@@ -2,11 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Exception;
 
-use Akeneo\Pim\Enrichment\Component\Error\Documented\Documentation;
-use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentationCollection;
-use Akeneo\Pim\Enrichment\Component\Error\Documented\DocumentedErrorInterface;
-use Akeneo\Pim\Enrichment\Component\Error\Documented\HrefMessageParameter;
-use Akeneo\Pim\Enrichment\Component\Error\Documented\RouteMessageParameter;
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessage;
 use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessageInterface;
@@ -18,8 +13,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
  */
 final class UnknownFamilyException extends InvalidPropertyException implements
     DomainErrorInterface,
-    TemplatedErrorMessageInterface,
-    DocumentedErrorInterface
+    TemplatedErrorMessageInterface
 {
     /** @var TemplatedErrorMessage */
     private $templatedErrorMessage;
@@ -43,33 +37,5 @@ final class UnknownFamilyException extends InvalidPropertyException implements
     public function getTemplatedErrorMessage(): TemplatedErrorMessage
     {
         return $this->templatedErrorMessage;
-    }
-
-    public function getDocumentation(): DocumentationCollection
-    {
-        return new DocumentationCollection([
-            new Documentation(
-                'Please check your {family_settings}.',
-                [
-                    'family_settings' => new RouteMessageParameter(
-                        'Family settings',
-                        'pim_enrich_family_index'
-                    )
-                ]
-            ),
-            new Documentation(
-                'More information about families: {what_is_a_family} {manage_your_families}.',
-                [
-                    'what_is_a_family' => new HrefMessageParameter(
-                        'What is a family?',
-                        'https://help.akeneo.com/pim/serenity/articles/what-is-a-family.html'
-                    ),
-                    'manage_your_families' => new HrefMessageParameter(
-                        'Manage your families',
-                        'https://help.akeneo.com/pim/serenity/articles/manage-your-families.html'
-                    )
-                ]
-            )
-        ]);
     }
 }

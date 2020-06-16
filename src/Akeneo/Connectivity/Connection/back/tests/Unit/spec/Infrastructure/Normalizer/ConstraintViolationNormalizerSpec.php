@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Normalizer;
 
+use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\DocumentationBuilderRegistry;
 use Akeneo\Connectivity\Connection\Infrastructure\Normalizer\ConstraintViolationNormalizer;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation\DocumentationCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
@@ -19,9 +22,13 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
  */
 class ConstraintViolationNormalizerSpec extends ObjectBehavior
 {
-    public function let(IdentifiableObjectRepositoryInterface $attributeRepository): void
-    {
-        $this->beConstructedWith($attributeRepository);
+    public function let(
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        DocumentationBuilderRegistry $documentationBuilderRegistry
+    ): void {
+        $documentationBuilderRegistry->getDocumentation(Argument::any())->willReturn(null);
+
+        $this->beConstructedWith($attributeRepository, $documentationBuilderRegistry);
     }
 
     public function it_is_initializable(): void
@@ -39,7 +46,7 @@ class ConstraintViolationNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($constraintViolation)->shouldReturn(true);
     }
 
-    public function it_normalizes_a_constraint_violation(): void
+    public function it_normalizes_a_constraint_violation($documentationBuilderRegistry): void
     {
         $constraintViolation = new ConstraintViolation(
             'Property "clothing_size" expects a valid code. The option "z" does not exist',
@@ -53,6 +60,9 @@ class ConstraintViolationNormalizerSpec extends ObjectBehavior
             ''
         );
 
+        $documentationBuilderRegistry->getDocumentation($constraintViolation)
+            ->willReturn(new DocumentationCollection([]));
+
         $this->normalize($constraintViolation)->shouldReturn(
             [
                 'property' => 'values',
@@ -62,7 +72,8 @@ class ConstraintViolationNormalizerSpec extends ObjectBehavior
                 'message_parameters' => [
                     '%attribute_code%' => 'clothing_size',
                     '%invalid_option%' => 'z'
-                ]
+                ],
+                'documentation' => []
             ]
         );
     }

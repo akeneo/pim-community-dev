@@ -1,13 +1,14 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Error\Documented;
+namespace spec\Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation;
 
-use Akeneo\Pim\Enrichment\Component\Error\Documented\Documentation;
-use Akeneo\Pim\Enrichment\Component\Error\Documented\HrefMessageParameter;
-use Akeneo\Pim\Enrichment\Component\Error\Documented\MessageParameterInterface;
-use Akeneo\Pim\Enrichment\Component\Error\Documented\MessageParameterTypes;
-use Akeneo\Pim\Enrichment\Component\Error\Documented\RouteMessageParameter;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation\Documentation;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation\HrefMessageParameter;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation\MessageParameterInterface;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation\MessageParameterTypes;
+use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation\RouteMessageParameter;
 use PhpSpec\ObjectBehavior;
 
 class DocumentationSpec extends ObjectBehavior
@@ -25,7 +26,8 @@ class DocumentationSpec extends ObjectBehavior
                     'Attributes settings',
                     'pim_enrich_attribute_index'
                 )
-            ]
+            ],
+            Documentation::STYLE_TEXT
         );
 
         $this->normalize()->shouldReturn([
@@ -42,7 +44,8 @@ class DocumentationSpec extends ObjectBehavior
                     'routeParameters' => [],
                     'title' => 'Attributes settings',
                 ],
-            ]
+            ],
+            'style' => Documentation::STYLE_TEXT
         ]);
     }
 
@@ -55,18 +58,20 @@ class DocumentationSpec extends ObjectBehavior
                     'What is an attribute?',
                     'https://help.akeneo.com/what-is-an-attribute.html'
                 ),
-                'anything' => new class() {},
-            ]
+                'anything' => new class ()
+                {
+                }
+            ],
+            Documentation::STYLE_TEXT
         );
 
         $this
             ->shouldThrow(
                 new \InvalidArgumentException(sprintf(
-                        'Class "%s" accepts only associative array of "%s" as $messageParameters.',
-                        Documentation::class,
-                        MessageParameterInterface::class
-                    )
-                )
+                    'Class "%s" accepts only associative array of "%s" as $messageParameters.',
+                    Documentation::class,
+                    MessageParameterInterface::class
+                ))
             )
             ->duringInstantiation();
     }
@@ -82,17 +87,17 @@ class DocumentationSpec extends ObjectBehavior
                         'What is an attribute?',
                         'https://help.akeneo.com/what-is-an-attribute.html'
                     ),
-                ]
+                ],
+                Documentation::STYLE_TEXT
             );
 
             $this
                 ->shouldThrow(
                     new \InvalidArgumentException(sprintf(
-                            '$messageParameters "%s" not found in $message "%s".',
-                            $wrongMatch,
-                            $message
-                        )
-                    )
+                        '$messageParameters "%s" not found in $message "%s".',
+                        $wrongMatch,
+                        $message
+                    ))
                 )
                 ->duringInstantiation();
         }
@@ -104,18 +109,31 @@ class DocumentationSpec extends ObjectBehavior
                     'What is an attribute?',
                     'https://help.akeneo.com/what-is-an-attribute.html'
                 ),
-            ]
+            ],
+            Documentation::STYLE_TEXT
         );
 
         $this
             ->shouldThrow(
                 new \InvalidArgumentException(sprintf(
-                        '$messageParameters "%s" not found in $message "%s".',
-                        0,
-                        $message
-                    )
-                )
+                    '$messageParameters "%s" not found in $message "%s".',
+                    0,
+                    $message
+                ))
             )
+            ->duringInstantiation();
+    }
+
+    public function it_validates_the_documentation_type(): void
+    {
+        $this->beConstructedWith(
+            'More information about attributes!',
+            [],
+            'wrong_documentation_type'
+        );
+
+        $this
+            ->shouldThrow(\InvalidArgumentException::class)
             ->duringInstantiation();
     }
 }

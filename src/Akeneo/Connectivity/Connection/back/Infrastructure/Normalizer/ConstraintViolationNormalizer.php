@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Normalizer;
 
+use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\DocumentationBuilderRegistry;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Api\Normalizer\Exception\ViolationNormalizer;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
 /**
@@ -18,6 +20,18 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
  */
 class ConstraintViolationNormalizer extends ViolationNormalizer
 {
+    /** @var DocumentationBuilderRegistry */
+    private $documentationBuilderRegistry;
+
+    public function __construct(
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        DocumentationBuilderRegistry $documentationBuilderRegistry
+    ) {
+        parent::__construct($attributeRepository);
+
+        $this->documentationBuilderRegistry = $documentationBuilderRegistry;
+    }
+
     /**
      * @param ConstraintViolationInterface $object
      * @param string $format
@@ -31,6 +45,10 @@ class ConstraintViolationNormalizer extends ViolationNormalizer
         $data['type'] = 'violation_error';
         $data['message_template'] = $object->getMessageTemplate();
         $data['message_parameters'] = $object->getParameters();
+
+        if (null !== $documentation = $this->documentationBuilderRegistry->getDocumentation($object)) {
+            $data['documentation'] = $documentation->normalize();
+        }
 
         if (isset($context['product'])) {
             $product = $context['product'];

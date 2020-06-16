@@ -48,115 +48,6 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    public function test_it_collects_validation_errors(): void
-    {
-        $this->attributeLoader->create([
-            'code' => 'name',
-            'type' => 'pim_catalog_text',
-            'max_characters' => 5
-        ]);
-        $this->attributeLoader->create([
-            'code' => 'length',
-            'type' => 'pim_catalog_metric',
-            'metric_family' => 'Length',
-            'default_metric_unit' => 'CENTIMETER',
-            'negative_allowed' => false,
-            'decimals_allowed' => false,
-        ]);
-        $this->familyLoader->create([
-            'code' => 'shoes',
-            'attributes' => ['sku', 'name', 'length']
-        ]);
-
-        $this->productLoader->create('high-top_sneakers', ['family' => 'shoes']);
-        $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
-        $client = $this->createAuthenticatedClient(
-            [],
-            [],
-            $connection->clientId(),
-            $connection->secret(),
-            $connection->username(),
-            $connection->password()
-        );
-
-        $content = json_encode([
-            'identifier' => 'high-top_sneakers',
-            'family' => 'shoes',
-            'values' => [
-                'name' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => 'this_value_is_too_long',
-                    ]
-                ],
-                'length' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => [
-                            'amount' => 2,
-                            'unit' => 'this_is_invalid_unit_type'
-                        ],
-                    ]
-                ]
-            ]
-        ]);
-
-        $client->request('PATCH', '/api/rest/v1/products/high-top_sneakers', [], [], [], $content);
-        Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $client->getResponse()->getStatusCode());
-
-        $this->elasticsearch->refreshIndex();
-        $result = $this->elasticsearch->search([]);
-
-        Assert::assertCount(2, $result['hits']['hits']);
-
-        $doc = $result['hits']['hits'][0]['_source'];
-        Assert::assertEquals('erp', $doc['connection_code']);
-
-        $expectedContent = [
-            'property' => 'values',
-            'message' => 'This value is too long. It should have 5 characters or less.',
-            'attribute' => 'name',
-            'locale' => null,
-            'scope' => null,
-            'type' => 'violation_error',
-            'message_template' => 'This value is too long. It should have {{ limit }} character or less.|This value is too long. It should have {{ limit }} characters or less.',
-            'message_parameters' => [
-                '{{ value }}' => '"this_value_is_too_long"',
-                '{{ limit }}' => 5
-            ],
-            'product' => [
-                'id' => 1,
-                'identifier' => 'high-top_sneakers',
-                'label' => 'high-top_sneakers',
-                'family' => 'shoes'
-            ]
-        ];
-        Assert::assertEquals($expectedContent, $doc['content']);
-
-        $doc = $result['hits']['hits'][1]['_source'];
-        Assert::assertEquals('erp', $doc['connection_code']);
-
-        $expectedContent = [
-            'property' => 'values',
-            'message' => 'Please specify a valid metric unit',
-            'attribute' => 'length',
-            'locale' => null,
-            'scope' => null,
-            'type' => 'violation_error',
-            'message_template' => 'Please specify a valid metric unit',
-            'message_parameters' => [],
-            'product' => [
-                'id' => 1,
-                'identifier' => 'high-top_sneakers',
-                'label' => 'high-top_sneakers',
-                'family' => 'shoes'
-            ]
-        ];
-        Assert::assertEquals($expectedContent, $doc['content']);
-    }
-
     public function test_it_collects_an_unknown_family_error(): void
     {
         $this->attributeLoader->create([
@@ -222,7 +113,8 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
                             'routeParameters' => [],
                             'title' => 'Family settings',
                         ],
-                    ]
+                    ],
+                    'style' => 'text'
                 ],
                 [
                     'message' => 'More information about families: {what_is_a_family} {manage_your_families}.',
@@ -237,7 +129,8 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
                             'href' => 'https://help.akeneo.com/pim/serenity/articles/manage-your-families.html',
                             'title' => 'Manage your families',
                         ],
-                    ]
+                    ],
+                    'style' => 'information'
                 ]
             ],
             'product' => [
@@ -287,6 +180,18 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
             'message_parameters' => ['attribute_code' => 'name'],
             'documentation' =>  [
                 [
+                    'message' => 'Please check your {attribute_settings}.',
+                    'parameters' => [
+                        'attribute_settings' => [
+                            'route' => 'pim_enrich_attribute_index',
+                            'routeParameters' => [],
+                            'title' => 'Attributes settings',
+                            'type' => 'route',
+                        ]
+                    ],
+                    'style' => 'text'
+                ],
+                [
                     'message' => 'More information about attributes: {what_is_attribute} {manage_attribute}.',
                     'parameters' => [
                         'what_is_attribute' => [
@@ -299,18 +204,8 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
                             'title' => 'Manage your attributes',
                             'type' => 'href',
                         ]
-                    ]
-                ],
-                [
-                    'message' => 'Please check your {attribute_settings}.',
-                    'parameters' => [
-                        'attribute_settings' => [
-                            'route' => 'pim_enrich_attribute_index',
-                            'routeParameters' => [],
-                            'title' => 'Attributes settings',
-                            'type' => 'route',
-                        ]
-                    ]
+                    ],
+                    'style' => 'information'
                 ]
             ],
             'product' => [
@@ -381,7 +276,8 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
                             'routeParameters' => [],
                             'title' => 'Categories settings',
                         ],
-                    ]
+                    ],
+                    'style' => 'text'
                 ],
                 [
                     'message' => 'More information about catalogs and categories: {what_is_a_category} {categorize_a_product}.',
@@ -396,7 +292,8 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
                             'href' => 'https://help.akeneo.com/pim/serenity/articles/categorize-a-product.html',
                             'title' => 'Categorize a product',
                         ],
-                    ]
+                    ],
+                    'style' => 'information'
                 ]
             ],
             'product' => [

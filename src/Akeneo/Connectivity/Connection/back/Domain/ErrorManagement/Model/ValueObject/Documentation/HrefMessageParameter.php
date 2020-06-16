@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Error\Documented;
+namespace Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
