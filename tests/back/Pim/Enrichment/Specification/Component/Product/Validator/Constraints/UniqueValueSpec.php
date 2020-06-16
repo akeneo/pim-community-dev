@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constr
 
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueValue;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Validator\Constraint;
 
 class UniqueValueSpec extends ObjectBehavior
 {
@@ -15,12 +16,12 @@ class UniqueValueSpec extends ObjectBehavior
     function it_has_message()
     {
         $this->message->shouldBe(
-            'The value %value% is already set on another product for the unique attribute %attribute%'
+            'The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.'
         );
     }
 
     function it_is_a_validator_constraint()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraint');
+        $this->shouldBeAnInstanceOf(Constraint::class);
     }
 }

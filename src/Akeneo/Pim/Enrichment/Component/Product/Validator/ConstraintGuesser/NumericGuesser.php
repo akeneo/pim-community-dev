@@ -35,6 +35,6 @@ class NumericGuesser implements ConstraintGuesserInterface
      */
     public function guessConstraints(AttributeInterface $attribute)
     {
-        return [new IsNumeric()];
+        return [new IsNumeric(['attributeCode' => $attribute->getCode()])];
     }
 }

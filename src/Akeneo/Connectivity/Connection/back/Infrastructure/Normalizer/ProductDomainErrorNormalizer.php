@@ -56,8 +56,6 @@ class ProductDomainErrorNormalizer implements NormalizerInterface, CacheableSupp
                 'label' => $product->getLabel(),
                 'family' => null !== $product->getFamily() ? $product->getFamily()->getCode() : null,
             ];
-
-
         }
 
         return $data;
