@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
@@ -93,6 +94,12 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /** @var MissingRequiredAttributesNormalizerInterface */
     private $missingRequiredAttributesNormalizer;
 
+    /** @var MissingRequiredAttributesCalculator */
+    private $missingRequiredAttributesCalculator;
+
+    /**
+     * @todo @merge master/5.0: remove the CompletenessCalculator argument, and the default null value for the MissingRequiredAttributesCalculator argument
+     */
     public function __construct(
         NormalizerInterface $normalizer,
         NormalizerInterface $versionNormalizer,
@@ -113,7 +120,8 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
         NormalizerInterface $parentAssociationsNormalizer,
         CatalogContext $catalogContext,
         CompletenessCalculator $completenessCalculator,
-        MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer
+        MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
+        MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator = null
     ) {
         $this->normalizer                       = $normalizer;
         $this->versionNormalizer                = $versionNormalizer;
@@ -135,6 +143,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
         $this->catalogContext                   = $catalogContext;
         $this->completenessCalculator           = $completenessCalculator;
         $this->missingRequiredAttributesNormalizer = $missingRequiredAttributesNormalizer;
+        $this->missingRequiredAttributesCalculator = $missingRequiredAttributesCalculator;
     }
 
     /**
@@ -261,7 +270,13 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
      */
     protected function getCompletenesses(ProductInterface $product): ProductCompletenessWithMissingAttributeCodesCollection
     {
-        $completenessCollection = $this->completenessCalculator->fromProductIdentifier($product->getIdentifier());
+        /** @todo @merge master/5.0: remove the "else" statement */
+        if (null !== $this->missingRequiredAttributesCalculator) {
+            $completenessCollection = $this->missingRequiredAttributesCalculator->fromEntityWithFamily($product);
+        } else {
+            $completenessCollection = $this->completenessCalculator->fromProductIdentifier($product->getIdentifier());
+        }
+
         if (null === $completenessCollection) {
             $completenessCollection = new ProductCompletenessWithMissingAttributeCodesCollection($product->getId(), []);
         }

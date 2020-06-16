@@ -198,5 +198,6 @@ services:
             - '@pim_catalog.context.catalog'
             - '@pim_catalog.completeness.calculator'
             - '@pim_enrich.normalizer.missing_required_attributes'
+            - '@pim_catalog.completeness.missing_required_attributes_calculator'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 110 }
