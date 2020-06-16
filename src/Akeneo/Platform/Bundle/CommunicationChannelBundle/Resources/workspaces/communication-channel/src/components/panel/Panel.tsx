@@ -2,51 +2,43 @@ import React from 'react';
 import styled from 'styled-components';
 import {useTranslate, useMediator} from '@akeneo-pim-community/legacy-bridge';
 import {useAnnouncements} from './../../hooks/useAnnouncements';
-import {AnnouncementFetcher} from './../../fetcher/announcement.type';
-import {useCampaign} from './../../hooks/useCampaign';
-import {CampaignFetcher} from './../../fetcher/campaign.type';
+import {usePimVersion} from '../../hooks/usePimVersion';
 import {HeaderPanel} from './../../components/panel/Header';
 import {AnnouncementComponent, EmptyAnnouncementList} from './announcement';
 import {Announcement} from './../../models/announcement';
+import {formatCampaign} from '../../tools/formatCampaign';
 
 const ListAnnouncement = styled.ul`
   margin: 74px 30px 0 30px;
 `;
 
-type PanelDataProvider = {
-  announcementFetcher: AnnouncementFetcher;
-  campaignFetcher: CampaignFetcher;
-};
-
-type PanelProps = {
-  dataProvider: PanelDataProvider
-};
-
-const Panel = ({dataProvider}: PanelProps): JSX.Element => {
+const Panel = (): JSX.Element => {
   const __ = useTranslate();
   const mediator = useMediator();
-  const {announcements} = useAnnouncements(dataProvider.announcementFetcher);
-  const {campaign} = useCampaign(dataProvider.campaignFetcher);
+  const pimVersion = usePimVersion();
+  const announcements = useAnnouncements();
+  const cloudEEVersion = 'serenity';
+  const campaign = null !== pimVersion.data ? formatCampaign(pimVersion.data.edition, pimVersion.data.version) : '';
+  const isSerenity = null !== pimVersion.data && cloudEEVersion === pimVersion.data.edition.toLowerCase();
+
   const closePanel = () => {
     mediator.trigger('communication-channel:panel:close');
   };
-  const isSerenity = null !== campaign && 'serenity' === campaign.toLowerCase();
 
   return (
     <>
       <HeaderPanel title={__('akeneo_communication_channel.panel.title')} onClickCloseButton={closePanel} />
-      {null !== announcements && isSerenity && (
+      {isSerenity ? (
         <ListAnnouncement>
-          {announcements.map((announcement: Announcement, index: number): JSX.Element =>
+          {announcements.data.map((announcement: Announcement, index: number): JSX.Element =>
             <AnnouncementComponent announcement={announcement} key={index} campaign={campaign} />)
           }
         </ListAnnouncement>
-      )}
-      {!isSerenity && (
+      ) : (
         <EmptyAnnouncementList text={__('akeneo_communication_channel.panel.list.empty')} />
       )}
     </>
   );
 };
 
-export {Panel, PanelDataProvider};
+export {Panel};

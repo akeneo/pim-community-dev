@@ -1,5 +1,5 @@
 import React from 'react';
-import {ReactView} from '@akeneo-pim-community/legacy-bridge';
+import {ReactView} from '@akeneo-pim-community/legacy-bridge/src/bridge/react';
 import {Index} from '@akeneo-pim-community/communication-channel';
 
 const mediator = require('oro/mediator');
@@ -19,7 +19,7 @@ class PanelView extends ReactView {
   reactElementToMount(): JSX.Element {
     return <Index />;
   }
-  
+
   render() {
     this.closePanel();
 

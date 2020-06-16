@@ -26,6 +26,7 @@ const unitConfig = {
     '^module-registry$': `${__dirname}/../../../../public/js/module-registry.js`,
     'pim/fetcher-registry': '<rootDir>/public/bundles/pimui/js/fetcher/fetcher-registry.js',
     'pim/router': '<rootDir>/public/bundles/pimui/js/router.js',
+    // 'oro/mediator': '<rootDir>/public/bundles/pimui/js/mediator.js',
     routing: '<rootDir>/public/bundles/pimui/js/fos-routing-wrapper.js',
     routes: '<rootDir>/public/js/routes.js',
   },
@@ -49,7 +50,7 @@ const unitConfig = {
       lines: 100,
     },
   },
-  setupFiles: [`${__dirname}/enzyme.js`, `${__dirname}/mocks.js`],
+  setupFiles: [`${__dirname}/enzyme.js`, `${__dirname}/mocks.js`, `${__dirname}/fetchMock.ts`],
 };
 
 module.exports = Object.assign({}, baseConfig, unitConfig);
