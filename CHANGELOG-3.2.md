@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes
+
+- PIM-9084: Block the export of attributes with specific locale wich isn't the used locale in the export profile
+
 # 3.2.58 (2020-06-01)
 
 # 3.2.57 (2020-05-28)
