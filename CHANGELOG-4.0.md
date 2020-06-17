@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.34 (2020-06-17)
+
 ## Bug fixes
 
 - PIM-9301: Fix extractUpdatedProductsByConnection query group by issue
