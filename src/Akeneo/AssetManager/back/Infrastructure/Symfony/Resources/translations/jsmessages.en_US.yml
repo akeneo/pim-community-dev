@@ -120,6 +120,7 @@ pim_asset_manager:
       edit: Edit family
       view: View family
       execute_product_link_rules: Execute rules
+      execute_naming_convention: Execute naming convention
     permission:
       title: Asset family permissions
     title: Assets
@@ -149,6 +150,11 @@ pim_asset_manager:
         confirm_title: Confirm execution
         confirm_content: Are you sure you want to execute all the rules? (this could take a long time)
         execute_rules: Execute rules
+        cancel: Cancel
+      execute_naming_convention:
+        confirm_title: Confirm execution
+        confirm_content: Are you sure you want to execute the naming convention? (this could take a long time)
+        execute_naming_convention: Execute naming convention
         cancel: Cancel
     properties:
       title: Asset family properties
@@ -206,6 +212,9 @@ pim_asset_manager:
       execute_product_link_rules:
         success: Product link rules have been launched
         fail: An error occured when trying to launch the product link rules
+      execute_naming_convention:
+        success: Naming convention has been launched
+        fail: An error occured when trying to launch the naming convention
     helper:
       title: Welcome to the Asset Manager!
       no_asset:
