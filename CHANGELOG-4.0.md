@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.34 (2020-06-17)
+
 ## Bug fixes
 
 - PIM-9298: Disallow removal of ReferenceEntity records used as product variant axis
