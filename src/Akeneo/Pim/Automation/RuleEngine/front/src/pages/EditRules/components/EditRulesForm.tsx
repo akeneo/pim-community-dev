@@ -45,7 +45,7 @@ const StyledTab = styled(Tab)`
 `;
 
 const StyledTabPanel = styled(TabPanel)`
-  padding-top: 20px;
+  padding-top: 10px;
 `;
 
 const StyledTabList = styled(TabList)`
