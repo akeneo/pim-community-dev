@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 import * as akeneoTheme from '../../theme';
-import { useBackboneRouter, useTranslate } from '../../dependenciesTools/hooks';
-import { useInitEditRules } from '../EditRules';
+import { useBackboneRouter } from '../../dependenciesTools/hooks';
 import { EditRulesContent } from './EditRulesContent';
 import { FullScreenError } from '../../components/FullScreenError';
 import { RuleDefinition } from '../../models';
+import { useInitEditRules } from './hooks';
 
 type Props = {
   ruleDefinitionCode: string;
@@ -14,7 +14,6 @@ type Props = {
 
 const EditRules: React.FC<Props> = ({ ruleDefinitionCode, setIsDirty }) => {
   const router = useBackboneRouter();
-  const translate = useTranslate();
   const [ruleDefinition, setRuleDefinition] = useState<RuleDefinition>();
   const { error, locales, scopes } = useInitEditRules(
     ruleDefinitionCode,
@@ -28,7 +27,6 @@ const EditRules: React.FC<Props> = ({ ruleDefinitionCode, setIsDirty }) => {
         <FullScreenError
           statusCode={error.statusCode}
           message={error.exception.message}
-          translate={translate}
         />
       ) : !ruleDefinition || !locales || !scopes ? (
         'Loading (TODO: better display)'
@@ -39,7 +37,6 @@ const EditRules: React.FC<Props> = ({ ruleDefinitionCode, setIsDirty }) => {
           locales={locales}
           scopes={scopes}
           setIsDirty={setIsDirty}
-          setRuleDefinition={setRuleDefinition}
         />
       )}
     </ThemeProvider>

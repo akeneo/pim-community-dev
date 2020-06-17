@@ -1,13 +1,9 @@
-import React from 'react';
-import { Attribute } from '../Attribute';
 import { Router } from '../../dependenciesTools';
 import { getAttributeByIdentifier } from '../../repositories/AttributeRepository';
-import {
-  TextAttributeConditionLine,
-  TextAttributeConditionLineProps,
-} from '../../pages/EditRules/components/conditions/TextAttributeConditionLine';
+import { TextAttributeConditionLine } from '../../pages/EditRules/components/conditions/TextAttributeConditionLine';
 import { Operator } from '../Operator';
-import { ConditionDenormalizer, ConditionFactory } from './Condition';
+import { ConditionFactory } from './Condition';
+import { ConditionModuleGuesser } from './ConditionModuleGuesser';
 
 const TYPE = 'pim_catalog_text';
 
@@ -23,8 +19,6 @@ const TextAttributeOperators = [
 
 type TextAttributeCondition = {
   scope?: string;
-  module: React.FC<TextAttributeConditionLineProps>;
-  attribute: Attribute;
   field: string;
   operator: Operator;
   value?: string;
@@ -41,17 +35,15 @@ const createTextAttributeCondition: ConditionFactory = async (
   }
 
   return {
-    module: TextAttributeConditionLine,
-    attribute,
     field: fieldCode,
     operator: Operator.IS_EMPTY,
   };
 };
 
-const denormalizeTextAttributeCondition: ConditionDenormalizer = async (
-  json: any,
-  router: Router
-): Promise<TextAttributeCondition | null> => {
+const getTextAttributeConditionModule: ConditionModuleGuesser = async (
+  json,
+  router
+) => {
   if (typeof json.field !== 'string') {
     return null;
   }
@@ -63,26 +55,17 @@ const denormalizeTextAttributeCondition: ConditionDenormalizer = async (
     return null;
   }
 
-  const textAttributeCondition = await createTextAttributeCondition(
-    json.field,
-    router
-  );
-  if (textAttributeCondition === null) {
+  const attribute = await getAttributeByIdentifier(json.field, router);
+  if (null === attribute || attribute.type !== TYPE) {
     return null;
   }
 
-  return {
-    ...(textAttributeCondition as TextAttributeCondition),
-    operator: json.operator,
-    value: json.value,
-    locale: json.locale || null,
-    scope: json.scope || null,
-  };
+  return TextAttributeConditionLine;
 };
 
 export {
   TextAttributeOperators,
   TextAttributeCondition,
-  denormalizeTextAttributeCondition,
+  getTextAttributeConditionModule,
   createTextAttributeCondition,
 };

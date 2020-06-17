@@ -90,7 +90,7 @@ class RuleExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function presentRuleActionValue($value, $code)
+    public function presentRuleActionValue($value, $code): string
     {
         $presenter = $this->presenterRegistry->getPresenterByFieldCode($code);
         if (null === $presenter) {

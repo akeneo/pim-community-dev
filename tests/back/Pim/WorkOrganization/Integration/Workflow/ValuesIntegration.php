@@ -245,11 +245,14 @@ class ValuesIntegration extends AbstractSecurityTestCase
         ]]);
         $this->generateToken('mary');
 
-        $this->updateProduct($product, ['associations' => [
-            'X_SELL' => [
-                'products' => []
-            ]
-        ]]);
+        $this->updateProduct($product, [
+            'associations' => [
+                'X_SELL' => [
+                    'products' => []
+                ]
+            ],
+            'quantified_associations' => []
+        ]);
     }
 
     public function testUpdateAssociationsFieldOnProductDraftWithoutChange()
@@ -262,11 +265,14 @@ class ValuesIntegration extends AbstractSecurityTestCase
         ]]);
         $this->generateToken('mary');
 
-        $this->updateProduct($product, ['associations' => [
-            'X_SELL' => [
-                'products' => ['product_a'],
-            ]
-        ]]);
+        $this->updateProduct($product, [
+            'associations' => [
+                'X_SELL' => [
+                    'products' => ['product_a']
+                ]
+            ],
+            'quantified_associations' => []
+        ]);
         $this->assertSame('product_a', $product->getAssociationForTypeCode('X_SELL')->getProducts()->first()->getIdentifier());
 
         $this->updateProduct($product, ['associations' => ['X_SELL' => ['products' => ['product_a'], 'groups' => ['groupB', 'groupA']]]]);

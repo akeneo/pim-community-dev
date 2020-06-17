@@ -1,16 +1,15 @@
 import React from 'react';
-import { ClearAction } from '../../../../models/actions/ClearAction';
+import { ClearAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
-import { useValueInitialization } from '../../hooks/useValueInitialization';
 import { FallbackField } from '../FallbackField';
+import { useRegisterConsts } from '../../hooks/useRegisterConst';
 
 type Props = {
   action: ClearAction;
 } & ActionLineProps;
 
 const ClearActionLine: React.FC<Props> = ({
-  translate,
   lineNumber,
   action,
   handleDelete,
@@ -28,13 +27,10 @@ const ClearActionLine: React.FC<Props> = ({
     values.scope = action.scope;
   }
 
-  useValueInitialization(`content.actions[${lineNumber}]`, values, {}, [
-    action,
-  ]);
+  useRegisterConsts(values, `content.actions[${lineNumber}]`);
 
   return (
     <ActionTemplate
-      translate={translate}
       title='Clear Action'
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'

@@ -83,6 +83,7 @@ final class ClearerActionApplier implements ActionApplierInterface
 
     /**
      * We do not apply the action if field is an attribute and:
+     *  - field is "groups" and entity is a product model
      *  - entity is variant (variant product or product model) and attribute is not on the entity's variation level
      */
     private function actionCanBeAppliedToEntity(
@@ -90,6 +91,13 @@ final class ClearerActionApplier implements ActionApplierInterface
         ProductClearActionInterface $action
     ): void {
         $field = $action->getField();
+
+        if ('groups' === $field && $entity instanceof ProductModelInterface) {
+            throw new NonApplicableActionException(
+                'The "groups" property cannot be cleared from a product model'
+            );
+        }
+
         $attribute = $this->getAttributes->forCode($field);
         if (null === $attribute) {
             return;

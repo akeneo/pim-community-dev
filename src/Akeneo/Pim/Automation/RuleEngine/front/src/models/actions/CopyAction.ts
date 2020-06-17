@@ -1,9 +1,7 @@
-import React from 'react';
 import { CopyActionLine } from '../../pages/EditRules/components/actions/CopyActionLine';
-import { ActionLineProps } from '../../pages/EditRules/components/actions/ActionLineProps';
+import { ActionModuleGuesser } from './ActionModuleGuesser';
 
 export type CopyAction = {
-  module: React.FC<{ action: CopyAction } & ActionLineProps>;
   type: 'copy';
   from_field: string;
   from_locale: string | null;
@@ -13,19 +11,10 @@ export type CopyAction = {
   to_scope: string | null;
 };
 
-export const denormalizeCopyAction = (json: any): CopyAction | null => {
+export const getCopyActionModule: ActionModuleGuesser = json => {
   if (json.type !== 'copy') {
-    return null;
+    return Promise.resolve(null);
   }
 
-  return {
-    module: CopyActionLine,
-    type: 'copy',
-    from_field: json.from_field,
-    from_locale: json.from_locale || null,
-    from_scope: json.from_scope || null,
-    to_field: json.to_field,
-    to_locale: json.to_locale || null,
-    to_scope: json.to_scope || null,
-  };
+  return Promise.resolve(CopyActionLine);
 };

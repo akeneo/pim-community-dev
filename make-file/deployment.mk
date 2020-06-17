@@ -158,6 +158,19 @@ endif
 ifeq ($(INSTANCE_NAME_PREFIX),pimci-pr)
 	sed 's/^\(FLAG_.*_ENABLED\).*/  \1: "1"/g' .env | (grep "FLAG_.*_ENABLED" || true) >> $(PIM_SRC_DIR)/deployments/terraform/pim/templates/env-configmap.yaml
 endif
+ifeq ($(INSTANCE_NAME_PREFIX),beta)
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled true
+endif
+ifeq ($(INSTANCE_NAME_PREFIX),pimci-duplic)
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.daemons.default.resources.limits.memory "2048Mi"
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.daemons.default.resources.requests.memory "2048Mi"
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.daemons.default.resources.requests.cpu "200m"
+	yq w -i $(INSTANCE_DIR)/values.yaml mysql.common.persistentDisks[0] $(PFID)
+	yq w -i $(INSTANCE_DIR)/values.yaml mysql.mysql.userPassword test
+	yq w -i $(INSTANCE_DIR)/values.yaml mysql.mysql.rootPassword test
+endif
 
 .PHONY: create-pim-main-tf
 create-pim-main-tf: $(INSTANCE_DIR)
@@ -218,8 +231,25 @@ terraform-pre-upgrade: terraform-init
 	done
 	# Move monitoring resources from pim to pim-monitoring
 	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_logging_metric.login_count module.pim-monitoring.google_logging_metric.login_count
+	sleep 1
 	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_logging_metric.login-response-time-distribution module.pim-monitoring.google_logging_metric.login-response-time-distribution
+	sleep 1
 	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_logging_metric.logs-count module.pim-monitoring.google_logging_metric.logs-count
+	sleep 1
 	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_monitoring_alert_policy.alert_policy module.pim-monitoring.google_monitoring_alert_policy.alert_policy
+	sleep 1
 	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_monitoring_notification_channel.pagerduty module.pim-monitoring.google_monitoring_notification_channel.pagerduty
+	sleep 1
 	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_monitoring_uptime_check_config.https module.pim-monitoring.google_monitoring_uptime_check_config.https
+	# Delete useless resources
+	cd $(INSTANCE_DIR) && terraform state rm module.pim.template_file.metric-template
+	sleep 1
+	cd $(INSTANCE_DIR) && terraform state rm module.pim.local_file.metric-rendered
+	sleep 1
+	cd $(INSTANCE_DIR) && terraform state rm module.pim.null_resource.metric
+	sleep 1
+
+.PHONY: duplicate_prod_environment_and_upgrade
+duplicate_prod_environment_and_upgrade:
+	ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) SOURCE_PED_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/bin/clone_serenity.sh && \
+	INSTANCE_NAME_PREFIX=pimci-duplic INSTANCE_NAME=$${INSTANCE_NAME} IMAGE_TAG=$${CIRCLE_SHA1} make create-ci-release-files deploy

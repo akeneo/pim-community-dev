@@ -232,6 +232,8 @@ batch_jobs:
   default_steps:
     fetch_products: 제품 데이터 가져오기
     create_proposals: 제안 만들기
+    notify_if_pending_attributes: 지도에서 보류 중인 특성을 사용자에게 알림
+    validate_configuration: Franklin Insights 구성 유효성 검사
   franklin_insights_subscribe_products:
     label: Franklin Insights 일괄 구독
     validate_configuration.label: Franklin Insights 구성 유효성 검사
@@ -262,3 +264,8 @@ pim_title:
 pim_notification:
   types:
     franklin_insights: Franklin Insights
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        franklin_insights: Franklin Insights

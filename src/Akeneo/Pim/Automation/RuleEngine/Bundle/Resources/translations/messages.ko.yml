@@ -98,16 +98,18 @@ pimee_catalog_rule:
     product_rule_definition_writer.title: 제품 규칙 가져오기 라이터
     rules_execution.title: 규칙 실행
   notification:
-    rule:
-      executed: 규칙 실행 완료
+    execute_rules:
+      success: 규칙 실행 완료
     mass_edit_rule:
       success: 규칙의 영향받는 제품 계산 완료
       error: 규칙의 영향받는 제품을 계산하는 중에 오류가 발생했습니다
 btn:
   Execute rules: 규칙 실행
-mass_edit_rule: 규칙 설정
-job_execution.summary.rule_calculated: 규칙 수
+job_execution:
+  summary:
+    rule_calculated: 규칙 수
 pim_datagrid:
   cells:
     type:
       mass_edit_rule: 규칙 설정
+      execute_rules: 규칙 실행

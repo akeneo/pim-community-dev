@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedActionForSubjectEvent;
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductAddActionInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -13,6 +14,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Tool\Component\StorageUtils\Updater\PropertyAdderInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -275,6 +277,34 @@ class SetterActionApplierSpec extends ObjectBehavior
         $eventDispatcher->dispatch(Argument::type(SkippedActionForSubjectEvent::class))->shouldBeCalled();
 
         $this->applyAction($action, [$entity])->shouldReturn([]);
+    }
+
+    function it_does_not_apply_action_if_entity_is_a_product_model_and_field_is_groups(
+        PropertySetterInterface $propertySetter,
+        EventDispatcherInterface $eventDispatcher,
+        ProductSetActionInterface $action,
+        ProductModelInterface $productModel
+    ) {
+        $action->getField()->willReturn('groups');
+
+        $propertySetter->setData(Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SkippedActionForSubjectEvent::class))->shouldBeCalled();
+
+        $this->applyAction($action, [$productModel])->shouldReturn([]);
+    }
+
+    function it_does_not_apply_action_if_entity_is_a_product_model_and_field_is_enabled(
+        PropertySetterInterface $propertySetter,
+        EventDispatcherInterface $eventDispatcher,
+        ProductSetActionInterface $action,
+        ProductModelInterface $productModel
+    ) {
+        $action->getField()->willReturn('enabled');
+
+        $propertySetter->setData(Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SkippedActionForSubjectEvent::class))->shouldBeCalled();
+
+        $this->applyAction($action, [$productModel])->shouldReturn([]);
     }
 
     function it_does_not_apply_set_action_if_the_field_is_not_an_attribute_of_the_family(

@@ -53,8 +53,6 @@ class GetCategoriesController
         $categories = $this->repository->findBy(['code' => $categoryCodes]);
         $categories = $this->objectFilter->filterCollection($categories, 'pim.internal_api.product_category.view');
 
-        return new JsonResponse(
-            $this->normalizer->normalize($categories, 'internal_api')
-        );
+        return new JsonResponse($this->normalizer->normalize($categories, 'internal_api', ['with_root' => true]));
     }
 }

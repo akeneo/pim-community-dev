@@ -9,19 +9,11 @@ export enum Operator {
 
 export type Operation = {
   operator: Operator;
-  operand: Operand;
-};
+} & Operand;
 
 export const denormalizeOperation = (data: any): Operation => {
   return {
     operator: data.operator,
-    operand: denormalizeOperand(data),
-  };
-};
-
-export const normalizeOperation = (operation: Operation) => {
-  return {
-    operator: operation.operator,
-    ...operation.operand,
+    ...denormalizeOperand(data),
   };
 };

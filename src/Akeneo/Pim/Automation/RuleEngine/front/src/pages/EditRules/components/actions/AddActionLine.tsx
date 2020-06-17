@@ -1,16 +1,15 @@
 import React from 'react';
-import { AddAction } from '../../../../models/actions/AddAction';
+import { AddAction } from '../../../../models/actions/';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
-import { useValueInitialization } from '../../hooks/useValueInitialization';
 import { FallbackField } from '../FallbackField';
+import { useRegisterConsts } from '../../hooks/useRegisterConst';
 
 type Props = {
   action: AddAction;
 } & ActionLineProps;
 
 const AddActionLine: React.FC<Props> = ({
-  translate,
   lineNumber,
   action,
   handleDelete,
@@ -29,13 +28,10 @@ const AddActionLine: React.FC<Props> = ({
     values.scope = action.scope;
   }
 
-  useValueInitialization(`content.actions[${lineNumber}]`, values, {}, [
-    action,
-  ]);
+  useRegisterConsts(values, `content.actions[${lineNumber}]`);
 
   return (
     <ActionTemplate
-      translate={translate}
       title='Add Action'
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'
@@ -46,6 +42,7 @@ const AddActionLine: React.FC<Props> = ({
             {/* It is not translated since it is temporary. */}
             The value{action.items.length > 1 && 's'}&nbsp;
             <span className='AknRule-attribute'>{action.items.join(', ')}</span>
+            &nbsp;
             {action.items.length > 1 ? ' are' : ' is'}
             &nbsp;added to&nbsp;
             <FallbackField

@@ -12,11 +12,10 @@ import { NetworkLifeCycle } from './hooks/NetworkLifeCycle.types';
 
 const ContainerCategoryTree = styled.div`
   margin: 0 20px;
-  border-top: ${({ theme }) => `1px solid ${theme.color.purple100}`};
 `;
 
 type Props = {
-  categoriesTrees: NetworkLifeCycle<CategoryTreeModel[]>;
+  categoryTrees: NetworkLifeCycle<CategoryTreeModel[]>;
   categoryTreeSelected?: CategoryTreeModel;
   locale: LocaleCode;
   onSelectCategory: (categoryCode: CategoryCode) => void;
@@ -32,13 +31,13 @@ const CategoryTreeFilter: React.FC<Props> = ({
   onSelectCategory,
   selectedCategories,
   initCategoryTreeOpenBranch,
-  categoriesTrees,
+  categoryTrees,
   categoryTreeSelected,
   setCategoryTreeSelected,
 }) => {
   if (
-    categoriesTrees.status === 'PENDING' ||
-    !categoriesTrees.data ||
+    categoryTrees.status === 'PENDING' ||
+    !categoryTrees.data ||
     !categoryTreeSelected
   ) {
     return <AkeneoSpinner />;
@@ -47,7 +46,7 @@ const CategoryTreeFilter: React.FC<Props> = ({
     <>
       <SelectCategoriesTrees
         currentCategoryTreeSelected={categoryTreeSelected}
-        categoriesTrees={categoriesTrees.data}
+        categoryTrees={categoryTrees.data}
         locale={locale}
         onClick={setCategoryTreeSelected}
       />

@@ -98,16 +98,18 @@ pimee_catalog_rule:
     product_rule_definition_writer.title: Pisarz importu reguły produktu
     rules_execution.title: Wykonywanie reguł
   notification:
-    rule:
-      executed: Wykonywanie reguł gotowe
+    execute_rules:
+      success: Wykonywanie reguł gotowe
     mass_edit_rule:
       success: Obliczanie produktów, których dotyczy problem dla reguł zakończone
       error: Wystąpił błąd podczas obliczania dotkniętych produktów dla reguł
 btn:
   Execute rules: Wykonywanie reguł
-mass_edit_rule: Ustawienia Reguł
-job_execution.summary.rule_calculated: Liczba zasad
+job_execution:
+  summary:
+    rule_calculated: Liczba zasad
 pim_datagrid:
   cells:
     type:
       mass_edit_rule: Ustawienia reguł
+      execute_rules: Wykonywanie reguł
