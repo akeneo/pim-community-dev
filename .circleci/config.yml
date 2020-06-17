@@ -369,41 +369,6 @@ jobs:
               command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make delete
               when: always
 
-  deploy_upgrade_oldest_prod_environment_beta:
-      environment:
-        <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
-      steps:
-          - attach_workspace:
-                at: ~/
-          - add_ssh_keys
-          - set_gcloud_config_dev
-          - run:
-              name: Oldest SaaS prod (PIM v3) deployment on kubernetes
-              command: |
-                ssh-keyscan github.com >> ~/.ssh/known_hosts
-                INSTANCE_NAME_PREFIX=beta IMAGE_TAG=$CIRCLE_SHA1 make helm-prepare
-                INSTANCE_NAME_PREFIX=beta IMAGE_TAG=$CIRCLE_SHA1 make deploy-pim3
-          - run:
-              name: Upgrade intermediate version SaaS to master
-              command: |
-                INSTANCE_NAME_PREFIX=beta IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
-                INSTANCE_NAME_PREFIX=beta IMAGE_TAG=$CIRCLE_SHA1 make terraform-pre-upgrade
-                INSTANCE_NAME_PREFIX=beta IMAGE_TAG=$CIRCLE_SHA1 make deploy
-          - run:
-              name: Production tests on upgraded env
-              command: INSTANCE_NAME_PREFIX=beta IMAGE_TAG=$CIRCLE_SHA1 make test-prod
-          - run:
-              name: Prepare infrastructure artifacts
-              command: INSTANCE_NAME_PREFIX=beta IMAGE_TAG=$CIRCLE_SHA1 make prepare-infrastructure-artifacts
-              when: on_fail
-          - store_artifacts:
-              path: ~/artifacts/infra
-          - run:
-              name: Remove upgraded env
-              command: INSTANCE_NAME_PREFIX=beta IMAGE_TAG=$CIRCLE_SHA1 make delete
-              when: always
-
   release:
       environment:
           <<: *envVarsDeployDev
@@ -821,7 +786,7 @@ workflows:
           - deploy_master_environment:
                 requires:
                     - build_prod
-          - deploy_upgrade_oldest_prod_environment_beta:
+          - deploy_upgrade_oldest_prod_environment:
                 requires:
                     - deploy_master_environment
           - test_back_static_and_acceptance:
@@ -854,7 +819,7 @@ workflows:
                     - test_back_performance
                     - test_back_behat_legacy
                     - deploy_master_environment
-                    - deploy_upgrade_oldest_prod_environment_beta
+                    - deploy_upgrade_oldest_prod_environment
                     - test_back_data_migrations
 
   on_demand:
