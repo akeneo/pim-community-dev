@@ -49,14 +49,14 @@ const CategoryTreeItem = styled.li`
 `;
 
 type Props = {
-  categoriesTrees: CategoryTreeModel[];
+  categoryTrees: CategoryTreeModel[];
   currentCategoryTreeSelected: CategoryTreeModel;
   locale: LocaleCode;
   onClick: (category: CategoryTreeModel, event?: React.MouseEvent) => void;
 };
 
 const SelectCategoriesTrees: React.FC<Props> = ({
-  categoriesTrees,
+  categoryTrees,
   currentCategoryTreeSelected,
   locale,
   onClick,
@@ -99,7 +99,7 @@ const SelectCategoriesTrees: React.FC<Props> = ({
         {...menu}
         aria-label={translate('pimee_catalog_rule.form.category.menu')}>
         <ul tabIndex={-1} role='menu'>
-          {categoriesTrees.map(category => (
+          {categoryTrees.map(category => (
             <CategoryTreeItem key={category.code} role='none'>
               <MenuItem
                 {...menu}

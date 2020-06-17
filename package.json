@@ -10,13 +10,13 @@
   },
   "scripts": {
     "requirements": "node $npm_package_config_source/frontend/build/check-requirements.js",
-    "webpack": "yarn requirements && yarn generate-asset-manager-models && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js --env=prod",
-    "webpack-dev": "yarn requirements && yarn generate-asset-manager-models && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js",
-    "webpack-watch": "yarn requirements && yarn generate-asset-manager-models && NODE_PATH=node_modules webpack --progress --config $npm_package_config_source/webpack.config.js --watch --strict",
+    "webpack": "yarn requirements && yarn generate-models && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js --env=prod",
+    "webpack-dev": "yarn requirements && yarn generate-models && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js",
+    "webpack-watch": "yarn requirements && yarn generate-models && NODE_PATH=node_modules webpack --progress --config $npm_package_config_source/webpack.config.js --watch --strict",
     "prettier": "prettier --config $npm_package_config_source/.prettierrc.json --parser typescript --write \"./{src,tests}/Akeneo/ReferenceEntity/**/*.ts\"; prettier --config $npm_package_config_source/.prettierrc.json --parser typescript --write \"./{src,tests}/Akeneo/AssetManager/**/*.ts\"; prettier --config $npm_package_config_source/.prettierrc.json --parser typescript --write \"./{src,tests}/Akeneo/ReferenceEntity/**/*.tsx\"; prettier --config $npm_package_config_source/.prettierrc.json --parser typescript --write \"./{src,tests}/Akeneo/AssetManager/**/*.tsx\"; prettier --config $npm_package_config_source/.prettierrc.json --parser typescript --write \"./tests/front/**/*.js\";",
     "before-commit": "yarn prettier && yarn lint && yarn test",
     "test": "yarn unit && yarn webpack-test --env=prod && yarn integration && yarn acceptance-re && yarn acceptance-am && yarn acceptance tests/features && yarn acceptance $npm_package_config_source/tests/features",
-    "webpack-test": "yarn generate-asset-manager-models && webpack --config $npm_package_config_source/webpack-test.config.js",
+    "webpack-test": "yarn generate-models && webpack --config $npm_package_config_source/webpack-test.config.js",
     "lint": "eslint 'src/**/*.js' --config $npm_package_config_source/.eslintrc --ignore-path $npm_package_config_source/.eslintignore --quiet",
     "lint-fix": "eslint 'src/**/*.js' --config $npm_package_config_source/.eslintrc --ignore-path $npm_package_config_source/.eslintignore --quiet --fix",
     "tslint": "node ./node_modules/tslint/bin/tslint",
@@ -29,7 +29,8 @@
     "less": "node $npm_package_config_styles",
     "less-watch": "SHELL=/bin/bash chokidar --verbose \"{$npm_package_config_source/src,src,public/bundles}/**/*.{less,css}\" -c \"yarn run less\"",
     "update-extensions": "node vendor/akeneo/pim-community-dev/frontend/build/update-extensions.js",
-    "generate-asset-manager-models": "node frontend/build/json-schema-to-typescript.js src/Akeneo/AssetManager/definitions/ public/bundles/akeneoassetmanager/infrastructure/model/"
+    "generate-asset-manager-models": "node $npm_package_config_source/frontend/build/json-schema-to-typescript.js src/Akeneo/AssetManager/definitions/ public/bundles/akeneoassetmanager/infrastructure/model/",
+    "generate-models": "yarn generate-asset-manager-models && yarn --cwd=node_modules/@akeneo-pim-community/communication-channel generate-models"
   },
   "devDependencies": {
     "@types/draft-js": "^0.10.25",
@@ -42,12 +43,9 @@
     "tslint-react": "^4.0.0"
   },
   "dependencies": {
-    "ajv": "^6.10.2",
     "draft-js": "^0.10.5",
     "draftjs-to-html": "^0.8.4",
     "html-to-draftjs": "^1.4.0",
-    "json-schema-ref-parser": "^7.1.2",
-    "json-schema-to-typescript": "^7.1.0",
     "jsoneditor-react": "^2.0.0",
     "p-limit": "^2.0.0",
     "p-queue": "^6.2.1",
@@ -65,6 +63,7 @@
     "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/front",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared",
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/Resources/workspaces/communication-channel",
     "src/Akeneo/Pim/Automation/DataQualityInsights/front",
     "src/Akeneo/Pim/Automation/RuleEngine/front"
   ]

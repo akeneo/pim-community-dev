@@ -1,11 +1,11 @@
 import React from 'react';
-import { Translate } from '../dependenciesTools';
+import { useTranslate } from '../dependenciesTools/hooks';
 
-type Props = {
-  translate: Translate;
-};
+type Props = {};
 
-const UnsavedChangesWarning: React.FC<Props> = ({ translate }) => {
+const UnsavedChangesWarning: React.FC<Props> = () => {
+  const translate = useTranslate();
+
   return (
     <div className='AknTitleContainer-state'>
       <div className='updated-status'>

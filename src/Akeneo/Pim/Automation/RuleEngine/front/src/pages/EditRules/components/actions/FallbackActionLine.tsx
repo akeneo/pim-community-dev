@@ -1,26 +1,22 @@
 import React from 'react';
-import { FallbackAction } from '../../../../models/FallbackAction';
+import { FallbackAction } from '../../../../models/actions/FallbackAction';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
-import { useValueInitialization } from '../../hooks/useValueInitialization';
+import { useRegisterConsts } from '../../hooks/useRegisterConst';
 
 type Props = {
   action: FallbackAction;
 } & ActionLineProps;
 
 const FallbackActionLine: React.FC<Props> = ({
-  translate,
   lineNumber,
   action,
   handleDelete,
 }) => {
-  useValueInitialization(`content.actions[${lineNumber}]`, action.json, {}, [
-    action,
-  ]);
+  useRegisterConsts(action, `content.actions[${lineNumber}]`);
 
   return (
     <ActionTemplate
-      translate={translate}
       title='Unknown Action'
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'
@@ -33,7 +29,7 @@ const FallbackActionLine: React.FC<Props> = ({
                 fontFamily:
                   'Courier, "MS Courier New", Prestige, "Everson Mono"',
               }}>
-              {JSON.stringify(action.json)}
+              {JSON.stringify(action)}
             </div>
           </div>
         </div>

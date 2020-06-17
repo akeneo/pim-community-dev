@@ -1,42 +1,30 @@
-import React from 'react';
 import { CalculateActionLine } from '../../pages/EditRules/components/actions/CalculateActionLine';
-import { ActionLineProps } from '../../pages/EditRules/components/actions/ActionLineProps';
 import { ProductField } from './ProductField';
 import { Operand, denormalizeOperand } from './Calculate/Operand';
 import { denormalizeOperation, Operation } from './Calculate/Operation';
+import { ActionModuleGuesser } from './ActionModuleGuesser';
 
 export type CalculateAction = {
-  module: React.FC<{ action: CalculateAction } & ActionLineProps>;
   type: 'calculate';
   destination: ProductField;
   source: Operand;
   operation_list: Operation[];
-  // TODO: uncomment when it will be ready
-  // round_precision: number | null;
+  round_precision?: number | null;
 };
 
-export const denormalizeCalculateAction = (
-  json: any
-): CalculateAction | null => {
+export const getCalculateActionModule: ActionModuleGuesser = json => {
   if (json.type !== 'calculate') {
-    return null;
+    return Promise.resolve(null);
   }
 
   try {
-    return {
-      module: CalculateActionLine,
-      type: 'calculate',
-      destination: json.destination,
-      source: denormalizeOperand(json.source),
-      operation_list: json.operation_list.map((operation: any) =>
-        denormalizeOperation(operation)
-      ),
-      // TODO: uncomment when it will be ready
-      // round_precision: json.round_precision || null,
-    };
-  } catch (e) {
-    console.error(e);
+    denormalizeOperand(json.source);
+    json.operation_list.map((operation: any) =>
+      denormalizeOperation(operation)
+    );
 
-    return null;
+    return Promise.resolve(CalculateActionLine);
+  } catch (e) {
+    return Promise.resolve(null);
   }
 };

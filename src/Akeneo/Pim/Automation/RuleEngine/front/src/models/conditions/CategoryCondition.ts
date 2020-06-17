@@ -1,5 +1,4 @@
-import { ConditionDenormalizer, ConditionFactory } from './Condition';
-import { Router } from '../../dependenciesTools';
+import { ConditionFactory } from './Condition';
 import React from 'react';
 import { Operator } from '../Operator';
 import { CategoryCode } from '../Category';
@@ -7,6 +6,7 @@ import {
   CategoryConditionLine,
   CategoryConditionLineProps,
 } from '../../pages/EditRules/components/conditions/CategoryConditionLine';
+import { ConditionModuleGuesser } from './ConditionModuleGuesser';
 
 const FIELD = 'categories';
 
@@ -26,20 +26,12 @@ type CategoryCondition = {
   value?: CategoryCode[];
 };
 
-const denormalizeCategoryCondition: ConditionDenormalizer = async (
-  json: any,
-  _router: Router
-) => {
+const getCategoryConditionModule: ConditionModuleGuesser = async json => {
   if (json.field !== FIELD) {
     return Promise.resolve<null>(null);
   }
 
-  return {
-    module: CategoryConditionLine,
-    field: FIELD,
-    operator: json.operator as Operator,
-    value: json.value as CategoryCode[],
-  } as CategoryCondition;
+  return CategoryConditionLine;
 };
 
 const createCategoryCondition: ConditionFactory = async (
@@ -59,7 +51,7 @@ const createCategoryCondition: ConditionFactory = async (
 
 export {
   CategoryCondition,
-  denormalizeCategoryCondition,
+  getCategoryConditionModule,
   createCategoryCondition,
   CategoryOperators,
 };

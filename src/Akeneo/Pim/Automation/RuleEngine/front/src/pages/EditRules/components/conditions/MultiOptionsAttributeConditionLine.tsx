@@ -1,5 +1,4 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
 import {
   MultiOptionsAttributeCondition,
   MultiOptionsAttributeOperators,
@@ -7,11 +6,16 @@ import {
 import { ConditionLineProps } from './ConditionLineProps';
 import { AttributeConditionLine } from './AttributeConditionLine';
 import { MultiOptionsSelector } from '../../../../components/Selectors/MultiOptionsSelector';
-import { useValueInitialization } from '../../hooks/useValueInitialization';
 import {
   AttributeOptionCode,
   getAttributeOptionsByIdentifiers,
 } from '../../../../fetch/AttributeOptionFetcher';
+import {
+  useBackboneRouter,
+  useTranslate,
+} from '../../../../dependenciesTools/hooks';
+import { Attribute } from '../../../../models/Attribute';
+import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepository';
 
 type MultiOptionsAttributeConditionLineProps = ConditionLineProps & {
   condition: MultiOptionsAttributeCondition;
@@ -20,18 +24,27 @@ type MultiOptionsAttributeConditionLineProps = ConditionLineProps & {
 const MultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeConditionLineProps> = ({
   condition,
   lineNumber,
-  translate,
   locales,
   scopes,
   currentCatalogLocale,
-  router,
 }) => {
-  const { setValue, watch } = useFormContext();
+  const router = useBackboneRouter();
+  const translate = useTranslate();
   const [unexistingOptionCodes, setUnexistingOptionCodes] = React.useState<
     AttributeOptionCode[]
   >([]);
 
+  const [attribute, setAttribute] = React.useState<Attribute | null>();
   React.useEffect(() => {
+    getAttributeByIdentifier(condition.field, router).then(attribute =>
+      setAttribute(attribute)
+    );
+  }, []);
+
+  React.useEffect(() => {
+    if (!attribute) {
+      return;
+    }
     // This method stores the unexisting option codes at the loading of the line.
     // As there is no way to add unexisting options, the only solution for the user to validate is
     // to remove manually unexisting options.
@@ -41,7 +54,7 @@ const MultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeConditio
       getAttributeOptionsByIdentifiers(
         condition.value,
         currentCatalogLocale,
-        condition.attribute.meta.id,
+        attribute.meta.id,
         router
       ).then(select2Options => {
         const unexistingOptionCodes: AttributeOptionCode[] = [];
@@ -59,12 +72,9 @@ const MultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeConditio
         setUnexistingOptionCodes(unexistingOptionCodes);
       });
     }
-  }, []);
+  }, [attribute]);
 
-  const getValueFormValue: () => AttributeOptionCode[] = () =>
-    watch(`content.conditions[${lineNumber}].value`);
-
-  const validateOptionCodes = (optionCodes: AttributeOptionCode[]) => {
+  const validation = (optionCodes: AttributeOptionCode[]) => {
     if (optionCodes && unexistingOptionCodes.length) {
       const unknownOptionCodes: AttributeOptionCode[] = [];
       optionCodes.forEach(familyCode => {
@@ -85,45 +95,33 @@ const MultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeConditio
 
     return true;
   };
-
-  useValueInitialization(
-    `content.conditions[${lineNumber}]`,
-    { value: condition.value },
-    {
-      value: {
-        validate: validateOptionCodes,
-      },
-    },
-    [condition, unexistingOptionCodes]
-  );
-
-  const setValueFormValue = (value: AttributeOptionCode[] | null) =>
-    setValue(`content.conditions[${lineNumber}].value`, value);
-
-  const onValueChange = (value: any) => {
-    setValueFormValue(value);
-  };
+  const [validateOptionCodes, setValidateOptionCodes] = React.useState({
+    validate: validation,
+  });
+  React.useEffect(() => {
+    setValidateOptionCodes({ validate: validation });
+  }, [JSON.stringify(unexistingOptionCodes)]);
 
   return (
     <AttributeConditionLine
       condition={condition}
       lineNumber={lineNumber}
-      translate={translate}
       currentCatalogLocale={currentCatalogLocale}
       locales={locales}
       scopes={scopes}
       availableOperators={MultiOptionsAttributeOperators}
-      setValueFormValue={setValueFormValue}>
-      <MultiOptionsSelector
-        value={getValueFormValue() || []}
-        onValueChange={onValueChange}
-        id={`edit-rules-input-${lineNumber}-value`}
-        currentCatalogLocale={currentCatalogLocale}
-        router={router}
-        attributeId={condition.attribute.meta.id}
-        label={translate('pimee_catalog_rule.rule.value')}
-        hiddenLabel={true}
-      />
+      attribute={attribute}>
+      {attribute && (
+        <MultiOptionsSelector
+          value={condition.value || []}
+          currentCatalogLocale={currentCatalogLocale}
+          attributeId={attribute.meta.id}
+          label={translate('pimee_catalog_rule.rule.value')}
+          hiddenLabel={true}
+          name={`content.conditions[${lineNumber}].value`}
+          validation={validateOptionCodes}
+        />
+      )}
     </AttributeConditionLine>
   );
 };

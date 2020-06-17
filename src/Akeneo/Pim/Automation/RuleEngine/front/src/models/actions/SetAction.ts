@@ -1,25 +1,16 @@
-import React from 'react';
 import { SetActionLine } from '../../pages/EditRules/components/actions/SetActionLine';
-import { ActionLineProps } from '../../pages/EditRules/components/actions/ActionLineProps';
 import { ProductField } from './ProductField';
+import { ActionModuleGuesser } from './ActionModuleGuesser';
 
 export type SetAction = {
-  module: React.FC<{ action: SetAction } & ActionLineProps>;
   type: 'set';
   value: any;
 } & ProductField;
 
-export const denormalizeSetAction = (json: any): SetAction | null => {
+export const getSetActionModule: ActionModuleGuesser = json => {
   if (json.type !== 'set') {
-    return null;
+    return Promise.resolve(null);
   }
 
-  return {
-    module: SetActionLine,
-    type: 'set',
-    field: json.field,
-    locale: json.locale || null,
-    scope: json.scope || null,
-    value: json.value,
-  };
+  return Promise.resolve(SetActionLine);
 };

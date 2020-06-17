@@ -1,90 +1,27 @@
 import { RuleDefinition } from './RuleDefinition';
-import { denormalizeFallbackAction, FallbackAction } from './FallbackAction';
-import { Action } from './Action';
 import { Router } from '../dependenciesTools';
 import { getAttributesByIdentifiers } from '../repositories/AttributeRepository';
-import {
-  denormalizeAddAction,
-  denormalizeCalculateAction,
-  denormalizeClearAction,
-  denormalizeConcatenateAction,
-  denormalizeCopyAction,
-  denormalizeRemoveAction,
-  denormalizeSetAction,
-  denormalizeSetFamilyAction,
-} from './actions';
-import {
-  Condition,
-  ConditionDenormalizer,
-  denormalizeFallbackCondition,
-  denormalizeFamilyCondition,
-  denormalizeMultiOptionsAttributeCondition,
-  denormalizePimCondition,
-  denormalizeTextAttributeCondition,
-  denormalizeCategoryCondition,
-} from './conditions';
-
-function denormalizeAction(jsonAction: any): Action {
-  const denormalizers: ((json: any) => Action | null)[] = [
-    denormalizeSetFamilyAction,
-    denormalizeAddAction,
-    denormalizeCalculateAction,
-    denormalizeClearAction,
-    denormalizeConcatenateAction,
-    denormalizeCopyAction,
-    denormalizeRemoveAction,
-    denormalizeSetAction,
-  ];
-
-  for (let i = 0; i < denormalizers.length; i++) {
-    const denormalizer = denormalizers[i];
-    const action = denormalizer(jsonAction);
-    if (action !== null) {
-      return action;
-    }
-  }
-
-  return denormalizeFallbackAction(jsonAction);
-}
-
-async function denormalizeCondition(
-  jsonCondition: any,
-  router: Router
-): Promise<Condition> {
-  const denormalizers: ConditionDenormalizer[] = [
-    denormalizeFamilyCondition,
-    denormalizeCategoryCondition,
-    denormalizeTextAttributeCondition,
-    denormalizeMultiOptionsAttributeCondition,
-    denormalizePimCondition,
-  ];
-
-  for (let i = 0; i < denormalizers.length; i++) {
-    const denormalize = denormalizers[i];
-    const condition = await denormalize(jsonCondition, router);
-    if (condition !== null) {
-      return condition;
-    }
-  }
-
-  return denormalizeFallbackCondition(jsonCondition);
-}
 
 const extractFieldIdentifiers = (json: any): string[] => {
-  if (
-    'undefined' === typeof json.content ||
-    'undefined' === typeof json.content.conditions ||
-    !Array.isArray(json.content.conditions)
-  ) {
-    return [];
+  const indexedFieldIdentifiers: { [identifier: string]: boolean } = {};
+
+  const conditions = json.content?.conditions ?? [];
+  if (Array.isArray(conditions)) {
+    conditions.forEach((condition: any) => {
+      if ('string' === typeof condition.field) {
+        indexedFieldIdentifiers[condition.field] = true;
+      }
+    });
   }
 
-  const indexedFieldIdentifiers: { [identifier: string]: boolean } = {};
-  json.content.conditions.forEach((condition: any) => {
-    if ('string' === typeof condition.field) {
-      indexedFieldIdentifiers[condition.field] = true;
-    }
-  });
+  const actions = json.content?.actions || [];
+  if (Array.isArray(actions)) {
+    actions.forEach((action: any) => {
+      if ('string' === typeof action.field) {
+        indexedFieldIdentifiers[action.field] = true;
+      }
+    });
+  }
 
   return Object.keys(indexedFieldIdentifiers);
 };
@@ -97,37 +34,30 @@ const prepareCacheAttributes = async (
   await getAttributesByIdentifiers(fieldIdentifiers, router);
 };
 
-export const denormalize = async function(
+const denormalize = async function(
   json: any,
   router: Router
 ): Promise<RuleDefinition> {
+  if (
+    typeof json.code !== 'string' ||
+    (typeof json.labels !== 'undefined' && typeof json.labels !== 'object') ||
+    (typeof json.priority !== 'undefined' && typeof json.priority !== 'number')
+  ) {
+    throw new Error('Unable to parse rule definition ' + JSON.stringify(json));
+  }
   const code = json.code;
-  const labels = json.labels;
-  const priority = json.priority;
-  let actions: FallbackAction[] = [];
-  let conditions: Condition[] = [];
+  const labels = json.labels || {};
+  const priority = json.priority || 0;
 
   await prepareCacheAttributes(json, router);
-
-  if (Array.isArray(json.content.actions)) {
-    actions = json.content.actions.map((jsonAction: any) => {
-      return denormalizeAction(jsonAction);
-    });
-  }
-
-  if (Array.isArray(json.content.conditions)) {
-    conditions = (await Promise.all(
-      json.content.conditions.map(async (jsonCondition: any) => {
-        return await denormalizeCondition(jsonCondition, router);
-      })
-    )) as Condition[];
-  }
 
   return {
     code: code,
     labels: labels,
     priority: priority,
-    conditions: conditions,
-    actions: actions,
+    conditions: json.content?.conditions || [],
+    actions: json.content?.actions || [],
   };
 };
+
+export { denormalize };

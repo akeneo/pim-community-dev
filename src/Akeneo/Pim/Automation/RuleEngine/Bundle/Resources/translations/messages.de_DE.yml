@@ -98,16 +98,18 @@ pimee_catalog_rule:
     product_rule_definition_writer.title: Produktimport-Regeln Writer
     rules_execution.title: Regel-Ausführung
   notification:
-    rule:
-      executed: Anwenden der Regel(n) abgeschlossen
+    execute_rules:
+      success: Anwenden der Regel(n) abgeschlossen
     mass_edit_rule:
       success: Berechnung der von dieser Regel betroffenen Produkte abgeschlossen
       error: Während der Berechnung, der von diesen Regeln betroffenen Produkte, ist ein Fehler aufgetreten
 btn:
   Execute rules: Regeln anwenden
-mass_edit_rule: Regeleinstellungen
-job_execution.summary.rule_calculated: Anzahl der Regeln
+job_execution:
+  summary:
+    rule_calculated: Anzahl der Regeln
 pim_datagrid:
   cells:
     type:
       mass_edit_rule: Regeleinstellungen
+      execute_rules: Regel-Ausführung

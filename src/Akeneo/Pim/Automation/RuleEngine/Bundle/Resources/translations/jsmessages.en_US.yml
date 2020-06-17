@@ -95,18 +95,44 @@ pimee_catalog_rule:
             add_to_category: Add to category
             add_conditions: Add conditions
             products_count:
-                complete: "{{ count }} products and product models"
+                complete: "]-Inf, 1]{{ count }} product and product model|]1, +Inf[{{ count }} products and product models"
                 pending: Calculating products and product models
                 error: Calculation impossible
             product_selection: Product selection
             fields:
                 family: Family
                 category: Category
+                attribute: Attribute
             actions:
                 add_action: Add action
+                add_category:
+                    title: ADD categories
+                    helper: To add your product selection to one or more categories, please start by selecting your category trees and then, your categories
+                set_category:
+                    title: SET categories
+                    helper: To set your product selection to one or more categories, please start by selecting your category trees and then, your categories
+                category:
+                    select_category_trees: Select your category trees
+                    select_category_tree: Select your category tree
+                    select_categories: Select your categories
+                    select_category: Select your category
+                    category_tree: Category tree
+                    categories_selected: "]-Inf, 1]{{ count }} category selected|]1, +Inf[{{ count }} categories selected"
+                    no_category_tree: Please, select a category tree first
+                    remove_unknown_category: " Click here to remove this category."
                 set_family:
                     title: SET Family
                     subtitle: Select your family
+                set_attribute:
+                    title: SET Attribute value
+                    target_subtitle: Select your target
+                    value_subtitle: Define your value
+                    attribute_label: Attribute
+                    attribute_placeholder: Select your target attribute
+                clear_attribute:
+                    title: CLEAR Attribute value
+                    subtitle: Select the attribute to clear
+                    attribute_label: Attribute
                 delete:
                     label: Remove action
                     description: Are you sure you want to remove this action?
@@ -139,6 +165,8 @@ pimee_catalog_rule:
                 success: Rule updated successfully
                 failed: Rule update failed
             discard_changes: You will lose changes to the rule if you leave the page.
+            unknown_attribute: Unknown attribute
+            unhandled_attribute_type: Sorry this attribute type is not managed yet. Please use the rule import.
         helper:
             add_to_category: To add your product selection to one or more categories, please start by selecting our category trees and then, your categories.
             product_selection: "You must define your product selection in order to create your rule. If you don't know how, "
@@ -153,8 +181,10 @@ pimee_catalog_rule:
     exceptions:
         loading: An error occurred during rule definition loading.
         required: This field is required
+        required_attribute: An attribute is required
         required_locale: A locale is required for this attribute
         required_scope: A channel is required for this attribute
+        required_value: A value is required for this action
         unknown_or_inactive_locale: 'The "{{ localeCode }}" locale does not exist or is not activated'
         unbound_locale: 'The "{{ localeCode }}" locale is not activated in the channel "{{ channelCode }}"'
         locale_on_unlocalizable_attribute: This attribute is not localizable. Please remove the locale before continue.
@@ -162,6 +192,8 @@ pimee_catalog_rule:
         scope_on_unscopable_attribute: This attribute is not scopable. Please remove the scope before continue.
         unknown_families: "{1}The family {{ familyCodes }} does not exist|]1,+Inf[The families {{ familyCodes }} do not exist"
         unknown_attribute_options: "{1}The option {{ attributeOptionCodes }} does not exist|]1,+Inf[The options {{ attributeOptionCodes }} do not exist"
+        unknown_attribute: "The attribute {{ attributeCode }} does not exist"
+        unknown_categories: "{1}The category {{ categoryCodes }} does not exist.|]1, +Inf[The categories {{ categoryCodes }} do not exist"
 
 pim_enrich:
     entity:

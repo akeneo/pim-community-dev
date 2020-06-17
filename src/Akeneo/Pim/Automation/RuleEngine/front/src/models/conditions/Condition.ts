@@ -16,11 +16,6 @@ export type Condition =
   | TextAttributeCondition
   | MultiOptionsAttributeCondition;
 
-export type ConditionDenormalizer = (
-  json: any,
-  router: Router
-) => Promise<Condition | null>;
-
 export type ConditionFactory = (
   fieldCode: string,
   router: Router

@@ -1,14 +1,14 @@
 import React from 'react';
-import { Select2SimpleSyncWrapper } from '../../../../components/Select2Wrapper';
-import { Translate } from '../../../../dependenciesTools';
+import { Select2Wrapper } from '../../../../components/Select2Wrapper';
 import { Action, AvailableAddAction } from '../../../../models/Action';
+import { useTranslate } from '../../../../dependenciesTools/hooks';
 
 type Props = {
-  translate: Translate;
   handleAddAction: (action: Action) => void;
 };
 
-const AddActionButton: React.FC<Props> = ({ translate, handleAddAction }) => {
+const AddActionButton: React.FC<Props> = ({ handleAddAction }) => {
+  const translate = useTranslate();
   const [closeTick, setCloseTick] = React.useState<boolean>(false);
 
   const actionsData = Object.keys(AvailableAddAction).map(actionKey => {
@@ -27,7 +27,7 @@ const AddActionButton: React.FC<Props> = ({ translate, handleAddAction }) => {
   };
 
   return (
-    <Select2SimpleSyncWrapper
+    <Select2Wrapper
       data={actionsData}
       id={'add-action-button'}
       label={translate('pimee_catalog_rule.form.edit.actions.add_action')}
@@ -40,6 +40,7 @@ const AddActionButton: React.FC<Props> = ({ translate, handleAddAction }) => {
         handleAddActionFromKey(event.val);
       }}
       placeholder={translate('pimee_catalog_rule.form.edit.actions.add_action')}
+      multiple={false}
     />
   );
 };

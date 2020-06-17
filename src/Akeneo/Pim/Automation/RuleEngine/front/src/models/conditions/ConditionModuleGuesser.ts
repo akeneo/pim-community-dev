@@ -1,0 +1,43 @@
+import { Router } from '../../dependenciesTools';
+import React from 'react';
+import { ConditionLineProps } from '../../pages/EditRules/components/conditions/ConditionLineProps';
+import { Condition } from './Condition';
+import { getFamilyConditionModule } from './FamilyCondition';
+import { getCategoryConditionModule } from './CategoryCondition';
+import { getTextAttributeConditionModule } from './TextAttributeCondition';
+import { getMultiOptionsAttributeConditionModule } from './MultiOptionsAttributeCondition';
+import { getPimConditionModule } from './PimCondition';
+import { FallbackConditionLine } from '../../pages/EditRules/components/conditions/FallbackConditionLine';
+
+export type ConditionModuleGuesser = (
+  json: any,
+  router: Router
+) => Promise<React.FC<ConditionLineProps & { condition: Condition }> | null>;
+
+const getConditionModule: (
+  json: any,
+  router: Router
+) => Promise<React.FC<ConditionLineProps & { condition: Condition }>> = async (
+  json,
+  router
+) => {
+  const getConditionModuleFunctions: ConditionModuleGuesser[] = [
+    getFamilyConditionModule,
+    getCategoryConditionModule,
+    getTextAttributeConditionModule,
+    getMultiOptionsAttributeConditionModule,
+    getPimConditionModule,
+  ];
+
+  for (let i = 0; i < getConditionModuleFunctions.length; i++) {
+    const getModuleFunction = getConditionModuleFunctions[i];
+    const module = await getModuleFunction(json, router);
+    if (module !== null) {
+      return module;
+    }
+  }
+
+  return FallbackConditionLine;
+};
+
+export { getConditionModule };

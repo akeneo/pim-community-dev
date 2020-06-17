@@ -173,6 +173,22 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $this->applyAction($action, [$productModel])->shouldReturn([$productModel]);
     }
 
+    function it_does_not_apply_action_if_entity_is_a_product_model_and_field_is_groups(
+        PropertyRemoverInterface $propertyRemover,
+        EventDispatcherInterface $eventDispatcher,
+        ProductRemoveActionInterface $action,
+        ProductModelInterface $productModel
+    ) {
+        $action->getField()->willReturn('groups');
+        $action->getOptions()->willReturn([]);
+        $action->getItems()->willReturn(['tshirts']);
+
+        $propertyRemover->removeData(Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SkippedActionForSubjectEvent::class))->shouldBeCalled();
+
+        $this->applyAction($action, [$productModel])->shouldReturn([]);
+    }
+
     function it_does_not_apply_remove_action_on_entity_with_family_variant_if_variation_level_is_not_right(
         PropertyRemoverInterface $propertyRemover,
         GetAttributes $getAttributes,

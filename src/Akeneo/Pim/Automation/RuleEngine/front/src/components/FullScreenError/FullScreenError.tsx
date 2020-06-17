@@ -1,17 +1,14 @@
 import React from 'react';
-import { Translate } from '../../dependenciesTools';
+import { useTranslate } from '../../dependenciesTools/hooks';
 
 type Props = {
   statusCode: number;
   message: string;
-  translate: Translate;
 };
 
-const FullScreenError: React.FC<Props> = ({
-  statusCode,
-  message,
-  translate,
-}) => {
+const FullScreenError: React.FC<Props> = ({ statusCode, message }) => {
+  const translate = useTranslate();
+
   return (
     <div className='AknInfoBlock AknInfoBlock--error'>
       <img

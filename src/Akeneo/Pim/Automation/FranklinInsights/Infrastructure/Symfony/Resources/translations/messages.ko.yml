@@ -32,8 +32,10 @@ job_execution.summary:
   subscribed: 구독함
   unsubscribed: 구독 취소함
   unsubscription_skipped_not_subscribed: 건너뜀(구독 안 함)
+  identifiers_mapping_validation: 식별자 매핑 유효성 검사
 pim_datagrid:
   cells:
     type:
       franklin_insights_fetch_products: Franklin Insights
+      franklin_insights: Franklin Insights
 Franklin subscription: Franklin 구독
