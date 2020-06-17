@@ -80,7 +80,6 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
 
     function it_asserts_that_the_other_methods_are_not_implemented_yet()
     {
-        $this->shouldThrow(NotImplementedException::class)->during('findAll', []);
         $this->shouldThrow(NotImplementedException::class)->during('findBy', [[]]);
         $this->shouldThrow(NotImplementedException::class)->during('findOneBy', [[]]);
         $this->shouldThrow(NotImplementedException::class)->during('getClassName', []);
