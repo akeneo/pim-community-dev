@@ -788,7 +788,7 @@ workflows:
                     - build_prod
           - deploy_upgrade_oldest_prod_environment:
                 requires:
-                    - deploy_master_environment
+                    - build_prod
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -818,9 +818,9 @@ workflows:
                     - test_onboarder_bundle
                     - test_back_performance
                     - test_back_behat_legacy
+                    - test_back_data_migrations
                     - deploy_master_environment
                     - deploy_upgrade_oldest_prod_environment
-                    - test_back_data_migrations
 
   on_demand:
       jobs:
@@ -872,8 +872,8 @@ workflows:
                     - test_onboarder_bundle
                     - test_back_performance
                     - test_back_behat_legacy
-                    - deploy_master_environment
                     - test_back_data_migrations
+                    - deploy_master_environment
 
 commands:
   set_gcloud_config_dev:
