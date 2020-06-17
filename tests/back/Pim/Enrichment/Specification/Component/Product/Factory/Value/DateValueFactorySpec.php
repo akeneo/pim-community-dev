@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeValueTypeException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\DateValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Value\DateValue;
@@ -78,14 +79,8 @@ final class DateValueFactorySpec extends ObjectBehavior
     {
         $attribute = $this->getAttribute(false, false);
 
-        $exception = InvalidPropertyTypeException::stringExpected(
-            'an_attribute',
-            DateValueFactory::class,
-            []
-        );
-
         $this
-            ->shouldThrow($exception)
+            ->shouldThrow(InvalidAttributeValueTypeException::class)
             ->during('createByCheckingData', [$attribute, 'ecommerce', 'en_US', []]);
     }
 

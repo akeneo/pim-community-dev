@@ -104,7 +104,7 @@ class MediaFilterIntegration extends AbstractProductQueryBuilderTestCase
     public function testErrorDataIsMalformed()
     {
         $this->expectException(InvalidPropertyTypeException::class);
-        $this->expectExceptionMessage('The an_image attribute requires a string, a array was detected.');
+        $this->expectExceptionMessage('Property "an_image" expects a string as data, "array" given.');
 
         $this->executeFilter([['an_image', Operators::CONTAINS, []]]);
     }

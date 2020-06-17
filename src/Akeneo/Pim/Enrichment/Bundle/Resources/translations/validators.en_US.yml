@@ -33,6 +33,7 @@ The currency "%currency%" has to be activated.: The currency "%currency%" has to
 product_model.code.not_blank.message: The product model code must not be empty.
 product_model.code.unique.message: The same code is already set on another product model.
 product_model.family_variant.not_blank.message: The product model family variant must not be empty.
+The %attribute% attribute requires a string, a %givenType% was detected.: The %attribute% attribute requires a string, a %givenType% was detected.
 The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.: The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.
 The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.: The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.
 The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.: The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.
