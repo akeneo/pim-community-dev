@@ -17,7 +17,7 @@ class AnnouncementItemSpec extends ObjectBehavior
             '/images/announcements/new-connection-monitoring-page.png',
             'Connection monitoring page',
             'http://link.com#easily-monitor-errors-on-your-connections',
-            new \DateTimeImmutable('2020/06/04'),
+            new \DateTimeImmutable(),
             14,
             [
                 'updates'
@@ -35,7 +35,8 @@ class AnnouncementItemSpec extends ObjectBehavior
 
     public function it_normalizes_itself(): void
     {
-        $startDate = new \DateTimeImmutable('2020/06/04');
+        $startDate = new \DateTimeImmutable();
+
         $this->toArray()->shouldReturn([
             'title' => 'Title',
             'description' => 'Description',
@@ -43,9 +44,7 @@ class AnnouncementItemSpec extends ObjectBehavior
             'altImg' => 'Connection monitoring page',
             'link' => 'http://link.com#easily-monitor-errors-on-your-connections',
             'startDate' => $startDate->format('F\, jS Y'),
-            'notificationDuration' => 14,
             'tags' => ['new', 'updates'],
-            'editions' => ['CE', 'EE'],
         ]);
     }
 }

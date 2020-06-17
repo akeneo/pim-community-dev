@@ -13,6 +13,9 @@ use DateTimeImmutable;
  */
 final class AnnouncementItem
 {
+    private const DATE_FORMAT = 'F\, jS Y';
+    private const DATE_INTERVAL_FORMAT = 'P%sD';
+
     /** @var string */
     private $title;
 
@@ -20,10 +23,10 @@ final class AnnouncementItem
     private $description;
 
     /** @var string|null */
-    private $img;
+    private $image;
 
     /** @var string|null */
-    private $altImg;
+    private $altImage;
 
     /** @var string */
     private $link;
@@ -43,8 +46,8 @@ final class AnnouncementItem
     /**
      * @param string $title
      * @param string $description
-     * @param null|string $img
-     * @param null|string $altImg
+     * @param null|string $image
+     * @param null|string $altImage
      * @param string $link
      * @param DateTimeImmutable $startDate
      * @param int $notificationDuration
@@ -55,8 +58,8 @@ final class AnnouncementItem
     public function __construct(
         string $title,
         string $description,
-        ?string $img,
-        ?string $altImg,
+        ?string $image,
+        ?string $altImage,
         string $link,
         \DateTimeImmutable $startDate,
         int $notificationDuration,
@@ -65,8 +68,8 @@ final class AnnouncementItem
     ) {
         $this->title = $title;
         $this->description = $description;
-        $this->img = $img;
-        $this->altImg = $altImg;
+        $this->image = $image;
+        $this->altImage = $altImage;
         $this->link = $link;
         $this->startDate = $startDate;
         $this->notificationDuration = $notificationDuration;
@@ -75,41 +78,34 @@ final class AnnouncementItem
     }
 
     /**
-     * @return string[]
+     * @return array<string, array<string>|int|string|null>
      */
-    private function addNewTag(): array
+    public function toArray(): array
+    {
+        $this->addNewTag();
+
+        return [
+            'title' => $this->title,
+            'description' => $this->description,
+            'img' => $this->image,
+            'altImg' => $this->altImage,
+            'link' => $this->link,
+            'startDate' => $this->startDate->format(self::DATE_FORMAT),
+            'tags' => $this->tags,
+        ];
+    }
+
+    /**
+     * @return void
+     */
+    private function addNewTag(): void
     {
         $currentDate = new \DateTimeImmutable();
-        $dateInterval = new \DateInterval('P' . $this->notificationDuration . 'D');
+        $dateInterval = new \DateInterval(sprintf(self::DATE_INTERVAL_FORMAT, $this->notificationDuration));
         $endDate = $this->startDate->add($dateInterval);
 
         if ($currentDate > $this->startDate && $currentDate < $endDate) {
             array_unshift($this->tags, 'new');
         }
-
-        return $this->tags;
-    }
-
-    private function formatDate(\DateTimeImmutable $date): string
-    {
-        return $date->format('F\, jS Y');
-    }
-
-    /**
-     * @return array<string, array<string>|int|string|null>
-     */
-    public function toArray(): array
-    {
-        return [
-            'title' => $this->title,
-            'description' => $this->description,
-            'img' => $this->img,
-            'altImg' => $this->altImg,
-            'link' => $this->link,
-            'startDate' => $this->formatDate($this->startDate),
-            'notificationDuration' => $this->notificationDuration,
-            'tags' => $this->addNewTag(),
-            'editions' => $this->editions,
-        ];
     }
 }

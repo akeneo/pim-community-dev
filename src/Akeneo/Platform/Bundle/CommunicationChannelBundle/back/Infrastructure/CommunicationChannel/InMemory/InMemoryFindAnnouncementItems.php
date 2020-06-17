@@ -6,6 +6,7 @@ namespace Akeneo\Platform\CommunicationChannel\Infrastructure\CommunicationChann
 
 use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Model\Read\AnnouncementItem;
 use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Query\FindAnnouncementItemsInterface;
+use Akeneo\Platform\CommunicationChannel\Infrastructure\Filesystem\Encoder\ImageLinkBase64Encoder;
 
 /**
  * @author Christophe Chausseray <chaauseray.christophe@gmail.com>
@@ -19,9 +20,13 @@ final class InMemoryFindAnnouncementItems implements FindAnnouncementItemsInterf
     /** @var string */
     private $externalJson;
 
-    public function __construct()
+    /** @var string */
+    private $rootDirectory;
+
+    public function __construct(string $rootDirectory)
     {
         $this->externalJson = file_get_contents(dirname(__FILE__) . DIRECTORY_SEPARATOR . self::FILENAME);
+        $this->rootDirectory = $rootDirectory;
     }
 
     public function byPimVersion(string $pimEdition, string $pimVersion): array
@@ -35,10 +40,17 @@ final class InMemoryFindAnnouncementItems implements FindAnnouncementItemsInterf
 
     private function getAnnouncementItem(array $announcement): AnnouncementItem
     {
+        if (isset($announcement['img'])) {
+            $imageLink = $this->formatImageLink($announcement['img']);
+            $imageEncoded = ImageLinkBase64Encoder::encode($imageLink);
+        } else {
+            $imageEncoded = null;
+        }
+
         return new AnnouncementItem(
             $announcement['title'],
             $announcement['description'],
-            $announcement['img'] ?? null,
+            $imageEncoded,
             $announcement['altImg'] ?? null,
             $announcement['link'],
             new \DateTimeImmutable($announcement['startDate']),
@@ -46,5 +58,14 @@ final class InMemoryFindAnnouncementItems implements FindAnnouncementItemsInterf
             $announcement['tags'],
             $announcement['editions']
         );
+    }
+
+    private function formatImageLink($image)
+    {
+        if (filter_var($image, FILTER_VALIDATE_URL)) {
+            return $image;
+        }
+
+        return $this->rootDirectory . '/public' . $image;
     }
 }

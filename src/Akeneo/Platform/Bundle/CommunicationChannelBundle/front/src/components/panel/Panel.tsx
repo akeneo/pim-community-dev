@@ -28,7 +28,7 @@ const Panel = (): JSX.Element => {
   return (
     <>
       <HeaderPanel title={__('akeneo_communication_channel.panel.title')} onClickCloseButton={closePanel} />
-      {isSerenity ? (
+      {!isSerenity ? (
         <ListAnnouncement>
           {announcements.data.map((announcement: Announcement, index: number): JSX.Element =>
             <AnnouncementComponent announcement={announcement} key={index} campaign={campaign} />)

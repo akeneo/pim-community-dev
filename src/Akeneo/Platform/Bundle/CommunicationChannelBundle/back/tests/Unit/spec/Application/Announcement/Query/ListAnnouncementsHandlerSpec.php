@@ -30,7 +30,6 @@ class ListAnnouncementsHandlerSpec extends ObjectBehavior
         $announcements = [
             [
                 'startDate' => '2020/06/04',
-                'endDate' => '2020/12/31',
                 'notificationDuration' => 14,
                 'tags' => [
                     'updates'
@@ -47,7 +46,6 @@ class ListAnnouncementsHandlerSpec extends ObjectBehavior
             ],
             [
                 'startDate' => '2020/06/04',
-                'endDate' => '2020/12/31',
                 'notificationDuration' => 14,
                 'tags' => [
                     'updates'

@@ -2,7 +2,7 @@
     "data": [
         {
             "startDate": "2020/06/04",
-            "notificationDuration": 14,
+            "notificationDuration": 30,
             "tags": [
                 "updates"
             ],
@@ -18,7 +18,7 @@
         },
         {
             "startDate": "2020/06/04",
-            "notificationDuration": 14,
+            "notificationDuration": 30,
             "tags": [
                 "updates"
             ],
@@ -35,7 +35,7 @@
         {
             "startDate": "2020/06/04",
             "endDate": "2020/12/31",
-            "notificationDuration": 14,
+            "notificationDuration": 30,
             "tags": [
                 "updates"
             ],
@@ -51,7 +51,7 @@
         },
         {
             "startDate": "2020/06/04",
-            "notificationDuration": 14,
+            "notificationDuration": 30,
             "tags": [
                 "updates"
             ],
@@ -65,7 +65,7 @@
         },
         {
             "startDate": "2020/06/04",
-            "notificationDuration": 14,
+            "notificationDuration": 30,
             "tags": [
                 "updates"
             ],

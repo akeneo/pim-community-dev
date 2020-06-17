@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\CommunicationChannel\Integration\Announcement;
+namespace Akeneo\Platform\CommunicationChannel\Integration\Test\Announcement;
 
 use Akeneo\Platform\CommunicationChannel\Test\Integration\WebTestCase;
 use Akeneo\Test\Integration\Configuration;
@@ -28,11 +28,26 @@ class ListAnnouncementIntegration extends WebTestCase
         $content = json_decode($this->client->getResponse()->getContent(), true);
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        Assert::assertIsArray($content['items']);
         Assert::assertEquals(count($expectedJson['data']), count($content['items']));
+        $this->assertItemKeys($content['items']);
     }
 
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
+    }
+
+    private function assertItemKeys(array $items): void
+    {
+        array_map(function ($item) {
+            Assert::assertArrayHasKey('title', $item);
+            Assert::assertArrayHasKey('description', $item);
+            Assert::assertArrayHasKey('img', $item);
+            Assert::assertArrayHasKey('altImg', $item);
+            Assert::assertArrayHasKey('link', $item);
+            Assert::assertArrayHasKey('startDate', $item);
+            Assert::assertArrayHasKey('tags', $item);
+        }, $items);
     }
 }
