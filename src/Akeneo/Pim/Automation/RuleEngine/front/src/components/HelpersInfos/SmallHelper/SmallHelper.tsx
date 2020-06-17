@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { AkeneoTheme } from '@akeneo-pim-community/shared/src';
+import { AkeneoTheme } from '@akeneo-pim-community/shared/src/theme/theme';
 
 type Level = 'info' | 'warning' | 'error';
 
