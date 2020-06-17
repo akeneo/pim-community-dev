@@ -77,7 +77,7 @@ class InMemoryFamilyVariantRepositorySpec extends ObjectBehavior
         $this->save($familyVariant1)->shouldReturn(null);
 
         $familyVariant2 = new FamilyVariant();
-        $familyVariant2->setCode('family-variant-1');
+        $familyVariant2->setCode('family-variant-2');
         $this->save($familyVariant2)->shouldReturn(null);
 
         $this->findAll()->shouldReturn([$familyVariant1, $familyVariant2]);

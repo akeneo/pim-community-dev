@@ -94,9 +94,11 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
     function it_finds_all_products()
     {
         $product1 = new Product();
+        $product1->setIdentifier('product-1');
         $this->save($product1);
 
         $product2 = new Product();
+        $product2->setIdentifier('product-2');
         $this->save($product2);
 
         $this->findAll()->shouldReturn([$product1, $product2]);
