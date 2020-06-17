@@ -61,6 +61,13 @@ class ProductModel implements ProductModelInterface
     protected $associations;
 
     /**
+     * Not persisted.
+     *
+     * @var QuantifiedAssociations|null
+     */
+    protected $quantifiedAssociations;
+
+    /**
      * Create an instance of ProductModel.
      */
     public function __construct()

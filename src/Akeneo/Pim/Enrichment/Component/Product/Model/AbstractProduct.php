@@ -68,6 +68,13 @@ abstract class AbstractProduct implements ProductInterface
     /** @var Collection $associations */
     protected $associations;
 
+    /**
+     * Not persisted.
+     *
+     * @var QuantifiedAssociations|null
+     */
+    protected $quantifiedAssociations;
+
     /** @var Collection $completenesses */
     protected $completenesses;
 
@@ -94,7 +101,7 @@ abstract class AbstractProduct implements ProductInterface
         $this->groups = new ArrayCollection();
         $this->associations = new ArrayCollection();
         $this->uniqueData = new ArrayCollection();
-        $this->quantifiedAssociation = QuantifiedAssociations::createFromNormalized([]);
+        $this->quantifiedAssociations = QuantifiedAssociations::createFromNormalized([]);
     }
 
     /**
