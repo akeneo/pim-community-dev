@@ -1,11 +1,7 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Locale } from '../../../models';
-import {
-  InputNumber,
-  InputText,
-  FormSubsection,
-} from '../../../components';
+import { InputNumber, InputText, FormSubsection } from '../../../components';
 import { useTranslate } from '../../../dependenciesTools/hooks';
 
 type Props = {
