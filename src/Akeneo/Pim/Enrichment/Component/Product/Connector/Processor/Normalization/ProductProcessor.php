@@ -152,8 +152,9 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         foreach ($values as $code => $value) {
             if (isset($attributesToFilter[$code])) {
                 $attribute = $this->attributeRepository->findOneByIdentifier($code);
-                if (!$attribute->isLocaleSpecific()
-                    || in_array($this->currentLocale, $attribute->getLocaleSpecificCodes())) {
+                $parameters = $this->stepExecution->getJobParameters();
+                $currentLocale = $parameters->get('filters')['structure']['locales'];
+                if (!$attribute->isLocaleSpecific() || in_array($currentLocale, $attribute->getLocaleSpecificCodes())) {
                     $valuesToExport[$code] = $value;
                 }
             }
