@@ -58,6 +58,7 @@ const DetailRow = styled.div`
     line-height: ${({theme}) => theme.fontSize.default};
     color: ${({theme}) => theme.color.grey140};
     padding: 5px;
+    white-space: nowrap;
 `;
 
 const DetailLabel = styled.span`

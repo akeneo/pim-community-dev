@@ -2,6 +2,8 @@ export const HrefType = 'href';
 export const RouteType = 'route';
 export const DocumentationStyleText = 'text';
 export const DocumentationStyleInformation = 'information';
+export const ErrorMessageDomainType = 'domain_error';
+export const ErrorMessageViolationType = 'violation_error';
 
 export type HrefParameter = {
     type: typeof HrefType;
