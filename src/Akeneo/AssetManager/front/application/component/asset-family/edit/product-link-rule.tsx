@@ -15,8 +15,8 @@ import {
   saveAssetFamily,
 } from 'akeneoassetmanager/application/action/asset-family/edit';
 import {
-  executeProductLinkRules,
-  executeNamingConvention
+  executeNamingConvention,
+  executeProductLinkRules
 } from 'akeneoassetmanager/application/action/asset-family/product-link-rule';
 import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
 import Ajv from 'ajv';
@@ -51,6 +51,7 @@ interface StateProps {
       edit_naming_convention: boolean;
       edit_product_link_rules: boolean;
       execute_product_link_rules: boolean;
+      execute_naming_conventions: boolean;
     };
   };
 }
@@ -132,37 +133,51 @@ const AssetFamilyProductLinkRulesEditor = ({
 };
 
 type SecondaryActionsProps = {
+  canExecuteRules: boolean;
   onExecuteRules: () => void;
+  canExecuteNamingConvention: boolean;
   onExecuteNamingConvention: () => void;
 };
 
 const SecondaryActions = ({
+  canExecuteRules,
   onExecuteRules,
+  canExecuteNamingConvention,
   onExecuteNamingConvention,
-}: SecondaryActionsProps) => (
-  <div className="AknSecondaryActions AknDropdown AknButtonList-item">
-    <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown"/>
-    <div className="AknDropdown-menu AknDropdown-menu--right">
-      <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
-      <div>
-        <button
-          tabIndex={-1}
-          className="AknDropdown-menuLink"
-          onClick={onExecuteRules}
-        >
-          {__(`pim_asset_manager.asset_family.button.execute_product_link_rules`)}
-        </button>
-        <button
-          tabIndex={-1}
-          className="AknDropdown-menuLink"
-          onClick={onExecuteNamingConvention}
-        >
-          {__(`pim_asset_manager.asset_family.button.execute_naming_convention`)}
-        </button>
+}: SecondaryActionsProps) => {
+  if (!canExecuteRules && !canExecuteNamingConvention) {
+    return null;
+  }
+
+  return (
+    <div className="AknSecondaryActions AknDropdown AknButtonList-item">
+      <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown"/>
+      <div className="AknDropdown-menu AknDropdown-menu--right">
+        <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
+        <div>
+          {canExecuteRules &&
+            <button
+              tabIndex={-1}
+              className="AknDropdown-menuLink"
+              onClick={onExecuteRules}
+            >
+              {__(`pim_asset_manager.asset_family.button.execute_product_link_rules`)}
+            </button>
+          }
+          {canExecuteNamingConvention &&
+            <button
+              tabIndex={-1}
+              className="AknDropdown-menuLink"
+              onClick={onExecuteNamingConvention}
+            >
+              {__(`pim_asset_manager.asset_family.button.execute_naming_convention`)}
+            </button>
+          }
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 interface DispatchProps {
   events: {
@@ -204,7 +219,9 @@ class ProductLinkRule extends React.Component<StateProps & DispatchProps> {
           )}
           secondaryActions={() => (
             <SecondaryActions
+              canExecuteRules={rights.assetFamily.execute_product_link_rules}
               onExecuteRules={() => this.setState({isExecuteRulesModalOpen: true})}
+              canExecuteNamingConvention={rights.assetFamily.execute_naming_conventions}
               onExecuteNamingConvention={() => this.setState({isExecuteNamingConventionModalOpen: true})}
             />
           )}
@@ -317,6 +334,10 @@ export default connect(
             securityContext.isGranted('akeneo_assetmanager_asset_family_edit') &&
             securityContext.isGranted('akeneo_assetmanager_asset_family_execute_product_link_rule') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
+          execute_naming_conventions:
+            securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
+            securityContext.isGranted('akeneo_assetmanager_asset_family_execute_naming_conventions') &&
+            canEditAssetFamily(state.right.assetFamily, state.form.data.assetFamily.identifier),
         },
       },
     };
