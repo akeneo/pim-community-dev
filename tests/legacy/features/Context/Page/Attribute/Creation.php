@@ -229,7 +229,6 @@ class Creation extends Form
 
             return $actualOrder === $expectedOrder;
         }, 'Attribute options are not ordered as expected.');
-
     }
 
     /**
