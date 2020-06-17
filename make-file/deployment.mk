@@ -158,6 +158,11 @@ endif
 ifeq ($(INSTANCE_NAME_PREFIX),pimci-pr)
 	sed 's/^\(FLAG_.*_ENABLED\).*/  \1: "1"/g' .env | (grep "FLAG_.*_ENABLED" || true) >> $(PIM_SRC_DIR)/deployments/terraform/pim/templates/env-configmap.yaml
 endif
+ifeq ($(INSTANCE_NAME_PREFIX),beta)
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled true
+endif
 ifeq ($(INSTANCE_NAME_PREFIX),pimci-duplic)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.daemons.default.resources.limits.memory "2048Mi"
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.daemons.default.resources.requests.memory "2048Mi"

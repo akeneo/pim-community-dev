@@ -61,7 +61,7 @@ if [[ $( gcloud compute disks describe ${PFID} --zone=${DESTINATION_GOOGLE_CLUST
 fi
 DISKMYSQL=$(gcloud compute disks create ${PFID} --source-snapshot=${SELFLINKMYSQL} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --type=pd-ssd --format=json)
 if [[ $DISKMYSQL == "" ]]; then
-	echo "Mysql duplicate disk not exists, exiting"
+	echo "Mysql duplicate disk does not exist, exiting"
 	exit 9
 fi
 echo "Mysql duplicate disk has been created : $DISKMYSQL"

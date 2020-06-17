@@ -372,6 +372,41 @@ jobs:
               command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make delete
               when: always
 
+  deploy_upgrade_oldest_prod_environment_beta:
+      environment:
+        <<: *envVarsDeployDev
+      <<: *dockerCloudDeployer
+      steps:
+          - attach_workspace:
+                at: ~/
+          - add_ssh_keys
+          - set_gcloud_config_dev
+          - run:
+              name: Oldest SaaS prod (PIM v3) deployment on kubernetes
+              command: |
+                ssh-keyscan github.com >> ~/.ssh/known_hosts
+                INSTANCE_NAME_PREFIX=beta IMAGE_TAG=$CIRCLE_SHA1 make helm-prepare
+                INSTANCE_NAME_PREFIX=beta IMAGE_TAG=$CIRCLE_SHA1 make deploy-pim3
+          - run:
+              name: Upgrade intermediate version SaaS to master
+              command: |
+                INSTANCE_NAME_PREFIX=beta IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
+                INSTANCE_NAME_PREFIX=beta IMAGE_TAG=$CIRCLE_SHA1 make terraform-pre-upgrade
+                INSTANCE_NAME_PREFIX=beta IMAGE_TAG=$CIRCLE_SHA1 make deploy
+          - run:
+              name: Production tests on upgraded env
+              command: INSTANCE_NAME_PREFIX=beta IMAGE_TAG=$CIRCLE_SHA1 make test-prod
+          - run:
+              name: Prepare infrastructure artifacts
+              command: INSTANCE_NAME_PREFIX=beta IMAGE_TAG=$CIRCLE_SHA1 make prepare-infrastructure-artifacts
+              when: on_fail
+          - store_artifacts:
+              path: ~/artifacts/infra
+          - run:
+              name: Remove upgraded env
+              command: INSTANCE_NAME_PREFIX=beta IMAGE_TAG=$CIRCLE_SHA1 make delete
+              when: always
+
   release:
       environment:
           <<: *envVarsDeployDev
@@ -384,6 +419,19 @@ jobs:
           - run:
               name: make release
               command: OLD_IMAGE_TAG=$CIRCLE_SHA1 make release
+
+  release-beta:
+      environment:
+          <<: *envVarsDeployDev
+      machine:
+          image: ubuntu-1604:201903-01
+      steps:
+          -   attach_workspace:
+                  at: ~/
+          - set_gcloud_config_dev
+          - run:
+              name: make release-beta
+              command: OLD_IMAGE_TAG=$CIRCLE_SHA1 echo "The beta release went successfully with $OLD_IMAGE_TAG"
 
   deploy_helpdesk_environment:
       environment:
@@ -758,6 +806,64 @@ workflows:
                     - test_back_behat_legacy
                     - deploy_master_environment
                     - deploy_upgrade_oldest_prod_environment
+                    - test_back_data_migrations
+
+  nightly-beta:
+      triggers:
+          - schedule:
+                cron: "0 4 * * *"
+                filters:
+                    branches:
+                        only:
+                            - master
+
+      jobs:
+          - checkout
+          - build_dev:
+                is_pull_request: false
+                requires:
+                    - checkout
+          - build_prod:
+                is_pull_request: false
+                requires:
+                    - checkout
+          - deploy_master_environment:
+                requires:
+                    - build_prod
+          - deploy_upgrade_oldest_prod_environment_beta:
+                requires:
+                    - deploy_master_environment
+          - test_back_static_and_acceptance:
+                requires:
+                    - build_dev
+          - test_front_static_acceptance_and_integration:
+                requires:
+                    - build_dev
+          - test_back_phpunit:
+                requires:
+                    - build_dev
+          - test_onboarder_bundle:
+                requires:
+                    - build_dev
+          - test_back_behat_legacy:
+                requires:
+                    - build_dev
+          - test_back_data_migrations:
+                requires:
+                    - build_dev
+          - test_back_performance:
+                requires:
+                    - build_dev
+          - release-beta:
+                requires:
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
+                    - test_back_phpunit
+                    - test_onboarder_bundle
+                    - test_back_performance
+                    - test_back_behat_legacy
+                    - deploy_master_environment
+                    - deploy_upgrade_oldest_prod_environment_beta
                     - test_back_data_migrations
 
   on_demand:
