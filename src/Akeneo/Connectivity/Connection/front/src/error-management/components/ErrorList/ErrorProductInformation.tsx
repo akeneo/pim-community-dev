@@ -8,6 +8,13 @@ type Props = {
 };
 
 const ErrorProductInformation: FC<Props> = ({product}) => {
+    const productName =
+        ' ' +
+        ('number' === typeof product?.id && product.label === product.identifier
+            ? '[' + product.label + ']'
+            : product.label) +
+        ' ';
+
     return (
         <ProductInformation>
             {'' === product?.label ? (
@@ -15,14 +22,14 @@ const ErrorProductInformation: FC<Props> = ({product}) => {
             ) : '' !== product?.label && 'number' === typeof product?.id ? (
                 <>
                     <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.content_column.product_name' />
-                    <ProductName> {product.label} </ProductName>
+                    <ProductName>{productName}</ProductName>
                     <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.content_column.with_id' />
-                    <strong> {product.identifier}</strong>
+                    <strong>{' ' + product.identifier}</strong>
                 </>
             ) : (
                 <>
                     <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.content_column.product_name' />
-                    <ProductName> {product.label} </ProductName>
+                    <ProductName>{productName}</ProductName>
                 </>
             )}
         </ProductInformation>
