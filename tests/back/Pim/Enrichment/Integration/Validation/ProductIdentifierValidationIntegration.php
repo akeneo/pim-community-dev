@@ -45,7 +45,7 @@ class ProductIdentifierValidationIntegration extends TestCase
         $this->assertCount(1, $violations);
         $this->assertSame(
             $violations->get(0)->getMessage(),
-            'This value is too long. It should have 4 characters or less.'
+            'The identifier attribute must not contain more than 4 characters. The submitted value is too long.'
         );
     }
 

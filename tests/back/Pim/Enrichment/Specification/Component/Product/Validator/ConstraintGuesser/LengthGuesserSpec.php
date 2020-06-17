@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constr
 
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\LengthGuesser;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesserInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Length;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
@@ -12,8 +13,10 @@ class LengthGuesserSpec extends ObjectBehavior
     function let(AttributeInterface $text, AttributeInterface $identifier, AttributeInterface $textarea)
     {
         $text->getType()->willReturn('pim_catalog_text');
+        $text->getCode()->willReturn('a_text');
         $identifier->getType()->willReturn('pim_catalog_identifier');
         $textarea->getType()->willReturn('pim_catalog_textarea');
+        $textarea->getCode()->willReturn('a_textarea');
     }
 
     function it_is_initializable()
@@ -37,6 +40,17 @@ class LengthGuesserSpec extends ObjectBehavior
         $this->supportAttribute($image)->shouldReturn(false);
     }
 
+    function it_enforces_the_keyword_identifier_instead_of_attribute_code($identifier)
+    {
+        $identifier->getMaxCharacters()->willReturn(null);
+        $lengthConstraints = $this->guessConstraints($identifier);
+
+        $lengthConstraints->shouldHaveCount(1);
+        $lengthConstraints[0]->shouldBeAnInstanceOf(Length::class);
+        $lengthConstraints[0]->max->shouldBe(255);
+        $lengthConstraints[0]->attributeCode->shouldBe('identifier');
+    }
+
     function it_enforces_database_length_constraints($text, $textarea)
     {
         $text->getMaxCharacters()->willReturn(null);
@@ -45,13 +59,13 @@ class LengthGuesserSpec extends ObjectBehavior
         $textConstraints = $this->guessConstraints($text);
 
         $textConstraints->shouldHaveCount(1);
-        $textConstraints[0]->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraints\Length');
+        $textConstraints[0]->shouldBeAnInstanceOf(Length::class);
         $textConstraints[0]->max->shouldBe(255);
 
         $textareaConstraints = $this->guessConstraints($textarea);
 
         $textareaConstraints->shouldHaveCount(1);
-        $textareaConstraints[0]->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraints\Length');
+        $textareaConstraints[0]->shouldBeAnInstanceOf(Length::class);
         $textareaConstraints[0]->max->shouldBe(65535);
     }
 
@@ -64,14 +78,14 @@ class LengthGuesserSpec extends ObjectBehavior
 
         $textConstraints->shouldHaveCount(1);
         $textConstraint = $textConstraints[0];
-        $textConstraint->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraints\Length');
+        $textConstraint->shouldBeAnInstanceOf(Length::class);
         $textConstraint->max->shouldBe(100);
 
         $textareaConstraints = $this->guessConstraints($textarea);
 
         $textareaConstraints->shouldHaveCount(1);
         $textareaConstraint = $textareaConstraints[0];
-        $textareaConstraint->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraints\Length');
+        $textareaConstraint->shouldBeAnInstanceOf(Length::class);
         $textareaConstraint->max->shouldBe(500);
     }
 }
