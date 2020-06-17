@@ -4,6 +4,12 @@ import { fetchCategoriesByIdentifiers } from '../fetch/CategoryFetcher';
 
 const cacheCategories: { [identifier: string]: Category | null } = {};
 
+export const clearCategoryRepositoryCache = () => {
+  for (const key in cacheCategories) {
+    delete cacheCategories[key];
+  }
+};
+
 export const getCategoriesByIdentifiers = async (
   categoryIdentifiers: CategoryCode[],
   router: Router

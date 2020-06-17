@@ -9,7 +9,7 @@ import {
   locales,
   scopes,
 } from '../../factories';
-import { clearCache } from '../../../../src/repositories/AttributeRepository';
+import { clearAttributeRepositoryCache } from '../../../../src/repositories/AttributeRepository';
 
 const createSetAction = (data?: { [key: string]: any }): SetAction => {
   return {
@@ -30,7 +30,7 @@ jest.mock('../../../../src/fetch/categoryTree.fetcher.ts');
 describe('SetActionLine', () => {
   beforeEach(() => {
     fetchMock.resetMocks();
-    clearCache();
+    clearAttributeRepositoryCache();
   });
 
   it('should display the set action line with an unknown attribute', async () => {

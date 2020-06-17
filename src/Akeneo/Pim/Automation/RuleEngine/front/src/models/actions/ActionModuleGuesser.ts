@@ -13,6 +13,7 @@ import { FallbackActionLine } from '../../pages/EditRules/components/actions/Fal
 import { Router } from '../../dependenciesTools';
 import { getClearAttributeActionModule } from './ClearAttributeAction';
 import { getAddCategoriesModule } from './AddCategoriesAction';
+import { getSetCategoriesModule } from './SetCategoriesAction';
 
 export type ActionModuleGuesser = (
   json: any,
@@ -30,6 +31,7 @@ const getActionModule: (
     getSetFamilyActionModule,
     getClearAttributeActionModule,
     getAddCategoriesModule,
+    getSetCategoriesModule,
     // Fallbacks
     getAddActionModule,
     getCalculateActionModule,

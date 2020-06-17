@@ -71,6 +71,7 @@ const CategorySelector: React.FC<Props> = ({
   onSelectCategory,
   locale,
   categoryTreeSelected,
+  ...remainingProps
 }) => {
   const router = useBackboneRouter();
   const translate = useTranslate();
@@ -158,7 +159,7 @@ const CategorySelector: React.FC<Props> = ({
           )}
         </ContainerCategoryTree>
       </CategoryPopover>
-      <CategoryArtifact className='AknTextField'>
+      <CategoryArtifact {...remainingProps} className='AknTextField'>
         {selectedCategory ? (
           <>
             {getCategoryLabel(selectedCategory, locale)}
@@ -170,7 +171,7 @@ const CategorySelector: React.FC<Props> = ({
           </>
         ) : (
           translate(
-            'pimee_catalog_rule.form.edit.actions.add_category.select_category'
+            'pimee_catalog_rule.form.edit.actions.category.select_category'
           )
         )}
       </CategoryArtifact>

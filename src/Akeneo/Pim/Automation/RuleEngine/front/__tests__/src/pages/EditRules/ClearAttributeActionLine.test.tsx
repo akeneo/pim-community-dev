@@ -2,7 +2,7 @@ import { renderWithProviders, act, fireEvent } from '../../../../test-utils';
 import React from 'react';
 import 'jest-fetch-mock';
 import { ClearAttributeActionLine } from '../../../../src/pages/EditRules/components/actions/ClearAttributeActionLine';
-import { clearCache } from '../../../../src/repositories/AttributeRepository';
+import { clearAttributeRepositoryCache } from '../../../../src/repositories/AttributeRepository';
 import userEvent from '@testing-library/user-event';
 import {
   attributeSelect2Response,
@@ -24,7 +24,7 @@ const action: ClearAttributeAction = {
 
 describe('ClearAttributeActionLine', () => {
   beforeEach(() => {
-    clearCache();
+    clearAttributeRepositoryCache();
     fetchMock.resetMocks();
   });
 
