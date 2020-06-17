@@ -192,7 +192,7 @@ const QuantifiedAssociations = ({
                 <HeaderCell>{translate('pim_enrich.entity.product.module.associations.variant_products')}</HeaderCell>
               )}
               <HeaderCell>{translate('pim_enrich.entity.product.module.associations.quantified.quantity')}</HeaderCell>
-              {!isCompact && <HeaderCell />}
+              <HeaderCell />
             </tr>
           </thead>
           <tbody>

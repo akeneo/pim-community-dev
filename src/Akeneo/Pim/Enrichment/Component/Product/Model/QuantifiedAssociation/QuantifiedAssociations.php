@@ -139,7 +139,6 @@ class QuantifiedAssociations
                     $this->quantifiedAssociations[$associationTypeCode][$associationEntityType] = [];
                 }
 
-                $entityQuantifiedLinks = $this->quantifiedAssociations[$associationTypeCode][$associationEntityType];
                 foreach ($quantifiedLinks as $quantifiedLink) {
                     $key = $this->searchKeyOfDuplicatedQuantifiedAssociation(
                         $this->quantifiedAssociations,

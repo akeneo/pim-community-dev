@@ -72,6 +72,9 @@ define(
              * {@inheritdoc}
              */
             render: function () {
+                if ('' !== this.$el.html() && this.$('.association-type-selector').length === 0) {
+                    ReactDOM.unmountComponentAtNode(this.el);
+                }
                 if (!this.readOnly) {
                     this.loadAssociationTypes().then((associationTypes) => {
                         const currentAssociationTypeCode = associationTypes.length ?

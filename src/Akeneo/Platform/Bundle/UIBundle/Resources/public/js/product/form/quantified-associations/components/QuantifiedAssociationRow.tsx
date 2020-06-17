@@ -201,7 +201,7 @@ const QuantifiedAssociationRow = ({
           </InputCellContainer>
           <InputErrors errors={row.errors} />
         </Cell>
-        {!isCompact && (
+        {!isCompact ? (
           <Cell>
             <ActionCellContainer>
               <RowActions>
@@ -219,6 +219,18 @@ const QuantifiedAssociationRow = ({
                     </a>
                   </RowAction>
                 )}
+                {undefined === parentQuantifiedLink && (
+                  <RowAction onClick={() => onRemove(row)}>
+                    <CloseIcon title={translate('pim_enrich.entity.product.module.associations.remove')} size={20} />
+                  </RowAction>
+                )}
+              </RowActions>
+            </ActionCellContainer>
+          </Cell>
+        ) : (
+          <Cell>
+            <ActionCellContainer>
+              <RowActions>
                 {undefined === parentQuantifiedLink && (
                   <RowAction onClick={() => onRemove(row)}>
                     <CloseIcon title={translate('pim_enrich.entity.product.module.associations.remove')} size={20} />
