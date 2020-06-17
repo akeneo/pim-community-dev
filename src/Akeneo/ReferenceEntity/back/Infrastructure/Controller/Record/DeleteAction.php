@@ -25,6 +25,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Delete a record
@@ -49,18 +51,28 @@ class DeleteAction
     /** @var RecordIndexerInterface */
     private $recordIndexer;
 
+    /** @var ValidatorInterface */
+    private $validator;
+
+    /** @var NormalizerInterface */
+    private $normalizer;
+
     public function __construct(
         DeleteRecordHandler $deleteRecordHandler,
         SecurityFacade $securityFacade,
         CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
         TokenStorageInterface $tokenStorage,
-        RecordIndexerInterface $recordIndexer
+        RecordIndexerInterface $recordIndexer,
+        ValidatorInterface $validator,
+        NormalizerInterface $normalizer
     ) {
         $this->deleteRecordHandler = $deleteRecordHandler;
         $this->securityFacade = $securityFacade;
         $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
         $this->tokenStorage = $tokenStorage;
         $this->recordIndexer = $recordIndexer;
+        $this->validator = $validator;
+        $this->normalizer = $normalizer;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier, string $recordCode): Response
@@ -73,6 +85,14 @@ class DeleteAction
         }
 
         $command = new DeleteRecordCommand($recordCode, $referenceEntityIdentifier);
+        $violations = $this->validator->validate($command);
+
+        if ($violations->count() > 0) {
+            return new JsonResponse(
+                $this->normalizer->normalize($violations, 'internal_api'),
+                Response::HTTP_BAD_REQUEST
+            );
+        }
 
         try {
             ($this->deleteRecordHandler)($command);

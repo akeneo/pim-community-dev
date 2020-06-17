@@ -138,6 +138,13 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.record.there_should_be_less_records_than_limit' }
 
+    akeneo_referenceentity.infrastructure.validation.record.record_should_not_be_used_as_product_variant_axis:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Validator\Constraints\RecordShouldNotBeUsedAsProductVariantAxisValidator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.enrich.record_is_used_as_product_variant_axis'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.record.record_should_not_be_used_as_product_variant_axis' }
+
     akeneo_referenceentity.infrastructure.validation.record.attribute_options:
         class: Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeOptionsValidator
         arguments:

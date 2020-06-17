@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9298: Disallow removal of ReferenceEntity records used as product variant axis
+
 ## Technical Improvements
 
 - AOB-947: Add extension point on asset manager tab register
