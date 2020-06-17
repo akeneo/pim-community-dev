@@ -165,11 +165,11 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
           name={`content.conditions[${lineNumber}].operator`}
         />
       </OperatorColumn>
-      <ValueColumn>
-        {shouldDisplayValue(getOperatorFormValue()) && children}
-      </ValueColumn>
-      <ScopeColumn>
-        {(attribute.scopable || getScopeFormValue()) && (
+      {shouldDisplayValue(getOperatorFormValue()) && (
+        <ValueColumn>{children}</ValueColumn>
+      )}
+      {(attribute.scopable || getScopeFormValue()) && (
+        <ScopeColumn>
           <ScopeSelector
             data-testid={`edit-rules-input-${lineNumber}-scope`}
             hiddenLabel={true}
@@ -181,10 +181,10 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
             name={`content.conditions[${lineNumber}].scope`}
             validation={scopeValidation}
           />
-        )}
-      </ScopeColumn>
-      <LocaleColumn>
-        {(attribute.localizable || getLocaleFormValue()) && (
+        </ScopeColumn>
+      )}
+      {(attribute.localizable || getLocaleFormValue()) && (
+        <LocaleColumn>
           <LocaleSelector
             data-testid={`edit-rules-input-${lineNumber}-locale`}
             hiddenLabel={true}
@@ -194,8 +194,8 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
             name={`content.conditions[${lineNumber}].locale`}
             validation={localeValidation}
           />
-        )}
-      </LocaleColumn>
+        </LocaleColumn>
+      )}
       <LineErrors lineNumber={lineNumber} type='conditions' />
     </div>
   );

@@ -78,9 +78,7 @@ const AttributeValue: React.FC<Props> = ({
     setValue(name, value);
 
     return (
-      <div>
-        {translate('pimee_catalog_rule.form.edit.actions.unknown_attribute')}
-      </div>
+      <div>{translate('pimee_catalog_rule.form.edit.unknown_attribute')}</div>
     );
   }
 
