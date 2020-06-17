@@ -43,10 +43,22 @@
     display: inline-flex;
     width: 100%;
     flex-wrap: wrap;
+    padding-top: 17px;
+    padding-bottom: 17px;
 
     &.AknGrid-bodyCell--tight {
       width: 44px;
     }
+  }
+
+  .AknGrid-bodyCell.AknRule {
+    padding-top: 7px;
+    padding-bottom: 7px;
+    line-height: 40px;
+  }
+
+  .AknGrid-body .AknGrid-bodyRow:not(.AknGrid-bodyRow--thumbnail):not(.AknGrid-bodyRow--highlight):hover {
+    background: white;
   }
 
   .actionList > * {
