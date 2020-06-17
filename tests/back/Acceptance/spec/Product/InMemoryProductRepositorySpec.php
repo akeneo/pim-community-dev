@@ -78,19 +78,6 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
             ->during('save', ['a_thing']);
     }
 
-    function it_asserts_that_the_other_methods_are_not_implemented_yet()
-    {
-        $this->shouldThrow(NotImplementedException::class)->during('findBy', [[]]);
-        $this->shouldThrow(NotImplementedException::class)->during('findOneBy', [[]]);
-        $this->shouldThrow(NotImplementedException::class)->during('getClassName', []);
-        $this->shouldThrow(NotImplementedException::class)->during('getAvailableAttributeIdsToExport', [[]]);
-        $this->shouldThrow(NotImplementedException::class)->during('getProductsByGroup', [new Group(), 10]);
-        $this->shouldThrow(NotImplementedException::class)->during('getProductCountByGroup', [new Group()]);
-        $this->shouldThrow(NotImplementedException::class)->during('countAll', []);
-        $this->shouldThrow(NotImplementedException::class)->during('hasAttributeInFamily', ['a-product', 'an-attribute']);
-        $this->shouldThrow(NotImplementedException::class)->during('searchAfter', [null, 89]);
-    }
-
     function it_finds_a_product_from_its_id()
     {
         $product = new Product();
@@ -102,5 +89,29 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
     function it_returns_null_when_it_does_not_find_a_product()
     {
         $this->find(mt_rand())->shouldReturn(null);
+    }
+
+    function it_finds_all_products()
+    {
+        $product1 = new Product();
+        $this->save($product1);
+
+        $product2 = new Product();
+        $this->save($product2);
+
+        $this->findAll()->shouldReturn([$product1, $product2]);
+    }
+
+    function it_asserts_that_the_other_methods_are_not_implemented_yet()
+    {
+        $this->shouldThrow(NotImplementedException::class)->during('findBy', [[]]);
+        $this->shouldThrow(NotImplementedException::class)->during('findOneBy', [[]]);
+        $this->shouldThrow(NotImplementedException::class)->during('getClassName', []);
+        $this->shouldThrow(NotImplementedException::class)->during('getAvailableAttributeIdsToExport', [[]]);
+        $this->shouldThrow(NotImplementedException::class)->during('getProductsByGroup', [new Group(), 10]);
+        $this->shouldThrow(NotImplementedException::class)->during('getProductCountByGroup', [new Group()]);
+        $this->shouldThrow(NotImplementedException::class)->during('countAll', []);
+        $this->shouldThrow(NotImplementedException::class)->during('hasAttributeInFamily', ['a-product', 'an-attribute']);
+        $this->shouldThrow(NotImplementedException::class)->during('searchAfter', [null, 89]);
     }
 }

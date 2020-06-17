@@ -69,6 +69,20 @@ class InMemoryFamilyVariantRepositorySpec extends ObjectBehavior
             ->during('save', ['a_thing']);
     }
 
+
+    function it_finds_all_the_family_variants()
+    {
+        $familyVariant1 = new FamilyVariant();
+        $familyVariant1->setCode('family-variant-1');
+        $this->save($familyVariant1)->shouldReturn(null);
+
+        $familyVariant2 = new FamilyVariant();
+        $familyVariant2->setCode('family-variant-1');
+        $this->save($familyVariant2)->shouldReturn(null);
+
+        $this->findAll()->shouldReturn([$familyVariant1, $familyVariant2]);
+    }
+
     function it_asserts_that_the_other_methods_are_not_implemented_yet()
     {
         $this->shouldThrow(NotImplementedException::class)->during('find', ['a-family']);
