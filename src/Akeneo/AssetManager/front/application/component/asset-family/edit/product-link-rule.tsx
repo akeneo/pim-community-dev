@@ -335,9 +335,9 @@ export default connect(
             securityContext.isGranted('akeneo_assetmanager_asset_family_execute_product_link_rule') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
           execute_naming_conventions:
-            securityContext.isGranted('akeneo_assetmanager_asset_edit') &&
+            securityContext.isGranted('akeneo_assetmanager_asset_family_edit') &&
             securityContext.isGranted('akeneo_assetmanager_asset_family_execute_naming_conventions') &&
-            canEditAssetFamily(state.right.assetFamily, state.form.data.assetFamily.identifier),
+            canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
         },
       },
     };
