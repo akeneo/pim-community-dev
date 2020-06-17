@@ -19,6 +19,7 @@ const unitConfig = {
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/pages/create-measurement-family/CreateMeasurementFamily.tsx',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/pages/create-unit/CreateUnit.tsx',
     'src/Akeneo/Platform/Bundle/CommunicationChannelBundle/Resources/workspaces/communication-channel/src/components/icons',
+    'src/Akeneo/Platform/Bundle/CommunicationChannelBundle/Resources/workspaces/communication-channel/src/components/panel/announcement/Image.tsx',
     'src/Akeneo/Platform/Bundle/UIBundle/Resources/public/js/view',
   ],
   moduleNameMapper: {
