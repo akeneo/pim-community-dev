@@ -162,27 +162,27 @@ services:
             - { name: pim_volume_monitoring.persistence.count_query }
 
     pim_volume_monitoring.persistence.query.count_products:
-        class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountProducts'
+        class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Elasticsearch\CountProducts'
         arguments:
-            - '@database_connection'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
             - '%count_products_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
             - { name: pim_volume_monitoring.persistence.count_query_to_aggregate }
 
     pim_volume_monitoring.persistence.query.count_product_models:
-        class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountProductModels'
+        class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Elasticsearch\CountProductModels'
         arguments:
-            - '@database_connection'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
             - '%count_product_models_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
             - { name: pim_volume_monitoring.persistence.count_query_to_aggregate }
 
     pim_volume_monitoring.persistence.query.count_variant_products:
-        class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountVariantProducts'
+        class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Elasticsearch\CountVariantProducts'
         arguments:
-            - '@database_connection'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
             - '%count_variant_products_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
@@ -216,4 +216,3 @@ services:
         arguments:
             - '@database_connection'
             - '%count_users_limit%'
-
