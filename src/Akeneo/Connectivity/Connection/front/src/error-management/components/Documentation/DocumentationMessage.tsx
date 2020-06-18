@@ -42,18 +42,16 @@ export const DocumentationMessage = ({documentation}: Props) => {
     return (
         <>
             {DocumentationStyleInformation === documentation.style ? (
-                <span>
+                <>
                     <InfoImg />
                     {constructedMessage}
-                </span>
+                </>
             ) : (
-                <span>{constructedMessage}</span>
+                constructedMessage
             )}
         </>
     );
 };
-
-//const Message = styled.span``;
 
 const DocLink = styled(Typography.Link)`
     color: ${({theme}) => theme.color.blue100};
