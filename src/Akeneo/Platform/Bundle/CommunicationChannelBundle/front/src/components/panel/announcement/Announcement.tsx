@@ -40,20 +40,18 @@ const AnnouncementComponent = ({announcement, campaign}: AnnouncementProps): JSX
   return (
     <Container>
       <LineContainer>
-        {announcement.tags.map((tag: string, index: number): JSX.Element => <TagComponent key={index} tag={tag} />)}
+        {announcement.tags.map(
+          (tag: string, index: number): JSX.Element => (
+            <TagComponent key={index} tag={tag} />
+          )
+        )}
         <Date>{announcement.startDate}</Date>
       </LineContainer>
       <Title tags={announcement.tags} title={announcement.title} />
       <Description tags={announcement.tags} description={announcement.description} />
-      {null !== announcement.img &&
-        <Image src={announcement.img} alt={altImg} />
-      }
+      {null !== announcement.img && <Image src={announcement.img} alt={altImg} />}
       <LineContainer>
-        <LinkComponent
-          baseUrl={announcement.link}
-          title={announcement.title}
-          campaign={campaign}
-        />
+        <LinkComponent baseUrl={announcement.link} title={announcement.title} campaign={campaign} />
       </LineContainer>
     </Container>
   );

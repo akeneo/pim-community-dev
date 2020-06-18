@@ -4,7 +4,7 @@ import {NewsIllustration} from '@akeneo-pim-community/shared';
 
 type EmptyAnnouncementListProps = {
   text: string;
-}
+};
 
 const Container = styled.div`
   margin-top: 50%;

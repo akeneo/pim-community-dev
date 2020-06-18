@@ -19,7 +19,7 @@ type LinkProps = {
   baseUrl: string;
   title: string;
   campaign: string | null;
-}
+};
 
 const buildLinkAnnouncementUrl = (baseUrl: string, campaign: string | null): URL => {
   const url = new URL(baseUrl);
@@ -30,7 +30,7 @@ const buildLinkAnnouncementUrl = (baseUrl: string, campaign: string | null): URL
   }
 
   return url;
-}
+};
 
 const LinkComponent = ({baseUrl, title, campaign}: LinkProps): JSX.Element => {
   const __ = useTranslate();

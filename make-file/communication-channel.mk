@@ -88,7 +88,7 @@ communication-channel-back:
 	$(MAKE) communication-channel-integration-back
 
 communication-channel-front:
-	$(NODE_RUN) node_modules/.bin/prettier --config .prettierrc.json --parser typescript --write "./src/Akeneo/Platform/Bundle/CommunicationChannelBundle/**/*.ts"
+	$(NODE_RUN) node_modules/.bin/prettier --config .prettierrc.json --parser typescript --write "./src/Akeneo/Platform/Bundle/CommunicationChannelBundle/**/*.{ts,tsx}"
 	$(YARN_RUN) unit
 
 # Generate Models
