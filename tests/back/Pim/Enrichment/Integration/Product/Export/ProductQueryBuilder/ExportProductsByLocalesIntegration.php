@@ -37,6 +37,19 @@ class ExportProductsByLocalesIntegration extends AbstractExportTestCase
             ],
         ]);
 
+        $this->createAttribute([
+            'code'              => 'localeSpecificAttribute',
+            'group'             => 'attributeGroupA',
+            'type'              => 'pim_catalog_textarea',
+            'available_locales' => ['en_US'],
+            'localizable'       => false,
+            'scopable'          => false,
+            'labels'            => [
+                'fr_FR' => 'French name',
+                'en_US' => 'English label',
+            ],
+        ]);
+
         $this->createFamily([
             'code'       => 'localized',
             'attributes' => ['sku', 'name'],
@@ -44,6 +57,11 @@ class ExportProductsByLocalesIntegration extends AbstractExportTestCase
                 'tablet' => ['sku', 'name']
             ]
 
+        ]);
+
+        $this->createFamily([
+            'code'       => 'accessories',
+            'attributes' => ['name', 'localeSpecificAttribute']
         ]);
 
         $this->createProduct('french', [
@@ -84,6 +102,18 @@ class ExportProductsByLocalesIntegration extends AbstractExportTestCase
         ]);
 
         $this->createProduct('empty', ['family' => 'localized']);
+
+        $this->createProduct('withLocaleSpecificAttribute', [
+            'family' => 'accessories',
+            'values' => [
+                'name'        => [
+                    ['data' => 'English name', 'locale' => 'en_US', 'scope' => null],
+                ],
+                'localeSpecificAttribute' => [
+                    ['data' => 'French name', 'locale' => null, 'scope' => null, 'available_locales' => 'en_US'],
+                ],
+            ],
+        ]);
     }
 
     public function testProductExportWithFrenchData()
@@ -113,11 +143,12 @@ CSV;
     public function testProductExportWithEnglishAndFrenchData()
     {
         $expectedCsv = <<<CSV
-sku;categories;enabled;family;groups;description-fr_FR;name-en_US;name-fr_FR
+sku;categories;enabled;family;groups;description-fr_FR;localeSpecificAttribute;name-en_US;name-fr_FR
 french;;1;localized;;"French desc";;"French name"
 english;;1;localized;;"French desc";"English name";
 complete;;1;localized;;"French desc";"English name";"French name"
 empty;;1;localized;;;;
+withLocaleSpecificAttribute;;1;accessories;;;"French name";"English name";\n
 
 CSV;
 
