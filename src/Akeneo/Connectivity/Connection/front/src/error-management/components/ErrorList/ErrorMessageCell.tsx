@@ -13,16 +13,23 @@ type Props = {
 };
 
 const ErrorMessageCell: FC<Props> = ({content}) => {
+    let errorMessage;
+
+    switch (content.type) {
+        case ErrorMessageDomainType:
+            errorMessage = <ErrorMessageDomain content={content} />;
+            break;
+        case ErrorMessageViolationType:
+            errorMessage = <ErrorMessageViolation content={content} />;
+            break;
+        default:
+            errorMessage = <ErrorMessageUnformattedList content={content} />;
+    }
+
     return (
         <Container>
             {content?.product && <ErrorProductInformation product={content.product} />}
-            {ErrorMessageDomainType === content.type ? (
-                <ErrorMessageDomain content={content} />
-            ) : ErrorMessageViolationType === content.type ? (
-                <ErrorMessageViolation content={content} />
-            ) : (
-                <ErrorMessageUnformattedList content={content} />
-            )}
+            {errorMessage}
             {content.documentation && <DocumentationList documentations={content.documentation} />}
         </Container>
     );

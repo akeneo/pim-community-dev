@@ -6,22 +6,14 @@ type Props = {
     content: ConnectionErrorContent;
 };
 
+const hiddenFields = ['product', 'documentation', 'message_template', 'message_parameters', 'locale', 'scope'];
+
 const ErrorMessageUnformattedList: FC<Props> = ({content}) => {
     return (
         <table>
             <tbody>
                 {Object.entries(content)
-                    .filter(
-                        ([key]) =>
-                            ![
-                                'product',
-                                'documentation',
-                                'message_template',
-                                'message_parameters',
-                                'locale',
-                                'scope',
-                            ].includes(key)
-                    )
+                    .filter(([key]) => !hiddenFields.includes(key))
                     .map(([key, value], i) => {
                         return (
                             <tr key={i}>
