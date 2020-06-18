@@ -106,7 +106,9 @@ const ListItem = ({data, selectAttributeOption, isSelected, deleteAttributeOptio
             >
                 <span className={`AknAttributeOption-move-icon ${attributeContext.autoSortOptions ? 'AknAttributeOption-move-icon--disabled' : ''}`} draggable={true} role={'attribute-option-move-handle'}/>
                 <span className="AknAttributeOption-itemCode" role="attribute-option-item-label">
-                    {data.code}
+                    <div>
+                        <span>{data.code}</span>
+                    </div>
                 </span>
                 <span className="AknAttributeOption-delete-option-icon" onClick={(event: any) => {
                     event.preventDefault();
