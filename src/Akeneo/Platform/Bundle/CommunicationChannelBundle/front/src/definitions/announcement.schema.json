@@ -13,14 +13,7 @@
         "type": "string"
       }
     },
-    "startDate": {"type": "string"},
-    "notificationDuration": {"type": "integer"},
-    "editions": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    }
+    "startDate": {"type": "string"}
   },
   "required": [
     "title",
@@ -29,9 +22,7 @@
     "img",
     "altImg",
     "tags",
-    "startDate",
-    "notificationDuration",
-    "editions"
+    "startDate"
   ],
   "additionalProperties": false
 }

@@ -13,6 +13,9 @@ use DateTimeImmutable;
  */
 final class AnnouncementItem
 {
+    private const DATE_FORMAT = 'F\, jS Y';
+    private const DATE_INTERVAL_FORMAT = 'P%sD';
+
     /** @var string */
     private $title;
 
@@ -75,41 +78,34 @@ final class AnnouncementItem
     }
 
     /**
-     * @return string[]
-     */
-    private function addNewTag(): array
-    {
-        $currentDate = new \DateTimeImmutable();
-        $dateInterval = new \DateInterval('P' . $this->notificationDuration . 'D');
-        $endDate = $this->startDate->add($dateInterval);
-
-        if ($currentDate > $this->startDate && $currentDate < $endDate) {
-            array_unshift($this->tags, 'new');
-        }
-
-        return $this->tags;
-    }
-
-    private function formatDate(\DateTimeImmutable $date): string
-    {
-        return $date->format('F\, jS Y');
-    }
-
-    /**
      * @return array<string, array<string>|int|string|null>
      */
     public function toArray(): array
     {
+        $this->addNewTag();
+
         return [
             'title' => $this->title,
             'description' => $this->description,
             'img' => $this->img,
             'altImg' => $this->altImg,
             'link' => $this->link,
-            'startDate' => $this->formatDate($this->startDate),
-            'notificationDuration' => $this->notificationDuration,
-            'tags' => $this->addNewTag(),
-            'editions' => $this->editions,
+            'startDate' => $this->startDate->format(self::DATE_FORMAT),
+            'tags' => $this->tags,
         ];
+    }
+
+    /**
+     * @return void
+     */
+    private function addNewTag(): void
+    {
+        $currentDate = new \DateTimeImmutable();
+        $dateInterval = new \DateInterval(sprintf(self::DATE_INTERVAL_FORMAT, $this->notificationDuration));
+        $endDate = $this->startDate->add($dateInterval);
+
+        if ($currentDate > $this->startDate && $currentDate < $endDate) {
+            array_unshift($this->tags, 'new');
+        }
     }
 }
