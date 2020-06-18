@@ -101,6 +101,8 @@ class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
+        $this->activateLocaleForChannel('fr_FR', 'ecommerce');
+
         $this->createProduct(
             'complex_product_1',
             [

@@ -7,6 +7,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use PHPUnit\Framework\Assert;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -175,5 +176,18 @@ abstract class AbstractProductQueryBuilderTestCase extends TestCase
         }
 
         $this->assertSame($products, $expected);
+    }
+
+    protected function activateLocaleForChannel(string $localeCode, string $channelCode): void
+    {
+        $channel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier($channelCode);
+        Assert::assertNotNull($channel, sprintf('Channel "%s" not found', $channelCode));
+
+        $locale = $this->get('pim_catalog.repository.locale')->findOneByIdentifier($localeCode);
+        Assert::assertNotNull($locale, sprintf('Locale "%s" not found', $localeCode));
+
+        $channel->addLocale($locale);
+
+        $this->get('pim_catalog.saver.channel')->save($channel);
     }
 }

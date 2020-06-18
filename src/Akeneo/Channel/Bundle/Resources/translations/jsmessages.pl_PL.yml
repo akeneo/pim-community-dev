@@ -1,0 +1,76 @@
+batch_jobs:
+  csv_currency_export:
+    label: Eksport waluty do CSV
+    export.label: Eksport waluty
+  csv_currency_import:
+    label: Import waluty z CSV
+    import.label: Import waluty
+  xlsx_currency_export:
+    label: Eksport waluty do XLSX
+    export.label: Eksport waluty
+  xlsx_currency_import:
+    label: Import waluty z XLSX
+    import.label: Import waluty
+  csv_locale_export:
+    label: Eksport wersji językowej do CSV
+    export.label: Eksport wersji językowej
+  csv_locale_import:
+    label: Import wersji językowej z CSV
+    import.label: Import wersji językowej
+  xlsx_locale_export:
+    label: Eksport wersji językowej do XLSX
+    export.label: Eksport wersji językowej
+  xlsx_locale_import:
+    label: Import wersji językowej z XLSX
+    import.label: Import wersji językowej
+  csv_channel_export:
+    label: Eksport kanału do CSV
+    export.label: Eksport kanału
+  csv_channel_import:
+    label: Import kanału z CSV
+    import.label: Import kanału
+  xlsx_channel_export:
+    label: Eksport kanału do XLSX
+    export.label: Eksport kanału
+  xlsx_channel_import:
+    label: Import kanału z XLSX
+    import.label: Import kanałów
+pim_enrich.entity.channel:
+  label: kanał
+  uppercase_label: Kanał
+  flash:
+    update:
+      success: Kanał pomyślnie zaktualizowany.
+      fail: Nie można zaktualizować kanału.
+    create:
+      success: Kanał pomyślnie utworzony.
+      fail: Nie można utworzyć kanału.
+    delete:
+      success: Kanał został pomyślnie usunięty
+      fail: Nie można usunąć tego kanału
+  page_title:
+    index: "]-Inf, 1]{{ count }} kanał|]1, Inf[{{ count }} kanały"
+  property:
+    category_tree: Drzewo kategorii
+    do_not_convert: Nie konwertuj
+    label_conversion_units: Wybierz jednostkę konwersji dla każdej metryki używanej podczas eksportu produktów
+  module:
+    create:
+      button: Utwórz kanał
+    delete:
+      confirm: Czy na pewno chcesz usunąć ten kanał?
+pim_enrich.entity.locale:
+  label: wersja językowa
+  uppercase_label: Wersja językowa
+  plural_label: Ustawienia regionalne
+  page_title:
+    index: "]-Inf, 1]{{ count }} lokalizacja|]1, Inf[{{ count }} lokalizacji"
+pim_enrich.entity.currency:
+  plural_label: Waluty
+  page_title:
+    index: "]-Inf, 1]{{ count }} waluta|]1, Inf[{{ count }} walut"
+flash:
+  currency:
+    error:
+      linked_to_channel: Nie możesz wyłączyć waluty powiązanej z kanałem
+    updated: Waluta pomyślnie zaktualizowana

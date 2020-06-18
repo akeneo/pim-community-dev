@@ -9,6 +9,9 @@
 }
 
 .jstree {
+  .select2-container-active .select2-choice {
+    box-shadow: none;
+  }
   &.jstree-default {
     & > ul {
       max-height: ~"calc(100vh - 213px)";
@@ -22,6 +25,7 @@
 
     li {
       line-height: 24px;
+      background-image: none;
     }
 
     .jstree-hovered {

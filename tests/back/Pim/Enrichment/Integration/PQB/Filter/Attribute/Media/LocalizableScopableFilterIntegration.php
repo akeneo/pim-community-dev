@@ -20,6 +20,8 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
     {
         parent::setUp();
 
+        $this->activateLocaleForChannel('fr_Fr', 'ecommerce');
+
         $this->createFamily([
             'code' => 'a_family',
             'attributes' => ['sku', 'a_localizable_scopable_image']

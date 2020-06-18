@@ -4,3 +4,6 @@ Akeneo\Channel\Component\Model\Locale:
         - Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable:
             properties:
                 - code
+    properties:
+        code:
+            - Akeneo\Channel\Component\Validator\Constraint\LocaleCode: ~

@@ -1,5 +1,33 @@
 # 3.2.x
 
+# 3.2.57 (2020-05-28)
+
+## Improvement
+
+- PIM-9268: Add ko_KR to locales default list.
+
+## Bug fixes
+
+- PIM-9255: Refresh completeness of associated products in grid when channel is switched
+- PIM-9262: Keep image rotation on images and assets thumbnails
+
+# 3.2.56 (2020-05-25)
+
+## Bug fixes
+
+- AOB-953: Fix `ComputeFamilyVariantStructureChanges` constraint by accepting array of several elements
+
+## Improvement
+
+- PIM-9165: Improve message of `akeneo:elasticsearch:reset-indexes` command. Now, all commands available to re-index entities are shown.
+
+# 3.2.55 (2020-05-14)
+
+## Bug fixes
+
+- PIM-9245: Fix relative JS files path for less compilation
+- PIM-9249: Fix channel and locale popin display on product export
+
 # 3.2.54 (2020-05-06)
 
 ## Bug fixes

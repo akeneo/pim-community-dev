@@ -4,6 +4,69 @@
 
 - Fix fatal error on display product model associations when they have more than 25 products associated
 
+# 4.0.34 (2020-06-17)
+
+## Bug fixes
+
+- PIM-9301: Fix extractUpdatedProductsByConnection query group by issue
+- PIM-9294: Fix removal of a validation rule in text attribute edit form
+- PIM-9279: Fix missing required attributes display in PEF when an attribute option was deleted
+- PIM-9308: Fix infinite scroll in the view selector when some views are filtered
+
+# 4.0.33 (2020-06-11)
+
+## Bug fixes
+
+- PIM-9280: Fix SqlGetConnectorProduct query group by issue with MySQL 8.0.20)
+
+# 4.0.32 (2020-06-08)
+
+## Bug fixes
+
+- PIM-9203: Box shadow appearing on category selector in product grid
+- PIM-9250: Display glitch - vertical grey lines appear when opening category tree
+- AOB-968: Fix product label rendering on edit form
+- CXP-306: Fix the collect of product events
+- PIM-9282: Make calling attribute options via API case insensitive
+- PIM-9290: Fix product categories loading
+- PIM-9291: Fix product updated with a text value made of spaces only
+
+# 4.0.31 (2020-06-01)
+
+## Improvement
+
+-PIM-9106: Improve error message when editing an attribute when it's due to a regular expression
+
+## Bug fixes
+
+- PIM-9277: Fix product computing when moving an attribute in family variant
+- PIM-9273: Add a filter to remove the product values of deleted channels and not activated locales
+
+# 4.0.30 (2020-05-28)
+
+## Bug fixes
+
+-PIM-9264: Make "search on..." translatable on Crowdin
+-PIM-9269: Add the key "tree.create" and its associated message in the translation file for Crowdin
+
+# 4.0.29 (2020-05-26)
+
+## Bug fixes
+
+- PIM-9260: do not use FPM memory_limit for CommandLauncher
+
+# 4.0.28 (2020-05-20)
+
+# 4.0.27 (2020-05-18)
+
+# 4.0.26 (2020-05-15)
+
+# 4.0.25 (2020-05-14)
+
+## Bug fixes
+
+- PIM-9246: Add a validation on locale codes
+
 # 4.0.24 (2020-05-07)
 
 # 4.0.23 (2020-05-06)

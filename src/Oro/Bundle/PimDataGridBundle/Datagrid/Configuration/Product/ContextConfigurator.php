@@ -273,6 +273,10 @@ class ContextConfigurator implements ConfiguratorInterface
         }
 
         if (null === $currentScopeCode) {
+            $currentScopeCode = $this->requestParams->get('dataScope', null);
+        }
+
+        if (null === $currentScopeCode) {
             $channel = $this->userContext->getUser()->getCatalogScope();
             $currentScopeCode = $channel->getCode();
         }

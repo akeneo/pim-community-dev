@@ -4,7 +4,18 @@ services:
         class: 'Akeneo\Test\Acceptance\Attribute\InMemoryGetAttributes'
         arguments:
             - '@pim_catalog.repository.attribute'
+
     akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes:
         class: 'Akeneo\Test\Acceptance\AttributeOption\InMemoryGetExistingAttributeOptionCodes'
         arguments:
             - '@pim_catalog.repository.attribute_option'
+
+    pim_channel.query.sql.get_channel_code_with_locale_codes:
+        class: 'Akeneo\Test\Acceptance\Channel\InMemoryGetChannelCodeWithLocaleCodes'
+        arguments:
+            - '@pim_catalog.repository.channel'
+
+    akeneo.pim.structure.query.find_family_variants_identifiers_by_attribute_axes:
+        class: Akeneo\Test\Acceptance\FamilyVariant\InMemoryFamilyVariantsByAttributeAxes
+        arguments:
+            - '@pim_catalog.repository.family_variant'
