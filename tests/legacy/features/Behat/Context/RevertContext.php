@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace PimEnterprise\Behat\Context;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\WorkOrganization\ProductRevert\Exception\ConstraintViolationListException;
 use Akeneo\Pim\WorkOrganization\ProductRevert\Reverter\ProductReverter;
 use Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -59,7 +60,7 @@ class RevertContext implements Context
      *
      * @param string $productIdentifier
      *
-     * @throws \PimEnterprise\Bundle\VersioningBundle\Exception\RevertException
+     * @throws ConstraintViolationListException
      *
      * @When the product :productIdentifier is reverted to the previous version
      * @When the variant product :productIdentifier is reverted to the previous version

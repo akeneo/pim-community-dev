@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\ProductRevert\Reverter;
 
+use Akeneo\Pim\WorkOrganization\ProductRevert\Exception\ConstraintViolationListException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
@@ -11,7 +12,6 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Akeneo\Pim\WorkOrganization\ProductRevert\Exception\RevertException;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -23,10 +23,9 @@ class ProductReverterSpec extends ObjectBehavior
         ObjectUpdaterInterface $productUpdater,
         SaverInterface $saver,
         ValidatorInterface $validator,
-        TranslatorInterface $translator,
         ArrayConverterInterface $converter
     ) {
-        $this->beConstructedWith($registry, $productUpdater, $saver, $validator, $translator, $converter);
+        $this->beConstructedWith($registry, $productUpdater, $saver, $validator, $converter);
     }
 
     function it_reverts_an_entity(
@@ -214,7 +213,6 @@ class ProductReverterSpec extends ObjectBehavior
         $productUpdater,
         $converter,
         $validator,
-        $translator,
         Version $version,
         ObjectRepository $repository,
         ProductInterface $product,
@@ -235,9 +233,6 @@ class ProductReverterSpec extends ObjectBehavior
         $version->getSnapshot()->willReturn($snapshot);
         $version->getResourceId()->willReturn('baz');
 
-        $translator->trans('flash.error.revert.product_has_variant')->willReturn('Product can not be reverted because it belongs to a variant group');
-        $translator->trans('flash.error.revert.product')->willReturn('This version can not be restored. Some errors occurred during the validation.');
-
         $product->getValues()->willReturn($productValueCollection);
         $productValueCollection->clear()->shouldBecalled();
 
@@ -254,7 +249,7 @@ class ProductReverterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                new RevertException('This version can not be restored. Some errors occurred during the validation.')
+                new ConstraintViolationListException($violationsList->getWrappedObject())
             )
             ->during('revert', [$version]);
     }

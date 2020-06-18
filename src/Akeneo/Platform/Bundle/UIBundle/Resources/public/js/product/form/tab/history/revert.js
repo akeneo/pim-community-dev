@@ -86,12 +86,18 @@ define(
                         ).fail(
                             function (response) {
                                 loadingMask.hide().$el.remove();
-                                const message = response.responseJSON ?
-                                    response.responseJSON.error :
-                                    __('pim_enrich.entity.fallback.generic_error');
+                                const jsonResponse = response.responseJSON ?
+                                    response.responseJSON :
+                                    {error: __('pim_enrich.entity.fallback.generic_error')};
 
-                                messenger.notify('error', message);
-                            }
+                                if (Array.isArray(jsonResponse)) {
+                                    this.formatParameters(jsonResponse).forEach(function(error) {
+                                        messenger.notify('error', __(error.messageTemplate, error.parameters));
+                                    });
+                                } else {
+                                    messenger.notify('error', jsonResponse.error);
+                                }
+                            }.bind(this)
                         );
                     }.bind(this),
                     null,
@@ -99,6 +105,18 @@ define(
                     null,
                     'products'
                 );
+            },
+            formatParameters: function(errors) {
+                return errors.map(error => ({
+                    ...error,
+                    parameters: Object.keys(error.parameters).reduce(
+                        (result, key) => ({
+                            ...result,
+                            [key.replace('{{ ', '').replace(' }}', '')]: error.parameters[key],
+                        }),
+                        {}
+                    ),
+                }))
             }
         });
     }
