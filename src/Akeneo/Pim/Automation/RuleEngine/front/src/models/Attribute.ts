@@ -3,6 +3,27 @@ import { LocaleCode } from './Locale';
 type AttributeId = number;
 type AttributeCode = string;
 
+export enum AttributeType {
+  BOOLEAN = 'pim_catalog_boolean',
+  DATE = 'pim_catalog_date',
+  FILE = 'pim_catalog_file',
+  IDENTIFIER = 'pim_catalog_identifier',
+  IMAGE = 'pim_catalog_image',
+  METRIC = 'pim_catalog_metric',
+  NUMBER = 'pim_catalog_number',
+  OPTION_MULTI_SELECT = 'pim_catalog_multiselect',
+  OPTION_SIMPLE_SELECT = 'pim_catalog_simpleselect',
+  PRICE_COLLECTION = 'pim_catalog_price_collection',
+  TEXTAREA = 'pim_catalog_textarea',
+  TEXT = 'pim_catalog_text',
+  REFERENCE_DATA_MULTI_SELECT = 'pim_reference_data_multiselect',
+  REFERENCE_DATA_SIMPLE_SELECT = 'pim_reference_data_simpleselect',
+  REFERENCE_ENTITY_SIMPLE_SELECT = 'akeneo_reference_entity',
+  REFERENCE_ENTITY_COLLECTION = 'akeneo_reference_entity_collection',
+  ASSET_COLLECTION = 'pim_catalog_asset_collection',
+  LEGACY_ASSET_COLLECTION = 'pim_assets_collection',
+}
+
 type Attribute = {
   code: AttributeCode;
   type: string;

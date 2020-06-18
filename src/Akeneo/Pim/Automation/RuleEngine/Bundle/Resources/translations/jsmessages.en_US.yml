@@ -146,6 +146,11 @@ pimee_catalog_rule:
                 remove_category:
                     title: REMOVE categories
                     helper: To remove your product selection from one or more categories, please start by selecting your category trees and then, your categories
+                copy:
+                    title: COPY
+                    helper: To set values to your attribute, please start by selecting your target attribute and then, the value you want to set
+                    select_source: Select your source
+                    select_target: Select your target
                 delete:
                     label: Remove action
                     description: Are you sure you want to remove this action?

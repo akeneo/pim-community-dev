@@ -2,8 +2,10 @@ import React from 'react';
 import { CopyAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
-import { FallbackField } from '../FallbackField';
-import { useRegisterConsts } from '../../hooks/useRegisterConst';
+import { useRegisterConst } from '../../hooks/useRegisterConst';
+import { ActionGrid, ActionLeftSide, ActionRightSide, ActionTitle } from "./ActionLine";
+import { useTranslate } from "../../../../dependenciesTools/hooks";
+import { AttributeLocaleScopeSelector } from "./attribute";
 
 type Props = {
   action: CopyAction;
@@ -13,52 +15,60 @@ const CopyActionLine: React.FC<Props> = ({
   lineNumber,
   action,
   handleDelete,
+  locales,
+  scopes,
 }) => {
-  const values: any = {
-    type: 'copy',
-    from_field: action.from_field,
-    to_field: action.to_field,
-  };
-
-  if (action.from_locale) {
-    values.from_locale = action.from_locale;
-  }
-  if (action.from_scope) {
-    values.from_scope = action.from_scope;
-  }
-  if (action.to_locale) {
-    values.to_locale = action.to_locale;
-  }
-  if (action.to_scope) {
-    values.to_scope = action.to_scope;
-  }
-  useRegisterConsts(values, `content.actions[${lineNumber}]`);
+  const translate = useTranslate();
+  useRegisterConst(`content.actions[${lineNumber}].type`, 'copy');
 
   return (
     <ActionTemplate
-      title='Copy Action'
-      helper='This feature is under development. Please use the import to manage your rules.'
-      legend='This feature is under development. Please use the import to manage your rules.'
+      title={translate('pimee_catalog_rule.form.edit.actions.copy.title')}
+      helper={translate('pimee_catalog_rule.form.edit.actions.copy.helper')}
+      legend={translate('pimee_catalog_rule.form.edit.actions.copy.helper')}
       handleDelete={handleDelete}>
-      <div className='AknGrid AknGrid--unclickable'>
-        <div className='AknGrid-bodyRow AknGrid-bodyRow--highlight'>
-          <div className='AknGrid-bodyCell'>
-            <FallbackField
-              field={action.from_field}
-              scope={action.from_scope}
-              locale={action.from_locale}
-            />
-            {/* It is not translated since it is temporary. */}
-            &nbsp;is copied into&nbsp;
-            <FallbackField
-              field={action.to_field}
-              scope={action.to_scope}
-              locale={action.to_locale}
-            />
-            .
-          </div>
-        </div>
-      </div>
+      <ActionGrid>
+        <ActionLeftSide>
+          <ActionTitle>
+            {translate('pimee_catalog_rule.form.edit.actions.copy.select_source')}
+          </ActionTitle>
+          <AttributeLocaleScopeSelector
+            attributeCode={action.from_field}
+            attributeFormName={`content.actions[${lineNumber}].from_field`}
+            attributeId={`edit-rules-action-${lineNumber}-from-field`}
+            attributeLabel={`${translate(
+              'pimee_catalog_rule.form.edit.fields.attribute'
+            )} ${translate('pim_common.required_label')}`}
+            attributePlaceholder={''}
+            scopeId={`edit-rules-action-${lineNumber}-from-scope`}
+            scopeFormName={`content.actions[${lineNumber}.from_scope`}
+            localeId={`edit-rules-action-${lineNumber}-from-locale`}
+            localeFormName={`content.actions[${lineNumber}.from_locale`}
+            locales={locales}
+            scopes={scopes}
+          />
+        </ActionLeftSide>
+        <ActionRightSide>
+          <ActionTitle>
+            {translate('pimee_catalog_rule.form.edit.actions.copy.select_target')}
+          </ActionTitle>
+          <AttributeLocaleScopeSelector
+            attributeCode={action.to_field}
+            attributeFormName={`content.actions[${lineNumber}].to_field`}
+            attributeId={`edit-rules-action-${lineNumber}-to-field`}
+            attributeLabel={`${translate(
+              'pimee_catalog_rule.form.edit.fields.attribute'
+            )} ${translate('pim_common.required_label')}`}
+            attributePlaceholder={''}
+            scopeId={`edit-rules-action-${lineNumber}-to-scope`}
+            scopeFormName={`content.actions[${lineNumber}.to_scope`}
+            localeId={`edit-rules-action-${lineNumber}-to-locale`}
+            localeFormName={`content.actions[${lineNumber}.to_locale`}
+            locales={locales}
+            scopes={scopes}
+          />
+        </ActionRightSide>
+      </ActionGrid>
     </ActionTemplate>
   );
 };
