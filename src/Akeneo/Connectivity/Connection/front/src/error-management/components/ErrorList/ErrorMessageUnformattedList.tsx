@@ -13,12 +13,14 @@ const ErrorMessageUnformattedList: FC<Props> = ({content}) => {
                 {Object.entries(content)
                     .filter(
                         ([key]) =>
-                            'product' !== key &&
-                            'documentation' !== key &&
-                            'message_template' !== key &&
-                            'message_parameters' !== key &&
-                            'locale' !== key &&
-                            'scope' !== key
+                            ![
+                                'product',
+                                'documentation',
+                                'message_template',
+                                'message_parameters',
+                                'locale',
+                                'scope',
+                            ].includes(key)
                     )
                     .map(([key, value], i) => {
                         return (
@@ -35,7 +37,8 @@ const ErrorMessageUnformattedList: FC<Props> = ({content}) => {
 
 const ErrorKey = styled.th`
     text-align: left;
-    font-weight: normal;
+    font-weight: bold;
+    vertical-align: baseline;
     white-space: pre-wrap;
 `;
 

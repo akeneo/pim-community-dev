@@ -13,7 +13,7 @@ export const DocumentationMessage = ({documentation}: Props) => {
     const constructedMessage = documentation.message.split(/({[^{}]+})/).map((messagePart: string, i) => {
         const isNeedle = new RegExp(/^{([^{}]+)}$/);
         if (!isNeedle.test(messagePart)) {
-            return <Message key={i}>{messagePart}</Message>;
+            return <span key={i}>{messagePart}</span>;
         }
 
         const needle = isNeedle.exec(messagePart);
@@ -22,7 +22,7 @@ export const DocumentationMessage = ({documentation}: Props) => {
             2 !== needle.length ||
             !Object.prototype.hasOwnProperty.call(documentation.parameters, needle[1])
         ) {
-            return <Message key={i}>{messagePart}</Message>;
+            return <span key={i}>{messagePart}</span>;
         }
 
         const messageParameter = documentation.parameters[needle[1]];
@@ -42,18 +42,18 @@ export const DocumentationMessage = ({documentation}: Props) => {
     return (
         <>
             {DocumentationStyleInformation === documentation.style ? (
-                <Message>
+                <span>
                     <InfoImg />
                     {constructedMessage}
-                </Message>
+                </span>
             ) : (
-                <Message>{constructedMessage}</Message>
+                <span>{constructedMessage}</span>
             )}
         </>
     );
 };
 
-const Message = styled.span``;
+//const Message = styled.span``;
 
 const DocLink = styled(Typography.Link)`
     color: ${({theme}) => theme.color.blue100};

@@ -13,7 +13,7 @@ const ErrorMessageDomain: FC<Props> = ({content}) => {
         <>
             {'string' === typeof content?.message_template && null !== content?.message_parameters ? (
                 <ErrorMessage>
-                    {messageWithColoredParameters(content?.message_template, content?.message_parameters, content.type)}
+                    {messageWithColoredParameters(content.message_template, content.message_parameters, content.type)}
                 </ErrorMessage>
             ) : (
                 <ErrorMessageUnformattedList content={content} />

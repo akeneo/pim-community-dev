@@ -27,26 +27,25 @@ export type MessageParameters = {
 export type Documentation = {
     message: string;
     parameters: MessageParameters;
-    style: string;
+    style: 'text' | 'information';
 };
 
 export type Product = {
-    id?: number;
-    identifier?: string;
+    id: number;
+    identifier: string;
     family?: string;
-    label?: string;
+    label: string;
 };
 
 export type ConnectionErrorContent = {
     message: string;
-    message_parameters?: {};
+    message_parameters?: {[key: string]: string};
     message_template?: string;
-    property?: string;
     documentation?: Array<Documentation>;
     locale?: string;
     scope?: string;
     product?: Product;
-    type?: string;
+    type: 'violation_error' | 'domain_error';
 };
 
 export type ConnectionError = {

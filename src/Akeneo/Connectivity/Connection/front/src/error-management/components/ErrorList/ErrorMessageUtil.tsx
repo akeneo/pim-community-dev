@@ -1,8 +1,15 @@
 import React from 'react';
 import styled from '../../../common/styled-with-theme';
-import { ErrorMessageDomainType } from '../../model/ConnectionError';
+import {ErrorMessageDomainType} from '../../model/ConnectionError';
 
-const messageWithColoredParameters = (template: string, parameters: {[param: string]: string}, type: string) => {
+const messageWithColoredParameters = (
+    template: string | undefined,
+    parameters: {[param: string]: string} | undefined,
+    type: string
+) => {
+    if (undefined === template || undefined === parameters) {
+        return;
+    }
     let componentIndex = 0;
     const messageComponents = Object.entries(parameters).reduce(
         (messageComponents, [key, value]) => {
@@ -36,5 +43,4 @@ const ColoredParameters = styled.span`
     color: ${({theme}) => theme.color.red100};
 `;
 
-export { messageWithColoredParameters };
-
+export {messageWithColoredParameters};

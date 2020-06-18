@@ -4,13 +4,12 @@ import {ConnectionErrorContent} from '../../model/ConnectionError';
 import {ErrorMessageUnformattedList} from './ErrorMessageUnformattedList';
 import {messageWithColoredParameters} from './ErrorMessageUtil';
 
-const isParsableTemplate = (template: string, parameters: {[param: string]: string}) => {
-    const firstParameter = Object.keys(parameters)[0];
-
-    if ('string' !== typeof firstParameter) {
+const isParsableTemplate = (template: string, parameters: {[param: string]: string} | undefined) => {
+    if (undefined === parameters || 'string' !== typeof Object.keys(parameters)[0]) {
         return false;
     }
-    return -1 !== template.search(firstParameter);
+
+    return -1 !== template.search(Object.keys(parameters)[0]);
 };
 
 type Props = {
@@ -22,9 +21,9 @@ const ErrorMessageViolation: FC<Props> = ({content}) => {
         <>
             {'string' === typeof content?.message_template &&
             null !== content?.message_parameters &&
-            isParsableTemplate(content?.message_template, content?.message_parameters) ? (
+            isParsableTemplate(content?.message_template, content.message_parameters) ? (
                 <ErrorMessage>
-                    {messageWithColoredParameters(content?.message_template, content?.message_parameters, content.type)}
+                    {messageWithColoredParameters(content.message_template, content.message_parameters, content.type)}
                 </ErrorMessage>
             ) : (
                 <ErrorMessageUnformattedList content={content} />

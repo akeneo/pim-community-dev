@@ -16,14 +16,14 @@ const ErrorMessageCell: FC<Props> = ({content}) => {
     return (
         <Container>
             {content?.product && <ErrorProductInformation product={content.product} />}
-            {ErrorMessageDomainType === content?.type ? (
+            {ErrorMessageDomainType === content.type ? (
                 <ErrorMessageDomain content={content} />
-            ) : ErrorMessageViolationType === content?.type ? (
+            ) : ErrorMessageViolationType === content.type ? (
                 <ErrorMessageViolation content={content} />
             ) : (
                 <ErrorMessageUnformattedList content={content} />
             )}
-            {content.documentation !== undefined && <DocumentationList documentations={content.documentation} />}
+            {content.documentation && <DocumentationList documentations={content.documentation} />}
         </Container>
     );
 };
