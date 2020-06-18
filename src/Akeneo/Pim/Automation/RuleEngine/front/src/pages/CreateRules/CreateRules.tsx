@@ -18,6 +18,7 @@ import { httpPost } from '../../fetch';
 import { AkeneoSpinner, SmallHelper } from '../../components';
 import { Payload } from '../../rules.types';
 import { LocaleCode } from '../../models';
+import illustrationUrl from '../../assets/illustrations/rules.svg';
 
 const transformFormData = (
   formData: FormDataInput,
@@ -87,7 +88,10 @@ const CreateRules: React.FC = () => {
         {pending && <AkeneoSpinner />}
         <div className='AknFullPage-content AknFullPage-content--withIllustration'>
           <div>
-            <div className='AknFullPage-image AknFullPage-illustration AknFullPage-illustration--api' />
+            <div
+              className='AknFullPage-image AknFullPage-illustration'
+              style={{ backgroundImage: `url('${illustrationUrl}')` }}
+            />
           </div>
           <div>
             <div className='AknFullPage-titleContainer'>
