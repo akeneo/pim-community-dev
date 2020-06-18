@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactElement} from 'react';
 import styled from '../../../common/styled-with-theme';
 import {ErrorMessageDomainType} from '../../model/ConnectionError';
 
@@ -19,7 +19,7 @@ const messageWithColoredParameters = (
                         return messageComponent;
                     }
 
-                    const messageParts = messageComponent.split(
+                    const messageParts: Array<string | ReactElement> = messageComponent.split(
                         ErrorMessageDomainType === type ? '{' + key + '}' : key
                     );
 
@@ -34,7 +34,7 @@ const messageWithColoredParameters = (
                 })
                 .flat();
         },
-        [template]
+        [template] as Array<string | ReactElement>
     );
     return messageComponents;
 };

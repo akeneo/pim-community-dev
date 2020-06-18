@@ -2,13 +2,15 @@ import {ErrorList} from '@src/error-management/components/ErrorList';
 import {fireEvent, waitForDomChange} from '@testing-library/dom';
 import React from 'react';
 import {renderWithProviders} from '../../../test-utils';
+import {ConnectionError} from '@src/error-management/model/ConnectionError';
 
 test('filters errors by search value', async () => {
-    const errors = [
+    const errors: ConnectionError[] = [
         {
             id: 1,
             timestamp: 0,
             content: {
+                type: 'violation_error',
                 message: 'Error 1',
             },
         },
@@ -16,6 +18,7 @@ test('filters errors by search value', async () => {
             id: 2,
             timestamp: 0,
             content: {
+                type: 'violation_error',
                 message: 'Error 2',
             },
         },

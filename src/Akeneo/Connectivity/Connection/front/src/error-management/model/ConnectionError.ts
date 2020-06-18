@@ -31,9 +31,9 @@ export type Documentation = {
 };
 
 export type Product = {
-    id: number;
+    id: number | null;
     identifier: string;
-    family?: string;
+    family: string | null;
     label: string;
 };
 
@@ -42,8 +42,8 @@ export type ConnectionErrorContent = {
     message_parameters?: {[key: string]: string};
     message_template?: string;
     documentation?: Array<Documentation>;
-    locale?: string;
-    scope?: string;
+    locale?: string | null;
+    scope?: string | null;
     product?: Product;
     type: 'violation_error' | 'domain_error';
 };
