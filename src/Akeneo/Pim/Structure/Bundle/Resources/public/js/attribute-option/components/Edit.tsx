@@ -26,29 +26,32 @@ const Edit = ({option, saveAttributeOption}: EditProps) => {
         setUpdatedOption(updatedOption);
     };
 
+    const onSubmit = (event: any) => {
+        event.preventDefault();
+        saveAttributeOption(updatedOption);
+    };
+
     return (
         <EditingOptionContextProvider option={option}>
-            <div className="AknSubsection AknAttributeOption-edit">
+            <form className="AknSubsection AknAttributeOption-edit" onSubmit={(event: any) => onSubmit(event)}>
                 <div className="AknSubsection-title AknSubsection-title--glued tabsection-title">
                     <span>{translate('pim_enrich.entity.attribute_option.module.edit.options_labels')}</span>
                 </div>
                 <div className="AknAttributeOption-edit-translations">
                     {locales.map((locale: Locale) => (
                         <AttributeOptionForm key={`option-form-${option.code}-${locale.code}`}
-                            option={option}
-                            locale={locale}
-                            onUpdateOptionLabel={onUpdateOptionLabel}
+                             option={option}
+                             locale={locale}
+                             onUpdateOptionLabel={onUpdateOptionLabel}
                         />
                     ))}
                 </div>
                 <div className="AknAttributeOption-edit-saveTranslations">
-                    <button className="AknButton AknButton--apply save" role="save-options-translations"
-                        onClick={() => saveAttributeOption(updatedOption)}
-                    >
+                    <button className="AknButton AknButton--apply save" role="save-options-translations" type="submit">
                         {translate('pim_common.done')}
                     </button>
                 </div>
-            </div>
+            </form>
         </EditingOptionContextProvider>
     );
 };
