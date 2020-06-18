@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { LineErrors } from '../LineErrors';
-import { SmallErrorHelper } from '../style';
 import {
   ActionGrid,
   ActionLeftSide,
@@ -27,6 +26,7 @@ import {
 import { NetworkLifeCycle } from '../../../../components/CategoryTree/hooks/NetworkLifeCycle.types';
 import { getCategoriesTrees } from '../../../../components/CategoryTree/category-tree.getters';
 import { useFormContext } from 'react-hook-form';
+import { SmallHelper } from '../../../../components/HelpersInfos/SmallHelper';
 
 type Props = {
   lineNumber: number;
@@ -303,7 +303,7 @@ const ActionCategoriesSelector: React.FC<Props> = ({
   return (
     <>
       <LineErrors lineNumber={lineNumber} type='actions' />
-      <SmallErrorHelper>
+      <SmallHelper level='error'>
         {unexistingCategoryCodes.map(unexistingCategoryCode => {
           return (
             <li key={unexistingCategoryCode}>
@@ -324,7 +324,7 @@ const ActionCategoriesSelector: React.FC<Props> = ({
             </li>
           );
         })}
-      </SmallErrorHelper>
+      </SmallHelper>
       <ActionGrid>
         <ActionLeftSide>
           <div className='AknFormContainer'>

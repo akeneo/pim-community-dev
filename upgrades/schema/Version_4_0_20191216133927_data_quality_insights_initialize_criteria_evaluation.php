@@ -51,8 +51,8 @@ final class Version_4_0_20191216133927_data_quality_insights_initialize_criteria
 
     private function initializeDictionary(): void
     {
-        $dictionaryGenerator = $this->container->get('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionaryGenerator');
-        $dictionarySource = $this->container->get('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\ProductValueInDatabaseDictionarySource');
+        $dictionaryGenerator = $this->container->get('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionaryGenerator');
+        $dictionarySource = $this->container->get('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\ProductValueInDatabaseDictionarySource');
 
         $dictionaryGenerator->generate($dictionarySource);
     }

@@ -1,12 +1,7 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Locale } from '../../../models';
-import {
-  InputNumber,
-  InputText,
-  SmallHelper,
-  FormSubsection,
-} from '../../../components';
+import { InputNumber, InputText, FormSubsection } from '../../../components';
 import { useTranslate } from '../../../dependenciesTools/hooks';
 
 type Props = {
@@ -19,7 +14,6 @@ const RuleProperties: React.FC<Props> = ({ locales }) => {
 
   return (
     <>
-      <SmallHelper>Page under construction</SmallHelper>
       <FormSubsection
         title={translate(
           'pimee_catalog_rule.form.edit.properties.section.general'

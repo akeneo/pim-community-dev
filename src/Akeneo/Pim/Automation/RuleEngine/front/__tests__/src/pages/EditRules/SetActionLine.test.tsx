@@ -86,7 +86,7 @@ describe('SetActionLine', () => {
       )
     ).toBeInTheDocument();
     expect(
-      await findByText('pimee_catalog_rule.form.edit.actions.unknown_attribute')
+      await findByText('pimee_catalog_rule.form.edit.unknown_attribute')
     ).toBeInTheDocument();
   });
 

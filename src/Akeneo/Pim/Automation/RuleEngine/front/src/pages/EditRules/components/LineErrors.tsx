@@ -1,11 +1,17 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import { ErrorLine, SmallErrorHelper } from './style';
+import styled from 'styled-components';
+import { SmallHelper } from '../../../components/HelpersInfos/SmallHelper';
 
 type Props = {
   lineNumber: number;
   type: 'actions' | 'conditions';
 };
+
+const SmallHelperCondition = styled(SmallHelper)`
+  margin-left: 10%;
+  margin-top: 15px;
+`;
 
 const LineErrors: React.FC<Props> = ({ lineNumber, type }) => {
   const { errors } = useFormContext();
@@ -18,20 +24,20 @@ const LineErrors: React.FC<Props> = ({ lineNumber, type }) => {
 
   if (type === 'actions') {
     return (
-      <SmallErrorHelper>
+      <SmallHelper level='error'>
         {messages.map((message, i) => {
           return <li key={i}>{message}</li>;
         })}
-      </SmallErrorHelper>
+      </SmallHelper>
     );
   }
 
   return (
-    <ErrorLine>
+    <SmallHelperCondition level='error'>
       {messages.map((message, i) => {
         return <li key={i}>{message}</li>;
       })}
-    </ErrorLine>
+    </SmallHelperCondition>
   );
 };
 

@@ -78,9 +78,6 @@ jobs:
           environment:
             YARN_REGISTRY: "http://registry.yarnpkg.com"
       - run:
-          name: Activate Onboarder bundle
-          command: docker-compose run -u www-data --rm php sed -i "s~];~    Akeneo\\\Onboarder\\\Bundle\\\PimOnboarderBundle::class => ['all' => true],\n];~g" ./config/bundles.php
-      - run:
           name: Check PIM requirements
           command: |
               C='mysql elasticsearch' make up
@@ -569,6 +566,8 @@ jobs:
   test_onboarder_bundle:
       machine:
           image: ubuntu-1604:201903-01
+      environment:
+          FLAG_ONBOARDER_ENABLED: 1
       steps:
           - attach_workspace:
                 at: ~/
@@ -588,7 +587,7 @@ jobs:
                     docker/wait_docker_up.sh
           - run:
                 name: Load make commands
-                command: cp vendor/akeneo/pim-onboarder/.circleci/config/onboarder.mk make-file/
+                command: cp vendor/akeneo/pim-onboarder/onboarder.mk make-file/onboarder.mk
           - run:
                 name: Add configuration files to run the bundle tests from the PIM
                 command: |

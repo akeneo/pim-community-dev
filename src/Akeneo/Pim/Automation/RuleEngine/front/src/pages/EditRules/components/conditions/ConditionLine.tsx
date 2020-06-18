@@ -76,7 +76,7 @@ const ConditionLine: React.FC<Props> = ({
         <DeleteButton {...dialog}>
           <img
             alt={translate('pimee_catalog_rule.form.edit.conditions.delete')}
-            src='/bundles/pimui/images/icon-delete-slategrey.svg'
+            src='/bundles/akeneopimruleengine/assets/icons/icon-delete-grey100.svg'
           />
         </DeleteButton>
         <AlertDialog
