@@ -90,9 +90,11 @@ const PimConditionLine: React.FC<PimConditionLineProps> = ({
           locale={condition.locale}
         />
       </span>
-      {` ${translate(
+      &nbsp;
+      {translate(
         `pimee_catalog_rule.form.edit.conditions.operators.${getOperatorFormValue()}`
-      )} `}
+      )}
+      &nbsp;
       <span className='AknRule-attribute'>
         {displayValue(getValueFormValue())}
       </span>

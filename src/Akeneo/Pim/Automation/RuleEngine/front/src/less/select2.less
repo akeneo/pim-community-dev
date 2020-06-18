@@ -1,5 +1,11 @@
 @import './public/bundles/pimui/less/base/variables';
 
+#edit-rules-form {
+  .select2-container .select2-choice > .select2-chosen {
+    margin-right: 40px;
+  }
+}
+
 .select2-container.add-conditions-button {
   width: auto;
   border-radius: 16px;
@@ -28,7 +34,7 @@
     }
 
     & > .select2-chosen {
-      margin-right: 0;
+      margin-right: 0 !important;
     }
     & > .select2-arrow {
       display: none;
@@ -38,8 +44,8 @@
 
 .select2-container.add-action-button {
   .select2-choice {
-    border-color: @AknIllustrationBlue100;
-    color: @AknIllustrationBlue100 !important;
+    border-color: @AknBlue;
+    color: @AknBlue !important;
     text-transform: uppercase;
     border-radius: 100px;
     height: 32px;
@@ -76,18 +82,24 @@
       color: @AknSlateGrey;
     }
 
+    .select2-results .select2-result-label {
+      line-height: 34px;
+    }
+
     li.select2-result-with-children > .select2-result-label {
-      line-height: 36px;
+      line-height: 34px;
       padding-left: 0;
       font-weight: normal;
       text-transform: uppercase;
       color: @AknGrey;
       cursor: default;
       background-color: white;
+      margin-top: 10px;
+      font-size: 11px;
     }
 
     .select2-result-sub {
-      line-height: 36px;
+      line-height: 34px;
 
       & > li > .select2-result-label {
         padding-left: 0;
