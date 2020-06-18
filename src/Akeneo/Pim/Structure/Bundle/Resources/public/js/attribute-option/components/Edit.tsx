@@ -2,8 +2,7 @@ import React, {ChangeEvent, useEffect, useState} from 'react';
 
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {AttributeOption, Locale} from '../model';
-import {useLocalesContext} from '../contexts';
-import {OptionFormContextProvider} from "../contexts/OptionFormContext";
+import {EditingOptionContextProvider, useLocalesContext} from '../contexts';
 import AttributeOptionForm from './AttributeOptionForm';
 
 interface EditProps {
@@ -28,7 +27,7 @@ const Edit = ({option, saveAttributeOption}: EditProps) => {
     };
 
     return (
-        <OptionFormContextProvider option={option}>
+        <EditingOptionContextProvider option={option}>
             <div className="AknSubsection AknAttributeOption-edit">
                 <div className="AknSubsection-title AknSubsection-title--glued tabsection-title">
                     <span>{translate('pim_enrich.entity.attribute_option.module.edit.options_labels')}</span>
@@ -50,7 +49,7 @@ const Edit = ({option, saveAttributeOption}: EditProps) => {
                     </button>
                 </div>
             </div>
-        </OptionFormContextProvider>
+        </EditingOptionContextProvider>
     );
 };
 

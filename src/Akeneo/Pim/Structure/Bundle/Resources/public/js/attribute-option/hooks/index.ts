@@ -5,6 +5,8 @@ import {useCreateAttributeOption} from './useCreateAttributeOption';
 import {useDeleteAttributeOption} from './useDeleteAttributeOption';
 import {useManualSortAttributeOptions} from './useManualSortAttributeOptions';
 
+export * from './useEditingOptionContextState';
+
 export {
     useAttributeOptions,
     useSaveAttributeOption,

@@ -1,8 +1,9 @@
-import React, {createContext, FC, RefObject, useCallback, useContext} from 'react';
-import {AttributeOption} from "../model/AttributeOption.interface";
+import React, {RefObject, useCallback, useEffect} from 'react';
+import {AttributeOption} from '../model';
 
 export const PIM_ATTRIBUTE_OPTION_LABEL_FORM_ADDED = 'option-form-added';
 export const PIM_ATTRIBUTE_OPTION_LABEL_FORM_REMOVED = 'option-form-removed';
+export const PIM_ATTRIBUTE_OPTION_EDITING = 'option-editing';
 
 export type AttributeOptionFormEvent = {
     locale: string;
@@ -10,36 +11,17 @@ export type AttributeOptionFormEvent = {
     ref: RefObject<HTMLInputElement>;
 };
 
-export type OptionFormContextState = {
+export type EditAttributeOptionEvent = {
+    option: AttributeOption;
+};
+
+export type EditingOptionContextState = {
     option: AttributeOption|null;
     addRef(locale: string, ref: RefObject<HTMLInputElement>): void;
     removeRef(locale: string, ref: RefObject<HTMLInputElement>): void;
 };
 
-export const OptionFormContext = createContext<OptionFormContextState>({
-    option: null,
-    addRef: () => {},
-    removeRef: () => {},
-});
-OptionFormContext.displayName = 'OptionFormContext';
-
-export const useOptionFormContext = (): OptionFormContextState => {
-    return useContext(OptionFormContext);
-};
-
-type OptionFormContextProviderProps = {
-    option: AttributeOption;
-};
-
-export const OptionFormContextProvider: FC<OptionFormContextProviderProps> = ({children, option}) => {
-    const initialState = useOptionFormContextState(option);
-
-    return (
-        <OptionFormContext.Provider value={initialState}>{children}</OptionFormContext.Provider>
-    );
-};
-
-const useOptionFormContextState = (option: AttributeOption): OptionFormContextState => {
+export const useEditingOptionContextState = (option: AttributeOption): EditingOptionContextState => {
     const handleAddRef = useCallback((locale: string, ref: React.RefObject<HTMLInputElement>) => {
         window.dispatchEvent(new CustomEvent<AttributeOptionFormEvent>(PIM_ATTRIBUTE_OPTION_LABEL_FORM_ADDED, {
             detail: {
@@ -56,6 +38,14 @@ const useOptionFormContextState = (option: AttributeOption): OptionFormContextSt
                 locale,
                 code: option.code,
                 ref
+            }
+        }));
+    }, [option]);
+
+    useEffect(() => {
+        window.dispatchEvent(new CustomEvent<EditAttributeOptionEvent>(PIM_ATTRIBUTE_OPTION_EDITING, {
+            detail: {
+                option
             }
         }));
     }, [option]);

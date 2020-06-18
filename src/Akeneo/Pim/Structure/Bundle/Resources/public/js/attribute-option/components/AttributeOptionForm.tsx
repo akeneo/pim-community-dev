@@ -1,7 +1,7 @@
 import React, {ChangeEvent, FC, useEffect, useRef} from 'react';
 
 import {AttributeOption, Locale} from '../model';
-import {useOptionFormContext} from "../contexts/OptionFormContext";
+import {useEditingOptionContext} from '../contexts';
 
 type AttributeOptionFormProps = {
     option: AttributeOption;
@@ -11,7 +11,7 @@ type AttributeOptionFormProps = {
 
 const AttributeOptionForm: FC<AttributeOptionFormProps> = ({option, locale, onUpdateOptionLabel}) => {
     const inputRef = useRef<HTMLInputElement>(null);
-    const {addRef, removeRef} = useOptionFormContext();
+    const {addRef, removeRef} = useEditingOptionContext();
 
     useEffect(() => {
         addRef(locale.code, inputRef);

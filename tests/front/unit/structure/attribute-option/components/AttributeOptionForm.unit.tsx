@@ -1,8 +1,8 @@
 import React from "react";
-import {render, fireEvent} from '@testing-library/react';
+import {fireEvent, render} from '@testing-library/react';
 
 import AttributeOptionForm from "akeneopimstructure/js/attribute-option/components/AttributeOptionForm";
-import {OptionFormContext} from "akeneopimstructure/js/attribute-option/contexts/OptionFormContext";
+import {EditingOptionContext} from "akeneopimstructure/js/attribute-option/contexts/EditingOptionContext";
 
 describe('AttributeOptionForm', () => {
     beforeEach(() => {
@@ -22,9 +22,9 @@ describe('AttributeOptionForm', () => {
         };
 
         return render(
-            <OptionFormContext.Provider value={providerState}>
+            <EditingOptionContext.Provider value={providerState}>
                 <AttributeOptionForm option={option} locale={locale} onUpdateOptionLabel={onUpdateOptionLabel} />
-            </OptionFormContext.Provider>
+            </EditingOptionContext.Provider>
         );
     };
 
@@ -83,7 +83,6 @@ describe('AttributeOptionForm', () => {
             const {unmount} = renderAttributeOptionFormWithContext();
 
             unmount();
-
             expect(removeRefMockFn).toHaveBeenCalledWith('en_US', {current:  null});
         });
     });
