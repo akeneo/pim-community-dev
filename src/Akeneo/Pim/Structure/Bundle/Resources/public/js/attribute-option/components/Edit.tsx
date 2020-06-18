@@ -24,8 +24,13 @@ const Edit = ({option, saveAttributeOption}: EditProps) => {
         setUpdatedOption(updatedOption);
     };
 
+    const onSubmit = (event: any) => {
+        event.preventDefault();
+        saveAttributeOption(updatedOption);
+    };
+
     return (
-        <div className="AknSubsection AknAttributeOption-edit">
+        <form className="AknSubsection AknAttributeOption-edit" onSubmit={(event: any) => onSubmit(event)}>
             <div className="AknSubsection-title AknSubsection-title--glued tabsection-title">
                 <span>{translate('pim_enrich.entity.attribute_option.module.edit.options_labels')}</span>
             </div>
@@ -54,11 +59,11 @@ const Edit = ({option, saveAttributeOption}: EditProps) => {
             </div>
 
             <div className="AknAttributeOption-edit-saveTranslations">
-                <button className="AknButton AknButton--apply save" role="save-options-translations" onClick={() => saveAttributeOption(updatedOption)}>
+                <button className="AknButton AknButton--apply save" role="save-options-translations" type="submit">
                     {translate('pim_common.done')}
                 </button>
             </div>
-        </div>
+        </form>
     );
 };
 

@@ -13,19 +13,22 @@
       overflow-y: auto;
       margin-top: 20px;
     }
+
+    .has-switch {
+      margin-right: 0;
+    }
   }
 
   &-listItem {
     line-height: 54px;
+    height: 54px;
     border-bottom: 1px @AknGrey60 solid;
-    display: flex;
-    align-items: center;
 
     &--selected {
       background-color: @AknBlue20 !important;
 
       .AknAttributeOption-delete-option-icon {
-        display: block !important;
+        background: url("/bundles/pimui/images/icon-delete-slategrey.svg") no-repeat center;
       }
     }
 
@@ -38,41 +41,51 @@
       background-color: @AknLightGray;
 
       .AknAttributeOption-delete-option-icon {
-        display: block;
+        background: url("/bundles/pimui/images/icon-delete-slategrey.svg") no-repeat center;
       }
     }
 
     .AknAttributeOption-itemCode {
       font-size: 13px;
       font-weight: bold;
-      text-transform: uppercase;
       color: @AknLightPurple;
       cursor: pointer;
+      display: table-cell;
+
+      &>div {
+        display: table;
+        table-layout: fixed;
+        width: 100%;
+        &>span {
+          white-space: nowrap;
+          display: table-cell;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
 
       &--new {
-        margin-left: 44px;
+        padding-left: 44px;
       }
     }
 
     .AknAttributeOption-cancel-new-option-icon, .AknAttributeOption-delete-option-icon {
-      margin-right: 20px;
-      background: url("/bundles/pimui/images/icon-delete-slategrey.svg") no-repeat center;
-      width: 16px;
-      height: 16px;
+      width: 56px;
       cursor: pointer;
-      display: none;
       margin-left: auto;
+      display: table-cell;
+      text-align: center;
     }
     .AknAttributeOption-cancel-new-option-icon {
-      display: block;
+      background: url("/bundles/pimui/images/icon-delete-slategrey.svg") no-repeat center;
     }
 
     .AknAttributeOption-move-icon {
-      width: 20px;
-      height: 20px;
+      width: 42px;
       background: url("/bundles/pimui/images/icon-row-move.svg") no-repeat center;
       margin: 0 12px 0 12px;
       cursor: move;
+      display: table-cell;
 
       &--disabled {
         cursor: default;

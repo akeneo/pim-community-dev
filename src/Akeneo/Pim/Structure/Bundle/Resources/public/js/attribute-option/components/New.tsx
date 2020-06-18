@@ -15,7 +15,8 @@ const New = ({createAttributeOption}: NewProps) => {
         }
     }, []);
 
-    const createNewOptionFromCode = () => {
+    const createNewOptionFromCode = (event: any) => {
+        event.preventDefault();
         if (newOptionCodeRef.current !== null && newOptionCodeRef.current.value) {
             createAttributeOption(newOptionCodeRef.current.value.trim());
         }
@@ -26,7 +27,7 @@ const New = ({createAttributeOption}: NewProps) => {
             <div className="AknSubsection-title AknSubsection-title--glued tabsection-title">
                 <span>{translate('pim_enrich.entity.attribute_option.module.edit.options_settings')}</span>
             </div>
-            <div>
+            <form onSubmit={(event: any) => createNewOptionFromCode(event)}>
                 <div className="AknFieldContainer">
                     <div className="AknFieldContainer-header">
                         <label className="AknFieldContainer-label control-label AknFieldContainer-label">
@@ -42,10 +43,10 @@ const New = ({createAttributeOption}: NewProps) => {
                         />
                     </div>
                 </div>
-                <button className="AknButton AknButton--apply save" role="create-option-button" onClick={() => createNewOptionFromCode()}>
+                <button className="AknButton AknButton--apply save" role="create-option-button" type="submit">
                     {translate('pim_common.done')}
                 </button>
-            </div>
+            </form>
         </div>
     );
 };
