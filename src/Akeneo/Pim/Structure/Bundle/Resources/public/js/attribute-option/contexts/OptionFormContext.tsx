@@ -6,6 +6,7 @@ export const PIM_ATTRIBUTE_OPTION_LABEL_FORM_REMOVED = 'option-form-removed';
 
 export type AttributeOptionFormEvent = {
     locale: string;
+    code: string;
     ref: RefObject<HTMLInputElement>;
 };
 
@@ -43,19 +44,21 @@ const useOptionFormContextState = (option: AttributeOption): OptionFormContextSt
         window.dispatchEvent(new CustomEvent<AttributeOptionFormEvent>(PIM_ATTRIBUTE_OPTION_LABEL_FORM_ADDED, {
             detail: {
                 locale,
+                code: option.code,
                 ref
             }
         }));
-    }, []);
+    }, [option]);
 
     const handleRemoveRef = useCallback((locale: string, ref: React.RefObject<HTMLInputElement>) => {
         window.dispatchEvent(new CustomEvent<AttributeOptionFormEvent>(PIM_ATTRIBUTE_OPTION_LABEL_FORM_REMOVED, {
             detail: {
                 locale,
+                code: option.code,
                 ref
             }
         }));
-    }, []);
+    }, [option]);
 
     return {
         option,
