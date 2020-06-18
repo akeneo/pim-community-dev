@@ -7,9 +7,7 @@ type TagProps = {
   tag: Tag;
 };
 
-const TagComponent = (props: TagProps & any): JSX.Element => (
-  <StyledTag {...props}>{props.tag}</StyledTag>
-);
+const TagComponent = (props: TagProps & any): JSX.Element => <StyledTag {...props}>{props.tag}</StyledTag>;
 
 const StyledTag = styled.div`
   text-align: center;

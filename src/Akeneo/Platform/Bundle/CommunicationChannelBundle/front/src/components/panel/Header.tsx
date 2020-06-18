@@ -48,9 +48,11 @@ const HeaderPanel = ({title, onClickCloseButton}: HeaderPanelProps): JSX.Element
 
   return (
     <Container>
-      <IconContainer><MegaphoneIcon color={akeneoTheme.color.purple100} size={24} /></IconContainer>
+      <IconContainer>
+        <MegaphoneIcon color={akeneoTheme.color.purple100} size={24} />
+      </IconContainer>
       <Title>{title}</Title>
-      <CloseButton  onClick={onClickCloseButton}>
+      <CloseButton onClick={onClickCloseButton}>
         <CloseIcon color={akeneoTheme.color.purple100} title={__('pim_common.close')} size={15} />
       </CloseButton>
     </Container>

@@ -21,42 +21,24 @@ afterEach(() => {
 });
 
 test('it shows the panel with the announcements', async () => {
-  fetchMockResponseOnce(
-    'pim_analytics_data_collect',
-    JSON.stringify(expectedPimAnalyticsData)
-  );
-  fetchMockResponseOnce(
-    '/rest/announcements',
-    JSON.stringify({items: expectedAnnouncements})
-  );
+  fetchMockResponseOnce('pim_analytics_data_collect', JSON.stringify(expectedPimAnalyticsData));
+  fetchMockResponseOnce('/rest/announcements', JSON.stringify({items: expectedAnnouncements}));
 
-  await act(async () => renderWithProviders(
-    <Panel />,
-    container as HTMLElement
-  ));
+  await act(async () => renderWithProviders(<Panel />, container as HTMLElement));
 
   expect(getByText(container, 'akeneo_communication_channel.panel.title')).toBeInTheDocument();
   expect(container.querySelectorAll('ul li').length).toEqual(2);
 });
 
 test('it can show for each announcement the information from the json', async () => {
-  fetchMockResponseOnce(
-    'pim_analytics_data_collect',
-    JSON.stringify(expectedPimAnalyticsData)
-  );
-  fetchMockResponseOnce(
-    '/rest/announcements',
-    JSON.stringify({items: expectedAnnouncements})
-  );
+  fetchMockResponseOnce('pim_analytics_data_collect', JSON.stringify(expectedPimAnalyticsData));
+  fetchMockResponseOnce('/rest/announcements', JSON.stringify({items: expectedAnnouncements}));
 
-  await act(async () => renderWithProviders(
-    <Panel />,
-    container as HTMLElement
-  ));
+  await act(async () => renderWithProviders(<Panel />, container as HTMLElement));
 
   expect(getByText(container, expectedAnnouncements[0].title)).toBeInTheDocument();
   expect(getByText(container, expectedAnnouncements[0].description)).toBeInTheDocument();
-  expectedAnnouncements[0].tags.map((tag) => {
+  expectedAnnouncements[0].tags.map(tag => {
     expect(getByText(container, tag)).toBeInTheDocument();
   });
   expect(getAllByText(container, expectedAnnouncements[0].startDate).length).toEqual(2);
@@ -66,57 +48,44 @@ test('it can show for each announcement the information from the json', async ()
 
 test('it can open the read more link in a new tab', async () => {
   const campaign = formatCampaign(expectedPimAnalyticsData.pim_edition, expectedPimAnalyticsData.pim_version);
-  fetchMockResponseOnce(
-    'pim_analytics_data_collect',
-    JSON.stringify(expectedPimAnalyticsData)
-  );
-  fetchMockResponseOnce(
-    '/rest/announcements',
-    JSON.stringify({items: expectedAnnouncements})
-  );
+  fetchMockResponseOnce('pim_analytics_data_collect', JSON.stringify(expectedPimAnalyticsData));
+  fetchMockResponseOnce('/rest/announcements', JSON.stringify({items: expectedAnnouncements}));
 
-  await act(async () => renderWithProviders(
-    <Panel />,
-    container as HTMLElement
-  ));
+  await act(async () => renderWithProviders(<Panel />, container as HTMLElement));
 
-  expect((container.querySelector(`a[title="${expectedAnnouncements[0].title}"]`) as HTMLLinkElement).href).toEqual(`http://external.com/?utm_source=akeneo-app&utm_medium=communication-panel&utm_campaign=${campaign}`);
-  expect((container.querySelector(`a[title="${expectedAnnouncements[0].title}"]`) as HTMLLinkElement).target).toEqual('_blank');
+  expect((container.querySelector(`a[title="${expectedAnnouncements[0].title}"]`) as HTMLLinkElement).href).toEqual(
+    `http://external.com/?utm_source=akeneo-app&utm_medium=communication-panel&utm_campaign=${campaign}`
+  );
+  expect((container.querySelector(`a[title="${expectedAnnouncements[0].title}"]`) as HTMLLinkElement).target).toEqual(
+    '_blank'
+  );
+});
+
+test('it can display a message when it has an error during the fetch', async () => {
+  fetchMockResponseOnce('pim_analytics_data_collect', JSON.stringify(expectedPimAnalyticsData));
+  fetchMockResponseOnce('/rest/announcements', JSON.stringify({items: 'error'}));
+
+  await act(async () => renderWithProviders(<Panel />, container as HTMLElement));
+
+  expect(container.querySelectorAll('ul li').length).toEqual(0);
+  expect(getByText(container, 'akeneo_communication_channel.panel.list.error')).toBeInTheDocument();
 });
 
 test('it can display an empty panel when it is not a serenity version', async () => {
-  fetchMockResponseOnce(
-    'pim_analytics_data_collect',
-    JSON.stringify({pim_edition: 'CE', pim_version: '4.0'})
-  );
-  fetchMockResponseOnce(
-    '/rest/announcements',
-    JSON.stringify({items: expectedAnnouncements})
-  );
+  fetchMockResponseOnce('pim_analytics_data_collect', JSON.stringify({pim_edition: 'CE', pim_version: '4.0'}));
+  fetchMockResponseOnce('/rest/announcements', JSON.stringify({items: expectedAnnouncements}));
 
-  await act(async () => renderWithProviders(
-    <Panel />,
-    container as HTMLElement
-  ));
+  await act(async () => renderWithProviders(<Panel />, container as HTMLElement));
 
   expect(container.querySelectorAll('ul li').length).toEqual(0);
   expect(getByText(container, 'akeneo_communication_channel.panel.list.empty')).toBeInTheDocument();
 });
 
 test('it can close the panel', async () => {
-  fetchMockResponseOnce(
-    'pim_analytics_data_collect',
-    JSON.stringify(expectedPimAnalyticsData)
-  );
-  fetchMockResponseOnce(
-    '/rest/announcements',
-    JSON.stringify({items: []})
-  );
+  fetchMockResponseOnce('pim_analytics_data_collect', JSON.stringify(expectedPimAnalyticsData));
+  fetchMockResponseOnce('/rest/announcements', JSON.stringify({items: []}));
 
-  await act(async () => renderWithProviders(
-    <Panel />,
-    container as HTMLElement
-  ));
+  await act(async () => renderWithProviders(<Panel />, container as HTMLElement));
 
   fireEvent.click(getByTitle(container, 'pim_common.close'));
 

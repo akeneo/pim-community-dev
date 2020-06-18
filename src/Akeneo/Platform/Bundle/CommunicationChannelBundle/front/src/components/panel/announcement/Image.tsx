@@ -32,7 +32,7 @@ const Container = styled.div`
 type StyledImageProps = {
   naturalWidth: number;
   maxWidth: number;
-}
+};
 
 const StyledImage = styled.img`
   display: block;

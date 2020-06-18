@@ -7,7 +7,7 @@ const useAnnouncements = (): {
   data: Announcement[];
   hasError: boolean;
 } => {
-  const [announcements, setAnnouncements] = useState<{
+  const [announcementResponse, setAnnouncementResponse] = useState<{
     data: Announcement[];
     hasError: boolean;
   }>({
@@ -22,17 +22,17 @@ const useAnnouncements = (): {
       const announcements = jsonResponse.items;
       announcements.map(validateAnnouncement);
 
-      setAnnouncements({data: announcements, hasError: false});
+      setAnnouncementResponse({data: announcements, hasError: false});
     } catch (error) {
-      setAnnouncements({data: [], hasError: true});
+      setAnnouncementResponse({data: [], hasError: true});
     }
-  }, [route, setAnnouncements]);
+  }, [route, setAnnouncementResponse]);
 
   useEffect(() => {
     updateAnnouncements();
   }, []);
 
-  return announcements;
+  return announcementResponse;
 };
 
 export {useAnnouncements};
