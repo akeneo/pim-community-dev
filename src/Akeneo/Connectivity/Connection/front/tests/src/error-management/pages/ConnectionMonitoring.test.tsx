@@ -4,7 +4,6 @@ import React from 'react';
 import {Router} from 'react-router-dom';
 import {fetchMockResponseOnce, renderWithProviders} from '../../../test-utils';
 
-
 test('renders the connection monitoring page', async () => {
     fetchMockResponseOnce(
         'akeneo_connectivity_connection_rest_get?code=erp',
@@ -14,7 +13,7 @@ test('renders the connection monitoring page', async () => {
         'akeneo_connectivity_connection_error_management_rest_get_connection_business_errors?connection_code=erp',
         JSON.stringify([
             {
-                date_time: '2020-01-01T00:00:00+00:00',
+                date_time: '2020-01-01T00:12:00+00:00',
                 content: {
                     message: 'First error message',
                     type: 'domain_error',
@@ -41,12 +40,12 @@ test('renders the connection monitoring page', async () => {
     await findByText('ERP');
 
     await findByText('01/01/2020');
-    await findByText('12:00:00 AM');
-    await findByText('First error message');
+    await findByText('12:12:00 AM');
+    await findByText('"First error message"');
 
     await findByText('01/02/2020');
     await findByText('12:00:00 AM');
-    await findByText('Second error message');
+    await findByText('"Second error message"');
 });
 
 test('renders the connection monitoring page with no error', async () => {

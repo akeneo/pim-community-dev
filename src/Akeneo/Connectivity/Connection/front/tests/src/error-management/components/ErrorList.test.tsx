@@ -26,18 +26,18 @@ test('filters errors by search value', async () => {
 
     const {getByText, getByPlaceholderText, queryByText} = renderWithProviders(<ErrorList errors={errors} />);
 
-    getByText('Error 1');
-    getByText('Error 2');
+    getByText('"Error 1"');
+    getByText('"Error 2"');
 
     fireEvent.change(
         getByPlaceholderText(
             'akeneo_connectivity.connection.error_management.connection_monitoring.search_filter.placeholder'
         ),
-        {target: {value: 'Error 2'}}
+        {target: {value: '"Error 2"'}}
     );
 
     await waitForDomChange();
 
-    expect(queryByText('Error 1')).toBeNull();
-    getByText('Error 2');
+    expect(queryByText('"Error 1"')).toBeNull();
+    getByText('"Error 2"');
 });

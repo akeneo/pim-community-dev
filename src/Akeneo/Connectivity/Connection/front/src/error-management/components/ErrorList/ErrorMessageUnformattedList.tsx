@@ -17,8 +17,8 @@ const ErrorMessageUnformattedList: FC<Props> = ({content}) => {
                     .map(([key, value], i) => {
                         return (
                             <tr key={i}>
-                                <ErrorKey>{key}</ErrorKey>
-                                <td>: {JSON.stringify(value)}</td>
+                                <ErrorKey>{key}:</ErrorKey>
+                                <td>{JSON.stringify(value)}</td>
                             </tr>
                         );
                     })}
