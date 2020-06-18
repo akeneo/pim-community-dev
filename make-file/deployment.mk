@@ -78,7 +78,7 @@ render-helm-templates:
 	cd $(INSTANCE_DIR) ;\
 	mkdir -p helm-render ;\
 	helm template .terraform/modules/pim/pim -f tf-helm-pim-values.yaml -f values.yaml -n $(PFID) --output-dir helm-render || true
-ifeq ($(INSTANCE_NAME_PREFIX),pimup)
+ifeq ($(INSTANCE_NAME_PREFIX),pimup32)
 	cd $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ;\
 	mkdir -p helm-render ;\
 	helm template .terraform/modules/pim/pim -f tf-helm-pim-values.yaml -f values.yaml -n $(PFID) --output-dir helm-render || true
@@ -151,6 +151,8 @@ ifeq ($(INSTANCE_NAME_PREFIX),pimup)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled true
+endif
+ifeq ($(INSTANCE_NAME_PREFIX),pimup32)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.intermediateUpgrades[+] "v20200211172331"
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.intermediateUpgrades[+] "v20200401020139"
 endif

@@ -347,27 +347,26 @@ jobs:
               name: Oldest SaaS prod (PIM v3) deployment on kubernetes
               command: |
                 ssh-keyscan github.com >> ~/.ssh/known_hosts
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make helm-prepare
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make deploy-pim3
+                INSTANCE_NAME_PREFIX=pimup32 IMAGE_TAG=$CIRCLE_SHA1 make helm-prepare
+                INSTANCE_NAME_PREFIX=pimup32 IMAGE_TAG=$CIRCLE_SHA1 make deploy-pim3
           - run:
               name: Upgrade intermediate version SaaS to master
               command: |
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make terraform-pre-upgrade
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make deploy
+                INSTANCE_NAME_PREFIX=pimup32 IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
+                INSTANCE_NAME_PREFIX=pimup32 IMAGE_TAG=$CIRCLE_SHA1 make terraform-pre-upgrade
+                INSTANCE_NAME_PREFIX=pimup32 IMAGE_TAG=$CIRCLE_SHA1 make deploy
           - run:
               name: Production tests on upgraded env
-              command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make test-prod
+              command: INSTANCE_NAME_PREFIX=pimup32 IMAGE_TAG=$CIRCLE_SHA1 make test-prod
           - run:
               name: Prepare infrastructure artifacts
-              command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make prepare-infrastructure-artifacts
+              command: INSTANCE_NAME_PREFIX=pimup32 IMAGE_TAG=$CIRCLE_SHA1 make prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
           - run:
               name: Remove upgraded env
-              command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make delete
-              when: always
+              command: INSTANCE_NAME_PREFIX=pimup32 IMAGE_TAG=$CIRCLE_SHA1 make delete
 
   release:
       environment:
