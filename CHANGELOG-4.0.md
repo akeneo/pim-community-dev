@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- Fix fatal error on display product model associations when they have more than 25 products associated
+
 # 4.0.34 (2020-06-17)
 
 ## Bug fixes

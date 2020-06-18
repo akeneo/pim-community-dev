@@ -88,19 +88,6 @@ class AssociatedProductModelDatasource extends ProductDatasource
             $scope
         );
 
-        $productModelLimit = $limit - $associatedProducts->count();
-        $associatedProductModels = [];
-        if ($productModelLimit > 0) {
-            $productModelFrom = $from - count($associatedProductsIdentifiers) + $associatedProducts->count();
-            $associatedProductModels = $this->getAssociatedProductModels(
-                $associatedProductModelsIdentifiers,
-                $productModelLimit,
-                max($productModelFrom, 0),
-                $locale,
-                $scope
-            );
-        }
-
         $normalizedAssociatedProducts = $this->normalizeProductsAndProductModels(
             $associatedProducts,
             $associatedProductsIdentifiersFromParent,
@@ -108,12 +95,25 @@ class AssociatedProductModelDatasource extends ProductDatasource
             $scope
         );
 
-        $normalizedAssociatedProductModels = $this->normalizeProductsAndProductModels(
-            $associatedProductModels,
-            $associatedProductModelsIdentifiersFromParent,
-            $locale,
-            $scope
-        );
+        $productModelLimit = $limit - $associatedProducts->count() + $from;
+        $normalizedAssociatedProductModels = [];
+        if ($productModelLimit > 0) {
+            $productModelFrom = $from - count($associatedProductsIdentifiers) + count($normalizedAssociatedProducts);
+            $associatedProductModels = $this->getAssociatedProductModels(
+                $associatedProductModelsIdentifiers,
+                $productModelLimit,
+                max($productModelFrom, 0),
+                $locale,
+                $scope
+            );
+
+            $normalizedAssociatedProductModels = $this->normalizeProductsAndProductModels(
+                $associatedProductModels,
+                $associatedProductModelsIdentifiersFromParent,
+                $locale,
+                $scope
+            );
+        }
 
         $rows = ['totalRecords' => count($associatedProductsIdentifiers) + count($associatedProductModelsIdentifiers)];
         $rows['data'] = array_merge($normalizedAssociatedProducts, $normalizedAssociatedProductModels);
