@@ -11,9 +11,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductAssociationFilterSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $normalizer, ComparatorRegistry $comparatorRegistry)
+    function let(NormalizerInterface $associationsNormalizer, NormalizerInterface $quantifiedAssociationsNormalizer, ComparatorRegistry $comparatorRegistry)
     {
-        $this->beConstructedWith($normalizer, $comparatorRegistry);
+        $this->beConstructedWith($associationsNormalizer, $quantifiedAssociationsNormalizer, $comparatorRegistry);
     }
 
     function it_is_a_filter()
@@ -22,23 +22,39 @@ class ProductAssociationFilterSpec extends ObjectBehavior
     }
 
     function it_returns_all_associations_on_a_new_product(
-        $normalizer,
+        $associationsNormalizer,
+        $quantifiedAssociationsNormalizer,
         $comparatorRegistry,
         ProductInterface $product,
         ComparatorInterface $arrayComparator
     ) {
-        $originalValues = ['associations' => []];
+        $originalAssociationsValues = ['associations' => []];
+        $originalQuantifiedAssociationsValues = ['quantified_associations' => []];
         $newValues = [
             'associations' => [
                 'PACK' => [
                     'groups'   => ['akeneo_tshirt', 'oro_tshirt'],
                     'products' => ['AKNTS_BPXS', 'AKNTS_BPS', 'AKNTS_BPM']
                 ]
+            ],
+            'quantified_associations' => [
+                'PRODUCTSET' => [
+                    'products' => [
+                        ['identifier' => 'sku-A', 'quantity' => '12'],
+                        ['identifier' => 'sku-B', 'quantity' => '24']
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'sku_model-A', 'quantity' => '2'],
+                        ['identifier' => 'sku_model-B', 'quantity' => '4']
+                    ]
+                ]
             ]
         ];
 
-        $normalizer->normalize($product, 'standard')
-            ->willReturn($originalValues);
+        $associationsNormalizer->normalize($product, 'standard')
+            ->willReturn($originalAssociationsValues);
+        $quantifiedAssociationsNormalizer->normalize($product, 'standard')
+            ->willReturn($originalQuantifiedAssociationsValues);
 
         $comparatorRegistry->getFieldComparator('associations')->willReturn($arrayComparator);
         $arrayComparator->compare($newValues['associations']['PACK']['groups'], [])
@@ -46,16 +62,44 @@ class ProductAssociationFilterSpec extends ObjectBehavior
         $arrayComparator->compare($newValues['associations']['PACK']['products'], [])
             ->willReturn($newValues['associations']['PACK']['products']);
 
-        $this->filter($product, $newValues)->shouldReturn($newValues);
+        $comparatorRegistry->getFieldComparator('quantified_associations')->willReturn($arrayComparator);
+        $arrayComparator->compare($newValues['quantified_associations']['PRODUCTSET']['product_models'], [])
+            ->willReturn($newValues['quantified_associations']['PRODUCTSET']['product_models']);
+        $arrayComparator->compare($newValues['quantified_associations']['PRODUCTSET']['products'], [])
+            ->willReturn($newValues['quantified_associations']['PRODUCTSET']['products']);
+
+        $this->filter($product, $newValues)->shouldReturn(
+            [
+                'associations' => [
+                    'PACK' => [
+                        'groups'   => ['akeneo_tshirt', 'oro_tshirt'],
+                        'products' => ['AKNTS_BPXS', 'AKNTS_BPS', 'AKNTS_BPM']
+                    ]
+                ],
+                'quantified_associations' => [
+                    'PRODUCTSET' => [
+                        'products' => [
+                            ['identifier' => 'sku-A', 'quantity' => '12'],
+                            ['identifier' => 'sku-B', 'quantity' => '24']
+                        ],
+                        'product_models' => [
+                            ['identifier' => 'sku_model-A', 'quantity' => '2'],
+                            ['identifier' => 'sku_model-B', 'quantity' => '4']
+                        ]
+                    ]
+                ]
+            ]
+        );
     }
 
     function it_filters_not_updated_values(
-        $normalizer,
+        $associationsNormalizer,
+        $quantifiedAssociationsNormalizer,
         $comparatorRegistry,
         ProductInterface $product,
         ComparatorInterface $arrayComparator
     ) {
-        $originalValues = [
+        $originalAssociationsValues = [
             'PACK' => [
                 'groups'   => ['oro_tshirt'],
                 'products' => ['AKNTS_BPXS', 'AKNTS_BPS', 'AKNTS_BPM']
@@ -67,20 +111,23 @@ class ProductAssociationFilterSpec extends ObjectBehavior
                     'groups'   => ['akeneo_tshirt', 'oro_tshirt'],
                     'products' => ['AKNTS_BPXS', 'AKNTS_BPS', 'AKNTS_BPM']
                 ]
-            ]
+            ],
+            'quantified_associations' => []
         ];
 
-        $normalizer->normalize($product, 'standard')
-            ->willReturn($originalValues);
+        $associationsNormalizer->normalize($product, 'standard')
+            ->willReturn($originalAssociationsValues);
+        $quantifiedAssociationsNormalizer->normalize($product, 'standard')
+            ->willReturn(['quantified_associations' => []]);
 
         $comparatorRegistry->getFieldComparator('associations')->willReturn($arrayComparator);
         $arrayComparator->compare(
             $newValues['associations']['PACK']['groups'],
-            $originalValues['PACK']['groups']
+            $originalAssociationsValues['PACK']['groups']
         )->willReturn($newValues['associations']['PACK']['groups']);
         $arrayComparator->compare(
             $newValues['associations']['PACK']['products'],
-            $originalValues['PACK']['products']
+            $originalAssociationsValues['PACK']['products']
         )->willReturn(null);
 
         $this->filter($product, $newValues)->shouldReturn([
@@ -92,41 +139,99 @@ class ProductAssociationFilterSpec extends ObjectBehavior
         ]);
     }
 
-    function it_returns_an_empty_array_when_new_and_original_products_are_equals(
-        $normalizer,
+    function it_returns_an_empty_array_when_new_and_original_products_associations_are_equals(
+        $associationsNormalizer,
+        $quantifiedAssociationsNormalizer,
         $comparatorRegistry,
         ProductInterface $product,
         ComparatorInterface $arrayComparator
     ) {
-        $originalValues = [
+        $originalAssociationsValues = [
             'PACK' => [
                 'groups'   => ['akeneo_tshirt', 'oro_tshirt'],
                 'products' => ['AKNTS_BPXS', 'AKNTS_BPS', 'AKNTS_BPM']
             ]
         ];
 
-        $newValues = [
+        $newAssociationsValues = [
             'associations' => [
                 'PACK' => [
                     'groups'   => ['akeneo_tshirt', 'oro_tshirt'],
                     'products' => ['AKNTS_BPXS', 'AKNTS_BPS', 'AKNTS_BPM']
                 ]
-            ]
+            ],
+            'quantified_associations' => []
         ];
 
-        $normalizer->normalize($product, 'standard')
-            ->willReturn($originalValues);
+        $associationsNormalizer->normalize($product, 'standard')
+            ->willReturn($originalAssociationsValues);
+        $quantifiedAssociationsNormalizer->normalize($product, 'standard')
+            ->willReturn(['quantified_associations' => []]);
 
         $comparatorRegistry->getFieldComparator('associations')->willReturn($arrayComparator);
         $arrayComparator->compare(
-            $newValues['associations']['PACK']['groups'],
-            $originalValues['PACK']['groups']
+            $newAssociationsValues['associations']['PACK']['groups'],
+            $originalAssociationsValues['PACK']['groups']
         )->willReturn(null);
         $arrayComparator->compare(
-            $newValues['associations']['PACK']['products'],
-            $originalValues['PACK']['products']
+            $newAssociationsValues['associations']['PACK']['products'],
+            $originalAssociationsValues['PACK']['products']
         )->willReturn(null);
 
-        $this->filter($product, $newValues)->shouldReturn([]);
+        $this->filter($product, $newAssociationsValues)->shouldReturn([]);
+    }
+
+    function it_returns_an_empty_array_when_new_and_original_products_quantified_associations_are_equals(
+        $associationsNormalizer,
+        $quantifiedAssociationsNormalizer,
+        $comparatorRegistry,
+        ProductInterface $product,
+        ComparatorInterface $arrayComparator
+    ) {
+        $originalQuantifiedAssociationsValues = [
+            'PRODUCTSET' => [
+                'products' => [
+                    ['identifier' => 'sku-A', 'quantity' => '12'],
+                    ['identifier' => 'sku-B', 'quantity' => '24']
+                ],
+                'product_models' => [
+                    ['identifier' => 'sku_model-A', 'quantity' => '2'],
+                    ['identifier' => 'sku_model-B', 'quantity' => '4']
+                ]
+            ]
+        ];
+
+        $newQuantifiedAssociationsValues = [
+            'associations' => [],
+            'quantified_associations' => [
+                'PRODUCTSET' => [
+                    'products' => [
+                        ['identifier' => 'sku-A', 'quantity' => '12'],
+                        ['identifier' => 'sku-B', 'quantity' => '24']
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'sku_model-A', 'quantity' => '2'],
+                        ['identifier' => 'sku_model-B', 'quantity' => '4']
+                    ]
+                ]
+            ]
+        ];
+
+        $associationsNormalizer->normalize($product, 'standard')
+            ->willReturn(['associations' => []]);
+        $quantifiedAssociationsNormalizer->normalize($product, 'standard')
+            ->willReturn($originalQuantifiedAssociationsValues);
+
+        $comparatorRegistry->getFieldComparator('quantified_associations')->willReturn($arrayComparator);
+        $arrayComparator->compare(
+            $newQuantifiedAssociationsValues['quantified_associations']['PRODUCTSET']['product_models'],
+            $originalQuantifiedAssociationsValues['PRODUCTSET']['product_models']
+        )->willReturn(null);
+        $arrayComparator->compare(
+            $newQuantifiedAssociationsValues['quantified_associations']['PRODUCTSET']['products'],
+            $originalQuantifiedAssociationsValues['PRODUCTSET']['products']
+        )->willReturn(null);
+
+        $this->filter($product, $newQuantifiedAssociationsValues)->shouldReturn([]);
     }
 }

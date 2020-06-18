@@ -1,3 +1,7 @@
 akeneo_communication_channel:
     link:
-        title: Akeneo Help Center Updates
+        title: Announcements
+    panel:
+        title: What's new?
+        list:
+            empty: There is no news for the moment. Stay tuned!

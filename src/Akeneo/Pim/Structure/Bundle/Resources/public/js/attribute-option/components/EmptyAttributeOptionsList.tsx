@@ -12,7 +12,7 @@ const EmptyAttributeOptionsList = ({showNewOptionForm}: EmptyAttributeOptionsLis
         <div className="AknAttributeOption-emptyList">
             <img src="/bundles/pimui/images/illustrations/Attribute.svg"/>
             <div className="AknAttributeOption-emptyList-message">{translate('pim_enrich.entity.attribute_option.module.edit.no_options_msg')}</div>
-            <div className="AknAttributeOption-emptyList-addLink" onClick={() => showNewOptionForm(true)}>
+            <div className="AknAttributeOption-emptyList-addLink" onClick={() => showNewOptionForm(true)} role="add-new-attribute-option-button">
                 {translate('pim_enrich.entity.attribute_option.module.edit.add_option')}
             </div>
         </div>

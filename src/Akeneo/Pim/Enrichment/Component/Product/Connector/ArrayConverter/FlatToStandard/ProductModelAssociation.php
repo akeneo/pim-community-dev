@@ -65,7 +65,7 @@ class ProductModelAssociation implements ArrayConverterInterface
      */
     protected function filter(array $item): array
     {
-        $allowed = ['code', 'associations'];
+        $allowed = ['code', 'associations', 'quantified_associations'];
 
         return array_filter($item, function ($key) use ($allowed) {
             return in_array($key, $allowed);

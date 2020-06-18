@@ -1,15 +1,19 @@
+import {validateCampaignData} from './../validator/campaignData';
+
 const DataCollector = require('pim/data-collector');
 
 class CampaignFetcher {
-  private analyticsUrl: string = 'pim_analytics_data_collect';
+  static analyticsUrl: string = 'pim_analytics_data_collect';
 
-  private cloudVersion: string = 'serenity';
+  static cloudVersion: string = 'serenity';
 
-  private campaign: string | null = null;
+  static campaign: string | null = null;
 
-  public async fetch() {
+  static async fetch(): Promise<string> {
     if (null === this.campaign) {
       const data = await DataCollector.collect(this.analyticsUrl);
+
+      validateCampaignData(data);
 
       if (this.cloudVersion === data.pim_edition.toLowerCase()) {
         this.campaign = data.pim_edition as string;
@@ -22,4 +26,4 @@ class CampaignFetcher {
   }
 }
 
-export = new CampaignFetcher();
+export {CampaignFetcher};

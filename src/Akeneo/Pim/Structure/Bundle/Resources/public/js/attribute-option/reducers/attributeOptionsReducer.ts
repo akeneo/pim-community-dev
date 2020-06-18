@@ -17,6 +17,15 @@ export const initializeAttributeOptionsAction: ActionCreator<InitializeAttribute
     };
 };
 
+interface ResetAttributeOptionsAction extends Action {}
+
+const RESET_ATTRIBUTE_OPTIONS = 'RESET_ATTRIBUTE_OPTIONS';
+export const resetAttributeOptionsAction: ActionCreator<ResetAttributeOptionsAction> = () => {
+    return {
+        type: RESET_ATTRIBUTE_OPTIONS,
+    };
+};
+
 interface UpdateAttributeOptionAction extends Action {
     payload: {
         option: AttributeOption;
@@ -68,9 +77,17 @@ export const deleteAttributeOptionAction: ActionCreator<DeleteAttributeOptionAct
 const attributeOptionsReducer: Reducer<AttributeOption[] | null> = (previousState = null, {type, payload}) => {
     switch (type) {
     case INITIALIZE_ATTRIBUTE_OPTIONS: {
+        //The backend can return an empty object ({}) when there is no option and an array otherwise
+        if (typeof payload.attributeOptions === 'object' && !Array.isArray(payload.attributeOptions)) {
+            return [];
+        }
+
         return [
             ...payload.attributeOptions
         ];
+    }
+    case RESET_ATTRIBUTE_OPTIONS: {
+        return null;
     }
     case UPDATE_ATTRIBUTE_OPTION: {
         if (previousState === null) {

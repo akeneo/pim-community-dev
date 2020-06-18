@@ -54,5 +54,4 @@ const Edit = ({option, saveAttributeOption}: EditProps) => {
     );
 };
 
-
 export default Edit;

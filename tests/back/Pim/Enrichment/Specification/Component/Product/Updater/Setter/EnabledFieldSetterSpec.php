@@ -2,11 +2,13 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\EnabledFieldSetter;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\EnabledFieldSetter;
 use Prophecy\Argument;
 
 class EnabledFieldSetterSpec extends ObjectBehavior
@@ -56,5 +58,15 @@ class EnabledFieldSetterSpec extends ObjectBehavior
                 'foo'
             )
         )->during('setFieldData', [$product, 'enabled', 'foo']);
+    }
+
+    function it_throws_an_exception_if_the_subject_is_not_a_product()
+    {
+        $this->shouldThrow(
+            InvalidObjectException::objectExpected(
+                ProductModel::class,
+                ProductInterface::class
+            )
+        )->during('setFieldData', [new ProductModel(), 'enabled', true]);
     }
 }

@@ -15,6 +15,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -57,7 +58,8 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         ProductInterface $product,
         AssociationInterface $association,
         ConstraintViolationListInterface $violationList,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        QuantifiedAssociations $quantifiedAssociations
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(true);
@@ -82,7 +84,8 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
                     'groups'  => ['akeneo_tshirt', 'oro_tshirt'],
                     'product' => ['AKN_TS', 'ORO_TS']
                 ]
-            ]
+            ],
+            'quantified_associations' => []
         ];
 
         $filteredData = [
@@ -104,8 +107,13 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $product->getAssociations()->willReturn([$association]);
+        $product->getQuantifiedAssociations()->willReturn($quantifiedAssociations);
+
         $productValidator
             ->validate($association)
+            ->willReturn($violationList);
+        $productValidator
+            ->validate($quantifiedAssociations)
             ->willReturn($violationList);
 
         $this
@@ -146,7 +154,8 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
                     'groups'  => ['akeneo_tshirt', 'oro_tshirt'],
                     'product' => ['AKN_TS', 'ORO_TS']
                 ]
-            ]
+            ],
+            'quantified_associations' => []
         ];
 
         $filteredData = [
@@ -188,7 +197,9 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productDetacher,
         AssociationInterface $association,
         ProductInterface $product,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        QuantifiedAssociations $quantifiedAssociations,
+        ConstraintViolationListInterface $quantifiedViolations
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
@@ -213,7 +224,8 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
                     'groups'  => ['akeneo_tshirt', 'oro_tshirt'],
                     'product' => ['AKN_TS', 'ORO_TS']
                 ]
-            ]
+            ],
+            'quantified_associations' => []
         ];
 
         $filteredData = [
@@ -236,9 +248,95 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $violation = new ConstraintViolation('There is a small problem with option code', 'foo', [], 'bar', 'code', 'mycode');
         $violations = new ConstraintViolationList([$violation]);
         $product->getAssociations()->willReturn([$association]);
+        $product->getQuantifiedAssociations()->willReturn($quantifiedAssociations);
         $productValidator
             ->validate($association)
             ->willReturn($violations);
+        $productValidator
+            ->validate($quantifiedAssociations)
+            ->willReturn($quantifiedViolations);
+
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $this->setStepExecution($stepExecution);
+
+        $productDetacher->detach($product)->shouldBeCalled();
+
+        $this
+            ->shouldThrow(InvalidItemException::class)
+            ->during(
+                'process',
+                [$convertedData]
+            );
+    }
+
+    function it_skips_a_product_when_quantified_association_is_invalid(
+        $productRepository,
+        $productUpdater,
+        $productValidator,
+        $productAssocFilter,
+        $stepExecution,
+        $productDetacher,
+        AssociationInterface $association,
+        ProductInterface $product,
+        JobParameters $jobParameters,
+        QuantifiedAssociations $quantifiedAssociations,
+        ConstraintViolationListInterface $quantifiedViolations
+    ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
+        $jobParameters->get('enabledComparison')->willReturn(true);
+        $productRepository->getIdentifierProperties()->willReturn(['sku']);
+        $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
+        $product->getId()->willReturn(42);
+
+        $convertedData = [
+            'identifier'   => 'tshirt',
+            'values'       => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope' =>  null,
+                        'data' => 'tshirt'
+                    ],
+                ]
+            ],
+            'associations' => [
+                'XSELL' => [
+                    'groups'  => ['akeneo_tshirt', 'oro_tshirt'],
+                    'product' => ['AKN_TS', 'ORO_TS']
+                ]
+            ],
+            'quantified_associations' => []
+        ];
+
+        $filteredData = [
+            'associations' => [
+                'XSELL' => [
+                    'groups'  => ['akeneo_tshirt', 'oro_tshirt'],
+                    'product' => ['AKN_TS', 'ORO_TS']
+                ]
+            ]
+        ];
+
+        $productAssocFilter->filter($product, $convertedData)
+            ->shouldBeCalled()
+            ->willReturn($filteredData);
+
+        $productUpdater
+            ->update($product, $filteredData)
+            ->shouldBeCalled();
+
+        $violations = new ConstraintViolationList();
+        $violation = new ConstraintViolation('There is a small problem with your quantified associations', 'foo', [], 'bar', 'identifier', 'myidentifier');
+        $quantifiedViolations = new ConstraintViolationList([$violation]);
+        $product->getAssociations()->willReturn([$association]);
+        $product->getQuantifiedAssociations()->willReturn($quantifiedAssociations);
+        $productValidator
+            ->validate($association)
+            ->willReturn($violations);
+        $productValidator
+            ->validate($quantifiedAssociations)
+            ->willReturn($quantifiedViolations);
 
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
         $this->setStepExecution($stepExecution);
@@ -285,7 +383,8 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
                     'groups'  => ['akeneo_tshirt', 'oro_tshirt'],
                     'product' => ['AKN_TS', 'ORO_TSH']
                 ]
-            ]
+            ],
+            'quantified_associations' => []
         ];
 
         $filteredData = [

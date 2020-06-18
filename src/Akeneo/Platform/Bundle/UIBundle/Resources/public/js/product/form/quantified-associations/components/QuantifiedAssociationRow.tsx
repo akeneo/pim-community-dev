@@ -202,7 +202,7 @@ const QuantifiedAssociationRow = ({row, parentQuantifiedLink, onChange, onRemove
               {null !== row.product && (
                 <RowAction>
                   <a href={`#${productEditUrl}`} target="_blank">
-                    <EditIcon size={20} />
+                    <EditIcon title={translate('pim_enrich.entity.product.module.associations.edit')} size={20} />
                   </a>
                 </RowAction>
               )}

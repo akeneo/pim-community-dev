@@ -82,7 +82,6 @@ pim_enrich.entity.association_type:
   label: 연결 유형
   property:
     is_two_way: 양방향 연결
-    is_quantified: Association with quantity
   flash:
     update:
       success: 연결 유형이 업데이트되었습니다.
@@ -99,10 +98,6 @@ pim_enrich.entity.association_type:
     create:
       title: 새 연결 유형 만들기
       button: 연결 유형 만들기
-      is_two_way:
-        message_on_read_only: Association type can be either quantified or two-way, to select this one, uncheck the other
-      is_quantified:
-        message_on_read_only: Association type can be either quantified or two-way, to select this one, uncheck the other
     delete:
       confirm: 이 연결 유형을 삭제하시겠습니까?
   hint: <a href="{{link}}" target="_blank">이 문서에서</a> 고유한 연결 유형을 만드는 데 필요한 모든 내용을 볼 수 있습니다.
