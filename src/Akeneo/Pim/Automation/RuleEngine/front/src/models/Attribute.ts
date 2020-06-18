@@ -26,7 +26,7 @@ export enum AttributeType {
 
 type Attribute = {
   code: AttributeCode;
-  type: string;
+  type: AttributeType;
   group: string;
   unique: boolean;
   useable_as_grid_filter: boolean;

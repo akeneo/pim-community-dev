@@ -1,6 +1,6 @@
 import React from 'react';
 import { Select2SimpleSyncWrapper, Select2Value } from '../Select2Wrapper';
-import { Attribute, LocaleCode, Scope, ScopeCode } from '../../models';
+import { Attribute, getAttributeLabel, LocaleCode, Scope, ScopeCode } from '../../models';
 import { useTranslate } from '../../dependenciesTools/hooks';
 import { Translate } from '../../dependenciesTools';
 import { IndexedScopes } from '../../repositories/ScopeRepository';
@@ -8,13 +8,15 @@ import { IndexedScopes } from '../../repositories/ScopeRepository';
 const getScopeValidation = (
   attribute: Attribute | null,
   scopes: IndexedScopes,
-  translate: Translate
+  translate: Translate,
+  currentCatalogLocale: LocaleCode,
 ) => {
   const scopeValidation: any = {};
   if (attribute && attribute.scopable) {
     scopeValidation['required'] = translate(
-      'pimee_catalog_rule.exceptions.required_scope'
-    );
+      'pimee_catalog_rule.exceptions.required_scope',
+    { attributeLabel: getAttributeLabel(attribute, currentCatalogLocale) }
+  );
   }
   scopeValidation['validate'] = (scopeCode: any) => {
     if (attribute && attribute.scopable) {
