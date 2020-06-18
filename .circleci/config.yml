@@ -517,62 +517,12 @@ workflows:
           - build_dev:
                 requires:
                     - checkout_ee
-          - build_prod:
-                requires:
-                    - checkout_ee
-          - deploy_pr_environment?:
-                type: approval
-                filters:
-                    branches:
-                        ignore:
-                            - master
-                requires:
-                    - build_prod
-          - deploy_pr_environment:
-                requires:
-                    - deploy_pr_environment?
-          - deploy_upgrade_oldest_prod_environment:
-                requires:
-                    - build_prod
-          - test_back_static_and_acceptance:
-                requires:
-                    - build_dev
-          - test_front_static_acceptance_and_integration:
-                requires:
-                    - build_dev
           - test_back_missing_structure_migrations:
                 requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-          - test_back_data_migrations:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-          - test_back_phpunit:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-          - test_onboarder_bundle:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-          - test_back_behat_legacy:
-                requires:
-                    - test_back_data_migrations
-                    - test_back_missing_structure_migrations
-                    - test_back_phpunit
-                    - test_onboarder_bundle
-          - test_back_performance:
-                requires:
-                    - test_back_data_migrations
-                    - test_back_missing_structure_migrations
-                    - test_back_phpunit
-                    - test_onboarder_bundle
+                    - build_dev
           - pull_request_success:
                 requires:
-                    - test_back_behat_legacy
-                    - test_back_performance
-                    - deploy_upgrade_oldest_prod_environment
+                    - test_back_missing_structure_migrations
 
   nightly:
       triggers:
