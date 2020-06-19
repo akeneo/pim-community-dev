@@ -17,8 +17,11 @@ const givenInitialState = ():AttributeOptionsExtraData => {
 
 describe('attributeOptionsExtraDataReducer', () => {
     it('should add extra data in state when the action ADD_ATTRIBUTE_OPTION_EXTRA_DATA_ACTION is received', () => {
-        const state = givenInitialState();
-        const result = attributeOptionsExtraDataReducer(state, {
+        let state;
+        let result;
+
+        state = givenInitialState();
+        result = attributeOptionsExtraDataReducer(state, {
             type: ADD_ATTRIBUTE_OPTION_EXTRA_DATA_ACTION,
             code: 'black',
             extra: <div>TEST BLACK</div>
@@ -29,6 +32,19 @@ describe('attributeOptionsExtraDataReducer', () => {
             blue: <div>TEST BLUE</div>,
             yellow: <div>TEST YELLOW</div>,
             black: <div>TEST BLACK</div>,
+        });
+
+        state = givenInitialState();
+        result = attributeOptionsExtraDataReducer(state, {
+            type: ADD_ATTRIBUTE_OPTION_EXTRA_DATA_ACTION,
+            code: 'red',
+            extra: <div>NEW RED</div>
+        });
+
+        expect(result).toEqual({
+            red: <div>NEW RED</div>,
+            blue: <div>TEST BLUE</div>,
+            yellow: <div>TEST YELLOW</div>,
         });
     });
 
