@@ -74,4 +74,12 @@ class ProductCopyAction implements ProductCopyActionInterface
     {
         return [$this->getToField()];
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getType(): string
+    {
+        return 'copy';
+    }
 }

@@ -30,7 +30,7 @@ class RuleDefinitionRepository extends EntityRepository implements RuleDefinitio
         $qb = new RuleQueryBuilder($this->_em);
         $qb->from($this->_entityName, 'r');
 
-        $labelExpr = 'COALESCE(translation.label, CONCAT(\'[\', r.code, \']\'))';
+        $labelExpr = 'COALESCE(NULLIF(translation.label, \'\'), CONCAT(\'[\', r.code, \']\'))';
         $qb->leftJoin('r.translations', 'translation', 'WITH', 'translation.locale = :localeCode');
 
         $qb

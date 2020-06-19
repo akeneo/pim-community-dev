@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\RuleEngineBundle\Command;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
-use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
-use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
-use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\BulkDryRunnerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -37,27 +36,10 @@ class RunCommand extends Command
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
-    /** @var RuleDefinitionRepositoryInterface */
-    private $ruleDefinitionRepository;
-
-    /** @var BulkDryRunnerInterface */
-    private $strictbBulkDryRunner;
-
-    /** @var BulkDryRunnerInterface */
-    private $bulkDryRunner;
-
-    public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        RuleDefinitionRepositoryInterface $ruleDefinitionRepository,
-        BulkDryRunnerInterface $strictbBulkDryRunner,
-        BulkDryRunnerInterface $bulkDryRunner
-    ) {
+    public function __construct(EventDispatcherInterface $eventDispatcher)
+    {
         parent::__construct();
-
         $this->eventDispatcher = $eventDispatcher;
-        $this->ruleDefinitionRepository = $ruleDefinitionRepository;
-        $this->strictbBulkDryRunner = $strictbBulkDryRunner;
-        $this->bulkDryRunner = $bulkDryRunner;
     }
 
     /**
@@ -66,7 +48,7 @@ class RunCommand extends Command
     protected function configure()
     {
         $this
-            ->addArgument('code', InputArgument::OPTIONAL, 'Code of the rule to run')
+            ->addArgument('code', InputArgument::OPTIONAL, 'Code(s) of the rule(s) to run')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Dry run')
             ->addOption('stop-on-error', null, InputOption::VALUE_NONE, 'Stop rules execution on error')
             ->addOption(
@@ -87,16 +69,33 @@ class RunCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $code = $input->hasArgument('code') ? $input->getArgument('code') : null;
+        $ruleCodes = null === $code ? [] : explode(',', $code);
         $username = $input->getOption('username') ?: null;
         $stopOnError = $input->getOption('stop-on-error') ?: false;
         $dryRun = $input->getOption('dry-run') ?: false;
 
+        $config = [
+            'rule_codes' => $ruleCodes,
+            'user_to_notify' => $username,
+            'stop_on_error' => $stopOnError,
+            'dry_run' => $dryRun,
+        ];
+
+        $params = [
+            'command' => 'akeneo:batch:job',
+            'code' => 'rule_engine_execute_rules',
+            '--no-debug' => true,
+            '--no-log' => true,
+            '--config' => json_encode($config),
+        ];
+        if (null !== $username) {
+            $params['--username'] = $username;
+        }
+
         $message = $dryRun ? 'Dry running rules...' : 'Running rules...';
         $output->writeln($message);
 
-        $rules = $this->getRulesToRun($code);
-
-        $progressBar = new ProgressBar($output, count($rules));
+        $progressBar = new ProgressBar($output, count($ruleCodes));
 
         $this->eventDispatcher->addListener(
                 RuleEvents::POST_EXECUTE,
@@ -105,65 +104,12 @@ class RunCommand extends Command
                 }
             );
 
-        $this->runRules($rules, $dryRun, $stopOnError, $username);
+        $this->getApplication()->setAutoExit(false);
+        $result = $this->getApplication()->run(new ArrayInput($params), new NullOutput());
 
         $progressBar->finish();
-    }
+        $output->writeln('');
 
-    /**
-     * @param RuleDefinitionInterface[] $rules
-     * @param bool                      $dryRun
-     * @param bool                      $stopOnError
-     * @param string|null               $username
-     *
-     * @throws \Exception
-     */
-    protected function runRules(array $rules, $dryRun, $stopOnError, $username = null)
-    {
-        $chainedRunner = $this->getRuleRunner($stopOnError);
-
-        $options = [];
-        if (null !== $username) {
-            $options['username'] = $username;
-        }
-
-        $dryRun ? $chainedRunner->dryRunAll($rules) : $chainedRunner->runAll($rules, $options);
-    }
-
-    /**
-     * @param string $ruleCode
-     *
-     * @return RuleDefinitionInterface[]
-     */
-    protected function getRulesToRun($ruleCode): array
-    {
-        if (null !== $ruleCode) {
-            $rules = $this->ruleDefinitionRepository->findBy(
-                ['code' => explode(',', $ruleCode)],
-                ['priority' => 'DESC']
-            );
-
-            if (empty($rules)) {
-                throw new \InvalidArgumentException(sprintf('The rule(s) %s does not exists', $ruleCode));
-            }
-        } else {
-            $rules = $this->ruleDefinitionRepository->findAllOrderedByPriority();
-        }
-
-        return $rules;
-    }
-
-    /**
-     * @param bool $stopOnError
-     *
-     * @return BulkDryRunnerInterface
-     */
-    protected function getRuleRunner($stopOnError): BulkDryRunnerInterface
-    {
-        if ($stopOnError) {
-            return $this->strictbBulkDryRunner;
-        }
-
-        return $this->bulkDryRunner;
+        return $result;
     }
 }

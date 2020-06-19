@@ -115,6 +115,22 @@ final class RuleEvents
     const PRE_SAVE_ALL = 'pim_rule_engine.rule.pre_save_all';
 
     /**
+     * This event is thrown before a set of subjects is saved
+     *
+     * The event listener receives a
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     */
+    const PRE_SAVE_SUBJECTS = 'pim_rule_engine.pre_save_subjects';
+
+    /**
+     * This event is thrown after a set of subjects is saved
+     *
+     * The event listener receives a
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     */
+    const POST_SAVE_SUBJECTS = 'pim_rule_engine.post_save_subjects';
+
+    /**
      * This event is thrown after saving many rules.
      *
      * The event listener receives an

@@ -1,10 +1,12 @@
 type CategoryCode = string;
+type CategoryId = number;
 
 type Category = {
   code: CategoryCode;
   parent: CategoryCode;
   labels: { [locale: string]: string };
-  id: number;
+  id: CategoryId;
+  root: CategoryId;
 };
 
-export { CategoryCode, Category };
+export { CategoryId, CategoryCode, Category };

@@ -1,27 +1,27 @@
 import React from 'react';
-import { Select2SimpleSyncWrapper } from '../Select2Wrapper';
+import { Select2SimpleSyncWrapper, Select2Value } from '../Select2Wrapper';
 import { Operator } from '../../models/Operator';
-import { Translate } from '../../dependenciesTools';
+import { useTranslate } from '../../dependenciesTools/hooks';
 
 type Props = {
-  id: string;
-  label: string;
-  hiddenLabel?: boolean;
+  label?: string;
   availableOperators: Operator[];
-  translate: Translate;
   value: Operator;
-  onChange: (value: Operator) => void;
+  name: string;
+  onChange?: (value: Operator) => void;
+  hiddenLabel?: boolean;
 };
 
 const OperatorSelector: React.FC<Props> = ({
-  id,
   label,
   hiddenLabel = false,
   availableOperators,
-  translate,
   value,
   onChange,
+  name,
+  ...remainingProps
 }) => {
+  const translate = useTranslate();
   const translateOperator = (operator: Operator): string => {
     const label = translate(
       `pimee_catalog_rule.form.edit.conditions.operators.${operator}`
@@ -37,16 +37,23 @@ const OperatorSelector: React.FC<Props> = ({
     };
   });
 
+  const handleChange = (value: Select2Value) => {
+    if (onChange) {
+      onChange(value as Operator);
+    }
+  };
+
   return (
     <Select2SimpleSyncWrapper
-      id={id}
-      label={label}
+      {...remainingProps}
+      label={label || translate('pim_common.operator')}
       hiddenLabel={hiddenLabel}
       data={operatorChoices}
       value={value}
-      onValueChange={value => onChange(value as Operator)}
+      onChange={handleChange}
       dropdownCssClass={'operator-dropdown'}
       hideSearch={true}
+      name={name}
     />
   );
 };

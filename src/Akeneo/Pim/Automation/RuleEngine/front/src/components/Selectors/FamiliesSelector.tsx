@@ -3,20 +3,22 @@ import {
   InitSelectionCallback,
   Select2MultiAsyncWrapper,
   Select2Option,
+  Select2Value,
 } from '../Select2Wrapper';
 import { Router } from '../../dependenciesTools';
 import { IndexedFamilies } from '../../fetch/FamilyFetcher';
 import { getFamiliesByIdentifiers } from '../../repositories/FamilyRepository';
 import { FamilyCode, LocaleCode } from '../../models';
+import { useBackboneRouter, useTranslate } from '../../dependenciesTools/hooks';
 
 type Props = {
-  router: Router;
-  id: string;
-  label: string;
+  label?: string;
   hiddenLabel?: boolean;
   currentCatalogLocale: LocaleCode;
   value: FamilyCode[];
-  onChange: (value: FamilyCode[]) => void;
+  onChange?: (value: FamilyCode[]) => void;
+  validation?: { required?: string; validate?: (value: any) => string | true };
+  name: string;
 };
 
 const dataProvider = (
@@ -82,21 +84,31 @@ const initSelectedFamilies = async (
 };
 
 const FamiliesSelector: React.FC<Props> = ({
-  router,
-  id,
   label,
   hiddenLabel = false,
   currentCatalogLocale,
   value,
   onChange,
+  validation,
+  name,
+  ...remainingProps
 }) => {
+  const translate = useTranslate();
+  const router = useBackboneRouter();
+  const handleChange = (value: Select2Value[]) => {
+    if (onChange) {
+      onChange(value as FamilyCode[]);
+    }
+  };
+
   return (
     <Select2MultiAsyncWrapper
-      id={id}
-      label={label}
+      {...remainingProps}
+      name={name}
+      label={label || translate('pim_enrich.entity.family.plural_label')}
       hiddenLabel={hiddenLabel}
       value={value}
-      onValueChange={value => onChange(value as string[])}
+      onChange={handleChange}
       ajax={{
         url: router.generate('pim_enrich_family_rest_index'),
         quietMillis: 250,
@@ -109,6 +121,7 @@ const FamiliesSelector: React.FC<Props> = ({
       initSelection={(_element, callback) => {
         initSelectedFamilies(router, value, currentCatalogLocale, callback);
       }}
+      validation={validation}
     />
   );
 };

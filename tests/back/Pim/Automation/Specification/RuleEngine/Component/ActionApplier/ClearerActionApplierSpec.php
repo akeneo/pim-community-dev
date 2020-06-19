@@ -14,10 +14,12 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\ClearerActionApplier;
+use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedActionForSubjectEvent;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductClearAction;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetAction;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
@@ -26,12 +28,13 @@ use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyClearerInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ClearerActionApplierSpec extends ObjectBehavior
 {
-    function let(PropertyClearerInterface $propertyClearer, GetAttributes $getAttributes)
+    function let(PropertyClearerInterface $propertyClearer, GetAttributes $getAttributes, EventDispatcherInterface $eventDispatcher)
     {
-        $this->beConstructedWith($propertyClearer, $getAttributes);
+        $this->beConstructedWith($propertyClearer, $getAttributes, $eventDispatcher);
     }
 
     function it_is_initializable()
@@ -69,7 +72,7 @@ class ClearerActionApplierSpec extends ObjectBehavior
             ['locale' => null, 'scope' => null]
         )->shouldBeCalled();
 
-        $this->applyAction($clearerAction, [$product]);
+        $this->applyAction($clearerAction, [$product])->shouldReturn([$product]);
     }
 
     function it_applies_clear_attribute_action_with_locale_and_scope_on_non_variant_product(
@@ -88,7 +91,7 @@ class ClearerActionApplierSpec extends ObjectBehavior
             ['locale' => 'en_US', 'scope' => 'ecommerce']
         )->shouldBeCalled();
 
-        $this->applyAction($clearerAction, [$product]);
+        $this->applyAction($clearerAction, [$product])->shouldReturn([$product]);
     }
 
     function it_applies_clear_attribute_action_on_product_model_when_attribute_is_at_same_level(
@@ -116,7 +119,7 @@ class ClearerActionApplierSpec extends ObjectBehavior
             ['locale' => null, 'scope' => null]
         )->shouldBeCalled();
 
-        $this->applyAction($clearerAction, [$productModel]);
+        $this->applyAction($clearerAction, [$productModel])->shouldReturn([$productModel]);
     }
 
     function it_applies_clear_attribute_action_on_product_model_with_no_family_variant(
@@ -142,12 +145,26 @@ class ClearerActionApplierSpec extends ObjectBehavior
             ['locale' => null, 'scope' => null]
         )->shouldBeCalled();
 
-        $this->applyAction($clearerAction, [$productModel]);
+        $this->applyAction($clearerAction, [$productModel])->shouldReturn([$productModel]);
+    }
+
+    function it_does_not_apply_action_if_entity_is_a_product_model_and_field_is_groups(
+        PropertyClearerInterface $propertyClearer,
+        EventDispatcherInterface $eventDispatcher,
+        ProductModelInterface $productModel
+    ) {
+        $action = new ProductClearAction(['field' => 'groups']);
+
+        $propertyClearer->clear(Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SkippedActionForSubjectEvent::class))->shouldBeCalled();
+
+        $this->applyAction($action, [$productModel])->shouldReturn([]);
     }
 
     function it_does_not_apply_clear_attribute_action_on_product_model_when_variation_level_is_not_right(
         PropertyClearerInterface $propertyClearer,
         GetAttributes $getAttributes,
+        EventDispatcherInterface $eventDispatcher,
         ProductModel $productModel,
         FamilyInterface $family,
         FamilyVariantInterface $familyVariant
@@ -164,13 +181,10 @@ class ClearerActionApplierSpec extends ObjectBehavior
         $productModel->getFamilyVariant()->willReturn($familyVariant);
         $familyVariant->getLevelForAttributeCode('name')->willReturn(2);
 
-        $propertyClearer->clear(
-            Argument::any(),
-            Argument::any(),
-            Argument::any()
-        )->shouldNotBeCalled();
+        $propertyClearer->clear(Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SkippedActionForSubjectEvent::class))->shouldBeCalled();
 
-        $this->applyAction($clearerAction, [$productModel]);
+        $this->applyAction($clearerAction, [$productModel])->shouldReturn([]);
     }
 
     function it_clears_an_attribute_value_even_if_attribute_does_not_belong_to_the_family(
@@ -191,7 +205,7 @@ class ClearerActionApplierSpec extends ObjectBehavior
             ['locale' => null, 'scope' => null]
         )->shouldBeCalled();
 
-        $this->applyAction($clearerAction, [$product]);
+        $this->applyAction($clearerAction, [$product])->shouldReturn([$product]);
     }
 
     function it_applies_clear_action_on_product_field(PropertyClearerInterface $propertyClearer)
@@ -205,7 +219,7 @@ class ClearerActionApplierSpec extends ObjectBehavior
             ['locale' => null, 'scope' => null]
         )->shouldBeCalled();
 
-        $this->applyAction($clearerAction, [$product]);
+        $this->applyAction($clearerAction, [$product])->shouldReturn([$product]);
     }
 
     private function buildAttribute(string $code): Attribute

@@ -214,19 +214,6 @@ class EnterpriseFeatureContext extends FeatureContext
     }
 
     /**
-     * @param string $code
-     *
-     * @throws \LogicException
-     * @Given /^the product rule "([^"]*)" is executed$/
-     */
-    public function iExecuteTheProductRule($code)
-    {
-        $rule = $this->getSubcontext('fixtures')->getRule($code);
-        $runner = $this->getContainer()->get('akeneo_rule_engine.runner.chained');
-        $runner->run($rule);
-    }
-
-    /**
      * @Then /^I should see the smart icon for the attribute "([^"]*)"$/
      */
     public function iShouldSeeTheSmartIconForTheAttribute($attributeLabel)

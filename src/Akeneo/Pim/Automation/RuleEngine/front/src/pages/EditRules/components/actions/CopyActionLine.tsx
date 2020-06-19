@@ -2,15 +2,14 @@ import React from 'react';
 import { CopyAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
-import { useValueInitialization } from '../../hooks/useValueInitialization';
 import { FallbackField } from '../FallbackField';
+import { useRegisterConsts } from '../../hooks/useRegisterConst';
 
 type Props = {
   action: CopyAction;
 } & ActionLineProps;
 
 const CopyActionLine: React.FC<Props> = ({
-  translate,
   lineNumber,
   action,
   handleDelete,
@@ -33,13 +32,10 @@ const CopyActionLine: React.FC<Props> = ({
   if (action.to_scope) {
     values.to_scope = action.to_scope;
   }
-  useValueInitialization(`content.actions[${lineNumber}]`, values, {}, [
-    action,
-  ]);
+  useRegisterConsts(values, `content.actions[${lineNumber}]`);
 
   return (
     <ActionTemplate
-      translate={translate}
       title='Copy Action'
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'

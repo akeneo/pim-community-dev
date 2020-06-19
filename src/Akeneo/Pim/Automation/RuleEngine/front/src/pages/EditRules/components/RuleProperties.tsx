@@ -1,24 +1,19 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import { Translate } from '../../../dependenciesTools';
 import { Locale } from '../../../models';
-import {
-  InputNumber,
-  InputText,
-  SmallHelper,
-  FormSubsection,
-} from '../../../components';
+import { InputNumber, InputText, FormSubsection } from '../../../components';
+import { useTranslate } from '../../../dependenciesTools/hooks';
 
 type Props = {
   locales?: Locale[];
-  translate: Translate;
 };
 
-const RuleProperties: React.FC<Props> = ({ locales, translate }) => {
+const RuleProperties: React.FC<Props> = ({ locales }) => {
+  const translate = useTranslate();
   const { register } = useFormContext();
+
   return (
     <>
-      <SmallHelper>Page under construction</SmallHelper>
       <FormSubsection
         title={translate(
           'pimee_catalog_rule.form.edit.properties.section.general'

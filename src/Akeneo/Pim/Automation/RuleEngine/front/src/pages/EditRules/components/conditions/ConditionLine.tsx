@@ -5,9 +5,13 @@ import { PimConditionLine } from './PimConditionLine';
 import { FallbackConditionLine } from './FallbackConditionLine';
 import styled from 'styled-components';
 import { Condition, Locale, LocaleCode } from '../../../../models';
-import { Router, Translate } from '../../../../dependenciesTools';
 import { IndexedScopes } from '../../../../repositories/ScopeRepository';
 import { ConditionLineProps } from './ConditionLineProps';
+import {
+  useBackboneRouter,
+  useTranslate,
+} from '../../../../dependenciesTools/hooks';
+import { getConditionModule } from '../../../../models/conditions/ConditionModuleGuesser';
 
 const DeleteButton = styled(DialogDisclosure)`
   border: none;
@@ -17,33 +21,44 @@ const DeleteButton = styled(DialogDisclosure)`
 
 type Props = {
   lineNumber: number;
-  translate: Translate;
   locales: Locale[];
   scopes: IndexedScopes;
   currentCatalogLocale: LocaleCode;
-  router: Router;
   deleteCondition: (lineNumber: number) => void;
   condition: Condition;
 };
 
 const ConditionLine: React.FC<Props> = ({
-  translate,
   condition,
   lineNumber,
   locales,
   scopes,
   currentCatalogLocale,
   deleteCondition,
-  router,
 }) => {
+  const translate = useTranslate();
   const dialog = useDialogState();
+  const router = useBackboneRouter();
+  const [Line, setLine] = React.useState<
+    React.FC<ConditionLineProps & { condition: Condition }>
+  >();
+  React.useEffect(() => {
+    getConditionModule(condition, router).then(module => setLine(() => module));
+  }, []);
 
-  const Line = condition.module as React.FC<
-    ConditionLineProps & { condition: Condition }
-  >;
+  if (!Line) {
+    return (
+      <div className='AknGrid-bodyCell'>
+        <img
+          src='/bundles/pimui/images//loader-V2.svg'
+          alt={translate('pim_common.loading')}
+        />
+      </div>
+    );
+  }
+
   const isFallback =
-    condition.module === PimConditionLine ||
-    condition.module === FallbackConditionLine;
+    Line === PimConditionLine || Line === FallbackConditionLine;
 
   return (
     <div
@@ -53,17 +68,15 @@ const ConditionLine: React.FC<Props> = ({
       <Line
         condition={condition}
         lineNumber={lineNumber}
-        translate={translate}
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={currentCatalogLocale}
-        router={router}
       />
       <div className='AknGrid-bodyCell AknGrid-bodyCell--tight'>
         <DeleteButton {...dialog}>
           <img
             alt={translate('pimee_catalog_rule.form.edit.conditions.delete')}
-            src='/bundles/pimui/images/icon-delete-slategrey.svg'
+            src='/bundles/akeneopimruleengine/assets/icons/icon-delete-grey100.svg'
           />
         </DeleteButton>
         <AlertDialog

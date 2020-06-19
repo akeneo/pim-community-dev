@@ -1,41 +1,44 @@
 import styled from 'styled-components';
 
 const FieldColumn = styled.span`
-  width: 10%;
+  width: 100px;
   display: inline-block;
   padding: 0 2px;
   overflow: hidden;
   height: 40px;
   line-height: 40px;
+  margin: 0 20px 0 0;
 `;
 
 const OperatorColumn = styled.span`
-  width: 10%;
+  width: 160px;
   display: inline-block;
-  padding: 0 2px;
+  margin: 0 20px 0 0;
 `;
 
 const ValueColumn = styled.span`
-  width: 30%;
-  display: inline-block;
-  padding: 0 2px;
+  &:not(:empty) {
+    width: 300px;
+    display: inline-block;
+    margin: 0 20px 0 0;
+  }
 `;
 
 const LocaleColumn = styled.span`
-  width: 12%;
+  width: 120px;
   display: inline-block;
-  padding: 0 2px;
+  margin: 0 20px 0 0;
 `;
 
 const ScopeColumn = styled.span`
-  width: 12%;
+  width: 120px;
   display: inline-block;
-  padding: 0 2px;
+  margin: 0 20px 0 0;
 `;
 
 const ConditionErrorLine = styled.ul`
   &:not(:empty) {
-    margin-left: 10%;
+    margin-left: 100px;
     margin-top: 15px;
     color: ${({ theme }): string => theme.color.red100};
     background: ${({ theme }): string => theme.color.red20};
@@ -57,6 +60,10 @@ const ConditionErrorLine = styled.ul`
       height: 22px;
       margin-left: -16px;
     }
+  }
+  &:first-child {
+    margin-top: 0;
+    margin-left: 0;
   }
 `;
 

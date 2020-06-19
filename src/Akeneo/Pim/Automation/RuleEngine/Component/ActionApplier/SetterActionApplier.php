@@ -13,13 +13,17 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedActionForSubjectEvent;
+use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonApplicableActionException;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Setter action applier
@@ -34,22 +38,37 @@ class SetterActionApplier implements ActionApplierInterface
     /** @var GetAttributes */
     private $getAttributes;
 
-    public function __construct(PropertySetterInterface $propertySetter, GetAttributes $getAttributes)
-    {
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
+    public function __construct(
+        PropertySetterInterface $propertySetter,
+        GetAttributes $getAttributes,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->propertySetter = $propertySetter;
         $this->getAttributes = $getAttributes;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function applyAction(ActionInterface $action, array $entitiesWithValues = []): void
+    public function applyAction(ActionInterface $action, array $entitiesWithValues = []): array
     {
-        foreach ($entitiesWithValues as $entityWithValues) {
-            if ($this->actionCanBeAppliedToEntity($entityWithValues, $action)) {
+        foreach ($entitiesWithValues as $index => $entityWithValues) {
+            try {
+                $this->actionCanBeAppliedToEntity($entityWithValues, $action);
                 $this->setDataOnEntityWithValues($entityWithValues, $action);
+            } catch (NonApplicableActionException $e) {
+                unset($entitiesWithValues[$index]);
+                $this->eventDispatcher->dispatch(
+                    new SkippedActionForSubjectEvent($action, $entityWithValues, $e->getMessage())
+                );
             }
         }
+
+        return $entitiesWithValues;
     }
 
     /**
@@ -62,7 +81,8 @@ class SetterActionApplier implements ActionApplierInterface
 
     /**
      * We do not apply the action if:
-     * - if field is categories and the new category codes do not include the categories of the entity's parent
+     * - if field is "groups" or "enabled" and the entity is a product model
+     * - if field is "categories" and the new category codes do not include the categories of the entity's parent
      * - or field is an attribute and:
      *   - attribute does not belong to the family
      *   - or entity is variant (variant product or product model) and attribute is not on the entity's variation level
@@ -70,37 +90,63 @@ class SetterActionApplier implements ActionApplierInterface
     private function actionCanBeAppliedToEntity(
         EntityWithFamilyVariantInterface $entity,
         ProductSetActionInterface $action
-    ): bool {
+    ): void {
         $field = $action->getField();
+        if (!is_string($field)) {
+            return;
+        }
 
+        // TODO: Do we really need this check ??
         if ('categories' === $field) {
             $newCategoryCodes = $action->getValue();
             $parent = $entity->getParent();
 
-            return (null === $parent || empty(array_diff($parent->getCategoryCodes(), $newCategoryCodes)));
+            if (null !== $parent && !empty(array_diff($parent->getCategoryCodes(), $newCategoryCodes))) {
+                throw new NonApplicableActionException(
+                    'The ancestor categories are missing'
+                );
+            }
         }
 
-        // TODO: RUL-170: remove "?? ''" in the next line
-        $attribute = $this->getAttributes->forCode($field ?? '');
+        if (('groups' === $field || 'enabled' === $field) && $entity instanceof ProductModelInterface) {
+            throw new NonApplicableActionException(
+                \sprintf(
+                    'The "%s" property cannot be set on a product model',
+                    $field
+                )
+            );
+        }
+
+        $attribute = $this->getAttributes->forCode($field);
         if (null === $attribute) {
-            return true;
+            return;
         }
 
         $family = $entity->getFamily();
         if (null === $family) {
-            return true;
+            return;
         }
         if (!$family->hasAttributeCode($attribute->code())) {
-            return false;
+            throw new NonApplicableActionException(
+                \sprintf(
+                    'The "%s" attribute does not belong to the family of this %s',
+                    $attribute->code(),
+                    $entity instanceof ProductModelInterface ? 'product model' : 'product'
+                )
+            );
         }
 
         $familyVariant = $entity->getFamilyVariant();
         if (null !== $familyVariant &&
             $familyVariant->getLevelForAttributeCode($attribute->code()) !== $entity->getVariationLevel()) {
-            return false;
+            throw new NonApplicableActionException(
+                \sprintf(
+                    'The "%s" property cannot be updated for this %s, as it is not at the same variation level',
+                    $attribute->code(),
+                    $entity instanceof ProductModelInterface ? 'product model' : 'product'
+                )
+            );
         }
-
-        return true;
     }
 
     /**

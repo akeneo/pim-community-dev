@@ -10,14 +10,6 @@ services:
         tags:
             - { name: kernel.event_subscriber}
 
-    pimee_catalog_rule.event_subscriber.rule_execution:
-        class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\EventSubscriber\RuleExecutionSubscriber'
-        arguments:
-            - '@pim_notification.notifier'
-            - '%pim_notification.entity.notification.class%'
-        tags:
-            - { name: kernel.event_subscriber}
-
     pimee_catalog_rule.event_subscriber.refresh_indexes_before_rule_selection:
         class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\EventSubscriber\RefreshIndexesBeforeRuleSelectionSubscriber'
         arguments:

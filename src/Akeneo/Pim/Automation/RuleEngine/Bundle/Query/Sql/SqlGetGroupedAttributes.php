@@ -30,14 +30,14 @@ final class SqlGetGroupedAttributes implements GetGroupedAttributes
         $this->connection = $connection;
     }
 
-    public function getForAttributeTypes(
-        array $attributeTypes,
+    public function findAttributes(
         string $localeCode,
         int $limit,
         int $offset = 0,
+        array $attributeTypes = null,
         string $search = null
     ): array {
-        if (0 === count($attributeTypes)) {
+        if (is_array($attributeTypes) && 0 === count($attributeTypes)) {
             return [];
         }
 
@@ -66,29 +66,40 @@ FROM pim_catalog_attribute attribute
     LEFT JOIN pim_catalog_attribute_translation translation ON attribute.id = translation.foreign_key
                                                            AND locale = :localeCode
     LEFT JOIN attribute_group ON attribute_group.id = attribute.group_id
-WHERE attribute.attribute_type IN (:attributeTypes) {searchFilter}
+WHERE {searchFilters}
 ORDER BY attribute_group.sort_order, attribute.sort_order
 LIMIT :limit OFFSET :offset
 SQL;
 
-        $searchFilter = $search === null
-            ? ''
-            : sprintf(
-                "AND (translation.label LIKE '%%%s%%' OR attribute.code LIKE '%%%s%%')",
-                $search,
-                $search
-            );
+        $searchFilters = [];
+        if (null !== $attributeTypes) {
+            $searchFilters[] = 'attribute.attribute_type IN (:attributeTypes)';
+        }
 
-        $query = strtr($query, ['{searchFilter}' => $searchFilter]);
+        if (null !== $search) {
+            $search = sprintf('%%%s%%', $search);
+            $searchFilters[] = "(translation.label LIKE :search OR attribute.code LIKE :search)";
+        }
+
+        $query = strtr($query, [
+            '{searchFilters}' => 0 === count($searchFilters) ? 'TRUE' : implode(' AND ', $searchFilters),
+        ]);
 
         return $this->connection->executeQuery(
             $query,
-            ['attributeTypes' => $attributeTypes, 'limit' => $limit, 'offset' => $offset, 'localeCode' => $localeCode],
+            [
+                'attributeTypes' => $attributeTypes,
+                'limit' => $limit,
+                'offset' => $offset,
+                'localeCode' => $localeCode,
+                'search' => $search,
+            ],
             [
                 'attributeTypes' => Connection::PARAM_STR_ARRAY,
                 'limit' => \PDO::PARAM_INT,
                 'offset' => \PDO::PARAM_INT,
                 'localeCode' => \PDO::PARAM_STR,
+                'search' => \PDO::PARAM_STR,
             ]
         )->fetchAll();
     }

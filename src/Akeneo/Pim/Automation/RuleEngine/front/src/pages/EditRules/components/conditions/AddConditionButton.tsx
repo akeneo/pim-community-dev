@@ -1,6 +1,9 @@
 import React from 'react';
-import { Select2SimpleAsyncWrapper } from '../../../../components/Select2Wrapper';
-import { Router, Translate } from '../../../../dependenciesTools';
+import { Select2Wrapper } from '../../../../components/Select2Wrapper';
+import {
+  useBackboneRouter,
+  useTranslate,
+} from '../../../../dependenciesTools/hooks';
 
 type AddConditionAttribute = {
   id: string;
@@ -16,26 +19,32 @@ type AddConditionGroup = {
 type AddConditionResults = AddConditionGroup[];
 
 type Props = {
-  router: Router;
   handleAddCondition: (fieldCode: string) => void;
-  translate: Translate;
   isActiveConditionField: (fieldCode: string) => boolean;
 };
 
+// Add here the fields handled by the rule conditions.
+// Be sure that the associated UI component exists to display it correctly.
+const SYSTEM_FIELDS = ['family', 'categories'];
+
+const ATTRIBUTE_TYPES = ['pim_catalog_multiselect', 'pim_catalog_text'];
+
 const AddConditionButton: React.FC<Props> = ({
-  router,
   handleAddCondition,
-  translate,
   isActiveConditionField,
 }) => {
+  const translate = useTranslate();
+  const router = useBackboneRouter();
   const [closeTick, setCloseTick] = React.useState<boolean>(false);
 
   const dataProvider = (term: string, page: number) => {
     return {
       search: term,
       options: {
+        page,
+        systemFields: SYSTEM_FIELDS,
+        attributeTypes: ATTRIBUTE_TYPES,
         limit: 20,
-        page: page,
       },
     };
   };
@@ -58,13 +67,13 @@ const AddConditionButton: React.FC<Props> = ({
     return {
       more: fieldCount >= 20,
       results: result.map(group => {
-        return { ...group, id: null };
+        return { ...group, disabled: true };
       }),
     };
   };
 
   return (
-    <Select2SimpleAsyncWrapper
+    <Select2Wrapper
       id={'add_conditions'}
       label={translate('pimee_catalog_rule.form.edit.add_conditions')}
       hiddenLabel={true}
@@ -72,15 +81,12 @@ const AddConditionButton: React.FC<Props> = ({
       dropdownCssClass={'add-conditions-dropdown'}
       onSelecting={(event: any) => {
         event.preventDefault();
-        if (event.val !== null) {
-          // Use has not clicked on a group
-          setCloseTick(!closeTick);
-          handleAddCondition(event.val);
-        }
+        setCloseTick(!closeTick);
+        handleAddCondition(event.val);
       }}
       ajax={{
         url: router.generate(
-          'pimee_enrich_rule_definition_get_available_condition_fields'
+          'pimee_enrich_rule_definition_get_available_fields'
         ),
         quietMillis: 250,
         cache: true,
@@ -96,6 +102,7 @@ const AddConditionButton: React.FC<Props> = ({
         }">${option.text}</span>`;
       }}
       closeTick={closeTick}
+      multiple={false}
     />
   );
 };

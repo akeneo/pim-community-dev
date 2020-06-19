@@ -4,35 +4,36 @@ import {
   Select2Option,
   Select2Value,
 } from '../Select2Wrapper';
-import { Router } from '../../dependenciesTools';
 import {
   AttributeOptionCode,
   AttributeOptionDataProvider,
   getAttributeOptionsByIdentifiers,
 } from '../../fetch/AttributeOptionFetcher';
 import { AttributeId } from '../../models/Attribute';
+import { useBackboneRouter } from '../../dependenciesTools/hooks';
 
 type Props = {
-  id: string;
   label: string;
   hiddenLabel: boolean;
-  router: Router;
   currentCatalogLocale: string;
   attributeId: AttributeId;
-  onValueChange: (value: Select2Value[]) => void;
+  onChange?: (value: Select2Value[]) => void;
   value: string[];
+  name: string;
+  validation?: { required?: string; validate?: (value: any) => string | true };
 };
 
 const MultiOptionsSelector: React.FC<Props> = ({
-  id,
   label,
   hiddenLabel = false,
-  router,
   currentCatalogLocale,
   attributeId,
-  onValueChange,
+  onChange,
   value,
+  name,
+  validation,
 }) => {
+  const router = useBackboneRouter();
   const handleResults = (response: { results: Select2Option[] }) => {
     return {
       more: 20 === response.results.length,
@@ -65,7 +66,6 @@ const MultiOptionsSelector: React.FC<Props> = ({
 
   return (
     <Select2MultiAsyncWrapper
-      id={id}
       label={label}
       ajax={{
         url: router.generate('pim_ui_ajaxentity_list'),
@@ -85,8 +85,10 @@ const MultiOptionsSelector: React.FC<Props> = ({
       initSelection={(_element, callback) => {
         initSelectedOptions(value, callback);
       }}
-      onValueChange={onValueChange}
+      onChange={onChange}
       hiddenLabel={hiddenLabel}
+      name={name}
+      validation={validation}
     />
   );
 };

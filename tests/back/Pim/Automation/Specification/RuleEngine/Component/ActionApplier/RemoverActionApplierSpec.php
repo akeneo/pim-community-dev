@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\RemoverActionApplier;
+use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedActionForSubjectEvent;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductRemoveActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -17,15 +18,17 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RemoverActionApplierSpec extends ObjectBehavior
 {
     function let(
         PropertyRemoverInterface $propertyRemover,
         GetAttributes $getAttributes,
-        CategoryRepositoryInterface $categoryRepository
+        CategoryRepositoryInterface $categoryRepository,
+        EventDispatcherInterface $eventDispatcher
     ) {
-        $this->beConstructedWith($propertyRemover, $getAttributes, $categoryRepository);
+        $this->beConstructedWith($propertyRemover, $getAttributes, $categoryRepository, $eventDispatcher);
     }
 
     function it_supports_remove_action(ProductRemoveActionInterface $action)
@@ -68,7 +71,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$product])->shouldReturn([$product]);
     }
 
     function it_applies_remove_field_action_on_non_variant_product(
@@ -97,7 +100,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
             []
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$product])->shouldReturn([$product]);
     }
 
     function it_applies_remove_action_on_variant_product(
@@ -132,7 +135,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
             []
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$variantProduct]);
+        $this->applyAction($action, [$variantProduct])->shouldReturn([$variantProduct]);
     }
 
     function it_applies_remove_action_on_product_model(
@@ -167,12 +170,29 @@ class RemoverActionApplierSpec extends ObjectBehavior
             []
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$productModel]);
+        $this->applyAction($action, [$productModel])->shouldReturn([$productModel]);
+    }
+
+    function it_does_not_apply_action_if_entity_is_a_product_model_and_field_is_groups(
+        PropertyRemoverInterface $propertyRemover,
+        EventDispatcherInterface $eventDispatcher,
+        ProductRemoveActionInterface $action,
+        ProductModelInterface $productModel
+    ) {
+        $action->getField()->willReturn('groups');
+        $action->getOptions()->willReturn([]);
+        $action->getItems()->willReturn(['tshirts']);
+
+        $propertyRemover->removeData(Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SkippedActionForSubjectEvent::class))->shouldBeCalled();
+
+        $this->applyAction($action, [$productModel])->shouldReturn([]);
     }
 
     function it_does_not_apply_remove_action_on_entity_with_family_variant_if_variation_level_is_not_right(
         PropertyRemoverInterface $propertyRemover,
         GetAttributes $getAttributes,
+        EventDispatcherInterface $eventDispatcher,
         ProductRemoveActionInterface $action,
         EntityWithFamilyVariantInterface $entityWithFamilyVariant,
         FamilyVariantInterface $familyVariant,
@@ -193,8 +213,9 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $entityWithFamilyVariant->getVariationLevel()->willReturn(1);
 
         $propertyRemover->removeData(Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SkippedActionForSubjectEvent::class))->shouldBeCalled();
 
-        $this->applyAction($action, [$entityWithFamilyVariant]);
+        $this->applyAction($action, [$entityWithFamilyVariant])->shouldReturn([]);
     }
 
     function it_applies_remove_action_if_the_field_is_not_an_attribute(
@@ -211,7 +232,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
 
         $propertyRemover->removeData($entityWithFamilyVariant, 'categories', ['socks'], [])->shouldBeCalled();
 
-        $this->applyAction($action, [$entityWithFamilyVariant]);
+        $this->applyAction($action, [$entityWithFamilyVariant])->shouldReturn([$entityWithFamilyVariant]);
     }
 
     function it_removes_children_categories_with_include_children_option_set_to_true(
@@ -264,7 +285,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$entityWithValues]);
+        $this->applyAction($action, [$entityWithValues])->shouldReturn([$entityWithValues]);
     }
 
     function it_throws_exception_if_items_is_not_an_array(
@@ -302,7 +323,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $entityWithFamilyVariant->getFamilyVariant()->shouldNotBeCalled();
         $propertyRemover->removeData(Argument::cetera())->shouldBeCalled();
 
-        $this->applyAction($action, [$entityWithFamilyVariant]);
+        $this->applyAction($action, [$entityWithFamilyVariant])->shouldReturn([$entityWithFamilyVariant]);
     }
 
     private function buildAttribute(string $code): Attribute

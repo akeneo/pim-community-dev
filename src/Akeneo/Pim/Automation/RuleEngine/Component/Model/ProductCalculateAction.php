@@ -93,4 +93,12 @@ final class ProductCalculateAction implements ProductCalculateActionInterface, F
     {
         return [$this->destination->getField()];
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getType(): string
+    {
+        return 'calculate';
+    }
 }

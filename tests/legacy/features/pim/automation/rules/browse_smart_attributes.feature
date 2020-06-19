@@ -83,6 +83,5 @@ Feature: Browse smart attributes in the attribute grid
             field: destocking_date
             value: "2015-05-26"
       """
-    And the product rule "rule1" is executed
     When I filter by "smart" with operator "equals" and value "yes"
     Then the grid should contain 8 elements

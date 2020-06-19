@@ -6,29 +6,35 @@ import {
   FamilyOperators,
 } from '../../../../models/conditions';
 import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
-import { useValueInitialization } from '../../hooks/useValueInitialization';
 import { Operator } from '../../../../models/Operator';
 import { FamilyCode } from '../../../../models';
 import { FieldColumn, OperatorColumn, ValueColumn } from './style';
 import { FamiliesSelector } from '../../../../components/Selectors/FamiliesSelector';
 import { getFamiliesByIdentifiers } from '../../../../repositories/FamilyRepository';
-import { ConditionLineErrors } from './ConditionLineErrors';
+import { LineErrors } from '../LineErrors';
+import { useRegisterConst } from '../../hooks/useRegisterConst';
+import {
+  useBackboneRouter,
+  useTranslate,
+} from '../../../../dependenciesTools/hooks';
 
 type FamilyConditionLineProps = ConditionLineProps & {
   condition: FamilyCondition;
 };
 
 const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
-  router,
   lineNumber,
-  translate,
   currentCatalogLocale,
   condition,
 }) => {
-  const { watch, setValue } = useFormContext();
+  const translate = useTranslate();
+  const { watch } = useFormContext();
+  const router = useBackboneRouter();
   const [unexistingFamilyCodes, setUnexistingFamilyCodes] = React.useState<
     FamilyCode[]
   >([]);
+
+  useRegisterConst(`content.conditions[${lineNumber}].field`, condition.field);
 
   React.useEffect(() => {
     // This method stores the unexisting families at the loading of the line.
@@ -51,8 +57,6 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
 
   const getOperatorFormValue: () => Operator = () =>
     watch(`content.conditions[${lineNumber}].operator`);
-  const getValueFormValue: () => FamilyCode[] = () =>
-    watch(`content.conditions[${lineNumber}].value`);
 
   const shouldDisplayValue: () => boolean = () => {
     return !([Operator.IS_EMPTY, Operator.IS_NOT_EMPTY] as Operator[]).includes(
@@ -82,30 +86,12 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
     return true;
   };
 
-  useValueInitialization(
-    `content.conditions[${lineNumber}]`,
-    {
-      field: condition.field,
-      operator: condition.operator,
-      value: condition.value,
-    },
-    {
-      value: {
-        validate: validateFamilyCodes,
-      },
-    },
-    [condition, unexistingFamilyCodes]
-  );
-
-  const setValueFormValue = (value: FamilyCode[] | null) => {
-    setValue(`content.conditions[${lineNumber}].value`, value);
-  };
-  const setOperatorFormValue = (value: Operator) => {
-    setValue(`content.conditions[${lineNumber}].operator`, value);
-    if (!shouldDisplayValue()) {
-      setValueFormValue(null);
-    }
-  };
+  const [familyValidation, setValidate] = React.useState({
+    validate: validateFamilyCodes,
+  });
+  React.useEffect(() => {
+    setValidate({ validate: validateFamilyCodes });
+  }, [JSON.stringify(unexistingFamilyCodes)]);
 
   return (
     <div className={'AknGrid-bodyCell'}>
@@ -116,29 +102,26 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
       </FieldColumn>
       <OperatorColumn>
         <OperatorSelector
-          id={`edit-rules-input-${lineNumber}-operator`}
-          label='Operator'
+          data-testid={`edit-rules-input-${lineNumber}-operator`}
           hiddenLabel={true}
           availableOperators={FamilyOperators}
-          translate={translate}
-          value={getOperatorFormValue()}
-          onChange={setOperatorFormValue}
+          value={condition.operator}
+          name={`content.conditions[${lineNumber}].operator`}
         />
       </OperatorColumn>
       {shouldDisplayValue() && (
         <ValueColumn>
           <FamiliesSelector
-            router={router}
-            id={`edit-rules-input-${lineNumber}-value`}
-            label='Families'
+            data-testid={`edit-rules-input-${lineNumber}-value`}
             hiddenLabel={true}
             currentCatalogLocale={currentCatalogLocale}
-            value={getValueFormValue()}
-            onChange={setValueFormValue}
+            value={condition.value}
+            validation={familyValidation}
+            name={`content.conditions[${lineNumber}].value`}
           />
         </ValueColumn>
       )}
-      <ConditionLineErrors lineNumber={lineNumber} />
+      <LineErrors lineNumber={lineNumber} type='conditions' />
     </div>
   );
 };

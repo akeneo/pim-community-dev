@@ -72,4 +72,12 @@ class ProductSetAction implements ProductSetActionInterface
     {
         return [$this->getField()];
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getType(): string
+    {
+        return 'set';
+    }
 }

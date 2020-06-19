@@ -11,7 +11,7 @@ metadata:
   annotations:
     # This is what defines this resource as a hook. Without this line, the
     # job is considered part of the release.
-    "helm.sh/hook": {{ .Values.onboarder.hook.setupOnboarderDatabase.hook | quote }}
+    "helm.sh/hook": "post-install,post-upgrade"
     "helm.sh/hook-weight": "10"
     "helm.sh/hook-delete-policy": "hook-succeeded"
 spec:
@@ -33,7 +33,7 @@ spec:
         - name: setup-onboarder-database
           image:  {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'su www-data -s /bin/bash -c "cd /srv/pim && bin/console akeneo:onboarder:setup-database -vvv --no-interaction"']
+          command: ['sh', '-c', 'su www-data -s /bin/bash -c "cd /srv/pim && bin/console akeneo:onboarder:setup-database --no-table-creation -vvv --no-interaction"']
           envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
           env:
             - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }

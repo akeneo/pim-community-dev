@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedActionForSubjectEvent;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductAddActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -13,14 +14,16 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyAdderInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class AdderActionApplierSpec extends ObjectBehavior
 {
     function let(
         PropertyAdderInterface $propertyAdder,
-        GetAttributes $getAttributes
+        GetAttributes $getAttributes,
+        EventDispatcherInterface $eventDispatcher
     ) {
-        $this->beConstructedWith($propertyAdder, $getAttributes);
+        $this->beConstructedWith($propertyAdder, $getAttributes, $eventDispatcher);
     }
 
     function it_applies_add_field_action_on_non_variant_product(
@@ -36,7 +39,7 @@ class AdderActionApplierSpec extends ObjectBehavior
         $getAttributes->forCode('color')->willReturn(null);
         $propertyAdder->addData($product, 'color', ['red', 'blue'], [])->shouldBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$product])->shouldReturn([$product]);
     }
 
     function it_applies_add_attribute_action_on_non_variant_product(
@@ -85,7 +88,7 @@ class AdderActionApplierSpec extends ObjectBehavior
 
         $propertyAdder->addData($variantProduct, 'color', ['red', 'blue'], [])->shouldBeCalled();
 
-        $this->applyAction($action, [$variantProduct]);
+        $this->applyAction($action, [$variantProduct])->shouldReturn([$variantProduct]);
     }
 
     function it_applies_add_action_on_product_model(
@@ -112,12 +115,27 @@ class AdderActionApplierSpec extends ObjectBehavior
 
         $propertyAdder->addData($productModel, 'color', ['red', 'blue'], [])->shouldBeCalled();
 
-        $this->applyAction($action, [$productModel]);
+        $this->applyAction($action, [$productModel])->shouldReturn([$productModel]);
+    }
+
+    function it_does_not_apply_action_if_entity_is_a_product_model_and_field_is_groups(
+        PropertyAdderInterface $propertyAdder,
+        EventDispatcherInterface $eventDispatcher,
+        ProductAddActionInterface $action,
+        ProductModelInterface $productModel
+    ) {
+        $action->getField()->willReturn('groups');
+
+        $propertyAdder->addData(Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SkippedActionForSubjectEvent::class))->shouldBeCalled();
+
+        $this->applyAction($action, [$productModel])->shouldReturn([]);
     }
 
     function it_does_not_apply_add_action_on_entity_with_family_variant_if_variation_level_is_not_right(
         PropertyAdderInterface $propertyAdder,
         GetAttributes $getAttributes,
+        EventDispatcherInterface $eventDispatcher,
         ProductAddActionInterface $action,
         EntityWithFamilyVariantInterface $entityWithFamilyVariant,
         FamilyVariantInterface $familyVariant,
@@ -134,12 +152,12 @@ class AdderActionApplierSpec extends ObjectBehavior
 
         $entityWithFamilyVariant->getFamilyVariant()->willReturn($familyVariant);
         $familyVariant->getLevelForAttributeCode('color')->willReturn(1);
-
         $entityWithFamilyVariant->getVariationLevel()->willReturn(2);
 
         $propertyAdder->addData(Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SkippedActionForSubjectEvent::class))->shouldBeCalled();
 
-        $this->applyAction($action, [$entityWithFamilyVariant]);
+        $this->applyAction($action, [$entityWithFamilyVariant])->shouldReturn([]);
     }
 
     function it_applies_add_action_if_the_field_is_not_an_attribute(
@@ -151,16 +169,17 @@ class AdderActionApplierSpec extends ObjectBehavior
         $action->getField()->willReturn('categories');
         $action->getItems()->willReturn(['socks']);
         $action->getOptions()->willReturn([]);
-
         $getAttributes->forCode('categories')->willReturn(null);
+
         $propertyAdder->addData($entityWithFamilyVariant, 'categories', ['socks'], [])->shouldBeCalled();
 
-        $this->applyAction($action, [$entityWithFamilyVariant]);
+        $this->applyAction($action, [$entityWithFamilyVariant])->shouldReturn([$entityWithFamilyVariant]);
     }
 
     function it_does_not_apply_add_action_if_the_field_is_not_an_attribute_of_the_family(
         PropertyAdderInterface $propertyAdder,
         GetAttributes $getAttributes,
+        EventDispatcherInterface$eventDispatcher,
         ProductAddActionInterface $action,
         EntityWithFamilyVariantInterface $entityWithFamilyVariant,
         FamilyInterface $family
@@ -176,8 +195,9 @@ class AdderActionApplierSpec extends ObjectBehavior
 
         $entityWithFamilyVariant->getFamilyVariant()->shouldNotBeCalled();
         $propertyAdder->addData(Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(SkippedActionForSubjectEvent::class))->shouldBeCalled();
 
-        $this->applyAction($action, [$entityWithFamilyVariant]);
+        $this->applyAction($action, [$entityWithFamilyVariant])->shouldReturn([]);
     }
 
     private function buildAttribute(string $code): Attribute

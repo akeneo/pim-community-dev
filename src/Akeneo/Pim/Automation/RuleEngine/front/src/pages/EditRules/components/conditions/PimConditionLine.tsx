@@ -1,18 +1,23 @@
 import React from 'react';
 import { PimCondition } from '../../../../models/conditions';
 import { ConditionLineProps } from './ConditionLineProps';
-import { useValueInitialization } from '../../hooks/useValueInitialization';
 import { FallbackField } from '../FallbackField';
+import { useFormContext } from 'react-hook-form';
+import { Operator } from '../../../../models/Operator';
+import { useRegisterConsts } from '../../hooks/useRegisterConst';
+import { useTranslate } from '../../../../dependenciesTools/hooks';
 
 type PimConditionLineProps = ConditionLineProps & {
   condition: PimCondition;
 };
 
 const PimConditionLine: React.FC<PimConditionLineProps> = ({
-  translate,
   condition,
   lineNumber,
 }) => {
+  const translate = useTranslate();
+  const { watch } = useFormContext();
+
   const values: { [key: string]: any } = {
     field: condition.field,
     operator: condition.operator,
@@ -26,23 +31,21 @@ const PimConditionLine: React.FC<PimConditionLineProps> = ({
   if (condition.value) {
     values.value = condition.value;
   }
-  useValueInitialization(`content.conditions[${lineNumber}]`, values, {}, [
-    condition,
-  ]);
+  useRegisterConsts(values, `content.conditions[${lineNumber}]`);
 
   const isMetric = (value: any): boolean => {
     return (
       typeof value === 'object' &&
-      value.hasOwnProperty('amount') &&
-      value.hasOwnProperty('unit')
+      Object.hasOwnProperty.call(value, 'amount') &&
+      Object.hasOwnProperty.call(value, 'unit')
     );
   };
 
   const isPrice = (value: any): boolean => {
     return (
       typeof value === 'object' &&
-      value.hasOwnProperty('amount') &&
-      value.hasOwnProperty('currency')
+      Object.hasOwnProperty.call(value, 'amount') &&
+      Object.hasOwnProperty.call(value, 'currency')
     );
   };
 
@@ -73,6 +76,11 @@ const PimConditionLine: React.FC<PimConditionLineProps> = ({
     return value;
   };
 
+  const getValueFormValue: () => any = () =>
+    watch(`content.conditions[${lineNumber}].value`);
+  const getOperatorFormValue: () => Operator = () =>
+    watch(`content.conditions[${lineNumber}].operator`);
+
   return (
     <div className='AknGrid-bodyCell AknRule'>
       <span className='AknRule-attribute'>
@@ -82,10 +90,14 @@ const PimConditionLine: React.FC<PimConditionLineProps> = ({
           locale={condition.locale}
         />
       </span>
-      {` ${translate(
-        `pimee_catalog_rule.form.edit.conditions.operators.${condition.operator}`
-      )} `}
-      <span className='AknRule-attribute'>{displayValue(condition.value)}</span>
+      &nbsp;
+      {translate(
+        `pimee_catalog_rule.form.edit.conditions.operators.${getOperatorFormValue()}`
+      )}
+      &nbsp;
+      <span className='AknRule-attribute'>
+        {displayValue(getValueFormValue())}
+      </span>
     </div>
   );
 };

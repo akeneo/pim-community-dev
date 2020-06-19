@@ -29,7 +29,6 @@ type Props = {
   locales: Locale[];
   scopes: IndexedScopes;
   setIsDirty: (isDirty: boolean) => void;
-  setRuleDefinition: (ruleDefinition: RuleDefinition) => void;
 };
 
 const EditRulesContent: React.FC<Props> = ({
@@ -38,7 +37,6 @@ const EditRulesContent: React.FC<Props> = ({
   locales,
   scopes,
   setIsDirty,
-  setRuleDefinition,
 }) => {
   const translate = useTranslate();
   const userContext = useUserContext();
@@ -59,40 +57,31 @@ const EditRulesContent: React.FC<Props> = ({
     notify,
     router,
     ruleDefinition,
-    locales,
-    setRuleDefinition
+    locales
+  );
+  const [actionsState, setActionsState] = React.useState<(Action | null)[]>(
+    ruleDefinition.actions
   );
 
   useEffect(() => {
-    setIsDirty(formMethods.formState.dirtyFields.size > 0);
+    setIsDirty(formMethods.formState.dirty);
   }, [formMethods.formState.dirtyFields]);
 
   const title =
     (formMethods.watch(`labels.${currentCatalogLocale}`) as string) ||
     `[${ruleDefinitionCode}]`;
 
-  const [actions, setActions] = React.useState<(Action | null)[]>(
-    ruleDefinition.actions
-  );
-  React.useEffect(() => {
-    setActions(ruleDefinition.actions);
-  }, [ruleDefinition]);
-
-  const handleDeleteAction = (lineNumber: number) => {
-    Object.keys(formMethods.getValues()).forEach((value: string) => {
-      if (value.startsWith(`content.actions[${lineNumber}]`)) {
-        formMethods.unregister(value);
-      }
-    });
-    setActions(
-      actions.map((action: Action | null, i: number) => {
-        return i === lineNumber ? null : action;
-      })
-    );
+  const append = (action: Action) => {
+    setActionsState([...actionsState, action]);
   };
 
-  const handleAddAction = (action: Action) => {
-    setActions([...actions, action]);
+  const remove = (lineNumber: number) => {
+    actionsState[lineNumber] = null;
+    setActionsState([...actionsState]);
+  };
+
+  const handleAddAction = (action: any) => {
+    append(action);
   };
 
   return (
@@ -102,14 +91,8 @@ const EditRulesContent: React.FC<Props> = ({
         buttonLabel='pim_common.save'
         formId='edit-rules-form'
         title={title}
-        translate={translate}
-        unsavedChanges={formMethods.formState.dirtyFields.size > 0}
-        secondaryButton={
-          <AddActionButton
-            translate={translate}
-            handleAddAction={handleAddAction}
-          />
-        }>
+        unsavedChanges={formMethods.formState.dirty}
+        secondaryButton={<AddActionButton handleAddAction={handleAddAction} />}>
         <BreadcrumbItem href={`#${urlSettings}`} onClick={handleSettingsRoute}>
           {translate('pim_menu.tab.settings')}
         </BreadcrumbItem>
@@ -124,12 +107,10 @@ const EditRulesContent: React.FC<Props> = ({
             currentCatalogLocale={currentCatalogLocale}
             locales={locales}
             onSubmit={onSubmit}
-            router={router}
-            ruleDefinition={ruleDefinition}
             scopes={scopes}
-            translate={translate}
-            actions={actions}
-            handleDeleteAction={handleDeleteAction}
+            actions={actionsState}
+            handleDeleteAction={remove}
+            conditions={ruleDefinition.conditions}
           />
         </FormContext>
       </Content>

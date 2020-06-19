@@ -50,7 +50,7 @@ services:
             - '@pim_catalog.comparator.filter.product_association'
             - '@pim_catalog.comparator.filter.product'
             - ['enabled', 'family', 'categories', 'groups']
-            - ['associations']
+            - ['associations', 'quantified_associations']
 
     pimee_catalog.security.updater.entity_with_granted_values_property_setter:
         class: 'Akeneo\Pim\Permission\Component\Updater\Setter\EntityWithGrantedValuesPropertySetter'

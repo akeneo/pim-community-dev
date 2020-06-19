@@ -65,8 +65,7 @@ mailer:
 
 image:
   pim:
-    repository: eu.gcr.io/akeneo-ci/pim-enterprise-dev
-    # image.pim.tag is added by the Jenkinsfile when running the CI, manually use "--set image.pim.tag x.y.z-AB"
+    repository: eu.gcr.io/akeneo-cloud/pim-enterprise-dev
     pullPolicy: IfNotPresent
     tag: master
   httpd:
@@ -194,13 +193,12 @@ onboarder:
   hook:
     setupOnboarderDatabase:
       enabled: true
-      hook: "post-install"
     pushChannelToOnboarder:
       enabled: true
-      hook: "post-install"
+    pushCatalogToOnboarder:
+      enabled: false
     importAdditionalOnboarderFixtures:
-      enabled: true
-      hook: "post-install"
+      enabled: false
   pubsub:
     topicPubMiddleware: null
     topicPubOnboarder: null

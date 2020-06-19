@@ -81,6 +81,11 @@ class GetProductModelIdsToEvaluateQueryIntegration extends TestCase
                 CriterionEvaluationStatus::pending()
             ))
             ->add(new CriterionEvaluation(
+                new CriterionCode('spelling'),
+                $product1Id,
+                CriterionEvaluationStatus::pending()
+            ))
+            ->add(new CriterionEvaluation(
                 new CriterionCode('completion'),
                 $product2Id,
                 CriterionEvaluationStatus::pending()

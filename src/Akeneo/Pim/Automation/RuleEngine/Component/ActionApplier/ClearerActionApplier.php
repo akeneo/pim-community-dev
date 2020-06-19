@@ -13,13 +13,17 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedActionForSubjectEvent;
+use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonApplicableActionException;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductClearActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyClearerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -34,12 +38,17 @@ final class ClearerActionApplier implements ActionApplierInterface
     /** @var GetAttributes */
     private $getAttributes;
 
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
     public function __construct(
         PropertyClearerInterface $propertyClearer,
-        GetAttributes $getAttributes
+        GetAttributes $getAttributes,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->propertyClearer = $propertyClearer;
         $this->getAttributes = $getAttributes;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -53,43 +62,63 @@ final class ClearerActionApplier implements ActionApplierInterface
     /**
      * {@inheritDoc}
      */
-    public function applyAction(ActionInterface $action, array $entitiesWithValues = []): void
+    public function applyAction(ActionInterface $action, array $entitiesWithValues = []): array
     {
         Assert::isInstanceOf($action, ProductClearActionInterface::class);
 
-        foreach ($entitiesWithValues as $entityWithValues) {
-            if ($this->actionCanBeAppliedToEntity($entityWithValues, $action)) {
+        foreach ($entitiesWithValues as $index => $entityWithValues) {
+            try {
+                $this->actionCanBeAppliedToEntity($entityWithValues, $action);
                 $this->clearDataOnEntityWithValues($entityWithValues, $action);
+            } catch (NonApplicableActionException $e) {
+                unset($entitiesWithValues[$index]);
+                $this->eventDispatcher->dispatch(
+                    new SkippedActionForSubjectEvent($action, $entityWithValues, $e->getMessage())
+                );
             }
         }
+
+        return $entitiesWithValues;
     }
 
     /**
      * We do not apply the action if field is an attribute and:
+     *  - field is "groups" and entity is a product model
      *  - entity is variant (variant product or product model) and attribute is not on the entity's variation level
      */
     private function actionCanBeAppliedToEntity(
         EntityWithFamilyVariantInterface $entity,
         ProductClearActionInterface $action
-    ): bool {
+    ): void {
         $field = $action->getField();
+
+        if ('groups' === $field && $entity instanceof ProductModelInterface) {
+            throw new NonApplicableActionException(
+                'The "groups" property cannot be cleared from a product model'
+            );
+        }
+
         $attribute = $this->getAttributes->forCode($field);
         if (null === $attribute) {
-            return true;
+            return;
         }
 
         $family = $entity->getFamily();
         if (null === $family || !$family->hasAttributeCode($attribute->code())) {
-            return true;
+            return;
         }
 
         $familyVariant = $entity->getFamilyVariant();
         if (null !== $familyVariant &&
             $familyVariant->getLevelForAttributeCode($attribute->code()) !== $entity->getVariationLevel()) {
-            return false;
+            throw new NonApplicableActionException(
+                \sprintf(
+                    'The "%s" property cannot be updated for this %s, as it is not at the same variation level',
+                    $attribute->code(),
+                    $entity instanceof ProductModelInterface ? 'product model' : 'product'
+                )
+            );
         }
-
-        return true;
     }
 
     private function clearDataOnEntityWithValues(

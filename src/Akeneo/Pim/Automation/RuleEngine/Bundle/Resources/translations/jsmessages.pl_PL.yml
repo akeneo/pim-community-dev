@@ -16,7 +16,6 @@ pimee_catalog_rule:
       action.label: Działanie
       no_rule_yet.label: Aktualnie brak reguł
   rule:
-    value: Value
     condition:
       if.label: jeżeli
     action:
@@ -50,21 +49,6 @@ pimee_catalog_rule:
           error: Wystąpił błąd podczas usuwania reguł.
           empty_selection: Nie wybrano reguł.
   form:
-    category:
-      catalog: Catalog
-      select: Select a category
-      open_tree: Open category tree
-      tree: Category Tree
-      menu: Select a category tree
-      folder:
-        selected: Folder selected
-        not_selected: Folder
-      folders:
-        selected: Folders selected
-        not_selected: Folders
-      arrow:
-        open: Open branch category
-        close: Close branch category
     tab:
       list: Zakładki konstruktora reguł i właściwości
       rule_builder: Konstruktor reguł
@@ -94,19 +78,10 @@ pimee_catalog_rule:
         label: Priorytet
       add_to_category: Dodaj do kategorii
       add_conditions: Dodaj warunki
-      products_count:
-        complete: "{{ count }} products and product models"
-        pending: Calculating products and product models
-        error: Calculation impossible
       product_selection: Wybór produktu
       fields:
         family: Rodzina
-        category: Category
       actions:
-        add_action: Add action
-        set_family:
-          title: SET Family
-          subtitle: Select your family
         delete:
           label: Usuń akcję
           description: Czy na pewno chcesz usunąć tę akcję?
@@ -146,22 +121,8 @@ pimee_catalog_rule:
     legend:
       add_to_category: Utwórz akcję
       product_selection: Utwórz warunek
-    tree:
-      item:
-        selected: Item selected
-        not_selected: Select item
   exceptions:
     loading: Wystąpił błąd podczas ładowania definicji reguły.
-    required: This field is required
-    required_locale: A locale is required for this attribute
-    required_scope: A channel is required for this attribute
-    unknown_or_inactive_locale: 'The "{{ localeCode }}" locale does not exist or is not activated'
-    unbound_locale: 'The "{{ localeCode }}" locale is not activated in the channel "{{ channelCode }}"'
-    locale_on_unlocalizable_attribute: This attribute is not localizable. Please remove the locale before continue.
-    unknown_scope: 'The "{{ scopeCode }}" channel does not exist'
-    scope_on_unscopable_attribute: This attribute is not scopable. Please remove the scope before continue.
-    unknown_families: "{1}The family {{ familyCodes }} does not exist|]1,+Inf[The families {{ familyCodes }} do not exist"
-    unknown_attribute_options: "{1}The option {{ attributeOptionCodes }} does not exist|]1,+Inf[The options {{ attributeOptionCodes }} do not exist"
 pim_enrich:
   entity:
     rule:
@@ -183,6 +144,8 @@ batch_jobs:
   add_attribute_value:
     execute_rules.label: Wykonywanie reguł
   default_steps:
+    export_rules: Eksport reguł
+    import_rules: Import reguł
     execute_rules: Wykonywanie reguł
   yml_rule_import:
     label: Import reguł z pliku YAML
@@ -207,8 +170,14 @@ pim_notification:
   types:
     rule: Ustawienia Reguł
     mass_edit_rule: Masowa edycja reguł
+    execute_rules: Wykonywanie reguł
 pim_menu:
   item:
     rule: Reguły
 pim_title:
   pimee_catalog_rule_rule_index: Reguły
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        execute_rules: Wykonywanie reguł
