@@ -27,7 +27,9 @@ class ProductModelSpec extends ObjectBehavior
         AssociationColumnsResolver $assocColumnsResolver
     ) {
         $assocColumnsResolver->resolveAssociationColumns()
-            ->willReturn(['XSELL-products', 'XSELL-product-modelss', 'XSELL-groups']);
+            ->willReturn(['XSELL-products', 'XSELL-product-models', 'XSELL-groups']);
+        $assocColumnsResolver->resolveQuantifiedAssociationColumns()
+            ->willReturn(['PRODUCTSET-products', 'PRODUCTSET-product-models', 'PRODUCTSET-products-quantity', 'PRODUCTSET-product-models-quantity']);
         $this->beConstructedWith(
             $columnsMapper,
             $fieldConverter,
@@ -143,6 +145,7 @@ class ProductModelSpec extends ObjectBehavior
             'mapping' => [
                 'family' => 'family_variant',
             ],
+            'with_associations' => false
         ])->shouldReturn([
             'code' => 'code',
             'parent' => 1234,
@@ -181,6 +184,7 @@ class ProductModelSpec extends ObjectBehavior
                 'family_variant' => 'family_variant',
                 'categories' => 'tshirt,pull',
             ],
+            ['with_associations' => false]
         ]);
     }
 
@@ -214,6 +218,7 @@ class ProductModelSpec extends ObjectBehavior
                 'mapping' => [
                     'family' => 'family_variant',
                 ],
+                'with_associations' => false
             ],
         ]);
     }
