@@ -12,7 +12,7 @@ class NamingConventionSpec extends ObjectBehavior
     function it_is_a_naming_convention()
     {
         $this->beConstructedThrough('createFromNormalized', [
-            [['source' => ['property' => 'code'], 'pattern' => 'pattern', 'abort_asset_creation_on_error' => true]]
+            ['source' => ['property' => 'code'], 'pattern' => '#(.*)#', 'abort_asset_creation_on_error' => true]
         ]);
         $this->shouldBeAnInstanceOf(NamingConvention::class);
         $this->shouldImplement(NamingConventionInterface::class);
@@ -69,5 +69,13 @@ class NamingConventionSpec extends ObjectBehavior
                 'abort_asset_creation_on_error' => false,
             ]
         );
+    }
+
+    function it_is_never_empty()
+    {
+        $this->beConstructedThrough('createFromNormalized', [
+            ['source' => ['property' => 'code'], 'pattern' => '#(.*)#', 'abort_asset_creation_on_error' => true]
+        ]);
+        $this->isEmpty()->shouldReturn(false);
     }
 }

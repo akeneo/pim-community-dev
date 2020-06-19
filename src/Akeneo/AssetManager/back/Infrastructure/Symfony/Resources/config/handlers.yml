@@ -124,6 +124,12 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
             - '@akeneo_assetmanager.infrastructure.job.product_link_rule_launcher'
 
+    akeneo_assetmanager.application.asset.execute_asset_family_naming_convention.handler:
+        class: Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\ExecuteAssetFamilyNamingConventionHandler
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.job.naming_convention_launcher'
+
     akeneo_assetmanager.application.asset.compute_transformations_from_asset_identifiers.handler:
         class: Akeneo\AssetManager\Application\Asset\ComputeTransformationsAssets\ComputeTransformationsFromAssetIdentifiersHandler
         arguments:

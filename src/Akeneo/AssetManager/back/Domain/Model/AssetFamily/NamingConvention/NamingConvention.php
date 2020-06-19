@@ -82,4 +82,9 @@ class NamingConvention implements NamingConventionInterface
     {
         return $this->abortAssetCreationOnError;
     }
+
+    public function isEmpty(): bool
+    {
+        return false;
+    }
 }

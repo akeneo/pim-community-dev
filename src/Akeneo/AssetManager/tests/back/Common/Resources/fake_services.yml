@@ -285,6 +285,9 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
 
+    akeneo_assetmanager.infrastructure.job.naming_convention_launcher:
+        class: Akeneo\AssetManager\Common\Fake\NamingConventionLauncherSpy
+
     # Compute Transformations
     akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_identifiers_launcher:
         class: Akeneo\AssetManager\Common\Fake\ComputeTransformationFromAssetIdentifiersLauncherSpy

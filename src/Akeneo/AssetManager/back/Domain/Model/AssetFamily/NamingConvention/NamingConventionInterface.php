@@ -16,4 +16,6 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention;
 interface NamingConventionInterface
 {
     public function normalize();
+
+    public function isEmpty(): bool;
 }

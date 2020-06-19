@@ -22,4 +22,9 @@ class NullNamingConventionSpec extends ObjectBehavior
     {
         $this->normalize()->shouldBeLike(new \stdClass);
     }
+
+    function it_is_always_empty()
+    {
+        $this->isEmpty()->shouldReturn(true);
+    }
 }

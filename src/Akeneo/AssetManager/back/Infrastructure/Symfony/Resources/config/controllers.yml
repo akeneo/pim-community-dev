@@ -60,6 +60,14 @@ services:
             - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
             - '@oro_security.security_facade'
 
+    akeneo_assetmanager.infrastructure.action.asset_family.execute_naming_convention:
+        class: Akeneo\AssetManager\Infrastructure\Controller\AssetFamily\ExecuteNamingConventionAction
+        arguments:
+            - '@akeneo_assetmanager.application.asset.execute_asset_family_naming_convention.handler'
+            - '@akeneo_assetmanager.application.asset_family_permission.can_edit_asset_family_query_handler'
+            - '@security.token_storage'
+            - '@oro_security.security_facade'
+
     # Asset Family Permissions
     akeneo_assetmanager.infrastructure.action.asset_family_permission.get:
         class: Akeneo\AssetManager\Infrastructure\Controller\AssetFamilyPermission\GetAction
