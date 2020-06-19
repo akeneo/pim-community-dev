@@ -26,6 +26,7 @@
 ## Improvements
 
 - CLOUD-1959: Use cloud-deployer 2.2 and terraform 0.12.25
+- PIM-9306: Enhance catalog volume monitoring count queries for large datasets
 
 # Technical Improvements
 
