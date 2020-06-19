@@ -32,6 +32,7 @@
 - RUL-49: Rule engine - As Peter, I would like to clear attribute values, associations, categories and groups
 - RUL-77: Rule engine - As Peter, I would like to add labels to my rules
 - CLOUD-1959: Use cloud-deployer 2.2 and terraform 0.12.25
+- MET-207: Asset Manager - As Peter, I would like to manually re-execute naming conventions
 
 ## New features
 
