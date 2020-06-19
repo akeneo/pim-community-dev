@@ -41,7 +41,6 @@ class ProductStandardIntegration extends TestCase
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [],
-            // @todo https://akeneo.atlassian.net/browse/MET-198
             'quantified_associations' => [],
         ];
 
@@ -69,7 +68,6 @@ class ProductStandardIntegration extends TestCase
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [],
-            // @todo https://akeneo.atlassian.net/browse/MET-198
             'quantified_associations' => [],
         ];
 
@@ -257,8 +255,16 @@ class ProductStandardIntegration extends TestCase
                     'UPSELL' => ['groups' => ['groupA'], 'products' => [], 'product_models' => []],
                     'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar'], 'product_models' => []],
                 ],
-                // @todo https://akeneo.atlassian.net/browse/MET-198
-                'quantified_associations' => [],
+                'quantified_associations' => [
+                    "PRODUCT_SET" => [
+                        "products" => [
+                            ["identifier" => 'bar', "quantity" => 3]
+                        ],
+                        "product_models" => [
+                            ["identifier" => 'baz', "quantity" => 2]
+                        ]
+                    ],
+                ],
             ];
 
         $this->assertStandardFormat('foo', $expected);
@@ -451,8 +457,16 @@ SQL;
                     'UPSELL' => ['groups' => ['groupA'], 'products' => [], 'product_models' => []],
                     'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar'], 'product_models' => []],
                 ],
-                // @todo https://akeneo.atlassian.net/browse/MET-198
-                'quantified_associations' => [],
+                'quantified_associations' => [
+                    "PRODUCT_SET" => [
+                        "products" => [
+                            ["identifier" => 'bar', "quantity" => 3]
+                        ],
+                        "product_models" => [
+                            ["identifier" => 'baz', "quantity" => 2]
+                        ]
+                    ],
+                ],
             ];
 
         $this->assertStandardFormat('foo', $expected);
