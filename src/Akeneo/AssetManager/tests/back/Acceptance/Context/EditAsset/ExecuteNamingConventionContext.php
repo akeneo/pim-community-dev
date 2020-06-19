@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Acceptance\Context\ConstraintViolationsContext;
 use Akeneo\AssetManager\Acceptance\Context\ExceptionContext;
 use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
 use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\EditAssetCommandFactory;
+use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\ExecuteNamingConvention;
 use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
 use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyHandler;
 use Akeneo\AssetManager\Common\Fake\InMemoryFileExists;
@@ -81,6 +82,7 @@ class ExecuteNamingConventionContext implements Context
     private const ASSET_CODE = 'otherTitle_14_otherLink';
 
     private const PATTERN = '/(?P<title>[a-zA-Z0-9\s]+)_(?P<length>\d+)_(?P<link>\w+)/';
+    private const PATTERN_WITH_TITLE_ONLY = '/^(?P<title>[^\.]+)/';
     private const UNMATCHED_PATTERN = '/(?P<title>[a-zA-Z0-9\s]+)\|(?P<length>\d+)\|(?P<link>\w+)/';
     private const PATTERN_WITH_LOCALIZABLE_TARGET = '/(?P<localizabletitle>[a-zA-Z0-9\s]+)_(?P<length>\d+)_(?P<link>\w+)/';
     private const ORIGINAL_FILENAME = 'title_12_the_link-useless part.png';
@@ -115,6 +117,9 @@ class ExecuteNamingConventionContext implements Context
     /** @var ConstraintViolationsContext */
     private $violationsContext;
 
+    /** @var ExecuteNamingConvention */
+    private $executeNamingConvention;
+
     /** @var null|string */
     private $createdAssetCode = null;
 
@@ -128,7 +133,8 @@ class ExecuteNamingConventionContext implements Context
         EditAssetCommandFactory $editAssetCommandFactory,
         EditAssetHandler $editAssetHandler,
         ExceptionContext $exceptionContext,
-        ConstraintViolationsContext $violationContext
+        ConstraintViolationsContext $violationContext,
+        ExecuteNamingConvention $executeNamingConvention
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->validator = $validator;
@@ -140,6 +146,7 @@ class ExecuteNamingConventionContext implements Context
         $this->editAssetHandler = $editAssetHandler;
         $this->exceptionContext = $exceptionContext;
         $this->violationsContext = $violationContext;
+        $this->executeNamingConvention = $executeNamingConvention;
     }
 
     /**
@@ -533,5 +540,116 @@ class ExecuteNamingConventionContext implements Context
             ChannelReference::createfromNormalized($channel),
             LocaleReference::createfromNormalized($locale)
         );
+    }
+
+    /**
+     * @Given /^an asset with valid values for naming convention$/
+     */
+    public function anAssetWithValidValuesForNamingConvention()
+    {
+        $this->createdAssetCode = 'the_code';
+        $this->createAsset($this->createdAssetCode);
+
+        $attribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
+            AttributeCode::fromString(self::MEDIA_FILE_ATTRIBUTE_CODE),
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER)
+        );
+        $this->executeNamingConventionCommand([
+            'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
+            'code' => $this->createdAssetCode,
+            'values' => [
+                [
+                    'attribute' => $attribute->getIdentifier()->stringValue(),
+                    'channel' => null,
+                    'locale' => null,
+                    'data' => [
+                        'originalFilename' => self::ORIGINAL_FILENAME,
+                    ],
+                ],
+            ],
+        ]);
+    }
+
+    /**
+     * @When /^the naming convention is updated$/
+     */
+    public function theNamingConventionIsUpdated()
+    {
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER));
+        $assetFamily = $assetFamily->withNamingConvention(
+            NamingConvention::createFromNormalized([
+                'source' => ['property' => self::MEDIA_FILE_ATTRIBUTE_CODE, 'channel' => null, 'locale' => null],
+                'pattern' => self::PATTERN_WITH_TITLE_ONLY,
+                'abort_asset_creation_on_error' => true,
+            ])
+        );
+
+        $this->assetFamilyRepository->update($assetFamily);
+    }
+
+    /**
+     * @Given /^I request the naming convention execution$/
+     */
+    public function iRequestTheNamingConventionExecution()
+    {
+        try {
+            $this->executeNamingConvention->executeOnAsset(
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+                AssetIdentifier::create(self::ASSET_FAMILY_IDENTIFIER, $this->createdAssetCode, self::FINGERPRINT)
+            );
+        } catch (\Exception $exception) {
+            $this->exceptionContext->setException($exception);
+        }
+    }
+
+    /**
+     * @Then /^the asset should contain the updated values based on media file$/
+     */
+    public function theAssetShouldContainTheUpdatedValuesBasedOnMediaFile()
+    {
+        $asset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+            AssetCode::fromString($this->createdAssetCode)
+        );
+
+        $value = $asset->findValue($this->buildValueKey(self::MEDIA_FILE_ATTRIBUTE_CODE));
+        Assert::assertInstanceOf(Value::class, $value);
+        Assert::assertEquals('title_12_the_link-useless part.png', $value->getData()->normalize()['originalFilename']);
+
+        $value = $asset->findValue($this->buildValueKey(self::TEXT_ATTRIBUTE_CODE));
+        Assert::assertInstanceOf(Value::class, $value);
+        Assert::assertEquals('title_12_the_link-useless part', $value->getData()->normalize());
+    }
+
+    /**
+     * @Given /^I request the naming convention execution on a missing asset$/
+     */
+    public function iRequestTheNamingConventionExecutionOnAMissingAsset()
+    {
+        try {
+            $this->executeNamingConvention->executeOnAsset(
+                AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
+                AssetIdentifier::create(self::ASSET_FAMILY_IDENTIFIER, 'the_code', self::FINGERPRINT)
+            );
+        } catch (\Exception $exception) {
+            $this->exceptionContext->setException($exception);
+        }
+    }
+
+    /**
+     * @When /^the naming convention is updated with an invalid configuration$/
+     */
+    public function theNamingConventionIsUpdatedWithAnInvalidConfiguration()
+    {
+        $assetFamily = $this->assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER));
+        $assetFamily = $assetFamily->withNamingConvention(
+            NamingConvention::createFromNormalized([
+                'source' => ['property' => self::MEDIA_FILE_ATTRIBUTE_CODE, 'channel' => null, 'locale' => null],
+                'pattern' => '/^(?P<none>[^\.]+)/',
+                'abort_asset_creation_on_error' => true,
+            ])
+        );
+
+        $this->assetFamilyRepository->update($assetFamily);
     }
 }

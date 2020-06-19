@@ -20,6 +20,7 @@ $rules = [
         'Doctrine\Common',
         'Symfony\Component\EventDispatcher\EventSubscriberInterface',
         'Symfony\Component\EventDispatcher\Event',
+        'Symfony\Component\Validator',
         'Webmozart\Assert\Assert',
 
         //TODO: use a proper image storer interface for EditAssetFamilyHandler

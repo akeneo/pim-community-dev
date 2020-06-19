@@ -25,6 +25,9 @@ akeneo_assetmanager:
        option:
            edit: Edit options
            delete: Remove an option
+   jobs:
+       asset_manager_execute_naming_convention:
+           error: 'The naming convention failed on asset "{{ asset }}"'
 
 pim_import_export:
     widget:
@@ -32,6 +35,7 @@ pim_import_export:
             job_type:
                 asset_manager_compute_transformations: "Compute asset transformations"
                 asset_manager_link_assets_to_products: "Link assets to products"
+                asset_manager_execute_naming_convention: "Execute Asset Family naming convention"
 
 #pim_analytics:
 #    info_type:
@@ -46,3 +50,16 @@ pim_import_export:
 #        average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family
 
 pim_catalog_asset_collection: Asset collection
+
+pim_datagrid:
+    cells:
+        type:
+            asset_manager_execute_naming_convention: Execute Asset Family naming convention
+
+batch_jobs:
+    default_steps:
+        execute_naming_convention: Execute Asset Family naming convention
+
+job_execution:
+    summary:
+        assets: Assets
