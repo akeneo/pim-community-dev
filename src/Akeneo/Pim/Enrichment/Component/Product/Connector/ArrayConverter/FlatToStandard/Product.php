@@ -213,23 +213,21 @@ class Product implements ArrayConverterInterface
         return $item;
     }
 
-    /**
-     * @param array $mappedItem
-     * @param bool  $withAssociations
-     *
-     * @return array
-     */
-    protected function filterFields(array $mappedItem, $withAssociations): array
+    protected function filterFields(array $mappedItem, bool $withAssociations): array
     {
         if (false === $withAssociations) {
-            $isGroupAssPattern = '/^\w+'.AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX.'$/';
-            $isProductAssPattern = '/^\w+'.AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX.'$/';
-            $isProductModelAssPattern = '/^\w+'.AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX.'$/';
+            $isGroupAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX);
+            $isProductAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX);
+            $isProductModelAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX);
+            $isProductAssociationQuantityPattern = sprintf('/^\w+%s%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX, AssociationColumnsResolver::QUANTITY_SUFFIX);
+            $isProductModelAssociationQuantityPattern = sprintf('/^\w+%s%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX, AssociationColumnsResolver::QUANTITY_SUFFIX);
             foreach (array_keys($mappedItem) as $field) {
-                $isGroup = (1 === preg_match($isGroupAssPattern, $field));
-                $isProduct = (1 === preg_match($isProductAssPattern, $field));
-                $isProductModel = (1 === preg_match($isProductModelAssPattern, $field));
-                if ($isGroup || $isProduct || $isProductModel) {
+                $isGroup = (1 === preg_match($isGroupAssociationPattern, $field));
+                $isProduct = (1 === preg_match($isProductAssociationPattern, $field));
+                $isProductModel = (1 === preg_match($isProductModelAssociationPattern, $field));
+                $isProductQuantity = (1 === preg_match($isProductAssociationQuantityPattern, $field));
+                $isProductModelQuantity = (1 === preg_match($isProductModelAssociationQuantityPattern, $field));
+                if ($isGroup || $isProduct || $isProductModel || $isProductQuantity || $isProductModelQuantity) {
                     unset($mappedItem[$field]);
                 }
             }
@@ -319,9 +317,10 @@ class Product implements ArrayConverterInterface
                 sprintf('The field "%s" does not exist.', $unknownFields[0]);
         }
         foreach ($nonLocalizableOrScopableFields as $nonLocalizableOrScopableField) {
-            $messages[] = sprintf('The field "%s" needs an additional locale and/or a channel information; '.
-                'in order to do that, please set the code as follow: '.
-                '\'%s-[locale_code]-[channel_code]\'.',
+            $messages[] = sprintf(
+                'The field "%s" needs an additional locale and/or a channel information; ' .
+                    'in order to do that, please set the code as follow: ' .
+                    '\'%s-[locale_code]-[channel_code]\'.',
                 $nonLocalizableOrScopableField,
                 $nonLocalizableOrScopableField
             );
@@ -351,14 +350,15 @@ class Product implements ArrayConverterInterface
     }
 
     /**
-     * Returns associations fields (resolves once)
-     *
-     * @return array
+     * Returns associations and quantified associations fields (resolves once)
      */
     protected function getOptionalAssociationFields(): array
     {
         if (empty($this->optionalAssocFields)) {
-            $this->optionalAssocFields = $this->assocColumnsResolver->resolveAssociationColumns();
+            $this->optionalAssocFields = array_merge(
+                $this->assocColumnsResolver->resolveAssociationColumns(),
+                $this->assocColumnsResolver->resolveQuantifiedAssociationColumns()
+            );
         }
 
         return $this->optionalAssocFields;
@@ -382,7 +382,8 @@ class Product implements ArrayConverterInterface
         foreach ($attributeCodes as $attributeCode) {
             $found = false;
             foreach ($attributes as $attribute) {
-                if ($attribute->getCode() === $attributeCode &&
+                if (
+                    $attribute->getCode() === $attributeCode &&
                     ($attribute->isLocalizable() || $attribute->isScopable())
                 ) {
                     $found = true;

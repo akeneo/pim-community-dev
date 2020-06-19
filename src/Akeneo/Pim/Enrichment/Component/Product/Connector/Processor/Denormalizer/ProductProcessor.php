@@ -229,6 +229,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         }
         unset($item['identifier']);
         unset($item['associations']);
+        unset($item['quantified_associations']);
 
         return $item;
     }

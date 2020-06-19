@@ -15,6 +15,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -57,7 +58,8 @@ class ProductModelAssociationProcessorSpec extends ObjectBehavior
         ProductModelInterface $productModel,
         AssociationInterface $association,
         ConstraintViolationListInterface $violationList,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        QuantifiedAssociations $quantifiedAssociations
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(true);
@@ -73,7 +75,8 @@ class ProductModelAssociationProcessorSpec extends ObjectBehavior
                     'groups'  => ['akeneo_tshirt', 'oro_tshirt'],
                     'product' => ['AKN_TS', 'ORO_TS']
                 ]
-            ]
+            ],
+            'quantified_associations' => []
         ];
 
         $filteredData = [
@@ -82,7 +85,8 @@ class ProductModelAssociationProcessorSpec extends ObjectBehavior
                     'groups'  => ['akeneo_tshirt', 'oro_tshirt'],
                     'product' => ['AKN_TS', 'ORO_TS']
                 ]
-            ]
+            ],
+            'quantified_associations' => []
         ];
 
         unset($filteredData['associations']['XSELL']['groups']);
@@ -95,8 +99,12 @@ class ProductModelAssociationProcessorSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $productModel->getAssociations()->willReturn([$association]);
+        $productModel->getQuantifiedAssociations()->willReturn($quantifiedAssociations);
         $productValidator
             ->validate($association)
+            ->willReturn($violationList);
+        $productValidator
+            ->validate($quantifiedAssociations)
             ->willReturn($violationList);
 
         $this
@@ -128,7 +136,8 @@ class ProductModelAssociationProcessorSpec extends ObjectBehavior
                     'groups'  => ['akeneo_tshirt', 'oro_tshirt'],
                     'product' => ['AKN_TS', 'ORO_TS']
                 ]
-            ]
+            ],
+            'quantified_associations' => []
         ];
 
         $filteredData = [
@@ -137,7 +146,8 @@ class ProductModelAssociationProcessorSpec extends ObjectBehavior
                     'groups'  => ['akeneo_tshirt', 'oro_tshirt'],
                     'product' => ['AKN_TS', 'ORO_TS']
                 ]
-            ]
+            ],
+            'quantified_associations' => []
         ];
 
         $productAssocFilter->filter($productModel, $convertedData)
@@ -170,7 +180,8 @@ class ProductModelAssociationProcessorSpec extends ObjectBehavior
         $productDetacher,
         AssociationInterface $association,
         ProductModelInterface $productModel,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        QuantifiedAssociations $quantifiedAssociations
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
@@ -187,7 +198,8 @@ class ProductModelAssociationProcessorSpec extends ObjectBehavior
                     'groups'  => ['akeneo_tshirt', 'oro_tshirt'],
                     'product' => ['AKN_TS', 'ORO_TS']
                 ]
-            ]
+            ],
+            'quantified_associations' => []
         ];
 
         $filteredData = [
@@ -196,7 +208,8 @@ class ProductModelAssociationProcessorSpec extends ObjectBehavior
                     'groups'  => ['akeneo_tshirt', 'oro_tshirt'],
                     'product' => ['AKN_TS', 'ORO_TS']
                 ]
-            ]
+            ],
+            'quantified_associations' => []
         ];
 
         $productAssocFilter->filter($productModel, $convertedData)
@@ -210,8 +223,12 @@ class ProductModelAssociationProcessorSpec extends ObjectBehavior
         $violation = new ConstraintViolation('There is a small problem with option code', 'foo', [], 'bar', 'code', 'mycode');
         $violations = new ConstraintViolationList([$violation]);
         $productModel->getAssociations()->willReturn([$association]);
+        $productModel->getQuantifiedAssociations()->willReturn($quantifiedAssociations);
         $productValidator
             ->validate($association)
+            ->willReturn($violations);
+        $productValidator
+            ->validate($quantifiedAssociations)
             ->willReturn($violations);
 
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
@@ -250,7 +267,8 @@ class ProductModelAssociationProcessorSpec extends ObjectBehavior
                     'groups'  => ['akeneo_tshirt', 'oro_tshirt'],
                     'product' => ['AKN_TS', 'ORO_TSH']
                 ]
-            ]
+            ],
+            'quantified_associations' => []
         ];
 
         $filteredData = [
@@ -259,7 +277,8 @@ class ProductModelAssociationProcessorSpec extends ObjectBehavior
                     'groups'  => ['akeneo_tshirt', 'oro_tshirt'],
                     'product' => ['AKN_TS', 'ORO_TSH']
                 ]
-            ]
+            ],
+            'quantified_associations' => []
         ];
 
         $productAssocFilter->filter($productModel, $convertedData)

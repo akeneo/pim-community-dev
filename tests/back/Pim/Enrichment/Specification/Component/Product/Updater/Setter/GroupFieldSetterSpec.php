@@ -2,16 +2,17 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
-use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\GroupFieldSetter;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\GroupFieldSetter;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
-use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 
 class GroupFieldSetterSpec extends ObjectBehavior
 {
@@ -57,37 +58,30 @@ class GroupFieldSetterSpec extends ObjectBehavior
     }
 
     function it_sets_groups_field(
-        $groupRepository,
+        GroupRepositoryInterface $groupRepository,
         ProductInterface $product,
         GroupInterface $pack,
         GroupInterface $cross,
-        GroupInterface $up,
-        GroupTypeInterface $nonVariantType
+        GroupInterface $up
     ) {
         $groupRepository->findOneByIdentifier('pack')->willReturn($pack);
         $groupRepository->findOneByIdentifier('cross')->willReturn($cross);
 
         $product->getGroups()->willReturn([$up]);
+        $product->removeGroup($up->getWrappedObject())->shouldBeCalled();
 
-        $up->getType()->willReturn($nonVariantType);
-        $product->removeGroup($up)->shouldBeCalled();
-        $pack->getType()->willReturn($nonVariantType);
-        $cross->getType()->willReturn($nonVariantType);
-
-        $product->addGroup($pack)->shouldBeCalled();
-        $product->addGroup($cross)->shouldBeCalled();
+        $product->addGroup($pack->getWrappedObject())->shouldBeCalled();
+        $product->addGroup($cross->getWrappedObject())->shouldBeCalled();
 
         $this->setFieldData($product, 'groups', ['pack', 'cross']);
     }
 
     function it_fails_if_the_group_code_does_not_exist(
-        $groupRepository,
+        GroupRepositoryInterface $groupRepository,
         ProductInterface $product,
-        GroupInterface $pack,
-        GroupTypeInterface $nonVariantType
+        GroupInterface $pack
     ) {
         $groupRepository->findOneByIdentifier('pack')->willReturn($pack);
-        $pack->getType()->willReturn($nonVariantType);
         $groupRepository->findOneByIdentifier('not valid code')->willReturn(null);
 
         $this->shouldThrow(
@@ -99,5 +93,15 @@ class GroupFieldSetterSpec extends ObjectBehavior
                 'not valid code'
             )
         )->during('setFieldData', [$product, 'groups', ['pack', 'not valid code']]);
+    }
+
+    function it_throws_an_exception_if_the_subject_is_not_a_product()
+    {
+        $this->shouldThrow(
+            InvalidObjectException::objectExpected(
+                ProductModel::class,
+                ProductInterface::class
+            )
+        )->during('setFieldData', [new ProductModel(), 'groups', ['tshirts']]);
     }
 }

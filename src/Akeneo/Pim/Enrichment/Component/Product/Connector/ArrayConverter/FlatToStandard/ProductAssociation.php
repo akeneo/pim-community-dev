@@ -13,6 +13,10 @@ use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
  */
 class ProductAssociation implements ArrayConverterInterface
 {
+    const QUANTITY_SEPARATOR = '|';
+
+    const IDENTIFIER_SEPARATOR = ',';
+
     /** @var ArrayConverterInterface */
     protected $productConverter;
 
@@ -71,7 +75,7 @@ class ProductAssociation implements ArrayConverterInterface
      */
     protected function filter(array $item)
     {
-        $expectedFields = ['identifier', 'associations'];
+        $expectedFields = ['identifier', 'associations', 'quantified_associations'];
         foreach (array_keys($item) as $fieldName) {
             if (!in_array($fieldName, $expectedFields)) {
                 unset($item[$fieldName]);

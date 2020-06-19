@@ -297,6 +297,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ColumnsMerger'
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
+            - '@pim_connector.array_converter.flat_to_standard.product.association_columns_resolver'
 
     ### Columns mappers
     pim_connector.array_converter.flat_to_standard.product.columns_mapper:

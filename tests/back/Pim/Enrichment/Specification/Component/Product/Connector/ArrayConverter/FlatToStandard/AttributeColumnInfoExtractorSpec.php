@@ -40,6 +40,7 @@ class AttributeColumnInfoExtractorSpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('bar');
         $attributeRepository->findOneByIdentifier('foo')->willReturn($attribute);
         $assoColumnResolver->resolveAssociationColumns()->willReturn([]);
+        $assoColumnResolver->resolveQuantifiedAssociationColumns()->willReturn([]);
 
         $this->extractColumnInfo('foo')->shouldReturn(
             [
@@ -56,6 +57,7 @@ class AttributeColumnInfoExtractorSpec extends ObjectBehavior
     ) {
         $channelRepository->findOneByIdentifier('foo')->willReturn(null);
         $assoColumnResolver->resolveAssociationColumns()->willReturn([]);
+        $assoColumnResolver->resolveQuantifiedAssociationColumns()->willReturn([]);
 
         $this->extractColumnInfo('foo')->shouldReturn(null);
     }
@@ -79,6 +81,7 @@ class AttributeColumnInfoExtractorSpec extends ObjectBehavior
         $localeRepository->findOneByIdentifier('en_US')->shouldBeCalled()->willReturn($locale);
         $attributeRepository->findOneByIdentifier('foo')->willReturn($attribute);
         $assoColumnResolver->resolveAssociationColumns()->willReturn([]);
+        $assoColumnResolver->resolveQuantifiedAssociationColumns()->willReturn([]);
 
         $channel->hasLocale($locale)->shouldBeCalled()->willReturn(true);
 
@@ -135,6 +138,7 @@ class AttributeColumnInfoExtractorSpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('bar');
         $attributeRepository->findOneByIdentifier('foo')->willReturn($attribute);
         $assoColumnResolver->resolveAssociationColumns()->willReturn([]);
+        $assoColumnResolver->resolveQuantifiedAssociationColumns()->willReturn([]);
 
         // Test only scopable attribute
         $this->extractColumnInfo('foo-ecommerce')->shouldReturn(
@@ -168,6 +172,7 @@ class AttributeColumnInfoExtractorSpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('prices');
         $attributeRepository->findOneByIdentifier('foo')->willReturn($attribute);
         $assoColumnResolver->resolveAssociationColumns()->willReturn([]);
+        $assoColumnResolver->resolveQuantifiedAssociationColumns()->willReturn([]);
 
         $this->extractColumnInfo('foo-USD')->shouldReturn(
             [
@@ -191,6 +196,7 @@ class AttributeColumnInfoExtractorSpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('text');
         $attributeRepository->findOneByIdentifier('sku')->willReturn($attribute);
         $assoColumnResolver->resolveAssociationColumns()->willReturn([]);
+        $assoColumnResolver->resolveQuantifiedAssociationColumns()->willReturn([]);
 
         $this->shouldThrow(new \InvalidArgumentException('The field "sku-fr_FR" is not well-formatted, attribute "sku" expects no locale, no scope, no currency'))
             ->duringExtractColumnInfo('sku-fr_FR');
@@ -259,6 +265,7 @@ class AttributeColumnInfoExtractorSpec extends ObjectBehavior
         $channelRepository->findOneByIdentifier($attributeInfos['scope_code'])->shouldBeCalled()->willReturn($channel);
         $localeRepository->findOneByIdentifier($attributeInfos['locale_code'])->shouldBeCalled()->willReturn($locale);
         $assoColumnResolver->resolveAssociationColumns()->willReturn([]);
+        $assoColumnResolver->resolveQuantifiedAssociationColumns()->willReturn([]);
 
         $channel->hasLocale($locale)->shouldBeCalled()->willReturn(false);
 

@@ -53,6 +53,7 @@ class QueryTestCase extends TestCase
         Assert::assertEquals(0, $constraintList->count());
 
         $this->get('pim_catalog.saver.product')->save($product);
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         return $product;
     }

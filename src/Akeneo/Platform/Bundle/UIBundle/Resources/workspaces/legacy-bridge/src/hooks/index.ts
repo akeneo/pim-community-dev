@@ -6,3 +6,4 @@ export * from './useSecurity';
 export * from './useTranslate';
 export * from './useUserContext';
 export * from './useViewBuilder';
+export * from './useMediator';
