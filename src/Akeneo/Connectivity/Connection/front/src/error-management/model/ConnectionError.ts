@@ -27,7 +27,7 @@ export type MessageParameters = {
 export type Documentation = {
     message: string;
     parameters: MessageParameters;
-    style: 'text' | 'information';
+    style: typeof DocumentationStyleText | typeof DocumentationStyleInformation;
 };
 
 export type Product = {
@@ -45,7 +45,7 @@ export type ConnectionErrorContent = {
     locale?: string | null;
     scope?: string | null;
     product?: Product;
-    type: 'violation_error' | 'domain_error';
+    type:  typeof ErrorMessageViolationType |  typeof ErrorMessageDomainType;
 };
 
 export type ConnectionError = {

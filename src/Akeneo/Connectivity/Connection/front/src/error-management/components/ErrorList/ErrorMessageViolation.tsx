@@ -26,7 +26,10 @@ const ErrorMessageViolation: FC<Props> = ({content}) => {
                     {messageWithColoredParameters(content.message_template, content.message_parameters, content.type)}
                 </ErrorMessage>
             ) : (
-                <ErrorMessageUnformattedList content={content} />
+                <>
+                    <ErrorMessage>{content.message}</ErrorMessage>
+                    <ErrorMessageUnformattedList content={content} />
+                </>
             )}
         </>
     );

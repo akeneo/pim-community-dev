@@ -6,24 +6,32 @@ type Props = {
     content: ConnectionErrorContent;
 };
 
-const hiddenFields = ['product', 'documentation', 'message_template', 'message_parameters', 'locale', 'scope'];
+const hiddenFields = [
+    'message',
+    'product',
+    'documentation',
+    'message_template',
+    'message_parameters',
+    'locale',
+    'scope',
+];
 
 const ErrorMessageUnformattedList: FC<Props> = ({content}) => {
     return (
-        <table>
+        <ErrorTable>
             <tbody>
                 {Object.entries(content)
                     .filter(([key]) => !hiddenFields.includes(key))
                     .map(([key, value], i) => {
                         return (
-                            <tr key={i}>
+                            <ErrorTr key={i}>
                                 <ErrorKey>{key}:</ErrorKey>
                                 <td>{JSON.stringify(value)}</td>
-                            </tr>
+                            </ErrorTr>
                         );
                     })}
             </tbody>
-        </table>
+        </ErrorTable>
     );
 };
 
@@ -32,6 +40,15 @@ const ErrorKey = styled.th`
     font-weight: bold;
     vertical-align: baseline;
     white-space: pre-wrap;
+`;
+
+const ErrorTr = styled.tr`
+    line-height: 12px;
+`;
+
+const ErrorTable = styled.table`
+    padding-top: 15px;
+    border-collapse: separate;
 `;
 
 export {ErrorMessageUnformattedList};
