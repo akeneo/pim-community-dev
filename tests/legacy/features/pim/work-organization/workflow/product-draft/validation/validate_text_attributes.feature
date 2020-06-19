@@ -34,13 +34,13 @@ Feature: Validate text attributes of a draft
   Scenario: Validate the max characters constraint of text attribute
     Given I change the Barcode to "000000000"
     And I save the product
-    Then I should see validation error "This value is too long. It should have 8 characters or less."
+    Then I should see validation error "The barcode attribute must not contain more than 8 characters. The submitted value is too long."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the max characters constraint of scopable text attribute
     Given I change the Barcodes for scope mobile to "000000000"
     And I save the product
-    Then I should see validation error "This value is too long. It should have 8 characters or less."
+    Then I should see validation error "The barcodes attribute must not contain more than 8 characters. The submitted value is too long."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the email validation rule constraint of text attribute

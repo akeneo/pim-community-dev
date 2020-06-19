@@ -24,25 +24,25 @@ Feature: Validate textarea attributes of a draft
   Scenario: Validate the max characters constraint of textarea attribute
     Given I change the Info to "information"
     And I save the product
-    Then I should see validation error "This value is too long. It should have 5 characters or less."
+    Then I should see validation error "The info attribute must not contain more than 5 characters. The submitted value is too long."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the max characters constraint of scopable textarea attribute
     Given I visit the "Marketing" group
     And I change the Description for scope mobile to "information"
     And I save the product
-    Then I should see validation error "This value is too long. It should have 5 characters or less."
+    Then I should see validation error "The old_description attribute must not contain more than 5 characters. The submitted value is too long."
     And there should be 1 error in the "Marketing" tab
 
   Scenario: Validate the max characters constraint of textarea attribute with WYSIWYG
     Given I change the Longinfo to "the amazing information"
     And I save the product
-    Then I should see validation error "This value is too long. It should have 20 characters or less."
+    Then I should see validation error "The long_info attribute must not contain more than 20 characters. The submitted value is too long."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the max characters constraint of scopable textarea attribute with WYSIWYG
     Given I visit the "Marketing" group
     And I change the Longdescription for scope mobile to "the amazing information"
     And I save the product
-    Then I should see validation error "This value is too long. It should have 20 characters or less."
+    Then I should see validation error "The long_description attribute must not contain more than 20 characters. The submitted value is too long."
     And there should be 1 error in the "Marketing" tab
