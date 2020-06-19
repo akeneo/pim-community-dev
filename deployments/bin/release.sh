@@ -26,8 +26,10 @@ NEW_IMAGE_TAG=v$(docker run --rm eu.gcr.io/akeneo-ci/pim-enterprise-dev:${OLD_IM
 
 echo Tagging Docker image ${NEW_IMAGE_TAG}
 docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${OLD_IMAGE_TAG} eu.gcr.io/akeneo-ci/pim-enterprise-dev:${NEW_IMAGE_TAG}
+docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${OLD_IMAGE_TAG} eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${NEW_IMAGE_TAG}
 
 echo Pushing Docker image ${NEW_IMAGE_TAG}
+docker push eu.gcr.io/akeneo-cloud/pim-enterprise-dev:${NEW_IMAGE_TAG}
 IMAGE_TAG=${NEW_IMAGE_TAG} make push-php-image-prod
 
 echo Tagging EE dev repository
