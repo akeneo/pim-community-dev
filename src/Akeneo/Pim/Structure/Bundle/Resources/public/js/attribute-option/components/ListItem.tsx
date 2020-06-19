@@ -112,7 +112,7 @@ const ListItem: FC<AttributeOptionItemProps> = ({children, ...props}) => {
                     </div>
                 </span>
                 <span className="AknAttributeOption-extraData" role="attribute-option-extra-data">
-                    {children}
+                    <span>{children}</span>
                 </span>
                 <span className="AknAttributeOption-delete-option-icon" onClick={(event: any) => {
                     event.preventDefault();
