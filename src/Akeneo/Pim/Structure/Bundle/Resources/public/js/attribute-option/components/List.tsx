@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {useSelector} from 'react-redux';
 
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {AttributeOption} from '../model';
 import {useAttributeContext} from '../contexts';
-import {AttributeOptionsState} from '../store/store';
+import {useAttributeOptionsListState} from '../hooks/useAttributeOptionsListState';
 import {useSortedAttributeOptions} from '../hooks/useSortedAttributeOptions';
 import ToggleButton from './ToggleButton';
 import ListItem, {DragItem} from './ListItem';
@@ -20,7 +19,7 @@ interface ListProps {
 }
 
 const List = ({selectAttributeOption, selectedOptionId, isNewOptionFormDisplayed, showNewOptionForm, deleteAttributeOption, manuallySortAttributeOptions}: ListProps) => {
-    const attributeOptions = useSelector((state: AttributeOptionsState) => state.attributeOptions);
+    const {attributeOptions, extraData} = useAttributeOptionsListState();
     const translate = useTranslate();
     const attributeContext = useAttributeContext();
     const {
@@ -86,7 +85,9 @@ const List = ({selectAttributeOption, selectedOptionId, isNewOptionFormDisplayed
                             dragItem={dragItem}
                             setDragItem={setDragItem}
                             index={index}
-                        />
+                        >
+                            {extraData[attributeOption.code]}
+                        </ListItem>
                     );
                 })}
 
