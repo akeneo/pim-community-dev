@@ -94,6 +94,8 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             $productStandard['values'] = $this->filterValues($productStandard['values'], $attributesToFilter);
         }
 
+        $productStandard['values'] = $this->filterLocaleSpecificAttributes($productStandard['values']);
+
         if ($parameters->has('with_media') && $parameters->get('with_media')) {
             $directory = $this->stepExecution->getJobExecution()->getExecutionContext()
                 ->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
@@ -151,6 +153,20 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         $attributesToFilter = array_flip($attributesToFilter);
         foreach ($values as $code => $value) {
             if (isset($attributesToFilter[$code])) {
+                $valuesToExport[$code] = $value;
+            }
+        }
+
+        return $valuesToExport;
+    }
+
+    protected function filterLocaleSpecificAttributes(array $values): array
+    {
+        $valuesToExport = [];
+        $jobLocales = $this->stepExecution->getJobParameters()->get('filters')['structure']['locales'];
+        foreach ($values as $code => $value) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($code);
+            if (!$attribute->isLocaleSpecific() || !empty(array_intersect($jobLocales, $attribute->getLocaleSpecificCodes()))) {
                 $valuesToExport[$code] = $value;
             }
         }
