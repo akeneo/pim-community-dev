@@ -140,7 +140,7 @@ class ProductProcessorSpec extends ObjectBehavior
         JobInstance $jobInstance,
         WriteValueCollection $valuesCollection,
         ExecutionContext $executionContext,
-        AttributeRepository $attributeRepository,
+        AttributeRepositoryInterface $attributeRepository,
         AttributeInterface $attribute
     ) {
 
