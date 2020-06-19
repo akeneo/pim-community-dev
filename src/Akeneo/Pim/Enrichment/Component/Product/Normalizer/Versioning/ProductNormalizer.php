@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\EntityWithQuantifiedAssociations\QuantifiedAssociationsNormalizer;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
@@ -49,14 +50,17 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /** @var string[] */
     protected $supportedFormats = ['flat'];
 
-    /** @var CollectionFilterInterface */
+    /** @var CollectionFilterInterface | null */
     protected $filter;
 
-    /**
-     * @param CollectionFilterInterface $filter The collection filter
-     */
-    public function __construct(CollectionFilterInterface $filter = null)
-    {
+    /** @var QuantifiedAssociationsNormalizer */
+    private $quantifiedAssociationsNormalized;
+
+    public function __construct(
+        QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalized,
+        CollectionFilterInterface $filter = null
+    ) {
+        $this->quantifiedAssociationsNormalized = $quantifiedAssociationsNormalized;
         $this->filter = $filter;
     }
 
@@ -75,6 +79,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         $results[self::FIELD_CATEGORY] = $this->normalizeCategories($object->getCategoryCodes());
         $results[self::FIELD_PARENT] = $this->normalizeParent($object->getParent());
         $results = array_merge($results, $this->normalizeAssociations($object->getAssociations()));
+        $results = array_merge($results, $this->quantifiedAssociationsNormalized->normalize($object, $format, $context));
         $results = array_replace($results, $this->normalizeValues($object, $format, $context));
         $results[self::FIELD_ENABLED] = (int) $object->isEnabled();
 
