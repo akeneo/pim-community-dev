@@ -1,41 +1,42 @@
 import React from 'react';
 import { useTranslate } from '../../../../../dependenciesTools/hooks';
-import { useFormContext } from 'react-hook-form';
 import { InputText } from '../../../../../components/Inputs';
-import { InputValueProps } from './AttributeValue';
-import { useUnregisterAtUnmount } from '../../../hooks/useUnregisterAtUnmount';
 
-const FallbackValue: React.FC<InputValueProps> = ({
-  id,
-  name,
-  validation,
-  value,
-  label,
-}) => {
+type Props = {
+  id: string;
+  value: any;
+  label?: string;
+};
+
+const FallbackValue: React.FC<Props> = ({ id, value, label, children }) => {
   const translate = useTranslate();
-  const { register } = useFormContext();
-  useUnregisterAtUnmount(name);
+
+  const getDisplayValue = (value: any): string => {
+    if (null === value) {
+      return 'null';
+    }
+
+    switch (typeof value) {
+      case 'string':
+      case 'number':
+      case 'boolean':
+        return value.toString();
+      default:
+        return JSON.stringify(value);
+    }
+  };
 
   return (
     <>
-      <div>
-        {translate('pimee_catalog_rule.form.edit.unhandled_attribute_type')}
-      </div>
       <InputText
         data-testid={id}
-        name={name}
-        label={
-          label ||
-          `${translate('pimee_catalog_rule.rule.value')} ${translate(
-            'pim_common.required_label'
-          )}`
-        }
-        ref={register(validation || {})}
+        label={label || translate('pimee_catalog_rule.rule.value')}
         hiddenLabel
-        defaultValue={value}
+        value={getDisplayValue(value)}
         disabled
         readOnly
       />
+      {children}
     </>
   );
 };

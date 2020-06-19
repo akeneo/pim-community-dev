@@ -165,7 +165,7 @@ pimee_catalog_rule:
                 success: Rule updated successfully
                 failed: Rule update failed
             discard_changes: You will lose changes to the rule if you leave the page.
-            unknown_attribute: Unknown attribute
+            please_select_attribute: Please select your target attribute first.
             unhandled_attribute_type: Sorry this attribute type is not managed yet. Please use the rule import.
         helper:
             add_to_category: To add your product selection to one or more categories, please start by selecting our category trees and then, your categories.
@@ -192,8 +192,13 @@ pimee_catalog_rule:
         scope_on_unscopable_attribute: This attribute is not scopable. Please remove the scope before continue.
         unknown_families: "{1}The family {{ familyCodes }} does not exist|]1,+Inf[The families {{ familyCodes }} do not exist"
         unknown_attribute_options: "{1}The option {{ attributeOptionCodes }} does not exist|]1,+Inf[The options {{ attributeOptionCodes }} do not exist"
-        unknown_attribute: "The attribute {{ attributeCode }} does not exist"
+        unknown_attribute_code: "The {{ attributeCode }} attribute does not exist"
         unknown_categories: "{1}The category {{ categoryCodes }} does not exist.|]1, +Inf[The categories {{ categoryCodes }} do not exist"
+        unknown_attribute: "This attribute does not exist."
+        select_another_attribute_or_remove_action: "Select another attribute or remove this action."
+        select_another_attribute: "Select another attribute"
+        or: or
+        create_attribute_link: click here to create the attribute
 
 pim_enrich:
     entity:

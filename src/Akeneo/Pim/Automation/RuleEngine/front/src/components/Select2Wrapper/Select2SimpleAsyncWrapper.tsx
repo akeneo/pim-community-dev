@@ -11,7 +11,10 @@ type Props = Select2GlobalProps & {
   value?: Select2Value;
   ajax: Select2Ajax;
   name: string;
-  validation?: { required?: string; validate?: (value: any) => string | true };
+  validation?: {
+    required?: string;
+    validate?: (value: any) => string | true | Promise<string | true>;
+  };
 };
 
 const Select2SimpleAsyncWrapper: React.FC<Props> = props => {
