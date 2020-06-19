@@ -40,9 +40,9 @@ const Edit = ({option, saveAttributeOption}: EditProps) => {
                 <div className="AknAttributeOption-edit-translations">
                     {locales.map((locale: Locale) => (
                         <AttributeOptionForm key={`option-form-${option.code}-${locale.code}`}
-                             option={option}
-                             locale={locale}
-                             onUpdateOptionLabel={onUpdateOptionLabel}
+                            option={option}
+                            locale={locale}
+                            onUpdateOptionLabel={onUpdateOptionLabel}
                         />
                     ))}
                 </div>
