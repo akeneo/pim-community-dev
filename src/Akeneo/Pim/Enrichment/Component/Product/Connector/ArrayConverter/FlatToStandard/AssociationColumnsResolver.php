@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
-use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 
 /**
@@ -57,7 +56,6 @@ class AssociationColumnsResolver
         if (null === $this->assocFieldsCache) {
             $fieldNames = [];
             $assocTypes = $this->getAllAssociationTypes();
-            /** @var AssociationType $assocType */
             foreach ($assocTypes as $assocType) {
                 if (!$assocType->isQuantified()) {
                     $fieldNames[] = $assocType->getCode() . self::GROUP_ASSOCIATION_SUFFIX;
@@ -87,7 +85,6 @@ class AssociationColumnsResolver
         if (null === $this->quantifiedAssocQuantityFieldsCache) {
             $fieldNames = [];
             $assocTypes = $this->getAllAssociationTypes();
-            /** @var AssociationType $assocType */
             foreach ($assocTypes as $assocType) {
                 if ($assocType->isQuantified()) {
                     $fieldNames[] = $assocType->getCode() . self::PRODUCT_ASSOCIATION_SUFFIX . self::QUANTITY_SUFFIX;
@@ -108,7 +105,6 @@ class AssociationColumnsResolver
         if (null === $this->quantifiedAssocIdentifierFieldsCache) {
             $fieldNames = [];
             $assocTypes = $this->getAllAssociationTypes();
-            /** @var AssociationType $assocType */
             foreach ($assocTypes as $assocType) {
                 if ($assocType->isQuantified()) {
                     $fieldNames[] = $assocType->getCode() . self::PRODUCT_ASSOCIATION_SUFFIX;
