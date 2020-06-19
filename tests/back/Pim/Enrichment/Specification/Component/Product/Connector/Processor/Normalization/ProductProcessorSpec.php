@@ -3,7 +3,6 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductProcessor;
-use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
@@ -212,7 +211,7 @@ class ProductProcessorSpec extends ObjectBehavior
         JobInstance $jobInstance,
         WriteValueCollection $valuesCollection,
         ExecutionContext $executionContext,
-        AttributeRepository $attributeRepository,
+        AttributeRepositoryInterface $attributeRepository,
         AttributeInterface $attribute
     ) {
 
