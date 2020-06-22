@@ -18,10 +18,7 @@ import {
   permissionFetcher,
   Permissions,
 } from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/permission';
-import {
-  attributeFetcher,
-  fetchAssetAttributes,
-} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute';
+import {fetchAssetAttributes} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute';
 import {AttributeGroupCollection} from 'akeneoassetmanager/platform/model/structure/attribute-group';
 import {
   attributeGroupFetcher,
@@ -61,7 +58,7 @@ const transformValues = (legacyValues: LegacyValueCollection, assetAttributes: A
  *    - if the product category has the edit permission
  */
 const generate = async (product: Product): Promise<ValueCollection> => {
-  const assetAttributes: Attribute[] = await fetchAssetAttributes(attributeFetcher())();
+  const assetAttributes: Attribute[] = await fetchAssetAttributes();
 
   let valueCollection: ValueCollection = transformValues(product.values, assetAttributes);
 

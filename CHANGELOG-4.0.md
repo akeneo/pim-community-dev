@@ -5,6 +5,7 @@
 ## Bug fixes
 
 - PIM-9298: Disallow removal of ReferenceEntity records used as product variant axis
+- PIM-9313: Remove limit of only 20 asset collection attributes in the product's assets tab
 
 ## Technical Improvements
 
