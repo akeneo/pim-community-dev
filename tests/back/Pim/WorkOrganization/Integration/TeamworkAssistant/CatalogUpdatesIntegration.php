@@ -136,6 +136,42 @@ class CatalogUpdatesIntegration extends TeamworkAssistantTestCase
     }
 
     /**
+     * A project should not be impacted when a category not used as product filter is removed.
+     */
+    public function testRemoveExternalCategory()
+    {
+        $categoryRemover = $this->get('pim_catalog.remover.category');
+        $categoryRepository = $this->get('pim_catalog.repository.category');
+        $project = $this->createProject('High-Tech project', 'admin', 'en_US', 'tablet', [
+            [
+                'field'    => 'categories',
+                'operator' => 'IN OR UNCLASSIFIED',
+                'value'    => [
+                    'default',
+                    'clothing',
+                    'high_tech',
+                    'decoration',
+                    'car',
+                ],
+                'type' => 'field',
+            ],
+            [
+                'field'    => 'categories',
+                'operator' => 'IN',
+                'value'    => [
+                    'clothing'
+                ],
+                'type' => 'field',
+            ],
+        ]);
+
+        $category = $categoryRepository->findOneByIdentifier('car');
+        $categoryRemover->remove($category);
+
+        $this->calculateProject($project);
+    }
+
+    /**
      * A project must be removed if an attribute used as product filter is removed.
      */
     public function testRemoveCurrencyFromChannelRemovesAssociatedProjects()
