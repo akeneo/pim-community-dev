@@ -3,7 +3,7 @@ import {Provider} from 'react-redux';
 
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import attributeOptionsStore from './store/store';
-import {AttributeContextProvider, LocalesContextProvider} from './contexts';
+import {AttributeContextProvider, AttributeOptionsContextProvider, LocalesContextProvider} from './contexts';
 import AttributeOptions from './components/AttributeOptions';
 import OverridePimStyle from './components/OverridePimStyles';
 import {resetAttributeOptionsAction} from './reducers';
@@ -26,8 +26,10 @@ const AttributeOptionsApp = ({attributeId, autoSortOptions}: IndexProps) => {
             <Provider store={attributeOptionsStore}>
                 <AttributeContextProvider attributeId={attributeId} autoSortOptions={autoSortOptions}>
                     <LocalesContextProvider>
-                        <OverridePimStyle/>
-                        <AttributeOptions />
+                        <AttributeOptionsContextProvider attributeId={attributeId}>
+                            <OverridePimStyle/>
+                            <AttributeOptions />
+                        </AttributeOptionsContextProvider>
                     </LocalesContextProvider>
                 </AttributeContextProvider>
             </Provider>

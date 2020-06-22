@@ -8,6 +8,7 @@ import {
 import {LocalesContext, LocalesContextProvider, useLocalesContext} from './LocalesContext';
 
 export * from './EditingOptionContext';
+export * from './AttributeOptionsContext';
 
 export {
     AttributeContext,

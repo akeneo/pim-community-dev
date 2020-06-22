@@ -1,13 +1,11 @@
 import {useCallback, useEffect, useReducer} from 'react';
-import {useSelector} from 'react-redux';
-
-import {AttributeOptionsState} from '../store/store';
 import {AttributeOption} from '../model';
 import {
     ADD_ATTRIBUTE_OPTION_EXTRA_DATA_ACTION,
     AttributeOptionsExtraData,
     attributeOptionsExtraDataReducer,
-    ExtraData, REMOVE_ATTRIBUTE_OPTION_EXTRA_DATA_ACTION
+    ExtraData,
+    REMOVE_ATTRIBUTE_OPTION_EXTRA_DATA_ACTION
 } from '../reducers';
 
 export const ATTRIBUTE_OPTIONS_LIST_LOADED = 'attribute_options_list_loaded';
@@ -28,8 +26,7 @@ export type AttributeOptionsListStateEvent = {
 };
 
 
-export const useAttributeOptionsListState = ():AttributeOptionsListState => {
-    const attributeOptions = useSelector((state: AttributeOptionsState) => state.attributeOptions);
+export const useAttributeOptionsListState = (attributeOptions: AttributeOption[]|null):AttributeOptionsListState => {
     const [extraData, dispatch] = useReducer(attributeOptionsExtraDataReducer, {});
 
     const getAttributeOption = useCallback((code: string): AttributeOption|undefined => {

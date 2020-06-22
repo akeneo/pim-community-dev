@@ -1,5 +1,5 @@
-import {AttributeContextState} from '../contexts';
 import {useCallback, useState} from 'react';
+import {AttributeContextState} from '../contexts';
 import {ATTRIBUTE_OPTIONS_AUTO_SORT} from '../model';
 
 const useAttributeContextState = (attributeId: number, initialAutoSortOptions: boolean): AttributeContextState => {

@@ -4,8 +4,8 @@ import {AttributeOption} from '../model';
 
 type UseSortedAttributeOptionsState = {
     sortedAttributeOptions: AttributeOption[]|null,
-    moveAttributeOption: (sourceOptionCode: string, targetOptionCode: string) => void;
-    validateMoveAttributeOption: () => void;
+    move: (sourceOptionCode: string, targetOptionCode: string) => void;
+    validate: () => void;
 }
 
 export const useSortedAttributeOptions = (
@@ -13,8 +13,9 @@ export const useSortedAttributeOptions = (
     autoSortOptions: boolean,
     manuallySortAttributeOptions: (attributeOptions: AttributeOption[]) => void
 ): UseSortedAttributeOptionsState => {
-    const [sortedAttributeOptions, setSortedAttributeOptions] = useState<AttributeOption[] | null>(attributeOptions);
-    const moveAttributeOption = useCallback((sourceOptionCode: string, targetOptionCode: string) => {
+    const [sortedAttributeOptions, setSortedAttributeOptions] = useState<AttributeOption[]|null>(attributeOptions);
+
+    const move = useCallback((sourceOptionCode: string, targetOptionCode: string) => {
         if (sortedAttributeOptions !== null && sourceOptionCode !== targetOptionCode) {
             const sourceIndex = sortedAttributeOptions.findIndex((attributeOption: AttributeOption) => attributeOption.code === sourceOptionCode);
             const targetIndex = sortedAttributeOptions.findIndex((attributeOption: AttributeOption) => attributeOption.code === targetOptionCode);
@@ -28,7 +29,7 @@ export const useSortedAttributeOptions = (
         }
     }, [sortedAttributeOptions]);
 
-    const validateMoveAttributeOption = useCallback(() => {
+    const validate = useCallback(() => {
         if (sortedAttributeOptions !== null && JSON.stringify(sortedAttributeOptions) !== JSON.stringify(attributeOptions)) {
             manuallySortAttributeOptions(sortedAttributeOptions);
         }
@@ -47,10 +48,9 @@ export const useSortedAttributeOptions = (
         }
     }, [attributeOptions, autoSortOptions]);
 
-
     return {
         sortedAttributeOptions,
-        moveAttributeOption,
-        validateMoveAttributeOption
+        move,
+        validate
     };
 };

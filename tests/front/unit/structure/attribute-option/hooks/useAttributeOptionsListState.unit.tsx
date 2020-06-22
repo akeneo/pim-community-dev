@@ -1,8 +1,6 @@
-import React, {PropsWithChildren} from 'react';
-import {Provider} from 'react-redux';
+import React from 'react';
 import {act, renderHook} from '@testing-library/react-hooks';
 
-import {AttributeOptionsState, createStoreWithInitialState} from 'akeneopimstructure/js/attribute-option/store/store';
 import {
     ATTRIBUTE_OPTIONS_LIST_LOADED,
     AttributeOptionsListState,
@@ -11,14 +9,8 @@ import {
 } from 'akeneopimstructure/js/attribute-option/hooks/useAttributeOptionsListState';
 import {AttributeOption} from 'akeneopimstructure/js/attribute-option/model';
 
-const renderUseAttributeOptionsListStateHook = (initialState: AttributeOptionsState) => {
-    const store = createStoreWithInitialState(initialState);
-
-    return renderHook(() => useAttributeOptionsListState(), {
-        wrapper: ({children}: PropsWithChildren<any>) => (
-            <Provider store={store}>{children}</Provider>
-        )
-    });
+const renderUseAttributeOptionsListStateHook = (attributeOptions: AttributeOption[]|null) => {
+    return renderHook(() => useAttributeOptionsListState(attributeOptions));
 };
 
 const givenAttributeOptions = (): AttributeOption[]|null => {
@@ -66,9 +58,7 @@ describe('useAttributeOptionsList', () => {
 
     describe('dispatch attribute options list ist loaded', () => {
         it('it should not dispatch the attribute options list when it is null', () => {
-            const {result} = renderUseAttributeOptionsListStateHook({
-                attributeOptions: null,
-            });
+            const {result} = renderUseAttributeOptionsListStateHook(null);
 
             act(() => {
                 const expectedEvent = expectAttributeOptionsListLoadedEvent(result.current);
@@ -77,9 +67,7 @@ describe('useAttributeOptionsList', () => {
         });
 
         it('it should dispatch the attribute options list when it is loaded', () => {
-            const {result} = renderUseAttributeOptionsListStateHook({
-                attributeOptions: givenAttributeOptions(),
-            });
+            const {result} = renderUseAttributeOptionsListStateHook(givenAttributeOptions());
 
             act(() => {
                 const expectedEvent = expectAttributeOptionsListLoadedEvent(result.current);
@@ -88,9 +76,7 @@ describe('useAttributeOptionsList', () => {
         });
 
         it('it should dispatch the attribute options list when it is loaded but empty', () => {
-            const {result} = renderUseAttributeOptionsListStateHook({
-                attributeOptions: [],
-            });
+            const {result} = renderUseAttributeOptionsListStateHook([]);
 
             act(() => {
                 const expectedEvent = expectAttributeOptionsListLoadedEvent(result.current);
@@ -101,9 +87,7 @@ describe('useAttributeOptionsList', () => {
 
     describe('getAttributeOption', () => {
         it('it should retrieve the attribute option with a valid code', () => {
-            const {result} = renderUseAttributeOptionsListStateHook({
-                attributeOptions: givenAttributeOptions(),
-            });
+            const {result} = renderUseAttributeOptionsListStateHook(givenAttributeOptions());
             let blue;
             let red;
 
@@ -124,9 +108,7 @@ describe('useAttributeOptionsList', () => {
         });
 
         it('it should return undefined when the attribute options list is null', () => {
-            const {result} = renderUseAttributeOptionsListStateHook({
-                attributeOptions: null,
-            });
+            const {result} = renderUseAttributeOptionsListStateHook(null);
 
             let black;
 
@@ -140,9 +122,7 @@ describe('useAttributeOptionsList', () => {
 
     describe('add and remove extra data', () => {
         it('it should add or remove extra data for attribute option', () => {
-            const {result} = renderUseAttributeOptionsListStateHook({
-                attributeOptions: givenAttributeOptions(),
-            });
+            const {result} = renderUseAttributeOptionsListStateHook(givenAttributeOptions());
 
             expect(result.current.extraData).toEqual({});
 
@@ -166,9 +146,7 @@ describe('useAttributeOptionsList', () => {
         });
 
         it('it should add or remove extra data for attribute option', () => {
-            const {result} = renderUseAttributeOptionsListStateHook({
-                attributeOptions: null,
-            });
+            const {result} = renderUseAttributeOptionsListStateHook(null);
 
             expect(result.current.extraData).toEqual({});
 

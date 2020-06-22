@@ -1,11 +1,9 @@
-import React, {useEffect, useRef} from 'react';
+import React, {FC, useEffect, useRef} from 'react';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useAttributeOptionsContext} from '../contexts/AttributeOptionsContext';
 
-interface NewProps {
-    createAttributeOption: (optionCode: string) => void;
-}
-
-const New = ({createAttributeOption}: NewProps) => {
+const New: FC = () => {
+    const {create} = useAttributeOptionsContext();
     const translate = useTranslate();
     const newOptionCodeRef = useRef<HTMLInputElement>(null);
 
@@ -18,7 +16,7 @@ const New = ({createAttributeOption}: NewProps) => {
     const createNewOptionFromCode = (event: any) => {
         event.preventDefault();
         if (newOptionCodeRef.current !== null && newOptionCodeRef.current.value) {
-            createAttributeOption(newOptionCodeRef.current.value.trim());
+            create(newOptionCodeRef.current.value.trim());
         }
     };
 

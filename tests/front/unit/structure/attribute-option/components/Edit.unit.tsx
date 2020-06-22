@@ -1,11 +1,13 @@
 import React from 'react';
-import * as ReactDOM from 'react-dom';
+import {Provider} from "react-redux";
 import '@testing-library/jest-dom/extend-expect';
-import {act, fireEvent, getByRole, queryAllByRole} from '@testing-library/react';
+import {act, fireEvent, render} from '@testing-library/react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import Edit from 'akeneopimstructure/js/attribute-option/components/Edit';
 import {AttributeContextProvider, LocalesContextProvider} from 'akeneopimstructure/js/attribute-option/contexts';
 import {AttributeOption} from "akeneopimstructure/js/attribute-option/model";
+import {AttributeOptionsContextProvider} from "../../../../../../src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute-option/contexts";
+import {createStoreWithInitialState} from "../../../../../../public/bundles/akeneopimstructure/js/attribute-option/store/store";
 
 declare global {
     namespace NodeJS {
@@ -14,19 +16,6 @@ declare global {
         }
     }
 }
-
-let container: HTMLElement;
-
-beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
-});
-
-afterEach(() => {
-    document.body.removeChild(container);
-    global.fetch && global.fetch.mockClear();
-    delete global.fetch;
-});
 
 const option: AttributeOption = {
     id: 80,
@@ -45,7 +34,36 @@ const option: AttributeOption = {
     },
 };
 
+const renderEditWithContext = () => {
+    return render(
+        <DependenciesProvider>
+            <Provider store={createStoreWithInitialState({attributeOptions: [option]})}>
+                <AttributeContextProvider attributeId={8} autoSortOptions={true}>
+                    <LocalesContextProvider>
+                        <AttributeOptionsContextProvider attributeId={8}>
+                            <Edit option={option} />
+                        </AttributeOptionsContextProvider>
+                    </LocalesContextProvider>
+                </AttributeContextProvider>
+            </Provider>
+        </DependenciesProvider>
+    );
+};
+
 describe('Edit an attribute option', () => {
+    beforeAll(() => {
+        global.fetch = jest.fn();
+    });
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    afterAll(() => {
+        jest.restoreAllMocks();
+        delete global.fetch;
+    })
+
     test('it renders an option form', async () => {
         global.fetch = jest.fn().mockImplementationOnce(route => {
             return {json: () => [
@@ -56,27 +74,22 @@ describe('Edit an attribute option', () => {
 
         const saveCallback = jest.fn();
 
-        await act(async () => {
-            ReactDOM.render(
-                <DependenciesProvider>
-                    <AttributeContextProvider attributeId={8} autoSortOptions={true}>
-                        <LocalesContextProvider>
-                            <Edit option={option} saveAttributeOption={saveCallback} />
-                        </LocalesContextProvider>
-                    </AttributeContextProvider>
-                </DependenciesProvider>,
-                container
-            );
-        });
+        const {queryAllByRole, getByRole} = renderEditWithContext();
 
-        const translations = queryAllByRole(container, 'attribute-option-label');
+        const translations = queryAllByRole('attribute-option-label');
         expect(translations.length).toBe(2);
 
-        const saveButton = getByRole(container, 'save-options-translations');
+        const saveButton = getByRole('save-options-translations');
         expect(saveButton).toBeInTheDocument();
 
-        await fireEvent.change(translations[0], {target: {value: 'Black 2'}});
-        await fireEvent.click(saveButton);
+        act(() => {
+            fireEvent.change(translations[0], {target: {value: 'Black 2'}});
+        });
+
+        act(() => {
+            fireEvent.click(saveButton);
+        })
+
         let expectedOption: AttributeOption = expect.objectContaining({
             id: 80,
             code: 'black',

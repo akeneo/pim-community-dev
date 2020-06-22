@@ -4,14 +4,24 @@ import {useAttributeContext} from '../contexts';
 
 const ToggleButton = () => {
     const translate = useTranslate();
-    const attributeContext = useAttributeContext();
+    const {autoSortOptions, toggleAutoSortOptions} = useAttributeContext();
 
     return (
         <div className="switch switch-small has-switch" data-on-label="Yes" data-off-label="No">
-            <div className={`switch-animate switch-${attributeContext.autoSortOptions ? 'on' : 'off'}`}>
-                <input id="auto-sort-options" type="checkbox" name="auto_option_sorting" checked={attributeContext.autoSortOptions} readOnly={true}/>
+            <div className={`switch-animate switch-${autoSortOptions ? 'on' : 'off'}`}>
+                <input
+                    id="auto-sort-options"
+                    type="checkbox"
+                    name="auto_option_sorting"
+                    defaultChecked={autoSortOptions}
+                />
                 <span className="switch-left switch-small">{translate('Yes')}</span>
-                <label className="switch-small" onClick={() => attributeContext.toggleAutoSortOptions()} role="toggle-sort-attribute-option" htmlFor="auto-sort-options">
+                <label
+                    className="switch-small"
+                    role="toggle-sort-attribute-option"
+                    htmlFor="auto-sort-options"
+                    onClick={toggleAutoSortOptions}
+                >
                     &nbsp;
                 </label>
                 <span className="switch-right switch-small">{translate('No')}</span>

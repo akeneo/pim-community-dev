@@ -1,67 +1,60 @@
-import React, {useEffect, useState} from 'react';
+import React, {FC, useCallback, useState} from 'react';
 
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {AttributeOption} from '../model';
-import {useAttributeContext} from '../contexts';
+import {useAttributeContext, useAttributeOptionsContext} from '../contexts';
 import {useAttributeOptionsListState} from '../hooks/useAttributeOptionsListState';
 import {useSortedAttributeOptions} from '../hooks/useSortedAttributeOptions';
 import ToggleButton from './ToggleButton';
 import ListItem, {DragItem} from './ListItem';
 import NewOptionPlaceholder from './NewOptionPlaceholder';
 
-interface ListProps {
-    selectAttributeOption: (selectedOptionId: number | null) => void;
-    isNewOptionFormDisplayed: boolean,
-    showNewOptionForm: (isDisplayed: boolean) => void;
-    selectedOptionId: number | null;
-    deleteAttributeOption: (attributeOptionId: number) => void;
-    manuallySortAttributeOptions: (attributeOptions: AttributeOption[]) => void;
-}
-
-const List = ({selectAttributeOption, selectedOptionId, isNewOptionFormDisplayed, showNewOptionForm, deleteAttributeOption, manuallySortAttributeOptions}: ListProps) => {
-    const {attributeOptions, extraData} = useAttributeOptionsListState();
+const List: FC = () => {
     const translate = useTranslate();
-    const attributeContext = useAttributeContext();
+    const {autoSortOptions} = useAttributeContext();
+    const {
+        attributeOptions,
+        selectedOption,
+        isCreating,
+        select,
+        sort,
+        deactivateCreation,
+        activateCreation
+    } = useAttributeOptionsContext();
+    const {extraData} = useAttributeOptionsListState(attributeOptions);
     const {
         sortedAttributeOptions,
-        moveAttributeOption,
-        validateMoveAttributeOption
-    } = useSortedAttributeOptions(attributeOptions, attributeContext.autoSortOptions, manuallySortAttributeOptions);
-    const [showNewOptionPlaceholder, setShowNewOptionPlaceholder] = useState<boolean>(isNewOptionFormDisplayed);
+        move,
+        validate
+    } = useSortedAttributeOptions(attributeOptions, autoSortOptions, sort);
     const [dragItem, setDragItem] = useState<DragItem | null>(null);
 
-    useEffect(() => {
-        if (selectedOptionId !== null) {
-            setShowNewOptionPlaceholder(false);
-        }
-    }, [selectedOptionId]);
+    const onSelectItem = useCallback(async (optionId: number) => {
+        await select(optionId);
+        deactivateCreation();
+    }, [select, deactivateCreation]);
 
+    const displayNewOptionPlaceholder = useCallback(() => {
+        select(null);
+        activateCreation();
+    }, [select, activateCreation]);
 
-    const onSelectItem = (optionId: number) => {
-        setShowNewOptionPlaceholder(false);
-        selectAttributeOption(optionId);
-        showNewOptionForm(false);
-    };
-
-    const displayNewOptionPlaceholder = () => {
-        setShowNewOptionPlaceholder(true);
-        selectAttributeOption(null);
-        showNewOptionForm(true);
-    };
-
-    const cancelNewOption = () => {
-        showNewOptionForm(false);
-        setShowNewOptionPlaceholder(false);
+    const cancelNewOption = useCallback(async () => {
+        deactivateCreation();
         if (attributeOptions !== null && attributeOptions.length > 0) {
-            selectAttributeOption(attributeOptions[0].id);
+            await select(attributeOptions[0].id);
         }
-    };
+    }, [deactivateCreation, attributeOptions, select]);
 
     return (
         <div className="AknSubsection AknAttributeOption-list">
             <div className="AknSubsection-title AknSubsection-title--glued tabsection-title">
                 <span>{translate('pim_enrich.entity.attribute_option.module.edit.options_codes')}</span>
-                <div className="AknButton AknButton--micro" onClick={() => displayNewOptionPlaceholder()} role="add-new-attribute-option-button">
+                <div
+                    className="AknButton AknButton--micro"
+                    role="add-new-attribute-option-button"
+                    onClick={displayNewOptionPlaceholder}
+                >
                     {translate('pim_enrich.entity.product.module.attribute.add_option')}
                 </div>
             </div>
@@ -69,6 +62,7 @@ const List = ({selectAttributeOption, selectedOptionId, isNewOptionFormDisplayed
             <label className="AknFieldContainer-header" htmlFor="auto-sort-options">
                 {translate('pim_enrich.entity.attribute.property.auto_option_sorting')}
             </label>
+
             <ToggleButton />
 
             <div className="AknAttributeOption-list-optionsList" role="attribute-options-list">
@@ -78,10 +72,9 @@ const List = ({selectAttributeOption, selectedOptionId, isNewOptionFormDisplayed
                             key={attributeOption.code}
                             data={attributeOption}
                             selectAttributeOption={onSelectItem}
-                            isSelected={selectedOptionId === attributeOption.id}
-                            deleteAttributeOption={deleteAttributeOption}
-                            moveAttributeOption={moveAttributeOption}
-                            validateMoveAttributeOption={validateMoveAttributeOption}
+                            isSelected={selectedOption === attributeOption}
+                            moveAttributeOption={move}
+                            validateMoveAttributeOption={validate}
                             dragItem={dragItem}
                             setDragItem={setDragItem}
                             index={index}
@@ -91,7 +84,7 @@ const List = ({selectAttributeOption, selectedOptionId, isNewOptionFormDisplayed
                     );
                 })}
 
-                {showNewOptionPlaceholder && (<NewOptionPlaceholder cancelNewOption={cancelNewOption}/>)}
+                {(isCreating()) && (<NewOptionPlaceholder cancelNewOption={cancelNewOption}/>)}
             </div>
         </div>
     );

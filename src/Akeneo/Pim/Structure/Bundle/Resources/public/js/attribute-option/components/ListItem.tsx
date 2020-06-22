@@ -1,7 +1,7 @@
 import React, {FC, useRef, useState} from 'react';
 import {AttributeOption} from '../model';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
-import {useAttributeContext} from '../contexts';
+import {useAttributeContext, useAttributeOptionsContext} from '../contexts';
 
 export type DragItem = {
     code: string;
@@ -12,7 +12,6 @@ interface AttributeOptionItemProps {
     data: AttributeOption;
     selectAttributeOption: (selectedOptionId: number) => void;
     isSelected: boolean;
-    deleteAttributeOption: (optionId: number) => void;
     moveAttributeOption: (sourceOptionCode: string, targetOptionCode: string) => void;
     validateMoveAttributeOption: () => void;
     dragItem: DragItem | null;
@@ -21,14 +20,15 @@ interface AttributeOptionItemProps {
 }
 
 const ListItem: FC<AttributeOptionItemProps> = ({children, ...props}) => {
-    const {data, selectAttributeOption, isSelected, deleteAttributeOption, moveAttributeOption, validateMoveAttributeOption, dragItem, setDragItem, index} = props;
+    const {data, selectAttributeOption, isSelected, moveAttributeOption, validateMoveAttributeOption, dragItem, setDragItem, index} = props;
     const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState<boolean>(false);
+    const {remove} = useAttributeOptionsContext();
     const attributeContext = useAttributeContext();
     const rowRef = useRef(null);
 
     const deleteOption = () => {
         setShowDeleteConfirmationModal(false);
-        deleteAttributeOption(data.id);
+        remove(data.id);
     };
 
     const onDragStart = (event: any) => {
