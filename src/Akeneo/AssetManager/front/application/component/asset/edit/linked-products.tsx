@@ -43,6 +43,7 @@ const SubsectionHeaderSeparator = styled.div`
 `;
 
 interface StateProps {
+  assetCode: string;
   context: {
     locale: string;
     channel: string;
@@ -61,6 +62,7 @@ interface DispatchProps {
 }
 
 const LinkedProducts = ({
+  assetCode,
   products,
   totalCount,
   isLoaded,
@@ -123,7 +125,7 @@ const LinkedProducts = ({
         ))}
       </Grid>
       {products.length === 0 && <NoResults message={__('pim_asset_manager.asset.no_linked_products')} />}
-      <Limit productCount={products.length} totalCount={totalCount} attribute={selectedAttribute} />
+      <Limit assetCode={assetCode} productCount={products.length} totalCount={totalCount} attribute={selectedAttribute} />
     </Subsection>
   );
 };
@@ -131,6 +133,7 @@ const LinkedProducts = ({
 export default connect(
   (state: EditState): StateProps => {
     return {
+      assetCode: state.form.data.code,
       context: {
         locale: state.user.catalogLocale,
         channel: state.user.catalogChannel,

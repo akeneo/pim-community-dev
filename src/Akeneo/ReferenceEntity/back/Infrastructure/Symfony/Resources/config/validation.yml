@@ -154,6 +154,10 @@ Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery:
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\FilterRecordsByCompleteness: ~
 
+Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordCommand:
+    constraints:
+        - Akeneo\Pim\Enrichment\ReferenceEntity\Component\Validator\Constraints\RecordShouldNotBeUsedAsProductVariantAxis: ~
+
 # Attributes
 Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand:
     group_sequence:

@@ -52,6 +52,11 @@ class ProductRepository implements ProductRepositoryInterface
         ]);
 
         foreach ($productFilers as $productFiler) {
+            if ('categories' === $productFiler['field']
+                && 'IN OR UNCLASSIFIED' === $productFiler['operator']
+            ) {
+                continue;
+            }
             $productQueryBuilder->addFilter($productFiler['field'], $productFiler['operator'], $productFiler['value']);
         }
 
