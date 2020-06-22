@@ -323,6 +323,7 @@ define([
         quantifiedAssociations,
         parentQuantifiedAssociations,
         errors,
+        isCompact: false,
         onAssociationsChange: updatedAssociations => {
           const formData = this.getFormData();
           formData.quantified_associations = {
