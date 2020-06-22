@@ -143,7 +143,7 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
     return (
       <div className='AknGrid-bodyCell'>
         <ConditionErrorLine>
-          {translate('pimee_catalog_rule.exceptions.unknown_attribute', {
+          {translate('pimee_catalog_rule.exceptions.unknown_attribute_code', {
             attributeCode: condition.field,
           })}
         </ConditionErrorLine>

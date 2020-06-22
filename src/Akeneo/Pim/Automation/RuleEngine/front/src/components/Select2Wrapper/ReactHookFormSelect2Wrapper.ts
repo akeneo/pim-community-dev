@@ -4,7 +4,10 @@ import { useFormContext } from 'react-hook-form';
 
 type Props = {
   name: string;
-  validation?: { required?: string; validate?: (value: any) => string | true };
+  validation?: {
+    required?: string;
+    validate?: (value: any) => string | true | Promise<string | true>;
+  };
   value?: Select2Value | Select2Value[];
   onChange: (value: Select2Value) => void;
 } & Select2Props;

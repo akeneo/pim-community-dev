@@ -1,21 +1,24 @@
-import { renderWithProviders, act, fireEvent } from '../../../../test-utils';
+import {
+  renderWithProviders,
+  act,
+  fireEvent,
+} from '../../../../../../test-utils';
 import React from 'react';
 import 'jest-fetch-mock';
-import { ClearAttributeActionLine } from '../../../../src/pages/EditRules/components/actions/ClearAttributeActionLine';
-import { clearAttributeRepositoryCache } from '../../../../src/repositories/AttributeRepository';
+import { ClearAttributeActionLine } from '../../../../../../src/pages/EditRules/components/actions/ClearAttributeActionLine';
+import { clearAttributeRepositoryCache } from '../../../../../../src/repositories/AttributeRepository';
 import userEvent from '@testing-library/user-event';
 import {
   attributeSelect2Response,
   createAttribute,
   locales,
   scopes,
-} from '../../factories';
-import { ClearAttributeAction } from '../../../../src/models/actions';
+} from '../../../../factories';
+import { ClearAttributeAction } from '../../../../../../src/models/actions';
 
-jest.mock('../../../../src/fetch/categoryTree.fetcher');
-jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
-jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
-jest.mock('../../../../src/fetch/categoryTree.fetcher.ts');
+jest.mock('../../../../../../src/components/Select2Wrapper/Select2Wrapper');
+jest.mock('../../../../../../src/dependenciesTools/provider/dependencies.ts');
+jest.mock('../../../../../../src/fetch/categoryTree.fetcher.ts');
 
 const action: ClearAttributeAction = {
   type: 'clear',

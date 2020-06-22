@@ -30,7 +30,7 @@ final class GetProductModelIdsToEvaluateQuery implements GetProductIdsToEvaluate
     public function execute(int $limit, int $bulkSize): \Iterator
     {
         $sql = <<<SQL
-SELECT evaluation.product_id
+SELECT DISTINCT evaluation.product_id
 FROM pimee_data_quality_insights_product_model_criteria_evaluation AS evaluation
 INNER JOIN pim_catalog_product_model AS product_model ON(product_model.id = evaluation.product_id)
 WHERE evaluation.status = :status

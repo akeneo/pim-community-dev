@@ -54,6 +54,10 @@ export const attributeSelect2Response = [
         id: 'description',
         text: 'Description',
       },
+      {
+        id: 'brand',
+        text: 'Brand',
+      },
     ],
   },
 ];

@@ -65,8 +65,7 @@ mailer:
 
 image:
   pim:
-    repository: eu.gcr.io/akeneo-ci/pim-enterprise-dev
-    # image.pim.tag is added by the Jenkinsfile when running the CI, manually use "--set image.pim.tag x.y.z-AB"
+    repository: eu.gcr.io/akeneo-cloud/pim-enterprise-dev
     pullPolicy: IfNotPresent
     tag: master
   httpd:

@@ -8,7 +8,10 @@ import {
   ActionRightSide,
   ActionTitle,
 } from './ActionLine';
-import { AttributeLocaleScopeSelector } from './attribute';
+import {
+  AttributeLocaleScopeSelector,
+  MANAGED_ATTRIBUTE_TYPES,
+} from './attribute';
 import { Attribute } from '../../../../models';
 import { useRegisterConst } from '../../hooks/useRegisterConst';
 import { useTranslate } from '../../../../dependenciesTools/hooks';
@@ -31,15 +34,14 @@ const SetActionLine: React.FC<Props> = ({
     Attribute | null | undefined
   >(undefined);
 
-  const validateValue = {
-    required: translate('pimee_catalog_rule.exceptions.required_value'),
-  };
-
   useRegisterConst(`content.actions[${lineNumber}].type`, 'set');
 
   const onAttributeChange = (newAttribute: Attribute | null) => {
     setAttribute(newAttribute);
   };
+
+  const isUnmanagedAttribute = () =>
+    attribute && !(attribute.type in MANAGED_ATTRIBUTE_TYPES);
 
   return (
     <ActionTemplate
@@ -47,6 +49,7 @@ const SetActionLine: React.FC<Props> = ({
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'
       handleDelete={handleDelete}>
+      <LineErrors lineNumber={lineNumber} type='actions' />
       <ActionGrid>
         <ActionLeftSide>
           <ActionTitle>
@@ -73,6 +76,8 @@ const SetActionLine: React.FC<Props> = ({
             locales={locales}
             localeValue={action.locale || undefined}
             onAttributeChange={onAttributeChange}
+            filterAttributeTypes={Object.keys(MANAGED_ATTRIBUTE_TYPES)}
+            disabled={isUnmanagedAttribute() ? true : undefined}
           />
         </ActionLeftSide>
         <ActionRightSide>
@@ -85,12 +90,10 @@ const SetActionLine: React.FC<Props> = ({
             id={`edit-rules-action-${lineNumber}-value`}
             attribute={attribute}
             name={`content.actions[${lineNumber}].value`}
-            validation={validateValue}
             value={action.value}
           />
         </ActionRightSide>
       </ActionGrid>
-      <LineErrors lineNumber={lineNumber} type='actions' />
     </ActionTemplate>
   );
 };
