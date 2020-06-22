@@ -24,13 +24,13 @@ Feature: Validate localized price attributes of a product
   Scenario: Validate the decimals allowed constraint of price attribute
     Given I change the "Coût" to "2,7 USD"
     And I save the product
-    Then I should see validation tooltip "Cette valeur ne doit pas être un nombre décimal."
+    Then I should see validation tooltip "L'attribut cost requiert un nombre entier et la valeur 2.7 soumise ne l'est pas."
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the decimals allowed constraint of scopable price attribute
     Given I change the "Prix" to "4,9 EUR"
     And I save the product
-    Then I should see validation tooltip "Cette valeur ne doit pas être un nombre décimal."
+    Then I should see validation tooltip "L'attribut price requiert un nombre entier et la valeur 4.9 soumise ne l'est pas."
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the number min constraint of price attribute

@@ -34,11 +34,17 @@ class NotDecimalValidatorSpec extends ObjectBehavior
 
     function it_does_not_validate_decimal_value(
         $context,
-        NotDecimal $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
+        $constraint = new NotDecimal(['attributeCode' => 'number']);
         $context
-            ->buildViolation($constraint->message)
+            ->buildViolation(
+                $constraint->message,
+                [
+                    '%attribute%' => 'number',
+                    '%value%' => 100.5
+                ]
+            )
             ->shouldBeCalled()
             ->willReturn($violation);
 
@@ -56,11 +62,17 @@ class NotDecimalValidatorSpec extends ObjectBehavior
 
     function it_does_not_validate_string_value(
         $context,
-        NotDecimal $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
+        $constraint = new NotDecimal(['attributeCode' => 'number']);
         $context
-            ->buildViolation($constraint->message)
+            ->buildViolation(
+                $constraint->message,
+                [
+                    '%attribute%' => 'number',
+                    '%value%' => '100.5',
+                ]
+            )
             ->shouldBeCalled()
             ->willReturn($violation);
 
@@ -78,16 +90,22 @@ class NotDecimalValidatorSpec extends ObjectBehavior
         $this->validate($productPrice, $constraint);
     }
 
-    function it_does_not_validate_a_product_media(
+    function it_does_not_validate_a_price(
         $context,
-        NotDecimal $constraint,
         ProductPriceInterface $productPrice,
         ConstraintViolationBuilderInterface $violation
     ) {
+        $constraint = new NotDecimal(['attributeCode' => 'number']);
         $productPrice->getData()->willReturn(520.55);
 
         $context
-            ->buildViolation($constraint->message)
+            ->buildViolation(
+                $constraint->message,
+                [
+                    '%attribute%' => 'number',
+                    '%value%' => 520.55,
+                ]
+            )
             ->shouldBeCalled()
             ->willReturn($violation);
 
@@ -107,14 +125,20 @@ class NotDecimalValidatorSpec extends ObjectBehavior
 
     function it_does_not_validate_a_metric(
         $context,
-        NotDecimal $constraint,
         MetricInterface $metric,
         ConstraintViolationBuilderInterface $violation
     ) {
         $metric->getData()->willReturn(82.25);
 
+        $constraint = new NotDecimal(['attributeCode' => 'number']);
         $context
-            ->buildViolation($constraint->message)
+            ->buildViolation(
+                $constraint->message,
+                [
+                    '%attribute%' => 'number',
+                    '%value%' => 82.25,
+                ]
+            )
             ->shouldBeCalled()
             ->willReturn($violation);
 
