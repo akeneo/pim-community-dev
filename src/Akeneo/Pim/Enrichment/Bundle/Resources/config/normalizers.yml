@@ -203,7 +203,6 @@ services:
             - '@pim_catalog.association.missing_association_adder'
             - '@pim_catalog.normalizer.standard.product.parent_associations'
             - '@pim_catalog.context.catalog'
-            - '@pim_catalog.completeness.calculator'
             - '@pim_enrich.normalizer.missing_required_attributes'
             - '@pim_catalog.normalizer.standard.product.quantified_associations'
             - '@pim_catalog.completeness.missing_required_attributes_calculator'

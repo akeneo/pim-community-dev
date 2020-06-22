@@ -2,16 +2,16 @@
 
 namespace spec\Akeneo\Test\Acceptance\Product;
 
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Test\Acceptance\Common\NotImplementedException;
-use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Test\Acceptance\Common\NotImplementedException;
+use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use PhpSpec\ObjectBehavior;
 
 class InMemoryProductRepositorySpec extends ObjectBehavior
 {
@@ -100,7 +100,7 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
         $product2->setIdentifier('product-2');
         $this->save($product2);
 
-        $this->findAll()->shouldReturn([$product1, $product2]);
+        $this->findAll()->shouldReturn(['product-1' => $product1, 'product-2' => $product2]);
     }
 
     function it_asserts_that_the_other_methods_are_not_implemented_yet()
@@ -112,7 +112,8 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
         $this->shouldThrow(NotImplementedException::class)->during('getProductsByGroup', [new Group(), 10]);
         $this->shouldThrow(NotImplementedException::class)->during('getProductCountByGroup', [new Group()]);
         $this->shouldThrow(NotImplementedException::class)->during('countAll', []);
-        $this->shouldThrow(NotImplementedException::class)->during('hasAttributeInFamily', ['a-product', 'an-attribute']);
+        $this->shouldThrow(NotImplementedException::class)->during('hasAttributeInFamily',
+            ['a-product', 'an-attribute']);
         $this->shouldThrow(NotImplementedException::class)->during('searchAfter', [null, 89]);
     }
 
@@ -135,7 +136,7 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
 
     function it_returns_products_from_identifiers()
     {
-        foreach(['A', 'B', 'C'] as $identifier){
+        foreach (['A', 'B', 'C'] as $identifier) {
             $product = new Product();
             $product->setIdentifier($identifier);
             $this->save($product);
