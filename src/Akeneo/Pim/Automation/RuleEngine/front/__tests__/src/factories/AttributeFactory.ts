@@ -61,3 +61,20 @@ export const attributeSelect2Response = [
     ],
   },
 ];
+
+export const attributeOptionsSelect2Response = {
+  results: [
+    {
+      id: 'test1',
+      text: 'Test 1',
+    },
+    {
+      id: 'test2',
+      text: 'Test 2',
+    },
+    {
+      id: 'test3',
+      text: 'Test 3',
+    },
+  ],
+};

@@ -6,7 +6,7 @@ import {
   Condition,
   ConditionFactory,
   createFamilyCondition,
-  createMultiOptionsAttributeCondition,
+  createSimpleMultiOptionsAttributeCondition,
   createTextAttributeCondition,
   createCategoryCondition,
   Locale,
@@ -112,7 +112,7 @@ const RuleProductSelection: React.FC<Props> = ({
     const factories: ConditionFactory[] = [
       createFamilyCondition,
       createTextAttributeCondition,
-      createMultiOptionsAttributeCondition,
+      createSimpleMultiOptionsAttributeCondition,
       createCategoryCondition,
     ];
 

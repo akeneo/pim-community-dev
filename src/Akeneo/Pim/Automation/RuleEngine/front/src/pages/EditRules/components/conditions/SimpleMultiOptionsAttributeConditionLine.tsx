@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-  MultiOptionsAttributeCondition,
-  MultiOptionsAttributeOperators,
+  SimpleMultiOptionsAttributeCondition,
+  SimpleMultiOptionsAttributeOperators,
 } from '../../../../models/conditions';
 import { ConditionLineProps } from './ConditionLineProps';
 import { AttributeConditionLine } from './AttributeConditionLine';
@@ -18,10 +18,10 @@ import { Attribute } from '../../../../models';
 import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepository';
 
 type MultiOptionsAttributeConditionLineProps = ConditionLineProps & {
-  condition: MultiOptionsAttributeCondition;
+  condition: SimpleMultiOptionsAttributeCondition;
 };
 
-const MultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeConditionLineProps> = ({
+const SimpleMultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeConditionLineProps> = ({
   condition,
   lineNumber,
   locales,
@@ -109,12 +109,12 @@ const MultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeConditio
       currentCatalogLocale={currentCatalogLocale}
       locales={locales}
       scopes={scopes}
-      availableOperators={MultiOptionsAttributeOperators}
+      availableOperators={SimpleMultiOptionsAttributeOperators}
       attribute={attribute}>
       {attribute && (
         <MultiOptionsSelector
+          data-testid={`edit-rules-input-${lineNumber}-value`}
           value={condition.value || []}
-          currentCatalogLocale={currentCatalogLocale}
           attributeId={attribute.meta.id}
           label={translate('pimee_catalog_rule.rule.value')}
           hiddenLabel={true}
@@ -127,6 +127,6 @@ const MultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeConditio
 };
 
 export {
-  MultiOptionsAttributeConditionLine,
+  SimpleMultiOptionsAttributeConditionLine,
   MultiOptionsAttributeConditionLineProps,
 };

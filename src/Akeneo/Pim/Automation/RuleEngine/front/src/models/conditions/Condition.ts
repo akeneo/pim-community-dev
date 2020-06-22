@@ -2,7 +2,7 @@ import { Router } from '../../dependenciesTools';
 import {
   FallbackCondition,
   FamilyCondition,
-  MultiOptionsAttributeCondition,
+  SimpleMultiOptionsAttributeCondition,
   PimCondition,
   TextAttributeCondition,
   CategoryCondition,
@@ -14,7 +14,7 @@ export type Condition =
   | PimCondition
   | FamilyCondition
   | TextAttributeCondition
-  | MultiOptionsAttributeCondition;
+  | SimpleMultiOptionsAttributeCondition;
 
 export type ConditionFactory = (
   fieldCode: string,

@@ -9,13 +9,15 @@ import {
   AttributeOptionDataProvider,
   getAttributeOptionsByIdentifiers,
 } from '../../fetch/AttributeOptionFetcher';
-import { AttributeId } from '../../models/Attribute';
-import { useBackboneRouter } from '../../dependenciesTools/hooks';
+import { AttributeId } from '../../models';
+import {
+  useBackboneRouter,
+  useUserCatalogLocale,
+} from '../../dependenciesTools/hooks';
 
 type Props = {
   label: string;
   hiddenLabel: boolean;
-  currentCatalogLocale: string;
   attributeId: AttributeId;
   onChange?: (value: Select2Value[]) => void;
   value: string[];
@@ -26,14 +28,15 @@ type Props = {
 const MultiOptionsSelector: React.FC<Props> = ({
   label,
   hiddenLabel = false,
-  currentCatalogLocale,
   attributeId,
   onChange,
   value,
   name,
   validation,
+  ...remainingProps
 }) => {
   const router = useBackboneRouter();
+  const currentCatalogLocale = useUserCatalogLocale();
   const handleResults = (response: { results: Select2Option[] }) => {
     return {
       more: 20 === response.results.length,
@@ -66,6 +69,7 @@ const MultiOptionsSelector: React.FC<Props> = ({
 
   return (
     <Select2MultiAsyncWrapper
+      {...remainingProps}
       label={label}
       ajax={{
         url: router.generate('pim_ui_ajaxentity_list'),

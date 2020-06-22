@@ -4,7 +4,7 @@ import { Operator } from '../../../../models/Operator';
 import {
   Locale,
   LocaleCode,
-  MultiOptionsAttributeCondition,
+  SimpleMultiOptionsAttributeCondition,
   ScopeCode,
   TextAttributeCondition,
 } from '../../../../models';
@@ -37,7 +37,7 @@ const shouldDisplayValue: (operator: Operator) => boolean = operator =>
   );
 
 type AttributeConditionLineProps = {
-  condition: TextAttributeCondition | MultiOptionsAttributeCondition;
+  condition: TextAttributeCondition | SimpleMultiOptionsAttributeCondition;
   lineNumber: number;
   locales: Locale[];
   scopes: IndexedScopes;
