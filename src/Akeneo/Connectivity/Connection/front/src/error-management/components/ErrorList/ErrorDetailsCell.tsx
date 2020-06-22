@@ -10,6 +10,7 @@ type Props = {
 };
 
 const ErrorDetailsCell: FC<Props> = ({content}) => {
+    console.log(content.locale);
     return (
         <Container>
             {'string' === typeof content?.locale ? (
@@ -18,7 +19,7 @@ const ErrorDetailsCell: FC<Props> = ({content}) => {
                         <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.details_column.locale' />
                         :{' '}
                     </DetailLabel>
-                    <Flag locale={content.locale} /> {content.locale}
+                    <Flag locale={content.locale} />
                 </DetailRow>
             ) : (
                 <DetailRow></DetailRow>
