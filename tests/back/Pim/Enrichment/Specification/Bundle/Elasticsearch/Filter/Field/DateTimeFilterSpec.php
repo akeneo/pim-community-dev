@@ -314,7 +314,7 @@ class DateTimeFilterSpec extends ObjectBehavior
         $this->addFieldFilter('updated', '>', '-1 week');
     }
 
-    function it_thrwws_an_exception_for_relative_dates_on_unsupported_operators(SearchQueryBuilder $sqb)
+    function it_throws_an_exception_for_relative_dates_on_unsupported_operators(SearchQueryBuilder $sqb)
     {
         $this->setQueryBuilder($sqb);
 
