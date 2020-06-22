@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.60 (2020-06-22)
+
 ## Bug fixes
 
 - PIM-9084: Filter locale specific attributes in exports when the value's locale and the export profile's locale are different
