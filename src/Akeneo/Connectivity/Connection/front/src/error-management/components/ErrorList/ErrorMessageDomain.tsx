@@ -1,8 +1,7 @@
 import React, {FC} from 'react';
 import styled from '../../../common/styled-with-theme';
-import {ConnectionErrorContent} from '../../model/ConnectionError';
-import {ErrorMessageUnformattedList} from './ErrorMessageUnformattedList';
 import {messageWithColoredParameters} from '../../message-with-colored-parameters';
+import {ConnectionErrorContent} from '../../model/ConnectionError';
 
 type Props = {
     content: ConnectionErrorContent;
@@ -18,7 +17,6 @@ const ErrorMessageDomain: FC<Props> = ({content}) => {
             ) : (
                 <>
                     <ErrorMessage>{content.message}</ErrorMessage>
-                    <ErrorMessageUnformattedList content={content} />
                 </>
             )}
         </>

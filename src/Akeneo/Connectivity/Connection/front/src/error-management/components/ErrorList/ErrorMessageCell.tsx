@@ -1,11 +1,12 @@
-import React, { FC } from 'react';
-import { css } from 'styled-components';
+import React, {FC} from 'react';
+import {css} from 'styled-components';
 import styled from '../../../common/styled-with-theme';
-import { ConnectionErrorContent, ErrorMessageDomainType } from '../../model/ConnectionError';
-import { DocumentationList } from '../Documentation/DocumentationList';
-import { ErrorMessageDomain } from './ErrorMessageDomain';
-import { ErrorMessageViolation } from './ErrorMessageViolation';
-import { ErrorProductInformation } from './ErrorProductInformation';
+import {ConnectionErrorContent, ErrorMessageDomainType} from '../../model/ConnectionError';
+import {DocumentationList} from '../Documentation/DocumentationList';
+import {ErrorMessageDomain} from './ErrorMessageDomain';
+import {ErrorMessageUnformattedList} from './ErrorMessageUnformattedList';
+import {ErrorMessageViolation} from './ErrorMessageViolation';
+import {ErrorProductInformation} from './ErrorProductInformation';
 
 type Props = {
     content: ConnectionErrorContent;
@@ -20,6 +21,7 @@ const ErrorMessageCell: FC<Props> = ({content}) => {
             ) : (
                 <ErrorMessageViolation content={content} />
             )}
+            <ErrorMessageUnformattedList content={content} />
             {content.documentation && <DocumentationList documentations={content.documentation} />}
         </Container>
     );
@@ -38,5 +40,4 @@ const Container = styled.td<{collapsing?: boolean}>`
         `}
 `;
 
-export { ErrorMessageCell };
-
+export {ErrorMessageCell};

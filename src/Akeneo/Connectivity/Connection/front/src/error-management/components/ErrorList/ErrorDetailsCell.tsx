@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
+import {css} from 'styled-components';
 import {Flag} from '../../../common';
-import TableCell from '../../../common/components/Table/TableCell';
 import styled from '../../../common/styled-with-theme';
 import {Translate} from '../../../shared/translate';
 import {ConnectionErrorContent} from '../../model/ConnectionError';
@@ -49,9 +49,18 @@ const ErrorDetailsCell: FC<Props> = ({content}) => {
     );
 };
 
-const Container = styled(TableCell)`
+const Container = styled.td<{collapsing?: boolean}>`
+    border-bottom: 1px solid ${({theme}) => theme.color.grey60};
     color: ${({theme}) => theme.color.grey140};
+    padding: 15px 20px;
     white-space: pre-wrap;
+
+    ${({collapsing}) =>
+        collapsing &&
+        css`
+            width: 1px;
+            white-space: nowrap;
+        `}
 `;
 
 const DetailRow = styled.div`
