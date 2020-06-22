@@ -9,3 +9,4 @@ services:
             - '@doctrine'
             - '%pim_versioning.entity.version.class%'
             - '@pimee_revert.reverter.product'
+            - '@pim_internal_api_serializer'

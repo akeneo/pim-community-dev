@@ -9,5 +9,4 @@ services:
             - '@pim_catalog.updater.product'
             - '@pim_catalog.saver.product'
             - '@validator'
-            - '@translator'
             - '@pim_connector.array_converter.flat_to_standard.product'

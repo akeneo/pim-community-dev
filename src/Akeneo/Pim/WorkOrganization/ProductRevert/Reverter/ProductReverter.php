@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\ProductRevert\Reverter;
 
-use Akeneo\Pim\WorkOrganization\ProductRevert\Exception\RevertException;
+use Akeneo\Pim\WorkOrganization\ProductRevert\Exception\ConstraintViolationsException;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -42,9 +41,6 @@ class ProductReverter
     /** @var ValidatorInterface */
     protected $validator;
 
-    /** @var TranslatorInterface */
-    protected $translator;
-
     /** @var ArrayConverterInterface */
     protected $converter;
 
@@ -53,7 +49,6 @@ class ProductReverter
      * @param ObjectUpdaterInterface  $productUpdater
      * @param SaverInterface          $productSaver
      * @param ValidatorInterface      $validator
-     * @param TranslatorInterface     $translator
      * @param ArrayConverterInterface $converter
      */
     public function __construct(
@@ -61,14 +56,12 @@ class ProductReverter
         ObjectUpdaterInterface $productUpdater,
         SaverInterface $productSaver,
         ValidatorInterface $validator,
-        TranslatorInterface $translator,
         ArrayConverterInterface $converter
     ) {
         $this->registry = $registry;
         $this->productUpdater = $productUpdater;
         $this->productSaver = $productSaver;
         $this->validator = $validator;
-        $this->translator = $translator;
         $this->converter = $converter;
     }
 
@@ -77,7 +70,7 @@ class ProductReverter
      *
      * @param Version $version
      *
-     * @throws RevertException
+     * @throws ConstraintViolationsException
      */
     public function revert(Version $version): void
     {
@@ -93,11 +86,7 @@ class ProductReverter
 
         $violationsList = $this->validator->validate($currentObject);
         if ($violationsList->count() > 0) {
-            throw new RevertException(
-                $this->translator->trans(
-                    'flash.error.revert.product'
-                )
-            );
+            throw new ConstraintViolationsException($violationsList);
         }
 
         $this->productSaver->save($currentObject);
