@@ -59,12 +59,18 @@ class QuantifiedAssociationsNormalizerSpec extends ObjectBehavior
         ]);
 
         $this->normalize($product, 'flat')->shouldReturn([
-            'PRODUCT_SET1-products-productA' => 5,
-            'PRODUCT_SET1-products-productB' => 3,
-            'PRODUCT_SET1-product_models-productModelA' => 5,
-            'PRODUCT_SET1-product_models-productModelB' => 8,
-            'PRODUCT_SET2-products-productA' => 5,
-            'PRODUCT_SET2-product_models-productModelB' => 8,
+            'PRODUCT_SET-products' => '',
+            'PRODUCT_SET-products-quantity' => '',
+            'PRODUCT_SET-product_models' => '',
+            'PRODUCT_SET-product_models-quantity' => '',
+            'PRODUCT_SET1-products' => 'productA,productB',
+            'PRODUCT_SET1-products-quantity' => '5|3',
+            'PRODUCT_SET1-product_models' => 'productModelA,productModelB',
+            'PRODUCT_SET1-product_models-quantity' => '5|8',
+            'PRODUCT_SET2-products' => 'productA',
+            'PRODUCT_SET2-products-quantity' => '5',
+            'PRODUCT_SET2-product_models' => 'productModelB',
+            'PRODUCT_SET2-product_models-quantity' => '8',
         ]);
     }
 }
