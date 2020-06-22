@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\ProductRevert\Controller;
 
-use Akeneo\Pim\WorkOrganization\ProductRevert\Exception\ConstraintViolationListException;
+use Akeneo\Pim\WorkOrganization\ProductRevert\Exception\ConstraintViolationsException;
 use Akeneo\Pim\WorkOrganization\ProductRevert\Reverter\ProductReverter;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -72,9 +72,9 @@ class ProductVersionController
         try {
             $version = $this->findOr404($this->versionClass, $id);
             $this->reverter->revert($version);
-        } catch (ConstraintViolationListException $e) {
+        } catch (ConstraintViolationsException $e) {
             $normalizedResponse = $this->normalizer->normalize(
-                $e->getConstraintViolationList(),
+                $e->getConstraintViolations(),
                 'internal_api',
                 ['translate' => false]
             );

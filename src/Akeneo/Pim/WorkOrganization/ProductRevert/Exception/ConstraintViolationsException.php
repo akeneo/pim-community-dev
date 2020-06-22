@@ -5,23 +5,23 @@ namespace Akeneo\Pim\WorkOrganization\ProductRevert\Exception;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-class ConstraintViolationListException extends \InvalidArgumentException
+class ConstraintViolationsException extends \InvalidArgumentException
 {
     /** @var ConstraintViolationListInterface<ConstraintViolationInterface> */
-    private $constraintViolationList;
+    private $constraintViolations;
 
-    public function __construct(ConstraintViolationListInterface $constraintViolationList)
+    public function __construct(ConstraintViolationListInterface $constraintViolations)
     {
         parent::__construct('Validation failed');
 
-        $this->constraintViolationList = $constraintViolationList;
+        $this->constraintViolations = $constraintViolations;
     }
 
     /**
      * @return ConstraintViolationListInterface<ConstraintViolationInterface>
      */
-    public function getConstraintViolationList(): ConstraintViolationListInterface
+    public function getConstraintViolations(): ConstraintViolationListInterface
     {
-        return $this->constraintViolationList;
+        return $this->constraintViolations;
     }
 }

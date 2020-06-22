@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\ProductRevert\Reverter;
 
-use Akeneo\Pim\WorkOrganization\ProductRevert\Exception\ConstraintViolationListException;
+use Akeneo\Pim\WorkOrganization\ProductRevert\Exception\ConstraintViolationsException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
@@ -249,7 +249,7 @@ class ProductReverterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                new ConstraintViolationListException($violationsList->getWrappedObject())
+                new ConstraintViolationsException($violationsList->getWrappedObject())
             )
             ->during('revert', [$version]);
     }

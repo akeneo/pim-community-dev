@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\ProductRevert\Reverter;
 
-use Akeneo\Pim\WorkOrganization\ProductRevert\Exception\ConstraintViolationListException;
+use Akeneo\Pim\WorkOrganization\ProductRevert\Exception\ConstraintViolationsException;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -70,7 +70,7 @@ class ProductReverter
      *
      * @param Version $version
      *
-     * @throws ConstraintViolationListException
+     * @throws ConstraintViolationsException
      */
     public function revert(Version $version): void
     {
@@ -86,7 +86,7 @@ class ProductReverter
 
         $violationsList = $this->validator->validate($currentObject);
         if ($violationsList->count() > 0) {
-            throw new ConstraintViolationListException($violationsList);
+            throw new ConstraintViolationsException($violationsList);
         }
 
         $this->productSaver->save($currentObject);
