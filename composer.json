@@ -18,6 +18,7 @@
             "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/back",
             "Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/back",
             "Akeneo\\Connectivity\\Connection\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back",
+            "Akeneo\\Platform\\CommunicationChannel\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back",
             "Akeneo\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/back"
         },
         "exclude-from-classmap": [
@@ -45,6 +46,7 @@
             "Akeneo\\Connectivity\\Connection\\Tests\\Acceptance\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/Acceptance",
             "Akeneo\\Connectivity\\Connection\\Tests\\EndToEnd\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/tests/",
             "Pim\\Upgrade\\Schema\\Tests\\": "vendor/akeneo/pim-community-dev/upgrades/test_schema/",
+            "Akeneo\\Platform\\CommunicationChannel\\Test\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests",
             "Pimee\\Upgrade\\Schema\\Tests\\": "upgrades/test_schema/",
             "Akeneo\\Test\\Pim\\Automation\\RuleEngine\\": "src/Akeneo/Pim/Automation/RuleEngine/tests/back",
             "Akeneo\\Onboarder\\Test\\": "vendor/akeneo/pim-onboarder/tests/"
