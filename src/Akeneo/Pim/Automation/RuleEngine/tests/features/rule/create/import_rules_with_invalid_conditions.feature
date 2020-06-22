@@ -50,7 +50,7 @@ Feature: Import rules
                   locale: en_US
     """
     Then an exception with message "conditions[0]: Property \"name\" expects a string as data, \"integer\" given." has been thrown
-    And an exception with message "actions[0]: Property \"name\" expects a string as data, \"integer\" given." has been thrown
+    And an exception with message "actions[0]: The name attribute requires a string, a integer was detected." has been thrown
     And the rule list contains the rules:
       """
       sony_beautiful_description:
@@ -117,7 +117,7 @@ Feature: Import rules
                   scope: tablet
     """
     Then an exception with message "conditions[0]: Property \"description\" expects a string as data, \"integer\" given." has been thrown
-    And an exception with message "actions[0]: Property \"description\" expects a string as data, \"integer\" given." has been thrown
+    And an exception with message "actions[0]: The description attribute requires a string, a integer was detected." has been thrown
     And the rule list contains the rules:
       """
       sony_beautiful_description:
