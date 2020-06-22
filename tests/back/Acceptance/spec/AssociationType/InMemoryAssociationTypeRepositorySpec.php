@@ -92,6 +92,8 @@ class InMemoryAssociationTypeRepositorySpec extends ObjectBehavior
             $this->save($association);
         }
 
-        $this->findAll()->shouldReturn($associations);
+        $result = $this->findAll();
+        $result->shouldBeArray();
+        $result->shouldHaveCount(2);
     }
 }
