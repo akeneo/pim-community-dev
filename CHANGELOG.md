@@ -14,6 +14,7 @@
 - PIM-9261: Fix API assets pagination
 - PIM-9270: Fix assets family product-link-rule definition
 - PIM-9295: Fix error when applying an "Add groups" action to a product model
+- PIM-9309: Update mekras/php-speller dependency to fix Swedish spelling issues
 - PIM-9316: Fix url encoding of media links in asset edit form
 
 ## Improvements
