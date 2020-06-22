@@ -21,7 +21,7 @@ const Panel = (): JSX.Element => {
   return (
     <>
       <HeaderPanel title={__('akeneo_communication_channel.panel.title')} onClickCloseButton={closePanel} />
-      {!isSerenity ? (
+      {isSerenity ? (
         <ListAnnouncement campaign={campaign} />
       ) : (
         <EmptyAnnouncementList text={__('akeneo_communication_channel.panel.list.empty')} />
