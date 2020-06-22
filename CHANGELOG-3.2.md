@@ -1,5 +1,27 @@
 # 3.2.x
 
+# 3.2.60 (2020-06-22)
+
+## Bug fixes:
+
+- PIM-9312: Fix reference entity linked records migration
+
+# 3.2.59 (2020-06-15)
+
+## Bug fixes:
+
+- PIM-9292: Fix performances when filtering on assets with a lot of tags
+
+# 3.2.58 (2020-06-01)
+
+## Improvements
+
+- Uses Google Chrome from Node Docker image
+
+## Bug fixes:
+
+- PIM-9275: Fix mass upload of Assets ACL in the product edit form
+
 # 3.2.57 (2020-05-28)
 
 ## Bug fixes:
