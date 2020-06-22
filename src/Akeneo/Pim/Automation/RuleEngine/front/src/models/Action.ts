@@ -9,6 +9,7 @@ import {
   CopyAction,
   createClearAttributeAction,
   createAddCategoriesAction,
+  createSetAttributeAction,
   createSetFamilyAction,
   RemoveAction,
   SetAction,
@@ -22,6 +23,7 @@ export const AvailableAddAction: { [key: string]: () => Action } = {
   set_family: createSetFamilyAction,
   clear_attribute: createClearAttributeAction,
   add_category: createAddCategoriesAction,
+  set_attribute: createSetAttributeAction,
 };
 
 export type Action =

@@ -8,13 +8,19 @@ export const getJSON = (...args: any[]) => {
 };
 
 export const postJSON = (url: string, data: {}) => {
-  const promise = $.post(url, JSON.stringify(data), null, 'json');
+  const promise = $.ajax(
+      url,
+      {data: JSON.stringify(data), method: 'POST', contentType: "application/json", dataType: 'json'}
+  );
 
   return promisify(promise);
 };
 
 export const putJSON = (url: string, data: {}) => {
-  const promise = $.ajax(url, {data: JSON.stringify(data), method: 'PUT'});
+  const promise = $.ajax(
+      url,
+      {data: JSON.stringify(data), method: 'PUT', contentType: 'application/json', dataType: 'json'}
+  );
 
   return promisify(promise);
 };

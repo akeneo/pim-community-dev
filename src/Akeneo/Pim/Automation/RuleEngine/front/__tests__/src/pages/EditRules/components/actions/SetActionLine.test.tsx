@@ -1,15 +1,20 @@
 import React from 'react';
 import 'jest-fetch-mock';
-import { renderWithProviders } from '../../../../test-utils';
-import { SetActionLine } from '../../../../src/pages/EditRules/components/actions/SetActionLine';
-import { SetAction } from '../../../../src/models/actions';
+import {
+  act,
+  fireEvent,
+  renderWithProviders,
+} from '../../../../../../test-utils';
+import { SetActionLine } from '../../../../../../src/pages/EditRules/components/actions/SetActionLine';
+import { SetAction } from '../../../../../../src/models/actions';
 import {
   attributeSelect2Response,
   createAttribute,
   locales,
   scopes,
-} from '../../factories';
-import { clearAttributeRepositoryCache } from '../../../../src/repositories/AttributeRepository';
+} from '../../../../factories';
+import { clearAttributeRepositoryCache } from '../../../../../../src/repositories/AttributeRepository';
+import userEvent from '@testing-library/user-event';
 
 const createSetAction = (data?: { [key: string]: any }): SetAction => {
   return {
@@ -22,10 +27,9 @@ const createSetAction = (data?: { [key: string]: any }): SetAction => {
   };
 };
 
-jest.mock('../../../../src/fetch/categoryTree.fetcher');
-jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
-jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
-jest.mock('../../../../src/fetch/categoryTree.fetcher.ts');
+jest.mock('../../../../../../src/components/Select2Wrapper/Select2Wrapper');
+jest.mock('../../../../../../src/dependenciesTools/provider/dependencies.ts');
+jest.mock('../../../../../../src/fetch/categoryTree.fetcher.ts');
 
 describe('SetActionLine', () => {
   beforeEach(() => {
@@ -48,7 +52,7 @@ describe('SetActionLine', () => {
       throw new Error(`The "${request.url}" url is not mocked.`);
     });
 
-    const { findByText } = renderWithProviders(
+    const { findByText, findByTestId } = renderWithProviders(
       <SetActionLine
         action={createSetAction()}
         lineNumber={1}
@@ -86,17 +90,50 @@ describe('SetActionLine', () => {
       )
     ).toBeInTheDocument();
     expect(
-      await findByText('pimee_catalog_rule.form.edit.unknown_attribute')
+      await findByText(
+        'pimee_catalog_rule.exceptions.unknown_attribute pimee_catalog_rule.exceptions.select_another_attribute pimee_catalog_rule.exceptions.or'
+      )
     ).toBeInTheDocument();
+    expect(
+      await findByText('pimee_catalog_rule.exceptions.create_attribute_link')
+    ).toBeInTheDocument();
+
+    expect(await findByTestId('edit-rules-action-1-field')).toHaveValue('name');
+
+    const inputValue = await findByTestId('edit-rules-action-1-value');
+    expect(inputValue).toHaveValue('This is the name');
+    expect(inputValue).toHaveProperty('disabled', true);
   });
 
-  it('should display the set action line with a text attribute', async () => {
+  it('should be able display and change the attribute', async () => {
     fetchMock.mockResponse((request: Request) => {
-      if (request.url.includes('pim_enrich_attribute_rest_get')) {
+      if (
+        request.url.includes(
+          'pim_enrich_attribute_rest_get?%7B%22identifier%22:%22name%22%7D'
+        )
+      ) {
         return Promise.resolve(
           JSON.stringify(
             createAttribute({
               type: 'pim_catalog_text',
+              localizable: false,
+              scopable: false,
+            })
+          )
+        );
+      }
+      if (
+        request.url.includes(
+          'pim_enrich_attribute_rest_get?%7B%22identifier%22:%22brand%22%7D'
+        )
+      ) {
+        return Promise.resolve(
+          JSON.stringify(
+            createAttribute({
+              type: 'pim_catalog_simpleselect',
+              localizable: true,
+              scopable: true,
+              labels: { en_US: 'The brand', fr_FR: 'La marque' },
             })
           )
         );
@@ -123,11 +160,21 @@ describe('SetActionLine', () => {
       { all: true }
     );
 
-    const valueInput = await findByTestId('edit-rules-action-1-value');
-    expect(valueInput).toBeInTheDocument();
-    expect(valueInput).toHaveValue('This is the name');
-    expect(
-      await findByText('Name pim_common.required_label')
-    ).toBeInTheDocument();
+    expect(await findByTestId('edit-rules-action-1-value')).toHaveValue(
+      'This is the name'
+    );
+    expect(await findByText('Name')).toBeInTheDocument();
+
+    await act(async () => {
+      userEvent.click(await findByTestId('edit-rules-action-1-field'));
+      expect(
+        (await findByTestId('edit-rules-action-1-field')).children.length
+      ).toBeGreaterThan(1);
+      fireEvent.change(await findByTestId('edit-rules-action-1-field'), {
+        target: { value: 'brand' },
+      });
+    });
+    expect(await findByTestId('edit-rules-action-1-value')).toHaveValue('');
+    expect(await findByText('The brand')).toBeInTheDocument();
   });
 });

@@ -14,3 +14,11 @@ export const getSetActionModule: ActionModuleGuesser = json => {
 
   return Promise.resolve(SetActionLine);
 };
+
+export const createSetAttributeAction = (): SetAction => ({
+  type: 'set',
+  value: null,
+  field: '',
+  locale: null,
+  scope: null,
+});

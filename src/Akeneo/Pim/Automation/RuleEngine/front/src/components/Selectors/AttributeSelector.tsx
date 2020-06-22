@@ -4,11 +4,15 @@ import {
   Select2SimpleAsyncWrapper,
 } from '../Select2Wrapper';
 
-import { Attribute, AttributeCode, LocaleCode } from '../../models';
+import {
+  Attribute,
+  AttributeCode,
+  getAttributeLabel,
+  LocaleCode,
+} from '../../models';
 import { Router } from '../../dependenciesTools';
 import { useBackboneRouter } from '../../dependenciesTools/hooks';
 import { getAttributeByIdentifier } from '../../repositories/AttributeRepository';
-import { InputText } from '../Inputs';
 
 type AttributeResult = {
   id: string;
@@ -31,9 +35,12 @@ type Props = {
   onChange: (value: AttributeCode | null) => void;
   placeholder?: string;
   filterAttributeTypes?: string[];
-  disabled?: boolean;
   name: string;
-  validation?: { required?: string; validate?: (value: any) => string | true };
+  validation?: {
+    required?: string;
+    validate?: (value: any) => string | true | Promise<string | true>;
+  };
+  disabled?: boolean;
 };
 
 const initSelectedAttribute = async (
@@ -47,11 +54,17 @@ const initSelectedAttribute = async (
     router
   );
 
-  attribute &&
+  if (attribute) {
     callback({
       id: attribute.code,
-      text: attribute.labels[currentCatalogLocale] || `[${attribute.code}]`,
+      text: getAttributeLabel(attribute, currentCatalogLocale),
     });
+    return;
+  }
+  callback({
+    id: selectedAttributeCode,
+    text: selectedAttributeCode,
+  });
 };
 
 const AttributeSelector: React.FC<Props> = ({
@@ -62,7 +75,6 @@ const AttributeSelector: React.FC<Props> = ({
   onChange,
   placeholder,
   filterAttributeTypes,
-  disabled = false,
   name,
   validation,
   ...remainingProps
@@ -109,18 +121,6 @@ const AttributeSelector: React.FC<Props> = ({
       }),
     };
   };
-
-  if (disabled) {
-    return (
-      <InputText
-        {...remainingProps}
-        label={label}
-        hiddenLabel={hiddenLabel}
-        value={value as string}
-        readOnly={true}
-      />
-    );
-  }
 
   return (
     <Select2SimpleAsyncWrapper

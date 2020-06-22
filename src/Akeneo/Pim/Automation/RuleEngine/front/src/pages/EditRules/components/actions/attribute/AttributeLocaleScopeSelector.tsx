@@ -24,6 +24,8 @@ import { getAttributeByIdentifier } from '../../../../../repositories/AttributeR
 import { useFormContext } from 'react-hook-form';
 import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
 import styled from 'styled-components';
+import { InlineHelper } from '../../../../../components/HelpersInfos/InlineHelper';
+import { ActionFormContainer } from '../style';
 
 const SelectorBlock = styled.div`
   margin-bottom: 15px;
@@ -46,6 +48,8 @@ type Props = {
   onAttributeChange?: (attribute: Attribute | null) => void;
   scopeValue?: ScopeCode;
   localeValue?: LocaleCode;
+  filterAttributeTypes?: string[];
+  disabled?: boolean;
 };
 
 export const AttributeLocaleScopeSelector: React.FC<Props> = ({
@@ -65,11 +69,13 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   onAttributeChange,
   scopeValue,
   localeValue,
+  filterAttributeTypes,
+  disabled,
 }) => {
   const router = useBackboneRouter();
   const translate = useTranslate();
   const currentCatalogLocale = useUserCatalogLocale();
-  const { watch, setValue } = useFormContext();
+  const { watch, setValue, clearError } = useFormContext();
   const [attribute, setAttribute] = React.useState<Attribute | null>(null);
   const [attributeIsChanged, setAttributeIsChanged] = React.useState<boolean>(
     false
@@ -136,13 +142,30 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
     );
   }, [JSON.stringify(getAvailableLocales())]);
 
-  const setAttributeFormValue = (value: AttributeCode | null) => {
-    setValue(attributeFormName, value);
+  const onAttributeCodeChange = (value: AttributeCode | null) => {
     refreshAttribute(value);
     setAttributeIsChanged(true);
+    clearError(attributeFormName);
   };
 
-  const setScopeFormValue = () => {
+  const validateAttribute = async (value: any): Promise<string | true> => {
+    if (!value) {
+      return translate('pimee_catalog_rule.exceptions.required_attribute');
+    }
+
+    const attribute = await getAttributeByIdentifier(value, router);
+    if (null === attribute) {
+      return `${translate(
+        'pimee_catalog_rule.exceptions.unknown_attribute'
+      )} ${translate(
+        'pimee_catalog_rule.exceptions.select_another_attribute_or_remove_action'
+      )}`;
+    }
+
+    return true;
+  };
+
+  const onScopeCodeChange = () => {
     if (
       !getAvailableLocales()
         .map(locale => locale.code)
@@ -153,11 +176,15 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   };
 
   React.useEffect(() => {
-    refreshAttribute(attributeCode);
+    if (attributeCode) {
+      refreshAttribute(attributeCode);
+    }
   }, []);
 
+  const isDisabled = () => disabled ?? (!firstRefresh && null === attribute);
+
   return (
-    <div className={'AknFormContainer'}>
+    <ActionFormContainer>
       <SelectorBlock>
         <AttributeSelector
           data-testid={attributeId}
@@ -165,16 +192,27 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
           label={attributeLabel}
           currentCatalogLocale={currentCatalogLocale}
           value={attributeCode}
-          onChange={setAttributeFormValue}
+          onChange={onAttributeCodeChange}
           placeholder={attributePlaceholder}
-          disabled={false}
-          validation={{
-            required: translate(
-              'pimee_catalog_rule.exceptions.required_attribute'
-            ),
-          }}
+          validation={{ validate: validateAttribute }}
+          filterAttributeTypes={filterAttributeTypes}
+          disabled={disabled}
         />
       </SelectorBlock>
+      {null === attribute && !firstRefresh && (
+        <SelectorBlock>
+          <InlineHelper danger>
+            {`${translate(
+              'pimee_catalog_rule.exceptions.unknown_attribute'
+            )} ${translate(
+              'pimee_catalog_rule.exceptions.select_another_attribute'
+            )} ${translate('pimee_catalog_rule.exceptions.or')} `}
+            <a href={`#${router.generate(`pim_enrich_attribute_create`)}`}>
+              {translate('pimee_catalog_rule.exceptions.create_attribute_link')}
+            </a>
+          </InlineHelper>
+        </SelectorBlock>
+      )}
       {(attribute?.scopable || (!attributeIsChanged && scopeValue)) && (
         <SelectorBlock>
           <ScopeSelector
@@ -189,9 +227,9 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
             availableScopes={Object.values(scopes)}
             currentCatalogLocale={currentCatalogLocale}
             value={scopeValue}
-            onChange={setScopeFormValue}
+            onChange={onScopeCodeChange}
             allowClear={!attribute?.scopable}
-            disabled={!firstRefresh && null === attribute}
+            disabled={isDisabled()}
             validation={scopeValidation}
           />
         </SelectorBlock>
@@ -210,11 +248,11 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
             availableLocales={getAvailableLocales()}
             value={localeValue}
             allowClear={!attribute?.localizable}
-            disabled={!firstRefresh && null === attribute}
+            disabled={isDisabled()}
             validation={localeValidation}
           />
         </SelectorBlock>
       )}
-    </div>
+    </ActionFormContainer>
   );
 };
