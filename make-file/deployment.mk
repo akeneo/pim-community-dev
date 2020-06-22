@@ -140,8 +140,12 @@ create-ci-release-files: create-ci-values create-pim-main-tf
 
 .PHONY: create-ci-values
 create-ci-values: $(INSTANCE_DIR)
-	@echo "Deploy with $(IMAGE_TAG) - $(INSTANCE_DIR)/values.yaml"
-	@echo "Create Helm values file : $(INSTANCE_DIR)/values.yaml"
+	@echo "=========================================================="
+	@echo "Deploy namespace : $(PFID)"
+	@echo " - with pim version : $(IMAGE_TAG)"
+	@echo " - on cluster : $(GOOGLE_PROJECT_ID)/$(GOOGLE_CLUSTER_ZONE)"
+	@echo " - URL : $(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS)"
+	@echo "=========================================================="
 	cp $(PIM_SRC_DIR)/deployments/config/ci-values.yaml $(INSTANCE_DIR)/values.yaml
 ifeq ($(INSTANCE_NAME_PREFIX),pimup)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
