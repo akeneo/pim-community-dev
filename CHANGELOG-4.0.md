@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.35 (2020-06-22)
+
 ## Bug fixes
 - PIM-9303: Fix project recalculate
 
