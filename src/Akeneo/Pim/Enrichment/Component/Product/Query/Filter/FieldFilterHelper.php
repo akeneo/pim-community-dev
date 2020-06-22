@@ -86,7 +86,7 @@ class FieldFilterHelper
      */
     public static function checkDateTime($field, $value, $format, $dateMessageFormat, $className)
     {
-        if ($value instanceof \DateTime) {
+        if ($value instanceof \DateTimeInterface) {
             return;
         }
 
@@ -94,7 +94,7 @@ class FieldFilterHelper
             throw InvalidPropertyException::dateExpected($field, $format, $className, $value);
         }
 
-        $dateTime = \DateTime::createFromFormat($format, $value);
+        $dateTime = \DateTimeImmutable::createFromFormat($format, $value);
 
         if (false === $dateTime || 0 < $dateTime->getLastErrors()['warning_count']) {
             throw InvalidPropertyException::dateExpected(

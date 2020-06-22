@@ -144,7 +144,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
                 return $this->addFieldFilter(
                     $field,
                     Operators::GREATER_THAN,
-                    new \DateTime(sprintf('%s days ago', $value), new \DateTimeZone('UTC')),
+                    new \DateTimeImmutable(sprintf('%s days ago', $value), new \DateTimeZone('UTC')),
                     $locale,
                     $channel,
                     $options
@@ -197,7 +197,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
     /**
      * @param string $operator
      * @param string $field
-     * @param string|array|\DateTime $value
+     * @param string|array|\DateTimeInterface $value
      */
     protected function checkValue($operator, $field, $value)
     {
@@ -272,8 +272,8 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
         $dateTime = $value;
         $utcTimeZone = new \DateTimeZone('UTC');
 
-        if (!$dateTime instanceof \DateTime) {
-            $dateTime = \DateTime::createFromFormat(static::DATETIME_FORMAT, $dateTime, $utcTimeZone);
+        if (!$dateTime instanceof \DateTimeInterface) {
+            $dateTime = \DateTimeImmutable::createFromFormat(static::DATETIME_FORMAT, $dateTime, $utcTimeZone);
 
             if (false === $dateTime || 0 < $dateTime->getLastErrors()['warning_count']) {
                 throw InvalidPropertyException::dateExpected(
@@ -285,7 +285,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
             }
         }
 
-        $dateTime->setTimezone($utcTimeZone);
+        $dateTime = $dateTime->setTimezone($utcTimeZone);
 
         return $dateTime->format('c');
     }
@@ -297,7 +297,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
     {
         if (\is_string($value) && 1 === \preg_match(self::RELATIVE_DATETIME_FORMAT, \trim($value))) {
             try {
-                return new \DateTime(\trim($value));
+                return new \DateTimeImmutable(\trim($value));
             } catch (\Exception $e) {
                 return $value;
             }

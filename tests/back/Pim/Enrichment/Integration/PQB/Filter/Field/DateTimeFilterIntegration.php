@@ -142,12 +142,6 @@ class DateTimeFilterIntegration extends AbstractProductQueryBuilderTestCase
         $result = $this->executeFilter([['updated', Operators::GREATER_THAN, 'now']]);
         $this->assert($result, []);
 
-        $result = $this->executeFilter([['updated', Operators::LOWER_THAN, '-30 seconds']]);
-        $this->assert($result, ['test', 'foo', 'bar', 'baz']);
-
-        $result = $this->executeFilter([['updated', Operators::GREATER_THAN, '-30 seconds']]);
-        $this->assert($result, []);
-
         $result = $this->executeFilter([['updated', Operators::LOWER_THAN, '-30 minutes']]);
         $this->assert($result, ['foo', 'bar', 'baz']);
 
