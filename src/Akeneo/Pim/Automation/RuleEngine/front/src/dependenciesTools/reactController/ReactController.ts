@@ -32,7 +32,7 @@ export default abstract class ReactController extends BaseController {
    * The goal in to avoid to mount/unmount React between route changes and keep the same React element ref while in the
    * controller/context.
    */
-  abstract routeGuardToUnmount(): RegExp;
+  abstract routeGuardToUnmount(): RegExp | false;
 
   initialize() {
     // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -60,7 +60,11 @@ export default abstract class ReactController extends BaseController {
    * Avoid React mount/unmount between route changes.
    */
   private handleRouteChange(routeName: string) {
-    if (true === this.routeGuardToUnmount().test(routeName)) {
+    const routeGuardToUnmount = this.routeGuardToUnmount();
+    if (
+      false !== routeGuardToUnmount &&
+      true === routeGuardToUnmount.test(routeName)
+    ) {
       return;
     }
 

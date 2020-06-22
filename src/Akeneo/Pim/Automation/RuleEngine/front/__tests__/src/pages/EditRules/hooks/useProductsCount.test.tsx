@@ -4,6 +4,15 @@ import { Router } from '../../../../../src/dependenciesTools';
 import { httpGet } from '../../../../../src/fetch';
 
 jest.mock('../../../../../src/fetch');
+jest.mock('react-hook-form', () => {
+  return {
+    useFormContext: () => {
+      return {
+        watch: jest.fn(),
+      };
+    },
+  };
+});
 
 describe('useProductsCount', () => {
   test('it should get the products count according to the formValues', async () => {

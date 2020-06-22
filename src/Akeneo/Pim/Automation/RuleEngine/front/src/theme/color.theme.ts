@@ -29,6 +29,7 @@ type color = {
   red100: string;
   red120: string;
   red140: string;
+  red10: string;
   red20: string;
   red40: string;
   red60: string;
@@ -71,6 +72,7 @@ const color: color = {
   purple40: '#d4bae3',
   purple60: '#be97d5',
   purple80: '#a974c7',
+  red10: '#faefed',
   red100: '#d4604f',
   red120: '#a94c3f',
   red140: '#7f392f',

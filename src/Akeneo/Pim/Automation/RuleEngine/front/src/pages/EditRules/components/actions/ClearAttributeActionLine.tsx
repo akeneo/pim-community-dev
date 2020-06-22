@@ -30,6 +30,7 @@ const ClearAttributeActionLine: React.FC<Props> = ({
       helper='This feature is under development. Please use the import to manage your rules.'
       legend='This feature is under development. Please use the import to manage your rules.'
       handleDelete={handleDelete}>
+      <LineErrors lineNumber={lineNumber} type='actions' />
       <ActionTitle>
         {translate(
           'pimee_catalog_rule.form.edit.actions.clear_attribute.subtitle'
@@ -54,7 +55,6 @@ const ClearAttributeActionLine: React.FC<Props> = ({
         localeValue={action.locale || undefined}
         scopeValue={action.scope || undefined}
       />
-      <LineErrors lineNumber={lineNumber} type='actions' />
     </ActionTemplate>
   );
 };

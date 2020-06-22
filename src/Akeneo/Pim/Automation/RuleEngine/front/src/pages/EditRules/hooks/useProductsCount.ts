@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { httpGet } from '../../../fetch';
 import { generateUrl } from '../../../dependenciesTools/utils';
 import { Router } from '../../../dependenciesTools';
@@ -60,9 +61,13 @@ const createProductsCountUrl = (router: Router, form: FormData) => {
 
 const useProductsCount = (router: Router, formValues: FormData) => {
   const url = createProductsCountUrl(router, formValues);
+  const { watch } = useFormContext();
   const [count, setCount] = useState<CountError | CountPending | CountComplete>(
     countPending
   );
+  // Watch allows to subscribe input's change via event listener. We need that to trigger a new products count.
+  watch(`content.conditions`);
+
   useEffect(() => {
     getProductsCountUrlWithDebounce(url, setCount);
   }, [url]);

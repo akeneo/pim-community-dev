@@ -8,7 +8,7 @@
         {% elseif action.type in ["add", "remove"] %}
             {% set parameters = {
                 '%field%': action.field|append_locale_and_scope_context(action.options.locale|default, action.options.scope|default)|highlight,
-                '%value%': action.items|present_rule_action_value(action.field)|append_include_children_context(action.field, action.include_children|default(false))|highlight,
+                '%value%': action.items|default|present_rule_action_value(action.field)|append_include_children_context(action.field, action.include_children|default(false))|highlight,
             } %}
         {% elseif action.type == "concatenate" %}
             {% set parameters = {
@@ -27,7 +27,7 @@
         {% else %}
             {% set parameters = {
                 '%field%': action.field|append_locale_and_scope_context(action.locale|default, action.scope|default)|highlight,
-                '%value%': action.value|present_rule_action_value(action.field)|highlight
+                '%value%': action.value|default|present_rule_action_value(action.field)|highlight
             } %}
         {% endif %}
 

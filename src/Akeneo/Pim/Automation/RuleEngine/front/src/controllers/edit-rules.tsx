@@ -20,8 +20,8 @@ class EditRules extends ReactController {
     );
   }
 
-  routeGuardToUnmount() {
-    return /^pimee_catalog_rule_edit/;
+  routeGuardToUnmount(): RegExp | false {
+    return false;
   }
 
   initialize() {
