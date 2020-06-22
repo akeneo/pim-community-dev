@@ -186,6 +186,21 @@ class Client
     }
 
     /**
+     * @param array $body
+     *
+     * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/ElasticsearchPHP_Endpoints.html#Elasticsearch_Clientcount_count}
+     */
+    public function count(array $body): array
+    {
+        $params = [
+            'index' => $this->indexName,
+            'body' => $body,
+        ];
+
+        return $this->client->count($params);
+    }
+
+    /**
      * @param string $id
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_delete_a_document}

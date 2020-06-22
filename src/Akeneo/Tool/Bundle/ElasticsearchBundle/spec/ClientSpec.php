@@ -93,6 +93,18 @@ class ClientSpec extends ObjectBehavior
         $this->search(['a key' => 'a value']);
     }
 
+    function it_counts_documents($client)
+    {
+        $client->count(
+            [
+                'index' => 'an_index_name',
+                'body' => ['query' => 'some_query']
+            ]
+        )->shouldBeCalled()->willReturn(['count' => 42]);
+
+        $this->count(['query' => 'some_query'])->shouldReturn(['count' => 42]);
+    }
+
     public function it_multi_searches_documents($client)
     {
         $client->msearch(

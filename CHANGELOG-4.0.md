@@ -4,6 +4,10 @@
 
 - Fix fatal error on display product model associations when they have more than 25 products associated
 
+## Enhancements
+
+- PIM-9317: [Backport PIM-9306] Enhance catalog volume monitoring count queries for large datasets
+
 # 4.0.34 (2020-06-17)
 
 ## Bug fixes
