@@ -36,12 +36,6 @@ class RangeSpec extends ObjectBehavior
         $this->invalidMessage->shouldBe('The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.');
     }
 
-    function it_has_an_invalid_date_message()
-    {
-        $this->beConstructedWith(['min' => new \DateTime()]);
-        $this->invalidDateMessage->shouldBe('This value is not a valid date.');
-    }
-
     function it_has_an_attribute_code()
     {
         $this->beConstructedWith(['min' => new \DateTime(), 'attributeCode' => 'a_code']);

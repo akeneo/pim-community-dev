@@ -26,6 +26,10 @@ class RangeValidator extends BaseRangeValidator
             throw new UnexpectedTypeException($constraint, Range::class);
         }
 
+        if (null === $value) {
+            return;
+        }
+
         switch (true) {
             case $value instanceof \DateTimeInterface:
                 $this->validateDateTime($value, $constraint);
@@ -42,7 +46,9 @@ class RangeValidator extends BaseRangeValidator
                         '{{ attribute }}' => $constraint->attributeCode,
                         '{{ value }}' => $value,
                     ]
-                );
+                )
+                    ->setCode(Range::INVALID_CHARACTERS_ERROR)
+                    ->addViolation();
                 break;
 
             default:
@@ -70,26 +76,23 @@ class RangeValidator extends BaseRangeValidator
             return;
         }
 
-        $message = null;
-        $params = [];
-
-        if (null !== $constraint->max && $value > $constraint->max) {
-            $message = $constraint->maxMessage;
-            $params = [
-                '{{ value }}' => $value,
-                '{{ limit }}' => $constraint->max,
-            ];
-        } elseif (null !== $constraint->min && $value < $constraint->min) {
-            $message = $constraint->minMessage;
-            $params = [
+        if (null !== $constraint->min && $value < $constraint->min) {
+            $this->context->buildViolation($constraint->minMessage, [
                 '{{ value }}' => $value,
                 '{{ limit }}' => $constraint->min,
-            ];
+            ])
+                ->atPath('data')
+                ->setCode(Range::TOO_LOW_ERROR)
+                ->addViolation();
         }
 
-        if (null !== $message) {
-            $this->context->buildViolation($message, $params)
+        if (null !== $constraint->max && $value > $constraint->max) {
+            $this->context->buildViolation($constraint->maxMessage, [
+                '{{ value }}' => $value,
+                '{{ limit }}' => $constraint->max,
+            ])
                 ->atPath('data')
+                ->setCode(Range::TOO_HIGH_ERROR)
                 ->addViolation();
         }
     }
@@ -103,7 +106,9 @@ class RangeValidator extends BaseRangeValidator
                     '{{ limit }}' => $constraint->min->format('Y-m-d'),
                     '{{ attribute_code }}' => $constraint->attributeCode,
                 ]
-            )->addViolation();
+            )
+                ->setCode(Range::TOO_LOW_ERROR)
+                ->addViolation();
         }
 
         if ($constraint->max && $dateTime > $constraint->max) {
@@ -113,7 +118,9 @@ class RangeValidator extends BaseRangeValidator
                     '{{ limit }}' => $constraint->max->format('Y-m-d'),
                     '{{ attribute_code }}' => $constraint->attributeCode,
                 ]
-            )->addViolation();
+            )
+                ->setCode(Range::TOO_HIGH_ERROR)
+                ->addViolation();
         }
     }
 }

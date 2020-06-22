@@ -107,7 +107,7 @@ class IsNumericValidatorSpec extends ObjectBehavior
 
     function it_adds_violation_when_validating_non_numeric_value(
         $context,
-        ConstraintViolationBuilderInterface $violation
+        ConstraintViolationBuilderInterface $violationBuilder
     ) {
         $numericConstraint = new IsNumeric();
         $numericConstraint->attributeCode = 'number';
@@ -120,8 +120,10 @@ class IsNumericValidatorSpec extends ObjectBehavior
                     '{{ value }}' => 'a',
                 ]
             )
-            ->shouldBeCalled()
-            ->willReturn($violation);
+            ->willReturn($violationBuilder);
+
+        $violationBuilder->setCode(IsNumeric::IS_NUMERIC)->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate('a', $numericConstraint);
     }
@@ -129,7 +131,7 @@ class IsNumericValidatorSpec extends ObjectBehavior
     function it_adds_violation_when_validating_non_numeric_metric_value(
         $context,
         MetricInterface $metric,
-        ConstraintViolationBuilderInterface $violation
+        ConstraintViolationBuilderInterface $violationBuilder
     ) {
         $numericConstraint = new IsNumeric();
         $numericConstraint->attributeCode = 'number';
@@ -144,7 +146,11 @@ class IsNumericValidatorSpec extends ObjectBehavior
                 ]
             )
             ->shouldBeCalled()
-            ->willReturn($violation);
+            ->willReturn($violationBuilder);
+
+        $violationBuilder->setCode(IsNumeric::IS_NUMERIC)->willReturn($violationBuilder);
+        $violationBuilder->atPath('data')->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($metric, $numericConstraint);
     }
@@ -152,7 +158,7 @@ class IsNumericValidatorSpec extends ObjectBehavior
     function it_adds_violation_when_validating_non_numeric_product_price_value(
         $context,
         ProductPriceInterface $productPrice,
-        ConstraintViolationBuilderInterface $violation
+        ConstraintViolationBuilderInterface $violationBuilder
     ) {
         $numericConstraint = new IsNumeric();
         $numericConstraint->attributeCode = 'number';
@@ -166,7 +172,11 @@ class IsNumericValidatorSpec extends ObjectBehavior
                 ]
             )
             ->shouldBeCalled()
-            ->willReturn($violation);
+            ->willReturn($violationBuilder);
+
+        $violationBuilder->setCode(IsNumeric::IS_NUMERIC)->willReturn($violationBuilder);
+        $violationBuilder->atPath('data')->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($productPrice, $numericConstraint);
     }
