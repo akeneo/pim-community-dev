@@ -257,7 +257,16 @@ class ProductNormalizerIntegration extends TestCase
                 'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar'], 'product_models' => []],
                 'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
             ],
-            'quantified_associations' => [],
+            'quantified_associations' => [
+                "PRODUCT_SET" => [
+                    "products" => [
+                        ["identifier" => 'bar', "quantity" => 3]
+                    ],
+                    "product_models" => [
+                        ["identifier" => 'baz', "quantity" => 2]
+                    ]
+                ],
+            ],
         ];
 
         $this->assertProduct('foo', $expected, []);
@@ -343,7 +352,16 @@ class ProductNormalizerIntegration extends TestCase
                 'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar'], 'product_models' => []],
                 'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
             ],
-            'quantified_associations' => [],
+            'quantified_associations' => [
+                "PRODUCT_SET" => [
+                    "products" => [
+                        ["identifier" => 'bar', "quantity" => 3]
+                    ],
+                    "product_models" => [
+                        ["identifier" => 'baz', "quantity" => 2]
+                    ]
+                ],
+            ],
         ];
 
         $this->assertProduct('foo', $expected, ['attributes' => [
