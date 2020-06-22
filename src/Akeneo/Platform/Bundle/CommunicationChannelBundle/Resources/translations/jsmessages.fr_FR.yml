@@ -1,7 +1,0 @@
-akeneo_communication_channel:
-  link:
-    title: News
-  panel:
-    title: Quoi d'neuf ?
-    list:
-      empty: Aucune news pour le moment. Mais revenez plus tard !

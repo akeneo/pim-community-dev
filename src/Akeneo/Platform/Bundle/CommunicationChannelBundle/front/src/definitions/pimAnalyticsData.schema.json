@@ -1,0 +1,12 @@
+{
+  "title": "PimAnalyticsData",
+  "type": "object",
+  "properties": {
+    "pim_edition": {"type": "string"},
+    "pim_version": {"type": "string"}
+  },
+  "required": [
+    "pim_edition",
+    "pim_version"
+  ]
+}

@@ -15,11 +15,12 @@ const unitConfig = {
     'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/tools',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/shared/components/',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/shared/icons/',
+    'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/tests/front/unit/utils.tsx',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/shared/illustrations/',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/pages/create-measurement-family/CreateMeasurementFamily.tsx',
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/pages/create-unit/CreateUnit.tsx',
-    'src/Akeneo/Platform/Bundle/CommunicationChannelBundle/Resources/workspaces/communication-channel/src/components/icons',
-    'src/Akeneo/Platform/Bundle/CommunicationChannelBundle/Resources/workspaces/communication-channel/src/components/panel/announcement/Image.tsx',
+    'src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front/src/components/icons',
+    'src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front/src/components/panel/announcement/Image.tsx',
     'src/Akeneo/Platform/Bundle/UIBundle/Resources/public/js/view',
   ],
   moduleNameMapper: {
@@ -50,7 +51,7 @@ const unitConfig = {
       lines: 100,
     },
   },
-  setupFiles: [`${__dirname}/enzyme.js`, `${__dirname}/mocks.js`],
+  setupFiles: [`${__dirname}/enzyme.js`, `${__dirname}/mocks.js`, `${__dirname}/fetchMock.ts`],
 };
 
 module.exports = Object.assign({}, baseConfig, unitConfig);
