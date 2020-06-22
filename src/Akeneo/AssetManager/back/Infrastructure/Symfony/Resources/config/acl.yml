@@ -23,6 +23,11 @@ akeneo_assetmanager_asset_family_execute_product_link_rule:
     label: akeneo_assetmanager.acl.asset_family.execute_product_link_rule
     group_name: akeneo_assetmanager.acl_group.asset_manager
 
+akeneo_assetmanager_asset_family_execute_naming_conventions:
+    type: action
+    label: akeneo_assetmanager.acl.asset_family.execute_naming_conventions
+    group_name: akeneo_assetmanager.acl_group.asset_manager
+
 akeneo_assetmanager_asset_family_delete:
     type: action
     label: akeneo_assetmanager.acl.asset_family.delete

@@ -193,6 +193,7 @@ services:
             - '@akeneo_assetmanager.application.asset.edit_asset_handler'
             - '@akeneo_assetmanager.tests.back.acceptance.context.exception_context'
             - '@akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context'
+            - '@Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\ExecuteNamingConvention'
 
     akeneo_assetmanager.tests.back.acceptance.context.delete_asset_context:
         class: Akeneo\AssetManager\Acceptance\Context\DeleteAssetContext

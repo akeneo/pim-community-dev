@@ -46,3 +46,11 @@ export const notifyExecuteProductLinkRulesSucceeded = () => {
 export const notifyExecuteProductLinkRulesFailed = () => {
   return notify('error', 'pim_asset_manager.asset_family.notification.execute_product_link_rules.fail');
 };
+
+export const notifyExecuteNamingConventionSucceeded = () => {
+  return notify('success', 'pim_asset_manager.asset_family.notification.execute_naming_convention.success');
+};
+
+export const notifyExecuteNamingConventionFailed = () => {
+  return notify('error', 'pim_asset_manager.asset_family.notification.execute_naming_convention.fail');
+};

@@ -4,6 +4,12 @@ services:
         arguments:
             - '@akeneo_batch_queue.queue.publish_job_to_queue'
 
+    akeneo_assetmanager.infrastructure.job.naming_convention_launcher:
+        class: Akeneo\AssetManager\Infrastructure\Job\NamingConventionLauncher
+        arguments:
+            - '@akeneo_batch_queue.queue.publish_job_to_queue'
+            - '@security.token_storage'
+
     akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_identifiers_launcher:
         class: Akeneo\AssetManager\Infrastructure\Job\ComputeTransformationFromAssetIdentifiersLauncher
         arguments:
@@ -18,6 +24,12 @@ services:
 
     akeneo_assetmanager.infrastructure.job.provider.link_assets_to_products:
         class: 'Akeneo\AssetManager\Infrastructure\Job\Provider\LinkAssetsToProducts'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo_assetmanager.infrastructure.job.provider.execute_naming_convention:
+        class: Akeneo\AssetManager\Infrastructure\Job\Provider\ExecuteNamingConvention
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
@@ -40,6 +52,17 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: 'internal', type: 'akeneo_assetmanager.link_assets_to_products' }
 
+    akeneo_assetmanager.job.execute_naming_convention:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'asset_manager_execute_naming_convention'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo_assetmanager.step.execute_naming_convention'
+        tags:
+            - { name: akeneo_batch.job, connector: 'internal', type: 'akeneo_assetmanager.execute_naming_convention' }
+
     akeneo_assetmanager.job.compute_transformations:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
@@ -60,6 +83,15 @@ services:
             - '@akeneo_assetmanager.tasklet.link_assets_to_products'
         public: false
 
+    akeneo_assetmanager.step.execute_naming_convention:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'execute_naming_convention'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_assetmanager.tasklet.execute_naming_convention'
+        public: false
+
     akeneo_assetmanager.step.compute_transformations:
         class: '%pim_connector.step.tasklet.class%'
         arguments:
@@ -75,6 +107,13 @@ services:
         arguments:
             - '@akeneo_assetmanager.application.asset.execute_rule_templates.rule_template_executor'
             - '@Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindAssetCodesByAssetFamily'
+        public: false
+
+    akeneo_assetmanager.tasklet.execute_naming_convention:
+        class: Akeneo\AssetManager\Infrastructure\Job\NamingConventionTasklet
+        arguments:
+            - '@Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\ExecuteNamingConvention'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_identifiers_by_asset_family'
         public: false
 
     akeneo_assetmanager.tasklet.compute_transformations:

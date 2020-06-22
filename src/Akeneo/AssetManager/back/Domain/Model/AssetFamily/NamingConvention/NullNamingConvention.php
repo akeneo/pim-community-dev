@@ -19,4 +19,9 @@ class NullNamingConvention implements NamingConventionInterface
     {
         return new \stdClass;
     }
+
+    public function isEmpty(): bool
+    {
+        return true;
+    }
 }

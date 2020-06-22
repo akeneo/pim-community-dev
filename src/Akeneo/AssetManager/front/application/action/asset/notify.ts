@@ -40,3 +40,11 @@ export const notifyAssetDeletionErrorOccured = (errors: ValidationError[]) => {
 
   return notify('error', firstError.message);
 };
+
+export const notifyExecuteNamingConventionFailed = () => {
+  return notify('error', 'pim_asset_manager.asset.notification.execute_naming_convention.fail');
+};
+
+export const notifyExecuteNamingConventionSuccess = () => {
+  return notify('success', 'pim_asset_manager.asset.notification.execute_naming_convention.success');
+};

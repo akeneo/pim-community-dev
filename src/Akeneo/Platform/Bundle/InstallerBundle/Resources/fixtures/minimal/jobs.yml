@@ -212,6 +212,11 @@ jobs:
         alias:     asset_manager_link_assets_to_products
         label:     asset manager link assets to products
         type:      asset_manager_link_assets_to_products
+    asset_manager_execute_naming_convention:
+        connector: internal
+        alias:     asset_manager_execute_naming_convention
+        label:     Execution of Asset Family naming convention
+        type:      asset_manager_execute_naming_convention
     asset_manager_compute_transformations:
         connector: internal
         alias:     asset_manager_compute_transformations

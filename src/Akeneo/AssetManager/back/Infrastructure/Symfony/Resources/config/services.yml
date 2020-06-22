@@ -47,10 +47,10 @@ services:
     akeneo_assetmanager.updater.adder.asset_collection:
         class: Akeneo\Pim\Enrichment\AssetManager\Component\Updater\Adder\AssetCollectionAdder
         arguments:
-        - '@pim_catalog.builder.entity_with_values'
-        - ['pim_catalog_asset_collection']
+            - '@pim_catalog.builder.entity_with_values'
+            - ['pim_catalog_asset_collection']
         tags:
-        - { name: 'pim_catalog.updater.adder' }
+            - { name: 'pim_catalog.updater.adder' }
 
     akeneo_assetmanager.application.attribute.subscribers.set_default_attributes_on_asset_family_creation_subscriber:
         class: Akeneo\AssetManager\Application\Attribute\Subscribers\SetDefaultAttributesOnAssetFamilyCreationSubscriber
@@ -133,3 +133,10 @@ services:
             - ['pim_catalog_asset_collection']
         tags:
             - { name: 'pim_catalog.updater.copier' }
+
+    Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\ExecuteNamingConvention:
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+            - '@Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\EditAssetCommandFactory'
+            - '@akeneo_assetmanager.application.asset.edit_asset_handler'
+            - '@validator'

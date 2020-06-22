@@ -14,7 +14,10 @@ import {
   assetFamilyProductLinkRulesUpdated,
   saveAssetFamily,
 } from 'akeneoassetmanager/application/action/asset-family/edit';
-import {executeProductLinkRules} from 'akeneoassetmanager/application/action/asset-family/product-link-rule';
+import {
+  executeNamingConvention,
+  executeProductLinkRules
+} from 'akeneoassetmanager/application/action/asset-family/product-link-rule';
 import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
 import Ajv from 'ajv';
 import {getErrorsViewStartedWith} from 'akeneoassetmanager/application/component/app/validation-error';
@@ -25,8 +28,8 @@ import AssetIllustration from 'akeneoassetmanager/platform/component/visual/illu
 import {
   HelperSection,
   HelperSeparator,
-  HelperTitle,
   HelperText,
+  HelperTitle,
 } from 'akeneoassetmanager/platform/component/common/helper';
 import {Button, ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
 import {ConfirmModal} from 'akeneoassetmanager/application/component/app/modal';
@@ -48,6 +51,7 @@ interface StateProps {
       edit_naming_convention: boolean;
       edit_product_link_rules: boolean;
       execute_product_link_rules: boolean;
+      execute_naming_conventions: boolean;
     };
   };
 }
@@ -128,19 +132,71 @@ const AssetFamilyProductLinkRulesEditor = ({
   );
 };
 
+type SecondaryActionsProps = {
+  canExecuteRules: boolean;
+  onExecuteRules: () => void;
+  canExecuteNamingConvention: boolean;
+  onExecuteNamingConvention: () => void;
+};
+
+const SecondaryActions = ({
+  canExecuteRules,
+  onExecuteRules,
+  canExecuteNamingConvention,
+  onExecuteNamingConvention,
+}: SecondaryActionsProps) => {
+  if (!canExecuteRules && !canExecuteNamingConvention) {
+    return null;
+  }
+
+  return (
+    <div className="AknSecondaryActions AknDropdown AknButtonList-item">
+      <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown"/>
+      <div className="AknDropdown-menu AknDropdown-menu--right">
+        <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
+        <div>
+          {canExecuteRules &&
+            <button
+              tabIndex={-1}
+              className="AknDropdown-menuLink"
+              onClick={onExecuteRules}
+            >
+              {__(`pim_asset_manager.asset_family.button.execute_product_link_rules`)}
+            </button>
+          }
+          {canExecuteNamingConvention &&
+            <button
+              tabIndex={-1}
+              className="AknDropdown-menuLink"
+              onClick={onExecuteNamingConvention}
+            >
+              {__(`pim_asset_manager.asset_family.button.execute_naming_convention`)}
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  );
+};
+
 interface DispatchProps {
   events: {
     onAssetFamilyNamingConventionUpdated: (namingConvention: NamingConvention) => void;
     onAssetFamilyProductLinkRulesUpdated: (productLinkRules: ProductLinkRuleCollection) => void;
     onSaveEditForm: () => void;
     onExecuteProductLinkRules: () => void;
+    onExecuteNamingConvention: () => void;
   };
 }
 
 class ProductLinkRule extends React.Component<StateProps & DispatchProps> {
   props: StateProps & DispatchProps;
-  public state: {isExecuteRulesModalOpen: boolean} = {
+  public state: {
+    isExecuteRulesModalOpen: boolean,
+    isExecuteNamingConventionModalOpen: boolean,
+  } = {
     isExecuteRulesModalOpen: false,
+    isExecuteNamingConventionModalOpen: false,
   };
 
   render() {
@@ -154,15 +210,6 @@ class ProductLinkRule extends React.Component<StateProps & DispatchProps> {
           image={null}
           primaryAction={(defaultFocus: React.RefObject<any>) => (
             <ButtonContainer>
-              {rights.assetFamily.execute_product_link_rules ? (
-                <Button
-                  color="outline"
-                  onClick={() => this.setState({isExecuteRulesModalOpen: true})}
-                  ref={defaultFocus}
-                >
-                  {__(`pim_asset_manager.asset_family.button.execute_product_link_rules`)}
-                </Button>
-              ) : null}
               {rights.assetFamily.edit_naming_convention ? (
                 <Button color="green" onClick={events.onSaveEditForm} ref={defaultFocus}>
                   {__('pim_asset_manager.asset_family.button.save')}
@@ -170,7 +217,14 @@ class ProductLinkRule extends React.Component<StateProps & DispatchProps> {
               ) : null}
             </ButtonContainer>
           )}
-          secondaryActions={() => null}
+          secondaryActions={() => (
+            <SecondaryActions
+              canExecuteRules={rights.assetFamily.execute_product_link_rules}
+              onExecuteRules={() => this.setState({isExecuteRulesModalOpen: true})}
+              canExecuteNamingConvention={rights.assetFamily.execute_naming_conventions}
+              onExecuteNamingConvention={() => this.setState({isExecuteNamingConventionModalOpen: true})}
+            />
+          )}
           withLocaleSwitcher={false}
           withChannelSwitcher={false}
           isDirty={form.state.isDirty}
@@ -237,6 +291,21 @@ class ProductLinkRule extends React.Component<StateProps & DispatchProps> {
             }}
           />
         )}
+        {this.state.isExecuteNamingConventionModalOpen && (
+          <ConfirmModal
+            titleContent={__('pim_asset_manager.asset_family.product_link_rules.execute_naming_convention.confirm_title')}
+            content={__('pim_asset_manager.asset_family.product_link_rules.execute_naming_convention.confirm_content')}
+            cancelButtonText={__('pim_asset_manager.asset_family.product_link_rules.execute_naming_convention.cancel')}
+            confirmButtonText={__('pim_asset_manager.asset_family.product_link_rules.execute_naming_convention.execute_naming_convention')}
+            onCancel={() => {
+              this.setState({isExecuteNamingConventionModalOpen: false});
+            }}
+            onConfirm={() => {
+              this.setState({isExecuteNamingConventionModalOpen: false});
+              events.onExecuteNamingConvention();
+            }}
+          />
+        )}
       </React.Fragment>
     );
   }
@@ -265,6 +334,10 @@ export default connect(
             securityContext.isGranted('akeneo_assetmanager_asset_family_edit') &&
             securityContext.isGranted('akeneo_assetmanager_asset_family_execute_product_link_rule') &&
             canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
+          execute_naming_conventions:
+            securityContext.isGranted('akeneo_assetmanager_asset_family_edit') &&
+            securityContext.isGranted('akeneo_assetmanager_asset_family_execute_naming_conventions') &&
+            canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
         },
       },
     };
@@ -283,6 +356,9 @@ export default connect(
         },
         onExecuteProductLinkRules: () => {
           dispatch(executeProductLinkRules());
+        },
+        onExecuteNamingConvention: () => {
+          dispatch(executeNamingConvention());
         },
       },
     };

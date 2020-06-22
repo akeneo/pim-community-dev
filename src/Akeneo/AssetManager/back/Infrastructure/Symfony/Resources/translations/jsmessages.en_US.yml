@@ -120,6 +120,7 @@ pim_asset_manager:
       edit: Edit family
       view: View family
       execute_product_link_rules: Execute rules
+      execute_naming_convention: Execute naming convention
     permission:
       title: Asset family permissions
     title: Assets
@@ -149,6 +150,11 @@ pim_asset_manager:
         confirm_title: Confirm execution
         confirm_content: Are you sure you want to execute all the rules? (this could take a long time)
         execute_rules: Execute rules
+        cancel: Cancel
+      execute_naming_convention:
+        confirm_title: Confirm execution
+        confirm_content: Are you sure you want to execute the naming convention? (this could take a long time)
+        execute_naming_convention: Execute naming convention
         cancel: Cancel
     properties:
       title: Asset family properties
@@ -206,6 +212,9 @@ pim_asset_manager:
       execute_product_link_rules:
         success: Product link rules have been launched
         fail: An error occured when trying to launch the product link rules
+      execute_naming_convention:
+        success: Naming convention has been launched
+        fail: An error occured when trying to launch the naming convention
     helper:
       title: Welcome to the Asset Manager!
       no_asset:
@@ -249,6 +258,7 @@ pim_asset_manager:
       error:
         value: Oops, it seems that the rendering of the "{{ fieldName }}" field failed. See the developer console for more details.
     button:
+      save_and_execute_naming_convention: Save and execute naming convention
       save: Save
       create: Create an asset
       mass_upload: Mass upload
@@ -374,6 +384,9 @@ pim_asset_manager:
       delete_all:
         success: All "{{ entityIdentifier }}" assets successfully deleted.
         fail: An error occurred during the deletion of all this asset family's assets
+      execute_naming_convention:
+        success: Naming convention successfully executed
+        fail: An error occurred during the execution of the naming convention
     completeness:
       label: Complete
   attribute:
@@ -496,6 +509,10 @@ pim_asset_manager:
         cancel: Cancel
         confirm: Delete
 
+  jobs:
+    asset_manager_execute_naming_convention:
+      error: 'The naming convention failed on asset "{{ asset }}"'
+
 pim_enrich:
   confirmation:
     discard_changes: 'You will lose changes to the "{{ entity }}" entity if you leave the page.'
@@ -530,3 +547,17 @@ pim_import_export:
             job_type:
                 asset_manager_compute_transformations: "Compute asset transformations"
                 asset_manager_link_assets_to_products: "Link assets to products"
+                asset_manager_execute_naming_convention: Execute Asset Family naming convention
+
+pim_datagrid:
+    cells:
+        type:
+            asset_manager_execute_naming_convention: Execute Asset Family naming convention
+
+batch_jobs:
+    default_steps:
+        execute_naming_convention: Execute Asset Family naming convention
+
+job_execution:
+    summary:
+        assets: Assets
