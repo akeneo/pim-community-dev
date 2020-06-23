@@ -30,7 +30,7 @@ class UpdateQuantifiedAssociationsInProductModelEndToEnd extends AbstractProduct
     /**
      * @test
      */
-    public function it_can_partial_update_quantified_associations_in_a_product(): void
+    public function it_can_partial_update_quantified_associations_in_a_product_model(): void
     {
         $client = $this->createAuthenticatedClient();
         $this->createQuantifiedAssociationType('PRODUCTSET_A');

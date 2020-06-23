@@ -157,13 +157,17 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
             $attributeCode = $this->extractAttributeCode($valueHeader);
             $context['attribute'] = $attributeCode;
 
-            if (isset($attributeTypes[$attributeCode])) {
-                $presenter = $this->presenterRegistry->getPresenterByAttributeType($attributeTypes[$attributeCode]);
-                if (null !== $presenter) {
-                    foreach ($valueChanges as $key => $value) {
-                        $changeset[$valueHeader][$key] = $presenter->present($value, $context);
-                    }
-                }
+            if (!isset($attributeTypes[$attributeCode])) {
+                continue;
+            }
+
+            $presenter = $this->presenterRegistry->getPresenterByAttributeType($attributeTypes[$attributeCode]);
+            if (null === $presenter) {
+                continue;
+            }
+
+            foreach ($valueChanges as $key => $value) {
+                $changeset[$valueHeader][$key] = $presenter->present($value, $context);
             }
         }
 
@@ -179,8 +183,8 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     {
         if (($separatorPos = strpos($valueHeader, self::ATTRIBUTE_HEADER_SEPARATOR)) !== false) {
             return substr($valueHeader, 0, $separatorPos);
-        } else {
-            return $valueHeader;
         }
+
+        return $valueHeader;
     }
 }

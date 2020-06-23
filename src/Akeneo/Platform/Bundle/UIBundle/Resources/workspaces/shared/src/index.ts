@@ -1,4 +1,5 @@
 export * from './components';
+export * from './fetcher';
 export * from './hooks';
 export * from './icons';
 export * from './illustrations';

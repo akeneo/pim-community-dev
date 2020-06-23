@@ -372,6 +372,7 @@ pim_datagrid:
   filters:
     label: Filtres
     system: Système
+  search: Rechercher sur {{ label }}
 batch_jobs:
   add_association:
     label: Associer

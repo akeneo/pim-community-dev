@@ -67,9 +67,9 @@ class ColumnsMerger
                     $collectedQuantifiedAssociations = $this->collectQuantifiedQuantityAssociationData($collectedQuantifiedAssociations, $fieldName, $fieldValue);
                 } elseif (in_array($fieldName, $this->associationColumnResolver->resolveQuantifiedIdentifierAssociationColumns())) {
                     $collectedQuantifiedAssociations = $this->collectQuantifiedIdentifierAssociationData($collectedQuantifiedAssociations, $fieldName, $fieldValue);
+                } else {
+                    $resultRow[$fieldName] = $fieldValue;
                 }
-
-                $resultRow[$fieldName] = $fieldValue;
             }
         }
 

@@ -1,0 +1,4 @@
+akeneo_communication_channel_announcement_list_rest:
+    path: '/rest/announcements'
+    defaults: { _controller: akeneo_communication_channel.internal_api.announcement.list }
+    methods: [GET]
