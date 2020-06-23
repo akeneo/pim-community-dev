@@ -78,7 +78,7 @@ class FieldFilterHelper
      * Check if value is a datetime corresponding to a format
      *
      * @param string $field
-     * @param string|\DateTime $value
+     * @param string|\DateTimeInterface $value
      * @param string $format
      * @param string $dateMessageFormat
      * @param string $className

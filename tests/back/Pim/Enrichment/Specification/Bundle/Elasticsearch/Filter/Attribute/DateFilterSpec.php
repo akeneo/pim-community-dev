@@ -80,7 +80,7 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_equals(
-        $filterValidator,
+        ElasticsearchFilterValidator $filterValidator,
         AttributeInterface $publishedOn,
         SearchQueryBuilder $sqb
     ) {
@@ -118,7 +118,7 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_lower_than(
-        $filterValidator,
+        ElasticsearchFilterValidator $filterValidator,
         AttributeInterface $publishedOn,
         SearchQueryBuilder $sqb
     ) {
@@ -156,7 +156,7 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_greater_than(
-        $filterValidator,
+        ElasticsearchFilterValidator $filterValidator,
         AttributeInterface $publishedOn,
         SearchQueryBuilder $sqb
     ) {
@@ -194,7 +194,7 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_between(
-        $filterValidator,
+        ElasticsearchFilterValidator $filterValidator,
         AttributeInterface $publishedOn,
         SearchQueryBuilder $sqb
     ) {
@@ -235,7 +235,7 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_not_between(
-        $filterValidator,
+        ElasticsearchFilterValidator $filterValidator,
         AttributeInterface $publishedOn,
         SearchQueryBuilder $sqb
     ) {
@@ -278,7 +278,7 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_is_empty(
-        $filterValidator,
+        ElasticsearchFilterValidator $filterValidator,
         AttributeInterface $publishedOn,
         SearchQueryBuilder $sqb
     ) {
@@ -303,7 +303,7 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_is_not_empty(
-        $filterValidator,
+        ElasticsearchFilterValidator $filterValidator,
         AttributeInterface $publishedOn,
         SearchQueryBuilder $sqb
     ) {
@@ -327,7 +327,7 @@ class DateFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_is_not_equal(
-        $filterValidator,
+        ElasticsearchFilterValidator $filterValidator,
         AttributeInterface $publishedOn,
         SearchQueryBuilder $sqb
     ) {
@@ -364,6 +364,85 @@ class DateFilterSpec extends ObjectBehavior
             'ecommerce',
             []
         );
+    }
+
+    function it_adds_a_filter_with_a_relative_date_in_the_past(
+        ElasticsearchFilterValidator $filterValidator,
+        SearchQueryBuilder $sqb,
+        AttributeInterface $releaseDate
+    ) {
+        $releaseDate->getCode()->willReturn('release_date');
+        $releaseDate->getBackendType()->willReturn('date');
+
+        $filterValidator->validateLocaleForAttribute('release_date', null)->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('release_date', null)->shouldBeCalled();
+
+        $relativeDate = new \DateTimeImmutable('-1 week', new \DateTimeZone('UTC'));
+
+        $sqb->addFilter(
+            [
+                'range' => [
+                    'values.release_date-date.<all_channels>.<all_locales>' => [
+                        'gt' => $relativeDate->format('Y-m-d'),
+                    ],
+                ],
+            ]
+        )->shouldBeCalled();
+
+        $this->setQueryBuilder($sqb);
+        $this->addAttributeFilter($releaseDate, '>', '-1 week');
+    }
+
+    function it_adds_a_filter_with_a_relative_date_in_the_future(
+        ElasticsearchFilterValidator $filterValidator,
+        SearchQueryBuilder $sqb,
+        AttributeInterface $releaseDate
+    ) {
+        $releaseDate->getCode()->willReturn('release_date');
+        $releaseDate->getBackendType()->willReturn('date');
+
+        $filterValidator->validateLocaleForAttribute('release_date', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('release_date', null)->shouldBeCalled();
+
+        $relativeDate = new \DateTimeImmutable('+6 months', new \DateTimeZone('UTC'));
+
+        $sqb->addFilter(
+            [
+                'term' => [
+                    'values.release_date-date.<all_channels>.en_US' => $relativeDate->format('Y-m-d'),
+                ],
+            ]
+        )->shouldBeCalled();
+
+        $this->setQueryBuilder($sqb);
+        $this->addAttributeFilter($releaseDate, '=', '+6 months', 'en_US');
+    }
+
+    function it_throws_an_exception_for_relative_dates_on_unsupported_operators(
+        ElasticsearchFilterValidator $filterValidator,
+        SearchQueryBuilder $sqb,
+        AttributeInterface $releaseDate
+    ) {
+        $releaseDate->getCode()->willReturn('release_date');
+        $this->setQueryBuilder($sqb);
+
+        $this->shouldThrow(
+            InvalidPropertyException::dateExpected(
+                'release_date',
+                'yyyy-mm-dd',
+                DateFilter::class,
+                '-1 week'
+            )
+        )->during('addAttributeFilter', [$releaseDate, Operators::BETWEEN, ['-1 week', 'now']]);
+
+        $this->shouldThrow(
+            InvalidPropertyException::dateExpected(
+                'release_date',
+                'yyyy-mm-dd',
+                DateFilter::class,
+                'now'
+            )
+        )->during('addAttributeFilter', [$releaseDate, Operators::NOT_BETWEEN, ['2018-01-01', 'now']]);
     }
 
     function it_throws_an_exception_when_the_search_query_builder_is_not_initialized(AttributeInterface $publishedOn)
