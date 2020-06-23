@@ -208,10 +208,10 @@ class ProductNormalizerSpec extends ObjectBehavior
         $filter->filterCollection($values, 'pim.transform.product_value.flat', Argument::cetera())->willReturn([$sku]);
 
         $quantifiedAssociationsNormalizer->normalize($product, 'flat', Argument::any())->shouldBeCalled()->willReturn([
-            'set-products-sku_assoc_product1' => '14',
-            'set-products-sku_assoc_product2' => '2',
-            'set-product_models-obi' => '0',
-            'set-product_models-one' => '1',
+            'set-products' => 'sku_assoc_product1,sku_assoc_product2',
+            'set-products-quantity' => '14|2',
+            'set-product_models' => 'obi,one',
+            'set-product_models-quantity' => '0|1',
         ]);
 
         $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
@@ -228,10 +228,10 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'up_sell-groups' => 'associated_group1,associated_group2',
                 'up_sell-products' => 'sku_assoc_product1,sku_assoc_product2',
                 'up_sell-product_models' => 'obi,wan',
-                'set-products-sku_assoc_product1' => '14',
-                'set-products-sku_assoc_product2' => '2',
-                'set-product_models-obi' => '0',
-                'set-product_models-one' => '1',
+                'set-products' => 'sku_assoc_product1,sku_assoc_product2',
+                'set-products-quantity' => '14|2',
+                'set-product_models' => 'obi,one',
+                'set-product_models-quantity' => '0|1',
                 'sku' => 'sku-001',
                 'enabled' => 1,
             ]

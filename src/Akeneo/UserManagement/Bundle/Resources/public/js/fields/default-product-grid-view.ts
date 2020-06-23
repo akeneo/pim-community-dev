@@ -57,12 +57,22 @@ class DefaultProductGridView extends BaseSelect {
         data: {options: {identifiers: [id]}},
         type: this.choiceVerb,
       }).then(response => {
-        const selected: InterfaceNormalizedDatagridView|undefined = _.findWhere(response, {id: parseInt(id)});
+        const selected: InterfaceNormalizedDatagridView|undefined = _.findWhere(response.results, {id: parseInt(id)});
         if (undefined !== selected) {
           callback(this.convertBackendItem(selected));
         }
       });
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  select2Results(response: any) {
+    return {
+      more: response.more,
+      results: response.results.map((item: any) => this.convertBackendItem(item)),
+    };
   }
 }
 
