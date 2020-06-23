@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-9314: Reset scroll position when switching attribute group in the PEF
 - PIM-9084: Filter locale specific attributes in exports when the value's locale and the export profile's locale are different
 
 # 3.2.59 (2020-06-15)
