@@ -5,7 +5,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalizat
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\FilterValues;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingProductModelValues;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
@@ -84,6 +83,8 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             ->filterByAttributeCodes($attributeCodes)
             ->execute($productStandard['values']);
 
+        $productStandard['values'] = $this->filterLocaleSpecificAttributes($productStandard['values']);
+
         if ($parameters->has('with_media') && $parameters->get('with_media')) {
             $directory = $this->stepExecution->getJobExecution()->getExecutionContext()
                 ->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
@@ -125,6 +126,20 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         foreach ($this->mediaFetcher->getErrors() as $error) {
             $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));
         }
+    }
+
+    protected function filterLocaleSpecificAttributes(array $values): array
+    {
+        $valuesToExport = [];
+        $jobLocales = $this->stepExecution->getJobParameters()->get('filters')['structure']['locales'];
+        foreach ($values as $code => $value) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($code);
+            if (!$attribute->isLocaleSpecific() || !empty(array_intersect($jobLocales, $attribute->getLocaleSpecificCodes()))) {
+                $valuesToExport[$code] = $value;
+            }
+        }
+
+        return $valuesToExport;
     }
 
     /**

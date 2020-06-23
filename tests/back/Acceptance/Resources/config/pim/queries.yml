@@ -33,3 +33,8 @@ services:
         class: 'Akeneo\Test\Acceptance\ProductModel\InMemoryFindNonExistingProductModelCodesQuery'
         arguments:
             - '@pim_catalog.repository.product_model'
+
+    akeneo.pim.structure.query.find_family_variants_identifiers_by_attribute_axes:
+        class: Akeneo\Test\Acceptance\FamilyVariant\InMemoryFamilyVariantsByAttributeAxes
+        arguments:
+            - '@pim_catalog.repository.family_variant'

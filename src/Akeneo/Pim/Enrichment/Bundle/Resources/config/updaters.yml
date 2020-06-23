@@ -438,6 +438,13 @@ services:
         tags:
             - { name: 'pim_catalog.updater.adder' }
 
+    pim_catalog.updater.adder.quantified_association_field:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\QuantifiedAssociationFieldAdder'
+        arguments:
+            - ['quantified_associations']
+        tags:
+            - { name: 'pim_catalog.updater.adder' }
+
     pim_catalog.updater.adder.price_collection_value:
         class: '%pim_catalog.updater.adder.price_collection_value.class%'
         arguments:
@@ -581,6 +588,11 @@ services:
 
     pim_catalog.updater.clearer.association_field:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field\AssociationFieldClearer'
+        tags:
+            - { name: 'pim_catalog.updater.clearer' }
+
+    pim_catalog.updater.clearer.quantified_association_field:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field\QuantifiedAssociationFieldClearer'
         tags:
             - { name: 'pim_catalog.updater.clearer' }
 
