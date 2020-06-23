@@ -1,9 +1,36 @@
 # 4.0.x
 
+# 4.0.35 (2020-06-22)
+
+## Bug fixes
+
+- Fix fatal error on display product model associations when they have more than 25 products associated
+
+## Enhancements
+
+- PIM-9317: [Backport PIM-9306] Enhance catalog volume monitoring count queries for large datasets
+
+# 4.0.34 (2020-06-17)
+
+## Bug fixes
+
+- PIM-9301: Fix extractUpdatedProductsByConnection query group by issue
+- PIM-9294: Fix removal of a validation rule in text attribute edit form
+- PIM-9279: Fix missing required attributes display in PEF when an attribute option was deleted
+- PIM-9308: Fix infinite scroll in the view selector when some views are filtered
+
+# 4.0.33 (2020-06-11)
+
+## Bug fixes
+
+- PIM-9280: Fix SqlGetConnectorProduct query group by issue with MySQL 8.0.20)
+
 # 4.0.32 (2020-06-08)
 
 ## Bug fixes
 
+- PIM-9203: Box shadow appearing on category selector in product grid
+- PIM-9250: Display glitch - vertical grey lines appear when opening category tree
 - AOB-968: Fix product label rendering on edit form
 - CXP-306: Fix the collect of product events
 - PIM-9282: Make calling attribute options via API case insensitive

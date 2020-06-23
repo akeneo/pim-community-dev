@@ -38,3 +38,8 @@ services:
         class: Akeneo\Test\Acceptance\AssociationType\InMemoryFindNonExistingAssociationTypeCodesQuery
         arguments:
             - '@pim_catalog.repository.association_type'
+
+    akeneo.pim.structure.query.find_family_variants_identifiers_by_attribute_axes:
+        class: Akeneo\Test\Acceptance\FamilyVariant\InMemoryFamilyVariantsByAttributeAxes
+        arguments:
+            - '@pim_catalog.repository.family_variant'

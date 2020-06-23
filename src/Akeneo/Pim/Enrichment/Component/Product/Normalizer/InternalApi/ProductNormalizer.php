@@ -6,7 +6,7 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
@@ -88,14 +88,14 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /** @var CatalogContext */
     protected $catalogContext;
 
-    /** @var CompletenessCalculator */
-    private $completenessCalculator;
-
     /** @var MissingRequiredAttributesNormalizerInterface */
     private $missingRequiredAttributesNormalizer;
 
     /** @var QuantifiedAssociationsNormalizer */
     private $quantifiedAssociationsNormalizer;
+
+    /** @var MissingRequiredAttributesCalculator */
+    private $missingRequiredAttributesCalculator;
 
     public function __construct(
         NormalizerInterface $normalizer,
@@ -116,9 +116,9 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
         MissingAssociationAdder $missingAssociationAdder,
         NormalizerInterface $parentAssociationsNormalizer,
         CatalogContext $catalogContext,
-        CompletenessCalculator $completenessCalculator,
         MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
-        QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer
+        QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer,
+        MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator
     ) {
         $this->normalizer                       = $normalizer;
         $this->versionNormalizer                = $versionNormalizer;
@@ -138,9 +138,9 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
         $this->parentAssociationsNormalizer     = $parentAssociationsNormalizer;
         $this->missingAssociationAdder          = $missingAssociationAdder;
         $this->catalogContext                   = $catalogContext;
-        $this->completenessCalculator           = $completenessCalculator;
         $this->missingRequiredAttributesNormalizer = $missingRequiredAttributesNormalizer;
         $this->quantifiedAssociationsNormalizer = $quantifiedAssociationsNormalizer;
+        $this->missingRequiredAttributesCalculator = $missingRequiredAttributesCalculator;
     }
 
     /**
@@ -269,7 +269,8 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
      */
     protected function getCompletenesses(ProductInterface $product): ProductCompletenessWithMissingAttributeCodesCollection
     {
-        $completenessCollection = $this->completenessCalculator->fromProductIdentifier($product->getIdentifier());
+        $completenessCollection = $this->missingRequiredAttributesCalculator->fromEntityWithFamily($product);
+
         if (null === $completenessCollection) {
             $completenessCollection = new ProductCompletenessWithMissingAttributeCodesCollection($product->getId(), []);
         }

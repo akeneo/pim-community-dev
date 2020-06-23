@@ -292,6 +292,49 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
             );
     }
 
+    public function it_merge_quantified_associations_and_overwrite_quantities_from_duplicated_identifiers(
+        QuantifiedAssociations $quantifiedAssociationsToMerge
+    ) {
+        $this->beConstructedThrough(
+            'createFromNormalized',
+            [
+                [
+                    'PACK' => [
+                        'products' => [
+                            ['identifier' => 'A', 'quantity' => 2],
+                            ['identifier' => 'B', 'quantity' => 3],
+                            ['identifier' => 'C', 'quantity' => 4],
+                        ],
+                    ],
+                ]
+            ]
+        );
+
+        $quantifiedAssociationsToMerge->normalize()->willReturn([
+            'PACK' => [
+                'products' => [
+                    ['identifier' => 'B', 'quantity' => 3],
+                    ['identifier' => 'C', 'quantity' => 6],
+                    ['identifier' => 'D', 'quantity' => 1],
+                ],
+            ],
+        ]);
+
+        $this->merge($quantifiedAssociationsToMerge);
+
+        $this->normalize()->shouldReturn([
+            'PACK' => [
+                'products' => [
+                    ['identifier' => 'A', 'quantity' => 2],
+                    ['identifier' => 'B', 'quantity' => 3],
+                    ['identifier' => 'C', 'quantity' => 6],
+                    ['identifier' => 'D', 'quantity' => 1],
+                ],
+                'product_models' => []
+            ],
+        ]);
+    }
+
     private function anIdMapping(): IdMapping
     {
         return IdMapping::createFromMapping(

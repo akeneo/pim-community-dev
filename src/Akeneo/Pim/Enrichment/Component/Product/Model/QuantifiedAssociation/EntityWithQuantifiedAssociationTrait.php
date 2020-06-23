@@ -19,7 +19,7 @@ trait EntityWithQuantifiedAssociationTrait
      *
      * @var QuantifiedAssociations|null
      */
-    public $quantifiedAssociations;
+    protected $quantifiedAssociations;
 
     /**
      * @inheritDoc
