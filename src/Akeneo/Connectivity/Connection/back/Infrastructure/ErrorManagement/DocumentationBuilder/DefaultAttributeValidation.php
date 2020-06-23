@@ -13,6 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsNumeric;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsString;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotDecimal;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Range;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Regex;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueValue;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
@@ -28,6 +29,7 @@ final class DefaultAttributeValidation implements DocumentationBuilderInterface
         Range::NOT_IN_RANGE_ERROR,
         Range::TOO_HIGH_ERROR,
         Range::TOO_LOW_ERROR,
+        Regex::REGEX_FAILED_ERROR,
         UniqueValue::UNIQUE_VALUE,
         NotDecimal::NOT_DECIMAL,
         IsString::IS_STRING,
