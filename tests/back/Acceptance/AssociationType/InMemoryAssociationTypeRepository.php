@@ -85,9 +85,9 @@ class InMemoryAssociationTypeRepository implements AssociationTypeRepositoryInte
     /**
      * {@inheritdoc}
      */
-    public function findAll()
+    public function findAll(): array
     {
-        throw new NotImplementedException(__METHOD__);
+        return $this->associationType->toArray();
     }
 
     /**
