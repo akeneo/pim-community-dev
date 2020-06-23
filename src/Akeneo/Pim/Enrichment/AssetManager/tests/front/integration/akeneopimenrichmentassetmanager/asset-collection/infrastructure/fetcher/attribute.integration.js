@@ -7,7 +7,7 @@ beforeEach(async () => {
   page.on('request', interceptedRequest => {
     // Intercept the call to get the product attributes
     if (
-      'http://pim.com/rest/attribute/' === interceptedRequest.url() &&
+      'http://pim.com/rest/attribute/?types%5B%5D=pim_catalog_asset_collection&options%5Blimit%5D=100' === interceptedRequest.url() &&
       'POST' === interceptedRequest.method()
     ) {
       const attributes = [{
@@ -64,10 +64,8 @@ it('It fetches all product attributes of asset', async () => {
     const fetchAssetAttributes =
       require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute')
       .fetchAssetAttributes;
-    const fetcherRegistry = require('pim/fetcher-registry');
-    fetcherRegistry.initialize();
 
-    return await fetchAssetAttributes(fetcherRegistry.getFetcher('attribute'))();
+    return await fetchAssetAttributes();
   });
 
   // Check the attributes returned by the fetcher are the expected ones

@@ -1,15 +1,18 @@
-import promisify from 'akeneoassetmanager/tools/promisify';
 import {Attribute} from 'akeneoassetmanager/platform/model/structure/attribute';
 import {isString, isLabels} from 'akeneoassetmanager/domain/model/utils';
-const fetcherRegistry = require('pim/fetcher-registry');
+import {postJSON} from 'akeneoassetmanager/tools/fetch';
+const routing = require('routing');
 
-/**
- * Need to export this function in a variable to be able to mock it in our tests.
- * We couldn't require the pim/fetcher-registry in our test stack. We need to mock the legacy fetcher used.
- */
-export const attributeFetcher = () => fetcherRegistry.getFetcher('attribute');
-export const fetchAssetAttributes = (attributeFetcher: any) => async (): Promise<Attribute[]> => {
-  const attributes = await promisify(attributeFetcher.fetchByTypes(['pim_catalog_asset_collection']));
+const ASSET_COLLECTION_ATTRIBUTE_LIMIT = 100;
+
+export const fetchAssetAttributes = async (): Promise<Attribute[]> => {
+  const attributes = await postJSON(
+    routing.generate('pim_enrich_attribute_rest_index', {
+      types: ['pim_catalog_asset_collection'],
+      options: {limit: ASSET_COLLECTION_ATTRIBUTE_LIMIT},
+    }),
+    {}
+  );
 
   return denormalizeAssetAttributeCollection(attributes);
 };

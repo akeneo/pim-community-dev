@@ -6,6 +6,7 @@ import {Scroll} from 'akeneoassetmanager/application/component/app/illustration/
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
 import {Button} from 'akeneoassetmanager/application/component/app/button';
 import {getProductIndexUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import { updateDatagridStateWithFilterOnAssetCode } from "akeneoassetmanager/tools/datagridstate";
 
 const Container = styled.div`
   margin-top: 40px;
@@ -29,12 +30,13 @@ const StyledButton = styled(Button)`
 `;
 
 type LimitProps = {
+  assetCode: string;
   productCount: number;
   totalCount: number;
   attribute: NormalizedAttribute | null;
 };
 
-export const Limit = ({productCount, totalCount, attribute}: LimitProps) => {
+export const Limit = ({assetCode, productCount, totalCount, attribute}: LimitProps) => {
   if (null === attribute || productCount >= totalCount) return null;
 
   return (
@@ -51,7 +53,19 @@ export const Limit = ({productCount, totalCount, attribute}: LimitProps) => {
       </LimitSubtitle>
       {attribute.useable_as_grid_filter && (
         <a href={getProductIndexUrl()} target="_blank">
-          <StyledButton color="green">{__('pim_asset_manager.asset.product.not_enough_items.button')}</StyledButton>
+          <StyledButton
+            tabIndex="0"
+            role="button"
+            onClick={() =>
+              updateDatagridStateWithFilterOnAssetCode(
+                attribute.code,
+                assetCode
+              )
+            }
+            color="green"
+          >
+            {__("pim_asset_manager.asset.product.not_enough_items.button")}
+          </StyledButton>
         </a>
       )}
       <Scroll />

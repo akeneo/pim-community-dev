@@ -34,6 +34,7 @@ pim_reference_entity:
                 codes_dont_exist: "The following option codes don't exist for this attribute : \"%option_codes%\""
             record:
                 should_exist: 'The record "%record_code%" was not found.'
+                should_not_be_used_as_product_variant_axis: 'You cannot delete this entity as it`s used as a variant axis in one of your product variant'
             record_collection:
                 should_exist: 'The records "%record_codes%" were not found.'
             limit_reached: 'You cannot create the record "%record_label%" because you have reached the limit of %limit% records for this reference entity'

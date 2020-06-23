@@ -4,6 +4,33 @@
 
 - PIM-9243: Creation and update dates are not displayed on the asset page 
 
+# 4.0.35 (2020-06-22)
+
+## Bug fixes
+- PIM-9303: Fix project recalculate
+
+# 4.0.34 (2020-06-17)
+
+## Bug fixes
+
+- PIM-9298: Disallow removal of ReferenceEntity records used as product variant axis
+- PIM-9313: Remove limit of only 20 asset collection attributes in the product's assets tab
+
+## Technical Improvements
+
+- AOB-947: Add extension point on asset manager tab register
+
+# 4.0.33 (2020-06-11)
+
+## Technical Improvements
+
+- PIM-9299: Temporary increase memory peak limit test to 55mb
+
+## Bug fixes
+
+- PIM-9297: Fixed redirection from assets to products with filter
+- PIM-9296: Fix validation of product link rules format
+
 # 4.0.32 (2020-06-08)
 
 # 4.0.31 (2020-06-01)
@@ -11,6 +38,7 @@
 ## Bug fixes
 
 - PIM-9276: Fix API assets pagination
+- PIM-9281: Add title to asset navigation left menu
 
 # 4.0.30 (2020-05-28)
 

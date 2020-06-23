@@ -141,6 +141,8 @@ services:
             - '@akeneo_referenceentity.application.reference_entity_permission.can_edit_reference_entity_query_handler'
             - '@security.token_storage'
             - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer'
+            - '@validator'
+            - '@reference_entity_serializer'
 
     akeneo_referenceentity.infrastructure.action.record.delete_all:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\Record\DeleteAllAction

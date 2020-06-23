@@ -9,6 +9,13 @@ services:
         arguments:
             $allExistentRecordForReferenceEntityIdentifiers: '@akeneo_referenceentity.infrastructure.persistence.query.enrich.find_all_existent_records_for_reference_entity_identifiers_public_api'
 
+    akeneo_referenceentity.infrastructure.persistence.query.enrich.record_is_used_as_product_variant_axis:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Enrichment\SqlRecordIsUsedAsProductVariantAxis
+        arguments:
+            - '@database_connection'
+            - '@akeneo.pim.structure.query.find_family_variants_identifiers_by_attribute_axes'
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+
     # Enrichment > Reference entities
     pimee.reference_entity.enrichment.product.get_products_linked_to_a_record_action:
         class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Controller\Product\GetProductsLinkedToARecordAction
