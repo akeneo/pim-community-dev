@@ -55,14 +55,14 @@ Feature: Validate number attributes of a product
   Scenario: Validate the decimals allowed constraint of number attribute
     Given I change the Rating to "4.5"
     And I save the product
-    Then I should see validation tooltip "This value should not be a decimal."
+    Then I should see validation tooltip "The rating attribute requires a non-decimal value, and 4.5 is not a valid value."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the decimals allowed constraint of scopable number attribute
     Given I switch the scope to "ecommerce"
     And I change the Popularity to "9.5"
     And I save the product
-    Then I should see validation tooltip "This value should not be a decimal."
+    Then I should see validation tooltip "The popularity attribute requires a non-decimal value, and 9.5 is not a valid value."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the number min constraint of number attribute

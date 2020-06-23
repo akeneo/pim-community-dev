@@ -41,7 +41,9 @@ class IsNumericValidator extends ConstraintValidator
                     '{{ value }}' => $value,
                 ]
 
-            );
+            )
+                ->setCode(IsNumeric::IS_NUMERIC);
+
             if (isset($propertyPath)) {
                 $violation->atPath($propertyPath);
             }

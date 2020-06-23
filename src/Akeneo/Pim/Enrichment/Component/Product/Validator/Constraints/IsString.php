@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraint;
 class IsString extends Constraint
 {
     /** @var string */
-    public $message = 'Property "%attribute%" expects a string as data, "%givenType%" given.';
+    public $message = 'The %attribute% attribute requires a string, a %givenType% was detected.';
 
     /**
      * {@inheritdoc}

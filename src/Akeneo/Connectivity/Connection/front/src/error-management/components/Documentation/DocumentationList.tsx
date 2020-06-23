@@ -26,13 +26,17 @@ export const DocumentationList = ({documentations}: Props) => {
 
     return (
         <>
-            {checkDocumentations}
+            <PleaseCheckHelper>{checkDocumentations}</PleaseCheckHelper>
             <MoreInformationHelper>{moreInformationDocumentations}</MoreInformationHelper>
         </>
     );
 };
 
+const PleaseCheckHelper = styled.div`
+    padding-top: 8px;
+`;
+
 const MoreInformationHelper = styled.div`
-    padding-top: 10px;
+    padding-top: 15px;
     color: ${({theme}) => theme.color.grey100};
 `;

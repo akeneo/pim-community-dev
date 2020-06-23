@@ -67,7 +67,7 @@ abstract class AbstractProductTestCase extends ApiTestCase
 
         $this->get('pim_catalog.saver.product')->save($product);
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-
+        $this->get('pim_catalog.validator.unique_value_set')->reset();
 
         return $product;
     }

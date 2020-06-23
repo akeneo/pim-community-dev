@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
-import TableCell from '../../../common/components/Table/TableCell';
+import {css} from 'styled-components';
 import styled from '../../../common/styled-with-theme';
-import {ConnectionErrorContent, ErrorMessageDomainType, ErrorMessageViolationType} from '../../model/ConnectionError';
+import {ConnectionErrorContent, ErrorMessageDomainType} from '../../model/ConnectionError';
 import {DocumentationList} from '../Documentation/DocumentationList';
 import {ErrorMessageDomain} from './ErrorMessageDomain';
 import {ErrorMessageUnformattedList} from './ErrorMessageUnformattedList';
@@ -13,30 +13,31 @@ type Props = {
 };
 
 const ErrorMessageCell: FC<Props> = ({content}) => {
-    let errorMessage;
-
-    switch (content.type) {
-        case ErrorMessageDomainType:
-            errorMessage = <ErrorMessageDomain content={content} />;
-            break;
-        case ErrorMessageViolationType:
-            errorMessage = <ErrorMessageViolation content={content} />;
-            break;
-        default:
-            errorMessage = <ErrorMessageUnformattedList content={content} />;
-    }
-
     return (
         <Container>
             {content?.product && <ErrorProductInformation product={content.product} />}
-            {errorMessage}
+            {ErrorMessageDomainType === content.type ? (
+                <ErrorMessageDomain content={content} />
+            ) : (
+                <ErrorMessageViolation content={content} />
+            )}
+            <ErrorMessageUnformattedList content={content} />
             {content.documentation && <DocumentationList documentations={content.documentation} />}
         </Container>
     );
 };
 
-const Container = styled(TableCell)`
+const Container = styled.td<{collapsing?: boolean}>`
+    border-bottom: 1px solid ${({theme}) => theme.color.grey60};
     color: ${({theme}) => theme.color.grey140};
+    padding: 15px 20px;
+
+    ${({collapsing}) =>
+        collapsing &&
+        css`
+            width: 1px;
+            white-space: nowrap;
+        `}
 `;
 
 export {ErrorMessageCell};

@@ -39,6 +39,7 @@ class NotDecimalGuesserSpec extends ObjectBehavior
 
     function it_guesses_not_decimal(AttributeInterface $attribute)
     {
+        $attribute->getCode()->willReturn('a_code');
         $attribute->isDecimalsAllowed()
             ->willReturn(false)
             ->shouldBeCalled();

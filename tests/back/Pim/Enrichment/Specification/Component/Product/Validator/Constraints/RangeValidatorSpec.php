@@ -271,6 +271,7 @@ class RangeValidatorSpec extends ObjectBehavior
             )
             ->shouldBeCalled()
             ->willReturn($violation);
+        $violation->setCode(Range::TOO_LOW_ERROR)->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
         $this->validate(new \DateTime('2012-12-25'), $constraint);
@@ -295,6 +296,7 @@ class RangeValidatorSpec extends ObjectBehavior
             )
             ->shouldBeCalled()
             ->willReturn($violation);
+        $violation->setCode(Range::TOO_LOW_ERROR)->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
         $this->validate(new \DateTime('2012-12-25'), $constraint);
@@ -319,6 +321,7 @@ class RangeValidatorSpec extends ObjectBehavior
             )
             ->shouldBeCalled()
             ->willReturn($violation);
+        $violation->setCode(Range::TOO_HIGH_ERROR)->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
         $this->validate(new \DateTime('2015-12-25'), $constraint);
@@ -352,6 +355,7 @@ class RangeValidatorSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($violation);
         $violation->atPath('data')->shouldBeCalled()->willReturn($violation);
+        $violation->setCode(Range::TOO_HIGH_ERROR)->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
         $this->validate($productPrice, $constraint);
@@ -386,6 +390,7 @@ class RangeValidatorSpec extends ObjectBehavior
             ->willReturn($violation);
 
         $violation->atPath('data')->shouldBeCalled()->willReturn($violation);
+        $violation->setCode(Range::TOO_HIGH_ERROR)->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
         $this->validate($metric, $constraint);
@@ -397,14 +402,8 @@ class RangeValidatorSpec extends ObjectBehavior
         $constraint->max = 20;
 
         $context
-            ->buildViolation(
-                $constraint->invalidMessage,
-                [
-                    '{{ attribute }}' => $constraint->attributeCode,
-                    '{{ value }}' => null,
-                ]
-            )
-            ->shouldBeCalled();
+            ->buildViolation('myMessage', ['{{ value }}' => 21, '{{ limit }}' => 20])
+            ->shouldNotBeCalled();
 
         $this->validate(null, $constraint);
     }

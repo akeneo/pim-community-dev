@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constr
 
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsString;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Validator\Constraint;
 
 class IsStringSpec extends ObjectBehavior
 {
@@ -14,11 +15,11 @@ class IsStringSpec extends ObjectBehavior
 
     function it_has_message()
     {
-        $this->message->shouldBe('Property "%attribute%" expects a string as data, "%givenType%" given.');
+        $this->message->shouldBe('The %attribute% attribute requires a string, a %givenType% was detected.');
     }
 
     function it_is_a_validator_constraint()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraint');
+        $this->shouldBeAnInstanceOf(Constraint::class);
     }
 }

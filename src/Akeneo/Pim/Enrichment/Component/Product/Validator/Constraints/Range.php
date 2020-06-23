@@ -20,8 +20,6 @@ class Range extends BaseRange
     public $maxDateMessage = 'The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.';
 
     /** @var string */
-    public $invalidDateMessage = 'This value is not a valid date.';
-
     public $invalidMessage = 'The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.';
 
     /** @var string */
