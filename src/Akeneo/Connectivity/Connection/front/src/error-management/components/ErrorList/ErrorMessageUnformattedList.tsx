@@ -14,9 +14,14 @@ const hiddenFields = [
     'message_parameters',
     'locale',
     'scope',
+    'type',
 ];
 
 const ErrorMessageUnformattedList: FC<Props> = ({content}) => {
+    if (Object.entries(content).filter(([key]) => !hiddenFields.includes(key)).length === 0) {
+        return <></>;
+    }
+
     return (
         <ErrorTable>
             <tbody>
@@ -24,10 +29,10 @@ const ErrorMessageUnformattedList: FC<Props> = ({content}) => {
                     .filter(([key]) => !hiddenFields.includes(key))
                     .map(([key, value], i) => {
                         return (
-                            <ErrorTr key={i}>
+                            <tr key={i}>
                                 <ErrorKey>{key}:</ErrorKey>
-                                <td>{JSON.stringify(value)}</td>
-                            </ErrorTr>
+                                <ErrorValue>{JSON.stringify(value)}</ErrorValue>
+                            </tr>
                         );
                     })}
             </tbody>
@@ -40,15 +45,17 @@ const ErrorKey = styled.th`
     font-weight: bold;
     vertical-align: baseline;
     white-space: pre-wrap;
+    padding: 0px;
 `;
 
-const ErrorTr = styled.tr`
-    line-height: 12px;
+const ErrorValue = styled.td`
+    padding: 0px;
 `;
 
 const ErrorTable = styled.table`
-    padding-top: 15px;
+    padding: 10px 0 0 0;
     border-collapse: separate;
+    border-spacing: 0px 4px;
 `;
 
 export {ErrorMessageUnformattedList};
