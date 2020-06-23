@@ -9,6 +9,8 @@ use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Docu
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation\HrefMessageParameter;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation\RouteMessageParameter;
 use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\DocumentationBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsNumeric;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Range;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueValue;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
@@ -16,15 +18,24 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class AttributeValidation implements DocumentationBuilderInterface
+final class DefaultAttributeValidation implements DocumentationBuilderInterface
 {
+    const SUPPORTED_CONSTRAINTS_CODES = [
+        IsNumeric::IS_NUMERIC,
+        Range::INVALID_CHARACTERS_ERROR,
+        Range::NOT_IN_RANGE_ERROR,
+        Range::TOO_HIGH_ERROR,
+        Range::TOO_LOW_ERROR,
+        UniqueValue::UNIQUE_VALUE,
+    ];
+
     public function support($object): bool
     {
-        if ($object instanceof ConstraintViolationInterface) {
-            switch ($object->getCode()) {
-                case UniqueValue::UNIQUE_VALUE:
-                    return true;
-            }
+        if (
+            $object instanceof ConstraintViolationInterface
+            && in_array($object->getCode(), self::SUPPORTED_CONSTRAINTS_CODES)
+        ) {
+            return true;
         }
 
         return false;
