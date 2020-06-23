@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Proces
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductProcessor;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
@@ -65,9 +66,12 @@ class ProductProcessorSpec extends ObjectBehavior
         ChannelInterface $channel,
         LocaleInterface $locale,
         ProductInterface $product,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        AttributeInterface $attribute
     ) {
         $attributeRepository->findMediaAttributeCodes()->willReturn(['picture']);
+        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
+        $attribute->isLocaleSpecific()->willReturn(false);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filePath')->willReturn('/my/path/product.csv');
@@ -136,8 +140,14 @@ class ProductProcessorSpec extends ObjectBehavior
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         WriteValueCollection $valuesCollection,
-        ExecutionContext $executionContext
+        ExecutionContext $executionContext,
+        AttributeRepositoryInterface $attributeRepository,
+        AttributeInterface $attribute
     ) {
+
+        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
+        $attribute->isLocaleSpecific()->willReturn(false);
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filePath')->willReturn('/my/path/product.csv');
         $jobParameters->get('filters')->willReturn(
@@ -199,8 +209,14 @@ class ProductProcessorSpec extends ObjectBehavior
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         WriteValueCollection $valuesCollection,
-        ExecutionContext $executionContext
+        ExecutionContext $executionContext,
+        AttributeRepositoryInterface $attributeRepository,
+        AttributeInterface $attribute
     ) {
+
+        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn($attribute);
+        $attribute->isLocaleSpecific()->willReturn(false);
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filePath')->willReturn('/my/path/product.csv');
         $jobParameters->get('filters')->willReturn(
