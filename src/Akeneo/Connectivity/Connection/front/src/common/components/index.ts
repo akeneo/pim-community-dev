@@ -24,6 +24,7 @@ import {Select} from './select/Select';
 import {Select2, Select2Configuration} from './Select2';
 import {SmallHelper} from './SmallHelper';
 import {Table, TableCell, TableHeaderCell, TableHeaderRow, TableRow} from './Table';
+import {Flag} from './Flag';
 
 export {
     ApplyButton,
@@ -62,4 +63,5 @@ export {
     TableRow,
     EmptyState,
     Typography,
+    Flag,
 };
