@@ -3,6 +3,9 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
     table: pim_catalog_product_model
     changeTrackingPolicy: DEFERRED_EXPLICIT
     repositoryClass: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductModelRepository
+    indexes:
+        idx_product_model_updated:
+            columns: [ updated ]
     fields:
         id:
             type: integer
