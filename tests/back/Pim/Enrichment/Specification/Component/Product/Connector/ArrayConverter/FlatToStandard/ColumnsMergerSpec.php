@@ -288,7 +288,6 @@ class ColumnsMergerSpec extends ObjectBehavior
         $associationColumnResolver->resolveQuantifiedIdentifierAssociationColumns()->willReturn(['PACK-products']);
 
         $mergedRow = [
-            'PACK-products-quantity' => '10|24',
             'PACK-products' => [
                 [
                     'identifier' => 'my_sku',

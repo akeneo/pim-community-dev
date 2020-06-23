@@ -17,6 +17,9 @@ akeneo_measure:
 akeneo_feature_flag:
     resource: "@AkeneoFeatureFlagBundle/Resources/config/routing.yml"
 
+akeneo_communication_channel:
+    resource: "@AkeneoCommunicationChannelBundle/Resources/config/routing.yml"
+
 # PIM
 pim_analytics:
     resource: "@PimAnalyticsBundle/Resources/config/routing.yml"
