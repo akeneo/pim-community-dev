@@ -1,14 +1,11 @@
 {
     "data": [
         {
+            "id": "update-easily_monitor_errors_on_your_connections-2020-06-04",
             "startDate": "2020/06/04",
             "notificationDuration": 14,
             "tags": [
                 "updates"
-            ],
-            "editions": [
-                "CE",
-                "EE"
             ],
             "title": "Easily monitor errors on your connections",
             "description": "For each of your connections, a new `Monitoring` page now lists the last integration errors that may have occurred.",
@@ -17,14 +14,11 @@
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-05.html#easily-monitor-errors-on-your-connections"
         },
         {
+            "id": "update-new_metrics_on_the_connection_dashboard-2020-06-04",
             "startDate": "2020/06/04",
             "notificationDuration": 14,
             "tags": [
                 "updates"
-            ],
-            "editions": [
-                "CE",
-                "EE"
             ],
             "title": "New metrics on the Connection dashboard",
             "description": "The Connection dashboard now displays additional information to ease error monitoring and allow you to see at a glance how your source connections are performing.",
@@ -33,14 +27,11 @@
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-05.html#new-metrics-on-the-connection-dashboard"
         },
         {
+            "id": "update-new_association_type_the_two_way_association-2020-06-04",
             "startDate": "2020/06/04",
             "notificationDuration": 14,
             "tags": [
                 "updates"
-            ],
-            "editions": [
-                "CE",
-                "EE"
             ],
             "title": "New association type: the two-way association",
             "description": "Easily handle products compatibility in your PIM thanks to our **brand new two-way association type**! This new association type is now available under `Settings`/`Association types`.",
@@ -49,41 +40,33 @@
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-05.html#new-association-type-the-two-way-association"
         },
         {
+            "id": "update-more_visibility_on_pim_jobs-2020-06-04",
             "startDate": "2020/06/04",
             "notificationDuration": 14,
             "tags": [
                 "updates"
-            ],
-            "editions": [
-                "CE",
-                "EE"
             ],
             "title": "More visibility on PIM jobs",
             "description": "To give you more visibility and control on all PIM jobs, we added a new permission: `View all jobs in the Process Tracker` to see all jobs of any status under the Process Tracker.",
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-05.html#more-visibility-on-pim-jobs"
         },
         {
+            "id": "update-rules_engine_improvements-2020-06-04",
             "startDate": "2020/06/04",
             "notificationDuration": 14,
             "tags": [
                 "updates"
-            ],
-            "editions": [
-                "EE"
             ],
             "title": "Rules engine improvements",
             "description": "Small UI enhancements and a new parameter for your calculation action, check out the last improvements of the rules engine!",
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-05.html#rules-engine-improvements"
         },
         {
+            "id": "update-a_new_screen_to_add_your_own_measurement_units-2020-05-07",
             "startDate": "2020/05/07",
             "notificationDuration": 7,
             "tags": [
                 "updates"
-            ],
-            "editions": [
-                "CE",
-                "EE"
             ],
             "title": "A new screen to add your own measurement units",
             "description": "In order to give you more flexibility, we have improved the way we manage metrics in the PIM. Discover our new Measurements feature now!",
@@ -92,14 +75,11 @@
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#a-new-screen-to-add-your-own-measurement-units"
         },
         {
+            "id": "update-new_endpoints_to_manage_measurements-2020-05-07",
             "startDate": "2020/05/07",
             "notificationDuration": 7,
             "tags": [
                 "updates"
-            ],
-            "editions": [
-                "CE",
-                "EE"
             ],
             "title": "New endpoints to manage measurements",
             "description": "We introduced two new API endpoints to create, update and list your measurement families.",
@@ -108,14 +88,11 @@
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#new-endpoints-to-manage-measurements"
         },
         {
+            "id": "update-product_associations_update-2020-05-07",
             "startDate": "2020/05/07",
             "notificationDuration": 7,
             "tags": [
                 "updates"
-            ],
-            "editions": [
-                "CE",
-                "EE"
             ],
             "title": "Product associations update",
             "description": "Starting now, enjoy some small improvements to make your life easier when you work with product associations.",
@@ -124,14 +101,11 @@
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#product-associations-update"
         },
         {
+            "id": "update-track_your_destination_connections-2020-05-07",
             "startDate": "2020/05/07",
             "notificationDuration": 7,
             "tags": [
                 "updates"
-            ],
-            "editions": [
-                "CE",
-                "EE"
             ],
             "title": "Track your destination connections",
             "description": "You can now easily track the number of products that are sent to your destinations in the Connection dashboard.",
@@ -140,93 +114,77 @@
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#track-your-destination-connections"
         },
         {
+            "id": "update-connection_dashboard_updates-2020-05-07",
             "startDate": "2020/05/07",
             "notificationDuration": 7,
             "tags": [
                 "updates"
-            ],
-            "editions": [
-                "CE",
-                "EE"
             ],
             "title": "Connection dashboard updates",
             "description": "The Connection dashboard has been improved with a new layout as well as the possibility to choose which connection you want to track.",
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#connection-dashboard-updates"
         },
         {
+            "id": "update-rules_engine_new_actions_and_improvements-2020-05-07",
             "startDate": "2020/05/07",
             "notificationDuration": 7,
             "tags": [
                 "updates"
-            ],
-            "editions": [
-                "EE"
             ],
             "title": "Rules engine new actions and improvements",
             "description": "Discover the latest enhancements on the rules engine: we added two new actions, the possibility to name your rules and we also improved the rules format for associations.",
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#rules-engine-new-actions-and-improvements"
         },
         {
+            "id": "update-rules_engine_new_actions_and_improvements-2020-05-07",
             "startDate": "2020/05/07",
             "notificationDuration": 7,
             "tags": [
                 "updates"
-            ],
-            "editions": [
-                "EE"
             ],
             "title": "Data Quality Insights made even more powerful",
             "description": "Data Quality Insights recommendations and grades are now also available for product models to help you ensure that all your products have enriched and consistent content. Also, our spell-check feature now supports additional languages.",
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#data-quality-insights-made-even-more-powerful"
         },
         {
+            "id": "update-data_quality_improvements-2020-04-02",
             "startDate": "2020/04/02",
             "notificationDuration": 7,
             "tags": [
                 "updates"
-            ],
-            "editions": [
-                "EE"
             ],
             "title": "Data quality improvements",
             "description": "To help you craft the best product information ever, Data quality insights recommendations and grades are now available for variant products and our spell-check feature supports additional languages!",
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-03.html#data-quality-improvements"
         },
         {
+            "id": "update-new_measurement_units_and_families-2020-04-02",
             "startDate": "2020/04/02",
             "notificationDuration": 7,
             "tags": [
                 "updates"
-            ],
-            "editions": [
-                "CE",
-                "EE"
             ],
             "title": "New measurement units and families",
             "description": "We added four new measurement families: `Force`, `Angle`, `Capacitance` and `Volume Flow` to better fit your needs in terms of product modeling.",
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-03.html#new-measurement-units-and-families"
         },
         {
+            "id": "update-rules_engine_extended_capabilities-2020-04-02",
             "startDate": "2020/04/02",
             "notificationDuration": 7,
             "tags": [
                 "updates"
-            ],
-            "editions": [
-                "EE"
             ],
             "title": "Rules engine extended capabilities",
             "description": "A new action and enhancements made on the copy action: easily and automatically concatenate your attributes, and now copy values from an attribute type to another attribute type.",
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-03.html#rules-engine-extended-capabilities"
         },
         {
+            "id": "update-optimize_the_weight_of_your_assets-2020-03-05",
             "startDate": "2020/03/05",
             "notificationDuration": 7,
             "tags": [
                 "updates"
-            ],
-            "editions": [
-                "EE"
             ],
             "title": "Optimize the weight of your assets",
             "description": "If you need to reduce the size of your images, you can now use our new operation: `optimize_jpeg`. This transformation operation will compress your file to a jpeg.",
@@ -235,14 +193,11 @@
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-02.html#optimize-the-weight-of-your-assets"
         },
         {
+            "id": "update-new_warning_message_on_connection_usernames-2020-03-05",
             "startDate": "2020/03/05",
             "notificationDuration": 7,
             "tags": [
                 "updates"
-            ],
-            "editions": [
-                "CE",
-                "EE"
             ],
             "title": "New warning message on connection usernames",
             "description": "Whenever one of your connectors is not using the dedicated connection username, we now display a warning message in the main Connections screen as well as in the Connection form.",

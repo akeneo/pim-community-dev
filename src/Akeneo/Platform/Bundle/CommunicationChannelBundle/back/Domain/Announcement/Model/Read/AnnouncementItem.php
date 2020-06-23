@@ -17,6 +17,9 @@ final class AnnouncementItem
     private const DATE_INTERVAL_FORMAT = 'P%sD';
 
     /** @var string */
+    private $id;
+
+    /** @var string */
     private $title;
 
     /** @var string */
@@ -40,9 +43,6 @@ final class AnnouncementItem
     /** @var string[] */
     private $tags;
 
-    /** @var string[] */
-    private $editions;
-
     /**
      * @param string $title
      * @param string $description
@@ -52,10 +52,10 @@ final class AnnouncementItem
      * @param DateTimeImmutable $startDate
      * @param int $notificationDuration
      * @param string[] $tags
-     * @param string[] $editions
      * @return void
      */
     public function __construct(
+        string $id,
         string $title,
         string $description,
         ?string $img,
@@ -63,9 +63,9 @@ final class AnnouncementItem
         string $link,
         \DateTimeImmutable $startDate,
         int $notificationDuration,
-        array $tags,
-        array $editions
+        array $tags
     ) {
+        $this->id = $id;
         $this->title = $title;
         $this->description = $description;
         $this->img = $img;
@@ -74,7 +74,6 @@ final class AnnouncementItem
         $this->startDate = $startDate;
         $this->notificationDuration = $notificationDuration;
         $this->tags = $tags;
-        $this->editions = $editions;
     }
 
     /**
@@ -85,6 +84,7 @@ final class AnnouncementItem
         $this->addNewTag();
 
         return [
+            'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
             'img' => $this->img,

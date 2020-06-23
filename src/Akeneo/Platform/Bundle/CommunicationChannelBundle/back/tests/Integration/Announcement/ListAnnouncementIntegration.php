@@ -40,6 +40,7 @@ class ListAnnouncementIntegration extends WebTestCase
 
     private function assertItemKeys(array $item): void
     {
+        Assert::assertArrayHasKey('id', $item);
         Assert::assertArrayHasKey('title', $item);
         Assert::assertArrayHasKey('description', $item);
         Assert::assertArrayHasKey('img', $item);
