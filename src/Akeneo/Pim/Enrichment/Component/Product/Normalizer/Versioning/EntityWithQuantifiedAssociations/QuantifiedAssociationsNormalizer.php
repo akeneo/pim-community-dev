@@ -33,30 +33,18 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
 
     private function normalizeQuantifiedProductLinks(array $quantifiedProductLinks, string $associationTypeCode)
     {
-        return array_reduce(
-            $quantifiedProductLinks,
-            function (array $quantifiedLinksNormalized, array $quantifiedLink) use ($associationTypeCode) {
-                $flatAssociationKey = sprintf('%s-products-%s', $associationTypeCode, $quantifiedLink['identifier']);
-                $quantifiedLinksNormalized[$flatAssociationKey] = $quantifiedLink['quantity'];
-
-                return $quantifiedLinksNormalized;
-            },
-            []
-        );
+        return [
+            sprintf('%s-products', $associationTypeCode) => implode(',', array_column($quantifiedProductLinks, 'identifier')),
+            sprintf('%s-products-quantity', $associationTypeCode) => implode('|', array_column($quantifiedProductLinks, 'quantity')),
+        ];
     }
 
     private function normalizeQuantifiedProductModelLinks(array $quantifiedProductModelLinks, string $associationTypeCode)
     {
-        return array_reduce(
-            $quantifiedProductModelLinks,
-            function (array $quantifiedLinksNormalized, array $quantifiedLink) use ($associationTypeCode) {
-                $flatAssociationKey = sprintf('%s-product_models-%s', $associationTypeCode, $quantifiedLink['identifier']);
-                $quantifiedLinksNormalized[$flatAssociationKey] = $quantifiedLink['quantity'];
-
-                return $quantifiedLinksNormalized;
-            },
-            []
-        );
+        return [
+            sprintf('%s-product_models', $associationTypeCode) => implode(',', array_column($quantifiedProductModelLinks, 'identifier')),
+            sprintf('%s-product_models-quantity', $associationTypeCode) => implode('|', array_column($quantifiedProductModelLinks, 'quantity')),
+        ];
     }
 
     /**

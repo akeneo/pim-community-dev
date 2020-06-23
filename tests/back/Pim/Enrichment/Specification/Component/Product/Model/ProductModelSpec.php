@@ -459,7 +459,7 @@ class ProductModelSpec extends ObjectBehavior
     {
         $idMapping = $this->idMapping();
         $this->rawQuantifiedAssociations = [];
-        $this->quantifiedAssociations = QuantifiedAssociations::createWithAssociationsAndMapping(
+        $this->setQuantifiedAssociations(QuantifiedAssociations::createWithAssociationsAndMapping(
             [
                 'PACK' => [
                     'products'       => [
@@ -474,7 +474,7 @@ class ProductModelSpec extends ObjectBehavior
             ],
             $idMapping,
             $idMapping
-        );
+        ));
         $this->getQuantifiedAssociationsProductIds()->shouldReturn([]);
         $this->getQuantifiedAssociationsProductModelIds()->shouldReturn([]);
 

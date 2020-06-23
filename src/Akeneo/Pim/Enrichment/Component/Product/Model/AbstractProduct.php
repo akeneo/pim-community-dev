@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\EntityWithQuantifiedAssociationTrait;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -67,6 +68,13 @@ abstract class AbstractProduct implements ProductInterface
     /** @var Collection $associations */
     protected $associations;
 
+    /**
+     * Not persisted.
+     *
+     * @var QuantifiedAssociations|null
+     */
+    protected $quantifiedAssociations;
+
     /** @var Collection $completenesses */
     protected $completenesses;
 
@@ -93,6 +101,7 @@ abstract class AbstractProduct implements ProductInterface
         $this->groups = new ArrayCollection();
         $this->associations = new ArrayCollection();
         $this->uniqueData = new ArrayCollection();
+        $this->quantifiedAssociations = QuantifiedAssociations::createFromNormalized([]);
     }
 
     /**
