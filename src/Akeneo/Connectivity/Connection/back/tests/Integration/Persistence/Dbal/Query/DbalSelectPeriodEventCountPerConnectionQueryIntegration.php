@@ -51,15 +51,13 @@ class DbalSelectPeriodEventCountPerConnectionQueryIntegration extends TestCase
 
         $this->createHourlyEventCounts([
             ['sap', EventTypes::PRODUCT_UPDATED, '2020-01-01 12:00:00', 5],
-            [AllConnectionCode::CODE, EventTypes::PRODUCT_UPDATED, '2020-01-01 12:00:00', 5],
-            // Expected results
+            // Begin  of requested period interval
             ['bynder', EventTypes::PRODUCT_UPDATED, '2020-01-02 00:00:00', 2],
             ['sap', EventTypes::PRODUCT_UPDATED, '2020-01-02 00:00:00', 10],
-            [AllConnectionCode::CODE, EventTypes::PRODUCT_UPDATED, '2020-01-02 00:00:00', 12],
             ['sap', EventTypes::PRODUCT_UPDATED, '2020-01-03 23:00:00', 4],
-            [AllConnectionCode::CODE, EventTypes::PRODUCT_UPDATED, '2020-01-03 23:00:00', 4],
-            // End of expected results
             ['bynder', EventTypes::PRODUCT_UPDATED, '2020-01-04 00:00:00', 2],
+            // End of requested period interval
+            ['bynder', EventTypes::PRODUCT_UPDATED, '2020-01-05 00:00:00', 12],
         ]);
 
         $period = new DateTimePeriod(

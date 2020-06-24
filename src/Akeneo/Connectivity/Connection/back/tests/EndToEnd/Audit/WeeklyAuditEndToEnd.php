@@ -35,7 +35,6 @@ class WeeklyAuditEndToEnd extends WebTestCase
             ['sap', 'product_created', '2020-01-04 14:00:00', 10],
             ['sap', 'product_created', '2020-01-04 15:00:00', 30],
             ['sap', 'product_created', '2020-01-08 23:00:00', 50],
-            [AllConnectionCode::CODE, 'product_created', '2020-01-01 00:00:00', 100],
         ], 'Asia/Tokyo');
 
         $expectedResult = [
