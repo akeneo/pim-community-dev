@@ -305,7 +305,7 @@ jobs:
               name: Push PROD PIM image on docker registry
               command: IMAGE_TAG=$CIRCLE_SHA1 make push-php-image-prod
 
-  deploy_master_environment:
+  test_deploy_master:
       environment:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
@@ -334,7 +334,7 @@ jobs:
               command: IMAGE_TAG=$CIRCLE_SHA1 make delete
               when: always
 
-  deploy_32_upgrade_master_environment:
+  test_upgrade_from_32_to_master:
       environment:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
@@ -433,7 +433,7 @@ jobs:
               command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=${CIRCLE_SHA1} make delete
               when: on_fail
 
-  deploy_serenity_customer_db_upgrade_master_environment:
+  test_upgrade_from_serenity_customer_db_to_master:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
@@ -451,7 +451,7 @@ jobs:
                     SOURCE_PFID=${LIST_SOURCE_PFID[${RANDOM_SOURCE_PFID}]}
                     SOURCE_PED_TAG=$(cd /root/project; git fetch origin &> /dev/null && git tag --list | grep -E "^v?[0-9]+$" | sort -r | head -n 1 )
                     INSTANCE_NAME=$(echo "pimci-duplic-${CIRCLE_SHA1}"|cut -c1-40)
-                    ENV_NAME=dev SOURCE_PFID=${SOURCE_PFID} SOURCE_PED_TAG=${SOURCE_PED_TAG} INSTANCE_NAME=${INSTANCE_NAME} make deploy_serenity_customer_db_upgrade_master_environment
+                    ENV_NAME=dev SOURCE_PFID=${SOURCE_PFID} SOURCE_PED_TAG=${SOURCE_PED_TAG} INSTANCE_NAME=${INSTANCE_NAME} make test_upgrade_from_serenity_customer_db_to_master
           - run:
               name: Prepare infrastructure artifacts
               command: INSTANCE_NAME=$(echo "pimci-duplic-${CIRCLE_SHA1}"|cut -c1-40) make prepare-infrastructure-artifacts
@@ -618,7 +618,7 @@ workflows:
           - build_prod:
                 requires:
                     - checkout
-          - deploy_serenity_customer_db_upgrade_master_environment?:
+          - test_upgrade_from_serenity_customer_db_to_master?:
                 type: approval
                 filters:
                     branches:
@@ -626,9 +626,9 @@ workflows:
                             - master
                 requires:
                     - build_prod
-          - deploy_serenity_customer_db_upgrade_master_environment:
+          - test_upgrade_from_serenity_customer_db_to_master:
                 requires:
-                    - deploy_serenity_customer_db_upgrade_master_environment?
+                    - test_upgrade_from_serenity_customer_db_to_master?
           - deploy_pr_environment?:
                 type: approval
                 filters:
@@ -728,7 +728,7 @@ workflows:
                 is_pull_request: false
                 requires:
                     - checkout
-          - deploy_master_environment:
+          - test_deploy_master:
                 requires:
                     - build_prod
           - test_back_static_and_acceptance:
@@ -761,7 +761,7 @@ workflows:
                     - test_back_performance
                     - test_back_behat_legacy
                     - test_back_data_migrations
-                    - deploy_master_environment
+                    - test_deploy_master
 
   nightly-beta:
       triggers:
@@ -782,10 +782,10 @@ workflows:
                 is_pull_request: false
                 requires:
                     - checkout
-          - deploy_master_environment:
+          - test_deploy_master:
                 requires:
                     - build_prod
-          - deploy_32_upgrade_master_environment:
+          - test_upgrade_from_32_to_master:
                 requires:
                     - build_prod
           - test_back_static_and_acceptance:
@@ -818,8 +818,8 @@ workflows:
                     - test_back_performance
                     - test_back_behat_legacy
                     - test_back_data_migrations
-                    - deploy_master_environment
-                    - deploy_32_upgrade_master_environment
+                    - test_deploy_master
+                    - test_upgrade_from_32_to_master
 
   on_demand:
       jobs:
@@ -839,7 +839,7 @@ workflows:
                 is_pull_request: false
                 requires:
                     - checkout
-          - deploy_master_environment:
+          - test_deploy_master:
                 requires:
                     - build_prod
           - test_back_static_and_acceptance:
@@ -872,7 +872,7 @@ workflows:
                     - test_back_performance
                     - test_back_behat_legacy
                     - test_back_data_migrations
-                    - deploy_master_environment
+                    - test_deploy_master
 
 commands:
   set_gcloud_config_dev:

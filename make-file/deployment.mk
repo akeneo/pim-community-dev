@@ -255,7 +255,7 @@ terraform-pre-upgrade: terraform-init
 	cd $(INSTANCE_DIR) && terraform state rm module.pim.null_resource.metric
 	sleep 1
 
-.PHONY: deploy_serenity_customer_db_upgrade_master_environment
-deploy_serenity_customer_db_upgrade_master_environment:
+.PHONY: test_upgrade_from_serenity_customer_db_to_master
+test_upgrade_from_serenity_customer_db_to_master:
 	ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) SOURCE_PED_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/bin/clone_serenity.sh && \
 	INSTANCE_NAME_PREFIX=pimci-duplic INSTANCE_NAME=$${INSTANCE_NAME} IMAGE_TAG=$${CIRCLE_SHA1} make create-ci-release-files deploy
