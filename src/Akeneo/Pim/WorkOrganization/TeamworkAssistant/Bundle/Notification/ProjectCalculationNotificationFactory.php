@@ -15,7 +15,7 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectRe
 use Akeneo\Platform\Bundle\NotificationBundle\Factory\AbstractNotificationFactory;
 use Akeneo\Platform\Bundle\NotificationBundle\Factory\NotificationFactoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
-use Akeneo\Tool\Component\Localization\Presenter\DatePresenter;
+use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Doctrine\Common\Util\ClassUtils;
 
 /**
@@ -34,18 +34,12 @@ class ProjectCalculationNotificationFactory extends AbstractNotificationFactory 
     /** @var ProjectRepositoryInterface */
     protected $projectRepository;
 
-    /** @var DatePresenter */
+    /** @var PresenterInterface */
     protected $datePresenter;
 
-    /**
-     * @param ProjectRepositoryInterface $projectRepository
-     * @param DatePresenter              $datePresenter
-     * @param string[]                   $notificationTypes
-     * @param string                     $notificationClass
-     */
     public function __construct(
         ProjectRepositoryInterface $projectRepository,
-        DatePresenter $datePresenter,
+        PresenterInterface $datePresenter,
         array $notificationTypes,
         $notificationClass
     ) {

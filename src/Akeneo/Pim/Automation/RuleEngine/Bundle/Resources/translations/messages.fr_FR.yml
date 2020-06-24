@@ -111,7 +111,6 @@ pimee_catalog_rule:
   datetime:
     now: maintenant
     relative_date:
-      second: ]-Inf, -1[il y a %absolute_count% secondes|{-1}il y a 1 seconde|{1}dans 1 seconde|]1, +Inf[dans %absolute_count% secondes
       minute: ]-Inf, -1[il y a %absolute_count% minutes|{-1}il y a 1 minute|{1}dans 1 minute|]1, +Inf[dans %absolute_count% minutes
       hour: ]-Inf, -1[il y a %absolute_count% heures|{-1}il y a 1 heure|{1}dans 1 heure|]1, +Inf[dans %absolute_count% heures
       day: ]-Inf, -1[il y a %absolute_count% jours|{-1}il y a 1 jour|{1}dans 1 jour|]1, +Inf[dans %absolute_count% jours

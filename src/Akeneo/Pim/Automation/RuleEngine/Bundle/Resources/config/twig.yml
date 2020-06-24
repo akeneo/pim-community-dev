@@ -15,8 +15,17 @@ services:
         tags:
             - { name: twig.extension }
 
-    Akeneo\Pim\Automation\RuleEngine\Component\Localization\Presenter\RelativeDatePresenter:
+    pimee_catalog_rule.localization.presenter.datetime:
+        class: 'Akeneo\Pim\Automation\RuleEngine\Component\Localization\Presenter\RelativeDatePresenter'
         decorates: pim_catalog.localization.presenter.datetime
+        decoration_inner_name: 'base_datetime_presenter'
+        arguments:
+            - '@base_datetime_presenter'
+            - '@translator'
+
+    pimee_catalog_rule.localization.presenter.date:
+        class: 'Akeneo\Pim\Automation\RuleEngine\Component\Localization\Presenter\RelativeDatePresenter'
+        decorates: pim_catalog.localization.presenter.date
         decoration_inner_name: 'base_datetime_presenter'
         arguments:
             - '@base_datetime_presenter'
