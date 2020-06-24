@@ -305,7 +305,7 @@ jobs:
               name: Push PROD PIM image on docker registry
               command: IMAGE_TAG=$CIRCLE_SHA1 make push-php-image-prod
 
-  deploy_master_environment:
+  test_deploy_master:
       environment:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
@@ -334,7 +334,7 @@ jobs:
               command: IMAGE_TAG=$CIRCLE_SHA1 make delete
               when: always
 
-  deploy_upgrade_oldest_prod_environment:
+  test_upgrade_from_32_to_master:
       environment:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
@@ -347,62 +347,26 @@ jobs:
               name: Oldest SaaS prod (PIM v3) deployment on kubernetes
               command: |
                 ssh-keyscan github.com >> ~/.ssh/known_hosts
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make helm-prepare
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make deploy-pim3
+                INSTANCE_NAME_PREFIX=pimup32 IMAGE_TAG=$CIRCLE_SHA1 make helm-prepare
+                INSTANCE_NAME_PREFIX=pimup32 IMAGE_TAG=$CIRCLE_SHA1 make deploy-pim3
           - run:
               name: Upgrade intermediate version SaaS to master
               command: |
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make terraform-pre-upgrade
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make deploy
+                INSTANCE_NAME_PREFIX=pimup32 IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
+                INSTANCE_NAME_PREFIX=pimup32 IMAGE_TAG=$CIRCLE_SHA1 make terraform-pre-upgrade
+                INSTANCE_NAME_PREFIX=pimup32 IMAGE_TAG=$CIRCLE_SHA1 make deploy
           - run:
               name: Production tests on upgraded env
-              command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make test-prod
+              command: INSTANCE_NAME_PREFIX=pimup32 IMAGE_TAG=$CIRCLE_SHA1 make test-prod
           - run:
               name: Prepare infrastructure artifacts
-              command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make prepare-infrastructure-artifacts
+              command: INSTANCE_NAME_PREFIX=pimup32 IMAGE_TAG=$CIRCLE_SHA1 make prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
           - run:
               name: Remove upgraded env
-              command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make delete
-              when: always
-
-  deploy_upgrade_oldest_prod_environment_beta:
-      environment:
-        <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
-      steps:
-          - attach_workspace:
-                at: ~/
-          - add_ssh_keys
-          - set_gcloud_config_dev
-          - run:
-              name: Oldest SaaS prod (PIM v3) deployment on kubernetes
-              command: |
-                ssh-keyscan github.com >> ~/.ssh/known_hosts
-                INSTANCE_NAME_PREFIX=beta IMAGE_TAG=$CIRCLE_SHA1 make helm-prepare
-                INSTANCE_NAME_PREFIX=beta IMAGE_TAG=$CIRCLE_SHA1 make deploy-pim3
-          - run:
-              name: Upgrade intermediate version SaaS to master
-              command: |
-                INSTANCE_NAME_PREFIX=beta IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
-                INSTANCE_NAME_PREFIX=beta IMAGE_TAG=$CIRCLE_SHA1 make terraform-pre-upgrade
-                INSTANCE_NAME_PREFIX=beta IMAGE_TAG=$CIRCLE_SHA1 make deploy
-          - run:
-              name: Production tests on upgraded env
-              command: INSTANCE_NAME_PREFIX=beta IMAGE_TAG=$CIRCLE_SHA1 make test-prod
-          - run:
-              name: Prepare infrastructure artifacts
-              command: INSTANCE_NAME_PREFIX=beta IMAGE_TAG=$CIRCLE_SHA1 make prepare-infrastructure-artifacts
-              when: on_fail
-          - store_artifacts:
-              path: ~/artifacts/infra
-          - run:
-              name: Remove upgraded env
-              command: INSTANCE_NAME_PREFIX=beta IMAGE_TAG=$CIRCLE_SHA1 make delete
-              when: always
+              command: INSTANCE_NAME_PREFIX=pimup32 IMAGE_TAG=$CIRCLE_SHA1 make delete
 
   release:
       environment:
@@ -469,7 +433,7 @@ jobs:
               command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=${CIRCLE_SHA1} make delete
               when: on_fail
 
-  duplicate_prod_environment_and_upgrade:
+  test_upgrade_from_serenity_customer_db_to_master:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
@@ -487,7 +451,7 @@ jobs:
                     SOURCE_PFID=${LIST_SOURCE_PFID[${RANDOM_SOURCE_PFID}]}
                     SOURCE_PED_TAG=$(cd /root/project; git fetch origin &> /dev/null && git tag --list | grep -E "^v?[0-9]+$" | sort -r | head -n 1 )
                     INSTANCE_NAME=$(echo "pimci-duplic-${CIRCLE_SHA1}"|cut -c1-40)
-                    ENV_NAME=dev SOURCE_PFID=${SOURCE_PFID} SOURCE_PED_TAG=${SOURCE_PED_TAG} INSTANCE_NAME=${INSTANCE_NAME} make duplicate_prod_environment_and_upgrade
+                    ENV_NAME=dev SOURCE_PFID=${SOURCE_PFID} SOURCE_PED_TAG=${SOURCE_PED_TAG} INSTANCE_NAME=${INSTANCE_NAME} make test_upgrade_from_serenity_customer_db_to_master
           - run:
               name: Prepare infrastructure artifacts
               command: INSTANCE_NAME=$(echo "pimci-duplic-${CIRCLE_SHA1}"|cut -c1-40) make prepare-infrastructure-artifacts
@@ -654,7 +618,7 @@ workflows:
           - build_prod:
                 requires:
                     - checkout
-          - duplicate_prod_environment_and_upgrade?:
+          - test_upgrade_from_serenity_customer_db_to_master?:
                 type: approval
                 filters:
                     branches:
@@ -662,9 +626,9 @@ workflows:
                             - master
                 requires:
                     - build_prod
-          - duplicate_prod_environment_and_upgrade:
+          - test_upgrade_from_serenity_customer_db_to_master:
                 requires:
-                    - duplicate_prod_environment_and_upgrade?
+                    - test_upgrade_from_serenity_customer_db_to_master?
           - deploy_pr_environment?:
                 type: approval
                 filters:
@@ -676,9 +640,6 @@ workflows:
           - deploy_pr_environment:
                 requires:
                     - deploy_pr_environment?
-          - deploy_upgrade_oldest_prod_environment:
-                requires:
-                    - build_prod
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -717,7 +678,6 @@ workflows:
                 requires:
                     - test_back_behat_legacy
                     - test_back_performance
-                    - deploy_upgrade_oldest_prod_environment
 
   nightly_helpdesk:
       triggers:
@@ -768,12 +728,9 @@ workflows:
                 is_pull_request: false
                 requires:
                     - checkout
-          - deploy_master_environment:
+          - test_deploy_master:
                 requires:
                     - build_prod
-          - deploy_upgrade_oldest_prod_environment:
-                requires:
-                    - deploy_master_environment
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -803,9 +760,8 @@ workflows:
                     - test_onboarder_bundle
                     - test_back_performance
                     - test_back_behat_legacy
-                    - deploy_master_environment
-                    - deploy_upgrade_oldest_prod_environment
                     - test_back_data_migrations
+                    - test_deploy_master
 
   nightly-beta:
       triggers:
@@ -826,12 +782,12 @@ workflows:
                 is_pull_request: false
                 requires:
                     - checkout
-          - deploy_master_environment:
+          - test_deploy_master:
                 requires:
                     - build_prod
-          - deploy_upgrade_oldest_prod_environment_beta:
+          - test_upgrade_from_32_to_master:
                 requires:
-                    - deploy_master_environment
+                    - build_prod
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -861,9 +817,9 @@ workflows:
                     - test_onboarder_bundle
                     - test_back_performance
                     - test_back_behat_legacy
-                    - deploy_master_environment
-                    - deploy_upgrade_oldest_prod_environment_beta
                     - test_back_data_migrations
+                    - test_deploy_master
+                    - test_upgrade_from_32_to_master
 
   on_demand:
       jobs:
@@ -883,12 +839,9 @@ workflows:
                 is_pull_request: false
                 requires:
                     - checkout
-          - deploy_master_environment:
+          - test_deploy_master:
                 requires:
                     - build_prod
-          - deploy_upgrade_oldest_prod_environment:
-                requires:
-                    - deploy_master_environment
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -918,9 +871,8 @@ workflows:
                     - test_onboarder_bundle
                     - test_back_performance
                     - test_back_behat_legacy
-                    - deploy_master_environment
-                    - deploy_upgrade_oldest_prod_environment
                     - test_back_data_migrations
+                    - test_deploy_master
 
 commands:
   set_gcloud_config_dev:
