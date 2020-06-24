@@ -45,6 +45,16 @@ extensions:
             tabTitle: pim_common.properties
             tabCode: pim-job-instance-properties
 
+    pim-job-instance-shared-catalog-edit-content:
+        module: pim/job/product/edit/content
+        parent: pim-job-instance-shared-catalog-edit-tabs
+        aclResourceId: pim_importexport_export_profile_content_edit
+        targetZone: container
+        position: 130
+        config:
+            tabTitle: pim_import_export.form.job_instance.tab.content.title
+            tabCode: pim-job-instance-content
+
     pim-job-instance-shared-catalog-edit-history:
         module: pim/common/tab/history
         parent: pim-job-instance-shared-catalog-edit-tabs
@@ -75,6 +85,12 @@ extensions:
             fieldCode: label
             label: pim_common.label
             readOnly: false
+
+    pim-job-instance-shared-catalog-edit-content-structure:
+        module: pim/job/product/edit/content/structure
+        parent: pim-job-instance-shared-catalog-edit-content
+        targetZone: structure-filters
+        position: 100
 
     pim-job-instance-shared-catalog-edit-label:
         module: pim/job/common/edit/label
@@ -130,3 +146,56 @@ extensions:
         position: 900
         config:
             entity: pim_import_export.entity.job_instance.label
+
+    pim-job-instance-shared-catalog-edit-content-structure-scope:
+        module: pim/job/product/edit/content/structure/scope
+        parent: pim-job-instance-shared-catalog-edit-content-structure
+        targetZone: filters
+        position: 90
+
+    pim-job-instance-shared-catalog-edit-content-structure-locales:
+        module: pim/job/product/edit/content/structure/locales
+        parent: pim-job-instance-shared-catalog-edit-content-structure
+        targetZone: filters
+        position: 100
+
+    pim-job-instance-shared-catalog-edit-content-structure-attributes:
+        module: pim/job/product/edit/content/structure/attributes
+        parent: pim-job-instance-shared-catalog-edit-content-structure
+        targetZone: filters
+        position: 110
+
+    pim-job-instance-shared-catalog-edit-content-data:
+        module: pim/job/product/edit/content/data
+        parent: pim-job-instance-shared-catalog-edit-content
+        targetZone: data-filters
+        config:
+            filters:
+                -   field: family
+                    view: akeneo-product-family-filter
+                -   field: enabled
+                    view: akeneo-product-enabled-filter
+                -   field: completeness
+                    view: akeneo-product-completeness-filter
+                -   field: categories
+                    view: akeneo-product-category-filter
+
+    pim-job-instance-shared-catalog-edit-content-default-attribute-filters:
+        module: pim/job/product/edit/content/data/default-attribute-filters
+        parent: pim-job-instance-shared-catalog-edit-content-data
+        config:
+            types: [pim_catalog_identifier]
+
+    pim-job-instance-shared-catalog-edit-content-data-help:
+        module: pim/job/common/edit/content/data/help
+        parent: pim-job-instance-shared-catalog-edit-content-data
+
+    pim-job-instance-shared-catalog-edit-validation:
+        module: pim/job/common/edit/validation
+        parent: pim-job-instance-shared-catalog-edit
+
+    pim-job-instance-shared-catalog-edit-content-data-add-filter:
+        module: pim/job/product/edit/content/data/add-select/attribute
+        parent: pim-job-instance-shared-catalog-edit-content-data
+        targetZone: headings
+        position: 90
