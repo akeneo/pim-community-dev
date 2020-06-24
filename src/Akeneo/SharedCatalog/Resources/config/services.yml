@@ -1,0 +1,45 @@
+parameters:
+    akeneo.shared_catalog.connector.name: Akeneo Shared Catalogs
+    akeneo.shared_catalog.connector.code: 'akeneo_shared_catalog'
+
+services:
+    _defaults:
+        public: true
+
+    akeneo.shared_catalog.job.product:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%akeneo.shared_catalog.connector.code%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - []
+        tags:
+            - { name: akeneo_batch.job, connector: '%akeneo.shared_catalog.connector.name%', type: '%pim_connector.job.export_type%' }
+
+    akeneo.shared_catalog.job.job_parameters.default_values_provider:
+        class: 'Akeneo\SharedCatalog\Connector\DefaultValueProvider'
+        arguments:
+            - '@akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_csv_export'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            -
+                - '%akeneo.shared_catalog.connector.code%'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo.shared_catalog.job.job_parameters.constraint_collection_provider:
+        class: 'Akeneo\SharedCatalog\Connector\ConstraintCollectionProvider'
+        arguments:
+            - '@akeneo_pim_enrichment.job.job_parameters.constraint_collection_provider.simple_csv_export'
+            -
+                - '%akeneo.shared_catalog.connector.code%'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    akeneo.shared_catalog.provider.form.job_instance:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider'
+        arguments:
+            -
+                akeneo_shared_catalog: pim-job-instance-shared-catalog
+        tags:
+            - { name: pim_enrich.provider.form }
