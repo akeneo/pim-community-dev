@@ -149,6 +149,8 @@ pim_asset_manager:
         confirm_content: 모든 규칙을 실행하시겠습니까? (시간이 오래 걸릴 수 있음)
         execute_rules: 규칙 실행
         cancel: 취소
+      execute_naming_convention:
+        cancel: 취소
     properties:
       title: 자산 패밀리 속성
       identifier: 코드
@@ -524,3 +526,6 @@ pim_import_export:
       job_type:
         asset_manager_compute_transformations: "자산 변환 계산"
         asset_manager_link_assets_to_products: "제품에 자산 링크 연결"
+job_execution:
+  summary:
+    assets: 자산

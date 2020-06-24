@@ -149,6 +149,8 @@ pim_asset_manager:
         confirm_content: Êtes-vous certain de vouloir exécuter toutes les règles ? (cela peut prendre un certain temps)
         execute_rules: Exécuter les règles
         cancel: Annuler
+      execute_naming_convention:
+        cancel: Annuler
     properties:
       title: Propriétés de la famille de ressources
       identifier: Code
@@ -524,3 +526,6 @@ pim_import_export:
       job_type:
         asset_manager_compute_transformations: "Exécuter les transformations de ressources"
         asset_manager_link_assets_to_products: "Lier les ressources aux produits"
+job_execution:
+  summary:
+    assets: Ressources

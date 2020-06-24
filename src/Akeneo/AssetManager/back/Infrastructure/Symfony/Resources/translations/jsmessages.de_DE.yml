@@ -149,6 +149,8 @@ pim_asset_manager:
         confirm_content: Sind Sie sicher, dass Sie alle Regeln anwenden möchten? (Dies kann sehr lange dauern)
         execute_rules: Regeln anwenden
         cancel: Abbrechen
+      execute_naming_convention:
+        cancel: Abbrechen
     properties:
       title: Eigenschaften der Assetfamilie
       identifier: Code
@@ -524,3 +526,6 @@ pim_import_export:
       job_type:
         asset_manager_compute_transformations: "Asset-Transformationen berechnen"
         asset_manager_link_assets_to_products: "Assets mit Produkten verknüpfen"
+job_execution:
+  summary:
+    assets: Assets

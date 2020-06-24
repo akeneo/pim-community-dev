@@ -149,6 +149,8 @@ pim_asset_manager:
         confirm_content: Czy na pewno chcesz wykonać wszystkie reguły? (może to zająć dużo czasu)
         execute_rules: Wykonaj reguły
         cancel: Anuluj
+      execute_naming_convention:
+        cancel: Anuluj
     properties:
       title: Właściwości rodziny zasobów
       identifier: Kod
@@ -524,3 +526,6 @@ pim_import_export:
       job_type:
         asset_manager_compute_transformations: "Wykonaj transformację zasobów"
         asset_manager_link_assets_to_products: "Połącz zasoby z produktami"
+job_execution:
+  summary:
+    assets: Zasoby
