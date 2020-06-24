@@ -45,7 +45,7 @@ class NotDecimalValidator extends ConstraintValidator
                 $violation->atPath($propertyPath);
             }
 
-            $violation->addViolation();
+            $violation->setCode(NotDecimal::NOT_DECIMAL)->addViolation();
         }
     }
 }

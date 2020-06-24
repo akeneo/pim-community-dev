@@ -10,6 +10,8 @@ use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Docu
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation\RouteMessageParameter;
 use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\DocumentationBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsNumeric;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsString;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotDecimal;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Range;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueValue;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -27,6 +29,8 @@ final class DefaultAttributeValidation implements DocumentationBuilderInterface
         Range::TOO_HIGH_ERROR,
         Range::TOO_LOW_ERROR,
         UniqueValue::UNIQUE_VALUE,
+        NotDecimal::NOT_DECIMAL,
+        IsString::IS_STRING,
     ];
 
     public function support($object): bool
