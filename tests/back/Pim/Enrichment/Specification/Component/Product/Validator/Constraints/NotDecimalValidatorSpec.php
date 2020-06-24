@@ -47,6 +47,8 @@ class NotDecimalValidatorSpec extends ObjectBehavior
             )
             ->shouldBeCalled()
             ->willReturn($violation);
+        $violation->setCode(NotDecimal::NOT_DECIMAL)->shouldBeCalled()->willReturn($violation);
+        $violation->addViolation()->willReturn($violation);
 
         $this->validate(100.5, $constraint);
     }
@@ -75,6 +77,8 @@ class NotDecimalValidatorSpec extends ObjectBehavior
             )
             ->shouldBeCalled()
             ->willReturn($violation);
+        $violation->setCode(NotDecimal::NOT_DECIMAL)->shouldBeCalled()->willReturn($violation);
+        $violation->addViolation()->willReturn($violation);
 
         $this->validate('100.5', $constraint);
     }
@@ -108,6 +112,9 @@ class NotDecimalValidatorSpec extends ObjectBehavior
             )
             ->shouldBeCalled()
             ->willReturn($violation);
+        $violation->setCode(NotDecimal::NOT_DECIMAL)->shouldBeCalled()->willReturn($violation);
+        $violation->atPath('data')->willReturn($violation);
+        $violation->addViolation()->willReturn($violation);
 
         $this->validate($productPrice, $constraint);
     }
@@ -141,6 +148,9 @@ class NotDecimalValidatorSpec extends ObjectBehavior
             )
             ->shouldBeCalled()
             ->willReturn($violation);
+        $violation->setCode(NotDecimal::NOT_DECIMAL)->shouldBeCalled()->willReturn($violation);
+        $violation->atPath('data')->willReturn($violation);
+        $violation->addViolation()->willReturn($violation);
 
         $this->validate($metric, $constraint);
     }
