@@ -2,10 +2,12 @@
 
 define(
   [
+    'jquery',
     'pim/form',
     'pim/router'
   ],
   function (
+    $,
     BaseForm,
     router
   ) {

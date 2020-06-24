@@ -2,10 +2,12 @@
 
 define(
   [
+    'jquery',
     'pim/job-instance-edit-form/save',
     'pim/saver/job-instance-export'
   ],
   function (
+    $,
     BaseSave,
     JobInstanceSaver
   ) {
