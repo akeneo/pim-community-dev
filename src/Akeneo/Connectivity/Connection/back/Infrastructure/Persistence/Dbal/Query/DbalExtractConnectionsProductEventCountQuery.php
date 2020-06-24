@@ -57,7 +57,7 @@ SQL;
                 'end_time' => $hourlyInterval->upToDateTime(),
                 'resource_name' => $this->productClass,
                 'user_type' => User::TYPE_API,
-            'flow_type' => FlowType::DATA_SOURCE,
+                'flow_type' => FlowType::DATA_SOURCE,
         ],
             [
                 'start_time' => Types::DATETIME_IMMUTABLE,
@@ -101,7 +101,7 @@ SQL;
                 'end_time' => $hourlyInterval->upToDateTime(),
                 'resource_name' => $this->productClass,
                 'user_type' => User::TYPE_API,
-            'flow_type' => FlowType::DATA_SOURCE,
+                'flow_type' => FlowType::DATA_SOURCE,
         ],
             [
                 'start_time' => Types::DATETIME_IMMUTABLE,
