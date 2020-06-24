@@ -1,19 +1,39 @@
-import React, {FC} from 'react';
+import React, {FC, useContext} from 'react';
 import {css} from 'styled-components';
 import {Flag} from '../../../common';
 import styled from '../../../common/styled-with-theme';
 import {Translate} from '../../../shared/translate';
 import {ConnectionErrorContent} from '../../model/ConnectionError';
+import {FamilyContext} from '../../../shared/family/family-context';
+import {ChannelContext} from '../../../shared/channel/channel-context';
 
 type Props = {
     content: ConnectionErrorContent;
 };
 
 const ErrorDetailsCell: FC<Props> = ({content}) => {
-    console.log(content.locale);
+    const families = useContext(FamilyContext);
+    const channels = useContext(ChannelContext);
+
+    let familyLabel = content.product?.family;
+    if (undefined !== families && 'string' === typeof content.product?.family) {
+        const foundFamilyLabel = families.find(fam => fam.code === content.product?.family);
+        if (undefined !== foundFamilyLabel) {
+            familyLabel = foundFamilyLabel.label;
+        }
+    }
+
+    let channelLabel = content.scope;
+    if (undefined !== channels && 'string' === typeof content.scope) {
+        const foundChannelLabel = channels.find(c => c.code === content.scope);
+        if (undefined !== foundChannelLabel) {
+            channelLabel = foundChannelLabel.label;
+        }
+    }
+
     return (
         <Container>
-            {'string' === typeof content?.locale ? (
+            {'string' === typeof content.locale ? (
                 <DetailRow>
                     <DetailLabel>
                         <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.details_column.locale' />
@@ -24,24 +44,24 @@ const ErrorDetailsCell: FC<Props> = ({content}) => {
             ) : (
                 <DetailRow></DetailRow>
             )}
-            {'string' === typeof content?.scope ? (
+            {'string' === typeof content.scope ? (
                 <DetailRow>
                     <DetailLabel>
                         <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.details_column.channel' />
                         :{' '}
                     </DetailLabel>
-                    {content.scope}
+                    {channelLabel}
                 </DetailRow>
             ) : (
                 <DetailRow></DetailRow>
             )}
-            {'string' === typeof content?.product?.family ? (
+            {'string' === typeof content.product?.family ? (
                 <DetailRow>
                     <DetailLabel>
                         <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.details_column.family' />
                         :{' '}
                     </DetailLabel>
-                    {content.product.family}
+                    {familyLabel}
                 </DetailRow>
             ) : (
                 <DetailRow></DetailRow>
