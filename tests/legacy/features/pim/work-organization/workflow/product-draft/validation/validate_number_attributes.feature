@@ -27,7 +27,7 @@ Feature: Validate number attributes of a draft
   Scenario: Validate the unique constraint of number attribute
     Given I change the Reference to "111"
     And I save the product
-    Then I should see validation error "The value 111 is already set on another product for the unique attribute ref"
+    Then I should see validation error "The ref attribute can not have the same value more than once. The 111 value is already set on another product."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the negative allowed constraint of number attribute
@@ -45,13 +45,13 @@ Feature: Validate number attributes of a draft
   Scenario: Validate the decimals allowed constraint of number attribute
     Given I change the Rating to "4.5"
     And I save the product
-    Then I should see validation error "This value should not be a decimal."
+    Then I should see validation error "The note attribute requires a non-decimal value, and 4.5 is not a valid value."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the decimals allowed constraint of scopable number attribute
     Given I change the Popularity for scope mobile to "9.5"
     And I save the product
-    Then I should see validation error "This value should not be a decimal."
+    Then I should see validation error "The popularity attribute requires a non-decimal value, and 9.5 is not a valid value."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the number min constraint of number attribute
@@ -81,11 +81,11 @@ Feature: Validate number attributes of a draft
   Scenario: Validate the type constraint of decimal attribute
     Given I change the Quality to "qux"
     And I save the product
-    Then I should see validation error "This value should be a valid number."
+    Then I should see validation error "The quality attribute requires a number, and the submitted qux value is not."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the type constraint of number attribute
     Given I change the Rating to "qux"
     And I save the product
-    Then I should see validation error "This value should be a valid number."
+    Then I should see validation error "The note attribute requires a number, and the submitted qux value is not."
     And there should be 1 error in the "Product information" tab

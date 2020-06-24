@@ -44,7 +44,7 @@ JSON;
         $client->request('POST', '/api/rest/v1/products', [], [], [], $data);
         $this->assertError422(
             $client->getResponse(),
-            'Attribute \"a_metric_without_decimal_negative\" does not exist',
+            'The a_metric_without_decimal_negative attribute does not exist in your PIM',
             'post_products'
         );
     }

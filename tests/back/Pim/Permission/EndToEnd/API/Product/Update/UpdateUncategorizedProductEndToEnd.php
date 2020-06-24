@@ -81,7 +81,7 @@ JSON;
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
         $client->request('PATCH', 'api/rest/v1/products/product_without_category', [], [], [], $data);
 
-        $expectedMessage = 'Attribute \"a_metric_without_decimal_negative\" does not exist';
+        $expectedMessage = 'The a_metric_without_decimal_negative attribute does not exist in your PIM';
         $this->assertError422($client->getResponse(), $expectedMessage, static::DOC_PATCH_CODE);
     }
 

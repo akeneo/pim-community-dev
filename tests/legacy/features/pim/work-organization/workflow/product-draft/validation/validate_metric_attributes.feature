@@ -36,13 +36,13 @@ Feature: Validate metric attributes of a draft
   Scenario: Validate the decimals allowed constraint of metric attribute
     Given I change the Area to "2.7"
     And I save the product
-    Then I should see validation error "This value should not be a decimal."
+    Then I should see validation error "The area attribute requires a non-decimal value, and 2.7 is not a valid value."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the decimals allowed constraint of scopable metric attribute
     Given I change the Length for scope mobile to "4.9"
     And I save the product
-    Then I should see validation error "This value should not be a decimal."
+    Then I should see validation error "The max_length attribute requires a non-decimal value, and 4.9 is not a valid value."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the number min constraint of metric attribute
@@ -72,6 +72,6 @@ Feature: Validate metric attributes of a draft
   Scenario: Validate the type constraint of metric attribute
     Given I change the Power to "bar"
     And I save the product
-    Then I should see validation error "This value should be a valid number."
+    Then I should see validation error "The power attribute requires a number, and the submitted bar value is not."
     Then I should see validation error "This value should be -100 or less."
     And there should be 2 error in the "Product information" tab
