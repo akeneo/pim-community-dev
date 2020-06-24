@@ -2,11 +2,6 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification;
 
-use Akeneo\Tool\Component\Localization\Presenter\DatePresenter;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
-use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification\ProjectFinishedNotifier;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification\ProjectNotificationFactory;
@@ -15,13 +10,18 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterfa
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectStatusInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Notification\ProjectNotifierInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectStatusRepositoryInterface;
+use Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
+use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
+use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use PhpSpec\ObjectBehavior;
 
 class ProjectFinishedNotifierSpec extends ObjectBehavior
 {
     function let(
         ProjectNotificationFactory $projectNotificationFactory,
         NotifierInterface $notifier,
-        DatePresenter $datePresenter,
+        PresenterInterface $datePresenter,
         ProjectStatusRepositoryInterface $projectStatusRepository
     ) {
         $this->beConstructedWith($projectNotificationFactory, $notifier, $datePresenter, $projectStatusRepository);

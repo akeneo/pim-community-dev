@@ -16,7 +16,7 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterfa
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Notification\ProjectNotifierInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectStatusRepositoryInterface;
 use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
-use Akeneo\Tool\Component\Localization\Presenter\DatePresenter;
+use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -32,22 +32,16 @@ class ProjectCreatedNotifier implements ProjectNotifierInterface
     /** @var NotifierInterface */
     protected $notifier;
 
-    /** @var DatePresenter */
+    /** @var PresenterInterface */
     protected $datePresenter;
 
     /** @var ProjectStatusRepositoryInterface */
     protected $projectStatusRepository;
 
-    /**
-     * @param ProjectNotificationFactory       $projectNotificationFactory
-     * @param NotifierInterface                $notifier
-     * @param DatePresenter                    $datePresenter
-     * @param ProjectStatusRepositoryInterface $projectStatusRepository
-     */
     public function __construct(
         ProjectNotificationFactory $projectNotificationFactory,
         NotifierInterface $notifier,
-        DatePresenter $datePresenter,
+        PresenterInterface $datePresenter,
         ProjectStatusRepositoryInterface $projectStatusRepository
     ) {
         $this->projectNotificationFactory = $projectNotificationFactory;

@@ -2,22 +2,22 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification\ProjectCalculationNotificationFactory;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectRepositoryInterface;
 use Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Akeneo\Tool\Component\Localization\Presenter\DatePresenter;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification\ProjectCalculationNotificationFactory;
+use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
-use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 
 class ProjectCalculationNotificationFactorySpec extends ObjectBehavior
 {
-    function let(ProjectRepositoryInterface $projectRepository, DatePresenter $datePresenter)
+    function let(ProjectRepositoryInterface $projectRepository, PresenterInterface $datePresenter)
     {
         $this->beConstructedWith(
             $projectRepository,

@@ -15,7 +15,7 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectComplet
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Notification\ProjectNotifierInterface;
 use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
-use Akeneo\Tool\Component\Localization\Presenter\DatePresenter;
+use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -31,22 +31,16 @@ class ProjectDueDateReminderNotifier implements ProjectNotifierInterface
     /** @var NotifierInterface */
     protected $notifier;
 
-    /** @var DatePresenter */
+    /** @var PresenterInterface */
     protected $datePresenter;
 
     /** @var array */
     protected $reminders;
 
-    /**
-     * @param ProjectNotificationFactory $projectNotificationFactory
-     * @param NotifierInterface          $notifier
-     * @param DatePresenter              $datePresenter
-     * @param array                      $reminders
-     */
     public function __construct(
         ProjectNotificationFactory $projectNotificationFactory,
         NotifierInterface $notifier,
-        DatePresenter $datePresenter,
+        PresenterInterface $datePresenter,
         array $reminders
     ) {
         $this->projectNotificationFactory = $projectNotificationFactory;
