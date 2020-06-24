@@ -149,6 +149,8 @@ pim_asset_manager:
         confirm_content: Are you sure you want to execute all the rules? (It can take a while)
         execute_rules: Execute rules
         cancel: Cancel
+      execute_naming_convention:
+        cancel: Cancel
     properties:
       title: Asset family properties
       identifier: Code
@@ -524,3 +526,6 @@ pim_import_export:
       job_type:
         asset_manager_compute_transformations: "Compute asset transformations"
         asset_manager_link_assets_to_products: "Link assets to products"
+job_execution:
+  summary:
+    assets: Assets
