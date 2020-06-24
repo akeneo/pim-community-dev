@@ -1,11 +1,13 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\ErrorManagement;
 
+use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment\ProductLoader;
+use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Structure\FamilyLoader;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
@@ -17,11 +19,35 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CollectApiErrorsCountEndToEnd extends ApiTestCase
 {
+    /** @var AttributeLoader */
+    private $attributeLoader;
+
+    /** @var FamilyLoader */
+    private $familyLoader;
+
+    /** @var ProductLoader */
+    private $productLoader;
+
     /** @var Connection */
     private $dbalConnection;
 
-    // test_it_collects_the_error_count_from_a_product_delete
-    public function test_it_collects_the_error_count_from_a_not_found_http_exception(): void
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->attributeLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.attribute');
+        $this->familyLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.family');
+        $this->productLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.product');
+
+        $this->dbalConnection = $this->get('database_connection');
+    }
+
+    protected function getConfiguration(): Configuration
+    {
+        return $this->catalog->useMinimalCatalog();
+    }
+
+    public function test_it_collects_the_error_count_from_a_product_delete(): void
     {
         $connection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
 
@@ -37,17 +63,16 @@ class CollectApiErrorsCountEndToEnd extends ApiTestCase
         $client->request('DELETE', '/api/rest/v1/products/unknown_product_identifier');
         Assert::assertSame(Response::HTTP_NOT_FOUND, $client->getResponse()->getStatusCode());
 
-        $this->errorCountMustBe('erp', 1, ErrorTypes::TECHNICAL);
+        $this->errorCountMustBe('erp', 1, ErrorTypes::BUSINESS);
     }
 
-    // test_it_collects_the_error_count_from_a_product_create
-    public function test_it_collects_the_error_count_from_a_unprocessable_entity_http_exception(): void
+    public function test_it_collects_the_error_count_from_a_product_create(): void
     {
-        $this->createAttribute([
+        $this->attributeLoader->create([
             'code' => 'name',
             'type' => 'pim_catalog_text',
         ]);
-        $this->createFamily([
+        $this->familyLoader->create([
             'code' => 'planeswalker',
             'attributes' => ['sku', 'name']
         ]);
@@ -66,6 +91,7 @@ class CollectApiErrorsCountEndToEnd extends ApiTestCase
         $content = <<<JSON
 {
     "identifier": "teferi_time_raveler",
+    "family": "planeswalker",
     "values": {
         "description": [{
             "locale": null,
@@ -82,15 +108,14 @@ JSON;
         $this->errorCountMustBe('erp', 1, ErrorTypes::BUSINESS);
     }
 
-    // test_it_collects_the_error_count_from_a_product_partial_update
-    public function test_it_collects_the_error_count_from_a_violation_http_exception()
+    public function test_it_collects_the_error_count_from_a_product_partial_update()
     {
-        $this->createAttribute([
+        $this->attributeLoader->create([
             'code' => 'name',
             'type' => 'pim_catalog_text',
             'max_characters' => 5
         ]);
-        $this->createAttribute([
+        $this->attributeLoader->create([
             'code' => 'length',
             'type' => 'pim_catalog_metric',
             'metric_family' => 'Length',
@@ -98,7 +123,7 @@ JSON;
             'negative_allowed' => false,
             'decimals_allowed' => false,
         ]);
-        $this->createFamily([
+        $this->familyLoader->create([
             'code' => 'screen',
             'attributes' => ['sku', 'length', 'name']
         ]);
@@ -116,6 +141,7 @@ JSON;
         $content = <<<JSON
 {
     "identifier": "big_screen",
+    "family": "screen",
     "values": {
         "name": [{
             "locale": null,
@@ -142,15 +168,15 @@ JSON;
 
     public function test_it_collects_the_error_count_from_a_product_partial_update_list(): void
     {
-        $this->createAttribute([
+        $this->attributeLoader->create([
             'code' => 'name',
             'type' => 'pim_catalog_text',
         ]);
-        $this->createFamily([
+        $this->familyLoader->create([
             'code' => 'shoes',
             'attributes' => ['sku', 'name']
         ]);
-        $this->createProduct('high-top_sneakers', [
+        $this->productLoader->create('high-top_sneakers', [
             'family' => 'shoes',
             'values' => [
                 'name' => [['data' => 'High-Top Sneakers', 'locale' => null, 'scope' => null]]
@@ -171,6 +197,7 @@ JSON;
         // Error: unknown attribute "description"
         $content .= json_encode([
             'identifier' => 'high-top_sneakers',
+            'family' => 'shoes',
             'values' => [
                 'description' => [[
                     'locale' => null,
@@ -211,18 +238,6 @@ JSON;
         $this->errorCountMustBe('erp', 1, ErrorTypes::BUSINESS);
     }
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->dbalConnection = $this->get('database_connection');
-    }
-
-    protected function getConfiguration(): Configuration
-    {
-        return $this->catalog->useMinimalCatalog();
-    }
-
     private function errorCountMustBe(string $connectionCode, int $count, string $errorType): void
     {
         $selectQuery = <<<SQL
@@ -247,45 +262,5 @@ SQL;
 
         Assert::assertCount(1, $result);
         Assert::assertEquals('1', $result[0]);
-    }
-
-    private function createAttribute(array $data): void
-    {
-        $data['group'] = $data['group'] ?? 'other';
-
-        $attribute = $this->get('pim_catalog.factory.attribute')->create();
-        $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
-        $constraints = $this->get('validator')->validate($attribute);
-        $this->assertCount(0, $constraints, 'The validation from the attribute creation failed.');
-        $this->get('pim_catalog.saver.attribute')->save($attribute);
-    }
-
-    private function createFamily(array $data): void
-    {
-        $family = $this->get('pim_catalog.factory.family')->create();
-        $this->get('pim_catalog.updater.family')->update($family, $data);
-        $constraints = $this->get('validator')->validate($family);
-        $this->assertCount(0, $constraints, 'The validation from the family creation failed.');
-        $this->get('pim_catalog.saver.family')->save($family);
-    }
-
-    private function createProduct($identifier, array $data): ProductInterface
-    {
-        $family = isset($data['family']) ? $data['family'] : null;
-
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier, $family);
-        $this->updateProduct($product, $data);
-
-        return $product;
-    }
-
-    private function updateProduct(ProductInterface $product, array $data): void
-    {
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $constraints = $this->get('validator')->validate($product);
-        $this->assertCount(0, $constraints, 'The validation from the product creation failed.');
-        $this->get('pim_catalog.saver.product')->save($product);
-
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 }

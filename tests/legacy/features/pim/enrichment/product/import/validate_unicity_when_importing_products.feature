@@ -26,7 +26,7 @@ Feature: Validate values for unique attributes when importing products
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see the text "The value 2014-01-01 is already set on another product for the unique attribute date"
+    Then I should see the text "The date attribute can not have the same value more than once. The 2014-01-01 value is already set on another product."
     And there should be 1 product
 
   Scenario: Successfully ignore duplicate unique number values
@@ -41,7 +41,7 @@ Feature: Validate values for unique attributes when importing products
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see the text "The value 123 is already set on another product for the unique attribute number"
+    Then I should see the text "The number attribute can not have the same value more than once. The 123 value is already set on another product."
     And there should be 1 product
 
   Scenario: Successfully ignore duplicate unique text values
@@ -56,7 +56,7 @@ Feature: Validate values for unique attributes when importing products
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see the text "The value foo is already set on another product for the unique attribute text"
+    Then I should see the text "The text attribute can not have the same value more than once. The foo value is already set on another product."
     And there should be 1 product
 
   @jira https://akeneo.atlassian.net/browse/PIM-3309
@@ -78,7 +78,7 @@ Feature: Validate values for unique attributes when importing products
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see the text "The value 1200000011a is already set on another product for the unique attribute test_unique_attribute"
+    Then I should see the text "The test_unique_attribute attribute can not have the same value more than once. The 1200000011a value is already set on another product."
     And I am on the products grid
     When I show the filter "test_unique_attribute"
     And I filter by "test_unique_attribute" with operator "is equal to" and value "1200000011a"

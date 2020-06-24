@@ -10,6 +10,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotDecimal;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Range;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\Type;
 
 class PriceCollectionGuesserSpec extends ObjectBehavior
 {
@@ -54,16 +56,17 @@ class PriceCollectionGuesserSpec extends ObjectBehavior
 
     function it_guesses_aggregated_guessers_simple(AttributeInterface $attribute)
     {
+        $attribute->getCode()->willReturn('price');
         $constraints = $this->guessConstraints($attribute);
 
         $constraints->shouldHaveCount(1);
 
         $constraintsAll = $constraints[0];
-        $constraintsAll->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraints\All');
+        $constraintsAll->shouldBeAnInstanceOf(All::class);
         $constraintsAll->constraints->shouldHaveCount(4);
 
         $constraintsAll->constraints[0]
-            ->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraints\Type');
+            ->shouldBeAnInstanceOf(Type::class);
         $constraintsAll->constraints[1]
             ->shouldBeAnInstanceOf(IsNumeric::class);
         $constraintsAll->constraints[2]
@@ -76,18 +79,19 @@ class PriceCollectionGuesserSpec extends ObjectBehavior
     {
         $attribute->isDecimalsAllowed()
             ->willReturn(true);
+        $attribute->getCode()->willReturn('price');
 
         $constraints = $this->guessConstraints($attribute);
 
         $constraints->shouldHaveCount(1);
 
         $constraintsAll = $constraints[0];
-        $constraintsAll->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraints\All');
+        $constraintsAll->shouldBeAnInstanceOf(All::class);
 
         $constraintsAll->constraints->shouldHaveCount(3);
 
         $constraintsAll->constraints[0]
-            ->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraints\Type');
+            ->shouldBeAnInstanceOf(Type::class);
         $constraintsAll->constraints[1]
             ->shouldBeAnInstanceOf(IsNumeric::class);
         $constraintsAll->constraints[2]
@@ -96,6 +100,7 @@ class PriceCollectionGuesserSpec extends ObjectBehavior
 
     function it_guesses_aggregated_guessers_with_range(AttributeInterface $attribute)
     {
+        $attribute->getCode()->willReturn('attribute_code');
         $attribute->getNumberMin()
             ->willReturn(5);
         $attribute->getNumberMax()
@@ -106,12 +111,12 @@ class PriceCollectionGuesserSpec extends ObjectBehavior
         $constraints->shouldHaveCount(1);
 
         $constraintsAll = $constraints[0];
-        $constraintsAll->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraints\All');
+        $constraintsAll->shouldBeAnInstanceOf(All::class);
 
         $constraintsAll->constraints->shouldHaveCount(5);
 
         $constraintsAll->constraints[0]
-            ->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraints\Type');
+            ->shouldBeAnInstanceOf(Type::class);
         $constraintsAll->constraints[1]
             ->shouldBeAnInstanceOf(IsNumeric::class);
         $constraintsAll->constraints[2]
@@ -124,6 +129,7 @@ class PriceCollectionGuesserSpec extends ObjectBehavior
 
     function it_guesses_aggregated_guessers_with_range_without_notDecimal(AttributeInterface $attribute)
     {
+        $attribute->getCode()->willReturn('attribute_code');
         $attribute->getNumberMin()
             ->willReturn(5);
         $attribute->getNumberMax()
@@ -137,12 +143,12 @@ class PriceCollectionGuesserSpec extends ObjectBehavior
         $constraints->shouldHaveCount(1);
 
         $constraintsAll = $constraints[0];
-        $constraintsAll->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraints\All');
+        $constraintsAll->shouldBeAnInstanceOf(All::class);
 
         $constraintsAll->constraints->shouldHaveCount(4);
 
         $constraintsAll->constraints[0]
-            ->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraints\Type');
+            ->shouldBeAnInstanceOf(Type::class);
         $constraintsAll->constraints[0]->type
             ->shouldBe(ProductPriceInterface::class);
         $constraintsAll->constraints[1]

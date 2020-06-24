@@ -34,7 +34,13 @@ class NotDecimalValidator extends ConstraintValidator
             return;
         }
         if (is_numeric($value) && floor($value) != $value) {
-            $violation = $this->context->buildViolation($constraint->message);
+            $violation = $this->context->buildViolation(
+                $constraint->message,
+                [
+                    '%attribute%' => $constraint->attributeCode,
+                    '%value%' => $value,
+                ]
+            );
             if (isset($propertyPath)) {
                 $violation->atPath($propertyPath);
             }

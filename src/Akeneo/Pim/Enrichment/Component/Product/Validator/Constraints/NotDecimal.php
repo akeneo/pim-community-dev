@@ -13,5 +13,9 @@ use Symfony\Component\Validator\Constraint;
  */
 class NotDecimal extends Constraint
 {
-    public $message = 'This value should not be a decimal.';
+    /** @var string */
+    public $message = 'The %attribute% attribute requires a non-decimal value, and %value% is not a valid value.';
+
+    /** @var string */
+    public $attributeCode = '';
 }

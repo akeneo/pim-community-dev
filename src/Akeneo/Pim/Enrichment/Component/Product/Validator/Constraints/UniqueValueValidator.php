@@ -32,8 +32,8 @@ class UniqueValueValidator extends ConstraintValidator
     public function __construct(
         ProductUniqueDataRepositoryInterface $repository,
         UniqueValuesSet $uniqueValueSet,
-        IdentifiableObjectRepositoryInterface $attributeRepository)
-    {
+        IdentifiableObjectRepositoryInterface $attributeRepository
+    ) {
         $this->repository = $repository;
         $this->uniqueValuesSet = $uniqueValueSet;
         $this->attributeRepository = $attributeRepository;
@@ -87,8 +87,10 @@ class UniqueValueValidator extends ConstraintValidator
                 if (null !== $valueData && '' !== $valueData) {
                     $this->context->buildViolation(
                         $constraint->message,
-                        ['%value%' => $valueData, '%attribute%' => $attributeCode]
-                    )->addViolation();
+                        ['{{ value }}' => $valueData, '{{ attribute_code }}' => $attributeCode]
+                    )
+                        ->setCode(UniqueValue::UNIQUE_VALUE)
+                        ->addViolation();
                 }
             }
         }

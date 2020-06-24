@@ -21,9 +21,9 @@ Feature: Validate that validation is removed on correction
   Scenario: Validate that the validation error is removed on error correction
     Given I change the "Cost" to "10.9 USD"
     And I save the product
-    Then I should see validation tooltip "This value should not be a decimal."
+    Then I should see validation tooltip "The cost attribute requires a non-decimal value, and 10.9 is not a valid value."
     And there should be 1 error in the "Other" tab
     Then I change the "Cost" to "10 USD"
     And I save the product
     And there should be 0 error in the "Other" tab
-    Then I should not see validation tooltip "This value should not be a decimal."
+    Then I should not see validation tooltip "The cost attribute requires a non-decimal value, and 10.9 is not a valid value."

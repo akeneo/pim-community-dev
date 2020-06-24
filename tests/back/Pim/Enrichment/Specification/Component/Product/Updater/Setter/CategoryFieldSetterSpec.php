@@ -6,10 +6,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\CategoryFieldSetter;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownCategoryException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 class CategoryFieldSetterSpec extends ObjectBehavior
@@ -84,14 +84,8 @@ class CategoryFieldSetterSpec extends ObjectBehavior
         $categoryRepository->findOneByIdentifier('mug')->willReturn($mug);
         $categoryRepository->findOneByIdentifier('non valid category code')->willReturn(null);
 
-        $this->shouldThrow(
-            InvalidPropertyException::validEntityCodeExpected(
-                'categories',
-                'category code',
-                'The category does not exist',
-                CategoryFieldSetter::class,
-                'non valid category code'
-            )
-        )->during('setFieldData', [$product, 'categories', ['mug', 'non valid category code']]);
+        $this
+            ->shouldThrow(UnknownCategoryException::class)
+            ->during('setFieldData', [$product, 'categories', ['mug', 'non valid category code']]);
     }
 }
