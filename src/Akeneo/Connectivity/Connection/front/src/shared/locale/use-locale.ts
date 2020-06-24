@@ -13,7 +13,7 @@ const useLocale = () => {
 
     const locales = useMemo<Locale[]>(() => {
         return (data || []).map(error => ({
-            code : error.code,
+            code: error.code,
             language: error.language,
         }));
     }, [data]);
