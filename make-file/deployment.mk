@@ -236,13 +236,15 @@ slack_helpdesk:
 delete_pr_environments:
 	bash $(PWD)/deployments/bin/remove_pr_instance.sh
 
-.PHONY: terraform-pre-upgrade
-terraform-pre-upgrade: terraform-init
+.PHONY: terraform-pre-upgrade-disk
 	# Required by https://github.com/akeneo/pim-enterprise-dev/pull/8599
 	yq d -i $(INSTANCE_DIR)/values.yaml "mysql.common.persistentDisks"
 	for PD in $$(kubectl get -n $(PFID) pv $$(kubectl get -n $(PFID) pvc -l role=mysql-server -o jsonpath='{.items[*].spec.volumeName}') -o jsonpath='{..spec.gcePersistentDisk.pdName}'); do \
 		yq w -i $(INSTANCE_DIR)/values.yaml "mysql.common.persistentDisks[+]" "$${PD}"; \
 	done
+
+.PHONY: terraform-pre-upgrade
+terraform-pre-upgrade: terraform-init terraform-pre-upgrade-disk
 	# Move monitoring resources from pim to pim-monitoring
 	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_logging_metric.login_count module.pim-monitoring.google_logging_metric.login_count
 	sleep 1
