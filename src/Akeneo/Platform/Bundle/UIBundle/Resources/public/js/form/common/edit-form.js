@@ -65,8 +65,13 @@ define(
                 this.listenTo(this.getRoot(), 'pim_enrich:form:extension:render:before', () => {
                     this.saveScroll();
                 });
+
                 this.listenTo(this.getRoot(), 'pim_enrich:form:extension:render:after', () => {
                     this.setScroll();
+                });
+
+                this.listenTo(this.getRoot(), 'group:change', () => {
+                    this.resetScroll();
                 });
 
                 this.onExtensions('save-buttons:register-button', function (button) {
@@ -117,6 +122,10 @@ define(
                 if (containerElement && null !== this.scrollPosition) {
                     containerElement.scrollTop = this.scrollPosition;
                 }
+            },
+
+            resetScroll: function () {
+                this.scrollPosition = 0;
             },
 
             /**
