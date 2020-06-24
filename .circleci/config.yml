@@ -423,6 +423,9 @@ jobs:
           - set_gcloud_config_dev
           - run:
                 name: Deploy PR environment
+                command: echo "This environment will be available at https://pimci-pr-${CIRCLE_PULL_REQUEST##*/}.dev.cloud.akeneo.com once deployed :)"
+          - run:
+                name: Deploy PR environment
                 command: |
                     ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=${CIRCLE_SHA1} ACTIVATE_MONITORING=${ACTIVATE_MONITORING} make create-ci-release-files
                     ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=${CIRCLE_SHA1} make deploy

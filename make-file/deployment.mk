@@ -48,6 +48,7 @@ helm-prepare:
 
 .PHONY: deploy
 deploy: terraform-deploy
+	echo "This environment is available at https://$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS) :)"
 
 .PHONY: terraform-deploy
 terraform-deploy: terraform-init terraform-apply
@@ -230,14 +231,6 @@ deploy_latest_release_for_helpdesk:
 .PHONY: slack_helpdesk
 slack_helpdesk:
 	curl -X POST -H 'Content-type: application/json' --data '{"text":"Serenity env has been deployed with the last tag $(IMAGE_TAG) : https://pimci-helpdesk.preprod.cloud.akeneo.com"}' $${SLACK_URL_HELPDESK};
-
-.PHONY: deploy_pr_environment
-deploy_pr_environment:
-	@PR_NUMBER=$${CIRCLE_PULL_REQUEST##*/} && \
-	echo "This environment will be available at https://pimci-pr-$${PR_NUMBER}.$(GOOGLE_MANAGED_ZONE_DNS) once deployed :)"
-	PR_NUMBER=$${CIRCLE_PULL_REQUEST##*/} && \
-	INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-$${PR_NUMBER} IMAGE_TAG=$${CIRCLE_SHA1} make create-ci-release-files && \
-	INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-$${PR_NUMBER} IMAGE_TAG=$${CIRCLE_SHA1} make deploy
 
 .PHONY: delete_pr_environments
 delete_pr_environments:
