@@ -18,7 +18,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class RelativeDatePresenter implements PresenterInterface
 {
-    private const RELATIVE_DATETIME_FORMAT = '/^(now|([+-][0-9]+)\s?(second|minute|hour|day|week|month|year)s?)$/';
+    private const RELATIVE_DATETIME_FORMAT = '/^(now|([+-][0-9]+)\s?(minute|hour|day|week|month|year)s?)$/';
 
     /** @var PresenterInterface */
     private $basePresenter;
