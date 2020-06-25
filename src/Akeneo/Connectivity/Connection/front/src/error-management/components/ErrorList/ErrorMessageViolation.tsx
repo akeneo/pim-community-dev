@@ -2,6 +2,7 @@ import React, {FC} from 'react';
 import styled from '../../../common/styled-with-theme';
 import {messageWithColoredParameters} from '../../message-with-colored-parameters';
 import {ConnectionErrorContent} from '../../model/ConnectionError';
+import {ErrorMessageUnformattedList} from './ErrorMessageUnformattedList';
 
 const isParsableTemplate = (template: string, parameters: {[param: string]: string}) => {
     if (undefined === parameters || 'string' !== typeof Object.keys(parameters)[0]) {
@@ -16,6 +17,9 @@ type Props = {
 };
 
 const ErrorMessageViolation: FC<Props> = ({content}) => {
+    const unformattedList =
+        undefined === content.documentation ? <ErrorMessageUnformattedList content={content} /> : <></>;
+
     return (
         <>
             {undefined !== content?.message_template &&
@@ -27,6 +31,7 @@ const ErrorMessageViolation: FC<Props> = ({content}) => {
             ) : (
                 <>
                     <ErrorMessage>{content.message}</ErrorMessage>
+                    {unformattedList}
                 </>
             )}
         </>
