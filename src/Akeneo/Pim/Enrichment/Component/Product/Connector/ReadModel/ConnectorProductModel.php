@@ -170,7 +170,11 @@ final class ConnectorProductModel
             return array_column($quantifiedAssociations['products'], 'identifier');
         }, array_values($this->quantifiedAssociations));
 
-        return !empty($associatedWithQuantityProducts) ? array_unique(array_merge(...$associatedWithQuantityProducts)) : [];
+        if (empty($associatedWithQuantityProducts)) {
+            return [];
+        }
+
+        return array_values(array_unique(array_merge(...$associatedWithQuantityProducts)));
     }
 
     public function associatedProductModelWithQuantityCodes()
@@ -179,7 +183,11 @@ final class ConnectorProductModel
             return array_column($quantifiedAssociations['product_models'], 'identifier');
         }, array_values($this->quantifiedAssociations));
 
-        return !empty($associatedWithQuantityProductModels) ? array_unique(array_merge(...$associatedWithQuantityProductModels)) : [];
+        if (empty($associatedWithQuantityProductModels)) {
+            return [];
+        }
+
+        return array_values(array_unique(array_merge(...$associatedWithQuantityProductModels)));
     }
 
     public function filterByCategoryCodes(array $categoryCodesToKeep): ConnectorProductModel
@@ -297,7 +305,7 @@ final class ConnectorProductModel
         foreach ($this->quantifiedAssociations as $associationType => $quantifiedAssociation) {
             $filteredProductModelQuantifiedAssociations = array_filter(
                 $quantifiedAssociation['product_models'],
-                function($quantifiedLink) use ($productModelCodesToFilter) {
+                function ($quantifiedLink) use ($productModelCodesToFilter) {
                     return in_array($quantifiedLink['identifier'], $productModelCodesToFilter);
                 }
             );
@@ -328,7 +336,7 @@ final class ConnectorProductModel
         foreach ($this->quantifiedAssociations as $associationType => $quantifiedAssociation) {
             $filteredProductQuantifiedAssociations = array_filter(
                 $quantifiedAssociation['products'],
-                function($quantifiedLink) use ($productIdentifiersToFilter) {
+                function ($quantifiedLink) use ($productIdentifiersToFilter) {
                     return in_array($quantifiedLink['identifier'], $productIdentifiersToFilter);
                 }
             );

@@ -117,6 +117,12 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
                     ['id' => 2, 'quantity' => 2],
                 ],
                 'product_models' => [],
+            ],
+            'PRODUCT_SET' => [
+                'products' => [
+                    ['id' => 1, 'quantity' => 3],
+                ],
+                'product_models' => [],
             ]
         ];
         $idMapping = IdMapping::createFromMapping(
@@ -146,6 +152,12 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
                 'product_models' => [
                     ['id' => 1, 'quantity' => 1],
                     ['id' => 2, 'quantity' => 2],
+                ],
+            ],
+            'PRODUCT_SET' => [
+                'products' => [],
+                'product_models' => [
+                    ['id' => 1, 'quantity' => 3],
                 ],
             ]
         ];
