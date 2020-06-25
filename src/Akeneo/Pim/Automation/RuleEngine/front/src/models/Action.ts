@@ -5,6 +5,7 @@ import {
   CalculateAction,
   ClearAction,
   ClearAttributeAction,
+  ClearCategoriesAction,
   ConcatenateAction,
   CopyAction,
   createClearAttributeAction,
@@ -16,12 +17,14 @@ import {
   SetFamilyAction,
   SetCategoriesAction,
   createSetCategoriesAction,
+  createClearCategoriesAction,
 } from './actions';
 
 export const AvailableAddAction: { [key: string]: () => Action } = {
   set_category: createSetCategoriesAction,
   set_family: createSetFamilyAction,
   clear_attribute: createClearAttributeAction,
+  clear_categories: createClearCategoriesAction,
   add_category: createAddCategoriesAction,
   set_attribute: createSetAttributeAction,
 };
@@ -32,6 +35,7 @@ export type Action =
   | CalculateAction
   | ClearAction
   | ClearAttributeAction
+  | ClearCategoriesAction
   | ConcatenateAction
   | CopyAction
   | FallbackAction

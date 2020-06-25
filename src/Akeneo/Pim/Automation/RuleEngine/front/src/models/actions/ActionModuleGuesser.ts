@@ -14,6 +14,7 @@ import { Router } from '../../dependenciesTools';
 import { getClearAttributeActionModule } from './ClearAttributeAction';
 import { getAddCategoriesModule } from './AddCategoriesAction';
 import { getSetCategoriesModule } from './SetCategoriesAction';
+import { getClearCategoriesActionModule } from './ClearCategoriesAction';
 
 export type ActionModuleGuesser = (
   json: any,
@@ -30,6 +31,7 @@ const getActionModule: (
   const getActionModuleFunctions: ActionModuleGuesser[] = [
     getSetFamilyActionModule,
     getClearAttributeActionModule,
+    getClearCategoriesActionModule,
     getAddCategoriesModule,
     getSetCategoriesModule,
     // Fallbacks
