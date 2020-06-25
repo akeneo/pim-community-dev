@@ -76,14 +76,14 @@ Feature: Validate text attributes of a product
   Scenario: Validate the regexp validation rule constraint of text attribute
     Given I change the Barcode to "111111"
     And I save the product
-    Then I should see validation tooltip "This value is not valid due to regular expression defined in the attribute"
+    Then I should see validation tooltip "The barcode attribute must match the following regular expression: /^0\d*$/."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the regexp validation rule constraint of scopable text attribute
     Given I switch the scope to "ecommerce"
     Given I change the "Manufacturer number" to "111111"
     And I save the product
-    Then I should see validation tooltip "This value is not valid due to regular expression defined in the attribute"
+    Then I should see validation tooltip "The manufacturer_number attribute must match the following regular expression: /^0\d*$/."
     And there should be 1 error in the "Other" tab
 
   @jira https://akeneo.atlassian.net/browse/PIM-3447
