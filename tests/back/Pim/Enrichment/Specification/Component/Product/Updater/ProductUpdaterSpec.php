@@ -137,7 +137,7 @@ class ProductUpdaterSpec extends ObjectBehavior
             ->willThrow(UnknownPropertyException::unknownProperty('unknown_attribute'));
 
         $this
-            ->shouldThrow(UnknownAttributeException::unknownAttribute('unknown_attribute'))
+            ->shouldThrow(UnknownAttributeException::class)
             ->during('update', [$product, $updates, []]);
     }
 

@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class UniqueValueValidatorSpec extends ObjectBehavior
 {
-    const PROPERTY_PATH='children[values].children[unique_attribute].children[text].data';
+    const PROPERTY_PATH = 'children[values].children[unique_attribute].children[text].data';
 
     function let(
         ProductUniqueDataRepositoryInterface $uniqueDataRepository,
@@ -67,6 +67,7 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         $uniqueDataRepository->uniqueDataExistsInAnotherProduct($value, $product)->willReturn(true);
 
         $context->buildViolation(Argument::cetera())->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->setCode(UniqueValue::UNIQUE_VALUE)->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($value, $constraint);
@@ -93,6 +94,7 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         $uniqueValuesSet->addValue($value, $product)->willReturn(false);
 
         $context->buildViolation(Argument::cetera())->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->setCode(UniqueValue::UNIQUE_VALUE)->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($value, $constraint);

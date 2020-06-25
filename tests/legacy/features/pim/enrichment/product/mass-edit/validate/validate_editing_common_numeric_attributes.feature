@@ -64,7 +64,7 @@ Feature: Validate editing common numeric attributes of multiple products
     And I display the Length attribute
     And I change the Length to "foo"
     And I move on to the next step
-    Then I should see validation tooltip "This value should be a valid number."
+    Then I should see validation tooltip "The length attribute requires a number, and the submitted foo value is not."
     Then the value "Length" of products boots, sandals and sneakers should be empty
 
   Scenario: Successfully mass edit a number attribute

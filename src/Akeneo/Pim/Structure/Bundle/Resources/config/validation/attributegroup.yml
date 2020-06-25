@@ -10,7 +10,7 @@ Akeneo\Pim\Structure\Component\Model\AttributeGroup:
         sortOrder:
             - NotNull: ~
             - Type: numeric
-            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotDecimal: {}
+            - Akeneo\Pim\Structure\Component\Validator\Constraints\NotDecimal: {}
             - GreaterThanOrEqual:
                 value: 0
         code:

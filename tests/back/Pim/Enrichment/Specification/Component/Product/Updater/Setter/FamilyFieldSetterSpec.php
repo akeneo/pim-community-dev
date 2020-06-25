@@ -2,10 +2,10 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownFamilyException;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FamilyFieldSetter;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterInterface;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -57,7 +57,8 @@ class FamilyFieldSetterSpec extends ObjectBehavior
         $this->setFieldData($product, 'family', 'shirt');
     }
 
-    function it_empty_family_field(ProductInterface $product) {
+    function it_empty_family_field(ProductInterface $product)
+    {
         $product->setFamily(null)->shouldBeCalled();
         $this->setFieldData($product, 'family', null);
     }
@@ -68,14 +69,8 @@ class FamilyFieldSetterSpec extends ObjectBehavior
     ) {
         $familyRepository->findOneByIdentifier('shirt')->willReturn(null);
 
-        $this->shouldThrow(
-            InvalidPropertyException::validEntityCodeExpected(
-                'family',
-                'family code',
-                'The family does not exist',
-                FamilyFieldSetter::class,
-                'shirt'
-            )
-        )->during('setFieldData', [$product, 'family', 'shirt']);
+        $this
+            ->shouldThrow(UnknownFamilyException::class)
+            ->during('setFieldData', [$product, 'family', 'shirt']);
     }
 }
