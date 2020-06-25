@@ -24,7 +24,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
 
     const MAX_ASSOCIATIONS = 100;
     const MIN_QUANTITY = 1;
-    const MAX_QUANTITY = 9999;
+    const MAX_QUANTITY = 2147483647;
 
     /** @var AssociationTypeRepositoryInterface */
     private $associationTypeRepository;
@@ -179,7 +179,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
 
     private function validateAssociationQuantity($quantity, string $propertyPath): void
     {
-        if (!preg_match('/^[0-9]{1,4}$/', $quantity)
+        if (!preg_match('/^[0-9]{1,10}$/', $quantity)
             || intval($quantity) < self::MIN_QUANTITY
             || intval($quantity) > self::MAX_QUANTITY) {
             $this->context->buildViolation(

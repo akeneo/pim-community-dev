@@ -35,7 +35,7 @@ Feature: Validate number attributes of a product
     When I am on the "bar" product page
     And I change the Reference to "111"
     And I save the product
-    Then I should see validation tooltip "The value 111 is already set on another product for the unique attribute ref"
+    Then I should see validation tooltip "The ref attribute can not have the same value more than once. The 111 value is already set on another product."
     And there should be 1 error in the "Other" tab
 
   @ce
@@ -55,14 +55,14 @@ Feature: Validate number attributes of a product
   Scenario: Validate the decimals allowed constraint of number attribute
     Given I change the Rating to "4.5"
     And I save the product
-    Then I should see validation tooltip "This value should not be a decimal."
+    Then I should see validation tooltip "The rating attribute requires a non-decimal value, and 4.5 is not a valid value."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the decimals allowed constraint of scopable number attribute
     Given I switch the scope to "ecommerce"
     And I change the Popularity to "9.5"
     And I save the product
-    Then I should see validation tooltip "This value should not be a decimal."
+    Then I should see validation tooltip "The popularity attribute requires a non-decimal value, and 9.5 is not a valid value."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the number min constraint of number attribute
@@ -94,11 +94,11 @@ Feature: Validate number attributes of a product
   Scenario: Validate the type constraint of decimal attribute
     Given I change the Quality to "qux"
     And I save the product
-    Then I should see validation tooltip "This value should be a valid number."
+    Then I should see validation tooltip "The quality attribute requires a number, and the submitted qux value is not."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the type constraint of number attribute
     Given I change the Rating to "qux"
     And I save the product
-    Then I should see validation tooltip "This value should be a valid number."
+    Then I should see validation tooltip "The rating attribute requires a number, and the submitted qux value is not."
     And there should be 1 error in the "Other" tab

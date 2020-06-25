@@ -47,7 +47,11 @@ class VersionProvider implements VersionProviderInterface
     {
         if (!$this->isSaaSVersion()) {
             $matches = [];
-            preg_match('/^(?P<patch>\d+.\d+.\d+)/', $this->version, $matches);
+            $isMatching = preg_match('/^(?P<patch>\d+.\d+.\d+)/', $this->version, $matches);
+
+            if (!$isMatching) {
+                return $this->version;
+            }
 
             return $matches['patch'];
         }

@@ -2,7 +2,9 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Exception;
 
-use Akeneo\Pim\Enrichment\Component\DocumentedExceptionInterface;
+use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
+use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessage;
+use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessageInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use PhpSpec\ObjectBehavior;
@@ -11,7 +13,7 @@ class UnknownAttributeExceptionSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedThrough('unknownAttribute', ['attribute_code']);
+        $this->beConstructedWith('attribute_code');
     }
 
     function it_is_initializable()
@@ -29,17 +31,19 @@ class UnknownAttributeExceptionSpec extends ObjectBehavior
         $this->shouldHaveType(\Exception::class);
     }
 
-    function it_is_a_documented_exception()
+    function it_is_a_domain_error()
     {
-        $this->shouldImplement(DocumentedExceptionInterface::class);
+        $this->shouldImplement(DomainErrorInterface::class);
+    }
+
+    function it_is_has_a_templated_error_message()
+    {
+        $this->shouldImplement(TemplatedErrorMessageInterface::class);
     }
 
     function it_returns_an_exception_message()
     {
-        $this->getMessage()->shouldReturn(sprintf(
-            'Attribute "%s" does not exist.',
-            'attribute_code'
-        ));
+        $this->getMessage()->shouldReturn('The attribute_code attribute does not exist in your PIM.');
     }
 
     function it_returns_a_property_name()
@@ -50,40 +54,16 @@ class UnknownAttributeExceptionSpec extends ObjectBehavior
     function it_returns_the_previous_exception()
     {
         $previous = new \Exception();
-        $this->beConstructedThrough('unknownAttribute', ['attribute_code', $previous]);
+        $this->beConstructedWith('attribute_code', $previous);
 
         $this->getPrevious()->shouldReturn($previous);
     }
 
-    function it_provides_documentation()
+    function it_returns_a_message_template_and_parameters()
     {
-        $this->getDocumentation()->shouldReturn([
-            [
-                'message' => 'More information about attributes: %s %s.',
-                'params' => [
-                    [
-                        'href' => 'https://help.akeneo.com/pim/serenity/articles/what-is-an-attribute.html',
-                        'title' => 'What is an attribute?',
-                        'type' => 'href'
-                    ],
-                    [
-                        'href' => 'https://help.akeneo.com/pim/serenity/articles/manage-your-attributes.html',
-                        'title' => 'Manage your attributes',
-                        'type' => 'href'
-                    ],
-                ],
-            ],
-            [
-                'message' => 'Please check your %s.',
-                'params' => [
-                    [
-                        'route' => 'pim_enrich_attribute_index',
-                        'params' => [],
-                        'title' => 'Attributes settings',
-                        'type' => 'route',
-                    ],
-                ],
-            ],
-        ]);
+        $templatedErrorMessage = $this->getTemplatedErrorMessage();
+        $templatedErrorMessage->shouldBeAnInstanceOf(TemplatedErrorMessage::class);
+        $templatedErrorMessage->__toString()
+            ->shouldReturn('The attribute_code attribute does not exist in your PIM.');
     }
 }

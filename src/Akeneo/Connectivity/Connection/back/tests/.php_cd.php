@@ -19,8 +19,11 @@ $rules = [
             // Dependency on Symfony Validator to ease validation
             'Symfony\Component\Validator',
 
-            // Dependency on HttpException to transform them into an ApiError
-            'Symfony\Component\HttpKernel\Exception\HttpException'
+            'Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+
+            'FOS\RestBundle\Context\Context',
+            'FOS\RestBundle\Serializer\Serializer'
         ]
     )->in('Akeneo\Connectivity\Connection\Application'),
 
@@ -117,6 +120,7 @@ $rules = [
     $builder->only(
         [
             'Symfony\Component',
+            'Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterSerializerPass',
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\Symfony'),
 ];

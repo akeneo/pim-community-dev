@@ -30,14 +30,14 @@ Feature: Validate localized number attributes of a product
   Scenario: Validate the decimals allowed constraint of number attribute
     Given I change the Vendu to "4,5"
     And I save the product
-    Then I should see validation tooltip "Cette valeur ne doit pas être un nombre décimal."
+    Then I should see validation tooltip "L'attribut sold requiert un nombre entier et la valeur 4.5 soumise ne l'est pas."
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the decimals allowed constraint of scopable number attribute
     Given I switch the scope to "ecommerce"
     And I change the "Popularité" to "9,5"
     And I save the product
-    Then I should see validation tooltip "Cette valeur ne doit pas être un nombre décimal."
+    Then I should see validation tooltip "L'attribut popularity requiert un nombre entier et la valeur 9.5 soumise ne l'est pas."
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the number min constraint of number attribute
@@ -49,13 +49,13 @@ Feature: Validate localized number attributes of a product
   Scenario: Validate the type constraint of decimal attribute
     Given I change the "Qualité" to "qux"
     And I save the product
-    Then I should see validation tooltip "Cette valeur doit être un nombre."
+    Then I should see validation tooltip "L’attribut quality requiert une valeur numérique et la valeur qux soumise ne l’est pas."
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the type constraint of number attribute
     Given I change the Classement to "qux"
     And I save the product
-    Then I should see validation tooltip "Cette valeur doit être un nombre."
+    Then I should see validation tooltip "L’attribut rating requiert une valeur numérique et la valeur qux soumise ne l’est pas."
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the decimals separator constraint of number attribute

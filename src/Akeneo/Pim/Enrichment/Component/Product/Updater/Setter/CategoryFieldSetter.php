@@ -3,10 +3,10 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownCategoryException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
@@ -52,13 +52,7 @@ class CategoryFieldSetter extends AbstractFieldSetter
             $category = $this->getCategory($categoryCode);
 
             if (null === $category) {
-                throw InvalidPropertyException::validEntityCodeExpected(
-                    $field,
-                    'category code',
-                    'The category does not exist',
-                    static::class,
-                    $categoryCode
-                );
+                throw new UnknownCategoryException($field, $categoryCode, static::class);
             }
             $categories[] = $category;
         }

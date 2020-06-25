@@ -400,6 +400,8 @@ jobs:
         -   run:
                 name: Test missing database and index structure migrations
                 command: vendor/akeneo/pim-community-dev/.circleci/detect_structure_changes.sh ${CIRCLE_BRANCH}
+        - store_artifacts:
+              path: /tmp/structure_changes
 
   test_back_data_migrations:
       machine:
