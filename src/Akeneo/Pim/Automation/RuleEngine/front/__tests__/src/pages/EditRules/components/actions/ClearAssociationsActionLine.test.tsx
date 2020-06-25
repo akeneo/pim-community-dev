@@ -10,7 +10,10 @@ const action: ClearAssociationsAction = {
 
 describe('ClearAssociationsActionLine', () => {
   it('should display the clear associations action line', async () => {
-    const { findByText } = renderWithProviders(
+    const {
+      findByText,
+      findAllByText,
+    } = renderWithProviders(
       <ClearAssociationsActionLine
         currentCatalogLocale={'en_US'}
         lineNumber={1}
@@ -28,7 +31,7 @@ describe('ClearAssociationsActionLine', () => {
       )
     ).toBeInTheDocument();
     expect(
-      await findByText('pimee_catalog_rule.form.helper.clear_attributes')
-    ).toBeInTheDocument();
+      await findAllByText('pimee_catalog_rule.form.helper.clear_attributes')
+    ).toHaveLength(2);
   });
 });
