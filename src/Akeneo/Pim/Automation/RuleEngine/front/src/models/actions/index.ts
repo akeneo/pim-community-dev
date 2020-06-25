@@ -3,6 +3,7 @@ export * from './AddCategoriesAction';
 export * from './CalculateAction';
 export * from './ClearAction';
 export * from './ClearAttributeAction';
+export * from './ClearAssociationsAction';
 export * from './ClearCategoriesAction';
 export * from './ClearGroupsAction';
 export * from './ConcatenateAction';

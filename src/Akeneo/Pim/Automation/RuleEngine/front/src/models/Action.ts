@@ -10,6 +10,7 @@ import {
   ConcatenateAction,
   CopyAction,
   createClearAttributeAction,
+  createClearAssociationsAction,
   createAddCategoriesAction,
   createSetAttributeAction,
   createSetFamilyAction,
@@ -18,15 +19,16 @@ import {
   SetFamilyAction,
   SetCategoriesAction,
   createSetCategoriesAction,
+  ClearAssociationsAction,
   createClearCategoriesAction,
   createClearGroupsAction,
->>>>>>> RUL-236 Add clear groups action line
 } from './actions';
 
 export const AvailableAddAction: { [key: string]: () => Action } = {
   set_category: createSetCategoriesAction,
   set_family: createSetFamilyAction,
   clear_attribute: createClearAttributeAction,
+  clear_associations: createClearAssociationsAction,
   clear_categories: createClearCategoriesAction,
   clear_groups: createClearGroupsAction,
   add_category: createAddCategoriesAction,
@@ -39,6 +41,7 @@ export type Action =
   | CalculateAction
   | ClearAction
   | ClearAttributeAction
+  | ClearAssociationsAction
   | ClearCategoriesAction
   | ClearGroupsAction
   | ConcatenateAction

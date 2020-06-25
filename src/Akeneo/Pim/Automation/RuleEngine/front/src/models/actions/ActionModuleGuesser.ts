@@ -14,6 +14,7 @@ import { Router } from '../../dependenciesTools';
 import { getClearAttributeActionModule } from './ClearAttributeAction';
 import { getAddCategoriesModule } from './AddCategoriesAction';
 import { getSetCategoriesModule } from './SetCategoriesAction';
+import { getClearAssociationsActionModule } from './ClearAssociationsAction';
 import { getClearCategoriesActionModule } from './ClearCategoriesAction';
 import { getClearGroupsActionModule } from './ClearGroupsAction';
 
@@ -32,6 +33,7 @@ const getActionModule: (
   const getActionModuleFunctions: ActionModuleGuesser[] = [
     getSetFamilyActionModule,
     getClearAttributeActionModule,
+    getClearAssociationsActionModule,
     getClearCategoriesActionModule,
     getClearGroupsActionModule,
     getAddCategoriesModule,
