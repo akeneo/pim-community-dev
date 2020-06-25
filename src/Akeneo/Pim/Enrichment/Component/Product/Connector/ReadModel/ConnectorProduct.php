@@ -225,7 +225,7 @@ final class ConnectorProduct
         return !empty($associatedProductModels) ? array_unique(array_merge(...$associatedProductModels)) : [];
     }
 
-    public function associatedProductWithQuantityIdentifiers()
+    public function associatedWithQuantityProductIdentifiers()
     {
         $associatedWithQuantityProducts = array_map(function ($quantifiedAssociations) {
             return array_column($quantifiedAssociations['products'], 'identifier');
@@ -238,7 +238,7 @@ final class ConnectorProduct
         return array_values(array_unique(array_merge(...$associatedWithQuantityProducts)));
     }
 
-    public function associatedProductModelWithQuantityCodes()
+    public function associatedWithQuantityProductModelCodes()
     {
         $associatedWithQuantityProductModels = array_map(function ($quantifiedAssociations) {
             return array_column($quantifiedAssociations['product_models'], 'identifier');

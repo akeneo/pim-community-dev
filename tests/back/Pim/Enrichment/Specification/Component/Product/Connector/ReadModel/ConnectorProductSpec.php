@@ -128,7 +128,7 @@ class ConnectorProductSpec extends ObjectBehavior
     function it_filters_associated_with_quantity_products_with_empty_array_of_product_identifiers()
     {
         $connectorProduct = $this->filterAssociatedWithQuantityProductsByProductIdentifiers([]);
-        $connectorProduct->associatedProductWithQuantityIdentifiers()->shouldReturn([]);
+        $connectorProduct->associatedWithQuantityProductIdentifiers()->shouldReturn([]);
     }
 
     function it_filters_associated_with_quantity_product_by_identifier()
@@ -160,7 +160,7 @@ class ConnectorProductSpec extends ObjectBehavior
     function it_filters_associated_with_quantity_product_models_with_empty_array_of_codes()
     {
         $connectorProduct = $this->filterAssociatedWithQuantityProductModelsByProductModelCodes([]);
-        $connectorProduct->associatedProductModelWithQuantityCodes()->shouldReturn([]);
+        $connectorProduct->associatedWithQuantityProductModelCodes()->shouldReturn([]);
     }
 
     function it_filters_associated_with_quantity_product_models_by_codes()
@@ -238,12 +238,12 @@ class ConnectorProductSpec extends ObjectBehavior
 
     function it_gets_associated_with_quantity_product_identifiers()
     {
-        $this->associatedProductWithQuantityIdentifiers()->shouldBeLike(['product_1', 'product_2', 'product_3']);
+        $this->associatedWithQuantityProductIdentifiers()->shouldBeLike(['product_1', 'product_2', 'product_3']);
     }
 
     function it_gets_associated_with_quantity_product_model_codes()
     {
-        $this->associatedProductModelWithQuantityCodes()->shouldBeLike(['product_model_1', 'product_model_2', 'product_model_3']);
+        $this->associatedWithQuantityProductModelCodes()->shouldBeLike(['product_model_1', 'product_model_2', 'product_model_3']);
     }
 
     function it_adds_a_metadata()
@@ -273,7 +273,7 @@ class ConnectorProductSpec extends ObjectBehavior
 
         $this->associatedProductIdentifiers()->shouldReturn([]);
         $this->associatedProductModelCodes()->shouldReturn([]);
-        $this->associatedProductWithQuantityIdentifiers()->shouldReturn([]);
-        $this->associatedProductModelWithQuantityCodes()->shouldReturn([]);
+        $this->associatedWithQuantityProductIdentifiers()->shouldReturn([]);
+        $this->associatedWithQuantityProductModelCodes()->shouldReturn([]);
     }
 }

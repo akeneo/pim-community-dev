@@ -88,12 +88,12 @@ final class ConnectorProductModelSpec extends ObjectBehavior
 
     function it_gets_associated_with_quantity_product_identifiers()
     {
-        $this->associatedProductWithQuantityIdentifiers()->shouldBeLike(['product_1', 'product_2', 'product_3']);
+        $this->associatedWithQuantityProductIdentifiers()->shouldBeLike(['product_1', 'product_2', 'product_3']);
     }
 
     function it_gets_associated_with_quantity_product_model_codes()
     {
-        $this->associatedProductModelWithQuantityCodes()->shouldBeLike(['product_model_1', 'product_model_2', 'product_model_3']);
+        $this->associatedWithQuantityProductModelCodes()->shouldBeLike(['product_model_1', 'product_model_2', 'product_model_3']);
     }
 
     function it_filters_by_category_codes()
@@ -140,7 +140,7 @@ final class ConnectorProductModelSpec extends ObjectBehavior
     function it_filters_associated_with_quantity_products_with_empty_array_of_product_identifiers()
     {
         $connectorProductModel = $this->filterAssociatedWithQuantityProductsByProductIdentifiers([]);
-        $connectorProductModel->associatedProductWithQuantityIdentifiers()->shouldReturn([]);
+        $connectorProductModel->associatedWithQuantityProductIdentifiers()->shouldReturn([]);
     }
 
     function it_filters_associated_with_quantity_product_by_identifier()
@@ -172,7 +172,7 @@ final class ConnectorProductModelSpec extends ObjectBehavior
     function it_filters_associated_with_quantity_product_models_with_empty_array_of_codes()
     {
         $connectorProductModel = $this->filterAssociatedWithQuantityProductModelsByProductModelCodes([]);
-        $connectorProductModel->associatedProductModelWithQuantityCodes()->shouldReturn([]);
+        $connectorProductModel->associatedWithQuantityProductModelCodes()->shouldReturn([]);
     }
 
     function it_filters_associated_with_quantity_product_models_by_codes()
