@@ -1,7 +1,7 @@
 {
     "data": [
         {
-            "id": "update-easily_monitor_errors_on_your_connections-2020-06-04",
+            "id": "update_1-easily-monitor-errors-on-your-connections_2020-06-04",
             "startDate": "2020/06/04",
             "notificationDuration": 14,
             "tags": [
@@ -14,7 +14,7 @@
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-05.html#easily-monitor-errors-on-your-connections"
         },
         {
-            "id": "update-new_metrics_on_the_connection_dashboard-2020-06-04",
+            "id": "update_2-new-metric-on-the-connection-dashboard_2020-06-04",
             "startDate": "2020/06/04",
             "notificationDuration": 14,
             "tags": [
@@ -27,7 +27,7 @@
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-05.html#new-metrics-on-the-connection-dashboard"
         },
         {
-            "id": "update-new_association_type_the_two_way_association-2020-06-04",
+            "id": "update_3-2-way-associations_2020-06-04",
             "startDate": "2020/06/04",
             "notificationDuration": 14,
             "tags": [
@@ -40,7 +40,7 @@
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-05.html#new-association-type-the-two-way-association"
         },
         {
-            "id": "update-more_visibility_on_pim_jobs-2020-06-04",
+            "id": "update_4-visibility-on-jobs_2020-06-04",
             "startDate": "2020/06/04",
             "notificationDuration": 14,
             "tags": [
@@ -51,7 +51,7 @@
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-05.html#more-visibility-on-pim-jobs"
         },
         {
-            "id": "update-rules_engine_improvements-2020-06-04",
+            "id": "update_5-rules-engine-new-improvements_2020-06-04",
             "startDate": "2020/06/04",
             "notificationDuration": 14,
             "tags": [
@@ -62,7 +62,7 @@
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-05.html#rules-engine-improvements"
         },
         {
-            "id": "update-a_new_screen_to_add_your_own_measurement_units-2020-05-07",
+            "id": "update_1-new-screen-for-measurements-families_2020-05-07",
             "startDate": "2020/05/07",
             "notificationDuration": 7,
             "tags": [
@@ -75,7 +75,7 @@
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#a-new-screen-to-add-your-own-measurement-units"
         },
         {
-            "id": "update-new_endpoints_to_manage_measurements-2020-05-07",
+            "id": "update_2-new-measurements-api-endpoints_2020-05-07",
             "startDate": "2020/05/07",
             "notificationDuration": 7,
             "tags": [
@@ -88,7 +88,7 @@
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#new-endpoints-to-manage-measurements"
         },
         {
-            "id": "update-product_associations_update-2020-05-07",
+            "id": "update_3-associations-updates_2020-05-07",
             "startDate": "2020/05/07",
             "notificationDuration": 7,
             "tags": [
@@ -101,7 +101,7 @@
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#product-associations-update"
         },
         {
-            "id": "update-track_your_destination_connections-2020-05-07",
+            "id": "update_4-destination-connections-tracking_2020-05-07",
             "startDate": "2020/05/07",
             "notificationDuration": 7,
             "tags": [
@@ -114,7 +114,7 @@
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#track-your-destination-connections"
         },
         {
-            "id": "update-connection_dashboard_updates-2020-05-07",
+            "id": "update_5-connection-dashboard-updates_2020-05-07",
             "startDate": "2020/05/07",
             "notificationDuration": 7,
             "tags": [
@@ -125,7 +125,7 @@
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#connection-dashboard-updates"
         },
         {
-            "id": "update-rules_engine_new_actions_and_improvements-2020-05-07",
+            "id": "update_6-rules-engine-new-actions-and-improvements_2020-05-07",
             "startDate": "2020/05/07",
             "notificationDuration": 7,
             "tags": [
@@ -136,7 +136,7 @@
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#rules-engine-new-actions-and-improvements"
         },
         {
-            "id": "update-rules_engine_new_actions_and_improvements-2020-05-07",
+            "id": "update_7-data-quality-new-improvements_2020-05-07",
             "startDate": "2020/05/07",
             "notificationDuration": 7,
             "tags": [
@@ -147,7 +147,7 @@
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#data-quality-insights-made-even-more-powerful"
         },
         {
-            "id": "update-data_quality_improvements-2020-04-02",
+            "id": "update_1-data-quality-new-improvements_2020-04-02",
             "startDate": "2020/04/02",
             "notificationDuration": 7,
             "tags": [
@@ -158,7 +158,7 @@
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-03.html#data-quality-improvements"
         },
         {
-            "id": "update-new_measurement_units_and_families-2020-04-02",
+            "id": "update_2-product-modeling-improved-thanks-new-measurement-units_2020-04-02",
             "startDate": "2020/04/02",
             "notificationDuration": 7,
             "tags": [
@@ -169,7 +169,7 @@
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-03.html#new-measurement-units-and-families"
         },
         {
-            "id": "update-rules_engine_extended_capabilities-2020-04-02",
+            "id": "update_3-rules-engine-extended-capabilities_2020-04-02",
             "startDate": "2020/04/02",
             "notificationDuration": 7,
             "tags": [
@@ -180,7 +180,7 @@
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-03.html#rules-engine-extended-capabilities"
         },
         {
-            "id": "update-optimize_the_weight_of_your_assets-2020-03-05",
+            "id": "update_1-optimize-weight-assets_2020-03-05",
             "startDate": "2020/03/05",
             "notificationDuration": 7,
             "tags": [
@@ -193,7 +193,7 @@
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-02.html#optimize-the-weight-of-your-assets"
         },
         {
-            "id": "update-new_warning_message_on_connection_usernames-2020-03-05",
+            "id": "update_2-new-warning-message-username-connection_2020-03-05",
             "startDate": "2020/03/05",
             "notificationDuration": 7,
             "tags": [
