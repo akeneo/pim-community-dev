@@ -32,6 +32,7 @@ job_execution.summary:
   subscribed: abonné
   unsubscribed: non abonné
   unsubscription_skipped_not_subscribed: ignoré (non abonné)
+  identifiers_mapping_validation: Validation du mapping des identifiants
 pim_datagrid:
   cells:
     type:
