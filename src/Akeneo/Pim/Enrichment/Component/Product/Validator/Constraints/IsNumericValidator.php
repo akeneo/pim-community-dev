@@ -34,7 +34,16 @@ class IsNumericValidator extends ConstraintValidator
             return;
         }
         if (!is_numeric($value)) {
-            $violation = $this->context->buildViolation($constraint->message);
+            $violation = $this->context->buildViolation(
+                $constraint->message,
+                [
+                    '{{ attribute }}' => $constraint->attributeCode,
+                    '{{ value }}' => $value,
+                ]
+
+            )
+                ->setCode(IsNumeric::IS_NUMERIC);
+
             if (isset($propertyPath)) {
                 $violation->atPath($propertyPath);
             }

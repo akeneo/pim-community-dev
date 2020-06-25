@@ -63,6 +63,20 @@ interface EntityWithQuantifiedAssociationsInterface
     public function getQuantifiedAssociationsProductModelCodes(): array;
 
     /**
+     * Get all association type codes
+     *
+     * @return string[]
+     */
+    public function getQuantifiedAssociationsTypeCodes(): array;
+
+    /**
+     * Remove the given association type and all the corresponding associations
+     *
+     * @param string $associationTypeCode
+     */
+    public function removeQuantifiedAssociationsType(string $associationTypeCode): void;
+
+    /**
      * Update raw quantified associations from quantified associations
      *
      * @param IdMapping $mappedProductIdentifiers

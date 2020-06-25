@@ -23,10 +23,10 @@ Feature: Validate the quantified associations of a product
     When I associate a product to this product with the quantity "<quantity>"
     Then this product has a validation error about invalid quantity
     Examples:
-      | quantity |
-      | -1       |
-      | 0        |
-      | 10000    |
+      | quantity   |
+      | -1         |
+      | 0          |
+      | 2147483648 |
 
   @acceptance-back
   Scenario Outline: Can save a product with a quantified link with a valid quantity
@@ -34,9 +34,9 @@ Feature: Validate the quantified associations of a product
     When I associate a product to this product with the quantity "<quantity>"
     Then the product is valid
     Examples:
-      | quantity |
-      | 1        |
-      | 9999     |
+      | quantity   |
+      | 1          |
+      | 2147483647 |
 
   @acceptance-back
   Scenario: Cannot save a product with a quantified link with nonexistent product

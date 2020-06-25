@@ -261,7 +261,7 @@ class Client
         $body['aliases'] = [$this->indexName => (object) []];
 
         $params = [
-            'index' => strtolower($this->indexName . '_' . str_replace('.', '_', CommunityVersion::VERSION) . '_' . Uuid::uuid4()),
+            'index' => strtolower($this->indexName . '_' . Uuid::uuid4()),
             'body' => $body,
         ];
 

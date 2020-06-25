@@ -79,7 +79,7 @@ Feature: Edit a product model
     And I visit the "ERP" group
     And I change the Price to "foobar USD"
     When I press the "Save" button
-    Then I should see validation tooltip "This value should be a valid number."
+    Then I should see validation tooltip "The price attribute requires a number, and the submitted foobar value is not."
     And there should be 1 error in the "ERP" tab
 
   Scenario: Quickly view missing values to fill in
@@ -97,7 +97,7 @@ Feature: Edit a product model
     Then the Care instructions, Collection, Model picture fields should be highlighted
 
   @jira https://akeneo.atlassian.net/browse/PIM-7382
-  Scenario: Successfully display a product model's scopable value after editing it 
+  Scenario: Successfully display a product model's scopable value after editing it
     Given I am logged in as "Mary"
     And I am on the "bacchus" product model page
     And I fill in the following information:

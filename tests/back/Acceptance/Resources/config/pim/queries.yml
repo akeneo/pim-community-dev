@@ -34,6 +34,11 @@ services:
         arguments:
             - '@pim_catalog.repository.product_model'
 
+    akeneo.pim.enrichment.product.query.find_non_existing_association_type_codes_query:
+        class: Akeneo\Test\Acceptance\AssociationType\InMemoryFindNonExistingAssociationTypeCodesQuery
+        arguments:
+            - '@pim_catalog.repository.association_type'
+
     akeneo.pim.structure.query.find_family_variants_identifiers_by_attribute_axes:
         class: Akeneo\Test\Acceptance\FamilyVariant\InMemoryFamilyVariantsByAttributeAxes
         arguments:

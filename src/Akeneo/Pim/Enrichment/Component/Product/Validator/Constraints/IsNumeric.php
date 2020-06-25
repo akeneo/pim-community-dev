@@ -13,5 +13,11 @@ use Symfony\Component\Validator\Constraint;
  */
 class IsNumeric extends Constraint
 {
-    public $message = 'This value should be a valid number.';
+    const IS_NUMERIC = "3ee14592-14a8-4314-836f-b6177aaf7c05";
+
+    /** @var string */
+    public $message = 'The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.';
+
+    /** @var string */
+    public $attributeCode = '';
 }

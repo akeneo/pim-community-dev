@@ -182,7 +182,7 @@ JSON;
         $expected = <<<JSON
 {
     "code": 422,
-    "message": "Attribute \"not_found\" does not exist."
+    "message": "The not_found attribute does not exist in your PIM."
 }
 JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());

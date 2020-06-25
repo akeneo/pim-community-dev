@@ -29,7 +29,7 @@ Feature: Validate simple and multi-select attributes of a product
     When a product is created with values:
       | attribute | data  | scope | locale |
       | color     | green |       |        |
-    Then the error 'Property "color" expects a valid code. The option "green" does not exist' is raised
+    Then the error 'The green value is not in the color attribute option list.' is raised
 
   @acceptance-back
   Scenario: Providing existing multi select options should not raise an error
@@ -51,4 +51,4 @@ Feature: Validate simple and multi-select attributes of a product
     When a product is created with values:
       | attribute   | data                                          | scope | locale |
       | collections | winter_2018,spring_2019,summer_2019,fall_2019 |       |        |
-    Then the error 'Property "collections" expects valid codes. The following options do not exist: "fall_2019, winter_2018"' is raised
+    Then the error 'The fall_2019, winter_2018 values are not in the collections attribute option list.' is raised
