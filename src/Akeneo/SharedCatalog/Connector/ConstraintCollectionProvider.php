@@ -52,12 +52,6 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
                 'groups' => ['Default', 'FileConfiguration'],
             ]
         );
-        $constraintFields['recipients'] = new Type(
-            [
-                'type' => 'array',
-                'groups' => ['Default', 'FileConfiguration'],
-            ]
-        );
         $constraintFields['filters'] = [
             new Collection(
                 [
