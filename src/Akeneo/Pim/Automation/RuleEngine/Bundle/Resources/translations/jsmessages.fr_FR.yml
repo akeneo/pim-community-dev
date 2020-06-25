@@ -16,6 +16,7 @@ pimee_catalog_rule:
       action.label: Action
       no_rule_yet.label: Il n'y a aucune règle pour l'instant
   rule:
+    value: Valeur
     condition:
       if.label: Si
     action:
@@ -49,6 +50,21 @@ pimee_catalog_rule:
           error: Une erreur s'est produite lors de la suppression des règles.
           empty_selection: Aucune règle n'a été sélectionnée.
   form:
+    category:
+      catalog: Catalogue
+      select: Sélectionnez une catégorie
+      open_tree: Ouvrir l'arbre des catégories
+      tree: Arborescence des catégories
+      menu: Sélectionner un arbre de catégories
+      folder:
+        selected: Répertoire sélectionné
+        not_selected: Répertoire
+      folders:
+        selected: Dossiers sélectionnés
+        not_selected: Répertoires
+      arrow:
+        open: Ouvrir la branche de catégories
+        close: Fermer la branche de catégories
     tab:
       list: Constructeur de règle et onglets de propriétés
       rule_builder: Générateur de règles
@@ -78,13 +94,45 @@ pimee_catalog_rule:
         label: Priorité
       add_to_category: Ajouter à une catégorie
       add_conditions: Ajouter des conditions
+      products_count:
+        complete: "]-Inf, 1]{{ count }} produit et modèle de produit|]1, +Inf[{{ count }} produits et modèles de produits"
+        pending: Calcul des produits et des modèles de produits
+        error: Calcul impossible
       product_selection: Sélection de produits
       fields:
         family: Famille
+        category: Catégorie
+        attribute: Attribut
       actions:
         add_action: Ajouter une action
+        add_category:
+          title: AJOUTER des catégories
+          helper: Pour ajouter votre sélection de produits à une ou plusieurs catégories, veuillez commencer par sélectionner vos arbres de catégories et ensuite vos catégories.
+        set_category:
+          title: DEFINIR les catégories
+          helper: Pour classifier votre sélection de produits dans une ou plusieurs catégories (et les retirer des anciennes), veuillez commencer par sélectionner vos arbres de catégories et ensuite vos catégories.
+        category:
+          select_category_trees: Sélectionnez vos arbres de catégories
+          select_category_tree: Sélectionner votre arbre de catégories
+          select_categories: Sélectionnez vos catégories
+          select_category: Sélectionnez votre catégorie
+          category_tree: Arbre de catégories
+          categories_selected: "]-Inf, 1]{{ count }} catégorie sélectionnée|]1, +Inf[{{ count }} catégories sélectionnées"
+          no_category_tree: Veuillez d'abord sélectionner un arbre de catégories.
+          remove_unknown_category: " Cliquez ici pour supprimer cette catégorie."
         set_family:
+          title: DEFINIR une famille
           subtitle: Sélectionnez votre famille
+        set_attribute:
+          title: DEFINIR une valeur d'attribut
+          target_subtitle: Sélectionnez votre destination
+          value_subtitle: Définissez votre valeur
+          attribute_label: Attribut
+          attribute_placeholder: Sélectionnez votre attribut de destination
+        clear_attribute:
+          title: EFFACER la valeur d'attribut
+          subtitle: Sélectionnez l'attribut à effacer
+          attribute_label: Attribut
         delete:
           label: Supprimer l'action
           description: Êtes-vous sûr de vouloir supprimer cette action ?
@@ -117,6 +165,8 @@ pimee_catalog_rule:
         success: La règle a été mise à jour avec succès
         failed: La mise à jour de la règle a échoué
       discard_changes: Vous perdrez les modifications de la règle si vous quittez la page.
+      please_select_attribute: Veuillez d'abord sélectionner votre attribut cible.
+      unhandled_attribute_type: Désolé, ce type d'attribut n'est pas encore géré dans l'interface. Veuillez importer votre règle.
     helper:
       add_to_category: Pour ajouter votre sélection de produits à une ou plusieurs catégories, veuillez commencer par sélectionner vos arbres de catégories et ensuite vos catégories.
       product_selection: "Vous devez définir votre sélection de produits pour créer votre règle. Si vous ne savez pas comment, "
@@ -124,8 +174,31 @@ pimee_catalog_rule:
     legend:
       add_to_category: Créer une action
       product_selection: Créer une condition
+    tree:
+      item:
+        selected: Élément sélectionné
+        not_selected: Sélectionner l'élément
   exceptions:
     loading: Une erreur s'est produite lors du chargement de la définition de règle.
+    required: Ce champ est obligatoire
+    required_attribute: Vous devez indiquer un attribut
+    required_locale: Une locale est requise pour cet attribut
+    required_scope: Un canal est requis pour cet attribut
+    required_value: Vous devez indiquer une valeur pour cette action
+    unknown_or_inactive_locale: 'La locale "{{ localeCode }}" n''existe pas ou n''est pas activée'
+    unbound_locale: 'La locale "{{ localeCode }}" n''est pas activée dans le canal "{{ channelCode }}"'
+    locale_on_unlocalizable_attribute: Cet attribut n'est pas localisable. Veuillez supprimer la locale avant de continuer.
+    unknown_scope: 'Le canal "{{ scopeCode }}" n''existe pas'
+    scope_on_unscopable_attribute: Cet attribut n'est pas scopable. Veuillez supprimer le canal avant de continuer.
+    unknown_families: "{1}La famille {{ familyCodes }} n'existe pas|]1,+Inf[Les familles {{ familyCodes }} n'existent pas"
+    unknown_attribute_options: "{1}L'option {{ attributeOptionCodes }} n'existe pas|]1,+Inf[Les options {{ attributeOptionCodes }} n'existent pas"
+    unknown_attribute_code: "L'attribut {{ attributeCode }} n'existe pas"
+    unknown_categories: "{1}La catégorie {{ categoryCodes }} n'existe pas.|]1, +Inf[Les catégories {{ categoryCodes }} n'existent pas"
+    unknown_attribute: "Cet attribut n'existe pas."
+    select_another_attribute_or_remove_action: "Sélectionnez un autre attribut ou supprimez cette action."
+    select_another_attribute: "Sélectionnez un autre attribut"
+    or: ou
+    create_attribute_link: cliquez ici pour créer l'attribut
 pim_enrich:
   entity:
     rule:
@@ -149,6 +222,7 @@ batch_jobs:
   default_steps:
     export_rules: Export des règles
     import_rules: Import des règles
+    calculate_affected_products: Calculer les produits affectés
     execute_rules: Exécution des règles
   yml_rule_import:
     label: Import des règles en YAML
@@ -179,6 +253,7 @@ pim_menu:
     rule: Règles
 pim_title:
   pimee_catalog_rule_rule_index: Règles
+  pimee_catalog_rule_edit: Modifier la règle
 pim_import_export:
   widget:
     last_operations:

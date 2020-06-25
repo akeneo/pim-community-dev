@@ -10,12 +10,14 @@ akeneo_assetmanager:
       manage_transformation: Gérer les transformations de la famille de ressources
       manage_product_link_rule: Gérer les règles de rattachement aux produits de la famille de ressources
       execute_product_link_rule: Exécuter les règles de rattachement aux produits sur toutes les ressources d'une famille
+      execute_naming_conventions: Exécuter les conventions de nommage sur les ressources
     asset:
       create: Créer une ressource
       edit: Editer les ressources
       delete: Supprimer une ressource
       delete_all: Supprimer toutes les ressources
       list_product: Lister les produits liés à la ressource
+      execute_naming_conventions: Exécuter les conventions de nommage
     attribute:
       create: Ajouter un attribut à une famille de ressources
       edit: Modifier un attribut d'une famille de ressources
@@ -23,12 +25,16 @@ akeneo_assetmanager:
     option:
       edit: Modifier les options
       delete: Supprimer une option
+  jobs:
+    asset_manager_execute_naming_convention:
+      error: 'L''exécution de la convention de nommage a échoué sur la ressource "{{ asset }}"'
 pim_import_export:
   widget:
     last_operations:
       job_type:
         asset_manager_compute_transformations: "Calculer les transformations de ressources"
         asset_manager_link_assets_to_products: "Lier les ressources aux produits"
+        asset_manager_execute_naming_convention: "Exécuter la convention de nommage pour toutes les ressources de la famille"
 #pim_analytics:
 #info_type:
 #nb_asset_families: Number of asset families
@@ -41,3 +47,13 @@ pim_import_export:
 #average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per asset family
 #average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family
 pim_catalog_asset_collection: Collection de ressources
+pim_datagrid:
+  cells:
+    type:
+      asset_manager_execute_naming_convention: Exécuter la convention de nommage pour toutes les ressources de la famille
+batch_jobs:
+  default_steps:
+    execute_naming_convention: Exécuter la convention de nommage pour toutes les ressources de la famille
+job_execution:
+  summary:
+    assets: Ressources

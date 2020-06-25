@@ -119,6 +119,7 @@ pim_asset_manager:
       edit: Modifier la famille
       view: Voir la famille
       execute_product_link_rules: Exécuter les règles
+      execute_naming_convention: Exécuter la convention de nommage
     permission:
       title: Autorisations de la famille de ressources
     title: Ressources
@@ -150,6 +151,9 @@ pim_asset_manager:
         execute_rules: Exécuter les règles
         cancel: Annuler
       execute_naming_convention:
+        confirm_title: Confirmer l’exécution
+        confirm_content: Êtes-vous certain de vouloir exécuter la convention de nommage ? (cela peut prendre un certain temps)
+        execute_naming_convention: Exécuter la convention de nommage
         cancel: Annuler
     properties:
       title: Propriétés de la famille de ressources
@@ -207,6 +211,9 @@ pim_asset_manager:
       execute_product_link_rules:
         success: Les règles de rattachement aux produits ont été lancées.
         fail: Une erreur s'est produite lors du lancement des règles de rattachement aux produits.
+      execute_naming_convention:
+        success: La convention de nommage a été lancée
+        fail: Une erreur s'est produite lors du lancement de la convention de nommage
     helper:
       title: Bienvenue dans le gestionnaire de ressources !
       no_asset:
@@ -250,6 +257,7 @@ pim_asset_manager:
       error:
         value: Oups, il semble que le rendu du champ «{{ fieldName }}» a échoué. Voir la console du développeur pour plus de détails.
     button:
+      save_and_execute_naming_convention: Enregistrer et exécuter la convention de nommage
       save: Enregistrer
       create: Créer une ressource
       mass_upload: Chargement en masse
@@ -375,6 +383,9 @@ pim_asset_manager:
       delete_all:
         success: Toutes les ressources de «{{ entityIdentifier }}» ont été supprimées avec succès.
         fail: Une erreur s'est produite pendant la suppression des ressources de la famille.
+      execute_naming_convention:
+        success: Convention de nommage exécutée avec succès
+        fail: Une erreur s'est produite lors de l'exécution de la convention de nommage
     completeness:
       label: Complet
   attribute:
@@ -495,6 +506,9 @@ pim_asset_manager:
       button:
         cancel: Annuler
         confirm: Supprimer
+  jobs:
+    asset_manager_execute_naming_convention:
+      error: 'L''exécution de la convention de nommage a échoué sur la ressource "{{ asset }}"'
 pim_enrich:
   confirmation:
     discard_changes: 'Vous perdrez les modifications effectuées sur l''entité "{{ entity }}" si vous quittez la page.'
@@ -526,6 +540,14 @@ pim_import_export:
       job_type:
         asset_manager_compute_transformations: "Exécuter les transformations de ressources"
         asset_manager_link_assets_to_products: "Lier les ressources aux produits"
+        asset_manager_execute_naming_convention: Exécuter la convention de nommage pour toutes les ressources de la famille
+pim_datagrid:
+  cells:
+    type:
+      asset_manager_execute_naming_convention: Exécuter la convention de nommage pour toutes les ressources de la famille
+batch_jobs:
+  default_steps:
+    execute_naming_convention: Exécuter la convention de nommage pour toutes les ressources de la famille
 job_execution:
   summary:
     assets: Ressources
