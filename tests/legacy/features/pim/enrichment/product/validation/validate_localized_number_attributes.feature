@@ -49,13 +49,13 @@ Feature: Validate localized number attributes of a product
   Scenario: Validate the type constraint of decimal attribute
     Given I change the "Qualité" to "qux"
     And I save the product
-    Then I should see validation tooltip "L’attribut quality requiert une valeur numérique et la valeur qux soumise ne l’est pas."
+    Then I should see validation tooltip "L'attribut quality requiert une valeur numérique et la valeur qux soumise ne l'est pas."
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the type constraint of number attribute
     Given I change the Classement to "qux"
     And I save the product
-    Then I should see validation tooltip "L’attribut rating requiert une valeur numérique et la valeur qux soumise ne l’est pas."
+    Then I should see validation tooltip "L'attribut rating requiert une valeur numérique et la valeur qux soumise ne l'est pas."
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the decimals separator constraint of number attribute
