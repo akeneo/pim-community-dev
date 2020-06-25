@@ -61,6 +61,32 @@ class ViolationNormalizer implements NormalizerInterface, CacheableSupportsMetho
     }
 
     /**
+     * @param ConstraintViolationListInterface $violations
+     *
+     * @return array
+     */
+    protected function normalizeViolations(ConstraintViolationListInterface $violations)
+    {
+        $errors = [];
+        $existingViolation = [];
+
+        foreach ($violations as $violation) {
+            $error = $this->normalizeViolation($violation);
+
+            $key = $error['_key'];
+            unset($error['_key']);
+
+            if (!array_key_exists($key, $existingViolation)) {
+                $errors[] = $error;
+            }
+
+            $existingViolation[$key] = true;
+        }
+
+        return $errors;
+    }
+
+    /**
      * The product field "identifier" introduced during the single storage development (in addition to the "identifier"
      * product value) added a new Length constraint on this property (see the product validation mapping)
      * which is breaking the API.
@@ -75,57 +101,48 @@ class ViolationNormalizer implements NormalizerInterface, CacheableSupportsMetho
      *
      * TODO: TIP-722 - to revert once the identifier product value is dropped.
      *
-     * @param ConstraintViolationListInterface $violations
+     * @param ConstraintViolationInterface $violation
      *
      * @return array
      */
-    protected function normalizeViolations(ConstraintViolationListInterface $violations)
+    protected function normalizeViolation(ConstraintViolationInterface $violation): array
     {
-        $errors = [];
-        $existingViolation = [];
+        $error = [
+            'property' => $this->getErrorField($violation),
+            'message'  => $violation->getMessage()
+        ];
 
-        foreach ($violations as $violation) {
-            $error = [
-                'property' => $this->getErrorField($violation),
-                'message'  => $violation->getMessage()
-            ];
+        $propertyPath = $violation->getPropertyPath();
+        $violationMessage = $violation->getMessageTemplate();
 
-            $propertyPath = $violation->getPropertyPath();
-            $violationMessage = $violation->getMessageTemplate();
+        if (
+            $violation->getRoot() instanceof EntityWithValuesInterface &&
+            1 === preg_match(
+                '|^values\[(?P<attribute>[a-z0-9-_\<\>]+)|i',
+                $violation->getPropertyPath(),
+                $matches
+            )
+        ) {
+            $error = $this->getProductValuesErrors($violation, $matches['attribute']);
 
-            if ($violation->getRoot() instanceof EntityWithValuesInterface &&
-                1 === preg_match(
-                    '|^values\[(?P<attribute>[a-z0-9-_\<\>]+)|i',
-                    $violation->getPropertyPath(),
-                    $matches
-                )
-            ) {
-                $error = $this->getProductValuesErrors($violation, $matches['attribute']);
+            $productValue = $violation->getRoot()->getValues()->getByKey($matches['attribute']);
 
-                $productValue = $violation->getRoot()->getValues()->getByKey($matches['attribute']);
+            $attribute = $this->attributeRepository->findOneByIdentifier($productValue->getAttributeCode());
 
-                $attribute = $this->attributeRepository->findOneByIdentifier($productValue->getAttributeCode());
+            $attributeType = $attribute->getType();
 
-                $attributeType = $attribute->getType();
-
-                if (AttributeTypes::IDENTIFIER === $attributeType) {
-                    $propertyPath = 'identifier';
-                }
+            if (AttributeTypes::IDENTIFIER === $attributeType) {
+                $propertyPath = 'identifier';
             }
-
-            if ($violation->getRoot() instanceof ChannelInterface && 'category' === $violation->getPropertyPath()) {
-                $error['property'] = 'category_tree';
-            }
-
-            $key = $propertyPath.$violationMessage;
-            if (!array_key_exists($key, $existingViolation)) {
-                $errors[] = $error;
-            }
-
-            $existingViolation[$key] = true;
         }
 
-        return $errors;
+        if ($violation->getRoot() instanceof ChannelInterface && 'category' === $violation->getPropertyPath()) {
+            $error['property'] = 'category_tree';
+        }
+
+        $error['_key'] = $propertyPath . $violationMessage;
+
+        return $error;
     }
 
     /**
@@ -203,8 +220,10 @@ class ViolationNormalizer implements NormalizerInterface, CacheableSupportsMetho
             'scope'     => $productValue->getScopeCode()
         ];
 
-        if (AttributeTypes::PRICE_COLLECTION === $attributeType &&
-            null !== $violation->getInvalidValue()->getCurrency()) {
+        if (
+            AttributeTypes::PRICE_COLLECTION === $attributeType &&
+            null !== $violation->getInvalidValue()->getCurrency()
+        ) {
             $error['currency'] = $violation->getInvalidValue()->getCurrency();
         }
 

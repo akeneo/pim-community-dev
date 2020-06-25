@@ -37,14 +37,14 @@ Feature: Validate metric attributes of a product
   Scenario: Validate the decimals allowed constraint of metric attribute
     Given I change the Area to "2.7 Hectare"
     And I save the product
-    Then I should see validation tooltip "This value should not be a decimal."
+    Then I should see validation tooltip "The area attribute requires a non-decimal value, and 2.7 is not a valid value."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the decimals allowed constraint of scopable metric attribute
     Given I switch the scope to "ecommerce"
     And I change the Length to "4.9 Meter"
     And I save the product
-    Then I should see validation tooltip "This value should not be a decimal."
+    Then I should see validation tooltip "The length attribute requires a non-decimal value, and 4.9 is not a valid value."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the number min constraint of metric attribute
@@ -76,6 +76,6 @@ Feature: Validate metric attributes of a product
   Scenario: Validate the type constraint of metric attribute
     Given I change the Power to "bar Watt"
     And I save the product
-    Then I should see validation tooltip "This value should be a valid number."
+    Then I should see validation tooltip "The power attribute requires a number, and the submitted bar value is not."
     Then I should see validation tooltip "This value should be -100 or less."
     And there should be 2 error in the "Other" tab

@@ -22,5 +22,5 @@ Feature: Handle import of invalid data
     And I wait for the "csv_footwear_product_import" job to finish
     And I press the "Display item" button
     Then I should see the text "Warning"
-    And I should see the text "Property \"family\" expects a valid family code. The family does not exist, \"NO_FAMILY\" given."
+    And I should see the text "The NO_FAMILY family does not exist in your PIM."
     And I should see the text "{\"sku\":[{\"locale\":null,\"scope\":null,\"data\":\"SKU-001\"}],\"handmade\":[{\"locale\":null,\"scope\":null,\"data\":true}]}"

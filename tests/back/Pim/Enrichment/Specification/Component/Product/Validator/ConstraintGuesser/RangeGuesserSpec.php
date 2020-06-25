@@ -46,6 +46,7 @@ class RangeGuesserSpec extends ObjectBehavior
 
     function it_guesses_non_date_min(AttributeInterface $attribute)
     {
+        $attribute->getCode()->willReturn('attribute_code');
         $attribute->getType()->willReturn('not_date');
         $attribute->getNumberMin()->willReturn(5);
         $attribute->getNumberMax()->willReturn(null);
@@ -66,6 +67,7 @@ class RangeGuesserSpec extends ObjectBehavior
 
     function it_guesses_non_date_max(AttributeInterface $attribute)
     {
+        $attribute->getCode()->willReturn('attribute_code');
         $attribute->getType()->willReturn('not_date');
         $attribute->getNumberMin()->willReturn(null);
         $attribute->getNumberMax()->willReturn(10);
@@ -86,6 +88,7 @@ class RangeGuesserSpec extends ObjectBehavior
 
     function it_guesses_non_date_min_and_max(AttributeInterface $attribute)
     {
+        $attribute->getCode()->willReturn('attribute_code');
         $attribute->getType()->willReturn('not_date');
         $attribute->getNumberMin()->willReturn(5);
         $attribute->getNumberMax()->willReturn(10);
@@ -106,6 +109,7 @@ class RangeGuesserSpec extends ObjectBehavior
 
     function it_guesses_non_date_min_negative_allowed(AttributeInterface $attribute)
     {
+        $attribute->getCode()->willReturn('attribute_code');
         $attribute->getType()->willReturn('not_date');
         $attribute->getNumberMin()->willReturn(-5);
         $attribute->getNumberMax()->willReturn(null);
@@ -123,6 +127,7 @@ class RangeGuesserSpec extends ObjectBehavior
 
     function it_guesses_non_date_min_negative_not_allowed_will_be_zero(AttributeInterface $attribute)
     {
+        $attribute->getCode()->willReturn('attribute_code');
         $attribute->getType()->willReturn('not_date');
         $attribute->getNumberMin()->willReturn(-5);
         $attribute->getNumberMax()->willReturn(null);
@@ -140,6 +145,7 @@ class RangeGuesserSpec extends ObjectBehavior
 
     function it_guesses_date_min(AttributeInterface $attribute)
     {
+        $attribute->getCode()->willReturn('attribute_code');
         $attribute->getType()->willReturn('pim_catalog_date');
         $attribute->getDateMin()->willReturn('1970-01-01');
         $attribute->getDateMax()->willReturn(null);
@@ -160,6 +166,7 @@ class RangeGuesserSpec extends ObjectBehavior
 
     function it_guesses_date_max(AttributeInterface $attribute)
     {
+        $attribute->getCode()->willReturn('attribute_code');
         $attribute->getType()->willReturn('pim_catalog_date');
         $attribute->getDateMin()->willReturn(null);
         $attribute->getDateMax()->willReturn('2038-01-19');
@@ -180,6 +187,7 @@ class RangeGuesserSpec extends ObjectBehavior
 
     function it_guesses_date_min_and_max(AttributeInterface $attribute)
     {
+        $attribute->getCode()->willReturn('attribute_code');
         $attribute->getType()->willReturn('pim_catalog_date');
         $attribute->getDateMin()->willReturn('1970-01-01');
         $attribute->getDateMax()->willReturn('2038-01-19');

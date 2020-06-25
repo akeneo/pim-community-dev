@@ -356,7 +356,7 @@ class CreateProductModelIntegration extends TestCase
 
         $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
         $this->assertEquals(
-            'This value should be a valid number.',
+            'The weight attribute requires a number, and the submitted foobar value is not.',
             $errors->get(0)->getMessage()
         );
     }
