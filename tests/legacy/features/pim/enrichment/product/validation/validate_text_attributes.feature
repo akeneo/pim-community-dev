@@ -31,7 +31,7 @@ Feature: Validate text attributes of a product
     When I am on the "bar" product page
     And I change the Email to "bar@foo.com"
     And I save the product
-    Then I should see validation tooltip "The value bar@foo.com is already set on another product for the unique attribute email"
+    Then I should see validation tooltip "The email attribute can not have the same value more than once. The bar@foo.com value is already set on another product."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the max characters constraint of text attribute

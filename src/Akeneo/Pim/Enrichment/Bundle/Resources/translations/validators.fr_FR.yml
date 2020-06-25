@@ -83,6 +83,15 @@ pim_catalog:
     303: Ce champ attend un format d'association valide.
     pim_immutable_product_validator: Le même identifiant est déjà défini sur un autre produit
     pim_immutable_product_model_validator: Le même code est déjà défini sur un autre modèle de produit.
+    quantified_associations:
+      unexpected_link_type: 'Ce type de lien n''existe pas : "{{ value }}". Seuls des produits ou des modèles de produits peuvent être associés entre eux.'
+      max_associations: Vous avez atteint la limite de {{ limit }} associations. Vous devez supprimer des associations existantes si vous souhaitez en rajouter de nouvelles.
+      invalid_quantity: 'La quantité "{{ value }}" est invalide. Merci d''entrer une valeur comprise entre {{ min }} et {{ max }} inclus.'
+      products_do_not_exist: "Les produits suivants n'existent pas : {{ values }}. Merci de vérifier qu'ils n'ont pas été supprimés entre temps."
+      product_models_do_not_exist: "Les modèles de produit suivants n'existent pas : {{ values }}. Merci de vérifier qu'ils n'ont pas été supprimés entre temps."
+      association_type_does_not_exist: Ce type d'association n'existe pas. Merci de vérifier qu'il n'a pas été supprimé entre temps.
+      association_type_is_not_quantified: '"{{ association_type }}" ne permet pas de renseigner des associations avec des quantités. Merci d’utiliser un autre type d’association avec quantités ou d’utiliser la propriété "associations".'
+      association_type_should_not_be_quantified: '"{{ association_type }}" permet uniquement de renseigner des associations avec des quantités. Merci d’utiliser un autre type d’association ou d’utiliser la propriété "quantified_associations".'
 mass_edit:
   edit_common_attributes:
     invalid_values: Il y a des erreurs dans le formulaire d'attributs

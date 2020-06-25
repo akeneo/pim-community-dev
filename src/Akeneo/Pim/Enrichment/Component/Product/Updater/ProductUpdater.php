@@ -214,7 +214,7 @@ class ProductUpdater implements ObjectUpdaterInterface
                 try {
                     $this->valuesUpdater->update($product, $data, $options);
                 } catch (UnknownPropertyException $exception) {
-                    throw UnknownAttributeException::unknownAttribute($exception->getPropertyName(), $exception);
+                    throw new UnknownAttributeException($exception->getPropertyName(), $exception);
                 }
                 break;
             default:

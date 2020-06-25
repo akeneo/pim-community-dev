@@ -58,7 +58,7 @@ Feature: Execute a job
       | price | 8.00 EUR |
     And the product "SKU-008" should have the following value:
       | price |  |
-    And I should see the text "This value should be a valid number.: gruik EUR"
+    And I should see the text "The price attribute requires a number, and the submitted gruik value is not.: gruik EUR"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip existing products with invalid metrics during an import
