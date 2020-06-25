@@ -8,7 +8,7 @@ export const InlineHelper = styled.div<{
   warning?: true;
   danger?: true;
 }>`
-  background-size: 20px;
+  background-size: 16px;
   background-image: url(${infoIcon});
   background-image: url(${props => {
     if (props.danger) {
@@ -24,7 +24,7 @@ export const InlineHelper = styled.div<{
   color: ${props =>
     props.danger ? props.theme.color.red100 : props.theme.color.grey120};
   font-size: ${({ theme }) => theme.fontSize.small};
-  line-height: 20px;
+  line-height: 15px;
   padding-left: 26px;
   a {
     color: ${props =>

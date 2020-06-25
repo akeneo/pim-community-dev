@@ -55,10 +55,10 @@ const SmallErrorHelper = styled.ul<{ level: Level }>`
     min-height: 44px;
     padding: 10px;
     flex-basis: 100%;
-    line-height: 20px;
+    line-height: 15px;
     background-image: url('${({ level }) => getIcon(level)}');
     background-repeat: no-repeat;
-    background-size: 20px;
+    background-size: 16px;
     background-position: 10px 10px;
     padding-left: 52px;
 

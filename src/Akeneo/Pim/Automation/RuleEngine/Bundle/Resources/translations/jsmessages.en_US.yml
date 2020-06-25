@@ -90,6 +90,7 @@ pimee_catalog_rule:
                 section:
                     general: General parameters
                     labels: Label translations
+            character_left: "]-Inf, 1]{{ count }} Character left|]1, +Inf[{{ count }} Characters left"
             priority:
                 label: Priority
             add_to_category: Add to category

@@ -15,7 +15,7 @@ Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionTranslation:
                 strategy: AUTO
         label:
             type: string
-            length: 100
+            length: 255
             nullable: true
         locale:
             type: string

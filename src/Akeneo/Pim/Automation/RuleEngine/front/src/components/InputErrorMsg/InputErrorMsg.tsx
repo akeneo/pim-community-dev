@@ -3,6 +3,9 @@ import styled from 'styled-components';
 
 const DivErrMsg = styled.div`
   font-size: 11px;
+  margin-top: 5px;
+  line-height: 15px;
+  background-size: 16px;
 `;
 
 const InputErrorMsg: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({

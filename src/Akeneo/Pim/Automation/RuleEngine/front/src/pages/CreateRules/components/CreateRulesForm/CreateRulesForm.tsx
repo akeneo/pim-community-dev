@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import { useForm, ErrorMessage } from 'react-hook-form';
+import { useForm, ErrorMessage, FormContext } from 'react-hook-form';
 import { InputErrorMsg } from '../../../../components/InputErrorMsg';
 import { FlagLabel } from '../../../../components/Labels';
 import { InputText } from '../../../../components/Inputs';
@@ -11,6 +11,8 @@ const inputCodeErrorMsgId = 'inputCodeErrMsg';
 const inputCodeName = 'code';
 const inputLabelErrorMsgId = 'inputLabelErrMsg';
 const inputLabelName = 'label';
+const LABEL_MAX_LENGTH = 255;
+const CODE_MAX_LENGTH = 100;
 
 const LegendSrOnly = styled.legend`
   position: absolute;
@@ -49,9 +51,10 @@ const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
   const [customErrors, setCustomErrors] = React.useState<CustomErrors>(
     initialCustomErrors
   );
-  const { errors, formState, handleSubmit, register } = useForm<FormDataInput>({
+  const formMethods = useForm<FormDataInput>({
     mode: 'onChange',
   });
+  const { errors, formState, handleSubmit, register } = formMethods;
 
   const codeInputRegisterConfig = {
     required: translate(
@@ -102,81 +105,96 @@ const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
     }
   }, [customErrors]);
 
+  const resetCodeCustomErrors = () =>
+    setCustomErrors({ ...customErrors, code: [] });
+
   return (
-    <form
-      className='AknFormContainer'
-      data-testid='form-create-rules'
-      onSubmit={handleSubmit(manageSubmitError)}>
-      <fieldset>
-        <LegendSrOnly>
-          {translate('pimee_catalog_rule.form.creation.title')}
-        </LegendSrOnly>
-        <div className='AknFieldContainer'>
-          <InputText
-            id='code-input'
-            ariaDescribedBy={inputCodeErrorMsgId}
-            autoComplete='off'
-            label={`${translate('pim_common.code')} ${translate(
-              'pim_common.required_label'
-            )}`}
-            minLength={3}
-            name={inputCodeName}
-            ref={(currentRef: HTMLInputElement) => {
-              inputCodeRef.current = currentRef;
-              register(currentRef, codeInputRegisterConfig);
-            }}
-            required
-          />
-          <div id={inputCodeErrorMsgId}>
-            {customErrors.code.length > 0 &&
-              customErrors.code.map(message => (
-                <InputErrorMsg key={`code-${message}`}>{message}</InputErrorMsg>
-              ))}
-            <ErrorMessage errors={errors} name={inputCodeName}>
-              {({ message }) => <InputErrorMsg>{message}</InputErrorMsg>}
-            </ErrorMessage>
-          </div>
-        </div>
-        <div className='AknFieldContainer'>
-          <InputText
-            id='label-input'
-            ariaDescribedBy={inputLabelErrorMsgId}
-            autoComplete='off'
-            maxLength={255}
-            name={inputLabelName}
-            ref={register(labelInputRegisterConfig)}>
-            <FlagLabel
-              htmlFor='label-input'
-              locale={locale}
-              label={translate('pim_common.label')}
-              flagDescription={translate(
-                'pimee_catalog_rule.form.creation.english_flag'
-              )}
+    <FormContext {...formMethods}>
+      <form
+        className='AknFormContainer'
+        data-testid='form-create-rules'
+        onSubmit={handleSubmit(manageSubmitError)}>
+        <fieldset>
+          <LegendSrOnly>
+            {translate('pimee_catalog_rule.form.creation.title')}
+          </LegendSrOnly>
+          <div className='AknFieldContainer'>
+            <InputText
+              id='code-input'
+              ariaDescribedBy={inputCodeErrorMsgId}
+              autoComplete='off'
+              label={`${translate('pim_common.code')} ${translate(
+                'pim_common.required_label'
+              )}`}
+              minLength={3}
+              maxLength={CODE_MAX_LENGTH}
+              withCharactersLeft
+              name={inputCodeName}
+              ref={(currentRef: HTMLInputElement) => {
+                inputCodeRef.current = currentRef;
+                register(currentRef, codeInputRegisterConfig);
+              }}
+              required
+              onChange={resetCodeCustomErrors}
+              errors={
+                <div id={inputCodeErrorMsgId}>
+                  {customErrors.code.length > 0 &&
+                    customErrors.code.map(message => (
+                      <InputErrorMsg key={`code-${message}`}>
+                        {message}
+                      </InputErrorMsg>
+                    ))}
+                  <ErrorMessage errors={errors} name={inputCodeName}>
+                    {({ message }) => <InputErrorMsg>{message}</InputErrorMsg>}
+                  </ErrorMessage>
+                </div>
+              }
             />
-          </InputText>
-          <div id={inputLabelErrorMsgId}>
-            {customErrors.label.length > 0 &&
-              customErrors.label.map(message => (
-                <InputErrorMsg
-                  key={`label-${message}`}
-                  id={inputLabelErrorMsgId}>
-                  {message}
-                </InputErrorMsg>
-              ))}
-            <ErrorMessage errors={errors} name={inputLabelName}>
-              {({ message }) => (
-                <InputErrorMsg id={inputLabelErrorMsgId}>
-                  {message}
-                </InputErrorMsg>
-              )}
-            </ErrorMessage>
           </div>
-        </div>
-      </fieldset>
-      <PrimaryButton disabled={!formState.isValid} type='submit'>
-        {translate('pim_common.save')}
-      </PrimaryButton>
-    </form>
+          <div className='AknFieldContainer'>
+            <InputText
+              id='label-input'
+              ariaDescribedBy={inputLabelErrorMsgId}
+              autoComplete='off'
+              maxLength={LABEL_MAX_LENGTH}
+              name={inputLabelName}
+              withCharactersLeft
+              ref={register(labelInputRegisterConfig)}
+              errors={
+                <div id={inputLabelErrorMsgId}>
+                  {customErrors.label.length > 0 &&
+                    customErrors.label.map(message => (
+                      <InputErrorMsg
+                        key={`label-${message}`}
+                        id={inputLabelErrorMsgId}>
+                        {message}
+                      </InputErrorMsg>
+                    ))}
+                  <ErrorMessage errors={errors} name={inputLabelName}>
+                    {({ message }) => (
+                      <InputErrorMsg id={inputLabelErrorMsgId}>
+                        {message}
+                      </InputErrorMsg>
+                    )}
+                  </ErrorMessage>
+                </div>
+              }>
+              <FlagLabel
+                htmlFor='label-input'
+                locale={locale}
+                label={translate('pim_common.label')}
+                flagDescription={translate(
+                  'pimee_catalog_rule.form.creation.english_flag'
+                )}
+              />
+            </InputText>
+          </div>
+        </fieldset>
+        <PrimaryButton disabled={!formState.isValid} type='submit'>
+          {translate('pim_common.save')}
+        </PrimaryButton>
+      </form>
+    </FormContext>
   );
 };
 

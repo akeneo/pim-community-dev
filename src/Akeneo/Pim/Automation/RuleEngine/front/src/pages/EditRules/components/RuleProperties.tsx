@@ -4,6 +4,8 @@ import { Locale } from '../../../models';
 import { InputNumber, InputText, FormSubsection } from '../../../components';
 import { useTranslate } from '../../../dependenciesTools/hooks';
 
+const LABEL_MAX_LENGTH = 255;
+
 type Props = {
   locales?: Locale[];
 };
@@ -53,7 +55,8 @@ const RuleProperties: React.FC<Props> = ({ locales }) => {
                     id={`edit-rules-input-label-${locale.code}`}
                     label={locale.label}
                     ref={register}
-                    maxLength={100}
+                    maxLength={LABEL_MAX_LENGTH}
+                    withCharactersLeft
                   />
                 </div>
               );

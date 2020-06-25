@@ -3,6 +3,8 @@ import { CreateRulesForm } from '../../../../../../src/pages/CreateRules/compone
 import userEvent from '@testing-library/user-event';
 import { render, screen, act, fireEvent } from '../../../../../../test-utils';
 
+jest.mock('../../../../../../src/dependenciesTools/provider/dependencies.ts');
+
 describe('CreateRulesForm', () => {
   test('should display the form', async () => {
     // Given
@@ -16,7 +18,7 @@ describe('CreateRulesForm', () => {
         locale='en_US'
       />,
       {
-        theme: true,
+        all: true,
       }
     );
     // Then
@@ -45,7 +47,7 @@ describe('CreateRulesForm', () => {
         locale='en_US'
       />,
       {
-        theme: true,
+        all: true,
       }
     );
     const inputCode = (await screen.findByLabelText(
@@ -82,7 +84,7 @@ describe('CreateRulesForm', () => {
         locale='en_US'
       />,
       {
-        theme: true,
+        all: true,
       }
     );
     const inputCode = (await screen.findByLabelText(
@@ -114,7 +116,7 @@ describe('CreateRulesForm', () => {
         locale='en_US'
       />,
       {
-        theme: true,
+        all: true,
       }
     );
     const inputCode = (await screen.findByLabelText(
@@ -183,7 +185,7 @@ describe('CreateRulesForm', () => {
         locale='en_US'
       />,
       {
-        theme: true,
+        all: true,
       }
     );
     const inputCode = (await screen.findByLabelText(
