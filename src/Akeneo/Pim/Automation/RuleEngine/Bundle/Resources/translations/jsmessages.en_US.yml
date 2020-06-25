@@ -136,6 +136,8 @@ pimee_catalog_rule:
                     attribute_label: Attribute
                 clear_categories:
                     title: CLEAR Categories
+                clear_groups:
+                    title: CLEAR Groups
                 delete:
                     label: Remove action
                     description: Are you sure you want to remove this action?
@@ -173,6 +175,7 @@ pimee_catalog_rule:
         helper:
             add_to_category: To add your product selection to one or more categories, please start by selecting our category trees and then, your categories.
             clear_categories: All categories of selected products will be cleared.
+            clear_groups: All groups of selected attributes will be cleared.
             product_selection: "You must define your product selection in order to create your rule. If you don't know how, "
             product_selection_doc_link: take a look at this article.
         legend:

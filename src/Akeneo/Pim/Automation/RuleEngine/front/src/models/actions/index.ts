@@ -4,6 +4,7 @@ export * from './CalculateAction';
 export * from './ClearAction';
 export * from './ClearAttributeAction';
 export * from './ClearCategoriesAction';
+export * from './ClearGroupsAction';
 export * from './ConcatenateAction';
 export * from './CopyAction';
 export * from './RemoveAction';

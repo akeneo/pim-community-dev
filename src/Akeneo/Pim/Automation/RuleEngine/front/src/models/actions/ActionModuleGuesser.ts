@@ -15,6 +15,7 @@ import { getClearAttributeActionModule } from './ClearAttributeAction';
 import { getAddCategoriesModule } from './AddCategoriesAction';
 import { getSetCategoriesModule } from './SetCategoriesAction';
 import { getClearCategoriesActionModule } from './ClearCategoriesAction';
+import { getClearGroupsActionModule } from './ClearGroupsAction';
 
 export type ActionModuleGuesser = (
   json: any,
@@ -32,6 +33,7 @@ const getActionModule: (
     getSetFamilyActionModule,
     getClearAttributeActionModule,
     getClearCategoriesActionModule,
+    getClearGroupsActionModule,
     getAddCategoriesModule,
     getSetCategoriesModule,
     // Fallbacks
