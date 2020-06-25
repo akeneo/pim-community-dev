@@ -113,7 +113,7 @@ class QuantifiedAssociations
             }
         }
 
-        return $result;
+        return array_unique($result);
     }
 
     public function getQuantifiedAssociationsProductModelCodes(): array
@@ -126,7 +126,7 @@ class QuantifiedAssociations
             }
         }
 
-        return $result;
+        return array_unique($result);
     }
 
     public function merge(QuantifiedAssociations $quantifiedAssociations): void

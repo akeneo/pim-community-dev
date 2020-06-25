@@ -164,6 +164,24 @@ final class ConnectorProductModel
         return !empty($associatedProductModels) ? array_unique(array_merge(...$associatedProductModels)) : [];
     }
 
+    public function associatedProductWithQuantityIdentifiers()
+    {
+        $associatedWithQuantityProducts = array_map(function ($quantifiedAssociations) {
+            return array_column($quantifiedAssociations['products'], 'identifier');
+        }, array_values($this->quantifiedAssociations));
+
+        return !empty($associatedWithQuantityProducts) ? array_unique(array_merge(...$associatedWithQuantityProducts)) : [];
+    }
+
+    public function associatedProductModelWithQuantityCodes()
+    {
+        $associatedWithQuantityProductModels = array_map(function ($quantifiedAssociations) {
+            return array_column($quantifiedAssociations['product_models'], 'identifier');
+        }, array_values($this->quantifiedAssociations));
+
+        return !empty($associatedWithQuantityProductModels) ? array_unique(array_merge(...$associatedWithQuantityProductModels)) : [];
+    }
+
     public function filterByCategoryCodes(array $categoryCodesToKeep): ConnectorProductModel
     {
         return new self(
@@ -267,6 +285,69 @@ final class ConnectorProductModel
             $this->metadata,
             $filteredAssociations,
             $this->quantifiedAssociations,
+            $this->categoryCodes,
+            $this->values
+        );
+    }
+
+
+    public function filterAssociatedWithQuantityProductModelsByProductModelCodes(array $productModelCodesToFilter): ConnectorProductModel
+    {
+        $filteredQuantifiedAssociations = [];
+        foreach ($this->quantifiedAssociations as $associationType => $quantifiedAssociation) {
+            $filteredProductModelQuantifiedAssociations = array_filter(
+                $quantifiedAssociation['product_models'],
+                function($quantifiedLink) use ($productModelCodesToFilter) {
+                    return in_array($quantifiedLink['identifier'], $productModelCodesToFilter);
+                }
+            );
+
+            $filteredQuantifiedAssociations[$associationType]['products'] = $quantifiedAssociation['products'];
+            $filteredQuantifiedAssociations[$associationType]['product_models'] = array_values($filteredProductModelQuantifiedAssociations);
+        }
+
+        return new self(
+            $this->id,
+            $this->code,
+            $this->createdDate,
+            $this->updatedDate,
+            $this->parentCode,
+            $this->familyCode,
+            $this->familyVariantCode,
+            $this->metadata,
+            $this->associations,
+            $filteredQuantifiedAssociations,
+            $this->categoryCodes,
+            $this->values
+        );
+    }
+
+    public function filterAssociatedWithQuantityProductsByProductIdentifiers(array $productIdentifiersToFilter): ConnectorProductModel
+    {
+        $filteredQuantifiedAssociations = [];
+        foreach ($this->quantifiedAssociations as $associationType => $quantifiedAssociation) {
+            $filteredProductQuantifiedAssociations = array_filter(
+                $quantifiedAssociation['products'],
+                function($quantifiedLink) use ($productIdentifiersToFilter) {
+                    return in_array($quantifiedLink['identifier'], $productIdentifiersToFilter);
+                }
+            );
+
+            $filteredQuantifiedAssociations[$associationType]['products'] = array_values($filteredProductQuantifiedAssociations);
+            $filteredQuantifiedAssociations[$associationType]['product_models'] = $quantifiedAssociation['product_models'];
+        }
+
+        return new self(
+            $this->id,
+            $this->code,
+            $this->createdDate,
+            $this->updatedDate,
+            $this->parentCode,
+            $this->familyCode,
+            $this->familyVariantCode,
+            $this->metadata,
+            $this->associations,
+            $filteredQuantifiedAssociations,
             $this->categoryCodes,
             $this->values
         );
