@@ -1,10 +1,10 @@
-import { ProductField } from './ProductField';
 import { ActionModuleGuesser } from './ActionModuleGuesser';
 import { ClearAssociationsActionLine } from '../../pages/EditRules/components/actions/ClearAssociationsActionLine';
 
 export type ClearAssociationsAction = {
   type: 'clear';
-} & ProductField;
+  field: 'associations';
+};
 
 export const getClearAssociationsActionModule: ActionModuleGuesser = async json => {
   if (json.type !== 'clear') {
@@ -22,7 +22,5 @@ export const createClearAssociationsAction: () => ClearAssociationsAction = () =
   return {
     type: 'clear',
     field: 'associations',
-    locale: null,
-    scope: null,
   };
 };

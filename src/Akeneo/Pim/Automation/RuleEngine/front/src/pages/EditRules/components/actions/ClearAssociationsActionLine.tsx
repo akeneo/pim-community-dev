@@ -14,13 +14,8 @@ const ClearAssociationsActionLine: React.FC<Props> = ({
   action,
   handleDelete,
 }) => {
-  const values: any = {
-    type: 'clear',
-    field: action.field,
-  };
-
   const translate = useTranslate();
-  useRegisterConst(`content.actions[${lineNumber}]`, values);
+  useRegisterConst(`content.actions[${lineNumber}]`, action);
 
   return (
     <ActionTemplate
@@ -29,7 +24,8 @@ const ClearAssociationsActionLine: React.FC<Props> = ({
       )}
       helper={translate('pimee_catalog_rule.form.helper.clear_attributes')}
       legend='This feature is under development. Please use the import to manage your rules.'
-      handleDelete={handleDelete}></ActionTemplate>
+      handleDelete={handleDelete}
+    />
   );
 };
 
