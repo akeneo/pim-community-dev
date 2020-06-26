@@ -66,6 +66,15 @@ extensions:
             title: pim_common.history
             tabCode: pim-job-instance-history
 
+    pim-job-instance-shared-catalog-edit-recipients:
+        module: akeneosharedcatalog/job/tab/recipients
+        parent: pim-job-instance-shared-catalog-edit-tabs
+        targetZone: container
+        position: 135
+        config:
+            title: pim_common.recipients
+            tabCode: pim-job-instance-recipient
+
     pim-job-instance-shared-catalog-edit-properties-code:
         module: pim/job/common/edit/field/text
         parent: pim-job-instance-shared-catalog-edit-properties

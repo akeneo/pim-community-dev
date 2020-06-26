@@ -1,0 +1,82 @@
+'use strict';
+
+define([
+    'underscore',
+    'pim/form',
+    'oro/translator',
+    'react',
+    'react-dom',
+    'akeneosharedcatalog/job/form/recipients'
+  ],
+  function (
+    _,
+    BaseForm,
+    __,
+    React,
+    ReactDOM,
+    {Recipients}
+  ) {
+    return BaseForm.extend({
+      className: 'tabbable recipients',
+      validationErrors: [],
+
+      initialize: function (meta) {
+        this.config = _.extend({}, meta.config);
+
+        return BaseForm.prototype.initialize.call(this, arguments);
+      },
+
+      configure: function () {
+        this.trigger('tab:register', {
+          code: this.config.tabCode ? this.config.tabCode : this.code,
+          label: __(this.config.title)
+        });
+
+        this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.onValidationError.bind(this));
+
+        return BaseForm.prototype.configure.apply(this, arguments);
+      },
+
+      render: function () {
+        ReactDOM.unmountComponentAtNode(this.el);
+        this.$el.empty();
+
+        const Component = React.createElement(Recipients, {
+          recipients: this.getFormData().configuration.recipients ? this.getFormData().configuration.recipients : [],
+          validationErrors: this.validationErrors,
+          onRecipientsChange: (recipients) => {
+            const configuration = {...this.getFormData().configuration, recipients};
+            const updatedData = {...this.getFormData(), configuration};
+
+            this.setData(updatedData);
+            ReactDOM.unmountComponentAtNode(this.el);
+            this.render();
+          }
+        });
+
+        ReactDOM.render(Component, this.el);
+
+        return this;
+      },
+
+      onValidationError: function onValidationError(event) {
+        console.log(event);
+        this.validationErrors = event.response.configuration.recipients || [];
+        this.render();
+        // console.log(event);
+        // this.validationErrors = event.response;
+        //
+        // var globalErrors = _.where(this.validationErrors.values, {
+        //   global: true
+        // }); // Global errors with an empty property path
+        //
+        //
+        // _.each(globalErrors, function (error) {
+        //   messenger.notify('error', error.message);
+        // });
+        //
+        // this.getRoot().trigger('pim_enrich:form:entity:validation_error', event);
+      },
+    });
+  }
+);
