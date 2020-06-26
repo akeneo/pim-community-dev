@@ -60,22 +60,8 @@ define([
       },
 
       onValidationError: function onValidationError(event) {
-        console.log(event);
         this.validationErrors = event.response.configuration.recipients || [];
         this.render();
-        // console.log(event);
-        // this.validationErrors = event.response;
-        //
-        // var globalErrors = _.where(this.validationErrors.values, {
-        //   global: true
-        // }); // Global errors with an empty property path
-        //
-        //
-        // _.each(globalErrors, function (error) {
-        //   messenger.notify('error', error.message);
-        // });
-        //
-        // this.getRoot().trigger('pim_enrich:form:entity:validation_error', event);
       },
     });
   }
