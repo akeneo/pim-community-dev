@@ -56,7 +56,6 @@
         "doctrine/doctrine-fixtures-bundle": "2.3.0",
         "doctrine/doctrine-migrations-bundle": "1.2.1",
         "doctrine/event-manager": "1.0.0",
-        "doctrine/instantiator": "1.1.0",
         "doctrine/migrations": "1.5.0",
         "doctrine/orm": "2.6.3",
         "doctrine/persistence": "1.1.0",
