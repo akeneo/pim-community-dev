@@ -217,6 +217,39 @@ class QuantifiedAssociations
         return $result;
     }
 
+    public function filterProductIdentifiers(array $grantedProductIdentifiers): QuantifiedAssociations
+    {
+        $filteredQuantifiedAssociations = [];
+        foreach ($this->quantifiedAssociations as $associationTypeCode => $quantifiedAssociation) {
+            $filteredQuantifiedAssociations[$associationTypeCode]['product_models'] = $quantifiedAssociation['product_models'];
+            $filteredQuantifiedAssociations[$associationTypeCode]['products'] = array_filter(
+                $quantifiedAssociation['products'],
+                function (QuantifiedLink $quantifiedLink) use ($grantedProductIdentifiers) {
+                    return in_array($quantifiedLink->identifier(), $grantedProductIdentifiers);
+                }
+            );
+        }
+
+        return new self($filteredQuantifiedAssociations);
+    }
+
+
+    public function filterProductModelCodes(array $grantedProductModelCodes): QuantifiedAssociations
+    {
+        $filteredQuantifiedAssociations = [];
+        foreach ($this->quantifiedAssociations as $associationTypeCode => $quantifiedAssociation) {
+            $filteredQuantifiedAssociations[$associationTypeCode]['products'] = $quantifiedAssociation['products'];
+            $filteredQuantifiedAssociations[$associationTypeCode]['product_models'] = array_filter(
+                $quantifiedAssociation['product_models'],
+                function (QuantifiedLink $quantifiedLink) use ($grantedProductModelCodes) {
+                    return in_array($quantifiedLink->identifier(), $grantedProductModelCodes);
+                }
+            );
+        }
+
+        return new self($filteredQuantifiedAssociations);
+    }
+
     /**
      * Since we are using an unindexed array for the quantified associations,
      * we need to find if there is a row with the same identifier as the one we have.
