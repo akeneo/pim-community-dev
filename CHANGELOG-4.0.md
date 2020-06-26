@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9319: Fix date timezone for a correct display of the dates in the Connection Dashboard
+
 # 4.0.35 (2020-06-22)
 
 ## Bug fixes

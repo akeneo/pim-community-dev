@@ -58,17 +58,18 @@ export const EventChart: FC<Props> = ({title, eventType, theme}: Props) => {
                     weekday: 'long',
                     month: 'short',
                     day: 'numeric',
+                    timeZone: 'UTC',
                 }).format(new Date(date));
 
-                return {
-                    x: index,
-                    y: value,
-                    xLabel:
-                        index + 1 !== numberOfData
-                            ? xLabel
-                            : translate('akeneo_connectivity.connection.dashboard.charts.legend.today'),
-                    yLabel: 0 === index ? '' : formatNumber(value),
-                };
+                    return {
+                        x: index,
+                        y: value,
+                        xLabel:
+                            index + 1 !== numberOfData
+                                ? xLabel
+                                : translate('akeneo_connectivity.connection.dashboard.charts.legend.today'),
+                        yLabel: 0 === index ? '' : formatNumber(value),
+                    };
             }
         );
 
