@@ -3,6 +3,7 @@ import TableCell from '../../../common/components/Table/TableCell';
 import {ClockIcon, DateIcon} from '../../../common/icons';
 import styled from '../../../common/styled-with-theme';
 import {useDateFormatter} from '../../../shared/formatter/use-date-formatter';
+import {css} from 'styled-components';
 
 type Props = {
     timestamp: number;
@@ -46,8 +47,17 @@ const ErrorDateTimeCell: FC<Props> = ({timestamp}) => {
     );
 };
 
-const Container = styled(TableCell)`
-    color: ${({theme}) => theme.color.grey140};
+const Container = styled.td<{collapsing?: boolean}>`
+    border-bottom: 1px solid ${({theme}) => theme.color.grey60};
+    color: ${({theme}) => theme.color.grey120};
+    padding: 15px 20px;
+
+    ${({collapsing}) =>
+        collapsing &&
+        css`
+            width: 1px;
+            white-space: nowrap;
+        `}
 `;
 
 const DateTimeRow = styled.div`
