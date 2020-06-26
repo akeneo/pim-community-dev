@@ -3,7 +3,9 @@
 # 4.0.35 (2020-06-22)
 
 ## Bug fixes
+
 - PIM-9303: Fix project recalculate
+- PIM-9302: Fix ref entity multiple option attribute view crashing
 
 # 4.0.34 (2020-06-17)
 
