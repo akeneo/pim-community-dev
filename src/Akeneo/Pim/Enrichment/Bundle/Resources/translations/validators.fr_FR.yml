@@ -16,7 +16,7 @@ Option code may contain only letters (at least one), numbers and underscores: Le
 This value should not be a decimal.: Cette valeur ne doit pas être un nombre décimal.
 "The %attribute% attribute requires a non-decimal value, and %value% is not a valid value.": L'attribut %attribute% requiert un nombre entier et la valeur %value% soumise ne l'est pas.
 'The file extension is not allowed (allowed extensions: %extensions%).': 'L''extension du fichier n''est pas autorisée (les extensions autorisées sont : %extensions%).'
-"The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.": L’attribut {{ attribute_code }} ne peut avoir la même valeur qu’une seule fois. La valeur {{ value }} est déjà enregistrée pour un autre produit.
+"The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.": L'attribut {{ attribute_code }} ne peut avoir la même valeur qu'une seule fois. La valeur {{ value }} est déjà enregistrée pour un autre produit.
 The same identifier is already set on another product: Le même identifiant est déjà défini sur un autre produit
 regex.comma_or_semicolon_or_surrounding_space.message: Ce champ ne doit pas contenir de virgule ou de point-virgule ni débuter/finir par un espace.
 file.extensions.message: 'L''extension du fichier n''est pas autorisée (les extensions autorisées sont : %extensions%).'
