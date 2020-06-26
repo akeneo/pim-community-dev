@@ -233,7 +233,6 @@ class QuantifiedAssociations
         return new self($filteredQuantifiedAssociations);
     }
 
-
     public function filterProductModelCodes(array $grantedProductModelCodes): QuantifiedAssociations
     {
         $filteredQuantifiedAssociations = [];

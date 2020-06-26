@@ -304,6 +304,98 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
             );
     }
 
+    public function it_filter_by_product_identifiers()
+    {
+        $this->beConstructedThrough(
+            'createFromNormalized',
+            [
+                [
+                    'PACK' => [
+                        'products' => [
+                            ['identifier' => 'A', 'quantity' => 2],
+                            ['identifier' => 'B', 'quantity' => 3],
+                            ['identifier' => 'C', 'quantity' => 4],
+                        ],
+                        'product_models' => [
+                            ['identifier' => 'A', 'quantity' => 2],
+                            ['identifier' => 'B', 'quantity' => 3],
+                        ],
+                    ],
+                    'PRODUCTSET' => [
+                        'products' => [
+                            ['identifier' => 'B', 'quantity' => 3],
+                        ],
+                        'product_models' => [],
+                    ],
+                ],
+            ]
+        );
+
+        $this->filterProductIdentifiers(['A'])->normalize()->shouldReturn([
+            'PACK' => [
+                'products' => [
+                    ['identifier' => 'A', 'quantity' => 2],
+                ],
+                'product_models' => [
+                    ['identifier' => 'A', 'quantity' => 2],
+                    ['identifier' => 'B', 'quantity' => 3],
+                ],
+            ],
+            'PRODUCTSET' => [
+                'products' => [],
+                'product_models' => [],
+            ],
+        ]);
+    }
+
+    public function it_filter_by_product_model_codes()
+    {
+        $this->beConstructedThrough(
+            'createFromNormalized',
+            [
+                [
+                    'PACK' => [
+                        'products' => [
+                            ['identifier' => 'A', 'quantity' => 2],
+                            ['identifier' => 'B', 'quantity' => 3],
+                        ],
+                        'product_models' => [
+                            ['identifier' => 'A', 'quantity' => 2],
+                            ['identifier' => 'B', 'quantity' => 3],
+                            ['identifier' => 'C', 'quantity' => 4],
+                        ],
+                    ],
+                    'PRODUCTSET' => [
+                        'products' => [
+                            ['identifier' => 'B', 'quantity' => 3],
+                        ],
+                        'product_models' => [
+                            ['identifier' => 'B', 'quantity' => 5],
+                        ],
+                    ],
+                ],
+            ]
+        );
+
+        $this->filterProductModelCodes(['A'])->normalize()->shouldReturn([
+            'PACK' => [
+                'products' => [
+                    ['identifier' => 'A', 'quantity' => 2],
+                    ['identifier' => 'B', 'quantity' => 3],
+                ],
+                'product_models' => [
+                    ['identifier' => 'A', 'quantity' => 2],
+                ],
+            ],
+            'PRODUCTSET' => [
+                'products' => [
+                    ['identifier' => 'B', 'quantity' => 3],
+                ],
+                'product_models' => [],
+            ],
+        ]);
+    }
+
     public function it_merge_quantified_associations_and_overwrite_quantities_from_duplicated_identifiers(
         QuantifiedAssociations $quantifiedAssociationsToMerge
     ) {
