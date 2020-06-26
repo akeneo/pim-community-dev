@@ -31,6 +31,7 @@ lint-back:
 .PHONY: lint-front
 lint-front: franklin-insights-lint-front
 	$(YARN_RUN) lint
+	$(YARN_RUN) run --cwd=vendor/akeneo/pim-community-dev/ lint
 	$(MAKE) rule-engine-lint-front
 	$(MAKE) rule-engine-types-check-front
 	$(MAKE) rule-engine-prettier-check-front
