@@ -1,9 +1,8 @@
 import React, {FC} from 'react';
-import TableCell from '../../../common/components/Table/TableCell';
+import {css} from 'styled-components';
 import {ClockIcon, DateIcon} from '../../../common/icons';
 import styled from '../../../common/styled-with-theme';
 import {useDateFormatter} from '../../../shared/formatter/use-date-formatter';
-import {css} from 'styled-components';
 
 type Props = {
     timestamp: number;
