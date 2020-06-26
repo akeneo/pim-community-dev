@@ -91,6 +91,8 @@ class RecordDetailsHydratorSpec extends ObjectBehavior
                 ]),
                 'attribute_as_label'          => 'label_game_fingerprint',
                 'attribute_as_image'          => 'main_image_game_fingerprint',
+                'created_at'                  => '2020-06-23T09:24:03-07:00',
+                'updated_at'                  => '2020-06-23T09:30:03-07:00',
             ],
             [
                 'label_game_fingerprint_fr_FR' => [
@@ -118,6 +120,8 @@ class RecordDetailsHydratorSpec extends ObjectBehavior
                 'fr_FR' => 'MMORPG Blizzard',
                 'en_US' => 'Blizzard\'s MMORPG',
             ],
+            'created_at'                  => '2020-06-23T09:24:03-07:00',
+            'updated_at'                  => '2020-06-23T09:30:03-07:00',
             'image'                       => null,
             'values'                      => [
                 [
@@ -232,6 +236,8 @@ class RecordDetailsHydratorSpec extends ObjectBehavior
                 'value_collection'            => json_encode($rawValues),
                 'attribute_as_label'          => 'another_attribute_game_fingerprint',
                 'attribute_as_image'          => 'another_game_fingerprint',
+                'created_at'                  => '2020-06-23T09:24:03-07:00',
+                'updated_at'                  => '2020-06-23T09:30:03-07:00',
             ],
             $emptyValues,
             $valueKeys,

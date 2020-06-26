@@ -31,6 +31,7 @@ use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordHydratorInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -107,9 +108,13 @@ SQL;
                 'code' => (string) $record->getCode(),
                 'reference_entity_identifier' => (string) $record->getReferenceEntityIdentifier(),
                 'value_collection' => $valueCollection,
+                'created_at' => $record->getCreatedAt(),
+                'updated_at' => $record->getUpdatedAt(),
             ],
             [
                 'value_collection' => Type::JSON_ARRAY,
+                'created_at' => Types::DATETIME_IMMUTABLE,
+                'updated_at' => Types::DATETIME_IMMUTABLE,
             ]
         );
         if ($affectedRows > 1) {
@@ -137,7 +142,7 @@ SQL;
 
         $update = <<<SQL
         UPDATE akeneo_reference_entity_record
-        SET value_collection = :value_collection
+        SET value_collection = :value_collection, updated_at = :updated_at
         WHERE identifier = :identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
@@ -145,9 +150,11 @@ SQL;
             [
                 'identifier' => $record->getIdentifier(),
                 'value_collection' => $valueCollection,
+                'updated_at' => $record->getUpdatedAt(),
             ],
             [
                 'value_collection' => Type::JSON_ARRAY,
+                'updated_at' => Types::DATETIME_IMMUTABLE
             ]
         );
 
@@ -172,7 +179,7 @@ SQL;
         RecordCode $code
     ): Record {
         $fetch = <<<SQL
-        SELECT identifier, code, reference_entity_identifier, value_collection
+        SELECT identifier, code, reference_entity_identifier, value_collection, created_at, updated_at
         FROM akeneo_reference_entity_record
         WHERE code = :code AND reference_entity_identifier = :reference_entity_identifier;
 SQL;
@@ -195,7 +202,15 @@ SQL;
     public function getByIdentifier(RecordIdentifier $identifier): Record
     {
         $fetch = <<<SQL
-        SELECT record.identifier, record.code, record.reference_entity_identifier, record.value_collection, reference.attribute_as_label, reference.attribute_as_image
+        SELECT 
+            record.identifier,
+            record.code,
+            record.reference_entity_identifier,
+            record.value_collection,
+            reference.attribute_as_label,
+            reference.attribute_as_image,
+            created_at,
+            updated_at
         FROM akeneo_reference_entity_record AS record
         INNER JOIN akeneo_reference_entity_reference_entity AS reference
             ON reference.identifier = record.reference_entity_identifier

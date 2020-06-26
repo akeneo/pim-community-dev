@@ -290,6 +290,8 @@ class ReferenceEntityValueStringifierSpec extends ObjectBehavior
             ReferenceEntityIdentifier::fromString($refEntityIdentifier),
             RecordCode::fromString($recordCode),
             LabelCollection::fromArray($labels),
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, '2020-06-23T09:24:03-07:00'),
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, '2020-06-23T09:30:03-07:00'),
             Image::createEmpty(),
             [],
             true

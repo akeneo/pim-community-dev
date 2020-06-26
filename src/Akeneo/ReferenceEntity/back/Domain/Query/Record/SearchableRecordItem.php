@@ -15,13 +15,16 @@ class SearchableRecordItem
 
     /** @var string */
     public $referenceEntityIdentifier;
-    
+
     /** @var string */
     public $code;
 
     /** @var array */
     public $labels;
-    
+
     /** @var array */
     public $values;
+
+    /** @var \DateTimeImmutable */
+    public $updatedAt;
 }

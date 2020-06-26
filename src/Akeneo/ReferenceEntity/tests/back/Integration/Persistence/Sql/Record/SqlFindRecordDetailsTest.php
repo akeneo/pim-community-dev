@@ -174,6 +174,8 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
             $referenceEntityIdentifier,
             $recordCode,
             LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']),
+            new \DateTimeImmutable(),
+            new \DateTimeImmutable(),
             Image::fromFileInfo($imageInfo),
             $expectedValues,
             true
@@ -275,8 +277,16 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
         );
     }
 
-    private function assertRecordDetails(RecordDetails $expected, RecordDetails $actual)
+    private function assertRecordDetails(RecordDetails $expected, RecordDetails $actual): void
     {
-        $this->assertEqualsCanonicalizing($expected->normalize(), $actual->normalize());
+        $normalizeExpectedValues = $expected->normalize();
+        $normalizeActualValues = $actual->normalize();
+        $this->assertEquals($normalizeExpectedValues['identifier'], $normalizeActualValues['identifier']);
+        $this->assertEquals($normalizeExpectedValues['reference_entity_identifier'], $normalizeActualValues['reference_entity_identifier']);
+        $this->assertEquals($normalizeExpectedValues['code'], $normalizeActualValues['code']);
+        $this->assertEquals($normalizeExpectedValues['labels'], $normalizeActualValues['labels']);
+        $this->assertEquals($normalizeExpectedValues['image'], $normalizeActualValues['image']);
+        $this->assertEqualsCanonicalizing($normalizeExpectedValues['values'], $normalizeActualValues['values']);
+        $this->assertEquals($normalizeExpectedValues['permission'], $normalizeActualValues['permission']);
     }
 }

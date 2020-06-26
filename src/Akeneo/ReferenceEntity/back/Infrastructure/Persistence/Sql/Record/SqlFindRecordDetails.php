@@ -83,6 +83,8 @@ class SqlFindRecordDetails implements FindRecordDetailsInterface
             record.code,
             record.reference_entity_identifier,
             record.value_collection,
+            record.created_at,
+            record.updated_at,
             reference.attribute_as_image,
             reference.attribute_as_label
         FROM akeneo_reference_entity_record AS record

@@ -28,7 +28,7 @@ class SqlFindSearchableRecords implements FindSearchableRecordsInterface
     public function byRecordIdentifier(RecordIdentifier $recordIdentifier): ?SearchableRecordItem
     {
         $sqlQuery = <<<SQL
-        SELECT rec.identifier, rec.reference_entity_identifier, rec.code, rec.value_collection, ref.attribute_as_label
+        SELECT rec.identifier, rec.reference_entity_identifier, rec.code, rec.value_collection, ref.attribute_as_label, rec.updated_at
         FROM akeneo_reference_entity_record rec
         INNER JOIN akeneo_reference_entity_reference_entity ref ON ref.identifier = rec.reference_entity_identifier
         WHERE rec.identifier = :record_identifier;
@@ -41,6 +41,7 @@ SQL;
             $result['identifier'],
             $result['reference_entity_identifier'],
             $result['code'],
+            $result['updated_at'],
             ValuesDecoder::decode($result['value_collection']),
             $result['attribute_as_label']
         );
@@ -49,7 +50,7 @@ SQL;
     public function byReferenceEntityIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier): \Iterator
     {
         $sqlQuery = <<<SQL
-        SELECT rec.identifier, rec.reference_entity_identifier, rec.code, rec.value_collection, ref.attribute_as_label
+        SELECT rec.identifier, rec.reference_entity_identifier, rec.code, rec.value_collection, ref.attribute_as_label, rec.updated_at
         FROM akeneo_reference_entity_record rec
         INNER JOIN akeneo_reference_entity_reference_entity ref ON ref.identifier = rec.reference_entity_identifier
         WHERE ref.identifier = :reference_entity_identifier;
@@ -61,6 +62,7 @@ SQL;
                 $result['identifier'],
                 $result['reference_entity_identifier'],
                 $result['code'],
+                $result['updated_at'],
                 ValuesDecoder::decode($result['value_collection']),
                 $result['attribute_as_label']
             );
@@ -71,6 +73,7 @@ SQL;
         string $identifier,
         string $referenceEntityIdentifier,
         string $code,
+        string $updatedAt,
         array $values,
         ?string $attributeAsLabel
     ): SearchableRecordItem {
@@ -81,6 +84,7 @@ SQL;
             ->convertToPHPValue($referenceEntityIdentifier, $platform);
         $code = Type::getType(Type::STRING)->convertToPHPValue($code, $platform);
         $attributeAsLabel = Type::getType(Type::STRING)->convertToPHPValue($attributeAsLabel, $platform);
+        $updatedAt = Type::getType(Type::DATETIME_IMMUTABLE)->convertToPHPValue($updatedAt, $platform);
 
         $recordItem = new SearchableRecordItem();
         $recordItem->identifier = $identifier;
@@ -88,6 +92,7 @@ SQL;
         $recordItem->code = $code;
         $recordItem->labels = $this->getLabels($attributeAsLabel, $values);
         $recordItem->values = $values;
+        $recordItem->updatedAt = $updatedAt;
 
         return $recordItem;
     }

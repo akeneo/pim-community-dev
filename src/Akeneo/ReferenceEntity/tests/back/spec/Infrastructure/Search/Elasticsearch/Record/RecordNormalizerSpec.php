@@ -45,9 +45,12 @@ class RecordNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_searchable_record_by_record_identifier(
         FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
         SqlFindSearchableRecords $findSearchableRecords,
-        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType
+        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
+        \DateTimeImmutable $updatedAt
     ) {
         $recordIdentifier = RecordIdentifier::fromString('stark');
+        $updatedAt->getTimestamp()->willReturn(1589524960);
+
         $stark = new SearchableRecordItem();
         $stark->identifier = 'designer_stark_fingerprint';
         $stark->referenceEntityIdentifier = 'designer';
@@ -61,6 +64,8 @@ class RecordNormalizerSpec extends ObjectBehavior
                 'data' => 'Bio',
             ],
         ];
+        $stark->updatedAt = \DateTimeImmutable::createFromFormat(\DateTimeImmutable::ISO8601, '2020-05-15T10:16:21+0000');
+
         $findSearchableRecords
             ->byRecordIdentifier($recordIdentifier)
             ->willReturn($stark);
@@ -101,7 +106,8 @@ class RecordNormalizerSpec extends ObjectBehavior
                 'description_mobile_en_US' => true,
             ]
         );
-        $normalizedRecord['updated_at']->shouldBeInt();
+
+        $normalizedRecord['updated_at']->shouldBeEqualTo(1589537781);
     }
 
     function it_normalizes_a_searchable_records_by_reference_entity(

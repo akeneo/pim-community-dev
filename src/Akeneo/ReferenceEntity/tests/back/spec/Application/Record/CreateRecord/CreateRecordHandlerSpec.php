@@ -70,27 +70,33 @@ class CreateRecordHandlerSpec extends ObjectBehavior
             Argument::type(RecordCode::class)
         )->willReturn($recordIdentifier);
 
-        $expectedRecord = Record::create(
+        $recordRepository->create(Argument::that(function ($record) use (
             $recordIdentifier,
             $referenceEntityIdentifier,
-            RecordCode::fromString('intel'),
-            ValueCollection::fromValues([
-                Value::create(
-                    $labelAttributeReference->getIdentifier(),
-                    ChannelReference::noReference(),
-                    LocaleReference::createFromNormalized('en_US'),
-                    TextData::createFromNormalize('Intel')
-                ),
-                Value::create(
-                    $labelAttributeReference->getIdentifier(),
-                    ChannelReference::noReference(),
-                    LocaleReference::createFromNormalized('fr_FR'),
-                    TextData::createFromNormalize('Intel')
-                ),
-            ])
-        );
+            $labelAttributeReference
+        ) {
+            $expectedRecord = Record::fromState(
+                $recordIdentifier,
+                $referenceEntityIdentifier,
+                RecordCode::fromString('intel'),
+                ValueCollection::fromValues([
+                    Value::create(
+                        $labelAttributeReference->getIdentifier(),
+                        ChannelReference::noReference(),
+                        LocaleReference::createFromNormalized('en_US'),
+                        TextData::createFromNormalize('Intel')
+                    ),
+                    Value::create(
+                        $labelAttributeReference->getIdentifier(),
+                        ChannelReference::noReference(),
+                        LocaleReference::createFromNormalized('fr_FR'),
+                        TextData::createFromNormalize('Intel')
+                    ),
+                ]),
+                $record->getCreatedAt(),
+                $record->getUpdatedAt(),
+            );
 
-        $recordRepository->create(Argument::that(function ($record) use ($expectedRecord) {
             Assert::eq($expectedRecord, $record);
             return true;
         }))->shouldBeCalled();

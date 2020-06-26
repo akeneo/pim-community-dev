@@ -33,22 +33,32 @@ class Record
     /** @var RecordCode */
     private $code;
 
-    /** @var ReferenceEntity */
+    /** @var ReferenceEntityIdentifier */
     private $referenceEntityIdentifier;
 
     /** @var ValueCollection */
     private $valueCollection;
 
+    /** @var \DateTimeImmutable */
+    private $createdAt;
+
+    /** @var \DateTimeImmutable */
+    private $updatedAt;
+
     private function __construct(
         RecordIdentifier $identifier,
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         RecordCode $code,
-        ValueCollection $valueCollection
+        ValueCollection $valueCollection,
+        \DateTimeImmutable $createdAt,
+        \DateTimeImmutable $updatedAt
     ) {
         $this->identifier = $identifier;
         $this->referenceEntityIdentifier = $referenceEntityIdentifier;
         $this->code = $code;
         $this->valueCollection = $valueCollection;
+        $this->createdAt = $createdAt;
+        $this->updatedAt = $updatedAt;
     }
 
     public static function create(
@@ -57,12 +67,40 @@ class Record
         RecordCode $code,
         ValueCollection $valueCollection
     ): self {
-        return new self($identifier, $referenceEntityIdentifier, $code, $valueCollection);
+        return new self(
+            $identifier,
+            $referenceEntityIdentifier,
+            $code,
+            $valueCollection,
+            new \DateTimeImmutable('now', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('now', new \DateTimeZone('UTC'))
+        );
+    }
+
+    public static function fromState(
+        RecordIdentifier $identifier,
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        RecordCode $code,
+        ValueCollection $valueCollection,
+        \DateTimeImmutable $createdAt,
+        \DateTimeImmutable $updatedAt
+    ) {
+        return new self($identifier, $referenceEntityIdentifier, $code, $valueCollection, $createdAt, $updatedAt);
     }
 
     public function getIdentifier(): RecordIdentifier
     {
         return $this->identifier;
+    }
+
+    public function getCreatedAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt(): \DateTimeImmutable
+    {
+        return $this->updatedAt;
     }
 
     public function getCode(): RecordCode
@@ -88,6 +126,7 @@ class Record
     public function setValue(Value $value): void
     {
         $this->valueCollection = $this->valueCollection->setValue($value);
+        $this->updatedAt = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
     }
 
     public function findValue(ValueKey $valueKey): ?Value

@@ -35,6 +35,10 @@ class RecordDetails
     private const VALUES = 'values';
     private const PERMISSION = 'permission';
     private const EDIT_PERMISSION = 'edit';
+    private const CREATED_AT = 'created_at';
+    private const UPDATED_AT = 'updated_at';
+
+    private const DATE_FORMAT = 'c';
 
     /** @var RecordIdentifier */
     public $identifier;
@@ -47,6 +51,12 @@ class RecordDetails
 
     /** @var LabelCollection */
     public $labels;
+
+    /** @var \DateTimeImmutable */
+    public $createdAt;
+
+    /** @var \DateTimeImmutable */
+    public $updatedAt;
 
     /** @var Image */
     public $image;
@@ -62,6 +72,8 @@ class RecordDetails
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         RecordCode $code,
         LabelCollection $labels,
+        \DateTimeImmutable $createdAt,
+        \DateTimeImmutable $updatedAt,
         Image $image,
         array $values,
         bool $isAllowedToEdit
@@ -70,6 +82,8 @@ class RecordDetails
         $this->referenceEntityIdentifier = $referenceEntityIdentifier;
         $this->code = $code;
         $this->labels = $labels;
+        $this->createdAt = $createdAt;
+        $this->updatedAt = $updatedAt;
         $this->values = $values;
         $this->image = $image;
         $this->isAllowedToEdit = $isAllowedToEdit;
@@ -82,6 +96,8 @@ class RecordDetails
             self::REFERENCE_ENTITY_IDENTIFIER => $this->referenceEntityIdentifier->normalize(),
             self::CODE                        => $this->code->normalize(),
             self::LABELS                      => $this->labels->normalize(),
+            self::CREATED_AT                  => $this->createdAt->format(self::DATE_FORMAT),
+            self::UPDATED_AT                  => $this->updatedAt->format(self::DATE_FORMAT),
             self::IMAGE                       => $this->image->normalize(),
             self::VALUES                      => $this->values,
             self::PERMISSION                  => [

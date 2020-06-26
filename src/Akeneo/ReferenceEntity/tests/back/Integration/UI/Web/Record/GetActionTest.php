@@ -204,6 +204,8 @@ class GetActionTest extends ControllerIntegrationTestCase
             ReferenceEntityIdentifier::fromString('designer'),
             RecordCode::fromString('starck'),
             LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']),
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, '2020-06-23T09:24:03-07:00'),
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, '2020-06-23T09:30:03-07:00'),
             Image::createEmpty(),
             $values,
             true

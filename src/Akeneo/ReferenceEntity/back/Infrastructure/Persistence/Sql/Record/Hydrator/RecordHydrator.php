@@ -22,6 +22,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -53,12 +54,16 @@ class RecordHydrator implements RecordHydratorInterface
         $recordCode = Type::getType(Type::STRING)
             ->convertToPHPValue($row['code'], $this->platform);
         $valueCollection = json_decode($row['value_collection'], true);
+        $createdAt = Type::getType(Types::DATETIME_IMMUTABLE)->convertToPHPValue($row['created_at'], $this->platform);
+        $updatedAt = Type::getType(Types::DATETIME_IMMUTABLE)->convertToPHPValue($row['updated_at'], $this->platform);
 
-        $record = Record::create(
+        $record = Record::fromState(
             RecordIdentifier::fromString($recordIdentifier),
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             RecordCode::fromString($recordCode),
-            ValueCollection::fromValues($this->hydrateValues($valueKeyCollection, $attributes, $valueCollection))
+            ValueCollection::fromValues($this->hydrateValues($valueKeyCollection, $attributes, $valueCollection)),
+            $createdAt,
+            $updatedAt
         );
 
         return $record;

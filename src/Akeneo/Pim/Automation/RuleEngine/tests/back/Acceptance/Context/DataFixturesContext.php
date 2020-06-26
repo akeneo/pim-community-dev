@@ -368,6 +368,8 @@ final class DataFixturesContext implements Context
                     'en_US' => 'us ' . $normalizedRecord['code'],
                     'fr_FR' => 'fr ' . $normalizedRecord['code'],
                 ]),
+                \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, '2020-06-23T09:24:03-07:00'),
+                \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, '2020-06-23T09:30:03-07:00'),
                 Image::createEmpty(),
                 [
                     'label' => [

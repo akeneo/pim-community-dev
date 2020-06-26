@@ -135,11 +135,6 @@ class RecordNormalizer implements RecordNormalizerInterface
         return $result;
     }
 
-    private function now(): int
-    {
-        return (new \DateTime('now', new \DateTimeZone('UTC')))->getTimestamp();
-    }
-
     private function generateFilledValueKeys(SearchableRecordItem $searchableRecordItem): array
     {
         return array_fill_keys(array_keys($searchableRecordItem->values), true);
@@ -158,7 +153,7 @@ class RecordNormalizer implements RecordNormalizerInterface
             self::REFERENCE_ENTITY_CODE => $searchableRecordItem->referenceEntityIdentifier,
             self::RECORD_FULL_TEXT_SEARCH => $fullTextMatrix,
             self::RECORD_CODE_LABEL_SEARCH => $codeLabelMatrix,
-            self::UPDATED_AT => $this->now(),
+            self::UPDATED_AT => $searchableRecordItem->updatedAt->getTimestamp(),
             self::COMPLETE_VALUE_KEYS => $filledValueKeysMatrix,
             self::VALUES_FIELD => $filterableValues
         ];

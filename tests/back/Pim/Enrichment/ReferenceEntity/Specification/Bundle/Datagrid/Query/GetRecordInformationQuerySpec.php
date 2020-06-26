@@ -43,6 +43,8 @@ class GetRecordInformationQuerySpec extends ObjectBehavior
                 ReferenceEntityIdentifier::fromString('designer'),
                 RecordCode::fromString('stark'),
                 LabelCollection::fromArray(['fr_FR' => 'Philippe Stark', 'en_US' => 'Philippe Stark']),
+                \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, '2020-06-23T09:24:03-07:00'),
+                \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, '2020-06-23T09:30:03-07:00'),
                 Image::createEmpty(),
                 [],
                 false

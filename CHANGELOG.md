@@ -16,6 +16,7 @@
 - PIM-9295: Fix error when applying an "Add groups" action to a product model
 - PIM-9309: Update mekras/php-speller dependency to fix Swedish spelling issues
 - PIM-9316: Fix url encoding of media links in asset edit form
+- PIM-9318: Add created_at & updated_at fields in RefEntity record table
 
 ## Improvements
 

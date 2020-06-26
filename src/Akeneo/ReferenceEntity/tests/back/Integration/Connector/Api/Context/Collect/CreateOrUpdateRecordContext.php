@@ -180,7 +180,7 @@ class CreateOrUpdateRecordContext implements Context
             AttributeCode::fromString('label')
         );
 
-        $expectedRecord = Record::create(
+        $expectedRecord = Record::fromState(
             $kartellRecord->getIdentifier(),
             $referenceEntityIdentifier,
             RecordCode::fromString('kartell'),
@@ -209,7 +209,9 @@ class CreateOrUpdateRecordContext implements Context
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('Kartell english description.')
                 ),
-            ])
+            ]),
+            $kartellRecord->getCreatedAt(),
+            $kartellRecord->getUpdatedAt(),
         );
 
         Assert::assertEquals($expectedRecord, $kartellRecord);
@@ -278,7 +280,7 @@ class CreateOrUpdateRecordContext implements Context
             ->setOriginalFilename('kartell.jpg')
             ->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg');
 
-        $expectedKartellRecord = Record::create(
+        $expectedKartellRecord = Record::fromState(
             RecordIdentifier::fromString('brand_kartell_fingerprint'),
             $referenceEntityIdentifier,
             RecordCode::fromString('kartell'),
@@ -319,7 +321,9 @@ class CreateOrUpdateRecordContext implements Context
                     LocaleReference::noReference(),
                     FileData::createFromFileinfo($coverImageInfo)
                 ),
-            ])
+            ]),
+            $kartellRecord->getCreatedAt(),
+            $kartellRecord->getUpdatedAt()
         );
 
         Assert::assertEquals($expectedKartellRecord, $kartellRecord);
@@ -435,7 +439,7 @@ class CreateOrUpdateRecordContext implements Context
             AttributeCode::fromString('label')
         );
 
-        $expectedFatboyRecord = Record::create(
+        $expectedFatboyRecord = Record::fromState(
             $fatboyRecord->getIdentifier(),
             $referenceEntityIdentifier,
             RecordCode::fromString('fatboy'),
@@ -452,7 +456,9 @@ class CreateOrUpdateRecordContext implements Context
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('Fatboy name')
                 )
-            ])
+            ]),
+            $fatboyRecord->getCreatedAt(),
+            $fatboyRecord->getUpdatedAt(),
         );
 
         Assert::assertEquals($expectedFatboyRecord, $fatboyRecord);
@@ -478,7 +484,12 @@ class CreateOrUpdateRecordContext implements Context
             ->setOriginalFilename('kartell.jpg')
             ->setKey('0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg');
 
-        $expectedKartellRecord = Record::create(
+        $kartellRecord = $this->recordRepository->getByReferenceEntityAndCode(
+            ReferenceEntityIdentifier::fromString('brand'),
+            RecordCode::fromString('kartell')
+        );
+
+        $expectedKartellRecord = Record::fromState(
             RecordIdentifier::fromString('brand_kartell_fingerprint'),
             $referenceEntityIdentifier,
             RecordCode::fromString('kartell'),
@@ -513,17 +524,19 @@ class CreateOrUpdateRecordContext implements Context
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('Kartell english description')
                 )
-            ])
-        );
-
-        $kartellRecord = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString('brand'),
-            RecordCode::fromString('kartell')
+            ]),
+            $kartellRecord->getCreatedAt(),
+            $kartellRecord->getUpdatedAt(),
         );
 
         Assert::assertEquals($expectedKartellRecord, $kartellRecord);
 
-        $expectedLexonRecord = Record::create(
+        $lexonRecord = $this->recordRepository->getByReferenceEntityAndCode(
+            ReferenceEntityIdentifier::fromString('brand'),
+            RecordCode::fromString('lexon')
+        );
+
+        $expectedLexonRecord = Record::fromState(
             RecordIdentifier::fromString('brand_lexon_fingerprint'),
             ReferenceEntityIdentifier::fromString('brand'),
             RecordCode::fromString('lexon'),
@@ -540,12 +553,9 @@ class CreateOrUpdateRecordContext implements Context
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('Updated Lexon english name')
                 )
-            ])
-        );
-
-        $lexonRecord = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString('brand'),
-            RecordCode::fromString('lexon')
+            ]),
+            $lexonRecord->getCreatedAt(),
+            $lexonRecord->getUpdatedAt(),
         );
 
         Assert::assertEquals($expectedLexonRecord, $lexonRecord);

@@ -60,6 +60,8 @@ class ReferenceEntityAxisLabelNormalizerSpec extends ObjectBehavior
             ReferenceEntityIdentifier::fromString('designer_id'),
             RecordCode::fromString('starck'),
             LabelCollection::fromArray(['en_US' => 'Philippe Starck']),
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, '2020-06-23T09:24:03-07:00'),
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, '2020-06-23T09:30:03-07:00'),
             Image::createEmpty(),
             [],
             true
@@ -86,6 +88,8 @@ class ReferenceEntityAxisLabelNormalizerSpec extends ObjectBehavior
             ReferenceEntityIdentifier::fromString('designer_id'),
             RecordCode::fromString('starck'),
             LabelCollection::fromArray([]),
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, '2020-06-23T09:24:03-07:00'),
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, '2020-06-23T09:30:03-07:00'),
             Image::createEmpty(),
             [],
             true
