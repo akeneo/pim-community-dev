@@ -51,7 +51,6 @@ pim_enrich:
       permission.title: Permissões
   #Product group
   group:
-    axis.help: 'Os eixos definem os atributos sobre os quais os produtos do grupo devem variar. Os eixos são atributos com opções, não localizáveis e sem âmbito. Eles não podem ser alterados após a criação do grupo variante.'
     type:
       VARIANT: Variante
       X_SELL: Venda Cruzada
@@ -142,11 +141,6 @@ pim_enrich:
     mass_action:
       quick_export:
         launched_flash: A tarefa de exportação de produtos está em execução
-  #Sequential edit operations
-  sequential_edit_action:
-    product:
-      previous: Voltar atrás para "%product%" sem gravar.
-      next: Saltar para "%product%" sem gravar.
   #ACLs
   acl:
     locale:
@@ -272,7 +266,6 @@ attribute group:
   overview: visão geral do grupo de atributos
   create: criar grupo de atributos
   edit: editar grupo de atributos
-  suggest creation: Por favor, selecione um grupo de atributos à esquerda
   or: ou
   create new: Criar um novo grupo de atributo
 category:
@@ -347,7 +340,6 @@ btn:
   to grid: retornar para o grid
   to parent: retornar para o registro pai
   download_pdf: PDF
-  download: transferir
 #Confirmation messages
 confirmation:
   confirm: Confirmação
@@ -385,9 +377,6 @@ flash:
     removed: Grupo de atributos removido com sucesso
     attributes added: Atributos adicionados com sucesso no grupo de atributos
     attribute removed: Atributo removido com sucesso do grupo de atributos
-    not removed attributes: Grupo de atributos não pode ser removido porque contém atributos
-    not removed default: O grupo de atributos padrão não pode ser removido
-    not removed default attributes: O atributo não pode ser removido do grupo de atributos padrão
   category:
     created: Categoria criada com sucesso
     updated: Categoria atualizada com sucesso
@@ -644,11 +633,6 @@ pim_reference_data_multiselect: Seleção múltipla de dados de referência
 #Locales
 Activated: Ativado
 Disable: Desabilitar
-#Sequential edit operations
-pim_enrich.sequential_edit_action:
-  product:
-    previous: Voltar atrás para "%product%" sem gravar.
-    next: Saltar para "%product%" sem gravar.
 #Mass edit operations
 pim_enrich.mass_edit_action:
   limit_exceeded: Por favor, selecione menos de %limit% items para editar
@@ -693,7 +677,6 @@ pim_enrich.mass_edit_action:
     label: Alterar a família
     description: A família dos produtos selecionados será alterada para a família escolhida
     success_flash: A família do(s) produto(s) selecionado(s) foi alterada com êxito
-    no_family: Sem família
   add-to-groups:
     label: Adicionar aos grupos
     description: Selecione os grupos nos quais os produtos selecionados devem ser adicionados
@@ -876,10 +859,6 @@ batch_jobs:
     quick_export.label: Exportação rápida da grade de produtos em CSV
     perform:
       label: Exportação rápida da grade de produtos em CSV
-  xlsx_product_quick_export:
-    quick_export.label: Xlsx exportação rápida de produtos
-    perform:
-      label: Xlsx exportação rápida de produtos
   delete_products_and_product_models:
     delete_products_and_product_models.label: Exclusão em massa de produtos
   change_parent_product:
