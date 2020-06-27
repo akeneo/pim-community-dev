@@ -397,7 +397,6 @@ pim_enrich:
     attribute:
       info:
         deletion_successful: Atributo excluído com sucesso.
-        deletion_failed: O atributo não pode ser excluído.
         update_successful: Atributo atualizado com sucesso.
         update_failed: O atributo não pôde ser atualizado.
         create_successful: Atributo criado com sucesso.
