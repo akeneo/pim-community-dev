@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Component\Validator\Constraints;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
