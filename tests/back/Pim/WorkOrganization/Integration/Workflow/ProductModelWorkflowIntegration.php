@@ -14,46 +14,6 @@ class ProductModelWorkflowIntegration extends ApiTestCase
     /** @var PermissionFixturesLoader */
     private $loader;
 
-    public function testCreateProductModelDraft()
-    {
-        $this->loader->loadProductModelsFixturesForCategoryPermissions();
-
-        $data = [
-            'values' => [
-                'a_localized_and_scopable_text_area' => [
-                    ['data' => 'my RED tshirt', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                ],
-            ]
-        ];
-
-        $productModel = $this->assertProductModelDraft('sweat_edit', $data);
-
-        $this->assertSame(
-            'my pink tshirt',
-            $productModel->getValue('a_localized_and_scopable_text_area', 'en_US', 'ecommerce')->getData()
-        );
-
-        $productModelDraft = $this
-            ->get('pimee_workflow.repository.product_model_draft')
-            ->findUserEntityWithValuesDraft($productModel, 'mary');
-        $this->assertNotNull($productModelDraft);
-
-        $expected = [
-            'values' => [
-                'a_localized_and_scopable_text_area' => [
-                    ['data' => 'my RED tshirt', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                ],
-            ],
-            'review_statuses' => [
-                'a_localized_and_scopable_text_area' => [
-                    ['status' => 'draft', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                ],
-            ]
-        ];
-
-        $this->assertJsonStringEqualsJsonString(json_encode($expected), json_encode($productModelDraft->getChanges()));
-    }
-
     public function testCreateProductModelProposal()
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
