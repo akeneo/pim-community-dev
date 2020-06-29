@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9328: Add "en_GB" code to display the corresponding locale in the UI.
+
 # 4.0.35 (2020-06-22)
 
 ## Bug fixes
