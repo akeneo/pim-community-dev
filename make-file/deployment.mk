@@ -7,6 +7,7 @@ INSTANCE_NAME_PREFIX ?= pimci
 INSTANCE_NAME ?= $(INSTANCE_NAME_PREFIX)-$(IMAGE_TAG)
 PFID ?= srnt-$(INSTANCE_NAME)
 CI ?= false
+ACTIVATE_MONITORING ?= true
 
 TEST_AUTO ?= false
 ENV_NAME ?= dev
@@ -180,6 +181,13 @@ endif
 
 .PHONY: create-pim-main-tf
 create-pim-main-tf: $(INSTANCE_DIR)
+ifeq ($(ACTIVATE_MONITORING),true)
+	cat $(PWD)/deployments/config/serenity_instance.tpl.tf $(PWD)/deployments/config/serenity_instance_monitoring.tpl.tf > $(INSTANCE_DIR)/serenity_instance.tpl.tf.tmp
+else
+	cat $(PWD)/deployments/config/serenity_instance.tpl.tf > $(INSTANCE_DIR)/serenity_instance.tpl.tf.tmp
+	@echo "-- WARNING: MONITORING is not activated on this PR. If your PR impact monitoring, please activate it."
+	@echo "To activate it show 'deactivate_monitoring' and 'ACTIVATE_MONITORING' on '.CircleCi/config.yml'"
+endif
 	CLUSTER_DNS_NAME=$(CLUSTER_DNS_NAME) \
 	GOOGLE_CLUSTER_ZONE=$(GOOGLE_CLUSTER_ZONE) \
 	GOOGLE_MANAGED_ZONE_DNS=$(GOOGLE_MANAGED_ZONE_DNS) \
@@ -189,7 +197,8 @@ create-pim-main-tf: $(INSTANCE_DIR)
 	INSTANCE_NAME=$(INSTANCE_NAME) \
 	PFID=$(PFID) \
 	PIM_SRC_DIR=$(PIM_SRC_DIR) \
-	envsubst < $(PWD)/deployments/config/serenity_instance.tpl.tf > $(INSTANCE_DIR)/main.tf
+	envsubst < $(INSTANCE_DIR)/serenity_instance.tpl.tf.tmp > $(INSTANCE_DIR)/main.tf
+	rm -rf $(INSTANCE_DIR)/serenity_instance.tpl.tf.tmp
 
 .PHONY: test-prod
 test-prod:

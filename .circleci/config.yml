@@ -20,6 +20,9 @@ aliases:
             username: _json_key  # default username when using a JSON key file to authenticate
             password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
 
+  - &deactivate_monitoring
+      ACTIVATE_MONITORING: false
+
 jobs:
   checkout:
     docker:
@@ -412,6 +415,7 @@ jobs:
   deploy_pr_environment:
       environment:
           <<: *envVarsDeployDev
+          <<: *deactivate_monitoring
       <<: *dockerCloudDeployer
       steps:
           - attach_workspace:
@@ -420,7 +424,7 @@ jobs:
           - run:
                 name: Deploy PR environment
                 command: |
-                    ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=${CIRCLE_SHA1} make create-ci-release-files
+                    ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=${CIRCLE_SHA1} ACTIVATE_MONITORING=${ACTIVATE_MONITORING} make create-ci-release-files
                     ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=${CIRCLE_SHA1} make deploy
           - run:
               name: Prepare infrastructure artifacts
