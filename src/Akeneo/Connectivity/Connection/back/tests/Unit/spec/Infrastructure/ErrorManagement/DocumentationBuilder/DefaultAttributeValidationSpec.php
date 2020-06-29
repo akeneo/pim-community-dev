@@ -9,6 +9,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\DocumentationB
 use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\DocumentationBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsNumeric;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Range;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Regex;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueValue;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -36,7 +37,8 @@ class DefaultAttributeValidationSpec extends ObjectBehavior
             Range::INVALID_CHARACTERS_ERROR,
             Range::TOO_HIGH_ERROR,
             Range::TOO_LOW_ERROR,
-            UniqueValue::UNIQUE_VALUE
+            Regex::REGEX_FAILED_ERROR,
+            UniqueValue::UNIQUE_VALUE,
         ];
 
         foreach ($constraintCodes as $contraintCode) {
