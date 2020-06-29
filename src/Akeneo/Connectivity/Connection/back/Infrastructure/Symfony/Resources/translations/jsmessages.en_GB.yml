@@ -199,9 +199,6 @@ akeneo_connectivity.connection:
       search_filter:
         placeholder: Search in error messages
         result_count: '{0} No result |[1,Inf] {{ count }} results'
-      error_list:
-        date_time_column: Day and time
-        content_column: Error message
       no_error:
         title: Awesome! No error found!
       not_auditable:
