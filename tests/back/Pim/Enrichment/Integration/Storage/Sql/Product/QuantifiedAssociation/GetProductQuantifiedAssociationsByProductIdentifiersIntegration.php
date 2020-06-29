@@ -44,7 +44,7 @@ class GetProductQuantifiedAssociationsByProductIdentifiersIntegration extends Ab
     /**
      * @test
      */
-    public function itReturnQuantifiedAssociationWithProductsOnSingleProductWithParentQuantAssociationsOnProducts()
+    public function testItReturnQuantifiedAssociationWithProductsOnSingleProduct()
     {
         $this->getEntityBuilder()->createProduct('productA', 'aFamily', []);
         $this->getEntityBuilder()->createProduct('productB', 'aFamily', []);

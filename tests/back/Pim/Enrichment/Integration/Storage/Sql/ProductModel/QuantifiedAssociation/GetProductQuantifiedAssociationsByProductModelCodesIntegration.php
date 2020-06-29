@@ -42,7 +42,7 @@ class GetProductQuantifiedAssociationsByProductModelCodesIntegration extends Abs
     /**
      * @test
      */
-    public function testItReturnQuantifiedAssociationWithProductsOnSingleProductModel()
+    public function itReturnQuantifiedAssociationWithProductsOnSingleProductModel()
     {
         $this->getEntityBuilder()->createProduct('productA', 'aFamily', []);
         $this->getEntityBuilder()->createProduct('productB', 'aFamily', []);
@@ -75,22 +75,21 @@ class GetProductQuantifiedAssociationsByProductModelCodesIntegration extends Abs
     /**
      * @test
      */
-    public function testItReturnQuantifiedAssociationWithProductsOnMultipleProductModels()
+    public function itReturnQuantifiedAssociationWithProductsOnMultipleProductModels()
     {
         $this->getEntityBuilder()->createProduct('productA', 'aFamily', []);
         $this->getEntityBuilder()->createProduct('productB', 'aFamily', []);
-        $this->getEntityBuilder()->createProductModel('productModelA', 'familyVariantWithTwoLevels', null, [
+        $rootProductModel = $this->getEntityBuilder()->createProductModel('productModelA', 'familyVariantWithTwoLevels', null, [
             'quantified_associations' => [
                 'PRODUCT_SET' => [
                     'products' => [
                         ['identifier' => 'productA', 'quantity' => 3],
-                        ['identifier' => 'productB', 'quantity' => 2],
                     ],
                 ],
             ],
         ]);
 
-        $this->getEntityBuilder()->createProductModel('productModelB', 'familyVariantWithTwoLevels', null, [
+        $this->getEntityBuilder()->createProductModel('productModelB', 'familyVariantWithTwoLevels', $rootProductModel, [
             'quantified_associations' => [
                 'PRODUCT_SET' => [
                     'products' => [
@@ -106,7 +105,6 @@ class GetProductQuantifiedAssociationsByProductModelCodesIntegration extends Abs
                 'PRODUCT_SET' => [
                     'products' => [
                         ['identifier' => 'productA', 'quantity' => 3],
-                        ['identifier' => 'productB', 'quantity' => 2],
                     ],
                 ],
             ],
@@ -114,18 +112,19 @@ class GetProductQuantifiedAssociationsByProductModelCodesIntegration extends Abs
                 'PRODUCT_SET' => [
                     'products' => [
                         ['identifier' => 'productB', 'quantity' => 1],
+                        ['identifier' => 'productA', 'quantity' => 3],
                     ],
                 ],
             ],
         ];
 
-        $this->assertSame($expected, $actual);
+        $this->assertEqualsCanonicalizing($expected, $actual);
     }
 
     /**
      * @test
      */
-    public function testItOnlyReturnProductModelsWithQuantifiedAssociation()
+    public function itOnlyReturnProductModelsWithQuantifiedAssociation()
     {
         $this->getEntityBuilder()->createProduct('productA', 'aFamily', []);
         $this->getEntityBuilder()->createProductModel('productModelA', 'familyVariantWithTwoLevels', null, []);
@@ -156,7 +155,7 @@ class GetProductQuantifiedAssociationsByProductModelCodesIntegration extends Abs
     /**
      * @test
      */
-    public function testItDoesNotReturnQuantifiedAssociationsWithProductModel()
+    public function itDoesNotReturnQuantifiedAssociationsWithProductModel()
     {
         $rootProductModel = $this->getEntityBuilder()->createProductModel('root_product_model', 'familyVariantWithTwoLevels', null, []);
         $this->getEntityBuilder()->createProductModel('sub_product_model_1', 'familyVariantWithTwoLevels', $rootProductModel, []);
@@ -193,7 +192,7 @@ class GetProductQuantifiedAssociationsByProductModelCodesIntegration extends Abs
     /**
      * @test
      */
-    public function testItReturnEmptyArrayWhenProductModelsGivenDoesNotHaveQuantifiedAssociationsWithProducts()
+    public function itReturnEmptyArrayWhenProductModelsGivenDoesNotHaveQuantifiedAssociationsWithProducts()
     {
         $this->getEntityBuilder()->createProductModel('productModelA', 'familyVariantWithTwoLevels', null, []);
         $this->getEntityBuilder()->createProductModel('productModelB', 'familyVariantWithTwoLevels', null, [
@@ -214,7 +213,7 @@ class GetProductQuantifiedAssociationsByProductModelCodesIntegration extends Abs
     /**
      * @test
      */
-    public function testItDoesNotReturnQuantifiedAssociationWithDeletedProduct()
+    public function itDoesNotReturnQuantifiedAssociationWithDeletedProduct()
     {
         $productA = $this->getEntityBuilder()->createProduct('productA', 'aFamily', []);
         $this->getEntityBuilder()->createProductModel('productModelA', 'familyVariantWithTwoLevels', null, [
@@ -236,7 +235,7 @@ class GetProductQuantifiedAssociationsByProductModelCodesIntegration extends Abs
     /**
      * @test
      */
-    public function testItDoesNotReturnDeletedQuantifiedAssociationType()
+    public function itDoesNotReturnDeletedQuantifiedAssociationType()
     {
         $this->getEntityBuilder()->createProduct('productA', 'aFamily', []);
         $this->getEntityBuilder()->createProductModel('productModelA', 'familyVariantWithTwoLevels', null, [

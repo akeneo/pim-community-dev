@@ -63,7 +63,6 @@ FROM pim_catalog_product p
 LEFT JOIN pim_catalog_product_model pm1 ON p.product_model_id = pm1.id
 LEFT JOIN pim_catalog_product_model pm2 ON pm1.parent_id = pm2.id
 WHERE p.identifier IN (:productIdentifiers)
-GROUP BY p.id, p.identifier
 ;
 SQL;
 
