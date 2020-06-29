@@ -16,6 +16,7 @@
 - PIM-9213: Fix tooltip hover on Ellipsis for Family Name on creating product
 - PIM-9184: API - Fix dbal query group by part for saas instance
 - PIM-9289: Display a correct error message when deleting a group or an association
+- PIM-9324: Fix product grid not loading when asset used as main picture is deleted
 
 ## New features
 
