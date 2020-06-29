@@ -11,6 +11,7 @@ use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Docu
 use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\DocumentationBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsNumeric;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsString;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Length;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotDecimal;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Range;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Regex;
@@ -33,6 +34,7 @@ final class DefaultAttributeValidation implements DocumentationBuilderInterface
         UniqueValue::UNIQUE_VALUE,
         NotDecimal::NOT_DECIMAL,
         IsString::IS_STRING,
+        Length::TOO_LONG_ERROR,
     ];
 
     public function support($object): bool

@@ -3,9 +3,9 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser;
 
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesserInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Length;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Guesser
@@ -51,8 +51,9 @@ class LengthGuesser implements ConstraintGuesserInterface
         if ($maxCharacters = $attribute->getMaxCharacters()) {
             $characterLimit = min($maxCharacters, $characterLimit);
         }
+        $code = AttributeTypes::IDENTIFIER !== $attribute->getType() ? $attribute->getCode() : 'identifier';
 
-        $constraints[] = new Assert\Length(['max' => $characterLimit]);
+        $constraints[] = new Length(['max' => $characterLimit, 'attributeCode' => $code]);
 
         return $constraints;
     }
