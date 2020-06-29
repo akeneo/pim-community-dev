@@ -1,6 +1,8 @@
 import {Identifier, Row, ProductType, ProductsType, getProductsType} from '../models';
 import {ValidationError, filterErrors} from '@akeneo-pim-community/shared';
 
+const MAX_QUANTITY = 2147483647;
+
 type QuantifiedLink = {
   identifier: Identifier;
   quantity: number;
@@ -92,4 +94,5 @@ export {
   newAndUpdatedQuantifiedAssociationsCount,
   hasUpdatedQuantifiedAssociations,
   isQuantifiedAssociationEmpty,
+  MAX_QUANTITY,
 };
