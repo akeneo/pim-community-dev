@@ -27,7 +27,7 @@ Feature: Validate identifier attribute of a draft
     When I am on the "foo" product page
     And I change the SKU to "sku-0000000"
     And I save the product
-    Then I should see validation error "This value is too long. It should have 10 characters or less."
+    Then I should see validation error "The identifier attribute must not contain more than 10 characters. The submitted value is too long."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the regexp validation rule constraint of identifier attribute
