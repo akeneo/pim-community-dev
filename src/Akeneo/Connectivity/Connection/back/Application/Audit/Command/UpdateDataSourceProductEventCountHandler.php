@@ -34,16 +34,8 @@ final class UpdateDataSourceProductEventCountHandler
             ->extractCreatedProductsByConnection($command->hourlyInterval());
         $this->eventCountRepository->bulkInsert($createdProductsCount);
 
-        $createdProductsAllCount = $this->extractConnectionsEventCountQuery
-            ->extractAllCreatedProducts($command->hourlyInterval());
-        $this->eventCountRepository->bulkInsert($createdProductsAllCount);
-
         $updatedProductsCount = $this->extractConnectionsEventCountQuery
             ->extractUpdatedProductsByConnection($command->hourlyInterval());
         $this->eventCountRepository->bulkInsert($updatedProductsCount);
-
-        $updatedProductsAllCount = $this->extractConnectionsEventCountQuery
-            ->extractAllUpdatedProducts($command->hourlyInterval());
-        $this->eventCountRepository->bulkInsert($updatedProductsAllCount);
     }
 }
