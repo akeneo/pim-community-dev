@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.61 (2020-06-29)
+
 ## Bug fixes
 
 - PIM-9323: Fix PDF export for Product Model values
