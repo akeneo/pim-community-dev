@@ -87,7 +87,7 @@ const CreateRules: React.FC = () => {
         {pending && <AkeneoSpinner />}
         <div className='AknFullPage-content AknFullPage-content--withIllustration'>
           <div>
-            <div className='AknFullPage-image AknFullPage-illustration AknFullPage-illustration--api' />
+            <div className='AknFullPage-image AknFullPage-illustration AknFullPage-illustration--rules' />
           </div>
           <div>
             <div className='AknFullPage-titleContainer'>
