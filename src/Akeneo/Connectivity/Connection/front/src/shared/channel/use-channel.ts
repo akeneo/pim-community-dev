@@ -10,11 +10,10 @@ export type Channel = {
 
 const useChannel = (locale: string) => {
     const {loading, data} = useQuery<Result>('pim_enrich_channel_rest_index', {});
-    const localeUs = 'en_US';
     const channels = useMemo<Channel[]>(() => {
-        return (data || []).map(error => ({
-            code: error.code,
-            label: 'string' === typeof error.labels[locale] ? error.labels[locale] : error.labels[localeUs],
+        return (data || []).map(({code, labels}) => ({
+            code,
+            label: labels[locale] || `[${code}]`,
         }));
     }, [data, locale]);
 

@@ -12,9 +12,9 @@ const useLocale = () => {
     const {loading, data} = useQuery<Result>('pim_enrich_locale_rest_index', {});
 
     const locales = useMemo<Locale[]>(() => {
-        return (data || []).map(error => ({
-            code: error.code,
-            language: error.language,
+        return (data || []).map(({code, language}) => ({
+            code,
+            language,
         }));
     }, [data]);
 
