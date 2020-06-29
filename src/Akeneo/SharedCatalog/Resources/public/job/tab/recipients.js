@@ -14,7 +14,7 @@ define([
     __,
     React,
     ReactDOM,
-    {Recipients}
+    Recipients
   ) {
     return BaseForm.extend({
       className: 'tabbable recipients',
@@ -41,7 +41,7 @@ define([
         ReactDOM.unmountComponentAtNode(this.el);
         this.$el.empty();
 
-        const Component = React.createElement(Recipients, {
+        const Component = React.createElement(Recipients.default, {
           recipients: this.getFormData().configuration.recipients ? this.getFormData().configuration.recipients : [],
           validationErrors: this.validationErrors,
           onRecipientsChange: (recipients) => {

@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 // @todo pull-up master: change to '@akeneo-pim-community/shared'
-import {AkeneoThemeProvider, Button, CloseIcon, Key, useAutoFocus, useShortcut} from 'akeneosharedcatalog/akeneo-pim-community/shared';
+import {AkeneoThemeProvider, Button, CloseIcon, WarningIcon, Key, useAutoFocus, useShortcut} from 'akeneosharedcatalog/akeneo-pim-community/shared';
+// @todo pull-up master: change to '@akeneo-pim-community/legacy-bridge'
+import {DependenciesProvider, useTranslate} from 'akeneosharedcatalog/akeneo-pim-community/legacy-bridge';
 import {HeaderCell, LabelCell, Row, Table} from 'akeneosharedcatalog/common/Table';
 
 type Recipient = {
@@ -10,19 +12,31 @@ type Recipient = {
 type ValidationError = {
   email?: string;
 };
+type ValidationErrors = {
+  [index: number]: ValidationError;
+}
 type RecipientsProps = {
   recipients: Recipient[];
-  validationErrors: ValidationError[];
+  validationErrors: ValidationErrors;
   onRecipientsChange: (updatedRecipients: Recipient[]) => {};
 };
 
-const Container = styled.div``;
+const emailRegex = /\S+@\S+\.\S+/;
+const isValidEmail = (email: string) => {
+  return emailRegex.test(email);
+};
+
+const Body = styled.div``;
 const Form = styled.div`
-  align-items: center;
+  align-items: baseline;
   display: flex;
   justify-content: center;
   padding: 50px 0 5px 0;
   width: 100%;
+`;
+const InputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 const Input = styled.input`
   border-radius: 2px;
@@ -44,78 +58,119 @@ const ErrorMessage = styled.span`
   line-height: 13px;
   margin: 0 0 0 20px;
 `;
-
+const InputError = styled.div`
+  align-items: center;
+  color: #d4604f;
+  display: flex;
+  font-size: 11px;
+  font-style: normal;
+  line-height: 13px;
+  margin: 6px 0;
+  
+  svg {
+    margin: 0 6px 0 0;
+  }
+`;
 const ActionCell = styled(LabelCell)`
   width: 50px !important;
-`;
 
+  svg {
+    margin-top: 6px;
+  }
+`;
 const Cell = styled(LabelCell)`
   width: auto !important;
 `;
+
+const Container = ({
+  ...props
+}: RecipientsProps) => {
+  return (
+    <DependenciesProvider>
+      <AkeneoThemeProvider>
+        <Recipients {...props}/>
+      </AkeneoThemeProvider>
+    </DependenciesProvider>
+  );
+};
 
 const Recipients = ({
   recipients,
   validationErrors,
   onRecipientsChange
 }: RecipientsProps) => {
+  const __ = useTranslate();
   const [recipientToAdd, setRecipientToAdd] = React.useState('');
+  const [emailIsValid, setEmailIsValid] = React.useState(true);
   const inputRef = React.useRef<null|HTMLInputElement>(null);
   useAutoFocus(inputRef);
 
   const handleAddNewRecipient = React.useCallback(() => {
-    onRecipientsChange([...recipients, {email: recipientToAdd}]);
-  }, [onRecipientsChange, recipients, recipientToAdd]);
+    if (isValidEmail(recipientToAdd)) {
+      onRecipientsChange([...recipients, {email: recipientToAdd}]);
+    } else {
+      setEmailIsValid(false);
+    }
+  }, [onRecipientsChange, recipients, recipientToAdd, setEmailIsValid]);
 
   useShortcut(Key.Enter, handleAddNewRecipient);
   useShortcut(Key.NumpadEnter, handleAddNewRecipient);
 
   return (
-    <AkeneoThemeProvider>
-      <Container>
-        <Form>
+    <Body>
+      <Form>
+        <InputContainer>
           <Input
             ref={inputRef}
-            placeholder="Add a recipient"
+            placeholder={ __('shared_catalog.recipients.add_recipient') }
             value={recipientToAdd}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              setEmailIsValid(true);
               setRecipientToAdd(event.currentTarget.value);
             }}
           />
-          <Button onClick={handleAddNewRecipient}>
-            Add
-          </Button>
-        </Form>
-        <Table>
-          <thead>
-            <Row>
-              <HeaderCell>Email</HeaderCell>
-              <HeaderCell/>
+          {false === emailIsValid &&
+            <InputError>
+              <WarningIcon color={'#d4604f'} size={18}/>
+              { __('shared_catalog.recipients.invalid_email') }
+            </InputError>
+          }
+        </InputContainer>
+        <Button onClick={handleAddNewRecipient}>
+          {__('pim_common.add')}
+        </Button>
+      </Form>
+      <Table title="recipients">
+        <thead>
+          <Row>
+            <HeaderCell>Email</HeaderCell>
+            <HeaderCell/>
+          </Row>
+        </thead>
+        <tbody>
+          {recipients.map((recipient, index) => (
+            <Row key={recipient.email}>
+              <Cell>
+                {recipient.email}
+                {validationErrors[index] &&
+                  <ErrorMessage>{validationErrors[index].email}</ErrorMessage>
+                }
+              </Cell>
+              <ActionCell>
+                <CloseIcon
+                  onClick={() => {
+                    onRecipientsChange(recipients.filter(currentRecipient => currentRecipient !== recipient));
+                  }}
+                  size={20}
+                  title={__('pim_common.delete')}
+                />
+              </ActionCell>
             </Row>
-          </thead>
-          <tbody>
-            {recipients.map((recipient, index) => (
-              <Row key={recipient.email}>
-                <Cell>
-                  {recipient.email}
-                  {validationErrors[index] &&
-                    <ErrorMessage>{validationErrors[index].email}</ErrorMessage>
-                  }
-                </Cell>
-                <ActionCell>
-                  <CloseIcon
-                    onClick={() => {
-                      onRecipientsChange(recipients.filter(currentRecipient => currentRecipient !== recipient));
-                    }}
-                    size={20}
-                  />
-                </ActionCell>
-              </Row>
-            ))}
-          </tbody>
-        </Table>
-      </Container>
-    </AkeneoThemeProvider>
+          ))}
+        </tbody>
+      </Table>
+    </Body>
   );
 };
 
-export {Recipients};
+export {Container as default, Recipients};
