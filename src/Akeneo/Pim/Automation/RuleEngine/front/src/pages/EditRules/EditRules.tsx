@@ -6,6 +6,7 @@ import { EditRulesContent } from './EditRulesContent';
 import { FullScreenError } from '../../components/FullScreenError';
 import { RuleDefinition } from '../../models';
 import { useInitEditRules } from './hooks';
+import { AkeneoSpinner } from '../../components';
 
 type Props = {
   ruleDefinitionCode: string;
@@ -29,7 +30,7 @@ const EditRules: React.FC<Props> = ({ ruleDefinitionCode, setIsDirty }) => {
           message={error.exception.message}
         />
       ) : !ruleDefinition || !locales || !scopes ? (
-        'Loading (TODO: better display)'
+        <AkeneoSpinner />
       ) : (
         <EditRulesContent
           ruleDefinitionCode={ruleDefinitionCode}

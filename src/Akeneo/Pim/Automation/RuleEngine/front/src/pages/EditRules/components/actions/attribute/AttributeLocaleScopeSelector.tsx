@@ -31,6 +31,10 @@ const SelectorBlock = styled.div`
   margin-bottom: 15px;
 `;
 
+const ErrorBlock = styled.div`
+  margin-top: 5px;
+`;
+
 type Props = {
   attributeCode: AttributeCode | null;
   attributeFormName: string;
@@ -185,7 +189,10 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
 
   return (
     <ActionFormContainer>
-      <SelectorBlock>
+      <SelectorBlock
+        className={
+          null === attribute && !firstRefresh ? 'select2-container-error' : ''
+        }>
         <AttributeSelector
           data-testid={attributeId}
           name={attributeFormName}
@@ -198,21 +205,23 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
           filterAttributeTypes={filterAttributeTypes}
           disabled={disabled}
         />
+        {null === attribute && !firstRefresh && (
+          <ErrorBlock>
+            <InlineHelper danger>
+              {`${translate(
+                'pimee_catalog_rule.exceptions.unknown_attribute'
+              )} ${translate(
+                'pimee_catalog_rule.exceptions.select_another_attribute'
+              )} ${translate('pimee_catalog_rule.exceptions.or')} `}
+              <a href={`#${router.generate(`pim_enrich_attribute_create`)}`}>
+                {translate(
+                  'pimee_catalog_rule.exceptions.create_attribute_link'
+                )}
+              </a>
+            </InlineHelper>
+          </ErrorBlock>
+        )}
       </SelectorBlock>
-      {null === attribute && !firstRefresh && (
-        <SelectorBlock>
-          <InlineHelper danger>
-            {`${translate(
-              'pimee_catalog_rule.exceptions.unknown_attribute'
-            )} ${translate(
-              'pimee_catalog_rule.exceptions.select_another_attribute'
-            )} ${translate('pimee_catalog_rule.exceptions.or')} `}
-            <a href={`#${router.generate(`pim_enrich_attribute_create`)}`}>
-              {translate('pimee_catalog_rule.exceptions.create_attribute_link')}
-            </a>
-          </InlineHelper>
-        </SelectorBlock>
-      )}
       {(attribute?.scopable || (!attributeIsChanged && scopeValue)) && (
         <SelectorBlock>
           <ScopeSelector

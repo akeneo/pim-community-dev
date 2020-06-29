@@ -103,6 +103,7 @@ const ScopeSelector: React.FC<Props> = ({
         disabled={disabled}
         name={name}
         validation={validation}
+        dropdownCssClass='scope-dropdown'
       />
       {children}
     </>

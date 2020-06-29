@@ -68,21 +68,33 @@
   border-top: 1px solid @AknBorderColor;
 }
 
-.select2-drop.add-conditions-dropdown, .select2-drop.fields-selector-dropdown {
+.select2-drop.add-conditions-dropdown,
+.select2-drop.add-action-dropdown {
   min-width: 300px;
   margin-top: -43px;
   border-top: 1px solid #ccd1d8;
 
   .select2-results {
     min-height: 50vh;
-    font-size: 15px;
+  }
+}
+
+.select2-drop.add-conditions-dropdown,
+.select2-drop.add-action-dropdown,
+.select2-drop.family-selector-dropdown,
+.select2-drop.operator-dropdown,
+.select2-drop.locale-dropdown,
+.select2-drop.scope-dropdown,
+.select2-drop.fields-selector-dropdown {
+  .select2-results {
+    font-size: 13px;
 
     .select2-highlighted,
     .select2-highlighted ul {
       color: @AknSlateGrey;
     }
 
-    .select2-results .select2-result-label {
+    .select2-results .select2-result-label, .select2-result .select2-result-label {
       line-height: 34px;
     }
 
@@ -95,7 +107,7 @@
       cursor: default;
       background-color: white;
       margin-top: 10px;
-      font-size: 11px;
+      font-size: 13px;
     }
 
     .select2-result-sub {
@@ -112,4 +124,20 @@
       font-style: italic;
     }
   }
+}
+
+.select2-container-error > .select2-container > .select2-choice {
+  border: 1px solid @AknRed100;
+  border-radius: 3px;
+}
+
+.select2-container.select2-container-disabled > a.select2-choice,
+.AknTextField[readonly]:not(.AknTextField--light),
+.AknTextField[disabled]:not(.AknTextField--light) {
+  background-color: @AknGrey20;
+  color: @AknGrey100;
+  background-image: url('/bundles/akeneopimruleengine/assets/icons/icon-lock.svg');
+  background-size: 16px;
+  background-repeat: no-repeat;
+  background-position: calc(100% - 10px) 10px;
 }

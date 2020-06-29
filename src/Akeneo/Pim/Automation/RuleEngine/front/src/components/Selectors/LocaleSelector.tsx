@@ -132,6 +132,7 @@ const LocaleSelector: React.FC<Props> = ({
         disabled={disabled}
         name={name}
         validation={validation}
+        dropdownCssClass='locale-dropdown'
       />
       {children}
     </>

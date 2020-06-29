@@ -3,7 +3,7 @@ import { VisuallyHidden } from 'reakit/VisuallyHidden';
 import styled from 'styled-components';
 
 const StyledLabel = styled.label`
-  padding-bottom: 10px;
+  padding-bottom: 5px;
 `;
 
 type Props = {

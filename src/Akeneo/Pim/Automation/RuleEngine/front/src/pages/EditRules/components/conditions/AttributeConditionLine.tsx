@@ -57,7 +57,7 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
   attribute,
 }) => {
   const translate = useTranslate();
-  const { watch, setValue } = useFormContext();
+  const { watch, setValue, errors, clearError } = useFormContext();
 
   const getOperatorFormValue: () => Operator = () =>
     watch(`content.conditions[${lineNumber}].operator`);
@@ -121,6 +121,7 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
     ) {
       setValue(`content.conditions[${lineNumber}].locale`, undefined);
     }
+    clearError(`content.conditions[${lineNumber}].scope`);
   };
 
   const title =
@@ -151,6 +152,9 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
     );
   }
 
+  const isElementInError = (element: string): boolean =>
+    typeof errors?.content?.conditions?.[lineNumber]?.[element] === 'object';
+
   return (
     <div className={'AknGrid-bodyCell'}>
       <FieldColumn className={'AknGrid-bodyCell--highlight'} title={title}>
@@ -169,7 +173,10 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
         <ValueColumn>{children}</ValueColumn>
       )}
       {(attribute.scopable || getScopeFormValue()) && (
-        <ScopeColumn>
+        <ScopeColumn
+          className={
+            isElementInError('scope') ? 'select2-container-error' : ''
+          }>
           <ScopeSelector
             data-testid={`edit-rules-input-${lineNumber}-scope`}
             hiddenLabel={true}
@@ -184,7 +191,10 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
         </ScopeColumn>
       )}
       {(attribute.localizable || getLocaleFormValue()) && (
-        <LocaleColumn>
+        <LocaleColumn
+          className={
+            isElementInError('locale') ? 'select2-container-error' : ''
+          }>
           <LocaleSelector
             data-testid={`edit-rules-input-${lineNumber}-locale`}
             hiddenLabel={true}
@@ -193,6 +203,9 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
             allowClear={!attribute.localizable}
             name={`content.conditions[${lineNumber}].locale`}
             validation={localeValidation}
+            onChange={() =>
+              clearError(`content.conditions[${lineNumber}].locale`)
+            }
           />
         </LocaleColumn>
       )}

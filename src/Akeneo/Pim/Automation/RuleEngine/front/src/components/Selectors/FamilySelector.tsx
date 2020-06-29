@@ -86,6 +86,7 @@ const FamilySelector: React.FC<Props> = ({
 
   return (
     <Select2SimpleAsyncWrapper
+      dropdownCssClass='family-selector-dropdown'
       label={label}
       hiddenLabel={hiddenLabel}
       value={value}

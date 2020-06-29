@@ -107,6 +107,7 @@ const CategoryTreeNode: React.FC<Props> = ({
           nodeType={nodeType}
           selected={selected}
           translate={translate}
+          onClick={handlerSelect}
         />
         <TreeLabel onClick={handlerSelect} selected={selected}>
           {categoryLabel}
