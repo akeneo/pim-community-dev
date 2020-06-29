@@ -171,7 +171,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getUsedAttributeCodes(): array
     {
-        return $this->values->getAttributeCodes();
+        return $this->getValues()->getAttributeCodes();
     }
 
     /**
