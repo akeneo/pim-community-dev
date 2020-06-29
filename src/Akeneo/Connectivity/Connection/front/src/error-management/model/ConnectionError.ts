@@ -45,7 +45,7 @@ export type ConnectionErrorContent = {
     locale?: string | null;
     scope?: string | null;
     product?: Product;
-    type:  typeof ErrorMessageViolationType |  typeof ErrorMessageDomainType;
+    type: typeof ErrorMessageViolationType | typeof ErrorMessageDomainType;
 };
 
 export type ConnectionError = {
