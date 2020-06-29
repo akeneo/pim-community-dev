@@ -162,6 +162,15 @@ test('It triggers the onChange event when updating the quantity', async () => {
     errors: [],
   });
 
+  fireEvent.change(quantityInput, {target: {value: '1000000000000000000000'}});
+
+  expect(onChange).toBeCalledWith({
+    productType: ProductType.ProductModel,
+    quantifiedLink: {quantity: 16, identifier: 'braided-hat'},
+    product: productModel,
+    errors: [],
+  });
+
   fireEvent.change(quantityInput, {target: {value: 'NotANumber'}});
 
   expect(onChange).toBeCalledWith({
@@ -189,6 +198,43 @@ test('It triggers the onRemove event when the remove button is clicked', async (
                   product: productModel,
                   errors: [],
                 }}
+                parentQuantifiedLink={undefined}
+                onChange={onChange}
+                onRemove={onRemove}
+              />
+            </tbody>
+          </table>
+        </AkeneoThemeProvider>
+      </DependenciesProvider>,
+      container
+    );
+  });
+
+  const removeButton = getByTitle(container, 'pim_enrich.entity.product.module.associations.remove');
+  fireEvent.click(removeButton);
+
+  expect(onChange).not.toBeCalled();
+  expect(onRemove).toBeCalled();
+});
+
+test('It triggers the onRemove event when the remove button is clicked in compact mode', async () => {
+  const onChange = jest.fn();
+  const onRemove = jest.fn();
+
+  await act(async () => {
+    ReactDOM.render(
+      <DependenciesProvider>
+        <AkeneoThemeProvider>
+          <table>
+            <tbody>
+              <QuantifiedAssociationRow
+                row={{
+                  productType: ProductType.ProductModel,
+                  quantifiedLink: {quantity: 15, identifier: 'braided-hat'},
+                  product: productModel,
+                  errors: [],
+                }}
+                isCompact={true}
                 parentQuantifiedLink={undefined}
                 onChange={onChange}
                 onRemove={onRemove}

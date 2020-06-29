@@ -127,7 +127,8 @@ define(
                                     title: __('pim_enrich.entity.product.module.basket.title'),
                                     emptyLabel: __('pim_enrich.entity.product.module.basket.empty_basket'),
                                     confirmLabel: __(
-                                        'pim_enrich.mass_edit.product.operation.associate_to_product_and_product_model.confirm'
+                                        'pim_enrich.mass_edit.product.operation.' +
+                                            'associate_to_product_and_product_model.confirm'
                                     ),
                                     imagePathMethod: this.imagePathMethod.bind(this),
                                     labelMethod: this.labelMethod.bind(this),
@@ -146,9 +147,13 @@ define(
             isQuantifiedAssociation: function(associationTypes, associationTypeCode) {
                 if (!associationTypes || 0 === associationTypes.length) return false;
 
-                const associationType = associationTypes.find(associationType => associationType.code === associationTypeCode);
+                const associationType = associationTypes.find(
+                    associationType => associationType.code === associationTypeCode
+                );
 
-                if (undefined === associationType) throw new Error(`Cannot find association type ${associationTypeCode}`);
+                if (undefined === associationType) {
+                    throw new Error(`Cannot find association type ${associationTypeCode}`);
+                }
 
                 return associationType.is_quantified;
             },
@@ -160,7 +165,6 @@ define(
                     errors: [],
                     isCompact: true,
                     onAssociationsChange: updatedAssociations => {
-                        const value = this.getValue();
                         const currentAssociationTypeCode = this.getCurrentAssociationTypeCode();
                         this.setValue({[currentAssociationTypeCode]: updatedAssociations}, true);
                     },
