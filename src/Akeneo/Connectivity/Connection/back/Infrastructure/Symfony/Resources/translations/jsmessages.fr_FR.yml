@@ -200,8 +200,17 @@ akeneo_connectivity.connection:
         placeholder: Rechercher dans les messages d'erreur
         result_count: '{0} Aucun résultat |[1,Inf] {{ count }} résultats'
       error_list:
-        date_time_column: Jour et heure
-        content_column: Message d'erreur
+        date_time_column:
+          title: Jour et heure
+        content_column:
+          title: Message d'erreur
+          product_name: Le produit
+          with_id: identifié par
+        details_column:
+          title: Détails
+          locale: Langue
+          channel: Canal
+          family: Famille
       no_error:
         title: Génial ! Aucune erreur trouvée !
       not_auditable:

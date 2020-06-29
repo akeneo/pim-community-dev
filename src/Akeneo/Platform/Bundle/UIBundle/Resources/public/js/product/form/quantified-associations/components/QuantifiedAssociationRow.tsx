@@ -10,7 +10,7 @@ import {
   filterErrors,
   InputErrors,
 } from '@akeneo-pim-community/shared';
-import {ProductType, Row, QuantifiedLink} from '../models';
+import {ProductType, Row, QuantifiedLink, MAX_QUANTITY} from '../models';
 import {useProductThumbnail} from '../hooks';
 
 const Container = styled.tr`
@@ -189,14 +189,18 @@ const QuantifiedAssociationRow = ({
               title={translate('pim_enrich.entity.product.module.associations.quantified.quantity')}
               type="number"
               min={1}
+              max={MAX_QUANTITY}
               value={row.quantifiedLink.quantity}
               isInvalid={0 < filterErrors(row.errors, 'quantity').length}
-              onChange={event =>
+              onChange={event => {
+                const numberValue = Number(event.currentTarget.value) || 1;
+                const limitedValue = numberValue > MAX_QUANTITY ? row.quantifiedLink.quantity : numberValue;
+
                 onChange({
                   ...row,
-                  quantifiedLink: {...row.quantifiedLink, quantity: Number(event.currentTarget.value) || 1},
-                })
-              }
+                  quantifiedLink: {...row.quantifiedLink, quantity: limitedValue},
+                });
+              }}
             />
           </InputCellContainer>
           <InputErrors errors={row.errors} />
