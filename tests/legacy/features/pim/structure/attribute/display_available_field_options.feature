@@ -25,17 +25,3 @@ Feature: Display available field options
       | Number      | Min number, Max number, Decimal values allowed, Negative values allowed                     |
       | Text Area   | Max characters, Rich text editor enabled                                                    |
       | Text        | Max characters, Validation rule                                                             |
-
-  Scenario Outline: Successfully display available values fields for attribute types
-    Given I create a "<type>" attribute
-    And I fill in the following information:
-      | Code            | new_attribute |
-      | Attribute group | Other         |
-    And I save the attribute
-    And I visit the "Options" tab
-    Then I should see the <fields> fields
-
-    Examples:
-      | type          | fields                                           |
-      | Multi select  | Sort automatically options by alphabetical order |
-      | Simple select | Sort automatically options by alphabetical order |
