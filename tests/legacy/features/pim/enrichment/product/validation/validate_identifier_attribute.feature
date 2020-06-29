@@ -18,7 +18,7 @@ Feature: Validate identifier attribute of a product
     When I am on the "foo" product page
     And I change the SKU to "sku-0000000"
     And I save the product
-    Then I should see validation tooltip "This value is too long. It should have 10 characters or less."
+    Then I should see validation tooltip "The identifier attribute must not contain more than 10 characters. The submitted value is too long."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the regexp validation rule constraint of identifier attribute
@@ -30,7 +30,7 @@ Feature: Validate identifier attribute of a product
     When I am on the "foo" product page
     And I change the SKU to "001"
     And I save the product
-    Then I should see validation tooltip "This value is not valid due to regular expression defined in the attribute"
+    Then I should see validation tooltip "The sku attribute must match the following regular expression: /^sku-\d*$/."
     And there should be 1 error in the "Other" tab
 
   @jira https://akeneo.atlassian.net/browse/PIM-3447
@@ -38,5 +38,5 @@ Feature: Validate identifier attribute of a product
     Given I am on the "bar" product page
     When I change the SKU to an invalid value
     And I save the product
-    Then I should see validation tooltip "This value is too long. It should have 255 characters or less."
+    Then I should see validation tooltip "The identifier attribute must not contain more than 255 characters. The submitted value is too long."
     And there should be 1 error in the "Other" tab

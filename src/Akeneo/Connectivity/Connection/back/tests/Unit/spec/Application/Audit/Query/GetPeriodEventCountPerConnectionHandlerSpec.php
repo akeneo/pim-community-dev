@@ -8,7 +8,8 @@ use Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodEventCountPe
 use Akeneo\Connectivity\Connection\Application\Audit\Query\GetPeriodEventCountPerConnectionQuery;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\PeriodEventCount;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectPeriodEventCountsQuery;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectPeriodEventCountPerConnectionQuery;
+use Akeneo\Connectivity\Connection\Domain\ValueObject\DateTimePeriod;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -18,7 +19,7 @@ use PhpSpec\ObjectBehavior;
  */
 class GetPeriodEventCountPerConnectionHandlerSpec extends ObjectBehavior
 {
-    public function let(SelectPeriodEventCountsQuery $selectPeriodEventCountsQuery): void
+    public function let(SelectPeriodEventCountPerConnectionQuery $selectPeriodEventCountsQuery): void
     {
         $this->beConstructedWith($selectPeriodEventCountsQuery);
     }
@@ -30,16 +31,18 @@ class GetPeriodEventCountPerConnectionHandlerSpec extends ObjectBehavior
 
     public function it_handles_the_event_count($selectPeriodEventCountsQuery): void
     {
-        $fromDateTime = new \DateTimeImmutable('2020-01-01 00:00:00', new \DateTimeZone('UTC'));
-        $upToDateTime = new \DateTimeImmutable('2020-01-02 00:00:00', new \DateTimeZone('UTC'));
+        $period = new DateTimePeriod(
+            new \DateTimeImmutable('2020-01-01 00:00:00', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('2020-01-02 00:00:00', new \DateTimeZone('UTC'))
+        );
 
         $periodEventCounts = [
-            new PeriodEventCount('erp', $fromDateTime, $upToDateTime, [])
+            new PeriodEventCount('erp', $period->start(), $period->end(), [])
         ];
-        $selectPeriodEventCountsQuery->execute(EventTypes::PRODUCT_CREATED, $fromDateTime, $upToDateTime)
+        $selectPeriodEventCountsQuery->execute(EventTypes::PRODUCT_CREATED, $period)
             ->willReturn($periodEventCounts);
 
-        $query = new GetPeriodEventCountPerConnectionQuery(EventTypes::PRODUCT_CREATED, $fromDateTime, $upToDateTime);
+        $query = new GetPeriodEventCountPerConnectionQuery(EventTypes::PRODUCT_CREATED, $period);
         $this->handle($query)->shouldReturn($periodEventCounts);
     }
 }
