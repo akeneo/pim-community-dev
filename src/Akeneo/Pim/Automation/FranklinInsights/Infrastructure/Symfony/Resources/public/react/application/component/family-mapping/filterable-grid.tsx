@@ -76,7 +76,6 @@ export const FilterableGrid = ({mapping}: Props) => {
       ) : (
         <Grid mapping={filteredRows} selectedFranklinAttributeCodes={selectedFranklinAttributeCodes} />
       )}
-      }
     </>
   );
 };
