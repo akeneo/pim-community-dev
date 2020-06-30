@@ -540,6 +540,7 @@ workflows:
                 requires:
                     - ready_to_build?
           - build_dev:
+                name: build_dev_ce
                 requires:
                     - checkout_ce
 
