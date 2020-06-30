@@ -5,3 +5,4 @@ export * from './SimpleMultiOptionsAttributeCondition';
 export * from './PimCondition';
 export * from './TextAttributeCondition';
 export * from './CategoryCondition';
+export * from './NumberAttributeCondition';

@@ -6,6 +6,7 @@ import { getFamilyConditionModule } from './FamilyCondition';
 import { getCategoryConditionModule } from './CategoryCondition';
 import { getTextAttributeConditionModule } from './TextAttributeCondition';
 import { getSimpleMultiOptionsAttributeConditionModule } from './SimpleMultiOptionsAttributeCondition';
+import { getNumberAttributeConditionModule } from './NumberAttributeCondition';
 import { getPimConditionModule } from './PimCondition';
 import { FallbackConditionLine } from '../../pages/EditRules/components/conditions/FallbackConditionLine';
 
@@ -26,6 +27,7 @@ const getConditionModule: (
     getCategoryConditionModule,
     getTextAttributeConditionModule,
     getSimpleMultiOptionsAttributeConditionModule,
+    getNumberAttributeConditionModule,
     getPimConditionModule,
   ];
 
