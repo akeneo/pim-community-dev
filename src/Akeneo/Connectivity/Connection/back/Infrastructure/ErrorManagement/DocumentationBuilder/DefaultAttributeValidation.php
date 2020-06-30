@@ -12,6 +12,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\DocumentationB
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsNumeric;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsString;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Length;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotBlank;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotDecimal;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Range;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Regex;
@@ -26,6 +27,7 @@ final class DefaultAttributeValidation implements DocumentationBuilderInterface
 {
     const SUPPORTED_CONSTRAINTS_CODES = [
         IsNumeric::IS_NUMERIC,
+        NotBlank::IS_BLANK_ERROR,
         Range::INVALID_CHARACTERS_ERROR,
         Range::NOT_IN_RANGE_ERROR,
         Range::TOO_HIGH_ERROR,
