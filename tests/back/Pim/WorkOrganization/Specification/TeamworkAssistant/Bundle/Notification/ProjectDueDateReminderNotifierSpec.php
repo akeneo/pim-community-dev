@@ -3,23 +3,23 @@
 namespace Specification\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Tool\Component\Localization\Presenter\DatePresenter;
-use Akeneo\UserManagement\Component\Model\UserInterface;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
-use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification\ProjectDueDateReminderNotifier;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification\ProjectNotificationFactory;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectCompleteness;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Notification\ProjectNotifierInterface;
+use Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
+use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
+use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use PhpSpec\ObjectBehavior;
 
 class ProjectDueDateReminderNotifierSpec extends ObjectBehavior
 {
     function let(
         ProjectNotificationFactory $projectNotificationFactory,
         NotifierInterface $notifier,
-        DatePresenter $datePresenter
+        PresenterInterface $datePresenter
     ) {
         $this->beConstructedWith($projectNotificationFactory, $notifier, $datePresenter, [7, 3, 1]);
     }

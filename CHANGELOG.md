@@ -36,6 +36,7 @@
 - RUL-77: Rule engine - As Peter, I would like to add labels to my rules
 - CLOUD-1959: Use cloud-deployer 2.2 and terraform 0.12.25
 - MET-207: Asset Manager - As Peter, I would like to manually re-execute naming conventions
+- RUL-271: Rule engine - As Peter, I'd like to add a condition on a relative date for created/updated fields
 
 ## New features
 
@@ -62,3 +63,4 @@
 - Change return type of `Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface` from `void` to `array`
 - Change return type of `Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsUpdater` from `void` to `array`
 - Add method `getType()` to `Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface` interface
+- Change constructor of `Akeneo\Pim\Automation\RuleEngine\Bundle\Twig\RuleExtension` to add `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`

@@ -2,14 +2,17 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Bundle\Twig;
 
+use Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository;
+use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
-use Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface;
 use Prophecy\Argument;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class RuleExtensionSpec extends ObjectBehavior
@@ -19,14 +22,22 @@ class RuleExtensionSpec extends ObjectBehavior
         LocaleResolver $localeResolver,
         AttributeRepository $attributeRepository,
         TranslatorInterface $translator,
-        FileInfoRepositoryInterface $fileInfoRepository
+        FileInfoRepositoryInterface $fileInfoRepository,
+        TokenStorageInterface $tokenStorage,
+        TokenInterface $token,
+        UserInterface $user
     ) {
+        $user->getTimezone()->willReturn('Europe/Paris');
+        $token->getUser()->willReturn($user);
+        $tokenStorage->getToken()->willReturn($token);
+
         $this->beConstructedWith(
             $presenterRegistry,
             $localeResolver,
             $attributeRepository,
             $translator,
-            $fileInfoRepository
+            $fileInfoRepository,
+            $tokenStorage
         );
     }
 
@@ -73,7 +84,14 @@ class RuleExtensionSpec extends ObjectBehavior
         $presenterRegistry->getPresenterByFieldCode('attribute_code')->willReturn(null);
         $presenterRegistry->getPresenterByAttributeCode('attribute_code')->willReturn($presenter);
         $localeResolver->getCurrentLocale()->willReturn('en_US');
-        $presenter->present('toto', ['locale' => 'en_US', 'attribute' => 'attribute_code'])->willReturn('expected');
+        $presenter->present('toto',
+            [
+                'attribute' => 'attribute_code',
+                'locale' => 'en_US',
+                'present_relative_date' => true,
+                'timezone' => 'Europe/Paris',
+            ]
+        )->willReturn('expected');
         $attributeRepository->findMediaAttributeCodes()->willReturn(['media_attribute_code']);
 
         $this->presentRuleActionValue('toto', 'attribute_code')->shouldReturn('expected');
@@ -106,7 +124,14 @@ class RuleExtensionSpec extends ObjectBehavior
         $presenterRegistry->getPresenterByFieldCode('attribute_code')->willReturn(null);
         $presenterRegistry->getPresenterByAttributeCode('attribute_code')->willReturn($presenter);
         $localeResolver->getCurrentLocale()->willReturn('en_US');
-        $presenter->present(true, ['locale' => 'en_US',  'attribute' => 'attribute_code'])->willReturn('expected');
+        $presenter->present(true,
+            [
+                'attribute' => 'attribute_code',
+                'locale' => 'en_US',
+                'present_relative_date' => true,
+                'timezone' => 'Europe/Paris',
+            ]
+        )->willReturn('expected');
         $attributeRepository->findMediaAttributeCodes()->willReturn(['media_attribute_code']);
 
         $this->presentRuleActionValue(true, 'attribute_code')->shouldReturn('expected');
@@ -121,7 +146,14 @@ class RuleExtensionSpec extends ObjectBehavior
         $presenterRegistry->getPresenterByFieldCode('attribute_code')->willReturn(null);
         $presenterRegistry->getPresenterByAttributeCode('attribute_code')->willReturn($presenter);
         $localeResolver->getCurrentLocale()->willReturn('en_US');
-        $presenter->present(['foo', 'bar'], ['locale' => 'en_US', 'attribute' => 'attribute_code'])->willReturn('foobar');
+        $presenter->present(['foo', 'bar'],
+            [
+                'attribute' => 'attribute_code',
+                'locale' => 'en_US',
+                'present_relative_date' => true,
+                'timezone' => 'Europe/Paris',
+            ]
+        )->willReturn('foobar');
         $attributeRepository->findMediaAttributeCodes()->willReturn(['media_attribute_code']);
 
         $this->presentRuleActionValue(['foo', 'bar'], 'attribute_code')->shouldReturn('foobar');
@@ -136,7 +168,14 @@ class RuleExtensionSpec extends ObjectBehavior
         $presenterRegistry->getPresenterByFieldCode('attribute_code')->willReturn(null);
         $presenterRegistry->getPresenterByAttributeCode('attribute_code')->willReturn($presenter);
         $localeResolver->getCurrentLocale()->willReturn('en_US');
-        $presenter->present(['foo', 'bar'], ['locale' => 'en_US', 'attribute' => 'attribute_code'])->willReturn(['presented foo', 'presented bar']);
+        $presenter->present(['foo', 'bar'],
+            [
+                'attribute' => 'attribute_code',
+                'locale' => 'en_US',
+                'present_relative_date' => true,
+                'timezone' => 'Europe/Paris',
+            ]
+        )->willReturn(['presented foo', 'presented bar']);
         $attributeRepository->findMediaAttributeCodes()->willReturn(['media_attribute_code']);
 
         $this->presentRuleActionValue(['foo', 'bar'], 'attribute_code')->shouldReturn('presented foo, presented bar');
