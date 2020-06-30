@@ -1,5 +1,6 @@
 import React from 'react';
 import {Section} from '../../../common';
+import {LoadingSpinnerIcon} from '../../../common/icons';
 import styled from '../../../common/styled-with-theme';
 import {Translate} from '../../../shared/translate';
 import {useDashboardState} from '../../dashboard-context';
@@ -18,7 +19,7 @@ export const BusinessErrorCountWidget = () => {
     const {loading, errorCountPerConnection} = useBusinessErrorCountPerConnection();
 
     if (loading) {
-        return <>Loading...</>; // TODO Loading spinner
+        return <LoadingSpinnerIcon />;
     }
 
     if (errorCountPerConnection.length === 0) {

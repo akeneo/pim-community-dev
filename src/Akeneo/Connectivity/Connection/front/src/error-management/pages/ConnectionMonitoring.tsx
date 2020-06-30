@@ -1,6 +1,7 @@
 import React, {FC, memo} from 'react';
 import {useHistory, useParams} from 'react-router';
 import {Breadcrumb, BreadcrumbItem, PageContent, PageHeader} from '../../common';
+import {LoadingSpinnerIcon} from '../../common/icons';
 import {PimView} from '../../infrastructure/pim-view/PimView';
 import {FlowType} from '../../model/flow-type.enum';
 import {BreadcrumbRouterLink} from '../../shared/router';
@@ -16,7 +17,7 @@ const ConnectionMonitoring: FC = memo(() => {
 
     const {loading, connection} = useConnection(connectionCode);
     if (loading || !connection) {
-        return <>Loading...</>; // TODO Loading spinner
+        return <LoadingSpinnerIcon />;
     }
 
     const breadcrumb = (

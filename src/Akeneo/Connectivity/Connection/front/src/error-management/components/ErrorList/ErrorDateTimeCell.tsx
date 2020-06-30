@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import TableCell from '../../../common/components/Table/TableCell';
+import {css} from 'styled-components';
 import {ClockIcon, DateIcon} from '../../../common/icons';
 import styled from '../../../common/styled-with-theme';
 import {useDateFormatter} from '../../../shared/formatter/use-date-formatter';
@@ -46,8 +46,17 @@ const ErrorDateTimeCell: FC<Props> = ({timestamp}) => {
     );
 };
 
-const Container = styled(TableCell)`
+const Container = styled.td<{collapsing?: boolean}>`
+    border-bottom: 1px solid ${({theme}) => theme.color.grey60};
     color: ${({theme}) => theme.color.grey140};
+    padding: 15px 20px;
+
+    ${({collapsing}) =>
+        collapsing &&
+        css`
+            width: 1px;
+            white-space: nowrap;
+        `}
 `;
 
 const DateTimeRow = styled.div`
