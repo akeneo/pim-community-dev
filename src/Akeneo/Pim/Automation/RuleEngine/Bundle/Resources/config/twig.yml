@@ -1,20 +1,4 @@
-parameters:
-    pimee_catalog_rule.twig.rule_extension.class: Akeneo\Pim\Automation\RuleEngine\Bundle\Twig\RuleExtension
-
 services:
-    pimee_catalog_rule.twig.rule_extension:
-        class: '%pimee_catalog_rule.twig.rule_extension.class%'
-        public: false
-        arguments:
-            - '@pim_catalog.localization.presenter.registry'
-            - '@pim_enrich.resolver.locale'
-            - '@pim_catalog.repository.attribute'
-            - '@translator'
-            - '@akeneo_file_storage.repository.file_info'
-            - '@security.token_storage'
-        tags:
-            - { name: twig.extension }
-
     pimee_catalog_rule.localization.presenter.datetime:
         class: 'Akeneo\Pim\Automation\RuleEngine\Component\Localization\Presenter\RelativeDatePresenter'
         decorates: pim_catalog.localization.presenter.datetime
