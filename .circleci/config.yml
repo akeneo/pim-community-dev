@@ -538,7 +538,7 @@ workflows:
                             - master
           - checkout_ce:
                 requires:
-                    - ready_to_build?
+                    - ready_to_build_only_ce?
           - build_dev:
                 name: build_dev_ce
                 requires:
