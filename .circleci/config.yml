@@ -53,7 +53,7 @@ jobs:
 
   build_dev:
     parameters:
-        is_pull_request:
+        is_ee_built:
             type: boolean
             default: true
     machine:
@@ -65,7 +65,7 @@ jobs:
           name: Copy docker-compose.override.yml.dist
           command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
       - when:
-            condition: << parameters.is_pull_request >>
+            condition: << parameters.is_ee_built >>
             steps:
               - run:
                   name: Build the latest EE Docker images
@@ -73,7 +73,7 @@ jobs:
                       make php-image-dev
                       docker save -o php-pim-image.tar akeneo/pim-dev/php:7.3
       - unless:
-            condition: << parameters.is_pull_request >>
+            condition: << parameters.is_ee_built >>
             steps:
               - run:
                   name: Save the CE image as a tar
@@ -297,7 +297,7 @@ jobs:
 
   build_prod:
       parameters:
-          is_pull_request:
+          is_ee_built:
               type: boolean
               default: true
       environment:
@@ -541,6 +541,7 @@ workflows:
                     - ready_to_build_only_ce?
           - build_dev:
                 name: build_dev_ce
+                is_ee_built: false
                 requires:
                     - checkout_ce
           - test_back_static_and_acceptance:
@@ -585,7 +586,7 @@ workflows:
       jobs:
           - checkout_ce
           - build_dev:
-                is_pull_request: false
+                is_ee_built: false
                 requires:
                     - checkout_ce
           - test_back_static_and_acceptance:
