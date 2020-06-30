@@ -31,7 +31,7 @@ describe('ClearAssociationsActionLine', () => {
       )
     ).toBeInTheDocument();
     expect(
-      await findAllByText('pimee_catalog_rule.form.helper.clear_attributes')
+      await findAllByText('pimee_catalog_rule.form.helper.clear_associations')
     ).toHaveLength(2);
   });
 });

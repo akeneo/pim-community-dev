@@ -33,9 +33,9 @@ const getActionModule: (
   const getActionModuleFunctions: ActionModuleGuesser[] = [
     getSetFamilyActionModule,
     getClearAssociationsActionModule,
-    getClearAttributeActionModule,
     getClearCategoriesActionModule,
     getClearGroupsActionModule,
+    getClearAttributeActionModule,
     getAddCategoriesModule,
     getSetCategoriesModule,
     // Fallbacks
