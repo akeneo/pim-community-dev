@@ -31,6 +31,7 @@ class AnnouncementItemSpec extends ObjectBehavior
             ]
         );
     }
+
     public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(AnnouncementItem::class);

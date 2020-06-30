@@ -1,0 +1,8 @@
+services:
+    akeneo_communication_channel.handler.command.add_viewed_announcements_by_user:
+        class: 'Akeneo\Platform\CommunicationChannel\Application\Announcement\Command\AddViewedAnnouncementsByUserHandler'
+        arguments:
+            - '@akeneo_communication_channel.repository.in_memory.viewed_announcement'
+
+    akeneo_communication_channel.repository.in_memory.viewed_announcement:
+        class: 'Akeneo\Platform\CommunicationChannel\Infrastructure\Persistence\InMemory\Repository\InMemoryViewedAnnouncementRepository'
