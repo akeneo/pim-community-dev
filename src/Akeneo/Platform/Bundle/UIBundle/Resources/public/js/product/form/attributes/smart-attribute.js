@@ -4,19 +4,23 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'backbone',
         'pim/form',
         'pim/user-context',
         'pimee/rule-manager',
+        'routing',
         'pimee/template/product/tab/attribute/smart-attribute'
     ],
     function (
         $,
         _,
+        __,
         Backbone,
         BaseForm,
         UserContext,
         RuleManager,
+        Routing,
         smartAttributeTemplate
     ) {
         return BaseForm.extend({
@@ -34,15 +38,25 @@ define(
                     RuleManager.getRuleRelations('attribute').done(function (ruleRelations) {
                         var deferred = $.Deferred();
                         var field = event.field;
-                        var ruleRelation = _.findWhere(ruleRelations, {attribute: field.attribute.code});
 
-                        if (ruleRelation && field.isEditable()) {
-                            let ruleLabel = ruleRelation.labels[UserContext.get('catalogLocale')];
-                            if ('undefined' === typeof ruleLabel) {
-                                ruleLabel = '[' + ruleRelation.rule + ']';
-                            }
-                            var $element = this.template({
-                                ruleLabel: ruleLabel
+                        const matchingRuleRelations = ruleRelations.filter(ruleRelation => ruleRelation.attribute === field.attribute.code);
+                        if (matchingRuleRelations.length && field.isEditable()) {
+                            const element = this.template({
+                                __,
+                                Routing,
+                                ruleRelations: matchingRuleRelations,
+                                getRuleLabel: (ruleRelation) => {
+                                    const label = ruleRelation.labels[UserContext.get('catalogLocale')];
+                                    if ((label || '').trim() === '') {
+                                        return `[${ruleRelation.rule}]`;
+                                    }
+
+                                    return label;
+                                }
+                            });
+                            const $element = $(element);
+                            $element.on('click span', (event) => {
+                                Routing.redirect(event.target.dataset.url);
                             });
 
                             field.addElement('footer', 'from_smart', $element);
