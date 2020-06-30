@@ -530,6 +530,18 @@ workflows:
                 requires:
                     - test_back_behat_legacy
                     - test_back_performance
+          - ready_to_build_only_ce?:
+                type: approval
+                filters:
+                    branches:
+                        ignore:
+                            - master
+          - checkout_ce:
+                requires:
+                    - ready_to_build?
+          - build_dev:
+                requires:
+                    - checkout_ce
 
   nightly:
       triggers:
