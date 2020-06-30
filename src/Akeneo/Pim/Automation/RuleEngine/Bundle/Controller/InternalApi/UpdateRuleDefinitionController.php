@@ -18,11 +18,13 @@ use Akeneo\Pim\Automation\RuleEngine\Component\Updater\RuleDefinitionUpdaterInte
 use Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\Common\Saver\RuleDefinitionSaver;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Normalizer\RuleDefinitionNormalizer;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -46,6 +48,9 @@ class UpdateRuleDefinitionController
     /** @var ValidatorInterface */
     private $validator;
 
+    /** @var SecurityFacade */
+    private $securityFacade;
+
     public function __construct(
         RuleDefinitionRepositoryInterface $ruleDefinitionRepository,
         RuleDefinitionUpdaterInterface $ruleDefinitionUpdater,
@@ -66,6 +71,10 @@ class UpdateRuleDefinitionController
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
+        }
+
+        if (!$this->securityFacade->isGranted('pimee_catalog_rule_rule_edit_permissions')) {
+            throw new AccessDeniedException();
         }
 
         $ruleDefinition = $this->ruleDefinitionRepository->findOneByIdentifier($ruleDefinitionCode);

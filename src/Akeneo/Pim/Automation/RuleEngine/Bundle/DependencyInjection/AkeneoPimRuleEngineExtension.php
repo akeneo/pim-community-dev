@@ -59,6 +59,5 @@ class AkeneoPimRuleEngineExtension extends AkeneoStorageUtilsExtension
         $loader->load('validators.yml');
         $loader->load('view_elements/attribute.yml');
         $loader->load('steps.yml');
-        $loader->load('twig.yml');
     }
 }

@@ -15,18 +15,6 @@ datagrid:
             label:
                 label: pimee_catalog_rule.datagrid.rule-grid.column.label
                 frontend_type: label
-            conditions:
-                label: pimee_catalog_rule.datagrid.rule-grid.column.conditions
-                type: twig
-                template: AkeneoPimRuleEngineBundle:Rule:_conditions.html.twig
-                frontend_type: html
-                data_name: content
-            actions:
-                label: pimee_catalog_rule.datagrid.rule-grid.column.actions
-                type: twig
-                template: AkeneoPimRuleEngineBundle:Rule:_actions.html.twig
-                frontend_type: html
-                data_name: content
             impactedSubjectCount:
                 label: pimee_catalog_rule.datagrid.rule-grid.column.impacted_product_count.label
                 type: twig
@@ -78,7 +66,7 @@ datagrid:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--trash
                 type: delete
-                label: pimee_catalog_rule.datagrid.rule-grid.actions.delete
+                label: pim_common.delete
                 link: delete_link
                 acl_resource:  pimee_catalog_rule_rule_delete_permissions
         filters:
@@ -129,7 +117,7 @@ datagrid:
                 entity_name: rule
                 acl_resource: pimee_catalog_rule_rule_delete_permissions
                 handler: mass_delete_rule
-                label: pimee_catalog_rule.datagrid.rule-grid.mass_edit_action.delete
+                label: pim_common.delete
                 className: 'AknButton AknButton--important AknButtonList-item'
                 messages:
                     confirm_title: pim_common.confirm_deletion

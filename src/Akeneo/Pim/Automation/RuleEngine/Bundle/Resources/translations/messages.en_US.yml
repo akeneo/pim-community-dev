@@ -2,13 +2,10 @@ pimee_catalog_rule:
     datagrid:
         rule-grid:
             actions:
-                delete: Delete
                 execute: Execute
             title: Rules
             column:
                 label: Label
-                conditions: Condition
-                actions: Action
                 impacted_product_count:
                     label: Impacted products
                     count: '{0,1}%count% impacted product|]1,Inf[%count% impacted products'
@@ -76,6 +73,7 @@ pimee_catalog_rule:
         rule: Rules
     acl:
         rule:
+            edit_permissions: Edit rules
             view_permissions: View rules
             delete_permissions: Delete rules
             impacted_product_count_permissions: Calculate the number of products impacted by the rules
