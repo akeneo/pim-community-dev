@@ -5,5 +5,16 @@ import {UpdateIcon} from './UpdateIcon';
 import {ClockIcon} from './ClockIcon';
 import {DateIcon} from './DateIcon';
 import {InfoIcon} from './InfoIcon';
+import {LoadingSpinnerIcon} from './LoadingSpinnerIcon';
 
-export {ChevronDownIcon, DuplicateIcon, UpdateIcon, CaretUpIcon, CaretDownIcon, ClockIcon, DateIcon, InfoIcon};
+export {
+    ChevronDownIcon,
+    DuplicateIcon,
+    UpdateIcon,
+    CaretUpIcon,
+    CaretDownIcon,
+    ClockIcon,
+    DateIcon,
+    InfoIcon,
+    LoadingSpinnerIcon,
+};
