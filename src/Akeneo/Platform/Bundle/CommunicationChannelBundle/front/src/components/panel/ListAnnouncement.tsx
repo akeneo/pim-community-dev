@@ -6,7 +6,7 @@ import {AnnouncementComponent, EmptyAnnouncementList} from './announcement';
 import {Announcement} from './../../models/announcement';
 
 const Container = styled.ul`
-  margin: 74px 30px 0 30px;
+  margin: 30px 30px 0 30px;
 `;
 
 type ListAnnouncementProps = {
