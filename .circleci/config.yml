@@ -547,11 +547,11 @@ workflows:
           - test_back_static_and_acceptance:
                 name: test_back_static_and_acceptance_ce
                 requires:
-                    - build_dev
+                    - build_dev_ce
           - test_front_static_acceptance_and_integration:
                 name: test_front_static_acceptance_and_integration_ce
                 requires:
-                    - build_dev
+                    - build_dev_ce
           - test_back_phpunit:
                 name: test_back_phpunit_ce
                 requires:
