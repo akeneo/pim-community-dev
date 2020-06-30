@@ -29,36 +29,30 @@ class ListAnnouncementsHandlerSpec extends ObjectBehavior
     {
         $announcements = [
             [
-                'startDate' => '2020/06/04',
-                'endDate' => '2020/12/31',
-                'notificationDuration' => 14,
-                'tags' => [
-                    'updates'
-                ],
-                'editions' => [
-                    'CE',
-                    'EE'
-                ],
+                'id' => 'update-easily_monitor_errors_on_your_connections-2020-06-04',
                 'title' => 'Easily monitor errors on your connections',
                 'description' => 'For each of your connections, a new `Monitoring` page now lists the last integration errors that may have occurred.',
                 'img' => '/bundles/akeneocommunicationchannel/images/announcements/new-connection-monitoring-page.png',
                 'altImg' => 'Connection monitoring page',
-                'link' => 'https://help.akeneo.com/pim/serenity/updates/2020-05.html#easily-monitor-errors-on-your-connections'
-            ],
-            [
+                'link' => 'https://help.akeneo.com/pim/serenity/updates/2020-05.html#easily-monitor-errors-on-your-connections',
                 'startDate' => '2020/06/04',
                 'endDate' => '2020/12/31',
                 'notificationDuration' => 14,
                 'tags' => [
                     'updates'
-                ],
-                'editions' => [
-                    'CE',
-                    'EE'
-                ],
+                ]
+            ],
+            [
+                'id' => 'update-new_metrics_on_the_connection_dashboard-2020-06-04',
                 'title' => 'New metrics on the Connection dashboard',
                 'description' => 'The Connection dashboard now displays additional information to ease error monitoring and allow you to see at a glance how your source connections are performing.',
-                'link' => 'https://help.akeneo.com/pim/serenity/updates/2020-05.html#new-metrics-on-the-connection-dashboard'
+                'link' => 'https://help.akeneo.com/pim/serenity/updates/2020-05.html#new-metrics-on-the-connection-dashboard',
+                'startDate' => '2020/06/04',
+                'endDate' => '2020/12/31',
+                'notificationDuration' => 14,
+                'tags' => [
+                    'updates'
+                ]
             ],
         ];
         $announcementItems = $this->createAnnouncementItems($announcements);
@@ -76,6 +70,7 @@ class ListAnnouncementsHandlerSpec extends ObjectBehavior
     {
         return array_map(function ($announcement) {
             return new AnnouncementItem(
+                $announcement['id'],
                 $announcement['title'],
                 $announcement['description'],
                 $announcement['img'] ?? null,
@@ -84,7 +79,6 @@ class ListAnnouncementsHandlerSpec extends ObjectBehavior
                 new \DateTimeImmutable($announcement['startDate']),
                 $announcement['notificationDuration'],
                 $announcement['tags'],
-                $announcement['editions']
             );
         }, $announcements);
     }
