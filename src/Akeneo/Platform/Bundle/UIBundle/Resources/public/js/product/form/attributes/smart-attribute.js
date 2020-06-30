@@ -9,7 +9,8 @@ define(
         'pim/form',
         'pim/user-context',
         'pimee/rule-manager',
-        'routing',
+        'pim/router',
+        'pim/security-context',
         'pimee/template/product/tab/attribute/smart-attribute'
     ],
     function (
@@ -21,6 +22,7 @@ define(
         UserContext,
         RuleManager,
         Routing,
+        SecurityContext,
         smartAttributeTemplate
     ) {
         return BaseForm.extend({
@@ -39,12 +41,15 @@ define(
                         var deferred = $.Deferred();
                         var field = event.field;
 
-                        const matchingRuleRelations = ruleRelations.filter(ruleRelation => ruleRelation.attribute === field.attribute.code);
+                        const matchingRuleRelations = ruleRelations.filter(
+                            ruleRelation => ruleRelation.attribute === field.attribute.code
+                        );
                         if (matchingRuleRelations.length && field.isEditable()) {
                             const element = this.template({
                                 __,
                                 Routing,
                                 ruleRelations: matchingRuleRelations,
+                                canEdit: SecurityContext.isGranted('pimee_catalog_rule_rule_edit_permissions'),
                                 getRuleLabel: (ruleRelation) => {
                                     const label = ruleRelation.labels[UserContext.get('catalogLocale')];
                                     if ((label || '').trim() === '') {
@@ -55,7 +60,7 @@ define(
                                 }
                             });
                             const $element = $(element);
-                            $element.on('click span', (event) => {
+                            $element.on('click span[data-url]', (event) => {
                                 Routing.redirect(event.target.dataset.url);
                             });
 
