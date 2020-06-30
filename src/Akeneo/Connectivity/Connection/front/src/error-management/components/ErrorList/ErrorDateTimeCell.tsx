@@ -48,7 +48,7 @@ const ErrorDateTimeCell: FC<Props> = ({timestamp}) => {
 
 const Container = styled.td<{collapsing?: boolean}>`
     border-bottom: 1px solid ${({theme}) => theme.color.grey60};
-    color: ${({theme}) => theme.color.grey140};
+    color: ${({theme}) => theme.color.grey120};
     padding: 15px 20px;
 
     ${({collapsing}) =>

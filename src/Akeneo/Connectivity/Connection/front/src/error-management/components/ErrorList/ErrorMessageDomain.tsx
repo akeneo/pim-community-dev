@@ -2,12 +2,15 @@ import React, {FC} from 'react';
 import styled from '../../../common/styled-with-theme';
 import {messageWithColoredParameters} from '../../message-with-colored-parameters';
 import {ConnectionErrorContent} from '../../model/ConnectionError';
+import {ErrorMessageUnformattedList} from './ErrorMessageUnformattedList';
 
 type Props = {
     content: ConnectionErrorContent;
 };
 
 const ErrorMessageDomain: FC<Props> = ({content}) => {
+    const unformattedList =
+        undefined === content.documentation ? <ErrorMessageUnformattedList content={content} /> : <></>;
     return (
         <>
             {'string' === typeof content?.message_template && undefined !== content?.message_parameters ? (
@@ -17,6 +20,7 @@ const ErrorMessageDomain: FC<Props> = ({content}) => {
             ) : (
                 <>
                     <ErrorMessage>{content.message}</ErrorMessage>
+                    {unformattedList}
                 </>
             )}
         </>
