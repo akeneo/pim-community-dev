@@ -65,7 +65,17 @@ extensions:
         config:
             alias: rule-grid
 
-    pim-rule-index-confirm-button:
+    pim-user-index-create-button:
+        module: pimee/rules/create-button
+        parent: pim-rule-index
+        targetZone: buttons
+        position: 150
+        aclResourceId: pimee_catalog_rule_rule_create_permissions
+        config:
+            title: pim_common.create
+            url: pimee_catalog_rule_new
+
+    pim-rule-index-execute-button:
         module: pim/form/common/index/confirm-button
         parent: pim-rule-index
         targetZone: buttons
@@ -77,7 +87,7 @@ extensions:
             successMessage: pimee_catalog_rule.notification.launched
             errorMessage: pimee_catalog_rule.notification.fail
             buttonLabel: pimee_catalog_rule.execution_button
-            buttonClass: AknButton AknButton--apply execute-all-rules
+            buttonClass: AknButton AknButtonList-item execute-all-rules
             message: pimee_catalog_rule.popin.execute_rules.confirm_content
             title: pimee_catalog_rule.popin.execute_rules.confirm_title
             subTitle: pim_menu.item.rule
