@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-9328: Add "en_GB" code to display the corresponding locale in the UI.
 - PIM-9319: Fix date timezone for a correct display of the dates in the Connection Dashboard
 
 # 4.0.35 (2020-06-22)
