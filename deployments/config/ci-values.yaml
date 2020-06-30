@@ -54,6 +54,16 @@ mysql:
         cpu: 200m
 
 elasticsearch:
+  client:
+    replicas: 1
+    heapSize: "128m"
+    resources:
+      limits:
+        cpu: "1"
+        memory: "512Mi"
+      requests:
+        cpu: "25m"
+        memory: "160Mi"
   master:
     persistence:
       size: 1Gi
@@ -69,4 +79,3 @@ elasticsearch:
 image:
   pim:
     repository: eu.gcr.io/akeneo-ci/pim-enterprise-dev
-

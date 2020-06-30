@@ -177,6 +177,12 @@ ifeq ($(INSTANCE_NAME_PREFIX),pimci-duplic)
 	yq w -i $(INSTANCE_DIR)/values.yaml mysql.common.persistentDisks[0] $(PFID)
 	yq w -i $(INSTANCE_DIR)/values.yaml mysql.mysql.userPassword test
 	yq w -i $(INSTANCE_DIR)/values.yaml mysql.mysql.rootPassword test
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultAdminUser.email "findUserInDatabase"
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultAdminUser.login "findUserInDatabase"
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultAdminUser.password "changePasswdInDatabase"
+	@echo "elasticsearch customization below must be removed after fix PIM-9283"
+	yq w -i $(INSTANCE_DIR)/values.yaml elasticsearch.client.resources.limits.memory "1024Mi"
+	yq w -i $(INSTANCE_DIR)/values.yaml elasticsearch.client.resources.requests.memory "512Mi"
 endif
 
 .PHONY: create-pim-main-tf
