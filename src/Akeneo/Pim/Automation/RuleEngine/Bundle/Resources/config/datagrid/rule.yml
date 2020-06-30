@@ -38,6 +38,11 @@ datagrid:
                 data_name: content
         properties:
             id: ~
+            edit_link:
+                type: url
+                route: pimee_catalog_rule_edit
+                params:
+                    - code
             execute_link:
                 type: url
                 route: pimee_catalog_rule_rule_execute
@@ -49,6 +54,14 @@ datagrid:
                 params:
                     - id
         actions:
+            edit:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
+                type:      navigate
+                label:     pim_common.edit
+                link:      edit_link
+                rowAction: true
+                acl_resource: pimee_catalog_rule_rule_edit_permissions
             execute:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--play
