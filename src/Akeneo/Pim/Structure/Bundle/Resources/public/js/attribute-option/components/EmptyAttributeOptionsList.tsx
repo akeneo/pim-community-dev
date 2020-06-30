@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {useAttributeOptionsContext} from '../contexts';
+import {useAttributeOptionsContext} from '../hooks';
 
 const EmptyAttributeOptionsList: FC = () => {
     const translate = useTranslate();

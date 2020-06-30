@@ -1,19 +1,19 @@
 import {useCallback, useEffect, useState} from 'react';
-import {useDispatch} from "react-redux";
+import {useDispatch} from 'react-redux';
 
-import useAttributeOptions from "./useAttributeOptions";
-import {useSaveAttributeOption} from "./useSaveAttributeOption";
-import {useCreateAttributeOption} from "./useCreateAttributeOption";
-import {useDeleteAttributeOption} from "./useDeleteAttributeOption";
-import {NotificationLevel, useNotify} from "@akeneo-pim-community/legacy-bridge/src";
-import {AttributeOption} from "../model";
+import useAttributeOptions from './useAttributeOptions';
+import {useSaveAttributeOption} from './useSaveAttributeOption';
+import {useCreateAttributeOption} from './useCreateAttributeOption';
+import {useDeleteAttributeOption} from './useDeleteAttributeOption';
+import {useManualSortAttributeOptions} from './useManualSortAttributeOptions';
+import {NotificationLevel, useNotify} from '@akeneo-pim-community/legacy-bridge/src';
+import {AttributeOption} from '../model';
 import {
     createAttributeOptionAction,
     deleteAttributeOptionAction,
     initializeAttributeOptionsAction,
     updateAttributeOptionAction
-} from "../reducers";
-import {useManualSortAttributeOptions} from "./useManualSortAttributeOptions";
+} from '../reducers';
 
 export type AttributeOptionsContextState = {
     attributeOptions: AttributeOption[]|null;
@@ -29,6 +29,7 @@ export type AttributeOptionsContextState = {
     create: (optionCode: string) => Promise<void>;
     select: (optionId: number|null) => void;
     sort: (sortedAttributeOptions: AttributeOption[]) => Promise<void>;
+    initializeSelection: (attributeOptions: AttributeOption[]|null) => void;
 };
 
 export const initialAttributeOptionsContextState: AttributeOptionsContextState = {
@@ -45,9 +46,10 @@ export const initialAttributeOptionsContextState: AttributeOptionsContextState =
     create: async () => {},
     select: () => {},
     sort: async () => {},
+    initializeSelection: () => {},
 };
 
-export const useAttributeOptionsContextState = (attributeId: number): AttributeOptionsContextState => {
+export const useAttributeOptionsContextState = (): AttributeOptionsContextState => {
     const attributeOptions = useAttributeOptions();
     const attributeOptionSaver = useSaveAttributeOption();
     const attributeOptionCreate = useCreateAttributeOption();
@@ -89,24 +91,13 @@ export const useAttributeOptionsContextState = (attributeId: number): AttributeO
         try {
             await attributeOptionDelete(attributeOptionId);
             dispatchAction(deleteAttributeOptionAction(attributeOptionId));
-            if (attributeOptions && selectedOption && selectedOption.id === attributeOptionId) {
-                setSelectedOption(attributeOptions[0]);
-            }
         } catch (error) {
             notify(NotificationLevel.ERROR, error);
         }
         setIsSaving(false);
-    }, [attributeOptionDelete, setIsSaving, dispatchAction, notify, setSelectedOption, attributeOptions, selectedOption]);
+    }, [attributeOptionDelete, setIsSaving, dispatchAction, notify]);
 
-    const selectedOptionExists = useCallback(() => {
-        return (
-            attributeOptions !== null &&
-            selectedOption !== null &&
-            attributeOptions.filter((option: AttributeOption) => option.id === selectedOption.id).length === 1
-        );
-    }, [attributeOptions, selectedOption]);
-
-    const select = useCallback(async (optionId: number | null) => {
+    const select = useCallback((optionId: number | null) => {
         if (attributeOptions !== null) {
             const option = attributeOptions.find((option: AttributeOption) => option.id === optionId);
             if (option !== undefined) {
@@ -129,8 +120,8 @@ export const useAttributeOptionsContextState = (attributeId: number): AttributeO
     }, [setIsSaving, attributeOptionManualSort, dispatchAction]);
 
     const isEmpty = useCallback(() => {
-        return (attributeOptions !== null && attributeOptions.length === 0 && !showNewOptionForm);
-    }, [attributeOptions, showNewOptionForm]);
+        return (attributeOptions !== null && attributeOptions.length === 0);
+    }, [attributeOptions]);
 
     const isEditing = useCallback(() => {
         return (selectedOption !== null && !showNewOptionForm);
@@ -140,33 +131,61 @@ export const useAttributeOptionsContextState = (attributeId: number): AttributeO
         return (selectedOption === null && showNewOptionForm);
     }, [selectedOption, showNewOptionForm]);
 
-    const isLoading = useCallback(() => {
+    const isLoading = () => {
         return (attributeOptions === null || isSaving);
-    }, [attributeOptions, isSaving]);
+    };
 
     const deactivateCreation = useCallback(() => {
         setShowNewOptionForm(false);
     }, [setShowNewOptionForm]);
 
     const activateCreation = useCallback(() => {
+        setSelectedOption(null);
         setShowNewOptionForm(true);
-    }, [setShowNewOptionForm]);
+    }, [setShowNewOptionForm, setSelectedOption]);
 
-    useEffect(() => {
+    const initializeSelection = useCallback((attributeOptions: AttributeOption[]|null) => {
+        const selectedOptionExists = (optionsList: AttributeOption[], selection: AttributeOption) => {
+            return (
+                optionsList.filter((option: AttributeOption) => option.id === selection.id).length === 1
+            );
+        };
+
+        if (isCreating()) {
+            return;
+        }
+
+        if (isEditing() && attributeOptions && selectedOption && selectedOptionExists(attributeOptions, selectedOption)) {
+            select(selectedOption.id);
+
+            return;
+        }
+
         if (
             attributeOptions !== null &&
             attributeOptions.length > 0 &&
-            (selectedOption === null || !selectedOptionExists())
+            (selectedOption === null || !selectedOptionExists(attributeOptions, selectedOption))
         ) {
-            setSelectedOption(attributeOptions[0]);
-        } else if (attributeOptions === null || attributeOptions.length === 0) {
-            setSelectedOption(null);
+            select(attributeOptions[0].id);
+
+            return;
         }
-    }, [attributeOptions]);
+
+        if (attributeOptions === null || attributeOptions.length === 0) {
+            select(null);
+
+            return;
+        }
+    }, [select, selectedOption, isEditing, isCreating]);
 
     useEffect(() => {
-        setSelectedOption(null);
-    }, [attributeId]);
+        if (Array.isArray(attributeOptions) && selectedOption !== null) {
+            const selection = attributeOptions.filter((option: AttributeOption) => option.id === selectedOption.id);
+            if (selection.length === 0) {
+                setSelectedOption(attributeOptions[0]);
+            }
+        }
+    }, [attributeOptions, selectedOption, setSelectedOption]);
 
     return {
         attributeOptions,
@@ -182,5 +201,6 @@ export const useAttributeOptionsContextState = (attributeId: number): AttributeO
         create,
         select,
         sort,
+        initializeSelection,
     };
 };

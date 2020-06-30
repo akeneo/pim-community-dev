@@ -26,7 +26,7 @@ const AttributeOptionsApp = ({attributeId, autoSortOptions}: IndexProps) => {
             <Provider store={attributeOptionsStore}>
                 <AttributeContextProvider attributeId={attributeId} autoSortOptions={autoSortOptions}>
                     <LocalesContextProvider>
-                        <AttributeOptionsContextProvider attributeId={attributeId}>
+                        <AttributeOptionsContextProvider>
                             <OverridePimStyle/>
                             <AttributeOptions />
                         </AttributeOptionsContextProvider>

@@ -1,5 +1,5 @@
 import {useRoute} from '@akeneo-pim-community/legacy-bridge';
-import {useAttributeContext} from '../contexts';
+import {useAttributeContext} from './useAttributeContext';
 
 const useCreateAttributeOption = () => {
     const attribute = useAttributeContext();

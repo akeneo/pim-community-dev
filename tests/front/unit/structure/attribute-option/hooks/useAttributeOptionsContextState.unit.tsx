@@ -3,20 +3,22 @@ import {Provider} from 'react-redux';
 import {act, renderHook} from '@testing-library/react-hooks';
 import {AttributeContextProvider} from 'akeneopimstructure/js/attribute-option/contexts';
 import {createStoreWithInitialState} from 'akeneopimstructure/js/attribute-option/store/store';
-import {useAttributeOptionsContextState} from 'akeneopimstructure/js/attribute-option/hooks/useAttributeOptionsContextState';
+import {useAttributeOptionsContextState, initialAttributeOptionsContextState} from 'akeneopimstructure/js/attribute-option/hooks/useAttributeOptionsContextState';
 import {AttributeOption} from 'akeneopimstructure/js/attribute-option/model';
-
-import {useSaveAttributeOption} from 'akeneopimstructure/js/attribute-option/hooks/useSaveAttributeOption';
-import {useCreateAttributeOption} from 'akeneopimstructure/js/attribute-option/hooks/useCreateAttributeOption';
-import {useDeleteAttributeOption} from 'akeneopimstructure/js/attribute-option/hooks/useDeleteAttributeOption';
-import {useManualSortAttributeOptions} from 'akeneopimstructure/js/attribute-option/hooks/useManualSortAttributeOptions';
-import {DependenciesProvider} from "@akeneo-pim-community/legacy-bridge/src";
 
 jest.mock('akeneopimstructure/js/attribute-option/hooks/useSaveAttributeOption');
 jest.mock('akeneopimstructure/js/attribute-option/hooks/useCreateAttributeOption');
 jest.mock('akeneopimstructure/js/attribute-option/hooks/useDeleteAttributeOption');
 jest.mock('akeneopimstructure/js/attribute-option/hooks/useManualSortAttributeOptions');
-jest.mock('akeneopimstructure/js/attribute-option/hooks/useManualSortAttributeOptions');
+jest.mock('@akeneo-pim-community/legacy-bridge/src');
+
+import {useSaveAttributeOption} from 'akeneopimstructure/js/attribute-option/hooks/useSaveAttributeOption';
+import {useCreateAttributeOption} from 'akeneopimstructure/js/attribute-option/hooks/useCreateAttributeOption';
+import {useDeleteAttributeOption} from 'akeneopimstructure/js/attribute-option/hooks/useDeleteAttributeOption';
+import {useManualSortAttributeOptions} from 'akeneopimstructure/js/attribute-option/hooks/useManualSortAttributeOptions';
+
+import {useNotify} from '@akeneo-pim-community/legacy-bridge/src';
+const {DependenciesProvider} = jest.requireActual('@akeneo-pim-community/legacy-bridge/src');
 
 const givenAttributeOptions = (): AttributeOption[] => {
     return [
@@ -40,7 +42,7 @@ const givenAttributeOptions = (): AttributeOption[] => {
 };
 
 const renderUseAttributeOptionsContextState = (attributeOptions: AttributeOption[]|null) => {
-    return renderHook(() => useAttributeOptionsContextState(8), {
+    return renderHook(() => useAttributeOptionsContextState(), {
         wrapper: ({children}: PropsWithChildren<any>) => (
             <DependenciesProvider>
                 <Provider store={createStoreWithInitialState({attributeOptions})}>
@@ -53,19 +55,27 @@ const renderUseAttributeOptionsContextState = (attributeOptions: AttributeOption
     });
 };
 
+const mockNotify = jest.fn();
 const mockSave = jest.fn();
 const mockCreate = jest.fn();
 const mockDelete = jest.fn();
 const mockSort = jest.fn();
+const mockFetch = jest.fn().mockImplementation(() => {
+    return Promise.resolve({
+        status: 200,
+        json: () => Promise.resolve({}),
+    });
+});
 
 describe('useAttributeContextState', () => {
     beforeAll(() => {
-        global.fetch = jest.fn();
+        global.fetch = mockFetch;
 
         useSaveAttributeOption.mockImplementation(() => mockSave);
         useCreateAttributeOption.mockImplementation(() => mockCreate);
         useDeleteAttributeOption.mockImplementation(() => mockDelete);
         useManualSortAttributeOptions.mockImplementation(() => mockSort);
+        useNotify.mockImplementation(() => mockNotify);
     });
 
     beforeEach(() => {
@@ -73,6 +83,7 @@ describe('useAttributeContextState', () => {
     });
 
     afterAll(() => {
+        global.fetch.mockRestore();
         jest.restoreAllMocks();
     });
 
@@ -88,7 +99,7 @@ describe('useAttributeContextState', () => {
                 }
             };
 
-            const {result, wait} = renderUseAttributeOptionsContextState(attributeOptions);
+            const {result, waitForNextUpdate} = renderUseAttributeOptionsContextState(attributeOptions);
             let currentAttributeOptions;
 
             mockSave.mockImplementation(async () => Promise.resolve(attributeOption));
@@ -97,10 +108,10 @@ describe('useAttributeContextState', () => {
                 result.current.save(attributeOption);
             });
 
-            await wait(() => {
-                expect(mockSave).toHaveBeenCalledWith(attributeOption);
-                expect(mockSave).not.toThrow();
-            });
+            await waitForNextUpdate();
+
+            expect(mockSave).toHaveBeenCalledWith(attributeOption);
+            expect(mockSave).not.toThrow();
 
             act(() => {
                 currentAttributeOptions = result.current.attributeOptions;
@@ -126,7 +137,7 @@ describe('useAttributeContextState', () => {
             ]);
         });
 
-        it('should notify the update of the product has failed', async () => {
+        it('should notify the update of the attribute option failed', async () => {
             const attributeOptions = givenAttributeOptions();
             const attributeOption = {
                 id: 85,
@@ -137,7 +148,7 @@ describe('useAttributeContextState', () => {
                 }
             };
 
-            const {result, wait} = renderUseAttributeOptionsContextState(attributeOptions);
+            const {result, waitForNextUpdate} = renderUseAttributeOptionsContextState(attributeOptions);
             let currentAttributeOptions;
 
             mockSave.mockRejectedValue('invalid_code');
@@ -146,20 +157,95 @@ describe('useAttributeContextState', () => {
                 result.current.save(attributeOption);
             });
 
-            await wait(() => {
-                expect(mockSave).toHaveBeenCalledWith(attributeOption);
-                expect(mockSave).toThrow();
-            });
+            await waitForNextUpdate();
+
+            expect(mockSave).toHaveBeenCalledWith(attributeOption);
+            expect(mockNotify).toHaveBeenCalled();
 
             act(() => {
                 currentAttributeOptions = result.current.attributeOptions;
             });
 
-            expect(result.current.attributeOptions).toEqual(attributeOptions);
+            expect(currentAttributeOptions).toEqual(attributeOptions);
         });
     });
 
-    describe('remove', () => {});
+    describe('remove', () => {
+        it('should remove existing product', async () => {
+            const attributeOptions = givenAttributeOptions();
+            const expectedAttributeOptions = [
+                {
+                    id: 86,
+                    code: 'blue',
+                    optionValues: {
+                        'en_US': {id:255, locale:'en_US', value:'Blue'},
+                        'fr_FR':{id:256, locale:'fr_FR', value:'Bleu'}
+                    }
+                },
+            ];
+            const {result, waitForNextUpdate} = renderUseAttributeOptionsContextState(attributeOptions);
+            mockDelete.mockImplementation(async () => Promise.resolve({}));
+
+            act(() => {
+                result.current.remove(85);
+            });
+
+            await waitForNextUpdate();
+
+            expect(mockDelete).toHaveBeenCalled();
+            expect(result.current.attributeOptions).toEqual(expectedAttributeOptions);
+            expect(result.current.selectedOption).toBeNull();
+        });
+
+        it('should remove existing product and change selection', async () => {
+            const attributeOptions = givenAttributeOptions();
+            const expectedAttributeOptions = [
+                {
+                    id: 86,
+                    code: 'blue',
+                    optionValues: {
+                        'en_US': {id:255, locale:'en_US', value:'Blue'},
+                        'fr_FR':{id:256, locale:'fr_FR', value:'Bleu'}
+                    }
+                },
+            ];
+            const {result, waitForNextUpdate} = renderUseAttributeOptionsContextState(attributeOptions);
+            mockDelete.mockImplementation(async () => Promise.resolve({}));
+
+            act(() => {
+                result.current.select(85);
+            });
+
+            expect(result.current.selectedOption).not.toBeNull();
+            expect(result.current.selectedOption.id).toBe(85);
+
+            act(() => {
+                result.current.remove(85);
+            });
+
+            await waitForNextUpdate();
+
+            expect(mockDelete).toHaveBeenCalled();
+            expect(result.current.attributeOptions).toEqual(expectedAttributeOptions);
+            expect(result.current.selectedOption).not.toBeNull();
+            expect(result.current.selectedOption.id).toBe(86);
+        });
+
+        it('should notify the deletion of the attribute option failed', async () => {
+            const attributeOptions = givenAttributeOptions();
+            const {result, waitForNextUpdate} = renderUseAttributeOptionsContextState(attributeOptions);
+            mockDelete.mockRejectedValue('invalid_code');
+
+            act(() => {
+                result.current.remove(99);
+            });
+
+            await waitForNextUpdate();
+
+            expect(mockDelete).toHaveBeenCalledWith(99);
+            expect(mockNotify).toHaveBeenCalled();
+        });
+    });
 
     describe('create', () => {
         it('should edit the new created option', async () => {
@@ -169,9 +255,7 @@ describe('useAttributeContextState', () => {
                 id: 99,
                 optionValues: {},
             };
-            const {result, wait} = renderUseAttributeOptionsContextState([]);
-            let attributeOptions;
-            let selectOption;
+            const {result, waitForNextUpdate} = renderUseAttributeOptionsContextState([]);
             let isEditing;
 
             mockCreate.mockImplementation(() => mockNewOption);
@@ -179,21 +263,32 @@ describe('useAttributeContextState', () => {
             act(() => {
                 result.current.create(newOptionCode);
             });
+            await waitForNextUpdate();
 
-            await wait(() => {
-                expect(mockCreate).toHaveBeenCalledWith(newOptionCode);
-            });
+            expect(mockCreate).toHaveBeenCalledWith(newOptionCode);
+            expect(result.current.selectedOption).not.toBeNull();
+            expect(result.current.selectedOption).toEqual(mockNewOption);
+            expect(result.current.attributeOptions).toContain(mockNewOption);
 
             act(() => {
-                selectOption = result.current.selectedOption;
-                attributeOptions = result.current.attributeOptions;
                 isEditing = result.current.isEditing();
             });
 
-            expect(selectOption).not.toBeNull();
-            expect(selectOption).toEqual(mockNewOption);
             expect(isEditing).toBe(true);
-            expect(attributeOptions).toContain(mockNewOption);
+        });
+
+        it('should notify the creation of the attribute option failed', async () => {
+            const newOptionCode = 'new_option_code';
+            const {result, waitForNextUpdate} = renderUseAttributeOptionsContextState([]);
+            mockCreate.mockRejectedValue('invalid_code');
+
+            act(() => {
+                result.current.create(newOptionCode);
+            });
+            await waitForNextUpdate();
+
+            expect(mockCreate).toHaveBeenCalledWith(newOptionCode);
+            expect(mockNotify).toHaveBeenCalled();
         });
     });
 
@@ -201,70 +296,69 @@ describe('useAttributeContextState', () => {
         it('should dispatch the update og the attribute options list order', async () => {
             const attributeOptions = givenAttributeOptions();
             const reversedAttributeOptions = attributeOptions.reverse();
-            const {result, wait} = renderUseAttributeOptionsContextState(attributeOptions);
-            let sortedAttributeOptions;
+            const {result, waitForNextUpdate} = renderUseAttributeOptionsContextState(attributeOptions);
 
             act(() => {
                 result.current.sort(reversedAttributeOptions);
             });
+            await waitForNextUpdate();
 
-            await wait(() => {
-                expect(mockSort).toHaveBeenCalledWith(reversedAttributeOptions);
-            });
-
-            act(() => {
-                sortedAttributeOptions = result.current.attributeOptions;
-            });
-
-            expect(sortedAttributeOptions).toEqual(reversedAttributeOptions);
+            expect(mockSort).toHaveBeenCalledWith(reversedAttributeOptions);
+            expect(result.current.attributeOptions).toEqual(reversedAttributeOptions);
         });
     });
 
     describe('select', () => {
-        it('should reset the selection when the attribute options list is null', () => {
-            const {result} = renderUseAttributeOptionsContextState(null);
-            let selectedOption;
+        it('should reset the selection when the attribute options list is null', async () => {
+            const {result, waitForNextUpdate} = renderUseAttributeOptionsContextState(null);
             let isCreating;
             let isEditing;
 
             act(() => {
                 result.current.select(666);
             });
+            await waitForNextUpdate();
+
+            expect(result.current.selectedOption).toBeNull();
 
             act(() => {
-                selectedOption = result.current.selectedOption;
                 isCreating = result.current.isCreating();
+            });
+
+            expect(isCreating).toBe(false);
+
+            act(() => {
                 isEditing = result.current.isEditing();
             });
 
-            expect(selectedOption).toBeNull();
-            expect(isCreating).toBe(false);
             expect(isEditing).toBe(false);
         });
 
-        it('should reset the selection when the id is not in the attribute options list', () => {
+        it('should reset the selection when the id is not in the attribute options list', async () => {
             const attributeOptions = givenAttributeOptions();
             const {result} = renderUseAttributeOptionsContextState(attributeOptions);
-            let selectedOption;
             let isCreating;
             let isEditing;
 
             act(() => {
                 result.current.select(666);
             });
+            expect(result.current.selectedOption).toBeNull();
 
             act(() => {
-                selectedOption = result.current.selectedOption;
                 isCreating = result.current.isCreating();
+            });
+
+            expect(isCreating).toBe(false);
+
+            act(() => {
                 isEditing = result.current.isEditing();
             });
 
-            expect(selectedOption).toBeNull();
-            expect(isCreating).toBe(false);
             expect(isEditing).toBe(false);
         });
 
-        it('should in edition state when a valid option is selected', () => {
+        it('should in edition state when a valid option is selected', async () => {
             const attributeOptions = givenAttributeOptions();
             const {result} = renderUseAttributeOptionsContextState(attributeOptions);
             let selectedOption;
@@ -277,7 +371,13 @@ describe('useAttributeContextState', () => {
 
             act(() => {
                 selectedOption = result.current.selectedOption;
+            });
+
+            act(() => {
                 isCreating = result.current.isCreating();
+            });
+
+            act(() => {
                 isEditing = result.current.isEditing();
             });
 
@@ -289,31 +389,19 @@ describe('useAttributeContextState', () => {
     });
 
     describe('isLoading', () => {
-        it('should check if the list of attribute options is loading', () => {
-            const {result} = renderUseAttributeOptionsContextState(null);
-            let isLoading;
+        it('should check if the list of attribute options is loading', async () => {
+            const {result, waitForNextUpdate} = renderUseAttributeOptionsContextState(null);
 
-            act(() => {
-                isLoading = result.current.isLoading();
-            });
+            expect(result.current.isLoading()).toBe(true);
 
-            expect(isLoading).toBe(true);
+            await waitForNextUpdate();
+
+            expect(result.current.isLoading()).toBe(false);
         });
     });
 
     describe('isEmpty', () => {
-        it('should not be empty check if the list of attribute options is null', () => {
-            const {result} = renderUseAttributeOptionsContextState(null);
-            let isEmpty;
-
-            act(() => {
-                isEmpty = result.current.isEmpty();
-            });
-
-            expect(isEmpty).toBe(false);
-        });
-
-        it('should be empty if the list contains no options', () => {
+        it('should be empty if the list contains no options', async () => {
             const {result} = renderUseAttributeOptionsContextState([]);
             let isEmpty;
 
@@ -322,29 +410,9 @@ describe('useAttributeContextState', () => {
             });
 
             expect(isEmpty).toBe(true);
-
-            act(() => {
-                result.current.activateCreation();
-            });
-
-            act(() => {
-                isEmpty = result.current.isEmpty();
-            });
-
-            expect(isEmpty).toBe(false);
-
-            act(() => {
-                result.current.deactivateCreation();
-            });
-
-            act(() => {
-                isEmpty = result.current.isEmpty();
-            });
-
-            expect(isEmpty).toBe(true);
         });
 
-        it('should not be empty if the list contains options', () => {
+        it('should not be empty if the list contains options',  async () => {
             const attributeOptions = givenAttributeOptions();
             const {result} = renderUseAttributeOptionsContextState(attributeOptions);
             let isEmpty;
@@ -358,7 +426,7 @@ describe('useAttributeContextState', () => {
     });
 
     describe('isEditing', () => {
-        it('should check if an option is editing', () => {
+        it('should check if an option is editing', async () => {
             const attributeOptions = givenAttributeOptions();
             const {result} = renderUseAttributeOptionsContextState(attributeOptions);
             let isEditing;
@@ -388,6 +456,19 @@ describe('useAttributeContextState', () => {
             });
 
             expect(isEditing).toBe(false);
+            expect(result.current.isCreating()).toBe(true);
+            expect(result.current.isEditing()).toBe(false);
+
+            act(() => {
+                result.current.deactivateCreation();
+            });
+
+            act(() => {
+                isEditing = result.current.isEditing();
+            });
+
+            expect(result.current.isCreating()).toBe(false);
+            expect(result.current.isEditing()).toBe(false);
         });
     });
 
@@ -423,5 +504,110 @@ describe('useAttributeContextState', () => {
 
             expect(isCreating).toBe(false);
         });
+    });
+
+    describe('initializeSelection', () => {
+        it('should check if an option is creating', () => {
+            const attributeOptions = givenAttributeOptions();
+            const {result} = renderUseAttributeOptionsContextState(attributeOptions);
+
+            act(() => {
+                result.current.initializeSelection(attributeOptions);
+            });
+
+            expect(result.current.selectedOption).toEqual({
+                id: 85,
+                code: 'black',
+                optionValues: {
+                    'en_US': {id:252, locale:'en_US', value:'Black'},
+                    'fr_FR':{id:253, locale:'fr_FR', value:'Noir'}
+                }
+            });
+        });
+
+        it('should deactivate the selection if the attribute optionsis not defined', async () => {
+            const {result, waitForNextUpdate} = renderUseAttributeOptionsContextState(null);
+
+            act(() => {
+                result.current.initializeSelection(null);
+            });
+
+            await waitForNextUpdate();
+
+            expect(result.current.selectedOption).toBeNull();
+        });
+
+        it('should deactivate the selection if there are no attribute options', () => {
+            const {result} = renderUseAttributeOptionsContextState([]);
+
+            act(() => {
+                result.current.initializeSelection([]);
+            });
+
+            expect(result.current.selectedOption).toBeNull();
+        });
+
+        it('should deactivate the selection if there are no attribute options', () => {
+            const attributeOptions = givenAttributeOptions();
+            const {result} = renderUseAttributeOptionsContextState(attributeOptions);
+
+            act(() => {
+                result.current.select(85);
+            });
+
+            expect(result.current.selectedOption).not.toBeNull();
+
+            let isEditing;
+            act(() => {
+                isEditing = result.current.isEditing();
+            });
+            expect(isEditing).toBe(true);
+
+            act(() => {
+                result.current.initializeSelection(attributeOptions.reverse());
+            });
+
+            expect(result.current.selectedOption).not.toBeNull();
+            expect(result.current.selectedOption.id).toBe(85);
+        });
+
+        it('should not reinitialize the selection if is creating a new attribute option', async () => {
+            const attributeOptions = givenAttributeOptions();
+            const {result} = renderUseAttributeOptionsContextState(attributeOptions);
+
+            act(() => {
+                result.current.activateCreation();
+            });
+
+            expect(result.current.selectedOption).toBeNull();
+
+            act(() => {
+                result.current.initializeSelection(attributeOptions);
+            });
+
+            expect(result.current.selectedOption).toBeNull();
+        });
+    });
+});
+
+
+describe('initialAttributeOptionsContextState', () => {
+    it('should return default values', () => {
+        expect(initialAttributeOptionsContextState.attributeOptions).toBeNull();
+        expect(initialAttributeOptionsContextState.selectedOption).toBeNull();
+        expect(initialAttributeOptionsContextState.deactivateCreation()).toBeUndefined();
+        expect(initialAttributeOptionsContextState.activateCreation()).toBeUndefined();
+
+        expect(initialAttributeOptionsContextState.isEmpty()).toBeFalsy();
+        expect(initialAttributeOptionsContextState.isEditing()).toBeFalsy();
+        expect(initialAttributeOptionsContextState.isCreating()).toBeFalsy();
+        expect(initialAttributeOptionsContextState.isLoading()).toBeTruthy();
+
+        expect(initialAttributeOptionsContextState.save({id: 1, code: 'test', optionValues: {}})).toEqual(Promise.resolve({}));
+        expect(initialAttributeOptionsContextState.remove(0)).toEqual(Promise.resolve({}));
+        expect(initialAttributeOptionsContextState.create('test')).toEqual(Promise.resolve({}));
+        expect(initialAttributeOptionsContextState.sort([])).toEqual(Promise.resolve({}));
+        expect(initialAttributeOptionsContextState.select(0)).toBeUndefined();
+        expect(initialAttributeOptionsContextState.initializeSelection([])).toBeUndefined();
     });
 });

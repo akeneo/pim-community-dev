@@ -27,13 +27,13 @@ export const useSortedAttributeOptions = (
 
             setSortedAttributeOptions(newSortedAttributeOptions);
         }
-    }, [sortedAttributeOptions]);
+    }, [sortedAttributeOptions, setSortedAttributeOptions]);
 
     const validate = useCallback(() => {
         if (sortedAttributeOptions !== null && JSON.stringify(sortedAttributeOptions) !== JSON.stringify(attributeOptions)) {
             manuallySortAttributeOptions(sortedAttributeOptions);
         }
-    }, [sortedAttributeOptions]);
+    }, [sortedAttributeOptions, manuallySortAttributeOptions]);
 
     useEffect(() => {
         if (attributeOptions !== null) {
@@ -46,7 +46,7 @@ export const useSortedAttributeOptions = (
             }
             setSortedAttributeOptions(sortedOptions);
         }
-    }, [attributeOptions, autoSortOptions]);
+    }, [attributeOptions, autoSortOptions, setSortedAttributeOptions]);
 
     return {
         sortedAttributeOptions,

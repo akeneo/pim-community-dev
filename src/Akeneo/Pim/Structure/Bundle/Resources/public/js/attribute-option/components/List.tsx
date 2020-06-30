@@ -1,17 +1,20 @@
-import React, {FC, useCallback, useState} from 'react';
+import React, {FC, useCallback, useEffect, useState} from 'react';
 
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {AttributeOption} from '../model';
-import {useAttributeContext, useAttributeOptionsContext} from '../contexts';
-import {useAttributeOptionsListState} from '../hooks/useAttributeOptionsListState';
-import {useSortedAttributeOptions} from '../hooks/useSortedAttributeOptions';
+import {
+    useAttributeContext,
+    useAttributeOptionsContext,
+    useAttributeOptionsListState,
+    useSortedAttributeOptions
+} from '../hooks';
 import ToggleButton from './ToggleButton';
 import ListItem, {DragItem} from './ListItem';
 import NewOptionPlaceholder from './NewOptionPlaceholder';
 
 const List: FC = () => {
     const translate = useTranslate();
-    const {autoSortOptions} = useAttributeContext();
+    const {attributeId, autoSortOptions} = useAttributeContext();
     const {
         attributeOptions,
         selectedOption,
@@ -19,7 +22,8 @@ const List: FC = () => {
         select,
         sort,
         deactivateCreation,
-        activateCreation
+        activateCreation,
+        initializeSelection
     } = useAttributeOptionsContext();
     const {extraData} = useAttributeOptionsListState(attributeOptions);
     const {
@@ -30,21 +34,28 @@ const List: FC = () => {
     const [dragItem, setDragItem] = useState<DragItem | null>(null);
 
     const onSelectItem = useCallback(async (optionId: number) => {
-        await select(optionId);
         deactivateCreation();
+        select(optionId);
     }, [select, deactivateCreation]);
 
-    const displayNewOptionPlaceholder = useCallback(() => {
-        select(null);
+    const displayNewOptionPlaceholder = useCallback(async () => {
         activateCreation();
-    }, [select, activateCreation]);
+    }, [activateCreation]);
 
-    const cancelNewOption = useCallback(async () => {
+    const cancelNewOption = useCallback(() => {
         deactivateCreation();
         if (attributeOptions !== null && attributeOptions.length > 0) {
-            await select(attributeOptions[0].id);
+            select(attributeOptions[0].id);
         }
     }, [deactivateCreation, attributeOptions, select]);
+
+    useEffect(() => {
+        initializeSelection(sortedAttributeOptions);
+    }, [initializeSelection, sortedAttributeOptions]);
+
+    useEffect(() => {
+        select(null);
+    }, [attributeId]);
 
     return (
         <div className="AknSubsection AknAttributeOption-list">

@@ -1,7 +1,7 @@
 import React, {ChangeEvent, FC, useEffect, useRef} from 'react';
 
 import {AttributeOption, Locale} from '../model';
-import {useEditingOptionContext} from '../contexts';
+import {useEditingOptionContext} from '../hooks';
 
 type AttributeOptionFormProps = {
     option: AttributeOption;

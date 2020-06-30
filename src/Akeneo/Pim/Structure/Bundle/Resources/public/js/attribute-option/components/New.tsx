@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useRef} from 'react';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {useAttributeOptionsContext} from '../contexts/AttributeOptionsContext';
+import {useAttributeOptionsContext} from '../hooks';
 
 const New: FC = () => {
     const {create} = useAttributeOptionsContext();

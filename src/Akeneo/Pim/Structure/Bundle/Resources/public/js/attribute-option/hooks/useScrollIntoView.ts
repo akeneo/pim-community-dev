@@ -6,4 +6,4 @@ export const useScrollIntoView = (ref: RefObject<HTMLElement>):void => {
             ref.current.scrollIntoView();
         }
     }, []);
-}
+};

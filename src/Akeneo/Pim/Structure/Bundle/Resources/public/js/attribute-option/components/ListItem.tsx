@@ -1,7 +1,7 @@
-import React, {FC, useRef, useState} from 'react';
+import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
 import {AttributeOption} from '../model';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
-import {useAttributeContext, useAttributeOptionsContext} from '../contexts';
+import {useAttributeContext, useAttributeOptionsContext} from '../hooks';
 
 export type DragItem = {
     code: string;
@@ -26,33 +26,37 @@ const ListItem: FC<AttributeOptionItemProps> = ({children, ...props}) => {
     const attributeContext = useAttributeContext();
     const rowRef = useRef(null);
 
-    const deleteOption = () => {
+    const deleteOption = useCallback(async () => {
         setShowDeleteConfirmationModal(false);
-        remove(data.id);
-    };
+        await remove(data.id);
+    }, [setShowDeleteConfirmationModal, remove, data]);
 
-    const onDragStart = (event: any) => {
+    const cancelDeleteOption = useCallback(() => {
+        setShowDeleteConfirmationModal(false);
+    }, [setShowDeleteConfirmationModal])
+
+    const onDragStart = useCallback((event: any) => {
         event.stopPropagation();
         event.persist();
         event.dataTransfer.setDragImage(rowRef.current, 0, 0);
         setDragItem({code: data.code, index});
-    };
+    }, [setDragItem]);
 
-    const onDragStartCapture = (event: any) => {
+    const onDragStartCapture = useCallback((event: any) => {
         if (attributeContext.autoSortOptions || !event.target.classList.contains('AknAttributeOption-move-icon')) {
             event.preventDefault();
             event.stopPropagation();
         }
-    };
+    }, [attributeContext.autoSortOptions]);
 
-    const onDragEndCapture = (event: any) => {
+    const onDragEndCapture = useCallback((event: any) => {
         if (attributeContext.autoSortOptions || !event.target.classList.contains('AknAttributeOption-move-icon')) {
             event.preventDefault();
             event.stopPropagation();
         }
-    };
+    }, [attributeContext.autoSortOptions]);
 
-    const onDragOver = (event: any) => {
+    const onDragOver = useCallback((event: any) => {
         event.stopPropagation();
         event.preventDefault();
         event.persist();
@@ -75,33 +79,46 @@ const ListItem: FC<AttributeOptionItemProps> = ({children, ...props}) => {
         }
 
         moveAttributeOption(dragItem.code, data.code);
-    };
+    }, [dragItem, data, moveAttributeOption, index]);
 
-    const onDrop = (event: any) => {
+    const onDrop = useCallback((event: any) => {
         event.stopPropagation();
         event.preventDefault();
         event.persist();
+
         if (dragItem !== null) {
             validateMoveAttributeOption();
             setDragItem(null);
         }
-    };
+    }, [dragItem, setDragItem, validateMoveAttributeOption]);
 
-    const className = `AknAttributeOption-listItem ${isSelected || (dragItem !== null && dragItem.code === data.code) ? 'AknAttributeOption-listItem--selected' : ''}`;
+    const onDelete = useCallback((event: any) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setShowDeleteConfirmationModal(true);
+    }, [setShowDeleteConfirmationModal]);
+
+    const onSelect = useCallback(() => {
+        selectAttributeOption(data.id);
+    }, [data.id, selectAttributeOption]);
+
+    const className = useMemo<string>(() => {
+       return `AknAttributeOption-listItem ${isSelected || (dragItem !== null && dragItem.code === data.code) ? 'AknAttributeOption-listItem--selected' : ''}`;
+    }, [isSelected, dragItem, data.code]);
 
     return (
         <>
             <div
                 className={className}
                 role="attribute-option-item"
-                onClick={() => selectAttributeOption(data.id)}
+                onClick={onSelect}
                 draggable={true}
                 onDragStartCapture={onDragStartCapture}
                 onDragEndCapture={onDragEndCapture}
                 onDragStart={onDragStart}
-                onDragOver={(event: any) => onDragOver(event)}
-                onDrop={(event: any) => onDrop(event)}
-                onDragEnd={(event: any) => onDrop(event)}
+                onDragOver={onDragOver}
+                onDrop={onDrop}
+                onDragEnd={onDrop}
                 style={dragItem !== null && dragItem.code === data.code ? {opacity: 0.4} : {}}
                 ref={rowRef}
             >
@@ -114,18 +131,18 @@ const ListItem: FC<AttributeOptionItemProps> = ({children, ...props}) => {
                 <span className="AknAttributeOption-extraData" role="attribute-option-extra-data">
                     <span>{children}</span>
                 </span>
-                <span className="AknAttributeOption-delete-option-icon" onClick={(event: any) => {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    setShowDeleteConfirmationModal(true);
-                }} role="attribute-option-delete-button"/>
+                <span
+                    className="AknAttributeOption-delete-option-icon"
+                    onClick={onDelete}
+                    role="attribute-option-delete-button"
+                />
             </div>
 
             {showDeleteConfirmationModal && (
                 <DeleteConfirmationModal
                     attributeOptionCode={data.code}
                     confirmDelete={deleteOption}
-                    cancelDelete={() => setShowDeleteConfirmationModal(false)}
+                    cancelDelete={cancelDeleteOption}
                 />)
             }
         </>

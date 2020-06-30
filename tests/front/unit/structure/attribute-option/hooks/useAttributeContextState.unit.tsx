@@ -2,7 +2,7 @@ import React from 'react';
 import {act, renderHook} from '@testing-library/react-hooks';
 
 import useAttributeContextState from 'akeneopimstructure/js/attribute-option/hooks/useAttributeContextState';
-import {ATTRIBUTE_OPTIONS_AUTO_SORT} from "../../../../../../src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute-option/model";
+import {ATTRIBUTE_OPTIONS_AUTO_SORT} from 'akeneopimstructure/js/attribute-option/model';
 
 const renderUseAttributeContextState = (attributeId: number, autoSort: boolean) => {
     return renderHook(() => useAttributeContextState(attributeId, autoSort));

@@ -1,6 +1,6 @@
 import React from 'react';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {useAttributeContext} from '../contexts';
+import {useAttributeContext} from '../hooks';
 
 const ToggleButton = () => {
     const translate = useTranslate();

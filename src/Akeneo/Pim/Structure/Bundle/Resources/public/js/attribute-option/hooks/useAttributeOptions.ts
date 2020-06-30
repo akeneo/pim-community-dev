@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {AttributeOptionsState} from '../store/store';
 import {initializeAttributeOptionsAction} from '../reducers';
 import baseFetcher from '../fetchers/baseFetcher';
-import {useAttributeContext} from '../contexts';
+import {useAttributeContext} from './useAttributeContext';
 import {useRoute} from '@akeneo-pim-community/legacy-bridge';
 
 const useAttributeOptions = () => {

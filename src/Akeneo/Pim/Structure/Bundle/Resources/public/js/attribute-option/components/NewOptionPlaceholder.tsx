@@ -1,6 +1,6 @@
 import React, {useRef} from 'react';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {useScrollIntoView} from '../hooks/useScrollIntoView';
+import {useScrollIntoView} from '../hooks';
 
 interface newOptionPlaceholderProps {
   cancelNewOption: () => void;

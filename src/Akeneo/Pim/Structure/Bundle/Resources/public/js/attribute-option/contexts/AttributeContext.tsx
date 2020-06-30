@@ -1,4 +1,4 @@
-import React, {createContext, FC, useContext} from 'react';
+import React, {createContext, FC} from 'react';
 import useAttributeContextState from '../hooks/useAttributeContextState';
 
 export type AttributeContextState = {
@@ -6,17 +6,9 @@ export type AttributeContextState = {
     autoSortOptions: boolean;
     toggleAutoSortOptions: () => void;
 };
+
 export const AttributeContext = createContext<AttributeContextState | undefined>(undefined);
 AttributeContext.displayName = 'AttributeContext';
-
-export const useAttributeContext = () => {
-    const attributeContext = useContext(AttributeContext);
-    if (!attributeContext) {
-        throw new Error('[AttributeContext]: attribute context has not been properly initiated');
-    }
-
-    return attributeContext;
-};
 
 type AttributeContextProviderProps = {
     attributeId: number;

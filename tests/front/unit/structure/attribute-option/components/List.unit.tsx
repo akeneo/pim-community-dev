@@ -1,35 +1,38 @@
 import React from 'react';
-import {Provider} from "react-redux";
+import {Provider} from 'react-redux';
 import '@testing-library/jest-dom/extend-expect';
 import {act, createEvent, fireEvent, render} from '@testing-library/react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {createStoreWithInitialState} from 'akeneopimstructure/js/attribute-option/store/store';
 import List from 'akeneopimstructure/js/attribute-option/components/List';
-import {AttributeContextProvider} from 'akeneopimstructure/js/attribute-option/contexts';
-import {AttributeOptionsContextProvider} from "../../../../../../src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute-option/contexts";
+import {
+    AttributeContextProvider,
+    AttributeOptionsContextProvider
+} from 'akeneopimstructure/js/attribute-option/contexts';
+import {AttributeOption} from 'akeneopimstructure/js/attribute-option/model';
 
 const options = [
     {
-        "id": 86,
-        "code": "blue",
-        "optionValues": {
-            "en_US": {"id":255,"locale":"en_US","value":"Blue"},
-            "fr_FR":{"id":256,"locale":"fr_FR","value":"Bleu"}
+        id: 86,
+        code: 'blue',
+        optionValues: {
+            'en_US': {id:255, locale: 'en_US', value: 'Blue'},
+            'fr_FR': {id:256, locale: 'fr_FR', value: 'Bleu'}
         }
     },
     {
-        "id": 18,
-        "code": "black",
-        "optionValues": {
-            "en_US": {"id":252,"locale":"en_US","value":"Black"},
-            "fr_FR":{"id":253,"locale":"fr_FR","value":"Noir"}
+        id: 18,
+        code: 'black',
+        optionValues: {
+            'en_US': {id:252, locale: 'en_US', value: 'Black'},
+            'fr_FR': {id:253, locale: 'fr_FR', value: 'Noir'}
         }
     },
 ];
 
 describe('Attribute options list', () => {
     beforeAll(() => {
-        global.fetch = jest.fn();
+        window.HTMLElement.prototype.scrollIntoView = jest.fn();
     });
 
     beforeEach(() => {
@@ -37,22 +40,17 @@ describe('Attribute options list', () => {
     });
 
     afterAll(() => {
-        global.fetch.mockRestore();
         jest.restoreAllMocks();
         jest.resetAllMocks();
     });
 
-    test('it renders an empty attribute options list', async () => {
-        const {getByRole} = renderComponent([], false, jest.fn(), jest.fn(), jest.fn());
+    test('it renders an empty attribute options list', () => {
+        const {getByRole} = renderComponent([], false);
         expect(getByRole('attribute-options-list')).toBeEmpty();
     });
 
-    test('it renders a list of 2 options not sorted alphabetically by default', async () => {
-        jest.spyOn(global, 'fetch').mockImplementationOnce(route => {
-            return {json: () => options};
-        });
-
-        const {getAllByRole, queryByRole} = renderComponent(options, false, jest.fn(), jest.fn(), jest.fn());
+    test('it renders a list of 2 options not sorted alphabetically by default', () => {
+        const {getAllByRole, queryByRole} = renderComponent(options, false);
 
         const attributeOptions = getAllByRole('attribute-option-item');
         expect(attributeOptions.length).toBe(2);
@@ -62,8 +60,8 @@ describe('Attribute options list', () => {
         expect(queryByRole('new-option-placeholder')).toBeNull();
     });
 
-    test('it renders a list of 2 options sorted alphabetically by default', async () => {
-        const {getAllByRole} = renderComponent(options, true, jest.fn(), jest.fn(), jest.fn());
+    test('it renders a list of 2 options sorted alphabetically by default', () => {
+        const {getAllByRole} = renderComponent(options, true);
 
         const attributeOptions = getAllByRole('attribute-option-item');
         expect(attributeOptions.length).toBe(2);
@@ -71,8 +69,8 @@ describe('Attribute options list', () => {
         expect(attributeOptions[1].textContent).toBe('blue');
     });
 
-    test('the list order can be toggled', async () => {
-        const {getAllByRole, getByRole} = renderComponent(options, false, jest.fn(), jest.fn(), jest.fn());
+    test('the list order can be toggled', () => {
+        const {getAllByRole, getByRole} = renderComponent(options, false);
 
         let attributeOptions = getAllByRole('attribute-option-item');
         expect(attributeOptions.length).toBe(2);
@@ -91,10 +89,8 @@ describe('Attribute options list', () => {
         expect(attributeOptions[1].textContent).toBe('blue');
     });
 
-    test('it displays a fake new option at the end when adding a new option', async () => {
-        window.HTMLElement.prototype.scrollIntoView = jest.fn();
-        const showNewOptionFormCallback = jest.fn();
-        const {queryByRole, getByRole} = renderComponent(options, false, jest.fn(), showNewOptionFormCallback, jest.fn());
+    test('it displays a fake new option at the end when adding a new option', () => {
+        const {queryByRole, getByRole} = renderComponent(options, false);
 
         expect(queryByRole('new-option-placeholder')).toBeNull();
 
@@ -102,30 +98,27 @@ describe('Attribute options list', () => {
         act(() => {
             fireEvent.click(addNewOptionButton);
         });
-        const newOptionPlaceholder = getByRole('new-option-placeholder');
 
-        expect(newOptionPlaceholder).toBeInTheDocument();
-        expect(showNewOptionFormCallback).toHaveBeenNthCalledWith(1, true);
+        expect(queryByRole('new-option-placeholder')).toBeInTheDocument();
 
         const cancelNewOptionButton = getByRole('new-option-cancel');
         act(() => {
             fireEvent.click(cancelNewOptionButton);
         });
-        expect(newOptionPlaceholder).not.toBeInTheDocument();
+        expect(queryByRole('new-option-placeholder')).not.toBeInTheDocument();
     });
 
-    test('it allows option selection', async () => {
-        const selectOptionCallback = jest.fn();
-        const blueOptionId = 86;
-        const {queryByRole, queryAllByRole} = renderComponent(options, false, selectOptionCallback, jest.fn(), jest.fn(), blueOptionId);
+    test('it allows option selection', () => {
+        const {queryByRole, queryAllByRole} = renderComponent(options, false);
 
         expect(queryByRole('new-option-placeholder')).toBeNull();
 
-        const optionItems = queryAllByRole('attribute-option-item');
-        const blueOption = optionItems[0];
-        const blackOption = optionItems[1];
-        expect(blueOption).toHaveClass('AknAttributeOption-listItem--selected');
-        expect(blackOption).not.toHaveClass('AknAttributeOption-listItem--selected');
+        let optionItems = queryAllByRole('attribute-option-item');
+        let blueOption = optionItems[0];
+        let blackOption = optionItems[1];
+
+        expect(blueOption).toHaveClass('AknAttributeOption-listItem AknAttributeOption-listItem--selected');
+        expect(blackOption).not.toHaveClass('AknAttributeOption-listItem AknAttributeOption-listItem--selected');
 
         const optionLabels = queryAllByRole('attribute-option-item-label');
         const blackOptionLabel = optionLabels[1];
@@ -134,48 +127,37 @@ describe('Attribute options list', () => {
             fireEvent.click(blackOptionLabel);
         });
 
-        const blackOptionId = 18;
-        expect(selectOptionCallback).toHaveBeenNthCalledWith(1, blackOptionId)
+        optionItems = queryAllByRole('attribute-option-item');
+        blueOption = optionItems[0];
+        blackOption = optionItems[1];
+
+        expect(blueOption).not.toHaveClass('AknAttributeOption-listItem AknAttributeOption-listItem--selected');
+        expect(blackOption).toHaveClass('AknAttributeOption-listItem AknAttributeOption-listItem--selected');
     });
 
     test('it handles option reorder', async () => {
-        const manuallySortAttributeOptions = jest.fn();
-        const {getAllByRole} = renderComponent(options, false, jest.fn(), jest.fn(), manuallySortAttributeOptions);
+        const {getAllByRole} = renderComponent(options, false);
 
-        const attributeOptionMoveHandle = getAllByRole('attribute-option-move-handle').shift();
-        const attributeOptions = getAllByRole('attribute-option-item');
-
+        let attributeOptions = getAllByRole('attribute-option-item');
         expect(attributeOptions.length).toBe(2);
         expect(attributeOptions[0].textContent).toBe('blue');
         expect(attributeOptions[1].textContent).toBe('black');
 
-        act(() => {
-            moveBlueOptionToBackOption(attributeOptionMoveHandle, attributeOptions);
+        const attributeOptionMoveHandle = getAllByRole('attribute-option-move-handle').shift();
+
+        attributeOptions = getAllByRole('attribute-option-item');
+        expect(attributeOptions.length).toBe(2);
+        expect(attributeOptions[0].textContent).toBe('blue');
+        expect(attributeOptions[1].textContent).toBe('black');
+
+        await act(async () => {
+            await moveBlueOptionToBackOption(attributeOptionMoveHandle, attributeOptions);
         });
 
         const sortedAttributeOptions = getAllByRole('attribute-option-item');
         expect(sortedAttributeOptions.length).toBe(2);
         expect(sortedAttributeOptions[0].textContent).toBe('black');
         expect(sortedAttributeOptions[1].textContent).toBe('blue');
-
-        expect(manuallySortAttributeOptions).toHaveBeenNthCalledWith(1, [
-            {
-                "id": 18,
-                "code": "black",
-                "optionValues": {
-                    "en_US": {"id":252,"locale":"en_US","value":"Black"},
-                    "fr_FR":{"id":253,"locale":"fr_FR","value":"Noir"}
-                }
-            },
-            {
-                "id": 86,
-                "code": "blue",
-                "optionValues": {
-                    "en_US": {"id":255,"locale":"en_US","value":"Blue"},
-                    "fr_FR":{"id":256,"locale":"fr_FR","value":"Bleu"}
-                }
-            },
-        ]);
     });
 });
 
@@ -200,23 +182,19 @@ async function moveBlueOptionToBackOption(attributeOptionMoveHandle, attributeOp
     await fireEvent.dragEnd(attributeOptionMoveHandle);
 }
 
-const renderComponent = (options, autoSortOptions, selectOptionCallback, showNewOptionFormCallback, manuallySortAttributeOptionsCallback, selectedOptionId = null)  => {
+const renderComponent = (
+    options: AttributeOption[]|null,
+    autoSortOptions: boolean
+)  => {
     return render(
         <DependenciesProvider>
             <Provider store={createStoreWithInitialState({attributeOptions: options})}>
                 <AttributeContextProvider attributeId={8} autoSortOptions={autoSortOptions}>
-                    <AttributeOptionsContextProvider attributeId={8}>
-                        <List
-                            selectAttributeOption={selectOptionCallback}
-                            isNewOptionFormDisplayed={false}
-                            showNewOptionForm={showNewOptionFormCallback}
-                            selectedOptionId={selectedOptionId}
-                            deleteAttributeOption={jest.fn()}
-                            manuallySortAttributeOptions={manuallySortAttributeOptionsCallback}
-                        />
+                    <AttributeOptionsContextProvider>
+                        <List />
                     </AttributeOptionsContextProvider>
                 </AttributeContextProvider>
             </Provider>
         </DependenciesProvider>
     );
-}
+};

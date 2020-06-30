@@ -1,4 +1,4 @@
-import React, {createContext, FC, useContext} from 'react';
+import React, {createContext, FC} from 'react';
 
 import {AttributeOption} from '../model';
 import {EditingOptionContextState, useEditingOptionContextState} from '../hooks/useEditingOptionContextState';
@@ -9,10 +9,6 @@ export const EditingOptionContext = createContext<EditingOptionContextState>({
     removeRef: () => {},
 });
 EditingOptionContext.displayName = 'EditingOptionContext';
-
-export const useEditingOptionContext = (): EditingOptionContextState => {
-    return useContext(EditingOptionContext);
-};
 
 type EditingOptionContextProviderProps = {
     option: AttributeOption;

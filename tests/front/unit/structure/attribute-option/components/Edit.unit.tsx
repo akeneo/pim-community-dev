@@ -1,21 +1,15 @@
 import React from 'react';
-import {Provider} from "react-redux";
+import {Provider} from 'react-redux';
 import '@testing-library/jest-dom/extend-expect';
 import {act, fireEvent, render} from '@testing-library/react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import Edit from 'akeneopimstructure/js/attribute-option/components/Edit';
-import {AttributeContextProvider, LocalesContextProvider} from 'akeneopimstructure/js/attribute-option/contexts';
-import {AttributeOption} from "akeneopimstructure/js/attribute-option/model";
-import {AttributeOptionsContextProvider} from "../../../../../../src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute-option/contexts";
-import {createStoreWithInitialState} from "../../../../../../public/bundles/akeneopimstructure/js/attribute-option/store/store";
+import {AttributeContextProvider, LocalesContext} from 'akeneopimstructure/js/attribute-option/contexts';
+import {AttributeOption} from 'akeneopimstructure/js/attribute-option/model';
+import {createStoreWithInitialState} from 'akeneopimstructure/js/attribute-option/store/store';
+import {useAttributeOptionsContext} from 'akeneopimstructure/js/attribute-option/hooks/useAttributeOptionsContext';
 
-declare global {
-    namespace NodeJS {
-        interface Global {
-            fetch: any;
-        }
-    }
-}
+jest.mock('akeneopimstructure/js/attribute-option/hooks/useAttributeOptionsContext');
 
 const option: AttributeOption = {
     id: 80,
@@ -35,15 +29,18 @@ const option: AttributeOption = {
 };
 
 const renderEditWithContext = () => {
+    const locales = [
+        {'code':'en_US', 'label':'English (United States)'},
+        {'code':'fr_FR', 'label':'French (France)'},
+    ];
+
     return render(
         <DependenciesProvider>
             <Provider store={createStoreWithInitialState({attributeOptions: [option]})}>
                 <AttributeContextProvider attributeId={8} autoSortOptions={true}>
-                    <LocalesContextProvider>
-                        <AttributeOptionsContextProvider attributeId={8}>
-                            <Edit option={option} />
-                        </AttributeOptionsContextProvider>
-                    </LocalesContextProvider>
+                    <LocalesContext.Provider value={locales}>
+                        <Edit option={option} />
+                    </LocalesContext.Provider>
                 </AttributeContextProvider>
             </Provider>
         </DependenciesProvider>
@@ -51,8 +48,14 @@ const renderEditWithContext = () => {
 };
 
 describe('Edit an attribute option', () => {
+    const mockSave = jest.fn();
+
     beforeAll(() => {
-        global.fetch = jest.fn();
+        useAttributeOptionsContext.mockImplementation(() => {
+            return {
+                save: mockSave
+            };
+        });
     });
 
     beforeEach(() => {
@@ -61,19 +64,9 @@ describe('Edit an attribute option', () => {
 
     afterAll(() => {
         jest.restoreAllMocks();
-        delete global.fetch;
-    })
+    });
 
     test('it renders an option form', async () => {
-        global.fetch = jest.fn().mockImplementationOnce(route => {
-            return {json: () => [
-                    {"code":"en_US","label":"English (United States)"},
-                    {"code":"fr_FR","label":"French (France)"}
-                ]};
-        });
-
-        const saveCallback = jest.fn();
-
         const {queryAllByRole, getByRole} = renderEditWithContext();
 
         const translations = queryAllByRole('attribute-option-label');
@@ -88,7 +81,7 @@ describe('Edit an attribute option', () => {
 
         act(() => {
             fireEvent.click(saveButton);
-        })
+        });
 
         let expectedOption: AttributeOption = expect.objectContaining({
             id: 80,
@@ -106,6 +99,7 @@ describe('Edit an attribute option', () => {
                 },
             },
         });
-        expect(saveCallback).toHaveBeenNthCalledWith(1, expectedOption);
+
+        expect(mockSave).toHaveBeenNthCalledWith(1, expectedOption);
     });
 });

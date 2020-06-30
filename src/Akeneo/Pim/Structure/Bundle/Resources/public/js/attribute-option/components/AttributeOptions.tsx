@@ -1,10 +1,10 @@
 import React from 'react';
 
-import {useAttributeOptionsContext} from '../contexts';
 import List from './List';
 import Edit from './Edit';
 import New from './New';
 import EmptyAttributeOptionsList from './EmptyAttributeOptionsList';
+import {useAttributeOptionsContext} from '../hooks';
 
 const AttributeOptions = () => {
     const {
@@ -19,9 +19,9 @@ const AttributeOptions = () => {
         <div className="AknAttributeOption">
             {(isLoading()) && <div className="AknLoadingMask"/>}
 
-            {(isEmpty()) && <EmptyAttributeOptionsList />}
+            {(isEmpty() && !isCreating()) && <EmptyAttributeOptionsList />}
 
-            {(isEmpty()) || <List />}
+            {(isEmpty() && !isCreating()) || <List />}
 
             {(isEditing()) && (
                 <Edit

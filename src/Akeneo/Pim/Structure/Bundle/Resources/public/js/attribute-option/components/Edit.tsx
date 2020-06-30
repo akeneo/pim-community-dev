@@ -2,7 +2,8 @@ import React, {ChangeEvent, FC, useCallback, useEffect, useState} from 'react';
 
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {AttributeOption, Locale} from '../model';
-import {EditingOptionContextProvider, useAttributeOptionsContext, useLocalesContext} from '../contexts';
+import {EditingOptionContextProvider} from '../contexts';
+import {useAttributeOptionsContext, useLocalesContext} from '../hooks';
 import AttributeOptionForm from './AttributeOptionForm';
 
 interface EditProps {
@@ -21,15 +22,16 @@ const Edit: FC<EditProps> = ({option}) => {
 
     const onUpdateOptionLabel = useCallback((event: ChangeEvent<HTMLInputElement>, localeCode: string) => {
         event.persist();
-        let updatedOption: AttributeOption = {...option};
-        updatedOption.optionValues[localeCode].value = event.target.value;
-        setUpdatedOption(updatedOption);
-    }, [setUpdatedOption]);
+
+        const newOption: AttributeOption = {...option};
+        newOption.optionValues[localeCode].value = event.target.value;
+        setUpdatedOption(newOption);
+    }, [setUpdatedOption, option]);
 
     const onSubmit = useCallback((event: any) => {
         event.preventDefault();
         save(updatedOption);
-    }, [save]);
+    }, [save, updatedOption]);
 
     return (
         <EditingOptionContextProvider option={option}>
