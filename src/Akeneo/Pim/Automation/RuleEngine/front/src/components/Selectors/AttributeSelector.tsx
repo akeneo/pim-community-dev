@@ -32,7 +32,7 @@ type Props = {
   hiddenLabel?: boolean;
   currentCatalogLocale: LocaleCode;
   value: AttributeCode | null;
-  onChange: (value: AttributeCode | null) => void;
+  onChange: (value: AttributeCode) => void;
   placeholder?: string;
   filterAttributeTypes?: string[];
   name: string;

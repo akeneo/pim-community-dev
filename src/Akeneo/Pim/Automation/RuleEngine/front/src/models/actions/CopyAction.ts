@@ -4,11 +4,11 @@ import { ActionModuleGuesser } from './ActionModuleGuesser';
 export type CopyAction = {
   type: 'copy';
   from_field: string;
-  from_locale: string | null;
-  from_scope: string | null;
+  from_locale?: string | null;
+  from_scope?: string | null;
   to_field: string;
-  to_locale: string | null;
-  to_scope: string | null;
+  to_locale?: string | null;
+  to_scope?: string | null;
 };
 
 export const getCopyActionModule: ActionModuleGuesser = json => {

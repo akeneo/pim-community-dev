@@ -6,7 +6,7 @@ import { useRegisterConst } from '../../hooks/useRegisterConst';
 import { ActionGrid, ActionLeftSide, ActionRightSide, ActionTitle } from "./ActionLine";
 import { useBackboneRouter, useTranslate } from "../../../../dependenciesTools/hooks";
 import { AttributeLocaleScopeSelector } from "./attribute";
-import { Attribute, AttributeType } from "../../../../models";
+import { Attribute, AttributeCode, AttributeType } from "../../../../models";
 import { getAttributeByIdentifier } from "../../../../repositories/AttributeRepository";
 import { useFormContext } from 'react-hook-form';
 import { LineErrors } from "../LineErrors";
@@ -90,6 +90,8 @@ const CopyActionLine: React.FC<Props> = ({
 
   const [ targetAttributeTypes, setTargetAttributeTypes ] = React.useState<AttributeType[]>([]);
 
+  const [ toField, setToField ] = React.useState<AttributeCode | null>(action.to_field);
+
   const handleSourceChange = (attribute: Attribute | null) => {
     const supported = attribute ? (supportedTypes().get(attribute.type) || []) : [];
     setTargetAttributeTypes(supported);
@@ -98,6 +100,7 @@ const CopyActionLine: React.FC<Props> = ({
       getAttributeByIdentifier(targetAttributeCode, router).then((attribute) => {
         if (!attribute || !supported.includes(attribute.type)) {
           setValue(`content.actions[${lineNumber}].to_field`, null);
+          setToField(null);
         }
       })
     }
@@ -134,9 +137,11 @@ const CopyActionLine: React.FC<Props> = ({
             )} ${translate('pim_common.required_label')}`}
             attributePlaceholder={''}
             scopeId={`edit-rules-action-${lineNumber}-from-scope`}
-            scopeFormName={`content.actions[${lineNumber}.from_scope`}
+            scopeFormName={`content.actions[${lineNumber}].from_scope`}
+            scopeValue={action.from_scope || undefined}
             localeId={`edit-rules-action-${lineNumber}-from-locale`}
-            localeFormName={`content.actions[${lineNumber}.from_locale`}
+            localeFormName={`content.actions[${lineNumber}].from_locale`}
+            localeValue={action.from_locale || undefined}
             locales={locales}
             scopes={scopes}
             filterAttributeTypes={sourceAttributeTypes}
@@ -149,7 +154,7 @@ const CopyActionLine: React.FC<Props> = ({
           </ActionTitle>
           {targetAttributeTypes.length && (
             <AttributeLocaleScopeSelector
-              attributeCode={action.to_field}
+              attributeCode={toField}
               attributeFormName={`content.actions[${lineNumber}].to_field`}
               attributeId={`edit-rules-action-${lineNumber}-to-field`}
               attributeLabel={`${translate(
@@ -157,9 +162,11 @@ const CopyActionLine: React.FC<Props> = ({
               )} ${translate('pim_common.required_label')}`}
               attributePlaceholder={''}
               scopeId={`edit-rules-action-${lineNumber}-to-scope`}
-              scopeFormName={`content.actions[${lineNumber}.to_scope`}
+              scopeFormName={`content.actions[${lineNumber}].to_scope`}
+              scopeValue={action.to_scope || undefined}
               localeId={`edit-rules-action-${lineNumber}-to-locale`}
-              localeFormName={`content.actions[${lineNumber}.to_locale`}
+              localeFormName={`content.actions[${lineNumber}].to_locale`}
+              localeValue={action.to_locale || undefined}
               locales={locales}
               scopes={scopes}
               filterAttributeTypes={targetAttributeTypes}

@@ -83,19 +83,15 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   const [attributeIsChanged, setAttributeIsChanged] = React.useState<boolean>(
     false
   );
-  const [firstRefresh, setFirstRefresh] = React.useState<boolean>(true);
 
-  const refreshAttribute: (
-    attributeCode: AttributeCode | null
-  ) => void = async (attributeCode: AttributeCode | null) => {
-    const attribute = attributeCode
-      ? await getAttributeByIdentifier(attributeCode, router)
-      : null;
+  const refreshAttribute: (attributeCode: AttributeCode | null) => void = async (attributeCode) => {
+    const attribute = attributeCode ?
+      await getAttributeByIdentifier(attributeCode, router) :
+      undefined;
     setAttribute(attribute);
     if (onAttributeChange) {
-      onAttributeChange(attribute);
+      onAttributeChange(attribute || null);
     }
-    setFirstRefresh(false);
   };
 
   const getAvailableLocales = (): Locale[] => {
@@ -138,7 +134,13 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
     }
   }, []);
 
-  const isDisabled = () => disabled ?? (!firstRefresh && null === attribute);
+  React.useEffect(() => {
+    setAttribute(undefined);
+    refreshAttribute(attributeCode);
+    setAttributeIsChanged(false);
+  }, [attributeCode])
+
+  const isDisabled = () => disabled ?? null === attribute;
 
   return (
     <ActionFormContainer>

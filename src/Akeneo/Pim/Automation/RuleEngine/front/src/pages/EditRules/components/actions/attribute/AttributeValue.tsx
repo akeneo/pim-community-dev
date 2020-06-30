@@ -1,5 +1,5 @@
 import React from 'react';
-import { Attribute, getAttributeLabel } from '../../../../../models';
+import { Attribute, getAttributeLabel, AttributeType } from '../../../../../models';
 import {
   useTranslate,
   useUserCatalogLocale,
@@ -13,10 +13,10 @@ import {
 } from '../../../../../components/HelpersInfos';
 import { ActionFormContainer } from '../style';
 
-const MANAGED_ATTRIBUTE_TYPES: { [key: string]: React.FC<InputValueProps> } = {
-  pim_catalog_text: TextValue,
-  pim_catalog_simpleselect: SimpleSelectValue,
-};
+const MANAGED_ATTRIBUTE_TYPES: Map<AttributeType, React.FC<InputValueProps>> = new Map([
+  [AttributeType.TEXT, TextValue],
+  [AttributeType.OPTION_SIMPLE_SELECT, SimpleSelectValue],
+]);
 
 type InputValueProps = {
   id: string;
@@ -31,7 +31,7 @@ type InputValueProps = {
 const getValueModule: (
   attribute: Attribute
 ) => React.FC<InputValueProps> | null = attribute => {
-  return MANAGED_ATTRIBUTE_TYPES[attribute.type] || null;
+  return MANAGED_ATTRIBUTE_TYPES.get(attribute.type) || null;
 };
 
 enum AttributeStatus {
