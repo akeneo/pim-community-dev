@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Platform\CommunicationChannel\Application\Announcement\Query;
 
-use Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\ListAnnouncementsHandler;
-use Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\ListAnnouncementsQuery;
+use Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\ListAnnouncementHandler;
+use Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\ListAnnouncementQuery;
 use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Model\Read\AnnouncementItem;
 use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Query\FindAnnouncementItemsInterface;
 use Akeneo\Platform\VersionProviderInterface;
@@ -23,7 +23,7 @@ class ListAnnouncementsHandlerSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldBeAnInstanceOf(ListAnnouncementsHandler::class);
+        $this->shouldBeAnInstanceOf(ListAnnouncementHandler::class);
     }
 
     public function it_handles_the_list_announcements_query_paginated($versionProvider, $findAnnouncementItems): void
@@ -66,7 +66,7 @@ class ListAnnouncementsHandlerSpec extends ObjectBehavior
             Argument::type('int')
         )->willReturn([$expectedAnnouncementsItems[1]]);
 
-        $query = new ListAnnouncementsQuery('f68a21bb-ec9a-4009-9b0b-2639c6798e5f', 1);
+        $query = new ListAnnouncementQuery('f68a21bb-ec9a-4009-9b0b-2639c6798e5f', 1);
         $this->execute($query)->shouldReturn([$expectedAnnouncementsItems[1]]);
     }
 

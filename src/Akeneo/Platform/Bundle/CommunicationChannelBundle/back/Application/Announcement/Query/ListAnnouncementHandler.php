@@ -13,7 +13,7 @@ use Akeneo\Platform\VersionProviderInterface;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class ListAnnouncementsHandler
+final class ListAnnouncementHandler
 {
     /** @var VersionProviderInterface */
     private $versionProvider;
@@ -32,7 +32,7 @@ final class ListAnnouncementsHandler
     /**
      * @return AnnouncementItem[]
      */
-    public function execute(ListAnnouncementsQuery $query): array
+    public function execute(ListAnnouncementQuery $query): array
     {
         $edition = $this->versionProvider->getEdition();
         $version = $this->versionProvider->getPatch();
