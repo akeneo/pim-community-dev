@@ -1,5 +1,11 @@
 import React from 'react';
-import { Attribute, getAttributeLabel, Locale, LocaleCode, ScopeCode } from '../../models';
+import {
+  Attribute,
+  getAttributeLabel,
+  Locale,
+  LocaleCode,
+  ScopeCode,
+} from '../../models';
 import {
   Select2Option,
   Select2OptionGroup,
@@ -15,17 +21,18 @@ const getLocaleValidation = (
   availableLocales: Locale[],
   channelCode: ScopeCode,
   translate: Translate,
-  currentCatalogLocale: LocaleCode,
+  currentCatalogLocale: LocaleCode
 ) => {
   const localeValidation: any = {};
   if (!attribute) {
     return localeValidation;
   }
   if (attribute.localizable) {
-    localeValidation['required'] = translate(
-      'pimee_catalog_rule.exceptions.required_locale',
-      { attributeLabel: getAttributeLabel(attribute, currentCatalogLocale) }
-    );
+    localeValidation[
+      'required'
+    ] = translate('pimee_catalog_rule.exceptions.required_locale', {
+      attributeLabel: getAttributeLabel(attribute, currentCatalogLocale),
+    });
   }
   localeValidation['validate'] = (localeCode: any) => {
     if (attribute.localizable) {

@@ -84,10 +84,12 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
     false
   );
 
-  const refreshAttribute: (attributeCode: AttributeCode | null) => void = async (attributeCode) => {
-    const attribute = attributeCode ?
-      await getAttributeByIdentifier(attributeCode, router) :
-      undefined;
+  const refreshAttribute: (
+    attributeCode: AttributeCode | null
+  ) => void = async attributeCode => {
+    const attribute = attributeCode
+      ? await getAttributeByIdentifier(attributeCode, router)
+      : undefined;
     setAttribute(attribute);
     if (onAttributeChange) {
       onAttributeChange(attribute || null);
@@ -138,16 +140,14 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
     setAttribute(undefined);
     refreshAttribute(attributeCode);
     setAttributeIsChanged(false);
-  }, [attributeCode])
+  }, [attributeCode]);
 
   const isDisabled = () => disabled ?? null === attribute;
 
   return (
     <ActionFormContainer>
       <SelectorBlock
-        className={
-          null === attribute && !firstRefresh ? 'select2-container-error' : ''
-        }>
+        className={null === attribute ? 'select2-container-error' : ''}>
         <AttributeSelector
           data-testid={attributeId}
           name={attributeFormName}
@@ -160,7 +160,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
           filterAttributeTypes={filterAttributeTypes}
           disabled={disabled}
         />
-        {null === attribute && !firstRefresh && (
+        {null === attribute && (
           <ErrorBlock>
             <InlineHelper danger>
               {`${translate(

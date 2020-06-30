@@ -13,7 +13,10 @@ import {
 } from '../../../../../components/HelpersInfos';
 import { ActionFormContainer } from '../style';
 
-const MANAGED_ATTRIBUTE_TYPES: Map<AttributeType, React.FC<InputValueProps>> = new Map([
+const MANAGED_ATTRIBUTE_TYPES: Map<
+  AttributeType,
+  React.FC<InputValueProps>
+> = new Map([
   [AttributeType.TEXT, TextValue],
   [AttributeType.OPTION_SIMPLE_SELECT, SimpleSelectValue],
 ]);
