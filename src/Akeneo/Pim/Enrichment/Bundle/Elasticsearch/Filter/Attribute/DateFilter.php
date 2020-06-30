@@ -22,6 +22,7 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
 {
     const DATETIME_FORMAT = 'Y-m-d';
     const HUMAN_DATETIME_FORMAT = "yyyy-mm-dd";
+    const RELATIVE_DATE_FORMAT = '/^(now|[+-][0-9]+\s?(day|week|month|year)s?)$/';
 
     public function __construct(
         ElasticsearchFilterValidator $filterValidator,
@@ -51,6 +52,8 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
         $attributeCode = $attribute->getCode();
 
         $this->checkLocaleAndChannel($attribute, $locale, $channel);
+        // For now, we only allow relative dates for "simple" operators (excluding BETWEEN and NOT BETWEEN)
+        $value = $this->convertRelativeDate($value);
         $this->checkValue($operator, $attributeCode, $value);
 
         $attributePath = $this->getAttributePath($attribute, $locale, $channel);
@@ -168,7 +171,7 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
     /**
      * @param string $operator
      * @param string $field
-     * @param string|array|\DateTime $value
+     * @param string|array|\DateTimeInterface $value
      */
     protected function checkValue($operator, $field, $value)
     {
@@ -222,7 +225,7 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
 
     /**
      * @param string $field
-     * @param string|\DateTime $value
+     * @param string|\DateTimeInterface $value
      *
      * @return string
      */
@@ -230,8 +233,8 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
     {
         $dateTime = $value;
 
-        if (!$dateTime instanceof \DateTime) {
-            $dateTime = \DateTime::createFromFormat(static::DATETIME_FORMAT, $dateTime);
+        if (!$dateTime instanceof \DateTimeInterface) {
+            $dateTime = \DateTimeImmutable::createFromFormat(static::DATETIME_FORMAT, $dateTime);
 
             if (false === $dateTime || 0 < $dateTime->getLastErrors()['warning_count']) {
                 throw InvalidPropertyException::dateExpected(
@@ -244,5 +247,14 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
         }
 
         return $dateTime->format(static::DATETIME_FORMAT);
+    }
+
+    protected function convertRelativeDate($value)
+    {
+        if (\is_string($value) && 1 === \preg_match(self::RELATIVE_DATE_FORMAT, $value)) {
+            return (new \DateTimeImmutable('now'))->modify($value);
+        }
+
+        return $value;
     }
 }

@@ -129,6 +129,82 @@ class DateFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assert($result, ['product_one', 'product_two']);
     }
 
+    public function testRelativeDates()
+    {
+        $productsToRemove = $this->get('pim_catalog.repository.product')->findBy(
+            ['identifier' => ['product_one', 'product_two', 'empty_product']]
+        );
+        $this->get('pim_catalog.remover.product')->removeAll($productsToRemove);
+
+        $currentDate = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+        $this->createProduct(
+            'product_today',
+            [
+                'family' => 'a_family',
+                'values' => [
+                    'a_date' => [
+                        ['data' => $currentDate->format('Y-m-d'), 'locale' => null, 'scope' => null]
+                    ]
+                ]
+            ]
+        );
+        $this->createProduct(
+            'product_future',
+            [
+                'family' => 'a_family',
+                'values' => [
+                    'a_date' => [
+                        ['data' => $currentDate->modify('+10 days')->format('Y-m-d'), 'locale' => null, 'scope' => null]
+                    ]
+                ]
+            ]
+        );
+        $this->createProduct(
+            'product_past',
+            [
+                'family' => 'a_family',
+                'values' => [
+                    'a_date' => [
+                        ['data' => $currentDate->modify('-6 weeks')->format('Y-m-d'), 'locale' => null, 'scope' => null]
+                    ]
+                ]
+            ]
+        );
+
+        $this->assert(
+            $this->executeFilter([['a_date', Operators::EQUALS, '+10 days']]),
+            ['product_future']
+        );
+        $this->assert(
+            $this->executeFilter([['a_date', Operators::NOT_EQUAL, '+10 days']]),
+            ['product_past', 'product_today']
+        );
+        $this->assert(
+            $this->executeFilter([['a_date', Operators::GREATER_THAN, '+10 days']]),
+            []
+        );
+        $this->assert(
+            $this->executeFilter([['a_date', Operators::LOWER_THAN, '+10 days']]),
+            ['product_today', 'product_past']
+        );
+        $this->assert(
+            $this->executeFilter([['a_date', Operators::GREATER_THAN, 'now']]),
+            ['product_future']
+        );
+        $this->assert(
+            $this->executeFilter([['a_date', Operators::LOWER_THAN, 'now']]),
+            ['product_past']
+        );
+        $this->assert(
+            $this->executeFilter([['a_date', Operators::GREATER_THAN, '-6 weeks']]),
+            ['product_today', 'product_future']
+        );
+        $this->assert(
+            $this->executeFilter([['a_date', Operators::LOWER_THAN, '-6 weeks']]),
+            []
+        );
+    }
+
     public function testErrorDataIsMalformedWithEmptyArray()
     {
         $this->expectException(InvalidPropertyTypeException::class);
@@ -142,7 +218,7 @@ class DateFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->expectExceptionMessage('Property "a_date" expects a string with the format "yyyy-mm-dd" as data, "2016-12-12T00:00:00" given.');
         $this->executeFilter([['a_date', Operators::EQUALS, '2016-12-12T00:00:00']]);
     }
-    
+
     public function testErrorOperatorNotSupported()
     {
         $this->expectException(UnsupportedFilterException::class);
