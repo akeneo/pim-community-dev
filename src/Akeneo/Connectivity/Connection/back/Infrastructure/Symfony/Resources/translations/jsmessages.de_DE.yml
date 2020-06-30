@@ -200,8 +200,17 @@ akeneo_connectivity.connection:
         placeholder: Suche in Fehlermeldungen
         result_count: '{0} Kein Ergebnis |[1,Inf] {{ count }} Ergebnisse'
       error_list:
-        date_time_column: Tag und Zeit
-        content_column: Fehlermeldung
+        date_time_column:
+          title: Tag und Zeit
+        content_column:
+          title: Geschäftsfehlermeldung
+          product_name: Artikelbezeichnung
+          with_id: mit der ID
+        details_column:
+          title: Details
+          locale: Gebietsschema
+          channel: Ausgabekanal
+          family: Familie
       no_error:
         title: Großartig! Kein Fehler gefunden!
       not_auditable:
