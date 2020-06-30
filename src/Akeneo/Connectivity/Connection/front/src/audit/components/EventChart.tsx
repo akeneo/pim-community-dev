@@ -58,6 +58,7 @@ export const EventChart: FC<Props> = ({title, eventType, theme}: Props) => {
                     weekday: 'long',
                     month: 'short',
                     day: 'numeric',
+                    timeZone: 'UTC',
                 }).format(new Date(date));
 
                 return {
