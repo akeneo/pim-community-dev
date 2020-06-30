@@ -191,22 +191,6 @@ extensions:
             label: pim_enrich.entity.attribute_option.short_uppercase_label
             activeForTypes: [pim_catalog_multiselect, pim_catalog_simpleselect]
 
-    pim-attribute-edit-form-choices-auto-sorting:
-        module: pim/form/common/fields/boolean
-        parent: pim-attribute-edit-form-choices
-        targetZone: form-container
-        position: 100
-        config:
-            fieldName: auto_option_sorting
-            label: pim_enrich.entity.attribute.property.auto_option_sorting
-            defaultValue: null
-
-    pim-attribute-edit-form-choices-options-grid:
-        module: pim/attribute-edit-form/choices/options-grid
-        parent: pim-attribute-edit-form-choices
-        targetZone: bottom
-        position: 100
-
     pim-attribute-edit-form-labels-tab:
         module: pim/common/tab
         parent: pim-attribute-edit-form-form-tabs

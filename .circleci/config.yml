@@ -315,41 +315,6 @@ jobs:
               name: Push PROD PIM image on docker registry
               command: IMAGE_TAG=$CIRCLE_SHA1 make push-php-image-prod
 
-  deploy_upgrade_oldest_prod_environment:
-      environment:
-        <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
-      steps:
-          - attach_workspace:
-                at: ~/
-          - add_ssh_keys
-          - set_gcloud_config_dev
-          - run:
-              name: Oldest SaaS prod (PIM v3) deployment on kubernetes
-              command: |
-                ssh-keyscan github.com >> ~/.ssh/known_hosts
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make helm-prepare
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make deploy-pim3
-          - run:
-              name: Upgrade intermediate version SaaS to master
-              command: |
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make terraform-pre-upgrade
-                INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make deploy
-          - run:
-              name: Production tests on upgraded env
-              command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make test-prod
-          - run:
-              name: Prepare infrastructure artifacts
-              command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make prepare-infrastructure-artifacts
-              when: on_fail
-          - store_artifacts:
-              path: ~/artifacts/infra
-          - run:
-              name: Remove upgraded env
-              command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make delete
-              when: always
-
   deploy_pr_environment:
       environment:
           <<: *envVarsDeployDev
@@ -527,9 +492,6 @@ workflows:
           - deploy_pr_environment:
                 requires:
                     - deploy_pr_environment?
-          - deploy_upgrade_oldest_prod_environment:
-                requires:
-                    - build_prod
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -568,7 +530,6 @@ workflows:
                 requires:
                     - test_back_behat_legacy
                     - test_back_performance
-                    - deploy_upgrade_oldest_prod_environment
 
   nightly:
       triggers:

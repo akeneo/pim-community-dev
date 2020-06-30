@@ -37,6 +37,7 @@ product_model.family_variant.not_blank.message: La variante de famille du modèl
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.": L'attribut {{ attribute_code }} requiert une date égale ou postérieure à {{ limit }}.
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": L'attribut {{ attribute_code }} requiert une date antérieure ou égale à {{ limit }}.
 "The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": L'attribut {{ attribute }} requiert une valeur numérique et la valeur {{ value }} soumise ne l'est pas.
+"The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": L’attribut %attribute% ne peut excéder %limit% caractères. La valeur soumise est trop longue.
 pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: 'L''attribut "%attribute%" ne peut pas être vide, car il a été défini comme axe pour cette entité'

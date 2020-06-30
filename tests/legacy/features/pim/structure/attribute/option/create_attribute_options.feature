@@ -18,12 +18,12 @@ Feature: Create attribute options
     When I save the attribute
     And I visit the "Options" tab
     And I should not see the text "There are unsaved changes."
-    When I check the "Sort automatically options by alphabetical order" switch
     And I create the following attribute options:
       | Code  |
       | red   |
       | blue  |
       | green |
+    When I check the "Sort automatically options by alphabetical order" switch
     Then I should see the text "green"
     When I save the attribute
     Then I should see the flash message "Attribute successfully updated"
