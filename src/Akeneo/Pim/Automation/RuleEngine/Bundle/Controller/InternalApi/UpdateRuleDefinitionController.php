@@ -57,7 +57,8 @@ class UpdateRuleDefinitionController
         RuleDefinitionSaver $ruleDefinitionSaver,
         RuleDefinitionNormalizer $ruleDefinitionNormalizer,
         NormalizerInterface $normalizer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        SecurityFacade $securityFacade
     ) {
         $this->ruleDefinitionRepository = $ruleDefinitionRepository;
         $this->ruleDefinitionUpdater = $ruleDefinitionUpdater;
@@ -65,6 +66,7 @@ class UpdateRuleDefinitionController
         $this->ruleDefinitionNormalizer = $ruleDefinitionNormalizer;
         $this->normalizer = $normalizer;
         $this->validator = $validator;
+        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(string $ruleDefinitionCode, Request $request): Response
