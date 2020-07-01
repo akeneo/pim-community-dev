@@ -156,7 +156,7 @@ define(
                 this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
                 this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', (localeEvent) => {
                     if ('base_product' === localeEvent.context) {
-                        this.setLocale(localeEvent.localeCode, {});
+                        this.setLocale(localeEvent.localeCode, {silent: true});
                     }
                 });
 
