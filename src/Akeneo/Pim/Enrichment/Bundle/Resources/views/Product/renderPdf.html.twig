@@ -84,7 +84,7 @@
     <body>
         <div class="header">
             {% block header %}
-                <h1>{{ product.label }} {{ product.identifier != product.label ? '(' ~ product.identifier ~ ')' : '' }}</h1>
+                <h1>{{ product.getLabel(locale, scope) }} {{ product.identifier != product.getLabel(locale, scope) ? '(' ~ product.identifier ~ ')' : '' }}</h1>
                 <span class="rendering-date">{{ renderingDate|date }}</span>
             {% endblock %}
         </div>

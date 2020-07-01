@@ -78,10 +78,20 @@ pim_enrich.entity.attribute_option:
     edit:
       cancel_title: Änderung abbrechen
       cancel_description: Achtung, Sie verlieren nicht gespeicherte Daten. Sind Sie sicher, dass Sie die Änderung an dieser neuen Option abbrechen möchten?
+      options_labels: Optionen-Labels
+      options_settings: Optionen Einstellungen
+      options_codes: Optionen-Codes
+      option_code: Optionscode
+      new_option_code: new_option
+      no_options_msg: Es gibt leider keine Optionen!
+      add_option: Hier klicken, um eins hinzuzufügen.
+      delete_confirmation_title_msg: '"{{ optionCode }}" aus Ihren Optionen löschen?'
+      delete_confirmation_subtitle_msg: Sind Sie sicher, dass Sie diese Option löschen möchten? Sie können diese Aktion nicht rückgängig machen.
 pim_enrich.entity.association_type:
   label: Verbindungstyp
   property:
     is_two_way: 2-Wege-Verbindung
+    is_quantified: Verbindung mit Menge
   flash:
     update:
       success: Verbindungstyp erfolgreich aktualisiert.
@@ -98,6 +108,10 @@ pim_enrich.entity.association_type:
     create:
       title: Einen neuen Verbindungstyp anlegen
       button: Verbindungstyp anlegen
+      is_two_way:
+        message_on_read_only: Verbindungstyp kann entweder quantifiziert oder zweiseitig gewählt werden, um diesen auszuwählen, deaktivieren Sie den anderen
+      is_quantified:
+        message_on_read_only: Verbindungstyp kann entweder quantifiziert oder zweiseitig gewählt werden, um diesen auszuwählen, deaktivieren Sie den anderen
     delete:
       confirm: Möchten Sie diesen Verbindungstyp wirklich löschen?
   hint: <a href="{{link}}" target="_blank">In diesem Artikel</a>findest du alles, was du brauchst, um deinen eigenen Verbindungstyp zu erstellen.

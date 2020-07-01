@@ -36,6 +36,7 @@ final class InMemoryFindAnnouncementItems implements FindAnnouncementItemsInterf
     private function getAnnouncementItem(array $announcement): AnnouncementItem
     {
         return new AnnouncementItem(
+            $announcement['id'],
             $announcement['title'],
             $announcement['description'],
             $announcement['img'] ?? null,
@@ -43,8 +44,7 @@ final class InMemoryFindAnnouncementItems implements FindAnnouncementItemsInterf
             $announcement['link'],
             new \DateTimeImmutable($announcement['startDate']),
             $announcement['notificationDuration'],
-            $announcement['tags'],
-            $announcement['editions']
+            $announcement['tags']
         );
     }
 }
