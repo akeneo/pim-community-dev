@@ -17,6 +17,28 @@ class SettingsContext extends PimContext
     use SpinCapableTrait;
 
     /**
+     * @param $lambda
+     * @param int $wait
+     * @return bool
+     */
+    public function spinWithTimeout ($lambda, $wait = 60)
+    {
+        for ($i = 0; $i < $wait; $i++)
+        {
+            try {
+                if ($lambda($this)) {
+                    return true;
+                }
+                sleep(1);
+            } catch (\Exception $e) {
+
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * @param TableNode $creationData
      *
      * @When I create a connection with the following information:
@@ -61,7 +83,7 @@ class SettingsContext extends PimContext
             return $this->getCurrentPage()->getElement($element);
         }, sprintf('Can not find list for "%s"', $listType));
 
-        $this->spin(function () use ($list, $connection) {
+        $this->spinWithTimeout(function () use ($list, $connection) {
             return $list->find('css', sprintf('[title="%s"]', $connection));
         }, sprintf('Can not find connection "%s" in list "%s"', $connection, $listType));
     }
