@@ -610,7 +610,7 @@ Feature: Import rules
                   value: invalid
     """
     Then an exception with message "conditions[0]: Property \"handmade\" expects a boolean as data, \"string\" given." has been thrown
-    And an exception with message "actions[0]: Property \"handmade\" expects a boolean as data, \"string\" given." has been thrown
+    And an exception with message "actions[0]: The handmade attribute requires a boolean value (true or false) as data, a string was detected." has been thrown
     And the rule list contains the rules:
       """
       sony_beautiful_description:
