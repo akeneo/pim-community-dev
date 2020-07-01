@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Improvement
+
+-PIM-9315: Improve error message when when you have no rights on a product
+
 # 4.0.36 (2020-06-30)
 
 ## Bug fixes
