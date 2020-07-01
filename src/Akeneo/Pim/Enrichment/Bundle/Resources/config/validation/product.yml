@@ -20,7 +20,8 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
 
     properties:
         identifier:
-            - NotBlank: ~
+            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotBlank:
+                attributeCode: 'identifier'
             - Regex:
                 pattern: '/^(?!\s)[^,;]+(?<!\s)$/'
                 message: 'regex.comma_or_semicolon_or_surrounding_space.message'

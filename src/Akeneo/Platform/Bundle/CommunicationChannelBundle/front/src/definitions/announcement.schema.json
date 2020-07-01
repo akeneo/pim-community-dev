@@ -2,6 +2,7 @@
   "title": "Announcement",
   "type": "object",
   "properties": {
+    "id": {"type": "string"},
     "title": {"type": "string"},
     "description": {"type": "string"},
     "img": {"type": ["string", "null"]},
@@ -16,6 +17,7 @@
     "startDate": {"type": "string"}
   },
   "required": [
+    "id",
     "title",
     "description",
     "link",
