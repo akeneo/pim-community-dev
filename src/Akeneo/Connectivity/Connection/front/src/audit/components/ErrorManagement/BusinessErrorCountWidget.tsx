@@ -1,7 +1,7 @@
 import React from 'react';
-import {Section} from '../../../common';
 import styled from '../../../common/styled-with-theme';
 import {Translate} from '../../../shared/translate';
+import {Loading, Section} from '../../../common';
 import {useDashboardState} from '../../dashboard-context';
 import {useBusinessErrorCountPerConnection} from '../../hooks/api/use-business-error-count-per-connection';
 import {BusinessErrorCard} from './BusinessErrorCard';
@@ -18,7 +18,7 @@ export const BusinessErrorCountWidget = () => {
     const {loading, errorCountPerConnection} = useBusinessErrorCountPerConnection();
 
     if (loading) {
-        return <>Loading...</>; // TODO Loading spinner
+        return <Loading />;
     }
 
     if (errorCountPerConnection.length === 0) {
