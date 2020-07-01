@@ -1,6 +1,7 @@
 includes:
     - vendor/phpstan/phpstan-symfony/extension.neon
 parameters:
+    reportUnmatchedIgnoredErrors: false
     excludes_analyse:
         - %currentWorkingDirectory%/src/Akeneo/Pim/Automation/FranklinInsights/tests
         - %currentWorkingDirectory%/src/Akeneo/Pim/Automation/DataQualityInsights/tests

@@ -2,7 +2,7 @@ var/tests/%:
 	$(DOCKER_COMPOSE) run -u www-data --rm php mkdir -p $@
 
 .PHONY: coupling-back
-coupling-back: twa-coupling-back franklin-insights-coupling-back data-quality-insights-coupling-back reference-entity-coupling-back asset-manager-coupling-back rule-engine-coupling-back workflow-coupling-back permission-coupling-back
+coupling-back: twa-coupling-back franklin-insights-coupling-back data-quality-insights-coupling-back reference-entity-coupling-back asset-manager-coupling-back rule-engine-coupling-back workflow-coupling-back permission-coupling-back connectivity-connection-coupling-back
 
 ### Static tests
 static-back: asset-manager-static-back check-pullup check-sf-services
@@ -23,13 +23,13 @@ lint-back:
 	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
 	$(DOCKER_COMPOSE) run -u www-data --rm php vendor/bin/phpstan analyse src/Akeneo/Pim -l 1
 	$(DOCKER_COMPOSE) run -u www-data --rm php vendor/bin/phpstan analyse vendor/akeneo/pim-community-dev/src/Akeneo/Pim -l 1
-	$(MAKE) data-quality-insights-lint-back reference-entity-lint-back asset-manager-lint-back
+	$(MAKE) data-quality-insights-lint-back reference-entity-lint-back asset-manager-lint-back connectivity-connection-lint-back
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs_ce.php
 
 .PHONY: lint-front
-lint-front: franklin-insights-lint-front
+lint-front: franklin-insights-lint-front connectivity-connection-lint-front
 	$(YARN_RUN) lint
 	$(YARN_RUN) run --cwd=vendor/akeneo/pim-community-dev/ lint
 	$(MAKE) rule-engine-lint-front
@@ -61,10 +61,9 @@ unit-front:
 
 ### Acceptance tests
 .PHONY: acceptance-back
-acceptance-back: var/tests/behat reference-entity-acceptance-back asset-manager-acceptance-back rule-engine-acceptance-back
+acceptance-back: var/tests/behat reference-entity-acceptance-back asset-manager-acceptance-back rule-engine-acceptance-back connectivity-connection-acceptance-back
 	${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
 	${PHP_RUN} vendor/bin/behat --config vendor/akeneo/pim-community-dev/behat.yml -p acceptance --no-interaction --format=progress --strict
-	${PHP_RUN} vendor/bin/behat --config vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/Acceptance/behat.yml --no-interaction --format=progress --strict
 
 .PHONY: acceptance-front
 acceptance-front: MAX_RANDOM_LATENCY_MS=100 $(YARN_RUN) acceptance run acceptance ./tests/features
