@@ -44,7 +44,7 @@ class GetProductQuantifiedAssociationsByProductIdentifiersIntegration extends Ab
     /**
      * @test
      */
-    public function testItReturnQuantifiedAssociationWithProductsOnSingleProduct()
+    public function itReturnQuantifiedAssociationWithProductsOnSingleProduct()
     {
         $this->getEntityBuilder()->createProduct('productA', 'aFamily', []);
         $this->getEntityBuilder()->createProduct('productB', 'aFamily', []);
@@ -169,6 +169,53 @@ class GetProductQuantifiedAssociationsByProductIdentifiersIntegration extends Ab
         $this->assertEqualsCanonicalizing($expected, $actual);
     }
 
+    /**
+     * @test
+     */
+    public function itReturnsTheQuantifiedAssociationOfTheChildrenWhenDesynchronizedWithTheParent()
+    {
+        $this->getEntityBuilder()->createProduct('associated_product', 'aFamily', []);
+        $rootProductModel = $this->getEntityBuilder()->createProductModel('root', 'familyVariantWithTwoLevels', null, [
+            'quantified_associations' => [
+                'PRODUCT_SET' => [
+                    'products' => [
+                        ['identifier' => 'associated_product', 'quantity' => 1],
+                    ],
+                ],
+            ],
+        ]);
+        $subProductModel = $this->getEntityBuilder()->createProductModel('sub', 'familyVariantWithTwoLevels', $rootProductModel, [
+            'quantified_associations' => [
+                'PRODUCT_SET' => [
+                    'products' => [
+                        ['identifier' => 'associated_product', 'quantity' => 2],
+                    ],
+                ],
+            ],
+        ]);
+        $this->getEntityBuilder()->createVariantProduct('productA',  'aFamily', 'familyVariantWithTwoLevels', $subProductModel, [
+            'quantified_associations' => [
+                'PRODUCT_SET' => [
+                    'products' => [
+                        ['identifier' => 'associated_product', 'quantity' => 3],
+                    ],
+                ],
+            ],
+        ]);
+
+        $actual = $this->getQuery()->fromProductIdentifiers(['productA']);
+        $expected = [
+            'productA' => [
+                'PRODUCT_SET' => [
+                    'products' => [
+                        ['identifier' => 'associated_product', 'quantity' => 3],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertSame($expected, $actual);
+    }
 
     /**
      * @test

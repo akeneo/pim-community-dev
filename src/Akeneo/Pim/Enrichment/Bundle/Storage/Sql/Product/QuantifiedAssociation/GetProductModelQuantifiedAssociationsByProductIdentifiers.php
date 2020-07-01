@@ -108,16 +108,20 @@ SQL;
             if (!$this->associationTypeExists($associationTypeCode)) {
                 continue;
             }
+            $uniqueQuantifiedAssociations = [];
             foreach ($associationWithIds['product_models'] as $associationWithProductId) {
                 try {
                     $identifier = $productIdMapping->getIdentifier($associationWithProductId['id']);
                 } catch (\Exception $exception) {
                     continue;
                 }
-                $result[$associationTypeCode]['product_models'][] = [
+                $uniqueQuantifiedAssociations[$identifier] = [
                     'identifier' => $identifier,
                     'quantity'   => (int) $associationWithProductId['quantity']
                 ];
+            }
+            if (!empty($uniqueQuantifiedAssociations)) {
+                $result[$associationTypeCode]['product_models'] = array_values($uniqueQuantifiedAssociations);
             }
         }
 
