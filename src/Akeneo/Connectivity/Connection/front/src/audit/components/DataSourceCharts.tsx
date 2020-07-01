@@ -1,6 +1,6 @@
 import React from 'react';
 import {Section} from '../../common';
-import {LoadingSpinnerIcon} from '../../common/icons';
+import {Loading} from '../../common/components';
 import styled from '../../common/styled-with-theme';
 import {FlowType} from '../../model/flow-type.enum';
 import {useTranslate} from '../../shared/translate';
@@ -48,7 +48,7 @@ export const DataSourceCharts = () => {
                             weeklyAuditData={events.product_created[connectionCode]}
                         />
                     ) : (
-                        <LoadingSpinnerIcon />
+                        <Loading />
                     )}
                 </EventChartContainer>
                 <EventChartContainer>
@@ -62,7 +62,7 @@ export const DataSourceCharts = () => {
                             weeklyAuditData={events.product_updated[connectionCode]}
                         />
                     ) : (
-                        <LoadingSpinnerIcon />
+                        <Loading />
                     )}
                 </EventChartContainer>
             </ChartsContainer>

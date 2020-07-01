@@ -1,10 +1,10 @@
 import React, {SVGProps} from 'react';
 
-export const LoadingSpinnerIcon = (props: SVGProps<SVGSVGElement>) => (
+export const LoadingSpinner = (props: SVGProps<SVGSVGElement>) => (
     <svg
         className='lds-dash-ring'
-        width='40px'
-        height='40px'
+        width='60px'
+        height='60px'
         xmlns='http://www.w3.org/2000/svg'
         viewBox='0 0 100 100'
         style={{background: 'none)'}}

@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {LoadingSpinnerIcon} from '../../common/icons';
+import {Loading} from '../../common';
 import {useConnectionErrors} from '../hooks/api/use-connection-errors';
 import {ErrorList} from './ErrorList';
 import {ErrorsHelper} from './ErrorsHelper';
@@ -12,7 +12,7 @@ const ConnectionErrors: FC<Props> = ({connectionCode}) => {
     const {loading, connectionErrors} = useConnectionErrors(connectionCode);
 
     if (loading) {
-        return <LoadingSpinnerIcon />;
+        return <Loading />;
     }
 
     return (
