@@ -1199,3 +1199,49 @@ Feature: Import rules
             value:  true
       """
     And the rule list does not contain the "disable_old_products" rule
+
+  @integration-back
+  Scenario: Skip rules with null value for categories in conditions
+    When the following yaml file is imported:
+    """
+    rules:
+        rule_with_invalid_null_category:
+            conditions:
+                - field:    categories
+                  operator: UNCLASSIFIED
+                  value:
+                      - test1
+                      - null
+                      - test2
+            actions:
+                - type:  set
+                  field: name
+                  value: Test
+                  locale: en_US
+        rule_with_valid_empty_category:
+            conditions:
+                - field:    categories
+                  operator: UNCLASSIFIED
+                  value: []
+            actions:
+                - type:  set
+                  field: name
+                  value: Test
+                  locale: en_US
+    """
+    Then an exception with message "conditions[0].value[1]: This value should not be null." has been thrown
+    And the rule list contains the rules:
+      """
+      rule_with_valid_empty_category:
+          priority: 0
+          conditions:
+              - field:    categories
+                operator: UNCLASSIFIED
+                value: []
+          actions:
+              - type:  set
+                field: name
+                value: Test
+                locale: en_US
+      """
+    And the rule list does not contain the "rule_with_null_category" rule

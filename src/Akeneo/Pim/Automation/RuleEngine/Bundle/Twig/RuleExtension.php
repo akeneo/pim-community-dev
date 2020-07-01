@@ -98,6 +98,10 @@ class RuleExtension extends \Twig_Extension
      */
     public function presentRuleActionValue($value, $code): string
     {
+        if (null === $value) {
+            return '';
+        }
+
         $options = [
             'attribute' => $code,
             'locale' => $this->localeResolver->getCurrentLocale(),

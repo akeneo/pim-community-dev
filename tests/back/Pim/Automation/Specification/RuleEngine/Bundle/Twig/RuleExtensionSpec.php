@@ -193,6 +193,11 @@ class RuleExtensionSpec extends ObjectBehavior
         $this->presentRuleActionValue(false, 'enabled')->shouldReturn('false');
     }
 
+    function it_presents_a_null_value()
+    {
+        $this->presentRuleActionValue(null, 'categories')->shouldReturn('');
+    }
+
     function it_appends_locale_and_scope()
     {
         $this->appendLocaleAndScopeContext('value', 'en_US', 'mobile')

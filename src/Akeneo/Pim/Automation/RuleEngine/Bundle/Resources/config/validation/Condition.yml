@@ -14,6 +14,8 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Condition:
                   message: The "operator" key is missing or empty
         value:
             - Type: [scalar, array]
+            - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\AllIfIterable:
+                - NotNull:  ~
         scope:
             - Type: string
         locale:
