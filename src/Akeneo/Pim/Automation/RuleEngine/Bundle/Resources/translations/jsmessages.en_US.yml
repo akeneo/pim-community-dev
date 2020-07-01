@@ -134,6 +134,12 @@ pimee_catalog_rule:
                     title: CLEAR Attribute value
                     subtitle: Select the attribute to clear
                     attribute_label: Attribute
+                clear_associations:
+                    title: CLEAR Associations
+                clear_categories:
+                    title: CLEAR Categories
+                clear_groups:
+                    title: CLEAR Groups
                 delete:
                     label: Remove action
                     description: Are you sure you want to remove this action?
@@ -170,6 +176,9 @@ pimee_catalog_rule:
             unhandled_attribute_type: Sorry this attribute type is not managed yet. Please use the rule import.
         helper:
             add_to_category: To add your product selection to one or more categories, please start by selecting our category trees and then, your categories.
+            clear_associations: All associations of selected products will be cleared.
+            clear_categories: All categories of selected products will be cleared.
+            clear_groups: All groups of selected products will be cleared.
             product_selection: "You must define your product selection in order to create your rule. If you don't know how, "
             product_selection_doc_link: take a look at this article.
         legend:
