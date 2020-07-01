@@ -25,7 +25,7 @@ class CreateProductEndToEnd extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "product_create_headers"
     }
@@ -49,7 +49,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "product_creation_family",
         "family": "familyA"
@@ -88,7 +88,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "product_creation_groups",
         "groups": ["groupA", "groupB"]
@@ -127,7 +127,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "product_creation_categories",
         "categories": ["master", "categoryA"]
@@ -245,7 +245,7 @@ JSON;
         ];
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "product_creation_product_values",
         "groups": ["groupA", "groupB"],
@@ -618,7 +618,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "foo",
         "created": "2014-06-14T13:12:50+02:00",
@@ -665,7 +665,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "same_identifier",
         "values": {
@@ -696,7 +696,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "different",
         "values": {
@@ -727,7 +727,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "values": {
             "sku": [{
@@ -747,7 +747,7 @@ JSON;
             'errors'  => [
                 [
                     'property'   => 'identifier',
-                    'message' => 'This value should not be blank.',
+                    'message' => 'The identifier attribute cannot be empty.',
                 ],
             ],
         ];
@@ -772,7 +772,7 @@ JSON;
             'errors'  => [
                 [
                     'property' => 'identifier',
-                    'message'  => 'This value should not be blank.',
+                    'message'  => 'The identifier attribute cannot be empty.',
                 ],
             ],
         ];
@@ -788,7 +788,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "simple"
     }
@@ -818,7 +818,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "extra_property": "foo"
     }
@@ -845,7 +845,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "foo",
         "family": null,
@@ -866,7 +866,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Attribute "unknown_attribute" does not exist. Check the expected format on the API documentation.',
+            'message' => 'The unknown_attribute attribute does not exist in your PIM. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#post_products'
@@ -925,7 +925,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "foo",
         "values": {
@@ -949,8 +949,8 @@ JSON;
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
 
-        $this->assertSame('15'. chr(31) . 'm', $product->getValue('a_text')->getData());
-        $this->assertSame('15'. chr(31) . 'm', $product->getRawValues()['a_text']['<all_channels>']['<all_locales>']);
+        $this->assertSame('15' . chr(31) . 'm', $product->getValue('a_text')->getData());
+        $this->assertSame('15' . chr(31) . 'm', $product->getRawValues()['a_text']['<all_channels>']['<all_locales>']);
     }
 
     public function testResponseWhenAssociatingToNonExistingProductModel()

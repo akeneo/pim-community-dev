@@ -61,7 +61,10 @@ class AttributeOptionsExistValidator extends ConstraintValidator
                             '%attribute_code%' => $value->getAttributeCode(),
                             '%invalid_option%' => $value->getData(),
                         ]
-                    )->atPath(sprintf('[%s]', $key))->addViolation();
+                    )
+                        ->atPath(sprintf('[%s]', $key))
+                        ->setCode(AttributeOptionsExist::ATTRIBUTE_OPTION_DOES_NOT_EXIST)
+                        ->addViolation();
                 }
             } elseif ($value instanceof OptionsValueInterface) {
                 $notExistingOptionCodes = array_diff(array_map('strtolower', $value->getData()), ($existingOptionCodes[$value->getAttributeCode()] ?? []));
@@ -72,7 +75,10 @@ class AttributeOptionsExistValidator extends ConstraintValidator
                             '%attribute_code%' => $value->getAttributeCode(),
                             '%invalid_options%' => implode(', ', $notExistingOptionCodes),
                         ]
-                    )->atPath(sprintf('[%s]', $key))->addViolation();
+                    )
+                        ->atPath(sprintf('[%s]', $key))
+                        ->setCode(AttributeOptionsExist::ATTRIBUTE_OPTIONS_DO_NOT_EXIST)
+                        ->addViolation();
                 }
             }
         }

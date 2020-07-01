@@ -54,7 +54,7 @@ test('it can open the read more link in a new tab', async () => {
   await act(async () => renderWithProviders(<Panel />, container as HTMLElement));
 
   expect((container.querySelector(`a[title="${expectedAnnouncements[0].title}"]`) as HTMLLinkElement).href).toEqual(
-    `http://external.com/?utm_source=akeneo-app&utm_medium=communication-panel&utm_campaign=${campaign}`
+    `http://external.com/?utm_source=akeneo-app&utm_medium=communication-panel&utm_content=${expectedAnnouncements[0].id}&utm_campaign=${campaign}`
   );
   expect((container.querySelector(`a[title="${expectedAnnouncements[0].title}"]`) as HTMLLinkElement).target).toEqual(
     '_blank'

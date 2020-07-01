@@ -75,7 +75,7 @@ class PartialUpdateProductEndToEnd extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "product_create_with_identifier"
     }
@@ -155,7 +155,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "bar"
     }
@@ -178,7 +178,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "new_identifier",
         "values": {
@@ -211,7 +211,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "product_family",
         "values": {
@@ -276,7 +276,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "product_categories"
     }
@@ -357,7 +357,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "new_product_categories"
     }
@@ -403,7 +403,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": null
     }
@@ -417,7 +417,7 @@ JSON;
             'errors'  => [
                 [
                     'property' => 'identifier',
-                    'message'  => 'This value should not be blank.',
+                    'message'  => 'The identifier attribute cannot be empty.',
                 ],
             ],
         ];
@@ -433,7 +433,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "product_family",
         "family": "familyA"
@@ -472,7 +472,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "product_family",
         "family": null
@@ -511,7 +511,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "product_groups",
         "groups": ["groupB", "groupA"]
@@ -550,7 +550,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "product_groups",
         "groups": []
@@ -590,7 +590,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "product_categories",
         "categories": ["categoryA", "categoryA1"]
@@ -630,7 +630,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "product_categories",
         "categories": []
@@ -747,7 +747,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "product_associations",
         "associations": {
@@ -796,7 +796,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "product_associations",
         "associations": {
@@ -850,7 +850,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "product_categories",
         "enabled": false
@@ -892,7 +892,7 @@ JSON;
         $akeneoJpgPath = $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'));
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "localizable",
         "values": {
@@ -945,7 +945,7 @@ JSON;
         $ziggyPngPath = $this->getFileInfoKey($this->getFixturePath('ziggy.png'));
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "localizable",
         "values": {
@@ -1050,7 +1050,7 @@ JSON;
         ];
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "complete",
         "groups": ["groupA", "groupB"],
@@ -1225,7 +1225,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "product_categories",
         "created": "2014-06-14T13:12:50+02:00",
@@ -1273,7 +1273,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "product_categories",
         "values": {
@@ -1304,7 +1304,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "values": {
             "sku": [{
@@ -1334,7 +1334,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "product_family"
     }
@@ -1363,7 +1363,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "extra_property": "foo"
     }
@@ -1426,7 +1426,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "product_categories",
         "enabled": null
@@ -1454,7 +1454,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "product_family",
         "family": "familyA2",
@@ -1474,7 +1474,7 @@ JSON;
         $client->request('PATCH', 'api/rest/v1/products/product_family', [], [], [], $data);
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Attribute "unknown_attribute" does not exist. Check the expected format on the API documentation.',
+            'message' => 'The unknown_attribute attribute does not exist in your PIM. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => "http://api.akeneo.com/api-reference.html#patch_products__code_"
@@ -1492,11 +1492,11 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "product_family",
         "family": ["familyA"]
-    } 
+    }
 JSON;
         $client->request('PATCH', 'api/rest/v1/products/product_family', [], [], [], $data);
 
@@ -1520,7 +1520,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "big_boot",
         "family": "familyA",
@@ -1537,7 +1537,7 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "a_text" expects a string as data, "array" given. Check the expected format on the API documentation.',
+            'message' => 'The a_text attribute requires a string, a array was detected. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => "http://api.akeneo.com/api-reference.html#patch_products__code_"

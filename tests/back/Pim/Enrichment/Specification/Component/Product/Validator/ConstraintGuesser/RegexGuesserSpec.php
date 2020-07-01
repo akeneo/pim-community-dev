@@ -39,6 +39,8 @@ class RegexGuesserSpec extends ObjectBehavior
         $attribute->getValidationRegexp()
             ->willReturn('/.*/')
             ->shouldBeCalled();
+        $attribute->getCode()
+            ->willReturn('color');
 
         $constraints = $this->guessConstraints($attribute);
 

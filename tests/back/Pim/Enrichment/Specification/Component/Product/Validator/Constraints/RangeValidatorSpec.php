@@ -253,44 +253,76 @@ class RangeValidatorSpec extends ObjectBehavior
 
     function it_does_not_validate_a_date_in_range(
         $context,
-        Range $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
-        $constraint->min = new \DateTime('2013-06-13');
-        $constraint->max = new \DateTime('2014-06-13');
+        $constraint = new Range([
+            'min' => new \DateTime('2013-06-13'),
+            'max' => new \DateTime('2014-06-13'),
+            'attributeCode' => 'release'
+        ]);
 
         $context
-            ->buildViolation($constraint->minDateMessage, ['{{ limit }}' => '2013-06-13'])
+            ->buildViolation(
+                $constraint->minDateMessage,
+                [
+                    '{{ limit }}' => '2013-06-13',
+                    '{{ attribute_code }}' => 'release'
+                ]
+            )
             ->shouldBeCalled()
             ->willReturn($violation);
+        $violation->setCode(Range::TOO_LOW_ERROR)->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
 
         $this->validate(new \DateTime('2012-12-25'), $constraint);
     }
 
     function it_does_not_validate_a_date_without_max(
         $context,
-        Range $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
-        $constraint->min = new \DateTime('2013-06-13');
+        $constraint = new Range([
+            'min' => new \DateTime('2013-06-13'),
+            'attributeCode' => 'release'
+        ]);
+
         $context
-            ->buildViolation($constraint->minDateMessage, ['{{ limit }}' => '2013-06-13'])
+            ->buildViolation(
+                $constraint->minDateMessage,
+                [
+                    '{{ limit }}' => '2013-06-13',
+                    '{{ attribute_code }}' => 'release'
+                ]
+            )
             ->shouldBeCalled()
             ->willReturn($violation);
+        $violation->setCode(Range::TOO_LOW_ERROR)->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
 
         $this->validate(new \DateTime('2012-12-25'), $constraint);
     }
 
     function it_does_not_validate_a_date_without_min(
         $context,
-        Range $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
-        $constraint->max = new \DateTime('2014-06-13');
+        $constraint = new Range([
+            'max' => new \DateTime('2014-06-13'),
+            'attributeCode' => 'release'
+        ]);
+
         $context
-            ->buildViolation($constraint->maxDateMessage, ['{{ limit }}' => '2014-06-13'])
+            ->buildViolation(
+                $constraint->maxDateMessage,
+                [
+                    '{{ limit }}' => '2014-06-13',
+                    '{{ attribute_code }}' => 'release'
+                ]
+            )
             ->shouldBeCalled()
             ->willReturn($violation);
+        $violation->setCode(Range::TOO_HIGH_ERROR)->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
 
         $this->validate(new \DateTime('2015-12-25'), $constraint);
     }
@@ -323,6 +355,7 @@ class RangeValidatorSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($violation);
         $violation->atPath('data')->shouldBeCalled()->willReturn($violation);
+        $violation->setCode(Range::TOO_HIGH_ERROR)->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
         $this->validate($productPrice, $constraint);
@@ -357,6 +390,7 @@ class RangeValidatorSpec extends ObjectBehavior
             ->willReturn($violation);
 
         $violation->atPath('data')->shouldBeCalled()->willReturn($violation);
+        $violation->setCode(Range::TOO_HIGH_ERROR)->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
         $this->validate($metric, $constraint);

@@ -14,3 +14,28 @@ services:
         class: 'Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\AuditErrorLoader'
         arguments:
             - '@akeneo_connectivity.connection.application.error_management.handler.update_connection_error_count'
+
+    akeneo_connectivity.connection.fixtures.structure.attribute:
+        class: 'Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Structure\AttributeLoader'
+        arguments:
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@pim_catalog.saver.attribute'
+            - '@validator'
+
+    akeneo_connectivity.connection.fixtures.structure.family:
+        class: 'Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Structure\FamilyLoader'
+        arguments:
+            - '@pim_catalog.factory.family'
+            - '@pim_catalog.updater.family'
+            - '@pim_catalog.saver.family'
+            - '@validator'
+
+    akeneo_connectivity.connection.fixtures.enrichment.product:
+        class: 'Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment\ProductLoader'
+        arguments:
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.saver.product'
+            - '@validator'
+            - '@akeneo_elasticsearch.client.product_and_product_model'

@@ -157,7 +157,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                     - pim_reference_data_simpleselect
         maxCharacters:
             - Type: numeric
-            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotDecimal: {}
+            - Akeneo\Pim\Structure\Component\Validator\Constraints\NotDecimal: {}
             - GreaterThanOrEqual:
                 value: 0
                 groups:
@@ -189,7 +189,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
         sortOrder:
             - NotNull: ~
             - Type: numeric
-            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotDecimal: {}
+            - Akeneo\Pim\Structure\Component\Validator\Constraints\NotDecimal: {}
             - GreaterThanOrEqual:
                 value: 0
         required:

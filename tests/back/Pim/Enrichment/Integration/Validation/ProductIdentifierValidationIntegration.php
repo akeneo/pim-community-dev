@@ -45,7 +45,7 @@ class ProductIdentifierValidationIntegration extends TestCase
         $this->assertCount(1, $violations);
         $this->assertSame(
             $violations->get(0)->getMessage(),
-            'This value is too long. It should have 4 characters or less.'
+            'The identifier attribute must not contain more than 4 characters. The submitted value is too long.'
         );
     }
 
@@ -65,7 +65,7 @@ class ProductIdentifierValidationIntegration extends TestCase
         $this->assertCount(1, $violations);
         $this->assertSame(
             $violations->get(0)->getMessage(),
-            'This value is not valid due to regular expression defined in the attribute'
+            'The sku attribute must match the following regular expression: /^sku-\d*$/.'
         );
     }
 
@@ -78,7 +78,7 @@ class ProductIdentifierValidationIntegration extends TestCase
         $wrongProduct = $this->createProduct('');
         $violations = $this->validateProduct($wrongProduct);
         $this->assertCount(1, $violations);
-        $this->assertSame($violations->get(0)->getMessage(), 'This value should not be blank.');
+        $this->assertSame($violations->get(0)->getMessage(), 'The identifier attribute cannot be empty.');
         $this->assertSame($violations->get(0)->getPropertyPath(), 'identifier');
     }
 

@@ -70,7 +70,7 @@ Feature: Validate editing common text attributes of multiple products
     And I display the Info attribute
     And I change the "Info" to "Extremely useful information"
     And I move on to the next step
-    Then I should see validation tooltip "This value is too long. It should have 25 characters or less."
+    Then I should see validation tooltip "The info attribute must not contain more than 25 characters. The submitted value is too long."
     And the product "boots" should not have the following values:
       | Info |
     And the product "sandals" should not have the following values:

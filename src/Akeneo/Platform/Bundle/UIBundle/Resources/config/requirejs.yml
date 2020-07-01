@@ -823,7 +823,7 @@ config:
     pim/group-edit-form/save:                   pimui/js/group/form/save
 
     # Attribute
-    pim/attribute-edit-form/tab/choices:                    pimui/js/attribute/form/choices
+    pim/attribute-edit-form/tab/choices:                    pimui/js/attribute/form/choices.tsx
     pim/attribute-edit-form/choices/options-grid:           pimui/js/attribute/form/choices/options-grid
     pim/attribute-edit-form/save-form:                      pimui/js/attribute/form/save
     pim/attribute-edit-form/delete:                         pimui/js/attribute/form/delete
