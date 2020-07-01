@@ -125,11 +125,15 @@
 
   &-filterLabel {
     display: block;
-    color: @AknDarkBlue;
+    color: @AknGrey;
     text-transform: uppercase;
     font-size: @AknDefaultFontSize;
     white-space: nowrap;
     margin-bottom: 3px;
+
+    .AknFilterBox--search &, .AknButtonList &{
+      color: @AknDarkBlue;
+    }
   }
 
   &-filterCriteria {
