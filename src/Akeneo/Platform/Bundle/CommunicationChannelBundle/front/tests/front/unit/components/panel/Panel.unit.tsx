@@ -57,7 +57,10 @@ test('it shows the panel with the next announcements', async () => {
 
   fetchMockResponseOnce('pim_analytics_data_collect', JSON.stringify(expectedPimAnalyticsData));
   fetchMockResponseOnce('/rest/announcements?limit=10', JSON.stringify({items: expectedAnnouncements}));
-  fetchMockResponseOnce('/rest/announcements?limit=10&search_after=test-id-2', JSON.stringify({items: nextItems}));
+  fetchMockResponseOnce(
+    '/rest/announcements?limit=10&search_after=update-title_announcement_2-20-04-2020',
+    JSON.stringify({items: nextItems})
+  );
 
   await act(async () =>
     renderWithProviders(

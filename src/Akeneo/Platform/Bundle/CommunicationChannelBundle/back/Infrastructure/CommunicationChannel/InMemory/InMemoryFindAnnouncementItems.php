@@ -35,22 +35,8 @@ final class InMemoryFindAnnouncementItems implements FindAnnouncementItemsInterf
     public function byPimVersion(string $pimEdition, string $pimVersion, ?string $searchAfter, int $limit): array
     {
         $content = json_decode($this->externalJson, true);
-        $paginatedItems = array_filter($content['data'], function ($item) use ($content, $searchAfter, $limit) {
-            if (null === $searchAfter) {
-                $this->cptItems++;
-                return $this->cptItems < $limit+1;
-            } else {
-                if ($item['id'] === $searchAfter) {
-                    $this->itemToSearchAfter = array_search($item, $content['data']);
-                }
 
-                if (null !== $this->itemToSearchAfter) {
-                    $this->cptItems++;
-                }
-
-                return null !== $this->itemToSearchAfter && array_search($item, $content['data']) > $this->itemToSearchAfter && $this->cptItems <= $limit+1;
-            }
-        });
+        $paginatedItems = $this->paginateItems($content, $limit, $searchAfter);
 
         return array_map(function ($announcement) {
             return $this->getAnnouncementItem($announcement);
@@ -70,5 +56,17 @@ final class InMemoryFindAnnouncementItems implements FindAnnouncementItemsInterf
             $announcement['notificationDuration'],
             $announcement['tags']
         );
+    }
+
+    private function paginateItems(array $content, int $limit, string $searchAfter = null): array
+    {
+        $paginatedItems = $content['data'];
+        if (null === $searchAfter) {
+            return array_slice($paginatedItems, 0, $limit);
+        }
+
+        $searchAfterIdKey = array_search($searchAfter, array_column($paginatedItems, 'id'));
+
+        return array_slice($paginatedItems, $searchAfterIdKey + 1, $limit);
     }
 }
