@@ -38,4 +38,17 @@ class UserContext implements Context
         $token = new UsernamePasswordToken($user, null, 'main', ['ROLE_ADMINISTRATOR']);
         $this->tokenStorage->setToken($token);
     }
+
+    /**
+     * @Given /^an authentified user$/
+     */
+    public function anAuthenifiedUser()
+    {
+        /** @var UserInterface $user */
+        $user = $this->userFactory->create();
+        $user->setUsername('julia');
+
+        $token = new UsernamePasswordToken($user, null, 'main', ['ROLE_USER']);
+        $this->tokenStorage->setToken($token);
+    }
 }
