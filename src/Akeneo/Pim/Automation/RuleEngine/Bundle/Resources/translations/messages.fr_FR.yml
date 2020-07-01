@@ -108,15 +108,6 @@ pimee_catalog_rule:
     mass_edit_rule:
       success: Le calcul du nombre de produits affectés par les règles est terminé
       error: Une erreur que s’est produite lors du calcul du nombre de produits affectés par les règles
-  datetime:
-    now: maintenant
-    relative_date:
-      minute: ]-Inf, -1[il y a %absolute_count% minutes|{-1}il y a 1 minute|{1}dans 1 minute|]1, +Inf[dans %absolute_count% minutes
-      hour: ]-Inf, -1[il y a %absolute_count% heures|{-1}il y a 1 heure|{1}dans 1 heure|]1, +Inf[dans %absolute_count% heures
-      day: ]-Inf, -1[il y a %absolute_count% jours|{-1}il y a 1 jour|{1}dans 1 jour|]1, +Inf[dans %absolute_count% jours
-      week: ]-Inf, -1[il y a %absolute_count% semaines|{-1}il y a 1 semaine|{1}dans 1 semaine|]1, +Inf[dans %absolute_count% semaines
-      month: ]-Inf, -1]il y a %absolute_count% mois|[1, +Inf[dans %absolute_count% mois
-      year: ]-Inf, -1[il y a %absolute_count% ans|{-1}il y a 1 an|{1}dans 1 an|]1, +Inf[dans %absolute_count% ans
 btn:
   Execute rules: Exécuter les règles
 job_execution:
@@ -133,4 +124,3 @@ pim_datagrid:
     type:
       mass_edit_rule: Paramètres des règles
       execute_rules: Exécution des règles
-

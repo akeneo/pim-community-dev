@@ -10,12 +10,14 @@ akeneo_assetmanager:
       manage_transformation: Asset-Familie-Transformationen verwalten
       manage_product_link_rule: Regeln für Produktverlinkungen der Asset-Familie verwalten
       execute_product_link_rule: Produkt-Link-Regeln für alle Assets einer Asset-Familie ausführen
+      execute_naming_conventions: Benennungskonventionen auf Assets ausführen
     asset:
       create: Asset erstellen
       edit: Asset bearbeiten
       delete: Asset löschen
       delete_all: Alle Assets löschen
       list_product: Liste der zu erfassenden verknüpften Produkte
+      execute_naming_conventions: Namenskonventionen ausführen
     attribute:
       create: Attribut einer Asset-Familie hinzufügen
       edit: Ein Attribut einer Asset-Familie bearbeiten
@@ -23,12 +25,16 @@ akeneo_assetmanager:
     option:
       edit: Optionen bearbeiten
       delete: Entfernen einer Option
+  jobs:
+    asset_manager_execute_naming_convention:
+      error: 'Die Namenskonvention ist beim Asset "{{ asset }}" fehlgeschlagen'
 pim_import_export:
   widget:
     last_operations:
       job_type:
         asset_manager_compute_transformations: "Asset-Transformationen berechnen"
         asset_manager_link_assets_to_products: "Assets mit Produkten verknüpfen"
+        asset_manager_execute_naming_convention: "Asset-Familien-Namenskonvention ausführen"
 #pim_analytics:
 #info_type:
 #nb_asset_families: Number of asset families
@@ -41,3 +47,13 @@ pim_import_export:
 #average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per asset family
 #average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family
 pim_catalog_asset_collection: Asset-Sammlung
+pim_datagrid:
+  cells:
+    type:
+      asset_manager_execute_naming_convention: Asset-Familien-Namenskonvention ausführen
+batch_jobs:
+  default_steps:
+    execute_naming_convention: Asset-Familien-Namenskonvention ausführen
+job_execution:
+  summary:
+    assets: Assets

@@ -119,6 +119,7 @@ pim_asset_manager:
       edit: Familie bearbeiten
       view: Familie anzeigen
       execute_product_link_rules: Regeln anwenden
+      execute_naming_convention: Namenskonvention ausführen
     permission:
       title: Asset Familie Berechtigungen
     title: Assets
@@ -150,6 +151,9 @@ pim_asset_manager:
         execute_rules: Regeln anwenden
         cancel: Abbrechen
       execute_naming_convention:
+        confirm_title: Ausführung bestätigen
+        confirm_content: Sind Sie sicher, dass Sie die Namenskonvention ausführen möchten? (dies kann lange dauern)
+        execute_naming_convention: Namenskonvention ausführen
         cancel: Abbrechen
     properties:
       title: Eigenschaften der Assetfamilie
@@ -207,6 +211,9 @@ pim_asset_manager:
       execute_product_link_rules:
         success: Produkt-Link-Regeln wurden gestartet
         fail: Beim Aufruf der Artikel-Linkregeln ist ein Fehler aufgetreten
+      execute_naming_convention:
+        success: Namenskonvention wurde gestartet
+        fail: Beim Start der Namenskonvention ist ein Fehler aufgetreten
     helper:
       title: Willkommen beim Asset Manager!
       no_asset:
@@ -250,6 +257,7 @@ pim_asset_manager:
       error:
         value: Hoppla, es scheint, dass das Rendering des "{{ fieldName }}" Feldes fehlgeschlagen ist. Siehe die Entwicklerkonsole für weitere Details.
     button:
+      save_and_execute_naming_convention: Namenskonvention speichern und ausführen
       save: Speichern
       create: Asset erstellen
       mass_upload: Massenupload
@@ -375,6 +383,9 @@ pim_asset_manager:
       delete_all:
         success: Alle "{{ entityIdentifier }}" Assets erfolgreich gelöscht.
         fail: Beim Löschen aller Assets dieser Anlagefamilie ist ein Fehler aufgetreten
+      execute_naming_convention:
+        success: Namenskonvention erfolgreich ausgeführt
+        fail: Bei der Ausführung der Namenskonvention ist ein Fehler aufgetreten
     completeness:
       label: Vollständig
   attribute:
@@ -495,6 +506,9 @@ pim_asset_manager:
       button:
         cancel: Abbrechen
         confirm: Löschen
+  jobs:
+    asset_manager_execute_naming_convention:
+      error: 'Die Namenskonvention ist beim Asset "{{ asset }}" fehlgeschlagen'
 pim_enrich:
   confirmation:
     discard_changes: 'Sie verlieren Änderungen an der Entität "{{ entity }}", wenn Sie die Seite verlassen.'
@@ -526,6 +540,14 @@ pim_import_export:
       job_type:
         asset_manager_compute_transformations: "Asset-Transformationen berechnen"
         asset_manager_link_assets_to_products: "Assets mit Produkten verknüpfen"
+        asset_manager_execute_naming_convention: Asset-Familien-Namenskonvention ausführen
+pim_datagrid:
+  cells:
+    type:
+      asset_manager_execute_naming_convention: Asset-Familien-Namenskonvention ausführen
+batch_jobs:
+  default_steps:
+    execute_naming_convention: Asset-Familien-Namenskonvention ausführen
 job_execution:
   summary:
     assets: Assets
