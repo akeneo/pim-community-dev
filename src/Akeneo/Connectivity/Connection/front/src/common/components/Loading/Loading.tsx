@@ -12,13 +12,11 @@ const Loading = () => {
 
 const Container = styled.div`
     height: 100%;
-    display: grid;
+    display: flex;
 `;
 
 const Spinner = styled(LoadingSpinner)`
-    background-size: 60px;
     min-height: 60px;
-    background: center;
     margin: auto;
 `;
 
