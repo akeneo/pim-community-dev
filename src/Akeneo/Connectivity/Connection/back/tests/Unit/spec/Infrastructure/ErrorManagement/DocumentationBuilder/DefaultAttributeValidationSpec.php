@@ -7,7 +7,12 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Doc
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation\DocumentationCollection;
 use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\DocumentationBuilder\DefaultAttributeValidation;
 use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\DocumentationBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Boolean;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsNumeric;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsString;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Length;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotBlank;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotDecimal;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Range;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Regex;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueValue;
@@ -33,8 +38,14 @@ class DefaultAttributeValidationSpec extends ObjectBehavior
     function it_supports_some_attribute_validation_constraints(ConstraintViolationInterface $constraintViolation)
     {
         $constraintCodes = [
+            Boolean::NOT_BOOLEAN_ERROR,
             IsNumeric::IS_NUMERIC,
+            IsString::IS_STRING,
+            Length::TOO_LONG_ERROR,
+            NotBlank::IS_BLANK_ERROR,
+            NotDecimal::NOT_DECIMAL,
             Range::INVALID_CHARACTERS_ERROR,
+            Range::NOT_IN_RANGE_ERROR,
             Range::TOO_HIGH_ERROR,
             Range::TOO_LOW_ERROR,
             Regex::REGEX_FAILED_ERROR,
