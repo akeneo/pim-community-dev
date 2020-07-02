@@ -36,6 +36,16 @@ class AddViewedAnnouncementsActionIntegration extends WebTestCase
         $this->assertViewedAnnouncement($viewedAnnouncementIds);
     }
 
+    public function test_it_throws_an_exception_when_it_does_not_have_a_view_announcement_ids()
+    {
+        $this->client->request(
+            'GET',
+            '/rest/announcements'
+        );
+
+        Assert::assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $this->client->getResponse()->getStatusCode());
+    }
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();

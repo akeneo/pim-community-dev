@@ -6,7 +6,6 @@ namespace spec\Akeneo\Platform\CommunicationChannel\Application\Announcement\Com
 
 use Akeneo\Platform\CommunicationChannel\Application\Announcement\Command\AddViewedAnnouncementsByUserCommand;
 use Akeneo\Platform\CommunicationChannel\Application\Announcement\Command\AddViewedAnnouncementsByUserHandler;
-use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Model\Write\ViewedAnnouncement;
 use Akeneo\Platform\CommunicationChannel\Infrastructure\Persistence\InMemory\Repository\InMemoryViewedAnnouncementRepository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

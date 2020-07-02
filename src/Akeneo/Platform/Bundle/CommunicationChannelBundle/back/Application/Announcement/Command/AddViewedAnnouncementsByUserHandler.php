@@ -24,13 +24,13 @@ final class AddViewedAnnouncementsByUserHandler
 
     public function execute(AddViewedAnnouncementsByUserCommand $command): void
     {
-        $viewAnnouncements = array_map(function ($viewedAnnouncementId) use ($command) {
+        $viewedAnnouncements = array_map(function ($viewedAnnouncementId) use ($command) {
             return ViewedAnnouncement::create(
                 $viewedAnnouncementId,
                 $command->userId()
             );
         }, $command->ViewedAnnouncementIds());
 
-        $this->viewedAnnouncementRepository->create($viewAnnouncements);
+        $this->viewedAnnouncementRepository->create($viewedAnnouncements);
     }
 }
