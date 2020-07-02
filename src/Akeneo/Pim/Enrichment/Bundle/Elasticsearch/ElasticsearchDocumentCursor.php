@@ -14,6 +14,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductModelProjection;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 
@@ -137,6 +141,9 @@ final class ElasticsearchDocumentCursor implements CursorInterface
 
     protected function getNextItems(array $esQuery)
     {
+        // Remove source filtering to get all fields
+        unset($esQuery['_source']);
+
         $size = $this->limit > $this->pageSize ? $this->pageSize : $this->limit;
         if ($this->fetchedItemsCount + $size > $this->limit) {
             $size = $this->limit - $this->fetchedItemsCount;
@@ -165,7 +172,10 @@ final class ElasticsearchDocumentCursor implements CursorInterface
 
         $items = [];
         foreach ($response['hits']['hits'] as $hit) {
-            $items[] = $hit['_source'];
+            $items[] = $this->hydrateElasticsearchProjection(
+                $hit['_source'],
+                $hit['_source']['document_type'] ?? ProductInterface::class
+            );
         }
 
         $lastResult = end($response['hits']['hits']);
@@ -175,6 +185,18 @@ final class ElasticsearchDocumentCursor implements CursorInterface
         }
 
         return $items;
+    }
+
+    private function hydrateElasticsearchProjection(array $data, string $documentType)
+    {
+        switch ($documentType) {
+            case ProductInterface::class:
+                return ElasticsearchProductProjection::fromNormalized($data);
+            case ProductModelInterface::class:
+                return ElasticsearchProductModelProjection::fromNormalized($data);
+        }
+
+        throw new \InvalidArgumentException(sprintf('Unknown "%s" document type.', $documentType));
     }
 
     /**

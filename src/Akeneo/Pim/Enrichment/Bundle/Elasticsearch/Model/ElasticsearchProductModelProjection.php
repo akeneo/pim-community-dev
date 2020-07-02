@@ -166,4 +166,9 @@ final class ElasticsearchProductModelProjection
 
         return array_merge($data, $this->additionalData);
     }
+
+    public static function fromNormalized(array $data): ElasticsearchProductModelProjection
+    {
+        throw new \Exception('Not implemented');
+    }
 }

@@ -197,4 +197,30 @@ final class ElasticsearchProductProjection
 
         return array_merge($data, $this->additionalData);
     }
+
+    public static function fromNormalized(array $data): ElasticsearchProductProjection
+    {
+        return new ElasticsearchProductProjection(
+            str_replace(self::INDEX_PREFIX_ID, '', $data['id']),
+            $data['identifier'],
+            new \DateTimeImmutable($data['created']),
+            new \DateTimeImmutable($data['updated']),
+            $data['enabled'] === 1,
+            $data['family']['code'] ?? null,
+            $data['family']['label'] ?? null,
+            $data['family_variant'],
+            $data['categories'],
+            $data['categories_of_ancestors'],
+            $data['groups'],
+            $data['completeness'],
+            $data['parent'],
+            $data['values'],
+            preg_filter('/^product_model_/', '', $data['ancestors']['ids'] ?? []),
+            $data['ancestors']['codes'] ?? [],
+            $data['label'],
+            $data['attributes_of_ancestors'],
+            $data['attributes_for_this_level'],
+            [],
+        );
+    }
 }
