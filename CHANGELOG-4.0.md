@@ -4,10 +4,14 @@
 
 - PIM-9243: Creation and update dates are not displayed on the asset page 
 
+# 4.0.36 (2020-06-30)
+
 # 4.0.35 (2020-06-22)
 
 ## Bug fixes
+
 - PIM-9303: Fix project recalculate
+- PIM-9302: Fix ref entity multiple option attribute view crashing
 
 # 4.0.34 (2020-06-17)
 
