@@ -61,7 +61,7 @@ class ActiveCurrencyValidatorSpec extends ObjectBehavior
         ConstraintViolationBuilderInterface $builder
     ) {
         $constraint = new ActiveCurrency();
-        $context->buildViolation($constraint->message, ['%currency%' => 'UNKNOWN'])
+        $context->buildViolation($constraint->message, ['{{ currency }}' => 'UNKNOWN'])
             ->shouldBeCalled()->willReturn($builder);
         $builder->addViolation()->shouldBeCalled();
 

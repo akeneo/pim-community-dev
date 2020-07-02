@@ -53,7 +53,7 @@ class ExistingCopyFieldsValidator extends ConstraintValidator
         if (null === $copier) {
             $this->context->buildViolation(
                 $constraint->message,
-                ['%fromField%' => $action->fromField, '%toField%' => $action->toField]
+                ['{{ from_field }}' => $action->fromField, '{{ to_field }}' => $action->toField]
             )->addViolation();
         }
     }

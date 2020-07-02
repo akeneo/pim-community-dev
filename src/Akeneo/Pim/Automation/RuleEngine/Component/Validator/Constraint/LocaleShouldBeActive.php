@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraint;
  */
 final class LocaleShouldBeActive extends Constraint
 {
-    public $message = 'The "%locale_code%" locale does not exist or is not activated';
+    public $message = 'pimee_catalog_rule.rule_definition.validation.locale.unknown';
 
     /**
      * {@inheritdoc}

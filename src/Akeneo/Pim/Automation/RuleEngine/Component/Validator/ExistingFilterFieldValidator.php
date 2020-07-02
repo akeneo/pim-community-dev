@@ -54,7 +54,7 @@ class ExistingFilterFieldValidator extends ConstraintValidator
             $this->context
                 ->buildViolation(
                     $constraint->message,
-                    ['%field%' => $condition->field, '%operator%' => $condition->operator]
+                    ['{{ field }}' => $condition->field, '{{ operator }}' => $condition->operator]
                 )
                 ->addViolation();
         }

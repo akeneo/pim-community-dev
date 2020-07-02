@@ -45,7 +45,7 @@ class ExistingFilterFieldValidatorSpec extends ObjectBehavior
 
         $context->buildViolation(
             Argument::any(),
-            ['%field%' => 'groups.code', '%operator%' => 'IN']
+            ['{{ field }}' => 'groups.code', '{{ operator }}' => 'IN']
         )->shouldBeCalled()
         ->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();

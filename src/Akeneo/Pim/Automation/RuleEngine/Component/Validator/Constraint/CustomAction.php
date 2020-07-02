@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraint;
 
 class CustomAction extends Constraint
 {
-    public $message = 'Unknown action type';
+    public $message = 'pimee_catalog_rule.rule_definition.validation.actions.custom.unkown_type';
 
     public function validatedBy()
     {

@@ -18,8 +18,8 @@ use Symfony\Component\Validator\Constraint;
 
 class MeasurementUnit extends Constraint
 {
-    public $notMetricAttributeMessage = 'Attribute {{ attributeCode }} does not expect a unit, {{ unitCode }} given';
-    public $invalidUnitMessage = 'The "{{ unitCode }}" unit code does not exist or does not belong to the measurement family of the "{{ attributeCode }}" attribute';
+    public $notMetricAttributeMessage = 'pimee_catalog_rule.rule_definition.validation.measurement.invalid_attribute_type';
+    public $invalidUnitMessage = 'pimee_catalog_rule.rule_definition.validation.measurement.invalid_unit';
 
     public $attributeProperty;
     public $unitProperty;

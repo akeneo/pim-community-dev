@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraint;
 class ExistingRemoveField extends Constraint
 {
     /** @var string */
-    public $message = 'You cannot remove items from the "%field%" field.';
+    public $message = 'pimee_catalog_rule.rule_definition.validation.actions.remove.invalid_field';
 
     /**
      * {@inheritdoc}

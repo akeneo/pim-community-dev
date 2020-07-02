@@ -60,7 +60,7 @@ class ExistingAddFieldValidatorSpec extends ObjectBehavior
     ) {
         $constraint = new ExistingAddField();
         $adderRegistry->getAdder('foo')->shouldBeCalled()->willReturn(null);
-        $context->buildViolation($constraint->message, ['%field%' => 'foo'])
+        $context->buildViolation($constraint->message, ['{{ field }}' => 'foo'])
             ->shouldBeCalled()
             ->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();

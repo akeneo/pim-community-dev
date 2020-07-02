@@ -84,7 +84,7 @@ final class IsValidAttributeValidator extends ConstraintValidator
 
         if ($attribute->isLocalizable() && null === $locale) {
             $this->addViolation(
-                'Attribute "{{ attributeCode }}" expects a locale, none given.',
+                'pimee_catalog_rule.rule_definition.validation.attribute.missing_locale',
                 [
                     '{{ attributeCode }}' => $attribute->code(),
                 ],
@@ -100,7 +100,7 @@ final class IsValidAttributeValidator extends ConstraintValidator
 
         if (!$attribute->isLocalizable()) {
             $this->addViolation(
-                'Attribute "{{ attributeCode }}" does not expect a locale, "{{ locale }}" given.',
+                'pimee_catalog_rule.rule_definition.validation.attribute.unexpected_locale',
                 [
                     '{{ attributeCode }}' => $attribute->code(),
                     '{{ locale }}' => $locale,
@@ -113,7 +113,7 @@ final class IsValidAttributeValidator extends ConstraintValidator
 
         if (!$this->channelExistsWithLocale->isLocaleActive($locale)) {
             $this->addViolation(
-                'Attribute "{{ attributeCode }}" expects an existing and activated locale, "{{ locale }}" given',
+                'pimee_catalog_rule.rule_definition.validation.attribute.unknown_locale',
                 [
                     '{{ attributeCode }}' => $attribute->code(),
                     '{{ locale }}' => $locale,
@@ -126,7 +126,7 @@ final class IsValidAttributeValidator extends ConstraintValidator
 
         if ($attribute->isLocaleSpecific() && !in_array($locale, $attribute->availableLocaleCodes())) {
             $this->addViolation(
-                'Attribute "{{ attributeCode }}" is locale specific and expects one of these locales: {{ expectedLocales }}, "{{ invalidLocale }}" given.',
+                'pimee_catalog_rule.rule_definition.validation.attribute.invalid_specific_locale',
                 [
                     '{{ attributeCode }}' => $attribute->code(),
                     '{{ expectedLocales }}' => implode($attribute->availableLocaleCodes(), ', '),
@@ -141,7 +141,7 @@ final class IsValidAttributeValidator extends ConstraintValidator
         if ($attribute->isScopable() && is_string($scope) && $this->channelExistsWithLocale->doesChannelExist($scope)
             && !$this->channelExistsWithLocale->isLocaleBoundToChannel($locale, $scope)) {
             $this->addViolation(
-                'The "{{ invalidLocale }}" is not bound to the "{{ channelCode }}" channel',
+                'pimee_catalog_rule.rule_definition.validation.attribute.locale_not_bound_to_channel',
                 [
                     '{{ invalidLocale }}' => $locale,
                     '{{ channelCode }}' => $scope,
@@ -162,7 +162,7 @@ final class IsValidAttributeValidator extends ConstraintValidator
 
         if ($attribute->isScopable() && null === $scope) {
             $this->addViolation(
-                'Attribute "{{ attributeCode }}" expects a scope, none given.',
+                'pimee_catalog_rule.rule_definition.validation.attribute.missing_scope',
                 [
                     '{{ attributeCode }}' => $attribute->code(),
                 ],
@@ -178,7 +178,7 @@ final class IsValidAttributeValidator extends ConstraintValidator
 
         if (!$attribute->isScopable()) {
             $this->addViolation(
-                'Attribute "{{ attributeCode }}" does not expect a scope, "{{ channelCode }}" given.',
+                'pimee_catalog_rule.rule_definition.validation.attribute.unexpected_scope',
                 [
                     '{{ attributeCode }}' => $attribute->code(),
                     '{{ channelCode }}' => $scope,
@@ -191,7 +191,7 @@ final class IsValidAttributeValidator extends ConstraintValidator
 
         if (!$this->channelExistsWithLocale->doesChannelExist($scope)) {
             $this->addViolation(
-                'Attribute "{{ attributeCode }}" expects an existing scope, "{{ channelCode }}" given.',
+                'pimee_catalog_rule.rule_definition.validation.attribute.unknown_scope',
                 [
                     '{{ attributeCode }}' => $attribute->code(),
                     '{{ channelCode }}' => $scope,

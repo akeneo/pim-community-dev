@@ -48,7 +48,7 @@ class ExistingSetFieldValidator extends ConstraintValidator
         $setter = $this->setterRegistry->getSetter($fieldName);
 
         if (null === $setter) {
-            $this->context->buildViolation($constraint->message, ['%field%' => $fieldName])
+            $this->context->buildViolation($constraint->message, ['{{ field }}' => $fieldName])
                 ->addViolation();
         }
     }

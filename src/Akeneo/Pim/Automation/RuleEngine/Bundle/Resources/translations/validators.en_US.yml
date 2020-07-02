@@ -1,0 +1,56 @@
+pimee_catalog_rule:
+    rule_definition:
+        validation:
+            locale:
+                unknown: 'The "{{ locale_code }}" locale does not exist or is not activated'
+            currency:
+                unknown: 'Expected a valid currency, the "{{ currency }}" currency does not exist or is not activated'
+                missing_key: 'The "{{ key }}" key is missing or empty'
+                unexpected_key: 'The {{ key }} key was unexpected'
+            measurement:
+                invalid_unit: 'The "{{ unitCode }}" unit code does not exist or does not belong to the measurement family of the "{{ attributeCode }}" attribute'
+                invalid_attribute_type: 'The {{ attributeCode }} attribute does not expect a unit, {{ unitCode }} given'
+            attribute:
+                unknown: 'The "{{ code }}" attribute does not exist'
+                unexpected_type: 'The "{{ attribute_code }}" attribute has an invalid "{{ invalid_type }}" attribute type. Expected an attribute of type {{ expected_types }}'
+                missing_locale: 'Attribute "{{ attributeCode }}" expects a locale, none given.'
+                unexpected_locale: 'Attribute "{{ attributeCode }}" does not expect a locale, "{{ locale }}" given'
+                unknown_locale: 'Attribute "{{ attributeCode }}" expects an existing and activated locale, "{{ locale }}" given'
+                invalid_specific_locale: 'Attribute "{{ attributeCode }}" is locale specific and expects one of these locales: {{ expectedLocales }}, "{{ invalidLocale }}" given'
+                locale_not_bound_to_channel: 'The "{{ invalidLocale }}" is not bound to the "{{ channelCode }}" channel'
+                missing_scope: 'Attribute "{{ attributeCode }}" expects a scope, none given.'
+                unexpected_scope: 'Attribute "{{ attributeCode }}" does not expect a scope, "{{ channelCode }}" given'
+                unknown_scope: 'Attribute "{{ attributeCode }}" expects an existing scope, "{{ channelCode }}" given'
+            invalid_code: 'Rule code may contain only letters, numbers and underscores'
+            conditions:
+                missing_value_key: 'The "value" key is missing or empty'
+                missing_operator_key: 'The "operator" key is missing or empty'
+                existing_field: 'The "{{ field }}" field cannot be filtered or cannot be used with operator "{{ operator }}"'
+                missing_field_key: 'The "field" key is missing or empty'
+            actions:
+                missing_key: 'The "actions" key is missing or empty'
+                add:
+                    invalid_field: 'You cannot add items to the "{{ field }}" field'
+                clear:
+                    invalid_field: 'You cannot clear data from the "{{ field }}" field'
+                copy:
+                    invalid_fields: 'You cannot copy data from the "{{ from_field }}" field to the "{{ to_field }}" field'
+                    missing_from_field_key: 'The "from_field" key is missing or empty'
+                    missing_to_field_key: 'The "to_field" key is missing or empty'
+                concatenate:
+                    invalid_source: 'You cannot concatenate data from the "{{ field }}" field'
+                    unexpected_source_option: 'The {{ key }} key is irrelevant for the {{ attribute }} attribute'
+                calculate:
+                    division_by_zero: 'Cannot apply a division by zero operation'
+                    missing_operand_key: 'One of the "value" or "field" keys is required, but both are missing or empty'
+                    only_one_key_expected: 'Only one of the "value" or "field" keys were expected, but both were provided'
+                    unexpected_key: 'The "{{ key }}" key was unexpected'
+                    invalid_operator: 'This value should be either "add", "subtract", "multiply" or "divide"'
+                remove:
+                    invalid_field: 'You cannot remove items from the "{{ field }}" field'
+                    include_children_option: 'The "include_children" option can only be applied with the "categories" field, "{{ field }}" given'
+                set:
+                    invalid_field: 'You cannot set data to the "{{ field }}" field'
+                custom:
+                    unkown_type: 'Unknown action type'
+                    missing_type_key: 'The "type" key is missing or empty'

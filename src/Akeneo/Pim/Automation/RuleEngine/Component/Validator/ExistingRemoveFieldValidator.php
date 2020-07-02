@@ -48,7 +48,7 @@ class ExistingRemoveFieldValidator extends ConstraintValidator
         $remover = $this->removerRegistry->getRemover($fieldName);
 
         if (null === $remover) {
-            $this->context->buildViolation($constraint->message, ['%field%' => $fieldName])
+            $this->context->buildViolation($constraint->message, ['{{ field }}' => $fieldName])
                 ->addViolation();
         }
     }

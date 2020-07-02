@@ -47,7 +47,7 @@ final class LocaleShouldBeActiveValidator extends ConstraintValidator
             $this->context->buildViolation(
                 $constraint->message,
                 [
-                    '%locale_code%' => $localeCode,
+                    '{{ locale_code }}' => $localeCode,
                 ]
             )->addViolation();
         }

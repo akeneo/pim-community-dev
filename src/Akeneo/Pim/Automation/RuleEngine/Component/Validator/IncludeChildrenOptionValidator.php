@@ -43,7 +43,7 @@ class IncludeChildrenOptionValidator extends ConstraintValidator
             $this->context->buildViolation(
                 $constraint->invalidFieldMessage,
                 [
-                    '%field%' => $action->field,
+                    '{{ field }}' => $action->field,
                 ]
             )->addViolation();
         }

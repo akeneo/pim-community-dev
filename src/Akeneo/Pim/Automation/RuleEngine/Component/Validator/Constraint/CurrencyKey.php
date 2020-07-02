@@ -18,8 +18,9 @@ use Symfony\Component\Validator\Constraint;
 
 class CurrencyKey extends Constraint
 {
-    public $emptyKeyMessage = 'The "{{ key }}" key is missing or empty';
-    public $unexpectedKeyMessage = 'The {{ key }} key was unexpected';
+    public $emptyKeyMessage = 'pimee_catalog_rule.rule_definition.validation.currency.missing_key';
+    public $unexpectedKeyMessage = 'pimee_catalog_rule.rule_definition.validation.currency.unexpected_key';
+
     public $attributeProperty;
     public $currencyProperty;
 

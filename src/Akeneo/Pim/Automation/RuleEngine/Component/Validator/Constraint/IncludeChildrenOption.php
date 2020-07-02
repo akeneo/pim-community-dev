@@ -20,8 +20,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class IncludeChildrenOption extends Constraint
 {
-    public $invalidFieldMessage = 'The "include_children" option can only be applied with field "categories", ' .
-        '"%field%" given';
+    public $invalidFieldMessage = 'pimee_catalog_rule.rule_definition.validation.actions.remove.include_children_option';
 
     /**
      * {@inheritdoc}

@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraint;
 class ExistingCopyFields extends Constraint
 {
     /** @var string */
-    public $message = 'You cannot copy data from the "%fromField%" field to the "%toField%" field.';
+    public $message = 'pimee_catalog_rule.rule_definition.validation.actions.copy.invalid_fields';
 
     /**
      * {@inheritdoc}

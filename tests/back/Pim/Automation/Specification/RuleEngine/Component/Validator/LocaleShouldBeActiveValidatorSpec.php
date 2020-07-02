@@ -61,7 +61,7 @@ class LocaleShouldBeActiveValidatorSpec extends ObjectBehavior
         $context->buildViolation(
             $constraint->message,
             [
-                '%locale_code%' => 'es_CA',
+                '{{ locale_code }}' => 'es_CA',
             ]
         )->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();

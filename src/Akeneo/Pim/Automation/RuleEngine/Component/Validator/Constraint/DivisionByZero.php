@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraint;
 
 class DivisionByZero extends Constraint
 {
-    public $message = 'Cannot apply a division by zero operation';
+    public $message = 'pimee_catalog_rule.rule_definition.validation.actions.calculate.division_by_zero';
 
     /**
      * {@inheritdoc}
