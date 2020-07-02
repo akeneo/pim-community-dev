@@ -22,4 +22,4 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\RemoveAction:
             - All:
                 - NotBlank: ~
         includeChildren:
-            - Type: bool
+            - Type: boolean

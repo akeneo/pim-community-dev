@@ -3,15 +3,19 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Condition:
         - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\NonEmptyValueCondition: ~
         - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ValueCondition: ~
         - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ExistingFilterField: ~
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsValidAttribute:
+              attributeProperty: field
+              channelProperty: scope
+              localeProperty: locale
     properties:
         field:
             - Type: string
             - NotBlank:
-                  message: The "field" key is missing or empty
+                  message: pimee_catalog_rule.rule_definition.validation.conditions.missing_field_key
         operator:
             - Type: string
             - NotBlank:
-                  message: The "operator" key is missing or empty
+                  message: pimee_catalog_rule.rule_definition.validation.conditions.missing_operator_key
         value:
             - Type: [scalar, array]
             - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\AllIfIterable:

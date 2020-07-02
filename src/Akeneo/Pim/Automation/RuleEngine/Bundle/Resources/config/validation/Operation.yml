@@ -14,7 +14,7 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Operation:
             - NotNull: ~
             - Choice:
                 choices: [add, subtract, multiply, divide]
-                message: This value should be either "add", "subtract", "multiply" or "divide"
+                message: pimee_catalog_rule.rule_definition.validation.actions.calculate.invalid_operator
         field:
             - Type: string
             - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsAttribute: ~

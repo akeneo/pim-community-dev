@@ -7,7 +7,7 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateOrUpdateRuleCommand:
                 max: 100
             - Regex:
                 pattern: /^[a-zA-Z0-9_]+$/
-                message: Rule code may contain only letters, numbers and underscores
+                message: pimee_catalog_rule.rule_definition.validation.invalid_code
         priority:
             - Type: int
         conditions:
@@ -17,7 +17,7 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateOrUpdateRuleCommand:
             - Valid: ~
         actions:
             - NotBlank:
-                message: 'The "actions" key is missing or empty'
+                message: pimee_catalog_rule.rule_definition.validation.actions.missing_key
             - Type: array
             - Count:
                 min: 1
