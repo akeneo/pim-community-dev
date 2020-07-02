@@ -39,6 +39,6 @@ export const dependencies = {
     set: jest.fn(),
   },
   security: {
-    isGranted: jest.fn((acl: boolean) => acl),
+    isGranted: jest.fn((_acl: string) => true),
   },
 };
