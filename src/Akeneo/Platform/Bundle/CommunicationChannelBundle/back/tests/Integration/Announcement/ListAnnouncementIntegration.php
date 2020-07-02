@@ -18,19 +18,55 @@ class ListAnnouncementIntegration extends WebTestCase
         $this->authenticateAsAdmin();
     }
 
-    public function test_it_can_list_all_announcements()
+    public function test_it_can_list_first_paginated_announcements()
     {
-        $expectedJson = json_decode(file_get_contents(dirname(__FILE__) . '/../../../Infrastructure/CommunicationChannel/InMemory/serenity-updates.json'), true);
+        $expectedAnnouncements = json_decode(file_get_contents(dirname(__FILE__) . '/../../../Infrastructure/CommunicationChannel/InMemory/serenity-updates.json'), true);
+        $limit = 5;
         $this->client->request(
             'GET',
-            '/rest/announcements'
+            '/rest/announcements',
+            [
+                'limit' => $limit
+            ]
         );
         $content = json_decode($this->client->getResponse()->getContent(), true);
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         Assert::assertIsArray($content['items']);
-        Assert::assertEquals(count($expectedJson['data']), count($content['items']));
+        Assert::assertEquals($limit, count($content['items']));
         $this->assertItemKeys($content['items'][0]);
+        $this->assertFirstItem(null, $expectedAnnouncements['data'], $content['items']);
+    }
+
+    public function test_it_can_list_paginated_announcements_with_a_search_after_parameter()
+    {
+        $expectedAnnouncements = json_decode(file_get_contents(dirname(__FILE__) . '/../../../Infrastructure/CommunicationChannel/InMemory/serenity-updates.json'), true);
+        $searchAfter = '2e04e7e4-6c55-4cdd-b151-dab34d6a31a4';
+        $limit = 5;
+        $this->client->request(
+            'GET',
+            '/rest/announcements',
+            [
+                'search_after' => $searchAfter,
+                'limit' => $limit
+            ]
+        );
+        $content = json_decode($this->client->getResponse()->getContent(), true);
+
+        Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        Assert::assertIsArray($content['items']);
+        Assert::assertEquals($limit, count($content['items']));
+        $this->assertFirstItem($searchAfter, $expectedAnnouncements['data'], $content['items']);
+    }
+
+    public function test_it_throws_an_exception_when_it_does_mot_have_a_limit_parameter()
+    {
+        $this->client->request(
+            'GET',
+            '/rest/announcements'
+        );
+
+        Assert::assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $this->client->getResponse()->getStatusCode());
     }
 
     protected function getConfiguration(): Configuration
@@ -48,5 +84,17 @@ class ListAnnouncementIntegration extends WebTestCase
         Assert::assertArrayHasKey('link', $item);
         Assert::assertArrayHasKey('startDate', $item);
         Assert::assertArrayHasKey('tags', $item);
+    }
+
+    private function assertFirstItem(?string $searchAfter, array $expectedAnnouncementItems, array $announcementItems): void
+    {
+        $index = array_search($searchAfter, array_column($expectedAnnouncementItems, 'id'));
+        if (null === $searchAfter) {
+            $firstAnnouncement = $expectedAnnouncementItems[$index];
+        } else {
+            $firstAnnouncement = $expectedAnnouncementItems[$index+1];
+        }
+
+        Assert::assertEquals($firstAnnouncement['id'], $announcementItems[0]['id']);
     }
 }
