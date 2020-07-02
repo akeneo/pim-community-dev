@@ -44,6 +44,7 @@ final class AnnouncementItem
     private $tags;
 
     /**
+     * @param string $id
      * @param string $title
      * @param string $description
      * @param null|string $img

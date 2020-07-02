@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Platform\CommunicationChannel\Application\Announcement\Query;
 
 use Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\ListAnnouncementsHandler;
+use Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\ListAnnouncementsQuery;
 use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Model\Read\AnnouncementItem;
 use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Query\FindAnnouncementItemsInterface;
 use Akeneo\Platform\VersionProviderInterface;
@@ -25,9 +26,9 @@ class ListAnnouncementsHandlerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(ListAnnouncementsHandler::class);
     }
 
-    public function it_handles_the_list_announcements_query($versionProvider, $findAnnouncementItems): void
+    public function it_handles_the_list_announcements_query_paginated($versionProvider, $findAnnouncementItems): void
     {
-        $announcements = [
+        $expectedAnnouncements = [
             [
                 'id' => 'update-easily_monitor_errors_on_your_connections-2020-06-04',
                 'title' => 'Easily monitor errors on your connections',
@@ -55,12 +56,18 @@ class ListAnnouncementsHandlerSpec extends ObjectBehavior
                 ]
             ],
         ];
-        $announcementItems = $this->createAnnouncementItems($announcements);
+        $expectedAnnouncementsItems = $this->createAnnouncementItems($expectedAnnouncements);
         $versionProvider->getEdition()->willReturn('EE');
         $versionProvider->getPatch()->willReturn('4.0');
-        $findAnnouncementItems->byPimVersion(Argument::type('string'), Argument::type('string'))->willReturn($announcementItems);
+        $findAnnouncementItems->byPimVersion(
+            Argument::type('string'),
+            Argument::type('string'),
+            Argument::type('string'),
+            Argument::type('int')
+        )->willReturn([$expectedAnnouncementsItems[1]]);
 
-        $this->execute()->shouldReturn($announcementItems);
+        $query = new ListAnnouncementsQuery('f68a21bb-ec9a-4009-9b0b-2639c6798e5f', 1);
+        $this->execute($query)->shouldReturn([$expectedAnnouncementsItems[1]]);
     }
 
     /**
