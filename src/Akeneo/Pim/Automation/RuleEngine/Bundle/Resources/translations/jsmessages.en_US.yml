@@ -176,6 +176,7 @@ pimee_catalog_rule:
             unhandled_attribute_type: Sorry this attribute type is not managed yet. Please use the rule import.
         helper:
             add_to_category: To add your product selection to one or more categories, please start by selecting our category trees and then, your categories.
+            clear_attribute: To clear the attribute value, please start by selecting the attribute to clear.
             clear_associations: All associations of selected products will be cleared.
             clear_categories: All categories of selected products will be cleared.
             clear_groups: All groups of selected products will be cleared.

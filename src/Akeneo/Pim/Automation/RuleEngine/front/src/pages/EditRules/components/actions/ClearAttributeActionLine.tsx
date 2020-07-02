@@ -41,8 +41,8 @@ const ClearAttributeActionLine: React.FC<Props> = ({
         title={translate(
           'pimee_catalog_rule.form.edit.actions.clear_attribute.title'
         )}
-        helper='This feature is under development. Please use the import to manage your rules.'
-        legend='This feature is under development. Please use the import to manage your rules.'
+        helper={translate('pimee_catalog_rule.form.helper.clear_attribute')}
+        legend={translate('pimee_catalog_rule.form.helper.clear_attribute')}
         handleDelete={handleDelete}>
         <ActionTitle>
           {translate(
