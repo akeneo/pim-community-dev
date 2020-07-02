@@ -82,3 +82,10 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchAfterSizeIdentifierResultCursorFactory'
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    pim_catalog.factory.elasticsearch_document_search_after_size_cursor:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ElasticsearchDocumentCursorFactory'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ElasticsearchDocumentCursor'
+            - '%pim_job_product_batch_size%'
