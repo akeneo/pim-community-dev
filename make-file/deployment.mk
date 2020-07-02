@@ -48,6 +48,7 @@ helm-prepare:
 
 .PHONY: deploy
 deploy: terraform-deploy
+	echo "This environment is available at https://$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS) :)"
 
 .PHONY: terraform-deploy
 terraform-deploy: terraform-init terraform-apply
@@ -231,25 +232,19 @@ deploy_latest_release_for_helpdesk:
 slack_helpdesk:
 	curl -X POST -H 'Content-type: application/json' --data '{"text":"Serenity env has been deployed with the last tag $(IMAGE_TAG) : https://pimci-helpdesk.preprod.cloud.akeneo.com"}' $${SLACK_URL_HELPDESK};
 
-.PHONY: deploy_pr_environment
-deploy_pr_environment:
-	@PR_NUMBER=$${CIRCLE_PULL_REQUEST##*/} && \
-	echo "This environment will be available at https://pimci-pr-$${PR_NUMBER}.$(GOOGLE_MANAGED_ZONE_DNS) once deployed :)"
-	PR_NUMBER=$${CIRCLE_PULL_REQUEST##*/} && \
-	INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-$${PR_NUMBER} IMAGE_TAG=$${CIRCLE_SHA1} make create-ci-release-files && \
-	INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-$${PR_NUMBER} IMAGE_TAG=$${CIRCLE_SHA1} make deploy
-
 .PHONY: delete_pr_environments
 delete_pr_environments:
 	bash $(PWD)/deployments/bin/remove_pr_instance.sh
 
-.PHONY: terraform-pre-upgrade
-terraform-pre-upgrade: terraform-init
+.PHONY: terraform-pre-upgrade-disk
 	# Required by https://github.com/akeneo/pim-enterprise-dev/pull/8599
 	yq d -i $(INSTANCE_DIR)/values.yaml "mysql.common.persistentDisks"
 	for PD in $$(kubectl get -n $(PFID) pv $$(kubectl get -n $(PFID) pvc -l role=mysql-server -o jsonpath='{.items[*].spec.volumeName}') -o jsonpath='{..spec.gcePersistentDisk.pdName}'); do \
 		yq w -i $(INSTANCE_DIR)/values.yaml "mysql.common.persistentDisks[+]" "$${PD}"; \
 	done
+
+.PHONY: terraform-pre-upgrade
+terraform-pre-upgrade: terraform-init terraform-pre-upgrade-disk
 	# Move monitoring resources from pim to pim-monitoring
 	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_logging_metric.login_count module.pim-monitoring.google_logging_metric.login_count
 	sleep 1
