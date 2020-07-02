@@ -23,6 +23,8 @@ $rules = [
             'Akeneo\Platform\CommunicationChannel\Application',
             'Akeneo\Platform\CommunicationChannel\Domain',
             'Symfony\Component',
+            'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
+            'Doctrine\DBAL\Driver\Connection'
         ]
     )->in('Akeneo\Platform\CommunicationChannel\Infrastructure'),
 ];
