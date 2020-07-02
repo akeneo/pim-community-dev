@@ -6,13 +6,13 @@ namespace spec\Akeneo\Platform\CommunicationChannel\Application\Announcement\Com
 
 use Akeneo\Platform\CommunicationChannel\Application\Announcement\Command\AddViewedAnnouncementsByUserCommand;
 use Akeneo\Platform\CommunicationChannel\Application\Announcement\Command\AddViewedAnnouncementsByUserHandler;
-use Akeneo\Platform\CommunicationChannel\Infrastructure\Persistence\InMemory\Repository\InMemoryViewedAnnouncementRepository;
+use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Repository\ViewedAnnouncementRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class AddViewedAnnouncementsByUserHandlerSpec extends ObjectBehavior
 {
-    public function let(InMemoryViewedAnnouncementRepository $viewedAnnouncementRepository): void
+    public function let(ViewedAnnouncementRepositoryInterface $viewedAnnouncementRepository): void
     {
         $this->beConstructedWith($viewedAnnouncementRepository);
     }

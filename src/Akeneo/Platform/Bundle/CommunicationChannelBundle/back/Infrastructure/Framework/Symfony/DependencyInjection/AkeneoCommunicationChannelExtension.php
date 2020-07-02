@@ -20,6 +20,7 @@ class AkeneoCommunicationChannelExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('announcement_list.yml');
+        $loader->load('has_new_announcements.yml');
         $loader->load('installer.yml');
         $loader->load('viewed_announcements.yml');
     }
