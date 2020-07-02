@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Audit\Query;
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\PeriodEventCount;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectPeriodEventCountsQuery;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectPeriodEventCountPerConnectionQuery;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -14,12 +14,12 @@ use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectPeriodEv
  */
 class GetPeriodEventCountPerConnectionHandler
 {
-    /** @var SelectPeriodEventCountsQuery */
-    private $selectPeriodEventCountsQuery;
+    /** @var SelectPeriodEventCountPerConnectionQuery */
+    private $selectPeriodEventCountPerConnectionQuery;
 
-    public function __construct(SelectPeriodEventCountsQuery $selectPeriodEventCountsQuery)
+    public function __construct(SelectPeriodEventCountPerConnectionQuery $selectPeriodEventCountPerConnectionQuery)
     {
-        $this->selectPeriodEventCountsQuery = $selectPeriodEventCountsQuery;
+        $this->selectPeriodEventCountPerConnectionQuery = $selectPeriodEventCountPerConnectionQuery;
     }
 
     /**
@@ -27,10 +27,8 @@ class GetPeriodEventCountPerConnectionHandler
      */
     public function handle(GetPeriodEventCountPerConnectionQuery $query): array
     {
-        $periodEventCountPerConnection = $this
-            ->selectPeriodEventCountsQuery
-            ->execute($query->eventType(), $query->fromDateTime(), $query->upToDateTime());
-
-        return $periodEventCountPerConnection;
+        return $this
+            ->selectPeriodEventCountPerConnectionQuery
+            ->execute($query->eventType(), $query->period());
     }
 }

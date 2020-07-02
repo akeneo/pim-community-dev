@@ -22,15 +22,5 @@ interface ExtractConnectionsProductEventCountQuery
     /**
      * @return HourlyEventCount[]
      */
-    public function extractAllCreatedProducts(HourlyInterval $hourlyInterval): array;
-
-    /**
-     * @return HourlyEventCount[]
-     */
     public function extractUpdatedProductsByConnection(HourlyInterval $hourlyInterval): array;
-
-    /**
-     * @return HourlyEventCount[]
-     */
-    public function extractAllUpdatedProducts(HourlyInterval $hourlyInterval): array;
 }

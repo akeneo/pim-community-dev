@@ -70,7 +70,6 @@ pim_enrich.entity.product:
       locale_unavailable: Ce champ traduisible n'est pas disponible pour la locale '{{ locale }}' et le canal '{{ channel }}'
       to_fill_count: "{1}1 attribut requis manquant|]1, Inf[{{ count }} attributs requis manquants"
       add_attribute_option: Ajouter une option d'attribut
-      add_option: Ajouter une option
     completeness:
       title: Complétude
       complete: Complet
@@ -88,13 +87,24 @@ pim_enrich.entity.product:
       show_products: Afficher les produits
       show_groups: Afficher les groupes
       number_of_associations: "{{ productCount }} produit(s), {{ productModelCount }} modèle(s) de produit et {{ groupCount }} groupe(s)"
+      number_of_quantified_associations: "{ productCount }} produit(s) and {{ productModelCount }} modèle(s) de produit"
       association_type_selector: Type d'association
       target: Destination
       manage: Ajouter des associations {{ associationType }}
       manage_description: Sélectionnez les produits que vous souhaitez associer au produit "{{ productLabel }}"
       mass_edit_description: Sélectionnez les produits que vous souhaitez associer aux {{ productCount }} produits sélectionnés
       add_associations: Ajouter des associations
+      variant_products: Produits variants
+      quantified:
+        quantity: Quantité
+      search:
+        placeholder: Rechercher par libellé ou identifiant
       no_result: Désolé, il n’y a aucun résultat pour votre recherche.
+      no_data: Il n’y a aucun produit associé.
+      remove: Supprimer l'association
+      edit: Modifier le produit
+      limit_reached: Vous ne pouvez pas ajouter plus de {{ maxLimit }} associations à ce produit.
+      variant_updated: Vous avez mis à jour une quantité sur une variante, les quantités ne seront plus synchronisées.
     attribute_filter:
       display: Affichage
       all: Tous les attributs
@@ -431,3 +441,7 @@ batch_jobs:
     quick_export.label: Export rapide de produits en XLSX
     quick_export_product_model.label: Export rapide de modèles de produit en XLSX
     perform.label: Export rapide de produits en XLSX
+error:
+  removing:
+    group: Impossible de supprimer le groupe
+    association type: Impossible de supprimer le type d'association

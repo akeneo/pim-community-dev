@@ -48,7 +48,9 @@ class IsStringValidator extends ConstraintValidator
                     '%attribute%' => $code,
                     '%givenType%' => gettype($checkedValue),
                 ]
-            )->addViolation();
+            )
+                ->setCode(IsString::IS_STRING)
+                ->addViolation();
         }
     }
 }

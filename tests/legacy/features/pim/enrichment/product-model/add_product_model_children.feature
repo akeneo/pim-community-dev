@@ -159,7 +159,7 @@ Feature: Add children to product model
     When I fill in the following child information:
       | Size (variant axis) | XL |
     And I confirm the child creation
-    Then I should see the text "This value should not be blank."
+    Then I should see the text "The identifier attribute cannot be empty."
 
   Scenario: I cannot add a sub product model without axis value
     Given I am on the "apollon" product model page

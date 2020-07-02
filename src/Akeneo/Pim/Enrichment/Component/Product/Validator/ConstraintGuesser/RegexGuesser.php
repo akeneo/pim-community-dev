@@ -3,9 +3,9 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser;
 
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesserInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Regex;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Guesser
@@ -38,7 +38,7 @@ class RegexGuesser implements ConstraintGuesserInterface
         $constraints = [];
 
         if ('regexp' === $attribute->getValidationRule() && $pattern = $attribute->getValidationRegexp()) {
-            $constraints[] = new Assert\Regex(['pattern' => $pattern, 'message' => 'This value is not valid due to regular expression defined in the attribute']);
+            $constraints[] = new Regex(['pattern' => $pattern, 'attributeCode' => $attribute->getCode()]);
         }
 
         return $constraints;

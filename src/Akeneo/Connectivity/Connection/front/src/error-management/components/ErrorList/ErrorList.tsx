@@ -1,6 +1,10 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useContext, useState} from 'react';
 import {Table, TableHeaderCell, TableHeaderRow, TableRow} from '../../../common';
+import {ChannelContext, useChannel} from '../../../shared/channel';
+import {FamilyContext, useFamily} from '../../../shared/family';
+import {LocaleContext, useLocale} from '../../../shared/locale';
 import {Translate} from '../../../shared/translate';
+import {UserContext} from '../../../shared/user';
 import {ConnectionError} from '../../model/ConnectionError';
 import {ErrorDateTimeCell} from './ErrorDateTimeCell';
 import {ErrorDetailsCell} from './ErrorDetailsCell';
@@ -25,7 +29,7 @@ type Props = {
     errors: ConnectionError[];
 };
 
-const ErrorList: FC<Props> = ({errors}) => {
+export const ErrorList: FC<Props> = ({errors}) => {
     const [sortOrder, setSortOrder] = useState<Order>('desc');
     const [searchValue, setSearchValue] = useState<string>('');
 
@@ -33,42 +37,51 @@ const ErrorList: FC<Props> = ({errors}) => {
         .sort(sortingByTimestamp(sortOrder))
         .filter(filteringBySearchValue(searchValue));
 
+    const userLocale = useContext(UserContext).get('uiLocale');
+    const {locales} = useLocale();
+    const {families} = useFamily(userLocale);
+    const {channels} = useChannel(userLocale);
+
     return (
         <>
             <SearchFilter value={searchValue} onSearch={setSearchValue} resultCount={sortedAndfilteredErrors.length} />
 
             {errors.length > 0 ? (
-                <Table>
-                    <thead>
-                        <TableHeaderRow>
-                            <TableHeaderCell>
-                                <SortButton order={sortOrder} onSort={setSortOrder}>
-                                    <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.date_time_column.title' />
-                                </SortButton>
-                            </TableHeaderCell>
-                            <TableHeaderCell>
-                                <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.content_column.title' />
-                            </TableHeaderCell>
-                            <TableHeaderCell>
-                                <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.details_column.title' />
-                            </TableHeaderCell>
-                        </TableHeaderRow>
-                    </thead>
-                    <tbody>
-                        {sortedAndfilteredErrors.map(error => (
-                            <TableRow key={error.id}>
-                                <ErrorDateTimeCell timestamp={error.timestamp} />
-                                <ErrorMessageCell content={error.content} />
-                                <ErrorDetailsCell content={error.content} />
-                            </TableRow>
-                        ))}
-                    </tbody>
-                </Table>
+                <LocaleContext.Provider value={locales}>
+                    <FamilyContext.Provider value={families}>
+                        <ChannelContext.Provider value={channels}>
+                            <Table>
+                                <thead>
+                                    <TableHeaderRow>
+                                        <TableHeaderCell>
+                                            <SortButton order={sortOrder} onSort={setSortOrder}>
+                                                <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.date_time_column.title' />
+                                            </SortButton>
+                                        </TableHeaderCell>
+                                        <TableHeaderCell>
+                                            <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.content_column.title' />
+                                        </TableHeaderCell>
+                                        <TableHeaderCell>
+                                            <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.error_list.details_column.title' />
+                                        </TableHeaderCell>
+                                    </TableHeaderRow>
+                                </thead>
+                                <tbody>
+                                    {sortedAndfilteredErrors.map(error => (
+                                        <TableRow key={error.id}>
+                                            <ErrorDateTimeCell timestamp={error.timestamp} />
+                                            <ErrorMessageCell content={error.content} />
+                                            <ErrorDetailsCell content={error.content} />
+                                        </TableRow>
+                                    ))}
+                                </tbody>
+                            </Table>
+                        </ChannelContext.Provider>
+                    </FamilyContext.Provider>
+                </LocaleContext.Provider>
             ) : (
                 <NoError />
             )}
         </>
     );
 };
-
-export {ErrorList};

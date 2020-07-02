@@ -1,6 +1,7 @@
 export const getExpectedAnnouncements = () => {
   return [
     {
+      id: 'update-title_announcement-20-04-2020',
       title: 'Title announcement',
       description: 'Description announcement',
       img: '/path/img/announcement.png',
@@ -10,6 +11,7 @@ export const getExpectedAnnouncements = () => {
       startDate: '20-04-2020',
     },
     {
+      id: 'update-title_announcement_2-20-04-2020',
       title: 'Title announcement 2',
       description: 'Description announcement 2',
       link: 'http://external-2.com',

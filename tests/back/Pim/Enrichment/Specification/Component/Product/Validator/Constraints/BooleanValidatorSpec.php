@@ -49,40 +49,34 @@ class BooleanValidatorSpec extends ObjectBehavior
         $this->validate(false, $constraint);
     }
 
-    function it_does_not_add_violation_when_validates_boolean_like_value($context, Boolean $constraint)
-    {
-        $context
-            ->buildViolation(Argument::cetera())
-            ->shouldNotBeCalled();
-
-        $this->validate(1, $constraint);
-        $this->validate(0, $constraint);
-        $this->validate('1', $constraint);
-        $this->validate('0', $constraint);
-    }
-
     function it_adds_violation_when_validating_non_boolean_value(
         $context,
         Boolean $constraint,
-        ConstraintViolationBuilderInterface $violation
+        ConstraintViolationBuilderInterface $violationBuilder
     ) {
         $context
             ->buildViolation(
                 $constraint->message,
-                ['%attribute%' => '', '%givenType%' => 'integer']
+                ['{{ attribute_code }}' => '', '{{ given_type }}' => 'integer']
             )
-            ->shouldBeCalled()
-            ->willReturn($violation);
+            ->willReturn($violationBuilder);
+        $violationBuilder->setCode(Boolean::NOT_BOOLEAN_ERROR)
+            ->willReturn($violationBuilder);
+        $violationBuilder->addViolation()
+            ->shouldBeCalled();
 
         $this->validate(666, $constraint);
 
         $context
             ->buildViolation(
                 $constraint->message,
-                ['%attribute%' => '', '%givenType%' => 'string']
+                ['{{ attribute_code }}' => '', '{{ given_type }}' => 'string']
             )
-            ->shouldBeCalled()
-            ->willReturn($violation);
+            ->willReturn($violationBuilder);
+        $violationBuilder->setCode(Boolean::NOT_BOOLEAN_ERROR)
+            ->willReturn($violationBuilder);
+        $violationBuilder->addViolation()
+            ->shouldBeCalled();
 
         $this->validate('foo', $constraint);
         $this->validate('true', $constraint);
@@ -90,10 +84,13 @@ class BooleanValidatorSpec extends ObjectBehavior
         $context
             ->buildViolation(
                 $constraint->message,
-                ['%attribute%' => '', '%givenType%' => 'array']
+                ['{{ attribute_code }}' => '', '{{ given_type }}' => 'array']
             )
-            ->shouldBeCalled()
-            ->willReturn($violation);
+            ->willReturn($violationBuilder);
+        $violationBuilder->setCode(Boolean::NOT_BOOLEAN_ERROR)
+            ->willReturn($violationBuilder);
+        $violationBuilder->addViolation()
+            ->shouldBeCalled();
 
         $this->validate(['foo'], $constraint);
         $this->validate([true], $constraint);
@@ -133,7 +130,7 @@ class BooleanValidatorSpec extends ObjectBehavior
         $context,
         Boolean $constraint,
         ValueInterface $value,
-        ConstraintViolationBuilderInterface $violation
+        ConstraintViolationBuilderInterface $violationBuilder
     ) {
         $value->getAttributeCode()->willReturn('foo');
         $value->getData()->willReturn(666);
@@ -141,10 +138,13 @@ class BooleanValidatorSpec extends ObjectBehavior
         $context
             ->buildViolation(
                 $constraint->message,
-                ['%attribute%' => 'foo', '%givenType%' => 'integer']
+                ['{{ attribute_code }}' => 'foo', '{{ given_type }}' => 'integer']
             )
-            ->shouldBeCalled()
-            ->willReturn($violation);
+            ->willReturn($violationBuilder);
+        $violationBuilder->setCode(Boolean::NOT_BOOLEAN_ERROR)
+            ->willReturn($violationBuilder);
+        $violationBuilder->addViolation()
+            ->shouldBeCalled();
 
         $this->validate($value, $constraint);
     }

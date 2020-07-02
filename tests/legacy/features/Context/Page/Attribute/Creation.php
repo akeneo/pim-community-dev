@@ -29,9 +29,8 @@ class Creation extends Form
         $this->elements = array_merge(
             $this->elements,
             [
-                'attribute_option_table' => ['css' => '.attribute-option-grid table'],
-                'attribute_options'      => ['css' => '.attribute-option-grid tbody tr'],
-                'add_option_button'      => ['css' => '.attribute-option-grid .option-add'],
+                'attribute_option_table' => ['css' => '.AknAttributeOption-list-optionsList'],
+                'attribute_options'      => ['css' => '.AknAttributeOption-listItem'],
                 'new_option'             => ['css' => '.in-edition']
             ]
         );
@@ -60,7 +59,6 @@ class Creation extends Form
     {
         $this->createOption();
         $this->fillNewOption($code, $labels);
-        $this->saveNewOption();
     }
 
     public function createOption()
@@ -71,13 +69,10 @@ class Creation extends Form
             return (null === $loadingWrapper || !$loadingWrapper->isVisible());
         }, 'Loading mask is still visible');
 
-        $table = $this->getElement('attribute_option_table');
-
-        $this->spin(function () use ($table) {
-            $this->getElement('add_option_button')->click();
-
-            return $table->find('css', '.attribute_option_code');
-        }, 'Cannot add a new attribute option');
+        $addAttributeCodeButton = $this->spin(function () {
+            return $this->find('css', '[role="add-new-attribute-option-button"]');
+        }, 'Unable to find the new attribute code button');
+        $addAttributeCodeButton->click();
     }
 
     /**
@@ -86,29 +81,37 @@ class Creation extends Form
      */
     public function fillNewOption($name, $labels = [])
     {
-        $row = $this->getElement('new_option');
-
-        $codeField = $this->spin(function () use ($row) {
-            return $row->find('css', '.attribute_option_code');
+        $codeField = $this->spin(function () {
+            return $this->find('css', '.AknTextField[role="attribute-option-label"]');
         }, 'Unable to find the attribute option code field');
-
         $codeField->setValue($name);
 
+        $this->saveNewOption();
+
         foreach ($labels as $locale => $label) {
-            $labelField = $row->find('css', sprintf('.attribute-option-value[data-locale="%s"]', $locale));
+            $labelField = $this->spin(function () use ($locale) {
+                return $this->find('css', sprintf('.AknTextField[data-locale="%s"]', $locale));
+            }, 'Unable to find the attribute option label for locale ' . $locale);
             $labelField->setValue($label);
         }
+
+        $this->saveUpdatedOption();
     }
 
     public function saveNewOption()
     {
-        $this->spin(function () {
-            $this->getElement('new_option')
-                ->find('css', '.update-row')
-                ->click();
-
-            return true;
+        $saveButton = $this->spin(function () {
+            return $this->find('css', '.save[role="create-option-button"]');
         }, 'Cannot save new option.');
+        $saveButton->click();
+    }
+
+    public function saveUpdatedOption()
+    {
+        $saveButton = $this->spin(function () {
+            return $this->find('css', '.save[role="save-options-translations"]');
+        }, 'Cannot save option.');
+        $saveButton->click();
     }
 
     /**
@@ -182,7 +185,7 @@ class Creation extends Form
      */
     public function countOrderableOptions()
     {
-        return count($this->findAll('css', $this->elements['attribute_option_table']['css'].':not(.ui-sortable-disabled) .handle'));
+        return count($this->findAll('css', $this->elements['attribute_option_table']['css'].' .AknAttributeOption-move-icon:not(.AknAttributeOption-move-icon--disabled)'));
     }
 
     /**
@@ -198,7 +201,9 @@ class Creation extends Form
             return $this->getOptionElement($optionName);
         }, 'Cannot find delete option button.');
 
-        $deleteBtn = $optionRow->find('css', '.delete-row');
+        $optionRow->click();
+
+        $deleteBtn = $optionRow->find('css', '.AknAttributeOption-delete-option-icon');
 
         $this->spin(function () use ($deleteBtn) {
             $deleteBtn->click();
@@ -217,9 +222,9 @@ class Creation extends Form
         $this->spin(function () use ($expectedOrder) {
             $rows = $this->getOptionsElement();
             $actualOrder = array_map(function ($row) {
-                $option = $row->find('css', '.option-code');
+                $option = $row->find('css', '.AknAttributeOption-itemCode');
 
-                return null !== $option ? $option->getText() : '';
+                return null !== $option ? strtolower($option->getText()) : '';
             }, $rows);
 
             return $actualOrder === $expectedOrder;
@@ -248,8 +253,8 @@ class Creation extends Form
     protected function getOptionElement($optionName)
     {
         foreach ($this->getOptionsElement() as $optionRow) {
-            if ($optionRow->find('css', '.option-code') &&
-                $optionRow->find('css', '.option-code')->getText() === $optionName
+            if ($optionRow->find('css', '.AknAttributeOption-itemCode') &&
+                strtolower($optionRow->find('css', '.AknAttributeOption-itemCode')->getText()) === strtolower($optionName)
             ) {
                 return $optionRow;
             }

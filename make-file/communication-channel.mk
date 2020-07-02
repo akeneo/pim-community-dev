@@ -75,7 +75,7 @@ endif
 
 # Tests Front
 
-communication-channel-front-unit:
+communication-channel-unit-front:
 	$(YARN_RUN) unit --coverage=false src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front/tests/front/unit
 
 # Developpement

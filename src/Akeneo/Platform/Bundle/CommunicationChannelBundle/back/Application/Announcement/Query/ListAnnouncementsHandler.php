@@ -32,12 +32,12 @@ final class ListAnnouncementsHandler
     /**
      * @return AnnouncementItem[]
      */
-    public function execute(): array
+    public function execute(ListAnnouncementsQuery $query): array
     {
         $edition = $this->versionProvider->getEdition();
         $version = $this->versionProvider->getPatch();
 
-        $announcementItems = $this->findAnnouncementItems->byPimVersion($edition, $version);
+        $announcementItems = $this->findAnnouncementItems->byPimVersion($edition, $version, $query->searchAfter(), $query->limit());
 
         return $announcementItems;
     }
