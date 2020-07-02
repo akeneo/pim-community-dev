@@ -14,7 +14,6 @@ $rules = [
     $builder->only(
         [
             'Akeneo\Platform\CommunicationChannel\Domain',
-            'Akeneo\Platform\VersionProviderInterface',
         ]
     )->in('Akeneo\Platform\CommunicationChannel\Application'),
 
@@ -23,10 +22,11 @@ $rules = [
             'Akeneo\Platform\CommunicationChannel\Application',
             'Akeneo\Platform\CommunicationChannel\Domain',
             'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
+            'Akeneo\Platform\VersionProviderInterface',
             'Akeneo\UserManagement\Bundle\Context\UserContext',
             'Symfony\Component',
-            'Doctrine\DBAL\Driver\Connection',
-            'Doctrine\DBAL\Connection'
+            'Doctrine\DBAL\Connection',
+            'Doctrine\DBAL\FetchMode',
         ]
     )->in('Akeneo\Platform\CommunicationChannel\Infrastructure'),
 ];

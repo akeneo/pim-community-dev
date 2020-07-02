@@ -6,3 +6,14 @@ services:
 
     akeneo_communication_channel.repository.in_memory.viewed_announcement:
         class: 'Akeneo\Platform\CommunicationChannel\Infrastructure\Persistence\InMemory\Repository\InMemoryViewedAnnouncementRepository'
+
+    akeneo_communication_channel.handler.query.list_announcements:
+        class: 'Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\ListAnnouncementHandler'
+        arguments:
+            - '@akeneo_communication_channel.query.in_memory.find_announcement_items'
+            - '@akeneo_communication_channel.query.in_memory.find_viewed_announcement_ids'
+
+    akeneo_communication_channel.query.in_memory.find_viewed_announcement_ids:
+        class: 'Akeneo\Platform\CommunicationChannel\Infrastructure\Persistence\InMemory\Query\InMemoryFindViewedAnnouncementIds'
+        arguments:
+            - '@akeneo_communication_channel.repository.in_memory.viewed_announcement'

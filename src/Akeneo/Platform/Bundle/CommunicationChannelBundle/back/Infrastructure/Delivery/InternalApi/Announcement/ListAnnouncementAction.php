@@ -7,8 +7,11 @@ namespace Akeneo\Platform\CommunicationChannel\Infrastructure\Delivery\InternalA
 use Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\ListAnnouncementHandler;
 use Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\ListAnnouncementQuery;
 use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Model\Read\AnnouncementItem;
+use Akeneo\Platform\VersionProviderInterface;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
@@ -18,11 +21,19 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  */
 class ListAnnouncementAction
 {
+    /** @var VersionProviderInterface */
+    private $versionProvider;
+
+    /** @var UserContext */
+    private $userContext;
+
     /** @var ListAnnouncementHandler */
     private $listAnnouncementHandler;
 
-    public function __construct(ListAnnouncementHandler $listAnnouncementHandler)
+    public function __construct(VersionProviderInterface $versionProviderInterface, UserContext $userContext, ListAnnouncementHandler $listAnnouncementHandler)
     {
+        $this->versionProvider = $versionProviderInterface;
+        $this->userContext = $userContext;
         $this->listAnnouncementHandler = $listAnnouncementHandler;
     }
 
@@ -32,7 +43,14 @@ class ListAnnouncementAction
             throw new UnprocessableEntityHttpException('You should give a "limit" key.');
         }
 
+        if (null === $user = $this->userContext->getUser()) {
+            throw new NotFoundHttpException('Current user not found');
+        }
+
         $query = new ListAnnouncementQuery(
+            $this->versionProvider->getEdition(),
+            $this->versionProvider->getPatch(),
+            $user->getId(),
             $request->query->get('search_after'),
             (int) $request->query->get('limit')
         );

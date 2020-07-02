@@ -3,13 +3,15 @@ services:
         public: true
         class: 'Akeneo\Platform\CommunicationChannel\Infrastructure\Delivery\InternalApi\Announcement\ListAnnouncementAction'
         arguments:
+            - '@pim_catalog.version_provider'
+            - '@pim_user.context.user'
             - '@akeneo_communication_channel.handler.query.list_announcements'
 
     akeneo_communication_channel.handler.query.list_announcements:
         class: 'Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\ListAnnouncementHandler'
         arguments:
-            - '@pim_catalog.version_provider'
             - '@akeneo_communication_channel.query.in_memory.find_announcement_items'
+            - '@akeneo_communication_channel.query.dbal.find_viewed_announcement_ids'
 
     akeneo_communication_channel.query.in_memory.find_announcement_items:
         class: 'Akeneo\Platform\CommunicationChannel\Infrastructure\CommunicationChannel\InMemory\InMemoryFindAnnouncementItems'

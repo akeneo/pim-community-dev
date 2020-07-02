@@ -59,7 +59,7 @@ class ListAnnouncementActionIntegration extends WebTestCase
         $this->assertFirstItem($searchAfter, $expectedAnnouncements['data'], $content['items']);
     }
 
-    public function test_it_throws_an_exception_when_it_does_mot_have_a_limit_parameter()
+    public function test_it_throws_an_exception_when_it_does_not_have_a_limit_parameter()
     {
         $this->client->request(
             'GET',
