@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9335: Fix fetch attribute to 100 instead of 20 by default in linked products
+
 # 4.0.36 (2020-06-30)
 
 # 4.0.35 (2020-06-22)
