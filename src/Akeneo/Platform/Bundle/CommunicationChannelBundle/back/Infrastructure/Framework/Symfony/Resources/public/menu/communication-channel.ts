@@ -12,6 +12,12 @@ class CommunicationChannel extends Backbone.View<any> {
     };
   }
 
+  initialize() {
+    this.listenTo(mediator, 'communication-channel:announcements:new', this.renderColouredDot);
+
+    return super.initialize();
+  }
+
   render(): Backbone.View {
     const template = _.template(CommunicationChannelTemplate);
     this.$el.empty().append(
@@ -25,6 +31,12 @@ class CommunicationChannel extends Backbone.View<any> {
 
   onClickButton() {
     mediator.trigger('communication-channel:panel:open');
+  }
+
+  renderColouredDot() {
+    const span = document.createElement('span');
+    span.setAttribute('class', 'AknCommunicationChannelMenu-colouredDot');
+    this.$el.find('.AknCommunicationChannelMenu-link').append(span);
   }
 }
 
