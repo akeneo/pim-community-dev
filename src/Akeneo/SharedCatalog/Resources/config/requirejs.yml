@@ -1,4 +1,6 @@
 config:
     paths:
         pim/job-instance-shared-catalog-edit-form/save: akeneosharedcatalog/job/export/edit/save
-        akeneosharedcatalog/form/redirect-form: akeneosharedcatalog/form/common/edit-form.js
+        akeneosharedcatalog/form/redirect-form: akeneosharedcatalog/form/common/edit-form
+        akeneosharedcatalog/job/tab/recipients: akeneosharedcatalog/job/tab/recipients
+        akeneosharedcatalog/job/form/recipients: akeneosharedcatalog/job/form/recipients

@@ -17,7 +17,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Channel;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FilterStructureLocale;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
+use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 
@@ -52,6 +54,24 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
                 'groups' => ['Default', 'FileConfiguration'],
             ]
         );
+        $constraintFields['recipients'] = [
+            new Type([
+                'type' => 'array',
+                'groups' => ['Default', 'FileConfiguration'],
+            ]),
+            new All([
+                'constraints' => [
+                    new Collection([
+                        'fields' => [
+                            'email' => [
+                                new NotBlank(['groups' => ['Default', 'FileConfiguration']]),
+                                new Email(['groups' => ['Default', 'FileConfiguration']]),
+                            ],
+                        ],
+                    ]),
+                ],
+            ]),
+        ];
         $constraintFields['filters'] = [
             new Collection(
                 [

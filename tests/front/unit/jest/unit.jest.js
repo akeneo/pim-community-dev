@@ -34,6 +34,7 @@ const eeConfig = {
     'akeneoassetmanager/application/action/asset',
     'akeneoassetmanager/application/component/asset-family/edit/header',
     'akeneoreferenceentity/tools',
+    'akeneosharedcatalog/akeneo-pim-community',
 
     'src/Akeneo/AssetManager/front/tools',
     'vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/public/lib',
@@ -61,6 +62,7 @@ const eeConfig = {
     'vendor/akeneo/pim-community-dev',
     'src/Akeneo/AssetManager/front/infrastructure',
     'src/Akeneo/AssetManager/tests',
+    'src/Akeneo/SharedCatalog/Resources/public/akeneo-pim-community',
   ],
 };
 

@@ -1,1 +1,7 @@
 batch_jobs.akeneo_shared_catalog.label: Send to shared catalogs
+pim_common:
+    recipients: Recipients
+shared_catalog:
+    recipients:
+        invalid_email: This value is not a valid email address.
+        add_recipient: Add a recipient

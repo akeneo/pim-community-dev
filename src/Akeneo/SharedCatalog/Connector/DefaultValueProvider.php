@@ -21,6 +21,8 @@ class DefaultValueProvider extends ProductCsvExport
     {
         $parameters = parent::getDefaultValues();
 
+        $parameters['recipients'] = [];
+
         return $parameters;
     }
 }
