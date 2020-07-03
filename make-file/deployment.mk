@@ -48,7 +48,13 @@ helm-prepare:
 
 .PHONY: deploy
 deploy: terraform-deploy
-	echo "This environment is available at https://$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS) :)"
+	@echo "#######################################################################################"
+	@echo ""
+	@echo "This environment is available at https://$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS) :)"
+	@echo ""
+	@echo "K9s direct access command line: k9s -n $(PFID) -c pods"
+	@echo ""
+	@echo "#######################################################################################"
 
 .PHONY: terraform-deploy
 terraform-deploy: terraform-init terraform-apply
