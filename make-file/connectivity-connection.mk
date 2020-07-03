@@ -66,9 +66,6 @@ connectivity-connection-static-analysis-back:
 connectivity-connection-unit-back:
 	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Connectivity/Connection/back/tests/Unit/spec/
 
-connectivity-connection-acceptance-back: var/tests/behat/connectivity/connection
-	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/Connectivity/Connection/back/tests/Acceptance/behat.yml --format pim --out var/tests/behat/connectivity/connection --format progress --out std --colors
-
 connectivity-connection-integration-back:
 ifeq ($(CI),true)
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Connectivity_Connection_Integration
@@ -87,7 +84,6 @@ connectivity-connection-back:
 	$(MAKE) connectivity-connection-coupling-back
 	$(MAKE) connectivity-connection-static-analysis-back
 	$(MAKE) connectivity-connection-unit-back
-	$(MAKE) connectivity-connection-acceptance-back
 	$(MAKE) connectivity-connection-integration-back
 	$(MAKE) connectivity-connection-e2e-back
 
