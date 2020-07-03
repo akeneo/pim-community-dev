@@ -98,10 +98,6 @@ SQL;
             $expected->eventType(),
             $actual['event_type']
         );
-        Assert::assertEquals(
-            (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'),
-            $actual['updated']
-        );
     }
 
     protected function getConfiguration(): Configuration
