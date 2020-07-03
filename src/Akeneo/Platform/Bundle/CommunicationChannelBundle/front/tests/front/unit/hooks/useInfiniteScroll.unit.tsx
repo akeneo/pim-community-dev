@@ -5,7 +5,7 @@ import {useInfiniteScroll} from '../../../../src/hooks/useInfiniteScroll';
 
 const MockComponent: FC = ({fetch, limit}) => {
   const testRef = useRef(null);
-  const fetchResponse = useInfiniteScroll(fetch, testRef.current, limit);
+  const [fetchResponse, updateFetchResponse] = useInfiniteScroll(fetch, testRef.current, limit);
 
   if (fetchResponse.hasError) {
     return 'error';

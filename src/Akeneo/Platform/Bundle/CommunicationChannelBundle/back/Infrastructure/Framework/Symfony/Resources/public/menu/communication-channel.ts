@@ -13,7 +13,8 @@ class CommunicationChannel extends Backbone.View<any> {
   }
 
   initialize() {
-    this.listenTo(mediator, 'communication-channel:announcements:new', this.renderColouredDot);
+    this.listenTo(mediator, 'communication-channel:menu:add_coloured_dot', this.addColouredDot);
+    this.listenTo(mediator, 'communication-channel:menu:remove_coloured_dot', this.removeColouredDot);
 
     return super.initialize();
   }
@@ -26,17 +27,36 @@ class CommunicationChannel extends Backbone.View<any> {
       })
     );
 
+    if (this.hasNewAnnouncements()) {
+      this.addColouredDot();
+    }
+
     return Backbone.View.prototype.render.apply(this, arguments);
+  }
+
+  hasNewAnnouncements() {
+    if (null === sessionStorage.getItem('communication_channel_has_new_announcements')) {
+      return false;
+    }
+
+    return JSON.parse(sessionStorage.getItem('communication_channel_has_new_announcements') as string) === true;
   }
 
   onClickButton() {
     mediator.trigger('communication-channel:panel:open');
   }
 
-  renderColouredDot() {
+  addColouredDot() {
     const span = document.createElement('span');
     span.setAttribute('class', 'AknCommunicationChannelMenu-colouredDot');
     this.$el.find('.AknCommunicationChannelMenu-link').append(span);
+  }
+
+  removeColouredDot() {
+    const colouredDot = this.$el.find('.AknCommunicationChannelMenu-colouredDot');
+    if (colouredDot.length > 0) {
+      colouredDot.remove();
+    }
   }
 }
 
