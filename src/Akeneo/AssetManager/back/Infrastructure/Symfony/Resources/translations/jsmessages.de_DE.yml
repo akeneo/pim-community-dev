@@ -17,6 +17,7 @@ pim_asset_manager:
     no_asset_in_collection: 'Es tut uns leid, es gibt keine Assets in dieser Sammlung.'
     helper:
       title: 'Willkommen in Ihrem neuen Bereich für das Asset Management!'
+      text: 'Es gibt keine Sammlung von Assets für diese Familie. Um an dieser neuen Erfahrung teilzunehmen, fügen Sie einfach ein Asset Collection Attribut in Ihren Einstellungen hinzu.'
       link: 'Wie kann eine Asset-Sammlung hinzugefügt werden?'
     no_asset:
       title: 'Es gibt kein Asset für dieses Produkt.'
