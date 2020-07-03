@@ -27,7 +27,7 @@ class QuantifiedAssociationsMerger
             return [];
         }
 
-        $mergedQuantifiedAssociations = $entitiesWithQuantifiedAssociations[0]->getQuantifiedAssociations();
+        $mergedQuantifiedAssociations = QuantifiedAssociations::createFromNormalized([]);
         foreach ($entitiesWithQuantifiedAssociations as $entity) {
             if (!$entity instanceof EntityWithQuantifiedAssociationsInterface) {
                 continue;
