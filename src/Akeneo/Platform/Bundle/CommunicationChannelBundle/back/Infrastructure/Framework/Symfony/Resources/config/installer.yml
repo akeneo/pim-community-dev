@@ -1,0 +1,7 @@
+services:
+    akeneo_communication_channel.installer.installer_subscriber:
+        class: Akeneo\Platform\CommunicationChannel\Infrastructure\Framework\Symfony\Installer\InstallerSubscriber
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: kernel.event_subscriber }

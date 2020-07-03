@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
@@ -86,7 +87,7 @@ final class BooleanValueFactorySpec extends ObjectBehavior
             $this->getAttribute(true, true),
             'ecommerce',
             'fr_FR',
-            'michel'
+            new \stdClass()
         ]);
     }
 

@@ -51,7 +51,12 @@ const AnnouncementComponent = ({announcement, campaign}: AnnouncementProps): JSX
       <Description tags={announcement.tags} description={announcement.description} />
       {null !== announcement.img && <Image src={announcement.img} alt={altImg} />}
       <LineContainer>
-        <LinkComponent baseUrl={announcement.link} title={announcement.title} campaign={campaign} />
+        <LinkComponent
+          baseUrl={announcement.link}
+          title={announcement.title}
+          campaign={campaign}
+          content={announcement.id}
+        />
       </LineContainer>
     </Container>
   );

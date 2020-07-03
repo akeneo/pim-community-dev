@@ -46,13 +46,13 @@ Feature: Edit a user
     And I visit the "Permissions" tab
     And I grant rights to resource Edit users
     And I grant rights to resource List users
-    Then I save the role
-    When I edit the "mary" user
+    And I save the role
+    And I edit the "mary" user
     And I visit the "Groups and roles" tab
     And I fill in the following information:
       | Role | Tata role |
-    Then I save the user
-    And I logout
+    When I save the user
+    Then I should not see the text "There are unsaved changes"
     When I am logged in as "Mary"
     And I edit the "admin" user
     Then I should see the text "Admin"

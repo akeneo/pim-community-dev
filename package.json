@@ -53,6 +53,7 @@
     "@types/react-dom": "^16.8.0",
     "@types/react-router-dom": "^5.1.0",
     "@types/react-test-renderer": "^16.8.0",
+    "@types/react-redux": "^7.1.0",
     "@types/styled-components": "^4.1.18",
     "@types/underscore": "^1.9.3",
     "@types/victory": "^33.0.1",
@@ -101,7 +102,8 @@
     "webpack-livereload-plugin": "2.2.0",
     "webpack-shell-plugin": "^0.5.0",
     "write-file-webpack-plugin": "4.5.0",
-    "yamljs": "0.3.0"
+    "yamljs": "0.3.0",
+    "redux-devtools-extension": "^2.13.2"
   },
   "dependencies": {
     "ajv": "^6.10.2",
@@ -126,7 +128,9 @@
     "styled-components": "^4.3.2",
     "summernote": "0.6.16",
     "underscore": "1.8.3",
-    "victory": "^33.1.6"
+    "victory": "^33.1.6",
+    "react-redux": "^7.1.0",
+    "redux": "^4.0.0"
   },
   "resolutions": {
     "jest/**/ip-regex": "2.1.0"

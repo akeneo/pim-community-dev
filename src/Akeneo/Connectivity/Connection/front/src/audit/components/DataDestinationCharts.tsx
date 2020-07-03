@@ -1,5 +1,5 @@
 import React from 'react';
-import {Section} from '../../common';
+import {Section, Loading} from '../../common';
 import styled from '../../common/styled-with-theme';
 import {FlowType} from '../../model/flow-type.enum';
 import {Translate, useTranslate} from '../../shared/translate';
@@ -45,7 +45,7 @@ export const DataDestinationCharts = () => {
                     weeklyAuditData={events.product_read[connectionCode]}
                 />
             ) : (
-                <>Loading...</>
+                <Loading />
             )}
         </DataDestinationChartsContainer>
     );

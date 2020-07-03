@@ -40,10 +40,10 @@ Feature: Edit a product with localized attributes
 
   Scenario: Successfully view and edit localized price
     Given I am on the "foo" product page
-    Then the field Prix should contain "1000,50"
+    Then the product Prix in EUR should be "1000,50"
     When I change the "Prix" to "1200,50 EUR"
     And I save the product
-    Then the field Prix should contain "1200,50"
+    Then the product Prix in EUR should be "1200,50"
     And the product "foo" should have the following values:
       | price-EUR | 1200.50 |
 

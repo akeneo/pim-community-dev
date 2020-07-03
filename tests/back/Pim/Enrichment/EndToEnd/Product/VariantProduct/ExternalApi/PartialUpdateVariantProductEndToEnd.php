@@ -84,7 +84,7 @@ class PartialUpdateVariantProductEndToEnd extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "product_variant_create_with_identifier",
         "family": "familyA",
@@ -211,7 +211,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "bar"
     }
@@ -234,7 +234,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": null,
         "parent": "amor",
@@ -258,7 +258,7 @@ JSON;
             'errors'  => [
                 [
                     'property' => 'identifier',
-                    'message'  => 'This value should not be blank.',
+                    'message'  => 'The identifier attribute cannot be empty.',
                 ],
             ],
         ];
@@ -274,7 +274,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "apollon_optionb_false",
         "family": "familyA2",
@@ -315,7 +315,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "apollon_optionb_false",
         "parent": "amor",
@@ -397,7 +397,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "apollon_optionb_false",
         "groups": ["groupB", "groupA"],
@@ -482,7 +482,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "apollon_optionb_false",
         "groups": [],
@@ -739,7 +739,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "apollon_optionb_false",
         "groups": [],
@@ -855,7 +855,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "apollon_optionb_false",
         "groups": [],
@@ -1048,7 +1048,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "apollon_optionb_false",
         "enabled": false,
@@ -1136,7 +1136,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "apollon_optionb_false",
         "enabled": false,
@@ -1320,7 +1320,7 @@ JSON;
         ];
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "apollon_optionb_false",
         "parent": "amor",
@@ -1473,7 +1473,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "apollon_optionb_false",
         "parent": null
@@ -1505,7 +1505,7 @@ JSON;
         ];
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "apollon_optionb_false",
         "groups": ["groupA", "groupB"],
@@ -1657,7 +1657,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "identifier": "apollon_optionb_false",
         "parent": "amor",

@@ -70,7 +70,6 @@ pim_enrich.entity.product:
       locale_unavailable: Ce champ traduisible n'est pas disponible pour la locale '{{ locale }}' et le canal '{{ channel }}'
       to_fill_count: "{1}1 attribut requis manquant|]1, Inf[{{ count }} attributs requis manquants"
       add_attribute_option: Ajouter une option d'attribut
-      add_option: Ajouter une option
     completeness:
       title: Complétude
       complete: Complet
