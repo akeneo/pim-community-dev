@@ -1,3 +1,4 @@
+Training merci de ne pas merge.
 # Akeneo PIM Development Repository
 Welcome to Akeneo PIM Product.
 
