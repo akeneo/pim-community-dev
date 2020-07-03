@@ -18,6 +18,7 @@
 - PIM-9316: Fix url encoding of media links in asset edit form
 - PIM-9318: Add created_at & updated_at fields in RefEntity record table
 - PIM-9334: Add error during rule import when a condition value contains null value
+- PIM-9324: Fix cannot save product when simple reference entity linked to this product is deleted
 
 ## Improvements
 
