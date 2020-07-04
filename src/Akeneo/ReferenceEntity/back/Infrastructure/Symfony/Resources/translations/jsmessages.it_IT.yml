@@ -37,7 +37,7 @@ pim_reference_entity:
     img: Immagine principale dell'entità di riferimento denominata "{{ label }}"
     tab:
       records: Record
-      attribute: Atributi
+      attribute: Attributi
       properties: Proprietà
       permission: Autorizzazioni
     properties:
