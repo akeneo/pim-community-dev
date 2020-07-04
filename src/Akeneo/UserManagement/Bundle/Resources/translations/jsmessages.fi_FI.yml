@@ -78,7 +78,7 @@ pim_user_management:
           confirm: Haluatko varmasti poistaa tämän käyttäjän?
         update:
           additional: Lisää
-          groups_and_roles: Käyttäjäyhmät ja roolit
+          groups_and_roles: Käyttäjäryhmät ja roolit
           password: Salasana
           interfaces: Käyttöliittymä
           notifications: Ilmoitukset #TODO EE Only
