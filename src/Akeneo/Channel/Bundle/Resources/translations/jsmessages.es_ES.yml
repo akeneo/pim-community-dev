@@ -1,6 +1,5 @@
 batch_jobs:
   csv_currency_export:
-    label: Exportar monedas en CSV
     export.label: Exportar monedas
   csv_currency_import:
     label: Importar monedas en CSV
