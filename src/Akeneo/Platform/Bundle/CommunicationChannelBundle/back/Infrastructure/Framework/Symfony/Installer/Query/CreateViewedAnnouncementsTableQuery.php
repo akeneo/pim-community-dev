@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS akeneo_communication_channel_viewed_announcements(
     user_id INT NOT NULL,
     PRIMARY KEY (announcement_id, user_id),
     CONSTRAINT FK_COMMUNICATION_CHANNEL_VIEWED_ANNOUNCEMENTS_user_id FOREIGN KEY (user_id) REFERENCES oro_user (id) ON DELETE CASCADE,
-    INDEX IDX_VIEWED_ANNOUNCEMENTS_user_id_announcement_id (user_id, announcement_id)
+    UNIQUE INDEX IDX_VIEWED_ANNOUNCEMENTS_user_id_announcement_id (user_id, announcement_id)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB ROW_FORMAT = DYNAMIC
 SQL;
 }
