@@ -29,7 +29,7 @@ final class AddViewedAnnouncementsByUserHandler
                 $viewedAnnouncementId,
                 $command->userId()
             );
-        }, $command->ViewedAnnouncementIds());
+        }, $command->viewedAnnouncementIds());
 
         $this->viewedAnnouncementRepository->create($viewedAnnouncements);
     }

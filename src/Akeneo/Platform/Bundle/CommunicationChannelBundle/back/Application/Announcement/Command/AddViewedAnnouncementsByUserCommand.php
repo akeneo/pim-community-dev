@@ -30,7 +30,7 @@ final class AddViewedAnnouncementsByUserCommand
     /**
      * @return string[]
      */
-    public function ViewedAnnouncementIds(): array
+    public function viewedAnnouncementIds(): array
     {
         return $this->viewedAnnouncementIds;
     }

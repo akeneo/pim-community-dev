@@ -51,7 +51,7 @@ class AnnouncementItemSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_can_notify_when_the_announcement_is_new()
+    public function it_notifies_when_the_announcement_is_new()
     {
         $this->toNotify()->shouldReturnAnInstanceOf(AnnouncementItem::class);
 
