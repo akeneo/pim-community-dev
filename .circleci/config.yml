@@ -448,6 +448,22 @@ jobs:
                     ssh-keyscan github.com >> ~/.ssh/known_hosts
                     ENV_NAME=preprod make deploy_latest_release_for_helpdesk
 
+  deploy_pm_environment:
+      environment:
+          <<: *envVarsDeployPreprod
+      <<: *dockerCloudDeployer
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_preprod
+          - add_ssh_keys
+          - run:
+                name: Latest master version for PMs
+                command: |
+                    INSTANCE_NAME=pimci-pm IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
+                    INSTANCE_NAME=pimci-pm IMAGE_TAG=$CIRCLE_SHA1 make terraform-pre-upgrade-disk
+                    INSTANCE_NAME=pimci-pm IMAGE_TAG=$CIRCLE_SHA1 make deploy
+
   deploy_pr_environment:
       environment:
           <<: *envVarsDeployDev
