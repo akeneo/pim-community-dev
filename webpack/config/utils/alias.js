@@ -12,7 +12,7 @@ function findRequirejsConfigsFromSymfonyBundles(bundlesPaths) {
             try {
                 const requirejsPath = path.join(bundlePath, 'Resources/config/requirejs.yml');
                 if (false === fs.existsSync(requirejsPath)) {
-                    // console.log(colors.grey(`- ${bundlePath}`));
+                    console.log(colors.grey(`- ${bundlePath}`));
 
                     return results;
                 }
