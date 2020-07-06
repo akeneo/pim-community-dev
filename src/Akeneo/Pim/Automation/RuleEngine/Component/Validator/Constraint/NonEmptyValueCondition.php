@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraint;
 class NonEmptyValueCondition extends Constraint
 {
     /** @var string */
-    public $message = 'The "value" key is missing or empty';
+    public $message = 'pimee_catalog_rule.rule_definition.validation.conditions.missing_value_key';
 
     /**
      * {@inheritdoc}

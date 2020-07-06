@@ -60,7 +60,7 @@ class ExistingClearFieldValidatorSpec extends ObjectBehavior
     ) {
         $constraint = new ExistingClearField();
         $clearerRegistry->getClearer('foo')->shouldBeCalled()->willReturn(null);
-        $context->buildViolation($constraint->message, ['%field%' => 'foo'])
+        $context->buildViolation($constraint->message, ['{{ field }}' => 'foo'])
                 ->shouldBeCalled()
                 ->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();

@@ -75,7 +75,7 @@ class IncludeChildrenOptionValidatorSpec extends ObjectBehavior
         $context->buildViolation(
             'foo',
             [
-                '%field%' => 'attribute_field'
+                '{{ field }}' => 'attribute_field'
             ]
         )->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();

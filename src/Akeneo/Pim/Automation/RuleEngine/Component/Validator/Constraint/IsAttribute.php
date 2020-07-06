@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraint;
 
 class IsAttribute extends Constraint
 {
-    public $message = 'The "{{ code }}" attribute does not exist';
+    public $message = 'pimee_catalog_rule.rule_definition.validation.attribute.unknown';
 
     public function validatedBy()
     {

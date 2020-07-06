@@ -18,9 +18,9 @@ Feature: Import clear action rules
   @acceptance-back
   Scenario: Import a clear rule with unknown attributes
     When I import a clear rule with unknown attribute
-    And an exception with message "actions[0].field: You cannot clear the data from the \"unknown\" field." has been thrown
+    And an exception with message "actions[0].field: You cannot clear data from the \"unknown\" field" has been thrown
 
   @acceptance-back
   Scenario: Import a clear rule with bad locale
     When I import a clear rule with localized attribute and without locale
-    And an exception with message "actions[0]: Attribute \"name\" expects a locale, none given" has been thrown
+    And an exception with message "actions[0]: The \"name\" attribute requires a locale" has been thrown

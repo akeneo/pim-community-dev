@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraint;
 class ExistingSetField extends Constraint
 {
     /** @var string */
-    public $message = 'You cannot set data to the "%field%" field.';
+    public $message = 'pimee_catalog_rule.rule_definition.validation.actions.set.invalid_field';
 
     /**
      * {@inheritdoc}

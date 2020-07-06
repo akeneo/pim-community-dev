@@ -82,7 +82,7 @@ class ExistingCopyFieldsValidatorSpec extends ObjectBehavior
     ) {
         $constraint = new ExistingCopyFields();
         $copierRegistry->getCopier('foo', 'bar')->shouldBeCalled()->willReturn(null);
-        $context->buildViolation($constraint->message, ['%fromField%' => 'foo', '%toField%' => 'bar'])
+        $context->buildViolation($constraint->message, ['{{ from_field }}' => 'foo', '{{ to_field }}' => 'bar'])
                 ->shouldBeCalled()
                 ->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();

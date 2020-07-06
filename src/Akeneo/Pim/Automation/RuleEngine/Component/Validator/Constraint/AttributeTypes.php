@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraint;
 
 class AttributeTypes extends Constraint
 {
-    public $message = 'The "{{ attribute_code }}" attribute has an invalid "{{ invalid_type }}" attribute type. Expected an attribute of type {{ expected_types }}';
+    public $message = 'pimee_catalog_rule.rule_definition.validation.attribute.unexpected_type';
 
     public $types = [];
 

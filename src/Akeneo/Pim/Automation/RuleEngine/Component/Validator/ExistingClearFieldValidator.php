@@ -41,7 +41,7 @@ final class ExistingClearFieldValidator extends ConstraintValidator
         }
 
         if (null === $this->clearerRegistry->getClearer($value)) {
-            $this->context->buildViolation($constraint->message, ['%field%' => $value])
+            $this->context->buildViolation($constraint->message, ['{{ field }}' => $value])
                 ->addViolation();
 
             return;

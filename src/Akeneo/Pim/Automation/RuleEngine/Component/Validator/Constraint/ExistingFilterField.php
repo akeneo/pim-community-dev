@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraint;
 class ExistingFilterField extends Constraint
 {
     /** @var string */
-    public $message = 'The field "%field%" cannot be filtered or cannot be used with operator "%operator%".';
+    public $message = 'pimee_catalog_rule.rule_definition.validation.conditions.existing_field';
 
     /**
      * {@inheritdoc}

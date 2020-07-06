@@ -12,7 +12,7 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\SetAction:
             - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ExistingSetField: ~
         value:
             - NotNull:
-                  message: The "value" key is missing or empty
+                  message: pimee_catalog_rule.rule_definition.validation.actions.set.missing_value_key
             - Type: [scalar, array]
         scope:
             - Type: string

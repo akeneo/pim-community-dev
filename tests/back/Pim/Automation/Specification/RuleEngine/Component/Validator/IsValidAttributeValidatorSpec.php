@@ -86,7 +86,7 @@ class IsValidAttributeValidatorSpec extends ObjectBehavior
     ) {
         $getAttributes->forCode('name')->shouldBeCalled()->willReturn($this->buildAttribute('name', false, false));
         $executionContext->buildViolation(
-            'Attribute "{{ attributeCode }}" does not expect a scope, "{{ channelCode }}" given.',
+            'pimee_catalog_rule.rule_definition.validation.attribute.unexpected_scope',
             [
                 '{{ attributeCode }}' => 'name',
                 '{{ channelCode }}' => 'ecommerce',
@@ -105,7 +105,7 @@ class IsValidAttributeValidatorSpec extends ObjectBehavior
     ) {
         $getAttributes->forCode('name')->shouldBeCalled()->willReturn($this->buildAttribute('name', true, false));
         $executionContext->buildViolation(
-            'Attribute "{{ attributeCode }}" expects a scope, none given.',
+            'pimee_catalog_rule.rule_definition.validation.attribute.missing_scope',
             [
                 '{{ attributeCode }}' => 'name',
             ]
@@ -125,7 +125,7 @@ class IsValidAttributeValidatorSpec extends ObjectBehavior
         $getAttributes->forCode('name')->shouldBeCalled()->willReturn($this->buildAttribute('name', true, false));
         $channelExistsWithLocale->doesChannelExist('foo')->shouldBeCalled()->willReturn(false);
         $executionContext->buildViolation(
-            'Attribute "{{ attributeCode }}" expects an existing scope, "{{ channelCode }}" given.',
+            'pimee_catalog_rule.rule_definition.validation.attribute.unknown_scope',
             [
                 '{{ attributeCode }}' => 'name',
                 '{{ channelCode }}' => 'foo',
@@ -156,7 +156,7 @@ class IsValidAttributeValidatorSpec extends ObjectBehavior
     ) {
         $getAttributes->forCode('name')->shouldBeCalled()->willReturn($this->buildAttribute('name', false, false));
         $executionContext->buildViolation(
-            'Attribute "{{ attributeCode }}" does not expect a locale, "{{ locale }}" given.',
+            'pimee_catalog_rule.rule_definition.validation.attribute.unexpected_locale',
             [
                 '{{ attributeCode }}' => 'name',
                 '{{ locale }}' => 'en_US',
@@ -175,7 +175,7 @@ class IsValidAttributeValidatorSpec extends ObjectBehavior
     ) {
         $getAttributes->forCode('name')->shouldBeCalled()->willReturn($this->buildAttribute('name', false, true));
         $executionContext->buildViolation(
-            'Attribute "{{ attributeCode }}" expects a locale, none given.',
+            'pimee_catalog_rule.rule_definition.validation.attribute.missing_locale',
             [
                 '{{ attributeCode }}' => 'name',
             ],
@@ -207,7 +207,7 @@ class IsValidAttributeValidatorSpec extends ObjectBehavior
         $getAttributes->forCode('name')->shouldBeCalled()->willReturn($this->buildAttribute('name', false, true));
         $channelExistsWithLocale->isLocaleActive('es_CA')->shouldBeCalled()->willReturn(false);
         $executionContext->buildViolation(
-            'Attribute "{{ attributeCode }}" expects an existing and activated locale, "{{ locale }}" given',
+            'pimee_catalog_rule.rule_definition.validation.attribute.unknown_locale',
             [
                 '{{ attributeCode }}' => 'name',
                 '{{ locale }}' => 'es_CA',
@@ -230,7 +230,7 @@ class IsValidAttributeValidatorSpec extends ObjectBehavior
         $channelExistsWithLocale->isLocaleActive('de_DE')->shouldBeCalled()->willReturn(true);
         $channelExistsWithLocale->isLocaleBoundToChannel('de_DE', 'ecommerce')->shouldBeCalled()->willReturn(false);
         $executionContext->buildViolation(
-            'The "{{ invalidLocale }}" is not bound to the "{{ channelCode }}" channel',
+            'pimee_catalog_rule.rule_definition.validation.attribute.locale_not_bound_to_channel',
             [
                 '{{ invalidLocale }}' => 'de_DE',
                 '{{ channelCode }}' => 'ecommerce',
@@ -254,7 +254,7 @@ class IsValidAttributeValidatorSpec extends ObjectBehavior
         $channelExistsWithLocale->isLocaleActive('de_DE')->shouldBeCalled()->willReturn(true);
 
         $executionContext->buildViolation(
-            'Attribute "{{ attributeCode }}" is locale specific and expects one of these locales: {{ expectedLocales }}, "{{ invalidLocale }}" given.',
+            'pimee_catalog_rule.rule_definition.validation.attribute.invalid_specific_locale',
             [
                 '{{ attributeCode }}' => 'name',
                 '{{ expectedLocales }}' => 'en_US, fr_FR',

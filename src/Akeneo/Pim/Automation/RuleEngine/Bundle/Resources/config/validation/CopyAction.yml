@@ -13,7 +13,7 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\CopyAction:
         fromField:
             - Type: string
             - NotBlank:
-                  message: The "from_field" key is missing or empty
+                  message: pimee_catalog_rule.rule_definition.validation.actions.copy.missing_from_field_key
         fromScope:
             - Type: string
         fromLocale:
@@ -21,7 +21,7 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\CopyAction:
         toField:
             - Type: string
             - NotBlank:
-                  message: The "to_field" key is missing or empty
+                  message: pimee_catalog_rule.rule_definition.validation.actions.copy.missing_to_field_key
         toScope:
             - Type: string
         toLocale:

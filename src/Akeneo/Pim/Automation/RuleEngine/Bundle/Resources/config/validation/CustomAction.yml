@@ -4,5 +4,5 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\CustomAction:
     properties:
         type:
             - NotBlank:
-               message: The "type" key is missing or empty
+               message: pimee_catalog_rule.rule_definition.validation.actions.custom.missing_type_key
             - Type: string

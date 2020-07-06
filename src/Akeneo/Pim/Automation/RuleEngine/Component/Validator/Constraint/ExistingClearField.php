@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraint;
 final class ExistingClearField extends Constraint
 {
     /** @var string */
-    public $message = 'You cannot clear the data from the "%field%" field.';
+    public $message = 'pimee_catalog_rule.rule_definition.validation.actions.clear.invalid_field';
 
     /**
      * {@inheritdoc}

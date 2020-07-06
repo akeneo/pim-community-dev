@@ -60,7 +60,7 @@ class ExistingSetFieldValidatorSpec extends ObjectBehavior
     ) {
         $constraint = new ExistingSetField();
         $setterRegistry->getSetter('foo')->shouldBeCalled()->willReturn(null);
-        $context->buildViolation($constraint->message, ['%field%' => 'foo'])
+        $context->buildViolation($constraint->message, ['{{ field }}' => 'foo'])
                 ->shouldBeCalled()
                 ->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();

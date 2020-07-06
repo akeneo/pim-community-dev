@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraint;
 
 class ActiveCurrency extends Constraint
 {
-    public $message = 'Expected a valid currency, the "%currency%" currency does not exist or is not activated';
+    public $message = 'pimee_catalog_rule.rule_definition.validation.currency.unknown';
 
     public function validatedBy()
     {

@@ -48,7 +48,7 @@ class ExistingAddFieldValidator extends ConstraintValidator
         $adder = $this->adderRegistry->getAdder($fieldName);
 
         if (null === $adder) {
-            $this->context->buildViolation($constraint->message, ['%field%' => $fieldName])
+            $this->context->buildViolation($constraint->message, ['{{ field }}' => $fieldName])
                 ->addViolation();
         }
     }

@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraint;
 
 class ProductSourceOptions extends Constraint
 {
-    public $message = 'The {{ key }} key is irrelevant for the {{ attribute }} attribute';
+    public $message = 'pimee_catalog_rule.rule_definition.validation.actions.concatenate.unexpected_source_option';
 
     public function validatedBy()
     {

@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraint;
 
 class IsValidSource extends Constraint
 {
-    public $message = 'You cannot concatenate data from the "{{ field }}" field';
+    public $message = 'pimee_catalog_rule.rule_definition.validation.actions.concatenate.invalid_source';
 
     public function validatedBy()
     {

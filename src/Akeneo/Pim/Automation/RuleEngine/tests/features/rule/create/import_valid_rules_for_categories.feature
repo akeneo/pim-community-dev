@@ -40,3 +40,22 @@ Feature: Import rules for categories
     """
     Then no exception has been thrown
     And the rule list contains the imported rules
+
+  @integration-back
+  Scenario: Import valid rules with empty categories for UNCLASSIFIED operator
+    When the following yaml file is imported:
+    """
+    rules:
+      rule_with_valid_empty_category:
+        conditions:
+          - field:    categories
+            operator: UNCLASSIFIED
+            value: []
+        actions:
+          - type:  set
+            field: name
+            value: Test
+            locale: en_US
+    """
+    Then no exception has been thrown
+    And the rule list contains the imported rules

@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraint;
 class ExistingAddField extends Constraint
 {
     /** @var string */
-    public $message = 'You cannot add items to the "%field%" field.';
+    public $message = 'pimee_catalog_rule.rule_definition.validation.actions.add.invalid_field';
 
     /**
      * {@inheritdoc}

@@ -39,7 +39,7 @@ class ActiveCurrencyValidator extends ConstraintValidator
         if (!in_array($value, $this->findActivatedCurrencies->forAllChannels())) {
             $this->context->buildViolation(
                 $constraint->message,
-                ['%currency%' => $value]
+                ['{{ currency }}' => $value]
             )->addViolation();
         }
     }

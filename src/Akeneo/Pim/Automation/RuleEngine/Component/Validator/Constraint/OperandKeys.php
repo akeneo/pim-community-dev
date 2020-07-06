@@ -18,9 +18,9 @@ use Symfony\Component\Validator\Constraint;
 
 class OperandKeys extends Constraint
 {
-    public $requiredKeyMessage = 'One of the "value" or "field" keys is required, but both are missing or empty';
-    public $onlyOneKeyExpectedKeyMessage = 'Only one of the "value" or "field" keys were expected, but both were provided';
-    public $unexpectedKeyMessage = 'The "{{ key }}" key was unexpected';
+    public $requiredKeyMessage = 'pimee_catalog_rule.rule_definition.validation.actions.calculate.missing_operand_key';
+    public $onlyOneKeyExpectedKeyMessage = 'pimee_catalog_rule.rule_definition.validation.actions.calculate.only_one_key_expected';
+    public $unexpectedKeyMessage = 'pimee_catalog_rule.rule_definition.validation.actions.calculate.unexpected_key';
 
     public function validatedBy()
     {

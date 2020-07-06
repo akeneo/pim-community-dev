@@ -2,17 +2,17 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ConcatenateAction:
     properties:
         from:
             - NotNull:
-                message: The "from" key is missing or empty
+                message: pimee_catalog_rule.rule_definition.validation.actions.concatenate.missing_from_key
             - Type: array
             - Count:
                 min: 2
-                minMessage: This value should contain at least 2 elements
+                minMessage: pimee_catalog_rule.rule_definition.validation.actions.concatenate.source_count
             - All:
                 - NotNull: ~
                 - Type: object
             - Valid: ~
         to:
             - NotNull:
-                message: The "to" key is missing or empty
+                message: pimee_catalog_rule.rule_definition.validation.actions.concatenate.missing_to_key
             - Type: object
             - Valid: ~
