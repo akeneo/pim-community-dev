@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import BaseForm = require('pimui/js/view/base');
+
+const BaseForm = require('pimui/js/view/base');
 import { EventsHash } from "backbone";
 const Router = require('pim/router');
 const __ = require('oro/translator');
