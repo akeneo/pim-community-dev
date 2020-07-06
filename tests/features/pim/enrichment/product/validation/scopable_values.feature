@@ -4,7 +4,8 @@ Feature: Validate scopable values of a product
   I need to be able to see validation errors for scopable values
 
   Background:
-    Given the following locales "en_US"
+    Given an authentified user
+    And the following locales "en_US"
     And the following "ecommerce" channel with locales "en_US"
     And the following attributes:
       | code        | type                     | scopable |
