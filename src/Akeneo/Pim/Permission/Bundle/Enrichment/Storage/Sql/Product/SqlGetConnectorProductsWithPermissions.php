@@ -20,6 +20,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetViewableCategoryCodes;
 use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\ProductModel\FetchUserRightsOnProductModel;
+use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProduct;
+use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProductModel;
 use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
 use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublicApi\GetWorkflowStatusFromProductIdentifiers;
@@ -105,7 +107,9 @@ class SqlGetConnectorProductsWithPermissions implements GetConnectorProducts
         $filteredProducts = $this->filterNotGrantedCategoryCodes($products, $userId);
         $filteredProducts = $this->filterNotGrantedAttributeAndLocalesCodes($filteredProducts, $userId);
         $filteredProducts = $this->filterNotGrantedAssociatedProducts($filteredProducts, $userId);
+        $filteredProducts = $this->filterNotGrantedAssociatedWithQuantityProducts($filteredProducts, $userId);
         $filteredProducts = $this->filterNotGrantedAssociatedProductModels($filteredProducts, $userId);
+        $filteredProducts = $this->filterNotGrantedAssociatedWithQuantityProductModels($filteredProducts, $userId);
 
         return $this->addWorkflowStatusInMetadata($filteredProducts, $userId);
     }
@@ -147,15 +151,9 @@ class SqlGetConnectorProductsWithPermissions implements GetConnectorProducts
         foreach ($products as $product) {
             $productIdentifiers[] = $product->associatedProductIdentifiers();
         }
-        $productIdentifiers = !empty($productIdentifiers) ? array_unique(array_merge(...$productIdentifiers)) : [];
 
-        $viewableAssociatedProductIdentifiers = [];
-        $productRights = $this->fetchUserRightsOnProduct->fetchByIdentifiers($productIdentifiers, $userId);
-        foreach ($productRights as $productRight) {
-            if ($productRight->isProductViewable()) {
-                $viewableAssociatedProductIdentifiers[] = $productRight->productIdentifier();
-            }
-        }
+        $productIdentifiers = !empty($productIdentifiers) ? array_unique(array_merge(...$productIdentifiers)) : [];
+        $viewableAssociatedProductIdentifiers = $this->filterViewableProductIdentifiers($productIdentifiers, $userId);
 
         return array_map(function (ConnectorProduct $product) use ($viewableAssociatedProductIdentifiers) {
             return $product->filterAssociatedProductsByProductIdentifiers($viewableAssociatedProductIdentifiers);
@@ -168,18 +166,40 @@ class SqlGetConnectorProductsWithPermissions implements GetConnectorProducts
         foreach ($products as $product) {
             $productModelCodes[] = $product->associatedProductModelCodes();
         }
-        $productModelCodes = !empty($productModelCodes) ? array_unique(array_merge(...$productModelCodes)) : [];
 
-        $viewableAssociatedProductModelCodes = [];
-        $productModelRights = $this->fetchUserRightsOnProductModel->fetchByIdentifiers($productModelCodes, $userId);
-        foreach ($productModelRights as $productModelRight) {
-            if ($productModelRight->isProductModelViewable()) {
-                $viewableAssociatedProductModelCodes[] = $productModelRight->productModelCode();
-            }
-        }
+        $productModelCodes = !empty($productModelCodes) ? array_unique(array_merge(...$productModelCodes)) : [];
+        $viewableAssociatedProductModelCodes = $this->filterViewableProductModelCodes($productModelCodes, $userId);
 
         return array_map(function (ConnectorProduct $product) use ($viewableAssociatedProductModelCodes) {
             return $product->filterAssociatedProductModelsByProductModelCodes($viewableAssociatedProductModelCodes);
+        }, $products);
+    }
+
+    private function filterNotGrantedAssociatedWithQuantityProducts(array $products, int $userId): array
+    {
+        $productIdentifiers = array_map(function (ConnectorProduct $product) {
+            return $product->associatedWithQuantityProductIdentifiers();
+        }, $products);
+
+        $productIdentifiers = !empty($productIdentifiers) ? array_unique(array_merge(...$productIdentifiers)) : [];
+        $viewableAssociatedProductIdentifiers = $this->filterViewableProductIdentifiers($productIdentifiers, $userId);
+
+        return array_map(function (ConnectorProduct $product) use ($viewableAssociatedProductIdentifiers) {
+            return $product->filterAssociatedWithQuantityProductsByProductIdentifiers($viewableAssociatedProductIdentifiers);
+        }, $products);
+    }
+
+    private function filterNotGrantedAssociatedWithQuantityProductModels(array $products, int $userId): array
+    {
+        $productModelCodes = array_map(function (ConnectorProduct $product) {
+            return $product->associatedWithQuantityProductModelCodes();
+        }, $products);
+
+        $productModelCodes = !empty($productModelCodes) ? array_unique(array_merge(...$productModelCodes)) : [];
+        $viewableAssociatedProductModelCodes = $this->filterViewableProductModelCodes($productModelCodes, $userId);
+
+        return array_map(function (ConnectorProduct $product) use ($viewableAssociatedProductModelCodes) {
+            return $product->filterAssociatedWithQuantityProductModelsByProductModelCodes($viewableAssociatedProductModelCodes);
         }, $products);
     }
 
@@ -196,5 +216,29 @@ class SqlGetConnectorProductsWithPermissions implements GetConnectorProducts
 
             return $connectorProduct->addMetadata('workflow_status', $workflowStatus);
         }, $products);
+    }
+
+    private function filterViewableProductIdentifiers(array $productIdentifiers, int $userId)
+    {
+        $productRights = $this->fetchUserRightsOnProduct->fetchByIdentifiers($productIdentifiers, $userId);
+        $viewableAssociatedProducts = array_filter($productRights, function (UserRightsOnProduct $productRight) {
+            return $productRight->isProductViewable();
+        });
+
+        return array_map(function (UserRightsOnProduct $productRight) {
+            return $productRight->productIdentifier();
+        }, $viewableAssociatedProducts);
+    }
+
+    private function filterViewableProductModelCodes(array $productModelCodes, int $userId)
+    {
+        $productModelRights = $this->fetchUserRightsOnProductModel->fetchByIdentifiers($productModelCodes, $userId);
+        $viewableAssociatedProductModels = array_filter($productModelRights, function (UserRightsOnProductModel $productModelRight) {
+            return $productModelRight->isProductModelViewable();
+        });
+
+        return array_map(function (UserRightsOnProductModel $productModelRight) {
+            return $productModelRight->productModelCode();
+        }, $viewableAssociatedProductModels);
     }
 }

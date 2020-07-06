@@ -19,6 +19,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProductModels;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Test\Integration\TestCase;
+use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\QuantifiedAssociationsTestCaseTrait;
 use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
 use PHPUnit\Framework\Assert;
 
@@ -27,8 +28,32 @@ use PHPUnit\Framework\Assert;
  */
 class SqlGetConnectorProductModelsWithPermissionsIntegration extends TestCase
 {
+    use QuantifiedAssociationsTestCaseTrait;
+
     /** @var PermissionFixturesLoader */
     private $loader;
+
+    /**
+     * @test
+     */
+    public function it_applies_permissions_on_empty_product_model_list()
+    {
+        $pqb = $this->get('pim_catalog.query.product_query_builder_search_after_size_factory_external_api')->create([
+            'limit' => 0
+        ]);
+
+        $productModelList = $this->getQuery()->fromProductQueryBuilder(
+            $pqb,
+            (int) $this->getRedactorUserId(),
+            null,
+            null,
+            null
+        );
+
+        $expectedProductModelList = new ConnectorProductModelList(0, []);
+
+        Assert::assertEquals($expectedProductModelList, $productModelList);
+    }
 
     /**
      * @test
@@ -214,6 +239,33 @@ class SqlGetConnectorProductModelsWithPermissionsIntegration extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_get_connector_product_models_by_applying_permissions_on_quantified_associations()
+    {
+        $this->createQuantifiedAssociationType('PRODUCTSET');
+        $this->loader->loadProductsForQuantifiedAssociationPermissions();
+
+        $productModel = $this->getQuery()->fromProductModelCode(
+            'product_model_associated_with_product_and_product_model',
+            $this->getRedactorUserId()
+        );
+
+        Assert::assertEquals([
+            'PRODUCTSET' => [
+                'products' => [
+                    ['identifier' => 'product_viewable_by_everybody', 'quantity' => 2],
+                    ['identifier' => 'product_without_category', 'quantity' => 3],
+                ],
+                'product_models' => [
+                    ['identifier' => 'product_model_viewable_by_everybody', 'quantity' => 5],
+                    ['identifier' => 'product_model_without_category', 'quantity' => 6],
+                ],
+            ],
+        ], $productModel->quantifiedAssociations());
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -253,11 +305,24 @@ class SqlGetConnectorProductModelsWithPermissionsIntegration extends TestCase
 
     private function updateProductModelAssociations(string $productModelCode, array $associations): void
     {
-        $productModel = $this->get('pim_catalog.repository.product_model')->findOneByidentifier($productModelCode);
-        $this->get('pim_catalog.updater.product_model')->update($productModel, [
+        $this->updateProductModel($productModelCode, [
             'associations' => $associations,
         ]);
+    }
+
+    private function updateProductModelQuantifiedAssociations(string $productModelCode, array $quantifiedAssociations): void
+    {
+        $this->updateProductModel($productModelCode, [
+            'quantified_associations' => $quantifiedAssociations,
+        ]);
+    }
+
+    private function updateProductModel(string $productModelCode, array $data): void
+    {
+        $productModel = $this->get('pim_catalog.repository.product_model')->findOneByidentifier($productModelCode);
+        $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
         $this->get('pim_catalog.saver.product_model')->save($productModel);
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
+
 }

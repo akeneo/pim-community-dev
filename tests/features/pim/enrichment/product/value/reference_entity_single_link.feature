@@ -4,7 +4,8 @@ Feature: Validate asset multiple link attribute of a product
   I need to be able to see validation errors for reference entity attributes
 
   Background:
-    Given the "designers" reference entity with:
+    Given an authentified user
+    And the "designers" reference entity with:
       | labels               |
       | {"en_US": "Stylist"} |
     And the "starck" record for entity "designers" with:

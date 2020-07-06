@@ -21,11 +21,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\QuantifiedAssociationsTestCaseTrait;
 use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
 use PHPUnit\Framework\Assert;
 
 class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
 {
+    use QuantifiedAssociationsTestCaseTrait;
+
     /** @var PermissionFixturesLoader */
     private $loader;
 
@@ -34,6 +37,26 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
         parent::setUp();
 
         $this->loader = $this->get('akeneo_integration_tests.loader.permissions');
+    }
+
+    /**
+     * @test
+     */
+    public function it_applies_permissions_on_empty_product_list()
+    {
+        $pqb = $this->get('pim_catalog.query.product_query_builder_search_after_size_factory_external_api')->create([
+            'limit' => 0
+        ]);
+
+        $userId = $this
+            ->get('database_connection')
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
+
+        $productList = $this->getQuery()->fromProductQueryBuilder($pqb, (int) $userId, null, null, null);
+
+        $expectedProductList = new ConnectorProductList(0, []);
+
+        Assert::assertEquals($expectedProductList, $productList);
     }
 
     /**
@@ -151,6 +174,35 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
                 'groups' => []
             ]
         ], $product->associations());
+    }
+
+    /**
+     * @test
+     */
+    public function it_get_connector_products_by_applying_permissions_on_quantified_associations()
+    {
+        $this->createQuantifiedAssociationType('PRODUCTSET');
+        $this->loader->loadProductsForQuantifiedAssociationPermissions();
+        $query = $this->getQuery();
+
+        $userId = $this
+            ->get('database_connection')
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
+
+        $product = $query->fromProductIdentifier('product_associated_with_product_and_product_model', (int) $userId);
+
+        Assert::assertEquals([
+            'PRODUCTSET' => [
+                'products' => [
+                    ['identifier' => 'product_viewable_by_everybody', 'quantity' => 2],
+                    ['identifier' => 'product_without_category', 'quantity' => 3],
+                ],
+                'product_models' => [
+                    ['identifier' => 'product_model_viewable_by_everybody', 'quantity' => 5],
+                    ['identifier' => 'product_model_without_category', 'quantity' => 6],
+                ],
+            ],
+        ], $product->quantifiedAssociations());
     }
 
     /**

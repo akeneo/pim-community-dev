@@ -985,6 +985,7 @@ acceptance:
             paths:
                 - '%paths.base%/tests/features/pim/enrichment'
             contexts:
+                - test.user.context
                 - test.attribute.context
                 - test.family.context
                 - test.catalog.product_creation.context

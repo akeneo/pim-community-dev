@@ -3,6 +3,9 @@ Feature: Validate asset multiple link attribute of a product
   As a regular user
   I need to be able to see validation errors for asset multiple link attribute
 
+  Background:
+    Given an authentified user
+
   @acceptance-back
   Scenario:  Cannot add assets into an asset collection if it reaches the limit of assets per collection
     Given an asset family

@@ -102,7 +102,7 @@ class NotGrantedAssociatedProductMerger implements NotGrantedDataMergerInterface
     public function merge($filteredProduct, $fullProduct = null)
     {
         if (!$filteredProduct instanceof EntityWithAssociationsInterface) {
-            throw InvalidObjectException::objectExpected(ClassUtils::getClass($filteredProduct), ProductInterface::class);
+            throw InvalidObjectException::objectExpected(ClassUtils::getClass($filteredProduct), EntityWithAssociationsInterface::class);
         }
 
         if (null === $fullProduct) {
@@ -110,7 +110,7 @@ class NotGrantedAssociatedProductMerger implements NotGrantedDataMergerInterface
         }
 
         if (!$fullProduct instanceof EntityWithAssociationsInterface) {
-            throw InvalidObjectException::objectExpected(ClassUtils::getClass($fullProduct), ProductInterface::class);
+            throw InvalidObjectException::objectExpected(ClassUtils::getClass($fullProduct), EntityWithAssociationsInterface::class);
         }
 
         $associationCodes = [];

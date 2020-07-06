@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Permission\Component\Filter;
 
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -110,12 +110,7 @@ class NotGrantedAssociatedProductFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_subject_is_not_a_product()
     {
-        $this->shouldThrow(InvalidObjectException::objectExpected(ClassUtils::getClass(new \stdClass()), ProductInterface::class))
+        $this->shouldThrow(InvalidObjectException::objectExpected(ClassUtils::getClass(new \stdClass()), EntityWithAssociationsInterface::class))
             ->during('filter', [new \stdClass()]);
     }
-}
-
-interface ProductRepositorySpec extends ProductRepositoryInterface
-{
-    public function find($id);
 }

@@ -4,3 +4,9 @@ services:
 
     pimee_security.query.product_model_category_access:
         class: AkeneoEnterprise\Test\Acceptance\Permission\InMemory\InMemoryItemCategoryAccessQuery
+
+    pimee_security.query.product_category_access_with_ids:
+        class: AkeneoEnterprise\Test\Acceptance\Permission\InMemory\InMemoryProductCategoryAccessQuery
+
+    pimee_security.query.product_model_category_access_with_ids:
+        class: AkeneoEnterprise\Test\Acceptance\Permission\InMemory\InMemoryProductModelCategoryAccessQuery

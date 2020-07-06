@@ -14,3 +14,12 @@ services:
             - '@security.authorization_checker'
         tags:
             - { name: validator.constraint_validator, alias: pimee_granted_locale_validator }
+
+    pimee_permission.validator.constraints.granted_quantified_associations_validator:
+        class: 'Akeneo\Pim\Permission\Component\Validator\GrantedQuantifiedAssociationsValidator'
+        arguments:
+            - '@pimee_security.query.product_category_access_with_ids'
+            - '@pimee_security.query.product_model_category_access_with_ids'
+            - '@security.token_storage'
+        tags:
+            - { name: validator.constraint_validator, alias: pimee_granted_quantified_associations }

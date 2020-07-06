@@ -263,6 +263,129 @@ class PermissionFixturesLoader
         $this->createProduct('variant_product', $variantProduct);
     }
 
+    public function loadProductsForQuantifiedAssociationPermissions(): void
+    {
+        $this->createCategoryFixtures();
+        $this->createAttributeFixtures();
+        $this->createFamilyVariant();
+
+        $this->createProduct('product_viewable_by_everybody', [
+            'categories' => ['categoryA2'],
+        ]);
+
+        $this->createProduct('product_viewable_by_everybody_1', [
+            'categories' => ['categoryA2'],
+        ]);
+
+        $this->createProduct('product_not_viewable_by_redactor', [
+            'categories' => ['categoryB'],
+        ]);
+
+        $this->createProduct('product_without_category', [
+            'categories' => [],
+        ]);
+
+        $this->createProductModel([
+            'code' => 'product_model_viewable_by_everybody',
+            'family_variant' => 'family_variant_permission',
+            'categories' => ['categoryA2', 'categoryB'],
+        ]);
+
+        $this->createProductModel([
+            'code' => 'product_model_viewable_by_everybody_1',
+            'family_variant' => 'family_variant_permission',
+            'categories' => ['categoryA2'],
+        ]);
+
+        $this->createProductModel([
+            'code' => 'product_model_not_viewable_by_redactor',
+            'family_variant' => 'family_variant_permission',
+            'categories' => ['categoryB'],
+        ]);
+
+        $this->createProductModel([
+            'code' => 'product_model_without_category',
+            'family_variant' => 'family_variant_permission',
+            'categories' => [],
+        ]);
+
+        $this->createProduct('product_associated_with_product_and_product_model', [
+            'categories' => ['categoryA2'],
+            'quantified_associations' => [
+                'PRODUCTSET' => [
+                    'products' => [
+                        ['identifier' => 'product_not_viewable_by_redactor', 'quantity' => 1],
+                        ['identifier' => 'product_viewable_by_everybody', 'quantity' => 2],
+                        ['identifier' => 'product_without_category', 'quantity' => 3],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'product_model_not_viewable_by_redactor', 'quantity' => 4],
+                        ['identifier' => 'product_model_viewable_by_everybody', 'quantity' => 5],
+                        ['identifier' => 'product_model_without_category', 'quantity' => 6],
+                    ],
+                ],
+            ],
+        ]);
+
+        $this->createProductModel([
+            'code' => 'product_model_associated_with_product_and_product_model',
+            'family_variant' => 'family_variant_permission',
+            'categories' => ['categoryA2'],
+            'quantified_associations' => [
+                'PRODUCTSET' => [
+                    'products' => [
+                        ['identifier' => 'product_not_viewable_by_redactor', 'quantity' => 1],
+                        ['identifier' => 'product_viewable_by_everybody', 'quantity' => 2],
+                        ['identifier' => 'product_without_category', 'quantity' => 3],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'product_model_not_viewable_by_redactor', 'quantity' => 4],
+                        ['identifier' => 'product_model_viewable_by_everybody', 'quantity' => 5],
+                        ['identifier' => 'product_model_without_category', 'quantity' => 6],
+                    ],
+                ],
+            ],
+        ]);
+
+        $this->createProduct('product_owned_by_redactor_and_associated_with_product_and_product_model', [
+            'categories' => ['own_category'],
+            'quantified_associations' => [
+                'PRODUCTSET' => [
+                    'products' => [
+                        ['identifier' => 'product_not_viewable_by_redactor', 'quantity' => 1],
+                        ['identifier' => 'product_viewable_by_everybody', 'quantity' => 2],
+                        ['identifier' => 'product_without_category', 'quantity' => 3],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'product_model_not_viewable_by_redactor', 'quantity' => 4],
+                        ['identifier' => 'product_model_viewable_by_everybody', 'quantity' => 5],
+                        ['identifier' => 'product_model_without_category', 'quantity' => 6],
+                    ],
+                ],
+            ],
+        ]);
+
+        $this->createProductModel([
+            'code' => 'product_model_owned_by_redactor_and_associated_with_product_and_product_model',
+            'family_variant' => 'family_variant_permission',
+            'categories' => ['own_category'],
+            'quantified_associations' => [
+                'PRODUCTSET' => [
+                    'products' => [
+                        ['identifier' => 'product_not_viewable_by_redactor', 'quantity' => 1],
+                        ['identifier' => 'product_viewable_by_everybody', 'quantity' => 2],
+                        ['identifier' => 'product_without_category', 'quantity' => 3],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'product_model_not_viewable_by_redactor', 'quantity' => 4],
+                        ['identifier' => 'product_model_viewable_by_everybody', 'quantity' => 5],
+                        ['identifier' => 'product_model_without_category', 'quantity' => 6],
+                    ],
+                ],
+            ],
+        ]);
+    }
+
     /**
      * For redactor user:
      *

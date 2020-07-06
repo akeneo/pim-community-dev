@@ -14,6 +14,18 @@ services:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.product_model.class%'
 
+    pimee_security.query.product_category_access_with_ids:
+        class: Akeneo\Pim\Permission\Bundle\Entity\Query\ProductCategoryAccessQuery
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.product.class%'
+
+    pimee_security.query.product_model_category_access_with_ids:
+        class: Akeneo\Pim\Permission\Bundle\Entity\Query\ProductModelCategoryAccessQuery
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.product_model.class%'
+
     pim_catalog.query.get_associated_product_codes_by_product:
         class: Akeneo\Pim\Permission\Bundle\Entity\Query\GetAssociatedProductCodesByProductFromDB
         arguments:

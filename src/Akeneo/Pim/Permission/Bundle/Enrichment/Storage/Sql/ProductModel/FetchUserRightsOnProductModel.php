@@ -36,6 +36,10 @@ class FetchUserRightsOnProductModel
 
     public function fetchByIdentifiers(array $productModelCodes, int $userId): array
     {
+        if (empty($productModelCodes)) {
+            return [];
+        }
+
         $sql = <<<SQL
             SELECT 
                 product_model_categories.product_model_code as product_model_code, 

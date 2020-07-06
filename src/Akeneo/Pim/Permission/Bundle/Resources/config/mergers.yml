@@ -24,7 +24,10 @@ services:
     pimee_catalog.security.merger.not_granted_quantified_associations:
         class: Akeneo\Pim\Permission\Component\Merger\NotGrantedQuantifiedAssociationsMerger
         arguments:
-            - '@pim_catalog.updater.property_setter'
+            - '@pim_catalog.updater.setter.quantified_associations_field'
+            - '@pimee_security.query.product_category_access_with_ids'
+            - '@pimee_security.query.product_model_category_access_with_ids'
+            - '@security.token_storage'
 
     pimee_catalog.security.merger.merge_data_on_product:
         class: 'Akeneo\Pim\Permission\Component\Merger\MergeDataOnProduct'

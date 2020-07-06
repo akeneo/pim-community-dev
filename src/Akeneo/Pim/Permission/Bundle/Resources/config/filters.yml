@@ -180,6 +180,13 @@ services:
             - '@pimee_security.query.product_model_category_access'
             - '@security.token_storage'
 
+    pimee_catalog.security.filter.not_granted_quantified_associated_product:
+        class: 'Akeneo\Pim\Permission\Component\Filter\NotGrantedQuantifiedAssociationsFilter'
+        arguments:
+            - '@pimee_security.query.product_category_access_with_ids'
+            - '@pimee_security.query.product_model_category_access_with_ids'
+            - '@security.token_storage'
+
     pimee_catalog.security.filter.not_granted_values:
         class: 'Akeneo\Pim\Permission\Component\Filter\NotGrantedValuesFilter'
         arguments:

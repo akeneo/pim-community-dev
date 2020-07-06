@@ -67,7 +67,7 @@ class NotGrantedAssociatedProductFilter implements NotGrantedDataFilterInterface
         if (!$entityWithAssociations instanceof EntityWithAssociationsInterface) {
             throw InvalidObjectException::objectExpected(
                 ClassUtils::getClass($entityWithAssociations),
-                ProductInterface::class
+                EntityWithAssociationsInterface::class
             );
         }
 

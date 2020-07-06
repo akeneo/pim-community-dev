@@ -46,6 +46,10 @@ class FetchUserRightsOnProduct implements FetchUserRightsOnProductInterface
 
     public function fetchByIdentifiers(array $productIdentifiers, int $userId): array
     {
+        if (empty($productIdentifiers)) {
+            return [];
+        }
+
         $sql = <<<SQL
             SELECT 
                 product_categories.product_identifier as product_identifier, 
