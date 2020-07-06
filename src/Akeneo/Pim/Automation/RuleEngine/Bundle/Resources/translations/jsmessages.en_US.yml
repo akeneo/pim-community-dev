@@ -224,6 +224,7 @@ pimee_catalog_rule:
         select_another_attribute: "Select another attribute"
         or: or
         create_attribute_link: click here to create the attribute
+        edit_unauthorize: You are not allowed to edit rules
 
 pim_enrich:
     entity:

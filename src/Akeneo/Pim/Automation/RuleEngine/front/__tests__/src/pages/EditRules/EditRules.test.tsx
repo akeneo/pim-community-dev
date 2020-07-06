@@ -372,7 +372,10 @@ describe('EditRules', () => {
     };
     // When
     render(
-      <EditRules ruleDefinitionCode={ruleDefinitionCode} setIsDirty={setIsDirty} />,
+      <EditRules
+        ruleDefinitionCode={ruleDefinitionCode}
+        setIsDirty={setIsDirty}
+      />,
       {
         legacy: true,
       }
