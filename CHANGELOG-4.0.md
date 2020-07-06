@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.37 (2020-07-06)
+
 ## Bug fixes
 
 - PIM-9329: Fix slow queries collect data on reference entity and asset manager
