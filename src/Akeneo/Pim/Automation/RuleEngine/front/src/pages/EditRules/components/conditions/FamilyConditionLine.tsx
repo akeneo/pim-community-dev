@@ -1,10 +1,7 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { ConditionLineProps } from './ConditionLineProps';
-import {
-  FamilyCondition,
-  FamilyOperators,
-} from '../../../../models/conditions';
+import { FamilyOperators } from '../../../../models/conditions';
 import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
 import { Operator } from '../../../../models/Operator';
 import { FamilyCode } from '../../../../models';
@@ -12,40 +9,43 @@ import { FieldColumn, OperatorColumn, ValueColumn } from './style';
 import { FamiliesSelector } from '../../../../components/Selectors/FamiliesSelector';
 import { getFamiliesByIdentifiers } from '../../../../repositories/FamilyRepository';
 import { LineErrors } from '../LineErrors';
-import { useRegisterConst } from '../../hooks/useRegisterConst';
 import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
 
-type FamilyConditionLineProps = ConditionLineProps & {
-  condition: FamilyCondition;
-};
+import { useControlledFormInputCondition } from '../../hooks';
 
-const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
+const INIT_OPERATOR = Operator.IN_LIST;
+
+const FamilyConditionLine: React.FC<ConditionLineProps> = ({
   lineNumber,
   currentCatalogLocale,
-  condition,
 }) => {
   const translate = useTranslate();
-  const { watch } = useFormContext();
   const router = useBackboneRouter();
   const [unexistingFamilyCodes, setUnexistingFamilyCodes] = React.useState<
     FamilyCode[]
   >([]);
 
-  useRegisterConst(`content.conditions[${lineNumber}].field`, condition.field);
+  const {
+    fieldFormName,
+    operatorFormName,
+    valueFormName,
+    getOperatorFormValue,
+    getValueFormValue,
+  } = useControlledFormInputCondition<string[]>(lineNumber);
 
   React.useEffect(() => {
     // This method stores the unexisting families at the loading of the line.
     // As there is no way to add unexisting families, the only solution for the user to validate is
     // to remove manually unexisting families.
-    if (!condition.value || condition.value.length === 0) {
+    if (!getValueFormValue() || getValueFormValue().length === 0) {
       setUnexistingFamilyCodes([]);
     } else {
-      getFamiliesByIdentifiers(condition.value, router).then(families => {
+      getFamiliesByIdentifiers(getValueFormValue(), router).then(families => {
         const unexistingFamilies: FamilyCode[] = [];
-        condition.value.forEach(familyCode => {
+        getValueFormValue().forEach(familyCode => {
           if (!families[familyCode]) {
             unexistingFamilies.push(familyCode);
           }
@@ -54,9 +54,6 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
       });
     }
   }, []);
-
-  const getOperatorFormValue: () => Operator = () =>
-    watch(`content.conditions[${lineNumber}].operator`);
 
   const shouldDisplayValue: () => boolean = () => {
     return !([Operator.IS_EMPTY, Operator.IS_NOT_EMPTY] as Operator[]).includes(
@@ -82,42 +79,42 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
         );
       }
     }
-
     return true;
   };
-
-  const [familyValidation, setValidate] = React.useState({
-    validate: validateFamilyCodes,
-  });
-  React.useEffect(() => {
-    setValidate({ validate: validateFamilyCodes });
-  }, [JSON.stringify(unexistingFamilyCodes)]);
-
   return (
     <div className={'AknGrid-bodyCell'}>
+      <Controller
+        as={<input type='hidden' />}
+        name={fieldFormName}
+        defaultValue='family'
+      />
       <FieldColumn
         className={'AknGrid-bodyCell--highlight'}
         title={translate('pimee_catalog_rule.form.edit.fields.family')}>
         {translate('pimee_catalog_rule.form.edit.fields.family')}
       </FieldColumn>
       <OperatorColumn>
-        <OperatorSelector
-          data-testid={`edit-rules-input-${lineNumber}-operator`}
-          hiddenLabel={true}
+        <Controller
+          as={OperatorSelector}
           availableOperators={FamilyOperators}
-          value={condition.operator}
-          name={`content.conditions[${lineNumber}].operator`}
+          data-testid={`edit-rules-input-${lineNumber}-operator`}
+          hiddenLabel
+          name={operatorFormName}
+          defaultValue={getOperatorFormValue() ?? INIT_OPERATOR}
+          value={getOperatorFormValue()}
         />
       </OperatorColumn>
       {shouldDisplayValue() && (
         <ValueColumn>
-          <FamiliesSelector
-            data-testid={`edit-rules-input-${lineNumber}-value`}
-            hiddenLabel={true}
+          <Controller
+            as={FamiliesSelector}
             currentCatalogLocale={currentCatalogLocale}
-            value={condition.value}
-            validation={familyValidation}
-            name={`content.conditions[${lineNumber}].value`}
+            data-testid={`edit-rules-input-${lineNumber}-value`}
+            defaultValue={getValueFormValue()}
+            hiddenLabel
+            name={valueFormName}
+            rules={{ validate: validateFamilyCodes }}
+            value={getValueFormValue()}
           />
         </ValueColumn>
       )}
@@ -126,4 +123,4 @@ const FamilyConditionLine: React.FC<FamilyConditionLineProps> = ({
   );
 };
 
-export { FamilyConditionLine, FamilyConditionLineProps };
+export { FamilyConditionLine };

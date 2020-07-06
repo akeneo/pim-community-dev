@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { ConditionLineProps } from './ConditionLineProps';
-import {
-  CategoryCondition,
-  CategoryOperators,
-} from '../../../../models/conditions';
+import { CategoryOperators } from '../../../../models/conditions';
 import { Operator } from '../../../../models/Operator';
 import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
 import { FieldColumn, OperatorColumn } from './style';
@@ -20,24 +17,20 @@ import {
   CategoryTreeModel,
 } from '../../../../components/CategoryTree/category-tree.types';
 import { NetworkLifeCycle } from '../../../../components/CategoryTree/hooks/NetworkLifeCycle.types';
-import { useRegisterConst } from '../../hooks/useRegisterConst';
 import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
+import { useControlledFormInputCondition } from '../../hooks';
 
-type CategoryConditionLineProps = ConditionLineProps & {
-  condition: CategoryCondition;
-};
+const INIT_OPERATOR = Operator.IN_LIST;
 
-const CategoryConditionLine: React.FC<CategoryConditionLineProps> = ({
-  condition,
+const CategoryConditionLine: React.FC<ConditionLineProps> = ({
   currentCatalogLocale,
   lineNumber,
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
-  const { watch, setValue } = useFormContext();
   const [initCategoryTreeOpenBranch, setInitCategoryTreeOpenBranch] = useState<
     NetworkLifeCycle<CategoryTreeModelWithOpenBranch[]>
   >({
@@ -55,19 +48,14 @@ const CategoryConditionLine: React.FC<CategoryConditionLineProps> = ({
   });
 
   const [categories, setCategories] = React.useState<Category[]>([]);
-
-  useRegisterConst(`content.conditions[${lineNumber}].field`, condition.field);
-  // TODO Fix this: this field get back to condition.value if you delete another condition
-  useRegisterConst(`content.conditions[${lineNumber}].value`, condition.value);
-
-  const getOperatorFormValue: () => Operator = () =>
-    watch(`content.conditions[${lineNumber}].operator`);
-  const getValueFormValue: () => CategoryCode[] = () =>
-    watch(`content.conditions[${lineNumber}].value`);
-  const setValueFormValue = (value: CategoryCode[] | null) => {
-    condition.value = value ?? undefined;
-    setValue(`content.conditions[${lineNumber}].value`, value);
-  };
+  const {
+    fieldFormName,
+    operatorFormName,
+    valueFormName,
+    getOperatorFormValue,
+    getValueFormValue,
+    setValueFormValue,
+  } = useControlledFormInputCondition<CategoryCode[]>(lineNumber);
 
   useEffect(() => {
     getCategoriesByIdentifiers(getValueFormValue() || [], router).then(
@@ -127,32 +115,42 @@ const CategoryConditionLine: React.FC<CategoryConditionLineProps> = ({
 
   return (
     <div className='AknGrid-bodyCell'>
+      <Controller
+        as={<input type='hidden' value='' />}
+        defaultValue='categories'
+        name={fieldFormName}
+      />
       <FieldColumn className={'AknGrid-bodyCell--highlight'}>
         {translate('pimee_catalog_rule.form.edit.fields.category')}
       </FieldColumn>
       <OperatorColumn>
-        <OperatorSelector
-          data-testid={`edit-rules-input-${lineNumber}-operator`}
-          hiddenLabel={true}
+        <Controller
+          as={OperatorSelector}
           availableOperators={CategoryOperators}
-          value={condition.operator}
-          name={`content.conditions[${lineNumber}].operator`}
+          data-testid={`edit-rules-input-${lineNumber}-operator`}
+          defaultValue={getOperatorFormValue() ?? INIT_OPERATOR}
+          hiddenLabel={true}
+          name={operatorFormName}
+          value={getOperatorFormValue()}
         />
       </OperatorColumn>
       {shouldDisplayValue() && (
-        <CategoriesSelector
+        <Controller
+          as={CategoriesSelector}
           categoryTrees={categoryTrees}
           categoryTreeSelected={categoryTreeSelected}
-          setCategoryTreeSelected={setCategoryTreeSelected}
+          defaultValue={getValueFormValue()}
           initCategoryTreeOpenBranch={initCategoryTreeOpenBranch}
           locale={currentCatalogLocale}
+          name={valueFormName}
           onDelete={handleCategoryDelete}
           onSelectCategory={handlerCategorySelect}
           selectedCategories={categories}
+          setCategoryTreeSelected={setCategoryTreeSelected}
         />
       )}
     </div>
   );
 };
 
-export { CategoryConditionLine, CategoryConditionLineProps };
+export { CategoryConditionLine };

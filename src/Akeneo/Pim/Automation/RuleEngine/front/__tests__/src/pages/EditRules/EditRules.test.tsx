@@ -2,7 +2,13 @@ import React from 'react';
 import 'jest-fetch-mock';
 import { EditRules } from '../../../../src/pages/EditRules/';
 import userEvent from '@testing-library/user-event';
-import { act, render, fireEvent } from '../../../../test-utils';
+import {
+  act,
+  render,
+  fireEvent,
+  waitForElementToBeRemoved,
+  screen,
+} from '../../../../test-utils';
 import { Scope } from '../../../../src/models';
 
 jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
@@ -211,7 +217,7 @@ describe('EditRules', () => {
       [JSON.stringify(scopesPayload), { status: 200 }]
     );
     // When
-    const { findByLabelText, findByTestId } = render(
+    const { findByLabelText } = render(
       <EditRules
         ruleDefinitionCode={ruleDefinitionCode}
         setIsDirty={setIsDirty}
@@ -234,7 +240,13 @@ describe('EditRules', () => {
         target: { value: 'set_family' },
       }
     );
-    expect((await findByTestId('action-list')).children.length).toEqual(1);
+    await waitForElementToBeRemoved(() =>
+      document.querySelector(
+        'div[data-testid="action-list"] img[alt="pim_common.loading"]'
+      )
+    ).then(() => {
+      expect(screen.getByTestId('action-list').children.length).toEqual(3);
+    });
   });
 
   it('should render a 404 error', async () => {

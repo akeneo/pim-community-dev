@@ -1,28 +1,56 @@
+import React from 'react';
 import { Payload } from '../../../rules.types';
 import { httpPut } from '../../../fetch';
 import { generateUrl } from '../../../dependenciesTools/hooks';
 import { FormData } from '../edit-rules.types';
-import { useForm, DeepPartial } from 'react-hook-form';
-import { Locale, RuleDefinition } from '../../../models';
+import { useForm, FormContextValues, Control } from 'react-hook-form';
+import { Locale, RuleDefinition, Condition } from '../../../models';
 import {
   Router,
   Translate,
   Notify,
   NotificationLevel,
 } from '../../../dependenciesTools';
+import { Action } from '../../../models/Action';
 
-type Reset = (
-  values?: DeepPartial<FormData>,
-  omitResetState?: Partial<{
-    errors: boolean;
-    dirty: boolean;
-    dirtyFields: boolean;
-    isSubmitted: boolean;
-    touched: boolean;
-    isValid: boolean;
-    submitCount: boolean;
-  }>
-) => void;
+const registerConditions = (
+  register: Control['register'],
+  conditions: Condition[]
+) => {
+  if (conditions?.length) {
+    conditions.forEach((_, index) => {
+      register({ name: `content.conditions[${index}].field`, type: 'custom' });
+      register({
+        name: `content.conditions[${index}].operator`,
+        type: 'custom',
+      });
+      register({ name: `content.conditions[${index}].value`, type: 'custom' });
+      register({ name: `content.conditions[${index}].scope`, type: 'custom' });
+      register({ name: `content.conditions[${index}].locale`, type: 'custom' });
+    });
+  }
+};
+
+const registerActions = (register: Control['register'], actions: Action[]) => {
+  if (actions?.length) {
+    actions.forEach((_, index) => {
+      register({ name: `content.actions[${index}].field`, type: 'custom' });
+      register({ name: `content.actions[${index}].items`, type: 'custom' });
+      register({ name: `content.actions[${index}].type`, type: 'custom' });
+      register({ name: `content.actions[${index}].value`, type: 'custom' });
+      register({ name: `content.actions[${index}].scope`, type: 'custom' });
+      register({ name: `content.actions[${index}].locale`, type: 'custom' });
+    });
+  }
+};
+
+const filterDataContentValues = (value: object) => {
+  return (
+    value !== null &&
+    Object.keys(value).length &&
+    Object.values(value).some(value => value != null)
+  );
+};
 
 const transformFormData = (formData: FormData): Payload => {
   return {
@@ -30,13 +58,9 @@ const transformFormData = (formData: FormData): Payload => {
     priority: Number(formData.priority),
     content: {
       conditions:
-        formData?.content?.conditions?.filter(
-          condition => condition !== null && Object.keys(condition).length
-        ) || [],
+        formData?.content?.conditions?.filter(filterDataContentValues) ?? [],
       actions:
-        formData?.content?.actions?.filter(
-          action => action !== null && Object.keys(action).length
-        ) || [],
+        formData?.content?.actions?.filter(filterDataContentValues) ?? [],
     },
   };
 };
@@ -46,7 +70,8 @@ const submitEditRuleForm = (
   translate: Translate,
   notify: Notify,
   router: Router,
-  reset: Reset
+  reset: FormContextValues['reset'],
+  register: Control['register']
 ) => {
   return async (formData: FormData, event?: React.BaseSyntheticEvent) => {
     if (event) {
@@ -67,6 +92,8 @@ const submitEditRuleForm = (
         translate('pimee_catalog_rule.form.edit.notification.success')
       );
       reset(formData);
+      registerConditions(register, formData.content.conditions);
+      registerActions(register, formData.content.actions);
     } else {
       notify(
         NotificationLevel.ERROR,
@@ -109,16 +136,22 @@ const useSubmitEditRuleForm = (
   const formMethods = useForm<FormData>({
     defaultValues,
   });
+  const { reset, register, handleSubmit } = formMethods;
+  React.useEffect(() => {
+    registerConditions(register, ruleDefinition.conditions);
+    registerActions(register, ruleDefinition.actions);
+  }, []);
   const onSubmit = submitEditRuleForm(
     ruleDefinitionCode,
     translate,
     notify,
     router,
-    formMethods.reset
+    reset,
+    register
   );
 
   return {
-    onSubmit: formMethods.handleSubmit(onSubmit),
+    onSubmit: handleSubmit(onSubmit),
     formMethods,
     pending: formMethods.formState.isSubmitting,
   };

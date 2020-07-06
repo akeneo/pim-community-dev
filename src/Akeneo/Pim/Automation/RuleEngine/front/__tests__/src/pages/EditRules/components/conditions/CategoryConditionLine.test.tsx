@@ -1,20 +1,12 @@
 import 'jest-fetch-mock';
 import React from 'react';
-import { render } from '../../../../../../test-utils';
+import { render, screen } from '../../../../../../test-utils';
 import { CategoryConditionLine } from '../../../../../../src/pages/EditRules/components/conditions/CategoryConditionLine';
-import { CategoryCondition } from '../../../../../../src/models/conditions';
 import { Operator } from '../../../../../../src/models/Operator';
 
 jest.mock('../../../../../../src/fetch/categoryTree.fetcher');
 jest.mock('../../../../../../src/dependenciesTools/provider/dependencies.ts');
 jest.mock('../../../../../../src/components/Select2Wrapper/Select2Wrapper');
-
-const condition: CategoryCondition = {
-  module: CategoryConditionLine,
-  field: 'categories',
-  operator: Operator.NOT_IN_CHILDREN_LIST,
-  value: ['shoes', 'tshirts'],
-};
 
 describe('CategoryConditionLine', () => {
   beforeEach(() => {
@@ -40,25 +32,43 @@ describe('CategoryConditionLine', () => {
       [JSON.stringify(categoriesPayload), { status: 200 }],
       [JSON.stringify(categoriesPayload), { status: 200 }]
     );
+    const defaultValues = {
+      content: {
+        conditions: [
+          {},
+          {},
+          {
+            field: 'categories',
+            operator: Operator.NOT_IN_CHILDREN_LIST,
+            value: ['shoes', 'tshirts'],
+          },
+        ],
+      },
+    };
 
-    const { findByText, findByTestId } = render(
+    const toRegister = [
+      { name: 'content.conditions[2].field', type: 'custom' },
+      { name: 'content.conditions[2].value', type: 'custom' },
+      { name: 'content.conditions[2].operator', type: 'custom' },
+    ];
+
+    render(
       <CategoryConditionLine
-        condition={condition}
         lineNumber={2}
         locales={[]}
         scopes={{}}
         currentCatalogLocale={'fr_FR'}
       />,
-      { all: true }
+      { all: true },
+      { defaultValues, toRegister }
     );
-
     expect(
-      await findByText('pimee_catalog_rule.form.edit.fields.category')
+      screen.getByText('pimee_catalog_rule.form.edit.fields.category')
     ).toBeInTheDocument();
-    const operatorSelector = await findByTestId('edit-rules-input-2-operator');
+    const operatorSelector = screen.getByTestId('edit-rules-input-2-operator');
     expect(operatorSelector).toBeInTheDocument();
     expect(operatorSelector).toHaveValue('NOT IN CHILDREN');
-    expect(await findByText('Chaussures')).toBeInTheDocument();
-    expect(await findByText('[tshirts]')).toBeInTheDocument();
+    expect(await screen.findByText('Chaussures')).toBeInTheDocument();
+    expect(await screen.findByText('[tshirts]')).toBeInTheDocument();
   });
 });

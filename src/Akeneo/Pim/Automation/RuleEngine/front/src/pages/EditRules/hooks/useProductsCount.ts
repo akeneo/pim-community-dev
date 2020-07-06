@@ -5,6 +5,7 @@ import { generateUrl } from '../../../dependenciesTools/utils';
 import { Router } from '../../../dependenciesTools';
 import { Status } from '../../../rules.constants';
 import { FormData } from '../edit-rules.types';
+import { Condition } from '../../../models';
 type CountFn = (x: CountError | CountPending | CountComplete) => void;
 
 type CountError = { value: -1; status: Status.ERROR };
@@ -47,13 +48,18 @@ const getProductsCountUrl = async (url: string, fn: CountFn) => {
 
 const getProductsCountUrlWithDebounce = debounceFn(getProductsCountUrl, 400);
 
+const isConditionValid = (condition: Condition) =>
+  condition !== null &&
+  Object.entries(condition).length &&
+  Object.values(condition).some(value => value);
+
 const createProductsCountUrl = (router: Router, form: FormData) => {
   return generateUrl(
     router,
     'pimee_enrich_rule_definition_get_impacted_product_count',
     {
       conditions: JSON.stringify(
-        form?.content?.conditions?.filter(condition => condition !== null) || []
+        form?.content?.conditions?.filter(isConditionValid) || []
       ),
     }
   );

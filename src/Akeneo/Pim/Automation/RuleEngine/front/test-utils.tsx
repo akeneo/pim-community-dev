@@ -8,6 +8,15 @@ import { ApplicationDependenciesProvider } from './src/dependenciesTools';
 
 jest.mock('./src/dependenciesTools/provider/dependencies.ts');
 
+type ToRegister = {
+  name: string;
+};
+
+type ReactHookFormWrapperInitializer = {
+  defaultValues?: any;
+  toRegister?: ToRegister[];
+};
+
 const LegacyDependencies: React.FC = ({ children }) => (
   <ApplicationDependenciesProvider>{children}</ApplicationDependenciesProvider>
 );
@@ -16,51 +25,63 @@ const AkeneoThemeProvider: React.FC = ({ children }) => (
   <ThemeProvider theme={akeneoTheme}>{children}</ThemeProvider>
 );
 
-const ReactHookFormProvider: React.FC = ({ children }) => {
-  const formMethods = useForm();
-  return <FormContext {...formMethods}>{children}</FormContext>;
-};
-
-const AllProviders: React.FC = ({ children }) => {
-  return (
-    <ApplicationDependenciesProvider>
-      <AkeneoThemeProvider>
-        <ReactHookFormProvider>{children}</ReactHookFormProvider>
-      </AkeneoThemeProvider>
-    </ApplicationDependenciesProvider>
-  );
-};
-
-type Options = {
+type Context = {
   all?: boolean;
   legacy?: boolean;
   theme?: boolean;
   reactHookForm?: boolean;
 };
 
-const getProviders = (options: Options) => {
-  const { all, legacy, theme, reactHookForm } = options;
+const getProviders = (context: Context) => {
+  const { legacy, theme } = context;
   if (theme) {
     return AkeneoThemeProvider;
   }
   if (legacy) {
     return LegacyDependencies;
   }
-  if (reactHookForm) {
-    return ReactHookFormProvider;
-  }
-  if (all) {
-    return AllProviders;
-  }
   throw new Error("[TEST-UTILS]: The provider you asked doesn't exist");
 };
 
 export const renderWithProviders = (
   ui: React.ReactElement,
-  contextOptions?: Options
+  context?: Context,
+  options?: any
 ) => {
-  if (contextOptions) {
-    return render(ui, { wrapper: getProviders(contextOptions) });
+  /*
+    Providers with react-hook-form needs to be define here, to give them some specific props.
+  */
+  const ReactHookFormProvider: React.FC<ReactHookFormWrapperInitializer> = ({
+    children,
+    defaultValues = {},
+    toRegister = [],
+  }) => {
+    const form = useForm({ defaultValues });
+    const { register } = form;
+    React.useEffect(() => {
+      toRegister?.forEach(register);
+    }, [register]);
+    return <FormContext {...form}>{children}</FormContext>;
+  };
+  const AllProviders: React.FC = ({ children }) => {
+    return (
+      <LegacyDependencies>
+        <AkeneoThemeProvider>
+          <ReactHookFormProvider
+            defaultValues={options?.defaultValues}
+            toRegister={options?.toRegister}>
+            {children}
+          </ReactHookFormProvider>
+        </AkeneoThemeProvider>
+      </LegacyDependencies>
+    );
+  };
+  if (context?.all) {
+    return render(ui, { wrapper: AllProviders });
+  } else if (context?.reactHookForm) {
+    return render(ui, { wrapper: ReactHookFormProvider });
+  } else if (context) {
+    return render(ui, { wrapper: getProviders(context) });
   }
   return render(ui);
 };

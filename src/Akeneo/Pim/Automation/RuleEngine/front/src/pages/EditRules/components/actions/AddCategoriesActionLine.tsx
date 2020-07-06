@@ -1,55 +1,59 @@
 import React from 'react';
-import { AddCategoriesAction } from '../../../../models/actions';
+import { Controller } from 'react-hook-form';
 import { ActionLineProps } from './ActionLineProps';
 import { useTranslate } from '../../../../dependenciesTools/hooks';
 import { ActionTemplate } from './ActionTemplate';
-import { useFormContext } from 'react-hook-form';
-import { useRegisterConsts } from '../../hooks/useRegisterConst';
 import { ActionCategoriesSelector } from './ActionCategoriesSelector';
+import { useControlledFormInputAction } from '../../hooks';
+import { CategoryCode } from '../../../../models';
 
-type Props = {
-  action: AddCategoriesAction;
-} & ActionLineProps;
-
-const AddCategoriesActionLine: React.FC<Props> = ({
+const AddCategoriesActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
-  action,
   currentCatalogLocale,
   handleDelete,
 }) => {
   const translate = useTranslate();
-  const { control } = useFormContext();
 
-  useRegisterConsts(
-    {
-      type: 'add',
-      field: 'categories',
-    },
-    `content.actions[${lineNumber}]`
-  );
+  const {
+    fieldFormName,
+    typeFormName,
+    itemsFormName,
+    setItemsFormValue,
+    getItemsFormValue,
+  } = useControlledFormInputAction<CategoryCode[]>(lineNumber);
 
   return (
-    <ActionTemplate
-      title={translate(
-        'pimee_catalog_rule.form.edit.actions.add_category.title'
-      )}
-      helper={translate(
-        'pimee_catalog_rule.form.edit.actions.add_category.helper'
-      )}
-      legend={translate(
-        'pimee_catalog_rule.form.edit.actions.add_category.helper'
-      )}
-      handleDelete={handleDelete}>
-      <ActionCategoriesSelector
-        lineNumber={lineNumber}
-        currentCatalogLocale={currentCatalogLocale}
-        initialCategoryCodes={action.items || []}
-        name={`content.actions[${lineNumber}].items`}
-        defaultValue={
-          control.defaultValuesRef?.current?.content?.actions[lineNumber]?.items
-        }
+    <>
+      <Controller
+        as={<input type='hidden' />}
+        name={fieldFormName}
+        defaultValue='categories'
       />
-    </ActionTemplate>
+      <Controller
+        as={<input type='hidden' />}
+        name={typeFormName}
+        defaultValue='add'
+      />
+      <ActionTemplate
+        title={translate(
+          'pimee_catalog_rule.form.edit.actions.add_category.title'
+        )}
+        helper={translate(
+          'pimee_catalog_rule.form.edit.actions.add_category.helper'
+        )}
+        legend={translate(
+          'pimee_catalog_rule.form.edit.actions.add_category.helper'
+        )}
+        handleDelete={handleDelete}>
+        <ActionCategoriesSelector
+          lineNumber={lineNumber}
+          currentCatalogLocale={currentCatalogLocale}
+          setValue={setItemsFormValue}
+          values={getItemsFormValue() ?? []}
+          valueFormName={itemsFormName}
+        />
+      </ActionTemplate>
+    </>
   );
 };
 

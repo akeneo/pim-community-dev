@@ -1,5 +1,5 @@
 import React from 'react';
-import { renderWithProviders } from '../../../../test-utils';
+import { renderWithProviders, screen } from '../../../../test-utils';
 import 'jest-fetch-mock';
 import { NumberAttributeConditionLine } from '../../../../src/pages/EditRules/components/conditions/NumberAttributeConditionLine';
 import { Operator } from '../../../../src/models/Operator';
@@ -27,34 +27,54 @@ describe('NumberAttributeConditionLine', () => {
       ),
       { status: 200 },
     ]);
+    const defaultValues = {
+      content: {
+        conditions: [
+          {},
+          {
+            field: 'localizableScopableAttribute',
+            operator: Operator.NOT_EQUAL,
+            value: '10',
+            scope: 'mobile',
+            locale: 'en_US',
+          },
+        ],
+      },
+    };
 
-    const { findByText, findByTestId } = renderWithProviders(
+    const toRegister = [
+      { name: 'content.conditions[1].field', type: 'custom' },
+      { name: 'content.conditions[1].value', type: 'custom' },
+      { name: 'content.conditions[1].operator', type: 'custom' },
+      { name: 'content.conditions[1].locale', type: 'custom' },
+      { name: 'content.conditions[1].scope', type: 'custom' },
+    ];
+
+    renderWithProviders(
       <NumberAttributeConditionLine
         condition={{
           field: 'localizableScopableAttribute',
           operator: Operator.NOT_EQUAL,
-          value: '10',
-          scope: 'mobile',
-          locale: 'en_US',
         }}
         lineNumber={1}
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
       />,
-      { all: true }
+      { all: true },
+      { defaultValues, toRegister }
     );
 
-    expect(await findByText('Nom')).toBeInTheDocument();
-    const operatorSelector = await findByTestId('edit-rules-input-1-operator');
+    expect(await screen.findByText('Nom')).toBeInTheDocument();
+    const operatorSelector = screen.getByTestId('edit-rules-input-1-operator');
     expect(operatorSelector).toBeInTheDocument();
     expect(operatorSelector).toHaveValue('!=');
-    expect(await findByTestId('edit-rules-input-1-scope')).toBeInTheDocument();
-    expect(await findByTestId('edit-rules-input-1-scope')).toHaveValue(
+    expect(screen.getByTestId('edit-rules-input-1-scope')).toBeInTheDocument();
+    expect(screen.getByTestId('edit-rules-input-1-scope')).toHaveValue(
       'mobile'
     );
-    expect(await findByTestId('edit-rules-input-1-locale')).toBeInTheDocument();
-    expect(await findByTestId('edit-rules-input-1-locale')).toHaveValue(
+    expect(screen.getByTestId('edit-rules-input-1-locale')).toBeInTheDocument();
+    expect(screen.getByTestId('edit-rules-input-1-locale')).toHaveValue(
       'en_US'
     );
   });
@@ -70,28 +90,45 @@ describe('NumberAttributeConditionLine', () => {
       ),
       { status: 200 },
     ]);
+    const defaultValues = {
+      content: {
+        conditions: [
+          {},
+          {
+            field: 'conditionWithNonLocalizableScopableAttribute',
+            operator: Operator.NOT_EQUAL,
+            value: '10',
+          },
+        ],
+      },
+    };
 
-    const { findByText, findByTestId, queryByTestId } = renderWithProviders(
+    const toRegister = [
+      { name: 'content.conditions[1].field', type: 'custom' },
+      { name: 'content.conditions[1].value', type: 'custom' },
+      { name: 'content.conditions[1].operator', type: 'custom' },
+    ];
+
+    renderWithProviders(
       <NumberAttributeConditionLine
         condition={{
           field: 'conditionWithNonLocalizableScopableAttribute',
           operator: Operator.NOT_EQUAL,
-          value: '10',
         }}
         lineNumber={1}
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
       />,
-      { all: true }
+      { all: true },
+      { defaultValues, toRegister }
     );
 
-    expect(await findByText('Nom')).toBeInTheDocument();
-    const operatorSelector = await findByTestId('edit-rules-input-1-operator');
+    expect(await screen.findByText('Nom')).toBeInTheDocument();
+    const operatorSelector = screen.getByTestId('edit-rules-input-1-operator');
     expect(operatorSelector).toBeInTheDocument();
-
-    expect(queryByTestId('edit-rules-input-1-scope')).toBeNull();
-    expect(queryByTestId('edit-rules-input-1-locale')).toBeNull();
+    expect(screen.queryByTestId('edit-rules-input-1-scope')).toBeNull();
+    expect(screen.queryByTestId('edit-rules-input-1-locale')).toBeNull();
   });
 
   it('handles values option appearance based on selected operator', async () => {
@@ -106,32 +143,51 @@ describe('NumberAttributeConditionLine', () => {
       { status: 200 },
     ]);
 
-    const { findByText, findByTestId, queryByTestId } = renderWithProviders(
+    const defaultValues = {
+      content: {
+        conditions: [
+          {},
+          {
+            field: 'localizableScopableAttribute',
+            operator: Operator.NOT_EQUAL,
+            value: '10',
+          },
+        ],
+      },
+    };
+
+    const toRegister = [
+      { name: 'content.conditions[1].field', type: 'custom' },
+      { name: 'content.conditions[1].value', type: 'custom' },
+      { name: 'content.conditions[1].operator', type: 'custom' },
+    ];
+
+    renderWithProviders(
       <NumberAttributeConditionLine
         condition={{
           field: 'localizableScopableAttribute',
           operator: Operator.NOT_EQUAL,
-          value: '10',
         }}
         lineNumber={1}
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={'en_US'}
       />,
-      { all: true }
+      { all: true },
+      { defaultValues, toRegister }
     );
-    expect(await findByText('Name')).toBeInTheDocument();
-    const operatorSelector = await findByTestId('edit-rules-input-1-operator');
+    expect(await screen.findByText('Name')).toBeInTheDocument();
+    const operatorSelector = screen.getByTestId('edit-rules-input-1-operator');
     expect(operatorSelector).toBeInTheDocument();
-    expect(queryByTestId('edit-rules-input-1-value')).toBeDefined();
+    expect(screen.getByTestId('edit-rules-input-1-value')).toBeDefined();
 
     userEvent.selectOptions(operatorSelector, Operator.IS_NOT_EMPTY);
     await wait(() =>
-      expect(queryByTestId('edit-rules-input-1-value')).toBeNull()
+      expect(screen.queryByTestId('edit-rules-input-1-value')).toBeNull()
     );
 
     userEvent.selectOptions(operatorSelector, Operator.NOT_EQUAL);
-    expect(queryByTestId('edit-rules-input-1-value')).toBeDefined();
+    expect(screen.queryByTestId('edit-rules-input-1-value')).toBeDefined();
   });
 
   it('displays the matching locales regarding the scope', async () => {
@@ -145,13 +201,30 @@ describe('NumberAttributeConditionLine', () => {
       ),
       { status: 200 },
     ]);
+    const defaultValues = {
+      content: {
+        conditions: [
+          {},
+          {
+            field: 'localizableScopableAttribute',
+            operator: Operator.NOT_EQUAL,
+            value: '10',
+            scope: 'mobile',
+            locale: 'en_US',
+          },
+        ],
+      },
+    };
 
-    const {
-      findByText,
-      findByTestId,
-      queryByTestId,
-      queryByText,
-    } = renderWithProviders(
+    const toRegister = [
+      { name: 'content.conditions[1].field', type: 'custom' },
+      { name: 'content.conditions[1].value', type: 'custom' },
+      { name: 'content.conditions[1].operator', type: 'custom' },
+      { name: 'content.conditions[1].scope', type: 'custom' },
+      { name: 'content.conditions[1].locale', type: 'custom' },
+    ];
+
+    renderWithProviders(
       <NumberAttributeConditionLine
         condition={{
           field: 'localizableScopableAttribute',
@@ -165,26 +238,27 @@ describe('NumberAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'en_US'}
       />,
-      { all: true }
+      { all: true },
+      { defaultValues, toRegister }
     );
-    expect(await findByText('Name')).toBeInTheDocument();
-    const operatorSelector = await findByTestId('edit-rules-input-1-operator');
+    expect(await screen.findByText('Name')).toBeInTheDocument();
+    const operatorSelector = screen.getByTestId('edit-rules-input-1-operator');
     expect(operatorSelector).toBeInTheDocument();
-    expect(queryByTestId('edit-rules-input-1-value')).toBeDefined();
+    expect(screen.getByTestId('edit-rules-input-1-value')).toBeDefined();
 
     userEvent.selectOptions(
-      await findByTestId('edit-rules-input-1-scope'),
+      screen.getByTestId('edit-rules-input-1-scope'),
       'ecommerce'
     );
-    expect(queryByText('German')).toBeInTheDocument();
-    expect(queryByText('French')).toBeInTheDocument();
-    expect(queryByText('English')).toBeInTheDocument();
+    expect(screen.getByText('German')).toBeInTheDocument();
+    expect(screen.getByText('French')).toBeInTheDocument();
+    expect(screen.getByText('English')).toBeInTheDocument();
     userEvent.selectOptions(
-      await findByTestId('edit-rules-input-1-scope'),
+      screen.getByTestId('edit-rules-input-1-scope'),
       'mobile'
     );
-    expect(queryByText('German')).toBeInTheDocument();
-    expect(queryByText('French')).not.toBeInTheDocument();
-    expect(queryByText('English')).toBeInTheDocument();
+    expect(screen.getByText('German')).toBeInTheDocument();
+    expect(screen.queryByText('French')).not.toBeInTheDocument();
+    expect(screen.getByText('English')).toBeInTheDocument();
   });
 });

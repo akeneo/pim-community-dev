@@ -10,13 +10,16 @@ import { useTranslate } from '../../dependenciesTools/hooks';
 import { Translate } from '../../dependenciesTools';
 
 const getLocaleValidation = (
-  attribute: Attribute,
+  attribute: Attribute | null,
   locales: Locale[],
   availableLocales: Locale[],
   channelCode: ScopeCode,
   translate: Translate
 ) => {
   const localeValidation: any = {};
+  if (!attribute) {
+    return localeValidation;
+  }
   if (attribute.localizable) {
     localeValidation['required'] = translate(
       'pimee_catalog_rule.exceptions.required_locale'

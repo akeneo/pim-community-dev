@@ -1,18 +1,22 @@
 import React from 'react';
-import { renderWithProviders } from '../../../../test-utils';
+import {
+  act,
+  renderWithProviders,
+  screen,
+  waitForElementToBeRemoved,
+} from '../../../../test-utils';
 import 'jest-fetch-mock';
 import { TextAttributeConditionLine } from '../../../../src/pages/EditRules/components/conditions/TextAttributeConditionLine';
+import { createAttribute, locales, scopes } from '../../factories';
 import { Operator } from '../../../../src/models/Operator';
 import userEvent from '@testing-library/user-event';
-import { wait } from '@testing-library/dom';
-import { createAttribute, locales, scopes } from '../../factories';
 
 jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
 jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
 jest.mock('../../../../src/fetch/categoryTree.fetcher.ts');
 
 describe('TextAttributeConditionLine', () => {
-  afterEach(() => {
+  beforeEach(() => {
     fetchMock.resetMocks();
   });
 
@@ -21,35 +25,61 @@ describe('TextAttributeConditionLine', () => {
       JSON.stringify(createAttribute({ localizable: true, scopable: true })),
       { status: 200 },
     ]);
+    const defaultValues = {
+      content: {
+        conditions: [
+          {
+            operator: Operator.NOT_EQUAL,
+            scope: 'mobile',
+            value: 'Canon',
+            locale: 'en_US',
+          },
+        ],
+      },
+    };
 
-    const { findByText, findByTestId } = renderWithProviders(
+    const toRegister = [
+      { name: 'content.conditions[0].value', type: 'custom' },
+      { name: 'content.conditions[0].operator', type: 'custom' },
+      { name: 'content.conditions[0].locale', type: 'custom' },
+      { name: 'content.conditions[0].scope', type: 'custom' },
+    ];
+
+    renderWithProviders(
       <TextAttributeConditionLine
         condition={{
           field: 'localizableScopableAttribute',
           operator: Operator.NOT_EQUAL,
-          value: 'Canon',
-          scope: 'mobile',
-          locale: 'en_US',
         }}
-        lineNumber={1}
+        lineNumber={0}
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
       />,
-      { all: true }
+      { all: true },
+      { defaultValues, toRegister }
     );
-
-    expect(await findByText('Nom')).toBeInTheDocument();
-    const operatorSelector = await findByTestId('edit-rules-input-1-operator');
-    expect(operatorSelector).toBeInTheDocument();
-    expect(operatorSelector).toHaveValue('!=');
-    expect(await findByTestId('edit-rules-input-1-scope')).toBeInTheDocument();
-    expect(await findByTestId('edit-rules-input-1-scope')).toHaveValue(
-      'mobile'
-    );
-    expect(await findByTestId('edit-rules-input-1-locale')).toBeInTheDocument();
-    expect(await findByTestId('edit-rules-input-1-locale')).toHaveValue(
-      'en_US'
+    await waitForElementToBeRemoved(() => document.querySelector('img')).then(
+      () => {
+        expect(screen.getByText('Nom')).toBeInTheDocument();
+        const operatorSelector = screen.getByTestId(
+          'edit-rules-input-0-operator'
+        );
+        expect(operatorSelector).toBeInTheDocument();
+        expect(operatorSelector).toHaveValue('!=');
+        expect(
+          screen.getByTestId('edit-rules-input-0-scope')
+        ).toBeInTheDocument();
+        expect(screen.getByTestId('edit-rules-input-0-scope')).toHaveValue(
+          'mobile'
+        );
+        expect(
+          screen.getByTestId('edit-rules-input-0-locale')
+        ).toBeInTheDocument();
+        expect(screen.getByTestId('edit-rules-input-0-locale')).toHaveValue(
+          'en_US'
+        );
+      }
     );
   });
 
@@ -58,42 +88,58 @@ describe('TextAttributeConditionLine', () => {
       JSON.stringify(createAttribute({ localizable: false, scopable: false })),
       { status: 200 },
     ]);
+    const defaultValues = {
+      content: {
+        conditions: [
+          {
+            operator: Operator.NOT_EQUAL,
+            value: 'Canon',
+          },
+        ],
+      },
+    };
 
-    const { findByText, findByTestId, queryByTestId } = renderWithProviders(
+    const toRegister = [
+      { name: 'content.conditions[0].value', type: 'custom' },
+      { name: 'content.conditions[0].operator', type: 'custom' },
+    ];
+    renderWithProviders(
       <TextAttributeConditionLine
         condition={{
           field: 'conditionWithNonLocalizableScopableAttribute',
           operator: Operator.NOT_EQUAL,
-          value: 'Canon',
         }}
         lineNumber={1}
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
       />,
-      { all: true }
+      { all: true },
+      { defaultValues, toRegister }
     );
-
-    expect(await findByText('Nom')).toBeInTheDocument();
-    const operatorSelector = await findByTestId('edit-rules-input-1-operator');
-    expect(operatorSelector).toBeInTheDocument();
-
-    expect(queryByTestId('edit-rules-input-1-scope')).toBeNull();
-    expect(queryByTestId('edit-rules-input-1-locale')).toBeNull();
+    await waitForElementToBeRemoved(() => document.querySelector('img')).then(
+      () => {
+        expect(screen.getByText('Nom')).toBeInTheDocument();
+        const operatorSelector = screen.getByTestId(
+          'edit-rules-input-1-operator'
+        );
+        expect(operatorSelector).toBeInTheDocument();
+        expect(screen.queryByTestId('edit-rules-input-1-scope')).toBeNull();
+        expect(screen.queryByTestId('edit-rules-input-1-locale')).toBeNull();
+      }
+    );
   });
-
   it('handles values option appearance based on selected operator', async () => {
     fetchMock.mockResponses([
       JSON.stringify(createAttribute({ localizable: false, scopable: false })),
       { status: 200 },
     ]);
 
-    const { findByText, findByTestId, queryByTestId } = renderWithProviders(
+    renderWithProviders(
       <TextAttributeConditionLine
         condition={{
           field: 'localizableScopableAttribute',
           operator: Operator.NOT_EQUAL,
-          value: 'Canon',
         }}
         lineNumber={1}
         locales={locales}
@@ -102,39 +148,35 @@ describe('TextAttributeConditionLine', () => {
       />,
       { all: true }
     );
-    expect(await findByText('Name')).toBeInTheDocument();
-    const operatorSelector = await findByTestId('edit-rules-input-1-operator');
-    expect(operatorSelector).toBeInTheDocument();
-    expect(queryByTestId('edit-rules-input-1-value')).toBeDefined();
-
-    userEvent.selectOptions(operatorSelector, Operator.IS_NOT_EMPTY);
-    await wait(() =>
-      expect(queryByTestId('edit-rules-input-1-value')).toBeNull()
+    await waitForElementToBeRemoved(() => document.querySelector('img')).then(
+      () => {
+        expect(screen.getByText('Name')).toBeInTheDocument();
+        const operatorSelector = screen.getByTestId(
+          'edit-rules-input-1-operator'
+        );
+        expect(operatorSelector).toBeInTheDocument();
+        expect(screen.getByTestId('edit-rules-input-1-value')).toBeDefined();
+        act(() => {
+          userEvent.selectOptions(operatorSelector, Operator.IS_NOT_EMPTY);
+        });
+        expect(screen.queryByTestId('edit-rules-input-1-value')).toBeNull();
+        act(() => {
+          userEvent.selectOptions(operatorSelector, Operator.NOT_EQUAL);
+        });
+        expect(screen.getByTestId('edit-rules-input-1-value')).toBeDefined();
+      }
     );
-
-    userEvent.selectOptions(operatorSelector, Operator.NOT_EQUAL);
-    expect(queryByTestId('edit-rules-input-1-value')).toBeDefined();
   });
-
   it('displays the matching locales regarding the scope', async () => {
     fetchMock.mockResponses([
       JSON.stringify(createAttribute({ localizable: true, scopable: true })),
       { status: 200 },
     ]);
-
-    const {
-      findByText,
-      findByTestId,
-      queryByTestId,
-      queryByText,
-    } = renderWithProviders(
+    renderWithProviders(
       <TextAttributeConditionLine
         condition={{
           field: 'localizableScopableAttribute',
           operator: Operator.NOT_EQUAL,
-          value: 'Canon',
-          scope: 'mobile',
-          locale: 'en_US',
         }}
         lineNumber={1}
         locales={locales}
@@ -143,24 +185,29 @@ describe('TextAttributeConditionLine', () => {
       />,
       { all: true }
     );
-    expect(await findByText('Name')).toBeInTheDocument();
-    const operatorSelector = await findByTestId('edit-rules-input-1-operator');
-    expect(operatorSelector).toBeInTheDocument();
-    expect(queryByTestId('edit-rules-input-1-value')).toBeDefined();
-
-    userEvent.selectOptions(
-      await findByTestId('edit-rules-input-1-scope'),
-      'ecommerce'
+    await waitForElementToBeRemoved(() => document.querySelector('img')).then(
+      () => {
+        expect(screen.getByText('Name')).toBeInTheDocument();
+        const operatorSelector = screen.getByTestId(
+          'edit-rules-input-1-operator'
+        );
+        expect(operatorSelector).toBeInTheDocument();
+        expect(screen.getByTestId('edit-rules-input-1-value')).toBeDefined();
+        userEvent.selectOptions(
+          screen.getByTestId('edit-rules-input-1-scope'),
+          'ecommerce'
+        );
+        expect(screen.getByText('German')).toBeInTheDocument();
+        expect(screen.getByText('French')).toBeInTheDocument();
+        expect(screen.getByText('English')).toBeInTheDocument();
+        userEvent.selectOptions(
+          screen.getByTestId('edit-rules-input-1-scope'),
+          'mobile'
+        );
+        expect(screen.getByText('German')).toBeInTheDocument();
+        expect(screen.queryByText('French')).not.toBeInTheDocument();
+        expect(screen.getByText('English')).toBeInTheDocument();
+      }
     );
-    expect(queryByText('German')).toBeInTheDocument();
-    expect(queryByText('French')).toBeInTheDocument();
-    expect(queryByText('English')).toBeInTheDocument();
-    userEvent.selectOptions(
-      await findByTestId('edit-rules-input-1-scope'),
-      'mobile'
-    );
-    expect(queryByText('German')).toBeInTheDocument();
-    expect(queryByText('French')).not.toBeInTheDocument();
-    expect(queryByText('English')).toBeInTheDocument();
   });
 });

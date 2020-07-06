@@ -1,6 +1,6 @@
 import 'jest-fetch-mock';
 import React from 'react';
-import { render } from '../../../../../../test-utils';
+import { render, screen } from '../../../../../../test-utils';
 import { SimpleMultiOptionsAttributeCondition } from '../../../../../../src/models/conditions';
 import { Operator } from '../../../../../../src/models/Operator';
 import { SimpleMultiOptionsAttributeConditionLine } from '../../../../../../src/pages/EditRules/components/conditions/SimpleMultiOptionsAttributeConditionLine';
@@ -48,10 +48,26 @@ describe('SimpleMultiOptionsAttributeConditionLine', () => {
       value: ['test1', 'test3'],
     };
 
-    const {
-      findByText,
-      findByTestId,
-    } = render(
+    const defaultValues = {
+      content: {
+        conditions: [
+          {},
+          {
+            field: 'name',
+            operator: Operator.IN_LIST,
+            value: ['test1', 'test3'],
+          },
+        ],
+      },
+    };
+
+    const toRegister = [
+      { name: 'content.conditions[1].value', type: 'custom' },
+      { name: 'content.conditions[1].operator', type: 'custom' },
+      { name: 'content.conditions[1].value', type: 'custom' },
+    ];
+
+    render(
       <SimpleMultiOptionsAttributeConditionLine
         lineNumber={1}
         currentCatalogLocale={'en_US'}
@@ -59,15 +75,16 @@ describe('SimpleMultiOptionsAttributeConditionLine', () => {
         locales={locales}
         scopes={scopes}
       />,
-      { all: true }
+      { all: true },
+      { defaultValues, toRegister }
     );
 
-    expect(await findByText('Name')).toBeInTheDocument();
-    const inputOperator = await findByTestId('edit-rules-input-1-operator');
+    expect(await screen.findByText('Name')).toBeInTheDocument();
+    const inputOperator = screen.getByTestId('edit-rules-input-1-operator');
     expect(inputOperator).toHaveValue(Operator.IN_LIST);
 
     expect(inputOperator).toBeInTheDocument();
-    const inputValue = await findByTestId('edit-rules-input-1-value');
+    const inputValue = screen.getByTestId('edit-rules-input-1-value');
     expect(inputValue).toHaveValue(['test1', 'test3']);
   });
 });

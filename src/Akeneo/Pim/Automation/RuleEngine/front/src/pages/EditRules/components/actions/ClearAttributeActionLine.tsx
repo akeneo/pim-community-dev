@@ -1,12 +1,13 @@
 import React from 'react';
+import { Controller } from 'react-hook-form';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import { ActionTitle } from './ActionLine';
 import { ClearAttributeAction } from '../../../../models/actions';
 import { AttributeLocaleScopeSelector } from './attribute/AttributeLocaleScopeSelector';
 import { LineErrors } from '../LineErrors';
-import { useRegisterConst } from '../../hooks/useRegisterConst';
 import { useTranslate } from '../../../../dependenciesTools/hooks';
+import { useControlledFormInputAction } from '../../hooks';
 
 type Props = {
   action: ClearAttributeAction;
@@ -20,42 +21,53 @@ const ClearAttributeActionLine: React.FC<Props> = ({
   scopes,
 }) => {
   const translate = useTranslate();
-  useRegisterConst(`content.actions[${lineNumber}].type`, 'clear');
+  const { fieldFormName, typeFormName } = useControlledFormInputAction<string>(
+    lineNumber
+  );
 
   return (
-    <ActionTemplate
-      title={translate(
-        'pimee_catalog_rule.form.edit.actions.clear_attribute.title'
-      )}
-      helper='This feature is under development. Please use the import to manage your rules.'
-      legend='This feature is under development. Please use the import to manage your rules.'
-      handleDelete={handleDelete}>
-      <LineErrors lineNumber={lineNumber} type='actions' />
-      <ActionTitle>
-        {translate(
-          'pimee_catalog_rule.form.edit.actions.clear_attribute.subtitle'
-        )}
-      </ActionTitle>
-      <AttributeLocaleScopeSelector
-        attributeId={`edit-rules-action-${lineNumber}-field`}
-        attributeLabel={`${translate(
-          'pimee_catalog_rule.form.edit.fields.attribute'
-        )} ${translate('pim_common.required_label')}`}
-        attributePlaceholder={translate(
-          'pimee_catalog_rule.form.edit.actions.clear_attribute.subtitle'
-        )}
-        attributeFormName={`content.actions[${lineNumber}].field`}
-        attributeCode={action.field}
-        scopeId={`edit-rules-action-${lineNumber}-scope`}
-        scopeFormName={`content.actions[${lineNumber}].scope`}
-        scopes={scopes}
-        localeId={`edit-rules-action-${lineNumber}-locale`}
-        localeFormName={`content.actions[${lineNumber}].locale`}
-        locales={locales}
-        localeValue={action.locale || undefined}
-        scopeValue={action.scope || undefined}
+    <>
+      <Controller
+        name={fieldFormName}
+        as={<input type='hidden' />}
+        defaultValue=''
       />
-    </ActionTemplate>
+      <Controller
+        name={typeFormName}
+        as={<input type='hidden' />}
+        defaultValue='clear'
+      />
+      <ActionTemplate
+        title={translate(
+          'pimee_catalog_rule.form.edit.actions.clear_attribute.title'
+        )}
+        helper='This feature is under development. Please use the import to manage your rules.'
+        legend='This feature is under development. Please use the import to manage your rules.'
+        handleDelete={handleDelete}>
+        <ActionTitle>
+          {translate(
+            'pimee_catalog_rule.form.edit.actions.clear_attribute.subtitle'
+          )}
+        </ActionTitle>
+        <AttributeLocaleScopeSelector
+          attributeId={`edit-rules-action-${lineNumber}-field`}
+          attributeLabel={`${translate(
+            'pimee_catalog_rule.form.edit.fields.attribute'
+          )} ${translate('pim_common.required_label')}`}
+          attributePlaceholder={translate(
+            'pimee_catalog_rule.form.edit.actions.clear_attribute.subtitle'
+          )}
+          attributeCode={action.field}
+          scopeId={`edit-rules-action-${lineNumber}-scope`}
+          scopes={scopes}
+          localeId={`edit-rules-action-${lineNumber}-locale`}
+          locales={locales}
+          lineNumber={lineNumber}
+          attributeFormName={fieldFormName}
+        />
+        <LineErrors lineNumber={lineNumber} type='actions' />
+      </ActionTemplate>
+    </>
   );
 };
 

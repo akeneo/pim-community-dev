@@ -1,5 +1,5 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import {
   NumberAttributeCondition,
   NumberAttributeOperators,
@@ -13,6 +13,8 @@ import {
 } from '../../../../dependenciesTools/hooks';
 import { Attribute } from '../../../../models/Attribute';
 import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepository';
+import { Operator } from '../../../../models/Operator';
+import { useControlledFormInputCondition } from '../../hooks';
 
 type NumberAttributeConditionLineProps = ConditionLineProps & {
   condition: NumberAttributeCondition;
@@ -27,7 +29,9 @@ const NumberAttributeConditionLine: React.FC<NumberAttributeConditionLineProps> 
 }) => {
   const router = useBackboneRouter();
   const translate = useTranslate();
-  const { register } = useFormContext();
+  const { valueFormName, getValueFormValue } = useControlledFormInputCondition<
+    string[]
+  >(lineNumber);
   const [attribute, setAttribute] = React.useState<Attribute | null>();
   React.useEffect(() => {
     getAttributeByIdentifier(condition.field, router).then(attribute =>
@@ -37,20 +41,21 @@ const NumberAttributeConditionLine: React.FC<NumberAttributeConditionLineProps> 
 
   return (
     <AttributeConditionLine
-      condition={condition}
-      lineNumber={lineNumber}
-      currentCatalogLocale={currentCatalogLocale}
-      locales={locales}
-      scopes={scopes}
+      attribute={attribute}
       availableOperators={NumberAttributeOperators}
-      attribute={attribute}>
-      <InputNumber
+      currentCatalogLocale={currentCatalogLocale}
+      defaultOperator={Operator.IS_EMPTY}
+      field={condition.field}
+      lineNumber={lineNumber}
+      locales={locales}
+      scopes={scopes}>
+      <Controller
+        as={InputNumber}
         data-testid={`edit-rules-input-${lineNumber}-value`}
-        name={`content.conditions[${lineNumber}].value`}
+        name={valueFormName}
         label={translate('pimee_catalog_rule.rule.value')}
-        ref={register()}
         hiddenLabel={true}
-        defaultValue={condition.value}
+        defaultValue={getValueFormValue()}
         step={attribute?.decimals_allowed ? 'any' : 1}
       />
     </AttributeConditionLine>

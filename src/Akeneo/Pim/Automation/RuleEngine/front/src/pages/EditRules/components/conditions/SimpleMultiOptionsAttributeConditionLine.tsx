@@ -1,4 +1,5 @@
 import React from 'react';
+import { Controller } from 'react-hook-form';
 import {
   SimpleMultiOptionsAttributeCondition,
   SimpleMultiOptionsAttributeOperators,
@@ -16,6 +17,8 @@ import {
 } from '../../../../dependenciesTools/hooks';
 import { Attribute } from '../../../../models';
 import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepository';
+import { useControlledFormInputCondition } from '../../hooks';
+import { Operator } from '../../../../models/Operator';
 
 type MultiOptionsAttributeConditionLineProps = ConditionLineProps & {
   condition: SimpleMultiOptionsAttributeCondition;
@@ -28,6 +31,9 @@ const SimpleMultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeCo
   scopes,
   currentCatalogLocale,
 }) => {
+  const { valueFormName, getValueFormValue } = useControlledFormInputCondition<
+    string[]
+  >(lineNumber);
   const router = useBackboneRouter();
   const translate = useTranslate();
   const [unexistingOptionCodes, setUnexistingOptionCodes] = React.useState<
@@ -104,7 +110,8 @@ const SimpleMultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeCo
 
   return (
     <AttributeConditionLine
-      condition={condition}
+      defaultOperator={Operator.IS_EMPTY}
+      field={condition.field}
       lineNumber={lineNumber}
       currentCatalogLocale={currentCatalogLocale}
       locales={locales}
@@ -112,13 +119,14 @@ const SimpleMultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeCo
       availableOperators={SimpleMultiOptionsAttributeOperators}
       attribute={attribute}>
       {attribute && (
-        <MultiOptionsSelector
+        <Controller
+          as={MultiOptionsSelector}
           data-testid={`edit-rules-input-${lineNumber}-value`}
-          value={condition.value || []}
+          value={getValueFormValue() ?? []}
           attributeId={attribute.meta.id}
           label={translate('pimee_catalog_rule.rule.value')}
-          hiddenLabel={true}
-          name={`content.conditions[${lineNumber}].value`}
+          hiddenLabel
+          name={valueFormName}
           validation={validateOptionCodes}
         />
       )}

@@ -4,6 +4,7 @@ import {
   act,
   fireEvent,
   renderWithProviders,
+  screen,
 } from '../../../../../../test-utils';
 import { SetActionLine } from '../../../../../../src/pages/EditRules/components/actions/SetActionLine';
 import { SetAction } from '../../../../../../src/models/actions';
@@ -15,7 +16,6 @@ import {
 } from '../../../../factories';
 import { clearAttributeRepositoryCache } from '../../../../../../src/repositories/AttributeRepository';
 import userEvent from '@testing-library/user-event';
-
 const createSetAction = (data?: { [key: string]: any }): SetAction => {
   return {
     type: 'set',
@@ -38,6 +38,28 @@ describe('SetActionLine', () => {
   });
 
   it('should display the set action line with an unknown attribute', async () => {
+    const defaultValues = {
+      content: {
+        actions: [
+          {
+            type: 'set',
+            field: 'name',
+            locale: 'en_US',
+            scope: 'mobile',
+            value: 'This is the name',
+          },
+        ],
+      },
+    };
+
+    const toRegister = [
+      { name: 'content.actions[0].type', type: 'custom' },
+      { name: 'content.actions[0].field', type: 'custom' },
+      { name: 'content.actions[0].locale', type: 'custom' },
+      { name: 'content.actions[0].scope', type: 'custom' },
+      { name: 'content.actions[0].value', type: 'custom' },
+    ];
+
     fetchMock.mockResponse((request: Request) => {
       if (request.url.includes('pim_enrich_attribute_rest_get')) {
         return Promise.resolve(JSON.stringify(null));
@@ -52,55 +74,54 @@ describe('SetActionLine', () => {
       throw new Error(`The "${request.url}" url is not mocked.`);
     });
 
-    const { findByText, findByTestId } = renderWithProviders(
+    renderWithProviders(
       <SetActionLine
         action={createSetAction()}
-        lineNumber={1}
+        lineNumber={0}
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
-        handleDelete={() => {}}
+        handleDelete={jest.fn()}
       />,
-      { all: true }
+      { all: true },
+      { defaultValues, toRegister }
     );
-
     expect(
-      await findByText(
+      screen.getByText(
         'pimee_catalog_rule.form.edit.actions.set_attribute.target_subtitle'
       )
     ).toBeInTheDocument();
     expect(
-      await findByText(
+      screen.getByText(
         'pimee_catalog_rule.form.edit.fields.attribute pim_common.required_label'
       )
     ).toBeInTheDocument();
     expect(
-      await findByText(
+      await screen.findByText(
         'pim_enrich.entity.channel.uppercase_label pim_common.required_label'
       )
     ).toBeInTheDocument();
     expect(
-      await findByText(
+      screen.getByText(
         'pim_enrich.entity.locale.uppercase_label pim_common.required_label'
       )
     ).toBeInTheDocument();
     expect(
-      await findByText(
+      screen.getByText(
         'pimee_catalog_rule.form.edit.actions.set_attribute.value_subtitle'
       )
     ).toBeInTheDocument();
     expect(
-      await findByText(
+      screen.getAllByText(
         'pimee_catalog_rule.exceptions.unknown_attribute pimee_catalog_rule.exceptions.select_another_attribute pimee_catalog_rule.exceptions.or'
       )
-    ).toBeInTheDocument();
+    ).toHaveLength(2);
     expect(
-      await findByText('pimee_catalog_rule.exceptions.create_attribute_link')
-    ).toBeInTheDocument();
+      screen.getAllByText('pimee_catalog_rule.exceptions.create_attribute_link')
+    ).toHaveLength(2);
 
-    expect(await findByTestId('edit-rules-action-1-field')).toHaveValue('name');
-
-    const inputValue = await findByTestId('edit-rules-action-1-value');
+    expect(screen.getByTestId('edit-rules-action-0-field')).toHaveValue('name');
+    const inputValue = screen.getByTestId('edit-rules-action-0-value');
     expect(inputValue).toHaveValue('This is the name');
     expect(inputValue).toHaveProperty('disabled', true);
   });
@@ -115,6 +136,7 @@ describe('SetActionLine', () => {
         return Promise.resolve(
           JSON.stringify(
             createAttribute({
+              code: 'name',
               type: 'pim_catalog_text',
               localizable: false,
               scopable: false,
@@ -134,6 +156,7 @@ describe('SetActionLine', () => {
               localizable: true,
               scopable: true,
               labels: { en_US: 'The brand', fr_FR: 'La marque' },
+              code: 'brand',
             })
           )
         );
@@ -147,34 +170,57 @@ describe('SetActionLine', () => {
       }
       throw new Error(`The "${request.url}" url is not mocked.`);
     });
+    const defaultValues = {
+      content: {
+        actions: [
+          {
+            type: 'set',
+            field: 'name',
+            locale: 'en_US',
+            scope: 'mobile',
+            value: 'This is the name',
+          },
+        ],
+      },
+    };
 
-    const { findByText, findByTestId } = renderWithProviders(
+    const toRegister = [
+      { name: 'content.actions[0].type', type: 'custom' },
+      { name: 'content.actions[0].field', type: 'custom' },
+      { name: 'content.actions[0].locale', type: 'custom' },
+      { name: 'content.actions[0].scope', type: 'custom' },
+      { name: 'content.actions[0].value', type: 'custom' },
+    ];
+
+    renderWithProviders(
       <SetActionLine
         action={createSetAction()}
-        lineNumber={1}
+        lineNumber={0}
         locales={locales}
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
-        handleDelete={() => {}}
+        handleDelete={jest.fn()}
       />,
-      { all: true }
+      { all: true },
+      { defaultValues, toRegister }
     );
 
-    expect(await findByTestId('edit-rules-action-1-value')).toHaveValue(
+    expect(await screen.findByTestId('edit-rules-action-0-value')).toHaveValue(
       'This is the name'
     );
-    expect(await findByText('Name')).toBeInTheDocument();
+    expect(screen.getByText('Name')).toBeInTheDocument();
 
     await act(async () => {
-      userEvent.click(await findByTestId('edit-rules-action-1-field'));
+      userEvent.click(await screen.findByTestId('edit-rules-action-0-field'));
       expect(
-        (await findByTestId('edit-rules-action-1-field')).children.length
+        (await screen.findByTestId('edit-rules-action-0-field')).children.length
       ).toBeGreaterThan(1);
-      fireEvent.change(await findByTestId('edit-rules-action-1-field'), {
+      fireEvent.change(await screen.findByTestId('edit-rules-action-0-field'), {
         target: { value: 'brand' },
       });
     });
-    expect(await findByTestId('edit-rules-action-1-value')).toHaveValue('');
-    expect(await findByText('The brand')).toBeInTheDocument();
+    expect(await screen.findByTestId('edit-rules-action-0-value')).toHaveValue(
+      ''
+    );
   });
 });

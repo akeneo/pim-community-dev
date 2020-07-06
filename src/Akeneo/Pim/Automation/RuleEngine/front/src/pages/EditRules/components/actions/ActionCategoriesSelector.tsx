@@ -25,28 +25,26 @@ import {
 } from '../../../../repositories/CategoryRepository';
 import { NetworkLifeCycle } from '../../../../components/CategoryTree/hooks/NetworkLifeCycle.types';
 import { getCategoriesTrees } from '../../../../components/CategoryTree/category-tree.getters';
-import { useFormContext } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { SmallHelper } from '../../../../components/HelpersInfos/SmallHelper';
 
 type Props = {
   lineNumber: number;
   currentCatalogLocale: LocaleCode;
-  initialCategoryCodes: CategoryCode[];
-  name: string;
-  defaultValue: CategoryCode[];
+  values: CategoryCode[];
+  setValue: (value: any) => void;
+  valueFormName: string;
 };
 
 const ActionCategoriesSelector: React.FC<Props> = ({
   lineNumber,
   currentCatalogLocale,
-  initialCategoryCodes,
-  name,
-  defaultValue,
+  values,
+  setValue,
+  valueFormName,
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
-  const { setValue, register, formState, unregister } = useFormContext();
-
   const [categories, setCategories] = React.useState<
     NetworkLifeCycle<Category[]>
   >({ status: 'PENDING' });
@@ -92,25 +90,22 @@ const ActionCategoriesSelector: React.FC<Props> = ({
     );
   };
 
-  const registerField = () => {
-    register(
-      { name },
-      {
-        validate: () =>
-          unexistingCategoryCodes.length > 0
-            ? translate(
-                'pimee_catalog_rule.exceptions.unknown_categories',
-                { categoryCodes: unexistingCategoryCodes.join(', ') },
-                unexistingCategoryCodes.length
-              )
-            : true,
-      }
-    );
-  };
-
   React.useEffect(() => {
-    registerField();
-  }, [unexistingCategoryCodes]);
+    getCategoriesByIdentifiers(values, router).then(indexedCategories => {
+      const existingCategories: Category[] = [];
+      const unexistingCategoryCodes: CategoryCode[] = [];
+      values.forEach(categoryCode => {
+        if (indexedCategories[categoryCode]) {
+          existingCategories.push(indexedCategories[categoryCode] as Category);
+        } else {
+          unexistingCategoryCodes.push(categoryCode);
+        }
+      });
+      setCategories({ status: 'COMPLETE', data: existingCategories });
+      setUnexistingCategoryCodes(unexistingCategoryCodes);
+    });
+    getCategoriesTrees(setCategoriesTrees);
+  }, []);
 
   React.useEffect(() => {
     if (
@@ -125,35 +120,6 @@ const ActionCategoriesSelector: React.FC<Props> = ({
       );
     }
   }, [categories, categoryTrees]);
-
-  React.useEffect(() => {
-    registerField();
-    setValue(name, defaultValue);
-    return () => {
-      unregister(name);
-    };
-  }, [formState.submitCount]);
-
-  React.useEffect(() => {
-    getCategoriesByIdentifiers(initialCategoryCodes, router).then(
-      indexedCategories => {
-        const existingCategories: Category[] = [];
-        const unexistingCategoryCodes: CategoryCode[] = [];
-        initialCategoryCodes.forEach(categoryCode => {
-          if (indexedCategories[categoryCode]) {
-            existingCategories.push(
-              indexedCategories[categoryCode] as Category
-            );
-          } else {
-            unexistingCategoryCodes.push(categoryCode);
-          }
-        });
-        setCategories({ status: 'COMPLETE', data: existingCategories });
-        setUnexistingCategoryCodes(unexistingCategoryCodes);
-      }
-    );
-    getCategoriesTrees(setCategoriesTrees);
-  }, []);
 
   if (
     !categories.data ||
@@ -268,7 +234,7 @@ const ActionCategoriesSelector: React.FC<Props> = ({
       setCategoryTreesWithSelectedCategoriesMap(
         new Map(categoryTreesWithSelectedCategoriesMap)
       );
-      setValue(name, getSelectedCategories());
+      setValue(getSelectedCategories());
     });
   };
 
@@ -282,7 +248,7 @@ const ActionCategoriesSelector: React.FC<Props> = ({
     setCategoryTreesWithSelectedCategoriesMap(
       new Map(categoryTreesWithSelectedCategoriesMap)
     );
-    setValue(name, getSelectedCategories());
+    setValue(getSelectedCategories());
   };
 
   const handleCategoryTreeDelete = (categoryTree: CategoryTreeModel) => {
@@ -290,7 +256,7 @@ const ActionCategoriesSelector: React.FC<Props> = ({
     setCategoryTreesWithSelectedCategoriesMap(
       new Map(categoryTreesWithSelectedCategoriesMap)
     );
-    setValue(name, getSelectedCategories());
+    setValue(getSelectedCategories());
   };
 
   const getCategoryCount: (
@@ -328,6 +294,21 @@ const ActionCategoriesSelector: React.FC<Props> = ({
       <ActionGrid>
         <ActionLeftSide>
           <div className='AknFormContainer'>
+            <Controller
+              as={<input type='hidden' />}
+              name={valueFormName}
+              defaultValue={values}
+              rules={{
+                validate: () =>
+                  unexistingCategoryCodes.length > 0
+                    ? translate(
+                        'pimee_catalog_rule.exceptions.unknown_categories',
+                        { categoryCodes: unexistingCategoryCodes.join(', ') },
+                        unexistingCategoryCodes.length
+                      )
+                    : true,
+              }}
+            />
             <ActionTitle>
               {translate(
                 'pimee_catalog_rule.form.edit.actions.category.select_category_trees'

@@ -26,7 +26,6 @@ const OperatorSelector: React.FC<Props> = ({
     const label = translate(
       `pimee_catalog_rule.form.edit.conditions.operators.${operator}`
     );
-
     return label.charAt(0).toUpperCase() + label.slice(1);
   };
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import {
+  Select2Wrapper,
   Select2GlobalProps,
   Select2Option,
   Select2Value,
-  ReactHookFormSelect2Wrapper,
 } from './';
 
 type Props = Select2GlobalProps & {
@@ -24,7 +24,7 @@ const Select2SimpleSyncWrapper: React.FC<Props> = props => {
   };
 
   return (
-    <ReactHookFormSelect2Wrapper
+    <Select2Wrapper
       {...remainingProps}
       onChange={handleChange}
       multiple={false}

@@ -1,5 +1,4 @@
 import React from 'react';
-import { useFormContext, Controller } from 'react-hook-form';
 import { Attribute } from '../../../../../models';
 import { useTranslate } from '../../../../../dependenciesTools/hooks';
 import { TextValue } from './TextValue';
@@ -48,41 +47,26 @@ type Props = {
   validation?: { required?: string; validate?: (value: any) => string | true };
   value: any;
   label?: string;
+  onChange: (value: any) => void;
 };
 
 const AttributeValue: React.FC<Props> = ({
   id,
   attribute,
   name,
-  validation,
+  validation = {},
   value,
   label,
+  onChange,
 }) => {
   const translate = useTranslate();
-  const { setValue, unregister, watch } = useFormContext();
+
   const [ValueModule, setValueModule] = React.useState<React.FC<
     InputValueProps
   > | null>(null);
-  const [lastKnownValue, setLastKnownValue] = React.useState<any>(value);
-  const previousAttribute = React.useRef<Attribute | null | undefined>();
-
   React.useEffect(() => {
-    return () => {
-      unregister(name);
-    };
-  }, []);
-
-  React.useEffect(() => {
-    if (undefined !== previousAttribute.current) {
-      setValue(name, null);
-      setLastKnownValue(null);
-    }
-
-    previousAttribute.current = attribute;
     setValueModule(() => (attribute ? getValueModule(attribute) : null));
   }, [attribute]);
-
-  watch(name);
 
   const getAttributeStatus = (): AttributeStatus => {
     if (undefined === attribute) {
@@ -102,22 +86,16 @@ const AttributeValue: React.FC<Props> = ({
 
   return (
     <ActionFormContainer>
-      <Controller
-        as={<span style={{ display: 'none' }} />}
-        name={name}
-        defaultValue={value}
-        rules={validation || {}}
-      />
       {getAttributeStatus() === AttributeStatus.NOT_SELECTED && (
         <InlineHelper>
           {translate('pimee_catalog_rule.form.edit.please_select_attribute')}
         </InlineHelper>
       )}
       {getAttributeStatus() === AttributeStatus.UNKNOWN && (
-        <FallbackValue id={id} label={label} value={lastKnownValue} />
+        <FallbackValue id={id} label={label} value={value} />
       )}
       {getAttributeStatus() === AttributeStatus.UNMANAGED && (
-        <FallbackValue id={id} label={label} value={lastKnownValue}>
+        <FallbackValue id={id} label={label} value={value}>
           <HelperContainer>
             <InlineHelper>
               {translate(
@@ -127,19 +105,19 @@ const AttributeValue: React.FC<Props> = ({
           </HelperContainer>
         </FallbackValue>
       )}
+      {/* The key attribute here is used to force react to make an mount / unmount at each attribute change */}
       {getAttributeStatus() === AttributeStatus.VALID &&
         ValueModule &&
         attribute && (
           <ValueModule
+            key={attribute.code}
             id={id}
             attribute={attribute}
             name={name}
             label={label}
-            value={lastKnownValue}
-            onChange={(value: any) => {
-              setValue(name, value);
-              setLastKnownValue(value);
-            }}
+            value={value}
+            onChange={onChange}
+            validation={validation}
           />
         )}
     </ActionFormContainer>

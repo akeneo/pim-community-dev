@@ -1,5 +1,5 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import {
   TextAttributeCondition,
   TextAttributeOperators,
@@ -14,6 +14,9 @@ import {
 import { Attribute } from '../../../../models/Attribute';
 import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepository';
 
+import { useControlledFormInputCondition } from '../../hooks';
+import { Operator } from '../../../../models/Operator';
+
 type TextAttributeConditionLineProps = ConditionLineProps & {
   condition: TextAttributeCondition;
 };
@@ -27,7 +30,10 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
 }) => {
   const router = useBackboneRouter();
   const translate = useTranslate();
-  const { register } = useFormContext();
+  const { valueFormName, getValueFormValue } = useControlledFormInputCondition<
+    string[]
+  >(lineNumber);
+
   const [attribute, setAttribute] = React.useState<Attribute | null>();
   React.useEffect(() => {
     getAttributeByIdentifier(condition.field, router).then(attribute =>
@@ -37,20 +43,21 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
 
   return (
     <AttributeConditionLine
-      condition={condition}
-      lineNumber={lineNumber}
-      currentCatalogLocale={currentCatalogLocale}
-      locales={locales}
-      scopes={scopes}
+      attribute={attribute}
       availableOperators={TextAttributeOperators}
-      attribute={attribute}>
-      <InputText
+      currentCatalogLocale={currentCatalogLocale}
+      defaultOperator={Operator.NOT_EQUAL}
+      field={condition.field}
+      lineNumber={lineNumber}
+      locales={locales}
+      scopes={scopes}>
+      <Controller
+        as={InputText}
         data-testid={`edit-rules-input-${lineNumber}-value`}
-        name={`content.conditions[${lineNumber}].value`}
+        name={valueFormName}
         label={translate('pimee_catalog_rule.rule.value')}
-        ref={register()}
-        hiddenLabel={true}
-        defaultValue={condition.value}
+        hiddenLabel
+        defaultValue={getValueFormValue()}
       />
     </AttributeConditionLine>
   );

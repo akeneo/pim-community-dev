@@ -4,11 +4,12 @@ import {
   act,
   fireEvent,
   renderWithProviders,
+  screen,
 } from '../../../../../../../test-utils';
+
 import { createAttribute } from '../../../../../factories';
 import { AttributeValue } from '../../../../../../../src/pages/EditRules/components/actions/attribute';
 import { getAttributeLabel } from '../../../../../../../src/models';
-import userEvent from '@testing-library/user-event';
 
 jest.mock('../../../../../../../src/components/Select2Wrapper/Select2Wrapper');
 jest.mock(
@@ -21,77 +22,78 @@ describe('AttributeValue', () => {
     fetchMock.resetMocks();
   });
 
-  it('should display an information text with a non selected attribute', async () => {
-    const { findByText, queryByTestId } = renderWithProviders(
+  it('should display an information text with a non selected attribute', () => {
+    renderWithProviders(
       <AttributeValue
         id={'attribute-value-id'}
         name={'attribute-value-name'}
         value={'default'}
+        onChange={jest.fn()}
       />,
       { all: true }
     );
-
     expect(
-      await findByText('pimee_catalog_rule.form.edit.please_select_attribute')
+      screen.getByText('pimee_catalog_rule.form.edit.please_select_attribute')
     ).toBeInTheDocument();
-    const valueInput = queryByTestId('attribute-value-id');
-    expect(valueInput).not.toBeInTheDocument();
+    expect(screen.queryByTestId('attribute-value-id')).not.toBeInTheDocument();
   });
 
-  it('should display a disabled value with an unknown attribute', async () => {
-    const { findByTestId } = renderWithProviders(
+  it('should display a disabled value with an unknown attribute', () => {
+    renderWithProviders(
       <AttributeValue
         id={'attribute-value-id'}
         attribute={null}
         name={'attribute-value-name'}
         value={'default'}
+        onChange={jest.fn()}
       />,
       { all: true }
     );
-
-    const valueInput = await findByTestId('attribute-value-id');
+    const valueInput = screen.getByTestId('attribute-value-id');
     expect(valueInput).toHaveValue('default');
     expect(valueInput).toBeDisabled();
     expect(valueInput).toHaveProperty('type', 'text');
   });
 
-  it('should display a disabled value with a non managed attribute', async () => {
+  it('should display a disabled value with a non managed attribute', () => {
     const attribute = createAttribute({ type: 'unknown' });
-    const { findByText, findByTestId } = renderWithProviders(
+    renderWithProviders(
       <AttributeValue
         id={'attribute-value-id'}
         attribute={attribute}
         name={'attribute-value-name'}
         value={'default'}
+        onChange={jest.fn()}
       />,
       { all: true }
     );
 
     expect(
-      await findByText('pimee_catalog_rule.form.edit.unhandled_attribute_type')
+      screen.getByText('pimee_catalog_rule.form.edit.unhandled_attribute_type')
     ).toBeInTheDocument();
-    const valueInput = await findByTestId('attribute-value-id');
+    const valueInput = screen.getByTestId('attribute-value-id');
     expect(valueInput).toHaveValue('default');
     expect(valueInput).toBeDisabled();
     expect(valueInput).toHaveProperty('type', 'text');
   });
 
-  it('should display a text value with a text attribute', async () => {
+  it('should display a text value with a text attribute', () => {
     const attribute = createAttribute({});
-    const { findByText, findByTestId } = renderWithProviders(
+    renderWithProviders(
       <AttributeValue
         id={'attribute-value-id'}
         attribute={attribute}
         name={'attribute-value-name'}
         value={'default'}
+        onChange={jest.fn()}
       />,
       { all: true }
     );
 
     expect(
-      await findByText(getAttributeLabel(attribute, 'en_US'))
+      screen.getByText(getAttributeLabel(attribute, 'en_US'))
     ).toBeInTheDocument();
-    const valueInput = await findByTestId('attribute-value-id');
+    const valueInput = screen.getByTestId('attribute-value-id');
     expect(valueInput).toHaveValue('default');
     expect(valueInput).not.toBeDisabled();
     expect(valueInput).toHaveProperty('type', 'text');
@@ -117,32 +119,29 @@ describe('AttributeValue', () => {
     });
 
     const attribute = createAttribute({ type: 'pim_catalog_simpleselect' });
-    const { findByText, findByTestId } = renderWithProviders(
+    const onChange = jest.fn();
+    renderWithProviders(
       <AttributeValue
         id={'attribute-value-id'}
         attribute={attribute}
         name={'attribute-value-name'}
         value={'test2'}
+        onChange={onChange}
       />,
       { all: true }
     );
 
     expect(
-      await findByText(getAttributeLabel(attribute, 'en_US'))
+      await screen.findByText(getAttributeLabel(attribute, 'en_US'))
     ).toBeInTheDocument();
-    const valueInput = await findByTestId('attribute-value-id');
+    const valueInput = await screen.findByTestId('attribute-value-id');
     expect(valueInput).toHaveValue('test2');
     expect(valueInput).not.toBeDisabled();
-
-    await act(async () => {
-      userEvent.click(await findByTestId('attribute-value-id'));
-      expect(
-        (await findByTestId('attribute-value-id')).children.length
-      ).toBeGreaterThan(1);
-      fireEvent.change(await findByTestId('attribute-value-id'), {
+    act(() => {
+      fireEvent.change(valueInput, {
         target: { value: 'test1' },
       });
+      expect(onChange).toHaveBeenCalledTimes(1);
     });
-    expect(valueInput).toHaveValue('test1');
   });
 });

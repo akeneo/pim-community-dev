@@ -6,7 +6,7 @@ import { Translate } from '../../dependenciesTools';
 import { IndexedScopes } from '../../repositories/ScopeRepository';
 
 const getScopeValidation = (
-  attribute: Attribute,
+  attribute: Attribute | null,
   scopes: IndexedScopes,
   translate: Translate
 ) => {
