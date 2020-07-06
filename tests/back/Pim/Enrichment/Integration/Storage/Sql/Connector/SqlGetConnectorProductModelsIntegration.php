@@ -179,6 +179,10 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                         'products' => [['identifier' => 'a_simple_product', 'quantity' => 1]],
                         'product_models' => [['identifier' => 'simple_pm', 'quantity' => 9]],
                     ],
+                    'ANOTHER_PRODUCT_SET' => [
+                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 4]],
+                        'product_models' => [],
+                    ],
                 ],
                 ['categoryA1', 'categoryA2'],
                 new ReadValueCollection(
@@ -354,6 +358,10 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                         'products' => [['identifier' => 'a_simple_product', 'quantity' => 1]],
                         'product_models' => [['identifier' => 'simple_pm', 'quantity' => 9]],
                     ],
+                    'ANOTHER_PRODUCT_SET' => [
+                        'products' => [['identifier' => 'a_simple_product', 'quantity' => 4]],
+                        'product_models' => [],
+                    ],
                 ],
                 ['categoryA1', 'categoryA2'],
                 new ReadValueCollection(
@@ -418,6 +426,10 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                 'PRODUCT_SET' => [
                     'products' => [['identifier' => 'a_simple_product', 'quantity' => 1]],
                     'product_models' => [['identifier' => 'simple_pm', 'quantity' => 9]],
+                ],
+                'ANOTHER_PRODUCT_SET' => [
+                    'products' => [['identifier' => 'a_simple_product', 'quantity' => 4]],
+                    'product_models' => [],
                 ],
             ],
             ['categoryA1', 'categoryA2'],
