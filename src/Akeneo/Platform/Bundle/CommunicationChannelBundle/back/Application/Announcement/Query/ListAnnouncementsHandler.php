@@ -13,7 +13,7 @@ use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Query\FindViewedAnn
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class ListAnnouncementHandler
+final class ListAnnouncementsHandler
 {
     /** @var FindAnnouncementItemsInterface */
     private $findAnnouncementItems;
@@ -32,7 +32,7 @@ final class ListAnnouncementHandler
     /**
      * @return AnnouncementItem[]
      */
-    public function execute(ListAnnouncementQuery $query): array
+    public function execute(ListAnnouncementsQuery $query): array
     {
         $announcementItems = $this->findAnnouncementItems->byPimVersion($query->edition(), $query->version(), $query->searchAfter(), $query->limit());
         $viewedAnnouncementIds = $this->findViewedAnnouncementIds->byUserId($query->userId());

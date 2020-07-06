@@ -9,7 +9,7 @@ namespace Akeneo\Platform\CommunicationChannel\Application\Announcement\Query;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class ListAnnouncementQuery
+final class ListAnnouncementsQuery
 {
     /** @var string */
     private $edition;

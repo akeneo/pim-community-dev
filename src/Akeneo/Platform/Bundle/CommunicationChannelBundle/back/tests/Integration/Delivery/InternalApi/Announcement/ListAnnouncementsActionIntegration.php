@@ -9,7 +9,7 @@ use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
-class ListAnnouncementActionIntegration extends WebTestCase
+class ListAnnouncementsActionIntegration extends WebTestCase
 {
     public function setUp(): void
     {

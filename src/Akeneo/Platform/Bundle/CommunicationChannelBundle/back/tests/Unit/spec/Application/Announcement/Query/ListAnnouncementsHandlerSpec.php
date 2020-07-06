@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Platform\CommunicationChannel\Application\Announcement\Query;
 
-use Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\ListAnnouncementHandler;
-use Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\ListAnnouncementQuery;
+use Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\ListAnnouncementsHandler;
+use Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\ListAnnouncementsQuery;
 use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Model\Read\AnnouncementItem;
 use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Query\FindAnnouncementItemsInterface;
 use Akeneo\Platform\CommunicationChannel\Infrastructure\Persistence\InMemory\Query\InMemoryFindViewedAnnouncementIds;
@@ -14,7 +14,7 @@ use DateTimeImmutable;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class ListAnnouncementHandlerSpec extends ObjectBehavior
+class ListAnnouncementsHandlerSpec extends ObjectBehavior
 {
     /** @var InMemoryViewedAnnouncementRepository */
     private $viewedAnnouncementsRepository;
@@ -29,7 +29,7 @@ class ListAnnouncementHandlerSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldBeAnInstanceOf(ListAnnouncementHandler::class);
+        $this->shouldBeAnInstanceOf(ListAnnouncementsHandler::class);
     }
 
     public function it_handles_the_list_paginated_announcements_query($findAnnouncementItems): void
@@ -43,7 +43,7 @@ class ListAnnouncementHandlerSpec extends ObjectBehavior
             Argument::type('int')
         )->willReturn([$announcementItems[1]]);
 
-        $query = new ListAnnouncementQuery('EE', '4.0', 1, 'f68a21bb-ec9a-4009-9b0b-2639c6798e5f', 1);
+        $query = new ListAnnouncementsQuery('EE', '4.0', 1, 'f68a21bb-ec9a-4009-9b0b-2639c6798e5f', 1);
         $this->execute($query)->shouldReturn([$announcementItems[1]]);
     }
 
@@ -59,7 +59,7 @@ class ListAnnouncementHandlerSpec extends ObjectBehavior
         )->willReturn($announcementsItems);
         $this->viewedAnnouncementsRepository->dataRows[] = ['announcement_id' => 'update-easily_monitor_errors_on_your_connections-2020-06-04', 'user_id' => 1];
 
-        $query = new ListAnnouncementQuery('EE', '4.0', 1, null, 2);
+        $query = new ListAnnouncementsQuery('EE', '4.0', 1, null, 2);
         $expectedAnnouncements = $this->getAnnouncements();
         array_unshift($expectedAnnouncements[1]['tags'], 'new');
         $expectedAnnouncementItems = $this->createAnnouncementItems($expectedAnnouncements);
