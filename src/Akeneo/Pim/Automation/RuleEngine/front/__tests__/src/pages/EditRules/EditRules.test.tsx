@@ -12,6 +12,7 @@ import {
 import { Scope } from '../../../../src/models';
 import { clearCategoryRepositoryCache } from '../../../../src/repositories/CategoryRepository';
 import { clearAttributeRepositoryCache } from '../../../../src/repositories/AttributeRepository';
+import { dependencies } from '../../../../src/dependenciesTools/provider/dependencies';
 
 jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
 jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
@@ -362,5 +363,22 @@ describe('EditRules', () => {
     );
     // Then
     expect(await findByText('500')).toBeInTheDocument();
+  });
+  it('should render a non authorized page', async () => {
+    dependencies.security = {
+      isGranted: jest
+        .fn((_acl: string) => true)
+        .mockImplementationOnce((_acl: string) => false),
+    };
+    // When
+    render(
+      <EditRules ruleDefinitionCode={ruleDefinitionCode} setIsDirty={setIsDirty} />,
+      {
+        legacy: true,
+      }
+    );
+    // Then
+    expect(await screen.findByText('error.exception'));
+    expect(screen.getByText('401'));
   });
 });
