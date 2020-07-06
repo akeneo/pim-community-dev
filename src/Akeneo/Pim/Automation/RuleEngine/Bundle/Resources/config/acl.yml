@@ -7,6 +7,7 @@ pimee_catalog_rule_rule_edit_permissions:
     type: action
     label: pimee_catalog_rule.acl.rule.edit_permissions
     group_name: pimee_catalog_rule.acl_group.rule
+    enabled_at_creation: false
 
 pimee_catalog_rule_rule_delete_permissions:
     type: action
