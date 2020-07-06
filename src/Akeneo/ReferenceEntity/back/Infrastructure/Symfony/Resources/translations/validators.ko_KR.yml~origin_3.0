@@ -44,11 +44,6 @@ pim_reference_entity:
         is_not_expected: '로케일별 값이 없으므로 특성 "%attribute_code%"에 대한 로케일이 필요하지 않습니다'
         is_not_activated: '"%locale_identifier%" 로케일이 활성화되지 않았습니다.'
         is_not_activated_for_channel: '"%locale_identifier%" 로케일이 "%channel_identifier%" 채널에 대해 활성화되지 않았습니다.'
-      number:
-        should_be_string: '이 필드는 문자열이어야 합니다'
-        should_be_integer: '이 필드는 정수여야 합니다'
-        integer_too_long: '이 정수는 너무 큽니다'
-        should_be_numeric: '이 필드는 올바른 소수 구분 기호가 포함된 숫자 값이어야 합니다'
   attribute:
     validation:
       options:
@@ -62,12 +57,6 @@ pim_reference_entity:
         should_be_an_integer: '이 값은 정수여야 합니다.'
       max_file_size:
         should_be_a_number: '이 값은 숫자여야 합니다.'
-      min_value:
-        should_be_a_number: '이 값은 올바른 소수 구분 기호가 포함된 숫자여야 합니다'
-        cannot_be_greater_than_max: '최소값은 최대값보다 클 수 없습니다'
-      max_value:
-        should_be_a_number: '이 값은 올바른 소수 구분 기호가 포함된 숫자여야 합니다'
-        cannot_be_lower_than_min: '최대값은 최소값보다 작을 수 없습니다'
       code:
         pattern: '이 필드는 문자, 숫자 및 밑줄만 포함할 수 있습니다.'
         reserved_codes: '코드에 다음 값을 사용할 수 없습니다: "{{ comma_separated_reserved_keywords }}"'
@@ -84,13 +73,3 @@ pim_reference_entity:
       record_type:
         is_required: '참조 엔터티 링크 특성을 만들려면 참조 엔터티 유형을 지정해야 합니다'
         reference_entity_should_exist: '참조 엔터티 "%reference_entity_code%"을(를) 찾지 못했습니다.'
-      prefix:
-        should_not_be_empty: '접두사는 빈 문자열일 수 없습니다.'
-      suffix:
-        should_not_be_empty: '접미사는 빈 문자열일 수 없습니다.'
-      media_type:
-        not_expected: '지정된 미디어 유형은 필요한 유형(%supported_media_types%)에 해당되지 않습니다.'
-  product_value:
-    validation:
-      record_should_exist: '"%attribute_code%" 속성에 올바른 레코드 코드가 필요합니다. "%invalid_record%" 레코드가 존재하지 않습니다.'
-      records_should_exist: '"%attribute_code%" 속성에 올바른 레코드 코드가 필요합니다. 다음 레코드가 존재하지 않습니다: "%invalid_records%"'
