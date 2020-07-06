@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-9329: Fix slow queries collect data on reference entity and asset manager
 - PIM-9335: Fix fetch attribute to 100 instead of 20 by default in linked products
 
 # 4.0.36 (2020-06-30)

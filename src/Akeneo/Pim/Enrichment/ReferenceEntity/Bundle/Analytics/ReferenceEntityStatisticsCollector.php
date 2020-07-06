@@ -60,13 +60,16 @@ class ReferenceEntityStatisticsCollector implements DataCollectorInterface
 
     public function collect(): array
     {
+        $averageMaxNumberOfRecordsPerReferenceEntity = $this->averageMaxNumberOfRecordsPerReferenceEntity->fetch();
+        $averageMaxNumberOfAttributesPerReferenceEntity = $this->averageMaxNumberOfAttributesPerReferenceEntity->fetch();
+
         return [
             'nb_reference_entities' => $this->countReferenceEntities->fetch()->getVolume(),
-            'max_number_of_records_per_reference_entity' => $this->averageMaxNumberOfRecordsPerReferenceEntity->fetch()->getMaxVolume(),
-            'average_number_of_records_per_reference_entity' => $this->averageMaxNumberOfRecordsPerReferenceEntity->fetch()->getAverageVolume(),
+            'max_number_of_records_per_reference_entity' => $averageMaxNumberOfRecordsPerReferenceEntity->getMaxVolume(),
+            'average_number_of_records_per_reference_entity' => $averageMaxNumberOfRecordsPerReferenceEntity->getAverageVolume(),
             'average_number_of_values_per_records' => $this->averageMaxNumberOfValuesPerRecord->fetch()->getAverageVolume(),
-            'max_number_of_attributes_per_reference_entity' => $this->averageMaxNumberOfAttributesPerReferenceEntity->fetch()->getMaxVolume(),
-            'average_number_of_attributes_per_reference_entity' => $this->averageMaxNumberOfAttributesPerReferenceEntity->fetch()->getAverageVolume(),
+            'max_number_of_attributes_per_reference_entity' => $averageMaxNumberOfAttributesPerReferenceEntity->getMaxVolume(),
+            'average_number_of_attributes_per_reference_entity' => $averageMaxNumberOfAttributesPerReferenceEntity->getAverageVolume(),
             'average_percentage_localizable_only_attributes' => $this->localizableOnly->fetch()->getAverageVolume(),
             'average_percentage_scopable_only_attributes' => $this->scopableOnly->fetch()->getAverageVolume(),
             'average_percentage_scopable_and_localizable_attributes' => $this->scopableAndLocalizable->fetch()->getAverageVolume(),
