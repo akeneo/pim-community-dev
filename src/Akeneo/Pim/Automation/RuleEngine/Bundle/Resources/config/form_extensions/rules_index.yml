@@ -65,7 +65,7 @@ extensions:
         config:
             alias: rule-grid
 
-    pim-user-index-create-button:
+    pim-rule-index-create-button:
         module: pimee/rules/create-button
         parent: pim-rule-index
         targetZone: buttons
