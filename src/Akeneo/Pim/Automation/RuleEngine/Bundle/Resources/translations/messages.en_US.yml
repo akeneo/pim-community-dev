@@ -16,6 +16,14 @@ pimee_catalog_rule:
                 impacted_product_count: Calculate the impacted products
                 execute: Execute
                 delete: Delete
+    condition:
+        fields:
+            family: Family
+            associations: Associations
+            groups: Groups
+            categories: Categories
+        field_groups:
+            system: System
     acl_group:
         rule: Rules
     acl:
