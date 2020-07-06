@@ -738,7 +738,7 @@ workflows:
                     - test_back_behat_legacy
                     - test_back_performance
 
-  nightly_helpdesk:
+  nightly_deployments:
       triggers:
           - schedule:
                 cron: "30 4 * * *"
@@ -750,6 +750,9 @@ workflows:
       jobs:
           - checkout
           - deploy_helpdesk_environment:
+                requires:
+                    - checkout
+          - deploy_pm_environment:
                 requires:
                     - checkout
 
