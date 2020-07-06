@@ -6,6 +6,7 @@ const unitConfig = {
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
+  collectCoverage: false,
   coveragePathIgnorePatterns: [
     'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge',
     'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/components/Button.tsx',

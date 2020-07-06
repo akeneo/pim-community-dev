@@ -44,8 +44,13 @@ endif
 
 .PHONY: unit-front
 unit-front:
+ifeq ($(CI),true)
 	$(YARN_RUN) unit
 	$(MAKE) connectivity-connection-unit-front
+else
+	$(YARN_RUN) unit --coverage || (exit 0)
+	$(MAKE) connectivity-connection-unit-front_coverage
+endif
 
 ### Acceptance tests
 .PHONY: acceptance-back
