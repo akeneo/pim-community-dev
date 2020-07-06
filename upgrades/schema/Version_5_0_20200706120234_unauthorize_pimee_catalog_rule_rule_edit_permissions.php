@@ -15,7 +15,7 @@ use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 /**
  * Unauthorize by default the permission to edit catalog rules
  */
-final class Version_5_0_20200623100751_add_record_created_updated_at extends AbstractMigration implements ContainerAwareInterface
+final class Version_5_0_20200706120234_unauthorize_pimee_catalog_rule_rule_edit_permissions_Integration extends AbstractMigration implements ContainerAwareInterface
 {
     private const ACL_ID = 'pimee_catalog_rule_rule_edit_permissions';
 
