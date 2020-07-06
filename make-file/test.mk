@@ -47,6 +47,11 @@ unit-front:
 	$(YARN_RUN) unit
 	$(MAKE) connectivity-connection-unit-front
 
+.PHONY: unit-front-coverage
+unit-front-coverage:
+	$(YARN_RUN) unit-coverage || (exit 0)
+	$(MAKE) connectivity-connection-unit-front_coverage
+
 ### Acceptance tests
 .PHONY: acceptance-back
 acceptance-back:
