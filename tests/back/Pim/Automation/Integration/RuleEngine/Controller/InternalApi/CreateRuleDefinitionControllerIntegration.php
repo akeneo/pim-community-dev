@@ -31,14 +31,14 @@ class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
         $this->loadFixtures();
     }
 
-    public function test_it_creates_a_rule_defintion()
+    public function test_it_creates_a_rule_definition()
     {
         $normalizedRuleDefinition = [
             'code' => '345',
             'content' => [
                 'conditions' => [],
                 'actions' => [
-                    ['type' => 'set', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['type' => 'set', 'field' => 'a_text', 'value' => 'awesome-jacket'],
                 ]
             ],
             'priority' => 0,
@@ -65,6 +65,32 @@ class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
         Assert::assertEquals($content, $expectedContent);
     }
 
+    public function test_it_creates_a_rule_definition_with_only_code()
+    {
+        $normalizedRuleDefinition = [
+            'code' => 'my_new_code',
+            'content' => ['conditions' => [], 'actions' => []],
+        ];
+
+        $this->createRuleDefinition($normalizedRuleDefinition);
+
+        $response = $this->client->getResponse();
+        Assert::assertSame($response->getStatusCode(), Response::HTTP_OK);
+
+        $content = json_decode($response->getContent(), true);
+        Assert::arrayHasKey($content, 'id');
+
+        $expectedContent = $normalizedRuleDefinition;
+        $expectedContent['id'] = $content['id'];
+        $expectedContent['type'] = 'product';
+        $expectedContent['labels'] = [];
+        $expectedContent['priority'] = 0;
+
+        ksort($expectedContent);
+        ksort($content);
+        Assert::assertEquals($expectedContent, $content);
+    }
+
     public function test_it_fails_on_existing_code()
     {
         $normalizedRuleDefinition = [
@@ -72,7 +98,7 @@ class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
             'content' => [
                 'conditions' => [],
                 'actions' => [
-                    ['type' => 'set', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['type' => 'set', 'field' => 'a_text', 'value' => 'awesome-jacket'],
                 ]
             ],
             'priority' => 0,
@@ -84,11 +110,6 @@ class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
         Assert::assertSame($response->getStatusCode(), Response::HTTP_BAD_REQUEST);
     }
 
-    /**
-     * This test is deactivated because errors are not managed yet.
-     * TODO RUL-84
-     */
-    /*
     public function test_if_fails_with_a_wrong_format()
     {
         $normalizedRuleDefinition = [
@@ -96,7 +117,7 @@ class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
             'content' => [
                 'conditions' => [],
                 'actions' => [
-                    ['type' => 'set', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['type' => 'set', 'field' => 'a_text', 'value' => 'awesome-jacket'],
                 ]
             ],
             'priority' => 'toto',
@@ -106,7 +127,7 @@ class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
 
         $response = $this->client->getResponse();
         Assert::assertSame($response->getStatusCode(), Response::HTTP_BAD_REQUEST);
-    }*/
+    }
 
     private function loadFixtures()
     {
@@ -137,6 +158,6 @@ class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
 
     protected function getConfiguration(): Configuration
     {
-        return $this->catalog->useMinimalCatalog();
+        return $this->catalog->useTechnicalCatalog();
     }
 }

@@ -84,6 +84,7 @@ pimee_catalog_rule:
                     required: Rule code is required.
                     too_short: "Rule code is too short. It requires {{ characterLimit }} characters or more."
                     allowed_characters: Rule code can only be alphanumeric and underscore characters.
+                    unique: This code is already used.
             cross_link: Leave create rule form
         edit:
             properties:

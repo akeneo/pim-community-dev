@@ -31,14 +31,14 @@ class UpdateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
         $this->loadFixtures();
     }
 
-    public function test_it_updates_a_rule_defintion()
+    public function test_it_updates_a_rule_definition()
     {
         $normalizedRuleDefinition = [
             'code' => '123',
             'content' => [
                 'conditions' => [],
                 'actions' => [
-                    ['type' => 'set', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['type' => 'set', 'field' => 'a_text', 'value' => 'awesome-jacket'],
                 ]
             ],
             'type' => 'add',
@@ -57,8 +57,9 @@ class UpdateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
         $content = json_decode($response->getContent(), true);
         Assert::arrayHasKey($content, 'id');
         unset($content['id']);
+        $normalizedRuleDefinition['type'] = 'product';
 
-        Assert::assertEqualsCanonicalizing($content, $normalizedRuleDefinition);
+        Assert::assertEqualsCanonicalizing($normalizedRuleDefinition, $content);
     }
 
     public function test_it_fails_on_non_existing_code()
@@ -68,7 +69,7 @@ class UpdateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
             'content' => [
                 'conditions' => [],
                 'actions' => [
-                    ['type' => 'set', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
+                    ['type' => 'set', 'field' => 'a_text', 'value' => 'awesome-jacket'],
                 ]
             ],
             'type' => 'add',
@@ -89,7 +90,7 @@ class UpdateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
             ->setContent([
                 'conditions' => [],
                 'actions' => [
-                    ['type' => 'clear', 'field' => 'name'],
+                    ['type' => 'clear', 'field' => 'a_text'],
                 ],
             ])
             ->setType('add')
@@ -112,6 +113,6 @@ class UpdateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
 
     protected function getConfiguration(): Configuration
     {
-        return $this->catalog->useMinimalCatalog();
+        return $this->catalog->useTechnicalCatalog();
     }
 }

@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Tool\Bundle\RuleEngineBundle\Validation;
+namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
-use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
+use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\UniqueRuleDefinitionCode;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -33,20 +33,14 @@ final class UniqueRuleDefinitionCodeValidator extends ConstraintValidator
         $this->ruleDefinitionRepository = $ruleDefinitionRepository;
     }
 
-    public function validate($ruleDefinition, Constraint $constraint): void
+    public function validate($code, Constraint $constraint): void
     {
-        Assert::isInstanceOf($ruleDefinition, RuleDefinition::class);
         Assert::isInstanceOf($constraint, UniqueRuleDefinitionCode::class);
+        Assert::string($code);
 
-        $existingRuleDefinition = $this->ruleDefinitionRepository->findOneByIdentifier($ruleDefinition->getCode());
-        if (null === $existingRuleDefinition) {
-            return;
-        }
-
-        if ($existingRuleDefinition->getId() !== $ruleDefinition->getId()) {
-            $this->context->buildViolation($constraint->message)
-                ->atPath('code')
-                ->addViolation();
+        $existingRuleDefinition = $this->ruleDefinitionRepository->findOneByIdentifier($code);
+        if (null !== $existingRuleDefinition) {
+            $this->context->buildViolation($constraint->message)->addViolation();
         }
     }
 }

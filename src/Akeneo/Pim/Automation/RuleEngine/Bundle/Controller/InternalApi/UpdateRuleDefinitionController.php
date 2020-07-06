@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateOrUpdateRuleCommand;
 use Akeneo\Pim\Automation\RuleEngine\Component\Updater\RuleDefinitionUpdaterInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\Common\Saver\RuleDefinitionSaver;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Normalizer\RuleDefinitionNormalizer;
@@ -72,15 +73,21 @@ class UpdateRuleDefinitionController
             throw new NotFoundHttpException(sprintf('The "%s" rule definition is not found', $ruleDefinitionCode));
         }
         $content = json_decode($request->getContent(), true);
-        unset($content['code']);
+        $content['type'] = 'product';
+        $content['code'] = $ruleDefinitionCode;
 
-        $this->ruleDefinitionUpdater->update($ruleDefinition, $content);
-        $violations = $this->validator->validate($ruleDefinition);
-        if (0 < $violations->count()) {
+        $data = $content;
+        $data['conditions'] = $data['content']['conditions'] ?? null;
+        $data['actions'] = $data['content']['actions'] ?? null;
+        $command = new CreateOrUpdateRuleCommand($data);
+        $violations = $this->validator->validate($command, null, ['Default', 'update']);
+        if ($violations->count()) {
             $errors = $this->normalizer->normalize($violations, 'internal_api');
 
             return new JsonResponse($errors, Response::HTTP_BAD_REQUEST);
         }
+
+        $this->ruleDefinitionUpdater->update($ruleDefinition, $content);
         $this->ruleDefinitionSaver->save($ruleDefinition);
 
         return new JsonResponse($this->ruleDefinitionNormalizer->normalize($ruleDefinition));

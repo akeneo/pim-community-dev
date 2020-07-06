@@ -1,6 +1,0 @@
-services:
-    Akeneo\Tool\Bundle\RuleEngineBundle\Validation\UniqueRuleDefinitionCodeValidator:
-        arguments:
-            - '@akeneo_rule_engine.repository.rule_definition'
-        tags:
-            - { name: validator.constraint_validator }

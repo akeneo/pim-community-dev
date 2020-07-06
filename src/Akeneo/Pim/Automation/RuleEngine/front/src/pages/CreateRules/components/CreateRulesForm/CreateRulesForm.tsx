@@ -167,7 +167,7 @@ const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
                       <InputErrorMsg
                         key={`label-${message}`}
                         id={inputLabelErrorMsgId}>
-                        {message}
+                        {translate(message)}
                       </InputErrorMsg>
                     ))}
                   <ErrorMessage errors={errors} name={inputLabelName}>

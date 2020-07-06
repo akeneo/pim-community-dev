@@ -8,6 +8,8 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateOrUpdateRuleCommand:
             - Regex:
                 pattern: /^[a-zA-Z0-9_]+$/
                 message: pimee_catalog_rule.rule_definition.validation.invalid_code
+            - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\UniqueRuleDefinitionCode:
+                groups: ['create']
         priority:
             - Type: int
         conditions:
@@ -18,9 +20,11 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateOrUpdateRuleCommand:
         actions:
             - NotBlank:
                 message: pimee_catalog_rule.rule_definition.validation.actions.missing_key
+                groups: ['update', 'import']
             - Type: array
             - Count:
                 min: 1
+                groups: ['update', 'import']
             - All:
                 - Type: object
             - Valid: ~

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateOrUpdateRuleCommand;
 use Akeneo\Pim\Automation\RuleEngine\Component\Updater\RuleDefinitionUpdaterInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\Common\Saver\RuleDefinitionSaver;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
@@ -62,15 +63,21 @@ class CreateRuleDefinitionController
         }
 
         $content = json_decode($request->getContent(), true);
-        unset($content['type']);
-        $ruleDefinition = (new RuleDefinition())->setType('product');
-        $this->ruleDefinitionUpdater->update($ruleDefinition, $content);
-        $violations = $this->validator->validate($ruleDefinition);
-        if (0 < $violations->count()) {
+        $content['type'] = 'product';
+
+        $data = $content;
+        $data['conditions'] = $data['content']['conditions'] ?? null;
+        $data['actions'] = $data['content']['actions'] ?? null;
+        $command = new CreateOrUpdateRuleCommand($data);
+        $violations = $this->validator->validate($command, null, ['Default', 'create']);
+        if ($violations->count()) {
             $errors = $this->normalizer->normalize($violations, 'internal_api');
 
             return new JsonResponse($errors, Response::HTTP_BAD_REQUEST);
         }
+
+        $ruleDefinition = new RuleDefinition();
+        $this->ruleDefinitionUpdater->update($ruleDefinition, $content);
         $this->ruleDefinitionSaver->save($ruleDefinition);
 
         return new JsonResponse($this->ruleDefinitionNormalizer->normalize($ruleDefinition));

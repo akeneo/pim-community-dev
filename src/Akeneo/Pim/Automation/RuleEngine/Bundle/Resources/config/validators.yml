@@ -157,3 +157,9 @@ services:
             - '@akeneo.pim.structure.query.get_attributes'
         tags:
             - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Automation\RuleEngine\Component\Validator\UniqueRuleDefinitionCodeValidator:
+        arguments:
+            - '@akeneo_rule_engine.repository.rule_definition'
+        tags:
+            - { name: validator.constraint_validator }

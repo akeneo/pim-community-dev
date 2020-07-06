@@ -11,8 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Tool\Bundle\RuleEngineBundle\Validation;
+namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Validator\UniqueRuleDefinitionCodeValidator;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -21,7 +22,7 @@ use Symfony\Component\Validator\Constraint;
  */
 final class UniqueRuleDefinitionCode extends Constraint
 {
-    public $message = 'This value is already used.';
+    public $message = 'pimee_catalog_rule.form.creation.constraint.code.unique';
 
     /**
      * {@inheritdoc}
@@ -36,6 +37,6 @@ final class UniqueRuleDefinitionCode extends Constraint
      */
     public function getTargets()
     {
-        return self::CLASS_CONSTRAINT;
+        return self::PROPERTY_CONSTRAINT;
     }
 }

@@ -97,7 +97,7 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
             null,
             ['definitionObject' => null]
         )->shouldBeCalled()->willReturn($rule);
-        $validator->validate(Argument::type(CreateOrUpdateRuleCommand::class))
+        $validator->validate(Argument::type(CreateOrUpdateRuleCommand::class), null, ['Default', 'import'])
             ->shouldBeCalled()
             ->willReturn(new ConstraintViolationList([]));
 
@@ -273,7 +273,7 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
             null,
             ['definitionObject' => $definition]
         )->shouldBeCalled()->willReturn($rule);
-        $validator->validate(Argument::type(CreateOrUpdateRuleCommand::class))
+        $validator->validate(Argument::type(CreateOrUpdateRuleCommand::class), null, ['Default', 'import'])
             ->shouldBeCalled()
             ->willReturn(new ConstraintViolationList([]));
 
@@ -317,7 +317,7 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
         $violation  = new ConstraintViolation('error', 'error', [], '', '', ['invalid value 1', 'invalid value 2']);
         $violations = new ConstraintViolationList([$violation]);
 
-        $validator->validate(Argument::type(CreateOrUpdateRuleCommand::class))
+        $validator->validate(Argument::type(CreateOrUpdateRuleCommand::class),  null, ['Default', 'import'])
             ->shouldBeCalled()
             ->willReturn($violations);
 

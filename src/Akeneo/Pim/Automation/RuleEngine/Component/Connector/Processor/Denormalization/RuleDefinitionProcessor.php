@@ -85,7 +85,7 @@ class RuleDefinitionProcessor extends AbstractProcessor implements
     {
         $item = $this->storeMedias($item);
         $command = new CreateOrUpdateRuleCommand($item);
-        $violations = $this->validator->validate($command);
+        $violations = $this->validator->validate($command, null, ['Default', 'import']);
         if ($violations->count()) {
             $this->skipItemWithConstraintViolations($item, $violations);
         }
