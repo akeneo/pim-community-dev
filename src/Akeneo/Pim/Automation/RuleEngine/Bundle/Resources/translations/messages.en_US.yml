@@ -79,6 +79,7 @@ pimee_catalog_rule:
             view_permissions: View rules
             delete_permissions: Delete rules
             impacted_product_count_permissions: Calculate the number of products impacted by the rules
+            create_permissions: Create rules
             execute_permissions: Execute rules
     attribute:
         tab:

@@ -22,3 +22,4 @@ pimee_catalog_rule_rule_create_permissions:
     type: action
     label: pimee_catalog_rule.acl.rule.create_permissions
     group_name: pimee_catalog_rule.acl_group.rule
+    enabled_at_creation: false
