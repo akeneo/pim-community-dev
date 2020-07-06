@@ -680,6 +680,9 @@ workflows:
                             - master
                 requires:
                     - build_prod
+          - test_upgrade_from_serenity_to_master:
+                requires:
+                    - build_prod
           - deploy_pr_environment:
                 requires:
                     - deploy_pr_environment?
@@ -721,6 +724,7 @@ workflows:
                 requires:
                     - test_back_behat_legacy
                     - test_back_performance
+                    - test_upgrade_from_serenity_to_master
 
   nightly_helpdesk:
       triggers:
@@ -774,6 +778,9 @@ workflows:
           - test_deploy_master:
                 requires:
                     - build_prod
+          - test_upgrade_from_serenity_to_master:
+                requires:
+                    - build_prod
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -805,6 +812,7 @@ workflows:
                     - test_back_behat_legacy
                     - test_back_data_migrations
                     - test_deploy_master
+                    - test_upgrade_from_serenity_to_master
 
   nightly-beta:
       triggers:
