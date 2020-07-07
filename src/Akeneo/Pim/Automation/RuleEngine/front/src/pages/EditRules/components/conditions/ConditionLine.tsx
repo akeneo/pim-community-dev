@@ -19,6 +19,10 @@ const DeleteButton = styled(DialogDisclosure)`
   cursor: pointer;
 `;
 
+const DeleteButtonContainer = styled.div`
+  align-items: flex-start;
+`;
+
 type Props = {
   lineNumber: number;
   locales: Locale[];
@@ -72,7 +76,7 @@ const ConditionLine: React.FC<Props> = ({
         scopes={scopes}
         currentCatalogLocale={currentCatalogLocale}
       />
-      <div className='AknGrid-bodyCell AknGrid-bodyCell--tight'>
+      <DeleteButtonContainer className='AknGrid-bodyCell AknGrid-bodyCell--tight'>
         <DeleteButton {...dialog}>
           <img
             alt={translate('pimee_catalog_rule.form.edit.conditions.delete')}
@@ -93,7 +97,7 @@ const ConditionLine: React.FC<Props> = ({
             'pimee_catalog_rule.form.edit.conditions.delete.description'
           )}
         />
-      </div>
+      </DeleteButtonContainer>
     </div>
   );
 };

@@ -14,6 +14,7 @@ const OperatorColumn = styled.span`
   width: 160px;
   display: inline-block;
   margin: 0 20px 0 0;
+  height: 40px;
 `;
 
 const ValueColumn = styled.span`
@@ -21,6 +22,7 @@ const ValueColumn = styled.span`
     width: 300px;
     display: inline-block;
     margin: 0 20px 0 0;
+    height: 40px;
   }
 `;
 
@@ -28,12 +30,14 @@ const LocaleColumn = styled.span`
   width: 120px;
   display: inline-block;
   margin: 0 20px 0 0;
+  height: 40px;
 `;
 
 const ScopeColumn = styled.span`
   width: 120px;
   display: inline-block;
   margin: 0 20px 0 0;
+  height: 40px;
 `;
 
 const ConditionErrorLine = styled.ul`
@@ -67,11 +71,23 @@ const ConditionErrorLine = styled.ul`
   }
 `;
 
+const AttributeConditionLineFormAndErrorsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const AttributeConditionLineFormContainer = styled.div`
+  display: flex;
+  padding-bottom: 12px;
+`;
+
 export {
-  FieldColumn,
-  OperatorColumn,
-  ValueColumn,
-  LocaleColumn,
-  ScopeColumn,
+  AttributeConditionLineFormContainer,
+  AttributeConditionLineFormAndErrorsContainer,
   ConditionErrorLine,
+  FieldColumn,
+  LocaleColumn,
+  OperatorColumn,
+  ScopeColumn,
+  ValueColumn,
 };

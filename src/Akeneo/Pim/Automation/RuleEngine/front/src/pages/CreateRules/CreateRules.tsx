@@ -98,11 +98,9 @@ const CreateRules: React.FC = () => {
                 {translate('pimee_catalog_rule.form.creation.title')}
               </div>
               <SmallHelper>
-                <span>
-                  {translate('pimee_catalog_rule.form.creation.helper')}
-                  &nbsp;
-                  <a href='#'>Link to documentation under construction</a>
-                </span>
+                {translate('pimee_catalog_rule.form.creation.helper')}
+                &nbsp;
+                <a href='#'>Link to documentation under construction</a>
               </SmallHelper>
             </div>
             <CreateRulesForm

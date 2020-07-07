@@ -4,6 +4,17 @@ import { AkeneoTheme } from '@akeneo-pim-community/shared/src/theme/theme';
 
 type Level = 'info' | 'warning' | 'error';
 
+const getAnchorColor = (level: Level, theme: AkeneoTheme) => {
+  switch (level) {
+    case 'error':
+      return theme.color.red100;
+    case 'warning':
+      return theme.color.yellow120;
+    default:
+      return theme.color.blue100;
+  }
+};
+
 const getColor = (level: Level, theme: AkeneoTheme) => {
   switch (level) {
     case 'error':
@@ -11,7 +22,7 @@ const getColor = (level: Level, theme: AkeneoTheme) => {
     case 'warning':
       return theme.color.yellow120;
     default:
-      return theme.color.blue120;
+      return theme.color.grey120;
   }
 };
 
@@ -37,7 +48,7 @@ const getBackgroundColor = (level: Level, theme: AkeneoTheme) => {
   }
 };
 
-const getIcon = (level: Level) => {
+const getIcon = (level: Level | undefined) => {
   switch (level) {
     case 'error':
       return '/bundles/pimui/images/icon-danger.svg';
@@ -48,34 +59,14 @@ const getIcon = (level: Level) => {
   }
 };
 
-const SmallErrorHelper = styled.ul<{ level: Level }>`
+const SmallErrorHelper = styled.div<{ level: Level }>`
   &:not(:empty) {
-    color: ${({ theme, level }) => getColor(level, theme)};
+    display: flex;
+    align-items: center;
     background: ${({ theme, level }) => getBackgroundColor(level, theme)};
     min-height: 44px;
     padding: 10px;
-    flex-basis: 100%;
-    line-height: 15px;
-    background-image: url('${({ level }) => getIcon(level)}');
-    background-repeat: no-repeat;
-    background-size: 16px;
-    background-position: 10px 10px;
-    padding-left: 52px;
-
-    &:before {
-      content: '';
-      border-left: 1px solid ${({ theme, level }) =>
-        getBorderColor(level, theme)};
-      position: absolute;
-      height: 20px;
-      margin-left: -14px;
-    }
-
-    a {
-      color: ${({ theme, level }) => getColor(level, theme)};
-      cursor: pointer;
-      text-decoration: underline;
-    }
+    margin-bottom: 2px;
   }
 `;
 
@@ -83,8 +74,35 @@ type Props = {
   level?: Level;
 };
 
-export const SmallHelper: React.FC<Props> = ({ level, children }) => {
-  const levelOrDefault = level ?? 'info';
+export const SmallHelperText = styled.span<{ level: Level }>`
+  align-items: center;
+  border-left: 1px solid ${({ theme, level }) => getBorderColor(level, theme)};
+  color: ${({ theme, level }) => getColor(level, theme)};
+  display: flex;
+  padding-left: 10px;
+  a {
+    color: ${({ theme, level }) => getAnchorColor(level, theme)};
+    cursor: pointer;
+    text-decoration: underline;
+  }
+`;
 
-  return <SmallErrorHelper level={levelOrDefault}>{children}</SmallErrorHelper>;
+const HelperImg = styled.img`
+  height: 20px;
+  padding-right: 10px;
+`;
+
+export const SmallHelper: React.FC<Props> = ({ level = 'info', children }) => {
+  if (
+    (Array.isArray(children) && children.length) ||
+    typeof children === 'string'
+  ) {
+    return (
+      <SmallErrorHelper level={level}>
+        <HelperImg alt={`icon-${level}`} src={getIcon(level)} />
+        <SmallHelperText level={level}>{children}</SmallHelperText>
+      </SmallErrorHelper>
+    );
+  }
+  return null;
 };

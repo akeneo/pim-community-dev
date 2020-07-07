@@ -12,6 +12,8 @@ import {
 } from '../../../../components/Selectors/LocaleSelector';
 import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
 import {
+  AttributeConditionLineFormContainer,
+  AttributeConditionLineFormAndErrorsContainer,
   ConditionErrorLine,
   FieldColumn,
   LocaleColumn,
@@ -108,75 +110,78 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
     typeof errors?.content?.conditions?.[lineNumber]?.[element] === 'object';
 
   return (
-    <div className={'AknGrid-bodyCell'}>
-      <FieldColumn className={'AknGrid-bodyCell--highlight'} title={title}>
-        {title}
-      </FieldColumn>
-      <Controller
-        as={<input type='hidden' />}
-        name={fieldFormName}
-        defaultValue={field}
-      />
-      <OperatorColumn>
+    <AttributeConditionLineFormAndErrorsContainer
+      className={'AknGrid-bodyCell'}>
+      <AttributeConditionLineFormContainer>
+        <FieldColumn className={'AknGrid-bodyCell--highlight'} title={title}>
+          {title}
+        </FieldColumn>
         <Controller
-          as={OperatorSelector}
-          availableOperators={availableOperators}
-          data-testid={`edit-rules-input-${lineNumber}-operator`}
-          defaultValue={getOperatorFormValue() ?? defaultOperator}
-          hiddenLabel
-          name={operatorFormName}
-          value={getOperatorFormValue()}
+          as={<input type='hidden' />}
+          name={fieldFormName}
+          defaultValue={field}
         />
-      </OperatorColumn>
-      <ValueColumn>
-        {shouldDisplayValue(getOperatorFormValue() ?? defaultOperator) &&
-          children}
-      </ValueColumn>
-      {(attribute.scopable || getScopeFormValue()) && (
-        <ScopeColumn
-          className={
-            isElementInError('scope') ? 'select2-container-error' : ''
-          }>
+        <OperatorColumn>
           <Controller
-            allowClear={!attribute.scopable}
-            as={ScopeSelector}
-            availableScopes={Object.values(scopes)}
-            currentCatalogLocale={currentCatalogLocale}
-            data-testid={`edit-rules-input-${lineNumber}-scope`}
+            as={OperatorSelector}
+            availableOperators={availableOperators}
+            data-testid={`edit-rules-input-${lineNumber}-operator`}
+            defaultValue={getOperatorFormValue() ?? defaultOperator}
             hiddenLabel
-            name={scopeFormName}
-            defaultValue={getScopeFormValue()}
-            value={getScopeFormValue()}
-            rules={getScopeValidation(attribute, scopes, translate)}
+            name={operatorFormName}
+            value={getOperatorFormValue()}
           />
-        </ScopeColumn>
-      )}
-      {(attribute.localizable || getLocaleFormValue()) && (
-        <LocaleColumn
-          className={
-            isElementInError('locale') ? 'select2-container-error' : ''
-          }>
-          <Controller
-            as={LocaleSelector}
-            data-testid={`edit-rules-input-${lineNumber}-locale`}
-            hiddenLabel
-            availableLocales={getAvailableLocales()}
-            defaultValue={getLocaleFormValue()}
-            value={getLocaleFormValue()}
-            allowClear={!attribute.localizable}
-            name={localeFormName}
-            rules={getLocaleValidation(
-              attribute,
-              locales,
-              getAvailableLocales(),
-              getScopeFormValue(),
-              translate
-            )}
-          />
-        </LocaleColumn>
-      )}
+        </OperatorColumn>
+        <ValueColumn>
+          {shouldDisplayValue(getOperatorFormValue() ?? defaultOperator) &&
+            children}
+        </ValueColumn>
+        {(attribute.scopable || getScopeFormValue()) && (
+          <ScopeColumn
+            className={
+              isElementInError('scope') ? 'select2-container-error' : ''
+            }>
+            <Controller
+              allowClear={!attribute.scopable}
+              as={ScopeSelector}
+              availableScopes={Object.values(scopes)}
+              currentCatalogLocale={currentCatalogLocale}
+              data-testid={`edit-rules-input-${lineNumber}-scope`}
+              hiddenLabel
+              name={scopeFormName}
+              defaultValue={getScopeFormValue()}
+              value={getScopeFormValue()}
+              rules={getScopeValidation(attribute, scopes, translate)}
+            />
+          </ScopeColumn>
+        )}
+        {(attribute.localizable || getLocaleFormValue()) && (
+          <LocaleColumn
+            className={
+              isElementInError('locale') ? 'select2-container-error' : ''
+            }>
+            <Controller
+              as={LocaleSelector}
+              data-testid={`edit-rules-input-${lineNumber}-locale`}
+              hiddenLabel
+              availableLocales={getAvailableLocales()}
+              defaultValue={getLocaleFormValue()}
+              value={getLocaleFormValue()}
+              allowClear={!attribute.localizable}
+              name={localeFormName}
+              rules={getLocaleValidation(
+                attribute,
+                locales,
+                getAvailableLocales(),
+                getScopeFormValue(),
+                translate
+              )}
+            />
+          </LocaleColumn>
+        )}
+      </AttributeConditionLineFormContainer>
       <LineErrors lineNumber={lineNumber} type='conditions' />
-    </div>
+    </AttributeConditionLineFormAndErrorsContainer>
   );
 };
 

@@ -187,6 +187,7 @@ const RuleProductSelection: React.FC<Props> = ({
       </Header>
       <SmallHelper>
         {translate('pimee_catalog_rule.form.helper.product_selection')}
+        &nbsp;
         <a href='#'>
           {translate(
             'pimee_catalog_rule.form.helper.product_selection_doc_link'

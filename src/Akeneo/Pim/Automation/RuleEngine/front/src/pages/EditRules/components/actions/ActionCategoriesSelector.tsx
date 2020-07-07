@@ -269,28 +269,28 @@ const ActionCategoriesSelector: React.FC<Props> = ({
   return (
     <>
       <LineErrors lineNumber={lineNumber} type='actions' />
-      <SmallHelper level='error'>
-        {unexistingCategoryCodes.map(unexistingCategoryCode => {
-          return (
-            <li key={unexistingCategoryCode}>
+      {unexistingCategoryCodes.map(unexistingCategoryCode => {
+        console.log({ unexistingCategoryCode });
+        return (
+          <SmallHelper level='error' key={unexistingCategoryCode}>
+            {translate(
+              'pimee_catalog_rule.exceptions.unknown_categories',
+              { categoryCodes: unexistingCategoryCode },
+              1
+            )}
+            &nbsp;
+            <a
+              onClick={e => {
+                e.preventDefault();
+                handleDeleteUnexistingAttributeCode(unexistingCategoryCode);
+              }}>
               {translate(
-                'pimee_catalog_rule.exceptions.unknown_categories',
-                { categoryCodes: unexistingCategoryCode },
-                1
+                'pimee_catalog_rule.form.edit.actions.category.remove_unknown_category'
               )}
-              <a
-                onClick={e => {
-                  e.preventDefault();
-                  handleDeleteUnexistingAttributeCode(unexistingCategoryCode);
-                }}>
-                {translate(
-                  'pimee_catalog_rule.form.edit.actions.category.remove_unknown_category'
-                )}
-              </a>
-            </li>
-          );
-        })}
-      </SmallHelper>
+            </a>
+          </SmallHelper>
+        );
+      })}
       <ActionGrid>
         <ActionLeftSide>
           <div className='AknFormContainer'>
