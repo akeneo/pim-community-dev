@@ -115,10 +115,11 @@ const CopyActionLine: React.FC<Props> = ({
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
-  const { watch, setValue, getValues } = useFormContext();
+  const { setValue } = useFormContext();
   const {
     formName,
     typeFormName,
+    getFormValue
   } = useControlledFormInputAction<string | null>(lineNumber);
 
   const [targetAttributeTypes, setTargetAttributeTypes] = React.useState<
@@ -131,7 +132,7 @@ const CopyActionLine: React.FC<Props> = ({
       ? supportedTypes().get(attribute.type) || []
       : [];
     setTargetAttributeTypes(supported);
-    const targetAttributeCode = watch(formName('to_field'));
+    const targetAttributeCode = getFormValue('to_field');
     if (targetAttributeCode) {
       getAttributeByIdentifier(targetAttributeCode, router).then(attribute => {
         if (!attribute || !supported.includes(attribute.type)) {
@@ -158,8 +159,8 @@ const CopyActionLine: React.FC<Props> = ({
   return (
     <>
       <Controller name={typeFormName} as={<span hidden />} defaultValue='copy' />
-      <Controller name={formName('from_field')} as={<span hidden />} defaultValue={getValues()[formName('from_field')]} />
-      <Controller name={formName('to_field')} as={<span hidden />} defaultValue={getValues()[formName('to_field')]} />
+      <Controller name={formName('from_field')} as={<span hidden />} defaultValue={getFormValue('from_field')} />
+      <Controller name={formName('to_field')} as={<span hidden />} defaultValue={getFormValue('to_field')} />
       <ActionTemplate
         title={translate('pimee_catalog_rule.form.edit.actions.copy.title')}
         helper={translate('pimee_catalog_rule.form.edit.actions.copy.helper')}
@@ -174,7 +175,7 @@ const CopyActionLine: React.FC<Props> = ({
               )}
             </ActionTitle>
             <AttributeLocaleScopeSelector
-              attributeCode={getValues()[formName('from_field')]}
+              attributeCode={getFormValue('from_field')}
               attributeFormName={formName('from_field')}
               attributeId={`edit-rules-action-${lineNumber}-from-field`}
               attributeLabel={`${translate(
@@ -202,7 +203,7 @@ const CopyActionLine: React.FC<Props> = ({
             </ActionTitle>
             {targetAttributeTypes.length > 0 && (
               <AttributeLocaleScopeSelector
-                attributeCode={getValues()[formName('to_field')]}
+                attributeCode={getFormValue('to_field')}
                 attributeFormName={formName('to_field')}
                 attributeId={`edit-rules-action-${lineNumber}-to-field`}
                 attributeLabel={`${translate(
@@ -218,6 +219,8 @@ const CopyActionLine: React.FC<Props> = ({
                 filterAttributeTypes={targetAttributeTypes}
                 lineNumber={lineNumber}
                 onAttributeChange={handleTargetChange}
+                scopeFieldName={'to_scope'}
+                localeFieldName={'to_locale'}
               />
             )}
           </ActionRightSide>
