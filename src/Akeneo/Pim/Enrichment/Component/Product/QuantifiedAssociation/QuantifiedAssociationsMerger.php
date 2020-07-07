@@ -21,21 +21,20 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\Quantifi
  */
 class QuantifiedAssociationsMerger
 {
-    public function normalizeAndMergeQuantifiedAssociationsFrom(
-        array $entitiesWithQuantifiedAssociations,
-        QuantifiedAssociations $quantifiedAssociationToMergeInto = null
-    ): array {
+    public function normalizeAndMergeQuantifiedAssociationsFrom(array $entitiesWithQuantifiedAssociations): array
+    {
         if (empty($entitiesWithQuantifiedAssociations)) {
             return [];
         }
 
-        $mergedQuantifiedAssociations = null === $quantifiedAssociationToMergeInto ? QuantifiedAssociations::createFromNormalized([]) : $quantifiedAssociationToMergeInto;
+        $firstEntityWithQuantifiedAssociations = array_shift($entitiesWithQuantifiedAssociations);
+        $mergedQuantifiedAssociations = $firstEntityWithQuantifiedAssociations->getQuantifiedAssociations();
         foreach ($entitiesWithQuantifiedAssociations as $entity) {
             if (!$entity instanceof EntityWithQuantifiedAssociationsInterface) {
                 continue;
             }
 
-            $mergedQuantifiedAssociations->merge($entity->getQuantifiedAssociations());
+            $mergedQuantifiedAssociations = $mergedQuantifiedAssociations->merge($entity->getQuantifiedAssociations());
         }
 
         return $mergedQuantifiedAssociations->normalize();
