@@ -66,12 +66,14 @@ class NotGrantedQuantifiedAssociationsMerger implements NotGrantedDataMergerInte
             $fullProduct->getQuantifiedAssociations()
         );
 
-        $fullProductQuantifiedAssociationsNotGranted->merge($filteredProduct->getQuantifiedAssociations());
+        $mergedQuantifiedAssociations = $fullProductQuantifiedAssociationsNotGranted->merge(
+            $filteredProduct->getQuantifiedAssociations()
+        );
 
         $this->fieldSetter->setFieldData(
             $fullProduct,
             'quantified_associations',
-            $fullProductQuantifiedAssociationsNotGranted->normalize()
+            $mergedQuantifiedAssociations->normalize()
         );
 
         return $fullProduct;
