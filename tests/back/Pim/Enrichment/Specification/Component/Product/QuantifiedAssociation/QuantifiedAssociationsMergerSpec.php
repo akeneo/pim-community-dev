@@ -12,14 +12,15 @@ class QuantifiedAssociationsMergerSpec extends ObjectBehavior
         ProductInterface $product_1,
         ProductInterface $product_2,
         QuantifiedAssociations $quantifiedAsociations_1,
-        QuantifiedAssociations $quantifiedAsociations_2
+        QuantifiedAssociations $quantifiedAsociations_2,
+        QuantifiedAssociations $emptyQuantifiedAssociation
     ) {
         $product_1->getQuantifiedAssociations()->willReturn($quantifiedAsociations_1);
         $product_2->getQuantifiedAssociations()->willReturn($quantifiedAsociations_2);
 
-        $quantifiedAsociations_1->merge($quantifiedAsociations_1)->shouldBeCalled();
-        $quantifiedAsociations_1->merge($quantifiedAsociations_2)->shouldBeCalled();
-        $quantifiedAsociations_1->normalize()->willReturn([
+        $emptyQuantifiedAssociation->merge($quantifiedAsociations_1)->shouldBeCalled();
+        $emptyQuantifiedAssociation->merge($quantifiedAsociations_2)->shouldBeCalled();
+        $emptyQuantifiedAssociation->normalize()->willReturn([
             'PACK' => [
                 'products' => [
                     ['identifier' => 'A', 'quantity' => 2],
@@ -33,7 +34,7 @@ class QuantifiedAssociationsMergerSpec extends ObjectBehavior
         $this->normalizeAndMergeQuantifiedAssociationsFrom([
             $product_1,
             $product_2,
-        ])->shouldReturn([
+        ], $emptyQuantifiedAssociation)->shouldReturn([
             'PACK' => [
                 'products' => [
                     ['identifier' => 'A', 'quantity' => 2],
