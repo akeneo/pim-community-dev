@@ -67,7 +67,7 @@ pimee_catalog_rule:
         close: Branchenkategorie schließen
     tab:
       list: Regelersteller und Eigenschaften-Tabs
-      rule_builder: Rule Builder
+      rule_builder: Regel Ersteller
     attribute:
       tab:
         rules:
@@ -75,7 +75,7 @@ pimee_catalog_rule:
     creation:
       helper: Die Regel-Engine kann Ihre Produktivität im PIM radikal steigern, indem sie Aktionen automatisiert.
       english_flag: Bezeichnung für Englisch
-      title: Neue Rolle erstellen
+      title: Neue Regel erstellen
       notification:
         success: Die Regel wurde erfolgreich aktualisiert
         failed: Regelerstellung fehlgeschlagen
@@ -113,7 +113,7 @@ pimee_catalog_rule:
           title: Kategorien FESTLEGEN
           helper: Um Ihre Produktauswahl auf eine oder mehrere Kategorien zu setzen, wählen Sie bitte zuerst Ihre Kategoriebäume und dann Ihre Kategorien aus
         category:
-          select_category_trees: Kategoriebaum wählen
+          select_category_trees: Kategoriebäume wählen
           select_category_tree: Kategoriebaum wählen
           select_categories: Kategorien auswählen
           select_category: Kategorie wählen
@@ -122,7 +122,7 @@ pimee_catalog_rule:
           no_category_tree: Bitte wähle zuerst einen Kategoriebaum aus
           remove_unknown_category: "Hier klicken, um dieses Kategorie zu entfernen"
         set_family:
-          title: Familie setzen
+          title: Familie SETZEN
           subtitle: Familie wählen
         set_attribute:
           title: SETZE Attributwert
