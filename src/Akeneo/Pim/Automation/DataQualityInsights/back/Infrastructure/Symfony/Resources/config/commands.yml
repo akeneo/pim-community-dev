@@ -4,6 +4,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@akeneo_batch_queue.manager.job_execution_manager'
             - '@akeneo_batch.job_repository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
             - '%kernel.project_dir%'
         tags:
             - { name: 'console.command' }
@@ -49,6 +50,7 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\SchedulePeriodicTasksCommand:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\SchedulePeriodicTasks'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
         tags:
             - { name: 'console.command' }
 

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateProductsCriteriaTasklet;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
@@ -50,10 +51,14 @@ class EvaluatePendingCriteriaCommand extends Command
     /** @var string */
     private $projectDir;
 
+    /** @var FeatureFlag */
+    private $featureFlag;
+
     public function __construct(
         EntityManager $entityManager,
         JobExecutionManager $executionManager,
         JobRepositoryInterface $jobRepository,
+        FeatureFlag $featureFlag,
         string $projectDir
     ) {
         parent::__construct();
@@ -61,6 +66,7 @@ class EvaluatePendingCriteriaCommand extends Command
         $this->executionManager = $executionManager;
         $this->jobRepository = $jobRepository;
         $this->entityManager = $entityManager;
+        $this->featureFlag = $featureFlag;
         $this->projectDir = $projectDir;
     }
 
@@ -73,6 +79,11 @@ class EvaluatePendingCriteriaCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if (! $this->featureFlag->isEnabled()) {
+            $output->writeln('Data Quality Insights feature is disabled');
+            return;
+        }
+
         $io = new SymfonyStyle($input, $output);
         $jobInstance = $this->getJobInstance();
 

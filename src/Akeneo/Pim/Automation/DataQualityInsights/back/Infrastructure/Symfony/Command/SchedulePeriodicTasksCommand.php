@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\SchedulePeriodicTasks;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,11 +24,15 @@ final class SchedulePeriodicTasksCommand extends Command
     /** @var SchedulePeriodicTasks */
     private $schedulePeriodicTasks;
 
-    public function __construct(SchedulePeriodicTasks $schedulePeriodicTasks)
+    /** @var FeatureFlag */
+    private $featureFlag;
+
+    public function __construct(SchedulePeriodicTasks $schedulePeriodicTasks, FeatureFlag $featureFlag)
     {
         parent::__construct();
 
         $this->schedulePeriodicTasks = $schedulePeriodicTasks;
+        $this->featureFlag = $featureFlag;
     }
 
     protected function configure()
@@ -39,6 +44,10 @@ final class SchedulePeriodicTasksCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if (! $this->featureFlag->isEnabled()) {
+            $output->writeln('Data Quality Insights feature is disabled');
+            return;
+        }
         $this->schedulePeriodicTasks->schedule(new \DateTimeImmutable('-1 DAY'));
 
         $output->writeln('Data-Quality-Insights periodic tasks have been scheduled');
