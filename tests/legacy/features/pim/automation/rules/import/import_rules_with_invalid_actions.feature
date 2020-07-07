@@ -57,6 +57,3 @@ Feature: Import rules
     Then I should see the text "skipped 2"
     And I should see the text "actions: The \"actions\" key is missing or empty"
     When I am on the "description" attribute page
-    And I visit the "Rules" tab
-    Then I should see the text "sony_beautiful_description"
-    And I should see the text "Another good description"

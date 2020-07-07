@@ -100,29 +100,3 @@ Feature: Show all rules related to an attribute
             from_locale: en_US
             to_locale:   de_DE
       """
-
-  Scenario: Successfully show rules of an attribute
-    Given I am on the "description" attribute page
-    And I visit the "Rules" tab
-
-    Then the row "copy_description" should contain the texts:
-      | column    | value                                                                         |
-      | Condition | If name equals My nice tshirt [ en ]                                          |
-      | Condition | If weather_conditions.code in dry, wet                                        |
-      | Condition | If comment starts with promo                                                  |
-      | Action    | Then 4 is set into rating                                                     |
-      | Action    | Then description [ en \| mobile ] is copied into description [ en \| tablet ] |
-      | Action    | Then description [ en \| mobile ] is copied into description [ fr \| mobile ] |
-      | Action    | Then description [ en \| mobile ] is copied into description [ fr \| tablet ] |
-
-    And the row "update_tees_collection" should contain the texts:
-      | column    | value                                                               |
-      | Condition | If categories in tees                                               |
-      | Action    | Then une belle description is set into description [ fr \| mobile ] |
-      | Action    | Then 800 is set into number_in_stock [ tablet ]                     |
-      | Action    | Then 05/26/2015 is set into release_date [ mobile ]                 |
-      | Action    | Then €12.00 is set into price                                       |
-      | Action    | Then akeneo.jpg is set into side_view                               |
-      | Action    | Then 10 Centimeter is set into length                               |
-      | Action    | Then name [ en ] is copied into name [ fr ]                         |
-      | Action    | Then name [ en ] is copied into name [ de ]                         |
