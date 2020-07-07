@@ -520,7 +520,7 @@ define(
                                 return -1;
                             }
 
-                            if (a.sortOrder > b.sortOder) {
+                            if (a.sortOrder > b.sortOrder) {
                                 return 1;
                             }
 
