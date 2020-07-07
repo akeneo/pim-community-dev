@@ -49,7 +49,7 @@ class ListAnnouncementsAction
 
         $query = new ListAnnouncementsQuery(
             $this->versionProvider->getEdition(),
-            $this->versionProvider->getPatch(),
+            $this->versionProvider->getMinorVersion(),
             $user->getId(),
             $request->query->get('search_after'),
             (int) $request->query->get('limit')

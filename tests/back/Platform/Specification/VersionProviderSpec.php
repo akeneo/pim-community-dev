@@ -19,6 +19,12 @@ class VersionProviderSpec extends ObjectBehavior
         $this->getPatch()->shouldReturn('12.42.20');
     }
 
+    function it_provides_ce_minor_version()
+    {
+        $this->beConstructedWith(StaticCommunityVersion::class);
+        $this->getMinorVersion()->shouldReturn('12.42');
+    }
+
     function it_provides_full_ce_version()
     {
         $this->beConstructedWith(StaticCommunityVersion::class);
@@ -41,6 +47,12 @@ class VersionProviderSpec extends ObjectBehavior
     {
         $this->beConstructedWith(StaticSaaSVersion::class);
         $this->getPatch()->shouldReturn('20200130151605');
+    }
+
+    function it_provides_saas_minor_version()
+    {
+        $this->beConstructedWith(StaticSaaSVersion::class);
+        $this->getMinorVersion()->shouldReturn('20200130151605');
     }
 
     function it_provides_full_saas_version()
