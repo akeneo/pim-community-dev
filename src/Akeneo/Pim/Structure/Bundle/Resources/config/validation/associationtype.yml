@@ -14,9 +14,6 @@ Akeneo\Pim\Structure\Component\Model\AssociationType:
             - Regex:
                 pattern: /^[a-zA-Z0-9_]+$/
                 message: Association type code may contain only letters, numbers and underscores
-            - Regex:
-                pattern: /[a-zA-Z]+/
-                message: Association type code must contain at least one letter
             - Length:
                 max: 100
         translations:
