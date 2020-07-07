@@ -2,7 +2,7 @@ type CategoryTreeModel = {
   code: string;
   id: number;
   labels: { [key: string]: string };
-  parent: string;
+  parent: string | null;
 };
 
 type CategoryTreeNodeAttr = {

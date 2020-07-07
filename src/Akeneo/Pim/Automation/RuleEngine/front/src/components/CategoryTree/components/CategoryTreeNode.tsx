@@ -91,6 +91,7 @@ const CategoryTreeNode: React.FC<Props> = ({
         opacity={(categoryChildrenFetch.status === 'PENDING' && 0.5) || 1}>
         {isBranch(nodeType) && (
           <TreeArrowButton
+            data-testid={`tree-arrow-button-${categoryCode}`}
             type='button'
             onClick={() => setNodeOpened(!nodeOpened)}>
             <TreeArrow opened={nodeOpened} translate={translate} />

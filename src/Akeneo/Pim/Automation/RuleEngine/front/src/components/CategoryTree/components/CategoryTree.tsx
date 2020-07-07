@@ -13,7 +13,7 @@ type Props = {
   locale: LocaleCode;
   onSelectCategory: (categoryCode: CategoryCode) => void;
   selectedCategories: Category[];
-  initCategoryTreeOpenBranch: CategoryTreeModelWithOpenBranch;
+  initCategoryTreeOpenBranch?: CategoryTreeModelWithOpenBranch;
 };
 
 const CategoryTree: React.FC<Props> = ({
