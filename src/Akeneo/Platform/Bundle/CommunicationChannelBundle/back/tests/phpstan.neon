@@ -1,5 +1,0 @@
-parameters:
-    level: 8
-    paths:
-        - %rootDir%/../../../src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/Application
-        - %rootDir%/../../../src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/Domain

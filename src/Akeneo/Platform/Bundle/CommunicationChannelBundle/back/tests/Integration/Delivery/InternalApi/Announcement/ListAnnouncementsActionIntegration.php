@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\CommunicationChannel\Test\Integration\Announcement;
+namespace Akeneo\Platform\CommunicationChannel\Test\Integration\Delivery\InternalApi\Announcement;
 
 use Akeneo\Platform\CommunicationChannel\Test\Integration\WebTestCase;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
-class ListAnnouncementIntegration extends WebTestCase
+class ListAnnouncementsActionIntegration extends WebTestCase
 {
     public function setUp(): void
     {
@@ -20,7 +20,7 @@ class ListAnnouncementIntegration extends WebTestCase
 
     public function test_it_can_list_first_paginated_announcements()
     {
-        $expectedAnnouncements = json_decode(file_get_contents(dirname(__FILE__) . '/../../../Infrastructure/CommunicationChannel/InMemory/serenity-updates.json'), true);
+        $expectedAnnouncements = json_decode(file_get_contents(dirname(__FILE__) . '/../../../../../Infrastructure/CommunicationChannel/InMemory/serenity-updates.json'), true);
         $limit = 5;
         $this->client->request(
             'GET',
@@ -40,7 +40,7 @@ class ListAnnouncementIntegration extends WebTestCase
 
     public function test_it_can_list_paginated_announcements_with_a_search_after_parameter()
     {
-        $expectedAnnouncements = json_decode(file_get_contents(dirname(__FILE__) . '/../../../Infrastructure/CommunicationChannel/InMemory/serenity-updates.json'), true);
+        $expectedAnnouncements = json_decode(file_get_contents(dirname(__FILE__) . '/../../../../../Infrastructure/CommunicationChannel/InMemory/serenity-updates.json'), true);
         $searchAfter = '2e04e7e4-6c55-4cdd-b151-dab34d6a31a4';
         $limit = 5;
         $this->client->request(
@@ -59,7 +59,7 @@ class ListAnnouncementIntegration extends WebTestCase
         $this->assertFirstItem($searchAfter, $expectedAnnouncements['data'], $content['items']);
     }
 
-    public function test_it_throws_an_exception_when_it_does_mot_have_a_limit_parameter()
+    public function test_it_throws_an_exception_when_it_does_not_have_a_limit_parameter()
     {
         $this->client->request(
             'GET',

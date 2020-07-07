@@ -59,6 +59,22 @@ class VersionProvider implements VersionProviderInterface
         return $this->version;
     }
 
+    public function getMinorVersion(): string
+    {
+        if (!$this->isSaaSVersion()) {
+            $matches = [];
+            $isMatching = preg_match('/^(?P<minor>\d+.\d+).\d+/', $this->version, $matches);
+
+            if (!$isMatching) {
+                return $this->version;
+            }
+
+            return $matches['minor'];
+        }
+
+        return $this->version;
+    }
+
     /**
      * {@inheritdoc}
      */

@@ -31,6 +31,7 @@ type ViewBuilder = {
 
 type Mediator = {
   trigger(event: string): void;
+  on(event: string, callback: () => void): void;
 };
 
 export {NotificationLevel, Notify, RouteParams, Router, Security, Translate, UserContext, ViewBuilder, Mediator};

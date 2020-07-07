@@ -6,7 +6,7 @@ namespace Akeneo\Platform\CommunicationChannel\Infrastructure\Framework\Symfony\
 
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Platform\CommunicationChannel\Infrastructure\Framework\Symfony\Installer\Query\CreateViewedAnnouncementsTableQuery;
-use Doctrine\DBAL\Driver\Connection as DbalConnection;
+use Doctrine\DBAL\Connection as DbalConnection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
