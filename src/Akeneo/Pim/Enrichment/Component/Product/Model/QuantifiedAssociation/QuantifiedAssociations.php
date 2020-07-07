@@ -131,8 +131,8 @@ class QuantifiedAssociations
 
     public function merge(QuantifiedAssociations $quantifiedAssociations): self
     {
-        $currentQuantifiedAssociationsNormalized = $this->normalizeIndexedByIdentifiers();
-        $quantifiedAssociationsToMergeNormalized = $quantifiedAssociations->normalizeIndexedByIdentifiers();
+        $currentQuantifiedAssociationsNormalized = $this->normalizeWithIndexedIdentifiers();
+        $quantifiedAssociationsToMergeNormalized = $quantifiedAssociations->normalizeWithIndexedIdentifiers();
 
         $mergedQuantifiedAssociationsNormalized = array_replace_recursive(
             $currentQuantifiedAssociationsNormalized,
@@ -228,7 +228,7 @@ class QuantifiedAssociations
         return new self($filteredQuantifiedAssociations);
     }
 
-    private function normalizeIndexedByIdentifiers()
+    private function normalizeWithIndexedIdentifiers()
     {
         $quantifiedAssociationsNormalized = $this->normalize();
 
