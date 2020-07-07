@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9344: Fix pdf renderer when using pim_catalog_simpleselect
+
 # 4.0.38 (2020-07-07)
 
 ## Bug fixes
