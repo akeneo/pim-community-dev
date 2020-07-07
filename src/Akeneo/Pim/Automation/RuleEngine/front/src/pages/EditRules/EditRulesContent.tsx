@@ -64,8 +64,8 @@ const EditRulesContent: React.FC<Props> = ({
   );
 
   useEffect(() => {
-    setIsDirty(formMethods.formState.dirty);
-  }, [formMethods.formState.dirtyFields]);
+    setIsDirty(!!formMethods.formState.dirtyFields.size);
+  }, [formMethods.formState.dirtyFields.size]);
 
   const title =
     (formMethods.watch(`labels.${currentCatalogLocale}`) as string) ||
