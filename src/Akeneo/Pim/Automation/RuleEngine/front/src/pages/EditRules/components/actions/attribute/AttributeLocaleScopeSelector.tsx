@@ -48,6 +48,8 @@ type Props = {
   lineNumber: number;
   filterAttributeTypes?: string[];
   disabled?: boolean;
+  scopeFieldName?: string;
+  localeFieldName?: string;
 };
 
 export const AttributeLocaleScopeSelector: React.FC<Props> = ({
@@ -66,17 +68,22 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   lineNumber,
   filterAttributeTypes,
   disabled,
+  scopeFieldName,
+  localeFieldName,
 }) => {
   const router = useBackboneRouter();
   const translate = useTranslate();
   const currentCatalogLocale = useUserCatalogLocale();
 
   const {
-    scopeFormName,
-    localeFormName,
-    getScopeFormValue,
-    getLocaleFormValue,
+    formName,
+    getFormValue
   } = useControlledFormInputAction<string>(lineNumber);
+
+  const scopeFormName = formName(scopeFieldName || 'scope');
+  const getScopeFormValue = () => getFormValue(scopeFieldName || 'scope');
+  const localeFormName = formName(localeFieldName || 'locale');
+  const getLocaleFormValue = () => getFormValue(localeFieldName || 'locale');
 
   const { clearError } = useFormContext();
   /**
@@ -148,7 +155,6 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   }, [attributeCode]);
 
   const isDisabled = () => disabled ?? null === attribute;
-
 
   return (
     <ActionFormContainer>

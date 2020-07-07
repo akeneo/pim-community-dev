@@ -40,6 +40,12 @@ const registerActions = (register: Control['register'], actions: Action[]) => {
       register({ name: `content.actions[${index}].value`, type: 'custom' });
       register({ name: `content.actions[${index}].scope`, type: 'custom' });
       register({ name: `content.actions[${index}].locale`, type: 'custom' });
+      register({ name: `content.actions[${index}].from_field`, type: 'custom' });
+      register({ name: `content.actions[${index}].to_field`, type: 'custom' });
+      register({ name: `content.actions[${index}].from_locale`, type: 'custom' });
+      register({ name: `content.actions[${index}].to_locale`, type: 'custom' });
+      register({ name: `content.actions[${index}].from_scope`, type: 'custom' });
+      register({ name: `content.actions[${index}].to_scope`, type: 'custom' });
       register({
         name: `content.actions[${index}].include_children`,
         type: 'custom',

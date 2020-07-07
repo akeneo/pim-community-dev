@@ -3,10 +3,10 @@ import { ActionModuleGuesser } from './ActionModuleGuesser';
 
 export type CopyAction = {
   type: 'copy';
-  from_field?: string;
+  from_field: string | null;
   from_locale?: string | null;
   from_scope?: string | null;
-  to_field?: string;
+  to_field: string | null;
   to_locale?: string | null;
   to_scope?: string | null;
 };
@@ -21,4 +21,6 @@ export const getCopyActionModule: ActionModuleGuesser = json => {
 
 export const createCopyAction = (): CopyAction => ({
   type: 'copy',
+  from_field: null,
+  to_field: null,
 });

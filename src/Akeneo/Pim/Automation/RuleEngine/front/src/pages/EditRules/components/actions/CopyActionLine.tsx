@@ -2,7 +2,6 @@ import React from 'react';
 import { CopyAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
-import { useRegisterConst } from '../../hooks/useRegisterConst';
 import {
   ActionGrid,
   ActionLeftSide,
@@ -14,10 +13,11 @@ import {
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
 import { AttributeLocaleScopeSelector } from './attribute';
-import { Attribute, AttributeCode, AttributeType } from '../../../../models';
+import { Attribute, AttributeType } from '../../../../models';
 import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepository';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, Controller } from 'react-hook-form';
 import { LineErrors } from '../LineErrors';
+import { useControlledFormInputAction } from "../../hooks";
 
 const supportedTypes: () => Map<AttributeType, AttributeType[]> = () => {
   return new Map([
@@ -115,34 +115,35 @@ const CopyActionLine: React.FC<Props> = ({
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
-  const { watch, setValue } = useFormContext();
-  useRegisterConst(`content.actions[${lineNumber}].type`, 'copy');
+  const { watch, setValue, getValues } = useFormContext();
+  const {
+    formName,
+    typeFormName,
+  } = useControlledFormInputAction<string | null>(lineNumber);
 
   const [targetAttributeTypes, setTargetAttributeTypes] = React.useState<
     AttributeType[]
   >([]);
 
-  const [toField, setToField] = React.useState<AttributeCode | null>(
-    action.to_field || null
-  );
-
   const handleSourceChange = (attribute: Attribute | null) => {
+    setValue(formName('from_field'), attribute?.code);
     const supported = attribute
       ? supportedTypes().get(attribute.type) || []
       : [];
     setTargetAttributeTypes(supported);
-    const targetAttributeCode = watch(
-      `content.actions[${lineNumber}].to_field`
-    );
+    const targetAttributeCode = watch(formName('to_field'));
     if (targetAttributeCode) {
       getAttributeByIdentifier(targetAttributeCode, router).then(attribute => {
         if (!attribute || !supported.includes(attribute.type)) {
-          setValue(`content.actions[${lineNumber}].to_field`, null);
-          setToField(null);
+          setValue(formName('to_field'), null);
         }
       });
     }
   };
+
+  const handleTargetChange = (attribute: Attribute | null) => {
+    setValue(formName('to_field'), attribute?.code);
+  }
 
   React.useEffect(() => {
     if (action.from_field) {
@@ -155,62 +156,74 @@ const CopyActionLine: React.FC<Props> = ({
   const sourceAttributeTypes = Array.from(supportedTypes().keys());
 
   return (
-    <ActionTemplate
-      title={translate('pimee_catalog_rule.form.edit.actions.copy.title')}
-      helper={translate('pimee_catalog_rule.form.edit.actions.copy.helper')}
-      legend={translate('pimee_catalog_rule.form.edit.actions.copy.helper')}
-      handleDelete={handleDelete}>
-      <LineErrors lineNumber={lineNumber} type='actions' />
-      <ActionGrid>
-        <ActionLeftSide>
-          <ActionTitle>
-            {translate(
-              'pimee_catalog_rule.form.edit.actions.copy.select_source'
-            )}
-          </ActionTitle>
-          <AttributeLocaleScopeSelector
-            attributeCode={action.from_field || null}
-            attributeFormName={`content.actions[${lineNumber}].from_field`}
-            attributeId={`edit-rules-action-${lineNumber}-from-field`}
-            attributeLabel={`${translate(
-              'pimee_catalog_rule.form.edit.fields.attribute'
-            )} ${translate('pim_common.required_label')}`}
-            attributePlaceholder={''}
-            scopeId={`edit-rules-action-${lineNumber}-from-scope`}
-            localeId={`edit-rules-action-${lineNumber}-from-locale`}
-            locales={locales}
-            scopes={scopes}
-            filterAttributeTypes={sourceAttributeTypes}
-            onAttributeChange={handleSourceChange}
-            lineNumber={lineNumber}
-          />
-        </ActionLeftSide>
-        <ActionRightSide>
-          <ActionTitle>
-            {translate(
-              'pimee_catalog_rule.form.edit.actions.copy.select_target'
-            )}
-          </ActionTitle>
-          {targetAttributeTypes.length > 0 && (
+    <>
+      <Controller name={typeFormName} as={<span hidden />} defaultValue='copy' />
+      <Controller name={formName('from_field')} as={<span hidden />} defaultValue={getValues()[formName('from_field')]} />
+      <Controller name={formName('to_field')} as={<span hidden />} defaultValue={getValues()[formName('to_field')]} />
+      <ActionTemplate
+        title={translate('pimee_catalog_rule.form.edit.actions.copy.title')}
+        helper={translate('pimee_catalog_rule.form.edit.actions.copy.helper')}
+        legend={translate('pimee_catalog_rule.form.edit.actions.copy.helper')}
+        handleDelete={handleDelete}>
+        <LineErrors lineNumber={lineNumber} type='actions' />
+        <ActionGrid>
+          <ActionLeftSide>
+            <ActionTitle>
+              {translate(
+                'pimee_catalog_rule.form.edit.actions.copy.select_source'
+              )}
+            </ActionTitle>
             <AttributeLocaleScopeSelector
-              attributeCode={toField}
-              attributeFormName={`content.actions[${lineNumber}].to_field`}
-              attributeId={`edit-rules-action-${lineNumber}-to-field`}
+              attributeCode={getValues()[formName('from_field')]}
+              attributeFormName={formName('from_field')}
+              attributeId={`edit-rules-action-${lineNumber}-from-field`}
               attributeLabel={`${translate(
                 'pimee_catalog_rule.form.edit.fields.attribute'
               )} ${translate('pim_common.required_label')}`}
-              attributePlaceholder={''}
-              scopeId={`edit-rules-action-${lineNumber}-to-scope`}
-              localeId={`edit-rules-action-${lineNumber}-to-locale`}
+              attributePlaceholder={translate(
+                'pimee_catalog_rule.form.edit.actions.set_attribute.attribute_placeholder'
+              )}
+              scopeId={`edit-rules-action-${lineNumber}-from-scope`}
+              localeId={`edit-rules-action-${lineNumber}-from-locale`}
               locales={locales}
               scopes={scopes}
-              filterAttributeTypes={targetAttributeTypes}
+              filterAttributeTypes={sourceAttributeTypes}
+              onAttributeChange={handleSourceChange}
               lineNumber={lineNumber}
+              scopeFieldName={'from_scope'}
+              localeFieldName={'from_locale'}
             />
-          )}
-        </ActionRightSide>
-      </ActionGrid>
-    </ActionTemplate>
+          </ActionLeftSide>
+          <ActionRightSide>
+            <ActionTitle>
+              {translate(
+                'pimee_catalog_rule.form.edit.actions.copy.select_target'
+              )}
+            </ActionTitle>
+            {targetAttributeTypes.length > 0 && (
+              <AttributeLocaleScopeSelector
+                attributeCode={getValues()[formName('to_field')]}
+                attributeFormName={formName('to_field')}
+                attributeId={`edit-rules-action-${lineNumber}-to-field`}
+                attributeLabel={`${translate(
+                  'pimee_catalog_rule.form.edit.fields.attribute'
+                )} ${translate('pim_common.required_label')}`}
+                attributePlaceholder={translate(
+                  'pimee_catalog_rule.form.edit.actions.set_attribute.attribute_placeholder'
+                )}
+                scopeId={`edit-rules-action-${lineNumber}-to-scope`}
+                localeId={`edit-rules-action-${lineNumber}-to-locale`}
+                locales={locales}
+                scopes={scopes}
+                filterAttributeTypes={targetAttributeTypes}
+                lineNumber={lineNumber}
+                onAttributeChange={handleTargetChange}
+              />
+            )}
+          </ActionRightSide>
+        </ActionGrid>
+      </ActionTemplate>
+    </>
   );
 };
 
