@@ -42,22 +42,24 @@ Feature: Execute rules from the user interface
     When I press the "Execute rules" button
     Then I should see the text "Confirm execution"
     When I confirm the rules execution
+    And I wait for the "rule_engine_execute_rules" job to finish
     And I am on the rules page
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                           |
-      | success | Execution of the rule(s) finished |
+      | success | Execution of the rule(s) complete |
 
   Scenario: Successfully execute one rule from the rule datagrid
     Given I am on the rules page
     When I click on the "Execute" action of the row which contains "copy_description"
     Then I should see the text "Confirm execution"
     When I confirm the rule execution
+    And I wait for the "rule_engine_execute_rules" job to finish
     And I refresh current page
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                           |
-      | success | Execution of the rule(s) finished |
+      | success | Execution of the rule(s) complete |
 
   Scenario: Successfully do not execute
     Given I am on the "Catalog manager" role page

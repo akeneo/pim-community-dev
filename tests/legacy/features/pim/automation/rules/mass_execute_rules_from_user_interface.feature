@@ -63,7 +63,7 @@ Feature: Execute rules from the user interface
   Scenario: Successfully execute a selection of rules from the user interface
     Given I am on the rules page
     When I select rows rule_sku, rule_weight
-    And I press the "Calculate the affected products" button
+    And I press the "Calculate the impacted products" button
     Then I should see the text "Confirm calculation"
     When I confirm the rules calculation
     And I am on the rules page
@@ -71,7 +71,7 @@ Feature: Execute rules from the user interface
     And I should have 1 new notification
     And I should see notification:
       | type    | message                                                     |
-      | success | Calculation of the affected products for the rules finished |
-    When I click on the notification "Calculation of the affected products for the rules finished"
+      | success | Calculation of the impacted products for the rules finished |
+    When I click on the notification "Calculation of the impacted products for the rules finished"
     Then I should see the text "Execution details - Calculation the affected products for the rules [rule_impacted_product_count]"
     And I should see the text "COMPLETED"

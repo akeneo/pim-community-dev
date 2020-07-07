@@ -352,7 +352,7 @@ Feature: List all rules
     When I select rows set_name_to_Lorem and copy_en_to_fr
     And I press the "Execute" bottom button
     Then I should see the text "Confirm execution"
-    And I should see the text "Are you sure you want to execute the selected rules?"
+    And I should see the text "Are you sure you want to execute the rules? (It could take a while)"
     When I confirm the execution
     And I am on the "my-jacket" product page
     And I visit the "Attributes" column tab
