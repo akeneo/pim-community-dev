@@ -44,6 +44,7 @@ describe('ClearAttributeActionLine', () => {
 
     const {
       findByText,
+      findAllByText,
       queryByText,
       findByTestId,
     } = renderWithProviders(
@@ -63,6 +64,9 @@ describe('ClearAttributeActionLine', () => {
         'pimee_catalog_rule.form.edit.fields.attribute pim_common.required_label'
       )
     ).toBeInTheDocument();
+    expect(
+      await findAllByText('pimee_catalog_rule.form.helper.clear_attribute')
+    ).toHaveLength(2);
     expect(await findByTestId('edit-rules-action-1-field')).toHaveValue('name');
     expect(
       queryByText(
@@ -83,6 +87,7 @@ describe('ClearAttributeActionLine', () => {
 
     const {
       findByText,
+      findAllByText,
       findByTestId,
       queryByText,
     } = renderWithProviders(
@@ -102,6 +107,9 @@ describe('ClearAttributeActionLine', () => {
         'pimee_catalog_rule.form.edit.fields.attribute pim_common.required_label'
       )
     ).toBeInTheDocument();
+    expect(
+      await findAllByText('pimee_catalog_rule.form.helper.clear_attribute')
+    ).toHaveLength(2);
     expect(await findByTestId('edit-rules-action-1-field')).toHaveValue('name');
     expect(
       queryByText(
