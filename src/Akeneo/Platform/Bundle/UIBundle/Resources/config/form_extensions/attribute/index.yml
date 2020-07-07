@@ -57,6 +57,7 @@ extensions:
         position: 1000
         config:
             alias: attribute-grid
+            localeKey: dataLocale
 
     pim-attribute-index-create-button:
         module: pim/form/common/attributes/create-button
