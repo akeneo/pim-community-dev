@@ -40,8 +40,24 @@ final class ConnectorProductModelSpec extends ObjectBehavior
             ],
             [
                 'PRODUCT_SET' => [
-                    'products' => [['identifier' => 'a_simple_product', 'quantity' => 1]],
-                    'product_models' => [['identifier' => 'simple_pm', 'quantity' => 9]],
+                    'products' => [
+                        ['identifier' => 'product_1', 'quantity' => 1],
+                        ['identifier' => 'product_2', 'quantity' => 2]
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'product_model_1', 'quantity' => 3],
+                        ['identifier' => 'product_model_2', 'quantity' => 4],
+                    ],
+                ],
+                'PRODUCT_SET1' => [
+                    'products' => [
+                        ['identifier' => 'product_1', 'quantity' => 2],
+                        ['identifier' => 'product_3', 'quantity' => 9]
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'product_model_1', 'quantity' => 2],
+                        ['identifier' => 'product_model_3', 'quantity' => 3],
+                    ],
                 ],
             ],
             ['category_code_1', 'category_code_2'],
@@ -68,6 +84,16 @@ final class ConnectorProductModelSpec extends ObjectBehavior
     function it_gets_associated_product_model_codes()
     {
         $this->associatedProductModelCodes()->shouldBeLike(['product_model_5']);
+    }
+
+    function it_gets_associated_with_quantity_product_identifiers()
+    {
+        $this->associatedWithQuantityProductIdentifiers()->shouldBeLike(['product_1', 'product_2', 'product_3']);
+    }
+
+    function it_gets_associated_with_quantity_product_model_codes()
+    {
+        $this->associatedWithQuantityProductModelCodes()->shouldBeLike(['product_model_1', 'product_model_2', 'product_model_3']);
     }
 
     function it_filters_by_category_codes()
@@ -109,6 +135,70 @@ final class ConnectorProductModelSpec extends ObjectBehavior
     {
         $connectorProductModel = $this->filterAssociatedProductModelsByProductModelCodes([]);
         $connectorProductModel->associatedProductModelCodes()->shouldReturn([]);
+    }
+
+    function it_filters_associated_with_quantity_products_with_empty_array_of_product_identifiers()
+    {
+        $connectorProductModel = $this->filterAssociatedWithQuantityProductsByProductIdentifiers([]);
+        $connectorProductModel->associatedWithQuantityProductIdentifiers()->shouldReturn([]);
+    }
+
+    function it_filters_associated_with_quantity_product_by_identifier()
+    {
+        $connectorProductModel = $this->filterAssociatedWithQuantityProductsByProductIdentifiers(
+            ['product_2', 'product_4']
+        );
+
+        $connectorProductModel->quantifiedAssociations()->shouldReturn([
+            'PRODUCT_SET' => [
+                'products' => [
+                    ['identifier' => 'product_2', 'quantity' => 2]
+                ],
+                'product_models' => [
+                    ['identifier' => 'product_model_1', 'quantity' => 3],
+                    ['identifier' => 'product_model_2', 'quantity' => 4],
+                ],
+            ],
+            'PRODUCT_SET1' => [
+                'products' => [],
+                'product_models' => [
+                    ['identifier' => 'product_model_1', 'quantity' => 2],
+                    ['identifier' => 'product_model_3', 'quantity' => 3],
+                ],
+            ],
+        ]);
+    }
+
+    function it_filters_associated_with_quantity_product_models_with_empty_array_of_codes()
+    {
+        $connectorProductModel = $this->filterAssociatedWithQuantityProductModelsByProductModelCodes([]);
+        $connectorProductModel->associatedWithQuantityProductModelCodes()->shouldReturn([]);
+    }
+
+    function it_filters_associated_with_quantity_product_models_by_codes()
+    {
+        $connectorProductModel = $this->filterAssociatedWithQuantityProductModelsByProductModelCodes(
+            ['product_model_2', 'product_model_4']
+        );
+
+        $connectorProductModel->quantifiedAssociations()->shouldReturn([
+            'PRODUCT_SET' => [
+                'products' => [
+                    ['identifier' => 'product_1', 'quantity' => 1],
+                    ['identifier' => 'product_2', 'quantity' => 2]
+                ],
+                'product_models' => [
+                    ['identifier' => 'product_model_2', 'quantity' => 4],
+                ],
+            ],
+            'PRODUCT_SET1' => [
+                'products' => [
+                    ['identifier' => 'product_1', 'quantity' => 2],
+                    ['identifier' => 'product_3', 'quantity' => 9]
+                ],
+                'product_models' => [],
+            ],
+        ]);
     }
 
     function it_filters_values_by_attribute_codes()

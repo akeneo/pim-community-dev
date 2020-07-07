@@ -37,8 +37,24 @@ class ConnectorProductSpec extends ObjectBehavior
             ],
             [
                 'PRODUCT_SET' => [
-                    'products' => [['identifier' => 'a_simple_product', 'quantity' => 1]],
-                    'product_models' => [['identifier' => 'simple_pm', 'quantity' => 9]],
+                    'products' => [
+                        ['identifier' => 'product_1', 'quantity' => 1],
+                        ['identifier' => 'product_2', 'quantity' => 2]
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'product_model_1', 'quantity' => 3],
+                        ['identifier' => 'product_model_2', 'quantity' => 4],
+                    ],
+                ],
+                'PRODUCT_SET1' => [
+                    'products' => [
+                        ['identifier' => 'product_1', 'quantity' => 2],
+                        ['identifier' => 'product_3', 'quantity' => 9]
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'product_model_1', 'quantity' => 2],
+                        ['identifier' => 'product_model_3', 'quantity' => 3],
+                    ],
                 ],
             ],
             [],
@@ -109,6 +125,70 @@ class ConnectorProductSpec extends ObjectBehavior
         );
     }
 
+    function it_filters_associated_with_quantity_products_with_empty_array_of_product_identifiers()
+    {
+        $connectorProduct = $this->filterAssociatedWithQuantityProductsByProductIdentifiers([]);
+        $connectorProduct->associatedWithQuantityProductIdentifiers()->shouldReturn([]);
+    }
+
+    function it_filters_associated_with_quantity_product_by_identifier()
+    {
+        $connectorProduct = $this->filterAssociatedWithQuantityProductsByProductIdentifiers(
+            ['product_2', 'product_4']
+        );
+
+        $connectorProduct->quantifiedAssociations()->shouldReturn([
+            'PRODUCT_SET' => [
+                'products' => [
+                    ['identifier' => 'product_2', 'quantity' => 2]
+                ],
+                'product_models' => [
+                    ['identifier' => 'product_model_1', 'quantity' => 3],
+                    ['identifier' => 'product_model_2', 'quantity' => 4],
+                ],
+            ],
+            'PRODUCT_SET1' => [
+                'products' => [],
+                'product_models' => [
+                    ['identifier' => 'product_model_1', 'quantity' => 2],
+                    ['identifier' => 'product_model_3', 'quantity' => 3],
+                ],
+            ],
+        ]);
+    }
+
+    function it_filters_associated_with_quantity_product_models_with_empty_array_of_codes()
+    {
+        $connectorProduct = $this->filterAssociatedWithQuantityProductModelsByProductModelCodes([]);
+        $connectorProduct->associatedWithQuantityProductModelCodes()->shouldReturn([]);
+    }
+
+    function it_filters_associated_with_quantity_product_models_by_codes()
+    {
+        $connectorProduct = $this->filterAssociatedWithQuantityProductModelsByProductModelCodes(
+            ['product_model_2', 'product_model_4']
+        );
+
+        $connectorProduct->quantifiedAssociations()->shouldReturn([
+            'PRODUCT_SET' => [
+                'products' => [
+                    ['identifier' => 'product_1', 'quantity' => 1],
+                    ['identifier' => 'product_2', 'quantity' => 2]
+                ],
+                'product_models' => [
+                    ['identifier' => 'product_model_2', 'quantity' => 4],
+                ],
+            ],
+            'PRODUCT_SET1' => [
+                'products' => [
+                    ['identifier' => 'product_1', 'quantity' => 2],
+                    ['identifier' => 'product_3', 'quantity' => 9]
+                ],
+                'product_models' => [],
+            ],
+        ]);
+    }
+
     function it_filters_values_by_attribute_codes()
     {
         $connectorProduct = $this->filterValuesByAttributeCodesAndLocaleCodes(['attribute_code_1', 'attribute_code_4'], ['en_US', 'fr_FR']);
@@ -155,6 +235,17 @@ class ConnectorProductSpec extends ObjectBehavior
         $this->associatedProductModelCodes()->shouldReturn(['product_model_5', 'product_model_6']);
     }
 
+
+    function it_gets_associated_with_quantity_product_identifiers()
+    {
+        $this->associatedWithQuantityProductIdentifiers()->shouldBeLike(['product_1', 'product_2', 'product_3']);
+    }
+
+    function it_gets_associated_with_quantity_product_model_codes()
+    {
+        $this->associatedWithQuantityProductModelCodes()->shouldBeLike(['product_model_1', 'product_model_2', 'product_model_3']);
+    }
+
     function it_adds_a_metadata()
     {
         $connectorProduct = $this->addMetadata('key', 'value');
@@ -182,5 +273,7 @@ class ConnectorProductSpec extends ObjectBehavior
 
         $this->associatedProductIdentifiers()->shouldReturn([]);
         $this->associatedProductModelCodes()->shouldReturn([]);
+        $this->associatedWithQuantityProductIdentifiers()->shouldReturn([]);
+        $this->associatedWithQuantityProductModelCodes()->shouldReturn([]);
     }
 }
