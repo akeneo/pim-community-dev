@@ -117,6 +117,12 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
                     ['id' => 2, 'quantity' => 2],
                 ],
                 'product_models' => [],
+            ],
+            'PRODUCT_SET' => [
+                'products' => [
+                    ['id' => 1, 'quantity' => 3],
+                ],
+                'product_models' => [],
             ]
         ];
         $idMapping = IdMapping::createFromMapping(
@@ -146,6 +152,12 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
                 'product_models' => [
                     ['id' => 1, 'quantity' => 1],
                     ['id' => 2, 'quantity' => 2],
+                ],
+            ],
+            'PRODUCT_SET' => [
+                'products' => [],
+                'product_models' => [
+                    ['id' => 1, 'quantity' => 3],
                 ],
             ]
         ];
@@ -290,6 +302,98 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
                     $this->anIdMapping()
                 ]
             );
+    }
+
+    public function it_filter_by_product_identifiers()
+    {
+        $this->beConstructedThrough(
+            'createFromNormalized',
+            [
+                [
+                    'PACK' => [
+                        'products' => [
+                            ['identifier' => 'A', 'quantity' => 2],
+                            ['identifier' => 'B', 'quantity' => 3],
+                            ['identifier' => 'C', 'quantity' => 4],
+                        ],
+                        'product_models' => [
+                            ['identifier' => 'A', 'quantity' => 2],
+                            ['identifier' => 'B', 'quantity' => 3],
+                        ],
+                    ],
+                    'PRODUCTSET' => [
+                        'products' => [
+                            ['identifier' => 'B', 'quantity' => 3],
+                        ],
+                        'product_models' => [],
+                    ],
+                ],
+            ]
+        );
+
+        $this->filterProductIdentifiers(['A'])->normalize()->shouldReturn([
+            'PACK' => [
+                'products' => [
+                    ['identifier' => 'A', 'quantity' => 2],
+                ],
+                'product_models' => [
+                    ['identifier' => 'A', 'quantity' => 2],
+                    ['identifier' => 'B', 'quantity' => 3],
+                ],
+            ],
+            'PRODUCTSET' => [
+                'products' => [],
+                'product_models' => [],
+            ],
+        ]);
+    }
+
+    public function it_filter_by_product_model_codes()
+    {
+        $this->beConstructedThrough(
+            'createFromNormalized',
+            [
+                [
+                    'PACK' => [
+                        'products' => [
+                            ['identifier' => 'A', 'quantity' => 2],
+                            ['identifier' => 'B', 'quantity' => 3],
+                        ],
+                        'product_models' => [
+                            ['identifier' => 'A', 'quantity' => 2],
+                            ['identifier' => 'B', 'quantity' => 3],
+                            ['identifier' => 'C', 'quantity' => 4],
+                        ],
+                    ],
+                    'PRODUCTSET' => [
+                        'products' => [
+                            ['identifier' => 'B', 'quantity' => 3],
+                        ],
+                        'product_models' => [
+                            ['identifier' => 'B', 'quantity' => 5],
+                        ],
+                    ],
+                ],
+            ]
+        );
+
+        $this->filterProductModelCodes(['A'])->normalize()->shouldReturn([
+            'PACK' => [
+                'products' => [
+                    ['identifier' => 'A', 'quantity' => 2],
+                    ['identifier' => 'B', 'quantity' => 3],
+                ],
+                'product_models' => [
+                    ['identifier' => 'A', 'quantity' => 2],
+                ],
+            ],
+            'PRODUCTSET' => [
+                'products' => [
+                    ['identifier' => 'B', 'quantity' => 3],
+                ],
+                'product_models' => [],
+            ],
+        ]);
     }
 
     public function it_merge_quantified_associations_and_overwrite_quantities_from_duplicated_identifiers(

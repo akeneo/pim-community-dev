@@ -225,6 +225,32 @@ final class ConnectorProduct
         return !empty($associatedProductModels) ? array_unique(array_merge(...$associatedProductModels)) : [];
     }
 
+    public function associatedWithQuantityProductIdentifiers()
+    {
+        $associatedWithQuantityProducts = array_map(function ($quantifiedAssociations) {
+            return array_column($quantifiedAssociations['products'], 'identifier');
+        }, array_values($this->quantifiedAssociations));
+
+        if (empty($associatedWithQuantityProducts)) {
+            return [];
+        }
+
+        return array_values(array_unique(array_merge(...$associatedWithQuantityProducts)));
+    }
+
+    public function associatedWithQuantityProductModelCodes()
+    {
+        $associatedWithQuantityProductModels = array_map(function ($quantifiedAssociations) {
+            return array_column($quantifiedAssociations['product_models'], 'identifier');
+        }, array_values($this->quantifiedAssociations));
+
+        if (empty($associatedWithQuantityProductModels)) {
+            return [];
+        }
+
+        return array_values(array_unique(array_merge(...$associatedWithQuantityProductModels)));
+    }
+
     public function filterAssociatedProductModelsByProductModelCodes(array $productModelCodesToFilter): ConnectorProduct
     {
         $filteredAssociations = [];
@@ -249,6 +275,70 @@ final class ConnectorProduct
             $this->parentProductModelCode,
             $filteredAssociations,
             $this->quantifiedAssociations,
+            $this->metadata,
+            $this->values
+        );
+    }
+
+    public function filterAssociatedWithQuantityProductModelsByProductModelCodes(array $productModelCodesToFilter): ConnectorProduct
+    {
+        $filteredQuantifiedAssociations = [];
+        foreach ($this->quantifiedAssociations as $associationType => $quantifiedAssociation) {
+            $filteredProductModelQuantifiedAssociations = array_filter(
+                $quantifiedAssociation['product_models'],
+                function ($quantifiedLink) use ($productModelCodesToFilter) {
+                    return in_array($quantifiedLink['identifier'], $productModelCodesToFilter);
+                }
+            );
+
+            $filteredQuantifiedAssociations[$associationType]['products'] = $quantifiedAssociation['products'];
+            $filteredQuantifiedAssociations[$associationType]['product_models'] = array_values($filteredProductModelQuantifiedAssociations);
+        }
+
+        return new self(
+            $this->id,
+            $this->identifier,
+            $this->createdDate,
+            $this->updatedDate,
+            $this->enabled,
+            $this->familyCode,
+            $this->categoryCodes,
+            $this->groupCodes,
+            $this->parentProductModelCode,
+            $this->associations,
+            $filteredQuantifiedAssociations,
+            $this->metadata,
+            $this->values
+        );
+    }
+
+    public function filterAssociatedWithQuantityProductsByProductIdentifiers(array $productIdentifiersToFilter): ConnectorProduct
+    {
+        $filteredQuantifiedAssociations = [];
+        foreach ($this->quantifiedAssociations as $associationType => $quantifiedAssociation) {
+            $filteredProductQuantifiedAssociations = array_filter(
+                $quantifiedAssociation['products'],
+                function ($quantifiedLink) use ($productIdentifiersToFilter) {
+                    return in_array($quantifiedLink['identifier'], $productIdentifiersToFilter);
+                }
+            );
+
+            $filteredQuantifiedAssociations[$associationType]['products'] = array_values($filteredProductQuantifiedAssociations);
+            $filteredQuantifiedAssociations[$associationType]['product_models'] = $quantifiedAssociation['product_models'];
+        }
+
+        return new self(
+            $this->id,
+            $this->identifier,
+            $this->createdDate,
+            $this->updatedDate,
+            $this->enabled,
+            $this->familyCode,
+            $this->categoryCodes,
+            $this->groupCodes,
+            $this->parentProductModelCode,
+            $this->associations,
+            $filteredQuantifiedAssociations,
             $this->metadata,
             $this->values
         );
