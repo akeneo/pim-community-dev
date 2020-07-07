@@ -10,7 +10,7 @@ services:
     akeneo_communication_channel.handler.query.list_announcements:
         class: 'Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\ListAnnouncementsHandler'
         arguments:
-            - '@akeneo_communication_channel.query.in_memory.find_announcement_items'
+            - '@akeneo_communication_channel.query.local_filestorage.find_announcement_items'
             - '@akeneo_communication_channel.query.in_memory.find_viewed_announcement_ids'
 
     akeneo_communication_channel.query.in_memory.find_viewed_announcement_ids:
@@ -21,5 +21,5 @@ services:
     akeneo_communication_channel.handler.query.has_new_announcements:
         class: 'Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\HasNewAnnouncementsHandler'
         arguments:
-            - '@akeneo_communication_channel.query.in_memory.find_new_announcement_ids'
+            - '@akeneo_communication_channel.query.local_filestorage.find_new_announcement_ids'
             - '@akeneo_communication_channel.query.in_memory.find_viewed_announcement_ids'
