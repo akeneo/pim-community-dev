@@ -81,6 +81,7 @@ class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
 
     public function test_it_creates_a_rule_definition_with_only_code()
     {
+        $this->enableAcl();
         $normalizedRuleDefinition = [
             'code' => 'my_new_code',
             'content' => ['conditions' => [], 'actions' => []],

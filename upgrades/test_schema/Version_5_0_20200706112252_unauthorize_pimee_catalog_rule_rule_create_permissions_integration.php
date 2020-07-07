@@ -18,7 +18,7 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class Version_5_0_20200706112252_unauthorize_pimee_catalog_rule_rule_create_permissions extends TestCase
+class Version_5_0_20200706112252_unauthorize_pimee_catalog_rule_rule_create_permissions_Integration extends TestCase
 {
     private const ACL_ID = 'pimee_catalog_rule_rule_create_permissions';
     private const PRIVILEGE_ID = 'action:pimee_catalog_rule_rule_create_permissions';
