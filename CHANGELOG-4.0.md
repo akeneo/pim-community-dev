@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.38 (2020-07-07)
+
 ## Bug fixes
 
 - PIM-9271: Fix the image preview on asset manager linked product
