@@ -79,7 +79,12 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   } = useControlledFormInputAction<string>(lineNumber);
 
   const { clearError } = useFormContext();
-  const [attribute, setAttribute] = React.useState<Attribute | null>(null);
+  /**
+   * - if attribute is defined, it exists.
+   * - if attribute is undefined, it is currently fetching
+   * - if attribute is null, it does not exist.
+   */
+  const [attribute, setAttribute] = React.useState<Attribute | null>();
   const [attributeIsChanged, setAttributeIsChanged] = React.useState<boolean>(
     false
   );
@@ -144,6 +149,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
 
   const isDisabled = () => disabled ?? null === attribute;
 
+
   return (
     <ActionFormContainer>
       <SelectorBlock
@@ -177,7 +183,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
           </ErrorBlock>
         )}
       </SelectorBlock>
-      {null === attribute && !firstRefresh && (
+      {null === attribute && (
         <SelectorBlock>
           <InlineHelper danger>
             {`${translate(
@@ -208,8 +214,8 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
             currentCatalogLocale={currentCatalogLocale}
             value={getScopeFormValue()}
             allowClear={!attribute?.scopable}
-            disabled={!firstRefresh && null === attribute}
-            rules={getScopeValidation(attribute, scopes, translate)}
+            disabled={null === attribute}
+            rules={getScopeValidation(attribute || null, scopes, translate, currentCatalogLocale)}
           />
         </SelectorBlock>
       )}
@@ -230,11 +236,12 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
             value={getLocaleFormValue()}
             allowClear={!attribute?.localizable}
             rules={getLocaleValidation(
-              attribute,
+              attribute || null,
               locales,
               getAvailableLocales(),
               getScopeFormValue(),
-              translate
+              translate,
+              currentCatalogLocale
             )}
             disabled={isDisabled()}
           />

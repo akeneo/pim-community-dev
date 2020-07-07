@@ -177,15 +177,12 @@ const CopyActionLine: React.FC<Props> = ({
             )} ${translate('pim_common.required_label')}`}
             attributePlaceholder={''}
             scopeId={`edit-rules-action-${lineNumber}-from-scope`}
-            scopeFormName={`content.actions[${lineNumber}].from_scope`}
-            scopeValue={action.from_scope || undefined}
             localeId={`edit-rules-action-${lineNumber}-from-locale`}
-            localeFormName={`content.actions[${lineNumber}].from_locale`}
-            localeValue={action.from_locale || undefined}
             locales={locales}
             scopes={scopes}
             filterAttributeTypes={sourceAttributeTypes}
             onAttributeChange={handleSourceChange}
+            lineNumber={lineNumber}
           />
         </ActionLeftSide>
         <ActionRightSide>
@@ -204,14 +201,11 @@ const CopyActionLine: React.FC<Props> = ({
               )} ${translate('pim_common.required_label')}`}
               attributePlaceholder={''}
               scopeId={`edit-rules-action-${lineNumber}-to-scope`}
-              scopeFormName={`content.actions[${lineNumber}].to_scope`}
-              scopeValue={action.to_scope || undefined}
               localeId={`edit-rules-action-${lineNumber}-to-locale`}
-              localeFormName={`content.actions[${lineNumber}].to_locale`}
-              localeValue={action.to_locale || undefined}
               locales={locales}
               scopes={scopes}
               filterAttributeTypes={targetAttributeTypes}
+              lineNumber={lineNumber}
             />
           )}
         </ActionRightSide>

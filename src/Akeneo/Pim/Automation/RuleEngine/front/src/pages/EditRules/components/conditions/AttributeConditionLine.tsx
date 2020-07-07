@@ -151,7 +151,7 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
               name={scopeFormName}
               defaultValue={getScopeFormValue()}
               value={getScopeFormValue()}
-              rules={getScopeValidation(attribute, scopes, translate)}
+              rules={getScopeValidation(attribute || null, scopes, translate, currentCatalogLocale)}
             />
           </ScopeColumn>
         )}
@@ -170,11 +170,12 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
               allowClear={!attribute.localizable}
               name={localeFormName}
               rules={getLocaleValidation(
-                attribute,
+                attribute || null,
                 locales,
                 getAvailableLocales(),
                 getScopeFormValue(),
-                translate
+                translate,
+                currentCatalogLocale
               )}
             />
           </LocaleColumn>
