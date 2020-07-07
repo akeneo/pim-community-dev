@@ -5,9 +5,9 @@ namespace Context;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use Behat\Mink\Element\Element;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use Context\Traits\ClosestTrait;
 use Pim\Behat\Context\AttributeValidationContext;
 use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
 use Pim\Behat\Context\Domain\Enrich\AttributeTabContext;
@@ -38,6 +38,8 @@ use PimEnterprise\Behat\Context\ViewSelectorContext;
  */
 class EnterpriseFeatureContext extends FeatureContext
 {
+    use ClosestTrait;
+
     /** @BeforeScenario */
     public function gatherContexts(BeforeScenarioScope $scope)
     {
@@ -107,26 +109,26 @@ class EnterpriseFeatureContext extends FeatureContext
      */
     public function iShouldSeeThatAttributeIsASmartAttribute(string $attribute, string $ruleLabel): void
     {
-        $icons = $this->getSubcontext('navigation')->getCurrentPage()->findFieldIcons($attribute);
-
-        foreach ($icons as $icon) {
-            /** @var Element $parent */
-            $parent = $icon->getParent();
-            if ($parent->hasClass('from-smart')) {
-                $expected = sprintf('This attribute can be updated by a rule: %s', $ruleLabel);
-                if (trim($parent->getText()) !== $expected) {
-                    throw $this->createExpectationException(sprintf(
-                        'Smart attribute helper does not match: "%s" found, expected "%s"',
-                        trim($parent->getText()),
-                        $expected
-                    ));
-                }
-
-                return;
-            }
+        $element = $this->getSubcontext('navigation')->getCurrentPage()->findField($attribute);
+        if (!$element) {
+            throw $this->createExpectationException(sprintf('Expecting to see attribute "%s".', $attribute));
         }
 
-        throw $this->createExpectationException('Affected by a rule icon was not found');
+        $fieldContainer = $this->getClosest($element, 'AknFieldContainer');
+        $truc = $fieldContainer->find('css', '.from-smart');
+
+        if (null === $truc) {
+            throw new ElementNotFoundException(sprintf('No smart attribute found for %s', $attribute));
+        }
+
+        $expected = sprintf('This attribute can be updated by a rule: %s', $ruleLabel);
+        if ($truc->getText() !== $expected) {
+            throw new ElementNotFoundException(sprintf(
+                'Smart attribute text does not match: found "%s", expected "%s"',
+                $truc->getText(),
+                $expected
+            ));
+        }
     }
 
     /**
