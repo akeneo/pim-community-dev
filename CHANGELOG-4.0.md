@@ -1,5 +1,13 @@
 # 4.0.x
 
+# 4.0.38 (2020-07-07)
+
+## Bug fixes
+
+- PIM-9343: Fix cannot save product when simple reference entity linked to this product is deleted
+
+# 4.0.37 (2020-07-06)
+
 # 4.0.36 (2020-06-30)
 
 ## Bug fixes

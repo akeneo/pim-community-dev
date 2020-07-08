@@ -1,9 +1,20 @@
 # 3.2.x
 
+# 3.2.63 (2020-07-07)
+
+# 3.2.62 (2020-07-02)
+
+# 3.2.61 (2020-06-29)
+
+## Bug fixes
+
+- PIM-9323: Fix PDF export for Product Model values
+
 # 3.2.60 (2020-06-22)
 
 ## Bug fixes
 
+- PIM-9314: Reset scroll position when switching attribute group in the PEF
 - PIM-9084: Filter locale specific attributes in exports when the value's locale and the export profile's locale are different
 
 # 3.2.59 (2020-06-15)
