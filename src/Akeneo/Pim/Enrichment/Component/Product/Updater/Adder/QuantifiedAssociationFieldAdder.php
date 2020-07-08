@@ -41,11 +41,8 @@ class QuantifiedAssociationFieldAdder extends AbstractFieldAdder
      */
     public function addFieldData($product, $field, $data, array $options = [])
     {
-        $currentQuantifiedAssociations = $product->getQuantifiedAssociations();
         $quantifiedAssociationsToMerge = QuantifiedAssociations::createFromNormalized($data);
 
-        $mergedQuantifiedAssociations = $currentQuantifiedAssociations->merge($quantifiedAssociationsToMerge);
-
-        $product->setQuantifiedAssociations($mergedQuantifiedAssociations);
+        $product->mergeQuantifiedAssociations($quantifiedAssociationsToMerge);
     }
 }
