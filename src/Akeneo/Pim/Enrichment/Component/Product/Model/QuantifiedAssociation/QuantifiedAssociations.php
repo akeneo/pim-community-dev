@@ -235,11 +235,11 @@ class QuantifiedAssociations
         $result = [];
         foreach ($quantifiedAssociationsNormalized as $associationType => $associationsNormalized) {
             foreach ($associationsNormalized as $quantifiedLinksType => $quantifiedLinksNormalized) {
-                $result[$associationType][$quantifiedLinksType] = array_column(
-                    $quantifiedLinksNormalized,
-                    null,
-                    'identifier'
-                );
+                foreach ($quantifiedLinksNormalized as $quantifiedLinkNormalized) {
+                    $identifier = $quantifiedLinkNormalized['identifier'];
+
+                    $result[$associationType][$quantifiedLinksType][$identifier] = $quantifiedLinkNormalized;
+                }
             }
         }
 
