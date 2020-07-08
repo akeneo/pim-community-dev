@@ -1,6 +1,5 @@
 import React from 'react';
 import { Attribute, AttributeCode, Locale } from '../../../../../models';
-import { useFormContext } from 'react-hook-form';
 import { AttributeSelector } from '../../../../../components/Selectors/AttributeSelector';
 import {
   getScopeValidation,
@@ -15,7 +14,6 @@ import {
   useTranslate,
   useUserCatalogLocale,
 } from '../../../../../dependenciesTools/hooks';
-// import { getAttributeByIdentifier } from '../../../../../repositories/AttributeRepository';
 import { Controller } from 'react-hook-form';
 import { useControlledFormInputAction } from '../../../hooks';
 
@@ -45,8 +43,7 @@ type Props = {
   localeLabel?: string;
   locales: Locale[];
   scopes: IndexedScopes;
-  onAttributeChange?: (attribute: any) => void;
-  // onAttributeChange?: (attribute: AttributeCode | Attribute | null | any) => void;
+  onAttributeChange?: (attribute: AttributeCode) => void;
   lineNumber: number;
   filterAttributeTypes?: string[];
   disabled?: boolean;
@@ -81,24 +78,6 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
     getLocaleFormValue,
   } = useControlledFormInputAction<string>(lineNumber);
 
-  const { clearError } = useFormContext();
-  // const [attribute, setAttribute] = React.useState<Attribute | null>(null);
-  // const [attributeIsChanged, setAttributeIsChanged] = React.useState<boolean>(
-  //   false
-  // );
-  // const [firstRefresh, setFirstRefresh] = React.useState<boolean>(true);
-
-  console.log({ attributeCode });
-
-  console.warn(
-    clearError,
-    // setAttributeIsChanged,
-    // setAttribute,
-    // setFirstRefresh,
-    onAttributeChange
-  );
-  // console.log({ setAttribute });
-  // console.log({ setFirstRefresh });
 
   const getAvailableLocales = (): Locale[] => {
     if (!attribute?.scopable) {

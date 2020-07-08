@@ -30,7 +30,7 @@ type Props = {
 
 const SetActionLine: React.FC<Props> = ({
   lineNumber,
-  action,
+  // action,
   handleDelete,
   locales,
   scopes,
@@ -40,8 +40,6 @@ const SetActionLine: React.FC<Props> = ({
   const [attribute, setAttribute] = React.useState<
     Attribute | null | undefined
   >(undefined);
-
-  console.warn({ action });
 
   const {
     fieldFormName,
