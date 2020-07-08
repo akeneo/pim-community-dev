@@ -151,7 +151,12 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
               name={scopeFormName}
               defaultValue={getScopeFormValue()}
               value={getScopeFormValue()}
-              rules={getScopeValidation(attribute || null, scopes, translate, currentCatalogLocale)}
+              rules={getScopeValidation(
+                attribute || null,
+                scopes,
+                translate,
+                currentCatalogLocale
+              )}
             />
           </ScopeColumn>
         )}

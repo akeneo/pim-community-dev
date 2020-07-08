@@ -28,11 +28,12 @@ const getLocaleValidation = (
     return localeValidation;
   }
   if (attribute.localizable) {
-    localeValidation[
-      'required'
-    ] = translate('pimee_catalog_rule.exceptions.required_locale', {
-      attributeLabel: getAttributeLabel(attribute, currentCatalogLocale),
-    });
+    localeValidation['required'] = translate(
+      'pimee_catalog_rule.exceptions.required_locale',
+      {
+        attributeLabel: getAttributeLabel(attribute, currentCatalogLocale),
+      }
+    );
   }
   localeValidation['validate'] = (localeCode: any) => {
     if (attribute.localizable) {

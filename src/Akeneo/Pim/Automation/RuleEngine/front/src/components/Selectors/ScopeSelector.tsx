@@ -19,11 +19,12 @@ const getScopeValidation = (
 ) => {
   const scopeValidation: any = {};
   if (attribute && attribute.scopable) {
-    scopeValidation[
-      'required'
-    ] = translate('pimee_catalog_rule.exceptions.required_scope', {
-      attributeLabel: getAttributeLabel(attribute, currentCatalogLocale),
-    });
+    scopeValidation['required'] = translate(
+      'pimee_catalog_rule.exceptions.required_scope',
+      {
+        attributeLabel: getAttributeLabel(attribute, currentCatalogLocale),
+      }
+    );
   }
   scopeValidation['validate'] = (scopeCode: any) => {
     if (attribute && attribute.scopable) {

@@ -17,7 +17,16 @@ import { Attribute, AttributeType } from '../../../../models';
 import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepository';
 import { useFormContext, Controller } from 'react-hook-form';
 import { LineErrors } from '../LineErrors';
-import { useControlledFormInputAction } from "../../hooks";
+import { useControlledFormInputAction } from '../../hooks';
+import styled from 'styled-components';
+
+const EmptySourceHelper = styled.div`
+  background-image: url('/bundles/pimui/images/icon-info.svg');
+  background-repeat: no-repeat;
+  padding-left: 28px;
+  height: 21px;
+  line-height: 21px;
+`;
 
 const supportedTypes: () => Map<AttributeType, AttributeType[]> = () => {
   return new Map([
@@ -116,11 +125,9 @@ const CopyActionLine: React.FC<Props> = ({
   const translate = useTranslate();
   const router = useBackboneRouter();
   const { setValue } = useFormContext();
-  const {
-    formName,
-    typeFormName,
-    getFormValue
-  } = useControlledFormInputAction<string | null>(lineNumber);
+  const { formName, typeFormName, getFormValue } = useControlledFormInputAction<
+    string | null
+  >(lineNumber);
 
   const [targetAttributeTypes, setTargetAttributeTypes] = React.useState<
     AttributeType[]
@@ -144,7 +151,7 @@ const CopyActionLine: React.FC<Props> = ({
 
   const handleTargetChange = (attribute: Attribute | null) => {
     setValue(formName('to_field'), attribute?.code);
-  }
+  };
 
   React.useEffect(() => {
     if (action.from_field) {
@@ -158,9 +165,21 @@ const CopyActionLine: React.FC<Props> = ({
 
   return (
     <>
-      <Controller name={typeFormName} as={<span hidden />} defaultValue='copy' />
-      <Controller name={formName('from_field')} as={<span hidden />} defaultValue={getFormValue('from_field')} />
-      <Controller name={formName('to_field')} as={<span hidden />} defaultValue={getFormValue('to_field')} />
+      <Controller
+        name={typeFormName}
+        as={<span hidden />}
+        defaultValue='copy'
+      />
+      <Controller
+        name={formName('from_field')}
+        as={<span hidden />}
+        defaultValue={getFormValue('from_field')}
+      />
+      <Controller
+        name={formName('to_field')}
+        as={<span hidden />}
+        defaultValue={getFormValue('to_field')}
+      />
       <ActionTemplate
         title={translate('pimee_catalog_rule.form.edit.actions.copy.title')}
         helper={translate('pimee_catalog_rule.form.edit.actions.copy.helper')}
@@ -201,7 +220,7 @@ const CopyActionLine: React.FC<Props> = ({
                 'pimee_catalog_rule.form.edit.actions.copy.select_target'
               )}
             </ActionTitle>
-            {targetAttributeTypes.length > 0 && (
+            {targetAttributeTypes.length > 0 ? (
               <AttributeLocaleScopeSelector
                 attributeCode={getFormValue('to_field')}
                 attributeFormName={formName('to_field')}
@@ -222,6 +241,10 @@ const CopyActionLine: React.FC<Props> = ({
                 scopeFieldName={'to_scope'}
                 localeFieldName={'to_locale'}
               />
+            ) : (
+              <EmptySourceHelper>
+                Please, select your source attribute first
+              </EmptySourceHelper>
             )}
           </ActionRightSide>
         </ActionGrid>

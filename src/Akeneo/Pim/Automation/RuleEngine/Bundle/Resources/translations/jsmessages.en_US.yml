@@ -148,7 +148,7 @@ pimee_catalog_rule:
                     helper: To remove your product selection from one or more categories, please start by selecting your category trees and then, your categories
                 copy:
                     title: COPY
-                    helper: To set values to your attribute, please start by selecting your target attribute and then, the value you want to set
+                    helper: To copy values from an attribute to another, please start by selecting your target attribute and then, your target attribute
                     select_source: Select your source
                     select_target: Select your target
                 delete:

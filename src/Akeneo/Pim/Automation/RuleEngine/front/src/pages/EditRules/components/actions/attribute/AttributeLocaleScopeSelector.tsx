@@ -75,10 +75,9 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   const translate = useTranslate();
   const currentCatalogLocale = useUserCatalogLocale();
 
-  const {
-    formName,
-    getFormValue
-  } = useControlledFormInputAction<string>(lineNumber);
+  const { formName, getFormValue } = useControlledFormInputAction<string>(
+    lineNumber
+  );
 
   const scopeFormName = formName(scopeFieldName || 'scope');
   const getScopeFormValue = () => getFormValue(scopeFieldName || 'scope');
@@ -221,7 +220,12 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
             value={getScopeFormValue()}
             allowClear={!attribute?.scopable}
             disabled={null === attribute}
-            rules={getScopeValidation(attribute || null, scopes, translate, currentCatalogLocale)}
+            rules={getScopeValidation(
+              attribute || null,
+              scopes,
+              translate,
+              currentCatalogLocale
+            )}
           />
         </SelectorBlock>
       )}
