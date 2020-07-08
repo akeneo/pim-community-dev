@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithQuantifiedAssociations;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithQuantifiedAssociationsInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\FindNonExistingAssociationTypeCodesQueryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindQuantifiedAssociationTypeCodesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetIdMappingFromProductIdsQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetIdMappingFromProductModelIdsQueryInterface;
 use Doctrine\Common\EventSubscriber;
@@ -26,17 +26,17 @@ final class LoadEntitySubscriber implements EventSubscriber
     /** @var GetIdMappingFromProductModelIdsQueryInterface */
     private $getIdMappingFromProductModelIds;
 
-    /** @var FindNonExistingAssociationTypeCodesQueryInterface */
-    private $findNonExistingAssociationTypeCodesQuery;
+    /** @var FindQuantifiedAssociationTypeCodesInterface */
+    private $findQuantifiedAssociationTypeCodes;
 
     public function __construct(
         GetIdMappingFromProductIdsQueryInterface $getIdMappingFromProductIds,
         GetIdMappingFromProductModelIdsQueryInterface $getIdMappingFromProductModelIds,
-        FindNonExistingAssociationTypeCodesQueryInterface $findNonExistingAssociationTypeCodesQuery
+        FindQuantifiedAssociationTypeCodesInterface $findQuantifiedAssociationTypeCodes
     ) {
         $this->getIdMappingFromProductIds = $getIdMappingFromProductIds;
         $this->getIdMappingFromProductModelIds = $getIdMappingFromProductModelIds;
-        $this->findNonExistingAssociationTypeCodesQuery = $findNonExistingAssociationTypeCodesQuery;
+        $this->findQuantifiedAssociationTypeCodes = $findQuantifiedAssociationTypeCodes;
     }
 
     /**
@@ -64,28 +64,17 @@ final class LoadEntitySubscriber implements EventSubscriber
             return;
         }
 
-        $this->removeNonExistingQuantifiedAssociationsTypes($entity);
-
         $productIds = $entity->getQuantifiedAssociationsProductIds();
         $productModelIds = $entity->getQuantifiedAssociationsProductModelIds();
 
         $mappedProductIds = $this->getIdMappingFromProductIds->execute($productIds);
         $mappedProductModelIds = $this->getIdMappingFromProductModelIds->execute($productModelIds);
+        $quantifiedAssociationTypeCodes = $this->findQuantifiedAssociationTypeCodes->execute();
 
-        $entity->hydrateQuantifiedAssociations($mappedProductIds, $mappedProductModelIds);
-    }
-
-    private function removeNonExistingQuantifiedAssociationsTypes(
-        EntityWithQuantifiedAssociationsInterface $entity
-    ): void {
-        $currentQuantifiedAssociationsTypeCodes = $entity->getQuantifiedAssociationsTypeCodes();
-
-        $nonExistingQuantifiedAssociationsTypeCodes = $this->findNonExistingAssociationTypeCodesQuery->execute(
-            $currentQuantifiedAssociationsTypeCodes
+        $entity->hydrateQuantifiedAssociations(
+            $mappedProductIds,
+            $mappedProductModelIds,
+            $quantifiedAssociationTypeCodes
         );
-
-        foreach ($nonExistingQuantifiedAssociationsTypeCodes as $nonExistingQuantifiedAssociationsTypeCode) {
-            $entity->removeQuantifiedAssociationsType($nonExistingQuantifiedAssociationsTypeCode);
-        }
     }
 }

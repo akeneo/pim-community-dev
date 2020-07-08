@@ -2,30 +2,20 @@
 
 namespace Akeneo\Test\Acceptance\AssociationType;
 
-use Akeneo\Pim\Enrichment\Component\Product\Query\FindNonExistingAssociationTypeCodesQueryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindQuantifiedAssociationTypeCodesInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationType;
 
-class InMemoryFindNonExistingAssociationTypeCodesQuery implements FindNonExistingAssociationTypeCodesQueryInterface
+class InMemoryFindQuantifiedAssociationTypeCodes implements FindQuantifiedAssociationTypeCodesInterface
 {
     /** @var InMemoryAssociationTypeRepository */
     private $associationTypeRepository;
 
-    public function __construct(
-        InMemoryAssociationTypeRepository $associationTypeRepository
-    ) {
+    public function __construct(InMemoryAssociationTypeRepository $associationTypeRepository)
+    {
         $this->associationTypeRepository = $associationTypeRepository;
     }
 
-    public function execute(array $codes): array
-    {
-        $existingCodes = $this->getAllAssociationTypeCodes();
-
-        $nonExistingCodes = array_values(array_diff($codes, $existingCodes));
-
-        return $nonExistingCodes;
-    }
-
-    private function getAllAssociationTypeCodes(): array
+    public function execute(): array
     {
         $associationTypes = $this->associationTypeRepository->findAll();
 
