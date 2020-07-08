@@ -21,9 +21,11 @@ const Panel = (): JSX.Element => {
 
   useEffect(() => {
     if (isSerenity) {
+      /* istanbul ignore next: can't test the callback function */
       mediator.on('communication-channel:panel:open', () => {
         setIsOpened(true);
       });
+      /* istanbul ignore next */
       mediator.on('communication-channel:panel:close', () => {
         setIsOpened(false);
       });
@@ -50,7 +52,7 @@ const Panel = (): JSX.Element => {
     <>
       <HeaderPanel title={__('akeneo_communication_channel.panel.title')} onClickCloseButton={onClosePanel} />
       {isSerenity ? (
-        <AnnouncementList campaign={campaign} panelIsClosed={!isOpened} />
+        <AnnouncementList campaign={campaign} panelIsOpened={isOpened} />
       ) : (
         <EmptyAnnouncementList text={__('akeneo_communication_channel.panel.list.empty')} />
       )}

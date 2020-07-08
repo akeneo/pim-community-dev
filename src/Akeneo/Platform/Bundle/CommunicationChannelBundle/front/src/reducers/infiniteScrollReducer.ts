@@ -19,7 +19,7 @@ const reducer: Reducer<State, Actions> = (state, action) => {
     case INFINITE_SCROLL_FETCHING_RESULTS:
       return {...state, isFetching: true};
     case INFINITE_SCROLL_FIRST_RESULTS_FETCHED:
-      return {...state, items: action.payload.items, isFetching: false};
+      return {...state, items: action.payload.items, isFetching: false, lastAppend: false};
     case INFINITE_SCROLL_NEXT_RESULTS_FETCHED:
       return {
         ...state,
