@@ -22,7 +22,7 @@ const ActionTitle = styled.div`
 const ActionGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  grid-gap: 20px;
+  grid-gap: 40px;
 `;
 
 const ActionGridItem: React.FC = ({ children }) => (
