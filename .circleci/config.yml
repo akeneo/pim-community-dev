@@ -339,6 +339,42 @@ jobs:
               command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=${CIRCLE_SHA1} make delete
               when: on_fail
 
+  test_upgrade_from_serenity_to_master:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployer
+      steps:
+          - attach_workspace:
+                at: ~/
+          - add_ssh_keys
+          - set_gcloud_config_dev
+          - run:
+                name: Latest SaaS prod deployment on kubernetes
+                command: |
+                    ssh-keyscan github.com >> ~/.ssh/known_hosts
+                    LATEST_RELEASE=$(git tag --list | grep -E "^v?[0-9]+$" | sort -r | head -n 1)
+                    echo $LATEST_RELEASE
+                    INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$LATEST_RELEASE make create-ci-release-files
+                    INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$LATEST_RELEASE make deploy
+          - run:
+                name: Upgrade version to master
+                command: |
+                    INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
+                    INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$CIRCLE_SHA1 make terraform-pre-upgrade-disk
+                    INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$CIRCLE_SHA1 make deploy
+          - run:
+                name: Production tests on upgraded env
+                command: INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$CIRCLE_SHA1 make test-prod
+          - run:
+                name: Prepare infrastructure artifacts
+                command: INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$CIRCLE_SHA1 make prepare-infrastructure-artifacts
+                when: on_fail
+          - store_artifacts:
+                path: ~/artifacts/infra
+          - run:
+                name: Remove upgraded env
+                command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make delete
+
   test_back_missing_structure_migrations:
       machine:
         image: ubuntu-1604:201903-01
@@ -492,6 +528,9 @@ workflows:
           - deploy_pr_environment:
                 requires:
                     - deploy_pr_environment?
+          - test_upgrade_from_serenity_to_master:
+                requires:
+                    - build_prod
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -530,6 +569,7 @@ workflows:
                 requires:
                     - test_back_behat_legacy
                     - test_back_performance
+                    - test_upgrade_from_serenity_to_master
           - ready_to_build_only_ce?:
                 type: approval
                 filters:
@@ -579,10 +619,14 @@ workflows:
 
       jobs:
           - checkout_ce
+          - checkout_ee
           - build_dev:
                 is_ee_built: false
                 requires:
                     - checkout_ce
+          - build_prod:
+                requires:
+                    - checkout_ee
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -598,6 +642,9 @@ workflows:
           - test_back_data_migrations:
                 requires:
                     - build_dev
+          - test_upgrade_from_serenity_to_master:
+                requires:
+                    - build_prod
 
 commands:
   set_gcloud_config_dev:
