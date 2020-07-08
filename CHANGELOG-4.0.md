@@ -1,9 +1,29 @@
 # 4.0.x
 
+# 4.0.39 (2020-07-08)
+
+# 4.0.38 (2020-07-07)
+
+## Bug fixes
+
+- PIM-9271: Fix the image preview on asset manager linked product
+
+# 4.0.37 (2020-07-06)
+
+## Bug fixes
+
+- PIM-9329: Fix slow queries collect data on reference entity and asset manager
+- PIM-9335: Fix fetch attribute to 100 instead of 20 by default in linked products
+- PIM-9209: Fix broken proposal screen when submitting changes on an Asset Collection
+
+# 4.0.36 (2020-06-30)
+
 # 4.0.35 (2020-06-22)
 
 ## Bug fixes
+
 - PIM-9303: Fix project recalculate
+- PIM-9302: Fix ref entity multiple option attribute view crashing
 
 # 4.0.34 (2020-06-17)
 

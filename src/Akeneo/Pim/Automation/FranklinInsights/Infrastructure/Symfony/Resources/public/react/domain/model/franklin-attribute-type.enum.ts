@@ -12,5 +12,6 @@ export enum FranklinAttributeType {
   MULTISELECT = 'multiselect',
   NUMBER = 'number',
   SELECT = 'select',
-  TEXT = 'text'
+  TEXT = 'text',
+  BOOLEAN = 'boolean'
 }

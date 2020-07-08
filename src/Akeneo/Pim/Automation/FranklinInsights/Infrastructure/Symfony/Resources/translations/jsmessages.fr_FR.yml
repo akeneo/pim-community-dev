@@ -232,6 +232,7 @@ batch_jobs:
   default_steps:
     fetch_products: Récupérer les données de produit
     create_proposals: Créer les propositions
+    notify_if_pending_attributes: Notifier les utilisateurs pour les attributs en attente de mapping
     validate_configuration: Valider la configuration de Franklin Insights
   franklin_insights_subscribe_products:
     label: Abonnement en masse à Franklin Insights

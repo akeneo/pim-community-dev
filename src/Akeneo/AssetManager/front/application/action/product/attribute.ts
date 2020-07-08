@@ -1,36 +1,18 @@
 import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
-import promisify from 'akeneoassetmanager/tools/promisify';
 import {
   productListAttributeListUpdated,
   productListProductListUpdated,
   productListAttributeSelected,
 } from 'akeneoassetmanager/domain/event/asset/product';
 import productFetcher from 'akeneoassetmanager/infrastructure/fetcher/product';
-import AssetFamilyIdentifier, {
-  denormalizeAssetFamilyIdentifier,
-  assetFamilyidentifiersAreEqual,
-} from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
-import hydrate from 'akeneoassetmanager/application/hydrator/product/attribute';
+import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AttributeCode from 'akeneoassetmanager/domain/model/product/attribute/code';
-
-const fetcherRegistry = require('pim/fetcher-registry');
+import productAttributeFetcher from 'akeneoassetmanager/infrastructure/fetcher/product/attribute';
 
 export const updateAttributeList = (assetFamilyIdentifier: AssetFamilyIdentifier) => async (
   dispatch: any
 ): Promise<void> => {
-  const attributes = await promisify(
-    fetcherRegistry.getFetcher('attribute').fetchByTypes(['pim_catalog_asset_collection'], false)
-  );
-
-  const linkedAttributes = attributes
-    .filter((attribute: NormalizedAttribute) =>
-      assetFamilyidentifiersAreEqual(
-        assetFamilyIdentifier,
-        denormalizeAssetFamilyIdentifier(attribute.reference_data_name)
-      )
-    )
-    .map(hydrate);
+  const linkedAttributes = await productAttributeFetcher.fetchLinkedAssetAttributes(assetFamilyIdentifier);
 
   dispatch(productListAttributeListUpdated(linkedAttributes));
   if (linkedAttributes.length > 0) {

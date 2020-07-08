@@ -74,11 +74,25 @@ describe('Domain > are mapping types compatible', () => {
     expect(areMappingTypesCompatible(FranklinAttributeType.TEXT, AttributeType.METRIC)).toBe(false);
   });
 
+  test('it determines that a boolean franklin attribute is compatible with a pim attribute', () => {
+    expect(areMappingTypesCompatible(FranklinAttributeType.BOOLEAN, AttributeType.BOOLEAN)).toBe(true);
+  });
+
+  test('it determines that a boolean franklin attribute is not compatible with a pim attribute', () => {
+    expect(areMappingTypesCompatible(FranklinAttributeType.BOOLEAN, AttributeType.NUMBER)).toBe(false);
+    expect(areMappingTypesCompatible(FranklinAttributeType.BOOLEAN, AttributeType.SIMPLESELECT)).toBe(false);
+    expect(areMappingTypesCompatible(FranklinAttributeType.BOOLEAN, AttributeType.MULTISELECT)).toBe(false);
+    expect(areMappingTypesCompatible(FranklinAttributeType.BOOLEAN, AttributeType.METRIC)).toBe(false);
+    expect(areMappingTypesCompatible(FranklinAttributeType.BOOLEAN, AttributeType.TEXT)).toBe(false);
+    expect(areMappingTypesCompatible(FranklinAttributeType.BOOLEAN, AttributeType.TEXTAREA)).toBe(false);
+  });
+
   test('it determines that a franklin attribute is compatible if the pim attribute is null', () => {
     expect(areMappingTypesCompatible(FranklinAttributeType.TEXT, null)).toBe(true);
     expect(areMappingTypesCompatible(FranklinAttributeType.NUMBER, null)).toBe(true);
     expect(areMappingTypesCompatible(FranklinAttributeType.METRIC, null)).toBe(true);
     expect(areMappingTypesCompatible(FranklinAttributeType.SELECT, null)).toBe(true);
     expect(areMappingTypesCompatible(FranklinAttributeType.MULTISELECT, null)).toBe(true);
+    expect(areMappingTypesCompatible(FranklinAttributeType.BOOLEAN, null)).toBe(true);
   });
 });

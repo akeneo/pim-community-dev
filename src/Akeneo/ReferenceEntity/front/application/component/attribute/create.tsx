@@ -200,7 +200,7 @@ class Create extends React.Component<CreateProps> {
                         className="AknTextField AknTextField--light"
                         id="pim_reference_entity.attribute.create.input.label"
                         name="label"
-                        value={this.props.data.labels[this.props.context.locale]}
+                        value={this.props.data.labels[this.props.context.locale] || ''}
                         onChange={this.onLabelUpdate}
                         onKeyPress={this.onKeyPress}
                       />

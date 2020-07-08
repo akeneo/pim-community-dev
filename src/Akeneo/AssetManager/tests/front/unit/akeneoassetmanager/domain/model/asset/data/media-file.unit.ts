@@ -4,6 +4,8 @@ import {
   getMediaFilePath,
   PLACEHOLDER_PATH,
 } from 'akeneoassetmanager/domain/model/asset/data/media-file';
+const routing = require('routing');
+jest.mock('routing');
 
 const mediaFileData = {
   filePath: 'coucou',
@@ -25,7 +27,12 @@ describe('akeneo > asset family > domain > model > asset > data --- media-file',
   });
 
   test('I can get the media file path of a MediaFileData', () => {
-    expect(getMediaFilePath(mediaFileData)).toEqual('coucou');
+    expect(getMediaFilePath({filePath: 'rest/asset_manager/image_preview/coucou', originalFilename: 'coucou.jpg'})).toEqual('rest/asset_manager/image_preview/coucou');
+  });
+
+  test('I can get the generated url of a MediaFileData', () => {
+    routing.generate = jest.fn().mockImplementationOnce((route: string) => route);
+    expect(getMediaFilePath(mediaFileData)).toEqual('pim_enrich_media_show');
   });
 
   test('I should get a placeholder image path if the MediaFileData is empty', () => {
