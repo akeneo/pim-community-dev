@@ -4,6 +4,12 @@
 
 - PIM-9344: Fix pdf renderer when using pim_catalog_simpleselect
 
+# 4.0.39 (2020-07-08)
+
+## Bug fixes
+
+- PIM-9349: Fix record list alignment when images are loading indefinitely
+
 # 4.0.38 (2020-07-07)
 
 ## Bug fixes
