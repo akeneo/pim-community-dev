@@ -1,0 +1,78 @@
+{{ if and .Values.onboarder.enabled .Values.onboarder.hook.importOnboarderSuppliers.enabled -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: import-onboarder-suppliers
+  labels:
+    component: "hook-import-onboarder-suppliers" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+    app.kubernetes.io/component: "hook-import-onboarder-suppliers"
+    {{- include "onboarder.standardLabels" . | indent 4 }}
+    {{- include "pim.extraLabels" . | indent 4 }}
+  annotations:
+    # This is what defines this resource as a hook. Without this line, the
+    # job is considered part of the release.
+    "helm.sh/hook": "post-install"
+    "helm.sh/hook-weight": "50"
+    "helm.sh/hook-delete-policy": "hook-succeeded"
+spec:
+  template:
+    metadata:
+      labels:
+        component: "hook-import-onboarder-suppliers" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+        app.kubernetes.io/component: "hook-import-onboarder-suppliers"
+        role: "import-onboarder-suppliers" # Deprecated
+        {{- include "onboarder.standardLabels" . | indent 8 }}
+        {{- include "pim.extraLabels" . | indent 8 }}
+      annotations:
+        checksum/env-config: {{ include (print $.Template.BasePath "/env-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
+        checksum/pim-config: {{ include (print $.Template.BasePath "/pim-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
+        checksum/secrets: {{ include (print $.Template.BasePath "/pim-secrets.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: import-onboarder-suppliers
+          image:  {{ template "pim.imageNameAndTag" . }}
+          imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
+          command:
+            - 'su'
+            - 'www-data'
+            - '-s'
+            - '/bin/sh'
+            - '-c'
+            - |
+              cd /srv/pim && \
+              bin/console akeneo:batch:job csv_supplier_user_import -c "{\"filePath\": \"/srv/pim/vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/setup/supplier_users.csv\"}" && \
+              bin/console akeneo:batch:job csv_supplier_import -c "{\"filePath\": \"/srv/pim/vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/setup/suppliers.csv\"}"
+          envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
+          env:
+            - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }
+            - { name: MAILER_PASSWORD, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerPassword } } }
+            - { name: APP_DATABASE_PASSWORD, valueFrom: { secretKeyRef: { name: pim-secrets, key: mysqlPimUserPassword } } }
+            - { name: GOOGLE_NAMESPACE, valueFrom: { fieldRef: { fieldPath: metadata.namespace } } }
+            - { name: GOOGLE_POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
+{{- if .Values.common.phpConfCLI }}
+{{ toYaml .Values.common.phpConfCLI  | indent 12 }}
+{{- end }}
+          volumeMounts:
+            - name: google-cloud-pim-storage-key
+              mountPath: /var/secrets/google/srnt.json
+              subPath: srnt.json
+              readOnly: true
+            - name: google-cloud-onboarder-key
+              mountPath: /var/secrets/google/key.json
+              subPath: key.json
+              readOnly: true
+      volumes:
+        - name: google-cloud-pim-storage-key
+          secret:
+            secretName: pim-secrets
+            items:
+            - key: srntPimStorageKey
+              path: srnt.json
+        - name: google-cloud-onboarder-key
+          secret:
+            secretName: pim-secrets
+            items:
+            - key: akobOnboarderKey
+              path: key.json
+{{- end }}

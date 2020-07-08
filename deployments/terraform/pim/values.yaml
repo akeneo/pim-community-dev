@@ -199,6 +199,8 @@ onboarder:
       enabled: false
     importAdditionalOnboarderFixtures:
       enabled: false
+    importOnboarderSuppliers:
+      enabled: false
   pubsub:
     topicPubMiddleware: null
     topicPubOnboarder: null
