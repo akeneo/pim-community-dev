@@ -32,15 +32,14 @@ describe('ClearAttributeActionLine', () => {
   });
 
   it('should display the clear attribute action line without locale or scope', async () => {
-    fetchMock.mockResponses([
-      JSON.stringify(
-        createAttribute({
-          scopable: false,
-          localizable: false,
-        })
-      ),
-      { status: 200 },
-    ]);
+    fetchMock.mockResponse((request: Request) => {
+      // attribute values
+      if (request.url.includes('pim_enrich_attribute_rest_get')) {
+        return Promise.resolve(JSON.stringify(createAttribute({ scopable: false, localizable: false })))
+      }
+
+      throw new Error(`The "${request.url}" url is not mocked.`);
+    });
 
     const {
       findByText,
@@ -81,8 +80,13 @@ describe('ClearAttributeActionLine', () => {
   });
 
   it('should display the clear attribute action line with locale and scope', async () => {
-    fetchMock.mockResponse(() => {
-      return Promise.resolve(JSON.stringify(createAttribute({})));
+    fetchMock.mockResponse((request: Request) => {
+      // attribute values
+      if (request.url.includes('pim_enrich_attribute_rest_get')) {
+        return Promise.resolve(JSON.stringify(createAttribute({})))
+      }
+
+      throw new Error(`The "${request.url}" url is not mocked.`);
     });
 
     const {

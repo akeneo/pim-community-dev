@@ -111,8 +111,8 @@ const submitEditRuleForm = (
         translate('pimee_catalog_rule.form.edit.notification.success')
       );
       reset(formData);
-      registerConditions(register, formData.content.conditions);
-      registerActions(register, formData.content.actions);
+      registerConditions(register, formData.content?.conditions || []);
+      registerActions(register, formData.content?.actions || []);
     } else {
       notify(
         NotificationLevel.ERROR,

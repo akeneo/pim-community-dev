@@ -3,6 +3,9 @@ import { ClearAssociationsAction } from '../../../../../../src/models/actions';
 import { renderWithProviders } from '../../../../../../test-utils';
 import { ClearAssociationsActionLine } from '../../../../../../src/pages/EditRules/components/actions/ClearAssociationsActionLine';
 import { locales, scopes } from '../../../../factories';
+
+jest.mock('../../../../../../src/fetch/categoryTree.fetcher.ts');
+
 const action: ClearAssociationsAction = {
   type: 'clear',
   field: 'associations',
