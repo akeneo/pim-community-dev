@@ -23,6 +23,10 @@ const StyledTitleHeader = styled.span`
   padding-left: 8px;
 `;
 
+const ActionForm = styled.div`
+  margin-top: 18px;
+`;
+
 const DeleteButton = createComponent({
   as: RedGhostButton,
   useHook: useDialogDisclosure,
@@ -74,7 +78,7 @@ const ActionTemplate: React.FC<Props> = ({
       <VisuallyHidden>
         <legend>{legend}</legend>
       </VisuallyHidden>
-      {children}
+      <ActionForm>{children}</ActionForm>
     </fieldset>
   );
 };
