@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9349: Fix record list alignment when images are loading indefinitely
+
 # 4.0.38 (2020-07-07)
 
 ## Bug fixes
