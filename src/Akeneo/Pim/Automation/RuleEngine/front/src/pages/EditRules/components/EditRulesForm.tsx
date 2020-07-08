@@ -46,6 +46,9 @@ const StyledTab = styled(Tab)`
 
 const StyledTabPanel = styled(TabPanel)`
   padding-top: 10px;
+  &:focus {
+    outline: none;
+  }
 `;
 
 const StyledTabList = styled(TabList)`

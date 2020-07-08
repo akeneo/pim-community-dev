@@ -63,6 +63,9 @@ const AddConditionContainer = styled.div`
 
 const RuleProductSelectionFieldset = styled.fieldset<{ hasActions: boolean }>`
   padding-bottom: 20px;
+  &:focus {
+    outline: none;
+  }
 
   ${({ hasActions }) =>
     hasActions &&
@@ -162,7 +165,7 @@ const RuleProductSelection: React.FC<Props> = ({
     ).length > 0;
 
   return (
-    <RuleProductSelectionFieldset hasActions={hasActions} tabIndex={-1}>
+    <RuleProductSelectionFieldset hasActions={hasActions}>
       <Header className='AknSubsection-title'>
         <HeaderPartContainer>
           <TextBoxBlue>
