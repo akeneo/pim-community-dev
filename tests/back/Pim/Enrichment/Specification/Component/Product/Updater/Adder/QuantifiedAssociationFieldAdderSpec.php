@@ -58,12 +58,7 @@ class QuantifiedAssociationFieldAdderSpec extends ObjectBehavior
             ],
         ]);
 
-        $entityWithQuantifiedAssociations->getQuantifiedAssociations()->willReturn($currentQuantifiedAssociations);
-        $entityWithQuantifiedAssociations->setQuantifiedAssociations($quantifiedAssociationsMerged)->shouldBeCalled();
-        $currentQuantifiedAssociations
-            ->merge($quantifiedAssociationToAdd)
-            ->shouldBeCalled()
-            ->willReturn($quantifiedAssociationsMerged);
+        $entityWithQuantifiedAssociations->mergeQuantifiedAssociations($quantifiedAssociationToAdd)->shouldBeCalled();
 
         $this->addFieldData($entityWithQuantifiedAssociations, 'quantified_associations', $dataToAdd);
     }

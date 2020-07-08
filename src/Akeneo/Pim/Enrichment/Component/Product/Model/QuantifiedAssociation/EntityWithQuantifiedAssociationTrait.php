@@ -37,6 +37,13 @@ trait EntityWithQuantifiedAssociationTrait
         return $this->quantifiedAssociations;
     }
 
+    public function mergeQuantifiedAssociations(QuantifiedAssociations $quantifiedAssociations): void
+    {
+        $quantifiedAssociationsMerged = $this->quantifiedAssociations->merge($quantifiedAssociations);
+
+        $this->setQuantifiedAssociations($quantifiedAssociationsMerged);
+    }
+
     /**
      * @inheritDoc
      */
