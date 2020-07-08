@@ -80,27 +80,6 @@ class AssociationTypeValidationIntegration extends TestCase
         $this->assertSame('code', $violation->getPropertyPath());
     }
 
-    public function testAssociationTypeCodeIntegerRegex()
-    {
-        $associationType = $this->createAssociationType();
-        $this->getUpdater()->update(
-            $associationType,
-            [
-                'code' => '123456',
-            ]
-        );
-
-        $violations = $this->getValidator()->validate($associationType);
-        $violation = current($violations)[0];
-
-        $this->assertCount(1, $violations);
-        $this->assertSame(
-            'Association type code must contain at least one letter',
-            $violation->getMessage()
-        );
-        $this->assertSame('code', $violation->getPropertyPath());
-    }
-
     public function testAssociationTypeCodeLength()
     {
         $associationType = $this->createAssociationType();
