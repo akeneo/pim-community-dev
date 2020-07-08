@@ -51,6 +51,7 @@ const useControlledFormInputAction = <T>(lineNumber: number) => {
   const valueFormName = `content.actions[${lineNumber}].value`;
   const scopeFormName = `content.actions[${lineNumber}].scope`;
   const localeFormName = `content.actions[${lineNumber}].locale`;
+  const includeChildrenFormName = `content.actions[${lineNumber}].include_children`;
   const getValueFormValue = (): T => get(getValues(), valueFormName);
   const getItemsFormValue = (): T => get(getValues(), itemsFormName);
   const getFieldFormValue = (): T => get(getValues(), fieldFormName);
@@ -59,6 +60,10 @@ const useControlledFormInputAction = <T>(lineNumber: number) => {
   const setFieldFormValue = (data?: T) => setValue(fieldFormName, data);
   const setItemsFormValue = (data?: T) => setValue(itemsFormName, data);
   const setValueFormValue = (data?: T) => setValue(valueFormName, data);
+  const getIncludeChildrenFormValue = (): boolean =>
+    get(getValues(), includeChildrenFormName);
+  const setIncludeChildrenFormValue = (data?: boolean) =>
+    setValue(includeChildrenFormName, data);
 
   return {
     fieldFormName,
@@ -75,6 +80,9 @@ const useControlledFormInputAction = <T>(lineNumber: number) => {
     setValueFormValue,
     typeFormName,
     valueFormName,
+    includeChildrenFormName,
+    getIncludeChildrenFormValue,
+    setIncludeChildrenFormValue,
   };
 };
 

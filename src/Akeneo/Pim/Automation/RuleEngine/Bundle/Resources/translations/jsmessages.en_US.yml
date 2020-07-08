@@ -17,6 +17,7 @@ pimee_catalog_rule:
             no_rule_yet.label: No rules for now
     rule:
         value: Value
+        include_children: Include children
         condition:
             if.label: if
         action:
@@ -141,6 +142,9 @@ pimee_catalog_rule:
                     title: CLEAR Categories
                 clear_groups:
                     title: CLEAR Groups
+                remove_category:
+                    title: REMOVE categories
+                    helper: To remove your product selection from one or more categories, please start by selecting your category trees and then, your categories
                 delete:
                     label: Remove action
                     description: Are you sure you want to remove this action?

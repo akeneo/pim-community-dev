@@ -17,6 +17,7 @@ import { getSetCategoriesModule } from './SetCategoriesAction';
 import { getClearAssociationsActionModule } from './ClearAssociationsAction';
 import { getClearCategoriesActionModule } from './ClearCategoriesAction';
 import { getClearGroupsActionModule } from './ClearGroupsAction';
+import { getRemoveCategoriesModule } from './RemoveCategoriesAction';
 
 export type ActionModuleGuesser = (
   json: any,
@@ -38,6 +39,7 @@ const getActionModule: (
     getClearAttributeActionModule,
     getAddCategoriesModule,
     getSetCategoriesModule,
+    getRemoveCategoriesModule,
     // Fallbacks
     getAddActionModule,
     getCalculateActionModule,

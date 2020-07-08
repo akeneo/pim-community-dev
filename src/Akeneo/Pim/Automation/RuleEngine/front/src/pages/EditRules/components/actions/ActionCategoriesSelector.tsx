@@ -27,6 +27,12 @@ import { NetworkLifeCycle } from '../../../../components/CategoryTree/hooks/Netw
 import { getCategoriesTrees } from '../../../../components/CategoryTree/category-tree.getters';
 import { Controller } from 'react-hook-form';
 import { SmallHelper } from '../../../../components/HelpersInfos/SmallHelper';
+import InputBoolean from '../../../../components/Inputs/InputBoolean';
+import styled from 'styled-components';
+
+const SelectorBlock = styled.div`
+  margin-bottom: 15px;
+`;
 
 type Props = {
   lineNumber: number;
@@ -34,6 +40,10 @@ type Props = {
   values: CategoryCode[];
   setValue: (value: any) => void;
   valueFormName: string;
+  withIncludeChildren?: boolean;
+  includeChildrenFormName?: string;
+  includeChildrenValue?: boolean;
+  setIncludeChildrenValue?: (value: boolean) => void;
 };
 
 const ActionCategoriesSelector: React.FC<Props> = ({
@@ -42,6 +52,10 @@ const ActionCategoriesSelector: React.FC<Props> = ({
   values,
   setValue,
   valueFormName,
+  withIncludeChildren = false,
+  includeChildrenFormName = '',
+  includeChildrenValue = false,
+  setIncludeChildrenValue,
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
@@ -386,66 +400,87 @@ const ActionCategoriesSelector: React.FC<Props> = ({
                 'pimee_catalog_rule.form.edit.actions.category.select_categories'
               )}
             </ActionTitle>
-            {getCurrentCategoryTreeOrDefault() !== null ? (
-              <>
-                <label className='AknFieldContainer-label'>
-                  {`${translate(
-                    'pim_enrich.entity.category.plural_label'
-                  )} ${translate('pim_common.required_label')}`}
-                </label>
-                <ul>
-                  {(
-                    categoryTreesWithSelectedCategoriesMap.get(
+            <SelectorBlock>
+              {getCurrentCategoryTreeOrDefault() !== null ? (
+                <>
+                  <label className='AknFieldContainer-label'>
+                    {`${translate(
+                      'pim_enrich.entity.category.plural_label'
+                    )} ${translate('pim_common.required_label')}`}
+                  </label>
+                  <ul>
+                    {(
+                      categoryTreesWithSelectedCategoriesMap.get(
+                        getCurrentCategoryTreeOrDefault() as CategoryTreeModel
+                      ) || []
+                    ).map((category, i) => {
+                      return (
+                        <li key={category.code}>
+                          <CategorySelector
+                            data-testid={`category-selector-${category.code}`}
+                            locale={currentCatalogLocale}
+                            onDelete={() =>
+                              handleCategoryDelete(
+                                getCurrentCategoryTreeOrDefault() as CategoryTreeModel,
+                                i
+                              )
+                            }
+                            onSelectCategory={categoryCode =>
+                              handleCategorySelect(
+                                categoryCode,
+                                getCurrentCategoryTreeOrDefault() as CategoryTreeModel,
+                                i
+                              )
+                            }
+                            selectedCategory={category}
+                            categoryTreeSelected={
+                              getCurrentCategoryTreeOrDefault() as CategoryTreeModel
+                            }
+                          />
+                        </li>
+                      );
+                    })}
+                  </ul>
+                  <CategorySelector
+                    data-testid='category-selector-new'
+                    locale={currentCatalogLocale}
+                    onSelectCategory={categoryCode =>
+                      handleCategorySelect(
+                        categoryCode,
+                        getCurrentCategoryTreeOrDefault() as CategoryTreeModel
+                      )
+                    }
+                    categoryTreeSelected={
                       getCurrentCategoryTreeOrDefault() as CategoryTreeModel
-                    ) || []
-                  ).map((category, i) => {
-                    return (
-                      <li key={category.code}>
-                        <CategorySelector
-                          data-testid={`category-selector-${category.code}`}
-                          locale={currentCatalogLocale}
-                          onDelete={() =>
-                            handleCategoryDelete(
-                              getCurrentCategoryTreeOrDefault() as CategoryTreeModel,
-                              i
-                            )
-                          }
-                          onSelectCategory={categoryCode =>
-                            handleCategorySelect(
-                              categoryCode,
-                              getCurrentCategoryTreeOrDefault() as CategoryTreeModel,
-                              i
-                            )
-                          }
-                          selectedCategory={category}
-                          categoryTreeSelected={
-                            getCurrentCategoryTreeOrDefault() as CategoryTreeModel
-                          }
-                        />
-                      </li>
-                    );
-                  })}
-                </ul>
-                <CategorySelector
-                  data-testid='category-selector-new'
-                  locale={currentCatalogLocale}
-                  onSelectCategory={categoryCode =>
-                    handleCategorySelect(
-                      categoryCode,
-                      getCurrentCategoryTreeOrDefault() as CategoryTreeModel
-                    )
-                  }
-                  categoryTreeSelected={
-                    getCurrentCategoryTreeOrDefault() as CategoryTreeModel
-                  }
+                    }
+                  />
+                </>
+              ) : (
+                <div>
+                  {translate(
+                    'pimee_catalog_rule.form.edit.actions.category.no_category_tree'
+                  )}
+                </div>
+              )}
+            </SelectorBlock>
+            {withIncludeChildren && (
+              <SelectorBlock>
+                <Controller
+                  as={<input type='hidden' />}
+                  name={includeChildrenFormName}
+                  defaultValue={includeChildrenValue}
                 />
-              </>
-            ) : (
-              <div>
-                {translate(
-                  'pimee_catalog_rule.form.edit.actions.category.no_category_tree'
-                )}
-              </div>
+                <InputBoolean
+                  id='category-include-children'
+                  label={translate('pimee_catalog_rule.rule.include_children')}
+                  value={includeChildrenValue}
+                  onChange={(value: boolean) => {
+                    if (setIncludeChildrenValue) {
+                      setIncludeChildrenValue(value);
+                    }
+                  }}
+                />
+              </SelectorBlock>
             )}
           </div>
         </ActionRightSide>
