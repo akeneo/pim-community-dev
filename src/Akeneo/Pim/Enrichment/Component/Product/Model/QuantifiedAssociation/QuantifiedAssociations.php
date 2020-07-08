@@ -235,6 +235,7 @@ class QuantifiedAssociations
         $result = [];
         foreach ($quantifiedAssociationsNormalized as $associationType => $associationsNormalized) {
             foreach ($associationsNormalized as $quantifiedLinksType => $quantifiedLinksNormalized) {
+                $result[$associationType][$quantifiedLinksType] = [];
                 foreach ($quantifiedLinksNormalized as $quantifiedLinkNormalized) {
                     $identifier = $quantifiedLinkNormalized['identifier'];
 
