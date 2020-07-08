@@ -13,7 +13,11 @@ const FallbackConditionLine: React.FC<FallbackConditionLineProps> = ({
 }) => {
   useRegisterConsts(condition, `content.conditions[${lineNumber}]`);
 
-  return <div className={'AknGrid-bodyCell'}>{JSON.stringify(condition)}</div>;
+  return (
+    <div className={'AknGrid-bodyCell AknRule'}>
+      {JSON.stringify(condition)}
+    </div>
+  );
 };
 
 export { FallbackConditionLine, FallbackConditionLineProps };
