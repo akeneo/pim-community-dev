@@ -93,4 +93,10 @@ interface EntityWithQuantifiedAssociationsInterface
      * @return array
      */
     public function normalizeQuantifiedAssociations(): array;
+
+    /**
+     * Update quantified associations by merging with another quantified associations
+     * @param QuantifiedAssociations $quantifiedAssociations
+     */
+    public function mergeQuantifiedAssociations(QuantifiedAssociations $quantifiedAssociations): void;
 }

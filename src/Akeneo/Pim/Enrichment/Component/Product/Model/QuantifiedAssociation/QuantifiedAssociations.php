@@ -129,38 +129,17 @@ class QuantifiedAssociations
         return array_unique($result);
     }
 
-    public function merge(QuantifiedAssociations $quantifiedAssociations): void
+    public function merge(QuantifiedAssociations $quantifiedAssociations): self
     {
-        $normalizedQuantifiedAssociationsToMerge = $quantifiedAssociations->normalize();
+        $currentQuantifiedAssociationsNormalized = $this->normalizeWithIndexedIdentifiers();
+        $quantifiedAssociationsToMergeNormalized = $quantifiedAssociations->normalizeWithIndexedIdentifiers();
 
-        foreach ($normalizedQuantifiedAssociationsToMerge as $associationTypeCode => $association) {
-            foreach ($association as $associationEntityType => $quantifiedLinks) {
-                if (!isset($this->quantifiedAssociations[$associationTypeCode][$associationEntityType])) {
-                    $this->quantifiedAssociations[$associationTypeCode][$associationEntityType] = [];
-                }
+        $mergedQuantifiedAssociationsNormalized = array_replace_recursive(
+            $currentQuantifiedAssociationsNormalized,
+            $quantifiedAssociationsToMergeNormalized
+        );
 
-                foreach ($quantifiedLinks as $quantifiedLink) {
-                    $key = $this->searchKeyOfDuplicatedQuantifiedAssociation(
-                        $this->quantifiedAssociations,
-                        $associationTypeCode,
-                        $associationEntityType,
-                        $quantifiedLink
-                    );
-
-                    if (null !== $key) {
-                        $this->quantifiedAssociations[$associationTypeCode][$associationEntityType][$key] = new QuantifiedLink(
-                            $this->quantifiedAssociations[$associationTypeCode][$associationEntityType][$key]->identifier(),
-                            $quantifiedLink['quantity']
-                        );
-                    } else {
-                        $this->quantifiedAssociations[$associationTypeCode][$associationEntityType][] = new QuantifiedLink(
-                            $quantifiedLink['identifier'],
-                            $quantifiedLink['quantity']
-                        );
-                    }
-                }
-            }
-        }
+        return self::createFromNormalized($mergedQuantifiedAssociationsNormalized);
     }
 
     public function normalizeWithMapping(IdMapping $mappedProductIdentifiers, IdMapping $mappedProductModelIdentifiers)
@@ -249,39 +228,22 @@ class QuantifiedAssociations
         return new self($filteredQuantifiedAssociations);
     }
 
-    /**
-     * Since we are using an unindexed array for the quantified associations,
-     * we need to find if there is a row with the same identifier as the one we have.
-     * With its key, we will be able to overwrite the quantity.
-     *
-     * For context, this is the structure:
-     * [
-     *      'PACK' => [
-     *          'products' => [
-     *              ['identifier' => 'foo', 'quantity' => 2],
-     *              ['identifier' => 'bar', 'quantity' => 4],
-     *          ]
-     *      ]
-     * ]
-     *
-     */
-    private function searchKeyOfDuplicatedQuantifiedAssociation(
-        array $source,
-        string $associationTypeCode,
-        string $associationEntityType,
-        array $quantifiedLink
-    ): ?int {
-        $matchingSourceQuantifiedAssociations = array_filter(
-            $source[$associationTypeCode][$associationEntityType] ?? [],
-            function ($sourceQuantifiedAssociation) use ($quantifiedLink) {
-                return $sourceQuantifiedAssociation->identifier() === $quantifiedLink['identifier'];
-            }
-        );
+    private function normalizeWithIndexedIdentifiers()
+    {
+        $quantifiedAssociationsNormalized = $this->normalize();
 
-        if (empty($matchingSourceQuantifiedAssociations)) {
-            return null;
+        $result = [];
+        foreach ($quantifiedAssociationsNormalized as $associationType => $associationsNormalized) {
+            foreach ($associationsNormalized as $quantifiedLinksType => $quantifiedLinksNormalized) {
+                $result[$associationType][$quantifiedLinksType] = [];
+                foreach ($quantifiedLinksNormalized as $quantifiedLinkNormalized) {
+                    $identifier = $quantifiedLinkNormalized['identifier'];
+
+                    $result[$associationType][$quantifiedLinksType][$identifier] = $quantifiedLinkNormalized;
+                }
+            }
         }
 
-        return array_keys($matchingSourceQuantifiedAssociations)[0];
+        return $result;
     }
 }
