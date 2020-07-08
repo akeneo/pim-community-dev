@@ -50,6 +50,7 @@ const ClearAttributeActionLine: React.FC<Props> = ({
           )}
         </ActionTitle>
         <AttributeLocaleScopeSelector
+          attribute={null}
           attributeId={`edit-rules-action-${lineNumber}-field`}
           attributeLabel={`${translate(
             'pimee_catalog_rule.form.edit.fields.attribute'

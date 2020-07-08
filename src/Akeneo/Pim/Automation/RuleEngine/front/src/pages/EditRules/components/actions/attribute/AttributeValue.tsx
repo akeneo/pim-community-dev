@@ -1,6 +1,9 @@
 import React from 'react';
-import { Attribute } from '../../../../../models';
-import { useTranslate } from '../../../../../dependenciesTools/hooks';
+import { Attribute, getAttributeLabel } from '../../../../../models';
+import {
+  useTranslate,
+  useUserCatalogLocale,
+} from '../../../../../dependenciesTools/hooks';
 import { TextValue } from './TextValue';
 import { FallbackValue } from './FallbackValue';
 import { SimpleSelectValue } from './SimpleSelectValue';
@@ -27,28 +30,44 @@ type InputValueProps = {
   onChange: (value: any) => void;
 };
 
-const getValueModule: (
-  attribute: Attribute
-) => React.FC<InputValueProps> | null = attribute => {
-  return MANAGED_ATTRIBUTE_TYPES[attribute.type] || null;
+// const getValueModule: (
+//   attribute: Attribute
+// ) => React.FC<InputValueProps> | undefined = attribute => {
+//   return MANAGED_ATTRIBUTE_TYPES[attribute.type];
+// };
+
+const getValueModule = (attribute: Attribute, props: InputValueProps) => {
+  switch (attribute.type) {
+    case 'pim_catalog_text':
+      return <TextValue {...props} />;
+    case 'pim_catalog_simpleselect':
+      return <SimpleSelectValue {...props} key={attribute.code} />;
+    default:
+      return null;
+  }
 };
 
-enum AttributeStatus {
-  NOT_SELECTED,
-  UNKNOWN,
-  UNMANAGED,
-  VALID,
-}
+// enum AttributeStatus {
+//   NOT_SELECTED,
+//   UNKNOWN,
+//   UNMANAGED,
+//   VALID,
+// }
 
 type Props = {
   id: string;
   attribute?: Attribute | null;
   name: string;
   validation?: { required?: string; validate?: (value: any) => string | true };
-  value: any;
+  value?: any;
   label?: string;
   onChange: (value: any) => void;
 };
+
+const isAttrNotSelected = (attribute: Attribute | null | undefined) =>
+  undefined === attribute;
+// const isAttrUnknown = (attribute: Attribute | null | undefined) =>
+//   null === attribute;
 
 const AttributeValue: React.FC<Props> = ({
   id,
@@ -59,68 +78,50 @@ const AttributeValue: React.FC<Props> = ({
   label,
   onChange,
 }) => {
+  const catalogLocale = useUserCatalogLocale();
+
   const translate = useTranslate();
-
-  const [ValueModule, setValueModule] = React.useState<React.FC<
-    InputValueProps
-  > | null>(null);
-  React.useEffect(() => {
-    setValueModule(() => (attribute ? getValueModule(attribute) : null));
-  }, [attribute]);
-
-  const getAttributeStatus = (): AttributeStatus => {
-    if (undefined === attribute) {
-      return AttributeStatus.NOT_SELECTED;
-    }
-
-    if (null === attribute) {
-      return AttributeStatus.UNKNOWN;
-    }
-
-    if (attribute && ValueModule) {
-      return AttributeStatus.VALID;
-    }
-
-    return AttributeStatus.UNMANAGED;
-  };
-
-  return (
-    <ActionFormContainer>
-      {getAttributeStatus() === AttributeStatus.NOT_SELECTED && (
+  const getAttributeValueContent = () => {
+    if (isAttrNotSelected(attribute)) {
+      return (
         <InlineHelper>
           {translate('pimee_catalog_rule.form.edit.please_select_attribute')}
         </InlineHelper>
-      )}
-      {getAttributeStatus() === AttributeStatus.UNKNOWN && (
-        <FallbackValue id={id} label={label} value={value} />
-      )}
-      {getAttributeStatus() === AttributeStatus.UNMANAGED && (
-        <FallbackValue id={id} label={label} value={value}>
-          <HelperContainer>
-            <InlineHelper>
-              {translate(
-                'pimee_catalog_rule.form.edit.unhandled_attribute_type'
-              )}
-            </InlineHelper>
-          </HelperContainer>
-        </FallbackValue>
-      )}
-      {/* The key attribute here is used to force react to make an mount / unmount at each attribute change */}
-      {getAttributeStatus() === AttributeStatus.VALID &&
-        ValueModule &&
-        attribute && (
-          <ValueModule
-            key={attribute.code}
-            id={id}
-            attribute={attribute}
-            name={name}
-            label={label}
-            value={value}
-            onChange={onChange}
-            validation={validation}
-          />
-        )}
-    </ActionFormContainer>
+      );
+    }
+    if (attribute) {
+      const inputComponent = getValueModule(attribute, {
+        id,
+        attribute,
+        name,
+        label: `${getAttributeLabel(attribute, catalogLocale)} ${translate(
+          'pim_common.required_label'
+        )}`,
+        value,
+        onChange,
+        validation,
+      });
+      if (inputComponent) {
+        return inputComponent;
+      } else {
+        return (
+          <FallbackValue id={id} label={label} value={value}>
+            <HelperContainer>
+              <InlineHelper>
+                {translate(
+                  'pimee_catalog_rule.form.edit.unhandled_attribute_type'
+                )}
+              </InlineHelper>
+            </HelperContainer>
+          </FallbackValue>
+        );
+      }
+    }
+    return <FallbackValue id={id} label={label} value={value} />;
+  };
+
+  return (
+    <ActionFormContainer>{getAttributeValueContent()}</ActionFormContainer>
   );
 };
 

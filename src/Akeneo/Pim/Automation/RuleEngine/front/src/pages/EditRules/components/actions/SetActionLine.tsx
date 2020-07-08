@@ -13,14 +13,19 @@ import {
   AttributeLocaleScopeSelector,
   MANAGED_ATTRIBUTE_TYPES,
 } from './attribute';
-import { Attribute } from '../../../../models';
-import { useTranslate } from '../../../../dependenciesTools/hooks';
+import { Attribute, AttributeCode } from '../../../../models';
+import {
+  useTranslate,
+  useBackboneRouter,
+} from '../../../../dependenciesTools/hooks';
 import { LineErrors } from '../LineErrors';
 import { AttributeValue } from './attribute';
 import { useControlledFormInputAction } from '../../hooks';
 
+import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepository';
+
 type Props = {
-  action: SetAction;
+  action?: SetAction;
 } & ActionLineProps;
 
 const SetActionLine: React.FC<Props> = ({
@@ -31,9 +36,12 @@ const SetActionLine: React.FC<Props> = ({
   scopes,
 }) => {
   const translate = useTranslate();
+  const router = useBackboneRouter();
   const [attribute, setAttribute] = React.useState<
     Attribute | null | undefined
   >(undefined);
+
+  console.warn({ action });
 
   const {
     fieldFormName,
@@ -47,30 +55,67 @@ const SetActionLine: React.FC<Props> = ({
   // Watch is needed in this case to trigger a render at input
   const { watch } = useFormContext();
   watch(valueFormName);
-  const onAttributeChange = (newAttribute: Attribute | null) => {
-    /*
-      onAttributeChange is called at mount to set the correct attribute.
-      But we already know the correct field and the default value.
-      So to avoid to lost the default value at mount we are checking the field value avoiding the null setter.
-    */
-    if (newAttribute && getFieldFormValue() !== newAttribute.code) {
-      setValueFormValue(null);
+  React.useEffect(() => {
+    const fetchAttribute = async (attributeCode: AttributeCode) => {
+      const attribute = await getAttributeByIdentifier(attributeCode, router);
+      setAttribute(attribute);
+    };
+    const fieldValue = getFieldFormValue();
+    if (fieldValue && !attribute) {
+      fetchAttribute(fieldValue);
     }
-    setFieldFormValue(newAttribute ? newAttribute.code : '');
-    setAttribute(newAttribute);
+  }, []);
+
+  const onAttributeChange = (attributeCode: AttributeCode) => {
+    const fetchAttribute = async (attributeCode: AttributeCode) => {
+      const attribute = await getAttributeByIdentifier(attributeCode, router);
+      setAttribute(attribute);
+      setValueFormValue(null);
+      setFieldFormValue(attributeCode);
+    };
+    fetchAttribute(attributeCode);
   };
 
   const isUnmanagedAttribute = () =>
     attribute && !(attribute.type in MANAGED_ATTRIBUTE_TYPES);
 
+  if (getFieldFormValue() && !attribute) {
+    return null;
+  }
+
+  const validateAttribute = async (value: any): Promise<string | true> => {
+    if (!value) {
+      return translate('pimee_catalog_rule.exceptions.required_attribute');
+    }
+    const attribute = await getAttributeByIdentifier(value, router);
+    if (null === attribute) {
+      return `${translate(
+        'pimee_catalog_rule.exceptions.unknown_attribute'
+      )} ${translate(
+        'pimee_catalog_rule.exceptions.select_another_attribute_or_remove_action'
+      )}`;
+    }
+    return true;
+  };
+
+  console.warn('getValueFormValue()', getValueFormValue());
+
   return (
     <>
-      <Controller name={fieldFormName} as={<span hidden />} defaultValue='' />
+      <Controller
+        name={fieldFormName}
+        as={<span hidden />}
+        defaultValue=''
+        rules={{ validate: validateAttribute }}
+      />
       <Controller name={typeFormName} as={<span hidden />} defaultValue='set' />
       <Controller
         name={valueFormName}
         as={<span hidden />}
         defaultValue={getValueFormValue()}
+        rules={{
+          required: translate('pimee_catalog_rule.exceptions.required_value'),
+        }}
       />
       <ActionTemplate
         title='Set Action'
@@ -86,6 +131,7 @@ const SetActionLine: React.FC<Props> = ({
               )}
             </ActionTitle>
             <AttributeLocaleScopeSelector
+              attribute={attribute}
               attributeId={`edit-rules-action-${lineNumber}-field`}
               attributeLabel={`${translate(
                 'pimee_catalog_rule.form.edit.fields.attribute'
@@ -94,7 +140,7 @@ const SetActionLine: React.FC<Props> = ({
                 'pimee_catalog_rule.form.edit.actions.set_attribute.attribute_placeholder'
               )}
               attributeFormName={fieldFormName}
-              attributeCode={action.field}
+              attributeCode={getFieldFormValue() ?? ''}
               scopeId={`edit-rules-action-${lineNumber}-scope`}
               scopes={scopes}
               localeId={`edit-rules-action-${lineNumber}-locale`}
@@ -115,8 +161,8 @@ const SetActionLine: React.FC<Props> = ({
               id={`edit-rules-action-${lineNumber}-value`}
               attribute={attribute}
               name={valueFormName}
-              onChange={setValueFormValue}
               value={getValueFormValue()}
+              onChange={setValueFormValue}
             />
           </ActionRightSide>
         </ActionGrid>

@@ -65,6 +65,8 @@ const useControlledFormInputAction = <T>(lineNumber: number) => {
   const setIncludeChildrenFormValue = (data?: boolean) =>
     setValue(includeChildrenFormName, data);
 
+  // console.log('getValues()', getValues());
+
   return {
     fieldFormName,
     getFieldFormValue,
