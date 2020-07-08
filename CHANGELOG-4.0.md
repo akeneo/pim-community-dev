@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Improvement
+
+-PIM-9330: Sort jobs and connectors by alphabetical order on associated menus on Imports and Exports pages.
+
 # 4.0.38 (2020-07-07)
 
 ## Bug fixes
