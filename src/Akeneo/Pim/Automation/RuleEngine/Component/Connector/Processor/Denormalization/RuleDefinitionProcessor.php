@@ -89,6 +89,7 @@ class RuleDefinitionProcessor extends AbstractProcessor implements
         if ($violations->count()) {
             $this->skipItemWithConstraintViolations($item, $violations);
         }
+        $item = $command->toArray(false);
         $definition = $this->findObject($this->repository, $item);
         $rule = $this->buildRuleFromItemAndDefinition($item, $definition);
 

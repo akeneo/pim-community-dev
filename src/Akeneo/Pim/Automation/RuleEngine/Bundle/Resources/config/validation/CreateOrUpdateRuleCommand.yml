@@ -13,6 +13,9 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateOrUpdateRuleCommand:
         priority:
             - Type: int
         conditions:
+            - NotNull:
+                message: pimee_catalog_rule.rule_definition.validation.conditions.missing_key
+                groups: ['update', 'import']
             - Type: array
             - All:
                 - Type: object

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO;
 
+use Webmozart\Assert\Assert;
+
 final class RemoveAction implements ActionInterface
 {
     public $field;
@@ -32,13 +34,21 @@ final class RemoveAction implements ActionInterface
 
     public function toArray(): array
     {
-        return [
+        Assert::stringNotEmpty($this->field);
+        Assert::isArray($this->items);
+        Assert::nullOrStringNotEmpty($this->scope);
+        Assert::nullOrStringNotEmpty($this->locale);
+        Assert::nullOrBoolean($this->includeChildren);
+
+        return array_filter([
             'type' => 'remove',
             'field' => $this->field,
             'items' => $this->items,
             'scope' => $this->scope,
             'locale' => $this->locale,
             'include_children' => $this->includeChildren,
-        ];
+        ], function ($value): bool {
+            return null !== $value;
+        });
     }
 }

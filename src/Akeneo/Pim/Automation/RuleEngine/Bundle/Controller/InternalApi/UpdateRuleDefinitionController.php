@@ -81,16 +81,12 @@ class UpdateRuleDefinitionController
 
         $ruleDefinition = $this->ruleDefinitionRepository->findOneByIdentifier($ruleDefinitionCode);
         if (null === $ruleDefinition) {
-            throw new NotFoundHttpException(sprintf('The "%s" rule definition is not found', $ruleDefinitionCode));
+            throw new NotFoundHttpException(sprintf('The "%s" rule definition was not found', $ruleDefinitionCode));
         }
-        $content = json_decode($request->getContent(), true);
-        $content['type'] = 'product';
-        $content['code'] = $ruleDefinitionCode;
-
-        $data = $content;
-        $data['conditions'] = $data['content']['conditions'] ?? null;
-        $data['actions'] = $data['content']['actions'] ?? null;
+        $data = json_decode($request->getContent(), true);
+        $data['code'] = $ruleDefinitionCode;
         $command = new CreateOrUpdateRuleCommand($data);
+
         $violations = $this->validator->validate($command, null, ['Default', 'update']);
         if ($violations->count()) {
             $errors = $this->normalizer->normalize($violations, 'internal_api');
@@ -98,7 +94,7 @@ class UpdateRuleDefinitionController
             return new JsonResponse($errors, Response::HTTP_BAD_REQUEST);
         }
 
-        $this->ruleDefinitionUpdater->update($ruleDefinition, $content);
+        $this->ruleDefinitionUpdater->update($ruleDefinition, $command->toArray(true));
         $this->ruleDefinitionSaver->save($ruleDefinition);
 
         return new JsonResponse($this->ruleDefinitionNormalizer->normalize($ruleDefinition));

@@ -73,12 +73,8 @@ class CreateRuleDefinitionController
             throw new AccessDeniedException();
         }
 
-        $content = json_decode($request->getContent(), true);
-        $content['type'] = 'product';
+        $data = json_decode($request->getContent(), true);
 
-        $data = $content;
-        $data['conditions'] = $data['content']['conditions'] ?? null;
-        $data['actions'] = $data['content']['actions'] ?? null;
         $command = new CreateOrUpdateRuleCommand($data);
         $violations = $this->validator->validate($command, null, ['Default', 'create']);
         if ($violations->count()) {
@@ -88,7 +84,7 @@ class CreateRuleDefinitionController
         }
 
         $ruleDefinition = new RuleDefinition();
-        $this->ruleDefinitionUpdater->update($ruleDefinition, $content);
+        $this->ruleDefinitionUpdater->update($ruleDefinition, $command->toArray(true));
         $this->ruleDefinitionSaver->save($ruleDefinition);
 
         return new JsonResponse($this->ruleDefinitionNormalizer->normalize($ruleDefinition));

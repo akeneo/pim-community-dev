@@ -92,7 +92,7 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
 
         $repository->findOneByIdentifier('discharge_fr_description')->shouldBeCalledOnce()->willReturn(null);
         $denormalizer->denormalize(
-            $item,
+            Argument::type('array'),
             Rule::class,
             null,
             ['definitionObject' => null]
@@ -266,9 +266,9 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
             ]
         );
 
-        $repository->findOneByIdentifier(Argument::any())->shouldBeCalled()->willReturn($definition);
+        $repository->findOneByIdentifier('discharge_fr_description')->shouldBeCalledOnce()->willReturn($definition);
         $denormalizer->denormalize(
-            $item,
+            Argument::type('array'),
             Rule::class,
             null,
             ['definitionObject' => $definition]

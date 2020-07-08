@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO;
 
-final class CopyAction
+use Webmozart\Assert\Assert;
+
+final class CopyAction implements ActionInterface
 {
     public $fromField;
     public $fromLocale;
@@ -32,5 +34,27 @@ final class CopyAction
         $this->toField =   $data['to_field'] ?? null;
         $this->toLocale =  $data['to_locale'] ?? null;
         $this->toScope =   $data['to_scope'] ?? null;
+    }
+
+    public function toArray(): array
+    {
+        Assert::stringNotEmpty($this->fromField);
+        Assert::nullOrStringNotEmpty($this->fromScope);
+        Assert::nullOrStringNotEmpty($this->fromLocale);
+        Assert::stringNotEmpty($this->toField);
+        Assert::nullOrStringNotEmpty($this->toScope);
+        Assert::nullOrStringNotEmpty($this->toLocale);
+
+        return array_filter([
+            'type' => 'copy',
+            'from_field' => $this->fromField,
+            'from_scope' => $this->fromScope,
+            'from_locale' => $this->fromLocale,
+            'to_field' => $this->toField,
+            'to_scope' => $this->toScope,
+            'to_locale' => $this->toLocale,
+        ], function ($value): bool {
+            return null !== $value;
+        });
     }
 }
