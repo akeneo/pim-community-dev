@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\QuantifiedAssoci
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\QuantifiedAssociation\GetIdMappingFromProductIdsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\IdMapping;
-use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AssociationTypeRepository;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindQuantifiedAssociationTypeCodesInterface;
 use Doctrine\DBAL\Connection;
 
 final class GetProductQuantifiedAssociationsByProductModelCodes
@@ -17,17 +17,20 @@ final class GetProductQuantifiedAssociationsByProductModelCodes
     /** @var GetIdMappingFromProductIdsQuery */
     private $getIdMappingFromProductIdsQuery;
 
-    /** @var AssociationTypeRepository */
-    private $associationTypeRepository;
+    /** @var FindQuantifiedAssociationTypeCodesInterface */
+    private $findQuantifiedAssociationTypeCodes;
+
+    /** @var array|null */
+    private $quantifiedAssociationTypeCodesCache = null;
 
     public function __construct(
         Connection $connection,
         GetIdMappingFromProductIdsQuery $getIdMappingFromProductIdsQuery,
-        AssociationTypeRepository $associationTypeRepository
+        FindQuantifiedAssociationTypeCodesInterface $findQuantifiedAssociationTypeCodes
     ) {
         $this->connection = $connection;
         $this->getIdMappingFromProductIdsQuery = $getIdMappingFromProductIdsQuery;
-        $this->associationTypeRepository = $associationTypeRepository;
+        $this->findQuantifiedAssociationTypeCodes = $findQuantifiedAssociationTypeCodes;
     }
 
     /**
@@ -99,7 +102,7 @@ SQL;
 
         $result = [];
         foreach ($allQuantifiedAssociationsWithProductIds as $associationTypeCode => $associationWithIds) {
-            if (!$this->associationTypeExists($associationTypeCode)) {
+            if (!$this->quantifiedAssociationTypeExist($associationTypeCode)) {
                 continue;
             }
             $uniqueQuantifiedAssociations = [];
@@ -132,11 +135,6 @@ SQL;
         );
     }
 
-    private function associationTypeExists(string $associationTypeCode): bool
-    {
-        return null !== $this->associationTypeRepository->findOneByIdentifier($associationTypeCode);
-    }
-
     private function fetchIdMapping(array $allQuantifiedAssociationsWithProductModelIds): IdMapping
     {
         $productModelCodes = [];
@@ -148,5 +146,14 @@ SQL;
         }
 
         return $this->getIdMappingFromProductIdsQuery->execute($productModelCodes);
+    }
+
+    private function quantifiedAssociationTypeExist(string $associationTypeCode): bool
+    {
+        if ($this->quantifiedAssociationTypeCodesCache === null) {
+            $this->quantifiedAssociationTypeCodesCache = $this->findQuantifiedAssociationTypeCodes->execute();
+        }
+
+        return in_array($associationTypeCode, $this->quantifiedAssociationTypeCodesCache);
     }
 }

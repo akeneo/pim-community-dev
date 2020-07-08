@@ -61,10 +61,15 @@ class QuantifiedAssociations
     public static function createWithAssociationsAndMapping(
         array $rawQuantifiedAssociations,
         IdMapping $mappedProductIds,
-        IdMapping $mappedProductModelIds
+        IdMapping $mappedProductModelIds,
+        array $associationTypeCodes
     ): self {
         $mappedQuantifiedAssociations = [];
         foreach ($rawQuantifiedAssociations as $associationType => $associations) {
+            if (!in_array($associationType, $associationTypeCodes)) {
+                continue;
+            }
+
             Assert::keyExists($associations, self::PRODUCTS_QUANTIFIED_LINKS_KEY);
             Assert::keyExists($associations, self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY);
 

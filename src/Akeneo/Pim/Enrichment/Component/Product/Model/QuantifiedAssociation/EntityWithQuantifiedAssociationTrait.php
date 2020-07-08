@@ -78,40 +78,16 @@ trait EntityWithQuantifiedAssociationTrait
     /**
      * @inheritDoc
      */
-    public function getQuantifiedAssociationsTypeCodes(): array
-    {
-        return array_keys($this->rawQuantifiedAssociations ?? []);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function removeQuantifiedAssociationsType(string $associationTypeCode): void
-    {
-        if (isset($this->rawQuantifiedAssociations[$associationTypeCode])) {
-            unset($this->rawQuantifiedAssociations[$associationTypeCode]);
-        }
-
-        if (null !== $this->quantifiedAssociations) {
-            $normalized = $this->getQuantifiedAssociations()->normalize();
-
-            if (isset($normalized[$associationTypeCode])) {
-                unset($normalized[$associationTypeCode]);
-
-                $this->setQuantifiedAssociations(QuantifiedAssociations::createFromNormalized($normalized));
-            }
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function hydrateQuantifiedAssociations(IdMapping $mappedProductIds, IdMapping $mappedProductModelIds): void
-    {
+    public function hydrateQuantifiedAssociations(
+        IdMapping $mappedProductIds,
+        IdMapping $mappedProductModelIds,
+        array $associationTypeCodes
+    ): void {
         $this->quantifiedAssociations = QuantifiedAssociations::createWithAssociationsAndMapping(
             $this->rawQuantifiedAssociations ?? [],
             $mappedProductIds,
-            $mappedProductModelIds
+            $mappedProductModelIds,
+            $associationTypeCodes
         );
     }
 
