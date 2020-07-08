@@ -167,7 +167,7 @@ function(_, messenger, __, Dialog, AbstractAction) {
               this.getEntityHint(true),
               `${this.className} ok`,
               this.messages.confirm_ok,
-              this.type
+              this.illustrationClass ?? this.type
             );
         }
     });
