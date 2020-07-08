@@ -20,7 +20,7 @@ class ListAnnouncementsActionIntegration extends WebTestCase
 
     public function test_it_can_list_first_paginated_announcements()
     {
-        $expectedAnnouncements = json_decode(file_get_contents(dirname(__FILE__) . '/../../../../../Infrastructure/CommunicationChannel/InMemory/serenity-updates.json'), true);
+        $expectedAnnouncements = json_decode(file_get_contents(dirname(__FILE__) . '/../../../../../Infrastructure/CommunicationChannel/LocalFilestorage/serenity-updates.json'), true);
         $limit = 5;
         $this->client->request(
             'GET',
@@ -40,7 +40,7 @@ class ListAnnouncementsActionIntegration extends WebTestCase
 
     public function test_it_can_list_paginated_announcements_with_a_search_after_parameter()
     {
-        $expectedAnnouncements = json_decode(file_get_contents(dirname(__FILE__) . '/../../../../../Infrastructure/CommunicationChannel/InMemory/serenity-updates.json'), true);
+        $expectedAnnouncements = json_decode(file_get_contents(dirname(__FILE__) . '/../../../../../Infrastructure/CommunicationChannel/LocalFilestorage/serenity-updates.json'), true);
         $searchAfter = '2e04e7e4-6c55-4cdd-b151-dab34d6a31a4';
         $limit = 5;
         $this->client->request(

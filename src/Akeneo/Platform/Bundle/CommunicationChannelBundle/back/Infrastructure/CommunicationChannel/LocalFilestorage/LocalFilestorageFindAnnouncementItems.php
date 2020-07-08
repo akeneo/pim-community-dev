@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\CommunicationChannel\Infrastructure\CommunicationChannel\InMemory;
+namespace Akeneo\Platform\CommunicationChannel\Infrastructure\CommunicationChannel\LocalFilestorage;
 
 use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Model\Read\AnnouncementItem;
 use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Query\FindAnnouncementItemsInterface;
@@ -12,7 +12,7 @@ use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Query\FindAnnouncem
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class InMemoryFindAnnouncementItems implements FindAnnouncementItemsInterface
+final class LocalFilestorageFindAnnouncementItems implements FindAnnouncementItemsInterface
 {
     private const FILENAME = 'serenity-updates.json';
 
