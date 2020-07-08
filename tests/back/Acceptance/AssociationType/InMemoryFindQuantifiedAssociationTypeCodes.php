@@ -19,8 +19,15 @@ class InMemoryFindQuantifiedAssociationTypeCodes implements FindQuantifiedAssoci
     {
         $associationTypes = $this->associationTypeRepository->findAll();
 
-        return array_map(function (AssociationType $associationType) {
-            return $associationType->getCode();
-        }, $associationTypes);
+        $quantifiedAssociationTypeCodes = [];
+        foreach ($associationTypes as $associationType) {
+            if (!$associationType->isQuantified()) {
+                continue;
+            }
+
+            $quantifiedAssociationTypeCodes[] = $associationType->getCode();
+        }
+
+        return $quantifiedAssociationTypeCodes;
     }
 }

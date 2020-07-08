@@ -410,7 +410,7 @@ class ProductModelSpec extends ObjectBehavior
                 ],
             ]
         ];
-        $this->hydrateQuantifiedAssociations($idMapping, $idMapping);
+        $this->hydrateQuantifiedAssociations($idMapping, $idMapping, ['PACK']);
         $this->normalizeQuantifiedAssociations()->shouldReturn([
             'PACK' => [
                 'products'       => [
@@ -440,7 +440,7 @@ class ProductModelSpec extends ObjectBehavior
                 ],
             ]
         ];
-        $this->hydrateQuantifiedAssociations($idMapping, $idMapping);
+        $this->hydrateQuantifiedAssociations($idMapping, $idMapping, ['PACK']);
         $this->normalizeQuantifiedAssociations()->shouldReturn([
             'PACK' => [
                 'products'       => [
@@ -473,7 +473,8 @@ class ProductModelSpec extends ObjectBehavior
                 ]
             ],
             $idMapping,
-            $idMapping
+            $idMapping,
+            ['PACK']
         ));
         $this->getQuantifiedAssociationsProductIds()->shouldReturn([]);
         $this->getQuantifiedAssociationsProductModelIds()->shouldReturn([]);
@@ -481,6 +482,47 @@ class ProductModelSpec extends ObjectBehavior
         $this->updateRawQuantifiedAssociations($idMapping, $idMapping);
         $this->getQuantifiedAssociationsProductIds()->shouldReturn([1, 2]);
         $this->getQuantifiedAssociationsProductModelIds()->shouldReturn([1, 2]);
+    }
+
+    function it_filter_quantified_associations_during_hydration()
+    {
+        $idMapping = $this->idMapping();
+        $this->rawQuantifiedAssociations = [
+            'PACK' => [
+                'products'       => [
+                    ['id' => 1, 'quantity' => 1],
+                    ['id' => 2, 'quantity' => 2],
+                    ['id' => 3, 'quantity' => 2],
+                ],
+                'product_models' => [
+                    ['id' => 1, 'quantity' => 1],
+                    ['id' => 2, 'quantity' => 2],
+                    ['id' => 4, 'quantity' => 2],
+                ],
+            ],
+            'NON_EXISTING_ASSOCIATION_TYPE' => [
+                'products'       => [
+                    ['id' => 1, 'quantity' => 1],
+                ],
+                'product_models'       => [
+                    ['id' => 1, 'quantity' => 1],
+                ],
+            ],
+        ];
+
+        $this->hydrateQuantifiedAssociations($idMapping, $idMapping, ['PACK']);
+        $this->normalizeQuantifiedAssociations()->shouldReturn([
+            'PACK' => [
+                'products'       => [
+                    ['identifier' => 'entity_1', 'quantity' => 1],
+                    ['identifier' => 'entity_2', 'quantity' => 2]
+                ],
+                'product_models' => [
+                    ['identifier' => 'entity_1', 'quantity' => 1],
+                    ['identifier' => 'entity_2', 'quantity' => 2]
+                ],
+            ]
+        ]);
     }
 
     // Product quantified associations
