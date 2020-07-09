@@ -18,7 +18,6 @@ type ResultsResponse = {
  *
  * @param fetch Function to fetch the paginated items. Those function needs to take in parameter the seard after id and the items limit. It returns a Promise of items.
  * @param scrollableElement HTML element where the scroll is done
- * @param fetchFirstResults Flag to know if it has to fetch the first results
  * @param limit Limit numbers of items by qurey to fetch items (By default 10).
  * @param threshold Thereshold Maximum distance to bottom of the scroll to start the fetch of the items (By default 300).
  *
@@ -27,7 +26,6 @@ type ResultsResponse = {
 const useInfiniteScroll = (
   fetch: (searchAfter: string | null, limit: number) => Promise<any[]>,
   scrollableElement: HTMLElement | null,
-  fetchFirstResults: boolean = false,
   limit: number = 10,
   threshold: number = 300
 ): [ResultsResponse, (searchAfter: string | null, limit: number) => void] => {
@@ -66,9 +64,7 @@ const useInfiniteScroll = (
           handleFetchingResults(searchAfter, limit);
         }
       };
-    }
-
-    if (fetchFirstResults && null === scrollableElement) {
+    } else {
       handleFetchingResults(null, limit);
     }
   }, [scrollableElement, state]);

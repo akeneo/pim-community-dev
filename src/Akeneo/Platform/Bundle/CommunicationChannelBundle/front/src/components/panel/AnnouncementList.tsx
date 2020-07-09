@@ -14,10 +14,10 @@ const Container = styled.ul`
 
 type ListAnnouncementProps = {
   campaign: string;
-  panelIsOpened: boolean;
+  panelIsClosed: boolean;
 };
 
-const AnnouncementList = ({campaign, panelIsOpened}: ListAnnouncementProps) => {
+const AnnouncementList = ({campaign, panelIsClosed}: ListAnnouncementProps) => {
   const __ = useTranslate();
   const containerRef = useRef<HTMLUListElement | null>(null);
   const scrollableElement = null !== containerRef.current ? containerRef.current.parentElement : null;
@@ -25,7 +25,6 @@ const AnnouncementList = ({campaign, panelIsOpened}: ListAnnouncementProps) => {
   const [announcementResponse, handleFetchingResults] = useInfiniteScroll(
     fetchAnnouncements,
     scrollableElement,
-    false,
     limitNbElements
   );
   const handleHasNewAnnouncements = useHasNewAnnouncements();
@@ -40,20 +39,19 @@ const AnnouncementList = ({campaign, panelIsOpened}: ListAnnouncementProps) => {
     if (newAnnouncements.length > 0) {
       await handleAddViewedAnnouncements(newAnnouncements);
       await handleHasNewAnnouncements();
+      await handleFetchingResults(null, limitNbElements);
     }
   }, [announcementResponse.items]);
 
   useEffect(() => {
-    if (panelIsOpened) {
-      handleFetchingResults(null, limitNbElements);
-    } else {
+    if (panelIsClosed) {
       updateNewAnnouncements();
       if (null !== scrollableElement) {
         /* istanbul ignore next: can't simulate a scrollable element in the AnnouncementList.unit.tsx */
         scrollableElement.scrollTop = 0;
       }
     }
-  }, [panelIsOpened]);
+  }, [panelIsClosed]);
 
   if (announcementResponse.hasError) {
     return <EmptyAnnouncementList text={__('akeneo_communication_channel.panel.list.error')} />;

@@ -40,7 +40,7 @@ test('it check if it has new announcements when the component is mounted', async
   ]);
 
   await act(async () =>
-    renderWithProviders(<AnnouncementList campaign={campaign} panelIsOpened={false} />, container as HTMLElement)
+    renderWithProviders(<AnnouncementList campaign={campaign} panelIsOpened={true} />, container as HTMLElement)
   );
 
   expect(handleHasNewAnnouncements).toBeCalledTimes(1);
@@ -59,11 +59,10 @@ test('it shows the announcements when we open the panel', async () => {
   ]);
 
   await act(async () =>
-    renderWithProviders(<AnnouncementList campaign={campaign} panelIsOpened={true} />, container as HTMLElement)
+    renderWithProviders(<AnnouncementList campaign={campaign} panelIsClosed={false} />, container as HTMLElement)
   );
 
   expect(container.querySelectorAll('ul li').length).toEqual(2);
-  expect(handleFetchingResults).toBeCalledTimes(1);
 });
 
 test('it can show for each announcement the information from the json', async () => {
@@ -78,7 +77,7 @@ test('it can show for each announcement the information from the json', async ()
   ]);
 
   await act(async () =>
-    renderWithProviders(<AnnouncementList campaign={campaign} panelIsOpened={true} />, container as HTMLElement)
+    renderWithProviders(<AnnouncementList campaign={campaign} panelIsClosed={false} />, container as HTMLElement)
   );
 
   expect(getByText(container, expectedAnnouncements[0].title)).toBeInTheDocument();
@@ -103,7 +102,7 @@ test('it can open the read more link in a new tab', async () => {
   ]);
 
   await act(async () =>
-    renderWithProviders(<AnnouncementList campaign={campaign} panelIsOpened={true} />, container as HTMLElement)
+    renderWithProviders(<AnnouncementList campaign={campaign} panelIsClosed={false} />, container as HTMLElement)
   );
 
   expect((container.querySelector(`a[title="${expectedAnnouncements[0].title}"]`) as HTMLLinkElement).href).toEqual(
@@ -126,14 +125,14 @@ test('it can display a message when it has an error during the fetch', async () 
   ]);
 
   await act(async () =>
-    renderWithProviders(<AnnouncementList campaign={campaign} panelIsOpened={true} />, container as HTMLElement)
+    renderWithProviders(<AnnouncementList campaign={campaign} panelIsClosed={false} />, container as HTMLElement)
   );
 
   expect(container.querySelectorAll('ul li').length).toEqual(0);
   expect(getByText(container, 'akeneo_communication_channel.panel.list.error')).toBeInTheDocument();
 });
 
-test('it updates the new announcements when we close the panel', async () => {
+test('it updates the new announcements when closing the panel', async () => {
   const campaign = formatCampaign(expectedPimAnalyticsData.pim_edition, expectedPimAnalyticsData.pim_version);
   const handleHasNewAnnouncements = jest.fn();
   useHasNewAnnouncements.mockReturnValue(handleHasNewAnnouncements);
@@ -149,7 +148,7 @@ test('it updates the new announcements when we close the panel', async () => {
   useAddViewedAnnouncements.mockReturnValue(handleAddViewedAnnouncements);
 
   await act(async () =>
-    renderWithProviders(<AnnouncementList campaign={campaign} panelIsOpened={false} />, container as HTMLElement)
+    renderWithProviders(<AnnouncementList campaign={campaign} panelIsClosed={true} />, container as HTMLElement)
   );
 
   expect(handleAddViewedAnnouncements).toBeCalledWith([expectedAnnouncements[0]]);

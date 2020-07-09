@@ -6,9 +6,11 @@ import {dependencies} from '@akeneo-pim-community/legacy-bridge';
 import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import {usePimVersion} from '@akeneo-pim-community/communication-channel/src/hooks/usePimVersion';
 import {useHasNewAnnouncements} from '@akeneo-pim-community/communication-channel/src/hooks/useHasNewAnnouncements';
+import {useInfiniteScroll} from '@akeneo-pim-community/communication-channel/src/hooks/useInfiniteScroll';
 
 jest.mock('@akeneo-pim-community/communication-channel/src/hooks/usePimVersion');
 jest.mock('@akeneo-pim-community/communication-channel/src/hooks/useHasNewAnnouncements');
+jest.mock('@akeneo-pim-community/communication-channel/src/hooks/useInfiniteScroll');
 
 let container: HTMLElement;
 beforeEach(() => {
@@ -26,6 +28,14 @@ test('it displays a panel of announcements when it is a serenity version', async
     data: {edition: 'Serenity', version: '192939349'},
     hasError: false,
   });
+  useInfiniteScroll.mockReturnValue([
+    {
+      items: [],
+      isFetching: false,
+      hasError: false,
+    },
+    jest.fn(),
+  ]);
 
   await act(async () => renderWithProviders(<Panel />, container as HTMLElement));
 
