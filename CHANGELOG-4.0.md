@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Improvement
+
+-PIM-9330: Sort jobs and connectors by alphabetical order on associated menus on Imports and Exports pages.
+
 ## Bug fixes
 
 - PIM-9344: Fix pdf renderer when using pim_catalog_simpleselect
