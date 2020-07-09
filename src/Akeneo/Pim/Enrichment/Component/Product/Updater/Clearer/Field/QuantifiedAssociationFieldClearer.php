@@ -37,10 +37,7 @@ final class QuantifiedAssociationFieldClearer implements ClearerInterface
         );
 
         if ($entity instanceof EntityWithQuantifiedAssociationsInterface) {
-            $clearedQuantifiedAssociation = array_map(function ($quantifiedAssociationNormalized) {
-                return [];
-            }, $entity->getQuantifiedAssociations()->normalize());
-            $entity->setQuantifiedAssociations(QuantifiedAssociations::createFromNormalized($clearedQuantifiedAssociation));
+            $entity->clearQuantifiedAssociations();
         }
     }
 }

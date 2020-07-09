@@ -41,6 +41,19 @@ interface EntityWithQuantifiedAssociationsInterface
     public function getQuantifiedAssociationsProductModelIds(): array;
 
     /**
+     * Remove quantified association with product/product model not present in parameter
+     *
+     * @param array $productIdentifiersToKeep
+     * @param array $productModelCodesToKeep
+     */
+    public function filterQuantifiedAssociations(array $productIdentifiersToKeep, array $productModelCodesToKeep): void;
+
+    /**
+     * Remove all quantified associations
+     */
+    public function clearQuantifiedAssociations(): void;
+
+    /**
      * Hydrates quantified associations from raw quantified associations
      *
      * @param IdMapping $mappedProductIds

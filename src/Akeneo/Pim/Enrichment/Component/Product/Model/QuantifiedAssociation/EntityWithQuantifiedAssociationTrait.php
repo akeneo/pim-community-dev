@@ -32,16 +32,41 @@ trait EntityWithQuantifiedAssociationTrait
     /**
      * @inheritDoc
      */
+    public function filterQuantifiedAssociations(array $productIdentifiersToKeep, array $productModelCodesToKeep): void
+    {
+        $filteredQuantifiedAssociations = $this->quantifiedAssociations
+            ->filterProductIdentifiers($productIdentifiersToKeep)
+            ->filterProductModelCodes($productModelCodesToKeep);
+
+        $this->setQuantifiedAssociations($filteredQuantifiedAssociations);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getQuantifiedAssociations(): QuantifiedAssociations
     {
         return $this->quantifiedAssociations;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function mergeQuantifiedAssociations(QuantifiedAssociations $quantifiedAssociations): void
     {
         $quantifiedAssociationsMerged = $this->quantifiedAssociations->merge($quantifiedAssociations);
 
         $this->setQuantifiedAssociations($quantifiedAssociationsMerged);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function clearQuantifiedAssociations(): void
+    {
+        $quantifiedAssociationsCleared = $this->quantifiedAssociations->clearQuantifiedAssociations();
+
+        $this->setQuantifiedAssociations($quantifiedAssociationsCleared);
     }
 
     /**
