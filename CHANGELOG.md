@@ -19,6 +19,7 @@
 - PIM-9318: Add created_at & updated_at fields in RefEntity record table
 - PIM-9334: Add error during rule import when a condition value contains null value
 - PIM-9324: Fix cannot save product when simple reference entity linked to this product is deleted
+- PIM-9243: Creation and update dates are not displayed on the asset page 
 
 ## Improvements
 

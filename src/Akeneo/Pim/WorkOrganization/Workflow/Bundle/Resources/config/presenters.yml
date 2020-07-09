@@ -185,3 +185,8 @@ services:
         class: 'Akeneo\Pim\Enrichment\ReferenceEntity\Component\Presenter\ReferenceEntityValuePresenter'
         tags:
             - { name: pimee_workflow.presenter }
+
+    pimee_workflow.presenter.product_value.asset_collection:
+        class: 'Akeneo\Pim\Enrichment\AssetManager\Component\Presenter\AssetCollectionValuePresenter'
+        tags:
+            - { name: pimee_workflow.presenter }

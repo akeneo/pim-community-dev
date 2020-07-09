@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TitleSuggestion;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Events\TitleSuggestionIgnoredEvent;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -48,6 +49,10 @@ class IgnoreTitleSuggestionController
 
     public function __invoke(Request $request)
     {
+        if (!$this->featureFlag->isEnabled()) {
+            return new JsonResponse(null, Response::HTTP_NOT_FOUND);
+        }
+
         try {
             $title = new TitleSuggestion($request->request->get('title'));
             $channelCode = new ChannelCode($request->request->get('channel'));

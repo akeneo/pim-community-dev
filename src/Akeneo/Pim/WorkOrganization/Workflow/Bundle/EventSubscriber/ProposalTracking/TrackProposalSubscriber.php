@@ -60,7 +60,7 @@ final class TrackProposalSubscriber implements EventSubscriberInterface
                 $event->getSubject(),
                 ProposalTracking::STATUS_APPROVED,
                 array_keys($event->getArgument('updatedValues')),
-                $event->getArgument('comment')
+                $event->getArgument('comment') ?? ''
             );
         } catch (\Exception $exception) {
             $this->logger->error('Unable to track approved proposal', [
@@ -80,7 +80,7 @@ final class TrackProposalSubscriber implements EventSubscriberInterface
                 $event->getSubject(),
                 ProposalTracking::STATUS_REFUSED,
                 array_keys($event->getArgument('updatedValues')),
-                $event->getArgument('comment')
+                $event->getArgument('comment') ?? ''
             );
         } catch (\Exception $exception) {
             $this->logger->error('Unable to track refused proposal', [
