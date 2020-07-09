@@ -80,6 +80,7 @@ class GetProductModelQuantifiedAssociationsByProductModelCodesIntegration extend
      */
     public function itReturnQuantifiedAssociationWithProductModelsOnMultipleProductModels()
     {
+        $this->getEntityBuilder()->createProductModel('productModelB', 'familyVariantWithTwoLevels', null, []);
         $rootProductModel = $this->getEntityBuilder()->createProductModel('root_product_model', 'familyVariantWithTwoLevels', null, [
             "quantified_associations" => [
                 'PRODUCT_SET' => [
@@ -92,7 +93,6 @@ class GetProductModelQuantifiedAssociationsByProductModelCodesIntegration extend
         $this->getEntityBuilder()->createProductModel('sub_product_model_1', 'familyVariantWithTwoLevels', $rootProductModel, []);
 
         $this->getEntityBuilder()->createProductModel('productModelA', 'familyVariantWithTwoLevels', null, []);
-        $this->getEntityBuilder()->createProductModel('productModelB', 'familyVariantWithTwoLevels', null, []);
         $this->getEntityBuilder()->createProductModel('productModelC', 'familyVariantWithTwoLevels', null, [
             'quantified_associations' => [
                 'PRODUCT_SET' => [
@@ -144,6 +144,7 @@ class GetProductModelQuantifiedAssociationsByProductModelCodesIntegration extend
      */
     public function itReturnsTheQuantifiedAssociationOfTheChildrenWhenDesynchronizedWithTheParent()
     {
+        $this->getEntityBuilder()->createProductModel('productModelA', 'familyVariantWithTwoLevels', null, []);
         $rootProductModel = $this->getEntityBuilder()->createProductModel('root_product_model', 'familyVariantWithTwoLevels', null, [
             "quantified_associations" => [
                 'PRODUCT_SET' => [
@@ -153,7 +154,6 @@ class GetProductModelQuantifiedAssociationsByProductModelCodesIntegration extend
                 ],
             ]
         ]);
-        $this->getEntityBuilder()->createProductModel('productModelA', 'familyVariantWithTwoLevels', null, []);
         $this->getEntityBuilder()->createProductModel('productModelB', 'familyVariantWithTwoLevels', $rootProductModel, [
             'quantified_associations' => [
                 'PRODUCT_SET' => [
