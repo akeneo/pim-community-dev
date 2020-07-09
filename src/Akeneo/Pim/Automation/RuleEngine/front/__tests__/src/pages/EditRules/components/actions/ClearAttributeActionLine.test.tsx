@@ -35,7 +35,11 @@ describe('ClearAttributeActionLine', () => {
     fetchMock.mockResponse((request: Request) => {
       // attribute values
       if (request.url.includes('pim_enrich_attribute_rest_get')) {
-        return Promise.resolve(JSON.stringify(createAttribute({ scopable: false, localizable: false })))
+        return Promise.resolve(
+          JSON.stringify(
+            createAttribute({ scopable: false, localizable: false })
+          )
+        );
       }
 
       throw new Error(`The "${request.url}" url is not mocked.`);
@@ -83,7 +87,7 @@ describe('ClearAttributeActionLine', () => {
     fetchMock.mockResponse((request: Request) => {
       // attribute values
       if (request.url.includes('pim_enrich_attribute_rest_get')) {
-        return Promise.resolve(JSON.stringify(createAttribute({})))
+        return Promise.resolve(JSON.stringify(createAttribute({})));
       }
 
       throw new Error(`The "${request.url}" url is not mocked.`);

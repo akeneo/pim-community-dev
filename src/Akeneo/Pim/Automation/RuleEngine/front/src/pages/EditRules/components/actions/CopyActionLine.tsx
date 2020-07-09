@@ -243,7 +243,9 @@ const CopyActionLine: React.FC<Props> = ({
               />
             ) : (
               <EmptySourceHelper>
-                Please, select your source attribute first
+                {translate(
+                  'pimee_catalog_rule.form.edit.actions.copy.no_source'
+                )}
               </EmptySourceHelper>
             )}
           </ActionRightSide>
