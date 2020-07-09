@@ -100,7 +100,14 @@ const CreateRules: React.FC = () => {
               <SmallHelper>
                 {translate('pimee_catalog_rule.form.creation.helper')}
                 &nbsp;
-                <a href='#'>Link to documentation under construction</a>
+                <a
+                  href='https://help.akeneo.com/pim/serenity/articles/get-started-with-the-rules-engine.html'
+                  target='_blank'
+                  rel='noopener noreferrer'>
+                  {translate(
+                    'pimee_catalog_rule.form.helper.product_selection_doc_link'
+                  )}
+                </a>
               </SmallHelper>
             </div>
             <CreateRulesForm

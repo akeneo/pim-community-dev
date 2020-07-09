@@ -74,7 +74,7 @@ pimee_catalog_rule:
                 rules:
                     title: Rules
         creation:
-            helper: The rules engine can radically boost your productivity in the PIM by automating actions.
+            helper: The rules engine can radically boost your productivity in the PIM by automating actions,
             english_flag: Label for English
             title: Create a new rule
             notification:
