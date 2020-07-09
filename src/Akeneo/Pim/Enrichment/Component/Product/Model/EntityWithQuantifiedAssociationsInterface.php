@@ -17,11 +17,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\Quantifi
 interface EntityWithQuantifiedAssociationsInterface
 {
     /**
-     * Set the quantified associations
-     */
-    public function setQuantifiedAssociations(QuantifiedAssociations $quantifiedAssociations): void;
-
-    /**
      * Get the quantified associations
      */
     public function getQuantifiedAssociations(): QuantifiedAssociations;
@@ -103,4 +98,10 @@ interface EntityWithQuantifiedAssociationsInterface
      * @param QuantifiedAssociations $quantifiedAssociations
      */
     public function mergeQuantifiedAssociations(QuantifiedAssociations $quantifiedAssociations): void;
+
+    /**
+     * Update quantified associations by override with another quantified associations
+     * @param array $submittedQuantifiedAssociations
+     */
+    public function overrideQuantifiedAssociations(array $submittedQuantifiedAssociations): void;
 }

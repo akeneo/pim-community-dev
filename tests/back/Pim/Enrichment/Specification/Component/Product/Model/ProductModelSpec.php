@@ -455,35 +455,6 @@ class ProductModelSpec extends ObjectBehavior
         ]);
     }
 
-    function it_updates_the_raw_quantified_associations()
-    {
-        $idMapping = $this->idMapping();
-        $this->rawQuantifiedAssociations = [];
-        $this->setQuantifiedAssociations(QuantifiedAssociations::createWithAssociationsAndMapping(
-            [
-                'PACK' => [
-                    'products'       => [
-                        ['id' => 1, 'quantity' => 1],
-                        ['id' => 2, 'quantity' => 2]
-                    ],
-                    'product_models' => [
-                        ['id' => 1, 'quantity' => 1],
-                        ['id' => 2, 'quantity' => 2]
-                    ],
-                ]
-            ],
-            $idMapping,
-            $idMapping,
-            ['PACK']
-        ));
-        $this->getQuantifiedAssociationsProductIds()->shouldReturn([]);
-        $this->getQuantifiedAssociationsProductModelIds()->shouldReturn([]);
-
-        $this->updateRawQuantifiedAssociations($idMapping, $idMapping);
-        $this->getQuantifiedAssociationsProductIds()->shouldReturn([1, 2]);
-        $this->getQuantifiedAssociationsProductModelIds()->shouldReturn([1, 2]);
-    }
-
     function it_filter_quantified_associations_during_hydration()
     {
         $idMapping = $this->idMapping();
