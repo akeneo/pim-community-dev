@@ -30,6 +30,10 @@ import { SmallHelper } from '../../../../components/HelpersInfos/SmallHelper';
 import InputBoolean from '../../../../components/Inputs/InputBoolean';
 import styled from 'styled-components';
 import { Label } from '../../../../components/Labels';
+import {
+  HelperContainer,
+  InlineHelper,
+} from '../../../../components/HelpersInfos/InlineHelper';
 
 const SelectorBlock = styled.div`
   margin-bottom: 15px;
@@ -45,6 +49,7 @@ type Props = {
   includeChildrenFormName?: string;
   includeChildrenValue?: boolean;
   setIncludeChildrenValue?: (value: boolean) => void;
+  valueRequired?: boolean;
 };
 
 const ActionCategoriesSelector: React.FC<Props> = ({
@@ -57,6 +62,7 @@ const ActionCategoriesSelector: React.FC<Props> = ({
   includeChildrenFormName = '',
   includeChildrenValue = false,
   setIncludeChildrenValue,
+  valueRequired = false,
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
@@ -314,14 +320,24 @@ const ActionCategoriesSelector: React.FC<Props> = ({
               name={valueFormName}
               defaultValue={values}
               rules={{
-                validate: () =>
-                  unexistingCategoryCodes.length > 0
+                validate: (selectedCategories: CategoryCode[] | null) => {
+                  if (
+                    valueRequired &&
+                    (!selectedCategories || 0 === selectedCategories.length)
+                  ) {
+                    return translate(
+                      'pimee_catalog_rule.exceptions.required_categories'
+                    );
+                  }
+
+                  return unexistingCategoryCodes.length
                     ? translate(
                         'pimee_catalog_rule.exceptions.unknown_categories',
                         { categoryCodes: unexistingCategoryCodes.join(', ') },
                         unexistingCategoryCodes.length
                       )
-                    : true,
+                    : true;
+                },
               }}
             />
             <ActionTitle>
@@ -470,11 +486,13 @@ const ActionCategoriesSelector: React.FC<Props> = ({
                   />
                 </>
               ) : (
-                <div>
-                  {translate(
-                    'pimee_catalog_rule.form.edit.actions.category.no_category_tree'
-                  )}
-                </div>
+                <HelperContainer>
+                  <InlineHelper>
+                    {translate(
+                      'pimee_catalog_rule.form.edit.actions.category.no_category_tree'
+                    )}
+                  </InlineHelper>
+                </HelperContainer>
               )}
             </SelectorBlock>
             {withIncludeChildren && (

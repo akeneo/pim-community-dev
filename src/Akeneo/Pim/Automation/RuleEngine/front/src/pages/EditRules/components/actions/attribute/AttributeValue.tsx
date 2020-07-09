@@ -1,16 +1,17 @@
 import React from 'react';
-import { Attribute } from '../../../../../models';
-import { useTranslate } from '../../../../../dependenciesTools/hooks';
+import { Attribute, getAttributeLabel } from '../../../../../models';
+import {
+  useTranslate,
+  useUserCatalogLocale,
+} from '../../../../../dependenciesTools/hooks';
 import { TextValue } from './TextValue';
 import { FallbackValue } from './FallbackValue';
 import { SimpleSelectValue } from './SimpleSelectValue';
-import { InlineHelper } from '../../../../../components/HelpersInfos';
+import {
+  HelperContainer,
+  InlineHelper,
+} from '../../../../../components/HelpersInfos';
 import { ActionFormContainer } from '../style';
-import styled from 'styled-components';
-
-const HelperContainer = styled.div`
-  margin-top: 15px;
-`;
 
 const MANAGED_ATTRIBUTE_TYPES: { [key: string]: React.FC<InputValueProps> } = {
   pim_catalog_text: TextValue,
@@ -60,6 +61,7 @@ const AttributeValue: React.FC<Props> = ({
   onChange,
 }) => {
   const translate = useTranslate();
+  const catalogLocale = useUserCatalogLocale();
 
   const [ValueModule, setValueModule] = React.useState<React.FC<
     InputValueProps
@@ -84,6 +86,10 @@ const AttributeValue: React.FC<Props> = ({
     return AttributeStatus.UNMANAGED;
   };
 
+  const getAttributeLabelIfNotNull = (
+    attribute: Attribute | null | undefined
+  ) => (attribute ? getAttributeLabel(attribute, catalogLocale) : undefined);
+
   return (
     <ActionFormContainer>
       {getAttributeStatus() === AttributeStatus.NOT_SELECTED && (
@@ -92,10 +98,19 @@ const AttributeValue: React.FC<Props> = ({
         </InlineHelper>
       )}
       {getAttributeStatus() === AttributeStatus.UNKNOWN && (
-        <FallbackValue id={id} label={label} value={value} />
+        <FallbackValue
+          id={id}
+          label={label || getAttributeLabelIfNotNull(attribute)}
+          hiddenLabel={false}
+          value={value}
+        />
       )}
       {getAttributeStatus() === AttributeStatus.UNMANAGED && (
-        <FallbackValue id={id} label={label} value={value}>
+        <FallbackValue
+          id={id}
+          label={label || getAttributeLabelIfNotNull(attribute)}
+          hiddenLabel={false}
+          value={value}>
           <HelperContainer>
             <InlineHelper>
               {translate(

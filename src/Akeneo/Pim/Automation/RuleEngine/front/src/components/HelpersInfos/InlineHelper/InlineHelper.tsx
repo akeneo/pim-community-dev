@@ -3,6 +3,10 @@ import infoIcon from '../../../assets/icons/info.svg';
 
 const dangerIcon = '/bundles/pimui/images/icon-danger.svg';
 
+export const HelperContainer = styled.div`
+  margin-top: 15px;
+`;
+
 export const InlineHelper = styled.div<{
   info?: true;
   warning?: true;

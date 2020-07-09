@@ -6,9 +6,16 @@ type Props = {
   id: string;
   value: any;
   label?: string;
+  hiddenLabel?: boolean;
 };
 
-const FallbackValue: React.FC<Props> = ({ id, value, label, children }) => {
+const FallbackValue: React.FC<Props> = ({
+  id,
+  value,
+  label,
+  children,
+  hiddenLabel = true,
+}) => {
   const translate = useTranslate();
 
   const getDisplayValue = (value: any): string => {
@@ -31,7 +38,7 @@ const FallbackValue: React.FC<Props> = ({ id, value, label, children }) => {
       <InputText
         data-testid={id}
         label={label || translate('pimee_catalog_rule.rule.value')}
-        hiddenLabel
+        hiddenLabel={hiddenLabel}
         value={getDisplayValue(value)}
         disabled
         readOnly
