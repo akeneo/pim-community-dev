@@ -46,6 +46,10 @@ const AnnouncementList = ({campaign, panelIsClosed}: ListAnnouncementProps) => {
   useEffect(() => {
     if (panelIsClosed) {
       updateNewAnnouncements();
+      if (null !== scrollableElement) {
+        /* istanbul ignore next: can't simulate a scrollable element in the AnnouncementList.unit.tsx */
+        scrollableElement.scrollTop = 0;
+      }
     }
   }, [panelIsClosed]);
 

@@ -21,9 +21,11 @@ const Panel = (): JSX.Element => {
 
   useEffect(() => {
     if (isSerenity) {
+      /* istanbul ignore next: can't test the callback function */
       mediator.on('communication-channel:panel:open', () => {
         setIsOpened(true);
       });
+      /* istanbul ignore next */
       mediator.on('communication-channel:panel:close', () => {
         setIsOpened(false);
       });
