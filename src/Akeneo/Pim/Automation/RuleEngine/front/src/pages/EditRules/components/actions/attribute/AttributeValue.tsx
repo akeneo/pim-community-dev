@@ -1,5 +1,9 @@
 import React from 'react';
-import { Attribute, getAttributeLabel, AttributeType } from '../../../../../models';
+import {
+  Attribute,
+  getAttributeLabel,
+  AttributeType,
+} from '../../../../../models';
 import {
   useTranslate,
   useUserCatalogLocale,

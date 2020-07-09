@@ -101,7 +101,7 @@ const getAttributeLabel = (
   attribute: Attribute,
   localeCode: LocaleCode
 ): string => {
-  return attribute.labels[localeCode] || attribute.code;
+  return attribute.labels[localeCode] || `[${attribute.code}]`;
 };
 
 export {
