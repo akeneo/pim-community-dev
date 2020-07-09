@@ -108,6 +108,21 @@ class QuantifiedAssociations
         return new self($mappedQuantifiedAssociations);
     }
 
+    public function overrideQuantifiedAssociations(array $submittedQuantifiedAssociations): self
+    {
+        $currentQuantifiedAssociationNormalized = $this->normalize();
+
+        $result = $this->normalize();
+        foreach ($submittedQuantifiedAssociations as $submittedAssociationTypeCode => $submittedAssociations) {
+            $result[$submittedAssociationTypeCode] = array_merge(
+                $currentQuantifiedAssociationNormalized[$submittedAssociationTypeCode] ?? [],
+                $submittedAssociations
+            );
+        }
+
+        return self::createFromNormalized($result);
+    }
+
     public function getQuantifiedAssociationsProductIdentifiers(): array
     {
         $result = [];
