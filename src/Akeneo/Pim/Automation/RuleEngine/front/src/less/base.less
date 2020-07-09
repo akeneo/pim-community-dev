@@ -87,3 +87,22 @@
 .AknTextField[type="number"] {
   line-height: initial;
 }
+
+.ActionGridItem {
+  vertical-align: top;
+  border-left: none;
+  padding-left: 0;
+}
+
+@media (min-width: 992px) {
+  .ActionGridItem {
+    vertical-align: top;
+    border-left: none;
+    padding-left: 0;
+
+    &:nth-child(even) {
+      border-left: 1px solid @AknPurple100;
+      padding-left: 20px;
+    }
+  }
+}

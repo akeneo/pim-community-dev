@@ -29,6 +29,7 @@ import { Controller } from 'react-hook-form';
 import { SmallHelper } from '../../../../components/HelpersInfos/SmallHelper';
 import InputBoolean from '../../../../components/Inputs/InputBoolean';
 import styled from 'styled-components';
+import { Label } from '../../../../components/Labels';
 
 const SelectorBlock = styled.div`
   margin-bottom: 15px;
@@ -328,16 +329,19 @@ const ActionCategoriesSelector: React.FC<Props> = ({
                 'pimee_catalog_rule.form.edit.actions.category.select_category_trees'
               )}
             </ActionTitle>
-            <label className='AknFieldContainer-label'>
-              {`${translate(
+            <Label
+              className='AknFieldContainer-label control-label'
+              label={`${translate(
                 'pimee_catalog_rule.form.edit.actions.category.category_tree'
               )} ${translate('pim_common.required_label')}`}
-            </label>
+            />
             <ul>
               {Array.from(categoryTreesWithSelectedCategoriesMap.entries()).map(
                 ([categoryTree, _categories]) => {
                   return (
-                    <li key={categoryTree.code}>
+                    <li
+                      key={categoryTree.code}
+                      className={'AknCategoryTreeSelector-item'}>
                       <button
                         data-testid={`category-tree-selector-${categoryTree.code}`}
                         className={`AknTextField AknCategoryTreeSelector${
@@ -372,23 +376,30 @@ const ActionCategoriesSelector: React.FC<Props> = ({
                 }
               )}
               {getNonSelectedCategoryTrees().length > 0 && (
-                <Select2Wrapper
-                  data-testid='category-tree-selector-new'
-                  multiple={false}
-                  label={translate(
-                    'pimee_catalog_rule.form.edit.actions.category.category_tree'
-                  )}
-                  onSelecting={(event: any) => {
-                    event.preventDefault();
-                    setCloseTick(!closeTick);
-                    handleAddCategoryTree(event.val);
-                  }}
-                  placeholder={translate(
-                    'pimee_catalog_rule.form.edit.actions.category.select_category_tree'
-                  )}
-                  data={getNonSelectedCategoryTrees()}
-                  hiddenLabel={true}
-                />
+                <div
+                  className={
+                    categoryTreesWithSelectedCategoriesMap.size === 0
+                      ? 'AknCategoryTreeSelector-new'
+                      : 'AknCategoryTreeSelector-item'
+                  }>
+                  <Select2Wrapper
+                    data-testid='category-tree-selector-new'
+                    multiple={false}
+                    label={translate(
+                      'pimee_catalog_rule.form.edit.actions.category.category_tree'
+                    )}
+                    onSelecting={(event: any) => {
+                      event.preventDefault();
+                      setCloseTick(!closeTick);
+                      handleAddCategoryTree(event.val);
+                    }}
+                    placeholder={translate(
+                      'pimee_catalog_rule.form.edit.actions.category.select_category_tree'
+                    )}
+                    data={getNonSelectedCategoryTrees()}
+                    hiddenLabel={true}
+                  />
+                </div>
               )}
             </ul>
           </div>
@@ -403,11 +414,12 @@ const ActionCategoriesSelector: React.FC<Props> = ({
             <SelectorBlock>
               {getCurrentCategoryTreeOrDefault() !== null ? (
                 <>
-                  <label className='AknFieldContainer-label'>
-                    {`${translate(
+                  <Label
+                    className='AknFieldContainer-label control-label'
+                    label={`${translate(
                       'pim_enrich.entity.category.plural_label'
                     )} ${translate('pim_common.required_label')}`}
-                  </label>
+                  />
                   <ul>
                     {(
                       categoryTreesWithSelectedCategoriesMap.get(
@@ -415,7 +427,9 @@ const ActionCategoriesSelector: React.FC<Props> = ({
                       ) || []
                     ).map((category, i) => {
                       return (
-                        <li key={category.code}>
+                        <li
+                          key={category.code}
+                          className={'AknCategoryTreeSelector-item'}>
                           <CategorySelector
                             data-testid={`category-selector-${category.code}`}
                             locale={currentCatalogLocale}

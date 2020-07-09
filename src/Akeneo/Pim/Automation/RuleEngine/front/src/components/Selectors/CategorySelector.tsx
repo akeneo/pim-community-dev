@@ -21,6 +21,7 @@ const InputCategory = styled.div`
   position: relative;
   min-height: 40px;
   height: 100%;
+  max-width: 300px;
 `;
 
 const CategoryArtifact = styled.div`
@@ -30,8 +31,7 @@ const CategoryArtifact = styled.div`
   padding-left: 14px;
 `;
 
-const CategoryArtifactDelete = styled.span`
-  background-image: url('/bundles/pimui/images/icon-remove.svg') !important;
+const CategoryArtifactIcon = styled.span`
   background-repeat: no-repeat;
   background-position: center;
   cursor: pointer;
@@ -42,6 +42,15 @@ const CategoryArtifactDelete = styled.span`
   position: absolute;
   right: 10px;
   top: 10px;
+`;
+
+const CategoryArtifactDelete = styled(CategoryArtifactIcon)`
+  background-image: url('/bundles/pimui/images/icon-remove.svg') !important;
+  z-index: 1;
+`;
+
+const CategoryArtifactDropdown = styled(CategoryArtifactIcon)`
+  background-image: url('/bundles/pimui/images/icon-down.svg') !important;
 `;
 
 const getCategoryLabel = (category: Category, locale: LocaleCode) => {
@@ -170,9 +179,12 @@ const CategorySelector: React.FC<Props> = ({
             />
           </>
         ) : (
-          translate(
-            'pimee_catalog_rule.form.edit.actions.category.select_category'
-          )
+          <>
+            {translate(
+              'pimee_catalog_rule.form.edit.actions.category.select_category'
+            )}
+            <CategoryArtifactDropdown tabIndex={0} role='button' />
+          </>
         )}
       </CategoryArtifact>
     </InputCategory>

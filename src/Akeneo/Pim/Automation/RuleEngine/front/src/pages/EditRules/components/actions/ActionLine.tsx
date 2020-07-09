@@ -18,20 +18,16 @@ const ActionTitle = styled.div`
 const ActionGrid = styled.div`
   margin-top: 10px;
   display: grid;
-  grid-template-columns: repeat(2, minmax(140px, 1fr));
-`;
-const ActionLeftSide = styled.div`
-  grid-column: 1;
-  vertical-align: top;
-  padding-right: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-gap: 20px;
 `;
 
-const ActionRightSide = styled(ActionLeftSide)`
-  border-left: 1px solid ${({ theme }): string => theme.color.purple100};
-  grid-column: 2;
-  vertical-align: top;
-  padding-left: 20px;
-`;
+const ActionGridItem: React.FC = ({ children }) => (
+  <div className='ActionGridItem'>{children}</div>
+);
+
+const ActionLeftSide = ActionGridItem;
+const ActionRightSide = ActionGridItem;
 
 const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
   action,
