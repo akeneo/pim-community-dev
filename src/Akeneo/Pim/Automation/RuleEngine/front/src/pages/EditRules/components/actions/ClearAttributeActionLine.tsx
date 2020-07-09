@@ -73,6 +73,7 @@ const ClearAttributeActionLine: React.FC<Props> = ({
         helper={translate('pimee_catalog_rule.form.helper.clear_attribute')}
         legend={translate('pimee_catalog_rule.form.helper.clear_attribute')}
         handleDelete={handleDelete}>
+        <LineErrors lineNumber={lineNumber} type='actions' />
         <ActionTitle>
           {translate(
             'pimee_catalog_rule.form.edit.actions.clear_attribute.subtitle'
@@ -96,7 +97,6 @@ const ClearAttributeActionLine: React.FC<Props> = ({
           attributeFormName={fieldFormName}
           onAttributeChange={onAttributeChange}
         />
-        <LineErrors lineNumber={lineNumber} type='actions' />
       </ActionTemplate>
     </>
   );

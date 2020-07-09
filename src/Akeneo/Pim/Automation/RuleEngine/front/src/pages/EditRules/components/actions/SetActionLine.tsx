@@ -26,6 +26,7 @@ import {
   useGetAttributeAtMount,
   fetchAttribute,
 } from './attribute/attribute.utils';
+import { SmallHelper } from '../../../../components/HelpersInfos';
 
 type Props = {
   action?: SetAction;
@@ -75,8 +76,6 @@ const SetActionLine: React.FC<Props> = ({
   if (getFieldFormValue() && !attribute) {
     return null;
   }
-  console.warn('getValueFormValue()', getValueFormValue());
-
   return (
     <>
       <Controller
@@ -99,6 +98,13 @@ const SetActionLine: React.FC<Props> = ({
         helper='This feature is under development. Please use the import to manage your rules.'
         legend='This feature is under development. Please use the import to manage your rules.'
         handleDelete={handleDelete}>
+        {attribute && !getValueFormValue() && (
+          <SmallHelper level='info'>
+            {translate(
+              'pimee_catalog_rule.form.helper.set_attribute_info_clear'
+            )}
+          </SmallHelper>
+        )}
         <LineErrors lineNumber={lineNumber} type='actions' />
         <ActionGrid>
           <ActionLeftSide>
