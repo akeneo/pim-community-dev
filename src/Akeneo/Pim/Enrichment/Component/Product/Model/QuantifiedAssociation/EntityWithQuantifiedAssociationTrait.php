@@ -24,21 +24,11 @@ trait EntityWithQuantifiedAssociationTrait
     /**
      * @inheritDoc
      */
-    public function setQuantifiedAssociations(QuantifiedAssociations $quantifiedAssociations): void
-    {
-        $this->quantifiedAssociations = $quantifiedAssociations;
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function filterQuantifiedAssociations(array $productIdentifiersToKeep, array $productModelCodesToKeep): void
     {
-        $filteredQuantifiedAssociations = $this->quantifiedAssociations
+        $this->quantifiedAssociations = $this->quantifiedAssociations
             ->filterProductIdentifiers($productIdentifiersToKeep)
             ->filterProductModelCodes($productModelCodesToKeep);
-
-        $this->setQuantifiedAssociations($filteredQuantifiedAssociations);
     }
 
     /**
@@ -54,9 +44,17 @@ trait EntityWithQuantifiedAssociationTrait
      */
     public function mergeQuantifiedAssociations(QuantifiedAssociations $quantifiedAssociations): void
     {
-        $quantifiedAssociationsMerged = $this->quantifiedAssociations->merge($quantifiedAssociations);
+        $this->quantifiedAssociations = $this->quantifiedAssociations->merge($quantifiedAssociations);
+    }
 
-        $this->setQuantifiedAssociations($quantifiedAssociationsMerged);
+    /**
+     * @inheritDoc
+     */
+    public function overrideQuantifiedAssociations(array $submittedQuantifiedAssociations): void
+    {
+        $this->quantifiedAssociations = $this->quantifiedAssociations->overrideQuantifiedAssociations(
+            $submittedQuantifiedAssociations
+        );
     }
 
     /**
@@ -64,9 +62,7 @@ trait EntityWithQuantifiedAssociationTrait
      */
     public function clearQuantifiedAssociations(): void
     {
-        $quantifiedAssociationsCleared = $this->quantifiedAssociations->clearQuantifiedAssociations();
-
-        $this->setQuantifiedAssociations($quantifiedAssociationsCleared);
+        $this->quantifiedAssociations = $this->quantifiedAssociations->clearQuantifiedAssociations();
     }
 
     /**
