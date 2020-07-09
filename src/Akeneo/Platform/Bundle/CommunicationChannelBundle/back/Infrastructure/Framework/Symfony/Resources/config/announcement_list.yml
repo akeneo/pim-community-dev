@@ -10,8 +10,13 @@ services:
     akeneo_communication_channel.handler.query.list_announcements:
         class: 'Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\ListAnnouncementsHandler'
         arguments:
-            - '@akeneo_communication_channel.query.local_filestorage.find_announcement_items'
+            - '@akeneo_communication_channel.query.api.find_announcement_items'
             - '@akeneo_communication_channel.query.dbal.find_viewed_announcement_ids'
+
+    akeneo_communication_channel.query.api.find_announcement_items:
+        class: 'Akeneo\Platform\CommunicationChannel\Infrastructure\CommunicationChannel\Api\ApiFindAnnouncementItems'
+        arguments:
+            - '%help_center_api_url%'
 
     akeneo_communication_channel.query.local_filestorage.find_announcement_items:
         class: 'Akeneo\Platform\CommunicationChannel\Infrastructure\CommunicationChannel\LocalFilestorage\LocalFilestorageFindAnnouncementItems'

@@ -119,7 +119,8 @@
         "symfony/finder": "4.4.7",
         "symfony/templating": "4.4.7",
         "symfony/proxy-manager-bridge": "4.4.7",
-        "justinrainbow/json-schema": "^5.2"
+        "justinrainbow/json-schema": "^5.2",
+        "guzzlehttp/guzzle": "6.3.3"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "0.3.*",
@@ -144,7 +145,8 @@
         "liuggio/fastest": "1.6.*",
         "phpstan/phpstan": "^0.12.25",
         "phpstan/phpstan-symfony": "^0.12.6",
-        "league/flysystem-aws-s3-v3": "^1.0"
+        "league/flysystem-aws-s3-v3": "^1.0",
+        "mcustiel/phiremock": "1.12.1"
     },
     "conflict": {
         "symfony/symfony": "*"

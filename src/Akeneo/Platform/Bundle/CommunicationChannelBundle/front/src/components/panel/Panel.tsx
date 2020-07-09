@@ -9,7 +9,7 @@ import {formatCampaign} from '../../tools/formatCampaign';
 const Panel = (): JSX.Element => {
   const __ = useTranslate();
   const mediator = useMediator();
-  const cloudEEVersion = 'serenity';
+  const cloudEEVersion = 'ce';
   const [isOpened, setIsOpened] = useState<boolean>(false);
   const [campaign, setCampaign] = useState<string>('');
   const [isSerenity, setIsSerenity] = useState<boolean>(false);

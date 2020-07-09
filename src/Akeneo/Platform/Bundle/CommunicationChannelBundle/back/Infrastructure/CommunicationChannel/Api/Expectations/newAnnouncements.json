@@ -1,0 +1,22 @@
+{
+    "scenarioName": "NewAnnouncements",
+    "request": {
+        "method": "GET",
+        "url": {
+            "isEqualTo": "/new_announcements"
+        }
+    },
+    "response": {
+        "statusCode": 200,
+        "body": [
+            "update_1-duplicate-a-product_2020-07",
+            "update_2-option-screen-revamp_2020-07",
+            "update_3-rules-updates_2020-07",
+            "update_4-manually-execute-naming-conventions-on-assets_2020-07"
+        ],
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "delayMillis": 3000
+    }
+}
