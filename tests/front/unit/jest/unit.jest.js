@@ -21,6 +21,8 @@ const unitConfig = {
     'src/Akeneo/Tool/Bundle/MeasureBundle/Resources/public/pages/create-unit/CreateUnit.tsx',
     'src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front/src/components/icons',
     'src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front/src/components/panel/announcement/Image.tsx',
+    'src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front/src/components/panel/Panel.tsx',
+    'src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front/src/components/panel/AnnouncementList.tsx',
     'src/Akeneo/Platform/Bundle/UIBundle/Resources/public/js/view',
     'src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute-option/contexts',
     'src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute-option/fetchers',

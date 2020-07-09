@@ -31,6 +31,7 @@ class AnnouncementItemSpec extends ObjectBehavior
             ]
         );
     }
+
     public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(AnnouncementItem::class);
@@ -46,7 +47,15 @@ class AnnouncementItemSpec extends ObjectBehavior
             'altImg' => 'Connection monitoring page',
             'link' => 'http://link.com#easily-monitor-errors-on-your-connections',
             'startDate' => $this->startDate->format('F\, jS Y'),
-            'tags' => ['new', 'updates'],
+            'tags' => ['updates'],
         ]);
+    }
+
+    public function it_notifies_when_the_announcement_is_new()
+    {
+        $this->toNotify()->shouldReturnAnInstanceOf(AnnouncementItem::class);
+
+        $announcement = $this->toArray();
+        $announcement['tags']->shouldBeLike(['new', 'updates']);
     }
 }

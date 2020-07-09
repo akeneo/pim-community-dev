@@ -903,7 +903,7 @@ config:
     pim/menu/menu:                                       pimui/js/menu/menu
     pim/menu/tab:                                        pimui/js/menu/tab
     pim/menu/item:                                       pimui/js/menu/item
-    pim/menu/help:                                       pimui/js/menu/help
+    pim/menu/help:                                       pimui/js/menu/help.ts
     pim/menu/navigation-back:                            pimui/js/menu/navigation-back.ts
     pim/menu/navigation-block:                           pimui/js/menu/navigation-block
     pim/menu/resizable:                                  pimui/js/menu/resizable

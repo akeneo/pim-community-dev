@@ -7,7 +7,7 @@ namespace Akeneo\Platform\CommunicationChannel\Domain\Announcement\Model\Read;
 use DateTimeImmutable;
 
 /**
- * @author Christophe Chausseray <chaauseray.christophe@gmail.com>
+ * @author Christophe Chausseray <chausseray.christophe@gmail.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
@@ -77,13 +77,16 @@ final class AnnouncementItem
         $this->tags = $tags;
     }
 
+    public function id(): string
+    {
+        return $this->id;
+    }
+
     /**
      * @return array<string, array<string>|int|string|null>
      */
     public function toArray(): array
     {
-        $this->addNewTag();
-
         return [
             'id' => $this->id,
             'title' => $this->title,
@@ -96,10 +99,7 @@ final class AnnouncementItem
         ];
     }
 
-    /**
-     * @return void
-     */
-    private function addNewTag(): void
+    public function toNotify(): self
     {
         $currentDate = new \DateTimeImmutable();
         $dateInterval = new \DateInterval(sprintf(self::DATE_INTERVAL_FORMAT, $this->notificationDuration));
@@ -108,5 +108,7 @@ final class AnnouncementItem
         if ($currentDate > $this->startDate && $currentDate < $endDate) {
             array_unshift($this->tags, 'new');
         }
+
+        return $this;
     }
 }

@@ -1,12 +1,11 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {fireEvent, act, getByText, getAllByText, getByTitle} from '@testing-library/react';
+import {fireEvent, act, getByText, getAllByText, getByTitle, getByTestId} from '@testing-library/react';
 import {Panel} from '@akeneo-pim-community/communication-channel/src/components/panel';
 import {formatCampaign} from '@akeneo-pim-community/communication-channel/src/tools/formatCampaign';
 import {dependencies} from '@akeneo-pim-community/legacy-bridge';
 import {renderWithProviders, fetchMockResponseOnce} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import {getExpectedAnnouncements, getExpectedPimAnalyticsData} from '../../__mocks__/dataProvider';
-import {getByTestId} from '@testing-library/dom';
 
 const expectedAnnouncements = getExpectedAnnouncements();
 const expectedPimAnalyticsData = getExpectedPimAnalyticsData();
@@ -24,6 +23,7 @@ afterEach(() => {
 test('it shows the panel with the first announcements', async () => {
   fetchMockResponseOnce('pim_analytics_data_collect', JSON.stringify(expectedPimAnalyticsData));
   fetchMockResponseOnce('/rest/announcements?limit=10', JSON.stringify({items: expectedAnnouncements}));
+  fetchMockResponseOnce('/rest/new_announcements', JSON.stringify({status: true}));
 
   await act(async () => renderWithProviders(<Panel />, container as HTMLElement));
 
@@ -57,6 +57,7 @@ test('it shows the panel with the next announcements', async () => {
 
   fetchMockResponseOnce('pim_analytics_data_collect', JSON.stringify(expectedPimAnalyticsData));
   fetchMockResponseOnce('/rest/announcements?limit=10', JSON.stringify({items: expectedAnnouncements}));
+  fetchMockResponseOnce('/rest/new_announcements', JSON.stringify({status: true}));
   fetchMockResponseOnce(
     '/rest/announcements?limit=10&search_after=update-title_announcement_2-20-04-2020',
     JSON.stringify({items: nextItems})
@@ -81,6 +82,7 @@ test('it shows the panel with the next announcements', async () => {
 test('it can show for each announcement the information from the json', async () => {
   fetchMockResponseOnce('pim_analytics_data_collect', JSON.stringify(expectedPimAnalyticsData));
   fetchMockResponseOnce('/rest/announcements?limit=10', JSON.stringify({items: expectedAnnouncements}));
+  fetchMockResponseOnce('/rest/new_announcements', JSON.stringify({status: true}));
 
   await act(async () => renderWithProviders(<Panel />, container as HTMLElement));
 
@@ -98,6 +100,7 @@ test('it can open the read more link in a new tab', async () => {
   const campaign = formatCampaign(expectedPimAnalyticsData.pim_edition, expectedPimAnalyticsData.pim_version);
   fetchMockResponseOnce('pim_analytics_data_collect', JSON.stringify(expectedPimAnalyticsData));
   fetchMockResponseOnce('/rest/announcements?limit=10', JSON.stringify({items: expectedAnnouncements}));
+  fetchMockResponseOnce('/rest/new_announcements', JSON.stringify({status: true}));
 
   await act(async () => renderWithProviders(<Panel />, container as HTMLElement));
 
@@ -112,6 +115,7 @@ test('it can open the read more link in a new tab', async () => {
 test('it can display a message when it has an error during the fetch', async () => {
   fetchMockResponseOnce('pim_analytics_data_collect', JSON.stringify(expectedPimAnalyticsData));
   fetchMockResponseOnce('/rest/announcements?limit=10', JSON.stringify({items: 'error'}));
+  fetchMockResponseOnce('/rest/new_announcements', JSON.stringify({status: true}));
 
   await act(async () => renderWithProviders(<Panel />, container as HTMLElement));
 
@@ -122,6 +126,7 @@ test('it can display a message when it has an error during the fetch', async () 
 test('it can display an empty panel when it is not a serenity version', async () => {
   fetchMockResponseOnce('pim_analytics_data_collect', JSON.stringify({pim_edition: 'CE', pim_version: '4.0'}));
   fetchMockResponseOnce('/rest/announcements?limit=10', JSON.stringify({items: expectedAnnouncements}));
+  fetchMockResponseOnce('/rest/new_announcements', JSON.stringify({status: true}));
 
   await act(async () => renderWithProviders(<Panel />, container as HTMLElement));
 
@@ -131,7 +136,9 @@ test('it can display an empty panel when it is not a serenity version', async ()
 
 test('it can close the panel', async () => {
   fetchMockResponseOnce('pim_analytics_data_collect', JSON.stringify(expectedPimAnalyticsData));
-  fetchMockResponseOnce('/rest/announcements', JSON.stringify({items: []}));
+  fetchMockResponseOnce('/rest/announcements?limit=10', JSON.stringify({items: expectedAnnouncements}));
+  fetchMockResponseOnce('/rest/new_announcements', JSON.stringify({status: false}));
+  fetchMockResponseOnce('/rest/new_announcements', JSON.stringify({status: true}));
 
   await act(async () => renderWithProviders(<Panel />, container as HTMLElement));
 

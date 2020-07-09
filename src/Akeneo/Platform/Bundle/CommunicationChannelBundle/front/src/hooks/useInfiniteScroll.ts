@@ -7,6 +7,12 @@ import {
   infiniteScrollResultsNotFetched,
 } from '../actions/infiniteScrollActions';
 
+type ResultsResponse = {
+  items: any[];
+  isFetching: boolean;
+  hasError: boolean;
+};
+
 /**
  * Hook to do infinite scroll on a list of items fetched
  *
@@ -15,21 +21,17 @@ import {
  * @param limit Limit numbers of items by qurey to fetch items (By default 10).
  * @param threshold Thereshold Maximum distance to bottom of the scroll to start the fetch of the items (By default 300).
  *
- * @returns {items: any[], isFetching: boolean, hasError: boolean}
+ * @returns [ResultsResponse, callbackToHandleFetchingResults]
  */
 const useInfiniteScroll = (
   fetch: (searchAfter: string | null, limit: number) => Promise<any[]>,
   scrollableElement: HTMLElement | null,
   limit: number = 10,
   threshold: number = 300
-): {
-  items: any[];
-  isFetching: boolean;
-  hasError: boolean;
-} => {
+): [ResultsResponse, (searchAfter: string | null, limit: number) => void] => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const updateState = useCallback(async (searchAfter: string | null, limit: number) => {
+  const handleFetchingResults = useCallback(async (searchAfter: string | null, limit: number) => {
     try {
       dispatch(infiniteScrollFetchingResults());
       const data = await fetch(searchAfter, limit);
@@ -59,15 +61,15 @@ const useInfiniteScroll = (
         if (hasToAppendItems(scrollableElement, state.lastAppend, state.isFetching)) {
           const lastElement = state.items[state.items.length - 1];
           const searchAfter = lastElement.id;
-          updateState(searchAfter, limit);
+          handleFetchingResults(searchAfter, limit);
         }
       };
     } else {
-      updateState(null, limit);
+      handleFetchingResults(null, limit);
     }
   }, [scrollableElement, state]);
 
-  return {items: state.items, isFetching: state.isFetching, hasError: state.hasError};
+  return [{items: state.items, isFetching: state.isFetching, hasError: state.hasError}, handleFetchingResults];
 };
 
 export {useInfiniteScroll};

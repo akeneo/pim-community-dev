@@ -11,16 +11,43 @@ namespace Akeneo\Platform\CommunicationChannel\Application\Announcement\Query;
  */
 final class ListAnnouncementsQuery
 {
+    /** @var string */
+    private $edition;
+
+    /** @var string */
+    private $version;
+
+    /** @var int */
+    private $userId;
+
     /** @var string|null */
     private $searchAfter;
 
     /** @var int */
     private $limit;
 
-    public function __construct(?string $searchAfter, int $limit)
+    public function __construct(string $edition, string $version, int $userId, ?string $searchAfter, int $limit)
     {
+        $this->edition = $edition;
+        $this->version = $version;
+        $this->userId = $userId;
         $this->searchAfter = $searchAfter;
         $this->limit = $limit;
+    }
+
+    public function edition(): string
+    {
+        return $this->edition;
+    }
+
+    public function version(): string
+    {
+        return $this->version;
+    }
+
+    public function userId(): int
+    {
+        return $this->userId;
     }
 
     public function searchAfter(): ?string

@@ -19,7 +19,7 @@ class PimApp extends BaseView {
 
   public events() {
     return {
-      'click #overlay': 'onClickToHideOverlay',
+      'click #overlay': 'onClickToCollapsePanel',
     };
   }
 
@@ -59,16 +59,8 @@ class PimApp extends BaseView {
     return BaseView.prototype.render.apply(this, arguments);
   }
 
-  /**
-   * To collapse Panel when we click on the overlay
-   */
-  public onClickToHideOverlay(): void {
-    const divPanels = this.$('.AknPanel');
-
-    this.hideOverlay();
-    if (!divPanels.hasClass('AknPanel--collapsed')) {
-      divPanels.addClass('AknPanel--collapsed');
-    }
+  public onClickToCollapsePanel(): void {
+    mediator.trigger('pim-app:panel:close');
   }
 
   private showOverlay(): void {

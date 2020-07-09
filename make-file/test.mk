@@ -25,7 +25,7 @@ lint-back:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
 	$(MAKE) connectivity-connection-lint-back
-	$(MAKE) communication-channel-static-analysis-back
+	$(MAKE) communication-channel-lint-back
 
 .PHONY: lint-front
 lint-front:

@@ -12,6 +12,7 @@ class PanelView extends ReactView {
   configure() {
     this.listenTo(mediator, 'communication-channel:panel:open', this.openPanel);
     this.listenTo(mediator, 'communication-channel:panel:close', this.closePanel);
+    this.listenTo(mediator, 'pim-app:panel:close', this.closePanelFromOverlay);
 
     return super.configure();
   }
@@ -30,6 +31,10 @@ class PanelView extends ReactView {
     this.$el.removeClass('AknPanel--collapsed');
     this.$el.removeClass('AknPanel--no-overflow');
     mediator.trigger('pim-app:overlay:show');
+  }
+
+  closePanelFromOverlay() {
+    mediator.trigger('communication-channel:panel:close');
   }
 
   closePanel() {
