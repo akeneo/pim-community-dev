@@ -4,4 +4,5 @@ pim_common:
 shared_catalog:
     recipients:
         invalid_email: This value is not a valid email address.
-        add_recipient: Add a recipient
+        add_recipient: betty@akeneo.com
+        duplicates: You already shared with this recipient

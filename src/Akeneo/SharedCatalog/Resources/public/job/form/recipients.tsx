@@ -1,7 +1,16 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components';
 // @todo pull-up master: change to '@akeneo-pim-community/shared'
-import {AkeneoThemeProvider, Button, CloseIcon, WarningIcon, Key, useAutoFocus, useShortcut} from 'akeneosharedcatalog/akeneo-pim-community/shared';
+import {
+  AkeneoThemeProvider,
+  Button,
+  CloseIcon,
+  WarningIcon,
+  Key,
+  useAutoFocus,
+  useShortcut,
+  useAkeneoTheme,
+} from 'akeneosharedcatalog/akeneo-pim-community/shared';
 // @todo pull-up master: change to '@akeneo-pim-community/legacy-bridge'
 import {DependenciesProvider, useTranslate} from 'akeneosharedcatalog/akeneo-pim-community/legacy-bridge';
 import {HeaderCell, LabelCell, Row, Table} from 'akeneosharedcatalog/common/Table';
@@ -14,7 +23,7 @@ type ValidationError = {
 };
 type ValidationErrors = {
   [index: number]: ValidationError;
-}
+};
 type RecipientsProps = {
   recipients: Recipient[];
   validationErrors: ValidationErrors;
@@ -38,9 +47,10 @@ const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
-const Input = styled.input`
+const Input = styled.input<{isInvalid: boolean}>`
   border-radius: 2px;
-  border: 1px solid #ccd1d8;
+  border: 1px solid;
+  border-color: ${({theme, isInvalid}) => (isInvalid ? theme.color.red100 : theme.color.grey80)}
   color: #11324d;
   height: 40px;
   line-height: 40px;
@@ -66,7 +76,7 @@ const InputError = styled.div`
   font-style: normal;
   line-height: 13px;
   margin: 6px 0;
-  
+
   svg {
     margin: 0 6px 0 0;
   }
@@ -82,39 +92,41 @@ const Cell = styled(LabelCell)`
   width: auto !important;
 `;
 
-const Container = ({
-  ...props
-}: RecipientsProps) => {
+const Container = (props: RecipientsProps) => {
   return (
     <DependenciesProvider>
       <AkeneoThemeProvider>
-        <Recipients {...props}/>
+        <Recipients {...props} />
       </AkeneoThemeProvider>
     </DependenciesProvider>
   );
 };
 
-const Recipients = ({
-  recipients,
-  validationErrors,
-  onRecipientsChange
-}: RecipientsProps) => {
+const Recipients = ({recipients, validationErrors, onRecipientsChange}: RecipientsProps) => {
   const __ = useTranslate();
+  const theme = useAkeneoTheme();
   const [recipientToAdd, setRecipientToAdd] = React.useState('');
   const [emailIsValid, setEmailIsValid] = React.useState(true);
-  const inputRef = React.useRef<null|HTMLInputElement>(null);
-  useAutoFocus(inputRef);
+  const [emailIsDuplicated, setEmailIsDuplicated] = React.useState(false);
+  const inputRef = React.useRef<null | HTMLInputElement>(null);
 
   const handleAddNewRecipient = React.useCallback(() => {
+    if (true === emailIsDuplicated) return;
+
     if (isValidEmail(recipientToAdd)) {
       onRecipientsChange([...recipients, {email: recipientToAdd}]);
     } else {
       setEmailIsValid(false);
     }
-  }, [onRecipientsChange, recipients, recipientToAdd, setEmailIsValid]);
+  }, [onRecipientsChange, recipients, recipientToAdd, setEmailIsValid, emailIsDuplicated]);
 
+  useAutoFocus(inputRef);
   useShortcut(Key.Enter, handleAddNewRecipient);
   useShortcut(Key.NumpadEnter, handleAddNewRecipient);
+
+  useEffect(() => {
+    setEmailIsDuplicated(recipients.map(recipient => recipient.email).includes(recipientToAdd));
+  }, [recipientToAdd]);
 
   return (
     <Body>
@@ -122,21 +134,33 @@ const Recipients = ({
         <InputContainer>
           <Input
             ref={inputRef}
-            placeholder={ __('shared_catalog.recipients.add_recipient') }
+            placeholder={__('shared_catalog.recipients.add_recipient')}
             value={recipientToAdd}
+            isInvalid={emailIsDuplicated || !emailIsValid}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               setEmailIsValid(true);
               setRecipientToAdd(event.currentTarget.value);
             }}
           />
-          {false === emailIsValid &&
+          {false === emailIsValid && (
             <InputError>
-              <WarningIcon color={'#d4604f'} size={18}/>
-              { __('shared_catalog.recipients.invalid_email') }
+              <WarningIcon color={theme.color.red100} size={18} />
+              {__('shared_catalog.recipients.invalid_email')}
             </InputError>
-          }
+          )}
+          {true === emailIsDuplicated && (
+            <InputError>
+              <WarningIcon color={theme.color.red100} size={18} />
+              {__('shared_catalog.recipients.duplicates')}
+            </InputError>
+          )}
         </InputContainer>
-        <Button onClick={handleAddNewRecipient}>
+        <Button
+          color="grey"
+          onClick={handleAddNewRecipient}
+          disabled={emailIsDuplicated || '' === recipientToAdd}
+          outline={true}
+        >
           {__('pim_common.add')}
         </Button>
       </Form>
@@ -144,7 +168,7 @@ const Recipients = ({
         <thead>
           <Row>
             <HeaderCell>Email</HeaderCell>
-            <HeaderCell/>
+            <HeaderCell />
           </Row>
         </thead>
         <tbody>
@@ -152,9 +176,7 @@ const Recipients = ({
             <Row key={recipient.email}>
               <Cell>
                 {recipient.email}
-                {validationErrors[index] &&
-                  <ErrorMessage>{validationErrors[index].email}</ErrorMessage>
-                }
+                {validationErrors[index] && <ErrorMessage>{validationErrors[index].email}</ErrorMessage>}
               </Cell>
               <ActionCell>
                 <CloseIcon
