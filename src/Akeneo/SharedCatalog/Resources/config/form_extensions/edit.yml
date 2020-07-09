@@ -75,6 +75,15 @@ extensions:
             title: pim_common.recipients
             tabCode: pim-job-instance-recipient
 
+    pim-job-instance-shared-catalog-edit-branding:
+        module: akeneosharedcatalog/job/tab/branding
+        parent: pim-job-instance-shared-catalog-edit-tabs
+        targetZone: container
+        position: 136
+        config:
+            title: pim_common.branding
+            tabCode: pim-job-instance-branding
+
     pim-job-instance-shared-catalog-edit-properties-code:
         module: pim/job/common/edit/field/text
         parent: pim-job-instance-shared-catalog-edit-properties

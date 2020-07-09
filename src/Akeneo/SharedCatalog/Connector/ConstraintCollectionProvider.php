@@ -20,11 +20,15 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderIn
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 
 class ConstraintCollectionProvider implements ConstraintCollectionProviderInterface
 {
+    /** 2MB size converted to base64 */
+    private const MAX_LENGTH_BASE64 = 2000 * 1000 * 4 / 3;
+
     /** @var ConstraintCollectionProviderInterface */
     protected $simpleProvider;
 
@@ -72,6 +76,14 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
                 ],
             ]),
         ];
+        $constraintFields['branding'] = new Collection([
+            'fields' => [
+                'image' => [
+                    new Type(['type' => ['string', 'null']]),
+                    new Length(['max' => self::MAX_LENGTH_BASE64, 'maxMessage' => 'shared_catalog.branding.filesize_too_large'])
+                ]
+            ]
+        ]);
         $constraintFields['filters'] = [
             new Collection(
                 [
