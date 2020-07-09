@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { LineErrors } from '../LineErrors';
 import {
   ActionGrid,
   ActionLeftSide,
@@ -40,7 +39,6 @@ const SelectorBlock = styled.div`
 `;
 
 type Props = {
-  lineNumber: number;
   currentCatalogLocale: LocaleCode;
   values: CategoryCode[];
   setValue: (value: any) => void;
@@ -53,7 +51,6 @@ type Props = {
 };
 
 const ActionCategoriesSelector: React.FC<Props> = ({
-  lineNumber,
   currentCatalogLocale,
   values,
   setValue,
@@ -289,7 +286,6 @@ const ActionCategoriesSelector: React.FC<Props> = ({
 
   return (
     <>
-      <LineErrors lineNumber={lineNumber} type='actions' />
       {unexistingCategoryCodes.map(unexistingCategoryCode => {
         return (
           <SmallHelper level='error' key={unexistingCategoryCode}>

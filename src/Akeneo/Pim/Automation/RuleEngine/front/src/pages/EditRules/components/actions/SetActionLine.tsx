@@ -92,7 +92,8 @@ const SetActionLine: React.FC<Props> = ({
         legend={translate(
           'pimee_catalog_rule.form.edit.actions.set_attribute.helper'
         )}
-        handleDelete={handleDelete}>
+        handleDelete={handleDelete}
+        lineNumber={lineNumber}>
         {attribute && !getValueFormValue() && (
           <SmallHelper level='info'>
             {translate(
