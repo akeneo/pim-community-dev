@@ -102,8 +102,24 @@ class GetProductQuantifiedAssociationsByProductIdentifiersIntegration extends Ab
                 ],
             ],
         ]);
-        $rootProductModel = $this->getEntityBuilder()->createProductModel('root_product_model', 'familyVariantWithTwoLevels', null, []);
-        $subProductModel = $this->getEntityBuilder()->createProductModel('sub_product_model_1', 'familyVariantWithTwoLevels', $rootProductModel, []);
+        $rootProductModel = $this->getEntityBuilder()->createProductModel('root_product_model', 'familyVariantWithTwoLevels', null, [
+            "quantified_associations" => [
+                'PRODUCT_SET' => [
+                    'products' => [
+                        ['identifier' => 'productB', 'quantity' => 7],
+                    ],
+                ],
+            ]
+        ]);
+        $subProductModel = $this->getEntityBuilder()->createProductModel('sub_product_model_1', 'familyVariantWithTwoLevels', $rootProductModel, [
+            "quantified_associations" => [
+                'PRODUCT_SET' => [
+                    'products' => [
+                        ['identifier' => 'productC', 'quantity' => 6],
+                    ],
+                ],
+            ]
+        ]);
         $this->getEntityBuilder()->createVariantProduct('variant_product_1', 'aFamily', 'familyVariantWithTwoLevels', $subProductModel, [
             'quantified_associations' => [
                 'PRODUCT_SET' => [
@@ -113,30 +129,6 @@ class GetProductQuantifiedAssociationsByProductIdentifiersIntegration extends Ab
                 ],
             ],
         ]);
-        $subProductModel->setQuantifiedAssociations(
-            QuantifiedAssociations::createFromNormalized(
-                [
-                    'PRODUCT_SET' => [
-                        'products' => [
-                            ['identifier' => 'productC', 'quantity' => 6],
-                        ],
-                    ],
-                ]
-            )
-        );
-        $rootProductModel->setQuantifiedAssociations(
-            QuantifiedAssociations::createFromNormalized(
-                [
-                    'PRODUCT_SET' => [
-                        'products' => [
-                            ['identifier' => 'productB', 'quantity' => 7],
-                        ],
-                    ],
-                ]
-            )
-        );
-        $this->productModelSaver()->save($rootProductModel);
-        $this->productModelSaver()->save($subProductModel);
 
         $actual = $this->getQuery()->fromProductIdentifiers(['productC', 'productD', 'variant_product_1']);
         $expected = [
@@ -361,10 +353,5 @@ class GetProductQuantifiedAssociationsByProductIdentifiersIntegration extends Ab
     protected function getConfiguration()
     {
         return $this->catalog->useMinimalCatalog();
-    }
-
-    private function productModelSaver(): SaverInterface
-    {
-        return $this->get('pim_catalog.saver.product_model');
     }
 }
