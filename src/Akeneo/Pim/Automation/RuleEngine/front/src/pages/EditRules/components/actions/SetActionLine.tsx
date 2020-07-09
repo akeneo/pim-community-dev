@@ -21,8 +21,11 @@ import {
 import { LineErrors } from '../LineErrors';
 import { AttributeValue } from './attribute';
 import { useControlledFormInputAction } from '../../hooks';
-
-import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepository';
+import {
+  validateAttribute,
+  useGetAttributeAtMount,
+  fetchAttribute,
+} from './attribute/attribute.utils';
 
 type Props = {
   action?: SetAction;
@@ -49,29 +52,21 @@ const SetActionLine: React.FC<Props> = ({
     setFieldFormValue,
     setValueFormValue,
     getFieldFormValue,
-  } = useControlledFormInputAction<string | null>(lineNumber);
+  } = useControlledFormInputAction<string>(lineNumber);
   // Watch is needed in this case to trigger a render at input
   const { watch } = useFormContext();
   watch(valueFormName);
-  React.useEffect(() => {
-    const fetchAttribute = async (attributeCode: AttributeCode) => {
-      const attribute = await getAttributeByIdentifier(attributeCode, router);
-      setAttribute(attribute);
-    };
-    const fieldValue = getFieldFormValue();
-    if (fieldValue && !attribute) {
-      fetchAttribute(fieldValue);
-    }
-  }, []);
+
+  useGetAttributeAtMount(getFieldFormValue(), router, attribute);
 
   const onAttributeChange = (attributeCode: AttributeCode) => {
-    const fetchAttribute = async (attributeCode: AttributeCode) => {
-      const attribute = await getAttributeByIdentifier(attributeCode, router);
+    const getAttribute = async (attributeCode: AttributeCode) => {
+      const attribute = await fetchAttribute(router, attributeCode);
       setAttribute(attribute);
-      setValueFormValue(null);
+      setValueFormValue('');
       setFieldFormValue(attributeCode);
     };
-    fetchAttribute(attributeCode);
+    getAttribute(attributeCode);
   };
 
   const isUnmanagedAttribute = () =>
@@ -80,22 +75,6 @@ const SetActionLine: React.FC<Props> = ({
   if (getFieldFormValue() && !attribute) {
     return null;
   }
-
-  const validateAttribute = async (value: any): Promise<string | true> => {
-    if (!value) {
-      return translate('pimee_catalog_rule.exceptions.required_attribute');
-    }
-    const attribute = await getAttributeByIdentifier(value, router);
-    if (null === attribute) {
-      return `${translate(
-        'pimee_catalog_rule.exceptions.unknown_attribute'
-      )} ${translate(
-        'pimee_catalog_rule.exceptions.select_another_attribute_or_remove_action'
-      )}`;
-    }
-    return true;
-  };
-
   console.warn('getValueFormValue()', getValueFormValue());
 
   return (
@@ -104,7 +83,7 @@ const SetActionLine: React.FC<Props> = ({
         name={fieldFormName}
         as={<span hidden />}
         defaultValue=''
-        rules={{ validate: validateAttribute }}
+        rules={{ validate: validateAttribute(translate, router) }}
       />
       <Controller name={typeFormName} as={<span hidden />} defaultValue='set' />
       <Controller
