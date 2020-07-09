@@ -9,14 +9,9 @@ pimee_catalog_rule:
         label: Libellé
         conditions: Condition
         actions: Action
-        impacted_product_count:
-          label: Produit(s) affecté(s)
-          count: '{0,1}%count% produit affecté|]1,Inf[%count% produits affectés'
-          no_yet_calculated: Pas encore calculé
         tags:
           label: Actions
       mass_edit_action:
-        impacted_product_count: Calculer les produits affectés
         execute: Exécuter
         delete: Supprimer
   actions:
@@ -78,7 +73,6 @@ pimee_catalog_rule:
     rule:
       view_permissions: Afficher les règles
       delete_permissions: Supprimer les règles
-      impacted_product_count_permissions: Calculer le nombre de produits affectés par les règles
       execute_permissions: Exécuter les règles
   attribute:
     tab:
@@ -88,26 +82,12 @@ pimee_catalog_rule:
     acl:
       rule.view_permissions: Afficher les règles
   product:
-    tooltip:
-      product_attribute_affected_by_a_rule.content: La valeur de cet attribut peut provenir d'une ou plusieurs règles <strong>%rule%</strong>. Cela signifie que - dans le cas ou une règle peut s'appliquer -  vos modifications seront écrasées.
-      loading.title: Chargement en cours...
     history: Application de la règle "%rule%"
-  product_value:
-    tooltip:
-      affected_by.title: 'Champ affecté par une ou plusieurs règles :'
   steps:
-    product_rule_definition_reader.title: Lecture des règles des produits
-    rule_definition_processor.title: Traitement des règles des produits
-    product_rule_definition_writer.title: Sauvegarde des règles des produits
     rules_execution.title: Exécution des règles
   notification:
     execute_rules:
-      success: L'exécution des règles est terminée
-      warning: Exécution de(s) règle(s) terminée(s) avec avertissement(s)
       error: Une erreur s'est produite lors de l'exécution des règles
-    mass_edit_rule:
-      success: Le calcul du nombre de produits affectés par les règles est terminé
-      error: Une erreur que s’est produite lors du calcul du nombre de produits affectés par les règles
 btn:
   Execute rules: Exécuter les règles
 job_execution:

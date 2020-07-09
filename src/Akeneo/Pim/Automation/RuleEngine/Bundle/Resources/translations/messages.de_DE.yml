@@ -9,14 +9,9 @@ pimee_catalog_rule:
         label: Label
         conditions: Bedingung
         actions: Aktion
-        impacted_product_count:
-          label: Betroffene Produkte
-          count: '{0,1}%count% betroffenes Produkt |] 1, Inf [%count% betroffene Produkte'
-          no_yet_calculated: Noch nicht berechnet
         tags:
           label: Aktionen
       mass_edit_action:
-        impacted_product_count: Betroffene Produkte berechnen
         execute: Ausführen
         delete: Löschen
   actions:
@@ -78,7 +73,6 @@ pimee_catalog_rule:
     rule:
       view_permissions: Regeln ansehen
       delete_permissions: Regeln löschen
-      impacted_product_count_permissions: Die von dieser Regel betroffenen Produkte berechnen
       execute_permissions: Regeln anwenden
   attribute:
     tab:
@@ -88,26 +82,12 @@ pimee_catalog_rule:
     acl:
       rule.view_permissions: Regeln ansehen
   product:
-    tooltip:
-      product_attribute_affected_by_a_rule.content: Die Werten von diesen Attributen können von der/den Regel(n) <strong>%rule%</strong> stammen. Das bedeutet, dass wenn die Bedingungen der Regel gültig sind, Ihre Änderungen überschrieben werden.
-      loading.title: Lädt...
     history: Angewandte Regel "%rule%"
-  product_value:
-    tooltip:
-      affected_by.title: 'Von Regel(n) betroffen:'
   steps:
-    product_rule_definition_reader.title: Produktimport-Regeln Reader
-    rule_definition_processor.title: Produktimport-Regeln Processor
-    product_rule_definition_writer.title: Produktimport-Regeln Writer
     rules_execution.title: Regel-Ausführung
   notification:
     execute_rules:
-      success: Anwenden der Regel(n) abgeschlossen
-      warning: Ausführung der Regel(n) mit Warnung(en) beendet
       error: Beim Anwenden der Regeln ist ein Fehler aufgetreten
-    mass_edit_rule:
-      success: Berechnung der von dieser Regel betroffenen Produkte abgeschlossen
-      error: Während der Berechnung, der von diesen Regeln betroffenen Produkte, ist ein Fehler aufgetreten
 btn:
   Execute rules: Regeln anwenden
 job_execution:
