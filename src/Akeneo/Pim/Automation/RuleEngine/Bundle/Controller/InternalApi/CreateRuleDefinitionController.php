@@ -14,10 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateOrUpdateRuleCommand;
-use Akeneo\Pim\Automation\RuleEngine\Component\Updater\RuleDefinitionUpdaterInterface;
-use Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\Common\Saver\RuleDefinitionSaver;
-use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
+use Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateOrUpdateRuleDefinitionHandler;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Normalizer\RuleDefinitionNormalizer;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -29,11 +28,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateRuleDefinitionController
 {
-    /** @var RuleDefinitionUpdaterInterface */
-    private $ruleDefinitionUpdater;
+    /** @var CreateOrUpdateRuleDefinitionHandler */
+    private $createRuleDefinitionHandler;
 
-    /** @var RuleDefinitionSaver */
-    private $ruleDefinitionSaver;
+    /** @var RuleDefinitionRepositoryInterface */
+    private $ruleDefinitionRepository;
 
     /** @var RuleDefinitionNormalizer */
     private $ruleDefinitionNormalizer;
@@ -48,15 +47,15 @@ class CreateRuleDefinitionController
     private $securityFacade;
 
     public function __construct(
-        RuleDefinitionUpdaterInterface $ruleDefinitionUpdater,
-        RuleDefinitionSaver $ruleDefinitionSaver,
+        CreateOrUpdateRuleDefinitionHandler $createRuleDefinitionHandler,
+        RuleDefinitionRepositoryInterface $ruleDefinitionRepository,
         RuleDefinitionNormalizer $ruleDefinitionNormalizer,
         NormalizerInterface $normalizer,
         ValidatorInterface $validator,
         SecurityFacade $securityFacade
     ) {
-        $this->ruleDefinitionUpdater = $ruleDefinitionUpdater;
-        $this->ruleDefinitionSaver = $ruleDefinitionSaver;
+        $this->createRuleDefinitionHandler = $createRuleDefinitionHandler;
+        $this->ruleDefinitionRepository = $ruleDefinitionRepository;
         $this->ruleDefinitionNormalizer = $ruleDefinitionNormalizer;
         $this->normalizer = $normalizer;
         $this->validator = $validator;
@@ -83,9 +82,8 @@ class CreateRuleDefinitionController
             return new JsonResponse($errors, Response::HTTP_BAD_REQUEST);
         }
 
-        $ruleDefinition = new RuleDefinition();
-        $this->ruleDefinitionUpdater->update($ruleDefinition, $command->toArray(true));
-        $this->ruleDefinitionSaver->save($ruleDefinition);
+        ($this->createRuleDefinitionHandler)($command);
+        $ruleDefinition = $this->ruleDefinitionRepository->findOneByIdentifier($command->code);
 
         return new JsonResponse($this->ruleDefinitionNormalizer->normalize($ruleDefinition));
     }
