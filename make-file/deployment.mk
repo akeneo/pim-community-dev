@@ -40,11 +40,8 @@ endif
 executor ?= kubectl
 migrate ?= no
 
-.PHONY: helm-prepare
-helm-prepare:
-	helm init --client-only
-	helm repo add $(HELM_REPO_PROD) gs://$(HELM_REPO_PROD)/
-	helm repo update
+.PHONY: deploy-serenity
+deploy-serenity: create-ci-release-files deploy
 
 .PHONY: deploy
 deploy: terraform-deploy
@@ -75,7 +72,7 @@ terraform-apply:
 	cd $(INSTANCE_DIR) && TF_LOG=TRACE TF_LOG_PATH=terraform.log terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
 
 .PHONY: prepare-infrastructure-artifacts
-prepare-infrastructure-artifacts: render-helm-templates dump-kubernetes-namespace
+prepare-infrastructure-artifacts: render-helm-templates
 	mkdir -p ~/artifacts/infra
 	cp -raT $(DEPLOYMENTS_INSTANCES_DIR) ~/artifacts/infra/ || true
 	rm -Rf ~/artifacts/infra/**/.terraform || true
@@ -91,21 +88,6 @@ ifeq ($(INSTANCE_NAME_PREFIX),pimup32)
 	mkdir -p helm-render ;\
 	helm template .terraform/modules/pim/pim -f tf-helm-pim-values.yaml -f values.yaml -n $(PFID) --output-dir helm-render || true
 endif
-
-# TODO
-.PHONY: dump-kubernetes-namespace
-dump-kubernetes-namespace:
-	cd $(INSTANCE_DIR) ;\
-	mkdir -p k8s-dump ;\
-	RESOURCES=$$(kubectl -n $(PFID) get all -o jsonpath='{range .items[*]}{.kind}{"\n"}{end}' | uniq) ;\
-	for RESOURCE in $${RESOURCES};do \
-		echo $${RESOURCE} \
-		# RESOURCE_NAMES=$$(kubectl --context $${CONTEXT} -n $(PFID) get -o json $${RESOURCE}|jq '.items[].metadata.name'|sed "s/\"//g") ;\
-		# for RESOURCE_NAME in ${RESOURCE_NAMES};do \
-		# 	mkdir -p "k8s-dump" ;\
-		# 	kubectl --context $${CONTEXT} -n $(PFID) get -o yaml $${RESOURCE} $${RESOURCE_NAME} > "k8s-dump/$${RESOURCE_NAME}.yaml" ;\
-		# done ;\
-	done || true
 
 .PHONY: delete
 delete: terraform-delete purge-release-all
@@ -230,8 +212,7 @@ endif
 deploy_latest_release_for_helpdesk:
 	RELEASE_TO_DEPLOY=$$(cd ${PIM_SRC_DIR}; git fetch origin &> /dev/null && git tag --list | grep -E "^v?[0-9]+$$" | sort -r | head -n 1); \
 	echo $${RELEASE_TO_DEPLOY};  \
-	INSTANCE_NAME=pimci-helpdesk IMAGE_TAG=$${RELEASE_TO_DEPLOY} make create-ci-release-files; \
-	INSTANCE_NAME=pimci-helpdesk IMAGE_TAG=$${RELEASE_TO_DEPLOY} make deploy && \
+	INSTANCE_NAME=pimci-helpdesk IMAGE_TAG=$${RELEASE_TO_DEPLOY} make deploy-serenity && \
 	INSTANCE_NAME=pimci-helpdesk IMAGE_TAG=$${RELEASE_TO_DEPLOY} make slack_helpdesk
 
 .PHONY: slack_helpdesk
@@ -242,36 +223,7 @@ slack_helpdesk:
 delete_pr_environments:
 	bash $(PWD)/deployments/bin/remove_pr_instance.sh
 
-.PHONY: terraform-pre-upgrade-disk
-	# Required by https://github.com/akeneo/pim-enterprise-dev/pull/8599
-	yq d -i $(INSTANCE_DIR)/values.yaml "mysql.common.persistentDisks"
-	for PD in $$(kubectl get -n $(PFID) pv $$(kubectl get -n $(PFID) pvc -l role=mysql-server -o jsonpath='{.items[*].spec.volumeName}') -o jsonpath='{..spec.gcePersistentDisk.pdName}'); do \
-		yq w -i $(INSTANCE_DIR)/values.yaml "mysql.common.persistentDisks[+]" "$${PD}"; \
-	done
-
-.PHONY: terraform-pre-upgrade
-terraform-pre-upgrade: terraform-init terraform-pre-upgrade-disk
-	# Move monitoring resources from pim to pim-monitoring
-	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_logging_metric.login_count module.pim-monitoring.google_logging_metric.login_count
-	sleep 1
-	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_logging_metric.login-response-time-distribution module.pim-monitoring.google_logging_metric.login-response-time-distribution
-	sleep 1
-	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_logging_metric.logs-count module.pim-monitoring.google_logging_metric.logs-count
-	sleep 1
-	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_monitoring_alert_policy.alert_policy module.pim-monitoring.google_monitoring_alert_policy.alert_policy
-	sleep 1
-	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_monitoring_notification_channel.pagerduty module.pim-monitoring.google_monitoring_notification_channel.pagerduty
-	sleep 1
-	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_monitoring_uptime_check_config.https module.pim-monitoring.google_monitoring_uptime_check_config.https
-	# Delete useless resources
-	cd $(INSTANCE_DIR) && terraform state rm module.pim.template_file.metric-template
-	sleep 1
-	cd $(INSTANCE_DIR) && terraform state rm module.pim.local_file.metric-rendered
-	sleep 1
-	cd $(INSTANCE_DIR) && terraform state rm module.pim.null_resource.metric
-	sleep 1
-
 .PHONY: test_upgrade_from_serenity_customer_db_to_master
 test_upgrade_from_serenity_customer_db_to_master:
 	ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) SOURCE_PED_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/bin/clone_serenity.sh && \
-	INSTANCE_NAME_PREFIX=pimci-duplic INSTANCE_NAME=$${INSTANCE_NAME} IMAGE_TAG=$${CIRCLE_SHA1} make create-ci-release-files deploy
+	INSTANCE_NAME_PREFIX=pimci-duplic INSTANCE_NAME=$${INSTANCE_NAME} IMAGE_TAG=$${CIRCLE_SHA1} make deploy-serenity

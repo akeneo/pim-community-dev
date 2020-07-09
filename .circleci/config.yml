@@ -316,13 +316,9 @@ jobs:
           - attach_workspace:
                 at: ~/
           - set_gcloud_config_dev
-          - prepare_terraform
-          - run:
-              name: Prepare helm deployment on kubernetes
-              command: make helm-prepare
           - run:
               name: Deploy PIM on kubernetes
-              command: IMAGE_TAG=$CIRCLE_SHA1 make deploy
+              command: IMAGE_TAG=$CIRCLE_SHA1 make deploy-serenity
           - run:
               name: Test PIM connexion on kubernetes
               command: IMAGE_TAG=$CIRCLE_SHA1 make test-prod
@@ -386,14 +382,11 @@ jobs:
                     ssh-keyscan github.com >> ~/.ssh/known_hosts
                     LATEST_RELEASE=$(git fetch origin &> /dev/null && git tag --list | grep -E "^v?[0-9]+$" | sort -r | head -n 1)
                     echo $LATEST_RELEASE
-                    INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$LATEST_RELEASE make create-ci-release-files
-                    INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$LATEST_RELEASE make deploy
+                    INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$LATEST_RELEASE make deploy-serenity
           - run:
                 name: Upgrade version to master
                 command: |
-                    INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
-                    INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$CIRCLE_SHA1 make terraform-pre-upgrade-disk
-                    INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$CIRCLE_SHA1 make deploy
+                    INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$CIRCLE_SHA1 make deploy-serenity
           - run:
                 name: Production tests on upgraded env
                 command: INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$CIRCLE_SHA1 make test-prod
@@ -460,9 +453,7 @@ jobs:
           - run:
                 name: Latest master version for PMs
                 command: |
-                    INSTANCE_NAME=pimci-pm IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
-                    INSTANCE_NAME=pimci-pm IMAGE_TAG=$CIRCLE_SHA1 make terraform-pre-upgrade-disk
-                    INSTANCE_NAME=pimci-pm IMAGE_TAG=$CIRCLE_SHA1 make deploy
+                    INSTANCE_NAME=pimci-pm IMAGE_TAG=$CIRCLE_SHA1 make deploy-serenity
 
   deploy_pr_environment:
       environment:
@@ -479,8 +470,7 @@ jobs:
           - run:
                 name: Deploy PR environment
                 command: |
-                    ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=${CIRCLE_SHA1} ACTIVATE_MONITORING=${ACTIVATE_MONITORING} make create-ci-release-files
-                    ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=${CIRCLE_SHA1} make deploy
+                    ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=${CIRCLE_SHA1} ACTIVATE_MONITORING=${ACTIVATE_MONITORING} make deploy-serenity
           - run:
               name: Prepare infrastructure artifacts
               command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=${CIRCLE_SHA1} make prepare-infrastructure-artifacts
@@ -980,12 +970,3 @@ commands:
             echo 'export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"' >> $BASH_ENV
             export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
             gcloud auth configure-docker --quiet
-
-  prepare_terraform:
-    description: "Prepare terraform configuration."
-    steps:
-      - run:
-          name: "Prepare terraform configuration."
-          shell: "/bin/bash -eo pipefail"
-          command: |
-            IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
