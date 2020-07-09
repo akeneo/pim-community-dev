@@ -67,10 +67,7 @@ class NotGrantedQuantifiedAssociationsFilter implements NotGrantedDataFilterInte
             $user
         );
 
-        $quantifiedAssociationFiltered = $quantifiedAssociations->filterProductIdentifiers($grantedProductIdentifiers);
-        $quantifiedAssociationFiltered = $quantifiedAssociationFiltered->filterProductModelCodes($grantedProductModelCodes);
-
-        $entityWithAssociations->setQuantifiedAssociations($quantifiedAssociationFiltered);
+        $entityWithAssociations->filterQuantifiedAssociations($grantedProductIdentifiers, $grantedProductModelCodes);
 
         return $entityWithAssociations;
     }
