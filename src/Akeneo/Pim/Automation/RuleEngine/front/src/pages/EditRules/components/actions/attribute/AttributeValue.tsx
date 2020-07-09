@@ -30,12 +30,6 @@ type InputValueProps = {
   onChange: (value: any) => void;
 };
 
-// const getValueModule: (
-//   attribute: Attribute
-// ) => React.FC<InputValueProps> | undefined = attribute => {
-//   return MANAGED_ATTRIBUTE_TYPES[attribute.type];
-// };
-
 const getValueModule = (attribute: Attribute, props: InputValueProps) => {
   switch (attribute.type) {
     case 'pim_catalog_text':
@@ -46,13 +40,6 @@ const getValueModule = (attribute: Attribute, props: InputValueProps) => {
       return null;
   }
 };
-
-// enum AttributeStatus {
-//   NOT_SELECTED,
-//   UNKNOWN,
-//   UNMANAGED,
-//   VALID,
-// }
 
 type Props = {
   id: string;
@@ -66,8 +53,8 @@ type Props = {
 
 const isAttrNotSelected = (attribute: Attribute | null | undefined) =>
   undefined === attribute;
-// const isAttrUnknown = (attribute: Attribute | null | undefined) =>
-//   null === attribute;
+const isAttrUnknown = (attribute: Attribute | null | undefined) =>
+  null === attribute;
 
 const AttributeValue: React.FC<Props> = ({
   id,
@@ -88,6 +75,9 @@ const AttributeValue: React.FC<Props> = ({
           {translate('pimee_catalog_rule.form.edit.please_select_attribute')}
         </InlineHelper>
       );
+    }
+    if (isAttrUnknown(attribute)) {
+      return <FallbackValue id={id} label={label} value={value} />;
     }
     if (attribute) {
       const inputComponent = getValueModule(attribute, {
@@ -117,7 +107,7 @@ const AttributeValue: React.FC<Props> = ({
         );
       }
     }
-    return <FallbackValue id={id} label={label} value={value} />;
+    return null;
   };
 
   return (

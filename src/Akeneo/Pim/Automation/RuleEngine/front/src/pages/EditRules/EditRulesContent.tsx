@@ -76,11 +76,8 @@ const EditRulesContent: React.FC<Props> = ({
   };
 
   const remove = (lineNumber: number) => {
-    console.log('lineNumber', lineNumber);
     actionsState[lineNumber] = null;
     setActionsState([...actionsState]);
-    formMethods.unregister(`content.actions[${lineNumber}]`);
-    console.log('values', formMethods.getValues({ nest: true }));
   };
 
   const handleAddAction = (action: any) => {

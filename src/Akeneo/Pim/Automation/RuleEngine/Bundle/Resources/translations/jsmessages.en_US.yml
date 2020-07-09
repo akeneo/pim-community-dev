@@ -187,7 +187,6 @@ pimee_catalog_rule:
             clear_groups: All the groups for the selected products will be cleared.
             product_selection: "You must define your product selection in order to create your rule. If you don't know how, "
             product_selection_doc_link: take a look at this article.
-            product_selection_doc_link: take a look at this article.
             set_attribute_info_clear: You must define the value to set. If you want to clear the attribute value, please use the Clear attribute value action.
         legend:
             add_to_category: Create an action
