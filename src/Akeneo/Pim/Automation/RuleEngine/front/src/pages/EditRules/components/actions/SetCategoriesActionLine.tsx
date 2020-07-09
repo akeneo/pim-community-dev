@@ -53,6 +53,7 @@ const SetCategoriesActionLine: React.FC<Props> = ({
         handleDelete={handleDelete}
         lineNumber={lineNumber}>
         <ActionCategoriesSelector
+          lineNumber={lineNumber}
           currentCatalogLocale={currentCatalogLocale}
           setValue={setValueFormValue}
           values={getValueFormValue() ?? []}

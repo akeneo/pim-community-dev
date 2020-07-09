@@ -44,7 +44,9 @@ const useControlledFormInputCondition = <T>(lineNumber: number) => {
 };
 
 const useControlledFormInputAction = <T>(lineNumber: number) => {
-  const { getValues, setValue } = useFormContext();
+  const { getValues, setValue, errors } = useFormContext();
+  const isFormFieldInError = (formName: string): boolean =>
+    typeof errors?.content?.actions?.[lineNumber]?.[formName] === 'object';
   const formName = (name: string) => `content.actions[${lineNumber}].${name}`;
   const fieldFormName = formName('field');
   const typeFormName = formName('type');
@@ -68,6 +70,7 @@ const useControlledFormInputAction = <T>(lineNumber: number) => {
     setValue(includeChildrenFormName, data);
 
   return {
+    isFormFieldInError,
     fieldFormName,
     getFieldFormValue,
     getItemsFormValue,

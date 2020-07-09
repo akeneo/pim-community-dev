@@ -76,7 +76,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   const translate = useTranslate();
   const currentCatalogLocale = useUserCatalogLocale();
 
-  const { formName, getFormValue } = useControlledFormInputAction<string>(
+  const { formName, getFormValue, isFormFieldInError } = useControlledFormInputAction<string>(
     lineNumber
   );
 
@@ -153,8 +153,13 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
           </InlineHelper>
         </SelectorBlock>
       )}
-      {attribute && attribute?.scopable && (
-        <SelectorBlock>
+      {(attribute?.scopable ||
+        (!attributeIsChanged && getScopeFormValue())) && (
+        <SelectorBlock
+          className={
+            // todo: replace 'scope' by the scope form name
+            isFormFieldInError('scope') ? 'select2-container-error' : ''
+          }>
           <Controller
             as={ScopeSelector}
             data-testid={scopeId}
@@ -179,8 +184,13 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
           />
         </SelectorBlock>
       )}
-      {attribute && attribute?.localizable && (
-        <SelectorBlock>
+      {(attribute?.localizable ||
+        (!attributeIsChanged && getLocaleFormValue())) && (
+        <SelectorBlock
+          className={
+            // todo: replace 'locale' by the locale form name
+            isFormFieldInError('locale') ? 'select2-container-error' : ''
+          }>
           <Controller
             as={LocaleSelector}
             data-testid={localeId}

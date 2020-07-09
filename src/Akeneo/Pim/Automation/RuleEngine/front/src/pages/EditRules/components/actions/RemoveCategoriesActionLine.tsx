@@ -55,6 +55,7 @@ const RemoveCategoriesActionLine: React.FC<Props> = ({
         handleDelete={handleDelete}
         lineNumber={lineNumber}>
         <ActionCategoriesSelector
+          lineNumber={lineNumber}
           currentCatalogLocale={currentCatalogLocale}
           setValue={setItemsFormValue}
           values={getItemsFormValue() ?? []}

@@ -33,12 +33,15 @@ import {
   HelperContainer,
   InlineHelper,
 } from '../../../../components/HelpersInfos/InlineHelper';
+import { useControlledFormInputAction } from '../../hooks';
+import { useFormContext } from 'react-hook-form';
 
 const SelectorBlock = styled.div`
   margin-bottom: 15px;
 `;
 
 type Props = {
+  lineNumber: number;
   currentCatalogLocale: LocaleCode;
   values: CategoryCode[];
   setValue: (value: any) => void;
@@ -51,6 +54,7 @@ type Props = {
 };
 
 const ActionCategoriesSelector: React.FC<Props> = ({
+  lineNumber,
   currentCatalogLocale,
   values,
   setValue,
@@ -80,6 +84,10 @@ const ActionCategoriesSelector: React.FC<Props> = ({
   const [unexistingCategoryCodes, setUnexistingCategoryCodes] = React.useState<
     CategoryCode[]
   >([]);
+  const { isFormFieldInError } = useControlledFormInputAction<string>(
+    lineNumber
+  );
+  const { clearError } = useFormContext();
 
   /**
    * Initialize the main object for this component. This object is a Map, having
@@ -419,7 +427,14 @@ const ActionCategoriesSelector: React.FC<Props> = ({
               'pimee_catalog_rule.form.edit.actions.category.select_categories'
             )}
           </ActionTitle>
-          <SelectorBlock>
+          <SelectorBlock
+            className={
+              isFormFieldInError(
+                valueFormName.replace(`content.actions[${lineNumber}].`, '')
+              )
+                ? 'category-container-error'
+                : ''
+            }>
             {getCurrentCategoryTreeOrDefault() !== null ? (
               <>
                 <Label
@@ -441,19 +456,21 @@ const ActionCategoriesSelector: React.FC<Props> = ({
                         <CategorySelector
                           data-testid={`category-selector-${category.code}`}
                           locale={currentCatalogLocale}
-                          onDelete={() =>
+                          onDelete={() => {
+                            clearError(valueFormName);
                             handleCategoryDelete(
                               getCurrentCategoryTreeOrDefault() as CategoryTreeModel,
                               i
-                            )
-                          }
-                          onSelectCategory={categoryCode =>
+                            );
+                          }}
+                          onSelectCategory={categoryCode => {
+                            clearError(valueFormName);
                             handleCategorySelect(
                               categoryCode,
                               getCurrentCategoryTreeOrDefault() as CategoryTreeModel,
                               i
-                            )
-                          }
+                            );
+                          }}
                           selectedCategory={category}
                           categoryTreeSelected={
                             getCurrentCategoryTreeOrDefault() as CategoryTreeModel
@@ -466,12 +483,13 @@ const ActionCategoriesSelector: React.FC<Props> = ({
                 <CategorySelector
                   data-testid='category-selector-new'
                   locale={currentCatalogLocale}
-                  onSelectCategory={categoryCode =>
+                  onSelectCategory={categoryCode => {
+                    clearError(valueFormName);
                     handleCategorySelect(
                       categoryCode,
                       getCurrentCategoryTreeOrDefault() as CategoryTreeModel
-                    )
-                  }
+                    );
+                  }}
                   categoryTreeSelected={
                     getCurrentCategoryTreeOrDefault() as CategoryTreeModel
                   }
