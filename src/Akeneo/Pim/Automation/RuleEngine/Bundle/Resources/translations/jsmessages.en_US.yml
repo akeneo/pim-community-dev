@@ -127,6 +127,7 @@ pimee_catalog_rule:
                     title: SET Family
                     subtitle: Select your family
                 set_attribute:
+                    helper: To set values to your attribute, please start by selecting your target attribute and then, the value you want to set.
                     title: SET Attribute value
                     helper: To set values to your attribute, please start by selecting your target attribute and then, the value you want to set
                     target_subtitle: Select your target
