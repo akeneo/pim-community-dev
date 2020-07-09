@@ -78,7 +78,6 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
     getLocaleFormValue,
   } = useControlledFormInputAction<string>(lineNumber);
 
-
   const getAvailableLocales = (): Locale[] => {
     if (!attribute?.scopable) {
       return locales;

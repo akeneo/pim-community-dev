@@ -2,6 +2,7 @@ import {
   renderWithProviders,
   act,
   fireEvent,
+  screen,
 } from '../../../../../../test-utils';
 import React from 'react';
 import 'jest-fetch-mock';
@@ -42,39 +43,51 @@ describe('ClearAttributeActionLine', () => {
       { status: 200 },
     ]);
 
-    const {
-      findByText,
-      findAllByText,
-      queryByText,
-      findByTestId,
-    } = renderWithProviders(
+    const defaultValues = {
+      content: {
+        actions: [
+          {},
+          {
+            type: 'clear',
+            field: 'name',
+          },
+        ],
+      },
+    };
+
+    const toRegister = [
+      { name: 'content.actions[1].type', type: 'custom' },
+      { name: 'content.actions[1].field', type: 'custom' },
+    ];
+
+    renderWithProviders(
       <ClearAttributeActionLine
         currentCatalogLocale={'en_US'}
         lineNumber={1}
-        action={action}
-        handleDelete={() => {}}
+        handleDelete={jest.fn()}
         locales={locales}
         scopes={scopes}
       />,
-      { all: true }
+      { all: true },
+      { defaultValues, toRegister }
     );
 
     expect(
-      await findByText(
+      await screen.findByText(
         'pimee_catalog_rule.form.edit.fields.attribute pim_common.required_label'
       )
     ).toBeInTheDocument();
     expect(
-      await findAllByText('pimee_catalog_rule.form.helper.clear_attribute')
+      screen.getAllByText('pimee_catalog_rule.form.helper.clear_attribute')
     ).toHaveLength(2);
-    expect(await findByTestId('edit-rules-action-1-field')).toHaveValue('name');
+    expect(screen.getByTestId('edit-rules-action-1-field')).toHaveValue('name');
     expect(
-      queryByText(
+      screen.queryByText(
         'pim_enrich.entity.channel.uppercase_label pim_common.required_label'
       )
     ).not.toBeInTheDocument();
     expect(
-      queryByText(
+      screen.queryByText(
         'pim_enrich.entity.locale.uppercase_label pim_common.required_label'
       )
     ).not.toBeInTheDocument();
@@ -85,39 +98,50 @@ describe('ClearAttributeActionLine', () => {
       return Promise.resolve(JSON.stringify(createAttribute({})));
     });
 
-    const {
-      findByText,
-      findAllByText,
-      findByTestId,
-      queryByText,
-    } = renderWithProviders(
+    const defaultValues = {
+      content: {
+        actions: [
+          {},
+          {
+            type: 'clear',
+            field: 'name',
+          },
+        ],
+      },
+    };
+
+    const toRegister = [
+      { name: 'content.actions[1].type', type: 'custom' },
+      { name: 'content.actions[1].field', type: 'custom' },
+    ];
+
+    renderWithProviders(
       <ClearAttributeActionLine
         currentCatalogLocale={'en-US'}
         lineNumber={1}
-        action={action}
-        handleDelete={() => {}}
+        handleDelete={jest.fn()}
         locales={locales}
         scopes={scopes}
       />,
-      { all: true }
+      { all: true },
+      { defaultValues, toRegister }
     );
-
     expect(
-      await findByText(
+      await screen.findByText(
         'pimee_catalog_rule.form.edit.fields.attribute pim_common.required_label'
       )
     ).toBeInTheDocument();
     expect(
-      await findAllByText('pimee_catalog_rule.form.helper.clear_attribute')
+      screen.getAllByText('pimee_catalog_rule.form.helper.clear_attribute')
     ).toHaveLength(2);
-    expect(await findByTestId('edit-rules-action-1-field')).toHaveValue('name');
+    expect(screen.getByTestId('edit-rules-action-1-field')).toHaveValue('name');
     expect(
-      queryByText(
+      screen.getByText(
         'pim_enrich.entity.locale.uppercase_label pim_common.required_label'
       )
     ).toBeInTheDocument();
     expect(
-      queryByText(
+      screen.getByText(
         'pim_enrich.entity.channel.uppercase_label pim_common.required_label'
       )
     ).toBeInTheDocument();
@@ -162,74 +186,90 @@ describe('ClearAttributeActionLine', () => {
       throw new Error(`The "${request.url}" url is not mocked.`);
     });
 
-    const {
-      findByText,
-      findByTestId,
-      queryByText,
-    } = renderWithProviders(
+    const defaultValues = {
+      content: {
+        actions: [
+          {},
+          {
+            type: 'clear',
+            field: 'name',
+          },
+        ],
+      },
+    };
+
+    const toRegister = [
+      { name: 'content.actions[1].type', type: 'custom' },
+      { name: 'content.actions[1].field', type: 'custom' },
+    ];
+
+    renderWithProviders(
       <ClearAttributeActionLine
         currentCatalogLocale={'en-US'}
         lineNumber={1}
         action={action}
-        handleDelete={() => {}}
+        handleDelete={jest.fn()}
         locales={locales}
         scopes={scopes}
       />,
-      { all: true }
+      { all: true },
+      { defaultValues, toRegister }
     );
 
-    const attributeSelector = await findByTestId('edit-rules-action-1-field');
+    const attributeSelector = await screen.findByTestId(
+      'edit-rules-action-1-field'
+    );
     expect(attributeSelector).toBeInTheDocument();
     expect(attributeSelector).toHaveValue('name');
     expect(
-      await findByText(
+      screen.getByText(
         'pim_enrich.entity.locale.uppercase_label pim_common.required_label'
       )
     ).toBeInTheDocument();
     expect(
-      await findByText(
+      screen.getByText(
         'pim_enrich.entity.channel.uppercase_label pim_common.required_label'
       )
     ).toBeInTheDocument();
 
     await act(async () => {
-      userEvent.click(await findByTestId('edit-rules-action-1-field'));
+      userEvent.click(await screen.findByTestId('edit-rules-action-1-field'));
       expect(
-        (await findByTestId('edit-rules-action-1-field')).children.length
+        screen.getByTestId('edit-rules-action-1-field').children.length
       ).toBeGreaterThan(1);
-      fireEvent.change(await findByTestId('edit-rules-action-1-field'), {
+      fireEvent.change(await screen.findByTestId('edit-rules-action-1-field'), {
         target: { value: 'description' },
       });
     });
 
     expect(
-      queryByText(
+      screen.queryByText(
         'pim_enrich.entity.channel.uppercase_label pim_common.required_label'
       )
     ).not.toBeInTheDocument();
     expect(
-      queryByText(
+      screen.queryByText(
         'pim_enrich.entity.locale.uppercase_label pim_common.required_label'
       )
     ).not.toBeInTheDocument();
 
     await act(async () => {
-      userEvent.click(await findByTestId('edit-rules-action-1-field'));
+      userEvent.click(await screen.findByTestId('edit-rules-action-1-field'));
       expect(
-        (await findByTestId('edit-rules-action-1-field')).children.length
+        screen.getByTestId('edit-rules-action-1-field').children.length
       ).toBeGreaterThan(1);
-      fireEvent.change(await findByTestId('edit-rules-action-1-field'), {
+      fireEvent.change(await screen.findByTestId('edit-rules-action-1-field'), {
         target: { value: 'name' },
       });
     });
 
     expect(
-      queryByText(
+      screen.getByText(
         'pim_enrich.entity.channel.uppercase_label pim_common.required_label'
       )
     ).toBeInTheDocument();
     expect(
-      queryByText(
+      screen.getByText(
         'pim_enrich.entity.locale.uppercase_label pim_common.required_label'
       )
     ).toBeInTheDocument();

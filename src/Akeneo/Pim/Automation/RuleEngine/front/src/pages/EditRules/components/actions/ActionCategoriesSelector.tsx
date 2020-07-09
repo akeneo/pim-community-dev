@@ -284,7 +284,6 @@ const ActionCategoriesSelector: React.FC<Props> = ({
     <>
       <LineErrors lineNumber={lineNumber} type='actions' />
       {unexistingCategoryCodes.map(unexistingCategoryCode => {
-        console.log({ unexistingCategoryCode });
         return (
           <SmallHelper level='error' key={unexistingCategoryCode}>
             {translate(

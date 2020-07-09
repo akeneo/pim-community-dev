@@ -24,7 +24,6 @@ type Props = {
 
 const ClearAttributeActionLine: React.FC<Props> = ({
   lineNumber,
-  // action,
   handleDelete,
   locales,
   scopes,
@@ -42,7 +41,7 @@ const ClearAttributeActionLine: React.FC<Props> = ({
     getFieldFormValue,
   } = useControlledFormInputAction<string>(lineNumber);
 
-  useGetAttributeAtMount(getFieldFormValue(), router, attribute);
+  useGetAttributeAtMount(getFieldFormValue(), router, attribute, setAttribute);
 
   const onAttributeChange = (attributeCode: AttributeCode) => {
     const getAttribute = async (attributeCode: AttributeCode) => {

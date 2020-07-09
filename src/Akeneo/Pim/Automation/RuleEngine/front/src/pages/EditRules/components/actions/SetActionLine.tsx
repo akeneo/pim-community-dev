@@ -34,7 +34,6 @@ type Props = {
 
 const SetActionLine: React.FC<Props> = ({
   lineNumber,
-  // action,
   handleDelete,
   locales,
   scopes,
@@ -58,7 +57,7 @@ const SetActionLine: React.FC<Props> = ({
   const { watch } = useFormContext();
   watch(valueFormName);
 
-  useGetAttributeAtMount(getFieldFormValue(), router, attribute);
+  useGetAttributeAtMount(getFieldFormValue(), router, attribute, setAttribute);
 
   const onAttributeChange = (attributeCode: AttributeCode) => {
     const getAttribute = async (attributeCode: AttributeCode) => {
@@ -73,9 +72,6 @@ const SetActionLine: React.FC<Props> = ({
   const isUnmanagedAttribute = () =>
     attribute && !(attribute.type in MANAGED_ATTRIBUTE_TYPES);
 
-  if (getFieldFormValue() && !attribute) {
-    return null;
-  }
   return (
     <>
       <Controller

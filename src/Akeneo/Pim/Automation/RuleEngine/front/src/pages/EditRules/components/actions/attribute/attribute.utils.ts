@@ -27,14 +27,20 @@ const fetchAttribute = async (router: Router, attributeCode: AttributeCode) => {
 const useGetAttributeAtMount = (
   attributeCode: AttributeCode,
   router: Router,
-  attribute?: Attribute | null
+  attribute?: Attribute | null,
+  setAttribute?: (val: Attribute | null | undefined) => void
 ) => {
   useEffect(() => {
     const getAttribute = async (
       router: Router,
       attributeCode: AttributeCode
     ) => {
-      await fetchAttribute(router, attributeCode);
+      const attribute = await fetchAttribute(router, attributeCode);
+      if (setAttribute && attribute) {
+        setAttribute(attribute);
+      } else if (setAttribute) {
+        setAttribute(null);
+      }
     };
     if (attributeCode && !attribute) {
       getAttribute(router, attributeCode);

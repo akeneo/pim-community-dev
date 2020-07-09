@@ -7,7 +7,6 @@ import {
   screen,
 } from '../../../../../../test-utils';
 import { SetActionLine } from '../../../../../../src/pages/EditRules/components/actions/SetActionLine';
-import { SetAction } from '../../../../../../src/models/actions';
 import {
   attributeSelect2Response,
   createAttribute,
@@ -16,16 +15,6 @@ import {
 } from '../../../../factories';
 import { clearAttributeRepositoryCache } from '../../../../../../src/repositories/AttributeRepository';
 import userEvent from '@testing-library/user-event';
-const createSetAction = (data?: { [key: string]: any }): SetAction => {
-  return {
-    type: 'set',
-    field: 'name',
-    locale: 'en_US',
-    scope: 'mobile',
-    value: 'This is the name',
-    ...data,
-  };
-};
 
 jest.mock('../../../../../../src/components/Select2Wrapper/Select2Wrapper');
 jest.mock('../../../../../../src/dependenciesTools/provider/dependencies.ts');
@@ -76,7 +65,6 @@ describe('SetActionLine', () => {
 
     renderWithProviders(
       <SetActionLine
-        action={createSetAction()}
         lineNumber={0}
         locales={locales}
         scopes={scopes}
@@ -87,23 +75,13 @@ describe('SetActionLine', () => {
       { defaultValues, toRegister }
     );
     expect(
-      screen.getByText(
+      await screen.findByText(
         'pimee_catalog_rule.form.edit.actions.set_attribute.target_subtitle'
       )
     ).toBeInTheDocument();
     expect(
       screen.getByText(
         'pimee_catalog_rule.form.edit.fields.attribute pim_common.required_label'
-      )
-    ).toBeInTheDocument();
-    expect(
-      await screen.findByText(
-        'pim_enrich.entity.channel.uppercase_label pim_common.required_label'
-      )
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        'pim_enrich.entity.locale.uppercase_label pim_common.required_label'
       )
     ).toBeInTheDocument();
     expect(
@@ -194,7 +172,6 @@ describe('SetActionLine', () => {
 
     renderWithProviders(
       <SetActionLine
-        action={createSetAction()}
         lineNumber={0}
         locales={locales}
         scopes={scopes}
@@ -208,7 +185,9 @@ describe('SetActionLine', () => {
     expect(await screen.findByTestId('edit-rules-action-0-value')).toHaveValue(
       'This is the name'
     );
-    expect(screen.getByText('Name')).toBeInTheDocument();
+    expect(
+      screen.getByText(/name pim_common.required_label/i)
+    ).toBeInTheDocument();
 
     await act(async () => {
       userEvent.click(await screen.findByTestId('edit-rules-action-0-field'));
