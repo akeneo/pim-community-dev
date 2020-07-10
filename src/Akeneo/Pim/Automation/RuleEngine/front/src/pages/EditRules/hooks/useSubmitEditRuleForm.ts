@@ -41,6 +41,21 @@ const registerActions = (register: Control['register'], actions: Action[]) => {
       register({ name: `content.actions[${index}].scope`, type: 'custom' });
       register({ name: `content.actions[${index}].locale`, type: 'custom' });
       register({
+        name: `content.actions[${index}].from_field`,
+        type: 'custom',
+      });
+      register({ name: `content.actions[${index}].to_field`, type: 'custom' });
+      register({
+        name: `content.actions[${index}].from_locale`,
+        type: 'custom',
+      });
+      register({ name: `content.actions[${index}].to_locale`, type: 'custom' });
+      register({
+        name: `content.actions[${index}].from_scope`,
+        type: 'custom',
+      });
+      register({ name: `content.actions[${index}].to_scope`, type: 'custom' });
+      register({
         name: `content.actions[${index}].include_children`,
         type: 'custom',
       });
@@ -96,8 +111,8 @@ const submitEditRuleForm = (
         translate('pimee_catalog_rule.form.edit.notification.success')
       );
       reset(formData);
-      registerConditions(register, formData.content.conditions);
-      registerActions(register, formData.content.actions);
+      registerConditions(register, formData.content?.conditions || []);
+      registerActions(register, formData.content?.actions || []);
     } else {
       notify(
         NotificationLevel.ERROR,

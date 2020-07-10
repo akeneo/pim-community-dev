@@ -1,9 +1,9 @@
-import { Attribute } from '../../../src/models';
+import { Attribute, AttributeType } from '../../../src/models';
 
 export const createAttribute = (data: { [key: string]: any }): Attribute => {
   return {
     code: 'name',
-    type: 'pim_catalog_text',
+    type: AttributeType.TEXT,
     group: 'marketing',
     unique: false,
     useable_as_grid_filter: true,

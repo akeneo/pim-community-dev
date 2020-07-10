@@ -45,7 +45,7 @@ const ConditionErrorLine = styled.ul`
     margin-left: 100px;
     margin-top: 15px;
     color: ${({ theme }): string => theme.color.red100};
-    background: ${({ theme }): string => theme.color.red20};
+    background-color: ${({ theme }): string => theme.color.red20};
     min-height: 44px;
     padding: 10px;
     flex-basis: 100%;

@@ -10,6 +10,8 @@ import {
   screen,
 } from '../../../../test-utils';
 import { Scope } from '../../../../src/models';
+import { clearCategoryRepositoryCache } from '../../../../src/repositories/CategoryRepository';
+import { clearAttributeRepositoryCache } from '../../../../src/repositories/AttributeRepository';
 
 jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
 jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
@@ -91,6 +93,8 @@ const setIsDirty = (_isDirty: boolean) => {};
 describe('EditRules', () => {
   afterEach(() => {
     fetchMock.resetMocks();
+    clearCategoryRepositoryCache();
+    clearAttributeRepositoryCache();
   });
 
   it('should submit the form with the input data from rule properties', async () => {
@@ -145,11 +149,25 @@ describe('EditRules', () => {
 
   it('should render the page with the right title and right labels', async () => {
     // Given
-    fetchMock.mockResponses(
-      [JSON.stringify(ruleDefinitionPayload), { status: 200 }],
-      [JSON.stringify(localesPayload), { status: 200 }],
-      [JSON.stringify(scopesPayload), { status: 200 }]
-    );
+    fetchMock.mockResponse((request: Request) => {
+      if (
+        request.url.includes(
+          'pimee_enrich_rule_definition_get?%7B%22ruleCode%22:%22my_code%22%7D'
+        )
+      ) {
+        return Promise.resolve(JSON.stringify(ruleDefinitionPayload));
+      } else if (
+        request.url.includes(
+          'pim_enrich_locale_rest_index?%7B%22activated%22:true%7D'
+        )
+      ) {
+        return Promise.resolve(JSON.stringify(localesPayload));
+      } else if (request.url.includes('pim_enrich_channel_rest_index')) {
+        return Promise.resolve(JSON.stringify(scopesPayload));
+      }
+
+      throw new Error(`The "${request.url}" url is not mocked.`);
+    });
     // When
     const { findByText, findByLabelText } = render(
       <EditRules
@@ -169,19 +187,33 @@ describe('EditRules', () => {
   });
 
   it('should add a Family Line', async () => {
-    const familiesPayload = [
-      {
-        id: 'camcorders',
-        text: 'Camcorders',
-      },
-    ];
-    fetchMock.mockResponses(
-      [JSON.stringify(ruleDefinitionPayload), { status: 200 }],
-      //[JSON.stringify(localesPayload), { status: 200 }],
-      //[JSON.stringify(scopesPayload), { status: 200 }],
-      [JSON.stringify(addConditionFieldsPayload), { status: 200 }],
-      [JSON.stringify(familiesPayload), { status: 200 }]
-    );
+    // Given
+    fetchMock.mockResponse((request: Request) => {
+      if (
+        request.url.includes(
+          'pimee_enrich_rule_definition_get?%7B%22ruleCode%22:%22my_code%22%7D'
+        )
+      ) {
+        return Promise.resolve(JSON.stringify(ruleDefinitionPayload));
+      } else if (
+        request.url.includes(
+          'pimee_enrich_rule_definition_get_available_fields'
+        )
+      ) {
+        return Promise.resolve(JSON.stringify(addConditionFieldsPayload));
+      } else if (request.url.includes('pim_enrich_channel_rest_index')) {
+        return Promise.resolve(JSON.stringify(scopesPayload));
+      } else if (
+        request.url.includes(
+          'pim_enrich_locale_rest_index?%7B%22activated%22:true%7D'
+        )
+      ) {
+        return Promise.resolve(JSON.stringify(localesPayload));
+      }
+
+      throw new Error(`The "${request.url}" url is not mocked.`);
+    });
+
     // When
     const { findByLabelText, findByText, findByTestId } = render(
       <EditRules
@@ -211,11 +243,26 @@ describe('EditRules', () => {
   });
 
   it('should add an Action Line', async () => {
-    fetchMock.mockResponses(
-      [JSON.stringify(ruleDefinitionPayload), { status: 200 }],
-      [JSON.stringify(localesPayload), { status: 200 }],
-      [JSON.stringify(scopesPayload), { status: 200 }]
-    );
+    fetchMock.mockResponse((request: Request) => {
+      if (
+        request.url.includes(
+          'pimee_enrich_rule_definition_get?%7B%22ruleCode%22:%22my_code%22%7D'
+        )
+      ) {
+        return Promise.resolve(JSON.stringify(ruleDefinitionPayload));
+      } else if (
+        request.url.includes(
+          'pim_enrich_locale_rest_index?%7B%22activated%22:true%7D'
+        )
+      ) {
+        return Promise.resolve(JSON.stringify(localesPayload));
+      } else if (request.url.includes('pim_enrich_channel_rest_index')) {
+        return Promise.resolve(JSON.stringify(scopesPayload));
+      }
+
+      throw new Error(`The "${request.url}" url is not mocked.`);
+    });
+
     // When
     const { findByLabelText } = render(
       <EditRules
@@ -251,11 +298,25 @@ describe('EditRules', () => {
 
   it('should render a 404 error', async () => {
     // Given
-    fetchMock.mockResponses(
-      [JSON.stringify({}), { status: 404 }],
-      [JSON.stringify(localesPayload), { status: 200 }],
-      [JSON.stringify(scopesPayload), { status: 200 }]
-    );
+    fetchMock.mockResponse((request: Request) => {
+      if (
+        request.url.includes(
+          'pimee_enrich_rule_definition_get?%7B%22ruleCode%22:%22inexisting_rule%22%7D'
+        )
+      ) {
+        return Promise.resolve({ status: 404 });
+      } else if (
+        request.url.includes(
+          'pim_enrich_locale_rest_index?%7B%22activated%22:true%7D'
+        )
+      ) {
+        return Promise.resolve(JSON.stringify(localesPayload));
+      } else if (request.url.includes('pim_enrich_channel_rest_index')) {
+        return Promise.resolve(JSON.stringify(scopesPayload));
+      }
+
+      throw new Error(`The "${request.url}" url is not mocked.`);
+    });
     // When
     const { findByText } = render(
       <EditRules
@@ -272,11 +333,26 @@ describe('EditRules', () => {
 
   it('should render a fallback error', async () => {
     // Given
-    fetchMock.mockResponses(
-      [JSON.stringify({ foo: 'bar' }), { status: 200 }],
-      [JSON.stringify(localesPayload), { status: 200 }],
-      [JSON.stringify(scopesPayload), { status: 200 }]
-    );
+    fetchMock.mockResponse((request: Request) => {
+      if (
+        request.url.includes(
+          'pimee_enrich_rule_definition_get?%7B%22ruleCode%22:%22malformed_rule%22%7D'
+        )
+      ) {
+        return Promise.resolve(JSON.stringify({ foo: 'bar' }));
+      } else if (
+        request.url.includes(
+          'pim_enrich_locale_rest_index?%7B%22activated%22:true%7D'
+        )
+      ) {
+        return Promise.resolve(JSON.stringify(localesPayload));
+      } else if (request.url.includes('pim_enrich_channel_rest_index')) {
+        return Promise.resolve(JSON.stringify(scopesPayload));
+      }
+
+      throw new Error(`The "${request.url}" url is not mocked.`);
+    });
+
     // When
     const { findByText } = render(
       <EditRules ruleDefinitionCode='malformed_rule' setIsDirty={setIsDirty} />,

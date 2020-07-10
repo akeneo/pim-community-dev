@@ -146,6 +146,12 @@ pimee_catalog_rule:
                 remove_category:
                     title: REMOVE categories
                     helper: To remove your product selection from one or more categories, please start by selecting your category trees and then, your categories
+                copy:
+                    title: COPY attribute value
+                    helper: To copy values from an attribute to another, please start by selecting your target attribute and then, your target attribute.
+                    select_source: Select your source
+                    select_target: Select your target
+                    no_source: Please, select your source attribute first
                 delete:
                     label: Remove action
                     description: Are you sure you want to remove this action?
@@ -199,8 +205,8 @@ pimee_catalog_rule:
         loading: An error occurred during rule definition loading.
         required: This field is required
         required_attribute: An attribute is required
-        required_locale: A locale is required for this attribute
-        required_scope: A channel is required for this attribute
+        required_locale: A locale is required for the {{ attributeLabel }} attribute
+        required_scope: A channel is required for the {{ attributeLabel }} attribute
         required_value: A value is required for this action
         required_categories: At least one category is required for this action
         unknown_or_inactive_locale: 'The "{{ localeCode }}" locale does not exist or is not activated'

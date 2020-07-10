@@ -45,13 +45,15 @@ const useControlledFormInputCondition = <T>(lineNumber: number) => {
 
 const useControlledFormInputAction = <T>(lineNumber: number) => {
   const { getValues, setValue } = useFormContext();
-  const fieldFormName = `content.actions[${lineNumber}].field`;
-  const typeFormName = `content.actions[${lineNumber}].type`;
-  const itemsFormName = `content.actions[${lineNumber}].items`;
-  const valueFormName = `content.actions[${lineNumber}].value`;
-  const scopeFormName = `content.actions[${lineNumber}].scope`;
-  const localeFormName = `content.actions[${lineNumber}].locale`;
-  const includeChildrenFormName = `content.actions[${lineNumber}].include_children`;
+  const formName = (name: string) => `content.actions[${lineNumber}].${name}`;
+  const fieldFormName = formName('field');
+  const typeFormName = formName('type');
+  const itemsFormName = formName('items');
+  const valueFormName = formName('value');
+  const scopeFormName = formName('scope');
+  const localeFormName = formName('locale');
+  const includeChildrenFormName = formName('include_children');
+  const getFormValue = (name: string) => get(getValues(), formName(name));
   const getValueFormValue = (): T => get(getValues(), valueFormName);
   const getItemsFormValue = (): T => get(getValues(), itemsFormName);
   const getFieldFormValue = (): T => get(getValues(), fieldFormName);
@@ -83,6 +85,8 @@ const useControlledFormInputAction = <T>(lineNumber: number) => {
     includeChildrenFormName,
     getIncludeChildrenFormValue,
     setIncludeChildrenFormValue,
+    formName,
+    getFormValue,
   };
 };
 
