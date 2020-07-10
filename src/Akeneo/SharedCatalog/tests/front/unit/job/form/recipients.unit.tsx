@@ -1,9 +1,9 @@
 'use strict';
 
 import React from 'react';
-import * as ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom';
 import '@testing-library/jest-dom/extend-expect';
-import {act, fireEvent, getByTitle, getByText, getByPlaceholderText} from '@testing-library/react';
+import {act, queryByText, fireEvent, getByTitle, getByText, getByPlaceholderText} from '@testing-library/react';
 import Recipients from 'akeneosharedcatalog/job/form/recipients';
 
 let container: HTMLElement;
@@ -15,8 +15,6 @@ beforeEach(() => {
 
 afterEach(() => {
   document.body.removeChild(container);
-  global.fetch && global.fetch.mockClear();
-  delete global.fetch;
 });
 
 test('It renders without errors', async () => {
@@ -53,7 +51,7 @@ test('I can add a valid email', async () => {
     );
   });
 
-  const input = getByPlaceholderText(container, 'shared_catalog.recipients.add_recipient');
+  const input = getByPlaceholderText(container, 'shared_catalog.recipients.placeholder');
   fireEvent.change(input, {target: {value: email}});
   const button = getByText(container, 'pim_common.add');
   fireEvent.click(button);
@@ -78,13 +76,12 @@ test('I cannot add an invalid email', async () => {
     );
   });
 
-  const input = getByPlaceholderText(container, 'shared_catalog.recipients.add_recipient');
+  const input = getByPlaceholderText(container, 'shared_catalog.recipients.placeholder');
   fireEvent.change(input, {target: {value: email}});
   const button = getByText(container, 'pim_common.add');
   fireEvent.click(button);
 
   expect(getByText(container, 'shared_catalog.recipients.invalid_email')).toBeInTheDocument();
-  expect(mockOnRecipientsChange).not.toHaveBeenCalled();
 });
 
 test('I cannot add a duplicate email', async () => {
@@ -98,12 +95,11 @@ test('I cannot add a duplicate email', async () => {
     );
   });
 
-  const input = getByPlaceholderText(container, 'shared_catalog.recipients.add_recipient') as HTMLInputElement;
+  const input = getByPlaceholderText(container, 'shared_catalog.recipients.placeholder') as HTMLInputElement;
   fireEvent.change(input, {target: {value: email}});
   fireEvent.keyDown(input, {key: 'Enter', code: 'Enter', keyCode: 13, charCode: 13});
 
   expect(getByText(container, 'shared_catalog.recipients.duplicates')).toBeInTheDocument();
-  expect(mockOnRecipientsChange).not.toHaveBeenCalled();
 });
 
 test('I can see a backend validation error', async () => {
@@ -147,4 +143,65 @@ test('I can remove a recipient', async () => {
   fireEvent.click(button);
 
   expect(mockOnRecipientsChange).toHaveBeenCalledWith([]);
+});
+
+test('I can search recipients by email', async () => {
+  const recipients = [{email: 'hello@akeneo.com'}, {email: 'coucou@akeneo.com'}];
+  const mockOnRecipientsChange = jest.fn();
+
+  await act(async () => {
+    ReactDOM.render(
+      <Recipients recipients={recipients} validationErrors={[]} onRecipientsChange={mockOnRecipientsChange} />,
+      container
+    );
+  });
+
+  const searchInput = getByTitle(container, 'pim_common.search') as HTMLInputElement;
+
+  expect(queryByText(container, 'hello@akeneo.com')).toBeInTheDocument();
+  expect(queryByText(container, 'coucou@akeneo.com')).toBeInTheDocument();
+
+  fireEvent.change(searchInput, {target: {value: 'coucou'}});
+
+  expect(queryByText(container, 'hello@akeneo.com')).not.toBeInTheDocument();
+  expect(queryByText(container, 'coucou@akeneo.com')).toBeInTheDocument();
+
+  fireEvent.change(searchInput, {target: {value: 'unknown'}});
+
+  expect(queryByText(container, 'hello@akeneo.com')).not.toBeInTheDocument();
+  expect(queryByText(container, 'coucou@akeneo.com')).not.toBeInTheDocument();
+});
+
+test('It displays a message when no result is found', async () => {
+  const recipients = [{email: 'hello@akeneo.com'}];
+  const mockOnRecipientsChange = jest.fn();
+
+  await act(async () => {
+    ReactDOM.render(
+      <Recipients recipients={recipients} validationErrors={[]} onRecipientsChange={mockOnRecipientsChange} />,
+      container
+    );
+  });
+
+  const searchInput = getByTitle(container, 'pim_common.search') as HTMLInputElement;
+  fireEvent.change(searchInput, {target: {value: 'NOT FOUND'}});
+
+  expect(getByText(container, 'shared_catalog.recipients.no_result')).toBeInTheDocument();
+});
+
+test('It displays a helper when the max limit is reached', async () => {
+  const recipients = [];
+  for (let i = 0; i < 500; i++) {
+    recipients.push({email: `michel${i}@akeneo.com`});
+  }
+  const mockOnRecipientsChange = jest.fn();
+
+  await act(async () => {
+    ReactDOM.render(
+      <Recipients recipients={recipients} validationErrors={[]} onRecipientsChange={mockOnRecipientsChange} />,
+      container
+    );
+  });
+
+  expect(getByText(container, 'shared_catalog.recipients.max_limit_reached')).toBeInTheDocument();
 });

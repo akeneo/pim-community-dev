@@ -1,11 +1,6 @@
-import React, {SVGProps} from 'react';
-import {useAkeneoTheme} from '../hooks/useAkeneoTheme';
-
-type IconProps = {
-  color?: string;
-  title?: string;
-  size?: number;
-} & SVGProps<SVGSVGElement>;
+import React from 'react';
+import {IconProps} from '../icons';
+import {useAkeneoTheme} from '../hooks';
 
 const WarningIcon = ({title = 'Warning', color, size = 24, ...props}: IconProps) => (
   <svg width={size} height={size} viewBox="0 0 24 24" {...props}>

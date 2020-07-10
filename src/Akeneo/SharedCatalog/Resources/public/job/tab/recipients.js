@@ -49,8 +49,6 @@ define([
             const updatedData = {...this.getFormData(), configuration};
 
             this.setData(updatedData);
-            ReactDOM.unmountComponentAtNode(this.el);
-            this.render();
           }
         });
 

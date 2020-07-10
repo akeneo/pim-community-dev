@@ -19,6 +19,7 @@ use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -28,6 +29,8 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
 {
     /** 2MB size converted to base64 */
     private const MAX_LENGTH_BASE64 = 2000 * 1000 * 4 / 3;
+
+    private const MAX_RECIPIENT_COUNT = 500;
 
     /** @var ConstraintCollectionProviderInterface */
     protected $simpleProvider;
@@ -75,6 +78,7 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
                     ]),
                 ],
             ]),
+            new Count(['max' => self::MAX_RECIPIENT_COUNT, 'maxMessage' => 'shared_catalog.recipients.max_limit_reached'])
         ];
         $constraintFields['branding'] = new Collection([
             'fields' => [
