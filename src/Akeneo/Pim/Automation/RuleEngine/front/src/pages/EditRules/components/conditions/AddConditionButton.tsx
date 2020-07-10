@@ -102,9 +102,13 @@ const AddConditionButton: React.FC<Props> = ({
       }}
       placeholder={translate('pimee_catalog_rule.form.edit.add_conditions')}
       formatResult={option => {
-        return `<span class="${
-          isActiveConditionField(option.id as string) ? 'active-condition' : ''
-        }">${option.text}</span>`;
+        return option.text === ''
+          ? ''
+          : `<span class="${
+              isActiveConditionField(option.id as string)
+                ? 'active-condition'
+                : ''
+            }">${option.text}</span>`;
       }}
       closeTick={closeTick}
       multiple={false}

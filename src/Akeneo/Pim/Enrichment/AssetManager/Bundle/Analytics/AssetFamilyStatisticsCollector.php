@@ -60,13 +60,16 @@ class AssetFamilyStatisticsCollector implements DataCollectorInterface
 
     public function collect(): array
     {
+        $averageMaxNumberOfAssetsPerAssetFamily = $this->averageMaxNumberOfAssetsPerAssetFamily->fetch();
+        $averageMaxNumberOfAttributesPerAssetFamily = $this->averageMaxNumberOfAttributesPerAssetFamily->fetch();
+
         return [
             'nb_asset_families' => $this->countAssetFamilies->fetch()->getVolume(),
-            'max_number_of_assets_per_asset_family' => $this->averageMaxNumberOfAssetsPerAssetFamily->fetch()->getMaxVolume(),
-            'average_number_of_assets_per_asset_family' => $this->averageMaxNumberOfAssetsPerAssetFamily->fetch()->getAverageVolume(),
+            'max_number_of_assets_per_asset_family' => $averageMaxNumberOfAssetsPerAssetFamily->getMaxVolume(),
+            'average_number_of_assets_per_asset_family' => $averageMaxNumberOfAssetsPerAssetFamily->getAverageVolume(),
             'average_number_of_values_per_assets' => $this->averageMaxNumberOfValuesPerAsset->fetch()->getAverageVolume(),
-            'max_number_of_attributes_per_asset_family' => $this->averageMaxNumberOfAttributesPerAssetFamily->fetch()->getMaxVolume(),
-            'average_number_of_attributes_per_asset_family' => $this->averageMaxNumberOfAttributesPerAssetFamily->fetch()->getAverageVolume(),
+            'max_number_of_attributes_per_asset_family' => $averageMaxNumberOfAttributesPerAssetFamily->getMaxVolume(),
+            'average_number_of_attributes_per_asset_family' => $averageMaxNumberOfAttributesPerAssetFamily->getAverageVolume(),
             'average_percentage_localizable_only_attributes' => $this->localizableOnly->fetch()->getAverageVolume(),
             'average_percentage_scopable_only_attributes' => $this->scopableOnly->fetch()->getAverageVolume(),
             'average_percentage_scopable_and_localizable_attributes' => $this->scopableAndLocalizable->fetch()->getAverageVolume(),

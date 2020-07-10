@@ -90,9 +90,15 @@ const SetActionLine: React.FC<Props> = ({
         }}
       />
       <ActionTemplate
-        title='Set Action'
-        helper='This feature is under development. Please use the import to manage your rules.'
-        legend='This feature is under development. Please use the import to manage your rules.'
+        title={translate(
+          'pimee_catalog_rule.form.edit.actions.set_attribute.title'
+        )}
+        helper={translate(
+          'pimee_catalog_rule.form.edit.actions.set_attribute.helper'
+        )}
+        legend={translate(
+          'pimee_catalog_rule.form.edit.actions.set_attribute.helper'
+        )}
         handleDelete={handleDelete}>
         {attribute && !getValueFormValue() && (
           <SmallHelper level='info'>

@@ -32,7 +32,7 @@ type Props = {
   hiddenLabel?: boolean;
   currentCatalogLocale: LocaleCode;
   value: AttributeCode | null;
-  onChange: (value: AttributeCode | null) => void;
+  onChange: (value: AttributeCode) => void;
   placeholder?: string;
   filterAttributeTypes?: string[];
   name: string;
@@ -150,6 +150,9 @@ const AttributeSelector: React.FC<Props> = ({
           );
         }
       }}
+      // This formatResult is useful for the :empty css selector
+      // (without the format the result line is not empty because select2 adds some child node)
+      formatResult={option => option.text}
       placeholder={placeholder}
       validation={validation}
     />

@@ -24,8 +24,8 @@ class SqlAverageMaxNumberOfValuesPerRecord
     {
         $sql = <<<SQL
             SELECT
-              MAX(JSON_LENGTH(JSON_EXTRACT(value_collection, '$.*'))) AS max,
-              CEIL(AVG(JSON_LENGTH(JSON_EXTRACT(value_collection, '$.*')))) AS average
+              MAX(JSON_LENGTH(value_collection)) AS max,
+              CEIL(AVG(JSON_LENGTH(value_collection))) AS average
             FROM akeneo_reference_entity_record;
 SQL;
         $result = $this->sqlConnection->query($sql)->fetch();

@@ -4,6 +4,8 @@ import { ClearGroupsActionLine } from '../../../../../../src/pages/EditRules/com
 import { locales, scopes } from '../../../../factories';
 import { ClearGroupsAction } from '../../../../../../src/models/actions';
 
+jest.mock('../../../../../../src/fetch/categoryTree.fetcher.ts');
+
 const action: ClearGroupsAction = {
   type: 'clear',
   field: 'groups',

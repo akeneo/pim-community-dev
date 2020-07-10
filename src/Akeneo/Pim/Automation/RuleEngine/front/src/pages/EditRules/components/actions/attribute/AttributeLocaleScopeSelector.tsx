@@ -47,6 +47,8 @@ type Props = {
   lineNumber: number;
   filterAttributeTypes?: string[];
   disabled?: boolean;
+  scopeFieldName?: string;
+  localeFieldName?: string;
 };
 
 export const AttributeLocaleScopeSelector: React.FC<Props> = ({
@@ -66,17 +68,21 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   lineNumber,
   filterAttributeTypes,
   disabled,
+  scopeFieldName,
+  localeFieldName,
 }) => {
   const router = useBackboneRouter();
   const translate = useTranslate();
   const currentCatalogLocale = useUserCatalogLocale();
 
-  const {
-    scopeFormName,
-    localeFormName,
-    getScopeFormValue,
-    getLocaleFormValue,
-  } = useControlledFormInputAction<string>(lineNumber);
+  const { formName, getFormValue } = useControlledFormInputAction<string>(
+    lineNumber
+  );
+
+  const scopeFormName = formName(scopeFieldName || 'scope');
+  const getScopeFormValue = () => getFormValue(scopeFieldName || 'scope');
+  const localeFormName = formName(localeFieldName || 'locale');
+  const getLocaleFormValue = () => getFormValue(localeFieldName || 'locale');
 
   const getAvailableLocales = (): Locale[] => {
     if (!attribute?.scopable) {
@@ -160,7 +166,12 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
             value={getScopeFormValue()}
             allowClear={!attribute?.scopable}
             disabled={null === attribute}
-            rules={getScopeValidation(attribute, scopes, translate)}
+            rules={getScopeValidation(
+              attribute,
+              scopes,
+              translate,
+              currentCatalogLocale
+            )}
           />
         </SelectorBlock>
       )}
@@ -184,7 +195,8 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
               locales,
               getAvailableLocales(),
               getScopeFormValue(),
-              translate
+              translate,
+              currentCatalogLocale
             )}
             disabled={isDisabled()}
           />

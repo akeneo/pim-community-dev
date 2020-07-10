@@ -1,5 +1,9 @@
 import React from 'react';
-import { Attribute, getAttributeLabel } from '../../../../../models';
+import {
+  Attribute,
+  getAttributeLabel,
+  AttributeType,
+} from '../../../../../models';
 import {
   useTranslate,
   useUserCatalogLocale,
@@ -7,18 +11,19 @@ import {
 import { TextValue } from './TextValue';
 import { FallbackValue } from './FallbackValue';
 import { SimpleSelectValue } from './SimpleSelectValue';
-import { InlineHelper } from '../../../../../components/HelpersInfos';
+import {
+  HelperContainer,
+  InlineHelper,
+} from '../../../../../components/HelpersInfos';
 import { ActionFormContainer } from '../style';
-import styled from 'styled-components';
 
-const HelperContainer = styled.div`
-  margin-top: 15px;
-`;
-
-const MANAGED_ATTRIBUTE_TYPES: { [key: string]: React.FC<InputValueProps> } = {
-  pim_catalog_text: TextValue,
-  pim_catalog_simpleselect: SimpleSelectValue,
-};
+const MANAGED_ATTRIBUTE_TYPES: Map<
+  AttributeType,
+  React.FC<InputValueProps>
+> = new Map([
+  [AttributeType.TEXT, TextValue],
+  [AttributeType.OPTION_SIMPLE_SELECT, SimpleSelectValue],
+]);
 
 type InputValueProps = {
   id: string;
@@ -65,9 +70,13 @@ const AttributeValue: React.FC<Props> = ({
   label,
   onChange,
 }) => {
+  const translate = useTranslate();
   const catalogLocale = useUserCatalogLocale();
 
-  const translate = useTranslate();
+  const getAttributeLabelIfNotNull = (
+    attribute: Attribute | null | undefined
+  ) => (attribute ? getAttributeLabel(attribute, catalogLocale) : undefined);
+
   const getAttributeValueContent = () => {
     if (isAttrNotSelected(attribute)) {
       return (
@@ -77,7 +86,14 @@ const AttributeValue: React.FC<Props> = ({
       );
     }
     if (isAttrUnknown(attribute)) {
-      return <FallbackValue id={id} label={label} value={value} />;
+      return (
+        <FallbackValue
+          id={id}
+          label={label || getAttributeLabelIfNotNull(attribute)}
+          hiddenLabel={false}
+          value={value}
+        />
+      );
     }
     if (attribute) {
       const inputComponent = getValueModule(attribute, {
@@ -95,7 +111,11 @@ const AttributeValue: React.FC<Props> = ({
         return inputComponent;
       } else {
         return (
-          <FallbackValue id={id} label={label} value={value}>
+          <FallbackValue
+            id={id}
+            label={label || getAttributeLabelIfNotNull(attribute)}
+            hiddenLabel={false}
+            value={value}>
             <HelperContainer>
               <InlineHelper>
                 {translate(

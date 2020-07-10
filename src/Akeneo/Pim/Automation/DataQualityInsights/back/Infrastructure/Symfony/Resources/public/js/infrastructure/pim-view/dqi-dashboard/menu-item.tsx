@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+import {DataQualityInsightsFeature, getDataQualityInsightsFeature} from 'akeneodataqualityinsights-react';
+
 const BaseItem = require('pim/menu/item');
 
 /**
@@ -14,8 +16,9 @@ const BaseItem = require('pim/menu/item');
  */
 class MenuItem extends BaseItem {
   public render(): any {
-      return BaseItem.prototype.render.apply(this);
-
+    return getDataQualityInsightsFeature().then((dataQualityInsightsFeature: DataQualityInsightsFeature) => {
+      return dataQualityInsightsFeature.isActive ? BaseItem.prototype.render.apply(this) : null;
+    });
   }
 }
 

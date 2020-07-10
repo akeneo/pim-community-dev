@@ -51,6 +51,7 @@ const AddCategoriesActionLine: React.FC<ActionLineProps> = ({
           setValue={setItemsFormValue}
           values={getItemsFormValue() ?? []}
           valueFormName={itemsFormName}
+          valueRequired
         />
       </ActionTemplate>
     </>

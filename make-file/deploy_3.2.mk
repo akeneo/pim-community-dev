@@ -5,6 +5,12 @@ INSTANCE_NAME_PREFIX ?= pimci
 INSTANCE_NAME ?= $(INSTANCE_NAME_PREFIX)-$(IMAGE_TAG)
 PFID ?= srnt-$(INSTANCE_NAME)
 
+.PHONY: helm-prepare
+helm-prepare:
+	helm init --client-only
+	helm repo add $(HELM_REPO_PROD) gs://$(HELM_REPO_PROD)/
+	helm repo update
+
 PHONY: create-main-tf-for-pim3-with-last-tag
 create-main-tf-for-pim3-with-last-tag:
 	export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes' && \
@@ -46,3 +52,33 @@ terraform-apply-for-pim3:
 .PHONY: terraform-destroy-for-pim3
 terraform-destroy-for-pim3:
 	cd $(DEPLOYMENTS_INSTANCES_DIR)/3.2 && terraform destroy $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
+
+.PHONY: terraform-pre-upgrade-disk
+terraform-pre-upgrade-disk:
+	# Required by https://github.com/akeneo/pim-enterprise-dev/pull/8599
+	yq d -i $(INSTANCE_DIR)/values.yaml "mysql.common.persistentDisks"
+	for PD in $$(kubectl get -n $(PFID) pv $$(kubectl get -n $(PFID) pvc -l role=mysql-server -o jsonpath='{.items[*].spec.volumeName}') -o jsonpath='{..spec.gcePersistentDisk.pdName}'); do \
+		yq w -i $(INSTANCE_DIR)/values.yaml "mysql.common.persistentDisks[+]" "$${PD}"; \
+	done
+
+.PHONY: terraform-pre-upgrade
+terraform-pre-upgrade: terraform-init terraform-pre-upgrade-disk
+	# Move monitoring resources from pim to pim-monitoring
+	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_logging_metric.login_count module.pim-monitoring.google_logging_metric.login_count
+	sleep 1
+	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_logging_metric.login-response-time-distribution module.pim-monitoring.google_logging_metric.login-response-time-distribution
+	sleep 1
+	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_logging_metric.logs-count module.pim-monitoring.google_logging_metric.logs-count
+	sleep 1
+	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_monitoring_alert_policy.alert_policy module.pim-monitoring.google_monitoring_alert_policy.alert_policy
+	sleep 1
+	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_monitoring_notification_channel.pagerduty module.pim-monitoring.google_monitoring_notification_channel.pagerduty
+	sleep 1
+	cd $(INSTANCE_DIR) && terraform state mv module.pim.google_monitoring_uptime_check_config.https module.pim-monitoring.google_monitoring_uptime_check_config.https
+	# Delete useless resources
+	cd $(INSTANCE_DIR) && terraform state rm module.pim.template_file.metric-template
+	sleep 1
+	cd $(INSTANCE_DIR) && terraform state rm module.pim.local_file.metric-rendered
+	sleep 1
+	cd $(INSTANCE_DIR) && terraform state rm module.pim.null_resource.metric
+	sleep 1
