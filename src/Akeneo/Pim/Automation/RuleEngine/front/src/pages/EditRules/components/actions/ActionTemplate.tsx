@@ -81,7 +81,9 @@ const ActionTemplate: React.FC<Props> = ({
       <VisuallyHidden>
         <legend>{legend}</legend>
       </VisuallyHidden>
-      {lineNumber && <LineErrors lineNumber={lineNumber} type='actions' />}
+      {typeof lineNumber !== 'undefined' && (
+        <LineErrors lineNumber={lineNumber} type='actions' />
+      )}
       <ActionForm>{children}</ActionForm>
     </fieldset>
   );
