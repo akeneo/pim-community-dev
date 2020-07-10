@@ -750,7 +750,7 @@ workflows:
                 requires:
                     - checkout
 
-  nightly_cleanup:
+  hourly_cleanup:
       triggers:
           - schedule:
                 cron: "0 * * * *"
