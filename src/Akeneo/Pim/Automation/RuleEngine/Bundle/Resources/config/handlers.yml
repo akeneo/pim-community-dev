@@ -3,6 +3,7 @@ services:
         arguments:
             - '@akeneo_rule_engine.repository.rule_definition'
             - '@pimee_catalog_rule.denormalizer.product_rule.chained'
+            - '@akeneo_rule_engine.updater.rule_definition'
             - '@akeneo_rule_engine.saver.rule_definition'
             - '%akeneo_rule_engine.model.rule.class%'
             - '%akeneo_rule_engine.model.rule_definition.class%'

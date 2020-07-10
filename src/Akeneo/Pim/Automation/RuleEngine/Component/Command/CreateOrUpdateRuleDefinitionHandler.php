@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Command;
 
-use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionTranslationInterface;
+use Akeneo\Pim\Automation\RuleEngine\Component\Updater\RuleDefinitionUpdaterInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\Common\Saver\RuleDefinitionSaver;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class CreateOrUpdateRuleDefinitionHandler
@@ -26,7 +27,10 @@ class CreateOrUpdateRuleDefinitionHandler
     /** @var DenormalizerInterface */
     private $ruleDenormalizer;
 
-    /** @var SaverInterface */
+    /** @var RuleDefinitionUpdaterInterface */
+    private $ruleDefinitionUpdater;
+
+    /** @var RuleDefinitionSaver */
     private $ruleDefinitionSaver;
 
     /** @var string */
@@ -38,12 +42,14 @@ class CreateOrUpdateRuleDefinitionHandler
     public function __construct(
         RuleDefinitionRepositoryInterface $ruleDefinitionRepository,
         DenormalizerInterface $ruleDenormalizer,
-        SaverInterface $ruleDefinitionSaver,
+        RuleDefinitionUpdaterInterface $ruleDefinitionUpdater,
+        RuleDefinitionSaver $ruleDefinitionSaver,
         string $ruleClass,
         string $ruleDefinitionClass
     ) {
         $this->ruleDefinitionRepository = $ruleDefinitionRepository;
         $this->ruleDenormalizer = $ruleDenormalizer;
+        $this->ruleDefinitionUpdater = $ruleDefinitionUpdater;
         $this->ruleDefinitionSaver = $ruleDefinitionSaver;
         $this->ruleClass = $ruleClass;
         $this->ruleDefinitionClass = $ruleDefinitionClass;
@@ -63,15 +69,7 @@ class CreateOrUpdateRuleDefinitionHandler
             ['definitionObject' => $ruleDefinition]
         );
 
-        $ruleDefinition->setCode($rule->getCode());
-        $ruleDefinition->setPriority($rule->getPriority());
-        $ruleDefinition->setType($rule->getType());
-        $ruleDefinition->setContent($rule->getContent());
-        foreach ($rule->getTranslations() as $translation) {
-            /** @var $translation RuleDefinitionTranslationInterface */
-            $ruleDefinition->setLabel($translation->getLocale(), $translation->getLabel());
-        };
-
+        $this->ruleDefinitionUpdater->fromRule($ruleDefinition, $rule);
         $this->ruleDefinitionSaver->save($ruleDefinition);
     }
 }

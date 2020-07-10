@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Updater;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 
 class RuleDefinitionUpdater implements RuleDefinitionUpdaterInterface
 {
@@ -42,5 +43,16 @@ class RuleDefinitionUpdater implements RuleDefinitionUpdaterInterface
                     throw new \InvalidArgumentException(sprintf('Unknown "%s" property', $key));
             }
         }
+    }
+
+    public function fromRule(RuleDefinitionInterface $ruleDefinition, RuleInterface $rule): void
+    {
+        $ruleDefinition->setCode($rule->getCode());
+        $ruleDefinition->setPriority($rule->getPriority());
+        $ruleDefinition->setType($rule->getType());
+        $ruleDefinition->setContent($rule->getContent());
+        foreach ($rule->getTranslations() as $translation) {
+            $ruleDefinition->setLabel($translation->getLocale(), $translation->getLabel());
+        };
     }
 }

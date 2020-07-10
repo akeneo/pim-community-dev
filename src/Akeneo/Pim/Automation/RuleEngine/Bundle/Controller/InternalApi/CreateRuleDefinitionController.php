@@ -73,8 +73,8 @@ class CreateRuleDefinitionController
         }
 
         $data = json_decode($request->getContent(), true);
-
         $command = new CreateOrUpdateRuleCommand($data);
+
         $violations = $this->validator->validate($command, null, ['Default', 'create']);
         if ($violations->count()) {
             $errors = $this->normalizer->normalize($violations, 'internal_api');

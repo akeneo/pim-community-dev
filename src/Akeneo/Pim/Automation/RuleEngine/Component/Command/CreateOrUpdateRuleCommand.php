@@ -26,13 +26,14 @@ use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\RemoveAction;
 use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\SetAction;
 use Webmozart\Assert\Assert;
 
-final class CreateOrUpdateRuleCommand
+class CreateOrUpdateRuleCommand
 {
     public $code;
     public $priority;
     public $actions;
     public $conditions;
     public $labels;
+    public $additionalProperties;
 
     public function __construct(array $data)
     {
@@ -43,7 +44,7 @@ final class CreateOrUpdateRuleCommand
         if (is_array($conditions)) {
             $conditions = array_map(
                 function ($condition) {
-                    return is_array($condition) ? new Condition($condition) : null;
+                    return is_array($condition) ? new Condition($condition) : $condition;
                 },
                 $conditions
             );
@@ -74,7 +75,7 @@ final class CreateOrUpdateRuleCommand
         $this->labels = $labels;
     }
 
-    public function toArray(bool $withContent = false): array
+    public function toArray(): array
     {
         Assert::stringNotEmpty($this->code);
         Assert::nullOrInteger($this->priority);
@@ -88,23 +89,13 @@ final class CreateOrUpdateRuleCommand
         $normalized = [
             'code' => $this->code,
             'priority' => $this->priority ?? 0,
-            'type' => 'product',
+            'conditions' => array_map(function (Condition $condition): array {
+                return $condition->toArray();
+            }, $this->conditions),
+            'actions' => array_map(function (ActionInterface $action): array {
+                return $action->toArray();
+            }, $this->actions),
         ];
-        $conditions =  array_map(function (Condition $condition): array {
-            return $condition->toArray();
-        }, $this->conditions);
-        $actions = array_map(function (ActionInterface $action): array {
-            return $action->toArray();
-        }, $this->actions);
-        if ($withContent) {
-            $normalized['content'] = [
-                'conditions' => $conditions,
-                'actions' => $actions,
-            ];
-        } else {
-            $normalized['conditions'] = $conditions;
-            $normalized['actions'] = $actions;
-        }
 
         $normalizedLabels = [];
         foreach ($this->labels as $label) {
@@ -118,7 +109,7 @@ final class CreateOrUpdateRuleCommand
     private function createActionCommand($action)
     {
         if (!is_array($action)) {
-            return null;
+            return $action;
         }
 
         $type = $action['type'] ?? null;
