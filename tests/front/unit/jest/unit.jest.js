@@ -48,7 +48,12 @@ const unitConfig = {
   coverageReporters: ['text-summary', 'html'],
   coverageDirectory: '<rootDir>/coverage/',
   coverageThreshold: {
-    global: {
+    '**/Akeneo/Platform/Bundle/UIBundle/**': {
+      statements: 100,
+      functions: 100,
+      lines: 100,
+    },
+    '**/Akeneo/Tool/Bundle/MeasureBundle/**': {
       statements: 100,
       functions: 100,
       lines: 100,
