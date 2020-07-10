@@ -58,10 +58,27 @@ const eeConfig = {
     'src/Akeneo/ReferenceEntity/front/infrastructure',
     'src/Akeneo/ReferenceEntity/front/infrastructure/tools',
     'src/Akeneo/ReferenceEntity/tests',
-    'vendor/akeneo/pim-community-dev',
     'src/Akeneo/AssetManager/front/infrastructure',
     'src/Akeneo/AssetManager/tests',
   ],
+  coverageThreshold: {
+    ...baseConfig.coverageThreshold,
+    'src/Akeneo/AssetManager/': {
+      statements: 100,
+      functions: 100,
+      lines: 100,
+    },
+    'src/Akeneo/ReferenceEntity/': {
+      statements: 100,
+      functions: 100,
+      lines: 100,
+    },
+    'src/Akeneo/Pim/Enrichment/': {
+      statements: 100,
+      functions: 100,
+      lines: 100,
+    }
+  }
 };
 
 module.exports = Object.assign({}, baseConfig, eeConfig);
