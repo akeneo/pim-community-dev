@@ -323,30 +323,6 @@ class GetProductModelQuantifiedAssociationsByProductModelCodesIntegration extend
         $this->assertSame([], $actual);
     }
 
-    /**
-     * @test
-     *
-     * https://akeneo.atlassian.net/browse/PIM-9356
-     */
-    public function itDoesNotFailOnInvalidQuantifiedAssociations()
-    {
-        $this->getEntityBuilder()->createProductModel('root_product_model', 'familyVariantWithTwoLevels', null, []);
-
-        /** @var Connection $connection */
-        $connection = $this->get('doctrine.dbal.default_connection');
-
-        $query = <<<SQL
-        UPDATE pim_catalog_product_model
-        SET quantified_associations = '[]'
-        WHERE code = 'root_product_model'
-SQL;
-
-        $connection->executeUpdate($query);
-
-        $actual = $this->getQuery()->fromProductIdentifiers(['root_product_model']);
-        $this->assertSame([], $actual);
-    }
-
     protected function getConfiguration()
     {
         return $this->catalog->useMinimalCatalog();
