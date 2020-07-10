@@ -415,6 +415,121 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
         ]);
     }
 
+    public function it_clear_quantified_associations_already_empty()
+    {
+        $this->beConstructedThrough('createFromNormalized', [[]]);
+
+        $this->clearQuantifiedAssociations()->normalize()->shouldReturn([]);
+    }
+
+    public function it_clear_all_quantified_associations_already_empty()
+    {
+        $this->beConstructedThrough('createFromNormalized', [
+            [
+                'PRODUCTSET_A' => [
+                    'products' => [
+                        ['identifier' => 'AKN_TS1', 'quantity' => 2],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'MODEL_AKN_TS1', 'quantity' => 2],
+                    ],
+                ],
+                'PRODUCTSET_B' => [
+                    'products' => [
+                        ['identifier' => 'AKN_TSH2', 'quantity' => 2],
+                    ],
+                    'product_models' => [],
+                ],
+            ],
+        ]);
+
+        $this->clearQuantifiedAssociations()->normalize()->shouldReturn([
+            'PRODUCTSET_A' => [
+                'products' => [],
+                'product_models' => [],
+            ],
+            'PRODUCTSET_B' => [
+                'products' => [],
+                'product_models' => [],
+            ],
+        ]);
+    }
+
+    public function it_override_empty_quantified_associations()
+    {
+        $this->beConstructedThrough('createFromNormalized', [[]]);
+        $this->overrideQuantifiedAssociations([
+            'PRODUCTSET_A' => [
+                'products' => [
+                    ['identifier' => 'AKN_TS1', 'quantity' => 2],
+                ],
+            ]
+        ])->normalize()->shouldReturn([
+            'PRODUCTSET_A' => [
+                'products' => [
+                    ['identifier' => 'AKN_TS1', 'quantity' => 2],
+                ],
+                'product_models' => [],
+            ],
+        ]);
+    }
+
+    public function it_override_existing_quantified_associations()
+    {
+        $this->beConstructedThrough('createFromNormalized', [
+            [
+                'PRODUCTSET_A' => [
+                    'products' => [
+                        ['identifier' => 'AKN_TS1', 'quantity' => 2],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'MODEL_AKN_TS1', 'quantity' => 2],
+                    ],
+                ],
+                'PRODUCTSET_B' => [
+                    'products' => [
+                        ['identifier' => 'AKN_TSH2', 'quantity' => 2],
+                    ],
+                    'product_models' => [],
+                ],
+            ],
+        ]);
+
+        $this->overrideQuantifiedAssociations([
+            'PRODUCTSET_A' => [
+                'products' => [
+                    ['identifier' => 'AKN_TS1_ALT', 'quantity' => 200],
+                ],
+            ],
+            'PRODUCTSET_C' => [
+                'products' => [
+                    ['identifier' => 'AKN_TS1_ALT', 'quantity' => 200],
+                ],
+            ]
+        ])->normalize()->shouldReturn([
+            'PRODUCTSET_A' => [
+                'products' => [
+                    ['identifier' => 'AKN_TS1_ALT', 'quantity' => 200],
+                ],
+                'product_models' => [
+                    ['identifier' => 'MODEL_AKN_TS1', 'quantity' => 2],
+                ],
+            ],
+            'PRODUCTSET_B' => [
+                'products' => [
+                    ['identifier' => 'AKN_TSH2', 'quantity' => 2],
+                ],
+                'product_models' => [],
+            ],
+            'PRODUCTSET_C' => [
+                'products' => [
+                    ['identifier' => 'AKN_TS1_ALT', 'quantity' => 200],
+                ],
+                'product_models' => [],
+            ]
+        ]);
+    }
+
     public function it_merge_quantified_associations_and_overwrite_quantities_from_duplicated_identifiers() {
         $this->beConstructedThrough(
             'createFromNormalized',
