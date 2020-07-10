@@ -153,7 +153,7 @@ class QuantifiedAssociations
     {
         $quantifiedAssociationsCleared = array_fill_keys(
             $this->getAssociationTypeCodes(),
-            ['products' => [], 'products_models' => []]
+            ['products' => [], 'product_models' => []]
         );
 
         return self::createFromNormalized($quantifiedAssociationsCleared);
