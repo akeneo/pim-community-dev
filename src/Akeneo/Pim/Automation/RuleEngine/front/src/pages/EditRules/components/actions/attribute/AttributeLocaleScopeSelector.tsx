@@ -76,9 +76,11 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   const translate = useTranslate();
   const currentCatalogLocale = useUserCatalogLocale();
 
-  const { formName, getFormValue, isFormFieldInError } = useControlledFormInputAction<string>(
-    lineNumber
-  );
+  const {
+    formName,
+    getFormValue,
+    isFormFieldInError,
+  } = useControlledFormInputAction<string>(lineNumber);
 
   const scopeFormName = formName(scopeFieldName || 'scope');
   const getScopeFormValue = () => getFormValue(scopeFieldName || 'scope');
