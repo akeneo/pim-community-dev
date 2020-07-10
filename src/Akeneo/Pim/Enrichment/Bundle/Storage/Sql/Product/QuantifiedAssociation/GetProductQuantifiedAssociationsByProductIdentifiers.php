@@ -97,6 +97,9 @@ SQL;
     {
         $productIds = [];
         foreach ($allQuantifiedAssociationsWithProductId as $quantifiedAssociationWithId) {
+            if (empty($quantifiedAssociationWithId)) {
+                continue;
+            }
             $productIds = array_merge($productIds, $this->productIds($quantifiedAssociationWithId));
         }
 
@@ -104,6 +107,9 @@ SQL;
 
         $result = [];
         foreach ($allQuantifiedAssociationsWithProductId as $associationTypeCode => $associationWithIds) {
+            if (empty($associationWithIds) || !is_string($associationTypeCode)) {
+                continue;
+            }
             if (!$this->associationTypeExists($associationTypeCode)) {
                 continue;
             }
@@ -116,7 +122,7 @@ SQL;
                 }
                 $uniqueQuantifiedAssociations[$identifier] = [
                     'identifier' => $identifier,
-                    'quantity'   => (int) $associationWithProductId['quantity']
+                    'quantity' => (int)$associationWithProductId['quantity']
                 ];
             }
             if (!empty($uniqueQuantifiedAssociations)) {
@@ -133,7 +139,7 @@ SQL;
             function (array $quantifiedAssociations) {
                 return $quantifiedAssociations['id'];
             },
-            $quantifiedAssociationWithProductId['products']
+            $quantifiedAssociationWithProductId['products'] ?? []
         );
     }
 
