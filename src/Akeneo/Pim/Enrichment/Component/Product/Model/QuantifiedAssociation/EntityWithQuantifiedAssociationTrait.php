@@ -26,6 +26,10 @@ trait EntityWithQuantifiedAssociationTrait
      */
     public function filterQuantifiedAssociations(array $productIdentifiersToKeep, array $productModelCodesToKeep): void
     {
+        if (null === $this->quantifiedAssociations) {
+            return;
+        }
+
         $this->quantifiedAssociations = $this->quantifiedAssociations
             ->filterProductIdentifiers($productIdentifiersToKeep)
             ->filterProductModelCodes($productModelCodesToKeep);
@@ -44,6 +48,10 @@ trait EntityWithQuantifiedAssociationTrait
      */
     public function mergeQuantifiedAssociations(QuantifiedAssociations $quantifiedAssociations): void
     {
+        if ($this->quantifiedAssociations === null) {
+            return;
+        }
+
         $this->quantifiedAssociations = $this->quantifiedAssociations->merge($quantifiedAssociations);
     }
 
@@ -52,6 +60,10 @@ trait EntityWithQuantifiedAssociationTrait
      */
     public function overrideQuantifiedAssociations(array $submittedQuantifiedAssociations): void
     {
+        if (null === $this->quantifiedAssociations) {
+            return;
+        }
+
         $this->quantifiedAssociations = $this->quantifiedAssociations->overrideQuantifiedAssociations(
             $submittedQuantifiedAssociations
         );
@@ -62,6 +74,10 @@ trait EntityWithQuantifiedAssociationTrait
      */
     public function clearQuantifiedAssociations(): void
     {
+        if (null === $this->quantifiedAssociations) {
+            return;
+        }
+
         $this->quantifiedAssociations = $this->quantifiedAssociations->clearQuantifiedAssociations();
     }
 
