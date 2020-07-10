@@ -188,7 +188,7 @@ class ProductModelAssociationProcessor extends AbstractProcessor implements
      */
     protected function validateQuantifiedAssociations(EntityWithQuantifiedAssociationsInterface $product): ConstraintViolationListInterface
     {
-        return $this->validator->validate($product->getQuantifiedAssociations());
+        return $this->validator->validate($product->getQuantifiedAssociationCollection());
     }
 
     /**

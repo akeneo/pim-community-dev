@@ -11,7 +11,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class QuantifiedAssociations
+class QuantifiedAssociationCollection
 {
     private const PRODUCT_MODELS_QUANTIFIED_LINKS_KEY = 'product_models';
     private const PRODUCTS_QUANTIFIED_LINKS_KEY = 'products';
@@ -159,10 +159,10 @@ class QuantifiedAssociations
         return self::createFromNormalized($quantifiedAssociationsCleared);
     }
 
-    public function merge(QuantifiedAssociations $quantifiedAssociations): self
+    public function merge(QuantifiedAssociationCollection $quantifiedAssociationCollection): self
     {
         $currentQuantifiedAssociationsNormalized = $this->normalizeWithIndexedIdentifiers();
-        $quantifiedAssociationsToMergeNormalized = $quantifiedAssociations->normalizeWithIndexedIdentifiers();
+        $quantifiedAssociationsToMergeNormalized = $quantifiedAssociationCollection->normalizeWithIndexedIdentifiers();
 
         $mergedQuantifiedAssociationsNormalized = array_replace_recursive(
             $currentQuantifiedAssociationsNormalized,
@@ -226,7 +226,7 @@ class QuantifiedAssociations
         return $result;
     }
 
-    public function filterProductIdentifiers(array $productIdentifiersToKeep): QuantifiedAssociations
+    public function filterProductIdentifiers(array $productIdentifiersToKeep): QuantifiedAssociationCollection
     {
         $filteredQuantifiedAssociations = [];
         foreach ($this->quantifiedAssociations as $associationTypeCode => $quantifiedAssociation) {
@@ -242,7 +242,7 @@ class QuantifiedAssociations
         return new self($filteredQuantifiedAssociations);
     }
 
-    public function filterProductModelCodes(array $productModelCodesToKeep): QuantifiedAssociations
+    public function filterProductModelCodes(array $productModelCodesToKeep): QuantifiedAssociationCollection
     {
         $filteredQuantifiedAssociations = [];
         foreach ($this->quantifiedAssociations as $associationTypeCode => $quantifiedAssociation) {

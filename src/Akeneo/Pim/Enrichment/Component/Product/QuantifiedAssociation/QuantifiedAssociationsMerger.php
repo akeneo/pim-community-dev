@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\QuantifiedAssociation;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithQuantifiedAssociationsInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -28,13 +28,13 @@ class QuantifiedAssociationsMerger
         }
 
         $firstEntityWithQuantifiedAssociations = array_shift($entitiesWithQuantifiedAssociations);
-        $mergedQuantifiedAssociations = $firstEntityWithQuantifiedAssociations->getQuantifiedAssociations();
+        $mergedQuantifiedAssociations = $firstEntityWithQuantifiedAssociations->getQuantifiedAssociationCollection();
         foreach ($entitiesWithQuantifiedAssociations as $entity) {
             if (!$entity instanceof EntityWithQuantifiedAssociationsInterface) {
                 continue;
             }
 
-            $mergedQuantifiedAssociations = $mergedQuantifiedAssociations->merge($entity->getQuantifiedAssociations());
+            $mergedQuantifiedAssociations = $mergedQuantifiedAssociations->merge($entity->getQuantifiedAssociationCollection());
         }
 
         return $mergedQuantifiedAssociations->normalize();

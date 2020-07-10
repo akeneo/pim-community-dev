@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\IdMapping;
-use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 
 /**
  * Interface to implement for any entity that should be aware of any quantified associations it is holding.
@@ -19,7 +19,7 @@ interface EntityWithQuantifiedAssociationsInterface
     /**
      * Get the quantified associations
      */
-    public function getQuantifiedAssociations(): QuantifiedAssociations;
+    public function getQuantifiedAssociationCollection(): QuantifiedAssociationCollection;
 
     /**
      * Get all associated product ids
@@ -95,9 +95,9 @@ interface EntityWithQuantifiedAssociationsInterface
 
     /**
      * Update quantified associations by merging with another quantified associations
-     * @param QuantifiedAssociations $quantifiedAssociations
+     * @param QuantifiedAssociationCollection $quantifiedAssociationCollection
      */
-    public function mergeQuantifiedAssociations(QuantifiedAssociations $quantifiedAssociations): void;
+    public function mergeQuantifiedAssociations(QuantifiedAssociationCollection $quantifiedAssociationCollection): void;
 
     /**
      * Update quantified associations by override with another quantified associations

@@ -15,7 +15,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -59,7 +59,7 @@ class ProductModelAssociationProcessorSpec extends ObjectBehavior
         AssociationInterface $association,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters,
-        QuantifiedAssociations $quantifiedAssociations
+        QuantifiedAssociationCollection $quantifiedAssociations
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(true);
@@ -99,7 +99,7 @@ class ProductModelAssociationProcessorSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $productModel->getAssociations()->willReturn([$association]);
-        $productModel->getQuantifiedAssociations()->willReturn($quantifiedAssociations);
+        $productModel->getQuantifiedAssociationCollection()->willReturn($quantifiedAssociations);
         $productValidator
             ->validate($association)
             ->willReturn($violationList);
@@ -181,7 +181,7 @@ class ProductModelAssociationProcessorSpec extends ObjectBehavior
         AssociationInterface $association,
         ProductModelInterface $productModel,
         JobParameters $jobParameters,
-        QuantifiedAssociations $quantifiedAssociations
+        QuantifiedAssociationCollection $quantifiedAssociations
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
@@ -223,7 +223,7 @@ class ProductModelAssociationProcessorSpec extends ObjectBehavior
         $violation = new ConstraintViolation('There is a small problem with option code', 'foo', [], 'bar', 'code', 'mycode');
         $violations = new ConstraintViolationList([$violation]);
         $productModel->getAssociations()->willReturn([$association]);
-        $productModel->getQuantifiedAssociations()->willReturn($quantifiedAssociations);
+        $productModel->getQuantifiedAssociationCollection()->willReturn($quantifiedAssociations);
         $productValidator
             ->validate($association)
             ->willReturn($violations);

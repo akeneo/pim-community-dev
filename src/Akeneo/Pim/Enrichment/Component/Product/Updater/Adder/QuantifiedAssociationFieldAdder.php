@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Adder;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 
 /**
  * Quantified association field adder
@@ -41,7 +41,7 @@ class QuantifiedAssociationFieldAdder extends AbstractFieldAdder
      */
     public function addFieldData($product, $field, $data, array $options = [])
     {
-        $quantifiedAssociationsToMerge = QuantifiedAssociations::createFromNormalized($data);
+        $quantifiedAssociationsToMerge = QuantifiedAssociationCollection::createFromNormalized($data);
 
         $product->mergeQuantifiedAssociations($quantifiedAssociationsToMerge);
     }
