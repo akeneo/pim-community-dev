@@ -33,7 +33,8 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
                     ]
                 ],
                 $this->anIdMapping(),
-                $this->anIdMapping()
+                $this->anIdMapping(),
+                ['PACK']
             ]
         );
     }
@@ -63,14 +64,15 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
             [
                 $expectedRawQuantifiedAssociations,
                 $this->anIdMapping(),
-                $this->anIdMapping()
+                $this->anIdMapping(),
+                ['PACK']
             ]
         );
 
         $this->normalizeWithMapping($this->anIdMapping(), $this->anIdMapping())->shouldReturn($expectedRawQuantifiedAssociations);
     }
 
-    public function it_ignores_unknown_products_andProductModels()
+    public function it_ignores_unknown_products_product_models_and_association_types()
     {
         $rawQuantifiedAssociations = [
             'PACK' => [
@@ -81,6 +83,14 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
                 'product_models' => [
                     ['id' => 1, 'quantity' => 1],
                     ['id' => 2, 'quantity' => 2],
+                ],
+            ],
+            'NON_EXISTENT_ASSOCIATION_TYPE' => [
+                'products'       => [
+                    ['id' => 1, 'quantity' => 1],
+                ],
+                'product_models' => [
+                    ['id' => 1, 'quantity' => 1],
                 ],
             ]
         ];
@@ -101,7 +111,8 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
             [
                 $rawQuantifiedAssociations,
                 $this->anIncompleteIdMapping(),
-                $this->anIncompleteIdMapping()
+                $this->anIncompleteIdMapping(),
+                ['PACK']
             ]
         );
 
@@ -137,7 +148,8 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
             [
                 $expectedRawQuantifiedAssociations,
                 $idMapping,
-                $idMapping
+                $idMapping,
+                ['PACK', 'PRODUCT_SET']
             ]
         );
 
@@ -173,7 +185,8 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
             [
                 $expectedRawQuantifiedAssociations,
                 $idMapping,
-                $idMapping
+                $idMapping,
+                ['PACK', 'PRODUCT_SET']
             ]
         );
 
@@ -195,7 +208,8 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
                 [
                     $expectedRawQuantifiedAssociations,
                     $this->anIdMapping(),
-                    $this->anIdMapping()
+                    $this->anIdMapping(),
+                    ['PACK']
                 ]
             );
     }
@@ -216,7 +230,8 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
                 [
                     $expectedRawQuantifiedAssociations,
                     $this->anIdMapping(),
-                    $this->anIdMapping()
+                    $this->anIdMapping(),
+                    ['PACK']
                 ]
             );
     }
@@ -237,7 +252,8 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
                 [
                     $expectedRawQuantifiedAssociations,
                     $this->anIdMapping(),
-                    $this->anIdMapping()
+                    $this->anIdMapping(),
+                    ['PACK']
                 ]
             );
     }
@@ -257,7 +273,8 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
                 [
                     $expectedRawQuantifiedAssociations,
                     $this->anIdMapping(),
-                    $this->anIdMapping()
+                    $this->anIdMapping(),
+                    ['PACK']
                 ]
             );
     }
@@ -278,7 +295,8 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
                 [
                     $expectedRawQuantifiedAssociations,
                     $this->anIdMapping(),
-                    $this->anIdMapping()
+                    $this->anIdMapping(),
+                    ['PACK']
                 ]
             );
     }
@@ -299,7 +317,8 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
                 [
                     $expectedRawQuantifiedAssociations,
                     $this->anIdMapping(),
-                    $this->anIdMapping()
+                    $this->anIdMapping(),
+                    ['PACK']
                 ]
             );
     }

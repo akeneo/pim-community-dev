@@ -45,8 +45,13 @@ interface EntityWithQuantifiedAssociationsInterface
      *
      * @param IdMapping $mappedProductIds
      * @param IdMapping $mappedProductModelIds
+     * @param array $associationTypeCodes
      */
-    public function hydrateQuantifiedAssociations(IdMapping $mappedProductIds, IdMapping $mappedProductModelIds): void;
+    public function hydrateQuantifiedAssociations(
+        IdMapping $mappedProductIds,
+        IdMapping $mappedProductModelIds,
+        array $associationTypeCodes
+    ): void;
 
     /**
      * Get all associated product identifiers
@@ -61,20 +66,6 @@ interface EntityWithQuantifiedAssociationsInterface
      * @return string[]
      */
     public function getQuantifiedAssociationsProductModelCodes(): array;
-
-    /**
-     * Get all association type codes
-     *
-     * @return string[]
-     */
-    public function getQuantifiedAssociationsTypeCodes(): array;
-
-    /**
-     * Remove the given association type and all the corresponding associations
-     *
-     * @param string $associationTypeCode
-     */
-    public function removeQuantifiedAssociationsType(string $associationTypeCode): void;
 
     /**
      * Update raw quantified associations from quantified associations
