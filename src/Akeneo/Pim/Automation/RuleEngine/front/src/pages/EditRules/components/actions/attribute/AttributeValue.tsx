@@ -77,6 +77,11 @@ const AttributeValue: React.FC<Props> = ({
     attribute: Attribute | null | undefined
   ) => (attribute ? getAttributeLabel(attribute, catalogLocale) : undefined);
 
+  /**
+   * - if attribute is defined, it exists.
+   * - if attribute is undefined, it is currently fetching
+   * - if attribute is null, it does not exist.
+   */
   const getAttributeValueContent = () => {
     if (isAttrNotSelected(attribute)) {
       return (

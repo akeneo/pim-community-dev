@@ -25,7 +25,7 @@ const fetchAttribute = async (router: Router, attributeCode: AttributeCode) => {
 };
 
 const useGetAttributeAtMount = (
-  attributeCode: AttributeCode,
+  attributeCode: AttributeCode | null,
   router: Router,
   attribute?: Attribute | null,
   setAttribute?: (val: Attribute | null | undefined) => void

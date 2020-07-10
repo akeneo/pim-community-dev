@@ -13,7 +13,7 @@ import {
   AttributeLocaleScopeSelector,
   MANAGED_ATTRIBUTE_TYPES,
 } from './attribute';
-import { Attribute, AttributeCode } from '../../../../models';
+import { Attribute } from '../../../../models';
 import {
   useTranslate,
   useBackboneRouter,
@@ -24,7 +24,6 @@ import { useControlledFormInputAction } from '../../hooks';
 import {
   validateAttribute,
   useGetAttributeAtMount,
-  fetchAttribute,
 } from './attribute/attribute.utils';
 import { SmallHelper } from '../../../../components/HelpersInfos';
 
@@ -59,18 +58,12 @@ const SetActionLine: React.FC<Props> = ({
 
   useGetAttributeAtMount(getFieldFormValue(), router, attribute, setAttribute);
 
-  const onAttributeChange = (attributeCode: AttributeCode) => {
-    const getAttribute = async (attributeCode: AttributeCode) => {
-      const attribute = await fetchAttribute(router, attributeCode);
-      setAttribute(attribute);
-      setValueFormValue('');
-      setFieldFormValue(attributeCode);
-    };
-    getAttribute(attributeCode);
+  const onAttributeChange = (attribute: Attribute | null) => {
+    setAttribute(attribute);
+    setValueFormValue('');
+    setFieldFormValue(attribute?.code);
   };
 
-  const isUnmanagedAttribute = () =>
-    attribute && !(attribute.type in MANAGED_ATTRIBUTE_TYPES);
 
   return (
     <>
@@ -133,7 +126,7 @@ const SetActionLine: React.FC<Props> = ({
               onAttributeCodeChange={onAttributeChange}
               lineNumber={lineNumber}
               filterAttributeTypes={Object.keys(MANAGED_ATTRIBUTE_TYPES)}
-              disabled={isUnmanagedAttribute() ? true : undefined}
+              disabled={!!attribute && !MANAGED_ATTRIBUTE_TYPES.get(attribute.type)}
             />
           </ActionLeftSide>
           <ActionRightSide>

@@ -21,6 +21,7 @@ import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
 import styled from 'styled-components';
 import { InlineHelper } from '../../../../../components/HelpersInfos/InlineHelper';
 import { ActionFormContainer } from '../style';
+import { fetchAttribute } from '../attribute/attribute.utils';
 
 const SelectorBlock = styled.div`
   margin-bottom: 15px;
@@ -43,7 +44,7 @@ type Props = {
   localeLabel?: string;
   locales: Locale[];
   scopes: IndexedScopes;
-  onAttributeCodeChange?: (attribute: AttributeCode) => void;
+  onAttributeCodeChange?: (attribute: Attribute | null) => void;
   lineNumber: number;
   filterAttributeTypes?: string[];
   disabled?: boolean;
@@ -96,18 +97,22 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   };
 
   const handleAttributeCodeChange = (value: any) => {
-    if (onAttributeCodeChange) {
-      onAttributeCodeChange(value);
-    }
+    const getAttribute = async (attributeCode: AttributeCode) => {
+      const attribute = await fetchAttribute(router, attributeCode);
+      if (onAttributeCodeChange) {
+        onAttributeCodeChange(attribute);
+      }
+    };
+    getAttribute(value);
   };
 
   const isDisabled = () => disabled ?? null === attribute;
-
   return (
     <ActionFormContainer>
       <SelectorBlock
         className={null === attribute ? 'select2-container-error' : ''}>
         <AttributeSelector
+          key={attributeCode ?? attributeFormName}
           data-testid={attributeId}
           name={attributeFormName}
           label={attributeLabel}
@@ -165,7 +170,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
             currentCatalogLocale={currentCatalogLocale}
             value={getScopeFormValue()}
             allowClear={!attribute?.scopable}
-            disabled={null === attribute}
+            disabled={isDisabled()}
             rules={getScopeValidation(
               attribute,
               scopes,

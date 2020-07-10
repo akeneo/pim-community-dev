@@ -11,11 +11,10 @@ import {
   useBackboneRouter,
 } from '../../../../dependenciesTools/hooks';
 import { useControlledFormInputAction } from '../../hooks';
-import { AttributeCode, Attribute } from '../../../../models';
+import { Attribute } from '../../../../models';
 import {
   validateAttribute,
   useGetAttributeAtMount,
-  fetchAttribute,
 } from './attribute/attribute.utils';
 
 type Props = {
@@ -43,13 +42,9 @@ const ClearAttributeActionLine: React.FC<Props> = ({
 
   useGetAttributeAtMount(getFieldFormValue(), router, attribute, setAttribute);
 
-  const onAttributeChange = (attributeCode: AttributeCode) => {
-    const getAttribute = async (attributeCode: AttributeCode) => {
-      const attribute = await fetchAttribute(router, attributeCode);
-      setAttribute(attribute);
-      setFieldFormValue(attributeCode);
-    };
-    getAttribute(attributeCode);
+  const onAttributeChange = (attribute: Attribute | null) => {
+    setAttribute(attribute);
+    setFieldFormValue(attribute?.code);
   };
 
   return (
