@@ -60,6 +60,9 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
     usermod -d /srv/pim www-data && \
     mkdir -p /run/php
 
+# https://akeneo.atlassian.net/browse/PIM-9350
+RUN sed -i '/<!-- <policy domain="module" rights="none" pattern="{PS,PDF,XPS}" \/> -->/c\  <policy domain="module" rights="read|write" pattern="{PS,PDF,XPS}" \/>' /etc/ImageMagick-6/policy.xml
+RUN sed -i '/<policy domain="coder" rights="none" pattern="PDF" \/>/c\  <policy domain="coder" rights="read|write" pattern="PDF" \/>' /etc/ImageMagick-6/policy.xml
 
 COPY docker/php.ini /etc/php/7.3/cli/conf.d/99-akeneo.ini
 COPY docker/php.ini /etc/php/7.3/fpm/conf.d/99-akeneo.ini

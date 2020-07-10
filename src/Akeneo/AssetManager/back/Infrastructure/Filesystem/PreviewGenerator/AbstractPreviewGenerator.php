@@ -95,7 +95,6 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
                     'exception' => [
                         'type'    => get_class($exception),
                         'message' => $exception->getMessage(),
-                        'trace'   => $exception->getTrace(),
                     ],
                 ]
             );
