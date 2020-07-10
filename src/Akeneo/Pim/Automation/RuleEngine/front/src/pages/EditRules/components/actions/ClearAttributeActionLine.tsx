@@ -94,7 +94,7 @@ const ClearAttributeActionLine: React.FC<Props> = ({
           locales={locales}
           lineNumber={lineNumber}
           attributeFormName={fieldFormName}
-          onAttributeChange={onAttributeChange}
+          onAttributeCodeChange={onAttributeChange}
         />
       </ActionTemplate>
     </>

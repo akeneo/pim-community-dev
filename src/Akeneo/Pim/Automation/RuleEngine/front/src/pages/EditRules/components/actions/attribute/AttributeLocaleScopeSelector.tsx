@@ -43,7 +43,7 @@ type Props = {
   localeLabel?: string;
   locales: Locale[];
   scopes: IndexedScopes;
-  onAttributeChange?: (attribute: AttributeCode) => void;
+  onAttributeCodeChange?: (attribute: AttributeCode) => void;
   lineNumber: number;
   filterAttributeTypes?: string[];
   disabled?: boolean;
@@ -62,7 +62,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   localeLabel,
   locales,
   scopes,
-  onAttributeChange,
+  onAttributeCodeChange,
   lineNumber,
   filterAttributeTypes,
   disabled,
@@ -89,9 +89,9 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
     return [];
   };
 
-  const onAttributeCodeChange = (value: any) => {
-    if (onAttributeChange) {
-      onAttributeChange(value);
+  const handleAttributeCodeChange = (value: any) => {
+    if (onAttributeCodeChange) {
+      onAttributeCodeChange(value);
     }
   };
 
@@ -107,7 +107,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
           label={attributeLabel}
           currentCatalogLocale={currentCatalogLocale}
           value={attributeCode}
-          onChange={onAttributeCodeChange}
+          onChange={handleAttributeCodeChange}
           placeholder={attributePlaceholder}
           filterAttributeTypes={filterAttributeTypes}
           disabled={disabled}
