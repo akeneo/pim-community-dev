@@ -9,7 +9,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\Quantifi
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\QuantifiedAssociationsTestCaseTrait;
 use AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\AbstractQuantifiedAssociationIntegration;
-use Doctrine\DBAL\Connection;
 
 class GetProductModelQuantifiedAssociationsByProductIdentifiersIntegration extends AbstractQuantifiedAssociationIntegration
 {
@@ -354,28 +353,6 @@ class GetProductModelQuantifiedAssociationsByProductIdentifiersIntegration exten
         $this->getAssociationTypeRemover()->remove($associationType);
         $actual = $this->getQuery()->fromProductIdentifiers(['productB']);
 
-        $this->assertSame([], $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function itDoesNotFailOnInvalidQuantifiedAssociations()
-    {
-        $this->getEntityBuilder()->createProductModel('root_product_model', 'familyVariantWithTwoLevels', null, []);
-
-        /** @var Connection $connexion */
-        $connexion = $this->get('doctrine.dbal.default_connection');
-
-        $query = <<<SQL
-        UPDATE pim_catalog_product_model
-        SET quantified_associations = '[]'
-        WHERE code = 'root_product_model'
-SQL;
-
-        $connexion->executeUpdate($query);
-
-        $actual = $this->getQuery()->fromProductIdentifiers(['root_product_model']);
         $this->assertSame([], $actual);
     }
 

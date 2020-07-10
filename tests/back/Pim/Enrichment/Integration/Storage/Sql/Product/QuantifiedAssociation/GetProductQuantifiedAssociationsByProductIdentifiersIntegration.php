@@ -356,6 +356,8 @@ class GetProductQuantifiedAssociationsByProductIdentifiersIntegration extends Ab
 
     /**
      * @test
+     *
+     * https://akeneo.atlassian.net/browse/PIM-9356
      */
     public function itDoesNotFailOnInvalidQuantifiedAssociations()
     {
@@ -363,8 +365,8 @@ class GetProductQuantifiedAssociationsByProductIdentifiersIntegration extends Ab
         $subProductModel = $this->getEntityBuilder()->createProductModel('sub_product_model_1', 'familyVariantWithTwoLevels', $rootProductModel, []);
         $this->getEntityBuilder()->createVariantProduct('variant_product_1', 'aFamily', 'familyVariantWithTwoLevels', $subProductModel, []);
 
-        /** @var Connection $connexion */
-        $connexion = $this->get('doctrine.dbal.default_connection');
+        /** @var Connection $connection */
+        $connection = $this->get('doctrine.dbal.default_connection');
 
         $query = <<<SQL
         UPDATE pim_catalog_product_model
@@ -372,7 +374,7 @@ class GetProductQuantifiedAssociationsByProductIdentifiersIntegration extends Ab
         WHERE code = 'root_product_model'
 SQL;
 
-        $connexion->executeUpdate($query);
+        $connection->executeUpdate($query);
 
         $actual = $this->getQuery()->fromProductIdentifiers(['variant_product_1']);
         $this->assertSame([], $actual);
