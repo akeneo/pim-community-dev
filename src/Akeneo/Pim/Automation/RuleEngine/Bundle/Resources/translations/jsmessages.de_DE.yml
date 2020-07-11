@@ -179,6 +179,12 @@ pimee_catalog_rule:
     select_another_attribute: "Wählen Sie ein anderes Attribut"
     or: oder
     create_attribute_link: hier klicken, um das Attribut zu erstellen
+pim_enrich:
+  entity:
+    rule:
+      module:
+        delete:
+          confirm: Sind Sie sicher, dass Sie diese Regel löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden
 flash:
   rule:
     executed: Die Anwendung der Regeln wurde gestartet. Sie werden benachrichtigt, sobald der Vorgang abgeschlossen ist.
