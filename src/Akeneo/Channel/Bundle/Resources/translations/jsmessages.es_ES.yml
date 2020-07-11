@@ -1,5 +1,6 @@
 batch_jobs:
   csv_currency_export:
+    label: Exportar monedas en CSV
     export.label: Exportar monedas
   csv_currency_import:
     label: Importar monedas en CSV
@@ -68,3 +69,8 @@ pim_enrich.entity.currency:
   plural_label: Monedas
   page_title:
     index: "]-Inf, 1]{{ count }} moneda|]1, Inf[{{ count }} monedas"
+flash:
+  currency:
+    error:
+      linked_to_channel: No puede desactivar una moneda vinculada a un canal
+    updated: Moneda actualizada correctamente
