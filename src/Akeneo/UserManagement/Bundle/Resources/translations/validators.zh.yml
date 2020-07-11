@@ -1,0 +1,3 @@
+pim_user:
+  min_role: "您必須選擇至少 {{ limit }} 個角色。|您必須選擇至少 {{ limit }} 個角色。"
+  password_match: "密碼字段必須匹配。"
