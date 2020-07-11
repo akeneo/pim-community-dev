@@ -178,6 +178,12 @@ pimee_catalog_rule:
     select_another_attribute: "Sélectionnez un autre attribut"
     or: ou
     create_attribute_link: cliquez ici pour créer l'attribut
+pim_enrich:
+  entity:
+    rule:
+      module:
+        delete:
+          confirm: Êtes-vous sûr de vouloir supprimer cette règle ? Il est impossible d'annuler cette action
 flash:
   rule:
     executed: L'exécution des règles est en cours, vous serez notifié(e) lorsque cela sera terminé.

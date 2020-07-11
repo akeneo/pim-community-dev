@@ -178,6 +178,12 @@ pimee_catalog_rule:
     select_another_attribute: "Select another attribute"
     or: or
     create_attribute_link: click here to create the attribute
+pim_enrich:
+  entity:
+    rule:
+      module:
+        delete:
+          confirm: Are you sure you want to delete this rule? This action cannot be undone
 flash:
   rule:
     executed: The rules execution has been launched. You will be notified when it is done.
