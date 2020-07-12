@@ -168,8 +168,6 @@ pimee_catalog_rule:
     loading: Beim Laden der Regeldefinition ist ein Fehler aufgetreten.
     required: Dieses Feld ist erforderlich
     required_attribute: Ein Attribut ist erforderlich
-    required_locale: Für dieses Attribut ist eine Gebietsschema erforderlich
-    required_scope: Für diesen Ausgabekanal ist eine Gebietsschema erforderlich
     required_value: Für diese Aktion ist ein Wert erforderlich
     unknown_or_inactive_locale: 'Die "{{ localeCode }}" Gebietsschema existiert nicht oder ist nicht aktiviert'
     unknown_scope: 'Der "{{ scopeCode }}" Ausgabekanal existiert nicht'
