@@ -167,8 +167,6 @@ pimee_catalog_rule:
     loading: Une erreur s'est produite lors du chargement de la définition de règle.
     required: Ce champ est obligatoire
     required_attribute: Vous devez indiquer un attribut
-    required_locale: Une locale est requise pour cet attribut
-    required_scope: Un canal est requis pour cet attribut
     required_value: Vous devez indiquer une valeur pour cette action
     unknown_or_inactive_locale: 'La locale "{{ localeCode }}" n''existe pas ou n''est pas activée'
     unknown_scope: 'Le canal "{{ scopeCode }}" n''existe pas'
