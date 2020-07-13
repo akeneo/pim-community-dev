@@ -118,7 +118,6 @@ type Props = {
 
 const CopyActionLine: React.FC<Props> = ({
   lineNumber,
-  // action,
   handleDelete,
   locales,
   scopes,
@@ -126,12 +125,9 @@ const CopyActionLine: React.FC<Props> = ({
   const translate = useTranslate();
   const router = useBackboneRouter();
   const { setValue } = useFormContext();
-  const {
-    formName,
-    typeFormName,
-    getFormValue,
-    // getFieldFormValue,
-  } = useControlledFormInputAction<string | null>(lineNumber);
+  const { formName, typeFormName, getFormValue } = useControlledFormInputAction<
+    string | null
+  >(lineNumber);
   const [attributeLeft, setAttributeLeft] = React.useState<
     Attribute | null | undefined
   >(undefined);
@@ -145,6 +141,7 @@ const CopyActionLine: React.FC<Props> = ({
 
   const handleSourceChange = (attribute: Attribute | null) => {
     setValue(formName('from_field'), attribute?.code);
+    setAttributeLeft(attribute);
     const supported = attribute
       ? supportedTypes().get(attribute.type) || []
       : [];
@@ -170,7 +167,6 @@ const CopyActionLine: React.FC<Props> = ({
     router,
     attributeLeft,
     (attribute: Attribute | null | undefined) => {
-      setAttributeLeft(attribute);
       if (attribute || attribute === null) {
         handleSourceChange(attribute);
       }
