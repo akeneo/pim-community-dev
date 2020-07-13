@@ -47,6 +47,7 @@
 - RUL-17: Rule engine - Add the concatenate action type to concatenate some attribute values into a single attribute value
 - RUL-28: Rule engine - As Peter, I'd like to calculate attribute values
 - AOB-277: Add an acl to allow a role member to view all job executions in last job execution grids, job tracker and last operations widget.
+- RAC-54: Enabled possibility to create quantified associations
 
 ## BC Breaks
 
