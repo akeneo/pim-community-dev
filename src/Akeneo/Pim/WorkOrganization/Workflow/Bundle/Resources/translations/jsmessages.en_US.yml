@@ -29,7 +29,7 @@ pimee_workflow:
 
     proposal:
         overview: "]-Inf, 1]{{ count }} proposal|]1, Inf[{{ count }} proposals"
-        selected: proposals selected
+        selected: "]-Inf, 1]{{ count }} proposal selected|]1, Inf[{{ count }} proposals selected"
         mass_action_group:
             review:
                 label: Bulk Action
