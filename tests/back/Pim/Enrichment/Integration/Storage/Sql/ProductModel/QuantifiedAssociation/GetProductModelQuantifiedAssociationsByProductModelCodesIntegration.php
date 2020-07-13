@@ -81,7 +81,7 @@ class GetProductModelQuantifiedAssociationsByProductModelCodesIntegration extend
     {
         $this->getEntityBuilder()->createProductModel('productModelB', 'familyVariantWithTwoLevels', null, []);
         $rootProductModel = $this->getEntityBuilder()->createProductModel('root_product_model', 'familyVariantWithTwoLevels', null, [
-            "quantified_associations" => [
+            'quantified_associations' => [
                 'PRODUCT_SET' => [
                     'product_models' => [
                         ['identifier' => 'productModelB', 'quantity' => 2],
@@ -145,7 +145,7 @@ class GetProductModelQuantifiedAssociationsByProductModelCodesIntegration extend
     {
         $this->getEntityBuilder()->createProductModel('productModelA', 'familyVariantWithTwoLevels', null, []);
         $rootProductModel = $this->getEntityBuilder()->createProductModel('root_product_model', 'familyVariantWithTwoLevels', null, [
-            "quantified_associations" => [
+            'quantified_associations' => [
                 'PRODUCT_SET' => [
                     'product_models' => [
                         ['identifier' => 'productModelA', 'quantity' => 999],
