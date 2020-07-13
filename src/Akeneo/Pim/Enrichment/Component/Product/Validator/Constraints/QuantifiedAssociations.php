@@ -18,6 +18,8 @@ class QuantifiedAssociations extends Constraint
     public const ASSOCIATION_TYPE_DOES_NOT_EXIST_MESSAGE = 'pim_catalog.constraint.quantified_associations.association_type_does_not_exist';
     public const ASSOCIATION_TYPE_IS_NOT_QUANTIFIED_MESSAGE = 'pim_catalog.constraint.quantified_associations.association_type_is_not_quantified';
 
+    public $propertyPath = null;
+
     /**
      * {@inheritdoc}
      */

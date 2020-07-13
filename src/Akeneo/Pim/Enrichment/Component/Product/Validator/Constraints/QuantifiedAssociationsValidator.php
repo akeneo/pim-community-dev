@@ -56,6 +56,10 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
         }
 
         $this->disablePropertyPathNormalization($constraint);
+        if ($constraint->propertyPath !== null) {
+            $this->overridePropertyPath($value, $constraint->propertyPath);
+        }
+
         $normalized = $value->normalize();
 
         foreach ($normalized as $associationTypeCode => $targets) {
@@ -208,6 +212,16 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
                 ->atPath($propertyPath)
                 ->addViolation();
         }
+    }
+
+    private function overridePropertyPath(QuantifiedAssociationsModel $value, string $propertyPath)
+    {
+        $this->context->setNode(
+            $value,
+            $this->context->getObject(),
+            $this->context->getMetadata(),
+            $propertyPath
+        );
     }
 
     /**
