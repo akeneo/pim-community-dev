@@ -30,6 +30,14 @@ class QuantifiedLink
         $this->quantity = $quantity;
     }
 
+    public static function createFromNormalize(array $quantifiedLinkNormalized): self
+    {
+        Assert::keyExists($quantifiedLinkNormalized, 'identifier');
+        Assert::keyExists($quantifiedLinkNormalized, 'quantity');
+
+        return new self($quantifiedLinkNormalized['identifier'], $quantifiedLinkNormalized['quantity']);
+    }
+
     public function identifier(): string
     {
         return $this->identifier;
