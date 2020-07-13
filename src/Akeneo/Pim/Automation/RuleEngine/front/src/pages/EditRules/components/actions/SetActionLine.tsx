@@ -64,6 +64,7 @@ const SetActionLine: React.FC<Props> = ({
     setFieldFormValue(attribute?.code);
   };
 
+  console.log({ attribute });
 
   return (
     <>
@@ -126,7 +127,9 @@ const SetActionLine: React.FC<Props> = ({
               onAttributeCodeChange={onAttributeChange}
               lineNumber={lineNumber}
               filterAttributeTypes={Object.keys(MANAGED_ATTRIBUTE_TYPES)}
-              disabled={!!attribute && !MANAGED_ATTRIBUTE_TYPES.get(attribute.type)}
+              disabled={
+                !!attribute && !MANAGED_ATTRIBUTE_TYPES.get(attribute.type)
+              }
             />
           </ActionLeftSide>
           <ActionRightSide>
