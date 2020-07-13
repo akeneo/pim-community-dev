@@ -26,7 +26,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
         associations:
             - Symfony\Component\Validator\Constraints\All:
                 - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\AssociationTypeIsNotQuantified: ~
-        quantifiedAssociations:
+        quantifiedAssociationCollection:
             - Symfony\Component\Validator\Constraints\Valid: ~
     getters:
         values:
