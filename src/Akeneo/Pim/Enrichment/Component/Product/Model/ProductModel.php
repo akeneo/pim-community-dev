@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\EntityWithQuantifiedAssociationTrait;
-use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
@@ -63,9 +63,9 @@ class ProductModel implements ProductModelInterface
     /**
      * Not persisted.
      *
-     * @var QuantifiedAssociations|null
+     * @var QuantifiedAssociationCollection|null
      */
-    protected $quantifiedAssociations;
+    protected $quantifiedAssociationCollection;
 
     /**
      * Create an instance of ProductModel.
@@ -77,7 +77,7 @@ class ProductModel implements ProductModelInterface
         $this->products = new ArrayCollection();
         $this->productModels = new ArrayCollection();
         $this->associations = new ArrayCollection();
-        $this->quantifiedAssociations = QuantifiedAssociations::createFromNormalized([]);
+        $this->quantifiedAssociationCollection = QuantifiedAssociationCollection::createFromNormalized([]);
     }
 
     /**

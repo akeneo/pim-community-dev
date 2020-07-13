@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\IdMapping;
-use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -13,7 +13,7 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class QuantifiedAssociationsSpec extends ObjectBehavior
+class QuantifiedAssociationCollectionSpec extends ObjectBehavior
 {
     public function let()
     {
@@ -41,7 +41,7 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType(QuantifiedAssociations::class);
+        $this->shouldHaveType(QuantifiedAssociationCollection::class);
     }
 
     public function it_is_normalizable()
@@ -546,7 +546,7 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
             ]
         );
 
-        $quantifiedAssociationsToMerge = QuantifiedAssociations::createFromNormalized([
+        $quantifiedAssociationsToMerge = QuantifiedAssociationCollection::createFromNormalized([
             'PACK' => [
                 'products' => [
                     ['identifier' => 'B', 'quantity' => 3],
@@ -556,7 +556,7 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
             ],
         ]);
 
-        $this->merge($quantifiedAssociationsToMerge)->shouldBeLike(QuantifiedAssociations::createFromNormalized([
+        $this->merge($quantifiedAssociationsToMerge)->shouldBeLike(QuantifiedAssociationCollection::createFromNormalized([
             'PACK' => [
                 'products' => [
                     ['identifier' => 'A', 'quantity' => 2],
