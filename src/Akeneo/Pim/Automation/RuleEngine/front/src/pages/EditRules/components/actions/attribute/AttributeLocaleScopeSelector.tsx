@@ -33,7 +33,7 @@ const ErrorBlock = styled.div`
 
 type Props = {
   attribute?: Attribute | null;
-  attributeCode: AttributeCode | null;
+  attributeCode: AttributeCode;
   attributeFormName: string;
   attributeId: string;
   attributeLabel: string;
@@ -112,7 +112,6 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
       <SelectorBlock
         className={null === attribute ? 'select2-container-error' : ''}>
         <AttributeSelector
-          key={attributeCode ?? attributeFormName}
           data-testid={attributeId}
           name={attributeFormName}
           label={attributeLabel}

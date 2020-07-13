@@ -55,6 +55,7 @@ const SetActionLine: React.FC<Props> = ({
   // Watch is needed in this case to trigger a render at input
   const { watch } = useFormContext();
   watch(valueFormName);
+  watch(fieldFormName);
 
   useGetAttributeAtMount(getFieldFormValue(), router, attribute, setAttribute);
 
@@ -63,8 +64,6 @@ const SetActionLine: React.FC<Props> = ({
     setValueFormValue('');
     setFieldFormValue(attribute?.code);
   };
-
-  console.log({ attribute });
 
   return (
     <>

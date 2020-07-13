@@ -1,5 +1,5 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import { ActionTitle } from './ActionLine';
@@ -29,6 +29,7 @@ const ClearAttributeActionLine: React.FC<Props> = ({
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
+  const { watch } = useFormContext();
   const [attribute, setAttribute] = React.useState<
     Attribute | null | undefined
   >(undefined);
@@ -39,7 +40,7 @@ const ClearAttributeActionLine: React.FC<Props> = ({
     setFieldFormValue,
     getFieldFormValue,
   } = useControlledFormInputAction<string>(lineNumber);
-
+  watch(fieldFormName);
   useGetAttributeAtMount(getFieldFormValue(), router, attribute, setAttribute);
 
   const onAttributeChange = (attribute: Attribute | null) => {

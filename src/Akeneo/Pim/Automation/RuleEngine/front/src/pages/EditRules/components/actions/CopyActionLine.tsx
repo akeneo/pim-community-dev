@@ -124,14 +124,16 @@ const CopyActionLine: React.FC<Props> = ({
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
-  const { setValue } = useFormContext();
   const { formName, typeFormName, getFormValue } = useControlledFormInputAction<
     string | null
   >(lineNumber);
-  const [attributeLeft, setAttributeLeft] = React.useState<
+  const { setValue, watch } = useFormContext();
+  watch(formName('from_field'));
+  watch(formName('to_field'));
+  const [attributeSource, setAttributeSource] = React.useState<
     Attribute | null | undefined
   >(undefined);
-  const [attributeRight, setAttributeRight] = React.useState<
+  const [attributeTarget, setAttributeTarget] = React.useState<
     Attribute | null | undefined
   >(undefined);
 
@@ -141,7 +143,7 @@ const CopyActionLine: React.FC<Props> = ({
 
   const handleSourceChange = (attribute: Attribute | null) => {
     setValue(formName('from_field'), attribute?.code);
-    setAttributeLeft(attribute);
+    setAttributeSource(attribute);
     const supported = attribute
       ? supportedTypes().get(attribute.type) || []
       : [];
@@ -149,7 +151,7 @@ const CopyActionLine: React.FC<Props> = ({
     const targetAttributeCode = getFormValue('to_field');
     if (targetAttributeCode) {
       getAttributeByIdentifier(targetAttributeCode, router).then(attribute => {
-        setAttributeRight(attribute);
+        setAttributeTarget(attribute);
         if (!attribute || !supported.includes(attribute.type)) {
           setValue(formName('to_field'), null);
         }
@@ -158,14 +160,14 @@ const CopyActionLine: React.FC<Props> = ({
   };
 
   const handleTargetChange = (attribute: Attribute | null) => {
-    setAttributeRight(attribute);
+    setAttributeTarget(attribute);
     setValue(formName('to_field'), attribute?.code);
   };
 
   useGetAttributeAtMount(
     getFormValue('from_field'),
     router,
-    attributeLeft,
+    attributeSource,
     (attribute: Attribute | null | undefined) => {
       if (attribute || attribute === null) {
         handleSourceChange(attribute);
@@ -206,7 +208,7 @@ const CopyActionLine: React.FC<Props> = ({
               )}
             </ActionTitle>
             <AttributeLocaleScopeSelector
-              attribute={attributeLeft}
+              attribute={attributeSource}
               attributeCode={getFormValue('from_field')}
               attributeFormName={formName('from_field')}
               attributeId={`edit-rules-action-${lineNumber}-from-field`}
@@ -235,7 +237,7 @@ const CopyActionLine: React.FC<Props> = ({
             </ActionTitle>
             {targetAttributeTypes.length > 0 ? (
               <AttributeLocaleScopeSelector
-                attribute={attributeRight}
+                attribute={attributeTarget}
                 attributeCode={getFormValue('to_field')}
                 attributeFormName={formName('to_field')}
                 attributeId={`edit-rules-action-${lineNumber}-to-field`}
