@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Adder;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithQuantifiedAssociationsInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\FieldAdderInterface;
 use PhpSpec\ObjectBehavior;
@@ -29,8 +29,8 @@ class QuantifiedAssociationFieldAdderSpec extends ObjectBehavior
 
     function it_merge_quantified_associations(
         EntityWithQuantifiedAssociationsInterface $entityWithQuantifiedAssociations,
-        QuantifiedAssociations $currentQuantifiedAssociations,
-        QuantifiedAssociations $quantifiedAssociationsMerged
+        QuantifiedAssociationCollection $currentQuantifiedAssociations,
+        QuantifiedAssociationCollection $quantifiedAssociationsMerged
     ) {
         $dataToAdd = [
             'PRODUCT_SET' => [
@@ -45,7 +45,7 @@ class QuantifiedAssociationFieldAdderSpec extends ObjectBehavior
             ],
         ];
 
-        $quantifiedAssociationToAdd = QuantifiedAssociations::createFromNormalized([
+        $quantifiedAssociationToAdd = QuantifiedAssociationCollection::createFromNormalized([
             'PRODUCT_SET' => [
                 'products' => [
                     ['identifier' => 'productA', 'quantity' => 8]

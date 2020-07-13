@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithQuantifiedAssociationsInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
