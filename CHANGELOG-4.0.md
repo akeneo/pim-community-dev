@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.40 (2020-07-13)
+
 ## Bug fixes
 
 - PIM-9351: Fix the thumbnail preview of transparent PDFs in the asset manager
