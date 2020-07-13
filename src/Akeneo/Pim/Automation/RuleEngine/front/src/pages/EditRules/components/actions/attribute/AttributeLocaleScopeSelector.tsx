@@ -1,6 +1,5 @@
 import React from 'react';
 import { Attribute, AttributeCode, Locale } from '../../../../../models';
-import { useFormContext } from 'react-hook-form';
 import { AttributeSelector } from '../../../../../components/Selectors/AttributeSelector';
 import {
   getScopeValidation,
@@ -15,7 +14,6 @@ import {
   useTranslate,
   useUserCatalogLocale,
 } from '../../../../../dependenciesTools/hooks';
-import { getAttributeByIdentifier } from '../../../../../repositories/AttributeRepository';
 import { Controller } from 'react-hook-form';
 import { useControlledFormInputAction } from '../../../hooks';
 
@@ -23,6 +21,7 @@ import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
 import styled from 'styled-components';
 import { InlineHelper } from '../../../../../components/HelpersInfos/InlineHelper';
 import { ActionFormContainer } from '../style';
+import { fetchAttribute } from '../attribute/attribute.utils';
 
 const SelectorBlock = styled.div`
   margin-bottom: 15px;
@@ -33,7 +32,8 @@ const ErrorBlock = styled.div`
 `;
 
 type Props = {
-  attributeCode: AttributeCode | null;
+  attribute?: Attribute | null;
+  attributeCode: AttributeCode;
   attributeFormName: string;
   attributeId: string;
   attributeLabel: string;
@@ -44,7 +44,7 @@ type Props = {
   localeLabel?: string;
   locales: Locale[];
   scopes: IndexedScopes;
-  onAttributeChange?: (attribute: Attribute | null) => void;
+  onAttributeCodeChange?: (attribute: Attribute | null) => void;
   lineNumber: number;
   filterAttributeTypes?: string[];
   disabled?: boolean;
@@ -53,6 +53,7 @@ type Props = {
 };
 
 export const AttributeLocaleScopeSelector: React.FC<Props> = ({
+  attribute,
   attributeFormName,
   attributeCode,
   attributeId,
@@ -64,7 +65,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   localeLabel,
   locales,
   scopes,
-  onAttributeChange,
+  onAttributeCodeChange,
   lineNumber,
   filterAttributeTypes,
   disabled,
@@ -84,29 +85,6 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   const localeFormName = formName(localeFieldName || 'locale');
   const getLocaleFormValue = () => getFormValue(localeFieldName || 'locale');
 
-  const { clearError } = useFormContext();
-  /**
-   * - if attribute is defined, it exists.
-   * - if attribute is undefined, it is currently fetching
-   * - if attribute is null, it does not exist.
-   */
-  const [attribute, setAttribute] = React.useState<Attribute | null>();
-  const [attributeIsChanged, setAttributeIsChanged] = React.useState<boolean>(
-    false
-  );
-
-  const refreshAttribute: (
-    attributeCode: AttributeCode | null
-  ) => void = async attributeCode => {
-    const attribute = attributeCode
-      ? await getAttributeByIdentifier(attributeCode, router)
-      : undefined;
-    setAttribute(attribute);
-    if (onAttributeChange) {
-      onAttributeChange(attribute || null);
-    }
-  };
-
   const getAvailableLocales = (): Locale[] => {
     if (!attribute?.scopable) {
       return locales;
@@ -118,43 +96,17 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
     return [];
   };
 
-  const onAttributeCodeChange = (value: any) => {
-    refreshAttribute(value);
-    setAttributeIsChanged(true);
-    clearError(attributeFormName);
+  const handleAttributeCodeChange = (value: any) => {
+    const getAttribute = async (attributeCode: AttributeCode) => {
+      const attribute = await fetchAttribute(router, attributeCode);
+      if (onAttributeCodeChange) {
+        onAttributeCodeChange(attribute);
+      }
+    };
+    getAttribute(value);
   };
-
-  const validateAttribute = async (value: any): Promise<string | true> => {
-    if (!value) {
-      return translate('pimee_catalog_rule.exceptions.required_attribute');
-    }
-
-    const attribute = await getAttributeByIdentifier(value, router);
-    if (null === attribute) {
-      return `${translate(
-        'pimee_catalog_rule.exceptions.unknown_attribute'
-      )} ${translate(
-        'pimee_catalog_rule.exceptions.select_another_attribute_or_remove_action'
-      )}`;
-    }
-
-    return true;
-  };
-
-  React.useEffect(() => {
-    if (attributeCode) {
-      refreshAttribute(attributeCode);
-    }
-  }, []);
-
-  React.useEffect(() => {
-    setAttribute(undefined);
-    refreshAttribute(attributeCode);
-    setAttributeIsChanged(false);
-  }, [attributeCode]);
 
   const isDisabled = () => disabled ?? null === attribute;
-
   return (
     <ActionFormContainer>
       <SelectorBlock
@@ -165,9 +117,8 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
           label={attributeLabel}
           currentCatalogLocale={currentCatalogLocale}
           value={attributeCode}
-          onChange={onAttributeCodeChange}
+          onChange={handleAttributeCodeChange}
           placeholder={attributePlaceholder}
-          validation={{ validate: validateAttribute }}
           filterAttributeTypes={filterAttributeTypes}
           disabled={disabled}
         />
@@ -202,8 +153,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
           </InlineHelper>
         </SelectorBlock>
       )}
-      {(attribute?.scopable ||
-        (!attributeIsChanged && getScopeFormValue())) && (
+      {attribute && attribute?.scopable && (
         <SelectorBlock>
           <Controller
             as={ScopeSelector}
@@ -219,9 +169,9 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
             currentCatalogLocale={currentCatalogLocale}
             value={getScopeFormValue()}
             allowClear={!attribute?.scopable}
-            disabled={null === attribute}
+            disabled={isDisabled()}
             rules={getScopeValidation(
-              attribute || null,
+              attribute,
               scopes,
               translate,
               currentCatalogLocale
@@ -229,8 +179,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
           />
         </SelectorBlock>
       )}
-      {(attribute?.localizable ||
-        (!attributeIsChanged && getLocaleFormValue())) && (
+      {attribute && attribute?.localizable && (
         <SelectorBlock>
           <Controller
             as={LocaleSelector}
@@ -246,7 +195,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
             value={getLocaleFormValue()}
             allowClear={!attribute?.localizable}
             rules={getLocaleValidation(
-              attribute || null,
+              attribute,
               locales,
               getAvailableLocales(),
               getScopeFormValue(),

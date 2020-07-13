@@ -89,9 +89,10 @@ describe('AttributeValue', () => {
       />,
       { all: true }
     );
-
     expect(
-      screen.getByText(getAttributeLabel(attribute, 'en_US'))
+      screen.getByText(
+        `${getAttributeLabel(attribute, 'en_US')} pim_common.required_label`
+      )
     ).toBeInTheDocument();
     const valueInput = screen.getByTestId('attribute-value-id');
     expect(valueInput).toHaveValue('default');
@@ -132,7 +133,9 @@ describe('AttributeValue', () => {
     );
 
     expect(
-      await screen.findByText(getAttributeLabel(attribute, 'en_US'))
+      screen.getByText(
+        `${getAttributeLabel(attribute, 'en_US')} pim_common.required_label`
+      )
     ).toBeInTheDocument();
     const valueInput = await screen.findByTestId('attribute-value-id');
     expect(valueInput).toHaveValue('test2');

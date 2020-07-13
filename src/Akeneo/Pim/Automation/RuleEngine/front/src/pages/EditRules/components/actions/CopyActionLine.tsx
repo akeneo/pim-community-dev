@@ -1,4 +1,5 @@
 import React from 'react';
+import { useGetAttributeAtMount } from './attribute/attribute.utils';
 import { CopyAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
@@ -112,22 +113,29 @@ const supportedTypes: () => Map<AttributeType, AttributeType[]> = () => {
 };
 
 type Props = {
-  action: CopyAction;
+  action?: CopyAction;
 } & ActionLineProps;
 
 const CopyActionLine: React.FC<Props> = ({
   lineNumber,
-  action,
   handleDelete,
   locales,
   scopes,
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
-  const { setValue } = useFormContext();
   const { formName, typeFormName, getFormValue } = useControlledFormInputAction<
     string | null
   >(lineNumber);
+  const { setValue, watch } = useFormContext();
+  watch(formName('from_field'));
+  watch(formName('to_field'));
+  const [attributeSource, setAttributeSource] = React.useState<
+    Attribute | null | undefined
+  >(undefined);
+  const [attributeTarget, setAttributeTarget] = React.useState<
+    Attribute | null | undefined
+  >(undefined);
 
   const [targetAttributeTypes, setTargetAttributeTypes] = React.useState<
     AttributeType[]
@@ -135,6 +143,7 @@ const CopyActionLine: React.FC<Props> = ({
 
   const handleSourceChange = (attribute: Attribute | null) => {
     setValue(formName('from_field'), attribute?.code);
+    setAttributeSource(attribute);
     const supported = attribute
       ? supportedTypes().get(attribute.type) || []
       : [];
@@ -142,6 +151,7 @@ const CopyActionLine: React.FC<Props> = ({
     const targetAttributeCode = getFormValue('to_field');
     if (targetAttributeCode) {
       getAttributeByIdentifier(targetAttributeCode, router).then(attribute => {
+        setAttributeTarget(attribute);
         if (!attribute || !supported.includes(attribute.type)) {
           setValue(formName('to_field'), null);
         }
@@ -150,16 +160,20 @@ const CopyActionLine: React.FC<Props> = ({
   };
 
   const handleTargetChange = (attribute: Attribute | null) => {
+    setAttributeTarget(attribute);
     setValue(formName('to_field'), attribute?.code);
   };
 
-  React.useEffect(() => {
-    if (action.from_field) {
-      getAttributeByIdentifier(action.from_field, router).then(attribute => {
+  useGetAttributeAtMount(
+    getFormValue('from_field'),
+    router,
+    attributeSource,
+    (attribute: Attribute | null | undefined) => {
+      if (attribute || attribute === null) {
         handleSourceChange(attribute);
-      });
+      }
     }
-  }, []);
+  );
 
   const sourceAttributeTypes = Array.from(supportedTypes().keys());
 
@@ -194,6 +208,7 @@ const CopyActionLine: React.FC<Props> = ({
               )}
             </ActionTitle>
             <AttributeLocaleScopeSelector
+              attribute={attributeSource}
               attributeCode={getFormValue('from_field')}
               attributeFormName={formName('from_field')}
               attributeId={`edit-rules-action-${lineNumber}-from-field`}
@@ -208,7 +223,7 @@ const CopyActionLine: React.FC<Props> = ({
               locales={locales}
               scopes={scopes}
               filterAttributeTypes={sourceAttributeTypes}
-              onAttributeChange={handleSourceChange}
+              onAttributeCodeChange={handleSourceChange}
               lineNumber={lineNumber}
               scopeFieldName={'from_scope'}
               localeFieldName={'from_locale'}
@@ -222,6 +237,7 @@ const CopyActionLine: React.FC<Props> = ({
             </ActionTitle>
             {targetAttributeTypes.length > 0 ? (
               <AttributeLocaleScopeSelector
+                attribute={attributeTarget}
                 attributeCode={getFormValue('to_field')}
                 attributeFormName={formName('to_field')}
                 attributeId={`edit-rules-action-${lineNumber}-to-field`}
@@ -237,7 +253,7 @@ const CopyActionLine: React.FC<Props> = ({
                 scopes={scopes}
                 filterAttributeTypes={targetAttributeTypes}
                 lineNumber={lineNumber}
-                onAttributeChange={handleTargetChange}
+                onAttributeCodeChange={handleTargetChange}
                 scopeFieldName={'to_scope'}
                 localeFieldName={'to_locale'}
               />

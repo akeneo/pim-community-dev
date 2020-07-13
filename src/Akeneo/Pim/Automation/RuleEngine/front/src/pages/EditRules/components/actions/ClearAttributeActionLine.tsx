@@ -1,40 +1,64 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import { ActionTitle } from './ActionLine';
 import { ClearAttributeAction } from '../../../../models/actions';
 import { AttributeLocaleScopeSelector } from './attribute/AttributeLocaleScopeSelector';
 import { LineErrors } from '../LineErrors';
-import { useTranslate } from '../../../../dependenciesTools/hooks';
+import {
+  useTranslate,
+  useBackboneRouter,
+} from '../../../../dependenciesTools/hooks';
 import { useControlledFormInputAction } from '../../hooks';
+import { Attribute } from '../../../../models';
+import {
+  validateAttribute,
+  useGetAttributeAtMount,
+} from './attribute/attribute.utils';
 
 type Props = {
-  action: ClearAttributeAction;
+  action?: ClearAttributeAction;
 } & ActionLineProps;
 
 const ClearAttributeActionLine: React.FC<Props> = ({
   lineNumber,
-  action,
   handleDelete,
   locales,
   scopes,
 }) => {
   const translate = useTranslate();
-  const { fieldFormName, typeFormName } = useControlledFormInputAction<string>(
-    lineNumber
-  );
+  const router = useBackboneRouter();
+  const { watch } = useFormContext();
+  const [attribute, setAttribute] = React.useState<
+    Attribute | null | undefined
+  >(undefined);
+
+  const {
+    fieldFormName,
+    typeFormName,
+    setFieldFormValue,
+    getFieldFormValue,
+  } = useControlledFormInputAction<string>(lineNumber);
+  watch(fieldFormName);
+  useGetAttributeAtMount(getFieldFormValue(), router, attribute, setAttribute);
+
+  const onAttributeChange = (attribute: Attribute | null) => {
+    setAttribute(attribute);
+    setFieldFormValue(attribute?.code);
+  };
 
   return (
     <>
       <Controller
         name={fieldFormName}
-        as={<input type='hidden' />}
+        as={<span hidden />}
         defaultValue=''
+        rules={{ validate: validateAttribute(translate, router) }}
       />
       <Controller
         name={typeFormName}
-        as={<input type='hidden' />}
+        as={<span hidden />}
         defaultValue='clear'
       />
       <ActionTemplate
@@ -44,12 +68,14 @@ const ClearAttributeActionLine: React.FC<Props> = ({
         helper={translate('pimee_catalog_rule.form.helper.clear_attribute')}
         legend={translate('pimee_catalog_rule.form.helper.clear_attribute')}
         handleDelete={handleDelete}>
+        <LineErrors lineNumber={lineNumber} type='actions' />
         <ActionTitle>
           {translate(
             'pimee_catalog_rule.form.edit.actions.clear_attribute.subtitle'
           )}
         </ActionTitle>
         <AttributeLocaleScopeSelector
+          attribute={attribute}
           attributeId={`edit-rules-action-${lineNumber}-field`}
           attributeLabel={`${translate(
             'pimee_catalog_rule.form.edit.fields.attribute'
@@ -57,15 +83,15 @@ const ClearAttributeActionLine: React.FC<Props> = ({
           attributePlaceholder={translate(
             'pimee_catalog_rule.form.edit.actions.clear_attribute.subtitle'
           )}
-          attributeCode={action.field}
+          attributeCode={getFieldFormValue() ?? ''}
           scopeId={`edit-rules-action-${lineNumber}-scope`}
           scopes={scopes}
           localeId={`edit-rules-action-${lineNumber}-locale`}
           locales={locales}
           lineNumber={lineNumber}
           attributeFormName={fieldFormName}
+          onAttributeCodeChange={onAttributeChange}
         />
-        <LineErrors lineNumber={lineNumber} type='actions' />
       </ActionTemplate>
     </>
   );
