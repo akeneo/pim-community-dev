@@ -1,0 +1,4 @@
+akeneo_shared_catalog_catalog_index_rest:
+    path: '/api/rest/v1/shared-catalogs'
+    defaults: { _controller: Akeneo\SharedCatalog\Controller\SharedCatalogListAction }
+    methods: [GET]
