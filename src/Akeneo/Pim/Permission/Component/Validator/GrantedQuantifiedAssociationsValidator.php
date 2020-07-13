@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Component\Validator;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Permission\Component\Query\ProductCategoryAccessQueryInterface;
 use Akeneo\Pim\Permission\Component\Query\ProductModelCategoryAccessQueryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -42,8 +42,8 @@ class GrantedQuantifiedAssociationsValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        if (!$value instanceof QuantifiedAssociations) {
-            throw new UnexpectedTypeException($value, QuantifiedAssociations::class);
+        if (!$value instanceof QuantifiedAssociationCollection) {
+            throw new UnexpectedTypeException($value, QuantifiedAssociationCollection::class);
         }
 
         if (!$constraint instanceof GrantedQuantifiedAssociations) {

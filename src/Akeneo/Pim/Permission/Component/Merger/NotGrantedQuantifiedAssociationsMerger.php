@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Permission\Component\Merger;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithQuantifiedAssociationsInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;
 use Akeneo\Pim\Permission\Component\Query\ProductCategoryAccessQueryInterface;
@@ -80,8 +80,8 @@ class NotGrantedQuantifiedAssociationsMerger implements NotGrantedDataMergerInte
     }
 
     private function filterQuantifiedAssociationsNotGranted(
-        QuantifiedAssociations $quantifiedAssociations
-    ): QuantifiedAssociations {
+        QuantifiedAssociationCollection $quantifiedAssociations
+    ): QuantifiedAssociationCollection {
         $quantifiedAssociationsProductIdentifiers = $quantifiedAssociations->getQuantifiedAssociationsProductIdentifiers();
         $quantifiedAssociationsProductModelCodes = $quantifiedAssociations->getQuantifiedAssociationsProductModelCodes();
         $user = $this->tokenStorage->getToken()->getUser();

@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\Permission\Component\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithQuantifiedAssociationsInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Permission\Bundle\Entity\Query\ProductCategoryAccessQuery;
 use Akeneo\Pim\Permission\Bundle\Entity\Query\ProductModelCategoryAccessQuery;
 use Akeneo\Pim\Permission\Component\Filter\NotGrantedQuantifiedAssociationsFilter;
@@ -51,7 +51,7 @@ class NotGrantedQuantifiedAssociationsFilterSpec extends ObjectBehavior
         EntityWithQuantifiedAssociationsInterface $entityWithQuantifiedAssociations,
         UserInterface $user
     ) {
-        $quantifiedAssociations = QuantifiedAssociations::createFromNormalized([
+        $quantifiedAssociations = QuantifiedAssociationCollection::createFromNormalized([
             'COMPOSITION' => [
                 'products' => [
                     ['identifier' => 'a_motor', 'quantity' => 1],
@@ -98,7 +98,7 @@ class NotGrantedQuantifiedAssociationsFilterSpec extends ObjectBehavior
         EntityWithQuantifiedAssociationsInterface $entityWithQuantifiedAssociations,
         UserInterface $user
     ) {
-        $quantifiedAssociations = QuantifiedAssociations::createFromNormalized([
+        $quantifiedAssociations = QuantifiedAssociationCollection::createFromNormalized([
             'COMPOSITION' => [
                 'products' => [
                     ['identifier' => 'a_motor', 'quantity' => 1],
