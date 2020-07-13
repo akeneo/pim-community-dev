@@ -61,6 +61,7 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
                 'groups' => ['Default', 'FileConfiguration'],
             ]
         );
+        $constraintFields['publisher'] = new Type(['type' => ['string', 'null']]);
         $constraintFields['recipients'] = [
             new Type([
                 'type' => 'array',
