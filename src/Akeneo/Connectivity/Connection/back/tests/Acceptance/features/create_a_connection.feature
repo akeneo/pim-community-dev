@@ -1,4 +1,4 @@
-@acceptance-back
+@skip @acceptance-back
 Feature: Create a Connection
 
   Scenario: Successfully create a Connection

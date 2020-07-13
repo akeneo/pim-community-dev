@@ -116,7 +116,6 @@ legacy:
             contexts: *context
             paths:
                 - tests/legacy/features
-                - src/Akeneo/Connectivity/Connection/tests/features/
             filters:
                 tags: '~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated&&~@critical'
         chipmunk:
@@ -140,10 +139,6 @@ legacy:
                 - tests/legacy/features/platform/
             filters:
                 tags: '~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated&&~@critical'
-        connectivity:
-            contexts: *context
-            paths:
-                - src/Akeneo/Connectivity/Connection/tests/features/
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:
