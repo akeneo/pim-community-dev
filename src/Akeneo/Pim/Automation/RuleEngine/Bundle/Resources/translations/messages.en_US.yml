@@ -2,13 +2,10 @@ pimee_catalog_rule:
     datagrid:
         rule-grid:
             actions:
-                delete: Delete
                 execute: Execute
             title: Rules
             column:
                 label: Label
-                conditions: Condition
-                actions: Action
                 impacted_product_count:
                     label: Impacted products
                     count: '{0,1}%count% impacted product|]1,Inf[%count% impacted products'
@@ -19,52 +16,7 @@ pimee_catalog_rule:
                 impacted_product_count: Calculate the impacted products
                 execute: Execute
                 delete: Delete
-    actions:
-        type:
-            "copy": Then %from_field% is copied into %to_field%
-            "copy_value": Then %from_field% is copied into %to_field%
-            "set": Then %value% is set into %field%
-            "set_value": Then %value% is set into %field%
-            "add": Then %value% is added to %field%
-            "remove": Then %value% is removed from %field%
-            "concatenate": Then %fields% are concatenated into %to_field%
-            clear: Then %field% is cleared
-            calculate: Then %field% is calculated %operation_details%
-            calculate_first_operation:
-                add: by adding %operand% to %source%
-                subtract: by subtracting %operand% from %source%
-                multiply: by multiplying %source% by %operand%
-                divide: by dividing %source% by %operand%
-            calculate_other_operation:
-                add: , then by adding %operand%
-                subtract: , then by subtracting %operand%
-                divide: , then by dividing by %operand%
-                multiply: , then by multiplying by %operand%
-        options:
-            include_children: and children
     condition:
-        label: If %field% %operator% %value%
-        operators:
-            "STARTS WITH": starts with
-            "ENDS WITH": ends with
-            "CONTAINS": contains
-            "DOES NOT CONTAIN": does not contain
-            "EMPTY": is empty
-            "NOT EMPTY": is not empty
-            "IN": in
-            "NOT IN": not in
-            "IN CHILDREN": in children
-            "NOT IN CHILDREN": not in children
-            "UNCLASSIFIED": is unclassified
-            "IN OR UNCLASSIFIED": is unclassified or in
-            "BETWEEN": between
-            "NOT BETWEEN": not between
-            "=": equals
-            "!=": not equal
-            ">": greater than
-            ">=": equals or greater than
-            "<": less than
-            "<=": equals or less than
         fields:
             family: Family
             associations: Associations
@@ -76,9 +28,11 @@ pimee_catalog_rule:
         rule: Rules
     acl:
         rule:
+            edit_permissions: Edit rules
             view_permissions: View rules
             delete_permissions: Delete rules
             impacted_product_count_permissions: Calculate the number of products impacted by the rules
+            create_permissions: Create rules
             execute_permissions: Execute rules
     attribute:
         tab:

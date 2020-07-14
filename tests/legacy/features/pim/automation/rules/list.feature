@@ -220,61 +220,6 @@ Feature: List all rules
     And the grid should contain 7 elements
     And I should be able to sort the rows by label
 
-    And the row "Copy Description" should contain the texts:
-      | column    | value                                                                         |
-      | Condition | If name equals My nice tshirt [ en ]                                          |
-      | Condition | If weather_conditions.code in dry, wet                                        |
-      | Condition | If comment starts with promo                                                  |
-      | Action    | Then 4 is set into rating                                                     |
-      | Action    | Then description [ en \| mobile ] is copied into description [ en \| tablet ] |
-      | Action    | Then description [ en \| mobile ] is copied into description [ fr \| mobile ] |
-      | Action    | Then description [ en \| mobile ] is copied into description [ fr \| tablet ] |
-      | Actions   | set copy                                                                      |
-
-    And the row "Tees Collection Update" should contain the texts:
-      | column    | value                                                               |
-      | Condition | If categories in tees                                               |
-      | Condition | If enabled equals false                                             |
-      | Condition | If description is empty [ en \| mobile ]                            |
-      | Action    | Then une belle description is set into description [ fr \| mobile ] |
-      | Action    | Then 800 is set into number_in_stock [ tablet ]                     |
-      | Action    | Then 05/26/2015 is set into release_date [ mobile ]                 |
-      | Action    | Then €12.00 is set into price                                       |
-      | Action    | Then akeneo.jpg is set into side_view                               |
-      | Action    | Then 10 Centimeter is set into length                               |
-      | Action    | Then name [ en ] is copied into name [ fr ]                         |
-      | Action    | Then name [ en ] is copied into name [ de ]                         |
-      | Action    | Then true is set into enabled                                       |
-      | Actions   | set copy                                                            |
-
-    And the row "Unclassify 2014 Collection Tees" should contain the texts:
-      | column    | value                                                               |
-      | Condition | If family in tees                                                   |
-      | Condition | If enabled equals false                                             |
-      | Action    | Then 2014_collection and children is removed from categories        |
-      | Actions   | remove                                                              |
-
-    And the row "Nineties" should contain the texts:
-      | column    | value                                                        |
-      | Condition | If release_date between 01/15/1990, 01/15/2000 [ mobile ]    |
-      | Action    | Then 2014_collection and children is removed from categories |
-
-    And the row "Concatenate Rule" should contain the texts:
-      | column    | value                                                                                |
-      | Condition | If family in tees                                                                    |
-      | Action    | Then sku, release_date [ mobile ] are concatenated into description [ en \| tablet ] |
-      | Actions   | concatenate                                                                          |
-
-    And the row "Clear Rule" should contain the texts:
-      | column    | value                                        |
-      | Condition | If family in tees                            |
-      | Action    | Then description [ en \| tablet ] is cleared |
-
-    And the row "Calculate Rule" should contain the texts:
-      | column    | value                                                                                                                                                                                                               |
-      | Condition | If family in tees                                                                                                                                                                                                   |
-      | Action    | Then total_weight [ en \| tablet ] is calculated by multiplying weight by 5, then by dividing by in_stock [ tablet ], then by adding 1, then by subtracting booked_stock [ en ], then by subtracting booked_stock [ fr ] |
-
   Scenario: Successfully search rules
     Given I am on the rules page
     When I search "description"

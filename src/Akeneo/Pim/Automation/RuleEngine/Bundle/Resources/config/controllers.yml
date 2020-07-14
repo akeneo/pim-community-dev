@@ -39,6 +39,7 @@ services:
             - '@akeneo_rule_engine.normalizer.rule_definition'
             - '@pim_internal_api_serializer'
             - '@validator'
+            - '@oro_security.security_facade'
 
     pimee_enrich.controller.rule_definition.update:
         class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi\UpdateRuleDefinitionController'
@@ -50,6 +51,7 @@ services:
             - '@akeneo_rule_engine.normalizer.rule_definition'
             - '@pim_internal_api_serializer'
             - '@validator'
+            - '@oro_security.security_facade'
 
     pimee_enrich.controller.rule_definition.get_impacted_product_count:
         class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi\GetImpactedProductCountController'

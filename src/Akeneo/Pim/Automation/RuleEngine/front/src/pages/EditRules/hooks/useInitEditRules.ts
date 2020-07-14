@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getRuleDefinitionByCode } from '../../../fetch/RuleDefinitionFetcher';
 import { Locale, RuleDefinition } from '../../../models';
-import { Router } from '../../../dependenciesTools';
+import { Router, Security, Translate } from '../../../dependenciesTools';
 import {
   getAllScopes,
   IndexedScopes,
@@ -18,6 +18,8 @@ type Error = {
 const useInitEditRules = (
   ruleDefinitionCode: string,
   router: Router,
+  security: Security,
+  translate: Translate,
   setRuleDefinition: (ruleDefinition: RuleDefinition) => void
 ) => {
   const [error, setError] = useState<Error>({
@@ -29,6 +31,18 @@ const useInitEditRules = (
   const [scopes, setScopes] = useState<IndexedScopes>();
 
   useEffect(() => {
+    if (!security.isGranted('pimee_catalog_rule_rule_edit_permissions')) {
+      setError({
+        exception: new Error(
+          translate('pimee_catalog_rule.exceptions.edit_unauthorize')
+        ),
+        status: true,
+        statusCode: 401,
+      });
+
+      return;
+    }
+
     Promise.all([
       getRuleDefinitionByCode(ruleDefinitionCode, router),
       getActivatedLocales(router),

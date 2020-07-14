@@ -1,3 +1,5 @@
+@import './public/bundles/akeneopimruleengine/less/variables';
+
 .AknRuleEngine {
   &-edit {
     overflow: auto;
@@ -104,5 +106,21 @@
       border-left: 1px solid @AknPurple100;
       padding-left: 20px;
     }
+  }
+}
+
+.from-smart {
+  background-image: url("/bundles/pimui/images/icon-info.svg");
+  background-repeat: no-repeat;
+  line-height: 16px;
+  padding-left: 20px;
+  margin: 10px 0 0 0;
+  min-height: 16px;
+  background-size: 16px;
+
+  span[data-url] {
+    cursor: pointer;
+    color: @AknBlue100;
+    text-decoration: underline;
   }
 }
