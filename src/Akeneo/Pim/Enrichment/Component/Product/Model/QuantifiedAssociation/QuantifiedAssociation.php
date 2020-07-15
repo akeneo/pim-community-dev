@@ -93,7 +93,7 @@ class QuantifiedAssociation
             return $this;
         }
 
-        $quantifiedLinkFiltered = array_filter($this->quantifiedLinks, function(QuantifiedLink $quantifiedLink) use ($productIdentifiersToKeep) {
+        $quantifiedLinkFiltered = array_filter($this->quantifiedLinks, function (QuantifiedLink $quantifiedLink) use ($productIdentifiersToKeep) {
             return in_array($quantifiedLink->identifier(), $productIdentifiersToKeep);
         });
 
@@ -116,7 +116,7 @@ class QuantifiedAssociation
             return $this;
         }
 
-        $quantifiedLinkFiltered = array_filter($this->quantifiedLinks, function(QuantifiedLink $quantifiedLink) use ($productModelCodesToKeep) {
+        $quantifiedLinkFiltered = array_filter($this->quantifiedLinks, function (QuantifiedLink $quantifiedLink) use ($productModelCodesToKeep) {
             return in_array($quantifiedLink->identifier(), $productModelCodesToKeep);
         });
 

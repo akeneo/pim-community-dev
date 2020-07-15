@@ -190,7 +190,7 @@ class QuantifiedAssociationCollection
 
     public function filterProductIdentifiers(array $productIdentifiersToKeep): QuantifiedAssociationCollection
     {
-        $filteredQuantifiedAssociations = array_map(function(QuantifiedAssociation $quantifiedAssociation) use ($productIdentifiersToKeep) {
+        $filteredQuantifiedAssociations = array_map(function (QuantifiedAssociation $quantifiedAssociation) use ($productIdentifiersToKeep) {
             return $quantifiedAssociation->filterProductIdentifiers($productIdentifiersToKeep);
         }, $this->quantifiedAssociations);
 
@@ -199,7 +199,7 @@ class QuantifiedAssociationCollection
 
     public function filterProductModelCodes(array $productModelCodesToKeep): QuantifiedAssociationCollection
     {
-        $filteredQuantifiedAssociations = array_map(function(QuantifiedAssociation $quantifiedAssociation) use ($productModelCodesToKeep) {
+        $filteredQuantifiedAssociations = array_map(function (QuantifiedAssociation $quantifiedAssociation) use ($productModelCodesToKeep) {
             return $quantifiedAssociation->filterProductModelCodes($productModelCodesToKeep);
         }, $this->quantifiedAssociations);
 
