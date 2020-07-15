@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { LineErrors } from '../LineErrors';
 import {
   ActionGrid,
   ActionLeftSide,
@@ -34,6 +33,8 @@ import {
   HelperContainer,
   InlineHelper,
 } from '../../../../components/HelpersInfos/InlineHelper';
+import { useControlledFormInputAction } from '../../hooks';
+import { useFormContext } from 'react-hook-form';
 
 const SelectorBlock = styled.div`
   margin-bottom: 15px;
@@ -83,6 +84,10 @@ const ActionCategoriesSelector: React.FC<Props> = ({
   const [unexistingCategoryCodes, setUnexistingCategoryCodes] = React.useState<
     CategoryCode[]
   >([]);
+  const { isFormFieldInError } = useControlledFormInputAction<string>(
+    lineNumber
+  );
+  const { clearError } = useFormContext();
 
   /**
    * Initialize the main object for this component. This object is a Map, having
@@ -289,7 +294,6 @@ const ActionCategoriesSelector: React.FC<Props> = ({
 
   return (
     <>
-      <LineErrors lineNumber={lineNumber} type='actions' />
       {unexistingCategoryCodes.map(unexistingCategoryCode => {
         return (
           <SmallHelper level='error' key={unexistingCategoryCode}>
@@ -313,207 +317,213 @@ const ActionCategoriesSelector: React.FC<Props> = ({
       })}
       <ActionGrid>
         <ActionLeftSide>
-          <div className='AknFormContainer'>
-            <Controller
-              as={<input type='hidden' />}
-              name={valueFormName}
-              defaultValue={values}
-              rules={{
-                validate: (selectedCategories: CategoryCode[] | null) => {
-                  if (
-                    valueRequired &&
-                    (!selectedCategories || 0 === selectedCategories.length)
-                  ) {
-                    return translate(
-                      'pimee_catalog_rule.exceptions.required_categories'
-                    );
-                  }
-
-                  return unexistingCategoryCodes.length
-                    ? translate(
-                        'pimee_catalog_rule.exceptions.unknown_categories',
-                        { categoryCodes: unexistingCategoryCodes.join(', ') },
-                        unexistingCategoryCodes.length
-                      )
-                    : true;
-                },
-              }}
-            />
-            <ActionTitle>
-              {translate(
-                'pimee_catalog_rule.form.edit.actions.category.select_category_trees'
-              )}
-            </ActionTitle>
-            <Label
-              className='AknFieldContainer-label control-label'
-              label={`${translate(
-                'pimee_catalog_rule.form.edit.actions.category.category_tree'
-              )} ${translate('pim_common.required_label')}`}
-            />
-            <ul>
-              {Array.from(categoryTreesWithSelectedCategoriesMap.entries()).map(
-                ([categoryTree, _categories]) => {
-                  return (
-                    <li
-                      key={categoryTree.code}
-                      className={'AknCategoryTreeSelector-item'}>
-                      <button
-                        data-testid={`category-tree-selector-${categoryTree.code}`}
-                        className={`AknTextField AknCategoryTreeSelector${
-                          getCurrentCategoryTreeOrDefault() === categoryTree
-                            ? ' AknCategoryTreeSelector--selected'
-                            : ''
-                        }`}
-                        onClick={e => {
-                          e.preventDefault();
-                          setCurrentCategoryTree(categoryTree);
-                        }}>
-                        {categoryTree.labels[currentCatalogLocale] ||
-                          `[${categoryTree.code}]`}
-                        <span className='AknCategoryTreeSelector-helper'>
-                          {translate(
-                            'pimee_catalog_rule.form.edit.actions.category.categories_selected',
-                            {
-                              count: getCategoryCount(categoryTree),
-                            },
-                            getCategoryCount(categoryTree)
-                          )}
-                        </span>
-                        <span
-                          className='AknCategoryTreeSelector-delete'
-                          tabIndex={0}
-                          onClick={() => handleCategoryTreeDelete(categoryTree)}
-                          role='button'
-                        />
-                      </button>
-                    </li>
+          <Controller
+            as={<input type='hidden' />}
+            name={valueFormName}
+            defaultValue={values}
+            rules={{
+              validate: (selectedCategories: CategoryCode[] | null) => {
+                if (
+                  valueRequired &&
+                  (!selectedCategories || 0 === selectedCategories.length)
+                ) {
+                  return translate(
+                    'pimee_catalog_rule.exceptions.required_categories'
                   );
                 }
-              )}
-              {getNonSelectedCategoryTrees().length > 0 && (
-                <div
-                  className={
-                    categoryTreesWithSelectedCategoriesMap.size === 0
-                      ? 'AknCategoryTreeSelector-new'
-                      : 'AknCategoryTreeSelector-item'
-                  }>
-                  <Select2Wrapper
-                    data-testid='category-tree-selector-new'
-                    multiple={false}
-                    label={translate(
-                      'pimee_catalog_rule.form.edit.actions.category.category_tree'
-                    )}
-                    onSelecting={(event: any) => {
-                      event.preventDefault();
-                      setCloseTick(!closeTick);
-                      handleAddCategoryTree(event.val);
-                    }}
-                    placeholder={translate(
-                      'pimee_catalog_rule.form.edit.actions.category.select_category_tree'
-                    )}
-                    data={getNonSelectedCategoryTrees()}
-                    hiddenLabel={true}
-                  />
-                </div>
-              )}
-            </ul>
-          </div>
+
+                return unexistingCategoryCodes.length
+                  ? translate(
+                      'pimee_catalog_rule.exceptions.unknown_categories',
+                      { categoryCodes: unexistingCategoryCodes.join(', ') },
+                      unexistingCategoryCodes.length
+                    )
+                  : true;
+              },
+            }}
+          />
+          <ActionTitle>
+            {translate(
+              'pimee_catalog_rule.form.edit.actions.category.select_category_trees'
+            )}
+          </ActionTitle>
+          <Label
+            className='AknFieldContainer-label control-label'
+            label={`${translate(
+              'pimee_catalog_rule.form.edit.actions.category.category_tree'
+            )} ${translate('pim_common.required_label')}`}
+          />
+          <ul>
+            {Array.from(categoryTreesWithSelectedCategoriesMap.entries()).map(
+              ([categoryTree, _categories]) => {
+                return (
+                  <li
+                    key={categoryTree.code}
+                    className={'AknCategoryTreeSelector-item'}>
+                    <button
+                      data-testid={`category-tree-selector-${categoryTree.code}`}
+                      className={`AknTextField AknCategoryTreeSelector${
+                        getCurrentCategoryTreeOrDefault() === categoryTree
+                          ? ' AknCategoryTreeSelector--selected'
+                          : ''
+                      }`}
+                      onClick={e => {
+                        e.preventDefault();
+                        setCurrentCategoryTree(categoryTree);
+                      }}>
+                      {categoryTree.labels[currentCatalogLocale] ||
+                        `[${categoryTree.code}]`}
+                      <span className='AknCategoryTreeSelector-helper'>
+                        {translate(
+                          'pimee_catalog_rule.form.edit.actions.category.categories_selected',
+                          {
+                            count: getCategoryCount(categoryTree),
+                          },
+                          getCategoryCount(categoryTree)
+                        )}
+                      </span>
+                      <span
+                        className='AknCategoryTreeSelector-delete'
+                        tabIndex={0}
+                        onClick={() => handleCategoryTreeDelete(categoryTree)}
+                        role='button'
+                      />
+                    </button>
+                  </li>
+                );
+              }
+            )}
+            {getNonSelectedCategoryTrees().length > 0 && (
+              <div
+                className={
+                  categoryTreesWithSelectedCategoriesMap.size === 0
+                    ? 'AknCategoryTreeSelector-new'
+                    : 'AknCategoryTreeSelector-item'
+                }>
+                <Select2Wrapper
+                  data-testid='category-tree-selector-new'
+                  multiple={false}
+                  label={translate(
+                    'pimee_catalog_rule.form.edit.actions.category.category_tree'
+                  )}
+                  onSelecting={(event: any) => {
+                    event.preventDefault();
+                    setCloseTick(!closeTick);
+                    handleAddCategoryTree(event.val);
+                  }}
+                  placeholder={translate(
+                    'pimee_catalog_rule.form.edit.actions.category.select_category_tree'
+                  )}
+                  data={getNonSelectedCategoryTrees()}
+                  hiddenLabel={true}
+                />
+              </div>
+            )}
+          </ul>
         </ActionLeftSide>
         <ActionRightSide>
-          <div className='AknFormContainer'>
-            <ActionTitle>
-              {translate(
-                'pimee_catalog_rule.form.edit.actions.category.select_categories'
-              )}
-            </ActionTitle>
-            <SelectorBlock>
-              {getCurrentCategoryTreeOrDefault() !== null ? (
-                <>
-                  <Label
-                    className='AknFieldContainer-label control-label'
-                    label={`${translate(
-                      'pim_enrich.entity.category.plural_label'
-                    )} ${translate('pim_common.required_label')}`}
-                  />
-                  <ul>
-                    {(
-                      categoryTreesWithSelectedCategoriesMap.get(
-                        getCurrentCategoryTreeOrDefault() as CategoryTreeModel
-                      ) || []
-                    ).map((category, i) => {
-                      return (
-                        <li
-                          key={category.code}
-                          className={'AknCategoryTreeSelector-item'}>
-                          <CategorySelector
-                            data-testid={`category-selector-${category.code}`}
-                            locale={currentCatalogLocale}
-                            onDelete={() =>
-                              handleCategoryDelete(
-                                getCurrentCategoryTreeOrDefault() as CategoryTreeModel,
-                                i
-                              )
-                            }
-                            onSelectCategory={categoryCode =>
-                              handleCategorySelect(
-                                categoryCode,
-                                getCurrentCategoryTreeOrDefault() as CategoryTreeModel,
-                                i
-                              )
-                            }
-                            selectedCategory={category}
-                            categoryTreeSelected={
-                              getCurrentCategoryTreeOrDefault() as CategoryTreeModel
-                            }
-                          />
-                        </li>
-                      );
-                    })}
-                  </ul>
-                  <CategorySelector
-                    data-testid='category-selector-new'
-                    locale={currentCatalogLocale}
-                    onSelectCategory={categoryCode =>
-                      handleCategorySelect(
-                        categoryCode,
-                        getCurrentCategoryTreeOrDefault() as CategoryTreeModel
-                      )
-                    }
-                    categoryTreeSelected={
-                      getCurrentCategoryTreeOrDefault() as CategoryTreeModel
-                    }
-                  />
-                </>
-              ) : (
-                <HelperContainer>
-                  <InlineHelper>
-                    {translate(
-                      'pimee_catalog_rule.form.edit.actions.category.no_category_tree'
-                    )}
-                  </InlineHelper>
-                </HelperContainer>
-              )}
-            </SelectorBlock>
-            {withIncludeChildren && (
-              <SelectorBlock>
-                <Controller
-                  as={<input type='hidden' />}
-                  name={includeChildrenFormName}
-                  defaultValue={includeChildrenValue}
-                />
-                <InputBoolean
-                  id='category-include-children'
-                  label={translate('pimee_catalog_rule.rule.include_children')}
-                  value={includeChildrenValue}
-                  onChange={(value: boolean) => {
-                    if (setIncludeChildrenValue) {
-                      setIncludeChildrenValue(value);
-                    }
-                  }}
-                />
-              </SelectorBlock>
+          <ActionTitle>
+            {translate(
+              'pimee_catalog_rule.form.edit.actions.category.select_categories'
             )}
-          </div>
+          </ActionTitle>
+          <SelectorBlock
+            className={
+              isFormFieldInError(
+                valueFormName.replace(`content.actions[${lineNumber}].`, '')
+              )
+                ? 'category-container-error'
+                : ''
+            }>
+            {getCurrentCategoryTreeOrDefault() !== null ? (
+              <>
+                <Label
+                  className='AknFieldContainer-label control-label'
+                  label={`${translate(
+                    'pim_enrich.entity.category.plural_label'
+                  )} ${translate('pim_common.required_label')}`}
+                />
+                <ul>
+                  {(
+                    categoryTreesWithSelectedCategoriesMap.get(
+                      getCurrentCategoryTreeOrDefault() as CategoryTreeModel
+                    ) || []
+                  ).map((category, i) => {
+                    return (
+                      <li
+                        key={category.code}
+                        className={'AknCategoryTreeSelector-item'}>
+                        <CategorySelector
+                          data-testid={`category-selector-${category.code}`}
+                          locale={currentCatalogLocale}
+                          onDelete={() => {
+                            clearError(valueFormName);
+                            handleCategoryDelete(
+                              getCurrentCategoryTreeOrDefault() as CategoryTreeModel,
+                              i
+                            );
+                          }}
+                          onSelectCategory={categoryCode => {
+                            clearError(valueFormName);
+                            handleCategorySelect(
+                              categoryCode,
+                              getCurrentCategoryTreeOrDefault() as CategoryTreeModel,
+                              i
+                            );
+                          }}
+                          selectedCategory={category}
+                          categoryTreeSelected={
+                            getCurrentCategoryTreeOrDefault() as CategoryTreeModel
+                          }
+                        />
+                      </li>
+                    );
+                  })}
+                </ul>
+                <CategorySelector
+                  data-testid='category-selector-new'
+                  locale={currentCatalogLocale}
+                  onSelectCategory={categoryCode => {
+                    clearError(valueFormName);
+                    handleCategorySelect(
+                      categoryCode,
+                      getCurrentCategoryTreeOrDefault() as CategoryTreeModel
+                    );
+                  }}
+                  categoryTreeSelected={
+                    getCurrentCategoryTreeOrDefault() as CategoryTreeModel
+                  }
+                />
+              </>
+            ) : (
+              <HelperContainer>
+                <InlineHelper>
+                  {translate(
+                    'pimee_catalog_rule.form.edit.actions.category.no_category_tree'
+                  )}
+                </InlineHelper>
+              </HelperContainer>
+            )}
+          </SelectorBlock>
+          {withIncludeChildren && (
+            <SelectorBlock>
+              <Controller
+                as={<input type='hidden' />}
+                name={includeChildrenFormName}
+                defaultValue={includeChildrenValue}
+              />
+              <InputBoolean
+                id='category-include-children'
+                label={translate('pimee_catalog_rule.rule.include_children')}
+                value={includeChildrenValue}
+                onChange={(value: boolean) => {
+                  if (setIncludeChildrenValue) {
+                    setIncludeChildrenValue(value);
+                  }
+                }}
+              />
+            </SelectorBlock>
+          )}
         </ActionRightSide>
       </ActionGrid>
     </>

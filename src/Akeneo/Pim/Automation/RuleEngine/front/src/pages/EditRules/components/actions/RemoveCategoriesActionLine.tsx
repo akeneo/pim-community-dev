@@ -52,7 +52,8 @@ const RemoveCategoriesActionLine: React.FC<Props> = ({
         legend={translate(
           'pimee_catalog_rule.form.edit.actions.remove_category.helper'
         )}
-        handleDelete={handleDelete}>
+        handleDelete={handleDelete}
+        lineNumber={lineNumber}>
         <ActionCategoriesSelector
           lineNumber={lineNumber}
           currentCatalogLocale={currentCatalogLocale}

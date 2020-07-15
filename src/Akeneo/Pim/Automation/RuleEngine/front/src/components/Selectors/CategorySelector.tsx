@@ -168,7 +168,9 @@ const CategorySelector: React.FC<Props> = ({
           )}
         </ContainerCategoryTree>
       </CategoryPopover>
-      <CategoryArtifact {...remainingProps} className='AknTextField'>
+      <CategoryArtifact
+        {...remainingProps}
+        className='AknTextField category-artifact'>
         {selectedCategory ? (
           <>
             {getCategoryLabel(selectedCategory, locale)}

@@ -7,6 +7,7 @@ import { AlertDialog } from '../../../../components/AlertDialog/AlertDialog';
 import { createComponent } from 'reakit-system';
 import { useDialogDisclosure, useDialogState } from 'reakit';
 import { useTranslate } from '../../../../dependenciesTools/hooks';
+import { LineErrors } from '../LineErrors';
 
 const StyledHeader = styled.header`
   font-weight: normal;
@@ -23,6 +24,10 @@ const StyledTitleHeader = styled.span`
   padding-left: 8px;
 `;
 
+const ActionForm = styled.div`
+  margin-top: 18px;
+`;
+
 const DeleteButton = createComponent({
   as: RedGhostButton,
   useHook: useDialogDisclosure,
@@ -33,6 +38,7 @@ type Props = {
   helper: string;
   legend: string;
   handleDelete: () => void;
+  lineNumber?: number;
 };
 
 const ActionTemplate: React.FC<Props> = ({
@@ -41,6 +47,7 @@ const ActionTemplate: React.FC<Props> = ({
   helper,
   children,
   handleDelete,
+  lineNumber,
 }) => {
   const translate = useTranslate();
   const dialog = useDialogState();
@@ -74,7 +81,10 @@ const ActionTemplate: React.FC<Props> = ({
       <VisuallyHidden>
         <legend>{legend}</legend>
       </VisuallyHidden>
-      {children}
+      {typeof lineNumber !== 'undefined' && (
+        <LineErrors lineNumber={lineNumber} type='actions' />
+      )}
+      <ActionForm>{children}</ActionForm>
     </fieldset>
   );
 };

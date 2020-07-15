@@ -50,7 +50,8 @@ const SetCategoriesActionLine: React.FC<Props> = ({
         legend={translate(
           'pimee_catalog_rule.form.edit.actions.set_category.helper'
         )}
-        handleDelete={handleDelete}>
+        handleDelete={handleDelete}
+        lineNumber={lineNumber}>
         <ActionCategoriesSelector
           lineNumber={lineNumber}
           currentCatalogLocale={currentCatalogLocale}

@@ -8,18 +8,21 @@ import {
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
 
+const AknActionFormContainer = styled.div`
+  width: 300px;
+`;
+
 const ActionTitle = styled.div`
   color: ${({ theme }): string => theme.color.purple100};
   font-size: 20px;
-  line-height: 40px;
+  line-height: 30px;
   margin-bottom: 15px;
 `;
 
 const ActionGrid = styled.div`
-  margin-top: 10px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  grid-gap: 20px;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 40px;
 `;
 
 const ActionGridItem: React.FC = ({ children }) => (
@@ -69,4 +72,11 @@ const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
   );
 };
 
-export { ActionLine, ActionTitle, ActionGrid, ActionLeftSide, ActionRightSide };
+export {
+  ActionLine,
+  ActionTitle,
+  ActionGrid,
+  ActionLeftSide,
+  ActionRightSide,
+  AknActionFormContainer,
+};

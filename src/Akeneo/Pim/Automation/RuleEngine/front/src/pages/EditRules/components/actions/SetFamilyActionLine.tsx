@@ -3,7 +3,7 @@ import { Controller } from 'react-hook-form';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import { FamilySelector } from '../../../../components/Selectors/FamilySelector';
-import { ActionTitle } from './ActionLine';
+import { ActionTitle, AknActionFormContainer } from './ActionLine';
 import { useTranslate } from '../../../../dependenciesTools/hooks';
 import { useControlledFormInputAction } from '../../hooks';
 
@@ -45,7 +45,7 @@ const SetFamilyActionLine: React.FC<ActionLineProps> = ({
             'pimee_catalog_rule.form.edit.actions.set_family.subtitle'
           )}
         </ActionTitle>
-        <div className={'AknFormContainer'}>
+        <AknActionFormContainer>
           <Controller
             as={FamilySelector}
             label={`${translate(
@@ -58,7 +58,7 @@ const SetFamilyActionLine: React.FC<ActionLineProps> = ({
             )}
             name={valueFormName}
           />
-        </div>
+        </AknActionFormContainer>
       </ActionTemplate>
     </>
   );
