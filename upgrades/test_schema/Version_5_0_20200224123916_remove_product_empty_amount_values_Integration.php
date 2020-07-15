@@ -21,19 +21,19 @@ class Version_5_0_20200224123916_remove_product_empty_amount_values_Integration 
     {
         $this->getConnection()->executeQuery('DELETE FROM pim_catalog_product');
         $sql = <<<SQL
-INSERT INTO pim_catalog_product VALUES
-    (NULL, NULL, NULL, NULL, 1, 'product1', '{"a_metric": {"<all_channels>": {"<all_locales>": null}}}', NOW(), NOW()),
-    (NULL, NULL, NULL, NULL, 1, 'product2', '{"a_metric": {"<all_channels>": {"<all_locales>": {}}}}', NOW(), NOW()),
-    (NULL, NULL, NULL, NULL, 1, 'product3', '{"a_metric": {"<all_channels>": {"<all_locales>": {"unit": null, "amount": null}}}}', NOW(), NOW()),
-    (NULL, NULL, NULL, NULL, 1, 'product4', '{"a_metric": {"<all_channels>": {"<all_locales>": {"unit": "WATT", "amount": 5000}}}}', NOW(), NOW()),
-    (NULL, NULL, NULL, NULL, 1, 'product5', '{"a_metric": {"<all_channels>": {"fr_FR": {"unit": null, "amount": null}, "en_US": {"unit": "WATT", "amount": 5000}}}}', NOW(), NOW()),
-    (NULL, NULL, NULL, NULL, 1, 'product6', '{"a_metric": {"ecommerce": {"<all_locales>": {"unit": null, "amount": null}}, "mobile": {"<all_locales>": {"unit": "WATT", "amount": 5000}}}}', NOW(), NOW()),
-    (NULL, NULL, NULL, NULL, 1, 'product7', '{"a_price": {"<all_channels>": {"<all_locales>": null}}}', NOW(), NOW()),
-    (NULL, NULL, NULL, NULL, 1, 'product8', '{"a_price": {"<all_channels>": {"<all_locales>": []}}}', NOW(), NOW()),
-    (NULL, NULL, NULL, NULL, 1, 'product9', '{"a_price": {"<all_channels>": {"<all_locales>": [{"amount": null, "currency": "USD"}]}}}', NOW(), NOW()),
-    (NULL, NULL, NULL, NULL, 1, 'product10', '{"a_price": {"<all_channels>": {"<all_locales>": [{"amount": "1329.00", "currency": "USD"}]}}}', NOW(), NOW()),
-    (NULL, NULL, NULL, NULL, 1, 'product11', '{"a_price": {"<all_channels>": {"<all_locales>": [{"amount": "1329.00", "currency": "USD"}, {"amount": "1329.00", "currency": "EUR"}]}}}', NOW(), NOW()),
-    (NULL, NULL, NULL, NULL, 1, 'product12', '{"a_price": {"<all_channels>": {"<all_locales>": [{"amount": "1329.00", "currency": "USD"}, {"amount": null, "currency": "EUR"}]}}}', NOW(), NOW())
+INSERT INTO pim_catalog_product (is_enabled, identifier, raw_values, created, updated) VALUES
+    (1, 'product1', '{"a_metric": {"<all_channels>": {"<all_locales>": null}}}', NOW(), NOW()),
+    (1, 'product2', '{"a_metric": {"<all_channels>": {"<all_locales>": {}}}}', NOW(), NOW()),
+    (1, 'product3', '{"a_metric": {"<all_channels>": {"<all_locales>": {"unit": null, "amount": null}}}}', NOW(), NOW()),
+    (1, 'product4', '{"a_metric": {"<all_channels>": {"<all_locales>": {"unit": "WATT", "amount": 5000}}}}', NOW(), NOW()),
+    (1, 'product5', '{"a_metric": {"<all_channels>": {"fr_FR": {"unit": null, "amount": null}, "en_US": {"unit": "WATT", "amount": 5000}}}}', NOW(), NOW()),
+    (1, 'product6', '{"a_metric": {"ecommerce": {"<all_locales>": {"unit": null, "amount": null}}, "mobile": {"<all_locales>": {"unit": "WATT", "amount": 5000}}}}', NOW(), NOW()),
+    (1, 'product7', '{"a_price": {"<all_channels>": {"<all_locales>": null}}}', NOW(), NOW()),
+    (1, 'product8', '{"a_price": {"<all_channels>": {"<all_locales>": []}}}', NOW(), NOW()),
+    (1, 'product9', '{"a_price": {"<all_channels>": {"<all_locales>": [{"amount": null, "currency": "USD"}]}}}', NOW(), NOW()),
+    (1, 'product10', '{"a_price": {"<all_channels>": {"<all_locales>": [{"amount": "1329.00", "currency": "USD"}]}}}', NOW(), NOW()),
+    (1, 'product11', '{"a_price": {"<all_channels>": {"<all_locales>": [{"amount": "1329.00", "currency": "USD"}, {"amount": "1329.00", "currency": "EUR"}]}}}', NOW(), NOW()),
+    (1, 'product12', '{"a_price": {"<all_channels>": {"<all_locales>": [{"amount": "1329.00", "currency": "USD"}, {"amount": null, "currency": "EUR"}]}}}', NOW(), NOW())
 SQL;
 
         $this->getConnection()->executeQuery($sql);
@@ -65,7 +65,7 @@ SQL;
             'SELECT raw_values FROM pim_catalog_product WHERE identifier=:identifier',
             ['identifier' => $productIdentifier]
         );
-        $this->assertEquals($expectedRawValues, $result[0]);
+        $this->assertEquals($expectedRawValues, $result[0], sprintf('Raw values of product "%s" do not match with expected values', $productIdentifier));
     }
 
     private function getMigrationLabel(): string

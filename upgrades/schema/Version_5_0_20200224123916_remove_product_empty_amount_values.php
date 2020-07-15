@@ -2,7 +2,6 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
@@ -19,7 +18,6 @@ final class Version_5_0_20200224123916_remove_product_empty_amount_values
     implements ContainerAwareInterface
 {
     private const MYSQL_BATCH_SIZE = 1000;
-    private const ELASTICSEARCH_BATCH_SIZE = 1000;
 
     /** @var ContainerInterface */
     private $container;
@@ -41,8 +39,6 @@ final class Version_5_0_20200224123916_remove_product_empty_amount_values
         /** @var string[] $priceCollectionAttributesCodes */
         $priceCollectionAttributesCodes = $this->findPriceCollectionAttributesCodes();
 
-        $productIdentifiersToIndex = [];
-
         $rows = $this->getAllProducts();
         foreach ($rows as $i => $row) {
             $values = json_decode($row['raw_values'], true);
@@ -61,17 +57,7 @@ final class Version_5_0_20200224123916_remove_product_empty_amount_values
                         'identifier' => Types::STRING,
                     ]
                 );
-
-                $productIdentifiersToIndex[] = $row['identifier'];
-                if (count($productIdentifiersToIndex) % self::ELASTICSEARCH_BATCH_SIZE === 0) {
-                    $this->getProductIndexer()->indexFromProductIdentifiers($productIdentifiersToIndex);
-                    $productIdentifiersToIndex = [];
-                }
             }
-        }
-
-        if (!empty($productIdentifiersToIndex)) {
-            $this->getProductIndexer()->indexFromProductIdentifiers($productIdentifiersToIndex);
         }
     }
 
@@ -192,11 +178,6 @@ final class Version_5_0_20200224123916_remove_product_empty_amount_values
                 $lastId = $row['identifier'];
             }
         }
-    }
-
-    private function getProductIndexer(): ProductIndexer
-    {
-        return $this->container->get('pim_catalog.elasticsearch.indexer.product');
     }
 
     public function down(Schema $schema): void

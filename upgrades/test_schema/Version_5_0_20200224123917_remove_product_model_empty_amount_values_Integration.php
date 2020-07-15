@@ -23,19 +23,19 @@ class Version_5_0_20200224123917_remove_product_model_empty_amount_values_Integr
         $familySearch = $this->getConnection()->fetchArray('SELECT id FROM pim_catalog_family_variant LIMIT 1');
         $familyId = $familySearch[0];
         $sql = <<<SQL
-INSERT INTO pim_catalog_product_model VALUES
-    (NULL, NULL, :familyId, 'pm1', '{"a_metric": {"<all_channels>": {"<all_locales>": null}}}', NOW(), NOW(), 0, 0, 0, 0),
-    (NULL, NULL, :familyId, 'pm2', '{"a_metric": {"<all_channels>": {"<all_locales>": {}}}}', NOW(), NOW(), 0, 0, 0, 0),
-    (NULL, NULL, :familyId, 'pm3', '{"a_metric": {"<all_channels>": {"<all_locales>": {"unit": null, "amount": null}}}}', NOW(), NOW(), 0, 0, 0, 0),
-    (NULL, NULL, :familyId, 'pm4', '{"a_metric": {"<all_channels>": {"<all_locales>": {"unit": "WATT", "amount": 5000}}}}', NOW(), NOW(), 0, 0, 0, 0),
-    (NULL, NULL, :familyId, 'pm5', '{"a_metric": {"<all_channels>": {"fr_FR": {"unit": null, "amount": null}, "en_US": {"unit": "WATT", "amount": 5000}}}}', NOW(), NOW(), 0, 0, 0, 0),
-    (NULL, NULL, :familyId, 'pm6', '{"a_metric": {"ecommerce": {"<all_locales>": {"unit": null, "amount": null}}, "mobile": {"<all_locales>": {"unit": "WATT", "amount": 5000}}}}', NOW(), NOW(), 0, 0, 0, 0),
-    (NULL, NULL, :familyId, 'pm7', '{"a_price": {"<all_channels>": {"<all_locales>": null}}}', NOW(), NOW(), 0, 0, 0, 0),
-    (NULL, NULL, :familyId, 'pm8', '{"a_price": {"<all_channels>": {"<all_locales>": []}}}', NOW(), NOW(), 0, 0, 0, 0),
-    (NULL, NULL, :familyId, 'pm9', '{"a_price": {"<all_channels>": {"<all_locales>": [{"amount": null, "currency": "USD"}]}}}', NOW(), NOW(), 0, 0, 0, 0),
-    (NULL, NULL, :familyId, 'pm10', '{"a_price": {"<all_channels>": {"<all_locales>": [{"amount": "1329.00", "currency": "USD"}]}}}', NOW(), NOW(), 0, 0, 0, 0),
-    (NULL, NULL, :familyId, 'pm11', '{"a_price": {"<all_channels>": {"<all_locales>": [{"amount": "1329.00", "currency": "USD"}, {"amount": "1329.00", "currency": "EUR"}]}}}', NOW(), NOW(), 0, 0, 0, 0),
-    (NULL, NULL, :familyId, 'pm12', '{"a_price": {"<all_channels>": {"<all_locales>": [{"amount": "1329.00", "currency": "USD"}, {"amount": null, "currency": "EUR"}]}}}', NOW(), NOW(), 0, 0, 0, 0)
+INSERT INTO pim_catalog_product_model (family_variant_id, code, raw_values, created, updated) VALUES
+    (:familyId, 'pm1', '{"a_metric": {"<all_channels>": {"<all_locales>": null}}}', NOW(), NOW()),
+    (:familyId, 'pm2', '{"a_metric": {"<all_channels>": {"<all_locales>": {}}}}', NOW(), NOW()),
+    (:familyId, 'pm3', '{"a_metric": {"<all_channels>": {"<all_locales>": {"unit": null, "amount": null}}}}', NOW(), NOW()),
+    (:familyId, 'pm4', '{"a_metric": {"<all_channels>": {"<all_locales>": {"unit": "WATT", "amount": 5000}}}}', NOW(), NOW()),
+    (:familyId, 'pm5', '{"a_metric": {"<all_channels>": {"fr_FR": {"unit": null, "amount": null}, "en_US": {"unit": "WATT", "amount": 5000}}}}', NOW(), NOW()),
+    (:familyId, 'pm6', '{"a_metric": {"ecommerce": {"<all_locales>": {"unit": null, "amount": null}}, "mobile": {"<all_locales>": {"unit": "WATT", "amount": 5000}}}}', NOW(), NOW()),
+    (:familyId, 'pm7', '{"a_price": {"<all_channels>": {"<all_locales>": null}}}', NOW(), NOW()),
+    (:familyId, 'pm8', '{"a_price": {"<all_channels>": {"<all_locales>": []}}}', NOW(), NOW()),
+    (:familyId, 'pm9', '{"a_price": {"<all_channels>": {"<all_locales>": [{"amount": null, "currency": "USD"}]}}}', NOW(), NOW()),
+    (:familyId, 'pm10', '{"a_price": {"<all_channels>": {"<all_locales>": [{"amount": "1329.00", "currency": "USD"}]}}}', NOW(), NOW()),
+    (:familyId, 'pm11', '{"a_price": {"<all_channels>": {"<all_locales>": [{"amount": "1329.00", "currency": "USD"}, {"amount": "1329.00", "currency": "EUR"}]}}}', NOW(), NOW()),
+    (:familyId, 'pm12', '{"a_price": {"<all_channels>": {"<all_locales>": [{"amount": "1329.00", "currency": "USD"}, {"amount": null, "currency": "EUR"}]}}}', NOW(), NOW())
 SQL;
 
         $this->getConnection()->executeQuery($sql, ['familyId' => $familyId]);
