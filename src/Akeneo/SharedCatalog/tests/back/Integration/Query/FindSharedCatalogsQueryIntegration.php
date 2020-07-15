@@ -3,23 +3,21 @@
 namespace Akeneo\SharedCatalog\tests\back\Integration\Query;
 
 use Akeneo\SharedCatalog\Query\FindSharedCatalogsQueryInterface;
+use Akeneo\SharedCatalog\tests\back\Utils\CreateJobInstance;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Doctrine\ORM\EntityManager;
 
 class FindSharedCatalogsQueryIntegration extends TestCase
 {
+    use CreateJobInstance;
+
     /** @var FindSharedCatalogsQueryInterface */
     private $findSharedCatalogsQuery;
-
-    /** @var EntityManager */
-    private $em;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->findSharedCatalogsQuery = $this->get(FindSharedCatalogsQueryInterface::class);
-        $this->em = $this->get('doctrine')->getManager();
     }
 
     protected function getConfiguration()
@@ -149,25 +147,5 @@ class FindSharedCatalogsQueryIntegration extends TestCase
         $results = $this->findSharedCatalogsQuery->execute();
 
         self::assertEmpty($results);
-    }
-
-    private function createJobInstance(
-        string $code,
-        string $jobName,
-        string $type,
-        int $status,
-        array $rawParameters
-    ): void {
-        $jobInstance = new JobInstance();
-        $jobInstance->setCode($code);
-        $jobInstance->setLabel($code);
-        $jobInstance->setJobName($jobName);
-        $jobInstance->setStatus($status);
-        $jobInstance->setConnector('Some connector name');
-        $jobInstance->setType($type);
-        $jobInstance->setRawParameters($rawParameters);
-
-        $this->em->persist($jobInstance);
-        $this->em->flush();
     }
 }
