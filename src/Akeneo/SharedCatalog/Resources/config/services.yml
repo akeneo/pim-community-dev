@@ -43,3 +43,10 @@ services:
                 akeneo_shared_catalog: pim-job-instance-shared-catalog
         tags:
             - { name: pim_enrich.provider.form }
+
+    Akeneo\SharedCatalog\EventSubscriber\JobInstancePublisherSubscriber:
+        arguments:
+            - '@security.token_storage'
+            - '%akeneo.shared_catalog.connector.code%'
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
