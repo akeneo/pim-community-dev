@@ -11,9 +11,12 @@ import {
 import { TextValue } from './TextValue';
 import { FallbackValue } from './FallbackValue';
 import { SimpleSelectValue } from './SimpleSelectValue';
-import { HelperContainer, InlineHelper, } from '../../../../../components/HelpersInfos';
+import {
+  HelperContainer,
+  InlineHelper,
+} from '../../../../../components/HelpersInfos';
 import { ActionFormContainer } from '../style';
-import { BooleanValue } from "./BooleanValue";
+import { BooleanValue } from './BooleanValue';
 import { MultiSelectValue } from './MultiSelectValue';
 import { NumberValue } from './NumberValue';
 

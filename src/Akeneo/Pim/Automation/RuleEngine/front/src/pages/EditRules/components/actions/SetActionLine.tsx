@@ -43,10 +43,10 @@ const SetActionLine: React.FC<Props> = ({
   >(undefined);
 
   const isValueFilled = (value?: any) => {
-    const result = value !== '' && value !== [] && value !== null && value !== undefined;
-    console.log('isFilled?', JSON.stringify(value), result);
-    return result;
-  }
+    return (
+      value !== '' && value !== [] && value !== null && value !== undefined
+    );
+  };
 
   const {
     fieldFormName,
@@ -85,13 +85,11 @@ const SetActionLine: React.FC<Props> = ({
         defaultValue={getValueFormValue()}
         rules={{
           // We can not use 'required' validation rule a value can be "false" (for boolean).
-          validate: (value) => {
-            if (!isValueFilled(value)) {
-              return translate('pimee_catalog_rule.exceptions.required_value');
-            }
-
-            return true;
-          }
+          validate: value => {
+            return !isValueFilled(value)
+              ? translate('pimee_catalog_rule.exceptions.required_value')
+              : true;
+          },
         }}
       />
       <ActionTemplate

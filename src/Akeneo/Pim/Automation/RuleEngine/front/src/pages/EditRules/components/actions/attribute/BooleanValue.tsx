@@ -2,7 +2,7 @@ import React from 'react';
 import { useUserCatalogLocale } from '../../../../../dependenciesTools/hooks';
 import { InputValueProps } from './AttributeValue';
 import { getAttributeLabel } from '../../../../../models';
-import InputBoolean from "../../../../../components/Inputs/InputBoolean";
+import InputBoolean from '../../../../../components/Inputs/InputBoolean';
 
 const BooleanValue: React.FC<InputValueProps> = ({
   id,
