@@ -77,9 +77,6 @@ Each criterion is evaluated one by one.
 
 > Check if there is capital letters everywhere after punctuation, new line, ...
 
-**Example:**  
-`Macbook air Azerty core I7` should be written `MacBook Air AZERTY Core i7`
-
 ## Spelling
 Scope: For attribute type textarea (without WYSIWYG) and text.
 
