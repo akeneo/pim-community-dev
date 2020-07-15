@@ -8,17 +8,19 @@ import {
   useTranslate,
   useUserCatalogLocale,
 } from '../../../../../dependenciesTools/hooks';
-import { TextValue } from './TextValue';
-import { FallbackValue } from './FallbackValue';
-import { SimpleSelectValue } from './SimpleSelectValue';
+import {
+  BooleanValue,
+  MultiSelectValue,
+  TextValue,
+  SimpleSelectValue,
+  FallbackValue,
+  NumberValue,
+} from './';
 import {
   HelperContainer,
   InlineHelper,
 } from '../../../../../components/HelpersInfos';
 import { ActionFormContainer } from '../style';
-import { BooleanValue } from './BooleanValue';
-import { MultiSelectValue } from './MultiSelectValue';
-import { NumberValue } from './NumberValue';
 
 const MANAGED_ATTRIBUTE_TYPES: Map<
   AttributeType,
