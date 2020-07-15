@@ -43,8 +43,11 @@ const SetActionLine: React.FC<Props> = ({
   >(undefined);
 
   const isValueFilled = (value?: any) => {
-    return (
-      value !== '' && value !== [] && value !== null && value !== undefined
+    return !(
+      value === '' ||
+      (Array.isArray(value) && value.length === 0) ||
+      value === null ||
+      value === undefined
     );
   };
 
