@@ -42,6 +42,12 @@ const SetActionLine: React.FC<Props> = ({
     Attribute | null | undefined
   >(undefined);
 
+  const isValueFilled = (value?: any) => {
+    const result = value !== '' && value !== [] && value !== null && value !== undefined;
+    console.log('isFilled?', JSON.stringify(value), result);
+    return result;
+  }
+
   const {
     fieldFormName,
     typeFormName,
@@ -59,8 +65,8 @@ const SetActionLine: React.FC<Props> = ({
   useGetAttributeAtMount(getFieldFormValue(), router, attribute, setAttribute);
 
   const onAttributeChange = (attribute: Attribute | null) => {
-    setAttribute(attribute);
     setValueFormValue('');
+    setAttribute(attribute);
     setFieldFormValue(attribute?.code);
   };
 
@@ -78,7 +84,14 @@ const SetActionLine: React.FC<Props> = ({
         as={<span hidden />}
         defaultValue={getValueFormValue()}
         rules={{
-          required: translate('pimee_catalog_rule.exceptions.required_value'),
+          // We can not use 'required' validation rule a value can be "false" (for boolean).
+          validate: (value) => {
+            if (!isValueFilled(value)) {
+              return translate('pimee_catalog_rule.exceptions.required_value');
+            }
+
+            return true;
+          }
         }}
       />
       <ActionTemplate
@@ -93,7 +106,7 @@ const SetActionLine: React.FC<Props> = ({
         )}
         handleDelete={handleDelete}
         lineNumber={lineNumber}>
-        {attribute && !getValueFormValue() && (
+        {attribute && !isValueFilled(getValueFormValue()) && (
           <SmallHelper level='info'>
             {translate(
               'pimee_catalog_rule.form.helper.set_attribute_info_clear'
