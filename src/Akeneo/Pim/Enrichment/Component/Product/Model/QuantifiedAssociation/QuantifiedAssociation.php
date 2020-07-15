@@ -125,18 +125,17 @@ class QuantifiedAssociation
 
     public function normalizeWithMapping(IdMapping $mappedId): array
     {
-        $result = [
-            $this->associationType => [
-                $this->quantifiedLinksType => [],
-            ],
-        ];
+        $result = [];
+        $result[$this->associationType][$this->quantifiedLinksType]  = [];
 
         foreach ($this->quantifiedLinks as $quantifiedLink) {
             $quantifiedLinkNormalized = $quantifiedLink->normalize();
-            $result[$this->associationType][$this->quantifiedLinksType][] = [
-                'id' =>  $mappedId->getId($quantifiedLinkNormalized['identifier']),
-                'quantity' =>  $quantifiedLinkNormalized['quantity'],
-            ];
+            if ($mappedId->hasId($quantifiedLinkNormalized['identifier'])) {
+                $result[$this->associationType][$this->quantifiedLinksType][] = [
+                    'id' =>  $mappedId->getId($quantifiedLinkNormalized['identifier']),
+                    'quantity' =>  $quantifiedLinkNormalized['quantity'],
+                ];
+            }
         }
 
         return $result;
