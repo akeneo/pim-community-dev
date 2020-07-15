@@ -17,7 +17,6 @@ import { AttributeLocaleScopeSelector } from './attribute';
 import { Attribute, AttributeType } from '../../../../models';
 import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepository';
 import { useFormContext, Controller } from 'react-hook-form';
-import { LineErrors } from '../LineErrors';
 import { useControlledFormInputAction } from '../../hooks';
 import styled from 'styled-components';
 
@@ -199,7 +198,6 @@ const CopyActionLine: React.FC<Props> = ({
         helper={translate('pimee_catalog_rule.form.edit.actions.copy.helper')}
         legend={translate('pimee_catalog_rule.form.edit.actions.copy.helper')}
         handleDelete={handleDelete}>
-        <LineErrors lineNumber={lineNumber} type='actions' />
         <ActionGrid>
           <ActionLeftSide>
             <ActionTitle>

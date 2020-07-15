@@ -17,6 +17,7 @@ import {
 } from '../../../../../components/HelpersInfos';
 import { ActionFormContainer } from '../style';
 import { MultiSelectValue } from './MultiSelectValue';
+import { NumberValue } from './NumberValue';
 
 const MANAGED_ATTRIBUTE_TYPES: Map<
   AttributeType,
@@ -25,6 +26,7 @@ const MANAGED_ATTRIBUTE_TYPES: Map<
   [AttributeType.TEXT, TextValue],
   [AttributeType.OPTION_SIMPLE_SELECT, SimpleSelectValue],
   [AttributeType.OPTION_MULTI_SELECT, MultiSelectValue],
+  [AttributeType.NUMBER, NumberValue],
 ]);
 
 type InputValueProps = {
@@ -45,6 +47,8 @@ const getValueModule = (attribute: Attribute, props: InputValueProps) => {
       return <SimpleSelectValue {...props} key={attribute.code} />;
     case AttributeType.OPTION_MULTI_SELECT:
       return <MultiSelectValue {...props} />;
+    case AttributeType.NUMBER:
+      return <NumberValue {...props} />;
     default:
       return null;
   }

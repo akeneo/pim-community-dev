@@ -5,7 +5,6 @@ import { ActionLineProps } from './ActionLineProps';
 import { ActionTitle } from './ActionLine';
 import { ClearAttributeAction } from '../../../../models/actions';
 import { AttributeLocaleScopeSelector } from './attribute/AttributeLocaleScopeSelector';
-import { LineErrors } from '../LineErrors';
 import {
   useTranslate,
   useBackboneRouter,
@@ -69,7 +68,6 @@ const ClearAttributeActionLine: React.FC<Props> = ({
         legend={translate('pimee_catalog_rule.form.helper.clear_attribute')}
         handleDelete={handleDelete}
         lineNumber={lineNumber}>
-        <LineErrors lineNumber={lineNumber} type='actions' />
         <ActionTitle>
           {translate(
             'pimee_catalog_rule.form.edit.actions.clear_attribute.subtitle'

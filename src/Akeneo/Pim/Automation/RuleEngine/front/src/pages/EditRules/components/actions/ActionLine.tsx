@@ -20,6 +20,7 @@ const ActionTitle = styled.div`
 `;
 
 const ActionGrid = styled.div`
+  margin-top: 18px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 40px;
