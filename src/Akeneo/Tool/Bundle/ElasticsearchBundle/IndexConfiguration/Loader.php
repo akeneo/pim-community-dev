@@ -73,8 +73,7 @@ class Loader
     private function mergeMappings(array $originalMappings, array $additionalMappings): array
     {
         if (isset($additionalMappings['properties'])) {
-            $originalProperties = isset($originalMappings['properties']) ?
-                $originalMappings['properties'] : [];
+            $originalProperties = $originalMappings['properties'] ?? [];
 
             $originalMappings['properties'] = array_replace_recursive(
                 $originalProperties,
