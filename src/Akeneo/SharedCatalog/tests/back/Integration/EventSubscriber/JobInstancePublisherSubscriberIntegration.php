@@ -19,6 +19,7 @@ class JobInstancePublisherSubscriberIntegration extends TestCase
     {
         parent::setUp();
         $this->em = $this->get('doctrine')->getManager();
+        $this->tokenStorage = $this->get('security.token_storage');
     }
 
     protected function getConfiguration()
