@@ -5,12 +5,14 @@ import {
   getAttributeOptionsByIdentifiers,
 } from '../../fetch/AttributeOptionFetcher';
 import { AttributeId } from '../../models';
-import { useBackboneRouter } from '../../dependenciesTools/hooks';
+import {
+  useBackboneRouter,
+  useUserCatalogLocale,
+} from '../../dependenciesTools/hooks';
 
 type Props = {
   label: string;
   hiddenLabel: boolean;
-  currentCatalogLocale: string;
   attributeId: AttributeId;
   onChange?: (value: Select2Value) => void;
   value: string;
@@ -22,13 +24,14 @@ type Props = {
 const SimpleOptionSelector: React.FC<Props> = ({
   label,
   hiddenLabel = false,
-  currentCatalogLocale,
   attributeId,
   onChange,
   value,
   allowClear = true,
   ...remainingProps
 }) => {
+  const currentCatalogLocale = useUserCatalogLocale();
+
   const router = useBackboneRouter();
   const handleResults = (response: { results: Select2Option[] }) => {
     return {
