@@ -81,8 +81,7 @@ class Loader
             );
         }
         if (isset($additionalMappings['dynamic_templates'])) {
-            $originalTemplates = isset($originalMappings['dynamic_templates']) ?
-                $originalMappings['dynamic_templates'] : [];
+            $originalTemplates = $originalMappings['dynamic_templates'] ?? [];
 
             $originalMappings['dynamic_templates'] = array_merge_recursive(
                 $originalTemplates,
