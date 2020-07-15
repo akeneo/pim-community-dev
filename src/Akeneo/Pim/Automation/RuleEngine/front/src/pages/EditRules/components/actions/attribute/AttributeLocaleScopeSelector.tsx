@@ -155,12 +155,12 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
           </InlineHelper>
         </SelectorBlock>
       )}
-      {(attribute?.scopable ||
-        (!attributeIsChanged && getScopeFormValue())) && (
+      {attribute && attribute?.scopable && (
         <SelectorBlock
           className={
-            // todo: replace 'scope' by the scope form name
-            isFormFieldInError('scope') ? 'select2-container-error' : ''
+            isFormFieldInError(scopeFieldName || 'scope')
+              ? 'select2-container-error'
+              : ''
           }>
           <Controller
             as={ScopeSelector}
@@ -186,12 +186,12 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
           />
         </SelectorBlock>
       )}
-      {(attribute?.localizable ||
-        (!attributeIsChanged && getLocaleFormValue())) && (
+      {attribute && attribute?.localizable && (
         <SelectorBlock
           className={
-            // todo: replace 'locale' by the locale form name
-            isFormFieldInError('locale') ? 'select2-container-error' : ''
+            isFormFieldInError(localeFieldName || 'locale')
+              ? 'select2-container-error'
+              : ''
           }>
           <Controller
             as={LocaleSelector}
