@@ -2,9 +2,9 @@ import React from 'react';
 import { useUserCatalogLocale } from '../../../../../dependenciesTools/hooks';
 import { InputValueProps } from './AttributeValue';
 import { getAttributeLabel } from '../../../../../models';
-import { SimpleOptionSelector } from '../../../../../components/Selectors/SimpleOptionSelector';
+import { MultiOptionsSelector } from '../../../../../components/Selectors/MultiOptionsSelector';
 
-const SimpleSelectValue: React.FC<InputValueProps> = ({
+const MultiSelectValue: React.FC<InputValueProps> = ({
   id,
   attribute,
   name,
@@ -15,7 +15,7 @@ const SimpleSelectValue: React.FC<InputValueProps> = ({
   const currentCatalogLocale = useUserCatalogLocale();
 
   return (
-    <SimpleOptionSelector
+    <MultiOptionsSelector
       data-testid={id}
       name={name}
       attributeId={attribute.meta.id}
@@ -27,4 +27,4 @@ const SimpleSelectValue: React.FC<InputValueProps> = ({
   );
 };
 
-export { SimpleSelectValue };
+export { MultiSelectValue };

@@ -1,8 +1,8 @@
 import React from 'react';
 import {
   Attribute,
-  getAttributeLabel,
   AttributeType,
+  getAttributeLabel,
 } from '../../../../../models';
 import {
   useTranslate,
@@ -16,6 +16,7 @@ import {
   InlineHelper,
 } from '../../../../../components/HelpersInfos';
 import { ActionFormContainer } from '../style';
+import { MultiSelectValue } from './MultiSelectValue';
 
 const MANAGED_ATTRIBUTE_TYPES: Map<
   AttributeType,
@@ -23,6 +24,7 @@ const MANAGED_ATTRIBUTE_TYPES: Map<
 > = new Map([
   [AttributeType.TEXT, TextValue],
   [AttributeType.OPTION_SIMPLE_SELECT, SimpleSelectValue],
+  [AttributeType.OPTION_MULTI_SELECT, MultiSelectValue],
 ]);
 
 type InputValueProps = {
@@ -37,10 +39,12 @@ type InputValueProps = {
 
 const getValueModule = (attribute: Attribute, props: InputValueProps) => {
   switch (attribute.type) {
-    case 'pim_catalog_text':
+    case AttributeType.TEXT:
       return <TextValue {...props} />;
-    case 'pim_catalog_simpleselect':
+    case AttributeType.OPTION_SIMPLE_SELECT:
       return <SimpleSelectValue {...props} key={attribute.code} />;
+    case AttributeType.OPTION_MULTI_SELECT:
+      return <MultiSelectValue {...props} />;
     default:
       return null;
   }
