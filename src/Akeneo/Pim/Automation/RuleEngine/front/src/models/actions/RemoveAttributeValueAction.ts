@@ -1,8 +1,8 @@
-import { RemoveActionLine } from '../../pages/EditRules/components/actions/RemoveActionLine';
+import { RemoveAttributeValueActionLine } from '../../pages/EditRules/components/actions/RemoveAttributeValueActionLine';
 import { ProductField } from './ProductField';
 import { ActionModuleGuesser } from './ActionModuleGuesser';
 
-export type RemoveAction = {
+export type RemoveAttributeValueAction = {
   type: 'remove';
   items: string[];
   include_children: boolean | null;
@@ -13,5 +13,5 @@ export const getRemoveActionModule: ActionModuleGuesser = json => {
     return Promise.resolve(null);
   }
 
-  return Promise.resolve(RemoveActionLine);
+  return Promise.resolve(RemoveAttributeValueActionLine);
 };

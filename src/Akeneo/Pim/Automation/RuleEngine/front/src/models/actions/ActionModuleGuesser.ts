@@ -7,7 +7,7 @@ import { getCalculateActionModule } from './CalculateAction';
 import { getClearActionModule } from './ClearAction';
 import { getConcatenateActionModule } from './ConcatenateAction';
 import { getCopyActionModule } from './CopyAction';
-import { getRemoveActionModule } from './RemoveAction';
+import { getRemoveActionModule } from './RemoveAttributeValueAction';
 import { getSetActionModule } from './SetAction';
 import { FallbackActionLine } from '../../pages/EditRules/components/actions/FallbackActionLine';
 import { Router } from '../../dependenciesTools';
@@ -40,13 +40,13 @@ const getActionModule: (
     getAddCategoriesModule,
     getSetCategoriesModule,
     getRemoveCategoriesModule,
+    getRemoveActionModule,
     // Fallbacks
     getAddActionModule,
     getCalculateActionModule,
     getClearActionModule,
     getConcatenateActionModule,
     getCopyActionModule,
-    getRemoveActionModule,
     getSetActionModule,
   ];
 

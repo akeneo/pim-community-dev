@@ -1,15 +1,15 @@
 import React from 'react';
-import { RemoveAction } from '../../../../models/actions';
+import { RemoveAttributeValueAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import { FallbackField } from '../FallbackField';
 import { useRegisterConsts } from '../../hooks/useRegisterConst';
 
 type Props = {
-  action: RemoveAction;
+  action: RemoveAttributeValueAction;
 } & ActionLineProps;
 
-const RemoveActionLine: React.FC<Props> = ({
+const RemoveAttributeValueActionLine: React.FC<Props> = ({
   lineNumber,
   action,
   handleDelete,
@@ -65,4 +65,4 @@ const RemoveActionLine: React.FC<Props> = ({
   );
 };
 
-export { RemoveActionLine };
+export { RemoveAttributeValueActionLine };

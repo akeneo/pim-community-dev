@@ -15,7 +15,7 @@ import {
   createSetAttributeAction,
   createSetFamilyAction,
   createRemoveCategoriesAction,
-  RemoveAction,
+  RemoveAttributeValueAction,
   SetAction,
   SetFamilyAction,
   SetCategoriesAction,
@@ -51,7 +51,7 @@ export type Action =
   | ConcatenateAction
   | CopyAction
   | FallbackAction
-  | RemoveAction
+  | RemoveAttributeValueAction
   | SetAction
   | SetFamilyAction
   | SetCategoriesAction;
