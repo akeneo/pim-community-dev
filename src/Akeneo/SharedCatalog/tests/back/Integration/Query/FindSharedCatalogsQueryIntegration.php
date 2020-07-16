@@ -2,6 +2,7 @@
 
 namespace Akeneo\SharedCatalog\tests\back\Integration\Query;
 
+use Akeneo\SharedCatalog\Model\SharedCatalog;
 use Akeneo\SharedCatalog\Query\FindSharedCatalogsQueryInterface;
 use Akeneo\SharedCatalog\tests\back\Utils\CreateJobInstance;
 use Akeneo\Test\Integration\TestCase;
@@ -39,18 +40,19 @@ class FindSharedCatalogsQueryIntegration extends TestCase
         );
 
         $results = $this->findSharedCatalogsQuery->execute();
+        $normalizedResults = array_map(function (SharedCatalog $sharedCatalog) {
+            return $sharedCatalog->normalize();
+        }, $results);
 
         self::assertEquals([
             [
                 'code' => 'shared_catalog_1',
                 'publisher' => 'system',
                 'recipients' => [],
-                'channel' => null,
-                'catalogLocales' => [],
-                'attributes' => [],
-                'branding' => ['logo' => null],
+                'branding' => null,
+                'filters' => null,
             ],
-        ], $results);
+        ], $normalizedResults);
     }
 
     /**
@@ -90,27 +92,38 @@ class FindSharedCatalogsQueryIntegration extends TestCase
         );
 
         $results = $this->findSharedCatalogsQuery->execute();
+        $normalizedResults = array_map(function (SharedCatalog $sharedCatalog) {
+            return $sharedCatalog->normalize();
+        }, $results);
 
         self::assertEquals([
             [
                 'code' => 'shared_catalog_1',
                 'publisher' => 'system',
                 'recipients' => [
-                    'betty@akeneo.com',
-                    'julia@akeneo.com',
+                    [
+                        'email' => 'betty@akeneo.com',
+                    ],
+                    [
+                        'email' => 'julia@akeneo.com',
+                    ],
                 ],
-                'channel' => 'mobile',
-                'catalogLocales' => [
-                    'en_US',
-                ],
-                'attributes' => [
-                    'name',
+                'filters' => [
+                    'structure' => [
+                        'scope' => 'mobile',
+                        'locales' => [
+                            'en_US',
+                        ],
+                        'attributes' => [
+                            'name',
+                        ],
+                    ],
                 ],
                 'branding' => [
-                    'logo' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABKoAAAJFCAYAAAD9Ih9',
+                    'image' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABKoAAAJFCAYAAAD9Ih9',
                 ],
             ],
-        ], $results);
+        ], $normalizedResults);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Akeneo\SharedCatalog\Query;
 
+use Akeneo\SharedCatalog\Model\SharedCatalog;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
@@ -22,6 +23,9 @@ class FindSharedCatalogsQuery implements FindSharedCatalogsQueryInterface
         $this->sharedCatalogJobName = $sharedCatalogJobName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function execute(): array
     {
         $sql = <<<SQL
@@ -46,29 +50,23 @@ SQL;
         );
 
         $results = $statement->fetchAll();
-        $normalizedResults = $this->normalize($results);
+        $hydratedResults = $this->hydrate($results);
 
-        return $normalizedResults;
+        return $hydratedResults;
     }
 
-    private function normalize(array $rows)
+    private function hydrate(array $rows): array
     {
         return array_map(function ($row) {
             $parameters = unserialize($row['raw_parameters']);
 
-            return [
-                'code' => $row['code'],
-                'publisher' => $parameters['publisher'] ?? null,
-                'recipients' => array_map(function ($recipient) {
-                    return $recipient['email'];
-                }, $parameters['recipients'] ?? []),
-                'channel' => $parameters['filters']['structure']['scope'] ?? null,
-                'catalogLocales' => $parameters['filters']['structure']['locales'] ?? [],
-                'attributes' => $parameters['filters']['structure']['attributes'] ?? [],
-                'branding' => [
-                    'logo' => $parameters['branding']['image'] ?? null,
-                ],
-            ];
+            return SharedCatalog::create(
+                $row['code'],
+                $parameters['publisher'] ?? null,
+                $parameters['recipients'] ?? [],
+                $parameters['filters'] ?? null,
+                $parameters['branding'] ?? null
+            );
         }, $rows);
     }
 }
