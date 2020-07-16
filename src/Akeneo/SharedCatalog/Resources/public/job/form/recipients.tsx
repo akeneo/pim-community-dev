@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, useCallback, ChangeEvent} from 'react';
+import React, {useState, useEffect, useRef, useCallback, ChangeEvent, SyntheticEvent} from 'react';
 import styled from 'styled-components';
 // @todo pull-up master: change to '@akeneo-pim-community/shared'
 import {
@@ -62,18 +62,21 @@ const InputContainer = styled.div`
   flex-direction: column;
 `;
 
-const Input = styled.input<{isInvalid: boolean}>`
+const Input = styled.textarea<{isInvalid: boolean}>`
   border-radius: 2px;
   border: 1px solid;
   border-color: ${({theme, isInvalid}: AkeneoThemedProps & {isInvalid: boolean}) =>
     isInvalid ? theme.color.red100 : theme.color.grey80};
   color: ${({theme}: AkeneoThemedProps) => theme.color.grey140};
-  height: 40px;
-  line-height: 40px;
+  height: auto;
+  line-height: 15px;
+  min-height: 40px;
+  max-height: 150px;
   margin-right: 10px;
-  padding: 0 8px;
-  width: 400px;
+  padding: 10px 10px 0 10px;
+  width: 450px;
   z-index: 1;
+  resize: none;
 
   :disabled {
     color: ${({theme}: AkeneoThemedProps) => theme.color.grey60};
@@ -164,18 +167,40 @@ const Recipients = ({recipients, validationErrors, onRecipientsChange}: Recipien
   const [emailIsValid, setEmailIsValid] = useState<boolean>(true);
   const [emailIsDuplicated, setEmailIsDuplicated] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>('');
-  const inputRef = useRef<null | HTMLInputElement>(null);
+  const inputRef = useRef<null | HTMLTextAreaElement>(null);
 
-  const handleAddNewRecipient = useCallback(() => {
-    if (emailIsDuplicated || !emailIsValid || '' === recipientToAdd) return;
+  const handleAddNewRecipient = useCallback(
+    (event: SyntheticEvent) => {
+      event.preventDefault();
 
-    if (isValidEmail(recipientToAdd)) {
-      setCurrentRecipients(currentRecipients => [...currentRecipients, {email: recipientToAdd}]);
-      setRecipientToAdd('');
-    } else {
-      setEmailIsValid(false);
-    }
-  }, [recipientToAdd, setEmailIsValid, emailIsDuplicated]);
+      if (emailIsDuplicated || !emailIsValid || '' === recipientToAdd) return;
+
+      const addresses = recipientToAdd.split(/[\n\s,;]+/);
+
+      if (1 < addresses.length) {
+        const currentAddresses = currentRecipients.map(recipient => recipient.email);
+        const newRecipients = addresses
+          .filter(
+            (recipient, index) =>
+              isValidEmail(recipient) && !currentAddresses.includes(recipient) && index === addresses.indexOf(recipient)
+          )
+          .map(recipient => ({email: recipient}));
+        setRecipientToAdd('');
+        setCurrentRecipients(currentRecipients => [
+          ...currentRecipients,
+          ...newRecipients.slice(0, MAX_RECIPIENT_COUNT - currentAddresses.length),
+        ]);
+      } else {
+        if (isValidEmail(addresses[0])) {
+          setRecipientToAdd('');
+          setCurrentRecipients(currentRecipients => [...currentRecipients, {email: addresses[0]}]);
+        } else {
+          setEmailIsValid(false);
+        }
+      }
+    },
+    [recipientToAdd, setEmailIsValid, emailIsDuplicated, currentRecipients]
+  );
 
   useAutoFocus(inputRef);
   useShortcut(Key.Enter, handleAddNewRecipient);
@@ -183,6 +208,12 @@ const Recipients = ({recipients, validationErrors, onRecipientsChange}: Recipien
 
   useEffect(() => {
     setEmailIsDuplicated(currentRecipients.map(recipient => recipient.email).includes(recipientToAdd));
+
+    // Adapt height to content on each input change
+    if (null !== inputRef.current) {
+      inputRef.current.style.height = 'auto';
+      inputRef.current.style.height = `${inputRef.current.scrollHeight}px`;
+    }
   }, [recipientToAdd, currentRecipients]);
 
   useEffect(() => {
@@ -211,7 +242,7 @@ const Recipients = ({recipients, validationErrors, onRecipientsChange}: Recipien
               value={recipientToAdd}
               disabled={maxRecipientLimitReached}
               isInvalid={emailIsDuplicated || !emailIsValid}
-              onChange={(event: ChangeEvent<HTMLInputElement>) => {
+              onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
                 setEmailIsValid(true);
                 setRecipientToAdd(event.currentTarget.value);
               }}
@@ -255,7 +286,7 @@ const Recipients = ({recipients, validationErrors, onRecipientsChange}: Recipien
         </thead>
         <tbody>
           {filteredRecipients.map((recipient, index) => (
-            <Row key={recipient.email}>
+            <Row key={`${recipient.email}-${index}`}>
               <Cell>
                 {recipient.email}
                 {validationErrors[index] && <ErrorMessage>{validationErrors[index].email}</ErrorMessage>}
@@ -293,4 +324,4 @@ const Recipients = ({recipients, validationErrors, onRecipientsChange}: Recipien
   );
 };
 
-export {Container as default, Recipients};
+export {Container as default, Recipients, MAX_RECIPIENT_COUNT};
