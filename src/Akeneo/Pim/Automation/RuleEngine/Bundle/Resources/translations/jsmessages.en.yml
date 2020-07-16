@@ -1,0 +1,203 @@
+pimee_catalog_rule:
+  popin:
+    execute_rules:
+      confirm_content: Are you sure you want to execute the rules? (It could take a while)
+  notification:
+    fail: The action was not performed
+  attribute:
+    list:
+      no_rule_yet.label: No rules for now
+  rule:
+    value: Value
+    include_children: Include children
+  datagrid:
+    rule-grid:
+      mass_edit_action:
+        confirm_content: Are you sure you want to calculate the number of products impacted by the rules?
+      mass_action:
+        execute:
+          confirm_content: Are you sure you want to execute the rules? (It could take a while)
+  form:
+    category:
+      catalog: Catalog
+      select: Select a category
+      open_tree: Open category tree
+      tree: Category Tree
+      menu: Select a category tree
+      folder:
+        selected: Folder selected
+        not_selected: Folder
+      folders:
+        selected: Folders selected
+        not_selected: Folders
+      arrow:
+        open: Open branch category
+        close: Close branch category
+    tab:
+      list: Rule builder and properties tabs
+      rule_builder: Rules builder
+    creation:
+      english_flag: Label for English
+      title: Create a new rule
+      notification:
+        success: Rule created successfully
+        failed: Rule creation failed
+      constraint:
+        code:
+          required: A rule code is required.
+          too_short: "The rule code is too short. It requires {{ characterLimit }} characters or more."
+          allowed_characters: The rule code can only contain alphanumeric and underscore characters.
+          unique: This code is already used.
+      cross_link: Leave create rule form
+    edit:
+      properties:
+        section:
+          general: General parameters
+          labels: Label translations
+      character_left: "]-Inf, 1]{{ count }} Character left|]1, +Inf[{{ count }} Characters left"
+      priority:
+        label: Priority
+      add_to_category: Add to category
+      add_conditions: Add conditions
+      products_count:
+        complete: "]-Inf, 1]{{ count }} product and product model|]1, +Inf[{{ count }} products and product models"
+        pending: Calculating products and product models
+        error: Impossible to calculate products and product models
+      product_selection: Product selection
+      fields:
+        family: Family
+        category: Category
+        attribute: Attribute
+      actions:
+        add_action: Add action
+        add_category:
+          title: ADD categories
+          helper: To add your product selection to one or more categories, please start by selecting your category trees and then, your categories
+        set_category:
+          title: SET categories
+          helper: To set your product selection to one or more categories, please start by selecting your category trees and then, your categories
+        category:
+          select_category_trees: Select your category trees
+          select_category_tree: Select your category tree
+          select_categories: Select your categories
+          select_category: Select your category
+          category_tree: Category tree
+          categories_selected: "]-Inf, 1]{{ count }} category selected|]1, +Inf[{{ count }} categories selected"
+          no_category_tree: Please, select a category tree first
+          remove_unknown_category: " Click here to remove this category."
+        set_family:
+          title: SET Family
+          subtitle: Select your family
+        set_attribute:
+          title: SET Attribute value
+          helper: To set values to your attribute, please start by selecting your target attribute and then, the value you want to set
+          target_subtitle: Select your target
+          value_subtitle: Define your value
+          attribute_label: Attribute
+          attribute_placeholder: Select your target attribute
+        clear_attribute:
+          title: CLEAR Attribute value
+          subtitle: Select the attribute to clear
+          attribute_label: Attribute
+        clear_associations:
+          title: CLEAR Associations
+        clear_categories:
+          title: CLEAR Categories
+        clear_groups:
+          title: CLEAR Groups
+        remove_category:
+          title: REMOVE categories
+          helper: To remove your product selection from one or more categories, please start by selecting your category trees and then, your categories
+        delete:
+          label: Remove action
+          description: Are you sure you want to remove this action?
+      conditions:
+        delete:
+          label: Remove condition
+          description: Are you sure you want to remove this condition?
+        operators:
+          "STARTS WITH": starts with
+          "ENDS WITH": ends with
+          "CONTAINS": contains
+          "DOES NOT CONTAIN": does not contain
+          "EMPTY": is empty
+          "NOT EMPTY": is not empty
+          "IN": in
+          "NOT IN": not in
+          "IN CHILDREN": in children
+          "NOT IN CHILDREN": not in children
+          "UNCLASSIFIED": is unclassified
+          "IN OR UNCLASSIFIED": is unclassified or in
+          "BETWEEN": between
+          "NOT BETWEEN": not between
+          "=": equals
+          "!=": not equal
+          ">": greater than
+          ">=": equals or greater than
+          "<": less than
+          "<=": equals or less than
+      notification:
+        success: Rule updated successfully
+        failed: Rule update failed
+      discard_changes: Your changes will be lost if you leave the page.
+      please_select_attribute: Please select a target attribute first.
+      unhandled_attribute_type: Sorry this attribute type is not managed yet. Please use the rules import.
+    helper:
+      add_to_category: To add your product selection to one or more categories, please start by selecting your category trees and then, your categories.
+      clear_attribute: To clear the attribute value, please start by selecting the attribute to clear.
+      clear_associations: All the associations for the selected products will be cleared.
+      clear_categories: All the categories for the selected products will be cleared.
+      clear_groups: All the groups for the selected products will be cleared.
+      product_selection: "You must define your product selection in order to create your rule. If you don't know how, "
+      product_selection_doc_link: take a look at this article.
+    legend:
+      add_to_category: Create an action
+      product_selection: Create a condition
+    tree:
+      item:
+        selected: Item selected
+        not_selected: Select item
+  exceptions:
+    loading: An error occurred during rule definition loading.
+    required: This field is required
+    required_attribute: An attribute is required
+    required_value: A value is required for this action
+    required_categories: At least one category is required for this action
+    unknown_or_inactive_locale: 'The "{{ localeCode }}" locale does not exist or is not activated'
+    unbound_locale: 'The "{{ localeCode }}" locale is not activated in the "{{ channelCode }}" channel'
+    locale_on_unlocalizable_attribute: This attribute is not localizable. Please remove the locale before you continue.
+    unknown_scope: 'The "{{ scopeCode }}" channel does not exist'
+    scope_on_unscopable_attribute: This attribute is not scopable. Please remove the scope before you continue.
+    unknown_families: "{1}The {{ familyCodes }} family does not exist|]1,+Inf[The {{ familyCodes }} families do not exist"
+    unknown_attribute_options: "{1}The {{ attributeOptionCodes }} option does not exist|]1,+Inf[The {{ attributeOptionCodes }} options do not exist"
+    unknown_attribute_code: "The {{ attributeCode }} attribute does not exist"
+    unknown_categories: "{1}The {{ categoryCodes }} category does not exist.|]1, +Inf[The {{ categoryCodes }} categories do not exist"
+    unknown_attribute: "This attribute does not exist."
+    select_another_attribute_or_remove_action: "Select another attribute or remove this action."
+    select_another_attribute: "Select another attribute"
+    or: or
+    create_attribute_link: click here to create the attribute
+pim_enrich:
+  entity:
+    rule:
+      flash:
+        delete:
+          success: Rule successfully deleted
+flash:
+  rule:
+    impacted_product_count: The bulk action to calculate the number of impacted products has been launched. You will be notified when it is done.
+batch_jobs:
+  default_steps:
+    export_rules: Rules export
+    import_rules: Rules import
+    calculate_affected_products: Calculate affected products
+  yml_rule_import:
+    label: Rules import in YAML
+    import.label: Rules import
+  yml_rule_export:
+    label: Rules export in YAML
+    export.label: Rules export
+  rule_impacted_product_count:
+    label: Number of impacted products
+pim_title:
+  pimee_catalog_rule_edit: Edit rule

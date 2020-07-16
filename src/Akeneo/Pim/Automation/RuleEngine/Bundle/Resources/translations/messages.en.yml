@@ -1,0 +1,53 @@
+pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      column:
+        label: Label
+        impacted_product_count:
+          label: Impacted products
+          count: '{0,1}%count% impacted product|]1,Inf[%count% impacted products'
+          no_yet_calculated: Not calculated yet
+        tags:
+          label: Actions
+      mass_edit_action:
+        impacted_product_count: Calculate the impacted products
+  condition:
+    fields:
+      family: Family
+      associations: Associations
+      groups: Groups
+      categories: Categories
+    field_groups:
+      system: System
+  acl:
+    rule:
+      impacted_product_count_permissions: Calculate the number of products impacted by the rules
+  steps:
+    product_rule_definition_reader.title: Product rules import reader
+    rule_definition_processor.title: Product rules import processor
+    product_rule_definition_writer.title: Product rules import writer
+  notification:
+    execute_rules:
+      success: Execution of the rule(s) complete
+      warning: Execution of the rule(s) complete with warning(s)
+      error: An error occurred during the execution of the rules
+    mass_edit_rule:
+      success: Calculation of the impacted products for the rules finished
+      error: An error has occurred during the calculation of the number of products impacted by the rules
+  datetime:
+    now: now
+    relative_date:
+      minute: ']-Inf, -1[%absolute_count% minutes ago|{-1}1 minute ago|{1}in 1 minute|]1, +Inf[in %absolute_count% minutes'
+      hour: ']-Inf, -1[%absolute_count% hours ago|{-1}1 hour ago|{1}in 1 hour|]1, +Inf[in %absolute_count% hours'
+      day: ']-Inf, -1[%absolute_count% days ago|{-1}1 day ago|{1}in 1 day|]1, +Inf[in %absolute_count% days'
+      week: ']-Inf, -1[%absolute_count% weeks ago|{-1}1 week ago|{1}in 1 week|]1, +Inf[in %absolute_count% weeks'
+      month: ']-Inf, -1[%absolute_count% months ago|{-1}1 month ago|{1}in 1 month|]1, +Inf[in %absolute_count% months'
+      year: ']-Inf, -1[%absolute_count% years ago|{-1}1 year ago|{1}in 1 year|]1, +Inf[in %absolute_count% years'
+job_execution:
+  summary:
+    read_rules: read rules
+    selected_entities: selected products / product models
+    skipped_invalid: skipped products / product models (invalid)
+    updated_entities: updated products / product models
+    executed_rules: successfully executed rules
+    errored_rules: skipped rules (invalid)
