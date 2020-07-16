@@ -117,7 +117,7 @@
     "json-schema-ref-parser": "^7.1.2",
     "json-schema-to-typescript": "^7.1.0",
     "less": "^3.9.0",
-    "lodash": "^4.17.0",
+    "lodash": "^4.17.19",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-hook-form": "^5.2.0",
