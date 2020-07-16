@@ -92,8 +92,8 @@ SQL;
                 $localeCodes,
                 $channelCurrencyCodes,
                 $activatedCurrencyCodes,
-                json_decode($attributeData['labels'], true),
                 null !== $attributeData['specific_to_locales'] ? json_decode($attributeData['specific_to_locales'], true) : [],
+                json_decode($attributeData['labels'], true),
                 $unitLabel
             );
         }

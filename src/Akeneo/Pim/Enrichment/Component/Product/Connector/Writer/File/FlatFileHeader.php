@@ -68,8 +68,8 @@ final class FlatFileHeader
         ?array $channelCurrencyCodes = [],
         ?array $allCurrencyCodes = [],
         ?bool $isLocaleSpecific = false,
-        ?array $attributeLabels = [],
         ?array $specificToLocales = [],
+        ?array $attributeLabels = [],
         ?string $unitLabel = ''
     ) {
         if ($isLocaleSpecific && empty($specificToLocales)) {
@@ -118,8 +118,8 @@ final class FlatFileHeader
         array $localeCodes,
         array $channelCurrencyCodes,
         array $activatedCurrencyCodes,
-        array $attributeLabels,
         array $specificToLocales,
+        array $attributeLabels,
         string $unitLabel
     ): FlatFileHeader {
         $mediaAttributeTypes = [
@@ -139,8 +139,8 @@ final class FlatFileHeader
             $channelCurrencyCodes,
             $activatedCurrencyCodes,
             !empty($specificToLocales),
-            $attributeLabels,
             $specificToLocales,
+            $attributeLabels,
             $unitLabel
         );
     }
