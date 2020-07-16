@@ -2,6 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter;
 
+use Symfony\Component\Intl\Intl;
+
 /**
  * Price array converter.
  * Convert a standard price array format to a flat one.
@@ -69,7 +71,11 @@ class PriceConverter extends AbstractValueConverter implements ValueConverterInt
             );
 
             foreach ($value['data'] as $currency) {
-                $flatCurrencyName = sprintf('%s-%s', $flatName, $currency['currency']);
+                $language = \Locale::getPrimaryLanguage('fr_FR');
+
+                $currencyLabel = Intl::getCurrencyBundle()->getCurrencyName($currency['currency'], $language);
+
+                $flatCurrencyName = sprintf('%s (%s)', $flatName, $currencyLabel);
                 $convertedItem[$flatCurrencyName] = (string) $currency['amount'];
             }
         }

@@ -65,7 +65,10 @@ pim_common:
     name: Name
     remove: Remove
     code: Code
-
+    products: Products
+    product_models: Product models
+    groups: Groups
+    unit: Unit
 pim_enrich:
     # ACLs
     acl:

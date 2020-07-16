@@ -248,6 +248,11 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo.pim.enrichment.channel.query.get_association_type_labels:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\AssociationType\SqlGetAssociationTypeLabels'
+        arguments:
+            - '@database_connection'
+
     akeneo.pim.enrichment.attribute.query.get_labels:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Attribute\SqlGetAttributeLabels'
         arguments:

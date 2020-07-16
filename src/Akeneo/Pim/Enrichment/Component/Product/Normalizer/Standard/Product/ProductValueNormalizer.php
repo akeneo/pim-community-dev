@@ -8,8 +8,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -30,10 +32,13 @@ class ProductValueNormalizer implements NormalizerInterface, CacheableSupportsMe
     /** @var GetAttributes */
     private $getAttributes;
 
-    public function __construct(NormalizerInterface $normalizer, GetAttributes $getAttributes)
+    private $attributeOptionRepository;
+
+    public function __construct(NormalizerInterface $normalizer, GetAttributes $getAttributes, AttributeOptionRepositoryInterface $attributeOptionRepository)
     {
         $this->normalizer = $normalizer;
         $this->getAttributes = $getAttributes;
+        $this->attributeOptionRepository = $attributeOptionRepository;
     }
 
     /**
@@ -80,8 +85,9 @@ class ProductValueNormalizer implements NormalizerInterface, CacheableSupportsMe
 
         $data = [];
         foreach ($value->getData() as $item) {
-            if (AttributeTypes::OPTION_MULTI_SELECT === $attributeType ||
-                isset($attribute->properties()['reference_data_name'])) {
+            if (AttributeTypes::OPTION_MULTI_SELECT === $attributeType) {
+                $data[] = $this->getOptionLabel($attribute->code(), $item);
+            } else if(isset($attribute->properties()['reference_data_name'])) {
                 $data[] = $item;
             } else {
                 $data[] = $this->normalizer->normalize($item, $format, $context);
@@ -115,9 +121,11 @@ class ProductValueNormalizer implements NormalizerInterface, CacheableSupportsMe
             return $value->getData();
         }
 
-        if ($attributeType === AttributeTypes::OPTION_SIMPLE_SELECT ||
-            $attributeType === AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT
-        ) {
+        if($attributeType === AttributeTypes::OPTION_SIMPLE_SELECT) {
+            return $this->getOptionLabel($value->getAttributeCode(), $value->getData());
+        }
+
+        if ($attributeType === AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT) {
             return $value->getData();
         }
 
@@ -146,5 +154,18 @@ class ProductValueNormalizer implements NormalizerInterface, CacheableSupportsMe
         $formattedNumber = number_format($data, static::DECIMAL_PRECISION, '.', '');
 
         return strlen($formattedNumber) >= strlen($data) ? $formattedNumber : rtrim($data, '0');
+    }
+
+    private function getOptionLabel(string $attributeCode, string $optionCode)
+    {
+        $option = $this->attributeOptionRepository->findOneByIdentifier($attributeCode . '.' . $optionCode);
+        if (! $option instanceof AttributeOptionInterface) {
+            return sprintf('[%s]', $optionCode);
+        }
+
+        $option->setLocale('fr_FR');
+        $translation = $option->getTranslation();
+
+        return null !== $translation->getLabel() ? $translation->getValue() : sprintf('[%s]', $option->getCode());
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization;
 
+use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\FilterValues;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -100,6 +101,17 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
                 ARRAY_FILTER_USE_KEY
             );
         }
+
+        $parentLabel = '';
+        if($product->getParent() instanceof ProductModelInterface) {
+            $parentLabel = $product->getParent()->getLabel('fr_FR', $structure['scope']);
+        }
+        $productStandard['categories'] = $product->getCategories()->map(function (Category $category) {
+            return $category->getTranslation('fr_FR')->getLabel();
+        })->toArray();
+
+        $productStandard['family'] = $product->getFamily()->getTranslation('fr_FR')->getLabel();
+        $productStandard['parent'] = $parentLabel;
 
         return $productStandard;
     }

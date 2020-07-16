@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatT
 
 use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetAttributeLabelsInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
@@ -30,6 +31,7 @@ class AttributeColumnsResolver
 
     /** @var string */
     protected $identifierField;
+    private $getAttributeLabels;
 
     /**
      * @param AttributeRepositoryInterface     $attributeRepository
@@ -39,11 +41,13 @@ class AttributeColumnsResolver
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         CurrencyRepositoryInterface $currencyRepository,
-        AttributeValuesResolverInterface $valuesResolver
+        AttributeValuesResolverInterface $valuesResolver,
+        GetAttributeLabelsInterface $getAttributeLabels
     ) {
         $this->currencyRepository = $currencyRepository;
         $this->attributeRepository = $attributeRepository;
         $this->valuesResolver = $valuesResolver;
+        $this->getAttributeLabels = $getAttributeLabels;
     }
 
     /**
@@ -125,14 +129,19 @@ class AttributeColumnsResolver
      */
     public function resolveFlatAttributeName($attributeCode, $localeCode, $scopeCode)
     {
-        $field = $attributeCode;
+        $field = $this->getAttributeLabels->forAttributeCodes([$attributeCode])[$attributeCode]['fr_FR'] ?? "[$attributeCode]";
 
+        $extraInformation = [];
         if (null !== $localeCode) {
-            $field = sprintf('%s-%s', $field, $localeCode);
+            $extraInformation[] = $localeCode;
         }
 
         if (null !== $scopeCode) {
-            $field = sprintf('%s-%s', $field, $scopeCode);
+            $extraInformation[] = $scopeCode;
+        }
+
+        if (!empty($extraInformation)) {
+            $field = $field . "(".implode(', ', $extraInformation) . ")";
         }
 
         return $field;

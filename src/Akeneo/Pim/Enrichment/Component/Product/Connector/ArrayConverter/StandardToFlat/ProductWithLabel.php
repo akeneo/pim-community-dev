@@ -2,36 +2,21 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat;
 
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\AssociationType\SqlGetAssociationTypeLabels;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ProductValueConverter;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimpleArrayConverter;
-use Symfony\Component\Translation\TranslatorInterface;
 
-/**
- * Convert standard format to flat format for product
- *
- * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
- * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
- */
-class Product extends AbstractSimpleArrayConverter implements ArrayConverterInterface
+class ProductLabel extends AbstractSimpleArrayConverter implements ArrayConverterInterface
 {
     /** @var ProductValueConverter */
     protected $valueConverter;
 
-    private $associationTypeLabels;
-
-    private $translator;
-
     /**
      * @param ProductValueConverter $valueConverter
      */
-    public function __construct(ProductValueConverter $valueConverter, SqlGetAssociationTypeLabels $associationTypeLabels, TranslatorInterface $translator)
+    public function __construct(ProductValueConverter $valueConverter)
     {
         $this->valueConverter = $valueConverter;
-        $this->associationTypeLabels = $associationTypeLabels;
-        $this->translator = $translator;
     }
 
     /**
@@ -39,6 +24,7 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
      */
     protected function convertProperty($property, $data, array $convertedItem, array $options)
     {
+
         switch ($property) {
             case 'associations':
                 $convertedItem = $this->convertAssociations($data, $convertedItem);
@@ -130,10 +116,9 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
      */
     protected function convertAssociations(array $data, array $convertedItem): array
     {
-        $associationTypeLabels = $this->associationTypeLabels->forAssociationTypeCodes(array_keys($data));
         foreach ($data as $assocName => $associations) {
             foreach ($associations as $assocType => $entities) {
-                $propertyName = sprintf('%s %s', $associationTypeLabels[$assocName]['fr_FR'] ?? "[$assocName]", $this->translator->trans("pim_common.$assocType", [], null, 'fr_FR'));
+                $propertyName = sprintf('%s-%s', $assocName, $assocType);
                 $convertedItem[$propertyName] = implode(',', $entities);
             }
         }

@@ -77,6 +77,7 @@ services:
         arguments:
             - '@pim_standard_format_serializer'
             - '@akeneo.pim.structure.query.get_attributes'
+            - '@pim_catalog.repository.attribute_option'
         tags:
             - { name: pim_standard_format_serializer.normalizer, priority: 90 }
         lazy: true

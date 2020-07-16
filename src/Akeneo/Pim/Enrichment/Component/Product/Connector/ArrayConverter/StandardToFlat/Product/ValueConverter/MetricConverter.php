@@ -2,6 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnsResolver;
+use Symfony\Component\Translation\TranslatorInterface;
+
 /**
  * Metric array converter.
  * Convert a standard metric array format to a flat one.
@@ -12,6 +15,17 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\Stand
  */
 class MetricConverter extends AbstractValueConverter implements ValueConverterInterface
 {
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    public function __construct(AttributeColumnsResolver $columnsResolver, TranslatorInterface $translator, array $supportedAttributeTypes)
+    {
+        parent::__construct($columnsResolver, $supportedAttributeTypes);
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      *
@@ -38,6 +52,7 @@ class MetricConverter extends AbstractValueConverter implements ValueConverterIn
     public function convert($attributeCode, $data)
     {
         $convertedItem = [];
+        $unitLabel = $this->translator->trans('pim_common.unit', [], null, 'fr_FR');
 
         foreach ($data as $value) {
             $flatName = $this->columnsResolver->resolveFlatAttributeName(
@@ -45,7 +60,7 @@ class MetricConverter extends AbstractValueConverter implements ValueConverterIn
                 $value['locale'],
                 $value['scope']
             );
-            $flatUnitName = sprintf('%s-unit', $flatName);
+            $flatUnitName = sprintf('%s (%s)', $flatName, $unitLabel);
 
             if (null === $value['data']['amount']) {
                 $convertedItem[$flatName] = null;
