@@ -109,7 +109,7 @@ class FamilyFilter extends AbstractFieldFilter implements FieldFilterInterface
         FieldFilterHelper::checkArray($field, $values, static::class);
         $familyCodes = [];
 
-        foreach ($values as $index => $value) {
+        foreach ($values as $value) {
             FieldFilterHelper::checkIdentifier($field, $value, static::class);
             $family = $this->familyRepository->findOneByIdentifier($value);
 
