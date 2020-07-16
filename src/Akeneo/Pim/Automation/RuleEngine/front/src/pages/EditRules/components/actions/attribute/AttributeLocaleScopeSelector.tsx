@@ -1,5 +1,10 @@
 import React from 'react';
-import { Attribute, AttributeCode, AttributeType, Locale } from '../../../../../models';
+import {
+  Attribute,
+  AttributeCode,
+  AttributeType,
+  Locale,
+} from '../../../../../models';
 import { AttributeSelector } from '../../../../../components/Selectors/AttributeSelector';
 import {
   getScopeValidation,

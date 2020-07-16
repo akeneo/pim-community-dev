@@ -1,19 +1,11 @@
 import React from 'react';
 import 'jest-fetch-mock';
-import {
-  act,
-  renderWithProviders,
-  screen,
-} from '../../../../../../test-utils';
-import {
-  createAttribute,
-  locales,
-  scopes,
-} from '../../../../factories';
+import { act, renderWithProviders, screen } from '../../../../../../test-utils';
+import { createAttribute, locales, scopes } from '../../../../factories';
 import { clearAttributeRepositoryCache } from '../../../../../../src/repositories/AttributeRepository';
-import { AttributeType } from "../../../../../../src/models";
-import { RemoveAttributeValueActionLine } from "../../../../../../src/pages/EditRules/components/actions/RemoveAttributeValueActionLine";
-import { RemoveAttributeValueAction } from "../../../../../../src/models/actions";
+import { AttributeType } from '../../../../../../src/models';
+import { RemoveAttributeValueActionLine } from '../../../../../../src/pages/EditRules/components/actions/RemoveAttributeValueActionLine';
+import { RemoveAttributeValueAction } from '../../../../../../src/models/actions';
 import userEvent from '@testing-library/user-event';
 
 jest.mock('../../../../../../src/components/Select2Wrapper/Select2Wrapper');
@@ -50,18 +42,28 @@ describe('RemoveAttributeValueActionLine', () => {
     ];
 
     fetchMock.mockResponse((request: Request) => {
-      if (request.url.includes('pim_enrich_attribute_rest_get?%7B%22identifier%22:%22collection%22%7D')) {
-        return Promise.resolve(JSON.stringify(createAttribute({
-          code: 'collection',
-          type: AttributeType.OPTION_MULTI_SELECT
-        })));
+      if (
+        request.url.includes(
+          'pim_enrich_attribute_rest_get?%7B%22identifier%22:%22collection%22%7D'
+        )
+      ) {
+        return Promise.resolve(
+          JSON.stringify(
+            createAttribute({
+              code: 'collection',
+              type: AttributeType.OPTION_MULTI_SELECT,
+            })
+          )
+        );
       } else if (request.url.includes('pim_ui_ajaxentity_list')) {
-        return Promise.resolve(JSON.stringify({
-          'results': [
-            { 'id': 'autumn_2016', 'text': 'Autumn 2016' },
-            { 'id': 'winter_2016', 'text': 'Winter 2016' }
-          ]
-        }));
+        return Promise.resolve(
+          JSON.stringify({
+            results: [
+              { id: 'autumn_2016', text: 'Autumn 2016' },
+              { id: 'winter_2016', text: 'Winter 2016' },
+            ],
+          })
+        );
       }
 
       throw new Error(`The "${request.url}" url is not mocked.`);
@@ -85,7 +87,9 @@ describe('RemoveAttributeValueActionLine', () => {
       )
     ).toBeInTheDocument();
 
-    expect(screen.getByTestId('edit-rules-action-0-field')).toHaveValue('collection');
+    expect(screen.getByTestId('edit-rules-action-0-field')).toHaveValue(
+      'collection'
+    );
     const inputValue = screen.getByTestId('edit-rules-action-0-items');
     expect(inputValue).toHaveValue(['winter_2016']);
     await act(async () => {

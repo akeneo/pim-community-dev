@@ -3,12 +3,27 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { RemoveAttributeValueAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
-import { useBackboneRouter, useTranslate } from "../../../../dependenciesTools/hooks";
-import { Attribute } from "../../../../models";
-import { useControlledFormInputAction } from "../../hooks";
-import { useGetAttributeAtMount, validateAttribute } from "./attribute/attribute.utils";
-import { ActionGrid, ActionLeftSide, ActionRightSide, ActionTitle } from "./ActionLine";
-import { AttributeLocaleScopeSelector, AttributeValue, MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION } from "./attribute";
+import {
+  useBackboneRouter,
+  useTranslate,
+} from '../../../../dependenciesTools/hooks';
+import { Attribute } from '../../../../models';
+import { useControlledFormInputAction } from '../../hooks';
+import {
+  useGetAttributeAtMount,
+  validateAttribute,
+} from './attribute/attribute.utils';
+import {
+  ActionGrid,
+  ActionLeftSide,
+  ActionRightSide,
+  ActionTitle,
+} from './ActionLine';
+import {
+  AttributeLocaleScopeSelector,
+  AttributeValue,
+  MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION,
+} from './attribute';
 
 type Props = {
   action: RemoveAttributeValueAction;
@@ -24,7 +39,7 @@ const RemoveAttributeValueActionLine: React.FC<Props> = ({
   const router = useBackboneRouter();
   const [attribute, setAttribute] = React.useState<
     Attribute | null | undefined
-    >(undefined);
+  >(undefined);
 
   const {
     fieldFormName,
@@ -56,7 +71,11 @@ const RemoveAttributeValueActionLine: React.FC<Props> = ({
         defaultValue=''
         rules={{ validate: validateAttribute(translate, router) }}
       />
-      <Controller name={typeFormName} as={<span hidden />} defaultValue='remove' />
+      <Controller
+        name={typeFormName}
+        as={<span hidden />}
+        defaultValue='remove'
+      />
       <Controller
         name={itemsFormName}
         as={<span hidden />}
@@ -101,9 +120,12 @@ const RemoveAttributeValueActionLine: React.FC<Props> = ({
               locales={locales}
               onAttributeCodeChange={onAttributeChange}
               lineNumber={lineNumber}
-              filterAttributeTypes={Array.from(MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION.keys())}
+              filterAttributeTypes={Array.from(
+                MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION.keys()
+              )}
               disabled={
-                !!attribute && !MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION.get(attribute.type)
+                !!attribute &&
+                !MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION.get(attribute.type)
               }
             />
           </ActionLeftSide>

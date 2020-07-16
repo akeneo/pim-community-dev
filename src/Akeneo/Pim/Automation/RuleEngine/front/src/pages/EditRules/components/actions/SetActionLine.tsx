@@ -138,9 +138,12 @@ const SetActionLine: React.FC<Props> = ({
               locales={locales}
               onAttributeCodeChange={onAttributeChange}
               lineNumber={lineNumber}
-              filterAttributeTypes={Array.from(MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION.keys())}
+              filterAttributeTypes={Array.from(
+                MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION.keys()
+              )}
               disabled={
-                !!attribute && !MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION.get(attribute.type)
+                !!attribute &&
+                !MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION.get(attribute.type)
               }
             />
           </ActionLeftSide>
