@@ -68,7 +68,6 @@ pimee_catalog_rule:
         rules:
           title: Regeln
     creation:
-      helper: Die Regel-Engine kann Ihre Produktivität im PIM radikal steigern, indem sie Aktionen automatisiert.
       english_flag: Bezeichnung für Englisch
       title: Neue Regel erstellen
       notification:

@@ -1,0 +1,5 @@
+pim_reference_entity:
+  record:
+    validation:
+      record:
+        should_not_be_used_as_product_variant_axis: 'You cannot delete this entity as it`s used as a variant axis in one of your product variants'

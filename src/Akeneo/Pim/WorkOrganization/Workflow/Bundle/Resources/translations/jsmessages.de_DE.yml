@@ -111,7 +111,6 @@ pimee_enrich.entity.product:
       published: Veröffentlicht
       revert: Wiederherstellen
     attribute:
-      can_be_updated_by_a_rule: "Dieses Attribut kann durch eine Regel aktualisiert werden: {{ rule }}"
       value_updated: Dieser Wert wird durch den aktuellen Entwurf aktualisiert.
     meta:
       published_version: Veröffentlichte Version
