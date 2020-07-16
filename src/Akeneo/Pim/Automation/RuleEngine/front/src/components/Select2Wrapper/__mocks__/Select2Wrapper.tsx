@@ -55,8 +55,12 @@ const Select2Wrapper: typeof BaseWrapper = ({
       result.then(response => {
         response
           .json()
-          .then((fetchedOptions: (Select2Option | Select2OptionGroup)[]) => {
-            setOptions(fetchedOptions);
+          .then((fetchedOptions: (Select2Option | Select2OptionGroup)[] | { results: (Select2Option | Select2OptionGroup)[] }) => {
+            if (fetchedOptions.hasOwnProperty('results')) {
+              setOptions((fetchedOptions as { results: (Select2Option | Select2OptionGroup)[] }).results);
+            } else {
+              setOptions(fetchedOptions as (Select2Option | Select2OptionGroup)[]);
+            }
           });
       });
     }

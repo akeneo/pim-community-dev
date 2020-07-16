@@ -76,8 +76,6 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   const translate = useTranslate();
   const currentCatalogLocale = useUserCatalogLocale();
 
-  console.log(filterAttributeTypes);
-
   const {
     formName,
     getFormValue,
