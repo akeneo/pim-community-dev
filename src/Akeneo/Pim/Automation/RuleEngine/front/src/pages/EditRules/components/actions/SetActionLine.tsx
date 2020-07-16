@@ -18,7 +18,6 @@ import {
   useTranslate,
   useBackboneRouter,
 } from '../../../../dependenciesTools/hooks';
-import { LineErrors } from '../LineErrors';
 import { AttributeValue } from './attribute';
 import { useControlledFormInputAction } from '../../hooks';
 import {
@@ -101,7 +100,6 @@ const SetActionLine: React.FC<Props> = ({
             )}
           </SmallHelper>
         )}
-        <LineErrors lineNumber={lineNumber} type='actions' />
         <ActionGrid>
           <ActionLeftSide>
             <ActionTitle>
