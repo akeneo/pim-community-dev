@@ -8,16 +8,19 @@ import {
   useTranslate,
   useUserCatalogLocale,
 } from '../../../../../dependenciesTools/hooks';
-import { TextValue } from './TextValue';
-import { FallbackValue } from './FallbackValue';
-import { SimpleSelectValue } from './SimpleSelectValue';
+import {
+  BooleanValue,
+  MultiSelectValue,
+  TextValue,
+  SimpleSelectValue,
+  FallbackValue,
+  NumberValue,
+} from './';
 import {
   HelperContainer,
   InlineHelper,
 } from '../../../../../components/HelpersInfos';
 import { ActionFormContainer } from '../style';
-import { MultiSelectValue } from './MultiSelectValue';
-import { NumberValue } from './NumberValue';
 
 const MANAGED_ATTRIBUTE_TYPES: Map<
   AttributeType,
@@ -25,6 +28,7 @@ const MANAGED_ATTRIBUTE_TYPES: Map<
 > = new Map([
   [AttributeType.TEXT, TextValue],
   [AttributeType.OPTION_SIMPLE_SELECT, SimpleSelectValue],
+  [AttributeType.BOOLEAN, BooleanValue],
   [AttributeType.OPTION_MULTI_SELECT, MultiSelectValue],
   [AttributeType.NUMBER, NumberValue],
 ]);
@@ -49,6 +53,8 @@ const getValueModule = (attribute: Attribute, props: InputValueProps) => {
       return <MultiSelectValue {...props} />;
     case AttributeType.NUMBER:
       return <NumberValue {...props} />;
+    case AttributeType.BOOLEAN:
+      return <BooleanValue {...props} value={!!props.value} />;
     default:
       return null;
   }
