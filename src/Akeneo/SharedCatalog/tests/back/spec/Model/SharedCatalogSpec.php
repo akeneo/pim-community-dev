@@ -9,6 +9,17 @@ use PhpSpec\ObjectBehavior;
 
 class SharedCatalogSpec extends ObjectBehavior
 {
+    public function let()
+    {
+        $this->beConstructedWith(
+            'shared_catalog',
+            null,
+            [],
+            null,
+            null
+        );
+    }
+
     public function it_is_initializable()
     {
         $this->shouldHaveType(SharedCatalog::class);
@@ -16,7 +27,7 @@ class SharedCatalogSpec extends ObjectBehavior
 
     public function it_is_initializable_with_values()
     {
-        $this->beConstructedThrough('create', [
+        $this->beConstructedWith(
             'shared_catalog',
             'julia',
             [
@@ -37,54 +48,23 @@ class SharedCatalogSpec extends ObjectBehavior
             ],
             [
                 'image' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABKoAAAJFCAYAAAD9Ih9',
-            ],
-        ]);
+            ]
+        );
 
         $this->shouldHaveType(SharedCatalog::class);
     }
 
-    public function it_is_initializable_from_normalized()
+    public function it_can_be_normalized_for_external_api()
     {
-        $this->beConstructedThrough('createFromNormalized', [
+        $this->beConstructedWith(
+            'shared_catalog',
+            'julia',
             [
-                'code' => 'shared_catalog',
-                'publisher' => 'julia',
-                'recipients' => [
-                    [
-                        'email' => 'betty@akeneo.com',
-                    ],
-                ],
-                'filters' => [
-                    'structure' => [
-                        'scope' => 'mobile',
-                        'locales' => [
-                            'en_US',
-                        ],
-                        'attributes' => [
-                            'name',
-                        ],
-                    ],
-                ],
-                'branding' => [
-                    'image' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABKoAAAJFCAYAAAD9Ih9',
-                ],
-            ],
-        ]);
-
-        $this->shouldHaveType(SharedCatalog::class);
-    }
-
-    public function it_can_be_normalized()
-    {
-        $normalized = [
-            'code' => 'shared_catalog',
-            'publisher' => 'julia',
-            'recipients' => [
                 [
                     'email' => 'betty@akeneo.com',
                 ],
             ],
-            'filters' => [
+            [
                 'structure' => [
                     'scope' => 'mobile',
                     'locales' => [
@@ -95,45 +75,10 @@ class SharedCatalogSpec extends ObjectBehavior
                     ],
                 ],
             ],
-            'branding' => [
-                'image' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABKoAAAJFCAYAAAD9Ih9',
-            ],
-        ];
-
-        $this->beConstructedThrough('createFromNormalized', [
-            $normalized,
-        ]);
-
-        $this->normalize()->shouldBeLike($normalized);
-    }
-
-    public function it_can_be_normalized_for_external_api()
-    {
-        $this->beConstructedThrough('createFromNormalized', [
             [
-                'code' => 'shared_catalog',
-                'publisher' => 'julia',
-                'recipients' => [
-                    [
-                        'email' => 'betty@akeneo.com',
-                    ],
-                ],
-                'filters' => [
-                    'structure' => [
-                        'scope' => 'mobile',
-                        'locales' => [
-                            'en_US',
-                        ],
-                        'attributes' => [
-                            'name',
-                        ],
-                    ],
-                ],
-                'branding' => [
-                    'image' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABKoAAAJFCAYAAAD9Ih9',
-                ],
-            ],
-        ]);
+                'image' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABKoAAAJFCAYAAAD9Ih9',
+            ]
+        );
 
         $this->normalizeForExternalApi()->shouldBeLike([
             'code' => 'shared_catalog',

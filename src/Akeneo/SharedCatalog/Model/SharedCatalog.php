@@ -15,7 +15,7 @@ final class SharedCatalog
     /** @var array|null */
     private $branding;
 
-    private function __construct(
+    public function __construct(
         string $code,
         ?string $publisher,
         array $recipients,
@@ -27,44 +27,6 @@ final class SharedCatalog
         $this->recipients = $recipients;
         $this->filters = $filters;
         $this->branding = $branding;
-    }
-
-    public static function create(
-        string $code,
-        ?string $publisher,
-        array $recipients,
-        ?array $filters,
-        ?array $branding
-    ): self {
-        return new self(
-            $code,
-            $publisher,
-            $recipients,
-            $filters,
-            $branding
-        );
-    }
-
-    public static function createFromNormalized(array $normalized): self
-    {
-        return new self(
-            $normalized['code'],
-            $normalized['publisher'],
-            $normalized['recipients'],
-            $normalized['filters'],
-            $normalized['branding']
-        );
-    }
-
-    public function normalize(): array
-    {
-        return [
-            'code' => $this->code,
-            'publisher' => $this->publisher,
-            'recipients' => $this->recipients,
-            'filters' => $this->filters,
-            'branding' => $this->branding,
-        ];
     }
 
     public function normalizeForExternalApi(): array

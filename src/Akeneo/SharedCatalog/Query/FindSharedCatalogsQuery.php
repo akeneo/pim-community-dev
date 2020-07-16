@@ -60,7 +60,7 @@ SQL;
         return array_map(function ($row) {
             $parameters = unserialize($row['raw_parameters']);
 
-            return SharedCatalog::create(
+            return new SharedCatalog(
                 $row['code'],
                 $parameters['publisher'] ?? null,
                 $parameters['recipients'] ?? [],
