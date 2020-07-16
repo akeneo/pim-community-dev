@@ -55,7 +55,7 @@ const getValueModule = (attribute: Attribute, props: InputValueProps) => {
     case AttributeType.OPTION_SIMPLE_SELECT:
       return <SimpleSelectValue {...props} key={attribute.code} />;
     case AttributeType.OPTION_MULTI_SELECT:
-      return <MultiSelectValue {...props} />;
+      return <MultiSelectValue {...props} key={attribute.code} />;
     case AttributeType.NUMBER:
       return <NumberValue {...props} />;
     case AttributeType.BOOLEAN:

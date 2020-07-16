@@ -49,7 +49,7 @@ const RemoveAttributeValueActionLine: React.FC<Props> = ({
     setFieldFormValue,
     setItemsFormValue,
     getFieldFormValue,
-  } = useControlledFormInputAction<string>(lineNumber);
+  } = useControlledFormInputAction<string[]>(lineNumber);
   // Watch is needed in this case to trigger a render at input
   const { watch } = useFormContext();
   watch(itemsFormName);
@@ -59,7 +59,7 @@ const RemoveAttributeValueActionLine: React.FC<Props> = ({
 
   const onAttributeChange = (attribute: Attribute | null) => {
     setAttribute(attribute);
-    setItemsFormValue('');
+    setItemsFormValue([]);
     setFieldFormValue(attribute?.code);
   };
 
@@ -125,7 +125,7 @@ const RemoveAttributeValueActionLine: React.FC<Props> = ({
               )}
               disabled={
                 !!attribute &&
-                !MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION.get(attribute.type)
+                !MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION.has(attribute.type)
               }
             />
           </ActionLeftSide>

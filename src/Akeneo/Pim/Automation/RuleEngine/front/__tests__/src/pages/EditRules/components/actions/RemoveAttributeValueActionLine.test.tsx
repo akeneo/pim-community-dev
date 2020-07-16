@@ -90,6 +90,7 @@ describe('RemoveAttributeValueActionLine', () => {
     expect(screen.getByTestId('edit-rules-action-0-field')).toHaveValue(
       'collection'
     );
+    expect(screen.getByTestId('edit-rules-action-0-field')).toHaveProperty('disabled', false);
     const inputValue = screen.getByTestId('edit-rules-action-0-items');
     expect(inputValue).toHaveValue(['winter_2016']);
     await act(async () => {

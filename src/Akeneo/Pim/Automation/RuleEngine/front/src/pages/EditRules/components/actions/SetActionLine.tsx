@@ -143,7 +143,7 @@ const SetActionLine: React.FC<Props> = ({
               )}
               disabled={
                 !!attribute &&
-                !MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION.get(attribute.type)
+                !MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION.has(attribute.type)
               }
             />
           </ActionLeftSide>
