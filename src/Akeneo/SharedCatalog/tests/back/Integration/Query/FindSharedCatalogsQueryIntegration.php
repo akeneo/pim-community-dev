@@ -41,7 +41,7 @@ class FindSharedCatalogsQueryIntegration extends TestCase
 
         $results = $this->findSharedCatalogsQuery->execute();
         $normalizedResults = array_map(function (SharedCatalog $sharedCatalog) {
-            return $sharedCatalog->normalize();
+            return $sharedCatalog->normalizeForExternalApi();
         }, $results);
 
         self::assertEquals([
@@ -49,8 +49,10 @@ class FindSharedCatalogsQueryIntegration extends TestCase
                 'code' => 'shared_catalog_1',
                 'publisher' => 'system',
                 'recipients' => [],
-                'branding' => null,
-                'filters' => null,
+                'channel' => null,
+                'catalogLocales' => [],
+                'attributes' => [],
+                'branding' => ['logo' => null],
             ],
         ], $normalizedResults);
     }
@@ -93,7 +95,7 @@ class FindSharedCatalogsQueryIntegration extends TestCase
 
         $results = $this->findSharedCatalogsQuery->execute();
         $normalizedResults = array_map(function (SharedCatalog $sharedCatalog) {
-            return $sharedCatalog->normalize();
+            return $sharedCatalog->normalizeForExternalApi();
         }, $results);
 
         self::assertEquals([
@@ -101,26 +103,18 @@ class FindSharedCatalogsQueryIntegration extends TestCase
                 'code' => 'shared_catalog_1',
                 'publisher' => 'system',
                 'recipients' => [
-                    [
-                        'email' => 'betty@akeneo.com',
-                    ],
-                    [
-                        'email' => 'julia@akeneo.com',
-                    ],
+                    'betty@akeneo.com',
+                    'julia@akeneo.com',
                 ],
-                'filters' => [
-                    'structure' => [
-                        'scope' => 'mobile',
-                        'locales' => [
-                            'en_US',
-                        ],
-                        'attributes' => [
-                            'name',
-                        ],
-                    ],
+                'channel' => 'mobile',
+                'catalogLocales' => [
+                    'en_US',
+                ],
+                'attributes' => [
+                    'name',
                 ],
                 'branding' => [
-                    'image' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABKoAAAJFCAYAAAD9Ih9',
+                    'logo' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABKoAAAJFCAYAAAD9Ih9',
                 ],
             ],
         ], $normalizedResults);
