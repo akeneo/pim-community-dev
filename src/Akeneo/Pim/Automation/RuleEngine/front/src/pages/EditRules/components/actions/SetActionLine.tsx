@@ -11,7 +11,7 @@ import {
 } from './ActionLine';
 import {
   AttributeLocaleScopeSelector,
-  MANAGED_ATTRIBUTE_TYPES,
+  MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION,
 } from './attribute';
 import { Attribute } from '../../../../models';
 import {
@@ -138,9 +138,9 @@ const SetActionLine: React.FC<Props> = ({
               locales={locales}
               onAttributeCodeChange={onAttributeChange}
               lineNumber={lineNumber}
-              filterAttributeTypes={Object.keys(MANAGED_ATTRIBUTE_TYPES)}
+              filterAttributeTypes={Array.from(MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION.keys())}
               disabled={
-                !!attribute && !MANAGED_ATTRIBUTE_TYPES.get(attribute.type)
+                !!attribute && !MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION.get(attribute.type)
               }
             />
           </ActionLeftSide>

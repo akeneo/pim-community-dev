@@ -24,6 +24,7 @@ import {
   createClearCategoriesAction,
   createClearGroupsAction,
   createCopyAction,
+  createRemoveAttributeValueCategoriesAction,
 } from './actions';
 
 export const AvailableAddAction: { [key: string]: () => Action } = {
@@ -37,6 +38,7 @@ export const AvailableAddAction: { [key: string]: () => Action } = {
   set_attribute: createSetAttributeAction,
   copy: createCopyAction,
   remove_category: createRemoveCategoriesAction,
+  remove_attribute_value: createRemoveAttributeValueCategoriesAction,
 };
 
 export type Action =

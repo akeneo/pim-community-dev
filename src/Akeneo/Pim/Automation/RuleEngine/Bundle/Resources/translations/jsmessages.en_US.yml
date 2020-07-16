@@ -109,10 +109,10 @@ pimee_catalog_rule:
             actions:
                 add_action: Add action
                 add_category:
-                    title: ADD categories
+                    title: ADD Categories
                     helper: To add your product selection to one or more categories, please start by selecting your category trees and then, your categories
                 set_category:
-                    title: SET categories
+                    title: SET Categories
                     helper: To set your product selection to one or more categories, please start by selecting your category trees and then, your categories
                 category:
                     select_category_trees: Select your category trees
@@ -144,10 +144,14 @@ pimee_catalog_rule:
                 clear_groups:
                     title: CLEAR Groups
                 remove_category:
-                    title: REMOVE categories
+                    title: REMOVE Categories
                     helper: To remove your product selection from one or more categories, please start by selecting your category trees and then, your categories
+                remove_attribute_value:
+                    title: REMOVE Attribute value
+                    helper: To remove values from your attribute, please start by selecting your target attribute and then, the values you want to remove.
+                    value_subtitle: Define your values to remove
                 copy:
-                    title: COPY attribute value
+                    title: COPY Attribute value
                     helper: To copy values from an attribute to another, please start by selecting your source attribute and then, your target attribute.
                     select_source: Select your source
                     select_target: Select your target

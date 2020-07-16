@@ -22,7 +22,7 @@ import {
 } from '../../../../../components/HelpersInfos';
 import { ActionFormContainer } from '../style';
 
-const MANAGED_ATTRIBUTE_TYPES: Map<
+const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: Map<
   AttributeType,
   React.FC<InputValueProps>
 > = new Map([
@@ -31,6 +31,13 @@ const MANAGED_ATTRIBUTE_TYPES: Map<
   [AttributeType.BOOLEAN, BooleanValue],
   [AttributeType.OPTION_MULTI_SELECT, MultiSelectValue],
   [AttributeType.NUMBER, NumberValue],
+]);
+
+const MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION: Map<
+  AttributeType,
+  React.FC<InputValueProps>
+> = new Map([
+  [AttributeType.OPTION_MULTI_SELECT, MultiSelectValue],
 ]);
 
 type InputValueProps = {
@@ -154,4 +161,4 @@ const AttributeValue: React.FC<Props> = ({
   );
 };
 
-export { AttributeValue, InputValueProps, MANAGED_ATTRIBUTE_TYPES };
+export { AttributeValue, InputValueProps, MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION, MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION };

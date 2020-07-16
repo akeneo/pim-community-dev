@@ -1,9 +1,14 @@
 import React from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 import { RemoveAttributeValueAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
-import { FallbackField } from '../FallbackField';
-import { useRegisterConsts } from '../../hooks/useRegisterConst';
+import { useBackboneRouter, useTranslate } from "../../../../dependenciesTools/hooks";
+import { Attribute } from "../../../../models";
+import { useControlledFormInputAction } from "../../hooks";
+import { useGetAttributeAtMount, validateAttribute } from "./attribute/attribute.utils";
+import { ActionGrid, ActionLeftSide, ActionRightSide, ActionTitle } from "./ActionLine";
+import { AttributeLocaleScopeSelector, AttributeValue, MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION } from "./attribute";
 
 type Props = {
   action: RemoveAttributeValueAction;
@@ -11,57 +16,114 @@ type Props = {
 
 const RemoveAttributeValueActionLine: React.FC<Props> = ({
   lineNumber,
-  action,
   handleDelete,
+  scopes,
+  locales,
 }) => {
-  const values: any = {
-    type: 'remove',
-    field: action.field,
-    items: action.items,
+  const translate = useTranslate();
+  const router = useBackboneRouter();
+  const [attribute, setAttribute] = React.useState<
+    Attribute | null | undefined
+    >(undefined);
+
+  const {
+    fieldFormName,
+    typeFormName,
+    itemsFormName,
+    getItemsFormValue,
+    setFieldFormValue,
+    setItemsFormValue,
+    getFieldFormValue,
+  } = useControlledFormInputAction<string>(lineNumber);
+  // Watch is needed in this case to trigger a render at input
+  const { watch } = useFormContext();
+  watch(itemsFormName);
+  watch(fieldFormName);
+
+  useGetAttributeAtMount(getFieldFormValue(), router, attribute, setAttribute);
+
+  const onAttributeChange = (attribute: Attribute | null) => {
+    setAttribute(attribute);
+    setItemsFormValue('');
+    setFieldFormValue(attribute?.code);
   };
 
-  if (action.locale) {
-    values.locale = action.locale;
-  }
-
-  if (action.scope) {
-    values.scope = action.scope;
-  }
-
-  if (action.include_children) {
-    values.includeChildren = action.include_children;
-  }
-
-  useRegisterConsts(values, `content.actions[${lineNumber}]`);
-
   return (
-    <ActionTemplate
-      title='Remove Action'
-      helper='This feature is under development. Please use the import to manage your rules.'
-      legend='This feature is under development. Please use the import to manage your rules.'
-      handleDelete={handleDelete}>
-      <div className='AknGrid AknGrid--unclickable'>
-        <div className='AknGrid-bodyRow AknGrid-bodyRow--highlight'>
-          <div className='AknGrid-bodyCell'>
-            {/* It is not translated since it is temporary. */}
-            The value{action.items.length > 1 && 's'}&nbsp;
-            <span className='AknRule-attribute'>
-              {action.items.join(', ')}
-              {action.include_children && ' and children'}
-            </span>
-            &nbsp;
-            {action.items.length > 1 || action.include_children ? 'are' : 'is'}
-            &nbsp;removed from&nbsp;
-            <FallbackField
-              field={action.field}
-              scope={action.scope}
-              locale={action.locale}
+    <>
+      <Controller
+        name={fieldFormName}
+        as={<span hidden />}
+        defaultValue=''
+        rules={{ validate: validateAttribute(translate, router) }}
+      />
+      <Controller name={typeFormName} as={<span hidden />} defaultValue='remove' />
+      <Controller
+        name={itemsFormName}
+        as={<span hidden />}
+        defaultValue={getItemsFormValue()}
+        rules={{
+          required: translate('pimee_catalog_rule.exceptions.required_value'),
+        }}
+      />
+      <ActionTemplate
+        title={translate(
+          'pimee_catalog_rule.form.edit.actions.remove_attribute_value.title'
+        )}
+        helper={translate(
+          'pimee_catalog_rule.form.edit.actions.remove_attribute_value.helper'
+        )}
+        legend={translate(
+          'pimee_catalog_rule.form.edit.actions.remove_attribute_value.helper'
+        )}
+        handleDelete={handleDelete}
+        lineNumber={lineNumber}>
+        <ActionGrid>
+          <ActionLeftSide>
+            <ActionTitle>
+              {translate(
+                'pimee_catalog_rule.form.edit.actions.set_attribute.target_subtitle'
+              )}
+            </ActionTitle>
+            <AttributeLocaleScopeSelector
+              attribute={attribute}
+              attributeId={`edit-rules-action-${lineNumber}-field`}
+              attributeLabel={`${translate(
+                'pimee_catalog_rule.form.edit.fields.attribute'
+              )} ${translate('pim_common.required_label')}`}
+              attributePlaceholder={translate(
+                'pimee_catalog_rule.form.edit.actions.set_attribute.attribute_placeholder'
+              )}
+              attributeFormName={fieldFormName}
+              attributeCode={getFieldFormValue() ?? ''}
+              scopeId={`edit-rules-action-${lineNumber}-scope`}
+              scopes={scopes}
+              localeId={`edit-rules-action-${lineNumber}-locale`}
+              locales={locales}
+              onAttributeCodeChange={onAttributeChange}
+              lineNumber={lineNumber}
+              filterAttributeTypes={Array.from(MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION.keys())}
+              disabled={
+                !!attribute && !MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION.get(attribute.type)
+              }
             />
-            .
-          </div>
-        </div>
-      </div>
-    </ActionTemplate>
+          </ActionLeftSide>
+          <ActionRightSide>
+            <ActionTitle>
+              {translate(
+                'pimee_catalog_rule.form.edit.actions.remove_attribute_value.value_subtitle'
+              )}
+            </ActionTitle>
+            <AttributeValue
+              id={`edit-rules-action-${lineNumber}-items`}
+              attribute={attribute}
+              name={itemsFormName}
+              value={getItemsFormValue()}
+              onChange={setItemsFormValue}
+            />
+          </ActionRightSide>
+        </ActionGrid>
+      </ActionTemplate>
+    </>
   );
 };
 

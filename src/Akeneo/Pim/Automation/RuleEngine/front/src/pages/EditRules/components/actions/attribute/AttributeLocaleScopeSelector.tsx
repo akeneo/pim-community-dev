@@ -1,5 +1,5 @@
 import React from 'react';
-import { Attribute, AttributeCode, Locale } from '../../../../../models';
+import { Attribute, AttributeCode, AttributeType, Locale } from '../../../../../models';
 import { AttributeSelector } from '../../../../../components/Selectors/AttributeSelector';
 import {
   getScopeValidation,
@@ -46,7 +46,7 @@ type Props = {
   scopes: IndexedScopes;
   onAttributeCodeChange?: (attribute: Attribute | null) => void;
   lineNumber: number;
-  filterAttributeTypes?: string[];
+  filterAttributeTypes?: AttributeType[];
   disabled?: boolean;
   scopeFieldName?: string;
   localeFieldName?: string;
@@ -75,6 +75,8 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
   const router = useBackboneRouter();
   const translate = useTranslate();
   const currentCatalogLocale = useUserCatalogLocale();
+
+  console.log(filterAttributeTypes);
 
   const {
     formName,
