@@ -22,6 +22,12 @@ Feature: Import concatenate action rules
     Then an exception with message "actions[0].from[1].field: The \"categories\" attribute does not exist" has been thrown
 
   @acceptance-back
+  Scenario: Import a concatenate rule with missing fields
+    When I import a concatenate rule with missing from and to keys
+    Then an exception with message "actions[0].from: The \"from\" key is missing or empty" has been thrown
+    And an exception with message "actions[0].to: The \"to\" key is missing or empty" has been thrown
+
+  @acceptance-back
   Scenario: Import a concatenate rule with unknown target attribute
     When I import a concatenate rule with unknown target attribute
     Then an exception with message "actions[0].to.field: The \"unknown\" attribute does not exist" has been thrown
