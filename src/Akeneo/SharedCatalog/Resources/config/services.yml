@@ -1,6 +1,7 @@
 parameters:
     akeneo.shared_catalog.connector.name: Akeneo Shared Catalogs
     akeneo.shared_catalog.connector.code: 'akeneo_shared_catalog'
+    akeneo.shared_catalog.products_page_size: 10000
 
 services:
     _defaults:
@@ -57,6 +58,28 @@ services:
             - '@database_connection'
             - '%akeneo.shared_catalog.connector.code%'
 
+    Akeneo\SharedCatalog\Query\FindSharedCatalogQueryInterface:
+        class: Akeneo\SharedCatalog\Query\FindSharedCatalogQuery
+        arguments:
+            - '@database_connection'
+            - '%akeneo.shared_catalog.connector.code%'
+
     Akeneo\SharedCatalog\Controller\SharedCatalogListAction:
         arguments:
             - '@Akeneo\SharedCatalog\Query\FindSharedCatalogsQueryInterface'
+
+    Akeneo\SharedCatalog\Controller\ProductListAction:
+        arguments:
+            - '@Akeneo\SharedCatalog\Query\FindSharedCatalogQueryInterface'
+            - '@akeneo.shared_catalog.query.product_query_builder_factory'
+            - '%akeneo.shared_catalog.products_page_size%'
+
+    akeneo.shared_catalog.query.product_query_builder_factory:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@akeneo.pim.enrichment.factory.product_identifier_cursor_from_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
