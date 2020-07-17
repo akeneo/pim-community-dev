@@ -13,12 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateTitleFormatting;
-
 class AsynchronousCriterionEvaluationsFilterIterator extends \FilterIterator
 {
     private const ASYNCHRONOUS_CRITERION_CODES = [
-        EvaluateTitleFormatting::CRITERION_CODE,
     ];
 
     public function accept()

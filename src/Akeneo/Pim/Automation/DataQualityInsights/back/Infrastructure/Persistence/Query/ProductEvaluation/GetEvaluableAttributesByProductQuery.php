@@ -43,8 +43,7 @@ SELECT
     attribute.code,
     attribute.attribute_type AS type,
     properties,
-    attribute.is_localizable,
-    (family.label_attribute_id = pca.attribute_id) AS is_main_title
+    attribute.is_localizable
 FROM pim_catalog_attribute AS attribute
 INNER JOIN pim_catalog_family_attribute AS pca ON attribute.id = pca.attribute_id
 INNER JOIN pim_catalog_product AS product ON product.family_id = pca.family_id
@@ -72,7 +71,7 @@ SQL;
                 new AttributeCode($attribute['code']),
                 $this->attributeTypeMapper->fromPimStructure($attribute['type']),
                 (bool) $attribute['is_localizable'],
-                (bool) $attribute['is_main_title']
+                false
             );
         }
 

@@ -30,54 +30,13 @@ describe('WidgetsList', () => {
           'spellcheck-1': createWidget('spellcheck-1', editor1, 'attribute_textarea_editor_id', 'attribute_textarea', false),
           'spellcheck-2': createWidget('spellcheck-2', editor2, 'attribute_text_editor_id', 'attribute_text', false),
           'spellcheck-3': createWidget('spellcheck-3', editor4, 'attribute_wysiwyg_text_editor_id', 'attribute_wysiwyg_text', false),
-          'suggested-title-1': createWidget('suggested-title-1', editor3, 'attribute_main_label_editor_id', 'attribute_main_label', true),
         }
       }
     });
 
     expect(getAllByTestId(/^editor-highlight-spellcheck-.+/i).length).toBe(3);
-    expect(getAllByTestId(/^editor-highlight-suggested-title-.+/i).length).toBe(1);
   });
 
-  test('build widget list when suggested title is found', async () => {
-    const editor1 = document.createElement('input');
-    editor1.setAttribute('type', 'text');
-
-    const widgetData = {
-      ...createWidget('suggested-title-1', editor1, 'attribute_main_label_editor_id', 'attribute_main_label', true),
-      hasSuggestedTitle: true
-    };
-
-    const {getAllByTestId} = renderComponent({
-      editorHighlight: {
-        widgets: {
-          'suggested-title-1': widgetData,
-        }
-      }
-    });
-
-    expect(getAllByTestId(/^editor-highlight-suggested-title-.+/).length).toBe(1);
-  });
-
-  test('build widget list when suggested title is not found', async () => {
-    const editor1 = document.createElement('input');
-    editor1.setAttribute('type', 'text');
-
-    const widgetData = {
-      ...createWidget('suggested-title-1', editor1, 'attribute_main_label_editor_id',  'attribute_main_label', true),
-      hasSuggestedTitle: false
-    };
-
-    const {getAllByTestId} = renderComponent({
-      editorHighlight: {
-        widgets: {
-          'suggested-title-1': widgetData
-        }
-      }
-    });
-
-    expect(getAllByTestId(/^editor-highlight-spellcheck-.+/).length).toBe(1);
-  });
 });
 
 const renderComponent = (testedState: any) => {
