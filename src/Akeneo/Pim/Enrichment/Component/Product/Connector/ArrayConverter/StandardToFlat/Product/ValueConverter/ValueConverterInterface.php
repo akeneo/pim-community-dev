@@ -29,4 +29,6 @@ interface ValueConverterInterface
      * @return array
      */
     public function convert($attributeCode, $data);
+
+    public function convertWithLabel($attributeCode, $labelLocale, $data);
 }

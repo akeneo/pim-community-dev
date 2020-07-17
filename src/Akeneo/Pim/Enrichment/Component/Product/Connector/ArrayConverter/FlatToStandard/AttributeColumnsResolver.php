@@ -129,8 +129,22 @@ class AttributeColumnsResolver
      */
     public function resolveFlatAttributeName($attributeCode, $localeCode, $scopeCode)
     {
-        $field = $this->getAttributeLabels->forAttributeCodes([$attributeCode])[$attributeCode]['fr_FR'] ?? "[$attributeCode]";
+        $field = $attributeCode;
 
+        if (null !== $localeCode) {
+            $field = sprintf('%s-%s', $field, $localeCode);
+        }
+
+        if (null !== $scopeCode) {
+            $field = sprintf('%s-%s', $field, $scopeCode);
+        }
+
+        return $field;
+    }
+
+    public function resolveFlatAttributeLabelName($attributeCode, $localeCode, $scopeCode, $labelLocale)
+    {
+        $field = $this->getAttributeLabels->forAttributeCodes([$attributeCode])[$attributeCode][$labelLocale] ?? "[$attributeCode]";
         $extraInformation = [];
         if (null !== $localeCode) {
             $extraInformation[] = $localeCode;

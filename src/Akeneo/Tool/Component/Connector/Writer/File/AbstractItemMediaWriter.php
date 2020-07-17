@@ -63,6 +63,10 @@ abstract class AbstractItemMediaWriter implements
 
     /** @var String */
     protected $jobParamFilePath;
+    /**
+     * @var ArrayConverterInterface
+     */
+    private $arrayConverterWithLabel;
 
     /**
      * @param ArrayConverterInterface            $arrayConverter
@@ -75,6 +79,7 @@ abstract class AbstractItemMediaWriter implements
      */
     public function __construct(
         ArrayConverterInterface $arrayConverter,
+        ArrayConverterInterface $arrayConverterWithLabel,
         BufferFactory $bufferFactory,
         FlatItemBufferFlusher $flusher,
         AttributeRepositoryInterface $attributeRepository,
@@ -91,6 +96,7 @@ abstract class AbstractItemMediaWriter implements
         $this->jobParamFilePath = $jobParamFilePath;
 
         $this->localFs = new Filesystem();
+        $this->arrayConverterWithLabel = $arrayConverterWithLabel;
     }
 
     /**
@@ -120,12 +126,13 @@ abstract class AbstractItemMediaWriter implements
         $directory = $this->stepExecution->getJobExecution()->getExecutionContext()
             ->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
 
+
         foreach ($items as $item) {
             if ($parameters->has('with_media') && $parameters->get('with_media')) {
                 $item = $this->resolveMediaPaths($item, $directory);
             }
 
-            $flatItems[] = $this->arrayConverter->convert($item, $converterOptions);
+            $flatItems[] = $this->getArrayConverter()->convert($item, $converterOptions);
         }
 
         $options = [];
@@ -201,6 +208,15 @@ abstract class AbstractItemMediaWriter implements
         $this->stepExecution = $stepExecution;
     }
 
+    private function getArrayConverter(): ArrayConverterInterface
+    {
+        $jobParameters = $this->stepExecution->getJobParameters();
+        if ($jobParameters->has('with_label')) {
+            return $this->arrayConverterWithLabel;
+        }
+
+        return $this->arrayConverter;
+    }
     /**
      * Get configuration for writer (type of export, delimiter, enclosure, etc)
      *
@@ -315,6 +331,10 @@ abstract class AbstractItemMediaWriter implements
 
         if ($parameters->has('ui_locale')) {
             $options['locale'] = $parameters->get('ui_locale');
+        }
+
+        if ($parameters->has('label_locale')) {
+            $options['label_locale'] = $parameters->get('label_locale');
         }
 
         return $options;

@@ -44,6 +44,7 @@ class ProductWriter extends AbstractItemMediaWriter implements
 
     public function __construct(
         ArrayConverterInterface $arrayConverter,
+        ArrayConverterInterface $arrayConverterWithLabel,
         BufferFactory $bufferFactory,
         FlatItemBufferFlusher $flusher,
         AttributeRepositoryInterface $attributeRepository,
@@ -55,6 +56,7 @@ class ProductWriter extends AbstractItemMediaWriter implements
     ) {
         parent::__construct(
             $arrayConverter,
+            $arrayConverterWithLabel,
             $bufferFactory,
             $flusher,
             $attributeRepository,
@@ -116,6 +118,12 @@ class ProductWriter extends AbstractItemMediaWriter implements
     {
         $filters = $parameters->get('filters');
 
+        $withLabel = $parameters->has('with_label');
+        $labelLocale = '';
+        if ($parameters->has('label_locale')) {
+            $labelLocale = $parameters->get('label_locale');
+        }
+
         $localeCodes = isset($filters['structure']['locales']) ? $filters['structure']['locales'] : [$parameters->get('locale')];
         $channelCode = isset($filters['structure']['scope']) ? $filters['structure']['scope'] : $parameters->get('scope');
 
@@ -143,7 +151,7 @@ class ProductWriter extends AbstractItemMediaWriter implements
             if ($withMedia || !$header->isMedia()) {
                 $headerStrings = array_merge(
                     $headerStrings,
-                    $header->generateHeaderStrings()
+                    $withLabel ? $header->generateHeaderLabelStrings($labelLocale) : $header->generateHeaderStrings()
                 );
             }
         }

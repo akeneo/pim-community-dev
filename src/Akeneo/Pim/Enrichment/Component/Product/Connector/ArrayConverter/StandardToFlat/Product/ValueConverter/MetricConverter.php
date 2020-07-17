@@ -52,7 +52,6 @@ class MetricConverter extends AbstractValueConverter implements ValueConverterIn
     public function convert($attributeCode, $data)
     {
         $convertedItem = [];
-        $unitLabel = $this->translator->trans('pim_common.unit', [], null, 'fr_FR');
 
         foreach ($data as $value) {
             $flatName = $this->columnsResolver->resolveFlatAttributeName(
@@ -60,8 +59,36 @@ class MetricConverter extends AbstractValueConverter implements ValueConverterIn
                 $value['locale'],
                 $value['scope']
             );
-            $flatUnitName = sprintf('%s (%s)', $flatName, $unitLabel);
+            $flatUnitName = sprintf('%s-unit', $flatName);
 
+            if (null === $value['data']['amount']) {
+                $convertedItem[$flatName] = null;
+                $convertedItem[$flatUnitName] = null;
+
+                continue;
+            }
+
+            $convertedItem[$flatName] = (string) $value['data']['amount'];
+            $convertedItem[$flatUnitName] = $value['data']['unit'];
+        }
+
+        return $convertedItem;
+    }
+
+    public function convertWithLabel($attributeCode, $labelLocale, $data)
+    {
+        $convertedItem = [];
+        $unitLabel = $this->translator->trans('pim_common.unit', [], null, $labelLocale);
+
+        foreach ($data as $value) {
+            $flatName = $this->columnsResolver->resolveFlatAttributeLabelName(
+                $attributeCode,
+                $value['locale'],
+                $value['scope'],
+                $labelLocale
+            );
+
+            $flatUnitName = sprintf('%s (%s)', $flatName, $unitLabel);
             if (null === $value['data']['amount']) {
                 $convertedItem[$flatName] = null;
                 $convertedItem[$flatUnitName] = null;

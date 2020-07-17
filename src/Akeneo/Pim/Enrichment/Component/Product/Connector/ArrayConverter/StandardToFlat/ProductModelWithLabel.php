@@ -8,27 +8,27 @@ use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimpleArrayConverter;
 use Symfony\Component\Translation\TranslatorInterface;
 
-/**
- * Convert standard format to flat format for product
- *
- * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
- * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
- */
-class ProductWithLabel extends AbstractSimpleArrayConverter implements ArrayConverterInterface
+class ProductModelWithLabel extends AbstractSimpleArrayConverter implements ArrayConverterInterface
 {
     /** @var ProductValueConverter */
     protected $valueConverter;
-
+    /**
+     * @var SqlGetAssociationTypeLabels
+     */
     private $associationTypeLabels;
-
+    /**
+     * @var TranslatorInterface
+     */
     private $translator;
 
     /**
      * @param ProductValueConverter $valueConverter
      */
-    public function __construct(ProductValueConverter $valueConverter, SqlGetAssociationTypeLabels $associationTypeLabels, TranslatorInterface $translator)
-    {
+    public function __construct(
+        ProductValueConverter $valueConverter,
+        SqlGetAssociationTypeLabels $associationTypeLabels,
+        TranslatorInterface $translator
+    ) {
         $this->valueConverter = $valueConverter;
         $this->associationTypeLabels = $associationTypeLabels;
         $this->translator = $translator;
@@ -50,62 +50,31 @@ class ProductWithLabel extends AbstractSimpleArrayConverter implements ArrayConv
                 break;
             case 'categories':
                 $categoryLabel = $this->translator->trans('pim_common.categories', [], null, $labelLocale);
+
                 $convertedItem[$categoryLabel] = implode(',', $data);
                 break;
-            case 'enabled':
-                $enabledLabel = $this->translator->trans('pim_common.enabled', [], null, $labelLocale);
-                $convertedItem[$enabledLabel] = false === $data || null === $data ? $this->translator->trans('pim_common.no', [], null, $labelLocale) : $this->translator->trans('pim_common.yes', [], null, $labelLocale);
-                break;
-            case 'family':
-                $familyLabel = $this->translator->trans('pim_common.family', [], null, $labelLocale);
-                $convertedItem[$familyLabel] = (string) $data;
-                break;
+            case 'code':
+            case 'family_variant':
             case 'parent':
-                if (null !== $data && '' !== $data) {
-                    $parentLabel = $this->translator->trans('pim_common.parent', [], null, $labelLocale);
-                    $convertedItem[$parentLabel] = (string) $data;
-                }
-                break;
-            case 'groups':
-                $convertedItem = $this->convertGroups($data, $convertedItem);
+                $propertyLabel = $this->translator->trans("pim_common.$property", [], null, $labelLocale);
+
+                $convertedItem[$propertyLabel] = (string) $data;
                 break;
             case 'values':
                 foreach ($data as $code => $attribute) {
                     $convertedItem = $convertedItem + $this->valueConverter->convertAttributeWithLabel($code, $labelLocale, $attribute);
                 }
                 break;
-            case 'identifier':
             case 'created':
             case 'updated':
-                break;
             default:
-                $convertedItem = $convertedItem + $this->valueConverter->convertAttributeWithLabel($property, $labelLocale, $data);
+                break;
         }
 
         return $convertedItem;
     }
 
-    private function convertGroups($data, array $convertedItem)
-    {
-        if (!array_key_exists('groups', $convertedItem)) {
-            $convertedItem['groups'] = '';
-        }
-
-        $groups = is_array($data) ? implode(',', $data) : (string) $data;
-        if ('' === $groups) {
-            return $convertedItem;
-        }
-
-        if ('' !== $convertedItem['groups']) {
-            $convertedItem['groups'] .= sprintf(',%s', $groups);
-        } else {
-            $convertedItem['groups'] = $groups;
-        }
-
-        return $convertedItem;
-    }
-
-    private function convertAssociations(array $data, array $convertedItem, string $labelLocale): array
+    private function convertAssociations(array $data, array $convertedItem, string $labelLocale)
     {
         $associationTypeLabels = $this->associationTypeLabels->forAssociationTypeCodes(array_keys($data));
         foreach ($data as $associationTypeCode => $associations) {

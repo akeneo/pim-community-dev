@@ -59,6 +59,9 @@ class ProductXlsxExport implements DefaultValuesProviderInterface
         $parameters['with_media'] = true;
         $parameters['linesPerFile'] = 10000;
 
+        $parameters['with_label'] = false;
+        $parameters['label_locale'] = null;
+
         $channels = $this->channelRepository->getFullChannels();
         $defaultChannelCode = (0 !== count($channels)) ? $channels[0]->getCode() : null;
 

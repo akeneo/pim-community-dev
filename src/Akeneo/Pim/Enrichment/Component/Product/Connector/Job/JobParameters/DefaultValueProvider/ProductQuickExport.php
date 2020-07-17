@@ -42,6 +42,8 @@ class ProductQuickExport implements DefaultValuesProviderInterface
         $parameters['locale'] = null;
         $parameters['scope'] = null;
         $parameters['ui_locale'] = null;
+        $parameters['with_label'] = false;
+        $parameters['label_locale'] = null;
 
         return $parameters;
     }

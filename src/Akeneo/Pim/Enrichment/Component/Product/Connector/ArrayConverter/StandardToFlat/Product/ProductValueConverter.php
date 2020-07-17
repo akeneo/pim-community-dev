@@ -38,7 +38,21 @@ class ProductValueConverter
      *
      * @return array
      */
-    public function convertAttribute($attributeCode, $data)
+    public function convertAttribute($attributeCode, $data, array $options = [])
+    {
+        $converter = $this->getConverterByAttributeCode($attributeCode);
+
+        return $converter->convert($attributeCode, $data);
+    }
+
+    public function convertAttributeWithLabel(string $attributeCode,  string $labelLocale, $data)
+    {
+        $converter = $this->getConverterByAttributeCode($attributeCode);
+
+        return $converter->convertWithLabel($attributeCode, $labelLocale, $data);
+    }
+
+    private function getConverterByAttributeCode(string $attributeCode)
     {
         $attribute = $this->attributeRepo->findOneByIdentifier($attributeCode);
         $converter = $this->converterRegistry->getConverter($attribute);
@@ -52,6 +66,6 @@ class ProductValueConverter
             );
         }
 
-        return $converter->convert($attributeCode, $data);
+        return $converter;
     }
 }

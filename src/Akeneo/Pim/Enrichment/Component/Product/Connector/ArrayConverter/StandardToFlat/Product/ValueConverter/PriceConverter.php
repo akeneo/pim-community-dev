@@ -59,6 +59,7 @@ class PriceConverter extends AbstractValueConverter implements ValueConverterInt
      *     'super_price-fr_FR-ecommerce-USD' => '29',
      * ]
      */
+
     public function convert($attributeCode, $data)
     {
         $convertedItem = [];
@@ -71,7 +72,28 @@ class PriceConverter extends AbstractValueConverter implements ValueConverterInt
             );
 
             foreach ($value['data'] as $currency) {
-                $language = \Locale::getPrimaryLanguage('fr_FR');
+                $flatCurrencyName = sprintf('%s-%s', $flatName, $currency['currency']);
+                $convertedItem[$flatCurrencyName] = (string) $currency['amount'];
+            }
+        }
+
+        return $convertedItem;
+    }
+
+    public function convertWithLabel($attributeCode, $labelLocale, $data)
+    {
+        $convertedItem = [];
+
+        foreach ($data as $value) {
+            $flatName = $this->columnsResolver->resolveFlatAttributeLabelName(
+                $attributeCode,
+                $value['locale'],
+                $value['scope'],
+                $labelLocale
+            );
+
+            foreach ($value['data'] as $currency) {
+                $language = \Locale::getPrimaryLanguage($labelLocale);
 
                 $currencyLabel = Intl::getCurrencyBundle()->getCurrencyName($currency['currency'], $language);
 
@@ -82,4 +104,6 @@ class PriceConverter extends AbstractValueConverter implements ValueConverterInt
 
         return $convertedItem;
     }
+
+
 }

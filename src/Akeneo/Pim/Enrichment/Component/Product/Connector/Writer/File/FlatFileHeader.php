@@ -163,7 +163,60 @@ final class FlatFileHeader
         }
 
         $prefixes = [];
-        $codeLabel = $this->attributeLabels['fr_FR'] ?? "[$this->code]";
+
+        if ($this->isLocalizable && $this->isScopable) {
+            foreach ($this->localeCodes as $localeCode) {
+                if (!$this->isLocaleSpecific ||
+                    ($this->isLocaleSpecific && in_array($localeCode, $this->specificToLocales))) {
+                    $prefixes[] = sprintf('%s-%s-%s', $this->code, $localeCode, $this->channelCode);
+                }
+            }
+        } elseif ($this->isLocalizable) {
+            foreach ($this->localeCodes as $localeCode) {
+                if (!$this->isLocaleSpecific ||
+                    ($this->isLocaleSpecific && in_array($localeCode, $this->specificToLocales))) {
+                    $prefixes[] = sprintf('%s-%s', $this->code, $localeCode);
+                }
+            }
+        } elseif ($this->isScopable) {
+            $prefixes[] = sprintf('%s-%s', $this->code, $this->channelCode);
+        } else {
+            $prefixes[] = $this->code;
+        }
+
+        $headers = [];
+
+        if ($this->usesCurrencies) {
+            foreach ($prefixes as $prefix) {
+                if ($this->isScopable) {
+                    $currencyCodesToUse = $this->channelCurrencyCodes;
+                } else {
+                    $currencyCodesToUse = $this->allCurrencyCodes;
+                }
+                foreach ($currencyCodesToUse as $currencyCode) {
+                    $headers[] = sprintf('%s-%s', $prefix, $currencyCode);
+                }
+            }
+        } elseif ($this->usesUnit) {
+            foreach ($prefixes as $prefix) {
+                $headers[] = $prefix;
+                $headers[] = sprintf('%s-unit', $prefix);
+            }
+        } else {
+            $headers = $prefixes;
+        }
+
+        return $headers;
+    }
+
+    public function generateHeaderLabelStrings($labelLocale): array
+    {
+        if ($this->isLocaleSpecific && count(array_intersect($this->localeCodes, $this->specificToLocales)) === 0) {
+            return [];
+        }
+
+        $prefixes = [];
+        $codeLabel = $this->attributeLabels[$labelLocale] ?? "[$this->code]";
 
         if ($this->isLocalizable && $this->isScopable) {
             foreach ($this->localeCodes as $localeCode) {
@@ -196,7 +249,7 @@ final class FlatFileHeader
                     $currencyCodesToUse = $this->allCurrencyCodes;
                 }
                 foreach ($currencyCodesToUse as $currencyCode) {
-                    $language = \Locale::getPrimaryLanguage('fr_FR');
+                    $language = \Locale::getPrimaryLanguage($labelLocale);
                     $currency = Intl::getCurrencyBundle()->getCurrencyName($currencyCode, $language);
 
                     $headers[] = sprintf('%s %s', $prefix, $currency);

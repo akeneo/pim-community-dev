@@ -47,4 +47,22 @@ class MediaConverter extends AbstractValueConverter implements ValueConverterInt
 
         return $convertedItem;
     }
+
+    public function convertWithLabel($attributeCode, $labelLocale, $data)
+    {
+        $convertedItem = [];
+
+        foreach ($data as $value) {
+            $flatName = $this->columnsResolver->resolveFlatAttributeLabelName(
+                $attributeCode,
+                $value['locale'],
+                $value['scope'],
+                $labelLocale
+            );
+
+            $convertedItem[$flatName] = (string) $value['data'];
+        }
+
+        return $convertedItem;
+    }
 }
