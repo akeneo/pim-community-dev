@@ -191,7 +191,10 @@ const RuleProductSelection: React.FC<Props> = ({
       <SmallHelper>
         {translate('pimee_catalog_rule.form.helper.product_selection')}
         &nbsp;
-        <a href='#'>
+        <a
+          href='https://help.akeneo.com/pim/serenity/articles/manage-your-rules.html#product-selection'
+          target='_blank'
+          rel='noopener noreferrer'>
           {translate(
             'pimee_catalog_rule.form.helper.product_selection_doc_link'
           )}

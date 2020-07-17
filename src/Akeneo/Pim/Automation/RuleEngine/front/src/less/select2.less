@@ -1,4 +1,4 @@
-@import './public/bundles/pimui/less/base/variables';
+@import './public/bundles/akeneopimruleengine/less/variables';
 
 #edit-rules-form {
   .select2-container .select2-choice > .select2-chosen {
@@ -52,16 +52,22 @@
 
 .select2-container.add-action-button {
   .select2-choice {
-    border-color: @AknBlue;
-    color: @AknBlue !important;
+    border-color: @AknBlue100;
+    color: @AknBlue100 !important;
     text-transform: uppercase;
     border-radius: 100px;
     height: 32px;
-    line-height: 32px;
+    line-height: 30px;
 
     .select2-arrow {
       background-image: url('/bundles/akeneopimruleengine/assets/icons/icon-down-blue.svg');
       background-position-y: 7px;
+      background-position-x: 10px;
+      width: 43px;
+    }
+
+    & > .select2-chosen {
+      margin-right: 43px;
     }
   }
 }
