@@ -3,7 +3,7 @@ import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import { useRegisterConst } from '../../hooks/useRegisterConst';
 import { useTranslate } from '../../../../dependenciesTools/hooks';
-import { ClearAssociationsAction } from '../../../../models/actions/ClearAssociationsAction';
+import { ClearAssociationsAction } from '../../../../models/actions';
 
 type Props = {
   action: ClearAssociationsAction;
@@ -25,6 +25,7 @@ const ClearAssociationsActionLine: React.FC<Props> = ({
       helper={translate('pimee_catalog_rule.form.helper.clear_associations')}
       legend={translate('pimee_catalog_rule.form.helper.clear_associations')}
       handleDelete={handleDelete}
+      lineNumber={lineNumber}
     />
   );
 };

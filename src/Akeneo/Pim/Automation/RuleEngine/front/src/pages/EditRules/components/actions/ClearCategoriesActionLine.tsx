@@ -25,6 +25,7 @@ const ClearCategoriesActionLine: React.FC<Props> = ({
       helper={translate('pimee_catalog_rule.form.helper.clear_categories')}
       legend={translate('pimee_catalog_rule.form.helper.clear_categories')}
       handleDelete={handleDelete}
+      lineNumber={lineNumber}
     />
   );
 };

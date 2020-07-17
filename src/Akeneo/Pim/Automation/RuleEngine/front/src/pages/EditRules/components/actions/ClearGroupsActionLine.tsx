@@ -25,6 +25,7 @@ const ClearGroupsActionLine: React.FC<Props> = ({
       helper={translate('pimee_catalog_rule.form.helper.clear_groups')}
       legend={translate('pimee_catalog_rule.form.helper.clear_groups')}
       handleDelete={handleDelete}
+      lineNumber={lineNumber}
     />
   );
 };
