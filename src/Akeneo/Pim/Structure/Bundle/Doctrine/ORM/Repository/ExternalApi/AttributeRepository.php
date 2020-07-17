@@ -2,10 +2,12 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface as CatalogAttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\UnexpectedResultException;
 
 /**
@@ -44,15 +46,19 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
     }
 
     /**
-     * {@inheritdoc}
+     * Find resources with offset > $offset and filtered by $criteria
+     *
+     * @param array $searchFilters [property: [['operator' => (string), 'value' => (mixed)]]]
+     * @param array $orders
+     * @param int   $limit
+     * @param int   $offset
+     *
+     * @return array
      */
-    public function searchAfterOffset(array $criteria, array $orders, $limit, $offset)
+    public function searchAfterOffset(array $searchFilters, array $orders, $limit, $offset)
     {
         $qb = $this->createQueryBuilder('r');
-
-        foreach ($criteria as $field => $criterion) {
-            $qb->andWhere($qb->expr()->eq(sprintf('r.%s', $field), $qb->expr()->literal($criterion)));
-        }
+        $qb = $this->addFilters($qb, $searchFilters);
 
         foreach ($orders as $field => $sort) {
             $qb->addOrderBy(sprintf('r.%s', $field), $sort);
@@ -70,14 +76,11 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
     /**
      * {@inheritdoc}
      */
-    public function count(array $criteria = [])
+    public function count(array $searchFilters = [])
     {
         try {
             $qb = $this->createQueryBuilder('r');
-
-            foreach ($criteria as $field => $criterion) {
-                $qb->andWhere($qb->expr()->eq(sprintf('r.%s', $field), $qb->expr()->literal($criterion)));
-            }
+            $this->addFilters($qb, $searchFilters);
 
             return (int) $qb
                 ->select('COUNT(r.id)')
@@ -110,5 +113,65 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
     public function getMediaAttributeCodes()
     {
         return $this->attributeRepository->findMediaAttributeCodes();
+    }
+
+    protected function addFilters(QueryBuilder $qb, array $searchFilters): QueryBuilder
+    {
+        $this->validateSearchFilters($searchFilters);
+
+        foreach ($searchFilters as $property => $searchFilter) {
+            foreach ($searchFilter as $criterion) {
+                if (Operators::IN_LIST === $criterion['operator']) {
+                    $parameter = sprintf(':%s', $property);
+                    $qb->where($qb->expr()->in(sprintf('r.%s', $property), $parameter));
+                    $qb->setParameter($parameter, $criterion['value']);
+                }
+            }
+        }
+
+        return $qb;
+    }
+
+    protected function validateSearchFilters(array $searchFilters): void
+    {
+        if (empty($searchFilters)) {
+            return;
+        }
+
+        $availableSearchFilters = ['code'];
+        foreach ($searchFilters as $property => $searchFilter) {
+            foreach ($searchFilter as $criterion) {
+                if (!in_array($property, $availableSearchFilters)) {
+                    throw new \InvalidArgumentException(sprintf(
+                        'Available search filters are "%s" and you tried to search on unavailable filter "%s"',
+                        implode(', ', $availableSearchFilters),
+                        $property
+                    ));
+                }
+                $operator = $criterion['operator'] ?? null;
+                $value = $criterion['value'] ?? null;
+                if (null === $operator || null === $value) {
+                    throw new \InvalidArgumentException(
+                        'Search filters must have an "operator" and a "value" key.'
+                    );
+                }
+
+                switch ($property) {
+                    case 'code':
+                        if (Operators::IN_LIST !== $operator) {
+                            throw new \InvalidArgumentException(sprintf(
+                                'In order to search on attribute codes you must use "IN" operator, "%s" given.',
+                                $operator
+                            ));
+                        }
+                        if (!is_array($value)) {
+                            throw new \InvalidArgumentException(
+                                'In order to search on attribute codes you must send an array of codes as value.'
+                            );
+                        }
+                        break;
+                }
+            }
+        }
     }
 }
