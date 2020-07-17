@@ -46,13 +46,3 @@ akeneo_data_quality_insights_check_text_ignore:
     path: /data-quality-insights/check-text/ignore
     defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddWordInDictionaryController }
     methods: [POST]
-
-akeneo_data_quality_insights_check_title_suggestion:
-    path: /data-quality-insights/check-title
-    defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\CheckTitleSuggestionController }
-    methods: [POST]
-
-akeneo_data_quality_insights_check_title_suggestion_ignore:
-    path: /data-quality-insights/check-title/ignore
-    defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\IgnoreTitleSuggestionController }
-    methods: [POST]

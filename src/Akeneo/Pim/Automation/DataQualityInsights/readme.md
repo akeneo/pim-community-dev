@@ -76,13 +76,6 @@ Each criterion is evaluated one by one.
 **Scope:** All textarea attributes
 
 > Check if there is capital letters everywhere after punctuation, new line, ...
-## Text title formatting
-**Scope:** For attribute type text, localizable, attribute as main title in the family of the product to evaluate.
-
-> Calls Franklin Library to suggest a better formatting.
-
-**Example:**  
-`Macbook air Azerty core I7` should be written `MacBook Air AZERTY Core i7`
 
 ## Spelling
 Scope: For attribute type textarea (without WYSIWYG) and text.

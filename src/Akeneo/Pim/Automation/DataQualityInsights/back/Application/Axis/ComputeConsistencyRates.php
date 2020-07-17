@@ -15,7 +15,6 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application\Axis;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeAxisRatesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\EvaluateSpelling;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Text\EvaluateTitleFormatting;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Textarea\EvaluateUppercaseWords;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\AxisRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Criterion\LowerCaseWords;
@@ -28,7 +27,6 @@ final class ComputeConsistencyRates implements ComputeAxisRatesInterface
     {
         $evaluations = [
             $criterionEvaluationCollection->get(new CriterionCode(EvaluateSpelling::CRITERION_CODE)),
-            $criterionEvaluationCollection->get(new CriterionCode(EvaluateTitleFormatting::CRITERION_CODE)),
             $criterionEvaluationCollection->get(new CriterionCode(EvaluateUppercaseWords::CRITERION_CODE)),
             $criterionEvaluationCollection->get(new CriterionCode(LowerCaseWords::CRITERION_CODE)),
         ];

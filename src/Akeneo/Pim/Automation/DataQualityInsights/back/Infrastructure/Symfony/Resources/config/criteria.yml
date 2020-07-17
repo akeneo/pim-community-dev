@@ -43,13 +43,3 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetTextareaAttributeCodesCompatibleWithSpellingQuery'
         tags:
             - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_criterion' }
-
-    Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Text\EvaluateTitleFormatting:
-        arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLocalesByChannelQuery'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\BuildProductValues'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAttributeAsMainTitleFromProductId'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TitleFormattingService'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetIgnoredProductTitleSuggestionQuery'
-        tags:
-            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_criterion' }
