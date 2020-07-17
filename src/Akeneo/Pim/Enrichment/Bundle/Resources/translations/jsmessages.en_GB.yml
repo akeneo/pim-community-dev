@@ -363,9 +363,6 @@ pim_datagrid:
     mass_edit: Bulk actions
     sequential_edit: Sequential edit
     mass_delete: Mass delete
-    selected:
-      family: selected families
-      product: selected results
   view_selector:
     view: Views
   actions:
