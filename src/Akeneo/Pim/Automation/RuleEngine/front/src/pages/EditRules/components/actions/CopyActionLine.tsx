@@ -197,6 +197,7 @@ const CopyActionLine: React.FC<Props> = ({
         title={translate('pimee_catalog_rule.form.edit.actions.copy.title')}
         helper={translate('pimee_catalog_rule.form.edit.actions.copy.helper')}
         legend={translate('pimee_catalog_rule.form.edit.actions.copy.helper')}
+        lineNumber={lineNumber}
         handleDelete={handleDelete}>
         <ActionGrid>
           <ActionLeftSide>

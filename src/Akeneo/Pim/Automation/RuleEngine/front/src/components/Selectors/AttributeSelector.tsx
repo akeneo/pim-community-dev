@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
-  InitSelectionCallback,
+  InitSelectionCallback, Select2Ajax,
   Select2SimpleAsyncWrapper,
 } from '../Select2Wrapper';
 
@@ -81,46 +81,59 @@ const AttributeSelector: React.FC<Props> = ({
 }) => {
   const router: Router = useBackboneRouter();
 
-  const dataProvider = (term: string, page: number) => {
-    const data: any = {
-      search: term,
-      options: {
-        limit: 20,
-        page: page,
-        locale: currentCatalogLocale,
-        systemFields: [],
-      },
-    };
-    if (filterAttributeTypes) {
-      data.options.attributeTypes = filterAttributeTypes;
-    }
+  const ajax = React.useMemo<Select2Ajax>(() => {
+    console.log('Memoized change');
+    let lastDisplayedGroupLabel: string;
 
-    return data;
-  };
+    const handleResults = (result: Results) => {
+      const fieldCount = result.reduce((previousCount, group) => {
+        return previousCount + group.children.length;
+      }, 0);
 
-  let lastDisplayedGroupLabel: string;
-
-  const handleResults = (result: Results) => {
-    const fieldCount = result.reduce((previousCount, group) => {
-      return previousCount + group.children.length;
-    }, 0);
-
-    if (result.length) {
-      const firstCurrentGroupLabel = result[0].text;
-      if (firstCurrentGroupLabel === lastDisplayedGroupLabel) {
-        // Prevents to display 2 times the group label. Having an empty text removes the line.
-        result[0].text = '';
+      if (result.length) {
+        const firstCurrentGroupLabel = result[0].text;
+        if (firstCurrentGroupLabel === lastDisplayedGroupLabel) {
+          // Prevents to display 2 times the group label. Having an empty text removes the line.
+          result[0].text = '';
+        }
+        lastDisplayedGroupLabel = result[result.length - 1].text;
       }
-      lastDisplayedGroupLabel = result[result.length - 1].text;
-    }
+
+      return {
+        more: fieldCount >= 20,
+        results: result.map(group => {
+          return { ...group, disabled: true };
+        }),
+      };
+    };
+
+    const dataProvider = (term: string, page: number) => {
+      const data: any = {
+        search: term,
+        options: {
+          limit: 20,
+          page: page,
+          locale: currentCatalogLocale,
+          systemFields: [],
+        },
+      };
+      if (filterAttributeTypes) {
+        data.options.attributeTypes = filterAttributeTypes;
+      }
+
+      return data;
+    };
 
     return {
-      more: fieldCount >= 20,
-      results: result.map(group => {
-        return { ...group, disabled: true };
-      }),
-    };
-  };
+      url: router.generate(
+        'pimee_enrich_rule_definition_get_available_fields'
+      ),
+        quietMillis: 250,
+      cache: true,
+      data: dataProvider,
+      results: (attributes: Results) => handleResults(attributes),
+    }
+  }, [JSON.stringify(filterAttributeTypes), currentCatalogLocale, router]);
 
   return (
     <Select2SimpleAsyncWrapper
@@ -131,15 +144,7 @@ const AttributeSelector: React.FC<Props> = ({
       dropdownCssClass={'fields-selector-dropdown'}
       value={value}
       onChange={value => onChange(value as string)}
-      ajax={{
-        url: router.generate(
-          'pimee_enrich_rule_definition_get_available_fields'
-        ),
-        quietMillis: 250,
-        cache: true,
-        data: dataProvider,
-        results: (attributes: Results) => handleResults(attributes),
-      }}
+      ajax={ajax}
       initSelection={(_element, callback) => {
         if (value) {
           initSelectedAttribute(
