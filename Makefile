@@ -87,5 +87,5 @@ down:
 
 ## Run the coupling detector on everything
 .PHONY: coupling
-coupling: twa-coupling asset-coupling franklin-insights-coupling reference-entity-coupling rule-engine-coupling workflow-coupling permission-coupling
+coupling: twa-coupling asset-coupling reference-entity-coupling rule-engine-coupling workflow-coupling permission-coupling
 
