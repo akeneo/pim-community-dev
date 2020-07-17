@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  InitSelectionCallback,
+  InitSelectionCallback, Select2Ajax,
   Select2MultiAsyncWrapper,
   Select2Option,
   Select2Value,
@@ -101,6 +101,18 @@ const FamiliesSelector: React.FC<Props> = ({
     }
   };
 
+  const ajax = React.useMemo<Select2Ajax>(() => {
+    return {
+      url: router.generate('pim_enrich_family_rest_index'),
+        quietMillis: 250,
+      cache: true,
+      data: (term: string, page: number) =>
+      dataProvider(term, page, currentCatalogLocale),
+      results: (families: IndexedFamilies) =>
+      handleResults(families, currentCatalogLocale),
+    };
+  }, [currentCatalogLocale, router]);
+
   return (
     <Select2MultiAsyncWrapper
       {...remainingProps}
@@ -109,15 +121,7 @@ const FamiliesSelector: React.FC<Props> = ({
       hiddenLabel={hiddenLabel}
       value={value}
       onChange={handleChange}
-      ajax={{
-        url: router.generate('pim_enrich_family_rest_index'),
-        quietMillis: 250,
-        cache: true,
-        data: (term: string, page: number) =>
-          dataProvider(term, page, currentCatalogLocale),
-        results: (families: IndexedFamilies) =>
-          handleResults(families, currentCatalogLocale),
-      }}
+      ajax={ajax}
       initSelection={(_element, callback) => {
         initSelectedFamilies(router, value, currentCatalogLocale, callback);
       }}

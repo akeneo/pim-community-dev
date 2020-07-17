@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   InitSelectionCallback, Select2Ajax,
   Select2SimpleAsyncWrapper,
@@ -82,7 +82,6 @@ const AttributeSelector: React.FC<Props> = ({
   const router: Router = useBackboneRouter();
 
   const ajax = React.useMemo<Select2Ajax>(() => {
-    console.log('Memoized change');
     let lastDisplayedGroupLabel: string;
 
     const handleResults = (result: Results) => {

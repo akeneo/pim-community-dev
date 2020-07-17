@@ -146,20 +146,6 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
           </ErrorBlock>
         )}
       </SelectorBlock>
-      {null === attribute && (
-        <SelectorBlock>
-          <InlineHelper danger>
-            {`${translate(
-              'pimee_catalog_rule.exceptions.unknown_attribute'
-            )} ${translate(
-              'pimee_catalog_rule.exceptions.select_another_attribute'
-            )} ${translate('pimee_catalog_rule.exceptions.or')} `}
-            <a href={`#${router.generate(`pim_enrich_attribute_create`)}`}>
-              {translate('pimee_catalog_rule.exceptions.create_attribute_link')}
-            </a>
-          </InlineHelper>
-        </SelectorBlock>
-      )}
       {attribute && attribute?.scopable && (
         <SelectorBlock
           className={
