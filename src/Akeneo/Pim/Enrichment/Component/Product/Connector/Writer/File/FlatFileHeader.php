@@ -252,7 +252,7 @@ final class FlatFileHeader
                     $language = \Locale::getPrimaryLanguage($labelLocale);
                     $currency = Intl::getCurrencyBundle()->getCurrencyName($currencyCode, $language);
 
-                    $headers[] = sprintf('%s %s', $prefix, $currency);
+                    $headers[] = sprintf('%s (%s)', $prefix, $currency);
                 }
             }
         } elseif ($this->usesUnit) {

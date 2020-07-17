@@ -87,7 +87,12 @@ class ProductWriter extends AbstractItemMediaWriter implements
     {
         $this->hasItems = true;
         foreach ($items as $item) {
-            if (isset($item['family']) && !in_array($item['family'], $this->familyCodes)) {
+            if (isset($item['family_code']) && !in_array($item['family_code'], $this->familyCodes)) {
+                if (!in_array($item['family_code'], $this->familyCodes)) {
+                    $this->familyCodes[] = $item['family_code'];
+                }
+                unset($item['family_code']);
+            } elseif (isset($item['family']) && !in_array($item['family'], $this->familyCodes)) {
                 $this->familyCodes[] = $item['family'];
             }
         }
@@ -119,7 +124,7 @@ class ProductWriter extends AbstractItemMediaWriter implements
     {
         $filters = $parameters->get('filters');
 
-        $withLabel = $parameters->has('with_label');
+        $withLabel = $parameters->has('with_label') && $parameters->get('with_label');
         $labelLocale = '';
         if ($parameters->has('label_locale')) {
             $labelLocale = $parameters->get('label_locale');
@@ -140,9 +145,9 @@ class ProductWriter extends AbstractItemMediaWriter implements
 
         $headers = [];
         if (!empty($attributeCodes)) {
-            $headers = ($this->generateHeadersFromAttributeCodes)($attributeCodes, $channelCode, $localeCodes);
+            $headers = ($this->generateHeadersFromAttributeCodes)($attributeCodes, $channelCode, $localeCodes, $labelLocale);
         } elseif (!empty($this->familyCodes)) {
-            $headers = ($this->generateHeadersFromFamilyCodes)($this->familyCodes, $channelCode, $localeCodes);
+            $headers = ($this->generateHeadersFromFamilyCodes)($this->familyCodes, $channelCode, $localeCodes, $labelLocale);
         }
 
         $withMedia = (!$parameters->has('with_media') || $parameters->has('with_media') && $parameters->get('with_media'));

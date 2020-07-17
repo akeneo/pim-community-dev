@@ -68,7 +68,13 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         $structure = $parameters->get('filters')['structure'];
         $channel = $this->channelRepository->findOneByIdentifier($structure['scope']);
 
-        $productStandard = $this->normalizer->normalize($product, 'standard');
+        $normalizationContext = [];
+        if ($parameters->get('with_label')) {
+            $normalizationContext['with_label'] = true;
+            $normalizationContext['label_locale'] = $parameters->get('label_locale');
+        }
+
+        $productStandard = $this->normalizer->normalize($product, 'standard', $normalizationContext);
 
         // not done for product as it fill missing product values at the end for performance purpose
         // not done yet for product model export so we have to do it
@@ -102,16 +108,28 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             );
         }
 
-        $parentLabel = '';
-        if($product->getParent() instanceof ProductModelInterface) {
-            $parentLabel = $product->getParent()->getLabel('fr_FR', $structure['scope']);
-        }
-        $productStandard['categories'] = $product->getCategories()->map(function (Category $category) {
-            return $category->getTranslation('fr_FR')->getLabel();
-        })->toArray();
+        if ($parameters->get('with_label')) {
+            $labelLocale = $parameters->get('label_locale');
 
-        $productStandard['family'] = $product->getFamily()->getTranslation('fr_FR')->getLabel();
-        $productStandard['parent'] = $parentLabel;
+            $parentLabel = '';
+            if ($product->getParent() instanceof ProductModelInterface) {
+                $parentLabel = $product->getParent()->getLabel($labelLocale, $structure['scope']);
+            }
+
+            $productStandard['categories'] = $product->getCategories()->map(function (Category $category) use ($labelLocale) {
+                $translation = $category->getTranslation($labelLocale);
+
+                return null !== $translation->getLabel() ? $translation->getLabel() : sprintf('[%s]', $category->getCode());
+            })->toArray();
+
+            $productStandard['family_code'] = $productStandard['family'];
+            $family = $product->getFamily();
+            $familyTranslation = $family->getTranslation($labelLocale);
+            $familyLabel = null !== $familyTranslation->getLabel() ? $familyTranslation->getLabel() : sprintf('[%s]', $family->getCode());
+
+            $productStandard['family'] = $familyLabel;
+            $productStandard['parent'] = $parentLabel;
+        }
 
         return $productStandard;
     }

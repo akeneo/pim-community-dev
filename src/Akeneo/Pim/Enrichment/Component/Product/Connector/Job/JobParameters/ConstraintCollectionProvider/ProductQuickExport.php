@@ -48,7 +48,12 @@ class ProductQuickExport implements ConstraintCollectionProviderInterface
         $constraintFields['locale'] = new NotBlank(['groups' => 'Execution']);
         $constraintFields['scope'] = new NotBlank(['groups' => 'Execution']);
         $constraintFields['ui_locale'] = new NotBlank(['groups' => 'Execution']);
-        $constraintFields['with_label'] = new NotBlank(['groups' => ['Default', 'FileConfiguration']]);
+        $constraintFields['with_label'] = new Type(
+            [
+                'type'   => 'bool',
+                'groups' => ['Default', 'FileConfiguration'],
+            ]
+        );
         $constraintFields['label_locale'] = new NotBlank(['groups' => ['Default', 'FileConfiguration']]);
 
         return new Collection(['fields' => $constraintFields]);

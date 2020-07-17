@@ -173,6 +173,27 @@ extensions:
             label: pim_import_export.form.job_instance.tab.properties.with_media.title
             tooltip: pim_import_export.form.job_instance.tab.properties.with_media.help
 
+
+    pim-job-instance-csv-product-export-edit-properties-with-labels:
+        module: pim/job/common/edit/field/switch
+        parent: pim-job-instance-csv-product-export-edit-global
+        position: 190
+        targetZone: properties
+        config:
+            fieldCode: configuration.with_label
+            readOnly: false
+            label: With label
+
+    pim-job-instance-csv-product-export-edit-properties-label_locale:
+        module: pim/job/common/edit/field/text
+        parent: pim-job-instance-csv-product-export-edit-global
+        position: 200
+        targetZone: properties
+        config:
+            fieldCode: configuration.label_locale
+            readOnly: false
+            label: Label locale
+
     pim-job-instance-csv-product-export-edit-content-structure:
         module: pim/job/product/edit/content/structure
         parent: pim-job-instance-csv-product-export-edit-content

@@ -19,6 +19,7 @@ interface GenerateFlatHeadersFromFamilyCodesInterface
     public function __invoke(
         array $familyCodes,
         string $channelCode,
-        array $localeCodes
+        array $localeCodes,
+        string $labelLocale
     ): array;
 }

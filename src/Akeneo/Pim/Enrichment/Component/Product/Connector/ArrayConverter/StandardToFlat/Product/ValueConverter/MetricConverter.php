@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnsResolver;
-use Symfony\Component\Translation\TranslatorInterface;
+use Akeneo\Tool\Component\Localization\LabelTranslator;
 
 /**
  * Metric array converter.
@@ -16,11 +16,11 @@ use Symfony\Component\Translation\TranslatorInterface;
 class MetricConverter extends AbstractValueConverter implements ValueConverterInterface
 {
     /**
-     * @var TranslatorInterface
+     * @var LabelTranslator
      */
     private $translator;
 
-    public function __construct(AttributeColumnsResolver $columnsResolver, TranslatorInterface $translator, array $supportedAttributeTypes)
+    public function __construct(AttributeColumnsResolver $columnsResolver, LabelTranslator $translator, array $supportedAttributeTypes)
     {
         parent::__construct($columnsResolver, $supportedAttributeTypes);
         $this->translator = $translator;
@@ -78,7 +78,7 @@ class MetricConverter extends AbstractValueConverter implements ValueConverterIn
     public function convertWithLabel($attributeCode, $labelLocale, $data)
     {
         $convertedItem = [];
-        $unitLabel = $this->translator->trans('pim_common.unit', [], null, $labelLocale);
+        $unitLabel = $this->translator->trans('pim_common.unit', [], null, $labelLocale, '[unit]');
 
         foreach ($data as $value) {
             $flatName = $this->columnsResolver->resolveFlatAttributeLabelName(

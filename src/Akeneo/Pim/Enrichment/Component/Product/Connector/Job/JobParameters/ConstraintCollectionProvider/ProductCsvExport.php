@@ -46,7 +46,12 @@ class ProductCsvExport implements ConstraintCollectionProviderInterface
         $constraintFields = $baseConstraint->fields;
         $constraintFields['decimalSeparator'] = new NotBlank(['groups' => ['Default', 'FileConfiguration']]);
         $constraintFields['dateFormat'] = new NotBlank(['groups' => ['Default', 'FileConfiguration']]);
-        $constraintFields['with_label'] = new NotBlank(['groups' => ['Default', 'FileConfiguration']]);
+        $constraintFields['with_label'] = new Type(
+            [
+                'type'   => 'bool',
+                'groups' => ['Default', 'FileConfiguration'],
+            ]
+        );
         $constraintFields['label_locale'] = new NotBlank(['groups' => ['Default', 'FileConfiguration']]);
         $constraintFields['with_media'] = new Type(
             [

@@ -6,8 +6,8 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\Writer\File\Flat;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\FlatFileHeader;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromFamilyCodesInterface;
+use Akeneo\Tool\Component\Localization\LabelTranslator;
 use Doctrine\DBAL\Connection;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @author    Benoit Jacquemont <benoit@akeneo.com>
@@ -19,11 +19,11 @@ final class GenerateHeadersFromFamilyCodes implements GenerateFlatHeadersFromFam
     /** @var Connection */
     private $connection;
     /**
-     * @var TranslatorInterface
+     * @var LabelTranslator
      */
     private $translator;
 
-    public function __construct(Connection $connection, TranslatorInterface $translator)
+    public function __construct(Connection $connection, LabelTranslator $translator)
     {
         $this->connection = $connection;
         $this->translator = $translator;
@@ -37,7 +37,8 @@ final class GenerateHeadersFromFamilyCodes implements GenerateFlatHeadersFromFam
     public function __invoke(
         array $familyCodes,
         string $channelCode,
-        array $localeCodes
+        array $localeCodes,
+        string $labelLocale
     ): array {
         $activatedCurrencyCodes = $this->connection->executeQuery(
             "SELECT code FROM pim_catalog_currency WHERE is_activated = 1"
@@ -81,7 +82,7 @@ SQL;
             ['familyCodes' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
         )->fetchAll();
 
-        $unitLabel = $this->translator->trans('pim_common.unit', [], null, 'fr_FR');
+        $unitLabel = $this->translator->trans('pim_common.unit', [], null, $labelLocale, '[unit]');
 
         $headers = [];
         foreach ($attributesData as $attributeData) {

@@ -72,6 +72,7 @@ pim_common:
   categories: Catégories
   family: Famille
   parent: Parent
+  quantity: Quantité
 
 pim_enrich:
   #ACLs

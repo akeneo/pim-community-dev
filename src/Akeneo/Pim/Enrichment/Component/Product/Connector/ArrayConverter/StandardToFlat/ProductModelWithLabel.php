@@ -6,7 +6,7 @@ use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\AssociationType\SqlGetAssociationTy
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ProductValueConverter;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimpleArrayConverter;
-use Symfony\Component\Translation\TranslatorInterface;
+use Akeneo\Tool\Component\Localization\LabelTranslator;
 
 class ProductModelWithLabel extends AbstractSimpleArrayConverter implements ArrayConverterInterface
 {
@@ -17,7 +17,7 @@ class ProductModelWithLabel extends AbstractSimpleArrayConverter implements Arra
      */
     private $associationTypeLabels;
     /**
-     * @var TranslatorInterface
+     * @var LabelTranslator
      */
     private $translator;
 
@@ -27,7 +27,7 @@ class ProductModelWithLabel extends AbstractSimpleArrayConverter implements Arra
     public function __construct(
         ProductValueConverter $valueConverter,
         SqlGetAssociationTypeLabels $associationTypeLabels,
-        TranslatorInterface $translator
+        LabelTranslator $translator
     ) {
         $this->valueConverter = $valueConverter;
         $this->associationTypeLabels = $associationTypeLabels;
@@ -49,7 +49,7 @@ class ProductModelWithLabel extends AbstractSimpleArrayConverter implements Arra
                 $convertedItem = $this->convertQuantifiedAssociations($data, $convertedItem, $labelLocale);
                 break;
             case 'categories':
-                $categoryLabel = $this->translator->trans('pim_common.categories', [], null, $labelLocale);
+                $categoryLabel = $this->translator->trans('pim_common.categories', [], null, $labelLocale, '[categories]');
 
                 $convertedItem[$categoryLabel] = implode(',', $data);
                 break;
@@ -79,7 +79,7 @@ class ProductModelWithLabel extends AbstractSimpleArrayConverter implements Arra
         $associationTypeLabels = $this->associationTypeLabels->forAssociationTypeCodes(array_keys($data));
         foreach ($data as $associationTypeCode => $associations) {
             foreach ($associations as $entityType => $entities) {
-                $entityTypeLabel = $this->translator->trans("pim_common.$entityType", [], null, $labelLocale);
+                $entityTypeLabel = $this->translator->trans("pim_common.$entityType", [], null, $labelLocale, "[$entityType]");
                 $associationTypeLabel = $associationTypeLabels[$associationTypeCode][$labelLocale] ?? "[$associationTypeCode]";
 
                 $propertyName = sprintf('%s %s', $associationTypeLabel, $entityTypeLabel);
@@ -93,12 +93,12 @@ class ProductModelWithLabel extends AbstractSimpleArrayConverter implements Arra
     private function convertQuantifiedAssociations(array $data, array $convertedItem, string $labelLocale): array
     {
         $associationTypeLabels = $this->associationTypeLabels->forAssociationTypeCodes(array_keys($data));
-        $quantityLabel = $this->translator->trans('pim_common.quantity', [], null, $labelLocale);
+        $quantityLabel = $this->translator->trans('pim_common.quantity', [], null, $labelLocale, '[quantity]');
 
         foreach ($data as $associationTypeCode => $quantifiedAssociations) {
             foreach ($quantifiedAssociations as $entityType => $quantifiedLinks) {
-                $entityTypeLabel = $this->translator->trans("pim_common.$entityType", [], null, $labelLocale);
-                $associationTypeLabel = $associationTypeLabels[$associationTypeCode][$labelLocale] ?? "[$entityType]";
+                $entityTypeLabel = $this->translator->trans("pim_common.$entityType", [], null, $labelLocale, "[$entityType]");
+                $associationTypeLabel = $associationTypeLabels[$associationTypeCode][$labelLocale] ?? "[$associationTypeCode]";
                 $propertyName = sprintf('%s %s', $associationTypeLabel, $entityTypeLabel);
 
                 $convertedItem[$propertyName] = implode(',', array_column($quantifiedLinks, 'identifier'));

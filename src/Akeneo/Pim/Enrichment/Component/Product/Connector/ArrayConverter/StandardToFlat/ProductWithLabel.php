@@ -6,7 +6,7 @@ use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\AssociationType\SqlGetAssociationTy
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ProductValueConverter;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimpleArrayConverter;
-use Symfony\Component\Translation\TranslatorInterface;
+use Akeneo\Tool\Component\Localization\LabelTranslator;
 
 /**
  * Convert standard format to flat format for product
@@ -27,7 +27,7 @@ class ProductWithLabel extends AbstractSimpleArrayConverter implements ArrayConv
     /**
      * @param ProductValueConverter $valueConverter
      */
-    public function __construct(ProductValueConverter $valueConverter, SqlGetAssociationTypeLabels $associationTypeLabels, TranslatorInterface $translator)
+    public function __construct(ProductValueConverter $valueConverter, SqlGetAssociationTypeLabels $associationTypeLabels, LabelTranslator $translator)
     {
         $this->valueConverter = $valueConverter;
         $this->associationTypeLabels = $associationTypeLabels;
@@ -49,25 +49,25 @@ class ProductWithLabel extends AbstractSimpleArrayConverter implements ArrayConv
                 $convertedItem = $this->convertQuantifiedAssociations($data, $convertedItem, $labelLocale);
                 break;
             case 'categories':
-                $categoryLabel = $this->translator->trans('pim_common.categories', [], null, $labelLocale);
+                $categoryLabel = $this->translator->trans('pim_common.categories', [], null, $labelLocale, '[categories]');
                 $convertedItem[$categoryLabel] = implode(',', $data);
                 break;
             case 'enabled':
-                $enabledLabel = $this->translator->trans('pim_common.enabled', [], null, $labelLocale);
-                $convertedItem[$enabledLabel] = false === $data || null === $data ? $this->translator->trans('pim_common.no', [], null, $labelLocale) : $this->translator->trans('pim_common.yes', [], null, $labelLocale);
+                $enabledLabel = $this->translator->trans('pim_common.enabled', [], null, $labelLocale, '[enabled]');
+                $convertedItem[$enabledLabel] = false === $data || null === $data ? $this->translator->trans('pim_common.no', [], null, $labelLocale, '[no]') : $this->translator->trans('pim_common.yes', [], null, $labelLocale, '[yes]');
                 break;
             case 'family':
-                $familyLabel = $this->translator->trans('pim_common.family', [], null, $labelLocale);
+                $familyLabel = $this->translator->trans('pim_common.family', [], null, $labelLocale, '[family]');
                 $convertedItem[$familyLabel] = (string) $data;
                 break;
             case 'parent':
                 if (null !== $data && '' !== $data) {
-                    $parentLabel = $this->translator->trans('pim_common.parent', [], null, $labelLocale);
+                    $parentLabel = $this->translator->trans('pim_common.parent', [], null, $labelLocale, '[parent]');
                     $convertedItem[$parentLabel] = (string) $data;
                 }
                 break;
             case 'groups':
-                $groupLabel = $this->translator->trans('pim_common.groups', [], null, $labelLocale);
+                $groupLabel = $this->translator->trans('pim_common.groups', [], null, $labelLocale, '[groups]');
 
                 $convertedItem[$groupLabel] = is_array($data) ? implode(',', $data) : (string) $data;
                 break;
@@ -79,6 +79,7 @@ class ProductWithLabel extends AbstractSimpleArrayConverter implements ArrayConv
             case 'identifier':
             case 'created':
             case 'updated':
+            case 'family_code':
                 break;
             default:
                 $convertedItem = $convertedItem + $this->valueConverter->convertAttributeWithLabel($property, $labelLocale, $data);
@@ -92,7 +93,7 @@ class ProductWithLabel extends AbstractSimpleArrayConverter implements ArrayConv
         $associationTypeLabels = $this->associationTypeLabels->forAssociationTypeCodes(array_keys($data));
         foreach ($data as $associationTypeCode => $associations) {
             foreach ($associations as $entityType => $entities) {
-                $entityTypeLabel = $this->translator->trans("pim_common.$entityType", [], null, $labelLocale);
+                $entityTypeLabel = $this->translator->trans("pim_common.$entityType", [], null, $labelLocale, "[$entityType]");
                 $associationTypeLabel = $associationTypeLabels[$associationTypeCode][$labelLocale] ?? "[$associationTypeCode]";
 
                 $propertyName = sprintf('%s %s', $associationTypeLabel, $entityTypeLabel);
@@ -106,12 +107,12 @@ class ProductWithLabel extends AbstractSimpleArrayConverter implements ArrayConv
     private function convertQuantifiedAssociations(array $data, array $convertedItem, string $labelLocale): array
     {
         $associationTypeLabels = $this->associationTypeLabels->forAssociationTypeCodes(array_keys($data));
-        $quantityLabel = $this->translator->trans('pim_common.quantity', [], null, $labelLocale);
+        $quantityLabel = $this->translator->trans('pim_common.quantity', [], null, $labelLocale, '[quantity]');
 
         foreach ($data as $associationTypeCode => $quantifiedAssociations) {
             foreach ($quantifiedAssociations as $entityType => $quantifiedLinks) {
-                $entityTypeLabel = $this->translator->trans("pim_common.$entityType", [], null, $labelLocale);
-                $associationTypeLabel = $associationTypeLabels[$associationTypeCode][$labelLocale] ?? "[$entityType]";
+                $entityTypeLabel = $this->translator->trans("pim_common.$entityType", [], null, $labelLocale, "[$entityType]");
+                $associationTypeLabel = $associationTypeLabels[$associationTypeCode][$labelLocale] ?? "[$associationTypeCode]";
                 $propertyName = sprintf('%s %s', $associationTypeLabel, $entityTypeLabel);
 
                 $convertedItem[$propertyName] = implode(',', array_column($quantifiedLinks, 'identifier'));

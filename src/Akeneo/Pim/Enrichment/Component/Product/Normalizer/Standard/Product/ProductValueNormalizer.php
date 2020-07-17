@@ -86,7 +86,7 @@ class ProductValueNormalizer implements NormalizerInterface, CacheableSupportsMe
         $data = [];
         foreach ($value->getData() as $item) {
             if (AttributeTypes::OPTION_MULTI_SELECT === $attributeType) {
-                $data[] = $this->getOptionLabel($attribute->code(), $item);
+                $data[] = $this->getOptionData($attribute->code(), $item, $context);
             } else if(isset($attribute->properties()['reference_data_name'])) {
                 $data[] = $item;
             } else {
@@ -122,7 +122,7 @@ class ProductValueNormalizer implements NormalizerInterface, CacheableSupportsMe
         }
 
         if($attributeType === AttributeTypes::OPTION_SIMPLE_SELECT) {
-            return $this->getOptionLabel($value->getAttributeCode(), $value->getData());
+            return $this->getOptionData($value->getAttributeCode(), $value->getData(), $context);
         }
 
         if ($attributeType === AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT) {
@@ -156,14 +156,19 @@ class ProductValueNormalizer implements NormalizerInterface, CacheableSupportsMe
         return strlen($formattedNumber) >= strlen($data) ? $formattedNumber : rtrim($data, '0');
     }
 
-    private function getOptionLabel(string $attributeCode, string $optionCode)
+    private function getOptionData(string $attributeCode, string $optionCode, array $context)
     {
+        if (!array_key_exists('with_label', $context) || !$context['with_label']) {
+            return $optionCode;
+        }
+
+        $labelLocale = $context['label_locale'];
         $option = $this->attributeOptionRepository->findOneByIdentifier($attributeCode . '.' . $optionCode);
         if (! $option instanceof AttributeOptionInterface) {
             return sprintf('[%s]', $optionCode);
         }
 
-        $option->setLocale('fr_FR');
+        $option->setLocale($labelLocale);
         $translation = $option->getTranslation();
 
         return null !== $translation->getLabel() ? $translation->getValue() : sprintf('[%s]', $option->getCode());

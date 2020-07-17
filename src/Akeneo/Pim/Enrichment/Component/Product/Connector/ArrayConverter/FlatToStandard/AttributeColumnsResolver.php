@@ -155,7 +155,7 @@ class AttributeColumnsResolver
         }
 
         if (!empty($extraInformation)) {
-            $field = $field . "(".implode(', ', $extraInformation) . ")";
+            $field = $field . " (".implode(', ', $extraInformation) . ")";
         }
 
         return $field;

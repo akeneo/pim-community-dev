@@ -211,7 +211,7 @@ abstract class AbstractItemMediaWriter implements
     private function getArrayConverter(): ArrayConverterInterface
     {
         $jobParameters = $this->stepExecution->getJobParameters();
-        if ($jobParameters->has('with_label')) {
+        if ($jobParameters->has('with_label') && $jobParameters->get('with_label')) {
             return $this->arrayConverterWithLabel;
         }
 

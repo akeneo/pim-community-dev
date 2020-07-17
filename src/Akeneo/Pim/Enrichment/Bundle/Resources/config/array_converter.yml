@@ -61,14 +61,13 @@ services:
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.product.product_value_converter'
             - '@akeneo.pim.enrichment.channel.query.get_association_type_labels'
-            - '@translator'
 
     pim_connector.array_converter.standard_to_flat.product_with_label:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\ProductWithLabel'
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.product.product_value_converter'
             - '@akeneo.pim.enrichment.channel.query.get_association_type_labels'
-            - '@translator'
+            - '@pim_catalog.localization.translator.label'
 
     pim_connector.array_converter.standard_to_flat.product_localized:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\ProductLocalized'
@@ -93,7 +92,7 @@ services:
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.product.product_value_converter'
             - '@akeneo.pim.enrichment.channel.query.get_association_type_labels'
-            - '@translator'
+            - '@pim_catalog.localization.translator.label'
 
     pim_connector.array_converter.standard_to_flat.product_model_localized:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\ProductLocalized'
@@ -182,7 +181,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\MetricConverter'
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
-            - '@translator'
+            - '@pim_catalog.localization.translator.label'
             - ['pim_catalog_metric']
         tags:
             - { name: 'pim_connector.array_converter.standard_to_flat.product.value_converter' }
