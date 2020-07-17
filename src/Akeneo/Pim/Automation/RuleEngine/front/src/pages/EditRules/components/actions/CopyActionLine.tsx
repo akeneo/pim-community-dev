@@ -187,11 +187,17 @@ const CopyActionLine: React.FC<Props> = ({
         name={formName('from_field')}
         as={<span hidden />}
         defaultValue={getFormValue('from_field')}
+        rules={{
+          required: translate('pimee_catalog_rule.exceptions.required_value'),
+        }}
       />
       <Controller
         name={formName('to_field')}
         as={<span hidden />}
         defaultValue={getFormValue('to_field')}
+        rules={{
+          required: translate('pimee_catalog_rule.exceptions.required_value'),
+        }}
       />
       <ActionTemplate
         title={translate('pimee_catalog_rule.form.edit.actions.copy.title')}

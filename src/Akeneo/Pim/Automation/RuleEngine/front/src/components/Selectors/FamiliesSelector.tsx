@@ -1,6 +1,7 @@
 import React from 'react';
 import {
-  InitSelectionCallback, Select2Ajax,
+  InitSelectionCallback,
+  Select2Ajax,
   Select2MultiAsyncWrapper,
   Select2Option,
   Select2Value,
@@ -104,12 +105,12 @@ const FamiliesSelector: React.FC<Props> = ({
   const ajax = React.useMemo<Select2Ajax>(() => {
     return {
       url: router.generate('pim_enrich_family_rest_index'),
-        quietMillis: 250,
+      quietMillis: 250,
       cache: true,
       data: (term: string, page: number) =>
-      dataProvider(term, page, currentCatalogLocale),
+        dataProvider(term, page, currentCatalogLocale),
       results: (families: IndexedFamilies) =>
-      handleResults(families, currentCatalogLocale),
+        handleResults(families, currentCatalogLocale),
     };
   }, [currentCatalogLocale, router]);
 

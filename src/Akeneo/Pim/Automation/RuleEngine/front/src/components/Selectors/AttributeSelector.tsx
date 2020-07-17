@@ -1,6 +1,7 @@
 import React from 'react';
 import {
-  InitSelectionCallback, Select2Ajax,
+  InitSelectionCallback,
+  Select2Ajax,
   Select2SimpleAsyncWrapper,
 } from '../Select2Wrapper';
 
@@ -124,14 +125,12 @@ const AttributeSelector: React.FC<Props> = ({
     };
 
     return {
-      url: router.generate(
-        'pimee_enrich_rule_definition_get_available_fields'
-      ),
-        quietMillis: 250,
+      url: router.generate('pimee_enrich_rule_definition_get_available_fields'),
+      quietMillis: 250,
       cache: true,
       data: dataProvider,
       results: (attributes: Results) => handleResults(attributes),
-    }
+    };
   }, [JSON.stringify(filterAttributeTypes), currentCatalogLocale, router]);
 
   return (
