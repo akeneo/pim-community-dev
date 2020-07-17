@@ -18,3 +18,7 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductIdsFromProductIdentifiersQuery'
         tags:
             - { name: 'akeneo.pim.enrichment.product.query.indexing_additional_properties' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetUpdatedProductIdsQuery:
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'

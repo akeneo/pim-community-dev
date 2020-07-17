@@ -18,6 +18,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluat
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetUpdatedProductsWithoutUpToDateEvaluationQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\CriterionEvaluationRepository;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\AssertionFailedError;
@@ -45,7 +47,7 @@ final class GetUpdatedProductsWithoutUpToDateEvaluationQueryIntegration extends 
 
     protected function getConfiguration()
     {
-        return $this->catalog->useMinimalCatalog();
+        return $this->catalog->useTechnicalCatalog();
     }
 
     public function test_it_returns_all_updated_products_id_without_up_to_date_evaluation()
@@ -59,7 +61,10 @@ final class GetUpdatedProductsWithoutUpToDateEvaluationQueryIntegration extends 
         $this->givenAnUpdatedProductWithAnUpToDateEvaluation($today);
         $this->givenAnOldUpdatedProductWithAnOutdatedEvaluation($today);
         $this->givenAnOldUpdatedProductWithAnUpToDateEvaluation($today);
+        $this->givenAnUpdatedProductModel($today);
+        $this->givenAnUpdatedProductVariant($today);
 
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $productIds = iterator_to_array($this->query->execute($today->modify('-1 DAY'), 2));
 
@@ -73,7 +78,7 @@ final class GetUpdatedProductsWithoutUpToDateEvaluationQueryIntegration extends 
         $this->assertExpectedProductId($expectedProduct3, $productIds);
     }
 
-    private function createProduct(): ProductId
+    private function createProduct(): ProductInterface
     {
         $product = $this->get('akeneo_integration_tests.catalog.product.builder')
             ->withIdentifier(strval(Uuid::uuid4()))
@@ -81,10 +86,10 @@ final class GetUpdatedProductsWithoutUpToDateEvaluationQueryIntegration extends 
 
         $this->get('pim_catalog.saver.product')->save($product);
 
-        return new ProductId((int) $product->getId());
+        return $product;
     }
 
-    private function updateProductEvaluationsAt(ProductId $productId, \DateTimeImmutable $evaluatedAt): void
+    private function updateProductEvaluationsAt(int $productId, \DateTimeImmutable $evaluatedAt): void
     {
         $query = <<<SQL
 UPDATE pimee_data_quality_insights_criteria_evaluation SET created_at = :created_at WHERE product_id = :product_id;
@@ -92,20 +97,20 @@ SQL;
 
         $this->db->executeQuery($query, [
             'created_at' => $evaluatedAt->format(Clock::TIME_FORMAT),
-            'product_id' => $productId->toInt(),
+            'product_id' => $productId,
         ]);
     }
 
-    private function removeProductEvaluations(ProductId $productId): void
+    private function removeProductEvaluations(int $productId): void
     {
         $query = <<<SQL
 DELETE FROM pimee_data_quality_insights_criteria_evaluation WHERE product_id = :product_id;
 SQL;
 
-        $this->db->executeQuery($query, ['product_id' => $productId->toInt(),]);
+        $this->db->executeQuery($query, ['product_id' => $productId,]);
     }
 
-    private function updateProductAt(ProductId $productId, \DateTimeImmutable $updatedAt)
+    private function updateProductAt(ProductInterface $product, \DateTimeImmutable $updatedAt)
     {
         $query = <<<SQL
 UPDATE pim_catalog_product SET updated = :updated_at WHERE id = :product_id;
@@ -113,48 +118,64 @@ SQL;
 
         $this->db->executeQuery($query, [
             'updated_at' => $updatedAt->format('Y-m-d H:i:s'),
-            'product_id' => $productId->toInt(),
+            'product_id' => $product->getId(),
         ]);
+
+        $this->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifier($product->getIdentifier());
+    }
+
+    private function updateProductModelAt(ProductModelInterface $productModel, \DateTimeImmutable $updatedAt)
+    {
+        $query = <<<SQL
+UPDATE pim_catalog_product_model SET updated = :updatedAt WHERE id = :productModelId;
+SQL;
+
+        $this->db->executeQuery($query, [
+            'updatedAt' => $updatedAt->format('Y-m-d H:i:s'),
+            'productModelId' => $productModel->getId(),
+        ]);
+
+        $this->get('pim_catalog.elasticsearch.indexer.product_model')->indexFromProductModelCode($productModel->getCode());
     }
 
     private function givenAProductWithoutAnyEvaluation(): ProductId
     {
-        $productId = $this->createProduct();
-        $this->removeProductEvaluations($productId);
+        $product = $this->createProduct();
+        $this->removeProductEvaluations($product->getId());
 
-        return $productId;
+        return new ProductId(intval($product->getId()));
     }
 
     private function givenAnUpdatedProductWithAnOutdatedEvaluation(\DateTimeImmutable $updatedAt): ProductId
     {
-        $productId = $this->createProduct();
-        $this->updateProductAt($productId, $updatedAt);
-        $this->updateProductEvaluationsAt($productId, $updatedAt->modify('-1 SECOND'));
+        $product = $this->createProduct();
+        $this->updateProductAt($product, $updatedAt);
+        $this->updateProductEvaluationsAt($product->getId(), $updatedAt->modify('-1 SECOND'));
 
-        return $productId;
+        return new ProductId(intval($product->getId()));
     }
 
     private function givenAnUpdatedProductWithAnUpToDateEvaluation(\DateTimeImmutable $today)
     {
         $updatedAt = $today->modify('-2 SECOND');
-        $productId = $this->createProduct();
-        $this->updateProductAt($productId, $updatedAt);
-        $this->updateProductEvaluationsAt($productId, $updatedAt->modify('+1 SECOND'));
+        $product = $this->createProduct();
+        $this->updateProductAt($product, $updatedAt);
+        $this->updateProductEvaluationsAt($product->getId(), $updatedAt->modify('+1 SECOND'));
     }
 
     private function givenAnOldUpdatedProductWithAnOutdatedEvaluation(\DateTimeImmutable $today)
     {
-        $productId = $this->createProduct();
-        $this->updateProductAt($productId, $today->modify('-2 DAY'));
-        $this->updateProductEvaluationsAt($productId, $today->modify('-3 DAY'));
+        $product = $this->createProduct();
+        $this->updateProductAt($product, $today->modify('-2 DAY'));
+        $this->updateProductEvaluationsAt($product->getId(), $today->modify('-3 DAY'));
     }
 
     private function givenAnOldUpdatedProductWithAnUpToDateEvaluation(\DateTimeImmutable $today)
     {
         $updatedAt = $today->modify('-2 DAY');
-        $productId = $this->createProduct();
-        $this->updateProductAt($productId, $updatedAt);
-        $this->updateProductEvaluationsAt($productId, $updatedAt->modify('+1 HOUR'));
+        $product = $this->createProduct();
+        $this->updateProductAt($product, $updatedAt);
+        $this->updateProductEvaluationsAt($product->getId(), $updatedAt->modify('+1 HOUR'));
     }
 
     private function assertExpectedProductId(ProductId $expectedProductId, array $productIds): void
@@ -166,5 +187,38 @@ SQL;
         }
 
         throw new AssertionFailedError(sprintf('Expected product id %d not found', $expectedProductId->toInt()));
+    }
+
+    private function givenAnUpdatedProductModel(\DateTimeImmutable $today): void
+    {
+        $productModel = $this->createProductModel('an_updated_product_model');
+
+        $this->updateProductModelAt($productModel, $today);
+    }
+
+    private function givenAnUpdatedProductVariant(\DateTimeImmutable $today): void
+    {
+        $this->createProductModel('a_product_model_parent');
+        $productVariant = $this->createProduct();
+
+        $this->get('pim_catalog.updater.product')->update($productVariant, [
+            'family' => 'familyA',
+            'parent' => 'a_product_model_parent'
+        ]);
+        $this->get('pim_catalog.saver.product')->save($productVariant);
+
+        $this->updateProductAt($productVariant, $today);
+    }
+
+    private function createProductModel(string $code): ProductModelInterface
+    {
+        $productModel = $this->get('akeneo_integration_tests.catalog.product_model.builder')
+            ->withCode($code)
+            ->withFamilyVariant('familyVariantA1')
+            ->build();
+
+        $this->get('pim_catalog.saver.product_model')->save($productModel);
+
+        return $productModel;
     }
 }
