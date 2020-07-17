@@ -66,6 +66,12 @@ pim_common:
   product_models: Modeles de produit
   groups: Groupes
   unit: Unité
+  yes: Oui
+  no: Non
+  enabled: Activé
+  categories: Catégories
+  family: Famille
+  parent: Parent
 
 pim_enrich:
   #ACLs

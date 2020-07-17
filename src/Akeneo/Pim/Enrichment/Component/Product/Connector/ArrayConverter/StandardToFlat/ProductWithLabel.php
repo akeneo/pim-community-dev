@@ -67,7 +67,9 @@ class ProductWithLabel extends AbstractSimpleArrayConverter implements ArrayConv
                 }
                 break;
             case 'groups':
-                $convertedItem = $this->convertGroups($data, $convertedItem);
+                $groupLabel = $this->translator->trans('pim_common.groups', [], null, $labelLocale);
+
+                $convertedItem[$groupLabel] = is_array($data) ? implode(',', $data) : (string) $data;
                 break;
             case 'values':
                 foreach ($data as $code => $attribute) {
@@ -80,26 +82,6 @@ class ProductWithLabel extends AbstractSimpleArrayConverter implements ArrayConv
                 break;
             default:
                 $convertedItem = $convertedItem + $this->valueConverter->convertAttributeWithLabel($property, $labelLocale, $data);
-        }
-
-        return $convertedItem;
-    }
-
-    private function convertGroups($data, array $convertedItem)
-    {
-        if (!array_key_exists('groups', $convertedItem)) {
-            $convertedItem['groups'] = '';
-        }
-
-        $groups = is_array($data) ? implode(',', $data) : (string) $data;
-        if ('' === $groups) {
-            return $convertedItem;
-        }
-
-        if ('' !== $convertedItem['groups']) {
-            $convertedItem['groups'] .= sprintf(',%s', $groups);
-        } else {
-            $convertedItem['groups'] = $groups;
         }
 
         return $convertedItem;
