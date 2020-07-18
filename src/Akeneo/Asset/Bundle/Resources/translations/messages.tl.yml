@@ -1,0 +1,226 @@
+pimee_product_asset:
+  acl:
+    asset:
+      index: Pasaganain ang asset
+      create: Gumawa ng isang asset
+      remove: Tanggalin ang asset
+      categories_view: Magkonsulta ng mga kategorya ng isang asset
+      mass_upload: Mga asset ng Mass-upload
+    category_asset_picker:
+      list: Maglista ng mga kategorya ng asset sa tagapili ng asset
+    category:
+      create: Gumawa ng isang asset na kategorya
+      edit: Mag-edit ng kategorya ng isang asset
+      list: Ilista ang mga kategorya ng asset
+      remove: Tanggalin ang isang asset na kategorya
+      manage: Pangasiwaan ang mga permiso sa kategorya ng asset
+      history: Tingnan ang kasaysayan ng asset na kategorya
+  acl_group:
+    asset: Mga asset ng produkto
+    category: Mga kategorya ng asset
+  enrich_asset:
+    button:
+      upload: I-upload
+      delete: Tanggalin
+      download: I-download
+      generate_from_reference: Bumuo mula sa reperensiya
+      reset_variations: I-reset ang mga baryasyon
+    confirmation.remove: Sigurado ka bang gusto mong burahin ang asset na "%asset%"?
+    confirmation.subTitle: Mga asset
+    grid:
+      edit: I-edit ang mga katangian ng asset
+    view:
+      title: Asset ng produkto
+      code: Code
+      description: Deskripsyon
+      end_of_use: Huling paggamit sa
+      reference: Reperensiya
+      filename: Pangalan ng file
+      width: Lapad
+      height: Taas
+      resolution: Resolusyon
+      colors: Pagitan ng kulay
+      filesize: Laki ng file
+      filetype: Uri ng file
+      actions: Mga kilos
+      download: I-download
+      tag: Mga tag
+      no_reference: Walang reperensiya ng file ang nai-upload.
+      no_variation: Wala pang nabagong file ang naisagawa.
+    flash:
+      update:
+        success: Ang asset ay na-update na.
+      create:
+        success: Ang asset ay nilikha na.
+      remove:
+        success: Ang asset ay tinanggal na.
+  enrich_reference:
+    flash:
+      delete:
+        success: Tinanggal ang reperensiya ng file.
+  enrich_variation:
+    flash:
+      transformation:
+        invalid_options: Imposible na mabuo ang baryasyon %channel% dahil sa di-wastong mga opsyon.
+        image_width_error: Imposible na mabuo ang baryasyon %channel% dahil ang na-upload na imahe ay may lapad na mas maliit kaysa sa isa na kinakailangan ng pagbabago.
+        image_height_error: Imposible na mabuo ang baryasyon %channel% dahil ang na-upload na imahe ay may taas na mas maliit kaysa sa isa na kinakailangan ng pagbabago.
+        not_applicable: Imposible na makabuo ng baryasyon %channel%.
+        non_registered: Walang %transformation% pagbabago ang nakalista para sa uri ng mime %mimeType%. Imposible para makabuo ng baryasyon %channel%.
+        error: Imposible na makabuo ng baryasyon %channel%.
+        success: Ang mga file ng baryasyon ay matagumpay na nabuo.
+      update:
+        success: Ang file ng baryasyon ay na-update na.
+      delete:
+        success: Binura ang file ng pagkakaiba-iba.
+  popin.create:
+    title: Lumikha ng isang bagong asset
+    is_localized: Naka-lokalize
+  menu: Mga asset
+  page_tab:
+    title:
+      view: Produkto ng asset %asset.code% | Tingnan
+      edit: Produkto ng asset %asset.code% | Baguhin
+      index: Mga asset ng produkto
+  code:
+    label: Code
+  thumbnail:
+    label: Ang thumbmail
+  status:
+    label: Katayuan
+  description:
+    label: Deskripsyon
+  endOfUse:
+    label: Katapusan ng paggamit
+  createdAt:
+    label: Nilikha sa
+  updatedAt:
+    label: Huling nai-update sa
+  tags:
+    label: Mga tag
+  tabs:
+    properties.title: Mga ari-arian
+    variations.title: Mga pagkakaiba-iba
+    categories.title: Mga kategorya
+  validation:
+    code:
+      not_empty: Ang code is kinakailangan. Hindi ito maaaring walang laman.
+      unique: Ang code ay dapat na natatangi.
+      new_generation: Gumawa kami ng bago para sa iyo.
+  notAvailable:
+    label: hindi magagamit
+  asset:
+    title: Ang asset
+  mass_upload:
+    menu: I-upload ang mga asset
+    new: Isang bagong asset ang lilikhain
+    add_files: magdagdag ng mga file
+    start: Simulan ang pag-upload
+    cancel: Kanselahin ang pag-upload
+    import: Mag-angkat
+    executed: Isinagawa ang maramihang pag-upload
+    error:
+      code: Hindi wastong format ng kowd para sa asset
+      localizable: Ang isang asset ay umiiral pero hindi hindi naka-lokalize
+      invalid_locale: Ang pinagmulan ay hindi pinagana o hindi wasto
+  category:
+    menu: Mga kategorya ng asset
+    permissions:
+      view.label: Pinapayagan para tingnan ang mga asset
+      view.help: Payagan para tingnan ang mga asset sa kategoryang ito
+      edit.label: Pinapayagan na baguhin ang mga asset
+      edit.help: Payagan na baguhin ang mga asset sa kategoryang ito (nagpapahiwatig ng pagtanaw ng pahintulot)
+      no_access_to_products: Wala kang access sa mga asset sa anumang puno, mangyaring makipag-ugnay sa iyong administrator
+      apply_on_children.label: I-apply ang mga pagbabago sa mga bata
+      apply_on_children.help: Kinokopya ang mga permiso ng mga pagbabago sa lahat ng mga bata, ang mga umiiral na permiso sa mga bata ay pinananatili
+  mass_edit_action:
+    asset:
+      page_title: Mga asset
+      page_subtitle: Maramihang pag-edit (1 asset)|Maramihang pag-edit (%count% mga asset)
+      confirm: Ikaw ay malapit ng mag-update ng asset na may sumusunod na impormasyon, mangyaring kumpirmahin. | Susubukan mong i-update ang %count% na mga asset na may sumusunod na impormasyon, mangyaring kumpirmahin.
+      steps:
+        first: Pumili ng mga asset
+        second: I-configure
+        third: Kumpirmahin
+pim_enrich:
+  mass_edit_action:
+    asset-classify-move:
+      label: Ilipat ang mga asset sa mga kategorya
+      description: Ang mga asset ay nakaposisyon sa mga sumusunod na kategorya, nawawala ang umiiral na pagkakalagay
+      success_flash: Ang asset(s) ay inilipat sa mga napiling kategorya
+      launched_flash: Ang aksyon ng bulk na "ilipat sa mga kategorya" ay sinimulan. Ikaw ay maabisuhan kapag tapos na ito.
+    add-tags-to-assets:
+      label: Idagdag ang mga tag sa mga asset
+      description: Ang mga tag ay idaragdag sa mga asset. Kung may iilang mga tag na hindi na umiiral, sila ay malilikha.
+      success_flash: Ang tag(s) ay idinagdag sa asset(s)
+      launched_flash: Ang maramihang aksyon na "Magdagdag ng mga tag sa mga asset" ay inilunsad. Maabisuhan ka kapag tapos na ito.
+      message.error: Ang ibinigay na tag ay hindi umiiral
+pim:
+  grid:
+    mass_action:
+      mass_classify_assets: Uriin
+      add_tags_to_assets: Magdagdag ng mga tag
+      delete_assets: Tanggalin ang mga asset
+btn.create.asset: Gumawa ng isang asset
+btn.drag_or_upload: Mag-drag at mag-drop ng isang file o mag-click dito
+job_execution.summary:
+  variations_not_generated: Hindi nabuo ang mga baryasyon
+  pimee_product_asset.mass_upload.new: Ang asset ay nilikha mula sa file
+  pimee_product_asset.mass_upload.updated: Ang asset ay na-update na
+  error: Error sa pagproseso ng file ng asset
+  skipped_assets: Nilaktawan na mga asset
+assets_mass_upload.steps:
+  asset_mass_upload.title: Mag-upload ng mass ng asset
+import_asset.steps.channel_configuration_processor.title: Proseso ng mga kompigurasyon ng tsanel
+pim_datagrid:
+  cells:
+    type:
+      mass_upload: Mga asset sa pag-upload ng mass
+pim_analytics:
+  info_type:
+    nb_assets: Bilang ng mga asset
+pim_assets_collection: Pagkolekta ng mga asset
+pim_api:
+  acl:
+    asset_category:
+      edit: Maglikha at mag-update ng mga kategorya ng asset
+      list: Ilista ang mga kategorya ng asset
+    asset:
+      edit: Baguhin ang mga asset at i-upload ang kanilang mga reperensiya at baryasyon na file
+      list: Ilista ang mga asset at i-download ang kanilang mga reperensiya at baryasyon na file
+  acl_group:
+    asset_category: Mga kategorya ng asset
+    asset: Mga asset
+pimee_enrich:
+  channel:
+    tab:
+      asset_transformation.title: Pagbabago ng asset
+  asset_transformation:
+    not_found: Walang nakita na pagbabago
+    title:
+      transformation: Transpormasyon
+      options: Mga opsyun
+    colorspace:
+      title: Pagitan ng kulay
+      options:
+        colorspace: '%value% kolorspace'
+    resize:
+      title: Baguhin ang sukat
+      options:
+        width: '%value% px lapad'
+        height: '%value% px taas'
+    resolution:
+      title: Resolusyon
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Scale
+      options:
+        width: '%value%px lapad'
+        height: '%value%px haba'
+        ratio: '%value%px ratio'
+    thumbnail:
+      title: Hinlalaki
+      options:
+        width: '%value%px lapad'
+        height: '%value%px taas/haba'

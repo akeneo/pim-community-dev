@@ -1,0 +1,187 @@
+View the product: Переглянути продукт
+Unpublish the product: Зняти продукт з публікації
+Approve: Схвалити
+Refuse: Відхилити
+Approve selected: Схвалити виділене
+Refuse selected: Відхилити вибране
+pim_datagrid:
+  no_entities:
+    proposal: Немає пропозицій для розгляду.
+  no_results:
+    proposal: Немає пропозицій для розгляду. Спробуйте змінити критерії пошуку.
+pimee_datagrid:
+  cells:
+    expand:
+      expand_text: Розгорнути
+      collapse_text: Згорнути
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: Редагувати робочу копію
+    proposal:
+      modal.title: Залишити коментар ( 255 символів макс.)
+  proposal:
+    selected: пропозиції вибрані
+    mass_action_group:
+      review:
+        label: Масова дія
+    partial_accept:
+      modal.title: Частково схвалити інформацію
+      modal.label: Залишити коментар (необов'язково)
+      modal.success: Пропозицію успішно частково перевірено
+    partial_approve:
+      modal:
+        title: Частково затвердити зміни
+        label: Залишити коментар (необов'язково)
+        success: Зміни були успішно затверджені
+    partial_reject:
+      modal:
+        title: Частково відхилити зміни
+        label: Залишити коментар (необов'язково)
+        success: Зміни були успішно відхилені
+batch_jobs:
+  csv_published_product_export:
+    label: Опубліковано продукт експорт у форматі CSV
+    export.label: Експорт опублікованих товарів
+  csv_product_proposal_import:
+    label: Імпорт пропозицій з CSV
+    import.label: Імпорт пропозицій
+  approve_product_draft:
+    label: Затвердити пропозицію
+    perform.label: Затвердити пропозицію
+  refuse_product_draft:
+    label: Відмовитися від пропозиції
+    perform.label: Відмовитися від пропозиції
+  xlsx_published_product_export:
+    label: Експорт опублікованих товарів в XLSX
+    export.label: Експорт опублікованих товарів
+  xlsx_product_proposal_import:
+    label: Імпорт пропозицій з XLSX
+    import.label: Імпорт пропозицій з XLSX
+  csv_published_product_quick_export:
+    export.label: Швидкий експорт опублікованих товарів в CSV
+    perform.label: Швидкий експорт опублікованих товарів в CSV
+  csv_published_product_grid_context_quick_export:
+    export.label: Швидкий експорт контексту сітки опублікованих товарів в CSV
+    perform.label: Швидкий експорт контексту сітки опублікованих товарів в CSV
+  xlsx_published_product_quick_export:
+    export.label: Швидкий експорт опублікованих товарів в XLSX
+    perform.label: Швидкий експорт опублікованих товарів в XLSX
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Швидкий експорт контексту сітки опублікованих товарів в XLSX
+    perform.label: Швидкий експорт контексту сітки опублікованих товарів в XLSX
+  publish_product:
+    perform.label: Опублікувати продуктb
+pim_notification:
+  types:
+    pimee_workflow_product_draft_notification_new_proposal: Нова пропозиція
+    pimee_workflow_import_notification_new_proposals: Нові пропозиції від імпорту
+    pimee_workflow_product_draft_notification_partial_approve: Пропозицію частково прийнято
+    pimee_workflow_product_draft_notification_partial_reject: Пропозицію частково відхилено
+    pimee_workflow_product_draft_notification_partial_remove: Пропозицію частково видалено
+    pimee_workflow_product_draft_notification_approve: Пропозицію затверджено
+    pimee_workflow_product_draft_notification_refuse: Пропозицію відхилено
+    pimee_workflow_product_draft_notification_remove: Пропозицію видалено
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Дата
+      author: Автор
+      product: Продукт
+      review: Переглянути
+      empty: Немає пропозицій для розгляду
+    header.view_all: Переглянути всі
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: Опубліковано
+      revert: ' Відновити '
+    meta:
+      published_version: Опублікована версія
+      owner_groups: Групи власників
+      draft_status: Статус чернетки
+      draft:
+        in_progress: В процесі
+        sent_for_approval: Очікує на підтвердження
+        working_copy: Робоча копія
+    revert:
+      title: Підтвердження відновлення
+      content: Ви впевнені, що бажаєте повернутися до цієї версії продукту?
+    publish:
+      title: Опублікувати цей продукт
+      content: Ви дійсно бажаєте опублікувати цей продукт?
+    unpublish:
+      title: Скасувати публікацію цього продукту
+      content: Ви впевнені, що бажаєте зняти цей продукт з публікації?
+    copy:
+      working_copy: Робоча копія
+      draft: Моя чернетка
+      draft_of: "Чернетки користувача {{ author }}"
+    approval:
+      send: Надіслати для затвердження
+      sent: Надіслано для затвердження
+pimee_enrich.entity.published_product:
+  flash:
+    publish:
+      success: Товар успішно опубліковано
+      fail: Не вдалося опублікувати цей продукт
+    unpublish:
+      success: Продукт успішно знято з публікації
+      fail: Не вдалося скасувати публікацію цього продукту
+    revert:
+      success: Товар успішно відновлений
+  module:
+    publish:
+      label: Опублікувати
+      publish_this_version: Опублікувати цю версію
+    unpublish:
+      label: Видалити публікацію
+pimee_enrich.entity.product_draft:
+  flash:
+    approve:
+      success: Пропозиція була успішно застосована.
+      fail: "Пропозиція не може бути застосована внаслідок наступної помилки: {{ error }}"
+    reject:
+      success: Пропозицію було відхилено.
+    remove:
+      success: Пропозицію було видалено.
+    update:
+      success: Чернетка продукту успішно збережена
+      fail: Чернетка продукту не оновлена
+    create:
+      success: Чернетка продукту відправлена на затвердження
+      fail: Неможливо надіслати чернетку для затвердження
+  module:
+    proposal:
+      accept: Прийняти пропозицію
+      accept_selected: Прийняти вибрані пропозиції
+      reject: Відхилити пропозицію
+      reject_selected: Відхилити вибрані пропозиції
+      remove: Видалити пропозицію
+      comment_title: Коментувати вашу пропозицію (необов'язково - 255 символів макс.)
+      comment_chars: знаків.
+      confirm: Відправити
+    edit:
+      discard_changes: Незбережені зміни будуть втрачені. Ви дійсно бажаєте надіслати чернетку для затвердження без незбережених змін?
+      discard_changes_title: Ви дійсно бажаєте відправити цю чернетку?
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: Опублікувати
+      description: Продукти будуть опубліковані
+      warning: '{{ itemsCount }} вибраних продуктів буде опубліковано.'
+    unpublish:
+      label: Видалити публікацію
+      description: Продукти будуть зняті з публікації
+      warning: Вибрані продукти {{ itemsCount }} будуть зняті з публікації.
+pim_menu:
+  navigation:
+    published_products: Опубліковані продукти
+  item:
+    proposal: Пропозиції
+    published_product: Опубліковані продукти
+pim_title:
+  pimee_workflow_proposal_index: Пропозиції
+  pimee_workflow_published_product_index: Опубліковані продукти
+  pimee_workflow_published_product_view: Опублікований продукт {{ product.label }} | Перегляд

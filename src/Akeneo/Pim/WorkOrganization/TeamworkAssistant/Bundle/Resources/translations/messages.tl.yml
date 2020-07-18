@@ -1,0 +1,39 @@
+teamwork_assistant:
+  project:
+    required: Ang halagang ito ay dapat hindi blangko.
+    label_maxlength: Ang halagang ito ay napakahaba. Ito ay dapat na may higit-kumulang {{ max }} na karakter.
+    project_identifier: Ang proyektong {{ project }} ay hindi umiiral.
+    project_due_date: Hindi ka maaaring pumili ng petsa sa nakaraan.
+  notification:
+    project_calculation:
+      error: Ang kalkulasyon ng proyekto para sa <strong>%project_label%</strong> ay hindi gumana
+      warning: Ang kalkulasyon ng proyekto para sa <strong>%project_label%</strong> ay natapos ng may iilang babala
+      success: Ang proyektong <strong>%project_label%</strong> ay handa na at ang mga nag-ambag ay nabalitaan na. Magsimula na tayo!
+      start: Simula
+    message: Ikaw ay may mga bagong produkto na pasasaganain para sa "%project_label%". Ang takdang petsa ay sa "%due_date%".
+    project_finished:
+      contributor: Binabati kita! Ikaw ay 100% ng tapos sa produktong ginawa sa %project_label%.
+      owner: '%project_label% para sa %due_date% ay natapos na.'
+      show: Ipakita
+    due_date:
+      contributor: Ikaw ay %percent%% na sa produktong ginawa sa %project_label%. Ngunit huwag kalimutan na punan ang mga huling produkto para sa %due_date%.
+      owner: '%project_label% para sa %due_date% ay hindi pa 100% na tapos.'
+      start: Simula
+  datagrid:
+    project_completeness: Progreso ng proyekto
+    contributor_todo: Todo
+    contributor_in_progress: Nasa progreso
+    contributor_done: Tapos na
+    owner_todo: Todo (pangkalahatang-ideya ng proyekto)
+    owner_in_progress: Nasa progreso (pangkalahatang-ideya ng proyekto)
+    owner_done: Tapos na (pangkalahatang-ideya ng proyekto)
+job_execution:
+  summary:
+    processed_products: Mga produktong ipinroseso
+pim_analytics:
+  info_type:
+    nb_projects: Bilang ng mga proyekto
+pim_datagrid:
+  cells:
+    type:
+      project_calculation: Kalkulasyon ng proyekto

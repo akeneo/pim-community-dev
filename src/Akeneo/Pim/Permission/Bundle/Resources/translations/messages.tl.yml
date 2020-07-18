@@ -1,0 +1,96 @@
+pimee_enrich.acl.locale.edit_permissions: Pamamahala ng lokal ng mga pahintulot
+pimee_enrich.acl.category.edit_permissions: Pamamahala ng kategorya sa mga pahintulot
+pimee_enrich.acl.attribute_group.edit_permissions: Pamamahala ng katangiang gruoi sa mga pahintulot
+pimee_importexport.acl.export_profile.edit_permissions: Pamamahala sa pag-eksport ng profile sa mga pahintulot
+pimee_importexport.acl.import_profile.edit_permissions: Pamamahala sa pag-import ng profile sa mga pahintulot
+pimee_enrich.groups.label: May-ari ng mga grupo
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: I-edit ang mga katangian
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Magdagdag ng pahintulot ng produkto na may pahintulot
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: I-update nang may pahintulot ang halaga ng produkto
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Alisin ang pahintulot ng produkto na may pahintulot
+edit_common_attributes_with_permission: I-edit ang mga katangian na may pahintulot
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: I-edit ang mga katangian na may pahintulot
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: Bilang ng mga pagpasok ng pasadyang pinagmulan
+    nb_custom_category_accesses: Bilang ng mga pagpasok ng pasadyang kategorya
+    nb_custom_attribute_group_accesses: Bilang ng mga pagpasok ng pasadyang pangkat ng katangian
+job_profile.permissions:
+  execute.label: Pinapayagan upang maisagawa ang profile ng trabaho
+  edit.label: Pinapayagan na i-edit ang profile ng trabaho
+pim_title.locale:
+  edit: "Mga lokal %locale.code% | I-edit"
+attribute group.permissions:
+  view.label: Pinapayagan upang tingnan ang mga katangian
+  view.help: Payagan na tingnan ang mga produkto sa grupong katangian na ito
+  edit.label: Pinayagan na i-edit ang mga katangian
+  edit.help: Pagpayag na i-edit ang mga produkto sa grupo ng katangian na ito
+  no_access_to_attributes: Wala kang akses sa anumang mga katangian ng produktong ito. Paki-kontak ang iyong administrador.
+category.permissions:
+  view.label: Pinapayagan upang tingnan ang mga produkto
+  view.help: Payagan na tingnan ang mga produkto sa kategoryang ito
+  edit.label: Pinayagan na i-edit ang mga produkto
+  edit.help: Pagpayag na i-edit ang mga produkto sa kategoryang ito (nagpapahiwatig ng pagtanaw sa pahintulot)
+  own.label: Pinayagan sa sariling mga produkto
+  own.help: Pinapayagan para suriin, ihayag, huwag ihayag, uriin, iugnay ang mga produkto sa kategoryang ito (nagpapahiwatig ng pag-edit ng permiso)
+  no_access_to_products: Wala kang akses sa mga produkto sa anumang puno, paki-kontak ang iyong administrador
+  apply_on_children.label: Mag-apply ng mga pagbabago sa mga bata
+  apply_on_children.help: Kopyahin ang mga pahintulot ng mga pagbabago sa lahat ng mga bata, ang mga umiiral na pahintulot sa mga bata ay pinananatili
+locale.permissions:
+  no_access_to_products: Wala kang akses ng datos ng produkto sa anumang aktibong lokal, paki-kontak ang iyong administrador
+flash.locale.updated: Na-update ang lokal at mga pahintulot
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: Wala kang pahintulot na i-edit ang mga produkto "%identifiers%".
+      page_title: Mga Produkto
+      page_subtitle: Marmaihang pag-edit (1 produkto)|Maramihang pag-edit (%count% mga produkto)
+      title: Pumili ng operasyon
+      subtitle: Pumili ng operasyong nais mong gawin sa napiling produkto|Pumili ng operasyong nais mong gawin sa mga napiling %count% na mga produkto
+      confirm: Ikaw ay malapit ng mag-update ng produktong may sumusunod na impormasyon, mangyaring kumpirmahin.|Ikaw ay malapit ng mag-update ng %count% na produkto na may mga sumusunod na impormasyon, mangyaring kumpirmahin.
+      steps:
+        first: Pumili ng produkto
+        second: Pumili ng operasyon
+        third: Tukuyin
+        fourth: I-configure
+    publish:
+      message:
+        error: Hindi ikaw ang nagmamay-ari ng produkto, hindi mo maihahayag ito.
+        warning: Hindi ikaw ang may-ari ng lahat ng napiling mga produkto. Hinda mo maihahayag ang mga produkto "%notGranted%".
+      not_editable: Wala kang pahintulot na i-edit ang mga produkto "%identifiers%".
+    unpublish:
+      message:
+        error: Ikaw ay hindi may-ari ng produkto, hindi mo maihahayag ito.
+        warning: Ikaw ay hindi may-ari ng lahat ng napiling mga produkto. Hindi mo maihahayag ang mga produkto "%notGranted%".
+        info: Ang %nbProducts% mga napiling mga produkto ay hindi maihahayag.
+      not_editable: Wala kang pahintulot para i-edit ang mga produkto "%identifiers%".
+    classify:
+      message:
+        error: Hindi ka ang may-ari ng produkto, hindi mo ito ma-uri.
+        warning: Hindi ka ang may-ari ng lahat ng napiling produkto. Hindi mo mai-uri-uriin ang mga produkto "%notGranted%".
+    edit_common_attributes:
+      message:
+        error: Hindi ka ang may-ari ng produkto, hindi mo ma-edit ito.
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Kompirmahin
+  acl.product_ownership.title: Pagmamay-ari
+  attributes:
+    empty: wala
+  category:
+    tab:
+      permission:
+        title: Mga pahintulot
+  groups:
+    label: mga grupo ng may-ari
+    empty: wala
+add_product_value_with_permission_and_rules:
+  steps.perform: Magdagdag ng halaga ng produkto
+update_product_value_with_permission_and_rules:
+  steps.perform: I-update ang halaga ng produkto
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: I-edit ang mga katangian
+  steps.edit_common_attributes_processor.title: I-edit ang mga katangian
+pim_enrich_attribute_form:
+  isReadOnly: Basahin lamang

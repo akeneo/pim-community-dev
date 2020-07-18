@@ -1,0 +1,101 @@
+pimee_catalog_rule:
+  execution_button: Isagawa ang mga panutuntunan
+  selected: 'mga panutuntunan na napili'
+  popin:
+    execute_rules:
+      confirm_title: Ikumpirma ang mga ipapatupad
+      confirm_content: Ikaw ba ay sigurado na gusto mong isagawa ang lahat ng panuntunan? (maaaring tumagal ito ng mahabang panahon)
+  notification:
+    fail: Ang aksyon ay hindi maaring ma itanghal
+    launched: Ang mga panutuntunan na naipatupad ay na nailunsad na. Ikaw ay maabisuhan kapag ito ay natapos na.
+  attribute:
+    list:
+      code.label: Kodigo
+      condition.label: Kondisyon
+      action.label: Aksyon
+      no_rule_yet.label: Walang panuntunan sa ngayon
+  rule:
+    condition:
+      if.label: kung
+    action:
+      then.label: pagkatapos
+      set_value.label: ay naka-set sa
+      copy_value.label: ay kinopya sa
+      set.label: ay naka-set sa
+      copy.label: ay kinopya sa
+      add.label: ay idinagdag a
+      remove.label: ay tinanggal mula sa
+  datagrid:
+    rule-grid:
+      actions:
+        execute:
+          confirm_title: Ikumpirma ang pagsasagawa
+          confirm_content: Sigurado ka bang gusto mong ipatupad ang panuntunan?
+      mass_edit_action:
+        confirm_title: Kompirmahin ang kalkulasyon
+        confirm_content: Siguro ka bang gusto mong kalkulahin ang mga apektadong mga produkto para sa mga panuntunan?
+      mass_action:
+        execute:
+          confirm_title: Ikumpirma ang pagpapatupad
+          confirm_content: Sigurado ka bang gusto mong isagawa ang mga napiling panuntunan?
+          success: Ang karamihan ng aksyon na isinagawa sa mga napiling panuntunan ay nailunsad na. Ikaw ay aabisuhan kapag tapos na
+          empty_selection: Walang panuntunan ang napili.
+        delete:
+          confirm_title: Ikumpirma ang mga ipapatupad
+          confirm_content: Sigurado ka bang gusto mong burahin ang napiling mga panuntunan?
+          success: Matagumpay mong nabura ang mga panuntunan.
+          empty_selection: Walang mga panuntunan ang napili.
+  form:
+    attribute:
+      tab:
+        rules:
+          title: Mga panuntunan
+pim_enrich:
+  entity:
+    rule:
+      module:
+        delete:
+          confirm: Sigurado ka bang gusto mong burahin ang panuntunang ito? Hindi posible na i-undo ang aksyong ito
+pim_datagrid:
+  entity:
+    rule:
+      flash:
+        delete:
+          success: Ang panuntunan ay matagumpay na naalis
+flash:
+  rule:
+    impacted_product_count: Ang karamihan ng aksyon na kakalkula sa mga apektadong produkto para sa mga panuntunan ay nailunsad na. Ikaw ay aabisuhan kapag tapos na.
+    executed: Ang pagpapatupad ng panuntunan ay nailunsad na. Ikaw ay aabisuhan kapag tapos na.
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Mga setting ng mga panuntunan
+batch_jobs:
+  add_attribute_value:
+    execute_rules.label: Pagpapatupad ng mga panuntunan
+  default_steps:
+    execute_rules: Pagpapatupad ng mga panuntunan
+  yml_rule_import:
+    label: Pag-angkat ng Panuntunan sa YAML
+    import.label: Pag-angkat ng panuntunan
+  yml_rule_export:
+    label: Pag-luwas ng Panuntunan sa YAML
+    export.label: Pag-luwas ng panuntunan
+  rule_impacted_product_count:
+    label: Ang mga apektadong produkto para sa mga panuntunan
+    perform.label: Bilangin ang mga naapektuhang produkto
+  csv_product_import_with_rules:
+    label: Pag-angkat ng produkto sa CSV na may mga panuntunan
+    import.label: Pag-angkat ng produkto
+  csv_product_model_import_with_rules:
+    label: Angkatin ang mga modelo ng produkto sa CSV kasabay ang mga patakaran
+  xlsx_product_import_with_rules:
+    label: Pag-angkat ng produkto sa XLSX na may mga panuntunan
+    import.label: Pag-angkat ng produkto
+  xlsx_product_model_import_with_rules:
+    label: Angkatin ang modelo ng produkto sa XLSX kasabay ang mga patakaran
+pim_notification:
+  types:
+    rule: Mga setting ng mga panuntunan
+pim_menu:
+  item:
+    rule: Mga panuntunan
+pim_title:
+  pimee_catalog_rule_rule_index: Mga panuntunan

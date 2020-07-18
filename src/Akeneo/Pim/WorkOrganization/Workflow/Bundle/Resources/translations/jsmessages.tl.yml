@@ -1,0 +1,187 @@
+View the product: Tingnan ang produkto
+Unpublish the product: Alisin sa pagkakalathala ang produkto
+Approve: Aprubahan
+Refuse: Tanggihan
+Approve selected: Napiling aprubahan
+Refuse selected: Tanggihan ang napili
+pim_datagrid:
+  no_entities:
+    proposal: Walang panukala upang susuriin.
+  no_results:
+    proposal: Walang panukalang susuriin. Subukang baguhin ang iyong pamantayan sa paghahanap.
+pimee_datagrid:
+  cells:
+    expand:
+      expand_text: Palawakin
+      collapse_text: Pagbagsak
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: Baguhin ang kopya ng paggawa
+    proposal:
+      modal.title: Mag-iwan ng komento (opsyonal - 255 na karakter na max.)
+  proposal:
+    selected: mga mungkahing napili
+    mass_action_group:
+      review:
+        label: Maramihang Aksyon
+    partial_accept:
+      modal.title: Aprubahan ang bahagyang impormasyon
+      modal.label: Mag-iwan ng komento (opsyonal)
+      modal.success: Ang panukala ay matagumpay na bahagyang napatunayan
+    partial_approve:
+      modal:
+        title: Bahagyang aprubahan ang mga pagbabago
+        label: Mag-iwan ng komento (opsyonal)
+        success: Ang mga pagbabago ay atagumpay na naaprubahan
+    partial_reject:
+      modal:
+        title: Bahagyang tinanggihan ang mga pagbabago
+        label: Mag-iwan ng komento (opsyonal)
+        success: Ang pagbabago ay matagumpay na tinanggihan
+batch_jobs:
+  csv_published_product_export:
+    label: Iniluwas sa CSV na nailathalang produkto
+    export.label: Iniluwas na nalathalang produkto
+  csv_product_proposal_import:
+    label: Inangkat sa CSV na mungkahi ng produkto
+    import.label: Inangkat na mungkahi ng produkto
+  approve_product_draft:
+    label: Aprubahan ang mungkahi
+    perform.label: Aprubahan ang mungkahi
+  refuse_product_draft:
+    label: Tanggihan ang mga mungkahi
+    perform.label: Tanggihan ang mga mungkahi
+  xlsx_published_product_export:
+    label: Iniluwas sa XLSX na nailathalang produkto
+    export.label: Iniluwas na nailathalang produkto
+  xlsx_product_proposal_import:
+    label: Inangkat sa XLSX na mungkahi ng produkto
+    import.label: Inangkat sa XLSX na mungkahi ng produkto
+  csv_published_product_quick_export:
+    export.label: Ang Csv ay nag-publish ng mga produkto mabilis na pag-export
+    perform.label: Ang Csv ay nag-publish ng mga produkto mabilis na pag-export
+  csv_published_product_grid_context_quick_export:
+    export.label: Csv nai-publish na mga produkto grid konteksto mabilis na-export
+    perform.label: Csv nai-publish na mga produkto grid konteksto mabilis na-export
+  xlsx_published_product_quick_export:
+    export.label: Inilathala ng Xlsx ang mabilisang pag-export ng mga produkto
+    perform.label: Inilathala ng Xlsx ang mabilisang pag-export ng mga produkto
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Xlsx nai-publish na mga produkto grid konteksto mabilis na pag-export
+    perform.label: Xlsx nai-publish na mga produkto grid konteksto mabilis na pag-export
+  publish_product:
+    perform.label: I-publish ang mga produkto
+pim_notification:
+  types:
+    pimee_workflow_product_draft_notification_new_proposal: Bagong mungkahi
+    pimee_workflow_import_notification_new_proposals: Bagong mga mungkahi galing sa pag-angkat
+    pimee_workflow_product_draft_notification_partial_approve: Bahagyang naaprubahan ang mungkahi
+    pimee_workflow_product_draft_notification_partial_reject: Bahagyang tinanggihan ang mungkahi
+    pimee_workflow_product_draft_notification_partial_remove: Bahagyang binura ang mungkahi
+    pimee_workflow_product_draft_notification_approve: Inaprubahan na ang mungkahi
+    pimee_workflow_product_draft_notification_refuse: Tinanggihan na ang mungkahi
+    pimee_workflow_product_draft_notification_remove: Binura na ang mungkahi
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Petsa
+      author: May-akda
+      product: Produkto
+      review: Pagsusuri
+      empty: Walang mga panukalang susuriin
+    header.view_all: Tingnan lahat
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: I-publish na
+      revert: Ibalik
+    meta:
+      published_version: Nai-publish na bersyon
+      owner_groups: May-ari ng mga grupo
+      draft_status: Draft status
+      draft:
+        in_progress: Nasa progreso
+        sent_for_approval: Naghihintay na maaprubahan
+        working_copy: Kopya ng paggawa
+    revert:
+      title: Ibalik ang kumpirmasyon
+      content: Sigurado ka bang nais mong ibalik ang produkto sa bersyong ito?
+    publish:
+      title: I-publish ang produktong ito
+      content: Sigurado ka bang gusto mong i-publish ang produktong ito?
+    unpublish:
+      title: I-publish ang produktong ito
+      content: Sigurado ka bang gusto mong i-publish ang produktong ito?
+    copy:
+      working_copy: Kopya ng paggawa
+      draft: Aking draft
+      draft_of: "{{ author }}'s draft"
+    approval:
+      send: Ipadala para ma-apruba
+      sent: Naipadala para sa pagsang-ayon
+pimee_enrich.entity.published_product:
+  flash:
+    publish:
+      success: Matagumpay na na-publish ang produkto
+      fail: Nabigong i-publish ang produktong ito
+    unpublish:
+      success: Matagumpay na hindi nai-publish ang produkto
+      fail: Nabigong i-unpublish ang produktong ito
+    revert:
+      success: Matagumpay na naibalik ang produkto
+  module:
+    publish:
+      label: Ilathala
+      publish_this_version: I-publish ang bersyon na ito
+    unpublish:
+      label: Alisin sa pagkakalathala
+pimee_enrich.entity.product_draft:
+  flash:
+    approve:
+      success: Ang mungkahing ito ay matagumpay na nailapat.
+      fail: "Ang panukala ay hindi maaaring magamit dahil sa sumusunod na error: {{ error }}"
+    reject:
+      success: Ang mungkahing ito ay hindi tinanggap.
+    remove:
+      success: Ang panukala ay naalis na.
+    update:
+      success: Matagumpay na na-save ang draft ng produkto
+      fail: Hindi maaaring ma-update ang draft ng produkto
+    create:
+      success: Ipinadala ang draft ng produkto para sa pag-apruba
+      fail: Hindi ka maaaring magpadala ng draft na ito para sa pag-apruba
+  module:
+    proposal:
+      accept: Tanggapin ang panukala
+      accept_selected: Tanggapin ang mga piniling proposal (s)
+      reject: Tanggihan ang mungkahi
+      reject_selected: Tanggihan ang mga napiling (mga) panukala
+      remove: Alisin ang panukala
+      comment_title: Iulat ang iyong panukala (opsyonal - 255 na character na max.)
+      comment_chars: mga karakter.
+      confirm: Ipadala
+    edit:
+      discard_changes: Ang mga hindi nai-save na pagbabago ay mawawala. Sigurado ka ba na gusto mong ipadala ang iyong draft para sa pag-apruba nang walang mga hindi naka-save na pagbabago?
+      discard_changes_title: Sigurado ka bang gusto mong ipadala ang draft na ito?
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: Ilathala
+      description: Ang mga produkto ay mai-publish
+      warning: Ang {{ itemsCount }} ang mga piling produkto ay mai-publish.
+    unpublish:
+      label: Alisin sa pagkakalathala
+      description: Ang mga produkto ay hindi nai-publish
+      warning: Ang {{ itemsCount }} ang mga piling produkto ay hindi na-publish.
+pim_menu:
+  navigation:
+    published_products: Mga nailathalang produkto
+  item:
+    proposal: Mga mungkahi
+    published_product: Mga nailathalang produkto
+pim_title:
+  pimee_workflow_proposal_index: Mga mungkahi
+  pimee_workflow_published_product_index: Mga nailathalang produkto
+  pimee_workflow_published_product_view: Nai-publish na produkto {{ product.label }} | Tingnan

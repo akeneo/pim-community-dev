@@ -1,0 +1,90 @@
+pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      actions:
+        delete: Burahin
+        execute: Isakatuparan
+      title: Mga panuntunan
+      column:
+        code: Code
+        conditions: Kondisyon
+        actions: Aksyon
+        impacted_product_count:
+          label: Mga apektadong produkto
+          count: '{0,1}%count% apektadong produkto |]1,Inf[%count% apektadong mga produkto'
+          no_yet_calculated: Hindi pa nakakalkula
+      mass_edit_action:
+        impacted_product_count: Kalkulahin ang mga apektadong produkto
+        execute: Gawin
+        delete: Burahin
+  actions:
+    type:
+      "copy": Pagkatapos %from_field% ay kinopya sa %to_field%
+      "copy_value": Pagkatapos %from_field% ay kinopya sa %to_field%
+      "set": Pagkatapos %value% ay ipinadala sa %field%
+      "set_value": Then %value% ay itinakda sa %field%
+      "add": Pagkatapos %value% ay idinagdag sa %field%
+      "remove": Pagkatapos %value% ay tinanggal mula sa %field%
+    options:
+      include_children: at mga supling
+  condition:
+    label: Kung %field% %operator% %value%
+    operators:
+      "STARTS WITH": nag-uumpisa sa
+      "ENDS WITH": mga nagtatapos sa
+      "CONTAINS": naglalaman
+      "DOES NOT CONTAIN": ay hindi naglalaman
+      "EMPTY": ay walang laman
+      "NOT EMPTY": ay walang laman
+      "IN": sa
+      "NOT IN": hindi sa
+      "IN CHILDREN": sa mga bata
+      "NOT IN CHILDREN": hindi sa mga bata
+      "UNCLASSIFIED": ay hindi ma-uri
+      "IN OR UNCLASSIFIED": ay hindi ma-uri o sa
+      "BETWEEN": pagitan
+      "NOT BETWEEN": ay hindi sa pagitan
+      "=": katumbas
+      "!=": hindi katumbas
+      ">": mahigit sa
+      ">=": katumbas o mahigit sa
+      "<": mas mababa sa
+      "<=": katumbas o mas mababa sa
+  acl_group:
+    rule: Mga panuntunan
+  acl:
+    rule:
+      view_permissions: Tingnan ang mga panuntunan
+      delete_permissions: Burahin ang mga panuntunan
+      impacted_product_count_permissions: Kalkulahin ang mga apektadong produkto para sa mga panuntunan
+      execute_permissions: Isagawa ang mga panuntunan
+  attribute:
+    tab:
+      rule.title: Mga panuntunan
+    grid:
+      is_smart.label: Matalino
+    acl:
+      rule.view_permissions: Tignan ang mga panuntunan
+  product:
+    tooltip:
+      product_attribute_affected_by_a_rule.content: Ang halaga ng katangiang ito ay maaaring magmula sa panuntunan(s) <strong>%rule%</strong>. Iyon ay nangangahulugang kung ang mga kondisyon ng panuntunan ay may bisa, ang iyong pagbabago ay maaaring i-override.
+      loading.title: Naglo-load...
+    history: Inilapat na panuntunan "%rule%"
+  product_value:
+    tooltip:
+      affected_by.title: 'Apektado ng panuntunan(s):'
+  steps:
+    product_rule_definition_reader.title: Babasa sa panuntunan ng inangkat na produkto
+    rule_definition_processor.title: Magpo-proseso sa panuntunan ng inangkat na produkto
+    product_rule_definition_writer.title: Sumulat sa panuntunan ng inangkat na produkto
+    rules_execution.title: Pagpapatupad ng mga panuntunan
+  notification:
+    rule:
+      executed: Pagpapatupad ng panuntunan(s) tapos na
+    mass_edit_rule:
+      success: Kalkulasyon ng apektadong mga produkto sa mga natapos na mga panuntunan
+      error: Isang pagkakamali na naganap sa panahon ng pagkalkula ng mga apektadong produkto para sa mga panuntunan
+btn:
+  Execute rules: Isagawa ang mga panuntunan
+mass_edit_rule: Mga setting ng mga panuntunan
+job_execution.summary.rule_calculated: Bilang ng mga panuntunan

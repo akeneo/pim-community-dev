@@ -1,0 +1,206 @@
+user:
+  asset_delay_reminder: Paalala sa naantalang asset (sa mga araw)
+pimee_product_asset:
+  form:
+    product:
+      asset:
+        manage: Pamahalaan ang mga asset
+        manage_asset:
+          title: Pamahalaan ang mga asset
+          cancel: Kanselahin
+          confirm: Kumpirmahin
+        title: Pamahalaan ang mga asset
+        description: Piliin ang mga asset na nais mong ilakip sa iyong produkto
+        download: I-download
+        remove: Tanggal
+        upload: I-upload
+    asset:
+      not_empty: Ang kowd ay kinakailangan. Ito ay hindi dapat blangko.
+      alpha_numeric_plus_underscore: Ang kowd ay dapat binubuo lamang ng alphanumeric o salungguhit.
+      unique: Ang kowd ay dapat natatangi. Kami ay lumikha ng bago para sa iyo.
+  enrich_asset:
+    grid:
+      edit: I-edit ang mga katangian ng asset
+  enrich_variation:
+    popin:
+      reset:
+        title: I-reset ang mga pagkakaiba-iba
+  mass_upload:
+    menu: I-upload ang mga asset
+    btn:
+      remove_all_files: Alisin ang lahat ng mga file
+      import: Mag-angkat
+      upload: Mag-upload ng mga asset
+    success:
+      new: Isang bagong asset ang lilikhain
+      imported: Mga file na na-import para sa pagproseso ng asset
+      canceled: Matagumpay na nakansela ang pag-upload
+      deleted: Matagumpay na natanggal ang na-upload na file
+    error:
+      list: Hindi na mabasa ang na-upload na mga file
+      delete: Hindi ma-delete ang file mula sa server
+      filename: Di-wastong pangalan ng file para sa asset
+      code: Hindi wastong format ng kowd para sa asset
+      locale: Ang isang asset ay umiiral ngunit hindi localizable
+      invalid_locale: Ang pinagmulan ay hindi pinagana o hindi wasto
+      exists: Na-import na ang isang file na may parehong pangalan
+      conflicts: Ang mga pangalan ng file ay salungat
+    status:
+      added: Idinagdag
+      queued: Queued
+      uploading: Pag-upload
+      error: Error
+      success: Tagumpay
+    drag_and_drop: I-drag at i-drop ang iyong mga asset o mag-click dito
+  datagrid:
+    mass_action:
+      delete:
+        confirm_content: Sigurado ka bang gusto mong burahin ang mga napiling asset?
+        success: Matagumpay na natanggal ang napiling mga asset.
+        empty_selection: Walang napiling asset
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_assets_collection: Pagkolekta ng mga asset
+pim_title:
+  pimee_product_asset_mass_upload: I-upload ang mga asset
+  pimee_product_asset_index: Mga asset
+  pimee_product_asset_edit: Asset {{ asset.label }} | I-edit
+  pimee_asset_categorytree_index: Ang mga kategorya
+  pimee_asset_categorytree_edit: Kategorya {{ category.label }} | I-edit
+batch_jobs:
+  apply_assets_mass_upload:
+    label: Mag-upload ng mass ng asset
+    perform.label: Pag-upload ng masa
+  yml_asset_channel_configuration_import:
+    import.label: Pag-angkat ng kumpigurasyon ng tsanel ng asset
+    label: Pag-import ng configuration ng channel ng asset
+    import_asset.label: Pag-import ng configuration ng channel ng asset
+  yml_asset_channel_configuration_export:
+    label: Pag-export ng configuration ng channel ng asset
+    export.label: Pag-export ng configuration ng channel ng asset
+  csv_asset_import:
+    label: Pag-angkat ng channel sa CSV
+    import_tags.label: Pag-angkat ng kategorya sa CSV
+    import_asset.label: Pag-angkat ng channel sa CSV
+  csv_asset_export:
+    label: Pagluwas ng grupo sa CSV
+    export.label: Pagluwas ng grupo sa CSV
+  csv_asset_variation_export:
+    label: Asset Baryasyon eksport sa CSV
+    export.label: Asset Baryasyon eksport sa CSV
+  csv_tag_import:
+    label: Pag-angkat ng kategorya sa CSV
+    import.label: Pag-angkat ng kategorya sa CSV
+  csv_asset_category_import:
+    label: Pag-angkat ng kategorya sa CSV
+    import_asset_category.label: Pag-angkat ng kategorya sa CSV
+  csv_asset_configuration_import:
+    label: Pag-import ng configuration ng channel ng asset
+    import_asset.label: Pag-import ng configuration ng channel ng asset
+  csv_asset_category_export:
+    label: Pag-angkat ng kategorya sa CSV
+    export.label: Pag-angkat ng kategorya sa CSV
+  xlsx_tag_import:
+    label: Pag-angkat ng kategorya sa XLSX
+    import.label: Pag-angkat ng kategorya sa XLSX
+  xlsx_asset_import:
+    label: Pag-angkat ng channel sa XLSX
+    import_tags.label: Pag-angkat ng kategorya sa XLSX
+    import_asset.label: Pag-angkat ng channel sa XLSX
+  xlsx_asset_category_import:
+    label: Pag-angkat ng kategorya sa XLSX
+    import_asset_category.label: Pag-angkat ng kategorya sa XLSX
+  xlsx_asset_export:
+    label: Pag-angkat ng channel sa XLSX
+    export.label: Pag-angkat ng channel sa XLSX
+  xlsx_asset_category_export:
+    label: I-export ang kategorya sa XLSX
+    export.label: I-export ang kategorya sa XLSX
+  xlsx_asset_variation_export:
+    label: Iniluwas na baryasyon ng asset sa XLSX
+    export.label: Iniluwas na baryasyon ng asset sa XLSX
+  classify_assets:
+    perform.label: Ilipat ang mga asset sa mga kategorya
+  add_tags_to_assets:
+    perform.label: Magdadag ng mga tag sa mga asset
+jstree:
+  asset:
+    all: Lahat ng mga asset
+    unclassified: Hindi na-classify na mga asset
+asset_grid:
+  selected: mga napiling asset
+  label: Mga asset ng produkto
+create_asset:
+  title: Gumawa ng isang asset
+pim_datagrid:
+  mass_action:
+    mass_edit:
+      asset_edit: Mga asset ng pag-edit ng Mass
+pimee_enrich.entity.channel:
+  module:
+    asset_transformation:
+      title: Pagbabago ng asset
+      not_found: Walang nakita na pagbabago
+      transformation: Pagbabago
+      options: Mga opsyon
+      colorspace:
+        title: Pagitan ng kulay
+        options:
+          colorspace: '%value% kolorspace'
+      resize:
+        title: Baguhin ang sukat
+        options:
+          width: '%value% px lapad'
+          height: '%value% px taas'
+      resolution:
+        title: Resolusyon
+        options:
+          resolution: '%value%'
+          resolution-unit: '%value%'
+      scale:
+        title: Scale
+        options:
+          width: '%value% px lapad'
+          height: '%value% px taas'
+          ratio: '%value%px ratio'
+      thumbnail:
+        title: Ang thumbmail
+        options:
+          width: '%value% px lapad'
+          height: '%value% px taas'
+pimee_enrich.mass_edit.asset:
+  title: Maraming aksyon ng mga asset
+  step:
+    select:
+      label: Pumili ng mga asset
+    choose:
+      title: Mga bulk action na asset
+    configure:
+      label: I-configure
+    confirm:
+      label: Kumpirmahin
+  operation:
+    add_tag:
+      label: Idagdag ang mga tag sa mga asset
+      description: Ang mga tag ay idaragdag sa mga asset.
+      field: Mga tag
+      empty_selection: Mangyaring pumili ng mga tag
+    add_to_category:
+      label: Pag-uri-uriin ang mga asset sa mga kategorya
+      description: Ang mga asset ay nakaposisyon sa mga sumusunod na kategorya, ang nawawalang pagkakalagay ay mawawala.
+pim_catalog_volume:
+  axis:
+    count_assets: Mga asset
+    count_asset_categories: Mga kategorya ng asset
+pim_menu:
+  tab:
+    asset: Mga asset
+  item:
+    asset_category: Mga kategorya ng asset
+    upload_asset: Mag-upload ng Mga Asset
+pim_notification:
+  types:
+    mass_upload: Pag-upload ng masa
