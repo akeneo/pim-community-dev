@@ -1,26 +1,26 @@
 btn:
-  post: Añadir nuevo comentario
+  post: Agregar un nuevo comentario
   reply: Responder
   cancel: Cancelar
 confirmation:
   remove:
-    comment: '¿Está seguro de que desea borrar este comentario?'
+    comment: '¿Está seguro de que quiere eliminar este comentario?'
 flash:
   comment:
     create:
-      success: Su comentario ha sido creado con éxito.
+      success: Su comentario ha sido creado éxitosamente.
       error: Se ha producido un error durante la creación de su comentario.
     delete:
-      success: Su comentario ha sido eliminado con éxito.
+      success: Su comentario ha sido eliminado éxitosamente.
       error: Se ha producido un error durante la eliminación de su comentario.
     reply:
-      success: Su respuesta ha sido creada exitosamente.
+      success: Su respuesta ha sido creada éxitosamente.
       error: Ocurrió un error durante la creación de su respuesta.
 comment:
   index:
-    empty: Ningún comentario por el momento
-    header_comment: '{{ user }} comenta el producto'
-    header_reply: '{{ user }} contesta al comentario'
+    empty: Sin comentarios por ahora
+    header_comment: '{{ user }} comentarios del producto'
+    header_reply: '{{ user }} respuestas al comentario'
   placeholder:
     new: Escribir un nuevo comentario...
     reply: Responder a este comentario...

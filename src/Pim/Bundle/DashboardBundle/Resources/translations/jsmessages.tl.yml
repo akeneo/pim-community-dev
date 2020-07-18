@@ -1,0 +1,24 @@
+pim_dashboard:
+  widget:
+    last_operations:
+      empty: Walang mga operasyong nakita
+      status: Katayuan
+      date: Petsa
+      type: Uri
+      profile_name: Ang pangalan ng profile
+      details: Mga detalye
+      warning_count: Mga babala
+      job_type:
+        import: Mag-angkat
+        export: Magluwas
+        mass_edit: Malawakang pag-edit
+        quick_export: Mabilisang pagluwas
+        compute_product_models_descendants: Kalkulahin ang mga supling ng mga modelo ng produkto
+        compute_family_variant_structure_changes: Kalkulahing ang mga pagbabago sa istraktura ng baryang ng pamilya
+        compute_completeness_of_products_family: Kalkulahin ang pagiging kumpleto ng mga pamilya ng produkto
+    completeness:
+      load_more: 'Mag-load ng higit pa...'
+    header:
+      view_all: Tingnan lahat
+page_title:
+  pim_dashboard_index: Dashboard

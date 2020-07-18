@@ -1,0 +1,16 @@
+pim_dashboard:
+  title: Dashboard
+  version: Version
+  widget:
+    last_operations:
+      empty: Operation no dey
+      status: Which one e be
+      date: Date
+      type: Type
+      "profile name": Profil name
+      job_type:
+        import: Cari come
+        export: Export am
+        mass_edit: Mass Edit
+        quick_export: Sharp sharp export
+        compute_product_models_descendants: Makeu for put models dia data

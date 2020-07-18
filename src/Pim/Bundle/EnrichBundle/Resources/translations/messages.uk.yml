@@ -2,8 +2,11 @@ pim_enrich:
   #Product
   product:
     tab:
+      attribute.title: Атрибути
+      category.title: Категорії
       association.title: Асоціації
       completeness.title: Ступінь заповненості
+      history.title: Історія
     #Product comparison
     no_comparison_locale_available: Немає іншої локалі для порівняння
     no_compared_media: Немає доступних для порівняння медіа
@@ -12,13 +15,39 @@ pim_enrich:
     tab:
       parameter.title: Параметри
       value.title: Значення
+      history.title: Історія
+  #Attribute group
+  attribute_group:
+    tab:
+      property.title: Властивості
+      attribute.title: Атрибути
+      history.title: Історія
   #Family
   family:
     info:
       cant_remove_attribute_used_as_axis: Неможливо видалити атрибут, який використовується в якості різновиду основи у сімействі різновидів
+    tab:
+      property.title: Властивості
+      attribute.title: Атрибути
+      history.title: Історія
+  #Association type
+  association_type:
+    tab:
+      property.title: Властивості
+      history.title: Історія
+  #Group type
+  group_type:
+    tab:
+      property.title: Властивості
+  #Category
+  category:
+    tab:
+      property.title: Властивості
+      history.title: Історія
   #Locale
   locale:
     tab:
+      property.title: Властивості
       permission.title: Права доступу
   #Product group
   group:
@@ -28,6 +57,10 @@ pim_enrich:
       X_SELL: Перехресні продажі
       ADDITIONAL: Додатково
       RELATED: Пов'язані
+    tab:
+      product.title: Продукти
+      property.title: Властивості
+      history.title: Історія
   #Product completeness
   completeness:
     progress_bar.title: '%ratio%% завершено (1 обов''язкове значення)|%ratio%% завершено (%count% обов''язкових значень)'
@@ -39,6 +72,7 @@ pim_enrich:
   mass_edit_action:
     limit_exceeded: Будь ласка, виберіть менш ніж %limit% елементів для редагування
     product:
+      page_title: Продукти
       page_subtitle: Масове редагування (1 продукт)|Масове редагування (%count% продуктів)
       title: Виберіть операцію
       subtitle: Виберіть операцію, яку ви хочете виконати для вибраного продукту|Виберіть операцію, яку ви хочете виконати для вибраних %count% продуктів
@@ -208,9 +242,16 @@ pim_enrich:
       manage: Керування підключеннями API
   acl_group:
     association_type: Типи асоціацій
+    attribute: Атрибути
+    attribute_group: Групи атрибутів
+    category: Категорії
     channel: Канали
     currency: Валюти
+    family: Сімейства
+    group: Групи
     group_type: Типи груп
+    locale: Локалі
+    product: Продукти
     product_model: Моделі продукту
   reference_data:
     empty_value:
@@ -236,6 +277,7 @@ attribute group:
   create new: Створити нову групу атрибутів
 category:
   title: категорія
+  overview: Категорії
   create: створити категорію
   edit: редагувати категорію
   suggest selection: Будь ласка, оберіть категорію ліворуч
@@ -274,9 +316,22 @@ association type:
   title: тип асоціації
   create: створити тип асоціації
   edit: редагувати тип асоціації
+#Custom titles
+products: продукти
 #Buttons
 btn:
   create:
+    attribute: створити атрибут
+    attribute group: створити групу атрибутів
+    category: створити категорію
+    channel: створити канал
+    currency: створити валюту
+    family: створити сімейство
+    locale: створити локаль
+    product: створити продукт
+    group: створити групу
+    association type: створити тип асоціації
+    group type: створити тип групи
     drag_or_upload: Перетягніть для завантаження, або натисніть тут
   edit: редагувати
   save: зберегти
@@ -399,9 +454,14 @@ info:
     disable: Вимкнути
     disabled: Вимкнено
   group:
+    axis: 'Вісь варіації: %attributes%'
+    select products: Будь ласка, виберіть продукти, які повинні належати до цієї групи.
+    selectable products: Наступні виділені продукти мають визначене значення для кожної вісі.
     no group types: Типи груп не існуюють, натисніть тут, щоб створити одну
     more products: 'Ще %count% продуктів...'
   association type:
+    show products: Показати товари
+    show groups: Показати групи
     remove from products: Видалення типу асоціації буде видалено з %count% продуктів.
     none exist: Типи асоціацій не існуюють.
     create one: Натисніть тут, щоб створити один
@@ -423,6 +483,7 @@ Manage groups: Керувати групами
 Code: Код
 Name: Ім’я
 Type: Тип
+Scope: Канал
 Required: Обов’язково
 Unique: Унікальний
 Not required: Не вимагається
@@ -445,6 +506,7 @@ Label: Мітка
 Default label: Мітка за промовчанням
 Default value: Значення за промовчанням
 Attributetype: Тип атрибуту
+Attribute type: Тип атрибуту
 Defaultvalue: Значення за промовчанням
 Variant: Варіант
 Smart: Розумний
@@ -459,6 +521,8 @@ default: За промовчанням
 Axis: Вісь
 Add attributes: Додати атрибути
 Translate from: Переклад з
+switch_on: "Так"
+switch_off: "Ні"
 Close: Закрити
 Search: Пошук
 Choose the attribute type: Оберіть тип атрибута
@@ -482,6 +546,7 @@ Attribute used as label: Атрибут, який використовуєтьс
 Credentials: Дані доступу
 #Scopes
 Global: Глобальний
+Channel: Канал
 Expand all channels: Розгорнути всі канали
 Collapse all channels: Згорнути всі канали
 #Variants
@@ -513,10 +578,14 @@ E-mail: E-mail
 URL: URL
 Regular expression: Регулярний вираз
 Minimum input length: Мінімальна довжина вводу
+Default: За промовчанням
+#Family
+Attributes: Атрибути
 #Category
 Title: Назва
 #Page titles
 pim_title.attribute_group:
+  index: "Групи атрибутів"
   create: "Групи атрибутів | Створити"
   edit: "Групи атрибутів %group.label% | Редагувати"
 pim_title.category:
@@ -524,22 +593,36 @@ pim_title.category:
   create: "Категорія дерев | Створити"
   edit: "Дерева категорій %category.label% | Редагувати"
 pim_title.attribute:
+  index: "Атрибути"
   create: "Атрибути | Створити"
   edit: "Атрибути %attribute.label% | Редагувати"
 pim_title.product:
+  index: "Продукти"
   edit: "Продукти %product.label% | Редагувати"
 pim_title.family:
+  index: "Сімейства"
   edit: "Сім'ї %family.label% | Редагувати"
 pim_title.channel:
+  index: "Канали"
   create: "Канали | Створити"
   edit: "Канали %channel.label% | Редагувати"
+pim_title.currency:
+  index: "Валюти"
+pim_title.locale:
+  index: "Локалі"
 pim_title.group:
+  index: "Групи"
   edit: "Групи %group.label% | Редагувати"
 pim_title.association_type:
+  index: "Типи асоціацій"
   edit: "Типи асоціацій %association type.label% | Редагувати"
 pim_title.group_type:
+  index: "Типи груп"
   edit: "Типи груп %group type.label% | Редагувати"
 pim_title.mass_edit_product_action:
+  choose: "Масове редагування | Вибрати"
+  configure: "Масове редагування | Конфігурувати"
+pim_title.mass_edit_family_action:
   choose: "Масове редагування | Вибрати"
   configure: "Масове редагування | Конфігурувати"
 pim_title.job_tracker:
@@ -547,6 +630,7 @@ pim_title.job_tracker:
   show: "Трекер процесів | Показати завдання"
 pim_title.dashboard: "Панель керування"
 pim_catalog_identifier: Ідентифікатор
+pim_catalog_text: Текст
 pim_catalog_textarea: Область тексту
 pim_catalog_number: Число
 pim_catalog_price_collection: Ціна
@@ -556,10 +640,12 @@ pim_catalog_file: Файл
 pim_catalog_image: Зображення
 pim_catalog_boolean: "Так/Ні"
 pim_catalog_date: Дата
+pim_catalog_metric: Метрика
 pim_reference_data_simpleselect: Простий розкривний список довідкових даниx
 pim_reference_data_multiselect: Множинний розкривний список довідкових даниx
 #Locales
 Activated: Активовано
+Disable: Вимкнути
 #Sequential edit operations
 pim_enrich.sequential_edit_action:
   product:
@@ -569,6 +655,7 @@ pim_enrich.sequential_edit_action:
 pim_enrich.mass_edit_action:
   limit_exceeded: Будь ласка, виберіть менш ніж %limit% елементів для редагування
   product:
+    page_title: Продукти
     page_subtitle: Масове редагування (1 продукт)|Масове редагування (%count% продуктів)
     title: Виберіть операцію
     subtitle: Виберіть операцію, яку ви хочете виконати для вибраного продукту|Виберіть операцію, яку ви хочете виконати для %count% вибраних продуктів
@@ -579,6 +666,7 @@ pim_enrich.mass_edit_action:
       third: Налаштування
       fourth: Підтвердження
   family:
+    page_title: Сімейства
     page_subtitle: Масове редагування (1 сімейство)|Масове редагування (%count% сімейств)
     title: Виберіть операцію
     subtitle: Оберіть операцію, яку ви хочете виконати для вибраного сімейства|Оберіть операцію, яку ви хочете виконати для %count% вибраних сімейств
@@ -590,17 +678,28 @@ pim_enrich.mass_edit_action:
       fourth: Підтвердження
   change-status:
     label: Змінити статус
+    description: Вибрані продукти будуть увімкнені або вимкнені.
+    success_flash: Статус продукту(ів) був змінений
   edit-common-attributes:
     label: Редагувати атрибути
     description: Вибрані атрибути продуктів будуть змінені наступними даними для вибраної локалі.
+    empty: Будь ласка, виберіть атрибут(и), які ви хочете відредагувати
     success_flash: Атрибут(и) продукту(ів) було оновлено
     message.warning: Немає спільних атрибутів для вибраних продуктів. Будь ласка, змініть ваш вибір.
     no_attribute.warning: Немає спільних атрибутів для вибраних продуктів. Будь ласка, змініть ваш вибір.
   classify:
     label: Додати до категорій
+    description: Продукти будуть розташовуватися в наступних категоріях, існуюче положення збережеться.
+    success_flash: Продукт(и) було класифіковано в наступних категоріях
   change-family:
     label: Змінити сімейство
+    description: Сімейство вибраних продуктів буде змінено на вибране сімейство
+    success_flash: Сімейство вибраних продуктів було успішно змінено
     no_family: Немає сімейства
+  add-to-groups:
+    label: Додати до групи
+    description: Виберіть групи, до яких додати вибрані продукти
+    success_flash: Продукти було успішно додано до вибраних груп
   set-attribute-requirements:
     label: Встановити обов'язковість/ необов'язковість атрибутів
     description: Наступні вимоги до атрибутів будуть застосовані до виділених сімейств
@@ -610,25 +709,40 @@ Select attributes: Виберіть атрибути
 Select: Виберіть
 Remove this attribute: Видалити цей атрибут
 Copy: Копія
+Current tab: Поточна вкладка
 #Product view
 Group: Група
 View group: Переглянути групу
+Products: Продукти
+#Tabs
+Properties: Властивості
 History: Історія
 pane.accordion:
   node_values: Значення вузлів
   general_properties: Загальні властивості
   locale_values: Значення локалі
+  backend_parameters: Параметри бази даних
+  general_parameters: Загальні параметри
   validation_parameters: Параметри перевірки
+  label_translations: Переклади міток
+  options: Параметри
+  group_values: Значення групи
 #Popin titles
 popin.create:
   association_type.title: Створити новий тип асоціації
   group.title: Створити нову групу
+  product.title: Створити новий продукт
   option.title: Створити новий параметр
 #Datagrid contents
 In group: У групі
 Attribute as label: Атрибут як мітка
 Is associated: Пов'язано
 Complete: Завершено
+Created At: Створено в
+Updated At: Оновлено в
+Enabled: Ввімкнено
+Disabled: Вимкнено
+Status: Статус
 #Versioning / history
 Change History: Історія змін
 Data Audit: Аудит даних
@@ -720,6 +834,8 @@ batch_jobs:
       label: Оновити значення продукту
   add_attribute_value:
     label: Додати значення атрибутів
+    perform:
+      label: Додати значення атрибутів
   edit_common_attributes:
     label: Редагувати атрибути
     perform:
@@ -783,8 +899,13 @@ job_tracker:
   filter:
     started_at: Розпочато о
 pim_enrich_attribute_form:
+  code: Код
   type: Тип атрибуту
   reference_data_name: Ім'я довідкових даних
   scopable: Значення в каналі
   localizable: Значення в локалі
+  unique: Унікальне значення
+  availableLocales: Доступні локалі
+  locale_specific: Специфічно для локалі
+  group: Група атрибутів
   useableAsGridFilter: Використовується в сітці

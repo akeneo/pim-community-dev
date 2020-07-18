@@ -1,0 +1,165 @@
+pim_user:
+  user:
+    tab:
+      general.title: Panlahat
+      additional.title: Karagdagang
+      group_and_role.title: Mga grupo at mga tungkulin
+      password.title: Password
+      business_unit.title: Mga yunit ng negosyo
+      email_synchronization.title: Sinkronisasyon ng email settings
+      interfaces.title: Mga interface
+  group:
+    tab:
+      general.title: Panlahat
+      users.title: Mga gumagamit
+#user grids
+oro.user.controller:
+  group.message.saved: "Naka-save na grupo"
+  role.message.saved: "Naka-save na tungkulin"
+  user.message.saved: "I-save ang user"
+  status.message.saved: "Naka-save na estado"
+oro.user.grid.users:
+  columns:
+    username: "Username"
+    email: "Email"
+    firstName: "Pangalan"
+    lastName: "Apelyido"
+    createdAt: "Inilikha sa"
+    updatedAt: "In-update sa"
+    enabled: "Katayuan"
+oro.user.grid.roles:
+  columns:
+    label: "Tatak"
+oro.user.grid.groups:
+  columns:
+    name: "Pangalan"
+#Page titles
+pim_title:
+  user.index: Mga gumagamit
+  user_role.index: Mga tungkulin
+  user_group.index: Mga pangkat
+  system_configuration.index: Kumpigurasyon
+#User
+user.title: Gumagamit
+user.overview: Gumamit
+Users Management: Pamamahala ng gumagamit
+Create user: Lumikha ng gumagamit
+btn.create.user: Lumikha ng gumagamit
+New user: Bagong gumagamit
+Additional: Karagdagan
+Groups and Roles: Mga grupo at mga tungkulin
+Username: Username
+Password: Password
+Re-enter password: I-type muli ang password
+Name prefix: Pangalan ng prefix
+First name: Pangalan
+Middle name: Gitnang pangalan
+Last name: Apelyido
+Name suffix: Pangalan ng suffix
+Date of birth: Petsa ng kapanganakan
+Avatar: Avatar
+Additional emails: Karagdagang mga email
+Add another email: Magdagdag ng isa pang email
+Catalog locale: Katalog lokal
+Catalog scope: Katalog ng scope
+Default tree: Default puno
+Business Units: Mga yunit ng negosyo
+Email synchronization settings: Sinkronisasyon ng email settings
+Host: Host
+Port: Daungan
+Ssl: SSL
+Last logged in: Huling naitala
+Login count: Bilang ng pag-login
+Additional Information: Karagdagang impormasyon
+Interfaces: Mga interface
+Basic Information: Basic na impormasyon
+Contact Information: Impormasyon ng kontak
+User name: Pangalan ng gumagamit
+Birthday: Kaarawan
+API key: API key
+Ui locale: UI lokal
+UI locale: UI lokal
+User salt: Gumagamit ng asin
+Current password: Kasalukuyang password
+New password: Bagong password
+Repeat new password: Bagong password (ulitin)
+Generate key: Bumuo ng key
+Primary: pangunahin
+Removed user: Tanggalin ang gumagamit
+user:
+  product_grid_filters: Produkto ng grid ng mga filter
+  default_product_grid_view:
+    label: E-default ng tingnan ang grid ng produkto
+  default_grid_view:
+    none: Wala
+  timezone: Timezone
+#Role
+Role: Tungkulin
+Owner: May-ari
+General: Panlahat
+Entity: Entity
+Capabilities: Mga kakayahan
+Save and close: E-save at isarado
+Has role: May tungkulin
+role:
+  title: tungkulin
+  overview: tungkulin
+  edit: E-edit ang tungkulin
+  create: Lumikha ng tungkulin
+btn.create.role: Lumikha ng tungkulin
+rights:
+  action: Mga pahintulot
+oro_security:
+  acl_group:
+    user: Mga gumamit
+    role: Mga tungkulin
+    group: Mga grupo
+  acl:
+    user:
+      view: Listahan ng mga gumagamit
+      create: Lumikha ng gumagamit
+      edit: E-edit ang mga gumagamit
+      delete: Mag-tanggal ng gumagamit
+    role:
+      view: Mga listahan ng mga tungkulin
+      create: Lumikha ng grupo
+      edit: Mag-edit ng mga tungkulin
+      delete: Mag-tanggal ng isang tungkulin
+    group:
+      view: Listahan ng mga grupo ng gumagamit
+      create: Maglikha ng isang grupo ng gumagamit
+      edit: Mag-edit ng mga grupo ng gumagamit
+      delete: Mag-alis ng isang grupo ng gumagamit
+#Security
+(default): Mag-default ng pahintulot sa mga entity
+VIEW: Tingnan
+CREATE: Lumikha
+EDIT: Baguhin
+DELETE: Burahin
+ASSIGN: Itinakda
+SHARE: Ibahagi
+oro:
+  security:
+    access-level:
+      BASIC: User
+      LOCAL: Yunit ng negosyo
+      DEEP: Paghahati
+      GLOBAL: Samahan
+      SYSTEM: Sistema
+      NONE: Wala
+#User Group
+Create group: Lumikha ng grupo
+btn.create.user-group: Lumikha ng grupo
+Has group: May grupo
+Save and Close: I-save at isarado
+user-group.overview: Mga pangkat
+#Login page
+Log in: Log in
+Remember me on this computer: Tandaan mo ako sa kompyuter na ito
+Forgot your password?: Nakalimutan ang iyong password?
+Username or Email: Pangalan ginamit o email
+Forgot Password: Nakalimutang password
+Request: Hiniling
+Check Email: E-tsek ang email
+password_reset_email_sent: Ang email ay naihatid na sa %email%. Ito ay naglalaman ng isang link na kailangan mong pindutin para ma-reset mo ang iyong password.
+Go to homepage: Pumunta sa homepage

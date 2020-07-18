@@ -1,0 +1,29 @@
+job_execution:
+  summary:
+    hide_item: make e hide item
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: make e select categories
+          cancel: cancel
+          confirm: confam
+        label: "{0} All products|{1}E don select one category|]1,Inf[ {{ count }} e don select categories"
+        edit: Edit
+        title: select de categories
+    locales:
+      validation:
+        not_blank: Na must say dey go select one locale, abeg choose one locale wey u go export
+#Page titles
+page_title:
+  pim_importexport_export_profile_index: U go export de profiles management 
+  pim_importexport_export_profile_edit: U go export profile {{ job.label }} | Edit
+  pim_importexport_export_profile_show: U go export profile {{ job.label }} | Show
+  pim_importexport_export_execution_index: U go export executions history
+  pim_importexport_export_execution_show: "U go export executions | Details\n \npage_title -> "
+  pim_importexport_import_profile_index: U go import profiles management
+  pim_importexport_import_profile_edit: U go import profile {{ job.label }} | Edit
+  pim_importexport_import_profile_show: U go import profile {{ job.label }} | Show
+  pim_importexport_import_execution_index: U need import executions history
+  pim_importexport_import_execution_show: U go import executions | Details

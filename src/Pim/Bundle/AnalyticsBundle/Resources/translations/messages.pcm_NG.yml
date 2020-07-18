@@ -1,0 +1,11 @@
+pim_analytics:
+  system_info:
+    title: System information
+  info_type:
+    pim_version: Version
+  acl:
+    system_info:
+      index: System information
+pim_menu:
+  item:
+    system_info: System information

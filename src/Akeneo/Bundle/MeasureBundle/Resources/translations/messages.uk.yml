@@ -25,6 +25,7 @@ MEGABYTE: Мегабайт
 GIGABYTE: Гігабайт
 TERABYTE: Терабайт
 Decibel: Децибел
+DECIBEL: Децибел
 Frequency: Частота
 GIGAHERTZ: Гігагерц
 KILOHERTZ: Кілогерц
@@ -89,6 +90,10 @@ DEKACOULOMB: Декакулон
 HECTOCOULOMB: Гектокулон
 KILOCOULOMB: Кілокулон
 Duration: Тривалість
+MILLISECOND: Мілісекунда
+SECOND: Секунда
+MINUTE: Хвилина
+HOUR: Година
 DAY: День
 WEEK: Тиждень
 MONTH: Місяць

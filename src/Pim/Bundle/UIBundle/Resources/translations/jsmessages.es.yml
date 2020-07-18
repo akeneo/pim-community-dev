@@ -1,5 +1,5 @@
 #ORO messages
-Close: Cerrar
+Close: CerraR
 Update: Actualizar
 Selected Rows: Filas seleccionadas
 "Yes": "Sí"
@@ -7,11 +7,11 @@ Selected Rows: Filas seleccionadas
 "Yes, I Agree": "Sí, estoy de acuerdo"
 "Yes, do it": "Sí, hazlo"
 "No": "No"
-"Ok, got it.": "De acuerdo."
+"Ok, got it.": "Okey, entiendo."
 "Cancel": "Cancelar"
 "Delete Confirmation": "Confirmación de eliminación"
 "Edit": "Editar"
-"Unexpected error occured. Please contact system administrator.": "Ocurrió un error inesperado. Por favor, póngase en contacto con el administrador del sistema."
+"Unexpected error occured. Please contact system administrator.": "Ocurrió un error inesperado. Por favor, contacte con el administrador del sistema."
 "Yes, revoke": "Si, revocar"
 "Revoke Confirmation": "Revocar confirmación"
 Now: Ahora
@@ -35,7 +35,7 @@ Microsecond: Microsegundo
 #PIM messages
 Localized value: Valor localizado
 Columns: Columnas
-Datagrid Configuration: Configuración de cuadrícula de datos
+Datagrid Configuration: Configuración de la Grilla
 Apply: Aplicar
 #Filters
 Action: Acción
@@ -94,7 +94,7 @@ datetimepicker:
     Feb: Feb
     Mar: Mar
     Apr: Abr
-    May: May
+    May: Mayo
     Jun: Jun
     Jul: Jul
     Aug: Ago
@@ -106,7 +106,7 @@ datetimepicker:
 oro_config:
   form:
     config:
-      title: Configuración del sitema
+      title: Configuración del sistema
       tab:
         system:
           title: Sistema

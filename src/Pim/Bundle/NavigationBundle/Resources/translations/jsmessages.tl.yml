@@ -1,0 +1,4 @@
+"Sorry, page was not loaded correctly": "Paumanhin, ang pahina ay hindi na-load ng tama"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Ang iyong mga lokal na pagbabago ay mawawala. Ikaw ba ay sigurado na gusto mong i-refresh ang pahina?"
+"navigation.message.content.outdated": "Nilalaman ng {{ title }} Hindi na napapanahon ang pahina, mangyaring <a href='#' data-action='page-refresh'>i-refresh ang pahina</a>"
+"Content of pinned page is outdated": "Ang nilalaman ng naka-pin na pahina ay wala na sa panahon"

@@ -1,0 +1,32 @@
+"oro_datagrid.no_data_hint %entityHint%": '%entityHint% No dey exist.'
+oro_datagrid.not_found_hint: Sorry, wetin u dey find no dey.
+oro_datagrid.label_add_filter: Make u manage filters dem
+oro_datagrid.label_loading_mask: E dey load.
+oro.grid.mass_action.selected_rows: Rows dem wey u don select
+oro.grid.mass_action.confirm_title: Make e conafam plenti actions dem
+oro.grid.mass_action.confirm_content: U sure say u wan do dis thing?
+oro.grid.mass_action.confirm_ok: Na so, do am
+oro.grid.mass_action.error_title: Action erroro wey yapa
+oro.grid.mass_action.error_content: E no fit paform plenti action
+oro.grid.mass_action.delete.label: Commot am
+oro.grid.mass_action.delete.confirm_title: Confam make e commot plenty
+oro.grid.mass_action.delete.confirm_content: U sure say u wan comot de items dem wey u select so?
+oro.grid.mass_action.delete.item_limit: U no fit do plenti delete pass %limit% products dem (%count% wey u select)
+oro.grid.datagrid.page_size.all: Everri
+oro.grid.mass_action.delete.success_message: "{0} e no get entity wey don comot |{1} One entity don comot |]1,Inf[%count% entities dem don comot"
+#Datagrid views constraints
+datagrid_view:
+  columns:
+    min_message: U must select bad as e bad one datagrid column make e display
+  label:
+    unique_message: De label gats different
+    not_blank_message: De label no gats dey empty
+#View selector flash messages
+grid.view_selector.flash:
+  created: E don update Datagrid view finish
+  removed: E don update Datagrid view finish
+  not_removable: U no get to comot dis view
+quick_export: Sharp sharp export
+import: Cari come
+export: Export am
+mass_edit: Edit plenti

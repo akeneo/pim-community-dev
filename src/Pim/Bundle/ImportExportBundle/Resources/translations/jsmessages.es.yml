@@ -9,22 +9,22 @@ pim_connector:
         modal:
           title: Selección de categorías
           cancel: Cancelar
-          confirm: Confirmación
+          confirm: Confirmar
         label: "{0} Todos los productos|{1} Una categoría seleccionada|]1,Inf[{{ count }} categorías seleccionadas"
         edit: Editar
-        title: Seleccionar Categorías
+        title: Seleccionar categorías
     locales:
       validation:
-        not_blank: Un local debe ser seleccionado, por favor seleccione un local para exportar.
+        not_blank: Un configuración regional debe ser seleccionada, por favor seleccione un configuración regional para exportar.
 #Page titles
 page_title:
   pim_importexport_export_profile_index: Gestión de perfiles de exportación
   pim_importexport_export_profile_edit: Exportar perfil {{ job.label }} | Editar
   pim_importexport_export_profile_show: Exportar perfil {{ job.label }} | Mostrar
-  pim_importexport_export_execution_index: Historial de ejecuciones de exportación
-  pim_importexport_export_execution_show: Ejecuciones de importación | Detalles
-  pim_importexport_import_profile_index: Gestión de perfiles de exportación
+  pim_importexport_export_execution_index: Exportar el historial de ejecuciones
+  pim_importexport_export_execution_show: Ejecuciones de exportación | Detalles
+  pim_importexport_import_profile_index: Importar gestión de perfiles
   pim_importexport_import_profile_edit: Importar perfil {{ job.label }} | Editar
   pim_importexport_import_profile_show: Importar perfil {{ job.label }} | Mostrar
-  pim_importexport_import_execution_index: Historia de las ejecuciones de importación
+  pim_importexport_import_execution_index: Importar historial de ejecuciones
   pim_importexport_import_execution_show: Ejecuciones de importación | Detalles

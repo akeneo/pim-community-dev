@@ -1,0 +1,30 @@
+job_execution:
+  summary:
+    display_item: Ipakita ang aytem
+    hide_item: Itago ang aytem
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Pagpili ng mga kategorya
+          cancel: Ikansela
+          confirm: Kumpirmahin
+        label: "{0} Lahat ng mga produkto|{1} Napili ang isang kategorya|]1,Inf[ {{ count }} mga kategoryang napili"
+        edit: Baguhin
+        title: Pumili ng mga kategorya
+    locales:
+      validation:
+        not_blank: Isang lokal ay dapat na piliin, mangyaring pumili ng lokal para i-luwas.
+#Page titles
+page_title:
+  pim_importexport_export_profile_index: Pagluwas ng pamamahalang anyo
+  pim_importexport_export_profile_edit: I-eksport ang profile {{ job.label }} | I-edit
+  pim_importexport_export_profile_show: I-export ang profile {{ job.label }} | Ipakita
+  pim_importexport_export_execution_index: Iluwas ang kasaysayan sa pagsasakatuparan
+  pim_importexport_export_execution_show: Iluwas ang pagsasakatuparan | Mga Detalye
+  pim_importexport_import_profile_index: Pamamahala sa pag-angkat ng mga profile
+  pim_importexport_import_profile_edit: I-angkat ang profile {{ job.label }} | I-edit
+  pim_importexport_import_profile_show: I-angkat ang profile {{ job.label }} | Ipakita
+  pim_importexport_import_execution_index: I-angkat ang kasaysayan sa pagsasakatuparan
+  pim_importexport_import_execution_show: I-angkat ang mga pagsasakatuparan

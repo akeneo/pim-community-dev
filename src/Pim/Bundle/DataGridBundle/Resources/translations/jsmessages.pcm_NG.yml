@@ -1,0 +1,126 @@
+Item deleted: Item bin don delete
+Are you sure you want to delete this item?: U dey sure say u wan delete dis item?
+Delete Error: Delete Error
+Are you sure you want to do remove selected items?: You sure say you wan commot de products wey dey selected?
+Selected items were removed.: Item wey dey selected don commot.
+Selected items were not removed.: Item wey dey selected neva commot.
+Please, select items to remove.: Abeg select items yoy wan commot.
+Cannot delete item.: E no fit delete dis item.
+Refresh Confirmation: Refresh confirmation
+Your local changes will be lost. Are you sure you want to refresh grid?: You go lose your local changes, you sure say you wan refresh grid?
+Reset Confirmation: Reset Confirmation
+Your local changes will be lost. Are you sure you want to reset grid?: You go lose your local changes, you sure say you wan refresh grid?
+Confirmation: To confam am
+edit: edit am
+copy: copy am
+remove: commot
+Status: Which one e be
+All: Everri's
+Per page: Per page
+Mass Action Confirmation: Mass Action Confirmation
+Mass action performed.: E don perform mass action.
+Mass action is not performed.: E neva perform mass action.
+Please, select items to perform mass action.: Abeg, select items you wan perform mass action.
+Execution Confirmation: Mass Action Confirmation
+Are you sure you want to do this?: You sure say you wan do dis thing?
+Action performed.: E don perform action.
+Action is not performed.: E neva perform action.
+Please, select item to perform action.: Abeg, select item to use perform action.
+View per page: View per page
+Enabled: E don enable
+Disabled: E don disable
+not_available: N/A
+Yes: true
+No: false
+oro.datagrid.entityHint: Entity
+oro.datagrid.noentities: No record dey found
+oro.datagrid.noresults: "Sorry, wetin you search no dey."
+oro.datagrid.noresults_subTitle: "Try am again wit anoda search patarn."
+oro.datagrid.nocolumns: No columns don dey configured for dis grid
+oro.datagrid.pagination.label: "Page"
+oro.datagrid.pagination.totalPages: "of {{ totalPages }}"
+oro.datagrid.pagination.totalRecords: "{{ totalRecords }} records dem"
+oro.datagrid.action.reset: "Reset am"
+oro.datagrid.action.refresh: "Load am again"
+oro_datagrid.select.all: "Everri's"
+oro_datagrid.select.visible: "Make Everytin show"
+oro_datagrid.select.none: "E no get any"
+oro_datagrid.select.select: "Choose am"
+pim.grid.ajax_choice_filter.label_empty: e dey empty
+pim.grid.ajax_choice_filter.label_not_empty: e no dey empty
+pim:
+  grid:
+    choice_filter:
+      label_contains: contains
+      label_does_not_contain: e no contain
+      label_start_with: begin am wit
+      label_empty: e dey empty
+      label_not_empty: e no dey empty
+      label_in_list: e dey list
+      operator: Operator
+    price_filter:
+      label: Currency
+    category_filter:
+      done: E don finish
+#Column configuration
+Available Columns: Columns wey dey available
+Displayed Columns: Columns wey dey selected
+datagrid_view.columns.min_message: You must select bad as e bad one datagrid column make e display
+pim_datagrid:
+  column_configurator:
+    label: Columns
+    title: Configure columns
+    all_groups: Everri groups dem
+    search: Find
+    clear: Clear am
+    displayed_columns: Columns wey dey selected
+    apply: Apply am
+    cancel: Cancel am
+    remove_column: Commot am
+    description: Select de information wey you wan make e display as column
+    attribute_groups: Attribute groups
+  mass_action:
+    delete:
+      confirm_title: Confam say u don delete
+      confirm_ok: Ok
+      empty_selection: E no select any product
+#Quick export
+pim.grid.mass_action.quick_export.title: Sharp sharp export
+pim.grid.mass_action.quick_export.launched: Quick export don dey launch
+#Custom actions
+pim.grid.action.launch.title: Launch
+pim.grid.action.show.title: Show am
+Please select view: Abeg select view
+Loading...: E dey load...
+View: View am
+#Datetimepicker
+from: from
+to: to
+#View selector
+grid.view_selector:
+  default_view: Default view
+  save_changes: Save dis view
+  remove: Delete dis view
+  create_view: Make u create view
+  create: Create am
+  search: Find
+  views: Views
+  placeholder: Name for new view
+  choose_label: Choose a label for view
+  confirmation:
+    remove: You sure say you wan commot dis view?
+    delete: Confam say u don delete
+#View selector flash messages
+grid.view_selector.flash.updated: E don update Datagrid view finish
+#Display selector
+grid.display_selector:
+  label: Show
+  gallery: Gallery
+  list: List
+#Credentials cell
+Client ID: Client ID
+Secret: Secret
+grid.empty_results:
+  associated_product:
+    hint: Associated products no dey
+    subHint: 'Click dat button "Add associations" to associate dis product'
