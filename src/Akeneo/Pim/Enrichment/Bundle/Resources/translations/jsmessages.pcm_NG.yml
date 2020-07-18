@@ -1,0 +1,335 @@
+pim_notification:
+  types:
+    settings: Settings dem
+pim_enrich.entity.product:
+  label: e be product
+  uppercase_label: Product
+  plural_label: Products
+  flash:
+    update:
+      success: E don update product finish.
+      fail: De product no bin fit update.
+      fields_not_ready: "De product no fit save ryt now. de fields wey dem mention so neva ready: {{ fields }}"
+      already_in_upload: File don already dey upload for dis attribute for locale "{{ locale }}" and for scope "{{ scope }}"
+    delete:
+      success: De product no bin fit update.
+      fail: De product no bin fit delete.
+    create:
+      success: E don create product finish
+      fail: No attribute dey configured as product identifier or you no get de rights to edit am.
+  module:
+    create:
+      subtitle: Make you create product
+      title: Make you select action
+      choose_family: Make u select family
+      choose_family_variant: Choose a family variant
+    variant_navigation:
+      common: Common
+    status:
+      enabled: E don enable
+      disabled: E don disable
+    download_pdf:
+      label: PDF
+    copy:
+      label: Compare am / Translate am
+      select: Choose am
+      all_visible: Make Everytin show
+      copy: Copy am
+    history:
+      version: Version
+      author: Persin wey get am
+      logged_at: Logged at
+      from: From
+      modified: Modified
+      old_value: Value wey old
+      new_value: Value wey new
+    meta:
+      updated: Time wey e update last
+      groups: Groups dem
+    show_group:
+      title: Group {{ group }}
+      view_group: Check de group
+      more_products: '{{ count }} more products dem...'
+    attribute:
+      remove_optional: Commot dis attribute
+      locale_specific_unavailable: Dis very locale field no dey available for dis locale
+      locale_unavailable: Dis localizable field no dey available for locale '{{ locale }}' and for channel '{{ channel }}'
+      add_attribute_option: Make u add option to attribute
+      add_option: Put option
+    completeness:
+      title: Wen e complete
+      complete: E complete
+      no_family: Family no dey defined. Abeg define family make de calculation for dis product for dey complete.
+      no_completeness: U just change de family of de product now. Abeg save am first so u fit calculate say de new family dey complete.
+    sequential_edit:
+      item_limit: Na de only first 1000 items wey show for dis sequential edit ({{ count }} dey selected)
+      empty: Your selection dey empty, abeg change your search pattern
+      save_and_next: Save am den next am
+      save_and_finish: Save am den finish am
+    associations:
+      title: Associations dem
+      none_exist: E no get association types wey exist.
+      show_products: Show products
+      show_groups: Show groups
+      number_of_associations: "{{ productCount }} product(s), {{ productModelCount }} product model(s) and {{ groupCount }} group(s)"
+      association_type_selector: Association type
+      target: Target
+      manage: Make you add {{ associationType }} associations
+      manage_description: Make you select de product wey you wan associate wit de current product
+      add_associations: Make you add associations
+    attribute_filter:
+      display: Show am
+      all: Everri attributes dem
+      missing_required: Everri required attributes wey miss
+    change_family:
+      title: Make u change de product family
+      merge_attributes: Attributes dem wey dey now go join body with de ones wey dey d new family.
+      keep_attributes: E no get attributes wey go commot.
+      change_family_to: Make u change family to
+      empty_selection: Make u select family
+    basket:
+      title: Basket
+      empty_basket: Basket dey empty
+    delete:
+      confirm: U sure say u wan delete dis product?
+    comment:
+      removed_author: User wey dey comot
+pim_enrich.entity.product_model:
+  uppercase_label: Product model
+  plural_label: Product models dem
+  flash:
+    create:
+      success: E don create product model finish
+      product_model_added: Product model don enta product model finish
+      variant_product_added: Variant product don enta product model finish
+    update:
+      success: Product model din update finish. De completeness for variant products go dey recalculated.
+      fail: De product model no bin fit update.
+      fields_not_ready: "De product model no fit save right now. De following fields no dey ready: {{ fields }}"
+    delete:
+      success: E don delete product model finish.
+  choose: Make you choose product model
+  property:
+    family_variant: Variant
+  module:
+    create:
+      title: Make you create product model
+      content: Product model dey gather variant products and e dey also make common prpperties enrichment dem dey easy.
+    attribute:
+      read_only_parent_attribute_from_common: Na for de common attributes dey fit take update dis attribute.
+      read_only_parent_attribute_from_model: "Dis attributes no fit update for inside attributes by {{ axes }}"
+    variant_axis:
+      create: Join new one
+      create_label: "Add new {{ axes }}"
+      required_label: '(variant axis)'
+    delete:
+      confirm: U sure say u wan delete dis product model? wit all im pikin, product models wit im variant products, go also delete o.
+pim_enrich.entity.group:
+  label: Group
+  flash:
+    update:
+      success: Group bin don update finish.
+      fail: De group no bin fit update.
+      fields_not_ready: "De group no fit save right now, de fields wey dem mention so never dey ready: {{ fields }}"
+    create:
+      success: E don create group
+    delete:
+      success: Group don commot finish
+      fail: E no fit delete dis group
+  module:
+    create:
+      button: Do new group
+    delete:
+      confirm: U sure say u wan delete dis group?
+pim_enrich.entity.category:
+  label: category
+  uppercase_label: Category
+  plural_label: Categories
+pim_enrich.export.product:
+  data:
+    title: Make you filter de products dem
+  structure:
+    title: Make u filter de data
+  filter:
+    channel:
+      help: De channel dey explain scope wey dey de product values, de locales na it de use select data, and de tree na it de use select products.
+    locales:
+      help: "De locales dey define de localized product values wey e wan export. Ex: only product wey get information for french."
+    attributes:
+      label: "{0}All attributes|{1}One attribute selected|]1,Inf[{{ count }} attributes selected"
+      help: "Make u select de product information wey u wan export. Ex: na the technical attributes only."
+      empty: All de attributes dem go export
+      modal:
+        title: Selection for attribute
+    attributes_selector:
+      attributes: "Find am inside {{ itemsCount }} attributes"
+      selected: "Attributes dem wey don select"
+      clear: Clear am
+      all_group: Everri groups dem
+      empty_selection: All de attributes dem go export
+      description: Select de product imformation you wan export
+    family:
+      title: Family
+      help: "Select de product make e export by dia family. Ex: Make u export only shoes and dresses."
+      operators:
+        IN: E dey list
+        "NOT IN": E no dey list
+        EMPTY: Products dem wey no get family
+        "NOT EMPTY": Product wey get family
+      empty_selection: Condition no dey Families
+    updated:
+      title: Condition wey time get
+      operators:
+        ALL: E no get condition for date
+        "SINCE LAST N DAYS": Product wey don dey update for like some days (e.g.6)
+        ">": Product wey get update since dis date
+        "SINCE LAST JOB": Product wey get update since last export
+    enabled:
+      title: Which one e be
+      help: "Select product u wan export by dia status. Ex: Export products no mata wetin be dia status."
+      value:
+        enabled: E don enable
+        disabled: E don disable
+    completeness:
+      title: Wen e complete
+      help: Select de product you wan export by dia completeness.
+      operators:
+        ALL: Completeness no get condition
+        ">=": Complete bad as e bad for one selected locale
+        "GREATER OR EQUALS THAN ON ALL LOCALES": Complete everytin for all de locales wey dem select
+        "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Complete bad as e bad for one selected locale
+        LOWER THAN ON ALL LOCALES: Everytin no complete for all de locales wey dem select
+      empty_selection: Make u choose family
+    category:
+      title: Category
+      help: Use de product categories for tree (wey dey define be de channel before) to select de products dem wey u wan export
+    identifier:
+      title: Identifier
+      help: You go use product identifiers take export separated by commas, spaces or line breaks
+    string:
+      operators:
+        ALL: Everri's
+    select:
+      operators:
+        IN: E dey list
+    date:
+      operators:
+        BETWEEN: Between
+        NOT BETWEEN: Not between
+  global_settings:
+    title: Global settings
+pim_enrich.mass_edit.product:
+  title: Products bulk action
+  step:
+    select:
+      label: Select product dem
+    choose:
+      title: Products bulk actions
+    configure:
+      label: Arrange am
+    confirm:
+      label: Confam
+    launched:
+      label: The bulk action "{{ operation }}" don dey launched. You go get notification wen e dey ready.
+  operation:
+    common:
+      select_attributes: Make u choose attributes dem
+    change_status:
+      label: Make u change de status
+      description: D selected products go dey enable or disabled.
+      field: Enable am
+    edit_common:
+      description: Only de attributes wey belong to families of products wey don dey selected go dey edited wit de following data for the {{ locale }} locale and the {{ scope }} channel.
+    change_family:
+      label: Make you change family
+      description: De family wey dem don select so dia products go change to the one wey dem choose
+    add_to_group:
+      label: Join am for groups
+      description: Select de groups wey u wan add de products wey u bin select
+      field: Groups dem
+    add_to_category:
+      label: Add am to categories
+      description: De products go dey classified inside de following categories, dey don keep de classification wey don exist before.
+    move_to_category:
+      label: Move from one category go anoda
+      description: De products go dey classified inside de following categories, de classification wey exist before don lost.
+    remove_from_category:
+      label: Commot from categories
+      description: De products go comot from de categories wey dem mention so.
+    add_to_existing_product_model:
+      label: Add am to product model wey don exist
+      description: Product model dey gather products and e dey also make common properties dey enrich and make am dey easy.
+    associate_to_product_and_product_model:
+      description: De products wey dey selected for grid go associate wit de products wey dem select and product models for de association type wey dem choose
+      validate: Abeg put association before u enter de next step
+pim_datagrid:
+  mass_action_group:
+    bulk_actions:
+      label: Plenti actions
+    quick_export:
+      label: Sharp sharp export
+  mass_action:
+    delete:
+      confirm_content: You sure say you wan commot de selected products?
+      success: De products wey u select don comot finish.
+    quick_export:
+      csv_all: CSV (Everri attributes dem)
+      csv_grid_context: CSV (de grid context)
+      xlsx_all: Excel (Everri attributes dem)
+      xlsx_grid_context: Excel (Grid context)
+    mass_edit: Bulk actions
+    sequential_edit: Sequential edit
+    selected:
+      family: families wey dey seleted
+      product: result wey dey selected
+  view_selector:
+    view: Views
+  actions:
+    edit_product_attributes: Edit attributes wey dey de product
+    classify_product: Put de product for different classes dem
+    delete_product: Commot de product
+    change_status: Make u change de status
+    toggle_status: Toggle de status
+    other: Oda actions dem
+  empty_results:
+    associated_product:
+      hint: Associated products no dey
+      subHint: 'Click dat button "Add associations" to associate dis product'
+  filters:
+    label: Filters dem
+    system: System
+batch_jobs:
+  add_product_value:
+    label: Make you Add product value
+    perform.label: Make you Add product value
+  add_to_category:
+    label: Add am to categories
+    perform.label: Add am to categories
+  add_to_existing_product_model:
+    label: Add am to product model wey don alreadi exist
+    perform.label: Add am to product model wey don exist
+  csv_product_grid_context_quick_export:
+    quick_export.label: Sharp sharp report for Csv product grid context
+    quick_export_product_model.label: Sharp sharp export for CSV product model grid context
+    perform.label: Sharp sharp report for Csv product grid context
+  csv_product_quick_export:
+    quick_export.label: Sharp sharp report for Csv product
+    quick_export_product_model.label: Sharp sharp export for CSV product model
+    perform.label: Sharp sharp report for Csv product
+  edit_common_attributes:
+    label: Make u edit de attributes dem
+    perform.label: Make u edit de attributes dem
+    clean.label: Clean files wey dey for attributes
+    cleaner.label: Clean files wey dey for attributes
+  move_to_category:
+    label: Move am go category
+    perform.label: Move am go category
+  update_product_value:
+    label: Make u update value for product
+    perform.label: Make u update value for product
+  remove_from_category:
+    label: Comot am from category
+    perform.label: Comot am from category
+  set_attribute_requirements:
+    label: Set wetin attributes need
+    perform.label: Make you set attributes requirements

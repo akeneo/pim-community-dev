@@ -1,0 +1,208 @@
+pim_enrich.entity.family:
+  label: pamilya
+  uppercase_label: Pamilya
+  plural_label: Ang mga pamilya
+  flash:
+    update:
+      success: Ang pamilya ay matagumpay na na-update.
+      cant_remove_attribute_as_label: Hindi maaaring tanggaling ang katangian na ginamit bilang label
+      cant_remove_attribute_as_image: Hindi matanggal ang katangian na ginagamit bilang pangunahing larawan
+      cant_remove_attribute_used_as_axis: Hindi pwedeng matanggal ang katangian na ginagamit bilang isang variant axis sa isang variant ng pamilya
+    create:
+      success: Ang pamilya ay matagumpay na nalikha
+    delete:
+      success: Ang pamilya ay matagumpay na natanggal
+      fail: Hindi maaaring tanggalin ang pamilyang ito
+  property:
+    attribute_as_label: Ang katangian ginagamit bilang label
+    attribute_as_image: Katangian na ginamit bilang pangunahing imahe
+    empty_attribute_as_image: Hindi napili
+  module:
+    attributes:
+      not_required_label: Hindi kinakailangan
+      required_label: Kinakailangan
+    create:
+      button: Gumawa ng pamilya
+    delete:
+      confirm: Ikaw ba ay sigurado na gusto mong burahin ang pamilyang ito?
+pim_enrich.entity.family_variant:
+  short_plural_label: Mga baryante
+  short_label: Baryant
+  flash:
+    update:
+      success: Matagumpay na na-update ang ibat-ibang pamilya. Ang mga produkto na may mga ibat-iba ay maa-update sa iyong mga binago.
+    create:
+      success: Matagumpay na nagawa ang baryante ng pamilya
+  module:
+    edit:
+      common_attributes: Karaniwang katangian
+      no_common_attributes: Walang magkakahalintulad na katangian
+      variant_axis_label: Variant axis
+      level_1: Variant na mga katangian sa unang antas
+      level_2: Variant na mga katangian sa pangalawang antas
+      description: Hilahin at ilaglag ang mga katangian sa mga piling lebel ng baryente upang mapamahalaan itong mga katangian at mga lebel ng baryente.
+      confirm_attribute_removal_title: Kumpirmahin ang pagtanggal ng mga katangian
+      confirm_attribute_removal_message: Sa pamamagitan ng pag-alis nitong mga katangiang ibabalik mo ang mga karaniwang katangian ng ibat-ibang pamilya at alisin ang mga halaga mula sa mga ibat-ibang mga produkto
+    create:
+      label: Dagdagdan ng variant
+      title: Gumawa ng bagong variant ng pamilya
+      description: Sa isang variant ng pamilya, maaari mong tukuyin ang isang istraktura para sa mga produkto na mayroong mga variant. Pumili ng bilang ng mga antas ng pinamamahalaang variant, ang mga katangian ay ginamit bilang variant axes para sa bawat antas, at pagkatapos ay tukuyin kung paano ibinahagi ang mga katangian.
+      variant_levels: Mga antas ng variant
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: Mga opsyon
+  flash:
+    create:
+      success: Ang pagpipilian ng katangian ay matagumpay na nailikha
+    update:
+      fail: Hindi maaaring mai-save ang pagpipiliang attribute
+    delete:
+      fail: May pagkakamali habang pagtanggal ng attribute na pagpipilian
+  module:
+    edit:
+      cancel_title: Ikansela ang modipikasyon
+pim_enrich.entity.association_type:
+  label: uri ng asosasyon
+  flash:
+    update:
+      success: Matagumpay na nai-update ang uri ng asosasyon.
+      fail: Ang uri ng asosasyon ang hindi maaaring ma-update.
+      fields_not_ready: "Ang uri ng asosasyon ay hindi mai-save sa ngayon. Ang sumusunod na mga field ay hindi pa handa: {{ fields }}"
+    create:
+      success: Ang uri ng asosasyon ay matagumpay na nalikha
+    delete:
+      success: Ang uri ng asosasyon ay matagumpay na natanggal
+      fail: Hindi maaaring tanggalin ang uri ng asosasyon na ito
+  module:
+    create:
+      button: Gumawa ng tipo ng asosasyon
+    delete:
+      confirm: Ikaw ba ay sigurado na gusto mong burahin ang uri ng asosasyon na ito?
+pim_enrich.entity.group_type:
+  label: uri ng grupo
+  flash:
+    update:
+      success: Matagumpay na nai-update ang uri ng grupo.
+      fail: Ang uri ng grupo ay hindi pwedeng ma-update.
+      fields_not_ready: "Ang uri ng grupo ay hindi pwedeng mai-save sa ngayon. Ang sumusunod na mga field ay hindi pa handa: {{ fields }}"
+    create:
+      success: Ang uri ng grupo ay matagumpay nailikha
+    delete:
+      success: Ang tipo ng grupo ay matagumpay na inalis
+      fail: Hindi maaaring tanggalin ang uri ng grupo na ito
+  module:
+    create:
+      button: Gumawa ng tipo ng grupo
+    delete:
+      confirm: Sigurado ka bang gusto mong burahin ang uri ng grupong ito?
+pim_enrich.entity.attribute:
+  label: katangian
+  plural_label: Mga katangian
+  flash:
+    update:
+      success: Matagumpay na na-update ang katangian.
+      fail: Ang katangian ay hindi pwedeng ma-update.
+      fields_not_ready: "Ang katangian ay hindi pwedeng mai-save sa ngayon. Ang sumusunod na mga field ay hindi pa handa: {{ fields }}"
+    delete:
+      success: Ang katangian ay matagumpay na natanggal
+      fail: Hindi maaaring tanggalin ang attribute na ito
+  property:
+    allowed_extensions: Pinahihintulotan na ekstensyon
+    auto_option_sorting: Awtomatikong uriin ang mga pagpipilian sa alpabetikong pagkakasunod-sunod
+    available_locales: Lokal na magagamit
+    date_max: Pinakatagal na petsa
+    date_min: Pinakamaagang petsa
+    decimals_allowed: Pinapayagan ang mga halaga na nakadecimal
+    default_metric_unit:
+      label: Default na metrik yunit
+      choose: Pumili ng yunit
+    group:
+      label: Katangian na grupo
+      choose: Pumili sa grupo ng katangian
+    is_locale_specific: Espisikong lokal
+    localizable: Halaga bawat pinagmulan
+    max_characters: Pinakamataas na mga karakter
+    max_file_size: Mataas na file sukat (MB)
+    metric_family:
+      label: Metrik na pamilya
+      choose: Pumili ng pamilya
+    minimum_input_length: Pinakamaliit na taas para awtomatikong pagkumpleto
+    name: Pangalan
+    negative_allowed: Ang mga negatibong halaga ay pinapayagan
+    number_max: Pinakamataas na numero
+    number_min: Pinakamaliit na numero
+    reference_data_name:
+      label: Ang uri ng datos na reperensiya
+      choose: Piliin ang uri ng referens na datos
+    scopable: Halaga bawat channel
+    type:
+      choose: Pumili sa uri ng katangian
+      pim_catalog_identifier: Tagatukoy
+      pim_catalog_text: Teksto
+      pim_catalog_textarea: Lugar ng teksto
+      pim_catalog_number: Numero
+      pim_catalog_price_collection: Presyo
+      pim_catalog_multiselect: Maraming pinili
+      pim_catalog_simpleselect: Simpleng pagpili
+      pim_catalog_file: File
+      pim_catalog_image: Imahe
+      pim_catalog_boolean: "Oo/Hindi"
+      pim_catalog_date: Petsa
+      pim_catalog_metric: Metrik
+      pim_reference_data_simpleselect: Referens na datos at simpleng pagpili
+      pim_reference_data_multiselect: Referens na datos at maramihang pagpili
+    unique: Natatanging halaga
+    useable_as_grid_filter: Magagamit na grid
+    validation_regexp: Pangkaraniwan na ekspresyon
+    validation_rule:
+      label: Ang batas sa balidasyon
+      email: E-mail
+      regexp: Pangkaraniwan na ekspresyon
+      url: URL
+    wysiwyg_enabled: Pinayagan ang rich text editor
+  module:
+    add_attribute:
+      no_available_attributes: Wala nang mga katangian na maidagdag
+      attributes_selected: "{{ itemsCount }} na (mga) attribute ang napili"
+    create:
+      button: Gumawa ng attribute
+    edit:
+      common: Pangkalahalatan na mga parametro
+      type_specific: I-type ang mga espesipikong parametro
+      validation: Mga parametrong pagpapatunay
+    delete:
+      confirm: Ikaw ba ay sigurado na gusto mong burahin itong katangian?
+      confirm_from_group: Ikaw ba ay sigurado na gusto mong tanggalin ang katangian {{ attribute }} mula sa grupo ng katangian na ito?
+      confirm_from_product: Sigurado ka bang gusto mong tanggalin ang attribute na ito mula sa produkto?
+pim_enrich.entity.attribute_group:
+  label: grupo ng katangian
+  uppercase_label: Katangian na grupo
+  plural_label: Mga grupo ng katangian
+  flash:
+    update:
+      success: Matagumpay nai-update ang grupo ng katangian
+      fail: Ang grupo ng katangian ay hindi pwedeng ma-update
+    delete:
+      success: Matagumpay na naalis ang grupo ng katangian
+  module:
+    add_attribute_group:
+      label: Dagdagan bilang mga grupo
+      attributes_groups_selected: '{{ itemsCount }} na (mga) grupo ang napili'
+    delete:
+      confirm: Ikaw ba ay siguradong gusto mong itanggal ang grupo ng katangian na ito?
+pim_enrich.mass_edit.family:
+  title: Malaking aksyon ng mga pamilya
+  step:
+    select:
+      label: Pumili ng mga pamilya
+    choose:
+      title: Malalaking aksyon ng pamilya
+    configure:
+      label: I-configure
+    confirm:
+      label: Kumpirmahin
+    launched:
+      label: Ang malaking aksyon na "{{ operation }}" ay inilunsad. Maaabisuhan ka kapag natapos na ito.
+  operation:
+    set_requirements:
+      label: Magtakda ng mga katangian na kinakailangan
+      description: Ang mga sumusunod na mga kinakailangan na katangian ay ilalapat sa mga napiling pamilya

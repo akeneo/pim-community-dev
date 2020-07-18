@@ -1,0 +1,65 @@
+batch_jobs:
+  csv_currency_export:
+    label: Currency export for inside CSV
+    export.label: To export currency
+  csv_currency_import:
+    label: Currency import wey dey inside CSV
+    import.label: To import currency
+  xlsx_currency_export:
+    label: Currency export wey dey inside XLSX
+    export.label: To export currency
+  xlsx_currency_import:
+    label: Currency import wey dey inside XLSX
+    import.label: To import currency
+  csv_locale_export:
+    label: Locale export for inside CSV
+    export.label: To export locale
+  csv_locale_import:
+    label: Locale import for inside CSV
+    import.label: To import locale
+  xlsx_locale_export:
+    label: Locale export wey dey inside XLSX
+    export.label: To import export
+  xlsx_locale_import:
+    label: Locale import wey dey inside XLSX
+    import.label: To import locale
+  csv_channel_export:
+    label: Channel export for inside CSV
+    export.label: To export channel
+  csv_channel_import:
+    label: Channel import for inside CSV
+    import.label: To import channel
+  xlsx_channel_export:
+    label: Channel import wey dey inside XLSX
+    export.label: Channel export
+  xlsx_channel_import:
+    label: Channel import wey dey inside XLSX
+    import.label: To import channel
+pim_enrich.entity.channel:
+  label: channel
+  uppercase_label: Channels dem
+  flash:
+    update:
+      success: Channel don update finish.
+      fail: De channel no fit update.
+    create:
+      success: Channel don create finish.
+      fail: E no fit create channel.
+    delete:
+      success: E don comot channel finish
+      fail: E no fit delete dis channel
+  property:
+    category_tree: Category tree
+    do_not_convert: No convert am
+    label_conversion_units: Cari conversion unit for each matric attribute wey go need dey wen product wan export
+  module:
+    create:
+      button: Make you create channel
+    delete:
+      confirm: U sure say u wan delete dis channel?
+pim_enrich.entity.locale:
+  label: locale
+  uppercase_label: Locale
+  plural_label: Locales dem
+pim_enrich.entity.currency:
+  plural_label: Currencies

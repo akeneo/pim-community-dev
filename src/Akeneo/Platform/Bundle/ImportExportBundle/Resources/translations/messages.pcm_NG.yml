@@ -1,0 +1,121 @@
+#Entities
+Job: Job
+Connector: Connector
+pim_import_export:
+  job: Job
+  connector: Connector
+  ## Job status
+  status:
+    0: Ready
+  batch_status:
+    1: E don complete
+    2: "E don start\n"
+    3: E bin don start
+    4: E don de stop
+    5: E don stop
+    6: E don fail
+    7: don forget am
+    8: E no know
+  download_archive:
+    archive: download archive wey dey don generate|download archive wey dey don generate
+    output: download file wey dey don generate|download files wey dey don generate
+    input: download file wey dem de use read|download files wey dem de use read
+    invalid_xlsx: download data wey no dey valid
+    invalid_csv: download data wey no dey valid
+  notification:
+    export:
+      error: U go export <strong>%label%</strong> fail
+      warning: Export <strong>%label%</strong> finish am wit some warnings
+      success: U go export <strong>%label%</strong> finish
+    import:
+      error: "Import <strong>%label%</strong> fail\n \n"
+      warning: Import <strong>%label%</strong> finish am wit some warnings
+      success: Import <strong>%label%</strong> finish
+  list: U go select job
+  job_profile:
+    tab:
+      property.title: General properties
+      history.title: History
+      job_content.title: Content
+#Page titles:
+pim_title.export_profile.index: "U go export profiles management\n \n"
+pim_title.export_profile.edit: "U go export profile %job.label% | Edit\n \n"
+pim_title.export_profile.show: U go export profile %job.label% | Show
+pim_title.export_execution.index: U go export executions history
+pim_title.export_execution.show: U go export executions | Details
+pim_title.import_profile.index: U go import profiles management
+pim_title.import_profile.edit: "U go import profile %job.label% | Edit\n \n"
+pim_title.import_profile.show: U go import profile %job.label% | Show
+pim_title.import_execution.index: U go import executions history
+pim_title.import_execution.show: "U go import executions | Details\n \n"
+#Entity and page header titles
+export profile:
+  title: u go export profile
+  edit: edit export profile
+import profile:
+  title: u go import profile
+  edit: edit de profile wey de import 
+#ACLs
+pim_importexport:
+  acl:
+    export_profile:
+      index: View de export profiles list
+      create: Create de export profile
+      show: Show de export profile
+      edit: Edit de export profile
+      remove: U go remove de export profile
+      launch: U go launch de export profile
+      property_edit: U go edit de export profile general properties
+      property_show: U go show de export profile general properties
+      history: U go view de export profile history
+      content_edit: Edit de export profile content
+      content_show: make e show de export profile content
+    import_profile:
+      index: make e show de import profile list
+      create: Make e create de import profile
+      show: make e show de profile e import
+  acl_group:
+    export: Export profiles
+    import: Import profiles
+Upload and import now: Upload and follow import am now
+import now: Import am now
+export now: Export am now
+#Tabs
+General properties: General properties dem
+History: Stori
+pane.accordion:
+  properties: Properties dem
+  global_settings: Global settings
+  filters: Filters dem
+'Hide item': make e hide item
+'Collecting data about job execution...': E dey collect data wey dey about execution...
+Download log: Make you download log
+Show profile: Show profile
+job_execution.summary:
+  read: read
+  write: e don write
+  skip: ones wey don skip
+  create: e don create
+  update_products: products wey dey update
+  skip_products: product wey don skip
+  displayed: first warning wey don show
+  charset_validator:
+    title: 'File wey de code:'
+    skipped: skipped, extension wey dey white list
+Step: Step
+Status: Which one e be
+Warnings: Dey warn
+Summary: De main point
+Start: Start am
+End: End am
+#Process tracker
+set_attribute_requirements: Make you set attributes requirements
+COMPLETED: E don complete
+STARTING: "E don start\n"
+STARTED: E bin don start
+STOPPING: E don de stop
+STOPPED: E don stop
+FAILED: E don fail
+ABANDONED: don forget am
+UNKNOWN: E no know
+warning.label: Dey warn

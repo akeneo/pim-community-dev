@@ -1,0 +1,208 @@
+pim_enrich.entity.family:
+  label: family
+  uppercase_label: Family
+  plural_label: Families
+  flash:
+    update:
+      success: E don update family finish.
+      cant_remove_attribute_as_label: No fit commot attribute wey dey use as label
+      cant_remove_attribute_as_image: No fit commot attribute wey dey use as de main picture
+      cant_remove_attribute_used_as_axis: No fit commot dis attribute wey dem use like variant axis inside family variant
+    create:
+      success: E don create family
+    delete:
+      success: Family don commot finish
+      fail: E no fit delete dis family
+  property:
+    attribute_as_label: Attribute wey stand as label
+    attribute_as_image: Attributes wey dey used like main picture
+    empty_attribute_as_image: E neva select
+  module:
+    attributes:
+      not_required_label: E no mata
+      required_label: De nid am
+    create:
+      button: Make you create family
+    delete:
+      confirm: U sure say u wan delete dis family?
+pim_enrich.entity.family_variant:
+  short_plural_label: Variants
+  short_label: Variant
+  flash:
+    update:
+      success: Family variant don update. De product wey dey wit variants go follow de changes update.
+    create:
+      success: Family variant don create finish
+  module:
+    edit:
+      common_attributes: Simple attributes
+      no_common_attributes: Common attributes no dey
+      variant_axis_label: Variant axis
+      level_1: Level one for variant attributes
+      level_2: Level two for variant attributes
+      description: Carry attributes come drop for de selected variant level to get attributes managed for de variant level.
+      confirm_attribute_removal_title: Confam say you wan delete attributes
+      confirm_attribute_removal_message: As u remove dis attributes u go put dem back inside de common attributes for family variant and de values wey dey variant products go commot
+    create:
+      label: Make you add variant
+      title: Make you create new family variant
+      description: For inside family variant, you fit define structure for products wit variants. Make you choose de number wey dey variant levels, de attribute wey dem use as variant axes for each level dem, and den define how dem de take distribute attributes dem.
+      variant_levels: Variant levels
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: Options dem
+  flash:
+    create:
+      success: Attribute option don create finish
+    update:
+      fail: E no fit save de attribute option
+    delete:
+      fail: Error happen wen you dey try delete de attribute option
+  module:
+    edit:
+      cancel_title: Make u cancel de modification
+pim_enrich.entity.association_type:
+  label: association type
+  flash:
+    update:
+      success: Association type don delete finish.
+      fail: De association type no fit update.
+      fields_not_ready: "The association type no fit save right now. The following fields neva dey ready: {{ fields }}"
+    create:
+      success: E don create association type
+    delete:
+      success: E don commot association type finish
+      fail: E no fit comot dis association type
+  module:
+    create:
+      button: Make you create association types
+    delete:
+      confirm: U dey sure say u wan delete dis association type?
+pim_enrich.entity.group_type:
+  label: group type
+  flash:
+    update:
+      success: Group type don update finish.
+      fail: Group type no fit update.
+      fields_not_ready: "De group type no fit save rite now, de fields wey dey so neva dey ready: {{ fields }}"
+    create:
+      success: E don create group type
+    delete:
+      success: Group type don comot finish
+      fail: E no fit delete dis group type
+  module:
+    create:
+      button: Make you create group type
+    delete:
+      confirm: U sure say u wan delete dis group type?
+pim_enrich.entity.attribute:
+  label: attribute am
+  plural_label: Attributes dem
+  flash:
+    update:
+      success: Atrribute don update finish.
+      fail: De attribute no bin fit update.
+      fields_not_ready: "De attribute no fit dey saved right now. De fields wey dem mention so neva det ready: {{ fields }}"
+    delete:
+      success: E don remove attribute finish
+      fail: E no fit comot dis attribute
+  property:
+    allowed_extensions: Extensions dem wey dem don free
+    auto_option_sorting: Find option automatically by him alphabetical order
+    available_locales: Locales dem wey dey available
+    date_max: Max date
+    date_min: Min date
+    decimals_allowed: Decimal values wey dey allowed
+    default_metric_unit:
+      label: Default metric unit
+      choose: Make u pick unit
+    group:
+      label: Group for attribute
+      choose: Make u select attribute group
+    is_locale_specific: Locale specific
+    localizable: Value wey dey each locale
+    max_characters: Max characters
+    max_file_size: Max file size (MB)
+    metric_family:
+      label: Metric family
+      choose: Make u select family
+    minimum_input_length: Minimum length wey dey for autocompletion
+    name: Name
+    negative_allowed: Negative values wey dey allowed
+    number_max: Max number
+    number_min: Min number
+    reference_data_name:
+      label: Reference data type
+      choose: Make you choose de reference date type
+    scopable: Value wey dey for each channel
+    type:
+      choose: Make u select ur type for attribute
+      pim_catalog_identifier: Identifier
+      pim_catalog_text: Text
+      pim_catalog_textarea: Text Area
+      pim_catalog_number: Number
+      pim_catalog_price_collection: Price
+      pim_catalog_multiselect: Select plenti
+      pim_catalog_simpleselect: Simple select
+      pim_catalog_file: File
+      pim_catalog_image: Image
+      pim_catalog_boolean: "Gree/no gree"
+      pim_catalog_date: Date
+      pim_catalog_metric: Metric
+      pim_reference_data_simpleselect: Simple select for reference data
+      pim_reference_data_multiselect: Multi select for reference
+    unique: Na unique value
+    useable_as_grid_filter: Grid fit use am
+    validation_regexp: Expression wey normal
+    validation_rule:
+      label: Rule to carri validate
+      email: E-mail
+      regexp: Expression wey normal
+      url: URL
+    wysiwyg_enabled: Rich text editor dey enabled
+  module:
+    add_attribute:
+      no_available_attributes: Attributes no dey again to carri add
+      attributes_selected: "{{ itemsCount }} attribute(s) selected"
+    create:
+      button: Make you create attribute
+    edit:
+      common: General parameters dem
+      type_specific: Make you type specific parameters
+      validation: Validation parameters dem
+    delete:
+      confirm: U sure say u wan delete dis attribute?
+      confirm_from_group: You sure say you wan commot de attribute {{ attribute }} from dis attribute group?
+      confirm_from_product: U sure say U wan delete dis attribute group?
+pim_enrich.entity.attribute_group:
+  label: make attribute group
+  uppercase_label: Group for attribute
+  plural_label: Attribute groups
+  flash:
+    update:
+      success: Attribute group don update finish
+      fail: Attribute group no fit update
+    delete:
+      success: Attribute group don commot finish
+  module:
+    add_attribute_group:
+      label: Add by groups
+      attributes_groups_selected: '{{ itemsCount }} group(s) selected'
+    delete:
+      confirm: You sure say you wan delele dis attribute group?
+pim_enrich.mass_edit.family:
+  title: Families bulk action
+  step:
+    select:
+      label: Make u choose families dem
+    choose:
+      title: Plenti family actions dem
+    configure:
+      label: Arrange am
+    confirm:
+      label: Confam
+    launched:
+      label: The bulk action "{{ operation }}" don dey launched. You go get notification wen e dey ready.
+  operation:
+    set_requirements:
+      label: Make you set attributes requirements
+      description: De attributes requirements wey dem mention so, go dey applied to de selected families

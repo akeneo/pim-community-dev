@@ -1,0 +1,66 @@
+pim_title:
+  pim_user_index: Користувачі
+  pim_user_role_index: Ролі
+  pim_user_group_index: Групи користувачів
+  oro_config_configuration_system: Конфігурація
+  pim_user_security_login: Увійти
+  pim_user_reset_request: Відновити пароль
+confirmation:
+  remove:
+    user: Ви впевнені, що ви хочете видалити цього користувача?
+    group: Ви впевнені, що ви хочете видалити цю групу?
+pim_enrich:
+  entity:
+    user:
+      module:
+        delete:
+          confirm: Ви впевнені, що ви хочете видалити цього користувача?
+pim_user_management:
+  entity:
+    user:
+      properties:
+        username: Ім'я користувача
+        name_prefix: Префікс імені
+        first_name: Ім'я
+        middle_name: По батькові
+        last_name: Прізвище
+        name_suffix: Суфікс імені
+        avatar: Аватар
+        email: Email
+        catalog_locale: Локаль каталогу
+        catalog_scope: Сфера каталогу
+        default_tree: Усталене дерево каталогу 
+        default_asset_tree: Дерево ресурсів за замовчуванням
+        product_grid_filters: Фільтри товарів
+        current_password: Поточний пароль
+        new_password: Новий пароль
+        new_password_repeat: Новий пароль (повторно)
+        password: Пароль
+        ui_locale: Локаль інтерфейсу користувача
+        timezone: Часовий пояс
+        default_product_grid_view: Усталене представлення сітки продуктів
+        default_published_product_grid_view: Опубліковане табличне представлення за замовчуванням #EE Only
+        proposals_to_review_notification: Коли нова пропозиції для розгляду #EE Only
+        proposals_state_notifications: Коли пропозицію прийнято або відхилено #EE Only
+      module:
+        create:
+          button: Створити користувача
+        delete:
+          confirm: Ви впевнені, що ви хочете видалити цього користувача?
+        update:
+          additional: Додаткові
+          password: Пароль
+          interfaces: Інтерфейси
+          notifications: Сповіщення #TODO EE Only
+    role:
+      plural_label: Ролі
+      module:
+        create:
+          button: Створити роль
+        delete:
+          confirm: Ви впевнені, що ви хочете видалити цю роль?
+    group:
+      plural_label: Групи користувачів
+      module:
+        create:
+          button: Створити групу

@@ -1,0 +1,39 @@
+pim_enrich:
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: Parameters dem
+      value.title: Values dem
+      history.title: Stori
+  #Family
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: Cannot remove this attribute used as a variant axis in a family variant
+  #Group type
+  group_type:
+    tab:
+      property.title: Properties dem
+  #Mass edit operations
+  mass_edit_action:
+    family:
+      page_title: Families dem
+      page_subtitle: Plenti Edit (1 product)|plenti Edit (%count% families dem)
+      title: Select operation
+      subtitle: Chose d operation u wan to perform on d selected family|Chose d operation u wan to perform on d selected %count% familys
+      confirm: You dey about to update a family wit de following information, please confirm.|You dey about to update %count% families wit td following information, please confirm.
+      steps:
+        first: Chose familys
+        second: Chose operation
+        third: Make u set am
+        fourth: Confirm
+pim_enrich_attribute_form:
+  code: Code
+  type: Type for attribute
+  reference_data_name: Name for reference data
+  scopable: Value wey dey for each channel
+  localizable: Value wey dey each locale
+  unique: Na unique value
+  availableLocales: Locales dem wey dey available
+  locale_specific: Locale specific
+  group: Group for attribute
+  useableAsGridFilter: Grid fit use am

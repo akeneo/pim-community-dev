@@ -1,0 +1,9 @@
+pim_catalog_volume:
+  axis:
+    count_products: Ang mga produkto
+    count_channels: Mga tsanel
+    count_families: Ang mga pamilya
+    count_attributes: Mga katangian
+    count_categories: Ang mga kategorya
+    count_category_trees: Mga puno ng kategorya
+    count_product_models: Mga modelo ng produkto

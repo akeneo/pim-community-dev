@@ -1,0 +1,143 @@
+pim_user:
+  user:
+    title: Usuario
+    fields:
+      name_prefix: Prefijo del nombre
+      email: Correo electrónico
+      username: Nombre de usuario
+      first_name: Nombre
+      middle_name: Segundo nombre
+      last_name: Apellido
+      name_suffix: Sufijo del nombre
+      phone: Teléfono
+      date_of_birth: Fecha de nacimiento
+      avatar: Avatar
+      timezone: Zona horaria
+      roles: Roles
+      groups: Grupos
+      password: Contraseña
+      password_again: Vuelva a ingresar contraseña
+      product_grid_filters: Filtros de grilla de los productos
+      catalog_locale: Local de catálogo
+      catalog_scope: Ambito del Catálogo
+      default_tree: Arbol por defecto
+      current_password: Contraseña actual
+      new_password: Nueva contraseña
+      new_password_again: Nueva contraseña (nuevamente)
+      default_grid_view:
+        none: Ninguno
+      default_product_grid_view:
+        label: Vista de grilla de producto por defecto
+      ui_locale: Configuración regional de la interfaz
+      last_logged_in: Ultimo inicio de sesión
+      login_count: Contador de inicios de sesión
+      user_salt: Sal de usuario
+      created: Creado
+      updated: Actualizado
+      status: Estado
+      capabilities: Capacidades
+      has_role: Tiene rol
+      has_group: Tiene grupo
+      active: Activo
+      inactive: Inactivo
+    fields_errors:
+      new_password:
+        minimum_length: La contraseña de tener al menos 2 caracteres
+      new_password_repeat:
+        not_match: La contraseña no coincide
+      current_password:
+        wrong: Contraseña incorrecta
+    tabs:
+      general:
+        title: General
+        basic_information: Información básica
+        contact_information: Información de contacto
+      additional:
+        title: Adicional
+      additional_data:
+        title: Datos adicionales
+      interfaces:
+        title: Interfaces
+      group_and_role.title: Grupos y Roles
+      password.title: Contraseña
+      business_unit.title: Unidades de negocios
+      email_synchronization.title: Configuración de sincronizacion de correo electrónico
+    removed_user: Usuario eliminado
+    login:
+      username_or_email: Nombre de usuario o Email
+      remember_me: Recordarme en este ordenador
+      password_forgotten: '¿Olvidó su contraseña?'
+      log_in: Iniciar sesion
+      forgot_password: Contraseña olvidada
+      request: Solicitar
+      password_reset: Reiniciar contraseña
+      reset: Reiniciar
+      password_reset_email_sent: Un correo electrónico se ha enviado al usuario. Contiene un enlace para restablecer la contraseña.
+      homepage: Ir a la pagina de inicio
+  group:
+    tab:
+      general.title: General
+      users.title: Usuarios
+  roles:
+    title: Rol
+    tab:
+      general: General
+      action: Permisos
+      users: Usuarios
+  controller:
+    group:
+      message:
+        saved: "Grupo salvado"
+    role:
+      message:
+        saved: "Rol salvado"
+    user:
+      message:
+        saved: "Usuario salvado"
+pim_datagrid:
+  columns:
+    user:
+      createdAt: "Creado el"
+      updatedAt: "Actualizado el"
+    roles:
+      label: "Etiqueta"
+    groups:
+      name: "Nombre"
+confirmation:
+  remove:
+    role: '¿Está seguro que quiere eliminar este rol?'
+    user: '¿Seguro que quiere eliminar este usuario?'
+flash:
+  role:
+    removed: Rol eliminado éxitosamente
+  user:
+    removed: Usuario eliminado éxitosamente
+oro_security:
+  acl_group:
+    user: Usuarios
+    role: Roles
+    group: Grupos de Usuario
+  acl:
+    user:
+      view: Lista de usuarios
+      create: Crear un usuario
+      edit: Editar usuarios
+      delete: Quitar un usuario
+    role:
+      view: Lista de roles
+      create: Crear un rol
+      edit: Editar roles
+      delete: Quitar un rol
+    group:
+      view: Lista de grupos de usuarios
+      create: Crear un grupo de usuarios
+      edit: Editar grupo de usuarios
+      delete: Eliminar un grupo de usuarios
+#Security
+(default): Permiso por defecto en entidades
+VIEW: Vista
+CREATE: Crear
+EDIT: Editar
+DELETE: Borrar
+ASSIGN: Asignar
+SHARE: Compartir
