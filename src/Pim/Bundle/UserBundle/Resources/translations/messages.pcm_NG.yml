@@ -1,0 +1,164 @@
+pim_user:
+  user:
+    tab:
+      general.title: General
+      additional.title: Jara
+      group_and_role.title: Groups and roles
+      password.title: Password
+      business_unit.title: Business units dem
+      email_synchronization.title: Settings for email synchronization
+      interfaces.title: Interface
+  group:
+    tab:
+      general.title: General
+      users.title: Users dem
+#user grids
+oro.user.controller:
+  group.message.saved: "Group don save"
+  role.message.saved: "Role don save"
+  user.message.saved: "User don save"
+  status.message.saved: "Status don save"
+oro.user.grid.users:
+  columns:
+    username: "Name wey u for like use"
+    email: "Email"
+    firstName: "First name"
+    lastName: "Last name"
+    createdAt: "Na who create am be"
+    updatedAt: "E update for"
+    enabled: "Status"
+oro.user.grid.roles:
+  columns:
+    label: "Label"
+oro.user.grid.groups:
+  columns:
+    name: "Name"
+#Page titles
+pim_title:
+  user.index: Users dem
+  user_role.index: Roles dem
+  user_group.index: Groups dem
+  system_configuration.index: Configuration
+#User
+user.title: User
+user.overview: User
+Users Management: Users dem dia management
+Create user: Make u create user
+btn.create.user: Make u create user
+New user: New user
+Additional: Jara
+Groups and Roles: Groups dem and roles dem
+Username: Name wey u for like use
+Password: Password
+Re-enter password: Enter ur password again
+Name prefix: Name prefix
+First name: First name
+Middle name: Ur middle name
+Last name: Last name
+Name suffix: Name suffix
+Date of birth: Date wey u born
+Avatar: Avatar
+Additional emails: More emails
+Add another email: Add another email
+Catalog locale: Catalog locale
+Catalog scope: Catalog scope
+Default tree: Default tree
+Business Units: Business units dem
+Email synchronization settings: Settings wey dey for email synchronization
+Host: Host
+Port: Port
+Ssl: SSl
+Last logged in: Last tym wey u enta
+Login count: Count for login
+Additional Information: More information
+Interfaces: Interface
+Basic Information: Basic Info
+Contact Information: Contact info
+User name: Name of de user
+Birthday: Birthday
+API key: API Key
+Ui locale: UI locale
+UI locale: UI locale
+User salt: User salt
+Current password: Password wey u dey use now
+New password: New password
+Repeat new password: New Password (repeat)
+Generate key: Generate key
+Primary: primary
+Removed user: User wey dey comot
+user:
+  product_grid_filters: Project grid filters dem
+  default_product_grid_view:
+    label: Cari come grid view
+  default_grid_view:
+    none: No one
+  timezone: Timezone
+#Role
+Role: Role
+Owner: Wu get am
+General: General
+Entity: Entity
+Capabilities: Wetin e fit do
+Save and close: Save and close
+Has role: E get role
+role:
+  title: role
+  overview: role
+  edit: Change things insyd role
+  create: Do new role
+btn.create.role: Do new role
+rights:
+  action: Permissions dem
+oro_security:
+  acl_group:
+    user: Users dem
+    role: Roles dem
+    group: Groups dem for owner
+  acl:
+    user:
+      view: Write out users dem
+      create: Make u create user
+      edit: Change things for users dem
+      delete: Comot user
+    role:
+      view: Write out list roles
+      create: Do new role
+      edit: Write out list roles
+      delete: Comot one role
+    group:
+      view: Write out user groups dem
+      create: Make new group for user
+      edit: Write out user groups dem
+      delete: Comot on user group
+#Security
+(default): Any kind permission ontop entities dem
+VIEW: View
+CREATE: Create
+EDIT: Edit
+DELETE: Comot
+ASSIGN: Assign
+SHARE: Distribute
+oro:
+  security:
+    access-level:
+      BASIC: User
+      LOCAL: Business unit
+      DEEP: Division
+      GLOBAL: Organization
+      SYSTEM: System
+      NONE: No one
+#User Group
+Create group: Do new group
+btn.create.user-group: Do new group
+Has group: E get group
+Save and Close: Save am after u close am
+user-group.overview: Groups dem
+#Login page
+Log in: Enter
+Remember me on this computer: No forget me for this computer
+Forgot your password?: U no remember ur password?
+Username or Email: Username or email
+Forgot Password: U bin forget password
+Request: Request
+Check Email: Go look ur mail
+Go to homepage: Make u enta home

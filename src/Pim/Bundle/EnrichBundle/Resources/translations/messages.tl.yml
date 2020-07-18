@@ -1,0 +1,888 @@
+pim_enrich:
+  #Product
+  product:
+    tab:
+      attribute.title: Mga katangian
+      category.title: Mga kategorya
+      association.title: Mga asosasyon
+      completeness.title: Pagkakumpleto
+      history.title: Kasaysayan
+    #Product comparison
+    no_comparison_locale_available: Walang ibang lokal na bukas para sa paghahambing
+    no_compared_media: Walang media na bukas para sa paghahambing
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: Parametro
+      value.title: Halaga
+      history.title: Kasaysayan
+  #Attribute group
+  attribute_group:
+    tab:
+      property.title: Mga pag-aari
+      attribute.title: Mga ari-arian
+      history.title: Kasaysayan
+  #Family
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: Hindi maaaring alisin ang katangiang ito na ginagamit bilang isang baryanteng aksis sa isang pamilyang baryante
+    tab:
+      property.title: Mga pag-aari
+      attribute.title: Mga katangian
+      history.title: Kasaysayan
+  #Association type
+  association_type:
+    tab:
+      property.title: Mga ari-arian
+      history.title: Kasaysayan
+  #Group type
+  group_type:
+    tab:
+      property.title: Mga ari-arian
+  #Category
+  category:
+    tab:
+      property.title: Mga ari-arian
+      history.title: Kasaysayan
+  #Locale
+  locale:
+    tab:
+      property.title: Mga ari-arian
+      permission.title: Mga pahintulot
+  #Product group
+  group:
+    axis.help: 'Tinutukoy ng Axis ang mga katangian na dapat mag-iiba ang mga produkto ng pangkat. Ang Axis ay mga katangian na may mga pagpipilian, hindi lokal at hindi scoped. Hindi sila mababago pagkatapos ng paglikha ng iba''t iba pang grupo.'
+    type:
+      VARIANT: Baryant
+      X_SELL: X-Sell
+      ADDITIONAL: Karagdagan
+      RELATED: Kaugnayan
+    tab:
+      product.title: Mga produkto
+      property.title: Mga ari-arian
+      history.title: Kasaysayan
+  #Product completeness
+  completeness:
+    progress_bar.title: '%ratio%%kumpleto (1 kailangang halaga) |%ratio%% kumpleto (%count% kailangang mga halaga)'
+    subtitle: '{0}Kumpleto|{1} 1 nawawalang halaga |]1,Inf]%count% nawawalang mga halaga'
+    missing_attributes: Nawawalang halaga | Nawawalang mga halaga
+    legend:
+      locale_not_associated: Lokal na hindi nauugnay sa channel na ito
+  #Mass edit operations
+  mass_edit_action:
+    limit_exceeded: Pakiusap piliin ang mas mababa pa sa %limit% na nga aytems para i -edit
+    product:
+      page_title: Mga Produkto
+      page_subtitle: Malawakang pag edit (1 na produkto) | Malawakang pag edit (%count% mga produkto)
+      title: Pumili ng operasyon
+      subtitle: Pumili ng operasyon na hiling mong gawin sa mga napiling produkto | Pumili ng operasyon na hiling mong gawin sa mga napiling %count% na mga produkto
+      confirm: Ikaw ay mag update sa produkto na may ganitong mga impormasyon, pakiusap paki kompirma.|Ikaw ay mag update %count% sa mga produkto na may ganitong impormasyon, pakiusap paki kompirma.
+      steps:
+        first: Magpili ng mga produkto
+        second: Pumili ng operasyon
+        third: Konfigyur
+        fourth: Ikumpirma
+    family:
+      page_title: Ang mga pamilya
+      page_subtitle: Malawakang pag edit (1 na pamilya) | Malawakang pag edit (%count% mga pamilya)
+      title: Pumili ng operasyon
+      subtitle: Pumili ng operasyong nais mong gawin sa napiling pamilya|Pumili ng operasyong hinihiling mong gawin sa mga napiling %count% na mga pamilya
+      confirm: Ikaw ay malapit ng mag-update ng pamilya na may sumusunod na impormasyon, pakiusap kumpirmahin.|Ikaw ay malapit ng mag-update ng %count% na mga pamilya na may sumusunod na impormasyon, pakiusap pakumpirmahin.
+      steps:
+        first: Pumili ng mga pamilya
+        second: Pumili ng operaston
+        third: Ikompigura
+        fourth: Kumpirmahin
+    change-status:
+      label: Mag-iba ng estado
+      description: Ang napiling mga produkto ay paganahin o hindi paganahin.
+      success_flash: (Mga) Produkto na estado ay nabago
+      launched_flash: Ang bulk aksyon "pagbabago ng estado" ay nailunsad na. Maabisuhan ka kapag ito ay tapos na.
+    edit-common-attributes:
+      label: Baguhin ang mga attributes
+      description: Ang napiling mga attributes ng mga produkto ay mai-edit sa mga sumusunod na data para sa piniling locale.
+      empty: Pakiusap pumili sa mga katangian na gusto mong i edit
+      success_flash: Ang trabahong pag-update ng produkto (mga produkto) estado ay kasalukuyang tumatakbo
+      launched_flash: Ang malawakang aksyon na "pagbago sa mga katangian" ay nailunsad na. Ikaw ay mababalitaan kung ito'y tapos na.
+      message:
+        warning: Walang attribute na pangkaraniwan sa mga ihinirang na mga produkto. Pakiusap baguhin ang iyong pagpili.
+        invalid_attribute: Ang attribute na may kowd "attribute kowd" ay karaniwang nasa pinipiling mga produkto, nailaktawan na attribute.
+        no_valid_attribute: Wala sa mga piniling attribute ang pwedeng e-apply sa produktong ito.
+    classify-add:
+      label: Idagdag sa mga kategorya
+      description: Ang mga produkto ay nakahanay sa mga sumusonod na mga kategorya, ang umiiral na pagkakalagay ay pinanatilihin.
+      success_flash: Ang (mga) produkto ay naitakda sa napiling mga kategorya
+      launched_flash: Ang bulk aksyon "idagdag ito sa mga kategorya" ay nailunsad na. Ikaw ay maabisuhan kung ito ay tapos na.
+    classify-move:
+      label: Ilipat sa pagitan ng mga kategorya
+      description: Ang mga produkto ay naka-puwesto ayon sa mga kategorya nito, ang umiiral na pagpapalit ay nawawala.
+      success_flash: Ang produkto (mga produkto) ay nailipat na sa mga piniling mga kategorta nito.
+      launched_flash: Ang akyon bulk "ilipat sa mga kategorya" ay nailunsad na ikaw ay maabisuhan kung ito ay tapos na.
+    classify-remove:
+      label: Alisin mula sa mga kategorya
+      description: Ang mga nailipat na mga produkto ay mula sa mga sumusunod na mga kategorya.
+      success_flash: Ang produkto (mga produkto) ay nailipat na mula sa mga piniling mga kategorya
+      launched_flash: Ang aksyon bulk "tinanggal mula sa mga kategorya" ay inilunsad na. Ikaw ay maabisuhan kung ito ay tapos na.
+    change-family:
+      label: Palitan ang pamilya
+      description: Ang pamilya sa napiling mga produkto ay mababago sa napiling pamilya
+      success_flash: Ang pamilya sa napiling (mga) produkto ay matagumpay na nabago
+      launched_flash: Ang aksyon ng bulk "baguhin ang pamilya" ay inilunsad na. Ikaw ay maabisuhan kung ito ay tapos na.
+    add-to-groups:
+      label: Idagdag sa mga grupo
+      description: Piliin ang mga grupo kung saan idinagdag ang mga napiling mga produkto
+      success_flash: Ang mga produkto ay matagumpay na naidagdag sa mga napiling grupo
+      launched_flash: Ang aksyon bulk "idagdag sa mga grupo" ay inilunsad na. Ikaw ay maabisuhan kung ito ay tapos na.
+      no_group: Walang grupo sa ngayon. Pakiusap magsimulang maglikha ng grupo.
+    set-attribute-requirements:
+      label: Itakda ang mga kinakailangan sa mga katangian
+      description: Ang sumusunod na mga kinakailangan na katangian ay mailalapat sa mga napiling pamilya
+      success_flash: Ang mga kinakailangan ng katangian ay nailapat sa napiling mga pamilya
+      launched_flash: Ang bultong gawain "I-set ang mga kinakailangan katangian" ay nailunsad na. Ikaw ay ma notifay kung ito ay natapos na.
+    mass_action:
+      quick_export:
+        launched_flash: Ang job exporting products ay kasulukuyang pinatakbo
+  #Sequential edit operations
+  sequential_edit_action:
+    product:
+      previous: Bumalik sa %product% na walang pag save.
+      next: Lumaktaw sa "%product%" na walang pag save.
+  #ACLs
+  acl:
+    locale:
+      index: Listahan ng mga lokal
+    currency:
+      index: Listahan ng mga pera
+      toggle: I-toggle ang mga pera
+    product:
+      index: Listahan ng mga produkto
+      create: Gumawa ng produkto
+      edit_attributes: I-edit ang mga katangian ng produkto
+      remove: Itanggal ang produkto
+      add_attribute: Mag dagdag ng katangian sa produkto
+      remove_attribute: Itanggal ang katangian mula sa produkto
+      categories_view: Ikunsulta ang mga kategorya sa produkto
+      associations_view: Tingnan ang mga asosasyon ng isang produkto
+      associations_edit: Magdagdag ng mga asosasyon sa isang produkto
+      change_family: Baguhin ang produkto ng pamilya
+      add_to_groups: Idagdag ang produkto sa grupo
+      mass_edit: Malawakang gawain sa pag-edit ng produkto
+      comment: Komento sa mga produkto
+      download: I download ang produkto bilang PDF
+      history: Tingnan ang kasaysayan ng produkto
+    product_model:
+      create: Lumikha ng isang modelo ng produkto
+      edit_attributes: Baguhin ang mga katangian ng isang modelo ng produkto
+      categories_view: Konsultahin ang mga kategorya ng isang modelo ng produkto
+      history: Tingnan ang kasaysayan ng modelo ng produkto
+      remove: Tanggalin ang isang modelo ng produkto
+    category:
+      list: Listahan ng mga kategorya
+      create: Gumawa ng kategorya
+      edit: I-edit ang kategorya
+      remove: Tanggalin ang kategorya
+      move: Ilipat ang kategorya
+      children: Tingnan ang kategorya ng mga bata
+      products: Tingnan ang produkto ng kategorya
+      history: Tingnan ang kasaysayan ng kategorya
+    channel:
+      index: Listahan ng mga tsanel
+      create: Bumuo ng tsanel
+      edit: I-edit ang tsanel
+      remove: Tanggalin ang tsanel
+      history: Tingnan ang kasaysayan ng tsanel
+    family:
+      index: Listahan ng mga pamilya
+      create: Bumuo ng pamilya
+      edit_properties: I-edit ang mga ari arian ng pamilya
+      edit_attributes: I-edit ang mga attributes ng pamilya
+      remove: Alisin ang isang pamilya
+      history: Tingnan ang kasaysayan ng pamilya
+    family_variant:
+      remove: Mag-alis ng isang baryanteng pamilya
+    attribute_group:
+      index: Listahan ng attribute ng mga grupo
+      create: Maglikha ng isang attribute na grupo
+      edit: I-edit ang attribute na grupo
+      remove: Alisin ang attribute na grupo
+      sort: I-uri ang attribute na mga grupo
+      add_attribute: Idagdag ang attribute sa isang grupo
+      remove_attribute: Alisin ang attribute mula sa isang grupo
+      history: Tingnan ang attribute na kasaysayan ng grupo
+    attribute:
+      index: Listahan ng mga attributes
+      create: Lumikha ng attribute
+      edit: I-edit ang attribute
+      remove: Alisin ang attribute
+      sort: Ang mga attributes ay i-uri sa loob ng mga grupo ng attribute
+      history: Tingnan ang kasaysayan ng attribute
+    group:
+      index: Listahan ng mga grupo
+      create: Maglikha ng grupo
+      edit: Mag edit ng isang grupo
+      remove: Tanggalin sa grupo
+      history: Tingnan ang kasaysayan ng grupo
+    group_type:
+      index: Listahan ng mga uri ng grupo
+      create: Gumawa ng uri ng grupo
+      edit: I-edit ang uri ng grupo
+      remove: Tanggalin ang uri ng grupo
+    association_type:
+      index: Listahan ng mga uri ng asosasyon
+      create: Gumawa ng asosasyon na uri
+      edit: I-edit ang asosasyon na uri
+      remove: Tanggalin ang asosasyon na uri
+      history: Tingnan ang kasaysayan ng uri ng asosasyon
+    association:
+      remove: Alisin ang mga asosasyon sa isang produkto
+    job_tracker:
+      index: Tingnan ang proseso ng traker
+    api_connection:
+      manage: Pamahalaan ang mga koneksyon sa API
+  acl_group:
+    association_type: Mga uri ng asosasyon
+    attribute: Ang mga katangian
+    attribute_group: Mga grupo ng katangian
+    category: Mga kategorya
+    channel: Mga tsanel
+    currency: Mga pera
+    family: Mga pamilya
+    group: Mga pangkat
+    group_type: Ang mga uri ng grupo
+    locale: Mga pinagmulan
+    product: Mga produkto
+    product_model: Mga modelo ng produkto
+  reference_data:
+    empty_value:
+      reference_data_type:
+        label: Piliin ang uri ng referens na datos
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: Ang pinagmulan ay naitanggal na mula sa channel. Kasalukuyan naming nililinis ang mga pagkakakumpletong nakaugnay sa kanila.
+        done: Ang pag-aalis ng isang pinagmulan mula sa isang channel ay natapos na.
+#Entity and page header titles
+attribute:
+  title: katangian
+  edit: i-edit ang katangian
+  create: gumawa ng katangian
+attribute group:
+  title: grupo ng katangian
+  overview: malawakang pagtanaw sa grupo ng katangian
+  create: gumawa ng grupo ng katangian
+  edit: i-edit ang grupo ng katangian
+  suggest creation: Pakiusap piliin ang grupo ng katangian sa kaliwa
+  or: o
+  create new: Gunawa ng bagong grupo ng katangian
+category:
+  title: kategorya
+  overview: Mga kategorya
+  create: gumawa ng kategory
+  edit: i-edit ang kategorya
+  suggest selection: Pakiusap piliin ang kategorya sa kaliwa
+  or: o di kaya
+tree:
+  title: puno
+  edit: i-edit ang puno
+channel:
+  title: tsanel
+  overview: malawakang pagtanaw ng tsanel
+  create: gumawa ng tsanel
+  edit: i-edit ang tsanel
+currency:
+  title: pera
+  create: gumawa ng pera
+  edit: i-edit ang pera
+family:
+  title: pamilya
+  edit: i-edit ang pamilya
+locale:
+  title: lokal
+  create: gumawa ng lokal
+  edit: i-edit ang lokal
+product:
+  title: produkto
+  overview: malawakang pagtanaw ng produkto
+  create: gumawa ng produkto
+  edit: i-edit ang produkto
+group:
+  title: grupo
+  edit: i-edit ang grupo
+group type:
+  title: uri ng grupo
+  edit: i-edit ang uri ng grupo
+association type:
+  title: uri ng asosasyon
+  create: gumawa ng uri ng asosasyon
+  edit: i-edit ang uri ng asosasyon
+#Custom titles
+products: mga produkto
+#Buttons
+btn:
+  create:
+    attribute: gumawa ng katangian
+    attribute group: gumawa ng katanigan ng grupo
+    category: gumawa ng kategorya
+    channel: gumawa ng tsannel
+    currency: gumawa ng pera
+    family: gumawa ng pamilya
+    locale: gumawa ng lokal
+    product: gumawa ng produkto
+    group: gumawa ng produkto
+    association type: gumawa ng asosasyung tipo
+    group type: gumawa ng tipong grupo
+    drag_or_upload: I-drag at ihulog para ma-upload o i-klik dito
+  edit: i-edit
+  save: i-save
+  save and create: i-save at gumawa ng bago
+  save and next: i-save at sunod
+  save and finish: i-save at tapos
+  remove: itanggal
+  delete: ibura
+  cancel: kansel
+  next: sunod
+  back: bumalik
+  confirm: kompirmado
+  to grid: bumalik sa grid
+  to parent: bumalik sa magulang
+  download_pdf: PDF
+  download: i-download
+#Confirmation messages
+confirmation:
+  confirm: Kompirmasyon
+  delete: Kumpirmahin ang pag tanggal
+  leave: Sigurado kabang umalis sa pahina na ito?
+  discard changes: Mawawalan ka ng mga pagbabago sa %entity% kung sakaling ikaw ay aalis sa pahina na ito.
+  remove:
+    item: Ikaw ba ay sigurado na gusto mong burahin ang aytem na ito?
+    attribute: Sigurado kabang burahin ang katangiang %name%?
+    attribute group: Sigurado kabang burahin ang grupo ng katangian %name%?
+    category: Sigurado kabang idelete mo ang kategoryang %name%?
+    family: Sigurado kabang burahin ang pamilya %name%?
+    family_variant: Sigurado ka bang gusto mong burahin ang baryanteng pamilyang %name%?
+    product: Sigurado kabang burahin ang produktong %name%?
+    group: Sigurado kabang burahin ang grupong %name%?
+    group type: Sigurado kabang burahin ang uri ng grupong %name%?
+    user: Sigurado kabang burahin ang tagagamit %name%?
+  attribute group:
+    remove attribute: Sigurado kabang burahin ang katangiang %name% mula dito sa grupo ng katangian?
+  family:
+    remove attribute: Sigurado kabang burahin ang katangian %name% mula sa pamilyang ito?
+  product:
+    remove attribute: Sigurado kabang burahin ang katangian %name% mula sa produktong ito?
+#Flash messages
+flash:
+  entity:
+    removed: Ang aytem ay nabura
+  attribute:
+    created: Matagumpay na paggawa ng kantangian
+    updated: Ang katangian ay matagumpay nai-update
+    removed: Ang katangian ay matagumpay na natanggal
+    identifier_not_removable: Ang taga tukoy ng katangian ay hindi maaring alisin
+  attribute group:
+    created: Ang grupo ng katangian ay matagumpay na nalikha
+    updated: Matagumpay nai-update ang grupo ng katangian
+    removed: Matagumpay na naalis ang grupo ng katangian
+    attributes added: Matagumpay na naidagdag ang mga katangian sa grupo ng katangian
+    attribute removed: Matagumpay nai-tanggal ang katangian mula sa grupo ng katangian
+    not removed attributes: Nag grupo ng katangian ay hindi matanggal kasi may mga katangian ito na nakapaloob
+    not removed default: Ang default na grupo ng katangian ay hindi na maialis
+    not removed default attributes: Ang katangian ay hindi na matanggal mula sa default na grupo ng katangian
+  category:
+    created: Ang kategorya ay matagumpay na naisagawa
+    updated: Ang kategorya ay matagumpay na nai-update
+    removed: Matagumpay nai-alis ang kategorya
+  tree:
+    created: Matangumpay na nilikha ang puno
+    updated: Ang puno ay matagumpay na nai-update
+    removed: Matagumpay nai-alis ang puno
+    not removable: Ang puno na may kaugnayan sa mga tsanel ay hindi maaring alisin.
+  currency:
+    updated: Ang pera ay matagumpay na nai-update
+    error.linked_to_channel: Hindi maaring i-disable ang pera na nakaugnay sa tsanel.
+  family:
+    updated: Ang pamilya ay matagumpay na nai-update
+    removed: Ang pamilya ay matagumpay na natanggal
+    identifier not removable: Ang tagatukoy ng katangian ay hindi na matanggal mula sa pamilya
+    label attribute not removable: Ang katangian na ito ay hindi ma tanggal kasi ginagamit ito bilang label sa pamilya
+    attribute not found: Ang katangian ay hindi nauukol sa pamilyang ito
+    attributes added: Ang mga katangian ay matagumpay naidagdag sa pamilya
+    attribute removed: Ang katangian ay matagumpay na natanggal mula sa pamilya
+  product:
+    created: Ang produkto ay matagumpay na nalikha
+    updated: Ang produkto ay matagumpay na nai-update
+    removed: Ang produkto ay matagumpay na naialis
+    invalid: Pakiusap paki tsek ang iyong entri at subukan muli
+    attributes added: Ang mga katangian ay matagumpay nai-dagdag sa produkto
+    attribute removed: Nag katangian ay matagumpay na natanggal mula sa produkto
+    attribute not removable: Ang katangian ay hindi matanggal mula sa produkto
+    enabled: Ang produkto ay magamit na
+    disabled: Ang produkto ay hindi magamit
+  group:
+    updated: Ang grupo ay matagumpay na na-update
+    removed: Ang grupo ay matagumpay na inalis
+  group type:
+    created: Ang uri ng grupo ay matagumpay nailikha
+    updated: Ang uri ng grupo ay matagumpay na na-update
+    removed: Ang tipo ng grupo ay matagumpay na inalis
+    cant remove used: Ang uri ng grupo ay ginagamit ng ibang grupo at hindi ito matanggal
+  association type:
+    created: Ang uri ng asosasyon ay matagumpay na nalikha
+    updated: Ang uri ng asosasyon ay matagumpay na nai-update
+    removed: Ang uri ng asosasyon ay matagumpay na natanggal
+  user:
+    removed: Ang tagagamit ay matagumpay na natanggal
+  error ocurred: Ang ginagawa ay nabigo. Pakiusap paki ulit.
+#Info messages
+info:
+  updated: May mga wala na save sa mga binabago.
+  category:
+    remove children: Lahat ng mga sub-kategorya ay binura.
+    keep products: Mga produkto sa mga kategoryang ito ay hindi mabubura.
+    products limit exceeded: Ang kategoryang ito ay naglalaman ng marami pang produkto kay sa pagpahintulot sa operasyong ito (%limit% mga produktong nasa pinakamataas)
+  product:
+    no available attributes: Wala nang mga katangian na maidagdag
+    no family defined: Walang pamilyang natukoy
+    change family: Baguhin ang produkto ng pamilya
+    change family to: Baguhin ang pamilya sa
+    merge attributes: Ang mga kasalukuyang katangian ay ipagsasama sa mga nasa bagong pamilya.
+    keep attributes: Walang mga katangian ang tatanggalin.
+    number of associations: '%productCount% mga produkto at %groupCount% mga grupo'
+    enable: Magagamit
+    enabled: Pinagana
+    disable: Hindi pinagana
+    disabled: Hindi pinagana
+  group:
+    axis: 'Magkaibang-ibang aksis: %attributes%'
+    select products: Pakiusap pumili ng mga produkto na dapat nakaayon sa grupong ito.
+    selectable products: Ang mga sumusunod na mapipiling mga produkto ay may mga presyo sa bawat aksis.
+    no group types: Walang mga uri ng grupo ang umiiral, iklik dito para makalikha ng isa
+    more products: '%count% marami pang mga produkto...'
+  association type:
+    show products: Ipakita ang mga produkto
+    show groups: Ipakita ang mga grupo
+    remove from products: Ang pag bubura sa uri ng asosasyon ay makatatanggal ito mula sa %count% mga produkto.
+    none exist: Walang uri ng asosasyon ang umiiral.
+    create one: Iklik dito para maka likha ng isa
+  attribute:
+    auto option sorting: Kung magagamit, ang mga opsyon ay mahahanay awtomatikali sa mga lokal na labels
+  completeness:
+    not calculated: Hindi pa nakalkyulet
+#Form elements
+Options: Mga opsyon
+Created at: Nilikha sa
+Updated at: Na-update sa
+Created: Nilikga
+Updated: Na-update
+Last update: Huling update
+by: Kay
+N/A: N/A
+Manage products: Ipangasiwa ang mga produkto
+Manage groups: Ipangasiwa ang mga grupo
+Code: Kodigo
+Name: Pangalan
+Type: Uri
+Scope: Tsannel
+Required: Kinakailangan
+Unique: Natatangi
+Not required: Hindi kinakailangan
+Translatable: Maaring ma translate
+Scopable: May kalawakan
+Localizable: Lokal
+Unique value: Natatanging halaga
+Attribute group: Katangian na grupo
+Other: Iba
+Variants behavior when edited: Baryant na mga ugali kung ito'y ma edited
+Edit: I-Edit
+Remove: Tanggal
+Delete: Burahin
+Parameters: Parametro
+System: Systema
+Values: Halaga
+General parameters: Pangkalahalatan na mga parametro
+Backend parameters: Backend na mga parametro
+Label: Label
+Default label: Default label
+Default value: Default na halaga
+Attributetype: Uri ng katangian
+Attribute type: Uri ng katangian
+Defaultvalue: Default na halaga
+Variant: Baryant
+Smart: Matalino
+Useable as grid column: Magagamit bilang grid na kolumn
+Useable as grid filter: Magagamit na grid
+Family: Pamilya
+Image: Imahe
+Available locales: Lokal na magagamit
+Locale specific: Espisikong lokal
+default: Default
+Axis: Aksis
+Add attributes: Magdagdag ng mga katangian
+Translate from: Translasyon mula sa
+switch_on: "Uu"
+switch_off: "Hindi"
+Close: Sirado
+Search: Maghanap
+Choose the attribute type: Pumili sa uri ng katangian
+Choose the attribute group: Pumili sa grupo ng katangian
+Drag and drop a file or click here: Mag-drag at mag-drop ng isang file o mag-click dito
+Drop an image or click here: Ilaglag ang imahe rito o iklik dito
+Automatic option sorting: Awtomatik opsyon sa pag hanay
+save_attribute_before_manage_option: Para maka manage sa mga opsyon, pakiusap i-save ang katangian muna
+Please select: Pakiusap pumili
+Active: Aktibo
+Inactive: Hindi aktibo
+Do not convert: Huwag i-convert
+Create: Lumikha
+Cancel: Kansel
+Choose a family: Pumili ng pamilya
+Choose a unit: Pumili ng yunit
+No matches found: Walang nahanap na nagkatugma
+Category tree: Puno ng kategorya
+Completeness: Pagkakakumpleto
+Attribute used as label: Ang katangian ginagamit bilang label
+Credentials: Mga kredensyal
+#Scopes
+Global: Global
+Channel: Tsanel
+Expand all channels: Ipalawak ang lahat ng mga tsanel
+Collapse all channels: Tiklupin ang lahat ng mga tsanel
+#Variants
+Always override: Palaging i-override
+Ask: Magtanong
+#Attribute group
+General Properties: Pangkalahatang pag-aari
+Group values: Ang mga halaga ng grupo
+New group: Bagong Grupo
+Groups overview: Malawak na pagtanaw sa mga grupo
+'Y-m-d h:i:s': 'I-m-d hi:s'
+#Attribute properties
+Max characters: Pinakamataas na mga karakter
+Validation rule: Ang batas sa balidasyon
+Validation regexp: Balidasyon regexp
+Wysiwyg enabled: WYSIWYG ay magagamit
+Number min: Pinakamaliit na numero
+Number max: Pinakamataas na numero
+Decimals allowed: Payagan ang mga desimal
+Negative allowed: Pahintulotan na gagamitin ang negatibong mga halaga
+Date min: Pinakamaagang petsa
+Date max: Pinakatagal na petsa
+Metric family: Metrik na pamilya
+Default metric unit: Default na metrik yunit
+Max file size: Mataas na file sukat (MB)
+Allowed extensions: Pinahihintulotan na ekstensyon
+None: Wala
+E-mail: E-mail
+URL: URL
+Regular expression: Pangkaraniwan na ekspresyon
+Minimum input length: Pinakamababa na input length
+Default: Default
+#Family
+Attributes: Mga katangian
+#Category
+Title: Titulo
+#Page titles
+pim_title.attribute_group:
+  index: "Mga grupo ng katangian"
+  create: "Mga grupo ng katangian | Lumikha"
+  edit: "Mga grupo ng katangian %group.label% | I-edit"
+pim_title.category:
+  index: "Kategorya ng mga puno"
+  create: "Kategorya ng mga puno | Lumikha"
+  edit: "Kategorya ng mga puno %category.label% | I-edit"
+pim_title.attribute:
+  index: "Mga katangian"
+  create: "Mga katangian | Lumikha"
+  edit: "Mga katangian %attribute.label% | I-edit"
+pim_title.product:
+  index: "Mga produkto"
+  edit: "Mga produkto %product.label% | Baguhin"
+pim_title.family:
+  index: "Mga pamilya"
+  edit: "Mga pamilya %family.label% | Baguhin"
+pim_title.channel:
+  index: "Mga channel"
+  create: "Mga tsanel | Lumikha"
+  edit: "Mga tsanel %channel.label% | I-edit"
+pim_title.currency:
+  index: "Mga salapi"
+pim_title.locale:
+  index: "Mga pinagmulan"
+pim_title.group:
+  index: "Mga grupo"
+  edit: "Mga grupo %group.label% | I-edit"
+pim_title.association_type:
+  index: "Mga uri ng asosasyon"
+  edit: "Mga uri ng asosasyon %asosasyon na uri.label% | I-edit"
+pim_title.group_type:
+  index: "Mga uri ng grupo"
+  edit: "Mga uri ng grupo %grupo na uri.label% | I-edit"
+pim_title.mass_edit_product_action:
+  choose: "Malawakang pag edit | Pumili"
+  configure: "Malawakang pag edit | Ikonfigyur"
+pim_title.mass_edit_family_action:
+  choose: "Maramihang Pamamatnugot | Pumili"
+  configure: "Maramihang Pamamatnugot | I-configure"
+pim_title.job_tracker:
+  index: Tagasubaybay ng proseso
+  show: "Tagasubaybay ng proseso | Ipakita ang trabaho"
+pim_title.dashboard: "Dashboard"
+pim_catalog_identifier: Tagatukoy
+pim_catalog_text: Teksto
+pim_catalog_textarea: Lugar ng teksto
+pim_catalog_number: Numero
+pim_catalog_price_collection: Presyo
+pim_catalog_multiselect: Maraming pinili
+pim_catalog_simpleselect: Simpleng pagpili
+pim_catalog_file: File
+pim_catalog_image: Imahe
+pim_catalog_boolean: "Oo/Hindi"
+pim_catalog_date: Petsa
+pim_catalog_metric: Metrik
+pim_reference_data_simpleselect: Referens na datos at simpleng pagpili
+pim_reference_data_multiselect: Referens na datos at maramihang pagpili
+#Locales
+Activated: Aktibo na
+Disable: I-disable
+#Sequential edit operations
+pim_enrich.sequential_edit_action:
+  product:
+    previous: Bumalik sa %product% na walang pag save.
+    next: Lumaktaw sa "%product%" na walang pag save.
+#Mass edit operations
+pim_enrich.mass_edit_action:
+  limit_exceeded: Pakiusap piliin ang mas mababa pa sa %limit% na nga aytems para i -edit
+  product:
+    page_title: Mga produkto
+    page_subtitle: Malawakang pag edit (1 na produkto) | Malawakang pag edit (%count% mga produkto)
+    title: Pumili ng operasyon
+    subtitle: Pumili ng operasyon na hiling mong gawin sa mga napiling produkto | Pumili ng operasyon na hiling mong gawin sa mga napiling %count% na mga produkto
+    confirm: Ikaw ay mag update sa produkto na may ganitong mga impormasyon, pakiusap paki kompirma.|Ikaw ay mag update %count% sa mga produkto na may ganitong impormasyon, pakiusap paki kompirma.
+    steps:
+      first: Magpili ng mga produkto
+      second: Pumili ng operasyon
+      third: Konfigyur
+      fourth: Ikumpirma
+  family:
+    page_title: Mga pamilya
+    page_subtitle: Malawakang pag edit (1 na pamilya) | Malawakang pag edit (%count% mga pamilya)
+    title: Pumili ng operasyon
+    subtitle: Pumili ng operasyong nais mong gawin sa napiling pamilya|Pumili ng operasyong hinihiling mong gawin sa mga napiling %count% na mga pamilya
+    confirm: Ikaw ay malapit ng mag-update ng pamilya na may sumusunod na impormasyon, pakiusap kumpirmahin.|Ikaw ay malapit ng mag-update ng %count% na mga pamilya na may sumusunod na impormasyon, pakiusap pakumpirmahin.
+    steps:
+      first: Pumili ng mga pamilya
+      second: Pumili ng operasyon
+      third: Kumpigurahin
+      fourth: Kumpirmahin
+  change-status:
+    label: Mag-iba ng estado
+    description: Ang napiling mga produkto ay paganahin o hindi paganahin.
+    success_flash: (Mga) Produkto na estado ay nabago
+  edit-common-attributes:
+    label: Baguhin ang mga attributes
+    description: Ang mga napiling katangian ng produkto ay ma i-edit sa mga sumusunod na data para sa napiling locale.
+    empty: Pakiusap pumili sa mga katangian na gusto mong i edit
+    success_flash: Ang katangian ng produkto ay na update
+    message.warning: Wlang karaniwang katangian para sa napiling mga produkto. Mangyaring baguhin ang iyong pagpili.
+    no_attribute.warning: Wlang karaniwang katangian para sa napiling mga produkto. Pakiusay baguhin ang iyong pagpili.
+  classify:
+    label: Idagdag sa mga kategorya
+    description: Ang mga produkto ay nakahanay sa mga sumusonod na mga kategorya, ang umiiral na pagkakalagay ay pinanatilihin.
+    success_flash: Ang (mga) produkto ay naitakda sa napiling mga kategorya
+  change-family:
+    label: Baguhin ang pamilya
+    description: Ang pamilya sa napiling mga produkto ay mababago sa napiling pamilya
+    success_flash: Ang pamilya sa napiling (mga) produkto ay matagumpay na nabago
+    no_family: Walang pamilya
+  add-to-groups:
+    label: Isali sa mga grupo
+    description: Piliin ang mga grupo kung saan idinagdag ang mga napiling mga produkto
+    success_flash: Ang mga produkto ay matagumpay na naidagdag sa mga napiling grupo
+  set-attribute-requirements:
+    label: Itakda ang mga kinakailangan ng mga katangian
+    description: Ang sumusunod na mga kinakailangan na katangian ay mailalapat sa mga napiling pamilya
+    success_flash: Ang mga kinakailangan ng katangian ay nailapat sa napiling mga pamilya
+To enable: Upang paganahin
+Select attributes: Pumili ng mga katangian
+Select: Pumili
+Remove this attribute: Alisin ang katangiang ito
+Copy: Kopya
+Current tab: Kasalukuyang tab
+#Product view
+Group: Grupo
+View group: Tingnan ang grupo
+Products: Ang mga produkto
+#Tabs
+Properties: Ang mga ari-arian
+History: Kasaysayan
+pane.accordion:
+  node_values: Mga halaga ng node
+  general_properties: Ang pangkalahatang mga ari-arian
+  locale_values: Mga halaga ng lokal
+  backend_parameters: Mga parameter ng backend
+  general_parameters: Pangkahalatang mga parameter
+  validation_parameters: Mga parametrong pagpapatunay
+  label_translations: Mga pagsasalin sa libel
+  options: Mga opisyon
+  group_values: Mga halaga ng grupo
+#Popin titles
+popin.create:
+  association_type.title: Lumikha ng bagong uri ng asosasyon
+  group.title: Lumikha ng bagong grupo
+  product.title: Lumikha ng isang bagong produkto
+  option.title: Lumikha ng isang bagong pagpipilian
+#Datagrid contents
+In group: Nasa grupo
+Attribute as label: Ang katangian bilang label
+Is associated: Ay nakakaugnay
+Complete: Kumpleto
+Created At: Ginawa sa
+Updated At: Na-update sa
+Enabled: Pinagana
+Disabled: Hindi pinagana
+Status: Estado
+#Versioning / history
+Change History: Baguhin ang kasaysayan
+Data Audit: Pag-awdit ng datos
+Data Audit - System: 'Pag-awdit sa datos - sistema'
+Action: Aksyon
+Version: Bersyon
+Entity type: Uri ng entity
+Entity name: Pangalan ng entity
+Entity id: Id ng entity
+Data: Datos
+Author: May-akda
+Logged at: Naka-log sa
+Deleted: Binura na
+Old values: Ang mga lumang halaga
+New values: Ang mga bagong halaga
+#Configuration
+System configuration: Kompigurasyon ng sistema
+General setup: Pangkalahatang set-up
+Localization: Lokalisasyon
+Localization options: Mga pagpipilian sa lokalisasyon
+Locale: Lokal
+Location: Lokasyon
+Format address by address country: Pag-format ng address sa pamamagitan ng address na bansa
+Language: Wika
+Timezone: Timezone
+Currency: Pera
+settings: Mga setting
+oro.locale:
+  address_format:
+    region_name_type:
+      parish: "parokya"
+      state: "estado"
+      island: "isla"
+      county: "bansa"
+      area: "lugar"
+      prefecture: "prepektyur"
+      department: "departamento"
+      district: "distrito"
+      province: "probinsya"
+  form:
+    tooltip:
+      locale: "Piliin ang lokal na opsyon na ginagamit apra i format ang mga numero, mga address, mga pangalan at mga petsa"
+      location: " Ang lokasyon ay gagamitin para i-format ang mga address kung ang 'I-format ang address sa pamamgitan sa bansang bansa' na pagpipilian ay hindi pinagana"
+      format_address_by_address_country: "Ang pagpili sa pagpipiliang ito ay papaganahin ang mga address para mai-format sa pamamagitan sa bansang kinabibilangan nila. Ang hindi pagpapagana sa pagpipiliang ito ay magiging sanhi para ang mga address ay mai-format sa iyong format ng address ng lokasyon"
+      language: "Piliin ang wika ng sistemang gusto mong gamitin"
+      timezone: "Piliin ang timezone para mapakita ang petsa at oras"
+      currency: "Piliin ang naka-default na pera"
+#Datagrid
+Selected products successfully deleted: Ang napiling mga produkto ay matagumpay na nabura
+pim_mass_edit:
+  notification:
+    mass_edit:
+      error: Malawakang pag-edit <strong>%label%</strong> ay nabigo
+      warning: Malawakang pag-edit <strong>%label%</strong> ay natapos na may iilang babala
+      success: Malawakang pag-edit <strong>%label%</strong> ay natapos
+    quick_export:
+      error: Mabilisang pagluwas <strong>%label%</strong> ay nabigo
+      warning: Mabilisang pagluwas <strong>%label%</strong> ay natapos ng may iilang mga babala
+      success: Mabilisang pagluwas <strong>%label%</strong> ay natapos
+job_execution.summary:
+  mass_edited: Malawakang pag-edit
+  skip: Nilaktawan
+  skipped_products: Nilaktawang mga produkto
+  skipped_attributes: Nilaktawang mga katangian
+  skipped_families: Nilaktawang mga pamilya
+pim_mass_edit_execution_show: Malawakang pag-edit na pagsasagawa | Mga detalye
+edit_common_attributes.steps.edit_common_attributes_processor.title: Baguhin ang mga attributes
+update_product_value.steps.update_product_value_processor.title: I-update ang halaga ng produkto
+remove_product_value.steps.update_product_value_processor.title: Tanggalin ang halaga ng produkto
+edit_common_attributes: Baguhin ang mga attributes
+edit_common_attributes_clean: Linisin ang mga files para sa katangian
+perform.steps.duplicated.title: Duplikadong Aksis
+perform.steps.excluded.title: Hindi kasama na mga produkto
+#Background jobs & steps labels
+batch_jobs:
+  add_product_value:
+    label: Magdagdag ng halaga ng produkto
+    perform:
+      label: Mgadagdag ng halaga ng produkto
+  update_product_value:
+    label: Mag-update sa halaga ng produkto
+    perform:
+      label: Mag-update sa halaga ng produkto
+  edit_common_attributes:
+    label: Baguhin ang mga attributes
+    perform:
+      label: Baguhin ang mga attributes
+    clean:
+      label: Linisin ang mga files para sa mga katangian
+    cleaner:
+      label: Linisin ang mga files para sa mga katangian
+  add_to_category:
+    label: Idagdag sa kategorya
+    perform:
+      label: Idagdag sa kategorya
+  move_to_category:
+    label: Ilipat sa kategorya
+    perform:
+      label: Ilipat sa kategorya
+  remove_from_category:
+    label: Tanggalin mula sa kategorya
+    perform:
+      label: Tanggalin mula sa kategorya
+  add_to_existing_product_model:
+    label: Idagdag sa isang umiiral na modelo ng produkto
+    perform:
+      label: Idagdag sa isang umiiral na modelo ng produkto
+  set_attribute_requirements:
+    label: Itakda ang mga kinakailangan ng mga katangian
+    perform:
+      label: Itakda ang mga kinakailangan ng mga katangian
+  csv_product_quick_export:
+    quick_export.label: Mabilisan na pag-export sa Csv na produkto
+    perform:
+      label: Mabilisan na pag-export sa Csv na produkto
+  csv_product_grid_context_quick_export:
+    quick_export.label: Mabilisang pagluwas ng grid na konteksto ng produkto ng Csv
+    perform:
+      label: Mabilisang pagluwas ng grid na konteksto ng produkto ng Csv
+  xlsx_product_quick_export:
+    quick_export.label: Mabilisang pagluwas ng produkto ng Xlsx
+    perform:
+      label: Mabilisang pagluwas ng produkto ng Xlsx
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: Mabilisang pagluwas ng grid na konteksto ng produkto ng Xlsx
+    perform:
+      label: Mabilisang pagluwas ng grid na konteksto ng produkto ng Xlsx
+mass_edit report:
+  overview: Malawakang pag-edit sa mga ulat
+job_tracker:
+  tab:
+    title: Tagasubaybay ng proseso
+  filter:
+    started_at: Nagsimula sa
+pim_enrich_attribute_form:
+  code: Kodigo
+  type: Uri ng katangian
+  reference_data_name: Pangalan ng reperens na datos
+  scopable: Halaga bawat channel
+  localizable: Halaga bawat pinagmulan
+  unique: Natatanging halaga
+  availableLocales: Mga lokal na bukas
+  locale_specific: Espesipikong lokal
+  group: Gropong katangian
+  useableAsGridFilter: Magagamit sa grid

@@ -1,0 +1,28 @@
+btn:
+  post: Magdagdag ng bagong komento
+  reply: Sumagot
+  cancel: Kansel
+confirmation:
+  remove:
+    comment: Sigurado ka bang gusto mong burahin ang komentong ito?
+flash:
+  comment:
+    create:
+      success: Ang iyong komento ay matagumpay na nailikha.
+      error: Isang error ang naganap habang nililikha ang iyong komento.
+    delete:
+      success: Ang iyong komento ay matagumpay na nabura.
+      error: Isang error ang naganap habang binubura ang iyong komento.
+    reply:
+      success: Ang iyong kasagutan ay matagumpay na nailikha.
+      error: Isang error ang naganap habang nililikha ang iyong kasagutan.
+comment:
+  index:
+    empty: Walang komento sa ngayon
+    header_comment: '{{ user }} ay nagkomento sa produkto'
+    header_reply: '{{ user }} ay sumagot sa komento'
+  placeholder:
+    new: Magsulat ng bagong komento...
+    reply: Sumagot sa komentong ito...
+pim_comment:
+  product.panel.comment.title: Mga komento

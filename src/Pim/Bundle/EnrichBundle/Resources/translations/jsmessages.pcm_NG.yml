@@ -1,0 +1,1454 @@
+#Grid action messages
+confirmation:
+  title: Confam
+  remove:
+    item: U dey sure say u wan delete dis item?
+    association_type: U dey sure say u wan delete dis association type?
+    attribute: U sure say u wan delete dis attribute?
+    attribute_group: You sure say you wan delele dis attribute group?
+    family: U sure say u wan delete dis family?
+    family_variant: You sure say you wan delete dis family form?
+    product: U sure say u wan delete dis product?
+    product_model: U sure say u wan delete dis product model? wit all im pikin, product models wit im variant products, go also delete o.
+    channel: U sure say u wan delete dis channel?
+    group: U sure say u wan delete dis group?
+    group_type: U sure say u wan delete dis group type?
+    import_profile: U sure say u wan delete dis import profile?
+    export_profile: U sure say u wan delete dis export profile?
+    user: U sure say u wan delete dis user?
+    role: U sure say u wan delete dis role?
+    job_instance: You sure say you wan delele dis job instance?
+    api_connection: You sure say you wan cancel dis API connection? Everri API calls wey dey made from dis connection go now throw error.
+pim_datagrid:
+  mass_action_group:
+    bulk_actions:
+      label: Plenti actions
+    quick_export:
+      label: Sharp sharp export
+  mass_action:
+    delete:
+      label: Commot am
+      confirm_content: You sure say you wan commot de selected products?
+      success: De products wey u select don comot finish.
+      error: Error bin don happen wen you dey try commot de products wey dey selected, abeg try am again.
+  view_selector:
+    view: Views
+    create_view_modal:
+      create: Create am
+      confirm: Ok
+      cancel: Cancel am
+flash:
+  item:
+    removed: Item don commot successfully
+  association_type:
+    removed: E don commot association type finish
+  attribute:
+    removed: E don remove attribute finish
+  attribute_group:
+    removed: Attribute group don commot successfully
+  family:
+    removed: Family don commot finish
+  family_variant:
+    removed: Family variant don comot successfully
+  product:
+    removed: Product don commot finish
+  product_model:
+    removed: Product model don comot finish
+  channel:
+    removed: E don comot channel finish
+  group:
+    removed: Group don commot finish
+  group_type:
+    removed: Group type don comot finish
+  import_profile:
+    removed: Import profile don comot
+  export_profile:
+    removed: Export profile don comot
+  user:
+    removed: User don commot finish
+  role:
+    removed: Role don commot finish
+  job_instance:
+    removed: Job instance don commot finish
+  api_connection:
+    removed: API connection don cancel finish
+error:
+  common: Error don happen
+  creating:
+    product: No attribute dey configured as product identifier or you no get de rights to edit am.
+  removing:
+    item: E no fit delete dis item
+    association_type: E no fit comot dis association type
+    attribute: E no fit comot dis attribute
+    family: E no fit delete dis family
+    product: E no fit comot dis product
+    channel: E no fit delete dis channel
+    group: E no fit delete dis group
+    group type: E no fit delete dis group type
+    import profile: E no fit delete dis import profile
+    export profile: E no fit delete dis export profile
+    user: E no fit delete dis user
+    role: E no fit delete dis role
+    attribute_option: Error happen wen you dey try delete de attribute option
+  saving:
+    attribute_option: E no fit save de attribute option
+    export_profile: E no fit save export profile. Abeg check make u dey sure say all filters dey filled well well
+alert:
+  attribute_option:
+    error_occured_during_submission: Error don happen wen you de try submit de form for de server
+    save_before_edit_other: Abeg register your modifications for de other rows dem before you begin edit dis one
+  session_storage:
+    not_available: Ur web browser dey like say e no dey compatible wit sessionstorage. Abeg contact ur administrator
+confirm:
+  attribute_option:
+    cancel_edition_on_new_option_text: Dis na warning, u go lose ur data dem wey u never save. U dey sure say you wan cancel modification for dis new option ?
+    cancel_edition_on_new_option_title: Make u cancel de modification
+label:
+  attribute_option:
+    add_option: Put option
+Code: Code
+Edit: Make u edit am
+Delete: Commot am
+Edit attributes of the product: Edit attributes wey dey de product
+Classify the product: Put de product for different classes dem
+Delete the product: Commot de product
+Change status: Make u change de status
+Toggle status: Toggle de status
+#Quick export labels
+pim:
+  grid:
+    mass_action:
+      quick_export:
+        csv_all: CSV (Everri attributes)
+        csv_grid_context: CSV (de grid context)
+        xlsx_all: Excel (Everri attributes dem)
+        xlsx_grid_context: Excel (Grid context)
+      delete: Commot am
+      mass_edit: Bulk actions
+      category_edit: Move products dem for inside categories
+      sequential_edit: Sequential edit
+#Jstree context menu actions
+jstree.create: Create am
+jstree.done: Done
+switch_on: "Na so"
+switch_off: "No be so"
+pim_enrich:
+  item:
+    list:
+      delete.label: Commot am
+      delete.error: Error happen as dey try delete item
+    delete:
+      confirm.content: U dey sure say u want delete dis {{ itemName }}? e no dey possible to undo dis action again
+      confirm.title: Commot dis {{ itemName }}
+  navigation:
+    link:
+      back_to_grid: Go back grid
+    other_actions: Oda actions dem
+  entity:
+    save:
+      label: Save am
+    info:
+      update_failed: E don fail to update
+      update_successful: E don update finish
+    create_popin:
+      code: Code
+      label: Label am
+      labels:
+        save: Save am
+        cancel: Cancel am
+    product:
+      navigation: Navigate product
+      infos: Product infos dem
+      index_title: "] -Inf, 1] {{ count }} result|] 1, Inf [{{ count }} results"
+      title: e be product
+      locale: Locale
+      category: Category
+      create: Create am
+      subTitle: Make you create product
+      modalTitle: Make you select action
+      filters: Filters
+      selected: result wey dey selected
+      common: Common
+      btn:
+        enabled: E don enable
+        disabled: E don disable
+        download_pdf: PDF
+        compare_translate: Compare am / Translate am
+        delete: Delete am
+        save: Save am
+      history:
+        version: Version
+        author: Persin wey get am
+        logged_at: Logged at
+        from: From
+        modified: Modified
+        old_value: Value wey old
+        new_value: Value wey new
+        actions: Actions dem
+      info:
+        deletion_successful: De product no bin fit update.
+        deletion_failed: De product no bin fit delete.
+        update_successful: E don update product finish.
+        update_failed: De product no bin fit update.
+        field_not_ready: "De product no fit save ryt now. de fields wey dem mention so neva ready: {{ fields }}"
+        already_in_upload: File don already dey upload for dis attribute for locale "{{ locale }}" and for scope "{{ scope }}"
+      error:
+        upload: Error bin enta wen de file dey upload
+      meta:
+        created: E don create
+        created_by: By
+        updated_by: By
+        updated: Last time wey e update
+        family:
+          title: Family
+          none: E no get any
+        family_variant:
+          title: Variant
+          none: E no get any
+        groups:
+          title: Groups
+          modal:
+            title: Group {{ group }}
+            view_group: Check de group
+            group_label: Label am
+            more_products: '{{ count }} more products dem...'
+            close: Close am
+        status: Status
+        scope: Channels dem
+        locale: Locale
+      copy:
+        select: Choose am
+        all: Everri's
+        all_visible: Everri dey visible
+        none: E no get any
+        copy: Copy am
+      optional_attribute:
+        remove: Commot dis attribute
+      locale_specific_attribute:
+        unavailable: Dis very locale field no dey available for dis locale
+      localizable:
+        channel_locale_unavailable: Dis localizable field no dey available for locale '{{ locale }}' and for channel '{{ channel }}'
+      media:
+        upload: Drag come drop here so u fit upload or u click for here
+      create_popin:
+        type: Product
+        title: Create am
+        labels:
+          family: Make u select family
+          family_variant: Choose a family variant
+          save: Save am
+          cancel: Cancel am
+      message:
+        created: Product don dey created
+      completeness: Complete
+      sequential_edit:
+        item_limit: Na de only first 1000 items wey show for dis sequential edit ({{ count }} dey selected)
+        empty: Your selection dey empty, abeg change your search pattern
+    product_model:
+      create_popin:
+        type: Product model
+        title: Make you create product model
+        content: Product model dey gather variant products and e dey also make common prpperties enrichment dem dey easy.
+      info:
+        create_successful: E don create product model finish
+        update_successful: Product model din update finish. De completeness for variant products go dey recalculated.
+        deletion_successful: E don delete product model finish.
+        update_failed: De product model no bin fit update.
+        field_not_ready: "De product model no fit save right now. De following fields no dey ready: {{ fields }}"
+      read_only_parent_attribute_from_common: Na for de common attributes dey fit take update dis attribute.
+      read_only_parent_attribute_from_model: "Dis attributes no fit update for de attributes by {{ axes }}"
+      variant_axis: Variant axis
+      title: models dem for product
+      add_child:
+        create: Add new
+        cancel: Cancel am
+        confirm: Confam
+        create_label: "Add new {{ axes }}"
+        fields:
+          required_label: (variant axis)
+          code: Code
+    association_type:
+      info:
+        deletion_successful: Associate type don delete finish.
+        deletion_failed: Association type no fit delete.
+        update_successful: Association type don delete finish.
+        update_failed: De association type no fit update.
+        field_not_ready: "The association type no fit save right now. The following fields neva dey ready: {{ fields }}"
+      meta:
+        created: E don create
+        created_by: Who create am be
+        updated: E don update
+        updated_by: Who update am be
+      btn:
+        save: Save am
+      title: association type
+      create_popin:
+        title: Create am
+      message:
+        created: E don create association type
+    group_type:
+      info:
+        deletion_successful: Group type don delete finish.
+        deletion_failed: Group type no fit delete.
+        update_successful: Group type don update finish.
+        update_failed: Group type no fit update.
+        field_not_ready: "De group type no fit save rite now, de fields wey dey so neva dey ready: {{ fields }}"
+      meta:
+        created: E don create
+        created_by: Na who create am be
+        updated: E don update
+        updated_by: E bin update with
+      btn:
+        save: Save am
+      title: group type
+      create_popin:
+        title: Create am
+      message:
+        created: E don create group type
+    channel:
+      title: channel
+      info:
+        deletion_successful: Channel don delete finish.
+        deletion_failed: Channel no fit delete.
+        update_successful: Channel don update finish.
+        update_failed: De channel no fit update.
+        create_successful: Channel don create finish.
+        create_failed: E no fit create channel.
+        field_not_ready: "De channel no fit save rite now, de fields wey dey so neva dey ready: {{ fields }}"
+      meta:
+        created: E don create
+        created_by: Who create am be
+        updated: E don update
+        updated_by: Who update am be
+      btn:
+        save: Save am
+    family:
+      title: family
+      selected: families wey dey seleted
+      info:
+        update_successful: E don update family finish.
+        create_successful: E don create channel finish.
+        update_failed: Error bin happen as family bin dey try update.
+        cant_remove_attribute_as_label: No fit commot attribute wey dey use as label
+        cant_remove_attribute_as_image: No fit commot attribute wey dey use as de main picture
+        attribute_edit_permission_is_not_granted: You no get right make you edit family attributes dem
+        cant_remove_attribute_used_as_axis: No fit commot dis attribute wey dem use like variant axis inside family variant
+      meta:
+        created: E don create
+        created_by: Na who create am be
+        updated: E don update
+        updated_by: Who update am be
+      btn:
+        save: E don save
+      create_popin:
+        title: Create am
+      message:
+        created: E don create family
+      variant:
+        common:
+          title: Simple attributes
+          empty: Common attributes no dey
+        axis.label: Variant axis
+        level_1.label: Level one for variant attributes
+        level_2.label: Level two for variant attributes
+        add_variant: Make you add variant
+        create_label: Make you create new family variant
+        create_description: For inside family variant, you fit define structure for products wit variants. Make you choose de number wey dey variant levels, de attribute wey dem use as variant axes for each level dem, and den define how dem de take distribute attributes dem.
+        update_description: Carry attributes come drop for de selected variant level to get attributes managed for de variant level.
+        create: Create am
+        cancel: Cancel am
+        code: Code
+        label: Label am
+        levels: Variant levels
+        axis_level: Variant axis level
+        required: de nid am
+        confirm_attribute_removal:
+          title: Confam say you wan delete attributes
+          message: As u remove dis attributes u go put dem back inside de common attributes for family variant and de values wey dey variant products go commot
+    family_variant:
+      info:
+        update_successful: Family variant don update. De product wey dey wit variants go follow de changes update.
+    attribute_option:
+      code: Code
+      label: Label
+      actions: Actions dem
+    group:
+      title: Group
+      info:
+        deletion_successful: Group don delete finish.
+        deletion_failed: Group no bin fit delete.
+        update_successful: Group bin don update finish.
+        update_failed: De group no bin fit update.
+        field_not_ready: "De group no fit save right now, de fields wey dem mention so never dey ready: {{ fields }}"
+      btn:
+        save: Save am
+      meta:
+        product_count: Products dem
+        created: E don create
+        created_by: Who create am be
+        updated: E don update
+        updated_by: Who update am be
+      create_popin:
+        title: Create am
+      message:
+        created: E don create group
+    job_instance:
+      title: job profile
+      info:
+        update_failed: De job profile no bin fit update.
+        update_successful: De job profile don update finish.
+    attribute:
+      info:
+        deletion_successful: Attribute don delete finish.
+        deletion_failed: De attribute no bin fit delete.
+        update_successful: Atrribute don update finish.
+        update_failed: De attribute no bin fit update.
+        create_successful: Attribute don create finish.
+        create_failed: E no bin fit create attribute.
+        field_not_ready: "De attribute no fit dey saved right now. De fields wey dem mention so neva det ready: {{ fields }}"
+      scopable: Scopable
+      type:
+        pim_catalog_identifier: Identifier
+        pim_catalog_text: Text
+        pim_catalog_textarea: Text Area
+        pim_catalog_number: Numba
+        pim_catalog_price_collection: Price
+        pim_catalog_multiselect: Select everri
+        pim_catalog_simpleselect: Simple select
+        pim_catalog_file: File
+        pim_catalog_image: Image
+        pim_catalog_boolean: "You gree abi you no gree"
+        pim_catalog_date: Date
+        pim_catalog_metric: Metric
+        pim_reference_data_simpleselect: Reference date simple select
+        pim_reference_data_multiselect: Reference data multi select
+      validation_rule:
+        email: E-mail
+        regexp: Regular expression
+        url: URL
+      title: attributes
+    attribute_group:
+      info:
+        update_failed: Attribute group no fit update
+        update_successful: Attribute group don update finish
+    api_connection:
+      create_popin:
+        title: Create am
+      message:
+        created: API connection don update finish
+  confirmation:
+    leave: U sure say u wan commot from dis page?
+    discard_changes: U go lose de changes to de {{ entity }} if u commot for dis page.
+    delete_item: Confam am make e delete
+    remove_item: Confam say you wan commot am
+    remove: Remove am
+    delete:
+      attribute: U sure say U wan delete dis attribute group?
+      attribute_group: You sure say you wan commot de attribute {{ attribute }} from dis attribute group?
+      product_model: Confam am make e delete
+  info:
+    not_applicable: N/A
+    entity:
+      updated: E get changes wey neva save.
+  error:
+    upload: Error bin happen wen u bin dey upload file
+  alert:
+    not_allowed: Dey don forbid am. You no fit open this page
+    error_occured: Error bin happen wen u bin dey load de page
+  form:
+    required: (de need am)
+    product_model:
+      choose_product_model: Make you choose product model
+      choose_variant: Make you choose variant
+      complete_variant_product: variant product
+      complete_variant_products: variant products
+      family_variant: Variant
+      product_model: Product model
+      flash:
+        product_model_added: Product model don enta product model finish
+        variant_product_added: Variant product don enta product model finish
+    product:
+      tab:
+        associations:
+          title: Associations dem
+          info:
+            none_exist: E no get association types wey exist.
+            show_products: Show products
+            show_groups: Show groups
+            number_of_associations: "{{ productCount }} product(s), {{ productModelCount }} product model(s) and {{ groupCount }} group(s)"
+          association_type_selector: Association type
+          target: Target
+          manage: Make you add {{ associationType }} associations
+          manage_description: Make you select de product wey you wan associate wit de current product
+          add_associations: Make you add associations
+        attributes:
+          title: Attributes dem
+          btn:
+            add: Add
+            add_attributes: Make u add attributes dem
+          info:
+            search_attributes: Find am...
+            no_available_attributes: Attributes no dey again to carri add
+            attributes_selected: "{{ itemsCount }} attribute(s) selected"
+            no_match: E no see im match
+            load_more: E dey load more results...
+          attribute_group_selector: Attribute group
+          attribute_group_all: Everri's
+          attribute_group.to_fill_count: "Required attribute wey miss {1}1 Required attribute wey miss |]1, Inf [{{ count }}Required attribute wey miss"
+          attribute_filter:
+            display: Show am
+            all: Everri attributes dem
+            missing_required: Everri required attributes wey miss
+        categories:
+          title: Categories dem
+      panel:
+        completeness:
+          title: Wen e complete
+          info:
+            no_family: Family no dey defined. Abeg define family make de calculation for dis product for dey complete.
+            no_completeness: U just change de family of de product now. Abeg save am first so u fit calculate say de new family dey complete.
+          missing_values: "{1}1 missing value|] 1, Inf [{{ count }} missing values"
+        history:
+          title: Stori
+      switch:
+        "no": "No be so"
+        "yes": "Naso"
+      sequential_edit:
+        info:
+          products: products dem
+          previous: Carry go back {{ product }} without to save am.
+          next: Carry go {{ product }} without to save am.
+        btn:
+          save_and_next: Save am den next am
+          save_and_finish: Save am den finish am
+      change_family:
+        modal:
+          title: Make u change de product family
+          merge_attributes: Attributes dem wey dey now go join body with de ones wey dey d new family.
+          keep_attributes: E no get attributes wey go commot.
+          change_family_to: Make u change family to
+          empty_selection: Make u select family
+      flash:
+        attribute_deletion_error: Error bin happen wen de attribute dey delete
+      mass_edit:
+        select_attributes: Make u choose attributes dem
+        select: Select
+    association_type:
+      tab:
+        properties:
+          title: Properties dem
+          general: General properties dem
+          code: Code
+          label_translations: Translation for labal
+        history:
+          title: Stori
+    group_type:
+      tab:
+        properties:
+          title: Properties dem
+          general: General properties dem
+          code: Code
+          label_translations: Translation for label
+        history:
+          title: Stori
+    channel:
+      tab:
+        history:
+          title: Stori
+        properties:
+          title: Properties dem
+          general: General
+          code: Code
+          currencies: Currencies dem
+          locales: Locales
+          category_tree: Category tree
+          label_translations: Label translations
+          label_conversion_units: Cari conversion unit for each matric attribute wey go need dey wen product wan export
+          conversion_unit:
+            do_not_convert: No convert am
+    family:
+      tab:
+        properties:
+          title: Properties dem
+          general: General
+          code: Code
+          attribute_as_label: Attributes wey dey use like label
+          attribute_as_image: Attributes wey dey used like main picture
+          empty_attribute_as_image: E neva select
+          label_translations: Label translations
+        attributes:
+          title: Attributes dem
+          label_label: Label
+          toolbox:
+            select_attributes_by_groups: Add by groups
+            select_attributes: Make you add attributes
+            add: Add am
+            attributes_groups_selected: '{{ itemsCount }} group(s) selected'
+          not_required_label: De no need am
+          required_label: De nid am
+        variant:
+          title: Variants
+          flash:
+            family_variant_created: Family variant don create finish
+        history:
+          title: Stori
+    family_variant:
+      tab:
+        labels:
+          title: Translation for label
+    attribute_option:
+      flash:
+        option_created: Attribute option don create finish
+        error_creating_option: Error bin happen wen you dey try create de attribute option
+      add_option_modal:
+        title: Make u add option to attribute
+        confirm: Add am
+        cancel: Cancel
+    entity:
+      switch:
+        "no": "No be so"
+        "yes": "Na so"
+    group:
+      tab:
+        properties:
+          title: Properties dem
+          general: General properties dem
+          code: Code
+          type: Type
+          label_translations: Label translations
+        history:
+          title: Stori
+        products:
+          title: Products dem
+    attribute_group:
+      tab:
+        properties:
+          title: Properties dem
+          general: General properties dem
+          code: Code
+          label_translations: Translation for label
+        attribute:
+          title: Attributes dem
+          table:
+            name: Name
+            type: Which kind
+            scopable: You fit scope am
+            localizable: E fit localize
+        history.title: Stori
+    common:
+      tab:
+        attributes:
+          btn:
+            add: Add am
+            add_attributes: Make u add attributes dem
+          info:
+            search_attributes: Find am...
+            no_available_attributes: Attribute no dey again to add
+    job_execution:
+      loading: E dey load...
+      title.details: Execution details
+      refreshBtn.title: Reload am
+      meta:
+        status.title: Status
+      button:
+        show_profile.title: Show profile
+        download_log.title: Make you download log
+        download_file.title: Make you download generated file
+        download_archive.title: Mkae you downlaod generated archive
+      summary:
+        fetching: E dey collect data wey dey about execution...
+        warning: Dey warn
+        header.step: Step
+        header.status: Status
+        header.warnings: Dey warn
+        header.summary: De main point
+        header.start: Start am
+        header.end: End am
+    job_instance:
+      fail:
+        launch: E don fail to launch de job file. Dey sure say e dey valid and say you get de right to launch am.
+        save: E don fail to save de job profile. Dey sure say you get de right to edit am.
+      title:
+        import: Import profile
+        export: Export profile
+      button:
+        edit.title: Make u edit am
+        export.title: Export am now
+        import.launch: Import am now
+        import.upload: Upload and follow import am now
+        import.upload_file: Make you upload file
+      meta:
+        job: Job
+        connector: Connector
+      subsection:
+        last_executions: Last executions
+      tab:
+        content:
+          title: Content
+        properties:
+          title: Properties dem
+          code:
+            title: Code
+          label:
+            title: Label
+          decimal_separator:
+            title: Decimal separator
+            help: Make you determine de decimal separator
+          date_format:
+            title: Date format
+            help: Make you determine de format for date fields
+          file_path:
+            title: File path
+            help: Wey you fit write de generated file dem for de file system
+          delimiter:
+            title: Delimiter
+            help: One of de character wey dey de use set field delimiter
+          enclosure:
+            title: Enclosure
+            help: One character wey dey de use set field enclosure
+          with_header:
+            title: With header
+            help: Weda you wan print de column name or you no wan print
+          with_media:
+            title: Make you export files and images
+            help: Weda make e export product files and images or make e no export
+          lines_per_file:
+            title: Number wey dey lines for each file
+            help: Make you define de limit numba for lines wey dey each file
+          upload_allowed:
+            title: Allow file make e upload
+            help: Weda make e allow file make e upload directly or not
+          categories_column:
+            title: Column wey dey for categories
+            help: Name for categories column
+          escape:
+            title: Close am
+            help: One character you fit use set de field escape
+          family_column:
+            title: Column for family
+            help: Name for family column
+          groups_column:
+            title: Column for group
+            help: Name for groups column
+          enabled:
+            title: Make you enable product
+            help: Weda make e enable imported products dem or not
+          enabled_comparison:
+            title: Compare values dem
+            help: Enable de comparison wey dey between original values and imported values. Fit speed up import if imported values dey very similar wit de original values
+          real_time_versioning:
+            title: Stori update for real time
+            help: E mean say de product don update automatically, e fit dey switch off make e improve performances
+          family_variant_column:
+            title: Family variant column
+        history:
+          title: Stori
+      file_path: File path
+    attribute:
+      meta:
+        created: E don create
+        created_by: by
+        updated: Last time wey e update
+        updated_by: by
+      tab:
+        properties:
+          title: Properties
+          section:
+            common: General parameters
+            type_specific: Make you type specific parameters
+            validation: Validation parameters
+          label:
+            allowed_extensions: Allowed extensions
+            auto_option_sorting: Find option automatically by him alphabetical order
+            available_locales: Locales wey dey available
+            code: Code
+            date_max: Max date
+            date_min: Min date
+            decimals_allowed: Decimal values wey dey allowed
+            default_metric_unit: Default metric unit
+            group: Attribute group
+            is_locale_specific: Locale specific
+            localizable: Value per locale
+            max_characters: Max characters
+            max_file_size: Max file size (MB)
+            metric_family: Metric family
+            minimum_input_length: Minimum length wey dey for autocompletion
+            negative_allowed: Negative values wey dey allowed
+            number_max: Max number
+            number_min: Min number
+            reference_data_name: Reference data type
+            scopable: Value wey dey per channel
+            type: Type
+            unique: Unique value
+            useable_as_grid_filter: E dey usable for grid
+            validation_regexp: Normal expression
+            validation_rule: Validation rule
+            wysiwyg_enabled: Rich text editor dey enabled
+          default_label:
+            default_metric_unit: Make you choose unit
+            group: Make you choose de attribute group
+            metric_family: Make u select family
+            reference_data_name: Make you choose de reference date type
+        labels:
+          title: Translation for label
+        choices:
+          title: Options dem
+        history:
+          title: Stori
+    mass_edit:
+      family:
+        attributes:
+          label_label: Label
+          toolbox:
+            select_attributes_by_groups: Add by groups
+            select_attributes: Make you add attributes
+            add: Add am
+            attributes_groups_selected: '{{ itemsCount }} group(s) selected'
+    basket:
+      title: Basket
+      empty_basket: Basket dey empty
+  job:
+    upload: Make you drop your {{ type }} file here, or you click browse disk
+  export:
+    product:
+      data:
+        title: Make you filter de products dem
+      structure:
+        title: Make u filter de data
+        attributes:
+          title: Attributes dem
+      filter:
+        channel:
+          title: Channels dem
+          help: De channel dey explain scope wey dey de product values, de locales na it de use select data, and de tree na it de use select products.
+        locales:
+          title: Locales dem
+          help: "De locales dey define de localized product values wey e wan export. Ex: only product wey get information for french."
+        attributes:
+          title: Attributes dem
+          edit: Edit am
+          label: "{0}All attributes|{1}One attribute selected|]1,Inf[{{ count }} attributes selected"
+          help: "Make u select de product information wey u wan export. Ex: na the technical attributes only."
+          empty: All de attributes dem go export
+          modal:
+            apply: Apply am
+            cancel: Cancel am
+            title: Selection for attribute
+        attributes_selector:
+          attribute_group: Attribute groups dem
+          attributes: "Find am inside {{ itemsCount }} attributes"
+          selected: "Attributes dem wey don select"
+          clear: Clear
+          all_group: Everri groups
+          empty_selection: All de attributes dem go export
+          title: Attributes dem
+          description: Select de product imformation you wan export
+        family:
+          title: Family
+          help: "Select de product make e export by dia family. Ex: Make u export only shoes and dresses."
+          operators:
+            IN: E dey list
+            "NOT IN": E no dey list
+            EMPTY: Products dem wey no get family
+            "NOT EMPTY": Product wey get family
+          empty_selection: Condition no dey Families
+        updated:
+          title: Condition wey time get
+          operators:
+            ALL: E no get condition for date
+            "SINCE LAST N DAYS": Product wey don dey update for like some days (e.g.6)
+            ">": Product wey get update since dis date
+            "SINCE LAST JOB": Product wey get update since last export
+        enabled:
+          title: Status
+          help: "Select product u wan export by dia status. Ex: Export products no mata wetin be dia status."
+          value:
+            all: Everri
+            enabled: E don enable
+            disabled: E don disable
+        completeness:
+          title: Completeness
+          help: Select de product you wan export by dia completeness.
+          operators:
+            ALL: Completeness no get condition
+            "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Complete bad as e bad for one selected locale
+            "GREATER OR EQUALS THAN ON ALL LOCALES": Complete everytin for all de locales wey dem select
+            LOWER THAN ON ALL LOCALES: Everytin no complete for all de locales wey dem select
+          empty_selection: Make u choose family
+        category:
+          title: Category
+          help: Use de product categories for tree (wey dey define be de channel before) to select de products dem wey u wan export
+        identifier:
+          title: Identifier
+          help: You go use product identifiers take export separated by commas, spaces or line breaks
+        metric:
+          operators:
+            "=": E be de same with
+            "!=": E no dey equal to
+            ">=": E dey greater dan or e dey equal
+            ">": E big pass
+            "<=": E small pass or e be same as
+            "<": E small pass
+            EMPTY: E dey empty
+            NOT EMPTY: E no dey empty
+        string:
+          operators:
+            ALL: Everri's
+            CONTAINS: E carri
+            DOES NOT CONTAIN: E no contain
+            "=": E be de same with
+            STARTS WITH: E start with
+            ENDS WITH: E end with
+            EMPTY: E dey empty
+            NOT EMPTY: E no dey empty
+        price-collection:
+          operators:
+            "=": E be de same with
+            "!=": E dey equal to
+            ">=": E dey greater dan or e dey equal
+            ">": E big pass
+            "<=": E dey lower dan or e dey equal
+            "<": E small pass
+            EMPTY: E no dey empty
+            NOT EMPTY: E no dey empty
+        multi_select:
+          operators:
+            IN: E dey list
+            EMPTY: E dey empty
+            NOT EMPTY: E no dey empty
+        media:
+          operators:
+            CONTAINS: E contain
+            DOES NOT CONTAIN: E no contain
+            "=": E dey equal to
+            STARTS WITH: Start am wit
+            ENDS WITH: End am wit
+            EMPTY: E dey empty
+            NOT EMPTY: E no dey empty
+        date:
+          operators:
+            ">": E big pass
+            "<": E small pass
+            "=": E dey equal to
+            "!=": E no dey equal to
+            BETWEEN: Between
+            NOT BETWEEN: Not between
+            EMPTY: E dey empty
+            NOT EMPTY: E no dey empty
+        number:
+          operators:
+            "=": E dey equal to
+            "!=": E no dey equal to
+            ">=": E dey greater dan or e dey equal
+            ">": E dey greater dan
+            "<=": E dey lower dan or e dey equal
+            "<": E dey lower dan
+            EMPTY: E dey empty
+            NOT EMPTY: E no dey empty
+      properties:
+        title: Properties dem
+      global_settings:
+        title: Global settings
+  mass_edit_action:
+    edit_common_attributes:
+      description: Na only the attributes wey follow for families ontop de selected products go dey edited wit de following data for the <span class="highlight">{{ locale }}</span> locale and the <span class="highlight">{{ channel }}</span> channel.
+  index:
+    association_type:
+      title: "] -Inf, 1] {{ count }} association type|] 1, Inf [{{ count }} association types"
+      create_btn: Make you create association types
+    import_profiles:
+      title: "] -Inf, 1] {{ count }} import profile|] 1, Inf [{{ count }} import profiles"
+      create_btn: Make you create import profile
+      list: Make you select job
+      create_popin:
+        title: Create am
+      message:
+        created: Import profile don dey created
+    import_history:
+      title: Import reports
+    group:
+      title: "] -Inf, 1] {{ count }} group|] 1, Inf [{{ count }} groups"
+      create_btn: Make you create group
+    export_profiles:
+      title: "] -Inf, 1] {{ count }} export profile|] 1, Inf [{{ count }} export profiles"
+      create_btn: Make you create export profile
+      create_popin:
+        title: Create am
+      message:
+        created: Export profile dey successfully created
+    export_history:
+      title: Export reports
+    family:
+      title: "] -Inf, 1] {{ count }} family|] 1, Inf [{{ count }} families"
+      create_btn: Make you create family
+    grouptype:
+      title: "] -Inf, 1] {{ count }} group type|] 1, Inf [{{ count }} group types"
+      create_btn: Make you create group type
+    currency:
+      title: "] -Inf, 1] {{ count }} currency|] 1, Inf [{{ count }} currencies"
+    locale:
+      title: "] -Inf, 1] {{ count }} locale|] 1, Inf [{{ count }} locales"
+    user:
+      title: "] -Inf, 1] {{ count }} user|] 1, Inf [{{ count }} users"
+      create_btn: Make you create user
+    user_role:
+      title: "] -Inf, 1] {{ count }} role|] 1, Inf [{{ count }} roles"
+      create_btn: Make you create role
+    user_group:
+      title: "] -Inf, 1] {{ count }} group|] 1, Inf [{{ count }} groups"
+      create_btn: Make you reate group
+    process_tracker:
+      title: "] -Inf, 1] {{ count }} operation|] 1, Inf [{{ count }} operations"
+    channel:
+      title: "] -Inf, 1] {{ count }} channel|] 1, Inf [{{ count }} channels"
+      create_btn: Make you create channel
+    attribute:
+      title: "] -Inf, 1] {{ count }} attribute|] 1, Inf [{{ count }} attributes"
+      create_btn: Make you create attribute
+      modal_title: Make you choose the attribute type
+    attribute_group:
+      title: Attribute groups dem
+      create_btn: Create am
+    api_connection:
+      title: "] -Inf, 1] {{ count }} API connection|] 1, Inf [{{ count }} API connections"
+      create_btn: Create am
+  mass_edit:
+    next: Next
+    previous: Back
+    cancel: Cancel
+    confirm: Confam
+    product:
+      title: Products bulk action
+      confirm: "{1}u go soon update asset with de info dem wey demmention so, abeg confam am. |] 1, Inf [ u go soon update {{ itemsCount }} assets dem with de info wey dem mention so, abeg confam am."
+      step:
+        select:
+          label: Select products dem
+        choose:
+          title: Products bulk actions
+          label_count: "] 0, Inf [Make you select your action"
+        configure:
+          label: Configure
+        confirm:
+          label: Confam
+        launch_error:
+          label: Error bin happen wen e dey try launch de mass edit operation
+        launched:
+          label: The bulk action "{{ operation }}" don dey launched. You go get notification wen e dey ready.
+      operation:
+        change_status:
+          label: Make u change de status
+          label_count: "{1}Make you change the status of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change the status of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+          description: De products wey dey selected so go dey enabled or disabled.
+          field: To enable
+        edit_common:
+          description: Only de attributes wey belong to families of products wey don dey selected go dey edited wit de following data for the {{ locale }} locale and the {{ scope }} channel.
+        change_family:
+          label: Make you change family
+          label_count: "{1}Make you change de family of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Make you change the family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+          description: De family for selected products go change enter de chosen family
+          field: Family
+        add_to_group:
+          label: Add am to group
+          label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to groups|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to groups"
+          description: Select groups wey you wan add de products wey dey selected
+          field: Groups dem
+        add_to_category:
+          label: Add am to categories
+          label_count: "{1}Make you add <span class=\"AknFullPage-title--highlight\">1 product</span> to categories|] 1, Inf [Make you dd <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to categories"
+          description: De products go dey classified inside de following categories, dey don keep de classification wey don exist before.
+        move_to_category:
+          label: Move from one category go anoda
+          label_count: "{1}Move <span class=\"AknFullPage-title--highlight\">1 product</span> between categories|] 1, Inf [Move <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> between categories"
+          description: De products go dey classified inside de following categories, de classification wey exist before don lost.
+        remove_from_category:
+          label: Commot from categories
+          label_count: "{1}Remove <span class=\"AknFullPage-title--highlight\">1 product</span> from categories|] 1, Inf [Remove <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> from categories"
+          description: De products go comot from de categories wey dem mention so.
+        add_to_existing_product_model:
+          label: Add am to product model wey don exist
+          label_count: "{1}Make you add <span class=\"AknFullPage-title--highlight\">1 product</span> for product model wey don exist|] 1, Inf [Make you add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> for product model wey don exist"
+          description: Product model dey gather products and e dey also make common properties dey enrich and make am dey easy.
+        associate_to_product_and_product_model:
+          label_count: "{1}Associate <span class=\"AknFullPage-title--highlight\">1 product</span> to products or product models|] 1, Inf [Associate <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to products or product models"
+          description: De products wey dey selected for grid go associate wit de products wey dem select and product models for de association type wey dem choose
+          validate: Abeg put association before u enter den next step
+    family:
+      title: Families bulk action
+      confirm: "U don dey ready so to update family wey get de information so, abeg confirm.|] 1, Inf [You wan dey update {{ itemsCount }} families wey get de information so, Abeg confam."
+      step:
+        select:
+          label: Make you choose family
+        choose:
+          title: Plenti family actions dem
+          label_count: "] 0, Inf [Make you select your action"
+        configure:
+          label: Configure
+        confirm:
+          label: Confirm
+        launched:
+          label: De bulk action "{{ operation }}" don dey launched. You go get notification wen e don dey ready.
+      operation:
+        set_requirements:
+          label: Make you set attributes requirements
+          description: De attributes requirements wey dem mention so, go dey applied to de selected families
+          label_count: "{1}Make you set attributes requirements of <span class=\"AknFullPage-title--highlight\">1 family</span>|] 1, Inf [Make you set attributes requirements of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} families</span>"
+pim_enrich.error:
+  exception.title: Omo! A {{ status_code }} error don happen...
+  http:
+    403: Dey don forbid am. u no fit access dis page
+#Page titles
+page_title:
+  oro_default: Dashboard
+  pim_enrich_attributegroup_index: Attribute groups dem
+  pim_enrich_attributegroup_create: Attribute groups | Create am
+  pim_enrich_attributegroup_edit: Attribute group {{ group.label }} | Edit am
+  pim_enrich_categorytree_index: Category trees
+  pim_enrich_categorytree_create: Category trees | Create am
+  pim_enrich_categorytree_edit: Category tree {{ category.label }} | Edit am
+  pim_enrich_categorytree_create_tree: Category trees | Create am
+  pim_enrich_attribute_index: Attributes dem
+  pim_enrich_attribute_create: Attributes | Create am
+  pim_enrich_attribute_edit: Attribute {{ attribute.label }} | Edit am
+  pim_enrich_product_index: Products dem
+  pim_enrich_product_edit: Product {{ product.label }} | Edit am
+  pim_enrich_product_model_edit: Product model {{ product.label }} | Edit am
+  pim_enrich_family_index: Families
+  pim_enrich_family_edit: Family {{ family.label }} | Edit am
+  pim_enrich_channel_index: Channels
+  pim_enrich_channel_create: Channels | Create am
+  pim_enrich_channel_edit: Channel {{ channel.label }} | Edit am
+  pim_enrich_currency_index: Currencies
+  pim_enrich_locale_index: Locales dem
+  pim_enrich_group_index: Groups
+  pim_enrich_group_edit: Group {{ group.label }} | Edit am
+  pim_enrich_associationtype_index: Association types
+  pim_enrich_associationtype_edit: Association type {{ association type.label }} | Edit am
+  pim_enrich_grouptype_index: Group types
+  pim_enrich_grouptype_edit: Group type {{ group type.label }} | Edit am
+  pim_enrich_mass_edit_action_choose: Mass Edit | Choose am
+  pim_enrich_mass_edit_action_configure: Mass Edit | Configure am
+  pim_enrich_mass_edit_action_perform: Mass Edit | Perform am
+  pim_enrich_job_tracker_index: Process tracker
+  pim_enrich_job_tracker_show: Process tracker | Show job
+  pim_enrich_api_connection_index: API connections
+  pim_enrich_api_connection_create: API connections | Create am
+  pim_enrich_mass_edit_action: Mass Edit
+  pim_analytics_system_info_index: System information
+#Batch job labels
+batch_jobs:
+  add_product_value:
+    label: Make you Add product value
+    perform:
+      label: Make you add product value
+  update_product_value:
+    label: Make u update value for product
+    perform:
+      label: Make u update value for product
+  edit_common_attributes:
+    label: Make u edit de attributes dem
+    perform:
+      label: Make u edit de attributes dem
+    cleaner:
+      label: Clean files wey dey for attributes
+  add_to_category:
+    label: Add am to categories
+    perform:
+      label: Add am to categories
+  move_to_category:
+    label: Move am go category
+    perform:
+      label: Move am go category
+  remove_from_category:
+    label: Comot am from category
+    perform:
+      label: Commot am from category
+  add_to_existing_product_model:
+    label: Add am to product model wey don exist
+    perform:
+      label: Add am to product model wey don exist
+  set_attribute_requirements:
+    label: Set wetin attributes need
+    perform:
+      label: Set attributes requirements
+  csv_product_quick_export:
+    quick_export.label: Sharp sharp export for CSV product
+    quick_export_product_model.label: Sharp sharp export for CSV product
+    perform:
+      label: Sharp sharp export for CSV product
+  csv_product_grid_context_quick_export:
+    quick_export.label: Sharp sharp export for CSV product grid context
+    quick_export_product_model.label: Sharp sharp export for CSV product model grid context
+    perform:
+      label: Sharp sharp export for CSV grid context
+  xlsx_product_quick_export:
+    quick_export.label: Sharp sharp export for XSLX product
+    quick_export_product_model.label: Sharp sharp export for XSLX product model
+    perform:
+      label: Sharp sharp export for XSLX product
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: Sharp sharp export for XSLX product grid context
+    quick_export_product_model.label: Sharp sharp export for XSLX product model grid context
+    perform:
+      label: Sharp sharp export for XSLX product grid context
+  csv_product_export:
+    label: Product export for inside CSV
+    export.label: To export product
+  csv_product_model_export:
+    label: Product model export for inside CSV
+    export.label: Product export
+  csv_category_export:
+    label: Category export for inside CSV
+    export.label: To export category
+  csv_attribute_export:
+    label: Attribute export for inside CSV
+    export.label: To export attribute
+  csv_attribute_option_export:
+    label: Attribute option export for inside CSV
+    export.label: To export attribute option
+  csv_association_type_export:
+    label: Association type export for inside CSV
+    export.label: To export association type
+  csv_group_export:
+    label: Group export for inside CSV
+    export.label: To export group
+  csv_family_export:
+    label: "Family export for inside CSV\n \nContext | Edit Context"
+    export.label: Family export
+  csv_family_variant_export:
+    label: Family variant export for inside CSV
+    export.label: Family variant export
+  csv_product_import:
+    label: Product import for inside CSV
+    validation.label: Validation for file
+    import.label: Product for import
+    import_associations.label: Import for inside association
+  csv_product_model_import:
+    label: Product model import for inside CSV
+  csv_category_import:
+    label: Category import for inside CSV
+    validation.label: Validation for file
+    import.label: To import Category
+  csv_attribute_import:
+    label: Attribute import for inside CSV
+    validation.label: Validation for file
+    import.label: To import attribute
+  csv_attribute_option_import:
+    label: Attribute option import for inside CSV
+    validation.label: Validation for file
+    import.label: To import attribute option
+  csv_association_type_import:
+    label: Association type import for inside CSV
+    validation.label: Check file
+    import.label: To import association type
+  csv_family_import:
+    label: Family import for inside CSV
+    validation.label: Check file
+    import.label: To import family
+    compute_data_related_to_family_variants.label: Make you compute models data
+  csv_family_variant_import:
+    label: Family variant import for inside CSV
+    validation.label: Validation for file
+    import.label: Family variant import
+  csv_group_import:
+    label: Group import for inside CSV
+    validation.label: Validation for file
+    import.label: Import for group
+  csv_channel_export:
+    label: Channel export for inside CSV
+    export.label: To export channel
+  csv_locale_export:
+    label: Locale export for inside CSV
+    export.label: To export locale
+  csv_attribute_group_export:
+    label: Attribute group export for inside CSV
+    export.label: To export attribute group
+  csv_currency_export:
+    label: Currency export for inside CSV
+    export.label: To export currency
+  csv_group_type_export:
+    label: Group type import for inside CSV
+    export.label: To export group type
+  csv_channel_import:
+    label: Channel import for inside CSV
+    validation.label: Validation for file
+    import.label: To import channel
+  csv_locale_import:
+    label: Locale import for inside CSV
+    validation.label: Validation for file
+    import.label: To import locale
+  csv_attribute_group_import:
+    label: Attribute group import wey dey inside CSV
+    validation.label: Validation for file
+    import.label: To import attribute
+  csv_currency_import:
+    label: Currency import wey dey inside CSV
+    validation.label: Validation for file
+    import.label: To import currency
+  csv_group_type_import:
+    label: Group type import wey dey inside CSV
+    validation.label: Validation for file
+    import.label: To import group type
+  xlsx_category_import:
+    label: Category import for inside XLSX
+    validation.label: Validation for file
+    import.label: Import for category
+  xlsx_association_type_import:
+    label: Association type import for inside XLSX
+    validation.label: Validation for file
+    import.label: Import type for association
+  xlsx_attribute_import:
+    label: Attribute import for inside XLSX
+    validation.label: Validation for file
+    import.label: Attribute import
+  xlsx_attribute_option_import:
+    label: Attribute option import for inside XLSX
+    validation.label: Validation for file
+    import.label: Option for attribute import
+  xlsx_family_import:
+    label: Family import for inside XLSX
+    validation.label: Validation for file
+    import.label: Family import
+    compute_data_related_to_family_variants.label: Makeu for put models dia data
+  xlsx_family_variant_import:
+    label: Family variant import for inside XLSX
+    validation.label: Validation for file
+    import.label: Family variant import
+  xlsx_product_export:
+    label: Product export for inside XLSX
+    export.label: Export product
+  xlsx_product_model_export:
+    label: Product model export for inside XLSX
+    export.label: Product model export
+  xlsx_product_import:
+    label: Product import for inside XLSX
+    validation.label: Validation for file
+    import.label: Import for inside product
+    import_associations.label: Import for inside association
+  xlsx_product_model_import:
+    label: Product model import for inside XSLX
+  xlsx_group_export:
+    label: Group export for inside XLSX
+    export.label: Group export
+  xlsx_group_import:
+    label: Group import for inside XLSX
+    validation.label: Validation for file
+    import.label: To Import group
+  xlsx_family_export:
+    label: Family export for inside XLSX
+    export.label: Family export
+  xlsx_family_variant_export:
+    label: Family variant export for inside XLSX
+    export.label: Family variant export
+  xlsx_category_export:
+    label: Category export for inside XLSX
+    export.label: Category export
+  xlsx_attribute_export:
+    label: Attribute export for inside XLSX
+    export.label: Attribute export for inside XLSX
+  xlsx_attribute_option_export:
+    label: Attribute option export for inside XLSX
+    export.label: Attribute option export for inside XLSX
+  xlsx_association_type_export:
+    label: Association type export for inside XLSX
+    export.label: Association type export for inside XLSX
+  xlsx_channel_export:
+    label: Channel import wey dey inside XLSX
+    export.label: Channel export
+  xlsx_locale_export:
+    label: Locale export wey dey inside XLSX
+    export.label: Locale export
+  xlsx_attribute_group_export:
+    label: Attribute group export for inside XLSX
+    export.label: Attribute group export
+  xlsx_currency_export:
+    label: Currency export for inside XLSX
+    export.label: Currency export
+  xlsx_group_type_export:
+    label: Group type export for inside XLSX
+    export.label: Group type export
+  xlsx_channel_import:
+    label: Channel import for inside XLSX
+    validation.label: Validation for file
+    import.label: Channel import
+  xlsx_locale_import:
+    label: Locale import for inside XLSX
+    validation.label: Validation for file
+    import.label: Locale import
+  xlsx_attribute_group_import:
+    label: Attribute group import for inside XLSX
+    validation.label: Validation for file
+    import.label: Attribute group import
+  xlsx_currency_import:
+    label: Currency import for inside XLSX
+    validation.label: Validation for file
+    import.label: Currency import
+  xlsx_group_type_import:
+    label: Group type import for inside XLSX
+    validation.label: Validation for file
+    import.label: Group type import
+job_tracker:
+  download_archive:
+    archive: Make you download generated archive
+    output: Make you download generated files
+    input: Make you downlaod read files
+    invalid_xlsx: Make you download invalid data
+    invalid_csv: Make you download invalid data
+pim_menu:
+  tab:
+    activity: Activity
+    imports: Imports
+    products: Products dem
+    exports: Exports
+    settings: Settings
+    system: System
+    help:
+      title: Help
+      helper: Akeneo Help center
+  item:
+    association_type: Association types
+    attribute: Attributes dem
+    attribute_group: Attribute groups dem
+    category: Categories dem
+    channel: Channels
+    currency: Currencies
+    dashboard: Dashboard
+    family: Families
+    group: Groups
+    group_type: Group types
+    locale: Locales dem
+    product: Products dem
+    product_model: Product models
+    published_product: Products wey dey Published
+    export_history: Exports history
+    export_profile: Export profiles
+    import_history: Imports history
+    import_profile: Import profiles
+    configuration: Configuration
+    user_management: Users Management
+    user: Users
+    user_group: Groups dem
+    user_role: Roles dem
+    info: Information wey concern system
+    job_tracker: Process tracker
+    api_connection: API connections dem
+  navigation:
+    activity: Activity navigation
+    system: System navigation
+    user: Navigation for users management
+    settings: Navigation for settings
+  user:
+    logout: Close am
+    user_account: Na my account
+pim_notification:
+  mark_all_as_read: Mark everytin say u don read
+  no_notifications: Notifications no dey
+  loading: E dey load...
+catalog_volume:
+  axis:
+    count_products: Products dem
+    count_channels: Channels
+    count_families: Families
+    count_attributes: Attributes dem
+    count_categories: Categories dem
+    count_category_trees: Category trees
+    count_product_models: Product models dem

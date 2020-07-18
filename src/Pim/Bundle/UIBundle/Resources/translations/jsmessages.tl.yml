@@ -1,0 +1,124 @@
+#ORO messages
+Close: Sirado
+Update: Update
+Selected Rows: Napiling mga Hanay
+"Yes": "Oo"
+"Yes, Delete": "Oo, Burahin"
+"Yes, I Agree": "Oo, Sumasang-ayon ako"
+"Yes, do it": "Oo, gawin ito"
+"No": "Hindi"
+"Ok, got it.": "Ok, nakuha ko."
+"Cancel": "Kansel"
+"Delete Confirmation": "Burahin ang kumpirmasyon"
+"Edit": "I-Edit"
+"Unexpected error occured. Please contact system administrator.": "Ang hindi inaasahang pagkakamali ay naganap. Mangyaring makipag-ugnay sa administrator ng sistema."
+"Yes, revoke": "Oo, iurong"
+"Revoke Confirmation": "Iurong ang kompirmasyon"
+Now: Ngayon
+Prev: Nakaraan
+Next: Susunod
+Today: Ngayon
+Wk: Wk
+Done: Tapos na
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Pumili ng Oras"
+Time: Oras
+Hour: Oras
+Minute: Minuto
+Second: Segundo
+Millisecond: Millisegundo
+Microsecond: Microsegundo
+"Time Zone": "Oras ng Zona"
+#PIM messages
+Localized value: Lokal na halaga
+Columns: Mga column
+Datagrid Configuration: Kumpigurasyon ng Datagrid
+Apply: Ilapat
+#Filters
+Action: Aksyon
+Unit: Yunit
+Currency: Pera
+jstree:
+  all: Lahat ng mga produkto
+  unclassified: Hindi na-classify na mga produkto
+  product:
+    all: Lahat ng mga produkto
+    unclassified: Hindi na-classify na mga produkto
+  no_tree: Walang magagamit na puno
+  include_sub: Isama ang mga sub-kategorya
+  loading: Naglo-load ...
+#Datetimepicker
+datetimepicker:
+  days:
+    Sunday: Linggo
+    Monday: Lunes
+    Tuesday: Martes
+    Wednesday: Miyerkules
+    Thursday: Huwebes
+    Friday: Biyernes
+    Saturday: Sabado
+  daysShort:
+    Sun: Sun
+    Mon: Mon
+    Tue: Tue
+    Wed: Wed
+    Thu: Thu
+    Fri: Fri
+    Sat: Sat
+  daysMin:
+    Su: Su
+    Mo: Mo
+    Tu: Tu
+    We: We
+    Th: Th
+    Fr: Fr
+    Sa: Sa
+  months:
+    January: Enero
+    February: Pebrero
+    March: Marso
+    April: Abril
+    May: Mayo
+    June: Hunyo
+    July: Hulyo
+    August: Agosto
+    September: Setyembre
+    October: Oktubre
+    November: Nobyembre
+    December: Disyembre
+  monthsShort:
+    Jan: Jan
+    Feb: Feb
+    Mar: Mar
+    Apr: Apr
+    May: Mayo
+    Jun: Jun
+    Jul: Jul
+    Aug: Aug
+    Sep: Sep
+    Oct: Oct
+    Nov: Nov
+    Dec: Dec
+#ORO
+oro_config:
+  form:
+    config:
+      title: Kompigurasyon ng sistema
+      tab:
+        system:
+          title: Sistema
+      group:
+        localization:
+          title: Lokalisasyon
+          system_locale: Lenguahe
+        notification:
+          title: Mga abiso
+          system_notification: Bagong mga bersyon ng mga abiso
+        loading_message:
+          title: Naglo-load na mga mensahe
+          label: Hindi magawang mag-load ang mga mensahe
+        loading_messages:
+          label: Mayroong naglo-load na mga mensahe

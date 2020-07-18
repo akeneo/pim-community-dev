@@ -1,4 +1,6 @@
 pim_dashboard:
+  title: Панель керування
+  version: Версія
   link.label:
     product: Керування продуктами
     category: Керування категоріями
@@ -14,6 +16,8 @@ pim_dashboard:
       title: Останні операції
       empty: Операції не знайдені
       status: Статус
+      date: Дата
+      type: Тип
       "profile name": Назва профілю
       details: Детальніше
       job_type:
@@ -22,3 +26,4 @@ pim_dashboard:
         mass_edit: Масове редагування
         quick_export: Швидкий експорт
         compute_product_models_descendants: Обчислення дочірніх моделей продукту
+        mass_delete: Масове видалення продуктів

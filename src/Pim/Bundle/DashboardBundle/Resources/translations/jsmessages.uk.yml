@@ -3,6 +3,8 @@ pim_dashboard:
     last_operations:
       empty: Операції не знайдені
       status: Статус
+      date: Дата
+      type: Тип
       profile_name: Назва профілю
       details: Детальніше
       warning_count: Попередження
@@ -14,7 +16,10 @@ pim_dashboard:
         compute_product_models_descendants: Обчислення дочірніх моделей продукту
         compute_family_variant_structure_changes: Обчислення структурних змін різновидів сімейства
         compute_completeness_of_products_family: Підрахувати заповненість продуктів сімейства
+        mass_delete: Масове видалення продуктів
     completeness:
       load_more: 'Завантажити більше...'
     header:
       view_all: Переглянути всі
+page_title:
+  pim_dashboard_index: Панель керування

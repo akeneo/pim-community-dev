@@ -1,0 +1,28 @@
+pim_dashboard:
+  title: Dashboard
+  version: Bersyon
+  link.label:
+    product: Pangasiwaan ang mga produkto
+    category: Pangasiwaan ang mga kategorya
+    attribute: Pangasiwaan ang mga katangian
+    family: Pangasiwaan ang mga pamilya
+  widget:
+    error:
+      title: Error habang nilo-load ang widget
+      message: Ang widget na '%alias%' ay hindi umiiral
+    completeness:
+      title: Ang Pagkakakumpleto Sa Mga Tsanel at Pinagmulan
+    last_operations:
+      title: Mga huling operasyon
+      empty: Walang mga operasyong nakita
+      status: Katayuan
+      date: Petsa
+      type: Uri
+      "profile name": Ang pangalan ng profile
+      details: Mga detalye
+      job_type:
+        import: Mag-angkat
+        export: Magluwas
+        mass_edit: Malawakang pag-edit
+        quick_export: Mabilisang pagluwas
+        compute_product_models_descendants: Kalkulahin ang mga supling ng mga modelo ng produkto

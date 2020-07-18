@@ -1,0 +1,21 @@
+oro.filter.form.label_type_equal: '='
+oro.filter.form.label_type_greater_equal: '>='
+oro.filter.form.label_type_greater_than: '>'
+oro.filter.form.label_type_less_equal: '<='
+oro.filter.form.label_type_less_than: '<'
+oro.filter.form.label_type_yes: "oo"
+oro.filter.form.label_type_no: "hindi"
+oro.filter.form.label_type_contains: mga nilalaman
+oro.filter.form.label_type_not_contains: ay hindi naglalaman
+oro.filter.form.label_type_equals: ay katumbas ng
+oro.filter.form.label_type_start_with: nagsisimula sa
+oro.filter.form.label_type_end_with: nagtatapos sa
+oro.filter.form.label_type_empty: ay walang laman
+oro.filter.form.label_type_not_empty: ay walang laman
+oro.filter.form.label_type_in_list: nasa listahan
+oro.filter.form.label_date_type_between: sa pagitan
+oro.filter.form.label_date_type_not_between: hindi sa pagitan
+oro.filter.form.label_date_type_more_than: higit sa
+oro.filter.form.label_date_type_less_than: mas mababa sa
+oro.filter.form.label_not_selected: Hindi napili
+oro.filter.form.label_selected: Napili

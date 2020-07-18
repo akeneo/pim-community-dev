@@ -1,0 +1,81 @@
+An identifier attribute already exists.: Identifier wer don de b4.
+Attribute code may contain only letters, numbers and underscore: Option code dey only contain only letter, numbers and underscore
+Attribute code may contain only letters (at least one), numbers and underscores: Option code dey only contain only letter, (bad as e bad one), numbers and underscore
+This attribute type can't be used as a grid filter: Dem no fit use this kind attribute like grid filter
+This code is not available: Dis code no dey available
+This attribute type must be required: Dis attribute na must say e go dey
+This attribute type can't be required: Dis kind attribute dem no need am
+This attribute type can't have unique value: Dis kind attribute no fit get value
+No default value may be specified for this attribute type: Dem no fit specify any default value for dis attribute
+This value should be Yes or No: Dis value suppose be Yes or No
+This value should not be blank: Dis value no suppose dey blank
+Option code may contain only letters, numbers and underscores: Option code dey only contain letters only, numbers and underscore
+Option code may contain only letters (at least one), numbers and underscores: Option code dey only contain only letter, (bad as e bad one), numbers and underscore
+This value should not be a decimal.: Dis value no suppose be decimal.
+'The file extension is not allowed (allowed extensions: %extensions%).': 'De file extension no dey (allowed. %extensions%).'
+"The value %value% is already set on another product for the unique attribute %attribute%": De value %value% don dey set already for anoda product for him unique attribute %attribute%
+The same identifier is already set on another product: Dat kind identifier don dey set already for anoda product
+regex.comma_or_semicolon.message: Dis field no dey contain any comma or semicolon.
+file.extensions.message: 'De file extension no dey (allowed. %extensions%).'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": Dis kind value nid make you use {{ decimal_separator}} take separate decimals.
+"This type of value expects the use of dot (.) to separate decimals.": Dis kind value need make you use dot (.) take separate decimals them.
+"This type of value expects the use of comma (,) to separate decimals.": Dis kind value need make you use comma (,) take separate decimals them.
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Dis kind value nid make you use arabic decimal separator(,) take separate decimals.
+"This type of value expects the use of the format {{ date_format }} for dates.": Dis kind value nid make you use de format wey be {{ date_format}} for dates.
+"The category \"%category%\" has to be a root category.": De category nid be root category.
+"The attribute \"%attributeCode%\" does not exist.": De attribute wey be "%attributeCode%" no exist.
+"The attribute \"%attributeCode%\" is not a metric attribute.": De attribute "%attributeCode%" no be metric attribute.
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": De unit "%unitCode%" no dey exist and e no belong to de default metric family untop dat attribute before %attributeCode%".
+"The currency \"%currency%\" has to be activated.": De currency nid dey activated.
+product_model.code.not_blank.message: De product model code no supose de dey empty.
+product_model.code.unique.message: Dat kind code don dey set already for anoda product.
+product_model.family_variant.not_blank.message: De product model family na must say e suppose dey empty.
+pim_catalog:
+  constraint:
+    can_have_family_variant_empty_axis_value: 'Attribute no suppose dey empty at all, e dey defined as axis for dis entity'
+    can_have_family_variant_unexpected_attribute: 'E no fit see de property wey dey dis entity because him no dey de attribute set'
+    cannot_have_product_model_as_parent: 'De product model no fit get the product model as him papa wey father am'
+    cannot_have_parent: 'De product model no fit get parent'
+    attribute_does_not_belong_to_family: 'Attribute no dey belong to de family'
+    variant_product_invalid_family: 'De variant product family must to resemble pass him parent'
+    not_null_family: De family no fit dey invalid because say your product with de identifier na variant product.
+    variant_product_has_parent: 'Na must say de variant product must get him own papa'
+    invalid_variant_product_parent: 'De variant product "%variant_product%" no fit get product model "%product_model%" as him papa, ( dis kind product model go only fit get other models as him children)'
+    modified_variant_axis_value: 'Variant axis "%variant_axis%" no fit dey modified, "%provided_value%" given'
+    family_variant_attributes_unique: Attributes must dey unique, "%attributes%" fit dey use used plenty times for variant attributes set
+    family_variant_axes_unique: Attributes axes must dey different, "%attributes%" fit dey use used plenty times for variant attributes set
+    family_variant_axes_immutable: 'Variant axes no fit dey modified for dat level'
+    family_variant_axes_attribute_type_unique: Variant axes no fit be unique or be identifier
+    family_variant_axes_attribute_type: Variant axes na must say e must be boolean, simple select, or e be simple reference data or metric
+    family_variant_axes_wrong_type: Variant axes no fit be localizable, e no fit dey scopable or even be locale specific
+    family_variant_axes_number_of_axes: 'A variant attribute set no fit get more dan %max_axes_number% axes'
+    family_variant_no_axis: E suppose dey, bad as e bad one attribute wey dey defined as axis for de attribute set for de level "%level%"
+    family_variant_axis_level: Attribute "%axis%" must dey set as attribute for de same variant attribute set e bin dey set as axis
+    family_variant_has_family_attribute: '"%attribute%" attribute no fit dey added to "%family_variant%" family variant, as him no be attribute for de "%family%" family'
+    family_variant_level_do_not_exist: E no get any variant attribute wey dey set for level "%level%"
+    family_variant_no_level: Bad as e bad e suppose one level suppose dey wey dey defined for de family variant
+    family_variant_maximum_number_of_level: Family variant no fit plenty pass level
+    family_variant_unique_attributes_in_last_level: Unique attribute must dey set for de product level
+    product_identifier: Dis kind identifiers no de at all.
+    0: Error wey we no expect don happen.
+    100: Value wey we neva expect
+    101: Dis field dey expect boolean value.
+    102: Wetin dis field dey expect na float value.
+    103: Wetin dis field dey expect na integer value.
+    104: Dis field dey expect numeric value.
+    105: Wetin dis field dey expect na string value.
+    106: Wetin dis field dey expect na array value.
+    107: Wetin dis field dey expect na array for arrays as value.
+    200: Internal error don happen
+    201: Internal error don happen
+    202: Dis field dey expect numeric value.
+    203: Wetin dis field dey expect na string value.
+    204: Wetin dis field dey expect na string value.
+    205: Internal error don happen
+    300: Wetin dis field dey expect na valid entity code.
+    301: Wetin dis field dey expect na valid scope and locale.
+    302: Dis field dey expect valid scope.
+    303: Wetin dis field dey expect na valid association format.
+    pim_immutable_product_validator: Dat kind identifier don dey set already for anoda product
+    pim_immutable_product_model_validator: Dat kind code don dey set already for anoda product model.
+

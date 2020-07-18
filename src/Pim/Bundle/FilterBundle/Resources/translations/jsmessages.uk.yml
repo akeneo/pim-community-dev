@@ -9,3 +9,6 @@ after: після
 from: від
 to: до
 and: та
+system_filter_group: Система
+oro_filter.filters.manage: Керування фільтрами
+oro_filter.placeholder.all: Всі

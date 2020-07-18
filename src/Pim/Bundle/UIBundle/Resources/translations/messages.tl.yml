@@ -1,0 +1,49 @@
+User: Gumamit
+Run demo: Patakbuhin ang demo
+Product: Produkto
+Attribute list: Listahan ng katangian
+Attribute Group list: Listahan ng katangian ng grupo
+Users: Mga gumamit
+Roles: Mga tungkulin
+Groups: Mga pangkat
+Configuration: Kumpigurasyon
+Currency list: Listahan ng pera
+Locale list: Listahan ng lokal
+Logged in as: Naka-log in bilang
+Logout: I-logout
+Login: I-login
+Previous: Nakaraan
+Next: Susunod
+Channel list: Listahan ng tsanel
+Select file: Pumili ng file
+Change file: Palitan ang file
+Remove file: Tanggalin ang file
+Delete: Burahin
+Save: Save
+Cancel: Kansel
+Get help: Kumuha ng tulong
+My User: Aking account
+oro.form.choose_value: Pumili ng isang halaga...
+Read more: Magbasa nang higit pa
+oro.form.click_here_to_select: Mag-klik dito upang pumili...
+Add: Magdagdag
+"Learn how to use this space": "Alamin kung paano gamitin ang espasyo na ito"
+"How To Use Pinbar": "Paano Gamitin ang Pinbar"
+Pinbar: Ang pinbar
+Favorites: Mga paborito
+Most Viewed: Pinapanuod ng karamihan
+"Add this page to favorites": "Idagdag ang pahinang ito sa mga paborito"
+"Minimize the window to the pinbar": "Paliitin ang window sa pinbar"
+"Loading ...": "Naglo-load ..."
+"Yes": "Oo"
+"No": "Hindi"
+required: (kinakailangan)
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Paganahin ang mga naglo-load na mga mensahe
+    loading_message_enabled.tooltip: Ipakita ang mga kaaya-ayang mensahe habang naghihintay na mag-load ang isang pahina
+    loading_messages.label: Mayroong naglo-load na mga mensahe
+    loading_messages.tooltip: Lahat ng available na naglo-load na mga mensaheng hiwalay sa pamamagitan ng linyang breaks
+  group:
+    loading_message.title: Naglo-load na mga mensahe
+other_actions: Iba pang mga aksyon
