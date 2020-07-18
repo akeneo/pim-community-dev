@@ -1,0 +1,178 @@
+job_execution:
+  summary:
+    hide_item: make e hide item
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: make e select categories
+        title: select de categories
+    locales:
+      validation:
+        not_blank: Na must say dey go select one locale, abeg choose one locale wey u go export
+pim_import_export:
+  entity:
+    job_instance:
+      label: job profile
+      flash:
+        update:
+          success: De job profile don update finish.
+          fail: De job profile no bin fit update.
+        delete:
+          success: Job instance don commot finish
+    import_profile:
+      uppercase_label: Import profile
+      flash:
+        create:
+          success: Import profile don dey created
+      module:
+        create:
+          button: Make you create import profile
+    export_profile:
+      uppercase_label: Export profile
+      flash:
+        create:
+          success: Export profile dey successfully created
+      module:
+        create:
+          button: Make you create export profile
+  form:
+    job_execution:
+      title.details: Execution details
+      refreshBtn.title: Load am again
+      button:
+        show_profile.title: Show profile
+        download_log.title: Make you download log
+        download_file.title: Make you download generated file
+        download_archive.title: Mkae you downlaod generated archive
+      summary:
+        fetching: E dey collect data wey dey about execution...
+        warning: Dey warn
+        header.step: Step
+        header.warnings: Dey warn
+        header.summary: De main point
+        header.start: Start am
+        header.end: End am
+    job_instance:
+      fail:
+        launch: E don fail to launch de job file. Dey sure say e dey valid and say you get de right to launch am.
+        save: E don fail to save de job profile. Dey sure say you get de right to edit am.
+      button:
+        export.title: Export am now
+        import.launch: Import am now
+        import.upload: Upload and follow import am now
+        import.upload_file: Make you upload file
+      meta:
+        job: Job
+        connector: Connector
+      subsection:
+        last_executions: Last executions
+      tab:
+        content:
+          title: Content
+        properties:
+          decimal_separator:
+            title: Decimal separator
+            help: Make you determine de decimal separator
+          date_format:
+            title: Format for date
+            help: Make you determine de format for date fields
+          file_path:
+            title: File path
+            help: Wia you fit write generated file for de system
+          delimiter:
+            title: Delimiter
+            help: One character to use set de field delimiter
+          enclosure:
+            title: Enclosure
+            help: One character to use set de field enclosure
+          with_header:
+            title: With header
+            help: Weda make e print column name or make e no print
+          with_media:
+            title: Make you export files and images
+            help: Weda make e export product files and images or make e no export
+          lines_per_file:
+            title: Number wey dey lines for each file
+            help: Make you define de limit numba for lines wey dey each file
+          upload_allowed:
+            title: Allow file make e upload
+            help: Weda make e allow de file to upload directly or not
+          categories_column:
+            title: Column wey dey for categories
+            help: Name for de categories column
+          escape:
+            title: Close am
+            help: One character to use set de field escape
+          family_column:
+            title: Column for family
+            help: Name for family column
+          groups_column:
+            title: Column for group
+            help: Name for de group column
+          enabled:
+            title: Make you enable product
+            help: Weda make e enable imported products dem or not
+          enabled_comparison:
+            title: Compare values dem
+            help: Enable de comparison wey dey between cari come values and values wey dem import. E go fit speed up import if dey values wey e dey import na de same with de cari come values
+          real_time_versioning:
+            title: Stori update for real time
+            help: E mean say de product history don update automatically, e fit switch off make e for improve performance
+          family_variant_column:
+            title: Family variant column
+      file_path: File path
+  widget:
+    last_operations:
+      empty: Operation no dey
+      date: Date
+      profile_name: Profil name
+      warning_count: Dey warn
+      job_type:
+        import: Cari come
+        export: Export am
+        mass_edit: Mass Edit
+        quick_export: Sharp sharp export
+        compute_product_models_descendants: Makeu for put models dia data
+  batch_status:
+    1: E don complete
+    2: "E don start\n"
+    3: E bin don start
+    4: E don de stop
+    5: E don stop
+    6: E don fail
+    7: don forget am
+    8: E no know
+confirmation:
+  remove:
+    import_profile: U sure say u wan delete dis import profile?
+    export_profile: U sure say u wan delete dis export profile?
+    job_instance: You sure say you wan delele dis job instance?
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: U sure say u wan delete dis import profile?
+      flash:
+        delete:
+          success: Import profile don comot
+    export_profile:
+      module:
+        delete:
+          confirm: U sure say u wan delete dis export profile?
+      flash:
+        delete:
+          success: Export profile don comot
+pim_title:
+  pim_importexport_export_profile_index: "U go export profiles management\n \n"
+  pim_importexport_export_profile_edit: U go export profile {{ job.label }} | Edit
+  pim_importexport_export_profile_show: U go export profile {{ job.label }} | Show
+  pim_importexport_export_execution_index: U go export executions history
+  pim_importexport_export_execution_show: U go export executions | Details
+  pim_importexport_import_profile_index: U go import profiles management
+  pim_importexport_import_profile_edit: U go import profile {{ job.label }} | Edit
+  pim_importexport_import_profile_show: U go import profile {{ job.label }} | Show
+  pim_importexport_import_execution_index: U go import executions history
+  pim_importexport_import_execution_show: "U go import executions | Details\n \n"

@@ -1,0 +1,142 @@
+#Job labels
+batch_jobs:
+  default_steps:
+    validation: Pagbibigay-bisa sa file
+    import_associations: Pag-angkat ng asosasyon
+    import_root_product_model: Angkatin ang ugat ng modelo ng produkto
+    import_sub_product_model: Angkatin ang napapailallim na modelo ng produkto
+    compute_product_models_descendants: Kalkulahin ang mga supling ng mga modelo ng produkto
+    compute_family_variant_structure_changes: Kalkulahing ang mga pagbabago sa istraktura ng baryang ng pamilya
+    compute_completeness_of_products_family: Kalkulahin ang pagiging kumpleto ng mga pamilya ng produkto
+  csv_product_export:
+    label: Pagluwas ng produkto sa CSV
+    export.label: Pagluwas ng produkto
+  csv_product_model_export:
+    label: I-eksport ang modelo ng produkto sa CSV
+    export.label: I-eksport ang modelo ng produkto
+  csv_category_export:
+    label: Pagluwas ng kategorya sa CSV
+    export.label: Pagluwas ng kategorya
+  csv_attribute_export:
+    label: Pagluwas ng katangian sa CSV
+    export.label: Pagluwas ng katangian
+  csv_attribute_option_export:
+    label: Pagluwas ng pagpipiliang katangian sa CSV
+    export.label: Pagluwas ng pagpipiliang katangian
+  csv_association_type_export:
+    label: Tipo ng asosasyon na pagluwas sa CSV
+    export.label: Tip ng asosasyon na pagluwas
+  csv_group_export:
+    label: Pagluwas ng grupo sa CSV
+    export.label: Pagluwas ng grupo
+  csv_family_export:
+    label: Pagluwas ng pamilya sa CSV
+    export.label: Pagluwas ng pamilya
+  csv_family_variant_export:
+    label: I-eksport ang ibat-ibang pamilya sa CSV
+    export.label: I-esksport ang baryante ng pamilya
+  csv_product_import:
+    label: Pag-aklas sa CSV
+    import.label: Pag-angkat ng produkto
+  csv_product_model_import:
+    label: Angkatin ang modelo ng produkto sa CSV
+    import_product_model_descendants.label: Kalkulahin ang mga supling ng modelo ng produkto
+  csv_category_import:
+    label: Pag-angkat ng kategorya sa CSV
+    import.label: Pag-angkat ng kategorya
+  csv_attribute_import:
+    label: Pag-angkat ng katangian sa CSV
+    import.label: Pag-angkat ng katangian
+  csv_attribute_option_import:
+    label: Pag-angkat ng pagpipiliang katangian sa CSV
+    import.label: Pag-angkat ng pagpipiliang katangian
+  csv_association_type_import:
+    label: Pag angkat ng tipo ng asosasyon sa CSV
+    import.label: Pag-angkat ng tipo ng asosasyon
+  csv_family_import:
+    label: Pag-angkat ng pamilya CSV
+    import.label: Pag-angkat ng pamilya
+    compute_data_related_to_family_variants.label: Kalkulahin ang data ng mga modelo ng produkto
+  csv_family_variant_import:
+    label: Angkatin ang ibat-ibang pamilya sa CSV
+    import.label: Angkating ang ibat-ibang pamilya
+  csv_group_import:
+    label: Grupong pag-angkat sa CSV
+    import.label: Pag-aangkat ng grupo
+  csv_attribute_group_export:
+    label: Pag-luwas ng katangian ng grupo sa CSV
+    export.label: Pag-luwas ng grupo ng katangian
+  csv_group_type_export:
+    label: Pagluwas sa uri ng grupo sa CSV
+    export.label: Pagluwas sa uri ng grupo
+  csv_attribute_group_import:
+    label: Pag-angkat ng katangian ng grupo sa CSV
+    import.label: Pag-angkat sa katangian ng grupo
+  csv_group_type_import:
+    label: Ang pag-angkat ng uri ng grupo sa CSV
+    import.label: Ang pag-angkat ng uri ng grupo
+  xlsx_category_import:
+    label: Pag-angkat ng kategorya sa XLSX
+    import.label: Pag-angkat ng kategorya
+  xlsx_association_type_import:
+    label: Pag-angkat ng uri ng asosasyon sa XLSX
+    import.label: Pag-angkat ng tipo ng asosasyon
+  xlsx_attribute_import:
+    label: Pag-angkat ng katangian sa XLSX
+    import.label: Pag-angkat ng katangian
+  xlsx_attribute_option_import:
+    label: Pag-angkat ng pagpipiliang katangian sa XLSX
+    import.label: Pag-angkat ng pagpipiliang katangian
+  xlsx_family_import:
+    label: Angkatin ang pamilya sa XLSX
+    import.label: Pag-angkat ng pamilya
+  xlsx_family_variant_import:
+    label: Angkatin ang baryante ng pamilya sa XLSX
+    import.label: Angkatin ang ibat-ibang pamilya
+  xlsx_product_export:
+    label: I-eksport ang produkto sa XLSX
+    export.label: Pagluwas ng produkto
+  xlsx_product_model_export:
+    label: I-eksport ang modelo ng produkto sa XLSX
+    export.label: I-eksport ang modelo ng produkto
+  xlsx_product_import:
+    label: Angkatin ang produkto sa XLSX
+    import.label: Pag-angkat ng produkto
+  xlsx_product_model_import:
+    import_product_model_descendants.label: Kalkulahin ang mga supling ng modelo ng produkto
+  xlsx_group_export:
+    label: I-eksport ang grupo sa XLSX
+    export.label: Pagluwas ng grupo
+  xlsx_group_import:
+    label: Angkatin ang grupo sa XLSX
+    import.label: Pag-aangkat ng grupo
+  xlsx_family_export:
+    label: I-eksport ang pamilya sa XLSX
+    export.label: Pagluwas ng pamilya
+  xlsx_family_variant_export:
+    label: I-eksport ang ibat-ibang pamilya sa XLSX
+    export.label: I-eksport ang ibat-ibang pamilya
+  xlsx_category_export:
+    label: I-eksport ang kategorya sa XLSX
+    export.label: Pagluwas ng kategorya
+  xlsx_attribute_export:
+    label: Pagluwas ng katangian sa XLSX
+    export.label: I-eksport ang katangian sa XLSX
+  xlsx_attribute_option_export:
+    label: Pagluwas ng pagpipiliang katangian sa XLSX
+    export.label: I-eksport ang pagpipiliang katangian sa XLSX
+  xlsx_association_type_export:
+    label: Pagluwas ng uri ng asosasyon sa XLSX
+    export.label: I-eksport ang uri ng asosasyon sa XLSX
+  xlsx_attribute_group_export:
+    label: Pagluwas ng katangian ng grupo sa XLSX
+    export.label: Ang pagluwas ng grupo ng katangian
+  xlsx_group_type_export:
+    label: Pagluwas ng uri ng grupo sa XLSX
+    export.label: Uri ng grupo na iluluwas
+  xlsx_attribute_group_import:
+    label: Pag-angkat ng katangian ng grupo sa XLSX
+    import.label: Ang pag-angkat sa uri ng katangian
+  xlsx_group_type_import:
+    label: Pag-angkat ng uri ng grupo sa XLSX
+    import.label: Ang pag-angkat ng uri ng grupo

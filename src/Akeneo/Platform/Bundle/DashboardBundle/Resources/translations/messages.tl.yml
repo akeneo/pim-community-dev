@@ -1,0 +1,10 @@
+pim_dashboard:
+  title: Dashboard
+  version: Bersyon
+  widget:
+    completeness:
+      title: Ang Pagkakakumpleto Sa Mga Tsanel at Pinagmulan
+    last_operations:
+      title: Mga huling operasyon
+      status: Katayuan
+      type: Uri

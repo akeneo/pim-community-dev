@@ -1,0 +1,463 @@
+User: User
+Product: Product
+Users: Users
+Roles: Roles dem
+Groups: Groups dem
+Configuration: Configuration
+Logout: Close am
+Next: Next
+Delete: Delete
+Save: Save am
+My User: Na my account
+Add: Add am
+"Yes": "Na so"
+"No": "No be so"
+required: (de need am)
+other_actions: Oda actions dem
+pim_common:
+  cancel: Cancel am
+  save: Save am
+  delete: Delete
+  view: View
+  edit: Make u edit am
+  created: E don create
+  updated: E don update
+  create: Create am
+  permissions: Permissions dem
+  properties: Properties dem
+  name: Name
+  remove: Comot am
+pim_enrich:
+  #ACLs
+  acl:
+    locale:
+      index: Drop de locales dem
+    currency:
+      index: Drop de different money
+      toggle: Toggle de money dem
+    product:
+      index: Drop de products dem
+      create: Make u create product
+      edit_attributes: Edit de attributes dem wey dey de product
+      remove: Comot one product
+      add_attribute: Make u add attribute to product
+      remove_attribute: Comot attribute from product
+      categories_view: Follow categories for product reason
+      associations_view: Check out product association types dem
+      associations_edit: Make you add associations for product
+      change_family: Make u change de product family
+      add_to_groups: Join product for group
+      mass_edit: Actions dem wey dey edit boku products
+      comment: Yan on top products dia mata
+      download: Download prdocuts dem for pdf
+      history: Check out product stori
+    product_model:
+      create: Make u create model for product
+      edit_attributes: Make u edit attributes wey dey de product model
+      categories_view: Follow categories for product reason
+      history: Check out product stori
+      remove: Commot product model
+    category:
+      list: Drop categories dem
+      create: Make e create category
+      edit: Make e edit category
+      remove: Comot category
+      move: Make e move category
+      children: Check category pikin dem
+      products: Check de category product
+      history: Check category history
+    channel:
+      index: Drop channels dem
+      create: Make e create channel
+      edit: Make e edit channel
+      remove: Comot channel
+      history: Check channel stori
+    family:
+      index: Drop families dem
+      create: Make e create family
+      edit_properties: Make e edit family dia properties dem
+      edit_attributes: Edit attributes wey dey family
+      remove: Make u commot family
+      history: Make u check family stori
+    family_variant:
+      remove: Commot family variant
+    attribute_group:
+      index: Drop attribute groups
+      create: Make u create attribute group
+      edit: Make e edit attribute group
+      remove: Comot attribute group
+      sort: Make u find attribute groups
+      add_attribute: Make u add attribute to group
+      remove_attribute: Comot attribute from group
+      history: Check out attribute group stori
+    attribute:
+      index: Make u drop de attributes dem
+      create: Make u create attribute
+      edit: Make u edit attributes dem
+      remove: Commot attribute
+      sort: Find attributes for inside attributes groups dem
+      history: Check out attribute stori
+    group:
+      index: Drop groups dem
+      create: Make u create group
+      edit: Make u edit group
+      remove: Comot group
+      history: Check out group stori
+    group_type:
+      index: Make u drop group types dem
+      create: Make u create group type
+      edit: Make u edit group type
+      remove: Comot group type
+    association_type:
+      index: Make u drop association types dem
+      create: Make u create association type
+      edit: Make u edit association type
+      remove: Comot association type
+      history: Check out association type stori
+    association:
+      remove: Comot associations from product
+    job_tracker:
+      index: Make u check process tracker
+    api_connection:
+      manage: Manage de API connections dem
+  acl_group:
+    association_type: Association types dem
+    attribute: Attributes dem
+    attribute_group: Groups dem for attribute
+    category: Categories dem
+    channel: Channels dem
+    currency: Currencies dem
+    family: Families dem
+    group: Groups dem
+    group_type: Group types dem
+    locale: Locales dem
+    product: Products dem
+    product_model: Product models dem
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: Dem don comot de locale from de channel. now we dey clean completeness wey dem link to dem to.
+        done: To commot locale wey dey channel don ready.
+  create:
+    attribute: make e create attribute
+    attribute group: make e create attribute group
+    category: make e create category
+    tree: make e create tree
+    channel: make e create channel
+    currency: make e create currency
+    family: make u create family
+    locale: make u create locale
+    product: make e create product
+    group: make u create group
+    association type: make u create association type
+    group type: make u create group type
+    drag_or_upload: Drag am come drop here or you click for here
+#Confirmation messages
+confirmation:
+  delete: Confam say u don delete
+  leave: U sure say u wan commot from dis page?
+  discard changes: U go lose de changes to de {%entity% if u commot for dis page.
+  remove:
+    category: U sure say U wan delete dis category %name%?
+    user: U sure say u wan delete de user %name%?
+#Flash messages
+flash:
+  entity:
+    removed: Item bin don delete
+  attribute:
+    identifier_not_removable: E no fit commot identifier attribute
+  category:
+    removed: E don commot category finish
+  tree:
+    removed: E don commot tree finish
+    not removable: Trees wey follow for channels no fit commot.
+  currency:
+    updated: E don update currency finish
+    error.linked_to_channel: You no fit disable currency wey waka with channel.
+  product:
+    enabled: Product don enable
+    disabled: Product don disable
+  group type:
+    created: E don create group type
+  user:
+    removed: User don commot finish
+  error occurred: Ea no work. Abeg try am again.
+#Info messages
+info:
+  updated: E get changes wey neva save.
+  category:
+    remove children: E go delete every sub-category.
+    keep products: Products wey dey dis category no go comot.
+    products limit exceeded: Dis category get plenty products pass wetin dis operation dey permit (%limit% maximum for products dem)
+  product:
+    no available attributes: Attributes no dey again to carri add
+    no family defined: E no define family
+    change family: Make u change de product family
+    change family to: Make u change family to
+    merge attributes: Attributes dem wey dey now go join body with de ones wey dey d new family.
+    keep attributes: E no get attributes wey go commot.
+    number of associations: '%productCount% products dem and %groupCount% groups dem'
+    enable: Enable am
+    enabled: E don enable
+    disable: Disable am
+    disabled: E don disable
+  group:
+    axis: 'Axis for varfiation: %attributes%'
+    select products: Abeg choose products dem wey suppose dey dis group.
+    selectable products: De seletable products dem wey dem mention so get value wey dem don define for every axis.
+    no group types: Group types no exist, click here make u for create one
+    more products: '%count% more products dem...'
+  association type:
+    show products: Select product dem
+    show groups: Show de groups dem
+    remove from products: To delete de association type fit comot am from %count% products dem.
+    none exist: E no get association types wey exist.
+    create one: Click here make u for create one
+  attribute:
+    auto option sorting: If e enable, options go dey sort demsef by demsef for de labels dem wey dey localized
+  completeness:
+    not calculated: E neva calculate yet
+#Form elements
+Created: E don create
+Updated: E don update
+Last update: Time wey e update last
+by: By
+N/A: N/A
+Manage products: Manage products dem
+Manage groups: Make u manage group
+Code: Code
+Name: Name
+Type: Type
+Scope: Channel
+Required: De nid am
+Unique: E different
+Not required: E no mata
+Translatable: E fit translate
+Scopable: E fit scope
+Localizable: E fit localize
+Unique value: Na unique value
+Attribute group: Group for attribute
+Other: Other
+Variants behavior when edited: Variants dem dia behaviour when e don edit
+Remove: Comot am
+Parameters: Parameters dem
+System: System
+Values: Values dem
+General parameters: General parameters dem
+Backend parameters: Parameters dem for backend
+Label: Label am
+Default label: Default label
+Default value: Default value
+Attributetype: Type for attribute
+Attribute type: Type for attribute
+Defaultvalue: Default value
+Variant: Variant
+Smart: E sharp
+Useable as grid column: E fit work like grid column
+Useable as grid filter: Grid fit use am
+Family: Family
+Image: Image
+Available locales: Locales dem wey dey available
+Locale specific: Locale specific
+default: Default
+Axis: Axis
+Add attributes: Make u add attributes dem
+switch_on: "Na so"
+switch_off: "No be so"
+Close: Close am
+Search: Find
+Choose the attribute type: Make u select ur type for attribute
+Choose the attribute group: Make u select attribute group
+Drag and drop a file or click here: Drag come drop here so u fit upload or u click for here
+Drop an image or click here: Drop image or u click here
+Automatic option sorting: Option wey dey sort imsef
+save_attribute_before_manage_option: To take manage options dem, abeg save de attribute first
+Please select: Abeg select
+Active: E busy
+Inactive: E no busy
+Do not convert: No convert am
+Create: Create am
+Choose a family: Make u select family
+Choose a unit: Make u pick unit
+No matches found: E no see im match
+Category tree: Category tree
+Completeness: Wen e complete
+Attribute used as label: Attribute wey stand as label
+Credentials: Credentials dem
+#Scopes
+Global: Global
+Channel: Channels dem
+Expand all channels: Open everri channels dem
+Collapse all channels: Close evrri channels dem
+#Variants
+Always override: Override am evrri time
+Ask: Question am
+#Attribute group
+General Properties: General properties dem
+Group values: Values wey dey group
+New group: Tam tam group
+Groups overview: Overview for group
+'Y-m-d h:i:s': 'Y-m-d h:i:s'
+#Attribute properties
+Max characters: Max characters
+Validation rule: Rule to carri validate
+Validation regexp: Regexp for validation
+Wysiwyg enabled: E don enable WYSIWYG
+Number min: Min number
+Number max: Max number
+Decimals allowed: Free decimals
+Negative allowed: Free negative values dem
+Date min: Min date
+Date max: Max date
+Metric family: Metric family
+Default metric unit: Default metric unit
+Max file size: Max file size (MB)
+Allowed extensions: Extensions dem wey dem don free
+None: E no get any
+E-mail: E-mail
+URL: URL
+Regular expression: Expression wey normal
+Minimum input length: Minimum length wey go enta
+Default: Default
+#Family
+Attributes: Attributes dem
+#Category
+Title: Title
+#Page titles
+pim_catalog_identifier: Identifier
+pim_catalog_text: Text
+pim_catalog_textarea: Text Area
+pim_catalog_number: Number
+pim_catalog_price_collection: Price
+pim_catalog_multiselect: Select plenti
+pim_catalog_simpleselect: Simple select
+pim_catalog_file: File
+pim_catalog_image: Image
+pim_catalog_boolean: "Gree/no gree"
+pim_catalog_date: Date
+pim_catalog_metric: Metric
+pim_reference_data_simpleselect: Simple select for reference data
+pim_reference_data_multiselect: Multi select for reference
+#Locales
+Activated: E don activate
+Edit: Make u edit am
+Disable: Disable am
+To enable: Enable am
+Select attributes: Make u choose attributes dem
+Select: Choose am
+Remove this attribute: Commot dis attribute
+Copy: Copy am
+Translate from: Translate am from
+Current tab: Tab wey dey now
+#Product view
+Group: Group
+View group: Check de group
+Products: Products dem
+#Tabs
+Properties: Properties dem
+History: Stori
+pane.accordion:
+  node_values: Values dem for node
+  general_properties: General properties dem
+  locale_values: Values dem for locale
+  backend_parameters: Parameters dem for backend
+  general_parameters: General parameters dem
+  validation_parameters: Validation parameters dem
+  label_translations: Translation for label
+  options: Options dem
+  group_values: Values for de group
+#Popin titles
+popin.create:
+  association_type.title: Make u create association type
+  group.title: Make u create tamtam group
+  product.title: Make u create tamtam product
+  option.title: Make u create tamtam option
+#Datagrid contents
+In group: For inside group
+Attribute as label: Attribute wey standas label
+Is associated: E get connect
+Complete: E complete
+Created At: Na who create am be
+Updated At: E update for
+Enabled: E don enable
+Disabled: E don disable
+Status: Which one e be
+#Versioning / history
+Change History: Change de stori
+Data Audit: Audit de data
+Data Audit - System: 'System - for data audit'
+Action: Action
+Version: Version
+Entity type: Type for entity
+Entity name: Name for entity
+Entity id: Id for entity
+Data: Data dem
+Author: Persin wey get am
+Logged at: Logged at
+Deleted: E don comot
+Old values: Tey tey values dem
+New values: Tamtam values dem
+#Configuration
+System configuration: Setting for system
+General setup: Setup for evrris
+Localization: Wen e localize
+Localization options: Options dem to carri localize
+Locale: Locale
+Location: Wia e dey
+Format address by address country: Take country take format de address
+Language: Language
+Timezone: Timezone
+Currency: Currency
+oro.locale:
+  address_format:
+    region_name_type:
+      parish: "parish"
+      state: "state"
+      island: "waterside"
+      county: "county"
+      area: "area"
+      prefecture: "prefecture"
+      department: "department"
+      district: "district"
+      province: "province"
+  form:
+    tooltip:
+      locale: "Make u select de option to take format numbers, addresses, names n dates dem"
+      location: " Wen 'format adderess by address country' option don disable na location dey go use format addresses dem"
+      format_address_by_address_country: "If u select dis option e go enable addresses dem wey u wan format by de country wey dem dey. To disable dis option go make addresses dem make e format for de location address format"
+      language: "Make u select de system language wey u wan use"
+      timezone: "Make u select de time zone wey go show date and time"
+      currency: "Make u select de default currency"
+#Datagrid
+Selected products successfully deleted: De products wey u select don comot finish
+pim_mass_edit:
+  notification:
+    mass_edit:
+      error: Plenty edit <strong>%label%</strong> don fail
+      warning: Plenti edit <strong>%label%</strong> bin finish with some warnings dem
+      success: Plenti edit<strong>%label%</strong> don finish
+    quick_export:
+      error: Sharp sharp export <strong>%label%</strong> don fail
+      warning: Sharp sharp export <strong>%label%</strong> finish am wit some warnings dem
+      success: Sharp sharp export <strong>%label%</strong> don finish
+job_execution.summary:
+  mass_edited: Plenti wey don edit
+  skip: Ones wey don skip
+  skipped_products: Products wey don skip
+  skipped_attributes: Attributes dem wey don skip
+  skipped_families: Families dem wey bin skip
+pim_mass_edit_execution_show: Plenti edit executions dem | details dem
+edit_common_attributes.steps.edit_common_attributes_processor.title: Make u edit de attributes dem
+update_product_value.steps.update_product_value_processor.title: Make u update value for product
+remove_product_value.steps.update_product_value_processor.title: Make u comot poduct value
+edit_common_attributes: Make u edit de attributes dem
+edit_common_attributes_clean: Clean files wey dey attributes
+perform.steps.duplicated.title: Axis wey dey don copy
+perform.steps.excluded.title: Product wey no follow
+mass_edit report:
+  overview: Plenti edit reports dem
+job_tracker:
+  tab:
+    title: Tracker for process
+  filter:
+    started_at: Wia e bin begin

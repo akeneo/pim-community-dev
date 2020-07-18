@@ -1,0 +1,21 @@
+pim_connector:
+  steps:
+    file_reader:
+      invalid_item_columns_count: 'Dey expect to get %totalColumnsCount% columns, actually have %itemColumnsCount% in %filePath%:%lineno%'
+job_execution.summary:
+  read: read
+  write: e don write
+  skip: ones wey don skip
+  create: e don create
+  process: e don dey process
+  update_products: products wey dey update
+  process_products: product don dey processed
+  skip_products: product wey don skip
+  displayed: first warning wey don show
+  charset_validator:
+    title: 'File wey de code:'
+    skipped: skipped, extension wey dey white list
+  product_skipped_no_diff: skipped product (difference no dey)
+  product_skipped_no_associations: product wey don skip (association no dey detected)
+  product_model_skipped_no_diff: pass product model (no get different)
+  item_position: read lines

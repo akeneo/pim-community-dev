@@ -1,0 +1,65 @@
+batch_jobs:
+  csv_currency_export:
+    label: Експорт валют у CSV
+    export.label: Експорт валют
+  csv_currency_import:
+    label: Імпорт валют з CSV
+    import.label: Імпорт валют
+  xlsx_currency_export:
+    label: Експорт валют у XLSX
+    export.label: Експорт валют
+  xlsx_currency_import:
+    label: Імпорт валют з XLSX
+    import.label: Імпорт валют
+  csv_locale_export:
+    label: Експорт локалей у CSV
+    export.label: Експорт локалей
+  csv_locale_import:
+    label: Імпорт локалей з CSV
+    import.label: Імпорт локалей
+  xlsx_locale_export:
+    label: Експорт локалей у XLSX
+    export.label: Експорт локалей
+  xlsx_locale_import:
+    label: Імпорт локалей у XLSX
+    import.label: Імпорт локалей
+  csv_channel_export:
+    label: Експорт каналів у CSV
+    export.label: Експорт каналів
+  csv_channel_import:
+    label: Імпорт каналів з CSV
+    import.label: Імпорт каналів
+  xlsx_channel_export:
+    label: Експорт каналів у XLSX
+    export.label: Експорт каналів
+  xlsx_channel_import:
+    label: Імпорт каналів з XLSX
+    import.label: Імпорт каналів
+pim_enrich.entity.channel:
+  label: канал
+  uppercase_label: Канал
+  flash:
+    update:
+      success: Канал успішно видалено.
+      fail: Неможливо оновити канал.
+    create:
+      success: Канал успішно створено.
+      fail: Неможливо створити канал.
+    delete:
+      success: Канал успішно видалено
+      fail: Не можна видалити цей канал
+  property:
+    category_tree: Дерево категорій
+    do_not_convert: Не перетворювати
+    label_conversion_units: Виберіть одиниці перетворення для кожного атрибуту виміру, які будуть використані під час експорту продуктів
+  module:
+    create:
+      button: Створити канал
+    delete:
+      confirm: Ви впевнені, що ви хочете видалити цей канал?
+pim_enrich.entity.locale:
+  label: локаль
+  uppercase_label: Локаль
+  plural_label: Локалі
+pim_enrich.entity.currency:
+  plural_label: Валюти

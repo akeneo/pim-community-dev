@@ -1,0 +1,61 @@
+pim_title:
+  pim_user_index: Users
+  pim_user_role_index: Roles dem
+  pim_user_group_index: Groups dem for owner
+  oro_config_configuration_system: Configuration
+  pim_user_reset_request: U bin forget password
+confirmation:
+  remove:
+    user: U sure say u wan delete dis user?
+    group: U sure say u wan delete dis group?
+pim_enrich:
+  entity:
+    user:
+      module:
+        delete:
+          confirm: U sure say u wan delete dis user?
+pim_user_management:
+  entity:
+    user:
+      properties:
+        username: Name wey u for like use
+        name_prefix: Name prefix
+        first_name: First name
+        middle_name: Ur middle name
+        last_name: Last name
+        name_suffix: Name suffix
+        avatar: Avatar
+        email: Email
+        catalog_locale: Catalog locale
+        catalog_scope: Catalog scope
+        default_tree: Default tree
+        product_grid_filters: Project grid filters dem
+        current_password: Password wey u dey use now
+        new_password: New password
+        new_password_repeat: New Password (repeat)
+        password: Password
+        ui_locale: UI locale
+        timezone: Timezone
+        default_product_grid_view: Cari come grid view
+        proposals_to_review_notification: Wen we go review new proposal #EE Only
+      module:
+        create:
+          button: Make u create user
+        delete:
+          confirm: U sure say u wan delete dis user?
+        update:
+          additional: Jara
+          password: Password
+          interfaces: Interface
+    role:
+      plural_label: Roles dem
+      module:
+        create:
+          button: Do new role
+        delete:
+          confirm: U sure say u wan delete dis role?
+    group:
+      plural_label: Groups dem for owner
+      module:
+        create:
+          button: Do new group

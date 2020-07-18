@@ -1,0 +1,74 @@
+pim_enrich:
+  #Category
+  category:
+    tab:
+      property.title: Properties dem
+      history.title: Stori
+    suggest_selection: Abeg choose category for left hand
+    or: orh
+    create_new: Make e create tamtam category
+  #Mass edit operations
+  mass_edit_action:
+    limit_exceeded: Abeg select small pass %limit%% de items u wan edit
+    product:
+      page_title: Products dem
+      page_subtitle: Plenti Edit (1 product)|plenti Edit (%count% products dem)
+      title: Make u pick operation
+      subtitle: Make u choose aw u wan to dey operate de products dem wey u select | make u pick aw u wan make d products dem %count% wey u select go dey operate
+      confirm: U go soon update product wey waka wit dis information, abeg confam.|U go soon update %count% products wey waka wit dis information, abeg confam.
+      steps:
+        first: Select product dem
+        second: Make u pick operation
+        third: Set am
+        fourth: Confam
+    change-status:
+      label: Change status
+      description: D selected products go dey enable or disabled.
+      success_flash: Product(s) status don change
+      launched_flash: Plenty action "change status" don launch. u go get info wen e ready.
+    edit-common-attributes:
+      label: Make u edit de attributes dem
+      description: De pattern wey dem don select dem go edit am wit all dis data wey dem don select for locale.
+      empty: Abeg select d attribute(s) u wan edit
+      success_flash: De job wey dey update product(s) status de do im work now
+      launched_flash: D bulk action "edit attributes" don dey launch. we go tell u wen e don finish.
+      message:
+        warning: Attribute wey look de same no dey for de products dem wey u select. Abeg select anoda one.
+        invalid_attribute: Attribute wit code "attribute_code" no dey common for de products wey dey select, attribute don skip.
+        no_valid_attribute: No attribute wey dey selected go fit work for dis product.
+    classify-add:
+      label: Add am for inside categories
+      description: De products go dey positioned for different categories, de placement wey don exist already go still dey.
+      success_flash: Dey don select all product(s) go categories wey dem belong
+      launched_flash: Dey plenty action "add to categories" don launch. u go get info wen e ready.
+    classify-move:
+      label: Move from one categories go another
+      description: De products go enter different categories wey dem mention so, de one wey exist go lost.
+      success_flash: Dey don select all product(s) go categories wey dem belong
+      launched_flash: Dey plenty action "move to categories" don launch. u go get info wen e ready.
+    classify-remove:
+      label: Comot am from categories
+      description: De products go comot from de categories wey dem mention so.
+      success_flash: Dey don comot product(s) dem from de categories wey dem bin select dem to
+      launched_flash: Dey plenty action "remove from categories" don launch. u go get info wen e ready.
+    change-family:
+      label: Make you change family
+      description: De family wey dem don select so dia products go change to the one wey dem choose
+      success_flash: Dey don succeed change de family wey dem bin select de product(s) go
+      launched_flash: Plenty action "change family" don launch. u go get info wen e ready.
+    add-to-groups:
+      label: Join am for groups
+      description: Select de groups wey u wan add de products wey u bin select
+      success_flash: Product bin don enta selected groups finish
+      launched_flash: Plenty action "add to groups" don launch. Dem go let u know wen e ready.
+      no_group: Group no dey now. Abeg begin de create group.
+    set-attribute-requirements:
+      label: Set wetin attributes need
+      description: De attribute requirements wey dem mention so go follow for de family wey dem choose
+      success_flash: De attribute requirements wey dem mention so go follow for de family wey dem choose
+      launched_flash: De plenty action "set attributes" don launch. Dem go let u know wen e ready.
+    mass_action:
+      quick_export:
+        launched_flash: De work wey dey export de products dem now dey run
+category:
+  overview: Categories dem

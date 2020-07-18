@@ -1,0 +1,184 @@
+job_execution:
+  summary:
+    display_item: Показати елемент
+    hide_item: Приховати елемент
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Вибір категорій
+        title: Оберіть категорії
+    locales:
+      validation:
+        not_blank: Одна локаль має бути вибрана, будь ласка, оберіть локаль для експорту.
+pim_import_export:
+  entity:
+    job_instance:
+      label: профіль завдання
+      flash:
+        update:
+          success: Профіль завдання було успішно оновлено.
+          fail: Не вдалося оновити профіль завдання.
+        delete:
+          success: Екземпляр процесу успішно видалено
+    import_profile:
+      uppercase_label: Профіль імпорту
+      flash:
+        create:
+          success: Профіль імпорту успішно створено
+      module:
+        create:
+          button: Створити профіль імпорту
+    export_profile:
+      uppercase_label: Профіль експорту
+      flash:
+        create:
+          success: Профіль експорту успішно створено
+      module:
+        create:
+          button: Створити профіль експорту
+  form:
+    job_execution:
+      title.details: Подробиці виконання
+      refreshBtn.title: Оновити
+      button:
+        show_profile.title: Показати профіль
+        download_log.title: Журнал завантаження
+        download_file.title: Завантажити створений файл
+        download_archive.title: Завантажити створений архів
+      summary:
+        fetching: Збирання даних про виконання роботи...
+        warning: Попередження
+        header.step: Етап
+        header.warnings: Попередження
+        header.summary: Зведення
+        header.start: Початок
+        header.end: Кінець
+    job_instance:
+      fail:
+        launch: Не вдалося запустити робочий профіль. Переконайтеся, що він правильний і що ви маєте право запускати його.
+        save: Не вдалося зберегти робочий профіль. Переконайтеся, що ви маєте право редагувати його.
+      button:
+        export.title: Експортувати зараз
+        import.launch: Імпортувати зараз
+        import.upload: Завантажити та імпортувати зараз
+        import.upload_file: Вивантажити файл
+      meta:
+        job: Робота
+        connector: Коннектор
+      subsection:
+        last_executions: Останні запуски
+      tab:
+        content:
+          title: Вміст
+        properties:
+          decimal_separator:
+            title: Десятковий розділювач
+            help: Визначити десятковий роздільник
+          date_format:
+            title: Формат дати
+            help: Визначення формату дати поля
+          file_path:
+            title: Шлях до файлу
+            help: Куди писати згенерований файл у файловій системі
+          delimiter:
+            title: Роздільник
+            help: Один символ, який використовується для розділення полів
+          enclosure:
+            title: Обрамлення
+            help: Один символ, який використовується для обрамлення полів
+          with_header:
+            title: Із заголовком
+            help: Друкувати ім'я стовбця чи ні
+          with_media:
+            title: Експортувати файли та зображення
+            help: Експортувати чи ні файли та зображення продуктів
+          lines_per_file:
+            title: Кількість рядків у файлі
+            help: Визначити граничну кількість рядків у файлі
+          upload_allowed:
+            title: Дозволити завантаження файлу
+            help: Дозволити завантаження файлу на пряму чи ні
+          categories_column:
+            title: Стовпець категорій
+            help: Назва стовпця категорій
+          escape:
+            title: Екранування
+            help: Один символ, який використовується для екранування полів
+          family_column:
+            title: Сімейство стовпців
+            help: Назва стовпця сімейства
+          groups_column:
+            title: Стовпець груп
+            help: Назва стовпця груп
+          enabled:
+            title: Активувати продукт
+            help: Імпортований продукт повинен бути включений чи ні
+          enabled_comparison:
+            title: Порівняти значення
+            help: Ввімкнути порівняння висхідних значень і імпортованих значень. Може прискорити імпорт, якщо імпортовані значення дуже схожі на висхідні значення
+          real_time_versioning:
+            title: Оновлення історії змін в реальному часі
+            help: Означає, що історія продукту автоматично оновлюється, можна вимкнути для кращої продуктивності
+          family_variant_column:
+            title: Стовпець різновидів сімейств
+      file_path: Шлях до файлу
+  widget:
+    last_operations:
+      empty: Операції не знайдені
+      date: Дата
+      profile_name: Назва профілю
+      details: Детальніше
+      warning_count: Попередження
+      job_type:
+        import: Імпорт
+        export: Експорт
+        mass_edit: Масове редагування
+        quick_export: Швидкий експорт
+        compute_product_models_descendants: Обчислення дочірніх моделей продукту
+        compute_family_variant_structure_changes: Обчислення структурних змін різновидів сімейства
+        compute_completeness_of_products_family: Підрахувати заповненість продуктів сімейства
+        mass_delete: Масове видалення продуктів
+      header.view_all: Переглянути всі
+  batch_status:
+    1: Завершено
+    2: Запуск
+    3: Розпочато
+    4: Зупинка
+    5: Зупинено
+    6: Невдало
+    7: Завершити
+    8: Невідомий
+confirmation:
+  remove:
+    import_profile: Ви впевнені, що ви хочете видалити цей імпорт профілю?
+    export_profile: Ви впевнені, що ви хочете видалити цей експорт профілю?
+    job_instance: Ви впевнені, що хочете видалити цей екземпляр процесу?
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: Ви впевнені, що ви хочете видалити цей імпорт профілю?
+      flash:
+        delete:
+          success: Імпорт профілю успішно видалено
+    export_profile:
+      module:
+        delete:
+          confirm: Ви впевнені, що ви хочете видалити цей експорт профілю?
+      flash:
+        delete:
+          success: Експорт профілю успішно видалено
+pim_title:
+  pim_importexport_export_profile_index: Керування профілями експорту
+  pim_importexport_export_profile_edit: Експорт профілю {{ job.label }} | Редагувати
+  pim_importexport_export_profile_show: Експорт профілю {{ job.label }} | Показати
+  pim_importexport_export_execution_index: Історія запусків експорту
+  pim_importexport_export_execution_show: Запуски експорту | Подробиці
+  pim_importexport_import_profile_index: Керування профілями імпорту
+  pim_importexport_import_profile_edit: Імпорт профілю {{ job.label }} | Редагувати
+  pim_importexport_import_profile_show: Імпорт профілю {{ job.label }} | Показати
+  pim_importexport_import_execution_index: Історія запусків імпорту
+  pim_importexport_import_execution_show: Запуски імпорту | Подробиці

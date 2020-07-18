@@ -1,0 +1,137 @@
+#Job labels
+batch_jobs:
+  default_steps:
+    validation: Validation for file
+    import_associations: Import for inside association
+    import_root_product_model: To import root product model
+    import_sub_product_model: To import sub product model
+    compute_product_models_descendants: Makeu for put models dia data
+  csv_product_export:
+    label: Product export for inside CSV
+    export.label: To export product
+  csv_product_model_export:
+    label: Product model export for inside CSV
+    export.label: Product model export
+  csv_category_export:
+    label: Category export for inside CSV
+    export.label: To export category
+  csv_attribute_export:
+    label: Attribute export for inside CSV
+    export.label: To export attribute
+  csv_attribute_option_export:
+    label: Attribute option export for inside CSV
+    export.label: To export attribute option
+  csv_association_type_export:
+    label: Association type export for inside CSV
+    export.label: To export association type
+  csv_group_export:
+    label: Group export for inside CSV
+    export.label: To export group
+  csv_family_export:
+    label: "Family export for inside CSV\n \nContext | Edit Context"
+    export.label: Family export
+  csv_family_variant_export:
+    label: Family variant export for inside CSV
+    export.label: Family variant export
+  csv_product_import:
+    label: Product import for inside CSV
+    import.label: Product for import
+  csv_product_model_import:
+    label: Product model import for inside CSV
+  csv_category_import:
+    label: Category import for inside CSV
+    import.label: To import Category
+  csv_attribute_import:
+    label: Attribute import for inside CSV
+    import.label: To import attribute
+  csv_attribute_option_import:
+    label: Attribute option import for inside CSV
+    import.label: To import attribute option
+  csv_association_type_import:
+    label: Association type import for inside CSV
+    import.label: To import association type
+  csv_family_import:
+    label: Family import for inside CSV
+    import.label: To import family
+    compute_data_related_to_family_variants.label: Make you compute models data
+  csv_family_variant_import:
+    label: Family variant import for inside CSV
+    import.label: Family variant import
+  csv_group_import:
+    label: Group import for inside CSV
+    import.label: Import for group
+  csv_attribute_group_export:
+    label: Attribute group export for inside CSV
+    export.label: To export attribute group
+  csv_group_type_export:
+    label: Group type import for inside CSV
+    export.label: To export group type
+  csv_attribute_group_import:
+    label: Attribute group import wey dey inside CSV
+    import.label: To import attribute
+  csv_group_type_import:
+    label: Group type import wey dey inside CSV
+    import.label: To import group type
+  xlsx_category_import:
+    label: Category import for inside XLSX
+    import.label: Import for category
+  xlsx_association_type_import:
+    label: Association type import for inside XLSX
+    import.label: Import type for association
+  xlsx_attribute_import:
+    label: Attribute import for inside XLSX
+    import.label: Attribute import
+  xlsx_attribute_option_import:
+    label: Attribute option import for inside XLSX
+    import.label: Option for attribute import
+  xlsx_family_import:
+    label: Family import for inside XLSX
+    import.label: Family import
+  xlsx_family_variant_import:
+    label: Family variant import for inside XLSX
+    import.label: Family variant import
+  xlsx_product_export:
+    label: Product export for inside XLSX
+    export.label: Export product
+  xlsx_product_model_export:
+    label: Product model export for inside XLSX
+    export.label: Product model export
+  xlsx_product_import:
+    label: Product import for inside XLSX
+    import.label: Import for inside product
+  xlsx_group_export:
+    label: Group export for inside XLSX
+    export.label: Group export
+  xlsx_group_import:
+    label: Group import for inside XLSX
+    import.label: To Import group
+  xlsx_family_export:
+    label: Family export for inside XLSX
+    export.label: Family export
+  xlsx_family_variant_export:
+    label: Family variant export for inside XLSX
+    export.label: Family variant export
+  xlsx_category_export:
+    label: Category export for inside XLSX
+    export.label: Category export
+  xlsx_attribute_export:
+    label: Attribute export for inside XLSX
+    export.label: Attribute export for inside XLSX
+  xlsx_attribute_option_export:
+    label: Attribute option export for inside XLSX
+    export.label: Attribute option export for inside XLSX
+  xlsx_association_type_export:
+    label: Association type export for inside XLSX
+    export.label: Association type export for inside XLSX
+  xlsx_attribute_group_export:
+    label: Attribute group export for inside XLSX
+    export.label: To export attribute group
+  xlsx_group_type_export:
+    label: Group type export wey dey inside XLSX
+    export.label: To export group type
+  xlsx_attribute_group_import:
+    label: Attribute group import wey dey inside XLSX
+    import.label: To import attribute
+  xlsx_group_type_import:
+    label: Group type import wey dey inside XLSX
+    import.label: To import group type

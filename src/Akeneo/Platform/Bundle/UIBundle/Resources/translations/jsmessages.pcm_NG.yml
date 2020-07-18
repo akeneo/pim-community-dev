@@ -1,0 +1,230 @@
+"Yes, do it": "Na so, do am"
+"Edit": "Make u edit am"
+Hour: Hour
+Minute: Minute
+Second: Second
+Millisecond: Millisecond
+Columns: Columns
+#Filters
+Action: Action
+Currency: Currency
+#ORO
+oro_config:
+  form:
+    config:
+      title: Setting for system
+      tab:
+        system:
+          title: System
+      group:
+        localization:
+          title: Wen e localize
+          system_locale: Language
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
+pim_common:
+  actions: Actions
+  add: Add am
+  add_attributes: Make u add attributes dem
+  all: Everri's
+  apply: Apply am
+  by: by
+  cancel: Cancel am
+  code: Code
+  confirm: Confam
+  confirm_deletion: Confam say u don delete
+  create: Create am
+  created: E don create
+  delete: Delete
+  done: Done
+  edit: Make u edit am
+  entity_updated: E get changes wey neva save.
+  from: From
+  general_properties: General properties dem
+  history: Stori
+  label: Label am
+  label_translations: Translation for labal
+  loading: E dey load...
+  media_upload: Drag am come drop here or you click for here
+  next: Next
+  "no": "No be so"
+  none: E no get any
+  not_available: N/A
+  ok: Ok
+  permissions: Permissions dem
+  properties: Properties dem
+  remove: Comot am
+  required_label: (de need am)
+  save: Save am
+  search: Find
+  select2:
+    search: Find am...
+    no_match: E no see im match
+    load_more: E dey load more results...
+  status: Which one e be
+  to: to
+  type: Type
+  "yes": "Na so"
+  operator: Operator
+  operators:
+    "=": E be de same with
+    "!=": E no dey equal to
+    ">=": E dey greater dan or e dey equal
+    ">": E big pass
+    "<=": E small pass or e be same as
+    "<": E small pass
+    EMPTY: E dey empty
+    NOT EMPTY: E no dey empty
+    CONTAINS: E carri
+    DOES NOT CONTAIN: E no contain
+    STARTS WITH: E start with
+    ENDS WITH: E end with
+error:
+  forbidden: Dey don forbid am. You no fit open this page
+alert:
+  attribute_option:
+    save_before_edit_other: Abeg register your modifications for de other rows dem before you begin edit dis one
+  session_storage:
+    not_available: Ur web browser dey like say e no dey compatible wit sessionstorage. Abeg contact ur administrator
+pim_enrich.entity.fallback:
+  flash:
+    update:
+      fail: E don fail to update
+      success: E don update finish
+    delete:
+      fail: E no fit delete dis item
+      success: Item don commot successfully
+  module:
+    delete:
+      title: Commot dis {{ itemName }}
+      alternative_title: Confam say you wan commot am
+      item: You sure say you wan comot dis file?
+    edit:
+      leave: U sure say u wan commot from dis page?
+      discard_changes: U go lose de changes to de {{ entity }} if u commot for dis page.
+pim_enrich.entity.api_connection:
+  flash:
+    create:
+      success: API connection don update finish
+    delete:
+      success: API connection don cancel finish
+pim_enrich.entity.job_execution:
+  module:
+    create:
+      upload: Make you drop your {{ type }} file here, or you click browse disk
+    download:
+      archive: Make you download generated archive
+      output: Make you download generated files
+      input: Make you downlaod read files
+      invalid_xlsx: Make you download invalid data
+      invalid_csv: Make you download invalid data
+pim_title:
+  oro_default: Dashboard
+  pim_enrich_attributegroup_index: Attribute groups
+  pim_enrich_attributegroup_create: Attribute groups dem | Create am
+  pim_enrich_attributegroup_edit: Attribute group {{ group.label }} | Edit am
+  pim_enrich_categorytree_index: Category trees dem
+  pim_enrich_categorytree_create: Category trees | Create am
+  pim_enrich_categorytree_edit: Category tree {{ category.label }} | Edit am
+  pim_enrich_categorytree_create_tree: Category trees | Create am
+  pim_enrich_attribute_index: Attributes dem
+  pim_enrich_attribute_create: Attribute groups dem | Create am
+  pim_enrich_attribute_edit: Attribute {{ attribute.label }} | Edit am
+  pim_enrich_product_index: Products
+  pim_enrich_product_edit: Product {{ product.label }} | Edit am
+  pim_enrich_product_model_edit: Product model {{ product.label }} | Edit am
+  pim_enrich_family_index: Families
+  pim_enrich_family_edit: Family {{ family.label }} | Edit am
+  pim_enrich_channel_index: Channels
+  pim_enrich_channel_create: Channels dem | Create am
+  pim_enrich_channel_edit: Channel {{ channel.label }} | Edit am
+  pim_enrich_currency_index: Currencies
+  pim_enrich_locale_index: Locales dem
+  pim_enrich_group_index: Groups dem
+  pim_enrich_group_edit: Group {{ group.label }} | Edit am
+  pim_enrich_associationtype_index: Association types
+  pim_enrich_associationtype_edit: Association type {{ association type.label }} | Edit am
+  pim_enrich_grouptype_index: Group types dem
+  pim_enrich_grouptype_edit: Group type {{ group type.label }} | Edit am
+  pim_enrich_mass_edit_action_choose: Plenti edit | make u select am
+  pim_enrich_mass_edit_action_configure: Plenti edit | set am
+  pim_enrich_mass_edit_action_perform: Mass Edit | Perform am
+  pim_enrich_job_tracker_index: Tracker for process
+  pim_enrich_job_tracker_show: Process tracker | Show work
+  pim_enrich_api_connection_index: API connections
+  pim_enrich_api_connection_create: API connections | Create am
+  pim_enrich_mass_edit_action: Edit plenti
+  pim_analytics_system_info_index: System information
+pim_menu:
+  tab:
+    activity: Busy bodi
+    imports: Imports dem
+    exports: Exports dem
+    settings: Settings dem
+    system: System
+    help:
+      title: Help
+      helper: Akeneo Help center
+  item:
+    association_type: Association types
+    attribute_group: Attribute groups
+    channel: Channels
+    currency: Currencies
+    dashboard: Dashboard
+    family: Families
+    group: Groups
+    group_type: Group types
+    product_model: Product models
+    export_history: Exports history
+    export_profile: Export profiles
+    import_history: Imports history
+    import_profile: Import profiles
+    configuration: Configuration
+    user_management: Users Management
+    user: Users
+    user_group: Groups dem for owner
+    user_role: Roles dem
+    info: Information wey concern system
+    job_tracker: Process tracker
+    api_connection: API connections dem
+  navigation:
+    activity: Activity navigation
+    system: System navigation
+    user: Navigation for users management
+    settings: Navigation for settings
+    product: Navigate product
+    product_infos: Product infos dem
+  user:
+    logout: Close am
+    user_account: Na my account
+pim_notification:
+  types:
+    import: Cari come
+    export: Export am
+    quick_export: Sharp sharp export
+    mass_edit: Edit plenti

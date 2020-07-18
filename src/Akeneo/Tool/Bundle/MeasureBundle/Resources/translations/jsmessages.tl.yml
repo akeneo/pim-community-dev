@@ -1,0 +1,177 @@
+pim_measure:
+  families:
+    Area: Sukat
+    Binary: Binary
+    Decibel: Decibel
+    Frequency: Prikwensiya
+    Length: Haba
+    Power: Kapangyarihan
+    Resistance: Resistance
+    Voltage: Boltahe
+    Intensity: Intensity
+    ElectricCharge: Elektriko kargada
+    Duration: Tagal
+    Speed: Bilis
+    Temperature: Temperatura
+    Volume: Volume
+    Weight: Timbang
+    Pressure: Presyur
+    Energy: Enerhiya
+    CaseBox: Pagputos
+  units:
+    #Area
+    ACRE: Acre
+    ARE: Arya
+    ARPENT: Arpent
+    CENTIARE: Sentiarya
+    HECTARE: Hektarya
+    SQUARE_CENTIMETER: Sentimetro Kwadrado
+    SQUARE_DECIMETER: Desimetro kwadrado
+    SQUARE_DEKAMETER: Dekametro kwadrado
+    SQUARE_FOOT: Talampakan kwadrado
+    SQUARE_FURLONG: Furlong kwadrado
+    SQUARE_HECTOMETER: Hektometro kwadrado
+    SQUARE_INCH: Pulgada kwadrado
+    SQUARE_KILOMETER: Kilometro kwadrado
+    SQUARE_METER: Metro kwadrado
+    SQUARE_MIL: Mil kwadrado
+    SQUARE_MILE: Milya kwadrado
+    SQUARE_MILLIMETER: Milimetro kwadrado
+    SQUARE_YARD: Yarda kwadrado
+    #Binary
+    BIT: Bit
+    BYTE: Byte
+    KILOBYTE: Kilobyte
+    MEGABYTE: Megabyte
+    GIGABYTE: Gigabyte
+    TERABYTE: Terabyte
+    #Decibel
+    DECIBEL: Decibel
+    #Frequency
+    GIGAHERTZ: Gigahertz
+    KILOHERTZ: Kilohertz
+    MEGAHERTZ: Megahertz
+    TERAHERTZ: Terahertz
+    HERTZ: Hertz
+    #Length
+    CENTIMETER: Sentimetro
+    CHAIN: Kadena
+    DECIMETER: Desimetro
+    DEKAMETER: Dekametro
+    FEET: Piye
+    FURLONG: Furlong
+    INCH: Pulgada
+    HECTOMETER: Hektometro
+    KILOMETER: Torr
+    METER: Metro
+    MIL: Mil
+    MILE: Milya
+    MILLIMETER: Milimetro
+    YARD: Yarda
+    #Power
+    GIGAWATT: Gigawatt
+    KILOWATT: Kilowatt
+    MEGAWATT: Megawatt
+    TERAWATT: Terawatt
+    WATT: Watt
+    #Resistance
+    MILLIOHM: Miliohm
+    CENTIOHM: Sentiohm
+    DECIOHM: Desiohm
+    OHM: Ohm
+    DEKAOHM: Dekaohm
+    HECTOHM: Hektohm
+    KILOHM: Kilohm
+    MEGOHM: Megohm
+    #Voltage
+    MILLIVOLT: Milibolt
+    CENTIVOLT: Sentibolt
+    DECIVOLT: Desibolt
+    VOLT: Bolt
+    DEKAVOLT: Dekabolt
+    HECTOVOLT: Hektobolt
+    KILOVOLT: Kilobolt
+    #Intensity
+    MILLIAMPERE: Miliamper
+    CENTIAMPERE: Sentiamper
+    DECIAMPERE: Desiamper
+    AMPERE: Amper
+    DEKAMPERE: Dekaamper
+    HECTOAMPERE: Hektoamper
+    KILOAMPERE: Kiloamper
+    MEGAAMPERE: Megaamper
+    #ElectricCharge
+    MILLIAMPEREHOUR: Miliamper oras
+    AMPEREHOUR: Amper oras
+    MILLICOULOMB: Milicoulomb
+    CENTICOULOMB: Senticoulomb
+    DECICOULOMB: Desicoulomb
+    COULOMB: Coulomb
+    DEKACOULOMB: Dekacoulomb
+    HECTOCOULOMB: Hektocoulomb
+    KILOCOULOMB: Kilocoulomb
+    #Duration
+    MILLISECOND: Millisegundo
+    SECOND: Segundo
+    MINUTE: Minuto
+    HOUR: Oras
+    DAY: Araw
+    WEEK: Linggo
+    MONTH: Buwan
+    YEAR: Taon
+    #Speed
+    FOOT_PER_SECOND: Talampakan kada segundo
+    FOOT_PER_HOUR: Talampakan kada oras
+    KILOMETER_PER_HOUR: Kilometro kada oras
+    METER_PER_HOUR: Metro kada oras
+    METER_PER_MINUTE: Metro kada minuto
+    METER_PER_SECOND: Metro kada segundo
+    MILE_PER_HOUR: Milya kada oras
+    YARD_PER_HOUR: Yarda kada oras
+    #Temperature
+    CELSIUS: Sentigrado
+    FAHRENHEIT: Parenhayt
+    KELVIN: Kelvin
+    RANKINE: Rankine
+    REAUMUR: Reaumur
+    #Volume
+    BARREL: Barile
+    CENTILITER: Sentilitro
+    CUBIC_CENTIMETER: Sentimetro kubiko
+    CUBIC_DECIMETER: Desimetro kubiko
+    CUBIC_FOOT: Talampakan kubiko
+    CUBIC_INCH: Pulgada kubiko
+    CUBIC_METER: Metro kubiko
+    CUBIC_MILLIMETER: Milimetro kubiko
+    CUBIC_YARD: Yarda kubiko
+    DECILITER: Desilitro
+    GALLON: Galon
+    LITER: Litro
+    MILLILITER: Mililitro
+    OUNCE: Onsa
+    PINT: Pinta
+    #Weight
+    DENIER: Denier
+    GRAIN: Grano
+    GRAM: Gramo
+    KILOGRAM: Kilogramo
+    LIVRE: Livre
+    MARC: Marc
+    MILLIGRAM: Miligramo
+    ONCE: Onsa
+    POUND: Pound
+    TON: Tonelada
+    #Pressure
+    BAR: Bar
+    PASCAL: Pascal
+    HECTOPASCAL: hekto Pascal
+    MILLIBAR: mili Bar
+    ATM: Atmospera
+    PSI: Pound kada kwadrado pulgada
+    TORR: Torr
+    MMHG: milimetro ng Mercury
+    KILOCALORIE: kilocalorie
+    KILOJOULE: kilojoule
+    #CaseBox
+    PIECE: Piraso
+    DOZEN: Dosena
