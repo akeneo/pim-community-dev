@@ -1,0 +1,7 @@
+pim_measure:
+  families:
+    Brightness: Brightness
+  units:
+    #Brightness
+    LUMEN: Lumen
+    NIT: Nit
