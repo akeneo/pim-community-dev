@@ -1,0 +1,2 @@
+pim_datagrid:
+  search: Search on {{ label }}
