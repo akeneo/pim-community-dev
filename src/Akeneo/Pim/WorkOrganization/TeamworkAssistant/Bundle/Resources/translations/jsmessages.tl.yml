@@ -1,0 +1,66 @@
+teamwork_assistant:
+  common:
+    required: Kinakailangan
+    warning: Huwag mag-alala, ang pagkalkula sa proyekto ay maaaring tumagal ng ilang sandali, kung kaya't ang iyong proyekto ay hindi agad na makikita.
+  grid:
+    view_selector:
+      create: Maglikha ng proyekto
+      edit: Baguhin ang proyekto
+      remove: Burahin ang proyekto
+      create_from_view: Maglikha ng proyekto galing sa tanawing ito
+      start_new_project: Magsimula ng isang bagong proyekto
+      confirmation:
+        remove: Sigurado ka ba na gusto mong burahin ang proyektong ito?
+      projects: Mga proyekto
+  project:
+    label: Pangalan
+    locale: Pinagmulan
+    label_maxlength: Ang halagang ito ay napakahaba. Ito ay dapat na may higit-kumulang {{ max }} na karakter.
+    description: Deskripsyon
+    due_date: Takdang Petsa
+    due_date_past: Hindi ka maaaring pumili ng petsa sa nakaraan.
+    leaving_scope: Ikaw ay umaalis sa saklaw ng proyekto.
+  edit_project_modal:
+    saved: Ang proyektong ito ay nai-save na.
+    title: Baguhin ang proyekto
+  create_project_modal:
+    saved: Ang proyektong ito ay nai-save na, ikaw ay mabibigyan ng notipikasyon kung ang kalkulasyon ay tapos na.
+  widget:
+    no_project: Wala kang kasalukuyang proyekto
+    no_project_create: lumikha ng isang bagong proyekto
+    description: Deskripsyon
+    due_date: Takdang petsa
+    todo: TODO
+    in_progress: NASA PROGRESO
+    done: TAPOS NA
+    all_contributors: Lahat ng mga nag-ambag
+    display_products: Ipakita ang mga produkto
+    placeholder:
+      contributor_selector: Maghanap ng mga nag-aambag
+      project_selector: Maghanap ng proyekto
+    completeness:
+      to_start: MGA PRODUKTONG SISIMULAN
+      in_progress: MGA PRODUKTONG NASA PROGRESO
+      done: MGA PRODUKTONG NAGAWA NA
+pim_datagrid:
+  view_selector:
+    project: Mga proyekto
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        refresh_project_completeness_calculation: Kaagapay sa Pagtutulungan
+        project_calculation: Kaagapay sa Pagtutulungan
+batch_jobs:
+  project_calculation:
+    project_calculation.label: Kalkulasyon ng proyekto
+    prepare_project_calculation.label: Ihanda ang kalkulasyon ng proyekto
+    clean_contributor_group.label: Suriin ang mga pahintulot sa mga gumagamit sa pinagmulan ng proyekto
+  refresh_project_completeness_calculation:
+    label: Panariwain ang pagkakakumpleto ng proyekto
+    refresh_project_completeness_calculation.label: Panariwain ang pagkakakumpleto ng proyekto
+pim_notification:
+  types:
+    project_created: Isang bagong proyekto para sa'yo
+    project_finished: Natapos na proyekto
+    project_calculation: Kalkulasyon ng proyekto

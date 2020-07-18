@@ -1,0 +1,130 @@
+pim_reference_entity:
+  app:
+    image:
+      wide:
+        upload: Перетягніть для вивантаження, або натисніть тут
+      small:
+        remove: Видалити
+        download: Завантажити
+  reference_entity:
+    button:
+      save: Зберегти
+      save_permission: Зберегти
+      create: Створити
+    tab:
+      attribute: Атрибути
+      properties: Властивості
+      permission: Права доступу
+    properties:
+      identifier: Код
+      label: Мітка
+      image: Зображення
+    create:
+      header:
+        title: Створити
+      input:
+        label: Мітка
+      confirm: Зберегти
+    delete:
+      title: Атрибут
+  record:
+    no_result:
+      subtitle: Спробувати знову за іншим критерієм пошуку.
+    button:
+      save: Зберегти
+      create: Додати новий
+      delete: Видалити
+    product:
+      title: Продукти
+    enrich:
+      code: Код
+      label: Мітка
+    create:
+      header:
+        title: Створити
+      input:
+        label: Мітка
+      confirm: Зберегти
+    grid:
+      filter:
+        completeness:
+          label: Завершено
+          all: Всі
+          'yes': 'Так'
+          'no': 'Ні'
+        option:
+          all: Всі
+          operator:
+            in: У списку
+      column:
+        code: Код
+        image: Зображення
+        label: Мітка
+        complete: Завершено
+        action: Дії
+    tab:
+      enrich: Доповнити
+      product: Продукти
+    completeness:
+      label: Завершено
+  attribute:
+    default:
+      code: Код
+      label: Мітка
+      image: Зображення
+    type:
+      text: Текст до 255 символів
+      image: Зображення
+    create:
+      header:
+        title: Створити
+      input:
+        label: Мітка
+        type: Тип атрибуту
+        value_per_locale: Значення в локалі
+        value_per_channel: Значення в каналі
+      confirm: Зберегти
+    edit:
+      save: Зберегти
+      cancel: Відмінити
+      input:
+        label: Мітка
+        type: Тип атрибуту
+        value_per_locale: Значення в локалі
+        value_per_channel: Значення в каналі
+        max_length: Максимум символів
+        textarea: Область тексту
+        max_file_size: Максимальний розмір файлу (МБ)
+        allowed_extensions: Дозволені розширення
+        validation_rule: Правило перевірки
+        regular_expression: Регулярний вираз
+        options:
+          validation_rule:
+            none: Жоден
+            email: E-mail
+            regular_expression: Регулярний вираз
+            url: URL
+    delete:
+      title: Атрибут
+    notification:
+      save:
+        success: Атрибут успішно оновлено.
+      create:
+        success: Атрибут успішно створено.
+      delete:
+        success: Атрибут успішно видалено.
+    options:
+      helper:
+        title: Переклади міток
+  modal:
+    delete:
+      subtitle: Підтвердити видалення
+      button:
+        cancel: Відмінити
+        confirm: Видалити
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: Введіть конкретні параметри

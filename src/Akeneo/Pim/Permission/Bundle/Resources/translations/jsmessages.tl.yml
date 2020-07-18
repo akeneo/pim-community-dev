@@ -1,0 +1,48 @@
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        is_read_only: Basahin lamang
+pimee_enrich.entity.category:
+  module:
+    permissions:
+      grant: Ang grupo <strong>{{ group }}</strong> ay <strong> maging{{ permission }}</strong> sa kategoryang ito
+      revoke: Ang grupo <strong>{{ group }}</strong> ay <strong> hindi maging {{ permission }}</strong> sa kategoryang ito
+pimee_enrich.entity.locale:
+  module:
+    permissions:
+      grant: Ang grupo <strong>{{ group }}</strong> ay <strong> maging {{ permission }}</strong> sa lokal na ito
+      revoke: Ang grupo <strong>{{ group }}</strong> ay <strong> hindi{{ permission }}</strong> sa lokal na ito
+pimee_enrich.entity.attribute group:
+  module:
+    permissions:
+      grant: Ang grupo <strong>{{ group }} ay <strong> maging {{ permission }}</strong> sa katangian ng grupong ito
+      revoke: Ang grupo <strong>{{ group }}</strong> ay <strong> hindi maging {{ permission }}</strong> sa katangian ng grupong ito
+pimee_enrich.entity.attribute_group:
+  module:
+    permissions:
+      added: Ang grupo {{ group }} papayagan {{ permission }} grupo ng katangian
+      view: Pinapayagan upang tingnan ang mga katangian
+      edit: Pinayagan na i-edit ang mga katangian
+      removed: Ang grupo {{ group }} ay hindi papayagang {{ permission }} grupo ng katangian
+pimee_enrich.entity.job_instance:
+  module:
+    permissions:
+      added: Ang grupo {{ group }} ay papayagan {{ permission }} profile ng trabaho
+      execute: Pinapayagan upang maisagawa ang profile ng trabaho
+      edit: Pinapayagan na i-edit ang profile ng trabaho
+      removed: Ang grupo {{ group }} ay hindi papayagan {{ permission }} profile ng trabaho
+batch_jobs:
+  add_product_value_with_permission_and_rules:
+    label: Magdagdag ng halaga ng produkto na may pahintulot check & application panuntunan
+    perform.label: Magdagdag ng halaga ng produkto
+  update_product_value_with_permission_and_rules:
+    label: I-update ang halaga ng produkto na may pahintulot check & application panuntunan
+    perform.label: I-update ang halaga ng produkto
+  remove_product_value_with_permission_and_rules:
+    label: Alisin ang halaga ng produkto na may pahintulot check at mga tuntunin ng application
+    perform.label: Alisin ang halaga ng produkto
+  edit_common_attributes_with_permission_and_rules:
+    label: I-edit ang mga katangian na may pahintulot check & aplikasyon panuntunan
+    perform.label: I-edit ang mga katangian
+    cleaner.label: Malinis na pansamantalang mga file

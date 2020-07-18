@@ -1,0 +1,101 @@
+pimee_catalog_rule:
+  execution_button: Виконати правила
+  selected: 'вибрані правила'
+  popin:
+    execute_rules:
+      confirm_title: Підтвердити видалення
+      confirm_content: Ви впевнені, що бажаєте виконати всі правила? (це може зайняти багато часу)
+  notification:
+    fail: Не вдалося виконати дію
+    launched: Розпочато виконання правил. Ви будете повідомлені по завершенні процесу.
+  attribute:
+    list:
+      code.label: Код
+      condition.label: Умова
+      action.label: Дія
+      no_rule_yet.label: На даний момент правила відсутні
+  rule:
+    condition:
+      if.label: якщо
+    action:
+      then.label: тоді
+      set_value.label: встановлено в
+      copy_value.label: копіюється в
+      set.label: встановлено в
+      copy.label: копіюється в
+      add.label: додано в
+      remove.label: видалений з
+  datagrid:
+    rule-grid:
+      actions:
+        execute:
+          confirm_title: Підтвердити видалення
+          confirm_content: Ви впевнені, що хочете виконати правило?
+      mass_edit_action:
+        confirm_title: Підтвердити розрахунок
+        confirm_content: Ви впевнені, що бажаєте обчислити кількість пов'язаних правилами продуктів?
+      mass_action:
+        execute:
+          confirm_title: Підтвердити видалення
+          confirm_content: Ви дійсно бажаєте видалити вибрані правила?
+          success: Виконання вибраних правил розпочалося. Ви будете повідомлені по його завершенню
+          empty_selection: Правила не вибрані.
+        delete:
+          confirm_title: Підтвердити видалення
+          confirm_content: Ви справді бажаєте видалити вибрані правила?
+          success: Ви успішно видалили правила.
+          empty_selection: Правила не вибрані.
+  form:
+    attribute:
+      tab:
+        rules:
+          title: Правила
+pim_enrich:
+  entity:
+    rule:
+      module:
+        delete:
+          confirm: Ви впевнені, що хочете видалити це правило? Ця дія незворотня
+pim_datagrid:
+  entity:
+    rule:
+      flash:
+        delete:
+          success: Роль успішно видалена
+flash:
+  rule:
+    impacted_product_count: Обчислення кількості пов'язаних правилами продуктів розпочалося. Ви будете повідомлені по його завершенню.
+    executed: Розпочато виконання правила. Ви будете повідомлені по завершенні процесу.
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Налаштування правил
+batch_jobs:
+  add_attribute_value:
+    execute_rules.label: Виконання правил
+  default_steps:
+    execute_rules: Виконання правил
+  yml_rule_import:
+    label: Імпорт правил з YAML
+    import.label: Імпорт правил
+  yml_rule_export:
+    label: Експорт правил в YAML
+    export.label: Експорт правил
+  rule_impacted_product_count:
+    label: Пов'язані продукти для правил
+    perform.label: Обчислити пов'язані продукти
+  csv_product_import_with_rules:
+    label: Імпорт продуктів з CSV з правилами
+    import.label: Експорт продуктів
+  csv_product_model_import_with_rules:
+    label: Імпорт моделей продуктів з CSV з правилами
+  xlsx_product_import_with_rules:
+    label: Імпорт продуктів з XLSX з правилами
+    import.label: Експорт продуктів
+  xlsx_product_model_import_with_rules:
+    label: Імпорт моделей продуктів з XLSX з правилами
+pim_notification:
+  types:
+    rule: Налаштування правил
+pim_menu:
+  item:
+    rule: Правила
+pim_title:
+  pimee_catalog_rule_rule_index: Правила

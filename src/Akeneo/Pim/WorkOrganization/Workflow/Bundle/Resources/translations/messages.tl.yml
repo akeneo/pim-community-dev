@@ -1,0 +1,162 @@
+pimee_workflow:
+  product_draft:
+    author: May-akda
+    created: Iminungkahi sa
+    changes: Mga pagbabago
+    locale: Konteksto ng pinagmulan
+    product:
+      label: Tatak ng produkto
+    attribute:
+      label: Katangian
+    status:
+      label: Katayuan
+      working_copy: Kopya ng paggawa
+      in_progress: Nasa progreso
+      ready: Naghihintay na maaprubahan
+      can_be_partially_reviewed: Maaaring suriin ng bahagya
+      can_not_be_approved: Hindi maaaring suriin
+      can_not_be_deleted: Hindi pwedeng burahin
+    status_message:
+      can_be_partially_reviewed: Maaari mong suriin ang mungkahing ito ng bahagya lamang dahil may iilang mga pagbabago na magagamit sa mga halagang hindi mo maaaring baguhin. Mangyaring makipag-ugnay sa administrador para mapalitan ang iyong mga karapatan.
+      can_not_be_approved: Hindi mo maaaring suriin ang mungkahing ito dahil ang lahat ng mga pagbabago ay magagamit sa lamang sa mga halagang hindi mo pwedeng baguhin. Mangyaring makipag-ugnay sa administrador para mapalitan ang iyong karapatan.
+      can_not_be_deleted: Hindi mo maaaring burahin ang mungkahing ito dahil ang lahat ng mga pagbabago ay magagamit lamang sa mga halagang hindi mo pwedeng baguhin. Mangyaring makipag-ugnay sa administrador para palitan ang iyong mga karapatan.
+      in_progress: Ang mungkahing ito ay kasalukuyang nasa progreso at hindi pa naisusumite.
+    action:
+      approve: Aprubahan lahat
+      refuse: Tanggihan lahat
+      remove: Tanggalin
+      partial_approve: Aprubahan ang mga pagbabago sa katangiang %attribute% ng produktong %product%
+      partial_reject: Tanggihan ang mga pagbabago sa katangiang %attribute% ng produktong %product%
+    notification:
+      partial_approve: '%owner% ay may tinanggap na (mga) halaga para sa %attributes% ng produktong %product%'
+      partial_approve_number: '%owner% ay may mga tinanggap na halaga para sa %attributes_count% na mga katangian para sa produktong %product%'
+      partial_reject: '%owner% ay may (mga) halagang tinanggihan para sa %attributes% para sa produktong %product%'
+      partial_reject_number: '%owner% ay may mga tinanggihang halaga para sa %attributes_count% na mga katangian para sa produktong %product%'
+      partial_remove: '%owner% ay may (mga) halagang binura para sa %attributes% para sa produktong %product%'
+      partial_remove_number: '%owner% ay may mga halagang binura para sa %attributes_count% na mga katangian para sa produktong %product%'
+      approve: '%owner% ay tinanggap ang iyong mungkahi para sa produktong %product%'
+      refuse: '%owner% ay tinanggihan ang iyong mungkahi para sa produktong %product%'
+      remove: '%owner% ay binura ang iyong mungkahi para sa produktong %product%'
+    mass_review_action:
+      approve: Aprubahan ang lahat ng pinili
+      refuse: Tanggihan ang lahat ng napili
+      error:
+        draft_not_ready: Ang mungkahing ito ay hindi pa handang maaprubahan
+        not_product_owner: Hindi mo pagmamay-ari ang produktong may kaugnayan sa mungkahing ito
+        cannot_edit_attributes: Hindi mo maaaring baguhin ang mga katangiang nabago ng mungkahing ito
+        invalid_draft: Ang mungkahing ito ay hindi maaaring ilapat dahil sa sumusunod na error. %error%
+  proposal:
+    to_review: '%author.firstname% %author.lastname% ay nagpadala ng mungkahi para suriin ang produktong %product.label%'
+    individual_import: '%author.firstname% %author.lastname% ay nagpadala ng mga mungkahi mula sa inangkat na trabaho'
+    generic_import: Mayroon kang mga mungkahi para suriin mula sa inangkat na trabaho
+    original_value: Orihinal
+    new_value: Bago
+    no_diff: Ang halagang "%value%" ay pareho sa pagitan ng mungkahi at ng kopya ng paggawa.
+    draft_in_progress: Isang plano ang nasa progreso mula kay %author% para sa produktong ito.
+  published_product:
+    index: Nailathalang mga Produkto
+    title: Nailathalang Produkto
+  acl.published_product:
+    index: Pamahalaan ang mga nailathalang produkto
+  product:
+    permission:
+      own: Suriin / Ilathala
+      edit: Baguhin
+      view: Tingnan
+  steps:
+    product_draft_processor.title: Tagaproseso ng mungkahi
+    approve.title: Aprubahan ang mungkahi
+    refuse.title: Tanggihan ang mungkahi
+  mass_edit_action:
+    published:
+      page_title: Mga nailathalang produkto
+      page_subtitle: Maramihang pamamatnugot (1 nailathalang produkto)|Maramihang pamamatnugot (%count% mga nailathalang produkto)
+      title: Pumili ng operasyon
+      subtitle: Pumili ng operasyong nais mong gawin sa napiling produktong nalathala|Pumili ng operasyong nais mong gawin sa napiling %count% na produktong nalathala
+      confirm: Ikaw ay malapit ng mag-update ng isang nailathalang produkto na may sumusunod na impormasyon, mangyaring kumpirmahin ito.|Ikaw ay malapit ng mag-update ng %count% na mga nailathalang produkto na may sumusunod na impormasyon, mangyaring kumpirmahin ito.
+      steps:
+        first: Pumili ng mga nailathalang produkto
+        second: Pumili ng operasyon
+        third: I-configure
+        fourth: Kumpirmahin
+btn:
+  publish: Ilathala
+  unpublish: Alisin sa pagkakalathala
+  save working copy: I-save ang nagtatrabaho kopya
+  save working copy and next: I-save ang nagtatrabaho kopya at susunod
+  save working copy and finish: I-save ang nagtatrabaho kopya at tapusin
+  send for approval: Ipadala para ma-apruba
+  sent for approval: Naipadala para sa pagsang-ayon
+  editworkingcopy: Baguhon ang kopya ng paggawa
+flash:
+  product:
+    updated: Na-update ang kopya ng pagtatrabaho ng produkto
+    published: Ang produktong ito ay matagumpay na nailathala.
+    unpublished: Ang produktong ito ay matagumpay na naialis sa pagkalathala.
+  product_draft:
+    updated: Matagumpay na na-save ang draft
+    approve:
+      success: Ang mungkahing ito ay matagumpay na nailapat.
+      error: Ang mungkahing ito ay hindi maaaring ilapat dahil sa sumusunod na error. %error%
+    refuse:
+      success: Ang mungkahing ito ay hindi tinanggap.
+    remove:
+      success: Ang panukala ay naalis na.
+pim_menu:
+  item:
+    published_product: Mga nailathalang produkto
+    proposal: Mga mungkahi
+confirmation:
+  product:
+    publish: Sigurado ka bang gusto mong ilathala ang produktong ito?
+    unpublish: Sigurado ka bang gusto mong alisin sa pagkakalathala ang produktong ito?
+Attributes.title: Mga katangian
+Completeness.title: Mga pagkabuo
+publish_product.steps.publish_product_tasklet.title: Ilathala ang produkto
+unpublish_product.steps.unpublish_product_tasklet.title: Alisin sa pagkakalathala ang produkto
+approve_product_draft.steps.approve.title: Aprubahan ang mungkahi
+approve_product_draft.steps.refuse.title: Tanggihan ang mungkahi
+job_execution.summary:
+  approved: inaprubahan
+  refused: tinanggihan
+  mass_published: Nailathala na ang produkto
+  mass_unpublished: Naialis na sa pagkakalathala ang produkto
+  proposal: Ang mungkahi ay nilikha na
+  proposal_deleted: binurang mungkahi
+  proposal_updated: in-update na mungkahi
+  proposal_created: nilikhang mungkahi
+  proposal_skipped: nilaktawang mungkahi (walang mga pagkakaiba)
+published products: Nalathalang mga produkto
+pim_analytics:
+  info_type:
+    nb_published_products: Bilang ng nalathalang produkto
+    nb_product_drafts: Bilang ng mga planong produkto
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: Ang mga panukala upang suriin
+      date: Petsa
+      author: May-akda
+      product: Produkto
+      review: Pagsusuri
+      empty: Walang mga draft na produkto para suriin
+pim_enrich:
+  mass_edit_action:
+    publish:
+      label: Ihayag
+      description: Paghahayag ng mga napiling mga produkto, ang kasalukuyang nai-publish na datos ay mabubura ng kasalukuyang kopya ng paggawa.
+      success_flash: Ang napiling mga produkto ay matagumpay na nailathala.
+      launched_flash: Ang (mga) produkto na naghahayag ng trabaho ay kasalukuyang tumatakbo.
+      message:
+        info: Ang %nbProducts% napiling mga produkto ay maihahayag.
+    unpublish:
+      label: Huwag ihayag
+      description: Huwag ihayag ang napiling mga produkto, ang kasalukuyang naihayag na datos ay mabubura.
+      success_flash: Ang mga napiling produkto ay matagumpay na hindi naihayag.
+      launched_flash: Ang (mga) produkto na naghahayag ng trabaho ay kasalukuyang tumatakbo.
+      message:
+        info: Ang %nbProducts% mga napiling mga produkto ay hindi maihahayag.
+pimee_enrich:
+  product:
+    tab:
+      proposal.title: Mga panukala

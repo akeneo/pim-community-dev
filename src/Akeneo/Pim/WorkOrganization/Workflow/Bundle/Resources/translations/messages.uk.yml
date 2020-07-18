@@ -1,0 +1,162 @@
+pimee_workflow:
+  product_draft:
+    author: Автор
+    created: Дата пропозиції
+    changes: Зміни
+    locale: Контексті локалі
+    product:
+      label: Маркування товару
+    attribute:
+      label: Атрибут
+    status:
+      label: Статус
+      working_copy: Робоча копія
+      in_progress: В процесі
+      ready: Очікує на підтвердження
+      can_be_partially_reviewed: Може бути частково розглянуто
+      can_not_be_approved: Не може бути розглянуто
+      can_not_be_deleted: Не можна видалити
+    status_message:
+      can_be_partially_reviewed: Ви можете переглянути цю пропозицію лише частково, тому що деякі зміни стосуються значень, які Ви не можете редагувати. Будь ласка, зверніться до адміністратора, щоб змінити ваши права.
+      can_not_be_approved: Ви не можете переглянути цю пропозицію, тому що деякі зміни стосуються значень, які Ви не можете редагувати. Будь ласка, зверніться до адміністратора, щоб змінити ваши права.
+      can_not_be_deleted: Ви не можете видалити цю пропозицію, тому що деякі зміни стосуються значень, які Ви не можете редагувати. Будь ласка, зверніться до адміністратора, щоб змінити ваши права.
+      in_progress: Ця пропозиція знаходиться в процесі виконання і ще не була представлена.
+    action:
+      approve: Затвердження всіх
+      refuse: Відхилити всі
+      remove: Видалити
+      partial_approve: Затвердити зміни атрибуту %attribute% продукту %product%
+      partial_reject: Відхилити зміни атрибуту %attribute% продукту %product%
+    notification:
+      partial_approve: '%owner% прийняв значення для %attributes% продукту %product%'
+      partial_approve_number: '%owner% прийняв значення %attributes_count% атрибутів для продукту %product%'
+      partial_reject: '%owner% відхилив значення для %attributes% продукту %product%'
+      partial_reject_number: '%owner% відхилив значення %attributes_count% атрибутів для продукту %product%'
+      partial_remove: '%owner% видалив значення для %attributes% продукту %product%'
+      partial_remove_number: '%owner% видалив значення %attributes_count% атрибутів для продукту %product%'
+      approve: '%owner% прийняв Вашу пропозицію щодо продукту %product%'
+      refuse: '%owner% відхилив Вашу пропозицію щодо продукту %product%'
+      remove: '%owner% видалив Вашу пропозицію щодо продукту %product%'
+    mass_review_action:
+      approve: Підтвердити все вибране
+      refuse: Відхилити все вибране
+      error:
+        draft_not_ready: Ця пропозиція ще не готова для затвердження
+        not_product_owner: Ви не є власником продукту, пов'язаного з цією пропозицією
+        cannot_edit_attributes: Ви не можете редагувати атрибути, які змінює ця пропозиція
+        invalid_draft: Ця пропозиція не може бути застосована внаслідок наступної помилки. %error%
+  proposal:
+    to_review: '%author.firstname% %author.lastname% відправив на розгляд пропозицію щодо продукту %product.label%'
+    individual_import: '%author.firstname% %author.lastname% відправив на розгляд пропозиції щодо імпортування'
+    generic_import: У Вас є пропозиції на розгляд через імпорт
+    original_value: Оригінальний
+    new_value: Новий
+    no_diff: Значення "%value%" однакове в пропозиції та робочій копії.
+    draft_in_progress: Драфт в обработке у %author% цього продукту.
+  published_product:
+    index: Опубліковані продукти
+    title: Опублікований продукт
+  acl.published_product:
+    index: Керувати опублікованими продуктами
+  product:
+    permission:
+      own: Огляд / опублікувати
+      edit: Редагувати
+      view: Вид
+  steps:
+    product_draft_processor.title: Обробник пропозицій
+    approve.title: Затвердити пропозицію
+    refuse.title: Відмовитися від пропозиції
+  mass_edit_action:
+    published:
+      page_title: Опубліковані продукти
+      page_subtitle: Масове редагування (1 опублікований продукт)|Масове редагування (%count% опублікованих продуктів)
+      title: Виберіть операцію
+      subtitle: Виберіть операцію, яку ви хочете виконати з вибраним опублікованим продуктом|Виберіть операцію, яку ви хочете виконати з вибраним %count% опублікованим продуктом
+      confirm: Ви маєте намір оновити опублікований продукт з наступною інформацією, будь ласка, підтвердіть. |Ви маєте намір оновити %count% опублікованих продуктів з наступною інформацією, будь ласка, підтвердіть.
+      steps:
+        first: Виберіть опубліковані продукти
+        second: Виберіть операцію
+        third: Налаштувати
+        fourth: Підтвердити
+btn:
+  publish: Опублікувати
+  unpublish: Видалити публікацію
+  save working copy: Зберегти робочу копію
+  save working copy and next: Зберегти робочу копію і перейти до наступного
+  save working copy and finish: Зберегти робочу копію і завершити
+  send for approval: Надіслати для затвердження
+  sent for approval: Надіслано для затвердження
+  editworkingcopy: Редагувати робочу копію
+flash:
+  product:
+    updated: Робочу копію продукту було оновлено
+    published: Продукт успішно опублікований.
+    unpublished: Продукт успішно знятий з публікації.
+  product_draft:
+    updated: Чернетка успішно збережена
+    approve:
+      success: Пропозиція була успішно застосована.
+      error: Пропозиція не може бути застосована внаслідок наступної помилки. %error%
+    refuse:
+      success: Пропозицію було відхилено.
+    remove:
+      success: Пропозиція була видалена.
+pim_menu:
+  item:
+    published_product: Опубліковані продукти
+    proposal: Пропозиції
+confirmation:
+  product:
+    publish: Ви впевнені, що бажаєте опублікувати цей продукт?
+    unpublish: Ви дійсно бажаєте скасувати публікацію цього продукту?
+Attributes.title: Атрибути
+Completeness.title: Ступінь заповненості
+publish_product.steps.publish_product_tasklet.title: Опублікувати продукт
+unpublish_product.steps.unpublish_product_tasklet.title: Скасування публікації продукту
+approve_product_draft.steps.approve.title: Затвердити пропозицію
+approve_product_draft.steps.refuse.title: Відхилити пропозицію
+job_execution.summary:
+  approved: Затверджено
+  refused: Відхилено
+  mass_published: Продукт опубліковано
+  mass_unpublished: Продукт знятий з публікації
+  proposal: Пропозицію створено
+  proposal_deleted: видалених пропозицій
+  proposal_updated: оновлених пропозицій
+  proposal_created: створених пропозицій
+  proposal_skipped: пропущених пропозицій (без змін)
+published products: Опубліковані продукти
+pim_analytics:
+  info_type:
+    nb_published_products: Кількість опублікованих продуктів
+    nb_product_drafts: Кількість чорновиків продуктів
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: Пропозиції для розгляду
+      date: Дата
+      author: Автор
+      product: Продукт
+      review: Переглянути
+      empty: Немає чорновиків продуктів для розгляду
+pim_enrich:
+  mass_edit_action:
+    publish:
+      label: Опублікувати
+      description: Опублікувати вибрані продукти, при цьому поточні опубліковані дані будуть перезаписані поточною робочою копією.
+      success_flash: Вибрані продукти були успішно опубліковані.
+      launched_flash: Процес публікації товару(ов) триває.
+      message:
+        info: '%nbProducts% вибраних продуктів буде опубліковано.'
+    unpublish:
+      label: Видалити публікацію
+      description: Зняти вибрані продукти з публікації, поточні опубліковані дані будуть видалені.
+      success_flash: Вибрані продукти були успішно зняті з публікації.
+      launched_flash: Процес зняття товару(ов) з публікації триває.
+      message:
+        info: '%nbProducts% вибраних продуктів буде знято з публікації.'
+pimee_enrich:
+  product:
+    tab:
+      proposal.title: Пропозиції

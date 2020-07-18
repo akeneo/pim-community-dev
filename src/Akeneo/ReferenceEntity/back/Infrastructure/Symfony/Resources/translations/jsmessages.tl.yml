@@ -1,0 +1,130 @@
+pim_reference_entity:
+  app:
+    image:
+      wide:
+        upload: I drag at ilaglag para ma upload o i-klik dito
+      small:
+        remove: Tanggal
+        download: I-download
+  reference_entity:
+    button:
+      save: Save
+      save_permission: Save
+      create: Lumikha
+    tab:
+      attribute: Mga katangian
+      properties: Ang mga ari-arian
+      permission: Mga pahintulot
+    properties:
+      identifier: Kodigo
+      label: Label
+      image: Imahe
+    create:
+      header:
+        title: Lumikha
+      input:
+        label: Label
+      confirm: Save
+    delete:
+      title: Katangian
+  record:
+    no_result:
+      subtitle: Subukang muli gamit ang panibagong pamantayan sa paghahanap.
+    button:
+      save: Save
+      create: Magdagdag ng bago
+      delete: Burahin
+    product:
+      title: Ang mga produkto
+    enrich:
+      code: Kodigo
+      label: Label
+    create:
+      header:
+        title: Lumikha
+      input:
+        label: Label
+      confirm: Save
+    grid:
+      filter:
+        completeness:
+          label: Kumpleto
+          all: Lahat
+          'yes': 'Oo'
+          'no': 'Hindi'
+        option:
+          all: Lahat
+          operator:
+            in: Nasa listahan
+      column:
+        code: Kodigo
+        image: Imahe
+        label: Label
+        complete: Kumpleto
+        action: Mga kilos
+    tab:
+      enrich: Payamanin
+      product: Ang mga produkto
+    completeness:
+      label: Kumpleto
+  attribute:
+    default:
+      code: Kodigo
+      label: Label
+      image: Imahe
+    type:
+      text: Teksto
+      image: Imahe
+    create:
+      header:
+        title: Lumikha
+      input:
+        label: Label
+        type: Uri ng katangian
+        value_per_locale: Halaga bawat pinagmulan
+        value_per_channel: Halaga bawat channel
+      confirm: Save
+    edit:
+      save: Save
+      cancel: Kansel
+      input:
+        label: Label
+        type: Uri ng katangian
+        value_per_locale: Halaga bawat pinagmulan
+        value_per_channel: Halaga bawat channel
+        max_length: Pinakamataas na mga karakter
+        textarea: Lugar ng teksto
+        max_file_size: Mataas na file sukat (MB)
+        allowed_extensions: Pinahihintulotan na ekstensyon
+        validation_rule: Ang batas sa balidasyon
+        regular_expression: Pangkaraniwan na ekspresyon
+        options:
+          validation_rule:
+            none: Wala
+            email: E-mail
+            regular_expression: Pangkaraniwan na ekspresyon
+            url: URL
+    delete:
+      title: Katangian
+    notification:
+      save:
+        success: Matagumpay na na-update ang katangian.
+      create:
+        success: Matagumpay na nalikha ang katangian.
+      delete:
+        success: Ang katangian ay matagumpay na natanggal.
+    options:
+      helper:
+        title: Mga pagsasalin sa libel
+  modal:
+    delete:
+      subtitle: Kompirmadong pagtanggal
+      button:
+        cancel: Kansel
+        confirm: Burahin
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: I-type ang mga espesipikong parametro
