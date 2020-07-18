@@ -1,0 +1,4 @@
+teamwork_assistant:
+  user:
+    deletion:
+      user_is_project_owner: This user is still owner of one or more projects. Please delete all this user's projects.
