@@ -1,22 +1,31 @@
 import React from 'react';
 import { Select2Option, Select2SimpleSyncWrapper } from '../Select2Wrapper';
-// import { useTranslate } from "../../dependenciesTools/hooks";
+import { useTranslate } from '../../dependenciesTools/hooks';
 
 type Props = {
   value?: boolean;
+  label: string;
   name: string;
+  placeholder: string;
   onChange?: (value: boolean) => void;
 };
 
-const StatusSelector: React.FC<Props> = ({ value, name, onChange }) => {
+const StatusSelector: React.FC<Props> = ({
+  value,
+  label,
+  name,
+  placeholder,
+  onChange,
+}) => {
+  const translate = useTranslate();
   const data: Select2Option[] = [
     {
       id: 'enabled',
-      text: 'Enabled - TODO TRANSLATE',
+      text: translate('pim_enrich.entity.product.module.status.enabled'),
     },
     {
       id: 'disabled',
-      text: 'Disabled - TODO TRANSLATE',
+      text: translate('pim_enrich.entity.product.module.status.disabled'),
     },
   ];
   const handleChange = (value: 'enabled' | 'disabled') => {
@@ -29,11 +38,11 @@ const StatusSelector: React.FC<Props> = ({ value, name, onChange }) => {
 
   return (
     <Select2SimpleSyncWrapper
-      label={'status - TODO translate'}
+      label={label}
       data={data}
       value={selectValue}
       name={name}
-      placeholder={'select your status - TODO translate'}
+      placeholder={placeholder}
       onChange={handleChange}
     />
   );

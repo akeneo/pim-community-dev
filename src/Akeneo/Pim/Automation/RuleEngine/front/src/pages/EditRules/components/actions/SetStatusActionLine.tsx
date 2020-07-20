@@ -56,14 +56,30 @@ const SetStatusActionLine: React.FC<ActionLineProps & {
       />
       <ActionTemplate
         lineNumber={lineNumber}
-        title='toto - TODO translate'
-        helper='helpertext - TODO translate'
-        legend='legend - TODO translate'
+        title={translate(
+          'pimee_catalog_rule.form.edit.actions.set_status.title'
+        )}
+        helper={translate(
+          'pimee_catalog_rule.form.edit.actions.set_status.helper'
+        )}
+        legend={translate(
+          'pimee_catalog_rule.form.edit.actions.set_status.helper'
+        )}
         handleDelete={handleDelete}>
-        <ActionTitle>set status - TODO translate</ActionTitle>
+        <ActionTitle>
+          {translate(
+            'pimee_catalog_rule.form.edit.actions.set_status.subtitle'
+          )}
+        </ActionTitle>
         <AknActionFormContainer>
           <StatusSelector
             name={valueFormName}
+            label={`${translate('pim_common.status')} ${translate(
+              'pim_common.required_label'
+            )}`}
+            placeholder={translate(
+              'pimee_catalog_rule.form.edit.actions.set_status.placeholder'
+            )}
             value={getValueFormValue()}
             onChange={(value: boolean) => {
               handleChange(value);
