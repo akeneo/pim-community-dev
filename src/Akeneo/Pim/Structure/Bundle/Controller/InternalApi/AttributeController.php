@@ -381,7 +381,12 @@ class AttributeController
             );
         }
 
-        $this->remover->remove($attribute);
+        try{
+            $this->remover->remove($attribute);
+        }
+        catch (\Exception $e) {
+            return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
