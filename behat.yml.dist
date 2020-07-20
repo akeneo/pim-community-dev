@@ -151,6 +151,7 @@ legacy:
             paths:
                 - tests/legacy/features
                 - vendor/akeneo/pim-community-dev/tests/legacy/features
+            filters:
                 tags: '~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated&&~@ce&&~@critical&&~@acceptance-back'
             contexts:
                 - Context\EnterpriseFeatureContext:
