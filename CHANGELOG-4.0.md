@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.41 (2020-07-20)
+
 ## Bug fixes
 
 - PIM-9359: Fix ES configuration override for dynamic templates
