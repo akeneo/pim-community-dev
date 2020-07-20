@@ -22,7 +22,7 @@ class GetProductIdFromProductIdentifierQuery
     {
         $sql = <<<SQL
 SELECT id FROM pim_catalog_product
-WHERE identifier = (:product_identifier)
+WHERE identifier = :product_identifier
 SQL;
 
         $statement = $this->connection->executeQuery(
