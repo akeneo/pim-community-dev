@@ -68,7 +68,7 @@ class FamilyFilterSpec extends ObjectBehavior
         FamilyInterface $family
     ) {
         $familyRepository->findOneByIdentifier('familyA')->willReturn($family);
-
+        $family->getCode()->willReturn('familyA');
         $sqb->addFilter(
             [
                 'terms' => [
@@ -87,7 +87,7 @@ class FamilyFilterSpec extends ObjectBehavior
         FamilyInterface $family
     ) {
         $familyRepository->findOneByIdentifier('familyA')->willReturn($family);
-
+        $family->getCode()->willReturn('familyA');
         $sqb->addMustNot(
             [
                 'terms' => [
@@ -105,7 +105,7 @@ class FamilyFilterSpec extends ObjectBehavior
         SearchQueryBuilder $sqb,
         FamilyInterface $family
     ) {
-        $familyRepository->findOneByIdentifier('familyA')->willReturn($family);
+        $familyRepository->findOneByIdentifier('familyA')->shouldNotBeCalled();
         $sqb->addMustNot(
             [
                 'exists' => ['field' => 'family.code'],
@@ -130,6 +130,25 @@ class FamilyFilterSpec extends ObjectBehavior
 
         $this->setQueryBuilder($sqb);
         $this->addFieldFilter('family', Operators::IS_NOT_EMPTY, ['familyA'], null, null, []);
+    }
+
+    function it_adds_a_filter_with_operator_in_list_regardless_of_the_case(
+        $familyRepository,
+        SearchQueryBuilder $sqb,
+        FamilyInterface $family
+    ) {
+        $familyRepository->findOneByIdentifier('FAMILYA')->willReturn($family);
+        $family->getCode()->willReturn('familyA');
+        $sqb->addFilter(
+            [
+                'terms' => [
+                    'family.code' => ['familyA'],
+                ],
+            ]
+        )->shouldBeCalled();
+
+        $this->setQueryBuilder($sqb);
+        $this->addFieldFilter('family', Operators::IN_LIST, ['FAMILYA'], null, null, []);
     }
 
     function it_throws_an_exception_when_the_search_query_builder_is_not_initialized()
