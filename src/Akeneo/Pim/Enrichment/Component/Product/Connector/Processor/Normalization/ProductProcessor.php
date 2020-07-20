@@ -124,8 +124,10 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
 
             $productStandard['family_code'] = $productStandard['family'];
             $family = $product->getFamily();
-            $familyTranslation = $family->getTranslation($labelLocale);
-            $familyLabel = null !== $familyTranslation->getLabel() ? $familyTranslation->getLabel() : sprintf('[%s]', $family->getCode());
+            $familyLabel = '';
+            if ($family) {
+                $familyLabel = null !== $family->getTranslation($labelLocale)->getLabel() ? $family->getTranslation($labelLocale)->getLabel() : sprintf('[%s]', $family->getCode());
+            }
 
             $productStandard['family'] = $familyLabel;
             $productStandard['parent'] = $parentLabel;

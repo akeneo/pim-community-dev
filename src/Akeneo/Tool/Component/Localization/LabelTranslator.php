@@ -16,34 +16,17 @@ class LabelTranslator implements TranslatorInterface
 
     public function trans($id, array $parameters = [], $domain = null, $locale = null, $fallback = '')
     {
-        $fallbackLocales = $this->translator->getFallbackLocales();
-
-        try {
-            $this->translator->setFallbackLocales([]);
-            $translation = $this->translator->trans($id, $parameters, $domain, $locale);
-        } finally {
-            $this->translator->setFallbackLocales($fallbackLocales);
+        $catalog = $this->translator->getCatalogue($locale);
+        if ($catalog->defines($id)) {
+            return $fallback;
         }
 
-        if ($id === $translation) {
-            $translation = $fallback;
-        }
-
-        return $translation;
+        return $this->translator->trans($id, $parameters, $domain, $locale);
     }
 
     public function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null)
     {
-        $fallbackLocales = $this->translator->getFallbackLocales();
-
-        try {
-            $this->translator->setFallbackLocales([]);
-            $translation = $this->translator->transChoice($id, $number, $parameters, $domain, $locale);
-        } finally {
-            $this->translator->setFallbackLocales($fallbackLocales);
-        }
-
-        return $translation;
+        return $this->translator->transChoice($id, $number, $parameters, $domain, $locale);
     }
 
     public function setLocale($locale)

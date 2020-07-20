@@ -10,4 +10,4 @@ services:
     pim_catalog.localization.translator.label:
         class: 'Akeneo\Tool\Component\Localization\LabelTranslator'
         arguments:
-            - '@translator.data_collector.inner'
+            - '@translator.default'
