@@ -3,6 +3,7 @@
 namespace AkeneoTest\Pim\Structure\EndToEnd\Attribute\ExternalApi;
 
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -134,6 +135,52 @@ JSON;
         "items" : [
             {$standardizedAttributes['a_metric']},
             {$standardizedAttributes['a_metric_negative']}
+        ]
+    }
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+    }
+
+    public function testAttributeSearchByUpdated()
+    {
+        /** @var Connection $connection */
+        $connection = $this->get('database_connection');
+        $affected = $connection->exec('UPDATE pim_catalog_attribute SET updated="2019-05-15 16:27:00" WHERE code="a_file"');
+        $this->assertEquals(1, $affected, 'There is more result as expected during test setup, the test will not work.');
+
+        $client = $this->createAuthenticatedClient();
+        $search = '{"updated":[{"operator":">","value":"2020-01-01 00:00:01"}]}';
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+
+        $client->request('GET', 'api/rest/v1/attributes?limit=5&with_count=true&search=' . $search);
+
+        $standardizedAttributes = $this->getStandardizedAttributes();
+        $expected = <<<JSON
+{
+	"_links": {
+		"self": {
+			"href": "http://localhost/api/rest/v1/attributes?page=1&limit=5&with_count=true&search={$searchEncoded}"
+		},
+		"first": {
+			"href": "http://localhost/api/rest/v1/attributes?page=1&limit=5&with_count=true&search={$searchEncoded}"
+		},
+		"next": {
+			"href": "http://localhost/api/rest/v1/attributes?page=2&limit=5&with_count=true&search={$searchEncoded}"
+		}
+	},
+	"current_page": 1,
+	"items_count": 29,
+    "_embedded" : {
+        "items" : [
+            {$standardizedAttributes['a_date']},
+            {$standardizedAttributes['a_localizable_image']},
+            {$standardizedAttributes['a_localizable_scopable_image']},
+            {$standardizedAttributes['a_localized_and_scopable_text_area']},
+            {$standardizedAttributes['a_metric']}
         ]
     }
 }
