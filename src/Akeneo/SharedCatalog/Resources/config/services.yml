@@ -50,3 +50,13 @@ services:
             - '%akeneo.shared_catalog.connector.code%'
         tags:
             - { name: doctrine.event_subscriber, connection: default }
+
+    Akeneo\SharedCatalog\Query\FindSharedCatalogsQueryInterface:
+        class: Akeneo\SharedCatalog\Query\FindSharedCatalogsQuery
+        arguments:
+            - '@database_connection'
+            - '%akeneo.shared_catalog.connector.code%'
+
+    Akeneo\SharedCatalog\Controller\SharedCatalogListAction:
+        arguments:
+            - '@Akeneo\SharedCatalog\Query\FindSharedCatalogsQueryInterface'
