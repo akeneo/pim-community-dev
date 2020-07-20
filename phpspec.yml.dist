@@ -9,13 +9,6 @@ suites:
         spec_prefix: Specification
 
     ## PIM BC
-    FranklinInsights:
-        namespace: Akeneo\Pim\Automation\FranklinInsights
-        psr4_prefix: Akeneo\Pim\Automation\FranklinInsights
-        spec_path: src/Akeneo/Pim/Automation/FranklinInsights/tests/back/
-        src_path: src/Akeneo/Pim/Automation/FranklinInsights
-        spec_prefix: Specification
-
     Automation:
         namespace: Akeneo\Pim\Automation
         psr4_prefix: Akeneo\Pim\Automation

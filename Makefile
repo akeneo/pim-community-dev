@@ -182,7 +182,7 @@ xdebug-off: docker-compose.override.yml
 ##
 
 .PHONY: coupling
-coupling: twa-coupling asset-coupling franklin-insights-coupling reference-entity-coupling rule-engine-coupling workflow-coupling permission-coupling
+coupling: twa-coupling asset-coupling reference-entity-coupling rule-engine-coupling workflow-coupling permission-coupling
 
 .PHONY: phpspec
 phpspec: vendor
