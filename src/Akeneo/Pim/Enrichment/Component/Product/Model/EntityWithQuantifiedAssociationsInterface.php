@@ -17,11 +17,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\Quantifi
 interface EntityWithQuantifiedAssociationsInterface
 {
     /**
-     * Set the quantified associations
-     */
-    public function setQuantifiedAssociations(QuantifiedAssociations $quantifiedAssociations): void;
-
-    /**
      * Get the quantified associations
      */
     public function getQuantifiedAssociations(): QuantifiedAssociations;
@@ -39,6 +34,19 @@ interface EntityWithQuantifiedAssociationsInterface
      * @return int[]
      */
     public function getQuantifiedAssociationsProductModelIds(): array;
+
+    /**
+     * Remove quantified association with product/product model not present in parameter
+     *
+     * @param array $productIdentifiersToKeep
+     * @param array $productModelCodesToKeep
+     */
+    public function filterQuantifiedAssociations(array $productIdentifiersToKeep, array $productModelCodesToKeep): void;
+
+    /**
+     * Remove all quantified associations
+     */
+    public function clearQuantifiedAssociations(): void;
 
     /**
      * Hydrates quantified associations from raw quantified associations
@@ -90,4 +98,10 @@ interface EntityWithQuantifiedAssociationsInterface
      * @param QuantifiedAssociations $quantifiedAssociations
      */
     public function mergeQuantifiedAssociations(QuantifiedAssociations $quantifiedAssociations): void;
+
+    /**
+     * Update quantified associations by path
+     * @param array $submittedQuantifiedAssociations
+     */
+    public function patchQuantifiedAssociations(array $submittedQuantifiedAssociations): void;
 }
