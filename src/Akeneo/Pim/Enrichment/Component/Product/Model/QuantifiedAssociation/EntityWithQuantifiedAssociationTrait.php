@@ -58,13 +58,13 @@ trait EntityWithQuantifiedAssociationTrait
     /**
      * @inheritDoc
      */
-    public function overrideQuantifiedAssociations(array $submittedQuantifiedAssociations): void
+    public function patchQuantifiedAssociations(array $submittedQuantifiedAssociations): void
     {
         if (null === $this->quantifiedAssociations) {
             return;
         }
 
-        $this->quantifiedAssociations = $this->quantifiedAssociations->overrideQuantifiedAssociations(
+        $this->quantifiedAssociations = $this->quantifiedAssociations->patchQuantifiedAssociations(
             $submittedQuantifiedAssociations
         );
     }

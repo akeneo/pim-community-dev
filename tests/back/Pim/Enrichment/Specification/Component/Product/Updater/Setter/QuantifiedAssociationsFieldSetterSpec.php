@@ -37,7 +37,7 @@ class QuantifiedAssociationsFieldSetterSpec extends ObjectBehavior
             ],
         ];
 
-        $product->overrideQuantifiedAssociations($submittedQuantifiedAssociations)->shouldBeCalled();
+        $product->patchQuantifiedAssociations($submittedQuantifiedAssociations)->shouldBeCalled();
 
         $this->setFieldData($product, 'quantified_associations', $submittedQuantifiedAssociations);
     }

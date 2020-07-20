@@ -32,7 +32,7 @@ class QuantifiedAssociationsFieldSetter extends AbstractFieldSetter
      */
     public function setFieldData($entity, $field, $data, array $options = [])
     {
-        $entity->overrideQuantifiedAssociations($data);
+        $entity->patchQuantifiedAssociations($data);
     }
 
     public function supportsField($field)
