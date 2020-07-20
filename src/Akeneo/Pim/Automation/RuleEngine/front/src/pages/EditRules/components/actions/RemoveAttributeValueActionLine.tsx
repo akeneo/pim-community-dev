@@ -58,8 +58,8 @@ const RemoveAttributeValueActionLine: React.FC<Props> = ({
   useGetAttributeAtMount(getFieldFormValue(), router, attribute, setAttribute);
 
   const onAttributeChange = (attribute: Attribute | null) => {
-    setAttribute(attribute);
     setItemsFormValue([]);
+    setAttribute(attribute);
     setFieldFormValue(attribute?.code);
   };
 

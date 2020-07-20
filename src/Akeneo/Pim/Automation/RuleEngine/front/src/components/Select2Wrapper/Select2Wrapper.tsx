@@ -105,6 +105,7 @@ const Select2Wrapper: React.FC<Props> = ({
         getSelect2Input().select2('destroy');
       }
       getSelect2Input().val(value);
+
       const options: any = {
         ajax,
         data,
