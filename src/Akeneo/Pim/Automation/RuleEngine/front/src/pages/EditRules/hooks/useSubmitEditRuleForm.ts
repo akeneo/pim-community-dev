@@ -85,7 +85,7 @@ const transformFormData = (formData: FormData): Payload => {
 };
 
 const getErrorPath = (path: string) => {
-  if (path.match(/^actions|conditions\[\d+\]$/g)) {
+  if (path.match(/^(actions|conditions)\[\d+\]$/g)) {
     /* The error path is not linked to a specific field (value, field, operator...)
      * As in react-hook-form, every error is linked to a field, we need to link it to a fake field. */
     return `content.${path}.__fromBackend__`;
