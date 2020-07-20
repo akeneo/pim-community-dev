@@ -1,0 +1,3 @@
+pim_enrich.entity.channel:
+  property:
+    label_conversion_units: Pick a conversion unit for each measurement attribute that will be used during product export

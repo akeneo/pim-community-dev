@@ -1,0 +1,8 @@
+pim_enrich:
+  #ACLs
+  acl:
+    job_tracker:
+      view_all_jobs: View all jobs in process tracker
+Metric family: Measurement family
+Default metric unit: Default measurement unit
+pim_catalog_metric: Measurement

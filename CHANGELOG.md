@@ -18,12 +18,15 @@
 - PIM-9289: Display a correct error message when deleting a group or an association
 - PIM-9327: PDF generation header miss the product name when the attribute used as label is localizable 
 - PIM-9324: Fix product grid not loading when asset used as main picture is deleted
+- PIM-9356: Fix external api endpoint for products with invalid quantified associations
+- PIM-9357: Make rules case-insensitive so it complies with family and attribute codes
 
 ## New features
 
 - MET-197: Add possibility to define that an association type is two way & automatically create inversed association when association type is two way
 - MET-14: Measurements (or metrics) are now stored in database
 - AOB-277: Add an acl to allow a role member to view all job executions in last job execution grids, job tracker and last operations widget.
+- RAC-54: Add a new type of associations: Association with quantity
 
 ## Improvements
 

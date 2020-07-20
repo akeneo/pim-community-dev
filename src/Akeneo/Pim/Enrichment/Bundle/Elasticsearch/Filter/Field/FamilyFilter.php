@@ -52,7 +52,7 @@ class FamilyFilter extends AbstractFieldFilter implements FieldFilterInterface
         }
 
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
-            $this->checkValue($field, $value);
+            $value = $this->checkValue($field, $value);
         }
 
         switch ($operator) {
@@ -96,25 +96,31 @@ class FamilyFilter extends AbstractFieldFilter implements FieldFilterInterface
     }
 
     /**
-     * Check if value is valid
+     * Check if value is valid (case insensitive)
      *
      * @param string $field
      * @param mixed  $values
      *
      * @throws ObjectNotFoundException
      */
+
     protected function checkValue($field, $values)
     {
         FieldFilterHelper::checkArray($field, $values, static::class);
+        $familyCodes = [];
 
         foreach ($values as $value) {
             FieldFilterHelper::checkIdentifier($field, $value, static::class);
+            $family = $this->familyRepository->findOneByIdentifier($value);
 
-            if (null === $this->familyRepository->findOneByIdentifier($value)) {
+            if (null === $family) {
                 throw new ObjectNotFoundException(
                     sprintf('Object "family" with code "%s" does not exist', $value)
                 );
             }
+            $familyCodes[] = $family->getCode();
         }
+
+        return $familyCodes;
     }
 }

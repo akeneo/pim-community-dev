@@ -52,6 +52,14 @@ class FamilyFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assert($result, ['bar', 'baz', 'foo']);
     }
 
+    public function testCaseInsensitive()
+    {
+        $result = $this->executeFilter([['family', Operators::IN_LIST, ['FaMilya']]]);
+        $this->assert($result, ['foo']);
+        $result = $this->executeFilter([['family', Operators::NOT_IN_LIST, ['FAmilYa']]]);
+        $this->assert($result, ['bar', 'baz']);
+    }
+
     public function testOperatorEmpty()
     {
         $result = $this->executeFilter([['family', Operators::IS_EMPTY, '']]);

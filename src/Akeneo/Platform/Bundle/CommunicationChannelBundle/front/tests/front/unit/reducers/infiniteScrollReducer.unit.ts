@@ -50,6 +50,43 @@ it('handles INFINITE_SCROLL_FIRST_RESULTS_FETCHED action', () => {
   });
 });
 
+it('handles to set the last append to false when INFINITE_SCROLL_FIRST_RESULTS_FETCHED is dispatched', () => {
+  const initialState = {
+    items: [],
+    isFetching: false,
+    hasError: false,
+    lastAppend: true,
+  };
+  const action = infiniteScrollFirstResultsFetched([
+    {
+      title: 'item scrollable',
+      description: 'description item scrollable',
+    },
+    {
+      title: 'item scrollable 2',
+      description: 'description item scrollable 2',
+    },
+  ]);
+
+  const newState = reducer(initialState, action);
+
+  expect(newState).toStrictEqual({
+    items: [
+      {
+        title: 'item scrollable',
+        description: 'description item scrollable',
+      },
+      {
+        title: 'item scrollable 2',
+        description: 'description item scrollable 2',
+      },
+    ],
+    isFetching: false,
+    hasError: false,
+    lastAppend: false,
+  });
+});
+
 it('handles INFINITE_SCROLL_NEXT_RESULTS_FETCHED action', () => {
   const initialState = {
     items: [

@@ -360,7 +360,6 @@ jobs:
                 name: Upgrade version to master
                 command: |
                     INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
-                    INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$CIRCLE_SHA1 make terraform-pre-upgrade-disk
                     INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$CIRCLE_SHA1 make deploy
           - run:
                 name: Production tests on upgraded env

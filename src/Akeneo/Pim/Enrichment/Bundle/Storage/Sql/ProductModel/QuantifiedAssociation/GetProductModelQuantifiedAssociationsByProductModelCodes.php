@@ -99,6 +99,9 @@ SQL;
 
         $result = [];
         foreach ($allQuantifiedAssociationsWithProductModelIds as $associationTypeCode => $associationWithIds) {
+            if (empty($associationWithIds) || !is_string($associationTypeCode)) {
+                continue;
+            }
             if (!$this->associationTypeExists($associationTypeCode)) {
                 continue;
             }
@@ -128,7 +131,7 @@ SQL;
             function (array $quantifiedAssociations) {
                 return $quantifiedAssociations['id'];
             },
-            $quantifiedAssociationWithProductModelId['product_models']
+            $quantifiedAssociationWithProductModelId['product_models'] ?? []
         );
     }
 
@@ -141,6 +144,9 @@ SQL;
     ): IdMapping {
         $productModelIds = [];
         foreach ($allQuantifiedAssociationsWithProductModelIds as $quantifiedAssociationWithId) {
+            if (empty($quantifiedAssociationWithId)) {
+                continue;
+            }
             $productModelIds = array_merge($productModelIds, $this->productModelIds($quantifiedAssociationWithId));
         }
 
