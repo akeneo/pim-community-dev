@@ -15,6 +15,6 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-final class AkeneoDataQualityInsightsBundle extends Bundle
+final class AkeneoPimEnterpriseDataQualityInsightsBundle extends Bundle
 {
 }
