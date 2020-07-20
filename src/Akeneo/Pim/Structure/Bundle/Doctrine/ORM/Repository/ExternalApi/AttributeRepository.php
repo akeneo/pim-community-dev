@@ -141,23 +141,27 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
         }
         $availableSearchFilters = ['code'];
         $validator = Validation::createValidator();
-        $codeConstraints = new Assert\All([
-            new Assert\Collection([
-                'operator' => new Assert\IdenticalTo([
-                    'value' => Operators::IN_LIST,
-                    'message' => 'In order to search on attribute codes you must use "IN" operator, {{ compared_value }} given.',
-                ]),
-                'value' => [
-                    new Assert\Type([
-                        'type' => 'array',
-                        'message' => 'In order to search on attribute codes you must send an array of attribute codes as value, {{ type }} given.'
+        $constraints = [
+            'code' => new Assert\All([
+                new Assert\Collection([
+                    'operator' => new Assert\IdenticalTo([
+                        'value' => Operators::IN_LIST,
+                        'message' => 'In order to search on attribute codes you must use "IN" operator, {{ compared_value }} given.',
                     ]),
-                    new Assert\All([
-                        new Assert\Type('string')
-                    ])
-                ],
+                    'value' => [
+                        new Assert\Type([
+                            'type' => 'array',
+                            'message' => 'In order to search on attribute codes you must send an array of attribute codes as value, {{ type }} given.'
+                        ]),
+                        new Assert\All([
+                            new Assert\Type('string')
+                        ])
+                    ],
+                ])
             ])
-        ]);
+        ];
+
+        $exceptionMessage = '';
         foreach ($searchFilters as $property => $searchFilter) {
             if (!in_array($property, $availableSearchFilters)) {
                 throw new \InvalidArgumentException(sprintf(
@@ -167,19 +171,15 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
                 ));
             }
 
-            switch ($property) {
-                case 'code':
-                    $violations = $validator->validate($searchFilter, $codeConstraints);
-                    break;
-            }
-
+            $violations = $validator->validate($searchFilter, $constraints[$property]);
             if (0 !== $violations->count()) {
-                $exceptionMessage = '';
                 foreach ($violations as $violation) {
                     $exceptionMessage .= $violation->getMessage();
                 }
-                throw new \InvalidArgumentException($exceptionMessage);
             }
+        }
+        if ('' !== $exceptionMessage) {
+            throw new \InvalidArgumentException($exceptionMessage);
         }
     }
 }
