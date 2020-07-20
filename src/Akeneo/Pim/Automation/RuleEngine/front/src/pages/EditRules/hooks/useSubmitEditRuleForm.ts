@@ -84,13 +84,23 @@ const transformFormData = (formData: FormData): Payload => {
   };
 };
 
+const getErrorPath = (path: string) => {
+  if (path.match(/^actions|conditions\[\d+\]$/g)) {
+    /* The error path is not linked to a specific field (value, field, operator...)
+     * As in react-hook-form, every error is linked to a field, we need to link it to a fake field. */
+    return `content.${path}.__fromBackend__`;
+  }
+  return `content.${path}`;
+};
+
 const submitEditRuleForm = (
   ruleDefinitionCode: string,
   translate: Translate,
   notify: Notify,
   router: Router,
   reset: FormContextValues['reset'],
-  register: Control['register']
+  register: Control['register'],
+  setError: any
 ) => {
   return async (formData: FormData, event?: React.BaseSyntheticEvent) => {
     if (event) {
@@ -114,6 +124,13 @@ const submitEditRuleForm = (
       registerConditions(register, formData.content?.conditions || []);
       registerActions(register, formData.content?.actions || []);
     } else {
+      const errors = await response.json();
+      errors.forEach(
+        (error: { global: boolean; message: string; path: string }) => {
+          setError(getErrorPath(error.path), 'validate', error.message);
+        }
+      );
+
       notify(
         NotificationLevel.ERROR,
         translate('pimee_catalog_rule.form.edit.notification.failed')
@@ -155,7 +172,7 @@ const useSubmitEditRuleForm = (
   const formMethods = useForm<FormData>({
     defaultValues,
   });
-  const { reset, register, handleSubmit } = formMethods;
+  const { reset, register, handleSubmit, setError } = formMethods;
   React.useEffect(() => {
     registerConditions(register, ruleDefinition.conditions);
     registerActions(register, ruleDefinition.actions);
@@ -166,7 +183,8 @@ const useSubmitEditRuleForm = (
     notify,
     router,
     reset,
-    register
+    register,
+    setError
   );
 
   return {
