@@ -11,6 +11,7 @@ config:
         pimee/attribute-edit-form/rules/rules-grid: akeneopimruleengine/controllers/rules-grid
         pimee/attribute-edit-form/rules/edit-rules: akeneopimruleengine/controllers/edit-rules
         pimee/attribute-edit-form/rules/create-rules: akeneopimruleengine/controllers/create-rules
+        oro/datagrid/rules-action: akeneopimruleengine/datagrid/action/rules-action
         oro/datagrid/tags-cell: akeneopimruleengine/datagrid/cell/tags-cell.ts
         oro/datagrid/tags-cell-template: akeneopimruleengine/datagrid/cell/tags-cell.html
         pimee/rules/create-button: akeneopimruleengine/pages/IndexRules/create-button.ts

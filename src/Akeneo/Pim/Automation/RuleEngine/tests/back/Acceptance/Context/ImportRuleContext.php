@@ -233,6 +233,26 @@ YAML;
     }
 
     /**
+     * @When /^I import a concatenate rule with missing from and to keys$/
+     */
+    public function importAConcatenateRuleWithMissingFromAndToKeys(): void
+    {
+        $rulesConfig = <<<YAML
+rules:
+    test1:
+        priority: 90
+        conditions:
+            - field: family
+              operator: IN
+              value:
+                  - camcorders
+        actions:
+            - type: concatenate              
+YAML;
+        $this->importRules($rulesConfig);
+    }
+
+    /**
      * @When I import a calculate rule with invalid attribute types
      */
     public function importACalculateRuleWithInvalidAttributeTypes(): void
