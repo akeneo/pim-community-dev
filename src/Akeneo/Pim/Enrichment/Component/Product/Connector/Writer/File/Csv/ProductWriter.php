@@ -125,7 +125,7 @@ class ProductWriter extends AbstractItemMediaWriter implements
 
         $withLabel = $parameters->has('with_label') && $parameters->get('with_label');
         $labelLocale = '';
-        if ($parameters->has('label_locale')) {
+        if ($parameters->has('label_locale') && $parameters->get('label_locale')) {
             $labelLocale = $parameters->get('label_locale');
         }
 
