@@ -64,6 +64,10 @@ services:
             - '@database_connection'
             - '%akeneo.shared_catalog.connector.code%'
 
+    Akeneo\SharedCatalog\Query\GetProductIdFromProductIdentifierQuery:
+        arguments:
+            - '@database_connection'
+
     Akeneo\SharedCatalog\Controller\SharedCatalogListAction:
         arguments:
             - '@Akeneo\SharedCatalog\Query\FindSharedCatalogsQueryInterface'
@@ -72,6 +76,7 @@ services:
         arguments:
             - '@Akeneo\SharedCatalog\Query\FindSharedCatalogQueryInterface'
             - '@akeneo.shared_catalog.query.product_query_builder_factory'
+            - '@Akeneo\SharedCatalog\Query\GetProductIdFromProductIdentifierQuery'
             - '%akeneo.shared_catalog.products_page_size%'
 
     akeneo.shared_catalog.query.product_query_builder_factory:
@@ -81,5 +86,5 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.query.filter.product_registry'
             - '@pim_catalog.query.sorter.registry'
-            - '@akeneo.pim.enrichment.factory.product_identifier_cursor_from_size_cursor'
-            - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
+            - '@akeneo.pim.enrichment.factory.product_identifier_cursor_search_after_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'

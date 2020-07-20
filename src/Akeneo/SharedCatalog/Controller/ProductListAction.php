@@ -6,8 +6,10 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Akeneo\SharedCatalog\Query\FindSharedCatalogQueryInterface;
+use Akeneo\SharedCatalog\Query\GetProductIdFromProductIdentifierQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductListAction
@@ -18,16 +20,21 @@ class ProductListAction
     /** @var ProductQueryBuilderFactoryInterface */
     private $productQueryBuilderFactory;
 
+    /** @var GetProductIdFromProductIdentifierQuery */
+    private $getProductIdFromProductIdentifierQuery;
+
     /** @var int */
     private $pageSize;
 
     public function __construct(
         FindSharedCatalogQueryInterface $findSharedCatalogQuery,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
+        GetProductIdFromProductIdentifierQuery $getProductIdFromProductIdentifierQuery,
         int $pageSize
     ) {
         $this->findSharedCatalogQuery = $findSharedCatalogQuery;
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
+        $this->getProductIdFromProductIdentifierQuery = $getProductIdFromProductIdentifierQuery;
         $this->pageSize = $pageSize;
     }
 
@@ -41,14 +48,25 @@ class ProductListAction
             throw new NotFoundHttpException();
         }
 
-        $page = (int) $request->get('page', 1);
-
-        $pqb = $this->productQueryBuilderFactory->create([
+        $pqbOptions = [
             'default_scope' => $sharedCatalog->filters['structure']['scope'],
             'filters' => $sharedCatalog->filters['data'] ?? [],
             'limit' => $this->pageSize,
-            'from' => ($page - 1) * $this->pageSize,
-        ]);
+        ];
+
+        $searchAfterProductIdentifier = $request->get('search_after', null);
+
+        if (null !== $searchAfterProductIdentifier) {
+            $searchAfterProductId = $this->getProductIdFromProductIdentifierQuery->execute($searchAfterProductIdentifier);
+
+            if (null === $searchAfterProductId) {
+                throw new BadRequestHttpException(sprintf('Product with identifier "%s" not found', $searchAfterProductIdentifier));
+            }
+
+            $pqbOptions['search_after'] = [$searchAfterProductIdentifier, 'product_' . $searchAfterProductId];
+        }
+
+        $pqb = $this->productQueryBuilderFactory->create($pqbOptions);
         $pqb->addSorter('identifier', Directions::ASCENDING);
 
         $results = $pqb->execute();
@@ -62,7 +80,6 @@ class ProductListAction
             'pagination' => [
                 'results_by_page' => $this->pageSize,
                 'results_count' => count($identifiers),
-                'total_count' => $results->count(),
             ],
         ]);
     }
