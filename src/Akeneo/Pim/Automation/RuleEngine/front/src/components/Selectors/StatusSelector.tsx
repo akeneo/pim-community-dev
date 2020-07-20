@@ -28,7 +28,7 @@ const StatusSelector: React.FC<Props> = ({
       text: translate('pim_enrich.entity.product.module.status.disabled'),
     },
   ];
-  const handleChange = (value: 'enabled' | 'disabled') => {
+  const handleChange = (value: 'enabled'|'disabled') => {
     if (onChange) {
       onChange(value === 'enabled');
     }
@@ -43,7 +43,7 @@ const StatusSelector: React.FC<Props> = ({
       value={selectValue}
       name={name}
       placeholder={placeholder}
-      onChange={handleChange}
+      onChange={(value: string|number|null) => handleChange(value as 'enabled'|'disabled')}
     />
   );
 };

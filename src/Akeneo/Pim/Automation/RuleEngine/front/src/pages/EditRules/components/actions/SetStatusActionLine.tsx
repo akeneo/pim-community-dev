@@ -1,5 +1,5 @@
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { ActionLineProps } from './ActionLineProps';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionTitle, AknActionFormContainer } from './ActionLine';
@@ -12,7 +12,6 @@ const SetStatusActionLine: React.FC<ActionLineProps & {
   action: SetStatusAction;
 }> = ({ handleDelete, lineNumber }) => {
   const translate = useTranslate();
-  const { getValues } = useFormContext();
 
   const {
     fieldFormName,
@@ -21,9 +20,6 @@ const SetStatusActionLine: React.FC<ActionLineProps & {
     getValueFormValue,
     setValueFormValue,
   } = useControlledFormInputAction<boolean>(lineNumber);
-  React.useEffect(() => {
-    console.log('getValues', getValues());
-  }, [JSON.stringify(getValues())]);
 
   const handleChange = (value: boolean) => {
     setValueFormValue(value);
