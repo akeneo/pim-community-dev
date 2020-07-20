@@ -9,6 +9,8 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\UnexpectedResultException;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validation;
 
 /**
  * Attribute repository for the API
@@ -48,7 +50,7 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
     /**
      * Find resources with offset > $offset and filtered by $criteria
      *
-     * @param array $searchFilters [property: [['operator' => (string), 'value' => (mixed)]]]
+     * @param array{string: array{operator: string, value: mixed}[]} $searchFilters
      * @param array $orders
      * @param int   $limit
      * @param int   $offset
@@ -137,40 +139,47 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
         if (empty($searchFilters)) {
             return;
         }
-
         $availableSearchFilters = ['code'];
+        $validator = Validation::createValidator();
+        $codeConstraints = new Assert\All([
+            new Assert\Collection([
+                'operator' => new Assert\IdenticalTo([
+                    'value' => Operators::IN_LIST,
+                    'message' => 'In order to search on attribute codes you must use "IN" operator, {{ compared_value }} given.',
+                ]),
+                'value' => [
+                    new Assert\Type([
+                        'type' => 'array',
+                        'message' => 'In order to search on attribute codes you must send an array of attribute codes as value, {{ type }} given.'
+                    ]),
+                    new Assert\All([
+                        new Assert\Type('string')
+                    ])
+                ],
+            ])
+        ]);
         foreach ($searchFilters as $property => $searchFilter) {
-            foreach ($searchFilter as $criterion) {
-                if (!in_array($property, $availableSearchFilters)) {
-                    throw new \InvalidArgumentException(sprintf(
-                        'Available search filters are "%s" and you tried to search on unavailable filter "%s"',
-                        implode(', ', $availableSearchFilters),
-                        $property
-                    ));
-                }
-                $operator = $criterion['operator'] ?? null;
-                $value = $criterion['value'] ?? null;
-                if (null === $operator || null === $value) {
-                    throw new \InvalidArgumentException(
-                        'Search filters must have an "operator" and a "value" key.'
-                    );
-                }
+            if (!in_array($property, $availableSearchFilters)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Available search filters are "%s" and you tried to search on unavailable filter "%s"',
+                    implode(', ', $availableSearchFilters),
+                    $property
+                ));
+            }
 
-                switch ($property) {
-                    case 'code':
-                        if (Operators::IN_LIST !== $operator) {
-                            throw new \InvalidArgumentException(sprintf(
-                                'In order to search on attribute codes you must use "IN" operator, "%s" given.',
-                                $operator
-                            ));
-                        }
-                        if (!is_array($value)) {
-                            throw new \InvalidArgumentException(
-                                'In order to search on attribute codes you must send an array of codes as value.'
-                            );
-                        }
-                        break;
+            switch ($property) {
+                case 'code':
+                    $violations = $validator->validate($searchFilter, $codeConstraints);
+                    break;
+            }
+
+            if (0 !== $violations->count()) {
+                $exceptionMessage = '';
+                foreach ($violations as $violation) {
+                    dump($violation);
+                    $exceptionMessage .= $violation->getMessage();
                 }
+                throw new \InvalidArgumentException($exceptionMessage);
             }
         }
     }
