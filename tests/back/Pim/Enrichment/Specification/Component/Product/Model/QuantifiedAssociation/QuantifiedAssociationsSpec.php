@@ -458,7 +458,7 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
     public function it_override_empty_quantified_associations()
     {
         $this->beConstructedThrough('createFromNormalized', [[]]);
-        $this->overrideQuantifiedAssociations([
+        $this->patchQuantifiedAssociations([
             'PRODUCTSET_A' => [
                 'products' => [
                     ['identifier' => 'AKN_TS1', 'quantity' => 2],
@@ -495,7 +495,7 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
             ],
         ]);
 
-        $this->overrideQuantifiedAssociations([
+        $this->patchQuantifiedAssociations([
             'PRODUCTSET_A' => [
                 'products' => [
                     ['identifier' => 'AKN_TS1_ALT', 'quantity' => 200],

@@ -100,8 +100,8 @@ interface EntityWithQuantifiedAssociationsInterface
     public function mergeQuantifiedAssociations(QuantifiedAssociations $quantifiedAssociations): void;
 
     /**
-     * Update quantified associations by override with another quantified associations
+     * Update quantified associations by path
      * @param array $submittedQuantifiedAssociations
      */
-    public function overrideQuantifiedAssociations(array $submittedQuantifiedAssociations): void;
+    public function patchQuantifiedAssociations(array $submittedQuantifiedAssociations): void;
 }

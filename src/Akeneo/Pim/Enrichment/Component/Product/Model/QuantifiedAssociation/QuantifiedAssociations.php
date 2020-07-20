@@ -108,7 +108,7 @@ class QuantifiedAssociations
         return new self($mappedQuantifiedAssociations);
     }
 
-    public function overrideQuantifiedAssociations(array $submittedQuantifiedAssociations): self
+    public function patchQuantifiedAssociations(array $submittedQuantifiedAssociations): self
     {
         $currentQuantifiedAssociationNormalized = $this->normalize();
 
