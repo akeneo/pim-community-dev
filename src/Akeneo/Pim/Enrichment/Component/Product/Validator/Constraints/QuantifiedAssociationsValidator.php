@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindNonExistingProductIdentifiersQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindNonExistingProductModelCodesQueryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\QuantifiedAssociations as QuantifiedAssociationsConstraint;
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -50,8 +51,8 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
             throw new UnexpectedTypeException($value, QuantifiedAssociationCollection::class);
         }
 
-        if (!$constraint instanceof QuantifiedAssociations) {
-            throw new UnexpectedTypeException($constraint, QuantifiedAssociations::class);
+        if (!$constraint instanceof QuantifiedAssociationsConstraint) {
+            throw new UnexpectedTypeException($constraint, QuantifiedAssociationsConstraint::class);
         }
 
         $this->disablePropertyPathNormalization($constraint);
@@ -93,7 +94,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
 
         if (null === $associationType) {
             $this->context->buildViolation(
-                QuantifiedAssociations::ASSOCIATION_TYPE_DOES_NOT_EXIST_MESSAGE
+                QuantifiedAssociationsConstraint::ASSOCIATION_TYPE_DOES_NOT_EXIST_MESSAGE
             )
                 ->atPath($propertyPath)
                 ->addViolation();
@@ -103,7 +104,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
 
         if (!$associationType->isQuantified()) {
             $this->context->buildViolation(
-                QuantifiedAssociations::ASSOCIATION_TYPE_IS_NOT_QUANTIFIED_MESSAGE,
+                QuantifiedAssociationsConstraint::ASSOCIATION_TYPE_IS_NOT_QUANTIFIED_MESSAGE,
                 [
                     '{{ association_type }}' => $associationType->getCode(),
                 ]
@@ -118,7 +119,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
         foreach ($linkTypes as $linkType) {
             if (!in_array($linkType, self::ALLOWED_LINK_TYPES)) {
                 $this->context->buildViolation(
-                    QuantifiedAssociations::LINK_TYPE_UNEXPECTED_MESSAGE,
+                    QuantifiedAssociationsConstraint::LINK_TYPE_UNEXPECTED_MESSAGE,
                     [
                         '{{ value }}' => $linkType,
                         '{{ allowed }}' => implode(',', self::ALLOWED_LINK_TYPES),
@@ -144,7 +145,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
         );
         if (count($nonExistingProductIdentifiers) > 0) {
             $this->context->buildViolation(
-                QuantifiedAssociations::PRODUCTS_DO_NOT_EXIST_MESSAGE,
+                QuantifiedAssociationsConstraint::PRODUCTS_DO_NOT_EXIST_MESSAGE,
                 [
                     '{{ values }}' => implode(', ', $nonExistingProductIdentifiers),
                 ]
@@ -166,7 +167,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
         $nonExistingProductModelCodes = $this->findNonExistingProductModelCodesQuery->execute($productModelCodes);
         if (count($nonExistingProductModelCodes) > 0) {
             $this->context->buildViolation(
-                QuantifiedAssociations::PRODUCT_MODELS_DO_NOT_EXIST_MESSAGE,
+                QuantifiedAssociationsConstraint::PRODUCT_MODELS_DO_NOT_EXIST_MESSAGE,
                 [
                     '{{ values }}' => implode(', ', $nonExistingProductModelCodes),
                 ]
@@ -182,7 +183,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
             || intval($quantity) < self::MIN_QUANTITY
             || intval($quantity) > self::MAX_QUANTITY) {
             $this->context->buildViolation(
-                QuantifiedAssociations::INVALID_QUANTITY_MESSAGE,
+                QuantifiedAssociationsConstraint::INVALID_QUANTITY_MESSAGE,
                 [
                     '{{ value }}' => $quantity,
                     '{{ min }}' => self::MIN_QUANTITY,
@@ -198,7 +199,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
     {
         if ($count > self::MAX_ASSOCIATIONS) {
             $this->context->buildViolation(
-                QuantifiedAssociations::MAX_ASSOCIATIONS_MESSAGE,
+                QuantifiedAssociationsConstraint::MAX_ASSOCIATIONS_MESSAGE,
                 [
                     '{{ value }}' => $count,
                     '{{ limit }}' => self::MAX_ASSOCIATIONS,
@@ -213,7 +214,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
      * The Violation normalizer rename property paths with uppercase characters, this method disable this behavior
      * @see https://github.com/akeneo/pim-community-dev/blob/9b9f18385d51f5d2147a79374bd5b5aa9eae3464/src/Akeneo/Tool/Component/Api/Normalizer/Exception/ViolationNormalizer.php#L144
      */
-    private function disablePropertyPathNormalization(QuantifiedAssociations $constraint): void
+    private function disablePropertyPathNormalization(QuantifiedAssociationsConstraint $constraint): void
     {
         $constraint->payload['normalize_property_path'] = false;
     }
