@@ -175,3 +175,9 @@ services:
             - '@doctrine'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EventQueueTestProducer:
+        arguments:
+            - '@enqueue.client.default.context'
+        tags:
+            - { name: kernel.event_subscriber }

@@ -18,6 +18,14 @@
         <ini name="memory_limit" value="-1"/>
         <ini name="zend.enable_gc" value="1"/>
         <server name="KERNEL_CLASS" value="Kernel" force="true" />
+
+        <!-- ###+ enqueue/enqueue-bundle ### -->
+        <env name="ENQUEUE_DSN" value="null://"/>
+        <!-- ###- enqueue/enqueue-bundle ### -->
+
+        <!-- ###+ enqueue/gps ### -->
+        <env name="PUBSUB_EMULATOR_HOST" value="http://localhost:8900"/>
+        <!-- ###- enqueue/gps ### -->
     </php>
 
     <groups>

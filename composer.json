@@ -119,7 +119,11 @@
         "symfony/finder": "4.4.7",
         "symfony/templating": "4.4.7",
         "symfony/proxy-manager-bridge": "4.4.7",
-        "justinrainbow/json-schema": "^5.2"
+        "justinrainbow/json-schema": "^5.2",
+        "enqueue/enqueue-bundle": "^0.10.1",
+        "enqueue/gps": "^0.10.1",
+        "grpc/grpc": "1.19.0",
+        "guzzlehttp/guzzle": "6.3.3"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "0.3.*",

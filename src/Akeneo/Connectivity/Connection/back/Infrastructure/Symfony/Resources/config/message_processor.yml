@@ -1,0 +1,4 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\MessageProcessor\ProductEventProcessor:
+        tags:
+            - { name: enqueue.topic_subscriber }
