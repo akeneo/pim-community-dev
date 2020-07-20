@@ -27,9 +27,6 @@ final class Version_5_0_20200720083247_drop_title_formatting_tables_Integration 
 
     public function testItRemovesTitleFormattingTables()
     {
-        $stmt = $this->get('database_connection')->executeQuery('SHOW TABLES LIKE "%title_formatting%"');
-        $this->assertSame(2, $stmt->rowCount());
-
         $this->runMigration();
 
         $stmt = $this->get('database_connection')->executeQuery('SHOW TABLES LIKE "%title_formatting%"');

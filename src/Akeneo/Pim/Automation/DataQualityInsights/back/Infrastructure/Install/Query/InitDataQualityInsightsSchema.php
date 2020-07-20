@@ -66,17 +66,5 @@ CREATE TABLE pimee_data_quality_insights_text_checker_dictionary (
     word VARCHAR(250) NOT NULL,
     INDEX word_index (word)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-CREATE TABLE pimee_data_quality_insights_title_formatting_ignore (
-    product_id INT NOT NULL,
-    ignored_suggestions JSON NOT NULL,
-    PRIMARY KEY (product_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-CREATE TABLE pimee_data_quality_insights_pm_title_formatting_ignore (
-    product_id INT NOT NULL,
-    ignored_suggestions JSON NOT NULL,
-    PRIMARY KEY (product_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 SQL;
 }
