@@ -27,25 +27,28 @@ final class ApiFindAnnouncementItems implements FindAnnouncementItemsInterface
 
     public function byPimVersion(string $pimEdition, string $pimVersion, ?string $searchAfter, int $limit): array
     {
-        $uri = $this->getUri($searchAfter, $limit);
+        $queryParameters = [
+            'pim_edition' => $pimEdition,
+            'pim_version' => $pimVersion,
+        ];
+        if (null !== $searchAfter) {
+            $queryParameters['search_after'] = $searchAfter;
+        }
 
-        $response = $this->client->request('GET', $uri);
-        $content = json_decode((string) $response->getBody(), true);
+        $response = $this->client->request('GET', self::BASE_URI, ['query' => $queryParameters]);
+        if ($response->getStatusCode() !== 200) {
+            throw new \RuntimeException(
+                sprintf(
+                    'Error occurred when fetching the announcements with status code "%s". Please check the logs of the external service.',
+                    $response->getStatusCode()
+                )
+            );
+        }
+        $content = json_decode((string) $response->getBody(), true)['data'];
 
         return array_map(function ($announcement) {
             return $this->getAnnouncementItem($announcement);
         }, array_values($content));
-    }
-
-    private function getUri(?string $searchAfter, int $limit): string
-    {
-        $queryParameters = [];
-        if (null !== $searchAfter) {
-            $queryParameters['search_after'] = $searchAfter;
-        }
-        $queryParameters['limit'] = $limit;
-
-        return self::BASE_URI . http_build_query($queryParameters);
     }
 
     private function getAnnouncementItem(array $announcement): AnnouncementItem
@@ -55,7 +58,7 @@ final class ApiFindAnnouncementItems implements FindAnnouncementItemsInterface
             $announcement['title'],
             $announcement['description'],
             $announcement['img'] ?? null,
-            $announcement['altImg'] ?? null,
+            $announcement['imgAlt'] ?? null,
             $announcement['link'],
             new \DateTimeImmutable($announcement['startDate']),
             $announcement['notificationDuration'],

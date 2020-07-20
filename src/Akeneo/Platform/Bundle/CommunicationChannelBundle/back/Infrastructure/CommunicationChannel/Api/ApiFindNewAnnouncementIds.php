@@ -24,11 +24,22 @@ final class ApiFindNewAnnouncementIds implements FindNewAnnouncementIdsInterface
         $this->client = new Client(['base_uri' => $apiUrl]);
     }
 
-    public function find(): array
+    public function find(string $pimEdition, string $pimVersion): array
     {
-        $response = $this->client->request('GET', self::BASE_URI);
-        $content = json_decode((string) $response->getBody(), true);
+        $queryParameters = [
+            'pim_edition' => $pimEdition,
+            'pim_version' => $pimVersion,
+        ];
+        $response = $this->client->request('GET', self::BASE_URI, ['query' => $queryParameters]);
+        if ($response->getStatusCode() !== 200) {
+            throw new \RuntimeException(
+                sprintf(
+                    'Error occurred when fetching the announcements with status code "%s". Please check the logs of the external service.',
+                    $response->getStatusCode()
+                )
+            );
+        }
 
-        return $content;
+        return json_decode((string) $response->getBody(), true);
     }
 }

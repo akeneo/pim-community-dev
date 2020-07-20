@@ -3,6 +3,7 @@ services:
         public: true
         class: 'Akeneo\Platform\CommunicationChannel\Infrastructure\Delivery\InternalApi\Announcement\HasNewAnnouncementsAction'
         arguments:
+            - '@pim_catalog.version_provider'
             - '@pim_user.context.user'
             - '@akeneo_communication_channel.handler.query.has_new_announcements'
 

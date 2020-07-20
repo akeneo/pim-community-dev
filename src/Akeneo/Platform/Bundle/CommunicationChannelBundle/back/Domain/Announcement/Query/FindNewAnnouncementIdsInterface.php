@@ -14,5 +14,5 @@ interface FindNewAnnouncementIdsInterface
     /**
      * @return string[]
      */
-    public function find(): array;
+    public function find(string $pimEdition, string $pimVersion): array;
 }

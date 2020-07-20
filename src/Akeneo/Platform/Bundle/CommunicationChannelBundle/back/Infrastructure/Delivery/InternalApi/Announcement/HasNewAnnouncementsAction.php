@@ -6,6 +6,7 @@ namespace Akeneo\Platform\CommunicationChannel\Infrastructure\Delivery\InternalA
 
 use Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\HasNewAnnouncementsHandler;
 use Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\HasNewAnnouncementsQuery;
+use Akeneo\Platform\VersionProviderInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -17,14 +18,21 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class HasNewAnnouncementsAction
 {
+    /** @var VersionProviderInterface */
+    private $versionProvider;
+
     /** @var UserContext */
     private $userContext;
 
     /** @var HasNewAnnouncementsHandler */
     private $hasNewAnnouncementsHandler;
 
-    public function __construct(UserContext $userContext, HasNewAnnouncementsHandler $hasNewAnnouncementsHandler)
-    {
+    public function __construct(
+        VersionProviderInterface $versionProviderInterface,
+        UserContext $userContext,
+        HasNewAnnouncementsHandler $hasNewAnnouncementsHandler
+    ) {
+        $this->versionProvider = $versionProviderInterface;
         $this->userContext = $userContext;
         $this->hasNewAnnouncementsHandler = $hasNewAnnouncementsHandler;
     }
@@ -35,7 +43,11 @@ class HasNewAnnouncementsAction
             throw new NotFoundHttpException('Current user not found');
         }
 
-        $query = new HasNewAnnouncementsQuery($user->getId());
+        $query = new HasNewAnnouncementsQuery(
+            $this->versionProvider->getEdition(),
+            $this->versionProvider->getMinorVersion(),
+            $user->getId()
+        );
         $hasNewAnnouncements = $this->hasNewAnnouncementsHandler->execute($query);
 
         return new JsonResponse([

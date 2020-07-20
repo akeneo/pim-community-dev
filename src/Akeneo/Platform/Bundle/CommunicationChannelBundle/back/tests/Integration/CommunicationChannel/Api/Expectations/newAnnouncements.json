@@ -3,7 +3,7 @@
     "request": {
         "method": "GET",
         "url": {
-            "isEqualTo": "/new_announcements"
+            "isEqualTo": "/new_announcements?pim_edition=Serenity&pim_version=2020105"
         }
     },
     "response": {

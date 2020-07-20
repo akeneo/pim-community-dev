@@ -1,0 +1,146 @@
+{
+    "scenarioName": "FirstAnnouncements",
+    "request": {
+        "method": "GET",
+        "url": {
+            "isEqualTo": "/announcements?pim_edition=Serenity&pim_version=2020105"
+        }
+    },
+    "response": {
+        "statusCode": 200,
+        "body": {
+            "data": [
+                {
+                    "id": "update_1-duplicate-a-product_2020-07",
+                    "startDate": "2020-07-05",
+                    "description": "You want to easily create a new product based on an existing one? Use our brand new duplicate feature to copy a product in your user interface in one single click!",
+                    "img": "/bundles/akeneocommunicationchannel/images/announcements/zoom-on-duplicate-action.png",
+                    "imgAlt": "New duplicate action",
+                    "notificationDuration": 7,
+                    "tags": [
+                        "updates"
+                    ],
+                    "title": "New: duplicate a product",
+                    "link": "https://help.akeneo.com/pim/serenity/updates/2020-06.html#new-duplicate-a-product"
+                },
+                {
+                    "id": "update_2-option-screen-revamp_2020-07",
+                    "startDate": "2020-07-05",
+                    "description": "The attribute options screen for single and multiple-select attributes has been completely redesigned to give you a better user experience.",
+                    "img": "/bundles/akeneocommunicationchannel/images/announcements/new-option-screen.png",
+                    "imgAlt": "New option screen",
+                    "notificationDuration": 7,
+                    "tags": [
+                        "updates"
+                    ],
+                    "title": "Better manage your attribute options",
+                    "link": "https://help.akeneo.com/pim/serenity/updates/2020-06.html#better-manage-your-attribute-options"
+                },
+                {
+                    "id": "update_3-rules-updates_2020-07",
+                    "startDate": "2020-07-05",
+                    "description": "At Akeneo, we aim at delivering the best user experience. A good experience with our PIM goes with a good understanding of what is going on, especially when there are errors that you have to correct. The following improvements will enable you to better monitor rule executions, and easily correct errors that can occur in the rules engine when importing a YML file or when executing rules.",
+                    "img": null,
+                    "imgAlt": null,
+                    "notificationDuration": 7,
+                    "tags": [
+                        "updates"
+                    ],
+                    "title": "Rules engine updates",
+                    "link": "https://help.akeneo.com/pim/serenity/updates/2020-06.html#rules-engine-updates"
+                },
+                {
+                    "id": "update_4-manually-execute-naming-conventions-on-assets_2020-07",
+                    "startDate": "2020-07-05",
+                    "description": "You can now manually execute naming conventions from the user interface whenever you need it. This new feature can be very useful if your naming convention has changed after asset uploads or creations.",
+                    "img": "/bundles/akeneocommunicationchannel/images/announcements/mass-execution.png",
+                    "imgAlt": "The execute naming convention button",
+                    "notificationDuration": 7,
+                    "tags": [
+                        "updates"
+                    ],
+                    "title": "New: execute asset naming conventions manually",
+                    "link": "https://help.akeneo.com/pim/serenity/updates/2020-06.html#new-execute-asset-naming-conventions-manually"
+                },
+                {
+                    "id": "update_1-easily-monitor-errors-on-your-connections_2020-06",
+                    "startDate": "2020-06-04",
+                    "notificationDuration": 14,
+                    "tags": [
+                        "updates"
+                    ],
+                    "title": "Easily monitor errors on your connections",
+                    "description": "For each of your connections, a new `Monitoring` page now lists the last integration errors that may have occurred.",
+                    "img": "/bundles/akeneocommunicationchannel/images/announcements/new-connection-monitoring-page.png",
+                    "altImg": "Connection monitoring page",
+                    "link": "https://help.akeneo.com/pim/serenity/updates/2020-05.html#easily-monitor-errors-on-your-connections"
+                },
+                {
+                    "id": "update_2-new-metric-on-the-connection-dashboard_2020-06",
+                    "startDate": "2020-06-04",
+                    "notificationDuration": 14,
+                    "tags": [
+                        "updates"
+                    ],
+                    "title": "New metrics on the Connection dashboard",
+                    "description": "The Connection dashboard now displays additional information to ease error monitoring and allow you to see at a glance how your source connections are performing.",
+                    "img": "/bundles/akeneocommunicationchannel/images/announcements/error-monitoring-connection-dashboard.png",
+                    "altImg": "Error monitoring on the Connection dashboard",
+                    "link": "https://help.akeneo.com/pim/serenity/updates/2020-05.html#new-metrics-on-the-connection-dashboard"
+                },
+                {
+                    "id": "update_3-2-way-associations_2020-06",
+                    "startDate": "2020-06-04",
+                    "notificationDuration": 14,
+                    "tags": [
+                        "updates"
+                    ],
+                    "title": "New association type: the two-way association",
+                    "description": "Easily handle products compatibility in your PIM thanks to our **brand new two-way association type**! This new association type is now available under `Settings`/`Association types`.",
+                    "img": "/bundles/akeneocommunicationchannel/images/announcements/Associations_2-way-association-type.png",
+                    "altImg": "Create a new two-way association type",
+                    "link": "https://help.akeneo.com/pim/serenity/updates/2020-05.html#new-association-type-the-two-way-association"
+                },
+                {
+                    "id": "update_4-visibility-on-jobs_2020-06",
+                    "startDate": "2020-06-04",
+                    "notificationDuration": 14,
+                    "tags": [
+                        "updates"
+                    ],
+                    "title": "More visibility on PIM jobs",
+                    "description": "To give you more visibility and control on all PIM jobs, we added a new permission: `View all jobs in the Process Tracker` to see all jobs of any status under the Process Tracker.",
+                    "link": "https://help.akeneo.com/pim/serenity/updates/2020-05.html#more-visibility-on-pim-jobs"
+                },
+                {
+                    "id": "update_5-rules-engine-new-improvements_2020-06",
+                    "startDate": "2020-06-04",
+                    "notificationDuration": 14,
+                    "tags": [
+                        "updates"
+                    ],
+                    "title": "Rules engine improvements",
+                    "description": "Small UI enhancements and a new parameter for your calculation action, check out the last improvements of the rules engine!",
+                    "link": "https://help.akeneo.com/pim/serenity/updates/2020-05.html#rules-engine-improvements"
+                },
+                {
+                    "id": "update_1-new-screen-for-measurements-families_2020-05",
+                    "startDate": "2020-05-07",
+                    "notificationDuration": 7,
+                    "tags": [
+                        "updates"
+                    ],
+                    "title": "A new screen to add your own measurement units",
+                    "description": "In order to give you more flexibility, we have improved the way we manage metrics in the PIM. Discover our new Measurements feature now!",
+                    "img": "/bundles/akeneocommunicationchannel/images/announcements/Settings_Measurement_Families-updates.png",
+                    "altImg": "Measurement families list screen",
+                    "link": "https://help.akeneo.com/pim/serenity/updates/2020-04.html#a-new-screen-to-add-your-own-measurement-units"
+                }
+            ]
+        },
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "delayMillis": 3000
+    }
+}
