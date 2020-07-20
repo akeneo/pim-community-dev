@@ -739,7 +739,7 @@ legacy:
                 - Context\EnterpriseReferenceEntityContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseAssetManagerContext:
-
+                    - 'Context\EnterpriseFeatureContext'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:
