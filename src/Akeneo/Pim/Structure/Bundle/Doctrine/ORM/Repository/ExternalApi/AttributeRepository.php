@@ -176,7 +176,6 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
             if (0 !== $violations->count()) {
                 $exceptionMessage = '';
                 foreach ($violations as $violation) {
-                    dump($violation);
                     $exceptionMessage .= $violation->getMessage();
                 }
                 throw new \InvalidArgumentException($exceptionMessage);
