@@ -18,3 +18,5 @@ shared_catalog:
         upload: "Upload your logo (Max size: 2MB; File Format: PNG or JPG)"
         invalid_extension: "Invalid file extension, allowed extensions are: {{ allowed_extensions }}"
         filesize_too_large: The file you provided is too large, the max size is 2MB
+    button:
+        save: Save and share

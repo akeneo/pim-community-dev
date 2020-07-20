@@ -2,16 +2,19 @@
 
 define(
   [
+    'oro/translator',
     'jquery',
     'pim/job-instance-edit-form/save',
     'pim/saver/job-instance-export'
   ],
   function (
+    __,
     $,
     BaseSave,
     JobInstanceSaver
   ) {
     return BaseSave.extend({
+      label: __('shared_catalog.button.save'),
       save: function () {
         let jobInstance = $.extend(true, {}, this.getFormData());
 
