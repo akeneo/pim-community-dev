@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\CommunicationChannel\Domain\Announcement\Model\Read;
 
-use DateTimeImmutable;
-
 /**
  * @author Christophe Chausseray <chausseray.christophe@gmail.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -14,7 +12,6 @@ use DateTimeImmutable;
 final class AnnouncementItem
 {
     private const DATE_FORMAT = 'F\, jS Y';
-    private const DATE_INTERVAL_FORMAT = 'P%sD';
 
     /** @var string */
     private $id;
@@ -37,24 +34,12 @@ final class AnnouncementItem
     /** @var \DateTimeImmutable */
     private $startDate;
 
-    /** @var int */
-    private $notificationDuration;
+    /** @var \DateTimeImmutable */
+    private $endDate;
 
     /** @var string[] */
     private $tags;
 
-    /**
-     * @param string $id
-     * @param string $title
-     * @param string $description
-     * @param null|string $img
-     * @param null|string $altImg
-     * @param string $link
-     * @param DateTimeImmutable $startDate
-     * @param int $notificationDuration
-     * @param string[] $tags
-     * @return void
-     */
     public function __construct(
         string $id,
         string $title,
@@ -63,7 +48,7 @@ final class AnnouncementItem
         ?string $altImg,
         string $link,
         \DateTimeImmutable $startDate,
-        int $notificationDuration,
+        \DateTimeImmutable $endDate,
         array $tags
     ) {
         $this->id = $id;
@@ -73,13 +58,8 @@ final class AnnouncementItem
         $this->altImg = $altImg;
         $this->link = $link;
         $this->startDate = $startDate;
-        $this->notificationDuration = $notificationDuration;
+        $this->endDate = $endDate;
         $this->tags = $tags;
-    }
-
-    public function id(): string
-    {
-        return $this->id;
     }
 
     /**
@@ -99,16 +79,28 @@ final class AnnouncementItem
         ];
     }
 
-    public function toNotify(): self
+    public function shouldBeNotified(array $viewedAnnouncementIds): bool
     {
         $currentDate = new \DateTimeImmutable();
-        $dateInterval = new \DateInterval(sprintf(self::DATE_INTERVAL_FORMAT, $this->notificationDuration));
-        $endDate = $this->startDate->add($dateInterval);
 
-        if ($currentDate > $this->startDate && $currentDate < $endDate) {
-            array_unshift($this->tags, 'new');
-        }
+        return $this->startDate <= $currentDate && $currentDate <= $this->endDate && !in_array($this->id, $viewedAnnouncementIds);
+    }
 
-        return $this;
+    public function toNotify(): self
+    {
+        $tags = $this->tags;
+        $tags[] = 'new';
+
+        return new self(
+            $this->id,
+            $this->title,
+            $this->description,
+            $this->img,
+            $this->altImg,
+            $this->link,
+            $this->startDate,
+            $this->endDate,
+            $tags,
+        );
     }
 }

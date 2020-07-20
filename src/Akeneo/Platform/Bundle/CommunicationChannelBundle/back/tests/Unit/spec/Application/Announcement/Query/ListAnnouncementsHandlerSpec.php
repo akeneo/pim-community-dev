@@ -34,8 +34,7 @@ class ListAnnouncementsHandlerSpec extends ObjectBehavior
 
     public function it_handles_the_list_paginated_announcements_query($findAnnouncementItems): void
     {
-        $announcements = $this->getAnnouncements();
-        $announcementItems = $this->createAnnouncementItems($announcements);
+        $announcementItems = $this->getAnnouncements(new \DateTimeImmutable('2020-01-01'), new \DateTimeImmutable('2020-01-02'));
         $findAnnouncementItems->byPimVersion(
             Argument::type('string'),
             Argument::type('string'),
@@ -47,73 +46,72 @@ class ListAnnouncementsHandlerSpec extends ObjectBehavior
         $this->execute($query)->shouldReturn([$announcementItems[1]]);
     }
 
-    public function it_can_notifiy_new_announcements_when_user_has_not_seen_it($findAnnouncementItems)
+    public function it_notifies_new_announcements_when_user_has_not_seen_it($findAnnouncementItems)
     {
-        $announcements = $this->getAnnouncements();
-        $announcementsItems = $this->createAnnouncementItems($announcements);
+        $startDate = new \DateTimeImmutable();
+        $endDate = new \DateTimeImmutable('tomorrow');
+        $announcementItems = $this->getAnnouncements($startDate, $endDate);
         $findAnnouncementItems->byPimVersion(
             Argument::type('string'),
             Argument::type('string'),
             null,
             Argument::type('int')
-        )->willReturn($announcementsItems);
+        )->willReturn($announcementItems);
         $this->viewedAnnouncementsRepository->dataRows[] = ['announcement_id' => 'update-easily_monitor_errors_on_your_connections-2020-06-04', 'user_id' => 1];
 
         $query = new ListAnnouncementsQuery('EE', '4.0', 1, null, 2);
-        $expectedAnnouncements = $this->getAnnouncements();
-        array_unshift($expectedAnnouncements[1]['tags'], 'new');
-        $expectedAnnouncementItems = $this->createAnnouncementItems($expectedAnnouncements);
-        $this->execute($query)->shouldBeLike($expectedAnnouncementItems);
+
+        $this->execute($query)->shouldBeLike([
+            new AnnouncementItem(
+                'update-easily_monitor_errors_on_your_connections-2020-06-04',
+                'Easily monitor errors on your connections',
+                'For each of your connections, a new `Monitoring` page now lists the last integration errors that may have occurred.',
+                '/bundles/akeneocommunicationchannel/images/announcements/new-connection-monitoring-page.png',
+                'Connection monitoring page',
+                'https://help.akeneo.com/pim/serenity/updates/2020-05.html#easily-monitor-errors-on-your-connections',
+                $startDate,
+                $endDate,
+                ['updates']
+            ),
+            new AnnouncementItem(
+                'update-new_metrics_on_the_connection_dashboard-2020-06-04',
+                'New metrics on the Connection dashboard',
+                'The Connection dashboard now displays additional information to ease error monitoring and allow you to see at a glance how your source connections are performing.',
+                null,
+                null,
+                'https://help.akeneo.com/pim/serenity/updates/2020-05.html#new-metrics-on-the-connection-dashboard',
+                $startDate,
+                $endDate,
+                ['updates', 'new']
+            )
+        ]);
     }
 
-    /**
-     * @return AnnouncementItems[]
-     */
-    private function createAnnouncementItems(array $announcements): array
+    private function getAnnouncements(\DateTimeImmutable $startDate, \DateTimeImmutable $endDate): array
     {
-        return array_map(function ($announcement) {
-            return new AnnouncementItem(
-                $announcement['id'],
-                $announcement['title'],
-                $announcement['description'],
-                $announcement['img'] ?? null,
-                $announcement['altImg'] ?? null,
-                $announcement['link'],
-                new \DateTimeImmutable($announcement['startDate']),
-                $announcement['notificationDuration'],
-                $announcement['tags'],
-            );
-        }, $announcements);
-    }
-
-    private function getAnnouncements(): array
-    {
-        $currentStartDate = new DateTimeImmutable();
         return [
-            [
-                'id' => 'update-easily_monitor_errors_on_your_connections-2020-06-04',
-                'title' => 'Easily monitor errors on your connections',
-                'description' => 'For each of your connections, a new `Monitoring` page now lists the last integration errors that may have occurred.',
-                'img' => '/bundles/akeneocommunicationchannel/images/announcements/new-connection-monitoring-page.png',
-                'altImg' => 'Connection monitoring page',
-                'link' => 'https://help.akeneo.com/pim/serenity/updates/2020-05.html#easily-monitor-errors-on-your-connections',
-                'startDate' => $currentStartDate->format('Y/m/d'),
-                'notificationDuration' => 14,
-                'tags' => [
-                    'updates'
-                ]
-            ],
-            [
-                'id' => 'update-new_metrics_on_the_connection_dashboard-2020-06-04',
-                'title' => 'New metrics on the Connection dashboard',
-                'description' => 'The Connection dashboard now displays additional information to ease error monitoring and allow you to see at a glance how your source connections are performing.',
-                'link' => 'https://help.akeneo.com/pim/serenity/updates/2020-05.html#new-metrics-on-the-connection-dashboard',
-                'startDate' => $currentStartDate->format('Y/m/d'),
-                'notificationDuration' => 7,
-                'tags' => [
-                    'updates'
-                ]
-            ],
+            new AnnouncementItem(
+                'update-easily_monitor_errors_on_your_connections-2020-06-04',
+                'Easily monitor errors on your connections',
+                'For each of your connections, a new `Monitoring` page now lists the last integration errors that may have occurred.',
+                '/bundles/akeneocommunicationchannel/images/announcements/new-connection-monitoring-page.png',
+                'Connection monitoring page',
+                'https://help.akeneo.com/pim/serenity/updates/2020-05.html#easily-monitor-errors-on-your-connections',
+                $startDate,
+                $endDate,
+                ['updates']
+            ),
+            new AnnouncementItem(
+                'update-new_metrics_on_the_connection_dashboard-2020-06-04',
+                'New metrics on the Connection dashboard',
+                'The Connection dashboard now displays additional information to ease error monitoring and allow you to see at a glance how your source connections are performing.',
+                null,
+                null,
+                'https://help.akeneo.com/pim/serenity/updates/2020-05.html#new-metrics-on-the-connection-dashboard',
+                $startDate,
+                $endDate,
+                ['updates']
+            )
         ];
     }
 }

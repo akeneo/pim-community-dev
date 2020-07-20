@@ -39,7 +39,7 @@ final class ListAnnouncementsHandler
 
         $announcementItemsWithNew = [];
         foreach ($announcementItems as $announcementItem) {
-            $announcementItemsWithNew[] =  !in_array($announcementItem->id(), $viewedAnnouncementIds) ? $announcementItem->toNotify() : $announcementItem;
+            $announcementItemsWithNew[] =  $announcementItem->shouldBeNotified($viewedAnnouncementIds) ? $announcementItem->toNotify() : $announcementItem;
         }
 
         return $announcementItemsWithNew;
