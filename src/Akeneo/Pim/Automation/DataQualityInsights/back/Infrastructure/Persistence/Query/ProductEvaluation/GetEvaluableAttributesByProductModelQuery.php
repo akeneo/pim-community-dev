@@ -81,8 +81,7 @@ SQL;
             $attributes[] = new Attribute(
                 new AttributeCode($attribute['code']),
                 $this->attributeTypeMapper->fromPimStructure($attribute['type']),
-                (bool) $attribute['is_localizable'],
-                false
+                (bool) $attribute['is_localizable']
             );
         }
 

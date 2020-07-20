@@ -64,10 +64,10 @@ class GetEvaluableProductValuesQuerySpec extends ObjectBehavior
         $enUS = new LocaleCode('en_US');
         $frFR = new LocaleCode('fr_FR');
 
-        $attributeText1 = new Attribute(new AttributeCode('a_text_not_scopable'), AttributeType::textarea(), true, false);
-        $attributeText2 = new Attribute(new AttributeCode('a_text_not_localizable'), AttributeType::textarea(), false, false);
-        $attributeTextarea1 = new Attribute(new AttributeCode('a_textarea'), AttributeType::textarea(), true, false);
-        $attributeTextarea2 = new Attribute(new AttributeCode('a_textarea_without_values'), AttributeType::textarea(), true, false);
+        $attributeText1 = new Attribute(new AttributeCode('a_text_not_scopable'), AttributeType::textarea(), true);
+        $attributeText2 = new Attribute(new AttributeCode('a_text_not_localizable'), AttributeType::textarea(), false);
+        $attributeTextarea1 = new Attribute(new AttributeCode('a_textarea'), AttributeType::textarea(), true);
+        $attributeTextarea2 = new Attribute(new AttributeCode('a_textarea_without_values'), AttributeType::textarea(), true);
 
         $getEvaluableAttributesByProductQuery->execute($productId)->willReturn([
             $attributeText1, $attributeText2, $attributeTextarea1, $attributeTextarea2

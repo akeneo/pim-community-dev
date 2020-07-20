@@ -55,9 +55,9 @@ class GetEvaluableAttributesByProductQueryIntegration extends TestCase
         $productId = $this->createProduct();
 
         $expectedAttributes = [
-            new Attribute(new AttributeCode('a_localizable_textarea'), AttributeType::textarea(), true, false),
-            new Attribute(new AttributeCode('a_localizable_text'), AttributeType::text(), true, false),
-            new Attribute(new AttributeCode('a_not_localizable_text'), AttributeType::text(), false, false),
+            new Attribute(new AttributeCode('a_localizable_textarea'), AttributeType::textarea(), true),
+            new Attribute(new AttributeCode('a_localizable_text'), AttributeType::text(), true),
+            new Attribute(new AttributeCode('a_not_localizable_text'), AttributeType::text(), false),
         ];
 
         $result = $this

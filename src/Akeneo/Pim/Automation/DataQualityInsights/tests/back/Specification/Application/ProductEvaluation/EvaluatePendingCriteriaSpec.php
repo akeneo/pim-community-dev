@@ -213,7 +213,7 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
 
     private function givenRandomProductValues(): ProductValuesCollection
     {
-        $attribute = new Attribute(new AttributeCode(strval(Uuid::uuid4())), AttributeType::text(), true, false);
+        $attribute = new Attribute(new AttributeCode(strval(Uuid::uuid4())), AttributeType::text(), true);
         $values = (new ChannelLocaleDataCollection())
             ->addToChannelAndLocale(new ChannelCode('mobile'), new LocaleCode('en_US'), strval(Uuid::uuid4()))
             ->addToChannelAndLocale(new ChannelCode('print'), new LocaleCode('fr_FR'), strval(Uuid::uuid4()));
