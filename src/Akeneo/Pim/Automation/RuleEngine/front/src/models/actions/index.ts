@@ -8,7 +8,7 @@ export * from './ClearCategoriesAction';
 export * from './ClearGroupsAction';
 export * from './ConcatenateAction';
 export * from './CopyAction';
-export * from './RemoveAction';
+export * from './RemoveAttributeValueAction';
 export * from './SetAction';
 export * from './ProductField';
 export * from './SetFamilyAction';

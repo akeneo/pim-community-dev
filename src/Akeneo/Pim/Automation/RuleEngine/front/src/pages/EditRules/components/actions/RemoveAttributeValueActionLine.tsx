@@ -1,8 +1,18 @@
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { SetAction } from '../../../../models/actions';
+import { RemoveAttributeValueAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
+import {
+  useBackboneRouter,
+  useTranslate,
+} from '../../../../dependenciesTools/hooks';
+import { Attribute } from '../../../../models';
+import { useControlledFormInputAction } from '../../hooks';
+import {
+  useGetAttributeAtMount,
+  validateAttribute,
+} from './attribute/attribute.utils';
 import {
   ActionGrid,
   ActionLeftSide,
@@ -11,30 +21,19 @@ import {
 } from './ActionLine';
 import {
   AttributeLocaleScopeSelector,
-  MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION,
+  AttributeValue,
+  MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION,
 } from './attribute';
-import { Attribute } from '../../../../models';
-import {
-  useTranslate,
-  useBackboneRouter,
-} from '../../../../dependenciesTools/hooks';
-import { AttributeValue } from './attribute';
-import { useControlledFormInputAction } from '../../hooks';
-import {
-  validateAttribute,
-  useGetAttributeAtMount,
-} from './attribute/attribute.utils';
-import { SmallHelper } from '../../../../components/HelpersInfos';
 
 type Props = {
-  action?: SetAction;
+  action: RemoveAttributeValueAction;
 } & ActionLineProps;
 
-const SetActionLine: React.FC<Props> = ({
+const RemoveAttributeValueActionLine: React.FC<Props> = ({
   lineNumber,
   handleDelete,
-  locales,
   scopes,
+  locales,
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
@@ -42,33 +41,24 @@ const SetActionLine: React.FC<Props> = ({
     Attribute | null | undefined
   >(undefined);
 
-  const isValueFilled = (value?: any) => {
-    return !(
-      value === '' ||
-      (Array.isArray(value) && value.length === 0) ||
-      value === null ||
-      value === undefined
-    );
-  };
-
   const {
     fieldFormName,
     typeFormName,
-    valueFormName,
-    getValueFormValue,
+    itemsFormName,
+    getItemsFormValue,
     setFieldFormValue,
-    setValueFormValue,
+    setItemsFormValue,
     getFieldFormValue,
-  } = useControlledFormInputAction<string>(lineNumber);
+  } = useControlledFormInputAction<string[]>(lineNumber);
   // Watch is needed in this case to trigger a render at input
   const { watch } = useFormContext();
-  watch(valueFormName);
+  watch(itemsFormName);
   watch(fieldFormName);
 
   useGetAttributeAtMount(getFieldFormValue(), router, attribute, setAttribute);
 
   const onAttributeChange = (attribute: Attribute | null) => {
-    setValueFormValue('');
+    setItemsFormValue([]);
     setAttribute(attribute);
     setFieldFormValue(attribute?.code);
   };
@@ -81,39 +71,31 @@ const SetActionLine: React.FC<Props> = ({
         defaultValue=''
         rules={{ validate: validateAttribute(translate, router) }}
       />
-      <Controller name={typeFormName} as={<span hidden />} defaultValue='set' />
       <Controller
-        name={valueFormName}
+        name={typeFormName}
         as={<span hidden />}
-        defaultValue={getValueFormValue()}
+        defaultValue='remove'
+      />
+      <Controller
+        name={itemsFormName}
+        as={<span hidden />}
+        defaultValue={getItemsFormValue()}
         rules={{
-          // We can not use 'required' validation rule a value can be "false" (for boolean).
-          validate: value => {
-            return !isValueFilled(value)
-              ? translate('pimee_catalog_rule.exceptions.required_value')
-              : true;
-          },
+          required: translate('pimee_catalog_rule.exceptions.required_value'),
         }}
       />
       <ActionTemplate
         title={translate(
-          'pimee_catalog_rule.form.edit.actions.set_attribute.title'
+          'pimee_catalog_rule.form.edit.actions.remove_attribute_value.title'
         )}
         helper={translate(
-          'pimee_catalog_rule.form.edit.actions.set_attribute.helper'
+          'pimee_catalog_rule.form.edit.actions.remove_attribute_value.helper'
         )}
         legend={translate(
-          'pimee_catalog_rule.form.edit.actions.set_attribute.helper'
+          'pimee_catalog_rule.form.edit.actions.remove_attribute_value.helper'
         )}
         handleDelete={handleDelete}
         lineNumber={lineNumber}>
-        {attribute && !isValueFilled(getValueFormValue()) && (
-          <SmallHelper level='info'>
-            {translate(
-              'pimee_catalog_rule.form.helper.set_attribute_info_clear'
-            )}
-          </SmallHelper>
-        )}
         <ActionGrid>
           <ActionLeftSide>
             <ActionTitle>
@@ -139,26 +121,26 @@ const SetActionLine: React.FC<Props> = ({
               onAttributeCodeChange={onAttributeChange}
               lineNumber={lineNumber}
               filterAttributeTypes={Array.from(
-                MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION.keys()
+                MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION.keys()
               )}
               disabled={
                 !!attribute &&
-                !MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION.has(attribute.type)
+                !MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION.has(attribute.type)
               }
             />
           </ActionLeftSide>
           <ActionRightSide>
             <ActionTitle>
               {translate(
-                'pimee_catalog_rule.form.edit.actions.set_attribute.value_subtitle'
+                'pimee_catalog_rule.form.edit.actions.remove_attribute_value.value_subtitle'
               )}
             </ActionTitle>
             <AttributeValue
-              id={`edit-rules-action-${lineNumber}-value`}
+              id={`edit-rules-action-${lineNumber}-items`}
               attribute={attribute}
-              name={valueFormName}
-              value={getValueFormValue()}
-              onChange={setValueFormValue}
+              name={itemsFormName}
+              value={getItemsFormValue()}
+              onChange={setItemsFormValue}
             />
           </ActionRightSide>
         </ActionGrid>
@@ -167,4 +149,4 @@ const SetActionLine: React.FC<Props> = ({
   );
 };
 
-export { SetActionLine };
+export { RemoveAttributeValueActionLine };

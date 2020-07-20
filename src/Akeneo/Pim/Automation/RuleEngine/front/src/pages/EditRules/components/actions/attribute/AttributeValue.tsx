@@ -22,7 +22,7 @@ import {
 } from '../../../../../components/HelpersInfos';
 import { ActionFormContainer } from '../style';
 
-const MANAGED_ATTRIBUTE_TYPES: Map<
+const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: Map<
   AttributeType,
   React.FC<InputValueProps>
 > = new Map([
@@ -32,6 +32,11 @@ const MANAGED_ATTRIBUTE_TYPES: Map<
   [AttributeType.OPTION_MULTI_SELECT, MultiSelectValue],
   [AttributeType.NUMBER, NumberValue],
 ]);
+
+const MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION: Map<
+  AttributeType,
+  React.FC<InputValueProps>
+> = new Map([[AttributeType.OPTION_MULTI_SELECT, MultiSelectValue]]);
 
 type InputValueProps = {
   id: string;
@@ -50,7 +55,7 @@ const getValueModule = (attribute: Attribute, props: InputValueProps) => {
     case AttributeType.OPTION_SIMPLE_SELECT:
       return <SimpleSelectValue {...props} key={attribute.code} />;
     case AttributeType.OPTION_MULTI_SELECT:
-      return <MultiSelectValue {...props} />;
+      return <MultiSelectValue {...props} key={attribute.code} />;
     case AttributeType.NUMBER:
       return <NumberValue {...props} />;
     case AttributeType.BOOLEAN:
@@ -154,4 +159,9 @@ const AttributeValue: React.FC<Props> = ({
   );
 };
 
-export { AttributeValue, InputValueProps, MANAGED_ATTRIBUTE_TYPES };
+export {
+  AttributeValue,
+  InputValueProps,
+  MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION,
+  MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION,
+};
