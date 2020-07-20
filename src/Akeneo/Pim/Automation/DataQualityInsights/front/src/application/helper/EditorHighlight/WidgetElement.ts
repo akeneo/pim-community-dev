@@ -15,15 +15,13 @@ export default interface WidgetElement {
   isTextArea: boolean;
   isTextInput: boolean;
   isEditableContent: boolean;
-  isMainLabel: boolean;
-  hasSuggestedTitle: boolean|undefined;
 }
 
 export interface WidgetsCollection {
   [id: string]: WidgetElement;
 }
 
-export const createWidget = (identifier: string, editor: EditorElement, editorId: string|null, attribute: string, isMainLabel: boolean = false) => {
+export const createWidget = (identifier: string, editor: EditorElement, editorId: string|null, attribute: string) => {
   return {
     id: identifier,
     editor: editor,
@@ -34,8 +32,6 @@ export const createWidget = (identifier: string, editor: EditorElement, editorId
     isTextArea: isTextArea(editor),
     isTextInput: isTextInput(editor),
     isEditableContent: isEditableContent(editor),
-    isMainLabel,
-    hasSuggestedTitle: undefined,
     content: getEditorContent(editor),
     analysis: [],
     highlights: {}

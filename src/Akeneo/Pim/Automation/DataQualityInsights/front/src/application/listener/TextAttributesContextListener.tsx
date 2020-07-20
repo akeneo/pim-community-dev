@@ -110,7 +110,7 @@ const TextAttributesContextListener = () => {
             editor.setAttribute("spellcheck", 'false');
 
             const widgetId = uuidV5(`${product.meta.id}-${attribute}`, WIDGET_UUID_NAMESPACE);
-            widgetList[widgetId] = createWidget(widgetId, editor as EditorElement, editorId, attribute, false);
+            widgetList[widgetId] = createWidget(widgetId, editor as EditorElement, editorId, attribute);
           }
         });
 

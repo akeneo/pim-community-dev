@@ -32,7 +32,6 @@ export interface WidgetAction extends Action {
       analysis?: MistakeElement[],
       highlights?: HighlightElement[];
       highlightId?: string;
-      hasSuggestedTitle?: boolean;
     };
   }
 }
@@ -153,19 +152,6 @@ export const enableWidgetHighlightAction: ActionCreator<WidgetAction> = (id: str
       }
     }
   };
-};
-
-const SET_HAS_SUGGESTED_TITLE = 'SET_HAS_SUGGESTED_TITLE';
-export const setHasSuggestedTitleAction: ActionCreator<WidgetAction> = (id: string, hasSuggestedTitle: boolean) => {
-  return {
-    type: SET_HAS_SUGGESTED_TITLE,
-    payload: {
-      widget: {
-        id,
-        hasSuggestedTitle
-      }
-    }
-  }
 };
 
 const DISABLE_WIDGET_HIGHLIGHT = 'DISABLE_WIDGET_HIGHLIGHT';
@@ -380,18 +366,6 @@ const widgetsReducer: Reducer<WidgetsState, WidgetElementsAction & WidgetAction>
       });
 
       return state;
-    }
-
-    case SET_HAS_SUGGESTED_TITLE: {
-      const {widget} = payload;
-
-      return {
-        ...previousState,
-        [widget.id]: {
-          ...previousState[widget.id],
-          hasSuggestedTitle: (widget.hasSuggestedTitle === true),
-        }
-      }
     }
 
     default:

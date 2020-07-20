@@ -81,9 +81,6 @@ akeneo_data_quality_insights:
             original_text_title: Original
             suggestions_title: Proposals
             ignore_all_suggestions_button_label: Ignore
-        title_suggestion_popover:
-            title: Suggestions
-            ignore_all_suggestions_button_label: Ignore
 
 pim_title:
     akeneo_data_quality_insights_dashboard: Data Quality Insights

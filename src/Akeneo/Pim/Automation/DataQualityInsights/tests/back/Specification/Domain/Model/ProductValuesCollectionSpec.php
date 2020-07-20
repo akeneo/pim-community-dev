@@ -124,16 +124,6 @@ class ProductValuesCollectionSpec extends ObjectBehavior
         return new Attribute(new AttributeCode($code), AttributeType::textarea(), false);
     }
 
-    private function givenALocalizableMainTitleAttribute(string $code): Attribute
-    {
-        return new Attribute(new AttributeCode($code), AttributeType::text(), true);
-    }
-
-    private function givenANotLocalizableMainTitleAttribute(string $code): Attribute
-    {
-        return new Attribute(new AttributeCode($code), AttributeType::text(), false);
-    }
-
     private function givenRandomValuesForAttribute(Attribute $attribute): ProductValues
     {
         $values = (new ChannelLocaleDataCollection())
