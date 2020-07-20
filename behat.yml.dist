@@ -4,7 +4,6 @@ legacy:
             paths:
                 - tests/legacy/features
                 - vendor/akeneo/pim-community-dev/tests/legacy/features
-                - '%paths.base%/src/Akeneo/Pim/Automation/FranklinInsights/tests/features'
             filters:
                 tags: '@critical&&~@ce&&~@skip&&~@skip-pef'
             contexts:

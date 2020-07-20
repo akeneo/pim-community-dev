@@ -5,7 +5,6 @@ imports:
     - { resource: ../../src/Akeneo/ReferenceEntity/tests/back/Common/Resources/helpers.yml }
     - { resource: ../../src/Akeneo/AssetManager/tests/back/Common/Resources/helpers.yml }
     - { resource: ../../src/Akeneo/AssetManager/tests/back/Common/Resources/fake_anti_corruption_layer.yml }
-    - { resource: ../../src/Akeneo/Pim/Automation/FranklinInsights/tests/back/Acceptance/Resources/config/pim/data_providers.yml }
 
 framework:
     test: ~
