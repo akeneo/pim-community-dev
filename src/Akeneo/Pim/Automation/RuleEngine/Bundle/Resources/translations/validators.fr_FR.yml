@@ -1,0 +1,40 @@
+pimee_catalog_rule:
+  rule_definition:
+    validation:
+      invalid_code: 'Le code de la règle ne doit contenir que des lettres, des chiffres et des tirets bas'
+      conditions:
+        missing_value_key: 'La clé "value" est manquante ou vide'
+        missing_operator_key: 'La clé "operator" est manquante ou vide'
+        existing_field: 'Le champ "{{ field }}" ne peut pas être filtré ou ne peut pas être utilisé avec l''opérateur "{{ operator }}"'
+        missing_field_key: 'La clé "field" est manquante ou vide'
+      actions:
+        missing_key: 'La clé "actions" est manquante ou vide'
+        add:
+          invalid_field: 'Vous ne pouvez pas ajouter d''éléments au champ "{{ field }}"'
+        clear:
+          invalid_field: 'Vous ne pouvez pas effacer les données du champ "{{ field }}"'
+        copy:
+          invalid_fields: 'Vous ne pouvez pas copier les données du champ "{{ from_field }}" vers le champ "{{ to_field }}"'
+          missing_from_field_key: 'La clé "from_field" est manquante ou vide'
+          missing_to_field_key: 'La clé "to_field" est manquante ou vide'
+        concatenate:
+          invalid_source: 'Vous ne pouvez pas concaténer les données du champ "{{ field }}"'
+          unexpected_source_option: 'La clé {{ key }} n''est pas pertinente pour l''attribut {{ attribute }}'
+          missing_from_key: 'La clé "from" est manquante ou vide'
+          missing_to_key: 'La clé "to" est manquante ou vide'
+          source_count: 'Cette valeur doit contenir au moins 2 éléments'
+        calculate:
+          division_by_zero: 'Les divisions par zéro ne sont pas possibles'
+          missing_operand_key: 'La clé "value" ou "fied" est requise, mais les deux sont manquantes ou vides'
+          only_one_key_expected: 'La clé "valeur" ou "champ" est requise, veuillez en choisir une'
+          unexpected_key: 'La clé "{{ key }}" n''est pas pertinente'
+          invalid_operator: 'Cette valeur doit être soit "add", "subtract", "multiply" ou "divide"'
+        remove:
+          invalid_field: 'Vous ne pouvez pas ajouter d''éléments au champ "{{ field }}"'
+          include_children_option: 'L''option "include_children" ne peut être appliquée qu''avec le champ "categories"'
+        set:
+          invalid_field: 'Vous ne pouvez pas effacer les données du champ "{{ field }}"'
+          missing_value_key: 'La clé "value" est manquante ou vide'
+        custom:
+          unkown_type: 'Type d''action inconnu'
+          missing_type_key: 'La clé "type" est manquante ou vide'

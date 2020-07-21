@@ -2,64 +2,19 @@ pimee_catalog_rule:
   datagrid:
     rule-grid:
       actions:
-        delete: Supprimer
         execute: Exécuter
       title: Règles
       column:
         label: Libellé
-        conditions: Condition
-        actions: Action
+        impacted_product_count:
+          label: Produits impactés
         tags:
           label: Actions
       mass_edit_action:
+        impacted_product_count: Calculer les produits impactés
         execute: Exécuter
         delete: Supprimer
-  actions:
-    type:
-      "copy": Alors %from_field% est copié dans %to_field%
-      "copy_value": Alors %from_field% est copié dans %to_field%
-      "set": Alors %value% est défini dans %field%
-      "set_value": Alors %value% est défini dans %field%
-      "add": Alors %value% est ajouté à %field%
-      "remove": Alors %value% est retiré de %field%
-      "concatenate": Alors %fields% sont concaténés dans %to_field%
-      clear: Alors %field% est effacé
-      calculate: Alors %field% est calculé %operation_details%
-      calculate_first_operation:
-        add: en ajoutant %operand% à %source%
-        subtract: en ajoutant %operand% à %source%
-        multiply: en multipliant %source% par %operand%
-        divide: en divisant %source% par %operand%
-      calculate_other_operation:
-        add: ', puis en ajoutant %operand%'
-        subtract: ', puis en soustrayant %operand%'
-        divide: ', puis en divisant par %operand%'
-        multiply: ', puis en multipliant par %operand%'
-    options:
-      include_children: et les enfants
   condition:
-    label: Si %field% %operator% %value%
-    operators:
-      "STARTS WITH": commence par
-      "ENDS WITH": finit par
-      "CONTAINS": contient
-      "DOES NOT CONTAIN": ne contient pas
-      "EMPTY": Est vide
-      "NOT EMPTY": n'est pas vide
-      "IN": est dans
-      "NOT IN": n'est pas dans
-      "IN CHILDREN": est dans les enfants
-      "NOT IN CHILDREN": n'est pas dans les enfants
-      "UNCLASSIFIED": n'est pas classifié
-      "IN OR UNCLASSIFIED": n'est pas classifié ou bien est dans
-      "BETWEEN": est entre
-      "NOT BETWEEN": n'est pas entre
-      "=": est égal à
-      "!=": est différent de
-      ">": est supérieur à
-      ">=": est supérieur ou égal à
-      "<": est inférieur à
-      "<=": est inférieur ou égal à
     fields:
       family: Famille
       associations: Associations
