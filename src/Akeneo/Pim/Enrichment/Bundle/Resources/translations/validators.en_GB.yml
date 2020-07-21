@@ -14,7 +14,9 @@ This value should not be blank: This value should not be blank
 Option code may contain only letters, numbers and underscores: Option code may contain only letters, numbers and underscores
 Option code may contain only letters (at least one), numbers and underscores: Option code may contain only letters (at least one), numbers and underscores
 This value should not be a decimal.: This value should not be a decimal.
+"The %attribute% attribute requires a non-decimal value, and %value% is not a valid value.": The %attribute% attribute requires a non-decimal value, and %value% is not a valid value.
 'The file extension is not allowed (allowed extensions: %extensions%).': 'The file extension is not allowed (allowed extensions: %extensions%).'
+"The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.": The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.
 The same identifier is already set on another product: The same identifier is already set on another product
 regex.comma_or_semicolon_or_surrounding_space.message: This field should not contain any comma or semicolon or leading/trailing space
 file.extensions.message: 'This file extension is not allowed (allowed extensions: %extensions%).'
@@ -31,6 +33,13 @@ file.extensions.message: 'This file extension is not allowed (allowed extensions
 product_model.code.not_blank.message: The product model code must not be empty.
 product_model.code.unique.message: The same code is already set on another product model.
 product_model.family_variant.not_blank.message: The product model family variant must not be empty.
+"The %attribute% attribute requires a string, a %givenType% was detected.": The %attribute% attribute requires a string, a %givenType% was detected.
+"The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.": The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.
+"The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.
+"The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.
+"The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.
+'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.'
+'The {{ attribute_code }} attribute cannot be empty.': 'The {{ attribute_code }} attribute cannot be empty.'
 pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: 'Attribute "%attribute%" cannot be empty, as it is defined as an axis for this entity'
