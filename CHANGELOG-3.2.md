@@ -1,5 +1,13 @@
 # 3.2.x
 
+# 3.2.65 (2020-07-20)
+
+# 3.2.64 (2020-07-16)
+
+## Bug fixes:
+
+- PIM-9331: Fix reference entity linked records migration
+
 # 3.2.63 (2020-07-07)
 
 # 3.2.62 (2020-07-02)
