@@ -20,6 +20,7 @@
 - PIM-9324: Fix product grid not loading when asset used as main picture is deleted
 - PIM-9356: Fix external api endpoint for products with invalid quantified associations
 - PIM-9357: Make rules case-insensitive so it complies with family and attribute codes
+- PIM-9364: Fix error on indexation if "attribute as label" is null
 
 ## New features
 

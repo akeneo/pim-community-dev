@@ -118,7 +118,7 @@ WITH
             pim_catalog_product_model product_model
             INNER JOIN pim_catalog_family_variant family_variant ON family_variant.id = product_model.family_variant_id
             INNER JOIN pim_catalog_family family ON family.id = family_variant.family_id
-            INNER JOIN pim_catalog_attribute attribute ON family.label_attribute_id = attribute.id 
+            LEFT JOIN pim_catalog_attribute attribute ON family.label_attribute_id = attribute.id
             LEFT JOIN pim_catalog_product_model root_product_model ON product_model.parent_id = root_product_model.id
         WHERE
             product_model.code IN (:productModelCodes)
