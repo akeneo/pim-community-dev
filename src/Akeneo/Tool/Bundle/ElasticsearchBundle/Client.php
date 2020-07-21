@@ -96,7 +96,7 @@ class Client
         }
 
         if (isset($response['errors']) && true === $response['errors']) {
-            $this->throwIndexationExceptionFromReponse($response);
+            $this->throwIndexationExceptionFromResponse($response);
         }
 
         return $response;
@@ -140,17 +140,17 @@ class Client
                 ],
             ];
 
+            $params['body'][] = $document;
+
             if (null !== $refresh) {
                 $params['refresh'] = $refresh->getType();
             }
-
-            $params['body'][] = $document;
         }
 
         $mergedResponse = $this->doBulkIndex($params, $mergedResponse);
 
         if (isset($mergedResponse['errors']) && true === $mergedResponse['errors']) {
-            $this->throwIndexationExceptionFromReponse($mergedResponse);
+            $this->throwIndexationExceptionFromResponse($mergedResponse);
         }
 
         return $mergedResponse;
@@ -345,7 +345,7 @@ class Client
      *
      * @throws IndexationException
      */
-    private function throwIndexationExceptionFromReponse(array $response)
+    private function throwIndexationExceptionFromResponse(array $response)
     {
         foreach ($response['items'] as $item) {
             if (isset($item['index']['error'])) {
