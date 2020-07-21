@@ -31,9 +31,8 @@ final class LocalFilestorageFindNewAnnouncementIds implements FindNewAnnouncemen
 
         $newAnnouncementIds = [];
         foreach ($content['data'] as $announcement) {
-            $dateInterval = new \DateInterval(sprintf('P%sD', $announcement['notificationDuration']));
             $startDate = new \DateTimeImmutable($announcement['startDate']);
-            $endDate = $startDate->add($dateInterval);
+            $endDate = new \DateTimeImmutable($announcement['notificationEndDate']);
             if ($currentDate > $startDate && $currentDate < $endDate) {
                 $newAnnouncementIds[] = $announcement['id'];
             }

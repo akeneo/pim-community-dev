@@ -50,7 +50,7 @@ class ApiFindAnnouncementItemsIntegration extends KernelTestCase
                 'New duplicate action',
                 'https://help.akeneo.com/pim/serenity/updates/2020-06.html#new-duplicate-a-product',
                 new \DateTimeImmutable('2020-07-05'),
-                7,
+                new \DateTimeImmutable('2020-07-14'),
                 ['updates']
             ),
             $result[0]
@@ -76,7 +76,7 @@ class ApiFindAnnouncementItemsIntegration extends KernelTestCase
                 'Measurement endpoints',
                 'https://help.akeneo.com/pim/serenity/updates/2020-04.html#new-endpoints-to-manage-measurements',
                 new \DateTimeImmutable('2020-05-07'),
-                7,
+                new \DateTimeImmutable('2020-05-14'),
                 ['updates']
             ),
             $result[0]

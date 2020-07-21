@@ -25,7 +25,7 @@ final class ApiFindAnnouncementItems implements FindAnnouncementItemsInterface
         $this->client = new Client(['base_uri' => $apiUrl]);
     }
 
-    public function byPimVersion(string $pimEdition, string $pimVersion, ?string $searchAfter, int $limit): array
+    public function byPimVersion(string $pimEdition, string $pimVersion, ?string $searchAfter): array
     {
         $queryParameters = [
             'pim_edition' => $pimEdition,
@@ -61,7 +61,7 @@ final class ApiFindAnnouncementItems implements FindAnnouncementItemsInterface
             $announcement['imgAlt'] ?? null,
             $announcement['link'],
             new \DateTimeImmutable($announcement['startDate']),
-            $announcement['notificationDuration'],
+            new \DateTimeImmutable($announcement['notificationEndDate']),
             $announcement['tags']
         );
     }

@@ -23,16 +23,12 @@ final class ListAnnouncementsQuery
     /** @var string|null */
     private $searchAfter;
 
-    /** @var int */
-    private $limit;
-
-    public function __construct(string $edition, string $version, int $userId, ?string $searchAfter, int $limit)
+    public function __construct(string $edition, string $version, int $userId, ?string $searchAfter)
     {
         $this->edition = $edition;
         $this->version = $version;
         $this->userId = $userId;
         $this->searchAfter = $searchAfter;
-        $this->limit = $limit;
     }
 
     public function edition(): string
@@ -53,10 +49,5 @@ final class ListAnnouncementsQuery
     public function searchAfter(): ?string
     {
         return $this->searchAfter;
-    }
-
-    public function limit(): int
-    {
-        return $this->limit;
     }
 }

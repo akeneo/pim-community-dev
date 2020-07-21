@@ -16,7 +16,6 @@
         ],
         "headers": {
             "Content-Type": "application/json"
-        },
-        "delayMillis": 3000
+        }
     }
 }
