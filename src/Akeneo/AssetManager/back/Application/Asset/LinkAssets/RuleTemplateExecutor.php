@@ -42,16 +42,26 @@ class RuleTemplateExecutor
         $this->compiledRuleRunner = $compiledRuleRunner;
     }
 
-    public function execute(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $assetCode): void
+    public function execute(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $assetCode): array
     {
         $ruleTemplateCollection = $this->ruleTemplateCollection($assetFamilyIdentifier);
+
         if ($ruleTemplateCollection->isEmpty()) {
-            return;
+            return [];
         }
+
         $asset = $this->findPropertyAccessibleAsset->find($assetFamilyIdentifier, $assetCode);
+        $errors = [];
+
         foreach ($ruleTemplateCollection as $ruleTemplate) {
-            $this->run($ruleTemplate, $asset);
+            try {
+                $this->run($ruleTemplate, $asset);
+            } catch (\InvalidArgumentException $exception) {
+                $errors[] = $exception->getMessage();
+            }
         }
+
+        return $errors;
     }
 
     private function ruleTemplateCollection(AssetFamilyIdentifier $assetFamilyIdentifier): RuleTemplateCollection

@@ -8,6 +8,7 @@
 
 - PIM-9351: Fix the thumbnail preview of transparent PDFs in the asset manager
 - PIM-9350: Fix the thumbnail preview of any PDFs in the asset manager
+- PIM-9355: Fix product link rules for assets targeting both product & product models
 
 # 4.0.39 (2020-07-08)
 

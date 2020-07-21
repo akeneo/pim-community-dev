@@ -67,7 +67,10 @@ class LinkAssetsToProductsTasklet implements TaskletInterface
 
         foreach ($assetCodes as $assetCode) {
             try {
-                $this->ruleTemplateExecutor->execute($assetFamilyIdentifier, $assetCode);
+                $errors = $this->ruleTemplateExecutor->execute($assetFamilyIdentifier, $assetCode);
+                foreach ($errors as $error) {
+                    $this->stepExecution->addWarning($error, [], new DataInvalidItem(['asset_code' => (string)$assetCode]));
+                }
             } catch (\InvalidArgumentException $e) {
                 $message = sprintf('The asset could not be linked to products: %s', $e->getMessage());
                 $this->stepExecution->addWarning($message, [], new DataInvalidItem(['asset_code' => (string)$assetCode]));
