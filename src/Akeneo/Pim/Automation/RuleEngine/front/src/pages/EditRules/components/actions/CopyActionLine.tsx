@@ -28,12 +28,11 @@ const EmptySourceHelper = styled.div`
   line-height: 21px;
 `;
 
-const supportedTypes: () => Map<AttributeType, AttributeType[]> = () => {
-  return new Map([
+const getSupportedTypes = (fromType: AttributeType) => {
+  const supportedTypes = new Map<AttributeType, AttributeType[]>([
     [
       AttributeType.OPTION_SIMPLE_SELECT,
       [
-        AttributeType.OPTION_SIMPLE_SELECT,
         AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
         AttributeType.TEXT,
         AttributeType.TEXTAREA,
@@ -42,7 +41,6 @@ const supportedTypes: () => Map<AttributeType, AttributeType[]> = () => {
     [
       AttributeType.OPTION_MULTI_SELECT,
       [
-        AttributeType.OPTION_MULTI_SELECT,
         AttributeType.REFERENCE_ENTITY_COLLECTION,
         AttributeType.TEXT,
         AttributeType.TEXTAREA,
@@ -51,50 +49,28 @@ const supportedTypes: () => Map<AttributeType, AttributeType[]> = () => {
     [
       AttributeType.TEXT,
       [
-        AttributeType.TEXT,
         AttributeType.TEXTAREA,
         AttributeType.OPTION_SIMPLE_SELECT,
         AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
       ],
     ],
-    [
-      AttributeType.IDENTIFIER,
-      [AttributeType.IDENTIFIER, AttributeType.TEXT, AttributeType.TEXTAREA],
-    ],
-    [
-      AttributeType.DATE,
-      [AttributeType.DATE, AttributeType.TEXT, AttributeType.TEXTAREA],
-    ],
+    [AttributeType.IDENTIFIER, [AttributeType.TEXT, AttributeType.TEXTAREA]],
+    [AttributeType.DATE, [AttributeType.TEXT, AttributeType.TEXTAREA]],
     [
       AttributeType.METRIC,
-      [
-        AttributeType.METRIC,
-        AttributeType.TEXT,
-        AttributeType.TEXTAREA,
-        AttributeType.NUMBER,
-      ],
+      [AttributeType.TEXT, AttributeType.TEXTAREA, AttributeType.NUMBER],
     ],
     [
       AttributeType.NUMBER,
-      [
-        AttributeType.NUMBER,
-        AttributeType.TEXT,
-        AttributeType.TEXTAREA,
-        AttributeType.METRIC,
-      ],
+      [AttributeType.TEXT, AttributeType.TEXTAREA, AttributeType.METRIC],
     ],
     [
       AttributeType.PRICE_COLLECTION,
-      [
-        AttributeType.PRICE_COLLECTION,
-        AttributeType.TEXT,
-        AttributeType.TEXTAREA,
-      ],
+      [AttributeType.TEXT, AttributeType.TEXTAREA],
     ],
     [
       AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
       [
-        AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
         AttributeType.TEXT,
         AttributeType.TEXTAREA,
         AttributeType.OPTION_SIMPLE_SELECT,
@@ -102,13 +78,11 @@ const supportedTypes: () => Map<AttributeType, AttributeType[]> = () => {
     ],
     [
       AttributeType.REFERENCE_ENTITY_COLLECTION,
-      [
-        AttributeType.REFERENCE_ENTITY_COLLECTION,
-        AttributeType.TEXT,
-        AttributeType.TEXTAREA,
-      ],
+      [AttributeType.TEXT, AttributeType.TEXTAREA],
     ],
   ]);
+
+  return (supportedTypes.get(fromType) || []).concat([fromType]);
 };
 
 type Props = {
@@ -143,9 +117,7 @@ const CopyActionLine: React.FC<Props> = ({
   const handleSourceChange = (attribute: Attribute | null) => {
     setValue(formName('from_field'), attribute?.code);
     setAttributeSource(attribute);
-    const supported = attribute
-      ? supportedTypes().get(attribute.type) || []
-      : [];
+    const supported = attribute ? getSupportedTypes(attribute.type) || [] : [];
     setTargetAttributeTypes(supported);
     const targetAttributeCode = getFormValue('to_field');
     if (targetAttributeCode) {
@@ -173,8 +145,6 @@ const CopyActionLine: React.FC<Props> = ({
       }
     }
   );
-
-  const sourceAttributeTypes = Array.from(supportedTypes().keys());
 
   return (
     <>
@@ -227,7 +197,6 @@ const CopyActionLine: React.FC<Props> = ({
               localeId={`edit-rules-action-${lineNumber}-from-locale`}
               locales={locales}
               scopes={scopes}
-              filterAttributeTypes={sourceAttributeTypes}
               onAttributeCodeChange={handleSourceChange}
               lineNumber={lineNumber}
               scopeFieldName={'from_scope'}
