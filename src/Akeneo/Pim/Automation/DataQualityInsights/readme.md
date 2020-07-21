@@ -45,7 +45,7 @@ On product save (unitary save only):
 - synchonous evaluations are performed for eligible criteria (providing a fastest feedback loop)
 - asynchronous evaluations are performed for criteria that rely on a third party HTTP call
 
-A CRON `pimee:data-quality-insights:evaluate-products` is configured to run every 30 min.  
+A CRON `pimee:data-quality-insights:evaluations` is configured to run every 30 min.  
 To ensure a non-concurrency behavior this CRON adds a job and run it as a subprocess.  
 We find all the pending criteria of the product to evaluate and loop over them.
 Each CRON instance will evaluate 5000 products maximum.
@@ -96,10 +96,10 @@ It uses also the words "ignored" by the users thanks to the spellcheck tooltip i
 
 ## Commands usable in production
 
-### Command `pimee:data-quality-insights:evaluate-products`:
+### Command `pimee:data-quality-insights:evaluations`:
 
 **Aim:**
-- Add a `data_quality_insights_evaluate_products_criteria` job instance and run it as a subprocess directly (see job description at the end of this document) 
+- Add a `data_quality_insights_evaluations` job instance and run it as a subprocess directly (see job description at the end of this document) 
 
 > **Note:** Recommended to be launched every 30min.
 
@@ -163,9 +163,10 @@ It uses also the words "ignored" by the users thanks to the spellcheck tooltip i
 
 > **Note:** This Job is only added to the queue by the `pimee:data-quality-insights:schedule-periodic-tasks` command
 
-### Job `data_quality_insights_evaluate_products_criteria`:
+### Job `data_quality_insights_evaluations`:
 
 **Aim:**
+- Evaluate the spelling of attribute labels
 - Find all the products to evaluate (products updated since the last evaluation)
 - Evaluate the `PENDING` criteria
 

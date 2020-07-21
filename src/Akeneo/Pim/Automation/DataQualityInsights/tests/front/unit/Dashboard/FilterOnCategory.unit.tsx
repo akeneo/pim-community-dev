@@ -1,17 +1,21 @@
 import React from 'react';
+
 import '@testing-library/jest-dom/extend-expect';
 import {fireEvent, render, waitForElement} from '@testing-library/react';
-import fetchCategoryTrees from "../../../../front/src/infrastructure/fetcher/fetchCategoryTrees";
-import fetchCategoryChildren from "../../../../front/src/infrastructure/fetcher/fetchCategoryChildren";
-import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY} from "../../../../front/src/application/listener";
+
+import fetchCategoryTrees
+  from "@akeneo-pim-ee/data-quality-insights/src/infrastructure/fetcher/Dashboard/fetchCategoryTrees";
+import fetchCategoryChildren
+  from "@akeneo-pim-ee/data-quality-insights/src/infrastructure/fetcher/Dashboard/fetchCategoryChildren";
+import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY} from "@akeneo-pim-ee/data-quality-insights/src/application/listener";
 import CategoryFilter
-  from "../../../../front/src/application/component/Dashboard/Overview/Filters/CategoryFilter";
+  from "@akeneo-pim-ee/data-quality-insights/src/application/component/Dashboard/Overview/Filters/CategoryFilter";
 
 const UserContext = require('pim/user-context');
 
 jest.mock('pim/user-context');
-jest.mock("../../../../front/src/infrastructure/fetcher/fetchCategoryTrees");
-jest.mock("../../../../front/src/infrastructure/fetcher/fetchCategoryChildren");
+jest.mock("@akeneo-pim-ee/data-quality-insights/src/infrastructure/fetcher/Dashboard/fetchCategoryTrees");
+jest.mock("@akeneo-pim-ee/data-quality-insights/src/infrastructure/fetcher/Dashboard/fetchCategoryChildren");
 
 beforeEach(() =>  {
   jest.resetModules();

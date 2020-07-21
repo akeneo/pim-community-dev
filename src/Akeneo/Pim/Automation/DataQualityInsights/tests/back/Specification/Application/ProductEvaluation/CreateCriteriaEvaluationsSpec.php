@@ -23,7 +23,7 @@ use Prophecy\Argument;
 
 final class CreateCriteriaEvaluationsSpec extends ObjectBehavior
 {
-    public function it_creates_criteria(
+    public function it_creates_all_criteria(
         CriteriaEvaluationRegistry $criterionEvaluationRegistry,
         CriterionEvaluationRepositoryInterface $criterionEvaluationRepository
     ) {
@@ -37,6 +37,6 @@ final class CreateCriteriaEvaluationsSpec extends ObjectBehavior
             return $collection->count() === 2;
         }))->shouldBeCalled();
 
-        $this->create([$productId]);
+        $this->createAll([$productId]);
     }
 }

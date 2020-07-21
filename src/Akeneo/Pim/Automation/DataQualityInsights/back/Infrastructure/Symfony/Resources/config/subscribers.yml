@@ -47,3 +47,18 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Attribute\InitializeEvaluationSubscriber:
+        arguments:
+            $evaluateUpdatedAttributes: '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributes'
+            $evaluateUpdatedAttributeOptions: '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributeOptions'
+            $dataQualityInsightsFeature: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Attribute\UpdateAttributeQualitySubscriber:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\ComputeAttributeQuality'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeQualityRepository'
+            - '@logger'
+        tags:
+            - { name: kernel.event_subscriber }

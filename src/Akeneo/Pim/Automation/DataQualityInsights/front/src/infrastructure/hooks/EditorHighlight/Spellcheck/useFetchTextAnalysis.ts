@@ -4,7 +4,7 @@ import {WidgetElement, convertHtmlContent} from "../../../../application/helper"
 import {updateWidgetContentAnalysis} from "../../../reducer";
 import {fetchTextAnalysis} from "../../../fetcher";
 import {useCatalogContext} from "../../index";
-import useProduct from "../../useProduct";
+import useProduct from "../../ProductEditForm/useProduct";
 
 const useFetchTextAnalysis = (widget: WidgetElement) => {
   const [previousContent, setPreviousContent] = useState<null | string>(null);

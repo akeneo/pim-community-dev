@@ -192,7 +192,7 @@ SQL;
     private function createProductModelCriteriaEvaluations(ProductId $productModelId, \DateTimeImmutable $createdAt): void
     {
         $this->removeProductModelEvaluations($productModelId);
-        $this->get('akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations')->create([$productModelId]);
+        $this->get('akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations')->createAll([$productModelId]);
         $this->updateProductModelEvaluationsAt($productModelId, $createdAt);
     }
 }

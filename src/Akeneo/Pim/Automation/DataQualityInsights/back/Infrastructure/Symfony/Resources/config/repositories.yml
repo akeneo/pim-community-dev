@@ -54,3 +54,15 @@ services:
         arguments:
             $db: '@database_connection'
             $tableName: '%akeneo.pim.automation.data_quality_insights.persistence.product_model_ignore_title_suggestion_table%'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeSpellcheckRepository:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeOptionSpellcheckRepository:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeQualityRepository:
+        arguments:
+            - '@database_connection'

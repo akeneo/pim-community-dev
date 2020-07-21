@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useLayoutEffect, useState} from "react";
 import {EditorElement} from "../../../application/helper";
 
 const initialBoundingClientRect: DOMRect = {
@@ -29,12 +29,13 @@ const useGetEditorBoundingClientRect = (editor: EditorElement) => {
   useEffect(() => {
     let lastBoundingClientRect = initialBoundingClientRect;
     let ticking = false;
+    let requestAnimationFrameId: number|null = null;
 
     const handleResize = () => {
       lastBoundingClientRect = editor.getBoundingClientRect();
 
       if (!ticking) {
-        window.requestAnimationFrame(function() {
+        requestAnimationFrameId = window.requestAnimationFrame(function() {
           setEditorBoundingClientRect(lastBoundingClientRect);
           ticking = false;
         });
@@ -55,6 +56,12 @@ const useGetEditorBoundingClientRect = (editor: EditorElement) => {
 
     return () => {
       ticking = true;
+
+      if (requestAnimationFrameId !== null) {
+        window.cancelAnimationFrame(requestAnimationFrameId);
+        requestAnimationFrameId = null;
+      }
+
       window.removeEventListener("resize", handleResize);
       editorResizeObserver.unobserve(editor);
       editorResizeObserver.disconnect();
@@ -64,12 +71,13 @@ const useGetEditorBoundingClientRect = (editor: EditorElement) => {
   useEffect(() => {
     let lastBoundingClientRect = initialBoundingClientRect;
     let ticking = false;
+    let requestAnimationFrameId: number|null = null;
 
     const handleScroll = () => {
       lastBoundingClientRect = editor.getBoundingClientRect();
 
       if (!ticking) {
-        window.requestAnimationFrame(function() {
+        requestAnimationFrameId = window.requestAnimationFrame(function() {
           setEditorBoundingClientRect(lastBoundingClientRect);
           ticking = false;
         });
@@ -80,9 +88,46 @@ const useGetEditorBoundingClientRect = (editor: EditorElement) => {
 
     return () => {
       ticking = true;
+
+      if (requestAnimationFrameId !== null) {
+        window.cancelAnimationFrame(requestAnimationFrameId);
+        requestAnimationFrameId = null;
+      }
+
       document.removeEventListener("scroll", handleScroll);
     };
   }, [editor]);
+
+  useLayoutEffect(() => {
+    let ticking = false;
+    let requestAnimationFrameId: number|null = null;
+
+    const observer = new MutationObserver(() => {
+      if (!ticking) {
+        requestAnimationFrameId = window.requestAnimationFrame(function() {
+          const clientRect = editor.getBoundingClientRect();
+          setEditorBoundingClientRect(clientRect);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+
+    observer.observe(document, {
+      childList: true,
+      subtree: true
+    });
+
+    return () => {
+      observer.disconnect();
+      ticking = true;
+
+      if (requestAnimationFrameId !== null) {
+        window.cancelAnimationFrame(requestAnimationFrameId);
+        requestAnimationFrameId = null;
+      }
+    }
+  }, [editor])
 
   return {
     editorBoundingClientRect,

@@ -1,0 +1,13 @@
+Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Entity\AttributeQuality:
+    type: entity
+    table: pimee_dqi_attribute_quality
+    fields:
+        attributeCode:
+            column: attribute_code
+            type: string
+            length: 100
+            id: true
+        quality:
+            column: quality
+            type: string
+            length: 20

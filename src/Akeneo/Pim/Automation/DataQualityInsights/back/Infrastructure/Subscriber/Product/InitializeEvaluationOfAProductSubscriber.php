@@ -7,10 +7,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\Consolid
 use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\ProductWordIgnoredEvent;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\TitleSuggestionIgnoredEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Events\TitleSuggestionIgnoredEvent;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Events\WordIgnoredEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Psr\Log\LoggerInterface;
@@ -56,13 +56,13 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
     public static function getSubscribedEvents()
     {
         return [
-            WordIgnoredEvent::WORD_IGNORED => 'onIgnoredWord',
-            TitleSuggestionIgnoredEvent::TITLE_SUGGESTION_IGNORED => 'onIgnoredTitleSuggestion',
+            ProductWordIgnoredEvent::class => 'onIgnoredWord',
+            TitleSuggestionIgnoredEvent::class => 'onIgnoredTitleSuggestion',
             StorageEvents::POST_SAVE => 'onPostSave',
         ];
     }
 
-    public function onIgnoredWord(WordIgnoredEvent $event)
+    public function onIgnoredWord(ProductWordIgnoredEvent $event)
     {
         if (! $this->dataQualityInsightsFeature->isEnabled()) {
             return;
@@ -105,7 +105,7 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
     private function initializeCriteria($productId)
     {
         try {
-            $this->createProductsCriteriaEvaluations->create([new ProductId($productId)]);
+            $this->createProductsCriteriaEvaluations->createAll([new ProductId($productId)]);
         } catch (\Throwable $e) {
             $this->logger->error(
                 'Unable to create product criteria evaluation',

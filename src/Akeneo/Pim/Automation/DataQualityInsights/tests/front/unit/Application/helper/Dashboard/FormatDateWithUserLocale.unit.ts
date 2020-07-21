@@ -1,5 +1,7 @@
 import {
-  dailyCallback, monthlyCallback, weeklyCallback
+  dailyCallback,
+  monthlyCallback,
+  weeklyCallback
 } from "@akeneo-pim-ee/data-quality-insights/src/application/helper/Dashboard/FormatDateWithUserLocale";
 
 const UserContext = require('pim/user-context');

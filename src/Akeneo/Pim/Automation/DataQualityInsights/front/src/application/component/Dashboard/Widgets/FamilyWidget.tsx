@@ -1,13 +1,13 @@
 import React, {FunctionComponent, useEffect, useState} from "react";
 import {createPortal} from "react-dom";
-import useFetchWidgetFamilies from "../../../../infrastructure/hooks/useFetchWidgetFamilies";
-import useFetchFamiliesByCodes from "../../../../infrastructure/hooks/useFetchFamiliesByCodes";
+import useFetchWidgetFamilies from "../../../../infrastructure/hooks/Dashboard/useFetchWidgetFamilies";
+import useFetchFamiliesByCodes from "../../../../infrastructure/hooks/Dashboard/useFetchFamiliesByCodes";
 import Family from "../../../../domain/Family.interface";
 import {Ranks} from "../../../../domain/Rate.interface";
 import Rate from "../../Rate";
 import FamilyModal from "./FamilyModal";
 import {uniq as _uniq} from 'lodash';
-import {redirectToProductGridFilteredByFamily} from "../../../../infrastructure/GridRouter";
+import {redirectToProductGridFilteredByFamily} from "../../../../infrastructure/ProductGridRouter";
 
 const __ = require('oro/translator');
 const UserContext = require('pim/user-context');

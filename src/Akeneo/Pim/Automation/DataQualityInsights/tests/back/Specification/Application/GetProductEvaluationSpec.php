@@ -137,6 +137,24 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                 "improvable_attributes" => [],
                                 "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
                             ],
+                            [
+                                "code" =>"consistency_attribute_spelling",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" =>"consistency_attribute_option_spelling",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
                         ],
                     ],
                     "fr_FR" => [
@@ -174,6 +192,24 @@ class GetProductEvaluationSpec extends ObjectBehavior
                             ],
                             [
                                 "code" =>"consistency_textarea_uppercase_words",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" =>"consistency_attribute_spelling",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" =>"consistency_attribute_option_spelling",
                                 "rate" => [
                                     "value" => null,
                                     "rank" => null,
@@ -220,6 +256,24 @@ class GetProductEvaluationSpec extends ObjectBehavior
                             ],
                             [
                                 "code" =>"consistency_textarea_uppercase_words",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" =>"consistency_attribute_spelling",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" =>"consistency_attribute_option_spelling",
                                 "rate" => [
                                     "value" => null,
                                     "rank" => null,
@@ -525,6 +579,24 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                 "improvable_attributes" => [],
                                 "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
                             ],
+                            [
+                                "code" =>"consistency_attribute_spelling",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" =>"consistency_attribute_option_spelling",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
                         ],
                     ],
                     "fr_FR" => [
@@ -565,6 +637,24 @@ class GetProductEvaluationSpec extends ObjectBehavior
                             ],
                             [
                                 "code" =>"consistency_textarea_uppercase_words",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" =>"consistency_attribute_spelling",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" =>"consistency_attribute_option_spelling",
                                 "rate" => [
                                     "value" => null,
                                     "rank" => null,
@@ -613,6 +703,24 @@ class GetProductEvaluationSpec extends ObjectBehavior
                             ],
                             [
                                 "code" =>"consistency_textarea_uppercase_words",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" =>"consistency_attribute_spelling",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" =>"consistency_attribute_option_spelling",
                                 "rate" => [
                                     "value" => null,
                                     "rank" => null,

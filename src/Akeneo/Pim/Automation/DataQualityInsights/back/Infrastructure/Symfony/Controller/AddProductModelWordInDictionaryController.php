@@ -13,56 +13,41 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\SupportedLocaleChecker;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\TextCheckerDictionaryRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWordForProductModel;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DictionaryWord;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Events\ProductModelWordIgnoredEvent;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AddProductModelWordInDictionaryController
 {
+    /** @var IgnoreWordForProductModel */
+    private $ignoreWordForProductModel;
+
+    /** @var FeatureFlag */
     private $featureFlag;
 
-    private $supportedLocaleValidator;
-
-    private $textCheckerDictionaryRepository;
-
-    private $eventDispatcher;
-
-    public function __construct(
-        FeatureFlag $featureFlag,
-        SupportedLocaleValidator $supportedLocaleChecker,
-        TextCheckerDictionaryRepositoryInterface $textCheckerDictionaryRepository,
-        EventDispatcherInterface $eventDispatcher
-    ) {
+    public function __construct(IgnoreWordForProductModel $ignoreWordForProductModel, FeatureFlag $featureFlag)
+    {
+        $this->ignoreWordForProductModel = $ignoreWordForProductModel;
         $this->featureFlag = $featureFlag;
-        $this->supportedLocaleValidator = $supportedLocaleChecker;
-        $this->textCheckerDictionaryRepository = $textCheckerDictionaryRepository;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function __invoke(Request $request)
     {
+        if (!$this->featureFlag->isEnabled()) {
+            return new JsonResponse(null, Response::HTTP_NOT_FOUND);
+        }
+
         try {
             $word = new DictionaryWord($request->request->get('word'));
             $localeCode = new LocaleCode($request->request->get('locale'));
             $productId = new ProductId($request->request->getInt('product_id'));
 
-            if (!$this->supportedLocaleValidator->isSupported($localeCode)) {
-                throw new \InvalidArgumentException('Unable to process locales that are not handled by spellchecker');
-            }
-
-            $dictionaryWord = new Write\TextCheckerDictionaryWord($localeCode, $word);
-            $this->textCheckerDictionaryRepository->save($dictionaryWord);
-
-            $this->eventDispatcher->dispatch(new ProductModelWordIgnoredEvent($productId), ProductModelWordIgnoredEvent::WORD_IGNORED);
+            $this->ignoreWordForProductModel->execute($word, $localeCode, $productId);
 
             return new Response(null, Response::HTTP_CREATED);
         } catch (\Throwable $e) {

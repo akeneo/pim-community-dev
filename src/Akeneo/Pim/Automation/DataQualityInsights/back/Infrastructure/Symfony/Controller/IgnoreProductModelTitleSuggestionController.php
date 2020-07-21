@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\ProductModelTitleSuggestionIgnoredEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\IgnoredTitleSuggestionRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TitleSuggestion;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Events\ProductModelTitleSuggestionIgnoredEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -58,7 +58,7 @@ class IgnoreProductModelTitleSuggestionController
                 $title
             ));
 
-            $this->eventDispatcher->dispatch(new ProductModelTitleSuggestionIgnoredEvent($productId), ProductModelTitleSuggestionIgnoredEvent::TITLE_SUGGESTION_IGNORED);
+            $this->eventDispatcher->dispatch(new ProductModelTitleSuggestionIgnoredEvent($productId));
 
             return new Response(null, Response::HTTP_CREATED);
         } catch (\InvalidArgumentException $e) {

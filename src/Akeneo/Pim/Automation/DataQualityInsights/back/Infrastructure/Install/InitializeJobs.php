@@ -33,8 +33,8 @@ final class InitializeJobs
 
     public function initialize(): void
     {
-        if (!$this->isJobInstanceAlreadyCreated(EvaluateProductsCriteriaTasklet::JOB_INSTANCE_NAME)) {
-            $this->createJobInstance(EvaluateProductsCriteriaTasklet::JOB_INSTANCE_NAME);
+        if (!$this->isJobInstanceAlreadyCreated('data_quality_insights_evaluations')) {
+            $this->createJobInstance('data_quality_insights_evaluations');
         }
 
         if (!$this->isJobInstanceAlreadyCreated('data_quality_insights_periodic_tasks')) {

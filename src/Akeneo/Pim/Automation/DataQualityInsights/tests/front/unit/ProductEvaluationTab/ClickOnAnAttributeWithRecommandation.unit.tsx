@@ -1,14 +1,16 @@
 import React from 'react';
+import {Provider} from 'react-redux';
+
 import '@testing-library/jest-dom/extend-expect';
 import {fireEvent, render} from '@testing-library/react';
+
 import RecommendationAttributesList
-  from '../../../../front/src/application/component/ProductEditForm/TabContent/DataQualityInsights/RecommendationAttributesList';
-import {Evaluation, Product} from '../../../../front/src/domain';
-import {Provider} from 'react-redux';
+  from '@akeneo-pim-ee/data-quality-insights//src/application/component/ProductEditForm/TabContent/DataQualityInsights/RecommendationAttributesList';
+import {Evaluation, Product} from '@akeneo-pim-ee/data-quality-insights//src/domain';
 import {createStoreWithInitialState} from '@akeneo-pim-ee/data-quality-insights/src/infrastructure/store/productEditFormStore';
-import {DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE} from "../../../../front/src/application/listener";
-import {ATTRIBUTE_TO_IMPROVE_SESSION_STORAGE_KEY} from '../../../../front/src/application/component/ProductEditForm/TabContent/AttributesTabContent';
-import {PRODUCT_MODEL_ATTRIBUTES_TAB_NAME} from '../../../../front/src/application/constant';
+import {DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE} from "@akeneo-pim-ee/data-quality-insights//src/application/listener";
+import {ATTRIBUTE_TO_IMPROVE_SESSION_STORAGE_KEY} from '@akeneo-pim-ee/data-quality-insights//src/application/component/ProductEditForm/TabContent/AttributesTabContent';
+import {PRODUCT_MODEL_ATTRIBUTES_TAB_NAME} from '@akeneo-pim-ee/data-quality-insights//src/application/constant';
 
 beforeEach(() =>  {
   jest.resetModules();

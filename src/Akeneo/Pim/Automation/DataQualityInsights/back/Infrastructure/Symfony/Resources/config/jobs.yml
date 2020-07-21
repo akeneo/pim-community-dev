@@ -1,13 +1,15 @@
 services:
 
     #Jobs
-    akeneo.pim.automation.data_quality_insights.job.evaluate_products_criteria:
+    akeneo.pim.automation.data_quality_insights.job.evaluations:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
-            - 'data_quality_insights_evaluate_products_criteria'
+            - 'data_quality_insights_evaluations'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+                - '@akeneo.pim.automation.data_quality_insights.connector.step.evaluate_attributes'
+                - '@akeneo.pim.automation.data_quality_insights.connector.step.evaluate_attribute_options'
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.evaluate_products_criteria'
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.evaluate_product_models_criteria'
         tags:
@@ -40,7 +42,7 @@ services:
     akeneo.pim.automation.data_quality_insights.connector.step.evaluate_product_models_criteria:
         class: '%pim_connector.step.tasklet.class%'
         arguments:
-            - 'evaluate_products_criteria'
+            - 'evaluate_product_models_criteria'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateProductModelsCriteriaTasklet'
@@ -68,6 +70,22 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\PurgeOutdatedDataTasklet'
+
+    akeneo.pim.automation.data_quality_insights.connector.step.evaluate_attributes:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'evaluate_attributes'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateAttributesTasklet'
+
+    akeneo.pim.automation.data_quality_insights.connector.step.evaluate_attribute_options:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'evaluate_attribute_options'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateAttributeOptionsTasklet'
 
     #Tasklets
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateProductsCriteriaTasklet:
@@ -105,22 +123,37 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\PurgeOutdatedData'
             - '@logger'
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateAttributesTasklet:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributes'
+            - '@logger'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateAttributeOptionsTasklet:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributeOptions'
+            - '@logger'
+
     #Job parameters
     akeneo.pim.automation.data_quality_insights.job_parameters.default_values_provider.evaluate_products_criteria:
         class: Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyDefaultValuesProvider
         arguments:
-            - ['data_quality_insights_evaluate_products_criteria']
+            - ['data_quality_insights_evaluations']
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     akeneo.pim.automation.data_quality_insights.job_parameters.constraint_collection_provider.evaluate_products_criteria:
         class: Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyConstraintCollectionProvider
         arguments:
-            - ['data_quality_insights_evaluate_products_criteria']
+            - ['data_quality_insights_evaluations']
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\PeriodicTasksParameters:
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\EvaluationsParameters:
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
             - { name: akeneo_batch.job.job_parameters.default_values_provider }

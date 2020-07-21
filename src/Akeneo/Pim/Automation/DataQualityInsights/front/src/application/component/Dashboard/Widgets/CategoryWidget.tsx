@@ -1,11 +1,11 @@
 import React, {FunctionComponent, useEffect, useState} from "react";
-import useFetchWidgetCategories from "../../../../infrastructure/hooks/useFetchWidgetCategories";
+import useFetchWidgetCategories from "../../../../infrastructure/hooks/Dashboard/useFetchWidgetCategories";
 import Rate from "../../Rate";
 import {Ranks} from "../../../../domain/Rate.interface";
 import CategoryModal from "../CategoryModal/CategoryModal";
 import {uniqBy as _uniqBy, xorBy as _xorBy} from 'lodash';
 import Category from "../../../../domain/Category.interface";
-import {redirectToProductGridFilteredByCategory} from "../../../../infrastructure/GridRouter";
+import {redirectToProductGridFilteredByCategory} from "../../../../infrastructure/ProductGridRouter";
 
 const __ = require('oro/translator');
 

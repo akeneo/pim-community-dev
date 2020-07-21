@@ -85,7 +85,7 @@ class GetEvaluableProductValuesQuery implements GetEvaluableProductValuesQueryIn
         return $productValues->isEmpty() ? null : new ProductValues($attribute, $productValues);
     }
 
-    private function getValue(array $rawValues, string $channelCode, string $localeCode): ?string
+    private function getValue(array $rawValues, string $channelCode, string $localeCode)
     {
         if (isset($rawValues[$channelCode][$localeCode])) {
             return $rawValues[$channelCode][$localeCode];

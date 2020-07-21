@@ -13,7 +13,7 @@ class Version_4_0_20191210100000_data_quality_insights_add_evaluation_job extend
 {
     public function up(Schema $schema)
     {
-        $jobEvaluateProductsCriteria = EvaluateProductsCriteriaTasklet::JOB_INSTANCE_NAME;
+        $jobEvaluateProductsCriteria = 'data_quality_insights_evaluate_products_criteria';
 
         $this->addSql(<<<SQL
             INSERT INTO `akeneo_batch_job_instance` (`code`, `label`, `job_name`, `status`, `connector`, `raw_parameters`, `type`)

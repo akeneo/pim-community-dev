@@ -1,8 +1,8 @@
 import {useCallback} from "react";
 import {useCatalogContext, useProduct} from "../../index";
-import fetchIgnoreTitleSuggestion from "../../../fetcher/fetchIgnoreTitleSuggestion";
 import {isSimpleProduct, isVariantProduct} from '../../../../application/helper/ProductEditForm/Product';
-import fetchProductModelIgnoreTitleSuggestion from '../../../fetcher/fetchProductModelIgnoreTitleSuggestion';
+import fetchIgnoreTitleSuggestion from "../../../fetcher/ProductEditForm/SuggestedTitle/fetchIgnoreTitleSuggestion";
+import fetchProductModelIgnoreTitleSuggestion from '../../../fetcher/ProductEditForm/SuggestedTitle/fetchProductModelIgnoreTitleSuggestion';
 
 const useFetchIgnoreTitleSuggestion = () => {
   const product = useProduct();

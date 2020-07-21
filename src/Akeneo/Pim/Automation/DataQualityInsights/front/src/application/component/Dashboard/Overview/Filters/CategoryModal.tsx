@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import useFetchCategoryTrees from "../../../../../infrastructure/hooks/useFetchCategoryTrees";
+import useFetchCategoryTrees from "../../../../../infrastructure/hooks/Dashboard/useFetchCategoryTrees";
 import CategoryTreeNode from "./CategoryTreeNode";
 
 const __ = require('oro/translator');

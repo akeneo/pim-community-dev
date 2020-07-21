@@ -1,11 +1,11 @@
-import fetchDqiDashboardData from "./fetchDqiDashboardData";
-import fetchProductDataQualityEvaluation from "./fetchProductDataQualityEvaluation";
-import fetchProductAxisRates from './fetchProductAxisRates';
-import fetchFamilyInformation from "./fetchFamilyInformation";
-import fetchIgnoreTextIssue from "./fetchIgnoreTextIssue";
-import fetchProduct from "./fetchProduct";
-import fetchTextAnalysis from "./fetchTextAnalysis";
-import fetchTitleSuggestion from "./fetchTitleSuggestion";
+import fetchDqiDashboardData from "./Dashboard/fetchDqiDashboardData";
+import fetchProductDataQualityEvaluation from "./ProductEditForm/fetchProductDataQualityEvaluation";
+import fetchProductAxisRates from './ProductEditForm/fetchProductAxisRates';
+import fetchFamilyInformation from "./ProductEditForm/fetchFamilyInformation";
+import fetchIgnoreTextIssue from "./ProductEditForm/Spellcheck/fetchIgnoreTextIssue";
+import fetchProduct from "./ProductEditForm/fetchProduct";
+import fetchTextAnalysis from "./Spellcheck/fetchTextAnalysis";
+import fetchTitleSuggestion from "./ProductEditForm/SuggestedTitle/fetchTitleSuggestion";
 
 export {
   fetchDqiDashboardData,

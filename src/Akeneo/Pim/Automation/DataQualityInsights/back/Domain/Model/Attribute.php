@@ -57,4 +57,9 @@ final class Attribute
     {
         return $this->isMainTitle;
     }
+
+    public function hasOptions()
+    {
+        return $this->type->equals(AttributeType::simpleSelect()) || $this->type->equals(AttributeType::multiSelect());
+    }
 }

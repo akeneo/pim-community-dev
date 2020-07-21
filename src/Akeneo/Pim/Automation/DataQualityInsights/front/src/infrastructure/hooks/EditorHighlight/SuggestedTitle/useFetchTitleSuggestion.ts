@@ -4,9 +4,9 @@ import {WidgetElement} from "../../../../application/helper";
 import {fetchTitleSuggestion} from "../../../fetcher";
 import {useCatalogContext, useProduct} from "../../index";
 import {setHasSuggestedTitleAction, updateWidgetContentAnalysis} from "../../../reducer";
-import useProductAxesRates from "../../useProductAxesRates";
+import useProductAxesRates from "../../ProductEditForm/useProductAxesRates";
 import {isSimpleProduct, isVariantProduct} from '../../../../application/helper/ProductEditForm/Product';
-import fetchProductModelTitleSuggestion from '../../../fetcher/fetchProductModelTitleSuggestion';
+import fetchProductModelTitleSuggestion from '../../../fetcher/ProductEditForm/SuggestedTitle/fetchProductModelTitleSuggestion';
 
 const useFetchTitleSuggestion = (widget: WidgetElement) => {
   const {locale, channel} = useCatalogContext();

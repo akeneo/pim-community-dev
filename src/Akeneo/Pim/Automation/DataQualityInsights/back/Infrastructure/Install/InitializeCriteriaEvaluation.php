@@ -59,7 +59,7 @@ final class InitializeCriteriaEvaluation
                 return new ProductId($id);
             }, $ids);
 
-            $this->createProductsCriteriaEvaluations->create($productIds);
+            $this->createProductsCriteriaEvaluations->createAll($productIds);
         }
     }
 }

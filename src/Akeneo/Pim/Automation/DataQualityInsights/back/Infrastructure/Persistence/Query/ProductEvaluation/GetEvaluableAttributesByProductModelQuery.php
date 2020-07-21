@@ -19,7 +19,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Structure\EditableAttributeFilter;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Structure\MapAttributeType;
 use Doctrine\DBAL\Connection;
 
 class GetEvaluableAttributesByProductModelQuery implements GetEvaluableAttributesByProductQueryInterface
@@ -27,13 +26,9 @@ class GetEvaluableAttributesByProductModelQuery implements GetEvaluableAttribute
     /** * @var Connection */
     private $dbConnection;
 
-    /** @var MapAttributeType */
-    private $attributeTypeMapper;
-
-    public function __construct(Connection $dbConnection, MapAttributeType $attributeTypeMapper)
+    public function __construct(Connection $dbConnection)
     {
         $this->dbConnection = $dbConnection;
-        $this->attributeTypeMapper = $attributeTypeMapper;
     }
 
     public function execute(ProductId $productId): array
@@ -63,12 +58,10 @@ WHERE product_model.id = :product_model_id
     );
 SQL;
 
-        $evaluableAttributeTypes = $this->attributeTypeMapper->fromArrayStringToPimStructure(AttributeType::EVALUABLE_ATTRIBUTE_TYPES);
-
         $statement = $this->dbConnection->executeQuery($query,
             [
                 'product_model_id' => $productId->toInt(),
-                'attribute_types' => $evaluableAttributeTypes,
+                'attribute_types' => AttributeType::EVALUABLE_ATTRIBUTE_TYPES,
             ],
             [
                 'product_model_id' => \PDO::PARAM_INT,
@@ -81,7 +74,7 @@ SQL;
         foreach (new EditableAttributeFilter($statement->fetchAll()) as $attribute) {
             $attributes[] = new Attribute(
                 new AttributeCode($attribute['code']),
-                $this->attributeTypeMapper->fromPimStructure($attribute['type']),
+                new AttributeType($attribute['type']),
                 (bool) $attribute['is_localizable'],
                 (bool) $attribute['is_main_title']
             );

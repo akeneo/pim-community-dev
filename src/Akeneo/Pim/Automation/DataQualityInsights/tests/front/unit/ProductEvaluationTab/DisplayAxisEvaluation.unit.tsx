@@ -1,15 +1,17 @@
 import React from 'react';
+import {Provider} from "react-redux";
+
 import '@testing-library/jest-dom/extend-expect';
 import {fireEvent, render} from "@testing-library/react";
+
 import AxisEvaluation
-  from "../../../../front/src/application/component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation";
-import {Evaluation} from "../../../../front/src/domain";
-import {Provider} from "react-redux";
-import {createStoreWithInitialState} from "../../../../front/src/infrastructure/store/productEditFormStore";
+  from "@akeneo-pim-ee/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation";
+import {Evaluation} from "@akeneo-pim-ee/data-quality-insights/src/domain";
+import {createStoreWithInitialState} from "@akeneo-pim-ee/data-quality-insights/src/infrastructure/store/productEditFormStore";
 import {
   DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES,
   DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES
-} from "../../../../front/src/application/listener";
+} from "@akeneo-pim-ee/data-quality-insights/src/application/listener";
 
 const UserContext = require('pim/user-context');
 

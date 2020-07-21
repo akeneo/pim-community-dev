@@ -1,14 +1,17 @@
 import React from 'react';
+
 import '@testing-library/jest-dom/extend-expect';
 import {fireEvent, render, waitForElement} from "@testing-library/react";
-import FamilyFilter from "../../../../front/src/application/component/Dashboard/Overview/Filters/FamilyFilter";
-import fetchFamilies from "../../../../front/src/infrastructure/fetcher/fetchFamilies";
-import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY} from "../../../../front/src/application/listener";
+
+import FamilyFilter
+  from "@akeneo-pim-ee/data-quality-insights/src/application/component/Dashboard/Overview/Filters/FamilyFilter";
+import fetchFamilies from "@akeneo-pim-ee/data-quality-insights/src/infrastructure/fetcher/Dashboard/fetchFamilies";
+import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY} from "@akeneo-pim-ee/data-quality-insights/src/application/listener";
 
 const UserContext = require('pim/user-context');
 
 jest.mock('pim/user-context');
-jest.mock("../../../../front/src/infrastructure/fetcher/fetchFamilies");
+jest.mock("@akeneo-pim-ee/data-quality-insights/src/infrastructure/fetcher/Dashboard/fetchFamilies");
 
 beforeEach(() =>  {
   jest.resetModules();
