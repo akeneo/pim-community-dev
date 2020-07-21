@@ -160,7 +160,7 @@ pimee_catalog_rule:
                     label: Remove action
                     description: Are you sure you want to remove this action?
                 set_status:
-                    title: SET status
+                    title: SET Status
                     subtitle: Define your status
                     helper: To set a status to products, please select a status in the list below
                     placeholder: Select your status

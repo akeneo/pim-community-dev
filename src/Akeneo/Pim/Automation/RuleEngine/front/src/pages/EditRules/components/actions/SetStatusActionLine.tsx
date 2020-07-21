@@ -40,9 +40,10 @@ const SetStatusActionLine: React.FC<ActionLineProps & {
         rules={{
           // We can not use 'required' validation rule a value can be "false" (for boolean).
           validate: value => {
-            return ![true, false].includes(value)
-              ? translate('pimee_catalog_rule.exceptions.required_value')
-              : true;
+            return (
+              typeof value === 'boolean' ||
+              translate('pimee_catalog_rule.exceptions.required_value')
+            );
           },
         }}
       />
@@ -74,9 +75,7 @@ const SetStatusActionLine: React.FC<ActionLineProps & {
               'pimee_catalog_rule.form.edit.actions.set_status.placeholder'
             )}
             value={getValueFormValue()}
-            onChange={(value: boolean) => {
-              setValueFormValue(value);
-            }}
+            onChange={setValueFormValue}
           />
         </AknActionFormContainer>
       </ActionTemplate>
