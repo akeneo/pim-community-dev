@@ -52,7 +52,7 @@ extensions:
             gridName: attribute-grid
 
     pim-attribute-index-grid:
-        module: pim/form/common/index/grid
+        module: pim/attribute/grid
         parent: pim-attribute-index-grid-container
         position: 1000
         config:

@@ -1,9 +1,10 @@
 import React, {useEffect} from 'react';
 import {Provider} from 'react-redux';
-import attributeOptionsStore from './store/store';
-import AttributeOptions from './components/AttributeOptions';
+
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import attributeOptionsStore from './store/store';
 import {AttributeContextProvider, LocalesContextProvider} from './contexts';
+import AttributeOptions from './components/AttributeOptions';
 import OverridePimStyle from './components/OverridePimStyles';
 import {resetAttributeOptionsAction} from './reducers';
 

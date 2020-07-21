@@ -1,8 +1,9 @@
 import React, {useCallback, useEffect, useState} from 'react';
+import {useDispatch} from 'react-redux';
+
 import List from './List';
 import Edit from './Edit';
 import New from './New';
-import {useDispatch} from 'react-redux';
 import {AttributeOption} from '../model';
 import {
     useCreateAttributeOption,
@@ -35,7 +36,11 @@ const AttributeOptions = () => {
     const notify = useNotify();
 
     useEffect(() => {
-        if (attributeOptions !== null && attributeOptions.length > 0 && (selectedOption === null || !selectedOptionExists())) {
+        if (
+            attributeOptions !== null &&
+            attributeOptions.length > 0 &&
+            (selectedOption === null || !selectedOptionExists())
+        ) {
             setSelectedOption(attributeOptions[0]);
         } else if (attributeOptions === null || attributeOptions.length === 0) {
             setSelectedOption(null);
@@ -47,7 +52,11 @@ const AttributeOptions = () => {
     }, [attributeContext.attributeId]);
 
     const selectedOptionExists = () => {
-        return attributeOptions && selectedOption && attributeOptions.filter((option: AttributeOption) => option.id === selectedOption.id).length === 1;
+        return (
+            attributeOptions &&
+            selectedOption &&
+            attributeOptions.filter((option: AttributeOption) => option.id === selectedOption.id).length === 1
+        );
     };
 
     const selectAttributeOption = useCallback(async (optionId: number | null) => {
