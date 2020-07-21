@@ -19,7 +19,6 @@ const eeConfig = {
     'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher',
     'akeneopimenrichmentassetmanager/platform/component/common',
     'akeneoassetmanager/application/component/app/button',
-    'akeneofranklininsights/react/application/action',
     'akeneoassetmanager/application/component/asset/index/completeness-filter',
     'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/search-bar/search-field', // cannot trigger re-render
     'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/search-bar', // cannot test hooks + asynchronous fetching
@@ -32,7 +31,6 @@ const eeConfig = {
     'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/assets-collection/infrastructure/fetcher',
     'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/platform/component/common',
     'src/Akeneo/AssetManager/front/application/component/app/button',
-    'src/Akeneo/Pim/Automation/FranklinInsights/Infrastructure/Symfony/Resources/public/react/application/action',
     'src/Akeneo/AssetManager/front/application/component/asset/index/completeness-filter',
     'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/assets-collection/infrastructure/component/asset-picker/search-bar/search-field', // cannot test hooks + asynchronous fetching + cannot trigger re-render
     'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/assets-collection/infrastructure/component/asset-picker/search-bar', // cannot test hooks + asynchronous fetching
