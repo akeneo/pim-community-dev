@@ -111,6 +111,9 @@ pimee_catalog_rule:
                 add_category:
                     title: ADD Categories
                     helper: To add your product selection to one or more categories, please start by selecting your category trees and then, your categories
+                add_groups:
+                    title: ADD products to groups
+                    helper: To add products to groups, please select one or several groups
                 set_category:
                     title: SET Categories
                     helper: To set your product selection to one or more categories, please start by selecting your category trees and then, your categories

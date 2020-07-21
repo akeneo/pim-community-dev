@@ -5,3 +5,4 @@ export * from './Scope';
 export * from './Family';
 export * from './Category';
 export * from './Attribute';
+export * from './Group';
