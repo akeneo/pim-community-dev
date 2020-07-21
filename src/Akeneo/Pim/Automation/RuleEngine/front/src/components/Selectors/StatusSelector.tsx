@@ -3,6 +3,7 @@ import { Select2Option, Select2SimpleSyncWrapper } from '../Select2Wrapper';
 import { useTranslate } from '../../dependenciesTools/hooks';
 
 type Props = {
+  id: string;
   value?: boolean;
   label: string;
   name: string;
@@ -11,6 +12,7 @@ type Props = {
 };
 
 const StatusSelector: React.FC<Props> = ({
+  id,
   value,
   label,
   name,
@@ -28,7 +30,7 @@ const StatusSelector: React.FC<Props> = ({
       text: translate('pim_enrich.entity.product.module.status.disabled'),
     },
   ];
-  const handleChange = (value: 'enabled'|'disabled') => {
+  const handleChange = (value: 'enabled' | 'disabled') => {
     if (onChange) {
       onChange(value === 'enabled');
     }
@@ -38,12 +40,16 @@ const StatusSelector: React.FC<Props> = ({
 
   return (
     <Select2SimpleSyncWrapper
+      data-testid={id}
       label={label}
       data={data}
       value={selectValue}
       name={name}
       placeholder={placeholder}
-      onChange={(value: string|number|null) => handleChange(value as 'enabled'|'disabled')}
+      onChange={(value: string | number | null) =>
+        handleChange(value as 'enabled' | 'disabled')
+      }
+      hideSearch={true}
     />
   );
 };

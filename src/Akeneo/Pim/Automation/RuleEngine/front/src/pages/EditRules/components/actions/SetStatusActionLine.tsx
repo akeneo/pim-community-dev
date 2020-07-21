@@ -21,10 +21,6 @@ const SetStatusActionLine: React.FC<ActionLineProps & {
     setValueFormValue,
   } = useControlledFormInputAction<boolean>(lineNumber);
 
-  const handleChange = (value: boolean) => {
-    setValueFormValue(value);
-  };
-
   return (
     <>
       <Controller
@@ -69,6 +65,7 @@ const SetStatusActionLine: React.FC<ActionLineProps & {
         </ActionTitle>
         <AknActionFormContainer>
           <StatusSelector
+            id={`edit-rules-actions-${lineNumber}-value`}
             name={valueFormName}
             label={`${translate('pim_common.status')} ${translate(
               'pim_common.required_label'
@@ -78,7 +75,7 @@ const SetStatusActionLine: React.FC<ActionLineProps & {
             )}
             value={getValueFormValue()}
             onChange={(value: boolean) => {
-              handleChange(value);
+              setValueFormValue(value);
             }}
           />
         </AknActionFormContainer>
