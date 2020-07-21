@@ -1,26 +1,10 @@
 import React from 'react';
-import {
-  Attribute,
-  AttributeType,
-  getAttributeLabel,
-} from '../../../../../models';
-import {
-  useTranslate,
-  useUserCatalogLocale,
-} from '../../../../../dependenciesTools/hooks';
-import {
-  BooleanValue,
-  MultiSelectValue,
-  TextValue,
-  SimpleSelectValue,
-  FallbackValue,
-  NumberValue,
-} from './';
-import {
-  HelperContainer,
-  InlineHelper,
-} from '../../../../../components/HelpersInfos';
+import { Attribute, AttributeType, getAttributeLabel, } from '../../../../../models';
+import { useTranslate, useUserCatalogLocale, } from '../../../../../dependenciesTools/hooks';
+import { BooleanValue, FallbackValue, MultiSelectValue, NumberValue, SimpleSelectValue, TextValue, } from './';
+import { HelperContainer, InlineHelper, } from '../../../../../components/HelpersInfos';
 import { ActionFormContainer } from '../style';
+import { parsePriceCollectionValue, PriceCollectionValue } from "./PriceCollectionValue";
 
 const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: Map<
   AttributeType,
@@ -31,6 +15,7 @@ const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: Map<
   [AttributeType.BOOLEAN, BooleanValue],
   [AttributeType.OPTION_MULTI_SELECT, MultiSelectValue],
   [AttributeType.NUMBER, NumberValue],
+  [AttributeType.PRICE_COLLECTION, PriceCollectionValue],
 ]);
 
 const MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION: Map<
@@ -60,6 +45,8 @@ const getValueModule = (attribute: Attribute, props: InputValueProps) => {
       return <NumberValue {...props} />;
     case AttributeType.BOOLEAN:
       return <BooleanValue {...props} value={!!props.value} />;
+    case AttributeType.PRICE_COLLECTION:
+      return <PriceCollectionValue {...props} value={parsePriceCollectionValue(props.value)}/>;
     default:
       return null;
   }
