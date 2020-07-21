@@ -70,3 +70,6 @@ parameters:
     count_product_model_values_limit: -1
     count_product_and_product_model_values_limit: -1
     count_users_limit: -1
+
+    # url to request to fetch announcements in the communication panel
+    comm_panel_api_url: '%env(COMM_PANEL_API_URL)%'

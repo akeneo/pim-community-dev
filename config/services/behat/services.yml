@@ -1,5 +1,5 @@
 parameters:
-    help_center_api_url: 'http://localhost:8088' # avoid to call the external service in the CI
+    comm_panel_api_url: 'http://localhost:8088' # avoid to call the external service in the CI
 
 services:
     _defaults:

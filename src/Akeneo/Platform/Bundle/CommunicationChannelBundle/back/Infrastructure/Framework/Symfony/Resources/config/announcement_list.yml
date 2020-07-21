@@ -16,7 +16,7 @@ services:
     akeneo_communication_channel.query.api.find_announcement_items:
         class: 'Akeneo\Platform\CommunicationChannel\Infrastructure\CommunicationChannel\Api\ApiFindAnnouncementItems'
         arguments:
-            - '%help_center_api_url%'
+            - '%comm_panel_api_url%'
 
     akeneo_communication_channel.query.local_filestorage.find_announcement_items:
         class: 'Akeneo\Platform\CommunicationChannel\Infrastructure\CommunicationChannel\LocalFilestorage\LocalFilestorageFindAnnouncementItems'

@@ -57,7 +57,7 @@ class ApiFindNewAnnouncementIdsIntegration extends KernelTestCase
         $attempt = 0;
         do {
             try {
-                $httpClient = new Client(['base_uri' => self::$container->getParameter('help_center_api_url')]);
+                $httpClient = new Client(['base_uri' => self::$container->getParameter('comm_panel_api_url')]);
                 $httpClient->get('/');
             } catch (ConnectException $e) {
                 usleep(100000);
