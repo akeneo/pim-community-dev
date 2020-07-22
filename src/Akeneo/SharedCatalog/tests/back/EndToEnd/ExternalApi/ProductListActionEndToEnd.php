@@ -137,17 +137,4 @@ class ProductListActionEndToEnd extends ApiTestCase
             json_decode($response->getContent(), true)
         );
     }
-
-    /**
-     * @test
-     */
-    public function it_return_404_error_when_catalog_does_not_exist()
-    {
-        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-
-        $client->request('GET', 'api/rest/v1/shared-catalogs/unknown_catalog/products');
-        $response = $client->getResponse();
-        $this->assertSame(404, $response->getStatusCode());
-        $this->assertJsonStringEqualsJsonString('{"code": 404, "message": "Catalog \\"unknown_catalog\\" does not exist"}', $response->getContent());
-    }
 }
