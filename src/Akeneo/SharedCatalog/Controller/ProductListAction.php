@@ -24,26 +24,25 @@ class ProductListAction
     private $getProductIdFromProductIdentifierQuery;
 
     /** @var int */
-    private $pageSize;
+    private $defaultPageSize;
 
     public function __construct(
         FindSharedCatalogQueryInterface $findSharedCatalogQuery,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         GetProductIdFromProductIdentifierQuery $getProductIdFromProductIdentifierQuery,
-        int $pageSize
+        int $defaultPageSize
     ) {
         $this->findSharedCatalogQuery = $findSharedCatalogQuery;
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
         $this->getProductIdFromProductIdentifierQuery = $getProductIdFromProductIdentifierQuery;
-        $this->pageSize = $pageSize;
+        $this->defaultPageSize = $defaultPageSize;
     }
 
     public function __invoke(
         Request $request,
-        string $shared_catalog_code
+        string $sharedCatalogCode
     ): JsonResponse {
-        $sharedCatalog = $this->findSharedCatalogQuery->find($shared_catalog_code);
-
+        $sharedCatalog = $this->findSharedCatalogQuery->find($sharedCatalogCode);
         if (!$sharedCatalog) {
             throw new NotFoundHttpException();
         }
@@ -51,7 +50,7 @@ class ProductListAction
         $pqbOptions = [
             'default_scope' => $sharedCatalog->filters['structure']['scope'],
             'filters' => $sharedCatalog->filters['data'] ?? [],
-            'limit' => $this->pageSize,
+            'limit' => $request->query->getInt('limit', $this->defaultPageSize),
         ];
 
         $searchAfterProductIdentifier = $request->get('search_after', null);
@@ -77,10 +76,6 @@ class ProductListAction
 
         return new JsonResponse([
             'results' => $identifiers,
-            'pagination' => [
-                'results_by_page' => $this->pageSize,
-                'results_count' => count($identifiers),
-            ],
         ]);
     }
 }

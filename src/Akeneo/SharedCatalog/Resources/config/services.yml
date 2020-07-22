@@ -1,7 +1,7 @@
 parameters:
     akeneo.shared_catalog.connector.name: Akeneo Shared Catalogs
     akeneo.shared_catalog.connector.code: 'akeneo_shared_catalog'
-    akeneo.shared_catalog.products_page_size: 10000
+    akeneo.shared_catalog.default_products_page_size: 10000
 
 services:
     _defaults:
@@ -77,7 +77,7 @@ services:
             - '@Akeneo\SharedCatalog\Query\FindSharedCatalogQueryInterface'
             - '@akeneo.shared_catalog.query.product_query_builder_factory'
             - '@Akeneo\SharedCatalog\Query\GetProductIdFromProductIdentifierQuery'
-            - '%akeneo.shared_catalog.products_page_size%'
+            - '%akeneo.shared_catalog.default_products_page_size%'
 
     akeneo.shared_catalog.query.product_query_builder_factory:
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
