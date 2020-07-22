@@ -30,12 +30,12 @@ class GetAttributeQueryIntegration extends TestCase
         $this->createFamily('a_family', ['attribute_A', 'attribute_B']);
 
         $this->assertEquals(
-            new Attribute(new AttributeCode('attribute_A'), new AttributeType(AttributeTypes::TEXT), false, true),
+            new Attribute(new AttributeCode('attribute_A'), new AttributeType(AttributeTypes::TEXT), false),
             $this->get(GetAttributeQuery::class)->byAttributeCode(new AttributeCode('attribute_A'))
         );
 
         $this->assertEquals(
-            new Attribute(new AttributeCode('attribute_B'), new AttributeType(AttributeTypes::TEXT), true, false),
+            new Attribute(new AttributeCode('attribute_B'), new AttributeType(AttributeTypes::TEXT), true),
             $this->get(GetAttributeQuery::class)->byAttributeCode(new AttributeCode('attribute_B'))
         );
     }

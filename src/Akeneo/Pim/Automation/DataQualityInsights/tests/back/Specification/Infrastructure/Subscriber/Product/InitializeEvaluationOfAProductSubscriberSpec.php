@@ -19,7 +19,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Eval
 use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\TitleSuggestionIgnoredEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\ProductWordIgnoredEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
