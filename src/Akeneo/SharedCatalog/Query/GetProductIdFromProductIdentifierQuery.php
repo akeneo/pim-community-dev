@@ -4,7 +4,7 @@ namespace Akeneo\SharedCatalog\Query;
 
 use Doctrine\DBAL\Connection;
 
-class GetProductIdFromProductIdentifierQuery
+class GetProductIdFromProductIdentifierQuery implements GetProductIdFromProductIdentifierQueryInterface
 {
     /** @var Connection */
     private $connection;
