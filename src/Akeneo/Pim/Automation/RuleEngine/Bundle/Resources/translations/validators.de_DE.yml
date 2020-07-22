@@ -1,0 +1,60 @@
+pimee_catalog_rule:
+  rule_definition:
+    validation:
+      locale:
+        unknown: 'Das "{{ locale_code }}" Gebietsschema existiert nicht oder ist nicht aktiviert'
+      currency:
+        unknown: 'Eine gültige Währung ist erforderlich, die "{{ currency }}" Währung existiert nicht oder ist nicht aktiviert'
+        missing_key: 'Der "{{ key }}" Schlüssel fehlt oder leer'
+        unexpected_key: 'Der {{ key }} Schlüssel ist irrelevant'
+      measurement:
+        invalid_unit: 'Der "{{ unitCode }}" Einheitscode existiert nicht oder gehört nicht zur Messfamilie des Attributs "{{ attributeCode }}"'
+        invalid_attribute_type: 'Der Schlüssel {{ key }} ist für das Attribut {{ attributeCode }} irrelevant'
+      attribute:
+        unknown: 'Das Attribut "{{ code }}" existiert nicht'
+        unexpected_type: 'Das Attribut "{{ attribute_code }}" hat einen ungültigen "{{ invalid_type }}" Attribut Typ. Ein {{ expected_types }} Attribut ist erforderlich'
+        missing_locale: 'Das Attribut "{{ attributeCode }}" erfordert ein Gebietsschema'
+        unexpected_locale: 'Das Attribut "{{ attributeCode }}" benötigt keine Gebietsschema, bitte entfernen Sie es'
+        unknown_locale: 'Das Attribut "{{ attributeCode }}" erfordert ein vorhandenes und aktiviertes Gebietsschema, bitte stellen Sie sicher, dass Ihr Gebietsschema existiert und aktiviert ist'
+        invalid_specific_locale: 'Das Attribut "{{ attributeCode }}" ist gebietsspezifisch und erfordert eines der folgenden Gebietsschema: {{ expectedLocales }}'
+        locale_not_bound_to_channel: 'Es gibt keine "{{ invalidLocale }}" Gebietsschema im "{{ channelCode }}" Kanal'
+        missing_scope: 'Das Attribut "{{ attributeCode }}" benötigt einen Bereich'
+        unexpected_scope: 'Das Attribut "{{ attributeCode }}" benötigt keinen Bereich, bitte entfernen Sie es'
+        unknown_scope: 'Das Attribut "{{ attributeCode }}" erfordert einen vorhandenen Bereich'
+      invalid_code: 'Der Regelcode darf nur Buchstaben, Zahlen und Unterstriche enthalten'
+      conditions:
+        missing_value_key: 'Der Schlüssel "Wert" fehlt oder leer'
+        missing_operator_key: 'Der "Operator"-Schlüssel fehlt oder leer'
+        existing_field: 'Das "{{ field }}" Feld kann nicht gefiltert werden oder kann nicht mit dem "{{ operator }}" Operator verwendet werden'
+        missing_field_key: 'Der Schlüssel "Feld" fehlt oder leer'
+      actions:
+        missing_key: 'Der "Aktionen" Schlüssel fehlt oder leer'
+        add:
+          invalid_field: 'Sie können keine Elemente zum "{{ field }}" Feld hinzufügen'
+        clear:
+          invalid_field: 'Sie können keine Daten aus dem "{{ field }}" Feld löschen'
+        copy:
+          invalid_fields: 'Sie können keine Daten aus dem "{{ from_field }}" Feld in das "{{ to_field }}" Feld kopieren'
+          missing_from_field_key: 'Der "from_field" Schlüssel fehlt oder leer'
+          missing_to_field_key: 'Der "to_field" Schlüssel fehlt oder leer'
+        concatenate:
+          invalid_source: 'Sie können keine Daten aus dem "{{ field }}" Feld zusammenfassen'
+          unexpected_source_option: 'Der Schlüssel {{ key }} ist für das Attribut {{ attribute }} irrelevant'
+          missing_from_key: 'Der "von" Schlüssel fehlt oder leer'
+          missing_to_key: 'Der "bis" Schlüssel fehlt oder leer'
+          source_count: 'Dieser Wert sollte mindestens 2 Elemente enthalten'
+        calculate:
+          division_by_zero: 'Teilungen durch Null sind nicht möglich'
+          missing_operand_key: 'Entweder der Schlüssel "Wert" oder "Feld" wird benötigt, aber beide fehlen oder leer'
+          only_one_key_expected: 'Entweder der Schlüssel "Wert" oder "Feld" ist erforderlich, bitte wählen Sie einen'
+          unexpected_key: 'Der "{{ key }}" Schlüssel ist irrelevant'
+          invalid_operator: 'Dieser Wert sollte entweder "Addieren", "Subtrahieren", "Multiplizieren" oder "Teilen" sein'
+        remove:
+          invalid_field: 'Sie können keine Elemente aus dem "{{ field }}" Feld entfernen'
+          include_children_option: 'Die Option "include_children" kann nur mit dem Feld "Kategorien" angewendet werden'
+        set:
+          invalid_field: 'Sie können keine Daten auf das "{{ field }}" Feld setzen'
+          missing_value_key: 'Der Schlüssel "Wert" fehlt oder leer'
+        custom:
+          unkown_type: 'Unbekannter Aktionstyp'
+          missing_type_key: 'Der Schlüssel "Typ" fehlt oder leer'

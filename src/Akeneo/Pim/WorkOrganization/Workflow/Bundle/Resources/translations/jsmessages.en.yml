@@ -1,0 +1,4 @@
+pimee_enrich.entity.product:
+  module:
+    attribute:
+      can_be_updated_by_a_rule: "]-Inf, 1]This attribute can be updated by a rule:|]1, +Inf[This attribute can be updated by the rules:"

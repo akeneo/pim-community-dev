@@ -112,7 +112,7 @@ pimee_catalog_rule:
           title: AJOUTER des catégories
           helper: Pour ajouter votre sélection de produits à une ou plusieurs catégories, veuillez commencer par sélectionner vos arbres de catégories et ensuite vos catégories.
         set_category:
-          title: DEFINIR les catégories
+          title: DÉFINIR les catégories
           helper: Pour classifier votre sélection de produits dans une ou plusieurs catégories (et les retirer des anciennes), veuillez commencer par sélectionner vos arbres de catégories et ensuite vos catégories.
         category:
           select_category_trees: Sélectionnez vos arbres de catégories
@@ -144,10 +144,15 @@ pimee_catalog_rule:
         clear_groups:
           title: EFFACER les groupes
         remove_category:
-          title: SUPPRIMER des catégories
+          title: SUPPRIMER les catégories
           helper: Pour supprimer votre sélection de produits d'une ou de plusieurs catégories, veuillez commencer par sélectionner vos arborescences de catégories, puis vos catégories.
+        remove_attribute_value:
+          title: SUPPRIMER la valeur de l'attribut
+          helper: Pour supprimer des valeurs de votre attribut, veuillez commencer par sélectionner votre attribut cible et ensuite les valeurs que vous voulez supprimer.
+          value_subtitle: Définissez vos valeurs à supprimer
         copy:
           title: COPIER une valeur d'attribut
+          helper: Pour copier les valeurs d'un attribut à un autre, veuillez commencer par sélectionner votre attribut source et ensuite, votre attribut de destination.
           select_source: Sélectionner votre source
           select_target: Sélectionnez votre destination
           no_source: Veuillez d'abord sélectionner votre attribut source.
@@ -223,23 +228,37 @@ pimee_catalog_rule:
     select_another_attribute: "Sélectionnez un autre attribut"
     or: ou
     create_attribute_link: cliquez ici pour créer l'attribut
+    edit_unauthorize: Vous n'êtes pas autorisé à modifier les règles
 pim_enrich:
   entity:
     rule:
       module:
         delete:
           confirm: Êtes-vous sûr de vouloir supprimer cette règle ? Il est impossible d'annuler cette action
+      flash:
+        delete:
+          success: Règle supprimée avec succès
 flash:
   rule:
+    impacted_product_count: L'action de masse pour calculer le nombre de produits impactés a été lancée. Vous serez notifié lorsque cela sera terminé.
     executed: L'exécution des règles est en cours, vous serez notifié(e) lorsque cela sera terminé.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Paramètres des règles
 batch_jobs:
   add_attribute_value:
     execute_rules.label: Exécution des règles
   default_steps:
+    export_rules: Export des règles
+    import_rules: Import des règles
     calculate_affected_products: Calculer les produits affectés
     execute_rules: Exécution des règles
+  yml_rule_import:
+    label: Import des règles en YAML
+    import.label: Import des règles
+  yml_rule_export:
+    label: Export des règles en YAML
+    export.label: Export des règles
   rule_impacted_product_count:
+    label: Nombre de produits impactés
     perform.label: Calcul du nombre de produits affectés
   csv_product_import_with_rules:
     label: Import de produits en CSV avec exécution des règles

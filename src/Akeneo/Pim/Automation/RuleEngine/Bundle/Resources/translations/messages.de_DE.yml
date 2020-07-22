@@ -6,9 +6,14 @@ pimee_catalog_rule:
       title: Regeln
       column:
         label: Label
+        impacted_product_count:
+          label: Betroffene Produkte
+          count: '{0,1}%count% beeinträchtigte Produkt|]1,Inf[%count% beeinträchtigte Produkte'
+          no_yet_calculated: Noch nicht berechnet
         tags:
           label: Aktionen
       mass_edit_action:
+        impacted_product_count: Berechne betroffene Produkte
         execute: Ausführen
         delete: Löschen
   condition:
@@ -23,8 +28,11 @@ pimee_catalog_rule:
     rule: Regeln
   acl:
     rule:
+      edit_permissions: Regel bearbeiten
       view_permissions: Regeln ansehen
       delete_permissions: Regeln löschen
+      impacted_product_count_permissions: Berechne die Anzahl der Produkte, die von den Regeln beeinflusst werden
+      create_permissions: Regel erstellen
       execute_permissions: Regeln anwenden
   attribute:
     tab:
@@ -36,10 +44,27 @@ pimee_catalog_rule:
   product:
     history: Angewandte Regel "%rule%"
   steps:
+    product_rule_definition_reader.title: Produktimport-Regeln Leser
+    rule_definition_processor.title: Produktimport-Regeln Prozessor
+    product_rule_definition_writer.title: Produktimport-Regeln Schreiber
     rules_execution.title: Regel-Ausführung
   notification:
     execute_rules:
+      success: Anwenden der Regel(n) abgeschlossen
+      warning: Ausführung der Regel(n) mit Warnung(en) beendet
       error: Beim Anwenden der Regeln ist ein Fehler aufgetreten
+    mass_edit_rule:
+      success: Berechnung der betroffenen Produkte für die Regeln abgeschlossen
+      error: Bei der Berechnung der Anzahl der von den Regeln betroffenen Produkte ist ein Fehler aufgetreten
+  datetime:
+    now: jetzt
+    relative_date:
+      minute: ']-Inf, -1[%absolute_count% Minuten zurück|{-1}1 Minute|{1}in 1 Minute|]1, +Inf[in %absolute_count% Minuten'
+      hour: ']-Inf, -1[ vor%absolute_count% Stunden| vor{-1}1 Stunde|{1}in 1 Stunde|]1, +Inf[in %absolute_count% Stunden'
+      day: ']-Inf, -1[%absolute_count% Tage zurück|{-1}1 Tag|{1}in 1 Tag|]1, +Inf[in %absolute_count% Tagen'
+      week: ']-Inf, -1[%absolute_count% Wochen zurück|{-1}1 Woche|{1}in 1 Woche|]1, +Inf[in %absolute_count% Wochen'
+      month: ']-Inf, -1[ vor%absolute_count% Monaten|{-1}1 Monat|{1}in 1 Monat|]1, +Inf[in %absolute_count% Monaten'
+      year: ']-Inf, -1[vor%absolute_count% Jahren|{-1}1 Jahr|{1}in 1 Jahr|]1, +Inf[in %absolute_count% Jahren'
 btn:
   Execute rules: Regeln anwenden
 job_execution:

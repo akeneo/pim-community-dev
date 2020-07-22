@@ -1,6 +1,26 @@
 pimee_catalog_rule:
   rule_definition:
     validation:
+      locale:
+        unknown: 'La locale "{{ locale_code }}" n''existe pas ou n''est pas activée'
+      currency:
+        unknown: 'Vous devez renseigner une devise valide. La devise "{{ currency }}" n''existe pas ou n''est pas activée'
+        missing_key: 'La clé "{{ key }}" est manquante ou vide'
+        unexpected_key: 'La clé {{ key }} n''est pas pertinente'
+      measurement:
+        invalid_unit: 'Le code d''unité "{{ unitCode }}" n''existe pas ou n''appartient pas à la famille de mesure de l''attribut "{{ attributeCode }}"'
+        invalid_attribute_type: 'La clé {{ key }} n''est pas pertinente pour l''attribut {{ attributeCode }}'
+      attribute:
+        unknown: 'L''attribut {{ attributeCode }} n''existe pas'
+        unexpected_type: 'L''attribut "{{ attribute_code }}" a un type d''attribut invalide "{{ invalid_type }}". Un attribut {{ expected_types }} est requis'
+        missing_locale: 'L''attribut "{{ attributeCode }}" requiert une locale'
+        unexpected_locale: 'L''attribut "{{ attributeCode }}" ne nécessite pas de locale, veuillez la supprimer'
+        unknown_locale: 'L''attribut "{{ attributeCode }}" requiert une locale existante et activée, assurez-vous que votre locale existe et est activée'
+        invalid_specific_locale: 'L''attribut "{{ attributeCode }}" est spécifique à la langue et nécessite l''une des langues suivantes : {{ expectedLocales }}'
+        locale_not_bound_to_channel: 'Il n''y a pas de locale "{{ invalidLocale }}" dans le canal "{{ channelCode }}"'
+        missing_scope: 'L''attribut "{{ attributeCode }}" requiert un canal'
+        unexpected_scope: 'L''attribut "{{ attributeCode }}" ne nécessite pas de canal, veuillez le supprimer'
+        unknown_scope: 'L''attribut "{{ attributeCode }}" requiert un canal existant'
       invalid_code: 'Le code de la règle ne doit contenir que des lettres, des chiffres et des tirets bas'
       conditions:
         missing_value_key: 'La clé "value" est manquante ou vide'
