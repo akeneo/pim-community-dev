@@ -2,7 +2,9 @@
 
 namespace Akeneo\SharedCatalog\tests\back\Utils;
 
+use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Webmozart\Assert\Assert;
 
 trait CreateJobInstance
 {
@@ -13,6 +15,8 @@ trait CreateJobInstance
         int $status,
         array $rawParameters
     ): JobInstance {
+        Assert::isInstanceOf($this, TestCase::class);
+
         $jobInstance = new JobInstance();
         $jobInstance->setCode($code);
         $jobInstance->setLabel($code);
