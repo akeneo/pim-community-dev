@@ -11,7 +11,7 @@ import {
   createCategoryCondition,
   Locale,
   LocaleCode,
-  createNumberAttributeCondition,
+  createNumberAttributeCondition, createCompletenessCondition,
 } from '../../../../models/';
 import { TextBoxBlue } from '../TextBoxBlue';
 import { useProductsCount } from '../../hooks';
@@ -115,10 +115,11 @@ const RuleProductSelection: React.FC<Props> = ({
   ) => Promise<Condition> = async fieldCode => {
     const factories: ConditionFactory[] = [
       createFamilyCondition,
+      createCompletenessCondition,
+      createCategoryCondition,
       createTextAttributeCondition,
       createSimpleMultiOptionsAttributeCondition,
       createNumberAttributeCondition,
-      createCategoryCondition,
     ];
 
     for (let i = 0; i < factories.length; i++) {

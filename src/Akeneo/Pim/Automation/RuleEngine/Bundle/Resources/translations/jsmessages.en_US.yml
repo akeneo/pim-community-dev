@@ -197,6 +197,12 @@ pimee_catalog_rule:
                     ">=": equals or greater than
                     "<": less than
                     "<=": equals or less than
+                    "NOT EQUALS ON AT LEAST ONE LOCALE": not equal2
+                    "EQUALS ON AT LEAST ONE LOCALE": equals2
+                    "GREATER THAN ON AT LEAST ONE LOCALE": greater than2
+                    "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": greater or equals than2
+                    "LOWER OR EQUALS THAN ON AT LEAST ONE LOCALE": lower or equalsthan 2
+                    "LOWER THAN ON AT LEAST ONE LOCALE": lower than2
             notification:
                 success: Rule updated successfully
                 failed: Rule update failed
@@ -225,6 +231,8 @@ pimee_catalog_rule:
         required_attribute: An attribute is required
         required_locale: A locale is required for the {{ attributeLabel }} attribute
         required_scope: A channel is required for the {{ attributeLabel }} attribute
+        required_locale_completeness: A locale is required for the completeness
+        required_scope_completeness: A locale is required for the completeness
         required_value: A value is required for this action
         required_categories: At least one category is required for this action
         unknown_or_inactive_locale: 'The "{{ localeCode }}" locale does not exist or is not activated'

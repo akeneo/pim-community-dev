@@ -17,12 +17,12 @@ const OperatorColumn = styled.span`
   height: 40px;
 `;
 
-const ValueColumn = styled.span`
+const ValueColumn = styled.span<{ small?: boolean }>`
   &:not(:empty) {
-    width: 300px;
+    width: ${({ small }) => small ? '120px' : '300px'};
     display: inline-block;
     margin: 0 20px 0 0;
-    height: 40px;
+    min-height: 40px;
   }
 `;
 
