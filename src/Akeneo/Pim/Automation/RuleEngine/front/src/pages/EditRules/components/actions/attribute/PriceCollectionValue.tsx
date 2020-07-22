@@ -84,7 +84,7 @@ const PriceCollectionValue: React.FC<InputValueProps> = ({
   const getValue = (currencyCode: CurrencyCode) =>
     (value as PriceCollectionData).find(
       price => price.currency === currencyCode
-    )?.amount;
+    )?.amount || '';
 
   if (!currencyCodes) {
     return (
@@ -126,7 +126,7 @@ const PriceCollectionValue: React.FC<InputValueProps> = ({
               <PriceValue
                 data-testid={`${id}-${currencyCode}`}
                 label={currencyCode}
-                defaultValue={getValue(currencyCode)}
+                value={getValue(currencyCode)}
                 onChange={(event: any) =>
                   handleChange(currencyCode, event.target.value)
                 }
