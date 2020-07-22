@@ -47,7 +47,7 @@ class FindProductIdentifiersQuery implements FindProductIdentifiersQueryInterfac
             }
 
             $pqbOptions['search_after'] = [
-                $searchAfterProductIdentifier,
+                strtolower($searchAfterProductIdentifier),
                 'product_'.$searchAfterProductId,
             ];
         }

@@ -36,7 +36,7 @@ class ProductListAction
     ): JsonResponse {
         $sharedCatalog = $this->findSharedCatalogQuery->find($sharedCatalogCode);
         if (!$sharedCatalog) {
-            throw new NotFoundHttpException();
+            throw new NotFoundHttpException("Catalog \"$sharedCatalogCode\" does not exist");
         }
 
         try {
