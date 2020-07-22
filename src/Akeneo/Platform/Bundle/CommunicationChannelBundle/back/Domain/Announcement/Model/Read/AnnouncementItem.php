@@ -40,6 +40,9 @@ final class AnnouncementItem
     /** @var string[] */
     private $tags;
 
+    /**
+     * @param string[] $tags
+     */
     public function __construct(
         string $id,
         string $title,
@@ -79,6 +82,11 @@ final class AnnouncementItem
         ];
     }
 
+    /**
+     * @param array<string> $viewedAnnouncementIds
+     *
+     * @return bool
+     */
     public function shouldBeNotified(array $viewedAnnouncementIds): bool
     {
         $currentDate = new \DateTimeImmutable();
