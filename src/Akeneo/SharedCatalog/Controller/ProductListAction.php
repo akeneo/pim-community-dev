@@ -40,10 +40,13 @@ class ProductListAction
         }
 
         try {
-            $identifiers = $this->findProductIdentifiersQuery->find($sharedCatalog, [
-                'search_after' => $request->query->get('search_after', null),
-                'limit' => $request->query->getInt('limit', $this->defaultPageSize),
-            ]);
+            $identifiers = $this->findProductIdentifiersQuery->find(
+                $sharedCatalog,
+                [
+                    'search_after' => $request->query->get('search_after', null),
+                    'limit' => $request->query->getInt('limit', $this->defaultPageSize),
+                ]
+            );
         } catch (\InvalidArgumentException $ex) {
             throw new BadRequestHttpException($ex->getMessage());
         }
