@@ -2,7 +2,7 @@ var/tests/%:
 	$(DOCKER_COMPOSE) run -u www-data --rm php mkdir -p $@
 
 .PHONY: coupling-back
-coupling-back: twa-coupling-back franklin-insights-coupling-back data-quality-insights-coupling-back reference-entity-coupling-back asset-manager-coupling-back rule-engine-coupling-back workflow-coupling-back permission-coupling-back connectivity-connection-coupling-back communication-channel-coupling-back
+coupling-back: twa-coupling-back data-quality-insights-coupling-back reference-entity-coupling-back asset-manager-coupling-back rule-engine-coupling-back workflow-coupling-back permission-coupling-back connectivity-connection-coupling-back communication-channel-coupling-back
 
 ### Static tests
 static-back: asset-manager-static-back check-pullup check-sf-services
@@ -29,7 +29,7 @@ lint-back:
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs_ce.php
 
 .PHONY: lint-front
-lint-front: franklin-insights-lint-front connectivity-connection-lint-front
+lint-front: connectivity-connection-lint-front
 	$(YARN_RUN) lint
 	$(YARN_RUN) run --cwd=vendor/akeneo/pim-community-dev/ lint
 	$(MAKE) rule-engine-lint-front
@@ -74,7 +74,7 @@ integration-front:
 	$(YARN_RUN) integration
 
 .PHONY: integration-back
-integration-back: var/tests/phpunit franklin-insights-integration-back data-quality-insights-integration-back reference-entity-integration-back asset-manager-integration-back rule-engine-integration-back
+integration-back: var/tests/phpunit data-quality-insights-integration-back reference-entity-integration-back asset-manager-integration-back rule-engine-integration-back
 ifeq ($(CI),true)
 	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php PIM_Integration_Test
 else

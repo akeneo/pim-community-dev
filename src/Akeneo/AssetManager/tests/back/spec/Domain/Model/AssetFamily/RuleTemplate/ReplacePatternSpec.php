@@ -80,6 +80,6 @@ class ReplacePatternSpec extends ObjectBehavior
     public function it_cannot_replace_unknown_properties()
     {
         $accessibleAsset = new PropertyAccessibleAsset('hat', []);
-        $this->shouldThrow(new \InvalidArgumentException('The asset property "UNKOWN" does not exist'))->during('replace', ['{{UNKOWN}}', $accessibleAsset]);
+        $this->shouldThrow(new \InvalidArgumentException('The asset property "UNKNOWN" does not exist'))->during('replace', ['{{UNKNOWN}}', $accessibleAsset]);
     }
 }

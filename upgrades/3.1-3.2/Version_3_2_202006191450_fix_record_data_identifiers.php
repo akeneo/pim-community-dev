@@ -8,7 +8,9 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysByAttributeTypeIn
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\FetchMode;
 use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
 use PDO;
@@ -141,81 +143,48 @@ SQL;
         array $valueCollection,
         array $recordsValueKeys
     ): array {
-        $onlyRecordsValues = array_intersect_key($valueCollection, array_flip($recordsValueKeys));
-
-        if (empty($onlyRecordsValues)) {
-            return $valueCollection;
-        }
-
-        // Get record codes and attributes for which we have to retrieve the identifier
-        // We need both code and attribute to build an indexed array
-        // because code is not unique among reference entities
-        $codes = [];
-        $attributes = [];
-        foreach ($onlyRecordsValues as $value) {
-            $data = is_array($value['data']) ? $value['data'] : [$value['data']];
-            $codes = array_merge($codes, $data);
-            $attributes[] = $value['attribute'];
-        }
-
-        $codes = array_unique($codes);
-        $attributes = array_unique($attributes);
-
-        // Retrieve record identifiers
-        $recordsIdentifiers = $this->findRecordByCodeAndAttributeIdentifier(
-            $codes,
-            $attributes
-        );
-
-        // Replace codes by identifiers in the value collection
-        foreach ($onlyRecordsValues as $valueKey => $value) {
-            if (is_array($value['data'])) {
-                $valueAttribute = $value['attribute'];
-                $value['data'] = array_map(function ($code) use ($recordsIdentifiers, $valueAttribute) {
-                    $key = sprintf('%s-%s', $code, $valueAttribute);
-
-                    return isset($recordsIdentifiers[$key]) ? $recordsIdentifiers[$key] : $code;
-                }, $value['data']);
-            } else {
-                $key = sprintf('%s-%s', $value['data'], $value['attribute']);
-                $value['data'] = isset($recordsIdentifiers[$key]) ? $recordsIdentifiers[$key] : $value['data'];
+        foreach ($valueCollection as $attributeIdentifier => &$value) {
+            if (!in_array($attributeIdentifier, $recordsValueKeys)) {
+                continue;
             }
 
-            $valueCollection[$valueKey] = $value;
+            if (is_array($value['data'])) {
+                $value['data'] = array_map(function($recordCode) use ($attributeIdentifier) {
+                    return $this->replaceCodeByIdentifier($attributeIdentifier, $recordCode);
+                }, $value['data']);
+            } else {
+                $value['data'] = $this->replaceCodeByIdentifier($attributeIdentifier, $value['data']);
+            }
         }
 
         return $valueCollection;
     }
 
-    private function findRecordByCodeAndAttributeIdentifier(array $recordCodes, array $attributeIdentifiers): array
+    private function replaceCodeByIdentifier(string $attributeIdentifier, string $recordCode): string
     {
-        $sqlQuery = <<<SQL
-        SELECT r.code AS record_code, r.identifier AS record_identifier, a.identifier AS attribute_identifier
-        FROM akeneo_reference_entity_record r
-        INNER JOIN akeneo_reference_entity_attribute a 
-            ON r.reference_entity_identifier = JSON_EXTRACT(a.additional_properties, '$.record_type')
-        WHERE r.code IN (:record_codes) AND a.identifier IN (:attribute_identifiers)
-        ;
+        $query = <<<SQL
+        SELECT rec.identifier
+        FROM akeneo_reference_entity_attribute att
+        JOIN akeneo_reference_entity_record rec
+            ON rec.reference_entity_identifier = JSON_UNQUOTE(JSON_EXTRACT(att.additional_properties, '$.record_type'))
+        WHERE att.identifier = :attribute_identifier
+        AND rec.code = :record_code
 SQL;
 
         $statement = $this->sqlConnection->executeQuery(
-            $sqlQuery,
+            $query,
             [
-                'record_codes' => $recordCodes,
-                'attribute_identifiers' => $attributeIdentifiers,
+                'record_code' => $recordCode,
+                'attribute_identifier' => $attributeIdentifier,
             ],
             [
-                'record_codes' => Connection::PARAM_STR_ARRAY,
-                'attribute_identifiers' => Connection::PARAM_STR_ARRAY,
+                'record_code' => ParameterType::STRING,
+                'attribute_identifier' => ParameterType::STRING,
             ]
         );
 
-        $results = [];
-        foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $result) {
-            $key = sprintf('%s-%s', $result['record_code'], $result['attribute_identifier']);
-            $results[$key] = $result['record_identifier'];
-        }
+        $recordIdentifier = $statement->fetch(FetchMode::COLUMN);
 
-        return $results;
+        return $recordIdentifier ?: $recordCode;
     }
 }
