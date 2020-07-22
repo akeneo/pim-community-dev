@@ -48,7 +48,7 @@ class GetProductModelIdsToEvaluateQueryIntegration extends TestCase
     {
         $this->givenAProductModelWithEvaluationDone();
 
-        $this->assertEquals([], iterator_to_array($this->productModelQuery->execute(4, 2)));
+        $this->assertEquals([], iterator_to_array($this->productModelQuery->execute(4, 2)), 'All product models evaluations should be done');
 
         $product1Id = $this->createProductModel('p1');
         $product2Id = $this->createProductModel('p2');

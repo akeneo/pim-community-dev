@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CriteriaEvaluationRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
@@ -38,12 +38,21 @@ class CreateCriteriaEvaluations
     /**
      * @param ProductId[] $productIds
      */
-    public function create(array $productIds): void
+    public function createAll(array $productIds): void
+    {
+        $this->create($this->criteriaEvaluationRegistry->getCriterionCodes(), $productIds);
+    }
+
+    /**
+     * @param CriterionCode[] $criterionCodes
+     * @param ProductId[] $productIds
+     */
+    public function create(array $criterionCodes, array $productIds): void
     {
         $criteria = new Write\CriterionEvaluationCollection();
 
         foreach ($productIds as $productId) {
-            foreach ($this->criteriaEvaluationRegistry->getCriterionCodes() as $criterionCode) {
+            foreach ($criterionCodes as $criterionCode) {
                 $criteria->add(new Write\CriterionEvaluation(
                     $criterionCode,
                     $productId,

@@ -10,7 +10,7 @@ Feature: Browse smart attributes in the attribute grid
 
   Scenario: Successfully display the smart column in the attribute grid
     Given I am on the attributes page
-    Then I should see the columns Label, Type, Group, Scopable, Localizable and Smart
+    Then I should see the columns Label, Type, Group, Scopable, Localizable, Smart and Quality
 
   Scenario Outline: Successfully filter by the smart property in the attribute grid
     Given I am on the attributes page

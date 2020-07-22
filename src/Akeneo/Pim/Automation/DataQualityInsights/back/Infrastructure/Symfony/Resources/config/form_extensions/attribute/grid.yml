@@ -1,0 +1,5 @@
+extensions:
+    akeneo-data-quality-insights-attribute-grid-back-link:
+        module: akeneo/data-quality-insights/view/back-link
+        parent: pim-attribute-index
+        targetZone: breadcrumb-back-link

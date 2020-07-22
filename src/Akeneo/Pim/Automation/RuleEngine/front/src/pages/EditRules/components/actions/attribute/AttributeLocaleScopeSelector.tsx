@@ -1,5 +1,10 @@
 import React from 'react';
-import { Attribute, AttributeCode, Locale } from '../../../../../models';
+import {
+  Attribute,
+  AttributeCode,
+  AttributeType,
+  Locale,
+} from '../../../../../models';
 import { AttributeSelector } from '../../../../../components/Selectors/AttributeSelector';
 import {
   getScopeValidation,
@@ -46,7 +51,7 @@ type Props = {
   scopes: IndexedScopes;
   onAttributeCodeChange?: (attribute: Attribute | null) => void;
   lineNumber: number;
-  filterAttributeTypes?: string[];
+  filterAttributeTypes?: AttributeType[];
   disabled?: boolean;
   scopeFieldName?: string;
   localeFieldName?: string;
@@ -141,20 +146,6 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
           </ErrorBlock>
         )}
       </SelectorBlock>
-      {null === attribute && (
-        <SelectorBlock>
-          <InlineHelper danger>
-            {`${translate(
-              'pimee_catalog_rule.exceptions.unknown_attribute'
-            )} ${translate(
-              'pimee_catalog_rule.exceptions.select_another_attribute'
-            )} ${translate('pimee_catalog_rule.exceptions.or')} `}
-            <a href={`#${router.generate(`pim_enrich_attribute_create`)}`}>
-              {translate('pimee_catalog_rule.exceptions.create_attribute_link')}
-            </a>
-          </InlineHelper>
-        </SelectorBlock>
-      )}
       {attribute && attribute?.scopable && (
         <SelectorBlock
           className={

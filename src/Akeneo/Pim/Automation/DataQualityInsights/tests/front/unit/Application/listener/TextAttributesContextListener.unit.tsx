@@ -1,5 +1,5 @@
 import {Attribute, Family, Product} from "@akeneo-pim-ee/data-quality-insights/src/domain";
-import {getTextAttributes} from '@akeneo-pim-ee/data-quality-insights/src/application/listener/TextAttributesContextListener';
+import {getTextAttributes} from '@akeneo-pim-ee/data-quality-insights/src/application/listener/ProductEditForm/TextAttributesContextListener';
 
 const localizableTextarea = buildAttribute("textarea_1", "pim_catalog_textarea", true, false, false);
 const localizableTextareaWysiwyg = buildAttribute("textarea_2", "pim_catalog_textarea", true, true, false);

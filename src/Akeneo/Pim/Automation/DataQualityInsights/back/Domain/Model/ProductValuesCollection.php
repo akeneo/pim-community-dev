@@ -70,6 +70,26 @@ final class ProductValuesCollection implements \IteratorAggregate
         }
     }
 
+    public function getSimpleSelectValues(): \Iterator
+    {
+        $simpleSelectType = AttributeType::simpleSelect();
+        foreach ($this->productValuesByAttribute as $productValues) {
+            if ($productValues->getAttribute()->getType()->equals($simpleSelectType)) {
+                yield $productValues;
+            }
+        }
+    }
+
+    public function getMultiSelectValues(): \Iterator
+    {
+        $multiSelectType = AttributeType::multiSelect();
+        foreach ($this->productValuesByAttribute as $productValues) {
+            if ($productValues->getAttribute()->getType()->equals($multiSelectType)) {
+                yield $productValues;
+            }
+        }
+    }
+
     public function getIterator()
     {
         return new \ArrayIterator($this->productValuesByAttribute);

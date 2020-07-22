@@ -1,5 +1,5 @@
 import React, {FunctionComponent, useState} from "react";
-import useFetchCategoryChildren from "../../../../../infrastructure/hooks/useFetchCategoryChildren";
+import useFetchCategoryChildren from "../../../../../infrastructure/hooks/Dashboard/useFetchCategoryChildren";
 
 interface CategoryTreeNodeProps {
   categoryId: string;

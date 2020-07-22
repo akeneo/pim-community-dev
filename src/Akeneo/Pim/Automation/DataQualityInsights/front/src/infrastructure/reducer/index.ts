@@ -3,24 +3,23 @@ import catalogContextReducer, {
   changeCatalogContextChannel,
   changeCatalogContextLocale,
   initializeCatalogContext,
-} from "./catalogContextReducer";
-import productEvaluationReducer, {getProductEvaluationAction, ProductEvaluationState} from "./productEvaluationReducer";
+} from "./ProductEditForm/catalogContextReducer";
+import productEvaluationReducer, {getProductEvaluationAction, ProductEvaluationState} from "./ProductEditForm/productEvaluationReducer";
 import productAxesRatesReducer, {
   getProductAxesRatesAction,
   ProductAxesRatesState
-} from "../reducer/productAxesRatesReducer";
+} from "./ProductEditForm/productAxesRatesReducer";
 import productFamilyInformationReducer, {
   getProductFamilyInformationAction,
   ProductFamilyInformationState
-} from "./productFamilyInformationReducer";
-import productReducer, {initializeProductAction, ProductState} from "./productReducer";
+} from "./ProductEditForm/productFamilyInformationReducer";
+import productReducer, {initializeProductAction, ProductState} from "./ProductEditForm/productReducer";
 import pageContextReducer, {
   changeProductTabAction,
   endProductAttributesTabIsLoadedAction,
-  PageContextState,
   showDataQualityInsightsAttributeToImproveAction,
   startProductAttributesTabIsLoadingAction
-} from "./pageContextReducer";
+} from "./ProductEditForm/pageContextReducer";
 import productEditorHighlightReducer, {
   disableWidgetAction,
   disableWidgetHighlightAction,
@@ -35,7 +34,7 @@ import productEditorHighlightReducer, {
   updateWidgetContent,
   updateWidgetContentAnalysis,
   updateWidgetHighlightsAction,
-} from "./productEditorHighlightReducer";
+} from "./ProductEditForm/productEditorHighlightReducer";
 
 export {
   // Catalog Context Reducer
@@ -62,7 +61,6 @@ export {
   startProductAttributesTabIsLoadingAction,
   endProductAttributesTabIsLoadedAction,
   showDataQualityInsightsAttributeToImproveAction,
-  PageContextState,
   // Spellcheck
   productEditorHighlightReducer,
   ProductEditorHighlightState,

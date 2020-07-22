@@ -32,7 +32,7 @@ class Version_4_0_20191210100000_data_quality_insights_add_evaluation_job_Integr
         $result = $stmt->fetchAll(\PDO::FETCH_COLUMN);
 
         $expectedJobCodes = [
-            EvaluateProductsCriteriaTasklet::JOB_INSTANCE_NAME,
+            'data_quality_insights_evaluate_products_criteria',
             'data_quality_insights_periodic_tasks',
         ];
 

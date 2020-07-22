@@ -6,6 +6,10 @@ export const fetchAttributeByIdentifier = async (
   attributeIdentifier: string,
   router: Router
 ): Promise<Attribute | null> => {
+  if (attributeIdentifier === undefined) {
+    return null;
+  }
+
   const url = router.generate('pim_enrich_attribute_rest_get', {
     identifier: attributeIdentifier,
   });

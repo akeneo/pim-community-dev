@@ -105,6 +105,7 @@ const Select2Wrapper: React.FC<Props> = ({
         getSelect2Input().select2('destroy');
       }
       getSelect2Input().val(value);
+
       const options: any = {
         ajax,
         data,
@@ -141,8 +142,6 @@ const Select2Wrapper: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    initSelect2();
-
     return () => {
       getSelect2Input().off('change');
       getSelect2Input().select2('destroy');
@@ -151,15 +150,25 @@ const Select2Wrapper: React.FC<Props> = ({
 
   useEffect(() => {
     if (select2ref.current) {
-      getSelect2Input()
-        .val(value)
-        .trigger('change.select2');
+      const actualValue = getSelect2Input().val();
+      const newValue = Array.isArray(value) ? value.join(',') : value;
+
+      if (actualValue !== newValue) {
+        initSelect2(false);
+      }
     }
   }, [value]);
 
   useEffect(() => {
     initSelect2(true);
-  }, [onSelecting, allowClear, disabled, JSON.stringify(data), ajax]);
+  }, [
+    onSelecting,
+    allowClear,
+    disabled,
+    JSON.stringify(data),
+    ajax,
+    select2ref,
+  ]);
 
   useEffect(() => {
     if (select2ref.current) {

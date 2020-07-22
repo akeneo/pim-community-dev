@@ -1,5 +1,5 @@
 import {getTextRange} from "./HighlightElement";
-import {HTML_BREAKING_LINE_ELEMENTS_LIST, HTML_BLOCK_LEVEL_ELEMENTS_LIST} from "../../constant";
+import {HTML_BLOCK_LEVEL_ELEMENTS_LIST, HTML_BREAKING_LINE_ELEMENTS_LIST} from "../../constant";
 
 type EditorElement = HTMLTextAreaElement | HTMLDivElement | HTMLInputElement;
 
@@ -37,7 +37,7 @@ export const getEditorContent = (editor: EditorElement) => {
 };
 
 export const convertHtmlContent = (htmlContent: string): string => {
-  const domParser = new DOMParser()​​;
+  const domParser = new DOMParser();
   let content = htmlContent;
 
   const isHTML = (new RegExp(/(<([^>]+)>)/i)).test(content);

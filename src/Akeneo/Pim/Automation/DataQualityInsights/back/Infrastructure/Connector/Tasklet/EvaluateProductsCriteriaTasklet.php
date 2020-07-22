@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Crea
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsToEvaluateQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\EvaluationsParameters;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -25,11 +26,8 @@ use Psr\Log\LoggerInterface;
 
 final class EvaluateProductsCriteriaTasklet implements TaskletInterface
 {
-    public const JOB_INSTANCE_NAME = 'data_quality_insights_evaluate_products_criteria';
-
-    private const NB_PRODUCTS_MAX = 5000;
+    private const NB_PRODUCTS_MAX = 10000;
     private const BULK_SIZE = 100;
-    private const PRODUCTS_UPDATED_SINCE = '-1 DAY';
 
     /** @var EvaluatePendingCriteria */
     private $evaluatePendingCriteria;
@@ -97,10 +95,9 @@ final class EvaluateProductsCriteriaTasklet implements TaskletInterface
     private function createMissingCriteriaEvaluations(): void
     {
         try {
-            $this->createMissingProductsCriteriaEvaluations->createForProductsUpdatedSince(
-                new \DateTimeImmutable(self::PRODUCTS_UPDATED_SINCE),
-                self::BULK_SIZE
-            );
+            $updatedSince = $this->updatedSince();
+            $this->createMissingProductsCriteriaEvaluations->createForProductsUpdatedSince($updatedSince, self::BULK_SIZE);
+            $this->createMissingProductsCriteriaEvaluations->createForProductsImpactedByStructureUpdatedSince($updatedSince, self::BULK_SIZE);
         } catch (\Throwable $exception) {
             $this->logger->error(
                 'Unable to create all missing criteria evaluations for the products',
@@ -110,6 +107,13 @@ final class EvaluateProductsCriteriaTasklet implements TaskletInterface
                 ]
             );
         }
+    }
+
+    private function updatedSince(): \DateTimeImmutable
+    {
+        $evaluateFrom = $this->stepExecution->getJobParameters()->get(EvaluationsParameters::EVALUATE_FROM_FIELD);
+
+        return \DateTimeImmutable::createFromFormat(EvaluationsParameters::EVALUATE_FROM_FORMAT, $evaluateFrom);
     }
 
     private function cleanCriteriaOfDeletedProducts()

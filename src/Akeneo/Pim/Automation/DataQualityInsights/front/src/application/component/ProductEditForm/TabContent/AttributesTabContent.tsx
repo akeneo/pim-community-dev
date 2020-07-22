@@ -1,12 +1,16 @@
 import React, {FunctionComponent, useEffect} from "react";
+import {useDispatch} from "react-redux";
+
 import WidgetsList from "./Attributes/EditorHighlight/WidgetsList";
 import Popover from "./Attributes/EditorHighlight/Popover";
-import TabContentWithPortalDecorator from "./TabContentWithPortalDecorator";
-import {TextAttributesContextListener, AttributeToImproveContextListener} from "../../../listener";
+import TabContentWithPortalDecorator from "../../TabContentWithPortalDecorator";
+import {AttributeToImproveContextListener, TextAttributesContextListener} from "../../../listener";
 import {PRODUCT_ATTRIBUTES_TAB_NAME, PRODUCT_MODEL_ATTRIBUTES_TAB_NAME} from "../../../constant";
+
 import {Product} from "../../../../domain";
+
 import {showDataQualityInsightsAttributeToImproveAction} from "../../../../infrastructure/reducer";
-import {useDispatch} from "react-redux";
+import usePageContext from "../../../../infrastructure/hooks/ProductEditForm/usePageContext";
 
 export const CONTAINER_ELEMENT_ID = 'attributes-product-tab-content-dqi';
 
@@ -42,7 +46,7 @@ const AttributesTabContent: FunctionComponent<AttributesTabContentProps> = (prop
     }
   }, []);
 
-  return TabContentWithPortalDecorator(BaseAttributesTabContent)({
+  return TabContentWithPortalDecorator(BaseAttributesTabContent, usePageContext)({
     ...props,
     containerId: CONTAINER_ELEMENT_ID,
     tabName: tabName

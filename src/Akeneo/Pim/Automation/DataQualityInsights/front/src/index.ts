@@ -1,4 +1,4 @@
-import {ProductEditFormApp, ProductModelEditFormApp} from './application';
+import {AttributeCreateFormApp, AttributeEditFormApp, ProductEditFormApp, ProductModelEditFormApp} from './application';
 
 import {
   ATTRIBUTES_TAB_CONTENT_CONTAINER_ELEMENT_ID,
@@ -12,31 +12,39 @@ import {
   getDataQualityInsightsFeature
 } from './infrastructure/fetcher/data-quality-insights-feature';
 
-import fetchProductDataQualityEvaluation from './infrastructure/fetcher/fetchProductDataQualityEvaluation';
-import fetchProductModelEvaluation from './infrastructure/fetcher/fetchProductModelEvaluation';
+import fetchProductDataQualityEvaluation
+  from './infrastructure/fetcher/ProductEditForm/fetchProductDataQualityEvaluation';
+import fetchProductModelEvaluation from './infrastructure/fetcher/ProductEditForm/fetchProductModelEvaluation';
 
 import {
   CATALOG_CONTEXT_CHANNEL_CHANGED,
   CATALOG_CONTEXT_LOCALE_CHANGED,
   DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD,
+  DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY,
+  DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY,
   DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES,
   DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES,
-  DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY,
-  DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY,
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVED,
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVING,
   DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE,
   PRODUCT_ATTRIBUTES_TAB_LOADED,
   PRODUCT_ATTRIBUTES_TAB_LOADING,
-  PRODUCT_TAB_CHANGED,
   PRODUCT_MODEL_LEVEL_CHANGED,
+  PRODUCT_TAB_CHANGED,
 } from './application/listener';
 
-import {PRODUCT_ATTRIBUTES_TAB_NAME, PRODUCT_MODEL_ATTRIBUTES_TAB_NAME, PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME, PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME} from './application/constant';
+import {
+  BACK_LINK_SESSION_STORAGE_KEY,PRODUCT_ATTRIBUTES_TAB_NAME,
+  PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME,
+  PRODUCT_MODEL_ATTRIBUTES_TAB_NAME,
+  PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME
+} from './application/constant';
 
 import {Dashboard, DashboardHelper} from "./application/component/Dashboard";
 
-import {ProductEvaluation, CriterionEvaluationResult} from "./domain";
+import {CriterionEvaluationResult, ProductEvaluation} from "./domain";
+
+import BackLinkButton from './application/component/BackLinkButton';
 
 export {
   DashboardHelper,
@@ -69,5 +77,9 @@ export {
   Rate,
   fetchProductDataQualityEvaluation,
   fetchProductModelEvaluation,
-  ProductEvaluation, CriterionEvaluationResult
+  ProductEvaluation, CriterionEvaluationResult,
+  AttributeEditFormApp,
+  AttributeCreateFormApp,
+  BACK_LINK_SESSION_STORAGE_KEY,
+  BackLinkButton,
 };

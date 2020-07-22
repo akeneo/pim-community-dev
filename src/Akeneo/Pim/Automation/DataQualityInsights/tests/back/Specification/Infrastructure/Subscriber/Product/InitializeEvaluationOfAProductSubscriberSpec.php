@@ -19,7 +19,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Eval
 use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Events\WordIgnoredEvent;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\TitleSuggestionIgnoredEvent;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\ProductWordIgnoredEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
@@ -55,7 +56,7 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
 
     public function it_subscribes_to_several_events(): void
     {
-        $this::getSubscribedEvents()->shouldHaveKey(WordIgnoredEvent::WORD_IGNORED);
+        $this::getSubscribedEvents()->shouldHaveKey(ProductWordIgnoredEvent::class);
         $this::getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_SAVE);
     }
 
@@ -66,15 +67,15 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
     ) {
         $product->getId()->willReturn(12345);
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
-        $createProductsCriteriaEvaluations->create([new ProductId(12345)])->shouldBeCalled();
+        $createProductsCriteriaEvaluations->createAll([new ProductId(12345)])->shouldBeCalled();
 
-        $this->onIgnoredWord(new WordIgnoredEvent(new ProductId(12345)));
+        $this->onIgnoredWord(new ProductWordIgnoredEvent(new ProductId(12345)));
     }
 
     public function it_does_nothing_when_the_entity_is_not_a_product($dataQualityInsightsFeature, $createProductsCriteriaEvaluations)
     {
         $dataQualityInsightsFeature->isEnabled()->shouldNotBeCalled();
-        $createProductsCriteriaEvaluations->create(Argument::any())->shouldNotBeCalled();
+        $createProductsCriteriaEvaluations->createAll(Argument::any())->shouldNotBeCalled();
         $this->onPostSave(new GenericEvent(new \stdClass()));
     }
 
@@ -84,7 +85,7 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
         ProductInterface $product
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(false);
-        $createProductsCriteriaEvaluations->create(Argument::any())->shouldNotBeCalled();
+        $createProductsCriteriaEvaluations->createAll(Argument::any())->shouldNotBeCalled();
 
         $this->onPostSave(new GenericEvent($product->getWrappedObject()));
     }
@@ -95,7 +96,7 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
         ProductInterface $product
     ): void {
         $dataQualityInsightsFeature->isEnabled()->shouldNotBeCalled();
-        $createProductsCriteriaEvaluations->create(Argument::any())->shouldNotBeCalled();
+        $createProductsCriteriaEvaluations->createAll(Argument::any())->shouldNotBeCalled();
 
         $this->onPostSave(new GenericEvent($product->getWrappedObject(), ['unitary' => false]));
         $this->onPostSave(new GenericEvent($product->getWrappedObject(), []));
@@ -111,7 +112,7 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
     ) {
         $product->getId()->willReturn(12345);
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
-        $createProductsCriteriaEvaluations->create([new ProductId(12345)])->shouldBeCalled();
+        $createProductsCriteriaEvaluations->createAll([new ProductId(12345)])->shouldBeCalled();
 
         $evaluatePendingCriteria->evaluateSynchronousCriteria([12345])->shouldBeCalled();
         $consolidateProductAxisRates->consolidate([12345])->shouldBeCalled();
@@ -128,7 +129,7 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
     ) {
         $product->getId()->willReturn(12345);
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
-        $createProductsCriteriaEvaluations->create([new ProductId(12345)])->willThrow(\Exception::class);
+        $createProductsCriteriaEvaluations->createAll([new ProductId(12345)])->willThrow(\Exception::class);
 
         $logger->error('Unable to create product criteria evaluation', Argument::any())->shouldBeCalledOnce();
 

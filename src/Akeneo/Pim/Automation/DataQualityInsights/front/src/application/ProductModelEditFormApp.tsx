@@ -4,8 +4,8 @@ import {productEditFormStore} from "../infrastructure/store";
 import {CatalogContextListener, PageContextListener, ProductContextListener} from "./listener";
 import {Product} from "../domain";
 import {AttributesTabContent, DataQualityInsightsTabContent,} from "./component/ProductEditForm";
-import fetchProductModelEvaluation from "../infrastructure/fetcher/fetchProductModelEvaluation";
-import fetchProductModel from '../infrastructure/fetcher/fetchProductModel';
+import fetchProductModelEvaluation from "../infrastructure/fetcher/ProductEditForm/fetchProductModelEvaluation";
+import fetchProductModel from '../infrastructure/fetcher/ProductEditForm/fetchProductModel';
 
 interface ProductModelEditFormAppProps {
   catalogChannel: string;

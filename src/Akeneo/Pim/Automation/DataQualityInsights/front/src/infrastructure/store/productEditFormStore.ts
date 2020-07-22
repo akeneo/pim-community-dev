@@ -5,18 +5,22 @@ import {
   catalogContextReducer,
   CatalogContextState,
   pageContextReducer,
-  PageContextState,
+  productAxesRatesReducer,
+  ProductAxesRatesState,
+  productEditorHighlightReducer,
+  ProductEditorHighlightState,
   productEvaluationReducer,
   ProductEvaluationState,
   productFamilyInformationReducer,
   ProductFamilyInformationState,
-  productReducer, productEditorHighlightReducer, ProductEditorHighlightState,
-  ProductState, productAxesRatesReducer, ProductAxesRatesState,
+  productReducer,
+  ProductState,
 } from "../reducer";
+import {ProductEditFormPageContextState} from "../../application/state/PageContextState";
 
 export interface ProductEditFormState {
   catalogContext: CatalogContextState;
-  pageContext: PageContextState;
+  pageContext: ProductEditFormPageContextState;
   productEvaluation: ProductEvaluationState;
   productAxesRates: ProductAxesRatesState;
   families: ProductFamilyInformationState;
@@ -42,6 +46,6 @@ export const createStoreWithInitialState = (initialState = {}) => createStore(
   composeEnhancers(applyMiddleware()),
 );
 
-const productEditFormStore: Store = createStoreWithInitialState();
+const productEditFormStore: Store<any, any> = createStoreWithInitialState();
 
 export default productEditFormStore;

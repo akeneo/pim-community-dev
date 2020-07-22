@@ -37,12 +37,18 @@ services:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateMissingCriteriaEvaluations
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpdatedProductsWithoutUpToDateEvaluationQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductIdsWithOutdatedAttributeSpellcheckQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductIdsWithUpdatedFamilyAttributesListQuery'
+            - '@akeneo.pim.automation.data_quality_insights.query.get_product_ids_with_outdated_attribute_option_spellcheck'
             - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
 
     akeneo.pim.automation.data_quality_insights.create_missing_product_models_criteria_evaluations:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateMissingCriteriaEvaluations
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpdatedProductModelsWithoutUpToDateEvaluationQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelIdsWithOutdatedAttributeSpellcheckQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelIdsWithUpdatedFamilyAttributesListQuery'
+            - '@akeneo.pim.automation.data_quality_insights.query.get_product_model_ids_with_outdated_attribute_option_spellcheck'
             - '@akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations'
 
     akeneo.pim.automation.data_quality_insights.product_criteria_evaluation_registry:
@@ -224,4 +230,74 @@ services:
             $supportedLocaleValidator: '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator'
             $clock: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Structure\MapAttributeType: ~
+# Structure Evaluation
+    Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateAttributeLabelsSpelling:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeLabelsQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\TextChecker'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
+            - '@logger'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributes:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateAttributeLabelsSpelling'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeSpellcheckRepository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributesCodesToEvaluateQuery'
+            - '@event_dispatcher'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateAttributeOptionLabelsSpelling:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeOptionLabelsQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\TextChecker'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
+            - '@logger'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributeOptions:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeOptionSpellcheckRepository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateAttributeOptionLabelsSpelling'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeOptionCodesToEvaluateQuery'
+            - '@event_dispatcher'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\ComputeAttributeQuality:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeSpellcheckQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeOptionSpellcheckQuery'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWord:
+        arguments:
+            $supportedLocaleValidator: '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator'
+            $textCheckerDictionaryRepository: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\TextCheckerDictionaryRepository'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWordForProduct:
+        arguments:
+            $ignoreWord: '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWord'
+            $eventDispatcher: '@event_dispatcher'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWordForProductModel:
+        arguments:
+            $ignoreWord: '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWord'
+            $eventDispatcher: '@event_dispatcher'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWordForAttribute:
+        arguments:
+            $ignoreWord: '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWord'
+            $eventDispatcher: '@event_dispatcher'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWordForAttributeOption:
+        arguments:
+            $ignoreWord: '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWord'
+            $eventDispatcher: '@event_dispatcher'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\GetAttributeSpellcheckEvaluation:
+        arguments:
+            $attributeOptionsSpellcheckQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAllAttributeOptionsSpellcheckQuery'
+            $attributeSpellcheckQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeSpellcheckQuery'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\GetNumberOfProductsImpactedByAttributeOrOptionsSpellingMistakes:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetNumberOfProductsImpactedByAttributeSpellingMistakesQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetNumberOfProductsImpactedByAttributeOptionSpellingMistakesQuery'

@@ -21,7 +21,9 @@ pimee_catalog_rule:
       system: System
   acl:
     rule:
+      edit_permissions: Edit rules
       impacted_product_count_permissions: Calculate the number of products impacted by the rules
+      create_permissions: Create rules
   steps:
     product_rule_definition_reader.title: Product rules import reader
     rule_definition_processor.title: Product rules import processor

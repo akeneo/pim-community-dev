@@ -30,7 +30,8 @@ final class AkeneoDataQualityInsightsExtension extends Extension
         $loader->load('commands.yml');
         $loader->load('controllers.yml');
         $loader->load('criteria.yml');
-        $loader->load('datagrid.yml');
+        $loader->load('productgrid.yml');
+        $loader->load('attributegrid.yml');
         $loader->load('elasticsearch.yml');
         $loader->load('feature_flags.yml');
         $loader->load('jobs.yml');

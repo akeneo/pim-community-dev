@@ -34,7 +34,7 @@ type Props = {
   helper: string;
   legend: string;
   handleDelete: () => void;
-  lineNumber?: number;
+  lineNumber: number;
 };
 
 const ActionTemplate: React.FC<Props> = ({
@@ -79,9 +79,7 @@ const ActionTemplate: React.FC<Props> = ({
           <legend>{legend}</legend>
         </VisuallyHidden>
       </SmallHelper>
-      {typeof lineNumber !== 'undefined' && (
-        <LineErrors lineNumber={lineNumber} type='actions' />
-      )}
+      <LineErrors lineNumber={lineNumber} type='actions' />
       {children}
     </fieldset>
   );

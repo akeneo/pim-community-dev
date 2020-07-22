@@ -17,9 +17,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\Consolid
 use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\ProductModelWordIgnoredEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetDescendantVariantProductIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Events\ProductModelWordIgnoredEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductModelIdsQueryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -77,7 +77,7 @@ class InitializeEvaluationOfAProductModelSubscriber implements EventSubscriberIn
     {
         return [
             StorageEvents::POST_SAVE => 'onPostSave',
-            ProductModelWordIgnoredEvent::WORD_IGNORED => 'onIgnoredWord',
+            ProductModelWordIgnoredEvent::class => 'onIgnoredWord',
         ];
     }
 
@@ -116,7 +116,7 @@ class InitializeEvaluationOfAProductModelSubscriber implements EventSubscriberIn
     private function initializeProductModelCriteria($productModelId)
     {
         try {
-            $this->createProductModelCriteriaEvaluations->create([new ProductId($productModelId)]);
+            $this->createProductModelCriteriaEvaluations->createAll([new ProductId($productModelId)]);
         } catch (\Throwable $e) {
             $this->logger->error(
                 'Unable to create product model criteria evaluation',
@@ -141,7 +141,7 @@ class InitializeEvaluationOfAProductModelSubscriber implements EventSubscriberIn
         $variantProductIds = $this->getDescendantVariantProductIdsQuery->fromProductModelIds([$productId->toInt()]);
         foreach ($variantProductIds as $variantProductId) {
             try {
-                $this->createProductsCriteriaEvaluations->create([new ProductId((int) $variantProductId)]);
+                $this->createProductsCriteriaEvaluations->createAll([new ProductId((int) $variantProductId)]);
             } catch (\Throwable $e) {
                 $this->logger->error(
                     'Unable to create product criteria evaluation',

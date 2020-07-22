@@ -45,7 +45,7 @@ class InitializeCriteriaEvaluationSpec extends ObjectBehavior
         $db->executeQuery('select count(*) as nb from pim_catalog_product where product_model_id is null')->willReturn($resultStatement);
         $resultStatement->fetch()->willReturn(['nb' => 0]);
 
-        $createProductsCriteriaEvaluations->create(Argument::any())->shouldNotBeCalled();
+        $createProductsCriteriaEvaluations->createAll(Argument::any())->shouldNotBeCalled();
 
         $this->initialize();
     }
@@ -67,7 +67,7 @@ class InitializeCriteriaEvaluationSpec extends ObjectBehavior
         $ids = range(1, 100);
         $productIdsResultStatement->fetchAll(FetchMode::COLUMN, 0)->willReturn($ids);
 
-        $createProductsCriteriaEvaluations->create(Argument::type('array'))->shouldBeCalled();
+        $createProductsCriteriaEvaluations->createAll(Argument::type('array'))->shouldBeCalled();
 
         $this->initialize();
     }

@@ -1,9 +1,6 @@
 import EditorElement from "./EditorElement";
 import MistakeElement from "./MistakeElement";
-import {
-  HTML_BREAKING_LINE_ELEMENTS_LIST,
-  HTML_BLOCK_LEVEL_ELEMENTS_LIST
-} from "../../constant";
+import {HTML_BLOCK_LEVEL_ELEMENTS_LIST, HTML_BREAKING_LINE_ELEMENTS_LIST} from "../../constant";
 
 export default interface HighlightElement {
   id: string;
@@ -107,6 +104,7 @@ export const getTextNodesIn = (node: Node): Text[] => {
 const HIGHLIGHT_INTERSECTING_MARGIN = 2;
 
 export const isIntersectingHighlight = (x: number, y: number, highlight: HighlightElement) => {
+  //@fixme very slow performance, take too much time for requestAnimationFrame (message: [Violation] 'requestAnimationFrame' handler took 90ms)
   const rect: DOMRect = highlight.domRange.getBoundingClientRect();
 
   return (

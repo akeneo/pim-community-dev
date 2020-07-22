@@ -2,7 +2,7 @@ import {useCallback} from "react";
 import {useCatalogContext, useGetEditorHighlightWidgetsList, useProduct} from "../../index";
 import {fetchIgnoreTextIssue} from "../../../fetcher";
 import {isSimpleProduct, isVariantProduct} from '../../../../application/helper/ProductEditForm/Product';
-import fetchProductModelIgnoreTextIssue from '../../../fetcher/fetchProductModelIgnoreTextIssue';
+import fetchProductModelIgnoreTextIssue from '../../../fetcher/ProductEditForm/Spellcheck/fetchProductModelIgnoreTextIssue';
 
 const useFetchIgnoreTextIssue = () => {
   const product = useProduct();

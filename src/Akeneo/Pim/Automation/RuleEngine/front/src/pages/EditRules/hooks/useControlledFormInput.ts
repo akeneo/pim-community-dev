@@ -58,10 +58,10 @@ const useControlledFormInputAction = <T>(lineNumber: number) => {
   const getFormValue = (name: string) => get(getValues(), formName(name));
   const getValueFormValue = (): T => get(getValues(), valueFormName);
   const getItemsFormValue = (): T => get(getValues(), itemsFormName);
-  const getFieldFormValue = (): T => get(getValues(), fieldFormName);
+  const getFieldFormValue = (): string => get(getValues(), fieldFormName);
   const getScopeFormValue = (): ScopeCode => get(getValues(), scopeFormName);
   const getLocaleFormValue = (): LocaleCode => get(getValues(), localeFormName);
-  const setFieldFormValue = (data?: T) => setValue(fieldFormName, data);
+  const setFieldFormValue = (data?: string) => setValue(fieldFormName, data);
   const setItemsFormValue = (data?: T) => setValue(itemsFormName, data);
   const setValueFormValue = (data?: T) => setValue(valueFormName, data);
   const getIncludeChildrenFormValue = (): boolean =>

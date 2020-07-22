@@ -92,6 +92,10 @@ class AspellChecker implements TextChecker
                 continue;
             }
 
+            if (in_array(strtolower($issue->word), $this->getDefaultIgnoredWords())) {
+                continue;
+            }
+
             if (null === $issue->offset || null === $issue->line) {
                 throw new TextCheckFailedException('A check text issue must have an offset and a line.');
             }
@@ -134,5 +138,13 @@ class AspellChecker implements TextChecker
         }
 
         return $userGeneratedDictionary;
+    }
+
+    private function getDefaultIgnoredWords(): array
+    {
+        return [
+            'sku', 'upc', 'asin', 'ean', 'mpn', 'gtin', 'jan', 'isbn', 'erp',
+            'xxs', 'xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl',
+        ];
     }
 }

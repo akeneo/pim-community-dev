@@ -1,0 +1,18 @@
+extensions:
+    pim-attribute-edit-form-data-quality-insights-app:
+        module: akeneo/data-quality-insights/infrastructure/pim-view/attribute-edit-form/app
+        parent: pim-attribute-edit-form
+        targetZone: content
+        position: 110
+
+
+    akeneo-data-quality-insights-attribute-edit-form-back-link:
+        module: akeneo/data-quality-insights/view/back-link
+        parent: pim-attribute-edit-form
+        targetZone: breadcrumb-back-link
+
+    pim-attribute-edit-form-data-quality-insights-quality-summary:
+        module: akeneo/data-quality-insights/infrastructure/pim-view/attribute-edit-form/quality-summary-header
+        parent: pim-attribute-edit-form
+        targetZone: content
+        position: 80

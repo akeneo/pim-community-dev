@@ -1,18 +1,23 @@
 pimee_catalog_rule:
   overview: "] -Inf, 1] {{ count }} Regel|] 1, Inf [{{ count }} Regeln"
   execution_button: Regeln anwenden
+  selected: "]-Inf, 1]{{ count }} Regel ausgewählt|]1, Inf[{{ count }} Regeln ausgewählt"
   popin:
     execute_rules:
       confirm_title: Ausführung bestätigen
+      confirm_content: Sind Sie sicher, dass Sie die Regeln ausführen möchten? (Es könnte eine Weile dauern)
   notification:
+    fail: Die Aktion wurde nicht ausgeführt
     launched: Die Anwendung der Regeln wurde gestartet. Sie werden benachrichtigt, sobald der Vorgang abgeschlossen ist.
   attribute:
     list:
       code.label: Code
       condition.label: Bedingung
       action.label: Aktion
+      no_rule_yet.label: Bisher keine Regeln vorhanden
   rule:
     value: Wert
+    include_children: Kinder einbeziehen
     condition:
       if.label: wenn
     action:
@@ -31,9 +36,11 @@ pimee_catalog_rule:
           confirm_content: Sind Sie sicher, dass Sie die Regel anwenden möchten?
       mass_edit_action:
         confirm_title: Kalkulation bestätigen
+        confirm_content: Sind Sie sicher, dass Sie die Anzahl der von den Regeln betroffenen Produkte berechnen möchten?
       mass_action:
         execute:
           confirm_title: Ausführung bestätigen
+          confirm_content: Sind Sie sicher, dass Sie die Regeln ausführen möchten? (Es könnte eine Weile dauern)
           success: Die Anwendung der Regeln wurde gestartet. Sie werden benachrichtigt, sobald der Vorgang abgeschlossen ist.
           error: Beim Anwenden der Regeln ist ein Fehler aufgetreten.
           empty_selection: Keine Regeln ausgewählt.
@@ -67,11 +74,18 @@ pimee_catalog_rule:
         rules:
           title: Regeln
     creation:
+      helper: Die Regel-Engine kann Ihre Produktivität im PIM radikal steigern, indem Sie Aktionen automatisieren,
       english_flag: Bezeichnung für Englisch
       title: Neue Regel erstellen
       notification:
         success: Die Regel wurde erfolgreich aktualisiert
         failed: Regelerstellung fehlgeschlagen
+      constraint:
+        code:
+          required: Regelcode ist erforderlich.
+          too_short: "Der Regelcode ist zu kurz. Er benötigt {{ characterLimit }} oder mehr."
+          allowed_characters: Regelcode kann nur alphanumerische Zeichen und Unterstriche enthalten.
+          unique: Dieser Code wird bereits verwendet.
       cross_link: Erstellungsregel verlassen
     edit:
       properties:
@@ -86,6 +100,7 @@ pimee_catalog_rule:
       products_count:
         complete: "]-Inf, 1]{{ count }} Produkt- und Produktmodell|]1, +Inf[{{ count }} Produkte und Produktmodelle"
         pending: Berechne Produkte und Produktmodelle
+        error: Berechnung von Produkten und Produktmodellen nicht möglich
       product_selection: Produktauswahl
       fields:
         family: Produktfamilie
@@ -94,7 +109,7 @@ pimee_catalog_rule:
       actions:
         add_action: Aktion hinzufügen
         add_category:
-          title: Kategorie HINZUFÜGEN
+          title: Kategorien HINZUFÜGEN
           helper: Um Ihre Produktauswahl zu einer oder mehreren Kategorien hinzuzufügen, wählen Sie bitte zuerst Ihre Kategoriebäume und dann Ihre Kategorien aus
         set_category:
           title: Kategorien FESTLEGEN
@@ -113,6 +128,7 @@ pimee_catalog_rule:
           subtitle: Familie wählen
         set_attribute:
           title: SETZE Attributwert
+          helper: Um Werte auf Ihr Attribut zu setzen, wählen Sie bitte zuerst Ihr Zielattribut und dann den Wert, den Sie setzen möchten
           target_subtitle: Ziel wählen
           value_subtitle: Wert definieren
           attribute_label: Attribut
@@ -121,6 +137,25 @@ pimee_catalog_rule:
           title: LÖSCHE Attributwert
           subtitle: Attribut zum Löschen auswählen
           attribute_label: Attribut
+        clear_associations:
+          title: Verknüpfungen LÖSCHEN
+        clear_categories:
+          title: LÖSCHE Kategorien
+        clear_groups:
+          title: LÖSCHE Gruppen
+        remove_category:
+          title: Kategorien ENTFERNEN
+          helper: Um Ihre Produktauswahl aus einer oder mehreren Kategorien zu entfernen, wählen Sie bitte zuerst Ihre Kategoriebäume und dann Ihre Kategorien aus
+        remove_attribute_value:
+          title: Attributwert ENTFERNEN
+          helper: Um Werte aus Ihrem Attribut zu entfernen, wählen Sie bitte zuerst Ihr Zielattribut aus und dann die Werte, die Sie entfernen möchten.
+          value_subtitle: Definieren Sie Ihre Werte zum Entfernen
+        copy:
+          title: Attributwert KOPIEREN
+          helper: Um Werte von einem Attribut zu einem anderen zu kopieren, wählen Sie bitte zuerst Ihr Quellattribut und dann Ihr Zielattribut aus.
+          select_source: Eine Quelle auswählen
+          select_target: Ziel wählen
+          no_source: Bitte wählen Sie zuerst Ihr Quellattribut aus
         delete:
           label: Aktion entfernen
           description: Sind Sie sicher, dass Sie diese Aktion entfernen möchten?
@@ -152,9 +187,18 @@ pimee_catalog_rule:
       notification:
         success: Die Regel wurde erfolgreich aktualisiert
         failed: Regelerstellung fehlgeschlagen
+      discard_changes: Ihre Änderungen gehen verloren, wenn Sie die Seite verlassen.
+      please_select_attribute: Bitte wählen Sie zuerst ein Zielattribut aus.
+      unhandled_attribute_type: Entschuldigung, dieser Attributtyp wird noch nicht verwaltet. Bitte verwenden Sie den Regel-Import.
     helper:
+      add_to_category: Um Ihre Produktauswahl zu einer oder mehreren Kategorien hinzuzufügen, wählen Sie bitte zuerst Ihre Kategoriebäume und dann Ihre Kategorien.
+      clear_attribute: Um den Attributwert zu löschen, wählen Sie bitte das zu löschende Attribut aus.
+      clear_associations: Alle Verbindungen ausgewählter Produkte werden gelöscht.
+      clear_categories: Alle Kategorien für die ausgewählten Produkte werden gelöscht.
+      clear_groups: Alle Gruppen für die ausgewählten Produkte werden gelöscht.
       product_selection: "Sie müssen Ihre Produktauswahl definieren, um Ihre Regel zu erstellen. Wenn Sie nicht wissen, wie,"
       product_selection_doc_link: werfen Sie einen Blick auf diesen Artikel.
+      set_attribute_info_clear: Sie müssen den zu setzenden Wert definieren. Wenn Sie den Attributwert löschen möchten, verwenden Sie bitte die Aktion Attribut Wert löschen.
     legend:
       add_to_category: Neue Aktion erstellen
       product_selection: Bedingung erstellen
@@ -166,32 +210,55 @@ pimee_catalog_rule:
     loading: Beim Laden der Regeldefinition ist ein Fehler aufgetreten.
     required: Dieses Feld ist erforderlich
     required_attribute: Ein Attribut ist erforderlich
+    required_locale: Ein Gebietsschema ist erforderlich für das Attribut {{ attributeLabel }}
+    required_scope: Ein Kanal ist erforderlich für das Attribut {{ attributeLabel }}
     required_value: Für diese Aktion ist ein Wert erforderlich
+    required_categories: Mindestens eine Kategorie ist für diese Aktion erforderlich
     unknown_or_inactive_locale: 'Die "{{ localeCode }}" Gebietsschema existiert nicht oder ist nicht aktiviert'
+    unbound_locale: 'Die "{{ localeCode }}" Gebietsschema ist im "{{ channelCode }}" Kanal nicht aktiviert'
+    locale_on_unlocalizable_attribute: Dieses Attribut ist nicht lokalisierbar. Bitte entfernen Sie das Gebietsschema, bevor Sie fortfahren.
     unknown_scope: 'Der "{{ scopeCode }}" Ausgabekanal existiert nicht'
+    scope_on_unscopable_attribute: Dieses Attribut ist nicht skopierbar. Bitte entfernen Sie das Gebietsschema, bevor Sie fortfahren.
+    unknown_families: "{1}Die {{ familyCodes }} Familie existiert nicht|]1,+Inf[Die {{ familyCodes }} Familien existieren nicht"
+    unknown_attribute_options: "{1}Die {{ attributeOptionCodes }} Option existiert nicht|]1,+Inf[Die {{ attributeOptionCodes }} Optionen existieren nicht"
     unknown_attribute_code: "Das Attribut {{ attributeCode }} existiert nicht"
+    unknown_categories: "{1}Die Kategorie {{ categoryCodes }} existiert nicht.|]1, +Inf[Die Kategorien {{ categoryCodes }} existieren nicht"
     unknown_attribute: "Dieses Attribut existiert nicht."
     select_another_attribute_or_remove_action: "Wählen Sie ein anderes Attribut oder entfernen Sie diese Aktion."
     select_another_attribute: "Wählen Sie ein anderes Attribut"
     or: oder
     create_attribute_link: hier klicken, um das Attribut zu erstellen
+    edit_unauthorize: Sie sind nicht berechtigt, Regeln zu bearbeiten
 pim_enrich:
   entity:
     rule:
       module:
         delete:
           confirm: Sind Sie sicher, dass Sie diese Regel löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden
+      flash:
+        delete:
+          success: Regel erfolgreich gelöscht
 flash:
   rule:
+    impacted_product_count: Die Massen-Aktion zur Berechnung der Anzahl der betroffenen Produkte wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
     executed: Die Anwendung der Regeln wurde gestartet. Sie werden benachrichtigt, sobald der Vorgang abgeschlossen ist.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regeleinstellungen
 batch_jobs:
   add_attribute_value:
     execute_rules.label: Regel-Ausführung
   default_steps:
+    export_rules: Regel-Export
+    import_rules: Regel-Import
     calculate_affected_products: Berechne betroffene Produkte
     execute_rules: Regel-Ausführung
+  yml_rule_import:
+    label: Regel-Import in YAML
+    import.label: Regel-Import
+  yml_rule_export:
+    label: Regel-Export in YAML
+    export.label: Regel-Export
   rule_impacted_product_count:
+    label: Anzahl der betroffenen Produkte
     perform.label: Anzahl der betroffenen Produkte
   csv_product_import_with_rules:
     label: Produktimport in CSV mit Regeln

@@ -39,7 +39,8 @@ const SetFamilyActionLine: React.FC<ActionLineProps> = ({
         )}
         helper='This feature is under development. Please use the import to manage your rules.'
         legend='This feature is under development. Please use the import to manage your rules.'
-        handleDelete={handleDelete}>
+        handleDelete={handleDelete}
+        lineNumber={lineNumber}>
         <ActionTitle>
           {translate(
             'pimee_catalog_rule.form.edit.actions.set_family.subtitle'

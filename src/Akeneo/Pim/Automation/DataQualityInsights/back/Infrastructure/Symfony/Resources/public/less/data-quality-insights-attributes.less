@@ -19,6 +19,14 @@
         }
     }
 
+    .AknVerticalList-item--clickable {
+        .AknDataQualityInsightsAttribute--link {
+            &:hover > span {
+                color: @AknLightPurple;
+            }
+        }
+    }
+
     .AknDataQualityInsightsManyAttributes {
         color: @AknLightPurple;
         transition: color 0.1s ease-in;
@@ -39,6 +47,10 @@
         .AknVerticalList-item {
             min-height: 50px;
             height: auto;
+
+            &--clickable {
+                cursor: pointer;
+            }
         }
     }
 

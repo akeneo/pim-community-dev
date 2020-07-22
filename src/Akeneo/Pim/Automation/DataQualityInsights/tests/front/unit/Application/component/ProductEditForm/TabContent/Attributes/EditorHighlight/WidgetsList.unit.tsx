@@ -1,5 +1,6 @@
 import React from "react";
 import {Provider} from "react-redux";
+
 import {render} from "@testing-library/react";
 
 import WidgetsList
@@ -73,6 +74,14 @@ const initialProductEditFormState: ProductEditFormState = {
       meta: {
         id: null,
         label: {},
+        level: null,
+        attributes_for_this_level: [],
+        model_type: "product",
+        variant_navigation: [],
+        family_variant: {
+          variant_attribute_sets: []
+        },
+        parent_attributes: [],
       },
       created: null,
       updated: null,

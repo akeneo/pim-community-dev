@@ -1,19 +1,23 @@
 pimee_catalog_rule:
   overview: "]-Inf, 1]{{ count }} règle|]1, Inf[{{ count }} règles"
   execution_button: Exécuter les règles
-  selected: 'règles sélectionnées'
+  selected: "]-Inf, 1]{{ count }} règle sélectionnée|]1, +Inf[{{ count }} règles sélectionnées"
   popin:
     execute_rules:
       confirm_title: Confirmer l’exécution
+      confirm_content: Êtes-vous certain(e) de vouloir exécuter les règles ? (cela peut prendre un certain temps)
   notification:
+    fail: L'action n'a pas été effectuée
     launched: L'exécution des règles est en cours, vous serez notifié(e) lorsque cela sera terminé.
   attribute:
     list:
       code.label: Code
       condition.label: Condition
       action.label: Action
+      no_rule_yet.label: Il n'y a aucune règle pour le moment
   rule:
     value: Valeur
+    include_children: Inclure les enfants
     condition:
       if.label: Si
     action:
@@ -32,9 +36,11 @@ pimee_catalog_rule:
           confirm_content: Êtes-vous sûr de vouloir exécuter la règle ?
       mass_edit_action:
         confirm_title: Confirmer le calcul
+        confirm_content: Êtes-vous sûr de vouloir calculer le nombre de produits impactés par les règles ?
       mass_action:
         execute:
           confirm_title: Confirmer l’exécution
+          confirm_content: Êtes-vous sûr de vouloir exécuter les règles ? (Cela peut prendre un certain temps)
           success: L'exécution des règles est en cours, vous serez notifié(e) lorsque cela sera terminé.
           error: Une erreur s'est produite lors de l'exécution des règles.
           empty_selection: Aucune règle n'a été sélectionnée.
@@ -74,12 +80,19 @@ pimee_catalog_rule:
       notification:
         success: La règle a été créée avec succès
         failed: La création de la règle a échoué
+      constraint:
+        code:
+          required: Le code de la règle est requis.
+          too_short: "Le code de la règle est trop court. Il doit comporter {{ characterLimit }} caractères ou plus."
+          allowed_characters: Le code de la règle ne peut être composé que de caractères alphanumériques et de tirets bas.
+          unique: Ce code existe déjà.
       cross_link: Quitter le formulaire de création de règle
     edit:
       properties:
         section:
           general: Paramètres généraux
           labels: Traductions du libellé
+      character_left: "]-Inf, 1]{{ count }} caractère restant|]1, +Inf[{{ count }} caractères restants"
       priority:
         label: Priorité
       add_to_category: Ajouter à une catégorie
@@ -87,6 +100,7 @@ pimee_catalog_rule:
       products_count:
         complete: "]-Inf, 1]{{ count }} produit et modèle de produit|]1, +Inf[{{ count }} produits et modèles de produits"
         pending: Calcul des produits et des modèles de produits
+        error: Impossible de calculer les produits et les modèles de produits impactés
       product_selection: Sélection de produits
       fields:
         family: Famille
@@ -98,7 +112,7 @@ pimee_catalog_rule:
           title: AJOUTER des catégories
           helper: Pour ajouter votre sélection de produits à une ou plusieurs catégories, veuillez commencer par sélectionner vos arbres de catégories et ensuite vos catégories.
         set_category:
-          title: DEFINIR les catégories
+          title: DÉFINIR les catégories
           helper: Pour classifier votre sélection de produits dans une ou plusieurs catégories (et les retirer des anciennes), veuillez commencer par sélectionner vos arbres de catégories et ensuite vos catégories.
         category:
           select_category_trees: Sélectionnez vos arbres de catégories
@@ -114,6 +128,7 @@ pimee_catalog_rule:
           subtitle: Sélectionnez votre famille
         set_attribute:
           title: DEFINIR une valeur d'attribut
+          helper: Pour définir des valeurs à votre attribut, veuillez commencer par sélectionner votre attribut cible, puis ajoutez la valeur souhaitée.
           target_subtitle: Sélectionnez votre destination
           value_subtitle: Définissez votre valeur
           attribute_label: Attribut
@@ -122,6 +137,25 @@ pimee_catalog_rule:
           title: EFFACER la valeur d'attribut
           subtitle: Sélectionnez l'attribut à effacer
           attribute_label: Attribut
+        clear_associations:
+          title: EFFACER les associations
+        clear_categories:
+          title: EFFACER les catégories
+        clear_groups:
+          title: EFFACER les groupes
+        remove_category:
+          title: SUPPRIMER les catégories
+          helper: Pour supprimer votre sélection de produits d'une ou de plusieurs catégories, veuillez commencer par sélectionner vos arborescences de catégories, puis vos catégories.
+        remove_attribute_value:
+          title: SUPPRIMER la valeur de l'attribut
+          helper: Pour supprimer des valeurs de votre attribut, veuillez commencer par sélectionner votre attribut cible et ensuite les valeurs que vous voulez supprimer.
+          value_subtitle: Définissez vos valeurs à supprimer
+        copy:
+          title: COPIER une valeur d'attribut
+          helper: Pour copier les valeurs d'un attribut à un autre, veuillez commencer par sélectionner votre attribut source et ensuite, votre attribut de destination.
+          select_source: Sélectionner votre source
+          select_target: Sélectionnez votre destination
+          no_source: Veuillez d'abord sélectionner votre attribut source.
         delete:
           label: Supprimer l'action
           description: Êtes-vous sûr de vouloir supprimer cette action ?
@@ -153,9 +187,18 @@ pimee_catalog_rule:
       notification:
         success: La règle a été mise à jour avec succès
         failed: La mise à jour de la règle a échoué
+      discard_changes: Vos modifications seront perdues si vous ne les enregistrez pas.
+      please_select_attribute: Veuillez d'abord sélectionner votre attribut de destination.
+      unhandled_attribute_type: Désolé, ce type d'attribut n'est pas encore géré dans l'interface. Veuillez utiliser les imports de règles.
     helper:
+      add_to_category: Pour ajouter votre sélection de produits à une ou plusieurs catégories, veuillez commencer par sélectionner vos arbres de catégories, puis vos catégories.
+      clear_attribute: Pour effacer la valeur de l'attribut, veuillez commencer par sélectionner l'attribut à effacer.
+      clear_associations: Toutes les associations des produits sélectionnés seront effacées.
+      clear_categories: Toutes les catégories des produits sélectionnés seront effacées.
+      clear_groups: Tous les groupes des produits sélectionnés seront effacés.
       product_selection: "Vous devez définir votre sélection de produits pour créer votre règle. Si vous ne savez pas comment, "
       product_selection_doc_link: jetez un coup d'oeil à cet article.
+      set_attribute_info_clear: Vous devez renseigner une valeur à définir. Si vous voulez effacer la valeur de l'attribut, veuillez utiliser l'action "Effacer les valeurs d'attributs".
     legend:
       add_to_category: Créer une action
       product_selection: Créer une condition
@@ -167,32 +210,55 @@ pimee_catalog_rule:
     loading: Une erreur s'est produite lors du chargement de la définition de règle.
     required: Ce champ est obligatoire
     required_attribute: Vous devez indiquer un attribut
+    required_locale: Une locale est requise pour l'attribut {{ attributeLabel }}
+    required_scope: Un canal est requis pour l'attribut {{ attributeLabel }}
     required_value: Vous devez indiquer une valeur pour cette action
+    required_categories: Au moins une catégorie est requise pour cette action
     unknown_or_inactive_locale: 'La locale "{{ localeCode }}" n''existe pas ou n''est pas activée'
+    unbound_locale: 'La locale "{{ localeCode }}" n''est pas activée dans le canal "{{ channelCode }}"'
+    locale_on_unlocalizable_attribute: Cet attribut n'est pas localisable. Veuillez supprimer la locale avant de continuer.
     unknown_scope: 'Le canal "{{ scopeCode }}" n''existe pas'
+    scope_on_unscopable_attribute: Cet attribut n'est pas scopable. Veuillez supprimer le canal avant de continuer.
+    unknown_families: "{1}La famille {{ familyCodes }} n'existe pas|]1,+Inf[Les {{ familyCodes }} familles n'existent pas"
+    unknown_attribute_options: "{1}L'option {{ attributeOptionCodes }} n'existe pas|]1,+Inf[Les options {{ attributeOptionCodes }} n'existent pas"
     unknown_attribute_code: "L'attribut {{ attributeCode }} n'existe pas"
+    unknown_categories: "{1}La catégorie {{ categoryCodes }} n'existe pas.|]1, +Inf[Les {{ categoryCodes }} catégories n'existent pas"
     unknown_attribute: "Cet attribut n'existe pas."
     select_another_attribute_or_remove_action: "Sélectionnez un autre attribut ou supprimez cette action."
     select_another_attribute: "Sélectionnez un autre attribut"
     or: ou
     create_attribute_link: cliquez ici pour créer l'attribut
+    edit_unauthorize: Vous n'êtes pas autorisé à modifier les règles
 pim_enrich:
   entity:
     rule:
       module:
         delete:
           confirm: Êtes-vous sûr de vouloir supprimer cette règle ? Il est impossible d'annuler cette action
+      flash:
+        delete:
+          success: Règle supprimée avec succès
 flash:
   rule:
+    impacted_product_count: L'action de masse pour calculer le nombre de produits impactés a été lancée. Vous serez notifié lorsque cela sera terminé.
     executed: L'exécution des règles est en cours, vous serez notifié(e) lorsque cela sera terminé.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Paramètres des règles
 batch_jobs:
   add_attribute_value:
     execute_rules.label: Exécution des règles
   default_steps:
+    export_rules: Export des règles
+    import_rules: Import des règles
     calculate_affected_products: Calculer les produits affectés
     execute_rules: Exécution des règles
+  yml_rule_import:
+    label: Import des règles en YAML
+    import.label: Import des règles
+  yml_rule_export:
+    label: Export des règles en YAML
+    export.label: Export des règles
   rule_impacted_product_count:
+    label: Nombre de produits impactés
     perform.label: Calcul du nombre de produits affectés
   csv_product_import_with_rules:
     label: Import de produits en CSV avec exécution des règles

@@ -46,6 +46,7 @@ class GetEvaluableAttributesByProductModelQueryIntegration extends TestCase
         $attributes = $this->get(GetEvaluableAttributesByProductModelQuery::class)->execute($productModelId);
 
         $expectedAttributes = [
+            new Attribute(new AttributeCode('a_multi_select'), AttributeType::multiSelect(), false, false),
             new Attribute(new AttributeCode('a_text_area'), AttributeType::textarea(), false),
             new Attribute(new AttributeCode('a_localized_and_scopable_text_area'), AttributeType::textarea(), true),
             new Attribute(new AttributeCode('a_localizable_text'), AttributeType::text(), true),
@@ -61,6 +62,7 @@ class GetEvaluableAttributesByProductModelQueryIntegration extends TestCase
         $attributes = $this->get(GetEvaluableAttributesByProductModelQuery::class)->execute($productModelId);
 
         $expectedAttributes = [
+            new Attribute(new AttributeCode('a_multi_select'), AttributeType::multiSelect(), false, false),
             new Attribute(new AttributeCode('a_localized_and_scopable_text_area'), AttributeType::textarea(), true),
             new Attribute(new AttributeCode('a_localizable_text'), AttributeType::text(), true),
         ];
@@ -75,6 +77,8 @@ class GetEvaluableAttributesByProductModelQueryIntegration extends TestCase
         $attributes = $this->get(GetEvaluableAttributesByProductModelQuery::class)->execute($productModelId);
 
         $expectedAttributes = [
+            new Attribute(new AttributeCode('a_multi_select'), AttributeType::multiSelect(), false, false),
+            new Attribute(new AttributeCode('a_simple_select'), AttributeType::simpleSelect(), false, false),
             new Attribute(new AttributeCode('a_text'), AttributeType::text(), false),
             new Attribute(new AttributeCode('a_localized_and_scopable_text_area'), AttributeType::textarea(), true),
             new Attribute(new AttributeCode('a_localizable_text'), AttributeType::text(), true),

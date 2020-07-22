@@ -1,7 +1,7 @@
 import CatalogContextListener, {
   CATALOG_CONTEXT_CHANNEL_CHANGED,
   CATALOG_CONTEXT_LOCALE_CHANGED
-} from "./CatalogContextListener";
+} from "./ProductEditForm/CatalogContextListener";
 import ProductContextListener, {
   DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD,
   DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY,
@@ -11,18 +11,18 @@ import ProductContextListener, {
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVED,
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVING,
   DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE,
-} from "./ProductContextListener";
+} from "./ProductEditForm/ProductContextListener";
 import PageContextListener, {
   PRODUCT_ATTRIBUTES_TAB_LOADED,
   PRODUCT_ATTRIBUTES_TAB_LOADING,
   PRODUCT_TAB_CHANGED,
   PRODUCT_MODEL_LEVEL_CHANGED,
-} from "./PageContextListener";
+} from "./ProductEditForm/PageContextListener";
 
-import EditorHighlightPopoverContextListener from "./EditorHighlightPopoverContextListener";
-import EditorContextListener from "./EditorContextListener";
-import TextAttributesContextListener from "./TextAttributesContextListener";
-import AttributeToImproveContextListener from "./AttributeToImproveContextListener";
+import EditorHighlightPopoverContextListener from "./EditorHighlight/EditorHighlightPopoverContextListener";
+import EditorContextListener from "./EditorHighlight/EditorContextListener";
+import TextAttributesContextListener from "./ProductEditForm/TextAttributesContextListener";
+import AttributeToImproveContextListener from "./ProductEditForm/AttributeToImproveContextListener";
 
 export {
   CatalogContextListener,

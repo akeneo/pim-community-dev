@@ -7,7 +7,8 @@ import Rate, {
 } from "./Rate.interface";
 import AttributeWithRecommendation from "./AttributeWithRecommendation.interface";
 import Evaluation, {ProductEvaluation, AxisEvaluation, CriterionEvaluationResult} from "./Evaluation.interface";
-import Family, {Attribute} from "./Family.interface";
+import Family from "./Family.interface";
+import Attribute from "./Attribute.interface";
 import Product from "./Product.interface";
 
 export {

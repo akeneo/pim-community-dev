@@ -93,10 +93,10 @@ describe('SetActionLine', () => {
       screen.getAllByText(
         'pimee_catalog_rule.exceptions.unknown_attribute pimee_catalog_rule.exceptions.select_another_attribute pimee_catalog_rule.exceptions.or'
       )
-    ).toHaveLength(2);
+    ).toHaveLength(1);
     expect(
       screen.getAllByText('pimee_catalog_rule.exceptions.create_attribute_link')
-    ).toHaveLength(2);
+    ).toHaveLength(1);
 
     expect(screen.getByTestId('edit-rules-action-0-field')).toHaveValue('name');
     const inputValue = screen.getByTestId('edit-rules-action-0-value');

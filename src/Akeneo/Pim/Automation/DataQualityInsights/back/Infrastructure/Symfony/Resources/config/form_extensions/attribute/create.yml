@@ -1,0 +1,7 @@
+extensions:
+    pim-attribute-create-form-data-quality-insights-app:
+        module: akeneo/data-quality-insights/infrastructure/pim-view/attribute-edit-form/create-app
+        parent: pim-attribute-create-form
+        targetZone: content
+        position: 110
+

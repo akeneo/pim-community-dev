@@ -18,6 +18,7 @@ $rules = [
 
             //External dependencies
             'Ramsey\Uuid\Uuid',
+            'Akeneo\Pim\Structure\Component\AttributeTypes',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Domain'),
 
@@ -27,6 +28,7 @@ $rules = [
 
             //External dependencies
             'Psr\Log\LoggerInterface',
+            'Symfony\Component\EventDispatcher\EventDispatcherInterface',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Application'),
 
@@ -62,6 +64,10 @@ $rules = [
             'Akeneo\Tool\Component\Batch\Model\JobInstance',
             'Akeneo\Tool\Component\Batch\Job\JobInterface',
 
+            //Subscribers for attribute updates
+            'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
+            'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',
+
             //Connector / (Tasklets, job parameters)
             'Akeneo\Tool\Component\Batch\Job\JobInterface',
             'Akeneo\Tool\Component\Batch\Job\JobParameters',
@@ -92,10 +98,14 @@ $rules = [
             'Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration',
             'Oro\Bundle\DataGridBundle\Event\BuildBefore',
             'Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface',
+            'Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration',
+            'Oro\Bundle\DataGridBundle\Datagrid\RequestParameters',
+            'Oro\Bundle\DataGridBundle\Extension\AbstractExtension',
             'Oro\Bundle\PimDataGridBundle\Extension\Sorter\SorterInterface',
             'Oro\Bundle\FilterBundle\Grid\Extension\Configuration',
             'Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface',
             'Oro\Bundle\FilterBundle\Filter\ChoiceFilter',
+            'Oro\Bundle\FilterBundle\Filter\FilterUtility',
 
             //Necessary for the particular command EvaluatePendingCriteriaCommand
             'Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager',
@@ -107,6 +117,7 @@ $rules = [
             //External dependencies
             'Doctrine\DBAL',
             'Doctrine\Common\Persistence\ObjectRepository',
+            'Doctrine\ORM\Query\Expr',
             'League\Flysystem\MountManager',
             'Psr\Log\LoggerInterface',
             'Symfony\Component\Config\FileLocator',
@@ -120,6 +131,7 @@ $rules = [
             'Symfony\Component\Security',
             'Symfony\Component\Validator\Constraints',
             'Symfony\Contracts\EventDispatcher',
+            'Symfony\Component\Form\FormFactoryInterface',
             'GuzzleHttp\ClientInterface',
             'GuzzleHttp\Exception',
             'Mekras\Speller',

@@ -424,7 +424,7 @@ final class DemoHelperCommand extends Command
             return new ProductId($id);
         }, $ids);
 
-        $this->createProductsCriteriaEvaluations->create($productIds);
+        $this->createProductsCriteriaEvaluations->createAll($productIds);
         $this->evaluatePendingCriteria->evaluateAllCriteria($ids);
         $this->consolidateProductAxisRates->consolidate($ids);
         $this->indexProductRates->execute($ids);
@@ -436,7 +436,7 @@ final class DemoHelperCommand extends Command
             return new ProductId($id);
         }, $ids);
 
-        $this->createProductModelsCriteriaEvaluations->create($productIds);
+        $this->createProductModelsCriteriaEvaluations->createAll($productIds);
         $this->evaluateProductModelsPendingCriteria->evaluateAllCriteria($ids);
         $this->consolidateProductModelsAxisRates->consolidate($ids);
     }

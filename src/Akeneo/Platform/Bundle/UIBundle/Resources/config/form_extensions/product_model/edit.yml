@@ -68,3 +68,12 @@ extensions:
         module: pimee/product-edit-form/variant-navigation
         parent: pim-product-model-edit-form
         targetZone: navigation
+
+    pim-product-model-edit-form-associations:
+        module: pimee/product-edit-form/associations
+        parent: pim-product-model-edit-form-column-tabs
+        targetZone: container
+        aclResourceId: pim_enrich_associations_view
+        position: 110
+        config:
+            aclAddAssociations: pim_enrich_associations_edit

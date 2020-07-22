@@ -59,6 +59,7 @@ final class HealthCheckCommand extends Command
         $this->outputCatalogInfo($io);
         $this->outputMysqlInfo($io);
         $this->outputCriteriaInfo($io);
+        $this->outputStructureSpellcheck($io);
         $this->outputDictionaryInfo($io);
         $this->outputPeriodicTasksInfo($io);
         $this->outputEvaluationJobInfo($io);
@@ -165,6 +166,28 @@ SQL
         );
         $attributesTextAndTextareaScopableAndLocalizable = $stmt->fetch(\PDO::FETCH_ASSOC);
 
+        $stmt = $this->db->executeQuery(<<<SQL
+SELECT count(*)
+FROM pim_catalog_attribute
+WHERE attribute_type = 'pim_catalog_simpleselect'
+SQL
+        );
+        $attributesSimpleSelect = $stmt->fetchColumn();
+
+        $stmt = $this->db->executeQuery(<<<SQL
+SELECT count(*)
+FROM pim_catalog_attribute
+WHERE attribute_type = 'pim_catalog_multiselect'
+SQL
+        );
+        $attributesMultiSelect = $stmt->fetchColumn();
+
+        $stmt = $this->db->executeQuery(<<<SQL
+SELECT count(*) FROM pim_catalog_attribute_option;
+SQL
+        );
+        $attributeOptions = $stmt->fetchColumn();
+
         $eta = $this->estimatedTimeOfArrivalForRemainingProducts();
 
         $data = [
@@ -184,6 +207,9 @@ SQL
                 'number_of_attributes_text_and_textarea_scopable' => $attributesTextAndTextareaScopable['number_of_attributes'],
                 'number_of_attributes_text_and_textarea_localizable' => $attributesTextAndTextareaLocalizable['number_of_attributes'],
                 'number_of_attributes_text_and_textarea_scopable_and_localizable' => $attributesTextAndTextareaScopableAndLocalizable['number_of_attributes'],
+                'number_of_attributes_simple_select' => $attributesSimpleSelect,
+                'number_of_attributes_multi_select' => $attributesMultiSelect,
+                'number_of_attribute_options' => $attributeOptions,
                 'estimated_time_when_every_products_will_be_evaluated' => ($eta ? $eta->format(\DateTimeInterface::ATOM) : null)
             ]
         ];
@@ -202,7 +228,7 @@ SELECT
   AVG_ROW_LENGTH,
   ROUND((DATA_LENGTH + INDEX_LENGTH) / 1024 / 1024, 2) AS `Size (MB)`
 FROM information_schema.TABLES
-WHERE TABLE_NAME LIKE 'pimee_data_quality_insights_%';
+WHERE TABLE_NAME LIKE 'pimee_data_quality_insights_%' OR TABLE_NAME LIKE 'pimee_dqi_%';
 SQL;
 
         $stmt = $this->db->executeQuery($query);
@@ -468,14 +494,29 @@ SQL;
 SELECT
     step.step_name AS task_name,
     AVG(TIMESTAMPDIFF(SECOND, step.start_time, step.end_time)) as average_execution_time_in_second,
-    AVG(step.write_count) AS average_number_of_product_per_job,
-    MAX(step.write_count) AS max_number_of_product_in_a_job
-FROM akeneo_batch_job_instance AS job
-    JOIN akeneo_batch_job_execution AS job_execution ON job_execution.job_instance_id = job.id
+    AVG(step.write_count) AS average_number_of_product_per_job
+FROM akeneo_batch_job_execution AS job_execution
     JOIN akeneo_batch_step_execution AS step ON step.job_execution_id = job_execution.id
-WHERE job.code = 'data_quality_insights_evaluate_products_criteria'
+WHERE step.step_name IN ('evaluate_products_criteria', 'evaluate_product_models_criteria')
     AND job_execution.status = 1
     AND step.write_count > 0
+GROUP BY step.step_name;
+SQL;
+
+        $stmt = $this->db->executeQuery($query);
+
+        $this->outputAsTable($io, $stmt->fetchAll());
+
+        $io->section('Attributes and options evaluation jobs');
+
+        $query = <<<SQL
+SELECT
+    step.step_name AS task_name,
+    AVG(TIMESTAMPDIFF(SECOND, step.start_time, step.end_time)) as average_execution_time_in_second
+FROM akeneo_batch_job_execution AS job_execution
+    JOIN akeneo_batch_step_execution AS step ON step.job_execution_id = job_execution.id
+WHERE step.step_name IN ('evaluate_attributes', 'evaluate_attribute_options')
+    AND job_execution.status = 1
 GROUP BY step.step_name;
 SQL;
 
@@ -491,10 +532,9 @@ SELECT
     step.step_name AS task_name,
     AVG(TIMESTAMPDIFF(SECOND, step.start_time, step.end_time)) as average_execution_time_in_second,
     AVG(step.write_count) AS average_number_of_product_per_job
-FROM akeneo_batch_job_instance AS job
-    JOIN akeneo_batch_job_execution AS job_execution ON job_execution.job_instance_id = job.id
+FROM akeneo_batch_job_execution AS job_execution
     JOIN akeneo_batch_step_execution AS step ON step.job_execution_id = job_execution.id
-WHERE job.code = 'data_quality_insights_evaluate_products_criteria'
+WHERE step.step_name IN ('evaluate_products_criteria', 'evaluate_product_models_criteria')
     AND job_execution.status = 1
     AND step.write_count > 0
 GROUP BY step.step_name;
@@ -533,6 +573,33 @@ SQL
         }
 
         return null;
+    }
+
+    private function outputStructureSpellcheck(SymfonyStyle $io): void
+    {
+        $io->section('Spellcheck on structure entities');
+
+        $io->comment('Attributes spellcheck');
+        $stmt = $this->db->executeQuery(<<<SQL
+SELECT COUNT(*) AS total, SUM(to_improve) FROM pimee_dqi_attribute_spellcheck
+SQL
+        );
+        $this->outputAsTable($io, $stmt->fetchAll());
+
+        $io->comment('Attributes quality');
+        $stmt = $this->db->executeQuery(<<<SQL
+SELECT quality, COUNT(*) AS number_of_attributes 
+FROM pimee_dqi_attribute_quality GROUP BY quality;
+SQL
+        );
+        $this->outputAsTable($io, $stmt->fetchAll());
+
+        $io->comment('Attribute options spellcheck');
+        $stmt = $this->db->executeQuery(<<<SQL
+SELECT COUNT(*) AS total, SUM(to_improve)  FROM pimee_dqi_attribute_option_spellcheck
+SQL
+        );
+        $this->outputAsTable($io, $stmt->fetchAll());
     }
 
     private function prepareStatementWithProductIds(string $query, array $productIds): ResultStatement

@@ -52,7 +52,7 @@ const SpellcheckPopoverContent: FunctionComponent<SpellcheckPopoverContentProps>
               <p className="AknEditorHighlight-popover-original-title">
                 {__('akeneo_data_quality_insights.product_edit_form.spellcheck_popover.original_text_title')}
               </p>
-              <p className="knSpellCheck-popover-original-item">{mistake.text}</p>
+              <p className="AknSpellCheck-popover-original-item">{mistake.text}</p>
             </div>
             <hr />
             <div className="AknEditorHighlight-popover-suggestions">
