@@ -107,8 +107,8 @@
                                 {% set content = product.getValue(attribute.code, locale_attribute, channel_attribute) %}
                                 {% set manualHeight = true %}
 
-                                {% if 'pim_catalog_image' == attribute.type and content.media is not null %}
-                                    {% set content = content.media.originalFilename %}
+                                {% if 'pim_catalog_image' == attribute.type and content.data is defined and content.data is not null %}
+                                    {% set content = content.data.originalFilename %}
                                     {% set manualHeight = false %}
                                 {% elseif ('pim_catalog_simpleselect' == attribute.type or 'pim_catalog_multiselect' == attribute.type) and attribute.code in optionLabels|keys %}
                                     {% set content = optionLabels[attribute.code] %}
