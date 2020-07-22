@@ -1,26 +1,40 @@
 import React from 'react';
-import { useBackboneRouter, useTranslate, useUserCatalogLocale } from '../../../../../dependenciesTools/hooks';
+import {
+  useBackboneRouter,
+  useTranslate,
+  useUserCatalogLocale,
+} from '../../../../../dependenciesTools/hooks';
 import { InputValueProps } from './AttributeValue';
-import { getAttributeLabel } from '../../../../../models';
-import { getAllCurrencies, IndexedCurrencies } from "../../../../../repositories/CurrencyRepository";
-import { Label } from "../../../../../components/Labels";
-import { CurrencyCode } from "../../../../../models/Currency";
-import { PriceValue } from "./PriceValue";
+import { getAttributeLabel, Scope } from '../../../../../models';
+import {
+  getAllCurrencies,
+  getCurrenciesByCode,
+  IndexedCurrencies,
+} from '../../../../../repositories/CurrencyRepository';
+import { Label } from '../../../../../components/Labels';
+import { CurrencyCode } from '../../../../../models/Currency';
+import { PriceValue } from './PriceValue';
+import { getScopeByCode } from '../../../../../repositories/ScopeRepository';
 
-type PriceCollectionData = {amount: number; currency: CurrencyCode}[];
+type PriceCollectionData = { amount: number; currency: CurrencyCode }[];
 
-const parsePriceCollectionValue: (value: any) => PriceCollectionData = (value) => {
+const parsePriceCollectionValue: (
+  value: any
+) => PriceCollectionData = value => {
   const result: PriceCollectionData = [];
   if (Array.isArray(value)) {
-    value.forEach((price) => {
-      if (Object.prototype.hasOwnProperty.call(price, 'amount') && Object.prototype.hasOwnProperty.call(price, 'currency')) {
+    value.forEach(price => {
+      if (
+        Object.prototype.hasOwnProperty.call(price, 'amount') &&
+        Object.prototype.hasOwnProperty.call(price, 'currency')
+      ) {
         result.push({ amount: price.amount, currency: price.currency });
       }
     });
   }
 
   return result;
-}
+};
 
 const PriceCollectionValue: React.FC<InputValueProps> = ({
   id,
@@ -28,28 +42,56 @@ const PriceCollectionValue: React.FC<InputValueProps> = ({
   value,
   label,
   onChange,
+  scopeCode,
 }) => {
   const currentCatalogLocale = useUserCatalogLocale();
   const router = useBackboneRouter();
   const translate = useTranslate();
-  const [ currencies, setCurrencies ] = React.useState<IndexedCurrencies>({});
+  const [currencyCodes, setCurrencyCodes] = React.useState<CurrencyCode[]>();
+
+  const setCurrencyCodesAndFilterValue = (currencies: IndexedCurrencies) => {
+    const currencyCodes = Object.values(currencies).map(
+      currency => currency.code
+    );
+    setCurrencyCodes(currencyCodes);
+    onChange(
+      (value as PriceCollectionData).filter(price =>
+        currencyCodes.includes(price.currency)
+      )
+    );
+  };
 
   React.useEffect(() => {
-    getAllCurrencies(router).then(currencies => setCurrencies(currencies));
-  }, []);
+    if (scopeCode) {
+      getScopeByCode(scopeCode, router).then((scope: Scope) => {
+        getCurrenciesByCode(scope.currencies, router).then(currencies =>
+          setCurrencyCodesAndFilterValue(currencies)
+        );
+      });
+    } else {
+      getAllCurrencies(router).then(currencies =>
+        setCurrencyCodesAndFilterValue(currencies)
+      );
+    }
+  }, [scopeCode]);
 
-  const getValue = (currencyCode: CurrencyCode) => (value as PriceCollectionData).find((price) => price.currency === currencyCode)?.amount;
+  const getValue = (currencyCode: CurrencyCode) =>
+    (value as PriceCollectionData).find(
+      price => price.currency === currencyCode
+    )?.amount;
 
-  if (Object.keys(currencies).length === 0) {
-    return <img
-      src='/bundles/pimui/images//loader-V2.svg'
-      alt={translate('pim_common.loading')}
-    />;
+  if (!currencyCodes) {
+    return (
+      <img
+        src='/bundles/pimui/images//loader-V2.svg'
+        alt={translate('pim_common.loading')}
+      />
+    );
   }
 
   const handleChange = (currency: CurrencyCode, amount: string) => {
     const newValue: PriceCollectionData = [...value];
-    const index = newValue.findIndex((price) => price.currency === currency);
+    const index = newValue.findIndex(price => price.currency === currency);
     if (index >= 0) {
       if (amount !== '') {
         // Removes existing price
@@ -63,29 +105,34 @@ const PriceCollectionValue: React.FC<InputValueProps> = ({
       newValue.push({ amount: Number(amount), currency });
     }
     onChange(newValue);
-  }
+  };
 
-  return <>
-    <Label
-      className='AknFieldContainer-label control-label'
-      label={label || getAttributeLabel(attribute, currentCatalogLocale)}
-    />
-    <div className='AknPriceList'>
-      {Object.values(currencies).map((currency) => {
-        return <div className='AknPriceList-item' key={currency.code}>
-          <PriceValue
-            data-testid={`${id}-${currency.code}`}
-            label={currency.code}
-            defaultValue={getValue(currency.code)}
-            onChange={(event: any) => handleChange(currency.code, event.target.value)}
-            hiddenLabel
-            currencyCode={currency.code}
-          />
-        </div>
-        }
-      )}
-    </div>
-  </>
+  return (
+    <>
+      <Label
+        className='AknFieldContainer-label control-label'
+        label={label || getAttributeLabel(attribute, currentCatalogLocale)}
+      />
+      <div className='AknPriceList'>
+        {currencyCodes.map(currencyCode => {
+          return (
+            <div className='AknPriceList-item' key={currencyCode}>
+              <PriceValue
+                data-testid={`${id}-${currencyCode}`}
+                label={currencyCode}
+                defaultValue={getValue(currencyCode)}
+                onChange={(event: any) =>
+                  handleChange(currencyCode, event.target.value)
+                }
+                hiddenLabel
+                currencyCode={currencyCode}
+              />
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
 };
 
 export { PriceCollectionValue, parsePriceCollectionValue };

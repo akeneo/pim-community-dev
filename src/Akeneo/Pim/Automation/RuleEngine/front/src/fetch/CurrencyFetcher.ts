@@ -1,6 +1,6 @@
 import { Router } from '../dependenciesTools';
 import { httpGet } from './fetch';
-import { Currency } from "../models/Currency";
+import { Currency } from '../models/Currency';
 
 const fetchAllCurrencies = async (
   router: Router

@@ -1,10 +1,31 @@
 import React from 'react';
-import { Attribute, AttributeType, getAttributeLabel, } from '../../../../../models';
-import { useTranslate, useUserCatalogLocale, } from '../../../../../dependenciesTools/hooks';
-import { BooleanValue, FallbackValue, MultiSelectValue, NumberValue, SimpleSelectValue, TextValue, } from './';
-import { HelperContainer, InlineHelper, } from '../../../../../components/HelpersInfos';
+import {
+  Attribute,
+  AttributeType,
+  getAttributeLabel,
+  ScopeCode,
+} from '../../../../../models';
+import {
+  useTranslate,
+  useUserCatalogLocale,
+} from '../../../../../dependenciesTools/hooks';
+import {
+  BooleanValue,
+  FallbackValue,
+  MultiSelectValue,
+  NumberValue,
+  SimpleSelectValue,
+  TextValue,
+} from './';
+import {
+  HelperContainer,
+  InlineHelper,
+} from '../../../../../components/HelpersInfos';
 import { ActionFormContainer } from '../style';
-import { parsePriceCollectionValue, PriceCollectionValue } from "./PriceCollectionValue";
+import {
+  parsePriceCollectionValue,
+  PriceCollectionValue,
+} from './PriceCollectionValue';
 
 const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: Map<
   AttributeType,
@@ -31,6 +52,7 @@ type InputValueProps = {
   value: any;
   label?: string;
   onChange: (value: any) => void;
+  scopeCode?: ScopeCode;
 };
 
 const getValueModule = (attribute: Attribute, props: InputValueProps) => {
@@ -46,7 +68,12 @@ const getValueModule = (attribute: Attribute, props: InputValueProps) => {
     case AttributeType.BOOLEAN:
       return <BooleanValue {...props} value={!!props.value} />;
     case AttributeType.PRICE_COLLECTION:
-      return <PriceCollectionValue {...props} value={parsePriceCollectionValue(props.value)}/>;
+      return (
+        <PriceCollectionValue
+          {...props}
+          value={parsePriceCollectionValue(props.value)}
+        />
+      );
     default:
       return null;
   }
@@ -60,6 +87,7 @@ type Props = {
   value?: any;
   label?: string;
   onChange: (value: any) => void;
+  scopeCode?: ScopeCode;
 };
 
 const isAttrNotSelected = (attribute: Attribute | null | undefined) =>
@@ -75,6 +103,7 @@ const AttributeValue: React.FC<Props> = ({
   value,
   label,
   onChange,
+  scopeCode,
 }) => {
   const translate = useTranslate();
   const catalogLocale = useUserCatalogLocale();
@@ -117,6 +146,7 @@ const AttributeValue: React.FC<Props> = ({
         value,
         onChange,
         validation,
+        scopeCode,
       });
       if (inputComponent) {
         return inputComponent;
