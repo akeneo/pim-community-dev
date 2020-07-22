@@ -2,9 +2,7 @@ type GroupCode = string;
 
 type Group = {
   code: GroupCode;
-  labels: {
-    [locale: string]: string;
-  };
+  label: string;
 };
 
 export { Group, GroupCode };
