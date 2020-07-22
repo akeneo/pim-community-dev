@@ -5,7 +5,7 @@ import {
   useUserCatalogLocale,
 } from '../../../../../dependenciesTools/hooks';
 import { InputValueProps } from './AttributeValue';
-import { getAttributeLabel, Scope } from '../../../../../models';
+import { getAttributeLabel } from '../../../../../models';
 import {
   getAllCurrencies,
   getCurrenciesByCode,
@@ -63,10 +63,16 @@ const PriceCollectionValue: React.FC<InputValueProps> = ({
 
   React.useEffect(() => {
     if (scopeCode) {
-      getScopeByCode(scopeCode, router).then((scope: Scope) => {
-        getCurrenciesByCode(scope.currencies, router).then(currencies =>
-          setCurrencyCodesAndFilterValue(currencies)
-        );
+      getScopeByCode(scopeCode, router).then(scope => {
+        if (scope) {
+          getCurrenciesByCode(scope.currencies, router).then(currencies =>
+            setCurrencyCodesAndFilterValue(currencies)
+          );
+        } else {
+          getAllCurrencies(router).then(currencies =>
+            setCurrencyCodesAndFilterValue(currencies)
+          );
+        }
       });
     } else {
       getAllCurrencies(router).then(currencies =>
