@@ -16,16 +16,14 @@ import {
   NumberValue,
   SimpleSelectValue,
   TextValue,
+  parsePriceCollectionValue,
+  PriceCollectionValue,
 } from './';
 import {
   HelperContainer,
   InlineHelper,
 } from '../../../../../components/HelpersInfos';
 import { ActionFormContainer } from '../style';
-import {
-  parsePriceCollectionValue,
-  PriceCollectionValue,
-} from './PriceCollectionValue';
 
 const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: Map<
   AttributeType,
