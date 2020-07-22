@@ -2,7 +2,7 @@
 
 namespace Akeneo\SharedCatalog\Model;
 
-final class SharedCatalog
+class SharedCatalog
 {
     /** @var string */
     public $code;
