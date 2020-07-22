@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9365: Fix PDF previews' background being black
+
 # 4.0.41 (2020-07-20)
 
 # 4.0.40 (2020-07-13)
