@@ -115,6 +115,7 @@ class Client
     public function bulkIndexes($documents, $keyAsId, Refresh $refresh = null)
     {
         $params = [];
+        $paramsComputedSize = 0;
         $mergedResponse = [
             'took' => 0,
             'errors' => false,
@@ -126,9 +127,7 @@ class Client
                 throw new MissingIdentifierException(sprintf('Missing "%s" key in document', $keyAsId));
             }
 
-            $paramsComputedSize = strlen(json_encode($params)) + strlen(json_encode($document));
-
-            if ($paramsComputedSize >= self::PARAMS_MAX_SIZE) {
+            if (($paramsComputedSize + strlen(json_encode($document))) >= self::PARAMS_MAX_SIZE) {
                 $mergedResponse = $this->doBulkIndex($params, $mergedResponse);
                 $params = [];
             }
@@ -141,6 +140,7 @@ class Client
             ];
 
             $params['body'][] = $document;
+            $paramsComputedSize += strlen(json_encode($document));
 
             if (null !== $refresh) {
                 $params['refresh'] = $refresh->getType();
