@@ -5,15 +5,15 @@ namespace Akeneo\SharedCatalog\Model;
 final class SharedCatalog
 {
     /** @var string */
-    private $code;
+    public $code;
     /** @var string|null */
-    private $publisher;
+    public $publisher;
     /** @var array|null */
-    private $recipients;
+    public $recipients;
     /** @var array|null */
-    private $filters;
+    public $filters;
     /** @var array|null */
-    private $branding;
+    public $branding;
 
     public function __construct(
         string $code,
