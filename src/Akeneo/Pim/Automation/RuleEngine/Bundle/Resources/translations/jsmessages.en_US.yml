@@ -150,6 +150,10 @@ pimee_catalog_rule:
                     title: REMOVE Attribute value
                     helper: To remove values from your attribute, please start by selecting your target attribute and then, the values you want to remove.
                     value_subtitle: Define your values to remove
+                add_attribute_value:
+                    title: ADD Attribute value
+                    helper: To add values to your attribute, please start by selecting your target attribute and then, the values you want to add.
+                    value_subtitle: Define your values to add
                 copy:
                     title: COPY Attribute value
                     helper: To copy values from an attribute to another, please start by selecting your source attribute and then, your target attribute.

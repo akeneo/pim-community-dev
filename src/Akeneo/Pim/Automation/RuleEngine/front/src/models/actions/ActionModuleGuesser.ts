@@ -18,6 +18,7 @@ import { getClearAssociationsActionModule } from './ClearAssociationsAction';
 import { getClearCategoriesActionModule } from './ClearCategoriesAction';
 import { getClearGroupsActionModule } from './ClearGroupsAction';
 import { getRemoveCategoriesModule } from './RemoveCategoriesAction';
+import { getAddAttributeValueActionModule } from './AddAttributeValueAction';
 import { getSetStatusActionModule } from './SetStatusAction';
 
 export type ActionModuleGuesser = (
@@ -40,6 +41,7 @@ const getActionModule: (
     getClearGroupsActionModule,
     getClearAttributeActionModule,
     getAddCategoriesModule,
+    getAddAttributeValueActionModule,
     getSetCategoriesModule,
     getRemoveCategoriesModule,
     getRemoveAttributeValueActionModule,

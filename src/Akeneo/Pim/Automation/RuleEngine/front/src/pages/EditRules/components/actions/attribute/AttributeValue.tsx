@@ -38,6 +38,11 @@ const MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION: Map<
   React.FC<InputValueProps>
 > = new Map([[AttributeType.OPTION_MULTI_SELECT, MultiSelectValue]]);
 
+const MANAGED_ATTRIBUTE_TYPES_FOR_ADD_ACTION: Map<
+  AttributeType,
+  React.FC<InputValueProps>
+> = new Map([[AttributeType.OPTION_MULTI_SELECT, MultiSelectValue]]);
+
 type InputValueProps = {
   id: string;
   attribute: Attribute;
@@ -164,4 +169,5 @@ export {
   InputValueProps,
   MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION,
   MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION,
+  MANAGED_ATTRIBUTE_TYPES_FOR_ADD_ACTION,
 };
