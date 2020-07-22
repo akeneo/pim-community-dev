@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\ExternalApi;
 
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface as CatalogAttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
 use Doctrine\ORM\EntityManager;
@@ -123,7 +122,7 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
 
         foreach ($searchFilters as $property => $searchFilter) {
             foreach ($searchFilter as $criterion) {
-                if (Operators::IN_LIST === $criterion['operator']) {
+                if ('IN' === $criterion['operator']) {
                     $parameter = sprintf(':%s', $property);
                     $qb->where($qb->expr()->in(sprintf('r.%s', $property), $parameter));
                     $qb->setParameter($parameter, $criterion['value']);
@@ -145,7 +144,7 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
             'code' => new Assert\All([
                 new Assert\Collection([
                     'operator' => new Assert\IdenticalTo([
-                        'value' => Operators::IN_LIST,
+                        'value' => 'IN',
                         'message' => 'In order to search on attribute codes you must use "IN" operator, {{ compared_value }} given.',
                     ]),
                     'value' => [
