@@ -37,6 +37,7 @@ pimee_catalog_rule:
       list: Rule builder and properties tabs
       rule_builder: Rules builder
     creation:
+      helper: The rules engine can radically boost your productivity in the PIM by automating actions,
       english_flag: Label for English
       title: Create a new rule
       notification:
@@ -71,10 +72,8 @@ pimee_catalog_rule:
       actions:
         add_action: Add action
         add_category:
-          title: ADD categories
           helper: To add your product selection to one or more categories, please start by selecting your category trees and then, your categories
         set_category:
-          title: SET categories
           helper: To set your product selection to one or more categories, please start by selecting your category trees and then, your categories
         category:
           select_category_trees: Select your category trees
@@ -106,8 +105,11 @@ pimee_catalog_rule:
         clear_groups:
           title: CLEAR Groups
         remove_category:
-          title: REMOVE categories
           helper: To remove your product selection from one or more categories, please start by selecting your category trees and then, your categories
+        copy:
+          select_source: Select your source
+          select_target: Select your target
+          no_source: Please, select your source attribute first
         delete:
           label: Remove action
           description: Are you sure you want to remove this action?
@@ -150,6 +152,7 @@ pimee_catalog_rule:
       clear_groups: All the groups for the selected products will be cleared.
       product_selection: "You must define your product selection in order to create your rule. If you don't know how, "
       product_selection_doc_link: take a look at this article.
+      set_attribute_info_clear: You must define the value to set. If you want to clear the attribute value, please use the Clear attribute value action.
     legend:
       add_to_category: Create an action
       product_selection: Create a condition
@@ -161,6 +164,8 @@ pimee_catalog_rule:
     loading: An error occurred during rule definition loading.
     required: This field is required
     required_attribute: An attribute is required
+    required_locale: A locale is required for the {{ attributeLabel }} attribute
+    required_scope: A channel is required for the {{ attributeLabel }} attribute
     required_value: A value is required for this action
     required_categories: At least one category is required for this action
     unknown_or_inactive_locale: 'The "{{ localeCode }}" locale does not exist or is not activated'
@@ -177,6 +182,7 @@ pimee_catalog_rule:
     select_another_attribute: "Select another attribute"
     or: or
     create_attribute_link: click here to create the attribute
+    edit_unauthorize: You are not allowed to edit rules
 pim_enrich:
   entity:
     rule:

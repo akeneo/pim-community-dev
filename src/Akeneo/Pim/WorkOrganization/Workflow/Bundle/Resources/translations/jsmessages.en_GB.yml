@@ -25,7 +25,7 @@ pimee_workflow:
       modal.title: Leave a comment (optional - 255 characters max.)
   proposal:
     overview: "]-Inf, 1]{{ count }} proposal|]1, Inf[{{ count }} proposals"
-    selected: proposals selected
+    selected: "]-Inf, 1]{{ count }} proposal selected|]1, Inf[{{ count }} proposals selected"
     mass_action_group:
       review:
         label: Bulk Action
@@ -111,7 +111,7 @@ pimee_enrich.entity.product:
       published: Published
       revert: Restore
     attribute:
-      can_be_updated_by_a_rule: "This attribute can be updated by a rule: {{ rule }}"
+      can_be_updated_by_a_rule: "]-Inf, 1]This attribute can be updated by a rule:|]1, +Inf[This attribute can be updated by the rules:"
       value_updated: This value is updated by the current draft
     meta:
       published_version: Published version
