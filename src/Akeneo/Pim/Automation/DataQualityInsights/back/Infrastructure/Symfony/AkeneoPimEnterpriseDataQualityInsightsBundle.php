@@ -11,14 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure;
+namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-interface GetAllFamilyCodesQueryInterface
+final class AkeneoPimEnterpriseDataQualityInsightsBundle extends Bundle
 {
-    /**
-     * @return FamilyCode[]
-     */
-    public function execute(): array;
 }
