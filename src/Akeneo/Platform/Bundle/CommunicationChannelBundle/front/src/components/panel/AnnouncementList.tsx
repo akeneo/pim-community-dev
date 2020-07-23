@@ -21,11 +21,9 @@ const AnnouncementList = ({campaign, panelIsClosed}: ListAnnouncementProps) => {
   const __ = useTranslate();
   const containerRef = useRef<HTMLUListElement | null>(null);
   const scrollableElement = null !== containerRef.current ? containerRef.current.parentElement : null;
-  const limitNbElements = 10;
   const [announcementResponse, handleFetchingResults] = useInfiniteScroll(
     fetchAnnouncements,
-    scrollableElement,
-    limitNbElements
+    scrollableElement
   );
   const handleHasNewAnnouncements = useHasNewAnnouncements();
   const handleAddViewedAnnouncements = useAddViewedAnnouncements();
@@ -39,7 +37,7 @@ const AnnouncementList = ({campaign, panelIsClosed}: ListAnnouncementProps) => {
     if (newAnnouncements.length > 0) {
       await handleAddViewedAnnouncements(newAnnouncements);
       await handleHasNewAnnouncements();
-      await handleFetchingResults(null, limitNbElements);
+      await handleFetchingResults(null);
     }
   }, [announcementResponse.items]);
 
