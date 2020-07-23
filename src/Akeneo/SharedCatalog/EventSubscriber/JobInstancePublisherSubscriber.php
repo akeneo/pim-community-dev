@@ -45,11 +45,11 @@ class JobInstancePublisherSubscriber implements EventSubscriber
         }
 
         $rawParameters = $entity->getRawParameters();
-        $rawParameters['publisher'] = $this->getPublisherIdentifier();
+        $rawParameters['publisher'] = $this->getPublisherEmail();
         $entity->setRawParameters($rawParameters);
     }
 
-    private function getPublisherIdentifier(): ?string
+    private function getPublisherEmail(): ?string
     {
         $token = $this->tokenStorage->getToken();
         if (null === $token) {
