@@ -3,6 +3,7 @@
 namespace Akeneo\SharedCatalog\Query;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Types;
 
 class GetProductIdFromProductIdentifierQuery implements GetProductIdFromProductIdentifierQueryInterface
 {
@@ -31,7 +32,7 @@ SQL;
                 'product_identifier' => $productIdentifier,
             ],
             [
-                'product_identifiers' => Connection::PARAM_STR_ARRAY,
+                'product_identifier' => Types::STRING,
             ]
         );
 

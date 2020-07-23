@@ -127,7 +127,7 @@ class FindProductIdentifiersQuerySpec extends ObjectBehavior
         ProductQueryBuilderInterface $productQueryBuilder,
         SharedCatalog $sharedCatalog
     ) {
-        $searchAfterProductIdentifier = 'MyPrOdUcTiDeNtiFiEr';
+        $searchAfterProductIdentifier = 'identifier_WITH_UPPERCASE';
 
         $sharedCatalog->beConstructedWith([
             'shared_catalog',
@@ -162,7 +162,7 @@ class FindProductIdentifiersQuerySpec extends ObjectBehavior
                 ],
                 'limit' => 100,
                 'search_after' => [
-                    'myproductidentifier',
+                    'identifier_with_uppercase', // elasticsearch expect the search after to be in lowercase
                     'product_42',
                 ],
             ])
