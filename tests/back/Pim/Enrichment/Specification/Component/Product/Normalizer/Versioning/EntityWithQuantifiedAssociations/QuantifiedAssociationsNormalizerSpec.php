@@ -5,7 +5,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versi
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -20,7 +20,7 @@ class QuantifiedAssociationsNormalizerSpec extends ObjectBehavior
         ProductInterface $product,
         ProductModelInterface $productModel,
         GroupInterface $group,
-        QuantifiedAssociations $quantifiedAssociations
+        QuantifiedAssociationCollection $quantifiedAssociations
     ) {
         $this->supportsNormalization($product, 'flat')->shouldBe(true);
         $this->supportsNormalization($productModel, 'flat')->shouldBe(true);

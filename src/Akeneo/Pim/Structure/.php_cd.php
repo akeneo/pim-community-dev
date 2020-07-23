@@ -17,6 +17,10 @@ $rules = [
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'FOS\RestBundle\View',
+        'Oro\Bundle\DataGridBundle\Event\BuildBefore',
+        'Oro\Bundle\FilterBundle\Grid\Extension\Configuration',
+        'Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface',
+        'Oro\Bundle\FilterBundle\Filter\ChoiceFilter',
 
         // TIP-906: Functional problem to query products before removing AttributeOption
         'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelQueryBuilderFactory',

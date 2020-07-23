@@ -364,6 +364,9 @@ pim_datagrid:
     mass_edit: Massenbearbeitung
     sequential_edit: Sequentielle Bearbeitung
     mass_delete: Mehrauswahl löschen
+    selected:
+      family: "]-Inf, 1]{{ count }} Familie ausgewählt|]1, Inf[{{ count }} Familien ausgewählt"
+      product: "]-Inf, 1]{{ count }} Ergebnis ausgewählt|]1, Inf[{{ count }} Ergebnisse ausgewählt"
   view_selector:
     view: Ansichten
   actions:

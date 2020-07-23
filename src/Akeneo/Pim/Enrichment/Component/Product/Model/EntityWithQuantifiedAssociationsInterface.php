@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\IdMapping;
-use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 
 /**
  * Interface to implement for any entity that should be aware of any quantified associations it is holding.
@@ -17,14 +17,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\Quantifi
 interface EntityWithQuantifiedAssociationsInterface
 {
     /**
-     * Set the quantified associations
-     */
-    public function setQuantifiedAssociations(QuantifiedAssociations $quantifiedAssociations): void;
-
-    /**
      * Get the quantified associations
      */
-    public function getQuantifiedAssociations(): QuantifiedAssociations;
+    public function getQuantifiedAssociations(): QuantifiedAssociationCollection;
 
     /**
      * Get all associated product ids
@@ -41,12 +36,30 @@ interface EntityWithQuantifiedAssociationsInterface
     public function getQuantifiedAssociationsProductModelIds(): array;
 
     /**
+     * Remove quantified association with product/product model not present in parameter
+     *
+     * @param array $productIdentifiersToKeep
+     * @param array $productModelCodesToKeep
+     */
+    public function filterQuantifiedAssociations(array $productIdentifiersToKeep, array $productModelCodesToKeep): void;
+
+    /**
+     * Remove all quantified associations
+     */
+    public function clearQuantifiedAssociations(): void;
+
+    /**
      * Hydrates quantified associations from raw quantified associations
      *
      * @param IdMapping $mappedProductIds
      * @param IdMapping $mappedProductModelIds
+     * @param array $associationTypeCodes
      */
-    public function hydrateQuantifiedAssociations(IdMapping $mappedProductIds, IdMapping $mappedProductModelIds): void;
+    public function hydrateQuantifiedAssociations(
+        IdMapping $mappedProductIds,
+        IdMapping $mappedProductModelIds,
+        array $associationTypeCodes
+    ): void;
 
     /**
      * Get all associated product identifiers
@@ -61,20 +74,6 @@ interface EntityWithQuantifiedAssociationsInterface
      * @return string[]
      */
     public function getQuantifiedAssociationsProductModelCodes(): array;
-
-    /**
-     * Get all association type codes
-     *
-     * @return string[]
-     */
-    public function getQuantifiedAssociationsTypeCodes(): array;
-
-    /**
-     * Remove the given association type and all the corresponding associations
-     *
-     * @param string $associationTypeCode
-     */
-    public function removeQuantifiedAssociationsType(string $associationTypeCode): void;
 
     /**
      * Update raw quantified associations from quantified associations
@@ -93,4 +92,16 @@ interface EntityWithQuantifiedAssociationsInterface
      * @return array
      */
     public function normalizeQuantifiedAssociations(): array;
+
+    /**
+     * Update quantified associations by merging with another quantified associations
+     * @param QuantifiedAssociationCollection $quantifiedAssociations
+     */
+    public function mergeQuantifiedAssociations(QuantifiedAssociationCollection $quantifiedAssociations): void;
+
+    /**
+     * Update quantified associations by path
+     * @param array $submittedQuantifiedAssociations
+     */
+    public function patchQuantifiedAssociations(array $submittedQuantifiedAssociations): void;
 }

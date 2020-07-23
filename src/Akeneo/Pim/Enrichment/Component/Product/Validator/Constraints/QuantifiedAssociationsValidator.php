@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations as QuantifiedAssociationsModel;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindNonExistingProductIdentifiersQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindNonExistingProductModelCodesQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\QuantifiedAssociations as QuantifiedAssociationsConstraint;
@@ -47,8 +47,8 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        if (!$value instanceof QuantifiedAssociationsModel) {
-            throw new UnexpectedTypeException($value, QuantifiedAssociationsModel::class);
+        if (!$value instanceof QuantifiedAssociationCollection) {
+            throw new UnexpectedTypeException($value, QuantifiedAssociationCollection::class);
         }
 
         if (!$constraint instanceof QuantifiedAssociationsConstraint) {

@@ -1,5 +1,6 @@
-import React, {useLayoutEffect, useRef} from 'react';
+import React, {useRef} from 'react';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useScrollIntoView} from '../hooks/useScrollIntoView';
 
 interface newOptionPlaceholderProps {
   cancelNewOption: () => void;
@@ -7,13 +8,9 @@ interface newOptionPlaceholderProps {
 
 const NewOptionPlaceholder = ({cancelNewOption}: newOptionPlaceholderProps) => {
     const translate = useTranslate();
-    const placeholderRef = useRef<HTMLDivElement | null>(null);
+    const placeholderRef = useRef<HTMLDivElement>(null);
 
-    useLayoutEffect(() => {
-        if (placeholderRef && placeholderRef.current) {
-            placeholderRef.current.scrollIntoView();
-        }
-    }, []);
+    useScrollIntoView(placeholderRef);
 
     return (
         <div className="AknAttributeOption-listItem AknAttributeOption-listItem--selected" role="new-option-placeholder" ref={placeholderRef}>

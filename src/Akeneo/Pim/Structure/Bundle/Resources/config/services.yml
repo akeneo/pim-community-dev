@@ -60,3 +60,16 @@ services:
                 xlsx_group_type_import: pim-job-instance-xlsx-base-import
         tags:
             - { name: pim_enrich.provider.form, priority: 100 }
+
+    Akeneo\Pim\Structure\Bundle\Datagrid\Attribute\RegisterFamilyFilter:
+        arguments:
+            - '@pim_enrich.repository.family'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.attribute-grid, method: buildBefore }
+
+    Akeneo\Pim\Structure\Bundle\Datagrid\Attribute\FamilyFilter:
+        arguments:
+            - '@form.factory'
+            - '@oro_filter.filter_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: datagrid_attribute_family_filter }

@@ -15,7 +15,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -59,7 +59,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         AssociationInterface $association,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters,
-        QuantifiedAssociations $quantifiedAssociations
+        QuantifiedAssociationCollection $quantifiedAssociations
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(true);
@@ -198,7 +198,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         AssociationInterface $association,
         ProductInterface $product,
         JobParameters $jobParameters,
-        QuantifiedAssociations $quantifiedAssociations,
+        QuantifiedAssociationCollection $quantifiedAssociations,
         ConstraintViolationListInterface $quantifiedViolations
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -279,7 +279,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         AssociationInterface $association,
         ProductInterface $product,
         JobParameters $jobParameters,
-        QuantifiedAssociations $quantifiedAssociations,
+        QuantifiedAssociationCollection $quantifiedAssociations,
         ConstraintViolationListInterface $quantifiedViolations
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
