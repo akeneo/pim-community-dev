@@ -35,7 +35,7 @@ class ProductListActionEndToEnd extends ApiTestCase
     /**
      * @test
      */
-    public function it_list_product_id_linked_to_catalog()
+    public function it_list_product_identifiers_linked_to_catalog()
     {
         $this->createJobInstance(
             'shared_catalog_1',
@@ -66,7 +66,7 @@ class ProductListActionEndToEnd extends ApiTestCase
         $this->assertSame(200, $response->getStatusCode());
         $this->assertSame(
             [
-                "results" => [
+                'results' => [
                     'productA',
                     'productB',
                     'productC',
@@ -113,7 +113,7 @@ class ProductListActionEndToEnd extends ApiTestCase
         $this->assertSame(200, $response->getStatusCode());
         $this->assertSame(
             [
-                "results" => [
+                'results' => [
                     'productA',
                     'productB',
                 ],
@@ -128,7 +128,7 @@ class ProductListActionEndToEnd extends ApiTestCase
         $this->assertSame(200, $response->getStatusCode());
         $this->assertSame(
             [
-                "results" => [
+                'results' => [
                     'productC',
                     'productD',
                     'productE'
