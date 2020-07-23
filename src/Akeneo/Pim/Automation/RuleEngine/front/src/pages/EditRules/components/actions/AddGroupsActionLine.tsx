@@ -101,6 +101,7 @@ const AddGroupsActionLine: React.FC<ActionLineProps> = ({
         <AknActionFormContainer>
           <Controller
             as={GroupsSelector}
+            id={`edit-rules-actions-${lineNumber}-items`}
             label={`${translate(
               'pim_enrich.mass_edit.product.operation.add_to_group.field'
             )} ${translate('pim_common.required_label')}`}

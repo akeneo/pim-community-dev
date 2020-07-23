@@ -19,6 +19,7 @@ type Props = {
   onChange?: (value: GroupCode[]) => void;
   validation?: { required?: string; validate?: (value: any) => string | true };
   name: string;
+  id: string;
 };
 
 const dataProvider = (
@@ -81,6 +82,7 @@ const GroupsSelector: React.FC<Props> = ({
   onChange,
   validation,
   name,
+  id,
   ...remainingProps
 }) => {
   const translate = useTranslate();
@@ -112,6 +114,7 @@ const GroupsSelector: React.FC<Props> = ({
         label ||
         translate('pim_enrich.mass_edit.product.operation.add_to_group.field')
       }
+      data-testid={id}
       hiddenLabel={hiddenLabel}
       value={value}
       onChange={handleChange}
