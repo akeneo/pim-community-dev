@@ -5,15 +5,15 @@ namespace Akeneo\SharedCatalog\Model;
 class SharedCatalog
 {
     /** @var string */
-    public $code;
+    private $code;
     /** @var string|null */
-    public $publisher;
+    private $publisher;
     /** @var array|null */
-    public $recipients;
+    private $recipients;
     /** @var array|null */
-    public $filters;
+    private $filters;
     /** @var array|null */
-    public $branding;
+    private $branding;
 
     public function __construct(
         string $code,
@@ -27,6 +27,16 @@ class SharedCatalog
         $this->recipients = $recipients;
         $this->filters = $filters;
         $this->branding = $branding;
+    }
+
+    public function getDefaultScope(): ?string
+    {
+        return $this->filters['structure']['scope'] ?? null;
+    }
+
+    public function getPQBFilters(): array
+    {
+        return $this->filters['data'] ?? [];
     }
 
     public function normalizeForExternalApi(): array

@@ -29,8 +29,8 @@ class FindProductIdentifiersQuery implements FindProductIdentifiersQueryInterfac
         $options = $this->resolveOptions($options);
 
         $pqbOptions = [
-            'default_scope' => $sharedCatalog->filters['structure']['scope'] ?? null,
-            'filters' => $sharedCatalog->filters['data'] ?? [],
+            'default_scope' => $sharedCatalog->getDefaultScope(),
+            'filters' => $sharedCatalog->getPQBFilters(),
             'limit' => $options['limit'],
         ];
 
