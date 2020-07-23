@@ -2,7 +2,7 @@
 
 namespace Akeneo\SharedCatalog\Model;
 
-final class SharedCatalog
+class SharedCatalog
 {
     /** @var string */
     private $code;
@@ -27,6 +27,16 @@ final class SharedCatalog
         $this->recipients = $recipients;
         $this->filters = $filters;
         $this->branding = $branding;
+    }
+
+    public function getDefaultScope(): ?string
+    {
+        return $this->filters['structure']['scope'] ?? null;
+    }
+
+    public function getPQBFilters(): array
+    {
+        return (array)($this->filters['data'] ?? []);
     }
 
     public function normalizeForExternalApi(): array

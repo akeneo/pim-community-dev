@@ -98,4 +98,74 @@ class SharedCatalogSpec extends ObjectBehavior
             ],
         ]);
     }
+
+    public function it_can_return_the_default_scope()
+    {
+        $this->beConstructedWith(
+            'shared_catalog',
+            'julia',
+            [],
+            [
+                'structure' => [
+                    'scope' => 'mobile',
+                ],
+            ],
+            []
+        );
+
+        $this->getDefaultScope()->shouldEqual('mobile');
+    }
+
+    public function it_returns_null_if_there_is_no_default_scope()
+    {
+        $this->beConstructedWith(
+            'shared_catalog',
+            'julia',
+            [],
+            [],
+            []
+        );
+
+        $this->getDefaultScope()->shouldBeNull();
+    }
+
+    public function it_can_return_the_pqb_filters()
+    {
+        $this->beConstructedWith(
+            'shared_catalog',
+            'julia',
+            [],
+            [
+                'data' => [
+                    [
+                        'field' => 'enabled',
+                        'operator' => '=',
+                        'value' => true,
+                    ],
+                ],
+            ],
+            []
+        );
+
+        $this->getPQBFilters()->shouldEqual([
+            [
+                'field' => 'enabled',
+                'operator' => '=',
+                'value' => true,
+            ],
+        ]);
+    }
+
+    public function it_returns_an_empty_array_if_there_is_no_pqb_filters()
+    {
+        $this->beConstructedWith(
+            'shared_catalog',
+            'julia',
+            [],
+            [],
+            []
+        );
+
+        $this->getPQBFilters()->shouldEqual([]);
+    }
 }
