@@ -42,10 +42,14 @@ type Select2Result = {
   text: string;
 };
 
-const handleResults = (groups: Select2Result[]) => {
+type Select2Results = {
+  results: Select2Result[];
+};
+
+const handleResults = (json: Select2Results) => {
   return {
-    more: 20 === Object.keys(groups).length,
-    results: groups,
+    more: 20 === json.results.length,
+    ...json,
   };
 };
 
@@ -100,8 +104,8 @@ const GroupsSelector: React.FC<Props> = ({
       cache: true,
       data: (term: string, page: number) =>
         dataProvider(term, page, currentCatalogLocale),
-      results: (json: { results: Select2Result[] }) => {
-        return handleResults(json.results);
+      results: (json: Select2Results) => {
+        return handleResults(json);
       },
     };
   }, [currentCatalogLocale, router]);
