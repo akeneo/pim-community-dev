@@ -2,13 +2,13 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Adder;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 
 /**
  * Quantified association field adder
  *
  * @author    Julien Sanchez <julien@akeneo.com>
- * @copyright 2°2° Akeneo SAS (http://www.akeneo.com)
+ * @copyright Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class QuantifiedAssociationFieldAdder extends AbstractFieldAdder
@@ -41,6 +41,8 @@ class QuantifiedAssociationFieldAdder extends AbstractFieldAdder
      */
     public function addFieldData($product, $field, $data, array $options = [])
     {
-        $product->getQuantifiedAssociations()->merge(QuantifiedAssociations::createFromNormalized($data));
+        $quantifiedAssociationsToMerge = QuantifiedAssociationCollection::createFromNormalized($data);
+
+        $product->mergeQuantifiedAssociations($quantifiedAssociationsToMerge);
     }
 }

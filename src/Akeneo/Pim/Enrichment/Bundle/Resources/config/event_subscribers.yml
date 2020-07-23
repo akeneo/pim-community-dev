@@ -59,7 +59,7 @@ services:
         arguments:
             - '@akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_ids_query'
             - '@akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_model_ids_query'
-            - '@akeneo.pim.enrichment.product.query.find_non_existing_association_type_codes_query'
+            - '@akeneo.pim.enrichment.product.query.find_quantified_association_codes'
         tags:
             - { name: doctrine.event_subscriber, priority: 55 }
 
