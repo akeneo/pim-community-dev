@@ -32,30 +32,31 @@ final class GetProductIdsByAttributeOptionCodeQuery implements GetProductIdsByAt
     public function execute(AttributeOptionCode $attributeOptionCode, int $bulkSize): \Iterator
     {
         $query = [
-            '_source' => ['id'],
-            'size' => $bulkSize,
-            'sort' => ['_id' => 'asc'],
-            'query' => [
-                'bool' => [
-                    'must' => [
-                        [
-                            'term' => [
-                                'document_type' => ProductInterface::class
-                            ],
+            'bool' => [
+                'must' => [
+                    [
+                        'term' => [
+                            'document_type' => ProductInterface::class
                         ],
-                        [
-                            'query_string' => [
-                                'default_field' => sprintf('values.%s-option*', $attributeOptionCode->getAttributeCode()),
-                                'query' => strval($attributeOptionCode)
-                            ]
-                        ],
+                    ],
+                    [
+                        'query_string' => [
+                            'default_field' => sprintf('values.%s-option*', $attributeOptionCode->getAttributeCode()),
+                            'query' => strval($attributeOptionCode)
+                        ]
                     ],
                 ],
             ],
         ];
+        $searchQuery = [
+            '_source' => ['id'],
+            'size' => $bulkSize,
+            'sort' => ['_id' => 'asc'],
+            'query' => $query,
+        ];
 
-        $result = $this->esClient->search($query);
-        $totalProducts = $result['hits']['total']['value'];
+        $totalProducts = $this->countTotalOfProducts($query);
+        $result = $this->esClient->search($searchQuery);
         $searchAfter = [];
         $returnedProducts = 0;
 
@@ -69,7 +70,7 @@ final class GetProductIdsByAttributeOptionCodeQuery implements GetProductIdsByAt
             yield $productIds;
 
             $returnedProducts += count($productIds);
-            $result = $returnedProducts < $totalProducts ? $this->searchAfter($query, $searchAfter) : [];
+            $result = $returnedProducts < $totalProducts ? $this->searchAfter($searchQuery, $searchAfter) : [];
         }
     }
 
@@ -80,5 +81,16 @@ final class GetProductIdsByAttributeOptionCodeQuery implements GetProductIdsByAt
         }
 
         return $this->esClient->search($query);
+    }
+
+    private function countTotalOfProducts(array $query): int
+    {
+        $countResult = $this->esClient->count(['query' => $query]);
+
+        if (!isset($countResult['count'])) {
+            throw new \Exception('Failed to count the total number of products by attribute option');
+        }
+
+        return intval($countResult['count']);
     }
 }
