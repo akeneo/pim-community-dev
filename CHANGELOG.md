@@ -33,12 +33,16 @@
 
 - CLOUD-1959: Use cloud-deployer 2.2 and terraform 0.12.25
 - PIM-9306: Enhance catalog volume monitoring count queries for large datasets
+- API-1140: Be able get attributes searching by a list of attribute codes
 
 # Technical Improvements
 
 ## Classes
 
 ## BC breaks
+
+- API-1140: Change $criteria format from `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\ExternalApi\AttributeRepository`
+    the new format is `[property: [['operator' => (string), 'value' => (mixed)]]]`.
 
 ### Codebase
 
