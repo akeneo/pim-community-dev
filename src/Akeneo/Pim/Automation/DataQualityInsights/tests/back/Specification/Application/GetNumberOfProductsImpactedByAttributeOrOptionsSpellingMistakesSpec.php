@@ -81,6 +81,4 @@ final class GetNumberOfProductsImpactedByAttributeOrOptionsSpellingMistakesSpec 
 
         $this->byAttributeCode($attributeCode)->shouldReturn(0);
     }
-
-
 }
