@@ -57,10 +57,10 @@ class JobInstancePublisherSubscriber implements EventSubscriber
         }
 
         $user = $token->getUser();
-        if ($user instanceof User && null !== $user->getEmail()) {
-            return $user->getEmail();
+        if (!$user instanceof User) {
+            return null;
         }
 
-        return $token->getUsername();
+        return $user->getEmail();
     }
 }
