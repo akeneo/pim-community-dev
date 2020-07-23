@@ -22,21 +22,32 @@ use Akeneo\Test\Integration\TestCase;
 
 class GetAttributeQueryIntegration extends TestCase
 {
-    public function test_that_it_selects_the_attribute_codes_of_a_given_family()
+    public function test_that_it_selects_the_attribute_codes()
     {
         $this->createAttribute('attribute_A', false);
         $this->createAttribute('attribute_B', true);
+        $this->createAttribute('attribute_without_family', true);
 
-        $this->createFamily('a_family', ['attribute_A', 'attribute_B'], 'attribute_A');
+        $this->createFamily('a_family', ['attribute_A', 'attribute_B']);
 
         $this->assertEquals(
-            new Attribute(new AttributeCode('attribute_A'), new AttributeType(AttributeTypes::TEXT), false, true),
+            new Attribute(new AttributeCode('attribute_A'), new AttributeType(AttributeTypes::TEXT), false, false),
             $this->get(GetAttributeQuery::class)->byAttributeCode(new AttributeCode('attribute_A'))
         );
 
         $this->assertEquals(
             new Attribute(new AttributeCode('attribute_B'), new AttributeType(AttributeTypes::TEXT), true, false),
             $this->get(GetAttributeQuery::class)->byAttributeCode(new AttributeCode('attribute_B'))
+        );
+
+        $this->assertEquals(
+            new Attribute(new AttributeCode('attribute_without_family'), new AttributeType(AttributeTypes::TEXT), true, false),
+            $this->get(GetAttributeQuery::class)->byAttributeCode(new AttributeCode('attribute_without_family'))
+        );
+
+        $this->assertEquals(
+            null,
+            $this->get(GetAttributeQuery::class)->byAttributeCode(new AttributeCode('undefined_attribute'))
         );
     }
 
@@ -50,12 +61,11 @@ class GetAttributeQueryIntegration extends TestCase
         $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
 
-    private function createFamily(string $familyCode, array $attributeCodes, $attributeCodeAsMainTitle): void
+    private function createFamily(string $familyCode, array $attributeCodes): void
     {
         $familyData = [
             'code' => $familyCode,
             'attributes' => array_merge(['sku'], $attributeCodes),
-            'attribute_as_label' => $attributeCodeAsMainTitle,
         ];
 
         $family = $this
