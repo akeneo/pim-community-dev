@@ -35,7 +35,7 @@ describe('PriceCollectionValue', () => {
     fetchMock.resetMocks();
   });
 
-  xit('should display a field by currency with all currencies', async () => {
+  it('should display a field by currency with all currencies', async () => {
     fetchMock.mockResponse((request: Request) => {
       if (request.url.includes('pim_enrich_currency_rest_index')) {
         return Promise.resolve(JSON.stringify(currencies));
@@ -64,7 +64,7 @@ describe('PriceCollectionValue', () => {
     ).toBeInTheDocument();
   });
 
-  xit('should display a field by currency with a scope', async () => {
+  it('should display a field by currency with a scope', async () => {
     fetchMock.mockResponse((request: Request) => {
       if (request.url.includes('pim_enrich_currency_rest_index')) {
         return Promise.resolve(JSON.stringify(currencies));
@@ -96,7 +96,7 @@ describe('PriceCollectionValue', () => {
     ).toBeInTheDocument();
   });
 
-  xit('should trigger changes when adding a value', async () => {
+  it('should trigger changes when adding a value', async () => {
     fetchMock.mockResponse((request: Request) => {
       if (request.url.includes('pim_enrich_currency_rest_index')) {
         return Promise.resolve(JSON.stringify(currencies));
