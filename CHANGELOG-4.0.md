@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - Fix pdf renderer for image attributes, it was displaying the path instead of the original filename
+- PIM-9358: Break down values & properties query with CTE to use less memory
 
 # 4.0.42 (2020-07-22)
 
