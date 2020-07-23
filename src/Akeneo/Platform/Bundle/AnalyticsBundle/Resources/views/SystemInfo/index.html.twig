@@ -16,14 +16,23 @@
         ) }}
 
         <table class="AknGrid AknGrid--unclickable AknGrid--condensed table">
-            {% for infoType,info in data %}
+            {% for infoTypeLevel1,infoLevel1 in data %}
                 <tr class="AknGrid-bodyRow">
-                    <th class="AknGrid-bodyCell">{{ ('pim_analytics.info_type.' ~ infoType)|trans }}</th>
+                    <th class="AknGrid-bodyCell">{{ ('pim_analytics.info_type.' ~ infoTypeLevel1)|trans }}</th>
                     <td class="AknGrid-bodyCell">
-                        {% if info is iterable %}
-                            {{ info|join('<br>')|raw }}
+                        {% if infoLevel1 is iterable %}
+                            {% for infoTypeLevel2,infoLevel2 in infoLevel1 %}
+                                {% if infoLevel2 is iterable %}
+                                    {% for infoTypeLevel3,infoLevel3 in infoLevel2 %}
+                                        {{ ('pim_analytics.info_type.' ~ infoTypeLevel2 ~ '.' ~ infoTypeLevel3)|trans }} : {{ infoLevel3|raw }}
+                                        <br>
+                                    {% endfor %}
+                                {% else %}
+                                    {{ infoLevel1|join('<br>')|raw }}
+                                {% endif %}
+                            {% endfor %}
                         {% else %}
-                            {{ info }}
+                            {{ infoLevel1 }}
                         {% endif %}
                     </td>
                 </tr>
