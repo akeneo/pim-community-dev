@@ -77,11 +77,15 @@ const CompletenessConditionLine: React.FC<ConditionLineProps> = ({
     <ValueColumn small>
       <Controller
         as={InputNumber}
+        className={`AknTextField${isElementInError('value') ? ' AknTextField--error' : ''}`}
         data-testid={`edit-rules-input-${lineNumber}-value`}
         name={valueFormName}
         label={translate('pimee_catalog_rule.rule.value')}
         hiddenLabel={true}
         defaultValue={getValueFormValue()}
+        rules={{
+          required: translate('pimee_catalog_rule.exceptions.required_value'),
+        }}
       />
     </ValueColumn>
     <ScopeColumn

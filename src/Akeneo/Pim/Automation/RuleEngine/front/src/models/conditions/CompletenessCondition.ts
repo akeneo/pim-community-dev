@@ -57,7 +57,7 @@ const createCompletenessCondition: ConditionFactory = (
   return Promise.resolve<CompletenessCondition>({
     field: 'completeness',
     operator: Operator.EQUALS,
-    value: 100,
+    value: 0,
     locale: '',
     scope: '',
   });

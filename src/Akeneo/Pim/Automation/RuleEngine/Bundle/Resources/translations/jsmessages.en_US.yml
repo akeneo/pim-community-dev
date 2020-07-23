@@ -197,12 +197,12 @@ pimee_catalog_rule:
                     ">=": equals or greater than
                     "<": less than
                     "<=": equals or less than
-                    "NOT EQUALS ON AT LEAST ONE LOCALE": not equal2
-                    "EQUALS ON AT LEAST ONE LOCALE": equals2
-                    "GREATER THAN ON AT LEAST ONE LOCALE": greater than2
-                    "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": greater or equals than2
-                    "LOWER OR EQUALS THAN ON AT LEAST ONE LOCALE": lower or equalsthan 2
-                    "LOWER THAN ON AT LEAST ONE LOCALE": lower than2
+                    "NOT EQUALS ON AT LEAST ONE LOCALE": not equal
+                    "EQUALS ON AT LEAST ONE LOCALE": equals
+                    "GREATER THAN ON AT LEAST ONE LOCALE": greater than
+                    "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": equals or greater than
+                    "LOWER OR EQUALS THAN ON AT LEAST ONE LOCALE": equals or less than
+                    "LOWER THAN ON AT LEAST ONE LOCALE": less than
             notification:
                 success: Rule updated successfully
                 failed: Rule update failed
