@@ -85,5 +85,9 @@ akeneo_data_quality_insights:
     title_suggestion_popover:
       title: Suggestions
       ignore_all_suggestions_button_label: Ignorer
+  attribute_grid:
+    quality:
+      to_improve: A améliorer
+      good: Bon
 pim_title:
   akeneo_data_quality_insights_dashboard: Qualité des données
