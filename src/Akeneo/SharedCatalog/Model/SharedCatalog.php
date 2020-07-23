@@ -36,7 +36,7 @@ class SharedCatalog
 
     public function getPQBFilters(): array
     {
-        return $this->filters['data'] ?? [];
+        return (array)($this->filters['data'] ?? []);
     }
 
     public function normalizeForExternalApi(): array
