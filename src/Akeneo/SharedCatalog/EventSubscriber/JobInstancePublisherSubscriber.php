@@ -3,6 +3,7 @@
 namespace Akeneo\SharedCatalog\EventSubscriber;
 
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
@@ -43,12 +44,23 @@ class JobInstancePublisherSubscriber implements EventSubscriber
             return;
         }
 
-        if (null === $this->tokenStorage->getToken()) {
-            return;
+        $rawParameters = $entity->getRawParameters();
+        $rawParameters['publisher'] = $this->getPublisherIdentifier();
+        $entity->setRawParameters($rawParameters);
+    }
+
+    private function getPublisherIdentifier(): ?string
+    {
+        $token = $this->tokenStorage->getToken();
+        if (null === $token) {
+            return null;
         }
 
-        $rawParameters = $entity->getRawParameters();
-        $rawParameters['publisher'] = $this->tokenStorage->getToken()->getUsername();
-        $entity->setRawParameters($rawParameters);
+        $user = $token->getUser();
+        if ($user instanceof User && null !== $user->getEmail()) {
+            return $user->getEmail();
+        }
+
+        return $token->getUsername();
     }
 }

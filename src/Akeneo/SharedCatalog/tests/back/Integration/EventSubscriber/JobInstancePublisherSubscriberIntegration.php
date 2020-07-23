@@ -2,24 +2,25 @@
 
 namespace Akeneo\SharedCatalog\tests\back\Integration\EventSubscriber;
 
+use Akeneo\SharedCatalog\tests\back\Utils\AuthenticateAs;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class JobInstancePublisherSubscriberIntegration extends TestCase
 {
+    use AuthenticateAs;
+
     /** @var EntityManager */
     private $em;
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->em = $this->get('doctrine')->getManager();
-        $this->tokenStorage = $this->get('security.token_storage');
+        $this->authenticateAs('admin');
     }
 
     protected function getConfiguration()
@@ -44,10 +45,7 @@ class JobInstancePublisherSubscriberIntegration extends TestCase
         $this->em->persist($jobInstance);
         $this->em->flush();
 
-        $actualUsername = $this->tokenStorage->getToken()->getUsername();
-        self::assertEquals('system', $actualUsername);
-
         $actualPublisher = $jobInstance->getRawParameters()['publisher'];
-        self::assertEquals('system', $actualPublisher);
+        self::assertEquals('admin@example.com', $actualPublisher);
     }
 }
