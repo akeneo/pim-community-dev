@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\Permission\Component\Merger;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithQuantifiedAssociationsInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Permission\Bundle\Entity\Query\ProductCategoryAccessQuery;
 use Akeneo\Pim\Permission\Bundle\Entity\Query\ProductModelCategoryAccessQuery;
 use Akeneo\Pim\Permission\Component\Merger\NotGrantedQuantifiedAssociationsMerger;
@@ -65,7 +65,7 @@ class NotGrantedQuantifiedAssociationsMergerSpec extends ObjectBehavior
         )->willReturn(['product_model_a', 'product_model_b']);
 
         $fullEntityWithQuantifiedAssociations->getQuantifiedAssociations()->willReturn(
-            QuantifiedAssociations::createFromNormalized([
+            QuantifiedAssociationCollection::createFromNormalized([
                 'PRODUCTSET' => [
                     'products' => [
                         ['identifier' => 'product_b', 'quantity' => 1],
@@ -80,7 +80,7 @@ class NotGrantedQuantifiedAssociationsMergerSpec extends ObjectBehavior
         );
 
         $filteredEntityWithQuantifiedAssociations->getQuantifiedAssociations()->willReturn(
-            QuantifiedAssociations::createFromNormalized([
+            QuantifiedAssociationCollection::createFromNormalized([
                 'PRODUCTSET' => [
                     'products' => [
                         ['identifier' => 'product_c', 'quantity' => 12],
@@ -132,7 +132,7 @@ class NotGrantedQuantifiedAssociationsMergerSpec extends ObjectBehavior
         )->willReturn(['product_model_a']);
 
         $fullEntityWithQuantifiedAssociations->getQuantifiedAssociations()->willReturn(
-            QuantifiedAssociations::createFromNormalized([
+            QuantifiedAssociationCollection::createFromNormalized([
                 'PRODUCTSET' => [
                     'products' => [
                         ['identifier' => 'product_b', 'quantity' => 1],
@@ -147,7 +147,7 @@ class NotGrantedQuantifiedAssociationsMergerSpec extends ObjectBehavior
         ));
 
         $filteredEntityWithQuantifiedAssociations->getQuantifiedAssociations()->willReturn(
-            QuantifiedAssociations::createFromNormalized([
+            QuantifiedAssociationCollection::createFromNormalized([
                 'PRODUCTSET' => [
                     'products' => [
                         ['identifier' => 'product_b', 'quantity' => 11],
@@ -199,7 +199,7 @@ class NotGrantedQuantifiedAssociationsMergerSpec extends ObjectBehavior
         )->willReturn(['product_model_a', 'product_model_b']);
 
         $fullEntityWithQuantifiedAssociations->getQuantifiedAssociations()->willReturn(
-            QuantifiedAssociations::createFromNormalized([
+            QuantifiedAssociationCollection::createFromNormalized([
                 'PRODUCTSET' => [
                     'products' => [
                         ['identifier' => 'product_a', 'quantity' => 1],
@@ -214,7 +214,7 @@ class NotGrantedQuantifiedAssociationsMergerSpec extends ObjectBehavior
         );
 
         $filteredEntityWithQuantifiedAssociations->getQuantifiedAssociations()->willReturn(
-            QuantifiedAssociations::createFromNormalized([
+            QuantifiedAssociationCollection::createFromNormalized([
                 'PRODUCTSET' => [
                     'products' => [
                         ['identifier' => 'product_b', 'quantity' => 2],
@@ -263,7 +263,7 @@ class NotGrantedQuantifiedAssociationsMergerSpec extends ObjectBehavior
         )->willReturn(['product_model_a', 'product_model_b']);
 
         $fullEntityWithQuantifiedAssociations->getQuantifiedAssociations()->willReturn(
-            QuantifiedAssociations::createFromNormalized([
+            QuantifiedAssociationCollection::createFromNormalized([
                 'PRODUCTSET' => [
                     'products' => [
                         ['identifier' => 'product_a', 'quantity' => 1],
@@ -278,7 +278,7 @@ class NotGrantedQuantifiedAssociationsMergerSpec extends ObjectBehavior
         );
 
         $filteredEntityWithQuantifiedAssociations->getQuantifiedAssociations()->willReturn(
-            QuantifiedAssociations::createFromNormalized([
+            QuantifiedAssociationCollection::createFromNormalized([
                 'PRODUCTSET' => [
                     'products' => [
                         ['identifier' => 'product_a', 'quantity' => 1],
