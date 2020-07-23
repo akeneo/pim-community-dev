@@ -51,6 +51,9 @@ class FindProductIdentifiersQuerySpec extends ObjectBehavior
 
     public function it_throws_an_exception_if_the_search_after_identifier_does_not_exists(SharedCatalog $sharedCatalog)
     {
+        $sharedCatalog->getPQBFilters()->willReturn([]);
+        $sharedCatalog->getDefaultScope()->willReturn('ecommerce');
+
         $this->shouldThrow(\InvalidArgumentException::class)->during('find', [
             $sharedCatalog,
             [
@@ -82,6 +85,14 @@ class FindProductIdentifiersQuerySpec extends ObjectBehavior
                 ],
             ],
             [],
+        ]);
+        $sharedCatalog->getDefaultScope()->willReturn('ecommerce');
+        $sharedCatalog->getPQBFilters()->willReturn([
+            [
+                'field' => 'enabled',
+                'operator' => '=',
+                'value' => true,
+            ],
         ]);
         $productQueryBuilderFactory
             ->create([
@@ -146,6 +157,14 @@ class FindProductIdentifiersQuerySpec extends ObjectBehavior
                 ],
             ],
             [],
+        ]);
+        $sharedCatalog->getDefaultScope()->willReturn('ecommerce');
+        $sharedCatalog->getPQBFilters()->willReturn([
+            [
+                'field' => 'enabled',
+                'operator' => '=',
+                'value' => true,
+            ],
         ]);
         $getProductIdFromProductIdentifierQuery
             ->execute($searchAfterProductIdentifier)
