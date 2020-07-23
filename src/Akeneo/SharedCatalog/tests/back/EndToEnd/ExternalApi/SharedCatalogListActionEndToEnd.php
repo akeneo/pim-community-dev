@@ -2,6 +2,7 @@
 
 namespace Akeneo\SharedCatalog\tests\back\EndToEnd\ExternalApi;
 
+use Akeneo\SharedCatalog\tests\back\Utils\AuthenticateAs;
 use Akeneo\SharedCatalog\tests\back\Utils\CreateJobInstance;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -9,6 +10,7 @@ use Akeneo\Tool\Component\Batch\Model\JobInstance;
 class SharedCatalogListActionEndToEnd extends ApiTestCase
 {
     use CreateJobInstance;
+    use AuthenticateAs;
 
     /**
      * {@inheritdoc}
@@ -16,6 +18,7 @@ class SharedCatalogListActionEndToEnd extends ApiTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->authenticateAs('admin');
     }
 
     /**
@@ -71,7 +74,7 @@ class SharedCatalogListActionEndToEnd extends ApiTestCase
             [
                 [
                     'code' => 'shared_catalog_1',
-                    'publisher' => 'system',
+                    'publisher' => 'admin@example.com',
                     'recipients' => [
                         'betty@akeneo.com',
                         'julia@akeneo.com',
