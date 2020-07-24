@@ -851,6 +851,9 @@ workflows:
           - test_upgrade_from_serenity_to_master:
                 requires:
                     - build_prod
+          - test_upgrade_from_serenity_customer_db_to_master:
+                requires:
+                    - build_prod
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
