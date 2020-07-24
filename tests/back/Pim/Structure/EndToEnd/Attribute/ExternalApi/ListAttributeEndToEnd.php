@@ -153,7 +153,7 @@ JSON;
         $this->assertEquals(1, $affected, 'There is more result as expected during test setup, the test will not work.');
 
         $client = $this->createAuthenticatedClient();
-        $search = '{"updated":[{"operator":">","value":"2020-01-01 00:00:01"}]}';
+        $search = '{"updated":[{"operator":">","value":"2020-01-01T10:00:01Z"}]}';
         $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
 
         $client->request('GET', 'api/rest/v1/attributes?limit=5&with_count=true&search=' . $search);
