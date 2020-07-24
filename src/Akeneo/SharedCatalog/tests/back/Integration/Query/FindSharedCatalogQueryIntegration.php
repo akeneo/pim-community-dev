@@ -3,6 +3,7 @@
 namespace Akeneo\SharedCatalog\tests\back\Integration\Query;
 
 use Akeneo\SharedCatalog\Query\FindSharedCatalogQueryInterface;
+use Akeneo\SharedCatalog\tests\back\Utils\AuthenticateAs;
 use Akeneo\SharedCatalog\tests\back\Utils\CreateJobInstance;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -10,6 +11,7 @@ use Akeneo\Tool\Component\Batch\Model\JobInstance;
 class FindSharedCatalogQueryIntegration extends TestCase
 {
     use CreateJobInstance;
+    use AuthenticateAs;
 
     /** @var FindSharedCatalogQueryInterface */
     private $findSharedCatalogQuery;
@@ -18,6 +20,7 @@ class FindSharedCatalogQueryIntegration extends TestCase
     {
         parent::setUp();
         $this->findSharedCatalogQuery = $this->get(FindSharedCatalogQueryInterface::class);
+        $this->authenticateAs('admin');
     }
 
     protected function getConfiguration()
@@ -43,7 +46,7 @@ class FindSharedCatalogQueryIntegration extends TestCase
 
         self::assertEquals([
             'code' => 'shared_catalog_1',
-            'publisher' => 'system',
+            'publisher' => 'admin@example.com',
             'recipients' => [],
             'channel' => null,
             'catalogLocales' => [],
