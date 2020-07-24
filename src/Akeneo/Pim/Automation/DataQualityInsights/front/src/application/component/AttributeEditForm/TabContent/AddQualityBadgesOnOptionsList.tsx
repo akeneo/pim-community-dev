@@ -1,69 +1,76 @@
-import React, {FC, useCallback, useEffect, useLayoutEffect} from 'react';
+import React, {FC, useCallback, useEffect, useLayoutEffect, useState} from 'react';
 import {useAttributeSpellcheckEvaluationContext} from "../../../context/AttributeSpellcheckEvaluationContext";
 import {useAttributeOptionsListContext} from "../../../context/AttributeOptionsListContext";
-import QualityBadge from "../../Common/QualityBadge";
 import {useVisibleAttributeOptions} from "../../../../infrastructure/hooks/AttributeEditForm/useVisibleAttributeOptions";
-import {SpellcheckEvaluation} from "../../../../infrastructure/hooks/AttributeEditForm/useSpellcheckEvaluationState";
+import AttributeOptionQualityBadge from "./AttributeOptionQualityBadge";
 
-const goodBadge = <QualityBadge label={'good'} />;
-const toImproveBadge = <QualityBadge label={'to_improve'} />;
-const naBadge = <QualityBadge label={'n_a'} />;
-
-const AttributeOptionQualityBadge: FC<{option: string, evaluation: SpellcheckEvaluation}> = ({option, evaluation}) => {
-  if (!evaluation.options[option]) {
-    return naBadge;
-  }
-
-  const isToImprove = (evaluation.options[option].toImprove > 0) || false;
-  return isToImprove ? toImproveBadge: goodBadge;
+type DisplayedBadges = {
+  [option: string]: {
+    element: JSX.Element;
+    loaded: boolean;
+  };
 }
 
 const AddQualityBadgesOnOptionsList: FC = () => {
-  const {attributeOptions, addExtraData, removeExtraData} = useAttributeOptionsListContext();
+  const {attributeOptions, addExtraData} = useAttributeOptionsListContext();
   const {evaluation} = useAttributeSpellcheckEvaluationContext();
   const {visibleOptions} = useVisibleAttributeOptions();
-  const displayedBadges: {[option: string]: boolean} = {};
+  const [badges, setBadges] = useState<DisplayedBadges>({});
 
-  const showQualityBadge = useCallback((option: string, evaluation: SpellcheckEvaluation) => {
-    if (displayedBadges[option]) {
+  useEffect(() => {
+    if (attributeOptions !== null) {
+
+      const newBadges:DisplayedBadges = {};
+
+      attributeOptions.forEach((attributeOption) => {
+        newBadges[attributeOption.code] = {
+          element: <AttributeOptionQualityBadge option={attributeOption.code} evaluation={evaluation} />,
+          loaded: false
+        };
+      });
+      setBadges(newBadges);
+    }
+    else {
+      setBadges({});
+    }
+  }, [attributeOptions, evaluation]);
+
+  const showQualityBadge = useCallback((option: string, badges: DisplayedBadges) => {
+    if (badges[option] && (badges[option].loaded)) {
       return;
     }
-    addExtraData(option, <AttributeOptionQualityBadge option={option} evaluation={evaluation} />);
-    displayedBadges[option] = true;
-  }, [addExtraData]);
 
-  const hideQualityBadge = useCallback((option: string) => {
-    removeExtraData(option);
-  }, [removeExtraData]);
+    addExtraData(option, badges[option].element);
+
+    setBadges((state) => {
+      return {
+        ...state,
+        [option]: {
+          ...state.option,
+          loaded: true,
+        }
+      }
+    });
+  }, [addExtraData, setBadges]);
 
   useLayoutEffect(() => {
-    let ticking = false;
-    let requestAnimationFrameId: number|null = null;
-    if (!ticking) {
-      requestAnimationFrameId = window.requestAnimationFrame(() => {
-        visibleOptions.forEach((option) => {
-          showQualityBadge(option, evaluation);
+    const requestAnimationFrameIds: number[] = [];
+
+    if (Object.keys(badges).length > 0) {
+      visibleOptions.forEach((option) => {
+        const requestAnimationFrameId = window.requestAnimationFrame(() => {
+          showQualityBadge(option, badges);
         });
-        ticking = true;
+        requestAnimationFrameIds.push(requestAnimationFrameId);
       });
     }
 
     return () => {
-      if (requestAnimationFrameId) {
+      requestAnimationFrameIds.forEach((requestAnimationFrameId) => {
         window.cancelAnimationFrame(requestAnimationFrameId);
-      }
+      });
     }
-  }, [visibleOptions, evaluation]);
-
-  useEffect(() => {
-    return () => {
-      if (attributeOptions !== null) {
-        attributeOptions.forEach((attributeOption) => {
-          hideQualityBadge(attributeOption.code);
-        });
-      }
-    }
-  }, []);
+  }, [visibleOptions, badges]);
 
   return <></>;
 }

@@ -55,7 +55,8 @@ export const useVisibleAttributeOptions = () => {
         }
       });
     }, {
-      root: container
+      root: container,
+      rootMargin: '350px 0px'
     });
 
     elements.forEach((element) => {
