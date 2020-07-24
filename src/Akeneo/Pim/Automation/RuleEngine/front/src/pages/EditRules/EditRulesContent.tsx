@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useDialogState, DialogDisclosure } from 'reakit/Dialog';
 import { ThemeProvider } from 'styled-components';
 import { FormContext } from 'react-hook-form';
 import * as akeneoTheme from '../../theme';
@@ -26,6 +27,8 @@ import { AddActionButton } from './components/actions/AddActionButton';
 import { Action } from '../../models/Action';
 import { httpDelete } from '../../fetch';
 import { NotificationLevel } from '../../dependenciesTools';
+import { Dropdown } from '../../components/Dropdown';
+import { AlertDialog } from '../../components/AlertDialog/AlertDialog';
 
 type Props = {
   ruleDefinitionCode: string;
@@ -90,8 +93,10 @@ const EditRulesContent: React.FC<Props> = ({
     append(action);
   };
 
+  const dialog = useDialogState();
+
   const handleDeleteRule = async (): Promise<any> => {
-    const deleteRule = router.generate('pimee_catalog_rule_rule_delete', {
+    const deleteRuleUrl = router.generate('pimee_catalog_rule_rule_delete', {
       id: ruleDefinition.id,
     });
 
@@ -100,7 +105,7 @@ const EditRulesContent: React.FC<Props> = ({
     let result: any;
 
     try {
-      result = await httpDelete(deleteRule);
+      result = await httpDelete(deleteRuleUrl);
     } catch (error) {
       setDeletePending(false);
       notify(
@@ -139,6 +144,25 @@ const EditRulesContent: React.FC<Props> = ({
         title={title}
         handleDeleteRule={handleDeleteRule}
         unsavedChanges={formMethods.formState.dirty}
+        dropdown={
+          <Dropdown title={translate('pimee_catalog_rule.form.delete.label')}>
+            <DialogDisclosure {...dialog} className='AknDropdown-menuLink'>
+              {translate('pimee_catalog_rule.form.delete.label')}
+            </DialogDisclosure>
+            <AlertDialog
+              dialog={dialog}
+              onValidate={handleDeleteRule}
+              cancelLabel={translate('pim_common.cancel')}
+              confirmLabel={translate('pim_common.confirm')}
+              label={translate(
+                'pimee_catalog_rule.form.edit.actions.delete.label'
+              )}
+              description={translate(
+                'pimee_catalog_rule.form.delete.description'
+              )}
+            />
+          </Dropdown>
+        }
         secondaryButton={<AddActionButton handleAddAction={handleAddAction} />}>
         <BreadcrumbItem href={`#${urlSettings}`} onClick={handleSettingsRoute}>
           {translate('pim_menu.tab.settings')}

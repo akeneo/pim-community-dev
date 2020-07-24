@@ -46,7 +46,7 @@ const denormalize = async function(
   ) {
     throw new Error('Unable to parse rule definition ' + JSON.stringify(json));
   }
-  const id = json.id
+  const id = json.id;
   const code = json.code;
   const labels = json.labels || {};
   const priority = json.priority || 0;
