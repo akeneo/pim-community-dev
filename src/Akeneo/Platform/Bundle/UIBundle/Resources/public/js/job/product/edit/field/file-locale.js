@@ -33,7 +33,9 @@ define([
                 FetcherRegistry.getFetcher('locale').fetchActivated(),
                 SelectField.prototype.configure.apply(this, arguments)
             ).then(function (locales) {
-                this.config.options = locales.reduce((result, locale) => ({...result, [locale.code]: locale.label}), {});
+                this.config.options = locales.reduce(
+                    (result, locale) => ({...result, [locale.code]: locale.label}), {}
+                );
             }.bind(this));
         },
 

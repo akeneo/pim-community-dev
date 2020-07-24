@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider;
 
+use Akeneo\Channel\Component\Validator\Constraint\ActivatedLocale;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Channel;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FilterStructureLocale;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
@@ -44,6 +45,19 @@ class ProductXlsxExport implements ConstraintCollectionProviderInterface
         $constraintFields = $baseConstraint->fields;
         $constraintFields['decimalSeparator'] = new NotBlank(['groups' => ['Default', 'FileConfiguration']]);
         $constraintFields['dateFormat'] = new NotBlank(['groups' => ['Default', 'FileConfiguration']]);
+        $constraintFields['with_label'] = new Type(
+            [
+                'type'   => 'bool',
+                'groups' => ['Default', 'FileConfiguration'],
+            ]
+        );
+        $constraintFields['header_with_label'] = new Type(
+            [
+                'type'   => 'bool',
+                'groups' => ['Default', 'FileConfiguration'],
+            ]
+        );
+        $constraintFields['file_locale'] = new ActivatedLocale(['groups' => ['Default', 'FileConfiguration']]);
         $constraintFields['with_media'] = new Type(
             [
                 'type'   => 'bool',

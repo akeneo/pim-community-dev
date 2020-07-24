@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider;
 
+use Akeneo\Channel\Component\Validator\Constraint\ActivatedLocale;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\Type;
 
 /**
  * Constraints for product and product model quick export
@@ -44,6 +46,19 @@ class ProductAndProductModelQuickExport implements ConstraintCollectionProviderI
         $constraintFields['filePath'] = null;
         $constraintFields['filePathProduct'] = $constraintFilePath;
         $constraintFields['filePathProductModel'] = $constraintFilePath;
+        $constraintFields['with_label'] = new Type(
+            [
+                'type'   => 'bool',
+                'groups' => ['Default', 'FileConfiguration'],
+            ]
+        );
+        $constraintFields['header_with_label'] = new Type(
+            [
+                'type'   => 'bool',
+                'groups' => ['Default', 'FileConfiguration'],
+            ]
+        );
+        $constraintFields['file_locale'] = new ActivatedLocale(['groups' => ['Default', 'FileConfiguration']]);
 
         return new Collection(['fields' => $constraintFields]);
     }
