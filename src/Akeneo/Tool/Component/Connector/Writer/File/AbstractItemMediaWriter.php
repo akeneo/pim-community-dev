@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Component\Connector\Writer\File;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
@@ -65,11 +66,17 @@ abstract class AbstractItemMediaWriter implements
     protected $jobParamFilePath;
 
     /**
+     * @var FlatTranslatorInterface
+     */
+    private $flatTranslator;
+
+    /**
      * @param ArrayConverterInterface            $arrayConverter
      * @param BufferFactory                      $bufferFactory
      * @param FlatItemBufferFlusher              $flusher
      * @param AttributeRepositoryInterface       $attributeRepository
      * @param FileExporterPathGeneratorInterface $fileExporterPath
+     * @param FlatTranslatorInterface $flatTranslator
      * @param array                              $mediaAttributeTypes
      * @param String                             $jobParamFilePath
      */
@@ -79,6 +86,7 @@ abstract class AbstractItemMediaWriter implements
         FlatItemBufferFlusher $flusher,
         AttributeRepositoryInterface $attributeRepository,
         FileExporterPathGeneratorInterface $fileExporterPath,
+        FlatTranslatorInterface $flatTranslator,
         array $mediaAttributeTypes,
         string $jobParamFilePath = self::DEFAULT_FILE_PATH
     ) {
@@ -89,6 +97,7 @@ abstract class AbstractItemMediaWriter implements
         $this->mediaAttributeTypes = $mediaAttributeTypes;
         $this->fileExporterPath = $fileExporterPath;
         $this->jobParamFilePath = $jobParamFilePath;
+        $this->flatTranslator = $flatTranslator;
 
         $this->localFs = new Filesystem();
     }
@@ -128,8 +137,16 @@ abstract class AbstractItemMediaWriter implements
             $flatItems[] = $this->arrayConverter->convert($item, $converterOptions);
         }
 
+        if ($parameters->has('with_label') && $parameters->get('with_label')) {
+            $localeLabel = $parameters->has('label_locale') ? $parameters->get('label_locale') : 'en_US';
+            $withLabelHeader = $parameters->has('with_locale_header') && $parameters->get('with_locale_header');
+
+            $flatItems = $this->flatTranslator->translate($flatItems, $localeLabel, $withLabelHeader);
+        }
+
         $options = [];
         $options['withHeader'] = $parameters->get('withHeader');
+
         $this->flatRowBuffer->write($flatItems, $options);
     }
 

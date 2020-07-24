@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Csv;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromAttributeCodesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromFamilyCodesInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -50,6 +51,7 @@ class ProductWriter extends AbstractItemMediaWriter implements
         FileExporterPathGeneratorInterface $fileExporterPath,
         GenerateFlatHeadersFromFamilyCodesInterface $generateHeadersFromFamilyCodes,
         GenerateFlatHeadersFromAttributeCodesInterface $generateHeadersFromAttributeCodes,
+        FlatTranslatorInterface $flatTranslator,
         array $mediaAttributeTypes,
         string $jobParamFilePath = self::DEFAULT_FILE_PATH
     ) {
@@ -59,6 +61,7 @@ class ProductWriter extends AbstractItemMediaWriter implements
             $flusher,
             $attributeRepository,
             $fileExporterPath,
+            $flatTranslator,
             $mediaAttributeTypes,
             $jobParamFilePath
         );
@@ -115,6 +118,11 @@ class ProductWriter extends AbstractItemMediaWriter implements
     protected function getAdditionalHeaders(JobParameters $parameters): array
     {
         $filters = $parameters->get('filters');
+        $withLabel = $parameters->has('with_label') && $parameters->get('with_label');
+        $labelLocale = '';
+        if ($parameters->has('label_locale')) {
+            $labelLocale = $parameters->get('label_locale');
+        }
 
         $localeCodes = isset($filters['structure']['locales']) ? $filters['structure']['locales'] : [$parameters->get('locale')];
         $channelCode = isset($filters['structure']['scope']) ? $filters['structure']['scope'] : $parameters->get('scope');
@@ -131,9 +139,9 @@ class ProductWriter extends AbstractItemMediaWriter implements
 
         $headers = [];
         if (!empty($attributeCodes)) {
-            $headers = ($this->generateHeadersFromAttributeCodes)($attributeCodes, $channelCode, $localeCodes);
+            $headers = ($this->generateHeadersFromAttributeCodes)($attributeCodes, $channelCode, $localeCodes, $labelLocale);
         } elseif (!empty($this->familyCodes)) {
-            $headers = ($this->generateHeadersFromFamilyCodes)($this->familyCodes, $channelCode, $localeCodes);
+            $headers = ($this->generateHeadersFromFamilyCodes)($this->familyCodes, $channelCode, $localeCodes, $labelLocale);
         }
 
         $withMedia = (!$parameters->has('with_media') || $parameters->has('with_media') && $parameters->get('with_media'));
@@ -143,7 +151,7 @@ class ProductWriter extends AbstractItemMediaWriter implements
             if ($withMedia || !$header->isMedia()) {
                 $headerStrings = array_merge(
                     $headerStrings,
-                    $header->generateHeaderStrings()
+                    $withLabel ? $header->generateHeaderLabelStrings($labelLocale) : $header->generateHeaderStrings()
                 );
             }
         }

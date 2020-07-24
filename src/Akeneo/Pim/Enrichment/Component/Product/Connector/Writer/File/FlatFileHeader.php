@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Symfony\Component\Intl\Intl;
 
 /**
  * @author    Benoit Jacquemont <benoit@akeneo.com>
@@ -49,6 +50,12 @@ final class FlatFileHeader
     /** @var array */
     private $specificToLocales;
 
+    private $attributeLabels;
+    /**
+     * @var string|null
+     */
+    private $unitLabel;
+
     public function __construct(
         string $code,
         ?bool $isScopable = false,
@@ -61,7 +68,9 @@ final class FlatFileHeader
         ?array $channelCurrencyCodes = [],
         ?array $allCurrencyCodes = [],
         ?bool $isLocaleSpecific = false,
-        ?array $specificToLocales = []
+        ?array $specificToLocales = [],
+        ?array $attributeLabels = [],
+        ?string $unitLabel = ''
     ) {
         if ($isLocaleSpecific && empty($specificToLocales)) {
             throw new \InvalidArgumentException(
@@ -90,9 +99,11 @@ final class FlatFileHeader
         $this->usesCurrencies = $usesCurrencies;
         $this->channelCurrencyCodes = $channelCurrencyCodes;
         $this->allCurrencyCodes = $allCurrencyCodes;
+        $this->attributeLabels = $attributeLabels;
 
         $this->isLocaleSpecific = $isLocaleSpecific;
         $this->specificToLocales = $specificToLocales;
+        $this->unitLabel = $unitLabel;
     }
 
     /**
@@ -107,7 +118,9 @@ final class FlatFileHeader
         array $localeCodes,
         array $channelCurrencyCodes,
         array $activatedCurrencyCodes,
-        array $specificToLocales
+        array $specificToLocales,
+        array $attributeLabels,
+        string $unitLabel
     ): FlatFileHeader {
         $mediaAttributeTypes = [
             AttributeTypes::IMAGE,
@@ -126,7 +139,9 @@ final class FlatFileHeader
             $channelCurrencyCodes,
             $activatedCurrencyCodes,
             !empty($specificToLocales),
-            $specificToLocales
+            $specificToLocales,
+            $attributeLabels,
+            $unitLabel
         );
     }
 
@@ -186,6 +201,64 @@ final class FlatFileHeader
             foreach ($prefixes as $prefix) {
                 $headers[] = $prefix;
                 $headers[] = sprintf('%s-unit', $prefix);
+            }
+        } else {
+            $headers = $prefixes;
+        }
+
+        return $headers;
+    }
+
+    public function generateHeaderLabelStrings($labelLocale): array
+    {
+        if ($this->isLocaleSpecific && count(array_intersect($this->localeCodes, $this->specificToLocales)) === 0) {
+            return [];
+        }
+
+        $prefixes = [];
+        $codeLabel = $this->attributeLabels[$labelLocale] ?? "[$this->code]";
+
+        if ($this->isLocalizable && $this->isScopable) {
+            foreach ($this->localeCodes as $localeCode) {
+                if (!$this->isLocaleSpecific ||
+                    ($this->isLocaleSpecific && in_array($localeCode, $this->specificToLocales))) {
+
+                    $prefixes[] = sprintf('%s (%s, %s)', $codeLabel, $localeCode, $this->channelCode);
+                }
+            }
+        } elseif ($this->isLocalizable) {
+            foreach ($this->localeCodes as $localeCode) {
+                if (!$this->isLocaleSpecific ||
+                    ($this->isLocaleSpecific && in_array($localeCode, $this->specificToLocales))) {
+                    $prefixes[] = sprintf('%s (%s)', $codeLabel, $localeCode);
+                }
+            }
+        } elseif ($this->isScopable) {
+            $prefixes[] = sprintf('%s (%s)', $codeLabel, $this->channelCode);
+        } else {
+            $prefixes[] = $codeLabel;
+        }
+
+        $headers = [];
+
+        if ($this->usesCurrencies) {
+            foreach ($prefixes as $prefix) {
+                if ($this->isScopable) {
+                    $currencyCodesToUse = $this->channelCurrencyCodes;
+                } else {
+                    $currencyCodesToUse = $this->allCurrencyCodes;
+                }
+                foreach ($currencyCodesToUse as $currencyCode) {
+                    $language = \Locale::getPrimaryLanguage($labelLocale);
+                    $currency = Intl::getCurrencyBundle()->getCurrencyName($currencyCode, $language);
+
+                    $headers[] = sprintf('%s (%s)', $prefix, $currency);
+                }
+            }
+        } elseif ($this->usesUnit) {
+            foreach ($prefixes as $prefix) {
+                $headers[] = $prefix;
+                $headers[] = sprintf('%s (%s)', $prefix, $this->unitLabel);
             }
         } else {
             $headers = $prefixes;

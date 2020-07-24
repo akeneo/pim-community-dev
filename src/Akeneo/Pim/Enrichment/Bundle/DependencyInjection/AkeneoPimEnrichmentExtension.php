@@ -90,6 +90,7 @@ class AkeneoPimEnrichmentExtension extends Extension
         $loader->load('normalizers.yml');
         $loader->load('connector.yml');
         $loader->load('array_converter.yml');
+        $loader->load('flat_translators.yml');
         $loader->load('job_parameters.yml');
         $loader->load('processors.yml');
         $loader->load('readers.yml');

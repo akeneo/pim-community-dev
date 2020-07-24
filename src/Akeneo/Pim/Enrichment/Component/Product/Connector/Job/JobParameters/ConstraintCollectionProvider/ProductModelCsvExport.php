@@ -79,6 +79,13 @@ class ProductModelCsvExport implements ConstraintCollectionProviderInterface
                 ]
             ),
         ];
+        $constraintFields['with_label'] = new Type(
+            [
+                'type'   => 'bool',
+                'groups' => ['Default', 'FileConfiguration'],
+            ]
+        );
+        $constraintFields['label_locale'] = new Type(['type' => 'string', 'groups' => ['Default', 'FileConfiguration']]);
 
         return new Collection(['fields' => $constraintFields]);
     }

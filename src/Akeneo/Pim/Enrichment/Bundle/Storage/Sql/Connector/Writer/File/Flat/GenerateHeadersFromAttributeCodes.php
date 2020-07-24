@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\Writer\File\Flat;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\FlatFileHeader;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromAttributeCodesInterface;
+use Akeneo\Tool\Component\Localization\LabelTranslator;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -17,10 +18,15 @@ final class GenerateHeadersFromAttributeCodes implements GenerateFlatHeadersFrom
 {
     /** @var Connection */
     private $connection;
+    /**
+     * @var LabelTranslator
+     */
+    private $translator;
 
-    public function __construct(Connection $connection)
+    public function __construct(Connection $connection, LabelTranslator $translator)
     {
         $this->connection = $connection;
+        $this->translator = $translator;
     }
 
     /**
@@ -31,7 +37,8 @@ final class GenerateHeadersFromAttributeCodes implements GenerateFlatHeadersFrom
     public function __invoke(
         array $attributeCodes,
         string $channelCode,
-        array $localeCodes
+        array $localeCodes,
+        string $labelLocale
     ): array {
         $activatedCurrencyCodes = $this->connection->executeQuery(
             "SELECT code FROM pim_catalog_currency WHERE is_activated = 1"
@@ -59,8 +66,10 @@ SQL;
                      FROM pim_catalog_locale l
                      JOIN pim_catalog_attribute_locale al ON al.locale_id = l.id
                      WHERE al.attribute_id = a.id
-                   ) AS specific_to_locales
+                   ) AS specific_to_locales,
+                   JSON_OBJECTAGG(pcat.locale, pcat.label) AS labels
             FROM pim_catalog_attribute a
+            JOIN pim_catalog_attribute_translation pcat on pcat.foreign_key = a.id
             WHERE a.code IN (:attributeCodes)
             GROUP BY a.id;
 SQL;
@@ -70,6 +79,8 @@ SQL;
             ['attributeCodes' => $attributeCodes],
             ['attributeCodes' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
         )->fetchAll();
+
+        $unitLabel = $this->translator->translate('pim_common.unit', $labelLocale, '[unit]');
 
         $headers = [];
         foreach ($attributesData as $attributeData) {
@@ -82,7 +93,9 @@ SQL;
                 $localeCodes,
                 $channelCurrencyCodes,
                 $activatedCurrencyCodes,
-                null !== $attributeData['specific_to_locales'] ? json_decode($attributeData['specific_to_locales'], true) : []
+                null !== $attributeData['specific_to_locales'] ? json_decode($attributeData['specific_to_locales'], true) : [],
+                json_decode($attributeData['labels'], true),
+                $unitLabel
             );
         }
 

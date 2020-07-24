@@ -50,6 +50,14 @@ class ProductXlsxExport implements ConstraintCollectionProviderInterface
                 'groups' => ['Default', 'FileConfiguration'],
             ]
         );
+        $constraintFields['with_label'] = new Type(
+            [
+                'type'   => 'bool',
+                'groups' => ['Default', 'FileConfiguration'],
+            ]
+        );
+        $constraintFields['label_locale'] = new Type(['type' => 'string', 'groups' => ['Default', 'FileConfiguration']]);
+
         $constraintFields['filters'] = [
             new Collection(
                 [
