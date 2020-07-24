@@ -20,7 +20,6 @@ type Props = {
   unsavedChanges?: boolean;
   secondaryButton?: ReactElement;
   dropdown?: ReactElement;
-  handleDeleteRule: () => Promise<any>;
 };
 
 const RulesHeader: React.FC<Props> = ({

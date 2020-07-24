@@ -121,6 +121,7 @@ const EditRulesContent: React.FC<Props> = ({
         NotificationLevel.SUCCESS,
         translate('pimee_catalog_rule.form.delete.notification.success')
       );
+      setIsDirty(false);
       redirectToUrl(
         router,
         generateUrl(router, 'pimee_catalog_rule_rule_index')
@@ -142,12 +143,11 @@ const EditRulesContent: React.FC<Props> = ({
         buttonLabel='pim_common.save'
         formId='edit-rules-form'
         title={title}
-        handleDeleteRule={handleDeleteRule}
         unsavedChanges={formMethods.formState.dirty}
         dropdown={
-          <Dropdown title={translate('pimee_catalog_rule.form.delete.label')}>
+          <Dropdown title={translate('pim_common.other_actions')}>
             <DialogDisclosure {...dialog} className='AknDropdown-menuLink'>
-              {translate('pimee_catalog_rule.form.delete.label')}
+              {translate('pim_common.delete')}
             </DialogDisclosure>
             <AlertDialog
               dialog={dialog}
