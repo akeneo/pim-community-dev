@@ -2,6 +2,12 @@
 
 ## Bug fixes
 
+- PIM-9304: Fix slow query used to retrieve products to evaluate
+
+# 4.0.42 (2020-07-22)
+
+## Bug fixes
+
 - PIM-9365: Fix PDF previews' background being black
 
 # 4.0.41 (2020-07-20)
