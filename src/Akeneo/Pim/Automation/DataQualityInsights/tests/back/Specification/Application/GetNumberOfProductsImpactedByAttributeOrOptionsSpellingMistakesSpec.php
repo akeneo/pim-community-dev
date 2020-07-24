@@ -72,4 +72,13 @@ final class GetNumberOfProductsImpactedByAttributeOrOptionsSpellingMistakesSpec 
 
         $this->byAttributeCode($attributeCode)->shouldReturn(39);
     }
+
+    public function it_returns_zero_when_attribute_does_not_exist(
+        $getAttributeQuery
+    ) {
+        $attributeCode = new AttributeCode('undefined_attribute');
+        $getAttributeQuery->byAttributeCode($attributeCode)->willReturn(null);
+
+        $this->byAttributeCode($attributeCode)->shouldReturn(0);
+    }
 }
