@@ -111,6 +111,10 @@ pimee_catalog_rule:
                 add_category:
                     title: ADD Categories
                     helper: To add your product selection to one or more categories, please start by selecting your category trees and then, your categories
+                add_groups:
+                    title: ADD Products to groups
+                    helper: To add products to groups, please select one or several groups
+                    subtitle: Select your groups
                 set_category:
                     title: SET Categories
                     helper: To set your product selection to one or more categories, please start by selecting your category trees and then, your categories
@@ -233,6 +237,7 @@ pimee_catalog_rule:
         unknown_attribute_code: "The {{ attributeCode }} attribute does not exist"
         unknown_categories: "{1}The {{ categoryCodes }} category does not exist.|]1, +Inf[The {{ categoryCodes }} categories do not exist"
         unknown_attribute: "This attribute does not exist."
+        unknown_groups: "{1} The {{ groupCodes }} group does not exist|]1, +Inf[The following groups do not exist: {{ groupCodes }}"
         select_another_attribute_or_remove_action: "Select another attribute or remove this action."
         select_another_attribute: "Select another attribute"
         or: or
