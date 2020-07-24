@@ -3,21 +3,33 @@ import {useAttributeOptionsListContext} from "../../../context/AttributeOptionsL
 import {useAttributeSpellcheckEvaluationContext} from "../../../context/AttributeSpellcheckEvaluationContext";
 import {ATTRIBUTE_EDIT_FORM_UPDATED} from "../../../constant";
 import {AttributeOption} from 'akeneopimstructure/js/attribute-option/model/AttributeOption.interface';
+import {useMountedState} from "../../../../infrastructure/hooks/Common/useMountedState";
 
 type AttributeOptionsList = AttributeOption[]|null
 
 const RefreshEvaluationWhenAttributeOptionsChanged: FC = () => {
-  const [previousList, setPreviousList] = useState<AttributeOptionsList>(null);
+  const [updatedOptions, setUpdatedOptions] = useState<AttributeOptionsList>(null);
   const {attributeOptions} = useAttributeOptionsListContext();
-  const {refresh} = useAttributeSpellcheckEvaluationContext()
+  const {refresh} = useAttributeSpellcheckEvaluationContext();
+  const {isMounted} = useMountedState();
 
   useEffect(() => {
-    if (attributeOptions !== previousList) {
-      setPreviousList(attributeOptions);
-      (async () => refresh())();
-      window.dispatchEvent(new CustomEvent(ATTRIBUTE_EDIT_FORM_UPDATED));
+    if (attributeOptions !== updatedOptions) {
+      setUpdatedOptions(attributeOptions);
     }
-  }, [attributeOptions])
+  }, [attributeOptions]);
+
+  useEffect(() => {
+    if (updatedOptions !== null) {
+      refresh().then(() => {
+        if (isMounted()) {
+          window.dispatchEvent(new CustomEvent(ATTRIBUTE_EDIT_FORM_UPDATED));
+        }
+      })
+    }
+  }, [updatedOptions]);
+
+
 
   return <></>;
 };

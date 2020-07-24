@@ -31,5 +31,13 @@ export const useAttributeOptionsList = (attribute: Attribute) => {
     };
   }, [attribute]);
 
-  return attributeOptionsState;
+  return {
+    ...attributeOptionsState,
+    addExtraData: async (code: string, item: any) => new Promise(() => {
+      return attributeOptionsState.addExtraData(code, item);
+    }),
+    removeExtraData: async (code: string) => new Promise(() => {
+      return attributeOptionsState.removeExtraData(code)
+    })
+  };
 }
