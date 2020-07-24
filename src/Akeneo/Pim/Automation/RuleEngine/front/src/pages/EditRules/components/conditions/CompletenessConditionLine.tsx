@@ -8,7 +8,7 @@ import {
   ValueColumn
 } from "./style";
 import { OperatorSelector } from "../../../../components/Selectors/OperatorSelector";
-import { CompletenessOperatorsCompatibility } from "../../../../models/conditions";
+import { CompletenessOperators } from "../../../../models/conditions";
 import { useControlledFormInputCondition } from "../../hooks";
 import { useTranslate } from "../../../../dependenciesTools/hooks";
 import { Operator } from "../../../../models/Operator";
@@ -41,17 +41,6 @@ const CompletenessConditionLine: React.FC<ConditionLineProps> = ({
   const isElementInError = (element: string): boolean =>
     typeof errors?.content?.conditions?.[lineNumber]?.[element] === 'object';
 
-  /**
-   * The Completeness filter have deprecated Operators. These former operator still works and have the same behavior
-   * than the new ones. At the loading of the condition line, to avoid a hard replacement with the new one (and it
-   * will throw a "there is unsaved changes"), we consider to save it like this if the user does not change.
-   * When the user will change the operator, he can only use the new ones.
-   * @see src/Akeneo/Pim/Enrichment/Bundle/Elasticsearch/Filter/Field/Product/CompletenessFilter.php
-   */
-  const getCompatibleOperator: (operator: Operator) => Operator = (operator) => {
-    return CompletenessOperatorsCompatibility.has(operator) ? CompletenessOperatorsCompatibility.get(operator) as Operator : operator;
-  }
-
   return <div className={'AknGrid-bodyCell'}>
     <Controller
       as={<input type='hidden' />}
@@ -66,12 +55,12 @@ const CompletenessConditionLine: React.FC<ConditionLineProps> = ({
     <OperatorColumn>
       <Controller
         as={OperatorSelector}
-        availableOperators={Array.from(CompletenessOperatorsCompatibility.values())}
+        availableOperators={CompletenessOperators}
         data-testid={`edit-rules-input-${lineNumber}-operator`}
         hiddenLabel
         name={operatorFormName}
-        defaultValue={getCompatibleOperator(getOperatorFormValue() ?? Operator.EQUALS)}
-        value={getCompatibleOperator(getOperatorFormValue())}
+        defaultValue={getOperatorFormValue() ?? Operator.EQUALS}
+        value={getOperatorFormValue() || ''}
       />
     </OperatorColumn>
     <ValueColumn small>

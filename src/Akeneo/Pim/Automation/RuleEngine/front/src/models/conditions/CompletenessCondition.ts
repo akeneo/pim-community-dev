@@ -4,29 +4,12 @@ import { ConditionModuleGuesser } from "./ConditionModuleGuesser";
 import { CompletenessConditionLine } from "../../pages/EditRules/components/conditions/CompletenessConditionLine";
 import { ConditionFactory } from "./Condition";
 
-const CompletenessOperators = [
+const CompletenessOperators: Operator[] = [
   Operator.EQUALS,
   Operator.NOT_EQUAL,
   Operator.LOWER_THAN,
-  Operator.LOWER_OR_EQUAL_THAN,
   Operator.GREATER_THAN,
-  Operator.GREATER_OR_EQUAL_THAN,
-  Operator.NOT_EQUALS_ON_AT_LEAST_ONE_LOCALE,
-  Operator.EQUALS_ON_AT_LEAST_ONE_LOCALE,
-  Operator.GREATER_THAN_ON_AT_LEAST_ONE_LOCALE,
-  Operator.GREATER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE,
-  Operator.LOWER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE,
-  Operator.LOWER_THAN_ON_AT_LEAST_ONE_LOCALE,
 ];
-
-const CompletenessOperatorsCompatibility = new Map<Operator, Operator>([
-  [ Operator.EQUALS, Operator.EQUALS_ON_AT_LEAST_ONE_LOCALE ],
-  [ Operator.NOT_EQUAL, Operator.NOT_EQUALS_ON_AT_LEAST_ONE_LOCALE ],
-  [ Operator.LOWER_THAN, Operator.LOWER_THAN_ON_AT_LEAST_ONE_LOCALE ],
-  [ Operator.LOWER_OR_EQUAL_THAN, Operator.LOWER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE ],
-  [ Operator.GREATER_THAN, Operator.GREATER_THAN_ON_AT_LEAST_ONE_LOCALE ],
-  [ Operator.GREATER_OR_EQUAL_THAN, Operator.GREATER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE ]
-]);
 
 export type CompletenessCondition = {
   scope: ScopeCode;
@@ -63,4 +46,4 @@ const createCompletenessCondition: ConditionFactory = (
   });
 };
 
-export { getCompletenessConditionModule, createCompletenessCondition, CompletenessOperators, CompletenessOperatorsCompatibility }
+export { getCompletenessConditionModule, createCompletenessCondition, CompletenessOperators }
