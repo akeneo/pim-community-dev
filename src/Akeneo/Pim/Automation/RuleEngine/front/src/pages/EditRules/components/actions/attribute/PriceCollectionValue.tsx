@@ -13,7 +13,7 @@ import {
 } from '../../../../../repositories/CurrencyRepository';
 import { Label } from '../../../../../components/Labels';
 import { CurrencyCode } from '../../../../../models/Currency';
-import { PriceValue } from './PriceValue';
+import { InputNumberWithHelper } from '../../../../../components/Inputs/InputNumberWithHelper';
 import { getScopeByCode } from '../../../../../repositories/ScopeRepository';
 
 type PriceCollectionData = { amount: number; currency: CurrencyCode }[];
@@ -126,7 +126,7 @@ const PriceCollectionValue: React.FC<InputValueProps> = ({
         {currencyCodes.map(currencyCode => {
           return (
             <div className='AknPriceList-item' key={currencyCode}>
-              <PriceValue
+              <InputNumberWithHelper
                 data-testid={`${id}-${currencyCode}`}
                 label={currencyCode}
                 value={getValue(currencyCode)}
@@ -134,7 +134,7 @@ const PriceCollectionValue: React.FC<InputValueProps> = ({
                   handleChange(currencyCode, event.target.value)
                 }
                 hiddenLabel
-                currencyCode={currencyCode}
+                helper={currencyCode}
               />
             </div>
           );

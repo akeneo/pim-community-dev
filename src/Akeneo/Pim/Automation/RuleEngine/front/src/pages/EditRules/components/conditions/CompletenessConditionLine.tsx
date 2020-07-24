@@ -13,7 +13,7 @@ import { CompletenessOperators } from '../../../../models/conditions';
 import { useControlledFormInputCondition } from '../../hooks';
 import { useTranslate } from '../../../../dependenciesTools/hooks';
 import { Operator } from '../../../../models/Operator';
-import { InputNumber } from '../../../../components/Inputs';
+import { InputNumberWithHelper } from '../../../../components/Inputs';
 import { LineErrors } from '../LineErrors';
 import { ScopeSelector } from '../../../../components/Selectors/ScopeSelector';
 import { LocaleSelector } from '../../../../components/Selectors/LocaleSelector';
@@ -76,10 +76,7 @@ const CompletenessConditionLine: React.FC<ConditionLineProps> = ({
       </OperatorColumn>
       <ValueColumn small>
         <Controller
-          as={InputNumber}
-          className={`AknTextField${
-            isElementInError('value') ? ' AknTextField--error' : ''
-          }`}
+          as={InputNumberWithHelper}
           data-testid={`edit-rules-input-${lineNumber}-value`}
           name={valueFormName}
           label={translate('pimee_catalog_rule.rule.value')}
@@ -88,6 +85,7 @@ const CompletenessConditionLine: React.FC<ConditionLineProps> = ({
           rules={{
             required: translate('pimee_catalog_rule.exceptions.required_value'),
           }}
+          helper='%'
         />
       </ValueColumn>
       <ScopeColumn
