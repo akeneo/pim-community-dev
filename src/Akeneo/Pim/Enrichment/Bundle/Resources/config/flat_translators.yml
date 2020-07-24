@@ -7,13 +7,49 @@ services:
       - '@akeneo.pim.structure.query.get_attribute_translations'
       - '@pim_catalog.localization.translator.label'
       - '@akeneo.pim.structure.query.get_association_type_translations'
-      - '@akeneo.pim.structure.query.get_category_translations'
-      - '@akeneo.pim.structure.query.get_family_translations'
-      - '@akeneo.pim.structure.query.get_group_translations'
       - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
+      - '@pim_connector.flat_translators.property_translator_registry'
+      - '@pim_connector.flat_translators.attribute_translator_registry'
 
   pim_connector.flat_translators.product_model_translator:
     class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\NullFlatTranslator
 
   pim_connector.flat_translators.published_product_translator:
     class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\NullFlatTranslator
+
+  ## Registries
+  ## Todo Use tags
+  pim_connector.flat_translators.property_translator_registry:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\TranslatorRegistry
+    arguments:
+      -
+        - '@pim_connector.flat_translators.property_translator.category'
+        - '@pim_connector.flat_translators.property_translator.family'
+        - '@pim_connector.flat_translators.property_translator.group'
+        - '@pim_connector.flat_translators.property_translator.enabled'
+
+  pim_connector.flat_translators.attribute_translator_registry:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\TranslatorRegistry
+    arguments:
+      - []
+
+  ## Property translators
+  pim_connector.flat_translators.property_translator.category:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyTranslator\CategoryFlatTranslator
+    arguments:
+      - '@akeneo.pim.structure.query.get_category_translations'
+
+  pim_connector.flat_translators.property_translator.family:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyTranslator\FamilyFlatTranslator
+    arguments:
+      - '@akeneo.pim.structure.query.get_family_translations'
+
+  pim_connector.flat_translators.property_translator.group:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyTranslator\GroupFlatTranslator
+    arguments:
+      - '@akeneo.pim.structure.query.get_group_translations'
+
+  pim_connector.flat_translators.property_translator.enabled:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyTranslator\EnabledFlatTranslator
+    arguments:
+      - '@pim_catalog.localization.translator.label'

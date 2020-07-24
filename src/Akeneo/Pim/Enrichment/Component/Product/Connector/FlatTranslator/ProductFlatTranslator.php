@@ -5,6 +5,8 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AssociationColumnsResolver;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnsResolver;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeFlatTranslator\AttributeFlatTranslator;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyTranslator\PropertyFlatTranslator;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypeTranslations;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetAttributeTranslations;
@@ -42,24 +44,17 @@ class ProductFlatTranslator implements FlatTranslatorInterface
     private $getAssociationTypeTranslations;
 
     /**
-     * @var GetCategoryTranslations
-     */
-    private $getCategoryTranslations;
-
-    /**
-     * @var GetFamilyTranslations
-     */
-    private $getFamilyTranslations;
-
-    /**
-     * @var GetGroupTranslations
-     */
-    private $getGroupTranslations;
-
-    /**
      * @var GetGroupTranslations
      */
     private $attributeColumnInfoExtractor;
+    /**
+     * @var TranslatorRegistry
+     */
+    private $propertyTranslationRegistry;
+    /**
+     * @var TranslatorRegistry
+     */
+    private $attributeTranslationRegistry;
 
     public function __construct(
         AttributeColumnsResolver $attributeColumnsResolver,
@@ -67,26 +62,27 @@ class ProductFlatTranslator implements FlatTranslatorInterface
         GetAttributeTranslations $getAttributeTranslations,
         LabelTranslatorInterface $labelTranslator,
         GetAssociationTypeTranslations $getAssociationTypeTranslations,
-        GetCategoryTranslations $getCategoryTranslations,
-        GetFamilyTranslations $getFamilyTranslations,
-        GetGroupTranslations $getGroupTranslations,
-        AttributeColumnInfoExtractor $attributeColumnInfoExtractor
+        AttributeColumnInfoExtractor $attributeColumnInfoExtractor,
+        TranslatorRegistry $propertyTranslationRegistry,
+        TranslatorRegistry $attributeTranslationRegistry
     ) {
         $this->attributeColumnsResolver = $attributeColumnsResolver;
         $this->associationColumnsResolver = $associationColumnsResolver;
         $this->getAttributeTranslations = $getAttributeTranslations;
         $this->labelTranslator = $labelTranslator;
         $this->getAssociationTypeTranslations = $getAssociationTypeTranslations;
-        $this->getCategoryTranslations = $getCategoryTranslations;
-        $this->getFamilyTranslations = $getFamilyTranslations;
-        $this->getGroupTranslations = $getGroupTranslations;
         $this->attributeColumnInfoExtractor = $attributeColumnInfoExtractor;
+        $this->propertyTranslationRegistry = $propertyTranslationRegistry;
+        $this->attributeTranslationRegistry = $attributeTranslationRegistry;
     }
 
     public function translate(array $flatItems, string $locale, bool $translateHeaders): array
     {
         $translateHeaders = true;
-        $flatItems = $this->translateValues($flatItems, $locale);
+        $flatItemsByColumnName = $this->groupFlatItemsByColumnName($flatItems);
+        $flatItemsByColumnName = $this->translateValues($flatItemsByColumnName, $locale);
+        $flatItems = $this->undoGroupFlatItemsByColumnName($flatItemsByColumnName);
+
         if ($translateHeaders) {
             $flatItems = $this->translateHeaders($flatItems, $locale);
         }
@@ -94,58 +90,26 @@ class ProductFlatTranslator implements FlatTranslatorInterface
         return $flatItems;
     }
 
-    public function translateValues(array $flatItems, string $locale): array
+    public function translateValues(array $flatItemsByColumnName, string $locale): array
     {
-        $categoryCodes = $this->extractCategoryCodes($flatItems);
-        $familyCodes = $this->extractFamilyCodes($flatItems);
-        $parentIdentifiers = $this->extractParentIdentifiers($flatItems);
-        $groupCodes = $this->extractGroupCodes($flatItems);
-
-        $categoryTranslations = $this->getCategoryTranslations->byCategoryCodesAndLocale($categoryCodes, $locale);
-        $familyTranslations = $this->getFamilyTranslations->byFamilyCodesAndLocale($familyCodes, $locale);
-        $groupTranslations = $this->getGroupTranslations->byGroupCodesAndLocale($groupCodes, $locale);
-
-        $results = [];
-        foreach ($flatItems as $flatItemIndex => $flatItem) {
-            $result = [];
-            $columns = array_keys($flatItem);
-            foreach ($columns as $column) {
-                $labelizedValue = $flatItem[$column];
-                if ($column === 'categories') {
-                    $categoryCodes = explode(',', $flatItem['categories']);
-                    $categoriesLabelized = [];
-                    foreach ($categoryCodes as $categoryCode) {
-                        $categoriesLabelized[] = $categoryTranslations[$categoryCode] ?? sprintf('[%s]', $categoryCode);
-                    }
-
-                    $labelizedValue = implode(',', $categoriesLabelized);
-                } else if ($column === 'family') {
-                    $familyLabelized = $familyTranslations[$flatItem['family']] ?? sprintf('[%s]', $flatItem['family']);
-
-                    $labelizedValue = $familyLabelized;
-                } else if ($column === 'groups') {
-                    $groupsCodes = explode(',', $flatItem['groups']);
-                    $groupsLabelized = [];
-                    foreach ($groupsCodes as $groupsCode) {
-                        $groupsLabelized[] = $groupTranslations[$groupsCode] ?? sprintf('[%s]', $groupsCode);
-                    }
-
-                    $labelizedValue = implode(',', $groupsLabelized);
-                } else if ($column === 'parent') {
-                    $labelizedValue = $flatItem['parent']; //TODO
-                } else if ($column === 'enabled') {
-                    $labelizedValue = $flatItem['enabled'] ? $this->labelTranslator->translate('pim_common.yes', $locale, '[yes]') : $this->labelTranslator->translate('pim_common.no', $locale,'[no]');
-                } else if ($this->isAttributeColumn($column)) {
-                    $labelizedValue = $flatItem[$column]; //TODO
-                }
-
-                $result[$column] = $labelizedValue;
+        $result = [];
+        foreach ($flatItemsByColumnName as $columnName => $values) {
+            $propertyTranslation = $this->propertyTranslationRegistry->getTranslator($columnName);
+            if ($propertyTranslation instanceof PropertyFlatTranslator) {
+                $result[$columnName] = $propertyTranslation->translateValues($values, $locale);
+                continue;
             }
 
-            $results[$flatItemIndex] = $result;
+            $attributeTranslation = $this->attributeTranslationRegistry->getTranslator($columnName);
+            if ($attributeTranslation instanceof AttributeFlatTranslator) {
+                $result[$columnName] = $attributeTranslation->translateValues($values, $locale);
+                continue;
+            }
+
+            $result[$columnName] = $values;
         }
 
-        return $results;
+        return $result;
     }
 
     private function translateHeaders(array $flatItems, string $locale)
@@ -243,43 +207,9 @@ class ProductFlatTranslator implements FlatTranslatorInterface
         return $results;
     }
 
-    private function extractCategoryCodes(array $flatItems)
-    {
-        $categories = [];
-        foreach ($flatItems as $flatItem) {
-            $categories = array_merge($categories, explode(',', $flatItem['categories']));
-        }
-
-        return array_unique($categories);
-    }
-
-    private function extractFamilyCodes(array $flatItems)
-    {
-        $familyCodes = [];
-        foreach ($flatItems as $flatItem) {
-            $familyCodes[] = $flatItem['family'];
-        }
-
-        return array_unique($familyCodes);
-    }
     private function isAttributeColumn(string $column): bool
     {
         $attributeColumns = $this->attributeColumnsResolver->resolveAttributeColumns();
-
-        return in_array($column, $attributeColumns);
-    }
-
-    private function isLabelizableAttributeValueColumn(string $column): bool
-    {
-        $attributeColumns = $this->attributeColumnsResolver->resolveAttributeColumnsByTypes([
-            AttributeTypes::OPTION_SIMPLE_SELECT,
-            AttributeTypes::OPTION_MULTI_SELECT,
-            AttributeTypes::ASSET_COLLECTION,
-            AttributeTypes::REFERENCE_ENTITY_COLLECTION,
-            AttributeTypes::REFERENCE_ENTITY_SIMPLE_SELECT,
-            AttributeTypes::METRIC,
-            AttributeTypes::PRICE_COLLECTION
-        ]);
 
         return in_array($column, $attributeColumns);
     }
@@ -301,28 +231,6 @@ class ProductFlatTranslator implements FlatTranslatorInterface
         $associationsColumns = $this->associationColumnsResolver->resolveAssociationColumns();
 
         return in_array($column, $associationsColumns);
-    }
-
-    private function extractParentIdentifiers(array $flatItems): array
-    {
-        $parentIdentifiers = [];
-        foreach ($flatItems as $flatItem) {
-            if (isset($flatItem['parent'])) {
-                $parentIdentifiers[] = $flatItem['parent'];
-            }
-        }
-
-        return array_unique($parentIdentifiers);
-    }
-
-    private function extractGroupCodes(array $flatItems): array
-    {
-        $groupCodes = [];
-        foreach ($flatItems as $flatItem) {
-            $groupCodes[] = $flatItem['groups'];
-        }
-
-        return array_unique($groupCodes);
     }
 
     private function extractAssociationTypeCodes(array $flatItems): array
@@ -381,5 +289,32 @@ class ProductFlatTranslator implements FlatTranslatorInterface
         $associationsColumns = $this->associationColumnsResolver->resolveQuantifiedQuantityAssociationColumns();
 
         return in_array($column, $associationsColumns);
+    }
+
+
+    //@TODO to rename / in another service ?
+    private function groupFlatItemsByColumnName(array $flatItems)
+    {
+        $result = array();
+        foreach ($flatItems as $flatItemIndex => $flatItem) {
+            foreach ($flatItem as $columnName => $value) {
+                $result[$columnName][$flatItemIndex] = $value;
+            }
+        }
+
+        return $result;
+    }
+
+    //@TODO to rename / in another service ?
+    private function undoGroupFlatItemsByColumnName(array $columns)
+    {
+        $result = [];
+        foreach($columns as $columnName => $columnValues) {
+            foreach($columnValues as $flatItemIndex => $value) {
+                $result[$flatItemIndex][$columnName] = $value;
+            }
+        }
+
+        return $result;
     }
 }
