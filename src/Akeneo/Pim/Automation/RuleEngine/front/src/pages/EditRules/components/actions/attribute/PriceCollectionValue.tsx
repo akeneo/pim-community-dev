@@ -81,10 +81,13 @@ const PriceCollectionValue: React.FC<InputValueProps> = ({
     }
   }, [scopeCode]);
 
-  const getValue = (currencyCode: CurrencyCode) =>
-    (value as PriceCollectionData).find(
+  const getValue = (currencyCode: CurrencyCode) => {
+    const priceAmount = (value as PriceCollectionData).find(
       price => price.currency === currencyCode
-    )?.amount || '';
+    )?.amount;
+
+    return typeof priceAmount !== 'undefined' ? priceAmount : '';
+  };
 
   if (!currencyCodes) {
     return (
