@@ -31,5 +31,7 @@ export const useAttributeOptionsList = (attribute: Attribute) => {
     };
   }, [attribute]);
 
-  return attributeOptionsState;
+  return {
+    ...attributeOptionsState,
+  };
 }
