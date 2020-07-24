@@ -3,6 +3,7 @@ import {
   Attribute,
   AttributeType,
   getAttributeLabel,
+  ScopeCode,
 } from '../../../../../models';
 import {
   useTranslate,
@@ -10,11 +11,13 @@ import {
 } from '../../../../../dependenciesTools/hooks';
 import {
   BooleanValue,
-  MultiSelectValue,
-  TextValue,
-  SimpleSelectValue,
   FallbackValue,
+  MultiSelectValue,
   NumberValue,
+  SimpleSelectValue,
+  TextValue,
+  parsePriceCollectionValue,
+  PriceCollectionValue,
 } from './';
 import {
   HelperContainer,
@@ -31,6 +34,7 @@ const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: Map<
   [AttributeType.BOOLEAN, BooleanValue],
   [AttributeType.OPTION_MULTI_SELECT, MultiSelectValue],
   [AttributeType.NUMBER, NumberValue],
+  [AttributeType.PRICE_COLLECTION, PriceCollectionValue],
 ]);
 
 const MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION: Map<
@@ -46,6 +50,7 @@ type InputValueProps = {
   value: any;
   label?: string;
   onChange: (value: any) => void;
+  scopeCode?: ScopeCode;
 };
 
 const getValueModule = (attribute: Attribute, props: InputValueProps) => {
@@ -60,6 +65,13 @@ const getValueModule = (attribute: Attribute, props: InputValueProps) => {
       return <NumberValue {...props} />;
     case AttributeType.BOOLEAN:
       return <BooleanValue {...props} value={!!props.value} />;
+    case AttributeType.PRICE_COLLECTION:
+      return (
+        <PriceCollectionValue
+          {...props}
+          value={parsePriceCollectionValue(props.value)}
+        />
+      );
     default:
       return null;
   }
@@ -73,6 +85,7 @@ type Props = {
   value?: any;
   label?: string;
   onChange: (value: any) => void;
+  scopeCode?: ScopeCode;
 };
 
 const isAttrNotSelected = (attribute: Attribute | null | undefined) =>
@@ -88,6 +101,7 @@ const AttributeValue: React.FC<Props> = ({
   value,
   label,
   onChange,
+  scopeCode,
 }) => {
   const translate = useTranslate();
   const catalogLocale = useUserCatalogLocale();
@@ -130,6 +144,7 @@ const AttributeValue: React.FC<Props> = ({
         value,
         onChange,
         validation,
+        scopeCode,
       });
       if (inputComponent) {
         return inputComponent;
