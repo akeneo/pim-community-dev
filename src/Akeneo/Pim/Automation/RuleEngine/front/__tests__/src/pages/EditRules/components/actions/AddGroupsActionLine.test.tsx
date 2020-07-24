@@ -48,11 +48,7 @@ describe('SetStatusActionLine', () => {
             ],
           })
         );
-      } else if (
-        request.url.includes(
-          'pim_enrich_group_rest_search?%7B%22identifiers%22:%22winter,tshirts%22%7D'
-        )
-      ) {
+      } {
         return Promise.resolve(
           JSON.stringify({
             results: [

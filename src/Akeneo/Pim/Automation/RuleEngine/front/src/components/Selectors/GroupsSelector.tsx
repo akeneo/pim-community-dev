@@ -3,10 +3,10 @@ import {
   InitSelectionCallback,
   Select2Ajax,
   Select2MultiAsyncWrapper,
+  Select2Option,
   Select2Value,
 } from '../Select2Wrapper';
 import { Router } from '../../dependenciesTools';
-import { IndexedGroups } from '../../fetch/GroupFetcher';
 import { getGroupsByIdentifiers } from '../../repositories/GroupRepository';
 import { GroupCode, LocaleCode } from '../../models';
 import { useBackboneRouter, useTranslate } from '../../dependenciesTools/hooks';
@@ -37,13 +37,8 @@ const dataProvider = (
   };
 };
 
-type Select2Result = {
-  id: string;
-  text: string;
-};
-
 type Select2Results = {
-  results: Select2Result[];
+  results: Select2Option[];
 };
 
 const handleResults = (json: Select2Results) => {
@@ -53,29 +48,21 @@ const handleResults = (json: Select2Results) => {
   };
 };
 
-const initSelectedGroups = async (
+const initSelectedGroups = (
   router: Router,
   selectedGroupCodes: GroupCode[],
   callback: InitSelectionCallback
-): Promise<void> => {
-  const groups: IndexedGroups = await getGroupsByIdentifiers(
-    selectedGroupCodes,
-    router
-  );
-
-  callback(
-    selectedGroupCodes.map(groupCode => {
-      return groups[groupCode]
-        ? {
-            id: groupCode,
-            text: groups[groupCode].label,
-          }
-        : {
-            id: groupCode,
-            text: `[${groupCode}]`,
-          };
-    })
-  );
+): void => {
+  getGroupsByIdentifiers(selectedGroupCodes, router).then(groups => {
+    callback(
+      selectedGroupCodes.map(groupCode => {
+        return {
+          id: groupCode,
+          text: groups[groupCode]?.label || `[${groupCode}]`,
+        };
+      })
+    );
+  });
 };
 
 const GroupsSelector: React.FC<Props> = ({
@@ -104,9 +91,7 @@ const GroupsSelector: React.FC<Props> = ({
       cache: true,
       data: (term: string, page: number) =>
         dataProvider(term, page, currentCatalogLocale),
-      results: (json: Select2Results) => {
-        return handleResults(json);
-      },
+      results: (json: Select2Results) => handleResults(json),
     };
   }, [currentCatalogLocale, router]);
 

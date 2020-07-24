@@ -14,12 +14,12 @@ const fetchGroupsByIdentifiers = async (
   const response = await httpGet(url);
   const json = response.status === 404 ? null : await response.json();
 
-  const results = {} as IndexedGroups;
+  const results: IndexedGroups = {};
   json.results?.forEach((element: { id: string; text: string }) => {
     results[element.id] = {
       code: element.id,
       label: element.text,
-    } as Group;
+    };
   });
 
   return results;
