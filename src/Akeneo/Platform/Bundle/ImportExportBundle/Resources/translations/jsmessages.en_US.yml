@@ -137,6 +137,15 @@ pim_import_export:
                         help: Means that the product history is automatically updated, can be switched off to improve performances
                     family_variant_column:
                         title: Family variant column
+                    with_label:
+                        title: With labels
+                        help: Whether or not exported product data will have translated labels instead of code
+                    header_with_label:
+                        title: Headers with labels
+                        help: Whether or not exported product headers will have translated labels instead of code
+                    file_locale:
+                        title: File locale
+                        help: The locale in which the file will be translated to
             file_path: File path
     widget:
         last_operations:
