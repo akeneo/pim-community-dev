@@ -43,6 +43,9 @@ migrate ?= no
 .PHONY: deploy-serenity
 deploy-serenity: create-ci-release-files deploy
 
+.PHONY: delete-serenity
+delete-serenity: create-ci-release-files delete
+
 .PHONY: deploy
 deploy: terraform-deploy
 	@echo "#######################################################################################"

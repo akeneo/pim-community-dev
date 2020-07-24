@@ -466,7 +466,9 @@ jobs:
           - set_gcloud_config_dev
           - run:
                 name: Deploy PR environment
-                command: echo "This environment will be available at https://pimci-pr-${CIRCLE_PULL_REQUEST##*/}.dev.cloud.akeneo.com once deployed :)"
+                command: |
+                    if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
+                    echo "This environment will be available at https://pimci-pr-${CIRCLE_PULL_REQUEST##*/}.dev.cloud.akeneo.com once deployed :) "
           - run:
                 name: Deploy PR environment
                 command: |
@@ -508,7 +510,7 @@ jobs:
           - store_artifacts:
               path: ~/artifacts/infra
 
-  delete_pr_environments:
+  delete_pr_environments_hourly:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
@@ -519,7 +521,22 @@ jobs:
           - run:
                 name: delete PR environment
                 command: |
-                    make delete_pr_environments
+                    make delete_pr_environments_hourly
+
+  delete_pr_environment:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployer
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - run:
+                name: delete environments
+                command: |
+                    if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
+                    echo "remove env from 'deploy_pr_environment'"
+                    INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} make delete-serenity
 
   test_back_missing_structure_migrations:
       machine:
@@ -686,6 +703,17 @@ workflows:
                             - master
                 requires:
                     - build_prod
+          - delete_pr_environment:
+                requires:
+                    - delete_pr_environment?
+          - delete_pr_environment?:
+                type: approval
+                filters:
+                    branches:
+                        ignore:
+                            - master
+                requires:
+                    - deploy_pr_environment
           - test_upgrade_from_serenity_to_master:
                 requires:
                     - build_prod
@@ -761,7 +789,7 @@ workflows:
 
       jobs:
           - checkout
-          - delete_pr_environments:
+          - delete_pr_environments_hourly:
                 requires:
                     - checkout
 
