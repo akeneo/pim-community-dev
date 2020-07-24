@@ -38,3 +38,6 @@ hslavich_saml_sp:
 
 akeneo_monitoring:
     resource: "@AkeneoMonitoringBundle/Resources/config/routing.yml"
+
+shared_catalog:
+    resource: "@AkeneoSharedCatalogBundle/Resources/config/routing.yml"

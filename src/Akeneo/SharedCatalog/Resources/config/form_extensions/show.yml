@@ -1,0 +1,5 @@
+extensions:
+    pim-job-instance-shared-catalog-show:
+        module: akeneosharedcatalog/form/redirect-form
+        config:
+            redirectPath: pim_importexport_export_profile_edit

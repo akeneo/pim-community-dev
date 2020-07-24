@@ -113,6 +113,13 @@ suites:
         spec_path: src/Akeneo/Tool/Bundle/RuleEngineBundle
         src_path: src/Akeneo/Tool/Bundle/RuleEngineBundle
 
+    ## Shared Catalog
+    SharedCatalog:
+        namespace: Akeneo\SharedCatalog
+        psr4_prefix: Akeneo\SharedCatalog
+        spec_path: src/Akeneo/SharedCatalog/tests/back
+        src_path: src/Akeneo/SharedCatalog
+
     ## Acceptance
     Acceptance:
         namespace: AkeneoEnterprise\Test\Acceptance

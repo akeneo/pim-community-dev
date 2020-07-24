@@ -1,0 +1,96 @@
+parameters:
+    akeneo.shared_catalog.connector.name: Akeneo Shared Catalogs
+    akeneo.shared_catalog.connector.code: 'akeneo_shared_catalog'
+    akeneo.shared_catalog.default_products_page_size: 10000
+
+services:
+    _defaults:
+        public: true
+
+    akeneo.shared_catalog.job.product:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%akeneo.shared_catalog.connector.code%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - []
+        tags:
+            - { name: akeneo_batch.job, connector: '%akeneo.shared_catalog.connector.name%', type: '%pim_connector.job.export_type%' }
+
+    akeneo.shared_catalog.job.job_parameters.default_values_provider:
+        class: 'Akeneo\SharedCatalog\Connector\DefaultValueProvider'
+        arguments:
+            - '@akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_csv_export'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            -
+                - '%akeneo.shared_catalog.connector.code%'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo.shared_catalog.job.job_parameters.constraint_collection_provider:
+        class: 'Akeneo\SharedCatalog\Connector\ConstraintCollectionProvider'
+        arguments:
+            - '@akeneo_pim_enrichment.job.job_parameters.constraint_collection_provider.simple_csv_export'
+            -
+                - '%akeneo.shared_catalog.connector.code%'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    akeneo.shared_catalog.provider.form.job_instance:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider'
+        arguments:
+            -
+                akeneo_shared_catalog: pim-job-instance-shared-catalog
+        tags:
+            - { name: pim_enrich.provider.form }
+
+    Akeneo\SharedCatalog\EventSubscriber\JobInstancePublisherSubscriber:
+        arguments:
+            - '@security.token_storage'
+            - '%akeneo.shared_catalog.connector.code%'
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+
+    Akeneo\SharedCatalog\Query\FindSharedCatalogsQueryInterface:
+        class: Akeneo\SharedCatalog\Query\FindSharedCatalogsQuery
+        arguments:
+            - '@database_connection'
+            - '%akeneo.shared_catalog.connector.code%'
+
+    Akeneo\SharedCatalog\Query\FindSharedCatalogQueryInterface:
+        class: Akeneo\SharedCatalog\Query\FindSharedCatalogQuery
+        arguments:
+            - '@database_connection'
+            - '%akeneo.shared_catalog.connector.code%'
+
+    Akeneo\SharedCatalog\Query\GetProductIdFromProductIdentifierQueryInterface:
+        class: Akeneo\SharedCatalog\Query\GetProductIdFromProductIdentifierQuery
+        arguments:
+            - '@database_connection'
+
+    Akeneo\SharedCatalog\Query\FindProductIdentifiersQueryInterface:
+        class: Akeneo\SharedCatalog\Query\FindProductIdentifiersQuery
+        arguments:
+            - '@Akeneo\SharedCatalog\Query\GetProductIdFromProductIdentifierQueryInterface'
+            - '@akeneo.shared_catalog.query.product_query_builder_factory'
+
+    Akeneo\SharedCatalog\Controller\SharedCatalogListAction:
+        arguments:
+            - '@Akeneo\SharedCatalog\Query\FindSharedCatalogsQueryInterface'
+
+    Akeneo\SharedCatalog\Controller\ProductListAction:
+        arguments:
+            - '@Akeneo\SharedCatalog\Query\FindSharedCatalogQueryInterface'
+            - '@Akeneo\SharedCatalog\Query\FindProductIdentifiersQueryInterface'
+            - '%akeneo.shared_catalog.default_products_page_size%'
+
+    akeneo.shared_catalog.query.product_query_builder_factory:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@akeneo.pim.enrichment.factory.product_identifier_cursor_search_after_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
