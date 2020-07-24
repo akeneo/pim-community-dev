@@ -122,6 +122,7 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.repository.product_axis_rate'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ComputeAxisRates'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistry'
 
     akeneo.pim.automation.data_quality_insights.consolidate_product_model_axes_rates:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateAxesRates
@@ -130,6 +131,7 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.repository.product_model_axis_rate'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ComputeAxisRates'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistry'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateDashboardRates:
         arguments:
