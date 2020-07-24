@@ -126,13 +126,13 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
                 $field = sprintf('r.%s', $property);
                 switch ($criterion['operator']) {
                     case 'IN':
-                        $qb->where($qb->expr()->in($field, $parameter));
+                        $qb->andWhere($qb->expr()->in($field, $parameter));
                         break;
                     case '>':
-                        $qb->where($qb->expr()->gt($field, $parameter));
+                        $qb->andWhere($qb->expr()->gt($field, $parameter));
                         break;
                     default:
-                        continue 2;
+                        throw new \InvalidArgumentException('Invalid operator for search query.');
                 }
                 $qb->setParameter($parameter, $criterion['value']);
             }
