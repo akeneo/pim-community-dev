@@ -6,6 +6,7 @@ import { PimView } from '../../dependenciesTools/components/PimView';
 import { Breadcrumb } from '../Breadcrumb';
 import { UnsavedChangesWarning } from '../UnsavedChangesWarning';
 import { useTranslate } from '../../dependenciesTools/hooks';
+import { Dropdown } from '../Dropdown';
 
 const BreadcrumbAndButtons = styled.div`
   display: inline-flex;
@@ -19,6 +20,7 @@ type Props = {
   title: string;
   unsavedChanges?: boolean;
   secondaryButton?: ReactElement;
+  handleDeleteRule: () => Promise<any>;
 };
 
 const RulesHeader: React.FC<Props> = ({
@@ -28,6 +30,7 @@ const RulesHeader: React.FC<Props> = ({
   title,
   unsavedChanges = false,
   secondaryButton,
+  handleDeleteRule,
 }) => {
   const translate = useTranslate();
 
@@ -41,6 +44,7 @@ const RulesHeader: React.FC<Props> = ({
             viewName='pim-rule-index-user-navigation'
           />
           <div className='AknTitleContainer-actionsContainer AknButtonList'>
+            <Dropdown handleDeleteRule={handleDeleteRule} />
             <div className='AknButtonList-item'>{secondaryButton}</div>
             <PrimaryButton form={formId} type='submit'>
               {translate(buttonLabel)}

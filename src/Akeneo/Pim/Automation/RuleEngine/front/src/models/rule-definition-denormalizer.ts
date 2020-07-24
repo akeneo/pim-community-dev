@@ -39,12 +39,14 @@ const denormalize = async function(
   router: Router
 ): Promise<RuleDefinition> {
   if (
+    typeof json.id !== 'number' ||
     typeof json.code !== 'string' ||
     (typeof json.labels !== 'undefined' && typeof json.labels !== 'object') ||
     (typeof json.priority !== 'undefined' && typeof json.priority !== 'number')
   ) {
     throw new Error('Unable to parse rule definition ' + JSON.stringify(json));
   }
+  const id = json.id
   const code = json.code;
   const labels = json.labels || {};
   const priority = json.priority || 0;
@@ -52,9 +54,10 @@ const denormalize = async function(
   await prepareCacheAttributes(json, router);
 
   return {
-    code: code,
-    labels: labels,
-    priority: priority,
+    id,
+    code,
+    labels,
+    priority,
     conditions: json.content?.conditions || [],
     actions: json.content?.actions || [],
   };

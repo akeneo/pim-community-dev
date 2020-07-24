@@ -16,12 +16,16 @@ import {
   useNotify,
   useTranslate,
   useUserContext,
+  generateUrl,
+  redirectToUrl,
 } from '../../dependenciesTools/hooks';
 import { Locale, RuleDefinition } from '../../models';
 import { useSubmitEditRuleForm } from './hooks';
 import { IndexedScopes } from '../../repositories/ScopeRepository';
 import { AddActionButton } from './components/actions/AddActionButton';
 import { Action } from '../../models/Action';
+import { httpDelete } from '../../fetch';
+import { NotificationLevel } from '../../dependenciesTools';
 
 type Props = {
   ruleDefinitionCode: string;
@@ -63,6 +67,8 @@ const EditRulesContent: React.FC<Props> = ({
     ruleDefinition.actions
   );
 
+  const [deletePending, setDeletePending] = React.useState(false);
+
   useEffect(() => {
     setIsDirty(!!formMethods.formState.dirtyFields.size);
   }, [formMethods.formState.dirtyFields.size]);
@@ -84,13 +90,54 @@ const EditRulesContent: React.FC<Props> = ({
     append(action);
   };
 
+  const handleDeleteRule = async (): Promise<any> => {
+    const deleteRule = router.generate('pimee_catalog_rule_rule_delete', {
+      id: ruleDefinition.id,
+    });
+
+    setDeletePending(true);
+
+    let result: any;
+
+    try {
+      result = await httpDelete(deleteRule);
+    } catch (error) {
+      setDeletePending(false);
+      notify(
+        NotificationLevel.ERROR,
+        translate('pimee_catalog_rule.form.delete.notification.failed')
+      );
+
+      return error;
+    }
+
+    if (result.ok) {
+      notify(
+        NotificationLevel.SUCCESS,
+        translate('pimee_catalog_rule.form.delete.notification.success')
+      );
+      redirectToUrl(
+        router,
+        generateUrl(router, 'pimee_catalog_rule_rule_index')
+      );
+    } else {
+      setDeletePending(false);
+      notify(
+        NotificationLevel.ERROR,
+        translate('pimee_catalog_rule.form.delete.notification.failed')
+      );
+    }
+    return result;
+  };
+
   return (
     <ThemeProvider theme={akeneoTheme}>
-      {pending && <AkeneoSpinner />}
+      {(pending || deletePending) && <AkeneoSpinner />}
       <RulesHeader
         buttonLabel='pim_common.save'
         formId='edit-rules-form'
         title={title}
+        handleDeleteRule={handleDeleteRule}
         unsavedChanges={formMethods.formState.dirty}
         secondaryButton={<AddActionButton handleAddAction={handleAddAction} />}>
         <BreadcrumbItem href={`#${urlSettings}`} onClick={handleSettingsRoute}>
