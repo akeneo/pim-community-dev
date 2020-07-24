@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useRef, useCallback, ChangeEvent, SyntheticEvent} from 'react';
 import styled from 'styled-components';
-// @todo pull-up master: change to '@akeneo-pim-community/shared'
 import {
   AkeneoThemeProvider,
   Button,
@@ -17,9 +16,8 @@ import {
   NoResultsIllustration,
   UserSurveyIllustration,
   InfoIcon,
-} from 'akeneosharedcatalog/akeneo-pim-community/shared';
-// @todo pull-up master: change to '@akeneo-pim-community/legacy-bridge'
-import {DependenciesProvider, useTranslate} from 'akeneosharedcatalog/akeneo-pim-community/legacy-bridge';
+} from '@akeneo-pim-community/shared';
+import {DependenciesProvider, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {HeaderCell, LabelCell, Row, Table} from 'akeneosharedcatalog/common/Table';
 
 const MAX_RECIPIENT_COUNT = 500;
