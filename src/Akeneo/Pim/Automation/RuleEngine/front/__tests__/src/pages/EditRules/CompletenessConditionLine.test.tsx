@@ -2,7 +2,7 @@ import React from 'react';
 import 'jest-fetch-mock';
 import { renderWithProviders, screen } from '../../../../test-utils';
 import { Operator } from '../../../../src/models/Operator';
-import { CompletenessConditionLine } from "../../../../src/pages/EditRules/components/conditions/CompletenessConditionLine";
+import { CompletenessConditionLine } from '../../../../src/pages/EditRules/components/conditions/CompletenessConditionLine';
 
 jest.mock('../../../../src/fetch/categoryTree.fetcher');
 jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
@@ -57,9 +57,13 @@ describe('CompletenessConditionLine', () => {
     expect(screen.getByTestId('edit-rules-input-0-value')).toHaveValue(50);
 
     expect(screen.getByTestId('edit-rules-input-0-scope')).toBeInTheDocument();
-    expect(screen.getByTestId('edit-rules-input-0-scope')).toHaveValue('ecommerce');
+    expect(screen.getByTestId('edit-rules-input-0-scope')).toHaveValue(
+      'ecommerce'
+    );
 
     expect(screen.getByTestId('edit-rules-input-0-locale')).toBeInTheDocument();
-    expect(screen.getByTestId('edit-rules-input-0-locale')).toHaveValue('en_US');
+    expect(screen.getByTestId('edit-rules-input-0-locale')).toHaveValue(
+      'en_US'
+    );
   });
 });

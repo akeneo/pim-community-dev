@@ -9,7 +9,7 @@ import { getSimpleMultiOptionsAttributeConditionModule } from './SimpleMultiOpti
 import { getNumberAttributeConditionModule } from './NumberAttributeCondition';
 import { getPimConditionModule } from './PimCondition';
 import { FallbackConditionLine } from '../../pages/EditRules/components/conditions/FallbackConditionLine';
-import { getCompletenessConditionModule } from "./CompletenessCondition";
+import { getCompletenessConditionModule } from './CompletenessCondition';
 
 export type ConditionModuleGuesser = (
   json: any,

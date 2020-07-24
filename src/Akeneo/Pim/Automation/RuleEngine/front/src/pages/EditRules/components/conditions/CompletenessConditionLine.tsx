@@ -1,21 +1,23 @@
-import React from "react";
+import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { ConditionLineProps } from "./ConditionLineProps";
+import { ConditionLineProps } from './ConditionLineProps';
 import {
-  FieldColumn, LocaleColumn,
+  FieldColumn,
+  LocaleColumn,
   OperatorColumn,
   ScopeColumn,
-  ValueColumn
-} from "./style";
-import { OperatorSelector } from "../../../../components/Selectors/OperatorSelector";
-import { CompletenessOperators } from "../../../../models/conditions";
-import { useControlledFormInputCondition } from "../../hooks";
-import { useTranslate } from "../../../../dependenciesTools/hooks";
-import { Operator } from "../../../../models/Operator";
-import { InputNumber } from "../../../../components/Inputs";
-import { LineErrors } from "../LineErrors";
-import { ScopeSelector } from "../../../../components/Selectors/ScopeSelector";
-import { LocaleSelector } from "../../../../components/Selectors/LocaleSelector";
+  ValueColumn,
+} from './style';
+import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
+import { CompletenessOperators } from '../../../../models/conditions';
+import { useControlledFormInputCondition } from '../../hooks';
+import { useTranslate } from '../../../../dependenciesTools/hooks';
+import { Operator } from '../../../../models/Operator';
+import { InputNumber } from '../../../../components/Inputs';
+import { LineErrors } from '../LineErrors';
+import { ScopeSelector } from '../../../../components/Selectors/ScopeSelector';
+import { LocaleSelector } from '../../../../components/Selectors/LocaleSelector';
+import { Locale } from '../../../../models';
 
 const CompletenessConditionLine: React.FC<ConditionLineProps> = ({
   lineNumber,
@@ -41,82 +43,93 @@ const CompletenessConditionLine: React.FC<ConditionLineProps> = ({
   const isElementInError = (element: string): boolean =>
     typeof errors?.content?.conditions?.[lineNumber]?.[element] === 'object';
 
-  return <div className={'AknGrid-bodyCell'}>
-    <Controller
-      as={<input type='hidden' />}
-      name={fieldFormName}
-      defaultValue='completeness'
-    />
-    <FieldColumn
-      className={'AknGrid-bodyCell--highlight'}
-      title={translate('pim_common.completeness')}>
-      {translate('pim_common.completeness')}
-    </FieldColumn>
-    <OperatorColumn>
-      <Controller
-        as={OperatorSelector}
-        availableOperators={CompletenessOperators}
-        data-testid={`edit-rules-input-${lineNumber}-operator`}
-        hiddenLabel
-        name={operatorFormName}
-        defaultValue={getOperatorFormValue() ?? Operator.EQUALS}
-        value={getOperatorFormValue() || ''}
-      />
-    </OperatorColumn>
-    <ValueColumn small>
-      <Controller
-        as={InputNumber}
-        className={`AknTextField${isElementInError('value') ? ' AknTextField--error' : ''}`}
-        data-testid={`edit-rules-input-${lineNumber}-value`}
-        name={valueFormName}
-        label={translate('pimee_catalog_rule.rule.value')}
-        hiddenLabel={true}
-        defaultValue={getValueFormValue()}
-        rules={{
-          required: translate('pimee_catalog_rule.exceptions.required_value'),
-        }}
-      />
-    </ValueColumn>
-    <ScopeColumn
-      className={
-        isElementInError('scope') ? 'select2-container-error' : ''
-      }>
-      <Controller
-        allowClear={false}
-        as={ScopeSelector}
-        availableScopes={Object.values(scopes)}
-        currentCatalogLocale={currentCatalogLocale}
-        data-testid={`edit-rules-input-${lineNumber}-scope`}
-        hiddenLabel
-        name={scopeFormName}
-        defaultValue={getScopeFormValue()}
-        value={getScopeFormValue()}
-        rules={{
-          required: translate('pimee_catalog_rule.exceptions.required_scope_completeness'),
-        }}
-      />
-    </ScopeColumn>
-    <LocaleColumn
-      className={
-        isElementInError('locale') ? 'select2-container-error' : ''
-      }>
-      <Controller
-        as={LocaleSelector}
-        data-testid={`edit-rules-input-${lineNumber}-locale`}
-        hiddenLabel
-        availableLocales={locales}
-        defaultValue={getLocaleFormValue()}
-        value={getLocaleFormValue()}
-        allowClear={false}
-        name={localeFormName}
-        rules={{
-          required: translate('pimee_catalog_rule.exceptions.required_locale_completeness'),
-        }}
-      />
-    </LocaleColumn>
-    <LineErrors lineNumber={lineNumber} type='conditions' />
+  const getAvailableLocales = (): Locale[] => {
+    const scopeCode = getScopeFormValue();
+    if (scopeCode && scopes[scopeCode]) {
+      return scopes[scopeCode].locales;
+    }
+    return locales;
+  };
 
-  </div>
-}
+  return (
+    <div className={'AknGrid-bodyCell'}>
+      <Controller
+        as={<input type='hidden' />}
+        name={fieldFormName}
+        defaultValue='completeness'
+      />
+      <FieldColumn
+        className={'AknGrid-bodyCell--highlight'}
+        title={translate('pim_common.completeness')}>
+        {translate('pim_common.completeness')}
+      </FieldColumn>
+      <OperatorColumn>
+        <Controller
+          as={OperatorSelector}
+          availableOperators={CompletenessOperators}
+          data-testid={`edit-rules-input-${lineNumber}-operator`}
+          hiddenLabel
+          name={operatorFormName}
+          defaultValue={getOperatorFormValue() ?? Operator.EQUALS}
+          value={getOperatorFormValue() || ''}
+        />
+      </OperatorColumn>
+      <ValueColumn small>
+        <Controller
+          as={InputNumber}
+          className={`AknTextField${
+            isElementInError('value') ? ' AknTextField--error' : ''
+          }`}
+          data-testid={`edit-rules-input-${lineNumber}-value`}
+          name={valueFormName}
+          label={translate('pimee_catalog_rule.rule.value')}
+          hiddenLabel={true}
+          defaultValue={getValueFormValue()}
+          rules={{
+            required: translate('pimee_catalog_rule.exceptions.required_value'),
+          }}
+        />
+      </ValueColumn>
+      <ScopeColumn
+        className={isElementInError('scope') ? 'select2-container-error' : ''}>
+        <Controller
+          allowClear={false}
+          as={ScopeSelector}
+          availableScopes={Object.values(scopes)}
+          currentCatalogLocale={currentCatalogLocale}
+          data-testid={`edit-rules-input-${lineNumber}-scope`}
+          hiddenLabel
+          name={scopeFormName}
+          defaultValue={getScopeFormValue()}
+          value={getScopeFormValue()}
+          rules={{
+            required: translate(
+              'pimee_catalog_rule.exceptions.required_scope_completeness'
+            ),
+          }}
+        />
+      </ScopeColumn>
+      <LocaleColumn
+        className={isElementInError('locale') ? 'select2-container-error' : ''}>
+        <Controller
+          as={LocaleSelector}
+          data-testid={`edit-rules-input-${lineNumber}-locale`}
+          hiddenLabel
+          availableLocales={getAvailableLocales()}
+          defaultValue={getLocaleFormValue()}
+          value={getLocaleFormValue()}
+          allowClear={false}
+          name={localeFormName}
+          rules={{
+            required: translate(
+              'pimee_catalog_rule.exceptions.required_locale_completeness'
+            ),
+          }}
+        />
+      </LocaleColumn>
+      <LineErrors lineNumber={lineNumber} type='conditions' />
+    </div>
+  );
+};
 
-export { CompletenessConditionLine }
+export { CompletenessConditionLine };

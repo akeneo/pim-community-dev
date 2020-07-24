@@ -11,7 +11,8 @@ import {
   createCategoryCondition,
   Locale,
   LocaleCode,
-  createNumberAttributeCondition, createCompletenessCondition,
+  createNumberAttributeCondition,
+  createCompletenessCondition,
 } from '../../../../models/';
 import { TextBoxBlue } from '../TextBoxBlue';
 import { useProductsCount } from '../../hooks';

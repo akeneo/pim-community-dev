@@ -1,8 +1,9 @@
-import { Operator } from "../Operator";
-import { ScopeCode } from "../Scope";
-import { ConditionModuleGuesser } from "./ConditionModuleGuesser";
-import { CompletenessConditionLine } from "../../pages/EditRules/components/conditions/CompletenessConditionLine";
-import { ConditionFactory } from "./Condition";
+import { Operator } from '../Operator';
+import { ScopeCode } from '../Scope';
+import { ConditionModuleGuesser } from './ConditionModuleGuesser';
+import { CompletenessConditionLine } from '../../pages/EditRules/components/conditions/CompletenessConditionLine';
+import { ConditionFactory } from './Condition';
+import { LocaleCode } from '../Locale';
 
 const CompletenessOperators: Operator[] = [
   Operator.EQUALS,
@@ -16,7 +17,7 @@ export type CompletenessCondition = {
   field: string;
   operator: Operator;
   value: number;
-  locale?: string;
+  locale: LocaleCode;
 };
 
 const getCompletenessConditionModule: ConditionModuleGuesser = json => {
@@ -46,4 +47,8 @@ const createCompletenessCondition: ConditionFactory = (
   });
 };
 
-export { getCompletenessConditionModule, createCompletenessCondition, CompletenessOperators }
+export {
+  getCompletenessConditionModule,
+  createCompletenessCondition,
+  CompletenessOperators,
+};
