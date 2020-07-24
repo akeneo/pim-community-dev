@@ -81,34 +81,30 @@ class Loader
      */
     private function mergeMappings(array $originalMappings, array $additionalMappings): array
     {
-        foreach ($additionalMappings as $indexName => $definitions) {
-            if (isset($definitions['properties'])) {
-                $originalProperties = isset($originalMappings[$indexName]['properties']) ?
-                    $originalMappings[$indexName]['properties'] : [];
+        if (isset($additionalMappings['properties'])) {
+            $originalProperties = $originalMappings['properties'] ?? [];
 
-                $originalMappings[$indexName]['properties'] = array_replace_recursive(
-                    $originalProperties,
-                    $definitions['properties']
-                );
-            }
-            if (isset($definitions['dynamic_templates'])) {
-                $originalTemplates = isset($originalMappings[$indexName]['dynamic_templates']) ?
-                    $originalMappings[$indexName]['dynamic_templates'] : [];
-
-                $originalMappings[$indexName]['dynamic_templates'] = array_merge_recursive(
-                    $originalTemplates,
-                    $definitions['dynamic_templates']
-                );
-            }
-            // hacky stuff to merge all other mappings
-            $otherMappings = $definitions;
-            unset($otherMappings['properties']);
-            unset($otherMappings['dynamic_templates']);
-            $originalMappings[$indexName] = array_replace_recursive(
-                $originalMappings[$indexName] ?? [],
-                $otherMappings
+            $originalMappings['properties'] = array_replace_recursive(
+                $originalProperties,
+                $additionalMappings['properties']
             );
         }
+        if (isset($additionalMappings['dynamic_templates'])) {
+            $originalTemplates = $originalMappings['dynamic_templates'] ?? [];
+
+            $originalMappings['dynamic_templates'] = array_merge_recursive(
+                $originalTemplates,
+                $additionalMappings['dynamic_templates']
+            );
+        }
+        // hacky stuff to merge all other mappings
+        $otherMappings = $additionalMappings;
+        unset($otherMappings['properties']);
+        unset($otherMappings['dynamic_templates']);
+        $originalMappings = array_replace_recursive(
+            $originalMappings,
+            $otherMappings
+        );
 
         return $originalMappings;
     }

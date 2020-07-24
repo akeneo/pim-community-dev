@@ -30,7 +30,7 @@ pim_enrich:
     association_type:
       property:
         is_two_way: 2-way association
-        is_quantified: Quantified association
+        is_quantified: Association with quantities
 pim_enrich_attribute_form:
   code: Code
   type: Attribute Type

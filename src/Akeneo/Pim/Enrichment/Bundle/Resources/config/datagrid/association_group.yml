@@ -7,6 +7,8 @@ datagrid:
             columnListener:
                 dataField: id
                 columnName: is_checked
+            filtersAsColumn: false
+            manageFilters: false
         source:
             type: pim_datasource_default
             entity: '%pim_catalog.entity.group.class%'

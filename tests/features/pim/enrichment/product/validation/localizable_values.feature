@@ -4,7 +4,8 @@ Feature: Validate localizable values of a product
   I need to be able to see validation errors for localizable attributes
 
 Background:
-  Given the following locales "en_US, fr_FR, es_ES"
+  Given an authentified user
+  And the following locales "en_US, fr_FR, es_ES"
   And the following "ecommerce" channel with locales "en_US"
   And the following "mobile" channel with locales "fr_FR"
   And the following attributes:

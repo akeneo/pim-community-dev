@@ -121,7 +121,7 @@ services:
         arguments:
             - '@pim_channel.query.cache.channel_exists_with_locale'
         tags:
-            - { name: akeneo.pim.enrichment.factory.non_existent_values_filter }
+            - { name: akeneo.pim.enrichment.factory.non_existent_values_filter, priority: -1 }
 
     akeneo.pim.enrichment.factory.empty_values_cleaner:
         public: true

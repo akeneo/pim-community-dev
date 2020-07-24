@@ -59,9 +59,11 @@ _CONNECTIVITY_CONNECTION_YARN_RUN = $(YARN_RUN) run --cwd=src/Akeneo/Connectivit
 connectivity-connection-coupling-back:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Connectivity/Connection/back/tests/.php_cd.php src/Akeneo/Connectivity/Connection/back
 
-connectivity-connection-static-analysis-back:
-	$(PHP_RUN) vendor/bin/phpstan analyse --configuration src/Akeneo/Connectivity/Connection/back/tests/phpstan.neon
-	$(PHP_RUN) vendor/bin/phpstan analyse --configuration src/Akeneo/Connectivity/Connection/back/tests/phpstan-infra.neon
+connectivity-connection-lint-back:
+	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
+	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
+	$(PHP_RUN) vendor/bin/phpstan analyse --level=8 src/Akeneo/Connectivity/Connection/back/Application src/Akeneo/Connectivity/Connection/back/Domain
+	$(PHP_RUN) vendor/bin/phpstan analyse --level=5 src/Akeneo/Connectivity/Connection/back/Infrastructure
 
 connectivity-connection-unit-back:
 	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Connectivity/Connection/back/tests/Unit/spec/
@@ -85,7 +87,7 @@ endif
 
 connectivity-connection-back:
 	$(MAKE) connectivity-connection-coupling-back
-	$(MAKE) connectivity-connection-static-analysis-back
+	$(MAKE) connectivity-connection-lint-back
 	$(MAKE) connectivity-connection-unit-back
 	$(MAKE) connectivity-connection-acceptance-back
 	$(MAKE) connectivity-connection-integration-back

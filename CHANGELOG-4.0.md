@@ -1,5 +1,40 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9359: Fix ES configuration override for dynamic templates
+
+# 4.0.40 (2020-07-13)
+
+## Improvement
+
+-PIM-9330: Sort jobs and connectors by alphabetical order on associated menus on Imports and Exports pages.
+
+## Bug fixes
+
+- PIM-9344: Fix pdf renderer when using pim_catalog_simpleselect
+
+# 4.0.39 (2020-07-08)
+
+## Bug fixes
+
+- PIM-9349: Fix record list alignment when images are loading indefinitely
+
+# 4.0.38 (2020-07-07)
+
+## Bug fixes
+
+- PIM-9343: Fix cannot save product when simple reference entity linked to this product is deleted
+
+# 4.0.37 (2020-07-06)
+
+# 4.0.36 (2020-06-30)
+
+## Bug fixes
+
+- PIM-9328: Add "en_GB" code to display the corresponding locale in the UI.
+- PIM-9319: Fix date timezone for a correct display of the dates in the Connection Dashboard
+
 # 4.0.35 (2020-06-22)
 
 ## Bug fixes

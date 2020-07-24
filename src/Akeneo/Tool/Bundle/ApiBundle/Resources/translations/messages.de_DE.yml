@@ -8,7 +8,7 @@ pim_api:
       edit: Erstellen und Aktualisieren von Attributoptionen
       list: Attributoptionen auflisten
     attribute_group:
-      edit: Erstellen und aktualisieren von Attributgruppen
+      edit: Erstellen und Aktualisieren von Attributgruppen
       list: Attributgruppen auflisten
     category:
       edit: Erstellen und Aktualisieren von Kategorien
@@ -20,12 +20,12 @@ pim_api:
       edit: Varianten der Produktfamilien anlegen und aktualisieren
       list: Varianten der Produktfamilien auflisten
     channel:
-      edit: Erstellen und aktualisieren von Kanälen
+      edit: Erstellen und Aktualisieren von Kanälen
       list: Ausgabekanäle auflisten
     locale.list: Gebietsschemata auflisten
     currency.list: Währungen auflisten
     association_type:
-      edit: Erstellen und aktualisieren von Verbindungstypen
+      edit: Erstellen und Aktualisieren von Verbindungstypen
       list: Verbindungstypen auflisten
   acl_group:
     overall_access: Gesamtzugriff Web-API

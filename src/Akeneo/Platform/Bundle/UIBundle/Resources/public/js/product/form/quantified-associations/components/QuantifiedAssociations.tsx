@@ -164,7 +164,7 @@ const QuantifiedAssociations = ({
       />
       {!isCompact && (
         <Buttons>
-          <Button color="blue" outline={true} onClick={handleAdd}>
+          <Button color="blue" onClick={handleAdd}>
             {translate('pim_enrich.entity.product.module.associations.add_associations')}
           </Button>
         </Buttons>

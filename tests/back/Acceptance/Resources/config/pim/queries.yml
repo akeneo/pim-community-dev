@@ -34,8 +34,8 @@ services:
         arguments:
             - '@pim_catalog.repository.product_model'
 
-    akeneo.pim.enrichment.product.query.find_non_existing_association_type_codes_query:
-        class: Akeneo\Test\Acceptance\AssociationType\InMemoryFindNonExistingAssociationTypeCodesQuery
+    akeneo.pim.enrichment.product.query.find_quantified_association_codes:
+        class: Akeneo\Test\Acceptance\AssociationType\InMemoryFindQuantifiedAssociationTypeCodes
         arguments:
             - '@pim_catalog.repository.association_type'
 

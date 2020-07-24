@@ -38,6 +38,8 @@ product_model.family_variant.not_blank.message: La variante de famille du modèl
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": L'attribut {{ attribute_code }} requiert une date antérieure ou égale à {{ limit }}.
 "The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": L'attribut {{ attribute }} requiert une valeur numérique et la valeur {{ value }} soumise ne l'est pas.
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": L’attribut %attribute% ne peut excéder %limit% caractères. La valeur soumise est trop longue.
+'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': 'L''attribut {{ attribute_code }} doit respecter le modèle donné dans l''expression régulière (ou regex) suivante : {{ pattern }}.'
+'The {{ attribute_code }} attribute cannot be empty.': 'L''attribut {{ attribute_code }} ne peut pas être vide.'
 pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: 'L''attribut "%attribute%" ne peut pas être vide, car il a été défini comme axe pour cette entité'

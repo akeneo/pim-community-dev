@@ -1,7 +1,7 @@
 parameters:
     pim_localization.provider.ui_locale.class:
-    pim_localization.provider.ui_locale.min_percentage: 0.8
-    pim_localization.provider.ui_locale.locale_codes:   ['en_US', 'ca_ES', 'da_DK', 'de_DE', 'es_ES', 'fi_FI', 'fr_FR', 'hr_HR', 'it_IT', 'ja_JP', 'ko_KR', 'nl_NL', 'pl_PL', 'pt_BR', 'pt_PT', 'ru_RU', 'sv_SE', 'tl_PH', 'zh_CN', 'sv_SE', 'en_NZ']
+    pim_localization.provider.ui_locale.min_percentage: 0.7
+    pim_localization.provider.ui_locale.locale_codes:   ['ca_ES', 'da_DK', 'de_DE', 'en_GB', 'en_US', 'es_ES', 'fi_FI', 'fr_FR', 'hr_HR', 'it_IT', 'ja_JP', 'ko_KR', 'nl_NL', 'pl_PL', 'pt_BR', 'pt_PT', 'ru_RU', 'sv_SE', 'tl_PH', 'zh_CN', 'sv_SE', 'en_NZ']
 
 services:
     pim_localization.provider.ui_locale:

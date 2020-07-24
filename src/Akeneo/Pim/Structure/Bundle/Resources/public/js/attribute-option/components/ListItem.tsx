@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {FC, useRef, useState} from 'react';
 import {AttributeOption} from '../model';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import {useAttributeContext} from '../contexts';
@@ -20,7 +20,8 @@ interface AttributeOptionItemProps {
     index: number;
 }
 
-const ListItem = ({data, selectAttributeOption, isSelected, deleteAttributeOption, moveAttributeOption, validateMoveAttributeOption, dragItem, setDragItem, index}: AttributeOptionItemProps) => {
+const ListItem: FC<AttributeOptionItemProps> = ({children, ...props}) => {
+    const {data, selectAttributeOption, isSelected, deleteAttributeOption, moveAttributeOption, validateMoveAttributeOption, dragItem, setDragItem, index} = props;
     const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState<boolean>(false);
     const attributeContext = useAttributeContext();
     const rowRef = useRef(null);
@@ -109,6 +110,9 @@ const ListItem = ({data, selectAttributeOption, isSelected, deleteAttributeOptio
                     <div>
                         <span>{data.code}</span>
                     </div>
+                </span>
+                <span className="AknAttributeOption-extraData" role="attribute-option-extra-data">
+                    <span>{children}</span>
                 </span>
                 <span className="AknAttributeOption-delete-option-icon" onClick={(event: any) => {
                     event.preventDefault();

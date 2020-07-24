@@ -12,7 +12,7 @@ const Container = styled.div`
   height: 44px;
   border-bottom: 1px solid ${({theme}: AkeneoThemedProps) => theme.color.purple100};
   display: flex;
-  position: fixed;
+  position: sticky;
   top: 0px;
   padding-bottom: 47px;
 `;

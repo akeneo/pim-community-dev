@@ -70,6 +70,7 @@ pim_enrich.entity.product:
       locale_unavailable: Ce champ traduisible n'est pas disponible pour la locale '{{ locale }}' et le canal '{{ channel }}'
       to_fill_count: "{1}1 attribut requis manquant|]1, Inf[{{ count }} attributs requis manquants"
       add_attribute_option: Ajouter une option d'attribut
+      add_option: Ajouter une option
     completeness:
       title: Complétude
       complete: Complet
@@ -364,8 +365,8 @@ pim_datagrid:
     sequential_edit: Modification séquentielle
     mass_delete: Suppression massive
     selected:
-      family: familles sélectionnées
-      product: résultats sélectionnés
+      family: "]-Inf, 1]{{ count }} famille sélectionnée|]1, +Inf[{{ count }} familles sélectionnées"
+      product: "]-Inf, 1]{{ count }} résultat sélectionné|]1, +Inf[{{ count }} résultats sélectionnés"
   view_selector:
     view: Vues
   actions:

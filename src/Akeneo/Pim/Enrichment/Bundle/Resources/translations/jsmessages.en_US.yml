@@ -377,8 +377,8 @@ pim_datagrid:
         sequential_edit: Sequential edit
         mass_delete: Mass delete
         selected:
-            family: selected families
-            product: selected results
+            family: "]-Inf, 1]{{ count }} family selected|]1, Inf[{{ count }} families selected"
+            product: "]-Inf, 1]{{ count }} result selected|]1, Inf[{{ count }} results selected"
     view_selector:
         view: Views
     actions:

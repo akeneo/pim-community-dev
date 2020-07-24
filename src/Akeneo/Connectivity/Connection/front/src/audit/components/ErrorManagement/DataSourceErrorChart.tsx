@@ -1,5 +1,5 @@
 import React from 'react';
-import {Section, SmallHelper} from '../../../common';
+import {Loading, Section, SmallHelper} from '../../../common';
 import styled from '../../../common/styled-with-theme';
 import {FlowType} from '../../../model/flow-type.enum';
 import {Translate, useTranslate} from '../../../shared/translate';
@@ -55,7 +55,7 @@ export const DataSourceErrorChart = () => {
                     weeklyAuditData={weeklyErrorAuditData[connectionCode]}
                 />
             ) : (
-                <>Loading...</>
+                <Loading />
             )}
         </Container>
     );

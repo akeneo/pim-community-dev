@@ -1,9 +1,3 @@
-mappings:
-    an_index_type2:
-        just_a_mapping: ~
-    an_index_type3:
-        just_a_mapping: ~
-
 aliases:
     alias_1: {}
     alias_2:

@@ -40,12 +40,12 @@ class AttributeOptionUpdateGuesserSpec extends ObjectBehavior
         $this->guessUpdates($em, $option, UpdateGuesserInterface::ACTION_DELETE)->shouldReturn([$attribute]);
     }
 
-    function it_marks_attributes_as_updated_when_an_attribute_option_value_is_removed_or_updated(
+    function it_marks_attribute_options_as_updated_when_an_attribute_option_value_is_updated(
         $em,
-        $attribute,
+        $option,
         $optionValue
     ) {
-        $this->guessUpdates($em, $optionValue, UpdateGuesserInterface::ACTION_UPDATE_ENTITY)->shouldReturn([$attribute]);
-        $this->guessUpdates($em, $optionValue, UpdateGuesserInterface::ACTION_DELETE)->shouldReturn([$attribute]);
+        $this->guessUpdates($em, $optionValue, UpdateGuesserInterface::ACTION_UPDATE_ENTITY)->shouldReturn([$option]);
+        $this->guessUpdates($em, $optionValue, UpdateGuesserInterface::ACTION_DELETE)->shouldReturn([]);
     }
 }

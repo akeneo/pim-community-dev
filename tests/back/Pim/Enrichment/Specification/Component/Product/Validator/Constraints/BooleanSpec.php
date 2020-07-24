@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constr
 
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Boolean;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Validator\Constraint;
 
 class BooleanSpec extends ObjectBehavior
 {
@@ -14,11 +15,12 @@ class BooleanSpec extends ObjectBehavior
 
     function it_has_message()
     {
-        $this->message->shouldBe('Property "%attribute%" expects a boolean as data, "%givenType%" given.');
+        $this->message
+            ->shouldBe('The {{ attribute_code }} attribute requires a boolean value (true or false) as data, a {{ given_type }} was detected.');
     }
 
     function it_is_a_validator_constraint()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraint');
+        $this->shouldBeAnInstanceOf(Constraint::class);
     }
 }

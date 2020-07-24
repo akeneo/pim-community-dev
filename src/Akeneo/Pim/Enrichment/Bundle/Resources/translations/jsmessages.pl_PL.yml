@@ -371,6 +371,7 @@ pim_datagrid:
   filters:
     label: Filtry
     system: System
+  search: Szukaj w {{label}}
 batch_jobs:
   add_association:
     label: Powiąż

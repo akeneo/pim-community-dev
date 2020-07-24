@@ -56,9 +56,9 @@ _COMMUNICATION_CHANNEL_YARN_RUN = $(YARN_RUN) run --cwd=src/Akeneo/Platform/Bund
 
 # Tests Back
 
-communication-channel-static-analysis-back:
-	$(PHP_RUN) vendor/bin/phpstan analyse --configuration src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/phpstan.neon
-	$(PHP_RUN) vendor/bin/phpstan analyse --configuration src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/phpstan-infra.neon
+communication-channel-lint-back:
+	$(PHP_RUN) vendor/bin/phpstan analyse --level=8 src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/Application src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/Domain
+	$(PHP_RUN) vendor/bin/phpstan analyse --level=5 src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/Infrastructure
 
 communication-channel-coupling-back:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/.php_cd.php src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back
@@ -75,14 +75,16 @@ endif
 
 # Tests Front
 
-communication-channel-front-unit:
+communication-channel-unit-front:
 	$(YARN_RUN) unit --coverage=false src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front/tests/front/unit
 
 # Developpement
 
 communication-channel-back:
+	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
+	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --config=.php_cs.php src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back
-	$(MAKE) communication-channel-static-analysis-back
+	$(MAKE) communication-channel-lint-back
 	$(MAKE) communication-channel-coupling-back
 	$(MAKE) communication-channel-unit-back
 	$(MAKE) communication-channel-integration-back

@@ -5,6 +5,7 @@ Feature: Update the quantified associations of an entity
 
   Background:
     Given a catalog with the attribute "sku" as product identifier
+    And an authentified administrator
     And a quantified association type "PACK"
 
   @acceptance-back

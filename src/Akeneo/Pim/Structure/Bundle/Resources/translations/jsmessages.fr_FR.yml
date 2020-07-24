@@ -78,6 +78,15 @@ pim_enrich.entity.attribute_option:
     edit:
       cancel_title: Annuler les modifications
       cancel_description: Attention, vous allez perdre les données non sauvegardées. Êtes-vous sûr(e) de vouloir annuler les modifications sur cette nouvelle option ?
+      options_labels: Libellés des options
+      options_settings: Paramètres des options
+      options_codes: Codes des options
+      option_code: Code de l'option
+      new_option_code: nouvelle_option
+      no_options_msg: Désolé, il n'y a pas d'options !
+      add_option: Cliquez ici pour en ajouter une
+      delete_confirmation_title_msg: Supprimer "{{ optionCode }}" de vos options ?
+      delete_confirmation_subtitle_msg: Êtes-vous sûr de vouloir supprimer cette option ? Vous ne pouvez pas annuler cette action.
 pim_enrich.entity.association_type:
   label: type d'association
   property:

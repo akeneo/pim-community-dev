@@ -573,6 +573,21 @@ services:
         tags:
             - { name: 'pim_catalog.updater.value_data_converter' }
 
+    pim_catalog.updater.value_converter.date_to_string:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Converter\DateToStringDataConverter'
+        tags:
+            - { name: 'pim_catalog.updater.value_data_converter' }
+
+    pim_catalog.updater.value_converter.metric_to_number:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Converter\MetricToNumberDataConverter'
+        tags:
+            - { name: 'pim_catalog.updater.value_data_converter' }
+
+    pim_catalog.updater.value_converter.metric_to_string:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Converter\MetricToStringDataConverter'
+        tags:
+            - { name: 'pim_catalog.updater.value_data_converter' }
+
     # Clearers
     pim_catalog.updater.clearer.registry:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\ClearerRegistry'

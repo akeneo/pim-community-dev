@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
@@ -22,7 +23,7 @@ final class BooleanValueFactory extends ScalarValueFactory implements ValueFacto
 
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        if (!is_bool($data)) {
+        if (!is_scalar($data) || (is_string($data) && '' === trim($data))) {
             throw InvalidPropertyTypeException::booleanExpected(
                 $attribute->code(),
                 static::class,

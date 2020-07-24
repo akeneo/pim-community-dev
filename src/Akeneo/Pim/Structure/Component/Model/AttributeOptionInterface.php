@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Structure\Component\Model;
 
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
+use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 
 /**
  * Attribute options
@@ -11,7 +12,7 @@ use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-interface AttributeOptionInterface extends ReferableInterface
+interface AttributeOptionInterface extends ReferableInterface, VersionableInterface
 {
     /**
      * Get id

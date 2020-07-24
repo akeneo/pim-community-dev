@@ -41,19 +41,16 @@ class BooleanValidator extends ConstraintValidator
             return;
         }
 
-        if (!is_bool($checkedValue)
-            && '0' !== $checkedValue
-            && '1' !== $checkedValue
-            && 0 !== $checkedValue
-            && 1 !== $checkedValue
-        ) {
+        if (!is_bool($checkedValue)) {
             $this->context->buildViolation(
                 $constraint->message,
                 [
-                    '%attribute%' => $code,
-                    '%givenType%' => gettype($checkedValue),
+                    '{{ attribute_code }}' => $code,
+                    '{{ given_type }}' => gettype($checkedValue),
                 ]
-            )->addViolation();
+            )
+                ->setCode(Boolean::NOT_BOOLEAN_ERROR)
+                ->addViolation();
         }
     }
 }

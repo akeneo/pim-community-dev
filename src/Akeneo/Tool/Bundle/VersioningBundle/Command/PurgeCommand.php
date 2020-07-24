@@ -55,7 +55,7 @@ class PurgeCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('List versions of any updated entities')
+            ->setDescription('Purge versions of entities, except first and last versions.')
             ->addArgument(
                 'entity',
                 InputArgument::OPTIONAL,

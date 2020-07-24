@@ -840,6 +840,7 @@ config:
     pim/attribute-edit-form/type-specific-form:             pimui/js/attribute/form/type-specific-form
     pim/attribute-edit-form/type-specific-form-registry:    pimui/js/attribute/form/type-specific-form-registry
     pim/attribute-edit-form:                                pimui/js/attribute/form/edit-form
+    pim/attribute/grid:                                     pimui/js/attribute/form/grid
 
     # Common
     pim/common/grid:                   pimui/js/form/common/grid
@@ -902,7 +903,7 @@ config:
     pim/menu/menu:                                       pimui/js/menu/menu
     pim/menu/tab:                                        pimui/js/menu/tab
     pim/menu/item:                                       pimui/js/menu/item
-    pim/menu/help:                                       pimui/js/menu/help
+    pim/menu/help:                                       pimui/js/menu/help.ts
     pim/menu/navigation-back:                            pimui/js/menu/navigation-back.ts
     pim/menu/navigation-block:                           pimui/js/menu/navigation-block
     pim/menu/resizable:                                  pimui/js/menu/resizable

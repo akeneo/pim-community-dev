@@ -151,9 +151,17 @@ class AttributeController
         ];
 
         $queryParameters = array_merge($defaultParameters, $request->query->all());
+        $searchFilters = json_decode($queryParameters['search'] ?? '[]', true);
+        if (null === $searchFilters) {
+            throw new BadRequestHttpException('The search query parameter must be a valid JSON.');
+        }
 
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
-        $attributes = $this->repository->searchAfterOffset([], ['code' => 'ASC'], $queryParameters['limit'], $offset);
+        try {
+            $attributes = $this->repository->searchAfterOffset($searchFilters, ['code' => 'ASC'], $queryParameters['limit'], $offset);
+        } catch (\InvalidArgumentException $exception) {
+            throw new BadRequestHttpException($exception->getMessage(), $exception);
+        }
 
         $parameters = [
             'query_parameters'    => $queryParameters,
@@ -161,7 +169,7 @@ class AttributeController
             'item_route_name'     => 'pim_api_attribute_get',
         ];
 
-        $count = true === $request->query->getBoolean('with_count') ? $this->repository->count() : null;
+        $count = true === $request->query->getBoolean('with_count') ? $this->repository->count($searchFilters) : null;
         $paginatedAttributes = $this->paginator->paginate(
             $this->normalizer->normalize($attributes, 'external_api'),
             $parameters,

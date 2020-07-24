@@ -9,7 +9,7 @@
   overflow-y: scroll;
   background: @AknWhite;
   border-left: 1px solid #ccd1d8;
-  transition: right @AknColumnTiming @AknColumnTransition;
+  transition: right 0.3s @AknColumnTransition;
   z-index: 999;
 
   &:empty {
@@ -18,5 +18,10 @@
 
   &--collapsed {
     right: -@AknPanelWidth;
+  }
+
+  &--no-overflow {
+    overflow: hidden;
+    height: 0px;
   }
 }

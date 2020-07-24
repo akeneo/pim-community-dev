@@ -1,7 +1,9 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
+
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {AttributeOption, Locale} from '../model';
-import {useLocalesContext} from '../contexts';
+import {EditingOptionContextProvider, useLocalesContext} from '../contexts';
+import AttributeOptionForm from './AttributeOptionForm';
 
 interface EditProps {
     option: AttributeOption;
@@ -30,40 +32,27 @@ const Edit = ({option, saveAttributeOption}: EditProps) => {
     };
 
     return (
-        <form className="AknSubsection AknAttributeOption-edit" onSubmit={(event: any) => onSubmit(event)}>
-            <div className="AknSubsection-title AknSubsection-title--glued tabsection-title">
-                <span>{translate('pim_enrich.entity.attribute_option.module.edit.options_labels')}</span>
-            </div>
-            <div className="AknAttributeOption-edit-translations">
-                {locales.map((locale: Locale) => {
-                    return (
-                        <div className="AknFieldContainer" key={`${option.code}-${locale.code}`}>
-                            <div className="AknFieldContainer-header">
-                                <label className="AknFieldContainer-label control-label AknFieldContainer-label">
-                                    {locale.label}
-                                </label>
-                            </div>
-                            <div className="AknFieldContainer-inputContainer field-input">
-                                <input
-                                    type="text"
-                                    className="AknTextField"
-                                    defaultValue={option.optionValues[locale.code].value}
-                                    role="attribute-option-label"
-                                    onChange={(event: ChangeEvent<HTMLInputElement>) => onUpdateOptionLabel(event, locale.code)}
-                                    data-locale={locale.code}
-                                />
-                            </div>
-                        </div>
-                    );
-                })}
-            </div>
-
-            <div className="AknAttributeOption-edit-saveTranslations">
-                <button className="AknButton AknButton--apply save" role="save-options-translations" type="submit">
-                    {translate('pim_common.done')}
-                </button>
-            </div>
-        </form>
+        <EditingOptionContextProvider option={option}>
+            <form className="AknSubsection AknAttributeOption-edit" onSubmit={(event: any) => onSubmit(event)}>
+                <div className="AknSubsection-title AknSubsection-title--glued tabsection-title">
+                    <span>{translate('pim_enrich.entity.attribute_option.module.edit.options_labels')}</span>
+                </div>
+                <div className="AknAttributeOption-edit-translations">
+                    {locales.map((locale: Locale) => (
+                        <AttributeOptionForm key={`option-form-${option.code}-${locale.code}`}
+                            option={option}
+                            locale={locale}
+                            onUpdateOptionLabel={onUpdateOptionLabel}
+                        />
+                    ))}
+                </div>
+                <div className="AknAttributeOption-edit-saveTranslations">
+                    <button className="AknButton AknButton--apply save" role="save-options-translations" type="submit">
+                        {translate('pim_common.done')}
+                    </button>
+                </div>
+            </form>
+        </EditingOptionContextProvider>
     );
 };
 

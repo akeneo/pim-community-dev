@@ -5,7 +5,7 @@ import {act, fireEvent, getByRole, queryAllByRole} from '@testing-library/react'
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import Edit from 'akeneopimstructure/js/attribute-option/components/Edit';
 import {AttributeContextProvider, LocalesContextProvider} from 'akeneopimstructure/js/attribute-option/contexts';
-import {AttributeOption} from "../../../../../../src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute-option/model";
+import {AttributeOption} from "akeneopimstructure/js/attribute-option/model";
 
 declare global {
     namespace NodeJS {
@@ -59,7 +59,7 @@ describe('Edit an attribute option', () => {
         await act(async () => {
             ReactDOM.render(
                 <DependenciesProvider>
-                    <AttributeContextProvider attributeId={8}>
+                    <AttributeContextProvider attributeId={8} autoSortOptions={true}>
                         <LocalesContextProvider>
                             <Edit option={option} saveAttributeOption={saveCallback} />
                         </LocalesContextProvider>

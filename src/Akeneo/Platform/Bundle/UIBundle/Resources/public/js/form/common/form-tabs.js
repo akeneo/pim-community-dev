@@ -134,7 +134,7 @@ define(
              * @param {Event} event
              */
             selectTab: function (event) {
-                this.setCurrentTab(event.currentTarget.dataset.tab);
+                this.getRoot().trigger('pim_enrich:form:form-tabs:change', event.currentTarget.dataset.tab);
             },
 
             /**

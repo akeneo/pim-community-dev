@@ -38,12 +38,12 @@ abstract class AbstractQuantifiedAssociationIntegration extends TestCase
         $this->getAttributeSaver()->saveAll($attributes);
     }
 
-    protected function givenFamily(array $familyNormalized): void
+    protected function givenFamily(array $normalizedFamily): void
     {
         $family = $this->getFamilyFactory()->create();
         $this->getFamilyUpdater()->update($family, [
-            'code' => $familyNormalized['code'],
-            'attributes'  => array_merge(['sku'], $familyNormalized['attribute_codes']),
+            'code' => $normalizedFamily['code'],
+            'attributes'  => array_merge(['sku'], $normalizedFamily['attribute_codes']),
             'attribute_requirements' => ['ecommerce' => ['sku']]
         ]);
 

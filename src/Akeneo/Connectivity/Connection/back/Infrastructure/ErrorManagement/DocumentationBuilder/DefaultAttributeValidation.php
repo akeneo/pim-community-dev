@@ -9,6 +9,7 @@ use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Docu
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation\HrefMessageParameter;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\Documentation\RouteMessageParameter;
 use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\DocumentationBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Boolean;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsNumeric;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsString;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Length;
@@ -17,6 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotDecimal;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Range;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Regex;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueValue;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
 /**
@@ -26,17 +28,18 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
 final class DefaultAttributeValidation implements DocumentationBuilderInterface
 {
     const SUPPORTED_CONSTRAINTS_CODES = [
+        Boolean::NOT_BOOLEAN_ERROR,
         IsNumeric::IS_NUMERIC,
+        IsString::IS_STRING,
+        Length::TOO_LONG_ERROR,
         NotBlank::IS_BLANK_ERROR,
+        NotDecimal::NOT_DECIMAL,
         Range::INVALID_CHARACTERS_ERROR,
         Range::NOT_IN_RANGE_ERROR,
         Range::TOO_HIGH_ERROR,
         Range::TOO_LOW_ERROR,
         Regex::REGEX_FAILED_ERROR,
         UniqueValue::UNIQUE_VALUE,
-        NotDecimal::NOT_DECIMAL,
-        IsString::IS_STRING,
-        Length::TOO_LONG_ERROR,
     ];
 
     public function support($object): bool

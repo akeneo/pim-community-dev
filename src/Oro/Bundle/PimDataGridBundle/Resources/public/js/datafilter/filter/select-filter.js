@@ -147,6 +147,14 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
             AbstractFilter.prototype.render.apply(this, arguments);
 
             var options =  this.choices.slice(0);
+            options = options.map((option) => {
+                option.__translation = _.__(option.label);
+                return option;
+            });
+            options.sort((a, b) => {
+                return a.__translation.localeCompare(b.__translation);
+            });
+
             this.$el.empty();
 
             if (this.populateDefault) {

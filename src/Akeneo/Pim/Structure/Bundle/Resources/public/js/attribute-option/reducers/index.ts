@@ -1,10 +1,12 @@
 import attributeOptionsReducer, {
-    initializeAttributeOptionsAction,
-    updateAttributeOptionAction,
     createAttributeOptionAction,
     deleteAttributeOptionAction,
+    initializeAttributeOptionsAction,
     resetAttributeOptionsAction,
+    updateAttributeOptionAction,
 } from './attributeOptionsReducer';
+
+export * from './attributeOptionsExtraDataReducer';
 
 export {
     initializeAttributeOptionsAction,

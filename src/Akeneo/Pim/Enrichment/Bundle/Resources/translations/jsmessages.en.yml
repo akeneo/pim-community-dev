@@ -1,0 +1,51 @@
+pim_enrich.entity.product:
+  module:
+    attribute:
+      add_option: Add option
+    associations:
+      title: Associations ({{ count }})
+      number_of_quantified_associations: "{{ productCount }} product(s) and {{ productModelCount }} product model(s)"
+      manage_description: Select the products you want to associate with product "{{ productLabel }}"
+      mass_edit_description: Select the products you want to associate to the {{ productCount }} selected product(s)
+      variant_products: Variant products
+      quantified:
+        quantity: Quantity
+      search:
+        placeholder: Search on label or identifier
+      no_result: Sorry, there is no result for your search.
+      no_data: There are no associated products.
+      remove: Remove association
+      edit: Edit product
+      limit_reached: You cannot add more than {{ maxLimit }} associations to this product.
+      variant_updated: You have updated a quantity on a variant, the quantities will no longer be synchronized.
+pim_enrich.mass_edit.product:
+  confirm: "{0}You are about to update some products with the following information, please confirm.|{1}You are about to update a product with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} products with the following information, please confirm."
+  operation:
+    change_status:
+      label_count: "{0}Change the status of some <span class=\"AknFullPage-title--highlight\">products</span>|{1}Change the status of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change the status of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+    edit_common:
+      label_count: "{0}Edit attributes values of some <span class=\"AknFullPage-title--highlight\">products</span>|{1}Edit attributes values of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Edit attributes values of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+    add_attribute_value:
+      label_count: "{0}Add attributes values for some <span class=\"AknFullPage-title--highlight\">products</span>|{1}Add attributes values for <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Add attributes values for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+    change_family:
+      label_count: "{0}Change the family of some <span class=\"AknFullPage-title--highlight\">products</span>|{1}Change the family of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change the family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+    add_to_group:
+      label_count: "{0}Add some <span class=\"AknFullPage-title--highlight\">products</span> to groups|{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to groups|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to groups"
+    add_to_category:
+      label_count: "{0}Add some <span class=\"AknFullPage-title--highlight\">products</span> to categories|{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to categories|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to categories"
+    move_to_category:
+      label_count: "{0}Move some <span class=\"AknFullPage-title--highlight\">products</span> between categories|{1}Move <span class=\"AknFullPage-title--highlight\">1 product</span> between categories|]1, Inf[Move <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> between categories"
+    remove_from_category:
+      label_count: "{0}Remove some <span class=\"AknFullPage-title--highlight\">products</span> from categories|{1}Remove <span class=\"AknFullPage-title--highlight\">1 product</span> from categories|]1, Inf[Remove <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> from categories"
+    add_to_existing_product_model:
+      label_count: "{0}Add some <span class=\"AknFullPage-title--highlight\">products</span> to an existing product model|{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to an existing product model|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to an existing product model"
+    associate_to_product_and_product_model:
+      label_count: "{0}Associate some <span class=\"AknFullPage-title--highlight\">products</span> to products or product models|{1}Associate <span class=\"AknFullPage-title--highlight\">1 product</span> to products or product models|]1, Inf[Associate <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to products or product models"
+    change_parent_product_model:
+      label_count: "{0}Change parent product model of some <span class=\"AknFullPage-title--highlight\">products</span>|{1}Change parent product model of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change parent product model of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+pim_datagrid:
+  search: Search on {{ label }}
+error:
+  removing:
+    group: Impossible to remove group
+    association type: Impossible to remove association type

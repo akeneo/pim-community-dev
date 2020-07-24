@@ -4,7 +4,8 @@ Feature: Validate simple and multi-select attributes of a product
   I need to be able to see validation errors for simple and multi select attribute
 
   Background:
-    Given the following attributes:
+    Given an authentified user
+    And the following attributes:
       | code        | type                     |
       | sku         | pim_catalog_identifier   |
       | color       | pim_catalog_simpleselect |

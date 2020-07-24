@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\QuantifiedAssociation;
 
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\QuantifiedAssociation\GetIdMappingFromProductIdsQuery;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\IdMapping;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindQuantifiedAssociationTypeCodesInterface;
 use Doctrine\DBAL\Connection;
 
 final class GetProductQuantifiedAssociationsByProductModelCodes
@@ -11,9 +14,23 @@ final class GetProductQuantifiedAssociationsByProductModelCodes
     /** @var Connection */
     private $connection;
 
-    public function __construct(Connection $connection)
-    {
+    /** @var GetIdMappingFromProductIdsQuery */
+    private $getIdMappingFromProductIdsQuery;
+
+    /** @var FindQuantifiedAssociationTypeCodesInterface */
+    private $findQuantifiedAssociationTypeCodes;
+
+    /** @var array|null */
+    private $quantifiedAssociationTypeCodesCache = null;
+
+    public function __construct(
+        Connection $connection,
+        GetIdMappingFromProductIdsQuery $getIdMappingFromProductIdsQuery,
+        FindQuantifiedAssociationTypeCodesInterface $findQuantifiedAssociationTypeCodes
+    ) {
         $this->connection = $connection;
+        $this->getIdMappingFromProductIdsQuery = $getIdMappingFromProductIdsQuery;
+        $this->findQuantifiedAssociationTypeCodes = $findQuantifiedAssociationTypeCodes;
     }
 
     /**
@@ -35,36 +52,21 @@ final class GetProductQuantifiedAssociationsByProductModelCodes
             return [];
         }
 
+        $rows = $this->fetchQuantifiedAssociations($productModelCodes);
+
+        return $this->hydrateQuantifiedAssociations($rows);
+    }
+
+    private function fetchQuantifiedAssociations(array $productModelCodes): array
+    {
         $query = <<<SQL
-select
-    pm.code product_model_code,
-    JSON_UNQUOTE(
-       JSON_EXTRACT(
-           JSON_KEYS(pm.quantified_associations),
-           CONCAT("$[", association_type_ordinality - 1, "]")
-	   )
-    ) association_type_code,
-    existing_p.identifier associated_product_identifier,
-    associated_product_quantity
-from pim_catalog_product_model pm,
-json_table (
-    pm.quantified_associations,
-    '$.*'
-    columns (
-	association_type_ordinality FOR ORDINALITY,
-        nested path '$.products[*]'
-        columns (
-	        `associated_product_id` VARCHAR(255) PATH '$.id',
-            `associated_product_quantity` VARCHAR(255) PATH '$.quantity'
-        )
-    )
-) quantified_associations_extracted
-INNER JOIN pim_catalog_product existing_p ON quantified_associations_extracted.associated_product_id = existing_p.id
-WHERE pm.code IN (:productModelCodes)
-AND JSON_UNQUOTE(JSON_EXTRACT(JSON_KEYS(pm.quantified_associations), CONCAT("$[", association_type_ordinality - 1, "]"))) IN (
-    SELECT code
-    FROM pim_catalog_association_type
-)
+SELECT
+    product_model.code,
+    JSON_MERGE_PRESERVE(COALESCE(parent_product_model.quantified_associations, '{}'), COALESCE(product_model.quantified_associations, '{}')) AS all_quantified_associations
+FROM pim_catalog_product_model as product_model
+LEFT JOIN pim_catalog_product_model parent_product_model ON parent_product_model.id = product_model.parent_id
+WHERE product_model.code IN (:productModelCodes)
+;
 SQL;
 
         $rows = $this->connection->executeQuery(
@@ -73,16 +75,92 @@ SQL;
             ['productModelCodes' => Connection::PARAM_STR_ARRAY]
         )->fetchAll();
 
+        return $rows;
+    }
+
+    private function hydrateQuantifiedAssociations($rows): array
+    {
         $results = [];
         foreach ($rows as $row) {
-            $associationTypeCode = $row['association_type_code'];
-            $productModelCode = $row['product_model_code'];
-            $results[$productModelCode][$associationTypeCode]['products'][] = [
-                'identifier' => $row['associated_product_identifier'],
-                'quantity' => (int)$row['associated_product_quantity'],
-            ];
+            if (null === $row['all_quantified_associations']) {
+                continue;
+            }
+            $allQuantifiedAssociationsWithProductId = json_decode($row['all_quantified_associations'], true);
+            $associationWithIdentifiers = $this->associationsWithIdentifiers($allQuantifiedAssociationsWithProductId);
+            if (!empty($associationWithIdentifiers)) {
+                $productIdentifier = $row['code'];
+                $results[$productIdentifier] = $associationWithIdentifiers;
+            }
         }
 
         return $results;
+    }
+
+    private function associationsWithIdentifiers(array $allQuantifiedAssociationsWithProductIds)
+    {
+        $productIdMapping = $this->fetchIdMapping($allQuantifiedAssociationsWithProductIds);
+
+        $result = [];
+        foreach ($allQuantifiedAssociationsWithProductIds as $associationTypeCode => $associationWithIds) {
+            if (empty($associationWithIds) || !is_string($associationTypeCode)) {
+                continue;
+            }
+
+            if (!$this->quantifiedAssociationTypeExist($associationTypeCode)) {
+                continue;
+            }
+            $uniqueQuantifiedAssociations = [];
+            foreach ($associationWithIds['products'] as $associationWithProductId) {
+                try {
+                    $identifier = $productIdMapping->getIdentifier($associationWithProductId['id']);
+                } catch (\Exception $exception) {
+                    continue;
+                }
+                $uniqueQuantifiedAssociations[$identifier] = [
+                    'identifier' => $identifier,
+                    'quantity'   => (int) $associationWithProductId['quantity']
+                ];
+            }
+            if (!empty($uniqueQuantifiedAssociations)) {
+                $result[$associationTypeCode]['products'] = array_values($uniqueQuantifiedAssociations);
+            }
+        }
+
+        return $result;
+    }
+
+    private function productModelCodes(array $quantifiedAssociationWithProductModelId): array
+    {
+        return array_map(
+            function (array $quantifiedAssociations) {
+                return $quantifiedAssociations['id'];
+            },
+            $quantifiedAssociationWithProductModelId['products'] ?? []
+        );
+    }
+
+    private function fetchIdMapping(array $allQuantifiedAssociationsWithProductModelIds): IdMapping
+    {
+        $productModelCodes = [];
+        foreach ($allQuantifiedAssociationsWithProductModelIds as $quantifiedAssociationWithId) {
+            if (empty($quantifiedAssociationWithId)) {
+                continue;
+            }
+            $productModelCodes = array_merge(
+                $productModelCodes,
+                $this->productModelCodes($quantifiedAssociationWithId)
+            );
+        }
+
+        return $this->getIdMappingFromProductIdsQuery->execute($productModelCodes);
+    }
+
+    private function quantifiedAssociationTypeExist(string $associationTypeCode): bool
+    {
+        if ($this->quantifiedAssociationTypeCodesCache === null) {
+            $this->quantifiedAssociationTypeCodesCache = $this->findQuantifiedAssociationTypeCodes->execute();
+        }
+
+        return in_array($associationTypeCode, $this->quantifiedAssociationTypeCodesCache);
     }
 }

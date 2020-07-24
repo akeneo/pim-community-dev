@@ -35,8 +35,8 @@ class AttributeOptionUpdateGuesser implements UpdateGuesserInterface
 
         if ($entity instanceof AttributeOptionInterface) {
             $pendings[] = $entity->getAttribute();
-        } elseif ($entity instanceof AttributeOptionValueInterface) {
-            $pendings[] = $entity->getOption()->getAttribute();
+        } elseif ($entity instanceof AttributeOptionValueInterface && $action === UpdateGuesserInterface::ACTION_UPDATE_ENTITY) {
+            $pendings[] = $entity->getOption();
         }
 
         return $pendings;

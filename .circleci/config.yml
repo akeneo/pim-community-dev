@@ -53,7 +53,7 @@ jobs:
 
   build_dev:
     parameters:
-        is_pull_request:
+        is_ee_built:
             type: boolean
             default: true
     machine:
@@ -65,7 +65,7 @@ jobs:
           name: Copy docker-compose.override.yml.dist
           command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
       - when:
-            condition: << parameters.is_pull_request >>
+            condition: << parameters.is_ee_built >>
             steps:
               - run:
                   name: Build the latest EE Docker images
@@ -73,7 +73,7 @@ jobs:
                       make php-image-dev
                       docker save -o php-pim-image.tar akeneo/pim-dev/php:7.3
       - unless:
-            condition: << parameters.is_pull_request >>
+            condition: << parameters.is_ee_built >>
             steps:
               - run:
                   name: Save the CE image as a tar
@@ -297,7 +297,7 @@ jobs:
 
   build_prod:
       parameters:
-          is_pull_request:
+          is_ee_built:
               type: boolean
               default: true
       environment:
@@ -338,6 +338,41 @@ jobs:
               name: Remove env on kubernetes
               command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=${CIRCLE_SHA1} make delete
               when: on_fail
+
+  test_upgrade_from_serenity_to_master:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployer
+      steps:
+          - attach_workspace:
+                at: ~/
+          - add_ssh_keys
+          - set_gcloud_config_dev
+          - run:
+                name: Latest SaaS prod deployment on kubernetes
+                command: |
+                    ssh-keyscan github.com >> ~/.ssh/known_hosts
+                    LATEST_RELEASE=$(git tag --list | grep -E "^v?[0-9]+$" | sort -r | head -n 1)
+                    echo $LATEST_RELEASE
+                    INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$LATEST_RELEASE make create-ci-release-files
+                    INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$LATEST_RELEASE make deploy
+          - run:
+                name: Upgrade version to master
+                command: |
+                    INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
+                    INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$CIRCLE_SHA1 make deploy
+          - run:
+                name: Production tests on upgraded env
+                command: INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$CIRCLE_SHA1 make test-prod
+          - run:
+                name: Prepare infrastructure artifacts
+                command: INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$CIRCLE_SHA1 make prepare-infrastructure-artifacts
+                when: on_fail
+          - store_artifacts:
+                path: ~/artifacts/infra
+          - run:
+                name: Remove upgraded env
+                command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make delete
 
   test_back_missing_structure_migrations:
       machine:
@@ -492,6 +527,9 @@ workflows:
           - deploy_pr_environment:
                 requires:
                     - deploy_pr_environment?
+          - test_upgrade_from_serenity_to_master:
+                requires:
+                    - build_prod
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -530,6 +568,44 @@ workflows:
                 requires:
                     - test_back_behat_legacy
                     - test_back_performance
+                    - test_upgrade_from_serenity_to_master
+          - ready_to_build_only_ce?:
+                type: approval
+                filters:
+                    branches:
+                        ignore:
+                            - master
+          - checkout_ce:
+                requires:
+                    - ready_to_build_only_ce?
+          - build_dev:
+                name: build_dev_ce
+                is_ee_built: false
+                requires:
+                    - checkout_ce
+          - test_back_static_and_acceptance:
+                name: test_back_static_and_acceptance_ce
+                requires:
+                    - build_dev_ce
+          - test_front_static_acceptance_and_integration:
+                name: test_front_static_acceptance_and_integration_ce
+                requires:
+                    - build_dev_ce
+          - test_back_phpunit:
+                name: test_back_phpunit_ce
+                requires:
+                    - test_back_static_and_acceptance_ce
+                    - test_front_static_acceptance_and_integration_ce
+          - test_back_data_migrations:
+                name: test_back_data_migrations_ce
+                requires:
+                    - test_back_static_and_acceptance_ce
+                    - test_front_static_acceptance_and_integration_ce
+          - test_back_behat_legacy:
+                name: test_back_behat_legacy_ce
+                requires:
+                    - test_back_phpunit_ce
+                    - test_back_data_migrations_ce
 
   nightly:
       triggers:
@@ -542,10 +618,14 @@ workflows:
 
       jobs:
           - checkout_ce
+          - checkout_ee
           - build_dev:
-                is_pull_request: false
+                is_ee_built: false
                 requires:
                     - checkout_ce
+          - build_prod:
+                requires:
+                    - checkout_ee
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -561,6 +641,9 @@ workflows:
           - test_back_data_migrations:
                 requires:
                     - build_dev
+          - test_upgrade_from_serenity_to_master:
+                requires:
+                    - build_prod
 
 commands:
   set_gcloud_config_dev:

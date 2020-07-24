@@ -9,5 +9,5 @@ export interface OptionValue {
         id: number;
         locale: string;
         value: string;
-    }
+    };
 }

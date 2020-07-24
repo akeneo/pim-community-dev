@@ -17,24 +17,68 @@ trait EntityWithQuantifiedAssociationTrait
     /**
      * Not persisted.
      *
-     * @var QuantifiedAssociations|null
+     * @var QuantifiedAssociationCollection|null
      */
-    protected $quantifiedAssociations;
+    protected $quantifiedAssociationCollection;
 
     /**
      * @inheritDoc
      */
-    public function setQuantifiedAssociations(QuantifiedAssociations $quantifiedAssociations): void
+    public function filterQuantifiedAssociations(array $productIdentifiersToKeep, array $productModelCodesToKeep): void
     {
-        $this->quantifiedAssociations = $quantifiedAssociations;
+        if (null === $this->quantifiedAssociationCollection) {
+            return;
+        }
+
+        $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection
+            ->filterProductIdentifiers($productIdentifiersToKeep)
+            ->filterProductModelCodes($productModelCodesToKeep);
     }
 
     /**
      * @inheritDoc
      */
-    public function getQuantifiedAssociations(): QuantifiedAssociations
+    public function getQuantifiedAssociations(): QuantifiedAssociationCollection
     {
-        return $this->quantifiedAssociations;
+        return $this->quantifiedAssociationCollection;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function mergeQuantifiedAssociations(QuantifiedAssociationCollection $quantifiedAssociations): void
+    {
+        if ($this->quantifiedAssociationCollection === null) {
+            return;
+        }
+
+        $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection->merge($quantifiedAssociations);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function patchQuantifiedAssociations(array $submittedQuantifiedAssociations): void
+    {
+        if (null === $this->quantifiedAssociationCollection) {
+            return;
+        }
+
+        $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection->patchQuantifiedAssociations(
+            $submittedQuantifiedAssociations
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function clearQuantifiedAssociations(): void
+    {
+        if (null === $this->quantifiedAssociationCollection) {
+            return;
+        }
+
+        $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection->clearQuantifiedAssociations();
     }
 
     /**
@@ -78,40 +122,16 @@ trait EntityWithQuantifiedAssociationTrait
     /**
      * @inheritDoc
      */
-    public function getQuantifiedAssociationsTypeCodes(): array
-    {
-        return array_keys($this->rawQuantifiedAssociations ?? []);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function removeQuantifiedAssociationsType(string $associationTypeCode): void
-    {
-        if (isset($this->rawQuantifiedAssociations[$associationTypeCode])) {
-            unset($this->rawQuantifiedAssociations[$associationTypeCode]);
-        }
-
-        if (null !== $this->quantifiedAssociations) {
-            $normalized = $this->getQuantifiedAssociations()->normalize();
-
-            if (isset($normalized[$associationTypeCode])) {
-                unset($normalized[$associationTypeCode]);
-
-                $this->setQuantifiedAssociations(QuantifiedAssociations::createFromNormalized($normalized));
-            }
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function hydrateQuantifiedAssociations(IdMapping $mappedProductIds, IdMapping $mappedProductModelIds): void
-    {
-        $this->quantifiedAssociations = QuantifiedAssociations::createWithAssociationsAndMapping(
+    public function hydrateQuantifiedAssociations(
+        IdMapping $mappedProductIds,
+        IdMapping $mappedProductModelIds,
+        array $associationTypeCodes
+    ): void {
+        $this->quantifiedAssociationCollection = QuantifiedAssociationCollection::createWithAssociationsAndMapping(
             $this->rawQuantifiedAssociations ?? [],
             $mappedProductIds,
-            $mappedProductModelIds
+            $mappedProductModelIds,
+            $associationTypeCodes
         );
     }
 
@@ -120,11 +140,11 @@ trait EntityWithQuantifiedAssociationTrait
      */
     public function getQuantifiedAssociationsProductIdentifiers(): array
     {
-        if (null === $this->quantifiedAssociations) {
+        if (null === $this->quantifiedAssociationCollection) {
             return [];
         }
 
-        return $this->quantifiedAssociations->getQuantifiedAssociationsProductIdentifiers();
+        return $this->quantifiedAssociationCollection->getQuantifiedAssociationsProductIdentifiers();
     }
 
     /**
@@ -132,11 +152,11 @@ trait EntityWithQuantifiedAssociationTrait
      */
     public function getQuantifiedAssociationsProductModelCodes(): array
     {
-        if (null === $this->quantifiedAssociations) {
+        if (null === $this->quantifiedAssociationCollection) {
             return [];
         }
 
-        return $this->quantifiedAssociations->getQuantifiedAssociationsProductModelCodes();
+        return $this->quantifiedAssociationCollection->getQuantifiedAssociationsProductModelCodes();
     }
 
     /**
@@ -146,11 +166,11 @@ trait EntityWithQuantifiedAssociationTrait
         IdMapping $mappedProductIdentifiers,
         IdMapping $mappedProductModelIdentifiers
     ): void {
-        if (null === $this->quantifiedAssociations) {
+        if (null === $this->quantifiedAssociationCollection) {
             return;
         }
 
-        $normalized = $this->quantifiedAssociations->normalizeWithMapping(
+        $normalized = $this->quantifiedAssociationCollection->normalizeWithMapping(
             $mappedProductIdentifiers,
             $mappedProductModelIdentifiers
         );
@@ -166,10 +186,10 @@ trait EntityWithQuantifiedAssociationTrait
      */
     public function normalizeQuantifiedAssociations(): array
     {
-        if (null === $this->quantifiedAssociations) {
+        if (null === $this->quantifiedAssociationCollection) {
             return [];
         }
 
-        return $this->quantifiedAssociations->normalize();
+        return $this->quantifiedAssociationCollection->normalize();
     }
 }
