@@ -33,7 +33,6 @@ class CreateOrUpdateRuleCommand
     public $actions;
     public $conditions;
     public $labels;
-    public $additionalProperties;
 
     public function __construct(array $data)
     {
