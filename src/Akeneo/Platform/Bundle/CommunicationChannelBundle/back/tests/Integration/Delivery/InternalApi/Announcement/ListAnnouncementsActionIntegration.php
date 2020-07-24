@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\CommunicationChannel\Test\Integration\Delivery\InternalApi\Announcement;
 
+use Akeneo\Platform\CommunicationChannel\Infrastructure\CommunicationChannel\LocalFilestorage\LocalFilestorageFindAnnouncementItems;
 use Akeneo\Platform\CommunicationChannel\Test\Integration\WebTestCase;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
@@ -21,19 +22,15 @@ class ListAnnouncementsActionIntegration extends WebTestCase
     public function test_it_can_list_first_paginated_announcements()
     {
         $expectedAnnouncements = json_decode(file_get_contents(dirname(__FILE__) . '/../../../../../Infrastructure/CommunicationChannel/LocalFilestorage/serenity-updates.json'), true);
-        $limit = 5;
         $this->client->request(
             'GET',
-            '/rest/announcements',
-            [
-                'limit' => $limit
-            ]
+            '/rest/announcements'
         );
         $content = json_decode($this->client->getResponse()->getContent(), true);
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         Assert::assertIsArray($content['items']);
-        Assert::assertEquals($limit, count($content['items']));
+        Assert::assertEquals(LocalFilestorageFindAnnouncementItems::LIMIT, count($content['items']));
         $this->assertItemKeys($content['items'][0]);
         $this->assertFirstItem(null, $expectedAnnouncements['data'], $content['items']);
     }
@@ -42,31 +39,19 @@ class ListAnnouncementsActionIntegration extends WebTestCase
     {
         $expectedAnnouncements = json_decode(file_get_contents(dirname(__FILE__) . '/../../../../../Infrastructure/CommunicationChannel/LocalFilestorage/serenity-updates.json'), true);
         $searchAfter = '2e04e7e4-6c55-4cdd-b151-dab34d6a31a4';
-        $limit = 5;
         $this->client->request(
             'GET',
             '/rest/announcements',
             [
-                'search_after' => $searchAfter,
-                'limit' => $limit
+                'search_after' => $searchAfter
             ]
         );
         $content = json_decode($this->client->getResponse()->getContent(), true);
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         Assert::assertIsArray($content['items']);
-        Assert::assertEquals($limit, count($content['items']));
+        Assert::assertEquals(LocalFilestorageFindAnnouncementItems::LIMIT, count($content['items']));
         $this->assertFirstItem($searchAfter, $expectedAnnouncements['data'], $content['items']);
-    }
-
-    public function test_it_throws_an_exception_when_it_does_not_have_a_limit_parameter()
-    {
-        $this->client->request(
-            'GET',
-            '/rest/announcements'
-        );
-
-        Assert::assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $this->client->getResponse()->getStatusCode());
     }
 
     protected function getConfiguration(): Configuration

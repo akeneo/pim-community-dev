@@ -27,6 +27,7 @@ $rules = [
             'Symfony\Component',
             'Doctrine\DBAL\Connection',
             'Doctrine\DBAL\FetchMode',
+            'GuzzleHttp\Client'
         ]
     )->in('Akeneo\Platform\CommunicationChannel\Infrastructure'),
 ];

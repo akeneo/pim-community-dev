@@ -39,10 +39,6 @@ class ListAnnouncementsAction
 
     public function __invoke(Request $request)
     {
-        if (!$request->query->has('limit')) {
-            throw new UnprocessableEntityHttpException('You should give a "limit" key.');
-        }
-
         if (null === $user = $this->userContext->getUser()) {
             throw new NotFoundHttpException('Current user not found');
         }
@@ -51,8 +47,7 @@ class ListAnnouncementsAction
             $this->versionProvider->getEdition(),
             $this->versionProvider->getMinorVersion(),
             $user->getId(),
-            $request->query->get('search_after'),
-            (int) $request->query->get('limit')
+            $request->query->get('search_after')
         );
         $announcementItems = $this->listAnnouncementsHandler->execute($query);
 
