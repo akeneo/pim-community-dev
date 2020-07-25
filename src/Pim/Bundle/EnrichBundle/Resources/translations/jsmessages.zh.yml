@@ -117,6 +117,7 @@ pim:
       delete: 删除
       mass_edit: 批量操作
       category_edit: 在类别中移动产品
+      sequential_edit: "順序編輯\n"
 #Jstree context menu actions
 jstree.create: 创建
 jstree.done: 已完成
