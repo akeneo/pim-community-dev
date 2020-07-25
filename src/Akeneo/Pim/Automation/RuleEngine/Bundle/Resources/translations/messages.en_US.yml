@@ -22,6 +22,7 @@ pimee_catalog_rule:
             associations: Associations
             groups: Groups
             categories: Categories
+            completeness: Completeness
         field_groups:
             system: System
     acl_group:

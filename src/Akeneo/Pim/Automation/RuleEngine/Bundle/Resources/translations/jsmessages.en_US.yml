@@ -225,13 +225,15 @@ pimee_catalog_rule:
         required_attribute: An attribute is required
         required_locale: A locale is required for the {{ attributeLabel }} attribute
         required_scope: A channel is required for the {{ attributeLabel }} attribute
+        required_locale_completeness: A locale is required for the completeness
+        required_scope_completeness: A channel is required for the completeness
         required_value: A value is required for this action
         required_categories: At least one category is required for this action
         unknown_or_inactive_locale: 'The "{{ localeCode }}" locale does not exist or is not activated'
         unbound_locale: 'The "{{ localeCode }}" locale is not activated in the "{{ channelCode }}" channel'
         locale_on_unlocalizable_attribute: This attribute is not localizable. Please remove the locale before you continue.
         unknown_scope: 'The "{{ scopeCode }}" channel does not exist'
-        scope_on_unscopable_attribute: This attribute is not scopable. Please remove the scope before you continue.
+        scope_on_unscopable_attribute: This attribute is not scopable. Please remove the channel before you continue.
         unknown_families: "{1}The {{ familyCodes }} family does not exist|]1,+Inf[The {{ familyCodes }} families do not exist"
         unknown_attribute_options: "{1}The {{ attributeOptionCodes }} option does not exist|]1,+Inf[The {{ attributeOptionCodes }} options do not exist"
         unknown_attribute_code: "The {{ attributeCode }} attribute does not exist"
