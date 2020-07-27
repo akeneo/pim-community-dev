@@ -1,0 +1,6 @@
+services:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\InitDataQualityInsightsDbSchemaSubscriber:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'kernel.event_subscriber' }

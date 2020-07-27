@@ -22,5 +22,9 @@ data-quality-insights-lint-back:
 data-quality-insights-cs-fix:
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --config=.php_cs.php src/Akeneo/Pim/Automation/DataQualityInsights/back
 
+.PHONY: data-quality-insights-integration-back
+data-quality-insights-integration-back:
+	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit --testsuite=Data_Quality_Insights --testdox
+
 .PHONY: data-quality-insights-tests
-data-quality-insights-tests: data-quality-insights-coupling-back data-quality-insights-lint-back data-quality-insights-phpstan data-quality-insights-unit-back
+data-quality-insights-tests: data-quality-insights-coupling-back data-quality-insights-lint-back data-quality-insights-phpstan data-quality-insights-unit-back data-quality-insights-integration-back
