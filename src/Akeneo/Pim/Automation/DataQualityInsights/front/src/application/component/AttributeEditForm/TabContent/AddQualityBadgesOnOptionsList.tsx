@@ -40,7 +40,9 @@ const AddQualityBadgesOnOptionsList: FC = () => {
       return;
     }
 
-    addExtraData(option, badges[option].element);
+    if (badges[option]) {
+      addExtraData(option, badges[option].element);
+    }
 
     setBadges((state) => {
       return {
