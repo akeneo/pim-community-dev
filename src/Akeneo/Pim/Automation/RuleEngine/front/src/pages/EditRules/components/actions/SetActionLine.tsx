@@ -59,11 +59,14 @@ const SetActionLine: React.FC<Props> = ({
     setFieldFormValue,
     setValueFormValue,
     getFieldFormValue,
+    getScopeFormValue,
+    scopeFormName,
   } = useControlledFormInputAction<string>(lineNumber);
   // Watch is needed in this case to trigger a render at input
   const { watch } = useFormContext();
   watch(valueFormName);
   watch(fieldFormName);
+  watch(scopeFormName);
 
   useGetAttributeAtMount(getFieldFormValue(), router, attribute, setAttribute);
 
@@ -159,6 +162,7 @@ const SetActionLine: React.FC<Props> = ({
               name={valueFormName}
               value={getValueFormValue()}
               onChange={setValueFormValue}
+              scopeCode={getScopeFormValue()}
             />
           </ActionRightSide>
         </ActionGrid>

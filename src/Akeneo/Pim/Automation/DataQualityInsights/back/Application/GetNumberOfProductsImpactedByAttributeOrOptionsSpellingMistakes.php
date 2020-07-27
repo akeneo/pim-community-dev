@@ -40,6 +40,10 @@ final class GetNumberOfProductsImpactedByAttributeOrOptionsSpellingMistakes
     {
         $attribute = $this->getAttributeQuery->byAttributeCode($attributeCode);
 
+        if ($attribute === null) {
+            return 0;
+        }
+
         $attributeLabelsErrorNumber = $this->getNumberOfProductsImpactedByAttributeSpellingMistakesQuery->byAttributeCode($attributeCode);
         if ($attributeLabelsErrorNumber > 0 || !$attribute->hasOptions()) {
             return $attributeLabelsErrorNumber;
