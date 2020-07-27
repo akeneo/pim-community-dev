@@ -4,6 +4,12 @@ import { fetchGroupsByIdentifiers } from '../fetch/GroupFetcher';
 
 const cachedGroups: { [groupCode: string]: Group | null } = {};
 
+export const clearGroupRepositoryCache = () => {
+  for (const key in cachedGroups) {
+    delete cachedGroups[key];
+  }
+};
+
 const getCachedGroups = (
   groupCodes: GroupCode[]
 ): { [groupCode: string]: Group | null } => {
@@ -17,7 +23,7 @@ const getCachedGroups = (
   return results;
 };
 
-const getGroupsByIdentifiers = async (
+export const getGroupsByIdentifiers = async (
   groupIdentifiers: GroupCode[],
   router: Router
 ): Promise<{ [groupCode: string]: Group | null }> => {
@@ -43,5 +49,3 @@ const getGroupsByIdentifiers = async (
 
   return results;
 };
-
-export { getGroupsByIdentifiers };
