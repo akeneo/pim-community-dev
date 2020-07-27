@@ -34,12 +34,12 @@ final class ListAnnouncementsHandler
      */
     public function execute(ListAnnouncementsQuery $query): array
     {
-        $announcementItems = $this->findAnnouncementItems->byPimVersion($query->edition(), $query->version(), $query->searchAfter(), $query->limit());
+        $announcementItems = $this->findAnnouncementItems->byPimVersion($query->edition(), $query->version(), $query->searchAfter());
         $viewedAnnouncementIds = $this->findViewedAnnouncementIds->byUserId($query->userId());
 
         $announcementItemsWithNew = [];
         foreach ($announcementItems as $announcementItem) {
-            $announcementItemsWithNew[] =  !in_array($announcementItem->id(), $viewedAnnouncementIds) ? $announcementItem->toNotify() : $announcementItem;
+            $announcementItemsWithNew[] =  $announcementItem->shouldBeNotified($viewedAnnouncementIds) ? $announcementItem->toNotify() : $announcementItem;
         }
 
         return $announcementItemsWithNew;

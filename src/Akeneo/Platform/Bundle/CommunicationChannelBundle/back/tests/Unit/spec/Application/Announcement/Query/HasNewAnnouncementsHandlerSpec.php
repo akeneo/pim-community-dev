@@ -32,9 +32,11 @@ class HasNewAnnouncementsHandlerSpec extends ObjectBehavior
     public function it_returns_true_if_it_has_new_announcements_not_seen_by_the_user($findNewAnnouncementIds)
     {
         $userId = 1;
-        $query = new HasNewAnnouncementsQuery($userId);
+        $edition = 'Serenity';
+        $version = '20201015';
+        $query = new HasNewAnnouncementsQuery($edition, $version, $userId);
         $this->viewedAnnouncementsRepository->dataRows[] = ['announcement_id' => 'new_announcement_viewed', 'user_id' => $userId];
-        $findNewAnnouncementIds->find()->willReturn(['new_announcement_viewed', 'other_new_announcement']);
+        $findNewAnnouncementIds->find($edition, $version)->willReturn(['new_announcement_viewed', 'other_new_announcement']);
 
         $this->execute($query)->shouldReturn(true);
     }
@@ -42,7 +44,9 @@ class HasNewAnnouncementsHandlerSpec extends ObjectBehavior
     public function it_returns_false_if_it_has_only_new_announcements_already_seen_by_the_user($findNewAnnouncementIds)
     {
         $userId = 1;
-        $query = new HasNewAnnouncementsQuery($userId);
+        $edition = 'Serenity';
+        $version = '20201015';
+        $query = new HasNewAnnouncementsQuery($edition, $version, $userId);
         $this->viewedAnnouncementsRepository->dataRows =
         [
             [
@@ -54,7 +58,7 @@ class HasNewAnnouncementsHandlerSpec extends ObjectBehavior
                 'user_id' => $userId
             ],
         ];
-        $findNewAnnouncementIds->find()->willReturn(['new_announcement_viewed', 'other_new_announcement_viewed']);
+        $findNewAnnouncementIds->find($edition, $version)->willReturn(['new_announcement_viewed', 'other_new_announcement_viewed']);
 
         $this->execute($query)->shouldReturn(false);
     }

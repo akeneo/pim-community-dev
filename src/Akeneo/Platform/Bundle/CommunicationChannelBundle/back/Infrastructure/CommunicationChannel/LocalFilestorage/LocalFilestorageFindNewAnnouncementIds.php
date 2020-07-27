@@ -23,7 +23,7 @@ final class LocalFilestorageFindNewAnnouncementIds implements FindNewAnnouncemen
         $this->externalJson = file_get_contents(dirname(__FILE__) . DIRECTORY_SEPARATOR . self::FILENAME);
     }
 
-    public function find(): array
+    public function find(string $pimEdition, string $pimVersion): array
     {
         $content = json_decode($this->externalJson, true);
 
@@ -31,9 +31,8 @@ final class LocalFilestorageFindNewAnnouncementIds implements FindNewAnnouncemen
 
         $newAnnouncementIds = [];
         foreach ($content['data'] as $announcement) {
-            $dateInterval = new \DateInterval(sprintf('P%sD', $announcement['notificationDuration']));
             $startDate = new \DateTimeImmutable($announcement['startDate']);
-            $endDate = $startDate->add($dateInterval);
+            $endDate = new \DateTimeImmutable($announcement['notificationEndDate']);
             if ($currentDate > $startDate && $currentDate < $endDate) {
                 $newAnnouncementIds[] = $announcement['id'];
             }
