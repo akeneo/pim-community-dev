@@ -32,6 +32,8 @@ class ProductWriter extends AbstractItemMediaWriter implements
     StepExecutionAwareInterface,
     ArchivableWriterInterface
 {
+    private $familyCodes;
+
     /** @var GenerateFlatHeadersFromFamilyCodesInterface */
     protected $generateHeadersFromFamilyCodes;
 
@@ -39,8 +41,6 @@ class ProductWriter extends AbstractItemMediaWriter implements
     protected $generateHeadersFromAttributeCodes;
 
     private $hasItems;
-
-    private $familyCodes;
 
     public function __construct(
         ArrayConverterInterface $arrayConverter,
@@ -74,8 +74,8 @@ class ProductWriter extends AbstractItemMediaWriter implements
      */
     public function initialize()
     {
-        $this->hasItems = false;
         $this->familyCodes = [];
+        $this->hasItems = false;
 
         parent::initialize();
     }

@@ -325,26 +325,6 @@ class AttributeRepository extends EntityRepository implements
         }
     }
 
-    public function getAttributeCodesByTypes($types): array
-    {
-        $qb = $this->createQueryBuilder('a');
-        $qb
-            ->select('a.code, a.type')
-            ->where('a.type IN (:types)')
-            ->setParameter(':types', $types)
-            ->getQuery()
-            ->getArrayResult();
-
-        $attributes = [];
-        if (!empty($results)) {
-            foreach ($results as $attribute) {
-                $attributes[$attribute['code']] = $attribute['type'];
-            }
-        }
-
-        return $attributes;
-    }
-
     /**
      * {@inheritdoc}
      */

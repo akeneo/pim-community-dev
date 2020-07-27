@@ -28,9 +28,6 @@ class AttributeColumnsResolver
     /** @var array */
     protected $attributesFields = [];
 
-    /** @var array */
-    protected $attributesFieldByTypes = [];
-
     /** @var string */
     protected $identifierField;
 
@@ -80,25 +77,6 @@ class AttributeColumnsResolver
         }
 
         return $this->attributesFields;
-    }
-
-    public function resolveAttributeColumnsByTypes(array $types)
-    {
-        $typeCacheKey = implode(',', $types);
-        if (! isset($this->attributesFieldByTypes[$typeCacheKey])) {
-            $this->attributesFieldByTypes[$typeCacheKey] = [];
-            $attributes = $this->attributeRepository->getAttributeCodesByTypes($types);
-            $currencyCodes = $this->currencyRepository->getActivatedCurrencyCodes();
-            $values = $this->valuesResolver->resolveEligibleValues($attributes);
-            foreach ($values as $value) {
-                $fields = $this->resolveAttributeField($value, $currencyCodes);
-                foreach ($fields as $field) {
-                    $this->attributesFieldByTypes[$typeCacheKey][] = $field;
-                }
-            }
-        }
-
-        return $this->attributesFieldByTypes[$typeCacheKey];
     }
 
     /**

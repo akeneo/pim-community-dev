@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Symfony\Component\Intl\Intl;
 
 /**
  * @author    Benoit Jacquemont <benoit@akeneo.com>

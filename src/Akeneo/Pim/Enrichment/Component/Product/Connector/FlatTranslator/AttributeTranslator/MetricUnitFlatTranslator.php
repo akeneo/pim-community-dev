@@ -13,6 +13,7 @@ class MetricUnitFlatTranslator implements AttributeFlatTranslator
         return $attributeType === AttributeTypes::METRIC && $endWithUnit;
     }
 
+    /** TODO (not done in the first POC) */
     public function translateValues(string $attributeCode, array $properties, array $values, string $locale): array
     {
         return $values;
