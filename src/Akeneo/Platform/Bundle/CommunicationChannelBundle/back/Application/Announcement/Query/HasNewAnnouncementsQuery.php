@@ -17,13 +17,17 @@ final class HasNewAnnouncementsQuery
     /** @var string */
     private $version;
 
+    /** @var string */
+    private $locale;
+
     /** @var int */
     private $userId;
 
-    public function __construct(string $edition, string $version, int $userId)
+    public function __construct(string $edition, string $version, string $locale, int $userId)
     {
         $this->edition = $edition;
         $this->version = $version;
+        $this->locale = $locale;
         $this->userId = $userId;
     }
 
@@ -35,6 +39,11 @@ final class HasNewAnnouncementsQuery
     public function version(): string
     {
         return $this->version;
+    }
+
+    public function locale(): string
+    {
+        return $this->locale;
     }
 
     public function userId(): int

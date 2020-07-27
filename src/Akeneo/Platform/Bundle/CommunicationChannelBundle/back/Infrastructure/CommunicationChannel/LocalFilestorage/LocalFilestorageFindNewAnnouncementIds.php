@@ -23,7 +23,7 @@ final class LocalFilestorageFindNewAnnouncementIds implements FindNewAnnouncemen
         $this->externalJson = file_get_contents(dirname(__FILE__) . DIRECTORY_SEPARATOR . self::FILENAME);
     }
 
-    public function find(string $pimEdition, string $pimVersion): array
+    public function find(string $pimEdition, string $pimVersion, string $locale): array
     {
         $content = json_decode($this->externalJson, true);
 

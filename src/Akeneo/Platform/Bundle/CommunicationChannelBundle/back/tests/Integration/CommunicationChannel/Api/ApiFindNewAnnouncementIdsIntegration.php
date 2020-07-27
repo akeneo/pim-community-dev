@@ -39,7 +39,7 @@ class ApiFindNewAnnouncementIdsIntegration extends KernelTestCase
     public function test_it_finds_new_announcement_ids()
     {
         $query = self::$container->get('akeneo_communication_channel.query.api.find_new_announcement_ids');
-        $result = $query->find('Serenity', '2020105');
+        $result = $query->find('Serenity', '2020105', 'en_US');
         Assert::assertCount(4, $result);
         Assert::assertEquals(
             [

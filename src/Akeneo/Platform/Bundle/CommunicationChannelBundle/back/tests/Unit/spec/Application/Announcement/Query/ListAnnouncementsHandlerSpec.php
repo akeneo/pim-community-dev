@@ -38,10 +38,11 @@ class ListAnnouncementsHandlerSpec extends ObjectBehavior
         $findAnnouncementItems->byPimVersion(
             Argument::type('string'),
             Argument::type('string'),
+            Argument::type('string'),
             Argument::type('string')
         )->willReturn([$announcementItems[1]]);
 
-        $query = new ListAnnouncementsQuery('EE', '4.0', 1, 'f68a21bb-ec9a-4009-9b0b-2639c6798e5f');
+        $query = new ListAnnouncementsQuery('EE', '4.0', 'en_US', 1, 'f68a21bb-ec9a-4009-9b0b-2639c6798e5f');
         $this->execute($query)->shouldReturn([$announcementItems[1]]);
     }
 
@@ -53,11 +54,12 @@ class ListAnnouncementsHandlerSpec extends ObjectBehavior
         $findAnnouncementItems->byPimVersion(
             Argument::type('string'),
             Argument::type('string'),
+            Argument::type('string'),
             null
         )->willReturn($announcementItems);
         $this->viewedAnnouncementsRepository->dataRows[] = ['announcement_id' => 'update-easily_monitor_errors_on_your_connections-2020-06-04', 'user_id' => 1];
 
-        $query = new ListAnnouncementsQuery('EE', '4.0', 1, null);
+        $query = new ListAnnouncementsQuery('EE', '4.0', 'en_US', 1, null);
 
         $this->execute($query)->shouldBeLike([
             new AnnouncementItem(

@@ -34,7 +34,7 @@ final class ListAnnouncementsHandler
      */
     public function execute(ListAnnouncementsQuery $query): array
     {
-        $announcementItems = $this->findAnnouncementItems->byPimVersion($query->edition(), $query->version(), $query->searchAfter());
+        $announcementItems = $this->findAnnouncementItems->byPimVersion($query->edition(), $query->version(), $query->locale(), $query->searchAfter());
         $viewedAnnouncementIds = $this->findViewedAnnouncementIds->byUserId($query->userId());
 
         $announcementItemsWithNew = [];
