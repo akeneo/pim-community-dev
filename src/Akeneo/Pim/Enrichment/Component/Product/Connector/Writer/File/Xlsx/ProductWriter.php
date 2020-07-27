@@ -32,9 +32,6 @@ class ProductWriter extends AbstractItemMediaWriter implements
     StepExecutionAwareInterface,
     ArchivableWriterInterface
 {
-    /** @var array */
-    protected $familyCodes;
-
     /** @var GenerateFlatHeadersFromFamilyCodesInterface */
     protected $generateHeadersFromFamilyCodes;
 
@@ -42,6 +39,8 @@ class ProductWriter extends AbstractItemMediaWriter implements
     protected $generateHeadersFromAttributeCodes;
 
     private $hasItems;
+
+    private $familyCodes;
 
     public function __construct(
         ArrayConverterInterface $arrayConverter,
@@ -75,8 +74,8 @@ class ProductWriter extends AbstractItemMediaWriter implements
      */
     public function initialize()
     {
-        $this->familyCodes = [];
         $this->hasItems = false;
+        $this->familyCodes = [];
 
         parent::initialize();
     }
@@ -97,27 +96,12 @@ class ProductWriter extends AbstractItemMediaWriter implements
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function flush()
-    {
-        $parameters = $this->stepExecution->getJobParameters();
-
-        if ($parameters->has('withHeader') && true === $parameters->get('withHeader')) {
-            $additionalHeaders = $this->getAdditionalHeaders($parameters);
-            $this->flatRowBuffer->addToHeaders($additionalHeaders);
-        }
-
-        parent::flush();
-    }
-
-
-    /**
      * Return additional headers, based on the requested attributes if any,
      * and from the families definition
      */
-    protected function getAdditionalHeaders(JobParameters $parameters): array
+    protected function getAdditionalHeaders(): array
     {
+        $parameters = $this->stepExecution->getJobParameters();
         $filters = $parameters->get('filters');
 
         $localeCodes = isset($filters['structure']['locales']) ? $filters['structure']['locales'] : [$parameters->get('locale')];

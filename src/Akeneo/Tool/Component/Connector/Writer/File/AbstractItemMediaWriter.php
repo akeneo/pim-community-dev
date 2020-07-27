@@ -137,6 +137,10 @@ abstract class AbstractItemMediaWriter implements
             $flatItems[] = $this->arrayConverter->convert($item, $converterOptions);
         }
 
+        if ($parameters->has('withHeader') && true === $parameters->get('withHeader')) {
+            $flatItems = $this->fillMissingHeaders($flatItems);
+        }
+
         if ($parameters->has('with_label') && $parameters->get('with_label')) {
             $localeLabel = $parameters->has('label_locale') ? $parameters->get('label_locale') : 'en_US';
             $withLabelHeader = $parameters->has('with_locale_header') && $parameters->get('with_locale_header');
@@ -148,6 +152,22 @@ abstract class AbstractItemMediaWriter implements
         $options['withHeader'] = $parameters->get('withHeader');
 
         $this->flatRowBuffer->write($flatItems, $options);
+    }
+
+    private function fillMissingHeaders(array $items): array
+    {
+        $additionalHeaders = $this->getAdditionalHeaders();
+        $additionalHeadersFilled1 = array_fill_keys($additionalHeaders, '');
+        $products = array_keys($items);
+
+        $additionalHeadersFilled = array_fill_keys($products, $additionalHeadersFilled1);
+
+        return array_replace_recursive($additionalHeadersFilled, $items);
+    }
+
+    protected function getAdditionalHeaders()
+    {
+        return [];
     }
 
     /**

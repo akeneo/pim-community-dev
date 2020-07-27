@@ -34,6 +34,11 @@ class SimpleSelectFlatTranslator implements AttributeFlatTranslator
 
         $result = [];
         foreach ($values as $valueIndex => $value) {
+            if (empty($value)) {
+                $result[$valueIndex] = $value;
+                continue;
+            }
+
             $optionKey = sprintf('%s.%s', $attributeCode, $value);
             $attributeOptionTranslation = $attributeOptionTranslations[$optionKey][$locale] ?? sprintf('[%s]', $value);
             $result[$valueIndex] = $attributeOptionTranslation;

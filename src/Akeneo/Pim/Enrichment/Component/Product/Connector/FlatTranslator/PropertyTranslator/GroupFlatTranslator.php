@@ -29,6 +29,11 @@ class GroupFlatTranslator implements PropertyFlatTranslator
 
         $result = [];
         foreach ($values as $valueIndex => $value) {
+            if (empty($value)) {
+                $result[$valueIndex] = $value;
+                continue;
+            }
+
             $groupCodes = explode(',', $value);
             $groupsLabelized = [];
 

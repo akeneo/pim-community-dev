@@ -29,7 +29,12 @@ class BooleanFlatTranslator implements AttributeFlatTranslator
 
         $result = [];
         foreach ($values as $valueIndex => $value) {
-            $result[$valueIndex] = $value ? $trueLocalized : $falseLocalized;
+            $result[$valueIndex] = $value;
+            if ($value === '1') {
+                $result[$valueIndex] = $trueLocalized;
+            } elseif ($value === '0') {
+                $result[$valueIndex] = $falseLocalized;
+            }
         }
 
         return $result;

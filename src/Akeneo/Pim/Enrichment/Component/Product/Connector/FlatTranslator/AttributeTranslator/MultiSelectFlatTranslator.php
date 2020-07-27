@@ -31,6 +31,11 @@ class MultiSelectFlatTranslator implements AttributeFlatTranslator
 
         $result = [];
         foreach ($values as $valueIndex => $value) {
+            if (empty($value)) {
+                $result[$valueIndex] = $value;
+                continue;
+            }
+
             $optionCodes = explode(',', $value);
             $labelizedOptions = array_map(function ($optionCode) use ($attributeCode, $locale, $attributeOptionTranslations) {
                 $optionKey = sprintf('%s.%s', $attributeCode, $optionCode);

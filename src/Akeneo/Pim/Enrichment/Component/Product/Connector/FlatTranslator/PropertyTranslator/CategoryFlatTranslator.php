@@ -27,6 +27,11 @@ class CategoryFlatTranslator implements PropertyFlatTranslator
         $categoryTranslations = $this->getCategoryTranslations->byCategoryCodesAndLocale($categoryCodesExtracted, $locale);
 
         foreach ($values as $valueIndex => $value) {
+            if (empty($value)) {
+                $result[$valueIndex] = $value;
+                continue;
+            }
+
             $categoryCodes = explode(',', $value);
             $categoriesLabelized = [];
 

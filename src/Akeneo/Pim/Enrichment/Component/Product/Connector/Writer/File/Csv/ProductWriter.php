@@ -32,9 +32,6 @@ class ProductWriter extends AbstractItemMediaWriter implements
     StepExecutionAwareInterface,
     ArchivableWriterInterface
 {
-    /** @var array */
-    protected $familyCodes;
-
     /** @var GenerateFlatHeadersFromFamilyCodesInterface */
     protected $generateHeadersFromFamilyCodes;
 
@@ -42,6 +39,8 @@ class ProductWriter extends AbstractItemMediaWriter implements
     protected $generateHeadersFromAttributeCodes;
 
     private $hasItems;
+
+    private $familyCodes;
 
     public function __construct(
         ArrayConverterInterface $arrayConverter,
@@ -75,8 +74,8 @@ class ProductWriter extends AbstractItemMediaWriter implements
      */
     public function initialize()
     {
-        $this->familyCodes = [];
         $this->hasItems = false;
+        $this->familyCodes = [];
 
         parent::initialize();
     }
@@ -97,33 +96,14 @@ class ProductWriter extends AbstractItemMediaWriter implements
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function flush()
-    {
-        $parameters = $this->stepExecution->getJobParameters();
-
-        if ($parameters->has('withHeader') && true === $parameters->get('withHeader')) {
-            $additionalHeaders = $this->getAdditionalHeaders($parameters);
-            $this->flatRowBuffer->addToHeaders($additionalHeaders);
-        }
-
-        parent::flush();
-    }
-
-    /**
      * Return additional headers, based on the requested attributes if any,
      * and from the families definition
      */
-    protected function getAdditionalHeaders(JobParameters $parameters): array
+    protected function getAdditionalHeaders(): array
     {
-        $filters = $parameters->get('filters');
-        $withLabel = $parameters->has('with_label') && $parameters->get('with_label');
-        $labelLocale = '';
-        if ($parameters->has('label_locale')) {
-            $labelLocale = $parameters->get('label_locale');
-        }
+        $parameters = $this->stepExecution->getJobParameters();
 
+        $filters = $parameters->get('filters');
         $localeCodes = isset($filters['structure']['locales']) ? $filters['structure']['locales'] : [$parameters->get('locale')];
         $channelCode = isset($filters['structure']['scope']) ? $filters['structure']['scope'] : $parameters->get('scope');
 
@@ -139,9 +119,9 @@ class ProductWriter extends AbstractItemMediaWriter implements
 
         $headers = [];
         if (!empty($attributeCodes)) {
-            $headers = ($this->generateHeadersFromAttributeCodes)($attributeCodes, $channelCode, $localeCodes, $labelLocale);
+            $headers = ($this->generateHeadersFromAttributeCodes)($attributeCodes, $channelCode, $localeCodes);
         } elseif (!empty($this->familyCodes)) {
-            $headers = ($this->generateHeadersFromFamilyCodes)($this->familyCodes, $channelCode, $localeCodes, $labelLocale);
+            $headers = ($this->generateHeadersFromFamilyCodes)($this->familyCodes, $channelCode, $localeCodes);
         }
 
         $withMedia = (!$parameters->has('with_media') || $parameters->has('with_media') && $parameters->get('with_media'));
@@ -151,7 +131,7 @@ class ProductWriter extends AbstractItemMediaWriter implements
             if ($withMedia || !$header->isMedia()) {
                 $headerStrings = array_merge(
                     $headerStrings,
-                    $withLabel ? $header->generateHeaderLabelStrings($labelLocale) : $header->generateHeaderStrings()
+                    $header->generateHeaderStrings()
                 );
             }
         }
