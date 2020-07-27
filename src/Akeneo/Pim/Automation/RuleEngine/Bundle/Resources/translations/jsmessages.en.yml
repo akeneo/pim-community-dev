@@ -172,7 +172,6 @@ pimee_catalog_rule:
     unbound_locale: 'The "{{ localeCode }}" locale is not activated in the "{{ channelCode }}" channel'
     locale_on_unlocalizable_attribute: This attribute is not localizable. Please remove the locale before you continue.
     unknown_scope: 'The "{{ scopeCode }}" channel does not exist'
-    scope_on_unscopable_attribute: This attribute is not scopable. Please remove the scope before you continue.
     unknown_families: "{1}The {{ familyCodes }} family does not exist|]1,+Inf[The {{ familyCodes }} families do not exist"
     unknown_attribute_options: "{1}The {{ attributeOptionCodes }} option does not exist|]1,+Inf[The {{ attributeOptionCodes }} options do not exist"
     unknown_attribute_code: "The {{ attributeCode }} attribute does not exist"

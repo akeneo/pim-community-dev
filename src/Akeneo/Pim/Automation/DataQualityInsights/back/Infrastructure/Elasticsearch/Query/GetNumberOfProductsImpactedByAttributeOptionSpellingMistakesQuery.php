@@ -21,6 +21,8 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
 final class GetNumberOfProductsImpactedByAttributeOptionSpellingMistakesQuery implements GetNumberOfProductsImpactedByAttributeOptionSpellingMistakesQueryInterface
 {
+    private const OPTIONS_MAX_SIZE = 1000;
+
     /** @var Client */
     private $esClient;
 
@@ -48,8 +50,6 @@ final class GetNumberOfProductsImpactedByAttributeOptionSpellingMistakesQuery im
         }
 
         $query = [
-            '_source' => false,
-            'size' => 0,
             'query' => [
                 'bool' => [
                     'must' => [
@@ -70,28 +70,30 @@ final class GetNumberOfProductsImpactedByAttributeOptionSpellingMistakesQuery im
             ],
         ];
 
-        $result = $this->esClient->search($query);
+        $result = $this->esClient->count($query);
 
-        if (!isset($result['hits']['total']['value'])) {
+        if (!isset($result['count'])) {
             throw new \RuntimeException(sprintf(
                 'Unexpected result format received when retrieving the number of products impacted by spelling mistake for the attribute "%s"',
                 strval($attribute->getCode())
             ));
         }
 
-        return intval($result['hits']['total']['value']);
+        return intval($result['count']);
     }
 
     private function buildSearchQueryStringsForLocalizableAttribute(Attribute $attribute, array $optionCodes, array $localesToImprove): array
     {
         $queriesByLocale = [];
         foreach ($localesToImprove as $locale) {
-            $queriesByLocale[] = [
-                'query_string' => [
-                    'default_field' => sprintf('values.%s-option*.%s', strval($attribute->getCode()), $locale),
-                    'query' => join(' OR ', $optionCodes),
-                ],
-            ];
+            foreach (array_chunk($optionCodes, self::OPTIONS_MAX_SIZE) as $optionCodesBulk) {
+                $queriesByLocale[] = [
+                    'query_string' => [
+                        'default_field' => sprintf('values.%s-option*.%s', strval($attribute->getCode()), $locale),
+                        'query' => join(' OR ', $optionCodesBulk),
+                    ],
+                ];
+            }
         }
 
         return $queriesByLocale;
@@ -99,11 +101,16 @@ final class GetNumberOfProductsImpactedByAttributeOptionSpellingMistakesQuery im
 
     private function buildSearchQueryStringsForNotLocalizableAttribute(Attribute $attribute, array $optionCodes): array
     {
-        return [
-            'query_string' => [
-                'default_field' => sprintf('values.%s-option*', strval($attribute->getCode())),
-                'query' => join(' OR ', $optionCodes),
-            ],
-        ];
+        $queries = [];
+        foreach (array_chunk($optionCodes, self::OPTIONS_MAX_SIZE) as $optionCodesBulk) {
+            $queries[] = [
+                'query_string' => [
+                    'default_field' => sprintf('values.%s-option*', strval($attribute->getCode())),
+                    'query' => join(' OR ', $optionCodesBulk),
+                ],
+            ];
+        }
+
+        return $queries;
     }
 }

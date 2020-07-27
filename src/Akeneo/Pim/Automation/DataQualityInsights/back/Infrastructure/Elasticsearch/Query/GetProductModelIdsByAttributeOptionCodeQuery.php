@@ -32,10 +32,7 @@ final class GetProductModelIdsByAttributeOptionCodeQuery implements GetProductId
     public function execute(AttributeOptionCode $attributeOptionCode, int $bulkSize): \Iterator
     {
         $query = [
-            '_source' => ['id'],
-            'size' => $bulkSize,
-            'sort' => ['_id' => 'asc'],
-            'query' => [
+
                 'bool' => [
                     'must' => [
                         [
@@ -51,11 +48,17 @@ final class GetProductModelIdsByAttributeOptionCodeQuery implements GetProductId
                         ],
                     ],
                 ],
-            ],
+        ];
+        $searchQuery = [
+            '_source' => ['id'],
+            'size' => $bulkSize,
+            'sort' => ['_id' => 'asc'],
+            'query' => $query,
         ];
 
-        $result = $this->esClient->search($query);
-        $totalProductModels = $result['hits']['total']['value'];
+        $totalProductModels = $this->countTotalOfProductModels($query);
+        $result = $this->esClient->search($searchQuery);
+
         $searchAfter = [];
         $returnedProductModels = 0;
 
@@ -69,7 +72,7 @@ final class GetProductModelIdsByAttributeOptionCodeQuery implements GetProductId
             yield $productModelIds;
 
             $returnedProductModels += count($productModelIds);
-            $result = $returnedProductModels < $totalProductModels ? $this->searchAfter($query, $searchAfter) : [];
+            $result = $returnedProductModels < $totalProductModels ? $this->searchAfter($searchQuery, $searchAfter) : [];
         }
     }
 
@@ -80,5 +83,16 @@ final class GetProductModelIdsByAttributeOptionCodeQuery implements GetProductId
         }
 
         return $this->esClient->search($query);
+    }
+
+    private function countTotalOfProductModels(array $query): int
+    {
+        $countResult = $this->esClient->count(['query' => $query]);
+
+        if (!isset($countResult['count'])) {
+            throw new \Exception('Failed to count the total number of product models by attribute option');
+        }
+
+        return intval($countResult['count']);
     }
 }

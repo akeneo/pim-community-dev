@@ -6,10 +6,12 @@ import {
   PimCondition,
   TextAttributeCondition,
   CategoryCondition,
+  CompletenessCondition,
 } from './';
 
 export type Condition =
   | CategoryCondition
+  | CompletenessCondition
   | FallbackCondition
   | PimCondition
   | FamilyCondition

@@ -1,10 +1,11 @@
 import { Locale } from './Locale';
+import { CurrencyCode } from './Currency';
 
 type ScopeCode = string;
 
 type Scope = {
   code: ScopeCode;
-  currencies: string[];
+  currencies: CurrencyCode[];
   locales: Locale[];
   category_tree: string;
   conversion_units: string[];

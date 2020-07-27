@@ -11,6 +11,7 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\AddAction:
             - NotBlank: ~
             - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ExistingAddField: ~
         items:
+            - NotNull: ~
             - Type: array
             - Count:
                 min: 1

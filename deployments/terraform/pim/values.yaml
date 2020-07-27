@@ -74,6 +74,7 @@ image:
     pullPolicy: IfNotPresent
 
 pim:
+  comm_panel_api_url: null
   franklin:
     askFranklinUrl: "https://ask-franklin.cloud.akeneo.com"
     askFranklinTimeout: 30
@@ -273,19 +274,6 @@ elasticsearch:
       discovery.seed_hosts: "elasticsearch-discovery"
   client:
     replicas: 1
-    heapSize: "128m"
-    resources:
-      limits:
-        cpu: "1"
-        memory: "512Mi"
-      requests:
-        cpu: "25m"
-        memory: "160Mi"
-  master:
-    replicas: 2
-    persistence:
-      size: 1Gi
-      storageClass: ssd-retain
     heapSize: "256m"
     resources:
       limits:
@@ -293,7 +281,20 @@ elasticsearch:
         memory: "512Mi"
       requests:
         cpu: "25m"
-        memory: "320Mi"
+        memory: "512Mi"
+  master:
+    replicas: 2
+    persistence:
+      size: 1Gi
+      storageClass: ssd-retain
+    heapSize: "384m"
+    resources:
+      limits:
+        cpu: "1"
+        memory: "768Mi"
+      requests:
+        cpu: "25m"
+        memory: "768Mi"
     updateStrategy:
       type: RollingUpdate
   data:

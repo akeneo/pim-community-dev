@@ -59,6 +59,15 @@ final class GetNumberOfProductsImpactedByAttributeOptionSpellingMistakesQueryInt
                 ->add(new LocaleCode('en_US'), SpellCheckResult::toImprove())
         );
 
+        $this->createAttributeOptionSpellcheck(
+            'a_simple_select',
+            'optionB',
+            (new SpellcheckResultByLocaleCollection())
+                ->add(new LocaleCode('en_US'), SpellCheckResult::good())
+        );
+
+        $this->givenALotOfAttributeOptionsToImprove('a_simple_select');
+
         $productValuesWithSpellingMistake = [
             'a_simple_select' => [[
                 'scope' => null,
@@ -67,10 +76,10 @@ final class GetNumberOfProductsImpactedByAttributeOptionSpellingMistakesQueryInt
             ]]
         ];
         $productValuesWithoutSpellingMistake = [
-            'a_text' => [[
+            'a_simple_select' => [[
                 'scope' => null,
                 'locale' => null,
-                'data' => 'test'
+                'data' => 'optionB'
             ]]
         ];
 
@@ -114,6 +123,8 @@ final class GetNumberOfProductsImpactedByAttributeOptionSpellingMistakesQueryInt
                 ->add(new LocaleCode('en_US'), SpellCheckResult::good())
                 ->add(new LocaleCode('fr_FR'), SpellCheckResult::good())
         );
+
+        $this->givenALotOfAttributeOptionsToImprove('a_localizable_multi_select');
 
         // Given two products that have the option with spelling mistake in their values
         $this->createProduct([
@@ -203,6 +214,35 @@ final class GetNumberOfProductsImpactedByAttributeOptionSpellingMistakesQueryInt
             'attributes' => array_merge($family->getAttributeCodes(), [$attributeCode])
         ]);
         $this->get('pim_catalog.saver.family')->save($family);
+    }
+
+    private function givenALotOfAttributeOptionsToImprove(string $attributeCode): void
+    {
+        $optionFactory = $this->get('pim_catalog.factory.attribute_option');
+        $optionUpdater = $this->get('pim_catalog.updater.attribute_option');
+
+        // 1024 is the limit of elements allowed in a "query_string" clause in ES
+        $options = [];
+        for ($i = 1; $i <= 1025; $i++) {
+            $optionCode = 'overflow_' . $i;
+            $option = $optionFactory->create();
+            $optionUpdater->update($option, [
+                'code' => $optionCode,
+                'attribute' => $attributeCode,
+            ]);
+            $options[] = $option;
+        }
+
+        $this->get('pim_catalog.saver.attribute_option')->saveAll($options);
+
+        foreach ($options as $option) {
+            $this->createAttributeOptionSpellcheck(
+                $attributeCode,
+                $option->getCode(),
+                (new SpellcheckResultByLocaleCollection())
+                    ->add(new LocaleCode('en_US'), SpellCheckResult::toImprove())
+            );
+        }
     }
 
     private function createAttributeOption(string $attributeCode, string $optionCode): AttributeOptionInterface
