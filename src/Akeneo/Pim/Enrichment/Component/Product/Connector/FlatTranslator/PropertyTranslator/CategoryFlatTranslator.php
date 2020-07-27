@@ -23,6 +23,7 @@ class CategoryFlatTranslator implements PropertyFlatTranslator
 
     public function translateValues(array $values, string $locale): array
     {
+        $result = [];
         $categoryCodesExtracted = $this->extractCategoryCodes($values);
         $categoryTranslations = $this->getCategoryTranslations->byCategoryCodesAndLocale($categoryCodesExtracted, $locale);
 

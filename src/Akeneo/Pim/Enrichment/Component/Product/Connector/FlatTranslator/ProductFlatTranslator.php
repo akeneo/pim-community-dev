@@ -93,6 +93,11 @@ class ProductFlatTranslator implements FlatTranslatorInterface
     {
         $result = [];
         foreach ($flatItemsByColumnName as $columnName => $values) {
+            if ($this->valueAreAllEmpty($values)) {
+                $result[$columnName] = $values;
+                continue;
+            }
+
             $propertyTranslation = $this->propertyTranslationRegistry->getTranslator($columnName);
             if ($propertyTranslation instanceof PropertyFlatTranslator) {
                 $result[$columnName] = $propertyTranslation->translateValues($values, $locale);
@@ -108,6 +113,13 @@ class ProductFlatTranslator implements FlatTranslatorInterface
         }
 
         return $result;
+    }
+
+    private function valueAreAllEmpty(array $values)
+    {
+        return array_filter($values, function ($value) {
+            return $value === '';
+        });
     }
 
     private function translateHeaders(array $flatItems, string $locale)
