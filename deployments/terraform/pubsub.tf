@@ -2,7 +2,7 @@
 // TOPICS
 //
 
-resource "google_pubsub_topic" "business_event" {
+resource "google_pubsub_topic" "business-event" {
   name = "${local.pfid}-business-event"
 
   labels = {
@@ -17,3 +17,60 @@ resource "google_pubsub_topic" "job-queue" {
     pfid = local.pfid
   }
 }
+
+//
+// SUBSCRIPTIONS
+//
+
+resource "google_pubsub_subscription" "webhook" {
+  name                 = "${local.pfid}-webhook"
+  topic                = google_pubsub_topic.business-event.name
+  ack_deadline_seconds = 600
+
+  labels = {
+    pfid = local.pfid
+  }
+}
+
+resource "google_pubsub_topic" "job-queue" {
+  name                 = "${local.pfid}-job-queue"
+  topic                = google_pubsub_topic.job-queue.name
+  ack_deadline_seconds = 600
+
+  labels = {
+    pfid = local.pfid
+  }
+}
+
+//
+// PERMISSIONS
+//
+//
+// We do declare 2 kinds of applications, the one that writes and the one that
+// reads. It gives rights to the same service account: PIM.
+
+
+resource "google_pubsub_topic_iam_member" "pubsub_publisher_business-event" {
+  topic  = google_pubsub_topic.business-event.name
+  role   = "roles/pubsub.publisher"
+  member = "serviceAccount:${google_service_account.pim.email}"
+}
+
+resource "google_pubsub_topic_iam_member" "pubsub_publisher_job_queue" {
+  topic  = google_pubsub_topic.job-queue.name
+  role   = "roles/pubsub.publisher"
+  member = "serviceAccount:${google_service_account.pim.email}"
+}
+
+resource "google_pubsub_topic_iam_member" "pubsub_subscriber_webhook" {
+  topic  = google_pubsub_subscription.webhook.name
+  role   = "roles/pubsub.subsriber"
+  member = "serviceAccount:${google_service_account.pim.email}"
+}
+
+resource "google_pubsub_topic_iam_member" "pubsub_subscriber_job_queue" {
+  topic  = google_pubsub_subscription.job-queue.name
+  role   = "roles/pubsub.subsriber"
+  member = "serviceAccount:${google_service_account.pim.email}"
+}
+
