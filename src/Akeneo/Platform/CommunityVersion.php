@@ -12,7 +12,7 @@ namespace Akeneo\Platform;
 class CommunityVersion
 {
     /** @staticvar string */
-    const VERSION = '4.0.42';
+    const VERSION = '4.0.43';
 
     /** @staticvar string */
     const VERSION_CODENAME = 'Hare Tonic';
