@@ -15,7 +15,7 @@ export const getRemoveAttributeValueActionModule: ActionModuleGuesser = json => 
   return Promise.resolve(RemoveAttributeValueActionLine);
 };
 
-export const createRemoveAttributeValueCategoriesAction: () => RemoveAttributeValueAction = () => {
+export const createRemoveAttributeValueAction: () => RemoveAttributeValueAction = () => {
   return {
     type: 'remove',
     field: '',

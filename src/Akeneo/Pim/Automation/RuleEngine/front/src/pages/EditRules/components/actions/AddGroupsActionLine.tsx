@@ -49,23 +49,26 @@ const AddGroupsActionLine: React.FC<ActionLineProps> = ({
   }, []);
 
   const validateGroupCodes = (groupCodes: GroupCode[]) => {
-    if (groupCodes && unexistingGroupCodes.length) {
-      const unknownGroupCodes: GroupCode[] = [];
-      groupCodes.forEach(groupCode => {
-        if (unexistingGroupCodes.includes(groupCode)) {
-          unknownGroupCodes.push(groupCode);
-        }
-      });
-      if (unknownGroupCodes.length) {
-        return translate(
-          'pimee_catalog_rule.exceptions.unknown_groups',
-          {
-            groupCodes: unknownGroupCodes.join(', '),
-          },
-          unknownGroupCodes.length
-        );
-      }
+    if (!groupCodes || !groupCodes.length) {
+      return translate('pimee_catalog_rule.exceptions.required');
     }
+
+    const unknownGroupCodes: GroupCode[] = [];
+    groupCodes.forEach(groupCode => {
+      if (unexistingGroupCodes.includes(groupCode)) {
+        unknownGroupCodes.push(groupCode);
+      }
+    });
+    if (unknownGroupCodes.length) {
+      return translate(
+        'pimee_catalog_rule.exceptions.unknown_groups',
+        {
+          groupCodes: unknownGroupCodes.join(', '),
+        },
+        unknownGroupCodes.length
+      );
+    }
+
     return true;
   };
 
