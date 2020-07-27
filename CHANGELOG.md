@@ -23,6 +23,7 @@
 - PIM-9357: Make rules case-insensitive so it complies with family and attribute codes
 - PIM-9362: Adapt System Information twig file for a clear and a correct display of the number of API connections
 - PIM-9360: Fix PHP Warning raised in PriceComparator
+- PIM-9370: Fixes page freezing with a big number of attribute options
 
 ## New features
 
