@@ -315,6 +315,11 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo.pim.enrichment.product.query.get_product_model_label:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetProductModelLabel'
+        arguments:
+            - '@database_connection'
+
     akeneo.pim.enrichment.product.query.find_non_existing_association_type_codes_query:
         class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\FindNonExistingAssociationTypeCodesQuery
         arguments:

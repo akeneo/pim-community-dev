@@ -189,7 +189,7 @@ class ProductFlatTranslator implements FlatTranslatorInterface
                         );
 
                         $columnLabelized = sprintf('%s (%s)', $columnLabelized, $currencyLabelized);
-                    } elseif ($attribute->getType() === 'pim_catalog_metric') {
+                    } elseif ($attribute->getType() === 'pim_catalog_metric' && strpos($column, '-unit') !== false) {
                         $metricLabelized = $this->labelTranslator->translate('pim_common.unit', $locale, '[unit]');
 
                         $columnLabelized = sprintf('%s (%s)', $columnLabelized, $metricLabelized);

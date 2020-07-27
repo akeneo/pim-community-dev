@@ -27,6 +27,7 @@ services:
         - '@pim_connector.flat_translators.property_translator.family'
         - '@pim_connector.flat_translators.property_translator.group'
         - '@pim_connector.flat_translators.property_translator.enabled'
+        - '@pim_connector.flat_translators.attribute_translator.parent'
 
   ## @TODO Use tags
   pim_connector.flat_translators.attribute_translator_registry:
@@ -62,6 +63,11 @@ services:
     arguments:
       - '@pim_catalog.localization.translator.label'
 
+  pim_connector.flat_translators.attribute_translator.parent:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyTranslator\ParentFlatTranslator
+    arguments:
+      - '@akeneo.pim.enrichment.product.query.get_product_model_label'
+
   ## Attribute translators
   pim_connector.flat_translators.attribute_translator.boolean:
     class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeTranslator\BooleanFlatTranslator
@@ -86,3 +92,4 @@ services:
     class: \Akeneo\Pim\Enrichment\AssetManager\Component\Connector\FlatTranslator\AttributeTranslator\AssetCollectionFlatTranslator
     arguments:
       - '@pimee.asset_manager.enrichment.asset_label_translations'
+
