@@ -28,13 +28,16 @@ final class GetAttributeQuery implements GetAttributeQueryInterface
         $this->dbConnection = $dbConnection;
     }
 
+    /**
+     * @warn
+     * This query is only used in the GetNumberOfProductsImpactedByAttributeOrOptionsSpellingMistakes service.
+     * We do not need to know if the attribute is defined as main title.
+     */
     public function byAttributeCode(AttributeCode $attributeCode): ?Attribute
     {
         $query = <<<SQL
-SELECT attribute_type, is_localizable, (family.label_attribute_id = pca.attribute_id) AS is_main_title
+SELECT attribute_type, is_localizable
 FROM pim_catalog_attribute attribute
-INNER JOIN pim_catalog_family_attribute AS pca ON pca.attribute_id = attribute.id
-INNER JOIN pim_catalog_family AS family ON family.id = pca.family_id
 WHERE attribute.code = :attribute_code
 SQL;
         $statement = $this->dbConnection->executeQuery(
@@ -53,7 +56,7 @@ SQL;
             $attributeCode,
             new AttributeType($attribute['attribute_type']),
             (bool) $attribute['is_localizable'],
-            (bool) $attribute['is_main_title']
+            false
         );
     }
 }
