@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.43 (2020-07-27)
+
 ## Bug fixes
 
 - Fix pdf renderer for image attributes, it was displaying the path instead of the original filename
