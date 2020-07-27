@@ -74,6 +74,7 @@ image:
     pullPolicy: IfNotPresent
 
 pim:
+  comm_panel_api_url: null
   franklin:
     askFranklinUrl: "https://ask-franklin.cloud.akeneo.com"
     askFranklinTimeout: 30

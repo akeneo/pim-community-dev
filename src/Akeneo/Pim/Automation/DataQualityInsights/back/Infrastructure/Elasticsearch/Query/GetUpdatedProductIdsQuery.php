@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdsByAttributeOptionCodeQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeOptionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductIdsQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
-final class GetProductIdsByAttributeOptionCodeQuery implements GetProductIdsByAttributeOptionCodeQueryInterface
+class GetUpdatedProductIdsQuery implements GetUpdatedProductIdsQueryInterface
 {
     /** @var Client */
     private $esClient;
@@ -29,7 +27,7 @@ final class GetProductIdsByAttributeOptionCodeQuery implements GetProductIdsByAt
         $this->esClient = $esClient;
     }
 
-    public function execute(AttributeOptionCode $attributeOptionCode, int $bulkSize): \Iterator
+    public function since(\DateTimeImmutable $updatedSince, int $bulkSize): \Iterator
     {
         $query = [
             'bool' => [
@@ -40,37 +38,43 @@ final class GetProductIdsByAttributeOptionCodeQuery implements GetProductIdsByAt
                         ],
                     ],
                     [
-                        'query_string' => [
-                            'default_field' => sprintf('values.%s-option*', $attributeOptionCode->getAttributeCode()),
-                            'query' => strval($attributeOptionCode)
+                        'range' => [
+                            'updated' => [
+                                'gt' => $updatedSince->setTimezone(new \DateTimeZone('UTC'))->format('c')
+                            ],
                         ]
                     ],
                 ],
             ],
         ];
+
+        $totalProducts = $this->countUpdatedProducts($query);
+
         $searchQuery = [
             '_source' => ['id'],
             'size' => $bulkSize,
             'sort' => ['_id' => 'asc'],
-            'query' => $query,
+            'query' => $query
         ];
 
-        $totalProducts = $this->countTotalOfProducts($query);
         $result = $this->esClient->search($searchQuery);
         $searchAfter = [];
         $returnedProducts = 0;
 
         while (!empty($result['hits']['hits'])) {
             $productIds = [];
+            $previousSearchAfter = $searchAfter;
             foreach ($result['hits']['hits'] as $product) {
-                $productIds[] = new ProductId(intval(str_replace('product_', '', $product['_source']['id'])));
-                $searchAfter = $product['sort'];
+                $productIds[] = $this->formatProductId($product);
+                $searchAfter = $product['sort'] ?? $searchAfter;
             }
 
             yield $productIds;
 
             $returnedProducts += count($productIds);
-            $result = $returnedProducts < $totalProducts ? $this->searchAfter($searchQuery, $searchAfter) : [];
+            $result = $returnedProducts < $totalProducts && $searchAfter !== $previousSearchAfter
+                ? $this->searchAfter($searchQuery, $searchAfter)
+                : [];
         }
     }
 
@@ -83,14 +87,21 @@ final class GetProductIdsByAttributeOptionCodeQuery implements GetProductIdsByAt
         return $this->esClient->search($query);
     }
 
-    private function countTotalOfProducts(array $query): int
+    private function formatProductId(array $productData): int
     {
-        $countResult = $this->esClient->count(['query' => $query]);
-
-        if (!isset($countResult['count'])) {
-            throw new \Exception('Failed to count the total number of products by attribute option');
+        if (!isset($productData['_source']['id'])) {
+            throw new \Exception('No id not found in source when searching updated products');
         }
 
-        return intval($countResult['count']);
+        return intval(str_replace('product_', '', $productData['_source']['id']));
+    }
+
+    private function countUpdatedProducts(array $query): int
+    {
+        $count = $this->esClient->count([
+            'query' => $query,
+        ]);
+
+        return $count['count'] ?? 0;
     }
 }
