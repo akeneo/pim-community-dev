@@ -18,9 +18,9 @@ services:
     class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\NullFlatTranslator
 
   ## Registries
-  ## Todo Use tags
+  ## @TODO Use tags
   pim_connector.flat_translators.property_translator_registry:
-    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\TranslatorRegistry
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyTranslatorRegistry
     arguments:
       -
         - '@pim_connector.flat_translators.property_translator.category'
@@ -28,10 +28,18 @@ services:
         - '@pim_connector.flat_translators.property_translator.group'
         - '@pim_connector.flat_translators.property_translator.enabled'
 
+  ## @TODO Use tags
   pim_connector.flat_translators.attribute_translator_registry:
-    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\TranslatorRegistry
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeTranslatorRegistry
     arguments:
-      - []
+      -
+        - '@pim_connector.flat_translators.attribute_translator.boolean'
+        - '@pim_connector.flat_translators.attribute_translator.metric_unit'
+        - '@pim_connector.flat_translators.attribute_translator.multi_select'
+        - '@pim_connector.flat_translators.attribute_translator.simple_select'
+        - '@pimee_connector.flat_translators.attribute_translator.asset_collection'
+      - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
+      - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
 
   ## Property translators
   pim_connector.flat_translators.property_translator.category:
@@ -53,3 +61,28 @@ services:
     class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyTranslator\EnabledFlatTranslator
     arguments:
       - '@pim_catalog.localization.translator.label'
+
+  ## Attribute translators
+  pim_connector.flat_translators.attribute_translator.boolean:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeTranslator\BooleanFlatTranslator
+    arguments:
+      - '@pim_catalog.localization.translator.label'
+
+  pim_connector.flat_translators.attribute_translator.metric_unit:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeTranslator\MetricUnitFlatTranslator
+
+  pim_connector.flat_translators.attribute_translator.multi_select:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeTranslator\MultiSelectFlatTranslator
+    arguments:
+      - '@akeneo.pim.structure.query.lru_cached_get_existing_attribute_options_with_values'
+
+  pim_connector.flat_translators.attribute_translator.simple_select:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeTranslator\SimpleSelectFlatTranslator
+    arguments:
+      - '@akeneo.pim.structure.query.lru_cached_get_existing_attribute_options_with_values'
+
+  ## Move into EE
+  pimee_connector.flat_translators.attribute_translator.asset_collection:
+    class: \Akeneo\Pim\Enrichment\AssetManager\Component\Connector\FlatTranslator\AttributeTranslator\AssetCollectionFlatTranslator
+    arguments:
+      - '@pimee.asset_manager.enrichment.asset_label_translations'

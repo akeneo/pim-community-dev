@@ -5,13 +5,10 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AssociationColumnsResolver;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnsResolver;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeFlatTranslator\AttributeFlatTranslator;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeTranslator\AttributeFlatTranslator;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyTranslator\PropertyFlatTranslator;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypeTranslations;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetAttributeTranslations;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Category\GetCategoryTranslations;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetFamilyTranslations;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Group\GetGroupTranslations;
 use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
 use Symfony\Component\Intl\Intl;
@@ -47,12 +44,14 @@ class ProductFlatTranslator implements FlatTranslatorInterface
      * @var GetGroupTranslations
      */
     private $attributeColumnInfoExtractor;
+
     /**
-     * @var TranslatorRegistry
+     * @var PropertyTranslatorRegistry
      */
     private $propertyTranslationRegistry;
+
     /**
-     * @var TranslatorRegistry
+     * @var AttributeTranslatorRegistry
      */
     private $attributeTranslationRegistry;
 
@@ -63,8 +62,8 @@ class ProductFlatTranslator implements FlatTranslatorInterface
         LabelTranslatorInterface $labelTranslator,
         GetAssociationTypeTranslations $getAssociationTypeTranslations,
         AttributeColumnInfoExtractor $attributeColumnInfoExtractor,
-        TranslatorRegistry $propertyTranslationRegistry,
-        TranslatorRegistry $attributeTranslationRegistry
+        PropertyTranslatorRegistry $propertyTranslationRegistry,
+        AttributeTranslatorRegistry $attributeTranslationRegistry
     ) {
         $this->attributeColumnsResolver = $attributeColumnsResolver;
         $this->associationColumnsResolver = $associationColumnsResolver;
@@ -100,9 +99,8 @@ class ProductFlatTranslator implements FlatTranslatorInterface
                 continue;
             }
 
-            $attributeTranslation = $this->attributeTranslationRegistry->getTranslator($columnName);
-            if ($attributeTranslation instanceof AttributeFlatTranslator) {
-                $result[$columnName] = $attributeTranslation->translateValues($values, $locale);
+            if ($this->attributeTranslationRegistry->support($columnName)) {
+                $result[$columnName] = $this->attributeTranslationRegistry->translate($columnName, $values, $locale);
                 continue;
             }
 

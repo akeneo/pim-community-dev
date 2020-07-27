@@ -19,7 +19,7 @@ class GroupFlatTranslator implements PropertyFlatTranslator
 
     public function support(string $columnName): bool
     {
-        return $columnName === 'category';
+        return $columnName === 'groups';
     }
 
     public function translateValues(array $values, string $locale): array

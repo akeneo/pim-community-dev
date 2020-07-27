@@ -2,10 +2,10 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator;
 
-use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeFlatTranslator\AttributeFlatTranslator;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyTranslator\PropertyFlatTranslator;
+use Webmozart\Assert\Assert;
 
-class TranslatorRegistry
+class PropertyTranslatorRegistry
 {
     /**
      * @var array
@@ -14,14 +14,11 @@ class TranslatorRegistry
 
     public function __construct(array $translators)
     {
+        Assert::allImplementsInterface($translators, PropertyFlatTranslator::class);
         $this->translators = $translators;
     }
 
-    /**
-     * @param $column
-     * @return AttributeFlatTranslator|PropertyFlatTranslator|null
-     */
-    public function getTranslator($column)
+    public function getTranslator(string $column): ?PropertyFlatTranslator
     {
         foreach ($this->translators as $translator) {
             if ($translator->support($column)) {
