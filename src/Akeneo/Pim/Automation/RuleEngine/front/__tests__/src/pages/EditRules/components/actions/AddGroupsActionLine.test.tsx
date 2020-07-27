@@ -48,16 +48,8 @@ describe('SetStatusActionLine', () => {
             ],
           })
         );
-      } {
-        return Promise.resolve(
-          JSON.stringify({
-            results: [
-              { id: 'tshirts', text: 'T-shirts' },
-              { id: 'winter', text: 'Winter' },
-            ],
-          })
-        );
       }
+
       throw new Error(`The "${request.url}" url is not mocked.`);
     });
 
