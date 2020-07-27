@@ -35,7 +35,9 @@
 
 - CLOUD-1959: Use cloud-deployer 2.2 and terraform 0.12.25
 - PIM-9306: Enhance catalog volume monitoring count queries for large datasets
-- API-1140: Be able get attributes searching by a list of attribute codes
+- API-1140: Be able to get attributes searching by a list of attribute codes
+- API-1225: Be able to get attributes searching by updated date
+- API-1226: Be able to get attributes searching by a list of attribute types
 - PIM-9368: Allow minimum translation progress of 70% instead of 80%
 
 # Technical Improvements

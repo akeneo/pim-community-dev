@@ -146,7 +146,7 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
         if (empty($searchFilters)) {
             return;
         }
-        $availableSearchFilters = ['code', 'updated'];
+
         $validator = Validation::createValidator();
         $constraints = [
             'code' => new Assert\All([
@@ -175,7 +175,25 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
                     'value' => new Assert\DateTime(['format' => \DateTime::ATOM]),
                 ])
             ]),
+            'type' => new Assert\All(
+                new Assert\Collection([
+                    'operator' => new Assert\IdenticalTo([
+                        'value' => 'IN',
+                        'message' => 'In order to search on attribute types you must use "IN" operator, {{ compared_value }} given.',
+                    ]),
+                    'value' => [
+                        new Assert\Type([
+                            'type' => 'array',
+                            'message' => 'In order to search on attribute types you must send an array of attribute types as value, {{ type }} given.'
+                        ]),
+                        new Assert\All([
+                            new Assert\Type('string')
+                        ])
+                    ],
+                ])
+            ),
         ];
+        $availableSearchFilters = array_keys($constraints);
 
         $exceptionMessage = '';
         foreach ($searchFilters as $property => $searchFilter) {
