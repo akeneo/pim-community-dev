@@ -21,6 +21,7 @@ import { getRemoveCategoriesModule } from './RemoveCategoriesAction';
 import { getAddGroupsActionModule } from './AddGroupsAction';
 import { getAddAttributeValueActionModule } from './AddAttributeValueAction';
 import { getSetStatusActionModule } from './SetStatusAction';
+import { getRemoveGroupsActionModule } from './RemoveGroupsAction';
 
 export type ActionModuleGuesser = (
   json: any,
@@ -46,6 +47,7 @@ const getActionModule: (
     getAddAttributeValueActionModule,
     getSetCategoriesModule,
     getRemoveCategoriesModule,
+    getRemoveGroupsActionModule,
     getRemoveAttributeValueActionModule,
     // Fallbacks
     getAddActionModule,
