@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.43 (2020-07-27)
+
 ## Bug fixes
 
 - PIM-9304: Fix slow query used to retrieve products to evaluate
