@@ -51,7 +51,7 @@ resource "google_pubsub_subscription" "job-queue" {
 
 resource "google_service_account" "pimpubsub" {
   account_id   = format("gs-%s", substr(md5(var.instance_name), 0, 25))
-  display_name = "Google access for pim container (${var.instance_name})"
+  display_name = "PubSub access for pim (${var.instance_name})"
 }
 
 resource "google_service_account_key" "pimpubsub" {
