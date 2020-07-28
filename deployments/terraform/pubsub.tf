@@ -87,7 +87,7 @@ resource "google_pubsub_topic_iam_member" "pubsub_publisher_job_queue" {
 
 resource "google_pubsub_topic_iam_member" "pubsub_subscriber_webhook" {
   topic  = google_pubsub_subscription.webhook.name
-  role   = "roles/pubsub.subsriber"
+  role   = "roles/pubsub.subscriber"
   member = "serviceAccount:${google_service_account.pimpubsub.email}"
 
   depends_on = [
@@ -98,7 +98,7 @@ resource "google_pubsub_topic_iam_member" "pubsub_subscriber_webhook" {
 
 resource "google_pubsub_topic_iam_member" "pubsub_subscriber_job_queue" {
   topic  = google_pubsub_subscription.job-queue.name
-  role   = "roles/pubsub.subsriber"
+  role   = "roles/pubsub.subscriber"
   member = "serviceAccount:${google_service_account.pimpubsub.email}"
 
   depends_on = [
