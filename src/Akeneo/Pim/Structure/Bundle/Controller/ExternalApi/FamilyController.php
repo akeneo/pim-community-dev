@@ -151,9 +151,17 @@ class FamilyController
         ];
 
         $queryParameters = array_merge($defaultParameters, $request->query->all());
+        $searchFilters = json_decode($queryParameters['search'] ?? '[]', true);
+        if (null === $searchFilters) {
+            throw new BadRequestHttpException('The search query parameter must be a valid JSON.');
+        }
 
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
-        $families = $this->repository->searchAfterOffset([], ['code' =>'ASC'], $queryParameters['limit'], $offset);
+        try {
+            $families = $this->repository->searchAfterOffset($searchFilters, ['code' => 'ASC'], $queryParameters['limit'], $offset);
+        } catch (\InvalidArgumentException $exception) {
+            throw new BadRequestHttpException($exception->getMessage(), $exception);
+        }
 
         $parameters = [
             'query_parameters'    => $queryParameters,
@@ -161,7 +169,7 @@ class FamilyController
             'item_route_name'     => 'pim_api_family_get',
         ];
 
-        $count = true === $request->query->getBoolean('with_count') ? $this->repository->count() : null;
+        $count = true === $request->query->getBoolean('with_count') ? $this->repository->count($searchFilters) : null;
         $paginatedFamilies = $this->paginator->paginate(
             $this->normalizer->normalize($families, 'external_api'),
             $parameters,

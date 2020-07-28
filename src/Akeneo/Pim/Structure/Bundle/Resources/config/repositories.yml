@@ -56,6 +56,13 @@ services:
             - '%pim_catalog.entity.attribute.class%'
             - '@pim_catalog.repository.attribute'
 
+    pim_api.repository.family:
+        class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\ExternalApi\FamilyRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.family.class%'
+            - '@pim_catalog.repository.family'
+
     ### Internal API
     pim_enrich.repository.attribute_group:
         public: true

@@ -44,13 +44,6 @@ services:
             - '%pim_catalog.entity.channel.class%'
             - '@pim_catalog.repository.channel'
 
-    pim_api.repository.family:
-        class: '%pim_api.repository.api_resource.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.family.class%'
-            - '@pim_catalog.repository.family'
-
     pim_api.repository.family_variant:
         class: '%pim_api.repository.api_resource.class%'
         arguments:
