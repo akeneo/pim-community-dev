@@ -443,6 +443,23 @@ services:
             - '@pim_enrich.writer.database.product_and_product_model_writer'
             - '%pim_job_product_batch_size%'
 
+    pim_enrich.step.remove_non_existing_product_values:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - '%pim_catalog.job.remove_non_existing_product_values.job_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.tasklet.remove_non_existing_product_values'
+
+    pim_enrich.tasklet.remove_non_existing_product_values:
+        class: Akeneo\Pim\Enrichment\Component\Product\Job\RemoveNonExistingProductValuesTasklet
+        arguments:
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.saver.product_model'
+            - '%pim_job_product_batch_size%'
+
     # Cleaner steps -------------------------------------------------------------------------------------------------
     pim_enrich.step.clean:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Step\MassEditStep'
