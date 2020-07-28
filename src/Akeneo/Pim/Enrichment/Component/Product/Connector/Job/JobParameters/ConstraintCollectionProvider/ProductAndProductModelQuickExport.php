@@ -7,8 +7,10 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\Co
 use Akeneo\Channel\Component\Validator\Constraint\ActivatedLocale;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Constraints for product and product model quick export
@@ -58,7 +60,17 @@ class ProductAndProductModelQuickExport implements ConstraintCollectionProviderI
                 'groups' => ['Default', 'FileConfiguration'],
             ]
         );
-        $constraintFields['file_locale'] = new ActivatedLocale(['groups' => ['Default', 'FileConfiguration']]);
+        $constraintFields['file_locale'] = [
+            new ActivatedLocale(['groups' => ['Default', 'FileConfiguration']]),
+            new Callback(function ($value, ExecutionContextInterface $context) {
+                $fields = $context->getRoot();
+                if (true === $fields['with_label'] && empty($value)) {
+                    $context
+                        ->buildViolation('The locale cannot be empty.')
+                        ->addViolation();
+                }
+            })
+        ];
 
         return new Collection(['fields' => $constraintFields]);
     }
