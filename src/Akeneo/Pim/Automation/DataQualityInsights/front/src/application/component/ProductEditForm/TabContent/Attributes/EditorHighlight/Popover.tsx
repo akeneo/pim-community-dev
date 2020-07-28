@@ -2,6 +2,7 @@ import React, {FunctionComponent, useEffect, useLayoutEffect, useRef, useState} 
 import {useGetEditorHighlightPopover, useGetSpellcheckWidget} from "../../../../../../infrastructure/hooks";
 import {EditorHighlightPopoverContextListener} from "../../../../../listener";
 import SpellcheckPopoverContent from "./Spellcheck/SpellcheckPopoverContent";
+import SuggestedTitlePopoverContent from "./SuggestedTitle/SuggestedTitlePopoverContent";
 import PopoverWithPortalDecorator from "./PopoverWithPortalDecorator";
 
 const POPOVER_BOTTOM_PLACEMENT_OFFSET = 2;
@@ -71,7 +72,10 @@ const BasePopover: FunctionComponent<PopoverProps> = () => {
              onMouseLeave={() => handleClosing()}>
           {highlight && highlight.mistake && widget && (
             <>
-              <SpellcheckPopoverContent mistake={highlight.mistake} widget={widget}/>
+              {widget.isMainLabel ?
+                <SuggestedTitlePopoverContent mistake={highlight.mistake} widget={widget}/> :
+                <SpellcheckPopoverContent mistake={highlight.mistake} widget={widget}/>
+              }
             </>
           )}
         </div>
