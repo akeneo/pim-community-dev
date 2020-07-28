@@ -93,7 +93,7 @@ const View = ({
       doRegenerate();
     }
   }, [reloadPreview]);
-  const [regenerate, doRegenerate] = useRegenerate(mediaPreviewUrl);
+  const [regenerate, doRegenerate, refreshedUrl] = useRegenerate(mediaPreviewUrl);
 
   const label = getLabelInCollection(
     value.attribute.labels,
@@ -108,7 +108,7 @@ const View = ({
         <ThumbnailPlaceholder className="AknLoadingPlaceHolder" />
       ) : (
         <ThumbnailContainer>
-          <Thumbnail src={mediaPreviewUrl} alt={__('pim_asset_manager.attribute.media_type_preview')} />
+          <Thumbnail src={refreshedUrl} alt={__('pim_asset_manager.attribute.media_type_preview')} />
         </ThumbnailContainer>
       )}
       <MediaLinkInput

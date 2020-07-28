@@ -55,7 +55,7 @@ type LazyLoadedImageProps = {
   isLoading?: boolean;
 };
 
-const LazyLoadedImage = React.memo(({src, alt, isLoading = false, ...props}: LazyLoadedImageProps) => {
+const LazyLoadedImage = ({src, alt, isLoading = false, ...props}: LazyLoadedImageProps) => {
   const loadedSrc = useImageLoader(src);
 
   return undefined === loadedSrc || isLoading ? (
@@ -65,7 +65,7 @@ const LazyLoadedImage = React.memo(({src, alt, isLoading = false, ...props}: Laz
   ) : (
     <Image src={loadedSrc} alt={alt} {...props} />
   );
-});
+};
 
 const DisconnectedMediaDataPreview = ({
   label,
@@ -84,7 +84,7 @@ const DisconnectedMediaDataPreview = ({
     data: getMediaData(mediaData),
   });
 
-  const [regenerate, doRegenerate] = useRegenerate(url);
+  const [regenerate, doRegenerate, refreshedUrl] = useRegenerate(url);
 
   React.useEffect(() => {
     if (reloadPreview) {
@@ -94,8 +94,13 @@ const DisconnectedMediaDataPreview = ({
 
   return (
     <>
-      <LazyLoadedImage isLoading={regenerate} src={url} alt={label} data-role="media-data-preview" />
-
+      {regenerate ? (
+        <div className="AknLoadingPlaceHolderContainer">
+          <ImagePlaceholder alt={label} data-role="media-data-preview" />
+        </div>
+      ) : (
+        <Image src={refreshedUrl} alt={label} data-role="media-data-preview" />
+      )}
       {attribute.media_type === MediaTypes.other && (
         <Message title={__('pim_asset_manager.asset_preview.other_main_media')}>
           {__('pim_asset_manager.asset_preview.other_main_media')}
