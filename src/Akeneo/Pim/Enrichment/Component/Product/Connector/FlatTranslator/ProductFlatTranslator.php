@@ -80,11 +80,12 @@ class ProductFlatTranslator implements FlatTranslatorInterface
         $translateHeaders = true;
         $flatItemsByColumnName = $this->groupFlatItemsByColumnName($flatItems);
         $flatItemsByColumnName = $this->translateValues($flatItemsByColumnName, $locale);
-        $flatItems = $this->undoGroupFlatItemsByColumnName($flatItemsByColumnName);
 
         if ($translateHeaders) {
-            $flatItems = $this->translateHeaders($flatItems, $locale);
+            $flatItemsByColumnName = $this->translateHeaders($flatItemsByColumnName, $locale);
         }
+
+        $flatItems = $this->undoGroupFlatItemsByColumnName($flatItemsByColumnName);
 
         return $flatItems;
     }
@@ -115,11 +116,11 @@ class ProductFlatTranslator implements FlatTranslatorInterface
         return $result;
     }
 
-    private function translateHeaders(array $flatItems, string $locale)
+    private function translateHeaders(array $flatItemsByColumnName, string $locale)
     {
-        $attributeCodes = $this->extractAttributeCodes($flatItems);
-        $associationTypes = $this->extractAssociationTypeCodes($flatItems);
-        $quantifiedAssociationTypes = $this->extractQuantifiedAssociationTypeCodes($flatItems);
+        $attributeCodes = $this->extractAttributeCodes($flatItemsByColumnName);
+        $associationTypes = $this->extractAssociationTypeCodes($flatItemsByColumnName);
+        $quantifiedAssociationTypes = $this->extractQuantifiedAssociationTypeCodes($flatItemsByColumnName);
 
         $attributeTranslations = $this->getAttributeTranslations->byAttributeCodesAndLocale($attributeCodes, $locale);
         $associationTranslations = $this->getAssociationTypeTranslations->byAssociationTypeCodeAndLocale(
@@ -128,93 +129,88 @@ class ProductFlatTranslator implements FlatTranslatorInterface
         );
 
         $results = [];
-        foreach ($flatItems as $flatItemIndex => $flatItem) {
-            $result = [];
-            $columns = array_keys($flatItem);
-            foreach ($columns as $column) {
-                $columnLabelized = $column;
-                if ($this->isPropertyColumn($column)) {
-                    $columnLabelized = $this->labelTranslator->translate(
-                        sprintf('pim_common.%s', $column),
-                        $locale,
-                        sprintf('[%s]', $column)
-                    );
-                } elseif ($this->isAssociationColumn($column) || $this->isQuantifiedAssociationIdentifierColumn($column)) {
-                    list($associationType, $entityType) = explode('-', $column);
-                    $entityTypeLabelized =  $this->labelTranslator->translate(
-                        sprintf('pim_common.%s', $entityType),
-                        $locale,
-                        sprintf('[%s]', $entityType)
-                    );
+        foreach ($flatItemsByColumnName as $columnName => $flatItemValues) {
+            $columnLabelized = sprintf('[%s]', $columnName);
+            if ($this->isPropertyColumn($columnName)) {
+                $columnLabelized = $this->labelTranslator->translate(
+                    sprintf('pim_common.%s', $columnName),
+                    $locale,
+                    sprintf('[%s]', $columnName)
+                );
+            } elseif ($this->isAssociationColumn($columnName) || $this->isQuantifiedAssociationIdentifierColumn($columnName)) {
+                list($associationType, $entityType) = explode('-', $columnName);
+                $entityTypeLabelized =  $this->labelTranslator->translate(
+                    sprintf('pim_common.%s', $entityType),
+                    $locale,
+                    sprintf('[%s]', $entityType)
+                );
 
-                    $associationTypeLabelized = $associationTranslations[$associationType] ?? sprintf('[%s]', $associationType);
-                    $columnLabelized = sprintf('%s %s', $associationTypeLabelized, $entityTypeLabelized);
-                } elseif ($this->isQuantifiedAssociationQuantityColumn($column)) {
-                    list($associationType, $entityType, $unit) = explode('-', $column);
+                $associationTypeLabelized = $associationTranslations[$associationType] ?? sprintf('[%s]', $associationType);
+                $columnLabelized = sprintf('%s %s', $associationTypeLabelized, $entityTypeLabelized);
+            } elseif ($this->isQuantifiedAssociationQuantityColumn($columnName)) {
+                list($associationType, $entityType, $unit) = explode('-', $columnName);
 
-                    $associationTypeLabelized = $associationTranslations[$associationType] ?? sprintf('[%s]', $associationType);
-                    $entityTypeLabelized =  $this->labelTranslator->translate(
-                        sprintf('pim_common.%s', $entityType),
-                        $locale,
-                        sprintf('[%s]', $entityType)
-                    );
+                $associationTypeLabelized = $associationTranslations[$associationType] ?? sprintf('[%s]', $associationType);
+                $entityTypeLabelized =  $this->labelTranslator->translate(
+                    sprintf('pim_common.%s', $entityType),
+                    $locale,
+                    sprintf('[%s]', $entityType)
+                );
 
-                    $unitLabelized =  $this->labelTranslator->translate(
-                        'pim_common.unit',
-                        $locale,
-                        '([unit])'
-                    );
+                $unitLabelized =  $this->labelTranslator->translate(
+                    'pim_common.unit',
+                    $locale,
+                    '([unit])'
+                );
 
-                    $columnLabelized = sprintf('%s %s %s', $associationTypeLabelized, $entityTypeLabelized, $unitLabelized);
-                } elseif ($this->isAttributeColumn($column)) {
-                    $columnInformations = $this->attributeColumnInfoExtractor->extractColumnInfo($column);
-                    $attribute = $columnInformations['attribute'];
-                    $attributeCode = $attribute->getCode();
+                $columnLabelized = sprintf('%s %s %s', $associationTypeLabelized, $entityTypeLabelized, $unitLabelized);
+            } elseif ($this->isAttributeColumn($columnName)) {
+                $columnInformations = $this->attributeColumnInfoExtractor->extractColumnInfo($columnName);
+                $attribute = $columnInformations['attribute'];
+                $attributeCode = $attribute->getCode();
 
-                    $columnLabelized = $attributeTranslations[$attributeCode] ?? sprintf('[%s]', $attributeCode);
+                $columnLabelized = $attributeTranslations[$attributeCode] ?? sprintf('[%s]', $attributeCode);
 
-                    $extraInformation = [];
-                    if ($attribute->isLocalizable()) {
-                        $extraInformation[] = $columnInformations['locale_code'];
-                    }
-
-                    if ($attribute->isScopable()) {
-                        $extraInformation[] = $columnInformations['scope_code'];
-                    }
-
-                    if (!empty($extraInformation)) {
-                        $columnLabelized = $columnLabelized . " (".implode(', ', $extraInformation) . ")";
-                    }
-
-                    if ($attribute->getType() === 'pim_catalog_price_collection') {
-                        $language = \Locale::getPrimaryLanguage($locale);
-                        $currencyLabelized = Intl::getCurrencyBundle()->getCurrencyName(
-                            $columnInformations['price_currency'],
-                            $language
-                        );
-
-                        $columnLabelized = sprintf('%s (%s)', $columnLabelized, $currencyLabelized);
-                    } elseif ($attribute->getType() === 'pim_catalog_metric' && strpos($column, '-unit') !== false) {
-                        $metricLabelized = $this->labelTranslator->translate('pim_common.unit', $locale, '[unit]');
-
-                        $columnLabelized = sprintf('%s (%s)', $columnLabelized, $metricLabelized);
-                    }
+                $extraInformation = [];
+                if ($attribute->isLocalizable()) {
+                    $extraInformation[] = $columnInformations['locale_code'];
                 }
 
-                $result[$columnLabelized] = $flatItem[$column];
+                if ($attribute->isScopable()) {
+                    $extraInformation[] = $columnInformations['scope_code'];
+                }
+
+                if (!empty($extraInformation)) {
+                    $columnLabelized = $columnLabelized . " (".implode(', ', $extraInformation) . ")";
+                }
+
+                if ($attribute->getType() === 'pim_catalog_price_collection') {
+                    $language = \Locale::getPrimaryLanguage($locale);
+                    $currencyLabelized = Intl::getCurrencyBundle()->getCurrencyName(
+                        $columnInformations['price_currency'],
+                        $language
+                    );
+
+                    $columnLabelized = sprintf('%s (%s)', $columnLabelized, $currencyLabelized);
+                } elseif ($attribute->getType() === 'pim_catalog_metric' && strpos($columnName, '-unit') !== false) {
+                    $metricLabelized = $this->labelTranslator->translate('pim_common.unit', $locale, '[unit]');
+
+                    $columnLabelized = sprintf('%s (%s)', $columnLabelized, $metricLabelized);
+                }
             }
 
-            $results[$flatItemIndex] = $result;
+            $results[$columnLabelized] = $flatItemValues;
         }
+
 
         return $results;
     }
 
     private function valueAreAllEmpty(array $values)
     {
-        return array_filter($values, function ($value) {
-            return $value === '';
-        });
+        return count(array_filter($values, function ($value) {
+            return $value !== '';
+        })) === 0;
     }
 
     private function isAttributeColumn(string $column): bool
@@ -243,51 +239,42 @@ class ProductFlatTranslator implements FlatTranslatorInterface
         return in_array($column, $associationsColumns);
     }
 
-    private function extractAssociationTypeCodes(array $flatItems): array
+    private function extractAssociationTypeCodes(array $flatItemsByColumnName): array
     {
         $associationTypeCodes = [];
-        foreach ($flatItems as $flatItem) {
-            $columns = array_keys($flatItem);
-            foreach ($columns as $column) {
-                if ($this->isAssociationColumn($column)) {
-                    list($quantifiedAssociationType, $entityType) = explode('-', $column);
+        foreach ($flatItemsByColumnName as $columnName => $flatItemValues) {
+            if ($this->isAssociationColumn($columnName)) {
+                list($quantifiedAssociationType, $entityType) = explode('-', $columnName);
 
-                    $associationTypeCodes[] = $quantifiedAssociationType;
-                }
+                $associationTypeCodes[] = $quantifiedAssociationType;
             }
         }
 
         return array_unique($associationTypeCodes);
     }
 
-    private function extractQuantifiedAssociationTypeCodes(array $flatItems): array
+    private function extractQuantifiedAssociationTypeCodes(array $flatItemsByColumnName): array
     {
         $quantifiedAssociationTypeCodes = [];
-        foreach ($flatItems as $flatItem) {
-            $columns = array_keys($flatItem);
-            foreach ($columns as $column) {
-                if ($this->isQuantifiedAssociationIdentifierColumn($column)) {
-                    list($quantifiedAssociationType, $entityType) = explode('-', $column);
+        foreach ($flatItemsByColumnName as $columnName => $flatItemValues) {
+            if ($this->isQuantifiedAssociationIdentifierColumn($columnName)) {
+                list($quantifiedAssociationType, $entityType) = explode('-', $columnName);
 
-                    $quantifiedAssociationTypeCodes[] = $quantifiedAssociationType;
-                }
+                $quantifiedAssociationTypeCodes[] = $quantifiedAssociationType;
             }
         }
 
         return array_unique($quantifiedAssociationTypeCodes);
     }
 
-    private function extractAttributeCodes(array $flatItems): array
+    private function extractAttributeCodes(array $flatItemsByColumnName): array
     {
         $attributeCodes = [];
-        foreach ($flatItems as $flatItem) {
-            $columns = array_keys($flatItem);
-            foreach ($columns as $column) {
-                if ($this->isAttributeColumn($column)) {
-                    $columnInformations = $this->attributeColumnInfoExtractor->extractColumnInfo($column);
+        foreach ($flatItemsByColumnName as $columnName => $flatItems) {
+            if ($this->isAttributeColumn($columnName)) {
+                $columnInformations = $this->attributeColumnInfoExtractor->extractColumnInfo($columnName);
 
-                    $attributeCodes[] = $columnInformations['attribute']->getCode();;
-                }
+                $attributeCodes[] = $columnInformations['attribute']->getCode();
             }
         }
 
