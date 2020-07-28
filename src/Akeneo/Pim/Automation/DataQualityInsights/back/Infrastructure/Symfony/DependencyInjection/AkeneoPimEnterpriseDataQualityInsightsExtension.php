@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-final class AkeneoDataQualityInsightsExtension extends Extension
+final class AkeneoPimEnterpriseDataQualityInsightsExtension extends Extension
 {
     /**
      * {@inheritdoc}
@@ -33,7 +33,6 @@ final class AkeneoDataQualityInsightsExtension extends Extension
         $loader->load('productgrid.yml');
         $loader->load('attributegrid.yml');
         $loader->load('elasticsearch.yml');
-        $loader->load('feature_flags.yml');
         $loader->load('jobs.yml');
         $loader->load('queries.yml');
         $loader->load('repositories.yml');

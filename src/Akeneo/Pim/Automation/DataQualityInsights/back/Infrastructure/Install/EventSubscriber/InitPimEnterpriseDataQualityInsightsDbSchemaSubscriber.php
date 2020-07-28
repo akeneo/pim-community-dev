@@ -19,7 +19,7 @@ use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class InitDataQualityInsightsDbSchemaSubscriber implements EventSubscriberInterface
+class InitPimEnterpriseDataQualityInsightsDbSchemaSubscriber implements EventSubscriberInterface
 {
     private $dbalConnection;
 
