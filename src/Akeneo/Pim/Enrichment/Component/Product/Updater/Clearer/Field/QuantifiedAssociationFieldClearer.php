@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithQuantifiedAssociationsInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\ClearerInterface;
 use Webmozart\Assert\Assert;
 
@@ -37,10 +36,7 @@ final class QuantifiedAssociationFieldClearer implements ClearerInterface
         );
 
         if ($entity instanceof EntityWithQuantifiedAssociationsInterface) {
-            $clearedQuantifiedAssociation = array_map(function ($quantifiedAssociationNormalized) {
-                return [];
-            }, $entity->getQuantifiedAssociations()->normalize());
-            $entity->setQuantifiedAssociations(QuantifiedAssociations::createFromNormalized($clearedQuantifiedAssociation));
+            $entity->clearQuantifiedAssociations();
         }
     }
 }

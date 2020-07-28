@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\IdMapping;
-use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -13,7 +13,7 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class QuantifiedAssociationsSpec extends ObjectBehavior
+class QuantifiedAssociationCollectionSpec extends ObjectBehavior
 {
     public function let()
     {
@@ -33,14 +33,15 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
                     ]
                 ],
                 $this->anIdMapping(),
-                $this->anIdMapping()
+                $this->anIdMapping(),
+                ['PACK']
             ]
         );
     }
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType(QuantifiedAssociations::class);
+        $this->shouldHaveType(QuantifiedAssociationCollection::class);
     }
 
     public function it_is_normalizable()
@@ -63,14 +64,15 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
             [
                 $expectedRawQuantifiedAssociations,
                 $this->anIdMapping(),
-                $this->anIdMapping()
+                $this->anIdMapping(),
+                ['PACK']
             ]
         );
 
         $this->normalizeWithMapping($this->anIdMapping(), $this->anIdMapping())->shouldReturn($expectedRawQuantifiedAssociations);
     }
 
-    public function it_ignores_unknown_products_andProductModels()
+    public function it_ignores_unknown_products_product_models_and_association_types()
     {
         $rawQuantifiedAssociations = [
             'PACK' => [
@@ -81,6 +83,14 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
                 'product_models' => [
                     ['id' => 1, 'quantity' => 1],
                     ['id' => 2, 'quantity' => 2],
+                ],
+            ],
+            'NON_EXISTENT_ASSOCIATION_TYPE' => [
+                'products'       => [
+                    ['id' => 1, 'quantity' => 1],
+                ],
+                'product_models' => [
+                    ['id' => 1, 'quantity' => 1],
                 ],
             ]
         ];
@@ -101,7 +111,8 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
             [
                 $rawQuantifiedAssociations,
                 $this->anIncompleteIdMapping(),
-                $this->anIncompleteIdMapping()
+                $this->anIncompleteIdMapping(),
+                ['PACK']
             ]
         );
 
@@ -137,7 +148,8 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
             [
                 $expectedRawQuantifiedAssociations,
                 $idMapping,
-                $idMapping
+                $idMapping,
+                ['PACK', 'PRODUCT_SET']
             ]
         );
 
@@ -173,7 +185,8 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
             [
                 $expectedRawQuantifiedAssociations,
                 $idMapping,
-                $idMapping
+                $idMapping,
+                ['PACK', 'PRODUCT_SET']
             ]
         );
 
@@ -195,7 +208,8 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
                 [
                     $expectedRawQuantifiedAssociations,
                     $this->anIdMapping(),
-                    $this->anIdMapping()
+                    $this->anIdMapping(),
+                    ['PACK']
                 ]
             );
     }
@@ -216,7 +230,8 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
                 [
                     $expectedRawQuantifiedAssociations,
                     $this->anIdMapping(),
-                    $this->anIdMapping()
+                    $this->anIdMapping(),
+                    ['PACK']
                 ]
             );
     }
@@ -237,7 +252,8 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
                 [
                     $expectedRawQuantifiedAssociations,
                     $this->anIdMapping(),
-                    $this->anIdMapping()
+                    $this->anIdMapping(),
+                    ['PACK']
                 ]
             );
     }
@@ -257,7 +273,8 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
                 [
                     $expectedRawQuantifiedAssociations,
                     $this->anIdMapping(),
-                    $this->anIdMapping()
+                    $this->anIdMapping(),
+                    ['PACK']
                 ]
             );
     }
@@ -278,7 +295,8 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
                 [
                     $expectedRawQuantifiedAssociations,
                     $this->anIdMapping(),
-                    $this->anIdMapping()
+                    $this->anIdMapping(),
+                    ['PACK']
                 ]
             );
     }
@@ -299,7 +317,8 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
                 [
                     $expectedRawQuantifiedAssociations,
                     $this->anIdMapping(),
-                    $this->anIdMapping()
+                    $this->anIdMapping(),
+                    ['PACK']
                 ]
             );
     }
@@ -396,9 +415,122 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_merge_quantified_associations_and_overwrite_quantities_from_duplicated_identifiers(
-        QuantifiedAssociations $quantifiedAssociationsToMerge
-    ) {
+    public function it_clear_quantified_associations_already_empty()
+    {
+        $this->beConstructedThrough('createFromNormalized', [[]]);
+
+        $this->clearQuantifiedAssociations()->normalize()->shouldReturn([]);
+    }
+
+    public function it_clear_all_quantified_associations_already_empty()
+    {
+        $this->beConstructedThrough('createFromNormalized', [
+            [
+                'PRODUCTSET_A' => [
+                    'products' => [
+                        ['identifier' => 'AKN_TS1', 'quantity' => 2],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'MODEL_AKN_TS1', 'quantity' => 2],
+                    ],
+                ],
+                'PRODUCTSET_B' => [
+                    'products' => [
+                        ['identifier' => 'AKN_TSH2', 'quantity' => 2],
+                    ],
+                    'product_models' => [],
+                ],
+            ],
+        ]);
+
+        $this->clearQuantifiedAssociations()->normalize()->shouldReturn([
+            'PRODUCTSET_A' => [
+                'products' => [],
+                'product_models' => [],
+            ],
+            'PRODUCTSET_B' => [
+                'products' => [],
+                'product_models' => [],
+            ],
+        ]);
+    }
+
+    public function it_override_empty_quantified_associations()
+    {
+        $this->beConstructedThrough('createFromNormalized', [[]]);
+        $this->patchQuantifiedAssociations([
+            'PRODUCTSET_A' => [
+                'products' => [
+                    ['identifier' => 'AKN_TS1', 'quantity' => 2],
+                ],
+            ]
+        ])->normalize()->shouldReturn([
+            'PRODUCTSET_A' => [
+                'products' => [
+                    ['identifier' => 'AKN_TS1', 'quantity' => 2],
+                ],
+                'product_models' => [],
+            ],
+        ]);
+    }
+
+    public function it_override_existing_quantified_associations()
+    {
+        $this->beConstructedThrough('createFromNormalized', [
+            [
+                'PRODUCTSET_A' => [
+                    'products' => [
+                        ['identifier' => 'AKN_TS1', 'quantity' => 2],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'MODEL_AKN_TS1', 'quantity' => 2],
+                    ],
+                ],
+                'PRODUCTSET_B' => [
+                    'products' => [
+                        ['identifier' => 'AKN_TSH2', 'quantity' => 2],
+                    ],
+                    'product_models' => [],
+                ],
+            ],
+        ]);
+
+        $this->patchQuantifiedAssociations([
+            'PRODUCTSET_A' => [
+                'products' => [
+                    ['identifier' => 'AKN_TS1_ALT', 'quantity' => 200],
+                ],
+            ],
+            'PRODUCTSET_C' => [
+                'products' => [
+                    ['identifier' => 'AKN_TS1_ALT', 'quantity' => 200],
+                ],
+            ]
+        ])->normalize()->shouldReturn([
+            'PRODUCTSET_A' => [
+                'products' => [
+                    ['identifier' => 'AKN_TS1_ALT', 'quantity' => 200],
+                ],
+                'product_models' => [
+                    ['identifier' => 'MODEL_AKN_TS1', 'quantity' => 2],
+                ],
+            ],
+            'PRODUCTSET_B' => [
+                'products' => [
+                    ['identifier' => 'AKN_TSH2', 'quantity' => 2],
+                ],
+                'product_models' => [],
+            ],
+            'PRODUCTSET_C' => [
+                'products' => [
+                    ['identifier' => 'AKN_TS1_ALT', 'quantity' => 200],
+                ],
+                'product_models' => [],
+            ]
+        ]);
+    }
+
+    public function it_merge_quantified_associations_and_overwrite_quantities_from_duplicated_identifiers() {
         $this->beConstructedThrough(
             'createFromNormalized',
             [
@@ -414,7 +546,7 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
             ]
         );
 
-        $quantifiedAssociationsToMerge->normalize()->willReturn([
+        $quantifiedAssociationsToMerge = QuantifiedAssociationCollection::createFromNormalized([
             'PACK' => [
                 'products' => [
                     ['identifier' => 'B', 'quantity' => 3],
@@ -424,9 +556,7 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
             ],
         ]);
 
-        $this->merge($quantifiedAssociationsToMerge);
-
-        $this->normalize()->shouldReturn([
+        $this->merge($quantifiedAssociationsToMerge)->shouldBeLike(QuantifiedAssociationCollection::createFromNormalized([
             'PACK' => [
                 'products' => [
                     ['identifier' => 'A', 'quantity' => 2],
@@ -436,7 +566,7 @@ class QuantifiedAssociationsSpec extends ObjectBehavior
                 ],
                 'product_models' => []
             ],
-        ]);
+        ]));
     }
 
     private function anIdMapping(): IdMapping

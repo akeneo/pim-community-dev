@@ -146,14 +146,14 @@ services:
         arguments:
             - '@database_connection'
             - '@akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_ids_query'
-            - '@pim_catalog.repository.association_type'
+            - '@akeneo.pim.enrichment.product.query.find_quantified_association_codes'
 
     akeneo.pim.enrichment.product.query.get_product_model_quantified_associations_by_product_identifiers:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation\GetProductModelQuantifiedAssociationsByProductIdentifiers'
         arguments:
             - '@database_connection'
             - '@akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_model_ids_query'
-            - '@pim_catalog.repository.association_type'
+            - '@akeneo.pim.enrichment.product.query.find_quantified_association_codes'
 
     akeneo.pim.enrichment.product.query.get_existing_reference_data_codes:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetExistingReferenceDataCodes'
@@ -191,15 +191,14 @@ services:
         arguments:
             - '@database_connection'
             - '@akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_ids_query'
-            - '@pim_catalog.repository.association_type'
-
+            - '@akeneo.pim.enrichment.product.query.find_quantified_association_codes'
 
     akeneo.pim.enrichment.product_model.query.get_product_model_quantified_associations_by_product_model_codes:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\QuantifiedAssociation\GetProductModelQuantifiedAssociationsByProductModelCodes'
         arguments:
             - '@database_connection'
             - '@akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_model_ids_query'
-            - '@pim_catalog.repository.association_type'
+            - '@akeneo.pim.enrichment.product.query.find_quantified_association_codes'
 
     akeneo.pim.enrichment.product.connector.get_product_from_identifiers:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\SqlGetConnectorProducts'
@@ -320,8 +319,8 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo.pim.enrichment.product.query.find_non_existing_association_type_codes_query:
-        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\FindNonExistingAssociationTypeCodesQuery
+    akeneo.pim.enrichment.product.query.find_quantified_association_codes:
+        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\FindQuantifiedAssociationTypeCodes
         arguments:
             - '@database_connection'
 
