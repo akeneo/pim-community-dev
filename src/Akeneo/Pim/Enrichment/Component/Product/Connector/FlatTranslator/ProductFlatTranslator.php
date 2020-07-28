@@ -115,13 +115,6 @@ class ProductFlatTranslator implements FlatTranslatorInterface
         return $result;
     }
 
-    private function valueAreAllEmpty(array $values)
-    {
-        return array_filter($values, function ($value) {
-            return $value === '';
-        });
-    }
-
     private function translateHeaders(array $flatItems, string $locale)
     {
         $attributeCodes = $this->extractAttributeCodes($flatItems);
@@ -217,6 +210,13 @@ class ProductFlatTranslator implements FlatTranslatorInterface
         return $results;
     }
 
+    private function valueAreAllEmpty(array $values)
+    {
+        return array_filter($values, function ($value) {
+            return $value === '';
+        });
+    }
+
     private function isAttributeColumn(string $column): bool
     {
         $attributeColumns = $this->attributeColumnsResolver->resolveAttributeColumns();
@@ -302,6 +302,60 @@ class ProductFlatTranslator implements FlatTranslatorInterface
     }
 
 
+    /**
+     * Internal pivoting to facilitate translation of flat items
+     *
+     * Before
+     * [
+     *   [
+     *     'sku' => 1151511,
+     *     'categories' => 'master_femme_chaussures_sandales'
+     *     'description-en' => 'Ma description',
+     *     'enabled' => 0,
+     *     'groups' => 'group1',
+     *     'name-fr_FR' => 'Sandales dorées Femme'
+     *   ],
+     *   [
+     *     'sku' => 1151512,
+     *     'categories' => 'master_femme_manteaux_manteaux_dhiver'
+     *     'description-en' => 'Ma description1',
+     *     'enabled' => 1,
+     *     'groups' => 'group2,group3',
+     *     'name-fr_FR' => 'Jupe imprimée Femme'
+     *   ],
+     * ]
+
+     * After :
+     * [
+     *   'sku' => [
+     *     1151511,
+     *     1151512,
+     *   ],
+     *   'categories' => [
+     *     'master_femme_chaussures_sandales',
+     *     'master_femme_manteaux_manteaux_dhiver'
+     *   ],
+     *   'description-en' => [
+     *     'Ma description',
+     *     'Ma description1'
+     *   ],
+     *   'enabled' => [
+     *     0,
+     *     1
+     *   ],
+     *   'groups' => [
+     *     'group1',
+     *     'group2,group3'
+     *   ],
+     *   'name-fr_FR' => [
+     *     'Sandales dorées Femme',
+     *     'Jupe imprimée Femme'
+     *   ]
+     * ]
+     *
+     * @param array $flatItems
+     * @return array
+     */
     //@TODO to rename / in another service ?
     private function groupFlatItemsByColumnName(array $flatItems)
     {
@@ -315,6 +369,60 @@ class ProductFlatTranslator implements FlatTranslatorInterface
         return $result;
     }
 
+    /**
+     * Internal pivoting to facilitate translation of flat items
+     *
+     * Before :
+     * [
+     *   'sku' => [
+     *     1151511,
+     *     1151512,
+     *   ],
+     *   'categories' => [
+     *     'Sandales femme',
+     *     'Manteau d\'hiver'
+     *   ],
+     *   'description-en' => [
+     *     'Ma description',
+     *     'Ma description1'
+     *   ],
+     *   'enabled' => [
+     *     'Non',
+     *     'Oui',
+     *   ],
+     *   'groups' => [
+     *     'Le group 1',
+     *     'Le group 2,Le group 3'
+     *   ],
+     *   'name-fr_FR' => [
+     *     'Sandales dorées Femme',
+     *     'Jupe imprimée Femme'
+     *   ]
+     * ]
+     *
+     * After :
+     * [
+     *   [
+     *     'sku' => 1151511,
+     *     'categories' => 'Sandales femme'
+     *     'description-en' => 'Ma description',
+     *     'enabled' => 'Non',
+     *     'groups' => 'Le group 1',
+     *     'name-fr_FR' => 'Sandales dorées Femme'
+     *   ],
+     *   [
+     *     'sku' => 1151512,
+     *     'categories' => 'Manteau d\'hiver'
+     *     'description-en' => 'Ma description1',
+     *     'enabled' => 'Oui',
+     *     'groups' => 'Le group 2,Le group 3',
+     *     'name-fr_FR' => 'Jupe imprimée Femme'
+     *   ],
+     * ]
+     *
+     * @param array $columns
+     * @return array
+     */
     //@TODO to rename / in another service ?
     private function undoGroupFlatItemsByColumnName(array $columns)
     {
