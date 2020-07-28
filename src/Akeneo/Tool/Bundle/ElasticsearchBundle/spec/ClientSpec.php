@@ -251,6 +251,15 @@ class ClientSpec extends ObjectBehavior
 
     function it_indexes_with_bulk_several_documents($client)
     {
+        $expectedResponse = [
+            'took' => 1,
+            'errors' => false,
+            'items' => [
+                ['item_foo'],
+                ['item_bar'],
+            ],
+        ];
+
         $client->bulk(
             [
                 'body' => [
@@ -267,14 +276,14 @@ class ClientSpec extends ObjectBehavior
                 ],
                 'refresh' => 'wait_for',
             ]
-        )->willReturn(['errors' => false]);;
+        )->shouldBeCalled()->willReturn($expectedResponse);;
 
         $documents = [
             ['identifier' => 'foo', 'name' => 'a name'],
             ['identifier' => 'bar', 'name' => 'a name'],
         ];
 
-        $this->bulkIndexes($documents, 'identifier', Refresh::waitFor());
+        $this->bulkIndexes($documents, 'identifier', Refresh::waitFor())->shouldReturn($expectedResponse);
     }
 
     public function it_throws_an_exception_during_the_indexation_of_several_documents($client)
