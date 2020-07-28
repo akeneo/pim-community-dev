@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.44 (2020-07-28)
+
 ## Bug fixes
 
 - PIM-9374: Fix search by code on asset collection attribute
