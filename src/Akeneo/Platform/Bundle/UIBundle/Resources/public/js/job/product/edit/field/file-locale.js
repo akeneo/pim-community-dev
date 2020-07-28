@@ -12,13 +12,17 @@ define([
     'underscore',
     'oro/translator',
     'pim/fetcher-registry',
-    'pim/job/common/edit/field/select'
+    'pim/job/common/edit/field/field',
+    'pim/job/common/edit/field/select',
+    'pim/user-context'
 ], function (
     $,
     _,
     __,
     FetcherRegistry,
-    SelectField
+    BaseField,
+    SelectField,
+    UserContext
 ) {
     return SelectField.extend({
         /**
@@ -43,13 +47,21 @@ define([
          * {@inheritdoc}
          */
         render: function () {
-          if (!this.getFormData().configuration.with_label) {
-              this.$el.html('');
+            if (!this.getFormData().configuration.with_label) {
+                this.$el.html('');
 
-              return this;
-          }
+                return this;
+            }
 
-          SelectField.prototype.render.apply(this, arguments);
+            BaseField.prototype.render.apply(this, arguments);
+
+            const select2 = this.$('.select2');
+            select2.select2();
+
+            if (undefined === this.getFormData().configuration.file_locale || null === this.getFormData().configuration.file_locale) {
+                select2.val(UserContext.get('catalogLocale')).change();
+            }
+
         },
     });
 });
