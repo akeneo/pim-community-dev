@@ -244,7 +244,11 @@ class FixturesLoader
                     'redirect_uris' => []
                 ],
                 $data
-            )
+            ),
+            [
+                'allowed_grant_types' => Types::ARRAY,
+                'redirect_uris' => Types::ARRAY
+            ]
         );
 
         return $this->dbalConnection->lastInsertId();
