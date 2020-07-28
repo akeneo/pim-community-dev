@@ -19,9 +19,11 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 
 final class Consistency implements Axis
 {
+    public const AXIS_CODE = 'consistency';
+
     public function getCode(): AxisCode
     {
-        return new AxisCode('consistency');
+        return new AxisCode(self::AXIS_CODE);
     }
 
     public function getCriteriaCodes(): array

@@ -14,12 +14,11 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateAxesRates;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\ProductWordIgnoredEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
@@ -55,20 +54,7 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
 
     public function it_subscribes_to_several_events(): void
     {
-        $this::getSubscribedEvents()->shouldHaveKey(ProductWordIgnoredEvent::class);
         $this::getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_SAVE);
-    }
-
-    public function it_schedule_evaluation_when_a_word_is_ignored(
-        $dataQualityInsightsFeature,
-        $createProductsCriteriaEvaluations,
-        ProductInterface $product
-    ) {
-        $product->getId()->willReturn(12345);
-        $dataQualityInsightsFeature->isEnabled()->willReturn(true);
-        $createProductsCriteriaEvaluations->createAll([new ProductId(12345)])->shouldBeCalled();
-
-        $this->onIgnoredWord(new ProductWordIgnoredEvent(new ProductId(12345)));
     }
 
     public function it_does_nothing_when_the_entity_is_not_a_product($dataQualityInsightsFeature, $createProductsCriteriaEvaluations)

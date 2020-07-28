@@ -14,9 +14,8 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistry;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Consistency;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Axis;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Enrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResultStatusCollection;
@@ -37,15 +36,30 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvalua
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
+use Akeneo\Pim\Automation\DataQualityInsights\tests\back\Specification\Domain\Model\Axis\Consistency;
 use PhpSpec\ObjectBehavior;
 
 final class GetUpToDateProductEvaluationQuerySpec extends ObjectBehavior
 {
     public function let(
         GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
-        GetLatestAxesRatesQueryInterface $getLatestProductAxesRatesQuery
+        GetLatestAxesRatesQueryInterface $getLatestProductAxesRatesQuery,
+        AxisRegistry $axisRegistry,
+        Axis $consistencyAxis
     ) {
-        $this->beConstructedWith($getCriteriaEvaluationsByProductIdQuery, $getLatestProductAxesRatesQuery, new AxisRegistry());
+        $consistencyAxis->getCriteriaCodes()->willReturn([
+            new CriterionCode('consistency_spelling'),
+            new CriterionCode('consistency_textarea_lowercase_words'),
+            new CriterionCode('consistency_textarea_uppercase_words'),
+            new CriterionCode('consistency_attribute_spelling'),
+            new CriterionCode('consistency_attribute_option_spelling'),
+        ]);
+        $consistencyAxis->getCode()->willReturn(new AxisCode(Consistency::AXIS_CODE));
+        $axisRegistry->all()->willReturn([
+            new Enrichment(),
+            $consistencyAxis,
+        ]);
+        $this->beConstructedWith($getCriteriaEvaluationsByProductIdQuery, $getLatestProductAxesRatesQuery, $axisRegistry);
     }
 
     public function it_returns_the_latest_product_evaluation_for_a_product_id(
@@ -127,7 +141,7 @@ final class GetUpToDateProductEvaluationQuerySpec extends ObjectBehavior
         ];
 
         return new CriterionEvaluation(
-            new CriterionCode(EvaluateSpelling::CRITERION_CODE),
+            new CriterionCode('consistency_spelling'),
             $productId,
             new \DateTimeImmutable(),
             CriterionEvaluationStatus::done(),

@@ -19,7 +19,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Crea
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetDescendantVariantProductIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\ProductModelWordIgnoredEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductModelIdsQueryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -61,7 +60,6 @@ class InitializeEvaluationOfAProductModelSubscriberSpec extends ObjectBehavior
     public function it_subscribes_to_events()
     {
         $this::getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_SAVE);
-        $this::getSubscribedEvents()->shouldHaveKey(ProductModelWordIgnoredEvent::class);
     }
 
     public function it_does_nothing_when_the_entity_is_not_a_product($dataQualityInsightsFeature, $createCriteriaEvaluations)
@@ -124,30 +122,5 @@ class InitializeEvaluationOfAProductModelSubscriberSpec extends ObjectBehavior
         $logger->error('Unable to create product model criteria evaluation', Argument::any())->shouldBeCalledOnce();
 
         $this->onPostSave(new GenericEvent($productModel->getWrappedObject(), ['unitary' => true]));
-    }
-
-    public function it_creates_criteria_on_ignored_word_suggestion(
-        ProductModelInterface $productModel,
-        $dataQualityInsightsFeature,
-        $createCriteriaEvaluations,
-        $getDescendantVariantProductIdsQuery,
-        $getDescendantProductModelIdsQuery,
-        $createProductsCriteriaEvaluations
-    ) {
-        $productModel->getId()->willReturn(12345);
-        $dataQualityInsightsFeature->isEnabled()->willReturn(true);
-        $createCriteriaEvaluations->createAll([new ProductId(12345)])->shouldBeCalled();
-
-        $productModelId = new ProductId(12345);
-
-        $getDescendantProductModelIdsQuery->fetchFromParentProductModelId($productModelId->toInt())->willReturn([1111, 2222]);
-        $createCriteriaEvaluations->createAll([new ProductId(1111)])->shouldBeCalled();
-        $createCriteriaEvaluations->createAll([new ProductId(2222)])->shouldBeCalled();
-
-        $getDescendantVariantProductIdsQuery->fromProductModelIds([$productModelId->toInt()])->willReturn(['3333', '4444']);
-        $createProductsCriteriaEvaluations->createAll([new ProductId(3333)])->shouldBeCalled();
-        $createProductsCriteriaEvaluations->createAll([new ProductId(4444)])->shouldBeCalled();
-
-        $this->onIgnoredWord(new ProductModelWordIgnoredEvent($productModelId));
     }
 }
