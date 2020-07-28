@@ -60,7 +60,7 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $this->checkLocaleAndChannel($attribute, $locale, $channel);
 
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
-            $this->checkValue($attribute, $values);
+            $this->checkValue($attribute, $values, $options);
         }
 
         $attributePath = $this->getAttributePath($attribute, $locale, $channel);
@@ -122,12 +122,16 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
      *
      * @throws ObjectNotFoundException
      */
-    protected function checkValue(AttributeInterface $attribute, $values)
+    protected function checkValue(AttributeInterface $attribute, $values, array $options)
     {
         FieldFilterHelper::checkArray($attribute->getCode(), $values, static::class);
 
         foreach ($values as $value) {
             FieldFilterHelper::checkIdentifier($attribute->getCode(), $value, static::class);
+        }
+
+        if ($options['ignore_non_existing_values'] ?? false) {
+            return;
         }
 
         $attributeOptions = $this->attributeOptionRepository->findCodesByIdentifiers($attribute->getCode(), $values);
