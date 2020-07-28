@@ -52,22 +52,18 @@ const RemoveGroupsActionLine: React.FC<ActionLineProps> = ({
     if (!groupCodes || !groupCodes.length) {
       return translate('pimee_catalog_rule.exceptions.required');
     }
-    if (unexistingGroupCodes.length) {
-      const unknownGroupCodes: GroupCode[] = [];
-      groupCodes.forEach(groupCode => {
-        if (unexistingGroupCodes.includes(groupCode)) {
-          unknownGroupCodes.push(groupCode);
-        }
-      });
-      if (unknownGroupCodes.length) {
-        return translate(
-          'pimee_catalog_rule.exceptions.unknown_groups',
-          {
-            groupCodes: unknownGroupCodes.join(', '),
-          },
-          unknownGroupCodes.length
-        );
-      }
+
+    const unknownGroupCodes: GroupCode[] = groupCodes.filter(groupCode =>
+      unexistingGroupCodes.includes(groupCode)
+    );
+    if (unknownGroupCodes.length) {
+      return translate(
+        'pimee_catalog_rule.exceptions.unknown_groups',
+        {
+          groupCodes: unknownGroupCodes.join(', '),
+        },
+        unknownGroupCodes.length
+      );
     }
 
     return true;

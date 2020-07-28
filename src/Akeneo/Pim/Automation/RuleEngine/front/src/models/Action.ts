@@ -36,21 +36,21 @@ import {
 } from './actions';
 
 export const AvailableAddAction: { [key: string]: () => Action } = {
-  add_attribute_value: createAddAttributeValueAction,
-  add_category: createAddCategoriesAction,
-  add_groups: createAddGroupsAction,
-  clear_attribute: createClearAttributeAction,
-  clear_associations: createClearAssociationsAction,
-  clear_categories: createClearCategoriesAction,
-  clear_groups: createClearGroupsAction,
-  copy: createCopyAction,
-  remove_attribute_value: createRemoveAttributeValueAction,
-  remove_category: createRemoveCategoriesAction,
-  remove_groups: createRemoveGroupsAction,
   set_attribute: createSetAttributeAction,
   set_category: createSetCategoriesAction,
   set_family: createSetFamilyAction,
   set_status: createSetStatusAction,
+  clear_attribute: createClearAttributeAction,
+  clear_associations: createClearAssociationsAction,
+  clear_categories: createClearCategoriesAction,
+  clear_groups: createClearGroupsAction,
+  add_attribute_value: createAddAttributeValueAction,
+  add_category: createAddCategoriesAction,
+  add_groups: createAddGroupsAction,
+  copy: createCopyAction,
+  remove_attribute_value: createRemoveAttributeValueAction,
+  remove_category: createRemoveCategoriesAction,
+  remove_groups: createRemoveGroupsAction,
 };
 
 export type Action =

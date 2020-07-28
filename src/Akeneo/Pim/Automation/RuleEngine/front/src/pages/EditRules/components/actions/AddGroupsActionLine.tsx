@@ -53,12 +53,9 @@ const AddGroupsActionLine: React.FC<ActionLineProps> = ({
       return translate('pimee_catalog_rule.exceptions.required');
     }
 
-    const unknownGroupCodes: GroupCode[] = [];
-    groupCodes.forEach(groupCode => {
-      if (unexistingGroupCodes.includes(groupCode)) {
-        unknownGroupCodes.push(groupCode);
-      }
-    });
+    const unknownGroupCodes: GroupCode[] = groupCodes.filter(groupCode =>
+      unexistingGroupCodes.includes(groupCode)
+    );
     if (unknownGroupCodes.length) {
       return translate(
         'pimee_catalog_rule.exceptions.unknown_groups',
