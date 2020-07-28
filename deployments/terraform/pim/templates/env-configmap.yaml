@@ -46,3 +46,7 @@ data:
   {{- if .Values.pim.comm_panel_api_url }}
   COMM_PANEL_API_URL: {{ .Values.pim.comm_panel_api_url | quote }}
   {{- end }}
+  SUBSCRIPTION_WEBHOOK: {{ .Values.pim.pubsub.subscription_webhook }}
+  SUBSCRIPTION_JOB-QUEUE: {{ .Values.pim.pubsub.subscription_job-queue }}
+  TOPIC_BUSINESS-EVENT: {{ .Values.pim.pubsub.topic_business-event }}
+  TOPIC_JOB-QUEUE: {{ .Values.pim.pubsub.topic_job-queue }}

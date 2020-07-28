@@ -28,6 +28,10 @@ data "template_file" "helm_pim_config" {
     papoProjectCodeHashed           = md5(var.papo_project_code)
     pimVersion                      = var.pim_version
     monitoring_authentication_token = random_string.monitoring_authentication_token.result
+    subscription_webhook            = google_pubsub_subscription.webhook.name
+    subscription_job-queue          = google_pubsub_subscription.job-queue.name
+    topic_business-event            = google_pubsub_topic.business-event.name
+    topic_job-queue                 = google_pubsub_topic.job-queue.name
   }
 }
 

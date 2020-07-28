@@ -66,6 +66,11 @@ mailer:
   password: ${mailgun_password}
 
 pim:
+  pubsub:
+    subscription_webhook: ${subscription_webhook}
+    subscription_job-queue: ${subscription_job-queue}
+    topic_business-event: ${topic_business-event}
+    topic_job-queue: ${topic_job-queue}
   storage:
     bucketName: ${bucketName}
     serviceAccountKey: ${pimStoragekey}
