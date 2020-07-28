@@ -20,6 +20,7 @@ import {
   getSetActionModule,
   getSetCategoriesModule,
   getSetFamilyActionModule,
+  getSetGroupsActionModule,
   getSetStatusActionModule,
 } from './';
 import { FallbackActionLine } from '../../pages/EditRules/components/actions/FallbackActionLine';
@@ -47,6 +48,7 @@ const getActionModule: (
     getRemoveGroupsActionModule,
     getSetCategoriesModule,
     getSetFamilyActionModule,
+    getSetGroupsActionModule,
     getSetStatusActionModule,
     // Attribute values: they should be tested after the system field actions since their 'field' is dynamic
     getAddAttributeValueActionModule,
