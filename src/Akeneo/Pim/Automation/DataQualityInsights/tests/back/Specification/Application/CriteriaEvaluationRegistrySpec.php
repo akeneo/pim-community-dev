@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\EvaluateCriterionInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\CriterionNotFoundException;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use PhpSpec\ObjectBehavior;
 
@@ -29,7 +28,7 @@ class CriteriaEvaluationRegistrySpec extends ObjectBehavior
     public function it_throws_an_exception_if_an_evaluation_service_does_not_exist()
     {
         $this->beConstructedWith([]);
-        $this->shouldThrow(CriterionNotFoundException::class)->during('get', [new CriterionCode('unknown_code')]);
+        $this->shouldThrow(\InvalidArgumentException::class)->during('get', [new CriterionCode('unknown_code')]);
     }
 
     public function it_filters_non_accepted_services(EvaluateCriterionInterface $evaluateCriterion)

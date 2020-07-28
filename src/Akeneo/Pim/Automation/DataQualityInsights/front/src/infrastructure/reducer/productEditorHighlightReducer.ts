@@ -128,6 +128,20 @@ export const updateWidgetContentAnalysis: ActionCreator<WidgetAction> = (id: str
   };
 };
 
+const UPDATE_WIDGET_TITLE_SUGGESTION = "UPDATE_WIDGET_TITLE_SUGGESTION";
+export const updateWidgetTitleSuggestion: ActionCreator<WidgetAction> = (id: string, suggestion: string) => {
+  return {
+    type: UPDATE_WIDGET_TITLE_SUGGESTION,
+    payload: {
+      widget: {
+        id,
+        suggestion
+      }
+    }
+  };
+};
+
+
 const UPDATE_WIDGET_HIGHLIGHTS = "UPDATE_WIDGET_HIGHLIGHTS";
 export const updateWidgetHighlightsAction: ActionCreator<WidgetAction> = (id: string, highlights: HighlightElement[]) => {
   return {
