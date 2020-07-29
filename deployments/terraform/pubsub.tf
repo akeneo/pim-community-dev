@@ -50,7 +50,7 @@ resource "google_pubsub_subscription" "job-queue" {
 // reads. It gives rights to the same service account: PIM.
 
 resource "google_service_account" "pimpubsub" {
-  account_id   = format("gs-pubsub-%s", substr(md5(var.instance_name), 0, 25))
+  account_id   = format("gs-pubsub-%s", substr(md5(var.instance_name), 0, 18))
   display_name = "PubSub access for pim (${var.instance_name})"
 }
 
