@@ -21,5 +21,11 @@ class RegisterFlatTranslatorPass implements CompilerPassInterface
         foreach (array_keys($attributeTranslators) as $attributeTranslatorId) {
             $attributeTranslatorRegistry->addMethodCall('addTranslator', [new Reference($attributeTranslatorId)]);
         }
+
+        $headerTranslatorRegistry = $container->getDefinition('pim_connector.flat_translators.header_translator_registry');
+        $headerTranslators = $container->findTaggedServiceIds('pim_connector.flat_translators.header_translator');
+        foreach (array_keys($headerTranslators) as $headerTranslatorId) {
+            $headerTranslatorRegistry->addMethodCall('addTranslator', [new Reference($headerTranslatorId)]);
+        }
     }
 }

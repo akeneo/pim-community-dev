@@ -6,6 +6,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStand
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnsResolver;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeTranslator\AttributeFlatTranslator;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\HeaderFlatTranslator\HeaderFlatTranslatorInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\HeaderFlatTranslator\HeaderTranslationContext;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyTranslator\PropertyFlatTranslator;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypeTranslations;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetAttributeTranslations;
@@ -54,6 +56,10 @@ class ProductFlatTranslator implements FlatTranslatorInterface
      * @var AttributeTranslatorRegistry
      */
     private $attributeTranslationRegistry;
+    /**
+     * @var HeaderFlatTranslatorRegistry
+     */
+    private $headerFlatTranslatorRegistry;
 
     public function __construct(
         AttributeColumnsResolver $attributeColumnsResolver,
@@ -63,7 +69,8 @@ class ProductFlatTranslator implements FlatTranslatorInterface
         GetAssociationTypeTranslations $getAssociationTypeTranslations,
         AttributeColumnInfoExtractor $attributeColumnInfoExtractor,
         PropertyTranslatorRegistry $propertyTranslationRegistry,
-        AttributeTranslatorRegistry $attributeTranslationRegistry
+        AttributeTranslatorRegistry $attributeTranslationRegistry,
+        HeaderFlatTranslatorRegistry $headerFlatTranslatorRegistry
     ) {
         $this->attributeColumnsResolver = $attributeColumnsResolver;
         $this->associationColumnsResolver = $associationColumnsResolver;
@@ -73,6 +80,7 @@ class ProductFlatTranslator implements FlatTranslatorInterface
         $this->attributeColumnInfoExtractor = $attributeColumnInfoExtractor;
         $this->propertyTranslationRegistry = $propertyTranslationRegistry;
         $this->attributeTranslationRegistry = $attributeTranslationRegistry;
+        $this->headerFlatTranslatorRegistry = $headerFlatTranslatorRegistry;
     }
 
     public function translate(array $flatItems, string $locale, bool $translateHeaders): array
@@ -105,6 +113,7 @@ class ProductFlatTranslator implements FlatTranslatorInterface
                 continue;
             }
 
+            // @TODO
             if ($this->attributeTranslationRegistry->support($columnName)) {
                 $result[$columnName] = $this->attributeTranslationRegistry->translate($columnName, $values, $locale);
                 continue;
@@ -128,80 +137,19 @@ class ProductFlatTranslator implements FlatTranslatorInterface
             $locale
         );
 
+        $context = new HeaderTranslationContext($attributeTranslations, $associationTranslations);
+
         $results = [];
         foreach ($flatItemsByColumnName as $columnName => $flatItemValues) {
-            $columnLabelized = sprintf('[%s]', $columnName);
-            if ($this->isPropertyColumn($columnName)) {
-                $columnLabelized = $this->labelTranslator->translate(
-                    sprintf('pim_common.%s', $columnName),
-                    $locale,
-                    sprintf('[%s]', $columnName)
-                );
-            } elseif ($this->isAssociationColumn($columnName) || $this->isQuantifiedAssociationIdentifierColumn($columnName)) {
-                list($associationType, $entityType) = explode('-', $columnName);
-                $entityTypeLabelized =  $this->labelTranslator->translate(
-                    sprintf('pim_common.%s', $entityType),
-                    $locale,
-                    sprintf('[%s]', $entityType)
-                );
+            $columnLabelized = sprintf("[%s]", $columnName);
 
-                $associationTypeLabelized = $associationTranslations[$associationType] ?? sprintf('[%s]', $associationType);
-                $columnLabelized = sprintf('%s %s', $associationTypeLabelized, $entityTypeLabelized);
-            } elseif ($this->isQuantifiedAssociationQuantityColumn($columnName)) {
-                list($associationType, $entityType, $unit) = explode('-', $columnName);
-
-                $associationTypeLabelized = $associationTranslations[$associationType] ?? sprintf('[%s]', $associationType);
-                $entityTypeLabelized =  $this->labelTranslator->translate(
-                    sprintf('pim_common.%s', $entityType),
-                    $locale,
-                    sprintf('[%s]', $entityType)
-                );
-
-                $unitLabelized =  $this->labelTranslator->translate(
-                    'pim_common.unit',
-                    $locale,
-                    '([unit])'
-                );
-
-                $columnLabelized = sprintf('%s %s %s', $associationTypeLabelized, $entityTypeLabelized, $unitLabelized);
-            } elseif ($this->isAttributeColumn($columnName)) {
-                $columnInformations = $this->attributeColumnInfoExtractor->extractColumnInfo($columnName);
-                $attribute = $columnInformations['attribute'];
-                $attributeCode = $attribute->getCode();
-
-                $columnLabelized = $attributeTranslations[$attributeCode] ?? sprintf('[%s]', $attributeCode);
-
-                $extraInformation = [];
-                if ($attribute->isLocalizable()) {
-                    $extraInformation[] = $columnInformations['locale_code'];
-                }
-
-                if ($attribute->isScopable()) {
-                    $extraInformation[] = $columnInformations['scope_code'];
-                }
-
-                if (!empty($extraInformation)) {
-                    $columnLabelized = $columnLabelized . " (".implode(', ', $extraInformation) . ")";
-                }
-
-                if ($attribute->getType() === 'pim_catalog_price_collection') {
-                    $language = \Locale::getPrimaryLanguage($locale);
-                    $currencyLabelized = Intl::getCurrencyBundle()->getCurrencyName(
-                        $columnInformations['price_currency'],
-                        $language
-                    );
-
-                    $columnLabelized = sprintf('%s (%s)', $columnLabelized, $currencyLabelized);
-                } elseif ($attribute->getType() === 'pim_catalog_metric' && strpos($columnName, '-unit') !== false) {
-                    $metricLabelized = $this->labelTranslator->translate('pim_common.unit', $locale, '[unit]');
-
-                    $columnLabelized = sprintf('%s (%s)', $columnLabelized, $metricLabelized);
-                }
+            $translator = $this->headerFlatTranslatorRegistry->getTranslator($columnName);
+            if ($translator !== null) {
+                $columnLabelized = $translator->translate($columnName, $locale, $context);
             }
 
             $results[$columnLabelized] = $flatItemValues;
         }
-
 
         return $results;
     }
@@ -218,11 +166,6 @@ class ProductFlatTranslator implements FlatTranslatorInterface
         $attributeColumns = $this->attributeColumnsResolver->resolveAttributeColumns();
 
         return in_array($column, $attributeColumns);
-    }
-
-    private function isPropertyColumn(string $column): bool
-    {
-        return in_array($column, ['categories', 'enabled', 'family', 'parent', 'groups']);
     }
 
     private function isQuantifiedAssociationIdentifierColumn(string $column): bool
