@@ -17,12 +17,12 @@ class MultiSelectFlatTranslator implements FlatAttributeValueTranslatorInterface
         $this->getExistingAttributeOptionsWithValues = $getExistingAttributeOptionsWithValues;
     }
 
-    public function support(string $attributeType, string $columnName): bool
+    public function supports(string $attributeType, string $columnName): bool
     {
         return $attributeType === AttributeTypes::OPTION_MULTI_SELECT;
     }
 
-    public function translateValues(string $attributeCode, array $properties, array $values, string $locale): array
+    public function translate(string $attributeCode, array $properties, array $values, string $locale): array
     {
         $optionKeys = $this->generateOptionKeys($values, $attributeCode);
         $attributeOptionTranslations = $this->getExistingAttributeOptionsWithValues->fromAttributeCodeAndOptionCodes(

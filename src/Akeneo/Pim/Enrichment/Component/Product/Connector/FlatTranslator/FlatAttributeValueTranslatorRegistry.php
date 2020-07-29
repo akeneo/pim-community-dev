@@ -37,7 +37,7 @@ class FlatAttributeValueTranslatorRegistry
         $this->translators[] = $translator;
     }
 
-    public function support(string $columnName)
+    public function supports(string $columnName)
     {
         return $this->getTranslator($columnName) instanceof FlatAttributeValueTranslatorInterface;
     }
@@ -50,7 +50,7 @@ class FlatAttributeValueTranslatorRegistry
         $attributeCode = $attribute->getCode();
         $properties = $attribute->getProperties();
 
-        return $translator->translateValues($attributeCode, $properties, $values, $locale);
+        return $translator->translate($attributeCode, $properties, $values, $locale);
     }
 
     private function getTranslator(string $columnName): ?FlatAttributeValueTranslatorInterface
@@ -63,7 +63,7 @@ class FlatAttributeValueTranslatorRegistry
         $attributeType = $attribute->getType();
 
         foreach ($this->translators as $translator) {
-            if ($translator->support($attributeType, $columnName)) {
+            if ($translator->supports($attributeType, $columnName)) {
                 return $translator;
             }
         }

@@ -7,7 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatPropert
 class FlatPropertyValueTranslatorRegistry
 {
     /**
-     * @var array
+     * @var PropertyFlatValueTranslatorInterface[]
      */
     private $translators = [];
 
@@ -19,7 +19,7 @@ class FlatPropertyValueTranslatorRegistry
     public function getTranslator(string $column): ?PropertyFlatValueTranslatorInterface
     {
         foreach ($this->translators as $translator) {
-            if ($translator->support($column)) {
+            if ($translator->supports($column)) {
                 return $translator;
             }
         }

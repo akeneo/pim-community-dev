@@ -106,12 +106,12 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
 
             $propertyTranslator = $this->flatPropertyValueTranslatorRegistry->getTranslator($columnName);
             if ($propertyTranslator instanceof PropertyFlatValueTranslatorInterface) {
-                $result[$columnName] = $propertyTranslator->translateValues($values, $locale, $scope);
+                $result[$columnName] = $propertyTranslator->translate($values, $locale, $scope);
                 continue;
             }
 
             // @TODO
-            if ($this->flatAttributeValueTranslatorRegistry->support($columnName)) {
+            if ($this->flatAttributeValueTranslatorRegistry->supports($columnName)) {
                 $result[$columnName] = $this->flatAttributeValueTranslatorRegistry->translate($columnName, $values, $locale);
                 continue;
             }

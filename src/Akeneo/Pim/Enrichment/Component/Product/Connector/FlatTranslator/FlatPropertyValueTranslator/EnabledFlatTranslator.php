@@ -16,12 +16,12 @@ class EnabledFlatTranslator implements PropertyFlatValueTranslatorInterface
         $this->labelTranslator = $labelTranslator;
     }
 
-    public function support(string $columnName): bool
+    public function supports(string $columnName): bool
     {
         return $columnName === 'enabled';
     }
 
-    public function translateValues(array $values, string $locale, string $scope): array
+    public function translate(array $values, string $locale, string $scope): array
     {
         $result = [];
         $trueLocalized = $this->labelTranslator->translate('pim_common.yes', $locale, '[yes]');

@@ -16,12 +16,12 @@ class ParentFlatTranslator implements PropertyFlatValueTranslatorInterface
         $this->getProductModelLabels = $getProductModelLabels;
     }
 
-    public function support(string $columnName): bool
+    public function supports(string $columnName): bool
     {
         return $columnName === 'parent';
     }
 
-    public function translateValues(array $parentCodes, string $locale, string $scope): array
+    public function translate(array $parentCodes, string $locale, string $scope): array
     {
         $productModelLabels = $this->getProductModelLabels->byCodesAndLocaleAndScope($parentCodes, $locale, $scope);
 

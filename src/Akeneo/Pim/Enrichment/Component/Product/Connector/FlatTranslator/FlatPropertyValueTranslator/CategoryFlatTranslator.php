@@ -16,12 +16,12 @@ class CategoryFlatTranslator implements PropertyFlatValueTranslatorInterface
         $this->getCategoryTranslations = $getCategoryTranslations;
     }
 
-    public function support(string $columnName): bool
+    public function supports(string $columnName): bool
     {
         return $columnName === 'categories';
     }
 
-    public function translateValues(array $values, string $locale, string $scope): array
+    public function translate(array $values, string $locale, string $scope): array
     {
         $result = [];
         $categoryCodesExtracted = $this->extractCategoryCodes($values);

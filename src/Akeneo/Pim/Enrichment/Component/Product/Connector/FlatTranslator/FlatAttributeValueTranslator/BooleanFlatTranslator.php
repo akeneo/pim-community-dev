@@ -17,26 +17,25 @@ class BooleanFlatTranslator implements FlatAttributeValueTranslatorInterface
         $this->labelTranslator = $labelTranslator;
     }
 
-    public function support(string $attributeType, string $columnName): bool
+    public function supports(string $attributeType, string $columnName): bool
     {
         return $attributeType === AttributeTypes::BOOLEAN;
     }
 
-    public function translateValues(string $attributeCode, array $properties, array $values, string $locale): array
+    public function translate(string $attributeCode, array $properties, array $values, string $locale): array
     {
         $trueLocalized = $this->labelTranslator->translate('pim_common.yes', $locale, '[yes]');
         $falseLocalized = $this->labelTranslator->translate('pim_common.no', $locale, '[no]');
 
-        $result = [];
-        foreach ($values as $valueIndex => $value) {
-            $result[$valueIndex] = $value;
+        return array_map(function ($value) use ($trueLocalized, $falseLocalized) {
+            $valueLocalized = $value;
             if ($value === '1') {
-                $result[$valueIndex] = $trueLocalized;
+                $valueLocalized = $trueLocalized;
             } elseif ($value === '0') {
-                $result[$valueIndex] = $falseLocalized;
+                $valueLocalized = $falseLocalized;
             }
-        }
 
-        return $result;
+            return $valueLocalized;
+        }, $values);
     }
 }

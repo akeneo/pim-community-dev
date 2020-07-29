@@ -16,12 +16,12 @@ class GroupFlatTranslator implements PropertyFlatValueTranslatorInterface
         $this->getGroupTranslations = $getGroupTranslations;
     }
 
-    public function support(string $columnName): bool
+    public function supports(string $columnName): bool
     {
         return $columnName === 'groups';
     }
 
-    public function translateValues(array $values, string $locale, string $scope): array
+    public function translate(array $values, string $locale, string $scope): array
     {
         $categoryCodesExtracted = $this->extractGroupCodes($values);
         $groupTranslations = $this->getGroupTranslations->byGroupCodesAndLocale($categoryCodesExtracted, $locale);

@@ -17,12 +17,12 @@ class SimpleSelectFlatTranslator implements FlatAttributeValueTranslatorInterfac
         $this->getExistingAttributeOptionsWithValues = $getExistingAttributeOptionsWithValues;
     }
 
-    public function support(string $attributeType, string $columnName): bool
+    public function supports(string $attributeType, string $columnName): bool
     {
         return $attributeType === AttributeTypes::OPTION_SIMPLE_SELECT;
     }
 
-    public function translateValues(string $attributeCode, array $properties, array $values, string $locale): array
+    public function translate(string $attributeCode, array $properties, array $values, string $locale): array
     {
         $optionKeys = array_map(function ($value) use ($attributeCode) {
             return sprintf('%s.%s', $attributeCode, $value);
