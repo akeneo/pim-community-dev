@@ -14,7 +14,7 @@ services:
       - '@akeneo.pim.structure.query.get_association_type_translations'
       - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
       - '@pim_enrich.connector.flat_translators.property_value_translator_registry'
-      - '@pim_enrich.connector.flat_translators.attribute_value_translator_registry'
+      - '@pim_enrich.connector.flat_translators.attribute_values_translator'
       - '@pim_enrich.connector.flat_translators.header_translator_registry'
 
   pim_enrich.connector.flat_translators.product_model_translator:
@@ -27,8 +27,15 @@ services:
       - '@akeneo.pim.structure.query.get_association_type_translations'
       - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
       - '@pim_enrich.connector.flat_translators.property_value_translator_registry'
-      - '@pim_enrich.connector.flat_translators.attribute_value_translator_registry'
+      - '@pim_enrich.connector.flat_translators.attribute_values_translator'
       - '@pim_enrich.connector.flat_translators.header_translator_registry'
+
+  pim_enrich.connector.flat_translators.attribute_values_translator:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatAttributeValuesTranslator
+    arguments:
+      - '@pim_enrich.connector.flat_translators.attribute_value_translator_registry'
+      - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
+      - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
 
   ## Registries
   pim_enrich.connector.flat_translators.header_translator_registry:
@@ -39,6 +46,3 @@ services:
 
   pim_enrich.connector.flat_translators.attribute_value_translator_registry:
     class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatAttributeValueTranslatorRegistry
-    arguments:
-      - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
-      - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'

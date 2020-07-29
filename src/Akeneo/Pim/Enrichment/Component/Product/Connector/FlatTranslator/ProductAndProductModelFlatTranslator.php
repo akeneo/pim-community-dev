@@ -50,9 +50,9 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
     private $flatPropertyValueTranslatorRegistry;
 
     /**
-     * @var FlatAttributeValueTranslatorRegistry
+     * @var FlatAttributeValuesTranslator
      */
-    private $flatAttributeValueTranslatorRegistry;
+    private $flatAttributeValuesTranslator;
     /**
      * @var FlatHeaderTranslatorRegistry
      */
@@ -66,7 +66,7 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
         GetAssociationTypeTranslations $getAssociationTypeTranslations,
         AttributeColumnInfoExtractor $attributeColumnInfoExtractor,
         FlatPropertyValueTranslatorRegistry $flatPropertyValueTranslatorRegistry,
-        FlatAttributeValueTranslatorRegistry $flatAttributeValueTranslatorRegistry,
+        FlatAttributeValuesTranslator $flatAttributeValuesTranslator,
         FlatHeaderTranslatorRegistry $flatHeaderTranslatorRegistry
     ) {
         $this->attributeColumnsResolver = $attributeColumnsResolver;
@@ -76,7 +76,7 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
         $this->getAssociationTypeTranslations = $getAssociationTypeTranslations;
         $this->attributeColumnInfoExtractor = $attributeColumnInfoExtractor;
         $this->flatPropertyValueTranslatorRegistry = $flatPropertyValueTranslatorRegistry;
-        $this->flatAttributeValueTranslatorRegistry = $flatAttributeValueTranslatorRegistry;
+        $this->flatAttributeValuesTranslator = $flatAttributeValuesTranslator;
         $this->flatHeaderTranslatorRegistry = $flatHeaderTranslatorRegistry;
     }
 
@@ -110,9 +110,8 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
                 continue;
             }
 
-            // @TODO
-            if ($this->flatAttributeValueTranslatorRegistry->supports($columnName)) {
-                $result[$columnName] = $this->flatAttributeValueTranslatorRegistry->translate($columnName, $values, $locale);
+            if ($this->flatAttributeValuesTranslator->supports($columnName)) {
+                $result[$columnName] = $this->flatAttributeValuesTranslator->translate($columnName, $values, $locale);
                 continue;
             }
 
