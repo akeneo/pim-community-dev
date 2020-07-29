@@ -75,6 +75,10 @@ spec:
           volumeMounts:
             - name: web-src
               mountPath: /srv/pim/public
+            - name: google-cloud-pim-pubsub-key
+              mountPath: /var/secrets/google/pubsub.json
+              subPath: pubsub.json
+              readOnly: true
             - name: google-cloud-pim-storage-key
               mountPath: /var/secrets/google/srnt.json
               subPath: srnt.json
@@ -156,6 +160,12 @@ spec:
                 path: httpd.conf
               - key: mime.types
                 path: mime.types
+        - name: google-cloud-pim-pubsub-key
+          secret:
+            secretName: pim-secrets
+            items:
+            - key: srntPimPubsubKey
+              path: pubsub.json
         - name: google-cloud-pim-storage-key
           secret:
             secretName: pim-secrets

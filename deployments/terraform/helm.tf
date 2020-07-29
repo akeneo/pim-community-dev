@@ -32,6 +32,7 @@ data "template_file" "helm_pim_config" {
     subscription_job_queue          = google_pubsub_subscription.job-queue.name
     topic_business_event            = google_pubsub_topic.business-event.name
     topic_job_queue                 = google_pubsub_topic.job-queue.name
+    pimPubsubKey		    = google_service_account_key.pimpubsub.private_key
   }
 }
 

@@ -48,6 +48,10 @@ spec:
 {{ toYaml $tplCtx.Values.pim.resources | indent 14 }}
 {{- end }}
             volumeMounts:
+              - name: google-cloud-pim-pubsub-key
+                mountPath: /var/secrets/google/pubsub.json
+                subPath: pubsub.json
+                readOnly: true
               - name: google-cloud-pim-storage-key
                 mountPath: /var/secrets/google/srnt.json
                 subPath: srnt.json
@@ -65,6 +69,12 @@ spec:
 {{- end }}
           restartPolicy: OnFailure
           volumes:
+            - name: google-cloud-pim-pubsub-key
+              secret:
+              secretName: pim-secrets
+              items:
+              - key: srntPimPubsubKey
+                path: pubsub.json
             - name: google-cloud-pim-storage-key
               secret:
                 secretName: pim-secrets

@@ -71,6 +71,7 @@ pim:
     subscription_job_queue: ${subscription_job_queue}
     topic_business_event: ${topic_business_event}
     topic_job_queue: ${topic_job_queue}
+    serviceAccountKey: ${pimPubsubKey}
   storage:
     bucketName: ${bucketName}
     serviceAccountKey: ${pimStoragekey}
