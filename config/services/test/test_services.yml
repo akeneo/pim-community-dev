@@ -23,7 +23,7 @@ services:
         class: 'Akeneo\Tool\Component\Console\CommandLauncher'
         arguments:
             - '%kernel.root_dir%'
-            - 'prod'
+            - 'test'
             - '%kernel.logs_dir%'
 
     akeneo_integration_tests.loader.reference_data_loader:
