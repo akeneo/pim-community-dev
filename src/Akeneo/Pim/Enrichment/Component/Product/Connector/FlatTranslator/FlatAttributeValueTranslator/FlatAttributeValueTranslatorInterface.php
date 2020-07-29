@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeTranslator;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatAttributeValueTranslator;
 
-interface AttributeFlatTranslator
+interface FlatAttributeValueTranslatorInterface
 {
     public function support(string $attributeType, string $columnName): bool;
 

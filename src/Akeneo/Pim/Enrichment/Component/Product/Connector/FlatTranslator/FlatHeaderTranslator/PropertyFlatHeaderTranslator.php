@@ -1,10 +1,10 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\HeaderFlatTranslator;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatHeaderTranslator;
 
 use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
 
-class PropertyHeaderFlatTranslator implements HeaderFlatTranslatorInterface
+class PropertyFlatHeaderTranslator implements FlatHeaderTranslatorInterface
 {
     /**
      * @var LabelTranslatorInterface

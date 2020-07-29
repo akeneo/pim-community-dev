@@ -1,11 +1,11 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyTranslator;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatPropertyValueTranslator;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Category\GetCategoryTranslations;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetFamilyTranslations;
 
-class FamilyFlatTranslator implements PropertyFlatTranslator
+class FamilyFlatTranslator implements PropertyFlatTranslatorInterface
 {
     /**
      * @var GetFamilyTranslations

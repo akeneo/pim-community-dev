@@ -1,11 +1,11 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\HeaderFlatTranslator;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatHeaderTranslator;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AssociationColumnsResolver;
 use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
 
-class AssociationQuantityHeaderFlatTranslator implements HeaderFlatTranslatorInterface
+class AssociationQuantityFlatHeaderTranslator implements FlatHeaderTranslatorInterface
 {
     /**
      * @var AssociationColumnsResolver

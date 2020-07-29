@@ -1,10 +1,10 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeTranslator;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatAttributeValueTranslator;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 
-class MetricUnitFlatTranslator implements AttributeFlatTranslator
+class MetricUnitFlatTranslator implements FlatAttributeValueTranslatorInterface
 {
     public function support(string $attributeType, string $columnName): bool
     {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeTranslator;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatAttributeValueTranslator;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
 
-class BooleanFlatTranslator implements AttributeFlatTranslator
+class BooleanFlatTranslator implements FlatAttributeValueTranslatorInterface
 {
     /**
      * @var LabelTranslatorInterface

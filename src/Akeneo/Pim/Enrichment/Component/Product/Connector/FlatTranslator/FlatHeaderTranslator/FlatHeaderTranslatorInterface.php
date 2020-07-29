@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\HeaderFlatTranslator;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatHeaderTranslator;
 
-interface HeaderFlatTranslatorInterface
+interface FlatHeaderTranslatorInterface
 {
     public function supports(string $columnName): bool;
 

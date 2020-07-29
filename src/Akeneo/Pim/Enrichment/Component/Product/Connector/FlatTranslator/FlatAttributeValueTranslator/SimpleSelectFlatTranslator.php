@@ -1,11 +1,11 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeTranslator;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatAttributeValueTranslator;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAttributeOptionsWithValues;
 
-class SimpleSelectFlatTranslator implements AttributeFlatTranslator
+class SimpleSelectFlatTranslator implements FlatAttributeValueTranslatorInterface
 {
     /**
      * @var GetExistingAttributeOptionsWithValues

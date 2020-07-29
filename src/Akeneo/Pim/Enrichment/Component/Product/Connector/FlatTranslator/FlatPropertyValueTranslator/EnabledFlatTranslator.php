@@ -1,10 +1,10 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyTranslator;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatPropertyValueTranslator;
 
 use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
 
-class EnabledFlatTranslator implements PropertyFlatTranslator
+class EnabledFlatTranslator implements PropertyFlatTranslatorInterface
 {
     /**
      * @var LabelTranslatorInterface

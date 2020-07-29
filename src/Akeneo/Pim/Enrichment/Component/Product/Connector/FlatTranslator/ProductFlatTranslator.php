@@ -5,15 +5,12 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AssociationColumnsResolver;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnsResolver;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeTranslator\AttributeFlatTranslator;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\HeaderFlatTranslator\HeaderFlatTranslatorInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\HeaderFlatTranslator\HeaderTranslationContext;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyTranslator\PropertyFlatTranslator;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatHeaderTranslator\HeaderTranslationContext;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatPropertyValueTranslator\PropertyFlatTranslatorInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypeTranslations;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetAttributeTranslations;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Group\GetGroupTranslations;
 use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
-use Symfony\Component\Intl\Intl;
 
 class ProductFlatTranslator implements FlatTranslatorInterface
 {
@@ -48,18 +45,18 @@ class ProductFlatTranslator implements FlatTranslatorInterface
     private $attributeColumnInfoExtractor;
 
     /**
-     * @var PropertyTranslatorRegistry
+     * @var FlatPropertyValueTranslatorRegistry
      */
-    private $propertyTranslationRegistry;
+    private $flatPropertyValueTranslatorRegistry;
 
     /**
-     * @var AttributeTranslatorRegistry
+     * @var FlatAttributeValueTranslatorRegistry
      */
-    private $attributeTranslationRegistry;
+    private $flatAttributeValueTranslatorRegistry;
     /**
-     * @var HeaderFlatTranslatorRegistry
+     * @var FlatHeaderTranslatorRegistry
      */
-    private $headerFlatTranslatorRegistry;
+    private $flatHeaderTranslatorRegistry;
 
     public function __construct(
         AttributeColumnsResolver $attributeColumnsResolver,
@@ -68,9 +65,9 @@ class ProductFlatTranslator implements FlatTranslatorInterface
         LabelTranslatorInterface $labelTranslator,
         GetAssociationTypeTranslations $getAssociationTypeTranslations,
         AttributeColumnInfoExtractor $attributeColumnInfoExtractor,
-        PropertyTranslatorRegistry $propertyTranslationRegistry,
-        AttributeTranslatorRegistry $attributeTranslationRegistry,
-        HeaderFlatTranslatorRegistry $headerFlatTranslatorRegistry
+        FlatPropertyValueTranslatorRegistry $flatPropertyValueTranslatorRegistry,
+        FlatAttributeValueTranslatorRegistry $flatAttributeValueTranslatorRegistry,
+        FlatHeaderTranslatorRegistry $flatHeaderTranslatorRegistry
     ) {
         $this->attributeColumnsResolver = $attributeColumnsResolver;
         $this->associationColumnsResolver = $associationColumnsResolver;
@@ -78,9 +75,9 @@ class ProductFlatTranslator implements FlatTranslatorInterface
         $this->labelTranslator = $labelTranslator;
         $this->getAssociationTypeTranslations = $getAssociationTypeTranslations;
         $this->attributeColumnInfoExtractor = $attributeColumnInfoExtractor;
-        $this->propertyTranslationRegistry = $propertyTranslationRegistry;
-        $this->attributeTranslationRegistry = $attributeTranslationRegistry;
-        $this->headerFlatTranslatorRegistry = $headerFlatTranslatorRegistry;
+        $this->flatPropertyValueTranslatorRegistry = $flatPropertyValueTranslatorRegistry;
+        $this->flatAttributeValueTranslatorRegistry = $flatAttributeValueTranslatorRegistry;
+        $this->flatHeaderTranslatorRegistry = $flatHeaderTranslatorRegistry;
     }
 
     public function translate(array $flatItems, string $locale, bool $translateHeaders): array
@@ -107,15 +104,15 @@ class ProductFlatTranslator implements FlatTranslatorInterface
                 continue;
             }
 
-            $propertyTranslation = $this->propertyTranslationRegistry->getTranslator($columnName);
-            if ($propertyTranslation instanceof PropertyFlatTranslator) {
+            $propertyTranslation = $this->flatPropertyValueTranslatorRegistry->getTranslator($columnName);
+            if ($propertyTranslation instanceof PropertyFlatTranslatorInterface) {
                 $result[$columnName] = $propertyTranslation->translateValues($values, $locale);
                 continue;
             }
 
             // @TODO
-            if ($this->attributeTranslationRegistry->support($columnName)) {
-                $result[$columnName] = $this->attributeTranslationRegistry->translate($columnName, $values, $locale);
+            if ($this->flatAttributeValueTranslatorRegistry->support($columnName)) {
+                $result[$columnName] = $this->flatAttributeValueTranslatorRegistry->translate($columnName, $values, $locale);
                 continue;
             }
 
@@ -143,7 +140,7 @@ class ProductFlatTranslator implements FlatTranslatorInterface
         foreach ($flatItemsByColumnName as $columnName => $flatItemValues) {
             $columnLabelized = sprintf("[%s]", $columnName);
 
-            $translator = $this->headerFlatTranslatorRegistry->getTranslator($columnName);
+            $translator = $this->flatHeaderTranslatorRegistry->getTranslator($columnName);
             if ($translator !== null) {
                 $columnLabelized = $translator->translate($columnName, $locale, $context);
             }
@@ -223,14 +220,6 @@ class ProductFlatTranslator implements FlatTranslatorInterface
 
         return array_unique($attributeCodes);
     }
-
-    private function isQuantifiedAssociationQuantityColumn($column)
-    {
-        $associationsColumns = $this->associationColumnsResolver->resolveQuantifiedQuantityAssociationColumns();
-
-        return in_array($column, $associationsColumns);
-    }
-
 
     /**
      * Internal pivoting to facilitate translation of flat items

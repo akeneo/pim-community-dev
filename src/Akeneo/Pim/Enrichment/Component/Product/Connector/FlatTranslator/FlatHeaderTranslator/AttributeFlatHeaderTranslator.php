@@ -1,13 +1,13 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\HeaderFlatTranslator;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatHeaderTranslator;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnsResolver;
 use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
 use Symfony\Component\Intl\Intl;
 
-class AttributeHeaderFlatTranslator implements HeaderFlatTranslatorInterface
+class AttributeFlatHeaderTranslator implements FlatHeaderTranslatorInterface
 {
     /**
      * @var LabelTranslatorInterface

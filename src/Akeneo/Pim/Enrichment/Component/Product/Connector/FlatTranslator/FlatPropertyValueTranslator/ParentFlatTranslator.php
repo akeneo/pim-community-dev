@@ -1,10 +1,10 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyTranslator;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatPropertyValueTranslator;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetProductModelLabel;
 
-class ParentFlatTranslator implements PropertyFlatTranslator
+class ParentFlatTranslator implements PropertyFlatTranslatorInterface
 {
     private $getProductModelLabels;
 

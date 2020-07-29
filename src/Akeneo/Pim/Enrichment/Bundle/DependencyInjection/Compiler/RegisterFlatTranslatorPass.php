@@ -10,22 +10,31 @@ class RegisterFlatTranslatorPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $propertyTranslatorRegistry = $container->getDefinition('pim_connector.flat_translators.property_translator_registry');
-        $propertyTranslators = $container->findTaggedServiceIds('pim_connector.flat_translators.property_translator');
-        foreach (array_keys($propertyTranslators) as $propertyTranslatorId) {
-            $propertyTranslatorRegistry->addMethodCall('addTranslator', [new Reference($propertyTranslatorId)]);
+        $flatPropertyValueTranslatorRegistry = $container->getDefinition('pim_connector.flat_translators.property_value_translator_registry');
+        $flatPropertyValueTranslators = $container->findTaggedServiceIds('pim_connector.flat_translators.property_value_translator');
+        foreach (array_keys($flatPropertyValueTranslators) as $flatPropertyValueTranslatorId) {
+            $flatPropertyValueTranslatorRegistry->addMethodCall(
+                'addTranslator',
+                [new Reference($flatPropertyValueTranslatorId)]
+            );
         }
 
-        $attributeTranslatorRegistry = $container->getDefinition('pim_connector.flat_translators.attribute_translator_registry');
-        $attributeTranslators = $container->findTaggedServiceIds('pim_connector.flat_translators.attribute_translator');
-        foreach (array_keys($attributeTranslators) as $attributeTranslatorId) {
-            $attributeTranslatorRegistry->addMethodCall('addTranslator', [new Reference($attributeTranslatorId)]);
+        $flatAttributeValueTranslatorRegistry = $container->getDefinition('pim_connector.flat_translators.attribute_value_translator_registry');
+        $flatAttributeValueTranslators = $container->findTaggedServiceIds('pim_connector.flat_translators.attribute_value_translator');
+        foreach (array_keys($flatAttributeValueTranslators) as $flatAttributeValueTranslatorId) {
+            $flatAttributeValueTranslatorRegistry->addMethodCall(
+                'addTranslator',
+                [new Reference($flatAttributeValueTranslatorId)]
+            );
         }
 
-        $headerTranslatorRegistry = $container->getDefinition('pim_connector.flat_translators.header_translator_registry');
-        $headerTranslators = $container->findTaggedServiceIds('pim_connector.flat_translators.header_translator');
-        foreach (array_keys($headerTranslators) as $headerTranslatorId) {
-            $headerTranslatorRegistry->addMethodCall('addTranslator', [new Reference($headerTranslatorId)]);
+        $flatHeaderTranslatorRegistry = $container->getDefinition('pim_connector.flat_translators.header_translator_registry');
+        $flatHeaderTranslators = $container->findTaggedServiceIds('pim_connector.flat_translators.header_translator');
+        foreach (array_keys($flatHeaderTranslators) as $flatHeaderTranslatorId) {
+            $flatHeaderTranslatorRegistry->addMethodCall(
+                'addTranslator',
+                [new Reference($flatHeaderTranslatorId)]
+            );
         }
     }
 }

@@ -4,14 +4,13 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnsResolver;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeTranslator\AttributeFlatTranslator;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatAttributeValueTranslator\FlatAttributeValueTranslatorInterface;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
-use Webmozart\Assert\Assert;
 
-class AttributeTranslatorRegistry
+class FlatAttributeValueTranslatorRegistry
 {
     /**
-     * @var AttributeFlatTranslator[]
+     * @var FlatAttributeValueTranslatorInterface[]
      */
     private $translators = [];
 
@@ -33,14 +32,14 @@ class AttributeTranslatorRegistry
         $this->attributeColumnInfoExtractor = $attributeColumnInfoExtractor;
     }
 
-    public function addTranslator(AttributeFlatTranslator $translator): void
+    public function addTranslator(FlatAttributeValueTranslatorInterface $translator): void
     {
         $this->translators[] = $translator;
     }
 
     public function support(string $columnName)
     {
-        return $this->getTranslator($columnName) instanceof AttributeFlatTranslator;
+        return $this->getTranslator($columnName) instanceof FlatAttributeValueTranslatorInterface;
     }
 
     public function translate(string $columnName, array $values, $locale): array
@@ -54,7 +53,7 @@ class AttributeTranslatorRegistry
         return $translator->translateValues($attributeCode, $properties, $values, $locale);
     }
 
-    private function getTranslator(string $columnName): ?AttributeFlatTranslator
+    private function getTranslator(string $columnName): ?FlatAttributeValueTranslatorInterface
     {
         if (!$this->isAttributeColumn($columnName)) {
             return null;
