@@ -101,7 +101,7 @@ class FixturesLoader
             'label' => 'Magento',
             'flow_type' => FlowType::DATA_DESTINATION,
             'image' => $image->getKey(),
-            'auditable' => false,
+            'auditable' => true,
         ]);
 
         // SAP Connection
@@ -129,7 +129,7 @@ class FixturesLoader
             'label' => 'SAP',
             'flow_type' => FlowType::DATA_SOURCE,
             'image' => $image->getKey(),
-            'auditable' => false,
+            'auditable' => true,
         ]);
 
         // Alkemics Connection
@@ -157,7 +157,7 @@ class FixturesLoader
             'label' => 'Alkemics',
             'flow_type' => FlowType::DATA_SOURCE,
             'image' => $image->getKey(),
-            'auditable' => false,
+            'auditable' => true,
         ]);
 
         // Translations.com Connection
