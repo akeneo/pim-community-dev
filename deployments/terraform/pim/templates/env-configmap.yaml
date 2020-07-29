@@ -26,7 +26,7 @@ data:
   APP_ELASTICSEARCH_TOTAL_FIELDS_LIMIT: {{ .Values.pim.elasticsearch.settings.totalFieldsLimit | quote }}
   APP_SECRET: {{ .Values.pim.secret }}
   SRNT_GOOGLE_APPLICATION_CREDENTIALS: /var/secrets/google/srnt.json
-  SRNT_GOOGLE_PUBSUB_CREDENTIALS: /var/secrets/google/pubsub.json
+  GOOGLE_PUBSUB_CREDENTIALS: /var/secrets/google/pubsub.json
   SRNT_GOOGLE_BUCKET_NAME: {{ .Values.pim.storage.bucketName | quote }}
   APP_ENV: prod
   TRUSTED_PROXY_IPS: 10.0.0.0/8
