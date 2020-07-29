@@ -1,4 +1,4 @@
 #!/bin/sh
 
-mysql -u root -p${MYSQL_ROOT_PASSWORD} -e "CREATE DATABASE ${MYSQL_DATABASE}_test"
-mysql -u root -p${MYSQL_ROOT_PASSWORD} -e "GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}_test.* TO '${MYSQL_USER}'@'%'"
+mysql -u root -p${MYSQL_ROOT_PASSWORD} -e "CREATE DATABASE akeneo_pim_test"
+mysql -u root -p${MYSQL_ROOT_PASSWORD} -e "GRANT ALL PRIVILEGES ON akeneo_pim_test.* TO '${MYSQL_USER}'@'%'"
