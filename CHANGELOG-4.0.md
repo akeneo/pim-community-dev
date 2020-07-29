@@ -1,11 +1,32 @@
 # 4.0.x
 
+# 4.0.44 (2020-07-28)
+
+## Bug fixes
+
+- PIM-9374: Fix search by code on asset collection attribute
+
+# 4.0.43 (2020-07-27)
+
+## Bug fixes
+
+- PIM-9304: Fix slow query used to retrieve products to evaluate
+
+# 4.0.42 (2020-07-22)
+
+## Bug fixes
+
+- PIM-9365: Fix PDF previews' background being black
+
+# 4.0.41 (2020-07-20)
+
 # 4.0.40 (2020-07-13)
 
 ## Bug fixes
 
 - PIM-9351: Fix the thumbnail preview of transparent PDFs in the asset manager
 - PIM-9350: Fix the thumbnail preview of any PDFs in the asset manager
+- PIM-9355: Fix product link rules for assets targeting both product & product models
 
 # 4.0.39 (2020-07-08)
 

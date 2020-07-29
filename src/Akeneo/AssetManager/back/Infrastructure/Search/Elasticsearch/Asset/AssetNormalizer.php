@@ -11,6 +11,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\AssetManager\Domain\Query\Asset\SearchableAssetItem;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeysToIndexForAllChannelsAndLocalesInterface;
+use Akeneo\AssetManager\Domain\Query\Locale\FindActivatedLocalesInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindSearchableAssets;
 
@@ -40,14 +41,22 @@ class AssetNormalizer implements AssetNormalizerInterface
     /** @var FindValueKeysByAttributeTypeInterface */
     private $findValueKeysByAttributeType;
 
+    /** @var FindActivatedLocalesInterface */
+    private $findActivatedLocales;
+
+    /**
+     * @todo @merge master/5.0: remove the default null value for the FindActivatedLocalesInterface argument
+     */
     public function __construct(
         FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
         SqlFindSearchableAssets $findSearchableAssets,
-        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType
+        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
+        FindActivatedLocalesInterface $findActivatedLocales = null
     ) {
         $this->findValueKeysToIndexForAllChannelsAndLocales = $findValueKeysToIndexForAllChannelsAndLocales;
         $this->findSearchableAssets = $findSearchableAssets;
         $this->findValueKeysByAttributeType = $findValueKeysByAttributeType;
+        $this->findActivatedLocales = $findActivatedLocales;
     }
 
     public function normalizeAsset(AssetIdentifier $assetIdentifier): array
@@ -96,8 +105,19 @@ class AssetNormalizer implements AssetNormalizerInterface
     {
         $matrix = [];
 
-        foreach ($searchableAssetItem->labels as $localeCode => $label) {
-            $matrix[$localeCode] = sprintf('%s %s', $searchableAssetItem->code, $label);
+        // @todo @merge master/5.0: remove this case
+        if (null === $this->findActivatedLocales) {
+            foreach ($searchableAssetItem->labels as $localeCode => $label) {
+                $matrix[$localeCode] = sprintf('%s %s', $searchableAssetItem->code, $label);
+            }
+
+            return $matrix;
+        }
+
+        $activatedLocaleCodes = $this->findActivatedLocales->findAll();
+        foreach ($activatedLocaleCodes as $activatedLocaleCode) {
+            $label = $searchableAssetItem->labels[$activatedLocaleCode] ?? '';
+            $matrix[$activatedLocaleCode] = trim(sprintf('%s %s', $searchableAssetItem->code, $label));
         }
 
         return $matrix;
