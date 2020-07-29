@@ -5,6 +5,7 @@
 ## Bug fixes
 
 - PIM-9374: Fix search by code on asset collection attribute
+- PIM-9373: The Compare feature filters are not displayed on the product model parent level
 
 # 4.0.43 (2020-07-27)
 
