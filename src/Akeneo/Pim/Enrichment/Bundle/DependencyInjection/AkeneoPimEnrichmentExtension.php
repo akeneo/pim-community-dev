@@ -31,6 +31,7 @@ class AkeneoPimEnrichmentExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('connector/archivers.yml');
         $loader->load('connector/cleaners.yml');
+        $loader->load('connector/flat_translators.yml');
         $loader->load('connector/processors.yml');
         $loader->load('connector/use_cases.yml');
         $loader->load('api_filters.yml');
@@ -90,7 +91,6 @@ class AkeneoPimEnrichmentExtension extends Extension
         $loader->load('normalizers.yml');
         $loader->load('connector.yml');
         $loader->load('array_converter.yml');
-        $loader->load('flat_translators.yml');
         $loader->load('job_parameters.yml');
         $loader->load('processors.yml');
         $loader->load('readers.yml');

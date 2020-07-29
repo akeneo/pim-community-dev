@@ -1,0 +1,28 @@
+services:
+  pim_enrich.connector.flat_translators.header_translator.association_identifier:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatHeaderTranslator\AssociationIdentifierFlatHeaderTranslator
+    arguments:
+      - '@pim_connector.array_converter.flat_to_standard.product.association_columns_resolver'
+      - '@pim_catalog.localization.translator.label'
+    tags: [{ name: pim_enrich.connector.flat_translators.header_translator }]
+
+  pim_enrich.connector.flat_translators.header_translator.association_quantity:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatHeaderTranslator\AssociationQuantityFlatHeaderTranslator
+    arguments:
+      - '@pim_connector.array_converter.flat_to_standard.product.association_columns_resolver'
+      - '@pim_catalog.localization.translator.label'
+    tags: [{ name: pim_enrich.connector.flat_translators.header_translator }]
+
+  pim_enrich.connector.flat_translators.header_translator.attribute:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatHeaderTranslator\AttributeFlatHeaderTranslator
+    arguments:
+      - '@pim_catalog.localization.translator.label'
+      - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
+      - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
+    tags: [{ name: pim_enrich.connector.flat_translators.header_translator }]
+
+  pim_enrich.connector.flat_translators.header_translator.property:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatHeaderTranslator\PropertyFlatHeaderTranslator
+    arguments:
+      - '@pim_catalog.localization.translator.label'
+    tags: [{ name: pim_enrich.connector.flat_translators.header_translator }]

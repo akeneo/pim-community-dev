@@ -10,30 +10,33 @@ class RegisterFlatTranslatorPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $flatPropertyValueTranslatorRegistry = $container->getDefinition('pim_connector.flat_translators.property_value_translator_registry');
-        $flatPropertyValueTranslators = $container->findTaggedServiceIds('pim_connector.flat_translators.property_value_translator');
-        foreach (array_keys($flatPropertyValueTranslators) as $flatPropertyValueTranslatorId) {
-            $flatPropertyValueTranslatorRegistry->addMethodCall(
-                'addTranslator',
-                [new Reference($flatPropertyValueTranslatorId)]
-            );
-        }
+        $this->registerTranslators(
+            $container,
+            'pim_enrich.connector.flat_translators.property_value_translator_registry',
+            'pim_enrich.connector.flat_translators.property_value_translator'
+        );
 
-        $flatAttributeValueTranslatorRegistry = $container->getDefinition('pim_connector.flat_translators.attribute_value_translator_registry');
-        $flatAttributeValueTranslators = $container->findTaggedServiceIds('pim_connector.flat_translators.attribute_value_translator');
-        foreach (array_keys($flatAttributeValueTranslators) as $flatAttributeValueTranslatorId) {
-            $flatAttributeValueTranslatorRegistry->addMethodCall(
-                'addTranslator',
-                [new Reference($flatAttributeValueTranslatorId)]
-            );
-        }
+        $this->registerTranslators(
+            $container,
+            'pim_enrich.connector.flat_translators.attribute_value_translator_registry',
+            'pim_enrich.connector.flat_translators.attribute_value_translator'
+        );
 
-        $flatHeaderTranslatorRegistry = $container->getDefinition('pim_connector.flat_translators.header_translator_registry');
-        $flatHeaderTranslators = $container->findTaggedServiceIds('pim_connector.flat_translators.header_translator');
-        foreach (array_keys($flatHeaderTranslators) as $flatHeaderTranslatorId) {
-            $flatHeaderTranslatorRegistry->addMethodCall(
+        $this->registerTranslators(
+            $container,
+            'pim_enrich.connector.flat_translators.header_translator_registry',
+            'pim_enrich.connector.flat_translators.header_translator'
+        );
+    }
+
+    private function registerTranslators(ContainerBuilder $container, string $registryId, string $translatorTag): void
+    {
+        $registry = $container->getDefinition($registryId);
+        $translators = $container->findTaggedServiceIds($translatorTag);
+        foreach (array_keys($translators) as $translatorId) {
+            $registry->addMethodCall(
                 'addTranslator',
-                [new Reference($flatHeaderTranslatorId)]
+                [new Reference($translatorId)]
             );
         }
     }
