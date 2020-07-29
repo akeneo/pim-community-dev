@@ -73,12 +73,23 @@ $rules = [
 
     $builder->only(
         [
-            'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
-            'Doctrine\DBAL\Connection',
-            'Doctrine\DBAL\Driver\Connection',
-            'Symfony\Component',
             'Akeneo\Connectivity\Connection\Application',
-            'Akeneo\Connectivity\Connection\Domain'
+            'Akeneo\Connectivity\Connection\Domain',
+            'Akeneo\Pim\Enrichment\Component\FileStorage',
+            'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent',
+            'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
+            'Akeneo\Tool\Component\FileStorage\File\FileStorerInterface',
+            'Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface',
+            'Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface',
+            'Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface',
+            'Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface',
+            'Akeneo\UserManagement\Component\Model\GroupInterface',
+            'Akeneo\UserManagement\Component\Model\RoleInterface',
+            'Akeneo\UserManagement\Component\Model\UserInterface',
+            'Doctrine\DBAL\Connection',
+            'Doctrine\DBAL\Types\Types',
+            'OAuth2\OAuth2',
+            'Symfony\Component',
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\Install'),
 
