@@ -33,6 +33,7 @@ services:
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_values_to_index_for_channel_and_locale'
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_searchable_assets'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_value_keys_by_attribute_type'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales'
 
     # Query function
     akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_activated_locales_per_channels:
