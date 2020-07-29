@@ -142,6 +142,34 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
             $rawValuesIndexedByProductIdentifier[$identifier] = $rawValues;
         }
 
+
+        /***************************************************************************************************************
+         * BEGIN POC
+         */
+        $productSelectAttributeCodes = [];
+        $labels = [];
+
+        $catalogSelectAttributeCodes = $this->getValuesAndPropertiesFromProductIdentifiers
+            ->fetchAttributeCodesByTypes(['pim_catalog_simpleselect', 'pim_catalog_multiselect']);
+
+        foreach ($rows as $row) {
+            $productSelectAttributeCodes = array_intersect(array_keys($row['raw_values']), $catalogSelectAttributeCodes);
+        }
+
+//        dump($productSelectAttributeCodes);
+
+        foreach (array_unique($productSelectAttributeCodes) as $productSelectAttributeCode) {
+            if (!isset($labels[$productSelectAttributeCode])) {
+                $labels[$productSelectAttributeCode] = $this->getValuesAndPropertiesFromProductIdentifiers
+                    ->fetchAttributeOptionValuesByAttributeCode($productSelectAttributeCode);
+            }
+        }
+
+//        dump($labels);
+        /**
+         * END POC
+         **************************************************************************************************************/
+
         $filteredRawValuesIndexedByProductIdentifier = $this->readValueCollectionFactory->createMultipleFromStorageFormat($rawValuesIndexedByProductIdentifier);
 
         $products = [];
