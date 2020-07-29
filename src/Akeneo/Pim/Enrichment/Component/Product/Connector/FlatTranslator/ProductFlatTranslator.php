@@ -226,7 +226,7 @@ class ProductFlatTranslator implements FlatTranslatorInterface
      *
      * Before
      * [
-     *   [
+     *   0 => [
      *     'sku' => 1151511,
      *     'categories' => 'master_femme_chaussures_sandales'
      *     'description-en' => 'Ma description',
@@ -234,41 +234,45 @@ class ProductFlatTranslator implements FlatTranslatorInterface
      *     'groups' => 'group1',
      *     'name-fr_FR' => 'Sandales dorées Femme'
      *   ],
-     *   [
+     *   1 => [
      *     'sku' => 1151512,
      *     'categories' => 'master_femme_manteaux_manteaux_dhiver'
      *     'description-en' => 'Ma description1',
      *     'enabled' => 1,
      *     'groups' => 'group2,group3',
-     *     'name-fr_FR' => 'Jupe imprimée Femme'
+     *     'name-fr_FR' => 'Jupe imprimée Femme',
+     *     'collection' => 'summer_2016'
      *   ],
      * ]
 
      * After :
      * [
      *   'sku' => [
-     *     1151511,
-     *     1151512,
+     *     0 => 1151511,
+     *     1 => 1151512,
      *   ],
      *   'categories' => [
-     *     'master_femme_chaussures_sandales',
-     *     'master_femme_manteaux_manteaux_dhiver'
+     *     0 => 'master_femme_chaussures_sandales',
+     *     1 => 'master_femme_manteaux_manteaux_dhiver'
      *   ],
      *   'description-en' => [
-     *     'Ma description',
-     *     'Ma description1'
+     *     0 => 'Ma description',
+     *     1=> 'Ma description1'
      *   ],
      *   'enabled' => [
-     *     0,
-     *     1
+     *     0 => 0,
+     *     1 => 1
      *   ],
      *   'groups' => [
-     *     'group1',
-     *     'group2,group3'
+     *     0 => 'group1',
+     *     1 => 'group2,group3'
      *   ],
      *   'name-fr_FR' => [
-     *     'Sandales dorées Femme',
-     *     'Jupe imprimée Femme'
+     *     0 => 'Sandales dorées Femme',
+     *     1 => 'Jupe imprimée Femme'
+     *   ],
+     *   'collection' => [
+     *     1 => 'summer_2016'
      *   ]
      * ]
      *
@@ -294,34 +298,37 @@ class ProductFlatTranslator implements FlatTranslatorInterface
      * Before :
      * [
      *   'sku' => [
-     *     1151511,
-     *     1151512,
+     *     0 => 1151511,
+     *     1 => 1151512,
      *   ],
      *   'categories' => [
-     *     'Sandales femme',
-     *     'Manteau d\'hiver'
+     *     0 => 'Sandales femme',
+     *     1 => 'Manteau d\'hiver'
      *   ],
      *   'description-en' => [
-     *     'Ma description',
-     *     'Ma description1'
+     *     0 => 'Ma description',
+     *     1 => 'Ma description1'
      *   ],
      *   'enabled' => [
-     *     'Non',
-     *     'Oui',
+     *     0 => 'Non',
+     *     1 => 'Oui',
      *   ],
      *   'groups' => [
-     *     'Le group 1',
-     *     'Le group 2,Le group 3'
+     *     0 => 'Le group 1',
+     *     1 => 'Le group 2,Le group 3'
      *   ],
      *   'name-fr_FR' => [
-     *     'Sandales dorées Femme',
-     *     'Jupe imprimée Femme'
+     *     0 => 'Sandales dorées Femme',
+     *     1 => 'Jupe imprimée Femme'
+     *   ],
+     *   'collection' => [
+     *     1 => 'Eté 2016'
      *   ]
      * ]
      *
      * After :
      * [
-     *   [
+     *   0 => [
      *     'sku' => 1151511,
      *     'categories' => 'Sandales femme'
      *     'description-en' => 'Ma description',
@@ -329,13 +336,14 @@ class ProductFlatTranslator implements FlatTranslatorInterface
      *     'groups' => 'Le group 1',
      *     'name-fr_FR' => 'Sandales dorées Femme'
      *   ],
-     *   [
+     *   1 => [
      *     'sku' => 1151512,
      *     'categories' => 'Manteau d\'hiver'
      *     'description-en' => 'Ma description1',
      *     'enabled' => 'Oui',
      *     'groups' => 'Le group 2,Le group 3',
-     *     'name-fr_FR' => 'Jupe imprimée Femme'
+     *     'name-fr_FR' => 'Jupe imprimée Femme',
+     *     'collection' => 'Eté 2016'
      *   ],
      * ]
      *
