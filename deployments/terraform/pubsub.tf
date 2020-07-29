@@ -62,7 +62,6 @@ resource "google_service_account_key" "pimpubsub" {
 }
 
 
-
 resource "google_pubsub_topic_iam_member" "pubsub_publisher_business-event" {
   topic  = google_pubsub_topic.business-event.name
   role   = "roles/pubsub.publisher"
@@ -85,10 +84,10 @@ resource "google_pubsub_topic_iam_member" "pubsub_publisher_job_queue" {
   ]
 }
 
-resource "google_pubsub_topic_iam_member" "pubsub_subscriber_webhook" {
-  topic  = google_pubsub_subscription.webhook.name
-  role   = "roles/pubsub.subscriber"
-  member = "serviceAccount:${google_service_account.pimpubsub.email}"
+resource "google_pubsub_subscription_iam_member" "pubsub_subscriber_webhook" {
+  subscription = google_pubsub_subscription.webhook.name
+  role         = "roles/pubsub.subscriber"
+  member       = "serviceAccount:${google_service_account.pimpubsub.email}"
 
   depends_on = [
     google_service_account.pimpubsub,
@@ -96,10 +95,10 @@ resource "google_pubsub_topic_iam_member" "pubsub_subscriber_webhook" {
   ]
 }
 
-resource "google_pubsub_topic_iam_member" "pubsub_subscriber_job_queue" {
-  topic  = google_pubsub_subscription.job-queue.name
-  role   = "roles/pubsub.subscriber"
-  member = "serviceAccount:${google_service_account.pimpubsub.email}"
+resource "google_pubsub_subscription_iam_member" "pubsub_subscriber_job_queue" {
+  subscription  = google_pubsub_subscription.job-queue.name
+  role          = "roles/pubsub.subscriber"
+  member        = "serviceAccount:${google_service_account.pimpubsub.email}"
 
   depends_on = [
     google_service_account.pimpubsub,
