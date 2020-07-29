@@ -18,6 +18,7 @@
 ## Bug fixes
 
 - PIM-9365: Fix PDF previews' background being black
+- PIM-9366: Add a warning message when importing a product with asset that doesn't belong to the linked asset family
 
 # 4.0.41 (2020-07-20)
 

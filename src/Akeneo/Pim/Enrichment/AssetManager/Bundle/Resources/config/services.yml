@@ -13,6 +13,14 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: pim_enrichment_asset_should_exist }
 
+    akeneo_assetmanager.validator.constraint.assets_should_belong_to_asset_family:
+        class: Akeneo\Pim\Enrichment\AssetManager\Component\Validator\Constraints\AssetsShouldBelongToAssetFamilyValidator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.asset_exists'
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_enrichment_assets_should_belong_to_asset_family }
+
     akeneo_assetmanager.validator.constraint_guesser.asset_multiple_link:
         public: false
         class: Akeneo\Pim\Enrichment\AssetManager\Component\Validator\ConstraintGuesser\AssetMultipleLinkGuesser
