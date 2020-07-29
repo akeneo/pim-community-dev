@@ -16,4 +16,5 @@ export * from './ProductField';
 export * from './SetFamilyAction';
 export * from './SetCategoriesAction';
 export * from './RemoveCategoriesAction';
+export * from './RemoveGroupsAction';
 export * from './SetStatusAction';

@@ -12,7 +12,7 @@ import { ActionTitle, AknActionFormContainer } from './ActionLine';
 import { GroupsSelector } from '../../../../components/Selectors/GroupsSelector';
 import { getGroupsByIdentifiers } from '../../../../repositories/GroupRepository';
 
-const AddGroupsActionLine: React.FC<ActionLineProps> = ({
+const RemoveGroupsActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
   handleDelete,
   currentCatalogLocale,
@@ -79,23 +79,23 @@ const AddGroupsActionLine: React.FC<ActionLineProps> = ({
       <Controller
         as={<input type='hidden' />}
         name={typeFormName}
-        defaultValue='add'
+        defaultValue='remove'
       />
       <ActionTemplate
         title={translate(
-          'pimee_catalog_rule.form.edit.actions.add_groups.title'
+          'pimee_catalog_rule.form.edit.actions.remove_groups.title'
         )}
         helper={translate(
-          'pimee_catalog_rule.form.edit.actions.add_groups.helper'
+          'pimee_catalog_rule.form.edit.actions.remove_groups.helper'
         )}
         legend={translate(
-          'pimee_catalog_rule.form.edit.actions.add_groups.helper'
+          'pimee_catalog_rule.form.edit.actions.remove_groups.helper'
         )}
         handleDelete={handleDelete}
         lineNumber={lineNumber}>
         <ActionTitle>
           {translate(
-            'pimee_catalog_rule.form.edit.actions.add_groups.subtitle'
+            'pimee_catalog_rule.form.edit.actions.remove_groups.subtitle'
           )}
         </ActionTitle>
         <AknActionFormContainer>
@@ -116,4 +116,4 @@ const AddGroupsActionLine: React.FC<ActionLineProps> = ({
   );
 };
 
-export { AddGroupsActionLine };
+export { RemoveGroupsActionLine };

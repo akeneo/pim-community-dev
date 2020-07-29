@@ -1,39 +1,42 @@
 import { FallbackAction } from './actions/FallbackAction';
 import {
   AddAction,
+  AddAttributeValueAction,
   AddCategoriesAction,
   AddGroupsAction,
   CalculateAction,
   ClearAction,
+  ClearAssociationsAction,
   ClearAttributeAction,
   ClearCategoriesAction,
   ClearGroupsAction,
   ConcatenateAction,
   CopyAction,
-  createClearAttributeAction,
-  createClearAssociationsAction,
-  createAddCategoriesAction,
-  createSetAttributeAction,
-  createSetFamilyAction,
-  createRemoveCategoriesAction,
   RemoveAttributeValueAction,
+  RemoveGroupsAction,
   SetAction,
-  SetFamilyAction,
   SetCategoriesAction,
-  createSetCategoriesAction,
-  ClearAssociationsAction,
+  SetFamilyAction,
+  SetStatusAction,
+  createAddAttributeValueAction,
+  createAddCategoriesAction,
+  createAddGroupsAction,
+  createClearAssociationsAction,
+  createClearAttributeAction,
   createClearCategoriesAction,
   createClearGroupsAction,
   createCopyAction,
-  createRemoveAttributeValueCategoriesAction,
-  createAddGroupsAction,
-  createAddAttributeValueCategoriesAction,
-  AddAttributeValueAction,
+  createRemoveAttributeValueAction,
+  createRemoveCategoriesAction,
+  createRemoveGroupsAction,
+  createSetAttributeAction,
+  createSetCategoriesAction,
+  createSetFamilyAction,
   createSetStatusAction,
-  SetStatusAction,
 } from './actions';
 
 export const AvailableAddAction: { [key: string]: () => Action } = {
+  set_attribute: createSetAttributeAction,
   set_category: createSetCategoriesAction,
   set_family: createSetFamilyAction,
   set_status: createSetStatusAction,
@@ -41,13 +44,13 @@ export const AvailableAddAction: { [key: string]: () => Action } = {
   clear_associations: createClearAssociationsAction,
   clear_categories: createClearCategoriesAction,
   clear_groups: createClearGroupsAction,
-  add_attribute_value: createAddAttributeValueCategoriesAction,
+  add_attribute_value: createAddAttributeValueAction,
   add_category: createAddCategoriesAction,
   add_groups: createAddGroupsAction,
-  set_attribute: createSetAttributeAction,
   copy: createCopyAction,
+  remove_attribute_value: createRemoveAttributeValueAction,
   remove_category: createRemoveCategoriesAction,
-  remove_attribute_value: createRemoveAttributeValueCategoriesAction,
+  remove_groups: createRemoveGroupsAction,
 };
 
 export type Action =
@@ -65,6 +68,7 @@ export type Action =
   | CopyAction
   | FallbackAction
   | RemoveAttributeValueAction
+  | RemoveGroupsAction
   | SetAction
   | SetFamilyAction
   | SetCategoriesAction

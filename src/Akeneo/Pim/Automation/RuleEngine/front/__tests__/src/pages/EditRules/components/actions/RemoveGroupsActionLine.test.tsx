@@ -2,21 +2,21 @@ import React from 'react';
 import 'jest-fetch-mock';
 import { renderWithProviders, screen } from '../../../../../../test-utils';
 import { locales, scopes } from '../../../../factories';
-import { AddGroupsActionLine } from '../../../../../../src/pages/EditRules/components/actions/AddGroupsActionLine';
+import { RemoveGroupsActionLine } from '../../../../../../src/pages/EditRules/components/actions/RemoveGroupsActionLine';
 import { clearGroupRepositoryCache } from '../../../../../../src/repositories/GroupRepository';
 
 jest.mock('../../../../../../src/components/Select2Wrapper/Select2Wrapper');
 jest.mock('../../../../../../src/fetch/categoryTree.fetcher.ts');
 
-describe('AddGroupsActionLine', () => {
+describe('RemoveGroupsActionLine', () => {
   beforeEach(() => {
     fetchMock.resetMocks();
     clearGroupRepositoryCache();
   });
 
-  it('should be able to display a new add groups action', async () => {
+  it('should be able to display a new remove groups action', async () => {
     renderWithProviders(
-      <AddGroupsActionLine
+      <RemoveGroupsActionLine
         lineNumber={0}
         locales={locales}
         scopes={scopes}
@@ -27,7 +27,7 @@ describe('AddGroupsActionLine', () => {
     );
     expect(
       await screen.findByText(
-        'pimee_catalog_rule.form.edit.actions.add_groups.title'
+        'pimee_catalog_rule.form.edit.actions.remove_groups.title'
       )
     ).toBeInTheDocument();
 
@@ -35,7 +35,7 @@ describe('AddGroupsActionLine', () => {
     expect(select).toHaveValue([]);
   });
 
-  it('should be able to display an existing add groups action', async () => {
+  it('should be able to display an existing remove groups action', async () => {
     fetchMock.mockResponse((request: Request) => {
       if (
         request.url.includes(
@@ -59,7 +59,7 @@ describe('AddGroupsActionLine', () => {
       content: {
         actions: [
           {
-            type: 'add',
+            type: 'remove',
             field: 'groups',
             items: ['winter', 'tshirts'],
           },
@@ -73,7 +73,7 @@ describe('AddGroupsActionLine', () => {
     ];
 
     renderWithProviders(
-      <AddGroupsActionLine
+      <RemoveGroupsActionLine
         lineNumber={0}
         locales={locales}
         scopes={scopes}
@@ -85,12 +85,72 @@ describe('AddGroupsActionLine', () => {
     );
     expect(
       await screen.findByText(
-        'pimee_catalog_rule.form.edit.actions.add_groups.title'
+        'pimee_catalog_rule.form.edit.actions.remove_groups.title'
       )
     ).toBeInTheDocument();
     expect(screen.getByTestId('edit-rules-actions-0-items')).toHaveValue([
       'tshirts',
       'winter',
+    ]);
+  });
+
+  it('should be able to display an existing remove groups action with unexisting groups', async () => {
+    fetchMock.mockResponse((request: Request) => {
+      if (
+        request.url.includes(
+          'pim_enrich_group_rest_search?%7B%22identifiers%22:%22winter,tshirts,unknown%22%7D'
+        )
+      ) {
+        return Promise.resolve(
+          JSON.stringify({
+            results: [
+              { id: 'tshirts', text: 'T-shirts' },
+              { id: 'winter', text: 'Winter' },
+            ],
+          })
+        );
+      }
+
+      throw new Error(`The "${request.url}" url is not mocked.`);
+    });
+
+    const defaultValues = {
+      content: {
+        actions: [
+          {
+            type: 'remove',
+            field: 'groups',
+            items: ['winter', 'tshirts', 'unknown'],
+          },
+        ],
+      },
+    };
+    const toRegister = [
+      { name: 'content.actions[0].type', type: 'custom' },
+      { name: 'content.actions[0].field', type: 'custom' },
+      { name: 'content.actions[0].items', type: 'custom' },
+    ];
+
+    renderWithProviders(
+      <RemoveGroupsActionLine
+        lineNumber={0}
+        locales={locales}
+        scopes={scopes}
+        currentCatalogLocale={'en_US'}
+        handleDelete={jest.fn()}
+      />,
+      { all: true },
+      { defaultValues, toRegister }
+    );
+    expect(
+      await screen.findByText(
+        'pimee_catalog_rule.form.edit.actions.remove_groups.title'
+      )
+    ).toBeInTheDocument();
+    expect(screen.getByTestId('edit-rules-actions-0-items')).toHaveValue([
+      'tshirts',
+      'winter',
+      'unknown',
     ]);
   });
 });
