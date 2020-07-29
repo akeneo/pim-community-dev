@@ -10,12 +10,11 @@ class PropertyTranslatorRegistry
     /**
      * @var array
      */
-    private $translators;
+    private $translators = [];
 
-    public function __construct(array $translators)
+    public function addTranslator(PropertyFlatTranslator $propertyFlatTranslator): void
     {
-        Assert::allImplementsInterface($translators, PropertyFlatTranslator::class);
-        $this->translators = $translators;
+        $this->translators[] = $propertyFlatTranslator;
     }
 
     public function getTranslator(string $column): ?PropertyFlatTranslator

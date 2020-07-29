@@ -13,7 +13,7 @@ class AttributeTranslatorRegistry
     /**
      * @var AttributeFlatTranslator[]
      */
-    private $translators;
+    private $translators = [];
 
     /**
      * @var AttributeColumnsResolver
@@ -25,21 +25,17 @@ class AttributeTranslatorRegistry
      */
     private $attributeColumnInfoExtractor;
 
-    /**
-     * AttributeTranslatorRegistry constructor.
-     * @param AttributeFlatTranslator[] $translators
-     * @param AttributeColumnsResolver $attributeColumnsResolver
-     * @param AttributeColumnInfoExtractor $attributeColumnInfoExtractor
-     */
     public function __construct(
-        array $translators,
         AttributeColumnsResolver $attributeColumnsResolver,
         AttributeColumnInfoExtractor $attributeColumnInfoExtractor
     ) {
-        Assert::allImplementsInterface($translators, AttributeFlatTranslator::class);
-        $this->translators = $translators;
         $this->attributeColumnsResolver = $attributeColumnsResolver;
         $this->attributeColumnInfoExtractor = $attributeColumnInfoExtractor;
+    }
+
+    public function addTranslator(AttributeFlatTranslator $translator): void
+    {
+        $this->translators[] = $translator;
     }
 
     public function support(string $columnName)
