@@ -68,9 +68,9 @@ mailer:
 pim:
   pubsub:
     subscription_webhook: ${subscription_webhook}
-    subscription_job-queue: ${subscription_job-queue}
-    topic_business-event: ${topic_business-event}
-    topic_job-queue: ${topic_job-queue}
+    subscription_job_queue: ${subscription_job_queue}
+    topic_business_event: ${topic_business_event}
+    topic_job_queue: ${topic_job_queue}
   storage:
     bucketName: ${bucketName}
     serviceAccountKey: ${pimStoragekey}
