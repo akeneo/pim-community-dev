@@ -3,7 +3,7 @@
     "request": {
         "method": "GET",
         "url": {
-            "isEqualTo": "/announcements?pim_edition=Serenity&pim_version=2020105&search_after=update_1-new-screen-for-measurements-families_2020-05"
+            "isEqualTo": "/announcements?pim_edition=Serenity&pim_version=2020105&locale=en_US&search_after=update_1-new-screen-for-measurements-families_2020-05"
         }
     },
     "response": {

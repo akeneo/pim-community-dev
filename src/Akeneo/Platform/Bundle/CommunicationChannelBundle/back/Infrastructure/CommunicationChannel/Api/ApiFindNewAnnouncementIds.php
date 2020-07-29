@@ -24,11 +24,12 @@ final class ApiFindNewAnnouncementIds implements FindNewAnnouncementIdsInterface
         $this->client = new Client(['base_uri' => $apiUrl]);
     }
 
-    public function find(string $pimEdition, string $pimVersion): array
+    public function find(string $pimEdition, string $pimVersion, string $locale): array
     {
         $queryParameters = [
             'pim_edition' => $pimEdition,
             'pim_version' => $pimVersion,
+            'locale' => $locale,
         ];
         $response = $this->client->request('GET', self::BASE_URI, ['query' => $queryParameters]);
         if ($response->getStatusCode() !== 200) {

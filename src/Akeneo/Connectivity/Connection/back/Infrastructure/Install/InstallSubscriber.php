@@ -8,8 +8,9 @@ use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnection
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionAuditTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateWrongCredentialsCombinationQuery;
+use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
-use Doctrine\DBAL\Driver\Connection as DbalConnection;
+use Doctrine\DBAL\Connection as DbalConnection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -18,17 +19,22 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class InstallSubscriber implements EventSubscriberInterface
 {
-    private $dbalConnection;
+    const ICECAT_DEMO_DEV = 'icecat_demo_dev';
 
-    public function __construct(DbalConnection $dbalConnection)
+    private $dbalConnection;
+    private $fixturesLoader;
+
+    public function __construct(DbalConnection $dbalConnection, FixturesLoader $fixturesLoader)
     {
         $this->dbalConnection = $dbalConnection;
+        $this->fixturesLoader = $fixturesLoader;
     }
 
     public static function getSubscribedEvents()
     {
         return [
-            InstallerEvents::POST_DB_CREATE => ['createConnectionsTable'],
+            InstallerEvents::POST_DB_CREATE => 'createConnectionsTable',
+            InstallerEvents::POST_LOAD_FIXTURES => 'loadFixtures'
         ];
     }
 
@@ -38,5 +44,14 @@ class InstallSubscriber implements EventSubscriberInterface
         $this->dbalConnection->exec(CreateConnectionAuditTableQuery::QUERY);
         $this->dbalConnection->exec(CreateWrongCredentialsCombinationQuery::QUERY);
         $this->dbalConnection->exec(CreateConnectionAuditErrorTableQuery::QUERY);
+    }
+
+    public function loadFixtures(InstallerEvent $installerEvent): void
+    {
+        if (substr($installerEvent->getArgument('catalog'), -strlen(self::ICECAT_DEMO_DEV)) !== self::ICECAT_DEMO_DEV) {
+            return;
+        }
+
+        $this->fixturesLoader->loadFixtures();
     }
 }

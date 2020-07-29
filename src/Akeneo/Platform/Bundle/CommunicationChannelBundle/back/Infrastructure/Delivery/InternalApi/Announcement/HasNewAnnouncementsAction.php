@@ -46,6 +46,7 @@ class HasNewAnnouncementsAction
         $query = new HasNewAnnouncementsQuery(
             $this->versionProvider->getEdition(),
             $this->versionProvider->getMinorVersion(),
+            $this->userContext->getUiLocaleCode(),
             $user->getId()
         );
         $hasNewAnnouncements = $this->hasNewAnnouncementsHandler->execute($query);
