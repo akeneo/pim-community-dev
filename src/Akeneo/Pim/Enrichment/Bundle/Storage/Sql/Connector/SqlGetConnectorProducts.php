@@ -18,6 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ReadValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
@@ -146,23 +147,18 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         /***************************************************************************************************************
          * BEGIN POC
          */
-        $productSelectAttributeCodes = [];
         $labels = [];
 
         $catalogSelectAttributeCodes = $this->getValuesAndPropertiesFromProductIdentifiers
-            ->fetchAttributeCodesByTypes(['pim_catalog_simpleselect', 'pim_catalog_multiselect']);
+            ->fetchAttributeCodesByTypes([AttributeTypes::OPTION_SIMPLE_SELECT, AttributeTypes::OPTION_MULTI_SELECT]);
 
-        foreach ($rows as $row) {
+        foreach ($rows as $identifier => $row) {
             $productSelectAttributeCodes = array_intersect(array_keys($row['raw_values']), $catalogSelectAttributeCodes);
-        }
 
-//        dump($productSelectAttributeCodes);
+            $toSearch = array_diff($productSelectAttributeCodes, array_keys($labels));
 
-        foreach (array_unique($productSelectAttributeCodes) as $productSelectAttributeCode) {
-            if (!isset($labels[$productSelectAttributeCode])) {
-                $labels[$productSelectAttributeCode] = $this->getValuesAndPropertiesFromProductIdentifiers
-                    ->fetchAttributeOptionValuesByAttributeCode($productSelectAttributeCode);
-            }
+            $labels += $this->getValuesAndPropertiesFromProductIdentifiers
+                ->fetchAttributeOptionValuesByAttributeCodes($toSearch);
         }
 
 //        dump($labels);
@@ -178,6 +174,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
                 continue;
             }
             $row = $rows[$identifier];
+//            $optionLabels = array_intersect_key($labels, $row['raw_values']);
 
             $products[] = new ConnectorProduct(
                 $row['id'],

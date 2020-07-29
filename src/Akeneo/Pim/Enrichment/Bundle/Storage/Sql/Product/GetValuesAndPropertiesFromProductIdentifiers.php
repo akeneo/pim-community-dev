@@ -98,10 +98,11 @@ SQL;
         return $attributeCodes;
     }
 
-    public function fetchAttributeOptionValuesByAttributeCode(string $attributeCode)
+    public function fetchAttributeOptionValuesByAttributeCodes(array $attributeCodes)
     {
         $query = <<<SQL
 SELECT
+       a.code as attribute_code,
        ao.code,
        aov.value,
        aov.locale_code,
@@ -109,13 +110,14 @@ SELECT
 FROM pim_catalog_attribute_option_value aov
 LEFT JOIN pim_catalog_attribute_option ao ON  ao.id = aov.option_id
 LEFT JOIN pim_catalog_attribute a ON  ao.attribute_id = a.id
-WHERE a.code = ?
+WHERE a.code IN (?)
 SQL;
 
         $attributeOptionValues = $this->connection->executeQuery(
             $query,
-            [$attributeCode]
-        )->fetchAll();
+            [$attributeCodes],
+            [Connection::PARAM_STR_ARRAY]
+        )->fetchAll(\PDO::FETCH_ASSOC | \PDO::FETCH_GROUP);
 
         return $attributeOptionValues;
     }
