@@ -74,6 +74,16 @@ liip_imagine:
                 background:
                     color: "#ffffff"
 
+        am_url_image_thumbnail_small:
+            cache: asset_manager_flysystem_cache
+            quality:          95
+            format:           jpg
+            data_loader:      stream_data_loader
+            filters:
+                thumbnail:    { size: [128, 128], mode: inset }
+                background:
+                    color: "#ffffff"
+
         am_binary_image_preview:
             cache: asset_manager_flysystem_cache
             quality:          95
