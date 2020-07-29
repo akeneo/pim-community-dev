@@ -5,7 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatP
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Category\GetCategoryTranslations;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetFamilyTranslations;
 
-class FamilyFlatTranslator implements PropertyFlatTranslatorInterface
+class FamilyFlatTranslator implements PropertyFlatValueTranslatorInterface
 {
     /**
      * @var GetFamilyTranslations
@@ -22,7 +22,7 @@ class FamilyFlatTranslator implements PropertyFlatTranslatorInterface
         return $columnName === 'family';
     }
 
-    public function translateValues(array $values, string $locale): array
+    public function translateValues(array $values, string $locale, string $scope): array
     {
         $familyTranslations = $this->getFamilyTranslations->byFamilyCodesAndLocale($values, $locale);
 

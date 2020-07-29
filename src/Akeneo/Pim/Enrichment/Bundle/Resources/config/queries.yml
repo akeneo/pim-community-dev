@@ -315,7 +315,7 @@ services:
             - '@database_connection'
 
     akeneo.pim.enrichment.product.query.get_product_model_label:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetProductModelLabel'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\SqlGetProductModelLabels'
         arguments:
             - '@database_connection'
 

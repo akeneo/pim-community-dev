@@ -4,7 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatP
 
 use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
 
-class EnabledFlatTranslator implements PropertyFlatTranslatorInterface
+class EnabledFlatTranslator implements PropertyFlatValueTranslatorInterface
 {
     /**
      * @var LabelTranslatorInterface
@@ -21,7 +21,7 @@ class EnabledFlatTranslator implements PropertyFlatTranslatorInterface
         return $columnName === 'enabled';
     }
 
-    public function translateValues(array $values, string $locale): array
+    public function translateValues(array $values, string $locale, string $scope): array
     {
         $result = [];
         $trueLocalized = $this->labelTranslator->translate('pim_common.yes', $locale, '[yes]');

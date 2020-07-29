@@ -2,10 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatPropertyValueTranslator;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Category\GetCategoryTranslations;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Group\GetGroupTranslations;
 
-class GroupFlatTranslator implements PropertyFlatTranslatorInterface
+class GroupFlatTranslator implements PropertyFlatValueTranslatorInterface
 {
     /**
      * @var GetGroupTranslations
@@ -22,7 +21,7 @@ class GroupFlatTranslator implements PropertyFlatTranslatorInterface
         return $columnName === 'groups';
     }
 
-    public function translateValues(array $values, string $locale): array
+    public function translateValues(array $values, string $locale, string $scope): array
     {
         $categoryCodesExtracted = $this->extractGroupCodes($values);
         $groupTranslations = $this->getGroupTranslations->byGroupCodesAndLocale($categoryCodesExtracted, $locale);

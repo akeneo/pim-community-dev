@@ -6,7 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStand
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnsResolver;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatHeaderTranslator\HeaderTranslationContext;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatPropertyValueTranslator\PropertyFlatTranslatorInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatPropertyValueTranslator\PropertyFlatValueTranslatorInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypeTranslations;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetAttributeTranslations;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Group\GetGroupTranslations;
@@ -80,11 +80,11 @@ class ProductFlatTranslator implements FlatTranslatorInterface
         $this->flatHeaderTranslatorRegistry = $flatHeaderTranslatorRegistry;
     }
 
-    public function translate(array $flatItems, string $locale, bool $translateHeaders): array
+    public function translate(array $flatItems, string $locale, string $scope, bool $translateHeaders): array
     {
         $translateHeaders = true;
         $flatItemsByColumnName = $this->groupFlatItemsByColumnName($flatItems);
-        $flatItemsByColumnName = $this->translateValues($flatItemsByColumnName, $locale);
+        $flatItemsByColumnName = $this->translateValues($flatItemsByColumnName, $locale, $scope);
 
         if ($translateHeaders) {
             $flatItemsByColumnName = $this->translateHeaders($flatItemsByColumnName, $locale);
@@ -95,7 +95,7 @@ class ProductFlatTranslator implements FlatTranslatorInterface
         return $flatItems;
     }
 
-    public function translateValues(array $flatItemsByColumnName, string $locale): array
+    public function translateValues(array $flatItemsByColumnName, string $locale, string $scope): array
     {
         $result = [];
         foreach ($flatItemsByColumnName as $columnName => $values) {
@@ -105,8 +105,8 @@ class ProductFlatTranslator implements FlatTranslatorInterface
             }
 
             $propertyTranslation = $this->flatPropertyValueTranslatorRegistry->getTranslator($columnName);
-            if ($propertyTranslation instanceof PropertyFlatTranslatorInterface) {
-                $result[$columnName] = $propertyTranslation->translateValues($values, $locale);
+            if ($propertyTranslation instanceof PropertyFlatValueTranslatorInterface) {
+                $result[$columnName] = $propertyTranslation->translateValues($values, $locale, $scope);
                 continue;
             }
 

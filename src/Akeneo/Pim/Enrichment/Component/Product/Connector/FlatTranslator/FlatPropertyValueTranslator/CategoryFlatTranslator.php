@@ -4,7 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatP
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Category\GetCategoryTranslations;
 
-class CategoryFlatTranslator implements PropertyFlatTranslatorInterface
+class CategoryFlatTranslator implements PropertyFlatValueTranslatorInterface
 {
     /**
      * @var GetCategoryTranslations
@@ -21,7 +21,7 @@ class CategoryFlatTranslator implements PropertyFlatTranslatorInterface
         return $columnName === 'categories';
     }
 
-    public function translateValues(array $values, string $locale): array
+    public function translateValues(array $values, string $locale, string $scope): array
     {
         $result = [];
         $categoryCodesExtracted = $this->extractCategoryCodes($values);

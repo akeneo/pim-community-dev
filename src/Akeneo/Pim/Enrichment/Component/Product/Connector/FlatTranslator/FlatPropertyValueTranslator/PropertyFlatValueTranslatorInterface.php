@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatPropertyValueTranslator;
 
-interface PropertyFlatTranslatorInterface
+interface PropertyFlatValueTranslatorInterface
 {
     public function support(string $columnName): bool;
-    public function translateValues(array $values, string $locale): array;
+    public function translateValues(array $values, string $locale, string $scope): array;
 }

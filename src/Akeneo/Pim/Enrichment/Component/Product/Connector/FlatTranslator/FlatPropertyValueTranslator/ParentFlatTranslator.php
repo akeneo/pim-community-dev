@@ -2,13 +2,16 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatPropertyValueTranslator;
 
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetProductModelLabel;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductModelLabelsInterface;
 
-class ParentFlatTranslator implements PropertyFlatTranslatorInterface
+class ParentFlatTranslator implements PropertyFlatValueTranslatorInterface
 {
+    /**
+     * @var GetProductModelLabelsInterface
+     */
     private $getProductModelLabels;
 
-    public function __construct(GetProductModelLabel $getProductModelLabels)
+    public function __construct(GetProductModelLabelsInterface $getProductModelLabels)
     {
         $this->getProductModelLabels = $getProductModelLabels;
     }
@@ -18,10 +21,11 @@ class ParentFlatTranslator implements PropertyFlatTranslatorInterface
         return $columnName === 'parent';
     }
 
-    public function translateValues(array $parentCodes, string $locale): array
+    public function translateValues(array $parentCodes, string $locale, string $scope): array
     {
+        $productModelLabels = $this->getProductModelLabels->byCodesAndLocaleAndScope($parentCodes, $locale, $scope);
+
         $result = [];
-        $productModelLabels = $this->getProductModelLabels->byCodesAndLocaleAndScope($parentCodes, $locale);
         foreach ($parentCodes as $valueIndex => $parentCode) {
             if (empty($parentCode)) {
                 $result[$valueIndex] = $parentCode;

@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator;
 
-use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatPropertyValueTranslator\PropertyFlatTranslatorInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatPropertyValueTranslator\PropertyFlatValueTranslatorInterface;
 
 class FlatPropertyValueTranslatorRegistry
 {
@@ -11,12 +11,12 @@ class FlatPropertyValueTranslatorRegistry
      */
     private $translators = [];
 
-    public function addTranslator(PropertyFlatTranslatorInterface $propertyFlatTranslator): void
+    public function addTranslator(PropertyFlatValueTranslatorInterface $propertyFlatTranslator): void
     {
         $this->translators[] = $propertyFlatTranslator;
     }
 
-    public function getTranslator(string $column): ?PropertyFlatTranslatorInterface
+    public function getTranslator(string $column): ?PropertyFlatValueTranslatorInterface
     {
         foreach ($this->translators as $translator) {
             if ($translator->support($column)) {
