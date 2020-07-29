@@ -24,7 +24,7 @@ class MultiSelectFlatTranslator implements FlatAttributeValueTranslatorInterface
 
     public function translateValues(string $attributeCode, array $properties, array $values, string $locale): array
     {
-        $optionKeys = $this->extractOptionCodes($values, $attributeCode);
+        $optionKeys = $this->generateOptionKeys($values, $attributeCode);
         $attributeOptionTranslations = $this->getExistingAttributeOptionsWithValues->fromAttributeCodeAndOptionCodes(
             $optionKeys
         );
@@ -49,7 +49,7 @@ class MultiSelectFlatTranslator implements FlatAttributeValueTranslatorInterface
         return $result;
     }
 
-    private function extractOptionCodes(array $values, string $attributeCode): array
+    private function generateOptionKeys(array $values, string $attributeCode): array
     {
         $optionKeys = [];
         foreach ($values as $value) {

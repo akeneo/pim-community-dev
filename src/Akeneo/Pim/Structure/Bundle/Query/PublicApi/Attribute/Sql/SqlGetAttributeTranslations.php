@@ -17,6 +17,10 @@ class SqlGetAttributeTranslations implements GetAttributeTranslations
 
     public function byAttributeCodesAndLocale(array $attributeCodes, string $locale)
     {
+        if (empty($attributeCodes)) {
+           return [];
+        }
+
         $query = <<<SQL
 SELECT code, label
 FROM akeneo_pim.pim_catalog_attribute a

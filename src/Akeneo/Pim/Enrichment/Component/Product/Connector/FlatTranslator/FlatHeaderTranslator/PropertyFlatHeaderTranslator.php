@@ -18,7 +18,7 @@ class PropertyFlatHeaderTranslator implements FlatHeaderTranslatorInterface
 
     public function supports(string $columnName): bool
     {
-        return in_array($columnName, ['categories', 'enabled', 'family', 'parent', 'groups']);
+        return in_array($columnName, ['categories', 'family_variant', 'enabled', 'family', 'parent', 'groups']);
     }
 
     public function translate(string $columnName, string $locale, HeaderTranslationContext $context)

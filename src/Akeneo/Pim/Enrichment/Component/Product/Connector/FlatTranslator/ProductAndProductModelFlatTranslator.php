@@ -12,7 +12,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetAttributeTransla
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Group\GetGroupTranslations;
 use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
 
-class ProductFlatTranslator implements FlatTranslatorInterface
+class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
 {
     /**
      * @var AttributeColumnsResolver
@@ -104,9 +104,9 @@ class ProductFlatTranslator implements FlatTranslatorInterface
                 continue;
             }
 
-            $propertyTranslation = $this->flatPropertyValueTranslatorRegistry->getTranslator($columnName);
-            if ($propertyTranslation instanceof PropertyFlatValueTranslatorInterface) {
-                $result[$columnName] = $propertyTranslation->translateValues($values, $locale, $scope);
+            $propertyTranslator = $this->flatPropertyValueTranslatorRegistry->getTranslator($columnName);
+            if ($propertyTranslator instanceof PropertyFlatValueTranslatorInterface) {
+                $result[$columnName] = $propertyTranslator->translateValues($values, $locale, $scope);
                 continue;
             }
 
