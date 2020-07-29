@@ -71,7 +71,7 @@ echo "Clean cache..."
 APP_ENV=test make cache
 
 echo "Install 4.0 database and indexes..."
-APP_ENV=test make database
+APP_DATABASE_NAME=akeneo_pim_test APP_ENV=test make database
 
 
 ## STEP 2: apply PR migrations on 4.0 database and index
