@@ -3,13 +3,15 @@ import 'jest-fetch-mock';
 import { renderWithProviders, screen } from '../../../../../../test-utils';
 import { locales, scopes } from '../../../../factories';
 import { AddGroupsActionLine } from '../../../../../../src/pages/EditRules/components/actions/AddGroupsActionLine';
+import { clearGroupRepositoryCache } from '../../../../../../src/repositories/GroupRepository';
 
 jest.mock('../../../../../../src/components/Select2Wrapper/Select2Wrapper');
 jest.mock('../../../../../../src/fetch/categoryTree.fetcher.ts');
 
-describe('SetStatusActionLine', () => {
+describe('AddGroupsActionLine', () => {
   beforeEach(() => {
     fetchMock.resetMocks();
+    clearGroupRepositoryCache();
   });
 
   it('should be able to display a new add groups action', async () => {
@@ -48,16 +50,8 @@ describe('SetStatusActionLine', () => {
             ],
           })
         );
-      } {
-        return Promise.resolve(
-          JSON.stringify({
-            results: [
-              { id: 'tshirts', text: 'T-shirts' },
-              { id: 'winter', text: 'Winter' },
-            ],
-          })
-        );
       }
+
       throw new Error(`The "${request.url}" url is not mocked.`);
     });
 

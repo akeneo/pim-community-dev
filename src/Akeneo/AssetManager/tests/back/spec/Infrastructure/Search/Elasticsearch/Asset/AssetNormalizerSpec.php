@@ -4,16 +4,12 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset;
 
-use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
-use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\SearchableAssetItem;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeysToIndexForAllChannelsAndLocalesInterface;
-use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
-use Akeneo\AssetManager\Domain\Query\Attribute\ValueKeyCollection;
-use Akeneo\AssetManager\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
-use Akeneo\AssetManager\Domain\Query\Asset\SearchableAssetItem;
+use Akeneo\AssetManager\Domain\Query\Locale\FindActivatedLocalesInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindSearchableAssets;
 use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\AssetNormalizer;
 use PhpSpec\ObjectBehavior;
@@ -28,12 +24,15 @@ class AssetNormalizerSpec extends ObjectBehavior
     function let(
         FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
         SqlFindSearchableAssets $findSearchableAssets,
-        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType
+        FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
+        FindActivatedLocalesInterface $findActivatedLocales
     ) {
+        $findActivatedLocales->findAll()->willReturn(['en_US', 'fr_FR', 'de_DE']);
         $this->beConstructedWith(
             $findValueKeysToIndexForAllChannelsAndLocales,
             $findSearchableAssets,
-            $findValueKeysByAttributeType
+            $findValueKeysByAttributeType,
+            $findActivatedLocales
         );
     }
 
@@ -99,6 +98,12 @@ class AssetNormalizerSpec extends ObjectBehavior
                 'mobile'    => [
                     'en_US' => "stark Bio",
                 ],
+            ]
+        );
+        $normalizedAsset['asset_code_label_search']->shouldBeLike([
+                'fr_FR' => 'stark Philippe Stark',
+                'en_US' => 'stark',
+                'de_DE' => 'stark',
             ]
         );
         $normalizedAsset['complete_value_keys']->shouldBeEqualTo([

@@ -49,8 +49,6 @@ akeneo_data_quality_insights:
         recommendation: 重要項目の属性
       consistency_textarea_lowercase_words:
         recommendation: 優先性の低い項目の属性
-      consistency_text_title_formatting:
-        recommendation: 提案の形成に関する属性
       consistency_spelling:
         recommendation: つづりが無効な属性
     axis:

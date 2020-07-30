@@ -51,8 +51,6 @@ akeneo_data_quality_insights:
         recommendation: Attributs contenant trop de majuscules
       consistency_textarea_lowercase_words:
         recommendation: Attributs pour lesquels des majuscules sont manquantes
-      consistency_text_title_formatting:
-        recommendation: Attributs avec suggestions de mise en forme
       consistency_spelling:
         recommendation: Attributs contenant des fautes d'orthographe
     axis:
