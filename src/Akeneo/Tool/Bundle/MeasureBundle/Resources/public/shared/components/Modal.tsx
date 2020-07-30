@@ -1,7 +1,7 @@
 import React, {PropsWithChildren, ReactElement} from 'react';
 import styled from 'styled-components';
-import {useAkeneoTheme, CloseIcon} from '@akeneo-pim-community/shared';
-
+import {useAkeneoTheme, CloseIcon, Button} from '@akeneo-pim-community/shared';
+//Todo remove this file
 const Modal = styled.div.attrs(() => ({className: 'AknFullPage'}))``;
 
 const ModalCloseButtonContainer = styled.button`
@@ -18,6 +18,12 @@ const ModalCloseButtonContainer = styled.button`
   &:hover {
     cursor: pointer;
   }
+`;
+
+const ModalConfirmButton = styled(Button).attrs(() => ({color: 'green'}))`
+  position: absolute;
+  top: 24px;
+  right: 24px;
 `;
 
 const ModalCloseButton = ({title, ...props}: {title: string} & any) => {
@@ -63,4 +69,4 @@ const ModalTitle = ({title, subtitle, ...props}: ModalTitleProps) => (
   </ModalTitleContainer>
 );
 
-export {Modal, ModalCloseButton, ModalBodyWithIllustration, ModalTitle, ModalDescription};
+export {Modal, ModalCloseButton, ModalBodyWithIllustration, ModalTitle, ModalDescription, ModalConfirmButton};

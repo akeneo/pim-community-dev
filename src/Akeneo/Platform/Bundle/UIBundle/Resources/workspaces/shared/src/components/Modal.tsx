@@ -1,6 +1,6 @@
 import React, {PropsWithChildren, ReactElement} from 'react';
 import styled from 'styled-components';
-import {useAkeneoTheme, CloseIcon} from '@akeneo-pim-community/shared';
+import {useAkeneoTheme, CloseIcon, Button} from '@akeneo-pim-community/shared';
 
 const Modal = styled.div`
   position: fixed;
@@ -34,6 +34,12 @@ const ModalCloseButtonContainer = styled.button`
   }
 `;
 
+const ModalConfirmButton = styled(Button).attrs(() => ({color: 'green'}))`
+  position: absolute;
+  top: 24px;
+  right: 24px;
+`;
+
 const ModalCloseButton = ({title, ...props}: {title: string} & any) => {
   const akeneoTheme = useAkeneoTheme();
 
@@ -49,7 +55,7 @@ type ModalWithIllustationProps = {
 };
 
 const ModalBodyWithIllustration = ({illustration, children}: PropsWithChildren<ModalWithIllustationProps>) => (
-  <div className="AknFullPage-content AknFullPage-content--withIllustration">
+  <div className='AknFullPage-content AknFullPage-content--withIllustration'>
     <div>{illustration}</div>
     <div>{children}</div>
   </div>
@@ -72,9 +78,9 @@ type ModalTitleProps = {
 
 const ModalTitle = ({title, subtitle, ...props}: ModalTitleProps) => (
   <ModalTitleContainer {...props}>
-    {subtitle && <div className="AknFullPage-subTitle">{subtitle}</div>}
-    <div className="AknFullPage-title">{title}</div>
+    {subtitle && <div className='AknFullPage-subTitle'>{subtitle}</div>}
+    <div className='AknFullPage-title'>{title}</div>
   </ModalTitleContainer>
 );
 
-export {Modal, ModalCloseButton, ModalBodyWithIllustration, ModalTitle, ModalDescription};
+export {Modal, ModalCloseButton, ModalBodyWithIllustration, ModalTitle, ModalDescription, ModalConfirmButton};
