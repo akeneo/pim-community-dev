@@ -7,7 +7,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Job;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Pim\Enrichment\Component\Product\Storage\GetProductAndProductModelIdsWithValuesIgnoringLocaleAndScope;
+use Akeneo\Pim\Enrichment\Component\Product\Storage\GetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -20,7 +20,7 @@ use PhpSpec\ObjectBehavior;
 class RemoveNonExistingProductValuesTaskletSpec extends ObjectBehavior
 {
     function let(
-        GetProductAndProductModelIdsWithValuesIgnoringLocaleAndScope $getProductAndProductModelIdsWithValues,
+        GetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope $getProductAndProductModelIdsWithValues,
         AttributeRepositoryInterface $attributeRepository,
         CursorableRepositoryInterface $productRepository,
         CursorableRepositoryInterface $productModelRepository,
@@ -43,7 +43,7 @@ class RemoveNonExistingProductValuesTaskletSpec extends ObjectBehavior
     }
 
     function it_removes_non_existing_product_values_from_filters(
-        GetProductAndProductModelIdsWithValuesIgnoringLocaleAndScope $getProductAndProductModelIdsWithValues,
+        GetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope $getProductAndProductModelIdsWithValues,
         AttributeRepositoryInterface $attributeRepository,
         CursorableRepositoryInterface $productRepository,
         CursorableRepositoryInterface $productModelRepository,

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\ProductAndProductModel;
 
-use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\ESGetProductAndProductModelIdsWithValuesIgnoringLocaleAndScope;
+use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -23,19 +23,19 @@ use Akeneo\Test\Integration\TestCase;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class ESGetProductAndProductModelIdsWithValuesIgnoringLocaleAndScopeIntegration extends TestCase
+final class ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScopeIntegration extends TestCase
 {
-    private const SERVICE_NAME = 'akeneo.pim.enrichment.product.query.get_product_and_product_model_ids_with_values_ignoring_locale_and_scope';
+    private const SERVICE_NAME = 'akeneo.pim.enrichment.product.query.get_product_and_product_model_identifiers_with_values_ignoring_locale_and_scope';
 
-    /** @var ESGetProductAndProductModelIdsWithValuesIgnoringLocaleAndScope */
-    private $eSGetProductAndProductModelIdsWithValuesIgnoringLocaleAndScope;
+    /** @var ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope */
+    private $eSGetProductAndProductModelIdentifiers;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->eSGetProductAndProductModelIdsWithValuesIgnoringLocaleAndScope = $this->get(static::SERVICE_NAME);
-        $this->eSGetProductAndProductModelIdsWithValuesIgnoringLocaleAndScope->setBatchSize(5);
+        $this->eSGetProductAndProductModelIdentifiers = $this->get(static::SERVICE_NAME);
+        $this->eSGetProductAndProductModelIdentifiers->setBatchSize(5);
     }
 
     public function test_it_returns_products_and_product_models_using_pagination()
@@ -43,7 +43,7 @@ final class ESGetProductAndProductModelIdsWithValuesIgnoringLocaleAndScopeIntegr
         $attribute = new Attribute();
         $attribute->setCode('color');
         $attribute->setBackendType('option');
-        $results = $this->eSGetProductAndProductModelIdsWithValuesIgnoringLocaleAndScope->forAttributeAndValues(
+        $results = $this->eSGetProductAndProductModelIdentifiers->forAttributeAndValues(
             $attribute,
             ['blue']
         );
@@ -64,7 +64,7 @@ final class ESGetProductAndProductModelIdsWithValuesIgnoringLocaleAndScopeIntegr
         $attribute = new Attribute();
         $attribute->setCode('name');
         $attribute->setBackendType('text');
-        $results = $this->eSGetProductAndProductModelIdsWithValuesIgnoringLocaleAndScope->forAttributeAndValues(
+        $results = $this->eSGetProductAndProductModelIdentifiers->forAttributeAndValues(
             $attribute,
             ['athena']
         );

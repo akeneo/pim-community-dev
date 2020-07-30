@@ -454,7 +454,7 @@ services:
     pim_enrich.tasklet.remove_non_existing_product_values:
         class: Akeneo\Pim\Enrichment\Component\Product\Job\RemoveNonExistingProductValuesTasklet
         arguments:
-            - '@akeneo.pim.enrichment.product.query.get_product_and_product_model_ids_with_values_ignoring_locale_and_scope'
+            - '@akeneo.pim.enrichment.product.query.get_product_and_product_model_identifiers_with_values_ignoring_locale_and_scope'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.product_model'

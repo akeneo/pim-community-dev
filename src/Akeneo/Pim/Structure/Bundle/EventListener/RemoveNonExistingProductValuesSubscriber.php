@@ -74,7 +74,6 @@ final class RemoveNonExistingProductValuesSubscriber implements EventSubscriberI
                 'field' => $attributeOption->getAttribute()->getCode(),
                 'operator' => Operators::IN_LIST,
                 'value' => [$attributeOption->getCode()],
-                'context' => ['ignore_non_existing_values' => true],
             ],
         ];
 

@@ -91,7 +91,6 @@ class RemoveNonExistingProductValuesSubscriberSpec extends ObjectBehavior
                     'field' => 'color',
                     'operator' => Operators::IN_LIST,
                     'value' => ['blue'],
-                    'context' => ['ignore_non_existing_values' => true],
                 ],
             ],
         ];

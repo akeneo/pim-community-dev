@@ -247,27 +247,6 @@ class OptionFilterSpec extends ObjectBehavior
         )->during('addAttributeFilter', [$color, Operators::IN_LIST, ['black'], 'en_US', 'ecommerce', []]);
     }
 
-    function it_does_not_check_the_existence_of_values_when_given_option_is_used(
-        AttributeOptionRepository $attributeOptionRepository,
-        AttributeInterface $color,
-        SearchQueryBuilder $sqb
-    ) {
-        $options = ['ignore_non_existing_values' => true];
-        $color->getCode()->willReturn('color');
-        $color->getBackendType()->willReturn('option');
-
-        $attributeOptionRepository->findCodesByIdentifiers('color', ['black'])->willReturn([]);
-
-        $this->setQueryBuilder($sqb);
-
-        $sqb->addFilter([
-            'terms' => [
-                'values.color-option.<all_channels>.<all_locales>' => ['black'],
-            ]
-        ])->shouldBeCalled();
-        $this->addAttributeFilter($color, Operators::IN_LIST, ['black'], null, null, $options);
-    }
-
     function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(
         $attributeValidatorHelper,
         $attributeOptionRepository,
