@@ -12,8 +12,8 @@ import {
 } from '../../../../components/Selectors/LocaleSelector';
 import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
 import {
-  AttributeConditionLineFormContainer,
-  AttributeConditionLineFormAndErrorsContainer,
+  ConditionLineFormContainer,
+  ConditionLineFormAndErrorsContainer,
   ConditionErrorLine,
   FieldColumn,
   LocaleColumn,
@@ -110,9 +110,8 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
     typeof errors?.content?.conditions?.[lineNumber]?.[element] === 'object';
 
   return (
-    <AttributeConditionLineFormAndErrorsContainer
-      className={'AknGrid-bodyCell'}>
-      <AttributeConditionLineFormContainer>
+    <ConditionLineFormAndErrorsContainer className={'AknGrid-bodyCell'}>
+      <ConditionLineFormContainer>
         <FieldColumn className={'AknGrid-bodyCell--highlight'} title={title}>
           {title}
         </FieldColumn>
@@ -185,9 +184,9 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
             />
           </LocaleColumn>
         )}
-      </AttributeConditionLineFormContainer>
+      </ConditionLineFormContainer>
       <LineErrors lineNumber={lineNumber} type='conditions' />
-    </AttributeConditionLineFormAndErrorsContainer>
+    </ConditionLineFormAndErrorsContainer>
   );
 };
 

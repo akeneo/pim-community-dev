@@ -72,19 +72,19 @@ const ConditionErrorLine = styled.ul`
   }
 `;
 
-const AttributeConditionLineFormAndErrorsContainer = styled.div`
+const ConditionLineFormAndErrorsContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const AttributeConditionLineFormContainer = styled.div`
+const ConditionLineFormContainer = styled.div`
   display: flex;
   padding-bottom: 12px;
 `;
 
 export {
-  AttributeConditionLineFormContainer,
-  AttributeConditionLineFormAndErrorsContainer,
+  ConditionLineFormContainer,
+  ConditionLineFormAndErrorsContainer,
   ConditionErrorLine,
   FieldColumn,
   LocaleColumn,

@@ -4,8 +4,8 @@ import { ConditionLineProps } from './ConditionLineProps';
 import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
 import { Operator } from '../../../../models/Operator';
 import {
-  AttributeConditionLineFormAndErrorsContainer,
-  AttributeConditionLineFormContainer,
+  ConditionLineFormAndErrorsContainer,
+  ConditionLineFormContainer,
   FieldColumn,
   OperatorColumn,
   ValueColumn,
@@ -87,9 +87,8 @@ const GroupsConditionLine: React.FC<ConditionLineProps> = ({
     typeof errors?.content?.conditions?.[lineNumber]?.[element] === 'object';
 
   return (
-    <AttributeConditionLineFormAndErrorsContainer
-      className={'AknGrid-bodyCell'}>
-      <AttributeConditionLineFormContainer>
+    <ConditionLineFormAndErrorsContainer className={'AknGrid-bodyCell'}>
+      <ConditionLineFormContainer>
         <Controller
           as={<input type='hidden' />}
           name={fieldFormName}
@@ -129,9 +128,9 @@ const GroupsConditionLine: React.FC<ConditionLineProps> = ({
             />
           </ValueColumn>
         )}
-      </AttributeConditionLineFormContainer>
+      </ConditionLineFormContainer>
       <LineErrors lineNumber={lineNumber} type='conditions' />
-    </AttributeConditionLineFormAndErrorsContainer>
+    </ConditionLineFormAndErrorsContainer>
   );
 };
 
