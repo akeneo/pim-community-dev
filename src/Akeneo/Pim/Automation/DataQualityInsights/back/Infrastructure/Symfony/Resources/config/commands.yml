@@ -16,3 +16,15 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
         tags:
             - { name: 'console.command' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\PurgeOutdatedDataCommand:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\PurgeOutdatedData'
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\ConsolidateDashboardRatesCommand:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateDashboardRates'
+        tags:
+            - { name: 'console.command' }
