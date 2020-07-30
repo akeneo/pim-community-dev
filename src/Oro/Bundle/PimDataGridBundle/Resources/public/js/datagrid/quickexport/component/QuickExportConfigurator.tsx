@@ -1,4 +1,4 @@
-import React, {ReactNode, useState, Children, isValidElement, cloneElement} from 'react';
+import React, {ReactNode, useState, Children, isValidElement, cloneElement, useEffect} from 'react';
 import {DependenciesProvider, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {
   AkeneoThemeProvider,
@@ -12,16 +12,17 @@ import {
 } from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 
-const Container = styled.div``;
+const Container = styled.div`
+  color: ${({theme}: AkeneoThemedProps) => theme.color.grey140};
+  font-size: ${({theme}: AkeneoThemedProps) => theme.fontSize.default};
+  cursor: default;
+  text-transform: none;
+`;
 
 const Content = styled.div`
-  color: ${({theme}: AkeneoThemedProps) => theme.color.grey100};
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-transform: none;
-  font-size: ${({theme}: AkeneoThemedProps) => theme.fontSize.default};
-  cursor: default;
 `;
 
 const Subtitle = styled.div`
@@ -75,11 +76,16 @@ const Option = ({isSelected, code, onSelect}: OptionProps) => {
 };
 
 type SelectProps = {
+  onChange: (value: string | null) => void;
   children?: ReactNode;
 };
 
-const Select = ({children}: SelectProps) => {
+const Select = ({onChange, children}: SelectProps) => {
   const [selectedOptionCode, setSelectedOptionCode] = useState<string | null>(null);
+
+  useEffect(() => {
+    onChange(selectedOptionCode);
+  }, [selectedOptionCode]);
 
   const updatedChildren = Children.map(children, child => {
     if (!isValidElement<OptionProps>(child)) {
@@ -112,6 +118,9 @@ const QuickExportConfigurator = (props: QuickExportConfiguratorProps) => (
 );
 
 const QuickExportConfiguratorContainer = ({onActionLaunch}: QuickExportConfiguratorProps) => {
+  const [type, setType] = useState<string | null>(null);
+  const [context, setContext] = useState<string | null>(null);
+  const [withLabel, setWithLabel] = useState<string | null>(null);
   const [isModalOpen, openModal, closeModal] = useToggleState(false);
   const translate = useTranslate();
 
@@ -121,48 +130,55 @@ const QuickExportConfiguratorContainer = ({onActionLaunch}: QuickExportConfigura
   const productCount = 3;
 
   return (
-    <Container>
+    <>
       <div onClick={openModal}>{translate('pim_datagrid.mass_action_group.quick_export.label')}</div>
-      {isModalOpen && (
-        <Modal>
-          <Content>
-            <ModalCloseButton onClick={closeModal} />
-            <ModalConfirmButton
-              onClick={() => {
-                closeModal();
-                onActionLaunch('yolo');
-              }}
-              disabled={true}
-            >
-              {translate('pim_common.export')}
-            </ModalConfirmButton>
-            <Subtitle>
-              {translate('pim_datagrid.mass_action.quick_export.configurator.subtitle')} |{' '}
-              {translate(
-                'pim_datagrid.mass_action.quick_export.configurator.product_count',
-                {
-                  count: productCount.toString(),
-                },
-                productCount
+      <Container>
+        {isModalOpen && (
+          <Modal>
+            <Content>
+              <ModalCloseButton onClick={closeModal} />
+              <ModalConfirmButton
+                onClick={() => {
+                  closeModal();
+                  console.log(type, context, withLabel);
+                  onActionLaunch('yolo');
+                }}
+                disabled={null === type || null === context || null === withLabel}
+              >
+                {translate('pim_common.export')}
+              </ModalConfirmButton>
+              <Subtitle>
+                {translate('pim_datagrid.mass_action.quick_export.configurator.subtitle')} |{' '}
+                {translate(
+                  'pim_datagrid.mass_action.quick_export.configurator.product_count',
+                  {
+                    count: productCount.toString(),
+                  },
+                  productCount
+                )}
+              </Subtitle>
+              <Title>{translate('pim_datagrid.mass_action.quick_export.configurator.title')}</Title>
+              <Select onChange={setType}>
+                <Option code="csv"></Option>
+                <Option code="xlsx"></Option>
+              </Select>
+              {null !== type && (
+                <Select onChange={setContext}>
+                  <Option code="grid-context"></Option>
+                  <Option code="all"></Option>
+                </Select>
               )}
-            </Subtitle>
-            <Title>{translate('pim_datagrid.mass_action.quick_export.configurator.title')}</Title>
-            <Select>
-              <Option code="csv"></Option>
-              <Option code="xlsx"></Option>
-            </Select>
-            <Select>
-              <Option code="grid-context"></Option>
-              <Option code="all"></Option>
-            </Select>
-            <Select>
-              <Option code="with-label"></Option>
-              <Option code="without-label"></Option>
-            </Select>
-          </Content>
-        </Modal>
-      )}
-    </Container>
+              {null !== context && (
+                <Select onChange={setWithLabel}>
+                  <Option code="with-label"></Option>
+                  <Option code="without-label"></Option>
+                </Select>
+              )}
+            </Content>
+          </Modal>
+        )}
+      </Container>
+    </>
   );
 };
 
