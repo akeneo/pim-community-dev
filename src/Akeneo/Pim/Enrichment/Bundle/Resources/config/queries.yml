@@ -266,3 +266,9 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\SqlGetProductCompletenessRatio'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.enrichment.product.query.get_product_and_product_model_ids_with_values_ignoring_locale_and_scope:
+        class: Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\ESGetProductAndProductModelIdsWithValuesIgnoringLocaleAndScope
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '%pim_job_product_batch_size%'
