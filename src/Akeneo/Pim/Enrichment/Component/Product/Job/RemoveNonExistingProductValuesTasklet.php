@@ -1,6 +1,5 @@
 <?php
 
-
 declare(strict_types=1);
 
 /*
@@ -14,31 +13,42 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Job;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Storage\GetProductAndProductModelIdsWithValuesIgnoringLocaleAndScope;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
-use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
+use Webmozart\Assert\Assert;
 
 /**
+ * Orchestrator to remove the non existing product values:
+ *  - search the products/product models that have the values
+ *  - remove the non existing values (the non existing values are removed during the hydration)
+ *
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 final class RemoveNonExistingProductValuesTasklet implements TaskletInterface
 {
     /** @var StepExecution */
     private $stepExecution;
 
-    /** @var ProductQueryBuilderFactoryInterface */
-    private $pqbFactory;
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
 
-    /** @var ChannelRepositoryInterface */
-    private $channelRepository;
+    /** @var GetProductAndProductModelIdsWithValuesIgnoringLocaleAndScope */
+    private $getProductAndProductModelIdsWithValues;
+
+    /** @var CursorableRepositoryInterface */
+    private $productRepository;
+
+    /** @var CursorableRepositoryInterface */
+    private $productModelRepository;
 
     /** @var BulkSaverInterface */
     private $productSaver;
@@ -46,20 +56,29 @@ final class RemoveNonExistingProductValuesTasklet implements TaskletInterface
     /** @var BulkSaverInterface */
     private $productModelSaver;
 
+    /** @var EntityManagerClearerInterface */
+    private $entityManagerClearer;
+
     /** @var int */
     private $batchSize;
 
     public function __construct(
-        ProductQueryBuilderFactoryInterface $pqbFactory,
-        ChannelRepositoryInterface $channelRepository,
+        GetProductAndProductModelIdsWithValuesIgnoringLocaleAndScope $getProductAndProductModelIdsWithValues,
+        AttributeRepositoryInterface $attributeRepository,
+        CursorableRepositoryInterface $productRepository,
+        CursorableRepositoryInterface $productModelRepository,
         BulkSaverInterface $productSaver,
         BulkSaverInterface $productModelSaver,
+        EntityManagerClearerInterface $entityManagerClearer,
         int $batchSize
     ) {
-        $this->pqbFactory = $pqbFactory;
-        $this->channelRepository = $channelRepository;
+        $this->getProductAndProductModelIdsWithValues = $getProductAndProductModelIdsWithValues;
+        $this->attributeRepository = $attributeRepository;
+        $this->productRepository = $productRepository;
+        $this->productModelRepository = $productModelRepository;
         $this->productSaver = $productSaver;
         $this->productModelSaver = $productModelSaver;
+        $this->entityManagerClearer = $entityManagerClearer;
         $this->batchSize = $batchSize;
     }
 
@@ -74,82 +93,52 @@ final class RemoveNonExistingProductValuesTasklet implements TaskletInterface
     /**
      * {@inheritdoc}
      *
-     * Loading the product filters the unexisting values. We just need to save it again.
+     * Loading the product filters the non existing values. We just need to save it again.
      */
     public function execute()
     {
-        $channel = $this->getConfiguredChannel();
-        $filters = $this->getConfiguredFilters();
-
-        $cursor = $this->getCursor($filters, $channel);
-        $products = [];
-        $productModels = [];
-        while ($cursor->valid()) {
-            $entity = $cursor->current();
-            if ($entity instanceof ProductModelInterface) {
-                $productModels[] = $entity;
-            } elseif ($entity instanceof ProductInterface) {
-                $products[] = $entity;
-            }
-
-            if (count($products) >= $this->batchSize) {
-                $this->productSaver->saveAll($products);
-                $products = [];
-            }
-
-            if (count($productModels) >= $this->batchSize) {
-                $this->productModelSaver->saveAll($productModels);
-                $productModels = [];
-            }
-
-            $cursor->next();
-        }
-
-        $this->productSaver->saveAll($products);
-        $this->productModelSaver->saveAll($productModels);
-    }
-
-    /**
-     * Returns the filters from the configuration.
-     *
-     * Here we transform the ID filter into SELF_AND_ANCESTOR.ID in order to retrieve
-     * all the product models and products that are possibly impacted by the mass edit.
-     */
-    private function getConfiguredFilters(): array
-    {
         $filters = $this->stepExecution->getJobParameters()->get('filters');
+        $this->checkFilters($filters);
 
-        return array_filter($filters, function ($filter) {
-            return count($filter) > 0;
-        });
+        $filter = current($filters);
+        $attributeCode = $filter['field'];
+        $values = $filter['values'];
+
+        $batchIdentifiers = $this->getProductAndProductModelIdsWithValues->forAttributeAndValues(
+            $this->getAttribute($attributeCode),
+            $values
+        );
+
+        foreach ($batchIdentifiers as $identifiers) {
+            $products = $this->productRepository->getItemsFromIdentifiers($identifiers);
+            $this->productSaver->saveAll($products);
+
+            $productModels = $this->productModelRepository->getItemsFromIdentifiers($identifiers);
+            $this->productModelSaver->saveAll($productModels);
+
+            $this->entityManagerClearer->clear();
+        }
     }
 
-    private function getConfiguredChannel(): ?ChannelInterface
+    private function getAttribute(string $attributeCode): Attribute
     {
-        $parameters = $this->stepExecution->getJobParameters();
-        if (!isset($parameters->get('filters')['structure']['scope'])) {
-            return null;
+        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+        if (null === $attribute) {
+            throw new \InvalidArgumentException(sprintf('The "%s" attribute code was not found', $attributeCode));
         }
 
-        $channelCode = $parameters->get('filters')['structure']['scope'];
-        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
-        if (null === $channel) {
-            throw new ObjectNotFoundException(sprintf('Channel with "%s" code does not exist', $channelCode));
-        }
-
-        return $channel;
+        return $attribute;
     }
 
-    private function getCursor(array $filters, ChannelInterface $channel = null): CursorInterface
+    private function checkFilters(array $filters): void
     {
-        $options = ['filters' => $filters];
-
-        if (null !== $channel) {
-            $options['default_scope'] = $channel->getCode();
-        }
-
-        $queryBuilder = $this->pqbFactory->create($options);
-
-        return $queryBuilder->execute();
+        Assert::count($filters, 1);
+        $filter = current($filters);
+        Assert::keyExists($filter, 'field');
+        Assert::keyExists($filter, 'operator');
+        Assert::keyExists($filter, 'values');
+        Assert::same($filter['operator'], Operators::IN_LIST);
+        Assert::isArray($filter['values']);
+        Assert::allString($filter['values']);
     }
 }
