@@ -24,6 +24,7 @@ use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -56,6 +57,16 @@ class RemoveNonExistingProductValuesSubscriberSpec extends ObjectBehavior
         $subscribedEvents[StorageEvents::POST_REMOVE]->shouldBe('launchRemoveNonExistingProductValuesJob');
     }
 
+    function it_handles_only_attribute_option_subject(JobLauncherInterface $jobLauncher)
+    {
+        $entity = new \StdClass();
+        $event = new GenericEvent($entity);
+
+        $jobLauncher->launch(Argument::any())->shouldNotBeCalled();
+
+        $this->launchRemoveNonExistingProductValuesJob($event);
+    }
+
     function it_launches_the_job_with_filters(
         TokenStorageInterface $tokenStorage,
         JobInstanceRepository $jobInstanceRepository,
@@ -81,11 +92,6 @@ class RemoveNonExistingProductValuesSubscriberSpec extends ObjectBehavior
                     'operator' => Operators::IN_LIST,
                     'value' => ['blue'],
                     'context' => ['ignore_non_existing_values' => true],
-                ],
-                [
-                    'field' => 'attributes_for_this_level',
-                    'operator' => Operators::IN_LIST,
-                    'value' => ['color'],
                 ],
             ],
         ];
