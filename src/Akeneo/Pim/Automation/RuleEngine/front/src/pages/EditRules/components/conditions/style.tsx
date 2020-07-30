@@ -79,7 +79,6 @@ const AttributeConditionLineFormAndErrorsContainer = styled.div`
 
 const AttributeConditionLineFormContainer = styled.div`
   display: flex;
-  padding-bottom: 12px;
 `;
 
 export {
