@@ -52,6 +52,7 @@ class ProductValueNormalizer implements NormalizerInterface, CacheableSupportsMe
             'locale' => $entity->getLocaleCode(),
             'scope' => $entity->getScopeCode(),
             'data' => $data,
+            (!$context['labels'][$entity->getAttributeCode()][$data]) ? array() : 'labels' => $context['labels'][$entity->getAttributeCode()][$data]
         ];
     }
 

@@ -51,6 +51,9 @@ final class ListProductsQuery
     /** @var int */
     public $userId;
 
+    /** @var string */
+    public $withAttributeOptions = 'false';
+
     /**
      * Returns the parameter 'with_count' typed as a boolean
      *
@@ -59,5 +62,15 @@ final class ListProductsQuery
     public function withCountAsBoolean(): bool
     {
         return $this->withCount === 'true';
+    }
+
+    /**
+     * Returns the parameter 'with_attribute_options' typed as a boolean
+     *
+     * @return bool
+     */
+    public function withAttributeOptionsAsBoolean(): bool
+    {
+        return $this->withAttributeOptions === 'true';
     }
 }

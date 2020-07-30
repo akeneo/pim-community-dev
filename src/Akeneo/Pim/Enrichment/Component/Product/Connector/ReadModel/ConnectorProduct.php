@@ -54,6 +54,9 @@ final class ConnectorProduct
     /** @var ReadValueCollection */
     private $values;
 
+    /** @var array|null */
+    private $labels;
+
     public function __construct(
         int $id,
         string $identifier,
@@ -67,7 +70,8 @@ final class ConnectorProduct
         array $associations,
         array $quantifiedAssociations,
         array $metadata,
-        ReadValueCollection $values
+        ReadValueCollection $values,
+        array $labels = null
     ) {
         $this->id = $id;
         $this->identifier = $identifier;
@@ -82,6 +86,7 @@ final class ConnectorProduct
         $this->associations = $associations;
         $this->quantifiedAssociations = $quantifiedAssociations;
         $this->metadata = $metadata;
+        $this->labels = $labels;
     }
 
     public function id(): int
@@ -147,6 +152,11 @@ final class ConnectorProduct
     public function values(): ReadValueCollection
     {
         return $this->values;
+    }
+
+    public function labels(): ?array
+    {
+        return $this->labels;
     }
 
     public function attributeCodesInValues(): array

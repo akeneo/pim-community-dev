@@ -85,14 +85,15 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         int $userId,
         ?array $attributesToFilterOn,
         ?string $channelToFilterOn,
-        ?array $localesToFilterOn
+        ?array $localesToFilterOn,
+        ?bool $withAttributeOptions
     ): ConnectorProductList {
         $result = $pqb->execute();
         $identifiers = array_map(function (IdentifierResult $identifier) {
             return $identifier->getIdentifier();
         }, iterator_to_array($result));
 
-        $products = $this->fromProductIdentifiers($identifiers, $attributesToFilterOn, $channelToFilterOn, $localesToFilterOn);
+        $products = $this->fromProductIdentifiers($identifiers, $attributesToFilterOn, $channelToFilterOn, $localesToFilterOn, $withAttributeOptions);
 
         return new ConnectorProductList($result->count(), $products);
     }
@@ -111,7 +112,8 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         array $productIdentifiers,
         ?array $attributesToFilterOn,
         ?string $channelToFilterOn,
-        ?array $localesToFilterOn
+        ?array $localesToFilterOn,
+        ?bool $withAttributeOptions
     ): array {
         $identifierAttributeCode = $this->attributeRepository->getIdentifierCode();
 
@@ -148,20 +150,23 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
          * BEGIN POC
          */
         $labels = [];
+        $labelsIndexedByProductIdentifier = [];
 
-        $catalogSelectAttributeCodes = $this->getValuesAndPropertiesFromProductIdentifiers
-            ->fetchAttributeCodesByTypes([AttributeTypes::OPTION_SIMPLE_SELECT, AttributeTypes::OPTION_MULTI_SELECT]);
+        if ($withAttributeOptions) {
+            $catalogSelectAttributeCodes = $this->getValuesAndPropertiesFromProductIdentifiers
+                ->fetchAttributeCodesByTypes([AttributeTypes::OPTION_SIMPLE_SELECT, AttributeTypes::OPTION_MULTI_SELECT]);
 
-        foreach ($rows as $identifier => $row) {
-            $productSelectAttributeCodes = array_intersect(array_keys($row['raw_values']), $catalogSelectAttributeCodes);
+            foreach ($rows as $identifier => $row) {
+                $productSelectAttributeCodes = array_intersect(array_keys($row['raw_values']), $catalogSelectAttributeCodes);
 
-            $toSearch = array_diff($productSelectAttributeCodes, array_keys($labels));
+                $toSearch = array_diff($productSelectAttributeCodes, array_keys($labels));
 
-            $labels += $this->getValuesAndPropertiesFromProductIdentifiers
-                ->fetchAttributeOptionValuesByAttributeCodes($toSearch);
+                $labels += $this->getValuesAndPropertiesFromProductIdentifiers
+                    ->fetchAttributeOptionValuesByAttributeCodes($toSearch);
+
+                $labelsIndexedByProductIdentifier[$identifier] = array_intersect_key($labels, $row['raw_values']);
+            }
         }
-
-//        dump($labels);
         /**
          * END POC
          **************************************************************************************************************/
@@ -174,7 +179,6 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
                 continue;
             }
             $row = $rows[$identifier];
-//            $optionLabels = array_intersect_key($labels, $row['raw_values']);
 
             $products[] = new ConnectorProduct(
                 $row['id'],
@@ -189,7 +193,8 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
                 $row['associations'] ?? [],
                 $row['quantified_associations'] ?? [],
                 [],
-                $filteredRawValuesIndexedByProductIdentifier[$identifier]
+                $filteredRawValuesIndexedByProductIdentifier[$identifier],
+                $labelsIndexedByProductIdentifier[$identifier]
             );
         }
 

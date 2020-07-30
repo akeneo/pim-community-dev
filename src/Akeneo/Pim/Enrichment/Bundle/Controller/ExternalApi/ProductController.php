@@ -259,6 +259,7 @@ class ProductController
         $query->searchChannelCode = $request->query->get('search_scope', null);
         $query->searchAfter = $request->query->get('search_after', null);
         $query->userId = $user->getId();
+        $query->withAttributeOptions = $request->query->get('with_attribute_options', 'false');
 
         try {
             $this->listProductsQueryValidator->validate($query);

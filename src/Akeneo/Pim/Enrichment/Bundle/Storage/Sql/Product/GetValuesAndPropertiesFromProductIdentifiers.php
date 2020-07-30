@@ -104,22 +104,28 @@ SQL;
 SELECT
        a.code as attribute_code,
        ao.code,
-       aov.value,
-       aov.locale_code,
-       ao.sort_order
+       JSON_OBJECTAGG(aov.locale_code, aov.value) as option_values
 FROM pim_catalog_attribute_option_value aov
 LEFT JOIN pim_catalog_attribute_option ao ON  ao.id = aov.option_id
 LEFT JOIN pim_catalog_attribute a ON  ao.attribute_id = a.id
 WHERE a.code IN (?)
+GROUP BY attribute_code, ao.code;
 SQL;
 
-        $attributeOptionValues = $this->connection->executeQuery(
+        $data = $this->connection->executeQuery(
             $query,
             [$attributeCodes],
             [Connection::PARAM_STR_ARRAY]
         )->fetchAll(\PDO::FETCH_ASSOC | \PDO::FETCH_GROUP);
 
-        return $attributeOptionValues;
+        $result = [];
+        foreach ($data as $attributeCode => $attributeOptionValues) {
+            foreach ($attributeOptionValues as $attributeOptionValue) {
+                $result[$attributeCode][$attributeOptionValue['code']] = json_decode($attributeOptionValue['option_values'], true);
+            }
+        }
+
+        return $result;
     }
     /**
      * END POC

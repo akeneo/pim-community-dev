@@ -23,7 +23,8 @@ interface GetConnectorProducts
         int $userId,
         ?array $attributesToFilterOn,
         ?string $channelToFilterOn,
-        ?array $localesToFilterOn
+        ?array $localesToFilterOn,
+        ?bool $withAttributeOptions
     ): ConnectorProductList;
 
     /**

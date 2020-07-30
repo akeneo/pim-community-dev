@@ -101,7 +101,8 @@ final class ListProductsQueryHandler
             $query->userId,
             $query->attributeCodes,
             $query->channelCode,
-            $this->getLocales($query->channelCode, $query->localeCodes)
+            $this->getLocales($query->channelCode, $query->localeCodes),
+            $query->withAttributeOptionsAsBoolean()
         );
 
         $productIds = array_map(function (ConnectorProduct $connectorProduct) {

@@ -29,11 +29,11 @@ final class ValuesNormalizer
         $this->router = $router;
     }
 
-    public function normalize(ReadValueCollection $values): array
+    public function normalize(ReadValueCollection $values, $format = null, array $context = []): array
     {
         $normalizedValues = [];
         foreach ($values as $value) {
-            $normalizedValue = $this->valueNormalizer->normalize($value, 'standard');
+            $normalizedValue = $this->valueNormalizer->normalize($value, $format, $context);
             if ($value instanceof MediaValue) {
                 $normalizedValue = $this->addHalLink($value, $normalizedValue);
             }
