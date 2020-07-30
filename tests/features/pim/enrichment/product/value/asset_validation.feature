@@ -29,11 +29,11 @@ Feature: Throw an error if an asset doesn't exist or if it doesn't belong to an 
     When a product is created with values:
       | attribute       | data                 | scope | locale |
       | assetCollection | starck,inventedAsset |       |        |
-    Then the error 'Please make sure the "inventedAsset" asset exists and belongs to the "designer" asset family.' is raised
+    Then the error 'Please make sure the "inventedAsset" asset exists and belongs to the "designer" asset family for the "assetCollection" attribute.' is raised
 
   @acceptance-back
   Scenario: Providing an asset that doesn't belong to the asset family should raise an error
     When a product is created with values:
       | attribute       | data                     | scope | locale |
       | assetCollection | coco,absorb_atmosphere_1 |       |        |
-    Then the error 'Please make sure the "absorb_atmosphere_1" asset exists and belongs to the "designer" asset family.' is raised
+    Then the error 'Please make sure the "absorb_atmosphere_1" asset exists and belongs to the "designer" asset family for the "assetCollection" attribute.' is raised

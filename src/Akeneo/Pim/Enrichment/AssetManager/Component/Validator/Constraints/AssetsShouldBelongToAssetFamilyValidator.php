@@ -46,6 +46,7 @@ class AssetsShouldBelongToAssetFamilyValidator extends ConstraintValidator
                     [
                         '%asset_code%' => $assetCode->__toString(),
                         '%asset_family_identifier%' => $assetFamilyIdentifier->__toString(),
+                        '%attribute%' => $value->getAttributeCode(),
                     ]
                 )->addViolation();
             }
