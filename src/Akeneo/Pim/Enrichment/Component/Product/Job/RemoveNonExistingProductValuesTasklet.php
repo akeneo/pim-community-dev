@@ -102,7 +102,7 @@ final class RemoveNonExistingProductValuesTasklet implements TaskletInterface
 
         $filter = current($filters);
         $attributeCode = $filter['field'];
-        $values = $filter['values'];
+        $values = $filter['value'];
 
         $batchIdentifiers = $this->getProductAndProductModelIdentifiersWithValues->forAttributeAndValues(
             $this->getAttribute($attributeCode),
@@ -110,6 +110,7 @@ final class RemoveNonExistingProductValuesTasklet implements TaskletInterface
         );
 
         foreach ($batchIdentifiers as $identifiers) {
+            print_r($identifiers);
             $products = $this->productRepository->getItemsFromIdentifiers($identifiers);
             $this->productSaver->saveAll($products);
 
@@ -136,9 +137,9 @@ final class RemoveNonExistingProductValuesTasklet implements TaskletInterface
         $filter = current($filters);
         Assert::keyExists($filter, 'field');
         Assert::keyExists($filter, 'operator');
-        Assert::keyExists($filter, 'values');
+        Assert::keyExists($filter, 'value');
         Assert::same($filter['operator'], Operators::IN_LIST);
-        Assert::isArray($filter['values']);
-        Assert::allString($filter['values']);
+        Assert::isArray($filter['value']);
+        Assert::allString($filter['value']);
     }
 }
