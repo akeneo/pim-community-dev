@@ -1,6 +1,5 @@
 <?php
 
-
 declare(strict_types=1);
 
 /*
@@ -14,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\EventListener;
 
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
@@ -72,7 +69,7 @@ final class RemoveNonExistingProductValuesSubscriber implements EventSubscriberI
         $filters = [
             [
                 'field' => $attributeOption->getAttribute()->getCode(),
-                'operator' => Operators::IN_LIST,
+                'operator' => 'IN',
                 'value' => [$attributeOption->getCode()],
             ],
         ];

@@ -15,7 +15,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Job;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\GetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -104,8 +103,14 @@ final class RemoveNonExistingProductValuesTasklet implements TaskletInterface
         $attributeCode = $filter['field'];
         $values = $filter['value'];
 
+        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+        if (null === $attribute) {
+            throw new \InvalidArgumentException(sprintf('The "%s" attribute code was not found', $attributeCode));
+        }
+
         $batchIdentifiers = $this->getProductAndProductModelIdentifiersWithValues->forAttributeAndValues(
-            $this->getAttribute($attributeCode),
+            $attribute->getCode(),
+            $attribute->getBackendType(),
             $values
         );
 
@@ -119,16 +124,6 @@ final class RemoveNonExistingProductValuesTasklet implements TaskletInterface
 
             $this->entityManagerClearer->clear();
         }
-    }
-
-    private function getAttribute(string $attributeCode): Attribute
-    {
-        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
-        if (null === $attribute) {
-            throw new \InvalidArgumentException(sprintf('The "%s" attribute code was not found', $attributeCode));
-        }
-
-        return $attribute;
     }
 
     private function checkFilters(array $filters): void

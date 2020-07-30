@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel;
 
 use Akeneo\Pim\Enrichment\Component\Product\Storage\GetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
 /**
@@ -41,9 +40,9 @@ final class ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndSco
         $this->batchSize = $batchSize;
     }
 
-    public function forAttributeAndValues(Attribute $attribute, array $values): iterable
+    public function forAttributeAndValues(string $attributeCode, string $backendType, array $values): iterable
     {
-        $attributePath = sprintf('values.%s-%s.*', $attribute->getCode(), $attribute->getBackendType());
+        $attributePath = sprintf('values.%s-%s.*', $attributeCode, $backendType);
 
         $baseQuery = [
             '_source' => ['identifier'],
@@ -59,7 +58,7 @@ final class ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndSco
                         ],
                         [
                             'term' => [
-                                'attributes_for_this_level' => $attribute->getCode(),
+                                'attributes_for_this_level' => $attributeCode,
                             ],
                         ],
                     ],
@@ -69,11 +68,7 @@ final class ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndSco
         ];
 
         $searchAfter = null;
-        $count = 0;
         while (true) {
-            $count++;
-            if ($count > 10) break;
-
             $query = $baseQuery;
             if ($searchAfter !== null) {
                 $query['search_after'] = $searchAfter;
@@ -94,6 +89,5 @@ final class ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndSco
             $lastResult = end($hits);
             $searchAfter = $lastResult['sort'];
         }
-
     }
 }
