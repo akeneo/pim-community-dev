@@ -5,8 +5,9 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatH
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnsResolver;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Channel\GetChannelTranslations;
+use Akeneo\Tool\Component\Localization\CurrencyTranslator;
 use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
-use Symfony\Component\Intl\Intl;
+use Akeneo\Tool\Component\Localization\LanguageTranslator;
 
 class AttributeFlatHeaderTranslator implements FlatHeaderTranslatorInterface
 {
@@ -14,18 +15,31 @@ class AttributeFlatHeaderTranslator implements FlatHeaderTranslatorInterface
      * @var LabelTranslatorInterface
      */
     private $labelTranslator;
+
     /**
      * @var AttributeColumnsResolver
      */
     private $attributeColumnsResolver;
+
     /**
      * @var AttributeColumnInfoExtractor
      */
     private $attributeColumnInfoExtractor;
+
     /**
      * @var GetChannelTranslations
      */
     private $getChannelTranslations;
+
+    /**
+     * @var LanguageTranslator
+     */
+    private $languageTranslator;
+
+    /**
+     * @var CurrencyTranslator
+     */
+    private $currencyTranslator;
 
     private $channelTranslationCache = null;
 
@@ -33,12 +47,16 @@ class AttributeFlatHeaderTranslator implements FlatHeaderTranslatorInterface
         LabelTranslatorInterface $labelTranslator,
         AttributeColumnsResolver $attributeColumnsResolver,
         AttributeColumnInfoExtractor $attributeColumnInfoExtractor,
-        GetChannelTranslations $getChannelTranslations
+        GetChannelTranslations $getChannelTranslations,
+        LanguageTranslator $languageTranslator,
+        CurrencyTranslator $currencyTranslator
     ) {
         $this->labelTranslator = $labelTranslator;
         $this->attributeColumnInfoExtractor = $attributeColumnInfoExtractor;
         $this->attributeColumnsResolver = $attributeColumnsResolver;
         $this->getChannelTranslations = $getChannelTranslations;
+        $this->languageTranslator = $languageTranslator;
+        $this->currencyTranslator = $currencyTranslator;
     }
 
     public function supports(string $columnName): bool
@@ -58,12 +76,11 @@ class AttributeFlatHeaderTranslator implements FlatHeaderTranslatorInterface
 
         $extraInformation = [];
         if ($attribute->isLocalizable()) {
-            $displayLocale = \Locale::getPrimaryLanguage($locale);
-            list($language, $region) = explode('_', $columnInformations['locale_code']);
-            $extraInformation[] = Intl::getLanguageBundle()->getLanguageName(
-                $language,
-                $region,
-                $displayLocale
+            $localeCode = $columnInformations['locale_code'];
+            $extraInformation[] = $this->languageTranslator->translate(
+                $localeCode,
+                $locale,
+                sprintf('[%s]', $localeCode)
             );
         }
 
@@ -79,10 +96,11 @@ class AttributeFlatHeaderTranslator implements FlatHeaderTranslatorInterface
         }
 
         if ($attribute->getType() === 'pim_catalog_price_collection') {
-            $language = \Locale::getPrimaryLanguage($locale);
-            $currencyLabelized = Intl::getCurrencyBundle()->getCurrencyName(
-                $columnInformations['price_currency'],
-                $language
+            $currencyCode  = $columnInformations['price_currency'];
+            $currencyLabelized = $this->currencyTranslator->translate(
+                $currencyCode,
+                $locale,
+                sprintf('[%s]', $currencyCode)
             );
 
             $columnLabelized = sprintf('%s (%s)', $columnLabelized, $currencyLabelized);
