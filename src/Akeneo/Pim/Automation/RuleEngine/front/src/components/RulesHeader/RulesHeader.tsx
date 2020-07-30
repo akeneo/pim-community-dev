@@ -19,6 +19,7 @@ type Props = {
   title: string;
   unsavedChanges?: boolean;
   secondaryButton?: ReactElement;
+  dropdown?: ReactElement;
 };
 
 const RulesHeader: React.FC<Props> = ({
@@ -28,6 +29,7 @@ const RulesHeader: React.FC<Props> = ({
   title,
   unsavedChanges = false,
   secondaryButton,
+  dropdown,
 }) => {
   const translate = useTranslate();
 
@@ -41,6 +43,7 @@ const RulesHeader: React.FC<Props> = ({
             viewName='pim-rule-index-user-navigation'
           />
           <div className='AknTitleContainer-actionsContainer AknButtonList'>
+            {dropdown}
             <div className='AknButtonList-item'>{secondaryButton}</div>
             <PrimaryButton form={formId} type='submit'>
               {translate(buttonLabel)}
