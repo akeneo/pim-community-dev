@@ -26,8 +26,10 @@ final class AkeneoDataQualityInsightsExtension extends Extension
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('commands.yml');
         $loader->load('criteria.yml');
         $loader->load('elasticsearch.yml');
+        $loader->load('jobs.yml');
         $loader->load('feature_flags.yml');
         $loader->load('queries.yml');
         $loader->load('repositories.yml');

@@ -25,3 +25,10 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.consolidate_product_model_axes_rates'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\InitDataQualityInsightsJobsSubscriber:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\InitializeJobs'
+        tags:
+            - { name: kernel.event_subscriber }
+

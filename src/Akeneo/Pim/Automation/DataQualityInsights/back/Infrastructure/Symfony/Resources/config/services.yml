@@ -131,3 +131,21 @@ services:
             - '@akeneo.pim.enrichment.completeness.query.get_product_masks'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\GetNonRequiredProductModelAttributesMaskQuery'
             - '@pim_catalog.repository.product_model'
+
+    akeneo.pim.automation.data_quality_insights.create_missing_products_criteria_evaluations:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateMissingCriteriaEvaluations
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpdatedProductsWithoutUpToDateEvaluationQuery'
+            - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
+
+    akeneo.pim.automation.data_quality_insights.create_missing_product_models_criteria_evaluations:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateMissingCriteriaEvaluations
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpdatedProductModelsWithoutUpToDateEvaluationQuery'
+            - '@akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\InitializeJobs:
+        public: true
+        arguments:
+            - '@pim_enrich.repository.job_instance'
+            - '@database_connection'
