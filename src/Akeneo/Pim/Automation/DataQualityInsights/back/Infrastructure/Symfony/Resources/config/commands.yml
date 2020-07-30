@@ -40,13 +40,6 @@ services:
         tags:
             - { name: 'console.command' }
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\SchedulePeriodicTasksCommand:
-        arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\SchedulePeriodicTasks'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-        tags:
-            - { name: 'console.command' }
-
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\PurgeOutdatedDataCommand:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\PurgeOutdatedData'
