@@ -1,6 +1,8 @@
 import React, {PropsWithChildren, ReactElement} from 'react';
 import styled from 'styled-components';
-import {useAkeneoTheme, CloseIcon, Button} from '@akeneo-pim-community/shared';
+import {useAkeneoTheme} from '../hooks';
+import {CloseIcon} from '../icons';
+import {Button} from '../components';
 
 const Modal = styled.div`
   position: fixed;
@@ -34,7 +36,7 @@ const ModalCloseButtonContainer = styled.button`
   }
 `;
 
-const ModalConfirmButton = styled(Button).attrs(() => ({color: 'green'}))`
+const ModalConfirmButton = styled(Button)`
   position: absolute;
   top: 24px;
   right: 24px;
@@ -50,11 +52,11 @@ const ModalCloseButton = ({title, ...props}: {title: string} & any) => {
   );
 };
 
-type ModalWithIllustationProps = {
+type ModalWithIllustrationProps = {
   illustration: ReactElement;
 };
 
-const ModalBodyWithIllustration = ({illustration, children}: PropsWithChildren<ModalWithIllustationProps>) => (
+const ModalBodyWithIllustration = ({illustration, children}: PropsWithChildren<ModalWithIllustrationProps>) => (
   <div className='AknFullPage-content AknFullPage-content--withIllustration'>
     <div>{illustration}</div>
     <div>{children}</div>

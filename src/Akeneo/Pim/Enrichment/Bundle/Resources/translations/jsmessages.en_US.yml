@@ -373,6 +373,10 @@ pim_datagrid:
             csv_grid_context: CSV (Grid context)
             xlsx_all: Excel (All attributes)
             xlsx_grid_context: Excel (Grid context)
+            configurator:
+                subtitle: Quick export
+                title: Select your action
+                product_count: "{0}0 products|{1}1 product|]1, Inf[{{ count }} products"
         mass_edit: Bulk actions
         sequential_edit: Sequential edit
         mass_delete: Mass delete
