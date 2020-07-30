@@ -47,8 +47,8 @@ export const SetGroupsActionLine: React.FC<ActionLineProps> = ({
   }, []);
 
   const validateGroupCodes = (groupCodes: GroupCode[]) => {
-    if (!groupCodes || !unexistingGroupCodes.length) {
-      return true;
+    if (!groupCodes?.length) {
+      return translate('pimee_catalog_rule.exception.required');
     }
 
     const unknownGroupCodes: GroupCode[] = groupCodes.filter(
