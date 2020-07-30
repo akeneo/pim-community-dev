@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatH
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnsResolver;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Channel\GetChannelTranslations;
 use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
 use Symfony\Component\Intl\Intl;
 
@@ -21,15 +22,23 @@ class AttributeFlatHeaderTranslator implements FlatHeaderTranslatorInterface
      * @var AttributeColumnInfoExtractor
      */
     private $attributeColumnInfoExtractor;
+    /**
+     * @var GetChannelTranslations
+     */
+    private $getChannelTranslations;
+
+    private $channelTranslationCache = null;
 
     public function __construct(
         LabelTranslatorInterface $labelTranslator,
         AttributeColumnsResolver $attributeColumnsResolver,
-        AttributeColumnInfoExtractor $attributeColumnInfoExtractor
+        AttributeColumnInfoExtractor $attributeColumnInfoExtractor,
+        GetChannelTranslations $getChannelTranslations
     ) {
         $this->labelTranslator = $labelTranslator;
         $this->attributeColumnInfoExtractor = $attributeColumnInfoExtractor;
         $this->attributeColumnsResolver = $attributeColumnsResolver;
+        $this->getChannelTranslations = $getChannelTranslations;
     }
 
     public function supports(string $columnName): bool
@@ -49,11 +58,20 @@ class AttributeFlatHeaderTranslator implements FlatHeaderTranslatorInterface
 
         $extraInformation = [];
         if ($attribute->isLocalizable()) {
-            $extraInformation[] = $columnInformations['locale_code'];
+            $displayLocale = \Locale::getPrimaryLanguage($locale);
+            list($language, $region) = explode('_', $columnInformations['locale_code']);
+            $extraInformation[] = Intl::getLanguageBundle()->getLanguageName(
+                $language,
+                $region,
+                $displayLocale
+            );
         }
 
         if ($attribute->isScopable()) {
-            $extraInformation[] = $columnInformations['scope_code'];
+            $channelCode = $columnInformations['scope_code'];
+            $channelTranslations = $this->getChannelTranslations($locale);
+
+            $extraInformation[] = $channelTranslations[$channelCode] ?? sprintf('[%s]', $channelCode);
         }
 
         if (!empty($extraInformation)) {
@@ -75,5 +93,14 @@ class AttributeFlatHeaderTranslator implements FlatHeaderTranslatorInterface
         }
 
         return $columnLabelized;
+    }
+
+    private function getChannelTranslations($locale)
+    {
+        if ($this->channelTranslationCache === null) {
+            $this->channelTranslationCache = $this->getChannelTranslations->byLocale($locale);
+        }
+
+        return $this->channelTranslationCache;
     }
 }

@@ -71,6 +71,11 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo.pim.structure.query.get_channel_translations:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Channel\SqlGetChannelTranslations
+        arguments:
+            - '@database_connection'
+
     akeneo.pim.structure.query.get_attribute_translations:
         class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\SqlGetAttributeTranslations
         arguments:
