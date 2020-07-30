@@ -83,10 +83,10 @@ spec:
       volumes:
         - name: google-cloud-pim-pubsub-key
           secret:
-          secretName: pim-secrets
-          items:
-          - key: srntPimPubsubKey
-          path: pubsub.json
+            secretName: pim-secrets
+            items:
+            - key: srntPimPubsubKey
+              path: pubsub.json
         - name: google-cloud-pim-storage-key
           secret:
             secretName: pim-secrets
