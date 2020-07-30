@@ -1,5 +1,7 @@
 /* global define */
 
+'use strict';
+
 /**
  * Panel with action buttons
  *
@@ -14,16 +16,21 @@ define(
         'backbone',
         'pim/template/datagrid/actions-group',
         'pim/form',
-        'oro/mediator'
+        'oro/mediator',
+        'react',
+        'react-dom',
+        'pimdatagrid/datagrid/quickexport/component/QuickExportConfigurator'
     ], function(
         _,
         __,
         Backbone,
         groupTemplate,
         BaseForm,
-        mediator
+        mediator,
+        React,
+        ReactDOM,
+        {QuickExportConfigurator}
     ) {
-    'use strict';
 
     const ActionsPanel = BaseForm.extend({
         appendToGrid: false,
@@ -121,10 +128,24 @@ define(
             }.bind(this));
 
             _.each(groupedLaunchers, function (groupLaunchers, groupName) {
-                const $dropdown = this.$el.find('.' + this.getGroupClassname(groupName) + ' .AknDropdown-menu');
-                _.each(groupLaunchers, (launcher) => {
-                    $dropdown.append(launcher.renderAsListItem().$el);
+                const button = this.el.querySelector(`.${this.getGroupClassname(groupName)}`);
+
+                const Component = React.createElement(QuickExportConfigurator, {
+                    onActionLaunch: (actionName) => {
+                        const launcher = groupLaunchers.find(
+                            launcher => launcher.action.route_parameters.actionName === actionName
+                        );
+
+                        if (undefined === launcher) {
+                            throw new Error(`Action of type "${actionName}" not found.`)
+                        }
+
+
+                        launcher.action.run();
+                    }
                 });
+
+                ReactDOM.render(Component, button);
             }.bind(this));
 
             return this;
