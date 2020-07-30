@@ -8,12 +8,6 @@ services:
         tags:
             - { name: 'console.command' }
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\ConsolidateDashboardRatesCommand:
-        arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateDashboardRates'
-        tags:
-            - { name: 'console.command' }
-
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\DemoHelperCommand:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\ProductValueInDatabaseDictionarySource'
@@ -37,11 +31,5 @@ services:
             $aspellDictionary: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionary'
             $aspellDictionaryGenerator: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionaryGenerator'
             $allActivatedLocalesQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetAllActivatedLocalesQuery'
-        tags:
-            - { name: 'console.command' }
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\PurgeOutdatedDataCommand:
-        arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\PurgeOutdatedData'
         tags:
             - { name: 'console.command' }
