@@ -17,12 +17,6 @@ services:
             - '@filesystem'
             - '%kernel.project_dir%'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\InitDataQualityInsightsJobsSubscriber:
-        arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\InitializeJobs'
-        tags:
-            - { name: kernel.event_subscriber }
-
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\CreateEvaluationCriteriaOnProductIgnoredWordSubscriber:
         arguments:
             $dataQualityInsightsFeature: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'

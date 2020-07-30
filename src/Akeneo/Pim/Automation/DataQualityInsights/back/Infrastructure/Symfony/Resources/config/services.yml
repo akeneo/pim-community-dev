@@ -12,12 +12,6 @@ services:
             - '@database_connection'
             - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\InitializeJobs:
-        public: true
-        arguments:
-            - '@pim_enrich.repository.job_instance'
-            - '@database_connection'
-
     akeneo.pim.automation.data_quality_insights.create_missing_products_criteria_evaluations:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateMissingCriteriaEvaluations
         arguments:
