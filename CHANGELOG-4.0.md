@@ -1,10 +1,12 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9379: attribute search by label was not working in attribute group add attributes
+
 # 4.0.45 (2020-07-31)
 
 # 4.0.44 (2020-07-28)
-
-- PIM-9379: attribute search by label was not working in attribute group add attributes
 
 # 4.0.43 (2020-07-27)
 
