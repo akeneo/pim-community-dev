@@ -33,6 +33,7 @@ class AkeneoPimEnrichmentExtension extends Extension
         $loader->load('connector/cleaners.yml');
         $loader->load('connector/processors.yml');
         $loader->load('connector/use_cases.yml');
+        $loader->load('connector/flat_translators.yml');
         $loader->load('api_filters.yml');
         $loader->load('associations.yml');
         $loader->load('builders.yml');

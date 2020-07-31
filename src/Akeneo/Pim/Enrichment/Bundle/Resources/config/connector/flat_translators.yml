@@ -1,0 +1,6 @@
+services:
+  pim_enrich.connector.flat_translators.product_translator:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\NullFlatTranslator
+
+  pim_enrich.connector.flat_translators.product_model_translator:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\NullFlatTranslator

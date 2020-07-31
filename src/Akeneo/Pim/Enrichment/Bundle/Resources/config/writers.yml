@@ -54,6 +54,7 @@ services:
             - '@pim_connector.writer.file.media_exporter_path_generator'
             - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_family_codes'
             - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_attribute_codes'
+            - '@pim_enrich.connector.flat_translators.product_translator'
             - ['pim_catalog_file', 'pim_catalog_image']
 
     pim_connector.writer.file.csv_product_model:
@@ -64,6 +65,7 @@ services:
             - '@pim_connector.writer.file.product_model.flat_item_buffer_flusher'
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.writer.file.media_exporter_path_generator'
+            - '@pim_enrich.connector.flat_translators.product_model_translator'
             - ['pim_catalog_file', 'pim_catalog_image']
 
     pim_connector.writer.file.csv_product_quick_export:
@@ -76,6 +78,7 @@ services:
             - '@pim_connector.writer.file.media_exporter_path_generator'
             - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_family_codes'
             - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_attribute_codes'
+            - '@pim_enrich.connector.flat_translators.product_translator'
             - ['pim_catalog_file', 'pim_catalog_image']
             - 'filePathProduct'
 
@@ -87,6 +90,7 @@ services:
             - '@pim_connector.writer.file.product_model_quick_export.flat_item_buffer_flusher'
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.writer.file.media_exporter_path_generator'
+            - '@pim_enrich.connector.flat_translators.product_model_translator'
             - ['pim_catalog_file', 'pim_catalog_image']
             - 'filePathProductModel'
 
@@ -100,6 +104,7 @@ services:
             - '@pim_connector.writer.file.media_exporter_path_generator'
             - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_family_codes'
             - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_attribute_codes'
+            - '@pim_enrich.connector.flat_translators.product_translator'
             - ['pim_catalog_file', 'pim_catalog_image']
 
     pim_connector.writer.file.xlsx_product_model:
@@ -110,6 +115,7 @@ services:
             - '@pim_connector.writer.file.product_model.flat_item_buffer_flusher'
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.writer.file.media_exporter_path_generator'
+            - '@pim_enrich.connector.flat_translators.product_model_translator'
             - ['pim_catalog_file', 'pim_catalog_image']
 
     pim_connector.writer.file.xlsx_product_quick_export:
@@ -122,6 +128,7 @@ services:
             - '@pim_connector.writer.file.media_exporter_path_generator'
             - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_family_codes'
             - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_attribute_codes'
+            - '@pim_enrich.connector.flat_translators.product_translator'
             - ['pim_catalog_file', 'pim_catalog_image']
             - 'filePathProduct'
 
@@ -133,6 +140,7 @@ services:
             - '@pim_connector.writer.file.product_model_quick_export.flat_item_buffer_flusher'
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.writer.file.media_exporter_path_generator'
+            - '@pim_enrich.connector.flat_translators.product_model_translator'
             - ['pim_catalog_file', 'pim_catalog_image']
             - 'filePathProductModel'
 
