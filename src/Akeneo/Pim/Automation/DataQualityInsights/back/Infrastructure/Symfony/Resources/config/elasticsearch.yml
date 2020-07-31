@@ -7,13 +7,6 @@ services:
         tags:
             - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\GetRatesForProductProjection:
-        arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpToDateLatestProductAxesRanksQuery'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductIdsFromProductIdentifiersQuery'
-        tags:
-            - { name: 'akeneo.pim.enrichment.product.query.indexing_additional_properties' }
-
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetNumberOfProductsImpactedByAttributeOptionSpellingMistakesQuery:
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
