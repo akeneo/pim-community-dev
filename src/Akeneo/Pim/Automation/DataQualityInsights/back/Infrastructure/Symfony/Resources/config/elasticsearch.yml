@@ -3,3 +3,10 @@ services:
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpToDateLatestProductAxesRanksQuery'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\GetRatesForProductProjection:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpToDateLatestProductAxesRanksQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductIdsFromProductIdentifiersQuery'
+        tags:
+            - { name: 'akeneo.pim.enrichment.product.query.indexing_additional_properties' }
