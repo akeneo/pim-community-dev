@@ -1,4 +1,4 @@
-import React, {ReactNode, useState, Children, isValidElement, cloneElement, useEffect} from 'react';
+import React, {ReactNode, Children, isValidElement, cloneElement, ReactElement, ReactNodeArray} from 'react';
 import {DependenciesProvider, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {
   AkeneoThemeProvider,
@@ -13,6 +13,7 @@ import {
   useAkeneoTheme,
   CSVFileIcon,
   XLSXFileIcon,
+  useStorageState,
 } from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 
@@ -21,6 +22,7 @@ const Container = styled.div`
   font-size: ${({theme}: AkeneoThemedProps) => theme.fontSize.default};
   cursor: default;
   text-transform: none;
+  line-height: initial;
 `;
 
 const Content = styled.div`
@@ -41,9 +43,11 @@ const Title = styled.div`
   margin: 10px 0 60px;
 `;
 
-const OptionContainer = styled.div<{isSelected: boolean}>`
+const OptionContainer = styled.div<{isSelected: boolean; withIcon: boolean}>`
   width: 128px;
-  padding: 24px 0;
+  padding: ${({withIcon}) => (withIcon ? 24 : 12)}px 0;
+  height: ${({withIcon}) => (withIcon ? '128px' : 'auto')};
+  justify-content: space-around;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -61,8 +65,9 @@ const OptionContainer = styled.div<{isSelected: boolean}>`
   }
 `;
 
-const SelectContainer = styled.div`
+const SelectContainer = styled.div<{isVisible: boolean}>`
   display: flex;
+  opacity: ${({isVisible}) => (isVisible ? 1 : 0)};
 
   :not(:first-child) {
     margin-top: 40px;
@@ -70,18 +75,18 @@ const SelectContainer = styled.div`
 `;
 
 type OptionProps = {
-  code: string;
+  value: string;
   isSelected?: boolean;
   children?: ReactNode;
   onSelect?: () => void;
 };
 
-const Option = ({isSelected, code, children, onSelect}: OptionProps) => {
+const Option = ({isSelected, children, onSelect}: OptionProps) => {
   const theme = useAkeneoTheme();
-  const translate = useTranslate();
+  const withIcon = Children.toArray(children).some((child: ReactNode) => isValidElement<IconProps>(child));
 
   return (
-    <OptionContainer isSelected={!!isSelected} onClick={onSelect}>
+    <OptionContainer withIcon={withIcon} isSelected={!!isSelected} onClick={onSelect}>
       {Children.map(children, child => {
         if (!isValidElement<IconProps>(child)) {
           return child;
@@ -91,36 +96,65 @@ const Option = ({isSelected, code, children, onSelect}: OptionProps) => {
           color: isSelected ? theme.color.blue100 : child.props.color,
         });
       })}
-      {translate(`pim_datagrid.mass_action.quick_export.configurator.${code}`)}
     </OptionContainer>
   );
 };
 
 type SelectProps = {
   children?: ReactNode;
-  onChange: (value: string | null) => void;
+  name: string;
+  value?: string | null;
+  isVisible?: boolean;
+  onChange?: (value: string | null) => void;
 };
 
-const Select = ({onChange, children}: SelectProps) => {
-  const [selectedOptionCode, setSelectedOptionCode] = useState<string | null>(null);
-
-  useEffect(() => {
-    onChange(selectedOptionCode);
-  }, [selectedOptionCode]);
-
+const Select = ({value, onChange, isVisible, children}: SelectProps) => {
   return (
-    <SelectContainer>
+    <SelectContainer isVisible={!!isVisible}>
       {Children.map(children, child => {
         if (!isValidElement<OptionProps>(child)) {
           return child;
         }
 
         return cloneElement<OptionProps>(child, {
-          isSelected: child.props.code === selectedOptionCode,
-          onSelect: () => setSelectedOptionCode(child.props.code),
+          isSelected: child.props.value === value,
+          onSelect: () => undefined !== onChange && onChange(child.props.value),
         });
       })}
     </SelectContainer>
+  );
+};
+
+type FormValue = {
+  [key: string]: string;
+};
+
+type FormProps = {
+  children?: ReactNode;
+  value: FormValue;
+  onChange: (value: FormValue) => void;
+};
+
+const Form = ({value, onChange, children}: FormProps) => {
+  return (
+    <>
+      {Children.map(children, (child, index) => {
+        if (!isValidElement<SelectProps>(child)) {
+          return child;
+        }
+
+        const options = children as ReactNodeArray;
+        const previousOption = options[index - 1] as ReactElement<SelectProps>;
+
+        return cloneElement<SelectProps>(child, {
+          onChange: (newValue: string) => {
+            onChange({...value, [child.props.name]: newValue});
+          },
+          isVisible: !(index > 0 && undefined !== previousOption && undefined === value[previousOption.props.name]),
+          value: undefined !== value[child.props.name] ? value[child.props.name] : null,
+        });
+      })}
+    </>
   );
 };
 
@@ -137,11 +171,9 @@ const QuickExportConfigurator = (props: QuickExportConfiguratorProps) => (
 );
 
 const QuickExportConfiguratorContainer = ({onActionLaunch}: QuickExportConfiguratorProps) => {
-  const [type, setType] = useState<string | null>(null);
-  const [context, setContext] = useState<string | null>(null);
-  const [withLabel, setWithLabel] = useState<string | null>(null);
   const [isModalOpen, openModal, closeModal] = useToggleState(false);
   const translate = useTranslate();
+  const [formValue, setFormValue] = useStorageState({}, 'quick_export_configuration');
 
   useShortcut(Key.Escape, closeModal);
 
@@ -159,14 +191,18 @@ const QuickExportConfiguratorContainer = ({onActionLaunch}: QuickExportConfigura
               <ModalConfirmButton
                 onClick={() => {
                   closeModal();
-                  console.log(type, context, withLabel);
+
                   onActionLaunch(
-                    `quick_export${'grid-context' === context ? `_grid_context` : ''}${
-                      'with-labels' === withLabel ? `_with_labels` : ''
-                    }_${type}`
+                    `quick_export${'grid-context' === formValue['context'] ? `_grid_context` : ''}${
+                      'with-labels' === formValue['with-labels'] ? `_with_labels` : ''
+                    }_${formValue['type']}`
                   );
                 }}
-                disabled={null === type || null === context || null === withLabel}
+                disabled={
+                  undefined === formValue['type'] ||
+                  undefined === formValue['context'] ||
+                  undefined === formValue['with-labels']
+                }
               >
                 {translate('pim_common.export')}
               </ModalConfirmButton>
@@ -178,26 +214,39 @@ const QuickExportConfiguratorContainer = ({onActionLaunch}: QuickExportConfigura
                 )}`}
               </Subtitle>
               <Title>{translate('pim_datagrid.mass_action.quick_export.configurator.title')}</Title>
-              <Select onChange={setType}>
-                <Option code="csv">
-                  <CSVFileIcon size={48} />
-                </Option>
-                <Option code="xlsx">
-                  <XLSXFileIcon size={48} />
-                </Option>
-              </Select>
-              {null !== type && (
-                <Select onChange={setContext}>
-                  <Option code="grid-context" />
-                  <Option code="all-attributes" />
+              <Form
+                value={formValue}
+                onChange={(newValue: FormValue) => {
+                  setFormValue(newValue);
+                }}
+              >
+                <Select name="type">
+                  <Option value="csv">
+                    <CSVFileIcon size={48} />
+                    {translate('pim_datagrid.mass_action.quick_export.configurator.csv')}
+                  </Option>
+                  <Option value="xlsx">
+                    <XLSXFileIcon size={48} />
+                    {translate('pim_datagrid.mass_action.quick_export.configurator.xlsx')}
+                  </Option>
                 </Select>
-              )}
-              {null !== context && (
-                <Select onChange={setWithLabel}>
-                  <Option code="with-codes" />
-                  <Option code="with-labels" />
+                <Select name="context">
+                  <Option value="grid-context">
+                    {translate('pim_datagrid.mass_action.quick_export.configurator.grid_context')}
+                  </Option>
+                  <Option value="all-attributes">
+                    {translate('pim_datagrid.mass_action.quick_export.configurator.all_attributes')}
+                  </Option>
                 </Select>
-              )}
+                <Select name="with-labels">
+                  <Option value="with-codes">
+                    {translate('pim_datagrid.mass_action.quick_export.configurator.with_codes')}
+                  </Option>
+                  <Option value="with-labels">
+                    {translate('pim_datagrid.mass_action.quick_export.configurator.with_labels')}
+                  </Option>
+                </Select>
+              </Form>
             </Content>
           </Modal>
         )}
