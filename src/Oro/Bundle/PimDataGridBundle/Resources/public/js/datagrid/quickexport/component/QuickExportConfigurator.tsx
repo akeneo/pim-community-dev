@@ -160,6 +160,7 @@ const Form = ({value, onChange, children}: FormProps) => {
 
 type QuickExportConfiguratorProps = {
   onActionLaunch: (actionName: string) => void;
+  getCount: () => number;
 };
 
 const QuickExportConfigurator = (props: QuickExportConfiguratorProps) => (
@@ -170,15 +171,15 @@ const QuickExportConfigurator = (props: QuickExportConfiguratorProps) => (
   </DependenciesProvider>
 );
 
-const QuickExportConfiguratorContainer = ({onActionLaunch}: QuickExportConfiguratorProps) => {
+const QuickExportConfiguratorContainer = ({onActionLaunch, getCount}: QuickExportConfiguratorProps) => {
   const [isModalOpen, openModal, closeModal] = useToggleState(false);
   const translate = useTranslate();
-  const [formValue, setFormValue] = useStorageState({}, 'quick_export_configuration');
+  const [formValue, setFormValue] = useStorageState<FormValue>({}, 'quick_export_configuration');
 
   useShortcut(Key.Escape, closeModal);
 
   //TODO
-  const productCount = 3;
+  const productCount = getCount();
 
   return (
     <>

@@ -1,6 +1,9 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, SetStateAction, Dispatch} from 'react';
 
-const useStorageState = <StateType>(defaultValue: StateType, key: string) => {
+const useStorageState = <StateType>(
+  defaultValue: StateType,
+  key: string
+): [StateType, Dispatch<SetStateAction<StateType>>] => {
   const storageValue = localStorage.getItem(key) as string;
   const [value, setValue] = useState<StateType>(null !== storageValue ? JSON.parse(storageValue) : defaultValue);
 
