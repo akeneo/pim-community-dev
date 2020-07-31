@@ -142,7 +142,6 @@ class AttributeGroupController
         $queryParameters = array_merge($defaultParameters, $request->query->all());
         $searchFilters = json_decode($queryParameters['search'] ?? '[]', true);
         if (null === $searchFilters) {
-            dump('json');
             throw new BadRequestHttpException('The search query parameter must be a valid JSON.');
         }
 
