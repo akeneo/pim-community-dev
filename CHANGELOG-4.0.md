@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.45 (2020-07-31)
+
 ## Bug fixes
 
 - PIM-9375: API Asset - add an error message
