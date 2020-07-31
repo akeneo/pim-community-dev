@@ -58,7 +58,7 @@ class RemoveNonExistingProductValuesSubscriberSpec extends ObjectBehavior
         $this->launchRemoveNonExistingProductValuesJob($event);
     }
 
-    function it_launches_the_job_with_filters(
+    function it_launches_the_remove_non_existing_product_values_job(
         TokenStorageInterface $tokenStorage,
         JobInstanceRepository $jobInstanceRepository,
         JobLauncherInterface $jobLauncher

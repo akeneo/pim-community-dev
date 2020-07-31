@@ -41,7 +41,7 @@ class RemoveNonExistingProductValuesTaskletSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
     }
 
-    function it_removes_non_existing_product_values_from_filters(
+    function it_removes_non_existing_product_values_from_attribute_code_and_options(
         GetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope $getProductAndProductModelIdsWithValues,
         GetAttributes $getAttributes,
         CursorableRepositoryInterface $productRepository,
