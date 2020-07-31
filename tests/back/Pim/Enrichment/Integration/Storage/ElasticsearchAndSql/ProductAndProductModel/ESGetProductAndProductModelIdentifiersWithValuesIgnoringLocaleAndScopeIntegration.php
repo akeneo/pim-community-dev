@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\ProductAndProductModel;
 
 use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -31,11 +30,9 @@ final class ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndSco
 
     public function test_it_returns_products_and_product_models_using_pagination()
     {
-        $attribute = new Attribute();
-        $attribute->setCode('color');
-        $attribute->setBackendType('option');
         $results = $this->eSGetProductAndProductModelIdentifiers->forAttributeAndValues(
-            $attribute,
+            'color',
+            'option',
             ['blue']
         );
 
@@ -52,11 +49,9 @@ final class ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndSco
 
     public function test_it_returns_products_and_product_models_for_a_localizable_attribute()
     {
-        $attribute = new Attribute();
-        $attribute->setCode('name');
-        $attribute->setBackendType('text');
         $results = $this->eSGetProductAndProductModelIdentifiers->forAttributeAndValues(
-            $attribute,
+            'name',
+            'text',
             ['athena']
         );
 
