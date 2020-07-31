@@ -1,11 +1,14 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9288: Product completeness was not up to date after deletion of an option for required attribute
+
 # 4.0.46 (2020-07-31)
 
 ## Bug fixes
 
 - PIM-9379: attribute search by label was not working in attribute group add attributes
-- PIM-9288: Product completeness was not up to date after deletion of an option for required attribute
 
 # 4.0.45 (2020-07-31)
 
