@@ -8,8 +8,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\GetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
@@ -21,7 +21,7 @@ class RemoveNonExistingProductValuesTaskletSpec extends ObjectBehavior
 {
     function let(
         GetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope $getProductAndProductModelIdsWithValues,
-        AttributeRepositoryInterface $attributeRepository,
+        GetAttributes $getAttributes,
         CursorableRepositoryInterface $productRepository,
         CursorableRepositoryInterface $productModelRepository,
         BulkSaverInterface $productSaver,
@@ -31,7 +31,7 @@ class RemoveNonExistingProductValuesTaskletSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith(
             $getProductAndProductModelIdsWithValues,
-            $attributeRepository,
+            $getAttributes,
             $productRepository,
             $productModelRepository,
             $productSaver,
@@ -44,7 +44,7 @@ class RemoveNonExistingProductValuesTaskletSpec extends ObjectBehavior
 
     function it_removes_non_existing_product_values_from_filters(
         GetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope $getProductAndProductModelIdsWithValues,
-        AttributeRepositoryInterface $attributeRepository,
+        GetAttributes $getAttributes,
         CursorableRepositoryInterface $productRepository,
         CursorableRepositoryInterface $productModelRepository,
         BulkSaverInterface $productSaver,
@@ -56,14 +56,14 @@ class RemoveNonExistingProductValuesTaskletSpec extends ObjectBehavior
             [
                 'field' => 'color',
                 'operator' => Operators::IN_LIST,
-                'values' => ['red', 'blue'],
+                'value' => ['red', 'blue'],
             ]
         ]]);
         $stepExecution->getJobParameters()->willReturn($jobParameter);
 
-        $attribute = new Attribute();
-        $attributeRepository->findOneByIdentifier('color')->willReturn($attribute);
-        $getProductAndProductModelIdsWithValues->forAttributeAndValues($attribute, ['red', 'blue'])->willReturn(
+        $attribute = $this->createAttribute();
+        $getAttributes->forCode('color')->willReturn($attribute);
+        $getProductAndProductModelIdsWithValues->forAttributeAndValues('color', 'option', ['red', 'blue'])->willReturn(
             new \ArrayIterator([
                 ['code1', 'code2'],
                 ['code3'],
@@ -88,28 +88,26 @@ class RemoveNonExistingProductValuesTaskletSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_filter_concerns_an_unknown_attribute(
-        AttributeRepositoryInterface $attributeRepository,
+        GetAttributes $getAttributes,
         StepExecution $stepExecution
     ) {
         $jobParameter = new JobParameters(['filters' => [
             [
                 'field' => 'color',
                 'operator' => Operators::IN_LIST,
-                'values' => ['red', 'blue'],
+                'value' => ['red', 'blue'],
             ]
         ]]);
         $stepExecution->getJobParameters()->willReturn($jobParameter);
 
-        $attributeRepository->findOneByIdentifier('color')->willReturn(null);
+        $getAttributes->forCode('color')->willReturn(null);
 
         $this->shouldThrow(new \InvalidArgumentException('The "color" attribute code was not found'))
             ->during('execute');
     }
 
-    function it_throws_an_exception_when_filter_is_not_well_formed(
-        AttributeRepositoryInterface $attributeRepository,
-        StepExecution $stepExecution
-    ) {
+    function it_throws_an_exception_when_filter_is_not_well_formed(StepExecution $stepExecution)
+    {
         $jobParameter = new JobParameters(['filters' => [
             [
                 'code' => 'color',
@@ -117,9 +115,22 @@ class RemoveNonExistingProductValuesTaskletSpec extends ObjectBehavior
         ]]);
         $stepExecution->getJobParameters()->willReturn($jobParameter);
 
-        $attributeRepository->findOneByIdentifier('color')->willReturn(null);
-
         $this->shouldThrow(\InvalidArgumentException::class)
             ->during('execute');
+    }
+
+    protected function createAttribute(): Attribute
+    {
+        return new Attribute(
+            'color',
+            'pim_catalog_simpleselect',
+            [],
+            false,
+            false,
+            null,
+            true,
+            'option',
+            []
+        );
     }
 }

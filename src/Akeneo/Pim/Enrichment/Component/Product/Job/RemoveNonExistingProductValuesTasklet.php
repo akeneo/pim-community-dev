@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Job;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\GetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
@@ -28,8 +28,8 @@ final class RemoveNonExistingProductValuesTasklet implements TaskletInterface
     /** @var StepExecution */
     private $stepExecution;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    /** @var GetAttributes */
+    private $getAttributes;
 
     /** @var GetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope */
     private $getProductAndProductModelIdentifiersWithValues;
@@ -54,7 +54,7 @@ final class RemoveNonExistingProductValuesTasklet implements TaskletInterface
 
     public function __construct(
         GetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope $getProductAndProductModelIdentifiersWithValues,
-        AttributeRepositoryInterface $attributeRepository,
+        GetAttributes $getAttributes,
         CursorableRepositoryInterface $productRepository,
         CursorableRepositoryInterface $productModelRepository,
         BulkSaverInterface $productSaver,
@@ -63,7 +63,7 @@ final class RemoveNonExistingProductValuesTasklet implements TaskletInterface
         int $batchSize
     ) {
         $this->getProductAndProductModelIdentifiersWithValues = $getProductAndProductModelIdentifiersWithValues;
-        $this->attributeRepository = $attributeRepository;
+        $this->getAttributes = $getAttributes;
         $this->productRepository = $productRepository;
         $this->productModelRepository = $productModelRepository;
         $this->productSaver = $productSaver;
@@ -94,14 +94,14 @@ final class RemoveNonExistingProductValuesTasklet implements TaskletInterface
         $attributeCode = $filter['field'];
         $values = $filter['value'];
 
-        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+        $attribute = $this->getAttributes->forCode($attributeCode);
         if (null === $attribute) {
             throw new \InvalidArgumentException(sprintf('The "%s" attribute code was not found', $attributeCode));
         }
 
         $batchIdentifiers = $this->getProductAndProductModelIdentifiersWithValues->forAttributeAndValues(
-            $attribute->getCode(),
-            $attribute->getBackendType(),
+            $attribute->code(),
+            $attribute->backendType(),
             $values
         );
 
