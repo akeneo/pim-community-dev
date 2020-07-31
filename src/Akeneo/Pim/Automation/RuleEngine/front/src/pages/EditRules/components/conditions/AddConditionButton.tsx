@@ -25,7 +25,7 @@ type Props = {
 
 // Add here the fields handled by the rule conditions.
 // Be sure that the associated UI component exists to display it correctly.
-const SYSTEM_FIELDS = ['family', 'categories', 'completeness', 'groups'];
+const SYSTEM_FIELDS = ['family', 'categories', 'completeness', 'groups', 'enabled'];
 
 const ATTRIBUTE_TYPES = [
   'pim_catalog_multiselect',
