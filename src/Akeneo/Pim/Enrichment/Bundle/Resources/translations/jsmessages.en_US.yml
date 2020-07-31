@@ -377,6 +377,12 @@ pim_datagrid:
                 subtitle: Quick export
                 title: Select your action
                 product_count: "{0}0 products|{1}1 product|]1, Inf[{{ count }} products"
+                csv: CSV
+                xlsx: XLSX
+                grid-context: Grid context
+                all-attributes: All attributes
+                with-codes: With codes
+                with-labels: With labels
         mass_edit: Bulk actions
         sequential_edit: Sequential edit
         mass_delete: Mass delete
