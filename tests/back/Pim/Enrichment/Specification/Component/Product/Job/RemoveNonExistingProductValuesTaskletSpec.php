@@ -6,7 +6,6 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Job;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\GetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
@@ -52,13 +51,10 @@ class RemoveNonExistingProductValuesTaskletSpec extends ObjectBehavior
         EntityManagerClearerInterface $entityManagerClearer,
         StepExecution $stepExecution
     ) {
-        $jobParameter = new JobParameters(['filters' => [
-            [
-                'field' => 'color',
-                'operator' => Operators::IN_LIST,
-                'value' => ['red', 'blue'],
-            ]
-        ]]);
+        $jobParameter = new JobParameters([
+            'attribute_code' => 'color',
+            'attribute_options' => ['red', 'blue'],
+        ]);
         $stepExecution->getJobParameters()->willReturn($jobParameter);
 
         $attribute = $this->createAttribute();
@@ -91,31 +87,15 @@ class RemoveNonExistingProductValuesTaskletSpec extends ObjectBehavior
         GetAttributes $getAttributes,
         StepExecution $stepExecution
     ) {
-        $jobParameter = new JobParameters(['filters' => [
-            [
-                'field' => 'color',
-                'operator' => Operators::IN_LIST,
-                'value' => ['red', 'blue'],
-            ]
-        ]]);
+        $jobParameter = new JobParameters([
+            'attribute_code' => 'color',
+            'attribute_options' => ['red', 'blue'],
+        ]);
         $stepExecution->getJobParameters()->willReturn($jobParameter);
 
         $getAttributes->forCode('color')->willReturn(null);
 
         $this->shouldThrow(new \InvalidArgumentException('The "color" attribute code was not found'))
-            ->during('execute');
-    }
-
-    function it_throws_an_exception_when_filter_is_not_well_formed(StepExecution $stepExecution)
-    {
-        $jobParameter = new JobParameters(['filters' => [
-            [
-                'code' => 'color',
-            ]
-        ]]);
-        $stepExecution->getJobParameters()->willReturn($jobParameter);
-
-        $this->shouldThrow(\InvalidArgumentException::class)
             ->during('execute');
     }
 

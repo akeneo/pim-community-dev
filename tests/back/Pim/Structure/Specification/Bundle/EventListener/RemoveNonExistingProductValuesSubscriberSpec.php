@@ -77,13 +77,8 @@ class RemoveNonExistingProductValuesSubscriberSpec extends ObjectBehavior
         $jobInstanceRepository->findOneByIdentifier('job_name')->willReturn($jobInstance);
 
         $configuration = [
-            'filters' => [
-                [
-                    'field' => 'color',
-                    'operator' => Operators::IN_LIST,
-                    'value' => ['blue'],
-                ],
-            ],
+            'attribute_code' => 'color',
+            'attribute_options' => ['blue'],
         ];
         $jobLauncher->launch($jobInstance, $user, $configuration)->shouldBeCalledOnce();
 

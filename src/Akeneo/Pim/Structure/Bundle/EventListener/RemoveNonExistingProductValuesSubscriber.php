@@ -57,16 +57,13 @@ final class RemoveNonExistingProductValuesSubscriber implements EventSubscriberI
             return;
         }
 
-        $filters = [
-            [
-                'field' => $attributeOption->getAttribute()->getCode(),
-                'operator' => 'IN',
-                'value' => [$attributeOption->getCode()],
-            ],
+        $configuration = [
+            'attribute_code' => $attributeOption->getAttribute()->getCode(),
+            'attribute_options' => [$attributeOption->getCode()],
         ];
 
         $user = $this->tokenStorage->getToken()->getUser();
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
-        $this->jobLauncher->launch($jobInstance, $user, ['filters' => $filters]);
+        $this->jobLauncher->launch($jobInstance, $user, $configuration);
     }
 }

@@ -6,8 +6,10 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Job\JobParameters\ConstraintCo
 
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
+use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Type;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -31,7 +33,14 @@ final class RemoveNonExistingProductValues implements ConstraintCollectionProvid
     {
         return new Collection([
             'fields' => [
-                'filters' => new NotNull(),
+                'attribute_code' => new NotNull(),
+                'attribute_options' => [
+                    new NotNull(),
+                    new Type('array'),
+                    new All([
+                        new Type('string'),
+                    ])
+                ],
             ],
         ]);
     }

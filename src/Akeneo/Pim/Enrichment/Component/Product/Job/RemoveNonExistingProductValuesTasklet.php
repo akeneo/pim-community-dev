@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Job;
 
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\GetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -87,12 +86,10 @@ final class RemoveNonExistingProductValuesTasklet implements TaskletInterface
      */
     public function execute()
     {
-        $filters = $this->stepExecution->getJobParameters()->get('filters');
-        $this->checkFilters($filters);
-
-        $filter = current($filters);
-        $attributeCode = $filter['field'];
-        $values = $filter['value'];
+        $attributeCode = $this->stepExecution->getJobParameters()->get('attribute_code');
+        Assert::string($attributeCode);
+        $values = $this->stepExecution->getJobParameters()->get('attribute_options');
+        Assert::isArray($values);
 
         $attribute = $this->getAttributes->forCode($attributeCode);
         if (null === $attribute) {
@@ -114,17 +111,5 @@ final class RemoveNonExistingProductValuesTasklet implements TaskletInterface
 
             $this->entityManagerClearer->clear();
         }
-    }
-
-    private function checkFilters(array $filters): void
-    {
-        Assert::count($filters, 1);
-        $filter = current($filters);
-        Assert::keyExists($filter, 'field');
-        Assert::keyExists($filter, 'operator');
-        Assert::keyExists($filter, 'value');
-        Assert::same($filter['operator'], Operators::IN_LIST);
-        Assert::isArray($filter['value']);
-        Assert::allString($filter['value']);
     }
 }
