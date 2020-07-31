@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9382: Fix fatal error on rule execution
+
 # 4.0.45 (2020-07-31)
 
 ## Bug fixes
