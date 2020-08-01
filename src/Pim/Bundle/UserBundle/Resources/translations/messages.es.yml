@@ -5,8 +5,8 @@ pim_user:
       additional.title: Adicional
       group_and_role.title: Grupos y Roles
       password.title: Contraseña
-      business_unit.title: Unidades de negocio
-      email_synchronization.title: Configuración de sincronización de correo electrónico
+      business_unit.title: Unidades de negocios
+      email_synchronization.title: Configuración de sincronizacion de correo electrónico
       interfaces.title: Interfaces
   group:
     tab:
@@ -14,16 +14,16 @@ pim_user:
       users.title: Usuarios
 #user grids
 oro.user.controller:
-  group.message.saved: "Grupo guardado"
-  role.message.saved: "Rol guardado"
-  user.message.saved: "Usuario guardado"
-  status.message.saved: "Estado guardado"
+  group.message.saved: "Grupo salvado"
+  role.message.saved: "Rol salvado"
+  user.message.saved: "Usuario salvado"
+  status.message.saved: "Estado salvado"
 oro.user.grid.users:
   columns:
     username: "Nombre de usuario"
-    email: "Correo Electrónico"
-    firstName: "Primer nombre"
-    lastName: "Apellidos"
+    email: "Correo Electronico"
+    firstName: "Nombre"
+    lastName: "Apellido"
     createdAt: "Creado el"
     updatedAt: "Actualizado el"
     enabled: "Estado"
@@ -42,7 +42,7 @@ pim_title:
 #User
 user.title: Usuario
 user.overview: Usuario
-Users Management: Gestión de Usuarios
+Users Management: Gestion de usuarios
 Create user: Crear usuario
 btn.create.user: Crear usuario
 New user: Nuevo usuario
@@ -51,25 +51,25 @@ Groups and Roles: Grupos y Roles
 Username: Nombre de usuario
 Password: Contraseña
 Password (again): Contraseña (repetir)
-Re-enter password: Re-ingresar contraseña
+Re-enter password: Vuelva a ingresar contraseña
 Name prefix: Prefijo del nombre
-First name: Primer nombre
+First name: Nombre
 Middle name: Segundo nombre
-Last name: Apellidos
+Last name: Apellido
 Name suffix: Sufijo del nombre
 Date of birth: Fecha de nacimiento
 Avatar: Avatar
-Additional emails: Correos electrónicos adicionales
-Add another email: Añadir otro correo electrónico
+Additional emails: Correos electronicos adicionales
+Add another email: Agregar otro correo electronico
 Catalog locale: Local de catálogo
-Catalog scope: Ambito del Catálogo
-Default tree: Árbol por defecto
-Business Units: Unidades de negocio
-Email synchronization settings: Configuraciones de sincronización de e-mail
-Host: Host
+Catalog scope: Ambito del catálogo
+Default tree: Arbol por defecto
+Business Units: Unidades de negocios
+Email synchronization settings: Configuración de sincronizacion de correo electrónico
+Host: Servidor
 Port: Puerto
 Ssl: SSL
-Last logged in: Última visita
+Last logged in: Ultimo inicio de sesión
 Login count: Contador de inicios de sesión
 Additional Information: Información Adicional
 Interfaces: Interfaces
@@ -78,21 +78,21 @@ Contact Information: Información de contacto
 User name: Nombre de Usuario
 Birthday: Cumpleaños
 API key: Clave de API
-Ui locale: Idioma de la interfaz
-UI locale: Idioma de la interfaz
+Ui locale: Configuración regional de la interfaz
+UI locale: Configuración regional de la interfaz
 User salt: Sal de usuario
 Current password: Contraseña actual
 New password: Nueva contraseña
-Repeat new password: Nueva contraseña (repetir)
+Repeat new password: Nueva contraseña (nuevamente)
 Generate key: Generar clave
-Primary: primaria
+Primary: primario
 Removed user: Usuario eliminado
 user:
-  product_grid_filters: Filtros de cuadrícula de productos
+  product_grid_filters: Filtros de grilla de los productos
   default_product_grid_view:
-    label: Vista de cuadrícula de producto automática
+    label: Vista de grilla de producto por defecto
   default_grid_view:
-    none: Ninguna
+    none: Ninguno
   timezone: Zona horaria
 #Role
 Role: Rol
@@ -100,7 +100,7 @@ Owner: Propietario
 General: General
 Entity: Entidad
 Capabilities: Capacidades
-Save and close: Guardar y cerrar
+Save and close: Salvar y cerrar
 Has role: Tiene rol
 role:
   title: rol
@@ -124,16 +124,16 @@ oro_security:
     role:
       view: Lista de roles
       create: Crear un rol
-      edit: Editar rol
+      edit: Editar roles
       delete: Quitar un rol
     group:
-      view: Lista de Grupos de usuarios
+      view: Lista de grupos de usuarios
       create: Crear un grupo de usuarios
-      edit: Editar grupos de usuarios
-      delete: Eliminar un usuario del grupo
+      edit: Editar grupo de usuarios
+      delete: Eliminar un grupo de usuarios
 #Security
-(default): Permisos predeterminados en entidades
-VIEW: Visualizar
+(default): Permiso por defecto en entidades
+VIEW: Vista
 CREATE: Crear
 EDIT: Editar
 DELETE: Borrar
@@ -143,24 +143,24 @@ oro:
   security:
     access-level:
       BASIC: Usuario
-      LOCAL: Unidad de negocio
-      DEEP: División
-      GLOBAL: Organización
+      LOCAL: Unidad de negocios
+      DEEP: Division
+      GLOBAL: Organizacion
       SYSTEM: Sistema
-      NONE: Ninguna
+      NONE: Ninguno
 #User Group
 Create group: Crear grupo
 btn.create.user-group: Crear grupo
 Has group: Tiene grupo
-Save and Close: Guardar y cerrar
+Save and Close: Salvar y cerrar
 user-group.overview: Grupos
 #Login page
 Log in: Iniciar sesion
-Remember me on this computer: Recordarme en esta computadora
+Remember me on this computer: Recordarme en este ordenador
 Forgot your password?: '¿Olvidó su contraseña?'
 Username or Email: Nombre de usuario o Email
 Forgot Password: Contraseña olvidada
-Request: Petición
-Check Email: Revise su correo electrónico
+Request: Solicitar
+Check Email: Revise el correo electronico
 password_reset_email_sent: Un correo electrónico se ha enviado al usuario. Contiene un enlace para restablecer la contraseña.
-Go to homepage: Ir a la página de inicio
+Go to homepage: Ir a la pagina de inicio

@@ -8,7 +8,7 @@ pim_import_export:
   status:
     0: Listo
   batch_status:
-    1: Finalizado
+    1: Completado
     2: Iniciando
     3: Iniciado
     4: Suspendiendo
@@ -17,43 +17,43 @@ pim_import_export:
     7: Abandonado
     8: Desconocido
   download_archive:
-    archive: descargar fichero generado|descargar ficheros generados
-    output: descargar fichero generado |descargar ficheros generados
-    input: descargar fichero de lectura |descargar ficheros de lectura
-    invalid_xlsx: descargar datos no válidos
-    invalid_csv: descargar datos no válidos
+    archive: descargar archivo generado|descargar archivos generados
+    output: descargar archivo generado|descargar archivos generados
+    input: descargar archivo de lectura |descargar archivos de lectura
+    invalid_xlsx: descargar datos inválidos
+    invalid_csv: descargar datos inválidos
   notification:
     export:
-      error: Exportación <strong>%label%</strong> fallida
-      warning: Exportación <strong>%label%</strong> terminó con algunas advertencias
+      error: Exportar <strong>%label%</strong> fallido
+      warning: Exportar <strong>%label%</strong> terminado con algunas advertencias
       success: Exportación <strong>%label%</strong> finalizada
     import:
       error: Importación <strong>%label%</strong> fallida
-      warning: Importación <strong>%label%</strong> terminó con algunas advertencias
+      warning: Importación <strong>%label%</strong> terminada con algunas advertencias
       success: Importación <strong>%label%</strong> finalizada
   list: Seleccionar un trabajo
   job_profile:
     tab:
       property.title: Propiedades generales
-      history.title: Historial
+      history.title: Historia
       job_content.title: Contenido
 #Page titles:
 pim_title.export_profile.index: Gestión de perfiles de exportación
 pim_title.export_profile.edit: Exportar perfil %job.label% | Editar
 pim_title.export_profile.show: Exportar perfil %job.label% | Mostrar
-pim_title.export_execution.index: Historial de ejecuciones de exportación
-pim_title.export_execution.show: Ejecuciones de importación | Detalles
-pim_title.import_profile.index: Gestión de perfiles de exportación
+pim_title.export_execution.index: Exportar el historial de ejecuciones
+pim_title.export_execution.show: Ejecuciones de exportación | Detalles
+pim_title.import_profile.index: Importar gestión de perfiles
 pim_title.import_profile.edit: Importar perfil %job.label% | Editar
 pim_title.import_profile.show: Importar perfil %job.label% | Mostrar
-pim_title.import_execution.index: Historia de las ejecuciones de importación
+pim_title.import_execution.index: Importar historial de ejecuciones
 pim_title.import_execution.show: Ejecuciones de importación | Detalles
 #Entity and page header titles
 export profile:
-  title: Perfil de exportación
-  edit: Editar perfil exportador
+  title: perfil de exportación
+  edit: editar perfil exportador
 import profile:
-  title: Perfil de importación
+  title: perfil de importación
   edit: editar perfil de importación
 #ACLs
 pim_importexport:
@@ -95,19 +95,19 @@ pim_importexport:
 btn:
   create:
     export profile: crear perfil exportador
-    import profile: crear Perfil de importación
-Upload and import now: Cargar e importar ahora
+    import profile: crear perfil de importación
+Upload and import now: Subir e importar ahora
 import now: Importar ahora
-export now: Exportar Ahora
+export now: Exportar ahora
 #Confirmation messages
 confirmation:
   remove:
-    export profile: '¿Está seguro que desea eliminar el perfil de exportación %name% ?'
+    export profile: '¿Está seguro que desea eliminar el perfil de exportación %name%?'
     import profile: '¿Está seguro que desea eliminar el perfil de importación %name%?'
 #Flash messages
 flash:
   export:
-    created: La exportación se ha creado con éxito
+    created: La exportación fue creada con éxito
     removed: La exportación se ha eliminado
     updated: La exportación se ha actualizado exitosamente
     running: La exportación se está ejecutando
@@ -129,10 +129,10 @@ popin.create:
   import_profile.title: Crear un nuevo perfil de importación
 #Job execution
 'Display item': Mostrar elemento
-'Hide item': Ocultar elemento
-'Collecting data about job execution...': Colectando datos sobre la ejecución del trabajo...
-'You must select a file to upload': Debe seleccionar un archivo para subir
-Download log: Descargar registro de log
+'Hide item': Ocultar item
+'Collecting data about job execution...': Recopilando datos sobre la ejecución del trabajo...
+'You must select a file to upload': Debes seleccionar un archivo para subir
+Download log: Descargar registro
 Show profile: Ver perfil
 execution details: detalles de ejecución
 job_execution.summary:
@@ -145,8 +145,8 @@ job_execution.summary:
   skip_products: productos omitidos
   displayed: primeras advertencias mostradas
   charset_validator:
-    title: 'Codificación del archivo:'
-    skipped: omitido, extensión en la lista blanca
+    title: 'Codificación de Archivo:'
+    skipped: omitido, extensión en lista blanca
 Step: Paso
 Status: Estado
 Warnings: Advertencias
@@ -155,7 +155,7 @@ Start: Iniciar
 End: Finalizar
 #Process tracker
 set_attribute_requirements: Establecer los requisitos de atributos
-COMPLETED: Finalizado
+COMPLETED: Completado
 STARTING: Iniciando
 STARTED: Iniciado
 STOPPING: Suspendiendo
@@ -163,4 +163,4 @@ STOPPED: Suspendido
 FAILED: Fallido
 ABANDONED: Abandonado
 UNKNOWN: Desconocido
-warning.label: '¡Advertencia!'
+warning.label: Advertencia
