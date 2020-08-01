@@ -216,8 +216,6 @@ pim_asset_manager:
         fail: Beim Start der Namenskonvention ist ein Fehler aufgetreten
     helper:
       title: Willkommen beim Asset Manager!
-      no_asset:
-        text: Es gibt kein Asset in der {{ family }} Familie. Klicken Sie auf "Erstellen" und wählen Sie aus, ob Sie ein leeres Asset oder Massenupload erstellen möchten.
       no_asset_family:
         text: Eine Bibliothek, die Ihre Assets sammelt (Bilder, Videos, Dokumente...), gefiltert nach Asset-Familien. Erstellen Sie Ihre erste Asset-Familie, setzen Sie ihre Attribute und laden Sie Assets hoch!
         link: Für weitere Details empfehlen wir Ihnen, diesen Artikel zu lesen.
