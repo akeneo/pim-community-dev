@@ -11,18 +11,18 @@ pim_dashboard:
       title: Error al cargar el widget
       message: No existe el widget "%alias%"
     completeness:
-      title: Integridad por Canales y Locales
+      title: Completitud por Canales y Locales
     last_operations:
       title: Últimas operaciones
-      empty: Ninguna operacione encontrada
+      empty: Ninguna operación encontrada
       status: Estado
       date: Fecha
       type: Tipo
       "profile name": Nombre del perfil
       details: Detalles
       job_type:
-        import: Importación
-        export: Export
+        import: Importar
+        export: Exportar
         mass_edit: Edición en masa
         quick_export: Exportación rápida
         compute_product_models_descendants: Calcular modelos de productos descendientes

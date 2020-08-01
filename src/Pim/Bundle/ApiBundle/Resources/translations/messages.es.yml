@@ -17,7 +17,7 @@ pim_api:
       edit: Crear y actualizar familias
       list: Lista de familias
     family_variant:
-      edit: Crear y actualizar las variantes de familias
+      edit: Crear y actualizar las variantes de familia
       list: Lista de variantes familiares
     channel:
       edit: Crear y actualizar canales

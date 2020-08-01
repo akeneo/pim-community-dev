@@ -11,7 +11,7 @@ Currency list: Lista de Moneda
 Locale list: Lista de locales
 Logged in as: Sesión iniciada como
 Logout: Salir
-Login: Ingresar
+Login: Iniciar sesión
 Previous: Previo
 Next: Siguiente
 Channel list: Lista de canales
@@ -34,14 +34,14 @@ Favorites: Favoritos
 Most Viewed: Más visto
 "Add this page to favorites": "Agregar esta página a favoritos"
 "Minimize the window to the pinbar": "Minimizar la ventana al pinbar"
-"Loading ...": "Cargando..."
+"Loading ...": "Cargando ..."
 "Yes": "Sí"
 "No": "No"
-required: (obligatorio)
+required: (requerido)
 pim_ui.system_config:
   form:
     loading_message_enabled.label: Activar los mensajes de carga
-    loading_message_enabled.tooltip: Mostrar mensajes personalizados mientras se encuentra esperando a que la página cargue
+    loading_message_enabled.tooltip: Mostrar mensajes amistosos mientras esta esperando a que una página cargue
     loading_messages.label: Mensajes de carga disponibles
     loading_messages.tooltip: Mensajes de carga de página separados por salto de líneas
   group:
