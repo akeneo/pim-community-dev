@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Xlsx;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Xlsx\ProductWriter;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\FlatFileHeader;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromFamilyCodesInterface;
@@ -37,7 +38,8 @@ class ProductWriterSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         FileExporterPathGeneratorInterface $fileExporterPath,
         GenerateFlatHeadersFromFamilyCodesInterface $generateHeadersFromFamilyCodes,
-        GenerateFlatHeadersFromAttributeCodesInterface $generateHeadersFromAttributeCodes
+        GenerateFlatHeadersFromAttributeCodesInterface $generateHeadersFromAttributeCodes,
+        FlatTranslatorInterface $flatTranslator
     ) {
         $this->directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'spec' . DIRECTORY_SEPARATOR;
         $this->filesystem = new Filesystem();
@@ -51,6 +53,7 @@ class ProductWriterSpec extends ObjectBehavior
             $fileExporterPath,
             $generateHeadersFromFamilyCodes,
             $generateHeadersFromAttributeCodes,
+            $flatTranslator,
             ['pim_catalog_file', 'pim_catalog_image']
         );
     }
@@ -75,12 +78,14 @@ class ProductWriterSpec extends ObjectBehavior
         JobParameters $jobParameters,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
-        ExecutionContext $executionContext
+        ExecutionContext $executionContext,
+        GenerateFlatHeadersFromFamilyCodesInterface $generateHeadersFromFamilyCodes
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->getStartTime()->willReturn(new \DateTime());
+        $jobParameters->has('withHeader')->willReturn(true);
         $jobParameters->get('withHeader')->willReturn(true);
         $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.xlsx');
         $jobParameters->has('ui_locale')->willReturn(false);
@@ -88,6 +93,11 @@ class ProductWriterSpec extends ObjectBehavior
         $jobParameters->has('dateFormat')->willReturn(false);
         $jobParameters->has('with_media')->willReturn(true);
         $jobParameters->get('with_media')->willReturn(true);
+        $jobParameters->get('filters')->willReturn(['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']]);
+        $jobParameters->has('selected_properties')->willReturn(false);
+
+        $jobParameters->has('with_label')->willReturn(true);
+        $jobParameters->get('with_label')->willReturn(false);
 
         $productStandard1 = [
             'identifier' => 'jackets',
@@ -218,6 +228,7 @@ class ProductWriterSpec extends ObjectBehavior
         $arrayConverter->convert($productStandard1, [])->willReturn($productFlat1);
         $arrayConverter->convert($productStandard2, [])->willReturn($productFlat2);
 
+        $generateHeadersFromFamilyCodes->__invoke(['clothes'], 'ecommerce', ["fr_FR", "en_US"])->willReturn([]);
         $flatRowBuffer->write([$productFlat1, $productFlat2], ['withHeader' => true])->shouldBeCalled();
 
         $this->initialize();
@@ -240,12 +251,14 @@ class ProductWriterSpec extends ObjectBehavior
         JobParameters $jobParameters,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
-        ExecutionContext $executionContext
+        ExecutionContext $executionContext,
+        GenerateFlatHeadersFromFamilyCodesInterface $generateHeadersFromFamilyCodes
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->getStartTime()->willReturn(new \DateTime());
+        $jobParameters->has('withHeader')->willReturn(true);
         $jobParameters->get('withHeader')->willReturn(true);
         $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.xlsx');
         $jobParameters->has('ui_locale')->willReturn(false);
@@ -253,6 +266,12 @@ class ProductWriterSpec extends ObjectBehavior
         $jobParameters->has('dateFormat')->willReturn(false);
         $jobParameters->has('with_media')->willReturn(true);
         $jobParameters->get('with_media')->willReturn(false);
+        $jobParameters->has('with_label')->willReturn(true);
+        $jobParameters->get('with_label')->willReturn(false);
+        $jobParameters->get('filters')->willReturn(['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']]);
+        $jobParameters->has('selected_properties')->willReturn(false);
+
+        $generateHeadersFromFamilyCodes->__invoke(["clothes"], "ecommerce", ["fr_FR", "en_US"]);
 
         $productStandard = [
             'code'       => 'jackets',
@@ -338,6 +357,8 @@ class ProductWriterSpec extends ObjectBehavior
         $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.xlsx');
         $jobParameters->has('ui_locale')->willReturn(false);
         $jobParameters->has('withHeader')->willReturn(false);
+        $jobParameters->has('with_label')->willReturn(true);
+        $jobParameters->get('with_label')->willReturn(false);
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
         $flusher->flush(
@@ -388,6 +409,8 @@ class ProductWriterSpec extends ObjectBehavior
         $jobParameters->has('selected_properties')->willReturn(false);
         $jobParameters->has('withHeader')->willReturn(true);
         $jobParameters->get('withHeader')->willReturn(true);
+        $jobParameters->has('with_label')->willReturn(true);
+        $jobParameters->get('with_label')->willReturn(false);
         $jobParameters->get('filters')->willReturn(['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']]);
 
         $descHeader = new FlatFileHeader(
@@ -463,6 +486,8 @@ class ProductWriterSpec extends ObjectBehavior
         $jobParameters->get('selected_properties')->willReturn(['name', 'description']);
         $jobParameters->has('withHeader')->willReturn(true);
         $jobParameters->get('withHeader')->willReturn(true);
+        $jobParameters->has('with_label')->willReturn(true);
+        $jobParameters->get('with_label')->willReturn(false);
         $jobParameters->get('filters')->willReturn(['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']]);
 
         $descHeader = new FlatFileHeader(
@@ -504,7 +529,6 @@ class ProductWriterSpec extends ObjectBehavior
 
     function it_does_not_write_the_selected_attributes_in_headers_if_there_is_no_content(
         $bufferFactory,
-        $flusher,
         $generateHeadersFromAttributeCodes,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
@@ -515,51 +539,28 @@ class ProductWriterSpec extends ObjectBehavior
     ) {
         $this->setStepExecution($stepExecution);
 
-        $flusher->setStepExecution($stepExecution)->shouldBeCalled();
+        $stepExecution->getJobExecution()->shouldBeCalled()->shouldBeCalled()->willReturn($jobExecution);
+        $stepExecution->getStartTime()->shouldBeCalled()->willReturn(new \DateTime());
+        $jobExecution->getJobInstance()->shouldBeCalled()->willReturn($jobInstance);
+        $jobInstance->getLabel()->shouldBeCalled()->willReturn('CSV Product export');
+        $jobExecution->getExecutionContext()->shouldBeCalled()->willReturn($executionContext);
+        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->shouldBeCalled()->willReturn($this->directory);
 
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $stepExecution->getStartTime()->willReturn(new \DateTime());
-        $jobExecution->getJobInstance()->willReturn($jobInstance);
-        $jobInstance->getLabel()->willReturn('CSV Product export');
-        $jobExecution->getExecutionContext()->willReturn($executionContext);
-        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
-
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->has('linesPerFile')->willReturn(false);
-        $jobParameters->get('delimiter')->willReturn(';');
-        $jobParameters->get('enclosure')->willReturn('"');
-        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.xlsx');
-        $jobParameters->has('ui_locale')->willReturn(false);
-        $jobParameters->has('decimalSeparator')->willReturn(false);
-        $jobParameters->has('dateFormat')->willReturn(false);
-        $jobParameters->has('with_media')->willReturn(false);
-        $jobParameters->has('selected_properties')->willReturn(false);
-        $jobParameters->has('withHeader')->willReturn(true);
-        $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->get('filters')->willReturn([
-            'structure' => [
-                'locales' => ['fr_FR', 'en_US'],
-                'scope' => 'ecommerce',
-                'attributes' => ['name', 'description'],
-            ]
-        ]);
+        $stepExecution->getJobParameters()->shouldBeCalled()->willReturn($jobParameters);
+        $jobParameters->get('filePath')->shouldBeCalled()->willReturn($this->directory . '%job_label%_product.xlsx');
+        $jobParameters->has('ui_locale')->shouldBeCalled()->willReturn(false);
+        $jobParameters->has('decimalSeparator')->shouldBeCalled()->willReturn(false);
+        $jobParameters->has('dateFormat')->shouldBeCalled()->willReturn(false);
+        $jobParameters->get('withHeader')->shouldBeCalled()->willReturn(true);
+        $jobParameters->has('with_label')->shouldBeCalled()->willReturn(true);
+        $jobParameters->get('with_label')->shouldBeCalled()->willReturn(false);
         $generateHeadersFromAttributeCodes
             ->__invoke(Argument::cetera())
             ->shouldNotBeCalled();
 
-        $bufferFactory->create()->willReturn($flatRowBuffer);
-        $flusher->flush(
-            $flatRowBuffer,
-            Argument::type('array'),
-            Argument::type('string'),
-            -1
-        )->willReturn([
-            $this->directory . 'XLSX_Product_export_product1.xlsx',
-            $this->directory . 'XLSX_Product_export_product2.xlsx'
-        ]);
-        $flatRowBuffer->addToHeaders([])->shouldBeCalled();
+        $bufferFactory->create()->shouldBeCalled()->willReturn($flatRowBuffer);
 
         $this->initialize();
-        $this->flush();
+        $this->write([]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Csv;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Csv\ProductWriter;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\FlatFileHeader;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromFamilyCodesInterface;
@@ -37,7 +38,8 @@ class ProductWriterSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         FileExporterPathGeneratorInterface $fileExporterPath,
         GenerateFlatHeadersFromFamilyCodesInterface $generateHeadersFromFamilyCodes,
-        GenerateFlatHeadersFromAttributeCodesInterface $generateHeadersFromAttributeCodes
+        GenerateFlatHeadersFromAttributeCodesInterface $generateHeadersFromAttributeCodes,
+        FlatTranslatorInterface $flatTranslator
     ) {
         $this->directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'spec' . DIRECTORY_SEPARATOR;
         $this->filesystem = new Filesystem();
@@ -51,6 +53,7 @@ class ProductWriterSpec extends ObjectBehavior
             $fileExporterPath,
             $generateHeadersFromFamilyCodes,
             $generateHeadersFromAttributeCodes,
+            $flatTranslator,
             ['pim_catalog_file', 'pim_catalog_image']
         );
     }
@@ -75,12 +78,14 @@ class ProductWriterSpec extends ObjectBehavior
         JobParameters $jobParameters,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
-        ExecutionContext $executionContext
+        ExecutionContext $executionContext,
+        GenerateFlatHeadersFromFamilyCodesInterface $generateHeadersFromFamilyCodes
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->getStartTime()->willReturn(new \DateTime());
+        $jobParameters->has('withHeader')->willReturn(true);
         $jobParameters->get('withHeader')->willReturn(true);
         $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.csv');
         $jobParameters->has('ui_locale')->willReturn(false);
@@ -88,6 +93,11 @@ class ProductWriterSpec extends ObjectBehavior
         $jobParameters->has('dateFormat')->willReturn(false);
         $jobParameters->has('with_media')->willReturn(true);
         $jobParameters->get('with_media')->willReturn(true);
+        $jobParameters->has('with_label')->willReturn(true);
+        $jobParameters->get('with_label')->willReturn(false);
+        $jobParameters->get('filters')->willReturn(['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']]);
+        $jobParameters->has('selected_properties')->willReturn(false);
+        $generateHeadersFromFamilyCodes->__invoke(["clothes"], "ecommerce", ["fr_FR", "en_US"]);
 
         $productStandard1 = [
             'identifier' => 'jackets',
@@ -237,12 +247,14 @@ class ProductWriterSpec extends ObjectBehavior
         JobParameters $jobParameters,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
-        ExecutionContext $executionContext
+        ExecutionContext $executionContext,
+        GenerateFlatHeadersFromFamilyCodesInterface $generateHeadersFromFamilyCodes
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->getStartTime()->willReturn(new \DateTime());
+        $jobParameters->has('withHeader')->willReturn(true);
         $jobParameters->get('withHeader')->willReturn(true);
         $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.csv');
         $jobParameters->has('ui_locale')->willReturn(false);
@@ -250,7 +262,11 @@ class ProductWriterSpec extends ObjectBehavior
         $jobParameters->has('dateFormat')->willReturn(false);
         $jobParameters->has('with_media')->willReturn(true);
         $jobParameters->get('with_media')->willReturn(false);
-
+        $jobParameters->has('with_label')->willReturn(true);
+        $jobParameters->get('with_label')->willReturn(false);
+        $jobParameters->get('filters')->willReturn(['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']]);
+        $jobParameters->has('selected_properties')->willReturn(false);
+        $generateHeadersFromFamilyCodes->__invoke(["clothes"], "ecommerce", ["fr_FR", "en_US"]);
         $productStandard = [
             'code'       => 'jackets',
             'enabled'    => true,
@@ -336,6 +352,8 @@ class ProductWriterSpec extends ObjectBehavior
         $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.csv');
         $jobParameters->has('ui_locale')->willReturn(false);
         $jobParameters->has('withHeader')->willReturn(false);
+        $jobParameters->has('with_label')->willReturn(true);
+        $jobParameters->get('with_label')->willReturn(false);
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
         $flusher->flush(
@@ -386,6 +404,8 @@ class ProductWriterSpec extends ObjectBehavior
         $jobParameters->has('selected_properties')->willReturn(false);
         $jobParameters->has('withHeader')->willReturn(true);
         $jobParameters->get('withHeader')->willReturn(true);
+        $jobParameters->has('with_label')->willReturn(true);
+        $jobParameters->get('with_label')->willReturn(false);
         $jobParameters->get('filters')->willReturn(['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']]);
 
         $descHeader = new FlatFileHeader(
@@ -462,6 +482,8 @@ class ProductWriterSpec extends ObjectBehavior
         $jobParameters->get('selected_properties')->willReturn(['name', 'description']);
         $jobParameters->has('withHeader')->willReturn(true);
         $jobParameters->get('withHeader')->willReturn(true);
+        $jobParameters->has('with_label')->willReturn(true);
+        $jobParameters->get('with_label')->willReturn(false);
         $jobParameters->get('filters')->willReturn(['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']]);
 
         $descHeader = new FlatFileHeader(
@@ -503,7 +525,6 @@ class ProductWriterSpec extends ObjectBehavior
 
     function it_does_not_write_the_selected_attributes_in_headers_if_there_is_no_content(
         $bufferFactory,
-        $flusher,
         $generateHeadersFromAttributeCodes,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
@@ -514,8 +535,6 @@ class ProductWriterSpec extends ObjectBehavior
     ) {
         $this->setStepExecution($stepExecution);
 
-        $flusher->setStepExecution($stepExecution)->shouldBeCalled();
-
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->getStartTime()->willReturn(new \DateTime());
         $jobExecution->getJobInstance()->willReturn($jobInstance);
@@ -524,41 +543,20 @@ class ProductWriterSpec extends ObjectBehavior
         $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->has('linesPerFile')->willReturn(false);
-        $jobParameters->get('delimiter')->willReturn(';');
-        $jobParameters->get('enclosure')->willReturn('"');
+        $jobParameters->has('decimalSeparator')->willReturn(false);
         $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.csv');
         $jobParameters->has('ui_locale')->willReturn(false);
-        $jobParameters->has('decimalSeparator')->willReturn(false);
         $jobParameters->has('dateFormat')->willReturn(false);
-        $jobParameters->has('with_media')->willReturn(false);
-        $jobParameters->has('selected_properties')->willReturn(true);
-        $jobParameters->get('selected_properties')->willReturn([]);
-        $jobParameters->has('withHeader')->willReturn(true);
         $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->get('filters')->willReturn([
-            'structure' => [
-                'locales' => ['fr_FR', 'en_US'],
-                'scope' => 'ecommerce',
-                'attributes' => ['name', 'description'],
-            ]
-        ]);
+        $jobParameters->has('with_label')->willReturn(true);
+        $jobParameters->get('with_label')->willReturn(false);
         $generateHeadersFromAttributeCodes
             ->__invoke(Argument::cetera())
             ->shouldNotBeCalled();
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
-        $flusher->flush(
-            $flatRowBuffer,
-            Argument::type('array'),
-            Argument::type('string'),
-            -1
-        )->willReturn([
-            $this->directory . 'CSV_Product_export_product1.csv',
-        ]);
-        $flatRowBuffer->addToHeaders([])->shouldBeCalled();
 
         $this->initialize();
-        $this->flush();
+        $this->write([]);
     }
 }
