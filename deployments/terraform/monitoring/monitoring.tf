@@ -1,3 +1,29 @@
+resource "google_logging_metric" "login-response-time-distribution" {
+  name            = "${local.pfid}-login-response-time-distribution"
+  description     = "Distribution of response time on the /user/login url."
+  filter          = "resource.type=k8s_container AND jsonPayload.http.path=\"/user/login\" AND resource.labels.namespace_name=${local.pfid}"
+  value_extractor = "EXTRACT(jsonPayload.http.duration_micros)"
+  label_extractors = {
+    "response_code" = "EXTRACT(jsonPayload.http.response_code)"
+  }
+  bucket_options {
+    exponential_buckets {
+      num_finite_buckets = 20
+      growth_factor      = 2
+      scale              = 5
+    }
+  }
+  metric_descriptor {
+    metric_kind = "DELTA"
+    value_type  = "DISTRIBUTION"
+    unit        = "us"
+    labels {
+      key        = "response_code"
+      value_type = "INT64"
+    }
+  }
+}
+
 resource "google_monitoring_uptime_check_config" "https" {
   display_name = replace(var.dns_external, "/\\.$/", "")
   timeout      = "30s"
@@ -36,8 +62,6 @@ resource "google_monitoring_alert_policy" "alert_policy" {
   project      = var.google_project_id
   depends_on = [
     google_logging_metric.login-response-time-distribution,
-    google_logging_metric.login_count,
-    google_logging_metric.logs-count,
     google_monitoring_uptime_check_config.https,
     var.helm_exec_id
   ]
