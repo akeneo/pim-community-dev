@@ -11,6 +11,7 @@ import { getPimConditionModule } from './PimCondition';
 import { FallbackConditionLine } from '../../pages/EditRules/components/conditions/FallbackConditionLine';
 import { getCompletenessConditionModule } from './CompletenessCondition';
 import { getGroupsConditionModule } from './GroupCondition';
+import { getStatusConditionModule } from './StatusCondition';
 
 export type ConditionModuleGuesser = (
   json: any,
@@ -28,6 +29,7 @@ const getConditionModule: (
     getFamilyConditionModule,
     getCategoryConditionModule,
     getGroupsConditionModule,
+    getStatusConditionModule,
     getTextAttributeConditionModule,
     getSimpleMultiOptionsAttributeConditionModule,
     getNumberAttributeConditionModule,

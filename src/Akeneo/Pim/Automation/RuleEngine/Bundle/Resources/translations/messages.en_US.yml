@@ -23,6 +23,7 @@ pimee_catalog_rule:
             groups: Groups
             categories: Categories
             completeness: Completeness
+            enabled: Status
         field_groups:
             system: System
     acl_group:

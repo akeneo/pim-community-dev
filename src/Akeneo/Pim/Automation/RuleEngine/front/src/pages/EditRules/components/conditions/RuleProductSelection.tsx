@@ -1,19 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useFormContext, Control } from 'react-hook-form';
+import { Control, useFormContext } from 'react-hook-form';
 import { SmallHelper } from '../../../../components';
 import {
   Condition,
   ConditionFactory,
-  createFamilyCondition,
-  createSimpleMultiOptionsAttributeCondition,
-  createTextAttributeCondition,
   createCategoryCondition,
+  createCompletenessCondition,
+  createFamilyCondition,
+  createGroupsCondition,
+  createNumberAttributeCondition,
+  createSimpleMultiOptionsAttributeCondition,
+  createStatusCondition,
+  createTextAttributeCondition,
   Locale,
   LocaleCode,
-  createNumberAttributeCondition,
-  createCompletenessCondition,
-  createGroupsCondition,
 } from '../../../../models/';
 import { TextBoxBlue } from '../TextBoxBlue';
 import { useProductsCount } from '../../hooks';
@@ -120,6 +121,7 @@ const RuleProductSelection: React.FC<Props> = ({
       createCompletenessCondition,
       createCategoryCondition,
       createGroupsCondition,
+      createStatusCondition,
       createTextAttributeCondition,
       createSimpleMultiOptionsAttributeCondition,
       createNumberAttributeCondition,
