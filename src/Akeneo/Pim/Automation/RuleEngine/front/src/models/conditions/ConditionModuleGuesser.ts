@@ -14,6 +14,7 @@ import { getCompletenessConditionModule } from './CompletenessCondition';
 import { getGroupsConditionModule } from './GroupCondition';
 import { getStatusConditionModule } from './StatusCondition';
 import { getDateSystemConditionModule } from './DateSystemCondition';
+import { getBooleanAttributeConditionModule } from './BooleanAttributeCondition';
 
 export type ConditionModuleGuesser = (
   json: any,
@@ -34,6 +35,7 @@ const getConditionModule: (
     getStatusConditionModule,
     getTextAttributeConditionModule,
     getSimpleMultiOptionsAttributeConditionModule,
+    getBooleanAttributeConditionModule,
     getNumberAttributeConditionModule,
     getCompletenessConditionModule,
     getDateSystemConditionModule,

@@ -5,6 +5,7 @@ import { SmallHelper } from '../../../../components';
 import {
   Condition,
   ConditionFactory,
+  createBooleanAttributeCondition,
   createCategoryCondition,
   createCompletenessCondition,
   createFamilyCondition,
@@ -127,6 +128,7 @@ const RuleProductSelection: React.FC<Props> = ({
       createCategoryCondition,
       createDateAttributeCondition,
       createDateSystemCondition,
+      createBooleanAttributeCondition,
     ];
 
     for (let i = 0; i < factories.length; i++) {
