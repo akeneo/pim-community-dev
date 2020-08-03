@@ -10,12 +10,18 @@ import {
   initializeCreateMeasurementFamilyForm,
   createMeasurementFamilyFromForm,
 } from 'akeneomeasure/pages/create-measurement-family/form/create-measurement-family-form';
-import {useShortcut} from 'akeneomeasure/shared/hooks/use-shortcut';
-import {Key} from 'akeneomeasure/shared/key';
 import {useForm} from 'akeneomeasure/hooks/use-form';
 import {MeasurementFamilyCode} from 'akeneomeasure/model/measurement-family';
 import {useTranslate, useNotify, NotificationLevel, useUserContext} from '@akeneo-pim-community/legacy-bridge';
-import {Button, HelperRibbon, HelperLevel, ValidationError, getErrorsForPath} from '@akeneo-pim-community/shared';
+import {
+  Button,
+  HelperRibbon,
+  HelperLevel,
+  ValidationError,
+  getErrorsForPath,
+  useShortcut,
+  Key,
+} from '@akeneo-pim-community/shared';
 
 type CreateMeasurementFamilyProps = {
   onClose: (createdMeasurementFamilyCode?: MeasurementFamilyCode) => void;

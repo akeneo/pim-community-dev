@@ -143,7 +143,7 @@ define(
 
                         launcher.action.run();
                     },
-                    getCount: () => this.getParent().count
+                    getProductCount: () => this.getParent().count
                 });
 
                 ReactDOM.render(Component, button);

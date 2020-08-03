@@ -147,10 +147,8 @@ const Form = ({value, onChange, children}: FormProps) => {
         const previousOption = options[index - 1] as ReactElement<SelectProps>;
 
         return cloneElement<SelectProps>(child, {
-          onChange: (newValue: string) => {
-            onChange({...value, [child.props.name]: newValue});
-          },
-          isVisible: !(index > 0 && undefined !== previousOption && undefined === value[previousOption.props.name]),
+          onChange: (newValue: string) => onChange({...value, [child.props.name]: newValue}),
+          isVisible: !(0 < index && undefined !== previousOption && undefined === value[previousOption.props.name]),
           value: undefined !== value[child.props.name] ? value[child.props.name] : null,
         });
       })}
@@ -160,7 +158,7 @@ const Form = ({value, onChange, children}: FormProps) => {
 
 type QuickExportConfiguratorProps = {
   onActionLaunch: (actionName: string) => void;
-  getCount: () => number;
+  getProductCount: () => number;
 };
 
 const QuickExportConfigurator = (props: QuickExportConfiguratorProps) => (
@@ -171,15 +169,14 @@ const QuickExportConfigurator = (props: QuickExportConfiguratorProps) => (
   </DependenciesProvider>
 );
 
-const QuickExportConfiguratorContainer = ({onActionLaunch, getCount}: QuickExportConfiguratorProps) => {
+const QuickExportConfiguratorContainer = ({onActionLaunch, getProductCount}: QuickExportConfiguratorProps) => {
   const [isModalOpen, openModal, closeModal] = useToggleState(false);
   const translate = useTranslate();
   const [formValue, setFormValue] = useStorageState<FormValue>({}, 'quick_export_configuration');
 
   useShortcut(Key.Escape, closeModal);
 
-  //TODO
-  const productCount = getCount();
+  const productCount = getProductCount();
 
   return (
     <>
@@ -191,13 +188,12 @@ const QuickExportConfiguratorContainer = ({onActionLaunch, getCount}: QuickExpor
               <ModalCloseButton onClick={closeModal} />
               <ModalConfirmButton
                 onClick={() => {
-                  closeModal();
+                  const actionName = `quick_export${'grid-context' === formValue['context'] ? `_grid_context` : ''}${
+                    'with-labels' === formValue['with-labels'] ? `_with_labels` : ''
+                  }_${formValue['type']}`;
 
-                  onActionLaunch(
-                    `quick_export${'grid-context' === formValue['context'] ? `_grid_context` : ''}${
-                      'with-labels' === formValue['with-labels'] ? `_with_labels` : ''
-                    }_${formValue['type']}`
-                  );
+                  onActionLaunch(actionName);
+                  closeModal();
                 }}
                 disabled={
                   undefined === formValue['type'] ||

@@ -8,10 +8,8 @@ import {
   ModalDescription,
 } from 'akeneomeasure/shared/components/Modal';
 import {TrashIllustration} from 'akeneomeasure/shared/illustrations/TrashIllustration';
-import {useShortcut} from 'akeneomeasure/shared/hooks/use-shortcut';
-import {Key} from 'akeneomeasure/shared/key';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {Button} from '@akeneo-pim-community/shared';
+import {Button, useShortcut, Key} from '@akeneo-pim-community/shared';
 
 const StyledTitle = styled(ModalTitle)`
   margin-bottom: 0;

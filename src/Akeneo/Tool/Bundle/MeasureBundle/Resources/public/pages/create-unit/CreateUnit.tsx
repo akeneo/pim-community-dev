@@ -5,8 +5,6 @@ import {Subsection} from 'akeneomeasure/shared/components/Subsection';
 import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
 import {useForm} from 'akeneomeasure/hooks/use-form';
-import {useShortcut} from 'akeneomeasure/shared/hooks/use-shortcut';
-import {Key} from 'akeneomeasure/shared/key';
 import {getMeasurementFamilyLabel, MeasurementFamily} from 'akeneomeasure/model/measurement-family';
 import {Unit} from 'akeneomeasure/model/unit';
 import {
@@ -28,6 +26,8 @@ import {
   HelperLevel,
   filterErrors,
   ValidationError,
+  useShortcut,
+  Key,
 } from '@akeneo-pim-community/shared';
 
 type CreateUnitProps = {

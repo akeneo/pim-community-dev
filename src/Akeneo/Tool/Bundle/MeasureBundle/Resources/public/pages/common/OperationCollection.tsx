@@ -4,8 +4,6 @@ import {ConfigContext} from 'akeneomeasure/context/config-context';
 import {DownIcon} from 'akeneomeasure/shared/icons/DownIcon';
 import {LockIcon} from 'akeneomeasure/shared/icons/LockIcon';
 import {SubArrowRightIcon} from 'akeneomeasure/shared/icons/SubArrowRightIcon';
-import {useShortcut} from 'akeneomeasure/shared/hooks/use-shortcut';
-import {Key} from 'akeneomeasure/shared/key';
 import {Operation, Operator, emptyOperation} from 'akeneomeasure/model/operation';
 import {Input, InputContainer} from 'akeneomeasure/shared/components/TextField';
 import {useLocalizedNumber} from 'akeneomeasure/shared/hooks/use-localized-number';
@@ -18,6 +16,8 @@ import {
   filterErrors,
   getErrorsForPath,
   InputErrors,
+  useShortcut,
+  Key,
 } from '@akeneo-pim-community/shared';
 
 const AknFieldContainer = styled.div`
