@@ -109,7 +109,6 @@ pimee_catalog_rule:
                 category: Category
                 attribute: Attribute
                 groups: Groups
-                enabled: Status
             actions:
                 add_action: Add action
                 add_category:

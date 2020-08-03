@@ -37,9 +37,7 @@ describe('StatusConditionLine', () => {
       { all: true },
       { defaultValues, toRegister }
     );
-    expect(
-      screen.getByText('pimee_catalog_rule.form.edit.fields.enabled')
-    ).toBeInTheDocument();
+    expect(screen.getByText('pim_common.status')).toBeInTheDocument();
     const operatorSelector = screen.getByTestId('edit-rules-input-1-operator');
     expect(operatorSelector).toBeInTheDocument();
     expect(operatorSelector).toHaveValue('!=');

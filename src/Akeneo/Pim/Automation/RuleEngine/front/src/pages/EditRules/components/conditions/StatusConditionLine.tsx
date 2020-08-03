@@ -5,8 +5,8 @@ import { StatusOperators } from '../../../../models/conditions';
 import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
 import { Operator } from '../../../../models/Operator';
 import {
-  AttributeConditionLineFormAndErrorsContainer,
-  AttributeConditionLineFormContainer,
+  ConditionLineFormAndErrorsContainer,
+  ConditionLineFormContainer,
   FieldColumn,
   OperatorColumn,
   ValueColumn,
@@ -28,16 +28,14 @@ const StatusConditionLine: React.FC<ConditionLineProps> = ({ lineNumber }) => {
     valueFormName,
     getOperatorFormValue,
     getValueFormValue,
-    setValueFormValue,
   } = useControlledFormInputCondition<boolean>(lineNumber);
 
   const isElementInError = (element: string): boolean =>
     typeof errors?.content?.conditions?.[lineNumber]?.[element] === 'object';
 
   return (
-    <AttributeConditionLineFormAndErrorsContainer
-      className={'AknGrid-bodyCell'}>
-      <AttributeConditionLineFormContainer>
+    <ConditionLineFormAndErrorsContainer className={'AknGrid-bodyCell'}>
+      <ConditionLineFormContainer>
         <Controller
           as={<input type='hidden' />}
           name={fieldFormName}
@@ -45,8 +43,8 @@ const StatusConditionLine: React.FC<ConditionLineProps> = ({ lineNumber }) => {
         />
         <FieldColumn
           className={'AknGrid-bodyCell--highlight'}
-          title={translate('pimee_catalog_rule.form.edit.fields.enabled')}>
-          {translate('pimee_catalog_rule.form.edit.fields.enabled')}
+          title={translate('pim_common.status')}>
+          {translate('pim_common.status')}
         </FieldColumn>
         <OperatorColumn>
           <Controller
@@ -65,7 +63,7 @@ const StatusConditionLine: React.FC<ConditionLineProps> = ({ lineNumber }) => {
           }>
           <Controller
             name={valueFormName}
-            as={<span hidden />}
+            as={StatusSelector}
             defaultValue={getValueFormValue()}
             rules={{
               validate: value => {
@@ -75,10 +73,7 @@ const StatusConditionLine: React.FC<ConditionLineProps> = ({ lineNumber }) => {
                 );
               },
             }}
-          />
-          <StatusSelector
             id={`edit-rules-input-${lineNumber}-value`}
-            name={valueFormName}
             label={`${translate('pim_common.status')} ${translate(
               'pim_common.required_label'
             )}`}
@@ -87,12 +82,11 @@ const StatusConditionLine: React.FC<ConditionLineProps> = ({ lineNumber }) => {
             )}
             hiddenLabel={true}
             value={getValueFormValue()}
-            onChange={setValueFormValue}
           />
         </ValueColumn>
-      </AttributeConditionLineFormContainer>
+      </ConditionLineFormContainer>
       <LineErrors lineNumber={lineNumber} type='conditions' />
-    </AttributeConditionLineFormAndErrorsContainer>
+    </ConditionLineFormAndErrorsContainer>
   );
 };
 

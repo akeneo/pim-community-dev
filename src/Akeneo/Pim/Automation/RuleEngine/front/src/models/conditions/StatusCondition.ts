@@ -5,7 +5,7 @@ import { StatusConditionLine } from '../../pages/EditRules/components/conditions
 
 const FIELD = 'enabled';
 
-const StatusOperators = [Operator.EQUALS, Operator.NOT_EQUAL];
+const StatusOperators: Operator[] = [Operator.EQUALS, Operator.NOT_EQUAL];
 
 type StatusCondition = {
   field: string;
@@ -20,17 +20,11 @@ const operatorIsValid = (operator: any): boolean => {
   );
 };
 
-const jsonValueIsValid = (value: any): boolean => {
-  return (
-    typeof value === 'undefined' || value === null || typeof value === 'boolean'
-  );
-};
-
 const statusConditionPredicate = (json: any): boolean => {
   return (
     json.field === FIELD &&
     operatorIsValid(json.operator) &&
-    jsonValueIsValid(json.value)
+    typeof json.value === 'boolean'
   );
 };
 

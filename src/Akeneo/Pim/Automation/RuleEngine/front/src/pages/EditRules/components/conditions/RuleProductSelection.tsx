@@ -24,7 +24,10 @@ import { ProductsCount } from '../ProductsCount';
 import { AddConditionButton } from './AddConditionButton';
 import { FormData } from '../../edit-rules.types';
 import startImage from '../../../../assets/illustrations/start.svg';
-import { useBackboneRouter, useTranslate, } from '../../../../dependenciesTools/hooks';
+import {
+  useBackboneRouter,
+  useTranslate,
+} from '../../../../dependenciesTools/hooks';
 import { Action } from '../../../../models/Action';
 
 const Header = styled.header`
