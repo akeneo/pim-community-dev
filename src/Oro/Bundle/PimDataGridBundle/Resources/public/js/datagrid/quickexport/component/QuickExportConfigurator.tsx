@@ -1,4 +1,5 @@
-import React, {ReactNode, Children, isValidElement, cloneElement, ReactElement, ReactNodeArray} from 'react';
+import React from 'react';
+import styled from 'styled-components';
 import {DependenciesProvider, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {
   AkeneoThemeProvider,
@@ -9,13 +10,13 @@ import {
   Key,
   ModalConfirmButton,
   AkeneoThemedProps,
-  IconProps,
-  useAkeneoTheme,
   CSVFileIcon,
   XLSXFileIcon,
   useStorageState,
 } from '@akeneo-pim-community/shared';
-import styled from 'styled-components';
+import {Form, FormValue} from './Form';
+import {Select} from './Select';
+import {Option} from './Option';
 
 const Container = styled.div`
   color: ${({theme}: AkeneoThemedProps) => theme.color.grey140};
@@ -31,130 +32,17 @@ const Content = styled.div`
   align-items: center;
 `;
 
-const Subtitle = styled.div`
-  color: ${({theme}: AkeneoThemedProps) => theme.color.purple100};
-  font-size: 19px;
-  text-transform: uppercase;
-`;
-
 const Title = styled.div`
   color: ${({theme}: AkeneoThemedProps) => theme.color.grey140};
   font-size: 38px;
   margin: 10px 0 60px;
 `;
 
-const OptionContainer = styled.div<{isSelected: boolean; withIcon: boolean}>`
-  width: 128px;
-  padding: ${({withIcon}) => (withIcon ? 24 : 12)}px 0;
-  height: ${({withIcon}) => (withIcon ? '128px' : 'auto')};
-  justify-content: space-around;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 1px solid;
-  border-color: ${({theme, isSelected}: AkeneoThemedProps & {isSelected: boolean}) =>
-    isSelected ? theme.color.blue100 : theme.color.grey80};
-  background-color: ${({theme, isSelected}: AkeneoThemedProps & {isSelected: boolean}) =>
-    isSelected ? theme.color.blue20 : theme.color.white};
-  color: ${({theme, isSelected}: AkeneoThemedProps & {isSelected: boolean}) =>
-    isSelected ? theme.color.blue100 : 'inherit'};
-  cursor: pointer;
-
-  :not(:first-child) {
-    margin-left: 20px;
-  }
+const Subtitle = styled.div`
+  color: ${({theme}: AkeneoThemedProps) => theme.color.purple100};
+  font-size: 19px;
+  text-transform: uppercase;
 `;
-
-const SelectContainer = styled.div<{isVisible: boolean}>`
-  display: flex;
-  opacity: ${({isVisible}) => (isVisible ? 1 : 0)};
-
-  :not(:first-child) {
-    margin-top: 40px;
-  }
-`;
-
-type OptionProps = {
-  value: string;
-  isSelected?: boolean;
-  children?: ReactNode;
-  onSelect?: () => void;
-};
-
-const Option = ({isSelected, children, onSelect}: OptionProps) => {
-  const theme = useAkeneoTheme();
-  const withIcon = Children.toArray(children).some((child: ReactNode) => isValidElement<IconProps>(child));
-
-  return (
-    <OptionContainer withIcon={withIcon} isSelected={!!isSelected} onClick={onSelect}>
-      {Children.map(children, child => {
-        if (!isValidElement<IconProps>(child)) {
-          return child;
-        }
-
-        return cloneElement<IconProps>(child, {
-          color: isSelected ? theme.color.blue100 : child.props.color,
-        });
-      })}
-    </OptionContainer>
-  );
-};
-
-type SelectProps = {
-  children?: ReactNode;
-  name: string;
-  value?: string | null;
-  isVisible?: boolean;
-  onChange?: (value: string | null) => void;
-};
-
-const Select = ({value, onChange, isVisible, children}: SelectProps) => {
-  return (
-    <SelectContainer isVisible={!!isVisible}>
-      {Children.map(children, child => {
-        if (!isValidElement<OptionProps>(child)) {
-          return child;
-        }
-
-        return cloneElement<OptionProps>(child, {
-          isSelected: child.props.value === value,
-          onSelect: () => undefined !== onChange && onChange(child.props.value),
-        });
-      })}
-    </SelectContainer>
-  );
-};
-
-type FormValue = {
-  [key: string]: string;
-};
-
-type FormProps = {
-  children?: ReactNode;
-  value: FormValue;
-  onChange: (value: FormValue) => void;
-};
-
-const Form = ({value, onChange, children}: FormProps) => {
-  return (
-    <>
-      {Children.map(children, (child, index) => {
-        if (!isValidElement<SelectProps>(child)) {
-          return child;
-        }
-
-        const options = children as ReactNodeArray;
-        const previousOption = options[index - 1] as ReactElement<SelectProps>;
-
-        return cloneElement<SelectProps>(child, {
-          onChange: (newValue: string) => onChange({...value, [child.props.name]: newValue}),
-          isVisible: !(0 < index && undefined !== previousOption && undefined === value[previousOption.props.name]),
-          value: undefined !== value[child.props.name] ? value[child.props.name] : null,
-        });
-      })}
-    </>
-  );
-};
 
 type QuickExportConfiguratorProps = {
   onActionLaunch: (actionName: string) => void;

@@ -19,7 +19,8 @@ define(
         'oro/mediator',
         'react',
         'react-dom',
-        'pimdatagrid/datagrid/quickexport/component/QuickExportConfigurator'
+        'pimdatagrid/datagrid/quickexport/component/QuickExportConfigurator',
+        'pim/user-context'
     ], function(
         _,
         __,
@@ -29,7 +30,8 @@ define(
         mediator,
         React,
         ReactDOM,
-        {QuickExportConfigurator}
+        {QuickExportConfigurator},
+        UserContext
     ) {
 
     const ActionsPanel = BaseForm.extend({
@@ -140,6 +142,11 @@ define(
                             throw new Error(`Action of type "${actionName}" not found.`)
                         }
 
+                        launcher.action.route_parameters = {
+                            ...launcher.action.route_parameters,
+                            _withLabels: true,
+                            _fileLocale: UserContext.get('catalogLocale'),
+                        };
 
                         launcher.action.run();
                     },
