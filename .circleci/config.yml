@@ -384,7 +384,7 @@ jobs:
                 name: Latest SaaS prod deployment on kubernetes
                 command: |
                     ssh-keyscan github.com >> ~/.ssh/known_hosts
-                    LATEST_RELEASE=$(git fetch origin &> /dev/null && git tag --list | grep -E "^v?[0-9]+$" | sort -r | head -n 1)
+                    LATEST_RELEASE=v20200802020139
                     echo $LATEST_RELEASE
                     INSTANCE_NAME=pimup-$IMAGE_TAG IMAGE_TAG=$LATEST_RELEASE make deploy-serenity
           - run:
