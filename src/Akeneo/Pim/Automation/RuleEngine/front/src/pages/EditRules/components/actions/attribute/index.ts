@@ -1,3 +1,4 @@
+export * from './AssetCollectionValue';
 export * from './AttributeLocaleScopeSelector';
 export * from './AttributeValue';
 export * from './BooleanValue';

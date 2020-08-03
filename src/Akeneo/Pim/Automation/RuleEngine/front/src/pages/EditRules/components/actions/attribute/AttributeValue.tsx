@@ -10,14 +10,16 @@ import {
   useUserCatalogLocale,
 } from '../../../../../dependenciesTools/hooks';
 import {
+  AssetCollectionValue,
   BooleanValue,
   FallbackValue,
   MultiSelectValue,
   NumberValue,
+  parsePriceCollectionValue,
+  parseAssetCollectionValue,
+  PriceCollectionValue,
   SimpleSelectValue,
   TextValue,
-  parsePriceCollectionValue,
-  PriceCollectionValue,
 } from './';
 import {
   HelperContainer,
@@ -35,6 +37,7 @@ const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: Map<
   [AttributeType.OPTION_MULTI_SELECT, MultiSelectValue],
   [AttributeType.NUMBER, NumberValue],
   [AttributeType.PRICE_COLLECTION, PriceCollectionValue],
+  [AttributeType.ASSET_COLLECTION, AssetCollectionValue],
 ]);
 
 const MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION: Map<
@@ -75,6 +78,13 @@ const getValueModule = (attribute: Attribute, props: InputValueProps) => {
         <PriceCollectionValue
           {...props}
           value={parsePriceCollectionValue(props.value)}
+        />
+      );
+    case AttributeType.ASSET_COLLECTION:
+      return (
+        <AssetCollectionValue
+          {...props}
+          value={parseAssetCollectionValue(props.value)}
         />
       );
     default:
