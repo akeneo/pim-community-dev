@@ -1,0 +1,4 @@
+config:
+    paths:
+        ## Product Grid
+        oro/datagrid/rate-badge-cell: akeneodataqualityinsights/js/infrastructure/datagrid/cell/rate-badge-cell.tsx
