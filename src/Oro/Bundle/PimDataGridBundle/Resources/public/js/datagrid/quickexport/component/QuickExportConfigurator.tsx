@@ -68,13 +68,16 @@ const QuickExportConfiguratorContainer = ({onActionLaunch, getProductCount}: Qui
 
   return (
     <>
-      <div onClick={openModal}>{translate('pim_datagrid.mass_action_group.quick_export.label')}</div>
-      <Container>
-        {isModalOpen && (
+      <div title={translate('pim_datagrid.mass_action_group.quick_export.label')} onClick={openModal}>
+        {translate('pim_datagrid.mass_action_group.quick_export.label')}
+      </div>
+      {isModalOpen && (
+        <Container>
           <Modal>
             <Content>
-              <ModalCloseButton onClick={closeModal} />
+              <ModalCloseButton title={translate('pim_common.close')} onClick={closeModal} />
               <ModalConfirmButton
+                title={translate('pim_common.export')}
                 onClick={() => {
                   const actionName = `quick_export${'grid-context' === formValue['context'] ? `_grid_context` : ''}${
                     'with-labels' === formValue['with-labels'] ? `_with_labels` : ''
@@ -134,8 +137,8 @@ const QuickExportConfiguratorContainer = ({onActionLaunch, getProductCount}: Qui
               </Form>
             </Content>
           </Modal>
-        )}
-      </Container>
+        </Container>
+      )}
     </>
   );
 };

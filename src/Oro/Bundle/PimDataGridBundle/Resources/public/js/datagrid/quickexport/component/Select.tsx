@@ -1,6 +1,6 @@
 import React, {ReactNode, Children, cloneElement, isValidElement} from 'react';
 import styled from 'styled-components';
-import {OptionProps} from './Option';
+import {OptionProps, Option} from './Option';
 
 const SelectContainer = styled.div<{isVisible: boolean}>`
   display: flex;
@@ -19,16 +19,17 @@ type SelectProps = {
   onChange?: (value: string | null) => void;
 };
 
-const Select = ({value, onChange, isVisible, children}: SelectProps) => {
+const Select = ({name, value, onChange, isVisible, children}: SelectProps) => {
   return (
-    <SelectContainer isVisible={!!isVisible}>
+    <SelectContainer role={`${name}-select`} isVisible={!!isVisible} data-visible={!!isVisible}>
       {Children.map(children, child => {
-        if (!isValidElement<OptionProps>(child)) {
+        if (!isValidElement<OptionProps>(child) || child.type !== Option) {
           return child;
         }
 
         return cloneElement<OptionProps>(child, {
           isSelected: child.props.value === value,
+          isDisabled: !isVisible,
           onSelect: () => undefined !== onChange && onChange(child.props.value),
         });
       })}

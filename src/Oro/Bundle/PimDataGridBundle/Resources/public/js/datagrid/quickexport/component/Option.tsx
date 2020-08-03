@@ -17,7 +17,7 @@ const OptionContainer = styled.div<{isSelected: boolean; withIcon: boolean}>`
     isSelected ? theme.color.blue20 : theme.color.white};
   color: ${({theme, isSelected}: AkeneoThemedProps & {isSelected: boolean}) =>
     isSelected ? theme.color.blue100 : 'inherit'};
-  cursor: pointer;
+  cursor: ${({onClick}) => (onClick ? 'pointer' : 'default')};
 
   :not(:first-child) {
     margin-left: 20px;
@@ -27,16 +27,22 @@ const OptionContainer = styled.div<{isSelected: boolean; withIcon: boolean}>`
 type OptionProps = {
   value: string;
   isSelected?: boolean;
+  isDisabled?: boolean;
   children?: ReactNode;
   onSelect?: () => void;
 };
 
-const Option = ({isSelected, children, onSelect}: OptionProps) => {
+const Option = ({isSelected, children, onSelect, isDisabled}: OptionProps) => {
   const theme = useAkeneoTheme();
   const withIcon = Children.toArray(children).some((child: ReactNode) => isValidElement<IconProps>(child));
 
   return (
-    <OptionContainer withIcon={withIcon} isSelected={!!isSelected} onClick={onSelect}>
+    <OptionContainer
+      withIcon={withIcon}
+      data-selected={!!isSelected}
+      isSelected={!!isSelected}
+      onClick={isDisabled ? undefined : onSelect}
+    >
       {Children.map(children, child => {
         if (!isValidElement<IconProps>(child)) {
           return child;
