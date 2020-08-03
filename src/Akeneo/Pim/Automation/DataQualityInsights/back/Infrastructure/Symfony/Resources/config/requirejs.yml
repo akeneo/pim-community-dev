@@ -42,7 +42,6 @@ config:
         pim/product-edit-form/attribute-filter-all-improvable-attributes: akeneopimenterprisedataqualityinsights/js/infrastructure/product-edit-form/attribute-filter-all-improvable-attributes.ts
 
         ## Product Grid
-        oro/datagrid/rate-badge-cell: akeneopimenterprisedataqualityinsights/js/infrastructure/datagrid/cell/rate-badge-cell.tsx
         oro/datagrid/quality-badge-cell: akeneopimenterprisedataqualityinsights/js/infrastructure/attribute-grid/cell/quality-badge-cell.tsx
 
         akeneo/data-quality-insights/view/back-link: akeneopimenterprisedataqualityinsights/js/infrastructure/pim-view/back-link.tsx

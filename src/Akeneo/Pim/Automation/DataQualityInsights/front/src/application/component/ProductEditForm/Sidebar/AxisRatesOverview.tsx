@@ -1,7 +1,7 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
 import {get} from 'lodash';
 import {useCatalogContext, useFetchProductAxisRates} from "../../../../infrastructure/hooks";
-import Rate from "../../Rate";
+import Rate from '@akeneo-pim-community/data-quality-insights/src/application/component/Rate';
 
 const __ = require('oro/translator');
 

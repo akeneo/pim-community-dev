@@ -1,6 +1,6 @@
 import React, {FunctionComponent, useEffect, useState} from "react";
 import useFetchWidgetCategories from "../../../../infrastructure/hooks/Dashboard/useFetchWidgetCategories";
-import Rate from "../../Rate";
+import Rate from '@akeneo-pim-community/data-quality-insights/src/application/component/Rate';
 import {Ranks} from "../../../../domain/Rate.interface";
 import CategoryModal from "../CategoryModal/CategoryModal";
 import {uniqBy as _uniqBy, xorBy as _xorBy} from 'lodash';

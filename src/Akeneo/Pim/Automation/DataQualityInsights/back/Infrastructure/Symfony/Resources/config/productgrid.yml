@@ -12,19 +12,6 @@ services:
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: data_quality_insights_consistency }
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\RegisterEnrichmentFilter:
-        arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-        tags:
-            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-grid, method: buildBefore }
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\EnrichmentFilter:
-        arguments:
-            - '@form.factory'
-            - '@pim_filter.product_utility'
-        tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: data_quality_insights_enrichment }
-
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\FetchConsistencyForProductRows:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.get_product_axes_rates'
@@ -35,16 +22,6 @@ services:
             tags:
                 - { name: akeneo.pim.enrichment.product.grid.add_additional_product_model_properties }
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\FetchEnrichmentForProductRows:
-        arguments:
-            - '@akeneo.pim.automation.data_quality_insights.get_product_axes_rates'
-        tags:
-            - { name: akeneo.pim.enrichment.product.grid.add_additional_product_properties }
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\FetchEnrichmentForProductModelRows:
-            tags:
-                - { name: akeneo.pim.enrichment.product.grid.add_additional_product_model_properties }
-
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\ConsistencySorter:
         tags:
             - { name: pim_datagrid.extension.sorter, type: data_quality_insights_consistency }
@@ -52,15 +29,5 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Sorter\ConsistencySorter:
         arguments:
             - ['rates_consistency']
-        tags:
-            - { name: pim_catalog.elasticsearch.query.sorter, priority: 30 }
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\EnrichmentSorter:
-        tags:
-            - { name: pim_datagrid.extension.sorter, type: data_quality_insights_enrichment }
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Sorter\EnrichmentSorter:
-        arguments:
-            - ['rates_enrichment']
         tags:
             - { name: pim_catalog.elasticsearch.query.sorter, priority: 30 }

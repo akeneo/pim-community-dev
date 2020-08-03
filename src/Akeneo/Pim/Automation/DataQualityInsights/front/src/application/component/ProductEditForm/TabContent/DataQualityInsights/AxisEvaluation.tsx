@@ -1,7 +1,7 @@
 import React, {FunctionComponent} from 'react';
 import {uniq as _uniq} from 'lodash';
 
-import Rate from "../../../Rate";
+import Rate from '@akeneo-pim-community/data-quality-insights/src/application/component/Rate';
 import AllAttributesLink from "./AllAttributesLink";
 import {Evaluation} from "../../../../../domain";
 import CriteriaList from "./CriteriaList";

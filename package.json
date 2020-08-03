@@ -65,6 +65,7 @@
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front",
     "src/Akeneo/Pim/Automation/DataQualityInsights/front",
-    "src/Akeneo/Pim/Automation/RuleEngine/front"
+    "src/Akeneo/Pim/Automation/RuleEngine/front",
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/front"
   ]
 }

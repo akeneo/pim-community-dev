@@ -5,7 +5,6 @@ import {
   DATA_QUALITY_INSIGHTS_TAB_CONTENT_CONTAINER_ELEMENT_ID
 } from './application/component/ProductEditForm/TabContent';
 import {DATA_QUALITY_INSIGHTS_AXIS_RATES_OVERVIEW_SIDEBAR_CONTAINER_ELEMENT_ID} from './application/component/ProductEditForm/Sidebar';
-import Rate from './application/component/Rate';
 
 import {
   DataQualityInsightsFeature,

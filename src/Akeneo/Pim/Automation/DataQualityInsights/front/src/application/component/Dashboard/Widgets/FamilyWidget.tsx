@@ -4,7 +4,7 @@ import useFetchWidgetFamilies from "../../../../infrastructure/hooks/Dashboard/u
 import useFetchFamiliesByCodes from "../../../../infrastructure/hooks/Dashboard/useFetchFamiliesByCodes";
 import Family from "../../../../domain/Family.interface";
 import {Ranks} from "../../../../domain/Rate.interface";
-import Rate from "../../Rate";
+import Rate from '@akeneo-pim-community/data-quality-insights/src/application/component/Rate';
 import FamilyModal from "./FamilyModal";
 import {uniq as _uniq} from 'lodash';
 import {redirectToProductGridFilteredByFamily} from "../../../../infrastructure/ProductGridRouter";
