@@ -108,6 +108,7 @@ pimee_catalog_rule:
                 family: Family
                 category: Category
                 attribute: Attribute
+                groups: Groups
             actions:
                 add_action: Add action
                 add_category:
