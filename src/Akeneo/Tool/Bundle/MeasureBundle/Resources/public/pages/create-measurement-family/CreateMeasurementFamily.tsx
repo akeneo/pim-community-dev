@@ -1,5 +1,4 @@
 import React, {FormEvent, useCallback, useState} from 'react';
-import {Modal, ModalBodyWithIllustration, ModalCloseButton, ModalTitle} from 'akeneomeasure/shared/components/Modal';
 import {MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasurementFamilyIllustration';
 import {Subsection, SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
 import {TextField} from 'akeneomeasure/shared/components/TextField';
@@ -21,6 +20,10 @@ import {
   getErrorsForPath,
   useShortcut,
   Key,
+  Modal,
+  ModalBodyWithIllustration,
+  ModalCloseButton,
+  ModalTitle,
 } from '@akeneo-pim-community/shared';
 
 type CreateMeasurementFamilyProps = {

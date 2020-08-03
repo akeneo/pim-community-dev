@@ -1,5 +1,4 @@
 import React, {FormEvent, useCallback, useContext, useRef, useState} from 'react';
-import {Modal, ModalBodyWithIllustration, ModalCloseButton, ModalTitle} from 'akeneomeasure/shared/components/Modal';
 import {MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasurementFamilyIllustration';
 import {Subsection} from 'akeneomeasure/shared/components/Subsection';
 import {TextField} from 'akeneomeasure/shared/components/TextField';
@@ -28,6 +27,10 @@ import {
   ValidationError,
   useShortcut,
   Key,
+  Modal,
+  ModalBodyWithIllustration,
+  ModalCloseButton,
+  ModalTitle,
 } from '@akeneo-pim-community/shared';
 
 type CreateUnitProps = {
