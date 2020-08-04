@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import {AttributeEditFormApp} from 'akeneodataqualityinsights-react';
 import {
-  AttributeEditFormApp,
   DataQualityInsightsFeature,
   getDataQualityInsightsFeature,
-} from 'akeneodataqualityinsights-react';
+} from '@akeneo-pim-community/data-quality-insights/src';
 import {ATTRIBUTE_EDIT_FORM_TAB_CHANGED_EVENT} from 'akeneodataqualityinsights-react/application/constant';
 import OverrideTabTitles, {OverrideTabTitlesInterface} from "./override-tab-titles";
 

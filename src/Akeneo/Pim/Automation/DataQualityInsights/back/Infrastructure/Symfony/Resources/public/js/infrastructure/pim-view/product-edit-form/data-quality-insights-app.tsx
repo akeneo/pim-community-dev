@@ -8,17 +8,20 @@ import {
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVED,
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVING,
   DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE,
-  DataQualityInsightsFeature,
-  getDataQualityInsightsFeature,
   PRODUCT_ATTRIBUTES_TAB_LOADED,
   PRODUCT_ATTRIBUTES_TAB_LOADING,
-  PRODUCT_TAB_CHANGED,
-  ProductEditFormApp,
-  ProductModelEditFormApp,
   PRODUCT_ATTRIBUTES_TAB_NAME,
   PRODUCT_MODEL_ATTRIBUTES_TAB_NAME,
   PRODUCT_MODEL_LEVEL_CHANGED,
+  PRODUCT_TAB_CHANGED,
+  ProductEditFormApp,
+  ProductModelEditFormApp,
 } from 'akeneodataqualityinsights-react';
+
+import {
+  DataQualityInsightsFeature,
+  getDataQualityInsightsFeature,
+} from '@akeneo-pim-community/data-quality-insights/src';
 
 const UserContext = require('pim/user-context');
 const BaseView = require('pimui/js/view/base');

@@ -13,9 +13,6 @@ interface ProductContextListenerProps {
 export const DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE = 'data-quality:product:show_attribute';
 export const DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES = 'data-quality:product:filter_all_missing_attributes';
 export const DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES = 'data-quality:product:filter_all_improvable_attributes';
-export const DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD = 'data-quality:dashboard:change_time_period';
-export const DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY = 'data-quality:dashboard:filter:family';
-export const DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY = 'data-quality:dashboard:filter:category';
 export const DATA_QUALITY_INSIGHTS_PRODUCT_SAVING = 'data-quality:product:saving';
 export const DATA_QUALITY_INSIGHTS_PRODUCT_SAVED = 'data-quality:product:saved';
 

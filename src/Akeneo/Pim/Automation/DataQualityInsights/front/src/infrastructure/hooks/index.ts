@@ -1,4 +1,3 @@
-import useFetchDqiDashboardData from "./Dashboard/useFetchDqiDashboardData";
 import useFetchProductDataQualityEvaluation from "./ProductEditForm/useFetchProductDataQualityEvaluation";
 import useFetchProductFamilyInformation from "./ProductEditForm/useFetchProductFamilyInformation";
 import useCatalogContext from "./ProductEditForm/useCatalogContext";
@@ -14,10 +13,8 @@ import useFetchTextAnalysis from "./EditorHighlight/Spellcheck/useFetchTextAnaly
 import useGetPopover from "./EditorHighlight/useGetPopover";
 import useGetWidget from "./EditorHighlight/useGetWidget";
 import useFetchIgnoreTextIssue from "./EditorHighlight/Spellcheck/useFetchIgnoreTextIssue";
-import useGetChartScalingSizeRatio from "./Dashboard/useGetChartScalingSizeRatio";
 
 export {
-  useFetchDqiDashboardData,
   useFetchProductDataQualityEvaluation,
   useFetchProductFamilyInformation,
   useCatalogContext,
@@ -32,6 +29,5 @@ export {
   useGetPopover as useGetEditorHighlightPopover,
   useGetWidget as useGetSpellcheckWidget,
   useFetchIgnoreTextIssue,
-  useGetChartScalingSizeRatio as useGetDashboardChartScalingSizeRatio,
   useProductEvaluation,
 }

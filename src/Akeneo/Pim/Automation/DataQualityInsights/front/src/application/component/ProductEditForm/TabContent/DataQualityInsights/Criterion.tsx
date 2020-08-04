@@ -1,7 +1,7 @@
 import React, {FunctionComponent} from 'react';
 
 import RecommendationAttributesList from "./RecommendationAttributesList";
-import {MAX_RATE, Rate} from "../../../../../domain";
+import {MAX_RATE, Rate} from "@akeneo-pim-community/data-quality-insights/src/domain";
 import Evaluation, {
   CRITERION_DONE,
   CRITERION_ERROR,

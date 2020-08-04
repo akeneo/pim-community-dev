@@ -6,11 +6,6 @@ import {
 } from './application/component/ProductEditForm/TabContent';
 import {DATA_QUALITY_INSIGHTS_AXIS_RATES_OVERVIEW_SIDEBAR_CONTAINER_ELEMENT_ID} from './application/component/ProductEditForm/Sidebar';
 
-import {
-  DataQualityInsightsFeature,
-  getDataQualityInsightsFeature
-} from './infrastructure/fetcher/data-quality-insights-feature';
-
 import fetchProductDataQualityEvaluation
   from './infrastructure/fetcher/ProductEditForm/fetchProductDataQualityEvaluation';
 import fetchProductModelEvaluation from './infrastructure/fetcher/ProductEditForm/fetchProductModelEvaluation';
@@ -18,9 +13,6 @@ import fetchProductModelEvaluation from './infrastructure/fetcher/ProductEditFor
 import {
   CATALOG_CONTEXT_CHANNEL_CHANGED,
   CATALOG_CONTEXT_LOCALE_CHANGED,
-  DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD,
-  DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY,
-  DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY,
   DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES,
   DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES,
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVED,
@@ -39,19 +31,13 @@ import {
   PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME
 } from './application/constant';
 
-import {Dashboard, DashboardHelper} from "./application/component/Dashboard";
-
 import {CriterionEvaluationResult, ProductEvaluation} from "./domain";
 
 import BackLinkButton from './application/component/BackLinkButton';
 
 export {
-  DashboardHelper,
-  Dashboard,
   ProductEditFormApp,
   ProductModelEditFormApp,
-  DataQualityInsightsFeature,
-  getDataQualityInsightsFeature,
   CATALOG_CONTEXT_CHANNEL_CHANGED,
   CATALOG_CONTEXT_LOCALE_CHANGED,
   PRODUCT_ATTRIBUTES_TAB_LOADED,
@@ -63,9 +49,6 @@ export {
   DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE,
   DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES,
   DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES,
-  DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD,
-  DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY,
-  DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY,
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVING,
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVED,
   PRODUCT_ATTRIBUTES_TAB_NAME,

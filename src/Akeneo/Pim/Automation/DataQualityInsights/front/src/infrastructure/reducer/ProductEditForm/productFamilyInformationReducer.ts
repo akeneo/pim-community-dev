@@ -1,5 +1,5 @@
 import {Action, Reducer} from "redux";
-import {Family as FamilyInformation} from '../../../domain';
+import {Family as FamilyInformation} from '@akeneo-pim-community/data-quality-insights/src/domain';
 
 export interface ProductFamilyInformationState {
   [family: string]: FamilyInformation;

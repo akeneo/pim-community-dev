@@ -8,7 +8,7 @@ const unitConfig = {
     'src/Akeneo/Pim/Automation/DataQualityInsights'
   ],
   verbose: true,
-  testRegex: 'src/Akeneo/Pim/Automation/DataQualityInsights/tests/front/unit(.*)(unit).(jsx?|tsx?)$',
+  testRegex: `${__dirname}(.*)(unit).(jsx?|tsx?)$`,
 };
 
 module.exports = Object.assign({}, baseConfig, unitConfig);

@@ -1,4 +1,7 @@
-import {DataQualityInsightsFeature, getDataQualityInsightsFeature} from 'akeneodataqualityinsights-react';
+import {
+  DataQualityInsightsFeature,
+  getDataQualityInsightsFeature,
+} from '@akeneo-pim-community/data-quality-insights/src';
 import {ATTRIBUTE_EDIT_FORM_UPDATED} from "@akeneo-pim-ee/data-quality-insights/src/application/constant";
 
 const BaseView = require('pimui/js/view/base');

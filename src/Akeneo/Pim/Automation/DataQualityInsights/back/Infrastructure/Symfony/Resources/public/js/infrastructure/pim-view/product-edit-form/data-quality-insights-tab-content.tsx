@@ -2,10 +2,13 @@ import {
   DATA_QUALITY_INSIGHTS_TAB_CONTENT_CONTAINER_ELEMENT_ID,
   PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME,
   PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME,
-  DataQualityInsightsFeature,
-  getDataQualityInsightsFeature,
   PRODUCT_TAB_CHANGED
 } from 'akeneodataqualityinsights-react';
+
+import {
+  DataQualityInsightsFeature,
+  getDataQualityInsightsFeature,
+} from '@akeneo-pim-community/data-quality-insights/src';
 
 const BaseView = require('pimui/js/view/base');
 
