@@ -66,6 +66,7 @@ mailer:
   password: ${mailgun_password}
 
 pim:
+  serviceAccountKey: ${pimStoragekey}
   pubsub:
     subscription_webhook: ${subscription_webhook}
     subscription_job_queue: ${subscription_job_queue}
@@ -74,6 +75,5 @@ pim:
     serviceAccountKey: ${pimPubsubKey}
   storage:
     bucketName: ${bucketName}
-    serviceAccountKey: ${pimStoragekey}
   monitoring:
     authenticationToken: ${monitoring_authentication_token}
