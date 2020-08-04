@@ -6,6 +6,7 @@ import CategoryModal from "../CategoryModal/CategoryModal";
 import {uniqBy as _uniqBy, xorBy as _xorBy} from 'lodash';
 import Category from "../../../../domain/Category.interface";
 import {redirectToProductGridFilteredByCategory} from "../../../../infrastructure/ProductGridRouter";
+import {useAxesContext} from "@akeneo-pim-community/data-quality-insights/src/application/context/AxesContext";
 
 const __ = require('oro/translator');
 
@@ -22,6 +23,7 @@ const CategoryWidget: FunctionComponent<CategoryWidgetProps> = ({catalogChannel,
   const [categoriesToWatch, setCategoriesToWatch] = useState<Category[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [modalErrorMessage, setModalErrorMessage] = useState<string | null>(null);
+  const axesContext = useAxesContext();
 
   const ratesByCategory = useFetchWidgetCategories(catalogChannel, catalogLocale, watchedCategories);
 
@@ -104,7 +106,9 @@ const CategoryWidget: FunctionComponent<CategoryWidgetProps> = ({catalogChannel,
           <tr>
             <th className="AknGrid-headerCell">{__('akeneo_data_quality_insights.dqi_dashboard.widgets.title')}</th>
             <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate">{__(`akeneo_data_quality_insights.product_evaluation.axis.enrichment.title`)}</th>
-            <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate">{__(`akeneo_data_quality_insights.product_evaluation.axis.consistency.title`)}</th>
+            {axesContext.axes.includes('consistency') &&
+              <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate">{__(`akeneo_data_quality_insights.product_evaluation.axis.consistency.title`)}</th>
+            }
             <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate"> </th>
             <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate"> </th>
           </tr>
@@ -118,9 +122,11 @@ const CategoryWidget: FunctionComponent<CategoryWidgetProps> = ({catalogChannel,
                 <td className="AknGrid-bodyCell AknDataQualityInsightsGrid-axis-rate">
                   <Rate value={ratesByAxis.enrichment ? Ranks[ratesByAxis.enrichment] : null}/>
                 </td>
-                <td className="AknGrid-bodyCell AknDataQualityInsightsGrid-axis-rate">
-                  <Rate value={ratesByAxis.consistency ? Ranks[ratesByAxis.consistency] : null}/>
-                </td>
+                {axesContext.axes.includes('consistency') &&
+                  <td className="AknGrid-bodyCell AknDataQualityInsightsGrid-axis-rate">
+                    <Rate value={ratesByAxis.consistency ? Ranks[ratesByAxis.consistency] : null}/>
+                  </td>
+                }
                 <td className="AknGrid-bodyCell AknGrid-bodyCell--actions">
                   <div className="AknButton AknButton--micro" onClick={() => redirectToProductGridFilteredByCategory(catalogChannel, catalogLocale, category.id, category.rootCategoryId)}>
                     {__('akeneo_data_quality_insights.dqi_dashboard.widgets.see_in_grid')}

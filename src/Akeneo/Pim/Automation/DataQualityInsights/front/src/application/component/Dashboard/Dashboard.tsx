@@ -1,6 +1,7 @@
 import React, {FunctionComponent} from "react";
 import Overview from "./Overview/Overview";
 import Widgets from "./Widgets/Widgets";
+import {AxesContextProvider} from "@akeneo-pim-community/data-quality-insights/src/application/context/AxesContext";
 
 interface DataQualityInsightsDashboardProps {
   timePeriod: string;
@@ -8,16 +9,19 @@ interface DataQualityInsightsDashboardProps {
   catalogChannel: string;
   familyCode: string | null;
   categoryCode: string | null;
+  axes: string[];
 }
 
-const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({timePeriod, catalogLocale, catalogChannel, familyCode, categoryCode}) => {
+const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({timePeriod, catalogLocale, catalogChannel, familyCode, categoryCode, axes}) => {
   return (
-    <div id="data-quality-insights-activity-dashboard">
-      <div className="AknSubsection">
-        <Overview catalogLocale={catalogLocale} catalogChannel={catalogChannel} timePeriod={timePeriod} familyCode={familyCode} categoryCode={categoryCode}/>
-        <Widgets catalogLocale={catalogLocale} catalogChannel={catalogChannel}/>
+    <AxesContextProvider axes={axes}>
+      <div id="data-quality-insights-activity-dashboard">
+        <div className="AknSubsection">
+          <Overview catalogLocale={catalogLocale} catalogChannel={catalogChannel} timePeriod={timePeriod} familyCode={familyCode} categoryCode={categoryCode}/>
+          <Widgets catalogLocale={catalogLocale} catalogChannel={catalogChannel}/>
+        </div>
       </div>
-    </div>
+    </AxesContextProvider>
   )
 };
 

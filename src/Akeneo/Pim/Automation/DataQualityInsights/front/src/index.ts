@@ -73,7 +73,6 @@ export {
   PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME,
   PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME,
   PRODUCT_MODEL_LEVEL_CHANGED,
-  Rate,
   fetchProductDataQualityEvaluation,
   fetchProductModelEvaluation,
   ProductEvaluation, CriterionEvaluationResult,

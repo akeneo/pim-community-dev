@@ -6,6 +6,10 @@ import Filters from "./Filters";
 import Header from "./Charts/Header";
 import EmptyChartPlaceholder from "./Charts/EmptyChartPlaceholder";
 import TimePeriodAxisChart from "./Charts/TimePeriodAxisChart";
+import {
+  AxesContextState,
+  useAxesContext
+} from "@akeneo-pim-community/data-quality-insights/src/application/context/AxesContext";
 
 const __ = require('oro/translator');
 
@@ -17,14 +21,14 @@ interface DataQualityOverviewChartProps {
   categoryCode: string | null;
 }
 
-const showOverviewPlaceholder = (dataset: Dataset|null) => {
+const showOverviewPlaceholder = (dataset: Dataset|null, axesContext: AxesContextState) => {
   return (dataset !== null) && (
     isEmpty(dataset) ||
     (
       // @ts-ignore
       (isEmpty(dataset['enrichment']) || Object.entries(dataset['enrichment']).every(([date, ranksData]) => isEmpty(ranksData))) &&
       // @ts-ignore
-      (isEmpty(dataset['consistency']) || Object.entries(dataset['consistency']).every(([date, ranksData]) => isEmpty(ranksData)))
+      (!axesContext.axes.includes('consistency') || isEmpty(dataset['consistency']) || Object.entries(dataset['consistency']).every(([date, ranksData]) => isEmpty(ranksData)))
     )
   );
 };
@@ -34,6 +38,7 @@ const Overview = ({catalogChannel, catalogLocale, timePeriod, familyCode, catego
   const [isLoading, setIsLoading] = useState(true);
   const [enrichmentChart, setEnrichmentChart] = useState<ReactElement>();
   const [consistencyChart, setConsistencyChart] = useState<ReactElement>();
+  const axesContext = useAxesContext();
 
   const dataset = useFetchDqiDashboardData(catalogChannel, catalogLocale, timePeriod, familyCode, categoryCode);
 
@@ -45,8 +50,10 @@ const Overview = ({catalogChannel, catalogLocale, timePeriod, familyCode, catego
     const enrichmentChartDataset = formatBackendRanksToVictoryFormat(dataset, 'enrichment');
     setEnrichmentChart(<TimePeriodAxisChart dataset={enrichmentChartDataset} timePeriod={timePeriod}/>);
 
-    const consistencyChartDataset = formatBackendRanksToVictoryFormat(dataset, 'consistency');
-    setConsistencyChart(<TimePeriodAxisChart dataset={consistencyChartDataset} timePeriod={timePeriod}/>);
+    if (axesContext.axes.includes('consistency')) {
+      const consistencyChartDataset = formatBackendRanksToVictoryFormat(dataset, 'consistency');
+      setConsistencyChart(<TimePeriodAxisChart dataset={consistencyChartDataset} timePeriod={timePeriod}/>);
+    }
 
     setIsLoading(false);
   }, [dataset]);
@@ -58,7 +65,7 @@ const Overview = ({catalogChannel, catalogLocale, timePeriod, familyCode, catego
   return (
     <>
       <Filters timePeriod={timePeriod} familyCode={familyCode} categoryCode={categoryCode}/>
-      {showOverviewPlaceholder(dataset) ? (
+      {showOverviewPlaceholder(dataset, axesContext) ? (
         <EmptyChartPlaceholder />
       ) : (
         <>
@@ -68,11 +75,15 @@ const Overview = ({catalogChannel, catalogLocale, timePeriod, familyCode, catego
             {enrichmentChart}
           </div>
 
-          <Header axisName={__(`akeneo_data_quality_insights.product_evaluation.axis.consistency.title`)} displayLegend={false}/>
-          <div className='AknDataQualityInsights-chart'>
-            {isLoading && <div className="AknLoadingMask"/>}
-            {consistencyChart}
-          </div>
+          {axesContext.axes.includes('consistency') &&
+            <>
+              <Header axisName={__(`akeneo_data_quality_insights.product_evaluation.axis.consistency.title`)} displayLegend={false}/>
+              <div className='AknDataQualityInsights-chart'>
+                {isLoading && <div className="AknLoadingMask"/>}
+                {consistencyChart}
+              </div>
+            </>
+          }
         </>
       )}
     </>

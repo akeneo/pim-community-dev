@@ -44,6 +44,14 @@ class SectionView extends BaseView {
 
   private categoryCode: string | null = null;
 
+  private axes = [];
+
+  constructor(options: any) {
+    super(options);
+
+    this.axes = options.config.axes;
+  }
+
   configure(): JQueryPromise<any> {
     window.addEventListener(DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD, ((event: CustomEvent<DashboardChangeTimePeriodEvent>) => {
       this.timePeriod = event.detail.timePeriod;
@@ -80,7 +88,14 @@ class SectionView extends BaseView {
     ReactDOM.render(
       <div>
         <DashboardHelper/>
-        <Dashboard timePeriod={this.timePeriod} catalogLocale={catalogLocale} catalogChannel={catalogChannel} familyCode={this.familyCode} categoryCode={this.categoryCode}/>
+        <Dashboard
+          timePeriod={this.timePeriod}
+          catalogLocale={catalogLocale}
+          catalogChannel={catalogChannel}
+          familyCode={this.familyCode}
+          categoryCode={this.categoryCode}
+          axes={this.axes}
+        />
       </div>,
       this.el
     );
