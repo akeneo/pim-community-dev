@@ -36,6 +36,7 @@ const AssetCollectionValue: React.FC<InputValueProps> = ({
         value={value}
         assetFamilyIdentifier={attribute.reference_data_name as string}
         multiple={true}
+        compact={true}
       />
     </>
   );
