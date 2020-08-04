@@ -58,7 +58,8 @@ define([
             const select2 = this.$('.select2');
             select2.select2();
 
-            if (undefined === this.getFormData().configuration.file_locale || null === this.getFormData().configuration.file_locale) {
+            const fileLocale = this.getFormData().configuration.file_locale;
+            if (undefined === fileLocale || null === fileLocale) {
                 select2.val(UserContext.get('catalogLocale')).change();
             }
 
