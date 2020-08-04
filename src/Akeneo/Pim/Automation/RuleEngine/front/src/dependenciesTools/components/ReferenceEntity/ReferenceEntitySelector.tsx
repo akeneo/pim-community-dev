@@ -72,7 +72,7 @@ export const ReferenceEntitySelector: React.FC<RecordSelectorProps> = ({
   };
 
   return (
-    <RecordSelector
+    <RecordSelector.default
       value={createValue(value)}
       referenceEntityIdentifier={ReferenceEntityString.create(
         referenceEntityIdentifier
