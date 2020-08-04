@@ -136,7 +136,7 @@ class ProductExportController
                 $dynamicConfiguration,
                 [
                     'with_label' => true,
-                    'with_header_label' => true,
+                    'header_with_label' => true,
                     'file_locale' => $fileLocale
                 ]
             );
