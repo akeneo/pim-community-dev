@@ -41,6 +41,7 @@ const ATTRIBUTE_TYPES = [
   'pim_catalog_text',
   'pim_catalog_number',
   'pim_catalog_date',
+  'pim_catalog_boolean',
 ];
 
 const AddConditionButton: React.FC<Props> = ({

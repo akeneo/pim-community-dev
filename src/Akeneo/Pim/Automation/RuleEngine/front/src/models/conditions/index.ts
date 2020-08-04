@@ -14,3 +14,4 @@ export * from './GroupCondition';
 export * from './CategoryCondition';
 export * from './NumberAttributeCondition';
 export * from './DateAttributeCondition';
+export * from './BooleanAttributeCondition';

@@ -1,26 +1,25 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
 import {
-  NumberAttributeCondition,
-  NumberAttributeOperators,
+  BooleanAttributeCondition,
+  BooleanAttributeOperators,
 } from '../../../../models/conditions';
 import { ConditionLineProps } from './ConditionLineProps';
-import { InputNumber } from '../../../../components/Inputs';
 import { AttributeConditionLine } from './AttributeConditionLine';
 import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
-import { Attribute } from '../../../../models/Attribute';
+import { Attribute } from '../../../../models';
 import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepository';
-import { Operator } from '../../../../models/Operator';
 import { useControlledFormInputCondition } from '../../hooks';
+import InputBoolean from '../../../../components/Inputs/InputBoolean';
 
-type NumberAttributeConditionLineProps = ConditionLineProps & {
-  condition: NumberAttributeCondition;
+type BooleanAttributeConditionLineProps = ConditionLineProps & {
+  condition: BooleanAttributeCondition;
 };
 
-const NumberAttributeConditionLine: React.FC<NumberAttributeConditionLineProps> = ({
+const BooleanAttributeConditionLine: React.FC<BooleanAttributeConditionLineProps> = ({
   condition,
   lineNumber,
   locales,
@@ -30,7 +29,7 @@ const NumberAttributeConditionLine: React.FC<NumberAttributeConditionLineProps> 
   const router = useBackboneRouter();
   const translate = useTranslate();
   const { valueFormName, getValueFormValue } = useControlledFormInputCondition<
-    string[]
+    boolean
   >(lineNumber);
   const [attribute, setAttribute] = React.useState<Attribute | null>();
   React.useEffect(() => {
@@ -42,24 +41,24 @@ const NumberAttributeConditionLine: React.FC<NumberAttributeConditionLineProps> 
   return (
     <AttributeConditionLine
       attribute={attribute}
-      availableOperators={NumberAttributeOperators}
+      availableOperators={BooleanAttributeOperators}
       currentCatalogLocale={currentCatalogLocale}
-      defaultOperator={Operator.IS_EMPTY}
+      defaultOperator={condition.operator}
       field={condition.field}
       lineNumber={lineNumber}
       locales={locales}
       scopes={scopes}>
       <Controller
-        as={InputNumber}
-        data-testid={`edit-rules-input-${lineNumber}-value`}
+        as={InputBoolean}
+        id={`edit-rules-input-${lineNumber}-value`}
         name={valueFormName}
         label={translate('pimee_catalog_rule.rule.value')}
         hiddenLabel={true}
-        defaultValue={getValueFormValue()}
-        step={attribute?.decimals_allowed ? 'any' : 1}
+        defaultValue={condition.value}
+        value={getValueFormValue()}
       />
     </AttributeConditionLine>
   );
 };
 
-export { NumberAttributeConditionLine, NumberAttributeConditionLineProps };
+export { BooleanAttributeConditionLine, BooleanAttributeConditionLineProps };
