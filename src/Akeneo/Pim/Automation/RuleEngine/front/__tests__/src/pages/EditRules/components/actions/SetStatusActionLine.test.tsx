@@ -10,6 +10,7 @@ import {
 
 jest.mock('../../../../../../src/components/Select2Wrapper/Select2Wrapper');
 jest.mock('../../../../../../src/fetch/categoryTree.fetcher.ts');
+jest.mock('../../../../../../src/dependenciesTools/AssetManager/AssetSelector');
 
 describe('SetStatusActionLine', () => {
   it('should be able to display a new set status action', async () => {

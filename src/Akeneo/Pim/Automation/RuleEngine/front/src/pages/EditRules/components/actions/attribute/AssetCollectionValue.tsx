@@ -1,5 +1,3 @@
-import AssetSelector from 'akeneoassetmanager/application/component/app/asset-selector';
-
 import React from 'react';
 import {
   useUserCatalogLocale,
@@ -8,6 +6,7 @@ import {
 import { InputValueProps } from './AttributeValue';
 import { getAttributeLabel } from '../../../../../models';
 import { Label } from '../../../../../components/Labels';
+import { AssetSelector } from '../../../../../dependenciesTools/AssetManager/AssetSelector';
 
 export const parseAssetCollectionValue = (value: any) => {
   if (value === '') {
