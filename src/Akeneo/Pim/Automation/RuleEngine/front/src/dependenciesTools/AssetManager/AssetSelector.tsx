@@ -33,7 +33,7 @@ export const AssetSelector: React.FC<AssetSelectorProps> = ({
   onChange,
 }) => {
   return (
-    <BaseAssetSelector
+    <BaseAssetSelector.default
       value={value}
       assetFamilyIdentifier={assetFamilyIdentifier}
       multiple={multiple}
