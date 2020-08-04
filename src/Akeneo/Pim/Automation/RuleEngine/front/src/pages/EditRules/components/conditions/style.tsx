@@ -79,7 +79,6 @@ const ConditionLineFormAndErrorsContainer = styled.div`
 
 const ConditionLineFormContainer = styled.div`
   display: flex;
-  padding-bottom: 12px;
 `;
 
 export {
