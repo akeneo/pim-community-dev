@@ -1,0 +1,66 @@
+akeneo_data_quality_insights:
+    dqi_dashboard:
+        menu: Data Quality Insights
+        title: Data Quality Overview
+        helper:
+            title: Introducing Data Quality in Akeneo
+            description: With the data quality dashboard, you are able to measure your catalog data quality. You can also focus on a category or family.
+            help_center: Check our Help Center for more information.
+        no_data_title: Sorry, we don't have enough data yet to show the data quality overview.
+        no_data_subtitle: Please come back later.
+        time_period:
+            label: Time period
+            daily: Daily
+            weekly: Weekly
+            monthly: Monthly
+        legend:
+            excellent: Excellent
+            good: Good
+            average: Average
+            below_average: Below average
+            to_improve: To improve
+        average_grade: Average grade
+        category_modal_filter:
+            subtitle: Filter on a category
+            message: Choose the category to explore on your dashboard
+        widgets:
+            family_modal:
+                subtitle: Add families
+                message: Choose the families to add on your dashboard
+                max_families_msg: Sorry, you cannot add more than {{ count }} families to track on your dashboard
+            category_modal:
+                subtitle: Add categories
+                message: Choose the categories to add on your dashboard
+                max_categories_msg: Sorry, you cannot add more than {{ count }} categories to track on your dashboard
+            add_families: Add families
+            add_categories: Add categories
+            title: Title
+            no_family_helper_msg: Select the families for which you wish to measure data quality
+            no_category_helper_msg: Select the categories for which you wish to measure data quality
+            see_in_grid: See in grid
+        time_axis:
+            day: day
+
+    product_evaluation:
+        criteria:
+            completeness_of_required_attributes:
+                recommendation: Required attributes with missing values
+            completeness_of_non_required_attributes:
+                recommendation: Non required attributes with missing values
+        axis:
+            enrichment:
+                title: Enrichment
+                attributes_link: Display all missing attributes
+                success: Your product data is fully enriched. Congratulations!
+        messages:
+            error:
+                axis_error: Due to an error, grade could not be fully calculated. Try again later.
+                criterion_error: Grade could not be calculated.
+            success:
+                criterion: Everything is good.
+            grading_in_progress: Grading in progress.
+            axis_grading_in_progress: Grading in progress. Please come back later.
+            too_many_attributes: You have {{ count }} attributes to improve.
+
+pim_title:
+    akeneo_data_quality_insights_dashboard: Data Quality Insights

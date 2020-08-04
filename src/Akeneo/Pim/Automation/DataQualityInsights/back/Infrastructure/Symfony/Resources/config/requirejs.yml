@@ -1,4 +1,21 @@
 config:
+    config:
+        pim/controller-registry:
+            controllers:
+                akeneo_data_quality_insights_dashboard:
+                    module: akeneo-data-quality-insights-dqi-dashboard-index
+
     paths:
+        # Controller
+        akeneo-data-quality-insights-dqi-dashboard-index: akeneodataqualityinsights/js/controller/dqi-dashboard.ts
+
         ## Product Grid
         oro/datagrid/rate-badge-cell: akeneodataqualityinsights/js/infrastructure/datagrid/cell/rate-badge-cell.tsx
+
+        ## Product Edit Form
+        akeneo/data-quality-insights/view/dqi-dashboard/menu-item: akeneodataqualityinsights/js/infrastructure/dqi-dashboard/menu-item.tsx
+        akeneo/data-quality-insights/view/dqi-dashboard/section: akeneodataqualityinsights/js/infrastructure/dqi-dashboard/section.tsx
+
+        ## Dashboard
+        akeneo/data-quality-insights/view/dqi-dashboard/locale-switcher: akeneodataqualityinsights/js/infrastructure/dqi-dashboard/locale-switcher.ts
+        akeneo/data-quality-insights/view/dqi-dashboard/channel-switcher: akeneodataqualityinsights/js/infrastructure/dqi-dashboard/channel-switcher.ts

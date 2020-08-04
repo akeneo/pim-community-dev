@@ -1,0 +1,59 @@
+extensions:
+    akeneo-data-quality-insights-menu-activity-dqi-dashboard:
+        module: akeneo/data-quality-insights/view/dqi-dashboard/menu-item
+        parent: pim-menu-activity-navigation-block
+        position: 103
+        config:
+            title: akeneo_data_quality_insights.dqi_dashboard.menu
+            to: akeneo_data_quality_insights_dashboard
+
+    akeneo-data-quality-insights-dqi-dashboard-index:
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/default-template
+
+    akeneo-data-quality-insights-dqi-dashboard-breadcrumb:
+        module: pim/common/breadcrumbs
+        parent: akeneo-data-quality-insights-dqi-dashboard-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-activity
+            item: akeneo-data-quality-insights-menu-activity-dqi-dashboard
+
+    akeneo-data-quality-insights-dqi-dashboard-title:
+        module: pim/common/grid-title
+        parent: akeneo-data-quality-insights-dqi-dashboard-index
+        targetZone: title
+        config:
+            title: akeneo_data_quality_insights.dqi_dashboard.menu
+            countable: false
+
+    akeneo-data-quality-insights-dqi-dashboard-user-navigation:
+        module: pim/menu/user-navigation
+        parent: akeneo-data-quality-insights-dqi-dashboard-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    akeneo-data-quality-insights-dqi-dashboard-scope-switcher:
+        module: akeneo/data-quality-insights/view/dqi-dashboard/channel-switcher
+        parent: akeneo-data-quality-insights-dqi-dashboard-index
+        targetZone: context
+        position: 100
+        config:
+            context: base_product
+            localeContext: base_product
+
+    akeneo-data-quality-insights-dqi-dashboard-locale-switcher:
+        module: akeneo/data-quality-insights/view/dqi-dashboard/locale-switcher
+        parent: akeneo-data-quality-insights-dqi-dashboard-index
+        targetZone: context
+        position: 110
+
+    akeneo-data-quality-insights-dqi-dashboard-overview-content:
+        module: akeneo/data-quality-insights/view/dqi-dashboard/section
+        parent: akeneo-data-quality-insights-dqi-dashboard-index
+        targetZone: content
+        config:
+            axes: [enrichment]
