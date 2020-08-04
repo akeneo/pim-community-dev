@@ -1,20 +1,3 @@
-resource "google_logging_metric" "login_count" {
-  name        = "${local.pfid}-login-count"
-  description = "Counter of access logs on the /user/login url."
-  filter      = "resource.type=k8s_container AND jsonPayload.http.path=\"/user/login\" AND resource.labels.namespace_name=${local.pfid}"
-  label_extractors = {
-    "response_code" = "EXTRACT(jsonPayload.http.response_code)"
-  }
-  metric_descriptor {
-    metric_kind = "DELTA"
-    value_type  = "INT64"
-    labels {
-      key        = "response_code"
-      value_type = "INT64"
-    }
-  }
-}
-
 resource "google_logging_metric" "login-response-time-distribution" {
   name            = "${local.pfid}-login-response-time-distribution"
   description     = "Distribution of response time on the /user/login url."
@@ -37,28 +20,6 @@ resource "google_logging_metric" "login-response-time-distribution" {
     labels {
       key        = "response_code"
       value_type = "INT64"
-    }
-  }
-}
-
-resource "google_logging_metric" "logs-count" {
-  name        = "${local.pfid}-logs-count"
-  description = "Counter of container logs."
-  filter      = "resource.type=k8s_container AND resource.labels.namespace_name=${local.pfid}"
-  label_extractors = {
-    "container_name" = "EXTRACT(resource.labels.container_name)"
-    "pod_name"       = "EXTRACT(resource.labels.pod_name)"
-  }
-  metric_descriptor {
-    metric_kind = "DELTA"
-    value_type  = "INT64"
-    labels {
-      key        = "container_name"
-      value_type = "STRING"
-    }
-    labels {
-      key        = "pod_name"
-      value_type = "STRING"
     }
   }
 }
@@ -101,8 +62,6 @@ resource "google_monitoring_alert_policy" "alert_policy" {
   project      = var.google_project_id
   depends_on = [
     google_logging_metric.login-response-time-distribution,
-    google_logging_metric.login_count,
-    google_logging_metric.logs-count,
     google_monitoring_uptime_check_config.https,
     var.helm_exec_id
   ]
