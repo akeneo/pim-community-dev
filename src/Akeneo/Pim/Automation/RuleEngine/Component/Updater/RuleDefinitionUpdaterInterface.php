@@ -20,14 +20,6 @@ interface RuleDefinitionUpdaterInterface
 {
     /**
      * @param RuleDefinitionInterface $ruleDefinition
-     * @param array                   $data
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function update(RuleDefinitionInterface $ruleDefinition, array $data): void;
-
-    /**
-     * @param RuleDefinitionInterface $ruleDefinition
      * @param RuleInterface $rule
      */
     public function fromRule(RuleDefinitionInterface $ruleDefinition, RuleInterface $rule): void;
