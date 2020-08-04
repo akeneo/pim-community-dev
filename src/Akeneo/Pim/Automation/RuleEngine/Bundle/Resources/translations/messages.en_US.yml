@@ -24,6 +24,8 @@ pimee_catalog_rule:
             categories: Categories
             completeness: Completeness
             enabled: Status
+            created: Created
+            updated: Updated
         field_groups:
             system: System
     acl_group:

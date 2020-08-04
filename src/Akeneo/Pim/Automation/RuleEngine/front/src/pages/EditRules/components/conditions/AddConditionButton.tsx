@@ -26,10 +26,12 @@ type Props = {
 // Add here the fields handled by the rule conditions.
 // Be sure that the associated UI component exists to display it correctly.
 const SYSTEM_FIELDS = [
-  'family',
   'categories',
   'completeness',
+  'created',
+  'family',
   'groups',
+  'updated',
   'enabled',
 ];
 
@@ -38,6 +40,7 @@ const ATTRIBUTE_TYPES = [
   'pim_catalog_simpleselect',
   'pim_catalog_text',
   'pim_catalog_number',
+  'pim_catalog_date',
 ];
 
 const AddConditionButton: React.FC<Props> = ({

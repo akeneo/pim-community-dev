@@ -4,6 +4,9 @@ import { Router } from '../../../../../src/dependenciesTools';
 import { httpGet } from '../../../../../src/fetch';
 
 jest.mock('../../../../../src/fetch');
+jest.mock('../../../../../src/dependenciesTools/provider/dependencies.ts');
+jest.mock('../../../../../src/fetch/categoryTree.fetcher.ts');
+
 jest.mock('react-hook-form', () => {
   return {
     useFormContext: () => {

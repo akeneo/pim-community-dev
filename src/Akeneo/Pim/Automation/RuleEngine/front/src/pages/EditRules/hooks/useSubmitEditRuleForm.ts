@@ -12,6 +12,10 @@ import {
   NotificationLevel,
 } from '../../../dependenciesTools';
 import { Action } from '../../../models/Action';
+import {
+  formatDateLocaleTimeConditionsToBackend,
+  formatDateLocaleTimeConditionsFromBackend,
+} from '../components/conditions/DateConditionLines/dateConditionLines.utils';
 
 const registerConditions = (
   register: Control['register'],
@@ -72,12 +76,15 @@ const filterDataContentValues = (value: object) => {
 };
 
 const transformFormData = (formData: FormData): Payload => {
+  let conditions = formData?.content?.conditions;
+  if (conditions) {
+    conditions = formatDateLocaleTimeConditionsToBackend(conditions);
+  }
   return {
     ...formData,
     priority: Number(formData.priority),
     content: {
-      conditions:
-        formData?.content?.conditions?.filter(filterDataContentValues) ?? [],
+      conditions: conditions?.filter(filterDataContentValues) ?? [],
       actions:
         formData?.content?.actions?.filter(filterDataContentValues) ?? [],
     },
@@ -111,7 +118,6 @@ const submitEditRuleForm = (
       'pimee_enrich_rule_definition_update',
       { ruleDefinitionCode }
     );
-
     const response = await httpPut(updateRuleUrl, {
       body: transformFormData(formData),
     });
@@ -155,7 +161,9 @@ const createFormDefaultValues = (
   priority: ruleDefinition.priority.toString(),
   labels: locales.reduce(createLocalesLabels(ruleDefinition), {}),
   content: {
-    conditions: ruleDefinition.conditions || [],
+    conditions: formatDateLocaleTimeConditionsFromBackend(
+      ruleDefinition.conditions || []
+    ),
     actions: ruleDefinition.actions || [],
   },
 });

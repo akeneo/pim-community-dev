@@ -15,6 +15,8 @@ import {
   createTextAttributeCondition,
   Locale,
   LocaleCode,
+  createDateAttributeCondition,
+  createDateSystemCondition,
 } from '../../../../models/';
 import { TextBoxBlue } from '../TextBoxBlue';
 import { useProductsCount } from '../../hooks';
@@ -101,10 +103,7 @@ const RuleProductSelection: React.FC<Props> = ({
 
   const [conditionsState, setConditionsState] = React.useState<
     (Condition | null)[]
-  >([]);
-  React.useEffect(() => {
-    setConditionsState(conditions);
-  }, []);
+  >(conditions);
 
   const { getValues } = useFormContext();
 
@@ -125,6 +124,9 @@ const RuleProductSelection: React.FC<Props> = ({
       createTextAttributeCondition,
       createSimpleMultiOptionsAttributeCondition,
       createNumberAttributeCondition,
+      createCategoryCondition,
+      createDateAttributeCondition,
+      createDateSystemCondition,
     ];
 
     for (let i = 0; i < factories.length; i++) {

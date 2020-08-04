@@ -8,10 +8,12 @@ import { getTextAttributeConditionModule } from './TextAttributeCondition';
 import { getSimpleMultiOptionsAttributeConditionModule } from './SimpleMultiOptionsAttributeCondition';
 import { getNumberAttributeConditionModule } from './NumberAttributeCondition';
 import { getPimConditionModule } from './PimCondition';
+import { getDateAttributeConditionModule } from './DateAttributeCondition';
 import { FallbackConditionLine } from '../../pages/EditRules/components/conditions/FallbackConditionLine';
 import { getCompletenessConditionModule } from './CompletenessCondition';
 import { getGroupsConditionModule } from './GroupCondition';
 import { getStatusConditionModule } from './StatusCondition';
+import { getDateSystemConditionModule } from './DateSystemCondition';
 
 export type ConditionModuleGuesser = (
   json: any,
@@ -34,7 +36,9 @@ const getConditionModule: (
     getSimpleMultiOptionsAttributeConditionModule,
     getNumberAttributeConditionModule,
     getCompletenessConditionModule,
+    getDateSystemConditionModule,
     // Fallback
+    getDateAttributeConditionModule,
     getPimConditionModule,
   ];
 
