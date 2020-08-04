@@ -4,26 +4,58 @@
   &-edit {
     overflow: auto;
 
-    .select2-container-multi .select2-choices {
-      padding-right: 4px;
-      padding-bottom: 4px;
-      min-height: 40px;
+    *:not(.asset-selector-container) {
+      & > .select2-container-multi .select2-choices {
+        padding-right: 4px;
+        padding-bottom: 4px;
+        min-height: 40px;
+      }
+
+      & > .select2-container-multi .select2-choices .select2-search-field {
+        height: 34px;
+      }
+
+      & > .select2-container-multi .select2-choices .select2-search-choice {
+        margin-top: 4px;
+        margin-left: 4px;
+        height: 29px;
+        line-height: 29px;
+      }
+
+      & > .select2-container-multi .select2-choices .select2-search-choice .select2-search-choice-close,
+      & > .select2-container.select2-allowclear .select2-choice .select2-search-choice-close {
+        top: 7px;
+      }
     }
 
-    .select2-container-multi .select2-choices .select2-search-field {
-      height: 34px;
-    }
+    .asset-selector-container {
+      margin-left: -5px;
 
-    .select2-container-multi .select2-choices .select2-search-choice {
-      margin-top: 4px;
-      margin-left: 4px;
-      height: 29px;
-      line-height: 29px;
-    }
+      .asset-selector {
+        .select2-choices {
+          border-bottom: none;
 
-    .select2-container-multi .select2-choices .select2-search-choice .select2-search-choice-close,
-    .select2-container.select2-allowclear .select2-choice .select2-search-choice-close {
-      top: 7px;
+          .select2-search-choice {
+            border-radius: 2px;
+
+            .select2-result-label-bottom {
+              color: @AknGrey140;
+            }
+
+            img {
+              border: 1px solid @AknGrey60;
+            }
+          }
+
+          .select2-search-field {
+            height: 50px;
+            background: url('/bundles/pimui/images/icon-down.svg') no-repeat 241px 15px;
+            background-size: 17px;
+            width: 280px;
+            border-radius: 2px;
+          }
+        }
+      }
     }
   }
 }

@@ -11,6 +11,9 @@ import { createAttribute } from '../../../../../factories';
 import { AttributeValue } from '../../../../../../../src/pages/EditRules/components/actions/attribute';
 import { getAttributeLabel } from '../../../../../../../src/models';
 
+jest.mock(
+  '../../../../../../../src/dependenciesTools/AssetManager/AssetSelector'
+);
 jest.mock('../../../../../../../src/components/Select2Wrapper/Select2Wrapper');
 jest.mock(
   '../../../../../../../src/dependenciesTools/provider/dependencies.ts'

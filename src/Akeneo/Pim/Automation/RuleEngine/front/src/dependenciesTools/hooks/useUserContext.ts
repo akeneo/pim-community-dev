@@ -1,6 +1,6 @@
 import { useApplicationContext } from './useApplicationContext';
 import { UserContext } from '../provider/applicationDependenciesProvider.type';
-import { LocaleCode } from '../../models';
+import { LocaleCode, ScopeCode } from '../../models';
 
 export const useUserContext = (): UserContext => {
   const { user } = useApplicationContext();
@@ -14,4 +14,8 @@ export const useUserContext = (): UserContext => {
 
 export const useUserCatalogLocale = (): LocaleCode => {
   return useUserContext().get('catalogLocale');
+};
+
+export const useUserCatalogScope = (): ScopeCode => {
+  return useUserContext().get('catalogScope');
 };
