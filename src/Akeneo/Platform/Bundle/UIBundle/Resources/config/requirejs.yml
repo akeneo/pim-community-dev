@@ -737,6 +737,9 @@ config:
     pim/job/common/edit/content/data/help:                       pimui/js/job/common/edit/content/data/help
     pim/job/product/edit/content/data:                           pimui/js/job/product/edit/content/data
     pim/job/product/edit/field/date-format:                      pimui/js/job/product/edit/field/date-format
+    pim/job/product/edit/field/with-label:                       pimui/js/job/product/edit/field/with-label
+    pim/job/product/edit/field/header-with-label:                       pimui/js/job/product/edit/field/header-with-label
+    pim/job/product/edit/field/file-locale:                       pimui/js/job/product/edit/field/file-locale
     pim/job/common/edit/field/decimal-separator:                 pimui/js/job/common/edit/field/decimal-separator
     pim/job/common/edit/properties:                              pimui/js/job/common/edit/properties
     pim/job/common/edit/field/field:                             pimui/js/job/common/edit/field/field
