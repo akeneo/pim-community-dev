@@ -1,18 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useFormContext, Control } from 'react-hook-form';
+import { Control, useFormContext } from 'react-hook-form';
 import { SmallHelper } from '../../../../components';
 import {
   Condition,
   ConditionFactory,
-  createFamilyCondition,
-  createSimpleMultiOptionsAttributeCondition,
-  createTextAttributeCondition,
   createCategoryCondition,
+  createCompletenessCondition,
+  createFamilyCondition,
+  createGroupsCondition,
+  createNumberAttributeCondition,
+  createSimpleMultiOptionsAttributeCondition,
+  createStatusCondition,
+  createTextAttributeCondition,
   Locale,
   LocaleCode,
-  createNumberAttributeCondition,
-  createCompletenessCondition,
+  createDateAttributeCondition,
+  createDateSystemCondition,
 } from '../../../../models/';
 import { TextBoxBlue } from '../TextBoxBlue';
 import { useProductsCount } from '../../hooks';
@@ -99,10 +103,7 @@ const RuleProductSelection: React.FC<Props> = ({
 
   const [conditionsState, setConditionsState] = React.useState<
     (Condition | null)[]
-  >([]);
-  React.useEffect(() => {
-    setConditionsState(conditions);
-  }, []);
+  >(conditions);
 
   const { getValues } = useFormContext();
 
@@ -118,9 +119,14 @@ const RuleProductSelection: React.FC<Props> = ({
       createFamilyCondition,
       createCompletenessCondition,
       createCategoryCondition,
+      createGroupsCondition,
+      createStatusCondition,
       createTextAttributeCondition,
       createSimpleMultiOptionsAttributeCondition,
       createNumberAttributeCondition,
+      createCategoryCondition,
+      createDateAttributeCondition,
+      createDateSystemCondition,
     ];
 
     for (let i = 0; i < factories.length; i++) {

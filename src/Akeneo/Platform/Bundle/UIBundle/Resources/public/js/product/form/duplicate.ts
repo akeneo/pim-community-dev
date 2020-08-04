@@ -36,7 +36,8 @@ class Duplicate extends BaseView {
     if (
       SecurityContext.isGranted('pim_enrich_product_create') &&
       'product' === this.getFormData().meta.model_type &&
-      true === this.getFormData().meta.is_owner
+      true === this.getFormData().meta.is_owner &&
+      null === this.getFormData().parent
     ) {
        this.$el.html(this.template({'__': __}));
     }

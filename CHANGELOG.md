@@ -1,5 +1,6 @@
 ## Bug fixes
 
+- PIM-9376: Duplicate button appears under variant products.
 - PIM-9226: Fix error on channel deletion after migration from v3.2.
 - Fixes memory leak when indexing product models with a lot of product models in the same family (see https://github.com/akeneo/pim-community-dev/pull/11742)
 - PIM-9109: Fix SSO not working behind reverse proxy.

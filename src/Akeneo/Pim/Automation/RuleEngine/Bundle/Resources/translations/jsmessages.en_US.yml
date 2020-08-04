@@ -108,6 +108,7 @@ pimee_catalog_rule:
                 family: Family
                 category: Category
                 attribute: Attribute
+                groups: Groups
             actions:
                 add_action: Add action
                 add_category:
@@ -198,7 +199,7 @@ pimee_catalog_rule:
                     "BETWEEN": between
                     "NOT BETWEEN": not between
                     "=": equals
-                    "!=": not equal
+                    "!=": does not equal
                     ">": greater than
                     ">=": equals or greater than
                     "<": less than
@@ -230,6 +231,29 @@ pimee_catalog_rule:
             item:
                 selected: Item selected
                 not_selected: Select item
+        date:
+            operators:
+                specific_date: Specific date
+            label:
+                date_type: Choose a date type
+                operator: Choose an operator
+                date: Choose a date
+                relative_date: Choose a date
+                locale: Choose a locale
+                scope: Choose a scope
+                period: Choose a time unit
+                open_period: Open time unit menu
+                date_from: Choose a starting date
+                date_to: Choose an ending date
+                date_past: Date in the past
+                date_future: Date in the future
+                date_present: Today
+            day: "]-Inf, 1] Day|]1, +Inf[ Days"
+            week: "]-Inf, 1] Week|]1, +Inf[ Weeks"
+            month: "]-Inf, 1] Month|]1, +Inf[ Months"
+            year: "]-Inf, 1] Year|]1, +Inf[ Years"
+            hour: "]-Inf, 1] Hour|]1, +Inf[ Hours"
+            minute: "]-Inf, 1] Minute|]1, +Inf[ Minutes"
     exceptions:
         loading: An error occurred during rule definition loading.
         required: This field is required
@@ -256,6 +280,7 @@ pimee_catalog_rule:
         or: or
         create_attribute_link: click here to create the attribute
         edit_unauthorize: You are not allowed to edit rules
+        wrong_date_timespan: To define a valid timespan, please make sure your end date isn’t set before your start date.
 
 pim_enrich:
     entity:

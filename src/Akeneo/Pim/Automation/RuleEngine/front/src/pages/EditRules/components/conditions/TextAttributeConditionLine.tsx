@@ -39,7 +39,7 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
     getAttributeByIdentifier(condition.field, router).then(attribute =>
       setAttribute(attribute)
     );
-  });
+  }, []);
 
   return (
     <AttributeConditionLine

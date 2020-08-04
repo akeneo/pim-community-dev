@@ -177,6 +177,19 @@ class SharedCatalogFixturesCommand extends Command
 SQL;
 
         $this->dbalConnection->executeQuery($query);
+
+        $query = <<<SQL
+    INSERT INTO pimee_security_job_profile_access
+        (job_profile_id, user_group_id, execute_job_profile, edit_job_profile)
+    VALUES (
+        (SELECT id FROM akeneo_batch_job_instance WHERE code = 'catalog1'),
+        (SELECT id FROM oro_access_group WHERE name = 'All'),
+        1,
+        1
+    );
+SQL;
+
+        $this->dbalConnection->executeQuery($query);
     }
 
     private function validate(object $object): void
