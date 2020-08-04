@@ -36,7 +36,7 @@ const BooleanAttributeConditionLine: React.FC<BooleanAttributeConditionLineProps
     getAttributeByIdentifier(condition.field, router).then(attribute =>
       setAttribute(attribute)
     );
-  });
+  }, []);
 
   return (
     <AttributeConditionLine
