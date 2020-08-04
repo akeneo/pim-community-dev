@@ -361,6 +361,16 @@ pim_datagrid:
       csv_grid_context: CSV (contexte de la grille)
       xlsx_all: Excel (tous les attributs)
       xlsx_grid_context: Excel (contexte de la grille)
+      configurator:
+        subtitle: Export rapide
+        title: Sélectionnez une action
+        product_count: "{0}0 produit|{1}1 produit|]1, Inf[{{ count }} produits"
+        csv: CSV
+        xlsx: XLSX
+        grid_context: Contexte de la grille
+        all_attributes: Tous les attributs
+        with_codes: Avec codes
+        with_labels: Avec labels
     mass_edit: Actions de masse
     sequential_edit: Modification séquentielle
     mass_delete: Suppression massive

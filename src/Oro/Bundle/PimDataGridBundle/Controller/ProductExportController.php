@@ -135,8 +135,8 @@ class ProductExportController
             $dynamicConfiguration = array_merge(
                 $dynamicConfiguration,
                 [
-                    'with_labels' => true,
-                    'with_header_labels' => true,
+                    'with_label' => true,
+                    'with_header_label' => true,
                     'file_locale' => $fileLocale
                 ]
             );

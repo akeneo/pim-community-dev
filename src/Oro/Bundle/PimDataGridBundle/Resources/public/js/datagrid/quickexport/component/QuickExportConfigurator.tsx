@@ -44,6 +44,17 @@ const Subtitle = styled.div`
   text-transform: uppercase;
 `;
 
+const QuickExportButton = styled.button`
+  color: inherit;
+  padding: 0;
+  margin: 0;
+  background-color: inherit;
+  border: none;
+  font-size: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+`;
+
 type QuickExportConfiguratorProps = {
   onActionLaunch: (actionName: string) => void;
   getProductCount: () => number;
@@ -68,9 +79,9 @@ const QuickExportConfiguratorContainer = ({onActionLaunch, getProductCount}: Qui
 
   return (
     <>
-      <div title={translate('pim_datagrid.mass_action_group.quick_export.label')} onClick={openModal}>
+      <QuickExportButton title={translate('pim_datagrid.mass_action_group.quick_export.label')} onClick={openModal}>
         {translate('pim_datagrid.mass_action_group.quick_export.label')}
-      </div>
+      </QuickExportButton>
       {isModalOpen && (
         <Container>
           <Modal>
@@ -79,9 +90,9 @@ const QuickExportConfiguratorContainer = ({onActionLaunch, getProductCount}: Qui
               <ModalConfirmButton
                 title={translate('pim_common.export')}
                 onClick={() => {
-                  const actionName = `quick_export${'grid-context' === formValue['context'] ? `_grid_context` : ''}${
-                    'with-labels' === formValue['with-labels'] ? `_with_labels` : ''
-                  }_${formValue['type']}`;
+                  const actionName = `quick_export${'grid-context' === formValue['context'] ? `_grid_context` : ''}_${
+                    formValue['type']
+                  }`;
 
                   onActionLaunch(actionName);
                   closeModal();
@@ -109,30 +120,32 @@ const QuickExportConfiguratorContainer = ({onActionLaunch, getProductCount}: Qui
                 }}
               >
                 <Select name="type">
-                  <Option value="csv">
+                  <Option value="csv" title={translate('pim_datagrid.mass_action.quick_export.configurator.csv')}>
                     <CSVFileIcon size={48} />
-                    {translate('pim_datagrid.mass_action.quick_export.configurator.csv')}
                   </Option>
-                  <Option value="xlsx">
+                  <Option value="xlsx" title={translate('pim_datagrid.mass_action.quick_export.configurator.xlsx')}>
                     <XLSXFileIcon size={48} />
-                    {translate('pim_datagrid.mass_action.quick_export.configurator.xlsx')}
                   </Option>
                 </Select>
                 <Select name="context">
-                  <Option value="grid-context">
-                    {translate('pim_datagrid.mass_action.quick_export.configurator.grid_context')}
-                  </Option>
-                  <Option value="all-attributes">
-                    {translate('pim_datagrid.mass_action.quick_export.configurator.all_attributes')}
-                  </Option>
+                  <Option
+                    value="grid-context"
+                    title={translate('pim_datagrid.mass_action.quick_export.configurator.grid_context')}
+                  />
+                  <Option
+                    value="all-attributes"
+                    title={translate('pim_datagrid.mass_action.quick_export.configurator.all_attributes')}
+                  />
                 </Select>
                 <Select name="with-labels">
-                  <Option value="with-codes">
-                    {translate('pim_datagrid.mass_action.quick_export.configurator.with_codes')}
-                  </Option>
-                  <Option value="with-labels">
-                    {translate('pim_datagrid.mass_action.quick_export.configurator.with_labels')}
-                  </Option>
+                  <Option
+                    value="with-codes"
+                    title={translate('pim_datagrid.mass_action.quick_export.configurator.with_codes')}
+                  />
+                  <Option
+                    value="with-labels"
+                    title={translate('pim_datagrid.mass_action.quick_export.configurator.with_labels')}
+                  />
                 </Select>
               </Form>
             </Content>

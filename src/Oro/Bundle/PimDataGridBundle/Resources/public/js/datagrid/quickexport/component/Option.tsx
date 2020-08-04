@@ -1,8 +1,8 @@
-import React, {ReactNode, isValidElement, Children, cloneElement} from 'react';
+import React, {ReactNode, isValidElement, Children, cloneElement, ButtonHTMLAttributes} from 'react';
 import styled from 'styled-components';
 import {useAkeneoTheme, IconProps, AkeneoThemedProps} from '@akeneo-pim-community/shared';
 
-const OptionContainer = styled.div<{isSelected: boolean; withIcon: boolean}>`
+const OptionContainer = styled.button<{isSelected: boolean; withIcon: boolean}>`
   width: 128px;
   padding: ${({withIcon}) => (withIcon ? 24 : 12)}px 0;
   height: ${({withIcon}) => (withIcon ? '128px' : 'auto')};
@@ -30,9 +30,9 @@ type OptionProps = {
   isDisabled?: boolean;
   children?: ReactNode;
   onSelect?: () => void;
-};
+} & ButtonHTMLAttributes<HTMLButtonElement>;
 
-const Option = ({isSelected, children, onSelect, isDisabled}: OptionProps) => {
+const Option = ({isSelected, children, onSelect, isDisabled, title}: OptionProps) => {
   const theme = useAkeneoTheme();
   const withIcon = Children.toArray(children).some((child: ReactNode) => isValidElement<IconProps>(child));
 
@@ -42,6 +42,7 @@ const Option = ({isSelected, children, onSelect, isDisabled}: OptionProps) => {
       data-selected={!!isSelected}
       isSelected={!!isSelected}
       onClick={isDisabled ? undefined : onSelect}
+      title={title}
     >
       {Children.map(children, child => {
         if (!isValidElement<IconProps>(child)) {
@@ -52,6 +53,7 @@ const Option = ({isSelected, children, onSelect, isDisabled}: OptionProps) => {
           color: isSelected ? theme.color.blue100 : child.props.color,
         });
       })}
+      {title}
     </OptionContainer>
   );
 };
