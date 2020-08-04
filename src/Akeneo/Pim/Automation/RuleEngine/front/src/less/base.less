@@ -4,7 +4,11 @@
   &-edit {
     overflow: auto;
 
-    *:not(.asset-selector-container) {
+    .record-selector-container {
+      width: 460px;
+    }
+
+    *:not(.record-selector-container):not(.asset-selector-container) {
       & > .select2-container-multi .select2-choices {
         padding-right: 4px;
         padding-bottom: 4px;

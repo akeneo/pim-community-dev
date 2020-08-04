@@ -19,6 +19,9 @@ jest.mock(
   '../../../../../../../src/dependenciesTools/provider/dependencies.ts'
 );
 jest.mock('../../../../../../../src/fetch/categoryTree.fetcher.ts');
+jest.mock(
+  '../../../../../../../src/dependenciesTools/components/ReferenceEntity/ReferenceEntitySelector'
+);
 
 describe('AttributeValue', () => {
   beforeEach(() => {
