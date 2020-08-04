@@ -527,7 +527,188 @@ class ProductWriterSpec extends ObjectBehavior
         $this->flush();
     }
 
-    function it_does_not_write_the_selected_attributes_in_headers_if_there_is_no_content(
+    function it_writes_the_csv_file_with_label(
+        $bufferFactory,
+        JobExecution $jobExecution,
+        JobParameters $jobParameters,
+        StepExecution $stepExecution,
+        JobInstance $jobInstance,
+        ExecutionContext $executionContext,
+        ArrayConverterInterface $arrayConverter,
+        FlatTranslatorInterface $flatTranslator,
+        FlatItemBuffer $flatRowBuffer
+    ) {
+        $this->setStepExecution($stepExecution);
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $stepExecution->getStartTime()->willReturn(new \DateTime());
+
+        $jobExecution->getExecutionContext()->willReturn($executionContext);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+
+        $bufferFactory->create()->willReturn($flatRowBuffer);
+        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
+
+        $jobParameters->has('decimalSeparator')->willReturn(false);
+        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.csv');
+        $jobParameters->has('ui_locale')->willReturn(false);
+        $jobParameters->has('dateFormat')->willReturn(false);
+        $jobParameters->get('withHeader')->willReturn(true);
+        $jobParameters->has('with_media')->willReturn(false);
+        $jobParameters->has('withHeader')->willReturn(false);
+        $jobParameters->get('filters')->willReturn(['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']]);
+
+        $jobParameters->has('with_label')->willReturn(true);
+        $jobParameters->get('with_label')->willReturn(true);
+        $jobParameters->has('file_locale')->willReturn(true);
+        $jobParameters->get('file_locale')->willReturn('fr_FR');
+        $jobParameters->has('header_with_label')->willReturn(true);
+        $jobParameters->get('header_with_label')->willReturn(true);
+
+        $productStandard1 = [
+            'identifier' => 'jackets',
+            'enabled'    => true,
+            'categories' => ['2015_clothes', '2016_clothes'],
+            'groups'     => [],
+            'family'     => 'clothes',
+            'values'     => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => 'jackets',
+                    ]
+                ],
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope'  => 'ecommerce',
+                        'data'   => 'A wonderful description...',
+                    ],
+                    [
+                        'locale' => 'en_US',
+                        'scope'  => 'mobile',
+                        'data'   => 'Simple description',
+                    ],
+                    [
+                        'locale' => 'fr_FR',
+                        'scope'  => 'ecommerce',
+                        'data'   => 'Une description merveilleuse...',
+                    ],
+                    [
+                        'locale' => 'fr_FR',
+                        'scope'  => 'mobile',
+                        'data'   => 'Une simple description',
+                    ],
+                ],
+                'media' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        // the file paths are resolved before the conversion to the standard format
+                        'data'   => 'files/jackets/media/it\'s the filename.jpg',
+                    ]
+                ]
+            ]
+        ];
+
+        $productFlat1 = [
+            'enabled'                     => '1',
+            'categories'                  => '2015_clothes, 2016_clothes',
+            'groups'                      => '',
+            'family'                      => 'clothes',
+            'sku'                         => 'jackets',
+            'description-en_US-ecommerce' => 'A wonderful description...',
+            'description-en_US-mobile'    => 'Simple description',
+            'description-fr_FR-ecommerce' => 'Une description merveilleuse...',
+            'description-fr_FR-mobile'    => 'Une simple description',
+            'media'                       => 'files/jackets/media/it\'s the filename.jpg',
+        ];
+
+        $arrayConverter->convert($productStandard1, [])->willReturn($productFlat1);
+
+        $productStandard2 = [
+            'identifier' => 'sweaters',
+            'name' => [
+                'en_US' => 'Sweaters',
+                'en_GB' => 'Chandails',
+            ],
+            'values' => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => 'sweaters'
+                    ]
+                ],
+                'media' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => 'wrong/path',
+                    ]
+                ]
+            ]
+        ];
+
+        $productFlat2 = [
+            'label-en_US' => 'Sweaters',
+            'label-fr_FR' => 'Chandails',
+            'sku'         => 'sweaters',
+            'media'       => 'wrong/path',
+        ];
+
+        $arrayConverter->convert($productStandard2, [])->willReturn($productFlat2);
+        $flatTranslator
+            ->translate([$productFlat1, $productFlat2], 'fr_FR', 'ecommerce', true)
+            ->shouldBeCalled()
+            ->willReturn([
+                [
+                    'Activé' => 'Oui',
+                    'Catégories' => 'Vêtements 2015, Vêtements 2016',
+                    'Groupes' => '',
+                    'Famille' => 'Vêtements',
+                    'Sku' => 'jackets',
+                    'Description (Anglais, ecommerce)' => 'A wonderful description...',
+                    'Description (Anglais, mobile)' => 'Simple description',
+                    'Description (Français, ecommerce)' => 'Une description merveilleuse...',
+                    'Description (Francais, mobile)' => 'Une simple description',
+                    'Média' => 'files/jackets/media/it\'s the filename.jpg',
+                ],
+                [
+                    'Nom (Anglais)' => 'Sweaters',
+                    'Nom (Français)' => 'Chandails',
+                    'Sku' => 'sweaters',
+                    'Média' => 'wrong/path',
+                ]
+            ]);
+
+        $flatRowBuffer->write([
+            [
+                'Activé' => 'Oui',
+                'Catégories' => 'Vêtements 2015, Vêtements 2016',
+                'Groupes' => '',
+                'Famille' => 'Vêtements',
+                'Sku' => 'jackets',
+                'Description (Anglais, ecommerce)' => 'A wonderful description...',
+                'Description (Anglais, mobile)' => 'Simple description',
+                'Description (Français, ecommerce)' => 'Une description merveilleuse...',
+                'Description (Francais, mobile)' => 'Une simple description',
+                'Média' => 'files/jackets/media/it\'s the filename.jpg',
+            ],
+            [
+                'Nom (Anglais)' => 'Sweaters',
+                'Nom (Français)' => 'Chandails',
+                'Sku' => 'sweaters',
+                'Média' => 'wrong/path',
+            ]
+        ], ["withHeader" => true])->shouldBeCalled();
+        $this->initialize();
+        $this->write([$productStandard1, $productStandard2]);
+    }
+
+    function it_does_not_add_the_selected_attributes_in_headers_if_there_is_no_content(
         $bufferFactory,
         $generateHeadersFromAttributeCodes,
         FlatItemBuffer $flatRowBuffer,
