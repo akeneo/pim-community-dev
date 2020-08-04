@@ -91,11 +91,7 @@ class BaseView extends Backbone.View<any> implements View {
       return expectedPosition >= 0 && expectedPosition === extension.code.indexOf(code, expectedPosition);
     });
     
-    if (undefined === extensionKey || null === extensionKey) {
-      throw 'extensionKey is not defined.';
-    }
-
-    return this.extensions[extensionKey];
+    return this.extensions[extensionKey!];
   }
 
   /**
