@@ -83,7 +83,7 @@ const View = ({
   }
 
   const mediaPreviewUrl = getMediaPreviewUrl({
-    type: MediaPreviewType.ThumbnailSmall,
+    type: MediaPreviewType.Thumbnail,
     attributeIdentifier: value.attribute.identifier,
     data: getMediaData(value.data),
   });

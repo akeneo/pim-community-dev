@@ -99,6 +99,8 @@ class ImagePreviewAction
         $response->headers->set('Content-Disposition', $disposition);
         $response->headers->set('Content-Type', 'image/jpeg');
         $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
+        $response->setMaxAge(3600 * 24 * 365); // One year
+        $response->setSharedMaxAge(3600 * 24 * 365); // One year
 
         return $response;
     }

@@ -30,7 +30,7 @@ class MediaLinkImageGenerator extends AbstractPreviewGenerator
     private const DEFAULT_IMAGE = 'pim_asset_manager.default_image.image';
     public const SUPPORTED_TYPES = [
         PreviewGeneratorRegistry::THUMBNAIL_TYPE       => 'am_url_image_thumbnail',
-        PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE => 'am_url_image_thumbnail_small',
+        PreviewGeneratorRegistry::THUMBNAIL_SMALL_TYPE => 'am_url_image_thumbnail',
         PreviewGeneratorRegistry::PREVIEW_TYPE         => 'am_url_image_preview',
     ];
 

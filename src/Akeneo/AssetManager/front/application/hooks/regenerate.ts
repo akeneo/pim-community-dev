@@ -12,7 +12,7 @@ const useRegenerate = (url: string): [boolean, EffectCallback, string] => {
     if (regenerate) fetch(url, {method: 'POST', cache: 'no-cache'}).then(() => setRegenerate(false));
   }, [regenerate]);
 
-  return [regenerate, doRegenerate, 0 === generationCount ? url : `${url}&c=${Date.now()}`];
+  return [regenerate, doRegenerate, 0 === generationCount ? url : `${url}&c=${generationCount}`];
 };
 
 export {useRegenerate};
