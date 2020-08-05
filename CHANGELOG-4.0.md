@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9112: Fix empty values cleaner for metric with null values
+
 # 4.0.47 (2020-08-07)
 
 # 4.0.46 (2020-07-31)
