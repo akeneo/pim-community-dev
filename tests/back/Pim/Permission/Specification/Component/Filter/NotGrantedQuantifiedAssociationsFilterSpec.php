@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\Permission\Component\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithQuantifiedAssociationsInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Permission\Bundle\Entity\Query\ProductCategoryAccessQuery;
 use Akeneo\Pim\Permission\Bundle\Entity\Query\ProductModelCategoryAccessQuery;
 use Akeneo\Pim\Permission\Component\Filter\NotGrantedQuantifiedAssociationsFilter;
@@ -51,7 +51,7 @@ class NotGrantedQuantifiedAssociationsFilterSpec extends ObjectBehavior
         EntityWithQuantifiedAssociationsInterface $entityWithQuantifiedAssociations,
         UserInterface $user
     ) {
-        $quantifiedAssociations = QuantifiedAssociations::createFromNormalized([
+        $quantifiedAssociations = QuantifiedAssociationCollection::createFromNormalized([
             'COMPOSITION' => [
                 'products' => [
                     ['identifier' => 'a_motor', 'quantity' => 1],
@@ -84,24 +84,10 @@ class NotGrantedQuantifiedAssociationsFilterSpec extends ObjectBehavior
             $user
         )->willReturn(['a_door', 'a_sheetmetal', 'a_bicycle_rack', 'a_roof_rack']);
 
-        $entityWithQuantifiedAssociations->setQuantifiedAssociations(QuantifiedAssociations::createFromNormalized([
-            'COMPOSITION' => [
-                'products' => [
-                    ['identifier' => 'a_motor', 'quantity' => 1],
-                ],
-                'product_models' => [
-                    ['identifier' => 'a_door', 'quantity' => 4],
-                    ['identifier' => 'a_sheetmetal', 'quantity' => 1],
-                ],
-            ],
-            'PRODUCTSET' => [
-                'products' => [],
-                'product_models' => [
-                    ['identifier' => 'a_bicycle_rack', 'quantity' => 1],
-                    ['identifier' => 'a_roof_rack', 'quantity' => 2],
-                ],
-            ],
-        ]))->shouldBeCalled();
+        $entityWithQuantifiedAssociations->filterQuantifiedAssociations(
+            ['a_motor'],
+            ['a_door', 'a_sheetmetal', 'a_bicycle_rack', 'a_roof_rack']
+        )->shouldBeCalled();
 
         $this->filter($entityWithQuantifiedAssociations);
     }
@@ -112,7 +98,7 @@ class NotGrantedQuantifiedAssociationsFilterSpec extends ObjectBehavior
         EntityWithQuantifiedAssociationsInterface $entityWithQuantifiedAssociations,
         UserInterface $user
     ) {
-        $quantifiedAssociations = QuantifiedAssociations::createFromNormalized([
+        $quantifiedAssociations = QuantifiedAssociationCollection::createFromNormalized([
             'COMPOSITION' => [
                 'products' => [
                     ['identifier' => 'a_motor', 'quantity' => 1],
@@ -145,23 +131,10 @@ class NotGrantedQuantifiedAssociationsFilterSpec extends ObjectBehavior
             $user
         )->willReturn(['a_door']);
 
-        $entityWithQuantifiedAssociations->setQuantifiedAssociations(QuantifiedAssociations::createFromNormalized([
-            'COMPOSITION' => [
-                'products' => [
-                    ['identifier' => 'a_motor', 'quantity' => 1],
-                    ['identifier' => 'a_wheel', 'quantity' => 4],
-                ],
-                'product_models' => [
-                    ['identifier' => 'a_door', 'quantity' => 4],
-                ],
-            ],
-            'PRODUCTSET' => [
-                'products' => [
-                    ['identifier' => 'a_gps', 'quantity' => 1],
-                ],
-                'product_models' => [],
-            ],
-        ]))->shouldBeCalled();
+        $entityWithQuantifiedAssociations->filterQuantifiedAssociations(
+            ['a_motor', 'a_wheel', 'a_gps'],
+            ['a_door']
+        );
 
         $this->filter($entityWithQuantifiedAssociations);
     }

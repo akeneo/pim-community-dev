@@ -4,7 +4,8 @@
 #
 FROM debian:buster-slim AS base
 
-ENV PHP_CONF_DATE_TIMEZONE=UTC \
+ENV DEBIAN_FRONTEND=noninteractive \
+    PHP_CONF_DATE_TIMEZONE=UTC \
     PHP_CONF_MAX_EXECUTION_TIME=60 \
     PHP_CONF_MEMORY_LIMIT=512M \
     PHP_CONF_OPCACHE_VALIDATE_TIMESTAMP=0 \
@@ -132,14 +133,17 @@ WORKDIR /srv/pim/
 COPY bin bin
 COPY config config
 COPY public public
-COPY frontend/build frontend/build
-COPY frontend/types.d.ts frontend/types.d.ts
+COPY frontend frontend
 COPY src src
 COPY upgrades upgrades
-COPY composer.json package.json yarn.lock .env tsconfig.json .
+COPY composer.json package.json yarn.lock .env tsconfig.json *.js .
 
 ENV APP_ENV=prod
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
+ENV GOOGLE_CLOUD_PROJECT="akecld_google_cloud_project_dummy"
+ENV SRNT_GOOGLE_APPLICATION_CREDENTIALS="/srv/pim/config/fake_credentials_gcp.json"
+ENV SRNT_GOOGLE_BUCKET_NAME="srnt_google_bucket_dummy"
+
 RUN mkdir var && \
     php -d 'memory_limit=3G' /usr/local/bin/composer install \
         --no-scripts \
@@ -155,8 +159,8 @@ RUN mkdir var && \
     EDITION=cloud yarnpkg run webpack && \
     find . -type d -name node_modules | xargs rm -rf && \
     rm -rf public/test_dist && \
-    cp vendor/akeneo/pim-community-dev/upgrades/schema/* upgrades/schema/ && \
-    cp vendor/akeneo/pim-onboarder/upgrades/schema/* upgrades/schema/
+    (test -d vendor/akeneo/pim-community-dev/upgrades/schema/ && cp vendor/akeneo/pim-community-dev/upgrades/schema/* upgrades/schema/ || true) && \
+    (test -d vendor/akeneo/pim-onboarder/upgrades/schema/ && cp vendor/akeneo/pim-onboarder/upgrades/schema/* upgrades/schema/ || true)
 
 #
 # Image used for production
@@ -180,7 +184,11 @@ COPY --from=builder --chown=www-data:www-data /srv/pim/composer.lock .
 
 # Prepare the application
 RUN mkdir -p public/media && chown -R www-data:www-data public/media var && \
-    rm -rf var/cache && su www-data -s /bin/bash -c "bin/console cache:warmup"
+    rm -rf var/cache && su www-data -s /bin/bash -c " \
+        GOOGLE_CLOUD_PROJECT=akecld_google_cloud_project_dummy \
+        SRNT_GOOGLE_APPLICATION_CREDENTIALS=/srv/pim/config/fake_credentials_gcp.json \
+        SRNT_GOOGLE_BUCKET_NAME=srnt_google_bucket_dummy \
+        bin/console cache:warmup"
 
 # Keep root as default user
 USER root

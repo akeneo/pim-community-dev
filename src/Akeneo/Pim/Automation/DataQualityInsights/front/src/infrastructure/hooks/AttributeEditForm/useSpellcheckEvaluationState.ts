@@ -1,12 +1,12 @@
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useState} from 'react';
 import fetchSpellcheckEvaluation from "../../fetcher/AttributeEditForm/fetchSpellcheckEvaluation";
 import {useMountedState} from "../Common/useMountedState";
 
-type LocalesSpellcheckEvaluation = {
+export type LocalesSpellcheckEvaluation = {
   [locale: string]: boolean;
 };
 
-type OptionsSpellcheckEvaluation = {
+export type OptionsSpellcheckEvaluation = {
   [option: string]: {
     count: number;
     toImprove: number;
@@ -14,7 +14,7 @@ type OptionsSpellcheckEvaluation = {
   }
 };
 
-type SpellcheckEvaluation = {
+export type SpellcheckEvaluation = {
   attribute: string;
   options: OptionsSpellcheckEvaluation;
   options_count: number;
@@ -43,18 +43,21 @@ export const useSpellcheckEvaluationState = (attributeCode: string): SpellcheckE
   const {isMounted} = useMountedState();
 
   const refresh = useCallback(async () => {
-    if (!isMounted()) {
-      return;
-    }
+    const response = fetchSpellcheckEvaluation(attributeCode);
 
-    const evaluation = await fetchSpellcheckEvaluation(attributeCode);
-    setSpellcheckEvaluation(evaluation);
-  }, [attributeCode, isMounted, setSpellcheckEvaluation]);
+    return response.then((evaluation) => {
+      if (isMounted()) {
+        setSpellcheckEvaluation(evaluation);
+      }
+    });
+  }, [setSpellcheckEvaluation, isMounted]);
 
+/*
   useEffect(() => {
-    (async () => refresh())();
-  }, [attributeCode]);
+    refresh();
 
+  }, [attributeCode]);
+*/
   return {
     evaluation: spellcheckEvaluation,
     refresh,

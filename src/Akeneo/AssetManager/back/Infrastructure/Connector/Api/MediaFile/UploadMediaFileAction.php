@@ -47,6 +47,13 @@ class UploadMediaFileAction
             throw new UnprocessableEntityHttpException('Property "file" is required.');
         }
 
+        if (preg_match(
+            '/[' . preg_quote('& \ + * ? [ ^ ] $ ( ) { } = ! < > | : - # @ ;') . ']/',
+            $request->files->get('file')->getClientOriginalExtension())
+        ) {
+            throw new UnprocessableEntityHttpException('File extension cannot contain special characters.');
+        }
+
         try {
             $fileInfo = $this->fileStorer->store($request->files->get('file'), Storage::FILE_STORAGE_ALIAS, true);
         } catch (FileTransferException | FileRemovalException $exception) {

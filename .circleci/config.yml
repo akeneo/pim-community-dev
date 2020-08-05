@@ -20,15 +20,15 @@ aliases:
             username: _json_key  # default username when using a JSON key file to authenticate
             password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
 
-  - &deactivate_monitoring
-      ACTIVATE_MONITORING: false
-
 jobs:
   checkout:
     docker:
       - image: alpine/git
     steps:
       - checkout
+      - run:
+          name: Persist default IMAGE_TAG to be the repo last commit SHA1
+          command: echo export IMAGE_TAG=$CIRCLE_SHA1 >> persisted_env_vars
       - persist_to_workspace:
           root: ~/
           paths:
@@ -291,6 +291,7 @@ jobs:
           - attach_workspace:
                 at: ~/
           - set_gcloud_config_dev
+          - restore_persisted_env_vars
           - when:
                 condition: << parameters.is_pull_request >>
                 steps:
@@ -303,10 +304,10 @@ jobs:
                               echo "No CE branch $CIRCLE_BRANCH found. I don't touch the composer.json file."
           - run:
               name: Build PROD PIM docker image
-              command: IMAGE_TAG=$CIRCLE_SHA1 IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S) make php-image-prod
+              command: IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S) make php-image-prod
           - run:
               name: Push PROD PIM image on docker registry
-              command: IMAGE_TAG=$CIRCLE_SHA1 make push-php-image-prod
+              command: make push-php-image-prod
 
   test_deploy_master:
       environment:
@@ -316,21 +317,22 @@ jobs:
           - attach_workspace:
                 at: ~/
           - set_gcloud_config_dev
+          - restore_persisted_env_vars
           - run:
               name: Deploy PIM on kubernetes
-              command: IMAGE_TAG=$CIRCLE_SHA1 make deploy-serenity
+              command: make deploy-serenity
           - run:
               name: Test PIM connexion on kubernetes
-              command: IMAGE_TAG=$CIRCLE_SHA1 make test-prod
+              command: make test-prod
           - run:
               name: Prepare infrastructure artifacts
-              command: IMAGE_TAG=$CIRCLE_SHA1 make prepare-infrastructure-artifacts
+              command: make prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
           - run:
               name: Remove env on kubernetes
-              command: IMAGE_TAG=$CIRCLE_SHA1 make delete
+              command: make delete
               when: always
 
   test_upgrade_from_32_to_master:
@@ -342,30 +344,31 @@ jobs:
                 at: ~/
           - add_ssh_keys
           - set_gcloud_config_dev
+          - restore_persisted_env_vars
           - run:
               name: Oldest SaaS prod (PIM v3) deployment on kubernetes
               command: |
                 ssh-keyscan github.com >> ~/.ssh/known_hosts
-                INSTANCE_NAME_PREFIX=pimup32 IMAGE_TAG=$CIRCLE_SHA1 make helm-prepare
-                INSTANCE_NAME_PREFIX=pimup32 IMAGE_TAG=$CIRCLE_SHA1 make deploy-pim3
+                INSTANCE_NAME_PREFIX=pimup32 make helm-prepare
+                INSTANCE_NAME_PREFIX=pimup32 make deploy-pim3
           - run:
               name: Upgrade intermediate version SaaS to master
               command: |
-                INSTANCE_NAME_PREFIX=pimup32 IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
-                INSTANCE_NAME_PREFIX=pimup32 IMAGE_TAG=$CIRCLE_SHA1 make terraform-pre-upgrade
-                INSTANCE_NAME_PREFIX=pimup32 IMAGE_TAG=$CIRCLE_SHA1 make deploy
+                INSTANCE_NAME_PREFIX=pimup32 make create-ci-release-files
+                INSTANCE_NAME_PREFIX=pimup32 make terraform-pre-upgrade
+                INSTANCE_NAME_PREFIX=pimup32 make deploy
           - run:
               name: Production tests on upgraded env
-              command: INSTANCE_NAME_PREFIX=pimup32 IMAGE_TAG=$CIRCLE_SHA1 make test-prod
+              command: INSTANCE_NAME_PREFIX=pimup32 make test-prod
           - run:
               name: Prepare infrastructure artifacts
-              command: INSTANCE_NAME_PREFIX=pimup32 IMAGE_TAG=$CIRCLE_SHA1 make prepare-infrastructure-artifacts
+              command: INSTANCE_NAME_PREFIX=pimup32 make prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
           - run:
               name: Remove upgraded env
-              command: INSTANCE_NAME_PREFIX=pimup32 IMAGE_TAG=$CIRCLE_SHA1 make delete
+              command: INSTANCE_NAME_PREFIX=pimup32 make delete
 
   test_upgrade_from_serenity_to_master:
       environment:
@@ -376,29 +379,30 @@ jobs:
                 at: ~/
           - add_ssh_keys
           - set_gcloud_config_dev
+          - restore_persisted_env_vars
           - run:
                 name: Latest SaaS prod deployment on kubernetes
                 command: |
                     ssh-keyscan github.com >> ~/.ssh/known_hosts
                     LATEST_RELEASE=$(git fetch origin &> /dev/null && git tag --list | grep -E "^v?[0-9]+$" | sort -r | head -n 1)
                     echo $LATEST_RELEASE
-                    INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$LATEST_RELEASE make deploy-serenity
+                    INSTANCE_NAME=pimup-$IMAGE_TAG IMAGE_TAG=$LATEST_RELEASE make deploy-serenity
           - run:
                 name: Upgrade version to master
                 command: |
-                    INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$CIRCLE_SHA1 make deploy-serenity
+                    INSTANCE_NAME=pimup-$IMAGE_TAG make deploy-serenity
           - run:
                 name: Production tests on upgraded env
-                command: INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$CIRCLE_SHA1 make test-prod
+                command: INSTANCE_NAME=pimup-$IMAGE_TAG make test-prod
           - run:
                 name: Prepare infrastructure artifacts
-                command: INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$CIRCLE_SHA1 make prepare-infrastructure-artifacts
+                command: INSTANCE_NAME=pimup-$IMAGE_TAG make prepare-infrastructure-artifacts
                 when: on_fail
           - store_artifacts:
                 path: ~/artifacts/infra
           - run:
                 name: Remove upgraded env
-                command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make delete
+                command: INSTANCE_NAME_PREFIX=pimup make delete
 
   release:
       environment:
@@ -406,12 +410,13 @@ jobs:
       machine:
           image: ubuntu-1604:201903-01
       steps:
-          -   attach_workspace:
+          - attach_workspace:
                   at: ~/
           - set_gcloud_config_dev
+          - restore_persisted_env_vars
           - run:
               name: make release
-              command: OLD_IMAGE_TAG=$CIRCLE_SHA1 make release
+              command: OLD_IMAGE_TAG=$IMAGE_TAG make release
 
   release-beta:
       environment:
@@ -419,12 +424,13 @@ jobs:
       machine:
           image: ubuntu-1604:201903-01
       steps:
-          -   attach_workspace:
+          - attach_workspace:
                   at: ~/
           - set_gcloud_config_dev
+          - restore_persisted_env_vars
           - run:
               name: make release-beta
-              command: OLD_IMAGE_TAG=$CIRCLE_SHA1 echo "The beta release went successfully with $OLD_IMAGE_TAG"
+              command: OLD_IMAGE_TAG=$IMAGE_TAG echo "The beta release went successfully with $OLD_IMAGE_TAG"
 
   deploy_helpdesk_environment:
       environment:
@@ -449,37 +455,39 @@ jobs:
           - attach_workspace:
                 at: ~/
           - set_gcloud_config_preprod
+          - restore_persisted_env_vars
           - add_ssh_keys
           - run:
                 name: Latest master version for PMs
                 command: |
-                    INSTANCE_NAME=pimci-pm IMAGE_TAG=$CIRCLE_SHA1 make deploy-serenity
+                    INSTANCE_NAME=pimci-pm make deploy-serenity
 
   deploy_pr_environment:
       environment:
           <<: *envVarsDeployDev
-          <<: *deactivate_monitoring
       <<: *dockerCloudDeployer
       steps:
           - attach_workspace:
                 at: ~/
           - set_gcloud_config_dev
-          - run:
-                name: Deploy PR environment
-                command: echo "This environment will be available at https://pimci-pr-${CIRCLE_PULL_REQUEST##*/}.dev.cloud.akeneo.com once deployed :)"
+          - restore_persisted_env_vars
           - run:
                 name: Deploy PR environment
                 command: |
-                    ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=${CIRCLE_SHA1} ACTIVATE_MONITORING=${ACTIVATE_MONITORING} make deploy-serenity
+                    if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
+                    echo "This environment will be available at https://pimci-pr-${CIRCLE_PULL_REQUEST##*/}.dev.cloud.akeneo.com once deployed :) "
+          - run:
+                name: Deploy PR environment
+                command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} ACTIVATE_MONITORING=false make deploy-serenity
           - run:
               name: Prepare infrastructure artifacts
-              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=${CIRCLE_SHA1} make prepare-infrastructure-artifacts
+              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} make prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
           - run:
               name: Remove env on kubernetes
-              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=${CIRCLE_SHA1} make delete
+              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} make delete
               when: on_fail
 
   test_upgrade_from_serenity_customer_db_to_master:
@@ -491,6 +499,7 @@ jobs:
                 at: ~/
           - add_ssh_keys
           - set_gcloud_config_dev
+          - restore_persisted_env_vars
           - run:
                 name: Duplicate PROD environment and Upgrade
                 command: |
@@ -499,16 +508,16 @@ jobs:
                     RANDOM_SOURCE_PFID=$(( $RANDOM % 2 ))
                     SOURCE_PFID=${LIST_SOURCE_PFID[${RANDOM_SOURCE_PFID}]}
                     SOURCE_PED_TAG=$(cd /root/project; git fetch origin &> /dev/null && git tag --list | grep -E "^v?[0-9]+$" | sort -r | head -n 1 )
-                    INSTANCE_NAME=$(echo "pimci-duplic-${CIRCLE_SHA1}"|cut -c1-40)
+                    INSTANCE_NAME=$(echo "pimci-duplic-${IMAGE_TAG}"|cut -c1-40)
                     ENV_NAME=dev SOURCE_PFID=${SOURCE_PFID} SOURCE_PED_TAG=${SOURCE_PED_TAG} INSTANCE_NAME=${INSTANCE_NAME} make test_upgrade_from_serenity_customer_db_to_master
           - run:
               name: Prepare infrastructure artifacts
-              command: INSTANCE_NAME=$(echo "pimci-duplic-${CIRCLE_SHA1}"|cut -c1-40) make prepare-infrastructure-artifacts
+              command: INSTANCE_NAME=$(echo "pimci-duplic-${IMAGE_TAG}"|cut -c1-40) make prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
 
-  delete_pr_environments:
+  delete_pr_environments_hourly:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
@@ -519,7 +528,22 @@ jobs:
           - run:
                 name: delete PR environment
                 command: |
-                    make delete_pr_environments
+                    make delete_pr_environments_hourly
+
+  delete_pr_environment:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployer
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - run:
+                name: delete environments
+                command: |
+                    if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
+                    echo "remove env from 'deploy_pr_environment'"
+                    INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} make delete-serenity
 
   test_back_missing_structure_migrations:
       machine:
@@ -648,6 +672,86 @@ jobs:
           - store_artifacts:
                 path: ~/project/pim/var/logs
 
+  prepare_growth_edition:
+      environment:
+        <<: *envVarsDeployDev
+      machine:
+          image: ubuntu-1604:201903-01
+      steps:
+          - attach_workspace:
+                at: ~/
+          - add_ssh_keys:
+                fingerprints:
+                    - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+          - set_gcloud_config_dev
+          - run:
+              name: Get last good CE build revision
+              command: |
+                  CE_COMMIT_HASH=$(growth_edition/get_last_good_ce_revision.sh)
+                  IMAGE_TAG=$(echo growth-$CE_COMMIT_HASH | cut -b 1-40)
+                  GROWTH_RELEASE_NAME=growth-v$(date +%Y%m%d%H%M%S)
+
+                  echo "CE Commit hash used: $CE_COMMIT_HASH"
+                  echo "Image tag: $IMAGE_TAG"
+                  echo "Growth Release name: $GROWTH_RELEASE_NAME"
+
+                  echo export CE_COMMIT_HASH=$CE_COMMIT_HASH >> $BASH_ENV
+                  echo export IMAGE_TAG=$IMAGE_TAG >> $BASH_ENV
+                  echo export GROWTH_RELEASE_NAME=$GROWTH_RELEASE_NAME >> $BASH_ENV
+          - run:
+              name: Install yq
+              command: |
+                  wget https://github.com/mikefarah/yq/releases/download/2.4.0/yq_linux_386
+                  sudo mv yq_linux_386 /usr/local/bin/yq
+                  sudo chmod +x /usr/local/bin/yq
+          - run:
+              name: Prepare the Growth Edition
+              command: |
+                  export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                  mv /home/circleci/project /home/circleci/ee_project
+                  git clone --branch master git@github.com:akeneo/pim-community-dev.git /home/circleci/project
+                  cd /home/circleci/project
+                  git checkout $CE_COMMIT_HASH
+                  /home/circleci/ee_project/growth_edition/prepare_growth_edition.sh /home/circleci/project
+          - run:
+              name: Build the Growth Edition prod image
+              command: |
+                  DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --target prod \
+                    --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG \
+                    --build-arg COMPOSER_AUTH=${COMPOSER_AUTH} .
+                  docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG
+          - run:
+              name: Persist env vars for next jobs
+              command: |
+                  echo export CE_COMMIT_HASH=$CE_COMMIT_HASH > persisted_env_vars
+                  echo export IMAGE_TAG=$IMAGE_TAG >> persisted_env_vars
+                  echo export GROWTH_RELEASE_NAME=$GROWTH_RELEASE_NAME >> persisted_env_vars
+          - persist_to_workspace:
+              root: ~/
+              paths:
+                - project
+
+  release_growth_edition:
+      environment:
+          <<: *envVarsDeployDev
+      machine:
+          image: ubuntu-1604:201903-01
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - restore_persisted_env_vars
+          - run:
+              name: Push Terraform modules to GCS
+              command: BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/terraform gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME/
+          - run:
+              name: Tag the Docker image with the definitive tag
+              command: |
+                  docker pull eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG
+                  docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG eu.gcr.io/akeneo-ci/pim-enterprise-dev:$GROWTH_RELEASE_NAME
+                  docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG eu.gcr.io/akeneo-cloud/pim-enterprise-dev:$GROWTH_RELEASE_NAME
+                  docker push eu.gcr.io/akeneo-cloud/pim-enterprise-dev:$GROWTH_RELEASE_NAME
+
 workflows:
   version: 2
   pull_request:
@@ -686,6 +790,17 @@ workflows:
                             - master
                 requires:
                     - build_prod
+          - delete_pr_environment:
+                requires:
+                    - delete_pr_environment?
+          - delete_pr_environment?:
+                type: approval
+                filters:
+                    branches:
+                        ignore:
+                            - master
+                requires:
+                    - deploy_pr_environment
           - test_upgrade_from_serenity_to_master:
                 requires:
                     - build_prod
@@ -732,6 +847,26 @@ workflows:
                     - test_back_performance
                     - test_upgrade_from_serenity_to_master
 
+  growth_edition_release:
+      triggers:
+          - schedule:
+                cron: "0 4 * * *"
+                filters:
+                    branches:
+                        only:
+                            - master
+      jobs:
+           - checkout
+           - prepare_growth_edition:
+                requires:
+                    - checkout
+           - test_deploy_master:
+                requires:
+                    - prepare_growth_edition
+           - release_growth_edition:
+                    requires:
+                        - test_deploy_master
+
   nightly_deployments:
       triggers:
           - schedule:
@@ -761,7 +896,7 @@ workflows:
 
       jobs:
           - checkout
-          - delete_pr_environments:
+          - delete_pr_environments_hourly:
                 requires:
                     - checkout
 
@@ -849,6 +984,9 @@ workflows:
                 requires:
                     - build_prod
           - test_upgrade_from_serenity_to_master:
+                requires:
+                    - build_prod
+          - test_upgrade_from_serenity_customer_db_to_master:
                 requires:
                     - build_prod
           - test_back_static_and_acceptance:
@@ -970,3 +1108,13 @@ commands:
             echo 'export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"' >> $BASH_ENV
             export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
             gcloud auth configure-docker --quiet
+
+  restore_persisted_env_vars:
+    description: "Restore env vars that have been persisted by the previous job."
+    steps:
+      - run:
+         name: Restore persisted env vars
+         command: |
+            echo "Persisted env vars:"
+            cat persisted_env_vars
+            cat persisted_env_vars >> $BASH_ENV

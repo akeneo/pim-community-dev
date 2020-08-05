@@ -1,46 +1,78 @@
-import React, {FC, useCallback, useEffect} from 'react';
+import React, {FC, useCallback, useEffect, useLayoutEffect, useState} from 'react';
 import {useAttributeSpellcheckEvaluationContext} from "../../../context/AttributeSpellcheckEvaluationContext";
 import {useAttributeOptionsListContext} from "../../../context/AttributeOptionsListContext";
-import QualityBadge from "../../Common/QualityBadge";
+import {useVisibleAttributeOptions} from "../../../../infrastructure/hooks/AttributeEditForm/useVisibleAttributeOptions";
+import AttributeOptionQualityBadge from "./AttributeOptionQualityBadge";
+
+type DisplayedBadges = {
+  [option: string]: {
+    element: JSX.Element;
+    loaded: boolean;
+  };
+}
 
 const AddQualityBadgesOnOptionsList: FC = () => {
-  const {attributeOptions, addExtraData, removeExtraData} = useAttributeOptionsListContext();
+  const {attributeOptions, addExtraData} = useAttributeOptionsListContext();
   const {evaluation} = useAttributeSpellcheckEvaluationContext();
-
-  const addQualityBadges = useCallback(() => {
-    if (attributeOptions === null) {
-      return;
-    }
-
-    attributeOptions.forEach((attributeOptions) => {
-      if (!evaluation.options[attributeOptions.code]) {
-        return;
-      }
-
-      const isToImprove = (evaluation.options[attributeOptions.code].toImprove > 0) || false;
-      const label = isToImprove ? 'to_improve': 'good';
-
-      addExtraData(attributeOptions.code, <QualityBadge label={label} />);
-    });
-  }, [attributeOptions, evaluation, addExtraData]);
-
-  const removeQualityBadges = useCallback(() => {
-    if (attributeOptions === null) {
-      return;
-    }
-
-    attributeOptions.forEach((attributeOptions) => {
-      removeExtraData(attributeOptions.code);
-    });
-  }, [attributeOptions, removeExtraData]);
+  const {visibleOptions} = useVisibleAttributeOptions();
+  const [badges, setBadges] = useState<DisplayedBadges>({});
 
   useEffect(() => {
-    addQualityBadges();
+    if (attributeOptions !== null) {
+
+      const newBadges:DisplayedBadges = {};
+
+      attributeOptions.forEach((attributeOption) => {
+        newBadges[attributeOption.code] = {
+          element: <AttributeOptionQualityBadge option={attributeOption.code} evaluation={evaluation} />,
+          loaded: false
+        };
+      });
+      setBadges(newBadges);
+    }
+    else {
+      setBadges({});
+    }
+  }, [attributeOptions, evaluation]);
+
+  const showQualityBadge = useCallback((option: string, badges: DisplayedBadges) => {
+    if (badges[option] && (badges[option].loaded)) {
+      return;
+    }
+
+    if (badges[option]) {
+      addExtraData(option, badges[option].element);
+    }
+
+    setBadges((state) => {
+      return {
+        ...state,
+        [option]: {
+          ...state.option,
+          loaded: true,
+        }
+      }
+    });
+  }, [addExtraData, setBadges]);
+
+  useLayoutEffect(() => {
+    const requestAnimationFrameIds: number[] = [];
+
+    if (Object.keys(badges).length > 0) {
+      visibleOptions.forEach((option) => {
+        const requestAnimationFrameId = window.requestAnimationFrame(() => {
+          showQualityBadge(option, badges);
+        });
+        requestAnimationFrameIds.push(requestAnimationFrameId);
+      });
+    }
 
     return () => {
-      removeQualityBadges();
+      requestAnimationFrameIds.forEach((requestAnimationFrameId) => {
+        window.cancelAnimationFrame(requestAnimationFrameId);
+      });
     }
-  }, [addQualityBadges, removeQualityBadges]);
+  }, [visibleOptions, badges]);
 
   return <></>;
 }

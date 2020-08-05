@@ -18,6 +18,9 @@ import { getClearAssociationsActionModule } from './ClearAssociationsAction';
 import { getClearCategoriesActionModule } from './ClearCategoriesAction';
 import { getClearGroupsActionModule } from './ClearGroupsAction';
 import { getRemoveCategoriesModule } from './RemoveCategoriesAction';
+import { getAddGroupsActionModule } from './AddGroupsAction';
+import { getAddAttributeValueActionModule } from './AddAttributeValueAction';
+import { getSetStatusActionModule } from './SetStatusAction';
 
 export type ActionModuleGuesser = (
   json: any,
@@ -33,11 +36,14 @@ const getActionModule: (
 ) => {
   const getActionModuleFunctions: ActionModuleGuesser[] = [
     getSetFamilyActionModule,
+    getSetStatusActionModule,
     getClearAssociationsActionModule,
     getClearCategoriesActionModule,
     getClearGroupsActionModule,
     getClearAttributeActionModule,
     getAddCategoriesModule,
+    getAddGroupsActionModule,
+    getAddAttributeValueActionModule,
     getSetCategoriesModule,
     getRemoveCategoriesModule,
     getRemoveAttributeValueActionModule,

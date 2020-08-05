@@ -20,6 +20,8 @@
 - PIM-9334: Add error during rule import when a condition value contains null value
 - PIM-9324: Fix cannot save product when simple reference entity linked to this product is deleted
 - PIM-9243: Creation and update dates are not displayed on the asset page 
+- PIM-9362: Fix missing "System information" translations for asset analytics
+- PIM-9363: Fix API error 500 when import a picture with an incorrect extension
 
 ## Improvements
 

@@ -2,6 +2,7 @@ import { FallbackAction } from './actions/FallbackAction';
 import {
   AddAction,
   AddCategoriesAction,
+  AddGroupsAction,
   CalculateAction,
   ClearAction,
   ClearAttributeAction,
@@ -25,16 +26,24 @@ import {
   createClearGroupsAction,
   createCopyAction,
   createRemoveAttributeValueCategoriesAction,
+  createAddGroupsAction,
+  createAddAttributeValueCategoriesAction,
+  AddAttributeValueAction,
+  createSetStatusAction,
+  SetStatusAction,
 } from './actions';
 
 export const AvailableAddAction: { [key: string]: () => Action } = {
   set_category: createSetCategoriesAction,
   set_family: createSetFamilyAction,
+  set_status: createSetStatusAction,
   clear_attribute: createClearAttributeAction,
   clear_associations: createClearAssociationsAction,
   clear_categories: createClearCategoriesAction,
   clear_groups: createClearGroupsAction,
+  add_attribute_value: createAddAttributeValueCategoriesAction,
   add_category: createAddCategoriesAction,
+  add_groups: createAddGroupsAction,
   set_attribute: createSetAttributeAction,
   copy: createCopyAction,
   remove_category: createRemoveCategoriesAction,
@@ -43,7 +52,9 @@ export const AvailableAddAction: { [key: string]: () => Action } = {
 
 export type Action =
   | AddAction
+  | AddAttributeValueAction
   | AddCategoriesAction
+  | AddGroupsAction
   | CalculateAction
   | ClearAction
   | ClearAttributeAction
@@ -56,4 +67,5 @@ export type Action =
   | RemoveAttributeValueAction
   | SetAction
   | SetFamilyAction
-  | SetCategoriesAction;
+  | SetCategoriesAction
+  | SetStatusAction;

@@ -4,5 +4,6 @@ export * from './BooleanValue';
 export * from './FallbackValue';
 export * from './MultiSelectValue';
 export * from './NumberValue';
+export * from './PriceCollectionValue';
 export * from './SimpleSelectValue';
 export * from './TextValue';
