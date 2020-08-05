@@ -6,7 +6,6 @@ import {
   renderWithProviders,
   screen,
 } from '../../../../../../../test-utils';
-
 import { createAttribute } from '../../../../../factories';
 import { AttributeValue } from '../../../../../../../src/pages/EditRules/components/actions/attribute';
 import { getAttributeLabel } from '../../../../../../../src/models';
@@ -149,6 +148,41 @@ describe('AttributeValue', () => {
     act(() => {
       fireEvent.change(valueInput, {
         target: { value: 'test1' },
+      });
+      expect(onChange).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it('should display a date input', async () => {
+    const attribute = createAttribute({
+      code: 'release_date',
+      type: 'pim_catalog_date',
+      scopable: false,
+      localizable: false,
+      labels: {
+        en_US: 'Release date',
+      },
+    });
+    const onChange = jest.fn();
+    renderWithProviders(
+      <AttributeValue
+        id={'attribute-value-id'}
+        attribute={attribute}
+        name={'attribute-value-name'}
+        onChange={onChange}
+      />,
+      { all: true }
+    );
+
+    expect(
+      screen.getByText('Release date pim_common.required_label')
+    ).toBeInTheDocument();
+    const valueInput = await screen.findByTestId('attribute-value-id');
+    expect(valueInput).toHaveValue('');
+    expect(valueInput).not.toBeDisabled();
+    act(() => {
+      fireEvent.change(valueInput, {
+        target: { value: '2020-05-20' },
       });
       expect(onChange).toHaveBeenCalledTimes(1);
     });
