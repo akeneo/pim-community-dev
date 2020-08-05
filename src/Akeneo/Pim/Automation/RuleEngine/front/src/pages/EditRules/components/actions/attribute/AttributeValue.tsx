@@ -21,7 +21,6 @@ import {
   SimpleSelectValue,
   TextAreaValue,
   TextValue,
-  WysiwygTextAreaValue,
 } from './';
 import {
   HelperContainer,
@@ -77,11 +76,7 @@ const getValueModule = (attribute: Attribute, props: InputValueProps) => {
     case AttributeType.TEXT:
       return <TextValue {...props} />;
     case AttributeType.TEXTAREA:
-      return attribute.wysiwyg_enabled ? (
-        <WysiwygTextAreaValue {...props} />
-      ) : (
-        <TextAreaValue {...props} />
-      );
+      return <TextAreaValue {...props} />;
     case AttributeType.DATE:
       return <DateValue {...props} />;
     case AttributeType.OPTION_SIMPLE_SELECT:

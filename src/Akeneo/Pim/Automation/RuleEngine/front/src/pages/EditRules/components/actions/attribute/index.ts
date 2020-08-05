@@ -12,4 +12,3 @@ export * from './SimpleSelectValue';
 export * from './SimpleReferenceEntityValue';
 export * from './TextAreaValue';
 export * from './TextValue';
-export * from './WysiwygTextAreaValue';
