@@ -38,7 +38,7 @@ const registerConditions = (
 
 const registerActions = (register: Control['register'], actions: Action[]) => {
   if (actions?.length) {
-    actions.forEach((_, index) => {
+    actions.forEach((action, index) => {
       register({ name: `content.actions[${index}].field`, type: 'custom' });
       register({ name: `content.actions[${index}].items`, type: 'custom' });
       register({ name: `content.actions[${index}].type`, type: 'custom' });
@@ -62,6 +62,27 @@ const registerActions = (register: Control['register'], actions: Action[]) => {
       register({ name: `content.actions[${index}].to_scope`, type: 'custom' });
       register({
         name: `content.actions[${index}].include_children`,
+        type: 'custom',
+      });
+
+      if (typeof action.destination !== 'undefined') {
+        ['field', 'scope', 'locale', 'unit'].forEach(key =>
+          register({
+            name: `content.actions[${index}].destination.${key}`,
+            type: 'custom',
+          })
+        );
+      }
+      register({
+        name: `content.actions[${index}].source`,
+        type: 'custom',
+      });
+      register({
+        name: `content.actions[${index}].operation_list`,
+        type: 'custom',
+      });
+      register({
+        name: `content.actions[${index}].round_precision`,
         type: 'custom',
       });
     });

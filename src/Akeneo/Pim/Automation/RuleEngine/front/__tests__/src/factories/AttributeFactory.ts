@@ -58,6 +58,14 @@ export const attributeSelect2Response = [
         id: 'brand',
         text: 'Brand',
       },
+      {
+        id: 'margin',
+        text: 'Margin',
+      },
+      {
+        id: 'weight',
+        text: 'Weight',
+      },
     ],
   },
 ];
