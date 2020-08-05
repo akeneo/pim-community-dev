@@ -18,6 +18,7 @@ const TextAreaValue: React.FC<InputValueProps> = ({
 
   return attribute.wysiwyg_enabled ? (
     <InputWysiwygTextArea
+      data-testid={id}
       label={label || getAttributeLabel(attribute, catalogLocale)}
       onChange={onChange}
       value={value || ''}

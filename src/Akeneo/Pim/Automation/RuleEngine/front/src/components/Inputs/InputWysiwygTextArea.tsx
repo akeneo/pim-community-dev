@@ -25,7 +25,12 @@ type Props = {
   onChange: (value: string) => void;
 };
 
-const InputWysiwygTextArea: React.FC<Props> = ({ value, label, onChange }) => {
+const InputWysiwygTextArea: React.FC<Props> = ({
+  value,
+  label,
+  onChange,
+  ...remainingProps
+}) => {
   const [state, setState] = React.useState(rawToEditorState(value));
 
   const onEditorStateChange = (editorState: any) => {
@@ -54,6 +59,7 @@ const InputWysiwygTextArea: React.FC<Props> = ({ value, label, onChange }) => {
             options: ['Code'],
           },
         }}
+        {...remainingProps}
       />
     </>
   );

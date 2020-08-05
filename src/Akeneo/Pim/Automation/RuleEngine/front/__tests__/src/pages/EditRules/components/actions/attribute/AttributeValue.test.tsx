@@ -8,7 +8,10 @@ import {
 } from '../../../../../../../test-utils';
 import { createAttribute } from '../../../../../factories';
 import { AttributeValue } from '../../../../../../../src/pages/EditRules/components/actions/attribute';
-import { getAttributeLabel } from '../../../../../../../src/models';
+import {
+  AttributeType,
+  getAttributeLabel,
+} from '../../../../../../../src/models';
 
 jest.mock(
   '../../../../../../../src/dependenciesTools/components/AssetManager/AssetSelector'
@@ -186,5 +189,56 @@ describe('AttributeValue', () => {
       });
       expect(onChange).toHaveBeenCalledTimes(1);
     });
+  });
+
+  it('should display a text area (without wysiwyg', () => {
+    const attribute = createAttribute({
+      type: AttributeType.TEXTAREA,
+      wysiwyg_enabled: false,
+    });
+    renderWithProviders(
+      <AttributeValue
+        id={'attribute-value-id'}
+        attribute={attribute}
+        name={'attribute-value-name'}
+        value={'default'}
+        onChange={jest.fn()}
+      />,
+      { all: true }
+    );
+    expect(
+      screen.getByText(
+        `${getAttributeLabel(attribute, 'en_US')} pim_common.required_label`
+      )
+    ).toBeInTheDocument();
+    const valueInput = screen.getByTestId('attribute-value-id');
+    expect(valueInput).toHaveValue('default');
+    expect(valueInput).not.toBeDisabled();
+    expect(valueInput).toHaveProperty('type', 'textarea');
+  });
+
+  it('should display a text area with wysiwyg', () => {
+    const attribute = createAttribute({
+      type: AttributeType.TEXTAREA,
+      wysiwyg_enabled: true,
+    });
+    renderWithProviders(
+      <AttributeValue
+        id={'attribute-value-id'}
+        attribute={attribute}
+        name={'attribute-value-name'}
+        value={'default'}
+        onChange={jest.fn()}
+      />,
+      { all: true }
+    );
+    expect(
+      screen.getByText(
+        `${getAttributeLabel(attribute, 'en_US')} pim_common.required_label`
+      )
+    ).toBeInTheDocument();
+    // Wysiwyg editor container looks like <div aria-label="rdw-wrapper" className="rdw-editor-wrapper"...>
+    const valueInputs = screen.getByLabelText('rdw-wrapper');
+    expect(valueInputs).toBeInTheDocument();
   });
 });
