@@ -10,7 +10,9 @@ import { createAttribute, locales, scopes } from '../../../../factories';
 jest.mock('../../../../../../src/components/Select2Wrapper/Select2Wrapper');
 jest.mock('../../../../../../src/dependenciesTools/provider/dependencies.ts');
 jest.mock('../../../../../../src/fetch/categoryTree.fetcher.ts');
-jest.mock('../../../../../../src/dependenciesTools/components/AssetManager/AssetSelector');
+jest.mock(
+  '../../../../../../src/dependenciesTools/components/AssetManager/AssetSelector'
+);
 jest.mock(
   '../../../../../../src/dependenciesTools/components/ReferenceEntity/ReferenceEntitySelector'
 );
