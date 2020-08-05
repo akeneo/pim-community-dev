@@ -732,7 +732,9 @@ class ProductWriterSpec extends ObjectBehavior
         $jobParameters->get('withHeader')->willReturn(true);
         $jobParameters->has('with_label')->willReturn(true);
         $jobParameters->get('with_label')->willReturn(false);
-        $jobParameters->get('filters')->willReturn(['structure' => ['scope' => 'ecommerce']]);
+        $jobParameters->has('with_media')->willReturn(false);
+        $jobParameters->has('selected_properties')->willReturn(false);
+        $jobParameters->get('filters')->willReturn(['structure' => ['scope' => 'ecommerce', 'locales' => ['en_US']]]);
         $generateHeadersFromAttributeCodes
             ->__invoke(Argument::cetera())
             ->shouldNotBeCalled();
