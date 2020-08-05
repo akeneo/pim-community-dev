@@ -1,11 +1,15 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { useProductsCount } from '../../../../../src/pages/EditRules/hooks/useProductsCount';
+import { useProductsCount } from '../../../../../src/pages/EditRules/hooks';
 import { Router } from '../../../../../src/dependenciesTools';
 import { httpGet } from '../../../../../src/fetch';
 
 jest.mock('../../../../../src/fetch');
 jest.mock('../../../../../src/dependenciesTools/provider/dependencies.ts');
 jest.mock('../../../../../src/fetch/categoryTree.fetcher.ts');
+jest.mock('../../../../../src/dependenciesTools/AssetManager/AssetSelector');
+jest.mock(
+  '../../../../../src/dependenciesTools/components/ReferenceEntity/ReferenceEntitySelector'
+);
 
 jest.mock('react-hook-form', () => {
   return {

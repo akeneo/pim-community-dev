@@ -36,7 +36,7 @@ const MultiReferenceEntityValue: React.FC<InputValueProps> = ({
         placeholder={translate(
           'pimee_catalog_rule.form.edit.actions.set_attribute.select_reference_entity'
         )}
-        compact={false}
+        compact={true}
         readOnly={false}
         onChange={onChange}
         channel={currentCatalogScope}
