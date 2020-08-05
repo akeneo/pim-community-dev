@@ -90,6 +90,10 @@ pimee_catalog_rule:
                     unique: This code is already used.
             cross_link: Leave create rule form
         edit:
+            header:
+                welcome: Welcome to your new rules engine area!
+                description: To create a rule, you must define your product selection, and then add one or several actions.
+                documentation_link: Click here to discover the full extent of the rules engine capabilities.
             properties:
                 section:
                     general: General parameters

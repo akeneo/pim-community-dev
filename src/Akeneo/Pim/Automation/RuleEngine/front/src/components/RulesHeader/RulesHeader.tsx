@@ -13,6 +13,26 @@ const BreadcrumbAndButtons = styled.div`
   width: 100%;
 `;
 
+const DescriptionHeader = styled.div`
+  margin: 40px 0 0;
+  position: relative;
+`;
+
+const Illustration = styled.div`
+  background-image: url('/bundles/akeneopimruleengine/assets/illustrations/rules.svg');
+`;
+
+const HideButton = styled.div`
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+  background-image: url('/bundles/akeneopimruleengine/assets/icons/icon-delete-grey100.svg');
+  background-position: center;
+  width: 10px;
+  height: 10px;
+`;
+
 type Props = {
   buttonLabel: string;
   formId: string;
@@ -32,6 +52,14 @@ const RulesHeader: React.FC<Props> = ({
   dropdown,
 }) => {
   const translate = useTranslate();
+
+  const [showDescriptionHeader, setShowDescriptionHeader] = React.useState<
+    boolean
+  >(true);
+
+  const hideDescriptionHeader = () => {
+    setShowDescriptionHeader(false);
+  };
 
   return (
     <Header>
@@ -57,6 +85,28 @@ const RulesHeader: React.FC<Props> = ({
         </div>
         {unsavedChanges && <UnsavedChangesWarning />}
       </div>
+      {showDescriptionHeader && (
+        <DescriptionHeader className='AknDescriptionHeader'>
+          <Illustration className='AknDescriptionHeader-icon' />
+          <div className='AknDescriptionHeader-title'>
+            {translate('pimee_catalog_rule.form.edit.header.welcome')}
+            <div className='AknDescriptionHeader-description'>
+              {translate('pimee_catalog_rule.form.edit.header.description')}
+              <br />
+              <a
+                href='https://help.akeneo.com/pim/serenity/articles/get-started-with-the-rules-engine.html'
+                target='_blank'
+                rel='noopener noreferrer'
+                className='AknDescriptionHeader-link'>
+                {translate(
+                  'pimee_catalog_rule.form.edit.header.documentation_link'
+                )}
+              </a>
+            </div>
+          </div>
+          <HideButton onClick={hideDescriptionHeader} />
+        </DescriptionHeader>
+      )}
     </Header>
   );
 };
