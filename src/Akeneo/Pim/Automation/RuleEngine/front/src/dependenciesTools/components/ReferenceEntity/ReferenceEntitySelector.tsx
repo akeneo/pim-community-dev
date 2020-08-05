@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const RecordSelector = require('akeneoreferenceentity/application/component/app/record-selector');
+const RecordSelector = require('akeneoreferenceentity/application/component/app/record-selector').default;
 import * as React from 'react';
 
 export default class ReferenceEntityString {
@@ -72,7 +72,7 @@ export const ReferenceEntitySelector: React.FC<RecordSelectorProps> = ({
   };
 
   return (
-    <RecordSelector.default
+    <RecordSelector
       value={createValue(value)}
       referenceEntityIdentifier={ReferenceEntityString.create(
         referenceEntityIdentifier

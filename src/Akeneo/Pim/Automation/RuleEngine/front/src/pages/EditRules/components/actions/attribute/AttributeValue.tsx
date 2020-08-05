@@ -1,10 +1,6 @@
 import React from 'react';
-import { Attribute, getAttributeLabel, ScopeCode } from '../../../../../models';
-import { AttributeType } from '../../../../../models/Attribute';
-import {
-  useTranslate,
-  useUserCatalogLocale,
-} from '../../../../../dependenciesTools/hooks';
+import { Attribute, AttributeType, getAttributeLabel, ScopeCode } from '../../../../../models';
+import { useTranslate, useUserCatalogLocale, } from '../../../../../dependenciesTools/hooks';
 import {
   AssetCollectionValue,
   BooleanValue,
@@ -13,18 +9,16 @@ import {
   MultiReferenceEntityValue,
   MultiSelectValue,
   NumberValue,
+  parseAssetCollectionValue,
   parseMultiReferenceEntityValue,
   parsePriceCollectionValue,
-  parseAssetCollectionValue,
   PriceCollectionValue,
   SimpleReferenceEntityValue,
   SimpleSelectValue,
+  TextAreaValue,
   TextValue,
 } from './';
-import {
-  HelperContainer,
-  InlineHelper,
-} from '../../../../../components/HelpersInfos';
+import { HelperContainer, InlineHelper, } from '../../../../../components/HelpersInfos';
 import { ActionFormContainer } from '../style';
 
 const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: Map<
@@ -41,6 +35,7 @@ const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: Map<
   [AttributeType.ASSET_COLLECTION, AssetCollectionValue],
   [AttributeType.REFERENCE_ENTITY_COLLECTION, MultiReferenceEntityValue],
   [AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT, SimpleReferenceEntityValue],
+  [AttributeType.TEXTAREA, TextAreaValue],
 ]);
 
 const MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION: Map<
@@ -76,6 +71,8 @@ const getValueModule = (attribute: Attribute, props: InputValueProps) => {
   switch (attribute.type) {
     case AttributeType.TEXT:
       return <TextValue {...props} />;
+    case AttributeType.TEXTAREA:
+      return <TextAreaValue {...props} />;
     case AttributeType.DATE:
       return <DateValue {...props} />;
     case AttributeType.OPTION_SIMPLE_SELECT:

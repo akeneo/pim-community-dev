@@ -4,6 +4,41 @@
   &-edit {
     overflow: auto;
 
+    .rdw-editor-toolbar {
+      border: 1px solid @AknBorderColor;
+      border-bottom: none;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      margin-bottom: 0;
+
+      a {
+        color: @AknSlateGrey;
+      }
+
+      .rdw-editor-toolbar-blockType {
+        .rdw-option-wrapper {
+          font-family: FontAwesome;
+          font-size: 0;
+
+          &:before {
+            content: "\f121";
+            display: inline-block;
+            speak: none;
+            font-size: 17px;
+          }
+        }
+      }
+    }
+
+    .rdw-editor-wrapper {
+      width: calc((100vw - 580px) / 2);
+      min-width: 300px;
+    }
+
+    .AknTextareaField {
+      max-height: 250px;
+    }
+
     *:not(.record-selector-container):not(.asset-selector-container) {
       & > .select2-container-multi .select2-choices {
         padding-right: 4px;
