@@ -3,11 +3,11 @@ import React from 'react';
 import { ContentState, convertToRaw, EditorState } from 'draft-js';
 import { Label } from '../Labels';
 import { Editor } from 'react-draft-wysiwyg';
-const draftToHtml = require('draftjs-to-html');
-const htmlToDraft = require('html-to-draftjs').default;
+import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
 
 const draftToRaw = (editorState: any) => {
-  return draftToHtml(convertToRaw(editorState.getCurrentContent()));
+  return draftToHtml(convertToRaw(editorState.getCurrentContent()) as any);
 };
 
 const rawToEditorState = (value: string) => {
