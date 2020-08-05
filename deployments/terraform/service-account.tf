@@ -3,7 +3,7 @@ resource "google_service_account" "pim_service_account" {
   display_name = "Google access for pim container (${var.instance_name})"
 }
 
-resource "google_service_account_key" "pimstorage" {
+resource "google_service_account_key" "pim_service_account" {
   service_account_id = google_service_account.pim_service_account.id
   public_key_type    = "TYPE_X509_PEM_FILE"
 
