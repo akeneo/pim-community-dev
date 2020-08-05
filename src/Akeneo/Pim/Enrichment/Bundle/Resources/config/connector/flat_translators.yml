@@ -4,3 +4,7 @@ services:
 
   pim_enrich.connector.flat_translators.product_model_translator:
     class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\NullFlatTranslator
+
+  # Registries
+  pim_enrich.connector.flat_translators.header_translator_registry:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatHeaderTranslatorRegistry

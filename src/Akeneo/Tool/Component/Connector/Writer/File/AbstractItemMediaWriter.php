@@ -137,15 +137,16 @@ abstract class AbstractItemMediaWriter implements
             $flatItems[] = $this->arrayConverter->convert($item, $converterOptions);
         }
 
-        if (!empty($items) && $parameters->has('withHeader') && true === $parameters->get('withHeader')) {
-            $flatItems = $this->fillMissingFlatItemValues($flatItems);
+        if ($parameters->has('withHeader') && true === $parameters->get('withHeader')) {
+            $flatItems = $this->fillMissingHeaders($flatItems);
         }
 
-        if ($parameters->has('with_label') && true === $parameters->get('with_label')) {
-            $fileLocale = $parameters->has('file_locale') ? $parameters->get('file_locale') : 'en_US';
-            $withLabelHeader = $parameters->has('header_with_label') && $parameters->get('header_with_label');
+        if ($parameters->has('with_label') && $parameters->get('with_label')) {
+            $localeLabel = $parameters->has('label_locale') ? $parameters->get('label_locale') : 'en_US';
+            $withLabelHeader = $parameters->has('with_locale_header') && $parameters->get('with_locale_header');
             $scope = $parameters->get('filters')['structure']['scope'];
-            $flatItems = $this->flatTranslator->translate($flatItems, $fileLocale, $scope, $withLabelHeader);
+
+            $flatItems = $this->flatTranslator->translate($flatItems, $localeLabel, $scope, $withLabelHeader);
         }
 
         $options = [];
@@ -154,15 +155,15 @@ abstract class AbstractItemMediaWriter implements
         $this->flatRowBuffer->write($flatItems, $options);
     }
 
-    private function fillMissingFlatItemValues(array $items): array
+    private function fillMissingHeaders(array $items): array
     {
         $additionalHeaders = $this->getAdditionalHeaders();
-        $additionalHeadersFilled = array_fill_keys($additionalHeaders, '');
+        $additionalHeadersFilled1 = array_fill_keys($additionalHeaders, '');
+        $products = array_keys($items);
 
-        $flatItemIndex = array_keys($items);
-        $additionalHeadersFilledInFlatItemFormat = array_fill_keys($flatItemIndex, $additionalHeadersFilled);
+        $additionalHeadersFilled = array_fill_keys($products, $additionalHeadersFilled1);
 
-        return array_replace_recursive($additionalHeadersFilledInFlatItemFormat, $items);
+        return array_replace_recursive($additionalHeadersFilled, $items);
     }
 
     protected function getAdditionalHeaders()

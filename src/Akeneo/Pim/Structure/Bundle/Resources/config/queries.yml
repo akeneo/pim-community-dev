@@ -65,3 +65,33 @@ services:
         class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql\FindAttributeCodesForAttributeGroup
         arguments:
             - '@database_connection'
+
+    akeneo.pim.structure.query.get_association_type_translations:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Association\SqlGetAssociationTypeTranslations
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.get_channel_translations:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Channel\SqlGetChannelTranslations
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.get_attribute_translations:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\SqlGetAttributeTranslations
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.get_category_translations:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Category\SqlGetCategoryTranslations
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.get_family_translations:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\SqlGetFamilyTranslations
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.structure.query.get_group_translations:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Group\SqlGetGroupTranslations
+        arguments:
+            - '@database_connection'
