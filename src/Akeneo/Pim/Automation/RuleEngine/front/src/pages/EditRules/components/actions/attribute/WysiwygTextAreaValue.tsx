@@ -2,10 +2,9 @@ import React from 'react';
 import { useUserCatalogLocale } from '../../../../../dependenciesTools/hooks';
 import { InputValueProps } from './AttributeValue';
 import { getAttributeLabel } from '../../../../../models';
-import { InputTextArea } from '../../../../../components/Inputs';
+import { InputWysiwygTextArea } from '../../../../../components/Inputs/InputWysiwygTextArea';
 
-const TextAreaValue: React.FC<InputValueProps> = ({
-  id,
+const WysiwygTextAreaValue: React.FC<InputValueProps> = ({
   attribute,
   value,
   label,
@@ -14,13 +13,12 @@ const TextAreaValue: React.FC<InputValueProps> = ({
   const catalogLocale = useUserCatalogLocale();
 
   return (
-    <InputTextArea
-      data-testid={id}
+    <InputWysiwygTextArea
       label={label || getAttributeLabel(attribute, catalogLocale)}
+      onChange={onChange}
       value={value || ''}
-      onChange={(event: any) => onChange(event.target.value)}
     />
   );
 };
 
-export { TextAreaValue };
+export { WysiwygTextAreaValue };

@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  Attribute,
-  getAttributeLabel,
-  ScopeCode,
-} from '../../../../../models';
+import { Attribute, getAttributeLabel, ScopeCode } from '../../../../../models';
 import { AttributeType } from '../../../../../models/Attribute';
 import {
   useTranslate,
@@ -25,6 +21,7 @@ import {
   SimpleSelectValue,
   TextAreaValue,
   TextValue,
+  WysiwygTextAreaValue,
 } from './';
 import {
   HelperContainer,
@@ -32,22 +29,19 @@ import {
 } from '../../../../../components/HelpersInfos';
 import { ActionFormContainer } from '../style';
 
-const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: Map<
-  AttributeType,
-  React.FC<InputValueProps>
-> = new Map([
-  [AttributeType.TEXT, TextValue],
-  [AttributeType.OPTION_SIMPLE_SELECT, SimpleSelectValue],
-  [AttributeType.BOOLEAN, BooleanValue],
-  [AttributeType.OPTION_MULTI_SELECT, MultiSelectValue],
-  [AttributeType.NUMBER, NumberValue],
-  [AttributeType.PRICE_COLLECTION, PriceCollectionValue],
-  [AttributeType.DATE, DateValue],
-  [AttributeType.ASSET_COLLECTION, AssetCollectionValue],
-  [AttributeType.REFERENCE_ENTITY_COLLECTION, MultiReferenceEntityValue],
-  [AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT, SimpleReferenceEntityValue],
-  [AttributeType.TEXTAREA, TextAreaValue],
-]);
+const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: AttributeType[] = [
+  AttributeType.TEXT,
+  AttributeType.OPTION_SIMPLE_SELECT,
+  AttributeType.BOOLEAN,
+  AttributeType.OPTION_MULTI_SELECT,
+  AttributeType.NUMBER,
+  AttributeType.PRICE_COLLECTION,
+  AttributeType.DATE,
+  AttributeType.ASSET_COLLECTION,
+  AttributeType.REFERENCE_ENTITY_COLLECTION,
+  AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
+  AttributeType.TEXTAREA,
+];
 
 const MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION: Map<
   AttributeType,
@@ -83,7 +77,11 @@ const getValueModule = (attribute: Attribute, props: InputValueProps) => {
     case AttributeType.TEXT:
       return <TextValue {...props} />;
     case AttributeType.TEXTAREA:
-      return <TextAreaValue {...props} />;
+      return attribute.wysiwyg_enabled ? (
+        <WysiwygTextAreaValue {...props} />
+      ) : (
+        <TextAreaValue {...props} />
+      );
     case AttributeType.DATE:
       return <DateValue {...props} />;
     case AttributeType.OPTION_SIMPLE_SELECT:
