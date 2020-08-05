@@ -146,7 +146,10 @@ const formatDateLocaleTimeConditions = (pattern: string) => (
   conditions: any[]
 ) => {
   return conditions.map(condition => {
-    if (condition.field === 'created' || condition.field === 'updated') {
+    if (
+      condition &&
+      (condition.field === 'created' || condition.field === 'updated')
+    ) {
       const dateValue = new Date(condition.value);
       if (!isNaN(dateValue.getTime())) {
         return {

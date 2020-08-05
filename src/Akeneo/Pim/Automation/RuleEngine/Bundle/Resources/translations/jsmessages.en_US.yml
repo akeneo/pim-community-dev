@@ -140,6 +140,7 @@ pimee_catalog_rule:
                     value_subtitle: Define your value
                     attribute_label: Attribute
                     attribute_placeholder: Select your target attribute
+                    select_reference_entity: Select your reference entity
                 clear_attribute:
                     title: CLEAR Attribute value
                     subtitle: Select the attribute to clear

@@ -9,11 +9,14 @@ import {
   AssetCollectionValue,
   BooleanValue,
   FallbackValue,
+  MultiReferenceEntityValue,
   MultiSelectValue,
   NumberValue,
+  parseMultiReferenceEntityValue,
   parsePriceCollectionValue,
   parseAssetCollectionValue,
   PriceCollectionValue,
+  SimpleReferenceEntityValue,
   SimpleSelectValue,
   TextValue,
 } from './';
@@ -34,6 +37,8 @@ const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: Map<
   [AttributeType.NUMBER, NumberValue],
   [AttributeType.PRICE_COLLECTION, PriceCollectionValue],
   [AttributeType.ASSET_COLLECTION, AssetCollectionValue],
+  [AttributeType.REFERENCE_ENTITY_COLLECTION, MultiReferenceEntityValue],
+  [AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT, SimpleReferenceEntityValue],
 ]);
 
 const MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION: Map<
@@ -83,6 +88,15 @@ const getValueModule = (attribute: Attribute, props: InputValueProps) => {
           value={parseAssetCollectionValue(props.value)}
         />
       );
+    case AttributeType.REFERENCE_ENTITY_COLLECTION:
+      return (
+        <MultiReferenceEntityValue
+          {...props}
+          value={parseMultiReferenceEntityValue(props.value)}
+        />
+      );
+    case AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT:
+      return <SimpleReferenceEntityValue {...props} />;
     default:
       return null;
   }
