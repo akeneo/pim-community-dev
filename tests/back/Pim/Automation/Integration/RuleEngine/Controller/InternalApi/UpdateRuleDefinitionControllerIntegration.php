@@ -55,7 +55,7 @@ class UpdateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
                     ['type' => 'set', 'field' => 'a_text', 'value' => 'awesome-jacket'],
                 ]
             ],
-            'type' => 'add',
+            'type' => 'product',
             'priority' => 0,
             'labels' => [
                 'en_US' => '123 english',
@@ -71,7 +71,6 @@ class UpdateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
         $content = json_decode($response->getContent(), true);
         Assert::arrayHasKey($content, 'id');
         unset($content['id']);
-        $normalizedRuleDefinition['type'] = 'product';
 
         Assert::assertEqualsCanonicalizing($normalizedRuleDefinition, $content);
     }
@@ -87,7 +86,7 @@ class UpdateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
                     ['type' => 'set', 'field' => 'a_text', 'value' => 'awesome-jacket'],
                 ]
             ],
-            'type' => 'add',
+            'type' => 'product',
             'priority' => 0,
         ];
 
@@ -108,7 +107,7 @@ class UpdateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
                     ['type' => 'clear', 'field' => 'a_text'],
                 ],
             ])
-            ->setType('add')
+            ->setType('product')
         ;
 
         $this->ruleDefinitionSaver->save($ruleDefinition);

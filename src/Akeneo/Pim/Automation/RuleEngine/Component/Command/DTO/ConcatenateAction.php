@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO;
 
-final class ConcatenateAction
+use Webmozart\Assert\Assert;
+
+final class ConcatenateAction implements ActionInterface
 {
     public $from;
     public $to;
@@ -27,5 +29,20 @@ final class ConcatenateAction
             $to = new ProductTarget($to);
         }
         $this->to = $to;
+    }
+
+    public function toArray(): array
+    {
+        Assert::isArray($this->from);
+        Assert::allIsInstanceOf($this->from, ProductSource::class);
+        Assert::isInstanceOf($this->to, ProductTarget::class);
+
+        return [
+            'type' => 'concatenate',
+            'from' => array_map(function (ProductSource $source): array {
+                return $source->toArray();
+            }, $this->from),
+            'to' => $this->to->toArray(),
+        ];
     }
 }

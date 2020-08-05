@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO;
 
-final class CustomAction
+use Webmozart\Assert\Assert;
+
+final class CustomAction implements ActionInterface
 {
     public $type;
     public $data;
@@ -22,5 +24,12 @@ final class CustomAction
     {
         $this->type = $data['type'] ?? null;
         $this->data = $data;
+    }
+
+    public function toArray(): array
+    {
+        Assert::stringNotEmpty($this->type);
+
+        return $this->data;
     }
 }

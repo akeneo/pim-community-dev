@@ -66,10 +66,13 @@
   - replace `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface` by `Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes`
   - add `Symfony\Component\EventDispatcher\EventDispatcherInterface`
 - Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\RemoverActionApplier` to:
-  - replace `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface` by `Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes
+  - replace `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface` by `Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes`
   - add `Symfony\Component\EventDispatcher\EventDispatcherInterface`
 - Change return type of `Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface` from `void` to `array`
 - Change return type of `Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsUpdater` from `void` to `array`
 - Add method `getType()` to `Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface` interface
 - Change constructor of `Akeneo\Pim\Automation\RuleEngine\Bundle\Twig\RuleExtension` to add `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
 - Remove class `Akeneo\Pim\Automation\RuleEngine\Bundle\Normalizer\RuleDefinitionNormalizer`
+- Change constructor of `\Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Denormalization\RuleDefinitionProcessor` to
+  - remove `Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface`
+  - add `Akeneo\Pim\Automation\RuleEngine\Component\Updater\RuleDefinitionUpdaterInterface`

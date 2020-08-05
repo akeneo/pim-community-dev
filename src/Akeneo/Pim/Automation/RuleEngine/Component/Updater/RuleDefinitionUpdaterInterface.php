@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Updater;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 
 interface RuleDefinitionUpdaterInterface
 {
     /**
      * @param RuleDefinitionInterface $ruleDefinition
-     * @param array                   $data
-     *
-     * @throws \InvalidArgumentException
+     * @param RuleInterface $rule
      */
-    public function update(RuleDefinitionInterface $ruleDefinition, array $data): void;
+    public function fromRule(RuleDefinitionInterface $ruleDefinition, RuleInterface $rule): void;
 }
