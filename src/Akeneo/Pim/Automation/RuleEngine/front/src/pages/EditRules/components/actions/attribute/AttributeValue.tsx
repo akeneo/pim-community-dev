@@ -44,12 +44,20 @@ const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: Map<
 const MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION: Map<
   AttributeType,
   React.FC<InputValueProps>
-> = new Map([[AttributeType.OPTION_MULTI_SELECT, MultiSelectValue]]);
+> = new Map([
+  [AttributeType.OPTION_MULTI_SELECT, MultiSelectValue],
+  [AttributeType.ASSET_COLLECTION, AssetCollectionValue],
+  [AttributeType.REFERENCE_ENTITY_COLLECTION, MultiReferenceEntityValue],
+]);
 
 const MANAGED_ATTRIBUTE_TYPES_FOR_ADD_ACTION: Map<
   AttributeType,
   React.FC<InputValueProps>
-> = new Map([[AttributeType.OPTION_MULTI_SELECT, MultiSelectValue]]);
+> = new Map([
+  [AttributeType.OPTION_MULTI_SELECT, MultiSelectValue],
+  [AttributeType.ASSET_COLLECTION, AssetCollectionValue],
+  [AttributeType.REFERENCE_ENTITY_COLLECTION, MultiReferenceEntityValue],
+]);
 
 type InputValueProps = {
   id: string;
