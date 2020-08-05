@@ -1,5 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const RecordSelector = require('akeneoreferenceentity/application/component/app/record-selector').default;
+const RecordSelector = require('akeneoreferenceentity/application/component/app/record-selector')
+  .default;
 import * as React from 'react';
 
 export default class ReferenceEntityString {

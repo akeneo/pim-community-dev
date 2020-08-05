@@ -1,6 +1,14 @@
 import React from 'react';
-import { Attribute, AttributeType, getAttributeLabel, ScopeCode } from '../../../../../models';
-import { useTranslate, useUserCatalogLocale, } from '../../../../../dependenciesTools/hooks';
+import {
+  Attribute,
+  getAttributeLabel,
+  ScopeCode,
+} from '../../../../../models';
+import { AttributeType } from '../../../../../models/Attribute';
+import {
+  useTranslate,
+  useUserCatalogLocale,
+} from '../../../../../dependenciesTools/hooks';
 import {
   AssetCollectionValue,
   BooleanValue,
@@ -18,7 +26,10 @@ import {
   TextAreaValue,
   TextValue,
 } from './';
-import { HelperContainer, InlineHelper, } from '../../../../../components/HelpersInfos';
+import {
+  HelperContainer,
+  InlineHelper,
+} from '../../../../../components/HelpersInfos';
 import { ActionFormContainer } from '../style';
 
 const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: Map<

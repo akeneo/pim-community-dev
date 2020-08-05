@@ -11,7 +11,7 @@ import { AttributeValue } from '../../../../../../../src/pages/EditRules/compone
 import { getAttributeLabel } from '../../../../../../../src/models';
 
 jest.mock(
-  '../../../../../../../src/dependenciesTools/AssetManager/AssetSelector'
+  '../../../../../../../src/dependenciesTools/components/AssetManager/AssetSelector'
 );
 jest.mock('../../../../../../../src/components/Select2Wrapper/Select2Wrapper');
 jest.mock(
