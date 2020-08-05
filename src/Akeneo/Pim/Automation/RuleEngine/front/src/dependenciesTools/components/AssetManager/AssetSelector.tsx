@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const BaseAssetSelector = require('akeneoassetmanager/application/component/app/asset-selector');
+const BaseAssetSelector = require('akeneoassetmanager/application/component/app/asset-selector').default;
 import * as React from 'react';
 
 type AssetCode = string;
@@ -33,7 +33,7 @@ export const AssetSelector: React.FC<AssetSelectorProps> = ({
   onChange,
 }) => {
   return (
-    <BaseAssetSelector.default
+    <BaseAssetSelector
       value={value}
       assetFamilyIdentifier={assetFamilyIdentifier}
       multiple={multiple}
