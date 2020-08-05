@@ -30,7 +30,7 @@ final class HasNewAnnouncementsHandler
 
     public function execute(HasNewAnnouncementsQuery $query): bool
     {
-        $newAnnouncementIds = $this->findNewAnnouncementIds->find();
+        $newAnnouncementIds = $this->findNewAnnouncementIds->find($query->edition(), $query->version());
         $viewAnnouncementIds = $this->findViewedAnnouncementIds->byUserId($query->userId());
 
         return count(array_diff($newAnnouncementIds, $viewAnnouncementIds)) !== 0;

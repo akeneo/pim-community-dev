@@ -3,10 +3,10 @@
         {
             "id": "update_1-duplicate-a-product_2020-07",
             "startDate": "2020-07-05",
+            "notificationEndDate": "2020-07-12",
             "description": "You want to easily create a new product based on an existing one? Use our brand new duplicate feature to copy a product in your user interface in one single click!",
             "img": "/bundles/akeneocommunicationchannel/images/announcements/zoom-on-duplicate-action.png",
             "imgAlt": "New duplicate action",
-            "notificationDuration": 7,
             "tags": ["updates"],
             "title": "New: duplicate a product",
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-06.html#new-duplicate-a-product"
@@ -14,20 +14,20 @@
         {
             "id": "update_2-option-screen-revamp_2020-07",
             "startDate": "2020-07-05",
+            "notificationEndDate": "2020-07-12",
             "description": "The attribute options screen for single and multiple-select attributes has been completely redesigned to give you a better user experience.",
             "img": "/bundles/akeneocommunicationchannel/images/announcements/new-option-screen.png",
             "imgAlt": "New option screen",
-            "notificationDuration": 7,
             "tags": ["updates"],
             "title": "Better manage your attribute options",
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-06.html#better-manage-your-attribute-options"
         }, {
             "id": "update_3-rules-updates_2020-07",
             "startDate": "2020-07-05",
+            "notificationEndDate": "2020-07-12",
             "description": "At Akeneo, we aim at delivering the best user experience. A good experience with our PIM goes with a good understanding of what is going on, especially when there are errors that you have to correct. The following improvements will enable you to better monitor rule executions, and easily correct errors that can occur in the rules engine when importing a YML file or when executing rules.",
             "img": null,
             "imgAlt": null,
-            "notificationDuration": 7,
             "tags": ["updates"],
             "title": "Rules engine updates",
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-06.html#rules-engine-updates"
@@ -35,10 +35,10 @@
         {
             "id": "update_4-manually-execute-naming-conventions-on-assets_2020-07",
             "startDate": "2020-07-05",
+            "notificationEndDate": "2020-07-12",
             "description": "You can now manually execute naming conventions from the user interface whenever you need it. This new feature can be very useful if your naming convention has changed after asset uploads or creations.",
             "img": "/bundles/akeneocommunicationchannel/images/announcements/mass-execution.png",
             "imgAlt": "The execute naming convention button",
-            "notificationDuration": 7,
             "tags": ["updates"],
             "title": "New: execute asset naming conventions manually",
             "link": "https://help.akeneo.com/pim/serenity/updates/2020-06.html#new-execute-asset-naming-conventions-manually"
@@ -46,7 +46,7 @@
         {
             "id": "update_1-easily-monitor-errors-on-your-connections_2020-06",
             "startDate": "2020-06-04",
-            "notificationDuration": 14,
+            "notificationEndDate": "2020-06-18",
             "tags": [
                 "updates"
             ],
@@ -59,7 +59,7 @@
         {
             "id": "update_2-new-metric-on-the-connection-dashboard_2020-06",
             "startDate": "2020-06-04",
-            "notificationDuration": 14,
+            "notificationEndDate": "2020-06-18",
             "tags": [
                 "updates"
             ],
@@ -72,7 +72,7 @@
         {
             "id": "update_3-2-way-associations_2020-06",
             "startDate": "2020-06-04",
-            "notificationDuration": 14,
+            "notificationEndDate": "2020-06-18",
             "tags": [
                 "updates"
             ],
@@ -85,7 +85,7 @@
         {
             "id": "update_4-visibility-on-jobs_2020-06",
             "startDate": "2020-06-04",
-            "notificationDuration": 14,
+            "notificationEndDate": "2020-06-18",
             "tags": [
                 "updates"
             ],
@@ -96,7 +96,7 @@
         {
             "id": "update_5-rules-engine-new-improvements_2020-06",
             "startDate": "2020-06-04",
-            "notificationDuration": 14,
+            "notificationEndDate": "2020-06-18",
             "tags": [
                 "updates"
             ],
@@ -107,7 +107,7 @@
         {
             "id": "update_1-new-screen-for-measurements-families_2020-05",
             "startDate": "2020-05-07",
-            "notificationDuration": 7,
+            "notificationEndDate": "2020-05-12",
             "tags": [
                 "updates"
             ],
@@ -120,7 +120,7 @@
         {
             "id": "update_2-new-measurements-api-endpoints_2020-05",
             "startDate": "2020-05-07",
-            "notificationDuration": 7,
+            "notificationEndDate": "2020-05-12",
             "tags": [
                 "updates"
             ],
@@ -133,7 +133,7 @@
         {
             "id": "update_3-associations-updates_2020-05",
             "startDate": "2020-05-07",
-            "notificationDuration": 7,
+            "notificationEndDate": "2020-05-12",
             "tags": [
                 "updates"
             ],
@@ -146,7 +146,7 @@
         {
             "id": "update_4-destination-connections-tracking_2020-05",
             "startDate": "2020-05-07",
-            "notificationDuration": 7,
+            "notificationEndDate": "2020-05-12",
             "tags": [
                 "updates"
             ],
@@ -159,7 +159,7 @@
         {
             "id": "update_5-connection-dashboard-updates_2020-05",
             "startDate": "2020-05-07",
-            "notificationDuration": 7,
+            "notificationEndDate": "2020-05-12",
             "tags": [
                 "updates"
             ],
@@ -170,7 +170,7 @@
         {
             "id": "update_6-rules-engine-new-actions-and-improvements_2020-05",
             "startDate": "2020-05-07",
-            "notificationDuration": 7,
+            "notificationEndDate": "2020-05-12",
             "tags": [
                 "updates"
             ],
@@ -181,7 +181,7 @@
         {
             "id": "update_7-data-quality-new-improvements_2020-05",
             "startDate": "2020-05-07",
-            "notificationDuration": 7,
+            "notificationEndDate": "2020-05-12",
             "tags": [
                 "updates"
             ],
@@ -192,7 +192,7 @@
         {
             "id": "update_1-data-quality-new-improvements_2020-04",
             "startDate": "2020-04-02",
-            "notificationDuration": 7,
+            "notificationEndDate": "2020-04-09",
             "tags": [
                 "updates"
             ],
@@ -203,7 +203,7 @@
         {
             "id": "update_2-product-modeling-improved-thanks-new-measurement-units_2020-04",
             "startDate": "2020-04-02",
-            "notificationDuration": 7,
+            "notificationEndDate": "2020-04-09",
             "tags": [
                 "updates"
             ],
@@ -214,7 +214,7 @@
         {
             "id": "update_3-rules-engine-extended-capabilities_2020-04",
             "startDate": "2020-04-02",
-            "notificationDuration": 7,
+            "notificationEndDate": "2020-04-09",
             "tags": [
                 "updates"
             ],
@@ -225,7 +225,7 @@
         {
             "id": "update_1-optimize-weight-assets_2020-03",
             "startDate": "2020-03-05",
-            "notificationDuration": 7,
+            "notificationEndDate": "2020-03-12",
             "tags": [
                 "updates"
             ],
@@ -238,7 +238,7 @@
         {
             "id": "update_2-new-warning-message-username-connection_2020-03",
             "startDate": "2020-03-05",
-            "notificationDuration": 7,
+            "notificationEndDate": "2020-03-12",
             "tags": [
                 "updates"
             ],

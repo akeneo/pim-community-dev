@@ -19,7 +19,6 @@ interface FindAnnouncementItemsInterface
     public function byPimVersion(
         string $pimEdition,
         string $pimVersion,
-        ?string $searchAfter,
-        int $limit
+        ?string $searchAfter
     ): array;
 }

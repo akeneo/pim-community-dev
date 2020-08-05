@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductModel\Association;
 
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\QuantifiedAssociation\GetProductQuantifiedAssociationsByProductModelCodes;
-use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociations;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\QuantifiedAssociationsTestCaseTrait;
 use AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\AbstractQuantifiedAssociationIntegration;
 use Doctrine\DBAL\Connection;
@@ -130,7 +128,15 @@ class GetProductQuantifiedAssociationsByProductModelCodesIntegration extends Abs
     public function itReturnsTheQuantifiedAssociationOfTheChildrenWhenDesynchronizedWithTheParent()
     {
         $this->getEntityBuilder()->createProduct('productA', 'aFamily', []);
-        $rootProductModel = $this->getEntityBuilder()->createProductModel('root_product_model', 'familyVariantWithTwoLevels', null, []);
+        $rootProductModel = $this->getEntityBuilder()->createProductModel('root_product_model', 'familyVariantWithTwoLevels', null, [
+            'quantified_associations' => [
+                'PRODUCT_SET' => [
+                    'products' => [
+                        ['identifier' => 'productA', 'quantity' => 999],
+                    ],
+                ],
+            ]
+        ]);
         $this->getEntityBuilder()->createProductModel('productModelB', 'familyVariantWithTwoLevels', $rootProductModel, [
             'quantified_associations' => [
                 'PRODUCT_SET' => [
@@ -140,18 +146,6 @@ class GetProductQuantifiedAssociationsByProductModelCodesIntegration extends Abs
                 ],
             ],
         ]);
-        $rootProductModel->setQuantifiedAssociations(
-            QuantifiedAssociations::createFromNormalized(
-                [
-                    'PRODUCT_SET' => [
-                        'products' => [
-                            ['identifier' => 'productA', 'quantity' => 999],
-                        ],
-                    ],
-                ]
-            )
-        );
-        $this->productModelSaver()->save($rootProductModel);
 
         $actual = $this->getQuery()->fromProductModelCodes(['productModelB']);
         $expected = [
@@ -335,10 +329,5 @@ SQL;
     private function getQuery(): GetProductQuantifiedAssociationsByProductModelCodes
     {
         return $this->get('akeneo.pim.enrichment.product_model.query.get_product_quantified_associations_by_product_model_codes');
-    }
-
-    private function productModelSaver(): SaverInterface
-    {
-        return $this->get('pim_catalog.saver.product_model');
     }
 }

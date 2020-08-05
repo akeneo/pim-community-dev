@@ -11,7 +11,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class QuantifiedAssociations
+class QuantifiedAssociationCollection
 {
     private const PRODUCT_MODELS_QUANTIFIED_LINKS_KEY = 'product_models';
     private const PRODUCTS_QUANTIFIED_LINKS_KEY = 'products';
@@ -61,10 +61,15 @@ class QuantifiedAssociations
     public static function createWithAssociationsAndMapping(
         array $rawQuantifiedAssociations,
         IdMapping $mappedProductIds,
-        IdMapping $mappedProductModelIds
+        IdMapping $mappedProductModelIds,
+        array $associationTypeCodes
     ): self {
         $mappedQuantifiedAssociations = [];
         foreach ($rawQuantifiedAssociations as $associationType => $associations) {
+            if (!in_array($associationType, $associationTypeCodes)) {
+                continue;
+            }
+
             Assert::keyExists($associations, self::PRODUCTS_QUANTIFIED_LINKS_KEY);
             Assert::keyExists($associations, self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY);
 
@@ -103,6 +108,21 @@ class QuantifiedAssociations
         return new self($mappedQuantifiedAssociations);
     }
 
+    public function patchQuantifiedAssociations(array $submittedQuantifiedAssociations): self
+    {
+        $currentQuantifiedAssociationNormalized = $this->normalize();
+
+        $result = $this->normalize();
+        foreach ($submittedQuantifiedAssociations as $submittedAssociationTypeCode => $submittedAssociations) {
+            $result[$submittedAssociationTypeCode] = array_merge(
+                $currentQuantifiedAssociationNormalized[$submittedAssociationTypeCode] ?? [],
+                $submittedAssociations
+            );
+        }
+
+        return self::createFromNormalized($result);
+    }
+
     public function getQuantifiedAssociationsProductIdentifiers(): array
     {
         $result = [];
@@ -129,38 +149,27 @@ class QuantifiedAssociations
         return array_unique($result);
     }
 
-    public function merge(QuantifiedAssociations $quantifiedAssociations): void
+    public function clearQuantifiedAssociations()
     {
-        $normalizedQuantifiedAssociationsToMerge = $quantifiedAssociations->normalize();
+        $quantifiedAssociationsCleared = array_fill_keys(
+            $this->getAssociationTypeCodes(),
+            ['products' => [], 'product_models' => []]
+        );
 
-        foreach ($normalizedQuantifiedAssociationsToMerge as $associationTypeCode => $association) {
-            foreach ($association as $associationEntityType => $quantifiedLinks) {
-                if (!isset($this->quantifiedAssociations[$associationTypeCode][$associationEntityType])) {
-                    $this->quantifiedAssociations[$associationTypeCode][$associationEntityType] = [];
-                }
+        return self::createFromNormalized($quantifiedAssociationsCleared);
+    }
 
-                foreach ($quantifiedLinks as $quantifiedLink) {
-                    $key = $this->searchKeyOfDuplicatedQuantifiedAssociation(
-                        $this->quantifiedAssociations,
-                        $associationTypeCode,
-                        $associationEntityType,
-                        $quantifiedLink
-                    );
+    public function merge(QuantifiedAssociationCollection $quantifiedAssociations): self
+    {
+        $currentQuantifiedAssociationsNormalized = $this->normalizeWithIndexedIdentifiers();
+        $quantifiedAssociationsToMergeNormalized = $quantifiedAssociations->normalizeWithIndexedIdentifiers();
 
-                    if (null !== $key) {
-                        $this->quantifiedAssociations[$associationTypeCode][$associationEntityType][$key] = new QuantifiedLink(
-                            $this->quantifiedAssociations[$associationTypeCode][$associationEntityType][$key]->identifier(),
-                            $quantifiedLink['quantity']
-                        );
-                    } else {
-                        $this->quantifiedAssociations[$associationTypeCode][$associationEntityType][] = new QuantifiedLink(
-                            $quantifiedLink['identifier'],
-                            $quantifiedLink['quantity']
-                        );
-                    }
-                }
-            }
-        }
+        $mergedQuantifiedAssociationsNormalized = array_replace_recursive(
+            $currentQuantifiedAssociationsNormalized,
+            $quantifiedAssociationsToMergeNormalized
+        );
+
+        return self::createFromNormalized($mergedQuantifiedAssociationsNormalized);
     }
 
     public function normalizeWithMapping(IdMapping $mappedProductIdentifiers, IdMapping $mappedProductModelIdentifiers)
@@ -217,15 +226,15 @@ class QuantifiedAssociations
         return $result;
     }
 
-    public function filterProductIdentifiers(array $grantedProductIdentifiers): QuantifiedAssociations
+    public function filterProductIdentifiers(array $productIdentifiersToKeep): QuantifiedAssociationCollection
     {
         $filteredQuantifiedAssociations = [];
         foreach ($this->quantifiedAssociations as $associationTypeCode => $quantifiedAssociation) {
             $filteredQuantifiedAssociations[$associationTypeCode]['product_models'] = $quantifiedAssociation['product_models'];
             $filteredQuantifiedAssociations[$associationTypeCode]['products'] = array_filter(
                 $quantifiedAssociation['products'],
-                function (QuantifiedLink $quantifiedLink) use ($grantedProductIdentifiers) {
-                    return in_array($quantifiedLink->identifier(), $grantedProductIdentifiers);
+                function (QuantifiedLink $quantifiedLink) use ($productIdentifiersToKeep) {
+                    return in_array($quantifiedLink->identifier(), $productIdentifiersToKeep);
                 }
             );
         }
@@ -233,15 +242,15 @@ class QuantifiedAssociations
         return new self($filteredQuantifiedAssociations);
     }
 
-    public function filterProductModelCodes(array $grantedProductModelCodes): QuantifiedAssociations
+    public function filterProductModelCodes(array $productModelCodesToKeep): QuantifiedAssociationCollection
     {
         $filteredQuantifiedAssociations = [];
         foreach ($this->quantifiedAssociations as $associationTypeCode => $quantifiedAssociation) {
             $filteredQuantifiedAssociations[$associationTypeCode]['products'] = $quantifiedAssociation['products'];
             $filteredQuantifiedAssociations[$associationTypeCode]['product_models'] = array_filter(
                 $quantifiedAssociation['product_models'],
-                function (QuantifiedLink $quantifiedLink) use ($grantedProductModelCodes) {
-                    return in_array($quantifiedLink->identifier(), $grantedProductModelCodes);
+                function (QuantifiedLink $quantifiedLink) use ($productModelCodesToKeep) {
+                    return in_array($quantifiedLink->identifier(), $productModelCodesToKeep);
                 }
             );
         }
@@ -249,39 +258,27 @@ class QuantifiedAssociations
         return new self($filteredQuantifiedAssociations);
     }
 
-    /**
-     * Since we are using an unindexed array for the quantified associations,
-     * we need to find if there is a row with the same identifier as the one we have.
-     * With its key, we will be able to overwrite the quantity.
-     *
-     * For context, this is the structure:
-     * [
-     *      'PACK' => [
-     *          'products' => [
-     *              ['identifier' => 'foo', 'quantity' => 2],
-     *              ['identifier' => 'bar', 'quantity' => 4],
-     *          ]
-     *      ]
-     * ]
-     *
-     */
-    private function searchKeyOfDuplicatedQuantifiedAssociation(
-        array $source,
-        string $associationTypeCode,
-        string $associationEntityType,
-        array $quantifiedLink
-    ): ?int {
-        $matchingSourceQuantifiedAssociations = array_filter(
-            $source[$associationTypeCode][$associationEntityType] ?? [],
-            function ($sourceQuantifiedAssociation) use ($quantifiedLink) {
-                return $sourceQuantifiedAssociation->identifier() === $quantifiedLink['identifier'];
-            }
-        );
+    private function getAssociationTypeCodes()
+    {
+        return array_keys($this->quantifiedAssociations);
+    }
 
-        if (empty($matchingSourceQuantifiedAssociations)) {
-            return null;
+    private function normalizeWithIndexedIdentifiers()
+    {
+        $quantifiedAssociationsNormalized = $this->normalize();
+
+        $result = [];
+        foreach ($quantifiedAssociationsNormalized as $associationType => $associationsNormalized) {
+            foreach ($associationsNormalized as $quantifiedLinksType => $quantifiedLinksNormalized) {
+                $result[$associationType][$quantifiedLinksType] = [];
+                foreach ($quantifiedLinksNormalized as $quantifiedLinkNormalized) {
+                    $identifier = $quantifiedLinkNormalized['identifier'];
+
+                    $result[$associationType][$quantifiedLinksType][$identifier] = $quantifiedLinkNormalized;
+                }
+            }
         }
 
-        return array_keys($matchingSourceQuantifiedAssociations)[0];
+        return $result;
     }
 }
