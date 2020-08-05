@@ -2,6 +2,7 @@ export * from './AssetCollectionValue';
 export * from './AttributeLocaleScopeSelector';
 export * from './AttributeValue';
 export * from './BooleanValue';
+export * from './DateValue';
 export * from './FallbackValue';
 export * from './MultiSelectValue';
 export * from './MultiReferenceEntityValue';

@@ -27,12 +27,12 @@ type Props = {
 // Be sure that the associated UI component exists to display it correctly.
 const SYSTEM_FIELDS = [
   'categories',
-  'completeness',
-  'created',
   'family',
   'groups',
-  'updated',
   'enabled',
+  'completeness',
+  'created',
+  'updated',
 ];
 
 const ATTRIBUTE_TYPES = [

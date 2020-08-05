@@ -1,15 +1,15 @@
 import React from 'react';
 import 'jest-fetch-mock';
-import { renderWithProviders, screen } from '../../../../test-utils';
-import { Operator } from '../../../../src/models/Operator';
-import { CompletenessConditionLine } from '../../../../src/pages/EditRules/components/conditions/CompletenessConditionLine';
+import { renderWithProviders, screen } from '../../../../../../test-utils';
+import { Operator } from '../../../../../../src/models/Operator';
+import { CompletenessConditionLine } from '../../../../../../src/pages/EditRules/components/conditions/CompletenessConditionLine';
 
-jest.mock('../../../../src/fetch/categoryTree.fetcher');
-jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
-jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
-jest.mock('../../../../src/dependenciesTools/AssetManager/AssetSelector');
+jest.mock('../../../../../../src/fetch/categoryTree.fetcher');
+jest.mock('../../../../../../src/dependenciesTools/provider/dependencies.ts');
+jest.mock('../../../../../../src/components/Select2Wrapper/Select2Wrapper');
+jest.mock('../../../../../../src/dependenciesTools/AssetManager/AssetSelector');
 jest.mock(
-  '../../../../src/dependenciesTools/components/ReferenceEntity/ReferenceEntitySelector'
+  '../../../../../../src/dependenciesTools/components/ReferenceEntity/ReferenceEntitySelector'
 );
 
 describe('CompletenessConditionLine', () => {

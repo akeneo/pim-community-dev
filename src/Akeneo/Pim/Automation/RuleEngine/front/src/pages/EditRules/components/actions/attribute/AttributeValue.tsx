@@ -8,6 +8,7 @@ import {
 import {
   AssetCollectionValue,
   BooleanValue,
+  DateValue,
   FallbackValue,
   MultiReferenceEntityValue,
   MultiSelectValue,
@@ -36,6 +37,7 @@ const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: Map<
   [AttributeType.OPTION_MULTI_SELECT, MultiSelectValue],
   [AttributeType.NUMBER, NumberValue],
   [AttributeType.PRICE_COLLECTION, PriceCollectionValue],
+  [AttributeType.DATE, DateValue],
   [AttributeType.ASSET_COLLECTION, AssetCollectionValue],
   [AttributeType.REFERENCE_ENTITY_COLLECTION, MultiReferenceEntityValue],
   [AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT, SimpleReferenceEntityValue],
@@ -74,6 +76,8 @@ const getValueModule = (attribute: Attribute, props: InputValueProps) => {
   switch (attribute.type) {
     case AttributeType.TEXT:
       return <TextValue {...props} />;
+    case AttributeType.DATE:
+      return <DateValue {...props} />;
     case AttributeType.OPTION_SIMPLE_SELECT:
       return <SimpleSelectValue {...props} key={attribute.code} />;
     case AttributeType.OPTION_MULTI_SELECT:
