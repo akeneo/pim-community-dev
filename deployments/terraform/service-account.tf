@@ -1,5 +1,5 @@
 resource "google_service_account" "pim_service_account" {
-  account_id   = format("gs-%s", substr(md5(var.instance_name), 0, 25))
+  account_id   = format("gsa-%s", substr(md5(var.instance_name), 0, 25))
   display_name = "Google access for pim container (${var.instance_name})"
 }
 
