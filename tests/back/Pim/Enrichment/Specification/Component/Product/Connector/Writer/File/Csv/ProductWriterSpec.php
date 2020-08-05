@@ -728,9 +728,11 @@ class ProductWriterSpec extends ObjectBehavior
         $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.csv');
         $jobParameters->has('ui_locale')->willReturn(false);
         $jobParameters->has('dateFormat')->willReturn(false);
+        $jobParameters->has('withHeader')->willReturn(true);
         $jobParameters->get('withHeader')->willReturn(true);
         $jobParameters->has('with_label')->willReturn(true);
         $jobParameters->get('with_label')->willReturn(false);
+        $jobParameters->get('filters')->willReturn(['structure' => ['scope' => 'ecommerce']]);
         $generateHeadersFromAttributeCodes
             ->__invoke(Argument::cetera())
             ->shouldNotBeCalled();

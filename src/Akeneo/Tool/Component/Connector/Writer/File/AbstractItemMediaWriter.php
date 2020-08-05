@@ -141,12 +141,12 @@ abstract class AbstractItemMediaWriter implements
             $flatItems = $this->fillMissingHeaders($flatItems);
         }
 
-        if ($parameters->has('with_label') && $parameters->get('with_label')) {
-            $localeLabel = $parameters->has('label_locale') ? $parameters->get('label_locale') : 'en_US';
-            $withLabelHeader = $parameters->has('with_locale_header') && $parameters->get('with_locale_header');
+        if ($parameters->has('with_label') && $parameters->has('file_locale') && $parameters->get('with_label')) {
+            $fileLocale = $parameters->get('file_locale');
+            $headerWithLabel = $parameters->has('header_with_label') && $parameters->get('header_with_label');
             $scope = $parameters->get('filters')['structure']['scope'];
 
-            $flatItems = $this->flatTranslator->translate($flatItems, $localeLabel, $scope, $withLabelHeader);
+            $flatItems = $this->flatTranslator->translate($flatItems, $fileLocale, $scope, $headerWithLabel);
         }
 
         $options = [];
