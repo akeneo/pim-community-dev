@@ -51,5 +51,6 @@ yq d --inplace $TARGET_DIR/deployments/terraform/pim/values.yaml 'pim.jobs.frank
 yq d --inplace $TARGET_DIR/deployments/terraform/pim/values.yaml 'pim.jobs.reference-entity-refresh-records'
 yq d --inplace $TARGET_DIR/deployments/terraform/pim/values.yaml 'pim.jobs.sso-log-rotate'
 yq d --inplace $TARGET_DIR/deployments/terraform/pim/values.yaml 'pim.jobs.data-quality-insights-periodic-tasks'
-yq d --inplace $TARGET_DIR/deployments/terraform/pim/values.yaml 'pim.jobs.data-quality-insights-evaluate-products'
+yq d --inplace $TARGET_DIR/deployments/terraform/pim/values.yaml 'pim.jobs.data-quality-insights-evaluations'
 yq d --inplace $TARGET_DIR/deployments/terraform/pim/values.yaml 'pim.jobs.franklin-insights-quality-highlights-push'
+yq w --inplace $TARGET_DIR/deployments/terraform/pim/values.yaml 'global.extraLabels.type' grth
