@@ -14,7 +14,9 @@ jest.mock('../../../../../../src/fetch/categoryTree.fetcher.ts');
 jest.mock(
   '../../../../../../src/dependenciesTools/components/ReferenceEntity/ReferenceEntitySelector'
 );
-jest.mock('../../../../../../src/dependenciesTools/AssetManager/AssetSelector');
+jest.mock(
+  '../../../../../../src/dependenciesTools/components/AssetManager/AssetSelector'
+);
 
 describe('AddAttributeValueActionLine', () => {
   beforeEach(() => {

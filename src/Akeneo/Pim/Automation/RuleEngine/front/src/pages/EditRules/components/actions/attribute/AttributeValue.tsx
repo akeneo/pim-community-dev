@@ -13,12 +13,13 @@ import {
   MultiReferenceEntityValue,
   MultiSelectValue,
   NumberValue,
+  parseAssetCollectionValue,
   parseMultiReferenceEntityValue,
   parsePriceCollectionValue,
-  parseAssetCollectionValue,
   PriceCollectionValue,
   SimpleReferenceEntityValue,
   SimpleSelectValue,
+  TextAreaValue,
   TextValue,
 } from './';
 import {
@@ -27,21 +28,19 @@ import {
 } from '../../../../../components/HelpersInfos';
 import { ActionFormContainer } from '../style';
 
-const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: Map<
-  AttributeType,
-  React.FC<InputValueProps>
-> = new Map([
-  [AttributeType.TEXT, TextValue],
-  [AttributeType.OPTION_SIMPLE_SELECT, SimpleSelectValue],
-  [AttributeType.BOOLEAN, BooleanValue],
-  [AttributeType.OPTION_MULTI_SELECT, MultiSelectValue],
-  [AttributeType.NUMBER, NumberValue],
-  [AttributeType.PRICE_COLLECTION, PriceCollectionValue],
-  [AttributeType.DATE, DateValue],
-  [AttributeType.ASSET_COLLECTION, AssetCollectionValue],
-  [AttributeType.REFERENCE_ENTITY_COLLECTION, MultiReferenceEntityValue],
-  [AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT, SimpleReferenceEntityValue],
-]);
+const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: AttributeType[] = [
+  AttributeType.TEXT,
+  AttributeType.OPTION_SIMPLE_SELECT,
+  AttributeType.BOOLEAN,
+  AttributeType.OPTION_MULTI_SELECT,
+  AttributeType.NUMBER,
+  AttributeType.PRICE_COLLECTION,
+  AttributeType.DATE,
+  AttributeType.ASSET_COLLECTION,
+  AttributeType.REFERENCE_ENTITY_COLLECTION,
+  AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
+  AttributeType.TEXTAREA,
+];
 
 const MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION: Map<
   AttributeType,
@@ -76,6 +75,8 @@ const getValueModule = (attribute: Attribute, props: InputValueProps) => {
   switch (attribute.type) {
     case AttributeType.TEXT:
       return <TextValue {...props} />;
+    case AttributeType.TEXTAREA:
+      return <TextAreaValue {...props} />;
     case AttributeType.DATE:
       return <DateValue {...props} />;
     case AttributeType.OPTION_SIMPLE_SELECT:

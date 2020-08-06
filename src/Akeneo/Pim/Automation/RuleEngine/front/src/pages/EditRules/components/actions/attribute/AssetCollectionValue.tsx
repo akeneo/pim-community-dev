@@ -6,7 +6,7 @@ import {
 import { InputValueProps } from './AttributeValue';
 import { getAttributeLabel } from '../../../../../models';
 import { Label } from '../../../../../components/Labels';
-import { AssetSelector } from '../../../../../dependenciesTools/AssetManager/AssetSelector';
+import { AssetSelector } from '../../../../../dependenciesTools/components/AssetManager/AssetSelector';
 
 export const parseAssetCollectionValue = (value: any) => {
   if (value === '') {

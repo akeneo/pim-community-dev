@@ -10,4 +10,5 @@ export * from './NumberValue';
 export * from './PriceCollectionValue';
 export * from './SimpleSelectValue';
 export * from './SimpleReferenceEntityValue';
+export * from './TextAreaValue';
 export * from './TextValue';

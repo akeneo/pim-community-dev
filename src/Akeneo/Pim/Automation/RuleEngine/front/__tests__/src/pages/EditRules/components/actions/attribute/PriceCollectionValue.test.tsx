@@ -17,7 +17,7 @@ jest.mock(
 );
 jest.mock('../../../../../../../src/fetch/categoryTree.fetcher.ts');
 jest.mock(
-  '../../../../../../../src/dependenciesTools/AssetManager/AssetSelector'
+  '../../../../../../../src/dependenciesTools/components/AssetManager/AssetSelector'
 );
 jest.mock(
   '../../../../../../../src/dependenciesTools/components/ReferenceEntity/ReferenceEntitySelector'
