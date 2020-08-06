@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9386: Notification reminder message not compliant
+
 # 4.0.46 (2020-07-31)
 
 ## Bug fixes
