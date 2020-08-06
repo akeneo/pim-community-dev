@@ -8,15 +8,20 @@ type FormValue = {
 type FormProps = {
   children?: ReactNode;
   value: FormValue;
+  disabledChildren?: string[];
   onChange: (value: FormValue) => void;
 };
 
-const Form = ({value, onChange, children}: FormProps) => {
+const Form = ({value, disabledChildren, onChange, children}: FormProps) => {
   return (
     <>
       {Children.map(children, (child, index) => {
         if (!isValidElement<SelectProps>(child) || child.type !== Select) {
           return child;
+        }
+
+        if (disabledChildren?.includes(child.props.name)) {
+          return null;
         }
 
         const selects = Children.toArray(children).filter(

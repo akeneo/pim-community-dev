@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import {DependenciesProvider, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {
@@ -56,6 +56,7 @@ const QuickExportButton = styled.button`
 `;
 
 type QuickExportConfiguratorProps = {
+  hideWithLabelsSelect: boolean;
   onActionLaunch: (formValue: FormValue) => void;
   getProductCount: () => number;
 };
@@ -68,7 +69,11 @@ const QuickExportConfigurator = (props: QuickExportConfiguratorProps) => (
   </DependenciesProvider>
 );
 
-const QuickExportConfiguratorContainer = ({onActionLaunch, getProductCount}: QuickExportConfiguratorProps) => {
+const QuickExportConfiguratorContainer = ({
+  hideWithLabelsSelect,
+  onActionLaunch,
+  getProductCount,
+}: QuickExportConfiguratorProps) => {
   const [isModalOpen, openModal, closeModal] = useToggleState(false);
   const translate = useTranslate();
   const [formValue, setFormValue] = useStorageState<FormValue>({}, 'quick_export_configuration');
@@ -76,6 +81,12 @@ const QuickExportConfiguratorContainer = ({onActionLaunch, getProductCount}: Qui
   useShortcut(Key.Escape, closeModal);
 
   const productCount = getProductCount();
+
+  useEffect(() => {
+    if (hideWithLabelsSelect) {
+      setFormValue(formValue => ({...formValue, 'with-labels': 'with-codes'}));
+    }
+  }, []);
 
   return (
     <>
@@ -111,6 +122,7 @@ const QuickExportConfiguratorContainer = ({onActionLaunch, getProductCount}: Qui
               <Title>{translate('pim_datagrid.mass_action.quick_export.configurator.title')}</Title>
               <Form
                 value={formValue}
+                disabledChildren={hideWithLabelsSelect ? ['with-labels'] : undefined}
                 onChange={(newValue: FormValue) => {
                   setFormValue(newValue);
                 }}
