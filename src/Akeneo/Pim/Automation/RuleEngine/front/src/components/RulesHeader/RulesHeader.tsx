@@ -7,6 +7,9 @@ import { Breadcrumb } from '../Breadcrumb';
 import { UnsavedChangesWarning } from '../UnsavedChangesWarning';
 import { useTranslate } from '../../dependenciesTools/hooks';
 
+const IS_DESCRIPTION_HEADER_HIDDEN_KEY =
+  'akeneopimruleengine:is-description-header-hidden';
+
 const BreadcrumbAndButtons = styled.div`
   display: inline-flex;
   justify-content: space-between;
@@ -24,8 +27,8 @@ const Illustration = styled.div`
 
 const HideButton = styled.div`
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 10px;
+  right: 10px;
   cursor: pointer;
   background-image: url('/bundles/akeneopimruleengine/assets/icons/icon-delete-grey100.svg');
   background-position: center;
@@ -53,12 +56,16 @@ const RulesHeader: React.FC<Props> = ({
 }) => {
   const translate = useTranslate();
 
-  const [showDescriptionHeader, setShowDescriptionHeader] = React.useState<
-    boolean
-  >(true);
+  const [
+    isDescriptionHeaderHidden,
+    setIsDescriptionHeaderHidden,
+  ] = React.useState<boolean>(
+    localStorage.getItem(IS_DESCRIPTION_HEADER_HIDDEN_KEY) === 'true'
+  );
 
   const hideDescriptionHeader = () => {
-    setShowDescriptionHeader(false);
+    localStorage.setItem(IS_DESCRIPTION_HEADER_HIDDEN_KEY, 'true');
+    setIsDescriptionHeaderHidden(true);
   };
 
   return (
@@ -85,7 +92,7 @@ const RulesHeader: React.FC<Props> = ({
         </div>
         {unsavedChanges && <UnsavedChangesWarning />}
       </div>
-      {showDescriptionHeader && (
+      {!isDescriptionHeaderHidden && (
         <DescriptionHeader className='AknDescriptionHeader'>
           <Illustration className='AknDescriptionHeader-icon' />
           <div className='AknDescriptionHeader-title'>
