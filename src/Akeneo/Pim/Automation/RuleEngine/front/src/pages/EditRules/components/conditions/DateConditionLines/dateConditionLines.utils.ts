@@ -8,7 +8,7 @@ import {
   TimePeriodOptionsIds,
   isDateBetweenValue,
 } from './dateConditionLines.type';
-import { dateAttributeOperators } from '../../../../../models/conditions';
+import { DateAttributeOperators } from '../../../../../models/conditions';
 import { Translate } from '../../../../../dependenciesTools';
 
 const PRESENT_DEFAULT_VALUE = 'now';
@@ -41,7 +41,7 @@ const getDateAttributeOperatorsFromDateType = (dateType: DateTypeOptionIds) => {
   if (isRelativeDateOperatorSelected(dateType)) {
     return relativeDateAttributeOperators;
   }
-  return dateAttributeOperators;
+  return DateAttributeOperators;
 };
 
 const formatPastFutureDate = (

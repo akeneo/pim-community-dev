@@ -15,6 +15,7 @@ import { getGroupsConditionModule } from './GroupCondition';
 import { getStatusConditionModule } from './StatusCondition';
 import { getDateSystemConditionModule } from './DateSystemCondition';
 import { getBooleanAttributeConditionModule } from './BooleanAttributeCondition';
+import { getSimpleMultiReferenceEntitiesAttributeConditionModule } from './SimpleMultiReferenceEntitiesAttributeCondition';
 
 export type ConditionModuleGuesser = (
   json: any,
@@ -39,6 +40,7 @@ const getConditionModule: (
     getNumberAttributeConditionModule,
     getCompletenessConditionModule,
     getDateSystemConditionModule,
+    getSimpleMultiReferenceEntitiesAttributeConditionModule,
     // Fallback
     getDateAttributeConditionModule,
     getPimConditionModule,
