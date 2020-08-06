@@ -10,7 +10,7 @@ const Rate: FunctionComponent<RateProps> = ({value, isLoading = false}) => {
   if (isLoading) {
     return (
       <div className={'AknDataQualityInsightsRate AknDataQualityInsightsRate-Loading'}>
-        <img src={'bundles/akeneopimenterprisedataqualityinsights/images/AxisRateLoader.svg'}
+        <img src={'bundles/akeneodataqualityinsights/images/AxisRateLoader.svg'}
              className={' AknDataQualityInsightsRate-Loader'}/>
       </div>
     )

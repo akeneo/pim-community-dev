@@ -11,7 +11,7 @@ const DashboardHelper = React.memo(() => {
     localStorage.setItem('data-quality-insights:dashboard:show-helper', '0');
     helper =
       <div className="AknDescriptionHeader">
-        <div className="AknDescriptionHeader-icon" style={{backgroundImage: `url("bundles/akeneopimenterprisedataqualityinsights/images/AddingValues.svg")`}}/>
+        <div className="AknDescriptionHeader-icon" style={{backgroundImage: `url("bundles/akeneodataqualityinsights/images/AddingValues.svg")`}}/>
         <div className="AknDescriptionHeader-title">
           {__('akeneo_data_quality_insights.dqi_dashboard.helper.title')}
           <div className="AknDescriptionHeader-description">

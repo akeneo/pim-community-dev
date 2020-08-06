@@ -1,4 +1,6 @@
 akeneo_data_quality_insights:
+    title: Data Quality Insights
+
     dqi_dashboard:
         menu: Data Quality Insights
         title: Data Quality Overview
@@ -61,6 +63,10 @@ akeneo_data_quality_insights:
             grading_in_progress: Grading in progress.
             axis_grading_in_progress: Grading in progress. Please come back later.
             too_many_attributes: You have {{ count }} attributes to improve.
+
+    product_edit_form:
+        attribute_filter:
+            all_missing_attributes: All missing attributes
 
 pim_title:
     akeneo_data_quality_insights_dashboard: Data Quality Insights
