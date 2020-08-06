@@ -6,16 +6,6 @@ import { GroupsConditionLine } from '../../../../../../src/pages/EditRules/compo
 import { Operator } from '../../../../../../src/models/Operator';
 import { clearGroupRepositoryCache } from '../../../../../../src/repositories/GroupRepository';
 
-jest.mock('../../../../../../src/fetch/categoryTree.fetcher');
-jest.mock('../../../../../../src/dependenciesTools/provider/dependencies.ts');
-jest.mock('../../../../../../src/components/Select2Wrapper/Select2Wrapper');
-jest.mock(
-  '../../../../../../src/dependenciesTools/components/AssetManager/AssetSelector'
-);
-jest.mock(
-  '../../../../../../src/dependenciesTools/components/ReferenceEntity/ReferenceEntitySelector'
-);
-
 describe('GroupsConditionLine', () => {
   beforeEach(() => {
     jest.clearAllMocks();

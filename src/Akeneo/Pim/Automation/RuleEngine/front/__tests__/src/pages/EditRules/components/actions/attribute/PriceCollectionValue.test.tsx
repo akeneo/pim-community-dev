@@ -11,18 +11,6 @@ import { AttributeType } from '../../../../../../../src/models';
 import { PriceCollectionValue } from '../../../../../../../src/pages/EditRules/components/actions/attribute/PriceCollectionValue';
 import { IndexedCurrencies } from '../../../../../../../src/repositories/CurrencyRepository';
 
-jest.mock('../../../../../../../src/components/Select2Wrapper/Select2Wrapper');
-jest.mock(
-  '../../../../../../../src/dependenciesTools/provider/dependencies.ts'
-);
-jest.mock('../../../../../../../src/fetch/categoryTree.fetcher.ts');
-jest.mock(
-  '../../../../../../../src/dependenciesTools/components/AssetManager/AssetSelector'
-);
-jest.mock(
-  '../../../../../../../src/dependenciesTools/components/ReferenceEntity/ReferenceEntitySelector'
-);
-
 const currencies: IndexedCurrencies = {
   EUR: { code: 'EUR' },
   USD: { code: 'USD' },

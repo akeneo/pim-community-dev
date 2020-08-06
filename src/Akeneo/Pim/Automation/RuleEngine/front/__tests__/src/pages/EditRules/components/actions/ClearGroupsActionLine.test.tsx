@@ -3,14 +3,6 @@ import { renderWithProviders } from '../../../../../../test-utils';
 import { ClearGroupsActionLine } from '../../../../../../src/pages/EditRules/components/actions/ClearGroupsActionLine';
 import { locales, scopes } from '../../../../factories';
 
-jest.mock('../../../../../../src/fetch/categoryTree.fetcher.ts');
-jest.mock(
-  '../../../../../../src/dependenciesTools/components/AssetManager/AssetSelector'
-);
-jest.mock(
-  '../../../../../../src/dependenciesTools/components/ReferenceEntity/ReferenceEntitySelector'
-);
-
 describe('ClearGroupsActionLine', () => {
   it('should display the clear groups action line', async () => {
     const {
