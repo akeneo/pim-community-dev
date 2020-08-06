@@ -12,8 +12,8 @@ class RegisterFlatTranslatorPass implements CompilerPassInterface
     {
         $this->registerTranslators(
             $container,
-            'pim_enrich.connector.flat_translators.header_translator_registry',
-            'pim_enrich.connector.flat_translators.header_translator'
+            'pim_enrich.connector.flat_translators.header_registry',
+            'pim_enrich.connector.flat_translators.header'
         );
     }
 

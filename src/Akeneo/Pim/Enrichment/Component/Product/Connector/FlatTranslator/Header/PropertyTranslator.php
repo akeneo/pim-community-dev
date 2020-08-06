@@ -1,10 +1,10 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatHeaderTranslator;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\Header;
 
 use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
 
-class PropertyFlatHeaderTranslator implements FlatHeaderTranslatorInterface
+class PropertyTranslator implements FlatHeaderTranslatorInterface
 {
     /**
      * @var LabelTranslatorInterface
@@ -19,6 +19,10 @@ class PropertyFlatHeaderTranslator implements FlatHeaderTranslatorInterface
     public function supports(string $columnName): bool
     {
         return in_array($columnName, ['categories', 'family_variant', 'enabled', 'family', 'parent', 'groups']);
+    }
+
+    public function warmup(array $columnNames): void
+    {
     }
 
     public function translate(string $columnName, string $locale, HeaderTranslationContext $context)

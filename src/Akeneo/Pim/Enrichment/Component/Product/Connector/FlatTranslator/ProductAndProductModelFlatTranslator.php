@@ -2,41 +2,15 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator;
 
-use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AssociationColumnsResolver;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnsResolver;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatHeaderTranslator\HeaderTranslationContext;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypeTranslations;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetAttributeTranslations;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Group\GetGroupTranslations;
 use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
 
 class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
 {
     /**
-     * @var AttributeColumnsResolver
-     */
-    private $attributeColumnsResolver;
-
-    /**
-     * @var AssociationColumnsResolver
-     */
-    private $associationColumnsResolver;
-
-    /**
-     * @var GetAttributeTranslations
-     */
-    private $getAttributeTranslations;
-
-    /**
      * @var GetAssociationTypeTranslations
      */
     private $getAssociationTypeTranslations;
-
-    /**
-     * @var GetGroupTranslations
-     */
-    private $attributeColumnInfoExtractor;
 
     /**
      * @var FlatHeaderTranslatorRegistry
@@ -44,20 +18,10 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
     private $flatHeaderTranslatorRegistry;
 
     public function __construct(
-        AttributeColumnsResolver $attributeColumnsResolver,
-        AssociationColumnsResolver $associationColumnsResolver,
-        GetAttributeTranslations $getAttributeTranslations,
         LabelTranslatorInterface $labelTranslator,
-        GetAssociationTypeTranslations $getAssociationTypeTranslations,
-        AttributeColumnInfoExtractor $attributeColumnInfoExtractor,
         FlatHeaderTranslatorRegistry $flatHeaderTranslatorRegistry
     ) {
-        $this->attributeColumnsResolver = $attributeColumnsResolver;
-        $this->associationColumnsResolver = $associationColumnsResolver;
-        $this->getAttributeTranslations = $getAttributeTranslations;
         $this->labelTranslator = $labelTranslator;
-        $this->getAssociationTypeTranslations = $getAssociationTypeTranslations;
-        $this->attributeColumnInfoExtractor = $attributeColumnInfoExtractor;
         $this->flatHeaderTranslatorRegistry = $flatHeaderTranslatorRegistry;
     }
 
@@ -78,15 +42,8 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
     {
         $attributeCodes = $this->extractAttributeCodes($flatItemsByColumnName);
         $associationTypes = $this->extractAssociationTypeCodes($flatItemsByColumnName);
-        $quantifiedAssociationTypes = $this->extractQuantifiedAssociationTypeCodes($flatItemsByColumnName);
 
-        $attributeTranslations = $this->getAttributeTranslations->byAttributeCodesAndLocale($attributeCodes, $locale);
-        $associationTranslations = $this->getAssociationTypeTranslations->byAssociationTypeCodeAndLocale(
-            array_merge($associationTypes, $quantifiedAssociationTypes),
-            $locale
-        );
-
-        $context = new HeaderTranslationContext($attributeTranslations, $associationTranslations);
+        $this->flatHeaderTranslatorRegistry->warmup(array_keys($flatItemsByColumnName), $locale);
 
         $results = [];
         foreach ($flatItemsByColumnName as $columnName => $flatItemValues) {
@@ -94,76 +51,13 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
 
             $translator = $this->flatHeaderTranslatorRegistry->getTranslator($columnName);
             if ($translator !== null) {
-                $columnLabelized = $translator->translate($columnName, $locale, $context);
+                $columnLabelized = $translator->translate($columnName, $locale);
             }
 
             $results[$columnLabelized] = $flatItemValues;
         }
 
         return $results;
-    }
-
-    private function isAttributeColumn(string $column): bool
-    {
-        $attributeColumns = $this->attributeColumnsResolver->resolveAttributeColumns();
-
-        return in_array($column, $attributeColumns);
-    }
-
-    private function isQuantifiedAssociationIdentifierColumn(string $column): bool
-    {
-        $quantifiedAssociationsColumns = $this->associationColumnsResolver->resolveQuantifiedIdentifierAssociationColumns();
-
-        return in_array($column, $quantifiedAssociationsColumns);
-    }
-
-    private function isAssociationColumn(string $column): bool
-    {
-        $associationsColumns = $this->associationColumnsResolver->resolveAssociationColumns();
-
-        return in_array($column, $associationsColumns);
-    }
-
-    private function extractAssociationTypeCodes(array $flatItemsByColumnName): array
-    {
-        $associationTypeCodes = [];
-        foreach ($flatItemsByColumnName as $columnName => $flatItemValues) {
-            if ($this->isAssociationColumn($columnName)) {
-                list($quantifiedAssociationType, $entityType) = explode('-', $columnName);
-
-                $associationTypeCodes[] = $quantifiedAssociationType;
-            }
-        }
-
-        return array_unique($associationTypeCodes);
-    }
-
-    private function extractQuantifiedAssociationTypeCodes(array $flatItemsByColumnName): array
-    {
-        $quantifiedAssociationTypeCodes = [];
-        foreach ($flatItemsByColumnName as $columnName => $flatItemValues) {
-            if ($this->isQuantifiedAssociationIdentifierColumn($columnName)) {
-                list($quantifiedAssociationType, $entityType) = explode('-', $columnName);
-
-                $quantifiedAssociationTypeCodes[] = $quantifiedAssociationType;
-            }
-        }
-
-        return array_unique($quantifiedAssociationTypeCodes);
-    }
-
-    private function extractAttributeCodes(array $flatItemsByColumnName): array
-    {
-        $attributeCodes = [];
-        foreach ($flatItemsByColumnName as $columnName => $flatItems) {
-            if ($this->isAttributeColumn($columnName)) {
-                $columnInformations = $this->attributeColumnInfoExtractor->extractColumnInfo($columnName);
-
-                $attributeCodes[] = $columnInformations['attribute']->getCode();
-            }
-        }
-
-        return array_unique($attributeCodes);
     }
 
     /**
@@ -221,7 +115,6 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
      *   ]
      * ]
      */
-    //@TODO to rename / in another service ?
     private function groupFlatItemsByColumnName(array $flatItems): array
     {
         $result = array();
@@ -289,7 +182,6 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
      *   ],
      * ]
      */
-    //@TODO to rename / in another service ?
     private function undoGroupFlatItemsByColumnName(array $columns): array
     {
         $result = [];
