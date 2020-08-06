@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace AkeneoTestEnterprise\Pim\Automation\Integration\RuleEngine\Controller\InternalApi;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\Common\Saver\RuleDefinitionSaver;
-use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use AkeneoTestEnterprise\Pim\Automation\Integration\ControllerIntegrationTestCase;
 use PHPUnit\Framework\Assert;
@@ -64,6 +62,23 @@ class GetImpactedProductCountControllerIntegration extends ControllerIntegration
         ];
 
         $this->assertImpactedProductCount($normalizedConditions, 83);
+    }
+
+    public function test_it_returns_a_400_response_with_invalid_condition()
+    {
+        $invalidCondition = [
+            'field' => 'family',
+            'operator' => 'IN',
+        ];
+        $this->webClientHelper->callApiRoute(
+            $this->client,
+            static::ROUTE,
+            [],
+            'GET',
+            ['conditions' => \json_encode([$invalidCondition])]
+        );
+
+        Assert::assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode());
     }
 
     private function assertImpactedProductCount(array $conditions, int $expectedCount)

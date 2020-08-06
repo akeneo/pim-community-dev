@@ -56,8 +56,12 @@ final class GetImpactedProductCountController
         $ruleDefinition->setCode('fake');
         $ruleDefinition->setContent(['conditions' => $conditions, 'actions' => []]);
 
-        $rule = $this->productRuleBuilder->build($ruleDefinition);
-        $subjectSet = $this->productRuleSelector->select($rule);
+        try {
+            $rule = $this->productRuleBuilder->build($ruleDefinition);
+            $subjectSet = $this->productRuleSelector->select($rule);
+        } catch (\LogicException $e) {
+            return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
+        }
 
         return new JsonResponse(['impacted_product_count' => $subjectSet->getSubjectsCursor()->count()]);
     }
