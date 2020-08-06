@@ -25,7 +25,7 @@ class PropertyTranslator implements FlatHeaderTranslatorInterface
     {
     }
 
-    public function translate(string $columnName, string $locale)
+    public function translate(string $columnName, string $locale): string
     {
         return $this->labelTranslator->translate(
             sprintf('pim_common.%s', $columnName),

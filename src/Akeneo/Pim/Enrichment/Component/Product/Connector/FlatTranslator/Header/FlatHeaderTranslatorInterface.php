@@ -8,5 +8,5 @@ interface FlatHeaderTranslatorInterface
 
     public function warmup(array $columnNames, string $locale): void;
 
-    public function translate(string $columnName, string $locale);
+    public function translate(string $columnName, string $locale): string;
 }

@@ -2,7 +2,6 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\Header;
 
-use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -17,14 +16,11 @@ class PropertyTranslatorSpec extends ObjectBehavior
     {
         $translator->translate('pim_common.categories', 'fr_FR', '[categories]')->willReturn('Catégories');
 
-
         $this->translate('categories', 'fr_FR')->shouldReturn('Catégories');
     }
 
-    function it_supports_pim_default_properties($translator)
+    function it_supports_pim_default_properties()
     {
-        $translator->translate('pim_common.categories', 'fr_FR', '[categories]')->willReturn('Catégories');
-
         $this->supports('categories')->shouldReturn(true);
         $this->supports('family_variant')->shouldReturn(true);
         $this->supports('enabled')->shouldReturn(true);
