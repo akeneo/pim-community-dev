@@ -75,6 +75,79 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expectedSecondPage, $secondPageResponse->getContent());
     }
 
+    /**
+     * @param array $data
+     *
+     * @return CategoryInterface
+     */
+    protected function createCategory(array $data = []): CategoryInterface
+    {
+        $category = $this->get('pim_catalog.factory.category')->create();
+        $this->get('pim_catalog.updater.category')->update($category, $data);
+        $this->get('validator')->validate($category);
+        $this->get('pim_catalog.saver.category')->save($category);
+
+        return $category;
+    }
+
+    public function testListCategoriesByParent()
+    {
+        $this->createCategory(['parent' => 'categoryA1', 'code' => 'categoryA1-1']);
+        $this->createCategory(['parent' => 'categoryA1-1', 'code' => 'categoryA1-1-1']);
+
+        $categories = $this->getStandardizedCategories();
+        $search = '{"parent":[{"operator":"=","value":"categoryA"}]}';
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+
+        $client = $this->createAuthenticatedClient();
+        $client->request('GET', 'api/rest/v1/categories?with_count=true&search=' . $search);
+
+        $expected = <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=true&search={$searchEncoded}"
+        },
+        "first": {
+            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=true&search={$searchEncoded}"
+        }
+    },
+    "current_page": 1,
+    "items_count": 4,
+    "_embedded": {
+        "items": [
+            {$categories['categoryA1']},
+            {
+                "_links": {
+                    "self": {
+                        "href": "http://localhost/api/rest/v1/categories/categoryA1-1"
+                    }
+                },
+                "code": "categoryA1-1",
+                "parent": "categoryA1",
+                "labels": {}
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http://localhost/api/rest/v1/categories/categoryA1-1-1"
+                    }
+                },
+                "code": "categoryA1-1-1",
+                "parent": "categoryA1-1",
+                "labels": {}
+            },
+            {$categories['categoryA2']}
+        ]
+    }
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+    }
+
     public function testListCategoriesWithCount()
     {
         $categories = $this->getStandardizedCategories();
