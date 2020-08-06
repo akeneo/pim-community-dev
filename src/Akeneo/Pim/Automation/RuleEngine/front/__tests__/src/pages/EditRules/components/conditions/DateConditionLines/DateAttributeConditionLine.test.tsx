@@ -6,18 +6,6 @@ import { Operator } from '../../../../../../../src/models/Operator';
 import { render, screen, act } from '../../../../../../../test-utils';
 import { DateTypeOptionIds } from '../../../../../../../src/pages/EditRules/components/conditions/DateConditionLines/dateConditionLines.type';
 
-jest.mock('../../../../../../../src/fetch/categoryTree.fetcher');
-jest.mock(
-  '../../../../../../../src/dependenciesTools/provider/dependencies.ts'
-);
-jest.mock('../../../../../../../src/components/Select2Wrapper/Select2Wrapper');
-jest.mock(
-  '../../../../../../../src/dependenciesTools/components/AssetManager/AssetSelector'
-);
-jest.mock(
-  '../../../../../../../src/dependenciesTools/components/ReferenceEntity/ReferenceEntitySelector'
-);
-
 describe('DateAttributeConditionLine', () => {
   beforeEach(() => {
     jest.clearAllMocks();

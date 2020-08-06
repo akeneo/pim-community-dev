@@ -3,15 +3,6 @@ import { renderWithProviders, screen } from '../../../../../../test-utils';
 import { Operator } from '../../../../../../src/models/Operator';
 import { StatusConditionLine } from '../../../../../../src/pages/EditRules/components/conditions/StatusConditionLine';
 
-jest.mock('../../../../../../src/fetch/categoryTree.fetcher');
-jest.mock('../../../../../../src/components/Select2Wrapper/Select2Wrapper');
-jest.mock(
-  '../../../../../../src/dependenciesTools/components/AssetManager/AssetSelector'
-);
-jest.mock(
-  '../../../../../../src/dependenciesTools/components/ReferenceEntity/ReferenceEntitySelector'
-);
-
 describe('StatusConditionLine', () => {
   it('should display the status condition line', () => {
     const defaultValues = {
