@@ -15,7 +15,3 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\TextCheckerDictionaryRepository:
         arguments:
             $db: '@database_connection'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\IgnoredTitleSuggestionRepository:
-        arguments:
-            $db: '@database_connection'
