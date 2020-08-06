@@ -1,16 +1,6 @@
 import React from 'react';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
-import { FallbackField } from '../FallbackField';
-import {
-  Operation,
-  Operator,
-} from '../../../../models/actions/Calculate/Operation';
-import {
-  ConstantOperand,
-  FieldOperand,
-  Operand,
-} from '../../../../models/actions/Calculate/Operand';
 import { ActionLeftSide, ActionRightSide, ActionTitle } from './ActionLine';
 import styled from 'styled-components';
 import {
@@ -53,6 +43,7 @@ import {
 import { Currency } from '../../../../models/Currency';
 import { useActiveCurrencies } from '../../hooks/useActiveCurrencies';
 import { IndexedCurrencies } from '../../../../repositories/CurrencyRepository';
+import { CalculatePreview } from './calculate/CalculatePreview';
 
 const CalculateActionGrid = styled.div`
   margin-top: 18px;
@@ -74,100 +65,6 @@ const targetAttributeTypes: AttributeType[] = [
   AttributeType.PRICE_COLLECTION,
   AttributeType.METRIC,
 ];
-
-const OperandView: React.FC<{ operand: Operand }> = ({ operand }) => {
-  if (Object.keys(operand).includes('field')) {
-    const fieldOperand = operand as FieldOperand;
-
-    return (
-      <FallbackField
-        field={fieldOperand.field}
-        scope={fieldOperand.scope || null}
-        locale={fieldOperand.locale || null}
-      />
-    );
-  }
-
-  return (
-    <span className='AknRule-attribute'>
-      {(operand as ConstantOperand).value}
-    </span>
-  );
-};
-
-const AddView: React.FC<{ operand: Operand; source: Operand | null }> = ({
-  operand,
-  source,
-}) => {
-  return (
-    <>
-      by adding&nbsp;
-      <OperandView operand={operand} />
-      {source && (
-        <>
-          &nbsp;to&nbsp;
-          <OperandView operand={source} />
-        </>
-      )}
-    </>
-  );
-};
-
-const SubstractView: React.FC<{ operand: Operand; source: Operand | null }> = ({
-  operand,
-  source,
-}) => {
-  return (
-    <>
-      by subtracting&nbsp;
-      <OperandView operand={operand} />
-      {source && (
-        <>
-          &nbsp;from&nbsp;
-          <OperandView operand={source} />
-        </>
-      )}
-    </>
-  );
-};
-
-const MultiplyView: React.FC<{ operand: Operand; source: Operand | null }> = ({
-  operand,
-  source,
-}) => {
-  return (
-    <>
-      by multiplying&nbsp;
-      {source && (
-        <>
-          <OperandView operand={source} />
-          &nbsp;
-        </>
-      )}
-      by&nbsp;
-      <OperandView operand={operand} />
-    </>
-  );
-};
-
-const DivideView: React.FC<{ operand: Operand; source: Operand | null }> = ({
-  operand,
-  source,
-}) => {
-  return (
-    <>
-      by dividing&nbsp;
-      {source && (
-        <>
-          <OperandView operand={source} />
-          &nbsp;
-        </>
-      )}
-      by&nbsp;
-      <OperandView operand={operand} />
-    </>
-  );
-};
 
 const CalculateActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
@@ -283,45 +180,7 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
       />
       <CalculateActionGrid>
         <ActionLeftSide>
-          <FallbackField
-            field={getFormValue('destination.field')}
-            scope={getFormValue('destination.scope') || null}
-            locale={getFormValue('destination.locale') || null}
-          />
-          &nbsp;is calculated&nbsp;
-          {getOperationListFormValue().map(
-            (operation: Operation, key: number) => (
-              <React.Fragment key={key}>
-                {Operator.ADD === operation.operator && (
-                  <AddView
-                    operand={operation}
-                    source={key === 0 ? getSourceFormValue() : null}
-                  />
-                )}
-                {Operator.SUBSTRACT === operation.operator && (
-                  <SubstractView
-                    operand={operation}
-                    source={key === 0 ? getSourceFormValue() : null}
-                  />
-                )}
-                {Operator.MULTIPLY === operation.operator && (
-                  <MultiplyView
-                    operand={operation}
-                    source={key === 0 ? getSourceFormValue() : null}
-                  />
-                )}
-                {Operator.DIVIDE === operation.operator && (
-                  <DivideView
-                    operand={operation}
-                    source={key === 0 ? getSourceFormValue() : null}
-                  />
-                )}
-
-                {key < getOperationListFormValue().length - 1 && ', then '}
-              </React.Fragment>
-            )
-          )}
-          .
+          <CalculatePreview lineNumber={lineNumber} />
         </ActionLeftSide>
         <ActionRightSide>
           <ActionTitle>

@@ -108,6 +108,7 @@ pimee_catalog_rule:
                 pending: Calculating products and product models
                 error: Impossible to calculate products and product models
             product_selection: Product selection
+            preview: Preview
             fields:
                 family: Family
                 category: Category
