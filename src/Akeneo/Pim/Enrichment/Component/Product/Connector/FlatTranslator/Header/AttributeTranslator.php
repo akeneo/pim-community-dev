@@ -82,7 +82,7 @@ class AttributeTranslator implements FlatHeaderTranslatorInterface
         $this->attributeTranslations = $this->getAttributeTranslations->byAttributeCodesAndLocale($attributeCodes, $locale);
     }
 
-    public function translate(string $columnName, string $locale)
+    public function translate(string $columnName, string $locale): string
     {
         $columnInformations = $this->attributeColumnInfoExtractor->extractColumnInfo($columnName);
         $attribute = $columnInformations['attribute'];
