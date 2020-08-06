@@ -1,17 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
+import {TrashIllustration} from 'akeneomeasure/shared/illustrations/TrashIllustration';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {
+  Button,
+  useShortcut,
+  Key,
   Modal,
   ModalCloseButton,
   ModalBodyWithIllustration,
   ModalTitle,
   ModalDescription,
-} from 'akeneomeasure/shared/components/Modal';
-import {TrashIllustration} from 'akeneomeasure/shared/illustrations/TrashIllustration';
-import {useShortcut} from 'akeneomeasure/shared/hooks/use-shortcut';
-import {Key} from 'akeneomeasure/shared/key';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {Button} from '@akeneo-pim-community/shared';
+} from '@akeneo-pim-community/shared';
 
 const StyledTitle = styled(ModalTitle)`
   margin-bottom: 0;
