@@ -25,7 +25,7 @@ type ResultsResponse = {
 const useInfiniteScroll = (
   fetch: (searchAfter: string | null) => Promise<any[]>,
   scrollableElement: HTMLElement | null,
-  threshold: number = 300
+  threshold: number = 4000
 ): [ResultsResponse, (searchAfter: string | null) => void] => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
