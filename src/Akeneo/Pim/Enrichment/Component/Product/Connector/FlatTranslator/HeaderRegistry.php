@@ -4,7 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\Header\FlatHeaderTranslatorInterface;
 
-class FlatHeaderTranslatorRegistry
+class HeaderRegistry
 {
     private $translators = [];
 

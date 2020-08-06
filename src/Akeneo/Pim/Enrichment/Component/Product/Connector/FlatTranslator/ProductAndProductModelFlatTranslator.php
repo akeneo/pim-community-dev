@@ -2,27 +2,17 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypeTranslations;
-use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\HeaderRegistry;
 
 class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
 {
-    /**
-     * @var GetAssociationTypeTranslations
-     */
-    private $getAssociationTypeTranslations;
-
-    /**
-     * @var FlatHeaderTranslatorRegistry
-     */
-    private $flatHeaderTranslatorRegistry;
+    /** @var HeaderRegistry */
+    private $headerRegistry;
 
     public function __construct(
-        LabelTranslatorInterface $labelTranslator,
-        FlatHeaderTranslatorRegistry $flatHeaderTranslatorRegistry
+        HeaderRegistry $headerRegistry
     ) {
-        $this->labelTranslator = $labelTranslator;
-        $this->flatHeaderTranslatorRegistry = $flatHeaderTranslatorRegistry;
+        $this->headerRegistry = $headerRegistry;
     }
 
     public function translate(array $flatItems, string $locale, string $scope, bool $translateHeaders): array
@@ -40,16 +30,13 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
 
     private function translateHeaders(array $flatItemsByColumnName, string $locale)
     {
-        $attributeCodes = $this->extractAttributeCodes($flatItemsByColumnName);
-        $associationTypes = $this->extractAssociationTypeCodes($flatItemsByColumnName);
-
-        $this->flatHeaderTranslatorRegistry->warmup(array_keys($flatItemsByColumnName), $locale);
+        $this->headerRegistry->warmup(array_keys($flatItemsByColumnName), $locale);
 
         $results = [];
         foreach ($flatItemsByColumnName as $columnName => $flatItemValues) {
             $columnLabelized = sprintf("[%s]", $columnName);
 
-            $translator = $this->flatHeaderTranslatorRegistry->getTranslator($columnName);
+            $translator = $this->headerRegistry->getTranslator($columnName);
             if ($translator !== null) {
                 $columnLabelized = $translator->translate($columnName, $locale);
             }

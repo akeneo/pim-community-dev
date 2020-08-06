@@ -12,43 +12,29 @@ use Akeneo\Tool\Component\Localization\LanguageTranslator;
 
 class AttributeTranslator implements FlatHeaderTranslatorInterface
 {
-    /**
-     * @var LabelTranslatorInterface
-     */
+    /** @var LabelTranslatorInterface */
     private $labelTranslator;
 
-    /**
-     * @var AttributeColumnsResolver
-     */
+    /** @var AttributeColumnsResolver */
     private $attributeColumnsResolver;
 
-    /**
-     * @var AttributeColumnInfoExtractor
-     */
+    /** @var AttributeColumnInfoExtractor */
     private $attributeColumnInfoExtractor;
 
-    /**
-     * @var GetChannelTranslations
-     */
+    /** @var GetChannelTranslations */
     private $getChannelTranslations;
 
-    /**
-     * @var LanguageTranslator
-     */
+    /** @var LanguageTranslator */
     private $languageTranslator;
 
-    /**
-     * @var CurrencyTranslator
-     */
+    /** @var CurrencyTranslator */
     private $currencyTranslator;
 
     private $channelTranslationCache = null;
 
     private $attributeTranslations = [];
 
-    /**
-     * @var GetAttributeTranslations
-     */
+    /** @var GetAttributeTranslations */
     private $getAttributeTranslations;
 
     public function __construct(
@@ -61,8 +47,8 @@ class AttributeTranslator implements FlatHeaderTranslatorInterface
         GetAttributeTranslations $getAttributeTranslations
     ) {
         $this->labelTranslator = $labelTranslator;
-        $this->attributeColumnInfoExtractor = $attributeColumnInfoExtractor;
         $this->attributeColumnsResolver = $attributeColumnsResolver;
+        $this->attributeColumnInfoExtractor = $attributeColumnInfoExtractor;
         $this->getChannelTranslations = $getChannelTranslations;
         $this->languageTranslator = $languageTranslator;
         $this->currencyTranslator = $currencyTranslator;
@@ -88,7 +74,8 @@ class AttributeTranslator implements FlatHeaderTranslatorInterface
         $attribute = $columnInformations['attribute'];
         $attributeCode = $attribute->getCode();
 
-        $columnLabelized = isset($this->attributeTranslations[$attributeCode]) ? $this->attributeTranslations[$attributeCode] : sprintf('[%s]', $attributeCode);
+        $columnLabelized = isset($this->attributeTranslations[$attributeCode]) ?
+            $this->attributeTranslations[$attributeCode] : sprintf('[%s]', $attributeCode);
 
         $extraInformation = [];
         if ($attribute->isLocalizable()) {

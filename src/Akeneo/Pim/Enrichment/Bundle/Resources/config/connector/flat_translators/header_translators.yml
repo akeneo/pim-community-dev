@@ -4,6 +4,7 @@ services:
     arguments:
       - '@pim_connector.array_converter.flat_to_standard.product.association_columns_resolver'
       - '@pim_catalog.localization.translator.label'
+      - '@akeneo.pim.structure.query.get_association_type_translations'
     tags: [{ name: pim_enrich.connector.flat_translators.header }]
 
   pim_enrich.connector.flat_translators.header.attribute:
