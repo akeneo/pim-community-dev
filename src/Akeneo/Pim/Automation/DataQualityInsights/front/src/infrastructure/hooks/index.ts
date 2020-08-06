@@ -1,10 +1,17 @@
-import useFetchProductDataQualityEvaluation from "./ProductEditForm/useFetchProductDataQualityEvaluation";
-import useFetchProductFamilyInformation from "./ProductEditForm/useFetchProductFamilyInformation";
-import useCatalogContext from "./ProductEditForm/useCatalogContext";
-import useProduct from "./ProductEditForm/useProduct";
-import useFetchProductAxisRates from "./ProductEditForm/useFetchProductAxisRates";
-import usePageContext from "./ProductEditForm/usePageContext";
-import useProductEvaluation from "./ProductEditForm/useProductEvaluation";
+import useFetchProductDataQualityEvaluation
+  from "@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks/ProductEditForm/useFetchProductDataQualityEvaluation";
+import useFetchProductFamilyInformation
+  from "@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks/ProductEditForm/useFetchProductFamilyInformation";
+import useCatalogContext
+  from "@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks/ProductEditForm/useCatalogContext";
+import useProduct
+  from "@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks/ProductEditForm/useProduct";
+import useFetchProductAxisRates
+  from "@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks/ProductEditForm/useFetchProductAxisRates";
+import {usePageContext} from "@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks";
+import useProductEvaluation
+  from "@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks/ProductEditForm/useProductEvaluation";
+
 import useGetWidgetsList from "./EditorHighlight/useGetWidgetsList";
 import useGetEditorBoundingRect from "./EditorHighlight/useGetEditorBoundingRect";
 import useGetEditorScroll from "./EditorHighlight/useGetEditorScroll";

@@ -12,10 +12,7 @@ config:
     paths:
         # View
         ## Product Edit Form
-        akeneo/data-quality-insights/infrastructure/pim-view/product-edit-form/data-quality-insights-overview: akeneopimenterprisedataqualityinsights/js/infrastructure/pim-view/product-edit-form/data-quality-insights-overview.tsx
-        akeneo/data-quality-insights/infrastructure/pim-view/product-edit-form/data-quality-insights-tab-content: akeneopimenterprisedataqualityinsights/js/infrastructure/pim-view/product-edit-form/data-quality-insights-tab-content.tsx
         akeneo/data-quality-insights/infrastructure/pim-view/product-edit-form/data-quality-insights-app: akeneopimenterprisedataqualityinsights/js/infrastructure/pim-view/product-edit-form/data-quality-insights-app.tsx
-        akeneo/data-quality-insights/infrastructure/pim-view/product-edit-form/attributes-tab-content: akeneopimenterprisedataqualityinsights/js/infrastructure/pim-view/product-edit-form/attributes-tab-content.tsx
 
         ## Attribute Edit Form
         akeneo/data-quality-insights/infrastructure/pim-view/attribute-edit-form/app: akeneopimenterprisedataqualityinsights/js/infrastructure/pim-view/attribute-edit-form/app.tsx
@@ -24,7 +21,6 @@ config:
 
         # Components
         ## Product Edit Form
-        pim/product-edit-form/attribute-filter-all-missing-attributes: akeneopimenterprisedataqualityinsights/js/infrastructure/product-edit-form/attribute-filter-all-missing-attributes.ts
         pim/product-edit-form/attribute-filter-all-improvable-attributes: akeneopimenterprisedataqualityinsights/js/infrastructure/product-edit-form/attribute-filter-all-improvable-attributes.ts
 
         ## Product Grid

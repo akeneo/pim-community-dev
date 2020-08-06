@@ -1,33 +1,11 @@
 extensions:
-    akeneo-data-quality-insights-product-edit-form-axis-rates:
-        module: akeneo/data-quality-insights/infrastructure/pim-view/product-edit-form/data-quality-insights-overview
-        parent: pim-product-edit-form-meta
-        targetZone: meta
-        position: 70
-
-    pim-product-edit-form-data-quality-insights-tab-content:
-        module: akeneo/data-quality-insights/infrastructure/pim-view/product-edit-form/data-quality-insights-tab-content
-        parent: pim-product-edit-form-column-tabs
-        targetZone: container
-        position: 101
+    pim-product-edit-form-attribute-filter-all-improvable-attributes:
+        module: pim/product-edit-form/attribute-filter-all-improvable-attributes
+        parent: pim-product-edit-form-attribute-filter
+        position: 140
 
     pim-product-edit-form-data-quality-insights-app:
         module: akeneo/data-quality-insights/infrastructure/pim-view/product-edit-form/data-quality-insights-app
         parent: pim-product-edit-form
         targetZone: content
         position: 10
-
-    pim-product-edit-form-attribute-filter-all-missing-attributes:
-        module: pim/product-edit-form/attribute-filter-all-missing-attributes
-        parent: pim-product-edit-form-attribute-filter
-        position: 130
-
-    pim-product-edit-form-attribute-filter-all-improvable-attributes:
-        module: pim/product-edit-form/attribute-filter-all-improvable-attributes
-        parent: pim-product-edit-form-attribute-filter
-        position: 140
-
-    pim-product-edit-form-attributes-tab-content-spellcheck:
-        module: akeneo/data-quality-insights/infrastructure/pim-view/product-edit-form/attributes-tab-content
-        parent: pim-product-edit-form-attributes
-        position: 100

@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {ProductEditFormApp, ProductModelEditFormApp} from 'akeneodataqualityinsights-react';
+
 import {
   CATALOG_CONTEXT_CHANNEL_CHANGED,
   CATALOG_CONTEXT_LOCALE_CHANGED,
@@ -8,19 +10,14 @@ import {
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVED,
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVING,
   DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE,
+  DataQualityInsightsFeature,
+  getDataQualityInsightsFeature,
   PRODUCT_ATTRIBUTES_TAB_LOADED,
   PRODUCT_ATTRIBUTES_TAB_LOADING,
   PRODUCT_ATTRIBUTES_TAB_NAME,
   PRODUCT_MODEL_ATTRIBUTES_TAB_NAME,
   PRODUCT_MODEL_LEVEL_CHANGED,
   PRODUCT_TAB_CHANGED,
-  ProductEditFormApp,
-  ProductModelEditFormApp,
-} from 'akeneodataqualityinsights-react';
-
-import {
-  DataQualityInsightsFeature,
-  getDataQualityInsightsFeature,
 } from '@akeneo-pim-community/data-quality-insights/src';
 
 const UserContext = require('pim/user-context');
