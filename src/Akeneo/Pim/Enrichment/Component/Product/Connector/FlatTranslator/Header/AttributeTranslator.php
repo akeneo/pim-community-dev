@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\Heade
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnsResolver;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetAttributeTranslations;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Channel\GetChannelTranslations;
 use Akeneo\Tool\Component\Localization\CurrencyTranslator;
 use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
@@ -45,13 +46,19 @@ class AttributeTranslator implements FlatHeaderTranslatorInterface
 
     private $attributeTranslations = [];
 
+    /**
+     * @var GetAttributeTranslations
+     */
+    private $getAttributeTranslations;
+
     public function __construct(
         LabelTranslatorInterface $labelTranslator,
         AttributeColumnsResolver $attributeColumnsResolver,
         AttributeColumnInfoExtractor $attributeColumnInfoExtractor,
         GetChannelTranslations $getChannelTranslations,
         LanguageTranslator $languageTranslator,
-        CurrencyTranslator $currencyTranslator
+        CurrencyTranslator $currencyTranslator,
+        GetAttributeTranslations $getAttributeTranslations
     ) {
         $this->labelTranslator = $labelTranslator;
         $this->attributeColumnInfoExtractor = $attributeColumnInfoExtractor;
@@ -59,6 +66,7 @@ class AttributeTranslator implements FlatHeaderTranslatorInterface
         $this->getChannelTranslations = $getChannelTranslations;
         $this->languageTranslator = $languageTranslator;
         $this->currencyTranslator = $currencyTranslator;
+        $this->getAttributeTranslations = $getAttributeTranslations;
     }
 
     public function supports(string $columnName): bool
@@ -70,7 +78,7 @@ class AttributeTranslator implements FlatHeaderTranslatorInterface
 
     public function warmup(array $columnNames, string $locale): void
     {
-        $attributeCodes = $this->extractAttributeCodes($flatItemsByColumnName);
+        $attributeCodes = $this->extractAttributeCodes($columnNames);
         $this->attributeTranslations = $this->getAttributeTranslations->byAttributeCodesAndLocale($attributeCodes, $locale);
     }
 
@@ -80,7 +88,7 @@ class AttributeTranslator implements FlatHeaderTranslatorInterface
         $attribute = $columnInformations['attribute'];
         $attributeCode = $attribute->getCode();
 
-        $columnLabelized = $this->attributeTranslations[$attributeCode] ?: sprintf('[%s]', $attributeCode);
+        $columnLabelized = isset($this->attributeTranslations[$attributeCode]) ? $this->attributeTranslations[$attributeCode] : sprintf('[%s]', $attributeCode);
 
         $extraInformation = [];
         if ($attribute->isLocalizable()) {
