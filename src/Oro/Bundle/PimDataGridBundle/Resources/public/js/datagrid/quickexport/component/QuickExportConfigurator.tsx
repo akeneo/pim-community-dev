@@ -103,8 +103,8 @@ const QuickExportConfiguratorContainer = ({onActionLaunch, getProductCount}: Qui
               </ModalConfirmButton>
               <Subtitle>
                 {`${translate('pim_datagrid.mass_action.quick_export.configurator.subtitle')} | ${translate(
-                  'pim_datagrid.mass_action.quick_export.configurator.product_count',
-                  {count: productCount.toString()},
+                  'pim_common.result_count',
+                  {itemsCount: productCount.toString()},
                   productCount
                 )}`}
               </Subtitle>

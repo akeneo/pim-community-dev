@@ -364,7 +364,6 @@ pim_datagrid:
       configurator:
         subtitle: Export rapide
         title: Sélectionnez une action
-        product_count: "{0}0 produit|{1}1 produit|]1, Inf[{{ count }} produits"
         csv: CSV
         xlsx: XLSX
         grid_context: Contexte de la grille
