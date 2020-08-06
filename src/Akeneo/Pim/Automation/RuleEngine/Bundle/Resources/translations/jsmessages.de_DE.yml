@@ -179,7 +179,6 @@ pimee_catalog_rule:
           "BETWEEN": zwischen
           "NOT BETWEEN": nicht zwischen
           "=": ist gleich
-          "!=": ungleich
           ">": größer als
           ">=": gleich oder größer als
           "<": kleiner als
