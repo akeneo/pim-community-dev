@@ -122,7 +122,6 @@ const QuickExportConfiguratorContainer = ({
               <Title>{translate('pim_datagrid.mass_action.quick_export.configurator.title')}</Title>
               <Form
                 value={formValue}
-                disabledChildren={hideWithLabelsSelect ? ['with-labels'] : undefined}
                 onChange={(newValue: FormValue) => {
                   setFormValue(newValue);
                 }}
@@ -145,16 +144,18 @@ const QuickExportConfiguratorContainer = ({
                     title={translate('pim_datagrid.mass_action.quick_export.configurator.all_attributes')}
                   />
                 </Select>
-                <Select name="with-labels">
-                  <Option
-                    value="with-codes"
-                    title={translate('pim_datagrid.mass_action.quick_export.configurator.with_codes')}
-                  />
-                  <Option
-                    value="with-labels"
-                    title={translate('pim_datagrid.mass_action.quick_export.configurator.with_labels')}
-                  />
-                </Select>
+                {!hideWithLabelsSelect && (
+                  <Select name="with-labels">
+                    <Option
+                      value="with-codes"
+                      title={translate('pim_datagrid.mass_action.quick_export.configurator.with_codes')}
+                    />
+                    <Option
+                      value="with-labels"
+                      title={translate('pim_datagrid.mass_action.quick_export.configurator.with_labels')}
+                    />
+                  </Select>
+                )}
               </Form>
             </Content>
           </Modal>
