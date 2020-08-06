@@ -6,7 +6,7 @@ interface FlatHeaderTranslatorInterface
 {
     public function supports(string $columnName): bool;
 
-    public function warmup(string $columnName, string $locale);
+    public function warmup(array $columnNames, string $locale): void;
 
     public function translate(string $columnName, string $locale);
 }

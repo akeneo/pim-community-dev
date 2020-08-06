@@ -21,11 +21,11 @@ class PropertyTranslator implements FlatHeaderTranslatorInterface
         return in_array($columnName, ['categories', 'family_variant', 'enabled', 'family', 'parent', 'groups']);
     }
 
-    public function warmup(array $columnNames): void
+    public function warmup(array $columnNames, string $locale): void
     {
     }
 
-    public function translate(string $columnName, string $locale, HeaderTranslationContext $context)
+    public function translate(string $columnName, string $locale)
     {
         return $this->labelTranslator->translate(
             sprintf('pim_common.%s', $columnName),

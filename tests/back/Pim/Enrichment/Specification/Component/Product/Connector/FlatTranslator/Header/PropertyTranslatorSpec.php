@@ -10,13 +10,27 @@ class PropertyTranslatorSpec extends ObjectBehavior
 {
     function let(LabelTranslatorInterface $translator)
     {
-        $this->beContructedWith($translator);
+        $this->beConstructedWith($translator);
     }
 
-    function it_translate_static_properties($translator)
+    function it_translates_static_properties($translator)
     {
-        $translator->translate('pim_common.categories')->willReturn('Catégories', 'fr_FR', '[categories]');
+        $translator->translate('pim_common.categories', 'fr_FR', '[categories]')->willReturn('Catégories');
 
-        $this->translate('categories', 'fr_FR');
+
+        $this->translate('categories', 'fr_FR')->shouldReturn('Catégories');
+    }
+
+    function it_supports_pim_default_properties($translator)
+    {
+        $translator->translate('pim_common.categories', 'fr_FR', '[categories]')->willReturn('Catégories');
+
+        $this->supports('categories')->shouldReturn(true);
+        $this->supports('family_variant')->shouldReturn(true);
+        $this->supports('enabled')->shouldReturn(true);
+        $this->supports('family')->shouldReturn(true);
+        $this->supports('parent')->shouldReturn(true);
+        $this->supports('groups')->shouldReturn(true);
+        $this->supports('yolo')->shouldReturn(false);
     }
 }

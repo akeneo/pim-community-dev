@@ -52,7 +52,7 @@ class AssociationQuantityTranslator implements FlatHeaderTranslatorInterface
         );
     }
 
-    public function translate(string $columnName, string $locale, HeaderTranslationContext $context)
+    public function translate(string $columnName, string $locale)
     {
         list($associationType, $entityType, $unit) = explode('-', $columnName);
 
