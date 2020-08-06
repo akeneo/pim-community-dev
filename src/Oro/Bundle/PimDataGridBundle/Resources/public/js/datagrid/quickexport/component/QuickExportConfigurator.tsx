@@ -56,7 +56,7 @@ const QuickExportButton = styled.button`
 `;
 
 type QuickExportConfiguratorProps = {
-  onActionLaunch: (actionName: string) => void;
+  onActionLaunch: (formValue: FormValue) => void;
   getProductCount: () => number;
 };
 
@@ -90,11 +90,7 @@ const QuickExportConfiguratorContainer = ({onActionLaunch, getProductCount}: Qui
               <ModalConfirmButton
                 title={translate('pim_common.export')}
                 onClick={() => {
-                  const actionName = `quick_export${'grid-context' === formValue['context'] ? `_grid_context` : ''}_${
-                    formValue['type']
-                  }`;
-
-                  onActionLaunch(actionName);
+                  onActionLaunch(formValue);
                   closeModal();
                 }}
                 disabled={

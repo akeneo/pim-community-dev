@@ -133,7 +133,11 @@ define(
                 const button = this.el.querySelector(`.${this.getGroupClassname(groupName)}`);
 
                 const Component = React.createElement(QuickExportConfigurator, {
-                    onActionLaunch: (actionName) => {
+                    onActionLaunch: formValue => {
+                        const actionName = `quick_export${
+                          'grid-context' === formValue['context'] ? `_grid_context` : ''
+                        }_${formValue['type']}`;
+
                         const launcher = groupLaunchers.find(
                             launcher => launcher.action.route_parameters.actionName === actionName
                         );
@@ -144,7 +148,7 @@ define(
 
                         launcher.action.route_parameters = {
                             ...launcher.action.route_parameters,
-                            _withLabels: true,
+                            _withLabels: 'with-labels' === formValue['with-labels'],
                             _fileLocale: UserContext.get('catalogLocale'),
                         };
 

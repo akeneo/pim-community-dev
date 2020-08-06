@@ -46,7 +46,7 @@ test('it does call the action launch if every option is set', () => {
   fireEvent.click(getByText('pim_datagrid.mass_action.quick_export.configurator.with_labels'));
   fireEvent.click(getByTitle('pim_common.export'));
 
-  expect(onActionLaunch).toHaveBeenCalledWith('quick_export_grid_context_csv');
+  expect(onActionLaunch).toHaveBeenCalledWith({context: 'grid-context', type: 'csv', 'with-labels': 'with-labels'});
 
   fireEvent.click(getByTitle('pim_datagrid.mass_action_group.quick_export.label'));
   fireEvent.click(getByText('pim_datagrid.mass_action.quick_export.configurator.xlsx'));
@@ -54,5 +54,5 @@ test('it does call the action launch if every option is set', () => {
   fireEvent.click(getByText('pim_datagrid.mass_action.quick_export.configurator.with_codes'));
   fireEvent.click(getByTitle('pim_common.export'));
 
-  expect(onActionLaunch).toHaveBeenCalledWith('quick_export_xlsx');
+  expect(onActionLaunch).toHaveBeenCalledWith({context: 'all-attributes', type: 'xlsx', 'with-labels': 'with-codes'});
 });
