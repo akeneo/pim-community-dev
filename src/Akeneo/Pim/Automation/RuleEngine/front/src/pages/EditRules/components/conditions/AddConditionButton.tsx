@@ -1,9 +1,6 @@
 import React from 'react';
 import { Select2Wrapper } from '../../../../components/Select2Wrapper';
-import {
-  useBackboneRouter,
-  useTranslate,
-} from '../../../../dependenciesTools/hooks';
+import { useBackboneRouter, useTranslate, } from '../../../../dependenciesTools/hooks';
 import { AttributeType } from '../../../../models/Attribute';
 
 type AddConditionAttribute = {
@@ -40,6 +37,7 @@ const ATTRIBUTE_TYPES = [
   AttributeType.OPTION_MULTI_SELECT,
   AttributeType.OPTION_SIMPLE_SELECT,
   AttributeType.TEXT,
+  AttributeType.TEXTAREA,
   AttributeType.NUMBER,
   AttributeType.DATE,
   AttributeType.BOOLEAN,

@@ -18,6 +18,7 @@ import {
   LocaleCode,
   createDateAttributeCondition,
   createDateSystemCondition,
+  createTextareaAttributeCondition,
 } from '../../../../models/';
 import { TextBoxBlue } from '../TextBoxBlue';
 import { useProductsCount } from '../../hooks';
@@ -124,6 +125,7 @@ const RuleProductSelection: React.FC<Props> = ({
       createGroupsCondition,
       createStatusCondition,
       createTextAttributeCondition,
+      createTextareaAttributeCondition,
       createSimpleMultiOptionsAttributeCondition,
       createNumberAttributeCondition,
       createCategoryCondition,
