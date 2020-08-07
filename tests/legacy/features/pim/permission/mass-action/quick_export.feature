@@ -17,7 +17,11 @@ Feature: Quick export many published products from datagrid
   Scenario: Successfully quick export published products in CSV
     Given I am on the published products grid
     And I select rows boots, sneakers, sandals, pump
-    Then I press "CSV (All attributes)" on the "Quick Export" dropdown button
+    Then I press the "Quick Export" button
+    And I press the "CSV" button
+    And I press the "All attributes" button
+    And I press the "With codes" button
+    And I press the "Export" button
     And I wait for the "csv_published_product_quick_export" quick export to finish
     When I am on the dashboard page
     Then I should have 1 new notification
@@ -39,7 +43,11 @@ Feature: Quick export many published products from datagrid
   Scenario: Successfully quick export published products in XLSX
     Given I am on the published products grid
     And I select rows boots, sneakers, sandals, pump
-    Then I press "Excel (All attributes)" on the "Quick Export" dropdown button
+    Then I press the "Quick Export" button
+    And I press the "XLSX" button
+    And I press the "All attributes" button
+    And I press the "With codes" button
+    And I press the "Export" button
     And I wait for the "xlsx_published_product_quick_export" quick export to finish
     When I am on the dashboard page
     Then I should have 1 new notification

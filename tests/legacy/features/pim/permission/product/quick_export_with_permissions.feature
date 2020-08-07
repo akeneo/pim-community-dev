@@ -24,7 +24,11 @@ Feature: Quick export products with user permissions applied
     And I save the attribute group
     When I am on the products grid
     And I select rows blackhoodie and greenhoodie
-    And I press "CSV (All attributes)" on the "Quick Export" dropdown button
+    And I press the "Quick Export" button
+    And I press the "CSV" button
+    And I press the "All attributes" button
+    And I press the "With codes" button
+    And I press the "Export" button
     And I wait for the "csv_product_quick_export" quick export to finish
     And first exported file of "csv_product_quick_export" should contain:
     """
@@ -53,7 +57,11 @@ Feature: Quick export products with user permissions applied
     And I save the attribute group
     When I am on the published products grid
     And I select rows blackhoodie and greenhoodie
-    And I press "CSV (All attributes)" on the "Quick Export" dropdown button
+    And I press the "Quick Export" button
+    And I press the "CSV" button
+    And I press the "All attributes" button
+    And I press the "With codes" button
+    And I press the "Export" button
     And I wait for the "csv_published_product_quick_export" quick export to finish
     And exported file of "csv_published_product_quick_export" should contain:
     """
