@@ -3,6 +3,7 @@ import { ConditionLineProps } from './ConditionLineProps';
 import { AttributeConditionLine } from './AttributeConditionLine';
 import {
   useBackboneRouter,
+  useTranslate,
   useUserCatalogLocale,
   useUserCatalogScope,
 } from '../../../../dependenciesTools/hooks';
@@ -14,6 +15,8 @@ import {
   SimpleMultiReferenceEntitiesAttributeOperators,
 } from '../../../../models/conditions/SimpleMultiReferenceEntitiesAttributeCondition';
 import { ReferenceEntitySelector } from '../../../../dependenciesTools/components/ReferenceEntity/ReferenceEntitySelector';
+import { Controller } from 'react-hook-form';
+import { useControlledFormInputCondition } from '../../hooks';
 
 type SimpleMultiReferenceEntitiesAttributeConditionLineProps = ConditionLineProps & {
   condition: SimpleMultiReferenceEntitiesAttributeCondition;
@@ -27,8 +30,13 @@ const SimpleMultiReferenceEntitiesAttributeConditionLine: React.FC<SimpleMultiRe
   currentCatalogLocale,
 }) => {
   const router = useBackboneRouter();
+  const translate = useTranslate();
   const userCatalogLocale = useUserCatalogLocale();
   const userCatalogScope = useUserCatalogScope();
+
+  const { valueFormName, getValueFormValue } = useControlledFormInputCondition<
+    string[]
+  >(lineNumber);
 
   const [attribute, setAttribute] = React.useState<Attribute | null>();
   React.useEffect(() => {
@@ -38,8 +46,15 @@ const SimpleMultiReferenceEntitiesAttributeConditionLine: React.FC<SimpleMultiRe
   }, []);
 
   if (!attribute) {
-    return <div>LOADING</div>;
+    return (
+      <img
+        src='/bundles/pimui/images//loader-V2.svg'
+        alt={translate('pim_common.loading')}
+      />
+    );
   }
+
+  const val = getValueFormValue() || null;
 
   return (
     <AttributeConditionLine
@@ -52,27 +67,19 @@ const SimpleMultiReferenceEntitiesAttributeConditionLine: React.FC<SimpleMultiRe
       availableOperators={SimpleMultiReferenceEntitiesAttributeOperators}
       attribute={attribute}>
       {attribute && (
-        <ReferenceEntitySelector
-          value={condition.value || []}
+        <Controller
+          as={ReferenceEntitySelector}
+          value={val}
           referenceEntityIdentifier={attribute.reference_data_name as string}
           locale={userCatalogLocale}
           channel={userCatalogScope}
-          placeholder={'TODO CHANGE THIS'}
-          onChange={(value: any) => {
-            console.log(value);
-          }}
+          placeholder={translate(
+            'pimee_catalog_rule.form.edit.actions.set_attribute.select_reference_entity'
+          )}
+          compact={true}
           multiple={true}
-        />
-        /*<Controller
-          as={MultiReferenceEntitiesSelector}
-          data-testid={`edit-rules-input-${lineNumber}-value`}
-          value={getValueFormValue() ?? []}
-          attributeId={attribute.meta.id}
-          label={translate('pimee_catalog_rule.rule.value')}
-          hiddenLabel
           name={valueFormName}
-          validation={validateOptionCodes}
-        />*/
+        />
       )}
     </AttributeConditionLine>
   );
