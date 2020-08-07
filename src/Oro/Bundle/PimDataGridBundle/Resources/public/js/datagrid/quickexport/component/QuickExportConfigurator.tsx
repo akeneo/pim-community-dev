@@ -118,31 +118,41 @@ const QuickExportConfiguratorContainer = ({
                 <Select name="type">
                   <Option value="csv" title={translate('pim_datagrid.mass_action.quick_export.configurator.csv')}>
                     <CSVFileIcon size={48} />
+                    {translate('pim_datagrid.mass_action.quick_export.configurator.csv')}
                   </Option>
                   <Option value="xlsx" title={translate('pim_datagrid.mass_action.quick_export.configurator.xlsx')}>
                     <XLSXFileIcon size={48} />
+                    {translate('pim_datagrid.mass_action.quick_export.configurator.xlsx')}
                   </Option>
                 </Select>
                 <Select name="context">
                   <Option
                     value="grid-context"
                     title={translate('pim_datagrid.mass_action.quick_export.configurator.grid_context')}
-                  />
+                  >
+                    {translate('pim_datagrid.mass_action.quick_export.configurator.grid_context')}
+                  </Option>
                   <Option
                     value="all-attributes"
                     title={translate('pim_datagrid.mass_action.quick_export.configurator.all_attributes')}
-                  />
+                  >
+                    {translate('pim_datagrid.mass_action.quick_export.configurator.all_attributes')}
+                  </Option>
                 </Select>
                 {showWithLabelsSelect && (
                   <Select name="with-labels">
                     <Option
                       value="with-codes"
                       title={translate('pim_datagrid.mass_action.quick_export.configurator.with_codes')}
-                    />
+                    >
+                      {translate('pim_datagrid.mass_action.quick_export.configurator.with_codes')}
+                    </Option>
                     <Option
                       value="with-labels"
                       title={translate('pim_datagrid.mass_action.quick_export.configurator.with_labels')}
-                    />
+                    >
+                      {translate('pim_datagrid.mass_action.quick_export.configurator.with_labels')}
+                    </Option>
                   </Select>
                 )}
               </Form>
