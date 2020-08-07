@@ -44,6 +44,7 @@ import { Currency } from '../../../../models/Currency';
 import { useActiveCurrencies } from '../../hooks/useActiveCurrencies';
 import { IndexedCurrencies } from '../../../../repositories/CurrencyRepository';
 import { CalculatePreview } from './calculate/CalculatePreview';
+import { CalculateOperationList } from './calculate/CalculateOperationList';
 
 const CalculateActionGrid = styled.div`
   margin-top: 18px;
@@ -181,6 +182,12 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
       <CalculateActionGrid>
         <ActionLeftSide>
           <CalculatePreview lineNumber={lineNumber} />
+          <CalculateOperationList
+            defaultSource={getSourceFormValue()}
+            defaultOperationList={getOperationListFormValue()}
+            locales={locales}
+            scopes={scopes}
+          />
         </ActionLeftSide>
         <ActionRightSide>
           <ActionTitle>

@@ -100,6 +100,7 @@
 .select2-drop.locale-dropdown,
 .select2-drop.scope-dropdown,
 .select2-drop.currency-dropdown,
+.select2-drop.calculate-operator-dropdown,
 .select2-drop.fields-selector-dropdown {
   .select2-results {
     font-size: 13px;
@@ -143,6 +144,14 @@
       font-style: italic;
     }
   }
+}
+
+.select2-drop.calculate-operator-dropdown {
+  min-width: 150px;
+}
+
+.AknRuleOperation-elementOperator > .select2-container > .select2-choice {
+  border: none;
 }
 
 .select2-container-error > .select2-container > .select2-choices,

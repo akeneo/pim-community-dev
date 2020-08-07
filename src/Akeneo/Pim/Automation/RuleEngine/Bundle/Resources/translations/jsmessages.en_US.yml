@@ -117,6 +117,7 @@ pimee_catalog_rule:
                 measurement_unit: Measurement unit
                 measurement_default_unit: "Default unit ({{ unit }})"
                 currency: Currency
+                operator: operator
             execute:
                 button: Save and execute
                 title: Save and execute the rule
@@ -202,6 +203,11 @@ pimee_catalog_rule:
                     select_target: Select your target
                     attribute_placeholder: Select your target attribute
                     round_precision: Round precision
+                    operator:
+                        add: Add
+                        subtract: Subtract
+                        multiply: Multiply
+                        divide: Divide
             conditions:
                 delete:
                     label: Remove condition
