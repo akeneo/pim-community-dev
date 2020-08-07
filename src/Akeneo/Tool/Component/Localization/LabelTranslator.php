@@ -3,7 +3,6 @@
 namespace Akeneo\Tool\Component\Localization;
 
 use Symfony\Component\Translation\Translator;
-use Symfony\Component\Translation\TranslatorInterface;
 
 class LabelTranslator implements LabelTranslatorInterface
 {

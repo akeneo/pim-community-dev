@@ -11,7 +11,7 @@ class CurrencyTranslator implements CurrencyTranslatorInterface
         $language = \Locale::getPrimaryLanguage($locale);
 
         $currencyTranslated = Intl::getCurrencyBundle()->getCurrencyName($currencyCode, $language);
-        if ($currencyTranslated === null) {
+        if (null === $currencyTranslated) {
             return $fallback;
         }
 

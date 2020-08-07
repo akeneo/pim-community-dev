@@ -11,16 +11,16 @@ class LanguageTranslator implements LanguageTranslatorInterface
         $displayLocale = \Locale::getPrimaryLanguage($locale);
         list($language, $region) = explode('_', $localeCode);
 
-        $languageTranslated = Intl::getLanguageBundle()->getLanguageName(
+        $translatedLanguage = Intl::getLanguageBundle()->getLanguageName(
             $language,
             $region,
             $displayLocale
         );
 
-        if ($languageTranslated === null) {
+        if (null === $translatedLanguage) {
             return $fallback;
         }
 
-        return ucfirst($languageTranslated);
+        return ucfirst($translatedLanguage);
     }
 }
