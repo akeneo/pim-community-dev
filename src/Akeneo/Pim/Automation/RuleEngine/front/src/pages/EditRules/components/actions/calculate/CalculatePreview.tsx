@@ -21,7 +21,8 @@ const operationViewMapping: { [key: string]: string } = {
 };
 
 const OperandView: React.FC<{ operand: Operand }> = ({ operand }) => {
-  if (Object.keys(operand).includes('field')) {
+  const fieldOperand = (operand as FieldOperand).field;
+  if (fieldOperand) {
     const fieldOperand = operand as FieldOperand;
 
     return <AttributePreview attributeCode={fieldOperand.field} />;
@@ -81,10 +82,26 @@ const CalculatePreview: React.FC<Props> = ({ lineNumber }) => {
   >(lineNumber);
   const getSourceFormValue = () => getFormValue('source');
   const getOperationListFormValue = () => getFormValue('operation_list');
-  // Watch is needed in this case to trigger a render at input
+
+  // Watch recursive is needed to trigger a render at each changes
   const { watch } = useFormContext();
-  watch(formName('source'));
-  watch(formName('operation_list'));
+  const watchRecursive = (field: any, path: string) => {
+    if (Array.isArray(field)) {
+      field.map((child: any, key: number) =>
+        watchRecursive(child, `${path}[${key}]`)
+      );
+    } else if (typeof field === 'object' && null !== field) {
+      Object.keys(field).map((key: string) =>
+        watchRecursive(field[key], `${path}.${key}`)
+      );
+    } else {
+      watch(path);
+    }
+  };
+  const source = watch(formName('source'));
+  const OperationList = watch(formName('operation_list'));
+  watchRecursive(source, formName('source'));
+  watchRecursive(OperationList, formName('operation_list'));
 
   return (
     <div className={'AknRulePreviewBox'}>
