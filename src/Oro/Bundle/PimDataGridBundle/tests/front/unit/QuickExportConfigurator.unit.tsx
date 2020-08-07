@@ -68,3 +68,18 @@ test('it does call the action launch if every option is set', () => {
 
   expect(onActionLaunch).toHaveBeenCalledWith({context: 'all-attributes', type: 'xlsx', 'with-labels': 'with-codes'});
 });
+
+test('it does not display the with-labels select if specified', () => {
+  const onActionLaunch = jest.fn();
+  const getProductCount = jest.fn(() => 3);
+
+  const {queryByText} = render(
+    <QuickExportConfigurator
+      showWithLabelsSelect={false}
+      onActionLaunch={onActionLaunch}
+      getProductCount={getProductCount}
+    />
+  );
+
+  expect(queryByText('pim_datagrid.mass_action.quick_export.configurator.with_labels')).not.toBeInTheDocument();
+});
