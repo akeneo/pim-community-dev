@@ -4,6 +4,7 @@ import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
+import { AttributeType } from '../../../../models/Attribute';
 
 type AddConditionAttribute = {
   id: string;
@@ -36,12 +37,14 @@ const SYSTEM_FIELDS = [
 ];
 
 const ATTRIBUTE_TYPES = [
-  'pim_catalog_multiselect',
-  'pim_catalog_simpleselect',
-  'pim_catalog_text',
-  'pim_catalog_number',
-  'pim_catalog_date',
-  'pim_catalog_boolean',
+  AttributeType.OPTION_MULTI_SELECT,
+  AttributeType.OPTION_SIMPLE_SELECT,
+  AttributeType.TEXT,
+  AttributeType.NUMBER,
+  AttributeType.DATE,
+  AttributeType.BOOLEAN,
+  AttributeType.REFERENCE_ENTITY_COLLECTION,
+  AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
 ];
 
 const AddConditionButton: React.FC<Props> = ({

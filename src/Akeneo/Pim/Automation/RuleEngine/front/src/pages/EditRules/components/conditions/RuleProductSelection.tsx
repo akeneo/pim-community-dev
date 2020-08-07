@@ -32,6 +32,7 @@ import {
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
 import { Action } from '../../../../models/Action';
+import { createSimpleMultiReferenceEntitiesAttributeCondition } from '../../../../models/conditions/SimpleMultiReferenceEntitiesAttributeCondition';
 
 const Header = styled.header`
   font-weight: normal;
@@ -129,6 +130,7 @@ const RuleProductSelection: React.FC<Props> = ({
       createDateAttributeCondition,
       createDateSystemCondition,
       createBooleanAttributeCondition,
+      createSimpleMultiReferenceEntitiesAttributeCondition,
     ];
 
     for (let i = 0; i < factories.length; i++) {

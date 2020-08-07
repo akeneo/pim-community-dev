@@ -55,20 +55,20 @@ export const ReferenceEntitySelector: React.FC<RecordSelectorProps> = ({
   ) => {
     if (Array.isArray(value)) {
       onChange(value.map(subValue => subValue.stringValue()));
-    } else if (null !== value) {
+    } else if (value) {
       onChange(value.stringValue());
     } else {
-      onChange(null);
+      onChange(multiple ? [] : null);
     }
   };
 
   const createValue = (value: string | string[] | null) => {
     if (Array.isArray(value)) {
       return value.map(subValue => ReferenceEntityString.create(subValue));
-    } else if (null !== value) {
+    } else if (value) {
       return ReferenceEntityString.create(value);
     } else {
-      return null;
+      return multiple ? [] : null;
     }
   };
 
