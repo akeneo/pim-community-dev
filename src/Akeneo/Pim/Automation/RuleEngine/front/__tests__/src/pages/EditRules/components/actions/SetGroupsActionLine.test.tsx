@@ -4,9 +4,6 @@ import { renderWithProviders, screen } from '../../../../../../test-utils';
 import { locales, scopes } from '../../../../factories';
 import { SetGroupsActionLine } from '../../../../../../src/pages/EditRules/components/actions/SetGroupsActionLine';
 
-jest.mock('../../../../../../src/components/Select2Wrapper/Select2Wrapper');
-jest.mock('../../../../../../src/fetch/categoryTree.fetcher.ts');
-
 describe('SetGroupsActionLine', () => {
   beforeEach(() => {
     fetchMock.resetMocks();
