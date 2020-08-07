@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.67 (2020-08-07)
+
 ## Bug fixes:
 
 -PIM-9380: Parts of the PIM are not translatable on Crowdin

@@ -12,7 +12,7 @@ namespace Akeneo\Platform;
 class CommunityVersion
 {
     /** @staticvar string */
-    const VERSION = '3.2.66';
+    const VERSION = '3.2.67';
 
     /** @staticvar string */
     const VERSION_CODENAME = 'Rabbit Transit';
