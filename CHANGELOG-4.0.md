@@ -1,8 +1,8 @@
 # 4.0.x
 
 ## Bug fixes
-
 - PIM-9386: Notification reminder message not compliant
+- PIM-9385: Fix fatal error: Out of Sort memory on Record query 
 
 # 4.0.46 (2020-07-31)
 
