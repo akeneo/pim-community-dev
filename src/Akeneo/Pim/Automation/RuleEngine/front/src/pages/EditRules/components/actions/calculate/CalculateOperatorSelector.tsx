@@ -20,7 +20,7 @@ const buildData = (translate: Translate) =>
 
 type Props = {
   name: string;
-  defaultValue: Operator;
+  value: Operator;
   onChange?: (value: CurrencyCode) => void;
   label?: string;
   hiddenLabel?: boolean;
@@ -28,7 +28,7 @@ type Props = {
 
 const CalculateOperatorSelector: React.FC<Props> = ({
   name,
-  defaultValue,
+  value,
   onChange,
   label,
   hiddenLabel = false,
@@ -50,7 +50,7 @@ const CalculateOperatorSelector: React.FC<Props> = ({
       hideSearch
       name={name}
       data={buildData(translate)}
-      value={defaultValue}
+      value={value}
       onChange={handleChange}
       dropdownCssClass='calculate-operator-dropdown'
     />

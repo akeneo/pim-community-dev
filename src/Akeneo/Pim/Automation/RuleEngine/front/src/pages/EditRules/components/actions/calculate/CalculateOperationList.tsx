@@ -1,13 +1,10 @@
 import React from 'react';
+import { Controller } from 'react-hook-form';
 import {
   Operation,
   Operator,
 } from '../../../../../models/actions/Calculate/Operation';
-import {
-  ConstantOperand,
-  FieldOperand,
-  Operand,
-} from '../../../../../models/actions/Calculate/Operand';
+import { Operand } from '../../../../../models/actions/Calculate/Operand';
 import { CalculateOperatorSelector } from './CalculateOperatorSelector';
 import styled from 'styled-components';
 import { InputNumber } from '../../../../../components/Inputs';
@@ -15,6 +12,7 @@ import { useTranslate } from '../../../../../dependenciesTools/hooks';
 import { AttributePropertiesSelector } from './AttributePropertiesSelector';
 import { Locale } from '../../../../../models';
 import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
+import { useControlledFormInputAction } from '../../../hooks';
 
 const DeleteButton = styled.button`
   border: none;
@@ -27,10 +25,10 @@ type DropTarget = {
 };
 
 type OperationLineProps = {
-  operand: Operand;
-  operator?: Operator;
+  baseFormName: string;
   locales: Locale[];
   scopes: IndexedScopes;
+  lineNumber: number;
   operationLineNumber: number;
   dropTarget: DropTarget | null;
   setDropTarget: (dropTarget: DropTarget | null) => void;
@@ -41,22 +39,22 @@ type OperationLineProps = {
 };
 
 const OperationLine: React.FC<OperationLineProps> = ({
-  operand,
-  operator,
+  baseFormName,
   locales,
   scopes,
+  lineNumber,
   operationLineNumber,
   dropTarget,
   setDropTarget,
   moveOperation,
 }) => {
   const translate = useTranslate();
-  const operandValue = Object.keys(operand).includes('value')
-    ? (operand as ConstantOperand)
-    : null;
-  const operandField = Object.keys(operand).includes('field')
-    ? (operand as FieldOperand)
-    : null;
+  const {
+    formName,
+    getFormValue,
+    // isFormFieldInError,
+  } = useControlledFormInputAction<string | null>(lineNumber);
+  const operandField = getFormValue(`${baseFormName}.field`) || null;
 
   const onDragOver = () => {
     setDropTarget({ operationLineNumber });
@@ -92,36 +90,47 @@ const OperationLine: React.FC<OperationLineProps> = ({
               className={
                 'AknRuleOperation-element AknRuleOperation-elementOperator'
               }>
-              <CalculateOperatorSelector
-                name={`edit-rules-action-operation-list-${operationLineNumber}-operator`}
-                defaultValue={operator || Operator.ADD}
+              <Controller
+                as={CalculateOperatorSelector}
+                name={formName(`${baseFormName}.operator`)}
+                value={getFormValue(`${baseFormName}.operator`) || Operator.ADD}
                 hiddenLabel
               />
             </span>
           )}
-          {operandValue && (
+          {!operandField && (
             <span className={'AknRuleOperation-element'}>
-              <InputNumber
+              <Controller
+                as={InputNumber}
+                name={formName(`${baseFormName}.value`)}
                 className={
                   'AknTextField AknNumberField AknRuleOperation-inputValue'
                 }
                 data-testid={`edit-rules-action-operation-list-${operationLineNumber}-number`}
                 hiddenLabel={true}
-                defaultValue={operandValue.value}
+                defaultValue={getFormValue(`${baseFormName}.value`)}
                 step={'any'}
               />
             </span>
           )}
           {operandField && (
-            <AttributePropertiesSelector
-              operationLineNumber={operationLineNumber}
-              attributeCode={operandField.field}
-              localeCode={operandField.locale}
-              scopeCode={operandField.scope}
-              currencyCode={operandField.currency}
-              locales={locales}
-              scopes={scopes}
-            />
+            <>
+              <Controller
+                as={<input type='hidden' />}
+                name={formName(`${baseFormName}.field`)}
+                defaultValue={getFormValue(`${baseFormName}.field`)}
+              />
+              <AttributePropertiesSelector
+                lineNumber={lineNumber}
+                operationLineNumber={operationLineNumber}
+                attributeCode={getFormValue(`${baseFormName}.field`)}
+                localeFormName={formName(`${baseFormName}.locale`)}
+                scopeFormName={formName(`${baseFormName}.scope`)}
+                currencyFormName={formName(`${baseFormName}.currency`)}
+                locales={locales}
+                scopes={scopes}
+              />
+            </>
           )}
         </div>
       </div>
@@ -138,6 +147,7 @@ const OperationLine: React.FC<OperationLineProps> = ({
 };
 
 type Props = {
+  lineNumber: number;
   defaultSource: Operand;
   defaultOperationList: Operation[];
   onChange?: (value: Operation[]) => void;
@@ -146,6 +156,7 @@ type Props = {
 };
 
 const CalculateOperationList: React.FC<Props> = ({
+  lineNumber,
   defaultSource,
   defaultOperationList,
   locales,
@@ -174,24 +185,23 @@ const CalculateOperationList: React.FC<Props> = ({
   return (
     <ul className={'AknRuleOperation'}>
       <OperationLine
-        operand={source}
+        baseFormName={'source'}
         locales={locales}
         scopes={scopes}
+        lineNumber={lineNumber}
         operationLineNumber={0}
         dropTarget={dropTarget}
         setDropTarget={setDropTarget}
         moveOperation={moveOperation}
       />
-      {operationList.map((operation: Operation, key: number) => {
-        const { operator, ...operand } = operation;
-
+      {operationList.map((_operation: Operation, key: number) => {
         return (
           <OperationLine
             key={key}
-            operand={operand}
-            operator={operator}
+            baseFormName={`operation_list[${key}]`}
             locales={locales}
             scopes={scopes}
+            lineNumber={lineNumber}
             operationLineNumber={key + 1}
             dropTarget={dropTarget}
             setDropTarget={setDropTarget}

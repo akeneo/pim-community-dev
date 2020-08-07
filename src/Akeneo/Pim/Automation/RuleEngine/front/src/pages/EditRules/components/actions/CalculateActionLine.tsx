@@ -183,6 +183,7 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
         <ActionLeftSide>
           <CalculatePreview lineNumber={lineNumber} />
           <CalculateOperationList
+            lineNumber={lineNumber}
             defaultSource={getSourceFormValue()}
             defaultOperationList={getOperationListFormValue()}
             locales={locales}

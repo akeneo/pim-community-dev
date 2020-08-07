@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 import {
   Attribute,
   AttributeCode,
   AttributeType,
   getAttributeLabel,
   Locale,
-  LocaleCode,
-  ScopeCode,
 } from '../../../../../models';
 import { ScopeSelector } from '../../../../../components/Selectors/ScopeSelector';
 import {
@@ -17,36 +16,41 @@ import { LocaleSelector } from '../../../../../components/Selectors/LocaleSelect
 import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
 import { CurrencySelector } from '../../../../../components/Selectors/CurrencySelector';
 import { IndexedCurrencies } from '../../../../../repositories/CurrencyRepository';
-import { Currency, CurrencyCode } from '../../../../../models/Currency';
+import { Currency } from '../../../../../models/Currency';
 import { useActiveCurrencies } from '../../../hooks/useActiveCurrencies';
 import { Router } from '../../../../../dependenciesTools';
 import { getAttributeByIdentifier } from '../../../../../repositories/AttributeRepository';
+import { useControlledFormInputAction } from '../../../hooks';
 
 type Props = {
+  lineNumber: number;
   operationLineNumber: number;
   attributeCode: AttributeCode;
-  scopeCode?: ScopeCode | null;
-  localeCode?: LocaleCode | null;
-  currencyCode?: CurrencyCode | null;
+  scopeFormName: string;
+  localeFormName: string;
+  currencyFormName: string;
   locales: Locale[];
   scopes: IndexedScopes;
 };
 
 const AttributePropertiesSelector: React.FC<Props> = ({
+  lineNumber,
   operationLineNumber,
   attributeCode,
-  scopeCode,
-  localeCode,
-  currencyCode,
+  scopeFormName,
+  localeFormName,
+  currencyFormName,
   scopes,
   locales,
 }) => {
+  const { watch } = useFormContext();
   const currentCatalogLocale = useUserCatalogLocale();
   const router = useBackboneRouter();
   const currencies = useActiveCurrencies();
   const [attribute, setAttribute] = React.useState<
     Attribute | null | undefined
   >();
+  const { getFormValue } = useControlledFormInputAction<string>(lineNumber);
 
   useEffect(() => {
     const getAttribute = async (
@@ -69,6 +73,8 @@ const AttributePropertiesSelector: React.FC<Props> = ({
     if (!attribute?.scopable) {
       return Object.values(currencies);
     }
+    // watch() is needed instead of getFormValue() when currencySelector is displayed before ScopeSelector
+    const scopeCode = watch(scopeFormName);
     if (scopeCode && scopes[scopeCode]) {
       return scopes[scopeCode].currencies.map(code => ({ code }));
     }
@@ -88,11 +94,12 @@ const AttributePropertiesSelector: React.FC<Props> = ({
           className={
             'AknRuleOperation-element AknRuleOperation-element-currency'
           }>
-          <CurrencySelector
+          <Controller
+            as={CurrencySelector}
             data-testid={`edit-rules-action-operation-list-${operationLineNumber}-price`}
             availableCurrencies={getAvailableCurrenciesForTarget(currencies)}
-            name={`edit-rules-action-operation-list-${operationLineNumber}-currency`}
-            value={currencyCode || undefined}
+            name={currencyFormName}
+            value={getFormValue(currencyFormName)}
             hiddenLabel
           />
         </span>
@@ -100,12 +107,13 @@ const AttributePropertiesSelector: React.FC<Props> = ({
       {attribute?.scopable && (
         <span
           className={'AknRuleOperation-element AknRuleOperation-elementScope'}>
-          <ScopeSelector
+          <Controller
+            as={ScopeSelector}
             data-testid={`edit-rules-action-operation-list-${operationLineNumber}-scope`}
             allowClear={false}
             availableScopes={Object.values(scopes)}
-            value={scopeCode || undefined}
-            name={`edit-rules-action-operation-list-${operationLineNumber}-scope`}
+            value={getFormValue(scopeFormName)}
+            name={scopeFormName}
             currentCatalogLocale={currentCatalogLocale}
             hiddenLabel
           />
@@ -114,12 +122,13 @@ const AttributePropertiesSelector: React.FC<Props> = ({
       {attribute?.localizable && (
         <span
           className={'AknRuleOperation-element AknRuleOperation-elementLocale'}>
-          <LocaleSelector
+          <Controller
+            as={LocaleSelector}
             data-testid={`edit-rules-action-operation-list-${operationLineNumber}-locale`}
             allowClear={false}
             availableLocales={locales}
-            value={localeCode || undefined}
-            name={`edit-rules-action-operation-list-${operationLineNumber}-locale`}
+            value={getFormValue(localeFormName)}
+            name={localeFormName}
             hiddenLabel
           />
         </span>
