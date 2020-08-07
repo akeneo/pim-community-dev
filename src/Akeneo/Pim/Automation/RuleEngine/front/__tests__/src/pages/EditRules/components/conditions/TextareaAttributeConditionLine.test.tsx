@@ -61,28 +61,28 @@ describe('TextareaAttributeConditionLine', () => {
       { all: true },
       { defaultValues, toRegister }
     );
-    await waitForElementToBeRemoved(() => document.querySelector('img')).then(
-      () => {
-        expect(screen.getByText('Nom')).toBeInTheDocument();
-        const operatorSelector = screen.getByTestId(
-          'edit-rules-input-0-operator'
-        );
-        expect(operatorSelector).toBeInTheDocument();
-        expect(operatorSelector).toHaveValue('!=');
-        expect(
-          screen.getByTestId('edit-rules-input-0-scope')
-        ).toBeInTheDocument();
-        expect(screen.getByTestId('edit-rules-input-0-scope')).toHaveValue(
-          'mobile'
-        );
-        expect(
-          screen.getByTestId('edit-rules-input-0-locale')
-        ).toBeInTheDocument();
-        expect(screen.getByTestId('edit-rules-input-0-locale')).toHaveValue(
-          'en_US'
-        );
-      }
-    );
+    await waitForElementToBeRemoved(() =>
+      document.querySelector('div img[alt="pim_common.loading"]')
+    ).then(() => {
+      expect(screen.getByText('Nom')).toBeInTheDocument();
+      const operatorSelector = screen.getByTestId(
+        'edit-rules-input-0-operator'
+      );
+      expect(operatorSelector).toBeInTheDocument();
+      expect(operatorSelector).toHaveValue('!=');
+      expect(
+        screen.getByTestId('edit-rules-input-0-scope')
+      ).toBeInTheDocument();
+      expect(screen.getByTestId('edit-rules-input-0-scope')).toHaveValue(
+        'mobile'
+      );
+      expect(
+        screen.getByTestId('edit-rules-input-0-locale')
+      ).toBeInTheDocument();
+      expect(screen.getByTestId('edit-rules-input-0-locale')).toHaveValue(
+        'en_US'
+      );
+    });
   });
 
   it('should not display the locale and scope selectors', async () => {
