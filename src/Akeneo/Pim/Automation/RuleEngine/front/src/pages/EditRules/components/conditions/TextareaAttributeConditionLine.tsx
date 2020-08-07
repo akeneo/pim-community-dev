@@ -46,7 +46,7 @@ const TextareaAttributeConditionLine: React.FC<TextareaAttributeConditionLinePro
       attribute={attribute}
       availableOperators={TextareaAttributeOperators}
       currentCatalogLocale={currentCatalogLocale}
-      defaultOperator={Operator.NOT_EQUAL}
+      defaultOperator={Operator.CONTAINS}
       field={condition.field}
       lineNumber={lineNumber}
       locales={locales}

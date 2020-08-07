@@ -1,6 +1,9 @@
 import React from 'react';
 import { Select2Wrapper } from '../../../../components/Select2Wrapper';
-import { useBackboneRouter, useTranslate, } from '../../../../dependenciesTools/hooks';
+import {
+  useBackboneRouter,
+  useTranslate,
+} from '../../../../dependenciesTools/hooks';
 import { AttributeType } from '../../../../models/Attribute';
 
 type AddConditionAttribute = {
