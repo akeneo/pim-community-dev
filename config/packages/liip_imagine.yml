@@ -8,6 +8,12 @@ liip_imagine:
                 root_url:           "__root__"
                 cache_prefix:       thumbnail/asset_manager
                 visibility:         public
+        asset_manager_media_link_flysystem_cache:
+            flysystem:
+                filesystem_service: oneup_flysystem.asset_storage_filesystem
+                root_url:           "__root__"
+                cache_prefix:       thumbnail/asset_manager
+                visibility:         private
     filter_sets:
         cache: ~
         avatar_med:
@@ -55,7 +61,7 @@ liip_imagine:
                 strip:        ~
 
         am_url_image_preview:
-            cache: asset_manager_flysystem_cache
+            cache: asset_manager_media_link_flysystem_cache
             quality:          95
             format:           jpg
             data_loader:      stream_data_loader
@@ -65,7 +71,7 @@ liip_imagine:
                     color: "#ffffff"
 
         am_url_image_thumbnail:
-            cache: asset_manager_flysystem_cache
+            cache: asset_manager_media_link_flysystem_cache
             quality:          95
             format:           jpg
             data_loader:      stream_data_loader
@@ -75,7 +81,7 @@ liip_imagine:
                     color: "#ffffff"
 
         am_url_image_thumbnail_small:
-            cache: asset_manager_flysystem_cache
+            cache: asset_manager_media_link_flysystem_cache
             quality:          95
             format:           jpg
             data_loader:      stream_data_loader
