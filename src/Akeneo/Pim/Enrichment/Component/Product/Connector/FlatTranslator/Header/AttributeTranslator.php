@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\Heade
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnsResolver;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetAttributeTranslations;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Channel\GetChannelTranslations;
 use Akeneo\Tool\Component\Localization\CurrencyTranslator;
@@ -75,7 +76,8 @@ class AttributeTranslator implements FlatHeaderTranslatorInterface
         $attributeCode = $attribute->getCode();
 
         $columnLabelized = isset($this->attributeTranslations[$attributeCode]) ?
-            $this->attributeTranslations[$attributeCode] : sprintf('[%s]', $attributeCode);
+            $this->attributeTranslations[$attributeCode] :
+            sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $attributeCode);
 
         $extraInformation = [];
         if ($attribute->isLocalizable()) {
@@ -83,7 +85,7 @@ class AttributeTranslator implements FlatHeaderTranslatorInterface
             $extraInformation[] = $this->languageTranslator->translate(
                 $localeCode,
                 $locale,
-                sprintf('[%s]', $localeCode)
+                sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $localeCode)
             );
         }
 
@@ -91,7 +93,8 @@ class AttributeTranslator implements FlatHeaderTranslatorInterface
             $channelCode = $columnInformations['scope_code'];
             $channelTranslations = $this->getChannelTranslations($locale);
 
-            $extraInformation[] = $channelTranslations[$channelCode] ?? sprintf('[%s]', $channelCode);
+            $extraInformation[] = $channelTranslations[$channelCode] ??
+                sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $channelCode);
         }
 
         if (!empty($extraInformation)) {
@@ -103,7 +106,7 @@ class AttributeTranslator implements FlatHeaderTranslatorInterface
             $currencyLabelized = $this->currencyTranslator->translate(
                 $currencyCode,
                 $locale,
-                sprintf('[%s]', $currencyCode)
+                sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $currencyCode)
             );
 
             $columnLabelized = sprintf('%s (%s)', $columnLabelized, $currencyLabelized);

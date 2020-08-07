@@ -54,7 +54,7 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
      * [
      *   0 => [
      *     'sku' => 1151511,
-     *     'categories' => 'master_femme_chaussures_sandales'
+     *     'categories' => 'master_femme_chaussures_sandales',
      *     'description-en' => 'Ma description',
      *     'enabled' => 0,
      *     'groups' => 'group1',
@@ -62,7 +62,7 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
      *   ],
      *   1 => [
      *     'sku' => 1151512,
-     *     'categories' => 'master_femme_manteaux_manteaux_dhiver'
+     *     'categories' => 'master_femme_manteaux_manteaux_dhiver',
      *     'description-en' => 'Ma description1',
      *     'enabled' => 1,
      *     'groups' => 'group2,group3',

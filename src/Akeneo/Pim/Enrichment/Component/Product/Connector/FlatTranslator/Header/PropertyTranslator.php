@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\Header;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
 
 class PropertyTranslator implements FlatHeaderTranslatorInterface
@@ -30,7 +31,7 @@ class PropertyTranslator implements FlatHeaderTranslatorInterface
         return $this->labelTranslator->translate(
             sprintf('pim_common.%s', $columnName),
             $locale,
-            sprintf('[%s]', $columnName)
+            sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $columnName)
         );
     }
 }

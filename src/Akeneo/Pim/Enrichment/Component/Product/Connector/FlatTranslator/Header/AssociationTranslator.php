@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\Header;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AssociationColumnsResolver;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypeTranslations;
 use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
 
@@ -58,11 +59,12 @@ class AssociationTranslator implements FlatHeaderTranslatorInterface
         $entityTypeLabelized = $this->labelTranslator->translate(
             sprintf('pim_common.%s', $entityType),
             $locale,
-            sprintf('[%s]', $entityType)
+            sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $entityType)
         );
 
         $associationTypeLabelized = isset($this->associationTranslations[$associationType]) ?
-            $this->associationTranslations[$associationType] : sprintf('[%s]', $associationType);
+            $this->associationTranslations[$associationType] :
+            sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $associationType);
 
         $translation = sprintf('%s %s', $associationTypeLabelized, $entityTypeLabelized);
 
