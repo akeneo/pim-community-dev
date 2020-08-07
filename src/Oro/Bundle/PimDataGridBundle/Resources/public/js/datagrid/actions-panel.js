@@ -131,10 +131,10 @@ define(
 
             _.each(groupedLaunchers, function (groupLaunchers, groupName) {
                 const button = this.el.querySelector(`.${this.getGroupClassname(groupName)}`);
-                const isPublishedGrid = 'published-product-grid' === groupLaunchers[0]?.action.datagrid.name || false;
+                const isProductGrid = 'product-grid' === groupLaunchers[0]?.action.datagrid.name || false;
 
                 const Component = React.createElement(QuickExportConfigurator, {
-                    hideWithLabelsSelect: isPublishedGrid,
+                    showWithLabelsSelect: isProductGrid,
                     onActionLaunch: formValue => {
                         const actionName = `quick_export${
                           'grid-context' === formValue['context'] ? `_grid_context` : ''
@@ -150,7 +150,7 @@ define(
 
                         launcher.action.route_parameters = {
                             ...launcher.action.route_parameters,
-                            _withLabels: 'with-labels' === formValue['with-labels'],
+                            _withLabels: isProductGrid && 'with-labels' === formValue['with-labels'],
                             _fileLocale: UserContext.get('catalogLocale'),
                         };
 

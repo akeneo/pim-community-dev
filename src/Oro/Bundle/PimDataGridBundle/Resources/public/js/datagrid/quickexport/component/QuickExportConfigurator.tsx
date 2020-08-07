@@ -56,7 +56,7 @@ const QuickExportButton = styled.button`
 `;
 
 type QuickExportConfiguratorProps = {
-  hideWithLabelsSelect: boolean;
+  showWithLabelsSelect: boolean;
   onActionLaunch: (formValue: FormValue) => void;
   getProductCount: () => number;
 };
@@ -70,7 +70,7 @@ const QuickExportConfigurator = (props: QuickExportConfiguratorProps) => (
 );
 
 const QuickExportConfiguratorContainer = ({
-  hideWithLabelsSelect,
+  showWithLabelsSelect,
   onActionLaunch,
   getProductCount,
 }: QuickExportConfiguratorProps) => {
@@ -84,7 +84,7 @@ const QuickExportConfiguratorContainer = ({
   const readyToSubmit =
     undefined !== formValue['type'] &&
     undefined !== formValue['context'] &&
-    (undefined !== formValue['with-labels'] || hideWithLabelsSelect);
+    (undefined !== formValue['with-labels'] || !showWithLabelsSelect);
 
   return (
     <>
@@ -114,12 +114,7 @@ const QuickExportConfiguratorContainer = ({
                 )}`}
               </Subtitle>
               <Title>{translate('pim_datagrid.mass_action.quick_export.configurator.title')}</Title>
-              <Form
-                value={formValue}
-                onChange={(newValue: FormValue) => {
-                  setFormValue(newValue);
-                }}
-              >
+              <Form value={formValue} onChange={setFormValue}>
                 <Select name="type">
                   <Option value="csv" title={translate('pim_datagrid.mass_action.quick_export.configurator.csv')}>
                     <CSVFileIcon size={48} />
@@ -138,7 +133,7 @@ const QuickExportConfiguratorContainer = ({
                     title={translate('pim_datagrid.mass_action.quick_export.configurator.all_attributes')}
                   />
                 </Select>
-                {!hideWithLabelsSelect && (
+                {showWithLabelsSelect && (
                   <Select name="with-labels">
                     <Option
                       value="with-codes"
