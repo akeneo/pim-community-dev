@@ -53,19 +53,19 @@ const useInfiniteScroll = (
     return scrollPosition + clientHeight >= scrollSize - threshold && !lastAppend && !isFetching;
   };
 
+  if (null !== scrollableElement) {
+    scrollableElement.onscroll = () => {
+      if (hasToAppendItems(scrollableElement, state.lastAppend, state.isFetching)) {
+        const lastElement = state.items[state.items.length - 1];
+        const searchAfter = lastElement.id;
+        handleFetchingResults(searchAfter);
+      }
+    };
+  }
+
   useEffect(() => {
-    if (null !== scrollableElement) {
-      scrollableElement.onscroll = () => {
-        if (hasToAppendItems(scrollableElement, state.lastAppend, state.isFetching)) {
-          const lastElement = state.items[state.items.length - 1];
-          const searchAfter = lastElement.id;
-          handleFetchingResults(searchAfter);
-        }
-      };
-    } else {
-      handleFetchingResults(null);
-    }
-  }, [scrollableElement, state]);
+    handleFetchingResults(null);
+  }, []);
 
   return [{items: state.items, isFetching: state.isFetching, hasError: state.hasError}, handleFetchingResults];
 };

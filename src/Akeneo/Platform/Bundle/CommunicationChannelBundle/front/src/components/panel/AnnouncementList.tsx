@@ -55,6 +55,10 @@ const AnnouncementList = ({campaign, panelIsClosed}: ListAnnouncementProps) => {
     return <EmptyAnnouncementList text={__('akeneo_communication_channel.panel.list.error')} />;
   }
 
+  if (announcementResponse.items.length === 0) {
+    return <EmptyAnnouncementList text={__('akeneo_communication_channel.panel.list.empty')} />;
+  }
+
   return (
     <Container ref={containerRef}>
       {announcementResponse.items.map(
