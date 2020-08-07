@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import {DependenciesProvider, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {
@@ -81,12 +81,10 @@ const QuickExportConfiguratorContainer = ({
   useShortcut(Key.Escape, closeModal);
 
   const productCount = getProductCount();
-
-  useEffect(() => {
-    if (hideWithLabelsSelect) {
-      setFormValue(formValue => ({...formValue, 'with-labels': 'with-codes'}));
-    }
-  }, []);
+  const readyToSubmit =
+    undefined !== formValue['type'] &&
+    undefined !== formValue['context'] &&
+    (undefined !== formValue['with-labels'] || hideWithLabelsSelect);
 
   return (
     <>
@@ -104,11 +102,7 @@ const QuickExportConfiguratorContainer = ({
                   onActionLaunch(formValue);
                   closeModal();
                 }}
-                disabled={
-                  undefined === formValue['type'] ||
-                  undefined === formValue['context'] ||
-                  undefined === formValue['with-labels']
-                }
+                disabled={!readyToSubmit}
               >
                 {translate('pim_common.export')}
               </ModalConfirmButton>
