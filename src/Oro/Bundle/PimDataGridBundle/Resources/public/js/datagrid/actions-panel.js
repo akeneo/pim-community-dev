@@ -150,7 +150,7 @@ define(
 
                         launcher.action.route_parameters = {
                             ...launcher.action.route_parameters,
-                            _withLabels: isProductGrid && 'with-labels' === formValue['with-labels'],
+                            _withLabels: isProductGrid && 'with-labels' === formValue['with-labels'] ? 1 : 0,
                             _fileLocale: UserContext.get('catalogLocale'),
                         };
 
