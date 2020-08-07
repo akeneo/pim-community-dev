@@ -16,6 +16,7 @@ services:
       - '@akeneo.pim.structure.query.get_channel_translations'
       - '@pim_catalog.localization.translator.language'
       - '@pim_catalog.localization.translator.currency'
+      - '@akeneo.pim.structure.query.get_attribute_translations'
     tags: [{ name: pim_enrich.connector.flat_translators.header }]
 
   pim_enrich.connector.flat_translators.header.property:
