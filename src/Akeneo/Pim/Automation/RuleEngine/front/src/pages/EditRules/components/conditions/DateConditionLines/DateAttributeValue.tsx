@@ -38,6 +38,7 @@ type DateAttributeValueProps = {
   lineNumber: number;
   timePeriodOptions?: TimePeriodOption[];
   translate: Translate;
+  hasError?: boolean;
 };
 
 // Color is not present in theme ATM (discussed with the UI team)
@@ -60,6 +61,7 @@ const DateAttributeValue = forwardRef<
       handlePeriodChange,
       timePeriodOptions,
       inputDateType,
+      hasError,
     },
     forwardedRef: React.Ref<HTMLInputElement>
   ) => {
@@ -69,7 +71,7 @@ const DateAttributeValue = forwardRef<
           <>
             <CustomInputDate
               type={inputDateType}
-              className='AknTextField'
+              className={`AknTextField${hasError ? ' AknTextField--error' : ''}`}
               data-testid={`date-input-from-${lineNumber}`}
               hiddenLabel
               id={`date-input-from-${lineNumber}`}
@@ -81,7 +83,7 @@ const DateAttributeValue = forwardRef<
             />
             <CustomInputDate
               type={inputDateType}
-              className='AknTextField'
+              className={`AknTextField${hasError ? ' AknTextField--error' : ''}`}
               data-testid={`date-input-to-${lineNumber}`}
               hiddenLabel
               id={`date-input-to-${lineNumber}`}
@@ -102,7 +104,7 @@ const DateAttributeValue = forwardRef<
         return (
           <CustomInputDate
             type={inputDateType}
-            className='AknTextField'
+            className={`AknTextField${hasError ? ' AknTextField--error' : ''}`}
             data-testid={`date-input-${lineNumber}`}
             hiddenLabel
             id={`date-input-${lineNumber}`}

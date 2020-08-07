@@ -1,11 +1,17 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { ConditionLineProps } from './ConditionLineProps';
 import { FamilyOperators } from '../../../../models/conditions';
 import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
 import { Operator } from '../../../../models/Operator';
 import { FamilyCode } from '../../../../models';
-import { FieldColumn, OperatorColumn, ValueColumn } from './style';
+import {
+  ConditionLineFormAndErrorsContainer,
+  ConditionLineFormContainer,
+  FieldColumn,
+  OperatorColumn,
+  ValueColumn
+} from './style';
 import { FamiliesSelector } from '../../../../components/Selectors/FamiliesSelector';
 import { getFamiliesByIdentifiers } from '../../../../repositories/FamilyRepository';
 import { LineErrors } from '../LineErrors';
@@ -24,9 +30,14 @@ const FamilyConditionLine: React.FC<ConditionLineProps> = ({
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
+  const { errors } = useFormContext();
+
   const [unexistingFamilyCodes, setUnexistingFamilyCodes] = React.useState<
     FamilyCode[]
   >([]);
+
+  const isElementInError = (element: string): boolean =>
+    typeof errors?.content?.conditions?.[lineNumber]?.[element] === 'object';
 
   const {
     fieldFormName,
@@ -62,6 +73,9 @@ const FamilyConditionLine: React.FC<ConditionLineProps> = ({
   };
 
   const validateFamilyCodes = (familyCodes: FamilyCode[]) => {
+    if (Array.isArray(familyCodes) && familyCodes.length === 0) {
+      return translate('pimee_catalog_rule.exceptions.required');
+    }
     if (familyCodes && unexistingFamilyCodes.length) {
       const unknownFamilyCodes: FamilyCode[] = [];
       familyCodes.forEach(familyCode => {
@@ -82,44 +96,46 @@ const FamilyConditionLine: React.FC<ConditionLineProps> = ({
     return true;
   };
   return (
-    <div className={'AknGrid-bodyCell'}>
-      <Controller
-        as={<input type='hidden' />}
-        name={fieldFormName}
-        defaultValue='family'
-      />
-      <FieldColumn
-        className={'AknGrid-bodyCell--highlight'}
-        title={translate('pimee_catalog_rule.form.edit.fields.family')}>
-        {translate('pimee_catalog_rule.form.edit.fields.family')}
-      </FieldColumn>
-      <OperatorColumn>
+    <ConditionLineFormAndErrorsContainer className={'AknGrid-bodyCell'}>
+      <ConditionLineFormContainer>
         <Controller
-          as={OperatorSelector}
-          availableOperators={FamilyOperators}
-          data-testid={`edit-rules-input-${lineNumber}-operator`}
-          hiddenLabel
-          name={operatorFormName}
-          defaultValue={getOperatorFormValue() ?? INIT_OPERATOR}
-          value={getOperatorFormValue()}
+          as={<input type='hidden' />}
+          name={fieldFormName}
+          defaultValue='family'
         />
-      </OperatorColumn>
-      {shouldDisplayValue() && (
-        <ValueColumn>
+        <FieldColumn
+          className={'AknGrid-bodyCell--highlight'}
+          title={translate('pimee_catalog_rule.form.edit.fields.family')}>
+          {translate('pimee_catalog_rule.form.edit.fields.family')}
+        </FieldColumn>
+        <OperatorColumn>
           <Controller
-            as={FamiliesSelector}
-            currentCatalogLocale={currentCatalogLocale}
-            data-testid={`edit-rules-input-${lineNumber}-value`}
-            defaultValue={getValueFormValue()}
+            as={OperatorSelector}
+            availableOperators={FamilyOperators}
+            data-testid={`edit-rules-input-${lineNumber}-operator`}
             hiddenLabel
-            name={valueFormName}
-            rules={{ validate: validateFamilyCodes }}
-            value={getValueFormValue()}
+            name={operatorFormName}
+            defaultValue={getOperatorFormValue() ?? INIT_OPERATOR}
+            value={getOperatorFormValue()}
           />
-        </ValueColumn>
-      )}
+        </OperatorColumn>
+        {shouldDisplayValue() && (
+          <ValueColumn className={isElementInError('value') ? 'select2-container-error' : ''}>
+            <Controller
+              as={FamiliesSelector}
+              currentCatalogLocale={currentCatalogLocale}
+              data-testid={`edit-rules-input-${lineNumber}-value`}
+              defaultValue={getValueFormValue()}
+              hiddenLabel
+              name={valueFormName}
+              rules={{ validate: validateFamilyCodes, required: translate('pimee_catalog_rule.exceptions.required') }}
+              value={getValueFormValue()}
+            />
+          </ValueColumn>
+        )}
+      </ConditionLineFormContainer>
       <LineErrors lineNumber={lineNumber} type='conditions' />
-    </div>
+    </ConditionLineFormAndErrorsContainer>
   );
 };
 

@@ -150,10 +150,7 @@ const DateTemplateConditionLine: React.FC<Props> = ({
         />
       </OperatorColumn>
       {isNotAnEmptyOperator(operator) && (
-        <ValueColumn
-          className={
-            isElementInError('value') ? 'select2-container-error' : ''
-          }>
+        <ValueColumn>
           {isNotARangeOperator(operator) && (
             <StyledSelect2Wrapper>
               <Select2SimpleSyncWrapper
@@ -182,6 +179,7 @@ const DateTemplateConditionLine: React.FC<Props> = ({
             ref={refToInput}
             timePeriodOptions={timePeriodOptions}
             translate={translate}
+            hasError={isElementInError('value')}
           />
         </ValueColumn>
       )}
