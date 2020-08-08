@@ -50,6 +50,8 @@ akeneo_data_quality_insights:
         recommendation: Atrybuty z problemami wielkich liter
       consistency_textarea_lowercase_words:
         recommendation: Atrybuty z problemami z małymi literami
+      consistency_text_title_formatting:
+        recommendation: Atrybuty z sugestiami formatowania
       consistency_spelling:
         recommendation: Atrybuty z problemami z pisownią
     axis:

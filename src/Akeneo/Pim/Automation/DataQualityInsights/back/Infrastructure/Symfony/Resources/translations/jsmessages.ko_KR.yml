@@ -50,6 +50,8 @@ akeneo_data_quality_insights:
         recommendation: 대문자 문제가 있는 특성
       consistency_textarea_lowercase_words:
         recommendation: 소문자 문제가 있는 특성
+      consistency_text_title_formatting:
+        recommendation: 특성과 형식 지정 제안
       consistency_spelling:
         recommendation: 철자 문제가 있는 특성
     axis:
