@@ -333,6 +333,7 @@ pim_enrich.mass_edit.product:
       label_count: "{1}Ändere Eltern des Produktmodells von <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|] 1, Inf [Ändere Eltern des Produktmodells von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten</span>"
       description: Das übergeordnete Element der Variantenprodukte oder Sub Produktmodelle die im Raster ausgewählt wurden, werden zu dem gewählten Produktmodell geändert.
 pim_datagrid:
+  search: "Suche in {{ label }}"
   mass_action_group:
     bulk_actions:
       label: Massenbearbeitung

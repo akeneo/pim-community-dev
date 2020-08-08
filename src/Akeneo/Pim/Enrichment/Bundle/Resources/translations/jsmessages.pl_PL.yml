@@ -333,6 +333,7 @@ pim_enrich.mass_edit.product:
       label_count: "{1}Zmień nadrzędny model produktu <span class=\"AknFullPage-title--highlight\">1 produktu</span>|]1, Inf[Zmień nadrzędny model produktu <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span>"
       description: Element nadrzędny wariantu produktów lub modele produktu podrzędnego zaznaczone w siatce zostaną zmienione na wybrany model produktu.
 pim_datagrid:
+  search: "Szukaj w {{label}}"
   mass_action_group:
     bulk_actions:
       label: Działania zbiorcze
