@@ -55,6 +55,7 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
             'code'                   => $attribute->getCode(),
             'type'                   => $attribute->getType(),
             'group'                  => ($attribute->getGroup()) ? $attribute->getGroup()->getCode() : null,
+            'group_labels'           => ($attribute->getGroup()) ? $this->translationNormalizer->normalize($attribute->getGroup(), $format, $context) : null,
             'unique'                 => (bool) $attribute->isUnique(),
             'useable_as_grid_filter' => (bool) $attribute->isUseableAsGridFilter(),
             'allowed_extensions'     => $attribute->getAllowedExtensions(),
