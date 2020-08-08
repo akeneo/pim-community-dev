@@ -333,6 +333,7 @@ pim_enrich.mass_edit.product:
       label_count: "{1}Changer le parent d'<span class=\"AknFullPage-title--highlight\">1 produit</span>|]1, Inf[Changer le parent de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
       description: Le parent des produits variants et des sous modèles de produits sélectionnés dans la grille va être modifié avec ce modèle de produit.
 pim_datagrid:
+  search: "Rechercher sur {{ label }}"
   mass_action_group:
     bulk_actions:
       label: Actions de masse
