@@ -279,6 +279,7 @@ pim_menu:
 pim_title:
   pimee_catalog_rule_rule_index: Règles
   pimee_catalog_rule_edit: Modifier la règle
+  pimee_catalog_rule_new: Règles
 pim_import_export:
   widget:
     last_operations:
