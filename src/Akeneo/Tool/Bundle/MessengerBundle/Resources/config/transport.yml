@@ -1,0 +1,4 @@
+services:
+    Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\GpsTransportFactory:
+        tags: [messenger.transport_factory]
+
