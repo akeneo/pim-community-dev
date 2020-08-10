@@ -49,13 +49,6 @@ pimee_enrich_rule_definition_update:
         ruleDefinitionCode: '[a-z0-9_]+'
     methods: [PUT]
 
-pimee_enrich_rule_definition_execute:
-    path: /rest/rule_definition_execute/{ruleDefinitionCode}
-    defaults: { _controller: pimee_enrich.controller.rule_definition.execute }
-    requirements:
-        ruleDefinitionCode: '[a-z0-9_]+'
-    methods: [PUT]
-
 pimee_enrich_rule_definition_get_impacted_product_count:
     path: /rest/rule_definition_impacted_product_count
     defaults: { _controller: pimee_enrich.controller.rule_definition.get_impacted_product_count }

@@ -1,11 +1,16 @@
 import React from 'react';
 import { Payload } from '../../../rules.types';
-import { httpPut } from '../../../fetch';
+import { httpGet, httpPut } from '../../../fetch';
 import { generateUrl } from '../../../dependenciesTools/hooks';
 import { FormData } from '../edit-rules.types';
 import { Control, FormContextValues, useForm } from 'react-hook-form';
 import { Condition, Locale, RuleDefinition } from '../../../models';
-import { NotificationLevel, Notify, Router, Translate, } from '../../../dependenciesTools';
+import {
+  NotificationLevel,
+  Notify,
+  Router,
+  Translate,
+} from '../../../dependenciesTools';
 import { Action } from '../../../models/Action';
 import {
   formatDateLocaleTimeConditionsFromBackend,
@@ -116,10 +121,10 @@ const submitEditRuleForm = (
       'pimee_enrich_rule_definition_update',
       { ruleDefinitionCode }
     );
-    const response = await httpPut(updateRuleUrl, {
+    const updateResponse = await httpPut(updateRuleUrl, {
       body: transformFormData(formData),
     });
-    if (response.ok) {
+    if (updateResponse.ok) {
       reset(formData);
       registerConditions(register, formData.content?.conditions || []);
       registerActions(register, formData.content?.actions || []);
@@ -127,19 +132,23 @@ const submitEditRuleForm = (
       if (executeOnSave) {
         const executeRuleUrl = generateUrl(
           router,
-          'pimee_enrich_rule_definition_execute',
-          { ruleDefinitionCode }
+          'pimee_catalog_rule_rule_execute',
+          { code: ruleDefinitionCode }
         );
-        const executeResponse = await httpPut(executeRuleUrl, {});
+        const executeResponse = await httpGet(executeRuleUrl);
         if (executeResponse.ok) {
           notify(
             NotificationLevel.SUCCESS,
-            translate('pimee_catalog_rule.form.edit.notification.execute_success')
+            translate(
+              'pimee_catalog_rule.form.edit.notification.execute_success'
+            )
           );
         } else {
           notify(
             NotificationLevel.ERROR,
-            translate('pimee_catalog_rule.form.edit.notification.execute_failed')
+            translate(
+              'pimee_catalog_rule.form.edit.notification.execute_failed'
+            )
           );
         }
       } else {
@@ -149,7 +158,7 @@ const submitEditRuleForm = (
         );
       }
     } else {
-      const errors = await response.json();
+      const errors = await updateResponse.json();
       errors.forEach(
         (error: { global: boolean; message: string; path: string }) => {
           setError(getErrorPath(error.path), 'validate', error.message);

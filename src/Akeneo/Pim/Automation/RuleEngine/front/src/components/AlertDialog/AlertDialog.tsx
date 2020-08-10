@@ -20,7 +20,7 @@ const AlertDialog: React.FC<Props> = ({
   description,
   cancelLabel,
   confirmLabel,
-  illustrationClassName = 'AknFullPage-illustration--delete'
+  illustrationClassName = 'AknFullPage-illustration--delete',
 }) => {
   const handleConfirm = () => {
     dialog.hide();
@@ -45,7 +45,9 @@ const AlertDialog: React.FC<Props> = ({
       className='AknFullPage'>
       <div className='AknFullPage-content AknFullPage-content--withIllustration'>
         <div>
-          <div className={`AknFullPage-image AknFullPage-illustration ${illustrationClassName}`} />
+          <div
+            className={`AknFullPage-image AknFullPage-illustration ${illustrationClassName}`}
+          />
         </div>
         <div>
           <div className='AknFullPage-titleContainer'>

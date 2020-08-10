@@ -138,7 +138,9 @@ const EditRulesContent: React.FC<Props> = ({
   const saveAndExecuteDialog = useDialogState();
   const handleSaveAndExecuteRule = () => {
     formMethods.register({ name: 'execute_on_save', value: true });
-    onSubmit().then(() => { formMethods.unregister('execute_on_save') });
+    onSubmit().then(() => {
+      formMethods.unregister('execute_on_save');
+    });
   };
 
   return (
@@ -151,7 +153,9 @@ const EditRulesContent: React.FC<Props> = ({
         unsavedChanges={formMethods.formState.dirty}
         dropdown={
           <Dropdown title={translate('pim_common.other_actions')}>
-            <DialogDisclosure {...deleteDialog} className='AknDropdown-menuLink'>
+            <DialogDisclosure
+              {...deleteDialog}
+              className='AknDropdown-menuLink'>
               {translate('pim_common.delete')}
             </DialogDisclosure>
             <AlertDialog
@@ -166,7 +170,9 @@ const EditRulesContent: React.FC<Props> = ({
                 'pimee_catalog_rule.form.delete.description'
               )}
             />
-            <DialogDisclosure {...saveAndExecuteDialog} className='AknDropdown-menuLink'>
+            <DialogDisclosure
+              {...saveAndExecuteDialog}
+              className='AknDropdown-menuLink'>
               {translate('pimee_catalog_rule.form.edit.execute.button')}
             </DialogDisclosure>
             <AlertDialog
@@ -175,7 +181,9 @@ const EditRulesContent: React.FC<Props> = ({
               cancelLabel={translate('pim_common.cancel')}
               confirmLabel={translate('pim_common.confirm')}
               label={translate('pimee_catalog_rule.form.edit.execute.title')}
-              description={translate('pimee_catalog_rule.form.edit.execute.description')}
+              description={translate(
+                'pimee_catalog_rule.form.edit.execute.description'
+              )}
               illustrationClassName={'AknFullPage-illustration--rules'}
             />
           </Dropdown>
