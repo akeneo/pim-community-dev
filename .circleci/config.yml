@@ -258,11 +258,6 @@ jobs:
             name: Front linter
             command: docker-compose run --rm node yarn run lint
         - run:
-            name: Front linter (Franklin Insights)
-            command: |
-                docker-compose run --rm node ./node_modules/.bin/tslint -c src/Akeneo/Pim/Automation/FranklinInsights/tslint.json src/Akeneo/Pim/Automation/FranklinInsights/**/*.{ts,tsx}
-                docker-compose run --rm node ./node_modules/.bin/prettier --config src/Akeneo/Pim/Automation/FranklinInsights/.prettierrc.json --check src/Akeneo/Pim/Automation/FranklinInsights/**/*.{ts,tsx}
-        - run:
             name: Front unit tests
             command: docker-compose run --rm node yarn run unit
         - run:

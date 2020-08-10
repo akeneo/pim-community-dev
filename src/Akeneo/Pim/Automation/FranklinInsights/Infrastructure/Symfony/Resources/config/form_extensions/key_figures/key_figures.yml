@@ -1,12 +1,4 @@
 extensions:
-    akeneo-franklin-insights-menu-activity-key-figures:
-        module: akeneo/franklin-insights/view/key-figures/menu-item
-        parent: pim-menu-activity-navigation-block
-        position: 102
-        config:
-            title: akeneo_franklin_insights.key_figures.menu
-            to: akeneo_franklin_insights_key_figure_index
-
     akeneo-franklin-insights-key-figures-index:
         module: pim/common/simple-view
         config:
