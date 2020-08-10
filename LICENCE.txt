@@ -1,4 +1,4 @@
-Akeneo PIM yolo
+Akeneo PIM
 
 The Open Software License version 3.0
 
