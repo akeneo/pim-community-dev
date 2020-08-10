@@ -1,5 +1,5 @@
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import {
   TextAttributeCondition,
   TextAttributeOperators,
@@ -28,15 +28,13 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
   scopes,
   currentCatalogLocale,
 }) => {
-  const { errors } = useFormContext();
   const router = useBackboneRouter();
   const translate = useTranslate();
-  const { valueFormName, getValueFormValue } = useControlledFormInputCondition<
-    string[]
-  >(lineNumber);
-
-  const isElementInError = (element: string): boolean =>
-    typeof errors?.content?.conditions?.[lineNumber]?.[element] === 'object';
+  const {
+    valueFormName,
+    getValueFormValue,
+    isFormFieldInError,
+  } = useControlledFormInputCondition<string[]>(lineNumber);
 
   const [attribute, setAttribute] = React.useState<Attribute | null>();
   React.useEffect(() => {
@@ -58,7 +56,7 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
       <Controller
         as={InputText}
         className={
-          isElementInError('value')
+          isFormFieldInError('value')
             ? 'AknTextField AknTextField--error'
             : undefined
         }

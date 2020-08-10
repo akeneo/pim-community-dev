@@ -1,5 +1,5 @@
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { ConditionLineProps } from './ConditionLineProps';
 import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
 import { Operator } from '../../../../models/Operator';
@@ -29,13 +29,13 @@ const GroupsConditionLine: React.FC<ConditionLineProps> = ({
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
-  const { errors } = useFormContext();
   const {
     fieldFormName,
     operatorFormName,
     valueFormName,
     getOperatorFormValue,
     getValueFormValue,
+    isFormFieldInError,
   } = useControlledFormInputCondition<string[]>(lineNumber);
   const [unexistingGroupCodes, setUnexistingGroupCodes] = React.useState<
     GroupCode[]
@@ -83,9 +83,6 @@ const GroupsConditionLine: React.FC<ConditionLineProps> = ({
     return true;
   };
 
-  const isElementInError = (element: string): boolean =>
-    typeof errors?.content?.conditions?.[lineNumber]?.[element] === 'object';
-
   return (
     <ConditionLineFormAndErrorsContainer className={'AknGrid-bodyCell'}>
       <ConditionLineFormContainer>
@@ -113,7 +110,7 @@ const GroupsConditionLine: React.FC<ConditionLineProps> = ({
         {shouldDisplayValue() && (
           <ValueColumn
             className={
-              isElementInError('value') ? 'select2-container-error' : ''
+              isFormFieldInError('value') ? 'select2-container-error' : ''
             }>
             <Controller
               as={GroupsSelector}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import {
   SimpleMultiOptionsAttributeCondition,
   SimpleMultiOptionsAttributeOperators,
@@ -31,12 +31,13 @@ const SimpleMultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeCo
   scopes,
   currentCatalogLocale,
 }) => {
-  const { valueFormName, getValueFormValue } = useControlledFormInputCondition<
-    string[]
-  >(lineNumber);
+  const {
+    valueFormName,
+    getValueFormValue,
+    isFormFieldInError,
+  } = useControlledFormInputCondition<string[]>(lineNumber);
   const router = useBackboneRouter();
   const translate = useTranslate();
-  const { errors } = useFormContext();
 
   const [unexistingOptionCodes, setUnexistingOptionCodes] = React.useState<
     AttributeOptionCode[]
@@ -48,9 +49,6 @@ const SimpleMultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeCo
       setAttribute(attribute)
     );
   }, []);
-
-  const isElementInError = (element: string): boolean =>
-    typeof errors?.content?.conditions?.[lineNumber]?.[element] === 'object';
 
   React.useEffect(() => {
     if (!attribute) {
@@ -127,7 +125,7 @@ const SimpleMultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeCo
       scopes={scopes}
       availableOperators={SimpleMultiOptionsAttributeOperators}
       attribute={attribute}
-      valueHasError={isElementInError('value')}>
+      valueHasError={isFormFieldInError('value')}>
       {attribute && (
         <Controller
           as={MultiOptionsSelector}

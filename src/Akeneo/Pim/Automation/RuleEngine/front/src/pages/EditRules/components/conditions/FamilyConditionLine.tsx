@@ -1,5 +1,5 @@
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { ConditionLineProps } from './ConditionLineProps';
 import { FamilyOperators } from '../../../../models/conditions';
 import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
@@ -30,14 +30,10 @@ const FamilyConditionLine: React.FC<ConditionLineProps> = ({
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
-  const { errors } = useFormContext();
 
   const [unexistingFamilyCodes, setUnexistingFamilyCodes] = React.useState<
     FamilyCode[]
   >([]);
-
-  const isElementInError = (element: string): boolean =>
-    typeof errors?.content?.conditions?.[lineNumber]?.[element] === 'object';
 
   const {
     fieldFormName,
@@ -45,6 +41,7 @@ const FamilyConditionLine: React.FC<ConditionLineProps> = ({
     valueFormName,
     getOperatorFormValue,
     getValueFormValue,
+    isFormFieldInError,
   } = useControlledFormInputCondition<string[]>(lineNumber);
 
   React.useEffect(() => {
@@ -122,7 +119,7 @@ const FamilyConditionLine: React.FC<ConditionLineProps> = ({
         {shouldDisplayValue() && (
           <ValueColumn
             className={
-              isElementInError('value') ? 'select2-container-error' : ''
+              isFormFieldInError('value') ? 'select2-container-error' : ''
             }>
             <Controller
               as={FamiliesSelector}

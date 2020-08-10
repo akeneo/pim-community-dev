@@ -1,5 +1,5 @@
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { ConditionLineProps } from './ConditionLineProps';
 import {
   ConditionLineFormAndErrorsContainer,
@@ -28,8 +28,6 @@ const CompletenessConditionLine: React.FC<ConditionLineProps> = ({
   scopes,
 }) => {
   const translate = useTranslate();
-  const { errors } = useFormContext();
-
   const {
     fieldFormName,
     operatorFormName,
@@ -40,10 +38,8 @@ const CompletenessConditionLine: React.FC<ConditionLineProps> = ({
     localeFormName,
     getLocaleFormValue,
     scopeFormName,
+    isFormFieldInError,
   } = useControlledFormInputCondition<string[]>(lineNumber);
-
-  const isElementInError = (element: string): boolean =>
-    typeof errors?.content?.conditions?.[lineNumber]?.[element] === 'object';
 
   const getAvailableLocales = (): Locale[] => {
     const scopeCode = getScopeFormValue();
@@ -90,13 +86,13 @@ const CompletenessConditionLine: React.FC<ConditionLineProps> = ({
                 'pimee_catalog_rule.exceptions.required_value'
               ),
             }}
-            hasError={isElementInError('value')}
+            hasError={isFormFieldInError('value')}
             helper='%'
           />
         </ValueColumn>
         <ScopeColumn
           className={
-            isElementInError('scope') ? 'select2-container-error' : ''
+            isFormFieldInError('scope') ? 'select2-container-error' : ''
           }>
           <Controller
             allowClear={false}
@@ -117,7 +113,7 @@ const CompletenessConditionLine: React.FC<ConditionLineProps> = ({
         </ScopeColumn>
         <LocaleColumn
           className={
-            isElementInError('locale') ? 'select2-container-error' : ''
+            isFormFieldInError('locale') ? 'select2-container-error' : ''
           }>
           <Controller
             as={LocaleSelector}

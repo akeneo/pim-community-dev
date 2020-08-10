@@ -1,5 +1,5 @@
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { Operator } from '../../../../models/Operator';
 import { Locale, LocaleCode } from '../../../../models';
 import {
@@ -58,7 +58,6 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
   valueHasError = false,
 }) => {
   const translate = useTranslate();
-  const { errors } = useFormContext();
   const {
     fieldFormName,
     operatorFormName,
@@ -67,6 +66,7 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
     getLocaleFormValue,
     getOperatorFormValue,
     getScopeFormValue,
+    isFormFieldInError,
   } = useControlledFormInputCondition<string[]>(lineNumber);
 
   const getAvailableLocales = (): Locale[] => {
@@ -108,9 +108,6 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
     );
   }
 
-  const isElementInError = (element: string): boolean =>
-    typeof errors?.content?.conditions?.[lineNumber]?.[element] === 'object';
-
   return (
     <ConditionLineFormAndErrorsContainer className={'AknGrid-bodyCell'}>
       <ConditionLineFormContainer>
@@ -140,7 +137,7 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
         {(attribute.scopable || getScopeFormValue()) && (
           <ScopeColumn
             className={
-              isElementInError('scope') ? 'select2-container-error' : ''
+              isFormFieldInError('scope') ? 'select2-container-error' : ''
             }>
             <Controller
               allowClear={!attribute.scopable}
@@ -164,7 +161,7 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
         {(attribute.localizable || getLocaleFormValue()) && (
           <LocaleColumn
             className={
-              isElementInError('locale') ? 'select2-container-error' : ''
+              isFormFieldInError('locale') ? 'select2-container-error' : ''
             }>
             <Controller
               as={LocaleSelector}

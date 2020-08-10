@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { ConditionLineProps } from './ConditionLineProps';
 import { CategoryOperators } from '../../../../models/conditions';
 import { Operator } from '../../../../models/Operator';
@@ -37,7 +37,7 @@ const CategoryConditionLine: React.FC<ConditionLineProps> = ({
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
-  const { errors } = useFormContext();
+
   const [initCategoryTreeOpenBranch, setInitCategoryTreeOpenBranch] = useState<
     NetworkLifeCycle<CategoryTreeModelWithOpenBranch[]>
   >({
@@ -54,9 +54,6 @@ const CategoryConditionLine: React.FC<ConditionLineProps> = ({
     data: [],
   });
 
-  const isElementInError = (element: string): boolean =>
-    typeof errors?.content?.conditions?.[lineNumber]?.[element] === 'object';
-
   const [categories, setCategories] = React.useState<Category[]>([]);
   const {
     fieldFormName,
@@ -65,6 +62,7 @@ const CategoryConditionLine: React.FC<ConditionLineProps> = ({
     getOperatorFormValue,
     getValueFormValue,
     setValueFormValue,
+    isFormFieldInError,
   } = useControlledFormInputCondition<CategoryCode[]>(lineNumber);
 
   useEffect(() => {
@@ -165,7 +163,7 @@ const CategoryConditionLine: React.FC<ConditionLineProps> = ({
                   ? translate('pimee_catalog_rule.exceptions.required')
                   : true,
             }}
-            hasError={isElementInError('value')}
+            hasError={isFormFieldInError('value')}
           />
         )}
       </ConditionLineFormContainer>
