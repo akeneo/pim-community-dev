@@ -35,8 +35,8 @@ jobs:
         with:
           name: Lib
           path: akeneo-design-system/lib
-      # - name: Add lib to git
-      #   run: git config --global user.email "contact@akeneo.com" && git config --global user.name "Github actions" && git add -A && git commit -m "publish lib folder"
+      - name: Add lib to git
+        run: git config --global user.email "contact@akeneo.com" && git config --global user.name "Github actions" && git add -A && git commit -m "publish lib folder"
       - name: Extract
         uses: s0/git-publish-subdir-action@develop
         env:
