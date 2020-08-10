@@ -146,6 +146,10 @@ pim-prod:
 up:
 	$(DOCKER_COMPOSE) up -d --remove-orphan ${C}
 
+.PHONY: storybook
+storybook:
+	cd akeneo-design-system && $(MAKE) storybook
+
 .PHONY: down
 down:
 	$(DOCKER_COMPOSE) down -v
