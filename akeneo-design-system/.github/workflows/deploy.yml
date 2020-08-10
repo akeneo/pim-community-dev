@@ -1,0 +1,25 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - master
+jobs:
+  master:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout:master
+        uses: actions/checkout@master
+
+      - name: Use Node.js 13
+        uses: actions/setup-node@v1
+        with:
+          node-version: 13.13
+      - name: Install Packages
+        run: npm install
+      - name: Build page
+        run: npm run build:storybook
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          publish_dir: ./storybook-static
