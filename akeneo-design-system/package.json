@@ -1,6 +1,6 @@
 {
     "name": "akeneo-design-system",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Akeneo design system",
     "main": "lib/index.js",
     "scripts": {
@@ -10,8 +10,8 @@
         "check-types:watch": "yarn check-types -- --watch",
         "test": "jest",
         "test:watch": "jest --watch",
-        "storybook": "start-storybook -p 6006",
-        "build-storybook": "build-storybook",
+        "start:storybook": "start-storybook -p 6006",
+        "build:storybook": "build-storybook",
         "build:prod": "yarn prebuild && export NODE_ENV=production && rollup -c",
         "build:analyze": "yarn build:prod --config-analyze"
     },
