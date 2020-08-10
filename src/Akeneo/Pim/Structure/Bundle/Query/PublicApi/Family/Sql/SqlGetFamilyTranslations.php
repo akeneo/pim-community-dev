@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family;
+namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\Family\Sql;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetFamilyTranslations;
 use Doctrine\DBAL\Connection;

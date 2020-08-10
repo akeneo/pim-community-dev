@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\Association;
+namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\Association\Sql;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypeTranslations;
 use Doctrine\DBAL\Connection;

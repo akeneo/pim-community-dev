@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\Category;
+namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\Category\Sql;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Category\GetCategoryTranslations;
 use Doctrine\DBAL\Connection;

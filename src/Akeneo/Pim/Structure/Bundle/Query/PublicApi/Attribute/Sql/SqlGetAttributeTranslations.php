@@ -23,8 +23,8 @@ class SqlGetAttributeTranslations implements GetAttributeTranslations
 
         $query = <<<SQL
 SELECT code, label
-FROM akeneo_pim.pim_catalog_attribute a
-LEFT JOIN akeneo_pim.pim_catalog_attribute_translation at ON a.id = at.foreign_key
+FROM pim_catalog_attribute a
+LEFT JOIN pim_catalog_attribute_translation at ON a.id = at.foreign_key
 WHERE locale = :locale
 AND code IN (:attributeCodes);
 SQL;

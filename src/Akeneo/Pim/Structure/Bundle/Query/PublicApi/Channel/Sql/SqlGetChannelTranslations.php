@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\Channel;
+namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\Channel\Sql;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Channel\GetChannelTranslations;
 use Doctrine\DBAL\Connection;
