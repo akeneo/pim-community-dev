@@ -10,7 +10,7 @@ jobs:
       - name: checkout:master
         uses: actions/checkout@master
       - name: publish:dsm
-        uses: johno/actions-push-subdirectories@master
+        uses: juliensnz/actions-push-subdirectories@master
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
