@@ -60,7 +60,6 @@ Feature: Quick export products with user permissions applied
     And I press the "Quick Export" button
     And I press the "CSV" button
     And I press the "All attributes" button
-    And I press the "With codes" button
     And I press the "Export" button
     And I wait for the "csv_published_product_quick_export" quick export to finish
     And exported file of "csv_published_product_quick_export" should contain:

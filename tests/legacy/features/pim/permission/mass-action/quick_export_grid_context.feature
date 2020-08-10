@@ -36,7 +36,6 @@ Feature: Quick export products according to the product grid context
     When I press the "Quick Export" button
     And I press the "CSV" button
     And I press the "Grid context" button
-    And I press the "With codes" button
     And I press the "Export" button
     And I wait for the "csv_published_product_grid_context_quick_export" quick export to finish
     And I am on the dashboard page
@@ -62,7 +61,6 @@ Feature: Quick export products according to the product grid context
     When I press the "Quick Export" button
     And I press the "XLSX" button
     And I press the "Grid context" button
-    And I press the "With codes" button
     And I press the "Export" button
     And I wait for the "xlsx_published_product_grid_context_quick_export" quick export to finish
     And I am on the dashboard page
