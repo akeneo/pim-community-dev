@@ -1,5 +1,9 @@
 # 3.0.x
 
+## Bug fixes:
+
+- PIM-9396: Add missing event in unpublishAll method
+
 # 3.0.83 (2020-08-04)
 
 ## Improvements
