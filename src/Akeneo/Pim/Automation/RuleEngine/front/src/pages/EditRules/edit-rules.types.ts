@@ -5,6 +5,7 @@ type FormData = {
     [key: string]: string;
   };
   content: { conditions: any[]; actions: any[] };
+  execute_on_save?: boolean;
 };
 
 export { FormData };

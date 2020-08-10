@@ -3,18 +3,13 @@ import { Payload } from '../../../rules.types';
 import { httpPut } from '../../../fetch';
 import { generateUrl } from '../../../dependenciesTools/hooks';
 import { FormData } from '../edit-rules.types';
-import { useForm, FormContextValues, Control } from 'react-hook-form';
-import { Locale, RuleDefinition, Condition } from '../../../models';
-import {
-  Router,
-  Translate,
-  Notify,
-  NotificationLevel,
-} from '../../../dependenciesTools';
+import { Control, FormContextValues, useForm } from 'react-hook-form';
+import { Condition, Locale, RuleDefinition } from '../../../models';
+import { NotificationLevel, Notify, Router, Translate, } from '../../../dependenciesTools';
 import { Action } from '../../../models/Action';
 import {
-  formatDateLocaleTimeConditionsToBackend,
   formatDateLocaleTimeConditionsFromBackend,
+  formatDateLocaleTimeConditionsToBackend,
 } from '../components/conditions/DateConditionLines/dateConditionLines.utils';
 
 const registerConditions = (
@@ -81,7 +76,8 @@ const transformFormData = (formData: FormData): Payload => {
     conditions = formatDateLocaleTimeConditionsToBackend(conditions);
   }
   return {
-    ...formData,
+    code: formData.code,
+    labels: formData.labels,
     priority: Number(formData.priority),
     content: {
       conditions: conditions?.filter(filterDataContentValues) ?? [],
@@ -124,13 +120,34 @@ const submitEditRuleForm = (
       body: transformFormData(formData),
     });
     if (response.ok) {
-      notify(
-        NotificationLevel.SUCCESS,
-        executeOnSave ? translate('TODO - regle executee en BG') : translate('pimee_catalog_rule.form.edit.notification.success')
-      );
       reset(formData);
       registerConditions(register, formData.content?.conditions || []);
       registerActions(register, formData.content?.actions || []);
+
+      if (executeOnSave) {
+        const executeRuleUrl = generateUrl(
+          router,
+          'pimee_enrich_rule_definition_execute',
+          { ruleDefinitionCode }
+        );
+        const executeResponse = await httpPut(executeRuleUrl, {});
+        if (executeResponse.ok) {
+          notify(
+            NotificationLevel.SUCCESS,
+            translate('pimee_catalog_rule.form.edit.notification.execute_success')
+          );
+        } else {
+          notify(
+            NotificationLevel.ERROR,
+            translate('pimee_catalog_rule.form.edit.notification.execute_failed')
+          );
+        }
+      } else {
+        notify(
+          NotificationLevel.SUCCESS,
+          translate('pimee_catalog_rule.form.edit.notification.success')
+        );
+      }
     } else {
       const errors = await response.json();
       errors.forEach(

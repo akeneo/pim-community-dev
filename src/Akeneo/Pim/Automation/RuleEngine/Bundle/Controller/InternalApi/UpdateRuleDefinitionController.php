@@ -80,13 +80,6 @@ class UpdateRuleDefinitionController
 
         $data = json_decode($request->getContent(), true);
         $data['code'] = $ruleDefinitionCode;
-
-        $executeOnSave = false;
-        if (isset($data['execute_on_save'])) {
-            unset($data['execute_on_save']);
-            $executeOnSave = true;
-        }
-
         $command = new CreateOrUpdateRuleCommand($data);
 
         $violations = $this->validator->validate($command, null, ['Default', 'update']);
@@ -97,11 +90,6 @@ class UpdateRuleDefinitionController
         }
 
         ($this->updateRuleDefinitionHandler)($command);
-
-        if ($executeOnSave) {
-            die('execute background now');
-        }
-
         $ruleDefinition = $this->ruleDefinitionRepository->findOneByIdentifier($ruleDefinitionCode);
 
         return new JsonResponse($this->ruleDefinitionNormalizer->normalize($ruleDefinition));

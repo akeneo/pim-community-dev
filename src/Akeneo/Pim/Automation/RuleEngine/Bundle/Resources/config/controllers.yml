@@ -52,6 +52,13 @@ services:
             - '@validator'
             - '@oro_security.security_facade'
 
+    pimee_enrich.controller.rule_definition.execute:
+        class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi\ExecuteRuleDefinitionController'
+        public: true
+        arguments:
+            - '@akeneo_rule_engine.repository.rule_definition'
+            - '@oro_security.security_facade'
+
     pimee_enrich.controller.rule_definition.get_impacted_product_count:
         class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi\GetImpactedProductCountController'
         public: true

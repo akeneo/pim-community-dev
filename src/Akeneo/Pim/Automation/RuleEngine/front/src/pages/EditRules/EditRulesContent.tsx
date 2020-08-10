@@ -167,19 +167,16 @@ const EditRulesContent: React.FC<Props> = ({
               )}
             />
             <DialogDisclosure {...saveAndExecuteDialog} className='AknDropdown-menuLink'>
-              {translate('TODO')}
+              {translate('pimee_catalog_rule.form.edit.execute.button')}
             </DialogDisclosure>
             <AlertDialog
               dialog={saveAndExecuteDialog}
               onValidate={handleSaveAndExecuteRule}
               cancelLabel={translate('pim_common.cancel')}
               confirmLabel={translate('pim_common.confirm')}
-              label={translate(
-                'TODO'
-              )}
-              description={translate(
-                'TODO'
-              )}
+              label={translate('pimee_catalog_rule.form.edit.execute.title')}
+              description={translate('pimee_catalog_rule.form.edit.execute.description')}
+              illustrationClassName={'AknFullPage-illustration--rules'}
             />
           </Dropdown>
         }

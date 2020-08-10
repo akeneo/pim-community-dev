@@ -109,6 +109,10 @@ pimee_catalog_rule:
                 category: Category
                 attribute: Attribute
                 groups: Groups
+            execute:
+                button: Save and execute
+                title: Save and execute the rule
+                description: You will save the current rule and execute it in background. When it’s done, you will be notified.
             actions:
                 add_action: Add action
                 add_category:
@@ -212,6 +216,8 @@ pimee_catalog_rule:
             notification:
                 success: Rule updated successfully
                 failed: Rule update failed
+                execute_success: Rule successfully updated and executed
+                execute_failed: The rule was saved but there was an error during the execution
             discard_changes: Your changes will be lost if you leave the page.
             please_select_attribute: Please select a target attribute first.
             unhandled_attribute_type: Sorry this attribute type is not managed yet. Please use the rules import.
