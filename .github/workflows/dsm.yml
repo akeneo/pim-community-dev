@@ -19,7 +19,7 @@ jobs:
       - name: Run tests
         run: cd akeneo-design-system && npm run test
       - name: Build page
-        run: cd akeneo-design-system && npm run lib:sbuild:prod
+        run: cd akeneo-design-system && npm run lib:build:prod
       - uses: actions/upload-artifact@v1
         with:
           name: Lib
