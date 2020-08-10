@@ -172,8 +172,8 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
     private function undoGroupFlatItemsByColumnName(array $columns): array
     {
         $result = [];
-        foreach($columns as $columnName => $columnValues) {
-            foreach($columnValues as $flatItemIndex => $value) {
+        foreach ($columns as $columnName => $columnValues) {
+            foreach ($columnValues as $flatItemIndex => $value) {
                 $result[$flatItemIndex][$columnName] = $value;
             }
         }

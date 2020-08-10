@@ -18,7 +18,7 @@ class SqlGetAttributeTranslations implements GetAttributeTranslations
     public function byAttributeCodesAndLocale(array $attributeCodes, string $locale): array
     {
         if (empty($attributeCodes)) {
-           return [];
+            return [];
         }
 
         $query = <<<SQL
@@ -29,7 +29,7 @@ WHERE locale = :locale
 AND code IN (:attributeCodes);
 SQL;
 
-        $statement = $this->connection->executeQuery(
+        $rows = $this->connection->executeQuery(
             $query,
             [
                 'locale' => $locale,
@@ -38,10 +38,10 @@ SQL;
             [
                 'attributeCodes' => Connection::PARAM_STR_ARRAY,
             ]
-        );
+        )->fetchAll();
 
-        $results = $statement->fetchAll();
-        foreach ($results as $attribute) {
+        $attributeTranslations = [];
+        foreach ($rows as $attribute) {
             $attributeTranslations[$attribute['code']] = $attribute['label'];
         }
 
