@@ -56,6 +56,13 @@ final class EmptyValuesCleaner
         }
 
         if (is_array($data)) {
+            // @see PIM-9112: Fix publish product if metric with null values
+            // @todo to rework in 5.0:
+            // to clean with a migration as the data should not be null in database
+            // add the missing NonExistenMetricValueFilter to filter non existing metric
+            if (array_key_exists('amount', $data) && null === $data['amount']) {
+                return false;
+            }
             foreach ($data as $subValue) {
                 if ($this->isFilled($subValue)) {
                     return true;
