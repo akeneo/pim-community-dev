@@ -4,11 +4,39 @@ on:
     branches:
       - dsm
 jobs:
-  master:
+  build:
+    name: Create a lib build
     runs-on: ubuntu-latest
     steps:
       - name: checkout:master
         uses: actions/checkout@master
+      - name: Use Node.js 13
+        uses: actions/setup-node@v1
+        with:
+          node-version: 13.13
+      - name: Install Packages
+        run: npm install
+      - name: Run tests
+        run: npm run test
+      - name: Build page
+        run: npm run build:prod
+      - uses: actions/upload-artifact@v1
+        with:
+          name: Lib
+          path: lib
+
+  extract:
+    name: Extract to DSM dedicated repo
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout:master
+        uses: actions/checkout@master
+      - name: Download the lib artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: Lib
+          path: lib
       - name: Extract
         uses: s0/git-publish-subdir-action@develop
         env:

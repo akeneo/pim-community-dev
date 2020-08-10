@@ -10,10 +10,10 @@
         "check-types:watch": "yarn check-types -- --watch",
         "test": "jest",
         "test:watch": "jest --watch",
-        "start:storybook": "start-storybook -p 6006",
-        "build:storybook": "build-storybook",
-        "build:prod": "yarn prebuild && export NODE_ENV=production && rollup -c",
-        "build:analyze": "yarn build:prod --config-analyze"
+        "storybook:start": "start-storybook -p 6006",
+        "storybook:build": "build-storybook",
+        "lib:build:prod": "yarn prebuild && export NODE_ENV=production && rollup -c",
+        "lib:build:analyze": "yarn build:prod --config-analyze"
     },
     "author": "akeneo",
     "license": "OSL-3.0",
