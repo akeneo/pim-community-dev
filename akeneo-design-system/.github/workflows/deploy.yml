@@ -9,7 +9,6 @@ jobs:
     steps:
       - name: checkout:master
         uses: actions/checkout@master
-
       - name: Use Node.js 13
         uses: actions/setup-node@v1
         with:
