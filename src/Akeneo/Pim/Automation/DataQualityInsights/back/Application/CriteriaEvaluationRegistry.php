@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\CriterionNotFoundException;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 
 class CriteriaEvaluationRegistry
@@ -33,7 +32,7 @@ class CriteriaEvaluationRegistry
     public function get(CriterionCode $code): EvaluateCriterionInterface
     {
         if (!array_key_exists(strval($code), $this->criterionEvaluationServices)) {
-            throw new CriterionNotFoundException(sprintf('No evaluation service found for criterion "%s"', $code));
+            throw new \InvalidArgumentException(sprintf('No criterion found for "%s"', $code));
         }
 
         return $this->criterionEvaluationServices[strval($code)];

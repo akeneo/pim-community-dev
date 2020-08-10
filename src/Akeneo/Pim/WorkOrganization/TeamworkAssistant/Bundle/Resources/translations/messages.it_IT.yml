@@ -14,11 +14,9 @@ teamwork_assistant:
     message: Hai nuovi prodotti da arricchire per "%project_label%". La dato di scadenza è "%due_date%".
     project_finished:
       contributor: Complimenti! Hai completato il 100% dei prodotti per %project_label%.
-      owner: '%project_label% per il %due_date% è finito.'
       show: Visualizza
     due_date:
       contributor: Sei al %percent%% dei prodotti per %project_label%. Ricorda di completare gli ultimi prodotti entro il %due_date%.
-      owner: '%project_label% per il %due_date% non è ancora al 100%.'
       start: Inizio
   datagrid:
     project_completeness: Avanzamento del progetto

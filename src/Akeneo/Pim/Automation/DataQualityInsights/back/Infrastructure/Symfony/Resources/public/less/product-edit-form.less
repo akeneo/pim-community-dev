@@ -7,9 +7,11 @@
 
 @AknDefaultMarkUnderlineColor: rgba(212, 76, 96, @AknIssueMarkOpacity);
 @AknSpellingIssueMarkUnderlineColor: @AknDefaultMarkUnderlineColor;
+@AknTitleSuggestionMarkUnderlineColor: @AknDefaultMarkUnderlineColor;
 
 @AknDefaultMarkBackgroundColor: rgba(212, 76, 96, @AknIssueMarkBackgroundOpacity);
 @AknSpellingIssueMarkBackgroundColor: @AknDefaultMarkBackgroundColor;
+@AknTitleSuggestionMarkBackgroundColor: @AknDefaultMarkBackgroundColor;
 
 .AknColumn-block.AknDataQualityInsights {
     li {
@@ -122,6 +124,9 @@
     &--misspelling:after {
         background: @AknSpellingIssueMarkUnderlineColor;
     }
+    &--title_suggestion:after {
+        background: @AknTitleSuggestionMarkUnderlineColor;
+    }
     &--hidden {
         display: none;
     }
@@ -132,6 +137,9 @@
     }
     &--misspelling.AknEditorHighlight-mark--hover::before {
         background: @AknSpellingIssueMarkBackgroundColor;
+    }
+    &--title_suggestion.AknEditorHighlight-mark--hover::before {
+        background: @AknTitleSuggestionMarkBackgroundColor;
     }
 }
 

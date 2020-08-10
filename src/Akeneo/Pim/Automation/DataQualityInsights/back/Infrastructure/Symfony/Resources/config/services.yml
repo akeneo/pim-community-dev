@@ -1,4 +1,5 @@
 parameters:
+    env(DATA_QUALITY_INSIGHTS_JWT_VERIFYING_KEY): 'OXvfb6/iSYOgqD8w044j8PTMWDwbSKjgJDhrNu3NwAc='
     env(AKENEO_PIM_URL): ''
     env(PAPO_PROJECT_CODE_TRUNCATED): ''
     env(PAPO_PROJECT_CODE_HASHED): ''
@@ -51,6 +52,20 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetUpToDateLatestProductEvaluationQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLocalesByChannelQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\AxisRegistry'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TitleFormattingService:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Client\Franklin'
+            - '@logger'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TitleFormattingToken'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TitleFormattingToken:
+        arguments:
+            - '%env(DATA_QUALITY_INSIGHTS_JWT_VERIFYING_KEY)%'
+            - '%env(AKENEO_PIM_URL)%'
+            - '%kernel.project_dir%'
+            - '%env(PAPO_PROJECT_CODE_TRUNCATED)%'
+            - '%env(PAPO_PROJECT_CODE_HASHED)%'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\ConsolidateProductAxisRates:
         arguments:
@@ -140,3 +155,8 @@ services:
             $aspellDictionary: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TextChecker\AspellDictionary'
             $allActivatedLocalesQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAllActivatedLocalesQuery'
             $clock: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductTitleSuggestion:
+        arguments:
+            $getLatestCriteriaEvaluationsByProductIdQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetLatestCriteriaEvaluationsByProductIdQuery'
+            $getIgnoredProductTitleSuggestionQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetIgnoredProductTitleSuggestionQuery'

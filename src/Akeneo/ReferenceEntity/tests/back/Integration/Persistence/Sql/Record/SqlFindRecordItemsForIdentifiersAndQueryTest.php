@@ -41,6 +41,9 @@ class SqlFindRecordItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCas
     /** @var RecordIdentifier */
     private $cocoIdentifier;
 
+    /** @var RecordIdentifier */
+    private $gaultierIdentifier;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -138,6 +141,71 @@ class SqlFindRecordItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCas
         $this->assertRecordItem($coco, $recordItems[1]);
     }
 
+    /**
+     * @test
+     */
+    public function it_returns_record_items_without_case_sensitive()
+    {
+        $query = RecordQuery::createFromNormalized([
+            'channel' => 'ecommerce',
+            'locale' => 'en_US',
+            'filters' => [
+                [
+                    'field' => 'reference_entity',
+                    'operator' => '=',
+                    'value' => 'designer'
+                ]
+            ],
+            'page' => 1,
+            'size' => 10,
+        ]);
+
+        $recordItems = $this->findRecordItemsForIdentifiersAndQuery->find(
+            [(strtoupper((string) $this->gaultierIdentifier)), (string) $this->cocoIdentifier],
+            $query
+        );
+
+        /** @var ReferenceEntity $referenceEntity */
+        $referenceEntity = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity')
+            ->getByIdentifier(ReferenceEntityIdentifier::fromString('designer'));
+        $labelIdentifier = $referenceEntity->getAttributeAsLabelReference()->getIdentifier()->normalize();
+        $attributeAsLabelValueKey = $labelIdentifier . '_fr_FR';
+
+        $gaultier = new RecordItem();
+        $gaultier->identifier = (string) $this->gaultierIdentifier;
+        $gaultier->referenceEntityIdentifier = 'designer';
+        $gaultier->code = 'Gaultier';
+        $gaultier->labels = ['fr_FR' => 'Jean Paul Gaultier'];
+        $gaultier->values = [
+            $attributeAsLabelValueKey => [
+                'data' => 'Jean Paul Gaultier',
+                'channel' => null,
+                'locale' => 'fr_FR',
+                'attribute' => $labelIdentifier
+            ]
+        ];
+        $gaultier->completeness = ['complete' => 0, 'required' => 0];
+        $gaultier->image = null;
+
+        $coco = new RecordItem();
+        $coco->identifier = (string) $this->cocoIdentifier;
+        $coco->referenceEntityIdentifier = 'designer';
+        $coco->code = 'coco';
+        $coco->labels = ['fr_FR' => 'Coco Chanel'];
+        $coco->values = [
+            $attributeAsLabelValueKey => [
+                'data'      => 'Coco Chanel',
+                'channel'   => null,
+                'locale'    => 'fr_FR',
+                'attribute' => $labelIdentifier,
+            ]
+        ];
+        $coco->completeness = ['complete' => 0, 'required' => 0];
+        $coco->image = null;
+
+        $this->assertRecordItem($gaultier, $recordItems[0]);
+    }
+
     private function resetDB(): void
     {
         $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
@@ -175,6 +243,24 @@ class SqlFindRecordItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCas
                 ValueCollection::fromValues([$labelValue])
             )
         );
+
+        $gaultierCode = RecordCode::fromString('Gaultier');
+        $this->gaultierIdentifier = $recordRepository->nextIdentifier($referenceEntityIdentifier, $gaultierCode);
+        $labelValue = Value::create(
+            $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
+            ChannelReference::noReference(),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+            TextData::fromString('Jean Paul Gaultier')
+        );
+        $recordRepository->create(
+            Record::create(
+                $this->gaultierIdentifier,
+                $referenceEntityIdentifier,
+                $gaultierCode,
+                ValueCollection::fromValues([$labelValue])
+            )
+        );
+
         $cocoCode = RecordCode::fromString('coco');
         $this->cocoIdentifier = $recordRepository->nextIdentifier($referenceEntityIdentifier, $cocoCode);
         $labelValue = Value::create(

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluationRegistry;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\CriterionNotFoundException;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Psr\Log\LoggerInterface;
@@ -61,16 +60,9 @@ class EvaluatePendingCriteria
 
     private function evaluateCriterion(CriterionEvaluation $criterionEvaluation): void
     {
-        try {
-            $evaluationService = $this->registry->get($criterionEvaluation->getCriterionCode());
-            $criterionEvaluation->start();
-        } catch (CriterionNotFoundException $e) {
-            $criterionEvaluation->flagAsError();
-            $this->repository->update($criterionEvaluation);
+        $evaluationService = $this->registry->get($criterionEvaluation->getCriterionCode());
 
-            return;
-        }
-
+        $criterionEvaluation->start();
         $this->repository->update($criterionEvaluation);
 
         try {

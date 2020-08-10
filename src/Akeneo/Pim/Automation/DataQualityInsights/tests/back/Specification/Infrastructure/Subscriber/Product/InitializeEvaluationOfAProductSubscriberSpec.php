@@ -19,6 +19,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Eva
 use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Events\TitleSuggestionIgnoredEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Events\WordIgnoredEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -56,7 +57,20 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
     public function it_subscribes_to_several_events(): void
     {
         $this::getSubscribedEvents()->shouldHaveKey(WordIgnoredEvent::WORD_IGNORED);
+        $this::getSubscribedEvents()->shouldHaveKey(TitleSuggestionIgnoredEvent::TITLE_SUGGESTION_IGNORED);
         $this::getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_SAVE);
+    }
+
+    public function it_schedule_evaluation_when_a_title_suggestion_is_ignored(
+        $dataQualityInsightsFeature,
+        $createProductsCriteriaEvaluations,
+        ProductInterface $product
+    ) {
+        $product->getId()->willReturn(12345);
+        $dataQualityInsightsFeature->isEnabled()->willReturn(true);
+        $createProductsCriteriaEvaluations->create([new ProductId(12345)])->shouldBeCalled();
+
+        $this->onIgnoredTitleSuggestion(new TitleSuggestionIgnoredEvent(new ProductId(12345)));
     }
 
     public function it_schedule_evaluation_when_a_word_is_ignored(

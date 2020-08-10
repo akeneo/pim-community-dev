@@ -15,13 +15,13 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\AxisRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\EvaluateSpelling;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Consistency\Text\EvaluateTitleFormatting;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Consistency;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Enrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Criterion\LowerCaseWords;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResultStatusCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisEvaluation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisEvaluationCollection;
@@ -200,16 +200,16 @@ class GetProductEvaluationSpec extends ObjectBehavior
             ]
         ];
 
-        $evaluateLowercaseRates = (new ChannelLocaleRateCollection())
+        $evaluateTitleFormattingRates = (new ChannelLocaleRateCollection())
             ->addRate($channelCodeEcommerce, $localeCodeEn, new Rate(84))
             ->addRate($channelCodeMobile, $localeCodeEn, new Rate(0))
         ;
-        $evaluateLowercaseStatus = (new CriterionEvaluationResultStatusCollection())
+        $evaluateTitleFormattingStatus = (new CriterionEvaluationResultStatusCollection())
             ->add($channelCodeEcommerce, $localeCodeEn, CriterionEvaluationResultStatus::done())
             ->add($channelCodeEcommerce, $localeCodeFr, CriterionEvaluationResultStatus::notApplicable())
             ->add($channelCodeMobile, $localeCodeEn, CriterionEvaluationResultStatus::done())
         ;
-        $evaluateLowercaseData = [
+        $evaluateTitleFormattingData = [
             "attributes" => [
                 "ecommerce" => [
                     "en_US" => ["title"],
@@ -231,11 +231,11 @@ class GetProductEvaluationSpec extends ObjectBehavior
             ))
             ->add($this->generateCriterionEvaluation(
                 $productId,
-                LowerCaseWords::CRITERION_CODE,
+                EvaluateTitleFormatting::CRITERION_CODE,
                 CriterionEvaluationStatus::DONE,
-                $evaluateLowercaseRates,
-                $evaluateLowercaseStatus,
-                $evaluateLowercaseData
+                $evaluateTitleFormattingRates,
+                $evaluateTitleFormattingStatus,
+                $evaluateTitleFormattingData
             ))
         ;
 
@@ -349,7 +349,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                 "status" => CriterionEvaluationResultStatus::DONE,
                             ],
                             [
-                                "code" => LowerCaseWords::CRITERION_CODE,
+                                "code" =>"consistency_text_title_formatting",
                                 "rate" => [
                                     "value" => 84,
                                     "rank" => "B",
@@ -380,7 +380,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                 "status" => CriterionEvaluationResultStatus::DONE,
                             ],
                             [
-                                "code" => LowerCaseWords::CRITERION_CODE,
+                                "code" =>"consistency_text_title_formatting",
                                 "rate" => [
                                     "value" => null,
                                     "rank" => null,
@@ -408,7 +408,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                 "status" => CriterionEvaluationResultStatus::DONE,
                             ],
                             [
-                                "code" => LowerCaseWords::CRITERION_CODE,
+                                "code" =>"consistency_text_title_formatting",
                                 "rate" => [
                                     "value" => 0,
                                     "rank" => "E",

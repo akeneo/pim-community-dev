@@ -34,6 +34,7 @@ import productEditorHighlightReducer, {
   updateWidgetContent,
   updateWidgetContentAnalysis,
   updateWidgetHighlightsAction,
+  updateWidgetTitleSuggestion,
 } from "./productEditorHighlightReducer";
 
 export {
@@ -71,6 +72,7 @@ export {
   updateWidgetContent,
   updateWidgetContentAnalysis,
   updateWidgetHighlightsAction,
+  updateWidgetTitleSuggestion,
   initializePopoverOpeningAction,
   showPopoverAction,
   hidePopoverAction,

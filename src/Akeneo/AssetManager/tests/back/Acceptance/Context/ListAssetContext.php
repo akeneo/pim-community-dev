@@ -192,16 +192,20 @@ final class ListAssetContext implements Context
 
     private function loadAsset(): void
     {
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
-        $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
-        $attributeAsLabel = $assetFamily->getAttributeAsLabelReference();
+        $assetFamilyIdentifierDesigner = AssetFamilyIdentifier::fromString('designer');
+        $assetFamilyDesigner = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifierDesigner);
+        $attributeAsLabelDesigner = $assetFamilyDesigner->getAttributeAsLabelReference();
+
+        $assetFamilyIdentifierAtmosphere = AssetFamilyIdentifier::fromString('atmosphere');
+        $assetFamilyAtmosphere = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifierAtmosphere);
+        $attributeAsLabelAtmosphere = $assetFamilyAtmosphere->getAttributeAsLabelReference();
 
         // STARCK
         $assetCode = AssetCode::fromString('starck');
         $identifier = AssetIdentifier::fromString('designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2');
 
         $labelValue = Value::create(
-            $attributeAsLabel->getIdentifier(),
+            $attributeAsLabelDesigner->getIdentifier(),
             ChannelReference::noReference(),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
             TextData::fromString(ucfirst((string) $assetCode))
@@ -209,7 +213,7 @@ final class ListAssetContext implements Context
 
         $assetStarck = Asset::create(
             $identifier,
-            $assetFamilyIdentifier,
+            $assetFamilyIdentifierDesigner,
             $assetCode,
             ValueCollection::fromValues([$labelValue])
         );
@@ -220,7 +224,7 @@ final class ListAssetContext implements Context
         $identifier = AssetIdentifier::fromString('designer_coco_34aee120-fa95-4ff2-8439-bea116120e34');
 
         $labelValue = Value::create(
-            $attributeAsLabel->getIdentifier(),
+            $attributeAsLabelDesigner->getIdentifier(),
             ChannelReference::noReference(),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
             TextData::fromString(ucfirst((string) $assetCode))
@@ -228,7 +232,7 @@ final class ListAssetContext implements Context
 
         $assetCoco = Asset::create(
             $identifier,
-            $assetFamilyIdentifier,
+            $assetFamilyIdentifierDesigner,
             $assetCode,
             ValueCollection::fromValues([$labelValue])
         );
@@ -239,7 +243,7 @@ final class ListAssetContext implements Context
         $identifier = AssetIdentifier::fromString('designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd');
 
         $labelValue = Value::create(
-            $attributeAsLabel->getIdentifier(),
+            $attributeAsLabelDesigner->getIdentifier(),
             ChannelReference::noReference(),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
             TextData::fromString(ucfirst((string) $assetCode))
@@ -247,7 +251,26 @@ final class ListAssetContext implements Context
 
         $assetDyson = Asset::create(
             $identifier,
-            $assetFamilyIdentifier,
+            $assetFamilyIdentifierDesigner,
+            $assetCode,
+            ValueCollection::fromValues([$labelValue])
+        );
+        $this->assetRepository->create($assetDyson);
+
+        // ABSORB_ATMOSPHERE_1
+        $assetCode = AssetCode::fromString('absorb_atmosphere_1');
+        $identifier = AssetIdentifier::fromString('atmosphere_absorb_atmosphere_1_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd');
+
+        $labelValue = Value::create(
+            $attributeAsLabelAtmosphere->getIdentifier(),
+            ChannelReference::noReference(),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+            TextData::fromString(ucfirst((string) $assetCode))
+        );
+
+        $assetDyson = Asset::create(
+            $identifier,
+            $assetFamilyIdentifierAtmosphere,
             $assetCode,
             ValueCollection::fromValues([$labelValue])
         );
@@ -256,6 +279,7 @@ final class ListAssetContext implements Context
 
     private function loadAssetFamily(): void
     {
+        // DESIGNER
         $assetFamily = AssetFamily::create(
             AssetFamilyIdentifier::fromString('designer'),
             [
@@ -265,7 +289,18 @@ final class ListAssetContext implements Context
             Image::createEmpty(),
             RuleTemplateCollection::empty()
         );
+        $this->assetFamilyRepository->create($assetFamily);
 
+        // ATMOSPHERE
+        $assetFamily = AssetFamily::create(
+            AssetFamilyIdentifier::fromString('atmosphere'),
+            [
+                'fr_FR' => 'Atmosphère',
+                'en_US' => 'Atmosphere',
+            ],
+            Image::createEmpty(),
+            RuleTemplateCollection::empty()
+        );
         $this->assetFamilyRepository->create($assetFamily);
     }
 }
