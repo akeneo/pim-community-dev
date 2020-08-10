@@ -14,7 +14,7 @@ class LanguageTranslatorSpec extends ObjectBehavior
 
     function it_translates_languages()
     {
-        $this->translate('fr_FR', 'fr', '[français]')->shouldReturn('Français');
+        $this->translate('fr_FR', 'fr', '[français]')->shouldReturn('français');
         $this->translate('en_US', 'en', '[english]')->shouldReturn('English');
         $this->translate('en_GB', 'en', '[english]')->shouldReturn('English');
     }

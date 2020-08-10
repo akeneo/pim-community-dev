@@ -13,7 +13,7 @@ class LabelTranslator implements LabelTranslatorInterface
         $this->translator = $translator;
     }
 
-    public function translate(string $id, string $locale, string $fallback = ''): string
+    public function translate(string $id, string $locale, string $fallback): string
     {
         $catalog = $this->translator->getCatalogue($locale);
         if (!$catalog->defines($id)) {

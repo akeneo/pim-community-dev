@@ -19,7 +19,7 @@ class ProductAndProductModelFlatTranslatorSpec extends ObjectBehavior
         $headerRegistry->warmup(['sku', 'categories', 'description-en_US', 'enabled', 'groups', 'name-fr_FR', 'collection'], 'fr_FR')->shouldBeCalled();
         $headerRegistry->getTranslator('sku')->willReturn(null);
         $headerRegistry->getTranslator(Argument::any())->willReturn($headerTranslator);
-        $headerTranslator->translate('sku', 'fr_FR')->willReturn('Sku');
+        $headerTranslator->translate('sku', 'fr_FR')->shouldNotBeCalled();
         $headerTranslator->translate('categories', 'fr_FR')->willReturn('Catégories');
         $headerTranslator->translate('description-en_US', 'fr_FR')->willReturn('Description (Anglais Américain)');
         $headerTranslator->translate('enabled', 'fr_FR')->willReturn('Activé');

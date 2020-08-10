@@ -18,7 +18,7 @@ class AssociationTranslator implements FlatHeaderTranslatorInterface
     /** @var GetAssociationTypeTranslations */
     private $getAssociationTypeTranslations;
 
-    private $associationTranslations;
+    private $associationTranslations = [];
 
     public function __construct(
         AssociationColumnsResolver $associationColumnsResolver,
@@ -33,13 +33,11 @@ class AssociationTranslator implements FlatHeaderTranslatorInterface
     public function supports(string $columnName): bool
     {
         $associationsColumns = $this->associationColumnsResolver->resolveAssociationColumns();
-        $quantifiedAssociationsIdentifierColumns = $this->associationColumnsResolver->resolveQuantifiedIdentifierAssociationColumns();
-        $quantifiedAssociationsQuantityColumns = $this->associationColumnsResolver->resolveQuantifiedQuantityAssociationColumns();
+        $quantifiedAssociationsColumns = $this->associationColumnsResolver->resolveQuantifiedAssociationColumns();
 
         return in_array($columnName, array_merge(
             $associationsColumns,
-            $quantifiedAssociationsIdentifierColumns,
-            $quantifiedAssociationsQuantityColumns
+            $quantifiedAssociationsColumns,
         ));
     }
 
@@ -72,7 +70,7 @@ class AssociationTranslator implements FlatHeaderTranslatorInterface
             $quantityLabel = $this->labelTranslator->translate(
                 'pim_common.quantity',
                 $locale,
-                '[quantity]'
+                sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, 'quantity')
             );
             $translation = sprintf('%s %s', $translation, $quantityLabel);
         }
@@ -94,10 +92,10 @@ class AssociationTranslator implements FlatHeaderTranslatorInterface
         return array_unique($associationTypeCodes);
     }
 
-    private function extractQuantifiedAssociationTypeCodes(array $flatItemsByColumnName): array
+    private function extractQuantifiedAssociationTypeCodes(array $columnNames): array
     {
         $quantifiedAssociationTypeCodes = [];
-        foreach ($flatItemsByColumnName as $columnName => $flatItemValues) {
+        foreach ($columnNames as $columnName) {
             if ($this->isQuantifiedAssociationIdentifierColumn($columnName)) {
                 list($quantifiedAssociationType, $entityType) = explode('-', $columnName);
 
@@ -117,9 +115,9 @@ class AssociationTranslator implements FlatHeaderTranslatorInterface
 
     private function isQuantifiedAssociationIdentifierColumn(string $columnName): bool
     {
-        $quantifiedAssociationsColumns = $this->associationColumnsResolver->resolveQuantifiedIdentifierAssociationColumns();
+        $identifierColumns = $this->associationColumnsResolver->resolveQuantifiedIdentifierAssociationColumns();
 
-        return in_array($columnName, $quantifiedAssociationsColumns);
+        return in_array($columnName, $identifierColumns);
     }
 
     private function isQuantifiedAssociationQuantityColumn(string $columnName): bool

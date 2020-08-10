@@ -35,11 +35,11 @@ class AttributeTranslatorSpec extends ObjectBehavior
     }
 
     function it_translates_basic_attributes(
-        $getAttributeTranslations,
-        $attributeColumnsResolver,
-        $attributeColumnInfoExtractor,
-        $languageTranslator,
-        $getChannelTranslationsQuery,
+        AttributeColumnsResolver $attributeColumnsResolver,
+        AttributeColumnInfoExtractor $attributeColumnInfoExtractor,
+        GetChannelTranslations $getChannelTranslationsQuery,
+        LanguageTranslator $languageTranslator,
+        GetAttributeTranslations $getAttributeTranslations,
         AttributeInterface $name
     ) {
         $getAttributeTranslations->byAttributeCodesAndLocale(['name'], 'fr_FR')->willReturn(['name' => 'Nom', 'description' => 'Description']);
@@ -71,12 +71,12 @@ class AttributeTranslatorSpec extends ObjectBehavior
     }
 
     function it_translates_metric_attributes(
-        $getAttributeTranslations,
-        $attributeColumnsResolver,
-        $attributeColumnInfoExtractor,
-        $languageTranslator,
-        $getChannelTranslationsQuery,
-        $labelTranslator,
+        LabelTranslatorInterface $labelTranslator,
+        AttributeColumnsResolver $attributeColumnsResolver,
+        AttributeColumnInfoExtractor $attributeColumnInfoExtractor,
+        GetChannelTranslations $getChannelTranslationsQuery,
+        LanguageTranslator $languageTranslator,
+        GetAttributeTranslations $getAttributeTranslations,
         AttributeInterface $weight
     ) {
         $getAttributeTranslations->byAttributeCodesAndLocale(['weight'], 'fr_FR')->willReturn(['weight' => 'Poids', 'description' => 'Description']);
@@ -108,13 +108,12 @@ class AttributeTranslatorSpec extends ObjectBehavior
     }
 
     function it_translates_price_attributes(
-        $getAttributeTranslations,
-        $attributeColumnsResolver,
-        $attributeColumnInfoExtractor,
-        $languageTranslator,
-        $getChannelTranslationsQuery,
-        $labelTranslator,
-        $currencyTranslator,
+        AttributeColumnsResolver $attributeColumnsResolver,
+        AttributeColumnInfoExtractor $attributeColumnInfoExtractor,
+        GetChannelTranslations $getChannelTranslationsQuery,
+        LanguageTranslator $languageTranslator,
+        CurrencyTranslator $currencyTranslator,
+        GetAttributeTranslations $getAttributeTranslations,
         AttributeInterface $price
     ) {
         $getAttributeTranslations->byAttributeCodesAndLocale(['price'], 'fr_FR')->willReturn(['price' => 'Prix', 'description' => 'Description']);
@@ -147,13 +146,12 @@ class AttributeTranslatorSpec extends ObjectBehavior
     }
 
     function it_translates_basic_attribute_using_fallbacks(
-        $getAttributeTranslations,
-        $attributeColumnsResolver,
-        $attributeColumnInfoExtractor,
-        $languageTranslator,
-        $getChannelTranslationsQuery,
-        $labelTranslator,
-        $currencyTranslator,
+        AttributeColumnsResolver $attributeColumnsResolver,
+        AttributeColumnInfoExtractor $attributeColumnInfoExtractor,
+        GetChannelTranslations $getChannelTranslationsQuery,
+        LanguageTranslator $languageTranslator,
+        CurrencyTranslator $currencyTranslator,
+        GetAttributeTranslations $getAttributeTranslations,
         AttributeInterface $price
     ) {
         $getAttributeTranslations->byAttributeCodesAndLocale(['price'], 'fr_FR')->willReturn([]);

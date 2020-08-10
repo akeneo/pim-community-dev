@@ -9,7 +9,7 @@ class PropertyTranslatorSpec extends ObjectBehavior
 {
     function let(LabelTranslatorInterface $translator)
     {
-        $this->beConstructedWith($translator);
+        $this->beConstructedWith($translator, ['categories', 'family_variant', 'enabled', 'family', 'parent', 'groups']);
     }
 
     function it_translates_static_properties($translator)

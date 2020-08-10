@@ -21,6 +21,6 @@ class LanguageTranslator implements LanguageTranslatorInterface
             return $fallback;
         }
 
-        return ucfirst($translatedLanguage);
+        return $translatedLanguage;
     }
 }

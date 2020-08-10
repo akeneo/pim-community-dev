@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\Heade
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnsResolver;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetAttributeTranslations;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Channel\GetChannelTranslations;
 use Akeneo\Tool\Component\Localization\CurrencyTranslator;
@@ -98,10 +99,10 @@ class AttributeTranslator implements FlatHeaderTranslatorInterface
         }
 
         if (!empty($extraInformation)) {
-            $columnLabelized = $columnLabelized . " (".implode(', ', $extraInformation) . ")";
+            $columnLabelized = sprintf('%s (%s)', $columnLabelized, implode(', ', $extraInformation));
         }
 
-        if ($attribute->getType() === 'pim_catalog_price_collection') {
+        if ($attribute->getType() === AttributeTypes::PRICE_COLLECTION) {
             $currencyCode  = $columnInformations['price_currency'];
             $currencyLabelized = $this->currencyTranslator->translate(
                 $currencyCode,
@@ -110,8 +111,12 @@ class AttributeTranslator implements FlatHeaderTranslatorInterface
             );
 
             $columnLabelized = sprintf('%s (%s)', $columnLabelized, $currencyLabelized);
-        } elseif ($attribute->getType() === 'pim_catalog_metric' && strpos($columnName, '-unit') !== false) {
-            $metricLabelized = $this->labelTranslator->translate('pim_common.unit', $locale, '[unit]');
+        } elseif ($attribute->getType() === AttributeTypes::METRIC && false !== strpos($columnName, '-unit')) {
+            $metricLabelized = $this->labelTranslator->translate(
+                'pim_common.unit',
+                $locale,
+                sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, 'unit')
+            );
 
             $columnLabelized = sprintf('%s (%s)', $columnLabelized, $metricLabelized);
         }
@@ -119,7 +124,7 @@ class AttributeTranslator implements FlatHeaderTranslatorInterface
         return $columnLabelized;
     }
 
-    private function getChannelTranslations($locale)
+    private function getChannelTranslations($locale): array
     {
         if ($this->channelTranslationCache === null) {
             $this->channelTranslationCache = $this->getChannelTranslations->byLocale($locale);

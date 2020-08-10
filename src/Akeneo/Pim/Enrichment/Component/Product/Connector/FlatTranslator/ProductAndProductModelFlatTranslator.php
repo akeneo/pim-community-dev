@@ -28,7 +28,7 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
         return $flatItems;
     }
 
-    private function translateHeaders(array $flatItemsByColumnName, string $locale)
+    private function translateHeaders(array $flatItemsByColumnName, string $locale): array
     {
         $this->headerRegistry->warmup(array_keys($flatItemsByColumnName), $locale);
 
@@ -115,7 +115,7 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
     }
 
     /**
-     * Internal pivoting to facilitate translation of flat items
+     * Revert internal pivoting used to facilitate translation of flat items
      *
      * Before :
      * [

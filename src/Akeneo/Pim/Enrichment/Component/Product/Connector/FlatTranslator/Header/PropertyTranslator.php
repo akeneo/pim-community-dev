@@ -7,19 +7,21 @@ use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
 
 class PropertyTranslator implements FlatHeaderTranslatorInterface
 {
-    /**
-     * @var LabelTranslatorInterface
-     */
+    /** @var LabelTranslatorInterface */
     private $labelTranslator;
 
-    public function __construct(LabelTranslatorInterface $labelTranslator)
+    /** @var array */
+    private $supportedFields;
+
+    public function __construct(LabelTranslatorInterface $labelTranslator, array $supportedFields)
     {
         $this->labelTranslator = $labelTranslator;
+        $this->supportedFields = $supportedFields;
     }
 
     public function supports(string $columnName): bool
     {
-        return in_array($columnName, ['categories', 'family_variant', 'enabled', 'family', 'parent', 'groups']);
+        return in_array($columnName, $this->supportedFields);
     }
 
     public function warmup(array $columnNames, string $locale): void

@@ -13,7 +13,7 @@ class HeaderRegistry
         $this->translators[] = $translator;
     }
 
-    public function warmup(array $columnNames, string $locale)
+    public function warmup(array $columnNames, string $locale): void
     {
         foreach ($this->translators as $translator) {
             $translator->warmup($columnNames, $locale);
