@@ -5,6 +5,7 @@ Feature: Throw an error if an asset doesn't exist or if it doesn't belong to an 
 
   Background:
     Given a list of assets
+    And an authentified user
     And the following attributes:
       | code            | type                         |  reference_data_name |
       | sku             | pim_catalog_identifier       |  designer            |
