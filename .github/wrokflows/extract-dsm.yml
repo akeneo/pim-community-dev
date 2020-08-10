@@ -1,0 +1,17 @@
+name: Extract DSM
+on:
+  push:
+    branches:
+      - dsm-tests
+jobs:
+  master:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: publish:starters
+          uses: johno/actions-push-subdirectories@master
+          env:
+            API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            args: akeneo-design-system juliensnz dsm
