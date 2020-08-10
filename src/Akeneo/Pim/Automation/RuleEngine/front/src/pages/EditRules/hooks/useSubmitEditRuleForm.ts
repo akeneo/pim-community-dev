@@ -113,6 +113,8 @@ const submitEditRuleForm = (
     if (event) {
       event.preventDefault();
     }
+
+    const executeOnSave = formData.hasOwnProperty('execute_on_save');
     const updateRuleUrl = generateUrl(
       router,
       'pimee_enrich_rule_definition_update',
@@ -124,7 +126,7 @@ const submitEditRuleForm = (
     if (response.ok) {
       notify(
         NotificationLevel.SUCCESS,
-        translate('pimee_catalog_rule.form.edit.notification.success')
+        executeOnSave ? translate('TODO - regle executee en BG') : translate('pimee_catalog_rule.form.edit.notification.success')
       );
       reset(formData);
       registerConditions(register, formData.content?.conditions || []);
