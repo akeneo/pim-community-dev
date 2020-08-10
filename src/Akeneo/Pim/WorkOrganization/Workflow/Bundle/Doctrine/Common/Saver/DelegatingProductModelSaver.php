@@ -104,49 +104,40 @@ class DelegatingProductModelSaver implements SaverInterface, BulkSaverInterface
     /**
      * {@inheritdoc}
      */
-    public function save($filteredProductModel, array $options = []): void
+    public function save($productModel, array $options = []): void
     {
-        if (!$filteredProductModel instanceof ProductModelInterface) {
-            throw InvalidObjectException::objectExpected($filteredProductModel, ProductModelInterface::class);
+        if (!$productModel instanceof ProductModelInterface) {
+            throw InvalidObjectException::objectExpected($productModel, ProductModelInterface::class);
         }
 
-        $fullProductModel = $this->getFullProductModel($filteredProductModel);
-
-        if ($this->isOwner($fullProductModel) || null === $fullProductModel->getId()) {
-            $this->productModelSaver->save($fullProductModel, $options);
-        } elseif ($this->canEdit($fullProductModel)) {
-            $this->saveProductModelDraft($fullProductModel, $options);
+        if ($this->isOwner($productModel) || null === $productModel->getId()) {
+            $this->productModelSaver->save($productModel, $options);
+        } elseif ($this->canEdit($productModel)) {
+            $this->saveProductModelDraft($productModel, $options);
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function saveAll(array $filteredProductModels, array $options = []): void
+    public function saveAll(array $productModels, array $options = []): void
     {
-        if (empty($filteredProductModels)) {
+        if (empty($productModels)) {
             return;
         }
 
         $productModelsToCompute = [];
-        $fullProductModels = [];
-        foreach ($filteredProductModels as $filteredProductModel) {
-            $this->validateObject($filteredProductModel, ProductModelInterface::class);
+        foreach ($productModels as $productModel) {
+            $this->validateObject($productModel, ProductModelInterface::class);
 
-            $fullProductModel = $this->getFullProductModel($filteredProductModel);
-            $fullProductModels[] = $fullProductModel;
-
-            if ($this->isOwner($fullProductModel) || null === $fullProductModel->getId()) {
-                $productModelsToCompute[] = $fullProductModel;
-            } elseif ($this->canEdit($fullProductModel)) {
-                $this->saveProductModelDraft($fullProductModel, $options);
+            if ($this->isOwner($productModel) || null === $productModel->getId()) {
+                $productModelsToCompute[] = $productModel;
+            } elseif ($this->canEdit($productModel)) {
+                $this->saveProductModelDraft($productModel, $options);
             }
         }
 
-        if (null !== $this->bulkProductModelSaver) {
-            $this->bulkProductModelSaver->saveAll($productModelsToCompute, $options);
-        }
-        $this->objectManager->flush();
+        $this->bulkProductModelSaver->saveAll($productModelsToCompute, $options);
     }
 
     /**
@@ -174,11 +165,12 @@ class DelegatingProductModelSaver implements SaverInterface, BulkSaverInterface
     }
 
     /**
-     * @param ProductModelInterface $fullProductModel
+     * @param ProductModelInterface $filteredProductModel
      * @param array                 $options
      */
-    private function saveProductModelDraft(ProductModelInterface $fullProductModel, array $options): void
+    private function saveProductModelDraft(ProductModelInterface $filteredProductModel, array $options): void
     {
+        $fullProductModel = $this->getFullProductModel($filteredProductModel);
         $username = $this->tokenStorage->getToken()->getUser()->getUsername();
         $productModelDraft = $this->draftBuilder->build($fullProductModel,
             $this->draftSourceFactory->createFromUser($this->tokenStorage->getToken()->getUser())
@@ -186,6 +178,7 @@ class DelegatingProductModelSaver implements SaverInterface, BulkSaverInterface
 
         if (null !== $productModelDraft) {
             $this->productModelDraftSaver->save($productModelDraft, $options);
+            $this->objectManager->refresh($fullProductModel);
         } elseif (null !== $draft = $this->productModelDraftRepository->findUserEntityWithValuesDraft($fullProductModel, $username)) {
             $this->productDraftRemover->remove($draft);
         }
@@ -193,7 +186,7 @@ class DelegatingProductModelSaver implements SaverInterface, BulkSaverInterface
 
     /**
      * $filteredProductModel is the product model with only granted data.
-     * To avoid to lose data, we have to send to the save the full product model with all data (included not granted).
+     * In order to build the draft we have to get the full product model with all data (included not granted).
      * To do that, we get the product model from the DB and merge new data from $filteredProductModel into this product model.
      *
      * @param ProductModelInterface $filteredProductModel
