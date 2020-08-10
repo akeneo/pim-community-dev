@@ -4,7 +4,12 @@ import { ConditionLineProps } from './ConditionLineProps';
 import { CategoryOperators } from '../../../../models/conditions';
 import { Operator } from '../../../../models/Operator';
 import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
-import { ConditionLineFormAndErrorsContainer, ConditionLineFormContainer, FieldColumn, OperatorColumn } from './style';
+import {
+  ConditionLineFormAndErrorsContainer,
+  ConditionLineFormContainer,
+  FieldColumn,
+  OperatorColumn,
+} from './style';
 import { Category, CategoryCode } from '../../../../models';
 import { getCategoriesByIdentifiers } from '../../../../repositories/CategoryRepository';
 import { CategoriesSelector } from '../../../../components/Selectors/CategoriesSelector';
@@ -22,7 +27,7 @@ import {
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
 import { useControlledFormInputCondition } from '../../hooks';
-import { LineErrors } from "../LineErrors";
+import { LineErrors } from '../LineErrors';
 
 const INIT_OPERATOR = Operator.IN_LIST;
 
@@ -156,7 +161,9 @@ const CategoryConditionLine: React.FC<ConditionLineProps> = ({
             rules={{
               required: translate('pimee_catalog_rule.exceptions.required'),
               validate: (categoryCodes: CategoryCode[]) =>
-                Array.isArray(categoryCodes) && categoryCodes.length === 0 ? translate('pimee_catalog_rule.exceptions.required') : true,
+                Array.isArray(categoryCodes) && categoryCodes.length === 0
+                  ? translate('pimee_catalog_rule.exceptions.required')
+                  : true,
             }}
             hasError={isElementInError('value')}
           />

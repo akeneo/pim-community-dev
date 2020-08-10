@@ -1,5 +1,5 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import {
   SimpleMultiOptionsAttributeCondition,
   SimpleMultiOptionsAttributeOperators,
@@ -36,6 +36,8 @@ const SimpleMultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeCo
   >(lineNumber);
   const router = useBackboneRouter();
   const translate = useTranslate();
+  const { errors } = useFormContext();
+
   const [unexistingOptionCodes, setUnexistingOptionCodes] = React.useState<
     AttributeOptionCode[]
   >([]);
@@ -46,6 +48,9 @@ const SimpleMultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeCo
       setAttribute(attribute)
     );
   }, []);
+
+  const isElementInError = (element: string): boolean =>
+    typeof errors?.content?.conditions?.[lineNumber]?.[element] === 'object';
 
   React.useEffect(() => {
     if (!attribute) {
@@ -103,9 +108,13 @@ const SimpleMultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeCo
   };
   const [validateOptionCodes, setValidateOptionCodes] = React.useState({
     validate: validation,
+    required: translate('pimee_catalog_rule.exceptions.required'),
   });
   React.useEffect(() => {
-    setValidateOptionCodes({ validate: validation });
+    setValidateOptionCodes({
+      validate: validation,
+      required: translate('pimee_catalog_rule.exceptions.required'),
+    });
   }, [JSON.stringify(unexistingOptionCodes)]);
 
   return (
@@ -117,7 +126,8 @@ const SimpleMultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeCo
       locales={locales}
       scopes={scopes}
       availableOperators={SimpleMultiOptionsAttributeOperators}
-      attribute={attribute}>
+      attribute={attribute}
+      valueHasError={isElementInError('value')}>
       {attribute && (
         <Controller
           as={MultiOptionsSelector}
@@ -127,7 +137,7 @@ const SimpleMultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeCo
           label={translate('pimee_catalog_rule.rule.value')}
           hiddenLabel
           name={valueFormName}
-          validation={validateOptionCodes}
+          rules={validateOptionCodes}
         />
       )}
     </AttributeConditionLine>

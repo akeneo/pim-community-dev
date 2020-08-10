@@ -1,5 +1,5 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import {
   TextAttributeCondition,
   TextAttributeOperators,
@@ -28,11 +28,15 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
   scopes,
   currentCatalogLocale,
 }) => {
+  const { errors } = useFormContext();
   const router = useBackboneRouter();
   const translate = useTranslate();
   const { valueFormName, getValueFormValue } = useControlledFormInputCondition<
     string[]
   >(lineNumber);
+
+  const isElementInError = (element: string): boolean =>
+    typeof errors?.content?.conditions?.[lineNumber]?.[element] === 'object';
 
   const [attribute, setAttribute] = React.useState<Attribute | null>();
   React.useEffect(() => {
@@ -53,11 +57,19 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
       scopes={scopes}>
       <Controller
         as={InputText}
+        className={
+          isElementInError('value')
+            ? 'AknTextField AknTextField--error'
+            : undefined
+        }
         data-testid={`edit-rules-input-${lineNumber}-value`}
         name={valueFormName}
         label={translate('pimee_catalog_rule.rule.value')}
         hiddenLabel
         defaultValue={getValueFormValue()}
+        rules={{
+          required: translate('pimee_catalog_rule.exceptions.required'),
+        }}
       />
     </AttributeConditionLine>
   );

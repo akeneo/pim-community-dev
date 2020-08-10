@@ -10,7 +10,7 @@ import {
   ConditionLineFormContainer,
   FieldColumn,
   OperatorColumn,
-  ValueColumn
+  ValueColumn,
 } from './style';
 import { FamiliesSelector } from '../../../../components/Selectors/FamiliesSelector';
 import { getFamiliesByIdentifiers } from '../../../../repositories/FamilyRepository';
@@ -120,7 +120,10 @@ const FamilyConditionLine: React.FC<ConditionLineProps> = ({
           />
         </OperatorColumn>
         {shouldDisplayValue() && (
-          <ValueColumn className={isElementInError('value') ? 'select2-container-error' : ''}>
+          <ValueColumn
+            className={
+              isElementInError('value') ? 'select2-container-error' : ''
+            }>
             <Controller
               as={FamiliesSelector}
               currentCatalogLocale={currentCatalogLocale}
@@ -128,7 +131,10 @@ const FamilyConditionLine: React.FC<ConditionLineProps> = ({
               defaultValue={getValueFormValue()}
               hiddenLabel
               name={valueFormName}
-              rules={{ validate: validateFamilyCodes, required: translate('pimee_catalog_rule.exceptions.required') }}
+              rules={{
+                validate: validateFamilyCodes,
+                required: translate('pimee_catalog_rule.exceptions.required'),
+              }}
               value={getValueFormValue()}
             />
           </ValueColumn>

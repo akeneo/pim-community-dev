@@ -71,7 +71,9 @@ const DateAttributeValue = forwardRef<
           <>
             <CustomInputDate
               type={inputDateType}
-              className={`AknTextField${hasError ? ' AknTextField--error' : ''}`}
+              className={`AknTextField${
+                hasError ? ' AknTextField--error' : ''
+              }`}
               data-testid={`date-input-from-${lineNumber}`}
               hiddenLabel
               id={`date-input-from-${lineNumber}`}
@@ -83,7 +85,9 @@ const DateAttributeValue = forwardRef<
             />
             <CustomInputDate
               type={inputDateType}
-              className={`AknTextField${hasError ? ' AknTextField--error' : ''}`}
+              className={`AknTextField${
+                hasError ? ' AknTextField--error' : ''
+              }`}
               data-testid={`date-input-to-${lineNumber}`}
               hiddenLabel
               id={`date-input-to-${lineNumber}`}

@@ -2,7 +2,8 @@ import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { ConditionLineProps } from './ConditionLineProps';
 import {
-  ConditionLineFormAndErrorsContainer, ConditionLineFormContainer,
+  ConditionLineFormAndErrorsContainer,
+  ConditionLineFormContainer,
   FieldColumn,
   LocaleColumn,
   OperatorColumn,
@@ -85,14 +86,18 @@ const CompletenessConditionLine: React.FC<ConditionLineProps> = ({
             hiddenLabel={true}
             defaultValue={getValueFormValue()}
             rules={{
-              required: translate('pimee_catalog_rule.exceptions.required_value'),
+              required: translate(
+                'pimee_catalog_rule.exceptions.required_value'
+              ),
             }}
             hasError={isElementInError('value')}
             helper='%'
           />
         </ValueColumn>
         <ScopeColumn
-          className={isElementInError('scope') ? 'select2-container-error' : ''}>
+          className={
+            isElementInError('scope') ? 'select2-container-error' : ''
+          }>
           <Controller
             allowClear={false}
             as={ScopeSelector}
@@ -111,7 +116,9 @@ const CompletenessConditionLine: React.FC<ConditionLineProps> = ({
           />
         </ScopeColumn>
         <LocaleColumn
-          className={isElementInError('locale') ? 'select2-container-error' : ''}>
+          className={
+            isElementInError('locale') ? 'select2-container-error' : ''
+          }>
           <Controller
             as={LocaleSelector}
             data-testid={`edit-rules-input-${lineNumber}-locale`}

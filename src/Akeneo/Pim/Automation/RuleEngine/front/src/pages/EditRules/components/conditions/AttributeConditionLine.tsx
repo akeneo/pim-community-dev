@@ -42,6 +42,7 @@ type AttributeConditionLineProps = {
   lineNumber: number;
   locales: Locale[];
   scopes: IndexedScopes;
+  valueHasError?: boolean;
 };
 
 const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
@@ -54,6 +55,7 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
   lineNumber,
   locales,
   scopes,
+  valueHasError = false,
 }) => {
   const translate = useTranslate();
   const { errors } = useFormContext();
@@ -131,7 +133,7 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
             value={getOperatorFormValue()}
           />
         </OperatorColumn>
-        <ValueColumn>
+        <ValueColumn className={valueHasError ? 'select2-container-error' : ''}>
           {shouldDisplayValue(getOperatorFormValue() ?? defaultOperator) &&
             children}
         </ValueColumn>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import {
   NumberAttributeCondition,
   NumberAttributeOperators,
@@ -29,6 +29,7 @@ const NumberAttributeConditionLine: React.FC<NumberAttributeConditionLineProps> 
 }) => {
   const router = useBackboneRouter();
   const translate = useTranslate();
+  const { errors } = useFormContext();
   const { valueFormName, getValueFormValue } = useControlledFormInputCondition<
     string[]
   >(lineNumber);
@@ -38,6 +39,9 @@ const NumberAttributeConditionLine: React.FC<NumberAttributeConditionLineProps> 
       setAttribute(attribute)
     );
   }, []);
+
+  const isElementInError = (element: string): boolean =>
+    typeof errors?.content?.conditions?.[lineNumber]?.[element] === 'object';
 
   return (
     <AttributeConditionLine
@@ -57,6 +61,10 @@ const NumberAttributeConditionLine: React.FC<NumberAttributeConditionLineProps> 
         hiddenLabel={true}
         defaultValue={getValueFormValue()}
         step={attribute?.decimals_allowed ? 'any' : 1}
+        rules={{
+          required: translate('pimee_catalog_rule.exceptions.required'),
+        }}
+        hasError={isElementInError('value')}
       />
     </AttributeConditionLine>
   );
