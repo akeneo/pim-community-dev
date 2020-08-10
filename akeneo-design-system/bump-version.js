@@ -1,6 +1,6 @@
 'use strict';
 
-const { exec } = require('child_process');
+const {execSync} = require('child_process');
 const fs = require('fs');
 
 const filePath = process.argv[2];
@@ -50,6 +50,6 @@ const levelToBump = githubEvent.commits.reduce((currentBumpLevel, commit) => {
   return bumpLevel > currentBumpLevel ? bumpLevel : currentBumpLevel;
 }, BumpLevelEnum.Patch);
 
-exec(`npm --no-git-tag-version version ${getBumpNameFromBumpLevel(levelToBump)}`);
+execSync(`npm --no-git-tag-version version ${getBumpNameFromBumpLevel(levelToBump)}`);
 
 console.log(JSON.parse(fs.readFileSync('./package.json')).version);
