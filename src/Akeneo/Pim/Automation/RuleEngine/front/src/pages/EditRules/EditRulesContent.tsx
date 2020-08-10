@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import styled from 'styled-components';
 import { useDialogState, DialogDisclosure } from 'reakit/Dialog';
 import { ThemeProvider } from 'styled-components';
 import { FormContext } from 'react-hook-form';
@@ -29,6 +30,10 @@ import { httpDelete } from '../../fetch';
 import { NotificationLevel } from '../../dependenciesTools';
 import { Dropdown } from '../../components/Dropdown';
 import { AlertDialog } from '../../components/AlertDialog/AlertDialog';
+
+const Illustration = styled.div`
+  background-image: url('/bundles/akeneopimruleengine/assets/illustrations/rules.svg');
+`;
 
 type Props = {
   ruleDefinitionCode: string;
@@ -173,6 +178,25 @@ const EditRulesContent: React.FC<Props> = ({
         <LastBreadcrumbItem>{translate('pim_common.edit')}</LastBreadcrumbItem>
       </RulesHeader>
       <Content>
+        <div className='AknDescriptionHeader'>
+          <Illustration className='AknDescriptionHeader-icon' />
+          <div className='AknDescriptionHeader-title'>
+            {translate('pimee_catalog_rule.form.edit.header.welcome')}
+            <div className='AknDescriptionHeader-description'>
+              {translate('pimee_catalog_rule.form.edit.header.description')}
+              <br />
+              <a
+                href='https://help.akeneo.com/pim/serenity/articles/get-started-with-the-rules-engine.html'
+                target='_blank'
+                rel='noopener noreferrer'
+                className='AknDescriptionHeader-link'>
+                {translate(
+                  'pimee_catalog_rule.form.edit.header.documentation_link'
+                )}
+              </a>
+            </div>
+          </div>
+        </div>
         <FormContext {...formMethods}>
           <EditRulesForm
             currentCatalogLocale={currentCatalogLocale}
