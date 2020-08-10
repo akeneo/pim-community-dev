@@ -1,5 +1,5 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import {
   Operation,
   Operator,
@@ -14,6 +14,13 @@ import { Locale } from '../../../../../models';
 import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
 import { useControlledFormInputAction } from '../../../hooks';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const uuidV4 = require('uuid/v4');
+
+type SourceOrOperationIndexed = {
+  id: string;
+} & (Operand | Operation);
+
 const DeleteButton = styled.button`
   border: none;
   background: none;
@@ -22,6 +29,16 @@ const DeleteButton = styled.button`
 
 type DropTarget = {
   operationLineNumber: number;
+};
+
+const addUniqueIdToList = (sourceOrOperationList: (Operand | Operation)[] | undefined) => {
+  if (!sourceOrOperationList) {
+    return [];
+  }
+
+  return sourceOrOperationList.map((sourceOrOperation: Operand | Operation) => {
+    return { id: uuidV4(), ...sourceOrOperation };
+  });
 };
 
 type OperationLineProps = {
@@ -36,6 +53,7 @@ type OperationLineProps = {
     currentOperationLineNumber: number,
     newOperationLineNumber: number
   ) => void;
+  removeOperation: (operationLineNumber: number) => () => void;
 };
 
 const OperationLine: React.FC<OperationLineProps> = ({
@@ -47,14 +65,16 @@ const OperationLine: React.FC<OperationLineProps> = ({
   dropTarget,
   setDropTarget,
   moveOperation,
+  removeOperation,
 }) => {
   const translate = useTranslate();
-  const {
-    formName,
-    getFormValue,
-    // isFormFieldInError,
-  } = useControlledFormInputAction<string | null>(lineNumber);
+  const { formName, getFormValue } = useControlledFormInputAction<
+    string | null
+  >(lineNumber);
   const operandField = getFormValue(`${baseFormName}.field`) || null;
+
+  const { watch } = useFormContext();
+  watch(formName(`${baseFormName}.operator`));
 
   const onDragOver = () => {
     setDropTarget({ operationLineNumber });
@@ -139,6 +159,7 @@ const OperationLine: React.FC<OperationLineProps> = ({
           <img
             alt={translate('pimee_catalog_rule.form.edit.conditions.delete')}
             src='/bundles/akeneopimruleengine/assets/icons/icon-delete-grey100.svg'
+            onClick={removeOperation(operationLineNumber)}
           />
         </DeleteButton>
       </div>
@@ -148,8 +169,6 @@ const OperationLine: React.FC<OperationLineProps> = ({
 
 type Props = {
   lineNumber: number;
-  defaultSource: Operand;
-  defaultOperationList: Operation[];
   onChange?: (value: Operation[]) => void;
   locales: Locale[];
   scopes: IndexedScopes;
@@ -157,58 +176,139 @@ type Props = {
 
 const CalculateOperationList: React.FC<Props> = ({
   lineNumber,
-  defaultSource,
-  defaultOperationList,
   locales,
   scopes,
 }) => {
+  const { setValue } = useFormContext();
+  const { formName, getFormValue } = useControlledFormInputAction<
+    string | null
+  >(lineNumber);
   const [dropTarget, setDropTarget] = React.useState<DropTarget | null>(null);
-  const [source, setSource] = React.useState<Operand>(defaultSource);
-  const [operationList, setOperationList] = React.useState<Operation[]>(
-    defaultOperationList
+  const [sourceAndOperations, setSourceAndOperations] = React.useState<SourceOrOperationIndexed[]>(
+    addUniqueIdToList([getFormValue('source'), ...getFormValue('operation_list')])
   );
+
+  const getSourceFormValue = () => getFormValue('source');
+  const getOperationListFormValue = () => getFormValue('operation_list');
+
+  React.useEffect(() => {
+    console.log('after render formValues = ', getFormValue('operation_list'));
+  });
+
+  const setSourceAndOperationValues = (
+    sourceAndOperations: SourceOrOperationIndexed[]
+  ) => {
+    console.log('setSourceAndOperationValues', Array.from(sourceAndOperations));
+    const [source, ...operationList] = sourceAndOperations;
+
+    console.log('setSourceAndOperationValues source = ', source);
+    console.log('setSourceAndOperationValues operationList = ', operationList);
+
+    ['field', 'value', 'scope', 'locale', 'currency'].forEach((key: string) =>
+      setValue(
+        formName('source') + `.${key}`,
+        source ? (source as any)[key] || undefined : undefined
+      )
+    );
+
+    const operationFields = [
+      'field',
+      'value',
+      'scope',
+      'locale',
+      'currency',
+      'operator',
+    ];
+    getOperationListFormValue().map(
+      (_operation: any, operationIndex: number) => {
+        if ('undefined' === typeof operationList[operationIndex]) {
+          console.log(
+            'unregister',
+            formName('operation_list') + `[${operationIndex}]`
+          );
+          operationFields.forEach((key: string) =>
+            setValue(
+              formName('operation_list') + `[${operationIndex}].${key}`,
+              undefined
+            )
+          );
+          setValue(
+            formName('operation_list') + `[${operationIndex}]`,
+            undefined
+          );
+          return;
+        }
+        operationFields.forEach((key: string) =>
+          setValue(
+            formName('operation_list') + `[${operationIndex}].${key}`,
+            'undefined' !== typeof operationList[operationIndex]
+              ? (operationList as any)[operationIndex][key] || undefined
+              : undefined
+          )
+        );
+      }
+    );
+
+    console.log('--> end setOperationListAndSource');
+    console.log('getSourceFormValue', getSourceFormValue());
+    console.log('getOperationListFormValue', getOperationListFormValue());
+  };
+
+  const removeOperation = (lineToRemove: number) => () => {
+    console.log('removeOperation lineToRemove = ', lineToRemove);
+    console.log('operationList', sourceAndOperations);
+
+    const newSourceAndOperations = [
+      ...sourceAndOperations.slice(0, lineToRemove),
+      ...sourceAndOperations.slice(lineToRemove + 1),
+    ];
+    setSourceAndOperationValues(newSourceAndOperations);
+    setSourceAndOperations(
+      addUniqueIdToList(
+        newSourceAndOperations.filter(
+          (sourceOrOperation: any) => sourceOrOperation?.field || sourceOrOperation?.value
+        )
+      )
+    );
+  };
 
   const moveOperation = (
     currentOperationLineNumber: number,
     newOperationLineNumber: number
   ) => {
-    const operations = [source, ...operationList];
+    const operations = [...sourceAndOperations];
     operations.splice(
       newOperationLineNumber,
       0,
       operations.splice(currentOperationLineNumber, 1)[0]
     );
-    setSource(operations[0]);
-    setOperationList(operations.slice(1) as Operation[]);
+    setSourceAndOperationValues(operations);
+    setSourceAndOperations(addUniqueIdToList(operations));
   };
 
   return (
     <ul className={'AknRuleOperation'}>
-      <OperationLine
-        baseFormName={'source'}
-        locales={locales}
-        scopes={scopes}
-        lineNumber={lineNumber}
-        operationLineNumber={0}
-        dropTarget={dropTarget}
-        setDropTarget={setDropTarget}
-        moveOperation={moveOperation}
-      />
-      {operationList.map((_operation: Operation, key: number) => {
-        return (
-          <OperationLine
-            key={key}
-            baseFormName={`operation_list[${key}]`}
-            locales={locales}
-            scopes={scopes}
-            lineNumber={lineNumber}
-            operationLineNumber={key + 1}
-            dropTarget={dropTarget}
-            setDropTarget={setDropTarget}
-            moveOperation={moveOperation}
-          />
-        );
-      })}
+      {sourceAndOperations &&
+        sourceAndOperations.map((sourceOrOperation: SourceOrOperationIndexed, operationLineNumber) => {
+          const baseFormName = 0 === operationLineNumber
+            ? 'source'
+            : `operation_list[${operationLineNumber - 1}]`;
+
+          return (
+            <OperationLine
+              key={sourceOrOperation.id}
+              baseFormName={baseFormName}
+              locales={locales}
+              scopes={scopes}
+              lineNumber={lineNumber}
+              operationLineNumber={operationLineNumber}
+              dropTarget={dropTarget}
+              setDropTarget={setDropTarget}
+              moveOperation={moveOperation}
+              removeOperation={removeOperation}
+            />
+          );
+        })}
     </ul>
   );
 };

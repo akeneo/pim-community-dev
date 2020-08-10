@@ -101,8 +101,6 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
   const getCurrencyFormValue = () => getFormValue('destination.currency');
   const roundPrecisionFormName = formName('round_precision');
   const getRoundPrecisionFormValue = () => getFormValue('round_precision');
-  const operationListFormName = formName('operation_list');
-  const getOperationListFormValue = () => getFormValue('operation_list');
   const sourceFormName = formName('source');
   const getSourceFormValue = () => getFormValue('source');
 
@@ -170,11 +168,6 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
         defaultValue={getSourceFormValue()}
       />
       <Controller
-        name={operationListFormName}
-        as={<span hidden />}
-        defaultValue={getOperationListFormValue()}
-      />
-      <Controller
         name={formName('destination.field')}
         as={<span hidden />}
         defaultValue={getFormValue('destination.field')}
@@ -184,8 +177,6 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
           <CalculatePreview lineNumber={lineNumber} />
           <CalculateOperationList
             lineNumber={lineNumber}
-            defaultSource={getSourceFormValue()}
-            defaultOperationList={getOperationListFormValue()}
             locales={locales}
             scopes={scopes}
           />
