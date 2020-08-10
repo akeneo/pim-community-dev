@@ -35,6 +35,8 @@ jobs:
         with:
           name: Lib
           path: lib
+      - name: Add lib to git
+        run: git add -A && git commit -l "publish lib folder"
       - name: Extract
         uses: s0/git-publish-subdir-action@develop
         env:
