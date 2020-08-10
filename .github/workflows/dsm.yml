@@ -9,10 +9,10 @@ jobs:
     steps:
       - name: checkout:master
         uses: actions/checkout@master
-      - name: publish:dsm
-        uses: juliensnz/actions-push-subdirectories@master
+      - name: Extract
+        uses: s0/git-publish-subdir-action@develop
         env:
-          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          args: akeneo-design-system juliensnz dsm
+          REPO: git@github.com:juliensnz/dsm.git
+          BRANCH: master
+          FOLDER: akeneo-design-system
+          SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
