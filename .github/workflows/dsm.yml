@@ -15,15 +15,15 @@ jobs:
         with:
           node-version: 13.13
       - name: Install Packages
-        run: npm install
+        run: cd akeneo-design-system && npm install
       - name: Run tests
-        run: npm run test
+        run: cd akeneo-design-system && npm run test
       - name: Build page
-        run: npm run build:prod
+        run: cd akeneo-design-system && npm run build:prod
       - uses: actions/upload-artifact@v1
         with:
           name: Lib
-          path: lib
+          path: akeneo-design-system && lib
 
   extract:
     name: Extract to DSM dedicated repo
