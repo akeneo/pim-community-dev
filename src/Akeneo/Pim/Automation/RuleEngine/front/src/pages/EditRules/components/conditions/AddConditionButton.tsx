@@ -40,6 +40,7 @@ const ATTRIBUTE_TYPES = [
   AttributeType.OPTION_MULTI_SELECT,
   AttributeType.OPTION_SIMPLE_SELECT,
   AttributeType.TEXT,
+  AttributeType.TEXTAREA,
   AttributeType.NUMBER,
   AttributeType.DATE,
   AttributeType.BOOLEAN,

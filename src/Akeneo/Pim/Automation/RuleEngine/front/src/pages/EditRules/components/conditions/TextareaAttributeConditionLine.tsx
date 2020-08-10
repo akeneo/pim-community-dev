@@ -1,8 +1,8 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
 import {
-  TextAttributeCondition,
-  TextAttributeOperators,
+  TextareaAttributeCondition,
+  TextareaAttributeOperators,
 } from '../../../../models/conditions';
 import { ConditionLineProps } from './ConditionLineProps';
 import { InputText } from '../../../../components/Inputs';
@@ -17,11 +17,11 @@ import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepo
 import { useControlledFormInputCondition } from '../../hooks';
 import { Operator } from '../../../../models/Operator';
 
-type TextAttributeConditionLineProps = ConditionLineProps & {
-  condition: TextAttributeCondition;
+type TextareaAttributeConditionLineProps = ConditionLineProps & {
+  condition: TextareaAttributeCondition;
 };
 
-const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
+const TextareaAttributeConditionLine: React.FC<TextareaAttributeConditionLineProps> = ({
   condition,
   lineNumber,
   locales,
@@ -44,7 +44,7 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
   return (
     <AttributeConditionLine
       attribute={attribute}
-      availableOperators={TextAttributeOperators}
+      availableOperators={TextareaAttributeOperators}
       currentCatalogLocale={currentCatalogLocale}
       defaultOperator={Operator.CONTAINS}
       field={condition.field}
@@ -63,4 +63,4 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
   );
 };
 
-export { TextAttributeConditionLine, TextAttributeConditionLineProps };
+export { TextareaAttributeConditionLine, TextareaAttributeConditionLineProps };

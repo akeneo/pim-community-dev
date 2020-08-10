@@ -10,6 +10,7 @@ export * from './PimCondition';
 export * from './StatusCondition';
 export * from './SimpleMultiOptionsAttributeCondition';
 export * from './TextAttributeCondition';
+export * from './TextareaAttributeCondition';
 export * from './GroupCondition';
 export * from './CategoryCondition';
 export * from './NumberAttributeCondition';
