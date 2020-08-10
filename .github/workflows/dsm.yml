@@ -36,7 +36,7 @@ jobs:
           name: Lib
           path: lib
       - name: Add lib to git
-        run: git add -A && git commit -l "publish lib folder"
+        run: git add akeneo-design-system/lib && git commit -m "publish lib folder"
       - name: Extract
         uses: s0/git-publish-subdir-action@develop
         env:
