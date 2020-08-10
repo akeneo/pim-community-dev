@@ -19,7 +19,8 @@
     "license": "OSL-3.0",
     "dependencies": {
         "react": "^16.13.0",
-        "react-dom": "^16.13.0"
+        "react-dom": "^16.13.0",
+        "styled-components": "^5.0.1"
     },
     "peerDependencies": {
         "styled-components": "^5.0.1"
