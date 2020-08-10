@@ -56,6 +56,7 @@ const QuickExportButton = styled.button`
 `;
 
 type QuickExportConfiguratorProps = {
+  showWithLabelsSelect: boolean;
   onActionLaunch: (formValue: FormValue) => void;
   getProductCount: () => number;
 };
@@ -68,7 +69,11 @@ const QuickExportConfigurator = (props: QuickExportConfiguratorProps) => (
   </DependenciesProvider>
 );
 
-const QuickExportConfiguratorContainer = ({onActionLaunch, getProductCount}: QuickExportConfiguratorProps) => {
+const QuickExportConfiguratorContainer = ({
+  showWithLabelsSelect,
+  onActionLaunch,
+  getProductCount,
+}: QuickExportConfiguratorProps) => {
   const [isModalOpen, openModal, closeModal] = useToggleState(false);
   const translate = useTranslate();
   const [formValue, setFormValue] = useStorageState<FormValue>({}, 'quick_export_configuration');
@@ -76,6 +81,10 @@ const QuickExportConfiguratorContainer = ({onActionLaunch, getProductCount}: Qui
   useShortcut(Key.Escape, closeModal);
 
   const productCount = getProductCount();
+  const readyToSubmit =
+    undefined !== formValue['type'] &&
+    undefined !== formValue['context'] &&
+    (undefined !== formValue['with-labels'] || !showWithLabelsSelect);
 
   return (
     <>
@@ -93,11 +102,7 @@ const QuickExportConfiguratorContainer = ({onActionLaunch, getProductCount}: Qui
                   onActionLaunch(formValue);
                   closeModal();
                 }}
-                disabled={
-                  undefined === formValue['type'] ||
-                  undefined === formValue['context'] ||
-                  undefined === formValue['with-labels']
-                }
+                disabled={!readyToSubmit}
               >
                 {translate('pim_common.export')}
               </ModalConfirmButton>
@@ -109,40 +114,47 @@ const QuickExportConfiguratorContainer = ({onActionLaunch, getProductCount}: Qui
                 )}`}
               </Subtitle>
               <Title>{translate('pim_datagrid.mass_action.quick_export.configurator.title')}</Title>
-              <Form
-                value={formValue}
-                onChange={(newValue: FormValue) => {
-                  setFormValue(newValue);
-                }}
-              >
+              <Form value={formValue} onChange={setFormValue}>
                 <Select name="type">
                   <Option value="csv" title={translate('pim_datagrid.mass_action.quick_export.configurator.csv')}>
                     <CSVFileIcon size={48} />
+                    {translate('pim_datagrid.mass_action.quick_export.configurator.csv')}
                   </Option>
                   <Option value="xlsx" title={translate('pim_datagrid.mass_action.quick_export.configurator.xlsx')}>
                     <XLSXFileIcon size={48} />
+                    {translate('pim_datagrid.mass_action.quick_export.configurator.xlsx')}
                   </Option>
                 </Select>
                 <Select name="context">
                   <Option
                     value="grid-context"
                     title={translate('pim_datagrid.mass_action.quick_export.configurator.grid_context')}
-                  />
+                  >
+                    {translate('pim_datagrid.mass_action.quick_export.configurator.grid_context')}
+                  </Option>
                   <Option
                     value="all-attributes"
                     title={translate('pim_datagrid.mass_action.quick_export.configurator.all_attributes')}
-                  />
+                  >
+                    {translate('pim_datagrid.mass_action.quick_export.configurator.all_attributes')}
+                  </Option>
                 </Select>
-                <Select name="with-labels">
-                  <Option
-                    value="with-codes"
-                    title={translate('pim_datagrid.mass_action.quick_export.configurator.with_codes')}
-                  />
-                  <Option
-                    value="with-labels"
-                    title={translate('pim_datagrid.mass_action.quick_export.configurator.with_labels')}
-                  />
-                </Select>
+                {showWithLabelsSelect && (
+                  <Select name="with-labels">
+                    <Option
+                      value="with-codes"
+                      title={translate('pim_datagrid.mass_action.quick_export.configurator.with_codes')}
+                    >
+                      {translate('pim_datagrid.mass_action.quick_export.configurator.with_codes')}
+                    </Option>
+                    <Option
+                      value="with-labels"
+                      title={translate('pim_datagrid.mass_action.quick_export.configurator.with_labels')}
+                    >
+                      {translate('pim_datagrid.mass_action.quick_export.configurator.with_labels')}
+                    </Option>
+                  </Select>
+                )}
               </Form>
             </Content>
           </Modal>

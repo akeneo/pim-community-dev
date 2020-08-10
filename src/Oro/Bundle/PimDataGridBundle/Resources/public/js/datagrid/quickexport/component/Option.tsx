@@ -53,7 +53,6 @@ const Option = ({isSelected, children, onSelect, isDisabled, title}: OptionProps
           color: isSelected ? theme.color.blue100 : child.props.color,
         });
       })}
-      {title}
     </OptionContainer>
   );
 };

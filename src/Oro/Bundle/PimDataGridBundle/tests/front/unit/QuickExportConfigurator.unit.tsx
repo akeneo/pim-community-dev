@@ -8,7 +8,11 @@ test('it displays a button and no modal initially', () => {
   const getProductCount = jest.fn(() => 3);
 
   const {getByTitle, queryByTitle} = render(
-    <QuickExportConfigurator onActionLaunch={onActionLaunch} getProductCount={getProductCount} />
+    <QuickExportConfigurator
+      showWithLabelsSelect={true}
+      onActionLaunch={onActionLaunch}
+      getProductCount={getProductCount}
+    />
   );
 
   expect(getByTitle('pim_datagrid.mass_action_group.quick_export.label')).toBeInTheDocument();
@@ -20,7 +24,11 @@ test('it does not call the action launch if an option is not set', () => {
   const getProductCount = jest.fn(() => 3);
 
   const {getByTitle} = render(
-    <QuickExportConfigurator onActionLaunch={onActionLaunch} getProductCount={getProductCount} />
+    <QuickExportConfigurator
+      showWithLabelsSelect={true}
+      onActionLaunch={onActionLaunch}
+      getProductCount={getProductCount}
+    />
   );
 
   fireEvent.click(getByTitle('pim_datagrid.mass_action_group.quick_export.label'));
@@ -37,7 +45,11 @@ test('it does call the action launch if every option is set', () => {
   const getProductCount = jest.fn(() => 3);
 
   const {getByTitle, getByText} = render(
-    <QuickExportConfigurator onActionLaunch={onActionLaunch} getProductCount={getProductCount} />
+    <QuickExportConfigurator
+      showWithLabelsSelect={true}
+      onActionLaunch={onActionLaunch}
+      getProductCount={getProductCount}
+    />
   );
 
   fireEvent.click(getByTitle('pim_datagrid.mass_action_group.quick_export.label'));
@@ -55,4 +67,19 @@ test('it does call the action launch if every option is set', () => {
   fireEvent.click(getByTitle('pim_common.export'));
 
   expect(onActionLaunch).toHaveBeenCalledWith({context: 'all-attributes', type: 'xlsx', 'with-labels': 'with-codes'});
+});
+
+test('it does not display the with-labels select if specified', () => {
+  const onActionLaunch = jest.fn();
+  const getProductCount = jest.fn(() => 3);
+
+  const {queryByText} = render(
+    <QuickExportConfigurator
+      showWithLabelsSelect={false}
+      onActionLaunch={onActionLaunch}
+      getProductCount={getProductCount}
+    />
+  );
+
+  expect(queryByText('pim_datagrid.mass_action.quick_export.configurator.with_labels')).not.toBeInTheDocument();
 });
