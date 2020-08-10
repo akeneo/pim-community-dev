@@ -833,6 +833,9 @@ acceptance:
                 - '%paths.base%/tests/features/pim/enrichment'
             contexts:
                 - test.user.context
+                - test.channel.context
+                - test.attribute_option.context
+                - test.locale.context
                 - test.attribute.context
                 - test.family.context
                 - test.catalog.product_creation.context
@@ -842,6 +845,8 @@ acceptance:
                 - akeneo_assetmanager.tests.back.acceptance.context.edit_asset_family_context
                 - akeneo_referenceentity.tests.back.acceptance.context.create_reference_entity_context
                 - akeneo_referenceentity.tests.back.acceptance.context.create_record_context
+                - akeneo_assetmanager.tests.back.acceptance.context.list_asset_context
+
             filters:
                 tags: '@acceptance-back'
         platform:

@@ -1,6 +1,5 @@
 pim_asset_manager:
   product_value:
     validation:
-      asset_should_exist: 'La ressource qui porte le code "%asset_code%" n''existe pas.'
       asset_multiple_link:
         limit_reached: 'Vous avez atteint la limite de %limit% ressources par collection, vous ne pouvez plus ajouter de ressource à votre collection.'
