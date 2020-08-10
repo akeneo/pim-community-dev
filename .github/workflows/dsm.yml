@@ -7,8 +7,9 @@ jobs:
   master:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - name: publish:starters
+      - name: checkout:master
+        uses: actions/checkout@master
+      - name: publish:dsm
         uses: johno/actions-push-subdirectories@master
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
