@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Command;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ActionInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\AddAction;
 use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\CalculateAction;
 use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ClearAction;
@@ -23,8 +24,9 @@ use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\CustomAction;
 use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\Label;
 use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\RemoveAction;
 use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\SetAction;
+use Webmozart\Assert\Assert;
 
-final class CreateOrUpdateRuleCommand
+class CreateOrUpdateRuleCommand
 {
     public $code;
     public $priority;
@@ -37,18 +39,18 @@ final class CreateOrUpdateRuleCommand
         $this->code = $data['code'] ?? null;
         $this->priority = $data['priority'] ?? null;
 
-        $conditions = $data['conditions'] ?? null;
+        $conditions = $data['content']['conditions'] ?? $data['conditions'] ?? null;
         if (is_array($conditions)) {
             $conditions = array_map(
                 function ($condition) {
-                    return is_array($condition) ? new Condition($condition) : null;
+                    return is_array($condition) ? new Condition($condition) : $condition;
                 },
                 $conditions
             );
         }
         $this->conditions = $conditions;
 
-        $actions = $data['actions'] ?? null;
+        $actions = $data['content']['actions'] ?? $data['actions'] ?? null;
         if (is_array($actions)) {
             $actions = array_map(
                 function ($action) {
@@ -59,7 +61,7 @@ final class CreateOrUpdateRuleCommand
         }
         $this->actions = $actions;
 
-        $labels = $data['labels'] ?? null;
+        $labels = $data['labels'] ?? [];
         if (is_array($labels)) {
             $labels = array_map(
                 function ($key, $value) {
@@ -72,10 +74,41 @@ final class CreateOrUpdateRuleCommand
         $this->labels = $labels;
     }
 
+    public function toArray(): array
+    {
+        Assert::stringNotEmpty($this->code);
+        Assert::nullOrInteger($this->priority);
+        Assert::isArray($this->conditions);
+        Assert::allIsInstanceOf($this->conditions, Condition::class);
+        Assert::isArray($this->actions);
+        Assert::allIsInstanceOf($this->actions, ActionInterface::class);
+        Assert::isArray($this->labels);
+        Assert::allIsInstanceOf($this->labels, Label::class);
+
+        $normalized = [
+            'code' => $this->code,
+            'priority' => $this->priority ?? 0,
+            'conditions' => array_map(function (Condition $condition): array {
+                return $condition->toArray();
+            }, $this->conditions),
+            'actions' => array_map(function (ActionInterface $action): array {
+                return $action->toArray();
+            }, $this->actions),
+        ];
+
+        $normalizedLabels = [];
+        foreach ($this->labels as $label) {
+            $normalizedLabels[$label->locale] = $label->label;
+        }
+        $normalized['labels'] = new \ArrayObject($normalizedLabels);
+
+        return $normalized;
+    }
+
     private function createActionCommand($action)
     {
         if (!is_array($action)) {
-            return null;
+            return $action;
         }
 
         $type = $action['type'] ?? null;

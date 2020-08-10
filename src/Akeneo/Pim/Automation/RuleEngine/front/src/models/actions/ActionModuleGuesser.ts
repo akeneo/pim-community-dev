@@ -1,23 +1,30 @@
 import React from 'react';
 import { ActionLineProps } from '../../pages/EditRules/components/actions/ActionLineProps';
 import { Action } from '../Action';
-import { getSetFamilyActionModule } from './SetFamilyAction';
-import { getAddActionModule } from './AddAction';
-import { getCalculateActionModule } from './CalculateAction';
-import { getClearActionModule } from './ClearAction';
-import { getConcatenateActionModule } from './ConcatenateAction';
-import { getCopyActionModule } from './CopyAction';
-import { getRemoveAttributeValueActionModule } from './RemoveAttributeValueAction';
-import { getSetActionModule } from './SetAction';
+import {
+  getAddActionModule,
+  getAddAttributeValueActionModule,
+  getAddCategoriesModule,
+  getAddGroupsActionModule,
+  getCalculateActionModule,
+  getClearActionModule,
+  getClearAssociationsActionModule,
+  getClearAttributeActionModule,
+  getClearCategoriesActionModule,
+  getClearGroupsActionModule,
+  getConcatenateActionModule,
+  getCopyActionModule,
+  getRemoveAttributeValueActionModule,
+  getRemoveCategoriesModule,
+  getRemoveGroupsActionModule,
+  getSetActionModule,
+  getSetCategoriesModule,
+  getSetFamilyActionModule,
+  getSetGroupsActionModule,
+  getSetStatusActionModule,
+} from './';
 import { FallbackActionLine } from '../../pages/EditRules/components/actions/FallbackActionLine';
 import { Router } from '../../dependenciesTools';
-import { getClearAttributeActionModule } from './ClearAttributeAction';
-import { getAddCategoriesModule } from './AddCategoriesAction';
-import { getSetCategoriesModule } from './SetCategoriesAction';
-import { getClearAssociationsActionModule } from './ClearAssociationsAction';
-import { getClearCategoriesActionModule } from './ClearCategoriesAction';
-import { getClearGroupsActionModule } from './ClearGroupsAction';
-import { getRemoveCategoriesModule } from './RemoveCategoriesAction';
 
 export type ActionModuleGuesser = (
   json: any,
@@ -32,14 +39,20 @@ const getActionModule: (
   router
 ) => {
   const getActionModuleFunctions: ActionModuleGuesser[] = [
-    getSetFamilyActionModule,
+    getAddCategoriesModule,
+    getAddGroupsActionModule,
     getClearAssociationsActionModule,
     getClearCategoriesActionModule,
     getClearGroupsActionModule,
-    getClearAttributeActionModule,
-    getAddCategoriesModule,
-    getSetCategoriesModule,
     getRemoveCategoriesModule,
+    getRemoveGroupsActionModule,
+    getSetCategoriesModule,
+    getSetFamilyActionModule,
+    getSetGroupsActionModule,
+    getSetStatusActionModule,
+    // Attribute values: they should be tested after the system field actions since their 'field' is dynamic
+    getAddAttributeValueActionModule,
+    getClearAttributeActionModule,
     getRemoveAttributeValueActionModule,
     // Fallbacks
     getAddActionModule,

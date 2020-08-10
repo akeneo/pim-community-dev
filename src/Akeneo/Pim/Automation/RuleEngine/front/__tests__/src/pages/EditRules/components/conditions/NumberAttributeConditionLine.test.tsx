@@ -1,15 +1,11 @@
 import React from 'react';
-import { renderWithProviders, screen } from '../../../../test-utils';
+import { renderWithProviders, screen } from '../../../../../../test-utils';
 import 'jest-fetch-mock';
-import { NumberAttributeConditionLine } from '../../../../src/pages/EditRules/components/conditions/NumberAttributeConditionLine';
-import { Operator } from '../../../../src/models/Operator';
+import { NumberAttributeConditionLine } from '../../../../../../src/pages/EditRules/components/conditions/NumberAttributeConditionLine';
+import { Operator } from '../../../../../../src/models/Operator';
 import userEvent from '@testing-library/user-event';
 import { wait } from '@testing-library/dom';
-import { createAttribute, locales, scopes } from '../../factories';
-
-jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
-jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
-jest.mock('../../../../src/fetch/categoryTree.fetcher.ts');
+import { createAttribute, locales, scopes } from '../../../../factories';
 
 describe('NumberAttributeConditionLine', () => {
   afterEach(() => {

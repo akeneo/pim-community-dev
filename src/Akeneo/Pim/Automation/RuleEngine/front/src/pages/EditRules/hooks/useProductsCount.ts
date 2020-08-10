@@ -6,6 +6,7 @@ import { Router } from '../../../dependenciesTools';
 import { Status } from '../../../rules.constants';
 import { FormData } from '../edit-rules.types';
 import { Condition } from '../../../models';
+import { formatDateLocaleTimeConditionsToBackend } from '../components/conditions/DateConditionLines/dateConditionLines.utils';
 type CountFn = (x: CountError | CountPending | CountComplete) => void;
 
 type CountError = { value: -1; status: Status.ERROR };
@@ -54,13 +55,14 @@ const isConditionValid = (condition: Condition) =>
   Object.values(condition).some(value => value);
 
 const createProductsCountUrl = (router: Router, form: FormData) => {
+  const filterConditions =
+    form?.content?.conditions?.filter(isConditionValid) || [];
+  const conditions = formatDateLocaleTimeConditionsToBackend(filterConditions);
   return generateUrl(
     router,
     'pimee_enrich_rule_definition_get_impacted_product_count',
     {
-      conditions: JSON.stringify(
-        form?.content?.conditions?.filter(isConditionValid) || []
-      ),
+      conditions: JSON.stringify(conditions),
     }
   );
 };

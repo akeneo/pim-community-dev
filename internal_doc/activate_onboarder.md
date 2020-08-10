@@ -26,7 +26,7 @@ Edit the PIM `values.yaml` file, and turn on this hook with the following conten
 ```yaml
 onboarder:
     pushCatalogToOnboarder:
-      enabled: false
+      enabled: true
 ```
 
 Or using `yq`:

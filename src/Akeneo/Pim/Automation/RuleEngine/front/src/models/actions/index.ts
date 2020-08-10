@@ -1,5 +1,7 @@
 export * from './AddAction';
+export * from './AddAttributeValueAction';
 export * from './AddCategoriesAction';
+export * from './AddGroupsAction';
 export * from './CalculateAction';
 export * from './ClearAction';
 export * from './ClearAttributeAction';
@@ -14,3 +16,6 @@ export * from './ProductField';
 export * from './SetFamilyAction';
 export * from './SetCategoriesAction';
 export * from './RemoveCategoriesAction';
+export * from './RemoveGroupsAction';
+export * from './SetStatusAction';
+export * from './SetGroupsAction';

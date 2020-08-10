@@ -43,6 +43,7 @@ class AkeneoPimRuleEngineExtension extends AkeneoStorageUtilsExtension
         $loader->load('engine.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('factories.yml');
+        $loader->load('handlers.yml');
         $loader->load('job_constraints.yml');
         $loader->load('job_defaults.yml');
         $loader->load('jobs.yml');

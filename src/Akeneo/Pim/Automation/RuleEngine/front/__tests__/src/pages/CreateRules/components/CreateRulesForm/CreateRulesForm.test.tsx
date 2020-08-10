@@ -3,8 +3,6 @@ import { CreateRulesForm } from '../../../../../../src/pages/CreateRules/compone
 import userEvent from '@testing-library/user-event';
 import { render, screen, act, fireEvent } from '../../../../../../test-utils';
 
-jest.mock('../../../../../../src/dependenciesTools/provider/dependencies.ts');
-
 describe('CreateRulesForm', () => {
   test('should display the form', async () => {
     // Given

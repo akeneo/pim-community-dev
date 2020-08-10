@@ -14,13 +14,12 @@ const AknActionFormContainer = styled.div`
 
 const ActionTitle = styled.div`
   color: ${({ theme }): string => theme.color.purple100};
-  font-size: 20px;
+  font-size: 18px;
   line-height: 30px;
   margin-bottom: 15px;
 `;
 
 const ActionGrid = styled.div`
-  margin-top: 18px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 40px;

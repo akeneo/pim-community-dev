@@ -45,13 +45,6 @@ class GetUpdatedProductIdsQuery implements GetUpdatedProductIdsQueryInterface
                         ]
                     ],
                 ],
-                'must_not' => [
-                    [
-                        'exists' => [
-                            'field' => 'parent',
-                        ],
-                    ],
-                ],
             ],
         ];
 

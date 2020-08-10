@@ -1,32 +1,41 @@
 import React from 'react';
-import { ClearCategoriesAction } from '../../../../models/actions';
+import { Controller } from 'react-hook-form';
 import { ActionLineProps } from './ActionLineProps';
 import { useTranslate } from '../../../../dependenciesTools/hooks';
-import { useRegisterConst } from '../../hooks/useRegisterConst';
 import { ActionTemplate } from './ActionTemplate';
+import { useControlledFormInputAction } from '../../hooks';
 
-type Props = {
-  action: ClearCategoriesAction;
-} & ActionLineProps;
-
-const ClearCategoriesActionLine: React.FC<Props> = ({
+const ClearCategoriesActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
-  action,
   handleDelete,
 }) => {
   const translate = useTranslate();
-  useRegisterConst(`content.actions[${lineNumber}]`, action);
+  const { fieldFormName, typeFormName } = useControlledFormInputAction<boolean>(
+    lineNumber
+  );
 
   return (
-    <ActionTemplate
-      title={translate(
-        'pimee_catalog_rule.form.edit.actions.clear_categories.title'
-      )}
-      helper={translate('pimee_catalog_rule.form.helper.clear_categories')}
-      legend={translate('pimee_catalog_rule.form.helper.clear_categories')}
-      handleDelete={handleDelete}
-      lineNumber={lineNumber}
-    />
+    <>
+      <Controller
+        name={fieldFormName}
+        as={<input type='hidden' />}
+        defaultValue='categories'
+      />
+      <Controller
+        name={typeFormName}
+        as={<input type='hidden' />}
+        defaultValue='clear'
+      />
+      <ActionTemplate
+        title={translate(
+          'pimee_catalog_rule.form.edit.actions.clear_categories.title'
+        )}
+        helper={translate('pimee_catalog_rule.form.helper.clear_categories')}
+        legend={translate('pimee_catalog_rule.form.helper.clear_categories')}
+        handleDelete={handleDelete}
+        lineNumber={lineNumber}
+      />
+    </>
   );
 };
 

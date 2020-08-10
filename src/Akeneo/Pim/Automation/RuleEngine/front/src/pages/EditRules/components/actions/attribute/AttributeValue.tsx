@@ -1,20 +1,26 @@
 import React from 'react';
-import {
-  Attribute,
-  AttributeType,
-  getAttributeLabel,
-} from '../../../../../models';
+import { Attribute, getAttributeLabel, ScopeCode } from '../../../../../models';
+import { AttributeType } from '../../../../../models/Attribute';
 import {
   useTranslate,
   useUserCatalogLocale,
 } from '../../../../../dependenciesTools/hooks';
 import {
+  AssetCollectionValue,
   BooleanValue,
-  MultiSelectValue,
-  TextValue,
-  SimpleSelectValue,
+  DateValue,
   FallbackValue,
+  MultiReferenceEntityValue,
+  MultiSelectValue,
   NumberValue,
+  parseAssetCollectionValue,
+  parseMultiReferenceEntityValue,
+  parsePriceCollectionValue,
+  PriceCollectionValue,
+  SimpleReferenceEntityValue,
+  SimpleSelectValue,
+  TextAreaValue,
+  TextValue,
 } from './';
 import {
   HelperContainer,
@@ -22,21 +28,37 @@ import {
 } from '../../../../../components/HelpersInfos';
 import { ActionFormContainer } from '../style';
 
-const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: Map<
-  AttributeType,
-  React.FC<InputValueProps>
-> = new Map([
-  [AttributeType.TEXT, TextValue],
-  [AttributeType.OPTION_SIMPLE_SELECT, SimpleSelectValue],
-  [AttributeType.BOOLEAN, BooleanValue],
-  [AttributeType.OPTION_MULTI_SELECT, MultiSelectValue],
-  [AttributeType.NUMBER, NumberValue],
-]);
+const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: AttributeType[] = [
+  AttributeType.TEXT,
+  AttributeType.OPTION_SIMPLE_SELECT,
+  AttributeType.BOOLEAN,
+  AttributeType.OPTION_MULTI_SELECT,
+  AttributeType.NUMBER,
+  AttributeType.PRICE_COLLECTION,
+  AttributeType.DATE,
+  AttributeType.ASSET_COLLECTION,
+  AttributeType.REFERENCE_ENTITY_COLLECTION,
+  AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
+  AttributeType.TEXTAREA,
+];
 
 const MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION: Map<
   AttributeType,
   React.FC<InputValueProps>
-> = new Map([[AttributeType.OPTION_MULTI_SELECT, MultiSelectValue]]);
+> = new Map([
+  [AttributeType.OPTION_MULTI_SELECT, MultiSelectValue],
+  [AttributeType.ASSET_COLLECTION, AssetCollectionValue],
+  [AttributeType.REFERENCE_ENTITY_COLLECTION, MultiReferenceEntityValue],
+]);
+
+const MANAGED_ATTRIBUTE_TYPES_FOR_ADD_ACTION: Map<
+  AttributeType,
+  React.FC<InputValueProps>
+> = new Map([
+  [AttributeType.OPTION_MULTI_SELECT, MultiSelectValue],
+  [AttributeType.ASSET_COLLECTION, AssetCollectionValue],
+  [AttributeType.REFERENCE_ENTITY_COLLECTION, MultiReferenceEntityValue],
+]);
 
 type InputValueProps = {
   id: string;
@@ -46,12 +68,17 @@ type InputValueProps = {
   value: any;
   label?: string;
   onChange: (value: any) => void;
+  scopeCode?: ScopeCode;
 };
 
 const getValueModule = (attribute: Attribute, props: InputValueProps) => {
   switch (attribute.type) {
     case AttributeType.TEXT:
       return <TextValue {...props} />;
+    case AttributeType.TEXTAREA:
+      return <TextAreaValue {...props} />;
+    case AttributeType.DATE:
+      return <DateValue {...props} />;
     case AttributeType.OPTION_SIMPLE_SELECT:
       return <SimpleSelectValue {...props} key={attribute.code} />;
     case AttributeType.OPTION_MULTI_SELECT:
@@ -60,6 +87,29 @@ const getValueModule = (attribute: Attribute, props: InputValueProps) => {
       return <NumberValue {...props} />;
     case AttributeType.BOOLEAN:
       return <BooleanValue {...props} value={!!props.value} />;
+    case AttributeType.PRICE_COLLECTION:
+      return (
+        <PriceCollectionValue
+          {...props}
+          value={parsePriceCollectionValue(props.value)}
+        />
+      );
+    case AttributeType.ASSET_COLLECTION:
+      return (
+        <AssetCollectionValue
+          {...props}
+          value={parseAssetCollectionValue(props.value)}
+        />
+      );
+    case AttributeType.REFERENCE_ENTITY_COLLECTION:
+      return (
+        <MultiReferenceEntityValue
+          {...props}
+          value={parseMultiReferenceEntityValue(props.value)}
+        />
+      );
+    case AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT:
+      return <SimpleReferenceEntityValue {...props} />;
     default:
       return null;
   }
@@ -73,6 +123,7 @@ type Props = {
   value?: any;
   label?: string;
   onChange: (value: any) => void;
+  scopeCode?: ScopeCode;
 };
 
 const isAttrNotSelected = (attribute: Attribute | null | undefined) =>
@@ -88,6 +139,7 @@ const AttributeValue: React.FC<Props> = ({
   value,
   label,
   onChange,
+  scopeCode,
 }) => {
   const translate = useTranslate();
   const catalogLocale = useUserCatalogLocale();
@@ -130,6 +182,7 @@ const AttributeValue: React.FC<Props> = ({
         value,
         onChange,
         validation,
+        scopeCode,
       });
       if (inputComponent) {
         return inputComponent;
@@ -164,4 +217,5 @@ export {
   InputValueProps,
   MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION,
   MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION,
+  MANAGED_ATTRIBUTE_TYPES_FOR_ADD_ACTION,
 };

@@ -18,7 +18,7 @@ data "template_file" "helm_pim_config" {
     mailgun_host        = var.mailgun_host
     mailgun_port        = var.mailgun_port
     bucketName          = google_storage_bucket.srnt_bucket.name
-    pimStoragekey       = google_service_account_key.pimstorage.private_key
+    pimStoragekey       = google_service_account_key.pim_service_account.private_key
     papoProjectCode     = var.papo_project_code
     papoProjectCodeTruncated = substr(
       var.papo_project_code,
@@ -28,6 +28,10 @@ data "template_file" "helm_pim_config" {
     papoProjectCodeHashed           = md5(var.papo_project_code)
     pimVersion                      = var.pim_version
     monitoring_authentication_token = random_string.monitoring_authentication_token.result
+    subscription_webhook            = google_pubsub_subscription.webhook.name
+    subscription_job_queue          = google_pubsub_subscription.job-queue.name
+    topic_business_event            = google_pubsub_topic.business-event.name
+    topic_job_queue                 = google_pubsub_topic.job-queue.name
   }
 }
 

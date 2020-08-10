@@ -19,6 +19,14 @@ services:
         tags:
             - { name: 'akeneo.pim.enrichment.product.query.indexing_additional_properties' }
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetUpdatedProductIdsQuery:
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetUpdatedProductModelIdsQuery:
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetNumberOfProductsImpactedByAttributeOptionSpellingMistakesQuery:
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
@@ -31,9 +39,5 @@ services:
 
     akeneo.pim.automation.data_quality_insights.query.get_product_model_ids_by_attribute_option_code:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetProductModelIdsByAttributeOptionCodeQuery
-        arguments:
-            - '@akeneo_elasticsearch.client.product_and_product_model'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetUpdatedProductIdsQuery:
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'

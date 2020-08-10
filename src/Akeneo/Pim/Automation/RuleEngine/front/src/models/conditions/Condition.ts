@@ -6,15 +6,19 @@ import {
   PimCondition,
   TextAttributeCondition,
   CategoryCondition,
+  CompletenessCondition,
+  DateAttributeCondition,
 } from './';
 
 export type Condition =
   | CategoryCondition
+  | CompletenessCondition
   | FallbackCondition
   | PimCondition
   | FamilyCondition
   | TextAttributeCondition
-  | SimpleMultiOptionsAttributeCondition;
+  | SimpleMultiOptionsAttributeCondition
+  | DateAttributeCondition;
 
 export type ConditionFactory = (
   fieldCode: string,

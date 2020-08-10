@@ -4,6 +4,7 @@ import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
+import { AttributeType } from '../../../../models/Attribute';
 
 type AddConditionAttribute = {
   id: string;
@@ -25,13 +26,26 @@ type Props = {
 
 // Add here the fields handled by the rule conditions.
 // Be sure that the associated UI component exists to display it correctly.
-const SYSTEM_FIELDS = ['family', 'categories'];
+const SYSTEM_FIELDS = [
+  'categories',
+  'family',
+  'groups',
+  'enabled',
+  'completeness',
+  'created',
+  'updated',
+];
 
 const ATTRIBUTE_TYPES = [
-  'pim_catalog_multiselect',
-  'pim_catalog_simpleselect',
-  'pim_catalog_text',
-  'pim_catalog_number',
+  AttributeType.OPTION_MULTI_SELECT,
+  AttributeType.OPTION_SIMPLE_SELECT,
+  AttributeType.TEXT,
+  AttributeType.TEXTAREA,
+  AttributeType.NUMBER,
+  AttributeType.DATE,
+  AttributeType.BOOLEAN,
+  AttributeType.REFERENCE_ENTITY_COLLECTION,
+  AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
 ];
 
 const AddConditionButton: React.FC<Props> = ({

@@ -43,6 +43,9 @@ migrate ?= no
 .PHONY: deploy-serenity
 deploy-serenity: create-ci-release-files deploy
 
+.PHONY: delete-serenity
+delete-serenity: create-ci-release-files delete
+
 .PHONY: deploy
 deploy: terraform-deploy
 	@echo "#######################################################################################"
@@ -132,7 +135,7 @@ create-ci-release-files: create-ci-values create-pim-main-tf
 create-ci-values: $(INSTANCE_DIR)
 	@echo "=========================================================="
 	@echo "Deploy namespace : $(PFID)"
-	@echo " - with pim version : $(IMAGE_TAG)"
+	@echo " - with image tag : $(IMAGE_TAG)"
 	@echo " - on cluster : $(GOOGLE_PROJECT_ID)/$(GOOGLE_CLUSTER_ZONE)"
 	@echo " - URL : $(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS)"
 	@echo "=========================================================="
@@ -219,8 +222,8 @@ deploy_latest_release_for_helpdesk:
 slack_helpdesk:
 	curl -X POST -H 'Content-type: application/json' --data '{"text":"Serenity env has been deployed with the last tag $(IMAGE_TAG) : https://pimci-helpdesk.preprod.cloud.akeneo.com"}' $${SLACK_URL_HELPDESK};
 
-.PHONY: delete_pr_environments
-delete_pr_environments:
+.PHONY: delete_pr_environments_hourly
+delete_pr_environments_hourly:
 	bash $(PWD)/deployments/bin/remove_pr_instance.sh
 
 .PHONY: test_upgrade_from_serenity_customer_db_to_master

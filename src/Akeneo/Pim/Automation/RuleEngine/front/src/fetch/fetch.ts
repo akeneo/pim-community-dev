@@ -32,4 +32,14 @@ const httpPut = (url: string, params?: any) => {
   });
 };
 
-export { httpPost, httpPut, httpGet };
+const httpDelete = (url: string) => {
+  return fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest',
+    },
+    method: 'DELETE',
+  });
+};
+
+export { httpPost, httpPut, httpGet, httpDelete };

@@ -179,7 +179,6 @@ pimee_catalog_rule:
           "BETWEEN": entre
           "NOT BETWEEN": n'est pas entre
           "=": est égal à
-          "!=": est différent de
           ">": supérieur à
           ">=": égal ou supérieur à
           "<": inférieur à
@@ -218,7 +217,6 @@ pimee_catalog_rule:
     unbound_locale: 'La locale "{{ localeCode }}" n''est pas activée dans le canal "{{ channelCode }}"'
     locale_on_unlocalizable_attribute: Cet attribut n'est pas localisable. Veuillez supprimer la locale avant de continuer.
     unknown_scope: 'Le canal "{{ scopeCode }}" n''existe pas'
-    scope_on_unscopable_attribute: Cet attribut n'est pas scopable. Veuillez supprimer le canal avant de continuer.
     unknown_families: "{1}La famille {{ familyCodes }} n'existe pas|]1,+Inf[Les {{ familyCodes }} familles n'existent pas"
     unknown_attribute_options: "{1}L'option {{ attributeOptionCodes }} n'existe pas|]1,+Inf[Les options {{ attributeOptionCodes }} n'existent pas"
     unknown_attribute_code: "L'attribut {{ attributeCode }} n'existe pas"
@@ -281,6 +279,7 @@ pim_menu:
 pim_title:
   pimee_catalog_rule_rule_index: Règles
   pimee_catalog_rule_edit: Modifier la règle
+  pimee_catalog_rule_new: Règles
 pim_import_export:
   widget:
     last_operations:

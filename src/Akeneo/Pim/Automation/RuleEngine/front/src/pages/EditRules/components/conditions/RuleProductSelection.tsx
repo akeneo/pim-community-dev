@@ -1,17 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useFormContext, Control } from 'react-hook-form';
+import { Control, useFormContext } from 'react-hook-form';
 import { SmallHelper } from '../../../../components';
 import {
   Condition,
   ConditionFactory,
-  createFamilyCondition,
-  createSimpleMultiOptionsAttributeCondition,
-  createTextAttributeCondition,
+  createBooleanAttributeCondition,
   createCategoryCondition,
+  createCompletenessCondition,
+  createFamilyCondition,
+  createGroupsCondition,
+  createNumberAttributeCondition,
+  createSimpleMultiOptionsAttributeCondition,
+  createStatusCondition,
+  createTextAttributeCondition,
   Locale,
   LocaleCode,
-  createNumberAttributeCondition,
+  createDateAttributeCondition,
+  createDateSystemCondition,
+  createTextareaAttributeCondition,
 } from '../../../../models/';
 import { TextBoxBlue } from '../TextBoxBlue';
 import { useProductsCount } from '../../hooks';
@@ -26,6 +33,7 @@ import {
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
 import { Action } from '../../../../models/Action';
+import { createSimpleMultiReferenceEntitiesAttributeCondition } from '../../../../models/conditions/SimpleMultiReferenceEntitiesAttributeCondition';
 
 const Header = styled.header`
   font-weight: normal;
@@ -98,10 +106,7 @@ const RuleProductSelection: React.FC<Props> = ({
 
   const [conditionsState, setConditionsState] = React.useState<
     (Condition | null)[]
-  >([]);
-  React.useEffect(() => {
-    setConditionsState(conditions);
-  }, []);
+  >(conditions);
 
   const { getValues } = useFormContext();
 
@@ -115,10 +120,19 @@ const RuleProductSelection: React.FC<Props> = ({
   ) => Promise<Condition> = async fieldCode => {
     const factories: ConditionFactory[] = [
       createFamilyCondition,
+      createCompletenessCondition,
+      createCategoryCondition,
+      createGroupsCondition,
+      createStatusCondition,
       createTextAttributeCondition,
+      createTextareaAttributeCondition,
       createSimpleMultiOptionsAttributeCondition,
       createNumberAttributeCondition,
       createCategoryCondition,
+      createDateAttributeCondition,
+      createDateSystemCondition,
+      createBooleanAttributeCondition,
+      createSimpleMultiReferenceEntitiesAttributeCondition,
     ];
 
     for (let i = 0; i < factories.length; i++) {

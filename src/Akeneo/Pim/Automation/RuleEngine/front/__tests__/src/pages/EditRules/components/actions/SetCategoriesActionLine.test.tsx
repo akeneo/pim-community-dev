@@ -5,14 +5,14 @@ import {
   screen,
   renderWithProviders,
   waitForElementToBeRemoved,
-} from '../../../../test-utils';
-import { SetCategoriesAction } from '../../../../src/models/actions';
-import { locales, scopes } from '../../factories';
-import { SetCategoriesActionLine } from '../../../../src/pages/EditRules/components/actions/SetCategoriesActionLine';
-import { CategoryCode } from '../../../../src/models';
-import { createCategory } from '../../factories/CategoryFactory';
+} from '../../../../../../test-utils';
+import { SetCategoriesAction } from '../../../../../../src/models/actions';
+import { locales, scopes } from '../../../../factories';
+import { SetCategoriesActionLine } from '../../../../../../src/pages/EditRules/components/actions/SetCategoriesActionLine';
+import { CategoryCode } from '../../../../../../src/models';
+import { createCategory } from '../../../../factories/CategoryFactory';
 import userEvent from '@testing-library/user-event';
-import { clearCategoryRepositoryCache } from '../../../../src/repositories/CategoryRepository';
+import { clearCategoryRepositoryCache } from '../../../../../../src/repositories/CategoryRepository';
 
 const createSetCategoriesAction = (
   categoryCodes: CategoryCode[]
@@ -23,10 +23,6 @@ const createSetCategoriesAction = (
     value: categoryCodes,
   };
 };
-
-jest.mock('../../../../src/fetch/categoryTree.fetcher');
-jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
-jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
 
 describe('SetCategoriesActionLine', () => {
   beforeEach(() => {

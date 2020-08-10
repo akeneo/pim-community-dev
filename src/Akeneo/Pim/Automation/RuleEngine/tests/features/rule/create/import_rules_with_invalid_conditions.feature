@@ -285,7 +285,7 @@ Feature: Import rules
                   locale: en_US
                   scope: tablet
     """
-    Then an exception with message "Rule content \"canon_beautiful_description\" should have a \"conditions\" key." has been thrown
+    Then an exception with message "conditions: The \"conditions\" key is missing or empty" has been thrown
     And the rule list does not contain the "canon_beautiful_description" rule
 
   @integration-back

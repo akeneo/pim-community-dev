@@ -179,7 +179,6 @@ pimee_catalog_rule:
           "BETWEEN": zwischen
           "NOT BETWEEN": nicht zwischen
           "=": ist gleich
-          "!=": ungleich
           ">": größer als
           ">=": gleich oder größer als
           "<": kleiner als
@@ -218,7 +217,6 @@ pimee_catalog_rule:
     unbound_locale: 'Die "{{ localeCode }}" Gebietsschema ist im "{{ channelCode }}" Kanal nicht aktiviert'
     locale_on_unlocalizable_attribute: Dieses Attribut ist nicht lokalisierbar. Bitte entfernen Sie das Gebietsschema, bevor Sie fortfahren.
     unknown_scope: 'Der "{{ scopeCode }}" Ausgabekanal existiert nicht'
-    scope_on_unscopable_attribute: Dieses Attribut ist nicht skopierbar. Bitte entfernen Sie das Gebietsschema, bevor Sie fortfahren.
     unknown_families: "{1}Die {{ familyCodes }} Familie existiert nicht|]1,+Inf[Die {{ familyCodes }} Familien existieren nicht"
     unknown_attribute_options: "{1}Die {{ attributeOptionCodes }} Option existiert nicht|]1,+Inf[Die {{ attributeOptionCodes }} Optionen existieren nicht"
     unknown_attribute_code: "Das Attribut {{ attributeCode }} existiert nicht"
@@ -281,6 +279,7 @@ pim_menu:
 pim_title:
   pimee_catalog_rule_rule_index: Regeln
   pimee_catalog_rule_edit: Regel bearbeiten
+  pimee_catalog_rule_new: Regeln
 pim_import_export:
   widget:
     last_operations:

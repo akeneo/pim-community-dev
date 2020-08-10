@@ -44,14 +44,11 @@ class AssetNormalizer implements AssetNormalizerInterface
     /** @var FindActivatedLocalesInterface */
     private $findActivatedLocales;
 
-    /**
-     * @todo @merge master/5.0: remove the default null value for the FindActivatedLocalesInterface argument
-     */
     public function __construct(
         FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
         SqlFindSearchableAssets $findSearchableAssets,
         FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType,
-        FindActivatedLocalesInterface $findActivatedLocales = null
+        FindActivatedLocalesInterface $findActivatedLocales
     ) {
         $this->findValueKeysToIndexForAllChannelsAndLocales = $findValueKeysToIndexForAllChannelsAndLocales;
         $this->findSearchableAssets = $findSearchableAssets;
@@ -104,15 +101,6 @@ class AssetNormalizer implements AssetNormalizerInterface
     private function createCodeLabelMatrix(SearchableAssetItem $searchableAssetItem): array
     {
         $matrix = [];
-
-        // @todo @merge master/5.0: remove this case
-        if (null === $this->findActivatedLocales) {
-            foreach ($searchableAssetItem->labels as $localeCode => $label) {
-                $matrix[$localeCode] = sprintf('%s %s', $searchableAssetItem->code, $label);
-            }
-
-            return $matrix;
-        }
 
         $activatedLocaleCodes = $this->findActivatedLocales->findAll();
         foreach ($activatedLocaleCodes as $activatedLocaleCode) {

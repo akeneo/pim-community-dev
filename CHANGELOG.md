@@ -1,5 +1,7 @@
 ## Bug fixes
 
+- PIM-9389: Unfriendly page title in create rule page.
+- PIM-9376: Duplicate button appears under variant products.
 - PIM-9226: Fix error on channel deletion after migration from v3.2.
 - Fixes memory leak when indexing product models with a lot of product models in the same family (see https://github.com/akeneo/pim-community-dev/pull/11742)
 - PIM-9109: Fix SSO not working behind reverse proxy.
@@ -20,6 +22,9 @@
 - PIM-9334: Add error during rule import when a condition value contains null value
 - PIM-9324: Fix cannot save product when simple reference entity linked to this product is deleted
 - PIM-9243: Creation and update dates are not displayed on the asset page 
+- PIM-9362: Fix missing "System information" translations for asset analytics
+- PIM-9363: Fix API error 500 when import a picture with an incorrect extension
+- PIM-9370: Fixes page freezing with a big number of attribute options
 
 ## Improvements
 
@@ -62,10 +67,13 @@
   - replace `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface` by `Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes`
   - add `Symfony\Component\EventDispatcher\EventDispatcherInterface`
 - Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\RemoverActionApplier` to:
-  - replace `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface` by `Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes
+  - replace `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface` by `Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes`
   - add `Symfony\Component\EventDispatcher\EventDispatcherInterface`
 - Change return type of `Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface` from `void` to `array`
 - Change return type of `Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsUpdater` from `void` to `array`
 - Add method `getType()` to `Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface` interface
 - Change constructor of `Akeneo\Pim\Automation\RuleEngine\Bundle\Twig\RuleExtension` to add `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
 - Remove class `Akeneo\Pim\Automation\RuleEngine\Bundle\Normalizer\RuleDefinitionNormalizer`
+- Change constructor of `\Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Denormalization\RuleDefinitionProcessor` to
+  - remove `Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface`
+  - add `Akeneo\Pim\Automation\RuleEngine\Component\Updater\RuleDefinitionUpdaterInterface`

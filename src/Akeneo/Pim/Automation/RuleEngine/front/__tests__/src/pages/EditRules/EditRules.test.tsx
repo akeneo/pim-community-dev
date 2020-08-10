@@ -14,10 +14,6 @@ import { clearCategoryRepositoryCache } from '../../../../src/repositories/Categ
 import { clearAttributeRepositoryCache } from '../../../../src/repositories/AttributeRepository';
 import { dependencies } from '../../../../src/dependenciesTools/provider/dependencies';
 
-jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
-jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
-jest.mock('../../../../src/fetch/categoryTree.fetcher.ts');
-
 const ruleDefinitionCode = 'my_code';
 
 const ruleDefinitionPayload = {

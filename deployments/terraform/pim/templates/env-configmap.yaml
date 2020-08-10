@@ -43,3 +43,10 @@ data:
   {{- else }}
   FLAG_ONBOARDER_ENABLED: "0"
   {{- end }}
+  {{- if .Values.pim.comm_panel_api_url }}
+  COMM_PANEL_API_URL: {{ .Values.pim.comm_panel_api_url | quote }}
+  {{- end }}
+  PUBSUB_SUBSCRIPTION_WEBHOOK: {{ .Values.pim.pubsub.subscription_webhook }}
+  PUBSUB_SUBSCRIPTION_JOB_QUEUE: {{ .Values.pim.pubsub.subscription_job_queue }}
+  PUBSUB_TOPIC_BUSINESS_EVENT: {{ .Values.pim.pubsub.topic_business_event }}
+  PUBSUB_TOPIC_JOB_QUEUE: {{ .Values.pim.pubsub.topic_job_queue }}

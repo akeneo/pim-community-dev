@@ -4,16 +4,12 @@ import {
   renderWithProviders,
   screen,
   waitForElementToBeRemoved,
-} from '../../../../test-utils';
+} from '../../../../../../test-utils';
 import 'jest-fetch-mock';
-import { TextAttributeConditionLine } from '../../../../src/pages/EditRules/components/conditions/TextAttributeConditionLine';
-import { createAttribute, locales, scopes } from '../../factories';
-import { Operator } from '../../../../src/models/Operator';
+import { TextAttributeConditionLine } from '../../../../../../src/pages/EditRules/components/conditions/TextAttributeConditionLine';
+import { createAttribute, locales, scopes } from '../../../../factories';
+import { Operator } from '../../../../../../src/models/Operator';
 import userEvent from '@testing-library/user-event';
-
-jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
-jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
-jest.mock('../../../../src/fetch/categoryTree.fetcher.ts');
 
 describe('TextAttributeConditionLine', () => {
   beforeEach(() => {

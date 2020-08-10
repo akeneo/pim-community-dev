@@ -33,7 +33,7 @@ Feature: Execute rules with relative date conditions
     Then product "my-jacket" should be disabled
     But product "very_old" should be enabled
 
-  @integration-back @toto
+  @integration-back
   Scenario: Execute rules with products selected by a relative date
     Given the following product rule definitions:
       """

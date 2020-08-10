@@ -4,8 +4,6 @@ import { CreateRules } from '../../../../src/pages/CreateRules';
 import userEvent from '@testing-library/user-event';
 import { render, screen, act, fireEvent } from '../../../../test-utils';
 
-jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
-
 describe('CreateRules', () => {
   it('should render the page', async () => {
     // Given nothing
