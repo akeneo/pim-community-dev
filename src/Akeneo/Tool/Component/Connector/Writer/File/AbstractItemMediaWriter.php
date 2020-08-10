@@ -137,7 +137,7 @@ abstract class AbstractItemMediaWriter implements
             $flatItems[] = $this->arrayConverter->convert($item, $converterOptions);
         }
 
-        if ($parameters->has('withHeader') && true === $parameters->get('withHeader')) {
+        if (!empty($items) && $parameters->has('withHeader') && true === $parameters->get('withHeader')) {
             $flatItems = $this->fillMissingHeaders($flatItems);
         }
 

@@ -502,7 +502,7 @@ class ProductWriterSpec extends ObjectBehavior
             ->__invoke(["name", "description"], 'ecommerce', ['fr_FR', 'en_US'])
             ->willReturn([$nameHeader, $descHeader]);
 
-       $bufferFactory->create()->willReturn($flatRowBuffer);
+        $bufferFactory->create()->willReturn($flatRowBuffer);
         $flusher->flush(
             $flatRowBuffer,
             Argument::type('array'),
@@ -732,14 +732,10 @@ class ProductWriterSpec extends ObjectBehavior
         $jobParameters->has('ui_locale')->shouldBeCalled()->willReturn(false);
         $jobParameters->has('decimalSeparator')->shouldBeCalled()->willReturn(false);
         $jobParameters->has('dateFormat')->shouldBeCalled()->willReturn(false);
-        $jobParameters->has('withHeader')->shouldBeCalled()->willReturn(true);
         $jobParameters->get('withHeader')->shouldBeCalled()->willReturn(true);
         $jobParameters->has('with_label')->shouldBeCalled()->willReturn(true);
         $jobParameters->get('with_label')->shouldBeCalled()->willReturn(false);
         $jobParameters->get('filters')->willReturn(['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']]);
-        $jobParameters->has('selected_properties')->shouldBeCalled()->willReturn(false);
-        $jobParameters->has('with_media')->shouldBeCalled()->willReturn(false);
-
 
         $generateHeadersFromAttributeCodes
             ->__invoke(Argument::cetera())
