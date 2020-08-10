@@ -18,31 +18,29 @@ jobs:
         run: cd akeneo-design-system && npm install
       - name: Build page
         run: cd akeneo-design-system && npm run lib:build:prod
-      - name: Extract
-        uses: s0/git-publish-subdir-action@develop
+      - uses: actions/upload-artifact@v1
+        with:
+          name: Lib
+          path: akeneo-design-system/lib
+
+  extract:
+    name: Extract to DSM dedicated repo
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout:master
+        uses: actions/checkout@master
+      - name: Download the lib artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: Lib
+          path: akeneo-design-system/lib
+      - name: Pushes to dsm repository
+        uses: cpina/github-action-push-to-another-repository@master
         env:
-          REPO: git@github.com:juliensnz/dsm.git
-          BRANCH: master
-          FOLDER: akeneo-design-system
-          SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
-          MESSAGE: "{msg}"
-
-  #     - uses: actions/upload-artifact@v1
-  #       with:
-  #         name: Lib
-  #         path: akeneo-design-system/lib
-
-  # extract:
-  #   name: Extract to DSM dedicated repo
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: checkout:master
-  #       uses: actions/checkout@master
-  #     - name: Download the lib artifact
-  #       uses: actions/download-artifact@v1
-  #       with:
-  #         name: Lib
-  #         path: akeneo-design-system/lib
-  #     - name: Add lib to git
-  #       run: ls -lah akeneo-design-system && git status && git config --global user.email "contact@akeneo.com" && git config --global user.name "Github actions" && git add -A && git commit -m "publish lib folder"
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source-directory: akeneo-design-system
+          destination-github-username: 'juliensnz'
+          destination-repository-name: 'dsm'
+          user-email: contact@akeneo.com
