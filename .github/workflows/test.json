@@ -1,0 +1,81 @@
+{
+  "after": "b88a56d66f7abd352c444e070037f63f4b36edfd",
+  "base_ref": null,
+  "before": "3eee860049a32dcb6986fb8e81b71981456de50f",
+  "commits": [
+    {
+      "author": {
+        "email": "sumbobyboys@gmail.com",
+        "name": "Julien Sanchez",
+        "username": "juliensnz"
+      },
+      "committer": {
+        "email": "sumbobyboys@gmail.com",
+        "name": "Julien Sanchez",
+        "username": "juliensnz"
+      },
+      "distinct": true,
+      "id": "b88a56d66f7abd352c444e070037f63f4b36edfd",
+      "message": "cleanup #minor",
+      "timestamp": "2020-08-10T21:18:35+02:00",
+      "tree_id": "5dca4ff370af806cccfc41741162424bc6c04f1c",
+      "url": "https://github.com/juliensnz/pim-community-dev/commit/b88a56d66f7abd352c444e070037f63f4b36edfd"
+    },
+    {
+      "author": {
+        "email": "sumbobyboys@gmail.com",
+        "name": "Julien Sanchez",
+        "username": "juliensnz"
+      },
+      "committer": {
+        "email": "sumbobyboys@gmail.com",
+        "name": "Julien Sanchez",
+        "username": "juliensnz"
+      },
+      "distinct": true,
+      "id": "b88a56d66f7abd352c444e070037f63f4b36edfd",
+      "message": "cleanup #major",
+      "timestamp": "2020-08-10T21:18:35+02:00",
+      "tree_id": "5dca4ff370af806cccfc41741162424bc6c04f1c",
+      "url": "https://github.com/juliensnz/pim-community-dev/commit/b88a56d66f7abd352c444e070037f63f4b36edfd"
+    },
+
+    {
+      "author": {
+        "email": "sumbobyboys@gmail.com",
+        "name": "Julien Sanchez",
+        "username": "juliensnz"
+      },
+      "committer": {
+        "email": "sumbobyboys@gmail.com",
+        "name": "Julien Sanchez",
+        "username": "juliensnz"
+      },
+      "distinct": true,
+      "id": "b88a56d66f7abd352c444e070037f63f4b36edfd",
+      "message": "cleanup #patch",
+      "timestamp": "2020-08-10T21:18:35+02:00",
+      "tree_id": "5dca4ff370af806cccfc41741162424bc6c04f1c",
+      "url": "https://github.com/juliensnz/pim-community-dev/commit/b88a56d66f7abd352c444e070037f63f4b36edfd"
+    },
+
+    {
+      "author": {
+        "email": "sumbobyboys@gmail.com",
+        "name": "Julien Sanchez",
+        "username": "juliensnz"
+      },
+      "committer": {
+        "email": "sumbobyboys@gmail.com",
+        "name": "Julien Sanchez",
+        "username": "juliensnz"
+      },
+      "distinct": true,
+      "id": "b88a56d66f7abd352c444e070037f63f4b36edfd",
+      "message": "cleanup",
+      "timestamp": "2020-08-10T21:18:35+02:00",
+      "tree_id": "5dca4ff370af806cccfc41741162424bc6c04f1c",
+      "url": "https://github.com/juliensnz/pim-community-dev/commit/b88a56d66f7abd352c444e070037f63f4b36edfd"
+    }
+  ]
+}

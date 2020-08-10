@@ -12,20 +12,27 @@ jobs:
     steps:
       - name: checkout:master
         uses: actions/checkout@master
-      - name: Display Event
-        run: cat $GITHUB_EVENT_PATH
       - name: Use Node.js 13
         uses: actions/setup-node@v1
         with:
           node-version: 13.13
       - name: Install Packages
         run: cd akeneo-design-system && npm install
+      - name: Bump package version
+        run: cd akeneo-design-system && echo "::set-output name=new_version::$(node bump-version.js $GITHUB_EVENT_PATH)"
+        id: generate_new_dsm_version
+      - name: Push updated version
+        run: git add akeneo-design-system/package.json && git commit -m "Bump to version ${{steps.generate_new_dsm_version.outputs.new_version}}" && git push
       - name: Build page
         run: cd akeneo-design-system && npm run lib:build:prod
       - uses: actions/upload-artifact@v1
         with:
           name: Lib
           path: akeneo-design-system/lib
+      - uses: actions/upload-artifact@v1
+        with:
+          name: Package
+          path: akeneo-design-system/package.json
 
   extract:
     name: Extract to DSM dedicated repo
@@ -40,7 +47,7 @@ jobs:
           name: Lib
           path: akeneo-design-system/lib
       - name: Pushes to dsm repository
-        uses: juliensnz/github-action-push-to-another-repository@master
+        uses: ./.github/actions/extract
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
