@@ -77,31 +77,10 @@ type Props = {
 
 const CalculatePreview: React.FC<Props> = ({ lineNumber }) => {
   const translate = useTranslate();
-  const { getFormValue, formName } = useControlledFormInputAction<
-    string | null
-  >(lineNumber);
-  const getSourceFormValue = () => getFormValue('source');
-  const getOperationListFormValue = () => getFormValue('operation_list');
-
-  // Watch recursive is needed to trigger a render at each changes
   const { watch } = useFormContext();
-  const watchRecursive = (field: any, path: string) => {
-    if (Array.isArray(field)) {
-      field.map((child: any, key: number) =>
-        watchRecursive(child, `${path}[${key}]`)
-      );
-    } else if (typeof field === 'object' && null !== field) {
-      Object.keys(field).map((key: string) =>
-        watchRecursive(field[key], `${path}.${key}`)
-      );
-    } else {
-      watch(path);
-    }
-  };
-  const source = watch(formName('source'));
-  const OperationList = watch(formName('operation_list'));
-  watchRecursive(source, formName('source'));
-  watchRecursive(OperationList, formName('operation_list'));
+  const { formName } = useControlledFormInputAction<string | null>(lineNumber);
+  const getSourceFormValue = () => watch(formName('source'));
+  const getOperationListFormValue = () => watch(formName('operation_list'));
 
   return (
     <div className={'AknRulePreviewBox'}>

@@ -1,10 +1,9 @@
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller, useFormContext, useFieldArray } from 'react-hook-form';
 import {
   Operation,
   Operator,
 } from '../../../../../models/actions/Calculate/Operation';
-import { Operand } from '../../../../../models/actions/Calculate/Operand';
 import { CalculateOperatorSelector } from './CalculateOperatorSelector';
 import styled from 'styled-components';
 import { InputNumber } from '../../../../../components/Inputs';
@@ -13,13 +12,13 @@ import { AttributePropertiesSelector } from './AttributePropertiesSelector';
 import { Locale } from '../../../../../models';
 import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
 import { useControlledFormInputAction } from '../../../hooks';
+import {
+  ConstantOperand,
+  FieldOperand,
+  Operand,
+} from '../../../../../models/actions/Calculate/Operand';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const uuidV4 = require('uuid/v4');
-
-type SourceOrOperationIndexed = {
-  id: string;
-} & (Operand | Operation);
+type SourceOrOperation = Operand | Operation;
 
 const DeleteButton = styled.button`
   border: none;
@@ -31,18 +30,9 @@ type DropTarget = {
   operationLineNumber: number;
 };
 
-const addUniqueIdToList = (sourceOrOperationList: (Operand | Operation)[] | undefined) => {
-  if (!sourceOrOperationList) {
-    return [];
-  }
-
-  return sourceOrOperationList.map((sourceOrOperation: Operand | Operation) => {
-    return { id: uuidV4(), ...sourceOrOperation };
-  });
-};
-
 type OperationLineProps = {
   baseFormName: string;
+  sourceOrOperation: SourceOrOperation;
   locales: Locale[];
   scopes: IndexedScopes;
   lineNumber: number;
@@ -54,10 +44,12 @@ type OperationLineProps = {
     newOperationLineNumber: number
   ) => void;
   removeOperation: (operationLineNumber: number) => () => void;
+  version: number;
 };
 
 const OperationLine: React.FC<OperationLineProps> = ({
   baseFormName,
+  sourceOrOperation,
   locales,
   scopes,
   lineNumber,
@@ -66,15 +58,15 @@ const OperationLine: React.FC<OperationLineProps> = ({
   setDropTarget,
   moveOperation,
   removeOperation,
+  version,
 }) => {
   const translate = useTranslate();
+  const { setValue } = useFormContext();
   const { formName, getFormValue } = useControlledFormInputAction<
     string | null
   >(lineNumber);
-  const operandField = getFormValue(`${baseFormName}.field`) || null;
-
-  const { watch } = useFormContext();
-  watch(formName(`${baseFormName}.operator`));
+  const constantOperand = sourceOrOperation as ConstantOperand;
+  const fieldOperand = sourceOrOperation as FieldOperand;
 
   const onDragOver = () => {
     setDropTarget({ operationLineNumber });
@@ -91,6 +83,35 @@ const OperationLine: React.FC<OperationLineProps> = ({
     moveOperation(operationLineNumber, dropTarget.operationLineNumber);
     setDropTarget(null);
   };
+
+  React.useEffect(() => {
+    console.log('--> useEffect operationLineNumber = ', operationLineNumber);
+    // When lines are moved/removed, we have an issue with <Controller /> and selectors: the value of the old line
+    // is displayed not the good value. In the state of react hook form the values are good.
+    // To fix the display we set again the values. The react hook form state is unchanged but the display is now good.
+    console.log(
+      '----> key = ',
+      'field = ',
+      getFormValue(`${baseFormName}.field`) || undefined
+    );
+    console.log(
+      '----> key = ',
+      'value = ',
+      getFormValue(`${baseFormName}.value`) || undefined
+    );
+    ['operator', 'locale', 'scope', 'currency'].forEach((key: string) => {
+      console.log(
+        '----> key = ',
+        key,
+        ' = ',
+        getFormValue(`${baseFormName}.${key}`) || undefined
+      );
+      setValue(
+        formName(`${baseFormName}.${key}`),
+        getFormValue(`${baseFormName}.${key}`) || undefined
+      );
+    });
+  }, [version]);
 
   return (
     <li
@@ -113,12 +134,17 @@ const OperationLine: React.FC<OperationLineProps> = ({
               <Controller
                 as={CalculateOperatorSelector}
                 name={formName(`${baseFormName}.operator`)}
-                value={getFormValue(`${baseFormName}.operator`) || Operator.ADD}
+                defaultValue={
+                  (sourceOrOperation as Operation).operator || Operator.ADD
+                }
+                value={
+                  (sourceOrOperation as Operation).operator || Operator.ADD
+                }
                 hiddenLabel
               />
             </span>
           )}
-          {!operandField && (
+          {constantOperand.value && (
             <span className={'AknRuleOperation-element'}>
               <Controller
                 as={InputNumber}
@@ -128,27 +154,29 @@ const OperationLine: React.FC<OperationLineProps> = ({
                 }
                 data-testid={`edit-rules-action-operation-list-${operationLineNumber}-number`}
                 hiddenLabel={true}
-                defaultValue={getFormValue(`${baseFormName}.value`)}
+                defaultValue={constantOperand.value}
                 step={'any'}
               />
             </span>
           )}
-          {operandField && (
+          {fieldOperand.field && (
             <>
               <Controller
                 as={<input type='hidden' />}
                 name={formName(`${baseFormName}.field`)}
-                defaultValue={getFormValue(`${baseFormName}.field`)}
+                defaultValue={fieldOperand.field}
               />
               <AttributePropertiesSelector
-                lineNumber={lineNumber}
                 operationLineNumber={operationLineNumber}
-                attributeCode={getFormValue(`${baseFormName}.field`)}
+                attributeCode={fieldOperand.field}
                 localeFormName={formName(`${baseFormName}.locale`)}
                 scopeFormName={formName(`${baseFormName}.scope`)}
                 currencyFormName={formName(`${baseFormName}.currency`)}
                 locales={locales}
                 scopes={scopes}
+                defaultLocale={fieldOperand.locale || undefined}
+                defaultScope={fieldOperand.scope || undefined}
+                defaultCurrency={fieldOperand.currency || undefined}
               />
             </>
           )}
@@ -184,128 +212,136 @@ const CalculateOperationList: React.FC<Props> = ({
     string | null
   >(lineNumber);
   const [dropTarget, setDropTarget] = React.useState<DropTarget | null>(null);
-  const [sourceAndOperations, setSourceAndOperations] = React.useState<SourceOrOperationIndexed[]>(
-    addUniqueIdToList([getFormValue('source'), ...getFormValue('operation_list')])
-  );
+  const [toInsert, setToInsert] = React.useState<
+    { index: number; object: any } | undefined
+  >();
+  const [version, setVersion] = React.useState<number>(1);
 
   const getSourceFormValue = () => getFormValue('source');
-  const getOperationListFormValue = () => getFormValue('operation_list');
 
-  React.useEffect(() => {
-    console.log('after render formValues = ', getFormValue('operation_list'));
+  const { fields, remove, move, insert } = useFieldArray({
+    name: formName('operation_list'),
   });
 
-  const setSourceAndOperationValues = (
-    sourceAndOperations: SourceOrOperationIndexed[]
-  ) => {
-    console.log('setSourceAndOperationValues', Array.from(sourceAndOperations));
-    const [source, ...operationList] = sourceAndOperations;
-
-    console.log('setSourceAndOperationValues source = ', source);
-    console.log('setSourceAndOperationValues operationList = ', operationList);
-
-    ['field', 'value', 'scope', 'locale', 'currency'].forEach((key: string) =>
-      setValue(
-        formName('source') + `.${key}`,
-        source ? (source as any)[key] || undefined : undefined
-      )
-    );
-
-    const operationFields = [
-      'field',
-      'value',
-      'scope',
-      'locale',
-      'currency',
-      'operator',
-    ];
-    getOperationListFormValue().map(
-      (_operation: any, operationIndex: number) => {
-        if ('undefined' === typeof operationList[operationIndex]) {
-          console.log(
-            'unregister',
-            formName('operation_list') + `[${operationIndex}]`
-          );
-          operationFields.forEach((key: string) =>
-            setValue(
-              formName('operation_list') + `[${operationIndex}].${key}`,
-              undefined
-            )
-          );
-          setValue(
-            formName('operation_list') + `[${operationIndex}]`,
-            undefined
-          );
-          return;
-        }
-        operationFields.forEach((key: string) =>
-          setValue(
-            formName('operation_list') + `[${operationIndex}].${key}`,
-            'undefined' !== typeof operationList[operationIndex]
-              ? (operationList as any)[operationIndex][key] || undefined
-              : undefined
-          )
-        );
-      }
-    );
-
-    console.log('--> end setOperationListAndSource');
-    console.log('getSourceFormValue', getSourceFormValue());
-    console.log('getOperationListFormValue', getOperationListFormValue());
-  };
-
   const removeOperation = (lineToRemove: number) => () => {
-    console.log('removeOperation lineToRemove = ', lineToRemove);
-    console.log('operationList', sourceAndOperations);
+    if (0 === lineToRemove) {
+      ['field', 'value', 'scope', 'locale', 'currency'].forEach(key => {
+        setValue(
+          formName(`source.${key}`),
+          getFormValue(`operation_list[0].${key}`)
+        );
+      });
+      remove(0);
+      setVersion(version + 1);
+      return;
+    }
 
-    const newSourceAndOperations = [
-      ...sourceAndOperations.slice(0, lineToRemove),
-      ...sourceAndOperations.slice(lineToRemove + 1),
-    ];
-    setSourceAndOperationValues(newSourceAndOperations);
-    setSourceAndOperations(
-      addUniqueIdToList(
-        newSourceAndOperations.filter(
-          (sourceOrOperation: any) => sourceOrOperation?.field || sourceOrOperation?.value
-        )
-      )
-    );
+    remove(lineToRemove - 1);
+    setVersion(version + 1);
   };
 
   const moveOperation = (
     currentOperationLineNumber: number,
     newOperationLineNumber: number
   ) => {
-    const operations = [...sourceAndOperations];
-    operations.splice(
-      newOperationLineNumber,
-      0,
-      operations.splice(currentOperationLineNumber, 1)[0]
-    );
-    setSourceAndOperationValues(operations);
-    setSourceAndOperations(addUniqueIdToList(operations));
+    if (currentOperationLineNumber === newOperationLineNumber) {
+      return;
+    }
+
+    if (0 === currentOperationLineNumber) {
+      const currentSource = { ...getSourceFormValue() };
+      ['field', 'value', 'scope', 'locale', 'currency'].forEach(key => {
+        setValue(
+          formName(`source.${key}`),
+          getFormValue(`operation_list[0].${key}`)
+        );
+      });
+      console.log('currentSource = ', currentSource);
+      remove(0);
+
+      console.log('setToInsert currentSource = ', currentSource);
+      // setToInsert for later (useEffect) because we cannot make 2 useFieldArray operations in a same render (see docs)
+      setToInsert({
+        index: newOperationLineNumber - 1,
+        object: { operator: Operator.ADD, ...currentSource },
+      });
+      return;
+    }
+
+    if (0 === newOperationLineNumber) {
+      const currentSource = { ...getSourceFormValue() };
+      console.log('currentOperationLineNumber = ', currentOperationLineNumber);
+      console.log(
+        'test = ',
+        getFormValue(`operation_list[${currentOperationLineNumber - 1}].locale`)
+      );
+      ['field', 'value', 'scope', 'locale', 'currency'].forEach(key => {
+        setValue(
+          formName(`source.${key}`),
+          // operationToMove ? operationToMove[key] || undefined : undefined
+          getFormValue(
+            `operation_list[${currentOperationLineNumber - 1}].${key}`
+          )
+        );
+      });
+      // setValue(formName('source'), operationToMove || undefined);
+      remove(currentOperationLineNumber - 1);
+
+      console.log('setToInsert currentSource = ', currentSource);
+      // setToInsert for later (useEffect) because we cannot make 2 useFieldArray operations in a same render (see docs)
+      setToInsert({
+        index: 0,
+        object: { operator: Operator.ADD, ...currentSource },
+      });
+      return;
+    }
+
+    console.log(currentOperationLineNumber, newOperationLineNumber);
+    move(currentOperationLineNumber - 1, newOperationLineNumber - 1);
+    setVersion(version + 1);
   };
+
+  React.useEffect(() => {
+    if (toInsert) {
+      insert(toInsert.index, toInsert.object);
+      setToInsert(undefined);
+      setVersion(version + 1);
+    }
+  }, [toInsert]);
 
   return (
     <ul className={'AknRuleOperation'}>
-      {sourceAndOperations &&
-        sourceAndOperations.map((sourceOrOperation: SourceOrOperationIndexed, operationLineNumber) => {
-          const baseFormName = 0 === operationLineNumber
-            ? 'source'
-            : `operation_list[${operationLineNumber - 1}]`;
-
+      {getSourceFormValue() && (
+        <OperationLine
+          baseFormName={'source'}
+          sourceOrOperation={getSourceFormValue()}
+          locales={locales}
+          scopes={scopes}
+          lineNumber={lineNumber}
+          operationLineNumber={0}
+          dropTarget={dropTarget}
+          setDropTarget={setDropTarget}
+          moveOperation={moveOperation}
+          removeOperation={removeOperation}
+          version={version}
+        />
+      )}
+      {fields &&
+        fields.map((sourceOrOperation: any, operationLineNumber) => {
           return (
             <OperationLine
               key={sourceOrOperation.id}
-              baseFormName={baseFormName}
+              baseFormName={`operation_list[${operationLineNumber}]`}
+              sourceOrOperation={sourceOrOperation}
               locales={locales}
               scopes={scopes}
               lineNumber={lineNumber}
-              operationLineNumber={operationLineNumber}
+              operationLineNumber={operationLineNumber + 1}
               dropTarget={dropTarget}
               setDropTarget={setDropTarget}
               moveOperation={moveOperation}
               removeOperation={removeOperation}
+              version={version}
             />
           );
         })}

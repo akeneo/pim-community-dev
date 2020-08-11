@@ -86,21 +86,6 @@ const registerActions = (register: Control['register'], actions: Action[]) => {
         );
       }
       register({
-        name: `content.actions[${index}].operation_list`,
-        type: 'custom',
-      });
-      if (typeof action.operation_list !== 'undefined') {
-        action.operation_list.map((_operation: any, operationIndex: number) => {
-          ['field', 'value', 'scope', 'locale', 'currency', 'operator'].forEach(
-            key =>
-              register({
-                name: `content.actions[${index}].operation_list[${operationIndex}].${key}`,
-                type: 'custom',
-              })
-          );
-        });
-      }
-      register({
         name: `content.actions[${index}].round_precision`,
         type: 'custom',
       });

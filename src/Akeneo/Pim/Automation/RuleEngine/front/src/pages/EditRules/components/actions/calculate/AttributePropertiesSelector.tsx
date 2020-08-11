@@ -6,6 +6,8 @@ import {
   AttributeType,
   getAttributeLabel,
   Locale,
+  LocaleCode,
+  ScopeCode,
 } from '../../../../../models';
 import { ScopeSelector } from '../../../../../components/Selectors/ScopeSelector';
 import {
@@ -16,14 +18,12 @@ import { LocaleSelector } from '../../../../../components/Selectors/LocaleSelect
 import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
 import { CurrencySelector } from '../../../../../components/Selectors/CurrencySelector';
 import { IndexedCurrencies } from '../../../../../repositories/CurrencyRepository';
-import { Currency } from '../../../../../models/Currency';
+import { Currency, CurrencyCode } from '../../../../../models/Currency';
 import { useActiveCurrencies } from '../../../hooks/useActiveCurrencies';
 import { Router } from '../../../../../dependenciesTools';
 import { getAttributeByIdentifier } from '../../../../../repositories/AttributeRepository';
-import { useControlledFormInputAction } from '../../../hooks';
 
 type Props = {
-  lineNumber: number;
   operationLineNumber: number;
   attributeCode: AttributeCode;
   scopeFormName: string;
@@ -31,10 +31,12 @@ type Props = {
   currencyFormName: string;
   locales: Locale[];
   scopes: IndexedScopes;
+  defaultLocale?: LocaleCode;
+  defaultScope?: ScopeCode;
+  defaultCurrency?: CurrencyCode;
 };
 
 const AttributePropertiesSelector: React.FC<Props> = ({
-  lineNumber,
   operationLineNumber,
   attributeCode,
   scopeFormName,
@@ -42,6 +44,9 @@ const AttributePropertiesSelector: React.FC<Props> = ({
   currencyFormName,
   scopes,
   locales,
+  defaultLocale,
+  defaultScope,
+  defaultCurrency,
 }) => {
   const { watch } = useFormContext();
   const currentCatalogLocale = useUserCatalogLocale();
@@ -50,7 +55,6 @@ const AttributePropertiesSelector: React.FC<Props> = ({
   const [attribute, setAttribute] = React.useState<
     Attribute | null | undefined
   >();
-  const { getFormValue } = useControlledFormInputAction<string>(lineNumber);
 
   useEffect(() => {
     const getAttribute = async (
@@ -67,14 +71,14 @@ const AttributePropertiesSelector: React.FC<Props> = ({
     getAttribute(router, attributeCode);
   }, [attributeCode]);
 
-  const getAvailableCurrenciesForTarget = (
+  const getAvailableCurrenciesForAttribute = (
     currencies: IndexedCurrencies
   ): Currency[] => {
     if (!attribute?.scopable) {
       return Object.values(currencies);
     }
     // watch() is needed instead of getFormValue() when currencySelector is displayed before ScopeSelector
-    const scopeCode = watch(scopeFormName);
+    const scopeCode = watch(scopeFormName) ?? defaultScope;
     if (scopeCode && scopes[scopeCode]) {
       return scopes[scopeCode].currencies.map(code => ({ code }));
     }
@@ -97,9 +101,10 @@ const AttributePropertiesSelector: React.FC<Props> = ({
           <Controller
             as={CurrencySelector}
             data-testid={`edit-rules-action-operation-list-${operationLineNumber}-price`}
-            availableCurrencies={getAvailableCurrenciesForTarget(currencies)}
+            availableCurrencies={getAvailableCurrenciesForAttribute(currencies)}
             name={currencyFormName}
-            value={getFormValue(currencyFormName)}
+            value={defaultCurrency}
+            defaultValue={defaultCurrency}
             hiddenLabel
           />
         </span>
@@ -112,7 +117,8 @@ const AttributePropertiesSelector: React.FC<Props> = ({
             data-testid={`edit-rules-action-operation-list-${operationLineNumber}-scope`}
             allowClear={false}
             availableScopes={Object.values(scopes)}
-            value={getFormValue(scopeFormName)}
+            value={defaultScope}
+            defaultValue={defaultScope}
             name={scopeFormName}
             currentCatalogLocale={currentCatalogLocale}
             hiddenLabel
@@ -127,7 +133,8 @@ const AttributePropertiesSelector: React.FC<Props> = ({
             data-testid={`edit-rules-action-operation-list-${operationLineNumber}-locale`}
             allowClear={false}
             availableLocales={locales}
-            value={getFormValue(localeFormName)}
+            value={defaultLocale}
+            defaultValue={defaultLocale}
             name={localeFormName}
             hiddenLabel
           />
