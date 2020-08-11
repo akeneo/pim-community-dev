@@ -35,7 +35,7 @@ export const AssetSelector: React.FC<AssetSelectorProps> = ({
 }) => {
   return (
     <BaseAssetSelector
-      value={value}
+      value={value || (multiple ? [] : null)}
       assetFamilyIdentifier={assetFamilyIdentifier}
       multiple={multiple}
       readOnly={readOnly}

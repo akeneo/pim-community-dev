@@ -8,11 +8,6 @@ import {
   getAttributeConditionModule,
 } from './AbstractAttributeCondition';
 
-const TYPES: AttributeType[] = [
-  AttributeType.OPTION_SIMPLE_SELECT,
-  AttributeType.OPTION_MULTI_SELECT,
-];
-
 const AssetCollectionAttributeOperators = [
   Operator.IN_LIST,
   Operator.NOT_IN_LIST,
@@ -32,7 +27,12 @@ const createAssetCollectionAttributeCondition: ConditionFactory = async (
   fieldCode,
   router
 ) => {
-  return createAttributeCondition(fieldCode, router, TYPES, Operator.IS_EMPTY);
+  return createAttributeCondition(
+    fieldCode,
+    router,
+    [AttributeType.ASSET_COLLECTION],
+    Operator.IS_EMPTY
+  );
 };
 
 const getAssetCollectionAttributeConditionModule: ConditionModuleGuesser = async (
@@ -43,7 +43,7 @@ const getAssetCollectionAttributeConditionModule: ConditionModuleGuesser = async
     json,
     router,
     AssetCollectionAttributeOperators,
-    TYPES,
+    [AttributeType.ASSET_COLLECTION],
     AssetCollectionAttributeConditionLine
   );
 };
