@@ -78,7 +78,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
             );
         }
 
-        foreach ($data as $field => $value) {
+        foreach ($this->filterReadOnlyFields($data) as $field => $value) {
             $this->validateDataType($field, $value);
             $this->setData($attribute, $field, $value);
         }
@@ -348,5 +348,14 @@ class AttributeUpdater implements ObjectUpdaterInterface
         }
 
         return new \DateTime($date);
+    }
+
+    private function filterReadOnlyFields(array $dataToFilter) : array
+    {
+        $readOnlyFields = ['group_labels'];
+
+        return array_filter($dataToFilter, function ($key) use ($readOnlyFields) {
+            return !in_array($key, $readOnlyFields);
+        }, ARRAY_FILTER_USE_KEY);
     }
 }
