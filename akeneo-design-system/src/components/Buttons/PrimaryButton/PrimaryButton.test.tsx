@@ -1,15 +1,15 @@
 import React from 'react';
 import 'jest-styled-components';
-import { PrimaryButton } from './PrimaryButton';
-import { render } from '@testing-library/react';
+import {PrimaryButton} from './PrimaryButton';
+import {render} from '@testing-library/react';
 
 test('should render the component', () => {
-    // Given
-    const myLabel = 'Click Here';
-    // When
-    const { container } = render(<PrimaryButton>{myLabel}</PrimaryButton>);
-    // Then
-    expect(container.firstChild).toMatchInlineSnapshot(`
+  // Given
+  const myLabel = 'Click Here';
+  // When
+  const {container} = render(<PrimaryButton>{myLabel}</PrimaryButton>);
+  // Then
+  expect(container.firstChild).toMatchInlineSnapshot(`
         .c0 {
           border-radius: 16px;
           cursor: pointer;
@@ -26,7 +26,7 @@ test('should render the component', () => {
         }
 
         .c1 {
-          color: white;
+          color: red;
           background-color: #67B373;
         }
 
