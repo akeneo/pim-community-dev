@@ -502,7 +502,7 @@ class ProductWriterSpec extends ObjectBehavior
             ->__invoke(["name", "description"], 'ecommerce', ['fr_FR', 'en_US'])
             ->willReturn([$nameHeader, $descHeader]);
 
-       $bufferFactory->create()->willReturn($flatRowBuffer);
+        $bufferFactory->create()->willReturn($flatRowBuffer);
         $flusher->flush(
             $flatRowBuffer,
             Argument::type('array'),
@@ -735,6 +735,8 @@ class ProductWriterSpec extends ObjectBehavior
         $jobParameters->get('withHeader')->shouldBeCalled()->willReturn(true);
         $jobParameters->has('with_label')->shouldBeCalled()->willReturn(true);
         $jobParameters->get('with_label')->shouldBeCalled()->willReturn(false);
+        $jobParameters->get('filters')->willReturn(['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']]);
+
         $generateHeadersFromAttributeCodes
             ->__invoke(Argument::cetera())
             ->shouldNotBeCalled();

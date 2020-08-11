@@ -65,6 +65,16 @@ pim_common:
     name: Name
     remove: Remove
     code: Code
+    quantity: Quantity
+    products: Products
+    product_models: Product models
+    categories: Categories
+    family_vaiant: Family variant
+    enabled: Enabled
+    family: Family
+    parent: Parent
+    groups: Groups
+    unit: Unit
 
 pim_enrich:
     # ACLs
