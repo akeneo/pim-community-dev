@@ -14,13 +14,11 @@ jobs:
         with:
           node-version: 13.13
       - name: Install Packages
-        uses: borales/actions-yarn@v2.0.0
-        with:
-          cmd: install
-      - name: Build page
-        uses: borales/actions-yarn@v2.0.0
-        with:
-          cmd: storybook:build
+        run: yarn install
+      - name: Build storybook
+        run: yarn run storybook:build
+      - name: List folder
+        run: ls -la ./
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
