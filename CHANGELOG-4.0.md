@@ -2,7 +2,11 @@
 
 ## Bug fixes
 
-- PIM-9387: Fix product model proposal with empty values 
+- PIM-9387: Fix product model proposal with empty values
+
+## Technical Improvements
+
+- PIM-9381: add new asset clear thumbnail cache command 
 
 # 4.0.47 (2020-08-07)
 
