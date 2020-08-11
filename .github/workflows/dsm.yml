@@ -56,4 +56,4 @@ jobs:
           destination-github-username: 'juliensnz'
           destination-repository-name: 'dsm'
           user-email: contact@akeneo.com
-          destination-branch: '4.0'
+          destination-branch: 'master'
