@@ -223,11 +223,11 @@ class EvaluateSpellingSpec extends ObjectBehavior
 
     private function givenALocalizableAttributeOfTypeText(string $code): Attribute
     {
-        return new Attribute(new AttributeCode($code), AttributeType::text(), true, false);
+        return new Attribute(new AttributeCode($code), AttributeType::text(), true);
     }
 
     private function givenALocalizableAttributeOfTypeTextarea(string $code): Attribute
     {
-        return new Attribute(new AttributeCode($code), AttributeType::textarea(), true, false);
+        return new Attribute(new AttributeCode($code), AttributeType::textarea(), true);
     }
 }

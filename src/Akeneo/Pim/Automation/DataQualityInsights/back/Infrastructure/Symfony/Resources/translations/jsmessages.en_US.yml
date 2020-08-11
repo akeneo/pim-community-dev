@@ -52,8 +52,6 @@ akeneo_data_quality_insights:
                 recommendation: Attributes with uppercases issues
             consistency_textarea_lowercase_words:
                 recommendation: Attributes with lowercases issues
-            consistency_text_title_formatting:
-                recommendation: Attributes with formatting suggestions
             consistency_spelling:
                 recommendation: Attributes with spelling issues
             consistency_attribute_spelling:
@@ -86,9 +84,6 @@ akeneo_data_quality_insights:
             title: Corrections
             original_text_title: Original
             suggestions_title: Proposals
-            ignore_all_suggestions_button_label: Ignore
-        title_suggestion_popover:
-            title: Suggestions
             ignore_all_suggestions_button_label: Ignore
         back_to_products: Back to products
 

@@ -104,68 +104,24 @@ class ProductValuesCollectionSpec extends ObjectBehavior
         Assert::eq($allTextValues, [$localizableTextareaValues1, $localizableTextareaValues2]);
     }
 
-    public function it_returns_the_values_for_the_localizable_main_title()
-    {
-        $commonTextAttribute = $this->givenALocalizableAttributeOfTypeText('a_text');
-        $mainTitleAttribute = $this->givenALocalizableMainTitleAttribute('main_title');
-
-        $commonTextValues = $this->givenRandomValuesForAttribute($commonTextAttribute);
-        $mainTitleValues = $this->givenRandomValuesForAttribute($mainTitleAttribute);
-
-        $this->add($commonTextValues);
-        $this->add($mainTitleValues);
-
-        $this->getLocalizableMainTitleValues()->shouldReturn($mainTitleValues);
-    }
-
-    public function it_returns_null_if_there_is_no_main_title()
-    {
-        $commonTextAttribute = $this->givenALocalizableAttributeOfTypeText('a_text');
-        $commonTextValues = $this->givenRandomValuesForAttribute($commonTextAttribute);
-
-        $this->add($commonTextValues);
-
-        $this->getLocalizableMainTitleValues()->shouldReturn(null);
-    }
-
-    public function it_returns_null_if_the_main_title_is_not_localizable()
-    {
-        $notLocalizableMainTitleAttribute = $this->givenANotLocalizableMainTitleAttribute('not_localizable_main_title');
-        $mainTitleValues = $this->givenRandomValuesForAttribute($notLocalizableMainTitleAttribute);
-
-        $this->add($mainTitleValues);
-
-        $this->getLocalizableMainTitleValues()->shouldReturn(null);
-    }
-
     private function givenALocalizableAttributeOfTypeText(string $code): Attribute
     {
-        return new Attribute(new AttributeCode($code), AttributeType::text(), true, false);
+        return new Attribute(new AttributeCode($code), AttributeType::text(), true);
     }
 
     private function givenANotLocalizableAttributeOfTypeText(string $code): Attribute
     {
-        return new Attribute(new AttributeCode($code), AttributeType::text(), false, false);
+        return new Attribute(new AttributeCode($code), AttributeType::text(), false);
     }
 
     private function givenALocalizableAttributeOfTypeTextarea(string $code): Attribute
     {
-        return new Attribute(new AttributeCode($code), AttributeType::textarea(), true, false);
+        return new Attribute(new AttributeCode($code), AttributeType::textarea(), true);
     }
 
     private function givenANotLocalizableAttributeOfTypeTextarea(string $code): Attribute
     {
-        return new Attribute(new AttributeCode($code), AttributeType::textarea(), false, false);
-    }
-
-    private function givenALocalizableMainTitleAttribute(string $code): Attribute
-    {
-        return new Attribute(new AttributeCode($code), AttributeType::text(), true, true);
-    }
-
-    private function givenANotLocalizableMainTitleAttribute(string $code): Attribute
-    {
-        return new Attribute(new AttributeCode($code), AttributeType::text(), false, true);
+        return new Attribute(new AttributeCode($code), AttributeType::textarea(), false);
     }
 
     private function givenRandomValuesForAttribute(Attribute $attribute): ProductValues

@@ -47,9 +47,9 @@ class GetEvaluableAttributesByProductModelQueryIntegration extends TestCase
 
         $expectedAttributes = [
             new Attribute(new AttributeCode('a_multi_select'), AttributeType::multiSelect(), false, false),
-            new Attribute(new AttributeCode('a_text_area'), AttributeType::textarea(), false, false),
-            new Attribute(new AttributeCode('a_localized_and_scopable_text_area'), AttributeType::textarea(), true, false),
-            new Attribute(new AttributeCode('a_localizable_text'), AttributeType::text(), true, false),
+            new Attribute(new AttributeCode('a_text_area'), AttributeType::textarea(), false),
+            new Attribute(new AttributeCode('a_localized_and_scopable_text_area'), AttributeType::textarea(), true),
+            new Attribute(new AttributeCode('a_localizable_text'), AttributeType::text(), true),
         ];
 
         $this->assertEqualsCanonicalizing($expectedAttributes, $attributes);
@@ -63,8 +63,8 @@ class GetEvaluableAttributesByProductModelQueryIntegration extends TestCase
 
         $expectedAttributes = [
             new Attribute(new AttributeCode('a_multi_select'), AttributeType::multiSelect(), false, false),
-            new Attribute(new AttributeCode('a_localized_and_scopable_text_area'), AttributeType::textarea(), true, false),
-            new Attribute(new AttributeCode('a_localizable_text'), AttributeType::text(), true, false),
+            new Attribute(new AttributeCode('a_localized_and_scopable_text_area'), AttributeType::textarea(), true),
+            new Attribute(new AttributeCode('a_localizable_text'), AttributeType::text(), true),
         ];
 
         $this->assertEqualsCanonicalizing($expectedAttributes, $attributes);
@@ -79,9 +79,9 @@ class GetEvaluableAttributesByProductModelQueryIntegration extends TestCase
         $expectedAttributes = [
             new Attribute(new AttributeCode('a_multi_select'), AttributeType::multiSelect(), false, false),
             new Attribute(new AttributeCode('a_simple_select'), AttributeType::simpleSelect(), false, false),
-            new Attribute(new AttributeCode('a_text'), AttributeType::text(), false, false),
-            new Attribute(new AttributeCode('a_localized_and_scopable_text_area'), AttributeType::textarea(), true, false),
-            new Attribute(new AttributeCode('a_localizable_text'), AttributeType::text(), true, false),
+            new Attribute(new AttributeCode('a_text'), AttributeType::text(), false),
+            new Attribute(new AttributeCode('a_localized_and_scopable_text_area'), AttributeType::textarea(), true),
+            new Attribute(new AttributeCode('a_localizable_text'), AttributeType::text(), true),
         ];
 
         $this->assertEqualsCanonicalizing($expectedAttributes, $attributes);

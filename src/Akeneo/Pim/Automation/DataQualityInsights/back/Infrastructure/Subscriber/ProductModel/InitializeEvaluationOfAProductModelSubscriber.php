@@ -17,7 +17,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\Consolid
 use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\ProductModelTitleSuggestionIgnoredEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\ProductModelWordIgnoredEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetDescendantVariantProductIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
@@ -78,7 +77,6 @@ class InitializeEvaluationOfAProductModelSubscriber implements EventSubscriberIn
     {
         return [
             StorageEvents::POST_SAVE => 'onPostSave',
-            ProductModelTitleSuggestionIgnoredEvent::class => 'onIgnoredTitleSuggestion',
             ProductModelWordIgnoredEvent::class => 'onIgnoredWord',
         ];
     }
@@ -102,17 +100,6 @@ class InitializeEvaluationOfAProductModelSubscriber implements EventSubscriberIn
         $this->initializeProductModelCriteria($productModelId);
         $this->evaluatePendingCriteria->evaluateSynchronousCriteria([$productModelId]);
         $this->consolidateAxesRates->consolidate([$productModelId]);
-    }
-
-    public function onIgnoredTitleSuggestion(ProductModelTitleSuggestionIgnoredEvent $event)
-    {
-        if (! $this->dataQualityInsightsFeature->isEnabled()) {
-            return;
-        }
-
-        $this->initializeProductModelCriteria($event->getProductId()->toInt());
-        $this->initializeCriteriaForSubProductModels($event->getProductId());
-        $this->initializeCriteriaForVariantProducts($event->getProductId());
     }
 
     public function onIgnoredWord(ProductModelWordIgnoredEvent $event)

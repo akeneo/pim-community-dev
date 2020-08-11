@@ -27,15 +27,11 @@ final class Attribute
     /** @var bool */
     private $isLocalizable;
 
-    /** @var bool */
-    private $isMainTitle;
-
-    public function __construct(AttributeCode $code, AttributeType $type, bool $isLocalizable, bool $isMainTitle)
+    public function __construct(AttributeCode $code, AttributeType $type, bool $isLocalizable)
     {
         $this->code = $code;
         $this->type = $type;
         $this->isLocalizable = $isLocalizable;
-        $this->isMainTitle = $isMainTitle;
     }
 
     public function getCode(): AttributeCode
@@ -51,11 +47,6 @@ final class Attribute
     public function isLocalizable(): bool
     {
         return $this->isLocalizable;
-    }
-
-    public function isMainTitle(): bool
-    {
-        return $this->isMainTitle;
     }
 
     public function hasOptions()

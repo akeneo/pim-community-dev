@@ -67,26 +67,6 @@ akeneo_data_quality_insights_attribute_option_check_text_ignore:
     defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddAttributeOptionWordInDictionaryController }
     methods: [POST]
 
-akeneo_data_quality_insights_check_title_suggestion:
-    path: /data-quality-insights/product/check-title
-    defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\CheckTitleSuggestionController }
-    methods: [POST]
-
-akeneo_data_quality_insights_product_model_check_title_suggestion:
-    path: /data-quality-insights/product-model/check-title
-    defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\CheckProductModelTitleSuggestionController }
-    methods: [POST]
-
-akeneo_data_quality_insights_check_title_suggestion_ignore:
-    path: /data-quality-insights/product/check-title/ignore
-    defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\IgnoreTitleSuggestionController }
-    methods: [POST]
-
-akeneo_data_quality_insights_product_model_check_title_suggestion_ignore:
-    path: /data-quality-insights/product-model/check-title/ignore
-    defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\IgnoreProductModelTitleSuggestionController }
-    methods: [POST]
-
 akeneo_data_quality_insights_get_attribute_labels_error_count:
     path: /data-quality-insights/attribute/{attributeCode}/labels/error-count
     defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetAttributeLabelsErrorCountController }

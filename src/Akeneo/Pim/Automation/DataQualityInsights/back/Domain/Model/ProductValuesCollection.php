@@ -70,17 +70,6 @@ final class ProductValuesCollection implements \IteratorAggregate
         }
     }
 
-    public function getLocalizableMainTitleValues(): ?ProductValues
-    {
-        foreach ($this->productValuesByAttribute as $productValues) {
-            if ($productValues->getAttribute()->isMainTitle() && $productValues->getAttribute()->isLocalizable()) {
-                return $productValues;
-            }
-        }
-
-        return null;
-    }
-
     public function getSimpleSelectValues(): \Iterator
     {
         $simpleSelectType = AttributeType::simpleSelect();

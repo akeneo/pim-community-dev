@@ -71,23 +71,11 @@ CREATE TABLE pimee_data_quality_insights_text_checker_dictionary (
     INDEX word_index (word)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE pimee_data_quality_insights_title_formatting_ignore (
-    product_id INT NOT NULL,
-    ignored_suggestions JSON NOT NULL,
-    PRIMARY KEY (product_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-CREATE TABLE pimee_data_quality_insights_pm_title_formatting_ignore (
-    product_id INT NOT NULL,
-    ignored_suggestions JSON NOT NULL,
-    PRIMARY KEY (product_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 CREATE TABLE pimee_dqi_attribute_spellcheck (
-    attribute_code VARCHAR(100) NOT NULL PRIMARY KEY, 
-    evaluated_at DATETIME NOT NULL, 
-    to_improve TINYINT(1) DEFAULT NULL, 
-    result JSON NOT NULL, 
+    attribute_code VARCHAR(100) NOT NULL PRIMARY KEY,
+    evaluated_at DATETIME NOT NULL,
+    to_improve TINYINT(1) DEFAULT NULL,
+    result JSON NOT NULL,
     INDEX evaluated_at_index (evaluated_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

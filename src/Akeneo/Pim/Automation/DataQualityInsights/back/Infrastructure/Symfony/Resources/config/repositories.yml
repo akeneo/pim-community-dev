@@ -3,8 +3,6 @@ parameters:
      akeneo.pim.automation.data_quality_insights.persistence.product_model_criterion_evaluation_table: 'pimee_data_quality_insights_product_model_criteria_evaluation'
      akeneo.pim.automation.data_quality_insights.persistence.product_axis_rate_table: 'pimee_data_quality_insights_product_axis_rates'
      akeneo.pim.automation.data_quality_insights.persistence.product_model_axis_rate_table: 'pimee_data_quality_insights_product_model_axis_rates'
-     akeneo.pim.automation.data_quality_insights.persistence.product_ignore_title_suggestion_table: 'pimee_data_quality_insights_title_formatting_ignore'
-     akeneo.pim.automation.data_quality_insights.persistence.product_model_ignore_title_suggestion_table: 'pimee_data_quality_insights_pm_title_formatting_ignore'
 
 services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\CriterionEvaluationRepository:
@@ -42,18 +40,6 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\TextCheckerDictionaryRepository:
         arguments:
             $db: '@database_connection'
-
-    akeneo.pim.automation.data_quality_insights.repository.product_ignore_title_suggestion:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\IgnoredTitleSuggestionRepository
-        arguments:
-            $db: '@database_connection'
-            $tableName: '%akeneo.pim.automation.data_quality_insights.persistence.product_ignore_title_suggestion_table%'
-
-    akeneo.pim.automation.data_quality_insights.repository.product_model_ignore_title_suggestion:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\IgnoredTitleSuggestionRepository
-        arguments:
-            $db: '@database_connection'
-            $tableName: '%akeneo.pim.automation.data_quality_insights.persistence.product_model_ignore_title_suggestion_table%'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeSpellcheckRepository:
         arguments:

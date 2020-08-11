@@ -110,7 +110,7 @@ class FilterProductValuesForSpellingSpec extends ObjectBehavior
 
     private function givenLocalizableTextValues(string $attributeCode): ProductValues
     {
-        $attribute = new Attribute(new AttributeCode($attributeCode), AttributeType::text(), true, false);
+        $attribute = new Attribute(new AttributeCode($attributeCode), AttributeType::text(), true);
         $values = $this->createMinimalValues($attributeCode);
 
         return new ProductValues($attribute, $values);
@@ -118,7 +118,7 @@ class FilterProductValuesForSpellingSpec extends ObjectBehavior
 
     private function givenNotLocalizableTextValues(string $attributeCode): ProductValues
     {
-        $attribute = new Attribute(new AttributeCode($attributeCode), AttributeType::text(), false, false);
+        $attribute = new Attribute(new AttributeCode($attributeCode), AttributeType::text(), false);
         $values = $this->createMinimalValues($attributeCode);
 
         return new ProductValues($attribute, $values);
@@ -126,7 +126,7 @@ class FilterProductValuesForSpellingSpec extends ObjectBehavior
 
     private function givenLocalizableTextareaValues(string $attributeCode): ProductValues
     {
-        $attribute = new Attribute(new AttributeCode($attributeCode), AttributeType::textarea(), true, false);
+        $attribute = new Attribute(new AttributeCode($attributeCode), AttributeType::textarea(), true);
         $values = $this->createMinimalValues($attributeCode);
 
         return new ProductValues($attribute, $values);
@@ -134,7 +134,7 @@ class FilterProductValuesForSpellingSpec extends ObjectBehavior
 
     private function givenNotLocalizableTextareaValues(string $attributeCode): ProductValues
     {
-        $attribute = new Attribute(new AttributeCode($attributeCode), AttributeType::textarea(), false, false);
+        $attribute = new Attribute(new AttributeCode($attributeCode), AttributeType::textarea(), false);
         $values = $this->createMinimalValues($attributeCode);
 
         return new ProductValues($attribute, $values);

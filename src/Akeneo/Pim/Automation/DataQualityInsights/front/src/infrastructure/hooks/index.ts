@@ -15,7 +15,6 @@ import useGetPopover from "./EditorHighlight/useGetPopover";
 import useGetWidget from "./EditorHighlight/useGetWidget";
 import useFetchIgnoreTextIssue from "./EditorHighlight/Spellcheck/useFetchIgnoreTextIssue";
 import useGetChartScalingSizeRatio from "./Dashboard/useGetChartScalingSizeRatio";
-import useFetchTitleSuggestion from "./EditorHighlight/SuggestedTitle/useFetchTitleSuggestion";
 
 export {
   useFetchDqiDashboardData,
@@ -34,6 +33,5 @@ export {
   useGetWidget as useGetSpellcheckWidget,
   useFetchIgnoreTextIssue,
   useGetChartScalingSizeRatio as useGetDashboardChartScalingSizeRatio,
-  useFetchTitleSuggestion,
   useProductEvaluation,
 }

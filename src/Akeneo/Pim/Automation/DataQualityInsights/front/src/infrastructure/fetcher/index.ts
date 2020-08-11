@@ -5,7 +5,6 @@ import fetchFamilyInformation from "./ProductEditForm/fetchFamilyInformation";
 import fetchIgnoreTextIssue from "./ProductEditForm/Spellcheck/fetchIgnoreTextIssue";
 import fetchProduct from "./ProductEditForm/fetchProduct";
 import fetchTextAnalysis from "./Spellcheck/fetchTextAnalysis";
-import fetchTitleSuggestion from "./ProductEditForm/SuggestedTitle/fetchTitleSuggestion";
 
 export {
   fetchDqiDashboardData,
@@ -15,5 +14,4 @@ export {
   fetchIgnoreTextIssue,
   fetchProduct,
   fetchTextAnalysis,
-  fetchTitleSuggestion,
 }

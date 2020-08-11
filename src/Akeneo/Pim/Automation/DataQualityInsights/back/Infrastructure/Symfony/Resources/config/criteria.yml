@@ -60,22 +60,7 @@ services:
             - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_criterion' }
             - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_model_criterion' }
 
-    Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateTitleFormatting:
-        arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TitleFormattingService'
-            - '@akeneo.pim.automation.data_quality_insights.query.get_product_ignored_title_suggestion'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\FilterProductValuesForTitleFormatting'
-        tags:
-            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_criterion' }
-            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_model_criterion' }
-            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_criterion_applicability' }
-
     Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\FilterProductValuesForSpelling:
-        arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetAllActivatedLocalesQuery'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\FilterProductValuesForTitleFormatting:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetAllActivatedLocalesQuery'
 

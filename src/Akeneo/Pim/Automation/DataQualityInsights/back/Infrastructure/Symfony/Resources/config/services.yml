@@ -1,5 +1,4 @@
 parameters:
-    env(DATA_QUALITY_INSIGHTS_JWT_VERIFYING_KEY): 'OXvfb6/iSYOgqD8w044j8PTMWDwbSKjgJDhrNu3NwAc='
     env(AKENEO_PIM_URL): ''
     env(PAPO_PROJECT_CODE_TRUNCATED): ''
     env(PAPO_PROJECT_CODE_HASHED): ''
@@ -111,20 +110,6 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.query.get_up_to_date_latest_product_model_evaluations'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistry'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TitleFormattingService:
-        arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Client\Franklin'
-            - '@logger'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TitleFormattingToken'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Consistency\TitleFormattingToken:
-        arguments:
-            - '%env(DATA_QUALITY_INSIGHTS_JWT_VERIFYING_KEY)%'
-            - '%env(AKENEO_PIM_URL)%'
-            - '%kernel.project_dir%'
-            - '%env(PAPO_PROJECT_CODE_TRUNCATED)%'
-            - '%env(PAPO_PROJECT_CODE_HASHED)%'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ComputeAxisRates:
         arguments:
@@ -244,18 +229,6 @@ services:
             $aspellDictionary: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionary'
             $supportedLocaleValidator: '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator'
             $clock: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
-
-    akeneo.pim.automation.data_quality_insights.get_product_title_suggestion:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductTitleSuggestion
-        arguments:
-            - '@akeneo.pim.automation.data_quality_insights.query.get_product_criteria_evaluations'
-            - '@akeneo.pim.automation.data_quality_insights.query.get_product_ignored_title_suggestion'
-
-    akeneo.pim.automation.data_quality_insights.get_product_model_title_suggestion:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductTitleSuggestion
-        arguments:
-            - '@akeneo.pim.automation.data_quality_insights.query.get_product_model_criteria_evaluations'
-            - '@akeneo.pim.automation.data_quality_insights.query.get_product_model_ignored_title_suggestion'
 
 # Structure Evaluation
     Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateAttributeLabelsSpelling:

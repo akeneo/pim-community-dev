@@ -8,7 +8,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\ProductWordIgnoredEvent;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\TitleSuggestionIgnoredEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -57,21 +56,11 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
     {
         return [
             ProductWordIgnoredEvent::class => 'onIgnoredWord',
-            TitleSuggestionIgnoredEvent::class => 'onIgnoredTitleSuggestion',
             StorageEvents::POST_SAVE => 'onPostSave',
         ];
     }
 
     public function onIgnoredWord(ProductWordIgnoredEvent $event)
-    {
-        if (! $this->dataQualityInsightsFeature->isEnabled()) {
-            return;
-        }
-
-        $this->initializeCriteria($event->getProductId()->toInt());
-    }
-
-    public function onIgnoredTitleSuggestion(TitleSuggestionIgnoredEvent $event)
     {
         if (! $this->dataQualityInsightsFeature->isEnabled()) {
             return;

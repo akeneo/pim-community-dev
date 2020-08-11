@@ -77,32 +77,6 @@ services:
             $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
             $ignoreWordForAttributeOption: '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWordForAttributeOption'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\CheckTitleSuggestionController:
-        public: true
-        arguments:
-            $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-            $getProductTitleSuggestion: '@akeneo.pim.automation.data_quality_insights.get_product_title_suggestion'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\CheckProductModelTitleSuggestionController:
-        public: true
-        arguments:
-            $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-            $getProductTitleSuggestion: '@akeneo.pim.automation.data_quality_insights.get_product_model_title_suggestion'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\IgnoreTitleSuggestionController:
-        public: true
-        arguments:
-            $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-            $ignoredTitleSuggestionRepository: '@akeneo.pim.automation.data_quality_insights.repository.product_ignore_title_suggestion'
-            $eventDispatcher: '@event_dispatcher'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\IgnoreProductModelTitleSuggestionController:
-        public: true
-        arguments:
-            $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-            $ignoredTitleSuggestionRepository: '@akeneo.pim.automation.data_quality_insights.repository.product_model_ignore_title_suggestion'
-            $eventDispatcher: '@event_dispatcher'
-
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetAttributeLabelsErrorCountController:
         public: true
         arguments:

@@ -55,8 +55,7 @@ SQL;
         return new Attribute(
             $attributeCode,
             new AttributeType($attribute['attribute_type']),
-            (bool) $attribute['is_localizable'],
-            false
+            (bool) $attribute['is_localizable']
         );
     }
 }

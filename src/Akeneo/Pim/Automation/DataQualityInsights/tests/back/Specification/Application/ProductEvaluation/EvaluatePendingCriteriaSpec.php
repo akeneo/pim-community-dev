@@ -15,10 +15,8 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\Pr
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CriteriaApplicabilityRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateSpelling;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateTitleFormatting;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CriteriaEvaluationRegistry;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateCriterionApplicabilityInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateCriterionInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Attribute;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleDataCollection;
@@ -166,24 +164,16 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
     public function it_evaluates_synchronous_criteria_for_a_set_of_products(
         CriterionEvaluationRepositoryInterface $repository,
         CriteriaEvaluationRegistry $evaluationRegistry,
-        CriteriaApplicabilityRegistry $applicabilityRegistry,
         GetPendingCriteriaEvaluationsByProductIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
         GetEvaluableProductValuesQueryInterface $getEvaluableProductValuesQuery,
         EvaluateCriterionInterface $evaluateSpelling,
-        EvaluateCriterionInterface $evaluateCompleteness,
-        EvaluateCriterionApplicabilityInterface $evaluateTitleFormattingApplicability
+        EvaluateCriterionInterface $evaluateCompleteness
     ) {
         $criterionSpelling = new CriterionCode(EvaluateSpelling::CRITERION_CODE);
-        $criterionTitleFormatting = new CriterionCode(EvaluateTitleFormatting::CRITERION_CODE);
 
         $criteria = [
             'product_42_spelling' => new Write\CriterionEvaluation(
                 $criterionSpelling,
-                new ProductId(42),
-                CriterionEvaluationStatus::pending()
-            ),
-            'product_42_title' => new Write\CriterionEvaluation(
-                $criterionTitleFormatting,
                 new ProductId(42),
                 CriterionEvaluationStatus::pending()
             ),
@@ -196,8 +186,7 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
 
         $getPendingCriteriaEvaluationsQuery->execute([42, 123])->willreturn([
             42 => (new Write\CriterionEvaluationCollection())
-                ->add($criteria['product_42_spelling'])
-                ->add($criteria['product_42_title']),
+                ->add($criteria['product_42_spelling']),
             123 => (new Write\CriterionEvaluationCollection())
                 ->add($criteria['product_123_spelling']),
         ]);
@@ -208,33 +197,23 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
         $getEvaluableProductValuesQuery->byProductId(new ProductId(42))->willReturn($product42Values);
         $getEvaluableProductValuesQuery->byProductId(new ProductId(123))->willReturn($product123Values);
 
-        $evaluationRegistry->get($criterionTitleFormatting)->shouldNotBeCalled();
-        $evaluateCompleteness->evaluate($criteria['product_42_title'])->shouldNotBeCalled();
-
         $evaluationRegistry->get($criterionSpelling)->willReturn($evaluateSpelling);
         $evaluateSpelling->evaluate($criteria['product_42_spelling'], $product42Values)
             ->willReturn(new Write\CriterionEvaluationResult());
         $evaluateSpelling->evaluate($criteria['product_123_spelling'], $product123Values)
             ->willReturn(new Write\CriterionEvaluationResult());
 
-        $applicabilityRegistry->get($criterionTitleFormatting)->willReturn($evaluateTitleFormattingApplicability);
-        $evaluateTitleFormattingApplicability->evaluateApplicability($product42Values)
-            ->willReturn(new Write\CriterionApplicability(new Write\CriterionEvaluationResult(), true));
-        $evaluateTitleFormattingApplicability->evaluateApplicability($product123Values)
-            ->willReturn(new Write\CriterionApplicability(new Write\CriterionEvaluationResult(), true));
-
         $repository->update(Argument::any())->shouldBeCalledTimes(2);
 
         $this->evaluateSynchronousCriteria([42, 123]);
 
-        Assert::eq(CriterionEvaluationStatus::pending(), $criteria['product_42_title']->getStatus());
         Assert::eq(CriterionEvaluationStatus::done(), $criteria['product_42_spelling']->getStatus());
         Assert::eq(CriterionEvaluationStatus::done(), $criteria['product_123_spelling']->getStatus());
     }
 
     private function givenRandomProductValues(): ProductValuesCollection
     {
-        $attribute = new Attribute(new AttributeCode(strval(Uuid::uuid4())), AttributeType::text(), true, false);
+        $attribute = new Attribute(new AttributeCode(strval(Uuid::uuid4())), AttributeType::text(), true);
         $values = (new ChannelLocaleDataCollection())
             ->addToChannelAndLocale(new ChannelCode('mobile'), new LocaleCode('en_US'), strval(Uuid::uuid4()))
             ->addToChannelAndLocale(new ChannelCode('print'), new LocaleCode('fr_FR'), strval(Uuid::uuid4()));

@@ -15,7 +15,6 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateSpelling;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateTitleFormatting;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Consistency;
@@ -111,15 +110,6 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                 "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
                             ],
                             [
-                                "code" =>"consistency_text_title_formatting",
-                                "rate" => [
-                                    "value" => null,
-                                    "rank" => null,
-                                ],
-                                "improvable_attributes" => [],
-                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
-                            ],
-                            [
                                 "code" => "consistency_textarea_lowercase_words",
                                 "rate" => [
                                     "value" => 50,
@@ -165,15 +155,6 @@ class GetProductEvaluationSpec extends ObjectBehavior
                         "criteria" => [
                             [
                                 "code" =>"consistency_spelling",
-                                "rate" => [
-                                    "value" => null,
-                                    "rank" => null,
-                                ],
-                                "improvable_attributes" => [],
-                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
-                            ],
-                            [
-                                "code" =>"consistency_text_title_formatting",
                                 "rate" => [
                                     "value" => null,
                                     "rank" => null,
@@ -229,15 +210,6 @@ class GetProductEvaluationSpec extends ObjectBehavior
                         "criteria" => [
                             [
                                 "code" =>"consistency_spelling",
-                                "rate" => [
-                                    "value" => null,
-                                    "rank" => null,
-                                ],
-                                "improvable_attributes" => [],
-                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
-                            ],
-                            [
-                                "code" =>"consistency_text_title_formatting",
                                 "rate" => [
                                     "value" => null,
                                     "rank" => null,
@@ -402,16 +374,16 @@ class GetProductEvaluationSpec extends ObjectBehavior
             ]
         ];
 
-        $evaluateTitleFormattingRates = (new ChannelLocaleRateCollection())
+        $evaluateLowercaseRates = (new ChannelLocaleRateCollection())
             ->addRate($channelCodeEcommerce, $localeCodeEn, new Rate(84))
             ->addRate($channelCodeMobile, $localeCodeEn, new Rate(0))
         ;
-        $evaluateTitleFormattingStatus = (new CriterionEvaluationResultStatusCollection())
+        $evaluateLowercaseStatus = (new CriterionEvaluationResultStatusCollection())
             ->add($channelCodeEcommerce, $localeCodeEn, CriterionEvaluationResultStatus::done())
             ->add($channelCodeEcommerce, $localeCodeFr, CriterionEvaluationResultStatus::notApplicable())
             ->add($channelCodeMobile, $localeCodeEn, CriterionEvaluationResultStatus::done())
         ;
-        $evaluateTitleFormattingData = [
+        $evaluateLowercaseData = [
             "attributes_with_rates" => [
                 "ecommerce" => [
                     "en_US" => ["title" => 84],
@@ -433,11 +405,11 @@ class GetProductEvaluationSpec extends ObjectBehavior
             ))
             ->add($this->generateCriterionEvaluation(
                 $productId,
-                EvaluateTitleFormatting::CRITERION_CODE,
+                LowerCaseWords::CRITERION_CODE,
                 CriterionEvaluationStatus::DONE,
-                $evaluateTitleFormattingRates,
-                $evaluateTitleFormattingStatus,
-                $evaluateTitleFormattingData
+                $evaluateLowercaseRates,
+                $evaluateLowercaseStatus,
+                $evaluateLowercaseData
             ))
         ;
 
@@ -551,7 +523,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                 "status" => CriterionEvaluationResultStatus::DONE,
                             ],
                             [
-                                "code" =>"consistency_text_title_formatting",
+                                "code" => LowerCaseWords::CRITERION_CODE,
                                 "rate" => [
                                     "value" => 84,
                                     "rank" => "B",
@@ -560,15 +532,6 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                     "title",
                                 ],
                                 "status" => CriterionEvaluationResultStatus::DONE,
-                            ],
-                            [
-                                "code" =>"consistency_textarea_lowercase_words",
-                                "rate" => [
-                                    "value" => null,
-                                    "rank" => null,
-                                ],
-                                "improvable_attributes" => [],
-                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
                             ],
                             [
                                 "code" =>"consistency_textarea_uppercase_words",
@@ -618,22 +581,13 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                 "status" => CriterionEvaluationResultStatus::DONE,
                             ],
                             [
-                                "code" =>"consistency_text_title_formatting",
+                                "code" => LowerCaseWords::CRITERION_CODE,
                                 "rate" => [
                                     "value" => null,
                                     "rank" => null,
                                 ],
                                 "improvable_attributes" => [],
                                 "status" => CriterionEvaluationResultStatus::NOT_APPLICABLE,
-                            ],
-                            [
-                                "code" =>"consistency_textarea_lowercase_words",
-                                "rate" => [
-                                    "value" => null,
-                                    "rank" => null,
-                                ],
-                                "improvable_attributes" => [],
-                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
                             ],
                             [
                                 "code" =>"consistency_textarea_uppercase_words",
@@ -682,7 +636,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                 "status" => CriterionEvaluationResultStatus::DONE,
                             ],
                             [
-                                "code" =>"consistency_text_title_formatting",
+                                "code" => LowerCaseWords::CRITERION_CODE,
                                 "rate" => [
                                     "value" => 0,
                                     "rank" => "E",
@@ -691,15 +645,6 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                    "title", "meta_title",
                                 ],
                                 "status" => CriterionEvaluationResultStatus::DONE,
-                            ],
-                            [
-                                "code" =>"consistency_textarea_lowercase_words",
-                                "rate" => [
-                                    "value" => null,
-                                    "rank" => null,
-                                ],
-                                "improvable_attributes" => [],
-                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
                             ],
                             [
                                 "code" =>"consistency_textarea_uppercase_words",

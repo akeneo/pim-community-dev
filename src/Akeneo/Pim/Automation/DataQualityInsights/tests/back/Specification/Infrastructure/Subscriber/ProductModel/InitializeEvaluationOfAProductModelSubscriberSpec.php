@@ -19,7 +19,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Crea
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetDescendantVariantProductIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\ProductModelTitleSuggestionIgnoredEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\ProductModelWordIgnoredEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductModelIdsQueryInterface;
@@ -62,7 +61,6 @@ class InitializeEvaluationOfAProductModelSubscriberSpec extends ObjectBehavior
     public function it_subscribes_to_events()
     {
         $this::getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_SAVE);
-        $this::getSubscribedEvents()->shouldHaveKey(ProductModelTitleSuggestionIgnoredEvent::class);
         $this::getSubscribedEvents()->shouldHaveKey(ProductModelWordIgnoredEvent::class);
     }
 

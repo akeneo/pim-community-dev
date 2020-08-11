@@ -40,9 +40,6 @@
             <directory suffix="Integration.php">vendor/akeneo/pim-community-dev/upgrades/test_schema</directory>
         </testsuite>
 
-        <testsuite name="Franklin_Insights">
-            <directory suffix="Integration.php">src/Akeneo/Pim/Automation/FranklinInsights/tests/back/Integration</directory>
-        </testsuite>
         <testsuite name="Data_Quality_Insights">
             <directory suffix="Integration.php">src/Akeneo/Pim/Automation/DataQualityInsights/tests/back/Integration</directory>
         </testsuite>

@@ -16,7 +16,6 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeOptionSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateSpelling;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateTitleFormatting;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateUppercaseWords;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Axis;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Criterion\LowerCaseWords;
@@ -29,7 +28,6 @@ final class Consistency implements Axis
 
     public const CRITERIA_CODES = [
         EvaluateSpelling::CRITERION_CODE,
-        EvaluateTitleFormatting::CRITERION_CODE,
         LowerCaseWords::CRITERION_CODE,
         EvaluateUppercaseWords::CRITERION_CODE,
         EvaluateAttributeSpelling::CRITERION_CODE,
@@ -38,7 +36,6 @@ final class Consistency implements Axis
 
     private const CRITERIA_COEFFICIENTS = [
         EvaluateUppercaseWords::CRITERION_CODE => 1,
-        EvaluateTitleFormatting::CRITERION_CODE => 1,
         EvaluateSpelling::CRITERION_CODE => 2,
         LowerCaseWords::CRITERION_CODE => 1,
         EvaluateAttributeSpelling::CRITERION_CODE => 1,

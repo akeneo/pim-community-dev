@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateSpelling;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateTitleFormatting;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateUppercaseWords;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Axis;
@@ -49,11 +48,9 @@ final class ComputeAxisRatesSpec extends ObjectBehavior
         $axis->getCriteriaCodes()->willReturn([
             new CriterionCode(EvaluateSpelling::CRITERION_CODE),
             new CriterionCode(EvaluateUppercaseWords::CRITERION_CODE),
-            new CriterionCode(EvaluateTitleFormatting::CRITERION_CODE),
         ]);
         $axis->getCriterionCoefficient(new CriterionCode(EvaluateSpelling::CRITERION_CODE))->willReturn(2);
         $axis->getCriterionCoefficient(new CriterionCode(EvaluateUppercaseWords::CRITERION_CODE))->willReturn(1);
-        $axis->getCriterionCoefficient(new CriterionCode(EvaluateTitleFormatting::CRITERION_CODE))->willReturn(1);
 
         $getLocalesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection([
             'mobile' => ['en_US', 'fr_FR'],
@@ -115,13 +112,6 @@ final class ComputeAxisRatesSpec extends ObjectBehavior
                 new \DateTimeImmutable(),
                 CriterionEvaluationStatus::done(),
                 $upperCaseResult
-            ))
-            ->add(new CriterionEvaluation(
-                new CriterionCode(EvaluateTitleFormatting::CRITERION_CODE),
-                new ProductId(42),
-                new \DateTimeImmutable(),
-                CriterionEvaluationStatus::pending(),
-                null
             ))
         ;
 

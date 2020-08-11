@@ -38,7 +38,6 @@ class GetEvaluableAttributesByProductQueryIntegration extends TestCase
             ['code' => 'a_localizable_text', 'type' => AttributeTypes::TEXT, 'scopable' => true, 'localizable' => true],
             ['code' => 'a_not_localizable_text', 'type' => AttributeTypes::TEXT, 'scopable' => false, 'localizable' => false],
             ['code' => 'a_text_of_another_family', 'type' => AttributeTypes::TEXT, 'scopable' => true, 'localizable' => true],
-            ['code' => 'a_main_title', 'type' => AttributeTypes::TEXT, 'scopable' => true, 'localizable' => true],
         ]);
 
         $this->createFamily([
@@ -50,18 +49,15 @@ class GetEvaluableAttributesByProductQueryIntegration extends TestCase
                 'a_readonly_textarea',
                 'a_localizable_text',
                 'a_not_localizable_text',
-                'a_main_title',
             ],
-            'attribute_as_label' => 'a_main_title',
         ]);
 
         $productId = $this->createProduct();
 
         $expectedAttributes = [
-            new Attribute(new AttributeCode('a_localizable_textarea'), AttributeType::textarea(), true, false),
-            new Attribute(new AttributeCode('a_localizable_text'), AttributeType::text(), true, false),
-            new Attribute(new AttributeCode('a_not_localizable_text'), AttributeType::text(), false, false),
-            new Attribute(new AttributeCode('a_main_title'), AttributeType::text(), true, true),
+            new Attribute(new AttributeCode('a_localizable_textarea'), AttributeType::textarea(), true),
+            new Attribute(new AttributeCode('a_localizable_text'), AttributeType::text(), true),
+            new Attribute(new AttributeCode('a_not_localizable_text'), AttributeType::text(), false),
         ];
 
         $result = $this
