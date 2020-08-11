@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\Workflow\ProductModelProposal;
 
-use PHPUnit\Framework\Assert;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
+use PHPUnit\Framework\Assert;
 
 class SaveRootProductModelDraftIntegration extends AbstractDraft
 {
@@ -49,5 +49,31 @@ class SaveRootProductModelDraftIntegration extends AbstractDraft
         Assert::assertSame(['tshirts'], $draft['categories']);
         Assert::assertSame('Mary', $draft['author']);
         Assert::assertSame(ProductModelDraft::class, $draft['document_type']);
+    }
+
+    public function testSuccessfullyCreateProductModelDraftWithoutNonViewableAttributes()
+    {
+        // remove view permission for Redactor on Medias attribute group
+        // The medias attribute group contains the "image" attribute,
+        // which is not empty for the "model-tshirt-divided" product model
+        $mediaAttributeGroup = $this->get('pim_catalog.repository.attribute_group')->findOneByIdentifier('medias');
+        $userGroups = $this->get('pim_user.repository.group')->findBy(['name' => ['IT support', 'Manager']]);
+        $this->get('pimee_security.manager.attribute_group_access')->setAccess(
+            $mediaAttributeGroup,
+            $userGroups,
+            $userGroups
+        );
+
+        $this->createProductModelDraft('model-tshirt-divided', 'collection', ['summer_2017', 'summer_2016']);
+        $productModelDrafts = $this->get('pimee_workflow.repository.product_model_draft')->findAll();
+
+        Assert::assertCount(1, $productModelDrafts);
+        $changes = $productModelDrafts[0]->getChanges()['values'];
+        Assert::assertArrayHasKey('collection', $changes);
+        Assert::assertArrayNotHasKey(
+            'image',
+            $changes,
+            'The changes should not contain a value for the non-granted "image" attribute'
+        );
     }
 }
