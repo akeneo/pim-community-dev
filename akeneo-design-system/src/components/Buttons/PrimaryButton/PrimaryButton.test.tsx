@@ -27,7 +27,7 @@ test('should render the component', () => {
 
         .c1 {
           color: red;
-          background-color: #67B373;
+          background-color: #67b373;
         }
 
         .c1:hover {
