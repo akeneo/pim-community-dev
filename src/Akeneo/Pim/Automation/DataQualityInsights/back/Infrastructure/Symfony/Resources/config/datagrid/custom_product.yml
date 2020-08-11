@@ -6,16 +6,8 @@ datagrid:
                 data_name:     data_quality_insights_consistency
                 type:          field
                 frontend_type: rate-badge
-            data_quality_insights_enrichment:
-                label:         Enrichment
-                data_name:     data_quality_insights_enrichment
-                type:          field
-                frontend_type: rate-badge
         sorters:
             columns:
                 data_quality_insights_consistency:
                     data_name: rates_consistency
                     sorter: data_quality_insights_consistency
-                data_quality_insights_enrichment:
-                    data_name: rates_enrichment
-                    sorter: data_quality_insights_enrichment
