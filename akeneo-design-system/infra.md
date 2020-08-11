@@ -11,3 +11,7 @@ To reproduce this extract infra, you need:
 - Configure the branch on which you want to trigger the deploy in the `.github/workflows/dsm.yml` file.
 
 On each push on the dsm branch, this will launch the tests, generate a lib build and then push everything to the dsm repository
+
+# Launch build
+
+Just push on dsm branch and modify a file in akeneo-design-system
