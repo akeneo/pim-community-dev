@@ -37,15 +37,16 @@ const SYSTEM_FIELDS = [
 ];
 
 const ATTRIBUTE_TYPES = [
+  AttributeType.ASSET_COLLECTION,
+  AttributeType.BOOLEAN,
+  AttributeType.DATE,
+  AttributeType.NUMBER,
   AttributeType.OPTION_MULTI_SELECT,
   AttributeType.OPTION_SIMPLE_SELECT,
-  AttributeType.TEXT,
-  AttributeType.TEXTAREA,
-  AttributeType.NUMBER,
-  AttributeType.DATE,
-  AttributeType.BOOLEAN,
   AttributeType.REFERENCE_ENTITY_COLLECTION,
   AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
+  AttributeType.TEXT,
+  AttributeType.TEXTAREA,
 ];
 
 const AddConditionButton: React.FC<Props> = ({
