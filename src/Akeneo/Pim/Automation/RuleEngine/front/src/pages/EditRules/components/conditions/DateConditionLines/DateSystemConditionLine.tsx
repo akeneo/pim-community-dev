@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Controller } from 'react-hook-form';
 import {
   dateSystemOperators,
-  Condition,
+  DateSystemCondition,
 } from '../../../../../models/conditions';
 import { useTranslate } from '../../../../../dependenciesTools/hooks';
 import { useControlledFormInputCondition } from '../../../hooks';
@@ -27,7 +27,7 @@ import { LineErrors } from '../../LineErrors';
 import { useDateConditionHandlers } from './dateConditionLines.hooks';
 
 type Props = {
-  condition: Condition;
+  condition: DateSystemCondition;
   lineNumber: number;
 };
 
@@ -99,7 +99,7 @@ const DateSystemConditionLine: React.FC<Props> = ({
         lineNumber={lineNumber}
         operator={currentOperator}
         timePeriodOptions={timePeriodOptions}
-        title={translate('pim_common.created')}
+        title={translate(`pim_common.${condition.field}`)}
         value={getValueFormValue() || ''}
       />
       <LineErrors lineNumber={lineNumber} type='conditions' />

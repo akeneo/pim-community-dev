@@ -8,11 +8,13 @@ import {
   CategoryCondition,
   CompletenessCondition,
   DateAttributeCondition,
+  DateSystemCondition,
 } from './';
 
 export type Condition =
   | CategoryCondition
   | CompletenessCondition
+  | DateSystemCondition
   | FallbackCondition
   | PimCondition
   | FamilyCondition
