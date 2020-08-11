@@ -19,11 +19,16 @@ find "$CLONE_DIR" | grep -v "^$CLONE_DIR/\.git" | grep -v "^$CLONE_DIR$" | xargs
 rm -rf "$CLONE_DIR"/.github
 rm "$CLONE_DIR"/.gitignore
 
+ls -la "$CLONE_DIR"
+
 cp -r "$FOLDER"/* "$CLONE_DIR"
 
-cd "$CLONE_DIR"
+ls -la "$CLONE_DIR"
 
-sed '/\lib/d' .gitignore > .gitignore
+cd "$CLONE_DIR"
+git status
+
+sed '/\lib/d' .gitignore
 
 git add .
 git commit --message "Update from https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA"
