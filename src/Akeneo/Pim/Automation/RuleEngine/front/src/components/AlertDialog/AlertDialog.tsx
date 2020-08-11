@@ -9,6 +9,7 @@ type Props = {
   description: string;
   cancelLabel: string;
   confirmLabel: string;
+  illustrationClassName?: string;
 };
 
 const AlertDialog: React.FC<Props> = ({
@@ -19,6 +20,7 @@ const AlertDialog: React.FC<Props> = ({
   description,
   cancelLabel,
   confirmLabel,
+  illustrationClassName = 'AknFullPage-illustration--delete',
 }) => {
   const handleConfirm = () => {
     dialog.hide();
@@ -43,7 +45,9 @@ const AlertDialog: React.FC<Props> = ({
       className='AknFullPage'>
       <div className='AknFullPage-content AknFullPage-content--withIllustration'>
         <div>
-          <div className='AknFullPage-image AknFullPage-illustration AknFullPage-illustration--delete' />
+          <div
+            className={`AknFullPage-image AknFullPage-illustration ${illustrationClassName}`}
+          />
         </div>
         <div>
           <div className='AknFullPage-titleContainer'>

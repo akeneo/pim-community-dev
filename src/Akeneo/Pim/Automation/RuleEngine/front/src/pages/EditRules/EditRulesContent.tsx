@@ -93,8 +93,7 @@ const EditRulesContent: React.FC<Props> = ({
     append(action);
   };
 
-  const dialog = useDialogState();
-
+  const deleteDialog = useDialogState();
   const handleDeleteRule = async (): Promise<any> => {
     const deleteRuleUrl = router.generate('pimee_catalog_rule_rule_delete', {
       id: ruleDefinition.id,
@@ -136,6 +135,14 @@ const EditRulesContent: React.FC<Props> = ({
     return result;
   };
 
+  const saveAndExecuteDialog = useDialogState();
+  const handleSaveAndExecuteRule = () => {
+    formMethods.register({ name: 'execute_on_save', value: true });
+    onSubmit().then(() => {
+      formMethods.unregister('execute_on_save');
+    });
+  };
+
   return (
     <ThemeProvider theme={akeneoTheme}>
       {(pending || deletePending) && <AkeneoSpinner />}
@@ -146,11 +153,13 @@ const EditRulesContent: React.FC<Props> = ({
         unsavedChanges={formMethods.formState.dirty}
         dropdown={
           <Dropdown title={translate('pim_common.other_actions')}>
-            <DialogDisclosure {...dialog} className='AknDropdown-menuLink'>
+            <DialogDisclosure
+              {...deleteDialog}
+              className='AknDropdown-menuLink'>
               {translate('pim_common.delete')}
             </DialogDisclosure>
             <AlertDialog
-              dialog={dialog}
+              dialog={deleteDialog}
               onValidate={handleDeleteRule}
               cancelLabel={translate('pim_common.cancel')}
               confirmLabel={translate('pim_common.confirm')}
@@ -160,6 +169,22 @@ const EditRulesContent: React.FC<Props> = ({
               description={translate(
                 'pimee_catalog_rule.form.delete.description'
               )}
+            />
+            <DialogDisclosure
+              {...saveAndExecuteDialog}
+              className='AknDropdown-menuLink'>
+              {translate('pimee_catalog_rule.form.edit.execute.button')}
+            </DialogDisclosure>
+            <AlertDialog
+              dialog={saveAndExecuteDialog}
+              onValidate={handleSaveAndExecuteRule}
+              cancelLabel={translate('pim_common.cancel')}
+              confirmLabel={translate('pim_common.confirm')}
+              label={translate('pimee_catalog_rule.form.edit.execute.title')}
+              description={translate(
+                'pimee_catalog_rule.form.edit.execute.description'
+              )}
+              illustrationClassName={'AknFullPage-illustration--rules'}
             />
           </Dropdown>
         }
