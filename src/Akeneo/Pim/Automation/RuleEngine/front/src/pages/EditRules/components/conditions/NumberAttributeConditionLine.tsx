@@ -37,7 +37,7 @@ const NumberAttributeConditionLine: React.FC<NumberAttributeConditionLineProps> 
     getAttributeByIdentifier(condition.field, router).then(attribute =>
       setAttribute(attribute)
     );
-  });
+  }, []);
 
   return (
     <AttributeConditionLine

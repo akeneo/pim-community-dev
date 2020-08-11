@@ -5,10 +5,6 @@ import { wait } from '@testing-library/dom';
 import { render, act } from '../../../../test-utils';
 import { IndexedScopes } from '../../../../src/repositories/ScopeRepository';
 
-jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
-jest.mock('../../../../src/components/Select2Wrapper/Select2Wrapper');
-jest.mock('../../../../src/fetch/categoryTree.fetcher.ts');
-
 const setIsDirty = (_isDirty: boolean) => {};
 
 describe('EditRulesContent', () => {

@@ -20,6 +20,7 @@ use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetCo
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\FranklinInsights\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Exception\ConnectionConfigurationException;
+use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\FranklinInsights\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\InternalApi\Normalizer\ConnectionStatusNormalizer;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -93,10 +94,7 @@ class FranklinConnectionController
      */
     public function getStatusAction(Request $request): Response
     {
-        $checkTokenValidity = $request->query->getBoolean('checkValidity', false);
-        $connectionStatus = $this->getConnectionStatusHandler->handle(
-            new GetConnectionStatusQuery($checkTokenValidity)
-        );
+        $connectionStatus = new ConnectionStatus(false, false, false, 0);
 
         return new JsonResponse($this->connectionStatusNormalizer->normalize($connectionStatus));
     }

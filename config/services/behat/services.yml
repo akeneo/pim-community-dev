@@ -1,6 +1,4 @@
 imports:
-    - { resource: ../../../src/Akeneo/Pim/Automation/FranklinInsights/tests/back/Acceptance/Resources/config/pim/data_providers.yml }
-    - { resource: ../../../src/Akeneo/Pim/Automation/FranklinInsights/tests/back/EndToEnd/Resources/config/behat/services.yml }
 
 services:
     _defaults:

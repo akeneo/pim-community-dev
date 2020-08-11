@@ -222,8 +222,8 @@ deploy_latest_release_for_helpdesk:
 slack_helpdesk:
 	curl -X POST -H 'Content-type: application/json' --data '{"text":"Serenity env has been deployed with the last tag $(IMAGE_TAG) : https://pimci-helpdesk.preprod.cloud.akeneo.com"}' $${SLACK_URL_HELPDESK};
 
-.PHONY: delete_pr_environments
-delete_pr_environments:
+.PHONY: delete_pr_environments_hourly
+delete_pr_environments_hourly:
 	bash $(PWD)/deployments/bin/remove_pr_instance.sh
 
 .PHONY: test_upgrade_from_serenity_customer_db_to_master

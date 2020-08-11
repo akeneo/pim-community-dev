@@ -1,11 +1,52 @@
 # 4.0.x
 
+# 4.0.47 (2020-08-07)
+
+## Bug fixes
+- PIM-9386: Notification reminder message not compliant
+- PIM-9385: Fix fatal error: Out of Sort memory on Record query 
+
+# 4.0.46 (2020-07-31)
+
+## Bug fixes
+
+- PIM-9382: Fix fatal error on rule execution
+
+# 4.0.45 (2020-07-31)
+
+## Bug fixes
+
+- PIM-9375: API Asset - add an error message
+- PIM-9373: The Compare feature filters are not displayed on the product model parent level
+
+# 4.0.44 (2020-07-28)
+
+## Bug fixes
+
+- PIM-9374: Fix search by code on asset collection attribute
+
+# 4.0.43 (2020-07-27)
+
+## Bug fixes
+
+- PIM-9304: Fix slow query used to retrieve products to evaluate
+
+# 4.0.42 (2020-07-22)
+
+## Bug fixes
+
+- PIM-9365: Fix PDF previews' background being black
+- PIM-9366: Add a warning message when importing a product with asset that doesn't belong to the linked asset family
+
+# 4.0.41 (2020-07-20)
+
 # 4.0.40 (2020-07-13)
 
 ## Bug fixes
 
 - PIM-9351: Fix the thumbnail preview of transparent PDFs in the asset manager
 - PIM-9350: Fix the thumbnail preview of any PDFs in the asset manager
+- PIM-9355: Fix product link rules for assets targeting both product & product models
 
 # 4.0.39 (2020-07-08)
 

@@ -69,7 +69,7 @@ class PropertyActionValidatorSpec extends ObjectBehavior
     ) {
         $action = new SetAction(['field' => 'foo', 'value' => 'bar']);
         $chainedDenormalizer->denormalize(
-            ['type' => 'set', 'field' => 'foo', 'value' => 'bar', 'scope' => null, 'locale' => null],
+            ['type' => 'set', 'field' => 'foo', 'value' => 'bar'],
             ActionInterface::class
         )->willReturn($productAction);
 
@@ -110,7 +110,7 @@ class PropertyActionValidatorSpec extends ObjectBehavior
 
         $action = new SetAction(['field' => 'foo', 'value' => 'bar']);
         $chainedDenormalizer->denormalize(
-            ['type' => 'set', 'field' => 'foo', 'value' => 'bar', 'scope' => null, 'locale' => null],
+            ['type' => 'set', 'field' => 'foo', 'value' => 'bar'],
             ActionInterface::class
         )->willReturn($productSetAction);
 

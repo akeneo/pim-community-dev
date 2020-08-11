@@ -108,7 +108,7 @@ const CategorySelector: React.FC<Props> = ({
       left: 0,
       padding: '0',
       position: 'absolute',
-      width: '420px',
+      width: '300px',
       zIndex: 1,
     },
   };

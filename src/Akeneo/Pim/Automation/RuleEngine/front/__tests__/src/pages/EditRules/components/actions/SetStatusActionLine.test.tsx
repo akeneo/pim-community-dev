@@ -8,9 +8,6 @@ import {
   SetStatusAction,
 } from '../../../../../../src/models/actions';
 
-jest.mock('../../../../../../src/components/Select2Wrapper/Select2Wrapper');
-jest.mock('../../../../../../src/fetch/categoryTree.fetcher.ts');
-
 describe('SetStatusActionLine', () => {
   it('should be able to display a new set status action', async () => {
     renderWithProviders(

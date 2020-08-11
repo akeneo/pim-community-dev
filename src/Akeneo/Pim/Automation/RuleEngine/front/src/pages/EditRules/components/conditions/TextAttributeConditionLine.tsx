@@ -39,14 +39,14 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
     getAttributeByIdentifier(condition.field, router).then(attribute =>
       setAttribute(attribute)
     );
-  });
+  }, []);
 
   return (
     <AttributeConditionLine
       attribute={attribute}
       availableOperators={TextAttributeOperators}
       currentCatalogLocale={currentCatalogLocale}
-      defaultOperator={Operator.NOT_EQUAL}
+      defaultOperator={Operator.CONTAINS}
       field={condition.field}
       lineNumber={lineNumber}
       locales={locales}

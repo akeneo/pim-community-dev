@@ -7,6 +7,7 @@ import {
   TextAttributeCondition,
   CategoryCondition,
   CompletenessCondition,
+  DateAttributeCondition,
 } from './';
 
 export type Condition =
@@ -16,7 +17,8 @@ export type Condition =
   | PimCondition
   | FamilyCondition
   | TextAttributeCondition
-  | SimpleMultiOptionsAttributeCondition;
+  | SimpleMultiOptionsAttributeCondition
+  | DateAttributeCondition;
 
 export type ConditionFactory = (
   fieldCode: string,

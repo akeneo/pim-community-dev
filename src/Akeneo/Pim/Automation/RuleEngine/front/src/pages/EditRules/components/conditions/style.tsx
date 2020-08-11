@@ -19,8 +19,8 @@ const OperatorColumn = styled.span`
 
 const ValueColumn = styled.span<{ small?: boolean }>`
   &:not(:empty) {
+    display: inline-flex;
     width: ${({ small }) => (small ? '120px' : '300px')};
-    display: inline-block;
     margin: 0 20px 0 0;
     min-height: 40px;
     ${({ small }) => (small ? 'display: flex;' : '')};
@@ -72,19 +72,18 @@ const ConditionErrorLine = styled.ul`
   }
 `;
 
-const AttributeConditionLineFormAndErrorsContainer = styled.div`
+const ConditionLineFormAndErrorsContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const AttributeConditionLineFormContainer = styled.div`
+const ConditionLineFormContainer = styled.div`
   display: flex;
-  padding-bottom: 12px;
 `;
 
 export {
-  AttributeConditionLineFormContainer,
-  AttributeConditionLineFormAndErrorsContainer,
+  ConditionLineFormContainer,
+  ConditionLineFormAndErrorsContainer,
   ConditionErrorLine,
   FieldColumn,
   LocaleColumn,
