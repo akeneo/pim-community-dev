@@ -19,6 +19,9 @@ find "$CLONE_DIR" | grep -v "^$CLONE_DIR/\.git" | grep -v "^$CLONE_DIR$" | xargs
 rm -rf "$FOLDER"/.github
 rm "$FOLDER"/.gitignore
 
+ls -la "$FOLDER"/
+ls -la "$FOLDER"/.github
+
 cp -r "$FOLDER"/* "$CLONE_DIR"
 
 cd "$CLONE_DIR"
