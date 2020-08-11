@@ -23,6 +23,7 @@ pimee_catalog_rule:
                 unknown_scope: 'The "{{ attributeCode }}" attribute requires an existing scope'
             invalid_code: 'The rule code must only contain letters, numbers and underscores'
             conditions:
+                missing_key: 'The "conditions" key is missing or empty'
                 missing_value_key: 'The "value" key is missing or empty'
                 missing_operator_key: 'The "operator" key is missing or empty'
                 existing_field: 'The "{{ field }}" field cannot be filtered or cannot be used with the "{{ operator }}" operator'

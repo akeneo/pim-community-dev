@@ -17,10 +17,6 @@ import {
 } from '../../../../factories';
 import { ClearAttributeAction } from '../../../../../../src/models/actions';
 
-jest.mock('../../../../../../src/components/Select2Wrapper/Select2Wrapper');
-jest.mock('../../../../../../src/dependenciesTools/provider/dependencies.ts');
-jest.mock('../../../../../../src/fetch/categoryTree.fetcher.ts');
-
 const action: ClearAttributeAction = {
   type: 'clear',
   field: 'name',

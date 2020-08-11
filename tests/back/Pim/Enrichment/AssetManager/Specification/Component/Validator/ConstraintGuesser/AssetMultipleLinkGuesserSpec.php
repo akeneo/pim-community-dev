@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\AssetManager\Component\Validator\ConstraintGuesser;
 
 use Akeneo\Pim\Enrichment\AssetManager\Component\Validator\Constraints\AssetShouldExist;
+use Akeneo\Pim\Enrichment\AssetManager\Component\Validator\Constraints\AssetsShouldBelongToAssetFamily;
 use Akeneo\Pim\Enrichment\AssetManager\Component\Validator\Constraints\ThereShouldBeLessAssetsInValueThanLimit;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -29,7 +30,7 @@ class AssetMultipleLinkGuesserSpec extends ObjectBehavior
     ) {
         $constraints = $this->guessConstraints($attribute);
         $constraints->shouldBeArray();
-        $constraints[0]->shouldBeAnInstanceOf(AssetShouldExist::class);
+        $constraints[0]->shouldBeAnInstanceOf(AssetsShouldBelongToAssetFamily::class);
         $constraints[1]->shouldBeAnInstanceOf(ThereShouldBeLessAssetsInValueThanLimit::class);
     }
 }

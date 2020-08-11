@@ -1,32 +1,41 @@
 import React from 'react';
-import { ClearGroupsAction } from '../../../../models/actions';
-import { ActionLineProps } from './ActionLineProps';
+import { Controller } from 'react-hook-form';
 import { useTranslate } from '../../../../dependenciesTools/hooks';
 import { ActionTemplate } from './ActionTemplate';
-import { useRegisterConst } from '../../hooks/useRegisterConst';
+import { useControlledFormInputAction } from '../../hooks';
+import { ActionLineProps } from './ActionLineProps';
 
-type Props = {
-  action: ClearGroupsAction;
-} & ActionLineProps;
-
-const ClearGroupsActionLine: React.FC<Props> = ({
+const ClearGroupsActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
-  action,
   handleDelete,
 }) => {
   const translate = useTranslate();
-  useRegisterConst(`content.actions[${lineNumber}]`, action);
+  const { fieldFormName, typeFormName } = useControlledFormInputAction<boolean>(
+    lineNumber
+  );
 
   return (
-    <ActionTemplate
-      title={translate(
-        'pimee_catalog_rule.form.edit.actions.clear_groups.title'
-      )}
-      helper={translate('pimee_catalog_rule.form.helper.clear_groups')}
-      legend={translate('pimee_catalog_rule.form.helper.clear_groups')}
-      handleDelete={handleDelete}
-      lineNumber={lineNumber}
-    />
+    <>
+      <Controller
+        name={fieldFormName}
+        as={<input type='hidden' />}
+        defaultValue='groups'
+      />
+      <Controller
+        name={typeFormName}
+        as={<input type='hidden' />}
+        defaultValue='clear'
+      />
+      <ActionTemplate
+        title={translate(
+          'pimee_catalog_rule.form.edit.actions.clear_groups.title'
+        )}
+        helper={translate('pimee_catalog_rule.form.helper.clear_groups')}
+        legend={translate('pimee_catalog_rule.form.helper.clear_groups')}
+        handleDelete={handleDelete}
+        lineNumber={lineNumber}
+      />
+    </>
   );
 };
 

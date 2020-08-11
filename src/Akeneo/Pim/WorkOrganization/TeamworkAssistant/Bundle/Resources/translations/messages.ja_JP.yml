@@ -14,11 +14,9 @@ teamwork_assistant:
     message: '「%project_label%」を充実させるための新商品があります。予定日は「%due_date%」'
     project_finished:
       contributor: おめでとうございます! あなたの %project_label% で作成された商品が100%完了しました
-      owner: '%due_date% の %project_label% は終了しました。'
       show: 表示
     due_date:
       contributor: 商品の %percent%% を%project_label%で完了しています。%due_date% を最後の商品に記入するのを忘れないでください。
-      owner: '%due_date% の %project_label% の完成度は100%ではありません'
       start: 開始
   datagrid:
     project_completeness: プロジェクトの進捗状況

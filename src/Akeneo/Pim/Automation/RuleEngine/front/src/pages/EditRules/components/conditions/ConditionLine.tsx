@@ -20,7 +20,7 @@ const DeleteButton = styled(DialogDisclosure)`
 `;
 
 const DeleteButtonContainer = styled.div`
-  align-items: flex-start;
+  align-items: center;
 `;
 
 type Props = {

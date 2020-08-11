@@ -15,7 +15,7 @@ export const getAddAttributeValueActionModule: ActionModuleGuesser = json => {
   return Promise.resolve(AddAttributeValueActionLine);
 };
 
-export const createAddAttributeValueCategoriesAction: () => AddAttributeValueAction = () => {
+export const createAddAttributeValueAction: () => AddAttributeValueAction = () => {
   return {
     type: 'add',
     field: '',

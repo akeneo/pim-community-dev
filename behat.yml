@@ -4,7 +4,6 @@ legacy:
             paths:
                 - tests/legacy/features
                 - vendor/akeneo/pim-community-dev/tests/legacy/features
-                - '%paths.base%/src/Akeneo/Pim/Automation/FranklinInsights/tests/features'
             filters:
                 tags: '@critical&&~@ce&&~@skip&&~@skip-pef'
             contexts:
@@ -141,51 +140,11 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseAssetManagerContext:
                     - 'Context\EnterpriseFeatureContext'
-                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FixturesContext:
-                    - 'Context\EnterpriseFeatureContext'
-                    - '@akeneo.pim.automation.franklin_insights.handler.update_identifiers_mapping'
-                    - '@akeneo.pim.automation.franklin_insights.handler.subscribe_product'
-                    - '@akeneo_e2e.context.franklin_insights.builder.attribute'
-                    - '@pim_catalog.saver.attribute'
-                    - '@akeneo_e2e.context.franklin_insights.builder.family'
-                    - '@pim_catalog.saver.family'
-                    - '@akeneo_e2e.context.franklin_insights.builder.product'
-                    - '@pim_catalog.saver.product'
-                    - '@pim_catalog.repository.product'
-                    - '@akeneo_e2e.context.franklin_insights.builder.attribute_option'
-                    - '@pim_catalog.saver.attribute_option'
-                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FranklinConfigurationContext:
-                    - 'Context\EnterpriseFeatureContext'
-                    - '@akeneo.pim.automation.franklin_insights.repository.configuration'
-                    - '@pim_catalog.command_launcher'
-                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\ProductSubscriptionContext:
-                    - 'Context\EnterpriseFeatureContext'
-                    - '@pim_catalog.repository.product'
-                    - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
-                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\ProposalContext:
-                    - '@pim_catalog.repository.product'
-                    - '@pimee_workflow.repository.product_draft'
-                    - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
-                    - '@doctrine.orm.entity_manager'
-                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\IdentifiersMappingContext:
-                    - 'Context\EnterpriseFeatureContext'
-                    - '@akeneo.pim.automation.franklin_insights.repository.identifiers_mapping'
-                    - '@pim_catalog.repository.attribute'
-                    - '@akeneo_batch.job.job_instance_repository'
-                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\AttributesMappingContext:
-                    - 'Context\EnterpriseFeatureContext'
-                    - '@akeneo.pim.automation.franklin_insights.repository.family'
-                    - '@pim_catalog.repository.attribute'
-                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\AttributeOptionsMappingContext:
-                    - 'Context\EnterpriseFeatureContext'
-                    - '@akeneo.pim.automation.franklin_insights.repository.family'
-                    - '@akeneo.pim.automation.franklin_insights.repository.attribute_option'
         all:
             paths:
                 - tests/legacy/features
                 - vendor/akeneo/pim-community-dev/tests/legacy/features
                 - vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/tests/features/
-                - '%paths.base%/src/Akeneo/Pim/Automation/FranklinInsights/tests/features'
             filters:
                 tags: '~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated&&~@ce&&~@critical&&~@acceptance-back'
             contexts:
@@ -322,45 +281,6 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseAssetManagerContext:
                     - 'Context\EnterpriseFeatureContext'
-                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FixturesContext:
-                    - 'Context\EnterpriseFeatureContext'
-                    - '@akeneo.pim.automation.franklin_insights.handler.update_identifiers_mapping'
-                    - '@akeneo.pim.automation.franklin_insights.handler.subscribe_product'
-                    - '@akeneo_e2e.context.franklin_insights.builder.attribute'
-                    - '@pim_catalog.saver.attribute'
-                    - '@akeneo_e2e.context.franklin_insights.builder.family'
-                    - '@pim_catalog.saver.family'
-                    - '@akeneo_e2e.context.franklin_insights.builder.product'
-                    - '@pim_catalog.saver.product'
-                    - '@pim_catalog.repository.product'
-                    - '@akeneo_e2e.context.franklin_insights.builder.attribute_option'
-                    - '@pim_catalog.saver.attribute_option'
-                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FranklinConfigurationContext:
-                    - 'Context\EnterpriseFeatureContext'
-                    - '@akeneo.pim.automation.franklin_insights.repository.configuration'
-                    - '@pim_catalog.command_launcher'
-                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\ProductSubscriptionContext:
-                    - 'Context\EnterpriseFeatureContext'
-                    - '@pim_catalog.repository.product'
-                    - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
-                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\ProposalContext:
-                    - '@pim_catalog.repository.product'
-                    - '@pimee_workflow.repository.product_draft'
-                    - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
-                    - '@doctrine.orm.entity_manager'
-                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\IdentifiersMappingContext:
-                    - 'Context\EnterpriseFeatureContext'
-                    - '@akeneo.pim.automation.franklin_insights.repository.identifiers_mapping'
-                    - '@pim_catalog.repository.attribute'
-                    - '@akeneo_batch.job.job_instance_repository'
-                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\AttributesMappingContext:
-                    - 'Context\EnterpriseFeatureContext'
-                    - '@akeneo.pim.automation.franklin_insights.repository.family'
-                    - '@pim_catalog.repository.attribute'
-                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\AttributeOptionsMappingContext:
-                    - 'Context\EnterpriseFeatureContext'
-                    - '@akeneo.pim.automation.franklin_insights.repository.family'
-                    - '@akeneo.pim.automation.franklin_insights.repository.attribute_option'
                 - Akeneo\Connectivity\Connection\Tests\EndToEnd\Context\SettingsContext:
                       - 'Context\EnterpriseFeatureContext'
         chipmunk:
@@ -652,7 +572,6 @@ legacy:
                 - tests/legacy/features/pim/work-organization/
                 - tests/legacy/features/pim/automation/
                 - vendor/akeneo/pim-community-dev/tests/legacy/features/platform/
-                - '%paths.base%/src/Akeneo/Pim/Automation/FranklinInsights/tests/features'
             filters:
                 tags: '~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated&&~@ce&&~@critical&&~@acceptance-back'
             contexts:
@@ -789,78 +708,6 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseAssetManagerContext:
                     - 'Context\EnterpriseFeatureContext'
-        franklin:
-            paths:
-                - '%paths.base%/src/Akeneo/Pim/Automation/FranklinInsights/tests/features'
-            filters:
-                tags: '@end-to-end&&~@skip'
-            contexts:
-                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext:
-                    -
-                        base_url: 'http://httpd/'
-                        timeout: 10000
-                        window_width: 1280
-                        window_height: 1024
-                - Context\EnterpriseFixturesContext:
-                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
-                - Context\EnterpriseDataGridContext:
-                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
-                - Context\EnterpriseWebUser:
-                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
-                - Context\CatalogConfigurationContext:
-                      - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
-                      - '@akeneo_legacy_behat_tests.loader.fixtures_loader'
-                      - '@pim_connector.doctrine.cache_clearer'
-                      -
-                          - '%%kernel.project_dir%%/tests/legacy/features/Context/catalog'
-                - Context\EnterpriseAssertionContext:
-                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
-                - PimEnterprise\Behat\Context\HookContext:
-                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
-                    - 1280
-                    - 1024
-                - PimEnterprise\Behat\Context\NavigationContext:
-                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
-                    - 'http://httpd/'
-                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FixturesContext:
-                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
-                    - '@akeneo.pim.automation.franklin_insights.handler.update_identifiers_mapping'
-                    - '@akeneo.pim.automation.franklin_insights.handler.subscribe_product'
-                    - '@akeneo_e2e.context.franklin_insights.builder.attribute'
-                    - '@pim_catalog.saver.attribute'
-                    - '@akeneo_e2e.context.franklin_insights.builder.family'
-                    - '@pim_catalog.saver.family'
-                    - '@akeneo_e2e.context.franklin_insights.builder.product'
-                    - '@pim_catalog.saver.product'
-                    - '@pim_catalog.repository.product'
-                    - '@akeneo_e2e.context.franklin_insights.builder.attribute_option'
-                    - '@pim_catalog.saver.attribute_option'
-                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FranklinConfigurationContext:
-                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
-                    - '@akeneo.pim.automation.franklin_insights.repository.configuration'
-                    - '@pim_catalog.command_launcher'
-                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\ProductSubscriptionContext:
-                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
-                    - '@pim_catalog.repository.product'
-                    - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
-                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\ProposalContext:
-                    - '@pim_catalog.repository.product'
-                    - '@pimee_workflow.repository.product_draft'
-                    - '@akeneo.pim.automation.franklin_insights.repository.product_subscription'
-                    - '@doctrine.orm.entity_manager'
-                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\IdentifiersMappingContext:
-                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
-                    - '@akeneo.pim.automation.franklin_insights.repository.identifiers_mapping'
-                    - '@pim_catalog.repository.attribute'
-                    - '@akeneo_batch.job.job_instance_repository'
-                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\AttributesMappingContext:
-                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
-                    - '@akeneo.pim.automation.franklin_insights.repository.family'
-                    - '@pim_catalog.repository.attribute'
-                - Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\AttributeOptionsMappingContext:
-                    - 'Akeneo\Test\Pim\Automation\FranklinInsights\EndToEnd\Context\FeatureContext'
-                    - '@akeneo.pim.automation.franklin_insights.repository.family'
-                    - '@akeneo.pim.automation.franklin_insights.repository.attribute_option'
         connectivity:
             paths:
                 - vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/tests/features/
@@ -986,6 +833,9 @@ acceptance:
                 - '%paths.base%/tests/features/pim/enrichment'
             contexts:
                 - test.user.context
+                - test.channel.context
+                - test.attribute_option.context
+                - test.locale.context
                 - test.attribute.context
                 - test.family.context
                 - test.catalog.product_creation.context
@@ -995,26 +845,8 @@ acceptance:
                 - akeneo_assetmanager.tests.back.acceptance.context.edit_asset_family_context
                 - akeneo_referenceentity.tests.back.acceptance.context.create_reference_entity_context
                 - akeneo_referenceentity.tests.back.acceptance.context.create_record_context
-            filters:
-                tags: '@acceptance-back'
-        franklin-insights:
-            paths:
-                - '%paths.base%/src/Akeneo/Pim/Automation/FranklinInsights/tests/features'
-            contexts:
-                - test.attribute.context
-                - test.channel.context
-                - test.locale.context
-                - akeneo_acceptance.context.franklin_insights.franklin_configuration
-                - akeneo_acceptance.context.franklin_insights.identifiers_mapping
-                - akeneo_acceptance.context.franklin_insights.product_subscription
-                - akeneo_acceptance.context.franklin_insights.product_subscription_status
-                - akeneo_acceptance.context.franklin_insights.data_fixtures
-                - akeneo_acceptance.context.franklin_insights.proposal
-                - akeneo_acceptance.context.franklin_insights.attributes_mapping
-                - akeneo_acceptance.context.franklin_insights.attribute_options_mapping
-                - akeneo_acceptance.context.franklin_insights.channel
-                - akeneo_acceptance.context.franklin_insights.connection_status
-                - akeneo_acceptance.context.franklin_insights.exception
+                - akeneo_assetmanager.tests.back.acceptance.context.list_asset_context
+
             filters:
                 tags: '@acceptance-back'
         platform:

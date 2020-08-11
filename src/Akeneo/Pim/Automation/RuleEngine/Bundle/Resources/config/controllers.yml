@@ -34,8 +34,8 @@ services:
         class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi\CreateRuleDefinitionController'
         public: true
         arguments:
-            - '@akeneo_rule_engine.updater.rule_definition'
-            - '@akeneo_rule_engine.saver.rule_definition'
+            - '@Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateOrUpdateRuleDefinitionHandler'
+            - '@akeneo_rule_engine.repository.rule_definition'
             - '@akeneo_rule_engine.normalizer.rule_definition'
             - '@pim_internal_api_serializer'
             - '@validator'
@@ -46,8 +46,7 @@ services:
         public: true
         arguments:
             - '@akeneo_rule_engine.repository.rule_definition'
-            - '@akeneo_rule_engine.updater.rule_definition'
-            - '@akeneo_rule_engine.saver.rule_definition'
+            - '@Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateOrUpdateRuleDefinitionHandler'
             - '@akeneo_rule_engine.normalizer.rule_definition'
             - '@pim_internal_api_serializer'
             - '@validator'

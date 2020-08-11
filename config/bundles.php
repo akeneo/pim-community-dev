@@ -79,6 +79,7 @@ return [
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\AkeneoPimEnterpriseDataQualityInsightsBundle::class => ['all' => true],
     Akeneo\Pim\Enrichment\Product\Bundle\AkeneoPimEnterpriseProductEnrichmentBundle::class => ['all' => true],
     Akeneo\Pim\Structure\Bundle\AkeneoPimEnterpriseStructureBundle::class => ['all' => true],
+    Akeneo\SharedCatalog\AkeneoSharedCatalogBundle::class =>  ['all' => true],
 
     // Dev related bundles
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true, 'behat' => true],

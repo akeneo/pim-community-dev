@@ -16,4 +16,6 @@ export enum Operator {
   LOWER_OR_EQUAL_THAN = '<=',
   GREATER_THAN = '>',
   GREATER_OR_EQUAL_THAN = '>=',
+  BETWEEN = 'BETWEEN',
+  NOT_BETWEEN = 'NOT BETWEEN',
 }

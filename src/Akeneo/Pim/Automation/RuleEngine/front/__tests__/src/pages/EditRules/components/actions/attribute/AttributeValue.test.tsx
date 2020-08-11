@@ -6,16 +6,12 @@ import {
   renderWithProviders,
   screen,
 } from '../../../../../../../test-utils';
-
 import { createAttribute } from '../../../../../factories';
 import { AttributeValue } from '../../../../../../../src/pages/EditRules/components/actions/attribute';
-import { getAttributeLabel } from '../../../../../../../src/models';
-
-jest.mock('../../../../../../../src/components/Select2Wrapper/Select2Wrapper');
-jest.mock(
-  '../../../../../../../src/dependenciesTools/provider/dependencies.ts'
-);
-jest.mock('../../../../../../../src/fetch/categoryTree.fetcher.ts');
+import {
+  AttributeType,
+  getAttributeLabel,
+} from '../../../../../../../src/models';
 
 describe('AttributeValue', () => {
   beforeEach(() => {
@@ -146,5 +142,91 @@ describe('AttributeValue', () => {
       });
       expect(onChange).toHaveBeenCalledTimes(1);
     });
+  });
+
+  it('should display a date input', async () => {
+    const attribute = createAttribute({
+      code: 'release_date',
+      type: 'pim_catalog_date',
+      scopable: false,
+      localizable: false,
+      labels: {
+        en_US: 'Release date',
+      },
+    });
+    const onChange = jest.fn();
+    renderWithProviders(
+      <AttributeValue
+        id={'attribute-value-id'}
+        attribute={attribute}
+        name={'attribute-value-name'}
+        onChange={onChange}
+      />,
+      { all: true }
+    );
+
+    expect(
+      screen.getByText('Release date pim_common.required_label')
+    ).toBeInTheDocument();
+    const valueInput = await screen.findByTestId('attribute-value-id');
+    expect(valueInput).toHaveValue('');
+    expect(valueInput).not.toBeDisabled();
+    act(() => {
+      fireEvent.change(valueInput, {
+        target: { value: '2020-05-20' },
+      });
+      expect(onChange).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it('should display a text area (without wysiwyg', () => {
+    const attribute = createAttribute({
+      type: AttributeType.TEXTAREA,
+      wysiwyg_enabled: false,
+    });
+    renderWithProviders(
+      <AttributeValue
+        id={'attribute-value-id'}
+        attribute={attribute}
+        name={'attribute-value-name'}
+        value={'default'}
+        onChange={jest.fn()}
+      />,
+      { all: true }
+    );
+    expect(
+      screen.getByText(
+        `${getAttributeLabel(attribute, 'en_US')} pim_common.required_label`
+      )
+    ).toBeInTheDocument();
+    const valueInput = screen.getByTestId('attribute-value-id');
+    expect(valueInput).toHaveValue('default');
+    expect(valueInput).not.toBeDisabled();
+    expect(valueInput).toHaveProperty('type', 'textarea');
+  });
+
+  it('should display a text area with wysiwyg', () => {
+    const attribute = createAttribute({
+      type: AttributeType.TEXTAREA,
+      wysiwyg_enabled: true,
+    });
+    renderWithProviders(
+      <AttributeValue
+        id={'attribute-value-id'}
+        attribute={attribute}
+        name={'attribute-value-name'}
+        value={'default'}
+        onChange={jest.fn()}
+      />,
+      { all: true }
+    );
+    expect(
+      screen.getByText(
+        `${getAttributeLabel(attribute, 'en_US')} pim_common.required_label`
+      )
+    ).toBeInTheDocument();
+    // Wysiwyg editor container looks like <div aria-label="rdw-wrapper" className="rdw-editor-wrapper"...>
+    const valueInputs = screen.getByLabelText('rdw-wrapper');
+    expect(valueInputs).toBeInTheDocument();
   });
 });

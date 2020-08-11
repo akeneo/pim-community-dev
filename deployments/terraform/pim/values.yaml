@@ -163,10 +163,6 @@ pim:
       enabled: true
       pimCommand: "pimee:project:notify-before-due-date"
       schedule: "0 2 * * *"
-    franklin-insights-fetch-products:
-      enabled: true
-      pimCommand: "pimee:franklin-insights:fetch-products"
-      schedule: "*/30 * * * *"
     reference-entity-refresh-records:
       enabled: true
       pimCommand: "akeneo:reference-entity:refresh-records --all"
