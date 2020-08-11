@@ -101,6 +101,31 @@ const getErrorPath = (path: string) => {
   return `content.${path}`;
 };
 
+const doExecuteOnSave = async (
+  router: Router,
+  translate: Translate,
+  notify: Notify,
+  code: string
+) => {
+  const executeRuleUrl = generateUrl(
+    router,
+    'pimee_catalog_rule_rule_execute',
+    { code }
+  );
+  const executeResponse = await httpGet(executeRuleUrl);
+  if (executeResponse.ok) {
+    notify(
+      NotificationLevel.SUCCESS,
+      translate('pimee_catalog_rule.form.edit.notification.execute_success')
+    );
+  } else {
+    notify(
+      NotificationLevel.ERROR,
+      translate('pimee_catalog_rule.form.edit.notification.execute_failed')
+    );
+  }
+};
+
 const submitEditRuleForm = (
   ruleDefinitionCode: string,
   translate: Translate,
@@ -115,7 +140,10 @@ const submitEditRuleForm = (
       event.preventDefault();
     }
 
-    const executeOnSave = formData.hasOwnProperty('execute_on_save');
+    const executeOnSave = Object.prototype.hasOwnProperty.call(
+      formData,
+      'execute_on_save'
+    );
     const updateRuleUrl = generateUrl(
       router,
       'pimee_enrich_rule_definition_update',
@@ -130,27 +158,7 @@ const submitEditRuleForm = (
       registerActions(register, formData.content?.actions || []);
 
       if (executeOnSave) {
-        const executeRuleUrl = generateUrl(
-          router,
-          'pimee_catalog_rule_rule_execute',
-          { code: ruleDefinitionCode }
-        );
-        const executeResponse = await httpGet(executeRuleUrl);
-        if (executeResponse.ok) {
-          notify(
-            NotificationLevel.SUCCESS,
-            translate(
-              'pimee_catalog_rule.form.edit.notification.execute_success'
-            )
-          );
-        } else {
-          notify(
-            NotificationLevel.ERROR,
-            translate(
-              'pimee_catalog_rule.form.edit.notification.execute_failed'
-            )
-          );
-        }
+        doExecuteOnSave(router, translate, notify, ruleDefinitionCode);
       } else {
         notify(
           NotificationLevel.SUCCESS,
