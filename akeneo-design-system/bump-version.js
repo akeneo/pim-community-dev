@@ -21,9 +21,8 @@ Object.freeze(BumpLevelEnum);
 
 // Extract the bump level to extract from the commit message
 const getCommitMessageBumpLevel = (message) => {
-  if (message.includes(`#patch`)) return BumpLevelEnum.Patch;
-  if (message.includes('#minor')) return BumpLevelEnum.Minor;
   if (message.includes('#major')) return BumpLevelEnum.Major;
+  if (message.includes('#minor')) return BumpLevelEnum.Minor;
 
   return BumpLevelEnum.Patch;
 }

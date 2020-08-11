@@ -18,6 +18,8 @@
     "author": "akeneo",
     "license": "OSL-3.0",
     "dependencies": {
+        "@testing-library/jest-dom": "^5.11.2",
+        "@testing-library/react": "^10.4.8",
         "react": "^16.13.0",
         "react-dom": "^16.13.0",
         "styled-components": "^5.0.1"
@@ -38,8 +40,6 @@
         "@storybook/addon-links": "^5.3.13",
         "@storybook/addons": "^5.3.13",
         "@storybook/react": "^5.3.13",
-        "@testing-library/jest-dom": "^5.1.1",
-        "@testing-library/react": "^9.4.0",
         "@types/events": "^3.0.0",
         "@types/jest": "^25.1.3",
         "@types/react": "^16.9.21",
