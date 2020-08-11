@@ -14,4 +14,4 @@ On each push on the dsm branch, this will launch the tests, generate a lib build
 
 # Launch build
 
-Just push on dsm branch and modify a file in akeneo-design-system
+Just push on dsm branch and modify a file in akeneo-design-system.
