@@ -15,15 +15,13 @@ git clone "https://$API_TOKEN_GITHUB@github.com/$GITHUB_USERNAME/$GITHUB_REPO.gi
 
 # Copy files into the git and deletes all git
 find "$CLONE_DIR" | grep -v "^$CLONE_DIR/\.git" | grep -v "^$CLONE_DIR$" | xargs rm -rf # delete all files (to handle deletions)
-rm -rf .github
-rm .gitignore
-ls -la .
+
+rm -rf "$FOLDER"/.github
+rm "$FOLDER"/.gitignore
 
 cp -r "$FOLDER"/* "$CLONE_DIR"
 
 cd "$CLONE_DIR"
-
-cat .github/workflows/deploy.yml
 
 sed '/\lib/d' .gitignore > .gitignore
 
