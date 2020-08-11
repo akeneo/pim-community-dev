@@ -16,11 +16,8 @@ git clone "https://$API_TOKEN_GITHUB@github.com/$GITHUB_USERNAME/$GITHUB_REPO.gi
 # Copy files into the git and deletes all git
 find "$CLONE_DIR" | grep -v "^$CLONE_DIR/\.git" | grep -v "^$CLONE_DIR$" | xargs rm -rf # delete all files (to handle deletions)
 
-rm -rf "$FOLDER"/.github
-rm "$FOLDER"/.gitignore
-
-ls -la "$FOLDER"/
-ls -la "$FOLDER"/.github
+rm -rf "$CLONE_DIR"/.github
+rm "$CLONE_DIR"/.gitignore
 
 cp -r "$FOLDER"/* "$CLONE_DIR"
 
