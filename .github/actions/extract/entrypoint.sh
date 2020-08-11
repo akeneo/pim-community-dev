@@ -14,7 +14,10 @@ git config --global user.name "$GITHUB_USERNAME"
 git clone "https://$API_TOKEN_GITHUB@github.com/$GITHUB_USERNAME/$GITHUB_REPO.git" "$CLONE_DIR"
 
 # Copy files into the git and deletes all git
-find "$CLONE_DIR" | grep -v "^$CLONE_DIR/\.git$" | grep -v "^$CLONE_DIR$" | xargs rm -rf # delete all files (to handle deletions)
+find "$CLONE_DIR" | grep -v "^$CLONE_DIR/\.git" | grep -v "^$CLONE_DIR$" | xargs rm -rf # delete all files (to handle deletions)
+rm -rf .github
+rm .gitignore
+rm .gitkeep
 
 cp -r "$FOLDER"/* "$CLONE_DIR"
 
