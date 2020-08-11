@@ -22,3 +22,4 @@ jobs:
         with:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           publish_dir: ./storybook-static
+          allow_empty_commit: true
