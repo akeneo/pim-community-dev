@@ -14,12 +14,15 @@ jobs:
         with:
           node-version: 13.13
       - name: Install Packages
-        run: npm install
+        uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: install
       - name: Build page
-        run: npm run storybook:build
+        uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: storybook:build
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           publish_dir: ./storybook-static
-          allow_empty_commit: true
