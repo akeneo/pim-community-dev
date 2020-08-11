@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: 13.13
       - name: Install Packages
-        run: cd akeneo-design-system && npm install
+        run: cd akeneo-design-system && yarn install
       - name: Bump package version
         run: cd akeneo-design-system && echo "::set-output name=new_version::$(node bump-version.js $GITHUB_EVENT_PATH)"
         id: generate_new_dsm_version
@@ -29,7 +29,7 @@ jobs:
           git commit -m "Bump to version ${{steps.generate_new_dsm_version.outputs.new_version}}" && \
           git push
       - name: Build page
-        run: cd akeneo-design-system && npm run lib:build:prod
+        run: cd akeneo-design-system && yarn run lib:build:prod
       - uses: actions/upload-artifact@v1
         with:
           name: Lib
@@ -56,3 +56,4 @@ jobs:
           destination-github-username: 'juliensnz'
           destination-repository-name: 'dsm'
           user-email: contact@akeneo.com
+          branch: '4.0'

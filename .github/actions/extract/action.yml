@@ -10,6 +10,9 @@ inputs:
   destination-repository-name:
     description: 'Destination repository'
     required: true
+  destination-branch:
+    description: 'The branch to push to'
+    required: true
   user-email:
     description: 'Email for the git commit'
     required: true
@@ -21,6 +24,7 @@ runs:
     - ${{ inputs.destination-github-username }}
     - ${{ inputs.destination-repository-name }}
     - ${{ inputs.user-email }}
+    - ${{ inputs.destination-branch }}
 branding:
   icon: 'git-commit'
   color: 'green'
