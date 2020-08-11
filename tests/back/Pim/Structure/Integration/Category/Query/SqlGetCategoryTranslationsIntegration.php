@@ -11,9 +11,9 @@ use Webmozart\Assert\Assert;
 
 final class SqlGetCategoryTranslationsIntegration extends TestCase
 {
-    protected function setUp(): void
+    public function test_it_gets_category_translations_by_giving_category_codes_and_locale_code(): void
     {
-        parent::setUp();
+        $query = $this->getQuery();
 
         $this->givenCategories([
             [
@@ -31,28 +31,17 @@ final class SqlGetCategoryTranslationsIntegration extends TestCase
                 ]
             ]
         ]);
-    }
 
-    public function test_it_gets_category_translations_by_giving_category_codes_and_locale_code(): void
-    {
-        $expected = $this->getExpected();
-        $query = $this->getQuery();
-        $actual = $query->byCategoryCodesAndLocale(['new_furniture', 'new_clothes'], 'fr_FR');
-        $this->assertEqualsCanonicalizing($expected, $actual);
-    }
-
-    public function getExpected(): array
-    {
-        return [
+        $expected = [
             'new_clothes' => 'nouveaux habits',
             'new_furniture' => 'nouveaux meubles',
         ];
+        $actual = $query->byCategoryCodesAndLocale(['new_furniture', 'new_clothes'], 'fr_FR');
+
+        $this->assertEqualsCanonicalizing($expected, $actual);
     }
 
-    /**
-     * @return Configuration
-     */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }

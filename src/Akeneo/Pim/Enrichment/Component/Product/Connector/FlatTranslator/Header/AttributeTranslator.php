@@ -76,8 +76,7 @@ class AttributeTranslator implements FlatHeaderTranslatorInterface
         $attribute = $columnInformations['attribute'];
         $attributeCode = $attribute->getCode();
 
-        $columnLabelized = isset($this->attributeTranslations[$attributeCode]) ?
-            $this->attributeTranslations[$attributeCode] :
+        $columnLabelized = $this->attributeTranslations[$attributeCode] ??
             sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $attributeCode);
 
         $extraInformation = [];

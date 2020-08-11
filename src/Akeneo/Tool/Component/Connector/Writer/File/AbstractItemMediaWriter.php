@@ -138,7 +138,7 @@ abstract class AbstractItemMediaWriter implements
         }
 
         if (!empty($items) && $parameters->has('withHeader') && true === $parameters->get('withHeader')) {
-            $flatItems = $this->fillMissingHeaders($flatItems);
+            $flatItems = $this->fillMissingFlatItemValues($flatItems);
         }
 
         if ($parameters->has('with_label') && $parameters->get('with_label') && $parameters->has('file_locale')) {
@@ -155,15 +155,15 @@ abstract class AbstractItemMediaWriter implements
         $this->flatRowBuffer->write($flatItems, $options);
     }
 
-    private function fillMissingHeaders(array $items): array
+    private function fillMissingFlatItemValues(array $items): array
     {
         $additionalHeaders = $this->getAdditionalHeaders();
-        $additionalHeadersFilled1 = array_fill_keys($additionalHeaders, '');
-        $products = array_keys($items);
+        $additionalHeadersFilled = array_fill_keys($additionalHeaders, '');
 
-        $additionalHeadersFilled = array_fill_keys($products, $additionalHeadersFilled1);
+        $flatItemIndex = array_keys($items);
+        $additionalHeadersFilledInFlatItemFormat = array_fill_keys($flatItemIndex, $additionalHeadersFilled);
 
-        return array_replace_recursive($additionalHeadersFilled, $items);
+        return array_replace_recursive($additionalHeadersFilledInFlatItemFormat, $items);
     }
 
     protected function getAdditionalHeaders()

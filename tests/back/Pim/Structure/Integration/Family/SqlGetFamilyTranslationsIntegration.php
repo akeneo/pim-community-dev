@@ -11,9 +11,9 @@ use Webmozart\Assert\Assert;
 
 final class SqlGetFamilyTranslationsIntegration extends TestCase
 {
-    protected function setUp(): void
+    public function test_it_gets_family_translations_by_giving_family_codes_and_locale_code(): void
     {
-        parent::setUp();
+        $query = $this->getQuery();
 
         $this->givenFamilies([
             [
@@ -31,28 +31,17 @@ final class SqlGetFamilyTranslationsIntegration extends TestCase
                 ]
             ]
         ]);
-    }
 
-    public function test_it_gets_family_translations_by_giving_family_codes_and_locale_code(): void
-    {
-        $expected = $this->getExpected();
-        $query = $this->getQuery();
-        $actual = $query->byFamilyCodesAndLocale(['new_shoes', 'new_accessories'], 'fr_FR');
-        $this->assertEqualsCanonicalizing($expected, $actual);
-    }
-
-    public function getExpected(): array
-    {
-        return [
+        $expected = [
             'new_accessories' => 'nouveaux accessoires',
             'new_shoes' => 'nouvelles chaussures',
         ];
+        $actual = $query->byFamilyCodesAndLocale(['new_shoes', 'new_accessories'], 'fr_FR');
+
+        $this->assertEqualsCanonicalizing($expected, $actual);
     }
 
-    /**
-     * @return Configuration
-     */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }

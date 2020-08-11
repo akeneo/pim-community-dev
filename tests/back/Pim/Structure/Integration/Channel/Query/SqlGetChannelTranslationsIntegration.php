@@ -10,28 +10,17 @@ use Akeneo\Test\Integration\TestCase;
 
 final class SqlGetChannelTranslationsIntegration extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function test_it_gets_channel_translations_by_giving_locale_code(): void
     {
-        $expected = $this->getExpected();
         $query = $this->getQuery();
+
+        $expected = ['Ecommerce'];
         $actual = $query->byLocale('fr_FR');
+
         $this->assertEqualsCanonicalizing($expected, $actual);
     }
 
-    public function getExpected(): array
-    {
-        return ['Ecommerce'];
-    }
-
-    /**
-     * @return Configuration
-     */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }
