@@ -210,17 +210,27 @@ const CalculateOperationList: React.FC<Props> = ({
   locales,
   scopes,
 }) => {
+  const translate = useTranslate();
   const { formName } = useControlledFormInputAction<string | null>(lineNumber);
   const [dropTarget, setDropTarget] = React.useState<DropTarget | null>(null);
   const [version, setVersion] = React.useState<number>(1);
+  const { setError } = useFormContext();
 
   const { fields, remove, move } = useFieldArray({
     name: formName('full_operation_list'),
   });
 
   const removeOperation = (lineToRemove: number) => () => {
+    const numberOfOperationsBeforeRemove = fields.length;
     remove(lineToRemove);
     setVersion(version + 1);
+    if (numberOfOperationsBeforeRemove <= 2) {
+      setError(
+        formName('full_operation_list'),
+        'custom',
+        translate('pimee_catalog_rule.exceptions.two_operations_are_required')
+      );
+    }
   };
 
   const moveOperation = (
