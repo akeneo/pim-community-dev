@@ -20,14 +20,14 @@
   "author": "akeneo",
   "license": "OSL-3.0",
   "dependencies": {
-      "react": "^16.13.0",
-      "react-dom": "^16.13.0",
-      "styled-components": "^5.0.1"
+      "react": "^16.8.0",
+      "react-dom": "^16.8.0",
+      "styled-components": "^4.3.2"
   },
   "peerDependencies": {
-      "styled-components": "^5.0.1"
+      "styled-components": "^4.3.2"
   },
   "devDependencies": {
-      "typescript": "^3.8.2"
+      "typescript": "^3.7.2"
   }
 }
