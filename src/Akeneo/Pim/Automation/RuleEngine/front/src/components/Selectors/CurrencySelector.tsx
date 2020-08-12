@@ -12,7 +12,7 @@ import {
 import { Translate } from '../../dependenciesTools';
 import { IndexedCurrencies } from '../../repositories/CurrencyRepository';
 
-const getCurrencyValidator = (
+const getCurrencyValidation = (
   attribute: Attribute,
   translate: Translate,
   currentCatalogLocale: LocaleCode,
@@ -117,4 +117,4 @@ const CurrencySelector: React.FC<Props> = ({
   );
 };
 
-export { CurrencySelector, getCurrencyValidator };
+export { CurrencySelector, getCurrencyValidation };

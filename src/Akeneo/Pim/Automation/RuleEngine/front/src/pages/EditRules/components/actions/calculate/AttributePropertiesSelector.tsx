@@ -9,19 +9,30 @@ import {
   LocaleCode,
   ScopeCode,
 } from '../../../../../models';
-import { ScopeSelector } from '../../../../../components/Selectors/ScopeSelector';
+import {
+  getScopeValidation,
+  ScopeSelector,
+} from '../../../../../components/Selectors/ScopeSelector';
 import {
   useBackboneRouter,
+  useTranslate,
   useUserCatalogLocale,
 } from '../../../../../dependenciesTools/hooks';
-import { LocaleSelector } from '../../../../../components/Selectors/LocaleSelector';
+import {
+  getLocaleValidation,
+  LocaleSelector,
+} from '../../../../../components/Selectors/LocaleSelector';
 import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
-import { CurrencySelector } from '../../../../../components/Selectors/CurrencySelector';
+import {
+  CurrencySelector,
+  getCurrencyValidation,
+} from '../../../../../components/Selectors/CurrencySelector';
 import { IndexedCurrencies } from '../../../../../repositories/CurrencyRepository';
 import { Currency, CurrencyCode } from '../../../../../models/Currency';
 import { useActiveCurrencies } from '../../../hooks/useActiveCurrencies';
 import { Router } from '../../../../../dependenciesTools';
 import { getAttributeByIdentifier } from '../../../../../repositories/AttributeRepository';
+import get from 'lodash/get';
 
 type Props = {
   operationLineNumber: number;
@@ -48,7 +59,8 @@ const AttributePropertiesSelector: React.FC<Props> = ({
   defaultScope,
   defaultCurrency,
 }) => {
-  const { watch } = useFormContext();
+  const translate = useTranslate();
+  const { watch, errors } = useFormContext();
   const currentCatalogLocale = useUserCatalogLocale();
   const router = useBackboneRouter();
   const currencies = useActiveCurrencies();
@@ -67,7 +79,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
     getAttribute(router, attributeCode);
   }, [attributeCode]);
 
-  const getAvailableCurrenciesForAttribute = (
+  const getAvailableCurrencies = (
     currencies: IndexedCurrencies
   ): Currency[] => {
     if (!attribute?.scopable) {
@@ -81,6 +93,22 @@ const AttributePropertiesSelector: React.FC<Props> = ({
     return [];
   };
 
+  const getAvailableLocales = (): Locale[] => {
+    if (!attribute?.scopable) {
+      return locales;
+    }
+    const scopeCode = watch(scopeFormName) ?? defaultScope;
+    if (scopeCode && scopes[scopeCode]) {
+      return scopes[scopeCode].locales;
+    }
+    return [];
+  };
+
+  const isFullFormFieldInError = (fullFormName: string): boolean => {
+    const error = get(errors, fullFormName);
+    return 'undefined' !== typeof error;
+  };
+
   return (
     <>
       <span className={'AknRuleOperation-element'}>
@@ -92,22 +120,38 @@ const AttributePropertiesSelector: React.FC<Props> = ({
       {AttributeType.PRICE_COLLECTION === attribute?.type && (
         <span
           className={
-            'AknRuleOperation-element AknRuleOperation-element-currency'
+            'AknRuleOperation-element AknRuleOperation-element-currency' +
+            (isFullFormFieldInError(currencyFormName)
+              ? ' select2-container-error'
+              : '')
           }>
           <Controller
             as={CurrencySelector}
             data-testid={`edit-rules-action-operation-list-${operationLineNumber}-currency`}
-            availableCurrencies={getAvailableCurrenciesForAttribute(currencies)}
+            availableCurrencies={getAvailableCurrencies(currencies)}
             name={currencyFormName}
             value={defaultCurrency}
             defaultValue={defaultCurrency}
             hiddenLabel
+            rules={getCurrencyValidation(
+              attribute,
+              translate,
+              currentCatalogLocale,
+              getAvailableCurrencies(currencies),
+              currencies,
+              watch(scopeFormName) ?? defaultScope
+            )}
           />
         </span>
       )}
       {attribute?.scopable && (
         <span
-          className={'AknRuleOperation-element AknRuleOperation-elementScope'}>
+          className={
+            'AknRuleOperation-element AknRuleOperation-elementScope' +
+            (isFullFormFieldInError(scopeFormName)
+              ? ' select2-container-error'
+              : '')
+          }>
           <Controller
             as={ScopeSelector}
             data-testid={`edit-rules-action-operation-list-${operationLineNumber}-scope`}
@@ -118,21 +162,40 @@ const AttributePropertiesSelector: React.FC<Props> = ({
             name={scopeFormName}
             currentCatalogLocale={currentCatalogLocale}
             hiddenLabel
+            rules={getScopeValidation(
+              attribute,
+              scopes,
+              translate,
+              currentCatalogLocale
+            )}
           />
         </span>
       )}
       {attribute?.localizable && (
         <span
-          className={'AknRuleOperation-element AknRuleOperation-elementLocale'}>
+          className={
+            'AknRuleOperation-element AknRuleOperation-elementLocale' +
+            (isFullFormFieldInError(localeFormName)
+              ? ' select2-container-error'
+              : '')
+          }>
           <Controller
             as={LocaleSelector}
             data-testid={`edit-rules-action-operation-list-${operationLineNumber}-locale`}
             allowClear={false}
-            availableLocales={locales}
+            availableLocales={getAvailableLocales()}
             value={defaultLocale}
             defaultValue={defaultLocale}
             name={localeFormName}
             hiddenLabel
+            rules={getLocaleValidation(
+              attribute,
+              locales,
+              getAvailableLocales(),
+              watch(scopeFormName) ?? defaultScope,
+              translate,
+              currentCatalogLocale
+            )}
           />
         </span>
       )}

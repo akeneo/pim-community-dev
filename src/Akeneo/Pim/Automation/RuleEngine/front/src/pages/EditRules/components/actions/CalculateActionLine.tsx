@@ -38,7 +38,7 @@ import { ActionFormContainer } from './style';
 import { InputNumber } from '../../../../components/Inputs';
 import {
   CurrencySelector,
-  getCurrencyValidator,
+  getCurrencyValidation,
 } from '../../../../components/Selectors/CurrencySelector';
 import { Currency } from '../../../../models/Currency';
 import { useActiveCurrencies } from '../../hooks/useActiveCurrencies';
@@ -262,7 +262,7 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
                     currencies
                   )}
                   value={getCurrencyFormValue()}
-                  rules={getCurrencyValidator(
+                  rules={getCurrencyValidation(
                     attributeTarget,
                     translate,
                     currentCatalogLocale,
