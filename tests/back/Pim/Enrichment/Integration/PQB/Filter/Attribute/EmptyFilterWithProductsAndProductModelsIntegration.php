@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace back\Pim\Enrichment\Integration\PQB\Filter\Attribute;
+namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
