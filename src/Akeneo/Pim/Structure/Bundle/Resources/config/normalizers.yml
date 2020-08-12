@@ -13,6 +13,7 @@ services:
         class: 'Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\AttributeNormalizer'
         arguments:
             - '@pim_catalog.normalizer.standard.attribute'
+            - '@pim_catalog.normalizer.standard.translation'
         tags:
             - { name: pim_external_api_serializer.normalizer, priority: 90 }
 

@@ -16,12 +16,17 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
     /** @var NormalizerInterface */
     protected $stdNormalizer;
 
+    /** @var NormalizerInterface */
+    private $translationNormalizer;
+
     /**
      * @param NormalizerInterface $stdNormalizer
+     * @param NormalizerInterface $translationNormalizer
      */
-    public function __construct(NormalizerInterface $stdNormalizer)
+    public function __construct(NormalizerInterface $stdNormalizer, NormalizerInterface $translationNormalizer)
     {
         $this->stdNormalizer = $stdNormalizer;
+        $this->translationNormalizer = $translationNormalizer;
     }
 
     /**
@@ -34,6 +39,9 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
         if (empty($normalizedAttribute['labels'])) {
             $normalizedAttribute['labels'] = (object) $normalizedAttribute['labels'];
         }
+
+        // API-1253: Add read-only attribute group labels inside attribute
+        $normalizedAttribute['group_labels'] = ($attribute->getGroup()) ? $this->translationNormalizer->normalize($attribute->getGroup(), $format, $context) : null;
 
         return $normalizedAttribute;
     }
