@@ -39,10 +39,10 @@ describe('CalculatePreview', () => {
               scope: 'mobile',
             },
             round_precision: 0,
-            source: {
-              field: 'margin',
-            },
-            operation_list: [
+            full_operation_list: [
+              {
+                field: 'margin',
+              },
               {
                 operator: 'add',
                 value: 12,
