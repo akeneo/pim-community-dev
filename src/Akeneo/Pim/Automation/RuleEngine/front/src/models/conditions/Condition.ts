@@ -9,6 +9,12 @@ import {
   CompletenessCondition,
   DateAttributeCondition,
   DateSystemCondition,
+  SimpleMultiReferenceEntitiesAttributeCondition,
+  TextareaAttributeCondition,
+  BooleanAttributeCondition,
+  GroupsCondition,
+  NumberAttributeCondition,
+  StatusCondition,
 } from './';
 
 export type Condition =
@@ -20,7 +26,13 @@ export type Condition =
   | FamilyCondition
   | TextAttributeCondition
   | SimpleMultiOptionsAttributeCondition
-  | DateAttributeCondition;
+  | DateAttributeCondition
+  | SimpleMultiReferenceEntitiesAttributeCondition
+  | TextareaAttributeCondition
+  | BooleanAttributeCondition
+  | GroupsCondition
+  | NumberAttributeCondition
+  | StatusCondition;
 
 export type ConditionFactory = (
   fieldCode: string,

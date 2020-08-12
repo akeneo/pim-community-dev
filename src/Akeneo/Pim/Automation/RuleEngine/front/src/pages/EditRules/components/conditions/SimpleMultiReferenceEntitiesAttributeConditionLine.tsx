@@ -8,15 +8,15 @@ import {
   useUserCatalogScope,
 } from '../../../../dependenciesTools/hooks';
 import { Attribute } from '../../../../models';
-import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepository';
 import { Operator } from '../../../../models/Operator';
 import {
   SimpleMultiReferenceEntitiesAttributeCondition,
   SimpleMultiReferenceEntitiesAttributeOperators,
-} from '../../../../models/conditions/SimpleMultiReferenceEntitiesAttributeCondition';
+} from '../../../../models/conditions';
 import { ReferenceEntitySelector } from '../../../../dependenciesTools/components/ReferenceEntity/ReferenceEntitySelector';
 import { Controller } from 'react-hook-form';
 import { useControlledFormInputCondition } from '../../hooks';
+import { useGetAttributeAtMount } from '../actions/attribute/attribute.utils';
 
 type SimpleMultiReferenceEntitiesAttributeConditionLineProps = ConditionLineProps & {
   condition: SimpleMultiReferenceEntitiesAttributeCondition;
@@ -41,11 +41,7 @@ const SimpleMultiReferenceEntitiesAttributeConditionLine: React.FC<SimpleMultiRe
   } = useControlledFormInputCondition<string[]>(lineNumber);
 
   const [attribute, setAttribute] = React.useState<Attribute | null>();
-  React.useEffect(() => {
-    getAttributeByIdentifier(condition.field, router).then(attribute =>
-      setAttribute(attribute)
-    );
-  }, []);
+  useGetAttributeAtMount(condition.field, router, attribute, setAttribute);
 
   if (!attribute) {
     return (

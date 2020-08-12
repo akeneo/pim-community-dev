@@ -8,7 +8,6 @@ import {
   useUserCatalogScope,
 } from '../../../../dependenciesTools/hooks';
 import { Attribute } from '../../../../models';
-import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepository';
 import { Operator } from '../../../../models/Operator';
 import {
   AssetCollectionAttributeCondition,
@@ -17,6 +16,7 @@ import {
 import { Controller } from 'react-hook-form';
 import { useControlledFormInputCondition } from '../../hooks';
 import { AssetSelector } from '../../../../dependenciesTools/components/AssetManager/AssetSelector';
+import { useGetAttributeAtMount } from '../actions/attribute/attribute.utils';
 
 type AssetCollectionAttributeConditionLineProps = ConditionLineProps & {
   condition: AssetCollectionAttributeCondition;
@@ -41,11 +41,7 @@ const AssetCollectionAttributeConditionLine: React.FC<AssetCollectionAttributeCo
   } = useControlledFormInputCondition<string[]>(lineNumber);
 
   const [attribute, setAttribute] = React.useState<Attribute | null>();
-  React.useEffect(() => {
-    getAttributeByIdentifier(condition.field, router).then(attribute =>
-      setAttribute(attribute)
-    );
-  }, []);
+  useGetAttributeAtMount(condition.field, router, attribute, setAttribute);
 
   if (!attribute) {
     return (
