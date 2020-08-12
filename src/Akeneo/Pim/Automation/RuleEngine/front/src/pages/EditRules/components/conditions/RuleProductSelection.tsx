@@ -262,7 +262,7 @@ const RuleProductSelection: React.FC<Props> = ({
                   scopes={scopes}
                   currentCatalogLocale={currentCatalogLocale}
                   deleteCondition={() => {
-                    handleDelete(i)
+                    handleDelete(i);
                   }}
                 />
               )
@@ -276,9 +276,11 @@ const RuleProductSelection: React.FC<Props> = ({
       {!conditions.filter(Boolean).length && (
         <EmptySectionMessage>
           <div>
-            Your rule is empty. If you don't want to impact your whole catalog, please add at least one condition.
+            Your rule is empty. If you don't want to impact your whole catalog,
+            please add at least one condition.
             <br />
-            And then, add one or several actions to apply to your products/product models.
+            And then, add one or several actions to apply to your
+            products/product models.
           </div>
         </EmptySectionMessage>
       )}

@@ -59,7 +59,8 @@ const RulesBuilder: React.FC<Props> = ({
       {!!conditions.filter(Boolean).length && !actions.filter(Boolean).length && (
         <EmptySectionMessage>
           <div>
-            Well done! You defined your product selection. Now it's time to set up your action.
+            Well done! You defined your product selection. Now it's time to set
+            up your action.
           </div>
         </EmptySectionMessage>
       )}

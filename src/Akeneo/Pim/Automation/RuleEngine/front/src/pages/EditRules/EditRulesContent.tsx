@@ -105,13 +105,13 @@ const EditRulesContent: React.FC<Props> = ({
   const deleteDialog = useDialogState();
 
   const appendCondition = (condition: Condition) => {
-    setConditionsState([...conditionsState, condition])
-  }
+    setConditionsState([...conditionsState, condition]);
+  };
 
   const removeCondition = (lineNumber: number) => {
     conditionsState[lineNumber] = null;
-    setConditionsState([...conditionsState])
-  }
+    setConditionsState([...conditionsState]);
+  };
 
   const handleDeleteRule = async (): Promise<any> => {
     const deleteRuleUrl = router.generate('pimee_catalog_rule_rule_delete', {

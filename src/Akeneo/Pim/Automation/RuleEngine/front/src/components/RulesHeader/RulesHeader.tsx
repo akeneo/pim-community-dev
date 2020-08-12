@@ -47,10 +47,11 @@ const RulesHeader: React.FC<Props> = ({
           <div className='AknTitleContainer-actionsContainer AknButtonList'>
             {dropdown}
             <div className='AknButtonList-item'>{secondaryButton}</div>
-            <PrimaryButton form={formId} type='submit'
+            <PrimaryButton
+              form={formId}
+              type='submit'
               disabled={!saveable}
-              aria-disabled={!saveable}
-            >
+              aria-disabled={!saveable}>
               {translate(buttonLabel)}
             </PrimaryButton>
           </div>
