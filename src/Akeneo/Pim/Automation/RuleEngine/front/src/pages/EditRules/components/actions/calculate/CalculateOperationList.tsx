@@ -103,7 +103,8 @@ const OperationLine: React.FC<OperationLineProps> = ({
       draggable={true}
       onDragOver={onDragOver}
       onDragEnd={onDragEnd}
-      data-line-number={operationLineNumber}>
+      data-line-number={operationLineNumber}
+      data-testid={`edit-rules-action-operation-list-${operationLineNumber}-item`}>
       <div className={'AknRuleOperation-details'}>
         <div className={'AknRuleOperation-detailsContainer'}>
           <span
@@ -167,11 +168,13 @@ const OperationLine: React.FC<OperationLineProps> = ({
         </div>
       </div>
       <div className={'AknRuleOperation-remove'}>
-        <DeleteButton type={'button'}>
+        <DeleteButton
+          type={'button'}
+          onClick={removeOperation(operationLineNumber)}
+          data-testid={`edit-rules-action-operation-list-${operationLineNumber}-remove-button`}>
           <img
             alt={translate('pimee_catalog_rule.form.edit.conditions.delete')}
             src='/bundles/akeneopimruleengine/assets/icons/icon-delete-grey100.svg'
-            onClick={removeOperation(operationLineNumber)}
           />
         </DeleteButton>
       </div>

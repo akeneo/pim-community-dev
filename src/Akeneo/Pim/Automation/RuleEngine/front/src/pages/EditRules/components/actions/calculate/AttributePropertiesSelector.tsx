@@ -96,7 +96,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
           }>
           <Controller
             as={CurrencySelector}
-            data-testid={`edit-rules-action-operation-list-${operationLineNumber}-price`}
+            data-testid={`edit-rules-action-operation-list-${operationLineNumber}-currency`}
             availableCurrencies={getAvailableCurrenciesForAttribute(currencies)}
             name={currencyFormName}
             value={defaultCurrency}
