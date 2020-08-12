@@ -85,8 +85,9 @@ const OperationLine: React.FC<OperationLineProps> = ({
   };
 
   React.useEffect(() => {
-    // When lines are moved/removed, we have an issue with <Controller /> and selectors: the value of the old line
-    // is displayed not the good value. In the state of react hook form the values are good.
+    // When lines are moved/removed, we have an issue with <Controller /> and selectors.
+    // To reproduce that, change the value of the operator or scope or locale or currency, then move the line. The
+    // default value comes back visually (even if the good value is well store in the react hook form state)
     // To fix the display we set again the values. The react hook form state is unchanged but the display is now good.
     // Maybe react hook form v6 handles better this use case.
     ['operator', 'locale', 'scope', 'currency'].forEach((key: string) => {
