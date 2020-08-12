@@ -141,6 +141,7 @@
     "src/Akeneo/Connectivity/Connection/front",
     "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge",
     "src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared",
-    "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front"
+    "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front",
+    "akeneo-design-system"
   ]
 }
