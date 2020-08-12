@@ -247,7 +247,17 @@ class NumberFilterSpec extends ObjectBehavior
                 ]
             ]
         )->shouldBeCalled();
-        $sqb->addFilter(['exists' => ['field' => 'family.code']])->shouldBeCalled();
+        $sqb->addFilter(
+            [
+                'bool' => [
+                    'should' => [
+                        ['terms' => ['attributes_for_this_level' => ['size']]],
+                        ['terms' => ['attributes_of_ancestors' => ['size']]],
+                    ],
+                    'minimum_should_match' => 1,
+                ],
+            ]
+        )->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter($size, Operators::IS_EMPTY, null);
