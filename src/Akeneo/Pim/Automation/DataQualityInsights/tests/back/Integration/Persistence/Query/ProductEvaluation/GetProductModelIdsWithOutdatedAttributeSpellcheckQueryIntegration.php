@@ -173,7 +173,7 @@ final class GetProductModelIdsWithOutdatedAttributeSpellcheckQueryIntegration ex
     private function updateProductModelEvaluationsAt(int $productModelId, string $criterionCode, \DateTimeImmutable $evaluatedAt): void
     {
         $query = <<<SQL
-UPDATE pimee_data_quality_insights_product_model_criteria_evaluation
+UPDATE pim_data_quality_insights_product_model_criteria_evaluation
 SET evaluated_at = :evaluatedAt
 WHERE product_id = :productModelId AND criterion_code = :criterionCode;
 SQL;
@@ -188,7 +188,7 @@ SQL;
     private function deleteProductModelEvaluations(int $productModelId)
     {
         $query = <<<SQL
-DELETE FROM pimee_data_quality_insights_product_model_criteria_evaluation
+DELETE FROM pim_data_quality_insights_product_model_criteria_evaluation
 WHERE product_id = :productModelId
 SQL;
 
