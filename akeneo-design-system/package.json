@@ -4,30 +4,39 @@
   "description": "Akeneo design system",
   "main": "src/index.ts",
   "scripts": {
-      "prebuild": "rimraf lib && yarn test:run && yarn lint:check && yarn ts-build",
-      "ts-build": "tsc -p ./tsconfig.build.json --emitDeclarationOnly",
-      "check-types": "tsc",
-      "check-types:watch": "yarn check-types -- --watch",
-      "test:run": "echo jest",
-      "test:watch": "echo 'jest --watch'",
-      "lint:fix": "echo 'prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.ts\";'",
-      "lint:check": "echo 'prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.ts\";'",
-      "storybook:start": "start-storybook -p 6006",
-      "storybook:build": "build-storybook",
-      "lib:build:prod": "yarn prebuild && export NODE_ENV=production && rollup -c",
-      "lib:build:analyze": "yarn build:prod --config-analyze"
+    "prebuild": "rimraf lib && yarn test:run && yarn lint:check && yarn ts-build",
+    "ts-build": "tsc -p ./tsconfig.build.json --emitDeclarationOnly",
+    "check-types": "tsc",
+    "check-types:watch": "yarn check-types -- --watch",
+    "test:run": "echo jest",
+    "test:watch": "echo 'jest --watch'",
+    "lint:fix": "echo 'prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.ts\";'",
+    "lint:check": "echo 'prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.ts\";'",
+    "storybook:start": "start-storybook -p 6006",
+    "storybook:build": "build-storybook",
+    "lib:build:prod": "yarn prebuild && export NODE_ENV=production && rollup -c",
+    "lib:build:analyze": "yarn build:prod --config-analyze"
   },
   "author": "akeneo",
   "license": "OSL-3.0",
   "dependencies": {
-      "react": "^16.8.0",
-      "react-dom": "^16.8.0",
-      "styled-components": "^4.3.2"
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
+    "styled-components": "^4.3.2"
   },
   "peerDependencies": {
-      "styled-components": "^4.3.2"
+    "styled-components": "^4.3.2"
   },
   "devDependencies": {
-      "typescript": "^3.7.2"
+    "@babel/core": "^7.3.4",
+    "@storybook/addon-actions": "^6.0.4",
+    "@storybook/addon-essentials": "^6.0.4",
+    "@storybook/addon-knobs": "^6.0.4",
+    "@storybook/addon-links": "^6.0.4",
+    "@storybook/react": "^6.0.4",
+    "babel-loader": "8.0.5",
+    "prettier": "^1.16.4",
+    "react-is": "^16.13.1",
+    "typescript": "^3.7.2"
   }
 }

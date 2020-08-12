@@ -6,11 +6,20 @@ const DummyContainer = styled.div<{size: number}>`
 `;
 
 type DummyProps = {
+  /**
+   * Defines the size of the Dummy component, in pixels
+   */
   size: number;
-  onClick: () => void;
+  /**
+   * The handler called when clicking the component
+   */
+  onClick?: () => void;
 };
 
-const Dummy = ({size, onClick}: DummyProps) => {
+/**
+ * This is a nice Dummy component to bootstrap Storybook
+ */
+const Dummy = ({size = 12, onClick}: DummyProps) => {
   return (
     <DummyContainer size={size} onClick={onClick}>
       Dummy
@@ -18,4 +27,4 @@ const Dummy = ({size, onClick}: DummyProps) => {
   );
 };
 
-export {Dummy};
+export {Dummy, DummyProps};
