@@ -62,11 +62,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
       attributeCode: AttributeCode
     ) => {
       const attribute = await getAttributeByIdentifier(attributeCode, router);
-      if (setAttribute && attribute) {
-        setAttribute(attribute);
-      } else if (setAttribute) {
-        setAttribute(null);
-      }
+      setAttribute(attribute);
     };
     getAttribute(router, attributeCode);
   }, [attributeCode]);
