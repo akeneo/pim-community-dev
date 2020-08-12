@@ -21,7 +21,7 @@ import {
   generateUrl,
   redirectToUrl,
 } from '../../dependenciesTools/hooks';
-import { Locale, RuleDefinition } from '../../models';
+import { Locale, RuleDefinition, Condition } from '../../models';
 import { useSubmitEditRuleForm } from './hooks';
 import { IndexedScopes } from '../../repositories/ScopeRepository';
 import { AddActionButton } from './components/actions/AddActionButton';
@@ -75,6 +75,10 @@ const EditRulesContent: React.FC<Props> = ({
     ruleDefinition.actions
   );
 
+  const [conditionsState, setConditionsState] = React.useState<
+    (Condition | null)[]
+  >(ruleDefinition.conditions);
+
   const [deletePending, setDeletePending] = React.useState(false);
 
   useEffect(() => {
@@ -85,20 +89,30 @@ const EditRulesContent: React.FC<Props> = ({
     (formMethods.watch(`labels.${currentCatalogLocale}`) as string) ||
     `[${ruleDefinitionCode}]`;
 
-  const append = (action: Action) => {
+  const appendAction = (action: Action) => {
     setActionsState([...actionsState, action]);
   };
 
-  const remove = (lineNumber: number) => {
+  const removeAction = (lineNumber: number) => {
     actionsState[lineNumber] = null;
     setActionsState([...actionsState]);
   };
 
   const handleAddAction = (action: any) => {
-    append(action);
+    appendAction(action);
   };
 
   const deleteDialog = useDialogState();
+
+  const appendCondition = (condition: Condition) => {
+    setConditionsState([...conditionsState, condition])
+  }
+
+  const removeCondition = (lineNumber: number) => {
+    conditionsState[lineNumber] = null;
+    setConditionsState([...conditionsState])
+  }
+
   const handleDeleteRule = async (): Promise<any> => {
     const deleteRuleUrl = router.generate('pimee_catalog_rule_rule_delete', {
       id: ruleDefinition.id,
@@ -141,6 +155,7 @@ const EditRulesContent: React.FC<Props> = ({
   };
 
   const saveAndExecuteDialog = useDialogState();
+
   const handleSaveAndExecuteRule = () => {
     formMethods.register({ name: 'execute_on_save', value: true });
     onSubmit().then(() => {
@@ -229,8 +244,10 @@ const EditRulesContent: React.FC<Props> = ({
             onSubmit={onSubmit}
             scopes={scopes}
             actions={actionsState}
-            handleDeleteAction={remove}
-            conditions={ruleDefinition.conditions}
+            handleDeleteAction={removeAction}
+            conditions={conditionsState}
+            handleAddCondition={appendCondition}
+            handleDeleteCondition={removeCondition}
           />
         </FormContext>
       </Content>

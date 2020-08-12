@@ -73,6 +73,8 @@ type Props = {
   scopes: IndexedScopes;
   currentCatalogLocale: LocaleCode;
   handleDeleteAction: (lineNumber: number) => void;
+  handleAddCondition: (condition: Condition) => void;
+  handleDeleteCondition: (lineNumber: number) => void;
   conditions: Condition[];
   actions: (Action | null)[];
 };
@@ -85,6 +87,8 @@ const EditRulesForm: React.FC<Props> = ({
   actions,
   handleDeleteAction,
   conditions,
+  handleAddCondition,
+  handleDeleteCondition,
 }) => {
   const translate = useTranslate();
   const tab = useTabState({ selectedId: 'rulesBuilderTab' });
@@ -126,6 +130,8 @@ const EditRulesForm: React.FC<Props> = ({
             actions={actions}
             handleDeleteAction={handleDeleteAction}
             conditions={conditions}
+            handleAddCondition={handleAddCondition}
+            handleDeleteCondition={handleDeleteCondition}
           />
         </StyledTabPanel>
         <StyledTabPanel {...tab} tabIndex={-1}>

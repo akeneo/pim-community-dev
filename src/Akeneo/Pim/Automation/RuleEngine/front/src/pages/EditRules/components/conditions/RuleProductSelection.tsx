@@ -38,6 +38,7 @@ import {
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
 import { Action } from '../../../../models/Action';
+import { EmptySectionMessage } from '../EmptySectionMessage';
 
 const Header = styled.header`
   font-weight: normal;
@@ -97,6 +98,8 @@ type Props = {
   locales: Locale[];
   scopes: IndexedScopes;
   conditions: Condition[];
+  handleAdd: (condition: Condition) => void;
+  handleDelete: (lineNumber: number) => void;
 };
 
 const RuleProductSelection: React.FC<Props> = ({
@@ -104,13 +107,11 @@ const RuleProductSelection: React.FC<Props> = ({
   locales,
   scopes,
   conditions,
+  handleAdd,
+  handleDelete,
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
-
-  const [conditionsState, setConditionsState] = React.useState<
-    (Condition | null)[]
-  >(conditions);
 
   const { getValues } = useFormContext();
 
@@ -154,17 +155,8 @@ const RuleProductSelection: React.FC<Props> = ({
     throw new Error(`Unknown factory for field ${fieldCode}`);
   };
 
-  const append = (condition: Condition) => {
-    setConditionsState([...conditionsState, condition]);
-  };
-
-  const remove = (lineNumber: number) => {
-    conditionsState[lineNumber] = null;
-    setConditionsState([...conditionsState]);
-  };
-
   const handleAddCondition = (fieldCode: string) => {
-    createCondition(fieldCode).then(condition => append(condition));
+    createCondition(fieldCode).then(condition => handleAdd(condition));
   };
 
   // Add here the fields handled by the rule conditions.
@@ -259,7 +251,7 @@ const RuleProductSelection: React.FC<Props> = ({
       </SmallHelper>
       <div className='AknGrid AknGrid--unclickable'>
         <div className='AknGrid-body' data-testid={'condition-list'}>
-          {conditionsState.map((condition, i) => {
+          {conditions.map((condition, i) => {
             return (
               condition && (
                 <ConditionLine
@@ -269,7 +261,9 @@ const RuleProductSelection: React.FC<Props> = ({
                   locales={locales}
                   scopes={scopes}
                   currentCatalogLocale={currentCatalogLocale}
-                  deleteCondition={remove}
+                  deleteCondition={() => {
+                    handleDelete(i)
+                  }}
                 />
               )
             );
@@ -279,6 +273,15 @@ const RuleProductSelection: React.FC<Props> = ({
       <LegendSrOnly>
         {translate('pimee_catalog_rule.form.legend.product_selection')}
       </LegendSrOnly>
+      {!conditions.filter(Boolean).length && (
+        <EmptySectionMessage>
+          <div>
+            Your rule is empty. If you don't want to impact your whole catalog, please add at least one condition.
+            <br />
+            And then, add one or several actions to apply to your products/product models.
+          </div>
+        </EmptySectionMessage>
+      )}
     </RuleProductSelectionFieldset>
   );
 };
