@@ -79,8 +79,8 @@ const CalculatePreview: React.FC<Props> = ({ lineNumber }) => {
   const translate = useTranslate();
   const { watch } = useFormContext();
   const { formName } = useControlledFormInputAction<string | null>(lineNumber);
-  const getSourceFormValue = () => watch(formName('source'));
-  const getOperationListFormValue = () => watch(formName('operation_list'));
+  const getFullOperationListFormValue = () =>
+    watch(formName('full_operation_list'));
 
   return (
     <div className={'AknRulePreviewBox'}>
@@ -88,12 +88,13 @@ const CalculatePreview: React.FC<Props> = ({ lineNumber }) => {
         {translate('pimee_catalog_rule.form.edit.preview')}
       </div>
       <div data-testid={'calculate-preview'}>
-        {getSourceFormValue() && Array.isArray(getOperationListFormValue()) && (
-          <RecursiveOperationView
-            operations={getOperationListFormValue()}
-            source={getSourceFormValue()}
-          />
-        )}
+        {Array.isArray(getFullOperationListFormValue()) &&
+          getFullOperationListFormValue().length > 0 && (
+            <RecursiveOperationView
+              operations={getFullOperationListFormValue().slice(1)}
+              source={getFullOperationListFormValue()[0]}
+            />
+          )}
       </div>
     </div>
   );

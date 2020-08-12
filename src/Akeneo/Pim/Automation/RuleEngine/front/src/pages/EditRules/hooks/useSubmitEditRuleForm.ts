@@ -112,8 +112,22 @@ const transformFormData = (formData: FormData): Payload => {
     priority: Number(formData.priority),
     content: {
       conditions: conditions?.filter(filterDataContentValues) ?? [],
-      actions:
-        formData?.content?.actions?.filter(filterDataContentValues) ?? [],
+      actions: (
+        formData?.content?.actions?.filter(filterDataContentValues) ?? []
+      ).map((action: any) => {
+        if (
+          action.type === 'calculate' &&
+          Array.isArray(action.full_operation_list)
+        ) {
+          [
+            action.source,
+            ...action.operation_list
+          ] = action.full_operation_list;
+          delete action.full_operation_list;
+        }
+
+        return action;
+      }),
     },
   };
 };
@@ -143,6 +157,18 @@ const doExecuteOnSave = async (
   }
 };
 
+const createCalculateDefaultValues = (formData: FormData): FormData => {
+  formData.content.actions = formData.content.actions.map((action: any) => {
+    if (action.type === 'calculate') {
+      action.full_operation_list = [action.source, ...action.operation_list];
+    }
+
+    return action;
+  });
+
+  return formData;
+};
+
 const submitEditRuleForm = (
   ruleDefinitionCode: string,
   translate: Translate,
@@ -170,6 +196,7 @@ const submitEditRuleForm = (
       body: transformFormData(formData),
     });
     if (updateResponse.ok) {
+      formData = createCalculateDefaultValues(formData);
       reset(formData);
       registerConditions(register, formData.content?.conditions || []);
       registerActions(register, formData.content?.actions || []);
@@ -233,7 +260,9 @@ const useSubmitEditRuleForm = (
   ruleDefinition: RuleDefinition,
   locales: Locale[]
 ) => {
-  const defaultValues = createFormDefaultValues(ruleDefinition, locales);
+  const defaultValues = createCalculateDefaultValues(
+    createFormDefaultValues(ruleDefinition, locales)
+  );
   const formMethods = useForm<FormData>({
     defaultValues,
   });

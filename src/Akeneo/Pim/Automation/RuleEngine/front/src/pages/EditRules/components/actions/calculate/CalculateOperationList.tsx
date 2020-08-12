@@ -85,27 +85,10 @@ const OperationLine: React.FC<OperationLineProps> = ({
   };
 
   React.useEffect(() => {
-    console.log('--> useEffect operationLineNumber = ', operationLineNumber);
     // When lines are moved/removed, we have an issue with <Controller /> and selectors: the value of the old line
     // is displayed not the good value. In the state of react hook form the values are good.
     // To fix the display we set again the values. The react hook form state is unchanged but the display is now good.
-    console.log(
-      '----> key = ',
-      'field = ',
-      getFormValue(`${baseFormName}.field`) || undefined
-    );
-    console.log(
-      '----> key = ',
-      'value = ',
-      getFormValue(`${baseFormName}.value`) || undefined
-    );
     ['operator', 'locale', 'scope', 'currency'].forEach((key: string) => {
-      console.log(
-        '----> key = ',
-        key,
-        ' = ',
-        getFormValue(`${baseFormName}.${key}`) || undefined
-      );
       setValue(
         formName(`${baseFormName}.${key}`),
         getFormValue(`${baseFormName}.${key}`) || undefined
@@ -207,38 +190,16 @@ const CalculateOperationList: React.FC<Props> = ({
   locales,
   scopes,
 }) => {
-  const { setValue } = useFormContext();
-  const { formName, getFormValue } = useControlledFormInputAction<
-    string | null
-  >(lineNumber);
+  const { formName } = useControlledFormInputAction<string | null>(lineNumber);
   const [dropTarget, setDropTarget] = React.useState<DropTarget | null>(null);
-  const [toInsert, setToInsert] = React.useState<
-    { index: number; object: any } | undefined
-  >();
   const [version, setVersion] = React.useState<number>(1);
-  const [sourceKey, setSourceKey] = React.useState<string>('initial');
 
-  const getSourceFormValue = () => getFormValue('source');
-
-  const { fields, remove, move, insert } = useFieldArray({
-    name: formName('operation_list'),
+  const { fields, remove, move } = useFieldArray({
+    name: formName('full_operation_list'),
   });
 
   const removeOperation = (lineToRemove: number) => () => {
-    if (0 === lineToRemove) {
-      ['field', 'value', 'scope', 'locale', 'currency'].forEach(key => {
-        setValue(
-          formName(`source.${key}`),
-          getFormValue(`operation_list[0].${key}`)
-        );
-      });
-      setSourceKey(fields[0].id || 'initial');
-      remove(0);
-      setVersion(version + 1);
-      return;
-    }
-
-    remove(lineToRemove - 1);
+    remove(lineToRemove);
     setVersion(version + 1);
   };
 
@@ -250,88 +211,23 @@ const CalculateOperationList: React.FC<Props> = ({
       return;
     }
 
-    if (0 === currentOperationLineNumber) {
-      const currentSource = { ...getSourceFormValue() };
-      ['field', 'value', 'scope', 'locale', 'currency'].forEach(key => {
-        setValue(
-          formName(`source.${key}`),
-          getFormValue(`operation_list[0].${key}`)
-        );
-      });
-      setSourceKey(fields[0].id || 'initial');
-      remove(0);
-
-      // setToInsert for later (useEffect) because we cannot make 2 useFieldArray operations in a same render (see docs)
-      setToInsert({
-        index: newOperationLineNumber - 1,
-        object: { operator: Operator.ADD, ...currentSource },
-      });
-      return;
-    }
-
-    if (0 === newOperationLineNumber) {
-      const currentSource = { ...getSourceFormValue() };
-      ['field', 'value', 'scope', 'locale', 'currency'].forEach(key => {
-        setValue(
-          formName(`source.${key}`),
-          // operationToMove ? operationToMove[key] || undefined : undefined
-          getFormValue(
-            `operation_list[${currentOperationLineNumber - 1}].${key}`
-          )
-        );
-      });
-      setSourceKey(fields[currentOperationLineNumber - 1].id || 'initial');
-      remove(currentOperationLineNumber - 1);
-
-      // setToInsert for later (useEffect) because we cannot make 2 useFieldArray operations in a same render (see docs)
-      setToInsert({
-        index: 0,
-        object: { operator: Operator.ADD, ...currentSource },
-      });
-      return;
-    }
-
-    move(currentOperationLineNumber - 1, newOperationLineNumber - 1);
+    move(currentOperationLineNumber, newOperationLineNumber);
     setVersion(version + 1);
   };
 
-  React.useEffect(() => {
-    if (toInsert) {
-      insert(toInsert.index, toInsert.object);
-      setToInsert(undefined);
-      setVersion(version + 1);
-    }
-  }, [toInsert]);
-
   return (
     <ul className={'AknRuleOperation'}>
-      {getSourceFormValue() && (
-        <OperationLine
-          key={sourceKey}
-          baseFormName={'source'}
-          sourceOrOperation={getSourceFormValue()}
-          locales={locales}
-          scopes={scopes}
-          lineNumber={lineNumber}
-          operationLineNumber={0}
-          dropTarget={dropTarget}
-          setDropTarget={setDropTarget}
-          moveOperation={moveOperation}
-          removeOperation={removeOperation}
-          version={version}
-        />
-      )}
       {fields &&
         fields.map((sourceOrOperation: any, operationLineNumber) => {
           return (
             <OperationLine
               key={sourceOrOperation.id}
-              baseFormName={`operation_list[${operationLineNumber}]`}
+              baseFormName={`full_operation_list[${operationLineNumber}]`}
               sourceOrOperation={sourceOrOperation}
               locales={locales}
               scopes={scopes}
               lineNumber={lineNumber}
-              operationLineNumber={operationLineNumber + 1}
+              operationLineNumber={operationLineNumber}
               dropTarget={dropTarget}
               setDropTarget={setDropTarget}
               moveOperation={moveOperation}

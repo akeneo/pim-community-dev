@@ -27,7 +27,7 @@ const AttributePreview: React.FC<{ attributeCode: string }> = ({
     getAttributeByIdentifier(attributeCode, router).then(attribute =>
       setAttribute(attribute)
     );
-  }, []);
+  }, [attributeCode]);
 
   if (undefined === attribute) {
     return <AkeneoSpinner />;
