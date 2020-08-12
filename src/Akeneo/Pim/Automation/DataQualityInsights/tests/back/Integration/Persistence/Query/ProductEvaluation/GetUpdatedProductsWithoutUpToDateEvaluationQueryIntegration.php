@@ -129,7 +129,7 @@ final class GetUpdatedProductsWithoutUpToDateEvaluationQueryIntegration extends 
     private function updateProductEvaluationsAt(int $productId, \DateTimeImmutable $evaluatedAt, string $status = CriterionEvaluationStatus::DONE): void
     {
         $query = <<<SQL
-UPDATE pimee_data_quality_insights_product_criteria_evaluation 
+UPDATE pim_data_quality_insights_product_criteria_evaluation 
 SET evaluated_at = :evaluated_at, status = :status
 WHERE product_id = :product_id;
 SQL;
@@ -144,7 +144,7 @@ SQL;
     private function removeProductEvaluations(int $productId): void
     {
         $query = <<<SQL
-DELETE FROM pimee_data_quality_insights_product_criteria_evaluation WHERE product_id = :product_id;
+DELETE FROM pim_data_quality_insights_product_criteria_evaluation WHERE product_id = :product_id;
 SQL;
 
         $this->db->executeQuery($query, ['product_id' => $productId]);

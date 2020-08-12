@@ -197,7 +197,7 @@ final class DashboardRatesProjectionRepositoryIntegration extends TestCase
 
         $query = <<<SQL
 SELECT COUNT(*) AS nb_rates
-FROM pimee_data_quality_insights_dashboard_rates_projection
+FROM pim_data_quality_insights_dashboard_rates_projection
 WHERE JSON_CONTAINS_PATH(rates, 'one', $path)
 SQL;
 
@@ -210,7 +210,7 @@ SQL;
     {
         $query = <<<SQL
 SELECT JSON_EXTRACT(rates, '$.average_ranks') as average_ranks
-FROM pimee_data_quality_insights_dashboard_rates_projection
+FROM pim_data_quality_insights_dashboard_rates_projection
 WHERE type = :type AND code = :code
 SQL;
 

@@ -45,7 +45,7 @@ final class ProductModelCriterionEvaluationRepository implements CriterionEvalua
     {
         $query = <<<SQL
 DELETE evaluation
-FROM pimee_data_quality_insights_product_model_criteria_evaluation AS evaluation
+FROM pim_data_quality_insights_product_model_criteria_evaluation AS evaluation
 LEFT JOIN pim_catalog_product_model AS product_model ON(evaluation.product_id = product_model.id)
 WHERE product_model.id IS NULL
 SQL;

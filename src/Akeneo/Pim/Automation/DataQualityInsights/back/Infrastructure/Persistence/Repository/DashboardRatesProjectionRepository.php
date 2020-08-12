@@ -107,7 +107,7 @@ final class DashboardRatesProjectionRepository implements DashboardRatesProjecti
     public function save(Write\DashboardRatesProjection $ratesProjection): void
     {
         $query = <<<SQL
-INSERT INTO pimee_data_quality_insights_dashboard_rates_projection (type, code, rates)
+INSERT INTO pim_data_quality_insights_dashboard_rates_projection (type, code, rates)
 VALUES (:type, :code, :rates)
 ON DUPLICATE KEY UPDATE rates = JSON_MERGE_PATCH(rates, :rates);
 SQL;
@@ -137,7 +137,7 @@ SQL;
         $pathsToRemove = implode(', ', $pathsToRemove);
 
         $query = <<<SQL
-UPDATE pimee_data_quality_insights_dashboard_rates_projection
+UPDATE pim_data_quality_insights_dashboard_rates_projection
 SET rates = JSON_REMOVE(rates, $pathsToRemove)
 SQL;
 
@@ -147,7 +147,7 @@ SQL;
     private function saveAverageRanks(Write\DashboardRatesProjection $ratesProjection): void
     {
         $query = <<<SQL
-UPDATE pimee_data_quality_insights_dashboard_rates_projection
+UPDATE pim_data_quality_insights_dashboard_rates_projection
 SET rates = JSON_MERGE_PATCH(rates, :rates)
 WHERE type = :type AND code = :code 
   AND (

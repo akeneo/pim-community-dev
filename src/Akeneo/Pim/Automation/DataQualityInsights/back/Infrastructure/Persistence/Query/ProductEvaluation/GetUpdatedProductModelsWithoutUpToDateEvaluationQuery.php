@@ -68,7 +68,7 @@ class GetUpdatedProductModelsWithoutUpToDateEvaluationQuery implements GetUpdate
     WHERE product_model.id IN (:productModelIds)
         AND (
             EXISTS(
-                SELECT 1 FROM pimee_data_quality_insights_product_model_criteria_evaluation AS evaluation
+                SELECT 1 FROM pim_data_quality_insights_product_model_criteria_evaluation AS evaluation
                 WHERE evaluation.product_id = product_model.id
                 AND (
                     evaluation.evaluated_at < product_model.updated
@@ -77,7 +77,7 @@ class GetUpdatedProductModelsWithoutUpToDateEvaluationQuery implements GetUpdate
                 AND evaluation.status != :statusPending
             )
             OR NOT EXISTS(
-                SELECT 1 FROM pimee_data_quality_insights_product_model_criteria_evaluation AS missing_evaluation
+                SELECT 1 FROM pim_data_quality_insights_product_model_criteria_evaluation AS missing_evaluation
                 WHERE missing_evaluation.product_id = product_model.id
             )
       );

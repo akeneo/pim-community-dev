@@ -38,7 +38,7 @@ final class GetDashboardRatesQuery implements GetDashboardRatesQueryInterface
     {
         $sql = <<<'SQL'
 SELECT rates
-FROM pimee_data_quality_insights_dashboard_rates_projection
+FROM pim_data_quality_insights_dashboard_rates_projection
 WHERE type = :type
 SQL;
 
@@ -51,7 +51,7 @@ SQL;
     {
         $sql = <<<'SQL'
 SELECT rates
-FROM pimee_data_quality_insights_dashboard_rates_projection
+FROM pim_data_quality_insights_dashboard_rates_projection
 WHERE type = :type
 AND code = :code
 SQL;
@@ -68,7 +68,7 @@ SQL;
     {
         $sql = <<<'SQL'
 SELECT rates
-FROM pimee_data_quality_insights_dashboard_rates_projection
+FROM pim_data_quality_insights_dashboard_rates_projection
 WHERE type = :type
 AND code = :code
 SQL;

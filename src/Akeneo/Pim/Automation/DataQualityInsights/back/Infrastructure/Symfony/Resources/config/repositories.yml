@@ -1,8 +1,8 @@
 parameters:
-    akeneo.pim.automation.data_quality_insights.persistence.product_criterion_evaluation_table: 'pimee_data_quality_insights_product_criteria_evaluation'
-    akeneo.pim.automation.data_quality_insights.persistence.product_model_criterion_evaluation_table: 'pimee_data_quality_insights_product_model_criteria_evaluation'
-    akeneo.pim.automation.data_quality_insights.persistence.product_axis_rate_table: 'pimee_data_quality_insights_product_axis_rates'
-    akeneo.pim.automation.data_quality_insights.persistence.product_model_axis_rate_table: 'pimee_data_quality_insights_product_model_axis_rates'
+    akeneo.pim.automation.data_quality_insights.persistence.product_criterion_evaluation_table: 'pim_data_quality_insights_product_criteria_evaluation'
+    akeneo.pim.automation.data_quality_insights.persistence.product_model_criterion_evaluation_table: 'pim_data_quality_insights_product_model_criteria_evaluation'
+    akeneo.pim.automation.data_quality_insights.persistence.product_axis_rate_table: 'pim_data_quality_insights_product_axis_rates'
+    akeneo.pim.automation.data_quality_insights.persistence.product_model_axis_rate_table: 'pim_data_quality_insights_product_model_axis_rates'
 
 services:
       akeneo.pim.automation.data_quality_insights.repository.product_axis_rate:

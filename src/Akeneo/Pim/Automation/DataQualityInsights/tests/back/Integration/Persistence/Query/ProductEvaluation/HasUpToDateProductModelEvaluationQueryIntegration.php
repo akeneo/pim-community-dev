@@ -191,7 +191,7 @@ SQL;
     private function removeProductModelEvaluations(ProductId $productModelId): void
     {
         $query = <<<SQL
-DELETE FROM pimee_data_quality_insights_product_model_criteria_evaluation WHERE product_id = :product_id;
+DELETE FROM pim_data_quality_insights_product_model_criteria_evaluation WHERE product_id = :product_id;
 SQL;
 
         $this->db->executeQuery($query, ['product_id' => $productModelId->toInt(),]);
@@ -200,7 +200,7 @@ SQL;
     private function updateProductModelEvaluationsAt(ProductId $productModelId, \DateTimeImmutable $evaluatedAt): void
     {
         $query = <<<SQL
-UPDATE pimee_data_quality_insights_product_model_criteria_evaluation SET evaluated_at = :evaluated_at WHERE product_id = :product_id;
+UPDATE pim_data_quality_insights_product_model_criteria_evaluation SET evaluated_at = :evaluated_at WHERE product_id = :product_id;
 SQL;
 
         $this->db->executeQuery($query, [

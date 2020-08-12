@@ -38,8 +38,8 @@ final class GetRanksDistributionFromProductAxisRatesQuery implements GetRanksDis
     {
         $productAxisRatesQuery = <<<SQL
 SELECT latest_eval.axis_code, latest_eval.product_id, latest_eval.rates
-FROM pimee_data_quality_insights_product_axis_rates AS latest_eval
-    LEFT JOIN pimee_data_quality_insights_product_axis_rates AS other_eval
+FROM pim_data_quality_insights_product_axis_rates AS latest_eval
+    LEFT JOIN pim_data_quality_insights_product_axis_rates AS other_eval
         ON other_eval.axis_code = latest_eval.axis_code
         AND other_eval.product_id = latest_eval.product_id
         AND latest_eval.evaluated_at < other_eval.evaluated_at
@@ -69,9 +69,9 @@ SQL;
     {
         $productAxisRatesQuery = <<<SQL
 SELECT DISTINCT latest_eval.axis_code, latest_eval.product_id, latest_eval.rates
-FROM pimee_data_quality_insights_product_axis_rates AS latest_eval
+FROM pim_data_quality_insights_product_axis_rates AS latest_eval
     INNER JOIN pim_catalog_category_product cp ON cp.product_id = latest_eval.product_id
-    LEFT JOIN pimee_data_quality_insights_product_axis_rates AS other_eval
+    LEFT JOIN pim_data_quality_insights_product_axis_rates AS other_eval
         ON other_eval.axis_code = latest_eval.axis_code
         AND other_eval.product_id = latest_eval.product_id
         AND latest_eval.evaluated_at < other_eval.evaluated_at
@@ -113,10 +113,10 @@ SQL;
     {
         $productAxisRatesQuery = <<<SQL
 SELECT DISTINCT latest_eval.axis_code, latest_eval.product_id, latest_eval.rates
-FROM pimee_data_quality_insights_product_axis_rates AS latest_eval
+FROM pim_data_quality_insights_product_axis_rates AS latest_eval
     INNER JOIN pim_catalog_product AS product ON product.id = latest_eval.product_id
     INNER JOIN pim_catalog_family AS family ON family.id = product.family_id
-    LEFT JOIN pimee_data_quality_insights_product_axis_rates AS other_eval
+    LEFT JOIN pim_data_quality_insights_product_axis_rates AS other_eval
         ON other_eval.axis_code = latest_eval.axis_code
         AND other_eval.product_id = latest_eval.product_id
         AND latest_eval.evaluated_at < other_eval.evaluated_at

@@ -68,13 +68,13 @@ services:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetLatestAxesRatesQuery
         arguments:
             - '@database_connection'
-            - 'pimee_data_quality_insights_product_axis_rates'
+            - 'pim_data_quality_insights_product_axis_rates'
 
     akeneo.pim.automation.data_quality_insights.query.get_latest_product_model_axes_rates:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetLatestAxesRatesQuery
         arguments:
             - '@database_connection'
-            - 'pimee_data_quality_insights_product_model_axis_rates'
+            - 'pim_data_quality_insights_product_model_axis_rates'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard\GetDashboardRatesQuery:
         arguments:
