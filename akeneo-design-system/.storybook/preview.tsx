@@ -7,7 +7,3 @@ addDecorator(story => (
     <StoryStyle>{story()}</StoryStyle>
   </>
 ));
-
-export const parameters = {
-  actions: {argTypesRegex: '^on[A-Z].*'},
-};

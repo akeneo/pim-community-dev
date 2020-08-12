@@ -2,7 +2,6 @@ import { Meta, Story, Preview, Props, ArgsTable, Canvas } from '@storybook/addon
 import { action } from "@storybook/addon-actions";
 import { Dummy, Type } from "./Dummy.tsx";
 
-
 <Meta
   title="Components / Dummy"
   component={Dummy}
@@ -33,32 +32,15 @@ Use this playground to test the dummy component
 ## Variation on size
 
   <Story name="Size">
-      <table>
-          <tr>
-          <td> 12 </td>
-            <td>
-            <Dummy type="primary" size={12} onClick={action("clicked")}>
-              Click !
-            </Dummy>
-            </td>
-          </tr>
-      <tr>
-          <td> 24 </td>
-            <td>
-            <Dummy type="primary" size={24} onClick={action("clicked")}>
-              Click !
-            </Dummy>
-            </td>
-      </tr>
-      <tr>
-          <td> 48 </td>
-           <td>
-            <Dummy type="primary" size={48} onClick={action("clicked")}>
-              Click !
-            </Dummy>
-           </td>
-      </tr>
-    </table>
+    <Dummy type="primary" size={12} onClick={action("clicked")}>
+      Size 12
+    </Dummy>
+    <Dummy type="primary" size={24} onClick={action("clicked")}>
+      Size 24
+    </Dummy>
+    <Dummy type="primary" size={48} onClick={action("clicked")}>
+      Size 48
+    </Dummy>
   </Story>
 
 ## Variation on type
