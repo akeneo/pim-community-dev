@@ -12,7 +12,6 @@ use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
  * @author Christophe Chausseray <chausseray.christophe@gmail.com>
@@ -46,6 +45,7 @@ class ListAnnouncementsAction
         $query = new ListAnnouncementsQuery(
             $this->versionProvider->getEdition(),
             $this->versionProvider->getMinorVersion(),
+            $this->userContext->getUiLocaleCode(),
             $user->getId(),
             $request->query->get('search_after')
         );

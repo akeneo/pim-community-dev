@@ -26,7 +26,7 @@ final class LocalFilestorageFindAnnouncementItems implements FindAnnouncementIte
         $this->externalJson = file_get_contents(dirname(__FILE__) . DIRECTORY_SEPARATOR . self::FILENAME);
     }
 
-    public function byPimVersion(string $pimEdition, string $pimVersion, ?string $searchAfter): array
+    public function byPimVersion(string $pimEdition, string $pimVersion, string $locale, ?string $searchAfter): array
     {
         $content = json_decode($this->externalJson, true);
 

@@ -1,5 +1,19 @@
 # 4.0.x
 
+# 4.0.44 (2020-07-28)
+
+# 4.0.43 (2020-07-27)
+
+## Bug fixes
+
+- Fix pdf renderer for image attributes, it was displaying the path instead of the original filename
+- PIM-9358: Break down values & properties query with CTE to use less memory
+- PIM-9361: Chunk large ES query
+
+# 4.0.42 (2020-07-22)
+
+# 4.0.41 (2020-07-20)
+
 ## Bug fixes
 
 - PIM-9359: Fix ES configuration override for dynamic templates

@@ -39,7 +39,7 @@ class ApiFindAnnouncementItemsIntegration extends KernelTestCase
     public function test_it_finds_first_page_of_announcements()
     {
         $query = self::$container->get('akeneo_communication_channel.query.api.find_announcement_items');
-        $result = $query->byPimVersion('Serenity', '2020105', null, 10);
+        $result = $query->byPimVersion('Serenity', '2020105', 'en_US', null, 10);
         Assert::assertCount(10, $result);
         Assert::assertEquals(
             new AnnouncementItem(
@@ -59,13 +59,8 @@ class ApiFindAnnouncementItemsIntegration extends KernelTestCase
 
     public function test_it_finds_second_page_of_announcements()
     {
-        $currentDir = __DIR__ . '/Expectations';
-        $process = new Process("./vendor/bin/phiremock -p 8088 -i 0.0.0.0 -e '$currentDir'");
-        $process->start();
-        $this->waitServerUp();
-
         $query = self::$container->get('akeneo_communication_channel.query.api.find_announcement_items');
-        $result = $query->byPimVersion('Serenity', '2020105', 'update_1-new-screen-for-measurements-families_2020-05', 10);
+        $result = $query->byPimVersion('Serenity', '2020105', 'en_US', 'update_1-new-screen-for-measurements-families_2020-05', 10);
         Assert::assertCount(1, $result);
         Assert::assertEquals(
             new AnnouncementItem(

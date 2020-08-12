@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\ExternalApi;
 
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface as CatalogAttributeRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
+use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -12,38 +13,33 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
 
 /**
- * Attribute repository for the API
- *
- * @author    Marie Bochu <marie.bochu@akeneo.com>
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @author    Willy Mesnage <willy.mesnage@akeneo.com>
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeRepository extends EntityRepository implements AttributeRepositoryInterface
+class FamilyRepository extends EntityRepository implements ApiResourceRepositoryInterface
 {
-    /** @var CatalogAttributeRepositoryInterface */
-    protected $attributeRepository;
+    /** @var FamilyRepositoryInterface */
+    protected $familyRepository;
 
-    /**
-     * @param EntityManager                       $em
-     * @param string                              $className
-     * @param CatalogAttributeRepositoryInterface $attributeRepository
-     */
     public function __construct(
-        EntityManager $em,
+        EntityManager $entityManager,
         $className,
-        CatalogAttributeRepositoryInterface $attributeRepository
+        FamilyRepositoryInterface $familyRepository
     ) {
-        parent::__construct($em, $em->getClassMetadata($className));
+        parent::__construct($entityManager, $entityManager->getClassMetadata($className));
 
-        $this->attributeRepository = $attributeRepository;
+        $this->familyRepository = $familyRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function getIdentifierProperties(): array
+    {
+        return $this->familyRepository->getIdentifierProperties();
+    }
+
     public function findOneByIdentifier($identifier)
     {
-        return $this->attributeRepository->findOneByIdentifier($identifier);
+        return $this->familyRepository->findOneByIdentifier($identifier);
     }
 
     /**
@@ -68,20 +64,22 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
         if (null !== $offset) {
             $qb->setFirstResult($offset);
         }
+        $qb->setMaxResults($limit);
 
-        return $qb->setMaxResults($limit)
-            ->getQuery()
-            ->execute();
+        return $qb->getQuery()->execute();
     }
 
+
     /**
-     * {@inheritdoc}
+     * @param array{string: array{operator: string, value: mixed}[]} $searchFilters
+     *
+     * @return int
      */
-    public function count(array $searchFilters = [])
+    public function count(array $searchFilters = []): int
     {
         try {
             $qb = $this->createQueryBuilder('r');
-            $this->addFilters($qb, $searchFilters);
+            $qb = $this->addFilters($qb, $searchFilters);
 
             return (int) $qb
                 ->select('COUNT(r.id)')
@@ -90,30 +88,6 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
         } catch (UnexpectedResultException $e) {
             return 0;
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getIdentifierProperties()
-    {
-        return $this->attributeRepository->getIdentifierProperties();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getIdentifierCode()
-    {
-        return $this->attributeRepository->getIdentifierCode();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMediaAttributeCodes()
-    {
-        return $this->attributeRepository->findMediaAttributeCodes();
     }
 
     protected function addFilters(QueryBuilder $qb, array $searchFilters): QueryBuilder
@@ -153,12 +127,12 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
                 new Assert\Collection([
                     'operator' => new Assert\IdenticalTo([
                         'value' => 'IN',
-                        'message' => 'In order to search on attribute codes you must use "IN" operator, {{ compared_value }} given.',
+                        'message' => 'In order to search on family codes you must use "IN" operator, {{ compared_value }} given.',
                     ]),
                     'value' => [
                         new Assert\Type([
                             'type' => 'array',
-                            'message' => 'In order to search on attribute codes you must send an array of attribute codes as value, {{ type }} given.'
+                            'message' => 'In order to search on family codes you must send an array of family codes as value, {{ type }} given.'
                         ]),
                         new Assert\All([
                             new Assert\Type('string')
@@ -175,23 +149,6 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
                     'value' => new Assert\DateTime(['format' => \DateTime::ATOM]),
                 ])
             ]),
-            'type' => new Assert\All(
-                new Assert\Collection([
-                    'operator' => new Assert\IdenticalTo([
-                        'value' => 'IN',
-                        'message' => 'In order to search on attribute types you must use "IN" operator, {{ compared_value }} given.',
-                    ]),
-                    'value' => [
-                        new Assert\Type([
-                            'type' => 'array',
-                            'message' => 'In order to search on attribute types you must send an array of attribute types as value, {{ type }} given.'
-                        ]),
-                        new Assert\All([
-                            new Assert\Type('string')
-                        ])
-                    ],
-                ])
-            ),
         ];
         $availableSearchFilters = array_keys($constraints);
 
