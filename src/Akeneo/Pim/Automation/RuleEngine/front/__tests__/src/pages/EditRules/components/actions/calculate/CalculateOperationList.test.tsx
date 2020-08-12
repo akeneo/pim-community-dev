@@ -9,7 +9,6 @@ import {
   scopes,
 } from '../../../../../factories';
 import { CalculateOperationList } from '../../../../../../../src/pages/EditRules/components/actions/calculate/CalculateOperationList';
-import { Operation } from '../../../../../../../src/models/actions/Calculate/Operation';
 import { AttributeType } from '../../../../../../../src/models';
 
 jest.mock('../../../../../../../src/components/Select2Wrapper/Select2Wrapper');
@@ -25,32 +24,38 @@ describe('CalculateOperationList', () => {
   });
 
   it('should display the operation list', async () => {
-    const action = {
-      type: 'calculate',
-      destination: {
-        field: 'weight',
-      },
-      round_precision: 0,
-      source: {
-        field: 'margin',
-      },
-      operation_list: [
-        {
-          operator: 'add',
-          value: 12,
-        },
-        {
-          operator: 'multiply',
-          field: 'price',
-          locale: 'en_US',
-          scope: 'mobile',
-          currency: 'USD',
-        },
-        {
-          operator: 'subtract',
-          field: 'unknown_attribute',
-        },
-      ],
+    const defaultValues = {
+      content: {
+        actions: [
+          {
+            type: 'calculate',
+            destination: {
+              field: 'weight',
+            },
+            round_precision: 0,
+            full_operation_list: [
+              {
+                field: 'margin',
+              },
+              {
+                operator: 'add',
+                value: 12,
+              },
+              {
+                operator: 'multiply',
+                field: 'price',
+                locale: 'en_US',
+                scope: 'mobile',
+                currency: 'USD',
+              },
+              {
+                operator: 'subtract',
+                field: 'unknown_attribute',
+              },
+            ],
+          }
+        ]
+      }
     };
     const marginAttribute = createAttribute({
       type: AttributeType.NUMBER,
@@ -97,12 +102,12 @@ describe('CalculateOperationList', () => {
 
     renderWithProviders(
       <CalculateOperationList
-        defaultSource={action.source}
-        defaultOperationList={action.operation_list as Operation[]}
+        lineNumber={0}
         scopes={scopes}
         locales={locales}
       />,
-      { all: true }
+      { all: true },
+      { defaultValues }
     );
 
     expect(await screen.findByText('PriceUS')).toBeInTheDocument();
