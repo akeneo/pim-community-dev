@@ -112,9 +112,7 @@ it('it fetches items until there is no items in most recent response', async () 
 });
 
 it('it can handle error during the fetch', async () => {
-  const fetch = jest.fn((search) => Promise.reject<string>());
-  fetch.mockRejectedValueOnce(new Error('Async error'));
-
+  const fetch = (search) => {throw new Error('Async error')};
   await act(async () => ReactDOM.render(<MockComponent fetch={fetch} />, container as HTMLElement));
 
   expect(container.innerHTML).toStrictEqual('error');
