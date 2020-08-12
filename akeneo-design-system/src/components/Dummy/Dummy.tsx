@@ -12,23 +12,23 @@ type DummyProps = {
   /**
    * Defines the type of the Dummy component
    */
-  type: Type;
+  type?: Type;
   /**
    * Defines the size of the Dummy component, in pixels
    */
-  size: number;
+  size?: number;
   /**
    * The handler called when clicking the component
    */
   onClick?: () => void;
 
-  children: ReactNode;
+  children?: ReactNode;
 };
 
 /**
  * This is a nice Dummy component to bootstrap Storybook
  */
-const Dummy = ({size = 12, onClick, type = 'primary', children}: DummyProps) => {
+const Dummy = ({size = 12, type = 'primary', onClick, children}: DummyProps) => {
   return (
     <DummyContainer size={size} onClick={onClick} type={type}>
       {children}
