@@ -1,0 +1,69 @@
+import { Meta, Story, Preview, Props, ArgsTable, Canvas } from '@storybook/addon-docs/blocks';
+import { action } from "@storybook/addon-actions";
+import { Dummy, Type } from "./Dummy.tsx";
+
+
+<Meta title="Components / Dummy" component={Dummy} argTypes={{
+                                                            onClick: {action: 'Dummy component clicked'},
+                                                            type: {control: {type: 'select', options: ['primary', 'secondary']}},
+                                                            size: {control: { type: 'select', options: [12, 24, 48] }}
+                                                          }}/>
+
+# Dummy
+
+There is only one custom prop, the other props come from "React.ButtonHTMLAttributes HTMLButtonElement"
+
+## Playground
+
+This is the default Dummy
+
+<Preview>
+  <Story name="Dummy">
+    {(args) => <Dummy {...args} >Coucou</Dummy>}
+  </Story>
+</Preview>
+
+<Props story="Dummy" />
+
+
+## Variation on size
+
+  <Story name="Variation on size">
+      <table>
+          <tr>
+          <td> 12 </td>
+            <td>
+            <Dummy type="primary" size={12} onClick={action("clicked")}>
+              Click !
+            </Dummy>
+            </td>
+          </tr>
+      <tr>
+          <td> 24 </td>
+            <td>
+            <Dummy type="primary" size={24} onClick={action("clicked")}>
+              Click !
+            </Dummy>
+            </td>
+      </tr>
+      <tr>
+          <td> 48 </td>
+           <td>
+            <Dummy type="primary" size={48} onClick={action("clicked")}>
+              Click !
+            </Dummy>
+           </td>
+      </tr>
+    </table>
+  </Story>
+
+## Variation on type
+
+  <Story name="Variation on type">
+    <Dummy type="primary" size={24} onClick={action("clicked")}>
+      Primary
+    </Dummy>
+    <Dummy type="secondary" size={24} onClick={action("clicked")}>
+      Secondary
+    </Dummy>
+  </Story>
