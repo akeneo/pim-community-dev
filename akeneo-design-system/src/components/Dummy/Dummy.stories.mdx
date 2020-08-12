@@ -3,32 +3,36 @@ import { action } from "@storybook/addon-actions";
 import { Dummy, Type } from "./Dummy.tsx";
 
 
-<Meta title="Components / Dummy" component={Dummy} argTypes={{
-                                                            onClick: {action: 'Dummy component clicked'},
-                                                            type: {control: {type: 'select', options: ['primary', 'secondary']}},
-                                                            size: {control: { type: 'select', options: [12, 24, 48] }}
-                                                          }}/>
+<Meta
+  title="Components / Dummy"
+  component={Dummy}
+  argTypes={{
+    onClick: {action: 'Dummy component clicked'},
+    type: {control: {type: 'select', options: ['primary', 'secondary']}},
+    size: {control: { type: 'select', options: [12, 24, 48] }}
+  }}
+/>
 
 # Dummy
 
-There is only one custom prop, the other props come from "React.ButtonHTMLAttributes HTMLButtonElement"
+The dummy component is a little bit dumb, but that's why it exists.
 
 ## Playground
 
-This is the default Dummy
+Use this playground to test the dummy component
 
 <Preview>
-  <Story name="Dummy">
+  <Story name="Standard">
     {(args) => <Dummy {...args} >Coucou</Dummy>}
   </Story>
 </Preview>
 
-<Props story="Dummy" />
+<Props story="Standard" />
 
 
 ## Variation on size
 
-  <Story name="Variation on size">
+  <Story name="Size">
       <table>
           <tr>
           <td> 12 </td>
@@ -59,7 +63,7 @@ This is the default Dummy
 
 ## Variation on type
 
-  <Story name="Variation on type">
+  <Story name="Type">
     <Dummy type="primary" size={24} onClick={action("clicked")}>
       Primary
     </Dummy>

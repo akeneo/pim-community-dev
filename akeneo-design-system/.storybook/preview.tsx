@@ -1,11 +1,10 @@
 import React from 'react';
 import {addDecorator} from '@storybook/react';
-import {GlobalStyle} from '../src/shared/global';
+import {StoryStyle} from '../src/shared/global';
 
 addDecorator(story => (
   <>
-    <GlobalStyle />
-    {story()}
+    <StoryStyle>{story()}</StoryStyle>
   </>
 ));
 
