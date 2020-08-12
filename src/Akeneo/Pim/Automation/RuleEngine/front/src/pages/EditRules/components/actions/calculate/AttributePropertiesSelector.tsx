@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Attribute,
+  AttributeCode,
   AttributeType,
   getAttributeLabel,
   Locale,
@@ -8,7 +9,6 @@ import {
   ScopeCode,
 } from '../../../../../models';
 import { ScopeSelector } from '../../../../../components/Selectors/ScopeSelector';
-import { useGetAttributeAtMount } from '../attribute/attribute.utils';
 import {
   useBackboneRouter,
   useUserCatalogLocale,
@@ -19,10 +19,12 @@ import { CurrencySelector } from '../../../../../components/Selectors/CurrencySe
 import { IndexedCurrencies } from '../../../../../repositories/CurrencyRepository';
 import { Currency, CurrencyCode } from '../../../../../models/Currency';
 import { useActiveCurrencies } from '../../../hooks/useActiveCurrencies';
+import { Router } from '../../../../../dependenciesTools';
+import { getAttributeByIdentifier } from '../../../../../repositories/AttributeRepository';
 
 type Props = {
   operationLineNumber: number;
-  attributeCode: string;
+  attributeCode: AttributeCode;
   scopeCode?: ScopeCode | null;
   localeCode?: LocaleCode | null;
   currencyCode?: CurrencyCode | null;
@@ -45,7 +47,21 @@ const AttributePropertiesSelector: React.FC<Props> = ({
   const [attribute, setAttribute] = React.useState<
     Attribute | null | undefined
   >();
-  useGetAttributeAtMount(attributeCode, router, attribute, setAttribute);
+
+  useEffect(() => {
+    const getAttribute = async (
+      router: Router,
+      attributeCode: AttributeCode
+    ) => {
+      const attribute = await getAttributeByIdentifier(attributeCode, router);
+      if (setAttribute && attribute) {
+        setAttribute(attribute);
+      } else if (setAttribute) {
+        setAttribute(null);
+      }
+    };
+    getAttribute(router, attributeCode);
+  }, [attributeCode]);
 
   const getAvailableCurrenciesForTarget = (
     currencies: IndexedCurrencies
@@ -97,9 +113,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
       )}
       {attribute?.localizable && (
         <span
-          className={
-            'AknRuleOperation-element AknRuleOperation-elementLocale'
-          }>
+          className={'AknRuleOperation-element AknRuleOperation-elementLocale'}>
           <LocaleSelector
             data-testid={`edit-rules-action-operation-list-${operationLineNumber}-locale`}
             allowClear={false}

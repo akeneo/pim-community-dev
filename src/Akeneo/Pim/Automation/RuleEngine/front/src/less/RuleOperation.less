@@ -2,6 +2,7 @@
   margin-top: 10px;
 
   &-line {
+    z-index:10;
     display: flex;
     border-bottom: 1px solid @AknGrey70;
 
@@ -21,6 +22,14 @@
 
       .AknRuleOperation-detailsContainer {
         display: table;
+
+        .AknRuleOperation-moveIcon {
+          display: table-cell;
+          width: 40px;
+          background: url("/bundles/pimui/images/icon-row-move.svg") no-repeat center;
+          margin: 0 12px 0 12px;
+          cursor: move;
+        }
 
         .AknRuleOperation-element {
           display: table-cell;

@@ -22,12 +22,22 @@ const DeleteButton = styled.button`
   cursor: pointer;
 `;
 
+type DropTarget = {
+  operationLineNumber: number;
+};
+
 type OperationLineProps = {
   operand: Operand;
   operator?: Operator;
   locales: Locale[];
   scopes: IndexedScopes;
   operationLineNumber: number;
+  dropTarget: DropTarget | null;
+  setDropTarget: (dropTarget: DropTarget | null) => void;
+  moveOperation: (
+    currentOperationLineNumber: number,
+    newOperationLineNumber: number
+  ) => void;
 };
 
 const OperationLine: React.FC<OperationLineProps> = ({
@@ -36,6 +46,9 @@ const OperationLine: React.FC<OperationLineProps> = ({
   locales,
   scopes,
   operationLineNumber,
+  dropTarget,
+  setDropTarget,
+  moveOperation,
 }) => {
   const translate = useTranslate();
   const operandValue = Object.keys(operand).includes('value')
@@ -45,10 +58,35 @@ const OperationLine: React.FC<OperationLineProps> = ({
     ? (operand as FieldOperand)
     : null;
 
+  const onDragOver = () => {
+    setDropTarget({ operationLineNumber });
+  };
+  const onDragEnd = () => {
+    if (null === dropTarget) {
+      return;
+    }
+
+    if (dropTarget.operationLineNumber === operationLineNumber) {
+      return;
+    }
+
+    moveOperation(operationLineNumber, dropTarget.operationLineNumber);
+    setDropTarget(null);
+  };
+
   return (
-    <li className={'AknRuleOperation-line'}>
+    <li
+      className={'AknRuleOperation-line'}
+      draggable={true}
+      onDragOver={onDragOver}
+      onDragEnd={onDragEnd}
+      data-line-number={operationLineNumber}>
       <div className={'AknRuleOperation-details'}>
         <div className={'AknRuleOperation-detailsContainer'}>
+          <span
+            className={`AknRuleOperation-moveIcon`}
+            role={'operation-item-move-handle'}
+          />
           {operationLineNumber > 0 && (
             <span
               className={
@@ -113,15 +151,38 @@ const CalculateOperationList: React.FC<Props> = ({
   locales,
   scopes,
 }) => {
+  const [dropTarget, setDropTarget] = React.useState<DropTarget | null>(null);
+  const [source, setSource] = React.useState<Operand>(defaultSource);
+  const [operationList, setOperationList] = React.useState<Operation[]>(
+    defaultOperationList
+  );
+
+  const moveOperation = (
+    currentOperationLineNumber: number,
+    newOperationLineNumber: number
+  ) => {
+    const operations = [source, ...operationList];
+    operations.splice(
+      newOperationLineNumber,
+      0,
+      operations.splice(currentOperationLineNumber, 1)[0]
+    );
+    setSource(operations[0]);
+    setOperationList(operations.slice(1) as Operation[]);
+  };
+
   return (
     <ul className={'AknRuleOperation'}>
       <OperationLine
-        operand={defaultSource}
+        operand={source}
         locales={locales}
         scopes={scopes}
         operationLineNumber={0}
+        dropTarget={dropTarget}
+        setDropTarget={setDropTarget}
+        moveOperation={moveOperation}
       />
-      {defaultOperationList.map((operation: Operation, key: number) => {
+      {operationList.map((operation: Operation, key: number) => {
         const { operator, ...operand } = operation;
 
         return (
@@ -132,6 +193,9 @@ const CalculateOperationList: React.FC<Props> = ({
             locales={locales}
             scopes={scopes}
             operationLineNumber={key + 1}
+            dropTarget={dropTarget}
+            setDropTarget={setDropTarget}
+            moveOperation={moveOperation}
           />
         );
       })}
