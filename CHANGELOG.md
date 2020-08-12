@@ -23,6 +23,7 @@
 - PIM-9357: Make rules case-insensitive so it complies with family and attribute codes
 - PIM-9362: Adapt System Information twig file for a clear and a correct display of the number of API connections
 - PIM-9360: Fix PHP Warning raised in PriceComparator
+- PIM-9370: Fixes page freezing with a big number of attribute options
 
 ## New features
 
@@ -35,7 +36,9 @@
 
 - CLOUD-1959: Use cloud-deployer 2.2 and terraform 0.12.25
 - PIM-9306: Enhance catalog volume monitoring count queries for large datasets
-- API-1140: Be able get attributes searching by a list of attribute codes
+- API-1140: Be able to get attributes searching by a list of attribute codes
+- API-1225: Be able to get attributes searching by updated date
+- API-1226: Be able to get attributes searching by a list of attribute types
 - PIM-9368: Allow minimum translation progress of 70% instead of 80%
 
 # Technical Improvements

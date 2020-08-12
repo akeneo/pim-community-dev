@@ -51,9 +51,9 @@
     "@types/node": "11.9.5",
     "@types/react": "^16.8.0",
     "@types/react-dom": "^16.8.0",
+    "@types/react-redux": "^7.1.0",
     "@types/react-router-dom": "^5.1.0",
     "@types/react-test-renderer": "^16.8.0",
-    "@types/react-redux": "^7.1.0",
     "@types/styled-components": "^4.1.18",
     "@types/underscore": "^1.9.3",
     "@types/victory": "^33.0.1",
@@ -91,19 +91,20 @@
     "raw-loader": "1.0.0",
     "react-test-renderer": "^16.8.0",
     "read-pkg": "4.0.1",
+    "redux-devtools-extension": "^2.13.2",
     "text-loader": "0.0.1",
     "thread-loader": "^2.1.2",
     "ts-jest": "24.0.0",
     "ts-loader": "5.3.3",
     "typescript": "^3.7.2",
+    "typescript-plugin-styled-components": "^1.4.4",
     "webpack": "4.29.6",
     "webpack-cleanup-plugin": "0.5.1",
     "webpack-cli": "^3.2.3",
     "webpack-livereload-plugin": "2.2.0",
     "webpack-shell-plugin": "^0.5.0",
     "write-file-webpack-plugin": "4.5.0",
-    "yamljs": "0.3.0",
-    "redux-devtools-extension": "^2.13.2"
+    "yamljs": "0.3.0"
   },
   "dependencies": {
     "ajv": "^6.10.2",
@@ -122,15 +123,15 @@
     "react-dom": "^16.8.0",
     "react-hook-form": "^5.2.0",
     "react-markdown": "^4.3.1",
+    "react-redux": "^7.1.0",
     "react-router-dom": "^5.1.0",
     "reakit": "^1.0.0-rc.0",
+    "redux": "^4.0.0",
     "style-loader": "^1.0.1",
     "styled-components": "^4.3.2",
     "summernote": "0.6.16",
     "underscore": "1.8.3",
-    "victory": "^33.1.6",
-    "react-redux": "^7.1.0",
-    "redux": "^4.0.0"
+    "victory": "^33.1.6"
   },
   "resolutions": {
     "jest/**/ip-regex": "2.1.0"

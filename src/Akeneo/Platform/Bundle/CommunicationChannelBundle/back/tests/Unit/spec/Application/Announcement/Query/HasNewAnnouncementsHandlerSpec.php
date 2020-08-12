@@ -33,10 +33,11 @@ class HasNewAnnouncementsHandlerSpec extends ObjectBehavior
     {
         $userId = 1;
         $edition = 'Serenity';
+        $locale = 'en_US';
         $version = '20201015';
-        $query = new HasNewAnnouncementsQuery($edition, $version, $userId);
+        $query = new HasNewAnnouncementsQuery($edition, $version, $locale, $userId);
         $this->viewedAnnouncementsRepository->dataRows[] = ['announcement_id' => 'new_announcement_viewed', 'user_id' => $userId];
-        $findNewAnnouncementIds->find($edition, $version)->willReturn(['new_announcement_viewed', 'other_new_announcement']);
+        $findNewAnnouncementIds->find($edition, $version, $locale)->willReturn(['new_announcement_viewed', 'other_new_announcement']);
 
         $this->execute($query)->shouldReturn(true);
     }
@@ -46,7 +47,8 @@ class HasNewAnnouncementsHandlerSpec extends ObjectBehavior
         $userId = 1;
         $edition = 'Serenity';
         $version = '20201015';
-        $query = new HasNewAnnouncementsQuery($edition, $version, $userId);
+        $locale = 'en_US';
+        $query = new HasNewAnnouncementsQuery($edition, $version, $locale, $userId);
         $this->viewedAnnouncementsRepository->dataRows =
         [
             [
@@ -58,7 +60,7 @@ class HasNewAnnouncementsHandlerSpec extends ObjectBehavior
                 'user_id' => $userId
             ],
         ];
-        $findNewAnnouncementIds->find($edition, $version)->willReturn(['new_announcement_viewed', 'other_new_announcement_viewed']);
+        $findNewAnnouncementIds->find($edition, $version, $locale)->willReturn(['new_announcement_viewed', 'other_new_announcement_viewed']);
 
         $this->execute($query)->shouldReturn(false);
     }

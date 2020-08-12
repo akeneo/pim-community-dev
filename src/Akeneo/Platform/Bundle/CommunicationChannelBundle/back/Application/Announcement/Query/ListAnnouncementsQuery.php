@@ -17,16 +17,20 @@ final class ListAnnouncementsQuery
     /** @var string */
     private $version;
 
+    /** @var string */
+    private $locale;
+
     /** @var int */
     private $userId;
 
     /** @var string|null */
     private $searchAfter;
 
-    public function __construct(string $edition, string $version, int $userId, ?string $searchAfter)
+    public function __construct(string $edition, string $version, string $locale, int $userId, ?string $searchAfter)
     {
         $this->edition = $edition;
         $this->version = $version;
+        $this->locale = $locale;
         $this->userId = $userId;
         $this->searchAfter = $searchAfter;
     }
@@ -39,6 +43,11 @@ final class ListAnnouncementsQuery
     public function version(): string
     {
         return $this->version;
+    }
+
+    public function locale(): string
+    {
+        return $this->locale;
     }
 
     public function userId(): int

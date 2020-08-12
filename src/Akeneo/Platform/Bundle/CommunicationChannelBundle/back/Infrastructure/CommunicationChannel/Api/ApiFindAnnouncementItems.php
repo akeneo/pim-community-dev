@@ -25,11 +25,12 @@ final class ApiFindAnnouncementItems implements FindAnnouncementItemsInterface
         $this->client = new Client(['base_uri' => $apiUrl]);
     }
 
-    public function byPimVersion(string $pimEdition, string $pimVersion, ?string $searchAfter): array
+    public function byPimVersion(string $pimEdition, string $pimVersion, string $locale, ?string $searchAfter): array
     {
         $queryParameters = [
             'pim_edition' => $pimEdition,
             'pim_version' => $pimVersion,
+            'locale' => $locale,
         ];
         if (null !== $searchAfter) {
             $queryParameters['search_after'] = $searchAfter;

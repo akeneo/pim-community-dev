@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
 
-namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\ExternalApi;
+namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ExternalApi;
 
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface as CatalogAttributeRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
+use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -12,38 +13,38 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
 
 /**
- * Attribute repository for the API
- *
- * @author    Marie Bochu <marie.bochu@akeneo.com>
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @author    Willy Mesnage <willy.mesnage@akeneo.com>
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeRepository extends EntityRepository implements AttributeRepositoryInterface
+class CategoryRepository extends EntityRepository implements ApiResourceRepositoryInterface
 {
-    /** @var CatalogAttributeRepositoryInterface */
-    protected $attributeRepository;
+    /** @var CategoryRepositoryInterface */
+    protected $categoryRepository;
 
     /**
-     * @param EntityManager                       $em
-     * @param string                              $className
-     * @param CatalogAttributeRepositoryInterface $attributeRepository
+     * @param EntityManager $entityManager
+     * @param string $className
+     * @param CategoryRepositoryInterface $categoryRepository
      */
     public function __construct(
-        EntityManager $em,
+        EntityManager $entityManager,
         $className,
-        CatalogAttributeRepositoryInterface $attributeRepository
+        CategoryRepositoryInterface $categoryRepository
     ) {
-        parent::__construct($em, $em->getClassMetadata($className));
+        parent::__construct($entityManager, $entityManager->getClassMetadata($className));
 
-        $this->attributeRepository = $attributeRepository;
+        $this->categoryRepository = $categoryRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function getIdentifierProperties()
+    {
+        return $this->categoryRepository->getIdentifierProperties();
+    }
+
     public function findOneByIdentifier($identifier)
     {
-        return $this->attributeRepository->findOneByIdentifier($identifier);
+        return $this->categoryRepository->findOneByIdentifier($identifier);
     }
 
     /**
@@ -77,7 +78,7 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
     /**
      * {@inheritdoc}
      */
-    public function count(array $searchFilters = [])
+    public function count(array $searchFilters = []): int
     {
         try {
             $qb = $this->createQueryBuilder('r');
@@ -92,30 +93,6 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getIdentifierProperties()
-    {
-        return $this->attributeRepository->getIdentifierProperties();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getIdentifierCode()
-    {
-        return $this->attributeRepository->getIdentifierCode();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMediaAttributeCodes()
-    {
-        return $this->attributeRepository->findMediaAttributeCodes();
-    }
-
     protected function addFilters(QueryBuilder $qb, array $searchFilters): QueryBuilder
     {
         $this->validateSearchFilters($searchFilters);
@@ -127,9 +104,6 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
                 switch ($criterion['operator']) {
                     case 'IN':
                         $qb->andWhere($qb->expr()->in($field, $parameter));
-                        break;
-                    case '>':
-                        $qb->andWhere($qb->expr()->gt($field, $parameter));
                         break;
                     default:
                         throw new \InvalidArgumentException('Invalid operator for search query.');
@@ -153,12 +127,12 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
                 new Assert\Collection([
                     'operator' => new Assert\IdenticalTo([
                         'value' => 'IN',
-                        'message' => 'In order to search on attribute codes you must use "IN" operator, {{ compared_value }} given.',
+                        'message' => 'In order to search on category codes you must use "IN" operator, {{ compared_value }} given.',
                     ]),
                     'value' => [
                         new Assert\Type([
                             'type' => 'array',
-                            'message' => 'In order to search on attribute codes you must send an array of attribute codes as value, {{ type }} given.'
+                            'message' => 'In order to search on category codes you must send an array of category codes as value, {{ type }} given.'
                         ]),
                         new Assert\All([
                             new Assert\Type('string')
@@ -166,32 +140,6 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
                     ],
                 ])
             ]),
-            'updated' => new Assert\All([
-                new Assert\Collection([
-                    'operator' => new Assert\IdenticalTo([
-                        'value' => '>',
-                        'message' => 'Searching on the "updated" property require the ">" (greater than) operator, {{ compared_value }} given.',
-                    ]),
-                    'value' => new Assert\DateTime(['format' => \DateTime::ATOM]),
-                ])
-            ]),
-            'type' => new Assert\All(
-                new Assert\Collection([
-                    'operator' => new Assert\IdenticalTo([
-                        'value' => 'IN',
-                        'message' => 'In order to search on attribute types you must use "IN" operator, {{ compared_value }} given.',
-                    ]),
-                    'value' => [
-                        new Assert\Type([
-                            'type' => 'array',
-                            'message' => 'In order to search on attribute types you must send an array of attribute types as value, {{ type }} given.'
-                        ]),
-                        new Assert\All([
-                            new Assert\Type('string')
-                        ])
-                    ],
-                ])
-            ),
         ];
         $availableSearchFilters = array_keys($constraints);
 
