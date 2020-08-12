@@ -278,7 +278,7 @@ export default class AssetSelector extends React.Component<AssetSelectorProps> {
   }
 
   render(): JSX.Element | JSX.Element[] {
-    const {assetFamilyIdentifier, compact, ...props} = this.props;
+    const {assetFamilyIdentifier, compact, dropdownCssClass, ...props} = this.props;
     const className = `asset-selector ${this.props.readOnly ? 'asset-selector--disabled' : ''} ${
       compact ? 'asset-selector--compact' : ''
     }`;

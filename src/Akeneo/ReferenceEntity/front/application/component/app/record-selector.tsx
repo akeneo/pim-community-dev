@@ -268,7 +268,7 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
   }
 
   render(): JSX.Element | JSX.Element[] {
-    const {referenceEntityIdentifier, compact, ...props} = this.props;
+    const {referenceEntityIdentifier, compact, dropdownCssClass, ...props} = this.props;
     const className = `record-selector ${this.props.readOnly ? 'record-selector--disabled' : ''} ${
       compact ? 'record-selector--compact' : ''
     }`;
