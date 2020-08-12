@@ -9,7 +9,7 @@ type Props = {
 };
 
 const Container = styled.div`
-  *:first-child {
+  & > *:first-child {
     margin-top: 12px;
   }
 `;

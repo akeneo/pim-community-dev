@@ -30,9 +30,11 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
 }) => {
   const router = useBackboneRouter();
   const translate = useTranslate();
-  const { valueFormName, getValueFormValue } = useControlledFormInputCondition<
-    string[]
-  >(lineNumber);
+  const {
+    valueFormName,
+    getValueFormValue,
+    isFormFieldInError,
+  } = useControlledFormInputCondition<string[]>(lineNumber);
 
   const [attribute, setAttribute] = React.useState<Attribute | null>();
   React.useEffect(() => {
@@ -53,11 +55,19 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
       scopes={scopes}>
       <Controller
         as={InputText}
+        className={
+          isFormFieldInError('value')
+            ? 'AknTextField AknTextField--error'
+            : undefined
+        }
         data-testid={`edit-rules-input-${lineNumber}-value`}
         name={valueFormName}
         label={translate('pimee_catalog_rule.rule.value')}
         hiddenLabel
         defaultValue={getValueFormValue()}
+        rules={{
+          required: translate('pimee_catalog_rule.exceptions.required'),
+        }}
       />
     </AttributeConditionLine>
   );

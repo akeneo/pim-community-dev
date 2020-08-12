@@ -50,6 +50,7 @@ type Props = {
   categoryTrees: NetworkLifeCycle<CategoryTreeModel[]>;
   categoryTreeSelected?: CategoryTreeModel;
   setCategoryTreeSelected: (category: CategoryTreeModel) => void;
+  hasError?: boolean;
 };
 
 const CategoriesSelector: React.FC<Props> = ({
@@ -61,6 +62,7 @@ const CategoriesSelector: React.FC<Props> = ({
   categoryTrees,
   categoryTreeSelected,
   setCategoryTreeSelected,
+  hasError = false,
 }) => {
   const translate = useTranslate();
   const popover = usePopoverState({
@@ -92,7 +94,7 @@ const CategoriesSelector: React.FC<Props> = ({
   };
 
   return (
-    <InputCategory>
+    <InputCategory className={hasError ? ' select2-container-error' : ''}>
       <PopoverDisclosure {...popover}>
         {disclosureProps =>
           React.cloneElement(PopoverButton, {

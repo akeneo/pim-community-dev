@@ -9,12 +9,12 @@ type Props = InputProps & {
 
 const InputText = React.forwardRef<HTMLInputElement, Props>(
   (props, forwardedRef: React.Ref<HTMLInputElement>) => {
-    const { withCharactersLeft, errors, ...remainingProps } = props;
+    const { withCharactersLeft, errors, className, ...remainingProps } = props;
 
     return (
       <>
         <Input
-          className='AknTextField'
+          className={className ?? 'AknTextField'}
           type='text'
           ref={forwardedRef}
           {...remainingProps}

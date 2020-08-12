@@ -22,7 +22,6 @@ type Props = {
   onChange?: (value: Select2Value[]) => void;
   value: string[];
   name: string;
-  validation?: { required?: string; validate?: (value: any) => string | true };
 };
 
 const MultiOptionsSelector: React.FC<Props> = ({
@@ -32,7 +31,6 @@ const MultiOptionsSelector: React.FC<Props> = ({
   onChange,
   value,
   name,
-  validation,
   ...remainingProps
 }) => {
   const router = useBackboneRouter();
@@ -92,7 +90,6 @@ const MultiOptionsSelector: React.FC<Props> = ({
       onChange={onChange}
       hiddenLabel={hiddenLabel}
       name={name}
-      validation={validation}
     />
   );
 };

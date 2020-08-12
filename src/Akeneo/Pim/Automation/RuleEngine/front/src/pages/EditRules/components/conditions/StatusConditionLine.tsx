@@ -1,5 +1,5 @@
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { ConditionLineProps } from './ConditionLineProps';
 import { StatusOperators } from '../../../../models/conditions';
 import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
@@ -21,17 +21,14 @@ const INIT_OPERATOR = Operator.EQUALS;
 
 const StatusConditionLine: React.FC<ConditionLineProps> = ({ lineNumber }) => {
   const translate = useTranslate();
-  const { errors } = useFormContext();
   const {
     fieldFormName,
     operatorFormName,
     valueFormName,
     getOperatorFormValue,
     getValueFormValue,
+    isFormFieldInError,
   } = useControlledFormInputCondition<boolean>(lineNumber);
-
-  const isElementInError = (element: string): boolean =>
-    typeof errors?.content?.conditions?.[lineNumber]?.[element] === 'object';
 
   return (
     <ConditionLineFormAndErrorsContainer className={'AknGrid-bodyCell'}>
@@ -59,7 +56,7 @@ const StatusConditionLine: React.FC<ConditionLineProps> = ({ lineNumber }) => {
         </OperatorColumn>
         <ValueColumn
           className={
-            isElementInError('value') ? 'select2-container-error' : ''
+            isFormFieldInError('value') ? 'select2-container-error' : ''
           }>
           <Controller
             name={valueFormName}

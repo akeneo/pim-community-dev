@@ -6,6 +6,7 @@ type Props = {
   ariaDescribedBy?: string;
   label?: string;
   hiddenLabel?: boolean;
+  hasError?: boolean;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 const Input = forwardRef<HTMLInputElement, Props>(

@@ -16,6 +16,7 @@ import {
   formatDateLocaleTimeConditionsFromBackend,
   formatDateLocaleTimeConditionsToBackend,
 } from '../components/conditions/DateConditionLines/dateConditionLines.utils';
+import { getErrorPath } from './ErrorPathResolver';
 
 const registerConditions = (
   register: Control['register'],
@@ -92,15 +93,6 @@ const transformFormData = (formData: FormData): Payload => {
   };
 };
 
-const getErrorPath = (path: string) => {
-  if (path.match(/^(actions|conditions)\[\d+\]$/g)) {
-    /* The error path is not linked to a specific field (value, field, operator...)
-     * As in react-hook-form, every error is linked to a field, we need to link it to a fake field. */
-    return `content.${path}.__fromBackend__`;
-  }
-  return `content.${path}`;
-};
-
 const doExecuteOnSave = async (
   router: Router,
   translate: Translate,
@@ -169,7 +161,11 @@ const submitEditRuleForm = (
       const errors = await updateResponse.json();
       errors.forEach(
         (error: { global: boolean; message: string; path: string }) => {
-          setError(getErrorPath(error.path), 'validate', error.message);
+          setError(
+            getErrorPath(formData, error.path),
+            'validate',
+            error.message
+          );
         }
       );
 

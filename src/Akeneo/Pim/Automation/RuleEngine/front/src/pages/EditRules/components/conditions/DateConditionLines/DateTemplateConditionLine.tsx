@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import {
   useUserCatalogLocale,
   useTranslate,
@@ -92,9 +92,6 @@ const DateTemplateConditionLine: React.FC<Props> = ({
   const refToInput = useRef<HTMLInputElement>(null);
   const translate = useTranslate();
   const locale = useUserCatalogLocale();
-  const { errors } = useFormContext();
-  const isElementInError = (element: string): boolean =>
-    typeof errors?.content?.conditions?.[lineNumber]?.[element] === 'object';
 
   const {
     operatorFormName,
@@ -103,6 +100,7 @@ const DateTemplateConditionLine: React.FC<Props> = ({
     getScopeFormValue,
     localeFormName,
     getLocaleFormValue,
+    isFormFieldInError,
   } = useControlledFormInputCondition<DateValue>(lineNumber);
 
   useEffect(() => {
@@ -150,10 +148,7 @@ const DateTemplateConditionLine: React.FC<Props> = ({
         />
       </OperatorColumn>
       {isNotAnEmptyOperator(operator) && (
-        <ValueColumn
-          className={
-            isElementInError('value') ? 'select2-container-error' : ''
-          }>
+        <ValueColumn>
           {isNotARangeOperator(operator) && (
             <StyledSelect2Wrapper>
               <Select2SimpleSyncWrapper
@@ -182,13 +177,14 @@ const DateTemplateConditionLine: React.FC<Props> = ({
             ref={refToInput}
             timePeriodOptions={timePeriodOptions}
             translate={translate}
+            hasError={isFormFieldInError('value')}
           />
         </ValueColumn>
       )}
       {dateAttribute && dateAttribute.scopable && scopes && (
         <ScopeColumn
           className={
-            isElementInError('scope') ? 'select2-container-error' : ''
+            isFormFieldInError('scope') ? 'select2-container-error' : ''
           }>
           <Controller
             allowClear={!dateAttribute.scopable}
@@ -213,7 +209,7 @@ const DateTemplateConditionLine: React.FC<Props> = ({
       {dateAttribute && dateAttribute.localizable && locales && (
         <LocaleColumn
           className={
-            isElementInError('scope') ? 'select2-container-error' : ''
+            isFormFieldInError('scope') ? 'select2-container-error' : ''
           }>
           <Controller
             allowClear={!dateAttribute.localizable}
