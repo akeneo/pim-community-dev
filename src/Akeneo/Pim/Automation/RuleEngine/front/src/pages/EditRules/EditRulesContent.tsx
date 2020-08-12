@@ -171,6 +171,7 @@ const EditRulesContent: React.FC<Props> = ({
         formId='edit-rules-form'
         title={title}
         unsavedChanges={formMethods.formState.dirty}
+        saveable={!!actionsState.filter(Boolean).length}
         dropdown={
           <Dropdown title={translate('pim_common.other_actions')}>
             <DialogDisclosure
