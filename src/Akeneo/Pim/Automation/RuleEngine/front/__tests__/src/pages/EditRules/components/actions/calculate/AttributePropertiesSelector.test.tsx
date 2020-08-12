@@ -72,6 +72,7 @@ describe('AttributePropertiesSelector', () => {
       <AttributePropertiesSelector
         operationLineNumber={0}
         attributeCode={defaultValues.attribute.field}
+        fieldFormName={'attribute.field'}
         scopeFormName={'attribute.scope'}
         localeFormName={'attribute.locale'}
         currencyFormName={'attribute.currency'}
@@ -120,6 +121,7 @@ describe('AttributePropertiesSelector', () => {
       <AttributePropertiesSelector
         operationLineNumber={0}
         attributeCode={defaultValues.attribute.field}
+        fieldFormName={'attribute.field'}
         scopeFormName={'attribute.scope'}
         localeFormName={'attribute.locale'}
         currencyFormName={'attribute.currency'}

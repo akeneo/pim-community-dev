@@ -147,14 +147,10 @@ const OperationLine: React.FC<OperationLineProps> = ({
           )}
           {fieldOperand.field && (
             <>
-              <Controller
-                as={<input type='hidden' />}
-                name={formName(`${baseFormName}.field`)}
-                defaultValue={fieldOperand.field}
-              />
               <AttributePropertiesSelector
                 operationLineNumber={operationLineNumber}
                 attributeCode={fieldOperand.field}
+                fieldFormName={formName(`${baseFormName}.field`)}
                 localeFormName={formName(`${baseFormName}.locale`)}
                 scopeFormName={formName(`${baseFormName}.scope`)}
                 currencyFormName={formName(`${baseFormName}.currency`)}

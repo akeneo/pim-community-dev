@@ -33,10 +33,12 @@ import { useActiveCurrencies } from '../../../hooks/useActiveCurrencies';
 import { Router } from '../../../../../dependenciesTools';
 import { getAttributeByIdentifier } from '../../../../../repositories/AttributeRepository';
 import get from 'lodash/get';
+import { validateAttribute } from '../attribute/attribute.utils';
 
 type Props = {
   operationLineNumber: number;
   attributeCode: AttributeCode;
+  fieldFormName: string;
   scopeFormName: string;
   localeFormName: string;
   currencyFormName: string;
@@ -50,6 +52,7 @@ type Props = {
 const AttributePropertiesSelector: React.FC<Props> = ({
   operationLineNumber,
   attributeCode,
+  fieldFormName,
   scopeFormName,
   localeFormName,
   currencyFormName,
@@ -112,7 +115,19 @@ const AttributePropertiesSelector: React.FC<Props> = ({
   return (
     <>
       <span className={'AknRuleOperation-element'}>
-        <span className={'AknRuleOperation-elementField'}>
+        <Controller
+          as={<input type='hidden' />}
+          name={fieldFormName}
+          defaultValue={attributeCode}
+          rules={{ validate: validateAttribute(translate, router) }}
+        />
+        <span
+          className={
+            'AknRuleOperation-elementField' +
+            (isFullFormFieldInError(fieldFormName)
+              ? ' AknRuleOperation-elementField--error'
+              : '')
+          }>
           {null === attribute && `[${attributeCode}]`}
           {attribute && getAttributeLabel(attribute, currentCatalogLocale)}
         </span>
