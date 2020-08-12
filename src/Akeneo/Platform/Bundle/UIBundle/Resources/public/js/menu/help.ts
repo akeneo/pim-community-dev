@@ -35,12 +35,14 @@ class Help extends BaseView {
   private getUrl(): Promise<string> {
     return DataCollector.collect(this.analyticsUrl).then((data: any) => {
       const {pim_version, pim_edition} = data;
+
       let version = `v${pim_version.split('.')[0]}`;
       let campaign = `${pim_edition}${pim_version}`;
 
-      if ('serenity' === pim_edition.toLowerCase()) {
-        version = pim_edition.toLowerCase();
-        campaign = pim_edition;
+      // CE master, serenity
+      if (pim_version.split('.').length === 1) {
+        version = 'serenity';
+        campaign = 'serenity';
       }
 
       const url = new URL(`https://help.akeneo.com/pim/${version}/index.html`);
