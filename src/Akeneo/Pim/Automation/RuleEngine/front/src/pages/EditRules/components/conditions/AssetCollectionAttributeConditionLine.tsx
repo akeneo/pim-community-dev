@@ -10,19 +10,19 @@ import {
 import { Attribute } from '../../../../models';
 import { Operator } from '../../../../models/Operator';
 import {
-  SimpleMultiReferenceEntitiesAttributeCondition,
-  SimpleMultiReferenceEntitiesAttributeOperators,
+  AssetCollectionAttributeCondition,
+  AssetCollectionAttributeOperators,
 } from '../../../../models/conditions';
-import { ReferenceEntitySelector } from '../../../../dependenciesTools/components/ReferenceEntity/ReferenceEntitySelector';
 import { Controller } from 'react-hook-form';
 import { useControlledFormInputCondition } from '../../hooks';
+import { AssetSelector } from '../../../../dependenciesTools/components/AssetManager/AssetSelector';
 import { useGetAttributeAtMount } from '../actions/attribute/attribute.utils';
 
-type SimpleMultiReferenceEntitiesAttributeConditionLineProps = ConditionLineProps & {
-  condition: SimpleMultiReferenceEntitiesAttributeCondition;
+type AssetCollectionAttributeConditionLineProps = ConditionLineProps & {
+  condition: AssetCollectionAttributeCondition;
 };
 
-const SimpleMultiReferenceEntitiesAttributeConditionLine: React.FC<SimpleMultiReferenceEntitiesAttributeConditionLineProps> = ({
+const AssetCollectionAttributeConditionLine: React.FC<AssetCollectionAttributeConditionLineProps> = ({
   condition,
   lineNumber,
   locales,
@@ -62,30 +62,30 @@ const SimpleMultiReferenceEntitiesAttributeConditionLine: React.FC<SimpleMultiRe
       currentCatalogLocale={currentCatalogLocale}
       locales={locales}
       scopes={scopes}
-      availableOperators={SimpleMultiReferenceEntitiesAttributeOperators}
+      availableOperators={AssetCollectionAttributeOperators}
       attribute={attribute}
       valueHasError={isFormFieldInError('value')}>
       {attribute && (
         <Controller
-          as={ReferenceEntitySelector}
+          as={AssetSelector}
           value={val}
-          referenceEntityIdentifier={attribute.reference_data_name as string}
+          assetFamilyIdentifier={attribute.reference_data_name as string}
           locale={userCatalogLocale}
           channel={userCatalogScope}
           placeholder={translate(
-            'pimee_catalog_rule.form.edit.actions.set_attribute.select_reference_entity'
+            'pimee_catalog_rule.form.edit.actions.set_attribute.select_asset'
           )}
           compact={true}
           multiple={true}
           name={valueFormName}
           rules={{
             required: translate('pimee_catalog_rule.exceptions.required'),
-            validate: (refEntityCodes: string[]) =>
-              Array.isArray(refEntityCodes) && refEntityCodes.length === 0
+            validate: (assetCodes: string[]) =>
+              Array.isArray(assetCodes) && assetCodes.length === 0
                 ? translate('pimee_catalog_rule.exceptions.required')
                 : true,
           }}
-          dropdownCssClass={'record-selector-dropdown--rules'}
+          dropdownCssClass={'asset-selector-dropdown--rules'}
         />
       )}
     </AttributeConditionLine>
@@ -93,6 +93,6 @@ const SimpleMultiReferenceEntitiesAttributeConditionLine: React.FC<SimpleMultiRe
 };
 
 export {
-  SimpleMultiReferenceEntitiesAttributeConditionLine,
-  SimpleMultiReferenceEntitiesAttributeConditionLineProps,
+  AssetCollectionAttributeConditionLine,
+  AssetCollectionAttributeConditionLineProps,
 };

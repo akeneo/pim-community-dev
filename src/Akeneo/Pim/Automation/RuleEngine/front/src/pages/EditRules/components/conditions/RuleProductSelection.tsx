@@ -19,6 +19,8 @@ import {
   createDateAttributeCondition,
   createDateSystemCondition,
   createTextareaAttributeCondition,
+  createAssetCollectionAttributeCondition,
+  createSimpleMultiReferenceEntitiesAttributeCondition,
 } from '../../../../models/';
 import { TextBoxBlue } from '../TextBoxBlue';
 import { useProductsCount } from '../../hooks';
@@ -33,7 +35,6 @@ import {
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
 import { Action } from '../../../../models/Action';
-import { createSimpleMultiReferenceEntitiesAttributeCondition } from '../../../../models/conditions/SimpleMultiReferenceEntitiesAttributeCondition';
 
 const Header = styled.header`
   font-weight: normal;
@@ -119,20 +120,22 @@ const RuleProductSelection: React.FC<Props> = ({
     fieldCode: string
   ) => Promise<Condition> = async fieldCode => {
     const factories: ConditionFactory[] = [
-      createFamilyCondition,
-      createCompletenessCondition,
+      // System
       createCategoryCondition,
+      createCompletenessCondition,
+      createDateSystemCondition,
+      createFamilyCondition,
       createGroupsCondition,
       createStatusCondition,
+      // Attributes
+      createAssetCollectionAttributeCondition,
+      createBooleanAttributeCondition,
+      createDateAttributeCondition,
+      createNumberAttributeCondition,
+      createSimpleMultiOptionsAttributeCondition,
+      createSimpleMultiReferenceEntitiesAttributeCondition,
       createTextAttributeCondition,
       createTextareaAttributeCondition,
-      createSimpleMultiOptionsAttributeCondition,
-      createNumberAttributeCondition,
-      createCategoryCondition,
-      createDateAttributeCondition,
-      createDateSystemCondition,
-      createBooleanAttributeCondition,
-      createSimpleMultiReferenceEntitiesAttributeCondition,
     ];
 
     for (let i = 0; i < factories.length; i++) {

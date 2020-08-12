@@ -77,6 +77,7 @@ export type RecordSelectorProps = {
   channel: ChannelReference;
   placeholder: string;
   onChange: (value: RecordCode[] | RecordCode | null) => void;
+  dropdownCssClass?: string;
 };
 
 type Select2Item = {id: string; text: string; original: NormalizedItemRecord};
@@ -126,7 +127,8 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
       }`;
       const dropdownCssClass = `${
         this.props.multiple ? 'record-selector-multi-dropdown' : 'record-selector-dropdown'
-      } ${this.props.compact ? 'record-selector-dropdown--compact' : ''}`;
+      } ${this.props.compact ? 'record-selector-dropdown--compact' : ''
+      } ${this.props.dropdownCssClass || ''}`;
 
       this.el.select2({
         allowClear: true,
@@ -266,7 +268,7 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
   }
 
   render(): JSX.Element | JSX.Element[] {
-    const {referenceEntityIdentifier, compact, ...props} = this.props;
+    const {referenceEntityIdentifier, compact, dropdownCssClass, ...props} = this.props;
     const className = `record-selector ${this.props.readOnly ? 'record-selector--disabled' : ''} ${
       compact ? 'record-selector--compact' : ''
     }`;

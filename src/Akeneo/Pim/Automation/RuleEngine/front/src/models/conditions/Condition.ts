@@ -8,17 +8,31 @@ import {
   CategoryCondition,
   CompletenessCondition,
   DateAttributeCondition,
+  DateSystemCondition,
+  SimpleMultiReferenceEntitiesAttributeCondition,
+  TextareaAttributeCondition,
+  BooleanAttributeCondition,
+  GroupsCondition,
+  NumberAttributeCondition,
+  StatusCondition,
 } from './';
 
 export type Condition =
   | CategoryCondition
   | CompletenessCondition
+  | DateSystemCondition
   | FallbackCondition
   | PimCondition
   | FamilyCondition
   | TextAttributeCondition
   | SimpleMultiOptionsAttributeCondition
-  | DateAttributeCondition;
+  | DateAttributeCondition
+  | SimpleMultiReferenceEntitiesAttributeCondition
+  | TextareaAttributeCondition
+  | BooleanAttributeCondition
+  | GroupsCondition
+  | NumberAttributeCondition
+  | StatusCondition;
 
 export type ConditionFactory = (
   fieldCode: string,

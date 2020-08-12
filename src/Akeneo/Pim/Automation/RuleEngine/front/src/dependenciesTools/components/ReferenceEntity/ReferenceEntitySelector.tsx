@@ -37,6 +37,7 @@ export type RecordSelectorProps = {
   channel: string | null;
   placeholder: string;
   onChange: (value: string[] | string | null) => void;
+  dropdownCssClass?: string;
 };
 
 export const ReferenceEntitySelector: React.FC<RecordSelectorProps> = ({
@@ -49,6 +50,7 @@ export const ReferenceEntitySelector: React.FC<RecordSelectorProps> = ({
   channel,
   placeholder,
   onChange,
+  dropdownCssClass,
 }) => {
   const handleChange = (
     value: ReferenceEntityString | ReferenceEntityString[] | null
@@ -85,6 +87,7 @@ export const ReferenceEntitySelector: React.FC<RecordSelectorProps> = ({
       channel={channel ? ReferenceEntityString.create(channel) : null}
       placeholder={placeholder}
       onChange={handleChange}
+      dropdownCssClass={dropdownCssClass}
     />
   );
 };

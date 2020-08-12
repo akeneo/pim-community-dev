@@ -1,3 +1,4 @@
+export * from './AssetCollectionAttributeCondition';
 export * from './CategoryCondition';
 export * from './CompletenessCondition';
 export * from './Condition';
@@ -16,3 +17,4 @@ export * from './CategoryCondition';
 export * from './NumberAttributeCondition';
 export * from './DateAttributeCondition';
 export * from './BooleanAttributeCondition';
+export * from './SimpleMultiReferenceEntitiesAttributeCondition';

@@ -22,7 +22,7 @@ const dateSystemOperators = [
 ];
 
 type DateSystemCondition = {
-  field: string;
+  field: 'created' | 'updated';
   operator: DateOperator;
   value: DateValue;
 };
@@ -57,7 +57,7 @@ const createDateSystemCondition: ConditionFactory = async (
     return Promise.resolve(null);
   }
   return Promise.resolve({
-    field: fieldCode,
+    field: fieldCode as 'created' | 'updated',
     operator: Operator.EQUALS,
     value: '',
   });

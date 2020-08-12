@@ -34,7 +34,7 @@ pimee_enrich_rule_definition_get:
     path: /rest/rule_definition/{ruleCode}
     defaults: { _controller: pimee_enrich.controller.rule_definition.get }
     requirements:
-        ruleCode: '[a-z0-9_]+'
+        ruleCode: '[a-zA-Z0-9_]+'
     methods: [GET]
 
 pimee_enrich_rule_definition_create:
