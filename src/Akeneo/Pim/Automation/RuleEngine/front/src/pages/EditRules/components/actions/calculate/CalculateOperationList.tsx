@@ -216,6 +216,7 @@ const CalculateOperationList: React.FC<Props> = ({
     { index: number; object: any } | undefined
   >();
   const [version, setVersion] = React.useState<number>(1);
+  const [sourceKey, setSourceKey] = React.useState<string>('initial');
 
   const getSourceFormValue = () => getFormValue('source');
 
@@ -231,6 +232,7 @@ const CalculateOperationList: React.FC<Props> = ({
           getFormValue(`operation_list[0].${key}`)
         );
       });
+      setSourceKey(fields[0].id || 'initial');
       remove(0);
       setVersion(version + 1);
       return;
@@ -256,10 +258,9 @@ const CalculateOperationList: React.FC<Props> = ({
           getFormValue(`operation_list[0].${key}`)
         );
       });
-      console.log('currentSource = ', currentSource);
+      setSourceKey(fields[0].id || 'initial');
       remove(0);
 
-      console.log('setToInsert currentSource = ', currentSource);
       // setToInsert for later (useEffect) because we cannot make 2 useFieldArray operations in a same render (see docs)
       setToInsert({
         index: newOperationLineNumber - 1,
@@ -270,11 +271,6 @@ const CalculateOperationList: React.FC<Props> = ({
 
     if (0 === newOperationLineNumber) {
       const currentSource = { ...getSourceFormValue() };
-      console.log('currentOperationLineNumber = ', currentOperationLineNumber);
-      console.log(
-        'test = ',
-        getFormValue(`operation_list[${currentOperationLineNumber - 1}].locale`)
-      );
       ['field', 'value', 'scope', 'locale', 'currency'].forEach(key => {
         setValue(
           formName(`source.${key}`),
@@ -284,10 +280,9 @@ const CalculateOperationList: React.FC<Props> = ({
           )
         );
       });
-      // setValue(formName('source'), operationToMove || undefined);
+      setSourceKey(fields[currentOperationLineNumber - 1].id || 'initial');
       remove(currentOperationLineNumber - 1);
 
-      console.log('setToInsert currentSource = ', currentSource);
       // setToInsert for later (useEffect) because we cannot make 2 useFieldArray operations in a same render (see docs)
       setToInsert({
         index: 0,
@@ -296,7 +291,6 @@ const CalculateOperationList: React.FC<Props> = ({
       return;
     }
 
-    console.log(currentOperationLineNumber, newOperationLineNumber);
     move(currentOperationLineNumber - 1, newOperationLineNumber - 1);
     setVersion(version + 1);
   };
@@ -313,6 +307,7 @@ const CalculateOperationList: React.FC<Props> = ({
     <ul className={'AknRuleOperation'}>
       {getSourceFormValue() && (
         <OperationLine
+          key={sourceKey}
           baseFormName={'source'}
           sourceOrOperation={getSourceFormValue()}
           locales={locales}
