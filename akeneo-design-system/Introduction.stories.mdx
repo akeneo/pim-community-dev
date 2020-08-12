@@ -1,4 +1,5 @@
 import {Meta} from '@storybook/addon-docs/blocks';
+import { linkTo } from '@storybook/addon-links';
 
 <Meta title="Introduction" />
 
@@ -117,10 +118,10 @@ We recommend building UIs with a [**component-driven**](https://componentdriven.
 
 <div class="subheading">Configure</div>
 <div class="link-list">
-  <a class="link-item" href="https://storybook.js.org/docs/presets" target="_blank">
+  <a class="link-item" onClick={linkTo('Components/Dummy', 'Standard')}>
     <span>
-      <strong>Presets for popular tools</strong>
-      Easy setup for TypeScript, SCSS and more.
+      <strong>Dummy component</strong>
+      The bumbest component ever
     </span>
   </a>
   <a class="link-item" href="https://storybook.js.org/docs/webpack" target="_blank">
