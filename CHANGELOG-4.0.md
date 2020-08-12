@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.48 (2020-08-12)
+
 ## Bug fixes
 
 - PIM-9387: Fix product model proposal with empty values
