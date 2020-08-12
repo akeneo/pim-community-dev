@@ -37,6 +37,7 @@ const AssetCollectionValue: React.FC<InputValueProps> = ({
         assetFamilyIdentifier={attribute.reference_data_name as string}
         multiple={true}
         compact={true}
+        dropdownCssClass={'asset-selector-dropdown--rules'}
       />
     </>
   );

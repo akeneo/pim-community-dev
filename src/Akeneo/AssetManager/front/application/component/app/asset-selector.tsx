@@ -59,6 +59,7 @@ export type AssetSelectorProps = {
   channel: ChannelReference;
   placeholder?: string;
   onChange: (value: AssetCode[] | AssetCode | null) => void;
+  dropdownCssClass?: string;
 };
 
 type Select2Item = {id: string; text: string; original: ListAsset};
@@ -108,7 +109,7 @@ export default class AssetSelector extends React.Component<AssetSelectorProps> {
       }`;
       const dropdownCssClass = `${this.props.multiple ? 'asset-selector-multi-dropdown' : 'asset-selector-dropdown'} ${
         this.props.compact ? 'asset-selector-dropdown--compact' : ''
-      }`;
+      } ${this.props.dropdownCssClass || ''}`;
 
       this.el.select2({
         allowClear: true,

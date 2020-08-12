@@ -19,6 +19,7 @@ export type AssetSelectorProps = {
   channel: ChannelReference;
   placeholder?: string;
   onChange: (value: AssetCode[] | AssetCode | null) => void;
+  dropdownCssClass?: string;
 };
 
 export const AssetSelector: React.FC<AssetSelectorProps> = ({
@@ -32,6 +33,7 @@ export const AssetSelector: React.FC<AssetSelectorProps> = ({
   channel,
   placeholder,
   onChange,
+  dropdownCssClass,
 }) => {
   return (
     <BaseAssetSelector
@@ -45,6 +47,7 @@ export const AssetSelector: React.FC<AssetSelectorProps> = ({
       channel={channel}
       placeholder={placeholder}
       onChange={onChange}
+      dropdownCssClass={dropdownCssClass}
     />
   );
 };

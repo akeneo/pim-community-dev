@@ -34,9 +34,11 @@ const SimpleMultiReferenceEntitiesAttributeConditionLine: React.FC<SimpleMultiRe
   const userCatalogLocale = useUserCatalogLocale();
   const userCatalogScope = useUserCatalogScope();
 
-  const { valueFormName, getValueFormValue } = useControlledFormInputCondition<
-    string[]
-  >(lineNumber);
+  const {
+    valueFormName,
+    getValueFormValue,
+    isFormFieldInError,
+  } = useControlledFormInputCondition<string[]>(lineNumber);
 
   const [attribute, setAttribute] = React.useState<Attribute | null>();
   React.useEffect(() => {
@@ -65,7 +67,8 @@ const SimpleMultiReferenceEntitiesAttributeConditionLine: React.FC<SimpleMultiRe
       locales={locales}
       scopes={scopes}
       availableOperators={SimpleMultiReferenceEntitiesAttributeOperators}
-      attribute={attribute}>
+      attribute={attribute}
+      valueHasError={isFormFieldInError('value')}>
       {attribute && (
         <Controller
           as={ReferenceEntitySelector}
@@ -79,6 +82,14 @@ const SimpleMultiReferenceEntitiesAttributeConditionLine: React.FC<SimpleMultiRe
           compact={true}
           multiple={true}
           name={valueFormName}
+          rules={{
+            required: translate('pimee_catalog_rule.exceptions.required'),
+            validate: (refEntityCodes: string[]) =>
+              Array.isArray(refEntityCodes) && refEntityCodes.length === 0
+                ? translate('pimee_catalog_rule.exceptions.required')
+                : true,
+          }}
+          dropdownCssClass={'record-selector-dropdown--rules'}
         />
       )}
     </AttributeConditionLine>

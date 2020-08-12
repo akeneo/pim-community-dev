@@ -34,9 +34,11 @@ const AssetCollectionAttributeConditionLine: React.FC<AssetCollectionAttributeCo
   const userCatalogLocale = useUserCatalogLocale();
   const userCatalogScope = useUserCatalogScope();
 
-  const { valueFormName, getValueFormValue } = useControlledFormInputCondition<
-    string[]
-  >(lineNumber);
+  const {
+    valueFormName,
+    getValueFormValue,
+    isFormFieldInError,
+  } = useControlledFormInputCondition<string[]>(lineNumber);
 
   const [attribute, setAttribute] = React.useState<Attribute | null>();
   React.useEffect(() => {
@@ -65,7 +67,8 @@ const AssetCollectionAttributeConditionLine: React.FC<AssetCollectionAttributeCo
       locales={locales}
       scopes={scopes}
       availableOperators={AssetCollectionAttributeOperators}
-      attribute={attribute}>
+      attribute={attribute}
+      valueHasError={isFormFieldInError('value')}>
       {attribute && (
         <Controller
           as={AssetSelector}
@@ -74,11 +77,19 @@ const AssetCollectionAttributeConditionLine: React.FC<AssetCollectionAttributeCo
           locale={userCatalogLocale}
           channel={userCatalogScope}
           placeholder={translate(
-            'pimee_catalog_rule.form.edit.actions.set_attribute.select_reference_entity'
+            'pimee_catalog_rule.form.edit.actions.set_attribute.select_asset'
           )}
           compact={true}
           multiple={true}
           name={valueFormName}
+          rules={{
+            required: translate('pimee_catalog_rule.exceptions.required'),
+            validate: (assetCodes: string[]) =>
+              Array.isArray(assetCodes) && assetCodes.length === 0
+                ? translate('pimee_catalog_rule.exceptions.required')
+                : true,
+          }}
+          dropdownCssClass={'asset-selector-dropdown--rules'}
         />
       )}
     </AttributeConditionLine>

@@ -66,12 +66,20 @@
     .asset-selector-container, .record-selector-container {
       width: 460px;
       margin-left: -5px;
+      margin-top: -5px;
 
       .asset-selector, .record-selector {
+        &--compact {
+          .select2-choices {
+            .select2-search-choice {
+              width: 300px;
+            }
+          }
+        }
+
         .select2-choices {
           border-bottom: none;
-          margin-top: -5px;
-          margin-left: -5px;
+          min-height: 50px !important;
 
           .select2-search-choice {
             border-radius: 2px;
@@ -87,20 +95,26 @@
           }
 
           .select2-search-field {
-            height: 50px;
-            background: url('/bundles/pimui/images/icon-down.svg') no-repeat 241px 15px;
+            height: 40px;
+            background: url('/bundles/pimui/images/icon-down.svg') no-repeat 261px 10px;
             background-size: 17px;
-            width: 280px;
+            width: 300px;
             border-radius: 2px;
+            border-color: @AknBorderColor;
 
             input {
-              height: 46px;
+              height: 36px;
             }
           }
         }
       }
     }
   }
+}
+
+.asset-selector-dropdown--rules,
+.record-selector-dropdown--rules {
+  width: 300px !important;
 }
 
 #edit-rules-form {

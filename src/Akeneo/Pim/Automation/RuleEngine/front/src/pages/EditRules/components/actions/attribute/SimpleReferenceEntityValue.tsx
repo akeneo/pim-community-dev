@@ -36,6 +36,7 @@ const SimpleReferenceEntityValue: React.FC<InputValueProps> = ({
         value={value}
         referenceEntityIdentifier={attribute.reference_data_name as string}
         multiple={false}
+        dropdownCssClass={'record-selector-dropdown--rules'}
       />
     </>
   );
