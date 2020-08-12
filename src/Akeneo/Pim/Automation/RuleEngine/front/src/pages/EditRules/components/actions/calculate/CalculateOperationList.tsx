@@ -17,6 +17,7 @@ import {
   FieldOperand,
   Operand,
 } from '../../../../../models/actions/Calculate/Operand';
+import { Translate } from '../../../../../dependenciesTools';
 
 type SourceOrOperation = Operand | Operation;
 
@@ -28,6 +29,20 @@ const DeleteButton = styled.button`
 
 type DropTarget = {
   operationLineNumber: number;
+};
+
+const getConstantValidation = (operator: Operator, translate: Translate) => {
+  return {
+    required: translate(
+      'pimee_catalog_rule.exceptions.required_constant_for_operation'
+    ),
+    validate: (value: any) => {
+      if ('0' === value && Operator.DIVIDE === operator) {
+        return translate('pimee_catalog_rule.exceptions.division_by_zero');
+      }
+      return true;
+    },
+  };
 };
 
 type OperationLineProps = {
@@ -61,7 +76,7 @@ const OperationLine: React.FC<OperationLineProps> = ({
   version,
 }) => {
   const translate = useTranslate();
-  const { setValue } = useFormContext();
+  const { setValue, watch } = useFormContext();
   const { formName, getFormValue } = useControlledFormInputAction<
     string | null
   >(lineNumber);
@@ -142,6 +157,10 @@ const OperationLine: React.FC<OperationLineProps> = ({
                 hiddenLabel={true}
                 defaultValue={constantOperand.value}
                 step={'any'}
+                rules={getConstantValidation(
+                  watch(formName(`${baseFormName}.operator`)),
+                  translate
+                )}
               />
             </span>
           )}

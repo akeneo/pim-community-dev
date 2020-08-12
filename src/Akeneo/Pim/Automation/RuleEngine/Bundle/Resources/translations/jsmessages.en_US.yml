@@ -296,6 +296,8 @@ pimee_catalog_rule:
         required_scope_completeness: A channel is required for the completeness
         required_value: A value is required for this action
         required_categories: At least one category is required for this action
+        required_constant_for_operation: A constant value is required for this operation
+        division_by_zero: A division by zero is not possible
         unknown_or_inactive_locale: 'The "{{ localeCode }}" locale does not exist or is not activated'
         unknown_or_inactive_currency: 'The "{{ currencyCode }}" currency does not exist or is not activated'
         unbound_locale: 'The "{{ localeCode }}" locale is not activated in the "{{ channelCode }}" channel'
