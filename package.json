@@ -25,7 +25,8 @@
     "less": "node $npm_package_config_styles",
     "less-watch": "SHELL=/bin/bash chokidar --verbose \"{$npm_package_config_source/src,src,public/bundles}/**/*.{less,css}\" -c \"yarn run less --dev\"",
     "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js",
-    "generate-models": "yarn --cwd=node_modules/@akeneo-pim-community/communication-channel generate-models"
+    "generate-models": "yarn --cwd=node_modules/@akeneo-pim-community/communication-channel generate-models",
+    "build-dsm": "yarn --cwd=akeneo-design-system lib:build:dev"
   },
   "repository": {
     "type": "git",

@@ -21,8 +21,12 @@ include make-file/*.mk
 ## Front
 ##
 .PHONY: node_modules
-node_modules:
+node_modules: dsm
 	$(YARN_RUN) install --frozen-lockfile
+
+.PHONY: dsm
+dsm:
+	$(YARN_RUN) build-dsm
 
 .PHONY: assets
 assets:
