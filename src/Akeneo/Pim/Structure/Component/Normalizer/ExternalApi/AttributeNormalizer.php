@@ -40,7 +40,7 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
             $normalizedAttribute['labels'] = (object) $normalizedAttribute['labels'];
         }
 
-        // API-1253: Add read-only attribute group labels inside attribute
+        // Add read-only attribute group labels inside attribute
         $normalizedAttribute['group_labels'] = ($attribute->getGroup()) ? $this->translationNormalizer->normalize($attribute->getGroup(), $format, $context) : null;
 
         return $normalizedAttribute;
