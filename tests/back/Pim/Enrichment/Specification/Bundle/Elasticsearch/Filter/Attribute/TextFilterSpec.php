@@ -118,7 +118,17 @@ class TextFilterSpec extends ObjectBehavior
                 ],
             ]
         )->shouldBeCalled();
-        $sqb->addFilter(['exists' => ['field' => 'family.code']])->shouldBeCalled();
+        $sqb->addFilter(
+            [
+                'bool' => [
+                    'should' => [
+                        ['terms' => ['attributes_for_this_level' => ['name']]],
+                        ['terms' => ['attributes_of_ancestors' => ['name']]],
+                    ],
+                    'minimum_should_match' => 1,
+                ],
+            ]
+        )->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter($name, Operators::IS_EMPTY, null, 'en_US', 'ecommerce', []);
