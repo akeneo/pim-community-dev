@@ -16,7 +16,6 @@
     "storybook:start": "start-storybook -p 6006",
     "storybook:build": "build-storybook",
     "lib:build:prod": "yarn prebuild && export NODE_ENV=production && rollup -c",
-    "lib:build:dev": "yarn prebuild-dev && export NODE_ENV=dev && rollup -c",
     "lib:build:watch": "yarn prebuild-dev && export NODE_ENV=dev && rollup --watch -c",
     "lib:build:analyze": "yarn build:prod --config-analyze"
   },
@@ -50,6 +49,6 @@
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "ts-jest": "^26.2.0",
-    "typescript": "^3.7.2"
+    "typescript": "^3.9.2"
   }
 }
