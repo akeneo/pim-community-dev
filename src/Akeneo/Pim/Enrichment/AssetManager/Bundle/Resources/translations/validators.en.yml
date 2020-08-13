@@ -1,4 +1,0 @@
-pim_asset_manager:
-  product_value:
-    validation:
-      asset_should_exist: 'The asset with code "%asset_code%" does not exist'
