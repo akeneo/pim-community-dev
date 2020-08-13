@@ -10,12 +10,8 @@ import {
 } from '../../../../dependenciesTools/hooks';
 import { useControlledFormInputAction } from '../../hooks';
 import { Controller, useFormContext } from 'react-hook-form';
-import {
-  Attribute,
-  AttributeCode,
-  AttributeType,
-  Locale,
-} from '../../../../models';
+import { Attribute, AttributeCode, Locale } from '../../../../models';
+import { AttributeType } from '../../../../models/Attribute';
 import {
   fetchAttribute,
   useGetAttributeAtMount,

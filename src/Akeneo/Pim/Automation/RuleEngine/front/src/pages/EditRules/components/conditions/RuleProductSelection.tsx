@@ -21,6 +21,7 @@ import {
   createTextareaAttributeCondition,
   createAssetCollectionAttributeCondition,
   createSimpleMultiReferenceEntitiesAttributeCondition,
+  AttributeType,
 } from '../../../../models/';
 import { TextBoxBlue } from '../TextBoxBlue';
 import { useProductsCount } from '../../hooks';
@@ -162,6 +163,31 @@ const RuleProductSelection: React.FC<Props> = ({
     createCondition(fieldCode).then(condition => append(condition));
   };
 
+  // Add here the fields handled by the rule conditions.
+  // Be sure that the associated UI component exists to display it correctly.
+  const SYSTEM_FIELDS = [
+    'categories',
+    'family',
+    'groups',
+    'enabled',
+    'completeness',
+    'created',
+    'updated',
+  ];
+
+  const ATTRIBUTE_TYPES = [
+    AttributeType.ASSET_COLLECTION,
+    AttributeType.BOOLEAN,
+    AttributeType.DATE,
+    AttributeType.NUMBER,
+    AttributeType.OPTION_MULTI_SELECT,
+    AttributeType.OPTION_SIMPLE_SELECT,
+    AttributeType.REFERENCE_ENTITY_COLLECTION,
+    AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
+    AttributeType.TEXT,
+    AttributeType.TEXTAREA,
+  ];
+
   const isActiveConditionField = React.useCallback(
     (fieldCode: string) => {
       return (getValues({ nest: true })?.content?.conditions || []).some(
@@ -199,8 +225,10 @@ const RuleProductSelection: React.FC<Props> = ({
           />
           <AddConditionContainer>
             <AddFieldButton
-              handleAddCondition={handleAddCondition}
-              isActiveConditionField={isActiveConditionField}
+              handleAddField={handleAddCondition}
+              isFieldAlreadySelected={isActiveConditionField}
+              filterSystemFields={SYSTEM_FIELDS}
+              filterAttributeTypes={ATTRIBUTE_TYPES}
             />
           </AddConditionContainer>
         </HeaderPartContainer>

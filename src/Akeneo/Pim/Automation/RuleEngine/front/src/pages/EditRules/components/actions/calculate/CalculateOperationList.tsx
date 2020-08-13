@@ -2,10 +2,11 @@ import React from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { Operation } from '../../../../../models/actions/Calculate/Operation';
 import { useTranslate } from '../../../../../dependenciesTools/hooks';
-import { Locale } from '../../../../../models';
+import { AttributeCode, AttributeType, Locale } from '../../../../../models';
 import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
 import { useControlledFormInputAction } from '../../../hooks';
 import { DropTarget, OperationLine } from './OperationLine';
+import { AddFieldButton } from '../../../../../components/Selectors/AddFieldButton';
 
 type Props = {
   lineNumber: number;
@@ -25,7 +26,7 @@ const CalculateOperationList: React.FC<Props> = ({
   const [version, setVersion] = React.useState<number>(1);
   const { setError } = useFormContext();
 
-  const { fields, remove, move } = useFieldArray({
+  const { fields, remove, move, append } = useFieldArray({
     name: formName('full_operation_list'),
   });
 
@@ -54,28 +55,62 @@ const CalculateOperationList: React.FC<Props> = ({
     setVersion(version + 1);
   };
 
+  const handleAddValue = (e: any) => {
+    if (e) {
+      e.preventDefault();
+    }
+    if (fields.length > 0) {
+      append({ operator: null, value: '' });
+    } else {
+      append({ value: '' });
+    }
+    setVersion(version + 1);
+  };
+
+  const handleAddAttribute = (attributeCode: AttributeCode) => {
+    if (fields.length > 0) {
+      append({ operator: null, field: attributeCode });
+    } else {
+      append({ field: attributeCode });
+    }
+    setVersion(version + 1);
+  };
+
   return (
-    <ul className={'AknRuleOperation'}>
-      {fields &&
-        fields.map((sourceOrOperation: any, operationLineNumber) => {
-          return (
-            <OperationLine
-              key={sourceOrOperation.id}
-              baseFormName={`full_operation_list[${operationLineNumber}]`}
-              sourceOrOperation={sourceOrOperation}
-              locales={locales}
-              scopes={scopes}
-              lineNumber={lineNumber}
-              operationLineNumber={operationLineNumber}
-              dropTarget={dropTarget}
-              setDropTarget={setDropTarget}
-              moveOperation={moveOperation}
-              removeOperation={removeOperation}
-              version={version}
-            />
-          );
-        })}
-    </ul>
+    <>
+      <ul className={'AknRuleOperation'}>
+        {fields &&
+          fields.map((sourceOrOperation: any, operationLineNumber) => {
+            return (
+              <OperationLine
+                key={sourceOrOperation.id}
+                baseFormName={`full_operation_list[${operationLineNumber}]`}
+                sourceOrOperation={sourceOrOperation}
+                locales={locales}
+                scopes={scopes}
+                lineNumber={lineNumber}
+                operationLineNumber={operationLineNumber}
+                dropTarget={dropTarget}
+                setDropTarget={setDropTarget}
+                moveOperation={moveOperation}
+                removeOperation={removeOperation}
+                version={version}
+              />
+            );
+          })}
+      </ul>
+      <button onClick={handleAddValue}>Add value</button>
+      <AddFieldButton
+        handleAddField={handleAddAttribute}
+        isFieldAlreadySelected={() => false}
+        filterSystemFields={[]}
+        filterAttributeTypes={[
+          AttributeType.NUMBER,
+          AttributeType.PRICE_COLLECTION,
+          AttributeType.METRIC,
+        ]}
+      />
+    </>
   );
 };
 

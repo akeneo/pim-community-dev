@@ -1,9 +1,6 @@
 import React from 'react';
 import { Select2Wrapper } from '../Select2Wrapper';
-import {
-  useBackboneRouter,
-  useTranslate,
-} from '../../dependenciesTools/hooks';
+import { useBackboneRouter, useTranslate } from '../../dependenciesTools/hooks';
 import { AttributeType } from '../../models/Attribute';
 
 type AddConditionAttribute = {
@@ -20,38 +17,17 @@ type AddConditionGroup = {
 type AddConditionResults = AddConditionGroup[];
 
 type Props = {
-  handleAddCondition: (fieldCode: string) => void;
-  isActiveConditionField: (fieldCode: string) => boolean;
+  handleAddField: (fieldCode: string) => void;
+  isFieldAlreadySelected: (fieldCode: string) => boolean;
+  filterSystemFields: string[];
+  filterAttributeTypes: AttributeType[];
 };
 
-// Add here the fields handled by the rule conditions.
-// Be sure that the associated UI component exists to display it correctly.
-const SYSTEM_FIELDS = [
-  'categories',
-  'family',
-  'groups',
-  'enabled',
-  'completeness',
-  'created',
-  'updated',
-];
-
-const ATTRIBUTE_TYPES = [
-  AttributeType.ASSET_COLLECTION,
-  AttributeType.BOOLEAN,
-  AttributeType.DATE,
-  AttributeType.NUMBER,
-  AttributeType.OPTION_MULTI_SELECT,
-  AttributeType.OPTION_SIMPLE_SELECT,
-  AttributeType.REFERENCE_ENTITY_COLLECTION,
-  AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
-  AttributeType.TEXT,
-  AttributeType.TEXTAREA,
-];
-
 const AddFieldButton: React.FC<Props> = ({
-  handleAddCondition,
-  isActiveConditionField,
+  handleAddField,
+  isFieldAlreadySelected,
+  filterSystemFields,
+  filterAttributeTypes,
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
@@ -62,8 +38,8 @@ const AddFieldButton: React.FC<Props> = ({
       search: term,
       options: {
         page,
-        systemFields: SYSTEM_FIELDS,
-        attributeTypes: ATTRIBUTE_TYPES,
+        systemFields: filterSystemFields,
+        attributeTypes: filterAttributeTypes,
         limit: 20,
       },
     };
@@ -102,7 +78,7 @@ const AddFieldButton: React.FC<Props> = ({
       onSelecting={(event: any) => {
         event.preventDefault();
         setCloseTick(!closeTick);
-        handleAddCondition(event.val);
+        handleAddField(event.val);
       }}
       ajax={{
         url: router.generate(
@@ -120,7 +96,7 @@ const AddFieldButton: React.FC<Props> = ({
         return option.text === ''
           ? ''
           : `<span class="${
-              isActiveConditionField(option.id as string)
+              isFieldAlreadySelected(option.id as string)
                 ? 'active-condition'
                 : ''
             }">${option.text}</span>`;
