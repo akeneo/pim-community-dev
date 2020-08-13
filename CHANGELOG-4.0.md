@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.49 (2020-08-13)
+
 ## Bug fixes
 
 - PIM-9401: Fix Elasticsearch filters with EMPTY operator
