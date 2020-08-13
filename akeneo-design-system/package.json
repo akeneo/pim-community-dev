@@ -8,8 +8,8 @@
     "ts-build": "tsc -p ./tsconfig.build.json --emitDeclarationOnly",
     "check-types": "tsc",
     "check-types:watch": "yarn check-types -- --watch",
-    "test:run": "echo jest",
-    "test:watch": "echo 'jest --watch'",
+    "test:run": "jest",
+    "test:watch": "jest --watch",
     "lint:fix": "echo 'prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.ts\";'",
     "lint:check": "echo 'prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.ts\";'",
     "storybook:start": "start-storybook -p 6006",
@@ -33,9 +33,13 @@
     "@storybook/addon-essentials": "^6.0.4",
     "@storybook/addon-links": "^6.0.4",
     "@storybook/react": "^6.0.4",
+    "@testing-library/jest-dom": "^5.11.3",
+    "@testing-library/react": "^10.4.8",
     "babel-loader": "8.0.5",
+    "jest": "^26.4.0",
     "prettier": "^1.16.4",
     "react-is": "^16.13.1",
+    "ts-jest": "^26.2.0",
     "typescript": "^3.7.2"
   }
 }
