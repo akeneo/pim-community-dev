@@ -10,9 +10,10 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AttributeNormalizerSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $stdNormalizer)
+    function let(NormalizerInterface $stdNormalizer,NormalizerInterface $translationNormalizer)
     {
         $this->beConstructedWith($stdNormalizer);
+        $this->beConstructedWith($stdNormalizer, $translationNormalizer);
     }
 
     function it_is_initializable()

@@ -52,6 +52,11 @@ class AttributeUpdaterSpec extends ObjectBehavior
         $this->update($attribute, ['auto_option_sorting' => true]);
     }
 
+    function it_updates_attribute_properties_with_read_only_field(AttributeInterface $attribute)
+    {
+        $this->update($attribute, ['group_labels' => ['en_US' => 'Attribute group A','fr_FR' => 'Groupe d\'attribut A']]);
+    }
+
     function it_throw_an_exception_when_trying_to_update_anything_else_than_an_attribute()
     {
         $this->shouldThrow(
