@@ -5,6 +5,7 @@ import { IndexedScopes } from '../../../repositories/ScopeRepository';
 import { ActionLine } from './actions/ActionLine';
 import { Action } from '../../../models/Action';
 import { EmptySectionMessage } from './EmptySectionMessage';
+import { useTranslate } from '../../../dependenciesTools/hooks';
 
 type Props = {
   locales: Locale[];
@@ -13,7 +14,7 @@ type Props = {
   handleDeleteAction: (lineNumber: number) => void;
   handleAddCondition: (condition: Condition) => void;
   handleDeleteCondition: (lineNumber: number) => void;
-  conditions: Condition[];
+  conditions: (Condition | null)[];
   actions: (Action | null)[];
 };
 
@@ -27,6 +28,8 @@ const RulesBuilder: React.FC<Props> = ({
   handleAddCondition,
   handleDeleteCondition,
 }) => {
+  const translate = useTranslate();
+
   return (
     <>
       <RuleProductSelection
@@ -34,8 +37,8 @@ const RulesBuilder: React.FC<Props> = ({
         scopes={scopes}
         currentCatalogLocale={currentCatalogLocale}
         conditions={conditions}
-        handleAdd={handleAddCondition}
-        handleDelete={handleDeleteCondition}
+        handleAddCondition={handleAddCondition}
+        handleDeleteCondition={handleDeleteCondition}
       />
       <div data-testid={'action-list'} className={'actionList'}>
         {actions.map((action, i) => {
@@ -59,8 +62,9 @@ const RulesBuilder: React.FC<Props> = ({
       {!!conditions.filter(Boolean).length && !actions.filter(Boolean).length && (
         <EmptySectionMessage>
           <div>
-            Well done! You defined your product selection. Now it's time to set
-            up your action.
+            {translate(
+              'pimee_catalog_rule.form.edit.empty_section.set_up_action'
+            )}
           </div>
         </EmptySectionMessage>
       )}

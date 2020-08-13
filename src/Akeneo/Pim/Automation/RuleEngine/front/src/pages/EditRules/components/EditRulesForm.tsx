@@ -75,7 +75,7 @@ type Props = {
   handleDeleteAction: (lineNumber: number) => void;
   handleAddCondition: (condition: Condition) => void;
   handleDeleteCondition: (lineNumber: number) => void;
-  conditions: Condition[];
+  conditions: (Condition | null)[];
   actions: (Action | null)[];
 };
 

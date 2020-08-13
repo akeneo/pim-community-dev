@@ -97,9 +97,9 @@ type Props = {
   currentCatalogLocale: LocaleCode;
   locales: Locale[];
   scopes: IndexedScopes;
-  conditions: Condition[];
-  handleAdd: (condition: Condition) => void;
-  handleDelete: (lineNumber: number) => void;
+  conditions: (Condition | null)[];
+  handleAddCondition: (condition: Condition) => void;
+  handleDeleteCondition: (lineNumber: number) => void;
 };
 
 const RuleProductSelection: React.FC<Props> = ({
@@ -107,8 +107,8 @@ const RuleProductSelection: React.FC<Props> = ({
   locales,
   scopes,
   conditions,
-  handleAdd,
-  handleDelete,
+  handleAddCondition,
+  handleDeleteCondition,
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
@@ -155,8 +155,8 @@ const RuleProductSelection: React.FC<Props> = ({
     throw new Error(`Unknown factory for field ${fieldCode}`);
   };
 
-  const handleAddCondition = (fieldCode: string) => {
-    createCondition(fieldCode).then(condition => handleAdd(condition));
+  const addCondition = (fieldCode: string) => {
+    createCondition(fieldCode).then(condition => handleAddCondition(condition));
   };
 
   // Add here the fields handled by the rule conditions.
@@ -262,7 +262,7 @@ const RuleProductSelection: React.FC<Props> = ({
                   scopes={scopes}
                   currentCatalogLocale={currentCatalogLocale}
                   deleteCondition={() => {
-                    handleDelete(i);
+                    handleDeleteCondition(i);
                   }}
                 />
               )
@@ -276,11 +276,11 @@ const RuleProductSelection: React.FC<Props> = ({
       {!conditions.filter(Boolean).length && (
         <EmptySectionMessage>
           <div>
-            Your rule is empty. If you don't want to impact your whole catalog,
-            please add at least one condition.
+            {translate(
+              'pimee_catalog_rule.form.edit.empty_section.set_up_condition'
+            )}
             <br />
-            And then, add one or several actions to apply to your
-            products/product models.
+            {translate('pimee_catalog_rule.form.edit.empty_section.add_action')}
           </div>
         </EmptySectionMessage>
       )}

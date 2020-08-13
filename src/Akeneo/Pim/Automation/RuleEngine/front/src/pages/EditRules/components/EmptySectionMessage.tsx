@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTranslate } from '../../../dependenciesTools/hooks';
 
 const DEFAULT_ILLUSTRATION_URL =
   '/bundles/akeneopimruleengine/assets/illustrations/rules.svg';
@@ -42,17 +43,19 @@ const EmptySectionMessage: React.FC<Props> = ({
   illustrationUrl = DEFAULT_ILLUSTRATION_URL,
   children,
 }) => {
+  const translate = useTranslate();
+
   return (
     <Container>
       <Illustration url={illustrationUrl} />
       {children}
       <LinkSection>
-        You don't know what an action is ?{' '}
+        {translate('pimee_catalog_rule.form.edit.empty_section.doc')}{' '}
         <a
           href='https://help.akeneo.com/pim/serenity/articles/get-started-with-the-rules-engine.html'
           target='blank'
           rel='noopener noreferrer'>
-          This article may help you.
+          {translate('pimee_catalog_rule.form.edit.empty_section.doc_link')}
         </a>
       </LinkSection>
     </Container>
