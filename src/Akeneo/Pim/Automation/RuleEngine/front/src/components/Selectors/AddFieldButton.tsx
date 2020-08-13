@@ -1,10 +1,10 @@
 import React from 'react';
-import { Select2Wrapper } from '../../../../components/Select2Wrapper';
+import { Select2Wrapper } from '../Select2Wrapper';
 import {
   useBackboneRouter,
   useTranslate,
-} from '../../../../dependenciesTools/hooks';
-import { AttributeType } from '../../../../models/Attribute';
+} from '../../dependenciesTools/hooks';
+import { AttributeType } from '../../models/Attribute';
 
 type AddConditionAttribute = {
   id: string;
@@ -49,7 +49,7 @@ const ATTRIBUTE_TYPES = [
   AttributeType.TEXTAREA,
 ];
 
-const AddConditionButton: React.FC<Props> = ({
+const AddFieldButton: React.FC<Props> = ({
   handleAddCondition,
   isActiveConditionField,
 }) => {
@@ -131,4 +131,4 @@ const AddConditionButton: React.FC<Props> = ({
   );
 };
 
-export { AddConditionButton };
+export { AddFieldButton };

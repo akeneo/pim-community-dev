@@ -27,7 +27,7 @@ import { useProductsCount } from '../../hooks';
 import { IndexedScopes } from '../../../../repositories/ScopeRepository';
 import { ConditionLine } from './ConditionLine';
 import { ProductsCount } from '../ProductsCount';
-import { AddConditionButton } from './AddConditionButton';
+import { AddFieldButton } from '../../../../components/Selectors/AddFieldButton';
 import { FormData } from '../../edit-rules.types';
 import startImage from '../../../../assets/illustrations/start.svg';
 import {
@@ -198,7 +198,7 @@ const RuleProductSelection: React.FC<Props> = ({
             status={productsCount.status}
           />
           <AddConditionContainer>
-            <AddConditionButton
+            <AddFieldButton
               handleAddCondition={handleAddCondition}
               isActiveConditionField={isActiveConditionField}
             />
