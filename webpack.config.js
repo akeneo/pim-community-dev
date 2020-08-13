@@ -207,12 +207,11 @@ const webpackConfig = {
             },
           },
         ],
-        include: [/(public\/bundles)/, /node_modules\/@akeneo/, /akeneo-design-system\/lib/],
+        include: [/(public\/bundles)/, /node_modules\/@akeneo/],
         exclude: [
           /* Exclude /node_modules/ except /@akeneo/ workspaces */
           /node_modules\/(?!@akeneo)/,
           path.resolve(rootDir, 'vendor'),
-          path.resolve(rootDir, 'akeneo-design-system'),
           path.resolve(rootDir, 'tests'),
           path.resolve(__dirname, 'tests'),
           path.resolve(rootDir, 'src')

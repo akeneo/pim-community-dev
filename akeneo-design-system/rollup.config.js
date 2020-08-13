@@ -45,6 +45,9 @@ const rollUpConf = args => {
                 sourcemap: true,
             },
         ],
+        watch: {
+            exclude: ['node_modules/**']
+        },
         plugins,
         external,
     };

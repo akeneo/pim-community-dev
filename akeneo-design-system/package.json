@@ -17,6 +17,7 @@
     "storybook:build": "build-storybook",
     "lib:build:prod": "yarn prebuild && export NODE_ENV=production && rollup -c",
     "lib:build:dev": "yarn prebuild-dev && export NODE_ENV=dev && rollup -c",
+    "lib:build:watch": "yarn prebuild-dev && export NODE_ENV=dev && rollup --watch -c",
     "lib:build:analyze": "yarn build:prod --config-analyze"
   },
   "author": "akeneo",
