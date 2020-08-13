@@ -3,16 +3,9 @@ import {
   useBackboneRouter,
   useUserCatalogLocale,
 } from '../../../../../dependenciesTools/hooks';
-import { Attribute, LocaleCode } from '../../../../../models';
+import { Attribute, getAttributeLabel } from '../../../../../models';
 import { getAttributeByIdentifier } from '../../../../../repositories/AttributeRepository';
 import { AkeneoSpinner } from '../../../../../components';
-
-const getAttributeLabel = (
-  attribute: Attribute,
-  localeCode: LocaleCode
-): string => {
-  return attribute.labels[localeCode] || attribute.code;
-};
 
 const AttributePreview: React.FC<{ attributeCode: string }> = ({
   attributeCode,

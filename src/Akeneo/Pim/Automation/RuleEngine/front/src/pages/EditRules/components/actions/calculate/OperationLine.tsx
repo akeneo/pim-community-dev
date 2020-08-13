@@ -141,25 +141,26 @@ const OperationLine: React.FC<OperationLineProps> = ({
               />
             </span>
           )}
-          {constantOperand.value && (
-            <span className={'AknRuleOperation-element'}>
-              <Controller
-                as={InputNumber}
-                name={formName(`${baseFormName}.value`)}
-                className={
-                  'AknTextField AknNumberField AknRuleOperation-inputValue'
-                }
-                data-testid={`edit-rules-action-operation-list-${operationLineNumber}-number`}
-                hiddenLabel={true}
-                defaultValue={constantOperand.value}
-                step={'any'}
-                rules={getConstantValidation(
-                  watch(formName(`${baseFormName}.operator`)),
-                  translate
-                )}
-              />
-            </span>
-          )}
+          {constantOperand.value !== null &&
+            typeof constantOperand.value !== 'undefined' && (
+              <span className={'AknRuleOperation-element'}>
+                <Controller
+                  as={InputNumber}
+                  name={formName(`${baseFormName}.value`)}
+                  className={
+                    'AknTextField AknNumberField AknRuleOperation-inputValue'
+                  }
+                  data-testid={`edit-rules-action-operation-list-${operationLineNumber}-number`}
+                  hiddenLabel={true}
+                  defaultValue={constantOperand.value}
+                  step={'any'}
+                  rules={getConstantValidation(
+                    watch(formName(`${baseFormName}.operator`)),
+                    translate
+                  )}
+                />
+              </span>
+            )}
           {fieldOperand.field && (
             <>
               <AttributePropertiesSelector
