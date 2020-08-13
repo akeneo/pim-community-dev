@@ -2,7 +2,7 @@
   "name": "akeneo-design-system",
   "version": "0.0.1",
   "description": "Akeneo design system",
-  "main": "src/index.ts",
+  "main": "lib/index.js",
   "scripts": {
     "prebuild": "rimraf lib && yarn test:run && yarn lint:check && yarn ts-build",
     "ts-build": "tsc -p ./tsconfig.build.json --emitDeclarationOnly",
