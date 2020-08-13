@@ -51,8 +51,6 @@ akeneo_data_quality_insights:
         recommendation: Attribute mit Großbuchstaben
       consistency_textarea_lowercase_words:
         recommendation: Attribute mit Kleinbuchstaben
-      consistency_text_title_formatting:
-        recommendation: Attribute mit Formatierungsvorschlägen
       consistency_spelling:
         recommendation: Attribute mit Schreibproblemen
     axis:
@@ -81,9 +79,6 @@ akeneo_data_quality_insights:
       title: Korrekturen
       original_text_title: Original
       suggestions_title: Vorschläge
-      ignore_all_suggestions_button_label: Ignorieren
-    title_suggestion_popover:
-      title: Vorschläge
       ignore_all_suggestions_button_label: Ignorieren
   attribute_grid:
     quality:
