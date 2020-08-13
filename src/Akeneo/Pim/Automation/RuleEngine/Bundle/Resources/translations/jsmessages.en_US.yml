@@ -208,6 +208,7 @@ pimee_catalog_rule:
                         subtract: Subtract
                         multiply: Multiply
                         divide: Divide
+                        choose: Choose your operator
             conditions:
                 delete:
                     label: Remove condition

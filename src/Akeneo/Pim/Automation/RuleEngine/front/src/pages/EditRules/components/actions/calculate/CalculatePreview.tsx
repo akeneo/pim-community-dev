@@ -12,6 +12,12 @@ import {
 } from '../../../../../models/actions/Calculate/Operation';
 import { AttributePreview } from '../attribute/AttributePreview';
 import { useTranslate } from '../../../../../dependenciesTools/hooks';
+import styled from 'styled-components';
+import { Translate } from '../../../../../dependenciesTools';
+
+const UnknownValue = styled.span`
+  color: ${({ theme }): string => theme.color.red100};
+`;
 
 const operationViewMapping: { [key: string]: string } = {
   add: '+',
@@ -35,13 +41,24 @@ const OperandView: React.FC<{ operand: Operand }> = ({ operand }) => {
   );
 };
 
-const OperationView: React.FC<{ operation: Operation }> = ({ operation }) => {
-  const getOperatorView = (operator: Operator): string => {
+const OperationView: React.FC<{
+  operation: Operation;
+  translate: Translate;
+}> = ({ operation, translate }) => {
+  const getOperatorView = (operator: Operator): string | JSX.Element => {
     if ('undefined' === operationViewMapping[operator]) {
       console.error(`The ${operator} operator is unknown`);
     }
 
-    return operationViewMapping[operator] || '?';
+    return (
+      operationViewMapping[operator] || (
+        <UnknownValue>
+          {translate(
+            `pimee_catalog_rule.form.edit.actions.calculate.operator.choose`
+          )}
+        </UnknownValue>
+      )
+    );
   };
 
   return (
@@ -54,7 +71,8 @@ const OperationView: React.FC<{ operation: Operation }> = ({ operation }) => {
 const RecursiveOperationView: React.FC<{
   operations: Operation[];
   source: Operand;
-}> = ({ operations, source }) => {
+  translate: Translate;
+}> = ({ operations, source, translate }) => {
   const operationsCopy = Array.from(operations);
   const lastOperation: Operation | undefined = operationsCopy.pop();
   if (!lastOperation) {
@@ -64,9 +82,13 @@ const RecursiveOperationView: React.FC<{
   return (
     <>
       {operationsCopy.length > 0 && '('}
-      <RecursiveOperationView operations={operationsCopy} source={source} />
+      <RecursiveOperationView
+        operations={operationsCopy}
+        source={source}
+        translate={translate}
+      />
       {operationsCopy.length > 0 && ')'}{' '}
-      <OperationView operation={lastOperation} />
+      <OperationView operation={lastOperation} translate={translate} />
     </>
   );
 };
@@ -93,6 +115,7 @@ const CalculatePreview: React.FC<Props> = ({ lineNumber }) => {
             <RecursiveOperationView
               operations={getFullOperationListFormValue().slice(1)}
               source={getFullOperationListFormValue()[0]}
+              translate={translate}
             />
           )}
       </div>

@@ -53,6 +53,9 @@ const CalculateOperatorSelector: React.FC<Props> = ({
       value={value}
       onChange={handleChange}
       dropdownCssClass='calculate-operator-dropdown'
+      placeholder={translate(
+        `pimee_catalog_rule.form.edit.actions.calculate.operator.choose`
+      )}
     />
   );
 };

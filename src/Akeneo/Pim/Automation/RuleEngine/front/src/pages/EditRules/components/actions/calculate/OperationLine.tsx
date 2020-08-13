@@ -1,18 +1,18 @@
 import React from 'react';
-import { Locale } from "../../../../../models";
-import { IndexedScopes } from "../../../../../repositories/ScopeRepository";
+import { Locale } from '../../../../../models';
+import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
 import {
   Operation,
   Operator,
 } from '../../../../../models/actions/Calculate/Operation';
-import { useControlledFormInputAction } from "../../../hooks";
-import { useTranslate } from "../../../../../dependenciesTools/hooks";
+import { useControlledFormInputAction } from '../../../hooks';
+import { useTranslate } from '../../../../../dependenciesTools/hooks';
 import { Controller, useFormContext } from 'react-hook-form';
-import { CalculateOperatorSelector } from "./CalculateOperatorSelector";
-import styled from "styled-components";
-import { Translate } from "../../../../../dependenciesTools";
-import { AttributePropertiesSelector } from "./AttributePropertiesSelector";
-import { InputNumber } from "../../../../../components/Inputs";
+import { CalculateOperatorSelector } from './CalculateOperatorSelector';
+import styled from 'styled-components';
+import { Translate } from '../../../../../dependenciesTools';
+import { AttributePropertiesSelector } from './AttributePropertiesSelector';
+import { InputNumber } from '../../../../../components/Inputs';
 import {
   ConstantOperand,
   FieldOperand,
@@ -79,7 +79,7 @@ const OperationLine: React.FC<OperationLineProps> = ({
   const { setValue, watch } = useFormContext();
   const { formName, getFormValue } = useControlledFormInputAction<
     string | null
-    >(lineNumber);
+  >(lineNumber);
   const constantOperand = sourceOrOperation as ConstantOperand;
   const fieldOperand = sourceOrOperation as FieldOperand;
 
@@ -135,12 +135,8 @@ const OperationLine: React.FC<OperationLineProps> = ({
               <Controller
                 as={CalculateOperatorSelector}
                 name={formName(`${baseFormName}.operator`)}
-                defaultValue={
-                  (sourceOrOperation as Operation).operator || Operator.ADD
-                }
-                value={
-                  (sourceOrOperation as Operation).operator || Operator.ADD
-                }
+                defaultValue={(sourceOrOperation as Operation).operator || null}
+                value={(sourceOrOperation as Operation).operator || null}
                 hiddenLabel
               />
             </span>

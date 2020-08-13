@@ -146,13 +146,15 @@ const doExecuteOnSave = async (
 };
 
 const createCalculateDefaultValues = (formData: FormData): FormData => {
-  formData.content.actions = formData.content.actions.map((action: any) => {
-    if (action && action.type === 'calculate') {
-      action.full_operation_list = [action.source, ...action.operation_list];
-    }
+  if (formData.content && formData.content.actions) {
+    formData.content.actions = formData.content.actions.map((action: any) => {
+      if (action && action.type === 'calculate') {
+        action.full_operation_list = [action.source, ...action.operation_list];
+      }
 
-    return action;
-  });
+      return action;
+    });
+  }
 
   return formData;
 };

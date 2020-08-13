@@ -1,11 +1,11 @@
 import React from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { Operation, } from '../../../../../models/actions/Calculate/Operation';
+import { Operation } from '../../../../../models/actions/Calculate/Operation';
 import { useTranslate } from '../../../../../dependenciesTools/hooks';
 import { Locale } from '../../../../../models';
 import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
 import { useControlledFormInputAction } from '../../../hooks';
-import { DropTarget, OperationLine } from "./OperationLine";
+import { DropTarget, OperationLine } from './OperationLine';
 
 type Props = {
   lineNumber: number;
