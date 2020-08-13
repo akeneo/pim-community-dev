@@ -740,3 +740,4 @@ JSON;
         return $this->catalog->useTechnicalCatalog();
     }
 }
+

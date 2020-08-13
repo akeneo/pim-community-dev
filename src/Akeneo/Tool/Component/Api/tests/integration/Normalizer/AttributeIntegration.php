@@ -925,3 +925,4 @@ class AttributeIntegration extends AbstractNormalizerTestCase
         $this->assertEquals($expected, $result);
     }
 }
+
