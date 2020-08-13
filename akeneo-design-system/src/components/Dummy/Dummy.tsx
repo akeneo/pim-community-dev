@@ -6,7 +6,7 @@ const DummyContainer = styled.div<{size: number, type: Type}>`
   line-height: ${({size}) => size + 5}px;
   color: ${({type}) => (type === 'primary' ? 'blue' : 'green')};
 `;
-export type Type = 'primary' | 'secondary';
+type Type = 'primary' | 'secondary';
 
 type DummyProps = {
   /**
@@ -37,4 +37,4 @@ const Dummy = ({size = 12, type = 'primary', onClick, children}: DummyProps) => 
 };
 
 export {Dummy};
-export type {DummyProps};
+export type {DummyProps, Type};
