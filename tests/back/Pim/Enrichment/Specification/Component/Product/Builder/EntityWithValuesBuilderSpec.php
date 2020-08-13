@@ -2,15 +2,15 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Builder;
 
+use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Prophecy\Argument;
 
 class EntityWithValuesBuilderSpec extends ObjectBehavior
@@ -21,15 +21,33 @@ class EntityWithValuesBuilderSpec extends ObjectBehavior
         GetAttributes $getAttributesQuery
     ) {
         $getAttributesQuery->forCode('size')->willReturn(
-            new Attribute('size', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, null, false, 'option', [])
+            new Attribute(
+                'size',
+                AttributeTypes::OPTION_SIMPLE_SELECT,
+                [],
+                false,
+                false,
+                null,
+                null,
+                false,
+                'option',
+                []
+            )
         );
         $getAttributesQuery->forCode('color')->willReturn(
-            new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], true, true, null, null, false, 'option', [])
+            new Attribute(
+                'color', AttributeTypes::OPTION_SIMPLE_SELECT, [], true, true, null, null, false, 'option', []
+            )
         );
         $getAttributesQuery->forCode('label')->willReturn(
             new Attribute('label', AttributeTypes::TEXT, [], true, true, null, null, false, 'option', [])
         );
-
+        $getAttributesQuery->forCode('price')->willReturn(
+            new Attribute('price', AttributeTypes::PRICE_COLLECTION, [], false, false, null, null, false, 'prices', [])
+        );
+        $getAttributesQuery->forCode('weight')->willReturn(
+            new Attribute('weight', AttributeTypes::METRIC, [], false, false, null, 'KILOGRAM', false, 'metric', [])
+        );
 
         $this->beConstructedWith($valuesResolver, $productValueFactory, $getAttributesQuery);
     }
@@ -51,10 +69,34 @@ class EntityWithValuesBuilderSpec extends ObjectBehavior
         $product->removeValue($sizeValue)->willReturn($product);
         $product->removeValue($colorValue)->willReturn($product);
 
-        $sizeAttribute = new Attribute('size', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, null, false, 'option', []);
-        $colorAttribute = new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], true, true, null, null, false, 'option', []);
+        $sizeAttribute = new Attribute(
+            'size',
+            AttributeTypes::OPTION_SIMPLE_SELECT,
+            [],
+            false,
+            false,
+            null,
+            null,
+            false,
+            'option',
+            []
+        );
+        $colorAttribute = new Attribute(
+            'color',
+            AttributeTypes::OPTION_SIMPLE_SELECT,
+            [],
+            true,
+            true,
+            null,
+            null,
+            false,
+            'option',
+            []
+        );
         $productValueFactory->createByCheckingData($sizeAttribute, null, null, null)->willReturn($sizeValue);
-        $productValueFactory->createByCheckingData($colorAttribute, 'ecommerce', 'en_US', null)->willReturn($colorValue);
+        $productValueFactory->createByCheckingData($colorAttribute, 'ecommerce', 'en_US', null)->willReturn(
+            $colorValue
+        );
 
         $product->addValue(Argument::any())->shouldNotBecalled();
 
@@ -96,11 +138,35 @@ class EntityWithValuesBuilderSpec extends ObjectBehavior
         $product->removeValue($sizeValue)->willReturn($product);
         $product->removeValue($colorValue)->willReturn($product);
 
-        $sizeAttribute = new Attribute('size', AttributeTypes::OPTION_SIMPLE_SELECT, [], false, false, null, null, false, 'option', []);
-        $colorAttribute = new Attribute('color', AttributeTypes::OPTION_SIMPLE_SELECT, [], true, true, null, null, false, 'option', []);
+        $sizeAttribute = new Attribute(
+            'size',
+            AttributeTypes::OPTION_SIMPLE_SELECT,
+            [],
+            false,
+            false,
+            null,
+            null,
+            false,
+            'option',
+            []
+        );
+        $colorAttribute = new Attribute(
+            'color',
+            AttributeTypes::OPTION_SIMPLE_SELECT,
+            [],
+            true,
+            true,
+            null,
+            null,
+            false,
+            'option',
+            []
+        );
 
         $productValueFactory->createByCheckingData($sizeAttribute, null, null, null)->willReturn($sizeValue);
-        $productValueFactory->createByCheckingData($colorAttribute, 'ecommerce', 'en_US', 'red')->willReturn($colorValue);
+        $productValueFactory->createByCheckingData($colorAttribute, 'ecommerce', 'en_US', 'red')->willReturn(
+            $colorValue
+        );
 
         $product->addValue($sizeValue)->willReturn($product);
         $product->addValue($colorValue)->willReturn($product);
@@ -127,5 +193,118 @@ class EntityWithValuesBuilderSpec extends ObjectBehavior
         $product->addValue($value)->willReturn($product);
 
         $this->addOrReplaceValue($product, $label, null, null, 'foobar');
+    }
+
+    function it_filters_empty_prices(
+        ValueFactory $productValueFactory,
+        ProductInterface $product,
+        AttributeInterface $price,
+        ValueInterface $formerValue,
+        ValueInterface $newValue
+    ) {
+        $price->getCode()->willReturn('price');
+
+        $product->getValue('price', null, null)->willReturn($formerValue);
+        $product->removeValue($formerValue)->shouldBeCalled()->willReturn($product);
+        $product->addValue($newValue)->shouldBeCalled();
+
+        $priceData = [
+            [
+                'amount' => null,
+                'currency' => 'EUR',
+            ],
+            [
+                'amount' => 20,
+                'currency' => 'USD',
+            ],
+            [
+                'amount' => null,
+                'currency' => 'GBP',
+            ],
+            [
+                'amount' => 20,
+                'currency' => 'YEN',
+            ],
+        ];
+        $productValueFactory->createByCheckingData(
+            new Attribute('price', AttributeTypes::PRICE_COLLECTION, [], false, false, null, null, false, 'prices', []),
+            null,
+            null,
+            Argument::that(function (array $value) {
+                return array_values($value) === [
+                    ['amount' => 20, 'currency' => 'USD'],
+                    ['amount' => 20, 'currency' => 'YEN'],
+                ];
+            })
+        )->shouldBeCalled()->willReturn($newValue);
+
+        $this->addOrReplaceValue($product, $price, null, null, $priceData);
+    }
+
+    function it_does_not_filter_prices_with_wrong_format(
+        ValueFactory $productValueFactory,
+        ProductInterface $product,
+        AttributeInterface $price,
+        ValueInterface $formerValue
+    ) {
+        $price->getCode()->willReturn('price');
+        $product->getValue('price', null, null)->willReturn($formerValue);
+
+        $priceData = [
+            [
+                'currency' => 'EUR',
+            ],
+            'invalid_data_type'
+        ];
+
+        $exception = new \InvalidArgumentException();
+        $productValueFactory->createByCheckingData(
+            new Attribute('price', AttributeTypes::PRICE_COLLECTION, [], false, false, null, null, false, 'prices', []),
+            null,
+            null,
+            $priceData
+        )->shouldBeCalled()->willThrow($exception);
+
+        $this->shouldThrow($exception)->during('addOrReplaceValue', [$product, $price, null, null, $priceData]);
+    }
+
+    function it_filters_empty_measurements(
+        ValueFactory $productValueFactory,
+        ProductInterface $product,
+        AttributeInterface $weight,
+        ValueInterface $formerValue
+    ) {
+        $weight->getCode()->willReturn('weight');
+
+        $product->getValue('weight', null, null)->willReturn($formerValue);
+        $product->removeValue($formerValue)->shouldBeCalled()->willReturn($product);
+        $product->addValue(Argument::any())->shouldNotBeCalled();
+        $productValueFactory->createByCheckingData(Argument::any())->shouldNotBeCalled();
+
+        $this->addOrReplaceValue($product, $weight, null, null, ['amount' => null, 'unit' => 'GRAM']);
+    }
+
+    function it_does_not_filter_measurements_with_wrong_format(
+        ValueFactory $productValueFactory,
+        ProductInterface $product,
+        AttributeInterface $metric,
+        ValueInterface $formerValue
+    ) {
+        $metric->getCode()->willReturn('weight');
+        $product->getValue('weight', null, null)->willReturn($formerValue);
+
+        $data = [
+            'foo' => 'bar',
+        ];
+
+        $exception = new \InvalidArgumentException();
+        $productValueFactory->createByCheckingData(
+            new Attribute('weight', AttributeTypes::METRIC, [], false, false, null, 'KILOGRAM', false, 'metric', []),
+            null,
+            null,
+            $data
+        )->shouldBeCalled()->willThrow($exception);
+
+        $this->shouldThrow($exception)->during('addOrReplaceValue', [$product, $metric, null, null, $data]);
     }
 }
