@@ -90,6 +90,34 @@ class ActionSpec extends ObjectBehavior
         $this->shouldHaveType(Action::class);
     }
 
+    public function it_compile_channel_and_locale(PropertyAccessibleAsset $accessibleAsset)
+    {
+        $accessibleAsset->hasValue(Argument::any())->willReturn(true);
+        $accessibleAsset->getValue('locale')->willReturn('fr_FR');
+        $accessibleAsset->getValue('channel')->willReturn('ecommerce');
+        $accessibleAsset->getValue('code')->willReturn('nice_asset');
+        $accessibleAsset->getValue('attribute')->willReturn('sku');
+
+        $action = [
+            'type'  => 'add',
+            'field' => '{{attribute}}',
+            'items' => ['{{code}}'],
+            'locale' => '{{locale}}',
+            'channel' => '{{channel}}',
+        ];
+
+        $this->beConstructedThrough('createFromNormalized', [$action]);
+
+        $compiledAction = $this->compile($accessibleAsset);
+        $compiledAction->normalize()->shouldReturn([
+            'field' => 'sku',
+            'type' => 'add',
+            'items' => ['nice_asset'],
+            'channel' => 'ecommerce',
+            'locale' => 'fr_FR',
+        ]);
+    }
+
     public function it_could_normalize_itself()
     {
         $this->normalize()->shouldReturn(

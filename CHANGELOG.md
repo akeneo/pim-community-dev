@@ -1,5 +1,6 @@
 ## Bug fixes
 
+- PIM-9388: Fix product link rules for scopable/localizable asset collection attributes
 - PIM-9389: Unfriendly page title in create rule page.
 - PIM-9376: Duplicate button appears under variant products.
 - PIM-9226: Fix error on channel deletion after migration from v3.2.
