@@ -1,7 +1,9 @@
 parameters:
-    env(APP_FEATURE_FLAG_DATA_QUALITY_INSIGHTS): "true"
+    env(FLAG_DATA_QUALITY_INSIGHTS_ENABLED): 'true'
 
 services:
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature:
+    akeneo.pim.automation.data_quality_insights.feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
         arguments:
-            $activationFlag: '%env(bool:APP_FEATURE_FLAG_DATA_QUALITY_INSIGHTS)%'
+            - '%env(bool:FLAG_DATA_QUALITY_INSIGHTS_ENABLED)%'
+        public: true

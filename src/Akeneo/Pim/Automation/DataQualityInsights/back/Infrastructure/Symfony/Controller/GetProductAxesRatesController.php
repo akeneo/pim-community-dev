@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAxesRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,21 +23,13 @@ final class GetProductAxesRatesController
     /** @var GetProductAxesRates */
     private $getProductAxesRates;
 
-    /** @var FeatureFlag */
-    private $featureFlag;
-
-    public function __construct(GetProductAxesRates $getProductAxesRates, FeatureFlag $featureFlag)
+    public function __construct(GetProductAxesRates $getProductAxesRates)
     {
         $this->getProductAxesRates = $getProductAxesRates;
-        $this->featureFlag = $featureFlag;
     }
 
     public function __invoke(string $productId): JsonResponse
     {
-        if (!$this->featureFlag->isEnabled()) {
-            return new JsonResponse(null, Response::HTTP_NOT_FOUND);
-        }
-
         try {
             $productId = new ProductId(intval($productId));
         } catch (\InvalidArgumentException $exception) {

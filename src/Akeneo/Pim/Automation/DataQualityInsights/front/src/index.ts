@@ -11,8 +11,6 @@ import {
     PRODUCT_MODEL_ATTRIBUTES_TAB_NAME,
 } from "./application/constant";
 
-import {DataQualityInsightsFeature, getDataQualityInsightsFeature} from "./infrastructure/fetcher/data-quality-insights-feature";
-
 import {
     CATALOG_CONTEXT_CHANNEL_CHANGED,
     CATALOG_CONTEXT_LOCALE_CHANGED,
@@ -45,8 +43,6 @@ export {
     DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY,
     DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD,
     DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY,
-    DataQualityInsightsFeature,
-    getDataQualityInsightsFeature,
     CATALOG_CONTEXT_CHANNEL_CHANGED,
     CATALOG_CONTEXT_LOCALE_CHANGED,
     PRODUCT_ATTRIBUTES_TAB_LOADED,

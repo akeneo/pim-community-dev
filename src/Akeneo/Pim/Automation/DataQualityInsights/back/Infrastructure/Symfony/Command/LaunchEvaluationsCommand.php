@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\EvaluationsParameters;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
