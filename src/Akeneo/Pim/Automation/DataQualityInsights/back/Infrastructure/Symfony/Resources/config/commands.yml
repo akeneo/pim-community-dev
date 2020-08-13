@@ -2,7 +2,7 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\HealthCheckCommand:
         arguments:
             - '@database_connection'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
+            - '@akeneo.pim.automation.data_quality_insights.feature'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionaryLocalFilesystem'
             - '@oneup_flysystem.mount_manager'
         tags:

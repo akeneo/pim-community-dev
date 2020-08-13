@@ -3,5 +3,6 @@ extensions:
         module: akeneo/data-quality-insights/view/dqi-dashboard/section
         parent: akeneo-data-quality-insights-dqi-dashboard-index
         targetZone: content
+        feature: data_quality_insights
         config:
             axes: [enrichment, consistency]

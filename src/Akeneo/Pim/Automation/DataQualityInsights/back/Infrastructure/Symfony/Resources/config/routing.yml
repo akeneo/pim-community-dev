@@ -1,44 +1,62 @@
 akeneo_data_quality_insights_check_text:
     path: /data-quality-insights/check-text
-    defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\CheckTextController }
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\CheckTextController
+        _feature: data_quality_insights
     methods: [POST]
 
 akeneo_data_quality_insights_check_text_ignore:
     path: /data-quality-insights/product/check-text/ignore
-    defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddProductWordInDictionaryController }
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddProductWordInDictionaryController
+        _feature: data_quality_insights
     methods: [POST]
 
 akeneo_data_quality_insights_product_model_check_text_ignore:
     path: /data-quality-insights/product-model/check-text/ignore
-    defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddProductModelWordInDictionaryController }
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddProductModelWordInDictionaryController
+        _feature: data_quality_insights
     methods: [POST]
 
 akeneo_data_quality_insights_attribute_check_text_ignore:
     path: /data-quality-insights/attribute/check-text/ignore
-    defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddAttributeWordInDictionaryController }
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddAttributeWordInDictionaryController
+        _feature: data_quality_insights
     methods: [POST]
 
 akeneo_data_quality_insights_attribute_option_check_text_ignore:
     path: /data-quality-insights/attribute-option/check-text/ignore
-    defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddAttributeOptionWordInDictionaryController }
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddAttributeOptionWordInDictionaryController
+        _feature: data_quality_insights
     methods: [POST]
 
 akeneo_data_quality_insights_get_attribute_labels_error_count:
     path: /data-quality-insights/attribute/{attributeCode}/labels/error-count
-    defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetAttributeLabelsErrorCountController }
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetAttributeLabelsErrorCountController
+        _feature: data_quality_insights
     methods: [GET]
 
 akeneo_data_quality_insights_get_attribute_options_labels_error_count:
     path: /data-quality-insights/attribute/{attributeCode}/options-labels/error-count
-    defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetAttributeOptionsLabelsErrorCountController }
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetAttributeOptionsLabelsErrorCountController
+        _feature: data_quality_insights
     methods: [GET]
 
 akeneo_data_quality_insights_get_attribute_spellcheck_evaluation:
     path: /data-quality-insights/attribute/{attributeCode}/evaluation
-    defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetAttributeSpellcheckEvaluationController }
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetAttributeSpellcheckEvaluationController
+        _feature: data_quality_insights
     methods: [GET]
 
 akeneo_data_quality_insights_get_number_of_products_impacted_by_attribute_spelling_mistakes:
     path: /data-quality-insights/attribute/{attributeCode}/products-error-count
-    defaults: { _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetNumberOfProductsImpactedByAttributeSpellingMistakesController }
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetNumberOfProductsImpactedByAttributeSpellingMistakesController
+        _feature: data_quality_insights
     methods: [GET]
