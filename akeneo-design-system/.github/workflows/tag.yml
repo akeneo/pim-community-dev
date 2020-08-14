@@ -2,7 +2,7 @@ name: Tag
 on:
   push:
     branches:
-      - RAC-191
+      - master
     paths:
       - package.json
 jobs:
@@ -11,10 +11,6 @@ jobs:
     steps:
       - name: Checkout current branch
         uses: actions/checkout@v2
-      - name: Use Node.js 13
-        uses: actions/setup-node@v1
-        with:
-          node-version: 13.13
       - name: Create tag
         run: |
           git config --global user.email "contact@akeneo.com" && \
