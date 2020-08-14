@@ -6,6 +6,7 @@
   "scripts": {
     "prebuild": "rimraf lib && yarn test:run && yarn lint:check && yarn ts-build",
     "prebuild-dev": "rimraf lib && yarn ts-build",
+    "prebuild-watch": "find lib -name \"*.d.ts\" -delete && yarn ts-build",
     "ts-build": "tsc -p ./tsconfig.build.json --emitDeclarationOnly",
     "check-types": "tsc",
     "check-types:watch": "yarn check-types -- --watch",
@@ -19,7 +20,7 @@
     "storybook:ci": "start-storybook -p 6006 --ci",
     "storybook:build": "build-storybook",
     "lib:build:prod": "yarn prebuild && export NODE_ENV=production && rollup -c",
-    "lib:build:watch": "yarn prebuild-dev && export NODE_ENV=dev && rollup --watch -c",
+    "lib:build:watch": "yarn prebuild-watch && export NODE_ENV=dev && rollup --watch -c",
     "lib:build:analyze": "yarn build:prod --config-analyze"
   },
   "author": "akeneo",

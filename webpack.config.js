@@ -207,7 +207,7 @@ const webpackConfig = {
             },
           },
         ],
-        include: [/(public\/bundles)/, /node_modules\/@akeneo/],
+        include: [/(public\/bundles)/, /node_modules\/@akeneo/, /akeneo-design-system\/src/],
         exclude: [
           /* Exclude /node_modules/ except /@akeneo/ workspaces */
           /node_modules\/(?!@akeneo)/,
