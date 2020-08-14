@@ -1,6 +1,6 @@
 {
   "name": "akeneo-design-system",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Akeneo design system",
   "main": "lib/index.js",
   "scripts": {
