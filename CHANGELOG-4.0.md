@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9397: Dispatch missing pre_ready event during bulk actions when "Send for approval" is checked
+
 # 4.0.49 (2020-08-13)
 
 ## Bug fixes:
