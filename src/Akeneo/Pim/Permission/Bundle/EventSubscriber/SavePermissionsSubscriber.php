@@ -109,7 +109,7 @@ class SavePermissionsSubscriber implements EventSubscriberInterface
         }
 
         if (empty($data['permissions']['edit'] ?? [])) {
-            throw new JobInstanceCannotBeUpdatedException('pim_import_export.entity.job_instance.flash.update.fail_empty_permission');
+            throw new JobInstanceCannotBeUpdatedException('pimee_import_export.entity.job_instance.flash.update.fail_empty_permission');
         }
     }
 

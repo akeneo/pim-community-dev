@@ -55,7 +55,7 @@ class SavePermissionsSubscriberSpec extends ObjectBehavior
             ]
         ]);
 
-        $this->shouldThrow(new JobInstanceCannotBeUpdatedException('pim_import_export.entity.job_instance.flash.update.fail_empty_permission'))
+        $this->shouldThrow(new JobInstanceCannotBeUpdatedException('pimee_import_export.entity.job_instance.flash.update.fail_empty_permission'))
             ->during('checkJobInstancePermissions', [$event]);
     }
 }
