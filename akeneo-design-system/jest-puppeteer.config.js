@@ -1,7 +1,7 @@
 module.exports = {
   launch: {
     dumpio: true,
-    headless: false,
+    headless: true,
   },
   server: {
     command: 'yarn storybook:ci',

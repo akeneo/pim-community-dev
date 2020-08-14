@@ -1,0 +1,60 @@
+name: Extract DSM
+on:
+    push:
+        branches:
+            - dsm
+        paths:
+            - 'akeneo-design-system/**'
+jobs:
+    build:
+        name: Create a lib build
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout current branch
+                uses: actions/checkout@v2
+            -   name: Use Node.js 13
+                uses: actions/setup-node@v1
+                with:
+                    node-version: 13.13
+            -   name: Install Packages
+                run: cd akeneo-design-system && yarn install
+            -   name: Bump package version
+                run: cd akeneo-design-system && node .github/workflows/bump-version.js $GITHUB_EVENT_PATH && echo "::set-output name=new_version::$(node .github/workflows/get-version.js)"
+                id: generate_new_dsm_version
+            -   name: Push updated version
+                # Check we are able to push on a protected branch (like master)
+                run: |
+                    git config --global user.email "contact@akeneo.com" && \
+                    git config --global user.name "Github Actions" && \
+                    git add akeneo-design-system/package.json && \
+                    git commit -m "Bump to version ${{steps.generate_new_dsm_version.outputs.new_version}}" && \
+                    git push
+            -   name: Build library
+                run: cd akeneo-design-system && yarn run lib:build:prod
+            -   uses: actions/upload-artifact@v1
+                with:
+                    name: Lib
+                    path: akeneo-design-system/lib
+
+    extract:
+        name: Extract to DSM dedicated repo
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout the current branch
+                uses: actions/checkout@v2.3.2
+            -   name: Download the lib artifact
+                uses: actions/download-artifact@v1
+                with:
+                    name: Lib
+                    path: akeneo-design-system/lib
+            -   name: Pushes to dsm repository
+                uses: ./.github/actions/extract
+                env:
+                    API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+                with:
+                    source-directory: akeneo-design-system
+                    destination-github-username: 'samirboulil'
+                    destination-repository-name: 'dsm'
+                    user-email: contact@akeneo.com
+                    destination-branch: 'master'

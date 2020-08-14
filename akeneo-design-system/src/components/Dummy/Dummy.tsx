@@ -5,6 +5,7 @@ const DummyContainer = styled.div<{size: number, type: Type}>`
   font-size: ${({size}) => size}px;
   line-height: ${({size}) => size + 5}px;
   color: ${({type}) => (type === 'primary' ? 'blue' : 'green')};
+  font-weight: 400;
 `;
 type Type = 'primary' | 'secondary';
 
