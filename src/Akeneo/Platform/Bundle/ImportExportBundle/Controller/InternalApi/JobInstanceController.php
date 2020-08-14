@@ -350,7 +350,7 @@ class JobInstanceController
                 new GenericEvent($jobInstance, ['data' => $data])
             );
         } catch (JobInstanceCannotBeUpdatedException $e) {
-            return new JsonResponse(['message' => 'pim_import_export.entity.job_instance.flash.update.fail_empty_permission'], 400);
+            return new JsonResponse(['message' => $e->getMessage()], 400);
         }
 
         $filteredData = $this->inputFilter->filterCollection(
