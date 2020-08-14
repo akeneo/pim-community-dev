@@ -22,6 +22,9 @@ jobs:
       - name: Launch tests
         run: cd akeneo-design-system && yarn test:run
       - name: Launch visual tests
+        run: cd akeneo-design-system && yarn test:visual:run
+      - name: Update visual tests
+        if: failure()
         run: cd akeneo-design-system && yarn test:visual:run -u
       - uses: actions/upload-artifact@v2
         if: failure()
