@@ -25,6 +25,7 @@
 - PIM-9360: Fix PHP Warning raised in PriceComparator
 - PIM-9370: Fixes page freezing with a big number of attribute options
 - PIM-9391: Filter empty prices and measurement values
+- PIM-9407: Fix glitch in family variant selector if the family variant has no label
 
 ## New features
 
