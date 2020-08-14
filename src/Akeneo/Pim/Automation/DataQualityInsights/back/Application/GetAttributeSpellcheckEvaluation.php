@@ -40,7 +40,7 @@ class GetAttributeSpellcheckEvaluation
         $attributeSpellcheck = $this->attributeSpellcheckQuery->getByAttributeCode($attributeCode);
 
         $options = array_reduce($attributeOptionsSpellcheck, function (array $previousData, AttributeOptionSpellcheck $attributeOptionSpellcheck) {
-            return array_merge($previousData, [
+            return array_replace($previousData, [
                 strval($attributeOptionSpellcheck->getAttributeOptionCode()) => [
                     'toImprove' => $attributeOptionSpellcheck->getResult()->getLabelsToImproveNumber(),
                     'locales' => $attributeOptionSpellcheck->getResult()->toArrayBool()

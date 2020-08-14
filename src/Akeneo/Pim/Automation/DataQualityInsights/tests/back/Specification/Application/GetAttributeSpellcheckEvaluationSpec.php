@@ -52,7 +52,7 @@ class GetAttributeSpellcheckEvaluationSpec extends ObjectBehavior
             'attribute' =>'attribute_processed',
             'options_count' => 4,
             'options' => [
-                'option1' => [
+                '1' => [
                     'toImprove' => 3,
                     'locales' => ['de_DE' => true, 'en_US' => true, 'fr_FR' => true],
                 ],
@@ -60,7 +60,7 @@ class GetAttributeSpellcheckEvaluationSpec extends ObjectBehavior
                     'toImprove' => 1,
                     'locales' => ['de_DE' => false, 'en_US' => false, 'fr_FR' => true],
                 ],
-                'option3' => [
+                '3' => [
                     'toImprove' => 0,
                     'locales' => ['de_DE' => false, 'en_US' => false, 'fr_FR' => false],
                 ],
@@ -95,7 +95,7 @@ class GetAttributeSpellcheckEvaluationSpec extends ObjectBehavior
     private function givenAttributeOptionsSpellcheckEvaluation(AttributeCode $attributeCode)
     {
         $option1 = new AttributeOptionSpellcheck(
-            new AttributeOptionCode($attributeCode, 'option1'),
+            new AttributeOptionCode($attributeCode, '1'),
             new \DateTimeImmutable('2020-06-10 10:00:00'),
             (new SpellcheckResultByLocaleCollection())
                 ->add(new LocaleCode('de_DE'), new SpellCheckResult(true))
@@ -113,7 +113,7 @@ class GetAttributeSpellcheckEvaluationSpec extends ObjectBehavior
         );
 
         $option3 = new AttributeOptionSpellcheck(
-            new AttributeOptionCode($attributeCode, 'option3'),
+            new AttributeOptionCode($attributeCode, '3'),
             new \DateTimeImmutable('2020-06-10 10:00:00'),
             (new SpellcheckResultByLocaleCollection())
                 ->add(new LocaleCode('de_DE'), new SpellCheckResult(false))

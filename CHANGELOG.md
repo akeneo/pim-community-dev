@@ -26,6 +26,7 @@
 - PIM-9362: Fix missing "System information" translations for asset analytics
 - PIM-9363: Fix API error 500 when import a picture with an incorrect extension
 - PIM-9370: Fixes page freezing with a big number of attribute options
+- PIM-9404: Fix incorrect cast of numeric attribute option codes
 
 ## Improvements
 
