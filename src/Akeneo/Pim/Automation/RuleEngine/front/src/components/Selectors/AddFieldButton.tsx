@@ -34,6 +34,7 @@ const AddFieldButton: React.FC<Props> = ({
   containerCssClass,
   dropdownCssClass,
   placeholder,
+  ...remainingProps
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
@@ -109,6 +110,7 @@ const AddFieldButton: React.FC<Props> = ({
       }}
       closeTick={closeTick}
       multiple={false}
+      {...remainingProps}
     />
   );
 };

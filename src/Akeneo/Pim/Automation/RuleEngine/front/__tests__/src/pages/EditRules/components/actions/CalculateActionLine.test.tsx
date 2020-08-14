@@ -76,6 +76,66 @@ const assertTestIdHasValue = (testId: string, value: any): void => {
   expect(screen.getByTestId(testId)).toHaveValue(value);
 };
 
+const weightAttribute = createAttribute({
+  code: 'weight',
+  type: AttributeType.METRIC,
+  decimals_allowed: true,
+  metric_family: 'weight_metric_family',
+  localizable: true,
+  scopable: true,
+});
+
+const marginAttribute = createAttribute({
+  code: 'margin',
+  type: AttributeType.NUMBER,
+  decimals_allowed: false,
+  metric_family: null,
+  localizable: false,
+  scopable: false,
+});
+
+const sellPriceAttribute = createAttribute({
+  code: 'sellprice',
+  type: AttributeType.PRICE_COLLECTION,
+  decimals_allowed: true,
+  metric_family: null,
+  localizable: false,
+  scopable: false,
+});
+
+const response = (request: Request) => {
+  if (
+    request.url.includes('pim_enrich_attribute_rest_get') &&
+    request.url.includes('weight')
+  ) {
+    return Promise.resolve(JSON.stringify(weightAttribute));
+  }
+  if (
+    request.url.includes('pim_enrich_attribute_rest_get') &&
+    request.url.includes('margin')
+  ) {
+    return Promise.resolve(JSON.stringify(marginAttribute));
+  }
+  if (
+    request.url.includes('pim_enrich_attribute_rest_get') &&
+    request.url.includes('sellprice')
+  ) {
+    return Promise.resolve(JSON.stringify(sellPriceAttribute));
+  }
+  if (
+    request.url.includes('pimee_enrich_rule_definition_get_available_fields')
+  ) {
+    return Promise.resolve(JSON.stringify(attributeSelect2Response));
+  }
+  if (request.url.includes('pim_enrich_currency_rest_index')) {
+    return Promise.resolve(JSON.stringify(currencies));
+  }
+  if (request.url.includes('pim_enrich_measures_rest_index')) {
+    return Promise.resolve(JSON.stringify(measurementFamiliesResponse));
+  }
+  throw new Error(`The "${request.url}" url is not mocked.`);
+};
+
 describe('CalculateActionLine', () => {
   beforeEach(() => {
     fetchMock.resetMocks();
@@ -86,37 +146,8 @@ describe('CalculateActionLine', () => {
 
   it('should display the calculate action line with a metric target attribute', async () => {
     const defaultValues = buildDefaultValues({});
-    const targetAttribute = createAttribute({
-      code: 'weight',
-      type: AttributeType.METRIC,
-      decimals_allowed: true,
-      metric_family: 'weight_metric_family',
-      localizable: true,
-      scopable: true,
-    });
 
-    fetchMock.mockResponse((request: Request) => {
-      if (
-        request.url.includes('pim_enrich_attribute_rest_get') &&
-        request.url.includes('weight')
-      ) {
-        return Promise.resolve(JSON.stringify(targetAttribute));
-      }
-      if (
-        request.url.includes(
-          'pimee_enrich_rule_definition_get_available_fields'
-        )
-      ) {
-        return Promise.resolve(JSON.stringify(attributeSelect2Response));
-      }
-      if (request.url.includes('pim_enrich_currency_rest_index')) {
-        return Promise.resolve(JSON.stringify(currencies));
-      }
-      if (request.url.includes('pim_enrich_measures_rest_index')) {
-        return Promise.resolve(JSON.stringify(measurementFamiliesResponse));
-      }
-      throw new Error(`The "${request.url}" url is not mocked.`);
-    });
+    fetchMock.mockResponse(response);
 
     renderWithProviders(
       <CalculateActionLine
@@ -162,34 +193,8 @@ describe('CalculateActionLine', () => {
       },
       round_precision: undefined,
     });
-    const targetAttribute = createAttribute({
-      code: 'margin',
-      type: AttributeType.NUMBER,
-      decimals_allowed: false,
-      metric_family: null,
-      localizable: false,
-      scopable: false,
-    });
 
-    fetchMock.mockResponse((request: Request) => {
-      if (
-        request.url.includes('pim_enrich_attribute_rest_get') &&
-        request.url.includes('margin')
-      ) {
-        return Promise.resolve(JSON.stringify(targetAttribute));
-      }
-      if (
-        request.url.includes(
-          'pimee_enrich_rule_definition_get_available_fields'
-        )
-      ) {
-        return Promise.resolve(JSON.stringify(attributeSelect2Response));
-      }
-      if (request.url.includes('pim_enrich_currency_rest_index')) {
-        return Promise.resolve(JSON.stringify(currencies));
-      }
-      throw new Error(`The "${request.url}" url is not mocked.`);
-    });
+    fetchMock.mockResponse(response);
 
     renderWithProviders(
       <CalculateActionLine
@@ -229,31 +234,12 @@ describe('CalculateActionLine', () => {
   it('should display the calculate action line with a price target attribute', async () => {
     const defaultValues = buildDefaultValues({
       destination: {
-        field: 'margin',
+        field: 'sellprice',
         currency: 'USD',
       },
     });
-    const targetAttribute = createAttribute({
-      code: 'margin',
-      type: AttributeType.PRICE_COLLECTION,
-      decimals_allowed: true,
-      metric_family: null,
-      localizable: false,
-      scopable: false,
-    });
 
-    fetchMock.mockResponse((request: Request) => {
-      if (
-        request.url.includes('pim_enrich_attribute_rest_get') &&
-        request.url.includes('margin')
-      ) {
-        return Promise.resolve(JSON.stringify(targetAttribute));
-      }
-      if (request.url.includes('pim_enrich_currency_rest_index')) {
-        return Promise.resolve(JSON.stringify(currencies));
-      }
-      throw new Error(`The "${request.url}" url is not mocked.`);
-    });
+    fetchMock.mockResponse(response);
 
     renderWithProviders(
       <CalculateActionLine
@@ -273,7 +259,7 @@ describe('CalculateActionLine', () => {
       'pimee_catalog_rule.form.edit.fields.currency pim_common.required_label'
     );
 
-    assertTestIdHasValue('edit-rules-action-0-destination-field', 'margin');
+    assertTestIdHasValue('edit-rules-action-0-destination-field', 'sellprice');
     assertTestIdHasValue('edit-rules-action-0-destination-currency', 'USD');
     assertTestIdIsNotInDocument('edit-rules-action-0-destination-unit');
   });
@@ -285,52 +271,8 @@ describe('CalculateActionLine', () => {
       },
       round_precision: undefined,
     });
-    const marginAttribute = createAttribute({
-      code: 'margin',
-      type: AttributeType.NUMBER,
-      decimals_allowed: false,
-      metric_family: null,
-      localizable: false,
-      scopable: false,
-    });
 
-    const weightAttribute = createAttribute({
-      code: 'weight',
-      type: AttributeType.METRIC,
-      decimals_allowed: true,
-      metric_family: 'weight_metric_family',
-      localizable: true,
-      scopable: true,
-    });
-
-    fetchMock.mockResponse((request: Request) => {
-      if (
-        request.url.includes('pim_enrich_attribute_rest_get') &&
-        request.url.includes('margin')
-      ) {
-        return Promise.resolve(JSON.stringify(marginAttribute));
-      }
-      if (
-        request.url.includes('pim_enrich_attribute_rest_get') &&
-        request.url.includes('weight')
-      ) {
-        return Promise.resolve(JSON.stringify(weightAttribute));
-      }
-      if (
-        request.url.includes(
-          'pimee_enrich_rule_definition_get_available_fields'
-        )
-      ) {
-        return Promise.resolve(JSON.stringify(attributeSelect2Response));
-      }
-      if (request.url.includes('pim_enrich_currency_rest_index')) {
-        return Promise.resolve(JSON.stringify(currencies));
-      }
-      if (request.url.includes('pim_enrich_measures_rest_index')) {
-        return Promise.resolve(JSON.stringify(measurementFamiliesResponse));
-      }
-      throw new Error(`The "${request.url}" url is not mocked.`);
-    });
+    fetchMock.mockResponse(response);
 
     renderWithProviders(
       <CalculateActionLine

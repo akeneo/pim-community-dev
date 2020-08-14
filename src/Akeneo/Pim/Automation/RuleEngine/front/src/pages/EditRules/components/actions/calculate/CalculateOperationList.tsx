@@ -102,6 +102,7 @@ const CalculateOperationList: React.FC<Props> = ({
       </ul>
       <div className={'AknButtonList AknButtonList--single'}>
         <BlueGhostButton
+          data-testid={`edit-rules-action-${lineNumber}-add-value`}
           onClick={handleAddValue}
           className={'AknButtonList-item'}>
           {translate(
@@ -110,6 +111,7 @@ const CalculateOperationList: React.FC<Props> = ({
         </BlueGhostButton>
         <div className={'AknButtonList-item'}>
           <AddFieldButton
+            data-testid={`edit-rules-action-${lineNumber}-add-attribute`}
             handleAddField={handleAddAttribute}
             isFieldAlreadySelected={() => false}
             filterSystemFields={[]}

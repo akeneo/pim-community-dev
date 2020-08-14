@@ -9,6 +9,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import { clearAttributeRepositoryCache } from '../../../../../../../src/repositories/AttributeRepository';
 import {
+  attributeSelect2Response,
   createAttribute,
   currencies,
   locales,
@@ -66,6 +67,7 @@ const marginAttribute = createAttribute({
   localizable: false,
   scopable: false,
 });
+
 const priceAttribute = createAttribute({
   type: AttributeType.PRICE_COLLECTION,
   labels: {
@@ -76,6 +78,52 @@ const priceAttribute = createAttribute({
   scopable: true,
 });
 
+const descriptionAttribute = createAttribute({
+  type: AttributeType.NUMBER,
+  labels: {
+    en_US: 'DescriptionUS',
+    fr_FR: 'Description',
+  },
+  localizable: true,
+  scopable: true,
+});
+
+const response = (request: Request) => {
+  if (
+    request.url.includes('pim_enrich_attribute_rest_get') &&
+    request.url.includes('margin')
+  ) {
+    return Promise.resolve(JSON.stringify(marginAttribute));
+  }
+  if (
+    request.url.includes('pim_enrich_attribute_rest_get') &&
+    request.url.includes('price')
+  ) {
+    return Promise.resolve(JSON.stringify(priceAttribute));
+  }
+  if (
+    request.url.includes('pim_enrich_attribute_rest_get') &&
+    request.url.includes('description')
+  ) {
+    return Promise.resolve(JSON.stringify(descriptionAttribute));
+  }
+  if (
+    request.url.includes('pim_enrich_attribute_rest_get') &&
+    request.url.includes('unknown_attribute')
+  ) {
+    return Promise.resolve(JSON.stringify(null));
+  }
+  if (request.url.includes('pim_enrich_currency_rest_index')) {
+    return Promise.resolve(JSON.stringify(currencies));
+  }
+  if (
+    request.url.includes('pimee_enrich_rule_definition_get_available_fields')
+  ) {
+    return Promise.resolve(JSON.stringify(attributeSelect2Response));
+  }
+  throw new Error(`The "${request.url}" url is not mocked.`);
+};
+
 describe('CalculateOperationList', () => {
   beforeEach(() => {
     fetchMock.resetMocks();
@@ -83,30 +131,7 @@ describe('CalculateOperationList', () => {
   });
 
   it('should display the operation list', async () => {
-    fetchMock.mockResponse((request: Request) => {
-      if (
-        request.url.includes('pim_enrich_attribute_rest_get') &&
-        request.url.includes('margin')
-      ) {
-        return Promise.resolve(JSON.stringify(marginAttribute));
-      }
-      if (
-        request.url.includes('pim_enrich_attribute_rest_get') &&
-        request.url.includes('price')
-      ) {
-        return Promise.resolve(JSON.stringify(priceAttribute));
-      }
-      if (
-        request.url.includes('pim_enrich_attribute_rest_get') &&
-        request.url.includes('unknown_attribute')
-      ) {
-        return Promise.resolve(JSON.stringify(null));
-      }
-      if (request.url.includes('pim_enrich_currency_rest_index')) {
-        return Promise.resolve(JSON.stringify(currencies));
-      }
-      throw new Error(`The "${request.url}" url is not mocked.`);
-    });
+    fetchMock.mockResponse(response);
 
     renderWithProviders(
       <CalculateOperationList
@@ -135,30 +160,7 @@ describe('CalculateOperationList', () => {
   });
 
   it('should be able to remove an operation', async () => {
-    fetchMock.mockResponse((request: Request) => {
-      if (
-        request.url.includes('pim_enrich_attribute_rest_get') &&
-        request.url.includes('margin')
-      ) {
-        return Promise.resolve(JSON.stringify(marginAttribute));
-      }
-      if (
-        request.url.includes('pim_enrich_attribute_rest_get') &&
-        request.url.includes('price')
-      ) {
-        return Promise.resolve(JSON.stringify(priceAttribute));
-      }
-      if (
-        request.url.includes('pim_enrich_attribute_rest_get') &&
-        request.url.includes('unknown_attribute')
-      ) {
-        return Promise.resolve(JSON.stringify(null));
-      }
-      if (request.url.includes('pim_enrich_currency_rest_index')) {
-        return Promise.resolve(JSON.stringify(currencies));
-      }
-      throw new Error(`The "${request.url}" url is not mocked.`);
-    });
+    fetchMock.mockResponse(response);
 
     renderWithProviders(
       <CalculateOperationList
@@ -216,30 +218,7 @@ describe('CalculateOperationList', () => {
   });
 
   it('should be able to drag and drop an operation', async () => {
-    fetchMock.mockResponse((request: Request) => {
-      if (
-        request.url.includes('pim_enrich_attribute_rest_get') &&
-        request.url.includes('margin')
-      ) {
-        return Promise.resolve(JSON.stringify(marginAttribute));
-      }
-      if (
-        request.url.includes('pim_enrich_attribute_rest_get') &&
-        request.url.includes('price')
-      ) {
-        return Promise.resolve(JSON.stringify(priceAttribute));
-      }
-      if (
-        request.url.includes('pim_enrich_attribute_rest_get') &&
-        request.url.includes('unknown_attribute')
-      ) {
-        return Promise.resolve(JSON.stringify(null));
-      }
-      if (request.url.includes('pim_enrich_currency_rest_index')) {
-        return Promise.resolve(JSON.stringify(currencies));
-      }
-      throw new Error(`The "${request.url}" url is not mocked.`);
-    });
+    fetchMock.mockResponse(response);
 
     renderWithProviders(
       <CalculateOperationList
@@ -301,6 +280,70 @@ describe('CalculateOperationList', () => {
     ).toHaveValue('en_US');
     expect(
       screen.getByTestId('edit-rules-action-operation-list-3-remove-button')
+    ).toBeInTheDocument();
+  });
+
+  it('should be able to add a constant value', async () => {
+    fetchMock.mockResponse(response);
+
+    renderWithProviders(
+      <CalculateOperationList
+        lineNumber={0}
+        scopes={scopes}
+        locales={locales}
+      />,
+      { all: true },
+      { defaultValues }
+    );
+
+    expect(await screen.findByText('Margin')).toBeInTheDocument();
+
+    userEvent.click(await screen.findByTestId('edit-rules-action-0-add-value'));
+    expect(
+      screen.getByTestId('edit-rules-action-operation-list-4-remove-button')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId('edit-rules-action-operation-list-4-number')
+    ).toBeInTheDocument();
+  });
+
+  it('should be able to add a localizable and scopable attribute', async () => {
+    fetchMock.mockResponse(response);
+
+    renderWithProviders(
+      <CalculateOperationList
+        lineNumber={0}
+        scopes={scopes}
+        locales={locales}
+      />,
+      { all: true },
+      { defaultValues }
+    );
+
+    expect(await screen.findByText('Margin')).toBeInTheDocument();
+
+    userEvent.click(
+      await screen.findByTestId('edit-rules-action-0-add-attribute')
+    );
+    expect(
+      (await screen.findByTestId('edit-rules-action-0-add-attribute')).children
+        .length
+    ).toBeGreaterThan(1);
+    fireEvent.change(
+      await screen.findByTestId('edit-rules-action-0-add-attribute'),
+      {
+        target: { value: 'description' },
+      }
+    );
+    expect(await screen.findByText('DescriptionUS')).toBeInTheDocument();
+    expect(
+      screen.getByTestId('edit-rules-action-operation-list-4-remove-button')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId('edit-rules-action-operation-list-4-locale')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId('edit-rules-action-operation-list-4-scope')
     ).toBeInTheDocument();
   });
 });
