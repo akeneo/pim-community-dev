@@ -10,7 +10,7 @@
     "ts-build": "tsc -p ./tsconfig.build.json --emitDeclarationOnly",
     "check-types": "tsc",
     "check-types:watch": "yarn check-types -- --watch",
-    "test:run": "yarn test:unit:run && yarn test:visual:run",
+    "test:run": "yarn test:unit:run",
     "test:unit:run": "jest --config ./jest.unit.config.js",
     "test:visual:run": "jest --config ./jest.visual.config.js",
     "test:unit:watch": "jest --watch",
