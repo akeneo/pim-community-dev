@@ -1,6 +1,8 @@
 name: Test DSM
 on:
   pull_request:
+    branches:
+      - RAC-191-1
     paths:
       - 'akeneo-design-system/**'
 # Maybe we can launch unit & visual in parallel in separate jobs
