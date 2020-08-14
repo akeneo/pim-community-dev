@@ -23,6 +23,7 @@ pim_import_export:
                 update:
                     success: The job profile has been successfully updated.
                     fail: The job profile could not be updated.
+                    fail_empty_permission: You must select at least one allowed to edit job
                 delete:
                     success: Job instance successfully removed
 
