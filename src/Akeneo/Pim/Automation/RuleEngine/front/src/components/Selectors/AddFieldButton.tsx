@@ -21,6 +21,8 @@ type Props = {
   isFieldAlreadySelected: (fieldCode: string) => boolean;
   filterSystemFields: string[];
   filterAttributeTypes: AttributeType[];
+  containerCssClass?: string;
+  dropdownCssClass?: string;
 };
 
 const AddFieldButton: React.FC<Props> = ({
@@ -28,6 +30,8 @@ const AddFieldButton: React.FC<Props> = ({
   isFieldAlreadySelected,
   filterSystemFields,
   filterAttributeTypes,
+  containerCssClass,
+  dropdownCssClass,
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
@@ -73,8 +77,8 @@ const AddFieldButton: React.FC<Props> = ({
       id={'add_conditions'}
       label={translate('pimee_catalog_rule.form.edit.add_conditions')}
       hiddenLabel={true}
-      containerCssClass={'add-conditions-button'}
-      dropdownCssClass={'add-conditions-dropdown'}
+      containerCssClass={containerCssClass}
+      dropdownCssClass={dropdownCssClass}
       onSelecting={(event: any) => {
         event.preventDefault();
         setCloseTick(!closeTick);

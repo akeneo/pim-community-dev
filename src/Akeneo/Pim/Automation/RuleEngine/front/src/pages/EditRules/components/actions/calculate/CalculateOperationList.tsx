@@ -7,6 +7,7 @@ import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
 import { useControlledFormInputAction } from '../../../hooks';
 import { DropTarget, OperationLine } from './OperationLine';
 import { AddFieldButton } from '../../../../../components/Selectors/AddFieldButton';
+import { BlueGhostButton } from "../../../../../components/Buttons";
 
 type Props = {
   lineNumber: number;
@@ -99,17 +100,27 @@ const CalculateOperationList: React.FC<Props> = ({
             );
           })}
       </ul>
-      <button onClick={handleAddValue}>Add value</button>
-      <AddFieldButton
-        handleAddField={handleAddAttribute}
-        isFieldAlreadySelected={() => false}
-        filterSystemFields={[]}
-        filterAttributeTypes={[
-          AttributeType.NUMBER,
-          AttributeType.PRICE_COLLECTION,
-          AttributeType.METRIC,
-        ]}
-      />
+      <div className={'AknButtonList'}>
+        <BlueGhostButton
+          onClick={handleAddValue}
+          className={'AknButtonList-item'}
+        >Add value
+        </BlueGhostButton>
+        <div className={'AknButtonList-item'}>
+          <AddFieldButton
+            handleAddField={handleAddAttribute}
+            isFieldAlreadySelected={() => false}
+            filterSystemFields={[]}
+            filterAttributeTypes={[
+              AttributeType.NUMBER,
+              AttributeType.PRICE_COLLECTION,
+              AttributeType.METRIC,
+            ]}
+            containerCssClass={'add-attribute-button'}
+            dropdownCssClass={'add-attribute-dropdown'}
+          />
+        </div>
+      </div>
     </>
   );
 };

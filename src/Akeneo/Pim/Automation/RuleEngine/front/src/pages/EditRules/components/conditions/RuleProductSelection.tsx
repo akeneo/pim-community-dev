@@ -229,6 +229,8 @@ const RuleProductSelection: React.FC<Props> = ({
               isFieldAlreadySelected={isActiveConditionField}
               filterSystemFields={SYSTEM_FIELDS}
               filterAttributeTypes={ATTRIBUTE_TYPES}
+              containerCssClass={'add-conditions-button'}
+              dropdownCssClass={'add-conditions-dropdown'}
             />
           </AddConditionContainer>
         </HeaderPartContainer>
