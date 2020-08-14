@@ -1,12 +1,12 @@
 import React, {ReactNode} from 'react';
 import styled from 'styled-components';
 
-const DummyContainer = styled.div<{size: number; type: Type}>`
+const DummyContainer = styled.div<{size: number, type: Type}>`
   font-size: ${({size}) => size}px;
   line-height: ${({size}) => size + 5}px;
   color: ${({type}) => (type === 'primary' ? 'blue' : 'green')};
 `;
-export type Type = 'primary' | 'secondary';
+type Type = 'primary' | 'secondary';
 
 type DummyProps = {
   /**
@@ -36,4 +36,5 @@ const Dummy = ({size = 12, type = 'primary', onClick, children}: DummyProps) => 
   );
 };
 
-export {Dummy, DummyProps};
+export {Dummy};
+export type {DummyProps, Type};

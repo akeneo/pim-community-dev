@@ -21,8 +21,12 @@ include make-file/*.mk
 ## Front
 ##
 .PHONY: node_modules
-node_modules:
+node_modules: dsm
 	$(YARN_RUN) install --frozen-lockfile
+
+.PHONY: dsm
+dsm:
+	$(NODE_RUN) yarn --cwd=akeneo-design-system lib:build:prod
 
 .PHONY: assets
 assets:
