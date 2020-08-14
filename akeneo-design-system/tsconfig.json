@@ -27,6 +27,5 @@
     "target": "es6",
     "baseUrl": ".",
     "types": ["puppeteer", "jest-environment-puppeteer", "expect-puppeteer"]
-  },
-  "include": ["src"]
+  }
 }
