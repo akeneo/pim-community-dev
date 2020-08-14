@@ -48,8 +48,14 @@ const useControlledFormInputCondition = <T>(lineNumber: number) => {
 
 const useControlledFormInputAction = <T>(lineNumber: number) => {
   const { getValues, setValue, errors } = useFormContext();
-  const isFormFieldInError = (formName: string): boolean =>
-    typeof errors?.content?.actions?.[lineNumber]?.[formName] === 'object';
+  const isFormFieldInError = (formName: string): boolean => {
+    let path = errors?.content?.actions?.[lineNumber];
+    formName.split('.').forEach(subFormName => {
+      path = path ? path[subFormName] : undefined;
+    });
+    return typeof path === 'object';
+  };
+
   const formName = (name: string) => `content.actions[${lineNumber}].${name}`;
   const fieldFormName = formName('field');
   const typeFormName = formName('type');

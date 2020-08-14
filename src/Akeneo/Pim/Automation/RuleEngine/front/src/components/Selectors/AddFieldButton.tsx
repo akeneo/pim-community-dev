@@ -23,6 +23,7 @@ type Props = {
   filterAttributeTypes: AttributeType[];
   containerCssClass?: string;
   dropdownCssClass?: string;
+  placeholder: string;
 };
 
 const AddFieldButton: React.FC<Props> = ({
@@ -32,6 +33,7 @@ const AddFieldButton: React.FC<Props> = ({
   filterAttributeTypes,
   containerCssClass,
   dropdownCssClass,
+  placeholder,
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
@@ -95,7 +97,7 @@ const AddFieldButton: React.FC<Props> = ({
           return handleResults(result);
         },
       }}
-      placeholder={translate('pimee_catalog_rule.form.edit.add_conditions')}
+      placeholder={placeholder}
       formatResult={option => {
         return option.text === ''
           ? ''

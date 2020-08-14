@@ -167,6 +167,9 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
         name={formName('destination.field')}
         as={<span hidden />}
         defaultValue={getFormValue('destination.field')}
+        rules={{
+          required: translate('pimee_catalog_rule.exceptions.required'),
+        }}
       />
       <CalculateActionGrid>
         <ActionLeftSide>
@@ -186,7 +189,9 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
           <ActionFormContainer>
             <SelectorBlock
               className={
-                null === attributeTarget ? 'select2-container-error' : ''
+                isFormFieldInError('destination.field')
+                  ? 'select2-container-error'
+                  : ''
               }>
               <AttributeSelector
                 data-testid={`edit-rules-action-${lineNumber}-destination-field`}

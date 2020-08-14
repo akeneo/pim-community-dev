@@ -35,6 +35,7 @@ import {
   createSetFamilyAction,
   createSetGroupsAction,
   createSetStatusAction,
+  createCalculateAction,
 } from './actions';
 
 export const AvailableAddAction: { [key: string]: () => Action } = {
@@ -54,6 +55,7 @@ export const AvailableAddAction: { [key: string]: () => Action } = {
   remove_attribute_value: createRemoveAttributeValueAction,
   remove_category: createRemoveCategoriesAction,
   remove_groups: createRemoveGroupsAction,
+  calculate: createCalculateAction,
 };
 
 export type Action =

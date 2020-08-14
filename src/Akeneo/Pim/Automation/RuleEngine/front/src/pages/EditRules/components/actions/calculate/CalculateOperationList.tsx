@@ -7,7 +7,7 @@ import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
 import { useControlledFormInputAction } from '../../../hooks';
 import { DropTarget, OperationLine } from './OperationLine';
 import { AddFieldButton } from '../../../../../components/Selectors/AddFieldButton';
-import { BlueGhostButton } from "../../../../../components/Buttons";
+import { BlueGhostButton } from '../../../../../components/Buttons';
 
 type Props = {
   lineNumber: number;
@@ -100,11 +100,13 @@ const CalculateOperationList: React.FC<Props> = ({
             );
           })}
       </ul>
-      <div className={'AknButtonList'}>
+      <div className={'AknButtonList AknButtonList--single'}>
         <BlueGhostButton
           onClick={handleAddValue}
-          className={'AknButtonList-item'}
-        >Add value
+          className={'AknButtonList-item'}>
+          {translate(
+            'pimee_catalog_rule.form.edit.actions.calculate.add_value'
+          )}
         </BlueGhostButton>
         <div className={'AknButtonList-item'}>
           <AddFieldButton
@@ -118,6 +120,9 @@ const CalculateOperationList: React.FC<Props> = ({
             ]}
             containerCssClass={'add-attribute-button'}
             dropdownCssClass={'add-attribute-dropdown'}
+            placeholder={translate(
+              'pimee_catalog_rule.form.edit.actions.calculate.add_attribute'
+            )}
           />
         </div>
       </div>

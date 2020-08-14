@@ -231,6 +231,9 @@ const RuleProductSelection: React.FC<Props> = ({
               filterAttributeTypes={ATTRIBUTE_TYPES}
               containerCssClass={'add-conditions-button'}
               dropdownCssClass={'add-conditions-dropdown'}
+              placeholder={translate(
+                'pimee_catalog_rule.form.edit.add_conditions'
+              )}
             />
           </AddConditionContainer>
         </HeaderPartContainer>

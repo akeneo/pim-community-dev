@@ -199,7 +199,9 @@ pimee_catalog_rule:
                     helper: To remove products from groups, please select one or several groups
                     subtitle: Select your groups
                 calculate:
-                    title: Calculate values
+                    title: CALCULATE values
+                    add_value: Add value
+                    add_attribute: Add attribute
                     select_target: Select your target
                     attribute_placeholder: Select your target attribute
                     round_precision: Round precision
