@@ -25,8 +25,6 @@ cp -r "$FOLDER"/. "$CLONE_DIR"
 cd "$CLONE_DIR"
 git status
 
-sed '/\lib/d' .gitignore
-
 git add .
 git commit --message "Update from https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA"
 git push origin "$BRANCH"
