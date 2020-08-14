@@ -21,7 +21,7 @@ type DummyProps = {
   /**
    * The handler called when clicking the component
    */
-  onClick: () => void;
+  onClick?: () => void;
 
   children?: ReactNode;
 };
@@ -29,7 +29,7 @@ type DummyProps = {
 /**
  * This is a nice Dummy component to bootstrap Storybook
  */
-const Dummy = ({size = 12, type = 'primary', onClick = () => {}, children}: DummyProps) => {
+const Dummy = ({size = 12, type = 'primary', onClick, children}: DummyProps) => {
   return (
     <DummyContainer size={size} onClick={onClick} type={type}>
       {children}
