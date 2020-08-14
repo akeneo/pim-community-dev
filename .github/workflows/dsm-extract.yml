@@ -2,7 +2,7 @@ name: Extract DSM
 on:
     push:
         branches:
-            - dsm
+            - RAC-191-1
         paths:
             - 'akeneo-design-system/**'
 jobs:
