@@ -69,7 +69,7 @@ pim_common:
     products: Products
     product_models: Product models
     categories: Categories
-    family_vaiant: Family variant
+    family_variant: Family variant
     enabled: Enabled
     family: Family
     parent: Parent

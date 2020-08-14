@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Component\Localization;
 
+use Symfony\Component\Intl\Countries;
 use Symfony\Component\Intl\Intl;
 
 class LanguageTranslator implements LanguageTranslatorInterface
@@ -9,11 +10,11 @@ class LanguageTranslator implements LanguageTranslatorInterface
     public function translate(string $localeCode, string $locale, string $fallback): string
     {
         $displayLocale = \Locale::getPrimaryLanguage($locale);
-        list($language, $region) = explode('_', $localeCode);
+        list($language, $country) = explode('_', $localeCode);
 
         $translatedLanguage = Intl::getLanguageBundle()->getLanguageName(
             $language,
-            $region,
+            $country,
             $displayLocale
         );
 
@@ -21,6 +22,8 @@ class LanguageTranslator implements LanguageTranslatorInterface
             return $fallback;
         }
 
-        return $translatedLanguage;
+        $country = Countries::getName($country, $displayLocale);
+
+        return sprintf('%s %s', $translatedLanguage, $country);
     }
 }
