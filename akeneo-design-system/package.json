@@ -47,6 +47,7 @@
     "@types/jest-environment-puppeteer": "^4.3.2",
     "@types/jest-image-snapshot": "^3.1.0",
     "@types/puppeteer": "^3.0.1",
+    "@types/styled-components": "^5.1.2",
     "babel-loader": "8.0.5",
     "jest": "^26.3.0",
     "jest-image-snapshot": "^4.1.0",
