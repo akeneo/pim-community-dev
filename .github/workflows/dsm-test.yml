@@ -1,0 +1,24 @@
+name: Test DSM
+on:
+  pull_request:
+    paths:
+      - 'akeneo-design-system/**'
+# Maybe we can launch unit & visual in parallel in separate jobs
+jobs:
+  test:
+    name: Launch tests on the DSM
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout:master
+        uses: actions/checkout@v2.3.2
+      - name: Use Node.js 13
+        uses: actions/setup-node@v1
+        with:
+          node-version: 13.13
+      - name: Install Packages
+        run: cd akeneo-design-system && yarn install
+      - name: Launch lint checks
+        run: cd akeneo-design-system && yarn lint:check
+      - name: Launch tests
+        run: cd akeneo-design-system && yarn test:run
+
