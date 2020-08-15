@@ -50,8 +50,6 @@ akeneo_data_quality_insights:
         recommendation: Attributes with uppercase issues
       consistency_textarea_lowercase_words:
         recommendation: Attributes with lowercase issues
-      consistency_text_title_formatting:
-        recommendation: Attributes with formatting suggestions
       consistency_spelling:
         recommendation: Attributes with spelling issues
     axis:
