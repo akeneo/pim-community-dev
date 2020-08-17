@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistry;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductAxisRateRepositoryInterface;
@@ -41,7 +41,7 @@ class ConsolidateAxesRates
         ProductAxisRateRepositoryInterface $productAxisRateRepository,
         ComputeAxisRates $computeAxisRates,
         Clock $clock,
-        AxisRegistry $axisRegistry
+        AxisRegistryInterface $axisRegistry
     ) {
         $this->getCriteriaEvaluationsByProductIdQuery = $getCriteriaEvaluationsByProductIdQuery;
         $this->productAxisRateRepository = $productAxisRateRepository;

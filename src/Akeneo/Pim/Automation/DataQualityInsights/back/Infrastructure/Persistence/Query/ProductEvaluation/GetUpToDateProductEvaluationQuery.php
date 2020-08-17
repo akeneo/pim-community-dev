@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistry;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Axis;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisEvaluation;
@@ -34,13 +34,13 @@ final class GetUpToDateProductEvaluationQuery implements GetProductEvaluationQue
     /** @var GetLatestAxesRatesQueryInterface */
     private $getLatestProductAxesRatesQuery;
 
-    /** @var AxisRegistry */
+    /** @var AxisRegistryInterface */
     private $axisRegistry;
 
     public function __construct(
         GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
         GetLatestAxesRatesQueryInterface $getLatestProductAxesRatesQuery,
-        AxisRegistry $axisRegistry
+        AxisRegistryInterface $axisRegistry
     ) {
         $this->getCriteriaEvaluationsByProductIdQuery = $getCriteriaEvaluationsByProductIdQuery;
         $this->getLatestProductAxesRatesQuery = $getLatestProductAxesRatesQuery;

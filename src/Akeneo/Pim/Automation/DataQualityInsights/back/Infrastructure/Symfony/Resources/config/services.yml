@@ -1,5 +1,6 @@
 services:
-    Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistry: ~
+    akeneo.pim.automation.data_quality_insights.axis_registry:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistry
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock: ~
 
@@ -10,7 +11,7 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.repository.product_axis_rate'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ComputeAxisRates'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistry'
+            - '@akeneo.pim.automation.data_quality_insights.axis_registry'
 
     akeneo.pim.automation.data_quality_insights.consolidate_product_model_axes_rates:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateAxesRates
@@ -19,7 +20,7 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.repository.product_model_axis_rate'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ComputeAxisRates'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistry'
+            - '@akeneo.pim.automation.data_quality_insights.axis_registry'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ComputeAxisRates:
         arguments:
@@ -30,14 +31,14 @@ services:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.query.get_up_to_date_latest_product_evaluations'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistry'
+            - '@akeneo.pim.automation.data_quality_insights.axis_registry'
 
     akeneo.pim.automation.data_quality_insights.get_product_model_evaluation:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductEvaluation
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.query.get_up_to_date_latest_product_model_evaluations'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistry'
+            - '@akeneo.pim.automation.data_quality_insights.axis_registry'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateDashboardRates:
         arguments:

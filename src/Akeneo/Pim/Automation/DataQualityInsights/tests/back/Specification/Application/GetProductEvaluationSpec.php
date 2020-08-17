@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistry;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Axis;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Enrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
@@ -53,7 +54,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
     public function let(
         GetProductEvaluationQueryInterface $getProductEvaluationQuery,
         GetLocalesByChannelQueryInterface $getLocalesByChannelQuery,
-        AxisRegistry $axisRegistry,
+        AxisRegistryInterface $axisRegistry,
         Axis $consistencyAxis
     ) {
         $consistencyAxis->getCriteriaCodes()->willReturn([

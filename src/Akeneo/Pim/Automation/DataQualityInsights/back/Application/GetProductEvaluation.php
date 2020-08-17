@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistry;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisEvaluation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationResult;
@@ -62,13 +62,13 @@ class GetProductEvaluation
     /** @var GetLocalesByChannelQueryInterface */
     private $getLocalesByChannelQuery;
 
-    /** @var AxisRegistry */
+    /** @var AxisRegistryInterface */
     private $axisRegistry;
 
     public function __construct(
         GetProductEvaluationQueryInterface $getProductEvaluationQuery,
         GetLocalesByChannelQueryInterface $getLocalesByChannelQuery,
-        AxisRegistry $axisRegistry
+        AxisRegistryInterface $axisRegistry
     ) {
         $this->getProductEvaluationQuery = $getProductEvaluationQuery;
         $this->getLocalesByChannelQuery = $getLocalesByChannelQuery;

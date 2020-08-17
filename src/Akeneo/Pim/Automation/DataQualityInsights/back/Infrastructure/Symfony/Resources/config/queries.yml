@@ -23,14 +23,14 @@ services:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.query.get_up_to_date_product_criteria_evaluations'
             - '@akeneo.pim.automation.data_quality_insights.query.get_up_to_date_latest_product_axes_rates'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistry'
+            - '@akeneo.pim.automation.data_quality_insights.axis_registry'
 
     akeneo.pim.automation.data_quality_insights.query.get_up_to_date_latest_product_model_evaluations:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpToDateProductEvaluationQuery
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.query.get_up_to_date_product_model_criteria_evaluations'
             - '@akeneo.pim.automation.data_quality_insights.query.get_up_to_date_latest_product_model_axes_rates'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistry'
+            - '@akeneo.pim.automation.data_quality_insights.axis_registry'
 
     akeneo.pim.automation.data_quality_insights.query.get_up_to_date_product_criteria_evaluations:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpToDateCriteriaEvaluationsByProductIdQuery
