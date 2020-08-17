@@ -154,6 +154,9 @@ $rules = [
 
         //TODO: just because we override ProductController
         'Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder',
+
+        // PIM-9393: Avoid user to remove all permissions to edit a job instance
+        'Akeneo\Platform\Bundle\ImportExportBundle\Exception\JobInstanceCannotBeUpdatedException',
     ])->in('Akeneo\Pim\Permission\Bundle'),
     $builder->only([
         'Symfony\Component',
