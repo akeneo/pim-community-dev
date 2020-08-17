@@ -25,7 +25,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
 
-final class GetProductAxesRatesSpec extends ObjectBehavior
+final class PimEnterpriseGetProductAxesRatesSpec extends ObjectBehavior
 {
     public function let(GetLatestAxesRatesQueryInterface $getLatestProductAxesRatesQuery)
     {
