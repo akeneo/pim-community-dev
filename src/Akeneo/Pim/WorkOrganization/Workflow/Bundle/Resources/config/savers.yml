@@ -65,7 +65,7 @@ services:
             - '@pimee_workflow.product_model.builder.draft'
             - '@pimee_workflow.remover.product_model_draft'
             - '@pimee_catalog.security.merger.merge_data_on_product_model'
-            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.repository.product_model_without_permission'
             - '@pimee_workflow.repository.product_model_draft'
             - '@pim_catalog.saver.product_model'
             - '@Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory'

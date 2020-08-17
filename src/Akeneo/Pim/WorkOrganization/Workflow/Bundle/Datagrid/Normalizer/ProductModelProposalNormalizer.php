@@ -16,7 +16,6 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -59,12 +58,12 @@ class ProductModelProposalNormalizer implements NormalizerInterface, CacheableSu
     {
         $data = [];
 
-        $data['changes'] = $this->standardNormalizer->normalize(
-            $this->getValueCollectionFromChanges($proposalModelProduct),
-            'standard',
+        $data['changes'] = $this->getChanges($proposalModelProduct, $context);
+        $data['createdAt'] = $this->datagridNormlizer->normalize(
+            $proposalModelProduct->getCreatedAt(),
+            $format,
             $context
         );
-        $data['createdAt'] = $this->datagridNormlizer->normalize($proposalModelProduct->getCreatedAt(), $format, $context);
         $data['product'] = $proposalModelProduct->getEntityWithValue();
         $data['author'] = $proposalModelProduct->getAuthor();
         $data['author_label'] = $proposalModelProduct->getAuthorLabel();
@@ -73,7 +72,7 @@ class ProductModelProposalNormalizer implements NormalizerInterface, CacheableSu
         $data['status'] = $proposalModelProduct->getStatus();
         $data['proposal'] = $proposalModelProduct;
         $data['search_id'] = $proposalModelProduct->getEntityWithValue()->getCode();
-        $data['id'] = 'product_model_draft_' . (string) $proposalModelProduct->getId();
+        $data['id'] = 'product_model_draft_' . (string)$proposalModelProduct->getId();
         $data['document_type'] = 'product_model_draft';
         $data['proposal_id'] = $proposalModelProduct->getId();
 
@@ -93,6 +92,30 @@ class ProductModelProposalNormalizer implements NormalizerInterface, CacheableSu
         return true;
     }
 
+    private function getChanges(ProductModelDraft $proposal, array $context): array
+    {
+        $normalizedValues = $this->standardNormalizer->normalize(
+            $this->getValueCollectionFromChangesWithoutEmptyValues($proposal),
+            'standard',
+            $context
+        );
+
+        $changes = $proposal->getChanges();
+        foreach ($changes['values'] as $code => $changeset) {
+            foreach ($changeset as $index => $change) {
+                if ($this->isChangeDataNull($change['data'])) {
+                    $normalizedValues[$code][] = [
+                        'data' => null,
+                        'locale' => $change['locale'],
+                        'scope' => $change['scope'],
+                    ];
+                }
+            }
+        }
+
+        return $normalizedValues;
+    }
+
     /**
      * During the fetch of the Draft, the ValueCollectionFactory will remove the empty values. As empty values are
      * filtered in the raw values, deleted values are not rendered properly for the proposal.
@@ -102,11 +125,11 @@ class ProductModelProposalNormalizer implements NormalizerInterface, CacheableSu
      *
      * https://github.com/akeneo/pim-community-dev/issues/10083
      *
-     * @param ProductDraft $proposal
+     * @param ProductModelDraft $proposal
      *
      * @return WriteValueCollection
      */
-    private function getValueCollectionFromChanges(ProductModelDraft $proposal): WriteValueCollection
+    private function getValueCollectionFromChangesWithoutEmptyValues(ProductModelDraft $proposal): WriteValueCollection
     {
         $changes = $proposal->getChanges();
         $valueCollection = new WriteValueCollection();
@@ -114,16 +137,26 @@ class ProductModelProposalNormalizer implements NormalizerInterface, CacheableSu
         foreach ($changes['values'] as $code => $changeset) {
             $attribute = $this->getAttributesQuery->forCode($code);
             foreach ($changeset as $index => $change) {
-                $value = $this->valueFactory->createByCheckingData(
-                    $attribute,
-                    $change['scope'],
-                    $change['locale'],
-                    $change['data']
+                if (true === $this->isChangeDataNull($change['data'])) {
+                    continue;
+                }
+
+                $valueCollection->add(
+                    $this->valueFactory->createByCheckingData(
+                        $attribute,
+                        $change['scope'],
+                        $change['locale'],
+                        $change['data']
+                    )
                 );
-                $valueCollection->add($value);
             }
         }
 
         return $valueCollection;
+    }
+
+    private function isChangeDataNull($changeData): bool
+    {
+        return null === $changeData || '' === $changeData || [] === $changeData;
     }
 }

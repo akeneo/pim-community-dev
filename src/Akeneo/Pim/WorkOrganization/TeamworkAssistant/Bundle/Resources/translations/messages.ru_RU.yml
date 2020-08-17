@@ -13,11 +13,9 @@ teamwork_assistant:
     message: У вас есть новые продукты для обогащения "%project_label%". До даты "%due_date%".
     project_finished:
       contributor: Поздравления! Вы на 100% завершили продукт в %project_label%.
-      owner: '%project_label% до %due_date% закончен.'
       show: Показать
     due_date:
       contributor: Вы выполнили %percent%% продуктов %project_label%. Не забудьте заполнить остальные продукты до %due_date%.
-      owner: '%project_label% на %due_date% выпонены не на 100%.'
       start: Начало
   datagrid:
     project_completeness: Прогресс выполнения проекта

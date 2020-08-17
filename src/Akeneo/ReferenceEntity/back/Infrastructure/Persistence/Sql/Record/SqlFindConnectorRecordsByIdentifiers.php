@@ -66,7 +66,6 @@ class SqlFindConnectorRecordsByIdentifiers implements FindConnectorRecordsByIden
                 value_collection
             FROM akeneo_reference_entity_record
             WHERE identifier IN (:identifiers)
-            ORDER BY FIELD(identifier, :identifiers);
 SQL;
 
         $statement = $this->sqlConnection->executeQuery(
@@ -75,8 +74,28 @@ SQL;
             ['identifiers' => Connection::PARAM_STR_ARRAY]
         );
         $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $orderedResults = $this->orderRecordItems($results, $identifiers);
 
-        return empty($results) ? [] : $this->hydrateRecords($results, $recordQuery);
+        return empty($orderedResults) ? [] : $this->hydrateRecords($orderedResults, $recordQuery);
+    }
+
+    private function orderRecordItems(array $normalizedRecordItems, array $orderedIdentifiers): array
+    {
+        $resultIndexedByIdentifier = array_column($normalizedRecordItems, null, 'identifier');
+        $resultIndexedByIdentifier = array_change_key_case($resultIndexedByIdentifier, CASE_LOWER);
+
+        $existingIdentifiers = [];
+        foreach ($orderedIdentifiers as $orderedIdentifier) {
+            $satinizedIdentifier = trim(strtolower($orderedIdentifier));
+
+            if (isset($resultIndexedByIdentifier[$satinizedIdentifier])) {
+                $existingIdentifiers[$satinizedIdentifier] = $satinizedIdentifier;
+            }
+        }
+
+        $result = array_replace($existingIdentifiers, $resultIndexedByIdentifier);
+
+        return array_values($result);
     }
 
     /**

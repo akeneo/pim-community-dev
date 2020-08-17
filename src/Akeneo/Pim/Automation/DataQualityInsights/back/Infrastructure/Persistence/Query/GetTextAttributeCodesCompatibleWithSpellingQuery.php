@@ -36,12 +36,10 @@ class GetTextAttributeCodesCompatibleWithSpellingQuery implements GetTextAttribu
 SELECT pca.code, pca.properties
 FROM pim_catalog_attribute pca
 INNER JOIN pim_catalog_family_attribute pcfamatt on pca.id = pcfamatt.attribute_id
-INNER JOIN pim_catalog_family pcf on pcfamatt.family_id = pcf.id
 INNER JOIN pim_catalog_product pcp on pcp.family_id = pcfamatt.family_id
 WHERE pcp.id = :product_id
 AND pca.attribute_type = :attribute_type
 AND pca.is_localizable = 1
-AND pca.id != pcf.label_attribute_id;
 SQL;
 
         $statement = $this->db->executeQuery($query,

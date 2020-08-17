@@ -41,10 +41,6 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAttributeAsMainTitleFromProductId:
-        arguments:
-            - '@database_connection'
-
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetCategoryChildrenIdsQuery:
         arguments:
             - '@database_connection'
@@ -93,10 +89,6 @@ services:
             - '@database_connection'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAverageRanksQuery:
-        arguments:
-            - '@database_connection'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetIgnoredProductTitleSuggestionQuery:
         arguments:
             - '@database_connection'
 

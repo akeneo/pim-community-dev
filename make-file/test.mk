@@ -2,7 +2,7 @@ var/tests/%:
 	$(DOCKER_COMPOSE) run -u www-data --rm php mkdir -p $@
 
 .PHONY: coupling-back
-coupling-back: twa-coupling-back franklin-insights-coupling-back data-quality-insights-coupling-back reference-entity-coupling-back asset-manager-coupling-back rule-engine-coupling-back workflow-coupling-back permission-coupling-back
+coupling-back: twa-coupling-back data-quality-insights-coupling-back reference-entity-coupling-back asset-manager-coupling-back rule-engine-coupling-back workflow-coupling-back permission-coupling-back
 
 .PHONY: check-pullup
 check-pullup:
@@ -23,7 +23,7 @@ lint-back:
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
 
 .PHONY: lint-front
-lint-front: franklin-insights-lint-front
+lint-front:
 	$(YARN_RUN) lint
 
 ### Unit tests
@@ -54,7 +54,7 @@ integration-front:
 	$(YARN_RUN) integration
 
 .PHONY: integration-back
-integration-back: var/tests/phpunit franklin-insights-integration-back data-quality-insights-integration-back reference-entity-integration-back asset-manager-integration-back
+integration-back: var/tests/phpunit data-quality-insights-integration-back reference-entity-integration-back asset-manager-integration-back
 ifeq ($(CI),true)
 	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php PIM_Integration_Test
 else

@@ -109,6 +109,7 @@ class ProductModelWorkflowIntegration extends ApiTestCase
             $response->headers->get('location')
         );
 
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
         return $this->get('pimee_security.repository.product_model')->findOneByIdentifier($code);
     }
 
