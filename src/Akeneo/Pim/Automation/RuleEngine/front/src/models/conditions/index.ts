@@ -7,6 +7,7 @@ export * from './DateAttributeCondition';
 export * from './FallbackCondition';
 export * from './FamilyCondition';
 export * from './NumberAttributeCondition';
+export * from './PictureAttributeCondition';
 export * from './PimCondition';
 export * from './StatusCondition';
 export * from './SimpleMultiOptionsAttributeCondition';
