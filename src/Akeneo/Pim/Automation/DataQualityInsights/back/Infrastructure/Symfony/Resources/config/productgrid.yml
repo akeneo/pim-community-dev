@@ -1,7 +1,7 @@
 services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\RegisterConsistencyFilter:
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
+            - '@akeneo.pim.automation.data_quality_insights.feature'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-grid, method: buildBefore }
 

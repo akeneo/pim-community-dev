@@ -10,8 +10,6 @@ import {
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVED,
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVING,
   DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE,
-  DataQualityInsightsFeature,
-  getDataQualityInsightsFeature,
   PRODUCT_ATTRIBUTES_TAB_LOADED,
   PRODUCT_ATTRIBUTES_TAB_LOADING,
   PRODUCT_ATTRIBUTES_TAB_NAME,
@@ -51,15 +49,6 @@ interface LevelNavigationEvent {
 }
 
 class DataQualityInsightsApp extends BaseView {
-  private isDataQualityInsightsEnabled = false;
-
-  public initialize(): void {
-    super.initialize();
-
-    getDataQualityInsightsFeature().then((dataQualityInsightsFeature: DataQualityInsightsFeature) => {
-      this.isDataQualityInsightsEnabled = dataQualityInsightsFeature.isActive ;
-    });
-  }
 
   public configure() {
     this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', (event: LocaleEvent) => {
@@ -145,10 +134,6 @@ class DataQualityInsightsApp extends BaseView {
   }
 
   public render() {
-    if (!this.isDataQualityInsightsEnabled) {
-      return this;
-    }
-
     const catalogLocale: string = UserContext.get('catalogLocale');
     const catalogChannel: string = UserContext.get('catalogScope');
     const productData = this.getFormData();

@@ -2,7 +2,6 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\CheckTextController:
         public: true
         arguments:
-            $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
             $textChecker: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellChecker'
             $supportedLocaleValidator: '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator'
             $logger: '@monolog.logger.quality'
@@ -10,47 +9,39 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddProductWordInDictionaryController:
         public: true
         arguments:
-            $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
             $ignoreWordForProduct: '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWordForProduct'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddProductModelWordInDictionaryController:
         public: true
         arguments:
-            $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
             $ignoreWordForProductModel: '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWordForProductModel'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddAttributeWordInDictionaryController:
         public: true
         arguments:
             $ignoreWordForAttribute: '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWordForAttribute'
-            $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddAttributeOptionWordInDictionaryController:
         public: true
         arguments:
-            $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
             $ignoreWordForAttributeOption: '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWordForAttributeOption'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetAttributeLabelsErrorCountController:
         public: true
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeSpellcheckQuery'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetAttributeOptionsLabelsErrorCountController:
         public: true
         arguments:
-            $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
             $attributeOptionsSpellcheckQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAllAttributeOptionsSpellcheckQuery'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetAttributeSpellcheckEvaluationController:
         public: true
         arguments:
-            $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
             $getAttributeSpellcheckEvaluation: '@Akeneo\Pim\Automation\DataQualityInsights\Application\GetAttributeSpellcheckEvaluation'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetNumberOfProductsImpactedByAttributeSpellingMistakesController:
         public: true
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\GetNumberOfProductsImpactedByAttributeOrOptionsSpellingMistakes'

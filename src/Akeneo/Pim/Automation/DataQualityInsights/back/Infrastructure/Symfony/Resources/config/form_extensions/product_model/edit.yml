@@ -4,8 +4,10 @@ extensions:
         parent: pim-product-model-edit-form
         targetZone: content
         position: 10
+        feature: data_quality_insights
 
     pim-product-model-edit-form-attribute-filter-all-improvable-attributes:
         module: pim/product-edit-form/attribute-filter-all-improvable-attributes
         parent: pim-product-model-edit-form-attribute-filter
         position: 140
+        feature: data_quality_insights
