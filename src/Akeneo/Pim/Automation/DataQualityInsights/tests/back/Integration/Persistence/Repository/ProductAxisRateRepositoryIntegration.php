@@ -278,14 +278,14 @@ final class ProductAxisRateRepositoryIntegration extends TestCase
 
     private function findAllProductAxisRates(): array
     {
-        $stmt = $this->db->query('SELECT * FROM pimee_data_quality_insights_product_axis_rates ORDER BY product_id');
+        $stmt = $this->db->query('SELECT * FROM pim_data_quality_insights_product_axis_rates ORDER BY product_id');
 
         return $stmt->fetchAll();
     }
 
     private function findAllProductModelAxisRates(): array
     {
-        $stmt = $this->db->query('SELECT * FROM pimee_data_quality_insights_product_model_axis_rates ORDER BY product_id');
+        $stmt = $this->db->query('SELECT * FROM pim_data_quality_insights_product_model_axis_rates ORDER BY product_id');
 
         return $stmt->fetchAll();
     }
@@ -298,7 +298,7 @@ final class ProductAxisRateRepositoryIntegration extends TestCase
     private function assertCountProductAxisRates(int $expectedCount): void
     {
         $stmt = $this->db->executeQuery(
-            'SELECT COUNT(*) FROM pimee_data_quality_insights_product_axis_rates'
+            'SELECT COUNT(*) FROM pim_data_quality_insights_product_axis_rates'
         );
         $count = intval($stmt->fetchColumn());
 
@@ -308,7 +308,7 @@ final class ProductAxisRateRepositoryIntegration extends TestCase
     private function assertCountProductModelAxisRates(int $expectedCount): void
     {
         $stmt = $this->db->executeQuery(
-            'SELECT COUNT(*) FROM pimee_data_quality_insights_product_model_axis_rates'
+            'SELECT COUNT(*) FROM pim_data_quality_insights_product_model_axis_rates'
         );
         $count = intval($stmt->fetchColumn());
 
@@ -318,7 +318,7 @@ final class ProductAxisRateRepositoryIntegration extends TestCase
     private function assertProductAxisRatesExists(ProductAxisRates $productAxisRates): void
     {
         $query = <<<SQL
-SELECT 1 FROM pimee_data_quality_insights_product_axis_rates 
+SELECT 1 FROM pim_data_quality_insights_product_axis_rates 
 WHERE product_id = :product_id
     AND axis_code = :axis_code
     AND evaluated_at = :evaluated_at
@@ -339,7 +339,7 @@ SQL;
     private function assertProductModelAxisRatesExists(ProductAxisRates $productAxisRates): void
     {
         $query = <<<SQL
-SELECT 1 FROM pimee_data_quality_insights_product_model_axis_rates 
+SELECT 1 FROM pim_data_quality_insights_product_model_axis_rates 
 WHERE product_id = :product_id
     AND axis_code = :axis_code
     AND evaluated_at = :evaluated_at

@@ -1,8 +1,9 @@
 extensions:
     akeneo-data-quality-insights-menu-activity-dqi-dashboard:
-        module: akeneo/data-quality-insights/view/dqi-dashboard/menu-item
+        module: pim/menu/item
         parent: pim-menu-activity-navigation-block
         position: 103
+        feature: data_quality_insights
         config:
             title: akeneo_data_quality_insights.dqi_dashboard.menu
             to: akeneo_data_quality_insights_dashboard

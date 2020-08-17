@@ -50,7 +50,7 @@ SELECT
     code,
     JSON_UNQUOTE(JSON_EXTRACT(rates, $consistencyPath)) AS consistency_average_rank,
     JSON_UNQUOTE(JSON_EXTRACT(rates, $enrichmentPath)) AS enrichment_average_rank
-FROM pimee_data_quality_insights_dashboard_rates_projection
+FROM pim_data_quality_insights_dashboard_rates_projection
 WHERE type = :type AND code IN (:codes)
 SQL;
 

@@ -199,7 +199,7 @@ final class ProductCriterionEvaluationRepositoryIntegration extends TestCase
 
     private function findAllProductEvaluations(): array
     {
-        $stmt = $this->db->query('SELECT * FROM pimee_data_quality_insights_product_criteria_evaluation');
+        $stmt = $this->db->query('SELECT * FROM pim_data_quality_insights_product_criteria_evaluation');
 
         return $stmt->fetchAll();
     }
@@ -207,7 +207,7 @@ final class ProductCriterionEvaluationRepositoryIntegration extends TestCase
     private function findEvaluation(ProductId $productId, CriterionCode $criterionCode): array
     {
         $query = <<<SQL
-SELECT * FROM pimee_data_quality_insights_product_criteria_evaluation
+SELECT * FROM pim_data_quality_insights_product_criteria_evaluation
 WHERE product_id = :productId AND criterion_code = :criterionCode
 SQL;
 
@@ -227,7 +227,7 @@ SQL;
     private function assertCountProductCriterionEvaluations(int $expectedCount): void
     {
         $stmt = $this->db->executeQuery(
-            'SELECT COUNT(*) FROM pimee_data_quality_insights_product_criteria_evaluation'
+            'SELECT COUNT(*) FROM pim_data_quality_insights_product_criteria_evaluation'
         );
         $count = intval($stmt->fetchColumn());
 
@@ -248,7 +248,7 @@ SQL;
 
     private function clearAllEvaluations(): void
     {
-        $this->db->executeQuery('DELETE FROM pimee_data_quality_insights_product_criteria_evaluation');
+        $this->db->executeQuery('DELETE FROM pim_data_quality_insights_product_criteria_evaluation');
     }
 
     private function assertCriterionEvaluationEquals(Write\CriterionEvaluation $criterionEvaluation, array $rawCriterionEvaluation): void

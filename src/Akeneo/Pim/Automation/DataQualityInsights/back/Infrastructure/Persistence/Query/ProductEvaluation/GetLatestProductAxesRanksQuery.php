@@ -44,8 +44,8 @@ final class GetLatestProductAxesRanksQuery implements GetLatestProductAxesRanksQ
 SELECT product_id, JSON_OBJECTAGG(axis_code, rates) AS rates
 FROM (
     SELECT latest_eval.axis_code, latest_eval.product_id, latest_eval.rates
-    FROM pimee_data_quality_insights_product_axis_rates AS latest_eval
-        LEFT JOIN pimee_data_quality_insights_product_axis_rates AS other_eval
+    FROM pim_data_quality_insights_product_axis_rates AS latest_eval
+        LEFT JOIN pim_data_quality_insights_product_axis_rates AS other_eval
             ON other_eval.axis_code = latest_eval.axis_code
             AND other_eval.product_id = latest_eval.product_id
             AND latest_eval.evaluated_at < other_eval.evaluated_at

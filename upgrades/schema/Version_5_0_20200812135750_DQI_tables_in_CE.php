@@ -1,42 +1,43 @@
-<?php
+<?php declare(strict_types=1);
 
-declare(strict_types=1);
+namespace Pim\Upgrade\Schema;
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+use Doctrine\DBAL\Migrations\IrreversibleMigrationException;
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
-namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber;
-
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
-use Doctrine\DBAL\Connection;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
-class InitDataQualityInsightsDbSchemaSubscriber implements EventSubscriberInterface
+final class Version_5_0_20200812135750_DQI_tables_in_CE extends AbstractMigration
 {
-    private $dbalConnection;
-
-    public function __construct(Connection $dbalConnection)
+    public function up(Schema $schema) : void
     {
-        $this->dbalConnection = $dbalConnection;
+        if($this->tablesWithEEPrefixExist()) {
+            $this->renameTables();
+        } else {
+            $this->createTables();
+        }
     }
 
-    public static function getSubscribedEvents()
+    private function renameTables(): void
     {
-        return [
-            InstallerEvents::POST_DB_CREATE => 'initDbSchema'
-        ];
+        $sql = <<<SQL
+ALTER TABLE pimee_data_quality_insights_dashboard_rates_projection RENAME AS pim_data_quality_insights_dashboard_rates_projection;
+ALTER TABLE pimee_data_quality_insights_product_axis_rates RENAME AS pim_data_quality_insights_product_axis_rates;
+ALTER TABLE pimee_data_quality_insights_product_criteria_evaluation RENAME AS pim_data_quality_insights_product_criteria_evaluation;
+ALTER TABLE pimee_data_quality_insights_product_model_axis_rates RENAME AS pim_data_quality_insights_product_model_axis_rates;
+ALTER TABLE pimee_data_quality_insights_product_model_criteria_evaluation RENAME AS pim_data_quality_insights_product_model_criteria_evaluation;
+SQL;
+        $this->addSql($sql);
     }
 
-    public function initDbSchema(InstallerEvent $event): void
+    private function tablesWithEEPrefixExist(): bool
     {
-        $query = <<<'SQL'
+        $stmt = $this->connection->executeQuery('SHOW TABLES LIKE "%pimee_data_quality_insights_dashboard_rates_projection%"');
+
+        return $stmt->rowCount() === 1;
+    }
+
+    private function createTables(): void {
+        $sql = <<<'SQL'
 CREATE TABLE pim_data_quality_insights_product_criteria_evaluation (
   product_id int NOT NULL,
   criterion_code varchar(40) NOT NULL,
@@ -82,7 +83,11 @@ CREATE TABLE pim_data_quality_insights_dashboard_rates_projection (
     PRIMARY KEY (type, code)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 SQL;
+        $this->addSql($sql);
+    }
 
-        $this->dbalConnection->executeQuery($query);
+    public function down(Schema $schema) : void
+    {
+        $this->throwIrreversibleMigrationException();
     }
 }

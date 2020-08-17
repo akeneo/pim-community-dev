@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetAverageRanksQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
@@ -24,24 +23,16 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class DashboardWidgetFamiliesController
 {
-    /** @var FeatureFlag */
-    private $featureFlag;
-
     /** @var GetAverageRanksQueryInterface */
     private $getAverageRanks;
 
-    public function __construct(FeatureFlag $featureFlag, GetAverageRanksQueryInterface $getAverageRanks)
+    public function __construct(GetAverageRanksQueryInterface $getAverageRanks)
     {
-        $this->featureFlag = $featureFlag;
         $this->getAverageRanks = $getAverageRanks;
     }
 
     public function __invoke(Request $request, string $channel, string $locale)
     {
-        if (! $this->featureFlag->isEnabled()) {
-            return new JsonResponse(null, Response::HTTP_NOT_FOUND);
-        }
-
         try {
             $channelCode = new ChannelCode($channel);
             $localeCode = new LocaleCode($locale);

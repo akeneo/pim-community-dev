@@ -46,7 +46,7 @@ final class ProductCriterionEvaluationRepository implements CriterionEvaluationR
     {
         $query = <<<SQL
 DELETE evaluation
-FROM pimee_data_quality_insights_product_criteria_evaluation AS evaluation
+FROM pim_data_quality_insights_product_criteria_evaluation AS evaluation
 LEFT JOIN pim_catalog_product AS product ON(evaluation.product_id = product.id)
 WHERE product.id IS NULL
 SQL;

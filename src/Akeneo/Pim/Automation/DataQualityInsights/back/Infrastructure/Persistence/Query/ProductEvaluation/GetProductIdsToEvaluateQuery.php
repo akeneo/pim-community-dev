@@ -31,7 +31,7 @@ final class GetProductIdsToEvaluateQuery implements GetProductIdsToEvaluateQuery
     {
         $sql = <<<SQL
 SELECT DISTINCT evaluation.product_id
-FROM pimee_data_quality_insights_product_criteria_evaluation AS evaluation
+FROM pim_data_quality_insights_product_criteria_evaluation AS evaluation
 INNER JOIN pim_catalog_product AS product ON product.id = evaluation.product_id
 WHERE evaluation.status = :status
 LIMIT $limit

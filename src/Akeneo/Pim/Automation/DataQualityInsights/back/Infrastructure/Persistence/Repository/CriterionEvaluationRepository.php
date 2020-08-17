@@ -31,7 +31,7 @@ class CriterionEvaluationRepository
     public function createCriterionEvaluationsForProducts(Write\CriterionEvaluationCollection $criteriaEvaluations): void
     {
         $queryFormat = <<<SQL
-INSERT INTO pimee_data_quality_insights_product_criteria_evaluation
+INSERT INTO pim_data_quality_insights_product_criteria_evaluation
     (product_id, criterion_code, status) VALUES (:%s, :%s, :%s)
 ON DUPLICATE KEY UPDATE status = :%s;
 SQL;
@@ -42,7 +42,7 @@ SQL;
     public function createCriterionEvaluationsForProductModels(Write\CriterionEvaluationCollection $criteriaEvaluations): void
     {
         $queryFormat = <<<SQL
-INSERT INTO pimee_data_quality_insights_product_model_criteria_evaluation
+INSERT INTO pim_data_quality_insights_product_model_criteria_evaluation
     (product_id, criterion_code, status) VALUES (:%s, :%s, :%s)
 ON DUPLICATE KEY UPDATE status = :%s;
 SQL;
@@ -53,7 +53,7 @@ SQL;
     public function updateCriterionEvaluationsForProducts(Write\CriterionEvaluationCollection $criteriaEvaluations): void
     {
         $queryFormat = <<<SQL
-UPDATE pimee_data_quality_insights_product_criteria_evaluation
+UPDATE pim_data_quality_insights_product_criteria_evaluation
 SET evaluated_at = :%s, status = :%s, result = :%s
 WHERE product_id = :%s AND criterion_code = :%s;
 SQL;
@@ -63,7 +63,7 @@ SQL;
     public function updateCriterionEvaluationsForProductModels(Write\CriterionEvaluationCollection $criteriaEvaluations): void
     {
         $queryFormat = <<<SQL
-UPDATE pimee_data_quality_insights_product_model_criteria_evaluation
+UPDATE pim_data_quality_insights_product_model_criteria_evaluation
 SET evaluated_at = :%s, status = :%s, result = :%s
 WHERE product_id = :%s AND criterion_code = :%s;
 SQL;
@@ -132,7 +132,7 @@ SQL;
         try {
             $this->dbConnection->executeQuery('SET autocommit=0');
             $this->dbConnection->executeQuery('SET foreign_key_checks=0');
-            $this->dbConnection->executeQuery('LOCK TABLES pimee_data_quality_insights_product_criteria_evaluation WRITE');
+            $this->dbConnection->executeQuery('LOCK TABLES pim_data_quality_insights_product_criteria_evaluation WRITE');
             $this->dbConnection->executeQuery($query, $queryParametersValues, $queryParametersTypes);
             $this->dbConnection->executeQuery('COMMIT');
         } finally {

@@ -71,7 +71,7 @@ FROM pim_catalog_product AS product
 WHERE product.id IN (:productIds)
   AND (
       EXISTS(
-          SELECT 1 FROM pimee_data_quality_insights_product_criteria_evaluation AS evaluation
+          SELECT 1 FROM pim_data_quality_insights_product_criteria_evaluation AS evaluation
             WHERE evaluation.product_id = product.id
             AND (
                 evaluation.evaluated_at < product.updated
@@ -81,7 +81,7 @@ WHERE product.id IN (:productIds)
             AND evaluation.status != :statusPending
       )
       OR NOT EXISTS(
-          SELECT 1 FROM pimee_data_quality_insights_product_criteria_evaluation AS missing_evaluation
+          SELECT 1 FROM pim_data_quality_insights_product_criteria_evaluation AS missing_evaluation
           WHERE missing_evaluation.product_id = product.id
       )
   )

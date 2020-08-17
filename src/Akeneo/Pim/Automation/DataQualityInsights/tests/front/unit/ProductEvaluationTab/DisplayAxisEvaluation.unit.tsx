@@ -5,13 +5,13 @@ import '@testing-library/jest-dom/extend-expect';
 import {fireEvent, render} from "@testing-library/react";
 
 import AxisEvaluation
-  from "@akeneo-pim-ee/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation";
-import {Evaluation} from "@akeneo-pim-ee/data-quality-insights/src/domain";
-import {createStoreWithInitialState} from "@akeneo-pim-ee/data-quality-insights/src/infrastructure/store/productEditFormStore";
+  from "@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation";
+import {Evaluation} from "@akeneo-pim-community/data-quality-insights/src/domain";
+import {createStoreWithInitialState} from "@akeneo-pim-community/data-quality-insights/src/infrastructure/store/productEditFormStore";
 import {
   DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES,
   DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES
-} from "@akeneo-pim-ee/data-quality-insights/src/application/listener";
+} from "@akeneo-pim-community/data-quality-insights/src/application/listener";
 
 const UserContext = require('pim/user-context');
 
