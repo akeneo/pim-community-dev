@@ -19,7 +19,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AxisCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
-class GetProductAxesRates
+class GetProductAxesRates implements GetProductAxesRatesInterface
 {
     /** @var GetLatestAxesRatesQueryInterface */
     private $getLatestProductAxesRatesQuery;
