@@ -21,8 +21,9 @@ import {
 
 type SourceOrOperation = Operand | Operation;
 
-export type DropTarget = {
-  operationLineNumber: number;
+export type DragEvent = {
+  sourceOperationLineNumber: number | null;
+  targetOperationLineNumber: number | null;
 };
 
 const DeleteButton = styled.button`
@@ -52,8 +53,8 @@ type OperationLineProps = {
   scopes: IndexedScopes;
   lineNumber: number;
   operationLineNumber: number;
-  dropTarget: DropTarget | null;
-  setDropTarget: (dropTarget: DropTarget | null) => void;
+  dragEvent: DragEvent;
+  setDragEvent: (dropEvent: DragEvent) => void;
   moveOperation: (
     currentOperationLineNumber: number,
     newOperationLineNumber: number
@@ -69,8 +70,8 @@ const OperationLine: React.FC<OperationLineProps> = ({
   scopes,
   lineNumber,
   operationLineNumber,
-  dropTarget,
-  setDropTarget,
+  dragEvent,
+  setDragEvent,
   moveOperation,
   removeOperation,
   version,
@@ -83,20 +84,28 @@ const OperationLine: React.FC<OperationLineProps> = ({
   const constantOperand = sourceOrOperation as ConstantOperand;
   const fieldOperand = sourceOrOperation as FieldOperand;
 
-  const onDragOver = () => {
-    setDropTarget({ operationLineNumber });
+  const onDragOver = (e: any) => {
+    e.preventDefault();
+    setDragEvent({
+      ...dragEvent,
+      targetOperationLineNumber: operationLineNumber,
+    });
   };
+
   const onDragEnd = () => {
-    if (null === dropTarget) {
+    if (null === dragEvent.targetOperationLineNumber) {
       return;
     }
 
-    if (dropTarget.operationLineNumber === operationLineNumber) {
+    if (dragEvent.targetOperationLineNumber === operationLineNumber) {
       return;
     }
 
-    moveOperation(operationLineNumber, dropTarget.operationLineNumber);
-    setDropTarget(null);
+    moveOperation(operationLineNumber, dragEvent.targetOperationLineNumber);
+    setDragEvent({
+      sourceOperationLineNumber: null,
+      targetOperationLineNumber: null,
+    });
   };
 
   React.useEffect(() => {
@@ -113,12 +122,35 @@ const OperationLine: React.FC<OperationLineProps> = ({
     });
   }, [version]);
 
+  const getClassName = () => {
+    if (
+      dragEvent.targetOperationLineNumber === operationLineNumber &&
+      dragEvent.sourceOperationLineNumber !== null
+    ) {
+      if (dragEvent.sourceOperationLineNumber < operationLineNumber) {
+        return 'AknRuleOperation-line--over';
+      } else if (dragEvent.sourceOperationLineNumber > operationLineNumber) {
+        return 'AknRuleOperation-line--overTop';
+      }
+    }
+
+    return '';
+  };
+
   return (
     <li
-      className={'AknRuleOperation-line'}
+      className={`AknRuleOperation-line ${getClassName()}`}
       draggable={true}
-      onDragOver={onDragOver}
       onDragEnd={onDragEnd}
+      onDragOver={e => onDragOver(e)}
+      //onDragLeave={(e) => { e.preventDefault(); }}
+      //onDrop={(e) => { e.preventDefault(); }}
+      onDragStart={() => {
+        setDragEvent({
+          ...dragEvent,
+          sourceOperationLineNumber: operationLineNumber,
+        });
+      }}
       data-line-number={operationLineNumber}
       data-testid={`edit-rules-action-operation-list-${operationLineNumber}-item`}>
       <div className={'AknRuleOperation-details'}>

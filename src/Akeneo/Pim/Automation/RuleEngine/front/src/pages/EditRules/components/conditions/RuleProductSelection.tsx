@@ -234,6 +234,7 @@ const RuleProductSelection: React.FC<Props> = ({
               placeholder={translate(
                 'pimee_catalog_rule.form.edit.add_conditions'
               )}
+              id={'add_conditions'}
             />
           </AddConditionContainer>
         </HeaderPartContainer>

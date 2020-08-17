@@ -24,6 +24,7 @@ type Props = {
   containerCssClass?: string;
   dropdownCssClass?: string;
   placeholder: string;
+  id?: string;
 };
 
 const AddFieldButton: React.FC<Props> = ({
@@ -77,7 +78,6 @@ const AddFieldButton: React.FC<Props> = ({
 
   return (
     <Select2Wrapper
-      id={'add_conditions'}
       label={translate('pimee_catalog_rule.form.edit.add_conditions')}
       hiddenLabel={true}
       containerCssClass={containerCssClass}

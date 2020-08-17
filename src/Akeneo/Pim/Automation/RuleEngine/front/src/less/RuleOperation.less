@@ -5,6 +5,16 @@
     z-index:10;
     display: flex;
     border-bottom: 1px solid @AknGrey70;
+    border-top: 1px solid white;
+    transition: border-bottom-color 0.2s ease, border-top-color 0.2s ease;
+
+    &--over {
+      border-bottom-color: @AknBlue100;
+    }
+
+    &--overTop {
+      border-top-color: @AknPurple100;
+    }
 
     .AknRuleOperation-remove {
       display: inline-flex;

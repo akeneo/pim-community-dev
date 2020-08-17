@@ -5,7 +5,7 @@ import { useTranslate } from '../../../../../dependenciesTools/hooks';
 import { AttributeCode, AttributeType, Locale } from '../../../../../models';
 import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
 import { useControlledFormInputAction } from '../../../hooks';
-import { DropTarget, OperationLine } from './OperationLine';
+import { DragEvent, OperationLine } from './OperationLine';
 import { AddFieldButton } from '../../../../../components/Selectors/AddFieldButton';
 import { BlueGhostButton } from '../../../../../components/Buttons';
 
@@ -23,7 +23,10 @@ const CalculateOperationList: React.FC<Props> = ({
 }) => {
   const translate = useTranslate();
   const { formName } = useControlledFormInputAction<string | null>(lineNumber);
-  const [dropTarget, setDropTarget] = React.useState<DropTarget | null>(null);
+  const [dragEvent, setDragEvent] = React.useState<DragEvent>({
+    sourceOperationLineNumber: null,
+    targetOperationLineNumber: null,
+  });
   const [version, setVersion] = React.useState<number>(1);
   const { setError } = useFormContext();
 
@@ -91,8 +94,8 @@ const CalculateOperationList: React.FC<Props> = ({
                 scopes={scopes}
                 lineNumber={lineNumber}
                 operationLineNumber={operationLineNumber}
-                dropTarget={dropTarget}
-                setDropTarget={setDropTarget}
+                dragEvent={dragEvent}
+                setDragEvent={setDragEvent}
                 moveOperation={moveOperation}
                 removeOperation={removeOperation}
                 version={version}
