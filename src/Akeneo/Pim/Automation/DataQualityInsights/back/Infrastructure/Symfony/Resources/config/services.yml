@@ -30,7 +30,8 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.query.get_product_model_ids_with_outdated_attribute_option_spellcheck'
             - '@akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistry: ~
+    akeneo.pim.automation.data_quality_insights.axis_registry:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\PimEnterpriseAxisRegistry
 
 # PIM enrichment BC anti-corruption layers
     akeneo.pim.automation.calculate_product_model_completeness_of_required_attributes:
