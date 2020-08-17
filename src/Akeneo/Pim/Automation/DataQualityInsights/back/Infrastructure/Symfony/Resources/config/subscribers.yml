@@ -19,7 +19,7 @@ services:
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\CreateEvaluationCriteriaOnProductIgnoredWordSubscriber:
         arguments:
-            $dataQualityInsightsFeature: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
+            $dataQualityInsightsFeature: '@akeneo.pim.automation.data_quality_insights.feature'
             $createProductsCriteriaEvaluations: '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
             $logger: '@logger'
         tags:
@@ -27,7 +27,7 @@ services:
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\ProductModel\CreateEvaluationCriteriaOnProductModelIgnoredWordSubscriber:
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
+            - '@akeneo.pim.automation.data_quality_insights.feature'
             - '@akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations'
             - '@logger'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetDescendantVariantProductIds'
@@ -40,7 +40,7 @@ services:
         arguments:
             $evaluateUpdatedAttributes: '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributes'
             $evaluateUpdatedAttributeOptions: '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributeOptions'
-            $dataQualityInsightsFeature: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
+            $dataQualityInsightsFeature: '@akeneo.pim.automation.data_quality_insights.feature'
         tags:
             - { name: kernel.event_subscriber }
 

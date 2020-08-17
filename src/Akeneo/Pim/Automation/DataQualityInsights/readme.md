@@ -41,7 +41,7 @@ The migration scripts handle:
 
 ## PIM Lifecycle
 On product save (unitary save only):
-- we persist all the criteria in a `PENDING` status in the table `pimee_data_quality_insights_product_criteria_evaluation`
+- we persist all the criteria in a `PENDING` status in the table `pim_data_quality_insights_product_criteria_evaluation`
 - synchonous evaluations are performed for eligible criteria (providing a fastest feedback loop)
 - asynchronous evaluations are performed for criteria that rely on a third party HTTP call
 

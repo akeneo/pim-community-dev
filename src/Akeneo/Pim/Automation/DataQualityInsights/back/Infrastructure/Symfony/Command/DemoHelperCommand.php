@@ -173,7 +173,7 @@ final class DemoHelperCommand extends Command
         $io->section('Generate fake consolidation');
         $this->consolidateDashboardRates->consolidate($now);
 
-        $statement = $this->db->executeQuery('select type, code, rates from pimee_data_quality_insights_dashboard_rates_projection');
+        $statement = $this->db->executeQuery('select type, code, rates from pim_data_quality_insights_dashboard_rates_projection');
 
         $results = $statement->fetchAll();
 

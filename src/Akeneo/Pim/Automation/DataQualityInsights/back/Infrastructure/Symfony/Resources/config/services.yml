@@ -8,7 +8,7 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\InitializeCriteriaEvaluation:
         public: true
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
+            - '@akeneo.pim.automation.data_quality_insights.feature'
             - '@database_connection'
             - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
 
