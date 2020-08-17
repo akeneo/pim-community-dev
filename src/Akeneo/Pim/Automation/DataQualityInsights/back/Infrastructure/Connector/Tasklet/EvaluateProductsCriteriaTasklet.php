@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateAxesRates;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateMissingCriteriaEvaluations;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\PimEnterpriseCreateMissingCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsToEvaluateQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
@@ -44,7 +44,7 @@ final class EvaluateProductsCriteriaTasklet implements TaskletInterface
     /** @var GetProductIdsToEvaluateQueryInterface */
     private $getProductIdsToEvaluateQuery;
 
-    /** @var CreateMissingCriteriaEvaluations */
+    /** @var PimEnterpriseCreateMissingCriteriaEvaluations */
     private $createMissingProductsCriteriaEvaluations;
 
     /** @var LoggerInterface */
@@ -58,7 +58,7 @@ final class EvaluateProductsCriteriaTasklet implements TaskletInterface
         ConsolidateAxesRates $consolidateProductAxisRates,
         IndexProductRates $indexProductRates,
         GetProductIdsToEvaluateQueryInterface $getProductIdsToEvaluateQuery,
-        CreateMissingCriteriaEvaluations $createMissingProductsCriteriaEvaluations,
+        PimEnterpriseCreateMissingCriteriaEvaluations $createMissingProductsCriteriaEvaluations,
         LoggerInterface $logger,
         CriterionEvaluationRepositoryInterface $productCriterionEvaluationRepository
     ) {

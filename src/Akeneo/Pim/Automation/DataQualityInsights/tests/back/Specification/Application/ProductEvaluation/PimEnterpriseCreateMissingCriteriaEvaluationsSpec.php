@@ -24,7 +24,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use PhpSpec\ObjectBehavior;
 
-final class CreateMissingCriteriaEvaluationsSpec extends ObjectBehavior
+final class PimEnterpriseCreateMissingCriteriaEvaluationsSpec extends ObjectBehavior
 {
     public function let(
         GetUpdatedProductsWithoutUpToDateEvaluationQueryInterface $getUpdatedProductsWithoutUpToDateEvaluationQuery,
