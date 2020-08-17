@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAxesRatesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
