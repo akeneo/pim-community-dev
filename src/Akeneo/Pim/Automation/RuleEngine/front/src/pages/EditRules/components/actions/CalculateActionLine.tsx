@@ -72,7 +72,7 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
   const translate = useTranslate();
   const router = useBackboneRouter();
   const currentCatalogLocale = useUserCatalogLocale();
-  const { setValue, watch } = useFormContext();
+  const { setValue, watch, getValues } = useFormContext();
   const {
     formName,
     typeFormName,
@@ -149,14 +149,31 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
   return (
     <ActionTemplate
       title={translate('pimee_catalog_rule.form.edit.actions.calculate.title')}
-      helper='This feature is under development. Please use the import to manage your rules.'
-      legend='This feature is under development. Please use the import to manage your rules.'
+      helper={translate(
+        'pimee_catalog_rule.form.edit.actions.calculate.helper'
+      )}
+      legend={translate(
+        'pimee_catalog_rule.form.edit.actions.calculate.helper'
+      )}
       handleDelete={handleDelete}
       lineNumber={lineNumber}>
       <Controller
         name={typeFormName}
         as={<span hidden />}
         defaultValue='calculate'
+        rules={{
+          // There is no way to add a validation on a useFieldArray field. This is the only way to add a custom
+          // validation.
+          validate: () =>
+            (
+              getValues({ nest: true })?.content?.actions?.[lineNumber]
+                ?.full_operation_list || []
+            ).length >= 2
+              ? true
+              : translate(
+                  'pimee_catalog_rule.exceptions.two_operations_are_required'
+                ),
+        }}
       />
       <Controller
         name={sourceFormName}

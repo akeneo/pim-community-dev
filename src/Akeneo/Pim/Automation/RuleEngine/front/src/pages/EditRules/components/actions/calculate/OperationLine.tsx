@@ -77,7 +77,7 @@ const OperationLine: React.FC<OperationLineProps> = ({
   version,
 }) => {
   const translate = useTranslate();
-  const { setValue, watch } = useFormContext();
+  const { setValue, watch, errors } = useFormContext();
   const { formName, getFormValue } = useControlledFormInputAction<
     string | null
   >(lineNumber);
@@ -137,6 +137,15 @@ const OperationLine: React.FC<OperationLineProps> = ({
     return '';
   };
 
+  const isOperatorInError =
+    typeof errors?.content?.actions?.[lineNumber]?.full_operation_list?.[
+      operationLineNumber
+    ]?.operator === 'object';
+  const isValueInError =
+    typeof errors?.content?.actions?.[lineNumber]?.full_operation_list?.[
+      operationLineNumber
+    ]?.value === 'object';
+
   return (
     <li
       className={`AknRuleOperation-line ${getClassName()}`}
@@ -161,15 +170,20 @@ const OperationLine: React.FC<OperationLineProps> = ({
           />
           {operationLineNumber > 0 && (
             <span
-              className={
-                'AknRuleOperation-element AknRuleOperation-elementOperator'
-              }>
+              className={`AknRuleOperation-element AknRuleOperation-elementOperator${
+                isOperatorInError ? ' select2-container-error' : ''
+              }`}>
               <Controller
                 as={CalculateOperatorSelector}
                 name={formName(`${baseFormName}.operator`)}
                 defaultValue={(sourceOrOperation as Operation).operator || null}
                 value={(sourceOrOperation as Operation).operator || null}
                 hiddenLabel
+                rules={{
+                  required: translate(
+                    'pimee_catalog_rule.exceptions.required_operator_for_operation'
+                  ),
+                }}
               />
             </span>
           )}
@@ -179,9 +193,9 @@ const OperationLine: React.FC<OperationLineProps> = ({
                 <Controller
                   as={InputNumber}
                   name={formName(`${baseFormName}.value`)}
-                  className={
-                    'AknTextField AknNumberField AknRuleOperation-inputValue'
-                  }
+                  className={`AknTextField AknNumberField AknRuleOperation-inputValue${
+                    isValueInError ? ' AknTextField--error' : ''
+                  }`}
                   data-testid={`edit-rules-action-operation-list-${operationLineNumber}-number`}
                   hiddenLabel={true}
                   defaultValue={constantOperand.value}

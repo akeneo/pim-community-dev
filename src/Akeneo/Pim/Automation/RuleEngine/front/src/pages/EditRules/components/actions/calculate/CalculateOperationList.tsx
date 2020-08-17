@@ -1,5 +1,5 @@
 import React from 'react';
-import { useFieldArray, useFormContext } from 'react-hook-form';
+import { useFieldArray } from 'react-hook-form';
 import { Operation } from '../../../../../models/actions/Calculate/Operation';
 import { useTranslate } from '../../../../../dependenciesTools/hooks';
 import { AttributeCode, AttributeType, Locale } from '../../../../../models';
@@ -22,29 +22,22 @@ const CalculateOperationList: React.FC<Props> = ({
   scopes,
 }) => {
   const translate = useTranslate();
-  const { formName } = useControlledFormInputAction<string | null>(lineNumber);
+  const { formName, isFormFieldInError } = useControlledFormInputAction<
+    string | null
+  >(lineNumber);
   const [dragEvent, setDragEvent] = React.useState<DragEvent>({
     sourceOperationLineNumber: null,
     targetOperationLineNumber: null,
   });
   const [version, setVersion] = React.useState<number>(1);
-  const { setError } = useFormContext();
 
   const { fields, remove, move, append } = useFieldArray({
     name: formName('full_operation_list'),
   });
 
   const removeOperation = (lineToRemove: number) => () => {
-    const numberOfOperationsBeforeRemove = fields.length;
     remove(lineToRemove);
     setVersion(version + 1);
-    if (numberOfOperationsBeforeRemove <= 2) {
-      setError(
-        formName('full_operation_list'),
-        'custom',
-        translate('pimee_catalog_rule.exceptions.two_operations_are_required')
-      );
-    }
   };
 
   const moveOperation = (
@@ -82,7 +75,10 @@ const CalculateOperationList: React.FC<Props> = ({
 
   return (
     <>
-      <ul className={'AknRuleOperation'}>
+      <ul
+        className={`AknRuleOperation${
+          isFormFieldInError('type') ? ' AknRuleOperation--error' : ''
+        }`}>
         {fields &&
           fields.map((sourceOrOperation: any, operationLineNumber) => {
             return (
