@@ -4,6 +4,20 @@
 
 - PIM-9288: Product completeness was not up to date after deletion of an option for required attribute
 
+# 4.0.49 (2020-08-13)
+
+## Bug fixes
+
+- PIM-9401: Fix Elasticsearch filters with EMPTY operator
+
+# 4.0.48 (2020-08-12)
+
+## Bug fixes
+
+- PIM-9112: Fix empty values cleaner for metric with null values
+
+# 4.0.47 (2020-08-07)
+
 # 4.0.46 (2020-07-31)
 
 ## Bug fixes
