@@ -15,7 +15,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluatio
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductsWithoutUpToDateEvaluationQueryInterface;
 
-final class PimCreateMissingCriteriaEvaluations
+final class CreateMissingCriteriaEvaluations
 {
     /** @var GetUpdatedProductsWithoutUpToDateEvaluationQueryInterface */
     private $getUpdatedProductsWithoutUpToDateEvaluationQuery;
