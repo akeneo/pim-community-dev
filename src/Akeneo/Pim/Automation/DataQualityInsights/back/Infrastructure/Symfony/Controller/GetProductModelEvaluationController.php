@@ -21,27 +21,16 @@ use Symfony\Component\HttpFoundation\Response;
 
 class GetProductModelEvaluationController
 {
-    /** @var FeatureFlag */
-    private $featureFlag;
-
     /** @var GetProductEvaluation */
     private $getProductModelEvaluation;
 
-    public function __construct(FeatureFlag $featureFlag, GetProductEvaluation $getProductModelEvaluation)
+    public function __construct(GetProductEvaluation $getProductModelEvaluation)
     {
-        $this->featureFlag = $featureFlag;
         $this->getProductModelEvaluation = $getProductModelEvaluation;
     }
 
     public function __invoke(string $productId): Response
     {
-        if (!$this->featureFlag->isEnabled()) {
-            return new JsonResponse(
-                null,
-                Response::HTTP_NOT_FOUND
-            );
-        }
-
         try {
             $evaluation = $this->getProductModelEvaluation->get(
                 new ProductId(intval($productId))

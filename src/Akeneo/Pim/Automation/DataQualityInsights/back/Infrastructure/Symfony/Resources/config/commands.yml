@@ -5,7 +5,7 @@ services:
             - '@akeneo_batch_queue.manager.job_execution_manager'
             - '@akeneo_batch.job_repository'
             - '@logger'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
+            - '@akeneo.pim.automation.data_quality_insights.feature'
             - '%kernel.project_dir%'
         tags:
             - { name: 'console.command' }
@@ -13,7 +13,7 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\SchedulePeriodicTasksCommand:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\SchedulePeriodicTasks'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
+            - '@akeneo.pim.automation.data_quality_insights.feature'
         tags:
             - { name: 'console.command' }
 

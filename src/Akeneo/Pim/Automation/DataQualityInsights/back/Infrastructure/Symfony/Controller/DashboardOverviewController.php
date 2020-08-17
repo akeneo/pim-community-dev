@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetDashboardRatesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
@@ -26,24 +25,16 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class DashboardOverviewController
 {
-    /** @var FeatureFlag */
-    private $featureFlag;
-
     /** @var GetDashboardRatesQueryInterface */
     private $getDashboardRatesQuery;
 
-    public function __construct(FeatureFlag $featureFlag, GetDashboardRatesQueryInterface $getDashboardRatesQuery)
+    public function __construct(GetDashboardRatesQueryInterface $getDashboardRatesQuery)
     {
-        $this->featureFlag = $featureFlag;
         $this->getDashboardRatesQuery = $getDashboardRatesQuery;
     }
 
     public function __invoke(Request $request, string $channel, string $locale, string $timePeriod)
     {
-        if (! $this->featureFlag->isEnabled()) {
-            return new JsonResponse(null, Response::HTTP_NOT_FOUND);
-        }
-
         try {
             if ($request->query->has('category')) {
                 $category = new CategoryCode($request->query->get('category'));

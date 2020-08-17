@@ -16,8 +16,6 @@ import {
   PRODUCT_TAB_CHANGED,
   ProductEditFormApp,
   ProductModelEditFormApp,
-  DataQualityInsightsFeature,
-  getDataQualityInsightsFeature,
 } from '@akeneo-pim-community/data-quality-insights/src';
 
 const UserContext = require('pim/user-context');
@@ -51,16 +49,6 @@ interface LevelNavigationEvent {
 }
 
 class DataQualityInsightsApp extends BaseView {
-  private isDataQualityInsightsEnabled = false;
-
-  public initialize(): void {
-    super.initialize();
-
-    getDataQualityInsightsFeature().then((dataQualityInsightsFeature: DataQualityInsightsFeature) => {
-      this.isDataQualityInsightsEnabled = dataQualityInsightsFeature.isActive ;
-    });
-  }
-
   public configure() {
     this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', (event: LocaleEvent) => {
       window.dispatchEvent(new CustomEvent(CATALOG_CONTEXT_LOCALE_CHANGED, {detail: {
@@ -145,10 +133,6 @@ class DataQualityInsightsApp extends BaseView {
   }
 
   public render() {
-    if (!this.isDataQualityInsightsEnabled) {
-      return this;
-    }
-
     const catalogLocale: string = UserContext.get('catalogLocale');
     const catalogChannel: string = UserContext.get('catalogScope');
     const productData = this.getFormData();

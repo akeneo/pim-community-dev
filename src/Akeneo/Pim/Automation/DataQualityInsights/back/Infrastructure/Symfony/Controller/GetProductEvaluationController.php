@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductEvaluation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,27 +23,16 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class GetProductEvaluationController
 {
-    /** @var FeatureFlag */
-    private $featureFlag;
-
     /** @var GetProductEvaluation */
     private $getProductEvaluation;
 
-    public function __construct(FeatureFlag $featureFlag, GetProductEvaluation $getProductEvaluation)
+    public function __construct(GetProductEvaluation $getProductEvaluation)
     {
-        $this->featureFlag = $featureFlag;
         $this->getProductEvaluation = $getProductEvaluation;
     }
 
     public function __invoke(string $productId): Response
     {
-        if (!$this->featureFlag->isEnabled()) {
-            return new JsonResponse(
-                null,
-                Response::HTTP_NOT_FOUND
-            );
-        }
-
         try {
             $evaluation = $this->getProductEvaluation->get(
                 new ProductId(intval($productId))
