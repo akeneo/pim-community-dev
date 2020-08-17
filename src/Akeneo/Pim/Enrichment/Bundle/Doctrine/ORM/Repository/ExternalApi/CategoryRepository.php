@@ -139,20 +139,6 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
 
         $validator = Validation::createValidator();
         $constraints = [
-            'parent' => new Assert\All([
-                new Assert\Collection([
-                    'operator' => new Assert\IdenticalTo([
-                        'value' => '=',
-                        'message' => 'In order to search on category parent you must use "=" operator, {{ compared_value }} given.',
-                    ]),
-                    'value' => [
-                        new Assert\Type([
-                            'type' => 'string',
-                            'message' => 'In order to search on category parent you must send a parent code category as value, {{ type }} given.'
-                        ]),
-                    ],
-                ])
-            ]),
             'code' => new Assert\All([
                 new Assert\Collection([
                     'operator' => new Assert\IdenticalTo([
@@ -167,6 +153,20 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                         new Assert\All([
                             new Assert\Type('string')
                         ])
+                    ],
+                ])
+            ]),
+            'parent' => new Assert\All([
+                new Assert\Collection([
+                    'operator' => new Assert\IdenticalTo([
+                        'value' => '=',
+                        'message' => 'In order to search on category parent you must use "=" operator, {{ compared_value }} given.',
+                    ]),
+                    'value' => [
+                        new Assert\Type([
+                            'type' => 'string',
+                            'message' => 'In order to search on category parent you must send a parent code category as value, {{ type }} given.'
+                        ]),
                     ],
                 ])
             ]),
