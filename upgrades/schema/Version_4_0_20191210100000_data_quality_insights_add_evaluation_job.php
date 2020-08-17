@@ -2,7 +2,7 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateProductsCriteriaTasklet;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\PimEnterpriseEvaluateProductsCriteriaTasklet;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 

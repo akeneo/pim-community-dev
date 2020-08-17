@@ -21,7 +21,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductsWithoutUpToDateEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 
-final class PimEnterpriseCreateMissingCriteriaEvaluations
+final class PimEnterpriseCreateMissingCriteriaEvaluations implements CreateMissingCriteriaEvaluationsInterface
 {
     /** @var GetUpdatedProductsWithoutUpToDateEvaluationQueryInterface */
     private $getUpdatedProductsWithoutUpToDateEvaluationQuery;
