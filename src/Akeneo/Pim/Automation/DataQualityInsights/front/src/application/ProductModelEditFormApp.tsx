@@ -1,11 +1,18 @@
 import React, {FunctionComponent} from 'react';
 import {Provider} from "react-redux";
 import {productEditFormStore} from "../infrastructure/store";
-import {CatalogContextListener, PageContextListener, ProductContextListener} from "./listener";
 import {Product} from "../domain";
-import {AttributesTabContent, DataQualityInsightsTabContent,} from "./component/ProductEditForm";
-import fetchProductModelEvaluation from "../infrastructure/fetcher/ProductEditForm/fetchProductModelEvaluation";
-import fetchProductModel from '../infrastructure/fetcher/ProductEditForm/fetchProductModel';
+import {AxesContextProvider} from "@akeneo-pim-community/data-quality-insights/src/application/context/AxesContext";
+import {
+  CatalogContextListener,
+  PageContextListener,
+  ProductContextListener
+} from "@akeneo-pim-community/data-quality-insights/src/application/listener";
+import AttributesTabContent from "./component/ProductEditForm/TabContent/AttributesTabContent";
+import {DataQualityInsightsTabContent} from "@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent";
+import {fetchProductModelEvaluation} from "@akeneo-pim-community/data-quality-insights/src";
+import fetchProductModel
+  from "@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/ProductEditForm/fetchProductModel";
 
 interface ProductModelEditFormAppProps {
   catalogChannel: string;
@@ -21,7 +28,10 @@ const ProductModelEditFormApp: FunctionComponent<ProductModelEditFormAppProps> =
       <ProductContextListener product={product} productFetcher={fetchProductModel}/>
 
       <AttributesTabContent product={product}/>
-      <DataQualityInsightsTabContent product={product} productEvaluationFetcher={fetchProductModelEvaluation} />
+
+      <AxesContextProvider axes={['enrichment', 'consistency']}>
+        <DataQualityInsightsTabContent product={product} productEvaluationFetcher={fetchProductModelEvaluation} />
+      </AxesContextProvider>
     </Provider>
   );
 };

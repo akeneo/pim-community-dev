@@ -13,12 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWordForAttribute;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DictionaryWord;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -27,21 +25,13 @@ class AddAttributeWordInDictionaryController
     /** @var IgnoreWordForAttribute */
     private $ignoreWordForAttribute;
 
-    /** @var FeatureFlag */
-    private $featureFlag;
-
-    public function __construct(IgnoreWordForAttribute $ignoreWordForAttribute, FeatureFlag $featureFlag)
+    public function __construct(IgnoreWordForAttribute $ignoreWordForAttribute)
     {
         $this->ignoreWordForAttribute = $ignoreWordForAttribute;
-        $this->featureFlag = $featureFlag;
     }
 
     public function __invoke(Request $request)
     {
-        if (!$this->featureFlag->isEnabled()) {
-            return new JsonResponse(null, Response::HTTP_NOT_FOUND);
-        }
-
         try {
             $word = new DictionaryWord($request->request->get('word'));
             $localeCode = new LocaleCode($request->request->get('locale'));

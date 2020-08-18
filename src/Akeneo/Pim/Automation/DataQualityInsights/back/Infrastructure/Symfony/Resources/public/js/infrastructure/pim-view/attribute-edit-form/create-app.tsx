@@ -1,26 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {
-  AttributeCreateFormApp,
-  DataQualityInsightsFeature,
-  getDataQualityInsightsFeature,
-} from 'akeneodataqualityinsights-react';
+import {AttributeCreateFormApp,} from 'akeneodataqualityinsights-react';
 import {ATTRIBUTE_EDIT_FORM_TAB_CHANGED_EVENT} from 'akeneodataqualityinsights-react/application/constant';
 
 import BaseView from 'pimui/js/view/base';
 
 class DataQualityInsightsApp extends BaseView {
-  private isDataQualityInsightsEnabled = false;
   private renderingCount = 0;
-
-  public initialize(): void {
-    super.initialize();
-
-    getDataQualityInsightsFeature().then((dataQualityInsightsFeature: DataQualityInsightsFeature) => {
-      this.isDataQualityInsightsEnabled = dataQualityInsightsFeature.isActive ;
-    });
-  }
 
   public configure() {
     this.listenTo(this.getRoot(), 'pim_enrich:form:form-tabs:change', (tab: string) => {
@@ -33,10 +20,6 @@ class DataQualityInsightsApp extends BaseView {
   }
 
   public render() {
-    if (!this.isDataQualityInsightsEnabled) {
-      return this;
-    }
-
     this.renderingCount += 1;
 
     const attribute = this.getFormData();

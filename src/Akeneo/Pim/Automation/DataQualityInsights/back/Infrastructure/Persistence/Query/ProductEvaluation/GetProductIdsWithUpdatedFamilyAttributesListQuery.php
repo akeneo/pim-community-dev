@@ -42,11 +42,11 @@ final class GetProductIdsWithUpdatedFamilyAttributesListQuery implements GetProd
         $query = <<<SQL
 SELECT product.id
 FROM pim_catalog_product AS product
-LEFT JOIN pimee_data_quality_insights_product_criteria_evaluation AS product_evaluation
+LEFT JOIN pim_data_quality_insights_product_criteria_evaluation AS product_evaluation
     ON product_evaluation.product_id = product.id
     AND product_evaluation.criterion_code = :criterionCode
     AND (product_evaluation.evaluated_at >= :updatedSince OR product_evaluation.status = 'pending')
-WHERE product.family_id = :familyId 
+WHERE product.family_id = :familyId
     AND product_evaluation.product_id IS NULL;
 SQL;
         $stmt = $this->dbConnection->prepare($query);

@@ -1,14 +1,18 @@
 import React, {FunctionComponent} from 'react';
 import {Provider} from "react-redux";
 import {productEditFormStore} from "../infrastructure/store";
-import {CatalogContextListener, PageContextListener, ProductContextListener} from "./listener";
-import {Product} from "../domain";
-import {fetchProduct, fetchProductDataQualityEvaluation} from '../infrastructure/fetcher';
+import {Product} from "@akeneo-pim-community/data-quality-insights/src/domain";
 import {
-  AttributesTabContent,
-  AxisRatesOverviewPortal,
-  DataQualityInsightsTabContent,
-} from "./component/ProductEditForm";
+  CatalogContextListener,
+  PageContextListener,
+  ProductContextListener
+} from "@akeneo-pim-community/data-quality-insights/src/application/listener";
+import {fetchProduct} from "@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher";
+import AttributesTabContent from "./component/ProductEditForm/TabContent/AttributesTabContent";
+import {DataQualityInsightsTabContent} from "@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent";
+import {AxisRatesOverviewPortal} from "@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm";
+import {fetchProductDataQualityEvaluation} from "@akeneo-pim-community/data-quality-insights/src";
+import {AxesContextProvider} from "@akeneo-pim-community/data-quality-insights/src/application/context/AxesContext";
 
 interface ProductEditFormAppProps {
   catalogChannel: string;
@@ -24,8 +28,11 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
       <ProductContextListener product={product} productFetcher={fetchProduct}/>
 
       <AttributesTabContent product={product}/>
-      <DataQualityInsightsTabContent product={product} productEvaluationFetcher={fetchProductDataQualityEvaluation}/>
-      <AxisRatesOverviewPortal />
+
+      <AxesContextProvider axes={['enrichment', 'consistency']}>
+        <DataQualityInsightsTabContent product={product} productEvaluationFetcher={fetchProductDataQualityEvaluation}/>
+        <AxisRatesOverviewPortal />
+      </AxesContextProvider>
     </Provider>
   );
 };

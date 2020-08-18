@@ -145,7 +145,7 @@ final class GetProductIdsWithUpdatedFamilyAttributesListQueryIntegration extends
     private function getLastFamilyVersionId(int $familyId): int
     {
         $query = <<<SQL
-SELECT MAX(id) FROM pim_versioning_version 
+SELECT MAX(id) FROM pim_versioning_version
 WHERE resource_name = :familyClass AND resource_id = :familyId
 SQL;
 
@@ -204,7 +204,7 @@ SQL;
     private function updateProductEvaluationsAt(ProductId $productId, string $criterionCode, \DateTimeImmutable $evaluatedAt): void
     {
         $query = <<<SQL
-UPDATE pimee_data_quality_insights_product_criteria_evaluation 
+UPDATE pim_data_quality_insights_product_criteria_evaluation
 SET evaluated_at = :evaluated_at
 WHERE product_id = :product_id AND criterion_code = :criterionCode;
 SQL;

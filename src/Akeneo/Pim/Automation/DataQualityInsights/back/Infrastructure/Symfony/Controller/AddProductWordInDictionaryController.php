@@ -13,12 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWordForProduct;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DictionaryWord;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -27,21 +25,13 @@ class AddProductWordInDictionaryController
     /** @var IgnoreWordForProduct */
     private $ignoreWordForProduct;
 
-    /** @var FeatureFlag */
-    private $featureFlag;
-
-    public function __construct(IgnoreWordForProduct $ignoreWordForProduct, FeatureFlag $featureFlag)
+    public function __construct(IgnoreWordForProduct $ignoreWordForProduct)
     {
         $this->ignoreWordForProduct = $ignoreWordForProduct;
-        $this->featureFlag = $featureFlag;
     }
 
     public function __invoke(Request $request)
     {
-        if (!$this->featureFlag->isEnabled()) {
-            return new JsonResponse(null, Response::HTTP_NOT_FOUND);
-        }
-
         try {
             $word = new DictionaryWord($request->request->get('word'));
             $localeCode = new LocaleCode($request->request->get('locale'));

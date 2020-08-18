@@ -1,6 +1,6 @@
 import React, {createContext, FC, useContext} from "react";
 
-import {Attribute} from "../../domain";
+import {Attribute} from "@akeneo-pim-community/data-quality-insights/src/domain";
 import {AttributeSpellcheckEvaluationContextProvider} from "./AttributeSpellcheckEvaluationContext";
 import {AttributeOptionsListContextProvider} from "./AttributeOptionsListContext";
 

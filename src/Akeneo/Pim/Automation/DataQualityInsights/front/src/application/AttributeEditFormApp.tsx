@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {Provider} from "react-redux";
 
-import {Attribute} from "../domain";
+import {Attribute} from "@akeneo-pim-community/data-quality-insights/src/domain";
 import {ATTRIBUTE_EDIT_FORM_LABELS_TAB, ATTRIBUTE_EDIT_FORM_OPTIONS_TAB} from "./constant";
 import {AttributeEditFormContextProvider} from "./context/AttributeEditFormContext";
 import {attributeEditFormStore} from "../infrastructure/store";

@@ -136,6 +136,8 @@ $rules = [
             'GuzzleHttp\Exception',
             'Mekras\Speller',
             'League\Flysystem',
+
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure'),
 ];
