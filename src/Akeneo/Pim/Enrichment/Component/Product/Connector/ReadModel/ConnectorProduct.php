@@ -6,6 +6,10 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueWithLabels;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueWithLabels;
 
 /**
  * This read model is dedicated to export product data for the connector, such as the API.
@@ -175,6 +179,54 @@ final class ConnectorProduct
             $this->quantifiedAssociations,
             array_merge($this->metadata, [$key => $value]),
             $this->values
+        );
+    }
+
+    /**
+     * @param array $optionLabels array of all the labels of options, indexed by option code
+     *                            ['option_code' => ['en_US' => 'translation']
+     */
+    public function transformOptionWithLabels(array $optionLabels): ConnectorProduct
+    {
+        $values = $this->values->map(function (ValueInterface $value) use ($optionLabels) {
+            if ($value instanceof OptionValue) {
+                return new OptionValueWithLabels(
+                    $value->getAttributeCode(),
+                    [$value->getData() => $optionLabels[$value->getAttributeCode()][$value->getData()] ?? []],
+                    $value->getScopeCode(),
+                    $value->getLocaleCode()
+                );
+            } elseif ($value instanceof OptionsValue) {
+                $data = [];
+                foreach ($value->getData() as $optionCode) {
+                    $data[$optionCode] = $optionLabels[$value->getAttributeCode()][$optionCode] ?? [];
+                }
+
+                return new OptionsValueWithLabels(
+                    $value->getAttributeCode(),
+                    $data,
+                    $value->getScopeCode(),
+                    $value->getLocaleCode()
+                );
+            } else {
+                return $value;
+            }
+        });
+
+        return new self(
+            $this->id,
+            $this->identifier,
+            $this->createdDate,
+            $this->updatedDate,
+            $this->enabled,
+            $this->familyCode,
+            $this->categoryCodes,
+            $this->groupCodes,
+            $this->parentProductModelCode,
+            $this->associations,
+            $this->quantifiedAssociations,
+            $this->metadata,
+            $values
         );
     }
 

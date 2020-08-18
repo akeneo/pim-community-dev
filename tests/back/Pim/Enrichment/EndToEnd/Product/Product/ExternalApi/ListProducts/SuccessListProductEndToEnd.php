@@ -17,7 +17,7 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
     /** @var Collection */
     private $products;
 
-    /**
+     /**
      * {@inheritdoc}
      */
     protected function setUp(): void
