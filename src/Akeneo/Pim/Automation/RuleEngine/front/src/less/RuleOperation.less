@@ -11,14 +11,12 @@
     display: flex;
     border-bottom: 1px solid @AknGrey70;
     border-top: 1px solid white;
-    transition: border-bottom-color 0.2s ease, border-top-color 0.2s ease;
+    background: white;
 
-    &--over {
-      border-bottom-color: @AknBlue100;
-    }
-
-    &--overTop {
-      border-top-color: @AknPurple100;
+    &.gu-mirror {
+      .AknRuleOperation-remove {
+        display: none;
+      }
     }
 
     .AknRuleOperation-remove {

@@ -200,7 +200,7 @@ pimee_catalog_rule:
                     subtitle: Select your groups
                 calculate:
                     title: CALCULATE values
-                    helper: To calculate numeric attribute values, please choose attribute(s) and/or value(s) and then, select the target attribute you want to put the result in. You can also round the final result if needed
+                    helper: To calculate numeric attribute values, please choose attribute(s) and/or value(s) and then, select the target attribute you want to put the result in. You can also round the final result if needed.
                     add_value: Add value
                     add_attribute: Add attribute
                     select_target: Select your target

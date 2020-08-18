@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const Dragula = require('react-dragula');
 import React from 'react';
 import { useFieldArray } from 'react-hook-form';
 import { Operation } from '../../../../../models/actions/Calculate/Operation';
@@ -5,7 +7,7 @@ import { useTranslate } from '../../../../../dependenciesTools/hooks';
 import { AttributeCode, AttributeType, Locale } from '../../../../../models';
 import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
 import { useControlledFormInputAction } from '../../../hooks';
-import { DragEvent, OperationLine } from './OperationLine';
+import { OperationLine } from './OperationLine';
 import { AddFieldButton } from '../../../../../components/Selectors/AddFieldButton';
 import { BlueGhostButton } from '../../../../../components/Buttons';
 
@@ -25,10 +27,6 @@ const CalculateOperationList: React.FC<Props> = ({
   const { formName, isFormFieldInError } = useControlledFormInputAction<
     string | null
   >(lineNumber);
-  const [dragEvent, setDragEvent] = React.useState<DragEvent>({
-    sourceOperationLineNumber: null,
-    targetOperationLineNumber: null,
-  });
   const [version, setVersion] = React.useState<number>(1);
 
   const { fields, remove, move, append } = useFieldArray({
@@ -52,10 +50,7 @@ const CalculateOperationList: React.FC<Props> = ({
     setVersion(version + 1);
   };
 
-  const handleAddValue = (e: any) => {
-    if (e) {
-      e.preventDefault();
-    }
+  const handleAddValue = () => {
     if (fields.length > 0) {
       append({ operator: null, value: '' });
     } else {
@@ -73,12 +68,37 @@ const CalculateOperationList: React.FC<Props> = ({
     setVersion(version + 1);
   };
 
+  const dragulaDecorator = React.useRef(null);
+  React.useEffect(() => {
+    if (dragulaDecorator.current) {
+      const options = {};
+      const drake = Dragula([dragulaDecorator.current], options);
+      drake.on(
+        'drop',
+        (
+          el: HTMLElement,
+          _target: HTMLElement,
+          _source: HTMLElement,
+          sibling: HTMLElement
+        ) => {
+          const origin = Number(el.dataset.lineNumber);
+          let target = Number(sibling?.dataset?.lineNumber || fields.length);
+          if (target > origin) {
+            target--;
+          }
+          moveOperation(origin, target);
+        }
+      );
+    }
+  }, [dragulaDecorator]);
+
   return (
     <>
       <ul
         className={`AknRuleOperation${
           isFormFieldInError('type') ? ' AknRuleOperation--error' : ''
-        }`}>
+        }`}
+        ref={dragulaDecorator}>
         {fields &&
           fields.map((sourceOrOperation: any, operationLineNumber) => {
             return (
@@ -90,9 +110,6 @@ const CalculateOperationList: React.FC<Props> = ({
                 scopes={scopes}
                 lineNumber={lineNumber}
                 operationLineNumber={operationLineNumber}
-                dragEvent={dragEvent}
-                setDragEvent={setDragEvent}
-                moveOperation={moveOperation}
                 removeOperation={removeOperation}
                 version={version}
               />
@@ -102,7 +119,12 @@ const CalculateOperationList: React.FC<Props> = ({
       <div className={'AknButtonList AknButtonList--single'}>
         <BlueGhostButton
           data-testid={`edit-rules-action-${lineNumber}-add-value`}
-          onClick={handleAddValue}
+          onClick={(e: any) => {
+            if (e) {
+              e.preventDefault();
+            }
+            handleAddValue();
+          }}
           className={'AknButtonList-item'}>
           {translate(
             'pimee_catalog_rule.form.edit.actions.calculate.add_value'
