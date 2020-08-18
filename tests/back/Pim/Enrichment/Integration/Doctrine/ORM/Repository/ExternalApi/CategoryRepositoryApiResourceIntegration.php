@@ -44,7 +44,7 @@ class CategoryRepositoryApiResourceIntegration extends TestCase
     public function test_to_count_categories_with_search(): void
     {
         $this->initFixtures();
-        $count = $this->getRepository()->count(['parent' => [['operator' => 'IN', 'value' => ['categoryA']]]]);
+        $count = $this->getRepository()->count(['parent' => [['operator' => '=', 'value' => 'categoryA']]]);
         Assert::assertEquals(2, $count);
     }
 
@@ -66,6 +66,53 @@ class CategoryRepositoryApiResourceIntegration extends TestCase
         Assert::assertEquals('categoryB', $categories[1]->getCode());
     }
 
+    public function test_to_search_ordered_categories(): void
+    {
+        $this->initFixtures();
+
+        $categoriesCodeAsc = $this->getRepository()->searchAfterOffset([], ['code' => 'ASC'], 3, 0);
+        Assert::assertCount(3, $categoriesCodeAsc);
+        Assert::assertEquals('categoryA', $categoriesCodeAsc[0]->getCode());
+        Assert::assertEquals('categoryA1', $categoriesCodeAsc[1]->getCode());
+        Assert::assertEquals('categoryA2', $categoriesCodeAsc[2]->getCode());
+
+        $categoriesCodeDesc = $this->getRepository()->searchAfterOffset([], ['code' => 'DESC'], 3, 0);
+        Assert::assertCount(3, $categoriesCodeDesc);
+        Assert::assertEquals('master', $categoriesCodeDesc[0]->getCode());
+        Assert::assertEquals('categoryB', $categoriesCodeDesc[1]->getCode());
+        Assert::assertEquals('categoryA2', $categoriesCodeDesc[2]->getCode());
+    }
+
+    public function test_to_search_categories_by_codes(): void
+    {
+        $this->initFixtures();
+
+        $categories = $this->getRepository()->searchAfterOffset(
+            ['code' => [['operator' => 'IN', 'value' => ['categoryA', 'categoryB', 'categoryC']]]],
+            ['code' => 'ASC'],
+            5,
+            0
+        );
+        Assert::assertCount(2, $categories);
+        Assert::assertEquals('categoryA', $categories[0]->getCode());
+        Assert::assertEquals('categoryB', $categories[1]->getCode());
+    }
+
+    public function test_to_search_categories_by_parent(): void
+    {
+        $this->initFixtures();
+
+        $categories = $this->getRepository()->searchAfterOffset(
+            ['parent' => [['operator' => '=', 'value' => 'categoryA']]],
+            ['code' => 'ASC'],
+            5,
+            0
+        );
+        Assert::assertCount(2, $categories);
+        Assert::assertEquals('categoryA1', $categories[0]->getCode());
+        Assert::assertEquals('categoryA2', $categories[1]->getCode());
+    }
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
@@ -78,9 +125,9 @@ class CategoryRepositoryApiResourceIntegration extends TestCase
 
     private function initFixtures(): void
     {
-        $this->createCategory(['parent' => 'master', 'code' => 'categoryA']);
-        $this->createCategory(['parent' => 'categoryA', 'code' => 'categoryA1']);
-        $this->createCategory(['parent' => 'categoryA', 'code' => 'categoryA2']);
-        $this->createCategory(['parent' => 'master', 'code' => 'categoryB']);
+        $this->createCategory(['code' => 'categoryA', 'parent' => 'master']);
+        $this->createCategory(['code' => 'categoryA1', 'parent' => 'categoryA']);
+        $this->createCategory(['code' => 'categoryA2', 'parent' => 'categoryA']);
+        $this->createCategory(['code' => 'categoryB', 'parent' => 'master']);
     }
 }
