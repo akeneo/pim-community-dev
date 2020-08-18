@@ -43,12 +43,16 @@ class EvaluatePendingCriteria
     /** @var CriteriaApplicabilityRegistry */
     private $applicabilityRegistry;
 
+    /** @var SynchronousCriterionEvaluationsFilterInterface */
+    private $synchronousCriterionEvaluationsFilter;
+
     public function __construct(
         CriterionEvaluationRepositoryInterface $repository,
         CriteriaEvaluationRegistry $evaluationRegistry,
         CriteriaApplicabilityRegistry $applicabilityRegistry,
         GetPendingCriteriaEvaluationsByProductIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
         GetEvaluableProductValuesQueryInterface $getEvaluableProductValuesQuery,
+        SynchronousCriterionEvaluationsFilterInterface $synchronousCriterionEvaluationsFilter,
         LoggerInterface $logger
     ) {
         $this->repository = $repository;
@@ -57,6 +61,7 @@ class EvaluatePendingCriteria
         $this->logger = $logger;
         $this->getEvaluableProductValuesQuery = $getEvaluableProductValuesQuery;
         $this->applicabilityRegistry = $applicabilityRegistry;
+        $this->synchronousCriterionEvaluationsFilter = $synchronousCriterionEvaluationsFilter;
     }
 
     public function evaluateAllCriteria(array $productIds): void
@@ -77,7 +82,7 @@ class EvaluatePendingCriteria
         foreach ($productsCriteriaEvaluations as $productId => $productCriteria) {
             $productValues = $this->getEvaluableProductValuesQuery->byProductId(new ProductId($productId));
 
-            $synchronousCriteria = new SynchronousCriterionEvaluationsFilterIterator($productCriteria->getIterator());
+            $synchronousCriteria = $this->synchronousCriterionEvaluationsFilter->filter($productCriteria->getIterator());
             foreach ($synchronousCriteria as $synchronousCriterion) {
                 $this->evaluateCriterion($synchronousCriterion, $productValues);
             }
