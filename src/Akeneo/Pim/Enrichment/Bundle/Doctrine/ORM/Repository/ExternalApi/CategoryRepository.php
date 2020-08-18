@@ -109,7 +109,11 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                                 ->where('pr.code = :parent_code')
                                 ->setParameter('parent_code', $criterion['value'])
                                 ->getQuery()
-                                ->getSingleResult();
+                                ->getOneOrNullResult();
+
+                            if (!$parentCategory) {
+                                throw new \InvalidArgumentException(sprintf('Parent code %s does not exist.', $criterion['value']));
+                            }
 
                             $qb->andWhere($qb->expr()->gt('r.left', $parentCategory->getLeft()));
                             $qb->andWhere($qb->expr()->lt('r.right', $parentCategory->getRight()));
