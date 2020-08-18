@@ -23,6 +23,7 @@ import {
   createSimpleMultiReferenceEntitiesAttributeCondition,
   AttributeType,
   createPictureAttributeCondition,
+  createFileAttributeCondition,
 } from '../../../../models/';
 import { TextBoxBlue } from '../TextBoxBlue';
 import { useProductsCount } from '../../hooks';
@@ -133,6 +134,7 @@ const RuleProductSelection: React.FC<Props> = ({
       createAssetCollectionAttributeCondition,
       createBooleanAttributeCondition,
       createDateAttributeCondition,
+      createFileAttributeCondition,
       createNumberAttributeCondition,
       createPictureAttributeCondition,
       createSimpleMultiOptionsAttributeCondition,
@@ -181,6 +183,7 @@ const RuleProductSelection: React.FC<Props> = ({
     AttributeType.ASSET_COLLECTION,
     AttributeType.BOOLEAN,
     AttributeType.DATE,
+    AttributeType.FILE,
     AttributeType.IMAGE,
     AttributeType.NUMBER,
     AttributeType.OPTION_MULTI_SELECT,

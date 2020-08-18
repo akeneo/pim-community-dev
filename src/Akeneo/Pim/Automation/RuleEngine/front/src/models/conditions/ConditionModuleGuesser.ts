@@ -19,6 +19,7 @@ import { getSimpleMultiReferenceEntitiesAttributeConditionModule } from './Simpl
 import { getTextareaAttributeConditionModule } from './TextareaAttributeCondition';
 import { getAssetCollectionAttributeConditionModule } from './AssetCollectionAttributeCondition';
 import { getPictureAttributeConditionModule } from './PictureAttributeCondition';
+import { getFileAttributeConditionModule } from './FileAttributeCondition';
 
 export type ConditionModuleGuesser = (
   json: any,
@@ -38,6 +39,7 @@ const getConditionModule: (
     getGroupsConditionModule,
     getStatusConditionModule,
     getPictureAttributeConditionModule,
+    getFileAttributeConditionModule,
     getTextAttributeConditionModule,
     getTextareaAttributeConditionModule,
     getSimpleMultiOptionsAttributeConditionModule,
