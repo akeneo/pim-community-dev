@@ -20,8 +20,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Cons
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Criterion\LowerCaseWords;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
 
-final class SynchronousCriterionEvaluationsFilterIterator extends \FilterIterator
+final class PimEnterpriseSynchronousCriterionEvaluationsFilter implements SynchronousCriterionEvaluationsFilterInterface
 {
     private const SYNCHRONOUS_CRITERION_CODES = [
         EvaluateUppercaseWords::CRITERION_CODE,
@@ -33,10 +34,10 @@ final class SynchronousCriterionEvaluationsFilterIterator extends \FilterIterato
         EvaluateAttributeOptionSpelling::CRITERION_CODE,
     ];
 
-    public function accept()
+    public function filter(\Iterator $iterator): array
     {
-        $criterionEvaluation = $this->getInnerIterator()->current();
-
-        return in_array(strval($criterionEvaluation->getCriterionCode()), self::SYNCHRONOUS_CRITERION_CODES);
+        return array_filter(iterator_to_array($iterator), function (CriterionEvaluation $criterionEvaluation) {
+            return in_array(strval($criterionEvaluation->getCriterionCode()), self::SYNCHRONOUS_CRITERION_CODES);
+        });
     }
 }

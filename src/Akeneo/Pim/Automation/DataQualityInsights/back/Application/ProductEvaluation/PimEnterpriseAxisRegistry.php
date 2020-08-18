@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Consistency;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Enrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AxisCode;
 
-final class AxisRegistry
+final class PimEnterpriseAxisRegistry implements AxisRegistryInterface
 {
     /** @var Axis */
     private $axes;

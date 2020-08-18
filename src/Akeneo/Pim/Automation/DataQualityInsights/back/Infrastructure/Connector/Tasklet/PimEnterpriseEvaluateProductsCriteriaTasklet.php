@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateAxesRates;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateMissingCriteriaEvaluations;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateMissingCriteriaEvaluationsInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsToEvaluateQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
@@ -24,7 +24,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Psr\Log\LoggerInterface;
 
-final class EvaluateProductsCriteriaTasklet implements TaskletInterface
+final class PimEnterpriseEvaluateProductsCriteriaTasklet implements TaskletInterface
 {
     private const NB_PRODUCTS_MAX = 10000;
     private const BULK_SIZE = 100;
@@ -44,7 +44,7 @@ final class EvaluateProductsCriteriaTasklet implements TaskletInterface
     /** @var GetProductIdsToEvaluateQueryInterface */
     private $getProductIdsToEvaluateQuery;
 
-    /** @var CreateMissingCriteriaEvaluations */
+    /** @var CreateMissingCriteriaEvaluationsInterface */
     private $createMissingProductsCriteriaEvaluations;
 
     /** @var LoggerInterface */
@@ -58,7 +58,7 @@ final class EvaluateProductsCriteriaTasklet implements TaskletInterface
         ConsolidateAxesRates $consolidateProductAxisRates,
         IndexProductRates $indexProductRates,
         GetProductIdsToEvaluateQueryInterface $getProductIdsToEvaluateQuery,
-        CreateMissingCriteriaEvaluations $createMissingProductsCriteriaEvaluations,
+        CreateMissingCriteriaEvaluationsInterface $createMissingProductsCriteriaEvaluations,
         LoggerInterface $logger,
         CriterionEvaluationRepositoryInterface $productCriterionEvaluationRepository
     ) {

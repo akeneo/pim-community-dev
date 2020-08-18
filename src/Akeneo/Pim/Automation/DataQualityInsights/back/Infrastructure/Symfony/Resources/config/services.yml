@@ -13,7 +13,7 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
 
     akeneo.pim.automation.data_quality_insights.create_missing_products_criteria_evaluations:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateMissingCriteriaEvaluations
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\PimEnterpriseCreateMissingCriteriaEvaluations
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpdatedProductsWithoutUpToDateEvaluationQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductIdsWithOutdatedAttributeSpellcheckQuery'
@@ -22,7 +22,7 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
 
     akeneo.pim.automation.data_quality_insights.create_missing_product_models_criteria_evaluations:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateMissingCriteriaEvaluations
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\PimEnterpriseCreateMissingCriteriaEvaluations
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpdatedProductModelsWithoutUpToDateEvaluationQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelIdsWithOutdatedAttributeSpellcheckQuery'
@@ -30,7 +30,18 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.query.get_product_model_ids_with_outdated_attribute_option_spellcheck'
             - '@akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistry: ~
+    akeneo.pim.automation.data_quality_insights.axis_registry:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\PimEnterpriseAxisRegistry
+
+    akeneo.pim.automation.data_quality_insights.get_product_axes_rates:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\PimEnterpriseGetProductAxesRates
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.query.get_up_to_date_latest_product_axes_rates'
+
+    akeneo.pim.automation.data_quality_insights.get_product_model_axes_rates:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\PimEnterpriseGetProductAxesRates
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.query.get_up_to_date_latest_product_model_axes_rates'
 
 # PIM enrichment BC anti-corruption layers
     akeneo.pim.automation.calculate_product_model_completeness_of_required_attributes:
@@ -171,3 +182,6 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetNumberOfProductsImpactedByAttributeSpellingMistakesQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetNumberOfProductsImpactedByAttributeOptionSpellingMistakesQuery'
+
+    akeneo.pim.automation.data_quality_insights.synchronous_criterion_evaluations_filter:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\PimEnterpriseSynchronousCriterionEvaluationsFilter
