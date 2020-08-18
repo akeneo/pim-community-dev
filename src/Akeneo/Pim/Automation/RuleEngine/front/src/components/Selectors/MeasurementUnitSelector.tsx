@@ -65,14 +65,16 @@ const getMeasurementUnitValidator = (
         }
       );
     }
-    const unitExists = measurementFamily.units.some(
-      (unit: MeasurementUnit) => unit.code === selectedUnitCode
-    );
-    if (!unitExists) {
-      return translate('pimee_catalog_rule.exceptions.unit_not_found', {
-        unitCode: selectedUnitCode,
-        measurement_code: attribute.metric_family || '',
-      });
+    if (selectedUnitCode) {
+      const unitExists = measurementFamily.units.some(
+        (unit: MeasurementUnit) => unit.code === selectedUnitCode
+      );
+      if (!unitExists) {
+        return translate('pimee_catalog_rule.exceptions.unit_not_found', {
+          unitCode: selectedUnitCode,
+          measurement_code: attribute.metric_family || '',
+        });
+      }
     }
     return true;
   };
