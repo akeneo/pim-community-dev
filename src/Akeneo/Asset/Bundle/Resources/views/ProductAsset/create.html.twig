@@ -1,0 +1,80 @@
+{{ form_start(form, {
+    'action': path('pimee_product_asset_create', {dataLocale: app.request.get('dataLocale')}),
+    'class': 'container-fluid',
+    'attr': {
+        'data-title': 'pimee_product_asset.popin.create.title'|trans,
+        'data-button-cancel': 'pim_common.cancel'|trans|capitalize,
+        'data-button-submit': 'pim_common.save'|trans|capitalize
+    }
+}) }}
+
+<div class="AknFullPage ui-dialog">
+  <div class="AknFullPage-cancel cancel"></div>
+  <div class="AknFullPage-content AknFullPage-content--withIllustration">
+    <div>
+      <img src="bundles/pimui/images/illustrations/Asset.svg" alt="Asset">
+    </div>
+
+    <div>
+      <div class="AknFullPage-titleContainer">
+        <div class="AknFullPage-subTitle">{{'pimee_product_asset.menu'|trans}}</div>
+        <div class="AknFullPage-title">{{'pimee_product_asset.popin.create.title'|trans}}</div>
+      </div>
+
+      <div class="modal-body creation">
+        <div class="AknFormContainer AknFormContainer--withPadding">
+          <div class="AknFieldContainer">
+            <div class="AknMediaField asset-uploader media-uploader reference-field">
+              <div id="pimee_product_asset_create_reference_file" class="AknMediaField-fileUploaderInput">
+                <div class="AknFieldContainer">
+                  <div class="AknFieldContainer-header">
+                    <label class="AknFieldContainer-label control-label AknFieldContainer-label" for="pimee_product_asset_create_reference_file_uploadedFile">Uploaded file</label>
+                  </div>
+                  <div class="AknFieldContainer-inputContainer field-input">
+                    <input type="file" id="pimee_product_asset_create_reference_file_uploadedFile" name="pimee_product_asset_create[reference_file][uploadedFile]" class=" AknTextField AknTextField--file" />
+                  </div>
+                </div>
+              </div>
+              <div class="AknMediaField-emptyContainer">
+                  <span class="AknMediaField-uploadIcon"></span>
+                  <span>Drop your files here, or <a href="#">browse disk</a></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="AknFieldContainer">
+            <div class="AknFieldContainer-header">
+              <label class="AknFieldContainer-label control-label AknFieldContainer-label required" for="pimee_product_asset_create_code">Code <em>{{'required'|trans}}</em></label>
+            </div>
+            <div class="AknFieldContainer-inputContainer field-input">
+              <input type="text" id="pimee_product_asset_create_code" name="pimee_product_asset_create[code]" class=" AknTextField" />
+              <div class="AknFieldContainer-iconsContainer icons-container"></div>
+            </div>
+          </div>
+
+          <div class="AknFieldContainer">
+            <div class="AknFieldContainer-header">
+              <label class="AknFieldContainer-label control-label AknFieldContainer-label required" for="pimee_product_asset_create_isLocalized">{{'Localizable'|trans}}
+                <em>{{'required'|trans}}</em>
+              </label>
+            </div>
+
+            <div class="AknFieldContainer-inputContainer field-input">
+              <div id="switch-pimee_product_asset_create_isLocalized" class="switch switch-small" data-on-label="Yes" data-off-label="No">
+                <input id="pimee_product_asset_create_isLocalized" type="checkbox" value="0">
+                <input type="hidden" id="input-pimee_product_asset_create_isLocalized" name="pimee_product_asset_create[isLocalized]" size="small" data-on-label="switch_on" data-off-label="switch_off">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="AknButtonList">
+        <div class="AknButton AknButton--grey AknButtonList-item cancel">{{'pimee_product_asset.popin.create.cancel'|trans|capitalize}}</div>
+        <div title="Save" class="AknButton AknButtonList-item AknButton--apply ok">{{'pimee_product_asset.popin.create.confirm'|trans|capitalize}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{ form_end(form) }}
