@@ -14,28 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Axis;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Enrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AxisCode;
 
-class AxisRegistry implements AxisRegistryInterface
+interface AxisRegistryInterface
 {
-    /** @var Axis */
-    private $axes;
+    public function get(AxisCode $axisCode): ?Axis;
 
-    public function __construct()
-    {
-        $this->axes = [
-            Enrichment::AXIS_CODE => new Enrichment(),
-        ];
-    }
-
-    public function get(AxisCode $axisCode): ?Axis
-    {
-        return $this->axes[strval($axisCode)] ?? null;
-    }
-
-    public function all(): array
-    {
-        return $this->axes;
-    }
+    public function all(): array;
 }

@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAxesRates;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAxesRatesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 final class GetProductAxesRatesController
 {
-    /** @var GetProductAxesRates */
+    /** @var GetProductAxesRatesInterface */
     private $getProductAxesRates;
 
-    public function __construct(GetProductAxesRates $getProductAxesRates)
+    public function __construct(GetProductAxesRatesInterface $getProductAxesRates)
     {
         $this->getProductAxesRates = $getProductAxesRates;
     }

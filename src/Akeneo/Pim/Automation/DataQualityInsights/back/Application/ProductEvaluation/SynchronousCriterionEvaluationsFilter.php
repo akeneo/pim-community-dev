@@ -13,25 +13,21 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeOptionSpelling;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeSpelling;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateSpelling;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateUppercaseWords;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Criterion\LowerCaseWords;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
 
-final class SynchronousCriterionEvaluationsFilterIterator extends \FilterIterator
+final class SynchronousCriterionEvaluationsFilter implements SynchronousCriterionEvaluationsFilterInterface
 {
     private const SYNCHRONOUS_CRITERION_CODES = [
         EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE,
         EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE,
     ];
 
-    public function accept()
+    public function filter(\Iterator $iterator): array
     {
-        $criterionEvaluation = $this->getInnerIterator()->current();
-
-        return in_array(strval($criterionEvaluation->getCriterionCode()), self::SYNCHRONOUS_CRITERION_CODES);
+        return array_filter(iterator_to_array($iterator), function (CriterionEvaluation $criterionEvaluation) {
+            return in_array(strval($criterionEvaluation->getCriterionCode()), self::SYNCHRONOUS_CRITERION_CODES);
+        });
     }
 }
