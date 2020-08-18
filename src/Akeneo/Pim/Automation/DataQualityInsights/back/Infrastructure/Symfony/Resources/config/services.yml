@@ -182,3 +182,6 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetNumberOfProductsImpactedByAttributeSpellingMistakesQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetNumberOfProductsImpactedByAttributeOptionSpellingMistakesQuery'
+
+    akeneo.pim.automation.data_quality_insights.synchronous_criterion_evaluations_filter:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\PimEnterpriseSynchronousCriterionEvaluationsFilter
