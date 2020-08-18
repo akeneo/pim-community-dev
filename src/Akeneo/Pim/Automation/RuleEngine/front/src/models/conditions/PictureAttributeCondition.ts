@@ -14,7 +14,6 @@ const PictureAttributeOperators = [
   Operator.CONTAINS,
   Operator.DOES_NOT_CONTAIN,
   Operator.STARTS_WITH,
-  Operator.ENDS_WITH,
   Operator.IS_EMPTY,
   Operator.IS_NOT_EMPTY,
 ];

@@ -15,6 +15,7 @@ import { useControlledFormInputCondition } from '../../hooks';
 import { Operator } from '../../../../models/Operator';
 import { InputText } from '../../../../components';
 import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepository';
+import { useGetAttributeAtMount } from '../actions/attribute/attribute.utils';
 
 type PictureAttributeConditionLineProps = ConditionLineProps & {
   condition: PictureAttributeCondition;
@@ -37,12 +38,7 @@ const PictureAttributeConditionLine: React.FC<PictureAttributeConditionLineProps
   } = useControlledFormInputCondition<string[]>(lineNumber);
 
   const [attribute, setAttribute] = React.useState<Attribute | null>();
-
-  React.useEffect(() => {
-    getAttributeByIdentifier(condition.field, router).then(attribute =>
-      setAttribute(attribute)
-    );
-  }, []);
+  useGetAttributeAtMount(condition.field, router, attribute, setAttribute);
 
   return (
     <AttributeConditionLine

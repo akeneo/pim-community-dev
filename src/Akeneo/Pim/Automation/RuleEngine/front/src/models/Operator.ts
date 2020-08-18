@@ -5,7 +5,6 @@ export enum Operator {
   NOT_IN_LIST = 'NOT IN',
   STARTS_WITH = 'STARTS WITH',
   CONTAINS = 'CONTAINS',
-  ENDS_WITH = 'ENDS WITH',
   DOES_NOT_CONTAIN = 'DOES NOT CONTAIN',
   EQUALS = '=',
   NOT_EQUAL = '!=',
