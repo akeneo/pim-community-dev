@@ -227,7 +227,7 @@ mysql:
       limits:
         memory: 3072Mi
       requests:
-        memory: "3072Mi"
+        memory: 3072Mi
     readinessProbe:
       initialDelaySeconds: 5
       periodSeconds: 120
