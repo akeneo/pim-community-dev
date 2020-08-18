@@ -22,10 +22,10 @@ pim:
       enabled: false
   resources:
     limits:
-      memory: "3072Mi"
+      memory: "512Mi"
     requests:
       cpu: "100m"
-      memory: "3072Mi"
+      memory: "256Mi"
   daemon-all-but-linking-assets-to-products:
     enabled: true
     pimCommand: "akeneo:batch:job-queue-consumer-daemon  --blacklisted-job asset_manager_link_assets_to_products"
