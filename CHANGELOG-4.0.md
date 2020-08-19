@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9288: Product completeness was not up to date after deletion of an option for required attribute
+
 # 4.0.49 (2020-08-13)
 
 ## Bug fixes
