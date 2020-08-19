@@ -224,6 +224,8 @@ mysql:
     stateful:
       enabled: false
     resources:
+      limits:
+        memory: 3072Mi
       requests:
         memory: 3072Mi
     readinessProbe:
