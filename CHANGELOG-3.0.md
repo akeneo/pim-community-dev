@@ -1,5 +1,15 @@
 # 3.0.x
 
+## Bug fixes:
+
+- PIM-9396: Add missing event in unpublishAll method
+
+# 3.0.83 (2020-08-04)
+
+## Improvements
+
+- PIM-9383: Fix underscore JS dependency
+
 # 3.0.82 (2020-07-23)
 
 # 3.0.81 (2020-07-22)
