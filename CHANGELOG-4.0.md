@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-9288: Product completeness was not up to date after deletion of an option for required attribute
 - PIM-9397: Dispatch missing pre_ready event during bulk actions when "Send for approval" is checked
 
 # 4.0.49 (2020-08-13)
