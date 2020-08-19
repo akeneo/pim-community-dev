@@ -79,7 +79,7 @@ class LaunchEvaluationsCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('pimee:data-quality-insights:evaluations')
+            ->setName('pim:data-quality-insights:evaluations')
             ->setDescription('Launch the evaluations of products and structure');
     }
 

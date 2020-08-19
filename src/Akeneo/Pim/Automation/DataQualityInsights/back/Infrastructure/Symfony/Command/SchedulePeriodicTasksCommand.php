@@ -38,7 +38,7 @@ final class SchedulePeriodicTasksCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('pimee:data-quality-insights:schedule-periodic-tasks')
+            ->setName('pim:data-quality-insights:schedule-periodic-tasks')
             ->setDescription('Schedule the periodic tasks of Data-Quality-Insights.');
     }
 
