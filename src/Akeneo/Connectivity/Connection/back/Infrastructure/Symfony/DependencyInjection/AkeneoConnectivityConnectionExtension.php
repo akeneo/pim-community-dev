@@ -31,5 +31,6 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('event_subscribers.yml');
         $loader->load('serializers.yml');
         $loader->load('documentation.yml');
+        $loader->load('message_handler.yml');
     }
 }

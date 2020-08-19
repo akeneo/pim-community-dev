@@ -40,13 +40,14 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param ProductInterface $product
      */
     public function save($product, array $options = [])
     {
         $this->validateProduct($product);
 
         $options['unitary'] = true;
+        $isCreated = $this->isCreated($product);
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
 
@@ -55,11 +56,17 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         $this->objectManager->persist($product);
         $this->objectManager->flush();
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
+        $this->eventDispatcher->dispatch(
+            StorageEvents::POST_SAVE,
+            new GenericEvent(
+                $product,
+                array_merge($options, ['created' => $isCreated])
+            )
+        );
     }
 
     /**
-     * {@inheritdoc}
+     * @param ProductInterface[] $products
      */
     public function saveAll(array $products, array $options = [])
     {
@@ -67,10 +74,13 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
+        /** @var ProductInterface[] */
         $products = array_unique($products, SORT_REGULAR);
 
+        $createdProducts = [];
         foreach ($products as $product) {
             $this->validateProduct($product);
+            $createdProducts[$product->getIdentifier()] = $this->isCreated($product);
         }
 
         $options['unitary'] = false;
@@ -87,7 +97,13 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         $this->objectManager->flush();
 
         foreach ($products as $product) {
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
+            $this->eventDispatcher->dispatch(
+                StorageEvents::POST_SAVE,
+                new GenericEvent(
+                    $product,
+                    array_merge($options, ['created' => $createdProducts[$product->getIdentifier()]])
+                )
+            );
         }
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($products, $options));
@@ -104,5 +120,10 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
                 )
             );
         }
+    }
+
+    private function isCreated(ProductInterface $product): bool
+    {
+        return null === $product->getId();
     }
 }
