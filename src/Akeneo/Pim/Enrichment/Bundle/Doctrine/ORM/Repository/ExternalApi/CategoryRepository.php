@@ -117,6 +117,7 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
 
                             $qb->andWhere($qb->expr()->gt('r.left', $parentCategory->getLeft()));
                             $qb->andWhere($qb->expr()->lt('r.right', $parentCategory->getRight()));
+                            $qb->andWhere($qb->expr()->eq('r.root', $parentCategory->getRoot()));
                         } else {
                             $qb->andWhere($qb->expr()->eq($field, $parameter));
                             $qb->setParameter($parameter, $criterion['value']);

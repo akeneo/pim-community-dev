@@ -30,22 +30,22 @@ class CategoryRepositoryApiResourceIntegration extends TestCase
     public function test_to_get_categories(): void
     {
         $this->initFixtures();
-        $categories = $this->getRepository()->searchAfterOffset([], [], 10, 0);
-        Assert::assertCount(5, $categories);
+        $categories = $this->getRepository()->searchAfterOffset([], [], 20, 0);
+        Assert::assertCount(12, $categories);
     }
 
     public function test_to_count_categories(): void
     {
         $this->initFixtures();
         $count = $this->getRepository()->count([]);
-        Assert::assertEquals(5, $count);
+        Assert::assertEquals(12, $count);
     }
 
     public function test_to_count_categories_with_search(): void
     {
         $this->initFixtures();
-        $count = $this->getRepository()->count(['parent' => [['operator' => '=', 'value' => 'categoryA']]]);
-        Assert::assertEquals(2, $count);
+        $count = $this->getRepository()->count(['parent' => [['operator' => '=', 'value' => 'clothes']]]);
+        Assert::assertEquals(4, $count);
     }
 
     public function test_to_get_categories_with_limit(): void
@@ -53,17 +53,17 @@ class CategoryRepositoryApiResourceIntegration extends TestCase
         $this->initFixtures();
         $categories = $this->getRepository()->searchAfterOffset([], ['code' => 'ASC'], 2, 0);
         Assert::assertCount(2, $categories);
-        Assert::assertEquals('categoryA', $categories[0]->getCode());
-        Assert::assertEquals('categoryA1', $categories[1]->getCode());
+        Assert::assertEquals('accessories', $categories[0]->getCode());
+        Assert::assertEquals('bob', $categories[1]->getCode());
     }
 
     public function test_to_search_categories_after_the_offset(): void
     {
         $this->initFixtures();
-        $categories = $this->getRepository()->searchAfterOffset([], ['code' => 'ASC'], 2, 2);
+        $categories = $this->getRepository()->searchAfterOffset([], ['code' => 'ASC'], 2, 4);
         Assert::assertCount(2, $categories);
-        Assert::assertEquals('categoryA2', $categories[0]->getCode());
-        Assert::assertEquals('categoryB', $categories[1]->getCode());
+        Assert::assertEquals('hat', $categories[0]->getCode());
+        Assert::assertEquals('master', $categories[1]->getCode());
     }
 
     public function test_to_search_ordered_categories(): void
@@ -72,15 +72,15 @@ class CategoryRepositoryApiResourceIntegration extends TestCase
 
         $categoriesCodeAsc = $this->getRepository()->searchAfterOffset([], ['code' => 'ASC'], 3, 0);
         Assert::assertCount(3, $categoriesCodeAsc);
-        Assert::assertEquals('categoryA', $categoriesCodeAsc[0]->getCode());
-        Assert::assertEquals('categoryA1', $categoriesCodeAsc[1]->getCode());
-        Assert::assertEquals('categoryA2', $categoriesCodeAsc[2]->getCode());
+        Assert::assertEquals('accessories', $categoriesCodeAsc[0]->getCode());
+        Assert::assertEquals('bob', $categoriesCodeAsc[1]->getCode());
+        Assert::assertEquals('bracelet', $categoriesCodeAsc[2]->getCode());
 
         $categoriesCodeDesc = $this->getRepository()->searchAfterOffset([], ['code' => 'DESC'], 3, 0);
         Assert::assertCount(3, $categoriesCodeDesc);
-        Assert::assertEquals('master', $categoriesCodeDesc[0]->getCode());
-        Assert::assertEquals('categoryB', $categoriesCodeDesc[1]->getCode());
-        Assert::assertEquals('categoryA2', $categoriesCodeDesc[2]->getCode());
+        Assert::assertEquals('women', $categoriesCodeDesc[0]->getCode());
+        Assert::assertEquals('skirts', $categoriesCodeDesc[1]->getCode());
+        Assert::assertEquals('ring', $categoriesCodeDesc[2]->getCode());
     }
 
     public function test_to_search_categories_by_codes(): void
@@ -88,14 +88,15 @@ class CategoryRepositoryApiResourceIntegration extends TestCase
         $this->initFixtures();
 
         $categories = $this->getRepository()->searchAfterOffset(
-            ['code' => [['operator' => 'IN', 'value' => ['categoryA', 'categoryB', 'categoryC']]]],
+            ['code' => [['operator' => 'IN', 'value' => ['accessories', 'women', 'hat', 'mr_hankey']]]],
             ['code' => 'ASC'],
             5,
             0
         );
-        Assert::assertCount(2, $categories);
-        Assert::assertEquals('categoryA', $categories[0]->getCode());
-        Assert::assertEquals('categoryB', $categories[1]->getCode());
+        Assert::assertCount(3, $categories);
+        Assert::assertEquals('accessories', $categories[0]->getCode());
+        Assert::assertEquals('hat', $categories[1]->getCode());
+        Assert::assertEquals('women', $categories[2]->getCode());
     }
 
     public function test_to_search_categories_by_parent(): void
@@ -103,14 +104,17 @@ class CategoryRepositoryApiResourceIntegration extends TestCase
         $this->initFixtures();
 
         $categories = $this->getRepository()->searchAfterOffset(
-            ['parent' => [['operator' => '=', 'value' => 'categoryA']]],
+            ['parent' => [['operator' => '=', 'value' => 'accessories']]],
             ['code' => 'ASC'],
-            5,
+            10,
             0
         );
-        Assert::assertCount(2, $categories);
-        Assert::assertEquals('categoryA1', $categories[0]->getCode());
-        Assert::assertEquals('categoryA2', $categories[1]->getCode());
+        Assert::assertCount(5, $categories);
+        Assert::assertEquals('bob', $categories[0]->getCode());
+        Assert::assertEquals('bracelet', $categories[1]->getCode());
+        Assert::assertEquals('hat', $categories[2]->getCode());
+        Assert::assertEquals('melon', $categories[3]->getCode());
+        Assert::assertEquals('ring', $categories[4]->getCode());
     }
 
     protected function getConfiguration(): Configuration
@@ -125,9 +129,17 @@ class CategoryRepositoryApiResourceIntegration extends TestCase
 
     private function initFixtures(): void
     {
-        $this->createCategory(['code' => 'categoryA', 'parent' => 'master']);
-        $this->createCategory(['code' => 'categoryA1', 'parent' => 'categoryA']);
-        $this->createCategory(['code' => 'categoryA2', 'parent' => 'categoryA']);
-        $this->createCategory(['code' => 'categoryB', 'parent' => 'master']);
+        $this->createCategory(['code' => 'accessories']);
+        $this->createCategory(['code' => 'ring', 'parent' => 'accessories']);
+        $this->createCategory(['code' => 'bracelet', 'parent' => 'accessories']);
+        $this->createCategory(['code' => 'hat', 'parent' => 'accessories']);
+        $this->createCategory(['code' => 'bob', 'parent' => 'hat']);
+        $this->createCategory(['code' => 'melon', 'parent' => 'hat']);
+
+        $this->createCategory(['code' => 'clothes']);
+        $this->createCategory(['code' => 'men', 'parent' => 'clothes']);
+        $this->createCategory(['code' => 'pants', 'parent' => 'men']);
+        $this->createCategory(['code' => 'women', 'parent' => 'clothes']);
+        $this->createCategory(['code' => 'skirts', 'parent' => 'women']);
     }
 }
