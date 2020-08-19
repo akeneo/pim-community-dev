@@ -62,6 +62,33 @@ define(
                     }.bind(this))
                     .fail(this.fail.bind(this))
                     .always(this.hideLoadingMask.bind(this));
+            },
+
+            /**
+             * @inheritDoc
+             */
+            fail: function (response) {
+                switch (response.status) {
+                    case 400:
+                        this.getRoot().trigger(
+                            'pim_enrich:form:entity:bad_request',
+                            {'sentData': this.getFormData(), 'response': response.responseJSON}
+                        );
+                        break;
+                    case 500:
+                        /* global console */
+                        const message = response.responseJSON ? response.responseJSON : response;
+
+                        console.error('Errors:', message);
+                        this.getRoot().trigger('pim_enrich:form:entity:error:save', message);
+                        break;
+                    default:
+                }
+
+                messenger.notify(
+                    'error',
+                    response.responseJSON.message ? __(response.responseJSON.message) : this.updateFailureMessage
+                );
             }
         });
     }

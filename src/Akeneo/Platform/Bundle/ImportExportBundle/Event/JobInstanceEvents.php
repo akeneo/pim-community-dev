@@ -10,6 +10,11 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Event;
 final class JobInstanceEvents
 {
     /**
+     * This event is dispatched before a job instance is created or updated by the UI.
+     */
+    const PRE_SAVE = 'pim_enrich.job_instance.pre_save';
+
+    /**
      * This event is dispatched after a job instance is created or updated by the UI.
      */
     const POST_SAVE = 'pim_enrich.job_instance.post_save';
