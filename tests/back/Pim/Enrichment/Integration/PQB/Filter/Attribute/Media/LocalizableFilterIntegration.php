@@ -21,16 +21,9 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
-        $this->createAttribute([
-            'code'                => 'a_localizable_media',
-            'type'                => AttributeTypes::IMAGE,
-            'localizable'         => true,
-            'scopable'            => false
-        ]);
-
         $this->createFamily([
             'code' => 'a_family',
-            'attributes' => ['sku', 'a_localizable_media']
+            'attributes' => ['sku', 'a_localizable_image']
         ]);
 
         $this->createProduct('product_one', [

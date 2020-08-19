@@ -24,7 +24,7 @@ class ReferenceDataSimpleSelectFilterIntegration extends AbstractProductQueryBui
 
         $this->createFamily([
             'code' => 'a_family',
-            'attributes' => ['sku', 'a_ref_data_multi_select']
+            'attributes' => ['sku', 'a_ref_data_simple_select']
         ]);
 
         $this->createProduct(
