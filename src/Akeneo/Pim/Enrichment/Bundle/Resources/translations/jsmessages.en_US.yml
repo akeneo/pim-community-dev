@@ -345,6 +345,7 @@ pim_enrich.mass_edit.product:
             description: The parent of the variant products or sub-product models selected in the grid will be changed to the chosen product model.
 
 pim_datagrid:
+    no_entities: "No {{ entityHint }} found"
     mass_action_group:
         bulk_actions:
             label: Bulk Actions
