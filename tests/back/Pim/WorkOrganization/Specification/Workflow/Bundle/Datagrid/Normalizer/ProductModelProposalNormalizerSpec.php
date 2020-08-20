@@ -155,7 +155,7 @@ class ProductModelProposalNormalizerSpec extends ObjectBehavior
             ],
         ]);
 
-        $nameAttribute = new Attribute('name', 'pim_catalog_text', [], true, false, null, null, 'string', []);
+        $nameAttribute = new Attribute('name', 'pim_catalog_text', [], true, false, null, null, null, 'string', []);
         $getAttributesQuery->forCode('name')->willReturn($nameAttribute);
 
         $valueFactory->createByCheckingData($nameAttribute, null, 'en_US', null)->shouldNotBeCalled();
