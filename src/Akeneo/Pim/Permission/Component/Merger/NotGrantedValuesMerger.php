@@ -146,8 +146,7 @@ class NotGrantedValuesMerger implements NotGrantedDataMergerInterface
                 if (!isset($grantedAttributeCodes[$originalValue->getAttributeCode()]) ||
                     ($originalValue->isLocalizable() && !in_array($originalValue->getLocaleCode(), $grantedLocaleCodes))
                 ) {
-                    // @todo @merge master/5.0: uncomment the following line, see https://github.com/akeneo/pim-enterprise-dev/pull/9407
-                    // Assert::false($newValues->containsKey($key));
+                    Assert::false($newValues->containsKey($key));
                     $newValues->add($originalValue);
                 }
             }
