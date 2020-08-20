@@ -53,7 +53,7 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "dev-DAPI-1209@dev",
+        "akeneo/pim-community-dev": "dev-master",
         "akeneo/pim-onboarder": "^4.1",
         "guzzlehttp/guzzle": "6.3.3",
         "hslavich/oneloginsaml-bundle": "1.4.1",
