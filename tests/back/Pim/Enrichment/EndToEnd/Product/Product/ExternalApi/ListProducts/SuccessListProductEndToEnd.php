@@ -17,7 +17,7 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
     /** @var Collection */
     private $products;
 
-     /**
+    /**
      * {@inheritdoc}
      */
     protected function setUp(): void
@@ -27,7 +27,7 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
         // no locale, no scope, 1 category
         $this->createProduct('simple', [
             'categories' => ['master'],
-            'values'     => [
+            'values' => [
                 'a_metric' => [
                     ['data' => ['amount' => 10, 'unit' => 'KILOWATT'], 'locale' => null, 'scope' => null]
                 ],
@@ -40,7 +40,7 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
         // localizable, categorized in 1 tree (master)
         $this->createProduct('localizable', [
             'categories' => ['categoryB'],
-            'values'     => [
+            'values' => [
                 'a_localizable_image' => [
                     ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'en_US', 'scope' => null],
                     ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'fr_FR', 'scope' => null],
@@ -52,12 +52,12 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
         // scopable, categorized in 1 tree (master)
         $this->createProduct('scopable', [
             'categories' => ['categoryA1', 'categoryA2'],
-            'values'     => [
+            'values' => [
                 'a_scopable_price' => [
                     [
                         'locale' => null,
-                        'scope'  => 'ecommerce',
-                        'data'   => [
+                        'scope' => 'ecommerce',
+                        'data' => [
                             ['amount' => '78.77', 'currency' => 'CNY'],
                             ['amount' => '10.50', 'currency' => 'EUR'],
                             ['amount' => '11.50', 'currency' => 'USD'],
@@ -65,8 +65,8 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
                     ],
                     [
                         'locale' => null,
-                        'scope'  => 'tablet',
-                        'data'   => [
+                        'scope' => 'tablet',
+                        'data' => [
                             ['amount' => '78.77', 'currency' => 'CNY'],
                             ['amount' => '10.50', 'currency' => 'EUR'],
                             ['amount' => '11.50', 'currency' => 'USD'],
@@ -79,7 +79,7 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
         // localizable & scopable, categorized in 2 trees (master and master_china)
         $this->createProduct('localizable_and_scopable', [
             'categories' => ['categoryA', 'master_china'],
-            'values'     => [
+            'values' => [
                 'a_localized_and_scopable_text_area' => [
                     ['data' => 'Big description', 'locale' => 'en_US', 'scope' => 'ecommerce'],
                     ['data' => 'Medium description', 'locale' => 'en_US', 'scope' => 'tablet'],
@@ -106,12 +106,12 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
             [
                 'code' => 'parent_prod_mod',
                 'family_variant' => 'familyVariantA1',
-                'values'  => [
-                    'a_price'  => [
+                'values' => [
+                    'a_price' => [
                         'data' => ['data' => [['amount' => '50', 'currency' => 'EUR']], 'locale' => null, 'scope' => null],
                     ],
-                    'a_number_float'  => [['data' => '12.5', 'locale' => null, 'scope' => null]],
-                    'a_localized_and_scopable_text_area'  => [['data' => 'my pink tshirt', 'locale' => 'en_US', 'scope' => 'ecommerce']],
+                    'a_number_float' => [['data' => '12.5', 'locale' => null, 'scope' => null]],
+                    'a_localized_and_scopable_text_area' => [['data' => 'my pink tshirt', 'locale' => 'en_US', 'scope' => 'ecommerce']],
                 ]
             ]
         );
@@ -121,7 +121,7 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
                 'code' => 'prod_mod_optA',
                 'parent' => 'parent_prod_mod',
                 'family_variant' => 'familyVariantA1',
-                'values'  => [
+                'values' => [
                     'a_simple_select' => [
                         ['locale' => null, 'scope' => null, 'data' => 'optionA'],
                     ]
@@ -437,7 +437,7 @@ JSON;
         $currentDate = (new \DateTime('now'))->format('Y-m-d H:i:s');
         $currentDateMinusHalf = (new \DateTime('now'))->modify('- 30 minutes')->format('Y-m-d H:i:s');
 
-        $search = sprintf('{"updated":[{"operator":"BETWEEN","value":["%s","%s"]}]}', $currentDateMinusHalf, $currentDate );
+        $search = sprintf('{"updated":[{"operator":"BETWEEN","value":["%s","%s"]}]}', $currentDateMinusHalf, $currentDate);
         $client->request('GET', 'api/rest/v1/products?pagination_type=page&limit=10&search=' . $search);
         $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
         $expected = <<<JSON
@@ -445,6 +445,36 @@ JSON;
     "_links"       : {
         "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"},
         "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"}
+    },
+    "current_page" : 1,
+    "_embedded"    : {
+        "items" : [            
+            {$standardizedProducts['simple']},
+            {$standardizedProducts['localizable']},
+            {$standardizedProducts['scopable']},
+            {$standardizedProducts['localizable_and_scopable']},
+            {$standardizedProducts['product_china']},
+            {$standardizedProducts['product_without_category']},
+            {$standardizedProducts['product_with_parent']}
+        ]
+    }
+}
+JSON;
+
+        $this->assertListResponse($client->getResponse(), $expected);
+    }
+
+    public function testListProductsWithAttributeOptions()
+    {
+        $standardizedProducts = $this->getStandardizedProducts(true);
+        $client = $this->createAuthenticatedClient();
+        $client->request('GET', '/api/rest/v1/products?with_attribute_options=true');
+
+        $expected = <<<JSON
+{
+    "_links"       : {
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10"}
     },
     "current_page" : 1,
     "_embedded"    : {
@@ -623,8 +653,8 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $id = [
-            'simple'                   => $this->encodeStringWithSymfonyUrlGeneratorCompatibility($this->getEncryptedId('simple')),
-            'localizable'              => $this->encodeStringWithSymfonyUrlGeneratorCompatibility($this->getEncryptedId('localizable')),
+            'simple' => $this->encodeStringWithSymfonyUrlGeneratorCompatibility($this->getEncryptedId('simple')),
+            'localizable' => $this->encodeStringWithSymfonyUrlGeneratorCompatibility($this->getEncryptedId('localizable')),
             'localizable_and_scopable' => $this->encodeStringWithSymfonyUrlGeneratorCompatibility($this->getEncryptedId('localizable_and_scopable')),
         ];
 
@@ -656,7 +686,7 @@ JSON;
 
         $scopableEncryptedId = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($this->getEncryptedId('scopable'));
 
-        $client->request('GET', sprintf('api/rest/v1/products?pagination_type=search_after&limit=5&search_after=%s' , $scopableEncryptedId));
+        $client->request('GET', sprintf('api/rest/v1/products?pagination_type=search_after&limit=5&search_after=%s', $scopableEncryptedId));
         $expected = <<<JSON
 {
     "_links": {
@@ -721,7 +751,7 @@ JSON;
     /**
      * @return array
      */
-    private function getStandardizedProducts(): array
+    private function getStandardizedProducts(bool $withAttributeOptions = false): array
     {
         $standardizedProducts['simple'] = <<<JSON
 {
@@ -972,7 +1002,54 @@ JSON;
 }
 JSON;
 
-        $standardizedProducts['product_with_parent'] = <<<JSON
+        if ($withAttributeOptions) {
+            $standardizedProducts['product_with_parent'] = <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/localhost\/api\/rest\/v1\/products\/product_with_parent"
+        }
+	},
+    "identifier": "product_with_parent",
+    "enabled": true,
+    "family": "familyA",
+    "categories": ["master"],
+    "groups": [],
+    "parent": "prod_mod_optA",
+    "values": {
+        "a_simple_select": [
+                        {
+                            "locale": null,
+                            "scope": null,
+                            "data": "optionA",
+                            "linked_data": {
+                                "attribute": "a_simple_select",
+                                "code": "optionA",
+                                "labels": {
+                                    "en_US": "Option A"
+                                }
+                            }
+                        }
+                    ],
+        "a_price": [{ "locale": null, "scope": null, "data": [{ "amount": "50.00", "currency": "EUR" }] }],
+        "a_yes_no": [{ "locale": null, "scope": null, "data": true }],
+        "a_number_float": [{ "locale": null, "scope": null, "data": "12.5000" }],
+        "a_localized_and_scopable_text_area": [{ "locale": "en_US", "scope": "ecommerce", "data": "my pink tshirt" }]
+    },
+    "created": "2019-06-10T12:37:47+02:00",
+    "updated": "2019-06-10T12:37:47+02:00",
+    "associations": {
+        "PACK": { "products": [], "product_models": [], "groups": [] },
+        "UPSELL": { "products": [], "product_models": [], "groups": [] },
+        "X_SELL": { "products": [], "product_models": [], "groups": [] },
+        "SUBSTITUTION": { "products": [], "product_models": [], "groups": [] }
+    },
+    "quantified_associations": {}
+}
+JSON;
+
+        } else {
+            $standardizedProducts['product_with_parent'] = <<<JSON
 {
     "_links": {
         "self": {
@@ -1003,6 +1080,7 @@ JSON;
     "quantified_associations": {}
 }
 JSON;
+        }
 
         return $standardizedProducts;
     }

@@ -11,27 +11,39 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
  */
 class OptionsValueWithLabels extends AbstractValue
 {
-    /** @var string Option code */
+    /** @var array */
     protected $data;
+
+    /** @var array */
+    protected $linked_data;
 
     /**
      * {@inheritdoc}
      */
     public function __construct(
         string $attributeCode,
-        array $data,
+        ?array $data,
         ?string $scopeCode,
-        ?string $localeCode
+        ?string $localeCode,
+        ?array $linked_data
     ) {
         parent::__construct($attributeCode, $data, $scopeCode, $localeCode);
+        $this->linked_data = $linked_data;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getData(): array
+    public function getData(): ?array
     {
         return $this->data;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getLinkedData(): ?array {
+        return $this->linked_data;
     }
 
     /**

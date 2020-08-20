@@ -45,6 +45,9 @@ final class ListProductsQueryHandler
     /** @var GetConnectorProducts */
     private $getConnectorProductsQuery;
 
+    /** @var GetConnectorProducts */
+    private $getConnectorProductsQuerywithOptionLabel;
+
     /** @var IdentifiableObjectRepositoryInterface */
     private $channelRepository;
 
@@ -58,19 +61,23 @@ final class ListProductsQueryHandler
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         PrimaryKeyEncrypter $primaryKeyEncrypter,
         GetConnectorProducts $getConnectorProductsQuery,
+        GetConnectorProducts $getConnectorProductsQuerywithOptionLabel,
         EventDispatcherInterface $eventDispatcher
-    ) {
+    )
+    {
         $this->channelRepository = $channelRepository;
         $this->applyProductSearchQueryParametersToPQB = $applyProductSearchQueryParametersToPQB;
         $this->fromSizePqbFactory = $fromSizePqbFactory;
         $this->searchAfterPqbFactory = $searchAfterPqbFactory;
         $this->primaryKeyEncrypter = $primaryKeyEncrypter;
         $this->getConnectorProductsQuery = $getConnectorProductsQuery;
+        $this->getConnectorProductsQuerywithOptionLabel = $getConnectorProductsQuerywithOptionLabel;
         $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
-     * @throws InvalidQueryException
+     * @param ListProductsQuery $query
+     * @return ConnectorProductList
      */
     public function handle(ListProductsQuery $query): ConnectorProductList
     {
@@ -96,7 +103,11 @@ final class ListProductsQueryHandler
 
         $pqb->addSorter('id', Directions::ASCENDING);
 
-        $connectorProductList = $this->getConnectorProductsQuery->fromProductQueryBuilder(
+        $connectorProductsQuery = 'true' === $query->withAttributeOptions ?
+            $this->getConnectorProductsQuerywithOptionLabel :
+            $this->getConnectorProductsQuery;
+
+        $connectorProductList = $connectorProductsQuery->fromProductQueryBuilder(
             $pqb,
             $query->userId,
             $query->attributeCodes,
@@ -116,16 +127,16 @@ final class ListProductsQueryHandler
     {
         if (PaginationTypes::OFFSET === $query->paginationType) {
             return $this->fromSizePqbFactory->create([
-                'limit' => (int) $query->limit,
+                'limit' => (int)$query->limit,
                 'from' => ($query->page - 1) * $query->limit
             ]);
         }
-        $pqbOptions = ['limit' => (int) $query->limit];
+        $pqbOptions = ['limit' => (int)$query->limit];
 
         if (null !== $query->searchAfter) {
             $searchParameterDecrypted = $this->primaryKeyEncrypter->decrypt($query->searchAfter);
-            $pqbOptions['search_after_unique_key'] = 'product_'.$searchParameterDecrypted;
-            $pqbOptions['search_after'] = ['product_'.$searchParameterDecrypted];
+            $pqbOptions['search_after_unique_key'] = 'product_' . $searchParameterDecrypted;
+            $pqbOptions['search_after'] = ['product_' . $searchParameterDecrypted];
         }
 
         return $this->searchAfterPqbFactory->create($pqbOptions);

@@ -143,6 +143,9 @@ class ProductController
     /** @var GetConnectorProducts */
     private $getConnectorProducts;
 
+    /** @var GetConnectorProducts */
+    private $getConnectorProductsWithLabels;
+
     /** @var ApiAggregatorForProductPostSaveEventSubscriber */
     private $apiAggregatorForProductPostSave;
 
@@ -184,6 +187,7 @@ class ProductController
         ConnectorProductNormalizer $connectorProductNormalizer,
         TokenStorageInterface $tokenStorage,
         GetConnectorProducts $getConnectorProducts,
+        GetConnectorProducts $getConnectorProductsWithLabels,
         ApiAggregatorForProductPostSaveEventSubscriber $apiAggregatorForProductPostSave,
         WarmupQueryCache $warmupQueryCache,
         EventDispatcherInterface $eventDispatcher,
@@ -215,6 +219,7 @@ class ProductController
         $this->connectorProductNormalizer = $connectorProductNormalizer;
         $this->tokenStorage = $tokenStorage;
         $this->getConnectorProducts = $getConnectorProducts;
+        $this->getConnectorProductsWithLabels = $getConnectorProductsWithLabels;
         $this->apiAggregatorForProductPostSave = $apiAggregatorForProductPostSave;
         $this->warmupQueryCache = $warmupQueryCache;
         $this->eventDispatcher = $eventDispatcher;
@@ -259,6 +264,7 @@ class ProductController
         $query->searchChannelCode = $request->query->get('search_scope', null);
         $query->searchAfter = $request->query->get('search_after', null);
         $query->userId = $user->getId();
+        $query->withAttributeOptions = $request->query->get('with_attribute_options', 'false');
 
         try {
             $this->listProductsQueryValidator->validate($query);
@@ -286,15 +292,21 @@ class ProductController
     }
 
     /**
-     * @throws NotFoundHttpException
+     * @param Request $request
+     * @param string $code
+     * @return JsonResponse
      */
-    public function getAction(string $code): JsonResponse
+    public function getAction(Request $request, string $code): JsonResponse
     {
+        $connectorProductsQuery = 'true' === $request->query->get('with_attribute_options', "false") ?
+            $this->getConnectorProductsWithLabels :
+            $this->getConnectorProducts;
+
         try {
             $user = $this->tokenStorage->getToken()->getUser();
             Assert::isInstanceOf($user, UserInterface::class);
 
-            $product = $this->getConnectorProducts->fromProductIdentifier($code, $user->getId());
+            $product = $connectorProductsQuery->fromProductIdentifier($code, $user->getId());
             $this->eventDispatcher->dispatch(new ReadProductsEvent([$product->id()]));
         } catch (ObjectNotFoundException $e) {
             throw new NotFoundHttpException(sprintf('Product "%s" does not exist.', $code));

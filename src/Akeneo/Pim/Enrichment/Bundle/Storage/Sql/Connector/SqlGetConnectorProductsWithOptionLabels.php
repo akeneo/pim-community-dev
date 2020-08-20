@@ -65,7 +65,8 @@ class SqlGetConnectorProductsWithOptionLabels implements Query\GetConnectorProdu
         }, $connectorProducts);
     }
 
-    /***
+    /**
+     * @param array $connectorProducts
      * @return array [['attribute_code', 'option_code']]
      */
     private function getOptionCodes(array $connectorProducts): array
@@ -133,7 +134,6 @@ class SqlGetConnectorProductsWithOptionLabels implements Query\GetConnectorProdu
             SELECT * FROM aggregated_attributes
             ;
         SQL;
-
 
         $row = $this->connection->executeQuery(
             sprintf($query, implode(',', $queryStringParams)),

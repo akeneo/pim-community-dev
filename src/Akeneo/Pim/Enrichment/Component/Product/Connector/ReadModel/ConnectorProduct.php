@@ -192,21 +192,32 @@ final class ConnectorProduct
             if ($value instanceof OptionValue) {
                 return new OptionValueWithLabels(
                     $value->getAttributeCode(),
-                    [$value->getData() => $optionLabels[$value->getAttributeCode()][$value->getData()] ?? []],
+                    $value->getData(),
                     $value->getScopeCode(),
-                    $value->getLocaleCode()
+                    $value->getLocaleCode(),
+                    [
+                        "attribute" => $value->getAttributeCode(),
+                        "code"=> $value->getData(),
+                        "labels" => $optionLabels[$value->getAttributeCode()][$value->getData()] ?? []
+                    ],
                 );
+
             } elseif ($value instanceof OptionsValue) {
-                $data = [];
+                $linked_data = [];
                 foreach ($value->getData() as $optionCode) {
-                    $data[$optionCode] = $optionLabels[$value->getAttributeCode()][$optionCode] ?? [];
+                    $linked_data[$optionCode] = [
+                        "attribute" => $value->getAttributeCode(),
+                        "code"=> $optionCode,
+                        "labels" => $optionLabels[$value->getAttributeCode()][$optionCode] ?? [],
+                    ];
                 }
 
                 return new OptionsValueWithLabels(
                     $value->getAttributeCode(),
-                    $data,
+                    $value->getData(),
                     $value->getScopeCode(),
-                    $value->getLocaleCode()
+                    $value->getLocaleCode(),
+                    $linked_data
                 );
             } else {
                 return $value;

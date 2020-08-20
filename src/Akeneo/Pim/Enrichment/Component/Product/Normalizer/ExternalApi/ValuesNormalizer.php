@@ -35,22 +35,19 @@ final class ValuesNormalizer
     {
         $normalizedValues = [];
         foreach ($values as $value) {
-            // TODO: probably a dedicated API normalizer registry for asset override in EE
-            // be careful: this is not standard format, do not add normalizer in it
             if ($value instanceof OptionValueWithLabels || $value instanceof OptionsValueWithLabels) {
                 $normalizedValue = [
                     'locale' => $value->getLocaleCode(),
                     'scope' => $value->getScopeCode(),
-                    'data' => $value->getData()
+                    'data' => $value->getData(),
+                    'linked_data' => $value->getLinkedData(),
                 ];
-                $toto =1;
             } else {
                 $normalizedValue = $this->valueNormalizer->normalize($value, 'standard');
                 if ($value instanceof MediaValue) {
                     $normalizedValue = $this->addHalLink($value, $normalizedValue);
                 }
             }
-
 
             $normalizedValues[$value->getAttributeCode()][] = $normalizedValue;
         }

@@ -9,27 +9,39 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OptionValueWithLabels extends AbstractValue
+class OptionValueWithLabels extends AbstractValue implements OptionValueInterface
 {
     /** @var string Option code */
     protected $data;
+
+    /** @var array */
+    protected $linked_data;
 
     /**
      * {@inheritdoc}
      */
     public function __construct(
         string $attributeCode,
-        array $data,
+        ?string $data,
         ?string $scopeCode,
-        ?string $localeCode
+        ?string $localeCode,
+        ?array $linked_data
     ) {
         parent::__construct($attributeCode, $data, $scopeCode, $localeCode);
+        $this->linked_data = $linked_data;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getLinkedData(): ?array {
+        return $this->linked_data;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getData(): array
+    public function getData(): ?string
     {
         return $this->data;
     }
