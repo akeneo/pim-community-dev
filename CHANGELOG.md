@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-9408: Fix attribute group's updated_at field udpate
 - TIP-1513: Environment variables declared in the env were not loaded when using a compiled .env file
 - PIM-9274: Fix Yaml reader to display the number of lines read for incorrectly formatted files
 - TIP-1406: Add a tag to configure a DIC service based on a feature flag
@@ -25,6 +26,7 @@
 - PIM-9360: Fix PHP Warning raised in PriceComparator
 - PIM-9370: Fixes page freezing with a big number of attribute options
 - PIM-9391: Filter empty prices and measurement values
+- PIM-9407: Fix glitch in family variant selector if the family variant has no label
 
 ## New features
 

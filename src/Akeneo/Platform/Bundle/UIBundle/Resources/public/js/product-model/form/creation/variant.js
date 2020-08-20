@@ -89,7 +89,7 @@ define([
     getFamilyVariantLabelFromCode(code) {
       return FetcherRegistry.getFetcher('family-variant')
         .fetch(code)
-        .then(familyVariant => familyVariant.labels[UserContext.get('catalogLocale')]);
+        .then(familyVariant => familyVariant.labels[UserContext.get('catalogLocale')] || `[${familyVariant.code}]`);
     },
 
     /**
