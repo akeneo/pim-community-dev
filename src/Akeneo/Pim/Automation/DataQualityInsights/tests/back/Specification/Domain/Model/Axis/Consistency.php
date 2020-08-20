@@ -41,5 +41,4 @@ final class Consistency implements Axis
     {
         // TODO: Implement getCriterionCoefficient() method.
     }
-
 }
