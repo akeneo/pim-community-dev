@@ -43,7 +43,7 @@ final class PurgeOutdatedDataCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('pimee:data-quality-insights:purge-outdated-data')
+            ->setName('pim:data-quality-insights:purge-outdated-data')
             ->setDescription('Purge the outdated data persisted for Data-Quality-Insights.')
             ->addArgument('type', InputArgument::OPTIONAL, sprintf('Type of data to purge (%s, %s)',
                 self::PURGE_PRODUCT_AXIS_RATES,

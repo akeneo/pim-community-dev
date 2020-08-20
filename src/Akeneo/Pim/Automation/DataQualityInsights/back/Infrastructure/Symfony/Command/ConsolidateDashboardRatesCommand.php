@@ -35,7 +35,7 @@ final class ConsolidateDashboardRatesCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('pimee:data-quality-insights:consolidate-dashboard-rates')
+            ->setName('pim:data-quality-insights:consolidate-dashboard-rates')
             ->setDescription('Consolidate the Data-Quality-Insights dashboard rates.')
             ->addArgument('day', InputArgument::OPTIONAL, 'Day of the consolidation "Y-m-d".', date('Y-m-d'));
     }
