@@ -14,6 +14,12 @@ class Version_5_0_20200812135750_DQI_tables_in_CE_Integration extends TestCase
 
     public function test_it_creates_the_audit_error_table(): void
     {
+        $this->get('database_connection')->executeQuery('DROP TABLE pim_data_quality_insights_dashboard_rates_projection');
+        $this->get('database_connection')->executeQuery('DROP TABLE pim_data_quality_insights_product_axis_rates');
+        $this->get('database_connection')->executeQuery('DROP TABLE pim_data_quality_insights_product_criteria_evaluation');
+        $this->get('database_connection')->executeQuery('DROP TABLE pim_data_quality_insights_product_model_axis_rates');
+        $this->get('database_connection')->executeQuery('DROP TABLE pim_data_quality_insights_product_model_criteria_evaluation');
+
         $this->reExecuteMigration(self::MIGRATION_LABEL);
 
         $shemaManager = $this->get('database_connection')->getSchemaManager();
