@@ -108,7 +108,8 @@ class RemoveNonExistingProductValuesTaskletSpec extends ObjectBehavior
             false,
             false,
             null,
-            true,
+            null,
+            null,
             'option',
             []
         );
