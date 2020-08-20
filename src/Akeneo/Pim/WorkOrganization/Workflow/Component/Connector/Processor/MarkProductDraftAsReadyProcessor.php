@@ -39,6 +39,8 @@ class MarkProductDraftAsReadyProcessor implements ItemProcessorInterface
      */
     public function process($productDraft)
     {
+        $this->eventDispatcher->dispatch(new GenericEvent($productDraft), EntityWithValuesDraftEvents::PRE_READY);
+
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW);
         $productDraft->markAsReady();
 
