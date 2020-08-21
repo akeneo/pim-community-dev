@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9416: Add translation keys for mass delete action and corresponding message on the job page
+
 # 4.0.50 (2020-08-20)
 
 ## Bug fixes
