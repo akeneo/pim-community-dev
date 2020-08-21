@@ -893,6 +893,7 @@ config:
     pim/form/common/creation/field:                      pimui/js/form/common/creation/field
     pim/form/common/creation/modal:                      pimui/js/form/common/creation/modal
     pim/form/common/creation/modal/client:               pimui/js/form/common/creation/modal/client
+    pim/form/common/creation/modal/create-user:          pimui/js/form/common/creation/modal/create-user
     pim/form/common/creation/type:                       pimui/js/form/common/creation/type
     pim/form/common/creation/job:                        pimui/js/form/common/creation/job
     pim/form/common/product/create-button:               pimui/js/form/common/product/create-button
