@@ -9,10 +9,10 @@ define(
     ) {
         return BaseModal.extend({
             events: {
-                'keyup input': 'checkReadyToSubmit'
+                'keyup input': 'updateButtonState'
             },
 
-            checkReadyToSubmit() {
+            updateButtonState() {
                 this.$el.parent().find('.AknButton.ok').toggleClass('AknButton--disabled', !this.isReadyToSubmit());
             },
 
@@ -31,9 +31,10 @@ define(
              * {@inheritdoc}
              */
             render() {
-                this.checkReadyToSubmit();
+                BaseModal.prototype.render.apply(this, arguments);
+                this.updateButtonState();
 
-                return BaseModal.prototype.render.apply(this, arguments);
+                return this;
             },
 
             /**
