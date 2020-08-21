@@ -112,6 +112,7 @@ const CalculateOperationList: React.FC<Props> = ({
                 operationLineNumber={operationLineNumber}
                 removeOperation={removeOperation}
                 version={version}
+                isValue={sourceOrOperation.hasOwnProperty('value') && typeof sourceOrOperation.value !== 'undefined'}
               />
             );
           })}

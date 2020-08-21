@@ -14,7 +14,6 @@ import { Translate } from '../../../../../dependenciesTools';
 import { AttributePropertiesSelector } from './AttributePropertiesSelector';
 import { InputNumber } from '../../../../../components/Inputs';
 import {
-  ConstantOperand,
   FieldOperand,
   Operand,
 } from '../../../../../models/actions/Calculate/Operand';
@@ -27,7 +26,11 @@ const DeleteButton = styled.button`
   cursor: pointer;
 `;
 
-const getConstantValidation = (operator: Operator, translate: Translate) => {
+const getConstantValidation = (isValue: boolean, operator: Operator, translate: Translate) => {
+  if (!isValue) {
+    return {};
+  }
+
   return {
     required: translate(
       'pimee_catalog_rule.exceptions.required_constant_for_operation'
@@ -50,6 +53,7 @@ type OperationLineProps = {
   operationLineNumber: number;
   removeOperation: (operationLineNumber: number) => () => void;
   version: number;
+  isValue: boolean;
 };
 
 const OperationLine: React.FC<OperationLineProps> = ({
@@ -61,13 +65,13 @@ const OperationLine: React.FC<OperationLineProps> = ({
   operationLineNumber,
   removeOperation,
   version,
+  isValue,
 }) => {
   const translate = useTranslate();
   const { setValue, watch, errors } = useFormContext();
   const { formName, getFormValue } = useControlledFormInputAction<
     string | null
   >(lineNumber);
-  const constantOperand = sourceOrOperation as ConstantOperand;
   const fieldOperand = sourceOrOperation as FieldOperand;
 
   React.useEffect(() => {
@@ -76,6 +80,7 @@ const OperationLine: React.FC<OperationLineProps> = ({
     // default value comes back visually (even if the good value is well store in the react hook form state)
     // To fix the display we set again the values. The react hook form state is unchanged but the display is now good.
     // Maybe react hook form v6 handles better this use case.
+    return;
     ['operator', 'locale', 'scope', 'currency'].forEach((key: string) => {
       setValue(
         formName(`${baseFormName}.${key}`),
@@ -123,27 +128,29 @@ const OperationLine: React.FC<OperationLineProps> = ({
               />
             </span>
           )}
-          {constantOperand.value !== null &&
-            typeof constantOperand.value !== 'undefined' && (
-              <span className={'AknRuleOperation-element'}>
-                <Controller
-                  as={InputNumber}
-                  name={formName(`${baseFormName}.value`)}
-                  className={`AknTextField AknNumberField AknRuleOperation-inputValue${
-                    isValueInError ? ' AknTextField--error' : ''
-                  }`}
-                  data-testid={`edit-rules-action-operation-list-${operationLineNumber}-number`}
-                  hiddenLabel={true}
-                  defaultValue={constantOperand.value}
-                  step={'any'}
-                  rules={getConstantValidation(
-                    watch(formName(`${baseFormName}.operator`)),
-                    translate
-                  )}
-                />
-              </span>
+          <Controller
+            name={formName(`${baseFormName}.value`)}
+            as={<input type="hidden"/>}
+            rules={getConstantValidation(
+              isValue,
+              watch(formName(`${baseFormName}.operator`)),
+              translate
             )}
-          {fieldOperand.field && (
+          />
+          {isValue ? (
+            <span className={'AknRuleOperation-element'}>
+              <InputNumber
+                className={`AknTextField AknNumberField AknRuleOperation-inputValue${
+                  isValueInError ? ' AknTextField--error' : ''
+                }`}
+                data-testid={`edit-rules-action-operation-list-${operationLineNumber}-number`}
+                hiddenLabel={true}
+                defaultValue={watch(formName(`${baseFormName}.value`))}
+                step={'any'}
+                onChange={(e) => { setValue(formName(`${baseFormName}.value`), e.target.value ? Number(e.target.value) : '') }}
+              />
+            </span>
+          ) : (
             <>
               <AttributePropertiesSelector
                 operationLineNumber={operationLineNumber}
