@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- DAPI-1231: Fix possible ES conflicts when updating product rates
+
 # 4.0.52 (2020-08-24)
 
 # 4.0.51 (2020-08-21)
