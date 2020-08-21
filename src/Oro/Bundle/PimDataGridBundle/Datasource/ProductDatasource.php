@@ -68,6 +68,7 @@ class ProductDatasource extends Datasource
             'locales'             => [$this->getConfiguration('locale_code')],
             'channels'            => [$this->getConfiguration('scope_code')],
             'data_locale'         => $this->getParameters()['dataLocale'],
+            'data_channel'         => $this->getParameters()['scopeCode'],
             'association_type_id' => $this->getConfiguration('association_type_id', false),
             'current_group_id'    => $this->getConfiguration('current_group_id', false),
         ];

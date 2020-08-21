@@ -5,7 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Factory;
 
 /**
  * This service removes all empty values from raw values stored in the database.
- * Do note that we don't store null values or empty arrays in the database. However, the consistency of the data in not guaranteed
+ * Do note that we don't store null values or empty arrays in the database. However, the consistency of the data is not guaranteed
  * in the JSON of the raw values.
  *
  * Therefore, when filtering on non existing data, we can have values with empty arrays or empty data.
