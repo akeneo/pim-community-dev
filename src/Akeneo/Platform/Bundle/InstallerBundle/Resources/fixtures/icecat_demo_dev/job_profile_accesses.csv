@@ -93,5 +93,6 @@ project_calculation;All;IT support,Manager
 refresh_project_completeness_calculation;All;IT support,Manager
 compute_completeness_of_products_family;All;IT support,Manager
 compute_family_variant_structure_changes;All;IT support,Manager
+remove_non_existing_product_values;All;IT support,Manager
 change_parent_product;All;
 asset_manager_compute_transformations;All

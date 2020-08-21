@@ -253,6 +253,7 @@ class PublishedProductManager
 
             $this->dispatchEvent(PublishedProductEvents::PRE_UNPUBLISH, $product, $publishedProductWithoutPermission);
             $this->unpublisher->unpublish($publishedProductWithoutPermission);
+            $this->dispatchEvent(PublishedProductEvents::POST_UNPUBLISH, $product, $publishedProductWithoutPermission);
 
             $publishedProductsWithoutPermission[] = $publishedProductWithoutPermission;
         }

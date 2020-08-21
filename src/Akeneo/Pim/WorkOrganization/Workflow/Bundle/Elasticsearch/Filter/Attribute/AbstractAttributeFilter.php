@@ -22,6 +22,9 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
  */
 abstract class AbstractAttributeFilter implements AttributeFilterInterface
 {
+    protected const ATTRIBUTES_FOR_THIS_LEVEL_ES_ID = 'attributes_for_this_level';
+    protected const ATTRIBUTES_OF_ANCESTORS_ES_ID = 'attributes_of_ancestors';
+
     /** @var SearchQueryBuilder */
     protected $searchQueryBuilder = null;
 

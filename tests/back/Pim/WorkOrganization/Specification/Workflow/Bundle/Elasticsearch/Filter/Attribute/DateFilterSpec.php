@@ -264,7 +264,17 @@ class DateFilterSpec extends ObjectBehavior
                 ]
             ]
         )->shouldBeCalled();
-        $sqb->addFilter(['exists' => ['field' => 'family.code']])->shouldBeCalled();
+        $sqb->addFilter(
+            [
+                'bool' => [
+                    'should' => [
+                        ['terms' => ['attributes_for_this_level' => ['publishedOn']]],
+                        ['terms' => ['attributes_of_ancestors' => ['publishedOn']]],
+                    ],
+                    'minimum_should_match' => 1,
+                ],
+            ]
+        )->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter(
