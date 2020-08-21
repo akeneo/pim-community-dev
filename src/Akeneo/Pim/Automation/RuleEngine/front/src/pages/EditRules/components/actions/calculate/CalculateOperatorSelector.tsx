@@ -1,12 +1,10 @@
 import React from 'react';
 import { Operator } from '../../../../../models/actions/Calculate/Operation';
 import {
-  Select2SimpleSyncWrapper,
-  Select2Value,
+  Select2Value, Select2Wrapper,
 } from '../../../../../components/Select2Wrapper';
 import { Translate } from '../../../../../dependenciesTools';
 import { useTranslate } from '../../../../../dependenciesTools/hooks';
-import { CurrencyCode } from '../../../../../models/Currency';
 
 const buildData = (translate: Translate) =>
   Object.values(Operator).map((operator: string) => {
@@ -19,15 +17,13 @@ const buildData = (translate: Translate) =>
   });
 
 type Props = {
-  name: string;
   value: Operator;
-  onChange?: (value: CurrencyCode) => void;
+  onChange?: (value: Operator) => void;
   label?: string;
   hiddenLabel?: boolean;
 };
 
 const CalculateOperatorSelector: React.FC<Props> = ({
-  name,
   value,
   onChange,
   label,
@@ -43,12 +39,11 @@ const CalculateOperatorSelector: React.FC<Props> = ({
   };
 
   return (
-    <Select2SimpleSyncWrapper
+    <Select2Wrapper
       {...remainingProps}
       label={label || translate('pimee_catalog_rule.form.edit.fields.operator')}
       hiddenLabel={hiddenLabel || false}
       hideSearch
-      name={name}
       data={buildData(translate)}
       value={value}
       onChange={handleChange}
@@ -56,6 +51,7 @@ const CalculateOperatorSelector: React.FC<Props> = ({
       placeholder={translate(
         `pimee_catalog_rule.form.edit.actions.calculate.operator.choose`
       )}
+      multiple={false}
     />
   );
 };

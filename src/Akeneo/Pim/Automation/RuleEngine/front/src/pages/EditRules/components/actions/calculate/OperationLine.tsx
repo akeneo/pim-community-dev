@@ -109,22 +109,25 @@ const OperationLine: React.FC<OperationLineProps> = ({
             className={`AknRuleOperation-moveIcon`}
             role={'operation-item-move-handle'}
           />
+          <Controller
+            as={<input type="hidden"/>}
+            name={formName(`${baseFormName}.operator`)}
+            rules={operationLineNumber > 0 ? {
+              required: translate(
+                'pimee_catalog_rule.exceptions.required_operator_for_operation'
+              ),
+            }: {}}
+          />
           {operationLineNumber > 0 && (
             <span
               className={`AknRuleOperation-element AknRuleOperation-elementOperator${
                 isOperatorInError ? ' select2-container-error' : ''
               }`}>
-              <Controller
-                as={CalculateOperatorSelector}
-                name={formName(`${baseFormName}.operator`)}
-                defaultValue={(sourceOrOperation as Operation).operator || null}
-                value={(sourceOrOperation as Operation).operator || null}
+              <CalculateOperatorSelector
+                value={watch(formName(`${baseFormName}.operator`))}
                 hiddenLabel
-                rules={{
-                  required: translate(
-                    'pimee_catalog_rule.exceptions.required_operator_for_operation'
-                  ),
-                }}
+                onChange={(operator) => { setValue(formName(`${baseFormName}.operator`), operator)}}
+                label={translate('pim_common.operator')}
               />
             </span>
           )}
