@@ -31,6 +31,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         PrimaryKeyEncrypter $primaryKeyEncrypter,
         GetConnectorProducts $getConnectorProducts,
+        GetConnectorProducts $getConnectorProductswithOptionLabel,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->beConstructedWith(
@@ -40,6 +41,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             $searchAfterPqbFactory,
             $primaryKeyEncrypter,
             $getConnectorProducts,
+            $getConnectorProductswithOptionLabel,
             $eventDispatcher
         );
     }
