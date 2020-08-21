@@ -9,7 +9,7 @@ import Evaluation, {
   CriterionEvaluationResult
 } from "../../../../../domain/Evaluation.interface";
 import {useFetchProductFamilyInformation, useProduct} from "../../../../../infrastructure/hooks";
-import {isSimpleProduct} from "../../../../helper/ProductEditForm/Product";
+import {isProductModel, isSimpleProduct} from "../../../../helper/ProductEditForm/Product";
 import {ATTRIBUTE_OPTION_SPELLING_CRITERION_CODE, ATTRIBUTE_SPELLING_CRITERION_CODE, BACK_LINK_SESSION_STORAGE_KEY} from "../../../../constant";
 import {
   redirectToAttributeGridFilteredByFamilyAndQuality,
@@ -72,7 +72,7 @@ const Criterion: FunctionComponent<CriterionProps> = ({criterionEvaluation, axis
       if (family) {
           window.sessionStorage.setItem(BACK_LINK_SESSION_STORAGE_KEY, JSON.stringify({
             label: __('akeneo_data_quality_insights.product_edit_form.back_to_products'),
-            route: 'pim_enrich_product_edit',
+            route: isProductModel(product) ? 'pim_enrich_product_model_edit' : 'pim_enrich_product_edit',
             routeParams: {id: product.meta.id},
             displayLinkRoutes: [
               'pim_enrich_attribute_index',
