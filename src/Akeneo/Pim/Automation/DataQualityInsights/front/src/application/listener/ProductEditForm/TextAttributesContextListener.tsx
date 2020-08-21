@@ -2,7 +2,8 @@ import React, {useLayoutEffect} from "react";
 import {useDispatch} from "react-redux";
 import {useFetchProductFamilyInformation, usePageContext, useProduct} from "../../../infrastructure/hooks";
 import {createWidget, EditorElement, WidgetsCollection} from "../../helper";
-import {Attribute, Family, Product} from "../../../domain";
+import {Product} from "../../../domain";
+import {Attribute, Family} from '@akeneo-pim-community/data-quality-insights/src/domain';
 import {initializeWidgetsListAction} from "../../../infrastructure/reducer";
 import useFetchActiveLocales from '../../../infrastructure/hooks/EditorHighlight/useFetchActiveLocales';
 

@@ -21,6 +21,7 @@ final class Version_5_0_20200226102033_data_quality_insights_init_variant_produc
     public function up(Schema $schema) : void
     {
         $this->disableMigrationWarning();
+        return;
 
         $createProductsCriteriaEvaluations = $this->container->get('akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations');
         foreach ($this->getVariantProductIdToEvaluateByBatch() as $productIds) {

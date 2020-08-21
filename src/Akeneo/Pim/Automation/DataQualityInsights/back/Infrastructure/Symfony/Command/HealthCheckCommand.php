@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionaryLocalFilesystemInterface;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\ResultStatement;
 use League\Flysystem\MountManager;
@@ -248,7 +248,7 @@ SQL;
         $io->comment('Number of products with criteria evaluated');
         $stmt = $this->db->executeQuery(<<<SQL
 SELECT COUNT(DISTINCT product_id)
-FROM pimee_data_quality_insights_product_criteria_evaluation
+FROM pim_data_quality_insights_product_criteria_evaluation
 SQL
         );
         $this->outputAsTable($io, $stmt->fetchAll());
@@ -256,7 +256,7 @@ SQL
         $io->comment('Number of product models with criteria evaluated');
         $stmt = $this->db->executeQuery(<<<SQL
 SELECT COUNT(DISTINCT product_id)
-FROM pimee_data_quality_insights_product_model_criteria_evaluation
+FROM pim_data_quality_insights_product_model_criteria_evaluation
 SQL
         );
         $this->outputAsTable($io, $stmt->fetchAll());
@@ -264,7 +264,7 @@ SQL
         $io->comment('Status of product criteria evaluations - total');
         $stmt = $this->db->executeQuery(<<<SQL
 SELECT status, COUNT(status), MAX(evaluated_at)
-FROM pimee_data_quality_insights_product_criteria_evaluation
+FROM pim_data_quality_insights_product_criteria_evaluation
 GROUP BY status
 ORDER BY status
 SQL
@@ -274,7 +274,7 @@ SQL
         $io->comment('Status of product model criteria evaluations - total');
         $stmt = $this->db->executeQuery(<<<SQL
 SELECT status, COUNT(status), MAX(evaluated_at)
-FROM pimee_data_quality_insights_product_model_criteria_evaluation
+FROM pim_data_quality_insights_product_model_criteria_evaluation
 GROUP BY status
 ORDER BY status
 SQL
@@ -284,7 +284,7 @@ SQL
         $io->comment('Product criteria on error with last error date');
         $stmt = $this->db->executeQuery(<<<SQL
 SELECT status, criterion_code, COUNT(status), MAX(evaluated_at)
-FROM pimee_data_quality_insights_product_criteria_evaluation
+FROM pim_data_quality_insights_product_criteria_evaluation
 WHERE status='error'
 GROUP BY status, criterion_code
 ORDER BY status
@@ -295,7 +295,7 @@ SQL
         $io->comment('Product models criteria on error with last error date');
         $stmt = $this->db->executeQuery(<<<SQL
 SELECT status, criterion_code, COUNT(status), MAX(evaluated_at)
-FROM pimee_data_quality_insights_product_model_criteria_evaluation
+FROM pim_data_quality_insights_product_model_criteria_evaluation
 WHERE status='error'
 GROUP BY status, criterion_code
 ORDER BY status
@@ -371,7 +371,7 @@ SQL
         foreach ($productIds as $productId) {
             $query = <<<SQL
 SELECT product_id, criterion_code, status, evaluated_at, result
-FROM pimee_data_quality_insights_product_criteria_evaluation
+FROM pim_data_quality_insights_product_criteria_evaluation
 WHERE product_id = :product_id;
 SQL;
             $stmt = $this->db->executeQuery(
@@ -403,7 +403,7 @@ SQL;
         $query = <<<SQL
 SELECT
     product_id, axis_code, evaluated_at, rates
-FROM pimee_data_quality_insights_product_axis_rates
+FROM pim_data_quality_insights_product_axis_rates
 WHERE product_id IN (:product_ids)
 ORDER BY product_id, axis_code
 SQL;
@@ -426,7 +426,7 @@ SQL;
         $query = <<<SQL
 SELECT
     product_id, axis_code, evaluated_at, rates
-FROM pimee_data_quality_insights_product_model_axis_rates
+FROM pim_data_quality_insights_product_model_axis_rates
 WHERE product_id IN (:product_ids)
 ORDER BY product_id, axis_code
 SQL;
@@ -448,7 +448,7 @@ SQL;
         foreach ($productIds as $productId) {
             $query = <<<SQL
 SELECT product_id, criterion_code, status, evaluated_at, result
-FROM pimee_data_quality_insights_product_model_criteria_evaluation
+FROM pim_data_quality_insights_product_model_criteria_evaluation
 WHERE product_id = :product_id;
 SQL;
             $stmt = $this->db->executeQuery($query, ['product_id' => $productId], ['product_id' => \PDO::PARAM_INT]);
@@ -552,7 +552,7 @@ SQL;
 
         $stmt = $this->db->executeQuery(<<<SQL
 SELECT COUNT(DISTINCT product_id) as number_of_product_to_evaluate
-FROM pimee_data_quality_insights_product_criteria_evaluation
+FROM pim_data_quality_insights_product_criteria_evaluation
 WHERE status = 'pending'
 SQL
         );
@@ -588,7 +588,7 @@ SQL
 
         $io->comment('Attributes quality');
         $stmt = $this->db->executeQuery(<<<SQL
-SELECT quality, COUNT(*) AS number_of_attributes 
+SELECT quality, COUNT(*) AS number_of_attributes
 FROM pimee_dqi_attribute_quality GROUP BY quality;
 SQL
         );

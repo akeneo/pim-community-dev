@@ -41,7 +41,7 @@ class GetAttributeQueryIntegration extends TestCase
         );
 
         $this->assertEquals(
-            new Attribute(new AttributeCode('attribute_without_family'), new AttributeType(AttributeTypes::TEXT), true, false),
+            new Attribute(new AttributeCode('attribute_without_family'), new AttributeType(AttributeTypes::TEXT), true),
             $this->get(GetAttributeQuery::class)->byAttributeCode(new AttributeCode('attribute_without_family'))
         );
 

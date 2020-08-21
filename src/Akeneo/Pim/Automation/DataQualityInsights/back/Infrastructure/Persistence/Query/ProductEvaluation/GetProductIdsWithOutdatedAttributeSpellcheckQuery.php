@@ -38,7 +38,7 @@ FROM pimee_dqi_attribute_spellcheck AS spellcheck
     INNER JOIN pim_catalog_attribute AS attribute ON attribute.code = spellcheck.attribute_code
     INNER JOIN pim_catalog_family_attribute AS family_attribute ON family_attribute.attribute_id = attribute.id
     INNER JOIN pim_catalog_product AS product ON product.family_id = family_attribute.family_id
-    LEFT JOIN pimee_data_quality_insights_product_criteria_evaluation AS product_evaluation
+    LEFT JOIN pim_data_quality_insights_product_criteria_evaluation AS product_evaluation
         ON product_evaluation.product_id = product.id AND product_evaluation.criterion_code = :criterionCode
 WHERE spellcheck.evaluated_at >= :updatedSince
     AND (product_evaluation.evaluated_at IS NULL OR spellcheck.evaluated_at > product_evaluation.evaluated_at)

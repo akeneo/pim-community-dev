@@ -173,11 +173,11 @@ pim:
       schedule: "5 22 * * *"
     data-quality-insights-periodic-tasks:
       enabled: true
-      pimCommand: "pimee:data-quality-insights:schedule-periodic-tasks"
+      pimCommand: "pim:data-quality-insights:schedule-periodic-tasks"
       schedule: "15 0 * * *"
     data-quality-insights-evaluations:
       enabled: true
-      pimCommand: "pimee:data-quality-insights:evaluations"
+      pimCommand: "pim:data-quality-insights:evaluations"
       schedule: "*/30 * * * *"
     franklin-insights-quality-highlights-push:
       enabled: true

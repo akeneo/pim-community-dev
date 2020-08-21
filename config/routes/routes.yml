@@ -24,7 +24,7 @@ pim_franklin_insights:
     resource: "@AkeneoFranklinInsightsBundle/Resources/config/routing.yml"
 
 pim_data_quality_insights:
-    resource: "@AkeneoDataQualityInsightsBundle/Resources/config/routing.yml"
+    resource: "@AkeneoPimEnterpriseDataQualityInsightsBundle/Resources/config/routing.yml"
 
 pimee_enrichment:
     resource: "@AkeneoPimEnterpriseProductEnrichmentBundle/Resources/config/routing.yml"

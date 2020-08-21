@@ -5,7 +5,7 @@ import {
   fetchProductModelEvaluation,
   CriterionEvaluationResult,
   ProductEvaluation
-} from 'akeneodataqualityinsights-react';
+} from '@akeneo-pim-community/data-quality-insights/src/index';
 
 import {get as _get, has as _has, pick as _pick, uniq as _uniq} from 'lodash';
 

@@ -1,8 +1,7 @@
 import {useSelector} from 'react-redux';
 
-import PageContextHook from "../PageContextHook";
-import {AttributeEditFormPageContextState} from "../../../application/state/PageContextState";
-import AttributeEditFormState from "../../../application/state/AttributeEditFormState";
+import AttributeEditFormState, {AttributeEditFormPageContextState} from "../../../application/state/AttributeEditFormState";
+import PageContextHook from "@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks/PageContextHook";
 
 const usePageContext: PageContextHook<AttributeEditFormPageContextState> = () => {
   return useSelector((state: AttributeEditFormState) => state.pageContext);

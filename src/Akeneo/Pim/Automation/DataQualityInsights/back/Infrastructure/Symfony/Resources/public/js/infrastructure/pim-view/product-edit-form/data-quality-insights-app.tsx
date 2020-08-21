@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {ProductEditFormApp, ProductModelEditFormApp} from 'akeneodataqualityinsights-react';
+
 import {
   CATALOG_CONTEXT_CHANNEL_CHANGED,
   CATALOG_CONTEXT_LOCALE_CHANGED,
@@ -8,17 +10,13 @@ import {
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVED,
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVING,
   DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE,
-  DataQualityInsightsFeature,
-  getDataQualityInsightsFeature,
   PRODUCT_ATTRIBUTES_TAB_LOADED,
   PRODUCT_ATTRIBUTES_TAB_LOADING,
-  PRODUCT_TAB_CHANGED,
-  ProductEditFormApp,
-  ProductModelEditFormApp,
   PRODUCT_ATTRIBUTES_TAB_NAME,
   PRODUCT_MODEL_ATTRIBUTES_TAB_NAME,
   PRODUCT_MODEL_LEVEL_CHANGED,
-} from 'akeneodataqualityinsights-react';
+  PRODUCT_TAB_CHANGED,
+} from '@akeneo-pim-community/data-quality-insights/src';
 
 const UserContext = require('pim/user-context');
 const BaseView = require('pimui/js/view/base');
@@ -51,15 +49,6 @@ interface LevelNavigationEvent {
 }
 
 class DataQualityInsightsApp extends BaseView {
-  private isDataQualityInsightsEnabled = false;
-
-  public initialize(): void {
-    super.initialize();
-
-    getDataQualityInsightsFeature().then((dataQualityInsightsFeature: DataQualityInsightsFeature) => {
-      this.isDataQualityInsightsEnabled = dataQualityInsightsFeature.isActive ;
-    });
-  }
 
   public configure() {
     this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', (event: LocaleEvent) => {
@@ -145,10 +134,6 @@ class DataQualityInsightsApp extends BaseView {
   }
 
   public render() {
-    if (!this.isDataQualityInsightsEnabled) {
-      return this;
-    }
-
     const catalogLocale: string = UserContext.get('catalogLocale');
     const catalogChannel: string = UserContext.get('catalogScope');
     const productData = this.getFormData();

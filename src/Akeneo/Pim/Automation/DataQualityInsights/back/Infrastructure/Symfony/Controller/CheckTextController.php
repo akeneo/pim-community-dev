@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\TextChecker;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\TextCheckFailedException;
@@ -28,8 +27,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CheckTextController
 {
-    private $featureFlag;
-
     private $textChecker;
 
     private $supportedLocaleValidator;
@@ -38,12 +35,10 @@ class CheckTextController
     private $logger;
 
     public function __construct(
-        FeatureFlag $featureFlag,
         TextChecker $textChecker,
         SupportedLocaleValidator $supportedLocaleValidator,
         LoggerInterface $logger
     ) {
-        $this->featureFlag = $featureFlag;
         $this->textChecker = $textChecker;
         $this->supportedLocaleValidator = $supportedLocaleValidator;
         $this->logger = $logger;
@@ -51,10 +46,6 @@ class CheckTextController
 
     public function __invoke(Request $request)
     {
-        if (!$this->featureFlag->isEnabled()) {
-            return new JsonResponse(null, Response::HTTP_NOT_FOUND);
-        }
-
         $text = $request->request->get('text');
         $localeCode = new LocaleCode($request->request->get('locale'));
 
