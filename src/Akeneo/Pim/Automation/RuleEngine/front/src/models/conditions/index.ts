@@ -21,3 +21,4 @@ export * from './DateAttributeCondition';
 export * from './BooleanAttributeCondition';
 export * from './SimpleMultiReferenceEntitiesAttributeCondition';
 export * from './PriceCollectionAttributeCondition';
+export * from './IdentifierAttributeCondition';

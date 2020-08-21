@@ -21,6 +21,7 @@ import { getAssetCollectionAttributeConditionModule } from './AssetCollectionAtt
 import { getPictureAttributeConditionModule } from './PictureAttributeCondition';
 import { getFileAttributeConditionModule } from './FileAttributeCondition';
 import { getPriceCollectionAttributeConditionModule } from './PriceCollectionAttributeCondition';
+import { getIdentifierAttributeCondtionModule } from './IdentifierAttributeCondition';
 
 export type ConditionModuleGuesser = (
   json: any,
@@ -38,6 +39,7 @@ const getConditionModule: (
     getFamilyConditionModule,
     getCategoryConditionModule,
     getGroupsConditionModule,
+    getIdentifierAttributeCondtionModule,
     getStatusConditionModule,
     getPictureAttributeConditionModule,
     getFileAttributeConditionModule,
