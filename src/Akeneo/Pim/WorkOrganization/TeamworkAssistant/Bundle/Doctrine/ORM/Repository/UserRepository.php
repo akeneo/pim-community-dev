@@ -106,7 +106,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
         $qb->setFirstResult($options['limit'] * ($options['page'] - 1));
 
         if (null !== $search && '' !== $search) {
-            $qb->where('CONCAT(u.firstName, \' \', u.lastName) LIKE :search')
+            $qb->andWhere('CONCAT(u.firstName, \' \', u.lastName) LIKE :search')
                 ->setParameter('search', sprintf('%%%s%%', $search));
         }
 
