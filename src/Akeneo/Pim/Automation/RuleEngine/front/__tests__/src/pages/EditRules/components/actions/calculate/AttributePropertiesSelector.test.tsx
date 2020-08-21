@@ -78,6 +78,9 @@ describe('AttributePropertiesSelector', () => {
         currencyFormName={'attribute.currency'}
         scopes={scopes}
         locales={locales}
+        onLocaleChange={jest.fn()}
+        onScopeChange={jest.fn()}
+        onCurrencyChange={jest.fn()}
       />,
       { all: true },
       { defaultValues, toRegister }
@@ -127,6 +130,9 @@ describe('AttributePropertiesSelector', () => {
         currencyFormName={'attribute.currency'}
         scopes={scopes}
         locales={locales}
+        onLocaleChange={jest.fn()}
+        onScopeChange={jest.fn()}
+        onCurrencyChange={jest.fn()}
       />,
       { all: true },
       { defaultValues, toRegister }

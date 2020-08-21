@@ -46,7 +46,7 @@ type Props = {
   scopes: IndexedScopes;
   defaultLocale?: LocaleCode;
   defaultScope?: ScopeCode;
-  defaultCurrency: CurrencyCode;
+  defaultCurrency?: CurrencyCode;
   onCurrencyChange: (currencyCode: CurrencyCode) => void;
   onScopeChange: (scopeCode: ScopeCode) => void;
   onLocaleChange: (localeCode: LocaleCode) => void;
@@ -147,8 +147,9 @@ const AttributePropertiesSelector: React.FC<Props> = ({
               : '')
           }>
           <Controller
-            as={<input type="hidden"/>}
+            as={<input type='hidden' />}
             name={currencyFormName}
+            data-testid={`edit-rules-action-operation-list-${operationLineNumber}-currency`}
             rules={getCurrencyValidation(
               attribute,
               translate,
@@ -159,7 +160,6 @@ const AttributePropertiesSelector: React.FC<Props> = ({
             )}
           />
           <CurrencySelector
-            data-testid={`edit-rules-action-operation-list-${operationLineNumber}-currency`}
             availableCurrencies={getAvailableCurrencies(currencies)}
             value={defaultCurrency}
             hiddenLabel
@@ -176,7 +176,8 @@ const AttributePropertiesSelector: React.FC<Props> = ({
               : '')
           }>
           <Controller
-            as={<input type="hidden"/>}
+            as={<input type='hidden' />}
+            data-testid={`edit-rules-action-operation-list-${operationLineNumber}-scope`}
             name={scopeFormName}
             rules={getScopeValidation(
               attribute,
@@ -186,7 +187,6 @@ const AttributePropertiesSelector: React.FC<Props> = ({
             )}
           />
           <ScopeSelector
-            data-testid={`edit-rules-action-operation-list-${operationLineNumber}-scope`}
             allowClear={false}
             availableScopes={Object.values(scopes)}
             value={defaultScope}
@@ -205,7 +205,8 @@ const AttributePropertiesSelector: React.FC<Props> = ({
               : '')
           }>
           <Controller
-            as={<input type="hidden"/>}
+            data-testid={`edit-rules-action-operation-list-${operationLineNumber}-locale`}
+            as={<input type='hidden' />}
             name={localeFormName}
             rules={getLocaleValidation(
               attribute,
@@ -217,7 +218,6 @@ const AttributePropertiesSelector: React.FC<Props> = ({
             )}
           />
           <LocaleSelector
-            data-testid={`edit-rules-action-operation-list-${operationLineNumber}-locale`}
             allowClear={false}
             availableLocales={getAvailableLocales()}
             value={defaultLocale}

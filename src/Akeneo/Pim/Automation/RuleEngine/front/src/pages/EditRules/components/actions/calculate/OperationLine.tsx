@@ -26,7 +26,11 @@ const DeleteButton = styled.button`
   cursor: pointer;
 `;
 
-const getConstantValidation = (isValue: boolean, operator: Operator, translate: Translate) => {
+const getConstantValidation = (
+  isValue: boolean,
+  operator: Operator,
+  translate: Translate
+) => {
   if (!isValue) {
     return {};
   }
@@ -110,13 +114,17 @@ const OperationLine: React.FC<OperationLineProps> = ({
             role={'operation-item-move-handle'}
           />
           <Controller
-            as={<input type="hidden"/>}
+            as={<input type='hidden' />}
             name={formName(`${baseFormName}.operator`)}
-            rules={operationLineNumber > 0 ? {
-              required: translate(
-                'pimee_catalog_rule.exceptions.required_operator_for_operation'
-              ),
-            }: {}}
+            rules={
+              operationLineNumber > 0
+                ? {
+                    required: translate(
+                      'pimee_catalog_rule.exceptions.required_operator_for_operation'
+                    ),
+                  }
+                : {}
+            }
           />
           {operationLineNumber > 0 && (
             <span
@@ -126,14 +134,16 @@ const OperationLine: React.FC<OperationLineProps> = ({
               <CalculateOperatorSelector
                 value={watch(formName(`${baseFormName}.operator`))}
                 hiddenLabel
-                onChange={(operator) => { setValue(formName(`${baseFormName}.operator`), operator)}}
+                onChange={operator => {
+                  setValue(formName(`${baseFormName}.operator`), operator);
+                }}
                 label={translate('pim_common.operator')}
               />
             </span>
           )}
           <Controller
             name={formName(`${baseFormName}.value`)}
-            as={<input type="hidden"/>}
+            as={<input type='hidden' />}
             rules={getConstantValidation(
               isValue,
               watch(formName(`${baseFormName}.operator`)),
@@ -150,7 +160,12 @@ const OperationLine: React.FC<OperationLineProps> = ({
                 hiddenLabel={true}
                 defaultValue={watch(formName(`${baseFormName}.value`))}
                 step={'any'}
-                onChange={(e) => { setValue(formName(`${baseFormName}.value`), e.target.value ? Number(e.target.value) : '') }}
+                onChange={e => {
+                  setValue(
+                    formName(`${baseFormName}.value`),
+                    e.target.value ? Number(e.target.value) : ''
+                  );
+                }}
               />
             </span>
           ) : (
@@ -165,9 +180,15 @@ const OperationLine: React.FC<OperationLineProps> = ({
                 defaultLocale={watch(formName(`${baseFormName}.locale`))}
                 defaultScope={watch(formName(`${baseFormName}.scope`))}
                 defaultCurrency={watch(formName(`${baseFormName}.currency`))}
-                onCurrencyChange={(currencyCode) => { setValue(formName(`${baseFormName}.currency`), currencyCode); }}
-                onScopeChange={(scopeCode) => { setValue(formName(`${baseFormName}.scope`), scopeCode); }}
-                onLocaleChange={(localeCode) => { setValue(formName(`${baseFormName}.locale`), localeCode); }}
+                onCurrencyChange={currencyCode => {
+                  setValue(formName(`${baseFormName}.currency`), currencyCode);
+                }}
+                onScopeChange={scopeCode => {
+                  setValue(formName(`${baseFormName}.scope`), scopeCode);
+                }}
+                onLocaleChange={localeCode => {
+                  setValue(formName(`${baseFormName}.locale`), localeCode);
+                }}
                 locales={locales}
                 scopes={scopes}
               />
