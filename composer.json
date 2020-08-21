@@ -62,7 +62,7 @@
         "phpseclib/phpseclib": "~2.0",
         "superbalist/flysystem-google-storage": "7.2.1",
         "grpc/grpc": "1.19.0",
-        "mekras/php-speller": "^2.1.1"
+        "mekras/php-speller": "^2.1.2"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "0.3.*",

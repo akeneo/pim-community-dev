@@ -63,6 +63,8 @@ class CheckTextController
 
             $analysis = $this->textChecker->check($text, $localeCode);
         } catch (TextCheckFailedException $e) {
+            $this->logger->error('spelling evaluation failed', ['message' => $e->getMessage()]);
+
             return new Response(null, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
