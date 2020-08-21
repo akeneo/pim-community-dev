@@ -118,18 +118,6 @@ class ProductAndProductModelSearchAggregatorSpec extends ObjectBehavior
                 ],
             ]
         ])->shouldBeCalled();
-        $searchQueryBuilder->addShould([
-            [
-                'terms' => [
-                    'attributes_for_this_level' => ['foo', 'foo_currency1', 'foo_currency2'],
-                ],
-            ],
-            [
-                'terms' => [
-                    'attributes_of_ancestors' => ['foo', 'foo_currency1', 'foo_currency2'],
-                ],
-            ],
-        ])->shouldBeCalled();
 
         $this->aggregateResults($searchQueryBuilder, $rawFilters)->shouldReturn($searchQueryBuilder);
     }
@@ -177,18 +165,6 @@ class ProductAndProductModelSearchAggregatorSpec extends ObjectBehavior
                     ],
                 ],
             ]
-        ])->shouldBeCalled();
-        $searchQueryBuilder->addShould([
-            [
-                'terms' => [
-                    'attributes_for_this_level' => ['foo'],
-                ],
-            ],
-            [
-                'terms' => [
-                    'attributes_of_ancestors' => ['foo'],
-                ],
-            ],
         ])->shouldBeCalled();
 
         $this->aggregateResults($searchQueryBuilder, $rawFilters)->shouldReturn($searchQueryBuilder);

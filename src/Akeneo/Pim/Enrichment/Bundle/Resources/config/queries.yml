@@ -304,6 +304,12 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo.pim.enrichment.product.query.get_product_and_product_model_identifiers_with_values_ignoring_locale_and_scope:
+        class: Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '%pim_job_product_batch_size%'
+
     akeneo.pim.enrichment.product.query.find_non_existing_product_identifiers_query:
         class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\FindNonExistingProductIdentifiersQuery'
         arguments:
