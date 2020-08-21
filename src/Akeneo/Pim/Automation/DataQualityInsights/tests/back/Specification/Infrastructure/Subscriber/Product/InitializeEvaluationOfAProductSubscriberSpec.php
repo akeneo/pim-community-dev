@@ -17,7 +17,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\Consolid
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -34,16 +33,14 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
         CreateCriteriaEvaluations $createProductsCriteriaEvaluations,
         LoggerInterface $logger,
         EvaluatePendingCriteria $evaluatePendingCriteria,
-        ConsolidateAxesRates $consolidateProductAxisRates,
-        IndexProductRates $indexProductRates
+        ConsolidateAxesRates $consolidateProductAxisRates
     ) {
         $this->beConstructedWith(
             $dataQualityInsightsFeature,
             $createProductsCriteriaEvaluations,
             $logger,
             $evaluatePendingCriteria,
-            $consolidateProductAxisRates,
-            $indexProductRates
+            $consolidateProductAxisRates
         );
     }
 
@@ -92,7 +89,6 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
         $createProductsCriteriaEvaluations,
         $evaluatePendingCriteria,
         $consolidateProductAxisRates,
-        $indexProductRates,
         ProductInterface $product
     ) {
         $product->getId()->willReturn(12345);
@@ -101,7 +97,6 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
 
         $evaluatePendingCriteria->evaluateSynchronousCriteria([12345])->shouldBeCalled();
         $consolidateProductAxisRates->consolidate([12345])->shouldBeCalled();
-        $indexProductRates->execute([12345])->shouldBeCalled();
 
         $this->onPostSave(new GenericEvent($product->getWrappedObject(), ['unitary' => true]));
     }
