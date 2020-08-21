@@ -21,16 +21,9 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
-        $this->createAttribute([
-            'code'                => 'a_localizable_media',
-            'type'                => AttributeTypes::IMAGE,
-            'localizable'         => false,
-            'scopable'            => true
-        ]);
-
         $this->createFamily([
             'code' => 'a_family',
-            'attributes' => ['sku', 'a_localizable_media']
+            'attributes' => ['sku', 'a_scopable_image']
         ]);
 
         $this->createProduct('product_one', [
