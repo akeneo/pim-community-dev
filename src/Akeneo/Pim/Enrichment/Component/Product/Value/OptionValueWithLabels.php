@@ -34,7 +34,8 @@ class OptionValueWithLabels extends AbstractValue implements OptionValueInterfac
     /**
      * @return array|null
      */
-    public function getLinkedData(): ?array {
+    public function getLinkedData(): ?array
+    {
         return $this->linked_data;
     }
 

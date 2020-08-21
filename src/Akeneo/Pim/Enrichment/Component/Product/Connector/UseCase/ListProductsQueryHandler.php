@@ -63,8 +63,7 @@ final class ListProductsQueryHandler
         GetConnectorProducts $getConnectorProductsQuery,
         GetConnectorProducts $getConnectorProductsQuerywithOptionLabel,
         EventDispatcherInterface $eventDispatcher
-    )
-    {
+    ) {
         $this->channelRepository = $channelRepository;
         $this->applyProductSearchQueryParametersToPQB = $applyProductSearchQueryParametersToPQB;
         $this->fromSizePqbFactory = $fromSizePqbFactory;
@@ -103,7 +102,7 @@ final class ListProductsQueryHandler
 
         $pqb->addSorter('id', Directions::ASCENDING);
 
-        $connectorProductsQuery = 'true' === $query->withAttributeOptions ?
+        $connectorProductsQuery = $query->withAttributeOptionsAsBoolean() ?
             $this->getConnectorProductsQuerywithOptionLabel :
             $this->getConnectorProductsQuery;
 

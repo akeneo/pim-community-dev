@@ -42,7 +42,8 @@ class OptionsValueWithLabels extends AbstractValue
     /**
      * @return array|null
      */
-    public function getLinkedData(): ?array {
+    public function getLinkedData(): ?array
+    {
         return $this->linked_data;
     }
 

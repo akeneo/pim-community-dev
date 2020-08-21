@@ -144,7 +144,7 @@ class ProductController
     private $getConnectorProducts;
 
     /** @var GetConnectorProducts */
-    private $getConnectorProductsWithLabels;
+    private $getConnectorProductsWithOptionLabels;
 
     /** @var ApiAggregatorForProductPostSaveEventSubscriber */
     private $apiAggregatorForProductPostSave;
@@ -187,7 +187,7 @@ class ProductController
         ConnectorProductNormalizer $connectorProductNormalizer,
         TokenStorageInterface $tokenStorage,
         GetConnectorProducts $getConnectorProducts,
-        GetConnectorProducts $getConnectorProductsWithLabels,
+        GetConnectorProducts $getConnectorProductsWithOptionLabels,
         ApiAggregatorForProductPostSaveEventSubscriber $apiAggregatorForProductPostSave,
         WarmupQueryCache $warmupQueryCache,
         EventDispatcherInterface $eventDispatcher,
@@ -219,7 +219,7 @@ class ProductController
         $this->connectorProductNormalizer = $connectorProductNormalizer;
         $this->tokenStorage = $tokenStorage;
         $this->getConnectorProducts = $getConnectorProducts;
-        $this->getConnectorProductsWithLabels = $getConnectorProductsWithLabels;
+        $this->getConnectorProductsWithOptionLabels = $getConnectorProductsWithOptionLabels;
         $this->apiAggregatorForProductPostSave = $apiAggregatorForProductPostSave;
         $this->warmupQueryCache = $warmupQueryCache;
         $this->eventDispatcher = $eventDispatcher;
@@ -299,7 +299,7 @@ class ProductController
     public function getAction(Request $request, string $code): JsonResponse
     {
         $connectorProductsQuery = 'true' === $request->query->get('with_attribute_options', "false") ?
-            $this->getConnectorProductsWithLabels :
+            $this->getConnectorProductsWithOptionLabels :
             $this->getConnectorProducts;
 
         try {

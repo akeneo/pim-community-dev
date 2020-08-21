@@ -201,7 +201,6 @@ final class ConnectorProduct
                         "labels" => $optionLabels[$value->getAttributeCode()][$value->getData()] ?? []
                     ],
                 );
-
             } elseif ($value instanceof OptionsValue) {
                 $linked_data = [];
                 foreach ($value->getData() as $optionCode) {
