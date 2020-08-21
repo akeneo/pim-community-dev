@@ -55,7 +55,7 @@ type Props = {
   onChange?: (value: ScopeCode) => void;
   allowClear: boolean;
   disabled?: boolean;
-  name: string;
+  name?: string;
   validation?: { required?: string; validate?: (value: any) => string | true };
 };
 
@@ -69,7 +69,6 @@ const ScopeSelector: React.FC<Props> = ({
   children,
   allowClear = false,
   disabled = false,
-  name,
   validation,
   ...remainingProps
 }) => {
@@ -111,7 +110,6 @@ const ScopeSelector: React.FC<Props> = ({
         allowClear={allowClear}
         onChange={handleChange}
         disabled={disabled}
-        name={name}
         validation={validation}
         dropdownCssClass='scope-dropdown'
       />

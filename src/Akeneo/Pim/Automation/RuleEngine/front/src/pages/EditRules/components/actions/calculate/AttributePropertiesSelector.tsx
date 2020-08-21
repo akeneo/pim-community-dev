@@ -46,7 +46,10 @@ type Props = {
   scopes: IndexedScopes;
   defaultLocale?: LocaleCode;
   defaultScope?: ScopeCode;
-  defaultCurrency?: CurrencyCode;
+  defaultCurrency: CurrencyCode;
+  onCurrencyChange: (currencyCode: CurrencyCode) => void;
+  onScopeChange: (scopeCode: ScopeCode) => void;
+  onLocaleChange: (localeCode: LocaleCode) => void;
 };
 
 const AttributePropertiesSelector: React.FC<Props> = ({
@@ -61,6 +64,9 @@ const AttributePropertiesSelector: React.FC<Props> = ({
   defaultLocale,
   defaultScope,
   defaultCurrency,
+  onCurrencyChange,
+  onScopeChange,
+  onLocaleChange,
 }) => {
   const translate = useTranslate();
   const { watch, errors } = useFormContext();
@@ -141,13 +147,8 @@ const AttributePropertiesSelector: React.FC<Props> = ({
               : '')
           }>
           <Controller
-            as={CurrencySelector}
-            data-testid={`edit-rules-action-operation-list-${operationLineNumber}-currency`}
-            availableCurrencies={getAvailableCurrencies(currencies)}
+            as={<input type="hidden"/>}
             name={currencyFormName}
-            value={defaultCurrency}
-            defaultValue={defaultCurrency}
-            hiddenLabel
             rules={getCurrencyValidation(
               attribute,
               translate,
@@ -156,6 +157,13 @@ const AttributePropertiesSelector: React.FC<Props> = ({
               currencies,
               watch(scopeFormName) ?? defaultScope
             )}
+          />
+          <CurrencySelector
+            data-testid={`edit-rules-action-operation-list-${operationLineNumber}-currency`}
+            availableCurrencies={getAvailableCurrencies(currencies)}
+            value={defaultCurrency}
+            hiddenLabel
+            onChange={onCurrencyChange}
           />
         </span>
       )}
@@ -168,21 +176,23 @@ const AttributePropertiesSelector: React.FC<Props> = ({
               : '')
           }>
           <Controller
-            as={ScopeSelector}
-            data-testid={`edit-rules-action-operation-list-${operationLineNumber}-scope`}
-            allowClear={false}
-            availableScopes={Object.values(scopes)}
-            value={defaultScope}
-            defaultValue={defaultScope}
+            as={<input type="hidden"/>}
             name={scopeFormName}
-            currentCatalogLocale={currentCatalogLocale}
-            hiddenLabel
             rules={getScopeValidation(
               attribute,
               scopes,
               translate,
               currentCatalogLocale
             )}
+          />
+          <ScopeSelector
+            data-testid={`edit-rules-action-operation-list-${operationLineNumber}-scope`}
+            allowClear={false}
+            availableScopes={Object.values(scopes)}
+            value={defaultScope}
+            currentCatalogLocale={currentCatalogLocale}
+            hiddenLabel
+            onChange={onScopeChange}
           />
         </span>
       )}
@@ -195,14 +205,8 @@ const AttributePropertiesSelector: React.FC<Props> = ({
               : '')
           }>
           <Controller
-            as={LocaleSelector}
-            data-testid={`edit-rules-action-operation-list-${operationLineNumber}-locale`}
-            allowClear={false}
-            availableLocales={getAvailableLocales()}
-            value={defaultLocale}
-            defaultValue={defaultLocale}
+            as={<input type="hidden"/>}
             name={localeFormName}
-            hiddenLabel
             rules={getLocaleValidation(
               attribute,
               locales,
@@ -211,6 +215,14 @@ const AttributePropertiesSelector: React.FC<Props> = ({
               translate,
               currentCatalogLocale
             )}
+          />
+          <LocaleSelector
+            data-testid={`edit-rules-action-operation-list-${operationLineNumber}-locale`}
+            allowClear={false}
+            availableLocales={getAvailableLocales()}
+            value={defaultLocale}
+            hiddenLabel
+            onChange={onLocaleChange}
           />
         </span>
       )}

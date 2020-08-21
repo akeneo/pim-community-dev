@@ -1,7 +1,8 @@
 import React from 'react';
 import { Operator } from '../../../../../models/actions/Calculate/Operation';
 import {
-  Select2Value, Select2Wrapper,
+  Select2SimpleSyncWrapper,
+  Select2Value,
 } from '../../../../../components/Select2Wrapper';
 import { Translate } from '../../../../../dependenciesTools';
 import { useTranslate } from '../../../../../dependenciesTools/hooks';
@@ -39,7 +40,7 @@ const CalculateOperatorSelector: React.FC<Props> = ({
   };
 
   return (
-    <Select2Wrapper
+    <Select2SimpleSyncWrapper
       {...remainingProps}
       label={label || translate('pimee_catalog_rule.form.edit.fields.operator')}
       hiddenLabel={hiddenLabel || false}
@@ -51,7 +52,6 @@ const CalculateOperatorSelector: React.FC<Props> = ({
       placeholder={translate(
         `pimee_catalog_rule.form.edit.actions.calculate.operator.choose`
       )}
-      multiple={false}
     />
   );
 };

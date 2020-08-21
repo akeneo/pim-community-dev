@@ -75,7 +75,7 @@ type Props = {
   onChange?: (value: LocaleCode) => void;
   allowClear?: boolean;
   disabled?: boolean;
-  name: string;
+  name?: string;
   validation?: { required?: string; validate?: (value: any) => string | true };
 };
 
@@ -88,7 +88,6 @@ const LocaleSelector: React.FC<Props> = ({
   children,
   allowClear = false,
   disabled = false,
-  name,
   validation,
   ...remainingProps
 }) => {

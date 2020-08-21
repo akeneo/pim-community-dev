@@ -62,7 +62,6 @@ type Props = {
   onChange?: (value: CurrencyCode) => void;
   allowClear?: boolean;
   disabled?: boolean;
-  name: string;
   validation?: { required?: string; validate?: (value: any) => string | true };
 };
 
@@ -74,7 +73,6 @@ const CurrencySelector: React.FC<Props> = ({
   onChange,
   allowClear = false,
   disabled = false,
-  name,
   validation,
   ...remainingProps
 }) => {
@@ -110,7 +108,6 @@ const CurrencySelector: React.FC<Props> = ({
       onChange={handleChange}
       allowClear={allowClear}
       disabled={disabled}
-      name={name}
       validation={validation}
       dropdownCssClass='currency-dropdown'
     />

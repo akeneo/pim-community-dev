@@ -81,7 +81,7 @@ const OperationLine: React.FC<OperationLineProps> = ({
     // To fix the display we set again the values. The react hook form state is unchanged but the display is now good.
     // Maybe react hook form v6 handles better this use case.
     return;
-    ['operator', 'locale', 'scope', 'currency'].forEach((key: string) => {
+    ['locale', 'scope', 'currency'].forEach((key: string) => {
       setValue(
         formName(`${baseFormName}.${key}`),
         getFormValue(`${baseFormName}.${key}`) || undefined
@@ -162,11 +162,14 @@ const OperationLine: React.FC<OperationLineProps> = ({
                 localeFormName={formName(`${baseFormName}.locale`)}
                 scopeFormName={formName(`${baseFormName}.scope`)}
                 currencyFormName={formName(`${baseFormName}.currency`)}
+                defaultLocale={watch(formName(`${baseFormName}.locale`))}
+                defaultScope={watch(formName(`${baseFormName}.scope`))}
+                defaultCurrency={watch(formName(`${baseFormName}.currency`))}
+                onCurrencyChange={(currencyCode) => { setValue(formName(`${baseFormName}.currency`), currencyCode); }}
+                onScopeChange={(scopeCode) => { setValue(formName(`${baseFormName}.scope`), scopeCode); }}
+                onLocaleChange={(localeCode) => { setValue(formName(`${baseFormName}.locale`), localeCode); }}
                 locales={locales}
                 scopes={scopes}
-                defaultLocale={fieldOperand.locale || undefined}
-                defaultScope={fieldOperand.scope || undefined}
-                defaultCurrency={fieldOperand.currency || undefined}
               />
             </>
           )}
