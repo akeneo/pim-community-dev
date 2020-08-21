@@ -6,3 +6,5 @@ parameters:
         container_xml_path: %rootDir%/../../../var/cache/dev/srcKernelDevDebugContainer.xml
     ignoreErrors:
         - '#Unsafe usage of new static\(\)\.#'
+    excludes_analyse:
+        - %currentWorkingDirectory%/src/Akeneo/Pim/Automation/DataQualityInsights/tests
