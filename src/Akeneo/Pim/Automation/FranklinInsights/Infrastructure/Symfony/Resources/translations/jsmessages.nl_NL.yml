@@ -17,9 +17,16 @@ akeneo_franklin_insights:
           active: Actief
           inactive: Inactief
         values_summary: "Waarden samenvatting: {{ label }}"
+      module:
+        index:
+          types_mismatch_warning: 'Waarschuwing: attribuuttypes komen niet overeen.'
     product_subscription:
       constraint:
         product_subscription_with_same_identifier_already_exist: 'Een ander product met ten minste één identieke id is al geabonneerd.'
+    attribute_options_mapping:
+      module:
+        edit:
+          description: 'Om uw catalogus te helpen verrijken, moet Franklin de attribuutopties van uw catalogus kennen die overeenkomen met die van hem. <a href="#" target="_blank" class="AknDescriptionHeader-link">Lees meer</a>'
   product:
     edit:
       btn.push: Gegevens suggereren

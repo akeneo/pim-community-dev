@@ -146,3 +146,6 @@ pimee_enrich:
       options:
         width: '%value%px breedte'
         height: '%value%px hoogte'
+asset_tree:
+  remove:
+    error_linked: Deze categorieboom kan niet worden verwijderd, deze is ingesteld als de standaard assetcategorieboom van een gebruiker.

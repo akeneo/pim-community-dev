@@ -3,6 +3,7 @@ teamwork_assistant:
     required: Deze waarde mag niet leeg zijn.
     label_maxlength: Deze waarde is te lang. Het moet {{ max }} karakters of minder bevatten.
     project_identifier: Het project {{ project }} bestaat niet.
+    project_locale: De landinstelling {{ locale }} van het project moet worden ingeschakeld.
     project_due_date: Je kan geen datum in het verleden selecteren.
   notification:
     project_calculation:
@@ -21,6 +22,9 @@ teamwork_assistant:
     owner_todo: Taak (projectoverzicht)
     owner_in_progress: In uitvoering (projectoverzicht)
     owner_done: Afgewerkt (projectoverzicht)
+  user:
+    deletion:
+      user_linked_to_project: Deze gebruiker is nog gekoppeld aan een of meer projecten. Verwijder de groepen waaraan hij gekoppeld is in zijn gebruikersaccount.
 job_execution:
   summary:
     processed_products: Verwerkte producten
