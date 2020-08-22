@@ -1,51 +1,45 @@
 pim_user:
-    user:
-        tab:
-            general.title:               General
-            additional.title:            Additional
-            group_and_role.title:        Groups and Roles
-            password.title:              Password
-            business_unit.title:         Business Units
-            email_synchronization.title: Email synchronization settings
-            interfaces.title:            Interfaces
-    group:
-        tab:
-            general.title: General
-            users.title:   Users
-
-# user grids
+  user:
+    tab:
+      general.title: General
+      additional.title: Additional
+      group_and_role.title: Groups and Roles
+      password.title: Password
+      business_unit.title: Business Units
+      email_synchronization.title: Email synchronization settings
+      interfaces.title: Interfaces
+  group:
+    tab:
+      general.title: General
+      users.title: Users
+#user grids
 oro.user.controller:
-    group.message.saved: "Group saved"
-    role.message.saved: "Role saved"
-    user.message.saved: "User saved"
-    status.message.saved: "Status saved"
-
+  group.message.saved: "Group saved"
+  role.message.saved: "Role saved"
+  user.message.saved: "User saved"
+  status.message.saved: "Status saved"
 oro.user.grid.users:
-    columns:
-        username: "Username"
-        email: "Email"
-        firstName: "First name"
-        lastName: "Last name"
-        createdAt: "Created at"
-        updatedAt: "Updated at"
-        enabled: "Status"
-
+  columns:
+    username: "Username"
+    email: "Email"
+    firstName: "First name"
+    lastName: "Last name"
+    createdAt: "Created at"
+    updatedAt: "Updated at"
+    enabled: "Status"
 oro.user.grid.roles:
-    columns:
-        label: "Label"
-
+  columns:
+    label: "Label"
 oro.user.grid.groups:
-    columns:
-        name: "Name"
-
-# Page titles
+  columns:
+    name: "Name"
+#Page titles
 pim_title:
-    user.index: Users
-    user_role.index: Roles
-    user_group.index: Groups
-    system_configuration.index: Configuration
-
-# User
+  user.index: Users
+  user_role.index: Roles
+  user_group.index: Groups
+  system_configuration.index: Configuration
+#User
 user.title: User
 user.overview: User
 Users Management: Users Management
@@ -94,54 +88,50 @@ Generate key: Generate key
 Primary: primary
 Removed user: Removed user
 user:
-    product_grid_filters: Product grid filters
-    default_product_grid_view:
-        label: Default product grid view
-    default_grid_view:
-        none: None
-    timezone: Timezone
-
-# Role
+  product_grid_filters: Product grid filters
+  default_product_grid_view:
+    label: Default product grid view
+  default_grid_view:
+    none: None
+  timezone: Timezone
+#Role
 Role: Role
 Owner: Owner
 General: General
 Entity: Entity
 Capabilities: Capabilities
 Save and close: Save and close
-Has role : Has role
+Has role: Has role
 role:
-    title: role
-    overview: role
-    edit: Edit role
-    create: Create role
+  title: role
+  overview: role
+  edit: Edit role
+  create: Create role
 btn.create.role: Create role
-
 rights:
-    action: Permissions
-
+  action: Permissions
 oro_security:
-    acl_group:
-        user: Users
-        role: Roles
-        group: User groups
-    acl:
-        user:
-            view: List users
-            create: Create a user
-            edit: Edit users
-            delete: Remove a user
-        role:
-            view: List roles
-            create: Create a role
-            edit: Edit roles
-            delete: Remove a role
-        group:
-            view: List user groups
-            create: Create a user group
-            edit: Edit user groups
-            delete: Remove a user group
-
-# Security
+  acl_group:
+    user: Users
+    role: Roles
+    group: User groups
+  acl:
+    user:
+      view: List users
+      create: Create a user
+      edit: Edit users
+      delete: Remove a user
+    role:
+      view: List roles
+      create: Create a role
+      edit: Edit roles
+      delete: Remove a role
+    group:
+      view: List user groups
+      create: Create a user group
+      edit: Edit user groups
+      delete: Remove a user group
+#Security
 (default): Default permission on entities
 VIEW: View
 CREATE: Create
@@ -150,23 +140,21 @@ DELETE: Delete
 ASSIGN: Assign
 SHARE: Share
 oro:
-    security:
-        access-level:
-            BASIC: User
-            LOCAL: Business Unit
-            DEEP: Division
-            GLOBAL: Organization
-            SYSTEM: System
-            NONE: None
-
-# User Group
+  security:
+    access-level:
+      BASIC: User
+      LOCAL: Business Unit
+      DEEP: Division
+      GLOBAL: Organization
+      SYSTEM: System
+      NONE: None
+#User Group
 Create group: Create group
 btn.create.user-group: Create group
 Has group: Has group
 Save and Close: Save and close
 user-group.overview: Groups
-
-# Login page
+#Login page
 Log in: Log in
 Remember me on this computer: Remember me on this computer
 Forgot your password?: Forgot your password?

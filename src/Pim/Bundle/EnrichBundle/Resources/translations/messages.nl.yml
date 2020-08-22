@@ -283,8 +283,10 @@ category:
   edit: categorie bewerken
   suggest selection: Select een categorie aan de linkerkant
   or: of
+  create new: Maak een nieuwe categorieboom
 tree:
   title: structuur
+  create: categorieboom maken
   edit: structuur bewerken
 channel:
   title: kanaal
@@ -325,6 +327,7 @@ btn:
     attribute: attribuut aanmaken
     attribute group: attribuutgroep aanmaken
     category: categorie aanmaken
+    tree: categorieboom maken
     channel: kanaal aanmaken
     currency: valuta aanmaken
     family: familie aanmaken
@@ -381,6 +384,7 @@ flash:
     updated: Attribuut succesvol bijgewerkt
     removed: Attribuut succesvol verwijderd
     identifier_not_removable: Id-attribuut kan niet worden verwijderd
+    used_as_conversion_unit: Dit attribuut kan niet worden verwijderd omdat het wordt gebruikt als conversie-eenheid in de kanalen %channelCodes%.
   attribute group:
     created: Attribuutgroep succesvol aangemaakt
     updated: Attribuutgroep succesvol bijgewerkt

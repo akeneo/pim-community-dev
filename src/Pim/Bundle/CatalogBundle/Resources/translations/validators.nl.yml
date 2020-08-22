@@ -40,6 +40,7 @@ pim_catalog:
     cannot_have_parent: 'Het productmodel "%product_model%" kan geen ouder hebben'
     attribute_does_not_belong_to_family: 'Attribuut "%attribute%" behoort niet tot de familie "%family%"'
     variant_product_invalid_family: 'De familie van het variantproduct moet hetzelfde zijn als zijn ouder'
+    php_int_max_reached: 'Het maximale aantal moet lager zijn dan %php_int_max%.'
     not_null_family: De familie mag niet "null" zijn, omdat uw product met id "%sku%" een variantproduct is.
     variant_product_has_parent: 'Het variantproduct "%variant_product%" moet een ouder hebben'
     invalid_variant_product_parent: 'Het variantproduct "%variant_product%" kan productmodel "%product_model%" niet als ouder hebben, (dit productmodel kan alleen andere productmodellen als kinderen hebben)'
