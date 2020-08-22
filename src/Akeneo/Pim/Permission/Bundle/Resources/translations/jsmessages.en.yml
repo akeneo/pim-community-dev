@@ -1,0 +1,50 @@
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        is_read_only: Read only
+pimee_enrich.entity.category:
+  module:
+    permissions:
+      grant: The group <strong>{{ group }}</strong> will <strong>be {{ permission }}</strong> in this category
+      revoke: The group <strong>{{ group }}</strong> will <strong>not be {{ permission }}</strong> in this category
+pimee_enrich.entity.locale:
+  module:
+    permissions:
+      grant: The group <strong>{{ group }}</strong> will <strong>be {{ permission }}</strong> in this locale
+      revoke: The group <strong>{{ group }}</strong> will <strong>not be {{ permission }}</strong> in this locale
+pimee_enrich.entity.attribute group:
+  module:
+    permissions:
+      grant: The group <strong>{{ group }}</strong> will <strong>be {{ permission }}</strong> of this attribute group
+      revoke: The group <strong>{{ group }}</strong> will <strong>not be {{ permission }}</strong> of this attribute group
+pimee_enrich.entity.attribute_group:
+  module:
+    permissions:
+      added: The group {{ group }} will be allowed to {{ permission }} attribute group
+      view: Allowed to view attributes
+      edit: Allowed to edit attributes
+      removed: The group {{ group }} will not be allowed to {{ permission }} attribute group
+pimee_enrich.entity.job_instance:
+  module:
+    permissions:
+      added: The group {{ group }} will be allowed to {{ permission }} job profile
+      execute: Allowed to execute job profile
+      edit: Allowed to edit job profile
+      removed: The group {{ group }} will not be allowed to {{ permission }} job profile
+batch_jobs:
+  add_product_value_with_permission_and_rules:
+    label: Add product value with permission check & rules application
+    perform.label: Add product value
+  update_product_value_with_permission_and_rules:
+    label: Update product value with permission check & rules application
+    perform.label: Update product value
+  remove_product_value_with_permission_and_rules:
+    label: Remove product value with permission check & rules application
+    perform.label: Remove product value
+  edit_common_attributes_with_permission_and_rules:
+    label: Edit attributes with permission check & rules application
+    perform.label: Edit attributes
+    cleaner.label: Clean temporary files
+pim_title:
+  pimee_enrich_locale_edit: Locale | Edit

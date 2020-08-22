@@ -40,20 +40,32 @@ pim_reference_entity:
       delete:
         fail: Er deed zich een fout voor tijdens het verwijderen van de referentie-entiteit
   record:
+    validation:
+      text:
+        incompatible_with_regular_expression: 'Voer een tekst in die voldoet aan de reguliere expressie: "{{ %regular_expression%}}"'
+        invalid_email: 'Voer een e-mailadres in: xxxxx@xx.xx'
+        invalid_url: 'Vul een URL in: http(s)://xxxx.XXX'
     no_result:
       subtitle: Probeer het opnieuw met een andere zoekterm.
     button:
       save: Opslaan
       create: Nieuwe toevoegen
       delete: Verwijderen
+      back: Terug naar het overzicht
     enrich:
+      title: Selecteer attributen
       code: Code
       label: Label
+    title: Selectie
     create:
       header:
         title: Aanmaken
+      subtitle: Referentie-entiteiten
+      title: Voeg nieuwe {{ entityLabel }} toe
       input:
         label: Label
+        code: Code (verplicht)
+        create_another: Een record aanmaken
       confirm: Opslaan
     grid:
       filter:
