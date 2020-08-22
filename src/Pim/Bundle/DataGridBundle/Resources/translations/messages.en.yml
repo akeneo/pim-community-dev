@@ -1,4 +1,4 @@
-oro_datagrid.no_data_hint %entityHint%: No %entityHint% exists.
+"oro_datagrid.no_data_hint %entityHint%": No %entityHint% exists.
 oro_datagrid.not_found_hint: Sorry, there is no result for your search.
 oro_datagrid.label_add_filter: Manage filters
 oro_datagrid.label_loading_mask: Loading . . .
@@ -14,21 +14,18 @@ oro.grid.mass_action.delete.confirm_content: Are you sure you want to do delete 
 oro.grid.mass_action.delete.item_limit: You cannot mass delete more than %limit% products (%count% selected)
 oro.grid.datagrid.page_size.all: All
 oro.grid.mass_action.delete.success_message: "{0} No entities were removed|{1} One entity was removed|]1,Inf[ %count% entities were removed"
-
-# Datagrid views constraints
+#Datagrid views constraints
 datagrid_view:
-    columns:
-        min_message: You must select at least one datagrid column to display
-    label:
-        unique_message:    The label must be unique
-        not_blank_message: The label must not be blank
-
-# View selector flash messages
+  columns:
+    min_message: You must select at least one datagrid column to display
+  label:
+    unique_message: The label must be unique
+    not_blank_message: The label must not be blank
+#View selector flash messages
 grid.view_selector.flash:
-    created: Datagrid view successfully created
-    removed: Datagrid view successfully removed
-    not_removable: You don't have the rights to remove this view
-
+  created: Datagrid view successfully created
+  removed: Datagrid view successfully removed
+  not_removable: You don't have the rights to remove this view
 quick_export: Quick Export
 import: Import
 export: Export
