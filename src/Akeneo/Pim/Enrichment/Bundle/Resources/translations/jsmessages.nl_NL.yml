@@ -346,6 +346,7 @@ pim_enrich.mass_edit.product:
       label_count: "{0}Verander het bovenliggende productmodel van sommige <span class=\"AknFullPage-title--highlight\">producten</span>|{1}Verander het bovenliggende productmodel van <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Verander het bovenliggende productmodel van <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span>"
       description: In het overzicht zal het overkoepelende productmodel van het variantproduct of sub-productmodel worden aangepast naar het gekozen productmodel.
 pim_datagrid:
+  no_entities: "Geen {{ entityHint }} gevonden"
   mass_action_group:
     bulk_actions:
       label: Bulkacties
