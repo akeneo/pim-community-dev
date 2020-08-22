@@ -65,6 +65,12 @@ class Client
         $this->idPrefix = $idPrefix;
 
         $builder->setHosts($hosts);
+        $sslCa = getenv('APP_INDEX_SSL_CA');
+        if (isset($sslCa))
+        {
+            $builder->setSSLVerification($sslCa);
+        }
+
         $this->client = $builder->build();
     }
 
