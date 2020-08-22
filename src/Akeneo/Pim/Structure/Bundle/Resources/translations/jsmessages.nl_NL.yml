@@ -39,6 +39,8 @@ pim_enrich.entity.family_variant:
       fail: De familie variant kon niet worden bijgewerkt.
     create:
       success: Familievariant succesvol aangemaakt
+    delete:
+      success: Familie variant succesvol verwijderd
   module:
     edit:
       common_attributes: Gemeenschappelijke attributen
@@ -200,6 +202,10 @@ pim_enrich.entity.attribute_group:
   label: attribuutgroep
   uppercase_label: Attribuutgroep
   plural_label: Attribuutgroepen
+  show_more_attribute:
+    title: Het is hier een beetje vol, we laten je {{ attributeCount }}/{{ totalAttributeCount }} attributen zien.
+    subtitle: Om alle attributen van deze groep te ontdekken, klik hieronder!
+    button: Bekijk alle attributen
   flash:
     update:
       success: Attribuutgroep succesvol bijgewerkt

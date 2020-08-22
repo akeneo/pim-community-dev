@@ -60,12 +60,17 @@ pim_user_management:
         new_password_repeat: Nueva contraseña (nuevamente)
         password: Contraseña
         password_repeat: Contraseña (repetir)
+        last_logged_in: Último registro de ingreso
+        login_count: Conteo de inicios de sesión
         ui_locale: Configuración regional de la interfaz
         timezone: Zona horaria
         default_product_grid_view: Vista de grilla de producto por defecto
         default_published_product_grid_view: Vista por defecto de grilla de productos publicados #EE Only
         proposals_to_review_notification: Si hay nuevas propuestas a revisar #EE Only
         proposals_state_notifications: Cuando hay nueva propuesta es aceptada o rechazada #EE Only
+      meta:
+        created: Creado
+        updated: actualizado
       module:
         create:
           button: Crear usuario
