@@ -22,6 +22,10 @@ pimee_catalog_rule:
       associations: Associations
       groups: Groupes
       categories: Catégories
+      completeness: Complétude
+      enabled: Statut
+      created: Créé
+      updated: Mis à jour
     field_groups:
       system: Système
   acl_group:

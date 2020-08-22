@@ -23,6 +23,7 @@ pimee_catalog_rule:
         unknown_scope: 'L''attribut "{{ attributeCode }}" requiert un canal existant'
       invalid_code: 'Le code de la règle ne doit contenir que des lettres, des chiffres et des tirets bas'
       conditions:
+        missing_key: 'La clé "conditions" est manquante ou vide'
         missing_value_key: 'La clé "value" est manquante ou vide'
         missing_operator_key: 'La clé "operator" est manquante ou vide'
         existing_field: 'Le champ "{{ field }}" ne peut pas être filtré ou ne peut pas être utilisé avec l''opérateur "{{ operator }}"'

@@ -1,6 +1,9 @@
 pimee_catalog_rule:
   datagrid:
     rule-grid:
+      actions:
+        execute: Execute
+      title: Rules
       column:
         label: Label
         impacted_product_count:
@@ -11,23 +14,44 @@ pimee_catalog_rule:
           label: Actions
       mass_edit_action:
         impacted_product_count: Calculate the impacted products
+        execute: Execute
+        delete: Delete
   condition:
     fields:
       family: Family
       associations: Associations
       groups: Groups
       categories: Categories
+      completeness: Completeness
+      enabled: Status
+      created: Created
+      updated: Updated
     field_groups:
       system: System
+  acl_group:
+    rule: Rules
   acl:
     rule:
       edit_permissions: Edit rules
+      view_permissions: View rules
+      delete_permissions: Delete rules
       impacted_product_count_permissions: Calculate the number of products impacted by the rules
       create_permissions: Create rules
+      execute_permissions: Execute rules
+  attribute:
+    tab:
+      rule.title: Rules
+    grid:
+      is_smart.label: Smart
+    acl:
+      rule.view_permissions: View rules
+  product:
+    history: Applied rule "%rule%"
   steps:
     product_rule_definition_reader.title: Product rules import reader
     rule_definition_processor.title: Product rules import processor
     product_rule_definition_writer.title: Product rules import writer
+    rules_execution.title: Rules execution
   notification:
     execute_rules:
       success: Execution of the rule(s) complete
@@ -45,11 +69,19 @@ pimee_catalog_rule:
       week: ']-Inf, -1[%absolute_count% weeks ago|{-1}1 week ago|{1}in 1 week|]1, +Inf[in %absolute_count% weeks'
       month: ']-Inf, -1[%absolute_count% months ago|{-1}1 month ago|{1}in 1 month|]1, +Inf[in %absolute_count% months'
       year: ']-Inf, -1[%absolute_count% years ago|{-1}1 year ago|{1}in 1 year|]1, +Inf[in %absolute_count% years'
+btn:
+  Execute rules: Execute rules
 job_execution:
   summary:
+    rule_calculated: Number of rules
     read_rules: read rules
     selected_entities: selected products / product models
     skipped_invalid: skipped products / product models (invalid)
     updated_entities: updated products / product models
     executed_rules: successfully executed rules
     errored_rules: skipped rules (invalid)
+pim_datagrid:
+  cells:
+    type:
+      mass_edit_rule: Rules Settings
+      execute_rules: Rules execution

@@ -1,3 +1,5 @@
+user:
+  email_notifications: Email notifications
 pimee_enrich.entity.product:
   duplicate:
     title: Duplicate the product {{ product_identifier }}
