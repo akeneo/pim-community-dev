@@ -81,6 +81,8 @@ pimee_product_asset:
         error: Variationsdatei wurde nicht gelöscht. Es ist ein Fehler aufgetreten.
   popin.create:
     title: Neues Asset erstellen
+    confirm: Bestätigen
+    cancel: Abbrechen
     is_localized: Lokalisierbar
   menu: Assets
   page_tab:

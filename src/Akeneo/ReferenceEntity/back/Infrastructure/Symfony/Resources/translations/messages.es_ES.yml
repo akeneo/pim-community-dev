@@ -12,6 +12,7 @@ akeneo_referenceentity:
       edit: Editar los registros
       delete: Eliminar un registro
       delete_all: Eliminar todos los registros de entidad
+      list_product: Listar productos vinculados para grabar
     attribute:
       create: Añadir un atributo a una información de referencia
       edit: Editar un atributo de la información de referencia

@@ -24,7 +24,9 @@ pimee_product_asset:
       delete: Verwijderen
       download: Download
       reset_variations: Stel variaties opnieuw in
-    confirmation.remove: Weet u zeker dat u kenmerk %asset% wilt verwijderen?
+    confirmation.subTitle: Kenmerken
+    grid:
+      edit: Bewerk eigenschappen van het kenmerk
     view:
       title: Productkenmerk
       code: Code
@@ -40,15 +42,26 @@ pimee_product_asset:
       filetype: Bestandstype
       actions: Acties
       download: Download
+      tag: Labels
     flash:
       update:
         success: Het kenmerk is bijgewerkt.
-        error: Het kenmerk is niet bijgewerkt. Er is een fout opgetreden.
+        error: De asset is niet bijgewerkt. Er is een fout opgetreden.
       create:
         success: Het kenmerk is aangemaakt.
-        error: Het kenmerk is niet aangemaakt. Er is een fout opgetreden.
+        error: De asset is niet aangemaakt. Er is een fout opgetreden.
       remove:
         success: Kenmerk werd verwijderd.
+  enrich_reference:
+    flash:
+      delete:
+        error: Referentiebestand is niet verwijderd. Er is een fout opgetreden.
+  enrich_variation:
+    flash:
+      update:
+        error: Variatiebestand is niet bijgewerkt. Er is een fout opgetreden.
+      delete:
+        error: Variatiebestand is niet verwijderd. Er is een fout opgetreden.
   popin.create:
     is_localized: Lokaliseerbaar
   menu: Kenmerken
@@ -67,39 +80,72 @@ pimee_product_asset:
     label: Aangemaakt op
   updatedAt:
     label: Laatst bijgewerkt op
+  tags:
+    label: Labels
   tabs:
     properties.title: Eigenschappen
     categories.title: Categorieën
   mass_upload:
-    import: Import
+    menu: Upload assets
+    import: Importeer
+    error:
+      upload: Er is een fout opgetreden tijdens het uploaden
+      invalid_locale: De landinstelling is uitgeschakeld of ongeldig
   category:
     menu: Kenmerk categorieën
     permissions:
       apply_on_children.label: Breng wijzigingen aan de onderliggende elementen
+      apply_on_children.help: Kopiëer de wijzigingen van de machtigingen naar alle kinderen, bestaande machtigingen van de kinderen worden bewaard
   mass_edit_action:
     asset:
       page_title: Kenmerken
+      steps:
+        second: Configureer
+        third: Bevestig
 pim_enrich:
   mass_edit_action:
     asset-classify-move:
       launched_flash: De massa actie "verplaats naar categorieën" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
 btn.create.asset: Creëer een kenmerk
-batch_jobs:
-  apply_assets_mass_upload:
-    perform.label: Massa upload
-  yml_asset_channel_configuration_import:
-    validation.label: Bestandsvalidatie
-  csv_asset_import:
-    validation.label: Bestandsvalidatie
-  csv_tag_import:
-    validation.label: Bestandsvalidatie
-  csv_asset_category_import:
-    validation.label: Bestandsvalidatie
-  csv_asset_configuration_import:
-    validation.label: Bestandsvalidatie
-  xlsx_tag_import:
-    validation.label: Bestandsvalidatie
-  xlsx_asset_import:
-    validation.label: Bestandsvalidatie
-  xlsx_asset_category_import:
-    validation.label: Bestandsvalidatie
+btn.drag_or_upload: Klik en sleep een bestand of klik hier
+pim_datagrid:
+  cells:
+    type:
+      compute_completeness_of_products_linked_to_assets: Bereken volledigheid van producten gekoppeld aan assets
+pim_api:
+  acl:
+    asset_category:
+      edit: Categorieën aanmaken en bijwerken
+      list: Lijst kenmerk categorieën op
+    asset:
+      edit: Bewerk bestanden en upload de referentie en variatie bestanden
+      list: Geef bestanden weer en download de referentie en variatie bestanden
+  acl_group:
+    asset_category: Kenmerk categorieën
+    asset: Kenmerken
+pimee_enrich:
+  asset_transformation:
+    title:
+      transformation: Transformatie
+      options: Opties
+    resize:
+      title: Formaat wijzigen
+      options:
+        width: '%value%px breedte'
+        height: '%value%px hoogte'
+    resolution:
+      title: Resolutie
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      options:
+        width: '%value%px breedte'
+        height: '%value%px hoogte'
+    thumbnail:
+      options:
+        width: '%value%px breedte'
+        height: '%value%px hoogte'
+asset_tree:
+  remove:
+    error_linked: Deze categorieboom kan niet worden verwijderd, deze is ingesteld als de standaard assetcategorieboom van een gebruiker.
