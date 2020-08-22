@@ -170,7 +170,10 @@ pim_measure:
     PSI: Pound per vierkante inch
     TORR: Torr
     MMHG: millimeter kwik
+    #Energy
+    CALORIE: Calorieën
     KILOCALORIE: kilocalorie
+    JOULE: joule
     KILOJOULE: kilojoule
     #CaseBox
     PIECE: Deel

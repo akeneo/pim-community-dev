@@ -334,6 +334,7 @@ pim_enrich.mass_edit.product:
       description: Das übergeordnete Element der Variantenprodukte oder Sub Produktmodelle die im Raster ausgewählt wurden, werden zu dem gewählten Produktmodell geändert.
 pim_datagrid:
   search: "Suche in {{ label }}"
+  no_entities: "Kein {{ entityHint }} gefunden"
   mass_action_group:
     bulk_actions:
       label: Massenbearbeitung
