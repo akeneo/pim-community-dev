@@ -73,3 +73,4 @@ flash:
   currency:
     error:
       linked_to_channel: U kunt een valuta gekoppeld aan een kanaal niet uitschakelen
+    updated: Valuta succesvol bijgewerkt

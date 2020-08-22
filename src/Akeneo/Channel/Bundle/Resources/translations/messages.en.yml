@@ -1,0 +1,5 @@
+pim_enrich:
+  #Locale
+  locale:
+    tab:
+      property.title: Properties

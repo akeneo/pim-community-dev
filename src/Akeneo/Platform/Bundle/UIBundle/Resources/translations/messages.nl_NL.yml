@@ -207,6 +207,7 @@ flash:
     removed: Categorie succesvol verwijderd
   tree:
     removed: Structuur succesvol verwijderd
+    not removable: Structuren die zijn gekoppeld aan kanalen kunnen niet worden verwijderd.
   currency:
     updated: Valuta succesvol bijgewerkt
     error.linked_to_channel: U kan de valuta gekoppeld aan een kanaal niet uitschakelen.
