@@ -2,5 +2,7 @@ akeneo_data_quality_insights:
   axis:
     consistency: Konsistenz
     enrichment: Anreicherung
+  attribute_grid:
+    quality_column_label: Qualität
 Consistency: Konsistenz
 Enrichment: Anreicherung

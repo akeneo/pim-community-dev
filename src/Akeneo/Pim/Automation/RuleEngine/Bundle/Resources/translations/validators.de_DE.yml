@@ -23,6 +23,7 @@ pimee_catalog_rule:
         unknown_scope: 'Das Attribut "{{ attributeCode }}" erfordert einen vorhandenen Bereich'
       invalid_code: 'Der Regelcode darf nur Buchstaben, Zahlen und Unterstriche enthalten'
       conditions:
+        missing_key: 'Der Schlüssel "Bedingungen" fehlt oder ist leer'
         missing_value_key: 'Der Schlüssel "Wert" fehlt oder leer'
         missing_operator_key: 'Der "Operator"-Schlüssel fehlt oder leer'
         existing_field: 'Das "{{ field }}" Feld kann nicht gefiltert werden oder kann nicht mit dem "{{ operator }}" Operator verwendet werden'
