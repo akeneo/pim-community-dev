@@ -2,53 +2,116 @@ pimee_product_asset:
   form:
     product:
       asset:
-        panel:
-          basket:
-            title: Mandje
-            empty_basket: Mandje is leeg
+        manage: Beheer assets
         manage_asset:
-          cancel: Annuleren
+          title: Beheer assets
+          cancel: Annuleer
+          confirm: Bevestig
+        title: Beheer assets
+        description: Kies de assets die u wilt toevoegen aan uw product
+        download: Download
+        remove: Verwijder
+        upload: Upload
+  enrich_asset:
+    grid:
+      edit: Bewerk eigenschappen van het kenmerk
   enrich_variation:
     popin:
-      delete:
-        title: Bevestig verwijderen
-        message: Weet u zeker dat u dit item wilt verwijderen?
       reset:
         title: Stel variaties opnieuw in
-        message: Weet u zeker dat u alle variaties wilt resetten?
   mass_upload:
+    menu: Upload assets
     btn:
       remove_all_files: Verwijder alle bestanden
-      delete: Verwijderen
-      import: Import
-      upload: Upload
+      import: Importeer
+      upload: Upload assets
     success:
       canceled: Uploaden met succes geannuleerd
       deleted: Geüploade bestand succesvol verwijderd
     error:
       list: Kan de reeds geüploade bestanden niet lezen
+      upload: Er is een fout opgetreden tijdens het uploaden
       delete: Kan bestand niet verwijderen van server
-      import: Er is een fout opgetreden tijdens import
+      import: Er is een fout opgetreden tijdens het importeren
+      invalid_locale: De landinstelling is uitgeschakeld of ongeldig
       exists: Een bestand met dezelfde naam is reeds geïmporteerd
       conflicts: Bestandsnamen conflict
-    grid:
-      medias: media
-      filename: bestandsnaam
-      filetype: bestandstype
-      status: status
-      progress: vooruitgang
-      actions: acties
-    action:
-      cancel: Annuleren
-      remove: Verwijderen
     status:
       added: Toegevoegd
       queued: In wachtrij gezet
       uploading: Aan het uploaden
       error: Fout
       success: Geslaagd
-pim_dashboard:
+  datagrid:
+    mass_action:
+      delete:
+        error: Fout opgetreden bij het verwijderen van geselecteerde assets, probeer het opnieuw.
+pim_import_export:
   widget:
     last_operations:
       job_type:
-        mass_upload: Massa upload
+        compute_completeness_of_products_linked_to_assets: Bereken volledigheid van producten gekoppeld aan assets
+pim_title:
+  pimee_product_asset_mass_upload: Upload assets
+  pimee_product_asset_index: Kenmerken
+  pimee_asset_categorytree_index: Categorieën
+batch_jobs:
+  apply_assets_mass_upload:
+    perform.label: Massa upload
+  yml_asset_channel_configuration_import:
+    label: Assets channel-configuratie in Yaml importeren
+    import_asset.label: Assets channel-configuratie in Yaml importeren
+  compute_completeness_of_products_linked_to_assets:
+    compute_completeness_of_products_linked_to_assets.label: Bereken volledigheid van producten gekoppeld aan assets
+jstree:
+  asset:
+    all: Alle assets
+    unclassified: Niet-geclassificeerde assets
+asset_grid:
+  label: Productkenmerken
+create_asset:
+  title: Creëer een kenmerk
+pimee_enrich.entity.channel:
+  module:
+    asset_transformation:
+      transformation: Transformatie
+      options: Opties
+      resize:
+        title: Formaat wijzigen
+        options:
+          width: '%value%px breedte'
+          height: '%value%px hoogte'
+      resolution:
+        title: Resolutie
+        options:
+          resolution: '%value%'
+          resolution-unit: '%value%'
+      scale:
+        options:
+          width: '%value%px breedte'
+          height: '%value%px hoogte'
+      thumbnail:
+        options:
+          width: '%value%px breedte'
+          height: '%value%px hoogte'
+pimee_enrich.mass_edit.asset:
+  step:
+    configure:
+      label: Configureer
+    confirm:
+      label: Bevestig
+  operation:
+    add_tag:
+      field: Labels
+pim_catalog_volume:
+  axis:
+    count_assets: Kenmerken
+    count_asset_categories: Kenmerk categorieën
+pim_menu:
+  tab:
+    asset: Kenmerken
+  item:
+    asset_category: Kenmerk categorieën
+pim_notification:
+  types:
+    mass_upload: Massa upload

@@ -236,3 +236,6 @@ pimee_enrich:
       options:
         width: 'Ancho px %value%'
         height: 'Alto px %value%'
+asset_tree:
+  remove:
+    error_linked: Este árbol de categorías no puede ser eliminado, está configurado como el árbol de categorías por defecto de un usuario.
