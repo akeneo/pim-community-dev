@@ -1,52 +1,6 @@
 akeneo_data_quality_insights:
-  title: Qualité des données
-  dqi_dashboard:
-    menu: Qualité des données
-    title: Vue d’ensemble de la qualité des données
-    helper:
-      title: Bienvenue dans le nouveau tableau de bord d'Akeneo !
-      description: Le tableau de bord "Data quality insights" permet de mesurer la qualité du catalogue, d'une catégorie ou d'une famille.
-      help_center: Consultez notre Help Center pour plus d'informations.
-    no_data_title: Désolé, nous n'avons pas encore assez de données pour afficher l'aperçu de la qualité des données.
-    no_data_subtitle: Merci de revenir plus tard.
-    time_period:
-      label: Période
-      daily: Quotidien
-      weekly: Hebdomadaire
-      monthly: Mensuel
-    legend:
-      excellent: Excellent
-      good: Bon
-      average: Correct
-      below_average: Inférieur à la moyenne
-      to_improve: A améliorer
-    average_grade: Note moyenne
-    category_modal_filter:
-      subtitle: Filtrer par catégorie
-      message: Choisissez les catégories à ajouter à votre tableau de bord
-    widgets:
-      family_modal:
-        subtitle: Ajouter des familles
-        message: Choisissez les catégories à ajouter à votre tableau de bord
-        max_families_msg: Vous ne pouvez pas ajouter plus de {{ count }} familles sur votre tableau de bord
-      category_modal:
-        subtitle: Ajouter des catégories
-        message: Choisissez les catégories à ajouter à votre tableau de bord
-        max_categories_msg: Vous ne pouvez pas ajouter plus de {{ count }} catégories sur votre tableau de bord
-      add_families: Ajouter des familles
-      add_categories: Ajouter des catégories
-      title: Titre
-      no_family_helper_msg: Choisissez les familles à ajouter à votre tableau de bord
-      no_category_helper_msg: Choisissez les catégories à ajouter à votre tableau de bord
-      see_in_grid: Voir sur la grille
-    time_axis:
-      day: jour
   product_evaluation:
     criteria:
-      completeness_of_required_attributes:
-        recommendation: Attributs requis manquants
-      completeness_of_non_required_attributes:
-        recommendation: Attributs non-requis manquants
       consistency_textarea_uppercase_words:
         recommendation: Attributs contenant trop de majuscules
       consistency_textarea_lowercase_words:
@@ -54,26 +8,12 @@ akeneo_data_quality_insights:
       consistency_spelling:
         recommendation: Attributs contenant des fautes d'orthographe
     axis:
-      enrichment:
-        title: Enrichissement
-        attributes_link: Afficher tous les attributs manquants
-        success: Tous les attributs sont renseignés. Félicitations !
       consistency:
         title: Cohérence
         attributes_link: Tous les attributs améliorables
         success: Le contenu est cohérent. Félicitations !
-    messages:
-      error:
-        axis_error: En raison d'une erreur, la note n'a pas pu être entièrement calculée. Réessayez plus tard.
-        criterion_error: La note n'a pas pu être calculée.
-      success:
-        criterion: tout est correct.
-      grading_in_progress: Calcul en cours
-      axis_grading_in_progress: Calcul en cours
-      too_many_attributes: Vous avez {{ count }} attributs à améliorer.
   product_edit_form:
     attribute_filter:
-      all_missing_attributes: Tous les attributs manquants
       all_improvable_attributes: Tous les attributs améliorables
     spellcheck_popover:
       title: Corrections
@@ -84,5 +24,3 @@ akeneo_data_quality_insights:
     quality:
       to_improve: A améliorer
       good: Bon
-pim_title:
-  akeneo_data_quality_insights_dashboard: Qualité des données
