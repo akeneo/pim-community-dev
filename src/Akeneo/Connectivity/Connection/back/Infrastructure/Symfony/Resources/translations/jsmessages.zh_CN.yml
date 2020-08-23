@@ -1,0 +1,88 @@
+pim_menu:
+  navigation_back:
+    connection: 返回连接
+  navigation_block:
+    connection: 连接导航
+  item:
+    connection_settings_edit: 连接设置
+    connection_monitoring: 监测
+pim_title:
+  akeneo_connectivity_connection_settings_edit: 连接设置
+  akeneo_connectivity_connection_settings_any: 连接设置
+  akeneo_connectivity_connection_error_management_connection_monitoring: 连接监测
+akeneo_connectivity.connection:
+  connection:
+    auditable: 在仪表盘中跟踪此连接
+  edit_connection:
+    credentials:
+      wrong_credentials_combinations:
+        single: 我们注意到，您在此连接中使用的用户名是 {{ wrong_username }} （上次使用时间为 {{ date }} 的 {{ time }}）。我们建议改用用户名 {{ good_username }}。
+        link: 了解使用它的理由。
+        link_list: 了解我们建议使用此用户名的理由。
+        several: 我们注意到，您在此连接中没有使用用户名 {{ good_username }} 。
+        list: '以下是过去 7 天使用过的用户名列表：'
+        username_date: '在 {{ date }} 的 {{ time }} 使用了 {{ wrong_username }} '
+  auditable_helper:
+    message: 您只能跟踪“源”和“目的地”连接。
+  grid.wrong_credentials_combination_helper: 下面的一些连接没有使用其连接用户名，已用黄色警告标志加以识别。
+  dashboard:
+    connection_selector:
+      title:
+        destination: 目的地连接
+    charts:
+      inbound: 入站
+      outbound: 出站
+      number_of_products_created: 产品已创建
+      number_of_products_updated: 产品已更新
+      number_of_products_sent: 产品已发送
+      legend:
+        during_the_last_seven_days: '过去 7 天总计：'
+    error_management:
+      data_source_error_chart:
+        section:
+          title: 源连接错误
+          helper: 在这里可以查看错误总数，包括业务错误。
+        chart:
+          title: 每天的错误数
+      widget:
+        title: 每个源连接的业务错误
+        over_the_last_seven_days: 过去 7 天
+        business_errors: 业务错误
+    no_connection:
+      title:
+        data_source: 想要看到一些关于您的源连接的精致图表？
+        data_destination: 想要看到一些关于您的目的地连接的精致图表？
+      message_with_permission:
+        message: 创建并开始跟踪第一个
+  error_management:
+    connection_monitoring:
+      title: 监测
+      helper:
+        title: '{0} 您有 {{ count }} 个错误 |[1,Inf] 您有 {{ count }} 个错误'
+        description: 在这里，您可以看到过去 7 天内此连接的每个错误的详细信息。错误数限制为 100 个。
+        link: 要了解如何解决，请访问 API 帮助中心。
+      search_filter:
+        placeholder: 搜索错误消息
+        result_count: '{0} 无结果 |[1,Inf] {{ count }} 个结果'
+      error_list:
+        date_time_column:
+          title: 日期和时间
+        content_column:
+          title: 业务错误消息
+          product_name: 产品名称
+          with_id: 和 ID
+        details_column:
+          title: 详细信息
+          locale: 区域
+          channel: 渠道
+          family: 品类
+      no_error:
+        title: 太棒了！没有发现错误！
+      not_auditable:
+        title: 未受监测的连接
+        description:
+          1: 要跟踪此连接上的错误，
+          2: 请在设置中
+          3: 激活监测。
+      not_data_source:
+        title: 目前，监测页面仅对源连接可用。

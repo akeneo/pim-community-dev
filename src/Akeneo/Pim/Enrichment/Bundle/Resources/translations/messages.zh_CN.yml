@@ -1,3 +1,3 @@
-No products to remove: 没有产品可删除
-"dot (.)": 点 （.）
-"comma (,)": 逗号（,）
+tree:
+  remove:
+    error_linked: 无法删除此类别树，其已链接到一个渠道

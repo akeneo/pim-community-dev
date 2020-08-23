@@ -1,46 +1,60 @@
-An identifier attribute already exists.: 属性ID已经存在
-Attribute code may contain only letters, numbers and underscore: 属性代码只能包含字母，数字和下划线
-Attribute code may contain only letters (at least one), numbers and underscores: 属性代码只能包含字母（至少1个），数字和下划线
-This attribute type can't be used as a grid filter: 此属性类型不能用作数据筛选器
-This code is not available: 代码不可用
-This attribute type must be required: 此属性的类型是必填的
-This attribute type can't be required: 此属性的类型不是必填的
-This attribute type can't have unique value: 此属性类型不需要有唯一的值
-No default value may be specified for this attribute type: 对该属性类型可能没有指定默认的值
-This value should be Yes or No: 此值应该是Yes或No
-This value should not be blank: 该值不应该为空
-Option code may contain only letters, numbers and underscores: 选项代码仅可包含字母，数字和下划线
-Option code may contain only letters (at least one), numbers and underscores: 选项代码仅可包含字母（至少1个），数字和下划线
-This value should not be a decimal.: 该值不应该为小数
-'The file extension is not allowed (allowed extensions: %extensions%).': '不允许的文件扩展名 (允许扩展︰ %extensions%)。'
-"The value %value% is already set on another product for the unique attribute %attribute%": 值 %value% 已经设置为另一个产品的唯一属性 %attribute%
-regex.comma_or_semicolon.message: 此字段不应该包含任何逗号或分号。
-file.extensions.message: '不允许的文件扩展名 (允许扩展︰ %extensions%)。'
-"This type of value expects the use of {{ decimal_separator }} to separate decimals.": 这种类型的值可以使用 {{ decimal_separator }} 来分隔十进制数字。
-"This type of value expects the use of dot (.) to separate decimals.": 这种类型的值可以使用点（.）来分隔十进制数字。
-"This type of value expects the use of comma (,) to separate decimals.": 这种类型的值可以使用逗号（，）来分隔十进制数字。
-"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": 这种类型的值可以使用阿拉伯语十进制分隔符（,）来分隔十进制数字。
-"This type of value expects the use of the format {{ date_format }} for dates.": 这种类型的值可以使用这种格式 {{ date_format }} 来分隔十进制数字。
+An identifier attribute already exists.: 标识符属性已存在。
+Attribute code may contain only letters, numbers and underscore: 属性代码只能包含字母、数字和下划线
+Attribute code may contain only letters (at least one), numbers and underscores: 属性代码只能包含字母（至少 1 个）、数字和下划线
+Attribute code may not contain line-feed characters: 属性代码不能包含换行字符
+This attribute type can't be used as a grid filter: 此属性类型不能用作网格筛选器
+This code is not available: 此代码不可用
+This attribute type must be required: 此属性类型为必填项
+This attribute type can't be required: 此属性类型非必填项
+This attribute type can't have unique value: 此属性类型的值非唯一
+No default value may be specified for this attribute type: 此属性类型没有指定的默认值
+This value should be Yes or No: 该值应是 Yes 或 No
+This value should not be blank: 该值不应为空
+Option code may contain only letters, numbers and underscores: 选项代码仅可包含字母、数字和下划线
+Option code may contain only letters (at least one), numbers and underscores: 选项代码仅可包含字母（至少1个）、数字和下划线
+This value should not be a decimal.: 该值不应为小数。
+"The %attribute% attribute requires a non-decimal value, and %value% is not a valid value.": 属性 %attribute% 必须为非小数值， %value% 不是有效值。
+'The file extension is not allowed (allowed extensions: %extensions%).': '不允许的文件扩展名 (允许的扩展名︰ %extensions%)。'
+"The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.": 属性 {{ attribute_code }} 的同一个值不能出现超过一次。已在其他产品上设置了 {{ value }} 值。
+The same identifier is already set on another product: 已在另一产品上设置了同一标识符
+regex.comma_or_semicolon_or_surrounding_space.message: 此字段不应包含任何逗号、分号或前/后空格
+"The attribute \"%attributeCode%\" is not a metric attribute.": 属性 "%attributeCode%" 不属于测量属性。
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": 单位“%unitCode%”不存在，或不属于指定属性“%attributeCode%”的默认测量单位群。
+"The %attribute% attribute requires a string, a %givenType% was detected.": 属性 %attribute% 必须为字符串，而检测到的是 %givenType%。
+"The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.": 属性 {{ attribute_code }} 必须为 {{ limit }} 或更晚的日期。
+"The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": 属性 {{ attribute_code }} 必须为 {{ limit }} 或更早的日期。
+"The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": 属性 {{ attribute }} 必须为数字，而提交的值 {{ value }} 不是。
+"The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": 属性 %attribute% 不能超过 %limit% 个字符。提交的值太长。
+'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': '属性 {{ attribute_code }} 必须符合以下正则表达式： {{ pattern }}。'
+'The {{ attribute_code }} attribute cannot be empty.': '属性 {{ attribute_code }} 不能为空。'
 pim_catalog:
   constraint:
-    product_identifier: 这些标识符"%s"并不存在。
-    0: 发生意外错误。
-    100: 非预期的值
-    101: 此空需要填入一个布尔值。
-    102: 此空需要填入一个浮点值。
-    103: 此空需要填入一个整数值。
-    104: 此空需要填入一个整数值。
-    105: 此空需要填入一个字符串。
-    106: 此空需要填入一个数组
-    107: 此空需要填入一个数组的数组。
-    200: 发生了内部错误.
-    201: 发生了内部错误.
-    202: 此空需要填入一个整数值。
-    203: 此空需要填入一个字符串。
-    204: 此空需要填入一个字符串。
-    205: 发生了内部错误.
-    300: 此空需要填入一个有效的实体代号
-    301: 此空需要填入一个有效的范围和本地语言
-    302: 此空需要填入一个有效的范围
-    303: 此空需要填入一个有效的关联格式
-
+    family_variant_axes_attribute_type: 变量轴 "%axis%" 必须为布尔值，简单选择，简单参考数据，或测量值
+    0: An unexpected error occurred.
+    100: Non-expected value
+    101: This field expects a boolean value.
+    102: This field expects a float value.
+    103: This field expects an integer value.
+    104: This field expects a numeric value.
+    105: This field expects a string value.
+    106: This field expects an array value.
+    107: This field expects an array of arrays as value.
+    200: An internal error occurred
+    201: An internal error occurred
+    202: This field expects a numeric value.
+    203: This field expects a string value.
+    204: This field expects a string value.
+    205: An internal error occurred
+    300: This field expects a valid entity code.
+    301: This field expects a valid scope and locale.
+    302: This field expects a valid scope.
+    303: This field expects a valid association format.
+    quantified_associations:
+      unexpected_link_type: 链接类型"{{ value }}"不存在。您只能关联产品或产品模型。
+      max_associations: 已达到关联上限数目 {{ limit }}。请删除一些现有关联，然后再添加新的关联。
+      invalid_quantity: '数量"{{ value }}"无效。请输入介于 {{ min }} 和 {{ max }} 之间的值。'
+      products_do_not_exist: "以下产品不存在： {{ values }}。请确保这些产品在此期间未被删除。"
+      product_models_do_not_exist: "以下产品模型不存在： {{ values }}。请确保这些产品模型在此期间未被删除。"
+      association_type_does_not_exist: 此关联类型不存在。请确保在此期间其未被删除。
+      association_type_is_not_quantified: '“{{ association_type }}”不能用于关联数量。请选择其他关联类型用于关联数量，或设置“关联”属性。'
+      association_type_should_not_be_quantified: '"{{ association_type }}"只能用于关联数量。请选择其他关联类型或使用“quantified_associations”属性。'

@@ -1,0 +1,94 @@
+pim_notification:
+  types:
+    settings: 设置 
+flash:
+  comment:
+    create:
+      success: 您的评论已经成功创建。
+      error: 创建评论时出错。
+    delete:
+      success: 已成功删除您的评论。
+      error: 删除您的评论时出错。
+    reply:
+      success: 您的回复已经成功创建。
+      error: 创建回复时出错。
+pim_enrich.entity.product:
+  label: 产品
+  uppercase_label: 产品
+  plural_label: 产品
+  flash:
+    update:
+      success: 成功更新产品。
+      fail: 无法更新产品。
+      fields_not_ready: "现在无法保存该产品。 以下字段未准备好: {{ fields }}"
+      already_in_upload: 在区域"{{ locale }}"和范围"{{ scope }}"中，已有针对此属性的文件在上传
+      file_upload: 上传文件时发生错误
+    delete:
+      success: 产品被成功删除。
+      fail: 产品无法删除。
+    create:
+      success: 成功创建产品
+      fail: 没有属性被配置为产品标识符，或者您没有编辑的权限。
+  page_title:
+    index: "]-Inf, 1]{{ count }} 个结果|]1, Inf[{{ count }} 个结果"
+  module:
+    attribute:
+      add_option: 添加选项
+    associations:
+      title: 关联 ({{ count }})
+      number_of_quantified_associations: "{{ productCount }} 个产品和 {{ productModelCount }} 个产品模型"
+      manage_description: 选择想要与产品“{{ productLabel }}”关联的产品
+      mass_edit_description: 选择想要关联到选中的 {{ productCount }} 个产品的产品
+      variant_products: 变型产品
+      quantified:
+        quantity: 数量
+      search:
+        placeholder: 搜索标签或标识符
+      no_result: 抱歉，找不到与搜索相符的结果。
+      no_data: 没有关联的产品。
+      remove: 删除关联
+      edit: 编辑产品
+      limit_reached: 添加到此产品的关联不能超过 {{ maxLimit }} 个。
+      variant_updated: 您已更新变型的数量，此数量将不再同步。
+    comment:
+      removed_author: 已删除用户
+pim_enrich.mass_edit.product:
+  confirm: "{0}您即将更新一些产品的以下信息，请确认。{1}您即将更新一件产品的以下信息，请确认。|]1, Inf[您即将更新 {{ itemsCount }} 件产品的以下信息，请确认。"
+  step:
+    launch_error:
+      label: 启动批量编辑操作时出错
+  operation:
+    change_status:
+      label_count: "{0}更改一些<span class=\"AknFullPage-title--highlight\">产品</span>的状态|{1}更改 <span class=\"AknFullPage-title--highlight\">1 件产品</span>的状态|]1, Inf[更改 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>的状态"
+    edit_common:
+      label_count: "{0}编辑一些<span class=\"AknFullPage-title--highlight\">产品</span>的属性值|{1}编辑<span class=\"AknFullPage-title--highlight\"> 1 件产品</span>的属性值|]1, Inf[编辑 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品的属性值</span>"
+    add_attribute_value:
+      label_count: "{0}为一些<span class=\"AknFullPage-title--highlight\">产品</span>添加属性值|{1}为 <span class=\"AknFullPage-title--highlight\">1 件产品</span>添加属性|]1, Inf[为 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>添加属性值"
+    change_family:
+      label_count: "{0}更改一些<span class=\"AknFullPage-title--highlight\">产品</span>的品类|{1}更改 <span class=\"AknFullPage-title--highlight\">1 件产品</span>的品类|]1, Inf[更改 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>的品类"
+    add_to_group:
+      label_count: "{0}将一些<span class=\"AknFullPage-title--highlight\">产品</span>添加到分组|{1}将 <span class=\"AknFullPage-title--highlight\">1 件产品</span>添加到分组|]1, Inf[将 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>添加到分组"
+    add_to_category:
+      label_count: "{0}将一些<span class=\"AknFullPage-title--highlight\">产品</span>添加到类别|{1}将 <span class=\"AknFullPage-title--highlight\">1 件产品</span>添加到类别|]1, Inf[将 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>添加到类别"
+    move_to_category:
+      label_count: "{0}将一些<span class=\"AknFullPage-title--highlight\">产品</span>在类别之间移动|{1}将 <span class=\"AknFullPage-title--highlight\">1 件产品</span>在类别之间移动|]1, Inf[将 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>在类别之间移动"
+    remove_from_category:
+      label_count: "{0}从类别中移除一些<span class=\"AknFullPage-title--highlight\">产品</span>|{1}从类别中移除 <span class=\"AknFullPage-title--highlight\">1 件产品</span>|]1, Inf[从类别中移除 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>"
+      no_update: 没有选中的类别来从中删除选定的产品。
+    add_to_existing_product_model:
+      label_count: "{0}将一些<span class=\"AknFullPage-title--highlight\">产品</span>添加到现有的产品模型|{1}将 <span class=\"AknFullPage-title--highlight\">1 件产品</span>添加到现有的产品模型|]1, Inf[将 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>添加到现有的产品模型"
+    associate_to_product_and_product_model:
+      label_count: "{0}将一些<span class=\"AknFullPage-title--highlight\">产品</span>关联到产品或产品模型|{1}将 <span class=\"AknFullPage-title--highlight\">1 件产品关联到产品或产品模型</span>|]1, Inf[将 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>关联到产品或产品模型。"
+    change_parent_product_model:
+      label_count: "{0}更改一些<span class=\"AknFullPage-title--highlight\">产品</span>的父产品模型|{1}更改 <span class=\"AknFullPage-title--highlight\">1 件产品</span>的父产品模型|]1, Inf[更改 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>的父产品模型"
+pim_datagrid:
+  mass_action:
+    delete:
+      error: 尝试删除选定的产品时发生错误，请重试。
+    selected:
+      family: "]-Inf, 1]已选定 {{ count }} 个品类|]1, Inf[已选定 {{ count }} 个品类"
+      product: "]-Inf, 1]已选定 {{ count }} 个结果|]1, Inf[已选定 {{ count }} 个结果"
+error:
+  removing:
+    group: 无法删除分组
+    association type: 无法删除关联类型
