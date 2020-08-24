@@ -302,7 +302,7 @@ class ProductController
     {
         $product = $this->productRepository->findOneByIdentifier($code);
         if (null === $product) {
-            throw new NotFoundHttpException(sprintf('Product "%s" does not exist.', $code));
+            throw new NotFoundHttpException(sprintf('Product "%s" does not exist or you do not have permission to access it.', $code));
         }
 
         $this->remover->remove($product);
