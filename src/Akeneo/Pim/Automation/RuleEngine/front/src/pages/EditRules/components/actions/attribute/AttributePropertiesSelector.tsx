@@ -33,7 +33,7 @@ import { useActiveCurrencies } from '../../../hooks/useActiveCurrencies';
 import { Router } from '../../../../../dependenciesTools';
 import { getAttributeByIdentifier } from '../../../../../repositories/AttributeRepository';
 import get from 'lodash/get';
-import { validateAttribute } from '../attribute/attribute.utils';
+import { validateAttribute } from './attribute.utils';
 
 type Props = {
   operationLineNumber: number;

@@ -9,7 +9,7 @@ import {
   scopes,
 } from '../../../../../factories';
 import { AttributeType } from '../../../../../../../src/models';
-import { AttributePropertiesSelector } from '../../../../../../../src/pages/EditRules/components/actions/calculate/AttributePropertiesSelector';
+import { AttributePropertiesSelector } from '../../../../../../../src/pages/EditRules/components/actions/attribute/AttributePropertiesSelector';
 
 jest.mock('../../../../../../../src/components/Select2Wrapper/Select2Wrapper');
 jest.mock(
