@@ -20,7 +20,7 @@ class BooleanTranslatorSpec extends ObjectBehavior
         $this->supports('something_else', 'name')->shouldReturn(false);
     }
 
-    function it_translates_associations_and_quantified_associations_columns(
+    function it_translates_boolean_attribute_values(
         LabelTranslatorInterface $labelTranslator
     ) {
         $labelTranslator->translate('pim_common.yes', 'fr_FR', '[yes]')->willReturn('Oui');
