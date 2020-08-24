@@ -1,10 +1,9 @@
-# TODO RAC-131
-# services:
-#   pim_enrich.connector.flat_translators.attribute_value_translator.boolean:
-#     class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatAttributeValueTranslator\BooleanFlatTranslator
-#     arguments:
-#       - '@pim_catalog.localization.translator.label'
-#     tags: [{ name: pim_enrich.connector.flat_translators.attribute_value_translator }]
+services:
+  pim_enrich.connector.flat_translators.attribute_value.boolean:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValue\BooleanTranslator
+    arguments:
+      - '@pim_catalog.localization.translator.label'
+    tags: [{ name: pim_enrich.connector.flat_translators.attribute_value_translator }]
 
 #   pim_enrich.connector.flat_translators.attribute_value_translator.metric_unit:
 #     class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatAttributeValueTranslator\MetricUnitFlatTranslator
