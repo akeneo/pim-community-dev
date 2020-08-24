@@ -65,9 +65,7 @@ abstract class AbstractItemMediaWriter implements
     /** @var String */
     protected $jobParamFilePath;
 
-    /**
-     * @var FlatTranslatorInterface
-     */
+    /** @var FlatTranslatorInterface */
     private $flatTranslator;
 
     /**
