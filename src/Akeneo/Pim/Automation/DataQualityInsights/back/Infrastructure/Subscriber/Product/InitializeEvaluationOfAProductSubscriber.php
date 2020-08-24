@@ -7,7 +7,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\Consolid
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -32,29 +31,25 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
     /** @var ConsolidateAxesRates */
     private $consolidateProductAxisRates;
 
-    /** @var IndexProductRates */
-    private $indexProductRates;
-
     public function __construct(
         FeatureFlag $dataQualityInsightsFeature,
         CreateCriteriaEvaluations $createProductsCriteriaEvaluations,
         LoggerInterface $logger,
         EvaluatePendingCriteria $evaluatePendingCriteria,
-        ConsolidateAxesRates $consolidateProductAxisRates,
-        IndexProductRates $indexProductRates
+        ConsolidateAxesRates $consolidateProductAxisRates
     ) {
         $this->dataQualityInsightsFeature = $dataQualityInsightsFeature;
         $this->createProductsCriteriaEvaluations = $createProductsCriteriaEvaluations;
         $this->logger = $logger;
         $this->evaluatePendingCriteria = $evaluatePendingCriteria;
         $this->consolidateProductAxisRates = $consolidateProductAxisRates;
-        $this->indexProductRates = $indexProductRates;
     }
 
     public static function getSubscribedEvents()
     {
         return [
-            StorageEvents::POST_SAVE => 'onPostSave',
+            // Priority greater than zero to ensure that the evaluation is done prior to the re-indexation of the product in ES
+            StorageEvents::POST_SAVE => ['onPostSave', 10],
         ];
     }
 
@@ -77,7 +72,6 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
         $this->initializeCriteria($productId);
         $this->evaluatePendingCriteria->evaluateSynchronousCriteria([$productId]);
         $this->consolidateProductAxisRates->consolidate([$productId]);
-        $this->indexProductRates->execute([$productId]);
     }
 
     private function initializeCriteria($productId)
