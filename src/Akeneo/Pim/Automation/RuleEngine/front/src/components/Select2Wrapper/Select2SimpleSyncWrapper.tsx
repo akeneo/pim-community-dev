@@ -10,7 +10,7 @@ type Props = Select2GlobalProps & {
   data: Select2Option[];
   onChange?: (value: Select2Value) => void;
   value: Select2Value;
-  name: string;
+  name?: string;
   validation?: { required?: string; validate?: (value: any) => string | true };
 };
 

@@ -21,13 +21,14 @@ import {
   createTextareaAttributeCondition,
   createAssetCollectionAttributeCondition,
   createSimpleMultiReferenceEntitiesAttributeCondition,
+  AttributeType,
 } from '../../../../models/';
 import { TextBoxBlue } from '../TextBoxBlue';
 import { useProductsCount } from '../../hooks';
 import { IndexedScopes } from '../../../../repositories/ScopeRepository';
 import { ConditionLine } from './ConditionLine';
 import { ProductsCount } from '../ProductsCount';
-import { AddConditionButton } from './AddConditionButton';
+import { AddFieldButton } from '../../../../components/Selectors/AddFieldButton';
 import { FormData } from '../../edit-rules.types';
 import startImage from '../../../../assets/illustrations/start.svg';
 import {
@@ -162,6 +163,31 @@ const RuleProductSelection: React.FC<Props> = ({
     createCondition(fieldCode).then(condition => append(condition));
   };
 
+  // Add here the fields handled by the rule conditions.
+  // Be sure that the associated UI component exists to display it correctly.
+  const SYSTEM_FIELDS = [
+    'categories',
+    'family',
+    'groups',
+    'enabled',
+    'completeness',
+    'created',
+    'updated',
+  ];
+
+  const ATTRIBUTE_TYPES = [
+    AttributeType.ASSET_COLLECTION,
+    AttributeType.BOOLEAN,
+    AttributeType.DATE,
+    AttributeType.NUMBER,
+    AttributeType.OPTION_MULTI_SELECT,
+    AttributeType.OPTION_SIMPLE_SELECT,
+    AttributeType.REFERENCE_ENTITY_COLLECTION,
+    AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
+    AttributeType.TEXT,
+    AttributeType.TEXTAREA,
+  ];
+
   const isActiveConditionField = React.useCallback(
     (fieldCode: string) => {
       return (getValues({ nest: true })?.content?.conditions || []).some(
@@ -198,9 +224,17 @@ const RuleProductSelection: React.FC<Props> = ({
             status={productsCount.status}
           />
           <AddConditionContainer>
-            <AddConditionButton
-              handleAddCondition={handleAddCondition}
-              isActiveConditionField={isActiveConditionField}
+            <AddFieldButton
+              handleAddField={handleAddCondition}
+              isFieldAlreadySelected={isActiveConditionField}
+              filterSystemFields={SYSTEM_FIELDS}
+              filterAttributeTypes={ATTRIBUTE_TYPES}
+              containerCssClass={'add-conditions-button'}
+              dropdownCssClass={'add-conditions-dropdown'}
+              placeholder={translate(
+                'pimee_catalog_rule.form.edit.add_conditions'
+              )}
+              id={'add_conditions'}
             />
           </AddConditionContainer>
         </HeaderPartContainer>

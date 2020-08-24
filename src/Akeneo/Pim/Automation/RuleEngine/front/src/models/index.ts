@@ -6,3 +6,4 @@ export * from './Family';
 export * from './Category';
 export * from './Attribute';
 export * from './Group';
+export * from './MeasurementFamily';

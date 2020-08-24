@@ -38,7 +38,7 @@ const registerConditions = (
 
 const registerActions = (register: Control['register'], actions: Action[]) => {
   if (actions?.length) {
-    actions.forEach((_, index) => {
+    actions.forEach((action, index) => {
       register({ name: `content.actions[${index}].field`, type: 'custom' });
       register({ name: `content.actions[${index}].items`, type: 'custom' });
       register({ name: `content.actions[${index}].type`, type: 'custom' });
@@ -64,6 +64,19 @@ const registerActions = (register: Control['register'], actions: Action[]) => {
         name: `content.actions[${index}].include_children`,
         type: 'custom',
       });
+
+      if (typeof action.destination !== 'undefined') {
+        ['field', 'scope', 'locale', 'unit'].forEach(key =>
+          register({
+            name: `content.actions[${index}].destination.${key}`,
+            type: 'custom',
+          })
+        );
+      }
+      register({
+        name: `content.actions[${index}].round_precision`,
+        type: 'custom',
+      });
     });
   }
 };
@@ -87,8 +100,22 @@ const transformFormData = (formData: FormData): Payload => {
     priority: Number(formData.priority),
     content: {
       conditions: conditions?.filter(filterDataContentValues) ?? [],
-      actions:
-        formData?.content?.actions?.filter(filterDataContentValues) ?? [],
+      actions: (
+        formData?.content?.actions?.filter(filterDataContentValues) ?? []
+      ).map((action: any) => {
+        if (
+          action.type === 'calculate' &&
+          Array.isArray(action.full_operation_list)
+        ) {
+          [
+            action.source,
+            ...action.operation_list
+          ] = action.full_operation_list;
+          delete action.full_operation_list;
+        }
+
+        return action;
+      }),
     },
   };
 };
@@ -118,6 +145,20 @@ const doExecuteOnSave = async (
   }
 };
 
+const createCalculateDefaultValues = (formData: FormData): FormData => {
+  if (formData.content && formData.content.actions) {
+    formData.content.actions = formData.content.actions.map((action: any) => {
+      if (action && action.type === 'calculate') {
+        action.full_operation_list = [action.source, ...action.operation_list];
+      }
+
+      return action;
+    });
+  }
+
+  return formData;
+};
+
 const submitEditRuleForm = (
   ruleDefinitionCode: string,
   translate: Translate,
@@ -145,6 +186,7 @@ const submitEditRuleForm = (
       body: transformFormData(formData),
     });
     if (updateResponse.ok) {
+      formData = createCalculateDefaultValues(formData);
       reset(formData);
       registerConditions(register, formData.content?.conditions || []);
       registerActions(register, formData.content?.actions || []);
@@ -208,7 +250,9 @@ const useSubmitEditRuleForm = (
   ruleDefinition: RuleDefinition,
   locales: Locale[]
 ) => {
-  const defaultValues = createFormDefaultValues(ruleDefinition, locales);
+  const defaultValues = createCalculateDefaultValues(
+    createFormDefaultValues(ruleDefinition, locales)
+  );
   const formMethods = useForm<FormData>({
     defaultValues,
   });

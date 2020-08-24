@@ -2,7 +2,7 @@ import { denormalizeOperand, Operand } from './Operand';
 
 export enum Operator {
   ADD = 'add',
-  SUBSTRACT = 'substract',
+  SUBTRACT = 'subtract',
   MULTIPLY = 'multiply',
   DIVIDE = 'divide',
 }

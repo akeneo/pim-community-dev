@@ -1,5 +1,10 @@
 import React, { forwardRef } from 'react';
 import { Label } from '../Labels';
+import styled from 'styled-components';
+
+const InputElement = styled.input<{ small?: boolean }>`
+  width: ${({ small }) => (small ? '95px' : '100%')};
+`;
 
 type Props = {
   ariaInvalid?: boolean;
@@ -7,6 +12,7 @@ type Props = {
   label?: string;
   hiddenLabel?: boolean;
   hasError?: boolean;
+  small?: boolean;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 const Input = forwardRef<HTMLInputElement, Props>(
@@ -26,7 +32,7 @@ const Input = forwardRef<HTMLInputElement, Props>(
         ) : (
           children
         )}
-        <input
+        <InputElement
           aria-invalid={ariaInvalid}
           aria-describedby={ariaDescribedBy}
           id={id}

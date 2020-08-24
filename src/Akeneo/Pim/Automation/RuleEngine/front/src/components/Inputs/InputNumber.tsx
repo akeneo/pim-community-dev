@@ -6,7 +6,9 @@ const InputNumber = React.forwardRef<HTMLInputElement, InputProps>(
     const { hasError, ...remainingProps } = props;
     return (
       <Input
-        className={`AknTextField${hasError ? ' AknTextField--error' : ''}`}
+        className={`AknTextField AknNumberField${
+          hasError ? ' AknTextField--error' : ''
+        }`}
         type='number'
         ref={forwardedRef}
         {...remainingProps}

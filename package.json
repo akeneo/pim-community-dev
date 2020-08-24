@@ -53,6 +53,7 @@
     "p-limit": "^2.0.0",
     "p-queue": "^6.2.1",
     "react-draft-wysiwyg": "^1.12.13",
+    "react-dragula": "^1.1.17",
     "react-redux": "^7.1.0",
     "redux": "^4.0.0",
     "redux-thunk": "^2.2.0",
