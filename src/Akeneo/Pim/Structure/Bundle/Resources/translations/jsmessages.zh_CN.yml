@@ -1,0 +1,50 @@
+pim_enrich.entity.family:
+  label: 品类
+  uppercase_label: 品类
+  plural_label: 品类
+  flash:
+    update:
+      success: 品类已成功更新。
+      fail: 品类更新时出错。
+      cant_remove_attribute_as_label: 不能删除用作标签的属性
+      cant_remove_attribute_as_image: 不能删除用作主图片的属性
+    create:
+      success: 品类已成功创建
+    delete:
+      success: 品类已成功移除
+      fail: 不能删除该品类
+pim_enrich.entity.attribute_option:
+  flash:
+    create:
+      fail: 尝试创建属性选项时出错
+  module:
+    edit:
+      options_labels: 选项标签
+      options_settings: 选项设置
+      options_codes: 选项代码
+      option_code: 选项代码
+      new_option_code: new_option
+      no_options_msg: 抱歉，没有任何选项！
+      add_option: 点击此处添加选项
+      delete_confirmation_title_msg: 从您的选项中删除"{{ optionCode }}" ？
+      delete_confirmation_subtitle_msg: 确定要删除此选项？此操作无法撤消。
+pim_enrich.entity.association_type:
+  property:
+    is_two_way: 双向关联
+    is_quantified: 关联数量
+  module:
+    create:
+      title: 创建新的关联类型
+      is_two_way:
+        message_on_read_only: 关联类型可以是量化或双向的，要选择此类型，请取消选中另一个
+      is_quantified:
+        message_on_read_only: 关联类型可以是量化或双向的，要选择此类型，请取消选中另一个
+  hint: <a href="{{link}}" target="_blank">在此文章中</a>，您可找到创建自己关联类型所需的一切信息。
+pim_enrich.entity.attribute:
+  property:
+    default_metric_unit:
+      label: 默认测量单位
+    metric_family:
+      label: 测量单位群
+    type:
+      pim_catalog_metric: 测量

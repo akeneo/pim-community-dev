@@ -1,0 +1,89 @@
+pim_menu:
+  navigation_back:
+    connection: Terug naar verbindingen
+  navigation_block:
+    connection: Verbindingen navigatie
+  item:
+    connection_settings: Verbindingen
+    connection_settings_edit: Verbindingen instellingen
+    connection_monitoring: Monitoring
+pim_title:
+  akeneo_connectivity_connection_settings_edit: Verbindingen instellingen
+  akeneo_connectivity_connection_settings_any: Verbindingen instellingen
+  akeneo_connectivity_connection_error_management_connection_monitoring: Verbindingen monitoren
+akeneo_connectivity.connection:
+  connection:
+    auditable: Volg deze verbinding in het dashboard
+  edit_connection:
+    credentials:
+      wrong_credentials_combinations:
+        single: We hebben gemerkt dat u de {{ wrong_username }} gebruikersnaam voor deze verbinding gebruikt (laatst gebruikt op {{ date }} om {{ time }}). We raden het gebruik van de {{ good_username }} gebruikersnaam aan.
+        link: Ontdek waarom je het zou moeten gebruiken.
+        link_list: Ontdek waarom we deze gebruikersnaam aanraden.
+        several: We zien dat je niet de gebruikersnaam {{ good_username }} voor deze verbinding gebruikt.
+        list: 'Hier is de lijst met gebruikersnamen die de afgelopen 7 dagen werden gebruikt:'
+        username_date: '{{ wrong_username }} op {{ date }} om {{ time }}'
+  auditable_helper:
+    message: U kunt alleen Bron- en bestemmingsverbindingen volgen.
+  grid.wrong_credentials_combination_helper: Sommige van de onderstaande verbindingen gebruiken niet hun verbindingsgebruikersnamen. Ze worden geïdentificeerd door een gele waarschuwingsteken.
+  dashboard:
+    connection_selector:
+      title:
+        destination: Bestemming verbindingen
+    charts:
+      inbound: Inkomend
+      outbound: Uitgaand
+      number_of_products_created: Producten aangemaakt
+      number_of_products_updated: Producten geüpdatet
+      number_of_products_sent: Producten verzonden
+      legend:
+        during_the_last_seven_days: 'Totaal van de laatste 7 dagen:'
+    error_management:
+      data_source_error_chart:
+        section:
+          title: Fouten op bronverbindingen
+          helper: Hier kunt u het totale aantal fouten zien, inclusief verwerkingsfouten.
+        chart:
+          title: Aantal fouten per dag
+      widget:
+        title: Verwerkingsfouten per bronverbinding
+        over_the_last_seven_days: Over de afgelopen 7 dagen
+        business_errors: Verwerkingsfouten
+    no_connection:
+      title:
+        data_source: Wilt u enkele mooie grafieken zien over uw bronverbindingen?
+        data_destination: Wilt u enkele mooie grafieken zien over uw bestemmingsverbindingen?
+      message_with_permission:
+        message: Maak en begin met volgen van uw eerste
+  error_management:
+    connection_monitoring:
+      title: Verbindingsmonitor
+      helper:
+        title: '{0} U heeft {{ count }} fout |[1,Inf] U heeft {{ count }} fouten'
+        description: Hier kunt u details van alle fouten zien voor deze verbinding van de laatste 7 dagen. Het aantal fouten is beperkt tot 100.
+        link: Wil je leren hoe je dit kunt oplossen, bezoek dan het API-hulpcentrum.
+      search_filter:
+        placeholder: Zoeken in foutmeldingen
+        result_count: '{0} Geen resultaat |[1,Inf] {{ count }} resultaten'
+      error_list:
+        date_time_column:
+          title: Dag en tijd
+        content_column:
+          title: Verwerkingsfoutmeldingen
+          product_name: Productnaam
+          with_id: met ID
+        details_column:
+          title: Details
+          locale: Taal
+          channel: Kanaal
+          family: Familie
+      no_error:
+        title: Geweldig! Geen fouten gevonden!
+      not_auditable:
+        title: Verbinding zonder monitor
+        description:
+          1: Registreer fouten voor deze verbinding
+          2: activeer monitoring
+          3: in de instellingen.
+      not_data_source:
+        title: Op dit moment is de monitor pagina alleen beschikbaar voor de bronverbinding.
