@@ -1,5 +1,5 @@
 # TODO RAC-131
-# services:
+services:
 #   pim_enrich.connector.flat_translators.attribute_value_translator.boolean:
 #     class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatAttributeValueTranslator\BooleanFlatTranslator
 #     arguments:
@@ -16,8 +16,8 @@
 #       - '@akeneo.pim.structure.query.lru_cached_get_existing_attribute_options_with_values'
 #     tags: [{ name: pim_enrich.connector.flat_translators.attribute_value_translator }]
 
-#   pim_enrich.connector.flat_translators.attribute_value_translator.simple_select:
-#     class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatAttributeValueTranslator\SimpleSelectFlatTranslator
-#     arguments:
-#       - '@akeneo.pim.structure.query.lru_cached_get_existing_attribute_options_with_values'
-#     tags: [{ name: pim_enrich.connector.flat_translators.attribute_value_translator }]
+   pim_enrich.connector.flat_translators.attribute_value_translator.simple_select:
+     class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValue\SimpleSelectFlatTranslator
+     arguments:
+       - '@akeneo.pim.structure.query.lru_cached_get_existing_attribute_options_with_values'
+     tags: [{ name: pim_enrich.connector.flat_translators.attribute_value_translator }]
