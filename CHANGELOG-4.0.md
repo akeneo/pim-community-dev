@@ -2,7 +2,7 @@
 
 ## Improvement
 
--PIM-9315: Improve error message when when you have no rights on a product
+-PIM-9315bis: Improve error message when when you have no rights on a product
 
 # 4.0.52 (2020-08-24)
 
