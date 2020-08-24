@@ -1,10 +1,9 @@
-# TODO RAC-165
-# services:
-#   pim_enrich.connector.flat_translators.property_value_translator.category:
-#     class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatPropertyValueTranslator\CategoryFlatTranslator
-#     arguments:
-#       - '@akeneo.pim.structure.query.get_category_translations'
-#     tags: [{ name: pim_enrich.connector.flat_translators.property_value_translator }]
+services:
+  pim_enrich.connector.flat_translators.property_value_translator.category:
+    class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyValue\CategoryTranslator
+    arguments:
+      - '@akeneo.pim.structure.query.get_category_translations'
+    tags: [{name: pim_enrich.connector.flat_translators.property_value}]
 
 #   pim_enrich.connector.flat_translators.property_value_translator.family:
 #     class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatPropertyValueTranslator\FamilyFlatTranslator
