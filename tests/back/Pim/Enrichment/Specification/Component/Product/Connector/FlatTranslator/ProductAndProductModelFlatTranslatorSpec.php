@@ -2,23 +2,36 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValuesFlatTranslator;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\Header\FlatHeaderTranslatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\HeaderRegistry;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyValueRegistry;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class ProductAndProductModelFlatTranslatorSpec extends ObjectBehavior
 {
-    function let(HeaderRegistry $headerRegistry)
-    {
-        $this->beConstructedWith($headerRegistry);
+    function let(
+        HeaderRegistry $headerRegistry,
+        PropertyValueRegistry $propertyValueRegistry,
+        AttributeValuesFlatTranslator $attributeValuesFlatTranslator
+    ) {
+        $this->beConstructedWith(
+            $headerRegistry,
+            $propertyValueRegistry,
+            $attributeValuesFlatTranslator
+        );
     }
 
-    function it_translates_a_product(FlatHeaderTranslatorInterface $headerTranslator, $headerRegistry)
-    {
+    function it_translates_a_product(
+        FlatHeaderTranslatorInterface $headerTranslator,
+        HeaderRegistry $headerRegistry,
+        AttributeValuesFlatTranslator $attributeValuesFlatTranslator
+    ) {
         $headerRegistry->warmup(['sku', 'categories', 'description-en_US', 'enabled', 'groups', 'name-fr_FR', 'collection'], 'fr_FR')->shouldBeCalled();
-        $headerRegistry->getTranslator('sku')->willReturn(null);
         $headerRegistry->getTranslator(Argument::any())->willReturn($headerTranslator);
+        $headerRegistry->getTranslator('sku')->willReturn(null);
+
         $headerTranslator->translate('sku', 'fr_FR')->shouldNotBeCalled();
         $headerTranslator->translate('categories', 'fr_FR')->willReturn('Catégories');
         $headerTranslator->translate('description-en_US', 'fr_FR')->willReturn('Description (Anglais Américain)');
@@ -26,6 +39,15 @@ class ProductAndProductModelFlatTranslatorSpec extends ObjectBehavior
         $headerTranslator->translate('collection', 'fr_FR')->willReturn('Collection');
         $headerTranslator->translate('groups', 'fr_FR')->willReturn('Groupes');
         $headerTranslator->translate('name-fr_FR', 'fr_FR')->willReturn('Nom (Français Français)');
+
+        $attributeValuesFlatTranslator->supports('sku')->willReturn(false);
+        $attributeValuesFlatTranslator->supports('categories')->willReturn(false);
+        $attributeValuesFlatTranslator->supports('description-en_US')->willReturn(false);
+        $attributeValuesFlatTranslator->supports('name-fr_FR')->willReturn(false);
+        $attributeValuesFlatTranslator->supports('collection')->willReturn(false);
+        $attributeValuesFlatTranslator->supports('enabled')->willReturn(false);
+        $attributeValuesFlatTranslator->supports('groups')->willReturn(false);
+
 
         $this->translate([
             [
