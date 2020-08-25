@@ -32,27 +32,27 @@ abstract class BusinessEvent implements BusinessEventInterface
         $this->uuid = $uuid ?? Uuid::uuid4()->toString();
     }
 
-    public function getName(): string
+    public function name(): string
     {
         return $this->name;
     }
 
-    public function getAuthor(): string
+    public function author(): string
     {
         return $this->author;
     }
 
-    public function getData(): array
+    public function data(): array
     {
         return $this->data;
     }
 
-    public function getTimestamp(): int
+    public function timestamp(): int
     {
         return $this->timestamp;
     }
 
-    public function getUuid(): string
+    public function uuid(): string
     {
         return $this->uuid;
     }

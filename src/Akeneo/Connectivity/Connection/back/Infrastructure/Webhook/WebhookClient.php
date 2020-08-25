@@ -2,55 +2,34 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\MessageHandler;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook;
 
-use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectConnectionsWebhookQuery;
-use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
 use Akeneo\Tool\Bundle\WebhookBundle\Client\RequestFactory;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Pool;
 use GuzzleHttp\Psr7\Response;
-use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
+use function Akeneo\Connectivity\Connection\Application\Webhook\Command\;
 
-class BusinessEventHandler implements MessageSubscriberInterface
+class WebhookClient
 {
-    private $selectConnectionsWebhookQuery;
-    private $client;
+    /** @var RequestFactory */
     private $requestFactory;
 
-    public function __construct(
-        DbalSelectConnectionsWebhookQuery $selectConnectionsWebhookQuery,
-        ClientInterface $client,
-        RequestFactory $requestFactory
-    ) {
-        $this->selectConnectionsWebhookQuery = $selectConnectionsWebhookQuery;
+    /** @var ClientInterface */
+    private $client;
+
+    public function __construct(ClientInterface $client, RequestFactory $requestFactory) {
         $this->client = $client;
         $this->requestFactory = $requestFactory;
     }
 
-    public static function getHandledMessages(): iterable
+    public function bulkSend(array $queries): void
     {
-        yield BusinessEventInterface::class => [
-            'from_transport' => 'webhook'
-        ];
-    }
-
-    public function __invoke(BusinessEventInterface $event)
-    {
-        $webhooks = $this->selectConnectionsWebhookQuery->execute();
-
-        $payload = [
-            'event' => $event->name(),
-            'id' => $event->uuid(),
-            'data' => $event->data()
-        ];
-        $body = json_encode($payload);
-
         $requests = function ($webhooks, $body) {
             foreach ($webhooks as $webhook) {
                 yield $this->requestFactory->create(
-                    // http://172.17.0.1:8000/webhook
+                // http://172.17.0.1:8000/webhook
                     $webhook['webhook_url'],
                     $body,
                     [
@@ -68,6 +47,7 @@ class BusinessEventHandler implements MessageSubscriberInterface
             ],
             'fulfilled' => function (Response $response, $index) {
                 echo sprintf('%s fulfilled', $index);
+
             },
             'rejected' => function (RequestException $reason, $index) {
                 echo sprintf('%s rejected : %s', $index, $reason->getMessage());

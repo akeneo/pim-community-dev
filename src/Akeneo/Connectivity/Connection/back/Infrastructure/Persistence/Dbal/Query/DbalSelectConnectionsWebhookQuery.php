@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectConnectionsWebhookQuery;
 use Doctrine\DBAL\Connection as DbalConnection;
 use Doctrine\DBAL\FetchMode;
 
@@ -11,7 +12,7 @@ use Doctrine\DBAL\FetchMode;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class DbalSelectConnectionsWebhookQuery
+class DbalSelectConnectionsWebhookQuery implements SelectConnectionsWebhookQuery
 {
     /** @var DbalConnection */
     private $dbalConnection;
@@ -29,7 +30,8 @@ class DbalSelectConnectionsWebhookQuery
         $sql = <<<SQL
 SELECT code, webhook_url, webhook_secret
 FROM akeneo_connectivity_connection
-WHERE webhook_url IS NOT NULL AND webhook_enabled = 1
+WHERE webhook_url IS NOT NULL AND webhook_enabled = 1 
+ORDER BY code
 SQL;
 
         return $this->dbalConnection->executeQuery($sql)->fetchAll(FetchMode::ASSOCIATIVE);
