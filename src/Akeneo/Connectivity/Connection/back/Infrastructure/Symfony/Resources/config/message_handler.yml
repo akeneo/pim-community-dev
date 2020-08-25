@@ -1,0 +1,7 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\MessageHandler\BusinessEventHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectConnectionsWebhookQuery'
+            - '@akeneo_webhook.http_client'
+            - '@akeneo_webhook.http_request_factory'
+        tags: [messenger.message_handler]

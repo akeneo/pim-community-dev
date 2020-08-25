@@ -175,3 +175,11 @@ services:
             - '@doctrine'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductEventSubscriber:
+        arguments:
+            - '@security.helper'
+            - '@pim_api.normalizer.product'
+            - '@Symfony\Component\Messenger\MessageBusInterface'
+        tags:
+            - { name: kernel.event_subscriber }

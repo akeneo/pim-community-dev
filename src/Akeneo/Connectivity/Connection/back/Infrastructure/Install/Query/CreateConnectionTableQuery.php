@@ -21,6 +21,9 @@ CREATE TABLE IF NOT EXISTS akeneo_connectivity_connection(
     image VARCHAR(255) DEFAULT NULL NULL,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     auditable TINYINT(1) DEFAULT 0 NOT NULL,
+    webhook_url VARCHAR(255) NULL,
+    webhook_secret VARCHAR(255) NULL,
+    webhook_enabled TINYINT(1) DEFAULT 1 NOT NULL,
     CONSTRAINT FK_CONNECTIVITY_CONNECTION_client_id FOREIGN KEY (client_id) REFERENCES pim_api_client (id),
     CONSTRAINT FK_CONNECTIVITY_CONNECTION_user_id FOREIGN KEY (user_id) REFERENCES oro_user (id),
     INDEX IDX_CONNECTIVITY_CONNECTION_code (code)
