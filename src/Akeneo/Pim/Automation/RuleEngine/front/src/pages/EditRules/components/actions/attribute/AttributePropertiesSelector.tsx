@@ -34,6 +34,7 @@ import { Router } from '../../../../../dependenciesTools';
 import { getAttributeByIdentifier } from '../../../../../repositories/AttributeRepository';
 import get from 'lodash/get';
 import { validateAttribute } from './attribute.utils';
+import { DateFormatSelector } from "../../../../../components/Selectors/DateFormatSelector";
 
 type Props = {
   baseFormName: string;
@@ -65,6 +66,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
   const localeFormName = `${baseFormName}.locale`;
   const scopeFormName = `${baseFormName}.scope`;
   const currencyFormName = `${baseFormName}.currency`;
+  const formatFormName = `${baseFormName}.format`;
 
   useEffect(() => {
     const getAttribute = async (
@@ -157,7 +159,28 @@ const AttributePropertiesSelector: React.FC<Props> = ({
         </span>
       )}
       {AttributeType.DATE === attribute?.type && (
-        <span>Option format (optional)</span>
+        <>
+          <Controller
+            data-testid={`edit-rules-action-operation-list-${operationLineNumber}-format`}
+            as={<input type='hidden' />}
+            name={formatFormName}
+          />
+          <DateFormatSelector
+            value={watch(formatFormName)}
+            defaultFormat={'Y-m-d'}
+            predefinedFormats={{
+              'Y-m-d': '(1999-08-03)',
+              'd/m/y': '(03/08/99)',
+              'd.m.y': '(03.08.99)',
+              'n/d/y': '(8/03/99)',
+              'd-M-Y': '(03-Aug-1999)',
+              'j/m/y': '(3/08/99)',
+            }}
+            onChange={(dateFormat: string) => {
+              setValue(formatFormName, dateFormat !== '' ? dateFormat : undefined);
+            }}
+          />
+        </>
       )}
       {AttributeType.PRICE_COLLECTION === attribute?.type && (
         <span
