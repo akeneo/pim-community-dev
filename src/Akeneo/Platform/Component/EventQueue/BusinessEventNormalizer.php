@@ -30,11 +30,11 @@ class BusinessEventNormalizer implements NormalizerInterface, DenormalizerInterf
     public function normalize($object, $format = null, array $context = [])
     {
         return [
-            'name' => $object->getName(),
-            'author' => $object->getAuthor(),
-            'data' => $object->getData(),
-            'timestamp' => $object->getTimestamp(),
-            'uuid' => $object->getUuid()
+            'name' => $object->name(),
+            'author' => $object->author(),
+            'data' => $object->data(),
+            'timestamp' => $object->timestamp(),
+            'uuid' => $object->uuid()
         ];
     }
 
