@@ -110,6 +110,16 @@ const ConcatenateSourceList: React.FC<Props> = ({
             filterSystemFields={[]}
             filterAttributeTypes={[
               AttributeType.TEXT,
+              AttributeType.OPTION_SIMPLE_SELECT,
+              AttributeType.OPTION_MULTI_SELECT,
+              AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
+              AttributeType.REFERENCE_ENTITY_COLLECTION,
+              AttributeType.NUMBER,
+              AttributeType.IDENTIFIER,
+              AttributeType.DATE,
+              AttributeType.PRICE_COLLECTION,
+              AttributeType.METRIC,
+              AttributeType.TEXTAREA,
             ]}
             containerCssClass={'add-attribute-button'}
             dropdownCssClass={'add-attribute-dropdown'}

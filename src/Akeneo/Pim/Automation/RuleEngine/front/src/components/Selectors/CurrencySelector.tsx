@@ -18,11 +18,12 @@ const getCurrencyValidation = (
   currentCatalogLocale: LocaleCode,
   availableCurrencies: Currency[],
   currencies: IndexedCurrencies,
-  channelCode: ScopeCode
+  channelCode: ScopeCode,
+  isCurrencyRequired = true,
 ) => {
   const currencyValidation: any = {};
 
-  if (attribute.type === AttributeType.PRICE_COLLECTION) {
+  if (isCurrencyRequired && attribute.type === AttributeType.PRICE_COLLECTION) {
     currencyValidation['required'] = translate(
       'pimee_catalog_rule.exceptions.required_currency',
       {
@@ -31,6 +32,9 @@ const getCurrencyValidation = (
     );
   }
   currencyValidation['validate'] = (selectedCode: CurrencyCode) => {
+    if (!selectedCode || selectedCode === '') {
+      return;
+    }
     if ('undefined' === typeof currencies[selectedCode]) {
       return translate(
         'pimee_catalog_rule.exceptions.unknown_or_inactive_currency',

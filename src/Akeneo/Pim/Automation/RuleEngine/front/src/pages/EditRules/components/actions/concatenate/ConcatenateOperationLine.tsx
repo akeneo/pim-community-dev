@@ -4,7 +4,6 @@ import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
 import { Operation } from '../../../../../models/actions/Calculate/Operation';
 import { useControlledFormInputAction } from '../../../hooks';
 import { useTranslate } from '../../../../../dependenciesTools/hooks';
-import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
 import {
   FieldOperand,
@@ -41,7 +40,6 @@ const ConcatenateOperationLine: React.FC<OperationLineProps> = ({
   removeOperation,
 }) => {
   const translate = useTranslate();
-  const { setValue, watch } = useFormContext();
   const { formName } = useControlledFormInputAction<
     string | null
   >(lineNumber);
@@ -59,26 +57,12 @@ const ConcatenateOperationLine: React.FC<OperationLineProps> = ({
             role={'operation-item-move-handle'}
           />
           <AttributePropertiesSelector
+            baseFormName={formName(baseFormName)}
             operationLineNumber={operationLineNumber}
             attributeCode={fieldOperand.field}
-            fieldFormName={formName(`${baseFormName}.field`)}
-            localeFormName={formName(`${baseFormName}.locale`)}
-            scopeFormName={formName(`${baseFormName}.scope`)}
-            currencyFormName={formName(`${baseFormName}.currency`)}
-            defaultLocale={watch(formName(`${baseFormName}.locale`))}
-            defaultScope={watch(formName(`${baseFormName}.scope`))}
-            defaultCurrency={watch(formName(`${baseFormName}.currency`))}
-            onCurrencyChange={currencyCode => {
-              setValue(formName(`${baseFormName}.currency`), currencyCode);
-            }}
-            onScopeChange={scopeCode => {
-              setValue(formName(`${baseFormName}.scope`), scopeCode);
-            }}
-            onLocaleChange={localeCode => {
-              setValue(formName(`${baseFormName}.locale`), localeCode);
-            }}
             locales={locales}
             scopes={scopes}
+            isCurrencyRequired={false}
           />
         </div>
       </div>

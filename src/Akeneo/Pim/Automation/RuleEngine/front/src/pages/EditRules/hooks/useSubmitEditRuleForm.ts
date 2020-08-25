@@ -64,6 +64,9 @@ const registerActions = (register: Control['register'], actions: Action[]) => {
         name: `content.actions[${index}].include_children`,
         type: 'custom',
       });
+      register({ name: `content.actions[${index}].to.field`, type: 'custom' });
+      register({ name: `content.actions[${index}].to.locale`, type: 'custom' });
+      register({ name: `content.actions[${index}].to.scope`, type: 'custom' });
 
       if (typeof action.destination !== 'undefined') {
         ['field', 'scope', 'locale', 'unit'].forEach(key =>

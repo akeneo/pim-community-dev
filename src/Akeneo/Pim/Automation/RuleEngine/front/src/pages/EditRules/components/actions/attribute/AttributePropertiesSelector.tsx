@@ -36,46 +36,33 @@ import get from 'lodash/get';
 import { validateAttribute } from './attribute.utils';
 
 type Props = {
+  baseFormName: string;
   operationLineNumber: number;
   attributeCode: AttributeCode;
-  fieldFormName: string;
-  scopeFormName: string;
-  localeFormName: string;
-  currencyFormName: string;
   locales: Locale[];
   scopes: IndexedScopes;
-  defaultLocale?: LocaleCode;
-  defaultScope?: ScopeCode;
-  defaultCurrency?: CurrencyCode;
-  onCurrencyChange: (currencyCode: CurrencyCode) => void;
-  onScopeChange: (scopeCode: ScopeCode) => void;
-  onLocaleChange: (localeCode: LocaleCode) => void;
+  isCurrencyRequired: boolean;
 };
 
 const AttributePropertiesSelector: React.FC<Props> = ({
+  baseFormName,
   operationLineNumber,
   attributeCode,
-  fieldFormName,
-  scopeFormName,
-  localeFormName,
-  currencyFormName,
   scopes,
   locales,
-  defaultLocale,
-  defaultScope,
-  defaultCurrency,
-  onCurrencyChange,
-  onScopeChange,
-  onLocaleChange,
+  isCurrencyRequired,
 }) => {
   const translate = useTranslate();
-  const { watch, errors } = useFormContext();
+  const { watch, errors, setValue, } = useFormContext();
   const currentCatalogLocale = useUserCatalogLocale();
   const router = useBackboneRouter();
   const currencies = useActiveCurrencies();
-  const [attribute, setAttribute] = React.useState<
-    Attribute | null | undefined
-  >();
+  const [attribute, setAttribute] = React.useState<Attribute | null | undefined>();
+  const labelLocaleFormName = `${baseFormName}.label_locale`;
+  const fieldFormName = `${baseFormName}.field`;
+  const localeFormName = `${baseFormName}.locale`;
+  const scopeFormName = `${baseFormName}.scope`;
+  const currencyFormName = `${baseFormName}.currency`;
 
   useEffect(() => {
     const getAttribute = async (
@@ -94,8 +81,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
     if (!attribute?.scopable) {
       return Object.values(currencies);
     }
-    // watch() is needed instead of getFormValue() when currencySelector is displayed before ScopeSelector
-    const scopeCode = watch(scopeFormName) ?? defaultScope;
+    const scopeCode = watch(scopeFormName);
     if (scopeCode && scopes[scopeCode]) {
       return scopes[scopeCode].currencies.map(code => ({ code }));
     }
@@ -106,7 +92,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
     if (!attribute?.scopable) {
       return locales;
     }
-    const scopeCode = watch(scopeFormName) ?? defaultScope;
+    const scopeCode = watch(scopeFormName);
     if (scopeCode && scopes[scopeCode]) {
       return scopes[scopeCode].locales;
     }
@@ -138,6 +124,37 @@ const AttributePropertiesSelector: React.FC<Props> = ({
           {attribute && getAttributeLabel(attribute, currentCatalogLocale)}
         </span>
       </span>
+      {[
+        AttributeType.OPTION_MULTI_SELECT,
+        AttributeType.OPTION_SIMPLE_SELECT,
+        AttributeType.REFERENCE_ENTITY_COLLECTION,
+        AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT
+      ].includes(attribute?.type as AttributeType) && (
+        <span
+          className={
+            'AknRuleOperation-element AknRuleOperation-elementLocale' +
+            (isFullFormFieldInError(labelLocaleFormName)
+              ? ' select2-container-error'
+              : '')
+          }>
+          <Controller
+            data-testid={`edit-rules-action-operation-list-${operationLineNumber}-label-locale`}
+            as={<input type='hidden' />}
+            name={labelLocaleFormName}
+          />
+          <LocaleSelector
+            allowClear={true}
+            availableLocales={locales}
+            value={watch(labelLocaleFormName)}
+            hiddenLabel
+            placeholder={translate('TODO Label Locale')}
+            onChange={(localeCode: LocaleCode) => { setValue(labelLocaleFormName, localeCode); }}
+          />
+        </span>
+      )}
+      {AttributeType.DATE === attribute?.type && (
+        <span>Option format (optional)</span>
+      )}
       {AttributeType.PRICE_COLLECTION === attribute?.type && (
         <span
           className={
@@ -156,14 +173,16 @@ const AttributePropertiesSelector: React.FC<Props> = ({
               currentCatalogLocale,
               getAvailableCurrencies(currencies),
               currencies,
-              watch(scopeFormName) ?? defaultScope
+              watch(scopeFormName) ?? watch(scopeFormName),
+              isCurrencyRequired
             )}
           />
           <CurrencySelector
             availableCurrencies={getAvailableCurrencies(currencies)}
-            value={defaultCurrency}
+            value={watch(currencyFormName)}
             hiddenLabel
-            onChange={onCurrencyChange}
+            onChange={(currencyCode: CurrencyCode) => { setValue(currencyFormName, currencyCode); }}
+            allowClear={!isCurrencyRequired}
           />
         </span>
       )}
@@ -189,10 +208,10 @@ const AttributePropertiesSelector: React.FC<Props> = ({
           <ScopeSelector
             allowClear={false}
             availableScopes={Object.values(scopes)}
-            value={defaultScope}
+            value={watch(scopeFormName)}
             currentCatalogLocale={currentCatalogLocale}
             hiddenLabel
-            onChange={onScopeChange}
+            onChange={(scopeCode: ScopeCode) => { setValue(scopeFormName, scopeCode); }}
           />
         </span>
       )}
@@ -212,7 +231,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
               attribute,
               locales,
               getAvailableLocales(),
-              watch(scopeFormName) ?? defaultScope,
+              watch(scopeFormName),
               translate,
               currentCatalogLocale
             )}
@@ -220,9 +239,9 @@ const AttributePropertiesSelector: React.FC<Props> = ({
           <LocaleSelector
             allowClear={false}
             availableLocales={getAvailableLocales()}
-            value={defaultLocale}
+            value={watch(localeFormName)}
             hiddenLabel
-            onChange={onLocaleChange}
+            onChange={(localeCode: LocaleCode) => { setValue(localeFormName, localeCode); }}
           />
         </span>
       )}
