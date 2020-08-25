@@ -47,7 +47,7 @@ class MultiSelectFlatTranslator implements FlatAttributeValueTranslatorInterface
                 function ($optionCode) use ($attributeCode, $locale, $attributeOptionTranslations) {
                     $optionKey = sprintf('%s.%s', $attributeCode, $optionCode);
 
-                    return $attributeOptionTranslations[$optionKey][$locale] ?? sprintf('[%s]', $optionCode);
+                    return $attributeOptionTranslations[$optionKey][$locale] ?? sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $optionCode);
                 },
                 $optionCodes
             );
