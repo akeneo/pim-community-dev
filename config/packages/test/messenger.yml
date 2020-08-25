@@ -4,4 +4,4 @@ framework:
             webhook: 'in-memory://'
 
         routing:
-            'Akeneo\Pim\Enrichment\Bundle\Message\BusinessEvent': webhook
+            'Akeneo\Platform\Component\EventQueue\BusinessEvent': webhook

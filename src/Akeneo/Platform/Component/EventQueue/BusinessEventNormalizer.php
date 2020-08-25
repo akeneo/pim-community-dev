@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Message;
+namespace Akeneo\Platform\Component\EventQueue;
 
 use Symfony\Component\Serializer\Exception\RuntimeException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;

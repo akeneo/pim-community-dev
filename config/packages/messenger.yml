@@ -25,4 +25,4 @@ framework:
                 serializer: pim_enrich.messenger.serializer.business_event
 
         routing:
-            'Akeneo\Pim\Enrichment\Bundle\Message\BusinessEvent': business_event
+            'Akeneo\Platform\Component\EventQueue\BusinessEvent': business_event
