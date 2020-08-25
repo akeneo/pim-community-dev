@@ -146,6 +146,11 @@ suites:
         psr4_prefix: Akeneo\Tool\Bundle\MeasureBundle
         spec_path: src/Akeneo/Tool/Bundle/MeasureBundle
         src_path: src/Akeneo/Tool/Bundle/MeasureBundle
+    MessengerBundle:
+        namespace: Akeneo\Tool\Bundle\MessengerBundle
+        psr4_prefix: Akeneo\Tool\Bundle\MessengerBundle
+        spec_path: src/Akeneo/Tool/Bundle/MessengerBundle
+        src_path: src/Akeneo/Tool/Bundle/MessengerBundle
     VersioningBundle:
         namespace: Akeneo\Tool\Bundle\VersioningBundle
         psr4_prefix: Akeneo\Tool\Bundle\VersioningBundle

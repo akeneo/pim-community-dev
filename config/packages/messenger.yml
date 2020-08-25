@@ -1,0 +1,28 @@
+framework:
+    messenger:
+        transports:
+            # Producers
+            
+            business_event:
+                dsn: 'gps:'
+                options:
+                    project_id: '%env(PUBSUB_PROJECT_ID)%'
+                    topic_name: '%env(PUBSUB_TOPIC_BUSINESS_EVENT)%'
+                retry_strategy:
+                    max_retries: 0
+                serializer: pim_enrich.messenger.serializer.business_event
+
+            # Consumers
+
+            webhook:
+                dsn: 'gps:'
+                options:
+                    project_id: '%env(PUBSUB_PROJECT_ID)%'
+                    topic_name: '%env(PUBSUB_TOPIC_BUSINESS_EVENT)%'
+                    subscription_name: '%env(PUBSUB_SUBSCRIPTION_WEBHOOK)%'
+                retry_strategy:
+                    max_retries: 0
+                serializer: pim_enrich.messenger.serializer.business_event
+
+        routing:
+            'Akeneo\Pim\Enrichment\Bundle\Message\BusinessEvent': business_event

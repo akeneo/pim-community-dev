@@ -1,0 +1,7 @@
+framework:
+    messenger:
+        transports:
+            webhook: 'in-memory://'
+
+        routing:
+            'Akeneo\Pim\Enrichment\Bundle\Message\BusinessEvent': webhook
