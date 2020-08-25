@@ -1,0 +1,6 @@
+services:
+    akeneo_webhook.http_client:
+        class: GuzzleHttp\Client
+
+    akeneo_webhook.http_request_factory:
+        class: Akeneo\Tool\Bundle\WebhookBundle\Client\RequestFactory
