@@ -22,9 +22,10 @@ class FamilyVariantTranslatorSpec extends ObjectBehavior
     function it_translates_family_variant_property_values(
         GetFamilyVariantTranslations $getFamilyVariantTranslations
     ) {
-        $getFamilyVariantTranslations->byFamilyVariantCodesAndLocale(['accessories_color', 'scanners_print'], 'fr_FR')
+        $getFamilyVariantTranslations->byFamilyVariantCodesAndLocale(['accessories_color', 'scanners_print', 'unknown'], 'fr_FR')
             ->willReturn(['accessories_color' => 'Accessoires en couleur', 'scanners_print' => 'Scanners impression']);
 
-        $this->translate(['accessories_color', 'scanners_print'], 'fr_FR', 'ecommerce')->shouldReturn(['Accessoires en couleur', 'Scanners impression']);
+        $this->translate(['accessories_color', 'scanners_print', 'unknown'], 'fr_FR', 'ecommerce')
+            ->shouldReturn(['Accessoires en couleur', 'Scanners impression', '[unknown]']);
     }
 }
