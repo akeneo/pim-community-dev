@@ -23,7 +23,9 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
 
             'FOS\RestBundle\Context\Context',
-            'FOS\RestBundle\Serializer\Serializer'
+            'FOS\RestBundle\Serializer\Serializer',
+
+            'Akeneo\Platform\Component\EventQueue\BusinessEventInterface',
         ]
     )->in('Akeneo\Connectivity\Connection\Application'),
 
