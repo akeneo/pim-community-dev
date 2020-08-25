@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValue;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAttributeOptionsWithValues;
 
@@ -48,7 +49,7 @@ class SimpleSelectFlatTranslator implements FlatAttributeValueTranslatorInterfac
             }
 
             $optionKey = sprintf('%s.%s', $attributeCode, $value);
-            $attributeOptionTranslation = $attributeOptionTranslations[$optionKey][$locale] ?? sprintf('[%s]', $value);
+            $attributeOptionTranslation = $attributeOptionTranslations[$optionKey][$locale] ?? sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $value);
             $result[$valueIndex] = $attributeOptionTranslation;
         }
 
