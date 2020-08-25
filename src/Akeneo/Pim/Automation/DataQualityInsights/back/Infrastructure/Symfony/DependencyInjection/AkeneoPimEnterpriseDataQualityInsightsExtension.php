@@ -26,7 +26,6 @@ final class AkeneoPimEnterpriseDataQualityInsightsExtension extends Extension
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('clients.yml');
         $loader->load('commands.yml');
         $loader->load('controllers.yml');
         $loader->load('criteria.yml');

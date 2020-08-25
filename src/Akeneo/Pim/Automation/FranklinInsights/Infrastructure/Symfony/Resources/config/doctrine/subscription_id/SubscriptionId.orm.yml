@@ -1,7 +1,0 @@
-Akeneo\Pim\Automation\FranklinInsights\Domain\Subscription\ValueObject\SubscriptionId:
-    type: embeddable
-    fields:
-        subscriptionId:
-            type: string
-            column: subscription_id
-            nullable: false

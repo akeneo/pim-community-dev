@@ -29,8 +29,6 @@ data:
   SRNT_GOOGLE_BUCKET_NAME: {{ .Values.pim.storage.bucketName | quote }}
   APP_ENV: prod
   TRUSTED_PROXY_IPS: 10.0.0.0/8
-  ASK_FRANKLIN_URL: {{ .Values.pim.franklin.askFranklinUrl | quote }}
-  ASK_FRANKLIN_REQUEST_TIMEOUT: {{ .Values.pim.franklin.askFranklinTimeout | quote }}
   {{- if .Values.onboarder.enabled }}
   FLAG_ONBOARDER_ENABLED: "1"
   GCP_PROJECT_ID: {{ .Values.common.gcpProjectID | quote }}

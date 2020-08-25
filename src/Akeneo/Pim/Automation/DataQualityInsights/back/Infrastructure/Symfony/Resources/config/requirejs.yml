@@ -1,14 +1,4 @@
 config:
-    config:
-        # Fetchers
-        pim/fetcher-registry:
-            fetchers:
-                data-quality-insights:
-                    module: pim/base-fetcher
-                    options:
-                        urls:
-                            list: akeneo_franklin_insights_data_quality_insights_get_all
-
     paths:
         # View
         ## Product Edit Form

@@ -1,7 +1,5 @@
 pim:
   defaultCatalog: src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
-  franklin:
-    askFranklinUrl: "https://ask-franklin-test.dev.cloud.akeneo.com"
   secret: 5f559ffb-5b36-4922-9481-022057992057
   defaultAdminUser:
     login: pim-ci

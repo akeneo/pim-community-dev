@@ -2,7 +2,6 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Proposal\Factory\FranklinUserDraftSourceFactory;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
@@ -33,17 +32,6 @@ final class Version_4_0_20190911121924_proposal_add_source_to_product_drafts ext
                 [
                     'pimSourceCode' => PimUserDraftSourceFactory::PIM_SOURCE_CODE,
                     'pimSourceLabel' => PimUserDraftSourceFactory::PIM_SOURCE_LABEL,
-                ]
-            );
-
-            // Franklin Insights
-            $this->addSql(
-                "UPDATE $draftTable SET author_label = :franklinAuthorLabel, source = :franklinSourceCode, source_label = :franklinSourceLabel WHERE author = :franklinAuthorCode",
-                [
-                    'franklinAuthorCode' => FranklinUserDraftSourceFactory::AUTHOR_CODE,
-                    'franklinAuthorLabel' => FranklinUserDraftSourceFactory::AUTHOR_LABEL,
-                    'franklinSourceCode' => FranklinUserDraftSourceFactory::SOURCE_CODE,
-                    'franklinSourceLabel' => FranklinUserDraftSourceFactory::SOURCE_LABEL,
                 ]
             );
 

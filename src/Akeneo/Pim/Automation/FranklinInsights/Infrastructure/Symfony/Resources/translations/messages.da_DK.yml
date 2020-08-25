@@ -1,5 +1,0 @@
-akeneo_franklin_insights:
-  entity:
-    product_subscription:
-      constraint:
-        product_subscription_with_same_identifier_already_exist: 'Et andet produkt med mindst én identisk identifikator abonnerer allerede.'

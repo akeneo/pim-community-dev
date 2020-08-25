@@ -3,7 +3,6 @@ includes:
 parameters:
     reportUnmatchedIgnoredErrors: false
     excludes_analyse:
-        - %currentWorkingDirectory%/src/Akeneo/Pim/Automation/FranklinInsights/tests
         - %currentWorkingDirectory%/src/Akeneo/Pim/Automation/DataQualityInsights/tests
         - %currentWorkingDirectory%/vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/tests
     symfony:
