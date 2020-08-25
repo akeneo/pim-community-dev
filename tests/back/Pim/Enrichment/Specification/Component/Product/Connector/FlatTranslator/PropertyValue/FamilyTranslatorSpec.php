@@ -22,9 +22,10 @@ class FamilyTranslatorSpec extends ObjectBehavior
     function it_translates_family_property_values(
         GetFamilyTranslations $getFamilyTranslations
     ) {
-        $getFamilyTranslations->byFamilyCodesAndLocale(['accessories', 'scanners'], 'fr_FR')
+        $getFamilyTranslations->byFamilyCodesAndLocale(['accessories', 'scanners', 'unknown'], 'fr_FR')
             ->willReturn(['accessories' => 'Accessoires', 'scanners' => 'Scanners']);
 
-        $this->translate(['accessories', 'scanners'], 'fr_FR', 'ecommerce')->shouldReturn(['Accessoires', 'Scanners']);
+        $this->translate(['accessories', 'scanners', 'unknown'], 'fr_FR', 'ecommerce')
+            ->shouldReturn(['Accessoires', 'Scanners', '[unknown]']);
     }
 }
