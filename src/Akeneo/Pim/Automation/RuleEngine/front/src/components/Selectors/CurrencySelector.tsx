@@ -19,7 +19,7 @@ const getCurrencyValidation = (
   availableCurrencies: Currency[],
   currencies: IndexedCurrencies,
   channelCode: ScopeCode,
-  isCurrencyRequired = true,
+  isCurrencyRequired = true
 ) => {
   const currencyValidation: any = {};
 

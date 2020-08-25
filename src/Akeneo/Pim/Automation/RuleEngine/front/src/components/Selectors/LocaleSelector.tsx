@@ -139,7 +139,9 @@ const LocaleSelector: React.FC<Props> = ({
         hideSearch={true}
         formatResult={formatLocale}
         formatSelection={formatLocale}
-        placeholder={placeholder || translate('pim_enrich.entity.locale.uppercase_label')}
+        placeholder={
+          placeholder || translate('pim_enrich.entity.locale.uppercase_label')
+        }
         value={value || null}
         onChange={handleChange}
         allowClear={allowClear}

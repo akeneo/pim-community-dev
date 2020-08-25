@@ -1,6 +1,10 @@
 import React from 'react';
-import { Attribute, getAttributeLabel, ScopeCode } from '../../../../../models';
-import { AttributeType } from '../../../../../models/Attribute';
+import {
+  Attribute,
+  getAttributeLabel,
+  ScopeCode,
+  AttributeType,
+} from '../../../../../models';
 import {
   useTranslate,
   useUserCatalogLocale,

@@ -9,7 +9,7 @@ import {
   FieldOperand,
   Operand,
 } from '../../../../../models/actions/Calculate/Operand';
-import { AttributePropertiesSelector } from "../attribute/AttributePropertiesSelector";
+import { AttributePropertiesSelector } from '../attribute/AttributePropertiesSelector';
 
 type SourceOrOperation = Operand | Operation;
 
@@ -40,9 +40,7 @@ const ConcatenateOperationLine: React.FC<OperationLineProps> = ({
   removeOperation,
 }) => {
   const translate = useTranslate();
-  const { formName } = useControlledFormInputAction<
-    string | null
-  >(lineNumber);
+  const { formName } = useControlledFormInputAction<string | null>(lineNumber);
   const fieldOperand = sourceOrOperation as FieldOperand;
 
   return (

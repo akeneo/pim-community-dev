@@ -1,12 +1,12 @@
 import { ConcatenateActionLine } from '../../pages/EditRules/components/actions/ConcatenateActionLine';
 import { ProductField } from './ProductField';
 import { ActionModuleGuesser } from './ActionModuleGuesser';
-import { LocaleCode } from "../Locale";
+import { LocaleCode } from '../Locale';
 
 export type ConcatenateSource = ProductField & {
   label_locale?: LocaleCode;
   format?: string;
-}
+};
 
 export type ConcatenateAction = {
   type: 'concatenate';
@@ -31,4 +31,3 @@ export const createConcatenateAction: () => ConcatenateAction = () => {
     },
   };
 };
-

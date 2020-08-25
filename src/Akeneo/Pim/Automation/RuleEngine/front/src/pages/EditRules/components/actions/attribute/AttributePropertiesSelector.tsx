@@ -53,11 +53,13 @@ const AttributePropertiesSelector: React.FC<Props> = ({
   isCurrencyRequired,
 }) => {
   const translate = useTranslate();
-  const { watch, errors, setValue, } = useFormContext();
+  const { watch, errors, setValue } = useFormContext();
   const currentCatalogLocale = useUserCatalogLocale();
   const router = useBackboneRouter();
   const currencies = useActiveCurrencies();
-  const [attribute, setAttribute] = React.useState<Attribute | null | undefined>();
+  const [attribute, setAttribute] = React.useState<
+    Attribute | null | undefined
+  >();
   const labelLocaleFormName = `${baseFormName}.label_locale`;
   const fieldFormName = `${baseFormName}.field`;
   const localeFormName = `${baseFormName}.locale`;
@@ -128,7 +130,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
         AttributeType.OPTION_MULTI_SELECT,
         AttributeType.OPTION_SIMPLE_SELECT,
         AttributeType.REFERENCE_ENTITY_COLLECTION,
-        AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT
+        AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
       ].includes(attribute?.type as AttributeType) && (
         <span
           className={
@@ -148,7 +150,9 @@ const AttributePropertiesSelector: React.FC<Props> = ({
             value={watch(labelLocaleFormName)}
             hiddenLabel
             placeholder={translate('TODO Label Locale')}
-            onChange={(localeCode: LocaleCode) => { setValue(labelLocaleFormName, localeCode); }}
+            onChange={(localeCode: LocaleCode) => {
+              setValue(labelLocaleFormName, localeCode);
+            }}
           />
         </span>
       )}
@@ -181,7 +185,9 @@ const AttributePropertiesSelector: React.FC<Props> = ({
             availableCurrencies={getAvailableCurrencies(currencies)}
             value={watch(currencyFormName)}
             hiddenLabel
-            onChange={(currencyCode: CurrencyCode) => { setValue(currencyFormName, currencyCode); }}
+            onChange={(currencyCode: CurrencyCode) => {
+              setValue(currencyFormName, currencyCode);
+            }}
             allowClear={!isCurrencyRequired}
           />
         </span>
@@ -211,7 +217,9 @@ const AttributePropertiesSelector: React.FC<Props> = ({
             value={watch(scopeFormName)}
             currentCatalogLocale={currentCatalogLocale}
             hiddenLabel
-            onChange={(scopeCode: ScopeCode) => { setValue(scopeFormName, scopeCode); }}
+            onChange={(scopeCode: ScopeCode) => {
+              setValue(scopeFormName, scopeCode);
+            }}
           />
         </span>
       )}
@@ -241,7 +249,9 @@ const AttributePropertiesSelector: React.FC<Props> = ({
             availableLocales={getAvailableLocales()}
             value={watch(localeFormName)}
             hiddenLabel
-            onChange={(localeCode: LocaleCode) => { setValue(localeFormName, localeCode); }}
+            onChange={(localeCode: LocaleCode) => {
+              setValue(localeFormName, localeCode);
+            }}
           />
         </span>
       )}

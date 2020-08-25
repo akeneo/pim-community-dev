@@ -70,17 +70,12 @@ describe('AttributePropertiesSelector', () => {
 
     renderWithProviders(
       <AttributePropertiesSelector
+        baseFormName={'attribute'}
         operationLineNumber={0}
         attributeCode={defaultValues.attribute.field}
-        fieldFormName={'attribute.field'}
-        scopeFormName={'attribute.scope'}
-        localeFormName={'attribute.locale'}
-        currencyFormName={'attribute.currency'}
         scopes={scopes}
         locales={locales}
-        onLocaleChange={jest.fn()}
-        onScopeChange={jest.fn()}
-        onCurrencyChange={jest.fn()}
+        isCurrencyRequired={true}
       />,
       { all: true },
       { defaultValues, toRegister }
@@ -122,17 +117,12 @@ describe('AttributePropertiesSelector', () => {
 
     renderWithProviders(
       <AttributePropertiesSelector
+        baseFormName={'attribute'}
         operationLineNumber={0}
         attributeCode={defaultValues.attribute.field}
-        fieldFormName={'attribute.field'}
-        scopeFormName={'attribute.scope'}
-        localeFormName={'attribute.locale'}
-        currencyFormName={'attribute.currency'}
         scopes={scopes}
         locales={locales}
-        onLocaleChange={jest.fn()}
-        onScopeChange={jest.fn()}
-        onCurrencyChange={jest.fn()}
+        isCurrencyRequired={true}
       />,
       { all: true },
       { defaultValues, toRegister }

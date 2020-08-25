@@ -71,9 +71,7 @@ const CalculateOperationLine: React.FC<OperationLineProps> = ({
 }) => {
   const translate = useTranslate();
   const { setValue, watch, errors } = useFormContext();
-  const { formName } = useControlledFormInputAction<
-    string | null
-  >(lineNumber);
+  const { formName } = useControlledFormInputAction<string | null>(lineNumber);
   const fieldOperand = sourceOrOperation as FieldOperand;
 
   const isOperatorInError =

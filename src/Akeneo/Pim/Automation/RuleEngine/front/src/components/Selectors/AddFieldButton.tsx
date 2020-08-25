@@ -1,7 +1,7 @@
 import React from 'react';
 import { Select2Wrapper } from '../Select2Wrapper';
 import { useBackboneRouter, useTranslate } from '../../dependenciesTools/hooks';
-import { AttributeType } from '../../models/Attribute';
+import { AttributeType } from '../../models';
 
 type AddConditionAttribute = {
   id: string;

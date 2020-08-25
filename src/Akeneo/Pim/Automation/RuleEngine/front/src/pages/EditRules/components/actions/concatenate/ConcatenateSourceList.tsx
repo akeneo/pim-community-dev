@@ -8,7 +8,7 @@ import { AttributeCode, AttributeType, Locale } from '../../../../../models';
 import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
 import { useControlledFormInputAction } from '../../../hooks';
 import { AddFieldButton } from '../../../../../components/Selectors/AddFieldButton';
-import { ConcatenateOperationLine } from "./ConcatenateOperationLine";
+import { ConcatenateOperationLine } from './ConcatenateOperationLine';
 
 type Props = {
   lineNumber: number;

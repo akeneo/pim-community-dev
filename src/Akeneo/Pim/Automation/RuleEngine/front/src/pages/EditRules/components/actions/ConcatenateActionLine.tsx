@@ -3,27 +3,52 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { ConcatenateAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
-import { useControlledFormInputAction } from "../../hooks";
-import { useActiveCurrencies } from "../../hooks/useActiveCurrencies";
-import { Attribute, AttributeCode, AttributeType, Locale } from "../../../../models";
-import { IndexedCurrencies } from "../../../../repositories/CurrencyRepository";
-import { Currency } from "../../../../models/Currency";
-import { fetchAttribute, useGetAttributeAtMount } from "./attribute/attribute.utils";
-import { ActionLeftSide, ActionRightSide, ActionTitle } from "./ActionLine";
-import { ActionFormContainer } from "./style";
-import { AttributeSelector } from "../../../../components/Selectors/AttributeSelector";
-import { InlineHelper } from "../../../../components/HelpersInfos/InlineHelper";
+import { useControlledFormInputAction } from '../../hooks';
+import { useActiveCurrencies } from '../../hooks/useActiveCurrencies';
+import {
+  Attribute,
+  AttributeCode,
+  AttributeType,
+  Locale,
+} from '../../../../models';
+import { IndexedCurrencies } from '../../../../repositories/CurrencyRepository';
+import { Currency } from '../../../../models/Currency';
+import {
+  fetchAttribute,
+  useGetAttributeAtMount,
+} from './attribute/attribute.utils';
+import { ActionLeftSide, ActionRightSide, ActionTitle } from './ActionLine';
+import { ActionFormContainer } from './style';
+import { AttributeSelector } from '../../../../components/Selectors/AttributeSelector';
+import { InlineHelper } from '../../../../components/HelpersInfos/InlineHelper';
 import {
   getMeasurementUnitValidator,
-  MeasurementUnitSelector
-} from "../../../../components/Selectors/MeasurementUnitSelector";
-import { CurrencySelector, getCurrencyValidation } from "../../../../components/Selectors/CurrencySelector";
-import { getScopeValidation, ScopeSelector } from "../../../../components/Selectors/ScopeSelector";
-import { getLocaleValidation, LocaleSelector } from "../../../../components/Selectors/LocaleSelector";
-import { CalculateActionGrid, ErrorBlock, SelectorBlock } from "./CalculateActionLine";
-import { useBackboneRouter, useTranslate, useUserCatalogLocale } from "../../../../dependenciesTools/hooks";
-import { ConcatenatePreview } from "./concatenate/ConcatenatePreview";
-import { ConcatenateSourceList } from "./concatenate/ConcatenateSourceList";
+  MeasurementUnitSelector,
+} from '../../../../components/Selectors/MeasurementUnitSelector';
+import {
+  CurrencySelector,
+  getCurrencyValidation,
+} from '../../../../components/Selectors/CurrencySelector';
+import {
+  getScopeValidation,
+  ScopeSelector,
+} from '../../../../components/Selectors/ScopeSelector';
+import {
+  getLocaleValidation,
+  LocaleSelector,
+} from '../../../../components/Selectors/LocaleSelector';
+import {
+  CalculateActionGrid,
+  ErrorBlock,
+  SelectorBlock,
+} from './CalculateActionLine';
+import {
+  useBackboneRouter,
+  useTranslate,
+  useUserCatalogLocale,
+} from '../../../../dependenciesTools/hooks';
+import { ConcatenatePreview } from './concatenate/ConcatenatePreview';
+import { ConcatenateSourceList } from './concatenate/ConcatenateSourceList';
 
 type Props = {
   action: ConcatenateAction;
@@ -55,7 +80,7 @@ const ConcatenateActionLine: React.FC<Props> = ({
   watch(formName('to.field'));
   const [attributeTarget, setAttributeTarget] = React.useState<
     Attribute | null | undefined
-    >(undefined);
+  >(undefined);
 
   const scopeFormName = formName('to.scope');
   const getScopeFormValue = () => getFormValue('to.scope');
@@ -130,14 +155,15 @@ const ConcatenateActionLine: React.FC<Props> = ({
         rules={{
           // There is no way to add a validation on a useFieldArray field. This is the only way to add a custom
           // validation.
-          validate: () => (
-              getValues({ nest: true })?.content?.actions?.[lineNumber]
-                ?.from || []
+          validate: () =>
+            (
+              getValues({ nest: true })?.content?.actions?.[lineNumber]?.from ||
+              []
             ).length >= 2
               ? true
               : translate(
-              'pimee_catalog_rule.exceptions.two_operations_are_required'
-              ),
+                  'pimee_catalog_rule.exceptions.two_operations_are_required'
+                ),
         }}
       />
       <Controller
@@ -166,9 +192,7 @@ const ConcatenateActionLine: React.FC<Props> = ({
           <ActionFormContainer>
             <SelectorBlock
               className={
-                isFormFieldInError('to.field')
-                  ? 'select2-container-error'
-                  : ''
+                isFormFieldInError('to.field') ? 'select2-container-error' : ''
               }>
               <AttributeSelector
                 data-testid={`edit-rules-action-${lineNumber}-to-field`}
@@ -207,9 +231,7 @@ const ConcatenateActionLine: React.FC<Props> = ({
             {attributeTarget?.type === AttributeType.METRIC && (
               <SelectorBlock
                 className={
-                  isFormFieldInError('to.unit')
-                    ? 'select2-container-error'
-                    : ''
+                  isFormFieldInError('to.unit') ? 'select2-container-error' : ''
                 }>
                 <Controller
                   as={MeasurementUnitSelector}
