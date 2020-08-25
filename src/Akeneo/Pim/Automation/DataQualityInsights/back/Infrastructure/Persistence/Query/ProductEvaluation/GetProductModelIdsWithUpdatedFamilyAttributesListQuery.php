@@ -43,11 +43,11 @@ final class GetProductModelIdsWithUpdatedFamilyAttributesListQuery implements Ge
 SELECT product_model.id
 FROM pim_catalog_product_model AS product_model
 INNER JOIN pim_catalog_family_variant AS family_variant ON family_variant.id = product_model.family_variant_id
-LEFT JOIN pimee_data_quality_insights_product_model_criteria_evaluation AS product_model_evaluation
+LEFT JOIN pim_data_quality_insights_product_model_criteria_evaluation AS product_model_evaluation
     ON product_model_evaluation.product_id = product_model.id
     AND product_model_evaluation.criterion_code = :criterionCode
     AND (product_model_evaluation.evaluated_at >= :updatedSince OR product_model_evaluation.status = 'pending')
-WHERE family_variant.family_id = :familyId 
+WHERE family_variant.family_id = :familyId
     AND product_model_evaluation.product_id IS NULL;
 SQL;
         $stmt = $this->dbConnection->prepare($query);

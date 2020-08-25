@@ -4,15 +4,17 @@ extensions:
         parent: pim-attribute-edit-form
         targetZone: content
         position: 110
-
+        feature: data_quality_insights
 
     akeneo-data-quality-insights-attribute-edit-form-back-link:
         module: akeneo/data-quality-insights/view/back-link
         parent: pim-attribute-edit-form
         targetZone: breadcrumb-back-link
+        feature: data_quality_insights
 
     pim-attribute-edit-form-data-quality-insights-quality-summary:
         module: akeneo/data-quality-insights/infrastructure/pim-view/attribute-edit-form/quality-summary-header
         parent: pim-attribute-edit-form
         targetZone: content
         position: 80
+        feature: data_quality_insights

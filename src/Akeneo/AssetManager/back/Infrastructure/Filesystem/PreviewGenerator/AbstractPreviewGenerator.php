@@ -17,6 +17,9 @@ use Psr\Log\LoggerInterface;
  */
 abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
 {
+    /** The limit above which we do not try to generate a preview, in bytes */
+    private const PREVIEW_SIZE_LIMIT = 60000000;
+
     /** @var DefaultImageProviderInterface */
     protected $defaultImageProvider;
 
@@ -79,8 +82,12 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
 
             if (!$isStored) {
                 $binary = $this->dataManager->find($previewType, $url);
-                $file = $this->filterManager->applyFilter($binary, $previewType);
 
+                if (self::PREVIEW_SIZE_LIMIT < strlen($binary->getContent())) {
+                    throw new \LogicException('The file is too large to generate a preview');
+                }
+
+                $file = $this->filterManager->applyFilter($binary, $previewType);
                 $this->cacheManager->store(
                     $file,
                     $filename,
@@ -88,11 +95,12 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
                 );
             }
         } catch (\Exception $exception) {
-            $this->logger->error('Exception when trying to create a thumbnail',
+            $this->logger->error(
+                'Exception when trying to create a thumbnail',
                 [
-                    'data'      => $data,
-                    'attribute' => $attribute->normalize(),
-                    'exception' => [
+                    'data'        => $data,
+                    'attribute'   => $attribute->normalize(),
+                    'exception'   => [
                         'type'    => get_class($exception),
                         'message' => $exception->getMessage(),
                     ],

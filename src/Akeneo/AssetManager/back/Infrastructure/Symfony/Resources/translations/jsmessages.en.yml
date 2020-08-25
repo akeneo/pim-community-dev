@@ -3,20 +3,64 @@ pim_title:
   akeneo_asset_manager_asset_family_edit: Edit an asset family
   akeneo_asset_manager_asset_edit: Edit an asset
 pim_asset_manager:
+  editor:
+    embedded:
+      invalid_link:
+        title: Suspicious embedded link
+        message: Sorry, we do not display this embed item but it will be correctly saved
   result_counter: '{0} No result|{1} {{ count }} result|]1,Inf] {{ count }} results'
   asset_counter: '{0} No asset|{1} {{ count }} asset|]1,Inf] {{ count }} assets'
   asset_collection:
+    add_asset: 'Add asset'
     upload_asset: 'Upload asset'
+    add_asset_title: 'Open the asset picker to add assets to the collection'
+    no_asset_in_collection: 'Sorry, there is no asset in this collection.'
     helper:
       title: 'Welcome to your brand new product asset management space!'
       text: 'There is no asset collection for this family. To take part of this new experience, just add an asset collection attribute in your settings.'
+      link: 'How to add an asset collection?'
     no_asset:
       title: 'Sorry, there is no asset for this product.'
+    notification:
+      product_rule: 'This collection can be updated by a product rule:'
+      limit: 'You have reached the limit of {{ limit }} assets per collection, you can no longer add assets to your collection.'
+    edit_asset: Edit asset
     remove_asset: Remove asset
+    remove_one_asset: Remove asset {{ assetName }} from asset collection
+    remove_all_assets: Remove all assets
+    other_actions: Other actions
+    open_other_actions: Open other actions
+    dismiss_other_actions: Dismiss other actions
+    move_asset_to_left: Move asset {{ assetName }} to the left
+    move_asset_to_right: Move asset {{ assetName }} to the right
+    legacy_helper:
+      moved_to_assets_tab: To see the asset collection {{ label }}, go to the product's assets section.
+      is_missing_required: The asset collection {{ label }} is required. Enrich it in the product's assets section.
+  asset_picker:
+    title: Add assets to your product
+    sub_title: Choose the assets you want to attach to your product {{ productLabel }} in {{ attributeLabel }} collection
+    no_result:
+      title: Sorry, there is no asset for your search
+      sub_title: Try again with new search criteria
+    filter:
+      title: Asset filters
+    basket:
+      title: '{{ assetCount }} asset selected|{{ assetCount }} assets selected'
+      empty_title: Your basket is empty
+      remove_one_asset: Remove asset {{ assetName }} from asset selection
+      remove_all_assets: Remove all
   asset_preview:
+    previous: Previous asset
+    next: Next asset
     empty_main_media: This asset has no media.
     other_main_media: We cannot generate the preview of this asset.
+    edit_asset: Edit asset
+    download: Download
+    copy_url: Copy URL
     error: An error occurred during the rendering of the preview
+  close: Close the modal
+  breadcrumb:
+    products: Products
   app:
     image:
       wide:
@@ -25,7 +69,11 @@ pim_asset_manager:
         upload: Drag and drop to upload or click here
       small:
         remove: Remove
+        download: Download
         upload: Drag and drop to upload
+  grid:
+    counter: '{{ resultCount }} results'
+    counter_empty: '0 result'
   asset_family:
     column:
       title: Asset navigation
@@ -74,9 +122,11 @@ pim_asset_manager:
       execute_naming_convention: Execute naming convention
     permission:
       title: Asset family permissions
+    title: Assets
     breadcrumb: Asset families
     img: The main media of the asset family named "{{ label }}"
     tab:
+      assets: Assets
       attribute: Attributes
       properties: Properties
       permission: Permissions
@@ -203,6 +253,7 @@ pim_asset_manager:
       title: There is no result for your search
       subtitle: Try again with new search criteria.
     selector:
+      no_value: Click here to select an asset.
       error:
         value: Oops, it seems that the rendering of the "{{ fieldName }}" field failed. See the developer console for more details.
     button:
@@ -220,6 +271,7 @@ pim_asset_manager:
       counter: '{{ totalCount }} result|{{ totalCount }} results'
       dropdown:
         attribute: Product attribute
+      title: Products
       no_attribute:
         title: There is no product attribute linked to the asset family "{{ entityLabel }}"
         subtitle: 'To start linking products to this asset family you can create a new one: '
@@ -238,8 +290,10 @@ pim_asset_manager:
       title: Asset attributes
       code: Code
       label: Label
+      edit_subsection: Edit asset
       product_subsection: Linked products
       main_media_preview: Main media preview
+    title: Assets
     create:
       header:
         title: Create
@@ -256,6 +310,7 @@ pim_asset_manager:
       lines: Files
       retry: Retry
       remove: Remove
+      remove_all: Remove all
       confirm: Create
       add_to_product: Add to product
       drop_or_click_here: Drag and drop your files or click here
@@ -285,10 +340,26 @@ pim_asset_manager:
     delete_all:
       confirm: Are you sure you want to delete all "{{ entityIdentifier }}" assets? If they are linked to products, the links to the products will be removed.
     grid:
+      search: Search on label, code and text attributes
+      filter:
+        completeness:
+          label: Complete
+          all: All
+          'yes': 'Yes'
+          'no': 'No'
+        option:
+          all: All
+          no_value: Select an option to filter
+          operator:
+            in: In list
+      more_result:
+        title: That's not it!
+        description: You just scrolled through the first {{ maxDisplayedAssets }} results out of {{ total }} assets. To see more, try with more specific search criteria.
       column:
         code: Code
         image: Image
         label: Label
+        complete: Complete
         action: Actions
       completeness:
         title_no_required: No attribute required
@@ -297,6 +368,7 @@ pim_asset_manager:
         title_complete: All {{ required }} attributes complete
     tab:
       enrich: Enrich
+      product: Products
     notification:
       save:
         success: Asset successfully updated.
@@ -314,6 +386,8 @@ pim_asset_manager:
       execute_naming_convention:
         success: Naming convention successfully executed
         fail: An error occurred during the execution of the naming convention
+    completeness:
+      label: Complete
   attribute:
     validation:
       limit_reached: 'You cannot create the attribute "{{ %attribute_label% }}" because you have reached the limit of {{ %limit% }} attributes for this asset family'
@@ -330,6 +404,7 @@ pim_asset_manager:
       option_collection: Multiple options
       number: Number
       media_link: Media link
+    is_required: required for completeness
     is_read_only: Read only in the UI
     media_type_preview: Preview of media type
     no_data:
@@ -362,6 +437,7 @@ pim_asset_manager:
         code: Code (required)
         label: Label
         type: Attribute type
+        asset_type: Related asset family (required)
         value_per_locale: Value per locale
         value_per_channel: Value per channel
         is_required: Required for completeness
@@ -443,6 +519,9 @@ pim_enrich:
           pim_catalog_asset_collection: Asset collection
         section:
           type_specific: Type-specific parameters
+        asset_family:
+          identifier: Related asset family (required)
+          default_label: Please select an asset family
 permission:
   mass_action: Apply {{ rightLevel }} right on all groups
 #Analytics
@@ -469,3 +548,6 @@ pim_datagrid:
 batch_jobs:
   default_steps:
     execute_naming_convention: Execute Asset Family naming convention
+job_execution:
+  summary:
+    assets: Assets

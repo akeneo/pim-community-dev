@@ -98,6 +98,27 @@ class AssetFamilyFilter extends AbstractAttributeFilter implements AttributeFilt
                     ],
                 ];
                 $this->searchQueryBuilder->addMustNot($clause);
+
+                $attributeInEntityClauses = [
+                    [
+                        'terms' => [
+                            self::ATTRIBUTES_FOR_THIS_LEVEL_ES_ID => [$attribute->getCode()],
+                        ],
+                    ],
+                    [
+                        'terms' => [
+                            self::ATTRIBUTES_OF_ANCESTORS_ES_ID => [$attribute->getCode()],
+                        ],
+                    ]
+                ];
+                $this->searchQueryBuilder->addFilter(
+                    [
+                        'bool' => [
+                            'should' => $attributeInEntityClauses,
+                            'minimum_should_match' => 1,
+                        ],
+                    ]
+                );
                 break;
 
             case Operators::IS_NOT_EMPTY:

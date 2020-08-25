@@ -133,10 +133,26 @@ class TextAreaFilter extends AbstractAttributeFilter implements AttributeFilterI
                 $clause = $this->addBooleanClause($clauses);
                 $this->searchQueryBuilder->addMustNot($clause);
 
-                $familyExistsClause = [
-                    'exists' => ['field' => 'family.code']
+                $attributeInEntityClauses = [
+                    [
+                        'terms' => [
+                            self::ATTRIBUTES_FOR_THIS_LEVEL_ES_ID => [$attribute->getCode()],
+                        ],
+                    ],
+                    [
+                        'terms' => [
+                            self::ATTRIBUTES_OF_ANCESTORS_ES_ID => [$attribute->getCode()],
+                        ],
+                    ]
                 ];
-                $this->searchQueryBuilder->addFilter($familyExistsClause);
+                $this->searchQueryBuilder->addFilter(
+                    [
+                        'bool' => [
+                            'should' => $attributeInEntityClauses,
+                            'minimum_should_match' => 1,
+                        ],
+                    ]
+                );
                 break;
 
             case Operators::IS_NOT_EMPTY:

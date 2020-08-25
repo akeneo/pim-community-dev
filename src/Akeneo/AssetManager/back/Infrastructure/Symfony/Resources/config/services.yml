@@ -102,6 +102,13 @@ services:
         tags:
             - { name: console.command }
 
+    Akeneo\AssetManager\Infrastructure\Symfony\Command\ClearThumbnailCacheCommand:
+        arguments:
+            - '@liip_imagine.cache.manager'
+            - '@liip_imagine.filter.configuration'
+        tags:
+            - { name: console.command }
+
     pim_enrich.controller.file:
         public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\FileController'

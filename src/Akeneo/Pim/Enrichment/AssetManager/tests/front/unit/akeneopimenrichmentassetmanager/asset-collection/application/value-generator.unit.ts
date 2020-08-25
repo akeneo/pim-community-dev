@@ -645,7 +645,7 @@ test('It should generate a value collection from the product with editable categ
   expect(valueCollection).toEqual(expectedValueCollection);
 });
 
-test('It should consistently order a value collection even when the order is the same', async () => {
+test('It should keep the order of a value collection even when the order is the same', async () => {
   const attributeGroupPermission = {
     code: 'marketing',
     view: true,
@@ -700,22 +700,6 @@ test('It should consistently order a value collection even when the order is the
   const expectedValueCollection = [
     {
       attribute: {
-        code: 'notices',
-        labels: {
-          en_US: 'notices',
-        },
-        group: 'marketing',
-        isReadOnly: false,
-        referenceDataName: 'notices',
-        sort_order: 0,
-      },
-      locale: null,
-      channel: 'ecommerce',
-      data: [],
-      editable: false,
-    },
-    {
-      attribute: {
         code: 'packshot',
         labels: {
           en_US: 'packshot',
@@ -728,6 +712,22 @@ test('It should consistently order a value collection even when the order is the
       locale: 'en_US',
       channel: 'ecommerce',
       data: ['iphone'],
+      editable: false,
+    },
+    {
+      attribute: {
+        code: 'notices',
+        labels: {
+          en_US: 'notices',
+        },
+        group: 'marketing',
+        isReadOnly: false,
+        referenceDataName: 'notices',
+        sort_order: 0,
+      },
+      locale: null,
+      channel: 'ecommerce',
+      data: [],
       editable: false,
     },
     {

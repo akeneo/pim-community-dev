@@ -1,6 +1,5 @@
 import {Action, Reducer} from 'redux';
-
-import {AttributeEditFormPageContextState} from "../../../application/state/PageContextState";
+import {AttributeEditFormPageContextState} from "../../../application/state/AttributeEditFormState";
 
 export type UpdatePageContextAction = UpdateTabContextAction;
 

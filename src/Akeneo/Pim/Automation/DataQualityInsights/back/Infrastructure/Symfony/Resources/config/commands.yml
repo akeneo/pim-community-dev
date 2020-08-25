@@ -1,27 +1,10 @@
 services:
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\LaunchEvaluationsCommand:
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@akeneo_batch_queue.manager.job_execution_manager'
-            - '@akeneo_batch.job_repository'
-            - '@logger'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-            - '%kernel.project_dir%'
-        tags:
-            - { name: 'console.command' }
-
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\HealthCheckCommand:
         arguments:
             - '@database_connection'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
+            - '@akeneo.pim.automation.data_quality_insights.feature'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionaryLocalFilesystem'
             - '@oneup_flysystem.mount_manager'
-        tags:
-            - { name: 'console.command' }
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\ConsolidateDashboardRatesCommand:
-        arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateDashboardRates'
         tags:
             - { name: 'console.command' }
 
@@ -48,18 +31,5 @@ services:
             $aspellDictionary: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionary'
             $aspellDictionaryGenerator: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionaryGenerator'
             $allActivatedLocalesQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetAllActivatedLocalesQuery'
-        tags:
-            - { name: 'console.command' }
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\SchedulePeriodicTasksCommand:
-        arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\SchedulePeriodicTasks'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-        tags:
-            - { name: 'console.command' }
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\PurgeOutdatedDataCommand:
-        arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\PurgeOutdatedData'
         tags:
             - { name: 'console.command' }

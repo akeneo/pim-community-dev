@@ -456,3 +456,8 @@ jobs:
         alias:     rule_engine_execute_rules
         label:     Rules execution
         type:      execute_rules
+    remove_non_existing_product_values:
+        connector: internal
+        alias:     remove_non_existing_product_values
+        label:     Remove non existing product values
+        type:      remove_non_existing_product_values

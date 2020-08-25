@@ -30,6 +30,9 @@
 - PIM-9404: Fix incorrect cast of numeric attribute option codes
 - PIM-9393: Add error message on job instance when permissions edit is empty
 - PIM-9400: Fix asset linked products not refreshing when switching locale
+- PIM-9412: Keep asset collection order when sort order is the same
+- PIM-9392: Prevent generating asset thumbnail when file is too large
+- PIM-9411: Fix TWA project widget searching on all contributors
 
 ## Improvements
 

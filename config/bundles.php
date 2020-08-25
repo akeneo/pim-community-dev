@@ -57,6 +57,7 @@ return [
     Akeneo\Connectivity\Connection\Infrastructure\Symfony\AkeneoConnectivityConnectionBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\FeatureFlagBundle\AkeneoFeatureFlagBundle::class =>  ['all' => true],
     Akeneo\Platform\CommunicationChannel\Infrastructure\Framework\Symfony\AkeneoCommunicationChannelBundle::class =>  ['all' => true],
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\AkeneoDataQualityInsightsBundle::class =>  ['all' => true],
     Akeneo\Tool\Bundle\MessengerBundle\AkeneoMessengerBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\WebhookBundle\AkeneoWebhookBundle::class => ['all' => true],
 
@@ -77,7 +78,7 @@ return [
     Akeneo\AssetManager\Infrastructure\Symfony\AkeneoAssetManagerBundle::class => ['all' => true],
     Akeneo\Pim\Enrichment\AssetManager\Bundle\AkeneoPimEnrichmentAssetManagerBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\MonitoringBundle\AkeneoMonitoringBundle::class => ['all' => true],
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\AkeneoDataQualityInsightsBundle::class => ['all' => true],
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\AkeneoPimEnterpriseDataQualityInsightsBundle::class => ['all' => true],
     Akeneo\Pim\Enrichment\Product\Bundle\AkeneoPimEnterpriseProductEnrichmentBundle::class => ['all' => true],
     Akeneo\Pim\Structure\Bundle\AkeneoPimEnterpriseStructureBundle::class => ['all' => true],
     Akeneo\SharedCatalog\AkeneoSharedCatalogBundle::class =>  ['all' => true],

@@ -1,11 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {
-  AttributeEditFormApp,
-  DataQualityInsightsFeature,
-  getDataQualityInsightsFeature,
-} from 'akeneodataqualityinsights-react';
+import {AttributeEditFormApp} from 'akeneodataqualityinsights-react';
 import {ATTRIBUTE_EDIT_FORM_TAB_CHANGED_EVENT} from 'akeneodataqualityinsights-react/application/constant';
 import OverrideTabTitles, {OverrideTabTitlesInterface} from "./override-tab-titles";
 
@@ -13,17 +9,8 @@ import BaseView from 'pimui/js/view/base';
 import {ATTRIBUTE_EDIT_FORM_UPDATED} from "@akeneo-pim-ee/data-quality-insights/src/application/constant";
 
 class DataQualityInsightsApp extends BaseView {
-  private isDataQualityInsightsEnabled = false;
   private renderingCount = 0;
   private overrideTabTitles: OverrideTabTitlesInterface;
-
-  public initialize(): void {
-    super.initialize();
-
-    getDataQualityInsightsFeature().then((dataQualityInsightsFeature: DataQualityInsightsFeature) => {
-      this.isDataQualityInsightsEnabled = dataQualityInsightsFeature.isActive ;
-    });
-  }
 
   public configure() {
     this.overrideTabTitles = new OverrideTabTitles(this.getRoot());
@@ -35,10 +22,6 @@ class DataQualityInsightsApp extends BaseView {
     });
 
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', () => {
-      if (!this.isDataQualityInsightsEnabled) {
-        return;
-      }
-
       this.renderTabTitles();
     });
 
@@ -50,10 +33,6 @@ class DataQualityInsightsApp extends BaseView {
   }
 
   public render() {
-    if (!this.isDataQualityInsightsEnabled) {
-      return this;
-    }
-
     this.renderingCount += 1;
 
     const attribute = this.getFormData();

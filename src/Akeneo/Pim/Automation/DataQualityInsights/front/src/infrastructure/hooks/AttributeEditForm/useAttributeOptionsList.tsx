@@ -5,7 +5,7 @@ import {
   AttributeOptionsListStateEvent
 } from "akeneopimstructure/js/attribute-option/hooks";
 
-import {Attribute} from "../../../domain";
+import {Attribute} from "@akeneo-pim-community/data-quality-insights/src/domain";
 
 export type AttributeOptionsListState = AttributeOptionsListStateEvent;
 
