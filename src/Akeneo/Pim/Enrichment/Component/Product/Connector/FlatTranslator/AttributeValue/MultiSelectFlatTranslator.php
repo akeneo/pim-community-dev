@@ -13,7 +13,8 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAt
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SimpleSelectFlatTranslator implements FlatAttributeValueTranslatorInterface
+
+class MultiSelectFlatTranslator implements FlatAttributeValueTranslatorInterface
 {
     /** @var GetExistingAttributeOptionsWithValues */
     private $getExistingAttributeOptionsWithValues;
@@ -25,18 +26,12 @@ class SimpleSelectFlatTranslator implements FlatAttributeValueTranslatorInterfac
 
     public function supports(string $attributeType, string $columnName): bool
     {
-        return $attributeType === AttributeTypes::OPTION_SIMPLE_SELECT;
+        return $attributeType === AttributeTypes::OPTION_MULTI_SELECT;
     }
 
     public function translate(string $attributeCode, array $properties, array $values, string $locale): array
     {
-        $optionKeys = array_map(
-            function ($value) use ($attributeCode) {
-                return sprintf('%s.%s', $attributeCode, $value);
-            },
-            $values
-        );
-
+        $optionKeys = $this->generateOptionKeys($values, $attributeCode);
         $attributeOptionTranslations = $this->getExistingAttributeOptionsWithValues->fromAttributeCodeAndOptionCodes(
             $optionKeys
         );
@@ -48,11 +43,37 @@ class SimpleSelectFlatTranslator implements FlatAttributeValueTranslatorInterfac
                 continue;
             }
 
-            $optionKey = sprintf('%s.%s', $attributeCode, $value);
-            $attributeOptionTranslation = $attributeOptionTranslations[$optionKey][$locale] ?? sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $value);
-            $result[$valueIndex] = $attributeOptionTranslation;
+            $optionCodes = explode(',', $value);
+            $labelizedOptions = array_map(
+                function ($optionCode) use ($attributeCode, $locale, $attributeOptionTranslations) {
+                    $optionKey = sprintf('%s.%s', $attributeCode, $optionCode);
+
+                    return $attributeOptionTranslations[$optionKey][$locale] ?? sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $optionCode);
+                },
+                $optionCodes
+            );
+
+            $result[$valueIndex] = implode(',', $labelizedOptions);
         }
 
         return $result;
+    }
+
+    private function generateOptionKeys(array $values, string $attributeCode): array
+    {
+        $optionKeys = [];
+        foreach ($values as $value) {
+            $optionCodes = explode(',', $value);
+            $currentOptionKeys = array_map(
+                function ($optionCode) use ($attributeCode) {
+                    return sprintf('%s.%s', $attributeCode, $optionCode);
+                },
+                $optionCodes
+            );
+
+            $optionKeys = array_merge($optionKeys, $currentOptionKeys);
+        }
+
+        return $optionKeys;
     }
 }
