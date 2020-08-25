@@ -34,7 +34,7 @@ import { Router } from '../../../../../dependenciesTools';
 import { getAttributeByIdentifier } from '../../../../../repositories/AttributeRepository';
 import get from 'lodash/get';
 import { validateAttribute } from './attribute.utils';
-import { DateFormatSelector } from "../../../../../components/Selectors/DateFormatSelector";
+import { DateFormatSelector } from '../../../../../components/Selectors/DateFormatSelector';
 
 type Props = {
   baseFormName: string;
@@ -177,7 +177,10 @@ const AttributePropertiesSelector: React.FC<Props> = ({
               'j/m/y': '(3/08/99)',
             }}
             onChange={(dateFormat: string) => {
-              setValue(formatFormName, dateFormat !== '' ? dateFormat : undefined);
+              setValue(
+                formatFormName,
+                dateFormat !== '' ? dateFormat : undefined
+              );
             }}
           />
         </>

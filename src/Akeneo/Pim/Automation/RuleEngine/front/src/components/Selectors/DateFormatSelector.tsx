@@ -1,7 +1,7 @@
 import React from 'react';
 import { usePopoverState, Popover, PopoverDisclosure } from 'reakit/Popover';
-import styled from "styled-components";
-//import { color } from "../../theme";
+import styled from 'styled-components';
+import { useTranslate } from "../../dependenciesTools/hooks";
 
 type Props = {
   predefinedFormats: { [key: string]: string };
@@ -24,12 +24,13 @@ const PopoverItem = styled.li<{ selected: boolean }>`
   height: 34px;
   line-height: 34px;
   padding: 0 6px;
-  color: ${({ theme, selected }) => (selected ? theme.color.purple100 : 'inherit')};
+  color: ${({ theme, selected }) =>
+    selected ? theme.color.purple100 : 'inherit'};
   background: ${({ selected }) => (selected ? '#F9F9FB' : 'inherit')};
   &:hover {
-    background: #F9F9FB;
+    background: #f9f9fb;
   }
-`
+`;
 
 const PopoverArrow = styled.span`
   background: url(/bundles/pimui/images/icon-down.svg) no-repeat 10px -2px;
@@ -47,11 +48,12 @@ export const DateFormatSelector: React.FC<Props> = ({
   value,
   defaultFormat,
 }) => {
-  const popover = usePopoverState({ gutter: 0, placement: "top-end" });
+  const translate = useTranslate();
+  const popover = usePopoverState({ gutter: 0, placement: 'top-end' });
   const PopoverButton = (
     <button type='button'>
       {value || defaultFormat}
-      <PopoverArrow/>
+      <PopoverArrow />
     </button>
   );
   const PopoverButtonProps = {
@@ -80,27 +82,33 @@ export const DateFormatSelector: React.FC<Props> = ({
           })
         }
       </PopoverDisclosure>
-      <DateFormatPopover {...popover} aria-label="TODO">
-        <div className="AknDropdown-menuTitle">
-          Select the date format
-        </div>
+      <DateFormatPopover {...popover} aria-label={translate('pimee_catalog_rule.form.edit.actions.concatenate.date_format')}>
+        <div className='AknDropdown-menuTitle'>{translate('pimee_catalog_rule.form.edit.actions.concatenate.date_format')}</div>
         <ul>
-          {Object.keys(predefinedFormats).map((format) => {
-            return <PopoverItem
-              key={format}
-              onClick={() => { onChange(format); popover.hide(); }}
-              selected={(value || defaultFormat) === format}
-            >{format}&nbsp;{predefinedFormats[format]}</PopoverItem>
+          {Object.keys(predefinedFormats).map(format => {
+            return (
+              <PopoverItem
+                key={format}
+                onClick={() => {
+                  onChange(format);
+                  popover.hide();
+                }}
+                selected={(value || defaultFormat) === format}>
+                {format}&nbsp;{predefinedFormats[format]}
+              </PopoverItem>
+            );
           })}
         </ul>
         <input
           placeholder={defaultFormat}
-          type="text"
-          className="AknTextField"
+          type='text'
+          className='AknTextField'
           defaultValue={value}
-          onChange={(e) => { onChange(e.target.value); }}
+          onChange={e => {
+            onChange(e.target.value);
+          }}
         />
       </DateFormatPopover>
     </>
   );
-}
+};

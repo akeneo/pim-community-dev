@@ -212,6 +212,10 @@ pimee_catalog_rule:
                         multiply: Multiply
                         divide: Divide
                         choose: Choose your operator
+                concatenate:
+                    title: CONCATENATE values
+                    helper: To concatenate attribute values, please add the attributes and then, select the target attribute.
+                    date_format: Select a date format
             conditions:
                 delete:
                     label: Remove condition
@@ -304,6 +308,7 @@ pimee_catalog_rule:
         required_operator_for_operation: An operator is required for this operation
         division_by_zero: Divisions by zero are not possible
         two_operations_are_required: The operation list should contain 2 operations or more.
+        two_items_are_required: The list should contain 2 items or more.
         unknown_or_inactive_locale: 'The "{{ localeCode }}" locale does not exist or is not activated'
         unknown_or_inactive_currency: 'The "{{ currencyCode }}" currency does not exist or is not activated'
         unbound_locale: 'The "{{ localeCode }}" locale is not activated in the "{{ channelCode }}" channel'

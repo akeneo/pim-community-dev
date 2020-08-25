@@ -4,15 +4,12 @@ import { ConcatenateAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import { useControlledFormInputAction } from '../../hooks';
-import { useActiveCurrencies } from '../../hooks/useActiveCurrencies';
 import {
   Attribute,
   AttributeCode,
   AttributeType,
   Locale,
 } from '../../../../models';
-import { IndexedCurrencies } from '../../../../repositories/CurrencyRepository';
-import { Currency } from '../../../../models/Currency';
 import {
   fetchAttribute,
   useGetAttributeAtMount,
@@ -21,14 +18,6 @@ import { ActionLeftSide, ActionRightSide, ActionTitle } from './ActionLine';
 import { ActionFormContainer } from './style';
 import { AttributeSelector } from '../../../../components/Selectors/AttributeSelector';
 import { InlineHelper } from '../../../../components/HelpersInfos/InlineHelper';
-import {
-  getMeasurementUnitValidator,
-  MeasurementUnitSelector,
-} from '../../../../components/Selectors/MeasurementUnitSelector';
-import {
-  CurrencySelector,
-  getCurrencyValidation,
-} from '../../../../components/Selectors/CurrencySelector';
 import {
   getScopeValidation,
   ScopeSelector,
@@ -75,7 +64,6 @@ const ConcatenateActionLine: React.FC<Props> = ({
     getFormValue,
     isFormFieldInError,
   } = useControlledFormInputAction<string | null>(lineNumber);
-  const currencies = useActiveCurrencies();
   watch(formName('source'));
   watch(formName('to.field'));
   const [attributeTarget, setAttributeTarget] = React.useState<
@@ -86,10 +74,6 @@ const ConcatenateActionLine: React.FC<Props> = ({
   const getScopeFormValue = () => getFormValue('to.scope');
   const localeFormName = formName('to.locale');
   const getLocaleFormValue = () => getFormValue('to.locale');
-  const unitFormName = formName('to.unit');
-  const getUnitFormValue = () => getFormValue('to.unit');
-  const currencyFormName = formName('to.currency');
-  const getCurrencyFormValue = () => getFormValue('to.currency');
 
   const getAvailableLocalesForTarget = (): Locale[] => {
     if (!attributeTarget?.scopable) {
@@ -98,18 +82,6 @@ const ConcatenateActionLine: React.FC<Props> = ({
     const scopeCode = getScopeFormValue();
     if (scopeCode && scopes[scopeCode]) {
       return scopes[scopeCode].locales;
-    }
-    return [];
-  };
-  const getAvailableCurrenciesForTarget = (
-    currencies: IndexedCurrencies
-  ): Currency[] => {
-    if (!attributeTarget?.scopable) {
-      return Object.values(currencies);
-    }
-    const scopeCode = getScopeFormValue();
-    if (scopeCode && scopes[scopeCode]) {
-      return scopes[scopeCode].currencies.map(code => ({ code }));
     }
     return [];
   };
@@ -139,12 +111,14 @@ const ConcatenateActionLine: React.FC<Props> = ({
 
   return (
     <ActionTemplate
-      title={translate('pimee_catalog_rule.form.edit.actions.calculate.title')}
+      title={translate(
+        'pimee_catalog_rule.form.edit.actions.concatenate.title'
+      )}
       helper={translate(
-        'pimee_catalog_rule.form.edit.actions.calculate.helper'
+        'pimee_catalog_rule.form.edit.actions.concatenate.helper'
       )}
       legend={translate(
-        'pimee_catalog_rule.form.edit.actions.calculate.helper'
+        'pimee_catalog_rule.form.edit.actions.concatenate.helper'
       )}
       handleDelete={handleDelete}
       lineNumber={lineNumber}>
@@ -162,7 +136,7 @@ const ConcatenateActionLine: React.FC<Props> = ({
             ).length >= 2
               ? true
               : translate(
-                  'pimee_catalog_rule.exceptions.two_operations_are_required'
+                  'pimee_catalog_rule.exceptions.two_items_are_required'
                 ),
         }}
       />
@@ -228,51 +202,6 @@ const ConcatenateActionLine: React.FC<Props> = ({
                 </ErrorBlock>
               )}
             </SelectorBlock>
-            {attributeTarget?.type === AttributeType.METRIC && (
-              <SelectorBlock
-                className={
-                  isFormFieldInError('to.unit') ? 'select2-container-error' : ''
-                }>
-                <Controller
-                  as={MeasurementUnitSelector}
-                  data-testid={`edit-rules-action-${lineNumber}-to-unit`}
-                  name={unitFormName}
-                  attribute={attributeTarget}
-                  value={getUnitFormValue()}
-                  rules={getMeasurementUnitValidator(
-                    attributeTarget,
-                    router,
-                    translate
-                  )}
-                />
-              </SelectorBlock>
-            )}
-            {attributeTarget?.type === AttributeType.PRICE_COLLECTION && (
-              <SelectorBlock
-                className={
-                  isFormFieldInError('to.currency')
-                    ? 'select2-container-error'
-                    : ''
-                }>
-                <Controller
-                  as={CurrencySelector}
-                  data-testid={`edit-rules-action-${lineNumber}-to-currency`}
-                  name={currencyFormName}
-                  availableCurrencies={getAvailableCurrenciesForTarget(
-                    currencies
-                  )}
-                  value={getCurrencyFormValue()}
-                  rules={getCurrencyValidation(
-                    attributeTarget,
-                    translate,
-                    currentCatalogLocale,
-                    getAvailableCurrenciesForTarget(currencies),
-                    currencies,
-                    getScopeFormValue()
-                  )}
-                />
-              </SelectorBlock>
-            )}
             {attributeTarget?.scopable && (
               <SelectorBlock
                 className={
