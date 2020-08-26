@@ -43,12 +43,19 @@ class MetricTranslatorSpec extends ObjectBehavior
             ->shouldReturn(['Microgramme', 'Once française', '[unknown]', 'Livre']);
     }
 
-    function it_returns_values_with_fallback_pattern_when_reference_data_is_not_set(
+    function it_should_throw_when_reference_data_is_not_set(
         SqlGetUnitTranslations $getUnitTranslations
     ) {
         $getUnitTranslations->byMeasurementFamilyCodeAndLocale()->shouldNotBeCalled();
 
-        $this->translate('weight-fr_FR-unit', [], ['MICROGRAM', 'ONCE', 'unknown', 'POUND'], 'fr_FR')
-            ->shouldReturn(['[MICROGRAM]', '[ONCE]', '[unknown]', '[POUND]']);
+        $this->shouldThrow(\LogicException::class)->during(
+            'translate',
+            [
+                'weight-fr_FR-unit',
+                [],
+                ['MICROGRAM', 'ONCE', 'unknown', 'POUND'],
+                'fr_FR'
+            ]
+        );
     }
 }
