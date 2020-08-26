@@ -5,9 +5,11 @@ services:
             - '@pim_catalog.localization.translator.label'
         tags: [{ name: pim_enrich.connector.flat_translators.attribute_value }]
 
-#   pim_enrich.connector.flat_translators.attribute_value_translator.metric_unit:
-#     class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatAttributeValueTranslator\MetricUnitFlatTranslator
-#     tags: [{ name: pim_enrich.connector.flat_translators.attribute_value_translator }]
+    pim_enrich.connector.flat_translators.attribute_value_translator.metric_unit:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValue\MetricTranslator
+        arguments:
+            - '@akeneo_measurement.public_api.get_unit_translations'
+        tags: [{ name: pim_enrich.connector.flat_translators.attribute_value }]
 
     pim_enrich.connector.flat_translators.attribute_value_translator.multi_select:
         class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValue\MultiSelectFlatTranslator
