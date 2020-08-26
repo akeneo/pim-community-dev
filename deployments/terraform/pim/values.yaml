@@ -111,6 +111,9 @@ pim:
   elasticsearch:
     settings:
       totalFieldsLimit: 10000
+  dqi:
+    settings:
+      enabled: true
   defaultCatalog: src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
   defaultAdminUser:
     login: null # Fill me

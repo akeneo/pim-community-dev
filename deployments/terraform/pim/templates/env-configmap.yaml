@@ -24,6 +24,11 @@ data:
   APP_DATABASE_USER: {{ .Values.mysql.mysql.defaultUser | quote }}
   APP_INDEX_HOSTS: {{ .Values.elasticsearch.fullnameOverride }}-client:9200
   APP_ELASTICSEARCH_TOTAL_FIELDS_LIMIT: {{ .Values.pim.elasticsearch.settings.totalFieldsLimit | quote }}
+  {{- if .Values.pim.dqi.settings.enabled }}
+  FLAG_DATA_QUALITY_INSIGHTS_ENABLED: "1"
+  {{- else }}
+  FLAG_DATA_QUALITY_INSIGHTS_ENABLED: "0"
+  {{- end }}
   APP_SECRET: {{ .Values.pim.secret }}
   SRNT_GOOGLE_APPLICATION_CREDENTIALS: /var/secrets/google/srnt.json
   SRNT_GOOGLE_BUCKET_NAME: {{ .Values.pim.storage.bucketName | quote }}
