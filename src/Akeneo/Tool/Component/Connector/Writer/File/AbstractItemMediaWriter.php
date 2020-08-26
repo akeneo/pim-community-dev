@@ -142,7 +142,7 @@ abstract class AbstractItemMediaWriter implements
         if ($parameters->has('with_label') && $parameters->get('with_label') && $parameters->has('file_locale')) {
             $fileLocale = $parameters->get('file_locale');
             $headerWithLabel = $parameters->has('header_with_label') && $parameters->get('header_with_label');
-            $scope = $parameters->get('filters')['structure']['scope'];
+            $scope = $parameters->get('filters')['structure']['scope'] ?? $parameters->get('scope');
 
             $flatItems = $this->flatTranslator->translate($flatItems, $fileLocale, $scope, $headerWithLabel);
         }

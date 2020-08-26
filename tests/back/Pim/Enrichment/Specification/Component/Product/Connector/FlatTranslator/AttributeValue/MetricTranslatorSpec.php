@@ -39,7 +39,7 @@ class MetricTranslatorSpec extends ObjectBehavior
             'POUND' => 'Livre',
         ]);
 
-        $this->translate('weight-fr_FR-unit', ['reference_data_name' => 'Weight'], ['MICROGRAM', 'ONCE', 'unknown', 'POUND'], 'fr_FR')
+        $this->translate('weight-fr_FR-unit', ['measurement_family_code' => 'Weight'], ['MICROGRAM', 'ONCE', 'unknown', 'POUND'], 'fr_FR')
             ->shouldReturn(['Microgramme', 'Once française', '[unknown]', 'Livre']);
     }
 
