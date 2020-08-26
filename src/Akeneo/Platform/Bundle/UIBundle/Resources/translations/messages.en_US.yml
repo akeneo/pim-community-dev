@@ -75,6 +75,8 @@ pim_common:
     parent: Parent
     groups: Groups
     unit: Unit
+    yes: "Yes"
+    no: "No"
 
 pim_enrich:
     # ACLs
