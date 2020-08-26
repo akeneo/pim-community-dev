@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook;
 
+use Akeneo\Connectivity\Connection\Domain\Webhook\Model\ConnectionWebhook;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\WebhookClient;
 use Akeneo\Tool\Bundle\WebhookBundle\Client\RequestFactory;
@@ -41,10 +43,15 @@ class GuzzleWebhookClient implements WebhookClient
     {
         $buildRequests = function ($webhookRequests) {
             foreach ($webhookRequests as $request) {
+                /** @var ConnectionWebhook $webhook */
+                $webhook = $request->webhook();
+                /** @var WebhookEvent $event */
+                $event = $request->event();
+
                 yield $this->requestFactory->create(
-                    $request->getUrl(),
-                    $request->getPayload(),
-                    ['secret' => $request->getSecret()]
+                    $webhook->url(),
+                    json_encode($event->normalize()),
+                    ['secret' => $webhook->secret()]
                 );
             }
         };
@@ -55,10 +62,12 @@ class GuzzleWebhookClient implements WebhookClient
                 'timeout' => 3
             ],
             'fulfilled' => function (Response $response, $index) {
+                echo sprintf('%s fulfilled', $index);
                 $this->logger->info(sprintf('%s fulfilled', $index));
 
             },
             'rejected' => function (RequestException $reason, $index) {
+                echo sprintf('%s rejected : %s', $index, $reason->getMessage());
                 $this->logger->error(sprintf('%s rejected : %s', $index, $reason->getMessage()));
             },
         ]);

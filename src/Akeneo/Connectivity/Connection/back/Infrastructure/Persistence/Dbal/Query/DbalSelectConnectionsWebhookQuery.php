@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 
-use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Webhook;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Model\ConnectionWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectConnectionsWebhookQuery;
 use Doctrine\DBAL\Connection as DbalConnection;
 use Doctrine\DBAL\FetchMode;
@@ -24,8 +24,7 @@ class DbalSelectConnectionsWebhookQuery implements SelectConnectionsWebhookQuery
     }
 
     /**
-     * @return Webhook[]
-     *
+     * @return ConnectionWebhook[]
      * @throws \Doctrine\DBAL\DBALException
      */
     public function execute(): array
@@ -42,7 +41,7 @@ SQL;
         $rawWebhooks = $this->dbalConnection->executeQuery($sql)->fetchAll(FetchMode::ASSOCIATIVE);
         $webhooks = [];
         foreach ($rawWebhooks as $rawWebhook) {
-            $webhooks[] = new Webhook(
+            $webhooks[] = new ConnectionWebhook(
                 $rawWebhook['code'],
                 $rawWebhook['userGroup'],
                 $rawWebhook['userRole'],

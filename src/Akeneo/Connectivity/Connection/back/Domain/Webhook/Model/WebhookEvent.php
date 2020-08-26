@@ -49,4 +49,14 @@ class WebhookEvent
     {
         return $this->data;
     }
+
+    public function normalize(): array
+    {
+        return [
+            'action' => $this->action(),
+            'event_id' => $this->eventId(),
+            'event_date' => $this->eventDate(),
+            'data' => $this->data()
+        ];
+    }
 }

@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
+use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectConnectionsWebhookQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\GuzzleWebhookClient;
-use Akeneo\Tool\Bundle\WebhookBundle\Client\RequestFactory;
 
 /**
  * @package   Akeneo\Connectivity\Connection\Application\WebHook\Command
@@ -22,17 +23,17 @@ final class SendMessageToWebhooksHandler
     /** @var GuzzleWebhookClient */
     private $client;
 
-    /** @var RequestFactory */
-    private $requestFactory;
+    /** @var WebhookEventBuilder */
+    private $builder;
 
     public function __construct(
         SelectConnectionsWebhookQuery $selectConnectionsWebhookQuery,
         GuzzleWebhookClient $client,
-        RequestFactory $requestFactory
+        WebhookEventBuilder $builder
     ) {
         $this->selectConnectionsWebhookQuery = $selectConnectionsWebhookQuery;
         $this->client = $client;
-        $this->requestFactory = $requestFactory;
+        $this->builder = $builder;
     }
 
     public function handle(SendMessageToWebhooksCommand $command): void
@@ -43,16 +44,13 @@ final class SendMessageToWebhooksHandler
             // YoLO
         }
 
-//        foreach ($webhooks as $webhook) {
-//            $registry->build($webhook, $command->businessEvent());
-//        }
-
-//        $payload = [
-//            'event' => $command->businessEvent()->name(),
-//            'id' => $command->businessEvent()->uuid(),
-//            'data' => $command->businessEvent()->data()
-//        ];
-//        $body = json_encode($payload);
+        $webhookRequests = [];
+        foreach ($webhooks as $webhook) {
+            $webhookRequests[] = new WebhookRequest(
+                $webhook,
+                $this->builder->build($webhook, $command->businessEvent())
+            );
+        }
 
         $this->client->bulkSend($webhookRequests);
 
