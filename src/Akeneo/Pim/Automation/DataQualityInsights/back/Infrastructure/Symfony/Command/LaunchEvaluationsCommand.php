@@ -55,15 +55,8 @@ class LaunchEvaluationsCommand extends Command
         }
 
         try {
-            $this->runUniqueProcessJob->run(EvaluationsParameters::JOB_NAME, function(?JobExecution $lastJobExecution) {
-                $defaultFrom = new \DateTime(EvaluationsParameters::EVALUATE_FROM_DEFAULT_TIME);
-
-                $from = $defaultFrom;
-                if (null !== $lastJobExecution) {
-                    $from = max($lastJobExecution->getStartTime(), $defaultFrom);
-                }
-
-                return [EvaluationsParameters::EVALUATE_FROM_FIELD => $from->format(EvaluationsParameters::EVALUATE_FROM_FORMAT)];
+            $this->runUniqueProcessJob->run('data_quality_insights_evaluations', function(?JobExecution $lastJobExecution) {
+                return [];
             });
         } catch (AnotherJobStillRunningException $e) {
             exit(0);

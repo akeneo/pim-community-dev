@@ -55,15 +55,15 @@ class PrepareEvaluationsCommand extends Command
         }
 
         try {
-            $this->runUniqueProcessJob->run(PrepareEvaluationsParameters::JOB_NAME, function(?JobExecution $lastJobExecution) {
-                $defaultFrom = new \DateTime(PrepareEvaluationsParameters::EXECUTED_FROM_DEFAULT_TIME);
+            $this->runUniqueProcessJob->run('data_quality_insights_prepare_evaluations', function(?JobExecution $lastJobExecution) {
+                $defaultFrom = new \DateTime(PrepareEvaluationsParameters::UPDATED_SINCE_DEFAULT_TIME);
 
                 $from = $defaultFrom;
                 if (null !== $lastJobExecution) {
                     $from = max($lastJobExecution->getStartTime(), $defaultFrom);
                 }
 
-                return [PrepareEvaluationsParameters::EXECUTED_FROM_FIELD => $from->format(PrepareEvaluationsParameters::EXECUTED_FROM_FORMAT)];
+                return [PrepareEvaluationsParameters::UPDATED_SINCE_PARAMETER => $from->format(PrepareEvaluationsParameters::UPDATED_SINCE_DATE_FORMAT)];
             });
         } catch (AnotherJobStillRunningException $e) {
             exit(0);

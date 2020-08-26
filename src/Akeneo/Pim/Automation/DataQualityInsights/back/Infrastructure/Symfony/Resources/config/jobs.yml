@@ -3,7 +3,7 @@ services:
     akeneo.pim.automation.data_quality_insights.job.prepare_evaluations:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
-            - !php/const Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\PrepareEvaluationsParameters::JOB_NAME
+            - 'data_quality_insights_prepare_evaluations'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
@@ -16,7 +16,7 @@ services:
     akeneo.pim.automation.data_quality_insights.job.evaluations:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
-            - !php/const Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\EvaluationsParameters::JOB_NAME
+            - 'data_quality_insights_evaluations'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
@@ -129,7 +129,7 @@ services:
             - '@logger'
 
     #Job parameters
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\EvaluationsParameters:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\PrepareEvaluationsParameters:
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
             - { name: akeneo_batch.job.job_parameters.default_values_provider }

@@ -75,9 +75,9 @@ final class PrepareProductsCriteriaEvaluationTasklet implements TaskletInterface
 
     private function updatedSince(): \DateTimeImmutable
     {
-        $evaluateFrom = $this->stepExecution->getJobParameters()->get(PrepareEvaluationsParameters::EXECUTED_FROM_FIELD);
+        $evaluateFrom = $this->stepExecution->getJobParameters()->get(PrepareEvaluationsParameters::UPDATED_SINCE_PARAMETER);
 
-        return \DateTimeImmutable::createFromFormat(PrepareEvaluationsParameters::EXECUTED_FROM_FORMAT, $evaluateFrom);
+        return \DateTimeImmutable::createFromFormat(PrepareEvaluationsParameters::UPDATED_SINCE_DATE_FORMAT, $evaluateFrom);
     }
 
     private function cleanCriteriaOfDeletedProducts()
