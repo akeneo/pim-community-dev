@@ -33,6 +33,7 @@
 - PIM-9412: Keep asset collection order when sort order is the same
 - PIM-9392: Prevent generating asset thumbnail when file is too large
 - PIM-9411: Fix TWA project widget searching on all contributors
+- PIM-9372: Fix media-link thumbnail re-generation
 
 ## Improvements
 
