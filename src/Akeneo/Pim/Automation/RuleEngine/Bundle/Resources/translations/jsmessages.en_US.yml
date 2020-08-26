@@ -216,6 +216,7 @@ pimee_catalog_rule:
                     title: CONCATENATE values
                     helper: To concatenate attribute values, please add the attributes and then, select the target attribute.
                     date_format: Select a date format
+                    label_locale: Label locale
             conditions:
                 delete:
                     label: Remove condition

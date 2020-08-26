@@ -45,10 +45,22 @@
         }
 
         .AknRuleOperation-element {
+          color: @AknGrey140;
           display: table-cell;
           padding: 0 10px 0 0;
           height: 40px;
           vertical-align: top;
+
+          &--glued {
+            padding-right: 0;
+
+            .AknRuleOperation-elementField {
+              border-right-width: 0;
+              border-top-right-radius: 0;
+              border-bottom-right-radius: 0;
+              padding-right: 0;
+            }
+          }
         }
 
         .AknRuleOperation-elementOperator {
@@ -75,7 +87,7 @@
 
         .AknRuleOperation-elementScope,
         .AknRuleOperation-elementLocale {
-          max-width: 135px;
+          max-width: 155px;
         }
 
         .AknRuleOperation-inputValue {

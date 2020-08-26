@@ -78,6 +78,7 @@ type Props = {
   name?: string;
   validation?: { required?: string; validate?: (value: any) => string | true };
   placeholder?: string;
+  containerCssClass?: string;
 };
 
 const LocaleSelector: React.FC<Props> = ({

@@ -1,7 +1,8 @@
 import React from 'react';
 import { usePopoverState, Popover, PopoverDisclosure } from 'reakit/Popover';
 import styled from 'styled-components';
-import { useTranslate } from "../../dependenciesTools/hooks";
+import { useTranslate } from '../../dependenciesTools/hooks';
+import { color } from '../../theme';
 
 type Props = {
   predefinedFormats: { [key: string]: string };
@@ -33,7 +34,7 @@ const PopoverItem = styled.li<{ selected: boolean }>`
 `;
 
 const PopoverArrow = styled.span`
-  background: url(/bundles/pimui/images/icon-down.svg) no-repeat 10px -2px;
+  background: url(/bundles/pimui/images/icon-down.svg) no-repeat 10px 10px;
   width: 40px;
   display: block;
   position: absolute;
@@ -59,16 +60,20 @@ export const DateFormatSelector: React.FC<Props> = ({
   const PopoverButtonProps = {
     style: {
       backgroundColor: 'white',
-      border: `1px solid #ccd1d8`,
+      border: `1px solid ${color.purple100}`,
       borderRadius: '2px',
       cursor: 'pointer',
       height: '40px',
       left: 0,
       zIndex: 1,
-      padding: '0px 41px 0 15px',
+      padding: '0 41px 0 15px',
       margin: '0 10px 0 0',
       display: 'table-cell',
-      color: '#515d6d',
+      color: color.grey100,
+      borderLeftWidth: 0,
+      borderBottomLeftRadius: 0,
+      borderTopLeftRadius: 0,
+      lineHeight: '40px',
     },
   };
 
@@ -82,8 +87,16 @@ export const DateFormatSelector: React.FC<Props> = ({
           })
         }
       </PopoverDisclosure>
-      <DateFormatPopover {...popover} aria-label={translate('pimee_catalog_rule.form.edit.actions.concatenate.date_format')}>
-        <div className='AknDropdown-menuTitle'>{translate('pimee_catalog_rule.form.edit.actions.concatenate.date_format')}</div>
+      <DateFormatPopover
+        {...popover}
+        aria-label={translate(
+          'pimee_catalog_rule.form.edit.actions.concatenate.date_format'
+        )}>
+        <div className='AknDropdown-menuTitle'>
+          {translate(
+            'pimee_catalog_rule.form.edit.actions.concatenate.date_format'
+          )}
+        </div>
         <ul>
           {Object.keys(predefinedFormats).map(format => {
             return (

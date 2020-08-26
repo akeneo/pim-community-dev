@@ -108,9 +108,21 @@ const AttributePropertiesSelector: React.FC<Props> = ({
     return 'undefined' !== typeof error;
   };
 
+  const hasOptions = [
+    AttributeType.OPTION_SIMPLE_SELECT,
+    AttributeType.OPTION_MULTI_SELECT,
+    AttributeType.REFERENCE_ENTITY_COLLECTION,
+    AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
+    AttributeType.DATE,
+    AttributeType.PRICE_COLLECTION,
+  ].includes(attribute?.type as AttributeType);
+
   return (
     <>
-      <span className={'AknRuleOperation-element'}>
+      <span
+        className={`AknRuleOperation-element${
+          hasOptions ? ' AknRuleOperation-element--glued' : ''
+        }`}>
         <Controller
           as={<input type='hidden' />}
           name={fieldFormName}
@@ -151,10 +163,16 @@ const AttributePropertiesSelector: React.FC<Props> = ({
             availableLocales={locales}
             value={watch(labelLocaleFormName)}
             hiddenLabel
-            placeholder={translate('TODO Label Locale')}
+            placeholder={translate(
+              'pimee_catalog_rule.form.edit.actions.concatenate.label_locale'
+            )}
             onChange={(localeCode: LocaleCode) => {
-              setValue(labelLocaleFormName, localeCode);
+              setValue(
+                labelLocaleFormName,
+                localeCode != '' ? localeCode : undefined
+              );
             }}
+            containerCssClass={`select2-container-left-glued select2-container-as-option select2-container-uppercase`}
           />
         </span>
       )}
@@ -203,7 +221,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
               currentCatalogLocale,
               getAvailableCurrencies(currencies),
               currencies,
-              watch(scopeFormName) ?? watch(scopeFormName),
+              watch(scopeFormName),
               isCurrencyRequired
             )}
           />
@@ -212,9 +230,13 @@ const AttributePropertiesSelector: React.FC<Props> = ({
             value={watch(currencyFormName)}
             hiddenLabel
             onChange={(currencyCode: CurrencyCode) => {
-              setValue(currencyFormName, currencyCode);
+              setValue(
+                currencyFormName,
+                currencyCode !== '' ? currencyCode : undefined
+              );
             }}
             allowClear={!isCurrencyRequired}
+            containerCssClass={`select2-container-left-glued select2-container-as-option select2-container-uppercase`}
           />
         </span>
       )}

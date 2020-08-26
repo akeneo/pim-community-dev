@@ -67,6 +67,7 @@ type Props = {
   allowClear?: boolean;
   disabled?: boolean;
   validation?: { required?: string; validate?: (value: any) => string | true };
+  containerCssClass?: string;
 };
 
 const CurrencySelector: React.FC<Props> = ({
