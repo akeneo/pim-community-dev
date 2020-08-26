@@ -33,7 +33,7 @@ SQL
         );
 
         $this->addSql(<<<SQL
-DELETE FROM oro_user
+DELETE IGNORE FROM oro_user
 WHERE username = 'Franklin' AND first_name = 'Franklin' AND last_name = 'Insights' AND email = 'admin@akeneo.com'
 SQL
         );
