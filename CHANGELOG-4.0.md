@@ -7,6 +7,7 @@
 ## Bug fixes
 
 - DAPI-1231: Fix possible ES conflicts when updating product rates
+- PIM-9424: Fix add attributes values mass action on reference entity multiple links attributes
 
 # 4.0.52 (2020-08-24)
 
