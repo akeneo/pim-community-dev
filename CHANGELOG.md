@@ -43,6 +43,7 @@
 - API-1225: Be able to get attributes searching by updated date
 - API-1226: Be able to get attributes searching by a list of attribute types
 - PIM-9368: Allow minimum translation progress of 70% instead of 80%
+- PIM-9398: Add a primary key on connection table
 
 # Technical Improvements
 
