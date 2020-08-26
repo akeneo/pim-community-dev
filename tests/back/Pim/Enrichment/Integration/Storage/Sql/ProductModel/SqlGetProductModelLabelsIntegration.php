@@ -11,7 +11,6 @@ class SqlGetProductModelLabelsIntegration extends TestCase
 {
     public function test_that_it_returns_product_model_labels()
     {
-
         $result = $this->getProductModelLabels()->byCodesAndLocaleAndScope(['model-braided-hat', 'amor', 'dionysos', 'unknown'], 'fr_FR', 'ecommerce');
         $expected = [
             'model-braided-hat' => 'Chapeau tressé',
@@ -19,7 +18,7 @@ class SqlGetProductModelLabelsIntegration extends TestCase
             'amor' => null
         ];
 
-        Assert::assertSame($result, $expected);
+        Assert::assertSame($expected, $result);
     }
 
     protected function getConfiguration(): Configuration
