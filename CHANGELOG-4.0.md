@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Improvements
+
+- DAPI-1201: Remove unused ES index configuration file 
+
 ## Bug fixes
 
 - DAPI-1231: Fix possible ES conflicts when updating product rates
