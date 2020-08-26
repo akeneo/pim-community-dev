@@ -8,7 +8,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\SqlGetUnitTranslations;
 
 class MetricTranslator implements FlatAttributeValueTranslatorInterface
 {
-    const UNIT_SUFFIX = '-unit';
+    private const UNIT_SUFFIX = '-unit';
 
     /** @var SqlGetUnitTranslations */
     private $getUnitTranslations;
