@@ -18,7 +18,7 @@ class ProductEventDataBuilder implements WebhookEventDataBuilder
 {
     public function build(ConnectionWebhook $webhook, BusinessEventInterface $businessEvent): array
     {
-        return $businessEvent->getData();
+        return $businessEvent->data();
     }
 
     public function supports(BusinessEventInterface $businessEvent): bool

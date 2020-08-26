@@ -25,7 +25,7 @@ class WebhookEventBuilderRegistry
             }
         }
 
-        return $businessEvent->getData();
+        return $businessEvent->data();
     }
 
     public function register(WebhookEventDataBuilder $builder): void

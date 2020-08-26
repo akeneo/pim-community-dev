@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Query;
 
+use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionCommand;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionHandler;
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\ConnectionLoader;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
@@ -13,6 +15,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSel
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection as DbalConnection;
+use Doctrine\DBAL\FetchMode;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -43,10 +46,16 @@ class DbalSelectConnectionsWebhookIntegration extends TestCase
 
     public function test_it_finds_a_connection_with_enabled_webhooks()
     {
+        $groupItSupport = $this->selectGroup('IT support');
+
         $magento = $this->connectionLoader->createConnection('magento', 'Magento Connector', FlowType::DATA_DESTINATION, false);
         $erp = $this->connectionLoader->createConnection('erp', 'ERP Connector', FlowType::DATA_SOURCE, false);
         $binder = $this->connectionLoader->createConnection('binder', 'Binder Connector', FlowType::DATA_SOURCE, false);
         $sap = $this->connectionLoader->createConnection('sap', 'Sap Connector', FlowType::DATA_DESTINATION, false);
+
+        $this->get('akeneo_connectivity.connection.application.handler.update_connection')->handle(
+            new UpdateConnectionCommand($magento->code(), $magento->label(), $magento->flowType(), $magento->image(), $magento->userRoleId(), $groupItSupport['id'], $magento->auditable())
+        );
 
         $this->updateConnection($magento, 'secret_magento', null, 1);
         $this->updateConnection($binder, 'secret_binder', 'http://172.17.0.1:8000/webhook_binder', 1);
@@ -54,6 +63,8 @@ class DbalSelectConnectionsWebhookIntegration extends TestCase
         $this->updateConnection($sap, 'secret_sap', 'http://172.17.0.1:8000/webhook_sap', 0);
 
         $connections = $this->selectConnectionsWebhookQuery->execute();
+
+        exit();
 
         Assert::assertCount(2, $connections);
         Assert::assertEquals('binder', $connections[0]['code']);
@@ -64,12 +75,33 @@ class DbalSelectConnectionsWebhookIntegration extends TestCase
         Assert::assertEquals('http://172.17.0.1:8000/webhook_erp', $connections[1]['webhook_url']);
     }
 
+    private function selectGroup(string $name)
+    {
+        $sql = <<<SQL
+    SELECT * FROM oro_access_group WHERE name = :name
+SQL;
+
+        $group = $this->dbalConnection->executeQuery(
+            $sql,
+            [
+                'name' => $name,
+            ]
+        )->fetchAll();
+
+        return $group[0];
+    }
+
     private function updateConnection(ConnectionWithCredentials $connection, string $secret, ?string $url, int $enabled)
     {
-        $this->dbalConnection->update('akeneo_connectivity_connection', [
-            'webhook_url' => $url,
-            'webhook_secret' => $secret,
-            'webhook_enabled' => $enabled], ['code' => $connection->code()]);
+        $this->dbalConnection->update(
+            'akeneo_connectivity_connection',
+            [
+                'webhook_url' => $url,
+                'webhook_secret' => $secret,
+                'webhook_enabled' => $enabled,
+            ],
+            ['code' => $connection->code()]
+        );
     }
 
     protected function getConfiguration(): Configuration
