@@ -27,12 +27,14 @@ class MetricTranslator implements FlatAttributeValueTranslatorInterface
 
     public function translate(string $attributeCode, array $properties, array $values, string $localeCode): array
     {
-        if (!isset($properties['reference_data_name'])) {
-            return $values;
-        }
+        $unitTranslations = [];
 
-        $measurementFamilyCode = $properties['reference_data_name'];
-        $unitTranslations = $this->getUnitTranslations->byMeasurementFamilyCodeAndLocale($measurementFamilyCode, $localeCode);
+        if (isset($properties['reference_data_name'])) {
+            $unitTranslations = $this->getUnitTranslations->byMeasurementFamilyCodeAndLocale(
+                $properties['reference_data_name'],
+                $localeCode
+            );
+        }
 
         return array_map(function ($value) use ($unitTranslations) {
             return $unitTranslations[$value] ?? sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $value);
