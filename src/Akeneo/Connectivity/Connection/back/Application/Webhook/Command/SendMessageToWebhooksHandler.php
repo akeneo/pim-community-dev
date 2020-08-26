@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
-use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectConnectionsWebhookQuery;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectConnectionsWebhookQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\GuzzleWebhookClient;
 use Akeneo\Tool\Bundle\WebhookBundle\Client\RequestFactory;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Pool;
-use GuzzleHttp\Psr7\Response;
 
 /**
  * @package   Akeneo\Connectivity\Connection\Application\WebHook\Command
@@ -19,18 +16,18 @@ use GuzzleHttp\Psr7\Response;
  */
 final class SendMessageToWebhooksHandler
 {
-    /** @var DbalSelectConnectionsWebhookQuery */
+    /** @var SelectConnectionsWebhookQuery */
     private $selectConnectionsWebhookQuery;
 
-    /** @var ClientInterface */
+    /** @var GuzzleWebhookClient */
     private $client;
 
     /** @var RequestFactory */
     private $requestFactory;
 
     public function __construct(
-        DbalSelectConnectionsWebhookQuery $selectConnectionsWebhookQuery,
-        ClientInterface $client,
+        SelectConnectionsWebhookQuery $selectConnectionsWebhookQuery,
+        GuzzleWebhookClient $client,
         RequestFactory $requestFactory
     ) {
         $this->selectConnectionsWebhookQuery = $selectConnectionsWebhookQuery;
@@ -40,16 +37,24 @@ final class SendMessageToWebhooksHandler
 
     public function handle(SendMessageToWebhooksCommand $command): void
     {
-        $webhooks = $this->selectConnectionsWebhookQuery->execute();
+        try {
+            $webhooks = $this->selectConnectionsWebhookQuery->execute();
+        } catch (\Exception $e) {
+            // YoLO
+        }
 
-        $payload = [
-            'event' => $command->businessEvent()->name(),
-            'id' => $command->businessEvent()->uuid(),
-            'data' => $command->businessEvent()->data()
-        ];
-        $body = json_encode($payload);
+//        foreach ($webhooks as $webhook) {
+//            $registry->build($webhook, $command->businessEvent());
+//        }
 
-        // TODO : ADD SERVICE WebhookCLient
+//        $payload = [
+//            'event' => $command->businessEvent()->name(),
+//            'id' => $command->businessEvent()->uuid(),
+//            'data' => $command->businessEvent()->data()
+//        ];
+//        $body = json_encode($payload);
+
+        $this->client->bulkSend($webhookRequests);
 
     }
 }
