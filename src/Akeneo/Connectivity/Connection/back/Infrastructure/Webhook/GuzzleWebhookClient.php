@@ -41,22 +41,19 @@ class GuzzleWebhookClient implements WebhookClient
      */
     public function bulkSend(array $webhookRequests): void
     {
-        $buildRequests = function ($webhookRequests) {
-            foreach ($webhookRequests as $request) {
-                /** @var ConnectionWebhook $webhook */
-                $webhook = $request->webhook();
-                /** @var WebhookEvent $event */
-                $event = $request->event();
+        $requests = [];
+        foreach ($webhookRequests as $request) {
+            $webhook = $request->webhook();
+            $event = $request->event();
 
-                yield $this->requestFactory->create(
-                    $webhook->url(),
-                    json_encode($event->normalize()),
-                    ['secret' => $webhook->secret()]
-                );
-            }
-        };
+            $requests[] = $this->requestFactory->create(
+                $webhook->url(),
+                json_encode($event->normalize()),
+                ['secret' => $webhook->secret()]
+            );
+        }
 
-        $pool = new Pool($this->client, $buildRequests($webhookRequests), [
+        $pool = new Pool($this->client, $requests, [
             'concurrency' => 5,
             'options' => [
                 'timeout' => 3
@@ -67,7 +64,6 @@ class GuzzleWebhookClient implements WebhookClient
 
             },
             'rejected' => function (RequestException $reason, $index) {
-                echo sprintf('%s rejected : %s', $index, $reason->getMessage());
                 $this->logger->error(sprintf('%s rejected : %s', $index, $reason->getMessage()));
             },
         ]);

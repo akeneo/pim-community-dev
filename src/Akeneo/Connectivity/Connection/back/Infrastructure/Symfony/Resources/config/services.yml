@@ -72,6 +72,8 @@ services:
 
     akeneo_connectivity.connection.webhook.event_builder:
         class: Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder
+        arguments:
+            - '@akeneo_connectivity.connection.webhook.event_data_builder_registry'
 
     akeneo_connectivity.connection.webhook.event_data_builder_registry:
         class: Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilderRegistry

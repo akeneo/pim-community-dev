@@ -9,14 +9,14 @@ namespace Akeneo\Platform\Component\EventQueue;
  */
 interface BusinessEventInterface
 {
-    public function getName(): string;
+    public function name(): string;
 
-    public function getAuthor(): string;
+    public function author(): string;
 
-    public function getData(): array;
+    public function data(): array;
 
-    public function getTimestamp(): int;
+    public function timestamp(): int;
 
-    public function getUuid(): string;
+    public function uuid(): string;
 }
 

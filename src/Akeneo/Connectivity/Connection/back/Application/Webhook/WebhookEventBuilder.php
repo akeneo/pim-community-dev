@@ -19,12 +19,10 @@ class WebhookEventBuilder
 
     public function build(ConnectionWebhook $webhook, BusinessEventInterface $businessEvent): WebhookEvent
     {
-        $date = new \DateTime($businessEvent->getTimestamp(), new \DateTimeZone('UTC'));
-
         return new WebhookEvent(
-            $businessEvent->getName(),
-            $businessEvent->getUuid(),
-            $date->format(DATE_ATOM),
+            $businessEvent->name(),
+            $businessEvent->uuid(),
+            date(\DateTimeInterface::ATOM, $businessEvent->timestamp()),
             $this->dataBuilderRegistry->build($webhook, $businessEvent)
         );
     }
