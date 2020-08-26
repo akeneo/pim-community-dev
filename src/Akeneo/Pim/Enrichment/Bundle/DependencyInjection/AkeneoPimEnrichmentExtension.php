@@ -109,6 +109,7 @@ class AkeneoPimEnrichmentExtension extends Extension
         $loader->load('cli_command.yml');
         $loader->load('quantified_associations.yml');
         $loader->load('messenger.yml');
+        $loader->load('webhooks.yml');
 
         if (!$container->hasParameter('pim_pdf_generator_font')) {
             $container->setParameter('pim_pdf_generator_font', null);

@@ -1,0 +1,5 @@
+services:
+    pim_catalog.webhooks.event_data_builder.product:
+        class: Akeneo\Pim\Enrichment\Component\Product\WebhookEventBuilder\ProductEventDataBuilder
+        tags:
+            - { name: akeneo_connectivity.connection.webhook_event_data_builder }

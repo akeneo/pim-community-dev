@@ -10,34 +10,25 @@ namespace Akeneo\Connectivity\Connection\Domain\Webhook\Model;
  */
 class WebhookRequest
 {
-    /** @var string */
-    private $url;
+    /** @var ConnectionWebhook */
+    private $webhook;
 
-    /** @var string */
-    private $secret;
+    /** @var WebhookEvent */
+    private $event;
 
-    /** @var string */
-    private $payload;
-
-    public function __construct(string $url, string $secret, array $payload)
+    public function __construct(ConnectionWebhook $webhook, WebhookEvent $event)
     {
-        $this->url = $url;
-        $this->secret = $secret;
-        $this->payload = $payload;
+        $this->webhook = $webhook;
+        $this->event = $event;
     }
 
-    public function url(): string
+    public function webhook(): ConnectionWebhook
     {
-        return $this->url;
+        return $this->webhook;
     }
 
-    public function secret(): string
+    public function event(): WebhookEvent
     {
-        return $this->secret;
-    }
-
-    public function payload(): array
-    {
-        return $this->payload;
+        return $this->event;
     }
 }

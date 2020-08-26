@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Symfony;
 
+use Akeneo\Connectivity\Connection\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterWebhookEventDataBuilderPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterSerializerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -19,6 +20,8 @@ class AkeneoConnectivityConnectionBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new RegisterSerializerPass('akeneo_connectivity.connection.serializer'));
+        $container
+            ->addCompilerPass(new RegisterSerializerPass('akeneo_connectivity.connection.serializer'))
+            ->addCompilerPass(new RegisterWebhookEventDataBuilderPass());
     }
 }

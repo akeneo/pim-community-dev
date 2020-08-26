@@ -1,7 +1,5 @@
 services:
     Akeneo\Connectivity\Connection\Infrastructure\MessageHandler\BusinessEventHandler:
         arguments:
-            - '@akeneo_connectivity_connection_persistence_query_select_connections_webhook'
-            - '@akeneo_webhook.http_client'
-            - '@akeneo_webhook.http_request_factory'
+            - '@akeneo_connectivity.connection.application.webhook.handler.send_message_to_webhooks'
         tags: [messenger.message_handler]

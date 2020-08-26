@@ -1,10 +1,9 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
-use Akeneo\Pim\Enrichment\Bundle\Message\BusinessEvent;
+use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
 
 /**
  * @package   Akeneo\Connectivity\Connection\Application\WebHook\Command
@@ -14,14 +13,15 @@ use Akeneo\Pim\Enrichment\Bundle\Message\BusinessEvent;
  */
 class SendMessageToWebhooksCommand
 {
-    /** @var BusinessEvent */
+    /** @var BusinessEventInterface */
     private $businessEvent;
 
-    public function __construct(BusinessEvent $businessEvent) {
+    public function __construct(BusinessEventInterface $businessEvent)
+    {
         $this->businessEvent = $businessEvent;
     }
 
-    public function businessEvent(): BusinessEvent
+    public function businessEvent(): BusinessEventInterface
     {
         return $this->businessEvent;
     }
