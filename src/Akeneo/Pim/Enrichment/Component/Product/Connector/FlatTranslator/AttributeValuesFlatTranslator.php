@@ -38,6 +38,12 @@ class AttributeValuesFlatTranslator
         $attributeType = $attribute->getType();
         $attributeCode = $attribute->getCode();
         $attributeProperties = $attribute->getProperties();
+        $measurementFamilyCode = $attribute->getMetricFamily();
+
+        if (isset($measurementFamilyCode)) {
+            $attributeProperties['measurement_family_code'] = $measurementFamilyCode;
+        }
+
         $translator = $this->attributeValueRegistry->getTranslator($attributeType, $columnName);
 
         return null === $translator ? $values : $translator->translate($attributeCode, $attributeProperties, $values, $locale);
