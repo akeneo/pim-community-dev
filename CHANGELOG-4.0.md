@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.53 (2020-08-27)
+
 ## Improvements
 
 - DAPI-1201: Remove unused ES index configuration file 
