@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.53 (2020-08-27)
+
 ## Bug fixes
 
 - PIM-9426: Fix incorrect use of `Akeneo\Tool\Component\Batch\Item\InvalidItemInterface`
