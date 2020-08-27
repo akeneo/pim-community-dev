@@ -12,7 +12,6 @@ services:
             $logger: '@logger'
             $evaluatePendingCriteria: '@akeneo.pim.automation.data_quality_insights.evaluate_products_pending_criteria'
             $consolidateProductAxisRates: '@akeneo.pim.automation.data_quality_insights.consolidate_product_axes_rates'
-            $indexProductRates: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates'
         tags:
             - { name: kernel.event_subscriber }
 
