@@ -40,7 +40,7 @@ class AttributeValuesFlatTranslator
         $attributeProperties = $attribute->getProperties();
         $measurementFamilyCode = $attribute->getMetricFamily();
 
-        if (isset($measurementFamilyCode)) {
+        if (null !== $measurementFamilyCode) {
             $attributeProperties['measurement_family_code'] = $measurementFamilyCode;
         }
 
