@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\MessageHandler;
 
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectConnectionsWebhookQuery;
-use Akeneo\Pim\Enrichment\Bundle\Message\BusinessEvent;
+use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
 use Akeneo\Tool\Bundle\WebhookBundle\Client\RequestFactory;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
@@ -31,12 +31,12 @@ class BusinessEventHandler implements MessageSubscriberInterface
 
     public static function getHandledMessages(): iterable
     {
-        yield BusinessEvent::class => [
+        yield BusinessEventInterface::class => [
             'from_transport' => 'webhook'
         ];
     }
 
-    public function __invoke(BusinessEvent $event)
+    public function __invoke(BusinessEventInterface $event)
     {
         $webhooks = $this->selectConnectionsWebhookQuery->execute();
 

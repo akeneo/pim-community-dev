@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Message;
+namespace Akeneo\Platform\Component\EventQueue;
 
 use Ramsey\Uuid\Uuid;
 
@@ -10,7 +10,7 @@ use Ramsey\Uuid\Uuid;
  * @copyright 202O Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class BusinessEvent
+abstract class BusinessEvent implements BusinessEventInterface
 {
     private $name;
     private $author;
