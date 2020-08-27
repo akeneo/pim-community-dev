@@ -31,31 +31,26 @@ class DbalSelectConnectionsWebhookQuery implements SelectConnectionsWebhookQuery
     public function execute(): array
     {
         $sql = <<<SQL
-SELECT connection.code, connection.webhook_url, connection.webhook_secret, user_access_group.group_id, user_access_role.role_id
+SELECT connection.code, connection.webhook_url, connection.webhook_secret, user_access_group.group_id, user_access_role.role_id, access_group.name as group_name
 FROM akeneo_connectivity_connection as connection
-LEFT JOIN oro_user_access_group as user_access_group ON user_access_group.user_id = connection.user_id 
-LEFT JOIN oro_user_access_role as user_access_role ON user_access_role.user_id = connection.user_id 
+LEFT JOIN oro_user_access_group as user_access_group ON user_access_group.user_id = connection.user_id
+LEFT JOIN oro_user_access_role as user_access_role ON user_access_role.user_id = connection.user_id
 LEFT JOIN oro_access_group access_group ON user_access_group.group_id = access_group.id
-    AND user_access_group.name <> :default_group
 WHERE connection.webhook_url IS NOT NULL AND connection.webhook_enabled = 1 
 ORDER BY code
 SQL;
 
-        $rawWebhooks = $this->dbalConnection->executeQuery(
-            $sql,
-            [
-                'default_group' => User::GROUP_DEFAULT,
-            ]
-        )->fetchAll(FetchMode::ASSOCIATIVE);
+        $rows = $this->dbalConnection->executeQuery($sql)->fetchAll(FetchMode::ASSOCIATIVE);
 
-        dump($rawWebhooks);
-
-        // If there is more than one line, remove the one with the default user group (null).
-        if (count($rawWebhooks) > 1) {
-            $rawWebhooks = array_filter($rawWebhooks, function (array $row) {
-                return null !== $row['group_id'];
-            });
+        $rawWebhooks = [];
+        foreach ($rows as $row) {
+            if (!array_key_exists($row['code'], $rawWebhooks)
+                || User::GROUP_DEFAULT === $rawWebhooks[$row['code']]['group_name']
+            ) {
+                $rawWebhooks[$row['code']] = $row;
+            }
         }
+
 
         $webhooks = [];
         foreach ($rawWebhooks as $rawWebhook) {
