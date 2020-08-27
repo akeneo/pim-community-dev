@@ -5,17 +5,13 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Query;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionCommand;
-use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionHandler;
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\ConnectionLoader;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionWithCredentialsByCodeQuery;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectConnectionsWebhookQuery;
-use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectConnectionsWebhookQuery;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection as DbalConnection;
-use Doctrine\DBAL\FetchMode;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -53,8 +49,9 @@ class DbalSelectConnectionsWebhookIntegration extends TestCase
         $binder = $this->connectionLoader->createConnection('binder', 'Binder Connector', FlowType::DATA_SOURCE, false);
         $sap = $this->connectionLoader->createConnection('sap', 'Sap Connector', FlowType::DATA_DESTINATION, false);
 
+        // Add more than one user group
         $this->get('akeneo_connectivity.connection.application.handler.update_connection')->handle(
-            new UpdateConnectionCommand($magento->code(), $magento->label(), $magento->flowType(), $magento->image(), $magento->userRoleId(), $groupItSupport['id'], $magento->auditable())
+            new UpdateConnectionCommand($binder->code(), $binder->label(), $binder->flowType(), $binder->image(), $binder->userRoleId(), $groupItSupport['id'], $binder->auditable())
         );
 
         $this->updateConnection($magento, 'secret_magento', null, 1);
@@ -64,15 +61,16 @@ class DbalSelectConnectionsWebhookIntegration extends TestCase
 
         $connections = $this->selectConnectionsWebhookQuery->execute();
 
-        exit();
+        $binder = $connections[0];
+        $erp = $connections[1];
 
         Assert::assertCount(2, $connections);
-        Assert::assertEquals('binder', $connections[0]['code']);
-        Assert::assertEquals('secret_binder', $connections[0]['webhook_secret']);
-        Assert::assertEquals('http://172.17.0.1:8000/webhook_binder', $connections[0]['webhook_url']);
-        Assert::assertEquals('erp', $connections[1]['code']);
-        Assert::assertEquals('secret_erp', $connections[1]['webhook_secret']);
-        Assert::assertEquals('http://172.17.0.1:8000/webhook_erp', $connections[1]['webhook_url']);
+        Assert::assertEquals('binder', $binder->connectionCode());
+        Assert::assertEquals('secret_binder', $binder->secret());
+        Assert::assertEquals('http://172.17.0.1:8000/webhook_binder', $binder->url());
+        Assert::assertEquals('erp', $erp->connectionCode());
+        Assert::assertEquals('secret_erp', $erp->secret());
+        Assert::assertEquals('http://172.17.0.1:8000/webhook_erp', $erp->url());
     }
 
     private function selectGroup(string $name)
