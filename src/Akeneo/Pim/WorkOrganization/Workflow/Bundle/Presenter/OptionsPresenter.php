@@ -36,10 +36,12 @@ class OptionsPresenter extends AbstractProductValuePresenter
     public function present($formerData, array $change)
     {
         $options = [];
-        foreach ($formerData as $optionCode) {
-            $options[] = $this->optionRepository->findOneByIdentifier(
-                $change['attribute'].'.'.$optionCode
-            );
+        if (is_iterable($formerData)) {
+            foreach ($formerData as $optionCode) {
+                $options[] = $this->optionRepository->findOneByIdentifier(
+                    $change['attribute'] . '.' . $optionCode
+                );
+            }
         }
 
         return $this->renderer->renderDiff(

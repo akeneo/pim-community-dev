@@ -99,4 +99,19 @@ class PricesPresenterSpec extends ObjectBehavior
             ['amount' => 15.48, 'currency' => 'USD'],
         ]])->shouldReturn('15.12 €<br/>15.48 $');
     }
+
+    function it_presents_without_error_old_null_data(
+        $pricesPresenter,
+        $localeResolver,
+        RendererInterface $renderer
+    ) {
+        $localeResolver->getCurrentLocale()->willReturn('fr_FR');
+        $pricesPresenter->present(['amount' => 15.12, 'currency' => 'EUR'], ['locale' => 'fr_FR'])->willReturn('15.12 €');
+        $renderer->renderDiff([], ["15.12 €"])->willReturn('15.12 €');
+        $this->setRenderer($renderer);
+
+        $this->present(null, ['data' => [
+            ['amount' => 15.12, 'currency' => 'EUR'],
+        ]])->shouldReturn('15.12 €');
+    }
 }

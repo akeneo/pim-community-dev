@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9418: Fix errors on proposals containing metric, price and asset collection attributes
+
 # 4.0.53 (2020-08-27)
 
 ## Improvements
