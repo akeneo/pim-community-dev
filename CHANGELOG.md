@@ -27,6 +27,7 @@
 - PIM-9370: Fixes page freezing with a big number of attribute options
 - PIM-9391: Filter empty prices and measurement values
 - PIM-9407: Fix glitch in family variant selector if the family variant has no label
+- PIM-9425: Fix inaccurate attribute max characters
 
 ## New features
 
