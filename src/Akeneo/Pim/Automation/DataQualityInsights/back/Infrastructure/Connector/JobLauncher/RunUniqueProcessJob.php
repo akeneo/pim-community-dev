@@ -49,7 +49,6 @@ final class RunUniqueProcessJob
         LoggerInterface $logger,
         string $projectDir
     ) {
-
         $this->entityManager = $entityManager;
         $this->executionManager = $executionManager;
         $this->jobRepository = $jobRepository;

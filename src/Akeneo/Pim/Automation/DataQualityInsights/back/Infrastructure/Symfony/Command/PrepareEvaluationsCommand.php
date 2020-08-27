@@ -55,7 +55,7 @@ class PrepareEvaluationsCommand extends Command
         }
 
         try {
-            $this->runUniqueProcessJob->run('data_quality_insights_prepare_evaluations', function(?JobExecution $lastJobExecution) {
+            $this->runUniqueProcessJob->run('data_quality_insights_prepare_evaluations', function (?JobExecution $lastJobExecution) {
                 $defaultFrom = new \DateTime(PrepareEvaluationsParameters::UPDATED_SINCE_DEFAULT_TIME);
 
                 $from = $defaultFrom;

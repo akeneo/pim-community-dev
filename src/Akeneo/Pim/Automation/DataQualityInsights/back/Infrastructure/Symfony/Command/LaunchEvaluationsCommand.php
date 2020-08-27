@@ -55,7 +55,7 @@ class LaunchEvaluationsCommand extends Command
         }
 
         try {
-            $this->runUniqueProcessJob->run('data_quality_insights_evaluations', function(?JobExecution $lastJobExecution) {
+            $this->runUniqueProcessJob->run('data_quality_insights_evaluations', function (?JobExecution $lastJobExecution) {
                 return [];
             });
         } catch (AnotherJobStillRunningException $e) {
