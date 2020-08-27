@@ -32,7 +32,7 @@ class ReferenceEntityMultipleLinkValueFlatTranslator implements FlatAttributeVal
     public function translate(string $attributeCode, array $properties, array $values, string $locale): array
     {
         if (!isset($properties['reference_data_name'])) {
-            return $values;
+            throw new \LogicException(sprintf('Expected properties to have a reference data name to translate reference entity multiple link values to flat'));
         }
 
         $recordCodes = $this->extractRecordCodes($values);

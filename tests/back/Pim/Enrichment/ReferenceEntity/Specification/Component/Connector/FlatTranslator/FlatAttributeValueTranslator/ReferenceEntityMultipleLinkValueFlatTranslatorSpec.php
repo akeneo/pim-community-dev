@@ -7,6 +7,7 @@ namespace Specification\Akeneo\Pim\Enrichment\ReferenceEntity\Component\Connecto
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Connector\FlatTranslator\FlatAttributeValueTranslator\ReferenceEntityMultipleLinkValueFlatTranslator;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslations;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -51,13 +52,11 @@ class ReferenceEntityMultipleLinkValueFlatTranslatorSpec extends ObjectBehavior
             ->shouldReturn(['[dyson],[starck]', '[michael]']);
     }
 
-    function it_returns_the_record_codes_if_the_reference_data_name_is_null(FindRecordsLabelTranslations $findRecordsLabelTranslations)
+    function it_returns_the_record_codes_between_brackets_if_the_reference_data_name_is_null(FindRecordsLabelTranslations $findRecordsLabelTranslations)
     {
-        $findRecordsLabelTranslations
-            ->find('designers', ['dyson,starck', 'michael'], 'fr_FR')
-            ->shouldNotBeCalled();
+        $findRecordsLabelTranslations->find()->shouldNotBeCalled();
 
-        $this->translate('color', [], ['dyson,starck', 'michael'], 'fr_FR')
-            ->shouldReturn(['dyson,starck', 'michael']);
+        $this->shouldThrow(\LogicException::class)
+            ->during('translate', ['color', [], ['dyson,starck', 'michael'], 'fr_FR']);
     }
 }

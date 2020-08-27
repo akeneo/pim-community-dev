@@ -33,7 +33,7 @@ class ReferenceEntitySimpleLinkValueFlatTranslator implements FlatAttributeValue
     public function translate(string $attributeCode, array $properties, array $recordCodes, string $locale): array
     {
         if (!isset($properties['reference_data_name'])) {
-            return $recordCodes;
+            throw new \LogicException(sprintf('Expected properties to have a reference data name to translate reference entity single link values to flat'));
         }
 
         $referenceEntityIdentifier = $properties['reference_data_name'];
