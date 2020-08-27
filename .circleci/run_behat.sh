@@ -17,7 +17,10 @@ for TEST_FILE in $TEST_FILES; do
 
     set +e
     docker-compose exec -u www-data -T fpm ./vendor/bin/behat --strict --format pim --out var/tests/behat/${output} --format pretty --out std --colors -p legacy -s $TEST_SUITE $TEST_FILE ||
-    docker-compose exec -u www-data -T fpm ./vendor/bin/behat --strict --format pim --out var/tests/behat/${output} --format pretty --out std --colors -p legacy -s $TEST_SUITE $TEST_FILE
+    (
+      echo $TEST_FILE > var/tests/behat/behat_retried.txt &&
+      docker-compose exec -u www-data -T fpm ./vendor/bin/behat --strict --format pim --out var/tests/behat/${output} --format pretty --out std --colors -p legacy -s $TEST_SUITE $TEST_FILE
+    )
 
     fail=$(($fail + $?))
     counter=$(($counter + 1))
