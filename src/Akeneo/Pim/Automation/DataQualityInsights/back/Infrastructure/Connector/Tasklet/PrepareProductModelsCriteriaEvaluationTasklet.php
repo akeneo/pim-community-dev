@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateMissingCriteriaEvaluations;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateMissingCriteriaEvaluationsInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\PrepareEvaluationsParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -27,7 +27,7 @@ class PrepareProductModelsCriteriaEvaluationTasklet implements TaskletInterface
     /** @var StepExecution */
     private $stepExecution;
 
-    /** @var CreateMissingCriteriaEvaluations */
+    /** @var CreateMissingCriteriaEvaluationsInterface */
     private $createMissingCriteriaEvaluations;
 
     /** @var LoggerInterface */
@@ -37,7 +37,7 @@ class PrepareProductModelsCriteriaEvaluationTasklet implements TaskletInterface
     private $productModelCriterionEvaluationRepository;
 
     public function __construct(
-        CreateMissingCriteriaEvaluations $createMissingCriteriaEvaluations,
+        CreateMissingCriteriaEvaluationsInterface $createMissingCriteriaEvaluations,
         LoggerInterface $logger,
         CriterionEvaluationRepositoryInterface $productModelCriterionEvaluationRepository
     ) {
