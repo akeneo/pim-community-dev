@@ -9,6 +9,7 @@ import {ResultCounter} from 'akeneoassetmanager/application/component/app/result
 import ListAsset, {getListAssetMainMediaThumbnail} from 'akeneoassetmanager/domain/model/asset/list-asset';
 import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {useKeepVisibleX} from 'akeneoassetmanager/application/hooks/scroll';
+import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
 
 const Container = styled.div``;
 
@@ -70,16 +71,21 @@ export const Carousel = ({
         <ResultCounter count={assetCollection.length} labelKey={'pim_asset_manager.asset_counter'} />
       </Header>
       <Thumbnails ref={containerRef}>
-        {assetCollection.map(asset => (
-          <AssetThumbnail
-            data-role={`carousel-thumbnail-${asset.code}`}
-            ref={selectedAssetCode === asset.code ? elementRef : undefined}
-            key={asset.code}
-            highlighted={selectedAssetCode === asset.code}
-            src={getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale))}
-            onClick={() => onAssetChange(asset.code)}
-          />
-        ))}
+        {assetCollection.map(asset => {
+          const previewUrl = getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale));
+          const [, , refreshedUrl] = useRegenerate(previewUrl);
+
+          return (
+            <AssetThumbnail
+              data-role={`carousel-thumbnail-${asset.code}`}
+              ref={selectedAssetCode === asset.code ? elementRef : undefined}
+              key={asset.code}
+              highlighted={selectedAssetCode === asset.code}
+              src={refreshedUrl}
+              onClick={() => onAssetChange(asset.code)}
+            />
+          );
+        })}
       </Thumbnails>
     </Container>
   );

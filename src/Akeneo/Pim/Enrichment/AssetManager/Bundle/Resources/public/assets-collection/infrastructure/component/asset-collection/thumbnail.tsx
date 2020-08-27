@@ -15,6 +15,7 @@ import ListAsset, {
   getAssetLabel,
   assetWillNotMoveInCollection,
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
+import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
 
 const Img = styled.img`
   width: 140px;
@@ -133,6 +134,9 @@ export const Thumbnail = ({
     }
   };
 
+  const previewUrl = getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale));
+  const [, , refreshedUrl] = useRegenerate(previewUrl);
+
   return (
     <Container readonly={readonly}>
       {!readonly && (
@@ -161,7 +165,7 @@ export const Thumbnail = ({
           )}
         </Overlay>
       )}
-      <Img src={getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale))} />
+      <Img src={refreshedUrl} />
     </Container>
   );
 };
