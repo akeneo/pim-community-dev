@@ -1,3 +1,4 @@
 tree:
   remove:
     error_linked: 无法删除此类别树，其已链接到一个渠道
+  create: 创建类别树
