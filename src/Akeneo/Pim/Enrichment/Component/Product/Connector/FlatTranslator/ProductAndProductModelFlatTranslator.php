@@ -2,9 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator;
 
-use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\HeaderRegistry;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyValue\AssociationTranslator;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyValue\FlatPropertyValueTranslatorInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyValueRegistry;
 
 class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
 {
@@ -17,14 +16,19 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
     /** @var AttributeValuesFlatTranslator */
     private $attributeValuesFlatTranslator;
 
+    /** @var AssociationTranslator */
+    private $associationTranslator;
+
     public function __construct(
         HeaderRegistry $headerRegistry,
         PropertyValueRegistry $propertyValueRegistry,
-        AttributeValuesFlatTranslator $attributeValuesFlatTranslator
+        AttributeValuesFlatTranslator $attributeValuesFlatTranslator,
+        AssociationTranslator $associationTranslator
     ) {
         $this->headerRegistry = $headerRegistry;
         $this->propertyValueRegistry = $propertyValueRegistry;
         $this->attributeValuesFlatTranslator = $attributeValuesFlatTranslator;
+        $this->associationTranslator = $associationTranslator;
     }
 
     public function translate(array $flatItems, string $locale, string $scope, bool $translateHeaders): array
@@ -56,7 +60,7 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
         return $results;
     }
 
-    public function translateValues(array $flatItemsByColumnName, string $locale, string $scope): array
+    public function translateValues(array $flatItemsByColumnName, string $locale, string $channel): array
     {
         $result = [];
         foreach ($flatItemsByColumnName as $columnName => $values) {
@@ -67,12 +71,17 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
 
             $propertyValueTranslator = $this->propertyValueRegistry->getTranslator($columnName);
             if ($propertyValueTranslator instanceof FlatPropertyValueTranslatorInterface) {
-                $result[$columnName] = $propertyValueTranslator->translate($values, $locale, $scope);
+                $result[$columnName] = $propertyValueTranslator->translate($values, $locale, $channel);
                 continue;
             }
 
             if ($this->attributeValuesFlatTranslator->supports($columnName)) {
                 $result[$columnName] = $this->attributeValuesFlatTranslator->translate($columnName, $values, $locale);
+                continue;
+            }
+
+            if ($this->associationTranslator->supports($columnName)) {
+                $result[$columnName] = $this->associationTranslator->translate($columnName, $values, $locale, $channel);
                 continue;
             }
 

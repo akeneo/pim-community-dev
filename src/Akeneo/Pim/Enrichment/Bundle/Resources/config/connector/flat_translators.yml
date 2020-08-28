@@ -10,6 +10,7 @@ services:
       - '@pim_enrich.connector.flat_translators.header_registry'
       - '@pim_enrich.connector.flat_translators.property_value_registry'
       - '@pim_enrich.connector.flat_translators.attribute_values_translator'
+      - '@pim_enrich.connector.flat_translators.property_value_translator.associations'
 
   pim_enrich.connector.flat_translators.product_model_translator:
     class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\ProductAndProductModelFlatTranslator
@@ -17,6 +18,7 @@ services:
       - '@pim_enrich.connector.flat_translators.header_registry'
       - '@pim_enrich.connector.flat_translators.property_value_registry'
       - '@pim_enrich.connector.flat_translators.attribute_values_translator'
+      - '@pim_enrich.connector.flat_translators.property_value_translator.associations'
 
   pim_enrich.connector.flat_translators.attribute_values_translator:
     class: Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValuesFlatTranslator
