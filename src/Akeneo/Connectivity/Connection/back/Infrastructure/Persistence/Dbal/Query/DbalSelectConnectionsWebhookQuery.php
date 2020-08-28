@@ -31,7 +31,11 @@ class DbalSelectConnectionsWebhookQuery implements SelectConnectionsWebhookQuery
     public function execute(): array
     {
         $sql = <<<SQL
-SELECT connection.code, connection.webhook_url, connection.webhook_secret, user_access_group.group_id, user_access_role.role_id, access_group.name as group_name
+SELECT connection.code, 
+connection.webhook_url, 
+connection.webhook_secret, 
+connection.user_id,
+access_group.name as group_name,
 FROM akeneo_connectivity_connection as connection
 LEFT JOIN oro_user_access_group as user_access_group ON user_access_group.user_id = connection.user_id
 LEFT JOIN oro_user_access_role as user_access_role ON user_access_role.user_id = connection.user_id
