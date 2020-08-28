@@ -46,6 +46,6 @@ class DeleteProductEndToEnd extends AbstractProductTestCase
         $content = json_decode($response->getContent(), true);
         $this->assertCount(2, $content, 'response contains 2 items');
         $this->assertSame(Response::HTTP_NOT_FOUND, $content['code']);
-        $this->assertSame('Product "not_found" does not exist.', $content['message']);
+        $this->assertSame('Product "not_found" does not exist or you do not have permission to access it.', $content['message']);
     }
 }
