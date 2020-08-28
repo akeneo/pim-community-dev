@@ -182,7 +182,7 @@ class PublishedProductController
     {
         $publishedProduct = $this->publishedProductRepository->findOneByIdentifier($code);
         if (null === $publishedProduct) {
-            throw new NotFoundHttpException(sprintf('Published product "%s" does not exist.', $code));
+            throw new NotFoundHttpException(sprintf('Published product "%s" does not exist or you do not have permission to access it.', $code));
         }
 
         $productApi = $this->normalizer->normalize($publishedProduct, 'external_api');

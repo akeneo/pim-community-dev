@@ -9,6 +9,7 @@
 ## Improvements
 
 - DAPI-1201: Remove unused ES index configuration file 
+- PIM-9315: Improve error message when you have no rights on a published product
 
 ## Bug fixes
 
