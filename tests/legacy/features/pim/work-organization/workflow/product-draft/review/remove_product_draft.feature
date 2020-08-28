@@ -11,7 +11,6 @@ Feature: Review a product draft
     And I visit the "Attributes" tab
     And I add available attribute Old attribute not used anymore
     And I save the family
-    And I logout
     And the product:
       | family                   | jackets           |
       | categories               | winter_top        |
@@ -29,6 +28,7 @@ Feature: Review a product draft
       | legacy_attribute         | legacy            |
       | datasheet                |                   |
       | side_view                |                   |
+    And I logout
 
   @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully remove an in progress product draft
