@@ -13,11 +13,8 @@ class ConnectionWebhook
     /** @var string */
     private $connectionCode;
 
-    /** @var string */
-    private $userGroup;
-
-    /** @var string */
-    private $userRole;
+    /** @var int */
+    private $userId;
 
     /** @var string */
     private $secret;
@@ -27,14 +24,12 @@ class ConnectionWebhook
 
     public function __construct(
         string $connectionCode,
-        string $userGroup,
-        string $userRole,
+        int $userId,
         string $secret,
         string $url
     ) {
         $this->connectionCode = $connectionCode;
-        $this->userGroup = $userGroup;
-        $this->userRole = $userRole;
+        $this->userId = $userId;
         $this->secret = $secret;
         $this->url = $url;
     }
@@ -44,14 +39,9 @@ class ConnectionWebhook
         return $this->connectionCode;
     }
 
-    public function userGroup(): string
+    public function userId(): int
     {
-        return $this->userGroup;
-    }
-
-    public function userRole(): string
-    {
-        return $this->userRole;
+        return $this->userId;
     }
 
     public function secret(): string
