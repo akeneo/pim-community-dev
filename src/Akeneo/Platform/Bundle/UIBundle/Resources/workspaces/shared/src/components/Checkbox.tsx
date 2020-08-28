@@ -62,9 +62,10 @@ const Checkbox = ({
     <Container checked={value} className={`${readOnly ? 'AknCheckbox--disabled' : ''} ${className}`}>
       <Tick />
       <HiddenInput
+        checked={value}
         type="checkbox"
         id={id}
-        value={value ? 'true' : 'false'}
+        value={value.toString()}
         onChange={(e: FormEvent<HTMLInputElement>) => onChange && !readOnly && onChange(e.currentTarget.checked)}
         readOnly={readOnly}
       />
