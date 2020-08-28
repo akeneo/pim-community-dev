@@ -52,7 +52,7 @@ final class ProductEventSubscriber implements EventSubscriberInterface
         }
 
         $author = $user->getUsername();
-        $data = $this->normalizer->normalize($product);
+        $data = $this->normalizer->normalize($product, 'standard');
 
         $message = null;
         if ($event->hasArgument('created') && true === $event->getArgument('created')) {
