@@ -18,7 +18,7 @@ class SqlGetProductModelLabelsIntegration extends TestCase
             'amor' => null
         ];
 
-        Assert::assertSame($expected, $result);
+        Assert::assertEqualsCanonicalizing($expected, $result);
     }
 
     protected function getConfiguration(): Configuration
