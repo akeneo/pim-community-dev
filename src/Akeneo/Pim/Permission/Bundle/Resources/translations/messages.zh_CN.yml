@@ -1,6 +1,0 @@
-pimee_enrich.acl.locale.edit_permissions: 管理区域设置权限
-pimee_enrich.acl.category.edit_permissions: 管理资产目录权限
-pimee_enrich.acl.attribute_group.edit_permissions: 管理属性组权限
-pimee_importexport.acl.export_profile.edit_permissions: 管理导出配置文件权限
-pimee_importexport.acl.import_profile.edit_permissions: 管理导入配置文件权限
-pimee_enrich.groups.label: 所有者组

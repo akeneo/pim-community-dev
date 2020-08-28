@@ -1,0 +1,39 @@
+pim_reference_entity:
+  reference_entity:
+    attribute:
+      attribute:
+        error:
+          render_list: '在渲染"{{ %attribute_code% }}"属性时发生错误'
+          render_edit: '在渲染"{{ %attribute_code% }}"属性附加属性字段时发生错误'
+    notification:
+      save:
+        fail: 保存参考实体时发生错误
+      create:
+        fail: 创建参考实体时出错
+      delete:
+        fail: 删除参考实体时出错
+  record:
+    validation:
+      text:
+        incompatible_with_regular_expression: '请输入符合正则表达式的文本："{{ %regular_expression% }}"'
+        invalid_email: '请输入电子邮件地址：xxxxx@xx.xx'
+        invalid_url: '请输入网址：http(s)://xxxx.XXX'
+    notification:
+      save:
+        fail: 保存记录时出错
+      create:
+        fail: 创建记录时出错
+      delete:
+        fail: 删除记录时出错
+      delete_all:
+        fail: 删除此参考实体的所有记录时出错
+  attribute:
+    notification:
+      list:
+        fail: 更新属性列表时出错
+      save:
+        fail: 保存属性时出错
+      create:
+        fail: 创建属性时发生错误
+      delete:
+        fail: 删除属性时出错
