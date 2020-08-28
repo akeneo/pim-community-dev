@@ -4,6 +4,12 @@
 
 - PIM-9315: Improve error message when you have no rights on a product
 
+# 4.0.53 (2020-08-27)
+
+## Bug fixes
+
+- PIM-9426: Fix incorrect use of `Akeneo\Tool\Component\Batch\Item\InvalidItemInterface`
+
 # 4.0.52 (2020-08-24)
 
 # 4.0.51 (2020-08-21)
