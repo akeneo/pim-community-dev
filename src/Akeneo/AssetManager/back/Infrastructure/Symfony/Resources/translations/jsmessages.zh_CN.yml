@@ -1,0 +1,121 @@
+pim_title:
+  akeneo_asset_manager_asset_family_index: 资产管理器
+  akeneo_asset_manager_asset_family_edit: 编辑资产品类
+  akeneo_asset_manager_asset_edit: 编辑资产
+pim_asset_manager:
+  asset_collection:
+    upload_asset: '上传资产'
+    helper:
+      title: '欢迎来到全新的产品资产管理空间！'
+      text: '此品类没有资产集合。要参与这个新体验，只需在您的设置中添加资产集合属性即可。'
+    no_asset:
+      title: '抱歉，此产品没有资产。'
+  asset_preview:
+    other_main_media: 我们无法生成此资产的预览。
+  asset_family:
+    validation:
+      transformation:
+        unknown_extra_field: '属性 {{ {{ field }} }} 为未知多余的属性。'
+      naming_convention:
+        property_should_exist: '该资产品类不存在属性"{{ %property% }}"。'
+        not_main_media_attribute_code: '属性必须匹配指定为主媒体的属性的代码'
+      rule_template:
+        limit_reached: '您已达到资产品类 {{ %asset_family_identifier% }} 的产品链接规则上限数"{{ %limit% }}"。'
+        product_selection_cannot_be_empty: '您必须在产品链接规则中指定至少一个产品选择'
+        product_assignment_cannot_be_empty: '您必须在产品链接规则中指定至少一个产品指派'
+        extrapolated_attribute_type_should_be_supported: '不支持类型为"{{ %attribute_type% }}"的属性"{{ %attribute_code% }}"。此字段只支持以下属性类型： {{ %supported_attribute_type% }}'
+        channel_should_exist: '渠道 "{{ %channel_code% }}" 不存在'
+        locale_should_exist: '区域设置 "{{ %locale_code% }}"未激活或不存在'
+        extrapolated_attribute_type_should_not_have_one_value_per_channel: '属性"{{ %attribute_code% }}"不能用于外插，因为它对每个渠道有一个值'
+        extrapolated_attribute_type_should_not_have_one_value_per_locale: '属性"{{ %attribute_code% }}"不能用于外插，因为它对每个区域有一个值'
+        assignment_mode_not_supported: '在产品链接规则中发现无效的指派模式"{{ %assignment_mode% }}"，而所需要的是“替换”或“添加”'
+        channel_not_supported_for_field: '您不能为字段"{{ %product_field% }}"指定渠道'
+        locale_not_supported_for_field: '您不能为字段"{{ %product_field% }}"指定区域'
+        assignmement_attribute_does_not_support_this_asset_family: '产品属性"{{ %product_attribute_code% }}"不能包含资产品类"{{ %asset_family_identifier% }}"中的资产'
+    button:
+      execute_product_link_rules: 执行规则
+      execute_naming_convention: 执行命名约定
+    tab:
+      product_link_rules: 产品链接规则
+    product_link_rules:
+      naming_convention_subsection: '命名约定属性'
+      product_link_rules_subsection: '产品链接规则属性'
+      execute_rules:
+        confirm_title: 确认执行
+        confirm_content: 确定要执行所有的规则吗？(可能需要一段时间)
+        execute_rules: 执行规则
+      execute_naming_convention:
+        confirm_title: 确认执行
+        confirm_content: 确定要执行该命名约定吗？(可能需要很长时间)
+        execute_naming_convention: 执行命名约定
+    edit:
+      discard_changes: 如果离开页面，您将丢失对资产品类"{{ assetFamilyLabel }}"的更改。
+    notification:
+      execute_product_link_rules:
+        success: 已启动产品链接规则
+        fail: 尝试启动产品链接规则时出错
+      execute_naming_convention:
+        success: 已启动命名约定
+        fail: 尝试启动命名约定时出错
+    helper:
+      title: 欢迎来到资产管理器！
+      no_asset:
+        text: 品类 {{ family }} 中没有资产。点击“创建”并选择要创建一个空的资产还是批量上传资产。
+      no_asset_family:
+        text: 这是一个收集您的资产（图像、视频、文档...）的库，按资产品类进行筛选。创建您的第一个资产品类，设置其属性并上传资产！
+    no_data:
+      no_asset:
+        title: 抱歉，没有任何资产！
+  asset:
+    created_at: 已创建
+    updated_at: 已更新
+    no_data:
+      title: '{{ entityLabel }} 没有资产'
+    no_result:
+      title: 找不到与搜索相符的结果
+    button:
+      save_and_execute_naming_convention: 保存并执行命名约定
+    product:
+      not_enough_items:
+        subtitle:
+          usable_in_grid: 要发现所有链接的产品，请点击下方！
+          not_usable_in_grid: 要发现所有链接的产品，产品属性必须设置为“在网格中可用”。
+    no_linked_products: 此资产未链接到产品
+    enrich:
+      product_subsection: 链接的产品
+      main_media_preview: 主要媒体预览
+    upload:
+      retry: 重试
+      add_to_product: 添加到产品
+      files_limit: 您正在尝试上传的文件太多，只有前 {{ limit }} 个将被上传。
+      disabled_for_media_link: 您不能上传此品类中的资产，因为用作主要媒体属性的是一个媒体链接属性
+      upload_failure: 上传文件时出错。
+      cannot_retry: 尝试上传文件时出错。
+    delete:
+      message: 确定要删除资产"{{ assetLabel }}"吗？如果其与产品相关联，链接将被移除。
+    notification:
+      execute_naming_convention:
+        success: 命名约定已成功执行
+        fail: 命名约定执行过程中发生错误
+  attribute:
+    media_link:
+      placeholder: 将您的媒体链接置于此处
+      read_only: 此媒体链接为只读
+    media_file:
+      read_only: 此媒体文件为只读
+      uploading: 正在上传...
+  jobs:
+    asset_manager_execute_naming_convention:
+      error: '对资产"{{ asset }}"执行命名约定失败'
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        asset_manager_execute_naming_convention: 执行资产品类命名约定
+pim_datagrid:
+  cells:
+    type:
+      asset_manager_execute_naming_convention: 执行资产品类命名约定
+batch_jobs:
+  default_steps:
+    execute_naming_convention: 执行资产品类命名约定
