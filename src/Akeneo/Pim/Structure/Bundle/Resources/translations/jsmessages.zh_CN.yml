@@ -1,0 +1,12 @@
+pim_enrich.entity.family:
+  plural_label: 品类
+  flash:
+    update:
+      success: 品类已成功更新。
+      fail: 品类更新时出错。
+      cant_remove_attribute_as_label: 不能删除用作标签的属性
+      cant_remove_attribute_as_image: 不能删除用作主图片的属性
+pim_enrich.entity.attribute_option:
+  flash:
+    create:
+      fail: 尝试创建属性选项时出错
