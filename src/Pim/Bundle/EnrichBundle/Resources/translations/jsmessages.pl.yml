@@ -74,7 +74,6 @@ flash:
   api_connection:
     removed: Połączenie API zostało odwołane pomyślnie
 error:
-  common: Wystąpił błąd
   creating:
     product: Atrybut nie jest skonfigurowany jako identyfikator produktu, albo nie masz uprawnień żeby go edytować.
   removing:
@@ -96,7 +95,6 @@ error:
     export_profile: Nie można zapisać profilu eksportu. Proszę sprawdzić, czy wszystkie filtry są wypełnione
 alert:
   attribute_option:
-    error_occured_during_submission: Wystąpił błąd podczas składania formularza na serwerze
     save_before_edit_other: Zarejestruj zmiany w pozostałych wierszach przed edycją tego
   session_storage:
     not_available: Zdaje się, że twoja przeglądarka nie obsługuje sessionStorage. Skontaktuj się z administratorem
@@ -194,8 +192,6 @@ pim_enrich:
         update_failed: Produktu nie można zaktualizować.
         field_not_ready: "Nie można tego teraz zapisać. Następujące pola nie są gotowe: {{ fields }}"
         already_in_upload: Plik jest aktualnie dodawany dla tego atrybutu w regionalnych ustawieniach "{{ locale }}" i zakresie "{{ scope }}"
-      error:
-        upload: Wystąpił błąd podczas przekazywania pliku
       meta:
         created: Utworzono
         created_by: Przez
@@ -330,7 +326,6 @@ pim_enrich:
       info:
         update_successful: Rodzina produktu pomyślnie zaktualizowany.
         create_successful: Kanał został pomyślnie utworzony.
-        update_failed: Wystąpił błąd podczas aktualizacji rodziny.
         cant_remove_attribute_as_label: Nie można usunąć atrybutu użytego jako etykiety
         cant_remove_attribute_as_image: Nie można usunąć atrybutu użytego jako główne zdjęcie
         attribute_edit_permission_is_not_granted: Nie masz uprawnień do edytowania atrybutów rodziny
@@ -453,11 +448,8 @@ pim_enrich:
     not_applicable: N/A
     entity:
       updated: Istnieją niezapisane zmiany.
-  error:
-    upload: Wystąpił błąd podczas przekazywania pliku
   alert:
     not_allowed: Zakazane. Nie posiadasz uprawnień do przeglądania tej strony
-    error_occured: Wystąpił błąd podczas ładowania strony
   form:
     required: (wymagane)
     product_model:
@@ -532,8 +524,6 @@ pim_enrich:
           keep_attributes: Żadne atrybuty nie zostaną usunięte.
           change_family_to: Zmień rodzinę na
           empty_selection: Wybierz rodzinę
-      flash:
-        attribute_deletion_error: Wystąpił błąd podczas usuwania atrybutu
       mass_edit:
         select_attributes: Wybierz atrybuty
         select: Wybierz
@@ -1038,8 +1028,6 @@ pim_enrich:
           label: Konfiguruj
         confirm:
           label: Potwierdź
-        launch_error:
-          label: Wystąpił błąd podczas rozpoczęcia operacji masowej edycji
         launched:
           label: Działanie zbiorcze "{{ operation }}" zostało uruchomione. Zostaniesz powiadomiony o jego ukończeniu.
       operation:
@@ -1112,7 +1100,6 @@ pim_enrich:
           description: Poniższe wymagania atrybutów zostaną zastosowane do wybranych rodzin
           label_count: "{1}Ustaw wymagania atrybutów <span class=\"AknFullPage-title--highlight\">1 rodziny</span>|] 1, Inf [Ustaw wymagania atrybutów <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} rodzin</span>"
 pim_enrich.error:
-  exception.title: O rany! Wystąpił błąd {{ status_code }}...
   http:
     403: Nie posiadasz uprawnień do wejścia na tę stronę
 #Page titles

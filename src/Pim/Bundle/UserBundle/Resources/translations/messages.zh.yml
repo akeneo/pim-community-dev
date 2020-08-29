@@ -50,19 +50,20 @@ Additional: 附加
 Groups and Roles: 分组和角色
 Username: 用户名
 Password: 密码
-Re-enter password: 重复密码
-Name prefix: 名称前缀
+Password (again): 密码 (再输入一次)
+Re-enter password: 再次输入密码
+Name prefix: 名字前缀
 First name: 名
 Middle name: 中间名
 Last name: 姓
-Name suffix: 名称后缀
+Name suffix: 名字后缀
 Date of birth: 出生日期
 Avatar: 头像
 Additional emails: 附加电子邮件
 Add another email: 添加另一个电子邮件
-Catalog locale: 区域设置
-Catalog scope: 范围
-Default tree: 默认大类
+Catalog locale: 目录区域设置
+Catalog scope: 目录范围
+Default tree: 默认树
 Business Units: 业务单元
 Email synchronization settings: 电子邮件同步设置
 Host: 主机
@@ -71,9 +72,9 @@ Ssl: SSL
 Last logged in: 上次登录
 Login count: 登录计数
 Additional Information: 更多信息
-Interfaces: 接口
+Interfaces: 界面
 Basic Information: 基本信息
-Contact Information: 联系方式
+Contact Information: 联系人信息
 User name: 用户名
 Birthday: 出生日期
 API key: API 密钥
@@ -85,9 +86,9 @@ New password: 新密码
 Repeat new password: 新密码 (重复)
 Generate key: 生成密钥
 Primary: 首要
-Removed user: 已删除用户
+Removed user: 已移除用户
 user:
-  product_grid_filters: 商品过滤器
+  product_grid_filters: 产品网格筛选器
   default_product_grid_view:
     label: 默认产品网格视图
   default_grid_view:
@@ -119,25 +120,25 @@ oro_security:
       view: 用户列表
       create: 创建用户
       edit: 编辑用户
-      delete: 删除用户
+      delete: 移除用户
     role:
       view: 角色列表
       create: 创建角色
       edit: 编辑角色
-      delete: 删除角色
+      delete: 移除角色
     group:
       view: 用户组列表
       create: 创建用户组
       edit: 编辑用户组
-      delete: 删除用户组
+      delete: 移除用户组
 #Security
-(default): 实体上的默认权限
+(default): 实体的默认权限
 VIEW: 视图
 CREATE: 创建
 EDIT: 编辑
 DELETE: 删除
 ASSIGN: 指派
-SHARE: 共享
+SHARE: 分享
 oro:
   security:
     access-level:
@@ -161,4 +162,5 @@ Username or Email: 用户名或电子邮箱
 Forgot Password: 忘记密码
 Request: 请求
 Check Email: 检查电子邮件
+password_reset_email_sent: 已向用户发送了一封电子邮件，其中包含重置密码的链接。
 Go to homepage: 转到主页

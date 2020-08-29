@@ -6,7 +6,6 @@ pim_analytics:
       version_update.title: Mga update sa bersyon
     form:
       version_update.label: Mga notipikasyon sa mga bagong bersyon
-      version_update.tooltip: Magpadala ng hiling sa malayong server para makakuha ng impormasyon ukol sa pagpapalabas ng mga bagong patse
   system_info:
     title: Impormasyon ng sistema
     download: TXT

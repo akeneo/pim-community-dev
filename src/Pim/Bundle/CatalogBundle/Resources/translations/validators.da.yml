@@ -22,11 +22,6 @@ file.extensions.message: 'Filtypen er ikke tilladt (tilladte filtyper: %extensio
 "This type of value expects the use of comma (,) to separate decimals.": Denne form for værdi forventer brugen af et punktum (.) til at adskille decimaler.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Denne form for værdi forventer brugen af en arabisk decimalseparator (٫) til at adskille decimaler.
 "This type of value expects the use of the format {{ date_format }} for dates.": Denne form for værdi forventer brug af formatet {{ date_format }} på datoer.
-"The category \"%category%\" has to be a root category.": Kategorien "%category%" skal være en rod kategori.
-"The attribute \"%attributeCode%\" does not exist.": Attributten "%attributeCode%" findes ikke.
-"The attribute \"%attributeCode%\" is not a metric attribute.": Attributten "%attributeCode%" er ikke en metrisk attribut.
-"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": Enhed "%unitCode%" findes ikke eller hører ikke til den standard metriske familie af den givne attribut "%attributeCode%".
-"The currency \"%currency%\" has to be activated.": Valuta "%currency%" skal være aktiveret.
 product_model.code.not_blank.message: Model produktkode må ikke være tom.
 product_model.code.unique.message: Den samme id er allerede benyttet på et andet produkt
 product_model.family_variant.not_blank.message: Model produktkode må ikke være tom.

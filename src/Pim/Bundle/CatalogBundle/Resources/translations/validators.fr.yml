@@ -22,11 +22,6 @@ file.extensions.message: 'L''extension du fichier n''est pas autorisée (les ext
 "This type of value expects the use of comma (,) to separate decimals.": Ce type de valeur attend une virgule (,) comme séparateur de décimales.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Ce type de valeur attend un séparateur de décimales arabe (٫).
 "This type of value expects the use of the format {{ date_format }} for dates.": Ce type de valeur attend le format {{ date_format }} pour les dates.
-"The category \"%category%\" has to be a root category.": La catégorie « %category% » doit être une catégorie racine.
-"The attribute \"%attributeCode%\" does not exist.": L’attribut %attributeCode% n’existe pas.
-"The attribute \"%attributeCode%\" is not a metric attribute.": L’attribut %attributeCode% n’est pas un attribut métrique.
-"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": L’unité %unitCode% n’existe pas ou n’appartient pas à la famille de métriques par défaut de l’attribut %attributeCode%.
-"The currency \"%currency%\" has to be activated.": La devise %currency% doit être activée.
 product_model.code.not_blank.message: Le code du modèle de produit ne doit pas être vide.
 product_model.code.unique.message: Le même code est déjà défini sur un autre modèle de produit.
 product_model.family_variant.not_blank.message: La variante de famille du modèle de produit ne doit pas être vide.

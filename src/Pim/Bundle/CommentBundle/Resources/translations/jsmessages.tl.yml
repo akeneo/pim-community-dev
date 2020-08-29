@@ -9,13 +9,10 @@ flash:
   comment:
     create:
       success: Ang iyong komento ay matagumpay na nailikha.
-      error: Isang error ang naganap habang nililikha ang iyong komento.
     delete:
       success: Ang iyong komento ay matagumpay na nabura.
-      error: Isang error ang naganap habang binubura ang iyong komento.
     reply:
       success: Ang iyong kasagutan ay matagumpay na nailikha.
-      error: Isang error ang naganap habang nililikha ang iyong kasagutan.
 comment:
   index:
     empty: Walang komento sa ngayon

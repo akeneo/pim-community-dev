@@ -3,23 +3,20 @@ btn:
   reply: 回复
 confirmation:
   remove:
-    comment: 您确定要删除此评论吗？
+    comment: 确定要删除此评论吗？
 flash:
   comment:
     create:
-      success: 您的评论已经成功创建。
-      error: 创建评论时发生错误。
+      success: 您的评论已成功创建。
     delete:
       success: 已成功删除您的评论。
-      error: 删除评论时发生错误。
     reply:
-      success: 您的回复已经成功创建。
-      error: 创建回复时出错。
+      success: 您的回复已成功创建。
 comment:
   index:
-    empty: 发现找到评论。
+    empty: 未发现评论。
   placeholder:
-    new: 撰写一个新评论...
+    new: 撰写新评论...
     reply: 回复此评论...
 pim_comment:
   product.tab.comment.title: 评论

@@ -6,7 +6,6 @@ pim_analytics:
       version_update.title: Versie updates
     form:
       version_update.label: Meldingen nieuwe versies
-      version_update.tooltip: Controleer of er nieuwe patches beschikbaar zijn
   system_info:
     title: Systeeminformatie
     download: TXT

@@ -74,7 +74,6 @@ flash:
   api_connection:
     removed: API -yhteys poistettu onnistuneesti
 error:
-  common: Tapahtui virhe
   creating:
     product: Yhtään attribuuttia ei ole määritetty tuotteen tunnisteeksi tai sinulla ei ole muokkausoikeuksia.
   removing:
@@ -96,7 +95,6 @@ error:
     export_profile: Vientiprofiilia ei voi tallentaa. Tarkista että suodattimet on täytetty oikein
 alert:
   attribute_option:
-    error_occured_during_submission: Virhe lomakkeen lähettämisessä palvelimelle
     save_before_edit_other: Rekisteröi muiden rivien muokkauksesi ennen tämän muokkaamista
   session_storage:
     not_available: Web-selain ei ole yhteensopiva sessionStorage:n kanssa. Ota yhteyttä järjestelmänvalvojaan.
@@ -194,8 +192,6 @@ pim_enrich:
         update_failed: Tuotetta ei voitu päivittää.
         field_not_ready: "Tuotetta ei voida tallentaa. Seuraavat kentät eivät ole vielä valmiina: {{ fields }}"
         already_in_upload: Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
-      error:
-        upload: Virhe tiedoston lataamisessa
       meta:
         created: Luotu
         created_by: Luoja
@@ -330,7 +326,6 @@ pim_enrich:
       info:
         update_successful: Perheen päivittäminen onnistui.
         create_successful: Tuoteperhe luotu.
-        update_failed: Tuoteperheen tallennuksessa tapahtui virhe.
         cant_remove_attribute_as_label: Otsikkona käytettyä attribuuttia ei voida poistaa
         cant_remove_attribute_as_image: Pääkuvana käytettyä attribuuttia ei voi poistaa
         attribute_edit_permission_is_not_granted: Sinulla ei ole oikeuksia muokata tuoteperheen attribuutteja
@@ -453,11 +448,8 @@ pim_enrich:
     not_applicable: Ei mitään
     entity:
       updated: Tallentamattomia muutoksia löytyy.
-  error:
-    upload: Tiedoston lataamisen aikana tapahtui virhe
   alert:
     not_allowed: Käyttö estetty. Et saa käyttää tätä sivua
-    error_occured: Virhe ladattaessa sivua
   form:
     required: (vaadittu)
     product_model:
@@ -532,8 +524,6 @@ pim_enrich:
           keep_attributes: Mitään attribuutteja ei poisteta.
           change_family_to: Vaihda perhe olemaan
           empty_selection: Valitse perhe
-      flash:
-        attribute_deletion_error: Määritteen poistamisen aikana tapahtui virhe
       mass_edit:
         select_attributes: Valitse attribuutit
         select: Valitse
@@ -1038,8 +1028,6 @@ pim_enrich:
           label: Muuta asetuksia
         confirm:
           label: Vahvista
-        launch_error:
-          label: Massamuokkauksen käynnistämisen yhteydessä tapahtui virhe
         launched:
           label: Massamuokkaus "{{ operation }}" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
       operation:
@@ -1112,7 +1100,6 @@ pim_enrich:
           description: Seuraavat vaaditut attribuutit lisätään valituille perheille
           label_count: "{1}Aseta vaaditut attribuutit <span class=\"AknFullPage-title--highlight\">1 perheelle</span>|] 1, Inf [Aseta vaaditu attribuutit <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} perheelle</span>"
 pim_enrich.error:
-  exception.title: Voi ei! {{ status_code }} virhe tapahtui...
   http:
     403: Käyttö estetty. Et saa käyttää tätä sivua
 #Page titles

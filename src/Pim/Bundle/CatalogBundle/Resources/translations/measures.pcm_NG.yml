@@ -4,18 +4,11 @@ ARE: Are
 ARPENT: Arpent
 CENTIARE: Centiare
 HECTARE: Hectare
-SQUARE_CENTIMETER: Square centimeter
-SQUARE_DECIMETER: Square decimeter
-SQUARE_DEKAMETER: Square decimeter
 SQUARE_FOOT: Square foot
 SQUARE_FURLONG: Square distance
-SQUARE_HECTOMETER: Square hectometer
 SQUARE_INCH: Square inch
-SQUARE_KILOMETER: Square Kilometer
-SQUARE_METER: Square meter
 SQUARE_MIL: Square mile
 SQUARE_MILE: Square mile
-SQUARE_MILLIMETER: Square milimeter
 SQUARE_YARD: Square yard
 Binary: Binary
 BIT: Bit
@@ -31,19 +24,12 @@ MEGAHERTZ: Megahertz
 TERAHERTZ: Terahertz
 HERTZ: Hertz
 Length: Length
-CENTIMETER: Centimeter
 CHAIN: Chain
-DECIMETER: Decimeter
-DEKAMETER: Dekameter
 FEET: Feet
 FURLONG: Distance measurement
 INCH: Inch
-HECTOMETER: Unit for length
-KILOMETER: Torr
-METER: Meter
 MIL: Mil
 MILE: Mile
-MILLIMETER: Millimeter
 YARD: Yard
 Power: Power
 GIGAWATT: Gigawatt
@@ -54,10 +40,6 @@ WATT: Watt
 Speed: Speed
 FOOT_PER_SECOND: Foot evri second
 FOOT_PER_HOUR: Foot evri hour
-KILOMETER_PER_HOUR: Kilometer evri hour
-METER_PER_HOUR: Meter evri hour
-METER_PER_MINUTE: Meter evri minute
-METER_PER_SECOND: Meter evri second
 MILE_PER_HOUR: Mile evri hour
 YARD_PER_HOUR: Yard evri hour
 Temperature: Temperature
@@ -68,18 +50,10 @@ RANKINE: Rankine
 REAUMUR: Reaumur
 Volume: Volume
 BARREL: Barrel
-CENTILITER: Centiliter
-CUBIC_CENTIMETER: Cubic centimeter
-CUBIC_DECIMETER: Cubic decimeter
 CUBIC_FOOT: Cubic foot
 CUBIC_INCH: Cubic inch
-CUBIC_METER: Cubic meter
-CUBIC_MILLIMETER: Cubic millimeter
 CUBIC_YARD: Cubic yard
-DECILITER: Deciliter
 GALLON: Gallon
-LITER: Liter
-MILLILITER: Milliliter
 OUNCE: Ounce
 PINT: Pint
 Weight: Weight

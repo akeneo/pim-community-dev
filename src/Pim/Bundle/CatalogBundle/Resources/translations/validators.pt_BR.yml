@@ -22,11 +22,6 @@ file.extensions.message: 'A extensão do arquivo não é permitida (extensões p
 "This type of value expects the use of comma (,) to separate decimals.": Este tipo de valor espera a utilização de uma vírgula (,) para separar casas decimais.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Este tipo de valor espera a utilização de um separador decimal arábico (,) para separar casas decimais.
 "This type of value expects the use of the format {{ date_format }} for dates.": Este tipo de valor espera a utilização do formato {{ date_format }} para datas.
-"The category \"%category%\" has to be a root category.": A categoria "%category%" tem que ser a categoria raiz.
-"The attribute \"%attributeCode%\" does not exist.": O atributo "%attributeCode%" não existe.
-"The attribute \"%attributeCode%\" is not a metric attribute.": O atributo %attributeCode% não é um atributo métrico.
-"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": A unidade "%unitCode%" não existe ou não pertence à família de métrica padrão do atributo "%attributeCode%".
-"The currency \"%currency%\" has to be activated.": A moeda "%currency%" tem que ser ativada.
 product_model.code.not_blank.message: O código do modelo de produto não pode estar vazio.
 product_model.code.unique.message: Esse código já foi definido para outro modelo de produto.
 product_model.family_variant.not_blank.message: A variante da família do modelo de produto não pode estar vazio.

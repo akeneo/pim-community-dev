@@ -22,11 +22,6 @@ file.extensions.message: 'Ang ekstensyon ng file ay hindi pinapayagan (pinapayag
 "This type of value expects the use of comma (,) to separate decimals.": Ang uri ng halaga na ito ay inaasahan ang paggamit ng kuwit (,) para paghiwalayin ang mga decimal.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Ang uri ng halaga na ito ay inaasahan ang paggamit ng arabic na pampahiwalay sa decimal (٫) para paghiwalayin ang mga decimal.
 "This type of value expects the use of the format {{ date_format }} for dates.": Ang uri ng halaga na ito ay inaasahan ang paggamit ng format na {{ date_format }} para sa mga petsa.
-"The category \"%category%\" has to be a root category.": Ang kategorya "%category%" ay dapat na isang kategoryang ugat.
-"The attribute \"%attributeCode%\" does not exist.": Ang katangian "%attributeCode%" ay hindi umiiral.
-"The attribute \"%attributeCode%\" is not a metric attribute.": Ang katangian "%attributeCode%" ay hindi isang metrik na katangian.
-"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": Ang yunit "%unitCode%" ay hindi umiiral o hindi nabibilang sa default na pamilyang metrik ng ibinigay na katangian na "%attributeCode%".
-"The currency \"%currency%\" has to be activated.": Ang salaping "%currency%" ay dapat gawing aktibo.
 product_model.code.not_blank.message: Ang code ng modelo ng produkto ay hindi dapat blangko.
 product_model.code.unique.message: Ang parehong code ay nakatakda na sa ibang modelo ng produkto.
 product_model.family_variant.not_blank.message: Ang modelo ng produkto ng variant ng pamilya ay hindi dapat blangko.

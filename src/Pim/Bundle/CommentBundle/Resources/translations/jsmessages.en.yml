@@ -9,13 +9,10 @@ flash:
   comment:
     create:
       success: Your comment has been created successfully.
-      error: An error occurred during the creation of your comment.
     delete:
       success: Your comment has been deleted successfully.
-      error: An error occurred during the deletion of your comment.
     reply:
       success: Your reply has been created successfully.
-      error: An error occurred during the creation of your reply.
 comment:
   index:
     empty: No comment for now

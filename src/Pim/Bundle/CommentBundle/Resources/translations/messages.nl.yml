@@ -8,13 +8,10 @@ flash:
   comment:
     create:
       success: Uw reactie is succesvol aangemaakt.
-      error: Er is een fout opgetreden tijden het aanmaken van uw reactie.
     delete:
       success: Uw reactie is succesvol verwijderd.
-      error: Er is een fout opgetreden tijdens het verwijderen van uw reactie.
     reply:
       success: Uw antwoord is succesvol aangemaakt.
-      error: Er is een fout opgetreden tijdens het maken van uw antwoord.
 comment:
   index:
     empty: Geen reactie gevonden.

@@ -22,11 +22,6 @@ file.extensions.message: 'このファイル拡張子は許可されていませ
 "This type of value expects the use of comma (,) to separate decimals.": この型の値は少数を分割するためにコンマ(,) の使用を求めています
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": この型の値は少数を分割するためにアラビア小数点記号(٫) の使用を求めています
 "This type of value expects the use of the format {{ date_format }} for dates.": この型の値は日付表示のためにフォーマット{{ date_format }} の使用を求めています
-"The category \"%category%\" has to be a root category.": '「%category%」のカテゴリは、ルートカテゴリでなければなりません'
-"The attribute \"%attributeCode%\" does not exist.": 属性「%attributeCode%」は存在しません
-"The attribute \"%attributeCode%\" is not a metric attribute.": 属性「%attributeCode%」はメートル法の項目ではありません
-"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": 単位「%unitCode%」が存在しない、または特定の属性%attributeCode%の既定のメートル法のファミリーに属していません
-"The currency \"%currency%\" has to be activated.": 通貨「%currency%」をアクティブにしてください。
 product_model.code.not_blank.message: 商品モデルコードは空白にできません
 product_model.code.unique.message: 同じコードが、既に別の商品モデルに設定してあります。
 product_model.family_variant.not_blank.message: 商品モデルのファミリーバリアントは空にしないでください

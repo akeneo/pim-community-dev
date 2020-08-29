@@ -74,7 +74,6 @@ flash:
   api_connection:
     removed: APIコネクションを正常に削除しました
 error:
-  common: エラーが発生しました
   creating:
     product: 商品識別子として属性が構成されていないか、それを編集する権限がありません
   removing:
@@ -96,7 +95,6 @@ error:
     export_profile: エクスポートプロファイルを保存できません。フィルターが全て設定されているか確認してください。
 alert:
   attribute_option:
-    error_occured_during_submission: フォームの情報をサーバーに送信中にエラーが発生しました
     save_before_edit_other: 編集する前に、他の行で行った変更を確定してください
   session_storage:
     not_available: お使いのウェブブラウザはsessionStorageと互換性がありません。管理者に問い合わせてください。
@@ -194,8 +192,6 @@ pim_enrich:
         update_failed: 商品を更新できませんでした
         field_not_ready: "この商品は現在保存できません。次のフィールドが準備ができていません：{{ fields }}"
         already_in_upload: ファイルはすでにロケール {{ locale }} のフィルター {{ scope }} で、この属性にアップロードされています
-      error:
-        upload: ファイルをアップロード中にエラーが発生
       meta:
         created: 作成
         created_by: 作成
@@ -330,7 +326,6 @@ pim_enrich:
       info:
         update_successful: ファミリーが正常に更新されました。
         create_successful: チャンネルを正常に作成しました
-        update_failed: ファミリーの更新中にエラーが発生しました
         cant_remove_attribute_as_label: ラベルとして使用中の属性は削除できません
         cant_remove_attribute_as_image: メイン画像として使用中の属性は削除できません
         attribute_edit_permission_is_not_granted: ファミリー属性を編集する権限がありません
@@ -453,11 +448,8 @@ pim_enrich:
     not_applicable: N/A
     entity:
       updated: 保存されていない変更があります
-  error:
-    upload: ファイルをアップロード中にエラーが発生しました
   alert:
     not_allowed: このページへのアクセスは禁止されています
-    error_occured: ページをロード中にエラーが発生しました
   form:
     required: (必須)
     product_model:
@@ -532,8 +524,6 @@ pim_enrich:
           keep_attributes: 削除する属性はありません。
           change_family_to: 'ファミリーを次に変更:'
           empty_selection: ファミリーを選択
-      flash:
-        attribute_deletion_error: 属性の削除中にエラーが発生
       mass_edit:
         select_attributes: 属性の選択
         select: 選択
@@ -1038,8 +1028,6 @@ pim_enrich:
           label: 構成
         confirm:
           label: 確認
-        launch_error:
-          label: 一括編集操作の起動中にエラーが発生しました
         launched:
           label: 一括操作「{{ operation }}」が開始されました。終了後に通知されます
       operation:
@@ -1112,7 +1100,6 @@ pim_enrich:
           description: 以下の属性要件が選択したファミリーに適用されます
           label_count: "{1}<span class=\"AknFullPage-title--highlight\">１件のファミリー</span>の属性要件を設定|] 1, Inf [<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}件のファミリー</span>の属性要件を設定"
 pim_enrich.error:
-  exception.title: 申し訳ありません！ エラー{{ status_code }} が発生しました
   http:
     403: このページへのアクセスは禁止されています
 #Page titles

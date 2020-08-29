@@ -6,7 +6,6 @@ pim_analytics:
       version_update.title: Sürüm Güncellemeleri
     form:
       version_update.label: Yeni sürüm bildirimleri
-      version_update.tooltip: Yeni sürüm güncellemelerine ulaşmak için bilgi al
   system_info:
     title: Sistem bilgisi
     download: TXT

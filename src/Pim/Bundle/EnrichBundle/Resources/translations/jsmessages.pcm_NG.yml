@@ -73,7 +73,6 @@ flash:
   api_connection:
     removed: API connection don cancel finish
 error:
-  common: Error don happen
   creating:
     product: No attribute dey configured as product identifier or you no get de rights to edit am.
   removing:
@@ -95,7 +94,6 @@ error:
     export_profile: E no fit save export profile. Abeg check make u dey sure say all filters dey filled well well
 alert:
   attribute_option:
-    error_occured_during_submission: Error don happen wen you de try submit de form for de server
     save_before_edit_other: Abeg register your modifications for de other rows dem before you begin edit dis one
   session_storage:
     not_available: Ur web browser dey like say e no dey compatible wit sessionstorage. Abeg contact ur administrator
@@ -192,8 +190,6 @@ pim_enrich:
         update_failed: De product no bin fit update.
         field_not_ready: "De product no fit save ryt now. de fields wey dem mention so neva ready: {{ fields }}"
         already_in_upload: File don already dey upload for dis attribute for locale "{{ locale }}" and for scope "{{ scope }}"
-      error:
-        upload: Error bin enta wen de file dey upload
       meta:
         created: E don create
         created_by: By
@@ -328,7 +324,6 @@ pim_enrich:
       info:
         update_successful: E don update family finish.
         create_successful: E don create channel finish.
-        update_failed: Error bin happen as family bin dey try update.
         cant_remove_attribute_as_label: No fit commot attribute wey dey use as label
         cant_remove_attribute_as_image: No fit commot attribute wey dey use as de main picture
         attribute_edit_permission_is_not_granted: You no get right make you edit family attributes dem
@@ -450,11 +445,8 @@ pim_enrich:
     not_applicable: N/A
     entity:
       updated: E get changes wey neva save.
-  error:
-    upload: Error bin happen wen u bin dey upload file
   alert:
     not_allowed: Dey don forbid am. You no fit open this page
-    error_occured: Error bin happen wen u bin dey load de page
   form:
     required: (de need am)
     product_model:
@@ -528,8 +520,6 @@ pim_enrich:
           keep_attributes: E no get attributes wey go commot.
           change_family_to: Make u change family to
           empty_selection: Make u select family
-      flash:
-        attribute_deletion_error: Error bin happen wen de attribute dey delete
       mass_edit:
         select_attributes: Make u choose attributes dem
         select: Select
@@ -1030,8 +1020,6 @@ pim_enrich:
           label: Configure
         confirm:
           label: Confam
-        launch_error:
-          label: Error bin happen wen e dey try launch de mass edit operation
         launched:
           label: The bulk action "{{ operation }}" don dey launched. You go get notification wen e dey ready.
       operation:
@@ -1093,7 +1081,6 @@ pim_enrich:
           description: De attributes requirements wey dem mention so, go dey applied to de selected families
           label_count: "{1}Make you set attributes requirements of <span class=\"AknFullPage-title--highlight\">1 family</span>|] 1, Inf [Make you set attributes requirements of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} families</span>"
 pim_enrich.error:
-  exception.title: Omo! A {{ status_code }} error don happen...
   http:
     403: Dey don forbid am. u no fit access dis page
 #Page titles

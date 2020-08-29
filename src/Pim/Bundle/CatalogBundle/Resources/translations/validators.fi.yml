@@ -22,11 +22,6 @@ file.extensions.message: 'Tiedostotunnistetta ei sallita (sallitut: %extensions%
 "This type of value expects the use of comma (,) to separate decimals.": Tämäntyyppinen arvo vaatii pilkun (,) käyttöä desimaalien erottelussa.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Tämäntyyppinen arvo vaatii arabialaisen desimaalierottimen (٫) käyttöä desimaalien erottelussa.
 "This type of value expects the use of the format {{ date_format }} for dates.": Tämäntyyppinen arvo vaatii muodon {{ date_format }} käyttöä päivämäärille.
-"The category \"%category%\" has to be a root category.": Kategorian "%category%" täytyy olla juuritason luokka.
-"The attribute \"%attributeCode%\" does not exist.": Attribuutti "%attributeCode%" ei ole olemassa.
-"The attribute \"%attributeCode%\" is not a metric attribute.": Attribuutti ”%attributeCode%” ei ole metrinen attribuutti.
-"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": Yksikköä "%unitCode%" ei ole tai se ei kuulu attribuutin "%attributeCode%" oletusarvoiseen metriseen perheeseen.
-"The currency \"%currency%\" has to be activated.": Valuutta "%currency%" on aktivoitava.
 product_model.code.not_blank.message: Tuotemallin koodi ei saa olla tyhjä.
 product_model.code.unique.message: Sama tunnus on jo toisen tuotemallin käytössä.
 product_model.family_variant.not_blank.message: Tuotemallin varianttiperhe ei voi saa olla tyhjä.

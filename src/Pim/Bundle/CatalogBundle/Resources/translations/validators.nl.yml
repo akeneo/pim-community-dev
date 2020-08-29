@@ -22,11 +22,6 @@ file.extensions.message: 'De bestandsextensie is niet toegestaan (toegestane ext
 "This type of value expects the use of comma (,) to separate decimals.": Dit type waarde verwacht een komma (,) om decimalen te scheiden.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Dit type waarde verwacht een arabisch decimaal scheidingsteken (٫) om decimalen te scheiden.
 "This type of value expects the use of the format {{ date_format }} for dates.": Dit type waarde verwacht gebruik van het {{ date_format }} formaat voor datums.
-"The category \"%category%\" has to be a root category.": De categorie "%category%" moet een root-categorie zijn.
-"The attribute \"%attributeCode%\" does not exist.": Het kenmerk "%attributeCode%" bestaat niet.
-"The attribute \"%attributeCode%\" is not a metric attribute.": Het kenmerk "%attributeCode%" is geen metrisch kenmerk.
-"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": De eenheid '%unitCode%' bestaat niet of behoort niet tot de standaard metrische familie van het opgegeven kenmerk "%attributeCode%".
-"The currency \"%currency%\" has to be activated.": De munt "%currency%" moet worden geactiveerd.
 product_model.code.not_blank.message: De code voor het productmodel mag niet leeg zijn.
 product_model.code.unique.message: Dezelfde code is al ingesteld op een ander productmodel.
 product_model.family_variant.not_blank.message: De product model familie variant mag niet leeg zijn.

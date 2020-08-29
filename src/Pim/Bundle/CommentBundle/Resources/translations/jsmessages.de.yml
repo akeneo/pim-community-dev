@@ -9,13 +9,10 @@ flash:
   comment:
     create:
       success: Ihr Kommentar wurde  erfolgreich erstellt.
-      error: Bei der Erstellung Ihres Kommentars ist ein Fehler aufgetreten.
     delete:
       success: Ihr Kommentar wurde erfolgreich gelöscht.
-      error: Beim Löschen Ihres Kommentars ist ein Fehler aufgetreten.
     reply:
       success: Ihre Antwort wurde erfolgreich erstellt.
-      error: Bei der Erstellung Ihrer Antwort ist ein Fehler aufgetreten.
 comment:
   index:
     empty: Kein Kommentar vorhanden

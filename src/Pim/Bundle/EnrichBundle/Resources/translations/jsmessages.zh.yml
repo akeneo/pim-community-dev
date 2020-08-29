@@ -2,20 +2,24 @@
 confirmation:
   title: 确认
   remove:
-    item: 确实要删除这个项目吗?
-    association_type: 确实要删除这个相关类型吗?
-    attribute: 确定要删除这个属性吗？
-    attribute_group: 确定要删除这个属性组吗？
-    family: 确定要删除这个分类吗？
-    product: 确定要删除这个产品吗？
-    channel: 确定要删除这个频道吗？
-    group: 确定要删除这个组吗？
-    group_type: 确定要删除这个组类型吗？
-    import_profile: 确定要删除这个导入配置文件吗？
-    export_profile: 确定要删除这个导出配置文件吗？
-    user: 确定要删除这个用户吗？
-    role: 确定要删除这个角色吗？
-    job_instance: 确定要删除这个工作实例吗？
+    item: 确定要删除此条目吗?
+    association_type: 确定要删除此关联类型吗?
+    attribute: 确定要删除此属性吗？
+    attribute_group: 确定要删除此属性组吗？
+    family: 确定要删除此品类吗？
+    family_variant: 确定要删除此品类变型吗？
+    product: 确定要删除此产品吗？
+    product_model: 确定要删除此产品模型吗？其所有的子模型、产品模型和变型产品也将被删除。
+    channel: 确定要删除此渠道吗？
+    group: 确定要删除此组吗？
+    group_type: 确定要删除此组类型吗？
+    import_profile: 确定要删除此导入配置文件吗？
+    export_profile: 确定要删除此导出配置文件吗？
+    user: 确定要删除此用户吗？
+    role: 确定要删除此角色吗？
+    job_instance: 确定要删除此作业实例吗？
+    api_connection: 确定要撤销此 API 连接吗？这将导致通过此连接进行的所有 API 调用发生错误。
+    products_and_product_models: 确定要删除选定的产品和产品模型吗？所有产品模型的子元素也将被删除。
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -26,121 +30,126 @@ pim_datagrid:
     delete:
       label: 删除
       confirm_content: 确定要删除选定的产品吗？
-      success: 选定的产品被成功删除。
-      error: 删除选定的产品时发生错误，请重试。
+      success: 选定的产品已成功删除。
+      error: 尝试删除选定的产品时发生错误，请重试。
   view_selector:
-    view: 视图
+    view: 查看
     create_view_modal:
       create: 创建
-      confirm: 好的
+      confirm: 确定
       cancel: 取消
 flash:
   item:
-    removed: 项目已删除
+    removed: 条目已成功移除
   association_type:
-    removed: 关联类型已删除
+    removed: 关联类型已成功移除
   attribute:
-    removed: 属性已删除
+    removed: 属性已成功移除
   attribute_group:
-    removed: 属性组已删除
+    removed: 属性组已成功移除
   family:
-    removed: 产品族已删除
+    removed: 品类已成功移除
+  family_variant:
+    removed: 品类变型已成功移除
   product:
-    removed: 产品已删除
+    removed: 产品已成功移除
   product_model:
-    removed: 产品型号已经成功删除
+    removed: 产品模型已成功移除
   channel:
-    removed: 通道已删除
+    removed: 渠道已成功移除
   group:
-    removed: 分组已删除
+    removed: 分组已成功移除
   group_type:
-    removed: 分组类型已删除
+    removed: 分组类型已成功移除
   import_profile:
-    removed: 导入配置文件已删除
+    removed: 导入配置文件已成功移除
   export_profile:
-    removed: 导出配置文件已删除
+    removed: 导出配置文件已成功移除
   user:
-    removed: 用户已删除
+    removed: 用户已成功移除
   role:
-    removed: 角色已删除
+    removed: 角色已成功移除
   job_instance:
-    removed: 工作实例已成功删除
+    removed: 作业实例已成功移除
+  api_connection:
+    removed: API 连接已成功撤消
 error:
-  common: 出现了错误
+  creating:
+    product: 没有属性被配置为产品标识符，或者您没有编辑的权限。
   removing:
-    item: 不能删除此项目
-    association_type: 不能删除此关联类型
+    item: 无法删除此条目
+    association_type: 无法删除此关联类型
     attribute: 不能删除该属性
-    family: 不能删除这个分类
-    product: 不能删除这个产品
-    channel: 不能删除此频道
-    group: 不能删除这个组
-    group type: 不能删除这个组类型
-    import profile: 不能删除这个导入配置文件
-    export profile: 不能删除这个导出配置文件
-    user: 不能删除这个用户
-    role: 不能删除这个角色
-    attribute_option: 在属性选项删除错误
+    family: 不能删除此品类
+    product: 不能删除此产品
+    channel: 不能删除此渠道
+    group: 不能删除该组
+    group type: 不能删除该组类型
+    import profile: 不能删除此导入配置文件
+    export profile: 不能删除此导出配置文件
+    user: 不能删除此用户
+    role: 不能删除此角色
+    attribute_option: 删除属性选项时出错
   saving:
     attribute_option: 无法保存属性选项
     export_profile: 无法保存导出配置文件。请检查是否配置好所有的筛选器
 alert:
   attribute_option:
-    error_occured_during_submission: 表单提交给服务器时发生错误
-    save_before_edit_other: 请在编辑这一条行项目之前，请登记您对其他行的修改
+    save_before_edit_other: 请在编辑这一行之前，先登记您对其他行的修改
   session_storage:
-    not_available: 您的 web 浏览器似乎并不与 sessionStorage 兼容。请联系您的管理员联系
+    not_available: 您的 web 浏览器似乎并不与 sessionStorage 兼容。请联系您的管理员
 confirm:
   attribute_option:
-    cancel_edition_on_new_option_text: 警告，您将丢失未保存的数据。确实要取消对该新选项的修改吗？
-    cancel_edition_on_new_option_title: 取消更改
+    cancel_edition_on_new_option_text: 警告，您将丢失未保存的数据。确定要取消对该新选项的修改吗？
+    cancel_edition_on_new_option_title: 取消修改
 label:
   attribute_option:
-    add_option: 添加一个选项
+    add_option: 添加选项
 Code: 代码
 Edit: 编辑
 Delete: 删除
 Edit attributes of the product: 编辑产品属性
-Classify the product: 产品分类
+Classify the product: 分类产品
 Delete the product: 删除产品
 Change status: 更改状态
 Toggle status: 切换状态
+mass_delete: 批量删除
 #Quick export labels
 pim:
   grid:
     mass_action:
       quick_export:
-        csv_all: CSV （所有属性）
-        csv_grid_context: CSV （界面内容）
-        xlsx_all: Excel （所有属性）
-        xlsx_grid_context: Excel （界面内容）
+        csv_all: CSV（所有属性）
+        csv_grid_context: CSV（网格上下文）
+        xlsx_all: Excel（所有属性）
+        xlsx_grid_context: Excel（网格上下文）
       delete: 删除
       mass_edit: 批量操作
       category_edit: 在类别中移动产品
       sequential_edit: "順序編輯\n"
 #Jstree context menu actions
 jstree.create: 创建
-jstree.done: 已完成
+jstree.done: 完成
 switch_on: "是"
 switch_off: "否　"
 pim_enrich:
   item:
     list:
       delete.label: 删除
-      delete.error: 删除项目时出错
+      delete.error: 删除条目时出错
     delete:
-      confirm.content: 是否确实要删除此 {{ itemName }}？不能撤消此操作！
+      confirm.content: 是否确实要删除此 {{ itemName }}？此操作不能撤消
       confirm.title: 删除 {{ itemName }}
   navigation:
     link:
-      back_to_grid: 返回到列表
+      back_to_grid: 返回到网格
     other_actions: 其它操作
   entity:
     save:
       label: 保存
     info:
       update_failed: 更新失败
-      update_successful: 分组已更新
+      update_successful: 成功更新
     create_popin:
       code: 代码
       label: 标签
@@ -150,14 +159,16 @@ pim_enrich:
     product:
       navigation: 产品导航
       infos: 产品信息
+      index_title: "] -Inf, 1] {{ count }} 个结果|] 1, Inf [{{ count }} 个结果"
       title: 产品
       locale: 本地化语言
-      category: 分类
+      category: 类别
       create: 创建
       subTitle: 创建产品
       modalTitle: 选择操作
-      filters: 过滤器
+      filters: 筛选器
       selected: 选定的结果
+      common: 通用
       btn:
         enabled: 已启用
         disabled: 已禁用
@@ -168,30 +179,29 @@ pim_enrich:
       history:
         version: 版本
         author: 作者
-        logged_at: 登录
+        logged_at: 登录时间
         from: 从
         modified: 已修改
-        old_value: 旧值
+        old_value: 原值
         new_value: 新值
         actions: 操作
       info:
-        deletion_successful: 产品被成功删除。
-        deletion_failed: 产品不能被删除。
-        update_successful: 产品更新成功。
-        update_failed: 产品不能更新。
-        already_in_upload: 在针对本地化语言"{{ locale }}"和"{{ scope }}"范围中的这个属性中，一个文件已经在上传。
-      error:
-        upload: 上传文件时发生错误
+        deletion_successful: 产品已成功删除。
+        deletion_failed: 产品无法删除。
+        update_successful: 产品已成功更新。
+        update_failed: 产品无法更新。
+        field_not_ready: "该产品目前无法保存。以下字段未准备好： {{ fields }}"
+        already_in_upload: 在区域"{{ locale }}"和范围"{{ scope }}"中，已有针对此属性的文件在上传
       meta:
         created: 已创建
         created_by: 由
         updated_by: 由
         updated: 上次更新
         family:
-          title: 产品族
+          title: 品类
           none: 无
         family_variant:
-          title: 变量
+          title: 变型
           none: 无
         groups:
           title: 分组
@@ -199,52 +209,61 @@ pim_enrich:
             title: 组 {{ group }}
             view_group: 查看组
             group_label: 标签
-            more_products: '{{ count }} 更多产品...'
+            more_products: '{{ count }} 个以上产品...'
             close: 关闭
         status: 状态
-        scope: 通道
+        scope: 渠道
         locale: 本地化语言
       copy:
         select: 选择
         all: 所有
-        all_visible: 所有可见的
+        all_visible: 所有可见
         none: 无
         copy: 复制
       optional_attribute:
-        remove: 删除此属性
+        remove: 移除此属性
       locale_specific_attribute:
-        unavailable: 在此本地化语言中，特定的字段在此不可用。
+        unavailable: 此区域特定字段在此区域不可用
       localizable:
-        channel_locale_unavailable: 这个可本地化的字段不能用于本地化语言 '{{ locale }}' 和 '{{ channel }}' 通道
+        channel_locale_unavailable: 这个可本地化的字段不能用于本地化语言 '{{ locale }}' 和 '{{ channel }}' 渠道
       media:
-        upload: 拖放式操作可上传或点击这里
+        upload: 拖放即可上传或点击这里
       create_popin:
         type: 产品
         title: 创建
         labels:
-          family: 选择一个品类
+          family: 选择品类
+          family_variant: 选择品类变型
           save: 保存
           cancel: 取消
       message:
-        created: 产品已创建
+        created: 产品已成功创建
       completeness: 完成
       sequential_edit:
-        item_limit: 在这次序列编辑中只显示头1000个条目（{{ count }}项已选）
+        item_limit: 在该序列编辑中只显示头 1000 个条目（{{ count }} 个已选）
         empty: 您的选择为空，请更改搜索条件
     product_model:
       create_popin:
         type: 产品型号
         title: 创建产品型号
+        content: 产品模型收集各种变型产品，并使它们的通用属性更加丰富。
       info:
-        create_successful: 产品型号已经成功创建
-        deletion_successful: 产品型号已经成功删除。
-        update_failed: 产品型号无法更新
-      title: 产品型号
+        create_successful: 产品模型已成功创建
+        update_successful: 产品模型已成功更新。其变型产品的完整性将重新计算。
+        deletion_successful: 产品模型已成功删除。
+        update_failed: 产品模型无法更新
+        field_not_ready: "该产品模型目前无法保存。以下字段未准备好：{{ fields }}"
+      read_only_parent_attribute_from_common: 此属性可以在通用属性中更新。
+      read_only_parent_attribute_from_model: "此属性可通过 {{ axes }} 属性更新"
+      variant_axis: 变量轴
+      title: 产品模型
       add_child:
+        create: 新增
         cancel: 取消
         confirm: 确认
-        create_label: "添加新的{{ axes }}"
+        create_label: "添加新的 {{ axes }}"
         fields:
+          required_label: (变量轴)
           code: 代码
     association_type:
       info:
@@ -252,8 +271,9 @@ pim_enrich:
         deletion_failed: 关联类型无法删除。
         update_successful: 关联类型已成功更新。
         update_failed: 关联类型无法更新。
+        field_not_ready: "目前无法保存关联类型。以下字段未准备好： {{ fields }}"
       meta:
-        created: 创建
+        created: 已创建
         created_by: '创建者:'
         updated: 已更新
         updated_by: 更新者：
@@ -263,13 +283,14 @@ pim_enrich:
       create_popin:
         title: 创建
       message:
-        created: 关联类型已创建
+        created: 关联类型已成功创建
     group_type:
       info:
         deletion_successful: 分组类型已成功删除。
         deletion_failed: 分组类型无法删除。
         update_successful: 分组类型已成功更新。
         update_failed: 分组类型无法更新。
+        field_not_ready: "分组类型目前无法保存。以下字段未准备好： {{ fields }}"
       meta:
         created: 已创建
         created_by: '创建者:'
@@ -281,35 +302,36 @@ pim_enrich:
       create_popin:
         title: 创建
       message:
-        created: 分组类型已创建
+        created: 分组类型已成功创建
     channel:
-      title: 频道
+      title: 渠道
       info:
         deletion_successful: 渠道已成功删除。
-        deletion_failed: 渠道不能删除。
+        deletion_failed: 渠道无法删除。
         update_successful: 渠道已成功更新。
-        update_failed: 渠道不能更新。
+        update_failed: 渠道无法更新。
         create_successful: 渠道已成功创建。
-        create_failed: 渠道不能创建。
+        create_failed: 渠道无法创建。
+        field_not_ready: "该渠道目前无法保存。以下字段未准备好： {{ fields }}"
       meta:
-        created: 创建
+        created: 已创建
         created_by: '创建者:'
         updated: 已更新
         updated_by: 更新者：
       btn:
         save: 保存
     family:
-      title: 分类
+      title: 品类
       selected: 已选品类
       info:
         update_successful: 品类已成功更新。
         create_successful: 渠道已成功创建。
-        update_failed: 产品族更新时出错。
-        cant_remove_attribute_as_label: 不能删除用作标签的属性
-        cant_remove_attribute_as_image: 不能删除用作主图片的属性
-        attribute_edit_permission_is_not_granted: 你没有编辑品类属性的权限
+        cant_remove_attribute_as_label: 无法删除用作标签的属性
+        cant_remove_attribute_as_image: 无法删除用作主图片的属性
+        attribute_edit_permission_is_not_granted: 您没有编辑品类属性的权限
+        cant_remove_attribute_used_as_axis: 无法移除此属性，其被用作品类变型中的变量轴
       meta:
-        created: 创建
+        created: 已创建
         created_by: '创建者:'
         updated: 已更新
         updated_by: 更新者：
@@ -318,18 +340,36 @@ pim_enrich:
       create_popin:
         title: 创建
       message:
-        created: 产品族已创建
+        created: 品类已成功创建
       variant:
+        common:
+          title: 共同属性
+          empty: 没有共同属性
+        axis.label: 变量轴
+        level_1.label: 变量属性级别一
+        level_2.label: 变量属性级别二
+        add_variant: 添加变型
+        create_label: 新建品类变型
+        create_description: 在品类变型中，您可以定义带有变型的产品结构。 选择管理的变量级别数，每个级别作为变量轴使用的属性，然后定义属性如何分配。
+        update_description: 拖放属性到选定的变量级别，让这些属性在变量级别中进行管理。
+        update_translation: 翻译品类变型标签
         create: 创建
         cancel: 取消
         code: 代码
         label: 标签
+        levels: 变量级别
+        axis_level: 变量轴级别
+        required: 必需
         confirm_attribute_removal:
-          title: 确认属性删除
+          title: 确认属性移除
+          message: 通过移除这些属性，会将它们放回到品类变型的共用属性中，并从变型产品中移除值
+    family_variant:
+      info:
+        update_successful: 品类变型已成功更新。含有变量的产品将根据您的更改进行更新。
     attribute_option:
       code: 代码
       label: 标签
-      actions: 动作
+      actions: 操作
     group:
       title: 分组
       info:
@@ -337,34 +377,36 @@ pim_enrich:
         deletion_failed: 分组不能删除。
         update_successful: 分组已成功更新。
         update_failed: 分组不能更新。
+        field_not_ready: "分组目前无法保存。以下字段未准备好： {{ fields }}"
       btn:
         save: 保存
       meta:
-        product_count: 商品
-        created: 创建
+        product_count: 产品
+        created: 已创建
         created_by: '创建者:'
         updated: 已更新
         updated_by: 更新者：
       create_popin:
         title: 创建
       message:
-        created: 分组已创建
+        created: 分组已成功创建
     job_instance:
-      title: 工作配置文件
+      title: 作业配置文件
       info:
-        update_failed: 工作配置文件不能更新。
-        update_successful: 工作配置文件已成功更新。
+        update_failed: 作业配置文件不能更新。
+        update_successful: 作业配置文件已成功更新。
     attribute:
       info:
         deletion_successful: 属性已成功删除。
         deletion_failed: 属性无法删除。
-        update_successful: 属性已经成功更新。
+        update_successful: 属性已成功更新。
         update_failed: 属性无法更新。
-        create_successful: 属性已成功更新。
+        create_successful: 属性已成功创建。
         create_failed: 属性无法创建。
+        field_not_ready: "该属性目前无法保存。以下字段未准备好： {{ fields }}"
       scopable: 范围允许
       type:
-        pim_catalog_identifier: 标识
+        pim_catalog_identifier: 标识符
         pim_catalog_text: 文本
         pim_catalog_textarea: 文本区域
         pim_catalog_number: 数量
@@ -372,12 +414,12 @@ pim_enrich:
         pim_catalog_multiselect: 多选
         pim_catalog_simpleselect: 单选
         pim_catalog_file: 文件
-        pim_catalog_image: 图片
-        pim_catalog_boolean: "确定/取消"
+        pim_catalog_image: 图像
+        pim_catalog_boolean: "是/否"
         pim_catalog_date: 日期
         pim_catalog_metric: 公制
-        pim_reference_data_simpleselect: 参考数据简单选择
-        pim_reference_data_multiselect: 参考数据多项选择
+        pim_reference_data_simpleselect: 参考数据单选
+        pim_reference_data_multiselect: 参考数据多选
       validation_rule:
         email: 电子邮件
         regexp: 正则表达式
@@ -386,74 +428,84 @@ pim_enrich:
     attribute_group:
       info:
         update_failed: 属性组无法更新
-        update_successful: 属性组已更新
+        update_successful: 属性组已成功更新
     api_connection:
       create_popin:
         title: 创建
       message:
-        created: API连接已成功创建
+        created: API 连接已成功创建
   confirmation:
-    leave: 你确定你要离开此页面？
-    discard_changes: 如果你离开页面，将丢失更改 {{ entity }}。
-    delete_item: 确定删除
+    leave: 确定要离开此页面？
+    discard_changes: 如果离开此页面，将会丢失对  {{ entity }} 的更改。
+    delete_item: 确认删除 
     remove_item: 确认删除
-    remove: 删除
+    remove: 移除
     delete:
-      attribute: 你确定你想要从产品中删除此属性？
-      attribute_group: 确定要从这个属性组中把属性{{ attribute }}删除吗？
-      product_model: 确定删除
+      attribute: 确定要从产品中删除此属性？
+      attribute_group: 确定要从该属性组中移除属性 {{ attribute }}？
+      product_model: 确认删除
   info:
-    not_applicable: 不适用
+    not_applicable: N/A
     entity:
-      updated: 更新未保存。
-  error:
-    upload: 上传文件的过程中出错
+      updated: 有未保存的更改。
   alert:
-    not_allowed: 您无权访问这个页面
-    error_occured: 在页面加载时出错
+    not_allowed: 您无权访问此页面
   form:
     required: '（必填）'
     product_model:
-      choose_product_model: 选择产品型号
-      family_variant: 变量
-      product_model: 产品型号
+      choose_product_model: 选择产品模型
+      choose_variant: 选择变型
+      complete_variant_product: 变型产品
+      complete_variant_products: 变型产品
+      family_variant: 变型
+      product_model: 产品模型
+      flash:
+        product_model_added: 产品模型已成功添加到此产品模型
+        variant_product_added: 变型产品已成功添加到产品模型
     product:
       tab:
         associations:
           title: 关联
           info:
-            none_exist: 没有关联的类型存在。
+            none_exist: 没有关联类型存在。
             show_products: 显示产品
             show_groups: 显示分组
+            number_of_associations: "{{ productCount }} 个产品，{{ productModelCount }} 个产品模型和 {{ groupCount }} 个分组"
           association_type_selector: 关联类型
           target: 目标
+          manage: 添加 {{ associationType }} 关联
+          manage_description: 选择想要与当前产品关联的产品
+          add_associations: 添加关联
         attributes:
           title: 属性
           btn:
-            add: 增加
+            add: 添加
             add_attributes: 添加属性
           info:
             search_attributes: 搜索...
-            no_available_attributes: 没有需要添加的属性
-            attributes_selected: "{{ itemsCount }}项属性已选定"
+            no_available_attributes: 没有需要再添加的属性
+            attributes_selected: "已选定 {{ itemsCount }} 项属性"
             no_match: 未找到匹配项
-            load_more: 正在加载更多的结果...
+            load_more: 正在加载更多结果...
           attribute_group_selector: 属性组
           attribute_group_all: 所有
+          attribute_group.to_fill_count: "{1}缺少 1 个必要属性|]1, Inf [缺少 {{ count }} 个必要属性"
           attribute_filter:
             display: 显示
             all: 全部属性
-            missing_required: 全部缺少的必要属性
+            missing_required: 缺少全部必要属性
+            at_this_level: 所有级别的特定属性
         categories:
-          title: 分类
+          title: 类别
       panel:
         completeness:
           title: 完整性
           info:
-            no_family: 没有定义品类。请定义一个品类来计算这个产品的完成度。
-            no_completeness: 你只是改变了产品的品类。请先保存来计算在该品类下的数据完整性。
+            no_family: 没有定义品类。请定义一个品类来计算该产品的完成度。
+            no_completeness: 您只是改变了该产品的品类。请先保存以计算新品类的完整性。
+          missing_values: "{1}缺少 1 个值|] 1, Inf [缺少 {{ count }} 个值"
         history:
-          title: 历史
+          title: 历史记录 
       switch:
         "no": "否　"
         "yes": "是"
@@ -463,17 +515,15 @@ pim_enrich:
           previous: 向后跳到 {{ product }} 而不保存。
           next: 跳到 {{ product }} 而不保存。
         btn:
-          save_and_next: 保存和下一步
+          save_and_next: 保存并执行下一步
           save_and_finish: 保存并完成
       change_family:
         modal:
-          title: 变更产品族
-          merge_attributes: 当前属性将被合并到新的产品族
-          keep_attributes: 没有属性将被删除。
-          change_family_to: 变更产品族到
-          empty_selection: 选择一个品类
-      flash:
-        attribute_deletion_error: 删除属性的过程中出错
+          title: 更改产品品类
+          merge_attributes: 当前属性将与新品类中的属性合并
+          keep_attributes: 没有属性要移除。
+          change_family_to: 更改产品品类为
+          empty_selection: 选择品类
       mass_edit:
         select_attributes: 选择属性
         select: 选择
@@ -485,7 +535,7 @@ pim_enrich:
           code: 代码
           label_translations: 标签翻译
         history:
-          title: 历史
+          title: 历史记录 
     group_type:
       tab:
         properties:
@@ -494,29 +544,30 @@ pim_enrich:
           code: 代码
           label_translations: 标签翻译
         history:
-          title: 历史
+          title: 历史记录 
     channel:
       tab:
         history:
-          title: 历史
+          title: 历史记录 
         properties:
           title: 属性
-          general: 一般信息
+          general: 常规​​​​​
           code: 代码
           currencies: 货币
           locales: 本地化语言
-          category_tree: 目录树
+          category_tree: 类别树
           label_translations: 标签翻译
-          label_conversion_units: 在产品导出时，为每一个计量单位选择一个转位单位。
+          label_conversion_units: 在产品导出时，为每一个公制属性选择一个转位单位。
           conversion_unit:
             do_not_convert: 不转换
     family:
       tab:
         properties:
           title: 属性
-          general: 一般信息
+          general: 常规​​​​​
           code: 代码
-          attribute_as_label: 属性作为标签
+          attribute_as_label: 用作标签的属性
+          attribute_as_image: 用作主要图片的属性
           empty_attribute_as_image: 未选择
           label_translations: 标签翻译
         attributes:
@@ -524,24 +575,30 @@ pim_enrich:
           label_label: 标签
           toolbox:
             select_attributes_by_groups: 按分组添加
-            select_attributes: 增加属性
-            add: 增加
-            attributes_groups_selected: '{{ itemsCount }}个分组已选定'
+            select_attributes: 添加属性
+            add: 添加
+            attributes_groups_selected: '{{ itemsCount }} 个分组已选定'
           not_required_label: 不需要
-          required_label: 必填
+          required_label: 必需
+        variant:
+          title: 变型
+          flash:
+            family_variant_created: 品类变型已成功创建
         history:
-          title: 历史
+          title: 历史记录 
     family_variant:
       tab:
+        attributes:
+          title: 变体属性
         labels:
           title: 标签翻译
     attribute_option:
       flash:
-        option_created: 属性选项成功创建
-        error_creating_option: 试图创建属性选项时的时出错
+        option_created: 属性选项已成功创建
+        error_creating_option: 尝试创建属性选项时出错
       add_option_modal:
         title: 添加属性选项
-        confirm: 增加
+        confirm: 添加
         cancel: 取消
     entity:
       switch:
@@ -556,9 +613,9 @@ pim_enrich:
           type: 类型
           label_translations: 标签翻译
         history:
-          title: 历史
+          title: 历史记录 
         products:
-          title: 商品
+          title: 产品
     attribute_group:
       tab:
         properties:
@@ -573,18 +630,19 @@ pim_enrich:
             type: 类型
             scopable: 范围允许
             localizable: 可本地化
-        history.title: 历史
+        history.title: 历史记录 
     common:
       tab:
         attributes:
           btn:
-            add: 增加
-            add_attributes: 增加属性
+            add: 添加
+            add_attributes: 添加属性
           info:
             search_attributes: 搜索...
-            no_available_attributes: 没有需要添加的属性
+            no_available_attributes: 没有需要再添加的属性
     job_execution:
       loading: 正在加载...
+      title.details: 执行详细信息
       refreshBtn.title: 刷新
       meta:
         status.title: 状态
@@ -596,27 +654,27 @@ pim_enrich:
       summary:
         fetching: 正在收集有关作业执行的数据...
         warning: 警告
-        header.step: 步
+        header.step: 步骤
         header.status: 状态
         header.warnings: 警告
-        header.summary: 总结
+        header.summary: 摘要
         header.start: 开始
         header.end: 结束
     job_instance:
       fail:
-        launch: 无法启动工作配置文件。请确保其有效性以及你拥有启动权限。
-        save: 无法保存工作配置文件。请确保你有权限去编辑它。
+        launch: 启动作业配置文件失败。请确保其有效且您拥有启动权限。
+        save: 保存作业配置文件失败。请确保您有编辑权限。
       title:
         import: 导入配置文件
         export: 导出配置文件
       button:
         edit.title: 编辑
-        export.title: 现在导出
-        import.launch: 现在导入
-        import.upload: 现在上传并导入
-        import.upload_file: 上传一个文件
+        export.title: 立即导出
+        import.launch: 立即导入
+        import.upload: 立即上传并导入
+        import.upload_file: 上传文件
       meta:
-        job: 任务
+        job: 作业
         connector: 连接器
       subsection:
         last_executions: 上一次执行
@@ -631,130 +689,141 @@ pim_enrich:
             title: 标签
           decimal_separator:
             title: 小数分隔符
-            help: 确定小数点分隔符
+            help: 确定小数分隔符
           date_format:
             title: 日期格式
             help: 确定日期字段的格式
           file_path:
             title: 文件路径
-            help: 将生成的文件写到哪里
+            help: 将生成的文件写入文件系统的位置
           delimiter:
             title: 分隔符
             help: 作为字段分隔符的单个字符
           enclosure:
             title: 附件
-            help: 作为字段分隔符的单个字符
+            help: 作为字段附件的单个字符
           with_header:
             title: 包含标题
             help: 是否打印列名称
           with_media:
             title: 导出文件和图像
-            help: 是否要导出产品文件和图片
+            help: 是否要导出产品文件和图像
           lines_per_file:
             title: 每个文件的行数
-            help: 定义每个文件的限制行数
+            help: 定义每个文件的行数限制
           upload_allowed:
-            title: 允许文件上传
-            help: 是否允许直接文件上传
+            title: 允许上传文件
+            help: 是否允许直接上传文件
           categories_column:
-            title: 大类列
-            help: 大类列名称
+            title: 类别列
+            help: 类别列名称
           escape:
             title: 退出
             help: 作为字段空白的单个字符
           family_column:
-            title: 分类列
-            help: 分类列的名称
+            title: 品类列
+            help: 品类列的名称
           groups_column:
             title: 分组列
-            help: 分组类的名称
+            help: 分组列的名称
           enabled:
-            title: 启用此商品
-            help: 是否启用导入的商品
+            title: 启用产品
+            help: 是否启用导入的产品
           enabled_comparison:
             title: 比对值
-            help: 开启原始值与导入值的比较。如果导入值与原始值比较接近，可以加快导入速度。
+            help: 开启原始值与导入值的比较。如果导入值与原始值比较接近，可以加快导入速度
           real_time_versioning:
             title: 实时历史记录更新
-            help: 关闭产品历史自动更新以提高性能
+            help: 自动更新产品的历史记录，可将其关闭以提高性能
+          family_variant_column:
+            title: 品类变型列
         history:
-          title: 历史
+          title: 历史记录 
       file_path: 文件路径
     attribute:
       meta:
         created: 已创建
+        created_by: 由
         updated: 上次更新
+        updated_by: 由
       tab:
         properties:
           title: 属性
           section:
             common: 一般参数
+            type_specific: 类型特定参数
             validation: 验证参数
           label:
-            allowed_extensions: 允许的扩展
+            allowed_extensions: 允许的扩展名
+            auto_option_sorting: 按字母顺序自动排序选项
             available_locales: 可用区域
             code: 代码
             date_max: 最大日期
             date_min: 最小日期
-            decimals_allowed: 允许的十进制值
+            decimals_allowed: 允许小数值
             default_metric_unit: 默认度量单位
             group: 属性组
-            is_locale_specific: 特定的区域
+            is_locale_specific: 区域特定
             localizable: 每项区域设置的值
             max_characters: 最大字符数
             max_file_size: 最大文件大小 (MB)
             metric_family: 度量族
             minimum_input_length: 自动完成的最小长度
-            negative_allowed: 允许的负值
+            negative_allowed: 允许负值
             number_max: 最大编号
             number_min: 最小编号
+            reference_data_name: 参考数据类型
             scopable: 每个渠道的值
             type: 类型
-            unique: 唯一性值
-            useable_as_grid_filter: 在表格中可用
+            unique: 唯一值
+            useable_as_grid_filter: 可用在网格中
             validation_regexp: 正则表达式
             validation_rule: 验证规则
+            wysiwyg_enabled: 富文本编辑器已启用
           default_label:
-            default_metric_unit: 选择一个单位
+            default_metric_unit: 选择单位
             group: 选择属性组
-            metric_family: 选择一个品类
-            reference_data_name: 选择引用的数据类型
+            metric_family: 选择品类
+            reference_data_name: 选择参考数据类型
         labels:
           title: 标签翻译
         choices:
           title: 选项
         history:
-          title: 历史
+          title: 历史记录 
     mass_edit:
       family:
         attributes:
           label_label: 标签
           toolbox:
             select_attributes_by_groups: 按分组添加
-            select_attributes: 增加属性
-            add: 增加
-            attributes_groups_selected: '{{ itemsCount }}个分组已选定'
+            select_attributes: 添加属性
+            add: 添加
+            attributes_groups_selected: '已选定 {{ itemsCount }} 个分组'
     basket:
-      title: 购物篮
+      title: 购物车
       empty_basket: 购物车是空的
+  job:
+    upload: 将您的 {{ type }} 文件拖到此处，或点击浏览磁盘
   export:
     product:
       data:
-        title: 产品过滤：
+        title: 筛选产品
       structure:
         title: 筛选数据
         attributes:
           title: 属性
       filter:
         channel:
-          title: 通道
-          help: 渠道定义了产品值的范围、 用于选择数据的本地化语言，以及用来选择产品的目录树。
+          title: 渠道
+          help: 渠道定义了产品值的范围、 用于选择数据的区域，以及用来选择产品的树。
         locales:
-          title: 本地化语言
-          help: "本地化语言定义了要导出的本地化产品值。例如， 仅法国的产品信息"
+          title: 区域设置
+          help: "区域设置定义了要导出的本地化产品值。例如，仅用法语显示的产品信息"
         attributes:
           title: 属性
           edit: 编辑
+          label: "{0}所有属性 |{1}选定一个属性 |]1,Inf[选定 {{ count }} 个属性"
           help: "选择要导出的产品信息。例如︰ 仅导出有技术类的属性。"
           empty: 将导出所有属性
           modal:
@@ -763,57 +832,61 @@ pim_enrich:
             title: 属性选择
         attributes_selector:
           attribute_group: 属性组
-          attributes: "在{{ itemsCount }}项属性中搜索"
+          attributes: "在 {{ itemsCount }} 项属性中搜索"
           selected: "选定的属性"
           clear: 清除
-          all_group: 所有群组
+          all_group: 所有分组
           empty_selection: 将导出所有属性
           title: 属性
+          description: 选择要导出的产品信息
         family:
-          title: 产品族
+          title: 品类
           help: "按品类选中产品进行导出。例如︰ 只导出鞋和衣服。"
           operators:
             IN: 在列表中
             "NOT IN": 不在列表中
             EMPTY: 没有品类的产品
             "NOT EMPTY": 有品类的产品
-          empty_selection: 在产品族中没有条件
+          empty_selection: 没有关于品类的条件
         updated:
           title: 时间条件
           operators:
-            ALL: 日期条件
-            "SINCE LAST N DAYS": 在过去 n 天中更新过的产品 (例如， 6)
+            ALL: 无日期条件
+            "SINCE LAST N DAYS": 在过去 n 天（例如， 6） 中更新过的产品
             ">": 从该日期开始更新过的产品
             "SINCE LAST JOB": 从上次导出后更新过的产品
         enabled:
           title: 状态
-          help: "根据它们的状态来选择产品导出。例如，导出所有状态的产品。"
+          help: "按状态选择要导出的产品。例如：导出任何状态的产品。"
           value:
             all: 所有
             enabled: 已启用
             disabled: 已禁用
         completeness:
           title: 完整性
-          help: 根据它们的完成度来选择产品导出
+          help: 按完整性选择要导出的产品。
           operators:
-            ALL: 在完成度上没有条件
-            "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": 完成至少一个选定的本地化语言
-            "GREATER OR EQUALS THAN ON ALL LOCALES": 在所有选择的本地化语言中是完整的
-            LOWER THAN ON ALL LOCALES: 在所有选择的本地化语言中是不完整的
-          empty_selection: 选择一个品类
+            ALL: 没有针对完整性的条件
+            "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": 至少完成一个选定的区域设置
+            "GREATER OR EQUALS THAN ON ALL LOCALES": 在所有选择的区域是完整的
+            LOWER THAN ON ALL LOCALES: 在所有选择的区域中是不完整的
+            AT LEAST COMPLETE: 在所选区域中至少完成一个子产品
+            ALL COMPLETE: 在所有选定的区域完成所有子产品
+          empty_selection: 选择品类
         category:
-          title: 分类
-          help: 使用在目录树上 （由渠道中定义） 的产品类别来选择要导出的产品
+          title: 类别
+          help: 使用树（由上述渠道定义）中的产品类别来选择要导出的产品
         identifier:
-          title: 标识
+          title: 标识符
+          help: 使用要导出的产品标识符，用逗号、空格或换行分隔
         metric:
           operators:
             "=": 等于
             "!=": 不等于
             ">=": 大于或等于
             ">": 大于
-            "<=": 低于或等于
-            "<": 低于
+            "<=": 小于或等于
+            "<": 小于
             EMPTY: 为空
             NOT EMPTY: 不是空的
         string:
@@ -832,8 +905,8 @@ pim_enrich:
             "!=": 不等于
             ">=": 大于或等于
             ">": 大于
-            "<=": 低于或等于
-            "<": 低于
+            "<=": 小于或等于
+            "<": 小于
             EMPTY: 为空
             NOT EMPTY: 不是空的
         multi_select:
@@ -853,7 +926,7 @@ pim_enrich:
         date:
           operators:
             ">": 大于
-            "<": 低于
+            "<": 小于
             "=": 等于
             "!=": 不等于
             BETWEEN: 介于
@@ -866,17 +939,25 @@ pim_enrich:
             "!=": 不等于
             ">=": 大于或等于
             ">": 大于
-            "<=": 低于或等于
-            "<": 低于
+            "<=": 小于或等于
+            "<": 小于
             EMPTY: 为空
             NOT EMPTY: 不是空的
       properties:
         title: 属性
       global_settings:
         title: 全局设置
+  mass_edit_action:
+    edit_common_attributes:
+      description: 只有属于所选产品品类的属性才会被编辑，其中包含 <span class="highlight">{{ locale }}</span> 区域和 <span class="highlight">{{ channel }}</span> 渠道的以下数据。
   index:
+    association_type:
+      title: "] -Inf, 1] {{ count }} 个关联类型 |] 1, Inf [{{ count }} 个关联类型"
+      create_btn: 创建关联类型
     import_profiles:
-      list: 选择一份作业
+      title: "] -Inf, 1] {{ count }} 个导入配置文件|] 1, Inf [{{ count }} 个导入配置文件"
+      create_btn: 创建导入配置文件
+      list: 选择作业
       create_popin:
         title: 创建
       message:
@@ -884,10 +965,11 @@ pim_enrich:
     import_history:
       title: 导入报告
     group:
-      title: "] -Inf, 1] {{ count }}个分组|] 1, Inf [{{ count }}个分组"
+      title: "] -Inf, 1] {{ count }} 个分组|] 1, Inf [{{ count }} 个分组"
       create_btn: 创建组
     export_profiles:
-      create_btn: 创建导入配置文件
+      title: "] -Inf, 1] {{ count }} 个导出配置文件 |] 1, Inf [{{ count }} 个导出配置文件"
+      create_btn: 创建导出配置文件
       create_popin:
         title: 创建
       message:
@@ -895,322 +977,434 @@ pim_enrich:
     export_history:
       title: 导出报告
     family:
-      title: "] -Inf, 1] {{ count }}个品类|] 1, Inf [{{ count }}个品类"
+      title: "] -Inf, 1] {{ count }} 个品类|] 1, Inf [{{ count }} 个品类"
       create_btn: 创建品类
     grouptype:
-      title: "] -Inf, 1] {{ count }}个分组类型|] 1, Inf [{{ count }}个分组类型"
+      title: "] -Inf, 1] {{ count }} 个分组类型|] 1, Inf [{{ count }} 个分组类型"
       create_btn: 创建分组类型
     currency:
-      title: "] -Inf, 1] {{ count }}种货币|] 1, Inf [{{ count }}种货币"
+      title: "] -Inf, 1] {{ count }} 种货币|] 1, Inf [{{ count }} 种货币"
     locale:
-      title: "] -Inf, 1] {{ count }}项区域设置|] 1, Inf [{{ count }}项区域设置"
+      title: "] -Inf, 1] {{ count }} 项区域设置|] 1, Inf [{{ count }} 项区域设置"
     user:
-      title: "] -Inf, 1] {{ count }}名用户|] 1, Inf [{{ count }}名用户"
+      title: "] -Inf, 1] {{ count }} 个用户|] 1, Inf [{{ count }} 个用户"
       create_btn: 创建用户
     user_role:
-      title: "] -Inf, 1] {{ count }}个角色|] 1, Inf [{{ count }}个角色"
+      title: "] -Inf, 1] {{ count }} 个角色|] 1, Inf [{{ count }} 个角色"
       create_btn: 创建角色
     user_group:
-      title: "] -Inf, 1] {{ count }}个分组|] 1, Inf [{{ count }}个分组"
-      create_btn: 创建组
+      title: "] -Inf, 1] {{ count }} 个分组|] 1, Inf [{{ count }} 个分组"
+      create_btn: 创建分组
+    process_tracker:
+      title: "] -Inf, 1] {{ count }} 个运算 |] 1, Inf [{{ count }} 个运算"
     channel:
-      title: "] -Inf, 1] {{ count }}个渠道|] 1, Inf [{{ count }}个渠道"
+      title: "] -Inf, 1] {{ count }} 个渠道|] 1, Inf [{{ count }} 个渠道"
       create_btn: 创建渠道
     attribute:
-      title: "] -Inf, 1] {{ count }}项属性|] 1, Inf [{{ count }}项属性"
+      title: "] -Inf, 1] {{ count }} 项属性|] 1, Inf [{{ count }} 项属性"
       create_btn: 创建属性
       modal_title: 选择属性类型
     attribute_group:
       title: 属性组
       create_btn: 创建
     api_connection:
-      title: "] -Inf, 1] {{ count }}个API连接|] 1, Inf [{{ count }} 个API连接"
+      title: "] -Inf, 1] {{ count }} 个 API 连接|] 1, Inf [{{ count }} 个 API 连接"
       create_btn: 创建
   mass_edit:
     next: 下一页
+    previous: 返回
     cancel: 取消
     confirm: 确认
     product:
       title: 产品批量操作
+      confirm: "{1}您将要更新产品的以下信息，请确认。|] 1, Inf [您将要更新 {{ itemsCount }} 个产品的以下信息，请确认。"
       step:
         select:
           label: 选择产品
         choose:
           title: 产品批量操作
-          label_count: "] 0, Inf [选择你的操作"
+          label_count: "] 0, Inf [选择操作"
         configure:
           label: 配置
         confirm:
           label: 确认
         launched:
-          label: 批量操作“{{ operation }}”已启动。完成后你会收到通知。
+          label: 批量操作“{{ operation }}”已启动。完成后会通知您。
       operation:
         change_status:
           label: 更改状态
+          label_count: "{1}更改 <span class=\"AknFullPage-title--highlight\">1 个产品的状态</span>|] 1, Inf [更改 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个产品的状态</span>"
           description: 将启用或禁用选定的产品。
-          field: 启用
+          field: 要启用
+        edit_common:
+          label: 编辑属性值
+          label_count: "{1}编辑 <span class=\"AknFullPage-title--highlight\">1 个产品</span>的属性|] 1, Inf [编辑 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个产品</span>的属性"
+          description: 只有属于所选产品家族的属性将被编辑，其中包含 {{ locale }} 区域和 {{ scope }} 渠道的以下数据。
+        add_attribute_value:
+          label: 添加属性值
+          label_count: "{1}添加 <span class=\"AknFullPage-title--highlight\">1 个产品</span>的属性值|] 1, Inf [添加 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个产品</span>的属性值"
+          description: 只有属于产品品类的多值属性将被编辑，编辑内容包含以下 {{ locale }} 区域和 {{ scope }} 渠道数据。 已添加属性值，之前的值被保留。
         change_family:
           label: 更改品类
+          label_count: "{1}更改 <span class=\"AknFullPage-title--highlight\">1 个产品</span>的品类|] 1, Inf [更改 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个产品</span>的品类"
           description: 选定产品的品类将更改为被选定的品类
-          field: 产品族
+          field: 品类
         add_to_group:
-          label: 加入到组
-          description: 选择一个组，将所选定的产品加入其中
+          label: 添加到组
+          label_count: "{1}添加 <span class=\"AknFullPage-title--highlight\">1 个产品</span>到组|] 1, Inf [添加 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个产品</span>到组"
+          description: 选择要将选定的产品加入其中的组
           field: 分组
         add_to_category:
           label: 添加到类别
+          label_count: "{1}添加 <span class=\"AknFullPage-title--highlight\">1 个产品</span>到类别] 1, Inf [添加 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个产品</span>到类别"
+          description: 产品将被放入以下类别，现存的分类也会保留。
         move_to_category:
-          label: 更改类别
+          label: 在类别之间移动
+          label_count: "{1}将 <span class=\"AknFullPage-title--highlight\">1 个产品</span>在类别之间移动] 1, Inf [将 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个产品</span>在类别之间移动"
+          description: 产品将被放入以下类别，现存的分类会丢失。
         remove_from_category:
-          label: 从类别里删除
-          description: 产品将从以下目录中删除。
+          label: 从类别中移除
+          label_count: "{1}从类别中移除 <span class=\"AknFullPage-title--highlight\">1 个产品</span>] 1, Inf [从类别中移除 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个产品</span>"
+          description: 产品将从以下类别中移除。
+        add_to_existing_product_model:
+          label: 添加到现有产品模型
+          label_count: "{1}添加 <span class=\"AknFullPage-title--highlight\">1 个产品</span>|到现有的产品模型] 1, Inf [添加 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个产品</span>到现有的产品模型"
+          description: 选定的产品模型将收集这些产品，并使其通用属性更加丰富。
+        associate_to_product_and_product_model:
+          label: 关联
+          label_count: "{1}将 <span class=\"AknFullPage-title--highlight\">1 个产品</span>关联到产品或产品模型|] 1, Inf [将 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个产品</span>关联到产品或产品模型"
+          description: 在网格中选择的产品将关联到所选关联类型下的产品和产品模型
+          validate: 请先添加关联，再前往下一步
+        change_parent_product_model:
+          label: 更改父产品模型
+          label_count: "{1}更改 <span class=\"AknFullPage-title--highlight\">1 个产品</span>的父产品模型|] 1, Inf [更改 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个产品</span>的父产品模型"
+          description: 在网格中选定的变型产品或子产品模型的父级将被更改为选定的产品模型。
     family:
       title: 品类批量操作
+      confirm: "{1}您将更新品类的以下信息，请确认。|] 1, Inf [您将更新 {{ itemsCount }} 个品类的以下信息，请确认。"
       step:
         select:
           label: 选择品类
         choose:
           title: 品类批量操作
-          label_count: "] 0, Inf [选择你的操作"
+          label_count: "] 0, Inf [选择操作"
         configure:
           label: 配置
         confirm:
           label: 确认
         launched:
-          label: 批量操作“{{ operation }}”已启动。完成后你会收到通知。
+          label: 批量操作“{{ operation }}”已启动。完成后会通知您。
       operation:
         set_requirements:
           label: 设置属性要求
+          description: 下列属性要求将应用于所选的品类中
+          label_count: "{1}设置 <span class=\"AknFullPage-title--highlight\">1 个品类</span>的属性要求|] 1, Inf [设置 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个品类</span>的属性要求"
 pim_enrich.error:
-  exception.title: 我靠 ！{{ status_code }} 出错了...
   http:
-    403: 您无权访问这个页面
+    403: 您无权访问此页面
 #Page titles
 page_title:
   oro_default: 主界面
   pim_enrich_attributegroup_index: 属性组
   pim_enrich_attributegroup_create: 属性组 |创建
-  pim_enrich_categorytree_index: 目录树
-  pim_enrich_categorytree_create: 目录树|创建
-  pim_enrich_categorytree_create_tree: 目录树|创建
+  pim_enrich_attributegroup_edit: 属性组 {{ group.label }} | 编辑
+  pim_enrich_catalog_volume_index: 目录量监测
+  pim_enrich_categorytree_index: 类别树
+  pim_enrich_categorytree_create: 类别树|创建
+  pim_enrich_categorytree_edit: 类别树 {{ category.label }} | 编辑
+  pim_enrich_categorytree_create_tree: 类别树|创建
   pim_enrich_attribute_index: 属性
   pim_enrich_attribute_create: 属性|创建
-  pim_enrich_product_index: 商品
+  pim_enrich_attribute_edit: 属性 {{ attribute.label }} | 编辑
+  pim_enrich_product_index: 产品
+  pim_enrich_product_edit: 产品 {{ product.label }} | 编辑
+  pim_enrich_product_model_edit: 产品模型 {{ product.label }} | 编辑
   pim_enrich_family_index: 品类
+  pim_enrich_family_edit: 品类 {{ family.label }} | 编辑
   pim_enrich_channel_index: 渠道
-  pim_enrich_channel_create: 通道|创建
+  pim_enrich_channel_create: 渠道|创建
+  pim_enrich_channel_edit: 渠道 {{ channel.label }} | 编辑
   pim_enrich_currency_index: 货币
   pim_enrich_locale_index: 本地化语言
   pim_enrich_group_index: 分组
+  pim_enrich_group_edit: 组 {{ group.label }} | 编辑
   pim_enrich_associationtype_index: 关联类型
+  pim_enrich_associationtype_edit: 关联类型 {{ association type.label }} | 编辑
   pim_enrich_grouptype_index: 分组类型
+  pim_enrich_grouptype_edit: 分组类型 {{ group type.label }} | 编辑
   pim_enrich_mass_edit_action_choose: 批量编辑|选择
   pim_enrich_mass_edit_action_configure: 批量编辑|配置
-  pim_enrich_job_tracker_index: 过程跟踪器
-  pim_enrich_job_tracker_show: 过程跟踪器 |显示作业
-  pim_enrich_api_connection_index: API连接
+  pim_enrich_mass_edit_action_perform: 批量编辑|执行
+  pim_enrich_job_tracker_index: 进程跟踪器
+  pim_enrich_job_tracker_show: 进程跟踪器 |显示作业
+  pim_enrich_api_connection_index: API 连接
+  pim_enrich_api_connection_create: API 连接 | 创建
   pim_enrich_mass_edit_action: 批量编辑
   pim_analytics_system_info_index: 系统信息
 #Batch job labels
 batch_jobs:
   add_product_value:
-    label: 添加商品值
+    label: 添加产品值
     perform:
-      label: 添加商品值
+      label: 添加产品值
   update_product_value:
-    label: 更新商品值
+    label: 更新产品值
     perform:
-      label: 更新商品值
+      label: 更新产品值
+  add_to_group:
+    label: 添加到分组
+    perform:
+      label: 添加到分组
   edit_common_attributes:
     label: 编辑属性
     perform:
       label: 编辑属性
+    cleaner:
+      label: 清除属性文件
+  add_to_category:
+    label: 添加到类别
+    perform:
+      label: 添加到类别
+  move_to_category:
+    label: 移动到类别
+    perform:
+      label: 移动到类别
+  remove_from_category:
+    label: 从类别中移除
+    perform:
+      label: 从类别中移除
+  add_association:
+    label: 关联
+    perform:
+      label: 关联
+  add_to_existing_product_model:
+    label: 添加到现有的产品模型
+    perform:
+      label: 添加到现有的产品模型
   set_attribute_requirements:
     label: 设置属性要求
     perform:
       label: 设置属性要求
+  csv_product_quick_export:
+    quick_export.label: CSV 产品快速导出
+    quick_export_product_model.label: CSV 产品模型快速导出
+    perform:
+      label: CSV 产品快速导出
+  csv_product_grid_context_quick_export:
+    quick_export.label: CSV 产品网格上下文快速导出
+    quick_export_product_model.label: CSV 产品模型网格上下文快速导出
+    perform:
+      label: CSV 产品网格上下文快速导出
+  xlsx_product_quick_export:
+    quick_export.label: XSLX 产品快速导出
+    quick_export_product_model.label: XSLX 产品模型快速导出
+    perform:
+      label: XSLX 产品快速导出
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: XSLX 产品网格上下文快速导出
+    quick_export_product_model.label: XSLX 产品模型网格上下文快速导出
+    perform:
+      label: XSLX 产品网格上下文快速导出
   csv_product_export:
-    label: 产品导出到CSV
-    export.label: 产品导出
+    label: 以 CSV 格式导出产品
+    export.label: 导出产品
   csv_product_model_export:
-    label: 将产品模型导出为CSV文件
-    export.label: 产品导出
+    label: 以 CSV 格式导出产品模型
+    export.label: 导出产品
   csv_category_export:
-    label: 分类导出到CSV
-    export.label: 分类导出
+    label: 以 CSV 格式导出类别
+    export.label: 导出类别
   csv_attribute_export:
-    label: 属性导出到CSV
-    export.label: 属性导出
+    label: 以 CSV 格式导出属性
+    export.label: 导出属性
   csv_attribute_option_export:
-    label: 属性选项导出到CSV
-    export.label: 属性选项导出
+    label: 以 CSV 格式导出属性选项
+    export.label: 导出属性选项
   csv_association_type_export:
-    label: 相关类型导出到CSV
-    export.label: 相关类型导出
+    label: 以 CSV 格式导出关联类型
+    export.label: 导出关联类型
   csv_group_export:
-    label: 分组导出到CSV
-    export.label: 分组导出
+    label: 以 CSV 格式导出分组
+    export.label: 导出分组
   csv_family_export:
-    label: 在CSV导入品类
-    export.label: 品类导出
+    label: 以 CSV 格式导出品类
+    export.label: 导出品类
+  csv_family_variant_export:
+    label: 以 CSV 格式导出品类变型
+    export.label: 导出品类变型
   csv_product_import:
-    label: 从CSV导入产品
+    label: 以 CSV 格式导入产品
     validation.label: 文件验证
-    import.label: 产品导入
-    import_associations.label: 相关导入
+    import.label: 导入产品
+    import_associations.label: 导入关联
   csv_product_model_import:
-    label: 从SCV文件导入产品模型
+    label: 以 CSV 格式导入产品模型
   csv_category_import:
-    label: 从CSV导入分类
+    label: 以 CSV 格式导入类别
     validation.label: 文件验证
-    import.label: 分类导入
+    import.label: 导入类别
   csv_attribute_import:
-    label: 从CSV导入属性
+    label: 以 CSV 格式导入属性
     validation.label: 文件验证
-    import.label: 属性导入
+    import.label: 导入属性
   csv_attribute_option_import:
-    label: 从CSV导入属性选项
+    label: 以 CSV 格式导入属性选项
     validation.label: 文件验证
-    import.label: 属性选项导入
+    import.label: 导入属性选项
   csv_association_type_import:
-    label: 从CSV导入相关类型
+    label: 以 CSV 格式导入关联类型
     validation.label: 文件验证
-    import.label: 相关类型导入
+    import.label: 导入关联类型
   csv_family_import:
-    label: 从CSV导入品类
+    label: 以 CSV 格式导入品类
     validation.label: 文件验证
-    import.label: 品类导入
+    import.label: 导入品类
+    compute_data_related_to_family_variants.label: 计算产品模型数据
+    compute_data_related_to_family_root_product_models.label: 计算根产品模型数据
+    compute_data_related_to_family_sub_product_models.label: 计算子产品模型数据
+    compute_data_related_to_family_products.label: 计算产品数据
   csv_family_variant_import:
+    label: 以 CSV 格式导入品类变型
     validation.label: 文件验证
+    import.label: 导入品类变型
   csv_group_import:
-    label: 从CSV导入分组
+    label: 以 CSV 格式导入分组
     validation.label: 文件验证
-    import.label: 分组导入
+    import.label: 导入分组
   csv_channel_export:
-    label: 渠道导出为CSV文件
-    export.label: 渠道导出
+    label: 以 CSV 格式导出渠道
+    export.label: 导出渠道
   csv_locale_export:
-    label: 区域设置导出为CSV文件
-    export.label: 区域设置导出
+    label: 以 CSV 格式导出区域设置
+    export.label: 导出区域设置
   csv_attribute_group_export:
-    label: 属性组导出为CSV文件
-    export.label: 属性组导出
+    label: 以 CSV 格式导出属性组
+    export.label: 导出属性组
   csv_currency_export:
-    label: 货币导出为CSV
-    export.label: 货币导出
+    label: 以 CSV 格式导出货币
+    export.label: 导出货币
   csv_group_type_export:
-    label: 导出分组类型为CSV文件
+    label: 以 CSV 格式导出分组类型
     export.label: 导出分组类型
   csv_channel_import:
-    label: 从CSV文件导入渠道
+    label: 以 CSV 格式导入渠道
     validation.label: 文件验证
-    import.label: 渠道导入
+    import.label: 导入渠道
   csv_locale_import:
-    label: 从CSV文件导入区域设置
+    label: 以 CSV 格式导入区域设置
     validation.label: 文件验证
-    import.label: 区域设置导入
+    import.label: 导入区域设置
   csv_attribute_group_import:
-    label: 从CSV文件导入属性组
+    label: 以 CSV 格式导入属性组
     validation.label: 文件验证
-    import.label: 属性组导入
+    import.label: 导入属性组
   csv_currency_import:
-    label: 从CSV文件导入货币
+    label: 以 CSV 格式导入货币
     validation.label: 文件验证
-    import.label: 货币导入
+    import.label: 导入货币
   csv_group_type_import:
-    label: 从CSV文件导入分组类型
+    label: 以 CSV 格式导入分组类型
     validation.label: 文件验证
     import.label: 导入分组类型
   xlsx_category_import:
-    label: 用XLSX导入分类
+    label: 以 XLSX 格式导入类别
     validation.label: 文件验证
-    import.label: 分类导入
+    import.label: 导入类别
   xlsx_association_type_import:
-    label: 从XLSX中导入关联类型
+    label: 以 XLSX 格式导入关联类型
     validation.label: 文件验证
-    import.label: 相关类型导入
+    import.label: 导入关联类型
   xlsx_attribute_import:
-    label: 属性导入到XLSX
+    label: 以 XLSX 格式导入属性
     validation.label: 文件验证
-    import.label: 属性导入
+    import.label: 导入属性
   xlsx_attribute_option_import:
-    label: 用XLSX导入属性选项
+    label: 以 XLSX 格式导入属性选项
     validation.label: 文件验证
-    import.label: 属性选项导入
+    import.label: 导入属性选项
   xlsx_family_import:
-    label: 在XLSX导入品类
+    label: 以 XLSX 格式导入品类
     validation.label: 文件验证
-    import.label: 品类导入
+    import.label: 导入品类
+    compute_data_related_to_family_variants.label: 计算产品模型数据
+    compute_data_related_to_family_root_product_models.label: 计算根产品模型数据
+    compute_data_related_to_family_sub_product_models.label: 计算子产品模型数据
+    compute_data_related_to_family_products.label: 计算产品数据
   xlsx_family_variant_import:
+    label: 以 XLSX 格式导入品类变型
     validation.label: 文件验证
+    import.label: 导入品类变型
   xlsx_product_export:
-    label: 产品导出到 XLSX
-    export.label: 产品导出
+    label: 以 XLSX 格式导出产品
+    export.label: 导出产品
   xlsx_product_model_export:
-    label: 将产品模型导出为XLSX文件
-    export.label: 产品模型导出
+    label: 以 XLSX 格式导出产品模型
+    export.label: 导出产品模型
   xlsx_product_import:
-    label: 从 XLSX导入产品
+    label: 以 XLSX 格式导入产品
     validation.label: 文件验证
-    import.label: 产品导入
-    import_associations.label: 相关导入
+    import.label: 导入产品
+    import_associations.label: 导入关联
   xlsx_product_model_import:
-    label: 从XSLX文件导入产品模型
+    label: 以 XLSX 格式导入产品模型
   xlsx_group_export:
-    label: 分组导出到 XLSX
-    export.label: 分组导出
+    label: 以 XLSX 格式导出分组
+    export.label: 导出分组
   xlsx_group_import:
-    label: 从XLSX导入分组
+    label: 以 XLSX 格式导入分组
     validation.label: 文件验证
-    import.label: 分组导入
+    import.label: 导入分组
   xlsx_family_export:
-    label: 在XLSX导入品类
-    export.label: 品类导出
+    label: 以 XLSX 格式导出品类
+    export.label: 导出品类
+  xlsx_family_variant_export:
+    label: 以 XLSX 格式导出品类变型
+    export.label: 导出品类变型
   xlsx_category_export:
-    label: 在XLSX中导出分类
-    export.label: 分类导出
+    label: 以 XLSX 格式导出类别
+    export.label: 导出类别
   xlsx_attribute_export:
-    label: 属性导出到XLSX
-    export.label: 属性导出到XLSX
+    label: 以 XLSX 格式导出属性
+    export.label: 以 XLSX 格式导出属性
   xlsx_attribute_option_export:
-    label: 属性选项导出到XLSX
-    export.label: 属性选项导出到XLSX
+    label: 以 XLSX 格式导出属性选项
+    export.label: 以 XLSX 格式导出属性选项
   xlsx_association_type_export:
-    label: 关联类型导出到XLSX
-    export.label: 关联类型导出到XLSX
+    label: 以 XLSX 格式导出关联类型
+    export.label: 以 XLSX 格式导出关联类型
   xlsx_channel_export:
-    label: 渠道导出为XLSX文件
-    export.label: 渠道导出
+    label: 以 XLSX 格式导出渠道
+    export.label: 导出渠道
   xlsx_locale_export:
-    label: 区域设置导出为CSV文件
+    label: 以 XLSX 格式导出区域设置
     export.label: 导出区域设置
   xlsx_attribute_group_export:
-    label: 属性组导出为XLSX文件
-    export.label: 属性组导出
+    label: 以 XLSX 格式导出属性组
+    export.label: 导出属性组
   xlsx_currency_export:
-    label: 货币导出为XLSX文件
-    export.label: 货币导出
+    label: 以 XLSX 格式导出货币
+    export.label: 导出货币
   xlsx_group_type_export:
-    label: 分组类型导出为XLSX文件
+    label: 以 XLSX 格式导出分组类型
     export.label: 导出分组类型
   xlsx_channel_import:
-    label: 从XLSX文件导入渠道
+    label: 以 XLSX 格式导入渠道
     validation.label: 文件验证
-    import.label: 渠道导入
+    import.label: 导入渠道
   xlsx_locale_import:
-    label: 从XLSX文件导入区域设置
+    label: 以 XLSX 格式导入区域设置
     validation.label: 文件验证
-    import.label: 区域设置导入
+    import.label: 导入区域设置
   xlsx_attribute_group_import:
-    label: 从XLSX文件导入属性组
+    label: 以 XLSX 格式导入属性组
     validation.label: 文件验证
-    import.label: 属性组导入
+    import.label: 导入属性组
   xlsx_currency_import:
-    label: 从SLSX文件导入货币
+    label: 以 XLSX 格式导入货币
     validation.label: 文件验证
-    import.label: 货币导入
+    import.label: 导入货币
   xlsx_group_type_import:
-    label: 从XLSX文件导入分组类型
+    label: 以 XLSX 格式导入分组类型
     validation.label: 文件验证
     import.label: 导入分组类型
 job_tracker:
@@ -1224,18 +1418,18 @@ pim_menu:
   tab:
     activity: 活动
     imports: 导入
-    products: 商品
+    products: 产品
     exports: 导出
     settings: 设置 
     system: 系统
     help:
       title: 帮助
-      helper: Akeneo帮助中心
+      helper: Akeneo 帮助中心
   item:
     association_type: 关联类型
     attribute: 属性
     attribute_group: 属性组
-    category: 分类
+    category: 类别
     channel: 渠道
     currency: 货币
     dashboard: 主界面
@@ -1243,21 +1437,22 @@ pim_menu:
     group: 分组
     group_type: 分组类型
     locale: 本地化语言
-    product: 商品
+    product: 产品
     product_model: 产品模型
     published_product: 已发布的产品
-    export_history: 导出历史
-    export_profile: 导出方案
-    import_history: 导入历史
-    import_profile: 导入方案
+    export_history: 导出历史记录
+    export_profile: 导出配置文件
+    import_history: 导入历史记录
+    import_profile: 导入配置文件
     configuration: 配置
+    catalog_volume: 目录量监测
     user_management: 用户管理
     user: 用户
     user_group: 分组
     user_role: 角色
     info: 系统信息
-    job_tracker: 过程跟踪器
-    api_connection: API连接
+    job_tracker: 进程跟踪器
+    api_connection: API 连接
   navigation:
     activity: 活动导航
     system: 系统导航
@@ -1268,14 +1463,36 @@ pim_menu:
     user_account: 我的帐户
 pim_notification:
   mark_all_as_read: 标记所有为已读
-  no_notifications: 没有通知
+  no_notifications: 无通知
   loading: 正在加载...
 catalog_volume:
+  product_values: "您的 PIM 中有 <span>{{values}}</span> 个产品值！平均每个产品 <span>{{average}}</span> 个产品值！&nbsp; 💪"
+  product_values_description: '您拥有的产品值越多，您的 PIM 就越有价值，您的 ROI 就越高！更多详情 <a href="{{link}}" target="_blank">在这里</a>'
+  section:
+    product_values:
+      hint: '您是否知道，您的 PIM 中的产品值总数直接与以下坐标轴相关联？<br/>为了解更多详情，我们邀请您<a href="{{link}}" target="_blank">浏览这篇文章</a>。'
+      title: 影响产品值数量的轴
+    catalog_structure:
+      hint: 您可能知道，良好的目录结构确实很重要，是有效丰富的条件。下面是用于监视您目录结构的各种轴。
+      title: 与目录结构相关的轴
+    variant_modelling:
+      hint: 如果您正在使用变量建模，此处是帮助您监视量的轴。
+      title: 关于变量建模的轴
   axis:
-    count_products: 商品
+    count_products: 产品
+    average_max_attributes_per_family: 每个品类的属性
     count_channels: 渠道
+    count_locales: 区域 (已激活)
+    count_scopable_attributes: 可确定范围的属性
+    count_localizable_and_scopable_attributes: 可本地化和可确定范围的属性
+    count_localizable_attributes: 可本地化的属性
     count_families: 品类
     count_attributes: 属性
-    count_categories: 分类
-    count_category_trees: 目录树
+    average_max_options_per_attribute: 按属性的选项
+    count_categories: 类别
+    count_category_trees: 类别树
+    count_variant_products: 变型产品
     count_product_models: 产品模型
+    warning: 哇！您用该轴创下纪录！如果您在此规模下需要任何帮助，请随时与我们联系。
+  mean: '均值：'
+  max: '最大值：'

@@ -1,5 +1,5 @@
 Close: 关闭
-Update: 升级
+Update: 更新
 Now: 现在
 Selected Rows: 选定的行
 more than: 多于
@@ -10,5 +10,5 @@ from: 从
 to: 到
 and: 以及
 system_filter_group: 系统
-oro_filter.filters.manage: 管理过滤器
-oro_filter.placeholder.all: 所有
+oro_filter.filters.manage: 管理筛选器
+oro_filter.placeholder.all: 全部

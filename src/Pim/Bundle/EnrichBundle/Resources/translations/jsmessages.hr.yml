@@ -78,7 +78,6 @@ error:
     export_profile: Nije moguće spremiti profil izvoza. Molimo vas da provjerite da li su svi filteri ispravno popunjeni
 alert:
   attribute_option:
-    error_occured_during_submission: Došlo je do pogreške tijekom slanja obrasca na poslužitelj
     save_before_edit_other: Spremite vaše izmjene drugih redaka prije uređivanja ovoga
   session_storage:
     not_available: Vaš web preglednik nije kompatibilan sa sessionStorage opcijom. Obratite se administratoru
@@ -162,8 +161,6 @@ pim_enrich:
         update_successful: Proizvod je uspješno ažuriran.
         update_failed: Proizvod ne može se ažurirati.
         already_in_upload: Datoteka je već procesu prijenosa za ovaj atribut u lokalizaciji "{{ locale }}" i opsegu "{{ scope }}"
-      error:
-        upload: Došlo je do pogreške tijekom prijenosa datoteke
       meta:
         created: Kreirano
         created_by: Od
@@ -332,10 +329,6 @@ pim_enrich:
     not_applicable: N/A
     entity:
       updated: Postoje nespremljene promjene.
-  error:
-    upload: Došlo je do pogreške tijekom prijenosa datoteke
-  alert:
-    error_occured: Došlo je do pogreške tijekom učitavanja stranice
   form:
     required: (obavezno)
     product_model:
@@ -386,8 +379,6 @@ pim_enrich:
           keep_attributes: Niti jedan atribut neće biti uklonjen.
           change_family_to: Promjeni obitelji na
           empty_selection: Odaberi obitelj
-      flash:
-        attribute_deletion_error: Pojavila se pogreška tijekom brisanja atributa
       mass_edit:
         select_attributes: Odaberi atribute
         select: Odaberi
@@ -824,7 +815,6 @@ pim_enrich:
         confirm:
           label: Potvrdi
 pim_enrich.error:
-  exception.title: Ups! Pojavila se pogreška u {{ status_code }}...
   http:
     403: Forbidden. You are not allowed to access this page
 #Page titles

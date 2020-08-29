@@ -6,7 +6,6 @@ pim_analytics:
       version_update.title: バージョンアップデート
     form:
       version_update.label: 新しいバージョンの通知
-      version_update.tooltip: 外部サーバーにリクエストを送信して新しいパッチのリリース情報を受け取りましょう
   system_info:
     title: システム情報
     download: TXT

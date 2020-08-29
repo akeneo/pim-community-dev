@@ -74,7 +74,6 @@ flash:
   api_connection:
     removed: Connexió d'API revocada amb èxit
 error:
-  common: S'ha produït un error
   creating:
     product: Cap atribut s'ha configurat com identificador del producte o no té permisos per editar-lo.
   removing:
@@ -96,7 +95,6 @@ error:
     export_profile: No es pot desar el perfil d'exportació. Comproveu que tots els filtres estan ben informats
 alert:
   attribute_option:
-    error_occured_during_submission: S'ha produït un error durant l'enviament del formulari al servidor
     save_before_edit_other: Si us plau registri les seves modificacions a les altres files abans d'editar aquesta
   session_storage:
     not_available: El navegador web no sembla compatible amb sessionStorage. Contacteu amb l'administrador
@@ -194,8 +192,6 @@ pim_enrich:
         update_failed: El producte podria no actualitzar-se.
         field_not_ready: "Ara no es pot guardar el producte. Els següents camps no estan preparats: {{ fields }}"
         already_in_upload: Ja s'ha carregat un arxiu per a aquest atribut en la configuració regional "{{ locale }}" i l'àmbit "{{ scope }}"
-      error:
-        upload: S'ha produït un error durant la càrrega
       meta:
         created: Creat
         created_by: Per
@@ -330,7 +326,6 @@ pim_enrich:
       info:
         update_successful: Família actualitzada correctament.
         create_successful: Canal creat correctament.
-        update_failed: S'ha produït un error durant l'actualització de la família.
         cant_remove_attribute_as_label: No es pot eliminar un atribut utilitzat com etiqueta
         cant_remove_attribute_as_image: No es pot eliminar l'atribut utilitzat com a imatge principal
         attribute_edit_permission_is_not_granted: No teniu permisos per editar els atributs de la família
@@ -453,11 +448,8 @@ pim_enrich:
     not_applicable: N/D
     entity:
       updated: Hi ha canvis sense guardar.
-  error:
-    upload: S'ha produït un error carregant el fitxer
   alert:
     not_allowed: Prohibit. No té permís per accedir a aquesta pàgina
-    error_occured: S'ha produït un error durant la càrrega de la pàgina
   form:
     required: (obligatori)
     product_model:
@@ -532,8 +524,6 @@ pim_enrich:
           keep_attributes: No s'eliminarà cap atribut.
           change_family_to: Canviar la família a
           empty_selection: Trieu una família
-      flash:
-        attribute_deletion_error: S'ha produït un error durant la supressió de l'atribut
       mass_edit:
         select_attributes: Seleccionar atributs
         select: Seleccionar
@@ -1038,8 +1028,6 @@ pim_enrich:
           label: Configurar
         confirm:
           label: Confirmar
-        launch_error:
-          label: S'ha produït un error durant el llançament de l'operació d'edició massa
         launched:
           label: L'acció en massa "{{ operation }}" ja s'ha engegat. Se li notificarà una cop acabi.
       operation:
@@ -1112,7 +1100,6 @@ pim_enrich:
           description: Els següents requeriments d'atributs s'aplicaran a les famílies seleccionades
           label_count: "{1}Configurar els requeriments d'atributs de <span class=\"AknFullPage-title--highlight\">1 família</span>|] 1, Inf [Configurar els requeriments d'atributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} famílies</span>"
 pim_enrich.error:
-  exception.title: Oh no! S'ha produït un error de {{ status_code }}...
   http:
     403: Prohibit. No té permís per accedir a aquesta pàgina
 #Page titles

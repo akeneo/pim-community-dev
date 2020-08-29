@@ -6,7 +6,6 @@ pim_analytics:
       version_update.title: 버전 업데이트
     form:
       version_update.label: 새 버전 알림
-      version_update.tooltip: 새로운 패치 릴리스에 대한 정보를 가져오기 위해 외부 서버로 요청 보내기
   system_info:
     title: 시스템 정보
     download: TXT

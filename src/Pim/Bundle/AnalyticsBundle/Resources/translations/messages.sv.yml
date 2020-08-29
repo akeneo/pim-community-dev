@@ -6,7 +6,6 @@ pim_analytics:
       version_update.title: Versionsuppdateringar
     form:
       version_update.label: Ny versionsnotiser
-      version_update.tooltip: Skicka begäran till fjärrserver för att hämta information om nya uppdateringar
   system_info:
     title: Systeminformation
     download: TXT

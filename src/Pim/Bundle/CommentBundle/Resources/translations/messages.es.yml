@@ -8,13 +8,10 @@ flash:
   comment:
     create:
       success: Su comentario ha sido creado éxitosamente.
-      error: Se ha producido un error durante la creación de su comentario.
     delete:
       success: Su comentario ha sido eliminado éxitosamente.
-      error: Se ha producido un error durante la eliminación de su comentario.
     reply:
       success: Su respuesta ha sido creada éxitosamente.
-      error: Ocurrió un error durante la creación de su respuesta.
 comment:
   index:
     empty: No se encontraron comentarios.

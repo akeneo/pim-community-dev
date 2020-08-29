@@ -22,11 +22,6 @@ file.extensions.message: 'Die Dateierweiterung ist nicht zulässig (Erlaubte Dat
 "This type of value expects the use of comma (,) to separate decimals.": Dieser Wertetyp erwartet die Verwendung eines Kommas (,) als Dezimaltrennzeichen.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Dieser Wertetyp erwartet die Benutzung von arabischen (٫) Dezimaltrennzeichen.
 "This type of value expects the use of the format {{ date_format }} for dates.": Dieser Wertetyp erwartet die Benutzung von {{ date_format }} als Datumsformat.
-"The category \"%category%\" has to be a root category.": Die Kategorie "%category%" muss eine Hauptkategorie sein.
-"The attribute \"%attributeCode%\" does not exist.": Das Attribute "%attributeCode%" existiert nicht.
-"The attribute \"%attributeCode%\" is not a metric attribute.": Das Attribut "%attributeCode%" ist kein metrisches Attribut.
-"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": Die Einheit "%unitCode%" ist nicht vorhanden oder gehört nicht zu der metrischen Standardfamilie des angegebenen Attributs "%attributeCode%".
-"The currency \"%currency%\" has to be activated.": Die Währung "%currency%" muss erst aktiviert werden.
 product_model.code.not_blank.message: Der Codes des Produktmodells darf nicht leer sein.
 product_model.code.unique.message: Diese Kennung ist bereits für ein anderes Produktmodell in Verwendung.
 product_model.family_variant.not_blank.message: Die Produktfamilie des Produktmodells darf nicht leer sein.

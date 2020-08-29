@@ -4,18 +4,11 @@ ARE: 아르
 ARPENT: 아르팡
 CENTIARE: 센티아르
 HECTARE: 헥타르
-SQUARE_CENTIMETER: 평방 센티미터
-SQUARE_DECIMETER: 평방 데시미터
-SQUARE_DEKAMETER: 평방 데카미터
 SQUARE_FOOT: 평방 피트
 SQUARE_FURLONG: 평방 펄롱
-SQUARE_HECTOMETER: 평방 헥토미터
 SQUARE_INCH: 평방 인치
-SQUARE_KILOMETER: 평방 킬로미터
-SQUARE_METER: 평방 미터
 SQUARE_MIL: 평방 밀
 SQUARE_MILE: 평방 마일
-SQUARE_MILLIMETER: 평방 밀리미터
 SQUARE_YARD: 평방 야드
 Binary: 바이너리
 BIT: 비트
@@ -31,19 +24,12 @@ MEGAHERTZ: 메가헤르츠
 TERAHERTZ: 테라헤르츠
 HERTZ: 헤르츠
 Length: 길이
-CENTIMETER: 센티미터
 CHAIN: 체인
-DECIMETER: 데시미터
-DEKAMETER: 데카미터
 FEET: 피트
 FURLONG: 펄롱
 INCH: 인치
-HECTOMETER: 헥토미터
-KILOMETER: 킬로미터
-METER: 미터
 MIL: 밀
 MILE: 마일
-MILLIMETER: 밀리미터
 YARD: 야드
 Power: 전원
 GIGAWATT: 기가와트
@@ -54,10 +40,6 @@ WATT: 와트
 Speed: 속도
 FOOT_PER_SECOND: 초당 피트
 FOOT_PER_HOUR: 시간당 피트
-KILOMETER_PER_HOUR: 시간당 킬로미터
-METER_PER_HOUR: 시간당 미터
-METER_PER_MINUTE: 분당 미터
-METER_PER_SECOND: 초당 미터
 MILE_PER_HOUR: 시간당 마일
 YARD_PER_HOUR: 시간당 야드
 Temperature: 온도
@@ -68,18 +50,10 @@ RANKINE: 랭킨
 REAUMUR: 열씨
 Volume: 볼륨
 BARREL: 배럴
-CENTILITER: 센티리터
-CUBIC_CENTIMETER: 입방 센티미터
-CUBIC_DECIMETER: 입방 데시미터
 CUBIC_FOOT: 입방 피트
 CUBIC_INCH: 입방 인치
-CUBIC_METER: 입방 미터
-CUBIC_MILLIMETER: 입방 밀리미터
 CUBIC_YARD: 입방 야드
-DECILITER: 데시리터
 GALLON: 갤런
-LITER: 리터
-MILLILITER: 밀리리터
 OUNCE: 온스
 PINT: 파인트
 Weight: 무게

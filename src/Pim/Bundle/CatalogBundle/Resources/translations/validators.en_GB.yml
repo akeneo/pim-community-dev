@@ -22,11 +22,6 @@ file.extensions.message: 'The file extension is not allowed (allowed extensions:
 "This type of value expects the use of comma (,) to separate decimals.": This type of value expects the use of a comma (,) to separate decimals.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": This type of value expects the use of an Arabic decimal separator (٫) to separate decimals.
 "This type of value expects the use of the format {{ date_format }} for dates.": This type of value expects the use of the format {{ date_format }} for dates.
-"The category \"%category%\" has to be a root category.": The category "%category%" has to be a root category.
-"The attribute \"%attributeCode%\" does not exist.": The attribute "%attributeCode%" does not exist.
-"The attribute \"%attributeCode%\" is not a metric attribute.": The attribute "%attributeCode%" is not a metric attribute.
-"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": The unit "%unitCode%" does not exist or does not belong to the default metric family of the given attribute "%attributeCode%".
-"The currency \"%currency%\" has to be activated.": The currency "%currency%" has to be activated.
 product_model.code.not_blank.message: The product model code cannot be empty.
 product_model.code.unique.message: The same code is already set on another product model.
 product_model.family_variant.not_blank.message: The product model family variant cannot be empty.

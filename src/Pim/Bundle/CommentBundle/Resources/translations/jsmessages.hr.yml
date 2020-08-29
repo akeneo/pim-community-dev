@@ -9,13 +9,10 @@ flash:
   comment:
     create:
       success: Tvoj komentar je uspješno kreiran.
-      error: Došlo je do pogreške tijekom stvaranja tvojeg komentara.
     delete:
       success: Tvoj komentar je uspješno izbrisan.
-      error: Došlo je do pogreške tijekom brisanja tvojeg komentara.
     reply:
       success: Tvoj odgovor je uspješno kreiran.
-      error: Došlo je do pogreške tijekom stvaranja tvojeg odgovora.
 comment:
   index:
     empty: Trenutno bez komentara

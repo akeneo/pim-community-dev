@@ -9,13 +9,10 @@ flash:
   comment:
     create:
       success: Kommentti luotu.
-      error: Kommenttia luotaessa tapahtui virhe.
     delete:
       success: Kommentti poistettu.
-      error: Kommenttia poistaessa tapahtui virhe.
     reply:
       success: Vastaus luotu.
-      error: Virhe luotaessa vastausta.
 comment:
   index:
     empty: Ei kommentteja tällä hetkellä

@@ -4,18 +4,11 @@ ARE: Are
 ARPENT: Arpent
 CENTIARE: Sentiare
 HECTARE: Hectar
-SQUARE_CENTIMETER: Sentimeter persegi
-SQUARE_DECIMETER: Decimeter persegi
-SQUARE_DEKAMETER: Dekameter persegi
 SQUARE_FOOT: Kaki persegi
 SQUARE_FURLONG: Square furlong
-SQUARE_HECTOMETER: Hektometer persegi
 SQUARE_INCH: Persegi inci
-SQUARE_KILOMETER: Kilometer persegi
-SQUARE_METER: Meter persegi
 SQUARE_MIL: Square mil
 SQUARE_MILE: Mil persegi
-SQUARE_MILLIMETER: Mililiter persegi
 SQUARE_YARD: Halaman persegi
 Binary: Biner
 BIT: Sedikit
@@ -31,19 +24,12 @@ MEGAHERTZ: "Megahertz\n \nKonteks | Permintaan Konteks"
 TERAHERTZ: Terahertz
 HERTZ: Terahertz
 Length: Panjang
-CENTIMETER: "\nSentimeter\n \nKonteks | Permintaan Konteks\n "
 CHAIN: Rantai
-DECIMETER: Desimeter
-DEKAMETER: Dekameter
 FEET: Kaki
 FURLONG: Furlong
 INCH: Inch
-HECTOMETER: Hektometer
-KILOMETER: Kilometer
-METER: Meter
 MIL: Mil
 MILE: Mil
-MILLIMETER: Millimeter
 YARD: Yard
 Power: Kekuatan
 GIGAWATT: Gigawat
@@ -54,10 +40,6 @@ WATT: Watt
 Speed: Cepat
 FOOT_PER_SECOND: Kaki per detik
 FOOT_PER_HOUR: Kaki per jam
-KILOMETER_PER_HOUR: Kilometer per jam
-METER_PER_HOUR: Meter per jam
-METER_PER_MINUTE: Meter per menit
-METER_PER_SECOND: Meter per detik
 MILE_PER_HOUR: Mil per jam
 YARD_PER_HOUR: Halaman per jam
 Temperature: Suhu
@@ -68,18 +50,10 @@ RANKINE: Rankine
 REAUMUR: Reaumur
 Volume: Volume
 BARREL: Barel
-CENTILITER: Sentiliter
-CUBIC_CENTIMETER: Kubik sentimeter
-CUBIC_DECIMETER: Kubik desimeter
 CUBIC_FOOT: Kubik kaki
 CUBIC_INCH: Inci Kubik
-CUBIC_METER: Meter kubik
-CUBIC_MILLIMETER: Mililiter kubik
 CUBIC_YARD: Yard kubik
-DECILITER: Desiliter
 GALLON: Galon
-LITER: Liter
-MILLILITER: Mililiter
 OUNCE: Ons
 PINT: Pint
 Weight: Berat

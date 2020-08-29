@@ -6,7 +6,6 @@ pim_analytics:
       version_update.title: Actualitzacions de versió
     form:
       version_update.label: Notificacions de noves versions
-      version_update.tooltip: Enviar una petició a un servidor remot per recuperar informació sobre el llançament de nous pedaços
   system_info:
     title: Informació del sistema
     download: TXT

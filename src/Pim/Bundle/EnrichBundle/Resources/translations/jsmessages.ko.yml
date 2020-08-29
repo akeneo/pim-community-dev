@@ -74,7 +74,6 @@ flash:
   api_connection:
     removed: API 연결 취소됨
 error:
-  common: 오류 발생함
   creating:
     product: 제품 식별자로 특성이 구성되지 않았거나 특성을 편집할 권한이 없습니다.
   removing:
@@ -96,7 +95,6 @@ error:
     export_profile: 내보내기 프로필을 저장할 수 없습니다. 모든 필터가 제대로 채워졌는지 확인하십시오.
 alert:
   attribute_option:
-    error_occured_during_submission: 서버에서 양식 제출 중에 오류가 발생했습니다
     save_before_edit_other: 이 내용을 편집하기 전에 다른 행의 수정 사항을 등록하십시오
   session_storage:
     not_available: 해당 웹 브라우저는 sessionStorage와 호환되지 않는 것 같습니다. 관리자에게 문의하십시오.
@@ -194,8 +192,6 @@ pim_enrich:
         update_failed: 제품을 업데이트할 수 없습니다.
         field_not_ready: "이 제품은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다: {{ fields }}"
         already_in_upload: 이미 로케일 "{{ locale }}" 및 범위 "{{ scope }}"에서 이 특성에 대한 파일이 업로드되었습니다.
-      error:
-        upload: 파일을 업로드하는 중에 오류가 발생했습니다
       meta:
         created: 생성됨
         created_by: '-'
@@ -330,7 +326,6 @@ pim_enrich:
       info:
         update_successful: 패밀리가 업데이트되었습니다.
         create_successful: 채널이 생성되었습니다.
-        update_failed: 패밀리를 업데이트하는 중에 오류가 발생했습니다.
         cant_remove_attribute_as_label: 레이블로 사용되는 특성을 제거할 수 없음
         cant_remove_attribute_as_image: 기본 그림으로 사용되는 특성을 제거할 수 없음
         attribute_edit_permission_is_not_granted: 패밀리의 특성을 편집할 권한이 없습니다
@@ -453,11 +448,8 @@ pim_enrich:
     not_applicable: 해당 없음
     entity:
       updated: 저장되지 않은 변경 사항이 있습니다.
-  error:
-    upload: 파일을 업로드하는 중에 오류가 발생했습니다
   alert:
     not_allowed: 금지되었습니다. 이 페이지에 액세스할 권한이 없습니다.
-    error_occured: 페이지를 로드하는 중에 오류가 발생했습니다
   form:
     required: (필수)
     product_model:
@@ -532,8 +524,6 @@ pim_enrich:
           keep_attributes: 제거되는 특성이 없습니다.
           change_family_to: '패밀리를 다음으로 변경:'
           empty_selection: 패밀리 선택
-      flash:
-        attribute_deletion_error: 특성을 삭제하는 중에 오류가 발생했습니다
       mass_edit:
         select_attributes: 특성 선택
         select: 선택
@@ -1038,8 +1028,6 @@ pim_enrich:
           label: 구성
         confirm:
           label: 확인
-        launch_error:
-          label: 대량 편집 작업을 실행하는 중에 오류가 발생했습니다
         launched:
           label: 일괄 작업 "{{ operation }}"이(가) 실행되었습니다. 완료되면 알림이 전송됩니다.
       operation:
@@ -1112,7 +1100,6 @@ pim_enrich:
           description: 선택된 패밀리에 다음 특성 요구 사항이 적용됩니다.
           label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 패밀리</span>의 특성 요구 사항 설정|] 1, Inf [<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 패밀리</span>의 특성 요구 사항 설정"
 pim_enrich.error:
-  exception.title: 죄송합니다! {{ status_code }} 오류가 발생했습니다...
   http:
     403: 금지되었습니다. 이 페이지에 액세스할 권한이 없습니다.
 #Page titles

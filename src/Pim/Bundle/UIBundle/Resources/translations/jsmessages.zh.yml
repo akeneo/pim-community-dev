@@ -1,23 +1,24 @@
 #ORO messages
 Close: 关闭
-Update: 升级
+Update: 更新
 Selected Rows: 选定的行
 "Yes": "是"
-"Yes, Delete": "是的，删除"
-"Yes, I Agree": "是的，我同意"
+"Yes, Delete": "是，删除"
+"Yes, I Agree": "是，我同意"
 "Yes, do it": "是，继续"
 "No": "否　"
 "Ok, got it.": "好的，知道了"
 "Cancel": "取消"
 "Delete Confirmation": "确认删除"
 "Edit": "编辑"
-"Unexpected error occured. Please contact system administrator.": "发生意外错误。请与系统管理员联系。"
+"Yes, revoke": "是，撤销"
+"Revoke Confirmation": "确认撤销"
 Now: 现在
 Prev: 上一个
-Next: 下一页
+Next: 下一个
 Today: 今天
 Wk: 周
-Done: 已完成
+Done: 完成
 AM: 上午
 A: A
 PM: 下午
@@ -33,7 +34,7 @@ Microsecond: 微秒
 #PIM messages
 Localized value: 本地化的值
 Columns: 列
-Datagrid Configuration: Datagrid 配置
+Datagrid Configuration: 数据网格配置
 Apply: 应用
 #Filters
 Action: 操作
@@ -45,13 +46,13 @@ jstree:
   product:
     all: 所有产品
     unclassified: 未分类的产品
-  no_tree: 没有可用的树
+  no_tree: 无可用的树
   include_sub: 包括子类别
-  loading: 正在加载
+  loading: 正在加载 ...
 #Datetimepicker
 datetimepicker:
   days:
-    Sunday: 星期天
+    Sunday: 周日
     Monday: 周一
     Tuesday: 周二
     Wednesday: 周三
@@ -114,9 +115,9 @@ oro_config:
           system_locale: 语言
         notification:
           title: 通知
-          system_notification: 新版本提醒
+          system_notification: 新版本通知
         loading_message:
-          title: 正在加载消息
+          title: 加载消息
           label: 启用加载消息
         loading_messages:
           label: 可用的加载消息

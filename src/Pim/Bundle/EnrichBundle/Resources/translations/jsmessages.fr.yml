@@ -74,7 +74,6 @@ flash:
   api_connection:
     removed: La connexion API a été révoquée avec succès
 error:
-  common: Une erreur est survenue
   creating:
     product: Aucun attribut n'est configuré comme identifiant produit ou vous ne disposez pas des droits pour le modifier.
   removing:
@@ -96,7 +95,6 @@ error:
     export_profile: Impossible d'enregistrer le profil d'export. Vérifiez que tous les champs sont correctement remplis.
 alert:
   attribute_option:
-    error_occured_during_submission: Une erreur s'est produite lors de l'envoi d'un formulaire sur le serveur
     save_before_edit_other: Veuillez enregistrer vos modifications sur les autres lignes avant de modifier celle-ci
   session_storage:
     not_available: Votre navigateur Internet ne semble pas être compatible avec sessionStorage. Contactez votre administrateur
@@ -194,8 +192,6 @@ pim_enrich:
         update_failed: Le produit n'a pas pu être mis à jour.
         field_not_ready: "Le produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
         already_in_upload: Un fichier est déjà en téléchargement pour cet attribut pour la locale "{{ locale }}" et le canal "{{ scope }}"
-      error:
-        upload: Une erreur s'est produite lors du transfert du fichier.
       meta:
         created: Créé
         created_by: par
@@ -330,7 +326,6 @@ pim_enrich:
       info:
         update_successful: Famille mise à jour avec succès.
         create_successful: Canal créé avec succès.
-        update_failed: Une erreur s'est produite à la mise à jour de la famille.
         cant_remove_attribute_as_label: Impossible de supprimer un attribut utilisé comme libellé
         cant_remove_attribute_as_image: Impossible de supprimer un attribut utilisé comme image principale
         attribute_edit_permission_is_not_granted: Vous n'avez pas les permissions pour mettre à jour les attributs de la famille
@@ -453,11 +448,8 @@ pim_enrich:
     not_applicable: N/A
     entity:
       updated: Des modifications n'ont pas encore été sauvegardées.
-  error:
-    upload: Une erreur s'est produite pendant le chargement du fichier
   alert:
     not_allowed: Désolé, vous n'êtes pas autorisé(e) à accéder à cette page
-    error_occured: Une erreur s'est produite lors du chargement de la page
   form:
     required: (obligatoire)
     product_model:
@@ -532,8 +524,6 @@ pim_enrich:
           keep_attributes: Aucun attribut ne sera supprimé.
           change_family_to: Changer la famille pour
           empty_selection: Choisir une famille
-      flash:
-        attribute_deletion_error: Une erreur s'est produite lors de la suppression de l'attribut
       mass_edit:
         select_attributes: Sélectionnez les attributs
         select: Sélectionner
@@ -1038,8 +1028,6 @@ pim_enrich:
           label: Configurez l'opération à effectuer
         confirm:
           label: Confirmation
-        launch_error:
-          label: Une erreur s’est produite lors du lancement de l'édition de masse
         launched:
           label: L'action de masse "{{ operation }}" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
       operation:
@@ -1112,7 +1100,6 @@ pim_enrich:
           description: Ces changements s'appliqueront aux familles sélectionnées
           label_count: "{1}Définir s’ils sont obligatoires ou non pour la complétude de d'<span class=\"AknFullPage-title--highlight\">1 famille</span>|] 1, Inf [Définir s’ils sont obligatoires ou non pour la complétude de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} familles</span>"
 pim_enrich.error:
-  exception.title: Oups! Une erreur {{ status_code }} s'est produite...
   http:
     403: Désolé, vous n'êtes pas autorisé(e) à accéder à cette page
 #Page titles

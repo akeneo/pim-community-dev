@@ -22,11 +22,6 @@ file.extensions.message: 'Ekstensi file tidak diijinkan (ekstensi yang diizinkan
 "This type of value expects the use of comma (,) to separate decimals.": Tipe nilai ini yang diharapkan penggunaan koma (,) untuk memisahkan desimal.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Tipe nilai ini yang diharapkan penggunaan bahasa arab sebagai pemisah desimal (٫) untuk memisahkan desimal.
 "This type of value expects the use of the format {{ date_format }} for dates.": Tipe nilai ini yang diharapkan penggunaan format{{ date_format }} untuk tanggal.
-"The category \"%category%\" has to be a root category.": Kategori "%category%" telah menjadi akar kategori.
-"The attribute \"%attributeCode%\" does not exist.": Atribut "%attributeCode%" tidak ada.
-"The attribute \"%attributeCode%\" is not a metric attribute.": Atribut "%attributeCode%" tidak metrik atribut.
-"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": Unit "%unitCode%" tidak ada atau tidak termasuk dalam keluarga metrik standar dari atribut yang diberikan "%attributeCode%".
-"The currency \"%currency%\" has to be activated.": Mata uang "%currency%" harus diaktifkan.
 product_model.code.not_blank.message: Kode model produk tidak boleh kosong.
 product_model.code.unique.message: Kode yang sama sudah diatur pada model produk lain.
 product_model.family_variant.not_blank.message: Model produk keluarga varian tidak boleh kosong.

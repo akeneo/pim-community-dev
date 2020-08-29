@@ -22,11 +22,6 @@ file.extensions.message: '이 파일 확장명은 허용되지 않습니다(허�
 "This type of value expects the use of comma (,) to separate decimals.": 이 유형의 값은 소수를 구분하기 위해 쉼표(,)를 사용해야 합니다.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": 이 유형의 값은 소수를 구분하기 위해 아라비아 소수 구분 기호(٫)를 사용해야 합니다.
 "This type of value expects the use of the format {{ date_format }} for dates.": 이 유형의 값에는 날짜의 형식 {{date_format}}을(를) 사용해야 합니다.
-"The category \"%category%\" has to be a root category.": '"%category%" 카테고리는 루트 카테고리여야 합니다.'
-"The attribute \"%attributeCode%\" does not exist.": '"%attributeCode%" 특성이 존재하지 않습니다.'
-"The attribute \"%attributeCode%\" is not a metric attribute.": '"%attributeCode%" 특성이 메트릭 특성이 아닙니다.'
-"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": '"%unitCode%" 단위가 존재하지 않거나 지정된 특성 "%attributeCode%"의 기본 메트릭 패밀리에 속하지 않습니다.'
-"The currency \"%currency%\" has to be activated.": '"%currency%" 통화를 활성화해야 합니다.'
 product_model.code.not_blank.message: 제품 모델 코드는 비워둘 수 없습니다.
 product_model.code.unique.message: 동일한 코드가 이미 다른 제품 모델에 설정되어 있습니다.
 product_model.family_variant.not_blank.message: 제품 모델 패밀리 변형은 비워둘 수 없습니다.
