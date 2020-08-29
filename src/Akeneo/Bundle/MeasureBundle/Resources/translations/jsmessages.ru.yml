@@ -4,18 +4,11 @@ ARE: Ар
 ARPENT: Арпан
 CENTIARE: Центнер
 HECTARE: Гектар
-SQUARE_CENTIMETER: Квадратный сантиметр
-SQUARE_DECIMETER: Квадратный дециметр
-SQUARE_DEKAMETER: Квадратный декаметр
 SQUARE_FOOT: Квадратный фут
 SQUARE_FURLONG: Квадратный фурлонг
-SQUARE_HECTOMETER: Квадратный гектометр
 SQUARE_INCH: Квадратный дюйм
-SQUARE_KILOMETER: Квадратный километр
-SQUARE_METER: Квадратный метр
 SQUARE_MIL: Квадратная миля
 SQUARE_MILE: Квадратная миля
-SQUARE_MILLIMETER: Квадратный миллиметр
 SQUARE_YARD: Квадратный ярд
 Binary: Двоичный
 BIT: Бит
@@ -33,19 +26,12 @@ MEGAHERTZ: Мегагерц
 TERAHERTZ: Терагерц
 HERTZ: Герц
 Length: Длина
-CENTIMETER: Сантиметр
 CHAIN: Чейн
-DECIMETER: Дециметр
-DEKAMETER: Декаметр
 FEET: Фут
 FURLONG: Фурлонг
 INCH: Дюйм
-HECTOMETER: Гектометр
-KILOMETER: Километр
-METER: Метр
 MIL: Миля
 MILE: Миля
-MILLIMETER: Миллиметр
 YARD: Ярд
 Power: Мощность
 GIGAWATT: Гигаватт
@@ -101,10 +87,6 @@ YEAR: лет
 Speed: Скорость
 FOOT_PER_SECOND: Футов в секунду
 FOOT_PER_HOUR: Футoв в час
-KILOMETER_PER_HOUR: Километров в час
-METER_PER_HOUR: Метров в час
-METER_PER_MINUTE: Метров в минуту
-METER_PER_SECOND: Метров в секунду
 MILE_PER_HOUR: Миль в час
 YARD_PER_HOUR: Ярдов в час
 Temperature: Температура
@@ -115,18 +97,10 @@ RANKINE: По Ранкину
 REAUMUR: По Реомюру
 Volume: Объем
 BARREL: Баррель
-CENTILITER: Сантилитр
-CUBIC_CENTIMETER: Кубический сантиметр
-CUBIC_DECIMETER: Кубический дециметр
 CUBIC_FOOT: Кубический фут
 CUBIC_INCH: Кубический дюйм
-CUBIC_METER: Кубический метр
-CUBIC_MILLIMETER: Кубический миллиметр
 CUBIC_YARD: Кубический ярд
-DECILITER: Децилитр
 GALLON: Галлон
-LITER: Литр
-MILLILITER: Миллилитр
 OUNCE: Унция
 PINT: Пинта
 Weight: Вес
@@ -143,12 +117,9 @@ TON: Тонна
 Pressure: Давление
 BAR: Бар
 PASCAL: Паскаль
-HECTOPASCAL: Гектопаскаль
-MILLIBAR: Миллибар
 ATM: Атмосфера
 PSI: Фунт на квадратный дюйм
 TORR: Торр
-MMHG: Миллиметр ртутного столба
 Energy: Энергия
 KILOCALORIE: килокалория
 KILOJOULE: килоджоуль

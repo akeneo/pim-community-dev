@@ -4,18 +4,11 @@ ARE: Are
 ARPENT: Arpent
 CENTIARE: Centiare
 HECTARE: Hectare
-SQUARE_CENTIMETER: Vierkante centimeter
-SQUARE_DECIMETER: Vierkante decimeter
-SQUARE_DEKAMETER: Vierkante decameter
 SQUARE_FOOT: Vierkante voet
 SQUARE_FURLONG: Vierkante furlong
-SQUARE_HECTOMETER: Vierkante hectometer
 SQUARE_INCH: Vierkante duim
-SQUARE_KILOMETER: Vierkante kilometer
-SQUARE_METER: Vierkante meter
 SQUARE_MIL: Vierkante mil
 SQUARE_MILE: Vierkante mijl
-SQUARE_MILLIMETER: Vierkante millimeter
 SQUARE_YARD: Vierkante yard
 Binary: Binair
 BIT: Bit
@@ -33,19 +26,12 @@ MEGAHERTZ: Megahertz
 TERAHERTZ: Terahertz
 HERTZ: Hertz
 Length: Lengte
-CENTIMETER: Centimeter
 CHAIN: Chain
-DECIMETER: Decimeter
-DEKAMETER: Dekameter
 FEET: Voet
 FURLONG: Furlong
 INCH: Duim
-HECTOMETER: Hectometer
-KILOMETER: Kilometer
-METER: Meter
 MIL: Mil
 MILE: Mijl
-MILLIMETER: Millimeter
 YARD: Yard
 Power: Vermogen
 GIGAWATT: Gigawatt
@@ -101,10 +87,6 @@ YEAR: Jaar
 Speed: Snelheid
 FOOT_PER_SECOND: Voet per seconde
 FOOT_PER_HOUR: Voet per uur
-KILOMETER_PER_HOUR: Kilometer per uur
-METER_PER_HOUR: Meter per uur
-METER_PER_MINUTE: Meter per minuut
-METER_PER_SECOND: Meter per seconde
 MILE_PER_HOUR: Mijl per uur
 YARD_PER_HOUR: Yard per uur
 Temperature: Temperatuur
@@ -115,18 +97,10 @@ RANKINE: Rankine
 REAUMUR: Reaumur
 Volume: Volume
 BARREL: Vat
-CENTILITER: Centiliter
-CUBIC_CENTIMETER: Kubieke centimeter
-CUBIC_DECIMETER: Kubieke decimeter
 CUBIC_FOOT: Kubieke voet
 CUBIC_INCH: Kubieke duim
-CUBIC_METER: Kubieke meter
-CUBIC_MILLIMETER: Kubieke millimeter
 CUBIC_YARD: Kubieke yard
-DECILITER: Deciliter
 GALLON: Gallon
-LITER: Liter
-MILLILITER: Milliliter
 OUNCE: Ounce
 PINT: Pint
 Weight: Gewicht
@@ -143,12 +117,9 @@ TON: Ton
 Pressure: Luchtdruk
 BAR: Bar
 PASCAL: Pascal
-HECTOPASCAL: hecto Pascal
-MILLIBAR: milli Bar
 ATM: Atmosfeer
 PSI: Pound per vierkante inch
 TORR: Torr
-MMHG: millimeter kwik
 Energy: Energie
 KILOCALORIE: kilocalorie
 KILOJOULE: kilojoule

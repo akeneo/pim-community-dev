@@ -74,7 +74,6 @@ flash:
   api_connection:
     removed: API підключення успішно скасовано
 error:
-  common: Сталася помилка
   creating:
     product: У продукта не зазначений атрибут в якості ідентифікатора, або ви не маєте прав для його змін.
   removing:
@@ -96,7 +95,6 @@ error:
     export_profile: Не вдалося зберегти профіль експорту. Будь ласка, перевірте, чи всі фільтри добре заповнені
 alert:
   attribute_option:
-    error_occured_during_submission: Сталася помилка під час відправки форми на сервер
     save_before_edit_other: Будь ласка, зафіксуйте ваші зміні на інших рядках перед редагуванням цього
   session_storage:
     not_available: Здається, ваш веб-браузер не сумісний з sessionStorage. Будь ласка, зверніться до адміністратора
@@ -194,8 +192,6 @@ pim_enrich:
         update_failed: Не вдалось оновити продукт.
         field_not_ready: "Продукт не можна зберегти прямо зараз. Наступні обов'язкові поля не заповнені: {{ fields }}"
         already_in_upload: Файл вже знаходиться у вивантаженні для цього атрибута в локалі "{{ locale }}" і видимості "{{ scope }}"
-      error:
-        upload: Сталася помилка під час вивантаження файлу
       meta:
         created: Створено
         created_by: За
@@ -330,7 +326,6 @@ pim_enrich:
       info:
         update_successful: Сімейство успішно оновлено.
         create_successful: Канал успішно створено.
-        update_failed: Сталася помилка при оновленні сімейства.
         cant_remove_attribute_as_label: Неможливо видалити атрибут, який використовується як мітка
         cant_remove_attribute_as_image: Неможливо видалити атрибут, який використовується як основне зображення
         attribute_edit_permission_is_not_granted: Ви не маєте прав на редагування атрибутів сімейства
@@ -453,11 +448,8 @@ pim_enrich:
     not_applicable: Н/Д
     entity:
       updated: Є незбережені зміни.
-  error:
-    upload: Сталася помилка під час вивантаження файлу
   alert:
     not_allowed: Заборонено. У вас немає доступу до цієї сторінки
-    error_occured: Сталася помилка під час завантаження сторінки
   form:
     required: (обов'язково)
     product_model:
@@ -532,8 +524,6 @@ pim_enrich:
           keep_attributes: Атрибути не буде видалено.
           change_family_to: Змінити сімейство на
           empty_selection: Виберіть сімейство
-      flash:
-        attribute_deletion_error: Виникла помилка під час видалення атрибуту
       mass_edit:
         select_attributes: Виберіть атрибути
         select: Виберіть
@@ -1038,8 +1028,6 @@ pim_enrich:
           label: Налаштування
         confirm:
           label: Підтвердження
-        launch_error:
-          label: Сталася помилка під час запуску операції масового редагуванния
         launched:
           label: Була розпочата масова дія "{{ operation }}". Ви будете повідомлені по її завершенню.
       operation:
@@ -1112,7 +1100,6 @@ pim_enrich:
           description: Наступні вимоги до атрибутів будуть застосовані до виділених сімейств
           label_count: "{1}Встановити обов'язковість/ необов'язковість атрибутів <span class=\"AknFullPage-title--highlight\">1 сімейства</span>|] 1, Inf [Встановити обов'язковість/ необов'язковість атрибутів <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} сімейств</span>"
 pim_enrich.error:
-  exception.title: Ой, ні! Сталася помилка {{ status_code }}...
   http:
     403: Заборонено. У вас немає доступу до цієї сторінки
 #Page titles

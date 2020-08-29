@@ -22,11 +22,6 @@ file.extensions.message: 'Filändelsen tillåts inte (tillåtna filändelser: %e
 "This type of value expects the use of comma (,) to separate decimals.": Det här värdet förväntar sig komma (,) för att separera decimaler.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Det här värdet förväntar sig arabiskt decimaltecken (٫) för att separera decimaler.
 "This type of value expects the use of the format {{ date_format }} for dates.": Det här värdet förväntar sig att datumformatet {{ date_format }} används för datum.
-"The category \"%category%\" has to be a root category.": Kategorin ”%category%” måste vara en rotkategori.
-"The attribute \"%attributeCode%\" does not exist.": Attributet ”%attributeCode%” existerar inte.
-"The attribute \"%attributeCode%\" is not a metric attribute.": Attributet ”%attributeCode%” är inte ett metrisk attribut.
-"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": Enheten ”%unitCode%” finns inte eller tillhör inte familjen standard metriska av attributet given ”%attributeCode%”.
-"The currency \"%currency%\" has to be activated.": Valutan ”%currency%” måste vara aktiverad.
 product_model.code.not_blank.message: Productmodellens identifierare får inte vara tom.
 product_model.code.unique.message: Samma kod är redan inställd på en annan produktmodell.
 product_model.family_variant.not_blank.message: Produktmodellens variantfamilj får inte vara tom.

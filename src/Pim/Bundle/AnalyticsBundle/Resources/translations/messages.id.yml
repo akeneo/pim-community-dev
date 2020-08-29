@@ -6,7 +6,6 @@ pim_analytics:
       version_update.title: Update versi
     form:
       version_update.label: Pemberitahuan versi terbaru
-      version_update.tooltip: Kirim permintaan ke server untuk mengambil informasi tentang peluncuran patch baru
   system_info:
     title: Sistem informasi
     download: TXT

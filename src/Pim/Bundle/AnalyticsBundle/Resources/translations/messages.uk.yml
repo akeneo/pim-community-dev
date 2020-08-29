@@ -6,7 +6,6 @@ pim_analytics:
       version_update.title: Оновлення версії
     form:
       version_update.label: Сповіщення про нові версії
-      version_update.tooltip: Надішліть запит на віддалений сервер для отримання інформації про випуск нових оновлень
   system_info:
     title: Інформація про систему
     download: TXT

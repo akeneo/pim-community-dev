@@ -74,7 +74,6 @@ flash:
   api_connection:
     removed: API connection successfully revoked
 error:
-  common: An error occurred
   creating:
     product: No attribute is configured as a product identifier or you don't have the rights to edit it.
   removing:
@@ -96,7 +95,6 @@ error:
     export_profile: Cannot save export profile. Please check that all filters are well filled
 alert:
   attribute_option:
-    error_occured_during_submission: An error occurred during the form submission on the server
     save_before_edit_other: Please register your modifications on other rows before editing this one
   session_storage:
     not_available: Your web browser does not seems compatible with sessionStorage. Please contact your administrator
@@ -194,8 +192,6 @@ pim_enrich:
         update_failed: The product could not be updated.
         field_not_ready: "The product cannot be saved right now. The following fields are not ready: {{ fields }}"
         already_in_upload: A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"
-      error:
-        upload: An error occurred during the file upload
       meta:
         created: Created
         created_by: By
@@ -330,7 +326,6 @@ pim_enrich:
       info:
         update_successful: Family successfully updated.
         create_successful: Channel successfully created.
-        update_failed: An error occurred during family update.
         cant_remove_attribute_as_label: Cannot remove attribute used as label
         cant_remove_attribute_as_image: Cannot remove attribute used as the main picture
         attribute_edit_permission_is_not_granted: You have no rights to edit family's attributes
@@ -453,11 +448,8 @@ pim_enrich:
     not_applicable: N/A
     entity:
       updated: There are unsaved changes.
-  error:
-    upload: An error occurred during the upload of the file
   alert:
     not_allowed: Forbidden. You are not allowed to access this page
-    error_occured: An error occurred during the loading of the page
   form:
     required: (required)
     product_model:
@@ -532,8 +524,6 @@ pim_enrich:
           keep_attributes: No attributes will be removed.
           change_family_to: Change the family to
           empty_selection: Choose a family
-      flash:
-        attribute_deletion_error: An error occurred during the attribute deletion
       mass_edit:
         select_attributes: Select attributes
         select: Select
@@ -1038,8 +1028,6 @@ pim_enrich:
           label: Configure
         confirm:
           label: Confirm
-        launch_error:
-          label: An error occurred during the launching of the mass edit operation
         launched:
           label: The bulk action "{{ operation }}" has been launched. You will be notified when it is done.
       operation:
@@ -1112,7 +1100,6 @@ pim_enrich:
           description: The following attributes requirements will be applied to the selected families
           label_count: "{1}Set attributes requirements of <span class=\"AknFullPage-title--highlight\">1 family</span>|] 1, Inf [Set attributes requirements of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} families</span>"
 pim_enrich.error:
-  exception.title: Oh snap! A {{ status_code }} error occurred...
   http:
     403: Forbidden. You are not allowed to access this page
 #Page titles

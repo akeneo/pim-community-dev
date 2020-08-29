@@ -22,11 +22,6 @@ file.extensions.message: 'Extensia fișierului nu este permisă (extensiile perm
 "This type of value expects the use of comma (,) to separate decimals.": Acest tip de valoare se aşteaptă la folosirea unei virgule (,) pentru a separa zecimalele.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Acest tip de valoare se aşteaptă la folosirea unui separator zecimal arabic (٫) pentru a separa zecimalele.
 "This type of value expects the use of the format {{ date_format }} for dates.": Acest tip de valoare se aşteaptă la folosirea formatului {{ date_format }} pentru date.
-"The category \"%category%\" has to be a root category.": Categoria %category% trebuie să fie o categorie arbore.
-"The attribute \"%attributeCode%\" does not exist.": Atributul %attributeCode% nu există.
-"The attribute \"%attributeCode%\" is not a metric attribute.": Atributul %attributeCode% nu este un atribut metric.
-"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": Unitatea %unitCode% nu există ori nu aparține familiei metrică implicită al atributului dat %attributeCode%.
-"The currency \"%currency%\" has to be activated.": Valuta %currency% trebuie să fie activată.
 product_model.code.not_blank.message: Codul modelului de produs nu trebuie să fie gol.
 product_model.code.unique.message: Acelaşi cod este deja setat pe un alt model de produs.
 product_model.family_variant.not_blank.message: Varianta de familie a modelului de produs trebuie să nu fie goală.

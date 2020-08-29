@@ -4,18 +4,11 @@ ARE: Ar
 ARPENT: Arpa
 CENTIARE: Hektar
 HECTARE: Hektar
-SQUARE_CENTIMETER: Santimetre kare
-SQUARE_DECIMETER: Desimetre kare
-SQUARE_DEKAMETER: Dekametre kare
 SQUARE_FOOT: Metrekare
 SQUARE_FURLONG: Kare milin sekizde biri
-SQUARE_HECTOMETER: Hektometre kare
 SQUARE_INCH: İnç kare
-SQUARE_KILOMETER: Kilometre kare
-SQUARE_METER: Metrekare
 SQUARE_MIL: Mil kare
 SQUARE_MILE: Milkare
-SQUARE_MILLIMETER: Milimetre kare
 SQUARE_YARD: Yarda kare
 Binary: İkili
 BIT: Bit
@@ -31,19 +24,12 @@ MEGAHERTZ: Megahertz
 TERAHERTZ: Terahertz
 HERTZ: Hertz
 Length: Uzunluk
-CENTIMETER: Santimetre
 CHAIN: Zincir
-DECIMETER: Desimetre
-DEKAMETER: Dekametre
 FEET: Fit
 FURLONG: Milin sekizde biri
 INCH: İnç
-HECTOMETER: Hektometre
-KILOMETER: Kilometre
-METER: Metre
 MIL: Mil
 MILE: Mil
-MILLIMETER: Milimetre
 YARD: Yard
 Power: Güç
 GIGAWATT: Gigawatt
@@ -54,10 +40,6 @@ WATT: Watt
 Speed: Hız
 FOOT_PER_SECOND: Saniye başı adım
 FOOT_PER_HOUR: Saat başı adım
-KILOMETER_PER_HOUR: Kilometre / saat
-METER_PER_HOUR: Metre / saat
-METER_PER_MINUTE: Metre / dakika
-METER_PER_SECOND: Metre / saniye
 MILE_PER_HOUR: Mil / saat
 YARD_PER_HOUR: Yard / saat
 Temperature: Sıcaklık
@@ -68,18 +50,10 @@ RANKINE: Rankine
 REAUMUR: Reaumur
 Volume: Hacim
 BARREL: Varil
-CENTILITER: Santilitre
-CUBIC_CENTIMETER: Santimetre küp
-CUBIC_DECIMETER: Desimetre küp
 CUBIC_FOOT: Kübik ayak
 CUBIC_INCH: İnç küp
-CUBIC_METER: Metreküp
-CUBIC_MILLIMETER: Milimetre küp
 CUBIC_YARD: Yarda küp
-DECILITER: Desilitre
 GALLON: Galon
-LITER: Litre
-MILLILITER: Mililitre
 OUNCE: Ons
 PINT: Pint
 Weight: Ağırlık

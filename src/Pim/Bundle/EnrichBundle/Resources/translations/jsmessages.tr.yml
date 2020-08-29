@@ -73,7 +73,6 @@ flash:
   api_connection:
     removed: API bağlantısı başarıyla iptal edildi
 error:
-  common: Bir hata oluştu
   creating:
     product: Ürün kimliği olarak hiçbir özellik yapılandırılmamış ya da bunu düzenleme haklarına sahip değilsiniz.
   removing:
@@ -95,7 +94,6 @@ error:
     export_profile: Profil dışa aktarılamıyor. Lütfen tüm filtrelerin iyi doldurulduğunu kontrol ediniz
 alert:
   attribute_option:
-    error_occured_during_submission: Sunucuda form gönderme sırasında bir hata oluştu
     save_before_edit_other: Lütfen bunu düzenlemeden önce farklı satırlardaki modifikasyonlarınızı giriniz
   session_storage:
     not_available: Web tarayıcınız Anlık Depolama ile uyumlu görünmüyor. Lütfen yöneticiniz ile iletişime geçiniz
@@ -192,8 +190,6 @@ pim_enrich:
         update_failed: Bu ürün güncellenemedi.
         field_not_ready: "Ürün şuan için kayıt edilemiyor. Bu alanlar hazır değil {{ fields }}"
         already_in_upload: Bu özellik için "{{ locale }}" yerel ve {{ scope }} kapsamı için zaten bir dosya yüklü
-      error:
-        upload: Dosya yüklenirken bir hata oluştu
       meta:
         created: Oluşturuldu
         created_by: Yapan
@@ -328,7 +324,6 @@ pim_enrich:
       info:
         update_successful: Aile başarıyla güncellendi.
         create_successful: Kanal başarıyla oluşturuldu.
-        update_failed: Sınıf güncellemesi sırasında bir hata oluştu.
         cant_remove_attribute_as_label: Etiket olarak kullanılan özellik kaldırılamıyor
         cant_remove_attribute_as_image: Ana resim olarak kullanılan özellik kaldırılamıyor
         attribute_edit_permission_is_not_granted: Ailenin özelliklerini düzenleme hakkınız yok
@@ -450,11 +445,8 @@ pim_enrich:
     not_applicable: N/A
     entity:
       updated: Kaydedilmemiş değişiklikler var.
-  error:
-    upload: Bir dosya yüklerken hata oluştu
   alert:
     not_allowed: Yasak. Bu sayfaya erişim izniniz yok
-    error_occured: Sayfanın yüklenme esnasında bir hata meydana geldi
   form:
     required: (Gerekli)
     product_model:
@@ -528,8 +520,6 @@ pim_enrich:
           keep_attributes: Hiç bir özellik silinmeyecek.
           change_family_to: Aileyi şuna değiştir
           empty_selection: Bir aile seç
-      flash:
-        attribute_deletion_error: Özelliğin silinmesi esnasında bir hata meydana geldi
       mass_edit:
         select_attributes: Özellikleri seç
         select: Seç
@@ -1030,8 +1020,6 @@ pim_enrich:
           label: Yapılandırma
         confirm:
           label: Doğrula
-        launch_error:
-          label: Toplu düzenleme işleminin başlatılması sırasında bir hata oluştu
         launched:
           label: Toplu eylem"{{operasyonu}} " başlatıldı. Bittiğinde size bildirilecektir.
       operation:
@@ -1093,7 +1081,6 @@ pim_enrich:
           description: Aşağıdaki özellik gereksinimleri, seçilen ailelere uygulanacaktır
           label_count: "{1}Set-başlık--vurgu\">1 Aile </span>|<span sınıf=\"AknFullPage gereksinimleri 1, Inf [Set ihtiyaç öznitelikleri <span sınıf=\"{öğelerin sayısı}} AknFullPage-başlık--vurgu\"> {aileler</span>öznitelikleri]"
 pim_enrich.error:
-  exception.title: Tüh! {{ status_code }} bir hata meydana geldi...
   http:
     403: Yasak. Bu sayfaya erişimine izin verilmedi
 #Page titles

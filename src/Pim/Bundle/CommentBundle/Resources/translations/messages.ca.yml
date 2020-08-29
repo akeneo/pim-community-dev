@@ -8,13 +8,10 @@ flash:
   comment:
     create:
       success: El seu comentari s'ha creat correctament.
-      error: S'ha produït un error durant la creació del seu comentari.
     delete:
       success: El seu comentari s'ha suprimit correctament.
-      error: S'ha produït un error durant la supressió del seu comentari.
     reply:
       success: La seva resposta s'ha creat amb èxit.
-      error: S'ha produït un error durant la creació de la seva resposta.
 comment:
   index:
     empty: No s'han trobar comentaris.

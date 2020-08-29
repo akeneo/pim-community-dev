@@ -74,7 +74,6 @@ flash:
   api_connection:
     removed: API-Verbindung erfolgreich widerrufen
 error:
-  common: Es ist ein Fehler aufgetreten
   creating:
     product: Es ist kein Attribut ist als Produktidentifikator konfiguriert oder Sie haben keine Rechte diesen zu bearbeiten.
   removing:
@@ -96,7 +95,6 @@ error:
     export_profile: Export-Profil kann nicht gespeichert werden. Bitte überprüfen Sie die Wert aller Filter
 alert:
   attribute_option:
-    error_occured_during_submission: Während der Formularübertragung auf dem Server ist ein Fehler aufgetreten
     save_before_edit_other: Bitte speichern Sie die Änderungen in den anderen Zeilen bevor Sie diese bearbeiten
   session_storage:
     not_available: Ihr Webbrowser scheint nicht kompatibel mit sessionStorage zu sein. Bitte kontaktieren Sie Ihren Administrator
@@ -194,8 +192,6 @@ pim_enrich:
         update_failed: Das Produkt konnte nicht aktualisiert werden.
         field_not_ready: "Das Produkt kann gerade nicht gespeichert. Folgende Felder sind nicht bereit: {{ fields }}"
         already_in_upload: Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen
-      error:
-        upload: Während des Hochladens der Datei ist ein Fehler aufgetreten
       meta:
         created: Erstellt
         created_by: durch
@@ -330,7 +326,6 @@ pim_enrich:
       info:
         update_successful: Produktfamilie erfolgreich aktualisiert.
         create_successful: Ausgabekanal erfolgreich angelegt.
-        update_failed: Beim Aktualisieren der Produktfamilie ist ein Fehler aufgetreten.
         cant_remove_attribute_as_label: Das Attribut kann nicht entfernt werden, da es als Label verwendet wird
         cant_remove_attribute_as_image: Attribute kann nicht entfernt werden, da es als Hauptbild verwendet wird
         attribute_edit_permission_is_not_granted: Sie haben keine Berechtigungen um die Attribute der Produktfamilie zu bearbeiten
@@ -453,11 +448,8 @@ pim_enrich:
     not_applicable: N/A
     entity:
       updated: Es gibt ungesicherte Änderungen.
-  error:
-    upload: Während des Hochladens der Datei ist ein Fehler aufgetreten
   alert:
     not_allowed: Sie haben keine Berechtigung, diese Seite anzuzeigen
-    error_occured: Während des Ladens der Seite ist ein Fehler aufgetreten
   form:
     required: (erforderlich)
     product_model:
@@ -532,8 +524,6 @@ pim_enrich:
           keep_attributes: Es werden keine Attribute entfernt.
           change_family_to: Produktfamilie ändern zu
           empty_selection: Wählen Sie eine Produktfamilie
-      flash:
-        attribute_deletion_error: Während des Löschens des Attributs ist ein Fehler aufgetreten
       mass_edit:
         select_attributes: Attribute auswählen
         select: Auswählen
@@ -1038,8 +1028,6 @@ pim_enrich:
           label: Konfigurieren
         confirm:
           label: Bestätigen
-        launch_error:
-          label: Bei der Massenbearbeitung ist ein Fehler aufgetreten
         launched:
           label: Die Massenbearbeitung "{{ operation }}" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
       operation:
@@ -1112,7 +1100,6 @@ pim_enrich:
           description: Die folgenden benötigten Attribute werden den ausgewählten Produktfamilien zugeordnet
           label_count: "{1}Setze Attribut-Bedingungen für <span class=\"AknFullPage-title--highlight\">1 Familie</span>|] 1, Inf [Setze Attribut-Bedingungen für <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Familie</span>"
 pim_enrich.error:
-  exception.title: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...
   http:
     403: Sie haben keine Berechtigung, diese Seite anzuzeigen
 #Page titles

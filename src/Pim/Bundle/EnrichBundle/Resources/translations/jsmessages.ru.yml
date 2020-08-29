@@ -74,7 +74,6 @@ flash:
   api_connection:
     removed: Соединение API успешно аннулировано
 error:
-  common: Произошла ошибка
   creating:
     product: У продукта не указан атрибут в качестве идентификатора или у вас нет прав для его изменения.
   removing:
@@ -96,7 +95,6 @@ error:
     export_profile: Не удалось сохранить профиль экспорта. Пожалуйста, проверьте, что все фильтры хорошо заполнены
 alert:
   attribute_option:
-    error_occured_during_submission: Во время отправки формы на сервер произошла ошибка
     save_before_edit_other: Пожалуйста зафиксируйте ваши изменения на других строках перед редактированием этой
   session_storage:
     not_available: Ваш веб-браузер кажется не совместим с sessionStorage. Обратитесь к администратору
@@ -194,8 +192,6 @@ pim_enrich:
         update_failed: Не удалось обновить продукт.
         field_not_ready: "Товар не может быть сохранён в данный момент. Следующие поля не готовы: {{ fields }}"
         already_in_upload: Файл уже находится в загрузке для этого атрибута на «{{ locale }}» языке и в канале «{{ scope }}»
-      error:
-        upload: Произошла ошибка при загрузке файла
       meta:
         created: Создано
         created_by: Создано
@@ -330,7 +326,6 @@ pim_enrich:
       info:
         update_successful: Семейство успешно обновлено.
         create_successful: Канал успешно создан.
-        update_failed: Произошла ошибка во время обновления семейства.
         cant_remove_attribute_as_label: Невозможно удалить атрибут используемый в качестве метки
         cant_remove_attribute_as_image: Невозможно удалить атрибут используемый в качестве основного изображения
         attribute_edit_permission_is_not_granted: У вас нет прав для редактирования семейства атрибутов
@@ -453,11 +448,8 @@ pim_enrich:
     not_applicable: Н/Д
     entity:
       updated: Имеются несохраненные изменения.
-  error:
-    upload: Произошла ошибка во время загрузки файла
   alert:
     not_allowed: Запрещено. У вас нет доступа к этой странице
-    error_occured: Произошла ошибка во время загрузки страницы
   form:
     required: (требуется)
     product_model:
@@ -532,8 +524,6 @@ pim_enrich:
           keep_attributes: Атрибуты не будут удалены.
           change_family_to: Изменить семейство на
           empty_selection: Выберите семейство
-      flash:
-        attribute_deletion_error: Произошла ошибка при удалении атрибута
       mass_edit:
         select_attributes: Выберите атрибуты
         select: Выберите
@@ -1031,8 +1021,6 @@ pim_enrich:
           label: Настроить
         confirm:
           label: Подтверждение
-        launch_error:
-          label: Произошла ошибка при запуске операции массового редактирования
         launched:
           label: Началось массовое действие "{{ operation }}". Вы будете уведомлены по завершении.
       operation:
@@ -1105,7 +1093,6 @@ pim_enrich:
           description: Данные по обязательности/ необязательности атрибутов будут применены к выбранным семействам
           label_count: "{1}Установить обязательность атрибутов <span class=\"AknFullPage-title--highlight\">1 для семейства</span>|] 1, Inf [Установить обязательность атрибутов <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} для семейств</span>"
 pim_enrich.error:
-  exception.title: Ах, нет! Произошла ошибка {{ status_code }}...
   http:
     403: Запрещено. У вас нет доступа к этой странице
 #Page titles

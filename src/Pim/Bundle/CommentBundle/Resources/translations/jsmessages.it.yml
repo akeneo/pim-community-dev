@@ -9,13 +9,10 @@ flash:
   comment:
     create:
       success: Commento creato con successo.
-      error: Si è verificato un errore durante la creazione del tuo commento.
     delete:
       success: Commento eliminato con successo.
-      error: Si è verificato un errore durante la creazione del tuo commento.
     reply:
       success: Risposta creata con successo.
-      error: Si è verificato un errore durante la creazione della risposta.
 comment:
   index:
     empty: Non ci sono ancora commenti

@@ -6,7 +6,6 @@ pim_analytics:
       version_update.title: Aggiornamenti versione
     form:
       version_update.label: Notifiche di nuove versioni
-      version_update.tooltip: Invia la richiesta a un server remoto per recuperare informazioni sul rilascio di nuove patches
   system_info:
     title: Informazioni di sistema
     download: TXT

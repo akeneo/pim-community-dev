@@ -1,31 +1,33 @@
-"oro_datagrid.no_data_hint %entityHint%": 没有 %entityHint% 存在。
-oro_datagrid.not_found_hint: 抱歉，找不到与你的搜索相符的结果
-oro_datagrid.label_add_filter: 管理过滤器
-oro_datagrid.label_loading_mask: 正在加载
+"oro_datagrid.no_data_hint %entityHint%": '%entityHint% 不存在。'
+oro_datagrid.not_found_hint: 抱歉，找不到与搜索相符的结果。
+oro_datagrid.label_add_filter: 管理筛选器
+oro_datagrid.label_loading_mask: 正在加载. . .
 oro.grid.mass_action.selected_rows: 选定的行
-oro.grid.mass_action.confirm_title: 批处理确认
-oro.grid.mass_action.confirm_content: 您是否确认要这样做？
+oro.grid.mass_action.confirm_title: 批处理操作确认
+oro.grid.mass_action.confirm_content: 是否确认要这样做？
 oro.grid.mass_action.confirm_ok: 是，继续
-oro.grid.mass_action.error_title: 批处理错误
-oro.grid.mass_action.error_content: 不能执行批处理
+oro.grid.mass_action.error_title: 批处理操作错误
+oro.grid.mass_action.error_content: 无法执行批处理操作
 oro.grid.mass_action.delete.label: 删除
 oro.grid.mass_action.delete.confirm_title: 批量删除确认
-oro.grid.mass_action.delete.confirm_content: 您确定要删除所选的项目吗?
+oro.grid.mass_action.delete.confirm_content: 确定要删除选定的项目吗?
+oro.grid.mass_action.delete.item_limit: 不能批量删除超过 %limit% 个产品 (选定 %count% 个)
 oro.grid.datagrid.page_size.all: 所有
-oro.grid.mass_action.delete.success_message: "{0} 没有实体被删除 |{1} 一个实体被删除 |]1，Inf [%count% 实体被删除"
+oro.grid.mass_action.delete.success_message: "{0} 没有移除任何实体 |{1} 移除了一个实体 |]1，Inf [移除了 %count% 个实体"
 #Datagrid views constraints
 datagrid_view:
   columns:
-    min_message: 您必须选择至少一个要显示的 datagrid 列
+    min_message: 必须选择至少一个要显示的数据网格列
   label:
-    unique_message: 标签名称必须是唯一的
-    not_blank_message: 标题不得为空。
+    unique_message: 标签必须是唯一的
+    not_blank_message: 标签不得为空。
 #View selector flash messages
 grid.view_selector.flash:
-  created: 数据视图已创建
-  removed: 数据视图已删除
-  not_removable: 你没有权限删除此视图
+  created: 数据网格视图已成功创建
+  removed: 数据网格视图已成功移除
+  not_removable: 您无权移除此视图
 quick_export: 快速导出
 import: 导入
 export: 导出
 mass_edit: 批量编辑
+mass_delete: 批量删除

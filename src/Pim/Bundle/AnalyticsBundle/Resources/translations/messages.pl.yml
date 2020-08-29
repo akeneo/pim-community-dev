@@ -6,7 +6,6 @@ pim_analytics:
       version_update.title: Aktualizacje wersji
     form:
       version_update.label: Powiadomienia o nowych wersjach
-      version_update.tooltip: Sprawdź czy istnieją nowe aktualizacje
   system_info:
     title: Informacje o systemie
     download: TXT

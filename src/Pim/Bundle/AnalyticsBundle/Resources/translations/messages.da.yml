@@ -6,7 +6,6 @@ pim_analytics:
       version_update.title: Version opdateringer
     form:
       version_update.label: Notifikation om nye versioner
-      version_update.tooltip: Send anmodning til en fjernserver til at hente oplysninger om frigivelse af nye rettelser
   system_info:
     title: Systemoplysninger
     download: TXT

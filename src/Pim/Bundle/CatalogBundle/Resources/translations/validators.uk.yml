@@ -22,11 +22,6 @@ file.extensions.message: 'Розширення файлу є неприпуст�
 "This type of value expects the use of comma (,) to separate decimals.": цей тип значення очікує на використання коми для відокремлення десяткових чисел.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Цей тип значення передбачає використання арабського десяткового роздільника (٫) для розділення десяткових знаків.
 "This type of value expects the use of the format {{ date_format }} for dates.": цей тип значення очікує використання {{ date_format }} для дат.
-"The category \"%category%\" has to be a root category.": Категорія "%category%" має бути кореневою категорією.
-"The attribute \"%attributeCode%\" does not exist.": Атрибут "%attributeCode%" не існує.
-"The attribute \"%attributeCode%\" is not a metric attribute.": Атрибут "%attributeCode%" не є метричним атрибутом.
-"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": Одиниця "%unitCode%" не існує або не належить заданій метричній системі атрибуту "%attributeCode%".
-"The currency \"%currency%\" has to be activated.": Валюта "%currency%" має бути активована.
 product_model.code.not_blank.message: Код моделі продукту не має бути порожнім.
 product_model.code.unique.message: Цей ідентифікатор вже встановлений на іншому продукті.
 product_model.family_variant.not_blank.message: Варіант сімейства продукту не має бути порожнім.

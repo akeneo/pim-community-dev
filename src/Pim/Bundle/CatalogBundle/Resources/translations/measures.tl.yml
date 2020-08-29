@@ -4,18 +4,11 @@ ARE: Arya
 ARPENT: Arpent
 CENTIARE: Sentiarya
 HECTARE: Hektarya
-SQUARE_CENTIMETER: Sentimetro Kwadrado
-SQUARE_DECIMETER: Desimetro kwadrado
-SQUARE_DEKAMETER: Dekametro kwadrado
 SQUARE_FOOT: Talampakan kwadrado
 SQUARE_FURLONG: Furlong kwadrado
-SQUARE_HECTOMETER: Hektometro kwadrado
 SQUARE_INCH: Pulgada kwadrado
-SQUARE_KILOMETER: Kilometro kwadrado
-SQUARE_METER: Metro kwadrado
 SQUARE_MIL: Mil kwadrado
 SQUARE_MILE: Milya kwadrado
-SQUARE_MILLIMETER: Milimetro kwadrado
 SQUARE_YARD: Yarda kwadrado
 Binary: Binary
 BIT: Bit
@@ -31,19 +24,12 @@ MEGAHERTZ: Megahertz
 TERAHERTZ: Terahertz
 HERTZ: Hertz
 Length: Haba
-CENTIMETER: Sentimetro
 CHAIN: Kadena
-DECIMETER: Desimetro
-DEKAMETER: Dekametro
 FEET: Piye
 FURLONG: Furlong
 INCH: Pulgada
-HECTOMETER: Hektometro
-KILOMETER: Torr
-METER: Metro
 MIL: Mil
 MILE: Milya
-MILLIMETER: Milimetro
 YARD: Yarda
 Power: Kapangyarihan
 GIGAWATT: Gigawatt
@@ -54,10 +40,6 @@ WATT: Watt
 Speed: Bilis
 FOOT_PER_SECOND: Talampakan kada segundo
 FOOT_PER_HOUR: Talampakan kada oras
-KILOMETER_PER_HOUR: Kilometro kada oras
-METER_PER_HOUR: Metro kada oras
-METER_PER_MINUTE: Metro kada minuto
-METER_PER_SECOND: Metro kada segundo
 MILE_PER_HOUR: Milya kada oras
 YARD_PER_HOUR: Yarda kada oras
 Temperature: Temperatura
@@ -68,18 +50,10 @@ RANKINE: Rankine
 REAUMUR: Reaumur
 Volume: Volume
 BARREL: Barile
-CENTILITER: Sentilitro
-CUBIC_CENTIMETER: Sentimetro kubiko
-CUBIC_DECIMETER: Desimetro kubiko
 CUBIC_FOOT: Talampakan kubiko
 CUBIC_INCH: Pulgada kubiko
-CUBIC_METER: Metro kubiko
-CUBIC_MILLIMETER: Milimetro kubiko
 CUBIC_YARD: Yarda kubiko
-DECILITER: Desilitro
 GALLON: Galon
-LITER: Litro
-MILLILITER: Mililitro
 OUNCE: Onsa
 PINT: Pinta
 Weight: Timbang

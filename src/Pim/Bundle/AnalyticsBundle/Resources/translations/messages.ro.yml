@@ -6,7 +6,6 @@ pim_analytics:
       version_update.title: Actualizări versiune
     form:
       version_update.label: Noi versiuni notificări
-      version_update.tooltip: Trimite cerere pentru un server îndepărtate pentru a prelua informaţii despre eliberarea de noi patchs
   system_info:
     title: Informații despre sistem
     download: TXT

@@ -4,18 +4,11 @@ ARE: Ar
 ARPENT: Pogon
 CENTIARE: Centiar
 HECTARE: Hectar
-SQUARE_CENTIMETER: Centimetru pătrat
-SQUARE_DECIMETER: Decimetru pătrat
-SQUARE_DEKAMETER: Decametru pătrat
 SQUARE_FOOT: Picior pătrat
 SQUARE_FURLONG: Furlong pătrat
-SQUARE_HECTOMETER: Hectometru pătrat
 SQUARE_INCH: Inch pătrat
-SQUARE_KILOMETER: Kilometru pătrat
-SQUARE_METER: Metru pătrat
 SQUARE_MIL: Mil pătrat
 SQUARE_MILE: Milă pătrată
-SQUARE_MILLIMETER: Milimetru pătrat
 SQUARE_YARD: Yard pătrat
 Binary: Binar
 BIT: Bit
@@ -33,19 +26,12 @@ MEGAHERTZ: Megahertzi
 TERAHERTZ: Terahertzi
 HERTZ: Hertzi
 Length: Lungime
-CENTIMETER: Centimetru
 CHAIN: Lanț
-DECIMETER: Decimetru
-DEKAMETER: Decametru
 FEET: Picioare
 FURLONG: Furlong
 INCH: Inch
-HECTOMETER: Hectometru
-KILOMETER: Kilometru
-METER: Metru
 MIL: Mil
 MILE: Milă
-MILLIMETER: Millimetru
 YARD: Yard
 Power: Putere
 GIGAWATT: Gigawatt
@@ -101,10 +87,6 @@ YEAR: An
 Speed: Viteză
 FOOT_PER_SECOND: Picioare pe secundă
 FOOT_PER_HOUR: Picioare pe oră
-KILOMETER_PER_HOUR: Kilometri pe oră
-METER_PER_HOUR: Metri pe oră
-METER_PER_MINUTE: Metri pe minut
-METER_PER_SECOND: Metri pe secundă
 MILE_PER_HOUR: Mile pe oră
 YARD_PER_HOUR: Yard pe oră
 Temperature: Temperatură
@@ -115,18 +97,10 @@ RANKINE: Rankine
 REAUMUR: Réaumur
 Volume: Volum
 BARREL: Baril
-CENTILITER: Centilitru
-CUBIC_CENTIMETER: Centimetru cub
-CUBIC_DECIMETER: Decimetru cub
 CUBIC_FOOT: Picior cub
 CUBIC_INCH: Inch cub
-CUBIC_METER: Metru cub
-CUBIC_MILLIMETER: Millimetru cub
 CUBIC_YARD: Yard cub
-DECILITER: Decilitru
 GALLON: Galon
-LITER: Litru
-MILLILITER: Mililitru
 OUNCE: Uncie
 PINT: Pint
 Weight: Greutate
@@ -143,12 +117,9 @@ TON: Tonă
 Pressure: Presiune
 BAR: Bar
 PASCAL: Pascal
-HECTOPASCAL: hectopascali
-MILLIBAR: Milibar
 ATM: Atmosferă
 PSI: Libre pe inci pătrat
 TORR: Torrul
-MMHG: Milimetri de mercur
 Energy: Energie
 KILOCALORIE: Kilocalorii
 KILOJOULE: Kilojoule

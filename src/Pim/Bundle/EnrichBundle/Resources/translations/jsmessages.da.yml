@@ -74,7 +74,6 @@ flash:
   api_connection:
     removed: API forbindelse tilbagekaldt
 error:
-  common: Der er opstået en fejl
   creating:
     product: Ingen attribut er konfigureret som et produkt-id, eller du har ikke rettigheder til at redigere den.
   removing:
@@ -96,7 +95,6 @@ error:
     export_profile: Kan ikke gemme eksportprofil. Kontroller, at alle filtre er udfyldt korrekt
 alert:
   attribute_option:
-    error_occured_during_submission: Der opstod en fejl under formular modtagelsen på serveren
     save_before_edit_other: Registrer dine ændringer på andre rækker før du redigerer denne ene
   session_storage:
     not_available: Din webbrowser er ikke kompatibel med sessionStorage. Kontakt din administrator
@@ -194,8 +192,6 @@ pim_enrich:
         update_failed: Produktet kunne ikke opdateres.
         field_not_ready: "Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
         already_in_upload: Der findes allerede en fil indlæst for denne attribut for denne landestandard "{{ locale }}" og "{{ scope }}"
-      error:
-        upload: Der opstod en fejl under fil upload
       meta:
         created: Oprettet
         created_by: Af
@@ -330,7 +326,6 @@ pim_enrich:
       info:
         update_successful: Familien opdateret
         create_successful: Kanal oprettet.
-        update_failed: Der opstod en fejl under opdatering af familie.
         cant_remove_attribute_as_label: Kan ikke fjerne en attribut der bruges som etiket
         cant_remove_attribute_as_image: Kan ikke fjerne attributten anvendes som det primære billede
         attribute_edit_permission_is_not_granted: Du har ingen rettigheder til at redigere denne families attributter
@@ -453,11 +448,8 @@ pim_enrich:
     not_applicable: Ikke tilgængelig
     entity:
       updated: Der er ikke-gemte ændringer.
-  error:
-    upload: Der opstod en fejl under upload af filen
   alert:
     not_allowed: Du har ikke adgang til denne side
-    error_occured: Der opstod en fejl under indlæsning af siden
   form:
     required: (Påkrævet)
     product_model:
@@ -532,8 +524,6 @@ pim_enrich:
           keep_attributes: Ingen attributter vil blive fjernet.
           change_family_to: Ændre familien til
           empty_selection: Vælg familie
-      flash:
-        attribute_deletion_error: Der opstod en fejl under attribut sletning
       mass_edit:
         select_attributes: Vælg attributter
         select: Vælg
@@ -1038,8 +1028,6 @@ pim_enrich:
           label: Konfigurér
         confirm:
           label: Bekræft
-        launch_error:
-          label: Der opstod en fejl under opstart af handlingen masse Rediger
         launched:
           label: Bulk-handlingen "{{ operation }}" er blevet igangsat. Du får besked, når den er afsluttet.
       operation:
@@ -1112,7 +1100,6 @@ pim_enrich:
           description: Følgende attribut krav vil blive anvendt til de valgte familier
           label_count: "Sæt attribut kravene for  <span class=\"AknFullPage-title--highlight\">1 familie</span>|] 1, Inf [Sæt attribut kravene for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} familier</span>"
 pim_enrich.error:
-  exception.title: Oh snap! Der opstod en {{ status_code }}...
   http:
     403: Forbudt. Du har ikke adgang til denne side
 #Page titles

@@ -6,7 +6,6 @@ pim_analytics:
       version_update.title: Ažuriranja inačice
     form:
       version_update.label: Obavijesti o novoj inačici
-      version_update.tooltip: Pošaljite upit na udaljeni poslužitelj za dohvaćanje informacija o objavljenim novim zakrpama
   system_info:
     title: Informacije o sustavu
     download: TXT

@@ -22,11 +22,6 @@ file.extensions.message: 'Dosya uzantısına izin verilmiyor (izin verilen uzant
 "This type of value expects the use of comma (,) to separate decimals.": Bu tip bir değer, ondalık sayıları ayırırken virgül (,) kullanımını ister.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Bu tip bir değer, ondalık sayıları ayırırken Arapça ondalık ayracı (٫) kullanımını ister.
 "This type of value expects the use of the format {{ date_format }} for dates.": Bu tip bir değer, tarihler için {{ date_format }} biçiminde kullanım ister.
-"The category \"%category%\" has to be a root category.": '%category% kategorisi ana kategori olmalıdır.'
-"The attribute \"%attributeCode%\" does not exist.": '%attributeCode% özelliği yok.'
-"The attribute \"%attributeCode%\" is not a metric attribute.": '%attributeCode% özelliği metrik özelli değil.'
-"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": '%unitCode% birimi yok ya da belirtilen %attributeCode% özelliği varsayılan metrik türe ait değil.'
-"The currency \"%currency%\" has to be activated.": '%currency% para birimi aktifleştirilmelidir.'
 product_model.code.not_blank.message: Ürün model kodu boş olmamalıdır.
 product_model.code.unique.message: Aynı kod başka bir ürün modeli için önceden ayarlanmış.
 product_model.family_variant.not_blank.message: Ürün modeli tür değişkeni boş olmamalı.

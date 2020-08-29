@@ -67,7 +67,6 @@ flash:
   api_connection:
     removed: API-anslutningen har återkallas
 error:
-  common: Ett fel uppstod
   creating:
     product: Inget attribut är konfigurerat som produktidentifierare eller så har du inte rättigheter att redigera det.
   removing:
@@ -89,7 +88,6 @@ error:
     export_profile: Kan inte spara exportprofil. Vänligen kontrollera att alla filter är ifyllda
 alert:
   attribute_option:
-    error_occured_during_submission: Ett fel uppstod på servern när formuläret skulle skickas
     save_before_edit_other: Vänligen registrera dina ändringar på andra rader innan du redigerar denna
   session_storage:
     not_available: Din webbläsare inte verkar kompatibel med 'sessionStorage'. Vänligen kontakta administratören
@@ -181,8 +179,6 @@ pim_enrich:
         update_failed: Produkten kunde inte uppdateras.
         field_not_ready: "Produkten kan inte sparas just nu. Följande fält inte är redo: {{ fields }}"
         already_in_upload: En fil är har redan laddats upp för det här attributet i språkvariant "{{ locale }}" och omfattning "{{ scope }}"
-      error:
-        upload: Ett fel inträffade under filuppladdning
       meta:
         created: Skapat
         created_by: Av
@@ -298,7 +294,6 @@ pim_enrich:
       info:
         update_successful: Familjen har uppdaterats.
         create_successful: Kanalen har skapats.
-        update_failed: Ett fel inträffade under ändring av familj.
         cant_remove_attribute_as_label: Kan inte ta bort ett attribut som används som etikett
         cant_remove_attribute_as_image: Kan inte ta bort attributet används som huvudbild
         attribute_edit_permission_is_not_granted: Du saknar rättigheter för att ändra på en familjs attribut
@@ -387,10 +382,6 @@ pim_enrich:
     not_applicable: '-'
     entity:
       updated: Det finns ändringar som inte sparats.
-  error:
-    upload: Ett fel inträffade när filen skulle laddas upp
-  alert:
-    error_occured: Ett fel inträffade när sidan hämtades
   form:
     required: (obligatorisk)
     product_model:
@@ -447,8 +438,6 @@ pim_enrich:
           keep_attributes: Inga attribut kommer att tas bort.
           change_family_to: Ändra familjen till
           empty_selection: Välj en familj
-      flash:
-        attribute_deletion_error: Ett fel uppstod när attributet raderades
       mass_edit:
         select_attributes: Välj attribut
         select: Välj
@@ -936,7 +925,6 @@ pim_enrich:
         confirm:
           label: Bekräfta
 pim_enrich.error:
-  exception.title: Oh snap! Ett {{ status_code }} fel uppstod...
   http:
     403: Forbidden. You are not allowed to access this page
 #Page titles

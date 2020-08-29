@@ -8,13 +8,10 @@ flash:
   comment:
     create:
       success: Twój komentarz został utworzony pomyślnie.
-      error: Wystąpił błąd podczas tworzenia twojego komentarza.
     delete:
       success: Twój komentarz został pomyślnie usunięty.
-      error: Wystąpił błąd podczas usuwania twojego komentarza.
     reply:
       success: Twoja odpowiedź została utworzona pomyślnie.
-      error: Wystąpił błąd podczas tworzenia twojej odpowiedzi.
 comment:
   index:
     empty: Nie znaleziono komentarza.

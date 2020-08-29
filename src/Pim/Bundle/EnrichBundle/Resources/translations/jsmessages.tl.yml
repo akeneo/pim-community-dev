@@ -73,7 +73,6 @@ flash:
   api_connection:
     removed: Matagumpay na naiurong ang koneksyon ng API
 error:
-  common: Nagkaroon ng kamalian
   creating:
     product: Walang katangian ang na i-configure bilang isang tagakilala ng produkto o wala kang karapatan na i-edit ito.
   removing:
@@ -95,7 +94,6 @@ error:
     export_profile: Hindi maaaring mai-save ang export na profile. Pakiusap suriin ang lahat ng mga fikters ay napupuno ng mahusay
 alert:
   attribute_option:
-    error_occured_during_submission: May pagkakamaling naganap habang pagsusumite ng submisyon form sa server
     save_before_edit_other: Mangyaring e-rehistro ang mga modipikasyon sa ibang hanay bago mag-edit ng isang ito
   session_storage:
     not_available: Ang iyong web browser ay hindi tila tumutugma sa sesyonStorage. Pakiusap kontakin ang iyong administrador
@@ -192,8 +190,6 @@ pim_enrich:
         update_failed: Ang produkto ay hindi maaaring mai-update.
         field_not_ready: "Ang produkto ay hindi mai-save sa ngayon. Ang mga sumusunod na mga field ay hindi pa handa: {{ fields }}"
         already_in_upload: Ang isang file ay handa ng i-upload para sa attribute na ito sa lokal "{{ locale }}" at skop "{{ scope }}"
-      error:
-        upload: May naganap na pagkakamali habang ina-upload ang file
       meta:
         created: Nilikha
         created_by: Kay
@@ -328,7 +324,6 @@ pim_enrich:
       info:
         update_successful: Matagumpay na na-update ang pamilya.
         create_successful: Matagumpay na nagawa ang tsanel.
-        update_failed: Isang error ang naganap habang ina-update ang pamilya.
         cant_remove_attribute_as_label: Hindi maaaring tanggaling ang katangian na ginamit bilang label
         cant_remove_attribute_as_image: Hindi matanggal ang katangian na ginagamit bilang pangunahing larawan
         attribute_edit_permission_is_not_granted: Wala kang mga karapatan na i-edit ang mga katangian ng pamilya
@@ -450,11 +445,8 @@ pim_enrich:
     not_applicable: N/A
     entity:
       updated: May mga wala na save sa mga binabago.
-  error:
-    upload: May pagkakamaling naganap sa panahon ng pag upload ng file
   alert:
     not_allowed: Ipinagbabawal. Ikaw ay hindi pinapayagan sa pag-access sa pahinang ito
-    error_occured: May pagkakamaling naganap habang naglo-load ang pahina
   form:
     required: (kailangan)
     product_model:
@@ -528,8 +520,6 @@ pim_enrich:
           keep_attributes: Walang mga katangian ang tatanggalin.
           change_family_to: Baguhin ang pamilya sa
           empty_selection: Pumili ng pamilya
-      flash:
-        attribute_deletion_error: May pagkakamaling naganap habang pagtanggal ng katangian
       mass_edit:
         select_attributes: Pumili ng mga katangian
         select: Pumili
@@ -1030,8 +1020,6 @@ pim_enrich:
           label: Tukuyin
         confirm:
           label: Kumpirmahin
-        launch_error:
-          label: Nagkaroon ng pagkakamali habang inilulunsad ang maramihan pag-edit sa operasyon
         launched:
           label: Ang malaking aksyon na "{{ operation }}" ay inilunsad. Maaabisuhan ka kapag natapos na ito.
       operation:
@@ -1093,7 +1081,6 @@ pim_enrich:
           description: Ang mga sumusunod na mga kinakailangan na katangian ay ilalapat sa mga napiling pamilya
           label_count: "{1}Ilagay ang kailangang mga attributes ng <span class=\"AknFullPage-title--highlight\">1 pamilya</span>|] 1, Inf [Ilagay ang kailangang mga attributes ng <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} pamilya</span>"
 pim_enrich.error:
-  exception.title: "Naku! Nagkaroon ng {{ status_code }} na error...\n"
   http:
     403: Ipinagbabawal. Hindi mo pwedeng pasukin ang pahinang ito
 #Page titles

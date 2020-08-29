@@ -22,11 +22,6 @@ file.extensions.message: 'De file extension no dey (allowed. %extensions%).'
 "This type of value expects the use of comma (,) to separate decimals.": Dis kind value need make you use comma (,) take separate decimals them.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Dis kind value nid make you use arabic decimal separator(,) take separate decimals.
 "This type of value expects the use of the format {{ date_format }} for dates.": Dis kind value nid make you use de format wey be {{ date_format}} for dates.
-"The category \"%category%\" has to be a root category.": De category nid be root category.
-"The attribute \"%attributeCode%\" does not exist.": De attribute wey be "%attributeCode%" no exist.
-"The attribute \"%attributeCode%\" is not a metric attribute.": De attribute "%attributeCode%" no be metric attribute.
-"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": De unit "%unitCode%" no dey exist and e no belong to de default metric family untop dat attribute before %attributeCode%".
-"The currency \"%currency%\" has to be activated.": De currency nid dey activated.
 product_model.code.not_blank.message: De product model code no supose de dey empty.
 product_model.code.unique.message: Dat kind code don dey set already for anoda product.
 product_model.family_variant.not_blank.message: De product model family na must say e suppose dey empty.

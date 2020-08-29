@@ -74,7 +74,6 @@ flash:
   api_connection:
     removed: API koppeling met succes ingetrokken
 error:
-  common: Er is een fout opgetreden
   creating:
     product: Er is geen attribuut geconfigureerd als product-id of je hebt de nodige bewerkingsrechten niet.
   removing:
@@ -96,7 +95,6 @@ error:
     export_profile: Kan exportprofiel niet opslaan. Gelieve na te kijken of alle filters zijn ingevuld
 alert:
   attribute_option:
-    error_occured_during_submission: Er is een fout op de server opgetreden bij het versturen van het formulier
     save_before_edit_other: Registreer uw wijzigingen op de andere tijden voordat u deze rij wizigd
   session_storage:
     not_available: Jouw webbrowser lijkt niet compatibel te zijn met sessionStorage. Gelieve uw beheerder te contacteren
@@ -194,8 +192,6 @@ pim_enrich:
         update_failed: Het product kon niet geüpdatet worden.
         field_not_ready: "Het product kan nu niet worden opgeslagen. De volgende velden zijn niet klaar: {{ fields }}"
         already_in_upload: Voor dit attribuut is al een bestand geüpload in de locale "{{ locale }}" en scope "{{ scope }}"
-      error:
-        upload: Er deed zich een fout voor tijdens het uploaden van dit bestand
       meta:
         created: Aangemaakt
         created_by: Door
@@ -330,7 +326,6 @@ pim_enrich:
       info:
         update_successful: Familie succesvol bijgewerkt.
         create_successful: Kanaal succesvol aangemaakt.
-        update_failed: Er is een fout opgetreden tijdens het bijwerken van de familie.
         cant_remove_attribute_as_label: Het attribuut dat wordt gebruikt als label kan niet worden verwijderd
         cant_remove_attribute_as_image: Kan het attribuut dat als hoof afbeelding gebruikt wordt, niet verwijderen
         attribute_edit_permission_is_not_granted: Je hebt geen rechten om attributen van een familie bij te werken
@@ -453,11 +448,8 @@ pim_enrich:
     not_applicable: Niet beschikbaar
     entity:
       updated: Er zijn niet-opgeslagen wijzigingen.
-  error:
-    upload: Er deed zich een fout voor tijdens het upload van het bestand
   alert:
     not_allowed: U heeft geen toegang tot deze pagina
-    error_occured: Er deed zich een four voor tijdens het laden van de pagina
   form:
     required: (vereist)
     product_model:
@@ -532,8 +524,6 @@ pim_enrich:
           keep_attributes: Er zullen geen attributen worden verwijderd.
           change_family_to: Wijzig de familie naar
           empty_selection: Kies een familie
-      flash:
-        attribute_deletion_error: Er deed zich een fout voor tijdens het verwijderen van het attribuut
       mass_edit:
         select_attributes: Selecteer attributen
         select: Selecteer
@@ -1038,8 +1028,6 @@ pim_enrich:
           label: Configureer
         confirm:
           label: Bevestig
-        launch_error:
-          label: Er is een fout opgetreden tijdens het starten van de groepsgewijze wijzigingsactie
         launched:
           label: De groepsgewijze actie "{{ operation }}" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
       operation:
@@ -1112,7 +1100,6 @@ pim_enrich:
           description: De volgende attribuutvereisten zullen worden toegepast op de geselecteerde families
           label_count: "{1}stelt attributen vereisten in van <span class=\"AknFullPage-title--highlight\">familie</span>|] 1, Inf [Stel attributen vereisten in van <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} families</span>"
 pim_enrich.error:
-  exception.title: Oh, nee! Een {{ status_code }} fout deed zich voor...
   http:
     403: U heeft geen toegang tot deze pagina
 #Page titles

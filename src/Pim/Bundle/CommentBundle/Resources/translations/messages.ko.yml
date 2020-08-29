@@ -8,13 +8,10 @@ flash:
   comment:
     create:
       success: 코멘트가 작성되었습니다.
-      error: 코멘트를 작성하는 중에 오류가 발생했습니다.
     delete:
       success: 코멘트가 삭제되었습니다.
-      error: 코멘트를 삭제하는 중에 오류가 발생했습니다.
     reply:
       success: 답변이 작성되었습니다.
-      error: 답변을 작성하는 중에 오류가 발생했습니다.
 comment:
   index:
     empty: 코멘트가 없습니다.

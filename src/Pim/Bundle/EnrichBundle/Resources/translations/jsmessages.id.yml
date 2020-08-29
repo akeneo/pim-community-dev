@@ -74,7 +74,6 @@ flash:
   api_connection:
     removed: Sambungan API berhasil dicabut
 error:
-  common: Terjadi kesalahan
   creating:
     product: Atribut tidak dikonfigurasi sebagai pengenal produk atau anda tidak memiliki Akses untuk mengubahnya.
   removing:
@@ -96,7 +95,6 @@ error:
     export_profile: Tidak dapat menyimpan profil ekspor. Harap periksa bahwa seluruh filter telah terisi dengan baik
 alert:
   attribute_option:
-    error_occured_during_submission: Terjadi kesalahan saat pengiriman formulir di server
     save_before_edit_other: Silahkan mendaftar modifikasi anda pada baris lain sebelum mengubah yang satu ini
   session_storage:
     not_available: Peramban web anda sepertinya tidak kompatibel dengan sessionStorage. Silahkan hubungi administrator anda
@@ -194,8 +192,6 @@ pim_enrich:
         update_failed: Produk tidak dapat diperbarui.
         field_not_ready: "Produk tidak dapat disimpan sekarang. Bidang berikut belum siap: {{ fields }}"
         already_in_upload: File sudah diunggah untuk Perlengkapan ini di lokal "{{locale}}" dan meliputi "{{scope}}"
-      error:
-        upload: Terjadi kesalahan saat mengunggah berkas
       meta:
         created: Dibuat
         created_by: Oleh
@@ -330,7 +326,6 @@ pim_enrich:
       info:
         update_successful: Keluarga berhasil diperbaharui.
         create_successful: Saluran berhasil dibuat.
-        update_failed: Kesalahan terjadi selama perbaharui keluarga.
         cant_remove_attribute_as_label: Tidak dapat menghapus atribut yang di gunakan sebagai label
         cant_remove_attribute_as_image: Tidak dapat menghapus perlengkapan yang digunakan sebagai gambar utama
         attribute_edit_permission_is_not_granted: Anda tidak memiliki hak untuk mengedit atribut keluarga
@@ -453,11 +448,8 @@ pim_enrich:
     not_applicable: N/A
     entity:
       updated: Tidak ada perubahan tersimpan.
-  error:
-    upload: Terjadi kesalahan saat mengunggah berkas
   alert:
     not_allowed: Terlarang. Anda tidak diizinkan mengakses halaman ini
-    error_occured: Terjadi kesalahan saat memuat halaman
   form:
     required: (wajib diisi)
     product_model:
@@ -532,8 +524,6 @@ pim_enrich:
           keep_attributes: Tidak ada atribut yang akan dihapus.
           change_family_to: Mengubah keluarga menjadi
           empty_selection: Pilih keluarga
-      flash:
-        attribute_deletion_error: Terjadi kesalahan saat menghapus  perlengkapan
       mass_edit:
         select_attributes: Pilih perlengkapan
         select: Pilih
@@ -1036,8 +1026,6 @@ pim_enrich:
           label: Mengkonfigurasi
         confirm:
           label: Menyetujui
-        launch_error:
-          label: Terjadi kesalahan saat peluncuran operasi penyuntingan massal
         launched:
           label: Tindakan massal "{{operation}}" telah diluncurkan. Anda akan diberitahu saat hal itu dilakukan.
       operation:
@@ -1099,7 +1087,6 @@ pim_enrich:
           description: Persyaratan perlengkapan berikut akan diberlakukan pada keluarga terpilih
           label_count: "{1}Tetapkan persyaratan atribut dari <span class=\"AknFullPage-title--highlight\">1 family</span>|] 1, Inf [Tetapkan persyaratan atribut dari <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} keluarga</span>"
 pim_enrich.error:
-  exception.title: Oh jepret! A {{ status_code }} terjadi kesalahan...
   http:
     403: Terlarang. Anda tidak diizinkan untuk mengakses halaman ini
 #Page titles

@@ -8,13 +8,10 @@ flash:
   comment:
     create:
       success: Komentar anda telah berhasil dibuat.
-      error: Terjadi kesalahan saat pembuatan komentar anda.
     delete:
       success: Komentar anda telah berhasil dihapus.
-      error: Terjadi kesalahan saat penghapusan komentar anda.
     reply:
       success: Balasan komentar  anda telah berhasil dibuat.
-      error: Terjadi kesalahan saat pembuatan balasan anda.
 comment:
   index:
     empty: Tidak ada komentar yang ditemukan.

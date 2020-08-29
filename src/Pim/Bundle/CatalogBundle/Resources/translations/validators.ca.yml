@@ -22,11 +22,6 @@ file.extensions.message: 'Aquesta extensió d''arxiu no està permesa (extension
 "This type of value expects the use of comma (,) to separate decimals.": Aquest tipus de valor espera l'ús d'una coma (,) per separar els decimals.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Aquest tipus de valor espera l'ús d'un separador decimal àrab (٫) per separar els decimals.
 "This type of value expects the use of the format {{ date_format }} for dates.": 'Aquest tipus de valor espera l''ús d''aquest format per dates: {{ date_format }}.'
-"The category \"%category%\" has to be a root category.": La categoria "%category%" ha de ser una categoria d'arrel.
-"The attribute \"%attributeCode%\" does not exist.": L'atribut "%attributeCode%" no existeix.
-"The attribute \"%attributeCode%\" is not a metric attribute.": L'atribut "%attributeCode%" no és un atribut mètric.
-"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": La unitat "%unitCode%" no existeix o no pertany a la família de mètriques per defecte de l'atribut determinat "%attributeCode%".
-"The currency \"%currency%\" has to be activated.": La moneda "%currency%" ha de ser activada.
 product_model.code.not_blank.message: El codi de model de producte no pot ser buit.
 product_model.code.unique.message: El codi ja està utilitzat per un altre model de producte.
 product_model.family_variant.not_blank.message: La variant de família del model de producte no pot ser buit.

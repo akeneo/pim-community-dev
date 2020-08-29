@@ -4,18 +4,11 @@ ARE: Ар
 ARPENT: Акр
 CENTIARE: Сантіар
 HECTARE: Гектар
-SQUARE_CENTIMETER: Квадратний сантиметр
-SQUARE_DECIMETER: Квадратний дециметр
-SQUARE_DEKAMETER: Квадратний декаметр
 SQUARE_FOOT: Квадратний фут
 SQUARE_FURLONG: Квадратний фурлонг
-SQUARE_HECTOMETER: Квадратний гектометр
 SQUARE_INCH: Квадратний дюйм
-SQUARE_KILOMETER: Квадратний кілометр
-SQUARE_METER: Квадратний метр
 SQUARE_MIL: Квадратний міл
 SQUARE_MILE: Квадратна миля
-SQUARE_MILLIMETER: Квадратний міліметр
 SQUARE_YARD: Квадратний ярд
 Binary: Бінарний
 BIT: Біт
@@ -33,19 +26,12 @@ MEGAHERTZ: Мегагерц
 TERAHERTZ: Терагерц
 HERTZ: Герц
 Length: Довжина
-CENTIMETER: Сантиметр
 CHAIN: Ланцюг
-DECIMETER: Дециметр
-DEKAMETER: Декаметр
 FEET: Ноги
 FURLONG: Фурлонг
 INCH: Дюйм
-HECTOMETER: Гектометр
-KILOMETER: Кілометр
-METER: Метр
 MIL: Міл
 MILE: Миля
-MILLIMETER: Міліметр
 YARD: Ярд
 Power: Потужність
 GIGAWATT: Гігават
@@ -101,10 +87,6 @@ YEAR: Рік
 Speed: Швидкість
 FOOT_PER_SECOND: Фут на секунду
 FOOT_PER_HOUR: Фут на годину
-KILOMETER_PER_HOUR: Кілометр на годину
-METER_PER_HOUR: Метр на годину
-METER_PER_MINUTE: Метр на хвилину
-METER_PER_SECOND: Метр на секунду
 MILE_PER_HOUR: Миля на годину
 YARD_PER_HOUR: Ярд на годину
 Temperature: Температура
@@ -115,18 +97,10 @@ RANKINE: Ренкін
 REAUMUR: Реомюр
 Volume: Гучність
 BARREL: Барель
-CENTILITER: Сантилітр
-CUBIC_CENTIMETER: Кубічний сантиметр
-CUBIC_DECIMETER: Кубічний дециметр
 CUBIC_FOOT: Кубічний фут
 CUBIC_INCH: Кубічний дюйм
-CUBIC_METER: Кубічний метр
-CUBIC_MILLIMETER: Кубічний міліметр
 CUBIC_YARD: Кубічний ярд
-DECILITER: Децилітр
 GALLON: Галон
-LITER: Літр
-MILLILITER: Мілілітр
 OUNCE: Унція
 PINT: Пінта
 Weight: Вага
@@ -143,12 +117,9 @@ TON: Тонна
 Pressure: Тиск
 BAR: Бар
 PASCAL: Паскаль
-HECTOPASCAL: Гектопаскаль
-MILLIBAR: Мілібар
 ATM: Атмосфера
 PSI: Фунт на квадратний дюйм
 TORR: Торр
-MMHG: Міліметр ртутного стовпа
 Energy: Енергія
 KILOCALORIE: кілокалорія
 KILOJOULE: кілоджоуль

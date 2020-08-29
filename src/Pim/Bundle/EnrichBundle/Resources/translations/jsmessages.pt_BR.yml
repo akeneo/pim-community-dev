@@ -71,7 +71,6 @@ flash:
   api_connection:
     removed: Conexão de API revogada com sucesso
 error:
-  common: Ocorreu um erro
   creating:
     product: Nenhum atributo está configurado como um identificador de produto ou você não tem os direitos para editá-lo.
   removing:
@@ -93,7 +92,6 @@ error:
     export_profile: Não pode salvar o perfil de exportação. Por favor, verifique que todos os filtros são bem preenchidos
 alert:
   attribute_option:
-    error_occured_during_submission: Ocorreu um erro ao tentar submeter o formulário ao servidor
     save_before_edit_other: Por favor, registre suas modificações em outra linha antes de editar essa
   session_storage:
     not_available: Seu browser parece não ser compatível com sessionStorage. Por favor, contate seu administrador
@@ -191,8 +189,6 @@ pim_enrich:
         update_failed: O produto não pode ser atualizado.
         field_not_ready: "O produto não pode ser salvo agora. Os seguintes campos não estão prontos: {{ fields }}"
         already_in_upload: Um arquivo ja está sendo enviado para esse atributo no local "{{ locale }}" e no escopo "{{ scope }}"
-      error:
-        upload: Ocorreu um erro ao fazer o envio do arquivo
       meta:
         created: Criado
         created_by: Por
@@ -325,7 +321,6 @@ pim_enrich:
       info:
         update_successful: Família atualizada com sucesso.
         create_successful: Canal criado com êxito.
-        update_failed: Ocorreu um erro durante a atualização de família.
         cant_remove_attribute_as_label: O atributo usado como rótulo não pode ser excluído
         cant_remove_attribute_as_image: Não é possível remover o atributo usado como a imagem principal
         attribute_edit_permission_is_not_granted: Você não tem direitos para editar atributos da família
@@ -445,11 +440,8 @@ pim_enrich:
     not_applicable: Não aplicável
     entity:
       updated: Há alterações que ainda não foram salvas.
-  error:
-    upload: Ocorreu um erro durante o upload do arquivo
   alert:
     not_allowed: Proibido. Você não tem permissão para acessar esta página
-    error_occured: Ocorreu um erro durante o carregamento da página
   form:
     required: (Obrigatório)
     product_model:
@@ -519,8 +511,6 @@ pim_enrich:
           keep_attributes: Nenhum atributo será removido.
           change_family_to: Mudar a família para
           empty_selection: Escolher uma família
-      flash:
-        attribute_deletion_error: Ocorreu um erro ao deletar o atributo
       mass_edit:
         select_attributes: Selecione os atributos
         select: Selecionar
@@ -997,8 +987,6 @@ pim_enrich:
           label: Configurar
         confirm:
           label: Confirmar
-        launch_error:
-          label: Ocorreu um erro durante o lançamento da operação de edição em massa
         launched:
           label: A ação em massa "{{ operation }}" foi lançada. Você será notificado quando estiver pronto.
       operation:
@@ -1057,7 +1045,6 @@ pim_enrich:
           label: Definir os requisitos de atributos
           description: Os seguintes requisitos de atributos serão aplicados às famílias selecionadas
 pim_enrich.error:
-  exception.title: Oh snap! Um {{ status_code }} erro aconteceu...
   http:
     403: Proibido. Você não tem permissão para acessar esta página
 #Page titles
