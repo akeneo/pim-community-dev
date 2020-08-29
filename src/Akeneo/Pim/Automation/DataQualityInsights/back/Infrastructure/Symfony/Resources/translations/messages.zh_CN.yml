@@ -1,3 +1,6 @@
 akeneo_data_quality_insights:
+  axis:
+    consistency: 一致性
   attribute_grid:
     quality_column_label: 质量
+Consistency: 一致性
