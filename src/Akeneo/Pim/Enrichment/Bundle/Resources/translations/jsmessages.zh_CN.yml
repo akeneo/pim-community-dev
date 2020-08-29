@@ -1,0 +1,41 @@
+pim_notification:
+  types:
+    settings: 设置 
+    mass_delete: 删除
+flash:
+  comment:
+    create:
+      success: 您的评论已经成功创建。
+      error: 创建评论时出错。
+    delete:
+      success: 已成功删除您的评论。
+      error: 删除您的评论时出错。
+    reply:
+      success: 您的回复已经成功创建。
+      error: 创建回复时出错。
+pim_enrich.entity.product:
+  label: 产品
+  uppercase_label: 产品
+  flash:
+    update:
+      file_upload: 上传文件时发生错误
+    delete:
+      success: 产品被成功删除。
+  module:
+    comment:
+      removed_author: 已删除用户
+pim_enrich.mass_edit.product:
+  step:
+    launch_error:
+      label: 启动批量编辑操作时出错
+  operation:
+    remove_from_category:
+      no_update: 没有选中的类别来从中删除选定的产品。
+pim_datagrid:
+  mass_action:
+    delete:
+      error: 尝试删除选定的产品时发生错误，请重试。
+  search: 在 {{ label }} 上搜索
+batch_jobs:
+  default_steps:
+    delete_products_and_product_models: 删除产品和产品模型
