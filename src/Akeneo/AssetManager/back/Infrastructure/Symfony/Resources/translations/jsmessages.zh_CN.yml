@@ -3,6 +3,8 @@ pim_title:
   akeneo_asset_manager_asset_family_edit: 编辑资产品类
   akeneo_asset_manager_asset_edit: 编辑资产
 pim_asset_manager:
+  result_counter: '{0} 无结果|{1} {{ count }} 个结果|]1,Inf] {{ count }} 个结果'
+  asset_counter: '{0} 无资产|{1} {{ count }} 个资产|]1,Inf] {{ count }} 个资产'
   asset_collection:
     upload_asset: '上传资产'
     helper:
@@ -10,11 +12,38 @@ pim_asset_manager:
       text: '此品类没有资产集合。要参与这个新体验，只需在您的设置中添加资产集合属性即可。'
     no_asset:
       title: '抱歉，此产品没有资产。'
+    remove_asset: 移除资产
   asset_preview:
+    empty_main_media: 此资产没有媒体。
     other_main_media: 我们无法生成此资产的预览。
+    error: 在渲染预览过程中发生错误
+  app:
+    image:
+      wide:
+        remove: 移除文件
+        download: 下载文件
+        upload: 拖放即可上传或点击这里
+      small:
+        remove: 移除
+        upload: 拖放即可上传
   asset_family:
+    column:
+      title: 资产导航
+      selector:
+        title: 资产品类
+        no_data: 没有可用的资产品类
     validation:
+      code:
+        pattern: '此字段只能包含字母、数字和下划线。'
+        should_be_unique: '已存在代码为"{{ %asset_family_identifier% }}"的资产品类'
+        limit_reached: '无法创建资产品类“{{ %asset_family_label% }}” ，因为已经达到了资产品类的上限数目 {{ %limit% }}'
       transformation:
+        limit_reached: '您已达到转换的上限数目 {{ %limit% }} '
+        same_operation_twice: '运算"{{ %operation_type% }}"不能在单个转换中定义两次'
+        source_can_not_be_a_target: '属性源"{{ %attribute_code% }}"不能是转换的属性目标。'
+        attribute_reference_should_exist: '此资产品类不存在属性"{{ %attribute_code% }}" '
+        filename_is_not_unique: '属性源"{{ %attribute_code% }}"已存在一个文件名前缀为"{{ %filename_prefix% }}"、后缀为 "{{ %filename_suffix% }}"的转换'
+        code_is_not_unique: '您不能使用同一个代码"{{ %transformation_code% }}"定义两个转换'
         unknown_extra_field: '属性 {{ {{ field }} }} 为未知多余的属性。'
       naming_convention:
         property_should_exist: '该资产品类不存在属性"{{ %property% }}"。'
@@ -23,6 +52,7 @@ pim_asset_manager:
         limit_reached: '您已达到资产品类 {{ %asset_family_identifier% }} 的产品链接规则上限数"{{ %limit% }}"。'
         product_selection_cannot_be_empty: '您必须在产品链接规则中指定至少一个产品选择'
         product_assignment_cannot_be_empty: '您必须在产品链接规则中指定至少一个产品指派'
+        extrapolated_attribute_should_exist: '此资产品类不存在属性"{{ %attribute_code% }}" '
         extrapolated_attribute_type_should_be_supported: '不支持类型为"{{ %attribute_type% }}"的属性"{{ %attribute_code% }}"。此字段只支持以下属性类型： {{ %supported_attribute_type% }}'
         channel_should_exist: '渠道 "{{ %channel_code% }}" 不存在'
         locale_should_exist: '区域设置 "{{ %locale_code% }}"未激活或不存在'

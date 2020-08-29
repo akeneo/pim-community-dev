@@ -3,11 +3,28 @@ akeneo_assetmanager:
     asset_manager: 资产管理器
   acl:
     asset_family:
+      create: 创建资产品类
+      edit: 编辑资产品类属性
+      delete: 删除资产品类
+      manage_permission: 管理资产品类权限
+      manage_transformation: 管理资产品类转换
       manage_product_link_rule: 管理资产品类产品链接规则
       execute_product_link_rule: 对资产品类的所有资产执行产品链接规则
       execute_naming_conventions: 对资产执行命名约定
     asset:
+      create: 创建资产
+      edit: 编辑资产
+      delete: 删除资产
+      delete_all: 删除所有资产
+      list_product: 列出已链接到资产的产品
       execute_naming_conventions: 执行命名约定
+    attribute:
+      create: 将属性添加到资产品类
+      edit: 编辑资产品类的属性
+      delete: 删除资产品类的属性
+    option:
+      edit: 编辑选项
+      delete: 移除选项
   jobs:
     asset_manager_execute_naming_convention:
       error: '对资产"{{ asset }}"执行命名约定失败'
@@ -16,6 +33,7 @@ pim_import_export:
     last_operations:
       job_type:
         asset_manager_compute_transformations: "计算资产转换"
+        asset_manager_link_assets_to_products: "将资产链接到产品"
         asset_manager_execute_naming_convention: "执行资产品类命名约定"
 pim_analytics:
   info_type:
@@ -35,6 +53,10 @@ pim_analytics:
     other:
       tracked: 其他跟踪
       untracked: 其他取消跟踪
+#average_percentage_localizable_only_attributes: Average percentage of localizable only attributes per asset family
+#average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per asset family
+#average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family
+pim_catalog_asset_collection: 资产集合
 pim_datagrid:
   cells:
     type:

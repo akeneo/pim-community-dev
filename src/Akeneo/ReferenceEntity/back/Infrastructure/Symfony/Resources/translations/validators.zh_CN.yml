@@ -34,6 +34,7 @@ pim_reference_entity:
         codes_dont_exist: "此属性不存在以下选项代码：\"%option_codes%\""
       record:
         should_exist: '找不到记录"%record_code%" 。'
+        should_not_be_used_as_product_variant_axis: '您不能删除此实体，因为它在其中一个产品变型中用作变量轴'
       record_collection:
         should_exist: '找不到记录"%record_codes%" 。'
       limit_reached: '您不能创建记录"%record_label%" ，因为已达到此参考实体的记录上限数目 %limit%'
