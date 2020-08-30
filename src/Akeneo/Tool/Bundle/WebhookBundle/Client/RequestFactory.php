@@ -20,7 +20,7 @@ class RequestFactory
      */
     public static function create(string $url, string $body, array $options): Request
     {
-        if (null === $secret = $options['secret']) {
+        if (null === $secret = $options['secret'] ?? null) {
             throw new \InvalidArgumentException('The "secret" option is missing.');
         }
 
@@ -30,8 +30,8 @@ class RequestFactory
         $headers = array_merge(
             [
                 'Content-Type' => 'application/json',
-                'X-Akeneo-Timestamp' => $timestamp,
                 'X-Akeneo-Signature' => $signature,
+                'X-Akeneo-Signature-Timestamp' => $timestamp,
             ],
             $options['headers'] ?? []
         );
