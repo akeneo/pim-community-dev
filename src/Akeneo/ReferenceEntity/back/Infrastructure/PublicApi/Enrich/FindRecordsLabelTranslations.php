@@ -6,6 +6,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich;
 
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordLabelsByCodesInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordLabelsByCodes;
 
 /**
@@ -18,7 +19,7 @@ class FindRecordsLabelTranslations
     /** @var SqlFindRecordLabelsByCodes */
     private $findRecordLabelsByCodes;
 
-    public function __construct(SqlFindRecordLabelsByCodes $findRecordLabelsByCodes)
+    public function __construct(FindRecordLabelsByCodesInterface $findRecordLabelsByCodes)
     {
         $this->findRecordLabelsByCodes = $findRecordLabelsByCodes;
     }

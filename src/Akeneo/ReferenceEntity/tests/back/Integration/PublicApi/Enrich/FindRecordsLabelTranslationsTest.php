@@ -78,7 +78,6 @@ class FindRecordsLabelTranslationsTest extends SqlIntegrationTestCase
         // Starck record
         $starckCode = RecordCode::fromString('starck');
         $recordIdentifier = $recordRepository->nextIdentifier($referenceEntityIdentifier, $starckCode);
-        $this->starckIdentifier = $recordIdentifier;
         $labelValueFR = Value::create(
             $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
             ChannelReference::noReference(),
@@ -103,7 +102,6 @@ class FindRecordsLabelTranslationsTest extends SqlIntegrationTestCase
         // Dyson record
         $dysonCode = RecordCode::fromString('dyson');
         $recordIdentifier = $recordRepository->nextIdentifier($referenceEntityIdentifier, $dysonCode);
-        $this->dysonIdentifier = $recordIdentifier;
         $labelValueFR = Value::create(
             $referenceEntity->getAttributeAsLabelReference()->getIdentifier(),
             ChannelReference::noReference(),
@@ -122,7 +120,6 @@ class FindRecordsLabelTranslationsTest extends SqlIntegrationTestCase
         // Michael record
         $michaelCode = RecordCode::fromString('michael');
         $recordIdentifier = $recordRepository->nextIdentifier($referenceEntityIdentifier, $michaelCode);
-        $this->michaelIdentifier = $recordIdentifier;
         $recordRepository->create(
             Record::create(
                 $recordIdentifier,

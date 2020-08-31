@@ -6,6 +6,7 @@ namespace Akeneo\AssetManager\Infrastructure\PublicApi\Enrich;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
+use Akeneo\AssetManager\Domain\Query\Asset\FindAssetLabelsByCodesInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindAssetLabelsByCodes;
 
 /**
@@ -18,7 +19,7 @@ class FindAssetLabelTranslation
     /** @var SqlFindAssetLabelsByCodes */
     private $sqlFindAssetLabelsByCodes;
 
-    public function __construct(SqlFindAssetLabelsByCodes $sqlFindAssetLabelsByCodes)
+    public function __construct(FindAssetLabelsByCodesInterface $sqlFindAssetLabelsByCodes)
     {
         $this->sqlFindAssetLabelsByCodes = $sqlFindAssetLabelsByCodes;
     }
