@@ -8,7 +8,7 @@ import { AttributeCode, AttributeType, Locale } from '../../../../../models';
 import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
 import { useControlledFormInputAction } from '../../../hooks';
 import { AddFieldButton } from '../../../../../components/Selectors/AddFieldButton';
-import { ConcatenateOperationLine } from './ConcatenateOperationLine';
+import { ConcatenateSourceLine } from './ConcatenateSourceLine';
 
 type Props = {
   lineNumber: number;
@@ -84,10 +84,10 @@ const ConcatenateSourceList: React.FC<Props> = ({
         {fields &&
           fields.map((sourceOrOperation: any, operationLineNumber) => {
             return (
-              <ConcatenateOperationLine
+              <ConcatenateSourceLine
                 key={sourceOrOperation.id}
                 baseFormName={`from[${operationLineNumber}]`}
-                sourceOrOperation={sourceOrOperation}
+                source={sourceOrOperation}
                 locales={locales}
                 scopes={scopes}
                 lineNumber={lineNumber}

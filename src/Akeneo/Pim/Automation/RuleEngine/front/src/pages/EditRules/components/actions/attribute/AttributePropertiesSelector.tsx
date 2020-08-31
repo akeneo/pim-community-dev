@@ -191,8 +191,9 @@ const AttributePropertiesSelector: React.FC<Props> = ({
               'Y-m-d': '(1999-08-03)',
               'd/m/y': '(03/08/99)',
               'd.m.y': '(03.08.99)',
-              'n/d/y': '(8/03/99)',
+              'm/d/Y': '(08/03/1999)',
               'd-M-Y': '(03-Aug-1999)',
+              'n/d/y': '(8/03/99)',
               'j/m/y': '(3/08/99)',
             }}
             onChange={(dateFormat: string) => {

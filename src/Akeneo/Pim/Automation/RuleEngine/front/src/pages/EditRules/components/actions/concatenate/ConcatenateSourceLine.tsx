@@ -1,17 +1,11 @@
 import React from 'react';
 import { Locale } from '../../../../../models';
 import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
-import { Operation } from '../../../../../models/actions/Calculate/Operation';
 import { useControlledFormInputAction } from '../../../hooks';
 import { useTranslate } from '../../../../../dependenciesTools/hooks';
 import styled from 'styled-components';
-import {
-  FieldOperand,
-  Operand,
-} from '../../../../../models/actions/Calculate/Operand';
 import { AttributePropertiesSelector } from '../attribute/AttributePropertiesSelector';
-
-type SourceOrOperation = Operand | Operation;
+import { ConcatenateSource } from '../../../../../models/actions';
 
 const DeleteButton = styled.button`
   border: none;
@@ -21,7 +15,7 @@ const DeleteButton = styled.button`
 
 type OperationLineProps = {
   baseFormName: string;
-  sourceOrOperation: SourceOrOperation;
+  source: ConcatenateSource;
   locales: Locale[];
   scopes: IndexedScopes;
   lineNumber: number;
@@ -30,9 +24,9 @@ type OperationLineProps = {
   isValue: boolean;
 };
 
-const ConcatenateOperationLine: React.FC<OperationLineProps> = ({
+const ConcatenateSourceLine: React.FC<OperationLineProps> = ({
   baseFormName,
-  sourceOrOperation,
+  source,
   locales,
   scopes,
   lineNumber,
@@ -41,7 +35,6 @@ const ConcatenateOperationLine: React.FC<OperationLineProps> = ({
 }) => {
   const translate = useTranslate();
   const { formName } = useControlledFormInputAction<string | null>(lineNumber);
-  const fieldOperand = sourceOrOperation as FieldOperand;
 
   return (
     <li
@@ -57,7 +50,7 @@ const ConcatenateOperationLine: React.FC<OperationLineProps> = ({
           <AttributePropertiesSelector
             baseFormName={formName(baseFormName)}
             operationLineNumber={operationLineNumber}
-            attributeCode={fieldOperand.field}
+            attributeCode={source.field}
             locales={locales}
             scopes={scopes}
             isCurrencyRequired={false}
@@ -79,4 +72,4 @@ const ConcatenateOperationLine: React.FC<OperationLineProps> = ({
   );
 };
 
-export { ConcatenateOperationLine };
+export { ConcatenateSourceLine };

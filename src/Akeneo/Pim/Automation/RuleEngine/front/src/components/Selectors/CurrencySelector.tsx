@@ -32,7 +32,7 @@ const getCurrencyValidation = (
     );
   }
   currencyValidation['validate'] = (selectedCode: CurrencyCode) => {
-    if (!selectedCode || selectedCode === '') {
+    if (!selectedCode) {
       return;
     }
     if ('undefined' === typeof currencies[selectedCode]) {
