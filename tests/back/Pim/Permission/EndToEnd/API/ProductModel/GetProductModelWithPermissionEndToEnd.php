@@ -25,7 +25,7 @@ class GetProductModelWithPermissionEndToEnd extends ApiTestCase
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
 
-        $message = 'Product model "%s" does not exist.';
+        $message = 'Product model "%s" does not exist or you do not have permission to access it.';
         $this->assertUnauthorized('sweat_no_view', sprintf($message, 'sweat_no_view'));
         $this->assertUnauthorized('colored_sweat_no_view', sprintf($message, 'colored_sweat_no_view'));
         $this->assertUnauthorized('shoes_no_view', sprintf($message, 'shoes_no_view'));
