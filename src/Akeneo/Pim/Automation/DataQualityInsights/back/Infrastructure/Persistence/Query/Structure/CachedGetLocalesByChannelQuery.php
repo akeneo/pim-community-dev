@@ -68,4 +68,13 @@ SQL;
 
         return $this->cachedChannelLocaleCollection;
     }
+
+    public function rebuildCache(): void
+    {
+        $this->cachedChannelLocaleArray = null;
+        $this->getArray();
+
+        $this->cachedChannelLocaleCollection = null;
+        $this->getChannelLocaleCollection();
+    }
 }
