@@ -15,7 +15,12 @@ import {
   useGetAttributeAtMount,
 } from './attribute/attribute.utils';
 import { ActionLeftSide, ActionRightSide, ActionTitle } from './ActionLine';
-import { ActionFormContainer } from './style';
+import {
+  ActionFormContainer,
+  LargeActionGrid,
+  SelectorBlock,
+  ErrorBlock,
+} from './style';
 import { AttributeSelector } from '../../../../components/Selectors/AttributeSelector';
 import { InlineHelper } from '../../../../components/HelpersInfos/InlineHelper';
 import {
@@ -26,11 +31,6 @@ import {
   getLocaleValidation,
   LocaleSelector,
 } from '../../../../components/Selectors/LocaleSelector';
-import {
-  CalculateActionGrid,
-  ErrorBlock,
-  SelectorBlock,
-} from './CalculateActionLine';
 import {
   useBackboneRouter,
   useTranslate,
@@ -148,7 +148,7 @@ const ConcatenateActionLine: React.FC<Props> = ({
           required: translate('pimee_catalog_rule.exceptions.required'),
         }}
       />
-      <CalculateActionGrid>
+      <LargeActionGrid>
         <ActionLeftSide>
           <ConcatenatePreview lineNumber={lineNumber} />
           <ConcatenateSourceList
@@ -261,7 +261,7 @@ const ConcatenateActionLine: React.FC<Props> = ({
             )}
           </ActionFormContainer>
         </ActionRightSide>
-      </CalculateActionGrid>
+      </LargeActionGrid>
     </ActionTemplate>
   );
 };

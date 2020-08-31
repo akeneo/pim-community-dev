@@ -2,7 +2,6 @@ import React from 'react';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import { ActionLeftSide, ActionRightSide, ActionTitle } from './ActionLine';
-import styled from 'styled-components';
 import {
   useBackboneRouter,
   useTranslate,
@@ -34,7 +33,12 @@ import {
   getLocaleValidation,
   LocaleSelector,
 } from '../../../../components/Selectors/LocaleSelector';
-import { ActionFormContainer } from './style';
+import {
+  ActionFormContainer,
+  LargeActionGrid,
+  SelectorBlock,
+  ErrorBlock,
+} from './style';
 import { InputNumber } from '../../../../components/Inputs';
 import {
   CurrencySelector,
@@ -45,21 +49,6 @@ import { useActiveCurrencies } from '../../hooks/useActiveCurrencies';
 import { IndexedCurrencies } from '../../../../repositories/CurrencyRepository';
 import { CalculatePreview } from './calculate/CalculatePreview';
 import { CalculateOperationList } from './calculate/CalculateOperationList';
-
-export const CalculateActionGrid = styled.div`
-  margin-top: 18px;
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  grid-gap: 40px;
-`;
-
-export const SelectorBlock = styled.div`
-  margin-bottom: 15px;
-`;
-
-export const ErrorBlock = styled.div`
-  margin-top: 5px;
-`;
 
 const targetAttributeTypes: AttributeType[] = [
   AttributeType.NUMBER,
@@ -192,7 +181,7 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
           required: translate('pimee_catalog_rule.exceptions.required'),
         }}
       />
-      <CalculateActionGrid>
+      <LargeActionGrid>
         <ActionLeftSide>
           <CalculatePreview lineNumber={lineNumber} />
           <CalculateOperationList
@@ -375,7 +364,7 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
             )}
           </ActionFormContainer>
         </ActionRightSide>
-      </CalculateActionGrid>
+      </LargeActionGrid>
     </ActionTemplate>
   );
 };
