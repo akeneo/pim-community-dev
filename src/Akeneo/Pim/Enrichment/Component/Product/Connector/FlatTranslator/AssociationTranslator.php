@@ -1,6 +1,8 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyValue;
+declare(strict_types=1);
+
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AssociationColumnsResolver;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
@@ -13,7 +15,6 @@ class AssociationTranslator
     private const PRODUCT_MODELS_COLUMN_SUFFIX = '-product_models';
     private const PRODUCTS_COLUMN_SUFFIX = '-products';
     private const GROUPS_ASSOCIATIONS_SUFFIX = '-groups';
-    private const QUANTITY_ASSOCIATIONS_SUFFIX = '-quantity';
 
     /** @var AssociationColumnsResolver */
     private $associationColumnsResolver;
@@ -42,17 +43,13 @@ class AssociationTranslator
     public function supports(string $columnName): bool
     {
         $associationsColumns = $this->associationColumnsResolver->resolveAssociationColumns();
-        $quantifiedAssociationsColumns = $this->associationColumnsResolver->resolveQuantifiedAssociationColumns();
+        $quantifiedAssociationsColumns = $this->associationColumnsResolver->resolveQuantifiedIdentifierAssociationColumns();
 
         return in_array($columnName, array_merge($associationsColumns, $quantifiedAssociationsColumns));
     }
 
     public function translate(string $columnName, array $values, string $locale, string $channel): array
     {
-        if ($this->isColumnWithQuantity($columnName)) {
-            return $values;
-        }
-
         $translations = $this->getTranslations($values, $columnName, $locale, $channel);
         $result = $this->doTranslate($values, $translations);
 
@@ -63,33 +60,26 @@ class AssociationTranslator
     {
         $codes = $this->extractCodes($values);
         if ($this->isProductModelAssocation($columnName)) {
-            $translations = $this->getProductModelLabels->byCodesAndLocaleAndScope($codes, $locale, $channel);
-        } elseif ($this->isProductAssociation($columnName)) {
-            $translations = $this->getProductLabels->byCodesAndLocaleAndScope($codes, $locale, $channel);
-        } elseif ($this->isGroupAssociation($columnName)) {
-            $translations = $this->getGroupTranslations->byGroupCodesAndLocale($codes, $locale);
-        } else {
-            throw new \LogicException(sprintf('Unsupported column to translate associations "%s"', $columnName));
+            return $this->getProductModelLabels->byCodesAndLocaleAndScope($codes, $locale, $channel);
+        }
+        if ($this->isProductAssociation($columnName)) {
+            return $this->getProductLabels->byIdentifiersAndLocaleAndScope($codes, $locale, $channel);
+        }
+        if ($this->isGroupAssociation($columnName)) {
+            return $this->getGroupTranslations->byGroupCodesAndLocale($codes, $locale);
         }
 
-        return $translations;
+        throw new \LogicException(sprintf('Unsupported column to translate associations "%s"', $columnName));
     }
 
     private function extractCodes(array $values): array
     {
-        $allCategoryCodes = [];
+        $codes = [];
         foreach ($values as $value) {
-            $categoryCodes = explode(',', $value);
-            $categoryCodesWithoutQuantities = array_map(
-                function (string $categoryCodeWithQuantities) {
-                    return preg_replace('/\|.*$/', '', $categoryCodeWithQuantities);
-                },
-                $categoryCodes
-            );
-            $allCategoryCodes = array_merge($allCategoryCodes, $categoryCodesWithoutQuantities);
+            $codes = array_merge($codes, explode(',', $value));
         }
 
-        return array_unique($allCategoryCodes);
+        return array_unique($codes);
     }
 
     private function doTranslate(array $values, array $translations): array
@@ -105,18 +95,8 @@ class AssociationTranslator
             $labelized = [];
 
             foreach ($codes as $code) {
-                preg_match('/^(?<code>.*)\|(?<quantity>.*)$/', $code, $matches);
-                $quantity = $matches['quantity'] ?? null;
-                if (empty($quantity)) {
-                    $translation = $translations[$code] ??
-                        sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $code);
-                } else {
-                    $code = $matches['code'];
-                    $translationWithoutQuantity = $translations[$code] ??
-                        sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $code);
-                    $translation = sprintf('%s|%s', $translationWithoutQuantity, $quantity);
-                }
-                $labelized[] = $translation;
+                $labelized[] = $translations[$code] ??
+                    sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $code);
             }
 
             $result[$valueIndex] = implode(',', $labelized);
@@ -138,10 +118,5 @@ class AssociationTranslator
     private function isGroupAssociation(string $columnName): bool
     {
         return str_ends_with($columnName, self::GROUPS_ASSOCIATIONS_SUFFIX);
-    }
-
-    private function isColumnWithQuantity(string $columnName): bool
-    {
-        return str_ends_with($columnName, self::QUANTITY_ASSOCIATIONS_SUFFIX);
     }
 }

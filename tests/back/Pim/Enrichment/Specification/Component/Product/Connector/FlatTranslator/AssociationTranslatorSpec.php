@@ -1,9 +1,9 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyValue;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AssociationColumnsResolver;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyValue\AssociationTranslator;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AssociationTranslator;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductLabelsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductModelLabelsInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Group\GetGroupTranslations;
@@ -30,18 +30,19 @@ class AssociationTranslatorSpec extends ObjectBehavior
         $associationColumnsResolver->resolveAssociationColumns()->willReturn(
             ['X_SELL-products', 'X_SELL-product_models']
         );
-        $associationColumnsResolver->resolveQuantifiedAssociationColumns()->willReturn(
+        $associationColumnsResolver->resolveQuantifiedIdentifierAssociationColumns()->willReturn(
             ['X_SELL_quantified-products', 'X_SELL_quantified-product_models']
         );
 
         $this->supports('X_SELL-products')->shouldReturn(true);
         $this->supports('X_SELL_quantified-product_models')->shouldReturn(true);
+        $this->supports('X_SELL_quantified-product_models-quantity')->shouldReturn(false);
         $this->supports('other')->shouldReturn(false);
     }
 
     function it_translates_product_codes_to_labels(GetProductLabelsInterface $getProductLabels)
     {
-        $getProductLabels->byCodesAndLocaleAndScope(
+        $getProductLabels->byIdentifiersAndLocaleAndScope(
             ['hat-m-red', 'hat-xs-red', 'tshirt-l', 'product-with-no-label'],
             'fr_FR',
             'ecommerce'
@@ -65,32 +66,6 @@ class AssociationTranslatorSpec extends ObjectBehavior
                 '[product-with-no-label]'
             ]
         );
-    }
-
-    function it_translates_product_codes_with_quantities_to_labels(GetProductLabelsInterface $getProductLabels)
-    {
-        $getProductLabels->byCodesAndLocaleAndScope(['tshirt', 'group-with-no-label'], 'fr_FR', 'ecommerce')
-            ->willReturn(['tshirt' => 'Groupe des T-shirts']);
-        $this->translate(
-            'X_SELL-products-quantified',
-            ['tshirt|2,group-with-no-label|1', 'group-with-no-label|1'],
-            'fr_FR',
-            'ecommerce'
-        )->shouldReturn(
-            [
-                'Groupe des T-shirts|2,[group-with-no-label]|1',
-                '[group-with-no-label]|1'
-            ]
-        );
-    }
-
-    function it_does_not_translates_values_holding_quantities(GetProductLabelsInterface $getProductLabels)
-    {
-        $getProductLabels->byCodesAndLocaleAndScope(['tshirt', 'group-with-no-label'], 'fr_FR', 'ecommerce')
-            ->willReturn(['tshirt' => 'Groupe des T-shirts']);
-
-        $this->translate('X_SELL-products-quantity', ['1|2|3', '4|5|6'], 'fr_FR', 'ecommerce')
-            ->shouldReturn(['1|2|3', '4|5|6']);
     }
 
     function it_translates_product_model_codes_to_labels(GetProductModelLabelsInterface $getProductModelLabels)

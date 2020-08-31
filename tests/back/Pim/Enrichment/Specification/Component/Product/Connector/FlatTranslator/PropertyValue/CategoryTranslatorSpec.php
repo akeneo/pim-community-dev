@@ -22,8 +22,10 @@ class CategoryTranslatorSpec extends ObjectBehavior
     function it_translates_category_property_values(
         GetCategoryTranslations $getCategoryTranslations
     ) {
-        $getCategoryTranslations->byCategoryCodesAndLocale(['men_shoe', 'tshirt_women', 'not_translated_category'], 'fr_FR')->willReturn(['men_shoe' => 'Chaussures pour hommes', 'tshirt_women' => 'Tshirt pour femmes']);
+        $getCategoryTranslations->byCategoryCodesAndLocale(['men_shoe', 'tshirt_women', 'not_translated_category'], 'fr_FR')
+            ->willReturn(['men_shoe' => 'Chaussures pour hommes', 'tshirt_women' => 'Tshirt pour femmes']);
 
-        $this->translate(['men_shoe,tshirt_women,not_translated_category'], 'fr_FR', 'ecommerce')->shouldReturn(['Chaussures pour hommes,Tshirt pour femmes,[not_translated_category]']);
+        $this->translate(['men_shoe,tshirt_women,not_translated_category', ''], 'fr_FR', 'ecommerce')
+            ->shouldReturn(['Chaussures pour hommes,Tshirt pour femmes,[not_translated_category]', '']);
     }
 }

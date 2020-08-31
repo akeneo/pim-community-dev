@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator;
 
-use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyValue\AssociationTranslator;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AssociationTranslator;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyValue\FlatPropertyValueTranslatorInterface;
 
 class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface

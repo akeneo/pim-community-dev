@@ -28,7 +28,7 @@ class BooleanTranslatorSpec extends ObjectBehavior
         $labelTranslator->translate('pim_common.no', 'fr_FR', '[no]')->willReturn('Non');
         $labelTranslator->translate('pim_common.no', 'UNKNOWN', '[no]')->willReturn('[no]');
 
-        $this->translate('with', [], ['1', '0', '1'], 'fr_FR')->shouldReturn(['Oui', 'Non', 'Oui']);
-        $this->translate('with', [], ['0', '1', '0'], 'UNKNOWN')->shouldReturn(['[no]', '[yes]', '[no]']);
+        $this->translate('with', [], ['1', '0', '1', ''], 'fr_FR')->shouldReturn(['Oui', 'Non', 'Oui', '']);
+        $this->translate('with', [], ['0', '1', '0', ''], 'UNKNOWN')->shouldReturn(['[no]', '[yes]', '[no]', '']);
     }
 }

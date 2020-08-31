@@ -19,12 +19,11 @@ class GroupTranslatorSpec extends ObjectBehavior
         $this->supports('other')->shouldReturn(false);
     }
 
-    function it_translates_group_property_values(
-        GetGroupTranslations $getGroupTranslations
-    ) {
+    function it_translates_group_property_values(GetGroupTranslations $getGroupTranslations)
+    {
         $getGroupTranslations->byGroupCodesAndLocale(['tshirt', 'jeans', 'not_translated_group'], 'fr_FR')
             ->willReturn(['tshirt' => 'Tshirt', 'jeans' => 'Jeans']);
 
-        $this->translate(['tshirt,jeans,not_translated_group'], 'fr_FR', 'ecommerce')->shouldReturn(['Tshirt,Jeans,[not_translated_group]']);
+        $this->translate(['tshirt,jeans,not_translated_group', ''], 'fr_FR', 'ecommerce')->shouldReturn(['Tshirt,Jeans,[not_translated_group]', '']);
     }
 }

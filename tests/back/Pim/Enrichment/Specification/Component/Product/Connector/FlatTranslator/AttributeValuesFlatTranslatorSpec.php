@@ -68,9 +68,11 @@ class AttributeValuesFlatTranslatorSpec extends ObjectBehavior
         $name->getProperties()->willReturn(['my_property' => 'not null value']);
         $name->getMetricFamily()->willReturn(null);
 
-        $attributeValueRegistry->getTranslator('pim_catalog_text', 'name-en_US-ecommerce')->willReturn($translator);
-        $translator->translate('name', ['my_property' => 'not null value'], ['value'], 'fr_FR')->willReturn(['valeur une', 'valeur deux']);
+        $attributeValueRegistry->getTranslator('pim_catalog_text', 'name-en_US-ecommerce')
+            ->willReturn($translator);
+        $translator->translate('name', ['my_property' => 'not null value'], ['value1', 'value2'], 'fr_FR')
+            ->willReturn(['valeur une', 'valeur deux']);
 
-        $this->translate('name-en_US-ecommerce', ['value'], 'fr_FR')->shouldReturn(['valeur une', 'valeur deux']);
+        $this->translate('name-en_US-ecommerce', ['value1', 'value2'], 'fr_FR')->shouldReturn(['valeur une', 'valeur deux']);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyValue;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
@@ -22,8 +24,8 @@ class GroupTranslator implements FlatPropertyValueTranslatorInterface
 
     public function translate(array $values, string $locale, string $scope): array
     {
-        $categoryCodesExtracted = $this->extractGroupCodes($values);
-        $groupTranslations = $this->getGroupTranslations->byGroupCodesAndLocale($categoryCodesExtracted, $locale);
+        $extractedGroupCodes = $this->extractGroupCodes($values);
+        $groupTranslations = $this->getGroupTranslations->byGroupCodesAndLocale($extractedGroupCodes, $locale);
 
         $result = [];
         foreach ($values as $valueIndex => $value) {
@@ -50,6 +52,9 @@ class GroupTranslator implements FlatPropertyValueTranslatorInterface
     {
         $groupCodes = [];
         foreach ($values as $value) {
+            if (empty($value)) {
+                continue;
+            }
             $groupCodes = array_merge($groupCodes, explode(',', $value));
         }
 

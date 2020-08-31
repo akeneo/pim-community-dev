@@ -14,7 +14,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAt
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-class MultiSelectFlatTranslator implements FlatAttributeValueTranslatorInterface
+class MultiSelectTranslator implements FlatAttributeValueTranslatorInterface
 {
     /** @var GetExistingAttributeOptionsWithValues */
     private $getExistingAttributeOptionsWithValues;
@@ -63,6 +63,9 @@ class MultiSelectFlatTranslator implements FlatAttributeValueTranslatorInterface
     {
         $optionKeys = [];
         foreach ($values as $value) {
+            if (empty($value)) {
+                continue;
+            }
             $optionCodes = explode(',', $value);
             $currentOptionKeys = array_map(
                 function ($optionCode) use ($attributeCode) {

@@ -12,7 +12,7 @@ class SqlGetProductLabelsIntegration extends TestCase
 
     public function test_that_it_returns_product_labels()
     {
-        $actual = $this->getProductLabelsQuery()->byCodesAndLocaleAndScope(
+        $actual = $this->getProductLabelsQuery()->byIdentifiersAndLocaleAndScope(
             [
                 'braided-hat-m',// Variant product
                 '1111111292',// Simple product

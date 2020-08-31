@@ -6,7 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeVa
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\Header\FlatHeaderTranslatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\HeaderRegistry;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\ProductAndProductModelFlatTranslator;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyValue\AssociationTranslator;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AssociationTranslator;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyValueRegistry;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

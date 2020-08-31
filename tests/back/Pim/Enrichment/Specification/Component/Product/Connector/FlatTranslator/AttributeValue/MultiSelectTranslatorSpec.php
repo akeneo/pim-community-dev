@@ -12,7 +12,7 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MultiSelectFlatTranslatorSpec extends ObjectBehavior
+class MultiSelectTranslatorSpec extends ObjectBehavior
 {
     function let(GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues)
     {
@@ -43,8 +43,8 @@ class MultiSelectFlatTranslatorSpec extends ObjectBehavior
                 ]
             );
 
-        $this->translate('color', [], ['red,yellow', 'purple'], $locale)
-            ->shouldReturn(['rouge,jaune', 'purple']);
+        $this->translate('color', [], ['red,yellow', 'purple', ''], $locale)
+            ->shouldReturn(['rouge,jaune', 'purple', '']);
     }
 
     function it_puts_the_option_code_between_brackets_when_the_option_does_have_a_translation(

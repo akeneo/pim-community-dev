@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor;
@@ -27,7 +29,7 @@ class AttributeValuesFlatTranslator
         $this->attributeColumnsResolver = $attributeColumnsResolver;
     }
 
-    public function supports($columnName): bool
+    public function supports(string $columnName): bool
     {
         return in_array($columnName, $this->attributeColumnsResolver->resolveAttributeColumns());
     }

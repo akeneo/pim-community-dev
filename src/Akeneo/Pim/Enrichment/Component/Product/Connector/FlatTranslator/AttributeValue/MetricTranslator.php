@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValue;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
@@ -20,9 +22,9 @@ class MetricTranslator implements FlatAttributeValueTranslatorInterface
 
     public function supports(string $attributeType, string $columnName): bool
     {
-        $endsWithUnit = 0 === substr_compare($columnName, self::UNIT_SUFFIX, -strlen(self::UNIT_SUFFIX));
+        $isEndingWithUnit = str_ends_with($columnName, self::UNIT_SUFFIX);
 
-        return $attributeType === AttributeTypes::METRIC && $endsWithUnit;
+        return $attributeType === AttributeTypes::METRIC && $isEndingWithUnit;
     }
 
     public function translate(string $attributeCode, array $properties, array $values, string $localeCode): array

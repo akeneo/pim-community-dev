@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyValue;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
@@ -50,6 +52,9 @@ class CategoryTranslator implements FlatPropertyValueTranslatorInterface
     {
         $categoryCodes = [];
         foreach ($values as $value) {
+            if (empty($value)) {
+                continue;
+            }
             $categoryCodes = array_merge($categoryCodes, explode(',', $value));
         }
 
