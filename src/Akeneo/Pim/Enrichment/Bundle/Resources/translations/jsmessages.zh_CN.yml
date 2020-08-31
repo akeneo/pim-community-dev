@@ -88,6 +88,7 @@ pim_datagrid:
     selected:
       family: "]-Inf, 1]已选定 {{ count }} 个品类|]1, Inf[已选定 {{ count }} 个品类"
       product: "]-Inf, 1]已选定 {{ count }} 个结果|]1, Inf[已选定 {{ count }} 个结果"
+  search: 在 {{ label }} 上搜索
 error:
   removing:
     group: 无法删除分组

@@ -27,7 +27,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                 default: false
             column: useable_as_grid_filter
         maxCharacters:
-            type: smallint
+            type: integer
             nullable: true
             column: max_characters
         validationRule:
