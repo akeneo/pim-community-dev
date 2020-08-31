@@ -16,7 +16,7 @@ use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
  */
 class ProductEventDataBuilder implements WebhookEventDataBuilder
 {
-    public function build(ConnectionWebhook $webhook, BusinessEventInterface $businessEvent): array
+    public function build(ConnectionWebhook $webhook, BusinessEventInterface $businessEvent)
     {
         return $businessEvent->data();
     }
