@@ -45,6 +45,7 @@ final class SendMessageToWebhooksHandler
         }
 
         $webhookRequests = [];
+        
         foreach ($webhooks as $webhook) {
             $webhookRequests[] = new WebhookRequest(
                 $webhook,
