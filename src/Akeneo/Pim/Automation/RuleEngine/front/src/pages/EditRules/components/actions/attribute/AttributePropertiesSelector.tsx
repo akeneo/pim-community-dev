@@ -173,6 +173,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
               );
             }}
             containerCssClass={`select2-container-left-glued select2-container-as-option select2-container-uppercase`}
+            displayAsCode={true}
           />
         </span>
       )}

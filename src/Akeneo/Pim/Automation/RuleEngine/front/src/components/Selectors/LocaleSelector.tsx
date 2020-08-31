@@ -79,6 +79,7 @@ type Props = {
   validation?: { required?: string; validate?: (value: any) => string | true };
   placeholder?: string;
   containerCssClass?: string;
+  displayAsCode?: boolean;
 };
 
 const LocaleSelector: React.FC<Props> = ({
@@ -92,6 +93,7 @@ const LocaleSelector: React.FC<Props> = ({
   disabled = false,
   validation,
   placeholder,
+  displayAsCode = false,
   ...remainingProps
 }) => {
   const translate = useTranslate();
@@ -121,7 +123,7 @@ const LocaleSelector: React.FC<Props> = ({
       localeCode.split('_').length - 1
     ];
 
-    return `<i class="flag flag-${shortRegion}"}/>&nbsp;${locale.language}`;
+    return `<i class="flag flag-${shortRegion}"}/>&nbsp;${displayAsCode ? locale.code : locale.language}`;
   };
 
   const handleChange = (value: Select2Value) => {
