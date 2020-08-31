@@ -91,6 +91,10 @@ class BaseView extends Backbone.View<any> implements View {
       return expectedPosition >= 0 && expectedPosition === extension.code.indexOf(code, expectedPosition);
     });
 
+    if (undefined === extensionKey) {
+      throw new Error(`Cannot find extention "${extensionKey}"`);
+    }
+
     return this.extensions[extensionKey];
   }
 
@@ -275,7 +279,7 @@ class BaseView extends Backbone.View<any> implements View {
   triggerExtensions() {
     const options = Object.values(arguments);
 
-    Object.values(this.extensions).forEach(extension => {
+    Object.values(this.extensions).forEach((extension) => {
       extension.trigger.apply(extension, options);
       extension.triggerExtensions.apply(extension, options);
     });

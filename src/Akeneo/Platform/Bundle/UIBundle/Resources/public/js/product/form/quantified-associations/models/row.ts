@@ -11,7 +11,7 @@ type Row = {
 const addProductToRows = (rows: Row[], products: Product[]): Row[] =>
   rows.map((row: Row) => {
     if (null === products) return {...row, product: null};
-    const product = products.find(product => product.identifier === row.quantifiedLink.identifier);
+    const product = products.find((product) => product.identifier === row.quantifiedLink.identifier);
     if (undefined === product) return {...row, product: null};
 
     return {...row, product};
@@ -38,7 +38,7 @@ const filterOnLabelOrIdentifier = (searchValue: string) => (row: Row): boolean =
     -1 !== row.quantifiedLink.identifier.toLowerCase().indexOf(searchValue.toLowerCase()));
 
 const updateRowInCollection = (rows: Row[], {quantifiedLink, productType}: Row) =>
-  rows.map(row => {
+  rows.map((row) => {
     if (row.quantifiedLink.identifier !== quantifiedLink.identifier || row.productType !== productType) return row;
 
     return {...row, quantifiedLink};
@@ -46,14 +46,14 @@ const updateRowInCollection = (rows: Row[], {quantifiedLink, productType}: Row) 
 
 const removeRowFromCollection = (collection: Row[], {quantifiedLink, productType}: Row) =>
   collection.filter(
-    row => row.quantifiedLink.identifier !== quantifiedLink.identifier || row.productType !== productType
+    (row) => row.quantifiedLink.identifier !== quantifiedLink.identifier || row.productType !== productType
   );
 
 const addRowsToCollection = (collection: Row[], addedRows: Row[]) =>
   addedRows.reduce(
     (collection: Row[], addedRow: Row) => {
       const row = collection.find(
-        row =>
+        (row) =>
           addedRow.quantifiedLink.identifier === row.quantifiedLink.identifier &&
           addedRow.productType === row.productType
       );
