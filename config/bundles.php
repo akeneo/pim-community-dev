@@ -35,6 +35,8 @@ return [
     Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle::class => ['all' => true],
     FOS\OAuthServerBundle\FOSOAuthServerBundle::class => ['all' => true],
     Oneup\FlysystemBundle\OneupFlysystemBundle::class => ['all' => true],
+    Akeneo\Tool\Bundle\MessengerBundle\AkeneoMessengerBundle::class => ['all' => true],
+    Akeneo\Tool\Bundle\WebhookBundle\AkeneoWebhookBundle::class => ['all' => true],
 
     // PIM bundles
     Oro\Bundle\PimFilterBundle\PimFilterBundle::class => ['all' => true],
@@ -58,8 +60,6 @@ return [
     Akeneo\Platform\Bundle\FeatureFlagBundle\AkeneoFeatureFlagBundle::class =>  ['all' => true],
     Akeneo\Platform\CommunicationChannel\Infrastructure\Framework\Symfony\AkeneoCommunicationChannelBundle::class =>  ['all' => true],
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\AkeneoDataQualityInsightsBundle::class =>  ['all' => true],
-    Akeneo\Tool\Bundle\MessengerBundle\AkeneoMessengerBundle::class => ['all' => true],
-    Akeneo\Tool\Bundle\WebhookBundle\AkeneoWebhookBundle::class => ['all' => true],
 
     // PIM Enterprise bundle
     Akeneo\Tool\Bundle\RuleEngineBundle\AkeneoRuleEngineBundle::class => ['all' => true],
