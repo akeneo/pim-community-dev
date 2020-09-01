@@ -92,10 +92,7 @@ const IdentifiersSelector: React.FC<Props> = ({
     <Select2MultiAsyncWrapper
       {...remainingProps}
       name={name}
-      label={
-        label ||
-        translate('pim_enrich.mass_edit.product.operation.add_to_group.field')
-      }
+      label={label || translate('pim_common.identifier')}
       data-testid={id}
       hiddenLabel={hiddenLabel}
       value={value}

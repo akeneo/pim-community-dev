@@ -1,6 +1,9 @@
 import { Operator } from '../Operator';
 import { ConditionFactory } from './Condition';
-import { createAttributeCondition, getAttributeConditionModule } from './AbstractAttributeCondition';
+import {
+  createAttributeCondition,
+  getAttributeConditionModule,
+} from './AbstractAttributeCondition';
 import { AttributeType } from '../Attribute';
 import { ConditionModuleGuesser } from './ConditionModuleGuesser';
 import { IdentifierAttributeConditionLine } from '../../pages/EditRules/components/conditions/IdentifierAttributeConditionLine';
@@ -13,42 +16,42 @@ const IdentifierAttributeOperators = [
   Operator.NOT_EQUAL,
   Operator.IN_LIST,
   Operator.NOT_IN_LIST,
-]
+];
 
 type IdentifierAttributeCondition = {
   field: string;
   operator: Operator;
-  value?: string;
-}
+  value?: string | string[];
+};
 
 const createIdentifierAttributeCondition: ConditionFactory = async (
   fieldCode,
-  router,
+  router
 ) => {
   return createAttributeCondition(
     fieldCode,
     router,
     [AttributeType.IDENTIFIER],
-    IdentifierAttributeOperators[0],
-  )
-}
+    IdentifierAttributeOperators[0]
+  );
+};
 
 const getIdentifierAttributeCondtionModule: ConditionModuleGuesser = async (
   json,
-  router,
+  router
 ) => {
   return getAttributeConditionModule(
     json,
     router,
     IdentifierAttributeOperators,
     [AttributeType.IDENTIFIER],
-    IdentifierAttributeConditionLine,
-  )
-}
+    IdentifierAttributeConditionLine
+  );
+};
 
 export {
   IdentifierAttributeOperators,
   IdentifierAttributeCondition,
   getIdentifierAttributeCondtionModule,
   createIdentifierAttributeCondition,
-}
+};

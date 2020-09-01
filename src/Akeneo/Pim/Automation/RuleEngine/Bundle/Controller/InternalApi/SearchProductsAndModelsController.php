@@ -36,10 +36,10 @@ final class SearchProductsAndModelsController
         $search = $request->get('search', null);
         $options = $request->get('options', []);
         $type = $options['type'] ?? null;
-        $page = $options['page'] ?? 0;
+        $page = (int)$options['page'] ?? 1;
         $limit = (int)$options['limit'] ?? 20;
 
-        $pqb = $this->pqbFactory->create(['limit' => $limit, 'from' => $page * $limit]);
+        $pqb = $this->pqbFactory->create(['limit' => $limit, 'from' => ($page - 1) * $limit]);
         if (null !== $search) {
             $pqb->addFilter('identifier', Operators::CONTAINS, $search);
         }
