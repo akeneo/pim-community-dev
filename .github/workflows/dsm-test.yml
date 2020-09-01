@@ -19,8 +19,29 @@ jobs:
         run: cd akeneo-design-system && yarn install
       - name: Launch lint checks
         run: cd akeneo-design-system && yarn lint:check
-      - name: Launch tests
+      - name: Launch unit tests
         run: cd akeneo-design-system && yarn test:run
+      - name: Launch visual tests
+        run: cd akeneo-design-system && yarn test:visual:run
+        id: visual_test_execution
+      - name: Update visual tests
+        if: failure() && steps.visual_test_execution.outcome == 'failure'
+        run: cd akeneo-design-system && find . -name '*__image_snapshots__*'  -exec rm -rf {} \; || true && yarn test:visual:run -u
+      - uses: mdecoleman/pr-branch-name@1.0.0
+        if: failure() && steps.visual_test_execution.outcome == 'failure'
+        id: extract_branch
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push to a new branch and create pull request
+        if: failure() && steps.visual_test_execution.outcome == 'failure'
+        uses: peter-evans/create-pull-request@v3
+        with:
+          commit-message: Update visual tests for branch ${{ steps.extract_branch.outputs.branch }}
+          branch: ${{ steps.extract_branch.outputs.branch }}-visual-update
+          base: ${{ steps.extract_branch.outputs.branch }}
+          title: Update visual tests for branch ${{ steps.extract_branch.outputs.branch }}
+          body: This PR updates the visual tests for the changes in the branch ${{ steps.extract_branch.outputs.branch }}
+          assignees: ${{ github.actor }}
       - uses: actions/upload-artifact@v2
         if: failure()
         with:
