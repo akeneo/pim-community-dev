@@ -186,7 +186,7 @@ final class ConnectorProduct
      * @param array $optionLabels array of all the labels of options, indexed by option code
      *                            ['option_code' => ['en_US' => 'translation']
      */
-    public function transformOptionWithLabels(array $optionLabels): ConnectorProduct
+    public function buildLinkedData(array $optionLabels): ConnectorProduct
     {
         $values = $this->values->map(function (ValueInterface $value) use ($optionLabels) {
             if ($value instanceof OptionValue) {
