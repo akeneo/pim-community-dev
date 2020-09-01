@@ -18,16 +18,17 @@ jobs:
       - name: Install Packages
         run: cd akeneo-design-system && yarn install
       - name: Launch visual regression tests
-        run: cd akeneo-design-system && find . -name '*__image_snapshots__*'  -exec rm -rf {} \; ; yarn test:visual:run
-      - name: Extract branch name
-        shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        run: cd akeneo-design-system && find . -name '*__image_snapshots__*'  -exec rm -rf {} \; || true && yarn test:visual:run -u
+      - uses: mdecoleman/pr-branch-name@1.0.0
         id: extract_branch
-      - name: Create new branch
-        run: |
-            git config --global user.email "contact@akeneo.com" && \
-            git config --global user.name "Github Actions" && \
-            git checkout -b ${{ steps.extract_branch.outputs.branch }}-visual-update && \
-            git add -A && \
-            git commit -m "Update visual tests for branch ${{ steps.extract_branch.outputs.branch }}" && \
-            git push -u origin ${{ steps.extract_branch.outputs.branch }}-visual-update
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push to a new branch and create pull request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          commit-message: Update visual tests for branch ${{ steps.extract_branch.outputs.branch }}
+          branch: ${{ steps.extract_branch.outputs.branch }}-visual-update
+          base: ${{ steps.extract_branch.outputs.branch }}
+          title: Update visual tests for branch ${{ steps.extract_branch.outputs.branch }}
+          body: This PR updates the visual tests for the changes in the branch ${{ steps.extract_branch.outputs.branch }}
+          assignees: ${{ github.actor }}
