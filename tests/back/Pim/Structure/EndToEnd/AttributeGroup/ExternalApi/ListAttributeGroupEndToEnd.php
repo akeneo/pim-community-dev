@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Structure\EndToEnd\AttributeGroup\ExternalApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\Response;
 
 class ListAttributeGroupEndToEnd extends ApiTestCase
@@ -77,6 +78,88 @@ JSON;
     }
 }
 JSON;
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+    }
+
+    public function testListAttributeGroupsByCodes()
+    {
+        $search = '{"code":[{"operator":"IN","value":["attributeGroupA","other"]}]}';
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+
+        $client = $this->createAuthenticatedClient();
+        $client->request('GET', 'api/rest/v1/attribute-groups?limit=2&page=1&with_count=true&search=' . $search);
+
+        $standardizedAttributeGroups = $this->getStandardizedAttributeGroups();
+
+        $expected = <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http://localhost/api/rest/v1/attribute-groups?page=1&limit=2&with_count=true&search={$searchEncoded}"
+        },
+        "next": {
+            "href": "http://localhost/api/rest/v1/attribute-groups?page=2&limit=2&with_count=true&search={$searchEncoded}"
+        },
+        "first": {
+            "href": "http://localhost/api/rest/v1/attribute-groups?page=1&limit=2&with_count=true&search={$searchEncoded}"
+        }
+    },
+    "current_page": 1,
+    "items_count": 2,
+    "_embedded" : {
+        "items" : [
+            {$standardizedAttributeGroups['attributeGroupA']},
+            {$standardizedAttributeGroups['other']}
+        ]
+    }
+}
+JSON;
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+    }
+
+    public function testListAttributeGroupsByUpdatedDate()
+    {
+        $this->updateAttributeGroups();
+
+        $search = '{"updated":[{"operator":">","value":"2020-03-03T10:00:01Z"}]}';
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+
+        $client = $this->createAuthenticatedClient();
+        $client->request('GET', 'api/rest/v1/attribute-groups?limit=2&page=1&with_count=true&search=' . $search);
+
+        $standardizedAttributeGroups = $this->getStandardizedAttributeGroups();
+
+        $expected = <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http://localhost/api/rest/v1/attribute-groups?page=1&limit=2&with_count=true&search={$searchEncoded}"
+        },
+        "next": {
+            "href": "http://localhost/api/rest/v1/attribute-groups?page=2&limit=2&with_count=true&search={$searchEncoded}"
+        },
+        "first": {
+            "href": "http://localhost/api/rest/v1/attribute-groups?page=1&limit=2&with_count=true&search={$searchEncoded}"
+        }
+    },
+    "current_page": 1,
+    "items_count": 2,
+    "_embedded" : {
+        "items" : [
+            {$standardizedAttributeGroups['attributeGroupA']},
+            {$standardizedAttributeGroups['attributeGroupC']}
+        ]
+    }
+}
+JSON;
+
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
@@ -258,6 +341,18 @@ JSON;
 JSON;
 
         return $standardizedAttributeGroups;
+    }
+
+    private function updateAttributeGroups(): void
+    {
+        /** @var Connection $connection */
+        $connection = $this->get('database_connection');
+        $query = <<<SQL
+UPDATE pim_catalog_attribute_group
+SET updated = '2018-01-01 12:00:00'
+WHERE code IN ('attributeGroupB', 'other')
+SQL;
+        $connection->executeUpdate($query);
     }
 
     /**

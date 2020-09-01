@@ -9,10 +9,8 @@ import {formatCampaign} from '../../tools/formatCampaign';
 const Panel = (): JSX.Element => {
   const __ = useTranslate();
   const mediator = useMediator();
-  const cloudEEVersion = 'serenity';
   const [isOpened, setIsOpened] = useState<boolean>(false);
   const [campaign, setCampaign] = useState<string>('');
-  const [isSerenity, setIsSerenity] = useState<boolean>(false);
   const pimVersion = usePimVersion();
 
   const onClosePanel = () => {
@@ -20,7 +18,6 @@ const Panel = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (isSerenity) {
       /* istanbul ignore next: can't test the callback function */
       mediator.on('communication-channel:panel:open', () => {
         setIsOpened(true);
@@ -29,13 +26,11 @@ const Panel = (): JSX.Element => {
       mediator.on('communication-channel:panel:close', () => {
         setIsOpened(false);
       });
-    }
-  }, [isSerenity]);
+  }, []);
 
   useEffect(() => {
     if (null !== pimVersion.data) {
       setCampaign(formatCampaign(pimVersion.data.edition, pimVersion.data.version));
-      setIsSerenity(cloudEEVersion === pimVersion.data.edition.toLowerCase());
     }
   }, [pimVersion.data]);
 
@@ -51,11 +46,7 @@ const Panel = (): JSX.Element => {
   return (
     <>
       <HeaderPanel title={__('akeneo_communication_channel.panel.title')} onClickCloseButton={onClosePanel} />
-      {isSerenity ? (
         <AnnouncementList campaign={campaign} panelIsClosed={!isOpened} />
-      ) : (
-        <EmptyAnnouncementList text={__('akeneo_communication_channel.panel.list.empty')} />
-      )}
     </>
   );
 };

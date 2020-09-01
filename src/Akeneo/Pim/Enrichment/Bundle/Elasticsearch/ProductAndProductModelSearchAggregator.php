@@ -60,22 +60,6 @@ class ProductAndProductModelSearchAggregator
             );
         }
 
-        $attributeCodesWithIsEmptyOperator = $this->getAttributeCodesWithIsEmptyOperator($rawFilters);
-        if (!empty($attributeCodesWithIsEmptyOperator)) {
-            $searchQueryBuilder->addShould([
-                [
-                    'terms' => [
-                        'attributes_for_this_level' => $attributeCodesWithIsEmptyOperator,
-                    ],
-                ],
-                [
-                    'terms' => [
-                        'attributes_of_ancestors' => $attributeCodesWithIsEmptyOperator,
-                    ],
-                ],
-            ]);
-        }
-
         return $searchQueryBuilder;
     }
 
@@ -147,32 +131,5 @@ class ProductAndProductModelSearchAggregator
         }
 
         return $allChildrenCodes;
-    }
-
-    /**
-     * Returns the attribute codes for which there is a filter on with operator IsEmpty
-     *
-     * @param string[] $rawFilters
-     *
-     * @return string[]
-     */
-    private function getAttributeCodesWithIsEmptyOperator(array $rawFilters): array
-    {
-        $attributeFilters = array_filter(
-            $rawFilters,
-            function ($filter) {
-                $operator = $filter['operator'];
-
-                return
-                    'attribute' === $filter['type'] &&
-                    (
-                        Operators::IS_EMPTY === $operator ||
-                        Operators::IS_EMPTY_FOR_CURRENCY === $operator ||
-                        Operators::IS_EMPTY_ON_ALL_CURRENCIES === $operator
-                    );
-            }
-        );
-
-        return array_column($attributeFilters, 'field');
     }
 }
