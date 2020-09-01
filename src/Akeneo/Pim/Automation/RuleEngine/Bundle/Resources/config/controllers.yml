@@ -82,3 +82,9 @@ services:
             - '@pim_catalog.repository.category'
             - '@oro_security.security_facade'
             - '@@AkeneoPimEnrichment/Product/listCategories.json.twig'
+
+    pimee_enrich.controller.rule_definition.search_products_and_product_models:
+        class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi\SearchProductsAndModelsController'
+        public: true
+        arguments:
+            - '@akeneo.pim.enrichment.query.product_query_builder_from_size_factory.with_product_identifier_cursor'

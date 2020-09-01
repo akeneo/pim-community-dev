@@ -73,3 +73,8 @@ pimee_enrich_rule_definition_get_categories:
     path: /rest/rule_definition_get_categories
     defaults: { _controller: pimee_enrich.controller.rule_definition.get_categories }
     methods: [GET]
+
+pimee_enrich_rule_definition_search_products_and_product_models:
+    path: /rest/rule_definition_get_products_and_product_models
+    defaults: { _controller: pimee_enrich.controller.rule_definition.search_products_and_product_models }
+    methods: GET
