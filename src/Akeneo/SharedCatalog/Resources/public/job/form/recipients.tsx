@@ -17,6 +17,7 @@ import {
   NoResultsIllustration,
   UserSurveyIllustration,
   InfoIcon,
+  Checkbox,
 } from 'akeneosharedcatalog/akeneo-pim-community/shared';
 // @todo pull-up master: change to '@akeneo-pim-community/legacy-bridge'
 import {DependenciesProvider, useTranslate} from 'akeneosharedcatalog/akeneo-pim-community/legacy-bridge';
@@ -119,10 +120,6 @@ const ActionCell = styled(LabelCell)`
   }
 `;
 
-const Cell = styled(LabelCell)`
-  width: auto !important;
-`;
-
 const NoResults = styled.div`
   display: flex;
   flex-direction: column;
@@ -149,6 +146,43 @@ const InputWithButton = styled.div`
   margin-top: 8px;
 `;
 
+const RecipientCheckbox = styled(Checkbox)`
+  position: absolute;
+  right: 100%;
+  opacity: ${({value}) => (value ? 1 : 0)};
+  margin-right: 10px;
+`;
+
+const Cell = styled(LabelCell)`
+  width: auto !important;
+  position: relative;
+
+  :hover {
+    ${RecipientCheckbox} {
+      opacity: 1;
+    }
+  }
+`;
+
+const Footer = styled.div`
+  position: fixed;
+  left: 80px;
+  bottom: 0;
+  width: 100%;
+  height: 69px;
+  border-top: 1px solid ${({theme}: AkeneoThemedProps) => theme.color.grey80};
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background: ${({theme}: AkeneoThemedProps) => theme.color.white};
+`;
+
+const ItemsCount = styled.div`
+  width: 120px;
+  text-transform: uppercase;
+  margin: 0 20px;
+`;
+
 const Container = (props: RecipientsProps) => {
   return (
     <DependenciesProvider>
@@ -167,6 +201,7 @@ const Recipients = ({recipients, validationErrors, onRecipientsChange}: Recipien
   const [emailIsValid, setEmailIsValid] = useState<boolean>(true);
   const [emailIsDuplicated, setEmailIsDuplicated] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>('');
+  const [recipientSelection, setRecipientSelection] = useState<Recipient[]>([]);
   const inputRef = useRef<null | HTMLTextAreaElement>(null);
 
   const handleAddNewRecipient = useCallback(
@@ -225,6 +260,16 @@ const Recipients = ({recipients, validationErrors, onRecipientsChange}: Recipien
   );
 
   const maxRecipientLimitReached = MAX_RECIPIENT_COUNT <= currentRecipients.length;
+
+  const toggleRecipient = useCallback(
+    (recipient: Recipient) =>
+      setRecipientSelection(recipientSelection =>
+        recipientSelection.includes(recipient)
+          ? recipientSelection.filter(item => item !== recipient)
+          : [...recipientSelection, recipient]
+      ),
+    [recipientSelection]
+  );
 
   return (
     <Body>
@@ -285,25 +330,28 @@ const Recipients = ({recipients, validationErrors, onRecipientsChange}: Recipien
           </Row>
         </thead>
         <tbody>
-          {filteredRecipients.map((recipient, index) => (
-            <Row key={`${recipient.email}-${index}`}>
-              <Cell>
-                {recipient.email}
-                {validationErrors[index] && <ErrorMessage>{validationErrors[index].email}</ErrorMessage>}
-              </Cell>
-              <ActionCell>
-                <CloseIcon
-                  onClick={() => {
-                    setCurrentRecipients(currentRecipients =>
-                      currentRecipients.filter(currentRecipient => currentRecipient !== recipient)
-                    );
-                  }}
-                  size={20}
-                  title={translate('pim_common.delete')}
-                />
-              </ActionCell>
-            </Row>
-          ))}
+          {filteredRecipients.map((recipient, index) => {
+            const handleCheckboxChange = () => toggleRecipient(recipient);
+            const handleRecipientRemove = () => {
+              setCurrentRecipients(currentRecipients =>
+                currentRecipients.filter(currentRecipient => currentRecipient !== recipient)
+              );
+              setRecipientSelection(recipientSelection => recipientSelection.filter(item => item !== recipient));
+            };
+
+            return (
+              <Row key={`${recipient.email}-${index}`}>
+                <Cell onClick={handleCheckboxChange}>
+                  <RecipientCheckbox value={recipientSelection.includes(recipient)} onChange={handleCheckboxChange} />
+                  {recipient.email}
+                  {validationErrors[index] && <ErrorMessage>{validationErrors[index].email}</ErrorMessage>}
+                </Cell>
+                <ActionCell>
+                  <CloseIcon onClick={handleRecipientRemove} size={20} title={translate('pim_common.remove')} />
+                </ActionCell>
+              </Row>
+            );
+          })}
         </tbody>
       </Table>
       {0 === currentRecipients.length ? (
@@ -319,6 +367,35 @@ const Recipients = ({recipients, validationErrors, onRecipientsChange}: Recipien
             {translate('shared_catalog.recipients.no_result')}
           </NoResults>
         )
+      )}
+      {0 < recipientSelection.length && (
+        <Footer>
+          <label htmlFor="select-all-checkbox">
+            <Checkbox
+              id="select-all-checkbox"
+              value={currentRecipients.every(recipient => recipientSelection.includes(recipient))}
+              onChange={value => setRecipientSelection(value ? currentRecipients : [])}
+            />
+          </label>
+          <ItemsCount>
+            {translate(
+              'pim_common.items_selected',
+              {itemsCount: recipientSelection.length.toString()},
+              recipientSelection.length
+            )}
+          </ItemsCount>
+          <Button
+            color="red"
+            onClick={() => {
+              setCurrentRecipients(currentRecipients =>
+                currentRecipients.filter(currentRecipient => !recipientSelection.includes(currentRecipient))
+              );
+              setRecipientSelection([]);
+            }}
+          >
+            {translate('pim_common.delete')}
+          </Button>
+        </Footer>
       )}
     </Body>
   );
