@@ -7,9 +7,9 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
-use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueWithLabels;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueWithLinkedData;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
-use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueWithLabels;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueWithLinkedData;
 
 /**
  * This read model is dedicated to export product data for the connector, such as the API.
@@ -190,7 +190,7 @@ final class ConnectorProduct
     {
         $values = $this->values->map(function (ValueInterface $value) use ($optionLabels) {
             if ($value instanceof OptionValue) {
-                return new OptionValueWithLabels(
+                return new OptionValueWithLinkedData(
                     $value->getAttributeCode(),
                     $value->getData(),
                     $value->getScopeCode(),
@@ -202,21 +202,21 @@ final class ConnectorProduct
                     ],
                 );
             } elseif ($value instanceof OptionsValue) {
-                $linked_data = [];
+                $linkedData = [];
                 foreach ($value->getData() as $optionCode) {
-                    $linked_data[$optionCode] = [
+                    $linkedData[$optionCode] = [
                         "attribute" => $value->getAttributeCode(),
                         "code"=> $optionCode,
                         "labels" => $optionLabels[$value->getAttributeCode()][$optionCode] ?? [],
                     ];
                 }
 
-                return new OptionsValueWithLabels(
+                return new OptionsValueWithLinkedData(
                     $value->getAttributeCode(),
                     $value->getData(),
                     $value->getScopeCode(),
                     $value->getLocaleCode(),
-                    $linked_data
+                    $linkedData
                 );
             } else {
                 return $value;

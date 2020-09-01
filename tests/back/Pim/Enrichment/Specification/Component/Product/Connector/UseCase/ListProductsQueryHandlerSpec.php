@@ -31,7 +31,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         PrimaryKeyEncrypter $primaryKeyEncrypter,
         GetConnectorProducts $getConnectorProducts,
-        GetConnectorProducts $getConnectorProductswithOptionLabel,
+        GetConnectorProducts $getConnectorProductsWithOptions,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->beConstructedWith(
@@ -41,9 +41,73 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             $searchAfterPqbFactory,
             $primaryKeyEncrypter,
             $getConnectorProducts,
-            $getConnectorProductswithOptionLabel,
+            $getConnectorProductsWithOptions,
             $eventDispatcher
         );
+    }
+
+    function it_gets_connector_products_with_attribute_options(
+        ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
+        ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
+        ProductQueryBuilderInterface $pqb,
+        GetConnectorProducts $getConnectorProductsWithOptions
+    ) {
+        $query = new ListProductsQuery();
+        $query->paginationType = PaginationTypes::OFFSET;
+        $query->limit = 42;
+        $query->page = 69;
+        $query->channelCode = 'tablet';
+        $query->localeCodes = ['en_US'];
+        $query->attributeCodes = ['name'];
+        $query->userId = 1;
+        $query->withAttributeOptions = 'true';
+
+        $fromSizePqbFactory->create([
+            'limit' => 42,
+            'from' => 2856
+        ])->shouldBeCalled()->willReturn($pqb);
+
+        $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
+
+        $connectorProduct1 = new ConnectorProduct(
+            1,
+            'identifier_1',
+            new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
+            true,
+            'family_code',
+            ['category_code_1', 'category_code_2'],
+            ['group_code_1', 'group_code_2'],
+            'parent_product_model_code',
+            [],
+            [],
+            [],
+            new ReadValueCollection()
+        );
+
+        $connectorProduct2 = new ConnectorProduct(
+            2,
+            'identifier_2',
+            new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
+            true,
+            'family_code',
+            ['category_code_3', 'category_code_2'],
+            ['group_code_1', 'group_code_2'],
+            'parent_product_model_code',
+            [],
+            [],
+            [],
+            new ReadValueCollection()
+        );
+
+        $getConnectorProductsWithOptions
+            ->fromProductQueryBuilder($pqb, 1, ['name'], 'tablet', ['en_US'])
+            ->willReturn(new ConnectorProductList(2, [$connectorProduct1, $connectorProduct2]));
+
+        $searchAfterPqbFactory->create(Argument::cetera())->shouldNotBeCalled();
+
+        $this->handle($query)->shouldBeLike(new ConnectorProductList(2, [$connectorProduct1, $connectorProduct2]));
     }
 
     function it_gets_connector_products_with_offset_method(

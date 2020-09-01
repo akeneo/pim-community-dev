@@ -1018,19 +1018,19 @@ JSON;
     "parent": "prod_mod_optA",
     "values": {
         "a_simple_select": [
-                        {
-                            "locale": null,
-                            "scope": null,
-                            "data": "optionA",
-                            "linked_data": {
-                                "attribute": "a_simple_select",
-                                "code": "optionA",
-                                "labels": {
-                                    "en_US": "Option A"
-                                }
-                            }
-                        }
-                    ],
+            {
+                "locale": null,
+                "scope": null,
+                "data": "optionA",
+                "linked_data": {
+                    "attribute": "a_simple_select",
+                     "code": "optionA",
+                     "labels": {
+                        "en_US": "Option A"
+                     }
+                }
+            }
+        ],
         "a_price": [{ "locale": null, "scope": null, "data": [{ "amount": "50.00", "currency": "EUR" }] }],
         "a_yes_no": [{ "locale": null, "scope": null, "data": true }],
         "a_number_float": [{ "locale": null, "scope": null, "data": "12.5000" }],
