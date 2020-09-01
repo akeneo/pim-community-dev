@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\ReferenceEntity\Component\Connector\FlatTranslator\FlatAttributeValueTranslator;
 
-use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Connector\FlatTranslator\FlatAttributeValueTranslator\ReferenceEntityMultipleLinkValueFlatTranslator;
+use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Connector\FlatTranslator\FlatAttributeValueTranslator\ReferenceEntityMultipleLinkValueTranslator;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslations;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ReferenceEntityMultipleLinkValueFlatTranslatorSpec extends ObjectBehavior
+class ReferenceEntityMultipleLinkValueTranslatorSpec extends ObjectBehavior
 {
     function let(FindRecordsLabelTranslations $findRecordsLabelTranslations)
     {
@@ -23,7 +22,7 @@ class ReferenceEntityMultipleLinkValueFlatTranslatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->beAnInstanceOf(ReferenceEntityMultipleLinkValueFlatTranslator::class);
+        $this->beAnInstanceOf(ReferenceEntityMultipleLinkValueTranslator::class);
     }
 
     function it_supports_reference_entity_multiple_link_attributes()

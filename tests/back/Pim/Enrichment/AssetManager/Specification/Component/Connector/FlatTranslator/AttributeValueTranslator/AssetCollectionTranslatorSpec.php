@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\AssetManager\Component\Connector\FlatTranslator\AttributeValueTranslator;
 
 use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\FindAssetLabelTranslation;
-use Akeneo\Pim\Enrichment\AssetManager\Component\Connector\FlatTranslator\AttributeValueTranslator\AssetCollectionFlatTranslator;
+use Akeneo\Pim\Enrichment\AssetManager\Component\Connector\FlatTranslator\AttributeValueTranslator\AssetCollectionTranslator;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -13,7 +13,7 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssetCollectionFlatTranslatorSpec extends ObjectBehavior
+class AssetCollectionTranslatorSpec extends ObjectBehavior
 {
     function let(findAssetLabelTranslation $findAssetLabelTranslation)
     {
@@ -21,7 +21,7 @@ class AssetCollectionFlatTranslatorSpec extends ObjectBehavior
     }
 
     function it_is_initializable() {
-        $this->shouldHaveType(AssetCollectionFlatTranslator::class);
+        $this->shouldHaveType(AssetCollectionTranslator::class);
     }
 
     function it_only_supports_asset_collection_attributes()

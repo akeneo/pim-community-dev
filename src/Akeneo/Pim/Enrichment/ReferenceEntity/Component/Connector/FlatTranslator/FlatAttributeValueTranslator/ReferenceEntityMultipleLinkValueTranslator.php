@@ -14,7 +14,7 @@ use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTrans
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ReferenceEntityMultipleLinkValueFlatTranslator implements FlatAttributeValueTranslatorInterface
+class ReferenceEntityMultipleLinkValueTranslator implements FlatAttributeValueTranslatorInterface
 {
     /** @var FindRecordsLabelTranslations */
     private $findRecordsLabelTranslations;
@@ -38,7 +38,7 @@ class ReferenceEntityMultipleLinkValueFlatTranslator implements FlatAttributeVal
         $recordCodes = $this->extractRecordCodes($values);
 
         $referenceEntityIdentifier = $properties['reference_data_name'];
-        $assetTranslations = $this->findRecordsLabelTranslations->find($referenceEntityIdentifier, $recordCodes, $locale);
+        $recordTranslations = $this->findRecordsLabelTranslations->find($referenceEntityIdentifier, $recordCodes, $locale);
 
         $result = [];
         foreach ($values as $valueIndex => $value) {
@@ -51,7 +51,7 @@ class ReferenceEntityMultipleLinkValueFlatTranslator implements FlatAttributeVal
 
             $recordLabels = [];
             foreach ($currentRecordCodes as $currentRecordCode) {
-                $recordLabels[] = $assetTranslations[$currentRecordCode] ?? sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $currentRecordCode);
+                $recordLabels[] = $recordTranslations[$currentRecordCode] ?? sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $currentRecordCode);
             }
 
             $result[$valueIndex] = implode(',', $recordLabels);

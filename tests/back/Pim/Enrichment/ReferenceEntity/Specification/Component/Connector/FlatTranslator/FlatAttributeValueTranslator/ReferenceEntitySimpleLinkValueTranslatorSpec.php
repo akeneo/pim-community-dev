@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\ReferenceEntity\Component\Connector\FlatTranslator\FlatAttributeValueTranslator;
 
-use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Connector\FlatTranslator\FlatAttributeValueTranslator\ReferenceEntitySimpleLinkValueFlatTranslator;
+use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Connector\FlatTranslator\FlatAttributeValueTranslator\ReferenceEntitySimpleLinkValueTranslator;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslations;
 use PhpSpec\ObjectBehavior;
 
@@ -13,7 +13,7 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ReferenceEntitySimpleLinkValueFlatTranslatorSpec extends ObjectBehavior
+class ReferenceEntitySimpleLinkValueTranslatorSpec extends ObjectBehavior
 {
     function let(FindRecordsLabelTranslations $findRecordsLabelTranslations)
     {
@@ -22,7 +22,7 @@ class ReferenceEntitySimpleLinkValueFlatTranslatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->beAnInstanceOf(ReferenceEntitySimpleLinkValueFlatTranslator::class);
+        $this->beAnInstanceOf(ReferenceEntitySimpleLinkValueTranslator::class);
     }
 
     function it_supports_reference_entity_single_link_attributes()
