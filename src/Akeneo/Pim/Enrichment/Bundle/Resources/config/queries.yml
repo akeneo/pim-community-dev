@@ -314,6 +314,16 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo.pim.enrichment.product.query.get_product_model_labels:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\SqlGetProductModelLabels'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.product.query.get_product_labels:
+        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\SqlGetProductLabels
+        arguments:
+            - '@database_connection'
+
     akeneo.pim.enrichment.product.query.find_quantified_association_codes:
         class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\FindQuantifiedAssociationTypeCodes
         arguments:

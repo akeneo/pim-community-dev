@@ -5,6 +5,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -131,6 +132,17 @@ abstract class AbstractExportTestCase extends TestCase
         $this->get('pim_catalog.saver.attribute')->save($attribute);
 
         return $attribute;
+    }
+
+    protected function createAssociationType(array $data = []) : AssociationType
+    {
+        $associationType = $this->get('pim_catalog.factory.association_type')->create();
+        $this->get('pim_catalog.updater.association_type')->update($associationType, $data);
+        $constraintList = $this->get('validator')->validate($associationType);
+        $this->assertEquals(0, $constraintList->count());
+        $this->get('pim_catalog.saver.association_type')->save($associationType);
+
+        return $associationType;
     }
 
     /**

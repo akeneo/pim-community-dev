@@ -2,22 +2,39 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator;
 
-use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\HeaderRegistry;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AssociationTranslator;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyValue\FlatPropertyValueTranslatorInterface;
 
 class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
 {
     /** @var HeaderRegistry */
     private $headerRegistry;
 
+    /** @var PropertyValueRegistry */
+    private $propertyValueRegistry;
+
+    /** @var AttributeValuesFlatTranslator */
+    private $attributeValuesFlatTranslator;
+
+    /** @var AssociationTranslator */
+    private $associationTranslator;
+
     public function __construct(
-        HeaderRegistry $headerRegistry
+        HeaderRegistry $headerRegistry,
+        PropertyValueRegistry $propertyValueRegistry,
+        AttributeValuesFlatTranslator $attributeValuesFlatTranslator,
+        AssociationTranslator $associationTranslator
     ) {
         $this->headerRegistry = $headerRegistry;
+        $this->propertyValueRegistry = $propertyValueRegistry;
+        $this->attributeValuesFlatTranslator = $attributeValuesFlatTranslator;
+        $this->associationTranslator = $associationTranslator;
     }
 
     public function translate(array $flatItems, string $locale, string $scope, bool $translateHeaders): array
     {
         $flatItemsByColumnName = $this->groupFlatItemsByColumnName($flatItems);
+        $flatItemsByColumnName = $this->translateValues($flatItemsByColumnName, $locale, $scope);
 
         if ($translateHeaders) {
             $flatItemsByColumnName = $this->translateHeaders($flatItemsByColumnName, $locale);
@@ -34,17 +51,51 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
 
         $results = [];
         foreach ($flatItemsByColumnName as $columnName => $flatItemValues) {
-            $columnLabelized = sprintf("[%s]", $columnName);
-
             $translator = $this->headerRegistry->getTranslator($columnName);
-            if ($translator !== null) {
-                $columnLabelized = $translator->translate($columnName, $locale);
-            }
-
+            $columnLabelized = null !== $translator ? $translator->translate($columnName, $locale) :
+                sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $columnName);
             $results[$columnLabelized] = $flatItemValues;
         }
 
         return $results;
+    }
+
+    public function translateValues(array $flatItemsByColumnName, string $locale, string $channel): array
+    {
+        $result = [];
+        foreach ($flatItemsByColumnName as $columnName => $values) {
+            if ($this->areValuesEmpty($values)) {
+                $result[$columnName] = $values;
+                continue;
+            }
+
+            $propertyValueTranslator = $this->propertyValueRegistry->getTranslator($columnName);
+            if ($propertyValueTranslator instanceof FlatPropertyValueTranslatorInterface) {
+                $result[$columnName] = $propertyValueTranslator->translate($values, $locale, $channel);
+                continue;
+            }
+
+            if ($this->attributeValuesFlatTranslator->supports($columnName)) {
+                $result[$columnName] = $this->attributeValuesFlatTranslator->translate($columnName, $values, $locale);
+                continue;
+            }
+
+            if ($this->associationTranslator->supports($columnName)) {
+                $result[$columnName] = $this->associationTranslator->translate($columnName, $values, $locale, $channel);
+                continue;
+            }
+
+            $result[$columnName] = $values;
+        }
+
+        return $result;
+    }
+
+    private function areValuesEmpty(array $values): bool
+    {
+        return 0 === count(array_filter($values, function ($value) {
+            return '' !== $value;
+        }));
     }
 
     /**
