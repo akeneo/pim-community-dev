@@ -1,22 +1,21 @@
 import {applyMiddleware, combineReducers, createStore, Store} from 'redux';
 import {composeWithDevTools} from 'redux-devtools-extension';
 
+import {productEditorHighlightReducer, ProductEditorHighlightState,} from "../reducer";
 import {
   catalogContextReducer,
   CatalogContextState,
   pageContextReducer,
   productAxesRatesReducer,
   ProductAxesRatesState,
-  productEditorHighlightReducer,
-  ProductEditorHighlightState,
   productEvaluationReducer,
   ProductEvaluationState,
   productFamilyInformationReducer,
   ProductFamilyInformationState,
   productReducer,
   ProductState,
-} from "../reducer";
-import {ProductEditFormPageContextState} from "../../application/state/PageContextState";
+} from "@akeneo-pim-community/data-quality-insights/src/infrastructure/reducer";
+import {ProductEditFormPageContextState} from "@akeneo-pim-community/data-quality-insights/src/application/state/PageContextState";
 
 export interface ProductEditFormState {
   catalogContext: CatalogContextState;

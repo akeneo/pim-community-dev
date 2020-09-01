@@ -1,15 +1,9 @@
 imports:
-    - { resource: ../../../src/Akeneo/Pim/Automation/FranklinInsights/tests/back/Acceptance/Resources/config/pim/data_providers.yml }
-    - { resource: ../../../src/Akeneo/Pim/Automation/FranklinInsights/tests/back/EndToEnd/Resources/config/behat/services.yml }
     - { resource: ../../../tests/back/Acceptance/Resources/config/pim/queries.yml }
     - { resource: ../../../tests/back/Acceptance/Resources/config/pim/repositories.yml }
     - { resource: ../../../vendor/akeneo/pim-community-dev/tests/back/Platform/Acceptance/CatalogVolumeMonitoring/Resources/config/pim/queries.yml }
-    - { resource: ../../../src/Akeneo/Pim/Automation/FranklinInsights/tests/back/Acceptance/Resources/config/pim/repositories.yml }
-    - { resource: ../../../src/Akeneo/Pim/Automation/FranklinInsights/tests/back/Acceptance/Resources/config/pim/services.yml }
-    - { resource: ../../../src/Akeneo/Pim/Automation/FranklinInsights/tests/back/Acceptance/Resources/config/pim/queries.yml }
     - { resource: ../../../vendor/akeneo/pim-community-dev/tests/back/Acceptance/Resources/config/behat/services.yml }
     - { resource: ../../../vendor/akeneo/pim-community-dev/tests/back/Platform/Acceptance/CatalogVolumeMonitoring/Resources/config/behat/services.yml }
-    - { resource: ../../../src/Akeneo/Pim/Automation/FranklinInsights/tests/back/Acceptance/Resources/config/behat/contexts.yml }
     - { resource: ../../../tests/back/Platform/Acceptance/Resources/config/services.yml }
     - { resource: ../../../tests/back/Acceptance/Resources/config/behat/services.yml }
     # Reference Entity

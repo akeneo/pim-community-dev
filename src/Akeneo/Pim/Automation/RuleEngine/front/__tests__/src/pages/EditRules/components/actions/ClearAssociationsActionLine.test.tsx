@@ -3,8 +3,6 @@ import { renderWithProviders } from '../../../../../../test-utils';
 import { ClearAssociationsActionLine } from '../../../../../../src/pages/EditRules/components/actions/ClearAssociationsActionLine';
 import { locales, scopes } from '../../../../factories';
 
-jest.mock('../../../../../../src/fetch/categoryTree.fetcher.ts');
-
 describe('ClearAssociationsActionLine', () => {
   it('should display the clear associations action line', async () => {
     const {

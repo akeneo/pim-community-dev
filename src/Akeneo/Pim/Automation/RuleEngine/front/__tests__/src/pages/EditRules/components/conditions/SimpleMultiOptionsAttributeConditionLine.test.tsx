@@ -12,10 +12,6 @@ import {
 } from '../../../../factories';
 import { clearAttributeRepositoryCache } from '../../../../../../src/repositories/AttributeRepository';
 
-jest.mock('../../../../../../src/fetch/categoryTree.fetcher');
-jest.mock('../../../../../../src/dependenciesTools/provider/dependencies.ts');
-jest.mock('../../../../../../src/components/Select2Wrapper/Select2Wrapper');
-
 describe('SimpleMultiOptionsAttributeConditionLine', () => {
   beforeEach(() => {
     jest.clearAllMocks();

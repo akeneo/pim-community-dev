@@ -1,5 +1,5 @@
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { Operator } from '../../../../models/Operator';
 import { Locale, LocaleCode } from '../../../../models';
 import {
@@ -12,8 +12,8 @@ import {
 } from '../../../../components/Selectors/LocaleSelector';
 import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
 import {
-  AttributeConditionLineFormContainer,
-  AttributeConditionLineFormAndErrorsContainer,
+  ConditionLineFormContainer,
+  ConditionLineFormAndErrorsContainer,
   ConditionErrorLine,
   FieldColumn,
   LocaleColumn,
@@ -42,6 +42,7 @@ type AttributeConditionLineProps = {
   lineNumber: number;
   locales: Locale[];
   scopes: IndexedScopes;
+  valueHasError?: boolean;
 };
 
 const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
@@ -54,9 +55,9 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
   lineNumber,
   locales,
   scopes,
+  valueHasError = false,
 }) => {
   const translate = useTranslate();
-  const { errors } = useFormContext();
   const {
     fieldFormName,
     operatorFormName,
@@ -65,6 +66,7 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
     getLocaleFormValue,
     getOperatorFormValue,
     getScopeFormValue,
+    isFormFieldInError,
   } = useControlledFormInputCondition<string[]>(lineNumber);
 
   const getAvailableLocales = (): Locale[] => {
@@ -106,13 +108,9 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
     );
   }
 
-  const isElementInError = (element: string): boolean =>
-    typeof errors?.content?.conditions?.[lineNumber]?.[element] === 'object';
-
   return (
-    <AttributeConditionLineFormAndErrorsContainer
-      className={'AknGrid-bodyCell'}>
-      <AttributeConditionLineFormContainer>
+    <ConditionLineFormAndErrorsContainer className={'AknGrid-bodyCell'}>
+      <ConditionLineFormContainer>
         <FieldColumn className={'AknGrid-bodyCell--highlight'} title={title}>
           {title}
         </FieldColumn>
@@ -132,14 +130,14 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
             value={getOperatorFormValue()}
           />
         </OperatorColumn>
-        <ValueColumn>
+        <ValueColumn className={valueHasError ? 'select2-container-error' : ''}>
           {shouldDisplayValue(getOperatorFormValue() ?? defaultOperator) &&
             children}
         </ValueColumn>
         {(attribute.scopable || getScopeFormValue()) && (
           <ScopeColumn
             className={
-              isElementInError('scope') ? 'select2-container-error' : ''
+              isFormFieldInError('scope') ? 'select2-container-error' : ''
             }>
             <Controller
               allowClear={!attribute.scopable}
@@ -163,7 +161,7 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
         {(attribute.localizable || getLocaleFormValue()) && (
           <LocaleColumn
             className={
-              isElementInError('locale') ? 'select2-container-error' : ''
+              isFormFieldInError('locale') ? 'select2-container-error' : ''
             }>
             <Controller
               as={LocaleSelector}
@@ -185,9 +183,9 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
             />
           </LocaleColumn>
         )}
-      </AttributeConditionLineFormContainer>
+      </ConditionLineFormContainer>
       <LineErrors lineNumber={lineNumber} type='conditions' />
-    </AttributeConditionLineFormAndErrorsContainer>
+    </ConditionLineFormAndErrorsContainer>
   );
 };
 

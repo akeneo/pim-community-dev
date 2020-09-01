@@ -16,12 +16,10 @@ class UpdateListOfProductsEndToEnd extends AbstractProductTestCase
         "values": {
             "a_metric_without_decimal_negative": [
                 {
-                    "data": [
-                        {
-                            "amount": "-273",
-                            "unit": "CELSIUS"
-                        }
-                    ],
+                    "data": {
+                        "amount": "-273",
+                        "unit": "CELSIUS"
+                    },
                     "locale": null,
                     "scope": null
                 }
@@ -44,7 +42,7 @@ JSON;
     public function testFailedToUpdateListOfNotExistingProductsWithNotGrantedAttribute()
     {
         $data = <<<JSON
-    {"identifier": "not_existing_product", "values": {"a_metric_without_decimal_negative": [{"data": [{"amount": "-273", "unit": "CELSIUS"}], "locale": null, "scope": null}]}}
+    {"identifier": "not_existing_product", "values": {"a_metric_without_decimal_negative": [{"data": {"amount": "-273", "unit": "CELSIUS"}, "locale": null, "scope": null}]}}
     {"identifier": "toto"}
 JSON;
         $expectedContent = <<<JSON

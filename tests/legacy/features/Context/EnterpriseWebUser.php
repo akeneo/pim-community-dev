@@ -29,7 +29,6 @@ class EnterpriseWebUser extends BaseWebUser
             ->getPage('Batch Operation')
             ->addStep('Publish', 'Batch Publish')
             ->addStep('Unpublish', 'Batch Unpublish')
-            ->addStep('Franklin Insights Subscriptions', 'Batch FranklinInsights Subscription')
             ->chooseOperation($operation)
             ->choose();
 

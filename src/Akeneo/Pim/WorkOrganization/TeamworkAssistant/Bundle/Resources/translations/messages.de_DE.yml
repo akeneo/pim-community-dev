@@ -14,11 +14,11 @@ teamwork_assistant:
     message: Es müssen neue Produkte angereichert werden für "%project_label%". Das Fälligkeitsdatum ist "%due_date%".
     project_finished:
       contributor: Glückwunsch! Sie haben 100% vollständige Produkte in %project_label%.
-      owner: '%project_label% für den %due_date% ist fertiggestellt.'
+      owner: 'Das für den <strong>%due_date%</strong> fällige Projekt <strong>%project_label%</strong> ist beendet.'
       show: Anzeigen
     due_date:
       contributor: Sie haben %percent%% der Produkte in %project_label% vollständig. Vergessen Sie nicht, die fehlenden Produkte bis zum %due_date% zu vervollständigen.
-      owner: '%project_label% für den %due_date% ist nicht vollständig.'
+      owner: 'Das für den <strong>%due_date%</strong> fällige Projekt <strong>%project_label%</strong> ist nicht 100% erledigt.'
       start: Start
   datagrid:
     project_completeness: Projektfortschritt

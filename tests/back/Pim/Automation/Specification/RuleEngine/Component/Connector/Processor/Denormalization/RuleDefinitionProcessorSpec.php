@@ -4,17 +4,17 @@ namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Connector\Pro
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateOrUpdateRuleCommand;
 use Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Denormalization\RuleDefinitionProcessor;
+use Akeneo\Pim\Automation\RuleEngine\Component\Updater\RuleDefinitionUpdaterInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
-use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -28,7 +28,7 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $repository,
         DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
-        ObjectDetacherInterface $detacher,
+        RuleDefinitionUpdaterInterface $ruleDefinitionUpdater,
         AttributeRepositoryInterface $attributeRepository,
         FileStorerInterface $fileStorer
     ) {
@@ -36,7 +36,7 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
             $repository,
             $denormalizer,
             $validator,
-            $detacher,
+            $ruleDefinitionUpdater,
             $attributeRepository,
             $fileStorer,
             RuleDefinition::class,
@@ -60,6 +60,7 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $repository,
         DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
+        RuleDefinitionUpdaterInterface $ruleDefinitionUpdater,
         RuleInterface $rule
     ) {
         $item = [
@@ -67,12 +68,6 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
             'priority'   => 100,
             'conditions' => [
                 ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo'],
-                ['field'    => 'clothing_size',
-                 'operator' => 'NOT LIKE',
-                 'value'    => 'XL',
-                 'locale'   => 'fr_FR',
-                 'scope'    => 'ecommerce',
-                ],
             ],
             'actions'    => [
                 ['type'   => 'set_value',
@@ -81,18 +76,12 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
                  'locale' => 'en_US',
                  'scope'  => 'tablet',
                 ],
-                ['type'        => 'copy_value',
-                 'from_field'  => 'description',
-                 'to_field'    => 'description',
-                 'from_locale' => 'fr_FR',
-                 'to_locale'   => 'fr_CH',
-                ],
             ],
         ];
 
         $repository->findOneByIdentifier('discharge_fr_description')->shouldBeCalledOnce()->willReturn(null);
         $denormalizer->denormalize(
-            $item,
+            Argument::type('array'),
             Rule::class,
             null,
             ['definitionObject' => null]
@@ -101,183 +90,51 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn(new ConstraintViolationList([]));
 
-        $rule->getCode()->willReturn('discharge_fr_description');
-        $rule->getPriority()->willReturn(100);
-        $rule->getType()->willReturn('product');
-        $rule->getContent()->willReturn(
-            [
-                'conditions' => [
-                    ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo'],
-                    ['field'    => 'clothing_size',
-                     'operator' => 'NOT LIKE',
-                     'value'    => 'XL',
-                     'locale'   => 'fr_FR',
-                     'scope'    => 'ecommerce',
-                    ],
-                ],
-                'actions'    => [
-                    ['type'   => 'set_value',
-                     'field'  => 'name',
-                     'value'  => 'awesome-jacket',
-                     'locale' => 'en_US',
-                     'scope'  => 'tablet',
-                    ],
-                    ['type'        => 'copy_value',
-                     'from_field'  => 'description',
-                     'to_field'    => 'description',
-                     'from_locale' => 'fr_FR',
-                     'to_locale'   => 'fr_CH',
-                    ],
-                ],
-            ]
-        );
-        $rule->getTranslations()->willReturn(new ArrayCollection([]));
+        $ruleDefinitionUpdater->fromRule(Argument::type(RuleDefinition::class), $rule)->shouldBeCalled();
 
-        $definition = new RuleDefinition();
-        $definition->setCode('discharge_fr_description');
-        $definition->setPriority(100);
-        $definition->setType('product');
-        $definition->setContent(
-            [
-                'conditions' => [
-                    ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo'],
-                    ['field'    => 'clothing_size',
-                     'operator' => 'NOT LIKE',
-                     'value'    => 'XL',
-                     'locale'   => 'fr_FR',
-                     'scope'    => 'ecommerce',
-                    ],
-                ],
-                'actions'    => [
-                    ['type'   => 'set_value',
-                     'field'  => 'name',
-                     'value'  => 'awesome-jacket',
-                     'locale' => 'en_US',
-                     'scope'  => 'tablet',
-                    ],
-                    ['type'        => 'copy_value',
-                     'from_field'  => 'description',
-                     'to_field'    => 'description',
-                     'from_locale' => 'fr_FR',
-                     'to_locale'   => 'fr_CH',
-                    ],
-                ],
-            ]
-        );
-
-        $this->process($item)->shouldBeValidRuleDefinition($definition);
+        $this->process($item)->shouldBeAnInstanceOf(RuleDefinition::class);
     }
 
     function it_processes_an_existing_valid_item(
         IdentifiableObjectRepositoryInterface $repository,
         DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
+        RuleDefinitionUpdaterInterface $ruleDefinitionUpdater,
+        RuleDefinitionInterface $ruleDefinition,
         RuleInterface $rule
     ) {
         $item = [
-            'code'       => 'discharge_fr_description',
-            'priority'   => 100,
+            'code' => 'discharge_fr_description',
+            'priority' => 100,
             'conditions' => [
                 ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo'],
-                ['field'    => 'clothing_size',
-                 'operator' => 'NOT LIKE',
-                 'value'    => 'XL',
-                 'locale'   => 'fr_FR',
-                 'scope'    => 'ecommerce',
-                ],
             ],
-            'actions'    => [
-                ['type'   => 'set_value',
-                 'field'  => 'name',
-                 'value'  => 'awesome-jacket',
-                 'locale' => 'en_US',
-                 'scope'  => 'tablet',
-                ],
-                ['type'        => 'copy_value',
-                 'from_field'  => 'description',
-                 'to_field'    => 'description',
-                 'from_locale' => 'fr_FR',
-                 'to_locale'   => 'fr_CH',
+            'actions' => [
+                [
+                    'type' => 'set_value',
+                    'field' => 'name',
+                    'value' => 'awesome-jacket',
+                    'locale' => 'en_US',
+                    'scope' => 'tablet',
                 ],
             ],
         ];
 
-        $rule->getCode()->willReturn('discharge_fr_description');
-        $rule->getPriority()->willReturn(100);
-        $rule->getType()->willReturn('product');
-        $rule->getContent()->willReturn(
-            [
-                'conditions' => [
-                    ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo'],
-                    ['field'    => 'clothing_size',
-                     'operator' => 'NOT LIKE',
-                     'value'    => 'XL',
-                     'locale'   => 'fr_FR',
-                     'scope'    => 'ecommerce',
-                    ],
-                ],
-                'actions'    => [
-                    ['type'   => 'set_value',
-                     'field'  => 'name',
-                     'value'  => 'awesome-jacket',
-                     'locale' => 'en_US',
-                     'scope'  => 'tablet',
-                    ],
-                    ['type'        => 'copy_value',
-                     'from_field'  => 'description',
-                     'to_field'    => 'description',
-                     'from_locale' => 'fr_FR',
-                     'to_locale'   => 'fr_CH',
-                    ],
-                ],
-            ]
-        );
-        $rule->getTranslations()->willReturn(new ArrayCollection([]));
-
-        $definition = new RuleDefinition();
-        $definition->setCode('discharge_fr_description');
-        $definition->setPriority(100);
-        $definition->setType('product');
-        $definition->setContent(
-            [
-                'conditions' => [
-                    ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo'],
-                    ['field'    => 'clothing_size',
-                     'operator' => 'NOT LIKE',
-                     'value'    => 'XL',
-                     'locale'   => 'fr_FR',
-                     'scope'    => 'ecommerce',
-                    ],
-                ],
-                'actions'    => [
-                    ['type'   => 'set_value',
-                     'field'  => 'name',
-                     'value'  => 'awesome-jacket',
-                     'locale' => 'en_US',
-                     'scope'  => 'tablet',
-                    ],
-                    ['type'        => 'copy_value',
-                     'from_field'  => 'description',
-                     'to_field'    => 'description',
-                     'from_locale' => 'fr_FR',
-                     'to_locale'   => 'fr_CH',
-                    ],
-                ],
-            ]
-        );
-
-        $repository->findOneByIdentifier(Argument::any())->shouldBeCalled()->willReturn($definition);
+        $repository->findOneByIdentifier('discharge_fr_description')->shouldBeCalledOnce()->willReturn($ruleDefinition);
         $denormalizer->denormalize(
-            $item,
+            Argument::type('array'),
             Rule::class,
             null,
-            ['definitionObject' => $definition]
+            ['definitionObject' => $ruleDefinition]
         )->shouldBeCalled()->willReturn($rule);
         $validator->validate(Argument::type(CreateOrUpdateRuleCommand::class), null, ['Default', 'import'])
-            ->shouldBeCalled()
-            ->willReturn(new ConstraintViolationList([]));
+                  ->shouldBeCalled()
+                  ->willReturn(new ConstraintViolationList([]));
 
-        $this->process($item)->shouldBeValidRuleDefinition($definition);
+        $ruleDefinitionUpdater->fromRule($ruleDefinition, $rule)->shouldBeCalled();
+
+        $definition = $this->process($item);
+        $definition->shouldReturn($ruleDefinition);
     }
 
     function it_skips_an_invalid_item(
@@ -292,12 +149,6 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
             'priority'   => 100,
             'conditions' => [
                 ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo'],
-                ['field'    => 'clothing_size',
-                 'operator' => 'NOT LIKE',
-                 'value'    => 'XL',
-                 'locale'   => 'fr_FR',
-                 'scope'    => 'ecommerce',
-                ],
             ],
             'actions'    => [
                 ['type'   => 'set_value',
@@ -305,12 +156,6 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
                  'value'  => 'awesome-jacket',
                  'locale' => 'en_US',
                  'scope'  => 'tablet',
-                ],
-                ['type'        => 'copy_value',
-                 'from_field'  => 'description',
-                 'to_field'    => 'description',
-                 'from_locale' => 'fr_FR',
-                 'to_locale'   => 'fr_CH',
                 ],
             ],
         ];
@@ -329,17 +174,5 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
 
         $this->shouldThrow(InvalidItemException::class)->during('process', [$item]);
-    }
-
-    function getMatchers(): array
-    {
-        return [
-            'beValidRuleDefinition' => function ($subject, $expected) {
-                return $subject->getCode() === $expected->getCode() &&
-                    $subject->getPriority() === $expected->getPriority() &&
-                    $subject->getType() === $expected->getType() &&
-                    $subject->getContent() === $expected->getContent();
-            },
-        ];
     }
 }

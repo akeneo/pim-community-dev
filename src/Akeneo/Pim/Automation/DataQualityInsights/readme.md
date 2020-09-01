@@ -41,11 +41,11 @@ The migration scripts handle:
 
 ## PIM Lifecycle
 On product save (unitary save only):
-- we persist all the criteria in a `PENDING` status in the table `pimee_data_quality_insights_product_criteria_evaluation`
+- we persist all the criteria in a `PENDING` status in the table `pim_data_quality_insights_product_criteria_evaluation`
 - synchonous evaluations are performed for eligible criteria (providing a fastest feedback loop)
 - asynchronous evaluations are performed for criteria that rely on a third party HTTP call
 
-A CRON `pimee:data-quality-insights:evaluations` is configured to run every 30 min.  
+A CRON `pim:data-quality-insights:evaluations` is configured to run every 30 min.  
 To ensure a non-concurrency behavior this CRON adds a job and run it as a subprocess.  
 We find all the pending criteria of the product to evaluate and loop over them.
 Each CRON instance will evaluate 5000 products maximum.
@@ -76,13 +76,6 @@ Each criterion is evaluated one by one.
 **Scope:** All textarea attributes
 
 > Check if there is capital letters everywhere after punctuation, new line, ...
-## Text title formatting
-**Scope:** For attribute type text, localizable, attribute as main title in the family of the product to evaluate.
-
-> Calls Franklin Library to suggest a better formatting.
-
-**Example:**  
-`Macbook air Azerty core I7` should be written `MacBook Air AZERTY Core i7`
 
 ## Spelling
 Scope: For attribute type textarea (without WYSIWYG) and text.
@@ -96,14 +89,14 @@ It uses also the words "ignored" by the users thanks to the spellcheck tooltip i
 
 ## Commands usable in production
 
-### Command `pimee:data-quality-insights:evaluations`:
+### Command `pim:data-quality-insights:evaluations`:
 
 **Aim:**
 - Add a `data_quality_insights_evaluations` job instance and run it as a subprocess directly (see job description at the end of this document) 
 
 > **Note:** Recommended to be launched every 30min.
 
-### Command `pimee:data-quality-insights:schedule-periodic-tasks`:
+### Command `pim:data-quality-insights:schedule-periodic-tasks`:
 
 **Aim:**
 - Add a `data_quality_insights_periodic_tasks` job instance into the job queue (see job description at the end of this document)
@@ -117,13 +110,13 @@ It uses also the words "ignored" by the users thanks to the spellcheck tooltip i
 
 > **Note:** Retrieve all the product values per locale. All the words with more than 3 letters, and used more than 10 times in the catalog are considered as part of the dictionary.
 
-### Command `pimee:data-quality-insights:consolidate-dashboard-rates <2020-01-10>`:
+### Command `pim:data-quality-insights:consolidate-dashboard-rates <2020-01-10>`:
 
 **Aim:**
 - Force the consolidation of the dashboard rates for a given day
 - For Administration/Support/Dev purpose
 
-### Command `pimee:data-quality-insights:purge-outdated-data`:
+### Command `pim:data-quality-insights:purge-outdated-data`:
 
 **Aim:**
 - Purge several data use by the Data Quality Insights feature.

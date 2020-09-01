@@ -132,12 +132,6 @@ const filterCategories = (
 const sortByOrder = (values: ValueCollection, attributeGroups: AttributeGroupCollection): ValueCollection => {
   return values.sort((a, b) => {
     if (a.attribute.group === b.attribute.group) {
-      // there is a legacy bug when sometimes, 2 attributes will have the same sort_order.
-      // If that the case, order by code to keep visual consistency
-      if (a.attribute.sort_order === b.attribute.sort_order) {
-        return a.attribute.code.localeCompare(b.attribute.code);
-      }
-
       return a.attribute.sort_order - b.attribute.sort_order;
     }
 

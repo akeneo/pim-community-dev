@@ -31,7 +31,6 @@ define(
                 gridElement.on('click', '.partial-approve-link, .partial-reject-link', function (event) {
                     const $this  = event.currentTarget;
                     const action = $this.dataset.action;
-                    const author = $this.dataset.author;
                     const documentType = $this.dataset.documentType;
                     const route = 'pimee_workflow_' + documentType + '_rest_partial_' + action;
                     const title  = _.__('pimee_workflow.proposal.partial_' + action + '.modal.title');
@@ -41,43 +40,32 @@ define(
                     const scope = _.isEmpty($this.dataset.scope) ? null : $this.dataset.scope;
                     const locale = _.isEmpty($this.dataset.locale) ? null : $this.dataset.locale;
 
-                    if ('Franklin' !== author) {
-                        const modal = new FormModal(
-                            'pimee-workflow-partial-approve-proposal-comment',
-                            function () {
-                                return $.Deferred().resolve();
-                            },
-                            {
-                                title: title,
-                                cancelText: _.__('pim_common.cancel'),
-                                okText: _.__('pimee_enrich.entity.product_draft.module.proposal.confirm'),
-                            illustrationClass: 'proposal'
-                            }
-                        );
+                    const modal = new FormModal(
+                        'pimee-workflow-partial-approve-proposal-comment',
+                        function () {
+                            return $.Deferred().resolve();
+                        },
+                        {
+                            title: title,
+                            cancelText: _.__('pim_common.cancel'),
+                            okText: _.__('pimee_enrich.entity.product_draft.module.proposal.confirm'),
+                        illustrationClass: 'proposal'
+                        }
+                    );
 
-                        modal
-                            .open()
-                            .then((myFormData) => {
-                                const routing = Routing.generate(route, {
-                                    id: id,
-                                    code: code,
-                                    scope: scope,
-                                    locale: locale,
-                                    comment: _.isUndefined(myFormData.comment) ? null : myFormData.comment
-                                });
-
-                                this.doAction(action, routing, gridName);
+                    modal
+                        .open()
+                        .then((myFormData) => {
+                            const routing = Routing.generate(route, {
+                                id: id,
+                                code: code,
+                                scope: scope,
+                                locale: locale,
+                                comment: _.isUndefined(myFormData.comment) ? null : myFormData.comment
                             });
-                    } else {
-                        const routing = Routing.generate(route, {
-                            id: id,
-                            code: code,
-                            scope: scope,
-                            locale: locale,
-                            comment: null
+
+                            this.doAction(action, routing, gridName);
                         });
-                        this.doAction(action, routing, gridName);
-                    }
                 }.bind(this));
             },
 

@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\AttributeGrid;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Structure\Quality;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Entity\AttributeQuality;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Doctrine\ORM\Query\Expr;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;

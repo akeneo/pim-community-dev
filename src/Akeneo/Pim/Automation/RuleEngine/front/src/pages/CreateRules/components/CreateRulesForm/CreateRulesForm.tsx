@@ -4,8 +4,8 @@ import { useForm, ErrorMessage, FormContext } from 'react-hook-form';
 import { InputErrorMsg } from '../../../../components/InputErrorMsg';
 import { FlagLabel } from '../../../../components/Labels';
 import { InputText } from '../../../../components/Inputs';
-import { PrimaryButton } from '../../../../components/Buttons/PrimaryButton';
-import { Translate } from '../../../../dependenciesTools/provider/applicationDependenciesProvider.type';
+import { PrimaryButton } from '../../../../components/Buttons';
+import { Translate } from '../../../../dependenciesTools';
 
 const inputCodeErrorMsgId = 'inputCodeErrMsg';
 const inputCodeName = 'code';
@@ -141,11 +141,15 @@ const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
                   {customErrors.code.length > 0 &&
                     customErrors.code.map(message => (
                       <InputErrorMsg key={`code-${message}`}>
-                        {message}
+                        {translate(message)}
                       </InputErrorMsg>
                     ))}
                   <ErrorMessage errors={errors} name={inputCodeName}>
-                    {({ message }) => <InputErrorMsg>{message}</InputErrorMsg>}
+                    {({ message }) => (
+                      <InputErrorMsg>
+                        {translate(message as string)}
+                      </InputErrorMsg>
+                    )}
                   </ErrorMessage>
                 </div>
               }
@@ -173,7 +177,7 @@ const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
                   <ErrorMessage errors={errors} name={inputLabelName}>
                     {({ message }) => (
                       <InputErrorMsg id={inputLabelErrorMsgId}>
-                        {message}
+                        {translate(message as string)}
                       </InputErrorMsg>
                     )}
                   </ErrorMessage>

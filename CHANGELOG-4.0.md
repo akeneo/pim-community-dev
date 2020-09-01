@@ -1,5 +1,47 @@
 # 4.0.x
 
+# 4.0.50 (2020-08-20)
+
+## Bug fixes
+
+- PIM-9288: Product completeness was not up to date after deletion of an option for required attribute
+- PIM-9397: Dispatch missing pre_ready event during bulk actions when "Send for approval" is checked
+
+# 4.0.49 (2020-08-13)
+
+## Bug fixes:
+
+- PIM-9401: Fix Elasticsearch filters with EMPTY operator
+
+# 4.0.48 (2020-08-12)
+
+## Bug fixes
+
+- PIM-9387: Fix product model proposal with empty values
+
+## Technical Improvements
+
+- PIM-9381: add new asset clear thumbnail cache command 
+
+# 4.0.47 (2020-08-07)
+
+## Bug fixes
+- PIM-9386: Notification reminder message not compliant
+- PIM-9385: Fix fatal error: Out of Sort memory on Record query 
+
+# 4.0.46 (2020-07-31)
+
+## Bug fixes
+
+- PIM-9382: Fix fatal error on rule execution
+
+# 4.0.45 (2020-07-31)
+
+## Bug fixes
+
+- PIM-9375: API Asset - add an error message
+- PIM-9373: The Compare feature filters are not displayed on the product model parent level
+
 # 4.0.44 (2020-07-28)
 
 ## Bug fixes
@@ -17,6 +59,7 @@
 ## Bug fixes
 
 - PIM-9365: Fix PDF previews' background being black
+- PIM-9366: Add a warning message when importing a product with asset that doesn't belong to the linked asset family
 
 # 4.0.41 (2020-07-20)
 

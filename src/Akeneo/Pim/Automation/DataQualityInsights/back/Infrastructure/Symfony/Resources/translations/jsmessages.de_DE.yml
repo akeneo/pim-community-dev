@@ -1,91 +1,39 @@
 akeneo_data_quality_insights:
-  title: Datenqualitätseinsichten
-  dqi_dashboard:
-    menu: Datenqualitätseinsichten
-    title: Datenqualitätsübersicht
-    helper:
-      title: Einführung der Datenqualität in Akeneo
-      description: Mit dem Dashboard für Datenqualität können Sie die Qualität Ihrer Katalogdaten messen.
-      help_center: Weitere Informationen finden Sie in unserem Hilfe-Center.
-    no_data_title: Leider haben wir noch nicht genügend Daten, um die Datenqualitätsübersicht anzuzeigen.
-    no_data_subtitle: Bitte später wieder versuchen.
-    time_period:
-      label: Zeitraum
-      daily: Täglich
-      weekly: Wöchentlich
-      monthly: Monatlich
-    legend:
-      excellent: Ausgezeichnet
-      good: Gut
-      average: Durchschnittlich
-      below_average: Unterdurchschnittlich
-      to_improve: Zu verbessern
-    average_grade: Durchschnittsnote
-    category_modal_filter:
-      subtitle: Nach Kategorie filtern
-      message: Wähle die Kategorie, die du auf deinem Dashboard erkunden möchtest
-    widgets:
-      family_modal:
-        subtitle: Familien hinzufügen
-        message: Wählen Sie die Familien, die in Ihrem Dashboard hinzugefügt werden sollen
-        max_families_msg: Sie können leider nicht mehr als {{ count }} Familien auf Ihrem Dashboard hinzufügen
-      category_modal:
-        subtitle: Kategorien hinzufügen
-        message: Wählen Sie die Kategorien, die in Ihrem Dashboard hinzugefügt werden sollen
-        max_categories_msg: Du kannst nicht mehr als {{ count }} Kategorien auf deinem Dashboard hinzufügen
-      add_families: Familien hinzufügen
-      add_categories: Kategorien hinzufügen
-      title: Titel
-      no_family_helper_msg: Wählen Sie die Familien, für die Sie die Datenqualität messen möchten
-      no_category_helper_msg: Wählen Sie die Kategorien, für die Sie die Datenqualität messen möchten
-      see_in_grid: Im Raster sehen
-    time_axis:
-      day: Tag
   product_evaluation:
     criteria:
-      completeness_of_required_attributes:
-        recommendation: Erforderliche Attribute mit fehlenden Werten
-      completeness_of_non_required_attributes:
-        recommendation: Nicht benötigte Attribute mit fehlenden Werten
       consistency_textarea_uppercase_words:
         recommendation: Attribute mit Großbuchstaben
       consistency_textarea_lowercase_words:
         recommendation: Attribute mit Kleinbuchstaben
       consistency_spelling:
         recommendation: Attribute mit Schreibproblemen
+      consistency_attribute_spelling:
+        recommendation: Attributbezeichnungen mit Rechtschreibfehlern
+      consistency_attribute_option_spelling:
+        recommendation: Attributoption(en) mit Tippfehler
     axis:
-      enrichment:
-        title: Anreicherung
-        attributes_link: Fehlende Attribute anzeigen
-        success: Ihre Produktdaten sind vollständig angereichert. Herzlichen Glückwunsch!
       consistency:
         title: Konsistenz
         attributes_link: Alle verbesserbaren Attribute anzeigen
         success: Ihre Produktdaten sind konsistent. Herzlichen Glückwunsch!
-    messages:
-      error:
-        axis_error: Aufgrund eines Fehlers konnte die Bewertung nicht vollständig berechnet werden. Versuchen Sie es später erneut.
-        criterion_error: Bewertung konnte nicht berechnet werden.
-      success:
-        criterion: Alles in Ordnung.
-      grading_in_progress: Bewertung läuft.
-      axis_grading_in_progress: Bewertung wird durchgeführt. Bitte kommen Sie später wieder.
-      too_many_attributes: Sie haben {{ count }} Attribute zu verbessern.
   product_edit_form:
     attribute_filter:
-      all_missing_attributes: Alle fehlenden Attribute
       all_improvable_attributes: Alle verbesserbaren Attribute
     spellcheck_popover:
       title: Korrekturen
       original_text_title: Original
       suggestions_title: Vorschläge
       ignore_all_suggestions_button_label: Ignorieren
-    title_suggestion_popover:
-      title: Vorschläge
-      ignore_all_suggestions_button_label: Ignorieren
+    back_to_products: Zurück zu Produkten
   attribute_grid:
     quality:
       to_improve: Zu verbessern
       good: Gut
-pim_title:
-  akeneo_data_quality_insights_dashboard: Datenqualitätseinsichten
+      in_progress: Verarbeitung
+      n_a: N/A
+  attribute_edit_form:
+    quality_summary: Durch die Verbesserung dieses Attributs verbessern Sie die Gesamtqualität von {{ count }} Produkten.
+  spellcheck:
+    popover:
+      default_aria_label: Rechtschreibvorschläge
+      aria_label: "Rechtschreibvorschläge für: {{ mistake }}"

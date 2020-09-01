@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO;
 
+use Webmozart\Assert\Assert;
+
 class ProductDestination
 {
     public $field;
@@ -28,5 +30,25 @@ class ProductDestination
         $this->locale = $data['locale'] ?? null;
         $this->currency = $data['currency'] ?? null;
         $this->unit = $data['unit'] ?? null;
+    }
+
+    public function toArray(): array
+    {
+        Assert::stringNotEmpty($this->field);
+        Assert::nullOrStringNotEmpty($this->scope);
+        Assert::nullOrStringNotEmpty($this->locale);
+        Assert::nullOrStringNotEmpty($this->currency);
+        Assert::nullOrStringNotEmpty($this->unit);
+
+        return array_filter([
+            'field' => $this->field,
+            'scope' => $this->scope,
+            'locale' => $this->locale,
+            'currency' => $this->currency,
+            'unit' => $this->unit,
+        ],
+        function ($value): bool {
+            return null !== $value;
+        });
     }
 }

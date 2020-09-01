@@ -182,11 +182,11 @@ final class EvaluateUppercaseWordsSpec extends ObjectBehavior
 
     private function givenAnAttributeOfTypeText(string $code): Attribute
     {
-        return new Attribute(new AttributeCode($code), AttributeType::text(), true, false);
+        return new Attribute(new AttributeCode($code), AttributeType::text(), true);
     }
 
     private function givenAnAttributeOfTypeTextarea(string $code): Attribute
     {
-        return new Attribute(new AttributeCode($code), AttributeType::textarea(), true, false);
+        return new Attribute(new AttributeCode($code), AttributeType::textarea(), true);
     }
 }

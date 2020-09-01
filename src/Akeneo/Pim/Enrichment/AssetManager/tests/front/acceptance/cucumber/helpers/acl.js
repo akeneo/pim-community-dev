@@ -202,8 +202,5 @@ const allAcls = [
   'pim_api_asset_edit',
   'pimee_revert_product_version_revert',
   'pimee_workflow_published_product_index',
-  'akeneo_franklin_insights_product_subscription',
-  'akeneo_franklin_insights_connection',
-  'akeneo_franklin_insights_settings_mapping',
   'pimee_sso_configuration',
 ];

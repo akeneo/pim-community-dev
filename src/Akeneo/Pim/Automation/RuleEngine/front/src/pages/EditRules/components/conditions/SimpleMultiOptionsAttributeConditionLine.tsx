@@ -31,11 +31,14 @@ const SimpleMultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeCo
   scopes,
   currentCatalogLocale,
 }) => {
-  const { valueFormName, getValueFormValue } = useControlledFormInputCondition<
-    string[]
-  >(lineNumber);
+  const {
+    valueFormName,
+    getValueFormValue,
+    isFormFieldInError,
+  } = useControlledFormInputCondition<string[]>(lineNumber);
   const router = useBackboneRouter();
   const translate = useTranslate();
+
   const [unexistingOptionCodes, setUnexistingOptionCodes] = React.useState<
     AttributeOptionCode[]
   >([]);
@@ -103,9 +106,13 @@ const SimpleMultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeCo
   };
   const [validateOptionCodes, setValidateOptionCodes] = React.useState({
     validate: validation,
+    required: translate('pimee_catalog_rule.exceptions.required'),
   });
   React.useEffect(() => {
-    setValidateOptionCodes({ validate: validation });
+    setValidateOptionCodes({
+      validate: validation,
+      required: translate('pimee_catalog_rule.exceptions.required'),
+    });
   }, [JSON.stringify(unexistingOptionCodes)]);
 
   return (
@@ -117,7 +124,8 @@ const SimpleMultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeCo
       locales={locales}
       scopes={scopes}
       availableOperators={SimpleMultiOptionsAttributeOperators}
-      attribute={attribute}>
+      attribute={attribute}
+      valueHasError={isFormFieldInError('value')}>
       {attribute && (
         <Controller
           as={MultiOptionsSelector}
@@ -127,7 +135,7 @@ const SimpleMultiOptionsAttributeConditionLine: React.FC<MultiOptionsAttributeCo
           label={translate('pimee_catalog_rule.rule.value')}
           hiddenLabel
           name={valueFormName}
-          validation={validateOptionCodes}
+          rules={validateOptionCodes}
         />
       )}
     </AttributeConditionLine>

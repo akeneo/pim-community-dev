@@ -31,5 +31,22 @@ const RedGhostButton = styled(CoreButton)`
     color: ${({ theme }): string => theme.color.red80};
   }
 `;
+const BlueGhostButton = styled(CoreButton)`
+  color: ${({ theme }): string => theme.color.blue100};
+  border-color: ${({ theme }): string => theme.color.blue100};
+  background-color: ${({ theme }): string => theme.color.white};
+  &:hover {
+    color: ${({ theme }): string => theme.color.blue140};
+    border-color: ${({ theme }): string => theme.color.blue60};
+  }
+  &:active {
+    color: ${({ theme }): string => theme.color.blue140};
+    border-color: ${({ theme }): string => theme.color.blue140};
+  }
+  &:disabled {
+    border-color: ${({ theme }): string => theme.color.blue60};
+    color: ${({ theme }): string => theme.color.blue60};
+  }
+`;
 
-export { GreyGhostButton, RedGhostButton };
+export { GreyGhostButton, RedGhostButton, BlueGhostButton };

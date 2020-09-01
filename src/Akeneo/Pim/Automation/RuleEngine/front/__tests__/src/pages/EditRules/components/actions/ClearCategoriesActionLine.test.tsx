@@ -3,8 +3,6 @@ import { renderWithProviders } from '../../../../../../test-utils';
 import { ClearCategoriesActionLine } from '../../../../../../src/pages/EditRules/components/actions/ClearCategoriesActionLine';
 import { locales, scopes } from '../../../../factories';
 
-jest.mock('../../../../../../src/fetch/categoryTree.fetcher.ts');
-
 describe('ClearCategoriesActionLine', () => {
   it('should display the clear categories action line', async () => {
     const {

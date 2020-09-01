@@ -1,9 +1,0 @@
-extensions:
-    akeneo-franklin-insights-menu-settings-mapping:
-        module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
-        aclResourceId: akeneo_franklin_insights_settings_mapping
-        position: 210
-        config:
-            title: pim_menu.item.franklin
-            to: akeneo_franklin_insights_mapping_index

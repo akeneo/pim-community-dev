@@ -11,10 +11,10 @@ Feature: Define permissions for an attribute group with reference data
     And I visit the "Attributes" tab
     And I add available attributes Sole fabric and Sole color
     And I save the family
-    And I logout
     And the following product:
       | sku | family | sole_color | sole_fabric |
       | foo | boots  | Red        | Nylon       |
+    And I logout
 
   @critical
   Scenario: Successfully see a reference data attribute

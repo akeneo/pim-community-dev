@@ -16,7 +16,7 @@ beforeEach(() =>  {
 });
 
 describe('WidgetsList', () => {
-  test('build widget list when any suggested title has been found yet', async () => {
+  test('build widget list when any suggested title has not been found yet', async () => {
     const editor1 = document.createElement('textarea');
     const editor2 = document.createElement('input');
     editor2.setAttribute('type', 'text');
@@ -28,57 +28,16 @@ describe('WidgetsList', () => {
     const {getAllByTestId} = renderComponent({
       editorHighlight: {
         widgets: {
-          'spellcheck-1': createWidget('spellcheck-1', editor1, 'attribute_textarea_editor_id', 'attribute_textarea', false),
-          'spellcheck-2': createWidget('spellcheck-2', editor2, 'attribute_text_editor_id', 'attribute_text', false),
-          'spellcheck-3': createWidget('spellcheck-3', editor4, 'attribute_wysiwyg_text_editor_id', 'attribute_wysiwyg_text', false),
-          'suggested-title-1': createWidget('suggested-title-1', editor3, 'attribute_main_label_editor_id', 'attribute_main_label', true),
+          'spellcheck-1': createWidget('spellcheck-1', editor1, 'attribute_textarea_editor_id', 'attribute_textarea'),
+          'spellcheck-2': createWidget('spellcheck-2', editor2, 'attribute_text_editor_id', 'attribute_text'),
+          'spellcheck-3': createWidget('spellcheck-3', editor4, 'attribute_wysiwyg_text_editor_id', 'attribute_wysiwyg_text'),
         }
       }
     });
 
     expect(getAllByTestId(/^editor-highlight-spellcheck-.+/i).length).toBe(3);
-    expect(getAllByTestId(/^editor-highlight-suggested-title-.+/i).length).toBe(1);
   });
 
-  test('build widget list when suggested title is found', async () => {
-    const editor1 = document.createElement('input');
-    editor1.setAttribute('type', 'text');
-
-    const widgetData = {
-      ...createWidget('suggested-title-1', editor1, 'attribute_main_label_editor_id', 'attribute_main_label', true),
-      hasSuggestedTitle: true
-    };
-
-    const {getAllByTestId} = renderComponent({
-      editorHighlight: {
-        widgets: {
-          'suggested-title-1': widgetData,
-        }
-      }
-    });
-
-    expect(getAllByTestId(/^editor-highlight-suggested-title-.+/).length).toBe(1);
-  });
-
-  test('build widget list when suggested title is not found', async () => {
-    const editor1 = document.createElement('input');
-    editor1.setAttribute('type', 'text');
-
-    const widgetData = {
-      ...createWidget('suggested-title-1', editor1, 'attribute_main_label_editor_id',  'attribute_main_label', true),
-      hasSuggestedTitle: false
-    };
-
-    const {getAllByTestId} = renderComponent({
-      editorHighlight: {
-        widgets: {
-          'suggested-title-1': widgetData
-        }
-      }
-    });
-
-    expect(getAllByTestId(/^editor-highlight-spellcheck-.+/).length).toBe(1);
-  });
 });
 
 const renderComponent = (testedState: any) => {

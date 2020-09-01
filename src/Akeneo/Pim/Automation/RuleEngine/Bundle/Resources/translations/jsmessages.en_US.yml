@@ -90,6 +90,10 @@ pimee_catalog_rule:
                     unique: This code is already used.
             cross_link: Leave create rule form
         edit:
+            header:
+                welcome: Welcome to your new rules engine area!
+                description: To create a rule, you must define your product selection, and then add one or several actions.
+                documentation_link: Click here to discover the full extent of the rules engine capabilities.
             properties:
                 section:
                     general: General parameters
@@ -104,10 +108,20 @@ pimee_catalog_rule:
                 pending: Calculating products and product models
                 error: Impossible to calculate products and product models
             product_selection: Product selection
+            preview: Preview
             fields:
                 family: Family
                 category: Category
                 attribute: Attribute
+                groups: Groups
+                measurement_unit: Measurement unit
+                measurement_default_unit: "Default unit ({{ unit }})"
+                currency: Currency
+                operator: operator
+            execute:
+                button: Save and execute
+                title: Save and execute the rule
+                description: You will save the current rule and execute it in background. When it’s done, you will be notified.
             actions:
                 add_action: Add action
                 add_category:
@@ -116,6 +130,10 @@ pimee_catalog_rule:
                 add_groups:
                     title: ADD Products to groups
                     helper: To add products to groups, please select one or several groups
+                    subtitle: Select your groups
+                set_groups:
+                    title: SET Product groups
+                    helper: To set the product groups, please select one or several groups
                     subtitle: Select your groups
                 set_category:
                     title: SET Categories
@@ -139,6 +157,8 @@ pimee_catalog_rule:
                     value_subtitle: Define your value
                     attribute_label: Attribute
                     attribute_placeholder: Select your target attribute
+                    select_reference_entity: Select your reference entities
+                    select_asset: Select your assets
                 clear_attribute:
                     title: CLEAR Attribute value
                     subtitle: Select the attribute to clear
@@ -178,6 +198,20 @@ pimee_catalog_rule:
                     title: REMOVE products from groups
                     helper: To remove products from groups, please select one or several groups
                     subtitle: Select your groups
+                calculate:
+                    title: CALCULATE values
+                    helper: To calculate numeric attribute values, please choose attribute(s) and/or value(s) and then, select the target attribute you want to put the result in. You can also round the final result if needed.
+                    add_value: Add value
+                    add_attribute: Add attribute
+                    select_target: Select your target
+                    attribute_placeholder: Select your target attribute
+                    round_precision: Round precision
+                    operator:
+                        add: Add
+                        subtract: Subtract
+                        multiply: Multiply
+                        divide: Divide
+                        choose: Choose your operator
             conditions:
                 delete:
                     label: Remove condition
@@ -198,7 +232,7 @@ pimee_catalog_rule:
                     "BETWEEN": between
                     "NOT BETWEEN": not between
                     "=": equals
-                    "!=": not equal
+                    "!=": does not equal
                     ">": greater than
                     ">=": equals or greater than
                     "<": less than
@@ -206,6 +240,8 @@ pimee_catalog_rule:
             notification:
                 success: Rule updated successfully
                 failed: Rule update failed
+                execute_success: Rule successfully updated and executed
+                execute_failed: The rule was saved but there was an error during the execution
             discard_changes: Your changes will be lost if you leave the page.
             please_select_attribute: Please select a target attribute first.
             unhandled_attribute_type: Sorry this attribute type is not managed yet. Please use the rules import.
@@ -230,17 +266,46 @@ pimee_catalog_rule:
             item:
                 selected: Item selected
                 not_selected: Select item
+        date:
+            operators:
+                specific_date: Specific date
+            label:
+                date_type: Choose a date type
+                operator: Choose an operator
+                date: Choose a date
+                relative_date: Choose a date
+                locale: Choose a locale
+                scope: Choose a scope
+                period: Choose a time unit
+                open_period: Open time unit menu
+                date_from: Choose a starting date
+                date_to: Choose an ending date
+                date_past: Date in the past
+                date_future: Date in the future
+                date_present: Today
+            day: "]-Inf, 1] Day|]1, +Inf[ Days"
+            week: "]-Inf, 1] Week|]1, +Inf[ Weeks"
+            month: "]-Inf, 1] Month|]1, +Inf[ Months"
+            year: "]-Inf, 1] Year|]1, +Inf[ Years"
+            hour: "]-Inf, 1] Hour|]1, +Inf[ Hours"
+            minute: "]-Inf, 1] Minute|]1, +Inf[ Minutes"
     exceptions:
         loading: An error occurred during rule definition loading.
         required: This field is required
         required_attribute: An attribute is required
         required_locale: A locale is required for the {{ attributeLabel }} attribute
         required_scope: A channel is required for the {{ attributeLabel }} attribute
+        required_currency: A currency is required for the {{ attributeLabel }} attribute
         required_locale_completeness: A locale is required for the completeness
         required_scope_completeness: A channel is required for the completeness
         required_value: A value is required for this action
         required_categories: At least one category is required for this action
+        required_constant_for_operation: A constant value is required for this operation
+        required_operator_for_operation: An operator is required for this operation
+        division_by_zero: Divisions by zero are not possible
+        two_operations_are_required: The operation list should contain 2 operations or more.
         unknown_or_inactive_locale: 'The "{{ localeCode }}" locale does not exist or is not activated'
+        unknown_or_inactive_currency: 'The "{{ currencyCode }}" currency does not exist or is not activated'
         unbound_locale: 'The "{{ localeCode }}" locale is not activated in the "{{ channelCode }}" channel'
         locale_on_unlocalizable_attribute: This attribute is not localizable. Please remove the locale before you continue.
         unknown_scope: 'The "{{ scopeCode }}" channel does not exist'
@@ -256,6 +321,9 @@ pimee_catalog_rule:
         or: or
         create_attribute_link: click here to create the attribute
         edit_unauthorize: You are not allowed to edit rules
+        wrong_date_timespan: To define a valid timespan, please make sure your end date isn’t set before your start date.
+        measurement_family_not_found: The "{{ measurement_code }}" measurement family does not exist
+        unit_not_found: The "{{ unitCode }}" unit was not found in the "{{ measurement_code }}" measurement family
 
 pim_enrich:
     entity:
@@ -314,6 +382,7 @@ pim_menu:
 pim_title:
     pimee_catalog_rule_rule_index: Rules
     pimee_catalog_rule_edit: Edit rule
+    pimee_catalog_rule_new: Rules
 
 pim_import_export:
     widget:

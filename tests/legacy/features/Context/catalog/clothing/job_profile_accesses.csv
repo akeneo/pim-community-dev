@@ -36,6 +36,7 @@ project_calculation;All;
 refresh_project_completeness_calculation;All;
 compute_completeness_of_products_family;All;
 compute_family_variant_structure_changes;All;
+remove_non_existing_product_values;All;
 delete_products_and_product_models;All;
 add_to_group;All;
 change_parent_product;IT support,Manager,Redactor;

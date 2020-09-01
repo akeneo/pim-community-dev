@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO;
 
+use Webmozart\Assert\Assert;
+
 class SetAction implements ActionInterface
 {
     public $field;
@@ -30,12 +32,18 @@ class SetAction implements ActionInterface
 
     public function toArray(): array
     {
-        return [
+        Assert::stringNotEmpty($this->field);
+        Assert::nullOrStringNotEmpty($this->scope);
+        Assert::nullOrStringNotEmpty($this->locale);
+
+        return array_filter([
             'type' => 'set',
             'field' => $this->field,
             'value' => $this->value,
             'scope' => $this->scope,
             'locale' => $this->locale,
-        ];
+        ], function ($value): bool {
+            return null !== $value;
+        });
     }
 }

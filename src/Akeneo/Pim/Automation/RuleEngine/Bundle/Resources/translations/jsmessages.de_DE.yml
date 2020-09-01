@@ -2,6 +2,8 @@ pimee_catalog_rule:
   overview: "] -Inf, 1] {{ count }} Regel|] 1, Inf [{{ count }} Regeln"
   execution_button: Regeln anwenden
   selected: "]-Inf, 1]{{ count }} Regel ausgewählt|]1, Inf[{{ count }} Regeln ausgewählt"
+  dropdown:
+    title: Weitere Aktionen
   popin:
     execute_rules:
       confirm_title: Ausführung bestätigen
@@ -88,6 +90,10 @@ pimee_catalog_rule:
           unique: Dieser Code wird bereits verwendet.
       cross_link: Erstellungsregel verlassen
     edit:
+      header:
+        welcome: Willkommen in Ihrem neuen Regel-Engine-Bereich!
+        description: Um eine Regel zu erstellen, müssen Sie Ihre Produktauswahl definieren und dann eine oder mehrere Aktionen hinzufügen.
+        documentation_link: Klicken Sie hier, um den vollen Umfang der Regelengine-Fähigkeiten zu erfahren.
       properties:
         section:
           general: Allgemeine Parameter
@@ -106,11 +112,24 @@ pimee_catalog_rule:
         family: Produktfamilie
         category: Kategorie
         attribute: Attribut
+        groups: Gruppen
+      execute:
+        button: Speichern und ausführen
+        title: Speichern und die Regel ausführen
+        description: Sie speichern die aktuelle Regel und führen sie im Hintergrund aus. Wenn sie abgeschlossen ist, werden Sie benachrichtigt.
       actions:
         add_action: Aktion hinzufügen
         add_category:
           title: Kategorien HINZUFÜGEN
           helper: Um Ihre Produktauswahl zu einer oder mehreren Kategorien hinzuzufügen, wählen Sie bitte zuerst Ihre Kategoriebäume und dann Ihre Kategorien aus
+        add_groups:
+          title: Produkten zu Gruppen HINZUFÜGEN
+          helper: Um Produkte zu Gruppen hinzuzufügen, wählen Sie bitte eine oder mehrere Gruppen
+          subtitle: Gruppen auswählen
+        set_groups:
+          title: Produktgruppen SETZEN
+          helper: Um die Produktgruppen festzulegen, wählen Sie bitte eine oder mehrere Gruppen
+          subtitle: Gruppen auswählen
         set_category:
           title: Kategorien FESTLEGEN
           helper: Um Ihre Produktauswahl auf eine oder mehrere Kategorien zu setzen, wählen Sie bitte zuerst Ihre Kategoriebäume und dann Ihre Kategorien aus
@@ -133,6 +152,8 @@ pimee_catalog_rule:
           value_subtitle: Wert definieren
           attribute_label: Attribut
           attribute_placeholder: Wähle ein Zielattribut
+          select_reference_entity: Wählen Sie Ihre Referenz-Entität
+          select_asset: Wählen Sie Ihre Assets
         clear_attribute:
           title: LÖSCHE Attributwert
           subtitle: Attribut zum Löschen auswählen
@@ -150,6 +171,10 @@ pimee_catalog_rule:
           title: Attributwert ENTFERNEN
           helper: Um Werte aus Ihrem Attribut zu entfernen, wählen Sie bitte zuerst Ihr Zielattribut aus und dann die Werte, die Sie entfernen möchten.
           value_subtitle: Definieren Sie Ihre Werte zum Entfernen
+        add_attribute_value:
+          title: Attributwert HINZUFÜGEN
+          helper: Um Werte zu Ihrem Attribut hinzuzufügen, wählen Sie bitte zuerst Ihr Zielattribut und dann die Werte aus, die Sie hinzufügen möchten.
+          value_subtitle: Definieren Sie Ihre Werte zum Hinzufügen
         copy:
           title: Attributwert KOPIEREN
           helper: Um Werte von einem Attribut zu einem anderen zu kopieren, wählen Sie bitte zuerst Ihr Quellattribut und dann Ihr Zielattribut aus.
@@ -159,6 +184,15 @@ pimee_catalog_rule:
         delete:
           label: Aktion entfernen
           description: Sind Sie sicher, dass Sie diese Aktion entfernen möchten?
+        set_status:
+          title: Status SETZEN
+          subtitle: Status definieren
+          helper: Um einen Status auf Produkte zu setzen, wählen Sie bitte einen Status in der Liste unten
+          placeholder: Wähle deinen Status
+        remove_groups:
+          title: Produkte aus Gruppen ENTFERNEN
+          helper: Um Produkte aus Gruppen zu entfernen, wählen Sie bitte eine oder mehrere Gruppen
+          subtitle: Gruppen auswählen
       conditions:
         delete:
           label: Bedingung entfernen
@@ -179,7 +213,7 @@ pimee_catalog_rule:
           "BETWEEN": zwischen
           "NOT BETWEEN": nicht zwischen
           "=": ist gleich
-          "!=": ungleich
+          "!=": ist nicht gleich
           ">": größer als
           ">=": gleich oder größer als
           "<": kleiner als
@@ -187,9 +221,16 @@ pimee_catalog_rule:
       notification:
         success: Die Regel wurde erfolgreich aktualisiert
         failed: Regelerstellung fehlgeschlagen
+        execute_success: Regel erfolgreich aktualisiert und ausgeführt
+        execute_failed: Die Regel wurde gespeichert, aber es gab einen Fehler während der Ausführung
       discard_changes: Ihre Änderungen gehen verloren, wenn Sie die Seite verlassen.
       please_select_attribute: Bitte wählen Sie zuerst ein Zielattribut aus.
       unhandled_attribute_type: Entschuldigung, dieser Attributtyp wird noch nicht verwaltet. Bitte verwenden Sie den Regel-Import.
+    delete:
+      description: Sind Sie sicher, dass Sie diese Regel löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.
+      notification:
+        failed: Regellöschung fehlgeschlagen
+        success: Regel erfolgreich gelöscht
     helper:
       add_to_category: Um Ihre Produktauswahl zu einer oder mehreren Kategorien hinzuzufügen, wählen Sie bitte zuerst Ihre Kategoriebäume und dann Ihre Kategorien.
       clear_attribute: Um den Attributwert zu löschen, wählen Sie bitte das zu löschende Attribut aus.
@@ -206,28 +247,56 @@ pimee_catalog_rule:
       item:
         selected: Element ausgewählt
         not_selected: Element auswählen
+    date:
+      operators:
+        specific_date: Bestimmtes Datum
+      label:
+        date_type: Datumstyp auswählen
+        operator: Operator auswählen
+        date: Datum auswählen
+        relative_date: Datum auswählen
+        locale: Gebietsschema auswählen
+        scope: Gültigkeitsbereich auswählen
+        period: Zeiteinheit auswählen
+        open_period: Öffne Zeiteinheiten-Menü
+        date_from: Startdatum auswählen
+        date_to: Enddatum wählen
+        date_past: Datum in der Vergangenheit
+        date_future: Datum in der Zukunft
+        date_present: Heute
+      day: "]-Inf, 1] Tag|]1, +Inf[ Tage"
+      week: "]-Inf, 1] Woche|]1, +Inf[ Wochen"
+      month: "]-Inf, 1] Monat|]1, +Inf[ Monate"
+      year: "]-Inf, 1] Jahr|]1, +Inf[ Jahre"
+      hour: "]-Inf, 1] Stunden|]1, +Inf[ Stunden"
+      minute: "]-Inf, 1] Minute|]1, +Inf[ Minuten"
   exceptions:
     loading: Beim Laden der Regeldefinition ist ein Fehler aufgetreten.
     required: Dieses Feld ist erforderlich
     required_attribute: Ein Attribut ist erforderlich
     required_locale: Ein Gebietsschema ist erforderlich für das Attribut {{ attributeLabel }}
     required_scope: Ein Kanal ist erforderlich für das Attribut {{ attributeLabel }}
+    required_locale_completeness: Ein Gebietsschema ist erforderlich für die Vollständigkeit
+    required_scope_completeness: Für die Vollständigkeit ist ein Kanal erforderlich
     required_value: Für diese Aktion ist ein Wert erforderlich
     required_categories: Mindestens eine Kategorie ist für diese Aktion erforderlich
     unknown_or_inactive_locale: 'Die "{{ localeCode }}" Gebietsschema existiert nicht oder ist nicht aktiviert'
     unbound_locale: 'Die "{{ localeCode }}" Gebietsschema ist im "{{ channelCode }}" Kanal nicht aktiviert'
     locale_on_unlocalizable_attribute: Dieses Attribut ist nicht lokalisierbar. Bitte entfernen Sie das Gebietsschema, bevor Sie fortfahren.
     unknown_scope: 'Der "{{ scopeCode }}" Ausgabekanal existiert nicht'
+    scope_on_unscopable_attribute: Dieses Attribut ist nicht skopierbar. Bitte entfernen Sie das Gebietsschema, bevor Sie fortfahren.
     unknown_families: "{1}Die {{ familyCodes }} Familie existiert nicht|]1,+Inf[Die {{ familyCodes }} Familien existieren nicht"
     unknown_attribute_options: "{1}Die {{ attributeOptionCodes }} Option existiert nicht|]1,+Inf[Die {{ attributeOptionCodes }} Optionen existieren nicht"
     unknown_attribute_code: "Das Attribut {{ attributeCode }} existiert nicht"
     unknown_categories: "{1}Die Kategorie {{ categoryCodes }} existiert nicht.|]1, +Inf[Die Kategorien {{ categoryCodes }} existieren nicht"
     unknown_attribute: "Dieses Attribut existiert nicht."
+    unknown_groups: "{1} Die Gruppe {{ groupCodes }} existiert nicht|]1, +Inf[Die folgenden Gruppen existieren nicht: {{ groupCodes }}"
     select_another_attribute_or_remove_action: "Wählen Sie ein anderes Attribut oder entfernen Sie diese Aktion."
     select_another_attribute: "Wählen Sie ein anderes Attribut"
     or: oder
     create_attribute_link: hier klicken, um das Attribut zu erstellen
     edit_unauthorize: Sie sind nicht berechtigt, Regeln zu bearbeiten
+    wrong_date_timespan: Um eine gültige Zeitspanne zu definieren, stellen Sie bitte sicher, dass Ihr Enddatum nicht vor dem Startdatum festgelegt ist.
 pim_enrich:
   entity:
     rule:
@@ -280,6 +349,7 @@ pim_menu:
 pim_title:
   pimee_catalog_rule_rule_index: Regeln
   pimee_catalog_rule_edit: Regel bearbeiten
+  pimee_catalog_rule_new: Regeln
 pim_import_export:
   widget:
     last_operations:

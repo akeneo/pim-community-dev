@@ -66,11 +66,11 @@ class DelegatingProductModelSaverSpec extends ObjectBehavior
     }
 
     function it_saves_the_product_model_when_user_is_the_owner(
-        $productModelSaver,
-        $authorizationChecker,
-        $tokenStorage,
-        $mergeDataOnProductModel,
-        $productModelRepository,
+        SaverInterface $productModelSaver,
+        AuthorizationCheckerInterface $authorizationChecker,
+        TokenStorageInterface $tokenStorage,
+        NotGrantedDataMergerInterface $mergeDataOnProductModel,
+        ProductModelRepositoryInterface $productModelRepository,
         ProductModelInterface $filteredProductModel,
         ProductModelInterface $fullProductModel
     ) {
@@ -94,19 +94,15 @@ class DelegatingProductModelSaverSpec extends ObjectBehavior
     }
 
     function it_does_not_save_neither_product_model_nor_draft_if_the_user_has_only_the_view_permission_on_product_model(
-        $authorizationChecker,
-        $tokenStorage,
-        $mergeDataOnProductModel,
-        $productModelSaver,
-        $productModelRepository,
+        AuthorizationCheckerInterface $authorizationChecker,
+        TokenStorageInterface $tokenStorage,
+        NotGrantedDataMergerInterface $mergeDataOnProductModel,
+        SaverInterface $productModelSaver,
         ProductModelInterface $filteredProductModel,
         ProductModelInterface $fullProductModel,
         TokenInterface $token
     ) {
-        $productModelRepository->find(42)->willReturn($fullProductModel);
         $mergeDataOnProductModel->merge($filteredProductModel, $fullProductModel)->willReturn($filteredProductModel);
-        $productModelRepository->findOneByIdentifier('code')->willReturn($fullProductModel);
-        $productModelRepository->findOneByIdentifier('sku')->willReturn($fullProductModel);
 
         $tokenStorage->getToken()->willReturn($token);
         $filteredProductModel->getId()->willReturn(42);
@@ -126,9 +122,9 @@ class DelegatingProductModelSaverSpec extends ObjectBehavior
     }
 
     function it_saves_the_product_model_when_user_is_not_the_owner_and_product_does_not_exist(
-        $productModelSaver,
-        $mergeDataOnProductModel,
-        $authorizationChecker,
+        SaverInterface $productModelSaver,
+        NotGrantedDataMergerInterface $mergeDataOnProductModel,
+        AuthorizationCheckerInterface $authorizationChecker,
         ProductModelInterface $filteredProductModel
     ) {
         $mergeDataOnProductModel->merge($filteredProductModel)->willReturn($filteredProductModel);
@@ -143,15 +139,15 @@ class DelegatingProductModelSaverSpec extends ObjectBehavior
     }
 
     function it_removes_the_existing_product_model_draft_when_user_is_not_the_owner_and_product_model_exists_without_changes_anymore(
-        $productModelSaver,
-        $authorizationChecker,
-        $tokenStorage,
-        $mergeDataOnProductModel,
-        $productModelRepository,
-        $draftBuilder,
-        $productModelDraftRepository,
-        $productModelDraftRemover,
-        $draftSourceFactory,
+        SaverInterface $productModelSaver,
+        AuthorizationCheckerInterface $authorizationChecker,
+        TokenStorageInterface $tokenStorage,
+        NotGrantedDataMergerInterface $mergeDataOnProductModel,
+        ProductModelRepositoryInterface $productModelRepository,
+        EntityWithValuesDraftBuilderInterface $draftBuilder,
+        EntityWithValuesDraftRepositoryInterface $productModelDraftRepository,
+        RemoverInterface $productModelDraftRemover,
+        PimUserDraftSourceFactory $draftSourceFactory,
         ProductModelInterface $filteredProductModel,
         ProductModelInterface $fullProductModel,
         EntityWithValuesDraftInterface $filteredProductModelDraft,
@@ -186,15 +182,15 @@ class DelegatingProductModelSaverSpec extends ObjectBehavior
     }
 
     function it_removes_the_existing_product_model_draft_when_user_is_not_the_owner_and_product_model_exists_without_changes_anymore_even_with_edit_rights(
-        $productModelSaver,
-        $authorizationChecker,
-        $draftBuilder,
-        $tokenStorage,
-        $mergeDataOnProductModel,
-        $productModelRepository,
-        $productModelDraftRemover,
-        $productModelDraftRepository,
-        $draftSourceFactory,
+        SaverInterface $productModelSaver,
+        AuthorizationCheckerInterface $authorizationChecker,
+        EntityWithValuesDraftBuilderInterface $draftBuilder,
+        TokenStorageInterface $tokenStorage,
+        NotGrantedDataMergerInterface $mergeDataOnProductModel,
+        ProductModelRepositoryInterface $productModelRepository,
+        RemoverInterface $productModelDraftRemover,
+        EntityWithValuesDraftRepositoryInterface $productModelDraftRepository,
+        PimUserDraftSourceFactory $draftSourceFactory,
         ProductModelInterface $filteredProductModel,
         ProductModelInterface $fullProductModel,
         EntityWithValuesDraftInterface $filteredProductModelDraft,
@@ -228,15 +224,15 @@ class DelegatingProductModelSaverSpec extends ObjectBehavior
     }
 
     function it_does_not_remove_any_product_model_draft_when_user_is_not_the_owner_and_product_model_exists_without_changes_but_the_draft_does_not_exists(
-        $productModelSaver,
-        $authorizationChecker,
-        $draftBuilder,
-        $tokenStorage,
-        $mergeDataOnProductModel,
-        $productModelDraftRepository,
-        $productModelDraftRemover,
-        $productModelRepository,
-        $draftSourceFactory,
+        SaverInterface $productModelSaver,
+        AuthorizationCheckerInterface $authorizationChecker,
+        EntityWithValuesDraftBuilderInterface $draftBuilder,
+        TokenStorageInterface $tokenStorage,
+        NotGrantedDataMergerInterface $mergeDataOnProductModel,
+        EntityWithValuesDraftRepositoryInterface $productModelDraftRepository,
+        RemoverInterface $productModelDraftRemover,
+        ProductModelRepositoryInterface $productModelRepository,
+        PimUserDraftSourceFactory $draftSourceFactory,
         ProductModelInterface $filteredProductModel,
         ProductModelInterface $fullProductModel,
         UsernamePasswordToken $token,
@@ -269,13 +265,15 @@ class DelegatingProductModelSaverSpec extends ObjectBehavior
     }
 
     function it_saves_the_product_model_draft_when_user_is_not_the_owner_and_product_model_exists_with_changes(
-        $productModelSaver,
-        $authorizationChecker,
-        $draftBuilder,
-        $tokenStorage,
-        $mergeDataOnProductModel,
-        $productModelRepository,
-        $draftSourceFactory,
+        ObjectManager $objectManager,
+        SaverInterface $productModelSaver,
+        AuthorizationCheckerInterface $authorizationChecker,
+        EntityWithValuesDraftBuilderInterface $draftBuilder,
+        TokenStorageInterface $tokenStorage,
+        NotGrantedDataMergerInterface $mergeDataOnProductModel,
+        ProductModelRepositoryInterface $productModelRepository,
+        PimUserDraftSourceFactory $draftSourceFactory,
+        SaverInterface $productModelDraftSaver,
         ProductModelInterface $filteredProductModel,
         ProductModelInterface $fullProductModel,
         EntityWithValuesDraftInterface $filteredProductDraft,
@@ -297,8 +295,10 @@ class DelegatingProductModelSaverSpec extends ObjectBehavior
             ->willReturn(true);
 
         $draftBuilder->build($filteredProductModel, $draftSource)
-            ->willReturn($filteredProductDraft)
-            ->shouldBeCalled();
+            ->shouldBeCalled()->willReturn($filteredProductDraft);
+
+        $productModelDraftSaver->save($filteredProductDraft, [])->shouldBeCalled();
+        $objectManager->refresh($filteredProductModel)->shouldBeCalled();
 
         $productModelSaver->save(Argument::any(), [])->shouldNotBeCalled();
 
@@ -306,31 +306,16 @@ class DelegatingProductModelSaverSpec extends ObjectBehavior
     }
 
     function it_bulk_saves_product_models(
-        $bulkProductModelSaver,
-        $authorizationChecker,
-        $tokenStorage,
-        $mergeDataOnProductModel,
-        $productModelRepository,
+        BulkSaverInterface $bulkProductModelSaver,
+        AuthorizationCheckerInterface $authorizationChecker,
         ProductModelInterface $filteredProductModel1,
-        ProductModelInterface $filteredProductModel2,
-        ProductModelInterface $fullProductModel1,
-        ProductModelInterface $fullProductModel2
+        ProductModelInterface $filteredProductModel2
     ) {
-        $tokenStorage->getToken()->willReturn('token');
-
-        $productModelRepository->find(42)->willReturn($fullProductModel1);
-        $mergeDataOnProductModel->merge($filteredProductModel1, $fullProductModel1)->willReturn($filteredProductModel1);
-        $productModelRepository->findOneByIdentifier('code_1')->willReturn($fullProductModel1);
-        $filteredProductModel1->getCode()->willReturn('code_1');
         $filteredProductModel1->getId()->willReturn(42);
         $authorizationChecker->isGranted(Attributes::OWN, $filteredProductModel1)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::EDIT, $filteredProductModel1)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::VIEW, $filteredProductModel1)->willReturn(true);
 
-        $productModelRepository->find(16)->willReturn($fullProductModel2);
-        $mergeDataOnProductModel->merge($filteredProductModel2, $fullProductModel2)->willReturn($filteredProductModel2);
-        $productModelRepository->findOneByIdentifier('code_2')->willReturn($fullProductModel2);
-        $filteredProductModel2->getCode()->willReturn('code_2');
         $filteredProductModel2->getId()->willReturn(16);
         $authorizationChecker->isGranted(Attributes::OWN, $filteredProductModel2)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::EDIT, $filteredProductModel2)->willReturn(true);

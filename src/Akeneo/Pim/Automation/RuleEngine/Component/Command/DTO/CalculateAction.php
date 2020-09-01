@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO;
 
-final class CalculateAction
+use Webmozart\Assert\Assert;
+
+final class CalculateAction implements ActionInterface
 {
     public $source;
     public $destination;
@@ -37,5 +39,26 @@ final class CalculateAction
         $this->operationList = $operationList;
 
         $this->roundPrecision = $data['round_precision'] ?? null;
+    }
+
+    public function toArray(): array
+    {
+        Assert::isInstanceOf($this->destination, ProductDestination::class);
+        Assert::isInstanceOf($this->source, Operand::class);
+        Assert::isArray($this->operationList);
+        Assert::allIsInstanceOf($this->operationList, Operation::class);
+        Assert::nullOrInteger($this->roundPrecision);
+
+        return array_filter([
+            'type' => 'calculate',
+            'destination' => $this->destination->toArray(),
+            'source' => $this->source->toArray(),
+            'operation_list' => array_map(function (Operation $operation): array {
+                return $operation->toArray();
+            }, $this->operationList),
+            'round_precision' => $this->roundPrecision,
+        ], function ($value): bool {
+            return null !== $value;
+        });
     }
 }

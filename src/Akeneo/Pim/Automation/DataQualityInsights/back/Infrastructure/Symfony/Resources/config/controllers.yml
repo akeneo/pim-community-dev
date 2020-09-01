@@ -1,54 +1,7 @@
 services:
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductAxesRatesController:
-        public: true
-        arguments:
-            - '@akeneo.pim.automation.data_quality_insights.get_product_axes_rates'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductEvaluationController:
-        public: true
-        arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-            - '@akeneo.pim.automation.data_quality_insights.get_product_evaluation'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductModelEvaluationController:
-        public: true
-        arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-            - '@akeneo.pim.automation.data_quality_insights.get_product_model_evaluation'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\DashboardController:
-        public: true
-        arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\DashboardOverviewController:
-        public: true
-        arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard\GetDashboardRatesQuery'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\DashboardWidgetFamiliesController:
-        public: true
-        arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard\GetAverageRanksQuery'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\DashboardWidgetCategoriesController:
-        public: true
-        arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard\GetAverageRanksQuery'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\FeatureFlagController:
-        public: true
-        arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\CheckTextController:
         public: true
         arguments:
-            $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
             $textChecker: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellChecker'
             $supportedLocaleValidator: '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator'
             $logger: '@monolog.logger.quality'
@@ -56,73 +9,39 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddProductWordInDictionaryController:
         public: true
         arguments:
-            $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
             $ignoreWordForProduct: '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWordForProduct'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddProductModelWordInDictionaryController:
         public: true
         arguments:
-            $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
             $ignoreWordForProductModel: '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWordForProductModel'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddAttributeWordInDictionaryController:
         public: true
         arguments:
             $ignoreWordForAttribute: '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWordForAttribute'
-            $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddAttributeOptionWordInDictionaryController:
         public: true
         arguments:
-            $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
             $ignoreWordForAttributeOption: '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWordForAttributeOption'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\CheckTitleSuggestionController:
-        public: true
-        arguments:
-            $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-            $getProductTitleSuggestion: '@akeneo.pim.automation.data_quality_insights.get_product_title_suggestion'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\CheckProductModelTitleSuggestionController:
-        public: true
-        arguments:
-            $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-            $getProductTitleSuggestion: '@akeneo.pim.automation.data_quality_insights.get_product_model_title_suggestion'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\IgnoreTitleSuggestionController:
-        public: true
-        arguments:
-            $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-            $ignoredTitleSuggestionRepository: '@akeneo.pim.automation.data_quality_insights.repository.product_ignore_title_suggestion'
-            $eventDispatcher: '@event_dispatcher'
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\IgnoreProductModelTitleSuggestionController:
-        public: true
-        arguments:
-            $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
-            $ignoredTitleSuggestionRepository: '@akeneo.pim.automation.data_quality_insights.repository.product_model_ignore_title_suggestion'
-            $eventDispatcher: '@event_dispatcher'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetAttributeLabelsErrorCountController:
         public: true
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeSpellcheckQuery'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetAttributeOptionsLabelsErrorCountController:
         public: true
         arguments:
-            $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
             $attributeOptionsSpellcheckQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAllAttributeOptionsSpellcheckQuery'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetAttributeSpellcheckEvaluationController:
         public: true
         arguments:
-            $featureFlag: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
             $getAttributeSpellcheckEvaluation: '@Akeneo\Pim\Automation\DataQualityInsights\Application\GetAttributeSpellcheckEvaluation'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetNumberOfProductsImpactedByAttributeSpellingMistakesController:
         public: true
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\GetNumberOfProductsImpactedByAttributeOrOptionsSpellingMistakes'

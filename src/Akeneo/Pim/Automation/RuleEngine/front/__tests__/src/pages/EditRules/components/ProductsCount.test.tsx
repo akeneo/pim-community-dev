@@ -3,8 +3,6 @@ import { renderWithProviders } from '../../../../../test-utils';
 import { Status } from '../../../../../src/rules.constants';
 import { ProductsCount } from '../../../../../src/pages/EditRules/components/ProductsCount';
 
-jest.mock('../../../../../src/dependenciesTools/provider/dependencies.ts');
-
 describe('ProductsCount', () => {
   test('it should render in complete mode', () => {
     // Given

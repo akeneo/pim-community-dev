@@ -1,20 +1,21 @@
 import React, {FunctionComponent, useEffect} from "react";
 import {useDispatch} from "react-redux";
-
 import WidgetsList from "./Attributes/EditorHighlight/WidgetsList";
 import Popover from "./Attributes/EditorHighlight/Popover";
-import TabContentWithPortalDecorator from "../../TabContentWithPortalDecorator";
-import {AttributeToImproveContextListener, TextAttributesContextListener} from "../../../listener";
-import {PRODUCT_ATTRIBUTES_TAB_NAME, PRODUCT_MODEL_ATTRIBUTES_TAB_NAME} from "../../../constant";
-
+import {TextAttributesContextListener} from "../../../listener";
 import {Product} from "../../../../domain";
-
-import {showDataQualityInsightsAttributeToImproveAction} from "../../../../infrastructure/reducer";
-import usePageContext from "../../../../infrastructure/hooks/ProductEditForm/usePageContext";
+import {
+  ATTRIBUTE_TO_IMPROVE_SESSION_STORAGE_KEY,
+  PRODUCT_ATTRIBUTES_TAB_NAME,
+  PRODUCT_MODEL_ATTRIBUTES_TAB_NAME
+} from "@akeneo-pim-community/data-quality-insights/src/application/constant";
+import {AttributeToImproveContextListener} from "@akeneo-pim-community/data-quality-insights/src/application/listener";
+import {showDataQualityInsightsAttributeToImproveAction} from "@akeneo-pim-community/data-quality-insights/src/infrastructure/reducer";
+import TabContentWithPortalDecorator
+  from "@akeneo-pim-community/data-quality-insights/src/application/component/TabContentWithPortalDecorator";
+import {usePageContext} from "@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks";
 
 export const CONTAINER_ELEMENT_ID = 'attributes-product-tab-content-dqi';
-
-export const ATTRIBUTE_TO_IMPROVE_SESSION_STORAGE_KEY = 'data-quality-insights:product-edit-form:attribute-to-improve';
 
 export interface AttributesTabContentProps {
   product: Product;

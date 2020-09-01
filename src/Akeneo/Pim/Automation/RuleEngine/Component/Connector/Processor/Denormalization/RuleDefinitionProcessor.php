@@ -12,10 +12,10 @@
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateOrUpdateRuleCommand;
+use Akeneo\Pim\Automation\RuleEngine\Component\Updater\RuleDefinitionUpdaterInterface;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
-use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionTranslationInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -23,7 +23,6 @@ use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
-use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -43,8 +42,8 @@ class RuleDefinitionProcessor extends AbstractProcessor implements
     /** @var ValidatorInterface */
     protected $validator;
 
-    /** @var ObjectDetacherInterface */
-    protected $detacher;
+    /** @var RuleDefinitionUpdaterInterface */
+    protected $ruleDefinitionUpdater;
 
     /** @var string rule class*/
     protected $ruleClass;
@@ -62,7 +61,7 @@ class RuleDefinitionProcessor extends AbstractProcessor implements
         IdentifiableObjectRepositoryInterface $repository,
         DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
-        ObjectDetacherInterface $detacher,
+        RuleDefinitionUpdaterInterface $ruleDefinitionUpdater,
         AttributeRepositoryInterface $attributeRepository,
         FileStorerInterface $fileStorer,
         $ruleDefinitionClass,
@@ -71,7 +70,7 @@ class RuleDefinitionProcessor extends AbstractProcessor implements
         parent::__construct($repository);
         $this->denormalizer = $denormalizer;
         $this->validator = $validator;
-        $this->detacher = $detacher;
+        $this->ruleDefinitionUpdater = $ruleDefinitionUpdater;
         $this->ruleClass = $ruleClass;
         $this->class = $ruleDefinitionClass;
         $this->attributeRepository = $attributeRepository;
@@ -131,29 +130,9 @@ class RuleDefinitionProcessor extends AbstractProcessor implements
             $ruleDefinition = new $this->class();
         }
 
-        $ruleDefinition->setCode($rule->getCode());
-        $ruleDefinition->setPriority($rule->getPriority());
-        $ruleDefinition->setType($rule->getType());
-        $ruleDefinition->setContent($rule->getContent());
-        foreach ($rule->getTranslations() as $translation) {
-            /** @var $translation RuleDefinitionTranslationInterface */
-            $ruleDefinition->setLabel($translation->getLocale(), $translation->getLabel());
-        };
+        $this->ruleDefinitionUpdater->fromRule($ruleDefinition, $rule);
 
         return $ruleDefinition;
-    }
-
-    /**
-     * Detaches the object from the unit of work
-     *
-     * Detach an object from the UOW is the responsibility of the writer, but to do so, it should know the
-     * skipped items or we should use an explicit persist strategy
-     *
-     * @param mixed $object
-     */
-    protected function detachObject($object)
-    {
-        $this->detacher->detach($object);
     }
 
     /**

@@ -179,7 +179,6 @@ pimee_catalog_rule:
           "BETWEEN": between
           "NOT BETWEEN": not between
           "=": equals
-          "!=": not equal
           ">": greater than
           ">=": equals or greater than
           "<": less than
@@ -280,6 +279,7 @@ pim_menu:
 pim_title:
   pimee_catalog_rule_rule_index: Rules
   pimee_catalog_rule_edit: Edit rule
+  pimee_catalog_rule_new: Rules
 pim_import_export:
   widget:
     last_operations:

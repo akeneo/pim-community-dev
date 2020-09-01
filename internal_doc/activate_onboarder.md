@@ -21,18 +21,10 @@ $ yq m -i <path to the PIM Serenity>/values.yaml <path to the Onboarder>/gen_fil
 Only for this one upgrade, as we activate the Onboarder feature for the first time, a special hook need to be run by
 Helm.
 
-Edit the PIM `values.yaml` file, and turn on this hook with the following content:
-
-```yaml
-onboarder:
-    pushCatalogToOnboarder:
-      enabled: true
-```
-
-Or using `yq`:
+Use `yq` to edit the PIM `values.yaml` file and turn on this hook:
 
 ```bash
-$ yq w -i values.yaml "onboarder.pushCatalogToOnboarder.enabled" true
+$ yq w -i values.yaml "onboarder.hook.pushCatalogToOnboarder.enabled" true
 ```
 
 This hook will push the PIM catalog data (only structure, no products) to the Onboarder to have them synchronized for
@@ -54,12 +46,9 @@ terraform apply
 
 ## 4. Remove the one-shot upgrade hook
 
-
-Edit again the PIM `values.yaml` file to remove the `onboarder.pushCatalogToOnboarder.enabled` value, as this hook shall
-never be played again.
-
-You can do so with `yq`:
+Edit again the PIM `values.yaml` file to remove the `onboarder.hook.pushCatalogToOnboarder.enabled` value, as this hook
+shall never be played again:
 
 ```bash
-$ yq d -i values.yaml "onboarder.pushCatalogToOnboarder"
+$ yq d -i values.yaml "onboarder.hook.pushCatalogToOnboarder"
 ```

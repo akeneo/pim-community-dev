@@ -5,9 +5,6 @@ import { locales, scopes } from '../../../../factories';
 import { AddGroupsActionLine } from '../../../../../../src/pages/EditRules/components/actions/AddGroupsActionLine';
 import { clearGroupRepositoryCache } from '../../../../../../src/repositories/GroupRepository';
 
-jest.mock('../../../../../../src/components/Select2Wrapper/Select2Wrapper');
-jest.mock('../../../../../../src/fetch/categoryTree.fetcher.ts');
-
 describe('AddGroupsActionLine', () => {
   beforeEach(() => {
     fetchMock.resetMocks();

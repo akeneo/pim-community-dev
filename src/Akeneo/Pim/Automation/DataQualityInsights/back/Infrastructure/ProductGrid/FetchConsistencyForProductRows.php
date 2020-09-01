@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAxesRates;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductAxesRatesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductProperties;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
@@ -21,10 +21,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\AdditionalProperty;
 
 class FetchConsistencyForProductRows implements AddAdditionalProductProperties
 {
-    /** @var GetProductAxesRates */
+    /** @var GetProductAxesRatesInterface */
     private $getProductAxesRates;
 
-    public function __construct(GetProductAxesRates $getProductAxesRates)
+    public function __construct(GetProductAxesRatesInterface $getProductAxesRates)
     {
         $this->getProductAxesRates = $getProductAxesRates;
     }

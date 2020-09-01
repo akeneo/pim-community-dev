@@ -99,7 +99,7 @@ final class FilterProductIdsWithCriterionNotEvaluatedSinceQueryIntegration exten
     private function evaluateProductCriterionAt(Write\CriterionEvaluation $criterionEvaluation, \DateTimeImmutable $evaluatedAt): void
     {
         $query = <<<SQL
-UPDATE pimee_data_quality_insights_product_criteria_evaluation 
+UPDATE pim_data_quality_insights_product_criteria_evaluation
 SET evaluated_at = :evaluated_at
 WHERE product_id = :productId AND criterion_code = :criterionCode;
 SQL;

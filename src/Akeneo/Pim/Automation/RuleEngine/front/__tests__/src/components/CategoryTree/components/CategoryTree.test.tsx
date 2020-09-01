@@ -6,9 +6,6 @@ import { Category } from '../../../../../src/models';
 import { CategoryTreeModel } from '../../../../../src/components/CategoryTree/category-tree.types';
 import { fetchCategoryTreeChildren } from '../../../../../src/fetch/categoryTree.fetcher';
 
-jest.mock('../../../../../src/dependenciesTools/provider/dependencies.ts');
-jest.mock('../../../../../src/fetch/categoryTree.fetcher');
-
 describe('SelectCategoriesTrees', () => {
   beforeEach(() => jest.clearAllMocks());
   const mockFetchCategoryTreeChildren = fetchCategoryTreeChildren as jest.Mock<

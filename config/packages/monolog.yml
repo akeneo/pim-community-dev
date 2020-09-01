@@ -8,12 +8,6 @@ monolog:
             type: stream
             path: '%kernel.logs_dir%/%kernel.environment%.log'
             level: info
-        franklin:
-            type: stream
-            path:  "php://stderr"
-            level: warning
-            channels: ['franklin']
-            formatter: 'monolog.formatter.json'
         quality:
             type: stream
             path:  "php://stderr"
@@ -24,4 +18,4 @@ monolog:
             type: service
             id: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\DbTableLogHandler'
             channels: ['security']
-    channels: ['franklin', 'quality']
+    channels: ['quality']

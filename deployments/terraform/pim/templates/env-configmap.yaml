@@ -24,13 +24,16 @@ data:
   APP_DATABASE_USER: {{ .Values.mysql.mysql.defaultUser | quote }}
   APP_INDEX_HOSTS: {{ .Values.elasticsearch.fullnameOverride }}-client:9200
   APP_ELASTICSEARCH_TOTAL_FIELDS_LIMIT: {{ .Values.pim.elasticsearch.settings.totalFieldsLimit | quote }}
+  {{- if .Values.pim.dqi.settings.enabled }}
+  FLAG_DATA_QUALITY_INSIGHTS_ENABLED: "1"
+  {{- else }}
+  FLAG_DATA_QUALITY_INSIGHTS_ENABLED: "0"
+  {{- end }}
   APP_SECRET: {{ .Values.pim.secret }}
   SRNT_GOOGLE_APPLICATION_CREDENTIALS: /var/secrets/google/srnt.json
   SRNT_GOOGLE_BUCKET_NAME: {{ .Values.pim.storage.bucketName | quote }}
   APP_ENV: prod
   TRUSTED_PROXY_IPS: 10.0.0.0/8
-  ASK_FRANKLIN_URL: {{ .Values.pim.franklin.askFranklinUrl | quote }}
-  ASK_FRANKLIN_REQUEST_TIMEOUT: {{ .Values.pim.franklin.askFranklinTimeout | quote }}
   {{- if .Values.onboarder.enabled }}
   FLAG_ONBOARDER_ENABLED: "1"
   GCP_PROJECT_ID: {{ .Values.common.gcpProjectID | quote }}
@@ -46,3 +49,7 @@ data:
   {{- if .Values.pim.comm_panel_api_url }}
   COMM_PANEL_API_URL: {{ .Values.pim.comm_panel_api_url | quote }}
   {{- end }}
+  PUBSUB_SUBSCRIPTION_WEBHOOK: {{ .Values.pim.pubsub.subscription_webhook }}
+  PUBSUB_SUBSCRIPTION_JOB_QUEUE: {{ .Values.pim.pubsub.subscription_job_queue }}
+  PUBSUB_TOPIC_BUSINESS_EVENT: {{ .Values.pim.pubsub.topic_business_event }}
+  PUBSUB_TOPIC_JOB_QUEUE: {{ .Values.pim.pubsub.topic_job_queue }}

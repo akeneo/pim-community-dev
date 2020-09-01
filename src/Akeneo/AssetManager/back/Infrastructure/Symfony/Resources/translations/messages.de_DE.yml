@@ -35,6 +35,24 @@ pim_import_export:
         asset_manager_compute_transformations: "Asset-Transformationen berechnen"
         asset_manager_link_assets_to_products: "Assets mit Produkten verknüpfen"
         asset_manager_execute_naming_convention: "Asset-Familien-Namenskonvention ausführen"
+pim_analytics:
+  info_type:
+    api_connection: Anzahl der API-Verbindungen
+    nb_asset_families: Anzahl der Asset-Familien
+    max_number_of_assets_per_asset_family: Maximale Anzahl von Assets pro Asset-Familie
+    average_number_of_values_per_assets: Durchschnittliche Anzahl von Werten pro Assets
+    average_number_of_assets_per_asset_family: Durchschnittliche Anzahl der Attribute pro Familie
+    max_number_of_attributes_per_asset_family: Maximale Anzahl von Attributen pro Asset Familie
+    average_number_of_attributes_per_asset_family: Durchschnittliche Anzahl von Attributen pro Asset-Familie
+    data_source:
+      tracked: Datenziel verfolgt
+      untracked: Datenziel nicht verfolgt
+    data_destination:
+      tracked: Datenquelle verfolgt
+      untracked: Datenquelle nicht verfolgt
+    other:
+      tracked: Andere getrackt
+      untracked: Andere nicht getrackt
 #average_percentage_localizable_only_attributes: Average percentage of localizable only attributes per asset family
 #average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per asset family
 #average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family

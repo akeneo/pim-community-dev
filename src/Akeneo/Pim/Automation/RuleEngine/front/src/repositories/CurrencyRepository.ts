@@ -3,7 +3,11 @@ import { Router } from '../dependenciesTools';
 import { Currency, CurrencyCode } from '../models/Currency';
 
 type IndexedCurrencies = { [currencyCode: string]: Currency };
-let cachedCurrencies: IndexedCurrencies;
+let cachedCurrencies: IndexedCurrencies | undefined;
+
+const clearCurrencyRepositoryCache = () => {
+  cachedCurrencies = undefined;
+};
 
 const getAllCurrencies: (
   router: Router
@@ -30,4 +34,9 @@ const getCurrenciesByCode: (
   );
 };
 
-export { getAllCurrencies, IndexedCurrencies, getCurrenciesByCode };
+export {
+  getAllCurrencies,
+  IndexedCurrencies,
+  getCurrenciesByCode,
+  clearCurrencyRepositoryCache,
+};

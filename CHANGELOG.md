@@ -1,5 +1,8 @@
 ## Bug fixes
 
+- PIM-9332: Bump resource's memory limits for flexibility environments
+- PIM-9388: Fix product link rules for scopable/localizable asset collection attributes
+- PIM-9389: Unfriendly page title in create rule page.
 - PIM-9376: Duplicate button appears under variant products.
 - PIM-9226: Fix error on channel deletion after migration from v3.2.
 - Fixes memory leak when indexing product models with a lot of product models in the same family (see https://github.com/akeneo/pim-community-dev/pull/11742)
@@ -24,6 +27,13 @@
 - PIM-9362: Fix missing "System information" translations for asset analytics
 - PIM-9363: Fix API error 500 when import a picture with an incorrect extension
 - PIM-9370: Fixes page freezing with a big number of attribute options
+- PIM-9404: Fix incorrect cast of numeric attribute option codes
+- PIM-9393: Add error message on job instance when permissions edit is empty
+- PIM-9400: Fix asset linked products not refreshing when switching locale
+- PIM-9412: Keep asset collection order when sort order is the same
+- PIM-9392: Prevent generating asset thumbnail when file is too large
+- PIM-9411: Fix TWA project widget searching on all contributors
+- PIM-9372: Fix media-link thumbnail re-generation
 
 ## Improvements
 
@@ -66,10 +76,16 @@
   - replace `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface` by `Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes`
   - add `Symfony\Component\EventDispatcher\EventDispatcherInterface`
 - Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\RemoverActionApplier` to:
-  - replace `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface` by `Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes
+  - replace `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface` by `Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes`
   - add `Symfony\Component\EventDispatcher\EventDispatcherInterface`
 - Change return type of `Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface` from `void` to `array`
 - Change return type of `Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsUpdater` from `void` to `array`
 - Add method `getType()` to `Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface` interface
 - Change constructor of `Akeneo\Pim\Automation\RuleEngine\Bundle\Twig\RuleExtension` to add `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
 - Remove class `Akeneo\Pim\Automation\RuleEngine\Bundle\Normalizer\RuleDefinitionNormalizer`
+- Change constructor of `\Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Denormalization\RuleDefinitionProcessor` to
+  - remove `Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface`
+  - add `Akeneo\Pim\Automation\RuleEngine\Component\Updater\RuleDefinitionUpdaterInterface`
+- Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\Common\Saver\DelegatingProductSaver` to
+  - remove `Symfony\Component\EventDispatcher\EventDispatcherInterface` and `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer`
+  - add `Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface` (twice) and `Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface`

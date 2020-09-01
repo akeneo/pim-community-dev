@@ -1,0 +1,9 @@
+user:
+  email_notifications: 电子邮件通知
+pimee_enrich.entity.product:
+  duplicate:
+    title: 复制产品 {{ product_identifier }}
+    button: 复制
+    flash:
+      success: 产品 {{ product_identifier }} 已成功复制。
+      success_with_attribute_codes: 产品 {{ product_identifier }} 已成功复制。您需要用唯一值丰富 {{ unique_attribute_codes }}

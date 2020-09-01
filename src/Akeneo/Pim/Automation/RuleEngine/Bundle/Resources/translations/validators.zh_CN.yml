@@ -1,0 +1,61 @@
+pimee_catalog_rule:
+  rule_definition:
+    validation:
+      locale:
+        unknown: ' 区域设置"{{ locale_code }}"不存在或未激活'
+      currency:
+        unknown: '需要有效的货币，货币"{{ currency }}"不存在或未激活'
+        missing_key: '密钥"{{ key }}"丢失或为空'
+        unexpected_key: '密钥 {{ key }} 无关。 '
+      measurement:
+        invalid_unit: '单位代码"{{ unitCode }}"不存在或不属于属性"{{ attributeCode }}"的测量单位群'
+        invalid_attribute_type: '密钥 {{ key }} 与属性 {{ attributeCode }} 不相干'
+      attribute:
+        unknown: '属性"{{ code }}"不存在'
+        unexpected_type: '属性"{{ attribute_code }}"有一个无效的"{{ invalid_type }}"属性类型。必须是 {{ expected_types }} 属性'
+        missing_locale: '属性"{{ attributeCode }}"需要区域设置'
+        unexpected_locale: '属性"{{ attributeCode }}"不需要区域设置，请将其移除'
+        unknown_locale: '属性"{{ attributeCode }}"需要一个已存在和激活的区域。请确保您的区域存在并已激活'
+        invalid_specific_locale: '属性"{{ attributeCode }}"是针对特定区域的，需要以下区域之一： {{ expectedLocales }}'
+        locale_not_bound_to_channel: '渠道"{{ channelCode }}"中没有"{{ invalidLocale }}"区域设置'
+        missing_scope: '属性"{{ attributeCode }}"需要范围'
+        unexpected_scope: '属性"{{ attributeCode }}"不需要范围, 请将其移除'
+        unknown_scope: '属性"{{ attributeCode }}"需要一个现有的范围'
+      invalid_code: '规则代码只能包含字母、数字和下划线'
+      conditions:
+        missing_key: '“条件”键缺失或为空'
+        missing_value_key: '“值”键缺失或为空'
+        missing_operator_key: '"运算符"键丢失或为空'
+        existing_field: '字段"{{ field }}"无法筛选或与"{{ operator }}" 运算符一起使用'
+        missing_field_key: '“字段”键缺失或为空'
+      actions:
+        missing_key: '“操作”键缺失或为空'
+        add:
+          invalid_field: '无法将条目添加到"{{ field }}"字段'
+        clear:
+          invalid_field: '无法清除"{{ field }}"字段的数据'
+        copy:
+          invalid_fields: '无法将数据从"{{ from_field }}"字段复制到"{{ to_field }}"字段'
+          missing_from_field_key: '“from_field”键缺失或为空'
+          missing_to_field_key: '“to_field”键缺失或为空'
+        concatenate:
+          invalid_source: '无法从"{{ field }}"字段中连接数据'
+          unexpected_source_option: '{{ key }} 键与属性 {{ attribute }} 无关。'
+          missing_from_key: '“from”键缺失或为空'
+          missing_to_key: '“to”键缺失或为空'
+          source_count: '此值应包含至少 2 个元素'
+        calculate:
+          division_by_zero: '不可用零除'
+          missing_operand_key: '“值”或“字段”键为必须，但两者都缺失或为空'
+          only_one_key_expected: '“值”或“字段”键为必须，请选择一个'
+          unexpected_key: '"{{ key }}" 键与此无关'
+          invalid_operator: '此值应是“加”、“减”、“乘”或“除”'
+        remove:
+          invalid_field: '无法从"{{ field }}"字段中移除条目'
+          include_children_option: '"incluse_child"选项只能在"categories"字段中应用'
+        set:
+          invalid_field: '无法将数据设置到"{{ field }}"字段'
+          missing_value_key: '“值”键缺失或为空'
+        custom:
+          unkown_type: '未知操作类型'
+          missing_type_key: '“类型”键缺失或为空'

@@ -4,7 +4,12 @@ import { ConditionLineProps } from './ConditionLineProps';
 import { CategoryOperators } from '../../../../models/conditions';
 import { Operator } from '../../../../models/Operator';
 import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
-import { FieldColumn, OperatorColumn } from './style';
+import {
+  ConditionLineFormAndErrorsContainer,
+  ConditionLineFormContainer,
+  FieldColumn,
+  OperatorColumn,
+} from './style';
 import { Category, CategoryCode } from '../../../../models';
 import { getCategoriesByIdentifiers } from '../../../../repositories/CategoryRepository';
 import { CategoriesSelector } from '../../../../components/Selectors/CategoriesSelector';
@@ -22,6 +27,7 @@ import {
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
 import { useControlledFormInputCondition } from '../../hooks';
+import { LineErrors } from '../LineErrors';
 
 const INIT_OPERATOR = Operator.IN_LIST;
 
@@ -31,6 +37,7 @@ const CategoryConditionLine: React.FC<ConditionLineProps> = ({
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
+
   const [initCategoryTreeOpenBranch, setInitCategoryTreeOpenBranch] = useState<
     NetworkLifeCycle<CategoryTreeModelWithOpenBranch[]>
   >({
@@ -55,6 +62,7 @@ const CategoryConditionLine: React.FC<ConditionLineProps> = ({
     getOperatorFormValue,
     getValueFormValue,
     setValueFormValue,
+    isFormFieldInError,
   } = useControlledFormInputCondition<CategoryCode[]>(lineNumber);
 
   useEffect(() => {
@@ -114,42 +122,53 @@ const CategoryConditionLine: React.FC<ConditionLineProps> = ({
   };
 
   return (
-    <div className='AknGrid-bodyCell'>
-      <Controller
-        as={<input type='hidden' value='' />}
-        defaultValue='categories'
-        name={fieldFormName}
-      />
-      <FieldColumn className={'AknGrid-bodyCell--highlight'}>
-        {translate('pimee_catalog_rule.form.edit.fields.category')}
-      </FieldColumn>
-      <OperatorColumn>
+    <ConditionLineFormAndErrorsContainer className='AknGrid-bodyCell'>
+      <ConditionLineFormContainer>
         <Controller
-          as={OperatorSelector}
-          availableOperators={CategoryOperators}
-          data-testid={`edit-rules-input-${lineNumber}-operator`}
-          defaultValue={getOperatorFormValue() ?? INIT_OPERATOR}
-          hiddenLabel={true}
-          name={operatorFormName}
-          value={getOperatorFormValue()}
+          as={<input type='hidden' value='' />}
+          defaultValue='categories'
+          name={fieldFormName}
         />
-      </OperatorColumn>
-      {shouldDisplayValue() && (
-        <Controller
-          as={CategoriesSelector}
-          categoryTrees={categoryTrees}
-          categoryTreeSelected={categoryTreeSelected}
-          defaultValue={getValueFormValue()}
-          initCategoryTreeOpenBranch={initCategoryTreeOpenBranch}
-          locale={currentCatalogLocale}
-          name={valueFormName}
-          onDelete={handleCategoryDelete}
-          onSelectCategory={handlerCategorySelect}
-          selectedCategories={categories}
-          setCategoryTreeSelected={setCategoryTreeSelected}
-        />
-      )}
-    </div>
+        <FieldColumn className={'AknGrid-bodyCell--highlight'}>
+          {translate('pimee_catalog_rule.form.edit.fields.category')}
+        </FieldColumn>
+        <OperatorColumn>
+          <Controller
+            as={OperatorSelector}
+            availableOperators={CategoryOperators}
+            data-testid={`edit-rules-input-${lineNumber}-operator`}
+            defaultValue={getOperatorFormValue() ?? INIT_OPERATOR}
+            hiddenLabel={true}
+            name={operatorFormName}
+            value={getOperatorFormValue()}
+          />
+        </OperatorColumn>
+        {shouldDisplayValue() && (
+          <Controller
+            as={CategoriesSelector}
+            categoryTrees={categoryTrees}
+            categoryTreeSelected={categoryTreeSelected}
+            defaultValue={getValueFormValue()}
+            initCategoryTreeOpenBranch={initCategoryTreeOpenBranch}
+            locale={currentCatalogLocale}
+            name={valueFormName}
+            onDelete={handleCategoryDelete}
+            onSelectCategory={handlerCategorySelect}
+            selectedCategories={categories}
+            setCategoryTreeSelected={setCategoryTreeSelected}
+            rules={{
+              required: translate('pimee_catalog_rule.exceptions.required'),
+              validate: (categoryCodes: CategoryCode[]) =>
+                Array.isArray(categoryCodes) && categoryCodes.length === 0
+                  ? translate('pimee_catalog_rule.exceptions.required')
+                  : true,
+            }}
+            hasError={isFormFieldInError('value')}
+          />
+        )}
+      </ConditionLineFormContainer>
+      <LineErrors lineNumber={lineNumber} type='conditions' />
+    </ConditionLineFormAndErrorsContainer>
   );
 };
 

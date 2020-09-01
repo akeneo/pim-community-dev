@@ -11,7 +11,6 @@ Feature: Delete only possible values
     And I visit the "Attributes" tab
     And I add available attribute Weather conditions
     And I save the family
-    And I logout
     And the following attribute group accesses:
       | attribute group | user group | access |
       | sizes           | Manager    | view   |
@@ -19,6 +18,7 @@ Feature: Delete only possible values
     And the following products:
       | sku  | family  | categories | name-en_US               | weather_conditions |
       | sp-1 | hoodies | tops       | South Park Hoodie - Timm | dry                |
+    And I logout
 
   Scenario: I can partially remove a product draft if I have no edit access on all values
     Given Mary started to propose the following change to "sp-1":

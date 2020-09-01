@@ -9,9 +9,6 @@ import {
 } from '../../../../src/components/CategoryTree/category-tree.types';
 import { NetworkLifeCycle } from '../../../../src/components/CategoryTree/hooks/NetworkLifeCycle.types';
 
-jest.mock('../../../../src/dependenciesTools/provider/dependencies.ts');
-jest.mock('../../../../src/fetch/categoryTree.fetcher');
-
 describe('CategoryTreeFilter', () => {
   it('should render the component with category tree master selected', async () => {
     // Given

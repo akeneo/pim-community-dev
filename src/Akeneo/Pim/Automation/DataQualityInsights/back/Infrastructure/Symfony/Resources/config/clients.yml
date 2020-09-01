@@ -1,5 +1,0 @@
-services:
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Client\Franklin:
-        class: GuzzleHttp\Client
-        arguments:
-            - {base_uri: '%akeneo.pim.automation.franklin_insights.franklin_client.url%'}

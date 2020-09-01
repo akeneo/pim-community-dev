@@ -13,6 +13,7 @@ import ListAsset, {
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import loadImage from 'akeneoassetmanager/tools/image-loader';
+import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
 
 type ContainerProps = {isDisabled: boolean};
 const Container = styled.div<ContainerProps>`
@@ -83,13 +84,15 @@ export const AssetCardWithLink = ({...props}: AssetCardProps) => {
 const AssetCard = ({asset, context, isSelected, onSelectionChange, isDisabled, onClick}: AssetCardProps) => {
   const [url, setUrl] = React.useState<string | null>(null);
 
+  const imageUrl = getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale));
+  const [, , refreshedUrl] = useRegenerate(imageUrl);
+
   let isDisplayed = true;
   React.useEffect(() => {
-    const imageUrl = getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale));
-    loadImage(imageUrl)
+    loadImage(refreshedUrl)
       .then(() => {
         if (isDisplayed) {
-          setUrl(imageUrl);
+          setUrl(refreshedUrl);
         }
       })
       .catch(() => {

@@ -1,22 +1,57 @@
 pimee_catalog_rule:
+  overview: "]-Inf, 1]{{ count }} rule|]1, Inf[{{ count }} rules"
+  execution_button: Execute rules
+  selected: "]-Inf, 1]{{ count }} rule selected|]1, Inf[{{ count }} rules selected"
+  dropdown:
+    title: Other actions
   popin:
     execute_rules:
+      confirm_title: Confirm execution
       confirm_content: Are you sure you want to execute the rules? (It could take a while)
   notification:
     fail: The action was not performed
+    launched: The rules execution has been launched. You will be notified when it is done.
   attribute:
     list:
+      code.label: Code
+      condition.label: Condition
+      action.label: Action
       no_rule_yet.label: No rules for now
   rule:
     value: Value
     include_children: Include children
+    condition:
+      if.label: if
+    action:
+      then.label: then
+      set_value.label: is set into
+      copy_value.label: is copied into
+      set.label: is set into
+      copy.label: is copied into
+      add.label: is added into
+      remove.label: is removed from
   datagrid:
     rule-grid:
+      actions:
+        execute:
+          confirm_title: Confirm execution
+          confirm_content: Are you sure you want to execute the rule?
       mass_edit_action:
+        confirm_title: Confirm calculation
         confirm_content: Are you sure you want to calculate the number of products impacted by the rules?
       mass_action:
         execute:
+          confirm_title: Confirm execution
           confirm_content: Are you sure you want to execute the rules? (It could take a while)
+          success: The rules execution has been launched. You will be notified when it is done.
+          error: An error occurred during the execution of the rules.
+          empty_selection: No rules selected.
+        delete:
+          confirm_title: Confirm execution
+          confirm_content: Are you sure you want to delete the selected rules?
+          success: You successfuly deleted the rules.
+          error: An error occurred during the deletion of the rules.
+          empty_selection: No rules selected.
   form:
     category:
       catalog: Catalog
@@ -36,6 +71,10 @@ pimee_catalog_rule:
     tab:
       list: Rule builder and properties tabs
       rule_builder: Rules builder
+    attribute:
+      tab:
+        rules:
+          title: Rules
     creation:
       helper: The rules engine can radically boost your productivity in the PIM by automating actions,
       english_flag: Label for English
@@ -69,11 +108,22 @@ pimee_catalog_rule:
         family: Family
         category: Category
         attribute: Attribute
+        groups: Groups
       actions:
         add_action: Add action
         add_category:
+          title: ADD Categories
           helper: To add your product selection to one or more categories, please start by selecting your category trees and then, your categories
+        add_groups:
+          title: ADD Products to groups
+          helper: To add products to groups, please select one or several groups
+          subtitle: Select your groups
+        set_groups:
+          title: SET Product groups
+          helper: To set the product groups, please select one or several groups
+          subtitle: Select your groups
         set_category:
+          title: SET Categories
           helper: To set your product selection to one or more categories, please start by selecting your category trees and then, your categories
         category:
           select_category_trees: Select your category trees
@@ -105,14 +155,34 @@ pimee_catalog_rule:
         clear_groups:
           title: CLEAR Groups
         remove_category:
+          title: REMOVE Categories
           helper: To remove your product selection from one or more categories, please start by selecting your category trees and then, your categories
+        remove_attribute_value:
+          title: REMOVE Attribute value
+          helper: To remove values from your attribute, please start by selecting your target attribute and then, the values you want to remove.
+          value_subtitle: Define your values to remove
+        add_attribute_value:
+          title: ADD Attribute value
+          helper: To add values to your attribute, please start by selecting your target attribute and then, the values you want to add.
+          value_subtitle: Define your values to add
         copy:
+          title: COPY Attribute value
+          helper: To copy values from an attribute to another, please start by selecting your source attribute and then, your target attribute.
           select_source: Select your source
           select_target: Select your target
           no_source: Please, select your source attribute first
         delete:
           label: Remove action
           description: Are you sure you want to remove this action?
+        set_status:
+          title: SET Status
+          subtitle: Define your status
+          helper: To set a status to products, please select a status in the list below
+          placeholder: Select your status
+        remove_groups:
+          title: REMOVE products from groups
+          helper: To remove products from groups, please select one or several groups
+          subtitle: Select your groups
       conditions:
         delete:
           label: Remove condition
@@ -133,7 +203,7 @@ pimee_catalog_rule:
           "BETWEEN": between
           "NOT BETWEEN": not between
           "=": equals
-          "!=": not equal
+          "!=": does not equal
           ">": greater than
           ">=": equals or greater than
           "<": less than
@@ -144,6 +214,11 @@ pimee_catalog_rule:
       discard_changes: Your changes will be lost if you leave the page.
       please_select_attribute: Please select a target attribute first.
       unhandled_attribute_type: Sorry this attribute type is not managed yet. Please use the rules import.
+    delete:
+      description: Are you sure you want to delete this rule? It is not possible to undo this action.
+      notification:
+        failed: Rule deletion failed
+        success: Rule successfully deleted
     helper:
       add_to_category: To add your product selection to one or more categories, please start by selecting your category trees and then, your categories.
       clear_attribute: To clear the attribute value, please start by selecting the attribute to clear.
@@ -160,42 +235,78 @@ pimee_catalog_rule:
       item:
         selected: Item selected
         not_selected: Select item
+    date:
+      operators:
+        specific_date: Specific date
+      label:
+        date_type: Choose a date type
+        operator: Choose an operator
+        date: Choose a date
+        relative_date: Choose a date
+        locale: Choose a locale
+        scope: Choose a scope
+        period: Choose a time unit
+        open_period: Open time unit menu
+        date_from: Choose a starting date
+        date_to: Choose an ending date
+        date_past: Date in the past
+        date_future: Date in the future
+        date_present: Today
+      day: "]-Inf, 1] Day|]1, +Inf[ Days"
+      week: "]-Inf, 1] Week|]1, +Inf[ Weeks"
+      month: "]-Inf, 1] Month|]1, +Inf[ Months"
+      year: "]-Inf, 1] Year|]1, +Inf[ Years"
+      hour: "]-Inf, 1] Hour|]1, +Inf[ Hours"
+      minute: "]-Inf, 1] Minute|]1, +Inf[ Minutes"
   exceptions:
     loading: An error occurred during rule definition loading.
     required: This field is required
     required_attribute: An attribute is required
     required_locale: A locale is required for the {{ attributeLabel }} attribute
     required_scope: A channel is required for the {{ attributeLabel }} attribute
+    required_locale_completeness: A locale is required for the completeness
+    required_scope_completeness: A channel is required for the completeness
     required_value: A value is required for this action
     required_categories: At least one category is required for this action
     unknown_or_inactive_locale: 'The "{{ localeCode }}" locale does not exist or is not activated'
     unbound_locale: 'The "{{ localeCode }}" locale is not activated in the "{{ channelCode }}" channel'
     locale_on_unlocalizable_attribute: This attribute is not localizable. Please remove the locale before you continue.
     unknown_scope: 'The "{{ scopeCode }}" channel does not exist'
+    scope_on_unscopable_attribute: This attribute is not scopable. Please remove the channel before you continue.
     unknown_families: "{1}The {{ familyCodes }} family does not exist|]1,+Inf[The {{ familyCodes }} families do not exist"
     unknown_attribute_options: "{1}The {{ attributeOptionCodes }} option does not exist|]1,+Inf[The {{ attributeOptionCodes }} options do not exist"
     unknown_attribute_code: "The {{ attributeCode }} attribute does not exist"
     unknown_categories: "{1}The {{ categoryCodes }} category does not exist.|]1, +Inf[The {{ categoryCodes }} categories do not exist"
     unknown_attribute: "This attribute does not exist."
+    unknown_groups: "{1} The {{ groupCodes }} group does not exist|]1, +Inf[The following groups do not exist: {{ groupCodes }}"
     select_another_attribute_or_remove_action: "Select another attribute or remove this action."
     select_another_attribute: "Select another attribute"
     or: or
     create_attribute_link: click here to create the attribute
     edit_unauthorize: You are not allowed to edit rules
+    wrong_date_timespan: To define a valid timespan, please make sure your end date isn’t set before your start date.
 pim_enrich:
   entity:
     rule:
+      module:
+        delete:
+          confirm: Are you sure you want to delete this rule? It is not possible to undo this action
       flash:
         delete:
           success: Rule successfully deleted
 flash:
   rule:
     impacted_product_count: The bulk action to calculate the number of impacted products has been launched. You will be notified when it is done.
+    executed: The rules execution has been launched. You will be notified when it is done.
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Rules settings
 batch_jobs:
+  add_attribute_value:
+    execute_rules.label: Rules execution
   default_steps:
     export_rules: Rules export
     import_rules: Rules import
     calculate_affected_products: Calculate affected products
+    execute_rules: Rules execution
   yml_rule_import:
     label: Rules import in YAML
     import.label: Rules import
@@ -204,5 +315,31 @@ batch_jobs:
     export.label: Rules export
   rule_impacted_product_count:
     label: Number of impacted products
+    perform.label: Count impacted products
+  csv_product_import_with_rules:
+    label: Product import in CSV with rules
+    import.label: Product import
+  csv_product_model_import_with_rules:
+    label: Product model import in CSV with rules
+  xlsx_product_import_with_rules:
+    label: Product import in XLSX with rules
+    import.label: Product import
+  xlsx_product_model_import_with_rules:
+    label: Product model import in XLSX with rules
+pim_notification:
+  types:
+    rule: Rules Settings
+    mass_edit_rule: Mass edit rule
+    execute_rules: Rules execution
+pim_menu:
+  item:
+    rule: Rules
 pim_title:
+  pimee_catalog_rule_rule_index: Rules
   pimee_catalog_rule_edit: Edit rule
+  pimee_catalog_rule_new: Rules
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        execute_rules: Rules execution

@@ -3,3 +3,4 @@ extensions:
         module: akeneo/data-quality-insights/view/back-link
         parent: pim-attribute-index
         targetZone: breadcrumb-back-link
+        feature: data_quality_insights

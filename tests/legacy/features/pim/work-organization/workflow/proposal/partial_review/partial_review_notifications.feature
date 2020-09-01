@@ -11,7 +11,6 @@ Feature: Adapt notification for redactor depending on action on their proposal
     And I visit the "Attributes" tab
     And I add available attribute Weather conditions
     And I save the family
-    And I logout
     And the following attribute group accesses:
       | attribute group | user group | access |
       | sizes           | Manager    | view   |
@@ -19,6 +18,7 @@ Feature: Adapt notification for redactor depending on action on their proposal
     And the following products:
       | sku  | family  | categories | name-en_US               | weather_conditions |
       | sp-1 | hoodies | tops       | South Park Hoodie - Timm | dry                |
+    And I logout
 
   Scenario: When I accept more than 3 values, it shows only number of attributes accepted
     Given Mary proposed the following change to "sp-1":

@@ -1,17 +1,22 @@
 import React from 'react';
 import { Payload } from '../../../rules.types';
-import { httpPut } from '../../../fetch';
+import { httpGet, httpPut } from '../../../fetch';
 import { generateUrl } from '../../../dependenciesTools/hooks';
 import { FormData } from '../edit-rules.types';
-import { useForm, FormContextValues, Control } from 'react-hook-form';
-import { Locale, RuleDefinition, Condition } from '../../../models';
+import { Control, FormContextValues, useForm } from 'react-hook-form';
+import { Condition, Locale, RuleDefinition } from '../../../models';
 import {
+  NotificationLevel,
+  Notify,
   Router,
   Translate,
-  Notify,
-  NotificationLevel,
 } from '../../../dependenciesTools';
 import { Action } from '../../../models/Action';
+import {
+  formatDateLocaleTimeConditionsFromBackend,
+  formatDateLocaleTimeConditionsToBackend,
+} from '../components/conditions/DateConditionLines/dateConditionLines.utils';
+import { getErrorPath } from './ErrorPathResolver';
 
 const registerConditions = (
   register: Control['register'],
@@ -33,7 +38,7 @@ const registerConditions = (
 
 const registerActions = (register: Control['register'], actions: Action[]) => {
   if (actions?.length) {
-    actions.forEach((_, index) => {
+    actions.forEach((action, index) => {
       register({ name: `content.actions[${index}].field`, type: 'custom' });
       register({ name: `content.actions[${index}].items`, type: 'custom' });
       register({ name: `content.actions[${index}].type`, type: 'custom' });
@@ -59,6 +64,19 @@ const registerActions = (register: Control['register'], actions: Action[]) => {
         name: `content.actions[${index}].include_children`,
         type: 'custom',
       });
+
+      if (typeof action.destination !== 'undefined') {
+        ['field', 'scope', 'locale', 'unit'].forEach(key =>
+          register({
+            name: `content.actions[${index}].destination.${key}`,
+            type: 'custom',
+          })
+        );
+      }
+      register({
+        name: `content.actions[${index}].round_precision`,
+        type: 'custom',
+      });
     });
   }
 };
@@ -72,25 +90,73 @@ const filterDataContentValues = (value: object) => {
 };
 
 const transformFormData = (formData: FormData): Payload => {
+  let conditions = formData?.content?.conditions;
+  if (conditions) {
+    conditions = formatDateLocaleTimeConditionsToBackend(conditions);
+  }
   return {
-    ...formData,
+    code: formData.code,
+    labels: formData.labels,
     priority: Number(formData.priority),
     content: {
-      conditions:
-        formData?.content?.conditions?.filter(filterDataContentValues) ?? [],
-      actions:
-        formData?.content?.actions?.filter(filterDataContentValues) ?? [],
+      conditions: conditions?.filter(filterDataContentValues) ?? [],
+      actions: (
+        formData?.content?.actions?.filter(filterDataContentValues) ?? []
+      ).map((action: any) => {
+        if (
+          action.type === 'calculate' &&
+          Array.isArray(action.full_operation_list)
+        ) {
+          [
+            action.source,
+            ...action.operation_list
+          ] = action.full_operation_list;
+          delete action.full_operation_list;
+        }
+
+        return action;
+      }),
     },
   };
 };
 
-const getErrorPath = (path: string) => {
-  if (path.match(/^(actions|conditions)\[\d+\]$/g)) {
-    /* The error path is not linked to a specific field (value, field, operator...)
-     * As in react-hook-form, every error is linked to a field, we need to link it to a fake field. */
-    return `content.${path}.__fromBackend__`;
+const doExecuteOnSave = async (
+  router: Router,
+  translate: Translate,
+  notify: Notify,
+  code: string
+) => {
+  const executeRuleUrl = generateUrl(
+    router,
+    'pimee_catalog_rule_rule_execute',
+    { code }
+  );
+  const executeResponse = await httpGet(executeRuleUrl);
+  if (executeResponse.ok) {
+    notify(
+      NotificationLevel.SUCCESS,
+      translate('pimee_catalog_rule.form.edit.notification.execute_success')
+    );
+  } else {
+    notify(
+      NotificationLevel.ERROR,
+      translate('pimee_catalog_rule.form.edit.notification.execute_failed')
+    );
   }
-  return `content.${path}`;
+};
+
+const createCalculateDefaultValues = (formData: FormData): FormData => {
+  if (formData.content && formData.content.actions) {
+    formData.content.actions = formData.content.actions.map((action: any) => {
+      if (action && action.type === 'calculate') {
+        action.full_operation_list = [action.source, ...action.operation_list];
+      }
+
+      return action;
+    });
+  }
+
+  return formData;
 };
 
 const submitEditRuleForm = (
@@ -106,28 +172,42 @@ const submitEditRuleForm = (
     if (event) {
       event.preventDefault();
     }
+
+    const executeOnSave = Object.prototype.hasOwnProperty.call(
+      formData,
+      'execute_on_save'
+    );
     const updateRuleUrl = generateUrl(
       router,
       'pimee_enrich_rule_definition_update',
       { ruleDefinitionCode }
     );
-
-    const response = await httpPut(updateRuleUrl, {
+    const updateResponse = await httpPut(updateRuleUrl, {
       body: transformFormData(formData),
     });
-    if (response.ok) {
-      notify(
-        NotificationLevel.SUCCESS,
-        translate('pimee_catalog_rule.form.edit.notification.success')
-      );
+    if (updateResponse.ok) {
+      formData = createCalculateDefaultValues(formData);
       reset(formData);
       registerConditions(register, formData.content?.conditions || []);
       registerActions(register, formData.content?.actions || []);
+
+      if (executeOnSave) {
+        doExecuteOnSave(router, translate, notify, ruleDefinitionCode);
+      } else {
+        notify(
+          NotificationLevel.SUCCESS,
+          translate('pimee_catalog_rule.form.edit.notification.success')
+        );
+      }
     } else {
-      const errors = await response.json();
+      const errors = await updateResponse.json();
       errors.forEach(
         (error: { global: boolean; message: string; path: string }) => {
-          setError(getErrorPath(error.path), 'validate', error.message);
+          setError(
+            getErrorPath(formData, error.path),
+            'validate',
+            error.message
+          );
         }
       );
 
@@ -155,7 +235,9 @@ const createFormDefaultValues = (
   priority: ruleDefinition.priority.toString(),
   labels: locales.reduce(createLocalesLabels(ruleDefinition), {}),
   content: {
-    conditions: ruleDefinition.conditions || [],
+    conditions: formatDateLocaleTimeConditionsFromBackend(
+      ruleDefinition.conditions || []
+    ),
     actions: ruleDefinition.actions || [],
   },
 });
@@ -168,7 +250,9 @@ const useSubmitEditRuleForm = (
   ruleDefinition: RuleDefinition,
   locales: Locale[]
 ) => {
-  const defaultValues = createFormDefaultValues(ruleDefinition, locales);
+  const defaultValues = createCalculateDefaultValues(
+    createFormDefaultValues(ruleDefinition, locales)
+  );
   const formMethods = useForm<FormData>({
     defaultValues,
   });

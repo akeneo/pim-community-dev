@@ -75,9 +75,6 @@ image:
 
 pim:
   comm_panel_api_url: null
-  franklin:
-    askFranklinUrl: "https://ask-franklin.cloud.akeneo.com"
-    askFranklinTimeout: 30
   hook:
     addAdmin:
       enabled: true
@@ -114,6 +111,9 @@ pim:
   elasticsearch:
     settings:
       totalFieldsLimit: 10000
+  dqi:
+    settings:
+      enabled: true
   defaultCatalog: src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
   defaultAdminUser:
     login: null # Fill me
@@ -163,10 +163,6 @@ pim:
       enabled: true
       pimCommand: "pimee:project:notify-before-due-date"
       schedule: "0 2 * * *"
-    franklin-insights-fetch-products:
-      enabled: true
-      pimCommand: "pimee:franklin-insights:fetch-products"
-      schedule: "*/30 * * * *"
     reference-entity-refresh-records:
       enabled: true
       pimCommand: "akeneo:reference-entity:refresh-records --all"
@@ -177,16 +173,12 @@ pim:
       schedule: "5 22 * * *"
     data-quality-insights-periodic-tasks:
       enabled: true
-      pimCommand: "pimee:data-quality-insights:schedule-periodic-tasks"
+      pimCommand: "pim:data-quality-insights:schedule-periodic-tasks"
       schedule: "15 0 * * *"
     data-quality-insights-evaluations:
       enabled: true
-      pimCommand: "pimee:data-quality-insights:evaluations"
+      pimCommand: "pim:data-quality-insights:evaluations"
       schedule: "*/30 * * * *"
-    franklin-insights-quality-highlights-push:
-      enabled: true
-      pimCommand: "pimee:franklin-insights:quality-highlights:push-structure-and-products"
-      schedule: "15 0,12 * * *"
 
 # Onboarder
 onboarder:
@@ -228,6 +220,8 @@ mysql:
     stateful:
       enabled: false
     resources:
+      limits:
+        memory: 3072Mi
       requests:
         memory: 3072Mi
     readinessProbe:

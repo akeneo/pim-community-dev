@@ -4,7 +4,7 @@ import { LocaleCode, ScopeCode } from '../../../models';
 import { Operator } from '../../../models/Operator';
 
 const useControlledFormInputCondition = <T>(lineNumber: number) => {
-  const { watch, getValues, setValue } = useFormContext();
+  const { watch, getValues, setValue, errors } = useFormContext();
   const fieldFormName = `content.conditions[${lineNumber}].field`;
   const operatorFormName = `content.conditions[${lineNumber}].operator`;
   const valueFormName = `content.conditions[${lineNumber}].value`;
@@ -21,6 +21,8 @@ const useControlledFormInputCondition = <T>(lineNumber: number) => {
   const setScopeFormValue = (data: ScopeCode) => setValue(scopeFormName, data);
   const setLocaleFormValue = (data: LocaleCode) =>
     setValue(localeFormName, data);
+  const isFormFieldInError = (formName: string): boolean =>
+    typeof errors?.content?.conditions?.[lineNumber]?.[formName] === 'object';
   watch(operatorFormName);
   watch(valueFormName);
   watch(scopeFormName);
@@ -40,13 +42,20 @@ const useControlledFormInputCondition = <T>(lineNumber: number) => {
     setScopeFormValue,
     setValueFormValue,
     valueFormName,
+    isFormFieldInError,
   };
 };
 
 const useControlledFormInputAction = <T>(lineNumber: number) => {
   const { getValues, setValue, errors } = useFormContext();
-  const isFormFieldInError = (formName: string): boolean =>
-    typeof errors?.content?.actions?.[lineNumber]?.[formName] === 'object';
+  const isFormFieldInError = (formName: string): boolean => {
+    let path = errors?.content?.actions?.[lineNumber];
+    formName.split('.').forEach(subFormName => {
+      path = path ? path[subFormName] : undefined;
+    });
+    return typeof path === 'object';
+  };
+
   const formName = (name: string) => `content.actions[${lineNumber}].${name}`;
   const fieldFormName = formName('field');
   const typeFormName = formName('type');

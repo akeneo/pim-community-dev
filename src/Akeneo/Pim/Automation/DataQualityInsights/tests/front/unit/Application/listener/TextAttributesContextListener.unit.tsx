@@ -1,8 +1,5 @@
 import {Attribute, Family, Product} from "@akeneo-pim-ee/data-quality-insights/src/domain";
-import {
-  getTextAttributes,
-  isTitleFormatterActivated
-} from '@akeneo-pim-ee/data-quality-insights/src/application/listener/ProductEditForm/TextAttributesContextListener';
+import {getTextAttributes} from '@akeneo-pim-ee/data-quality-insights/src/application/listener/ProductEditForm/TextAttributesContextListener';
 
 const localizableTextarea = buildAttribute("textarea_1", "pim_catalog_textarea", true, false, false);
 const localizableTextareaWysiwyg = buildAttribute("textarea_2", "pim_catalog_textarea", true, true, false);
@@ -81,38 +78,6 @@ describe('Get eligible text attributes to initialize the PEF widgets', () => {
       notLocalizableText,
       notLocalizableTextarea,
     ]);
-  });
-});
-
-describe('Check if an attribute is used as main label to initialize the PEF widget', () => {
-  test('Attribute localizable, used as label in the family and in the white list', () => {
-    const localizableText = buildAttribute("title", "pim_catalog_text", true, false, false);
-    const family = buildFamilyWithAttributes([localizableText]);
-    const attributes = [
-      localizableText,
-    ];
-    expect(isTitleFormatterActivated('title', family, attributes)).toBe(true);
-  });
-  test('Attribute localizable and used as label in the family but not in the white list', () => {
-    const localizableText = buildAttribute("title", "pim_catalog_text", true, false, false);
-    const family = buildFamilyWithAttributes([localizableText]);
-    expect(isTitleFormatterActivated('title', family, [])).toBe(false);
-  });
-  test('Attribute not localizable used as label in the family', () => {
-    const notLocalizableText = buildAttribute("title", "pim_catalog_text", false, false, false);
-    const family = buildFamilyWithAttributes([localizableText]);
-    const attributes = [
-      notLocalizableText,
-    ];
-    expect(isTitleFormatterActivated('title', family, attributes)).toBe(false);
-  });
-  test('Attribute localizable but not used as label in the family', () => {
-    const localizableText = buildAttribute("test", "pim_catalog_text", true, false, false);
-    const family = buildFamilyWithAttributes([localizableText]);
-    const attributes = [
-      localizableText,
-    ];
-    expect(isTitleFormatterActivated('test', family, attributes)).toBe(false);
   });
 });
 

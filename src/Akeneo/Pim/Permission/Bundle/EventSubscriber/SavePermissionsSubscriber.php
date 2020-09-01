@@ -16,6 +16,7 @@ use Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager;
 use Akeneo\Pim\Structure\Bundle\Event\AttributeGroupEvents;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Event\JobInstanceEvents;
+use Akeneo\Platform\Bundle\ImportExportBundle\Exception\JobInstanceCannotBeUpdatedException;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Doctrine\ORM\EntityRepository;
@@ -64,6 +65,7 @@ class SavePermissionsSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
+            JobInstanceEvents::PRE_SAVE    => 'checkJobInstancePermissions',
             AttributeGroupEvents::POST_SAVE => 'saveAttributeGroupPermissions',
             JobInstanceEvents::POST_SAVE    => 'saveJobInstancePermissions',
         ];
@@ -89,6 +91,26 @@ class SavePermissionsSubscriber implements EventSubscriberInterface
             $this->getGroups($data['permissions']['view']),
             $this->getGroups($data['permissions']['edit'])
         );
+    }
+
+    /**
+     * @param GenericEvent $event
+     */
+    public function checkJobInstancePermissions(GenericEvent $event)
+    {
+        $jobInstance = $event->getSubject();
+        if (!$jobInstance instanceof JobInstance || !$event->hasArgument('data')) {
+            return;
+        }
+
+        $data = $event->getArgument('data');
+        if (!isset($data['permissions'])) {
+            return;
+        }
+
+        if (empty($data['permissions']['edit'] ?? [])) {
+            throw new JobInstanceCannotBeUpdatedException('pimee_import_export.entity.job_instance.flash.update.fail_empty_permission');
+        }
     }
 
     /**

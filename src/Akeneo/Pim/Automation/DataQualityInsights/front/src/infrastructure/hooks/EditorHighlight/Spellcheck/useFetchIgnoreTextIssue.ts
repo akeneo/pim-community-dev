@@ -1,8 +1,11 @@
 import {useCallback} from "react";
 import {useCatalogContext, useGetEditorHighlightWidgetsList, useProduct} from "../../index";
 import {fetchIgnoreTextIssue} from "../../../fetcher";
-import {isSimpleProduct, isVariantProduct} from '../../../../application/helper/ProductEditForm/Product';
 import fetchProductModelIgnoreTextIssue from '../../../fetcher/ProductEditForm/Spellcheck/fetchProductModelIgnoreTextIssue';
+import {
+  isSimpleProduct,
+  isVariantProduct
+} from "@akeneo-pim-community/data-quality-insights/src/application/helper/ProductEditForm/Product";
 
 const useFetchIgnoreTextIssue = () => {
   const product = useProduct();

@@ -24,6 +24,10 @@ const StyledTitleHeader = styled.span`
   padding-left: 8px;
 `;
 
+const MarginatedHeader = styled.div`
+  margin-bottom: 18px;
+`;
+
 const DeleteButton = createComponent({
   as: RedGhostButton,
   useHook: useDialogDisclosure,
@@ -50,36 +54,40 @@ const ActionTemplate: React.FC<Props> = ({
 
   return (
     <fieldset>
-      <StyledHeader className='AknSubsection-title'>
-        <StyledHeaderLeft>
-          <TextBoxBlue>
-            {translate('pimee_catalog_rule.rule.action.then.label')}
-          </TextBoxBlue>
-          <StyledTitleHeader>{title}</StyledTitleHeader>
-        </StyledHeaderLeft>
-        <DeleteButton {...dialog} sizeMode='small'>
-          {translate('pimee_catalog_rule.form.edit.actions.delete.label')}
-        </DeleteButton>
-        <AlertDialog
-          dialog={dialog}
-          onValidate={() => {
-            handleDelete();
-          }}
-          cancelLabel={translate('pim_common.cancel')}
-          confirmLabel={translate('pim_common.confirm')}
-          label={translate('pimee_catalog_rule.form.edit.actions.delete.label')}
-          description={translate(
-            'pimee_catalog_rule.form.edit.actions.delete.description'
-          )}
-        />
-      </StyledHeader>
-      <SmallHelper>
-        {helper}
-        <VisuallyHidden>
-          <legend>{legend}</legend>
-        </VisuallyHidden>
-      </SmallHelper>
-      <LineErrors lineNumber={lineNumber} type='actions' />
+      <MarginatedHeader>
+        <StyledHeader className='AknSubsection-title'>
+          <StyledHeaderLeft>
+            <TextBoxBlue>
+              {translate('pimee_catalog_rule.rule.action.then.label')}
+            </TextBoxBlue>
+            <StyledTitleHeader>{title}</StyledTitleHeader>
+          </StyledHeaderLeft>
+          <DeleteButton {...dialog} sizeMode='small'>
+            {translate('pimee_catalog_rule.form.edit.actions.delete.label')}
+          </DeleteButton>
+          <AlertDialog
+            dialog={dialog}
+            onValidate={() => {
+              handleDelete();
+            }}
+            cancelLabel={translate('pim_common.cancel')}
+            confirmLabel={translate('pim_common.confirm')}
+            label={translate(
+              'pimee_catalog_rule.form.edit.actions.delete.label'
+            )}
+            description={translate(
+              'pimee_catalog_rule.form.edit.actions.delete.description'
+            )}
+          />
+        </StyledHeader>
+        <SmallHelper>
+          {helper}
+          <VisuallyHidden>
+            <legend>{legend}</legend>
+          </VisuallyHidden>
+        </SmallHelper>
+        <LineErrors lineNumber={lineNumber} type='actions' />
+      </MarginatedHeader>
       {children}
     </fieldset>
   );

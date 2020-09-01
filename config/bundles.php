@@ -57,6 +57,7 @@ return [
     Akeneo\Connectivity\Connection\Infrastructure\Symfony\AkeneoConnectivityConnectionBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\FeatureFlagBundle\AkeneoFeatureFlagBundle::class =>  ['all' => true],
     Akeneo\Platform\CommunicationChannel\Infrastructure\Framework\Symfony\AkeneoCommunicationChannelBundle::class =>  ['all' => true],
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\AkeneoDataQualityInsightsBundle::class =>  ['all' => true],
 
     // PIM Enterprise bundle
     Akeneo\Tool\Bundle\RuleEngineBundle\AkeneoRuleEngineBundle::class => ['all' => true],
@@ -68,14 +69,13 @@ return [
     Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\AkeneoPimTeamworkAssistantBundle::class => ['all' => true],
     Akeneo\Pim\WorkOrganization\ProductRevert\AkeneoPimProductRevertBundle::class => ['all' => true],
     Akeneo\Pim\WorkOrganization\Workflow\Bundle\AkeneoPimWorkflowBundle::class => ['all' => true],
-    Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony\AkeneoFranklinInsightsBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\UIBundle\PimEnterpriseUIBundle::class => ['all' => true],
     Hslavich\OneloginSamlBundle\HslavichOneloginSamlBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\AuthenticationBundle\AkeneoAuthenticationBundle::class => ['all' => true],
     Akeneo\AssetManager\Infrastructure\Symfony\AkeneoAssetManagerBundle::class => ['all' => true],
     Akeneo\Pim\Enrichment\AssetManager\Bundle\AkeneoPimEnrichmentAssetManagerBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\MonitoringBundle\AkeneoMonitoringBundle::class => ['all' => true],
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\AkeneoDataQualityInsightsBundle::class => ['all' => true],
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\AkeneoPimEnterpriseDataQualityInsightsBundle::class => ['all' => true],
     Akeneo\Pim\Enrichment\Product\Bundle\AkeneoPimEnterpriseProductEnrichmentBundle::class => ['all' => true],
     Akeneo\Pim\Structure\Bundle\AkeneoPimEnterpriseStructureBundle::class => ['all' => true],
     Akeneo\SharedCatalog\AkeneoSharedCatalogBundle::class =>  ['all' => true],

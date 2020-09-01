@@ -9,6 +9,7 @@ import ListAsset, {
   getListAssetMainMediaThumbnail,
   getAssetLabel,
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
+import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
 
 const Container = styled.li`
   padding: 10px 0;
@@ -65,6 +66,8 @@ const AssetItem = ({
   isLoading?: boolean;
 }) => {
   const label = getAssetLabel(asset, context.locale);
+  const previewUrl = getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale));
+  const [, , refreshedUrl] = useRegenerate(previewUrl);
 
   return (
     <Container
@@ -72,11 +75,7 @@ const AssetItem = ({
       data-code={asset.code}
       className={isLoading ? 'AknLoadingPlaceHolderContainer' : ''}
     >
-      <AssetThumbnail
-        src={getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale))}
-        width={44}
-        height={44}
-      />
+      <AssetThumbnail src={refreshedUrl} width={44} height={44} />
       <AssetDetails>
         <AssetCode title={asset.code}>{asset.code}</AssetCode>
         <AssetLabel title={label}>{label}</AssetLabel>

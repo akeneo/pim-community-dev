@@ -19,7 +19,7 @@
             "Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/back",
             "Akeneo\\Connectivity\\Connection\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back",
             "Akeneo\\Platform\\CommunicationChannel\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back",
-            "Akeneo\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/back"
+            "Akeneo\\Pim\\Automation\\DataQualityInsights\\": ["src/Akeneo/Pim/Automation/DataQualityInsights/back", "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/back"]
         },
         "exclude-from-classmap": [
             "vendor/akeneo/pim-community-dev/src/Kernel.php"
@@ -39,8 +39,7 @@
             "AkeneoEnterprise\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
             "Akeneo\\Test\\": "vendor/akeneo/pim-community-dev/tests/back/",
             "AkeneoEnterprise\\Test\\Acceptance\\": "tests/back/Acceptance/",
-            "Akeneo\\Test\\Pim\\Automation\\FranklinInsights\\": "src/Akeneo/Pim/Automation/FranklinInsights/tests/back",
-            "Akeneo\\Test\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/tests/back",
+            "Akeneo\\Test\\Pim\\Automation\\DataQualityInsights\\": ["src/Akeneo/Pim/Automation/DataQualityInsights/tests/back", "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/tests/back"],
             "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/tests/back",
             "Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/tests/back",
             "Akeneo\\Connectivity\\Connection\\Tests\\Acceptance\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests/Acceptance",
@@ -58,12 +57,11 @@
         "guzzlehttp/guzzle": "6.3.3",
         "hslavich/oneloginsaml-bundle": "1.4.1",
         "justinrainbow/json-schema": "^5.2",
-        "lcobucci/jwt": "3.3.1",
         "phpspec/php-diff": "1.0.2",
         "phpseclib/phpseclib": "~2.0",
         "superbalist/flysystem-google-storage": "7.2.1",
         "grpc/grpc": "1.19.0",
-        "mekras/php-speller": "^2.1.1"
+        "mekras/php-speller": "^2.1.2"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "0.3.*",

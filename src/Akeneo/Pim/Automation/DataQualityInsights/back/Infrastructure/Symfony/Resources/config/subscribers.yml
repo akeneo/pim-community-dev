@@ -1,5 +1,5 @@
 services:
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\InitDataQualityInsightsDbSchemaSubscriber:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\InitPimEnterpriseDataQualityInsightsDbSchemaSubscriber:
         arguments:
             - '@database_connection'
         tags:
@@ -17,30 +17,19 @@ services:
             - '@filesystem'
             - '%kernel.project_dir%'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\InitDataQualityInsightsJobsSubscriber:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\CreateEvaluationCriteriaOnProductIgnoredWordSubscriber:
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\InitializeJobs'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\InitializeEvaluationOfAProductSubscriber:
-        arguments:
-            $dataQualityInsightsFeature: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
+            $dataQualityInsightsFeature: '@akeneo.pim.automation.data_quality_insights.feature'
             $createProductsCriteriaEvaluations: '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
             $logger: '@logger'
-            $evaluatePendingCriteria: '@akeneo.pim.automation.data_quality_insights.evaluate_products_pending_criteria'
-            $consolidateProductAxisRates: '@akeneo.pim.automation.data_quality_insights.consolidate_product_axes_rates'
-            $indexProductRates: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates'
         tags:
             - { name: kernel.event_subscriber }
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\ProductModel\InitializeEvaluationOfAProductModelSubscriber:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\ProductModel\CreateEvaluationCriteriaOnProductModelIgnoredWordSubscriber:
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
+            - '@akeneo.pim.automation.data_quality_insights.feature'
             - '@akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations'
             - '@logger'
-            - '@akeneo.pim.automation.data_quality_insights.evaluate_product_models_pending_criteria'
-            - '@akeneo.pim.automation.data_quality_insights.consolidate_product_model_axes_rates'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetDescendantVariantProductIds'
             - '@pim_catalog.query.descendant_product_model_ids'
             - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
@@ -51,7 +40,7 @@ services:
         arguments:
             $evaluateUpdatedAttributes: '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributes'
             $evaluateUpdatedAttributeOptions: '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributeOptions'
-            $dataQualityInsightsFeature: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\DataQualityInsightsFeature'
+            $dataQualityInsightsFeature: '@akeneo.pim.automation.data_quality_insights.feature'
         tags:
             - { name: kernel.event_subscriber }
 

@@ -1,48 +1,19 @@
 config:
-    config:
-        pim/controller-registry:
-            controllers:
-                akeneo_data_quality_insights_dashboard:
-                    module: akeneo-data-quality-insights-dqi-dashboard-index
-
-        # Fetchers
-        pim/fetcher-registry:
-            fetchers:
-                data-quality-insights:
-                    module: pim/base-fetcher
-                    options:
-                        urls:
-                            list: akeneo_franklin_insights_data_quality_insights_get_all
-
     paths:
-        # Controller
-        akeneo-data-quality-insights-dqi-dashboard-index: akeneodataqualityinsights/js/controller/dqi-dashboard.ts
-
         # View
         ## Product Edit Form
-        akeneo/data-quality-insights/infrastructure/pim-view/product-edit-form/data-quality-insights-overview: akeneodataqualityinsights/js/infrastructure/pim-view/product-edit-form/data-quality-insights-overview.tsx
-        akeneo/data-quality-insights/infrastructure/pim-view/product-edit-form/data-quality-insights-tab-content: akeneodataqualityinsights/js/infrastructure/pim-view/product-edit-form/data-quality-insights-tab-content.tsx
-        akeneo/data-quality-insights/infrastructure/pim-view/product-edit-form/data-quality-insights-app: akeneodataqualityinsights/js/infrastructure/pim-view/product-edit-form/data-quality-insights-app.tsx
-        akeneo/data-quality-insights/infrastructure/pim-view/product-edit-form/attributes-tab-content: akeneodataqualityinsights/js/infrastructure/pim-view/product-edit-form/attributes-tab-content.tsx
-        akeneo/data-quality-insights/view/dqi-dashboard/menu-item: akeneodataqualityinsights/js/infrastructure/pim-view/dqi-dashboard/menu-item.tsx
-        akeneo/data-quality-insights/view/dqi-dashboard/section: akeneodataqualityinsights/js/infrastructure/pim-view/dqi-dashboard/section.tsx
-
-        ## Dashboard
-        akeneo/data-quality-insights/view/dqi-dashboard/locale-switcher: akeneodataqualityinsights/js/infrastructure/pim-view/dqi-dashboard/locale-switcher.ts
-        akeneo/data-quality-insights/view/dqi-dashboard/channel-switcher: akeneodataqualityinsights/js/infrastructure/pim-view/dqi-dashboard/channel-switcher.ts
+        akeneo/data-quality-insights/infrastructure/pim-view/product-edit-form/data-quality-insights-app: akeneopimenterprisedataqualityinsights/js/infrastructure/pim-view/product-edit-form/data-quality-insights-app.tsx
 
         ## Attribute Edit Form
-        akeneo/data-quality-insights/infrastructure/pim-view/attribute-edit-form/app: akeneodataqualityinsights/js/infrastructure/pim-view/attribute-edit-form/app.tsx
-        akeneo/data-quality-insights/infrastructure/pim-view/attribute-edit-form/create-app: akeneodataqualityinsights/js/infrastructure/pim-view/attribute-edit-form/create-app.tsx
-        akeneo/data-quality-insights/infrastructure/pim-view/attribute-edit-form/quality-summary-header: akeneodataqualityinsights/js/infrastructure/pim-view/attribute-edit-form/quality-summary-header.ts
+        akeneo/data-quality-insights/infrastructure/pim-view/attribute-edit-form/app: akeneopimenterprisedataqualityinsights/js/infrastructure/pim-view/attribute-edit-form/app.tsx
+        akeneo/data-quality-insights/infrastructure/pim-view/attribute-edit-form/create-app: akeneopimenterprisedataqualityinsights/js/infrastructure/pim-view/attribute-edit-form/create-app.tsx
+        akeneo/data-quality-insights/infrastructure/pim-view/attribute-edit-form/quality-summary-header: akeneopimenterprisedataqualityinsights/js/infrastructure/pim-view/attribute-edit-form/quality-summary-header.ts
 
         # Components
         ## Product Edit Form
-        pim/product-edit-form/attribute-filter-all-missing-attributes: akeneodataqualityinsights/js/infrastructure/product-edit-form/attribute-filter-all-missing-attributes.ts
-        pim/product-edit-form/attribute-filter-all-improvable-attributes: akeneodataqualityinsights/js/infrastructure/product-edit-form/attribute-filter-all-improvable-attributes.ts
+        pim/product-edit-form/attribute-filter-all-improvable-attributes: akeneopimenterprisedataqualityinsights/js/infrastructure/product-edit-form/attribute-filter-all-improvable-attributes.ts
 
         ## Product Grid
-        oro/datagrid/rate-badge-cell: akeneodataqualityinsights/js/infrastructure/datagrid/cell/rate-badge-cell.tsx
-        oro/datagrid/quality-badge-cell: akeneodataqualityinsights/js/infrastructure/attribute-grid/cell/quality-badge-cell.tsx
+        oro/datagrid/quality-badge-cell: akeneopimenterprisedataqualityinsights/js/infrastructure/attribute-grid/cell/quality-badge-cell.tsx
 
-        akeneo/data-quality-insights/view/back-link: akeneodataqualityinsights/js/infrastructure/pim-view/back-link.tsx
+        akeneo/data-quality-insights/view/back-link: akeneopimenterprisedataqualityinsights/js/infrastructure/pim-view/back-link.tsx

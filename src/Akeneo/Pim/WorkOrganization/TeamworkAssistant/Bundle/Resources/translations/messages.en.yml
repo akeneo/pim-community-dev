@@ -1,4 +1,45 @@
 teamwork_assistant:
+  project:
+    required: This value should not be blank.
+    label_maxlength: This value is too long. It should have {{ max }} characters or less.
+    project_identifier: The project {{ project }} doesn't exist.
+    project_locale: The locale {{ locale }} is not supported by the channel {{ channel }}.
+    project_due_date: You can't select a date in the past.
+  notification:
+    project_calculation:
+      error: Project's calculation for <strong>%project_label%</strong> failed
+      warning: Project's calculation for <strong>%project_label%</strong> finished with some warnings
+      success: The project <strong>%project_label%</strong> is ready and the contributors are notified. Let's start!
+      start: Start
+    message: You have new products to enrich for "%project_label%". Due date is "%due_date%".
+    project_finished:
+      contributor: Congrats! You're 100% of done product done with %project_label%.
+      owner: 'The project <strong>%project_label%</strong> due for the <strong>%due_date%</strong> is finished.'
+      show: Show
+    due_date:
+      contributor: You're %percent%% of product done with %project_label%. Don't forget, to fill in the last products for the %due_date%.
+      owner: 'The project <strong>%project_label%</strong> due for the <strong>%due_date%</strong> is not 100% done.'
+      start: Start
+  datagrid:
+    project_completeness: Project progress
+    contributor_todo: Todo
+    contributor_in_progress: In progress
+    contributor_done: Done
+    owner_todo: Todo (project overview)
+    owner_in_progress: In progress (project overview)
+    owner_done: Done (project overview)
   user:
     deletion:
+      user_linked_to_project: This user is still linked to one or more project(s). Please remove the groups he is linked to in his user account.
       user_is_project_owner: This user is still owner of one or more projects. Please delete all this user's projects.
+job_execution:
+  summary:
+    processed_products: Processed products
+pim_analytics:
+  info_type:
+    nb_projects: Number of projects
+pim_datagrid:
+  cells:
+    type:
+      project_calculation: Project calculation
+      refresh_project_completeness_calculation: Refresh project completeness calculation

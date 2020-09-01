@@ -1,64 +1,19 @@
-View the product: 查看产品
-Unpublish the product: 取消发布产品
-Approve: 批准
-Refuse: 拒绝
-Approve selected: 批准所选
-Refuse selected: 拒绝所选
-oro:
-  datagrid:
-    noentities:
-      proposal: 没有新的提案待审查
-    noresults:
-      proposal: 没有新的提案待审查。请尝试改变搜索条件。
-pimee_datagrid:
-  cell:
-    expand:
-      expandText: 展开
-      collapseText: 折叠
 pimee_workflow:
-  entity:
-    published_product:
-      btn:
-        original_product: 编辑工作副本
-    proposal:
-      modal.title: 留下你的评论 (可选-255 字符最大)
   proposal:
-    mass_action_group:
-      review:
-        label: 批量操作
+    selected: "]-Inf, 1]已选定 {{ count }} 个提案|]1, Inf[已选定 {{ count }} 个提案"
     partial_accept:
-      modal.title: 批准部分信息
-      modal.label: 留下你的评论 (可选)
-      modal.error: 出现了一个错误，该建议不被部分批准
-      modal.success: 部分成功地验证了这项建议
+      modal.error: 发生错误，提案尚未被部分批准
     partial_approve:
       modal:
-        title: 部分批准更改
-        label: 留下你的评论 (可选)
-        error: 出现了一个错误，该建议不被部分批准
-        success: 更改已被批准
+        error: 发生错误，提案尚未被部分批准
     partial_reject:
       modal:
-        title: 部分拒绝更改
-        label: 留下你的评论 (可选)
-        error: 出现了一个错误，这项提案尚未被部分拒绝
-        success: 所做的更改已被拒绝
-batch_jobs:
-  csv_published_product_export:
-    label: 用CSV格式导出已发布的产品
-    export.label: 导出已发布的产品
-  csv_product_proposal_import:
-    label: 在 CSV 导入产品的建议
-    import.label: 导入产品的建议
-  approve_product_draft:
-    label: 同意提案
-    perform.label: 同意提案
-  refuse_product_draft:
-    label: 拒绝建议
-    perform.label: 拒绝建议
-  xlsx_published_product_export:
-    label: 导出已发布的产品至XLSX文件
-    export.label: 导出已发布的产品
-  xlsx_product_proposal_import:
-    label: 从 XLSX导入产品提案
-    import.label: 从 XLSX导入产品提案
+        error: 发生错误，提案尚未被部分拒绝
+pimee_enrich.entity.product:
+  module:
+    attribute:
+      can_be_updated_by_a_rule: "]-Inf, 1]此属性可通过以下规则更新：|]1, +Inf[此属性可通过以下规则更新："
+pimee_enrich.entity.category:
+  flash:
+    remove:
+      error_linked: 无法删除链接到已发布产品的类别。
