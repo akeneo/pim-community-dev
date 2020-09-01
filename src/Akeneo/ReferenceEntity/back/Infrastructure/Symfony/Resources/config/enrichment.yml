@@ -4,6 +4,11 @@ services:
         arguments:
             $connection: '@database_connection'
 
+    akeneo_referenceentity.infrastructure.persistence.query.enrich.find_records_labels_public_api:
+        class: Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslations
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_labels_by_codes'
+
     pimee.reference_entity.enrichment.find_all_existent_records_for_record_identifiers:
         class: 'Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Enrichment\FindAllExistentRecordsForReferenceEntityIdentifiers'
         arguments:
