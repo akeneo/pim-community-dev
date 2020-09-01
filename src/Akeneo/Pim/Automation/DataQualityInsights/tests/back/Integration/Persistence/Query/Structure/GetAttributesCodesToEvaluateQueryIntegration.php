@@ -41,6 +41,7 @@ class GetAttributesCodesToEvaluateQueryIntegration extends TestCase
         $expectedAttributesCodes = [
             new AttributeCode('name'),
             new AttributeCode('description'),
+            new AttributeCode('title'),
         ];
 
         $attributesToEvaluate = iterator_to_array($this->get(GetAttributesCodesToEvaluateQuery::class)->execute());
