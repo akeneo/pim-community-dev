@@ -62,7 +62,7 @@ class AssetCollectionTranslatorSpec extends ObjectBehavior
             ->shouldReturn(['[anniversaire],[party]', '[cake]']);
     }
 
-    function it_returns_the_asset_codes_between_brackets_if_the_reference_data_name_is_not_set_properly(FindAssetLabelTranslation $findAssetLabelTranslation)
+    function it_does_not_translate_if_the_reference_data_name_is_null(FindAssetLabelTranslation $findAssetLabelTranslation)
     {
         $findAssetLabelTranslation->byFamilyCodeAndAssetCodes()->shouldNotBeCalled();
 

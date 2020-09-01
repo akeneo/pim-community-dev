@@ -51,7 +51,7 @@ class ReferenceEntitySimpleLinkValueTranslatorSpec extends ObjectBehavior
             ->shouldReturn(['[michael]']);
     }
 
-    function it_returns_the_record_codes_between_brackets_if_the_reference_data_name_is_null(FindRecordsLabelTranslations $findRecordsLabelTranslations)
+    function it_does_not_translate_if_the_reference_data_name_is_null(FindRecordsLabelTranslations $findRecordsLabelTranslations)
     {
         $findRecordsLabelTranslations->find()->shouldNotBeCalled();
 
