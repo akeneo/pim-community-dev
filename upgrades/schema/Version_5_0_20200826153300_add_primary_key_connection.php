@@ -10,7 +10,7 @@ final class Version_5_0_20200826153300_add_primary_key_connection extends Abstra
     public function up(Schema $schema) : void
     {
         $this->addSql(<<<SQL
-ALTER TABLE akeneo_connectivity_connection DROP KEY code, DROP INDEX IDX_CONNECTIVITY_CONNECTION_code, ADD PRIMARY KEY (code);
+ALTER TABLE akeneo_connectivity_connection DROP KEY IDX_APP_code, ADD PRIMARY KEY (code);
 SQL
         );
     }
