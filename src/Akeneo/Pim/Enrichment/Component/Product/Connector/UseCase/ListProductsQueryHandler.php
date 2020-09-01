@@ -46,7 +46,7 @@ final class ListProductsQueryHandler
     private $getConnectorProductsQuery;
 
     /** @var GetConnectorProducts */
-    private $getConnectorProductsQuerywithOptionLabel;
+    private $getConnectorProductsQuerywithOptions;
 
     /** @var IdentifiableObjectRepositoryInterface */
     private $channelRepository;
@@ -61,7 +61,7 @@ final class ListProductsQueryHandler
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         PrimaryKeyEncrypter $primaryKeyEncrypter,
         GetConnectorProducts $getConnectorProductsQuery,
-        GetConnectorProducts $getConnectorProductsQuerywithOptionLabel,
+        GetConnectorProducts $getConnectorProductsQuerywithOptions,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->channelRepository = $channelRepository;
@@ -70,7 +70,7 @@ final class ListProductsQueryHandler
         $this->searchAfterPqbFactory = $searchAfterPqbFactory;
         $this->primaryKeyEncrypter = $primaryKeyEncrypter;
         $this->getConnectorProductsQuery = $getConnectorProductsQuery;
-        $this->getConnectorProductsQuerywithOptionLabel = $getConnectorProductsQuerywithOptionLabel;
+        $this->getConnectorProductsQuerywithOptions = $getConnectorProductsQuerywithOptions;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -103,7 +103,7 @@ final class ListProductsQueryHandler
         $pqb->addSorter('id', Directions::ASCENDING);
 
         $connectorProductsQuery = $query->withAttributeOptionsAsBoolean() ?
-            $this->getConnectorProductsQuerywithOptionLabel :
+            $this->getConnectorProductsQuerywithOptions :
             $this->getConnectorProductsQuery;
 
         $connectorProductList = $connectorProductsQuery->fromProductQueryBuilder(

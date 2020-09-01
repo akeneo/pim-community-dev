@@ -16,7 +16,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SqlGetConnectorProductsWithOptionLabels implements Query\GetConnectorProducts
+class SqlGetConnectorProductsWithOptions implements Query\GetConnectorProducts
 {
     /** @var Query\GetConnectorProducts */
     private $getConnectorProducts;
@@ -43,9 +43,9 @@ class SqlGetConnectorProductsWithOptionLabels implements Query\GetConnectorProdu
         ?array $localesToFilterOn
     ): ConnectorProductList {
         $connectorProductList = $this->getConnectorProducts->fromProductQueryBuilder($pqb, $userId, $attributesToFilterOn, $channelToFilterOn, $localesToFilterOn);
-        $productsWithOptionLabels = $this->getConnectorProductsWithLabels($connectorProductList->connectorProducts());
+        $productsWithOptions = $this->getConnectorProductsWithLabels($connectorProductList->connectorProducts());
 
-        return new ConnectorProductList($connectorProductList->totalNumberOfProducts(), $productsWithOptionLabels);
+        return new ConnectorProductList($connectorProductList->totalNumberOfProducts(), $productsWithOptions);
     }
 
     public function fromProductIdentifier(string $productIdentifier, int $userId): ConnectorProduct
@@ -67,7 +67,7 @@ class SqlGetConnectorProductsWithOptionLabels implements Query\GetConnectorProdu
 
     /**
      * @param array $connectorProducts
-     * @return array [['attribute_code', 'option_code']]
+     * @return array{'attribute_code': int, 'option_code': mixed|string}
      */
     private function getOptionCodes(array $connectorProducts): array
     {

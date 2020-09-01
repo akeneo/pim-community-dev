@@ -213,8 +213,8 @@ services:
             $readValueCollectionFactory: '@akeneo.pim.enrichment.factory.read_value_collection'
             $attributeRepository: '@pim_catalog.repository.attribute'
 
-    akeneo.pim.enrichment.product.connector.get_product_from_identifiers_with_option_labels:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\SqlGetConnectorProductsWithOptionLabels'
+    akeneo.pim.enrichment.product.connector.get_product_from_identifiers_with_options:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\SqlGetConnectorProductsWithOptions'
         arguments:
             - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers'
             - '@database_connection'

@@ -67,8 +67,7 @@ class OptionValueWithLinkedData extends AbstractValue implements OptionValueInte
             return false;
         }
 
-        if ($value instanceof OptionValueWithLinkedData && $this->getLinkedData() !== $value->getLinkedData())
-        {
+        if ($value instanceof OptionValueWithLinkedData && $this->getLinkedData() !== $value->getLinkedData()) {
             return false;
         }
 

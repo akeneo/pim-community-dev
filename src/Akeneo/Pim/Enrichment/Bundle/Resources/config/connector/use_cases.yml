@@ -25,7 +25,7 @@ services:
             - '@pim_catalog.query.product_query_builder_search_after_size_factory_external_api'
             - '@pim_api.security.primary_key_encrypter'
             - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers'
-            - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers_with_option_labels'
+            - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers_with_options'
             - '@event_dispatcher'
 
     pim_enrich.connector.use_cases.handler.list_product_models:
