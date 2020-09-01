@@ -13,7 +13,7 @@ import {
   AttributeLocaleScopeSelector,
   MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION,
 } from './attribute';
-import { Attribute } from '../../../../models';
+import { Attribute, AttributeType } from '../../../../models';
 import {
   useTranslate,
   useBackboneRouter,
@@ -25,6 +25,7 @@ import {
   useGetAttributeAtMount,
 } from './attribute/attribute.utils';
 import { SmallHelper } from '../../../../components/HelpersInfos';
+import { isMetricValueFilled } from './attribute/MetricValue';
 
 type Props = {
   action?: SetAction;
@@ -42,12 +43,15 @@ const SetActionLine: React.FC<Props> = ({
     Attribute | null | undefined
   >(undefined);
 
-  const isValueFilled = (value?: any) => {
+  const isValueFilled = (value?: any, attribute?: Attribute | null) => {
     return !(
       value === '' ||
       (Array.isArray(value) && value.length === 0) ||
       value === null ||
-      value === undefined
+      value === undefined ||
+      (attribute &&
+        attribute.type === AttributeType.METRIC &&
+        !isMetricValueFilled(value))
     );
   };
 
@@ -92,7 +96,7 @@ const SetActionLine: React.FC<Props> = ({
         rules={{
           // We can not use 'required' validation rule a value can be "false" (for boolean).
           validate: value => {
-            return !isValueFilled(value)
+            return !isValueFilled(value, attribute)
               ? translate('pimee_catalog_rule.exceptions.required_value')
               : true;
           },
@@ -110,7 +114,7 @@ const SetActionLine: React.FC<Props> = ({
         )}
         handleDelete={handleDelete}
         lineNumber={lineNumber}>
-        {attribute && !isValueFilled(getValueFormValue()) && (
+        {attribute && !isValueFilled(getValueFormValue(), attribute) && (
           <SmallHelper level='info'>
             {translate(
               'pimee_catalog_rule.form.helper.set_attribute_info_clear'

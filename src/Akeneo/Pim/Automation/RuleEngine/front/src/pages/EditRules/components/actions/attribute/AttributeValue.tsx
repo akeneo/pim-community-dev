@@ -31,6 +31,7 @@ import {
   InlineHelper,
 } from '../../../../../components/HelpersInfos';
 import { ActionFormContainer } from '../style';
+import { MetricValue, parseMetricValue } from './MetricValue';
 
 const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: AttributeType[] = [
   AttributeType.TEXT,
@@ -44,6 +45,7 @@ const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: AttributeType[] = [
   AttributeType.REFERENCE_ENTITY_COLLECTION,
   AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
   AttributeType.TEXTAREA,
+  AttributeType.METRIC,
 ];
 
 const MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION: Map<
@@ -98,6 +100,8 @@ const getValueModule = (attribute: Attribute, props: InputValueProps) => {
           value={parsePriceCollectionValue(props.value)}
         />
       );
+    case AttributeType.METRIC:
+      return <MetricValue {...props} value={parseMetricValue(props.value)} />;
     case AttributeType.ASSET_COLLECTION:
       return (
         <AssetCollectionValue

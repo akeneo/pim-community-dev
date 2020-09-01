@@ -255,6 +255,7 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
                     router,
                     translate
                   )}
+                  allowClear={true}
                 />
               </SelectorBlock>
             )}
