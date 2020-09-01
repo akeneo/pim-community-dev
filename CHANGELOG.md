@@ -27,6 +27,7 @@
 - PIM-9370: Fixes page freezing with a big number of attribute options
 - PIM-9391: Filter empty prices and measurement values
 - PIM-9407: Fix glitch in family variant selector if the family variant has no label
+- PIM-9425: Fix inaccurate attribute max characters
 
 ## New features
 
@@ -43,6 +44,7 @@
 - API-1225: Be able to get attributes searching by updated date
 - API-1226: Be able to get attributes searching by a list of attribute types
 - PIM-9368: Allow minimum translation progress of 70% instead of 80%
+- PIM-9398: Add a primary key on connection table
 
 # Technical Improvements
 
