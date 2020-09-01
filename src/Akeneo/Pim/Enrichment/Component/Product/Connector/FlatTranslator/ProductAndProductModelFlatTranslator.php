@@ -54,7 +54,7 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
             $translator = $this->headerRegistry->getTranslator($columnName);
             $columnLabelized = null !== $translator ? $translator->translate($columnName, $locale) :
                 sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $columnName);
-            $results[$columnLabelized] = $flatItemValues;
+            $results[$columnName . '--' . $columnLabelized] = $flatItemValues;
         }
 
         return $results;

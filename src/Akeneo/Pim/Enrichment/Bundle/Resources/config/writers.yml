@@ -27,21 +27,25 @@ services:
     pim_connector.writer.file.product_quick_export.flat_item_buffer_flusher:
         class: 'Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher'
         arguments:
+            - '@pim_connector.writer.file.product.column_presenter'
             - '@pim_connector.writer.file.product_quick_export.column_sorter'
 
     pim_connector.writer.file.product_model_quick_export.flat_item_buffer_flusher:
         class: 'Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher'
         arguments:
+            - '@pim_connector.writer.file.product_model.column_presenter'
             - '@pim_connector.writer.file.product_model_quick_export.column_sorter'
 
     pim_connector.writer.file.product.flat_item_buffer_flusher:
         class: 'Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher'
         arguments:
+            - '@pim_connector.writer.file.product.column_presenter'
             - '@pim_connector.writer.file.product.column_sorter'
 
     pim_connector.writer.file.product_model.flat_item_buffer_flusher:
         class: 'Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher'
         arguments:
+            - '@pim_connector.writer.file.product_model.column_presenter'
             - '@pim_connector.writer.file.product_model.column_sorter'
 
     pim_connector.writer.file.csv_product:
@@ -176,6 +180,12 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.association_type'
             - ['code', 'family_variant', 'parent', 'categories']
+
+    pim_connector.writer.file.product.column_presenter:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\TranslatedColumnPresenter
+
+    pim_connector.writer.file.product_model.column_presenter:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\TranslatedColumnPresenter
 
     pim_enrich.writer.database.product_and_product_model_writer:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\MassEdit\ProductAndProductModelWriter'

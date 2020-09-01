@@ -75,10 +75,13 @@ services:
     pim_connector.writer.file.flat_item_buffer_flusher:
         class: '%pim_connector.writer.file.flat_item_buffer_flusher.class%'
         arguments:
-             - '@pim_connector.writer.file.default.column_sorter'
+            - '@pim_connector.writer.file.default.column_presenter'
+            - '@pim_connector.writer.file.default.column_sorter'
 
     pim_connector.writer.file.flat_invalid_item_buffer_flusher:
         class: '%pim_connector.writer.file.flat_item_buffer_flusher.class%'
+        arguments:
+            - '@pim_connector.writer.file.default.column_presenter'
 
     # CSV
     pim_connector.writer.file.csv:
@@ -165,3 +168,7 @@ services:
         arguments:
             - '@pim_connector.array_converter.field_splitter'
             - ['code','label']
+
+    # Column presenter
+    pim_connector.writer.file.default.column_presenter:
+        class: 'Akeneo\Tool\Component\Connector\Writer\File\NullColumnPresenter'

@@ -95,7 +95,8 @@ services:
     pim_connector.writer.file.family_variant.flat_item_buffer_flusher:
         class: '%pim_connector.writer.file.flat_item_buffer_flusher.class%'
         arguments:
-             - '@pim_connector.writer.file.family_variant.column_sorter'
+            - '@pim_connector.writer.file.default.column_presenter'
+            - '@pim_connector.writer.file.family_variant.column_sorter'
 
     pim_connector.writer.file.csv_attribute_option:
         class: '%pim_connector.writer.file.csv.class%'
