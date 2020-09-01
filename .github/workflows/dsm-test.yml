@@ -26,6 +26,7 @@ jobs:
         id: visual_test_execution
       - name: Update visual tests
         if: failure() && steps.visual_test_execution.outcome == 'failure'
+        # Here we add a "|| true" to the find command to avoid it to fail for no reason.
         run: cd akeneo-design-system && find . -name '*__image_snapshots__*'  -exec rm -rf {} \; || true && yarn test:visual:run -u
       - uses: mdecoleman/pr-branch-name@1.0.0
         if: failure() && steps.visual_test_execution.outcome == 'failure'
@@ -34,6 +35,7 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Push to a new branch and create pull request
         if: failure() && steps.visual_test_execution.outcome == 'failure'
+        id: create_visual_pull_request
         uses: peter-evans/create-pull-request@v3
         with:
           commit-message: Update visual tests for branch ${{ steps.extract_branch.outputs.branch }}
@@ -42,6 +44,14 @@ jobs:
           title: Update visual tests for branch ${{ steps.extract_branch.outputs.branch }}
           body: This PR updates the visual tests for the changes in the branch ${{ steps.extract_branch.outputs.branch }}
           assignees: ${{ github.actor }}
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@master
+        if: failure() && steps.visual_test_execution.outcome == 'failure'
+        with:
+          message: |
+            Your visual regression tests are not passing.
+            Here is a pull request to fix them: https://github.com/${{ github.repository }}/pull/${{ steps.create_visual_pull_request.outputs.pull-request-number }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/upload-artifact@v2
         if: failure()
         with:
