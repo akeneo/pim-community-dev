@@ -566,7 +566,7 @@ workflows:
                     - test_back_data_migrations
                     - test_back_missing_structure_migrations
                     - test_back_phpunit
-                    - test_onboarder_bundle
+#                    - test_onboarder_bundle
           - pull_request_success:
                 requires:
                     - test_back_behat_legacy
