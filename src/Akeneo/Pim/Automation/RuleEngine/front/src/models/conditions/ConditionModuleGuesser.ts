@@ -3,6 +3,7 @@ import React from 'react';
 import { ConditionLineProps } from '../../pages/EditRules/components/conditions/ConditionLineProps';
 import { Condition } from './Condition';
 import { getFamilyConditionModule } from './FamilyCondition';
+import { getIdentifierConditionModule } from './IdentifierCondition';
 import { getCategoryConditionModule } from './CategoryCondition';
 import { getTextAttributeConditionModule } from './TextAttributeCondition';
 import { getSimpleMultiOptionsAttributeConditionModule } from './SimpleMultiOptionsAttributeCondition';
@@ -37,6 +38,7 @@ const getConditionModule: (
 ) => {
   const getConditionModuleFunctions: ConditionModuleGuesser[] = [
     getFamilyConditionModule,
+    getIdentifierConditionModule,
     getCategoryConditionModule,
     getGroupsConditionModule,
     getIdentifierAttributeCondtionModule,

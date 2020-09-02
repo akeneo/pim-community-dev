@@ -112,6 +112,7 @@ pimee_catalog_rule:
             fields:
                 family: Family
                 category: Category
+                identifier: Identifier
                 attribute: Attribute
                 groups: Groups
                 measurement_unit: Measurement unit

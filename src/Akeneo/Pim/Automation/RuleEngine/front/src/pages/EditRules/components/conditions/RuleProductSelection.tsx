@@ -40,6 +40,7 @@ import {
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
 import { Action } from '../../../../models/Action';
+import { createIdentifierCondition } from '../../../../models/conditions/IdentifierCondition';
 import { EmptySectionMessage } from '../EmptySectionMessage';
 
 const Header = styled.header`
@@ -131,6 +132,7 @@ const RuleProductSelection: React.FC<Props> = ({
       createCompletenessCondition,
       createDateSystemCondition,
       createFamilyCondition,
+      createIdentifierCondition,
       createGroupsCondition,
       createStatusCondition,
       // Attributes
@@ -170,6 +172,7 @@ const RuleProductSelection: React.FC<Props> = ({
     'family',
     'groups',
     'enabled',
+    'identifier',
     'completeness',
     'created',
     'updated',
