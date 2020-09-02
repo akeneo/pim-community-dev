@@ -63,7 +63,7 @@ pim_reference_entity:
           description_part_one: Anreicherung relevanter Informationen zu Produkten (z.B. Marken, Hersteller, Farben, Materialien, Inhaltsstoffe....).
           description_part_two: Es ermöglicht Ihnen, Ihren Kunden ein besseres Produkterlebnis zu bieten.
           description_part_three: Klicken Sie auf die Schaltfläche "Erstellen", um Ihre erste Referenzentität zu erstellen sowie deren Attribute und Datensätze festzulegen.
-          description_part_four: Um dann mit Produkten zu verknüpfen, legen Sie einen Produktattributtyp an, der sich auf diese Refrenzentität bezieht.
+          description_part_four: Um dann mit Produkten zu verknüpfen, legen Sie einen Produktattributtyp an, der sich auf diese Referenzentität bezieht.
           description_part_five: Für weitere Details empfehlen wir Ihnen, diesen Artikel zu lesen.
     create:
       header:
