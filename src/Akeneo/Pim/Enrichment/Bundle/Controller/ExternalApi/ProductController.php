@@ -188,7 +188,7 @@ class ProductController
         WarmupQueryCache $warmupQueryCache,
         EventDispatcherInterface $eventDispatcher,
         DuplicateValueChecker $duplicateValueChecker,
-        ?LoggerInterface $logger
+        LoggerInterface $logger
     ) {
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
@@ -297,7 +297,7 @@ class ProductController
             $product = $this->getConnectorProducts->fromProductIdentifier($code, $user->getId());
             $this->eventDispatcher->dispatch(new ReadProductsEvent([$product->id()]));
         } catch (ObjectNotFoundException $e) {
-            throw new NotFoundHttpException(sprintf('Product "%s" does not exist.', $code));
+            throw new NotFoundHttpException(sprintf('Product "%s" does not exist or you do not have permission to access it.', $code));
         }
 
         $normalizedProduct = $this->connectorProductNormalizer->normalizeConnectorProduct($product);
