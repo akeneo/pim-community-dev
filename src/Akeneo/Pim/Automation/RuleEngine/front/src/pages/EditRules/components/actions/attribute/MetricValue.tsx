@@ -70,9 +70,15 @@ const MetricValue: React.FC<InputValueProps> = ({
       <InputNumber
         data-testid={id}
         label={label || getAttributeLabel(attribute, catalogLocale)}
-        value={value.amount || ''}
+        value={
+          value.amount === null || typeof value.amount === 'undefined'
+            ? ''
+            : value.amount
+        }
         onChange={(event: any) => handleAmountChange(event.target.value)}
-        className={'AknTextField AknNumberField AknTextField--noRightRadius'}
+        className={
+          'AknTextField AknNumberField AknTextField--noRightRadius AknNumberField--hideArrows'
+        }
       />
       <MeasurementUnitSelector
         attribute={attribute}
