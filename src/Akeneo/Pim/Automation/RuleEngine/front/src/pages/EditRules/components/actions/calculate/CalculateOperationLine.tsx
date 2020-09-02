@@ -11,7 +11,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { CalculateOperatorSelector } from './CalculateOperatorSelector';
 import styled from 'styled-components';
 import { Translate } from '../../../../../dependenciesTools';
-import { AttributePropertiesSelector } from './AttributePropertiesSelector';
+import { AttributePropertiesSelector } from '../attribute/AttributePropertiesSelector';
 import { InputNumber } from '../../../../../components/Inputs';
 import {
   FieldOperand,
@@ -56,11 +56,10 @@ type OperationLineProps = {
   lineNumber: number;
   operationLineNumber: number;
   removeOperation: (operationLineNumber: number) => () => void;
-  version: number;
   isValue: boolean;
 };
 
-const OperationLine: React.FC<OperationLineProps> = ({
+const CalculateOperationLine: React.FC<OperationLineProps> = ({
   baseFormName,
   sourceOrOperation,
   locales,
@@ -68,30 +67,12 @@ const OperationLine: React.FC<OperationLineProps> = ({
   lineNumber,
   operationLineNumber,
   removeOperation,
-  version,
   isValue,
 }) => {
   const translate = useTranslate();
   const { setValue, watch, errors } = useFormContext();
-  const { formName, getFormValue } = useControlledFormInputAction<
-    string | null
-  >(lineNumber);
+  const { formName } = useControlledFormInputAction<string | null>(lineNumber);
   const fieldOperand = sourceOrOperation as FieldOperand;
-
-  React.useEffect(() => {
-    // When lines are moved/removed, we have an issue with <Controller /> and selectors.
-    // To reproduce that, change the value of the operator or scope or locale or currency, then move the line. The
-    // default value comes back visually (even if the good value is well store in the react hook form state)
-    // To fix the display we set again the values. The react hook form state is unchanged but the display is now good.
-    // Maybe react hook form v6 handles better this use case.
-    return;
-    ['locale', 'scope', 'currency'].forEach((key: string) => {
-      setValue(
-        formName(`${baseFormName}.${key}`),
-        getFormValue(`${baseFormName}.${key}`) || undefined
-      );
-    });
-  }, [version]);
 
   const isOperatorInError =
     typeof errors?.content?.actions?.[lineNumber]?.full_operation_list?.[
@@ -171,26 +152,12 @@ const OperationLine: React.FC<OperationLineProps> = ({
           ) : (
             <>
               <AttributePropertiesSelector
+                baseFormName={formName(baseFormName)}
                 operationLineNumber={operationLineNumber}
                 attributeCode={fieldOperand.field}
-                fieldFormName={formName(`${baseFormName}.field`)}
-                localeFormName={formName(`${baseFormName}.locale`)}
-                scopeFormName={formName(`${baseFormName}.scope`)}
-                currencyFormName={formName(`${baseFormName}.currency`)}
-                defaultLocale={watch(formName(`${baseFormName}.locale`))}
-                defaultScope={watch(formName(`${baseFormName}.scope`))}
-                defaultCurrency={watch(formName(`${baseFormName}.currency`))}
-                onCurrencyChange={currencyCode => {
-                  setValue(formName(`${baseFormName}.currency`), currencyCode);
-                }}
-                onScopeChange={scopeCode => {
-                  setValue(formName(`${baseFormName}.scope`), scopeCode);
-                }}
-                onLocaleChange={localeCode => {
-                  setValue(formName(`${baseFormName}.locale`), localeCode);
-                }}
                 locales={locales}
                 scopes={scopes}
+                isCurrencyRequired={true}
               />
             </>
           )}
@@ -211,4 +178,4 @@ const OperationLine: React.FC<OperationLineProps> = ({
   );
 };
 
-export { OperationLine };
+export { CalculateOperationLine };

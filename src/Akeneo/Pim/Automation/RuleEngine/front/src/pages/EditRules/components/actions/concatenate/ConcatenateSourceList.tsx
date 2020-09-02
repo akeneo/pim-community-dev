@@ -7,9 +7,8 @@ import { useTranslate } from '../../../../../dependenciesTools/hooks';
 import { AttributeCode, AttributeType, Locale } from '../../../../../models';
 import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
 import { useControlledFormInputAction } from '../../../hooks';
-import { CalculateOperationLine } from './CalculateOperationLine';
 import { AddFieldButton } from '../../../../../components/Selectors/AddFieldButton';
-import { BlueGhostButton } from '../../../../../components/Buttons';
+import { ConcatenateSourceLine } from './ConcatenateSourceLine';
 
 type Props = {
   lineNumber: number;
@@ -18,7 +17,7 @@ type Props = {
   scopes: IndexedScopes;
 };
 
-const CalculateOperationList: React.FC<Props> = ({
+const ConcatenateSourceList: React.FC<Props> = ({
   lineNumber,
   locales,
   scopes,
@@ -29,7 +28,7 @@ const CalculateOperationList: React.FC<Props> = ({
   >(lineNumber);
 
   const { fields, remove, move, append } = useFieldArray({
-    name: formName('full_operation_list'),
+    name: formName('from'),
   });
 
   const removeOperation = (lineToRemove: number) => () => {
@@ -47,20 +46,8 @@ const CalculateOperationList: React.FC<Props> = ({
     move(currentOperationLineNumber, newOperationLineNumber);
   };
 
-  const handleAddValue = () => {
-    if (fields.length > 0) {
-      append({ operator: null, value: '' });
-    } else {
-      append({ value: '' });
-    }
-  };
-
   const handleAddAttribute = (attributeCode: AttributeCode) => {
-    if (fields.length > 0) {
-      append({ operator: null, field: attributeCode });
-    } else {
-      append({ field: attributeCode });
-    }
+    append({ field: attributeCode });
   };
 
   const dragulaDecorator = React.useRef(null);
@@ -97,10 +84,10 @@ const CalculateOperationList: React.FC<Props> = ({
         {fields &&
           fields.map((sourceOrOperation: any, operationLineNumber) => {
             return (
-              <CalculateOperationLine
+              <ConcatenateSourceLine
                 key={sourceOrOperation.id}
-                baseFormName={`full_operation_list[${operationLineNumber}]`}
-                sourceOrOperation={sourceOrOperation}
+                baseFormName={`from[${operationLineNumber}]`}
+                source={sourceOrOperation}
                 locales={locales}
                 scopes={scopes}
                 lineNumber={lineNumber}
@@ -115,19 +102,6 @@ const CalculateOperationList: React.FC<Props> = ({
           })}
       </ul>
       <div className={'AknButtonList AknButtonList--single'}>
-        <BlueGhostButton
-          data-testid={`edit-rules-action-${lineNumber}-add-value`}
-          onClick={(e: any) => {
-            if (e) {
-              e.preventDefault();
-            }
-            handleAddValue();
-          }}
-          className={'AknButtonList-item'}>
-          {translate(
-            'pimee_catalog_rule.form.edit.actions.calculate.add_value'
-          )}
-        </BlueGhostButton>
         <div className={'AknButtonList-item'}>
           <AddFieldButton
             data-testid={`edit-rules-action-${lineNumber}-add-attribute`}
@@ -135,9 +109,17 @@ const CalculateOperationList: React.FC<Props> = ({
             isFieldAlreadySelected={() => false}
             filterSystemFields={[]}
             filterAttributeTypes={[
+              AttributeType.TEXT,
+              AttributeType.OPTION_SIMPLE_SELECT,
+              AttributeType.OPTION_MULTI_SELECT,
+              AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
+              AttributeType.REFERENCE_ENTITY_COLLECTION,
               AttributeType.NUMBER,
+              AttributeType.IDENTIFIER,
+              AttributeType.DATE,
               AttributeType.PRICE_COLLECTION,
               AttributeType.METRIC,
+              AttributeType.TEXTAREA,
             ]}
             containerCssClass={'add-attribute-button'}
             dropdownCssClass={'add-attribute-dropdown'}
@@ -151,4 +133,4 @@ const CalculateOperationList: React.FC<Props> = ({
   );
 };
 
-export { CalculateOperationList };
+export { ConcatenateSourceList };

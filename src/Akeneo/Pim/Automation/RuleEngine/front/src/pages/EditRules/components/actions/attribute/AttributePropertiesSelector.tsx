@@ -33,49 +33,40 @@ import { useActiveCurrencies } from '../../../hooks/useActiveCurrencies';
 import { Router } from '../../../../../dependenciesTools';
 import { getAttributeByIdentifier } from '../../../../../repositories/AttributeRepository';
 import get from 'lodash/get';
-import { validateAttribute } from '../attribute/attribute.utils';
+import { validateAttribute } from './attribute.utils';
+import { DateFormatSelector } from '../../../../../components/Selectors/DateFormatSelector';
 
 type Props = {
+  baseFormName: string;
   operationLineNumber: number;
   attributeCode: AttributeCode;
-  fieldFormName: string;
-  scopeFormName: string;
-  localeFormName: string;
-  currencyFormName: string;
   locales: Locale[];
   scopes: IndexedScopes;
-  defaultLocale?: LocaleCode;
-  defaultScope?: ScopeCode;
-  defaultCurrency?: CurrencyCode;
-  onCurrencyChange: (currencyCode: CurrencyCode) => void;
-  onScopeChange: (scopeCode: ScopeCode) => void;
-  onLocaleChange: (localeCode: LocaleCode) => void;
+  isCurrencyRequired: boolean;
 };
 
 const AttributePropertiesSelector: React.FC<Props> = ({
+  baseFormName,
   operationLineNumber,
   attributeCode,
-  fieldFormName,
-  scopeFormName,
-  localeFormName,
-  currencyFormName,
   scopes,
   locales,
-  defaultLocale,
-  defaultScope,
-  defaultCurrency,
-  onCurrencyChange,
-  onScopeChange,
-  onLocaleChange,
+  isCurrencyRequired,
 }) => {
   const translate = useTranslate();
-  const { watch, errors } = useFormContext();
+  const { watch, errors, setValue } = useFormContext();
   const currentCatalogLocale = useUserCatalogLocale();
   const router = useBackboneRouter();
   const currencies = useActiveCurrencies();
   const [attribute, setAttribute] = React.useState<
     Attribute | null | undefined
   >();
+  const labelLocaleFormName = `${baseFormName}.label_locale`;
+  const fieldFormName = `${baseFormName}.field`;
+  const localeFormName = `${baseFormName}.locale`;
+  const scopeFormName = `${baseFormName}.scope`;
+  const currencyFormName = `${baseFormName}.currency`;
+  const formatFormName = `${baseFormName}.format`;
 
   useEffect(() => {
     const getAttribute = async (
@@ -94,8 +85,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
     if (!attribute?.scopable) {
       return Object.values(currencies);
     }
-    // watch() is needed instead of getFormValue() when currencySelector is displayed before ScopeSelector
-    const scopeCode = watch(scopeFormName) ?? defaultScope;
+    const scopeCode = watch(scopeFormName);
     if (scopeCode && scopes[scopeCode]) {
       return scopes[scopeCode].currencies.map(code => ({ code }));
     }
@@ -106,7 +96,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
     if (!attribute?.scopable) {
       return locales;
     }
-    const scopeCode = watch(scopeFormName) ?? defaultScope;
+    const scopeCode = watch(scopeFormName);
     if (scopeCode && scopes[scopeCode]) {
       return scopes[scopeCode].locales;
     }
@@ -118,9 +108,21 @@ const AttributePropertiesSelector: React.FC<Props> = ({
     return 'undefined' !== typeof error;
   };
 
+  const hasOptions = [
+    AttributeType.OPTION_SIMPLE_SELECT,
+    AttributeType.OPTION_MULTI_SELECT,
+    AttributeType.REFERENCE_ENTITY_COLLECTION,
+    AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
+    AttributeType.DATE,
+    AttributeType.PRICE_COLLECTION,
+  ].includes(attribute?.type as AttributeType);
+
   return (
     <>
-      <span className={'AknRuleOperation-element'}>
+      <span
+        className={`AknRuleOperation-element${
+          hasOptions ? ' AknRuleOperation-element--glued' : ''
+        }`}>
         <Controller
           as={<input type='hidden' />}
           name={fieldFormName}
@@ -138,6 +140,71 @@ const AttributePropertiesSelector: React.FC<Props> = ({
           {attribute && getAttributeLabel(attribute, currentCatalogLocale)}
         </span>
       </span>
+      {[
+        AttributeType.OPTION_MULTI_SELECT,
+        AttributeType.OPTION_SIMPLE_SELECT,
+        AttributeType.REFERENCE_ENTITY_COLLECTION,
+        AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
+      ].includes(attribute?.type as AttributeType) && (
+        <span
+          className={
+            'AknRuleOperation-element AknRuleOperation-elementLocale' +
+            (isFullFormFieldInError(labelLocaleFormName)
+              ? ' select2-container-error'
+              : '')
+          }>
+          <Controller
+            data-testid={`edit-rules-action-operation-list-${operationLineNumber}-label-locale`}
+            as={<input type='hidden' />}
+            name={labelLocaleFormName}
+          />
+          <LocaleSelector
+            allowClear={true}
+            availableLocales={locales}
+            value={watch(labelLocaleFormName)}
+            hiddenLabel
+            placeholder={translate(
+              'pimee_catalog_rule.form.edit.actions.concatenate.label_locale'
+            )}
+            onChange={(localeCode: LocaleCode) => {
+              setValue(
+                labelLocaleFormName,
+                localeCode != '' ? localeCode : undefined
+              );
+            }}
+            containerCssClass={`select2-container-left-glued select2-container-as-option select2-container-uppercase`}
+            displayAsCode={true}
+          />
+        </span>
+      )}
+      {AttributeType.DATE === attribute?.type && (
+        <>
+          <Controller
+            data-testid={`edit-rules-action-operation-list-${operationLineNumber}-format`}
+            as={<input type='hidden' />}
+            name={formatFormName}
+          />
+          <DateFormatSelector
+            value={watch(formatFormName)}
+            defaultFormat={'Y-m-d'}
+            predefinedFormats={{
+              'Y-m-d': '(1999-08-03)',
+              'd/m/y': '(03/08/99)',
+              'd.m.y': '(03.08.99)',
+              'm/d/Y': '(08/03/1999)',
+              'd-M-Y': '(03-Aug-1999)',
+              'n/d/y': '(8/03/99)',
+              'j/m/y': '(3/08/99)',
+            }}
+            onChange={(dateFormat: string) => {
+              setValue(
+                formatFormName,
+                dateFormat !== '' ? dateFormat : undefined
+              );
+            }}
+          />
+        </>
+      )}
       {AttributeType.PRICE_COLLECTION === attribute?.type && (
         <span
           className={
@@ -156,14 +223,22 @@ const AttributePropertiesSelector: React.FC<Props> = ({
               currentCatalogLocale,
               getAvailableCurrencies(currencies),
               currencies,
-              watch(scopeFormName) ?? defaultScope
+              watch(scopeFormName),
+              isCurrencyRequired
             )}
           />
           <CurrencySelector
             availableCurrencies={getAvailableCurrencies(currencies)}
-            value={defaultCurrency}
+            value={watch(currencyFormName)}
             hiddenLabel
-            onChange={onCurrencyChange}
+            onChange={(currencyCode: CurrencyCode) => {
+              setValue(
+                currencyFormName,
+                currencyCode !== '' ? currencyCode : undefined
+              );
+            }}
+            allowClear={!isCurrencyRequired}
+            containerCssClass={`select2-container-left-glued select2-container-as-option select2-container-uppercase`}
           />
         </span>
       )}
@@ -189,10 +264,12 @@ const AttributePropertiesSelector: React.FC<Props> = ({
           <ScopeSelector
             allowClear={false}
             availableScopes={Object.values(scopes)}
-            value={defaultScope}
+            value={watch(scopeFormName)}
             currentCatalogLocale={currentCatalogLocale}
             hiddenLabel
-            onChange={onScopeChange}
+            onChange={(scopeCode: ScopeCode) => {
+              setValue(scopeFormName, scopeCode);
+            }}
           />
         </span>
       )}
@@ -212,7 +289,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
               attribute,
               locales,
               getAvailableLocales(),
-              watch(scopeFormName) ?? defaultScope,
+              watch(scopeFormName),
               translate,
               currentCatalogLocale
             )}
@@ -220,9 +297,11 @@ const AttributePropertiesSelector: React.FC<Props> = ({
           <LocaleSelector
             allowClear={false}
             availableLocales={getAvailableLocales()}
-            value={defaultLocale}
+            value={watch(localeFormName)}
             hiddenLabel
-            onChange={onLocaleChange}
+            onChange={(localeCode: LocaleCode) => {
+              setValue(localeFormName, localeCode);
+            }}
           />
         </span>
       )}

@@ -13,8 +13,14 @@
     color: @AknGrey !important;
   }
 
+
   .select2-container.select2-allowclear .select2-choice .select2-chosen {
     width: calc(100% - 40px);
+    margin-right: 40px;
+    transition: width 0.2s ease;
+  }
+  .select2-container.select2-allowclear:hover .select2-choice .select2-chosen {
+    width: calc(100% - 70px);
   }
 
   .select2-container.add-conditions-button {
@@ -219,4 +225,24 @@
   background-size: 16px;
   background-repeat: no-repeat;
   background-position: calc(100% - 10px) 10px;
+}
+
+.select2-container-left-glued {
+  .select2-choice {
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-color: @AknPurple100;
+  }
+}
+
+.select2-container-as-option {
+  .select2-chosen {
+    text-transform: uppercase;
+    color: @AknGrey100;
+
+    .flag {
+      display: none;
+    }
+  }
 }
