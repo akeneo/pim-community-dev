@@ -530,34 +530,37 @@ workflows:
           - test_upgrade_from_serenity_to_master:
                 requires:
                     - build_prod
-          - test_back_static_and_acceptance:
-                requires:
-                    - build_dev
-          - test_front_static_acceptance_and_integration:
-                requires:
-                    - build_dev
+#          - test_back_static_and_acceptance:
+#                requires:
+#                    - build_dev
+#          - test_front_static_acceptance_and_integration:
+#                requires:
+#                    - build_dev
           - test_back_missing_structure_migrations:
                 requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
+                    - build_dev
+#                    - test_back_static_and_acceptance
+#                    - test_front_static_acceptance_and_integration
           - test_back_data_migrations:
                 requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
+                    - build_dev
+#                    - test_back_static_and_acceptance
+#                    - test_front_static_acceptance_and_integration
           - test_back_phpunit:
                 requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-          - test_onboarder_bundle:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
+                    - build_dev
+#                    - test_back_static_and_acceptance
+#                    - test_front_static_acceptance_and_integration
+#          - test_onboarder_bundle:
+#                requires:
+#                    - test_back_static_and_acceptance
+#                    - test_front_static_acceptance_and_integration
           - test_back_behat_legacy:
                 requires:
                     - test_back_data_migrations
                     - test_back_missing_structure_migrations
                     - test_back_phpunit
-                    - test_onboarder_bundle
+#                    - test_onboarder_bundle
           - test_back_performance:
                 requires:
                     - test_back_data_migrations
