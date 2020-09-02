@@ -12,6 +12,7 @@ use Akeneo\Tool\Bundle\WebhookBundle\Client\RequestFactory;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Pool;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Psr\Log\LoggerInterface;
 
@@ -45,7 +46,6 @@ class GuzzleWebhookClient implements WebhookClient
         foreach ($webhookRequests as $request) {
             $webhook = $request->webhook();
             $event = $request->event();
-
             $requests[] = $this->requestFactory->create(
                 $webhook->url(),
                 json_encode($event->normalize()),
@@ -58,17 +58,29 @@ class GuzzleWebhookClient implements WebhookClient
             'options' => [
                 'timeout' => 3
             ],
-            'fulfilled' => function (Response $response, $index) {
-                echo sprintf('%s fulfilled', $index);
-                $this->logger->info(sprintf('%s fulfilled', $index));
-
+            'fulfilled' => function (Response $response, $index) use ($requests)  {
+                $this->logger->info(sprintf('request fulfilled'), $this->buildLogContext($requests[$index]));
             },
-            'rejected' => function (RequestException $reason, $index) {
-                $this->logger->error(sprintf('%s rejected : %s', $index, $reason->getMessage()));
+            'rejected' => function (RequestException $reason, $index) use ($requests) {
+                $this->logger->error(sprintf('request rejected: %s', $reason->getMessage()), $this->buildLogContext($requests[$index]));
             },
         ]);
 
         $promise = $pool->promise();
         $promise->wait();
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    private function buildLogContext(Request $request)
+    {
+        $requestBody =  json_decode((string) $request->getBody(), true);
+
+        return [
+            'event_id' => $requestBody['event_id'],
+            'event_date' => $requestBody['event_date'],
+        ];
     }
 }
