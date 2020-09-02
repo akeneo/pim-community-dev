@@ -172,7 +172,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
                 localeCode != '' ? localeCode : undefined
               );
             }}
-            containerCssClass={`select2-container-left-glued select2-container-as-option select2-container-uppercase`}
+            containerCssClass={`select2-container-left-glued select2-container-as-option select2-container-uppercase select2-container-operation-field-option`}
             displayAsCode={true}
           />
         </span>
@@ -238,7 +238,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
               );
             }}
             allowClear={!isCurrencyRequired}
-            containerCssClass={`select2-container-left-glued select2-container-as-option select2-container-uppercase`}
+            containerCssClass={`select2-container-left-glued select2-container-as-option select2-container-uppercase select2-container-operation-field-option`}
           />
         </span>
       )}

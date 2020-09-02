@@ -159,6 +159,7 @@ pimee_catalog_rule:
                     attribute_placeholder: Select your target attribute
                     select_reference_entity: Select your reference entities
                     select_asset: Select your assets
+                    select_measurement_unit: Select your unit
                 clear_attribute:
                     title: CLEAR Attribute value
                     subtitle: Select the attribute to clear

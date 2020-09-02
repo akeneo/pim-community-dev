@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useUserCatalogLocale } from '../../../../../dependenciesTools/hooks';
+import {
+  useTranslate,
+  useUserCatalogLocale,
+} from '../../../../../dependenciesTools/hooks';
 import { InputNumber } from '../../../../../components/Inputs';
 import { InputValueProps } from './AttributeValue';
 import { getAttributeLabel, MeasurementUnitCode } from '../../../../../models';
@@ -12,10 +15,12 @@ const MetricValueContainer = styled.div`
 
   .AknNumberField {
     flex-basis: 50%;
+    max-width: 150px;
   }
 
   .select2-container {
     flex-basis: 50%;
+    max-width: 150px;
   }
 
   label {
@@ -57,6 +62,7 @@ const MetricValue: React.FC<InputValueProps> = ({
   onChange,
 }) => {
   const catalogLocale = useUserCatalogLocale();
+  const translate = useTranslate();
 
   const handleAmountChange = (amount: number) => {
     onChange({ amount, unit: value.unit });
@@ -88,6 +94,9 @@ const MetricValue: React.FC<InputValueProps> = ({
         containerCssClass={
           'select2-container-left-glued select2-container-as-option'
         }
+        placeholder={translate(
+          'pimee_catalog_rule.form.edit.actions.set_attribute.select_measurement_unit'
+        )}
       />
     </MetricValueContainer>
   );
