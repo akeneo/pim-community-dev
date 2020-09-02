@@ -87,8 +87,8 @@ CSV;
         ];
 
         $expectedWarnings = [
-            'Product "productA" does not exist.',
-            'Product "productA" does not exist.'
+            'Product "productA" does not exist or you do not have permission to access it.',
+            'Product "productA" does not exist or you do not have permission to access it.'
         ];
 
         $this->assertAuthenticatedImport($importCSV, 'mary', $expected, 1, 0, 1, $expectedWarnings);

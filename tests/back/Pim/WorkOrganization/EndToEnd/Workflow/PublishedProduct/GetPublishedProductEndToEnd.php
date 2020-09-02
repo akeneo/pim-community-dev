@@ -38,7 +38,7 @@ class GetPublishedProductEndToEnd extends AbstractPublishedProductTestCase
             <<<JSON
     {
         "code": 404,
-        "message": "Published product \"not_found\" does not exist."
+        "message": "Published product \"not_found\" does not exist or you do not have permission to access it."
     }
 JSON;
 

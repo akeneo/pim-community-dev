@@ -29,7 +29,7 @@ class DeleteVariantProductWithPermissionEndToEnd extends ApiTestCase
         $client->request('DELETE', 'api/rest/v1/products/' . 'colored_sized_sweat_no_view', [], [], [], '{"categories": ["own_category"]}');
         $response = $client->getResponse();
 
-        $expectedContent = sprintf('{"code":%d,"message":"Product \"colored_sized_sweat_no_view\" does not exist."}', Response::HTTP_NOT_FOUND);
+        $expectedContent = sprintf('{"code":%d,"message":"Product \"colored_sized_sweat_no_view\" does not exist or you do not have permission to access it."}', Response::HTTP_NOT_FOUND);
 
         Assert::assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
         Assert::assertEquals($expectedContent, $response->getContent());
