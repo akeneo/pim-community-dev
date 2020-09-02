@@ -4,6 +4,7 @@ const Table = styled.table`
   width: 100%;
   color: ${props => props.theme.color.grey140};
   border-collapse: collapse;
+  margin-bottom: 68px;
 
   td {
     width: 25%;
@@ -46,7 +47,7 @@ const HeaderCell = styled.th`
   padding-top: 15px;
 
   :first-child {
-    padding-left: 20px;
+    padding-left: 10px;
   }
 `;
 
@@ -54,7 +55,7 @@ const LabelCell = styled.td`
   color: ${props => props.theme.color.purple100};
   font-style: italic;
   font-weight: bold;
-  padding-left: 20px;
+  padding-left: 10px;
 `;
 
 export {Table, TablePlaceholder, Row, HeaderCell, LabelCell};
