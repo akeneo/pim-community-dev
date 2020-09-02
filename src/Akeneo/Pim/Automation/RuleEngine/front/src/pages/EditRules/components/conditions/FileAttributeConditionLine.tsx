@@ -14,7 +14,6 @@ import {
 import { useControlledFormInputCondition } from '../../hooks';
 import { Operator } from '../../../../models/Operator';
 import { InputText } from '../../../../components';
-import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepository';
 import { useGetAttributeAtMount } from '../actions/attribute/attribute.utils';
 
 type FileAttributeConditionLineProps = ConditionLineProps & {

@@ -223,7 +223,7 @@ const RuleProductSelection: React.FC<Props> = ({
           />
           <AddConditionContainer>
             <AddFieldButton
-              handleAddField={handleAddCondition}
+              handleAddField={addCondition}
               isFieldAlreadySelected={isActiveConditionField}
               filterSystemFields={SYSTEM_FIELDS}
               filterAttributeTypes={ATTRIBUTE_TYPES}
