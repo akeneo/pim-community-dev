@@ -24,6 +24,8 @@ jobs:
       - name: Launch visual tests
         run: cd akeneo-design-system && yarn test:visual:run
         id: visual_test_execution
+
+      # Update visual by doing a pull request
       - name: Update visual tests
         if: failure() && steps.visual_test_execution.outcome == 'failure'
         # Here we add a "|| true" to the find command to avoid it to fail for no reason.
@@ -44,7 +46,7 @@ jobs:
           title: Update visual tests for branch ${{ steps.extract_branch.outputs.branch }}
           body: This PR updates the visual tests for the changes in the branch ${{ steps.extract_branch.outputs.branch }}
           assignees: ${{ github.actor }}
-      - name: Comment PR
+      - name: Comment PR to notify that new visual are available
         uses: thollander/actions-comment-pull-request@master
         if: failure() && steps.visual_test_execution.outcome == 'failure'
         with:
@@ -52,6 +54,27 @@ jobs:
             Your visual regression tests are not passing.
             Here is a pull request to fix them: https://github.com/${{ github.repository }}/pull/${{ steps.create_visual_pull_request.outputs.pull-request-number }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Deploy storybook to a staging folder
+      -   name: Build storybook to deploy it to a staging env
+          run: cd akeneo-design-system && yarn run storybook:build
+      -   name: Deploy to gh-pages
+          uses: peaceiris/actions-gh-pages@v3.7.0-6
+          with:
+              personal_token: ${{ secrets.DSM_EXTERNAL_TOKEN }}
+              publish_dir: ./akeneo-design-system/storybook-static
+              destination_dir: ${{ github.event.number }}
+              keep_files: true
+              external_repository: samirboulil/dsm # To change
+      - name: Comment PR to say that the staging is available
+        uses: thollander/actions-comment-pull-request@master
+        with:
+          # To change
+          message: |
+            A new version of the staging env has been deployed :tada:
+            Check it out here: https://samirboulil.github.io/dsm/${{ github.event.number }}/
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - uses: actions/upload-artifact@v2
         if: failure()
         with:

@@ -22,3 +22,4 @@ jobs:
                 with:
                     deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
                     publish_dir: ./storybook-static
+                    keep_files: true
