@@ -149,7 +149,6 @@ abstract class AbstractItemMediaWriter implements
 
         $options = [];
         $options['withHeader'] = $parameters->get('withHeader');
-
         $this->flatRowBuffer->write($flatItems, $options);
     }
 

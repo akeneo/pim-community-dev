@@ -80,7 +80,9 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
         $hollowItem = array_fill_keys($headers, '');
 
         $writer = $this->getWriter($filePath, $writerOptions);
-        $writer->addRow($headers);
+        if (!$this->headerAreTranslated()) {
+            $writer->addRow($headers);
+        }
 
         foreach ($buffer as $incompleteItem) {
             $item = array_replace($hollowItem, $incompleteItem);
@@ -129,7 +131,9 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
                 );
                 $writtenLinesCount = 0;
                 $writer = $this->getWriter($filePath, $writerOptions);
-                $writer->addRow($headers);
+                if (!$this->headerAreTranslated()) {
+                    $writer->addRow($headers);
+                }
             }
 
             $item = array_replace($hollowItem, $incompleteItem);
@@ -265,5 +269,14 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
         $writer->openToFile($filePath);
 
         return $writer;
+    }
+
+    private function headerAreTranslated(): bool
+    {
+        return
+            $this->stepExecution->getJobParameters()->has('with_label') &&
+            $this->stepExecution->getJobParameters()->get('with_label') &&
+            $this->stepExecution->getJobParameters()->has('header_with_label') &&
+            $this->stepExecution->getJobParameters()->get('header_with_label');
     }
 }
