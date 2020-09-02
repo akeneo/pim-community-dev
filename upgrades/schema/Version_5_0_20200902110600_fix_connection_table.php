@@ -23,13 +23,16 @@ final class Version_5_0_20200902110600_fix_connection_table extends AbstractMigr
         if ($this->indexExists('IDX_APP_code')) {
             $this->addSql('ALTER TABLE akeneo_connectivity_connection DROP INDEX IDX_APP_code');
         }
+        if ($this->indexExists('IDX_CONNECTIVITY_CONNECTION_code')) {
+            $this->addSql('ALTER TABLE akeneo_connectivity_connection DROP INDEX IDX_CONNECTIVITY_CONNECTION_code');
+        }
         if ($this->indexExists('FK_APP_oro_user_app_user_id')) {
             $this->addSql('ALTER TABLE akeneo_connectivity_connection DROP INDEX FK_APP_oro_user_app_user_id');
         }
-
-        if (!$this->indexExists('code')) {
-            $this->addSql('ALTER TABLE akeneo_connectivity_connection ADD PRIMARY KEY (code)');
+        if ($this->indexExists('code')) {
+            $this->addSql('ALTER TABLE akeneo_connectivity_connection DROP INDEX code');
         }
+        $this->addSql('ALTER TABLE akeneo_connectivity_connection ADD PRIMARY KEY (code)');
     }
 
     private function fixConstraints()
