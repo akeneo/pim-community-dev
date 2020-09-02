@@ -27,9 +27,9 @@ CREATE TABLE IF NOT EXISTS akeneo_connectivity_connection(
     flow_type VARCHAR(50) NOT NULL DEFAULT 'other',
     image VARCHAR(255) DEFAULT NULL NULL,
     created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT FK_APP_pim_api_client_app_client_id FOREIGN KEY (client_id) REFERENCES pim_api_client (id),
-    CONSTRAINT FK_APP_oro_user_app_user_id FOREIGN KEY (user_id) REFERENCES oro_user (id),
-    INDEX IDX_APP_code (code)
+    CONSTRAINT FK_CONNECTIVITY_CONNECTION_client_id FOREIGN KEY (client_id) REFERENCES pim_api_client (id),
+    CONSTRAINT FK_CONNECTIVITY_CONNECTION_user_id FOREIGN KEY (user_id) REFERENCES oro_user (id),
+    INDEX IDX_CONNECTIVITY_CONNECTION_code (code)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB ROW_FORMAT = DYNAMIC
 SQL;
 
