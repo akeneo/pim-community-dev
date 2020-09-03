@@ -6,15 +6,6 @@ pim_import_export:
   widget:
     last_operations:
       username: 用户名
-  batch_status:
-    1: Completed
-    2: Starting
-    3: Started
-    4: Stopping
-    5: Stopped
-    6: Failed
-    7: Abandoned
-    8: Unknown
 pim_enrich:
   entity:
     import_profile:
