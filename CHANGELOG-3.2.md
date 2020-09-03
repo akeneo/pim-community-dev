@@ -3,6 +3,7 @@
 ## Bug fixes:
 
 - PIM-9427: Update datagrid selection count when clearing filter
+- PIM-9402: Add new ES filters for EMPTY operator
 
 # 3.2.67 (2020-08-07)
 
