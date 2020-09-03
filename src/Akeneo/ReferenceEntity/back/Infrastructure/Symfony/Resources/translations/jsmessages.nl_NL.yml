@@ -1,0 +1,185 @@
+pim_reference_entity:
+  app:
+    image:
+      wide:
+        upload: Klik en sleep een bestand om te uploaden of klik hier
+      small:
+        remove: Verwijder
+        download: Download
+  reference_entity:
+    button:
+      save: Opslaan
+      save_permission: Opslaan
+      create: Aanmaken
+    tab:
+      attribute: Attributen
+      properties: Eigenschappen
+      permission: Machtigingen
+    properties:
+      identifier: Code
+      label: Label
+      image: Afbeelding
+    attribute:
+      attribute:
+        error:
+          render_list: 'Er is een fout opgetreden tijdens het renderen van het "{{ %attribute_code% }" attribuut'
+          render_edit: 'Er is een fout opgetreden tijdens het renderen van de extra eigenschappen velden van het "{{ %attribute_code% }" attribuut'
+    create:
+      header:
+        title: Aanmaken
+      input:
+        label: Label
+      confirm: Opslaan
+    delete:
+      title: Attribuut
+    notification:
+      save:
+        fail: Er deed zich een fout voor tijdens het opslaan van de referentie-entiteit
+      create:
+        fail: Er deed zich een fout voor tijdens het aanmaken van de referentie-entiteit
+      delete:
+        fail: Er deed zich een fout voor tijdens het verwijderen van de referentie-entiteit
+  record:
+    validation:
+      text:
+        incompatible_with_regular_expression: 'Voer een tekst in die voldoet aan de reguliere expressie: "{{ %regular_expression%}}"'
+        invalid_email: 'Voer een e-mailadres in: xxxxx@xx.xx'
+        invalid_url: 'Vul een URL in: http(s)://xxxx.XXX'
+    no_result:
+      subtitle: Probeer het opnieuw met een andere zoekterm.
+    button:
+      save: Opslaan
+      create: Nieuwe toevoegen
+      delete: Verwijderen
+      back: Terug naar het overzicht
+    product:
+      attribute: Productattribuut
+      counter: '{{ totalCount }} resultaat|{{ totalCount }} resultaten'
+      dropdown:
+        attribute: Productattribuut
+      title: Producten
+      no_attribute:
+        title: Er is geen productkenmerk gekoppeld aan de referentie-entiteit "{{ entityLabel }}"
+        subtitle: "Om te beginnen met het koppelen van producten aan deze attributen familie kunt u een nieuwe maken: "
+        link: Een nieuw productattribuut aanmaken
+      not_enough_items:
+        title: Het is hier een beetje vol, we laten u {{ attributeCount }}/{{ totalAttributeCount }} attributen zien.
+        subtitle:
+          usable_in_grid: Om alle gekoppelde producten te ontdekken, klik hieronder!
+          not_usable_in_grid: Om alle gekoppelde producten te ontdekken, moet het product attribuut als "bruikbaar in raster" worden ingesteld.
+        button: Bekijk alle producten
+      no_product:
+        title: Er zijn geen producten gekoppeld aan het product attribuut "{{ entityLabel }}"
+        subtitle: "Begin met het koppelen van producten aan dit attribuut om ze hier te zien"
+    enrich:
+      title: Selecteer attributen
+      code: Code
+      label: Label
+    title: Selectie
+    create:
+      header:
+        title: Aanmaken
+      subtitle: Referentie-entiteiten
+      title: Voeg nieuwe {{ entityLabel }} toe
+      input:
+        label: Label
+        code: Code (verplicht)
+        create_another: Een record aanmaken
+      confirm: Opslaan
+    grid:
+      filter:
+        completeness:
+          label: Voltooien
+          all: Alle
+          'yes': 'Ja'
+          'no': 'Nee'
+        option:
+          all: Alle
+          operator:
+            in: In lijst
+      column:
+        code: Code
+        image: Afbeelding
+        label: Label
+        complete: Voltooien
+        action: Acties
+    tab:
+      enrich: Verrijken
+      product: Producten
+    notification:
+      save:
+        fail: Er deed zich een four voor tijdens het opslaan van het record
+      create:
+        fail: Er deed zich een four voor tijdens het aanmaken van het record
+      delete:
+        fail: Er deed zich een fout voor tijdens het verwijderen van het record
+      delete_all:
+        fail: Er is een fout opgetreden tijdens het verwijderen van alle referentiegegevens van deze entiteit
+    completeness:
+      label: Voltooien
+  attribute:
+    default:
+      code: Code
+      label: Label
+      image: Afbeelding
+    type:
+      text: Tekst
+      image: Afbeelding
+    create:
+      header:
+        title: Aanmaken
+      input:
+        label: Label
+        type: Attribuuttype
+        value_per_locale: Waarde per taal
+        value_per_channel: Waarde per kanaal
+      confirm: Opslaan
+    edit:
+      save: Opslaan
+      cancel: Annuleer
+      input:
+        label: Label
+        type: Attribuuttype
+        value_per_locale: Waarde per taal
+        value_per_channel: Waarde per kanaal
+        max_length: Max tekens
+        textarea: Tekstblok
+        max_file_size: Max bestandsgrootte (MB)
+        allowed_extensions: Toegestane extensies
+        validation_rule: Validatieregel
+        regular_expression: Reguliere expressie
+        options:
+          validation_rule:
+            none: Geen
+            email: E-mail
+            regular_expression: Reguliere expressie
+            url: URL
+    delete:
+      title: Attribuut
+    notification:
+      list:
+        fail: Er deed zich een fout voor tijdens het updaten van de attribuutlijst
+      save:
+        success: Attribuut met succes bijgewerkt.
+        fail: Er deed zich een fout voor tijdens het opslaan van het attribuut
+      create:
+        success: Attribuut met succes aangemaakt.
+        fail: Er deed zich een fout voor tijdens het aanmaken van het attribuut
+      delete:
+        success: Attribuut succesvol verwijderd.
+        fail: Er deed zich een fout voor tijdens het verwijderen van het attribuut
+    options:
+      helper:
+        title: Labelvertalingen
+  modal:
+    delete:
+      subtitle: Verwijderen bevestigen
+      button:
+        cancel: Annuleer
+        confirm: Verwijderen
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: Type specifieke parameters

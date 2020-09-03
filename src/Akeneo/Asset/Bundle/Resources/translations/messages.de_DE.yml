@@ -1,0 +1,243 @@
+pimee_product_asset:
+  acl:
+    asset:
+      index: Asset anreichern
+      create: Asset erstellen
+      remove: Asset entfernen
+      categories_view: Kategorien eines Assets durchsuchen
+      mass_upload: Massenupload von Assets
+      remove_from_collection: Entferne ein Produkt-Asset von einer Asset-Sammlung
+    category_asset_picker:
+      list: Assetkategorien in der Assetauswahl auflisten
+    category:
+      create: Assetkategorie erstellen
+      edit: Assetkategorie bearbeiten
+      list: Assetkategorien auflisten
+      remove: Assetkategorie entfernen
+      manage: Assetkategorieberechtigungen verwalten
+      history: Assetkategoriehistorie ansehen
+  acl_group:
+    asset: Produktassets
+    category: Assetkategorien
+  enrich_asset:
+    button:
+      upload: Hochladen
+      delete: Löschen
+      download: Herunterladen
+      generate_from_reference: Aus Referenz generieren
+      reset_variations: Variationen zurücksetzen
+    confirmation.remove: Sind Sie sicher, dass Sie das Asset "%asset%" entfernen möchten?
+    confirmation.subTitle: Assets
+    grid:
+      edit: Asseteigenschaften bearbeiten
+    view:
+      title: Produktasset
+      code: Code
+      description: Beschreibung
+      end_of_use: Gültig bis  
+      reference: Referenz
+      filename: Dateiname
+      width: Breite
+      height: Höhe
+      resolution: Auflösung
+      colors: Farbraum
+      filesize: Dateigröße
+      filetype: Dateityp
+      actions: Aktionen
+      download: Herunterladen
+      tag: Stichworte
+      no_reference: Es wurde noch keine Referenzdatei hochgeladen.
+      no_variation: Es wurde noch keine Variationsdatei generiert.
+    flash:
+      update:
+        success: Asset wurde aktualisiert.
+        error: Asset wurde nicht aktualisiert. Es ist ein Fehler aufgetreten.
+      create:
+        success: Asset wurde erstellt.
+        error: Asset wurde nicht erstellt. Es ist ein Fehler aufgetreten.
+      remove:
+        success: Asset wurde entfernt.
+  enrich_reference:
+    flash:
+      delete:
+        success: Referenzdatei wurde gelöscht.
+        error: Referenzdatei wurde nicht gelöscht. Es ist ein Fehler aufgetreten.
+  enrich_variation:
+    flash:
+      transformation:
+        invalid_options: Erstellen der Variation %channel% aufgrund ungültiger Optionen nicht möglich.
+        image_width_error: Erstellen der Variation %channel% nicht möglich, da das hochgeladene Bild eine geringere Breite aufweist, als die Umwandlung erfordert.
+        image_height_error: Erstellen der Variation %channel% nicht möglich, da das hochgeladene Bild eine geringere Höhe aufweist, als die Umwandlung erfordert.
+        not_applicable: Erstellen der Variation %channel% nicht möglich.
+        non_registered: Keine %transformation% Umwandlung für Mime Typ %mimeType% registriert. Erstellen der Variation %channel% nicht möglich.
+        missing_asset_transformation_for_channel: Kann die Variation %channel% nicht erzeugen, bitte setzen Sie eine Asset Transformation für diesen Kanal.
+        error: Erstellen der Variation %channel% nicht möglich.
+        success: Variationsdateien wurden erfolgreich generiert.
+      update:
+        success: Variationsdatei wurde aktualisiert.
+        error: Variationsdatei wurde nicht aktualisiert. Es ist ein Fehler aufgetreten.
+      delete:
+        success: Variationsdatei wurde gelöscht.
+        error: Variationsdatei wurde nicht gelöscht. Es ist ein Fehler aufgetreten.
+  popin.create:
+    title: Neues Asset erstellen
+    confirm: Bestätigen
+    cancel: Abbrechen
+    is_localized: Lokalisierbar
+  menu: Assets
+  page_tab:
+    title:
+      view: Produktasset %asset.code% | Ansehen
+      edit: Produktasset %asset.code% | Bearbeiten
+      index: Produktassets
+  code:
+    label: Code
+  thumbnail:
+    label: Miniaturansicht
+  status:
+    label: Status
+  description:
+    label: Beschreibung
+  endOfUse:
+    label: Ende der Nutzung
+  createdAt:
+    label: Erstellt am
+  updatedAt:
+    label: Zuletzt aktualisiert am
+  tags:
+    label: Stichworte
+  tabs:
+    properties.title: Eigenschaften
+    variations.title: Variationen
+    categories.title: Kategorien
+  validation:
+    code:
+      not_empty: Code ist erforderlich. Feld darf nicht leer sein.
+      unique: Code muss eindeutig sein.
+      new_generation: Wir haben einen neuen Code für Sie generiert.
+  notAvailable:
+    label: nicht verfügbar
+  asset:
+    title: Asset
+  mass_upload:
+    menu: Assets hochladen
+    new: Ein neues Asset wird erstellt
+    add_files: Dateien hinzufügen
+    start: Upload starten
+    cancel: Upload abbrechen
+    import: Import
+    executed: Massenupload ausgeführt
+    error:
+      upload: Während des Hochladens ist ein Fehler aufgetreten
+      code: Ungültiges Code-Format für Asset
+      localizable: Es existiert ein Asset, ist aber nicht lokalisierbar
+      invalid_locale: Das Gebietsschema ist deaktiviert oder ungültig
+  category:
+    menu: Assetkategorien
+    permissions:
+      view.label: Berechtigt zum Betrachten von Assets
+      view.help: Erlaube das Betrachten von Assets in dieser Kategorie
+      edit.label: Berechtigt zum Bearbeiten von Assets
+      edit.help: Erlaube das Bearbeiten von Assets in dieser Kategorie (beinhaltet die Berechtigung zum Betrachten)
+      no_access_to_products: SIe haben keinen Zugriff auf Assets eines beliebigen Baumes. Bitte wenden Sie sich an Ihren Administrator
+      apply_on_children.label: Übernehme Änderungen auf Kindelemente
+      apply_on_children.help: Übertragen der Berechtigungen auf alle Kindelemente, bereits bestehende Berechtigungen werden beibehalten
+  mass_edit_action:
+    asset:
+      page_title: Assets
+      page_subtitle: Massenbearbeitung (1 Asset)|Massenbearbeitung (%count% Assets)
+      confirm: Sie sind dabei ein Asset mit den folgenden Informationen zu aktualisieren, bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Assets mit den folgenden Informationen zu aktualisieren, bitte bestätigten Sie den Vorgang.
+      steps:
+        first: Asset auswählen
+        second: Konfigurieren
+        third: Bestätigen
+  not_editable: Sie haben keine Bearbeitungsberechtigung für das Asset "%code%"
+pim_enrich:
+  mass_edit_action:
+    asset-classify-move:
+      label: Assets in Kategorien verschieben
+      description: Die Assets werden folgenden Kategorien zugeordnet, die bestehende Zuordnung wird verworfen
+      success_flash: Asset(s) wurden in die ausgewählten Kategorien verschoben
+      launched_flash: Die Massenbearbeitung "in Kategorien verschieben" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
+    add-tags-to-assets:
+      label: Stichworte zu Assets hinzufügen
+      description: Stichworte werden Assets hinzugefügt. Stichworte die noch nicht vorhanden sind, werden erstellt.
+      success_flash: Stichwort(e) wurden Asset(s) hinzugefügt
+      launched_flash: Die Massenbearbeitung "Stichworte zu Asset(s) hinzufügen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
+      message.error: Das angegebene Stichwort existiert nicht
+pim:
+  grid:
+    mass_action:
+      mass_classify_assets: Klassifizieren
+      add_tags_to_assets: Stichworte hinzufügen
+      delete_assets: Assets löschen
+btn.create.asset: Asset erstellen
+btn.drag_or_upload: Drag & Drop einer Datei oder hier klicken
+job_execution.summary:
+  variations_not_generated: Variationen nicht generiert
+  pimee_product_asset.mass_upload.new: Asset aus Datei erzeugt
+  pimee_product_asset.mass_upload.updated: Asset aktualisiert
+  error: Fehler beim Verarbeiten der Asset-Datei
+  skipped_assets: Übersprungene Assets
+assets_mass_upload.steps:
+  asset_mass_upload.title: Massenupload von Assets
+import_asset.steps.channel_configuration_processor.title: Verarbeite Ausgabekanalkonfigurationen
+pim_datagrid:
+  cells:
+    type:
+      mass_upload: Massenupload von Assets
+      compute_completeness_of_products_linked_to_assets: Vollständigkeit der Produkte, die mit Assets verknüpft sind
+pim_analytics:
+  info_type:
+    nb_assets: Anzahl der Assets
+pim_assets_collection: Sammlung von Assets
+akeneo_reference_entity: Referenzentität Einzelverlinkung
+akeneo_reference_entity_collection: Referenzentität Mehrfachverlinkungen
+pim_api:
+  acl:
+    asset_category:
+      edit: Erstelle und Aktualisiere Asset-Kategorien
+      list: Assetkategorien auflisten
+    asset:
+      edit: Bearbeite Asset und lade Referenz- und Variationsdateien hoch
+      list: Liste Assets, zeige Sie auf und downloade Ihre Referenz- und Variantendateien
+  acl_group:
+    asset_category: Assetkategorien
+    asset: Assets
+pimee_enrich:
+  channel:
+    tab:
+      asset_transformation.title: Assetumwandlungen
+  asset_transformation:
+    not_found: Keine Umwandlung gefunden
+    title:
+      transformation: Umwandlung
+      options: Optionen
+    colorspace:
+      title: Farbraum
+      options:
+        colorspace: '%value% Farbraum'
+    resize:
+      title: Größe anpassen
+      options:
+        width: '%value%px Breite'
+        height: '%value%px Höhe'
+    resolution:
+      title: Auflösung
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Skalierung
+      options:
+        width: '%value%px Breite'
+        height: '%value%px Höhe'
+        ratio: 'Verhältnis %value%%'
+    thumbnail:
+      title: Miniaturansicht
+      options:
+        width: '%value%px Breite'
+        height: '%value%px Höhe'
+asset_tree:
+  remove:
+    error_linked: Dieser Kategoriebaum kann nicht gelöscht werden, er ist als Standard-Kategorienbaum eines Benutzers festgelegt.

@@ -1,0 +1,241 @@
+pimee_product_asset:
+  acl:
+    asset:
+      index: Enriquecer los recursos
+      create: Crear un recurso
+      remove: Quitar un recurso
+      categories_view: Consultar las categorías de un recurso
+      mass_upload: Carga masiva de recursos
+      remove_from_collection: Eliminar un recurso de producto de una colección de recursos
+    category_asset_picker:
+      list: Lista de categorías de recursos dentro de un selector de elementos
+    category:
+      create: Crear un categoría de recursos
+      edit: Editar una categoría de recursos
+      list: Lista de categorías de recursos
+      remove: Quitar una categoría de recursos
+      manage: Gestionar los permisos de categoría de recursos
+      history: Revisar el historial de categorías de recursos
+  acl_group:
+    asset: Recursos de productos
+    category: Categorías de recursos
+  enrich_asset:
+    button:
+      upload: Cargar
+      delete: Borrar
+      download: Descargar
+      generate_from_reference: Generar desde la referencia
+      reset_variations: Reajuste de variaciones
+    confirmation.remove: '¿Está seguro que desea remover el recurso "%asset%"?'
+    confirmation.subTitle: Recursos
+    grid:
+      edit: Editar las propiedades de el recurso
+    view:
+      title: Recursos del producto
+      code: Código
+      description: Descripción
+      end_of_use: Caduca el
+      reference: Referencia
+      filename: Nombre de fichero
+      width: Ancho
+      height: Alto
+      resolution: Resolución
+      colors: Espacio colorimétrico
+      filesize: Tamaño del fichero
+      filetype: Tipo de fichero
+      actions: Acciones
+      download: Descargar
+      tag: Etiquetas
+      no_reference: Ningún fichero de referencia ha sido cargado.
+      no_variation: Ningún fichero de variación ha sido generado.
+    flash:
+      update:
+        success: El recurso ha sido actualizado.
+        error: El recurso no ha sido actualizado. Se ha producido un error.
+      create:
+        success: El recurso ha sido creado.
+        error: El recurso no ha sido creado. Se ha producido un error.
+      remove:
+        success: El recurso ha sido quitado.
+  enrich_reference:
+    flash:
+      delete:
+        success: El fichero de referencia ha sido eliminado.
+        error: El archivo de referencia no ha sido eliminado. Se ha producido un error.
+  enrich_variation:
+    flash:
+      transformation:
+        invalid_options: Imposible de generar la varación %channel% de debido a opciones inválidas.
+        image_width_error: Imposible de generar la variación %channel% debido a que la imagen cargada tiene un ancho menor que el solicitado por la transformación.
+        image_height_error: Imposible de generar la variación %channel% debido a que la imagen cargada tiene un alto menor que el solicitado por la transformación.
+        not_applicable: Imposible de generar la variación %channel%.
+        non_registered: Ninguna %transformation% transformación registrada por el mime type %mimeType%. Imposible de generar la variación %channel%.
+        missing_asset_transformation_for_channel: Imposible generar la variación de %channel%, establezca una transformación de activos para este canal.
+        error: Imposible de generar la variación %channel%.
+        success: Los ficheros de variaciones han sido creados con éxito.
+      update:
+        success: El fichero de variación ha sido actualizado.
+        error: El archivo de variación no ha sido actualizado. Se ha producido un error.
+      delete:
+        success: El fichero de variación ha sido eliminado.
+        error: El archivo de variación no ha sido eliminado. Se ha producido un error.
+  popin.create:
+    title: Crear un nuevo recurso
+    is_localized: Localizable
+  menu: Recursos
+  page_tab:
+    title:
+      view: Recurso de producto %asset.code% | Ver
+      edit: Recurso de producto %asset.code% | Editar
+      index: Recursos de productos
+  code:
+    label: Código
+  thumbnail:
+    label: Miniatura
+  status:
+    label: Estado
+  description:
+    label: Descripción
+  endOfUse:
+    label: Caducidad
+  createdAt:
+    label: Creado el
+  updatedAt:
+    label: Ultima actualización el
+  tags:
+    label: Etiquetas
+  tabs:
+    properties.title: Propiedades
+    variations.title: Variaciones
+    categories.title: Categorías
+  validation:
+    code:
+      not_empty: Código requerido. No puede estar vacío.
+      unique: El código debe ser único.
+      new_generation: Hemos generado un nuevo código por usted.
+  notAvailable:
+    label: no disponible
+  asset:
+    title: Recurso
+  mass_upload:
+    menu: Cargar recursos
+    new: Un nuevo recurso ha sido creado
+    add_files: agregar ficheros
+    start: Comenzar carga
+    cancel: Cancelar carga
+    import: Importación
+    executed: Carga en masa iniciada
+    error:
+      upload: Se ha producido un error durante la subida
+      code: Formato de código no válido para los recursos
+      localizable: Existe un recurso pero no es localizable
+      invalid_locale: El local está inhabilitado o es inválido
+  category:
+    menu: Categorías de recursos
+    permissions:
+      view.label: Permitir de ver los recursos
+      view.help: Permitir ver los recursos en esta categoría
+      edit.label: Permitir editar los recursos
+      edit.help: Permitir editar los recursos en esta categoría (implica el permiso de ver)
+      no_access_to_products: Usted no tiene acceso a recursos en ningún árbol, por favor contacte a su administrador
+      apply_on_children.label: Aplicar cambios en sub categorías
+      apply_on_children.help: Copiar los cambios de permisos en todas las sub categorías, los permisos existentes en las sub categorías son conservados
+  mass_edit_action:
+    asset:
+      page_title: Recursos
+      page_subtitle: Edición en masa (1 recurso)|Edición en masa (%count% recursos)
+      confirm: Está a punto de actualizar un recurso con la siguiente información, por favor confirme.|Estás a punto de actualizar %count% recursos con la siguiente información, por favor confirme.
+      steps:
+        first: Elegir recurso
+        second: Configuración
+        third: Confirmación
+  not_editable: Usted no tiene permisos de edición del recurso "%code%".
+pim_enrich:
+  mass_edit_action:
+    asset-classify-move:
+      label: Mover recursos a categorías
+      description: Los recursos se colocarán en las siguientes categorías, la posición actual se perderá
+      success_flash: El/los recurso(s) ha(n) sido trasladado(s) a las categorías seleccionadas
+      launched_flash: La acción en bloque "añadir a categorías" ha sido lanzada. Será notificado una vez finalizada.
+    add-tags-to-assets:
+      label: Añadir etiquetas a los recursos
+      description: Las etiquetas se agregarán a los recursos. Si algunas etiquetas no existen, se crearán.
+      success_flash: La(s) etiqueta(s) se ha(n) agregado a los recursos
+      launched_flash: La acción en masa "añadir a recursos" ha sido lanzada. Será notificado una vez finalizada.
+      message.error: La etiqueta proporcionada no existe
+pim:
+  grid:
+    mass_action:
+      mass_classify_assets: Clasificar
+      add_tags_to_assets: Añadir etiquetas
+      delete_assets: Eliminar recursos
+btn.create.asset: Crear un recurso
+btn.drag_or_upload: Arrastrar y soltar un fichero o haga clic aquí
+job_execution.summary:
+  variations_not_generated: Variaciones no generadas
+  pimee_product_asset.mass_upload.new: Recurso creado desde el fichero
+  pimee_product_asset.mass_upload.updated: Recurso cargado
+  error: Error en el proceso de archivo de recursos
+  skipped_assets: Recursos omitidos
+assets_mass_upload.steps:
+  asset_mass_upload.title: Carga masiva de recursos
+import_asset.steps.channel_configuration_processor.title: Configuración de procesos de canal
+pim_datagrid:
+  cells:
+    type:
+      mass_upload: Cargar masiva recursos
+      compute_completeness_of_products_linked_to_assets: Ingrese la totalidad de los productos enlazados a los activos
+pim_analytics:
+  info_type:
+    nb_assets: Número de recursos
+pim_assets_collection: Colección de recursos
+akeneo_reference_entity: Enlace simple de entidad de referencia
+akeneo_reference_entity_collection: Enlace múltiple con información de referencia
+pim_api:
+  acl:
+    asset_category:
+      edit: Crear y actualizar las categorías de recursos
+      list: Lista de categorías de recursos
+    asset:
+      edit: Editar recursos, y cargar sus archivos de referencia y variación
+      list: Listar recursos, listar y descargar sus archivos de referencia y variación
+  acl_group:
+    asset_category: Categorías de recursos
+    asset: Recursos
+pimee_enrich:
+  channel:
+    tab:
+      asset_transformation.title: Transformaciones de recursos
+  asset_transformation:
+    not_found: Ninguna transformación encontrada
+    title:
+      transformation: Transformación
+      options: Opciones
+    colorspace:
+      title: Espacio de color
+      options:
+        colorspace: 'Espacio de color %value%'
+    resize:
+      title: Redimensionar
+      options:
+        width: 'Ancho px %value%'
+        height: 'Alto px %value%'
+    resolution:
+      title: Resolución
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Escala
+      options:
+        width: 'Ancho px %value%'
+        height: 'Alto px %value%'
+        ratio: 'Ratio %value%%'
+    thumbnail:
+      title: Miniatura
+      options:
+        width: 'Ancho px %value%'
+        height: 'Alto px %value%'
+asset_tree:
+  remove:
+    error_linked: Este árbol de categorías no puede ser eliminado, está configurado como el árbol de categorías por defecto de un usuario.

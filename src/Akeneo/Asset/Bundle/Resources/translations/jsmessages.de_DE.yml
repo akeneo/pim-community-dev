@@ -1,0 +1,241 @@
+user:
+  asset_delay_reminder: Wiedervorlage (Tage)
+pimee_product_asset:
+  form:
+    product:
+      asset:
+        manage: Assets verwalten
+        manage_asset:
+          title: Assets verwalten
+          cancel: Abbrechen
+          confirm: Bestätigen
+        title: Assets verwalten
+        description: Wählen Sie die Assets die dem Produkt zugeordnet werden sollen
+        preview_title: Asset-Sammlung Vorschau
+        download: Herunterladen
+        remove: Entfernen
+        upload: Hochladen
+        assetRemoveConfirmationLabel: Sind Sie sicher, dass Sie dieses Asset löschen wollen?
+    asset:
+      not_empty: Code ist erforderlich. Feld darf nicht leer sein.
+      alpha_numeric_plus_underscore: Der Code sollte nur alphanumerisch oder unterstreichen sein.
+      unique: Code muss eindeutig sein. Wir generieren einen neuen für Sie.
+  enrich_asset:
+    grid:
+      edit: Asseteigenschaften bearbeiten
+  enrich_variation:
+    popin:
+      reset:
+        title: Variationen zurücksetzen
+        message: Sind Sie sicher, dass Sie alle Variationen zurücksetzen möchten?
+  mass_upload:
+    menu: Assets hochladen
+    btn:
+      remove_all_files: Alle Dateien entfernen
+      import: Import
+      upload: Assets hochladen
+    success:
+      new: Ein neues Asset wird erstellt
+      imported: Dateien importiert für Verarbeitung von Assets
+      canceled: Upload erfolgreich abgebrochen
+      deleted: Hochgeladene Datei erfolgreich gelöscht
+      need_refresh: <b>Asset Import wurde gestartet</b><br> Um die importierten Assets im Produktformular sehen zu können, aktualisieren Sie bitte die Produktseite sobald Sie die Import-Benachrichtigung erhalten haben.
+    error:
+      list: Bereits hochgeladene Dateien können nicht gelesen werden
+      upload: Während des Hochladens ist ein Fehler aufgetreten
+      delete: Datei kann nicht vom Server gelöscht werden
+      import: Beim Import ist ein Fehler aufgetreten
+      filename: Ungültiger Dateiname für Asset
+      code: Ungültiges Code-Format für Asset
+      locale: Es existiert ein Asset, ist aber nicht lokalisierbar
+      invalid_locale: Das Gebietsschema ist deaktiviert oder ungültig
+      exists: Eine Datei mit dem gleichen Namen wurde bereits importiert
+      conflicts: Konflikt der Dateinamen
+    status:
+      added: Hinzugefügt
+      queued: In Warteschlange
+      uploading: Wird hochgeladen
+      error: Fehler
+      success: Abgeschlossen
+    drag_and_drop: Drag & Drop Ihrer Assetss oder hier klicken
+    tabsection_title: Assets hochgeladen
+  datagrid:
+    mass_action:
+      delete:
+        confirm_content: Sind Sie sicher, dass Sie die ausgewählten Assets löschen möchten?
+        success: Ausgewählte Assets erfolgreich gelöscht.
+        error: Es ist ein Fehler beim Löschen der ausgewählten Assets aufgetreten, bitte versuchen Sie es erneut.
+        empty_selection: Keine Assets ausgewählt
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_assets_collection: Sammlung von Assets
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        mass_upload: Massenupload
+        compute_completeness_of_products_linked_to_assets: Vollständigkeit der Produkte, die mit Assets verknüpft sind
+pim_title:
+  pimee_product_asset_mass_upload: Assets hochladen
+  pimee_product_asset_index: Assets
+  pimee_product_asset_edit: Asset {{ asset.label }} | Bearbeiten
+  pimee_product_asset_view: Asset {{ asset.label }} | Ansicht
+  pimee_asset_categorytree_index: Kategorien
+  pimee_asset_categorytree_edit: Kategorie {{ category.label }} | Bearbeiten
+  pimee_asset_categorytree_create: Kategorie ¦ Erstellen
+batch_jobs:
+  apply_assets_mass_upload:
+    label: Massenupload von Assets
+    perform.label: Massenupload
+  apply_assets_mass_upload_into_asset_collection:
+    label: Assets Massenupload und hinzufügen zum Produkt
+    perform.label: Assets Massenupload und hinzufügen zum Produkt
+  yml_asset_channel_configuration_import:
+    import.label: Asset-Ausgabekanal-Konfiguration-Import
+    label: Assets Channel-Konfiguration in Yaml importieren
+    import_asset.label: Assets Channel-Konfiguration in Yaml importieren
+  yml_asset_channel_configuration_export:
+    label: Assetausgabekanalkonfiguration-Export in Yaml
+    export.label: Assetausgabekanalkonfiguration-Export in Yaml
+  csv_asset_import:
+    label: Asset-Import aus CSV-Datei
+    import_tags.label: Stichworte-Import aus CSV-Datei
+    import_asset.label: Asset-Import aus CSV-Datei
+  csv_asset_export:
+    label: Asset-Export in CSV-Datei
+    export.label: Asset-Export in CSV-Datei
+  csv_asset_variation_export:
+    label: Assetvariationen-Export in CSV-Datei
+    export.label: Assetvariationen-Export in CSV-Datei
+  csv_tag_import:
+    label: Stichworte-Import aus CSV-Datei
+    import.label: Stichworte-Import aus CSV-Datei
+  csv_asset_category_import:
+    label: Assetkategorie-Import aus CSV-Datei
+    import_asset_category.label: Assetkategorie-Import aus CSV-Datei
+  csv_asset_configuration_import:
+    label: Asset-Ausgabekanal-Konfigurations-Import aus CSV-Datei
+    import_asset.label: Asset-Ausgabekanal-Konfigurations-Import aus CSV-Datei
+  csv_asset_category_export:
+    label: Assetkategorie-Export in CSV-Datei
+    export.label: Assetkategorie-Export in CSV-Datei
+  xlsx_tag_import:
+    label: Stichworte-Import aus XLSX-Datei
+    import.label: Stichworte-Import aus XLSX-Datei
+  xlsx_asset_import:
+    label: Asset-Import aus XLSX-Datei
+    import_tags.label: Stichworte-Import aus XLSX-Datei
+    import_asset.label: Asset-Import aus XLSX-Datei
+  xlsx_asset_category_import:
+    label: Assetkategorie-Import aus XLSX-Datei
+    import_asset_category.label: Assetkategorie-Import aus XLSX-Datei
+  xlsx_asset_export:
+    label: Asset-Export in XLSX-Datei
+    export.label: Asset-Export in XLSX-Datei
+  xlsx_asset_category_export:
+    label: Assetkategorie-Export in XLSX-Datei
+    export.label: Assetkategorie-Export in XLSX-Datei
+  xlsx_asset_variation_export:
+    label: Asset-Variationen als XLSX Export
+    export.label: Asset-Variationen als XLSX Export
+  classify_assets:
+    perform.label: Assets in Kategorien verschieben
+  add_tags_to_assets:
+    perform.label: Stichworte zu Assets hinzufügen
+  compute_completeness_of_products_linked_to_assets:
+    compute_completeness_of_products_linked_to_assets.label: Vollständigkeit der Produkte, die mit Assets verknüpft sind
+jstree:
+  asset:
+    all: Alle Daten
+    unclassified: Unklassifizierte Daten
+asset_grid:
+  title: "] -Inf, 1] {{ count }} Produktasset|] 1, Inf [{{ count }} Produktassets"
+  selected: Ausgewählte Assets
+  label: Produktassets
+create_asset:
+  title: Asset erstellen
+pim_datagrid:
+  display_selector:
+    label: Anzeige
+    gallery: Galerie
+    list: Liste
+  mass_action:
+    mass_edit:
+      asset_edit: Massenbearbeitung Assets
+pimee_enrich.entity.channel:
+  module:
+    asset_transformation:
+      title: Assetumwandlungen
+      not_found: Keine Umwandlung gefunden
+      transformation: Umwandlung
+      options: Optionen
+      colorspace:
+        title: Farbraum
+        options:
+          colorspace: '%value% Farbraum'
+      resize:
+        title: Größe anpassen
+        options:
+          width: '%value%px Breite'
+          height: '%value%px Höhe'
+      resolution:
+        title: Auflösung
+        options:
+          resolution: '%value%'
+          resolution-unit: '%value%'
+      scale:
+        title: Skalierung
+        options:
+          width: '%value%px Breite'
+          height: '%value%px Höhe'
+          ratio: 'Verhältnis %value%%'
+      thumbnail:
+        title: Miniaturansicht
+        options:
+          width: '%value%px Breite'
+          height: '%value%px Höhe'
+pimee_enrich.mass_edit.asset:
+  title: Massenbearbeitung Assets
+  confirm: "{1}Sie sind dabei, ein Asset mit den folgenden Informationen zu aktualisieren. Bitte bestätigen Sie dies.|] 1, Inf [Sie sind dabei, {{ itemsCount }} Assets mit den folgenden Informationen zu aktualisieren, Bitte bestätigen Sie dies."
+  step:
+    select:
+      label: Asset auswählen
+    choose:
+      title: Massenbearbeitung Assets
+      label_count: "]0, Inf[Wählen Sie Ihre Aktion aus"
+    configure:
+      label: Konfigurieren
+    confirm:
+      label: Bestätigen
+  operation:
+    add_tag:
+      label: Stichworte zu Assets hinzufügen
+      description: Tags werden den Assets hinzugefügt.
+      label_count: "{1}Hinzufügen von Tags <span class=\"AknFullPage-title--highlight\">1 Asset</span>|] 1, Inf [Hinzufügen von Tags <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Assets</span>"
+      field: Stichworte
+      empty_selection: Bitte Tags auswählen
+    add_to_category:
+      label: Zuordnung von Assets in Kategorien
+      description: Die Assets werden in folgende Kategorien eingeteilt, die bestehende Zuordnung geht verloren.
+      label_count: "{1}Klassifizierung von <span class=\"AknFullPage-title--highlight\">1 Asset</span> nach Kategorien|] 1, Inf [Klassifizierung von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Assets</span> nach Kategorien"
+pim_catalog_volume:
+  section:
+    assets:
+      title: Kennzahlen zu Assets
+      hint: Hier können Sie den Umfang bezüglich der Assets verfolgen.
+  axis:
+    count_assets: Assets
+    count_asset_categories: Assetkategorien
+    count_asset_category_trees: Assetkategoriebaum
+pim_menu:
+  tab:
+    asset: Assets
+  item:
+    asset_category: Assetkategorien
+    upload_asset: Assets hochladen
+pim_notification:
+  types:
+    mass_upload: Massenupload
