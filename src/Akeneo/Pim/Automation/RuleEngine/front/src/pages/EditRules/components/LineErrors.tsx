@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { useFormContext } from 'react-hook-form';
 import { SmallHelper } from '../../../components/HelpersInfos/SmallHelper';
 
@@ -7,12 +6,6 @@ type Props = {
   lineNumber: number;
   type: 'actions' | 'conditions';
 };
-
-const Container = styled.div`
-  & > *:first-child {
-    margin-top: 12px;
-  }
-`;
 
 const getErrorMessages = (obj: { [key: string]: any }): string[] => {
   const nestedMessages = Object.values(obj)
@@ -41,13 +34,13 @@ const LineErrors: React.FC<Props> = ({ lineNumber, type }) => {
   } = errors?.content?.[type]?.[lineNumber] || {};
   const messages = getErrorMessages(currentErrors);
   return (
-    <Container>
+    <>
       {messages.map((message, i) => (
         <SmallHelper level='error' key={`${lineNumber}-${i}`}>
           {message}
         </SmallHelper>
       ))}
-    </Container>
+    </>
   );
 };
 

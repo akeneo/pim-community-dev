@@ -10,7 +10,7 @@
   }
 
   .add-conditions-button .select2-default {
-    color: @AknGrey !important;
+    color: @AknGrey120 !important;
   }
 
 
@@ -35,9 +35,13 @@
     padding: 0 10px;
     border-width: 1px;
     border-style: solid;
-    color: @AknGrey;
-    border-color: @AknMediumGrey;
+    color: @AknGrey120;
+    border-color: @AknGrey100;
     background-color: @AknWhite;
+
+    &:hover {
+      background-color: @AknGrey20;
+    }
 
     & > .select2-choice {
       height: auto;
@@ -45,6 +49,7 @@
       border: none;
       color: @AknGrey;
       padding-left: 0;
+      background-color: transparent;
 
       &.select2-dropdown-open {
         background: @AknWhite;
@@ -83,6 +88,10 @@
       color: @AknPurple100 !important;
       padding-left: 0;
 
+      &:hover {
+        color: @AknPurple120 !important;
+      }
+
       &.select2-dropdown-open {
         background: @AknWhite;
       }
@@ -108,6 +117,10 @@
     border-radius: 100px;
     height: 32px;
     line-height: 30px;
+
+    &:hover {
+      color: @AknBlue120 !important;
+    }
 
     .select2-arrow {
       background-image: url('/bundles/akeneopimruleengine/assets/icons/icon-down-blue.svg');

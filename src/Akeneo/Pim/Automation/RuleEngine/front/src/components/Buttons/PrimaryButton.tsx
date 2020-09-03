@@ -5,7 +5,7 @@ import { CoreButton } from './CoreButton';
 const PrimaryButton = styled(CoreButton)`
   color: ${({ theme }): string => theme.color.white};
   background-color: ${({ theme }): string => theme.color.green100};
-  border-color: ${({ theme }): string => theme.color.green100};
+  border-width: 0;
   &:hover {
     background-color: ${({ theme }): string => theme.color.green120};
   }
