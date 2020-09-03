@@ -7,6 +7,7 @@ import {
 import { AttributeType } from '../Attribute';
 import { ConditionModuleGuesser } from './ConditionModuleGuesser';
 import { IdentifierAttributeConditionLine } from '../../pages/EditRules/components/conditions/IdentifierAttributeConditionLine';
+import { Identifier } from '../../components/Selectors/IdentifiersSelector';
 
 const IdentifierAttributeOperators = [
   Operator.STARTS_WITH,
@@ -21,7 +22,7 @@ const IdentifierAttributeOperators = [
 type IdentifierAttributeCondition = {
   field: string;
   operator: Operator;
-  value?: string | string[];
+  value?: string | Identifier[];
 };
 
 const createIdentifierAttributeCondition: ConditionFactory = async (

@@ -98,12 +98,12 @@ const IdentifiersSelector: React.FC<Props> = ({
       value={value}
       onChange={handleChange}
       ajax={ajax}
-      initSelection={(_element, callback) => {
-        initSelectedIdentifiers(value, callback);
-      }}
+      initSelection={(_element, callback) =>
+        initSelectedIdentifiers(value, callback)
+      }
       validation={validation}
     />
   );
 };
 
-export { IdentifiersSelector };
+export { Identifier, IdentifiersSelector };

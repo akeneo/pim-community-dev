@@ -10,6 +10,7 @@ import {
   createCompletenessCondition,
   createFamilyCondition,
   createGroupsCondition,
+  createIdentifierCondition,
   createIdentifierAttributeCondition,
   createNumberAttributeCondition,
   createSimpleMultiOptionsAttributeCondition,
@@ -40,7 +41,6 @@ import {
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
 import { Action } from '../../../../models/Action';
-import { createIdentifierCondition } from '../../../../models/conditions/IdentifierCondition';
 import { EmptySectionMessage } from '../EmptySectionMessage';
 
 const Header = styled.header`

@@ -2,6 +2,7 @@ import { Operator } from '../Operator';
 import { ConditionFactory } from './Condition';
 import { ConditionModuleGuesser } from './ConditionModuleGuesser';
 import { IdentifierConditionLine } from '../../pages/EditRules/components/conditions/IdentifierConditionLine';
+import { Identifier } from '../../components/Selectors/IdentifiersSelector';
 
 const FIELD = 'identifier';
 
@@ -18,7 +19,7 @@ const IdentifierOperators = [
 type IdentifierCondition = {
   field: string;
   operator: Operator;
-  value: string | string[];
+  value: string | Identifier[];
 };
 
 const operatorIsValid = (operator: any): boolean => {
@@ -63,7 +64,7 @@ const createIdentifierCondition: ConditionFactory = (
   return Promise.resolve<IdentifierCondition>({
     field: FIELD,
     operator: IdentifierOperators[0],
-    value: [],
+    value: '',
   });
 };
 

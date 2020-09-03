@@ -14,8 +14,11 @@ import { LineErrors } from '../LineErrors';
 import { useTranslate } from '../../../../dependenciesTools/hooks';
 
 import { useControlledFormInputCondition } from '../../hooks';
-import { IdentifierOperators } from '../../../../models/conditions/IdentifierCondition';
-import { IdentifiersSelector } from '../../../../components/Selectors/IdentifiersSelector';
+import { IdentifierOperators } from '../../../../models/conditions';
+import {
+  Identifier,
+  IdentifiersSelector,
+} from '../../../../components/Selectors/IdentifiersSelector';
 import { InputText } from '../../../../components/Inputs';
 
 const IdentifierConditionLine: React.FC<ConditionLineProps> = ({
@@ -101,8 +104,8 @@ const IdentifierConditionLine: React.FC<ConditionLineProps> = ({
               name={valueFormName}
               label={translate('pimee_catalog_rule.rule.value')}
               hiddenLabel
-              value={getValueFormValue() as string[]}
-              onChange={value => setValueFormValue(value)}
+              value={getValueFormValue() as Identifier[]}
+              onChange={setValueFormValue}
             />
           ) : (
             <InputText

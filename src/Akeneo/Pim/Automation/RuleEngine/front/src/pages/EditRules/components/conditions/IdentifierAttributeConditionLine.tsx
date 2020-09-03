@@ -15,7 +15,10 @@ import { AttributeConditionLine } from './AttributeConditionLine';
 import { InputText } from '../../../../components';
 import { useGetAttributeAtMount } from '../actions/attribute/attribute.utils';
 import { Operator } from '../../../../models/Operator';
-import { IdentifiersSelector } from '../../../../components/Selectors/IdentifiersSelector';
+import {
+  Identifier,
+  IdentifiersSelector,
+} from '../../../../components/Selectors/IdentifiersSelector';
 
 type IdentifierAttributeConditionLineProps = ConditionLineProps & {
   condition: IdentifierAttributeCondition;
@@ -92,9 +95,9 @@ const IdentifierAttributeConditionLine: React.FC<IdentifierAttributeConditionLin
           name={valueFormName}
           label={translate('pimee_catalog_rule.rule.value')}
           hiddenLabel
-          value={getValueFormValue() as string[]}
+          value={getValueFormValue() as Identifier[]}
           entityType={'product'}
-          onChange={value => setValueFormValue(value)}
+          onChange={setValueFormValue}
         />
       ) : (
         <InputText
