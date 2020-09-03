@@ -23,7 +23,7 @@ const AxisRatesOverview: FunctionComponent<AxisRatesOverviewProps> = () => {
   }, [productAxisRates]);
 
   // @ts-ignore
-  const enrichmentRate = get(productAxisRates, ['enrichment', 'rates', channel, locale], null) as string;
+  const enrichmentRate = get(productAxisRates, ['enrichment', 'rates', channel, locale], null) as any;
   let consistencyRate: any;
   if (axesContext.axes.includes('consistency')) {
     // @ts-ignore
