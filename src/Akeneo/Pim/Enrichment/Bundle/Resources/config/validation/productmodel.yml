@@ -26,8 +26,6 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
         associations:
             - Symfony\Component\Validator\Constraints\All:
                 - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\AssociationTypeIsNotQuantified: ~
-        quantifiedAssociations:
-            - Symfony\Component\Validator\Constraints\Valid: ~
     getters:
         values:
             - Symfony\Component\Validator\Constraints\Valid:
@@ -36,3 +34,5 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
             - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ReferenceDataOptionsExist: ~
             - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ScopableValues: ~
             - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\LocalizableValues: ~
+        quantifiedAssociations:
+            - Symfony\Component\Validator\Constraints\Valid: ~

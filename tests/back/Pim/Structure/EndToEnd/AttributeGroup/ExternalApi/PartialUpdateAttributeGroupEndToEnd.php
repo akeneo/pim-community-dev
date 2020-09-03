@@ -305,6 +305,10 @@ JSON;
     "code": "an_attr_text",
     "type": "pim_catalog_text",
     "group": "attributeGroupA",
+    "group_labels": {
+        "en_US": "Attribute group A",
+        "fr_FR": "Groupe d'attribut A"
+    },
     "unique": false,
     "useable_as_grid_filter": false,
     "allowed_extensions": [],

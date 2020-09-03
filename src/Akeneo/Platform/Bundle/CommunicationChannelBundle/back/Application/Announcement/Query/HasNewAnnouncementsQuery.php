@@ -11,12 +11,39 @@ namespace Akeneo\Platform\CommunicationChannel\Application\Announcement\Query;
  */
 final class HasNewAnnouncementsQuery
 {
+    /** @var string */
+    private $edition;
+
+    /** @var string */
+    private $version;
+
+    /** @var string */
+    private $locale;
+
     /** @var int */
     private $userId;
 
-    public function __construct(int $userId)
+    public function __construct(string $edition, string $version, string $locale, int $userId)
     {
+        $this->edition = $edition;
+        $this->version = $version;
+        $this->locale = $locale;
         $this->userId = $userId;
+    }
+
+    public function edition(): string
+    {
+        return $this->edition;
+    }
+
+    public function version(): string
+    {
+        return $this->version;
+    }
+
+    public function locale(): string
+    {
+        return $this->locale;
     }
 
     public function userId(): int

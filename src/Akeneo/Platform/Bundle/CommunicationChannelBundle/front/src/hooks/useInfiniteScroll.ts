@@ -16,30 +16,28 @@ type ResultsResponse = {
 /**
  * Hook to do infinite scroll on a list of items fetched
  *
- * @param fetch Function to fetch the paginated items. Those function needs to take in parameter the seard after id and the items limit. It returns a Promise of items.
+ * @param fetch Function to fetch the paginated items. Those function needs to take in parameter the seard after id. It returns a Promise of items.
  * @param scrollableElement HTML element where the scroll is done
- * @param limit Limit numbers of items by qurey to fetch items (By default 10).
  * @param threshold Thereshold Maximum distance to bottom of the scroll to start the fetch of the items (By default 300).
  *
  * @returns [ResultsResponse, callbackToHandleFetchingResults]
  */
 const useInfiniteScroll = (
-  fetch: (searchAfter: string | null, limit: number) => Promise<any[]>,
+  fetch: (searchAfter: string | null) => Promise<any[]>,
   scrollableElement: HTMLElement | null,
-  limit: number = 10,
-  threshold: number = 300
-): [ResultsResponse, (searchAfter: string | null, limit: number) => void] => {
+  threshold: number = 4000
+): [ResultsResponse, (searchAfter: string | null) => void] => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const handleFetchingResults = useCallback(async (searchAfter: string | null, limit: number) => {
+  const handleFetchingResults = useCallback(async (searchAfter: string | null) => {
     try {
       dispatch(infiniteScrollFetchingResults());
-      const data = await fetch(searchAfter, limit);
+      const data = await fetch(searchAfter);
 
       if (null === searchAfter) {
         dispatch(infiniteScrollFirstResultsFetched(data));
       } else {
-        const lastAppend = data.length < limit;
+        const lastAppend = data.length == 0;
         dispatch(infiniteScrollNextResultsFetched(data, lastAppend));
       }
     } catch (error) {
@@ -55,19 +53,19 @@ const useInfiniteScroll = (
     return scrollPosition + clientHeight >= scrollSize - threshold && !lastAppend && !isFetching;
   };
 
+  if (null !== scrollableElement) {
+    scrollableElement.onscroll = () => {
+      if (hasToAppendItems(scrollableElement, state.lastAppend, state.isFetching)) {
+        const lastElement = state.items[state.items.length - 1];
+        const searchAfter = lastElement.id;
+        handleFetchingResults(searchAfter);
+      }
+    };
+  }
+
   useEffect(() => {
-    if (null !== scrollableElement) {
-      scrollableElement.onscroll = () => {
-        if (hasToAppendItems(scrollableElement, state.lastAppend, state.isFetching)) {
-          const lastElement = state.items[state.items.length - 1];
-          const searchAfter = lastElement.id;
-          handleFetchingResults(searchAfter, limit);
-        }
-      };
-    } else {
-      handleFetchingResults(null, limit);
-    }
-  }, [scrollableElement, state]);
+    handleFetchingResults(null);
+  }, []);
 
   return [{items: state.items, isFetching: state.isFetching, hasError: state.hasError}, handleFetchingResults];
 };

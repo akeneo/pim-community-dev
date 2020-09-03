@@ -196,7 +196,7 @@ jobs:
           name: Get Behat Suite name to run
           command: |
             TESTSUITE=$(echo $CIRCLE_BRANCH | sed -e 's/^.*-\([^-]*\)$/\1/g')
-            if ! [[ $TESTSUITE =~ ^(weasel|chipmunk|raccoon|franklin)$ ]] ; then
+            if ! [[ $TESTSUITE =~ ^(weasel|chipmunk|raccoon)$ ]] ; then
               TESTSUITE="all"
             fi
             echo "Behat Suite to run: "$TESTSUITE

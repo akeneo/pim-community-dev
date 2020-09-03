@@ -3,6 +3,7 @@
 namespace AkeneoTest\Pim\Structure\EndToEnd\Attribute\ExternalApi;
 
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -101,6 +102,133 @@ JSON;
 
         $response = $client->getResponse();
 
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+    }
+
+    public function testAttributeSearchByCodes()
+    {
+        $client = $this->createAuthenticatedClient();
+        $search = '{"code":[{"operator":"IN","value":["a_metric","a_multi_select", "a_metric_negative"]}]}';
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+
+        $client->request('GET', 'api/rest/v1/attributes?limit=2&page=1&with_count=true&search=' . $search);
+
+        $standardizedAttributes = $this->getStandardizedAttributes();
+
+        $expected = <<<JSON
+{
+	"_links": {
+		"self": {
+			"href": "http://localhost/api/rest/v1/attributes?page=1&limit=2&with_count=true&search={$searchEncoded}"
+		},
+		"first": {
+			"href": "http://localhost/api/rest/v1/attributes?page=1&limit=2&with_count=true&search={$searchEncoded}"
+		},
+		"next": {
+			"href": "http://localhost/api/rest/v1/attributes?page=2&limit=2&with_count=true&search={$searchEncoded}"
+		}
+	},
+	"current_page": 1,
+	"items_count": 3,
+    "_embedded" : {
+        "items" : [
+            {$standardizedAttributes['a_metric']},
+            {$standardizedAttributes['a_metric_negative']}
+        ]
+    }
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+    }
+
+    public function testAttributeSearchByTypes()
+    {
+        $client = $this->createAuthenticatedClient();
+        $search = '{"type":[{"operator":"IN","value":["pim_catalog_metric", "pim_catalog_date", "pim_catalog_file"]}]}';
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+
+        $client->request('GET', 'api/rest/v1/attributes?limit=5&page=1&with_count=true&search=' . $search);
+
+        $standardizedAttributes = $this->getStandardizedAttributes();
+
+        $expected = <<<JSON
+{
+	"_links": {
+		"self": {
+			"href": "http://localhost/api/rest/v1/attributes?page=1&limit=5&with_count=true&search={$searchEncoded}"
+		},
+		"first": {
+			"href": "http://localhost/api/rest/v1/attributes?page=1&limit=5&with_count=true&search={$searchEncoded}"
+		},
+		"next": {
+			"href": "http://localhost/api/rest/v1/attributes?page=2&limit=5&with_count=true&search={$searchEncoded}"
+		}
+	},
+	"current_page": 1,
+	"items_count": 6,
+    "_embedded" : {
+        "items" : [
+            {$standardizedAttributes['a_date']},
+            {$standardizedAttributes['a_file']},
+            {$standardizedAttributes['a_metric']},
+            {$standardizedAttributes['a_metric_negative']},
+            {$standardizedAttributes['a_metric_without_decimal']}
+        ]
+    }
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+    }
+
+    public function testAttributeSearchByUpdated()
+    {
+        /** @var Connection $connection */
+        $connection = $this->get('database_connection');
+        $affected = $connection->exec('UPDATE pim_catalog_attribute SET updated="2019-05-15 16:27:00" WHERE code="a_file"');
+        $this->assertEquals(1, $affected, 'There is more result as expected during test setup, the test will not work.');
+
+        $client = $this->createAuthenticatedClient();
+        $search = '{"updated":[{"operator":">","value":"2020-01-01T10:00:01Z"}]}';
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+
+        $client->request('GET', 'api/rest/v1/attributes?limit=5&with_count=true&search=' . $search);
+
+        $standardizedAttributes = $this->getStandardizedAttributes();
+        $expected = <<<JSON
+{
+	"_links": {
+		"self": {
+			"href": "http://localhost/api/rest/v1/attributes?page=1&limit=5&with_count=true&search={$searchEncoded}"
+		},
+		"first": {
+			"href": "http://localhost/api/rest/v1/attributes?page=1&limit=5&with_count=true&search={$searchEncoded}"
+		},
+		"next": {
+			"href": "http://localhost/api/rest/v1/attributes?page=2&limit=5&with_count=true&search={$searchEncoded}"
+		}
+	},
+	"current_page": 1,
+	"items_count": 29,
+    "_embedded" : {
+        "items" : [
+            {$standardizedAttributes['a_date']},
+            {$standardizedAttributes['a_localizable_image']},
+            {$standardizedAttributes['a_localizable_scopable_image']},
+            {$standardizedAttributes['a_localized_and_scopable_text_area']},
+            {$standardizedAttributes['a_metric']}
+        ]
+    }
+}
+JSON;
+
+        $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
     }
@@ -231,6 +359,7 @@ JSON;
     "code"                   : "a_date",
     "type"                   : "pim_catalog_date",
     "group"                  : "attributeGroupA",
+    "group_labels"           : {"en_US": "Attribute group A","fr_FR": "Groupe d'attribut A"},
     "unique"                 : false,
     "useable_as_grid_filter" : false,
     "allowed_extensions"     : [],
@@ -268,6 +397,7 @@ JSON;
     "code"                   : "a_file",
     "type"                   : "pim_catalog_file",
     "group"                  : "attributeGroupA",
+    "group_labels"           : {"en_US": "Attribute group A","fr_FR": "Groupe d'attribut A"},
     "unique"                 : false,
     "useable_as_grid_filter" : false,
     "allowed_extensions"     : ["pdf", "doc", "docx", "txt"],
@@ -305,6 +435,7 @@ JSON;
     "code"                   : "a_localizable_image",
     "type"                   : "pim_catalog_image",
     "group"                  : "attributeGroupB",
+    "group_labels"           : {"en_US": "Attribute group B","fr_FR": "Groupe d'attribut B"},
     "unique"                 : false,
     "useable_as_grid_filter" : false,
     "allowed_extensions"     : [],
@@ -342,6 +473,7 @@ JSON;
     "code"                   : "a_localizable_scopable_image",
     "type"                   : "pim_catalog_image",
     "group"                  : "attributeGroupB",
+    "group_labels"           : {"en_US": "Attribute group B","fr_FR": "Groupe d'attribut B"},
     "unique"                 : false,
     "useable_as_grid_filter" : false,
     "allowed_extensions"     : [],
@@ -379,6 +511,7 @@ JSON;
     "code"                   : "a_localized_and_scopable_text_area",
     "type"                   : "pim_catalog_textarea",
     "group"                  : "attributeGroupA",
+    "group_labels"           : {"en_US": "Attribute group A","fr_FR": "Groupe d'attribut A"},
     "unique"                 : false,
     "useable_as_grid_filter" : false,
     "allowed_extensions"     : [],
@@ -416,6 +549,7 @@ JSON;
     "code"                   : "a_metric",
     "type"                   : "pim_catalog_metric",
     "group"                  : "attributeGroupB",
+    "group_labels"           : {"en_US": "Attribute group B","fr_FR": "Groupe d'attribut B"},
     "unique"                 : false,
     "useable_as_grid_filter" : false,
     "allowed_extensions"     : [],
@@ -453,6 +587,7 @@ JSON;
     "code"                   : "a_metric_negative",
     "type"                   : "pim_catalog_metric",
     "group"                  : "attributeGroupB",
+    "group_labels"           : {"en_US": "Attribute group B","fr_FR": "Groupe d'attribut B"},
     "unique"                 : false,
     "useable_as_grid_filter" : false,
     "allowed_extensions"     : [],
@@ -490,6 +625,7 @@ JSON;
     "code"                   : "a_metric_without_decimal",
     "type"                   : "pim_catalog_metric",
     "group"                  : "attributeGroupB",
+    "group_labels"           : {"en_US": "Attribute group B","fr_FR": "Groupe d'attribut B"},
     "unique"                 : false,
     "useable_as_grid_filter" : false,
     "allowed_extensions"     : [],
@@ -527,6 +663,7 @@ JSON;
     "code"                   : "a_metric_without_decimal_negative",
     "type"                   : "pim_catalog_metric",
     "group"                  : "attributeGroupC",
+    "group_labels"           : {"en_US": "Attribute group C","fr_FR": "Groupe d'attribut C"},
     "unique"                 : false,
     "useable_as_grid_filter" : false,
     "allowed_extensions"     : [],
@@ -564,6 +701,7 @@ JSON;
     "code"                   : "a_multi_select",
     "type"                   : "pim_catalog_multiselect",
     "group"                  : "attributeGroupC",
+    "group_labels"           : {"en_US": "Attribute group C","fr_FR": "Groupe d'attribut C"},
     "unique"                 : false,
     "useable_as_grid_filter" : false,
     "allowed_extensions"     : [],
@@ -602,3 +740,4 @@ JSON;
         return $this->catalog->useTechnicalCatalog();
     }
 }
+

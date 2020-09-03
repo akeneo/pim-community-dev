@@ -2,6 +2,8 @@
 
 ## Bug fixes
 
+- PIM-9408: Fix attribute group's updated_at field udpate
+- TIP-1513: Environment variables declared in the env were not loaded when using a compiled .env file
 - PIM-9274: Fix Yaml reader to display the number of lines read for incorrectly formatted files
 - TIP-1406: Add a tag to configure a DIC service based on a feature flag
 - PIM-9133: Fix product save when the user has no permission on some attribute groups
@@ -20,6 +22,12 @@
 - PIM-9324: Fix product grid not loading when asset used as main picture is deleted
 - PIM-9356: Fix external api endpoint for products with invalid quantified associations
 - PIM-9357: Make rules case-insensitive so it complies with family and attribute codes
+- PIM-9362: Adapt System Information twig file for a clear and a correct display of the number of API connections
+- PIM-9360: Fix PHP Warning raised in PriceComparator
+- PIM-9370: Fixes page freezing with a big number of attribute options
+- PIM-9391: Filter empty prices and measurement values
+- PIM-9407: Fix glitch in family variant selector if the family variant has no label
+- PIM-9425: Fix inaccurate attribute max characters
 - PIM-9364: Fix error on indexation if "attribute as label" is null
 
 ## New features
@@ -33,12 +41,21 @@
 
 - CLOUD-1959: Use cloud-deployer 2.2 and terraform 0.12.25
 - PIM-9306: Enhance catalog volume monitoring count queries for large datasets
+- API-1140: Be able to get attributes searching by a list of attribute codes
+- API-1225: Be able to get attributes searching by updated date
+- API-1226: Be able to get attributes searching by a list of attribute types
+- PIM-9368: Allow minimum translation progress of 70% instead of 80%
+- PIM-9398: Add a primary key on connection table
+- PIM-9371: Disable save button when user creation form is not ready to submit
 
 # Technical Improvements
 
 ## Classes
 
 ## BC breaks
+
+- API-1140: Change $criteria format from `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\ExternalApi\AttributeRepository`
+    the new format is `[property: [['operator' => (string), 'value' => (mixed)]]]`.
 
 ### Codebase
 

@@ -3,9 +3,9 @@ import React, {FC, useRef} from 'react';
 import {fireEvent, act, getByTestId} from '@testing-library/react';
 import {useInfiniteScroll} from '../../../../src/hooks/useInfiniteScroll';
 
-const MockComponent: FC = ({fetch, limit}) => {
+const MockComponent: FC = ({fetch}) => {
   const testRef = useRef(null);
-  const [fetchResponse, updateFetchResponse] = useInfiniteScroll(fetch, testRef.current, limit);
+  const [fetchResponse, updateFetchResponse] = useInfiniteScroll(fetch, testRef.current);
 
   if (fetchResponse.hasError) {
     return 'error';
@@ -38,10 +38,10 @@ it('it can fetch the first items', async () => {
       title: 'title 2',
     },
   ];
-  const fetch = jest.fn((search, limit) => Promise.resolve<any[]>([]));
+  const fetch = jest.fn((search) => Promise.resolve<any[]>([]));
   fetch.mockResolvedValueOnce(items);
 
-  await act(async () => ReactDOM.render(<MockComponent fetch={fetch} limit={2} />, container as HTMLElement));
+  await act(async () => ReactDOM.render(<MockComponent fetch={fetch} />, container as HTMLElement));
 
   expect(container.querySelectorAll('ul li').length).toEqual(2);
 });
@@ -63,10 +63,10 @@ it('it can fetch the next items', async () => {
       title: 'title 4',
     },
   ];
-  const fetch = jest.fn((search, limit) => Promise.resolve<any[]>([]));
+  const fetch = jest.fn((search) => Promise.resolve<any[]>([]));
   fetch.mockResolvedValueOnce(items).mockResolvedValueOnce(nextItems);
 
-  await act(async () => ReactDOM.render(<MockComponent fetch={fetch} limit={2} />, container as HTMLElement));
+  await act(async () => ReactDOM.render(<MockComponent fetch={fetch} />, container as HTMLElement));
 
   await act(async () => {
     fireEvent.scroll(getByTestId(container, 'test-component'), {target: {scrollY: 100}});
@@ -75,8 +75,8 @@ it('it can fetch the next items', async () => {
   expect(container.querySelectorAll('ul li').length).toEqual(4);
 });
 
-it('it does not fetch more items after the last one (aka the last fetch return less items than the limit)', async () => {
-  const items = [
+it('it fetches items until there is no items in most recent response', async () => {
+  const firstPageItems = [
     {
       title: 'title 1',
     },
@@ -84,16 +84,21 @@ it('it does not fetch more items after the last one (aka the last fetch return l
       title: 'title 2',
     },
   ];
-  const nextItems = [
+  const secondPageItems = [
     {
       title: 'title 3',
     },
   ];
+  const thirPageItems: any[] = [];
 
-  const fetch = jest.fn((search, limit) => Promise.resolve<any[]>([]));
-  fetch.mockResolvedValueOnce(items).mockResolvedValueOnce(nextItems);
+  const fetch = jest.fn((search) => Promise.resolve<any[]>([]));
+  fetch.mockResolvedValueOnce(firstPageItems).mockResolvedValueOnce(secondPageItems).mockResolvedValueOnce(thirPageItems);
 
-  await act(async () => ReactDOM.render(<MockComponent fetch={fetch} limit={2} />, container as HTMLElement));
+  await act(async () => ReactDOM.render(<MockComponent fetch={fetch} />, container as HTMLElement));
+
+  await act(async () => {
+    fireEvent.scroll(getByTestId(container, 'test-component'), {target: {scrollY: 100}});
+  });
 
   await act(async () => {
     fireEvent.scroll(getByTestId(container, 'test-component'), {target: {scrollY: 100}});
@@ -103,14 +108,12 @@ it('it does not fetch more items after the last one (aka the last fetch return l
     fireEvent.scroll(getByTestId(container, 'test-component'), {target: {scrollY: 100}});
   });
 
-  expect(fetch).toBeCalledTimes(2);
+  expect(fetch).toBeCalledTimes(3);
 });
 
 it('it can handle error during the fetch', async () => {
-  const fetch = jest.fn((search, limit) => Promise.reject<string>());
-  fetch.mockRejectedValueOnce(new Error('Async error'));
-
-  await act(async () => ReactDOM.render(<MockComponent fetch={fetch} limit={2} />, container as HTMLElement));
+  const fetch = (search) => {throw new Error('Async error')};
+  await act(async () => ReactDOM.render(<MockComponent fetch={fetch} />, container as HTMLElement));
 
   expect(container.innerHTML).toStrictEqual('error');
 });

@@ -1,0 +1,145 @@
+#Job labels
+batch_jobs:
+  default_steps:
+    validation: Bestandsvalidatie
+    import_associations: Productassociatie import
+    import_root_product_model: Root productmodel import
+    import_sub_product_model: Sub-productmodel export
+    compute_data_related_to_family_root_product_models: Bereken root product modellen gegevens
+    compute_data_related_to_family_sub_product_models: Bereken sub product modellen gegevens
+    compute_data_related_to_family_products: Productgegevens berekenen
+    compute_family_variant_structure_changes: Wijzigingen van de familie variant structuur berekenen
+    compute_completeness_of_products_family: Berekenen van de volledigheid van de producten-familie
+  csv_product_export:
+    label: Productexport in CSV
+    export.label: Productexport
+  csv_product_model_export:
+    label: Productmodel export in CSV
+    export.label: Productmodel export
+  csv_category_export:
+    label: Categorie-export in CSV
+    export.label: Categorie-export
+  csv_attribute_export:
+    label: Attribuutexport in CSV
+    export.label: Attribuutexport
+  csv_attribute_option_export:
+    label: Attribuutoptie-export in CSV
+    export.label: Attribuutoptie-export
+  csv_association_type_export:
+    label: Associatietype-export in CSV
+    export.label: Associatietype-export
+  csv_group_export:
+    label: Groepexport in CSV
+    export.label: Groepexport
+  csv_family_export:
+    label: Familie export in CSV
+    export.label: Familie export
+  csv_family_variant_export:
+    label: Familie-variant export in CSV
+    export.label: Familie-variant export
+  csv_product_import:
+    label: Productimport in CSV
+    import.label: Productimport
+  csv_product_model_import:
+    label: Productmodel import in CSV
+    import_product_model_descendants.label: Bereken productmodel afstammelingen
+  csv_category_import:
+    label: Categorie-import in CSV
+    import.label: Categorie-import
+  csv_attribute_import:
+    label: Attribuut-import in CSV
+    import.label: Attribuut-import
+  csv_attribute_option_import:
+    label: Attribuutoptie-import in CSV
+    import.label: Attribuutoptie-import
+  csv_association_type_import:
+    label: Associatietype-import in CSV
+    import.label: Associatietype-import
+  csv_family_import:
+    label: Familie import in CSV
+    import.label: Familie import
+    compute_data_related_to_family_variants.label: Bereken productmodel data
+  csv_family_variant_import:
+    label: Familie-variant import in CSV
+    import.label: Familie-variant import
+  csv_group_import:
+    label: Groep importeren in CSV
+    import.label: Groep importeren
+  csv_attribute_group_export:
+    label: Attribuut groep export in CSV
+    export.label: Attribuut groep export
+  csv_group_type_export:
+    label: Groepstype export in CSV
+    export.label: Groepstype export
+  csv_attribute_group_import:
+    label: Attribuut groep import in CSV
+    import.label: Attribuut groep import
+  csv_group_type_import:
+    label: Groepstype-import in CSV
+    import.label: Groep type import
+  xlsx_category_import:
+    label: Categorie import in XLSX
+    import.label: Categorie-import
+  xlsx_association_type_import:
+    label: Associatie type import in XLSX
+    import.label: Associatietype-import
+  xlsx_attribute_import:
+    label: Attribuut import in XLSX
+    import.label: Attribuut-import
+  xlsx_attribute_option_import:
+    label: Attribuut optie import in XLSX
+    import.label: Attribuutoptie-import
+  xlsx_family_import:
+    label: Familie import in XLSX
+    import.label: Familie import
+  xlsx_family_variant_import:
+    label: Familie-variant import in XLSX
+    import.label: Familie-variant import
+  xlsx_product_export:
+    label: Product export in XLSX
+    export.label: Productexport
+  xlsx_product_model_export:
+    label: Productmodel export in XLSX
+    export.label: Productmodel export
+  xlsx_product_import:
+    label: Product import in XLSX
+    import.label: Productimport
+  xlsx_product_model_import:
+    label: Productmodel import in XLSX
+    import_product_model_descendants.label: Bereken productmodel afstammelingen
+  xlsx_group_export:
+    label: Groep export in XLSX
+    export.label: Groepexport
+  xlsx_group_import:
+    label: Groep import in XLSX
+    import.label: Groep importeren
+  xlsx_family_export:
+    label: Familie export in XLSX
+    export.label: Familie export
+  xlsx_family_variant_export:
+    label: Familie-variant export in XLSX
+    export.label: Familie-variant import
+  xlsx_category_export:
+    label: Categorie export in XLSX
+    export.label: Categorie-export
+  xlsx_attribute_export:
+    label: Attribuut export in XLSX
+    export.label: Attribuut export in XLSX
+  xlsx_attribute_option_export:
+    label: Attribuut optie export in XLSX
+    export.label: Attribuut optie export in XLSX
+  xlsx_association_type_export:
+    label: Associatie type export in XLSX
+    export.label: Associatie type export in XLSX
+  xlsx_attribute_group_export:
+    label: Attribuut groep export in XLSX
+    export.label: Attribuut groep export
+  xlsx_group_type_export:
+    label: Groepstype export in XLSX
+    export.label: Groepstype export
+  xlsx_attribute_group_import:
+    label: Attribuut groep import in XLSX
+    import.label: Attribuut groep import
+  xlsx_group_type_import:
+    label: Groepstype import in XLSX
+    import.label: Groep type import

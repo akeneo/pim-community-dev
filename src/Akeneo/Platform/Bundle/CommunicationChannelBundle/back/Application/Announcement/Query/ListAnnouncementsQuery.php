@@ -17,22 +17,22 @@ final class ListAnnouncementsQuery
     /** @var string */
     private $version;
 
+    /** @var string */
+    private $locale;
+
     /** @var int */
     private $userId;
 
     /** @var string|null */
     private $searchAfter;
 
-    /** @var int */
-    private $limit;
-
-    public function __construct(string $edition, string $version, int $userId, ?string $searchAfter, int $limit)
+    public function __construct(string $edition, string $version, string $locale, int $userId, ?string $searchAfter)
     {
         $this->edition = $edition;
         $this->version = $version;
+        $this->locale = $locale;
         $this->userId = $userId;
         $this->searchAfter = $searchAfter;
-        $this->limit = $limit;
     }
 
     public function edition(): string
@@ -45,6 +45,11 @@ final class ListAnnouncementsQuery
         return $this->version;
     }
 
+    public function locale(): string
+    {
+        return $this->locale;
+    }
+
     public function userId(): int
     {
         return $this->userId;
@@ -53,10 +58,5 @@ final class ListAnnouncementsQuery
     public function searchAfter(): ?string
     {
         return $this->searchAfter;
-    }
-
-    public function limit(): int
-    {
-        return $this->limit;
     }
 }

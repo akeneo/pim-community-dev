@@ -1,5 +1,67 @@
 # 4.0.x
 
+# 4.0.54 (2020-08-28)
+
+## Improvement
+
+- PIM-9315: Improve error message when you have no rights on a product
+
+# 4.0.53 (2020-08-27)
+
+## Bug fixes
+
+- PIM-9426: Fix incorrect use of `Akeneo\Tool\Component\Batch\Item\InvalidItemInterface`
+
+# 4.0.52 (2020-08-24)
+
+# 4.0.51 (2020-08-21)
+
+## Bug fixes
+
+- PIM-9416: Add translation keys for mass delete action and corresponding message on the job page
+
+# 4.0.50 (2020-08-20)
+
+## Bug fixes
+
+- PIM-9288: Product completeness was not up to date after deletion of an option for required attribute
+
+# 4.0.49 (2020-08-13)
+
+## Bug fixes
+
+- PIM-9401: Fix Elasticsearch filters with EMPTY operator
+
+# 4.0.48 (2020-08-12)
+
+## Bug fixes
+
+- PIM-9112: Fix empty values cleaner for metric with null values
+
+# 4.0.47 (2020-08-07)
+
+# 4.0.46 (2020-07-31)
+
+## Bug fixes
+
+- PIM-9379: attribute search by label was not working in attribute group add attributes
+
+# 4.0.45 (2020-07-31)
+
+# 4.0.44 (2020-07-28)
+
+# 4.0.43 (2020-07-27)
+
+## Bug fixes
+
+- Fix pdf renderer for image attributes, it was displaying the path instead of the original filename
+- PIM-9358: Break down values & properties query with CTE to use less memory
+- PIM-9361: Chunk large ES query
+
+# 4.0.42 (2020-07-22)
+
+# 4.0.41 (2020-07-20)
+
 ## Bug fixes
 
 - PIM-9359: Fix ES configuration override for dynamic templates

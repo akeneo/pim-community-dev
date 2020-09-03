@@ -46,6 +46,6 @@ class DeleteProductEndToEnd extends AbstractProductTestCase
         $content = json_decode($response->getContent(), true);
         $this->assertCount(2, $content, 'response contains 2 items');
         $this->assertSame(Response::HTTP_NOT_FOUND, $content['code']);
-        $this->assertSame('The not_found product does not exist in your PIM.', $content['message']);
+        $this->assertSame('The not_found product does not exist in your PIM or you do not have permission to access it.', $content['message']);
     }
 }

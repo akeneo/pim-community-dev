@@ -1,0 +1,9 @@
+parameters:
+    env(FLAG_DATA_QUALITY_INSIGHTS_ENABLED): 'true'
+
+services:
+    akeneo.pim.automation.data_quality_insights.feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
+        arguments:
+            - '%env(bool:FLAG_DATA_QUALITY_INSIGHTS_ENABLED)%'
+        public: true

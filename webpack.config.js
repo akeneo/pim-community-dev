@@ -15,6 +15,10 @@ const isStrict = process.argv && process.argv.indexOf('--strict') > -1;
 const {getModulePaths, createModuleRegistry} = require('./frontend/webpack/requirejs-utils');
 const {aliases, config} = getModulePaths(rootDir, __dirname);
 
+// Plugin to make style components more readable in debug mode
+const createStyledComponentsTransformer = require('typescript-plugin-styled-components').default;
+const styledComponentsTransformer = createStyledComponentsTransformer();
+
 createModuleRegistry(Object.keys(aliases), rootDir);
 
 console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mode', isStrict ? 'with typechecking' : '');
@@ -192,6 +196,7 @@ const webpackConfig = {
               transpileOnly: !isStrict,
               configFile: path.resolve(rootDir, 'tsconfig.json'),
               context: path.resolve(rootDir),
+              getCustomTransformers: () => ({ before: [styledComponentsTransformer] })
             },
           },
           {
@@ -222,7 +227,7 @@ const webpackConfig = {
   },
 
   watchOptions: {
-    ignored: /node_modules|var\/cache|vendor/,
+    ignored: /node_modules\/(?!@akeneo)|var\/cache|vendor/,
   },
 
   plugins: [
@@ -240,7 +245,7 @@ const webpackConfig = {
 
     // Ignore these directories when webpack watches for changes
     new webpack.WatchIgnorePlugin([
-      path.resolve(rootDir, './node_modules'),
+      /node_modules\/(?!@akeneo)/,
       path.resolve(rootDir, './app'),
       path.resolve(rootDir, './var'),
       path.resolve(rootDir, './vendor'),

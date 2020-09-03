@@ -10,52 +10,119 @@ use PhpSpec\ObjectBehavior;
 
 class AnnouncementItemSpec extends ObjectBehavior
 {
-    /** @var DateTimeImmutable */
-    private $startDate;
-
-    public function let(): void
+    public function it_normalizes_itself(): void
     {
-        $this->startDate = new DateTimeImmutable();
-
         $this->beConstructedWith(
-            sprintf('update-title-%s', $this->startDate->format('YYYY-MM-dd')),
+            'id',
             'Title',
             'Description',
             '/images/announcements/new-connection-monitoring-page.png',
             'Connection monitoring page',
             'http://link.com#easily-monitor-errors-on-your-connections',
-            $this->startDate,
-            14,
-            [
-                'updates'
-            ]
+            new \DateTimeImmutable('2020-10-01'),
+            new \DateTimeImmutable('2020-10-06'),
+            ['updates']
         );
-    }
 
-    public function it_is_initializable(): void
-    {
         $this->shouldBeAnInstanceOf(AnnouncementItem::class);
-    }
 
-    public function it_normalizes_itself(): void
-    {
         $this->toArray()->shouldReturn([
-            'id' => sprintf('update-title-%s', $this->startDate->format('YYYY-MM-dd')),
+            'id' => 'id',
             'title' => 'Title',
             'description' => 'Description',
             'img' => '/images/announcements/new-connection-monitoring-page.png',
             'altImg' => 'Connection monitoring page',
             'link' => 'http://link.com#easily-monitor-errors-on-your-connections',
-            'startDate' => $this->startDate->format('F\, jS Y'),
+            'startDate' => 'October, 1st 2020',
             'tags' => ['updates'],
         ]);
     }
 
-    public function it_notifies_when_the_announcement_is_new()
+    public function it_adds_new_as_tag_when_we_notify_the_announcement()
     {
-        $this->toNotify()->shouldReturnAnInstanceOf(AnnouncementItem::class);
+        $this->beConstructedWith(
+            'id',
+            'Title',
+            'Description',
+            '/images/announcements/new-connection-monitoring-page.png',
+            'Connection monitoring page',
+            'http://link.com#easily-monitor-errors-on-your-connections',
+            new \DateTimeImmutable('2020-10-20'),
+            new \DateTimeImmutable('2020-10-30'),
+            ['updates']
+        );
 
-        $announcement = $this->toArray();
-        $announcement['tags']->shouldBeLike(['new', 'updates']);
+        $this->toNotify()->shouldBeLike(
+            new AnnouncementItem(
+                'id',
+                'Title',
+                'Description',
+                '/images/announcements/new-connection-monitoring-page.png',
+                'Connection monitoring page',
+                'http://link.com#easily-monitor-errors-on-your-connections',
+                new \DateTimeImmutable('2020-10-20'),
+                new \DateTimeImmutable('2020-10-30'),
+                ['updates', 'new']
+            )
+        );
+    }
+
+    public function it_should_be_notified_when_the_announcement_is_new_and_not_already_viewed()
+    {
+        $yesterday = new \DateTimeImmutable('yesterday');
+        $tomorrow = new \DateTimeImmutable('tomorrow');
+
+        $this->beConstructedWith(
+            'id',
+            'Title',
+            'Description',
+            '/images/announcements/new-connection-monitoring-page.png',
+            'Connection monitoring page',
+            'http://link.com#easily-monitor-errors-on-your-connections',
+            $yesterday,
+            $tomorrow,
+            ['updates']
+        );
+
+        $this->callOnWrappedObject('shouldBeNotified', [['id_2']])->shouldReturn(true);
+    }
+
+    public function it_should_not_be_notify_when_the_announcement_is_already_viewed()
+    {
+        $yesterday = new \DateTimeImmutable('yesterday');
+        $tomorrow = new \DateTimeImmutable('tomorrow');
+
+        $this->beConstructedWith(
+            'id',
+            'Title',
+            'Description',
+            '/images/announcements/new-connection-monitoring-page.png',
+            'Connection monitoring page',
+            'http://link.com#easily-monitor-errors-on-your-connections',
+            $yesterday,
+            $tomorrow,
+            ['updates']
+        );
+
+        $this->callOnWrappedObject('shouldBeNotified', [['id', 'id_2']])->shouldReturn(false);
+    }
+
+    public function it_should_not_be_notify_when_the_announcement_end_date_is_after_the_current_date()
+    {
+        $yesterday = new \DateTimeImmutable('yesterday');
+
+        $this->beConstructedWith(
+            'id',
+            'Title',
+            'Description',
+            '/images/announcements/new-connection-monitoring-page.png',
+            'Connection monitoring page',
+            'http://link.com#easily-monitor-errors-on-your-connections',
+            $yesterday,
+            $yesterday,
+            ['updates']
+        );
+
+        $this->callOnWrappedObject('shouldBeNotified', [['id_2']])->shouldReturn(false);
     }
 }

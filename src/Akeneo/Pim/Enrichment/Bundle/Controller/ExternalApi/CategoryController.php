@@ -68,19 +68,6 @@ class CategoryController
     /** @var array */
     protected $apiConfiguration;
 
-    /**
-     * @param ApiResourceRepositoryInterface $repository
-     * @param NormalizerInterface            $normalizer
-     * @param SimpleFactoryInterface         $factory
-     * @param ObjectUpdaterInterface         $updater
-     * @param ValidatorInterface             $validator
-     * @param SaverInterface                 $saver
-     * @param RouterInterface                $router
-     * @param PaginatorInterface             $paginator
-     * @param ParameterValidatorInterface    $parameterValidator
-     * @param StreamResourceResponse         $partialUpdateStreamResource
-     * @param array                          $apiConfiguration
-     */
     public function __construct(
         ApiResourceRepositoryInterface $repository,
         NormalizerInterface $normalizer,
@@ -151,10 +138,23 @@ class CategoryController
         ];
 
         $queryParameters = array_merge($defaultParameters, $request->query->all());
+        $searchFilters = json_decode($queryParameters['search'] ?? '[]', true);
+        if (null === $searchFilters) {
+            throw new BadRequestHttpException('The search query parameter must be a valid JSON.');
+        }
 
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
         $order = ['root' => 'ASC', 'left' => 'ASC'];
-        $categories = $this->repository->searchAfterOffset([], $order, $queryParameters['limit'], $offset);
+        try {
+            $categories = $this->repository->searchAfterOffset(
+                $searchFilters,
+                $order,
+                $queryParameters['limit'],
+                $offset
+            );
+        } catch (\InvalidArgumentException $exception) {
+            throw new BadRequestHttpException($exception->getMessage(), $exception);
+        }
 
         $parameters = [
             'query_parameters'    => $queryParameters,
@@ -162,7 +162,7 @@ class CategoryController
             'item_route_name'     => 'pim_api_category_get',
         ];
 
-        $count = true === $request->query->getBoolean('with_count') ? $this->repository->count() : null;
+        $count = true === $request->query->getBoolean('with_count') ? $this->repository->count($searchFilters) : null;
         $paginatedCategories = $this->paginator->paginate(
             $this->normalizer->normalize($categories, 'external_api'),
             $parameters,

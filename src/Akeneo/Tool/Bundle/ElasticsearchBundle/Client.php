@@ -22,6 +22,9 @@ use Ramsey\Uuid\Uuid;
  */
 class Client
 {
+    /** @var int ElasticSearch max query size */
+    private const PARAMS_MAX_SIZE = 100000000;
+
     /** @var ClientBuilder */
     private $builder;
 
@@ -48,8 +51,13 @@ class Client
      * @param array         $hosts
      * @param string        $indexName
      */
-    public function __construct(ClientBuilder $builder, Loader $configurationLoader, array $hosts, $indexName, string $idPrefix = '')
-    {
+    public function __construct(
+        ClientBuilder $builder,
+        Loader $configurationLoader,
+        array $hosts,
+        $indexName,
+        string $idPrefix = ''
+    ) {
         $this->builder = $builder;
         $this->configurationLoader = $configurationLoader;
         $this->hosts = $hosts;
@@ -88,7 +96,7 @@ class Client
         }
 
         if (isset($response['errors']) && true === $response['errors']) {
-            $this->throwIndexationExceptionFromReponse($response);
+            $this->throwIndexationExceptionFromResponse($response);
         }
 
         return $response;
@@ -107,6 +115,12 @@ class Client
     public function bulkIndexes($documents, $keyAsId = null, Refresh $refresh = null)
     {
         $params = [];
+        $paramsComputedSize = 0;
+        $mergedResponse = [
+            'took' => 0,
+            'errors' => false,
+            'items' => [],
+        ];
 
         foreach ($documents as $document) {
             $action = ['index' => ['_index' => $this->indexName]];
@@ -116,17 +130,34 @@ class Client
                     throw new MissingIdentifierException(sprintf('Missing "%s" key in document', $keyAsId));
                 }
 
+                if (($paramsComputedSize + strlen(json_encode($document))) >= self::PARAMS_MAX_SIZE) {
+                    $mergedResponse = $this->doBulkIndex($params, $mergedResponse);
+                    $params = [];
+                }
+
                 $action['index']['_id'] = $this->idPrefix . $document[$keyAsId];
             }
 
             $params['body'][] = $action;
             $params['body'][] = $document;
+            $paramsComputedSize += strlen(json_encode($document));
 
             if (null !== $refresh) {
                 $params['refresh'] = $refresh->getType();
             }
         }
 
+        $mergedResponse = $this->doBulkIndex($params, $mergedResponse);
+
+        if (isset($mergedResponse['errors']) && true === $mergedResponse['errors']) {
+            $this->throwIndexationExceptionFromResponse($mergedResponse);
+        }
+
+        return $mergedResponse;
+    }
+
+    private function doBulkIndex(array $params, array $mergedResponse): array
+    {
         try {
             $response = $this->client->bulk($params);
         } catch (\Exception $e) {
@@ -134,10 +165,16 @@ class Client
         }
 
         if (isset($response['errors']) && true === $response['errors']) {
-            $this->throwIndexationExceptionFromReponse($response);
+            $mergedResponse['errors'] = true;
         }
 
-        return $response;
+        $mergedResponse['items'] = array_merge($response['items'], $mergedResponse['items']);
+
+        if (isset($response['took'])) {
+            $mergedResponse['took'] += $response['took'];
+        }
+
+        return $mergedResponse;
     }
 
     /**
@@ -261,7 +298,7 @@ class Client
         $body['aliases'] = [$this->indexName => (object) []];
 
         $params = [
-            'index' => strtolower($this->indexName . '_' . Uuid::uuid4()),
+            'index' => strtolower($this->indexName . '_' . Uuid::uuid4()->toString()),
             'body' => $body,
         ];
 
@@ -308,7 +345,7 @@ class Client
      *
      * @throws IndexationException
      */
-    private function throwIndexationExceptionFromReponse(array $response)
+    private function throwIndexationExceptionFromResponse(array $response)
     {
         foreach ($response['items'] as $item) {
             if (isset($item['index']['error'])) {

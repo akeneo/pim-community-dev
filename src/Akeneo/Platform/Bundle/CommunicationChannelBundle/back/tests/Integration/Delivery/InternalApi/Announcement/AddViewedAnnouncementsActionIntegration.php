@@ -38,12 +38,14 @@ class AddViewedAnnouncementsActionIntegration extends WebTestCase
 
     public function test_it_throws_an_exception_when_it_does_not_have_a_view_announcement_ids()
     {
+        $viewedAnnouncementIds = ['update_1-easily-monitor-errors-on-your-connections_2020-06-04', 'update_2-new-metric-on-the-connection-dashboard_2020-06-04'];
         $this->client->request(
-            'GET',
-            '/rest/announcements'
+            'POST',
+            '/rest/viewed_announcements/add',
+            []
         );
 
-        Assert::assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $this->client->getResponse()->getStatusCode());
+        Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $this->client->getResponse()->getStatusCode());
     }
 
     protected function getConfiguration(): Configuration

@@ -346,6 +346,7 @@ pim_enrich.mass_edit.product:
       label_count: "{0}Ändern Sie das übergeordnete Produktmodell von <span class=\"AknFullPage-title--highlight\">Produkten</span>|{1}Ändern Sie das übergeordnete Produktmodell von <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|]1, Inf[Übergeordneten Produktmodell von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten ändern</span>"
       description: Das übergeordnete Element der Variantenprodukte oder Sub Produktmodelle die im Raster ausgewählt wurden, werden zu dem gewählten Produktmodell geändert.
 pim_datagrid:
+  no_entities: "Kein {{ entityHint }} gefunden"
   mass_action_group:
     bulk_actions:
       label: Massenbearbeitung
@@ -364,6 +365,9 @@ pim_datagrid:
     mass_edit: Massenbearbeitung
     sequential_edit: Sequentielle Bearbeitung
     mass_delete: Mehrauswahl löschen
+    selected:
+      family: "]-Inf, 1]{{ count }} Familie ausgewählt|]1, Inf[{{ count }} Familien ausgewählt"
+      product: "]-Inf, 1]{{ count }} Ergebnis ausgewählt|]1, Inf[{{ count }} Ergebnisse ausgewählt"
   view_selector:
     view: Ansichten
   actions:

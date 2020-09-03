@@ -1,4 +1,5 @@
 parameters:
+    comm_panel_api_url: 'http://localhost:8088'
     akeneo_integration_tests.loader.reference_data_loader.class: Akeneo\Test\IntegrationTestsBundle\Loader\ReferenceDataLoader
     akeneo_integration_tests.loader.fixtures_loader.class: Akeneo\Test\IntegrationTestsBundle\Loader\FixturesLoader
     akeneo_integration_tests.loader.database_schema_handler.class: Akeneo\Test\IntegrationTestsBundle\Loader\DatabaseSchemaHandler
@@ -187,6 +188,13 @@ services:
         arguments:
             - '@pim_catalog.factory.attribute'
             - '@pim_catalog.updater.attribute'
+            - '@validator'
+
+    akeneo_integration_tests.base.family.builder:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        arguments:
+            - '@pim_catalog.factory.family'
+            - '@pim_catalog.updater.family'
             - '@validator'
 
     akeneo_integration_tests.catalog.product_model.builder:

@@ -12,7 +12,6 @@ use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
  * @author Christophe Chausseray <chausseray.christophe@gmail.com>
@@ -39,10 +38,6 @@ class ListAnnouncementsAction
 
     public function __invoke(Request $request)
     {
-        if (!$request->query->has('limit')) {
-            throw new UnprocessableEntityHttpException('You should give a "limit" key.');
-        }
-
         if (null === $user = $this->userContext->getUser()) {
             throw new NotFoundHttpException('Current user not found');
         }
@@ -50,9 +45,9 @@ class ListAnnouncementsAction
         $query = new ListAnnouncementsQuery(
             $this->versionProvider->getEdition(),
             $this->versionProvider->getMinorVersion(),
+            $this->userContext->getUiLocaleCode(),
             $user->getId(),
-            $request->query->get('search_after'),
-            (int) $request->query->get('limit')
+            $request->query->get('search_after')
         );
         $announcementItems = $this->listAnnouncementsHandler->execute($query);
 

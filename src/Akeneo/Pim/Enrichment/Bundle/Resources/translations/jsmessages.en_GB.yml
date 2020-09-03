@@ -70,6 +70,7 @@ pim_enrich.entity.product:
       locale_unavailable: This localisable field is not available for locale '{{ locale }}' and channel '{{ channel }}'
       to_fill_count: "{1}1 missing required attribute|]1, Inf[{{ count }} missing required attributes"
       add_attribute_option: Add attribute option
+      add_option: Add option
     completeness:
       title: Completeness
       complete: Complete
@@ -96,7 +97,7 @@ pim_enrich.entity.product:
       add_associations: Add associations
       variant_products: Variant products
       quantified:
-        quantity: Quantity
+        quantity: Quantities
       search:
         placeholder: Search on label or identifier
       no_result: Sorry, there is no result for your search.
@@ -363,6 +364,9 @@ pim_datagrid:
     mass_edit: Bulk actions
     sequential_edit: Sequential edit
     mass_delete: Mass delete
+    selected:
+      family: "]-Inf, 1]{{ count }} family selected|]1, +Inf[{{ count }} families selected"
+      product: "]-Inf, 1]{{ count }} result selected|]1, Inf[{{ count }} results selected"
   view_selector:
     view: Views
   actions:

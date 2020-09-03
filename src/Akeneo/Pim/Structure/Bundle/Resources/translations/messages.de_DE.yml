@@ -30,6 +30,7 @@ pim_enrich:
     association_type:
       property:
         is_two_way: 2-Wege-Verbindung
+        is_quantified: Verbindung mit Menge
 pim_enrich_attribute_form:
   code: Code
   type: Attributtyp
