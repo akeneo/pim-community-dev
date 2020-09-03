@@ -14,3 +14,13 @@ services:
             - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 50 }
             - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 50 }
             - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 50 }
+
+    pim.reference_entity.query.filter.is_empty.reference_entity:
+        class: 'Akeneo\Pim\Enrichment\ReferenceEntity\Component\Filter\IsEmpty\ReferenceEntityFilter'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
+            - ['akeneo_reference_entity_collection', 'akeneo_reference_entity']
+            - ['EMPTY']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 60 }
