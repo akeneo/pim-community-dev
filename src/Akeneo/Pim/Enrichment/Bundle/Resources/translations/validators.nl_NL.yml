@@ -1,6 +1,8 @@
 An identifier attribute already exists.: Er bestaat al een id-attribuut.
 Attribute code may contain only letters, numbers and underscore: Attribuutcode mag alleen letters, cijfers en underscores bevatten
 Attribute code may contain only letters (at least one), numbers and underscores: De attribuutcode mag alleen letters (één op z'n minst), nummers en liggende streepjes bevatten
+Attribute code may not contain line-feed characters: Attribuutcode mag geen linefeedkarakters bevatten
+Attribute group code may contain only letters, numbers and underscores: De attribuut groep code mag alleen letters, cijfers en liggende streepjes bevatten.
 This attribute type can't be used as a grid filter: Dit attribuuttype kan niet worden gebruikt als een rasterfilter
 This code is not available: Deze code is niet beschikbaar
 This attribute type must be required: Dit attribuuttype moet worden vereist

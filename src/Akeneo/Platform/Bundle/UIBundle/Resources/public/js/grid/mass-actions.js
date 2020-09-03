@@ -49,12 +49,13 @@ define(
              * {@inheritdoc}
              */
             configure() {
-                const setCollection = (collection) => {
+                const setCollection = (collection, datagrid) => {
                     if (null === this.collection) {
                         this.listenTo(collection, 'backgrid:selected', this.select.bind(this));
                     }
 
                     this.collection = collection;
+                    this.datagrid = datagrid;
                     this.updateView();
                 };
                 this.listenTo(this.getRoot(), 'grid_load:start', setCollection);
@@ -147,10 +148,18 @@ define(
              * - The events of the sub extensions are lost after re-render.
              */
             updateView() {
-                if (this.count > 0) {
+                let count = this.count;
+                if (this.datagrid) {
+                    const selectionState = this.datagrid.getSelectionState();
+                    if (!selectionState.inset) {
+                        count = this.collection.state.totalRecords - Object.keys(selectionState.selectedModels).length;
+                    }
+                }
+
+                if (count > 0) {
                     this.$el.removeClass('AknDefault-bottomPanel--hidden');
 
-                    if (this.count >= this.collection.state.totalRecords) {
+                    if (count >= this.collection.state.totalRecords) {
                         this.$el.find('.AknSelectButton')
                             .removeClass('AknSelectButton--partial')
                             .addClass('AknSelectButton--selected');
@@ -167,7 +176,7 @@ define(
                         .removeClass('AknSelectButton--partial');
                 }
 
-                this.$el.find('.count').text(this.count);
+                this.$el.find('.count').text(count);
             }
         });
     }

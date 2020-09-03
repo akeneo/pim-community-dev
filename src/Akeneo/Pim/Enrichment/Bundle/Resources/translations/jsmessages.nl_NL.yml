@@ -1,0 +1,431 @@
+pim_notification:
+  types:
+    settings: Instellingen
+flash:
+  comment:
+    create:
+      success: Uw reactie is succesvol aangemaakt.
+      error: Er is een fout opgetreden tijden het aanmaken van uw reactie.
+    delete:
+      success: Uw reactie is succesvol verwijderd.
+      error: Er is een fout opgetreden tijdens het verwijderen van uw reactie.
+    reply:
+      success: Uw antwoord is succesvol aangemaakt.
+      error: Er is een fout opgetreden tijdens het maken van uw antwoord.
+pim_enrich.entity.product:
+  label: product
+  uppercase_label: Product
+  plural_label: Producten
+  flash:
+    update:
+      success: Product succesvol bijgewerkt.
+      fail: Het product kon niet worden geüpdatet.
+      fields_not_ready: "Het product kan nu niet worden opgeslagen. De volgende velden zijn niet klaar: {{ fields }}"
+      already_in_upload: Voor dit attribuut is al een bestand geüpload in de locale "{{ locale }}" en scope "{{ scope }}"
+      file_upload: Er deed zich een fout voor tijdens het uploaden van dit bestand
+    delete:
+      success: Product succesvol verwijderd.
+      fail: Het product kon niet worden verwijderd.
+    create:
+      success: Product succesvol aangemaakt
+      fail: Er is geen attribuut geconfigureerd als product-id of je hebt niet de benodigde bewerkingsrechten.
+  page_title:
+    index: "]-Inf, 1]{{ count }} resultaat|]1, Inf[{{ count }} resultaten"
+  module:
+    create:
+      subtitle: Product aanmaken
+      title: Selecteer een actie
+      choose_family: Kies een familie
+      choose_family_variant: Kies een familie variant
+    variant_navigation:
+      common: Gemeenschappelijk
+    status:
+      enabled: Ingeschakeld
+      disabled: Uitgeschakeld
+    download_pdf:
+      label: PDF
+    copy:
+      label: Vergelijk / Vertaal
+      select: Selecteer
+      all_visible: Alle zichtbare
+      copy: kopiëren
+    history:
+      version: Versie
+      author: Auteur
+      logged_at: Gelogd op
+      from: Van
+      modified: Gewijzigd
+      old_value: Oude waarde
+      new_value: Nieuwe waarde
+    meta:
+      updated: Laatst bijgewerkt
+      groups: Groepen
+    show_group:
+      title: Groep {{ group }}
+      view_group: Bekijk groep
+      more_products: '{{ count }} extra producten...'
+    attribute:
+      remove_optional: Dit attribuut verwijderen
+      locale_specific_unavailable: Dit lokaliseerbare veld is niet beschikbaar in deze lokalisatie
+      locale_unavailable: Dit lokaliseerbare veld is niet beschikbaar voor locale '{{ locale }}' en kanaal '{{ channel }}'
+      to_fill_count: "{1}1 ontbrekende vereiste attribuut|]1, Inf[{{ count }} ontbrekende vereiste attributen"
+      add_attribute_option: Voeg attribuut optie toe
+      add_option: Optie toevoegen
+    completeness:
+      title: Volledigheid
+      complete: Compleet
+      no_family: Geen familie gedefinieerd. Gelieve een familie te definiëren om de volledigheid van dit product te berekenen.
+      no_completeness: Je hebt net de familie van dit product gewijzigd. Gelieve deze eerst te bewaren om de volledigheid van de nieuwe familie te kunnen berekenen.
+      missing_values: "{1}1 ontbrekende waarde|]1, Inf[{{ count }} ontbrekende waarden"
+    sequential_edit:
+      item_limit: Enkel de eerste 1000 items uit deze sequentiële bewerking ({{ count }} geselecteerd) worden getoond
+      empty: Uw selectie heeft geen resultaten, gelieve uw zoekcriteria te wijzigen
+      save_and_next: Opslaan en volgende
+      save_and_finish: Opslaan en afsluiten
+    associations:
+      title: Associaties
+      none_exist: Er bestaan geen associatietypes.
+      show_products: Producten weergeven
+      show_groups: Groepen weergeven
+      number_of_associations: "{{ productCount }} product(en), {{ productModelCount }} productmodel(len) en {{ groupCount }} groep(en)"
+      association_type_selector: Associatietype
+      target: Doel
+      manage: Voeg {{ associationType }} associaties toe
+      manage_description: Selecteer de producten die je wilt associëren met het huidige product
+      add_associations: Voeg associaties toe
+    attribute_filter:
+      display: Weergave
+      all: Alle attributen
+      missing_required: Alle ontbrekende verplichte attributen
+      at_this_level: Alle niveau specifieke attributen
+    change_family:
+      title: Wijzig de productfamilie
+      merge_attributes: Huidige attributen zullen worden samengevoegd met die in de nieuwe familie.
+      keep_attributes: Er zullen geen attributen worden verwijderd.
+      change_family_to: Wijzig de familie naar
+      empty_selection: Kies een familie
+    basket:
+      title: Mandje
+      empty_basket: Mandje is leeg
+    delete:
+      confirm: Weet u zeker dat u dit product wilt verwijderen?
+    comment:
+      post: Voeg een nieuwe reactie toe
+      reply: Beantwoorden
+      title: Reacties
+      empty: Nog geen reacties beschikbaar
+      header_comment: '{{ user }} geeft een reactie op het product'
+      header_reply: '{{ user }} antwoordt op de reactie'
+      delete_confirm: Weet u zeker dat u deze reactie wilt verwijderen?
+      removed_author: Verwijderde gebruiker
+    asset:
+      title: Assets
+pim_enrich.entity.product_model:
+  label: product model
+  uppercase_label: Productmodel
+  plural_label: Productmodels
+  flash:
+    create:
+      success: Productmodel is succesvol aangemaakt
+      product_model_added: Productmodel is succesvol toegevoegd aan het productmodel
+      variant_product_added: Variantproduct is succesvol toegevoegd aan het productmodel
+    update:
+      success: Productmodel is succesvol bijgewerkt. Het volledigheidspercentage van de productvarianten zal opnieuw worden berekend.
+      fail: Het productmodel kon niet worden bijgewerkt.
+      fields_not_ready: "Het product model kon niet worden opgeslagen. De volgende velden zijn niet volledig: {{ fields }}"
+    delete:
+      success: Product model succesvol verwijderd.
+      fail: Kan dit product model niet verwijderen
+  choose: Kies een product model
+  property:
+    family_variant: Variant
+  module:
+    create:
+      title: Een product model aanmaken
+      content: Een product model verzamelt varianten van producten en vergemakkelijkt de verrijking van hun gemeenschappelijke eigenschappen.
+    attribute:
+      read_only_parent_attribute_from_common: Dit attribuut kan bijgewerkt worden in de gemeenschappelijke attributen.
+      read_only_parent_attribute_from_model: "Dit attribuut kan bijgewerkt worden in de attributen bij {{ axes }}"
+    variant_axis:
+      label: 'variant as'
+      create: Nieuwe toevoegen
+      create_label: "Nieuwe {{ axes }} toevoegen"
+      required_label: '(variant as)'
+    completeness:
+      variant_product: "]-Inf, 1]{{ complete }} / {{ total }} variant product|]1, Inf[{{ complete }}   {{ total }} variant producten"
+    delete:
+      confirm: Weet u zeker dat u dit product model wil verwijderen? Alle kinderen, productmodellen en productvarianten zullen ook verwijderd worden.
+      confirm_for_products_and_product_models: Weet u zeker dat u de geselecteerde producten en productmodellen wil verwijderen? Alle kinderen van deze productmodellen worden ook verwijderd.
+pim_enrich.entity.group:
+  label: Groep
+  flash:
+    update:
+      success: Groep succesvol bijgewerkt.
+      fail: De groep kon niet worden bijgewerkt.
+      fields_not_ready: "De groep kan nu niet worden opgeslagen. De volgende velden zijn niet volledig: {{ fields }}"
+    create:
+      success: Groep succesvol aangemaakt
+    delete:
+      success: Groep succesvol verwijderd
+      fail: Kan deze groep niet verwijderen
+  page_title:
+    index: "]-Inf, 1]{{ count }} groep|]1, Inf[{{ count }} groepen"
+  module:
+    create:
+      button: Groep aanmaken
+    delete:
+      confirm: Weet u zeker dat u deze groep wilt verwijderen?
+pim_enrich.entity.role:
+  module:
+    delete:
+      confirm: Weet u zeker dat u deze rol wilt verwijderen?
+  flash:
+    delete:
+      success: Rol succesvol verwijderd
+pim_enrich.entity.category:
+  label: categorie
+  uppercase_label: Categorie
+  plural_label: Categorieën
+pim_enrich.export.product:
+  data:
+    title: Filter de producten
+  structure:
+    title: Filter de data
+  filter:
+    channel:
+      help: Het kanaal definieert de scope voor productwaarden, de lokale wordt gebruikt om data te selecteren en de categorie wordt gebruikt om producten te selecteren.
+    locales:
+      help: "De lokalen definiëren de gelokaliseerde productwaarden in de export. Bijv: enkel productinformatie in het Frans."
+    attributes:
+      label: "{0}Alle attributen|{1}Één attribuut geselecteerd|]1,Inf[ {{ count }} attributen geselecteerd"
+      help: "Selecteer de productinformatie om te exporteren. Bijv. enkel technische attributen."
+      empty: Alle attributen worden geëxporteerd
+      modal:
+        title: Attribuut selectie
+    attributes_selector:
+      attributes: "Zoek in {{ itemsCount }} attributen"
+      selected: "Geselecteerde attributen"
+      clear: Wissen
+      all_group: Alle groepen
+      empty_selection: Alle attributen worden geëxporteerd
+      description: Selecteer productinformatie om te exporteren
+    family:
+      title: Familie
+      help: "Selecteer de producten om te exporteren volgens hun familie. Bijv. exporteer enkel schoenen en jurken."
+      operators:
+        IN: In lijst
+        "NOT IN": Niet in de lijst
+        EMPTY: Producten die geen familie hebben
+        "NOT EMPTY": Producten die een familie hebben
+      empty_selection: Geen voorwaarde voor families
+    updated:
+      title: Tijdsvoorwaarde
+      operators:
+        ALL: Geen datum voorwaarde
+        "SINCE LAST N DAYS": Geüpdatete producten gedurende de laatste n dagen (bijv. 6)
+        ">": Geüpdatete producten sinds deze datum
+        "SINCE LAST JOB": Geüpdatete producten sinds laatste export
+    enabled:
+      title: Status
+      help: "Selecteer de producten om te exporteren volgens hun status. Bijv. exporteer allerlei producten volgens hun status."
+      value:
+        enabled: Ingeschakeld
+        disabled: Uitgeschakeld
+    completeness:
+      title: Volledigheidspercentage
+      help: Selecteer de producten om te exporteren volgens hun volledigheid.
+      operators:
+        ALL: Geen voorwaarde op volledigheid
+        ">=": Voltooi op z'n minst één gekozen lokale
+        "GREATER OR EQUALS THAN ON ALL LOCALES": Voltooi op alle geselecteerde lokales
+        "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Voltooi op z'n minst één gekozen lokale
+        LOWER THAN ON ALL LOCALES: Niet volledig op alle geselecteerde lokales
+        AT LEAST COMPLETE: Minstens één onderliggend product voltooid voor een geselecteerde lokale
+        ALL COMPLETE: Alle onderliggende producten voltooid voor de geselecteerde lokales
+      empty_selection: Selecteer een familie
+    category:
+      title: Categorie
+      help: Gebruik de productcategorieën in de boom (gedefinieerd door het bovenstaande kanaal) om de producten te selecteren om te exporteren
+    identifier:
+      title: Identifier
+      help: Gebruik de product id's die je wil exporteren gescheiden door komma's, spaties of regeleindes
+    string:
+      operators:
+        ALL: Alle
+    select:
+      operators:
+        IN: In lijst
+    date:
+      operators:
+        BETWEEN: Tussen
+        NOT BETWEEN: Niet tussen
+  global_settings:
+    title: Algemene instellingen
+pim_enrich.mass_edit.product:
+  title: Product bulkactie
+  confirm: "{1}U staat op het punt een product te updaten met de volgende informatie, bevestig alstublieft.|]1, Inf[U staat op het punt om {{ itemsCount }} producten te updaten met de volgende informatie, bevestig dit."
+  step:
+    select:
+      label: Kies producten
+    choose:
+      title: Product bulkacties
+      label_count: "]0, Inf[Selecteer uw actie"
+    configure:
+      label: Configureer
+    confirm:
+      label: Bevestig
+    launch_error:
+      label: Er is een fout opgetreden tijdens het starten van de groepsgewijze wijzigingsactie
+    launched:
+      label: De bulkactie "{{ operation }}" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
+  operation:
+    common:
+      select_attributes: Selecteer attributen
+    change_status:
+      label: Status wijzigen
+      label_count: "{1}wijzig de status van <span class=\"AknFullPage-title--highlight\">product</span>|]1, Inf[Verander de status van <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span>"
+      description: De geselecteerde producten zullen worden ingeschakeld of uitgeschakeld.
+      field: Om in te schakelen
+    edit_common:
+      label: Attribuutwaarden wijzigen
+      label_count: "{1}Bewerk attributen waarden van <span class=\"AknFullPage-title--highlight\">product</span>|]1, Inf[Bewerk attributen waarden van <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span>"
+      description: Alleen de attributen die behoren tot de families van de geselecteerde producten worden gewijzigd met de volgende informatie voor de {{ locale }} lokale en het {{ scope }} kanaal.
+      no_update: Selecteer ten minste één veld om te updaten
+    add_attribute_value:
+      label: Attribuutwaarden toevoegen
+      label_count: "{1}Voeg attributen toe voor <span class=\"AknFullPage-title--highlight\">product</span>|]1, Inf[Voeg attributen toe voor <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span>"
+      description: Alleen de attributen met meervoudige waarden die tot de families van de producten behoren worden gewijzigd met de volgende gegevens voor de {{ locale }} lokale en het {{ scope }} kanaal. De attribuutwaardes worden toegevoegd, de oude waarden worden bewaard.
+    change_family:
+      label: Familie wijzigen
+      label_count: "{1}wijzig de familie van <span class=\"AknFullPage-title--highlight\">product</span>|]1, Inf[Wijzig de familie van <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span>"
+      description: De familie van de geselecteerde producten zal worden gewijzigd naar de gekozen familie
+    add_to_group:
+      label: Toevoegen aan groepen
+      label_count: "{1}Voeg <span class=\"AknFullPage-title--highlight\">product</span> toe aan groepen|]1, Inf[Voeg producten toe <span class=\"AknFullPage-title--highlight\">{{ itemsCount }}</span> aan groepen"
+      description: Selecteer de groepen waaraan u de geselecteerde producten wilt toevoegen
+      field: Groepen
+      no_update: Selecteer een groep voordat u wilt doorgaan
+    add_to_category:
+      label: Voeg toe aan categorieën
+      label_count: "{1}Voeg <span class=\"AknFullPage-title--highlight\">product</span> toe aan categorieën|]1, Inf[Voeg <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span> toe aan categorieën"
+      description: De producten zullen worden geclassificeerd in de volgende categorieën. De bestaande classificatie wordt behouden.
+    move_to_category:
+      label: Verplaats tussen categorieën
+      label_count: "{1}Verplaats <span class=\"AknFullPage-title--highlight\">product</span> tussen categorieën|]1, Inf[Verplaats <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span> tussen categorieën"
+      description: De producten zullen worden geclassificeerd in de volgende categorieën. De bestaande classificatie gaat verloren.
+    remove_from_category:
+      label: Verwijder uit categorieën
+      label_count: "{1}Verwijder <span class=\"AknFullPage-title--highlight\">product</span> van categorieën|]1, Inf[Verwijder <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span> van categorieën"
+      description: De producten zullen worden verwijderd uit de volgende categorieën.
+      no_update: Er is geen categorie aangevinkt om de geselecteerde producten uit te verwijderen.
+    add_to_existing_product_model:
+      label: Toevoegen aan een bestaand productmodel
+      label_count: "{1}Voeg <span class=\"AknFullPage-title--highlight\">product</span> toe aan een bestaand productmodel|]1, Inf[Voeg producten toe <span class=\"AknFullPage-title--highlight\">{{ itemsCount }}</span> aan een bestaand productmodel"
+      description: Het geselecteerde productmodel verzamelt de producten en maakt de verrijking van hun gemeenschappelijke eigenschappen mogelijk.
+      no_update: Selecteer een product model voordat u wilt doorgaan
+    associate_to_product_and_product_model:
+      label: Associëren
+      label_count: "{1}Associate <span class=\"AknFullPage-title--highlight\">product</span> voor producten of productmodellen|]1, Inf[Associate <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span> voor producten of productmodellen"
+      description: De geselecteerde producten in het overzicht worden gekoppeld aan de geselecteerde producten en productmodellen voor het gekozen associatietype
+      validate: Voeg associatie toe voordat u naar de volgende stap gaat
+    change_parent_product_model:
+      label: Pas het bovenliggende productmodel aan
+      label_count: "{1}Verander het bovenliggende productmodel van <span class=\"AknFullPage-title--highlight\">product</span>|]1, Inf[Verander het bovenliggende productmodel van <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span>"
+      description: In het overzicht zal het overkoepelende productmodel van het variantproduct of sub-productmodel worden aangepast naar het gekozen productmodel.
+pim_datagrid:
+  no_entities: "Geen {{ entityHint }} gevonden"
+  mass_action_group:
+    bulk_actions:
+      label: Bulkacties
+    quick_export:
+      label: Snelle export
+  mass_action:
+    delete:
+      confirm_content: Weet u zeker dat u de geselecteerde producten wilt verwijderen?
+      success: Geselecteerde producten succesvol verwijderd.
+      error: Er is een fout opgetreden tijdens het verwijderen van de geselecteerde producten, probeer het opnieuw.
+    quick_export:
+      csv_all: CSV (alle attributen)
+      csv_grid_context: CSV (rastercontext)
+      xlsx_all: Excel (alle attributen)
+      xlsx_grid_context: Excel (rastercontext)
+    mass_edit: Bulk acties
+    sequential_edit: Sequentiële bewerking
+    mass_delete: Groepsgewijs verwijderen
+    selected:
+      family: geselecteerde families
+      product: geselecteerde resultaten
+  view_selector:
+    view: Weergaves
+  actions:
+    edit_product_attributes: Bewerk attributen van het product
+    classify_product: Classificeer het product
+    delete_product: Het product verwijderen
+    change_status: Status wijzigen
+    toggle_status: Schakel status
+    other: Andere acties
+  empty_results:
+    associated_product:
+      hint: Er zijn geen geassocieerde producten
+      subHint: 'Klik op de knop "Voeg associaties toe" om dit product te koppelen'
+  filters:
+    label: Filters
+    system: Systeem
+batch_jobs:
+  add_association:
+    label: Associëren
+    perform.label: Associëren
+  add_attribute_value:
+    label: Attribuutwaarden toevoegen
+    perform.label: Attribuutwaarden toevoegen
+  add_product_value:
+    label: Voeg productwaarde toe
+    perform.label: Voeg productwaarde toe
+  add_to_category:
+    label: Voeg toe aan categorie
+    perform.label: Voeg toe aan categorie
+  add_to_existing_product_model:
+    label: Toevoegen aan een bestaand productmodel
+    perform.label: Toevoegen aan een bestaand productmodel
+  csv_product_grid_context_quick_export:
+    quick_export.label: Csv productoverzicht context snelle export
+    quick_export_product_model.label: CSV product model raster context snel exporteren
+    perform.label: Csv productoverzicht context snelle export
+  csv_product_quick_export:
+    quick_export.label: Csv product snel exporteren
+    quick_export_product_model.label: CSV product model snelle export
+    perform.label: Csv product snel exporteren
+  delete_products_and_product_models:
+    label: Groepsgewijs producten verwijderen
+    perform.label: Groepsgewijs producten verwijderen
+  change_parent_product:
+    label: Aanpassen bovenliggend productmodel
+    perform.label: Aanpassen bovenliggend productmodel
+  edit_common_attributes:
+    label: Bewerk attributen
+    perform.label: Bewerk attributen
+    clean.label: Opschonen bestanden voor attributen
+    cleaner.label: Opschonen bestanden voor attributen
+  compute_completeness_of_products_family:
+    label: Bereken volledigheidspercentage
+    perform.label: Bereken volledigheidspercentage
+  move_to_category:
+    label: Verplaats naar categorie
+    perform.label: Verplaats naar categorie
+  update_product_value:
+    label: Update productwaarde
+    perform.label: Update productwaarde
+  remove_from_category:
+    label: Verwijder uit categorie
+    perform.label: Verwijder uit categorie
+  set_attribute_requirements:
+    label: Instellen Attribuut vereisten
+    perform.label: Stel attribuut vereisten in
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: XLSX product raster context snel exporteren
+    quick_export_product_model.label: XLSX product model raster context snel exporteren
+    perform.label: XLSX product raster context snel exporteren
+  xlsx_product_quick_export:
+    quick_export.label: XLSX product snelle export
+    quick_export_product_model.label: XLSX product model snelle export
+    perform.label: XLSX product snelle export
