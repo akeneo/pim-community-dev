@@ -6,6 +6,7 @@ use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\MessageDecodingFailedException;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Serializer;
 use UnexpectedValueException;
@@ -21,7 +22,7 @@ class JsonSerializer implements SerializerInterface
     private $serializer;
 
     /**
-     * @param NormalizerInterface[] $normalizers
+     * @param (NormalizerInterface|DenormalizerInterface)[] $normalizers
      */
     public function __construct(iterable $normalizers)
     {
