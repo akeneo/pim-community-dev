@@ -31,6 +31,7 @@ pim_analytics:
     mongodb_version: MongoDB versie
     server_version: Server versie
     php_extensions: PHP extensies
+    email_domains: Gekoppelde e-maildomeinen
   acl:
     system_info:
       index: Systeeminformatie

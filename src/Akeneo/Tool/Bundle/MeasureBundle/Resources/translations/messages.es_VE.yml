@@ -5,7 +5,7 @@ pim_measure:
     Decibel: Decibelio
     Frequency: Frecuencia
     Length: Longitud
-    Power: Potencia
+    Power: Energía
     Resistance: Resistencia
     Voltage: Voltaje
     Intensity: Intensidad
@@ -27,14 +27,14 @@ pim_measure:
     HECTARE: Hectárea
     SQUARE_CENTIMETER: Centímetro cuadrado
     SQUARE_DECIMETER: Decímetro cuadrado
-    SQUARE_DEKAMETER: Dekametro cuadrado
-    SQUARE_FOOT: Pies cuadrados
+    SQUARE_DEKAMETER: Decámetro cuadrado
+    SQUARE_FOOT: Pie cuadrado
     SQUARE_FURLONG: Estadio cuadrado
     SQUARE_HECTOMETER: Hectómetro cuadrado
     SQUARE_INCH: Pulgada cuadrada
     SQUARE_KILOMETER: Kilómetro cuadrado
     SQUARE_METER: Metro cuadrado
-    SQUARE_MIL: Mil cuadrado
+    SQUARE_MIL: Milla cuadrada
     SQUARE_MILE: Milla cuadrada
     SQUARE_MILLIMETER: Milímetro cuadrado
     SQUARE_YARD: Yarda cuadrada
@@ -58,12 +58,12 @@ pim_measure:
     CHAIN: Cadena
     DECIMETER: Decímetro
     DEKAMETER: Decámetro
-    FEET: Pies
+    FEET: Pie
     FURLONG: Estadio
     INCH: Pulgadas
     HECTOMETER: Hectómetro
     KILOMETER: Kilómetro
-    METER: Medidor
+    METER: Metro
     MIL: Mil
     MILE: Milla
     MILLIMETER: Milímetro
@@ -126,7 +126,7 @@ pim_measure:
     METER_PER_HOUR: Metro por hora
     METER_PER_MINUTE: Metro por minuto
     METER_PER_SECOND: Metro por segundo
-    MILE_PER_HOUR: Millas por hora
+    MILE_PER_HOUR: Milla por hora
     YARD_PER_HOUR: Yarda por hora
     #Temperature
     CELSIUS: Celsius
@@ -169,10 +169,10 @@ pim_measure:
     ATM: Atmósfera
     PSI: Libra por pulgada cuadrada
     TORR: Torr
-    MMHG: milímetro de mercurio
+    MMHG: milímetro de Mercurio
     #Energy
     CALORIE: caloría
-    KILOCALORIE: kilo caloría
+    KILOCALORIE: kilocaloría
     JOULE: julio
     KILOJOULE: kilojulio
     #CaseBox

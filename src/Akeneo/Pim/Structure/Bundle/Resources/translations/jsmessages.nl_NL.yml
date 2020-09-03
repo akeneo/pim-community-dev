@@ -1,0 +1,243 @@
+pim_enrich.entity.family:
+  label: familie
+  uppercase_label: Familie
+  plural_label: Families
+  flash:
+    update:
+      success: Familie succesvol bijgewerkt.
+      fail: Er is een fout opgetreden tijdens het bijwerken van de familie.
+      cant_remove_attribute_as_label: Het attribuut dat wordt gebruikt als label kan niet worden verwijderd
+      cant_remove_attribute_as_image: Kan het attribuut dat als hoof afbeelding gebruikt wordt, niet verwijderen
+      cant_remove_attribute_used_as_axis: Kan dit attribuut niet verwijderen omdat het gebruikt wordt als variant as in een familie variant
+      fields_not_ready: "De familie kan niet worden opgeslagen. De volgende velden zijn niet klaar: {{ fields }}"
+    create:
+      success: Familie succesvol aangemaakt
+    delete:
+      success: Familie succesvol verwijderd
+      fail: Kan deze familie niet verwijderen
+  property:
+    attribute_as_label: Attribuut gebruikt als label
+    attribute_as_image: Attribuut dat gebruikt wordt als hoofdpagina
+    empty_attribute_as_image: Niet geselecteerd
+  page_title:
+    index: "]-Inf, 1]{{ count }} familie|]1, Inf[{{ count }} families"
+  module:
+    attributes:
+      not_required_label: Niet verplicht
+      required_label: Verplicht
+    create:
+      button: Familie aanmaken
+    delete:
+      confirm: Weet u zeker dat u deze familie wilt verwijderen?
+pim_enrich.entity.family_variant:
+  label: familie variant
+  short_plural_label: Varianten
+  short_label: Variant
+  flash:
+    update:
+      success: Familievariant succesvol bijgewerkt. De producten met varianten worden bijgewerkt met jouw wijzigingen.
+      fail: De familie variant kon niet worden bijgewerkt.
+    create:
+      success: Familievariant succesvol aangemaakt
+    delete:
+      success: Familie variant succesvol verwijderd
+  module:
+    edit:
+      common_attributes: Gemeenschappelijke attributen
+      no_common_attributes: Er zijn geen gemeenschappelijke attributen
+      variant_axis_label: Variant as
+      variant_attributes: Variant attributen
+      level_1: Variant attributen niveau één
+      level_2: Variant attributen niveau twee
+      description: Versleep de attributen naar het geselecteerde variant niveau om deze attributen te beheren op het variant niveau.
+      attribute_remove: Attribuut verwijderen
+      attribute_group_remove: Attribuutgroep verwijderen
+      confirm_attribute_removal_title: Verwijderen van attributen bevestigen
+      confirm_attribute_removal_message: Door het verwijderen van deze attributen stop je ze terug in de gemeenschappelijke attributen van de familievariant en verwijder je de waarden van de variant producten
+    create:
+      label: Variant toevoegen
+      title: Maak een nieuwe familie variant aan
+      description: In een familievariant kan je de structuur voor producten met varianten bepalen. Kies het aantal beheerde variant niveaus, voor elk niveau de attributen die gebruikt worden als assen en bepaal dan hoe de attributen gedistribueerd worden.
+      variant_levels: Variant niveaus
+      axis_level: "Variant as niveau {{ level }}"
+    update_translations:
+      title: Vertalingen bijwerken
+    delete:
+      confirm: Weet u zeker dat u deze familie variant wil verwijderen?
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: Opties
+  flash:
+    create:
+      success: Attribuut optie succesvol aangemaakt
+      fail: Er deed zich een fout voor tijdens uw poging om een attribuut optie te creëren
+    update:
+      fail: Kan attribuut-optie niet opslaan
+    delete:
+      fail: Fout tijdens verwijderen van de attribuut-optie
+  module:
+    edit:
+      cancel_title: Wijziging annuleren
+      cancel_description: 'Let op: De niet opgeslagen gegevens gaan verloren. Weet u zeker dat u wijzigingen voor deze optie wilt annuleren?'
+pim_enrich.entity.association_type:
+  label: koppelingstype
+  flash:
+    update:
+      success: Associatietype succesvol bijgewerkt.
+      fail: Het associatietype kon niet worden bijgewerkt.
+      fields_not_ready: "Het associatie type kon niet worden opgeslagen. De volgende velden zijn niet volledig: {{ fields }}"
+    create:
+      success: Associatietype met succes aangemaakt
+    delete:
+      success: Associatietype succesvol verwijderd
+      fail: Kan deze associatie niet verwijderen
+  page_title:
+    index: "]-Inf, 1]{{ count }} associatietype|]1, Inf[{{ count }} associatietypes"
+  module:
+    create:
+      button: Associatietype aanmaken
+    delete:
+      confirm: Weet u zeker dat u dit associatietype wilt verwijderen?
+pim_enrich.entity.group_type:
+  label: groepstype
+  flash:
+    update:
+      success: Groepstype succesvol bijgewerkt.
+      fail: De groepstype kon niet worden bijgewerkt.
+      fields_not_ready: "Het groepstype kan nu niet worden opgeslagen. De volgende velden zijn niet volledig: {{ fields }}"
+    create:
+      success: Groepstype succesvol aangemaakt
+    delete:
+      success: Groepstype succesvol verwijderd
+      fail: Kan dit groepstype niet verwijderen
+  page_title:
+    index: "]-Inf, 1]{{ count }} groepstype|]1, Inf[ groep types{{ count }}"
+  module:
+    create:
+      button: Groepstype aanmaken
+    delete:
+      confirm: Weet u zeker dat u dit groepstype wilt verwijderen?
+pim_enrich.entity.attribute:
+  label: attribuut
+  plural_label: Attributen
+  flash:
+    update:
+      success: Attribuut met succes bijgewerkt.
+      fail: Het attribuut kon niet geüpdatet worden.
+      fields_not_ready: "Het attribuut kan nu niet worden opgeslagen. De volgende velden zijn niet volledig: {{ fields }}"
+    delete:
+      success: Attribuut succesvol verwijderd
+      fail: Kan dit attribuut niet verwijderen
+  page_title:
+    index: "]-Inf, 1]{{ count }} attribuut|]1, Inf[{{ count }} attributen"
+  property:
+    allowed_extensions: Toegestane extensies
+    auto_option_sorting: Sorteer opties automatisch in alfabetische volgorde
+    available_locales: Beschikbare lokalisaties
+    date_max: Tot datum
+    date_min: Vanaf datum
+    decimals_allowed: Decimale waarden toegestaan
+    default_metric_unit:
+      label: Standaard meeteenheid
+      choose: Kies een eenheid
+    group:
+      label: Attribuutgroep
+      choose: Kies een attribuutgroep
+    is_locale_specific: Lokalisatiespecifiek
+    localizable: Waarde per taal
+    max_characters: Max tekens
+    max_file_size: Max bestandsgrootte (MB)
+    metric_family:
+      label: Meeteenhedenfamilie
+      choose: Kies een familie
+    minimum_input_length: Minimale lengte voor automatisch vervolledigen
+    name: Naam
+    negative_allowed: Negatieve waardes toegestaan
+    number_max: Max aantal
+    number_min: Min aantal
+    reference_data_name:
+      label: Type referentie gegevens
+      choose: Kies het referentiegegevenstype
+    scopable: Waarde per kanaal
+    type:
+      choose: Kies het attribuuttype
+      pim_catalog_identifier: Id
+      pim_catalog_text: Tekst
+      pim_catalog_textarea: Tekstblok
+      pim_catalog_number: Nummer
+      pim_catalog_price_collection: Prijs
+      pim_catalog_multiselect: Meervoudige selectie
+      pim_catalog_simpleselect: Enkelvoudige selectie
+      pim_catalog_file: Bestand
+      pim_catalog_image: Afbeelding
+      pim_catalog_boolean: "Ja/Nee"
+      pim_catalog_date: Datum
+      pim_catalog_metric: Meeteenheid
+      pim_reference_data_simpleselect: Referentiegegevens enkelvoudig selectieveld
+      pim_reference_data_multiselect: Referentiegegevens meervoudig selectieveld
+    unique: Unieke waarde
+    useable_as_grid_filter: Bruikbaar in raster
+    validation_regexp: Reguliere expressie
+    validation_rule:
+      label: Validatieregel
+      email: E-mail
+      regexp: Reguliere expressie
+      url: URL
+    wysiwyg_enabled: Rich text editor ingeschakeld
+  module:
+    add_attribute:
+      no_available_attributes: Er zijn geen attributen meer om toe te voegen
+      attributes_selected: "{{ itemsCount }} attribu(u)t(en) geselecteerd"
+    create:
+      button: Attribuut aanmaken
+    edit:
+      common: Algemene parameters
+      type_specific: Type specifieke parameters
+      validation: Validatieparameters
+    delete:
+      confirm: Weet u zeker dat u attribuut wilt verwijderen?
+      confirm_from_family: Weet u zeker dat u dit attribuut uit de familie wilt verwijderen?
+      confirm_from_group: Weet u zeker dat u het attribuut {{ attribute }} van deze attribuutgroep wilt verwijderen?
+      confirm_from_product: Bent u zeker dat u dit attribuut wil verwijderen van het product?
+pim_enrich.entity.attribute_group:
+  label: attribuutgroep
+  uppercase_label: Attribuutgroep
+  plural_label: Attribuutgroepen
+  show_more_attribute:
+    title: Het is hier een beetje vol, we laten je {{ attributeCount }}/{{ totalAttributeCount }} attributen zien.
+    subtitle: Om alle attributen van deze groep te ontdekken, klik hieronder!
+    button: Bekijk alle attributen
+  flash:
+    update:
+      success: Attribuutgroep succesvol bijgewerkt
+      fail: De attribuut groep kon niet geüpdatet worden
+      fields_not_ready: "De attribuutgroep kan niet worden opgeslagen. De volgende velden zijn niet klaar: {{ fields }}"
+    delete:
+      success: Attribuutgroep succesvol verwijderd
+      fail: Kan deze attribuutgroep niet verwijderen
+  module:
+    add_attribute_group:
+      label: Toevoegen via groepen
+      no_attribute_groups_available: Geen attribuutgroep beschikbaar
+      attributes_groups_selected: '{{ itemsCount }} groep(en) geselecteerd'
+    delete:
+      confirm: Weet u zeker dat u deze attribuut groep wilt verwijderen?
+pim_enrich.mass_edit.family:
+  title: Gezamenlijke actie voor families
+  confirm: "{1}U staat op het punt een familie te updaten met de volgende informatie, bevestig alstublieft.|]1, Inf[U staat op het punt om {{ itemsCount }} families te updaten met de volgende informatie, bevestig alstublieft."
+  step:
+    select:
+      label: Kies families
+    choose:
+      title: Families Bulk acties
+      label_count: "]0, Inf[Selecteer uw actie"
+    configure:
+      label: Configureer
+    confirm:
+      label: Bevestig
+    launched:
+      label: De groepsgewijze actie "{{ operation }}" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
+  operation:
+    set_requirements:
+      label: Instellen Attribuut vereisten
+      description: De volgende attribuutvereisten zullen worden toegepast op de geselecteerde families
+      label_count: "{1}stelt attributen vereisten van <span class=\"AknFullPage-title--highlight\">familie</span>|]1, Inf[Stel attributen vereisten in van <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} families</span>"

@@ -4,7 +4,7 @@ pim_enrich.entity.family:
   plural_label: Familias
   flash:
     update:
-      success: Familia actualizada con éxito.
+      success: Familia actualizada éxitosamente.
       fail: Ha ocurrido un error durante la actualización de la familia.
       cant_remove_attribute_as_label: No se puede remover el atributo utilizado como etiqueta
       cant_remove_attribute_as_image: No se puede quitar el atributo utilizado como la imagen principal
@@ -14,11 +14,11 @@ pim_enrich.entity.family:
       success: Familia creada correctamente
     delete:
       success: Familia eliminada correctamente
-      fail: No se puede eliminar esta familia
+      fail: Esta familia no se puede eliminar
   property:
     attribute_as_label: Atributo utilizado como etiqueta
     attribute_as_image: Atributo usado como la imagen principal
-    empty_attribute_as_image: No Seleccionado
+    empty_attribute_as_image: No seleccionado
   page_title:
     index: "]-Inf, 1]{{ count }} familia|]1, Inf[{{ count }} familias"
   module:
@@ -28,17 +28,17 @@ pim_enrich.entity.family:
     create:
       button: Crear familia
     delete:
-      confirm: '¿Está seguro que desea eliminar esta familia?'
+      confirm: '¿Está seguro que quiere eliminar esta familia?'
 pim_enrich.entity.family_variant:
   label: variante de familia
   short_plural_label: Variantes
   short_label: Variante
   flash:
     update:
-      success: La variante de la familia ha sido actualizada correctamente. Los productos con variantes serán actualizados con sus cambios.
+      success: La variante de la familia ha sido actualizada éxitosamente. Los productos con variantes serán actualizados con sus cambios.
       fail: La variante familiar no se ha podido actualizar.
     create:
-      success: Variante familiar creada con éxito
+      success: Variante familiar creada éxitosamente
     delete:
       success: Variante de familia removida exitosamente
   module:
@@ -47,15 +47,15 @@ pim_enrich.entity.family_variant:
       no_common_attributes: No hay atributos comunes
       variant_axis_label: Eje variante
       variant_attributes: Variantes de atributos
-      level_1: Atributos de variables de nivel uno
+      level_1: Atributos de variante nivel uno
       level_2: Atributos de variables de nivel dos
       description: Arrastre y suelte los atributos en el nivel de variante seleccionado para poder administrar estos atributos en el nivel de la variante.
       attribute_remove: Remover atributo
       attribute_group_remove: Eliminar atributo del grupo
-      confirm_attribute_removal_title: Confirme si desea suprimir los atributos
-      confirm_attribute_removal_message: Al remover estos atributos usted los colocará nuevamente en los atributos comunes de la variante de la familia y quitará los valores de los productos variantes
+      confirm_attribute_removal_title: Confirme si se eliminará los atributos
+      confirm_attribute_removal_message: Al eliminar estos atributos usted los colocará nuevamente en los atributos comunes de la variante de la familia y quitará los valores de los productos variantes
     create:
-      label: Añadir variante
+      label: Agregar variante
       title: Crear una nueva variante de familia
       description: En una variante de familia, puede definir una estructura para productos con variantes. Elija el número de los distintos niveles de variantes gestionados, los atributos utilizados como ejes variantes para cada nivel y luego defina cómo se distribuyen los atributos.
       variant_levels: Niveles de variantes
@@ -68,10 +68,10 @@ pim_enrich.entity.attribute_option:
   short_uppercase_label: Opciones
   flash:
     create:
-      success: Opción del atributo creada con éxito
+      success: Opción del atributo creada éxitosamente
       fail: Se ha producido un error al intentar crear la opción de atributo
     update:
-      fail: No se puede guardar la opción de atributo
+      fail: La opción de atributo no se puede guardar
     delete:
       fail: Error durante la eliminación de la opción de atributo
   module:
@@ -82,13 +82,13 @@ pim_enrich.entity.association_type:
   label: tipo de asociación
   flash:
     update:
-      success: Tipo de asociación actualizado correctamente.
-      fail: No se ha podido actualizar el tipo de asociación.
+      success: Tipo de asociación actualizado exitosamente.
+      fail: El tipo de asociación no se pudo actualizar.
       fields_not_ready: "El tipo de asociación no se puede guardar ahora. No están listos los siguientes campos: {{ fields }}"
     create:
-      success: Tipo de asociación se creó correctamente
+      success: Tipo de asociación creada éxitosamente
     delete:
-      success: Tipo de asociación eliminado correctamente
+      success: Tipo de asociación eliminado éxitosamente
       fail: No se puede eliminar este tipo de asociación
   page_title:
     index: "]-Inf, 1]{{ count }} tipo de asociación|]1, Inf[{{ count }}tipos de asociaciones"
@@ -96,45 +96,45 @@ pim_enrich.entity.association_type:
     create:
       button: Crear un tipo de asociación
     delete:
-      confirm: '¿Está seguro que desea eliminar este tipo de asociación?'
+      confirm: '¿Está seguro que quiere eliminar este tipo de asociación?'
 pim_enrich.entity.group_type:
   label: tipo de grupo
   flash:
     update:
-      success: Tipo de grupo actualizado correctamente.
+      success: Tipo de grupo actualizado éxitosamente.
       fail: El tipo de grupo no pudo ser actualizado.
       fields_not_ready: "El tipo de producto no puede ser guardado en el momento. Los siguientes campos no están listos: {{ fields }}"
     create:
-      success: Tipo de grupo creado correctamente
+      success: Tipo de grupo creado éxitosamente
     delete:
-      success: Tipo de Grupo eliminado correctamente
-      fail: No se puede eliminar este tipo de grupo
+      success: Tipo de grupo eliminado éxitosamente
+      fail: Este tipo de grupo no se puede eliminar
   page_title:
     index: "]-Inf, 1]{{ count }} tipo de grupo|]1, Inf[{{ count }} tipos de grupo"
   module:
     create:
       button: Crear tipo de grupo
     delete:
-      confirm: '¿Está seguro que desea eliminar este tipo de grupo?'
+      confirm: '¿Está seguro que quiere eliminar este tipo de grupo?'
 pim_enrich.entity.attribute:
   label: atributo
   plural_label: Atributos
   flash:
     update:
-      success: Atributo exitosamente actualizado.
+      success: Atributo actualizo éxitosamente.
       fail: El atributo no pudo ser actualizado.
       fields_not_ready: "El atributo no puede ser guardado ahora. No están listos los siguientes campos: {{ fields }}"
     delete:
-      success: Atributo eliminado correctamente
-      fail: No se puede eliminar este atributo
+      success: Atributo eliminado éxitosamente
+      fail: Este atributo no se puede eliminar
   page_title:
     index: "]-Inf, 1]{{ count }} atributo|]1, Inf[{{ count }} atributos"
   property:
     allowed_extensions: Extensiones permitidas
     auto_option_sorting: Ordene opciones automáticas por orden alfabético
     available_locales: Locales disponibles
-    date_max: Fecha máx
-    date_min: Fecha min
+    date_max: Fecha maxima
+    date_min: Fecha minima
     decimals_allowed: Valores decimales permitidos
     default_metric_unit:
       label: Unidad métrica predeterminada
@@ -145,61 +145,61 @@ pim_enrich.entity.attribute:
     is_locale_specific: Local específico
     localizable: Valor por local
     max_characters: Caracteres Max
-    max_file_size: Tamaño máximo de archivo (MB)
+    max_file_size: Tamañp maximo de archivo (MB)
     metric_family:
       label: Familia métrica
-      choose: Seleccionar familia
-    minimum_input_length: Longitud mínima para la autocompleción
+      choose: Elija una familia
+    minimum_input_length: Longitud mínima para la autocompletación
     name: Nombre
     negative_allowed: Valores negativos permitidos
-    number_max: Número máx
-    number_min: Número min
+    number_max: Numero maximo
+    number_min: Numero minimo
     reference_data_name:
-      label: Tipo de dato de referencia
-      choose: Seleccione el tipo de información de referencia
+      label: Referencia tipo de dato
+      choose: Seleccione el tipo de datos de referencia
     scopable: Valor por canal
     type:
       choose: Elija el tipo de atributo
       pim_catalog_identifier: Identificador
       pim_catalog_text: Texto
-      pim_catalog_textarea: Área de Texto
-      pim_catalog_number: Número
+      pim_catalog_textarea: Area de Texto
+      pim_catalog_number: Numero
       pim_catalog_price_collection: Precio
-      pim_catalog_multiselect: Selección múltiple
-      pim_catalog_simpleselect: Selección simple
+      pim_catalog_multiselect: Seleccion multiple
+      pim_catalog_simpleselect: Seleccion simple
       pim_catalog_file: Archivo
       pim_catalog_image: Imagen
       pim_catalog_boolean: "Si/No"
       pim_catalog_date: Fecha
-      pim_catalog_metric: Métrica
+      pim_catalog_metric: Metrica
       pim_reference_data_simpleselect: Selección simple de datos de referencia
       pim_reference_data_multiselect: Selección múltiple de datos de referencia
     unique: Valor único
-    useable_as_grid_filter: Se puede usar en la cuadrícula
+    useable_as_grid_filter: Utilizable en la grilla
     validation_regexp: Expresión regular
     validation_rule:
       label: Regla de validación
-      email: E-mail
+      email: Correo electrónico
       regexp: Expresión regular
       url: URL
     wysiwyg_enabled: Editor de texto enriquecido habilitado
   module:
     add_attribute:
-      no_available_attributes: No hay más atributos a agregar
+      no_available_attributes: No hay más atributos para agregar
       attributes_selected: "{{ itemsCount }} atributo(s) seleccionado"
     create:
       button: Crear atributo
     edit:
       common: Parámetros generales
-      type_specific: Escriba los parámetros específicos
+      type_specific: Escriba parametros específicos
       validation: Parámetros de validación
     delete:
-      confirm: '¿Está seguro que desea eliminar este atributo?'
+      confirm: '¿Está seguro que quiere eliminar este atributo?'
       confirm_from_family: '¿Está seguro que quiere eliminar este atributo de la familia?'
-      confirm_from_group: '¿Está seguro que desea eliminar el atributo {{ attribute }} de este grupo de atributos?'
-      confirm_from_product: '¿Está usted seguro que desea eliminar el atributo de este producto?'
+      confirm_from_group: '¿Está seguro que quiere eliminar el atributo {{ attribute }} de este grupo de atributos?'
+      confirm_from_product: '¿Está usted seguro que quiereeliminar el atributo de este producto?'
 pim_enrich.entity.attribute_group:
-  label: grupo de atributo
+  label: grupo de atributos
   uppercase_label: Grupo de atributos
   plural_label: Grupos de atributos
   show_more_attribute:
@@ -207,34 +207,34 @@ pim_enrich.entity.attribute_group:
     button: Mostrar todos los atributos
   flash:
     update:
-      success: Grupo de atributos actualizado correctamente
-      fail: El grupo del atributos no pudo ser actualizado
+      success: Grupo de atributos actualizado éxitosamente
+      fail: El grupo del atributo no pudo ser actualizado
       fields_not_ready: "El grupo de atributos no se puede guardar ahora. No están listos los siguientes campos: {{ fields }}"
     delete:
-      success: Grupo de atributos eliminado correctamente
+      success: Grupo de atributos eliminado éxitosamente
       fail: No se puede eliminar este grupo de atributos
   module:
     add_attribute_group:
-      label: Añadir por grupos
+      label: Agregar por grupos
       no_attribute_groups_available: Ningún grupo de atributos disponible
-      attributes_groups_selected: '{{ itemsCount }} grupo(s) seleccionado'
+      attributes_groups_selected: '{{ itemsCount }} grupo(s) seleccionados'
     delete:
-      confirm: '¿Está seguro que desea eliminar este grupo de atributo?'
+      confirm: '¿Está usted seguro que quiere eliminar este grupo de atributo?'
 pim_enrich.mass_edit.family:
-  title: Acción masiva sobre las familias
+  title: Familias de acción masiva
   confirm: "{1}Está a punto de actualizar una familia con la siguiente información, por favor confirme.|]1, Inf[Está a punto de actualizar {{ itemsCount }} familias con la información siguiente, por favor confirme."
   step:
     select:
-      label: Elija las familias
+      label: Elija familias
     choose:
-      title: Acción masiva sobre las familias
+      title: Familias de acciones masivas
       label_count: "]0, Inf[Seleccione su acción"
     configure:
-      label: Configuración
+      label: Configurar
     confirm:
-      label: Confirmación
+      label: Confirmar
     launched:
-      label: La acción en masa "{{ operation }}" ha sido lanzada. Será notificado una vez finalizada.
+      label: Ha puesto en marcha la acción masiva "{{ operation }}". Se le notificará cuando se realice.
   operation:
     set_requirements:
       label: Establecer los requisitos de atributos

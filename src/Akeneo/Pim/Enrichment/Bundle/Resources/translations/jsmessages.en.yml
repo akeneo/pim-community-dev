@@ -333,6 +333,10 @@ pim_enrich.mass_edit.product:
       label_count: "{1}Change parent product model of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change parent product model of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
       description: The parent of the variant products or sub-product models selected in the grid will be changed to the chosen product model.
 pim_datagrid:
+<<<<<<< HEAD
+=======
+  search: "Search on {{ label }}"
+>>>>>>> origin/3.2
   no_entities: "No {{ entityHint }} found"
   mass_action_group:
     bulk_actions:
@@ -371,7 +375,10 @@ pim_datagrid:
   filters:
     label: Filters
     system: System
+<<<<<<< HEAD
   search: Search on {{ label }}
+=======
+>>>>>>> origin/3.2
 batch_jobs:
   add_association:
     label: Associate

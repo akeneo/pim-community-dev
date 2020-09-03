@@ -1,0 +1,100 @@
+pim_title:
+  pim_user_index: Gebruikers
+  pim_user_role_index: Rollen
+  pim_user_group_index: Gebruikersgroepen
+  oro_config_configuration_system: Configuratie
+  pim_user_edit: 'Gebruiker {{ username }} | Bewerken'
+  pim_user_create: 'Gebruikers | Aanmaken'
+  pim_user_role_update: 'Rol {{ role }} | Bewerken'
+  pim_user_role_create: 'Rol | Aanmaken'
+  pim_user_security_login: Aanmelden
+  pim_user_reset_reset: Wachtwoord resetten
+  pim_user_reset_request: Wachtwoord vergeten
+  pim_user_reset_check_email: Wachtwoord opnieuw instellen - Bekijk E-mail
+  pim_user_group_create: 'Groepen | Aanmaken'
+  pim_user_group_update: 'Groep {{ group }} | Bewerken'
+confirmation:
+  remove:
+    user: Weet u zeker dat u deze gebruiker wilt verwijderen?
+    group: Weet u zeker dat u deze groep wilt verwijderen?
+pim_enrich:
+  entity:
+    user:
+      flash:
+        delete:
+          fail: De gebruiker kan niet verwijderd worden
+          success: De gebruiker werd verwijderd
+      module:
+        delete:
+          confirm: Weet u zeker dat u deze gebruiker wilt verwijderen?
+pim_user_management:
+  entity:
+    user:
+      label: gebruiker
+      flash:
+        update:
+          success: Gebruiker succesvol bijgewerkt.
+          fail: De gebruiker kon niet worden bijgewerkt.
+          fields_not_ready: "De gebruiker kan niet worden opgeslagen. De volgende velden zijn niet klaar: {{ fields }}"
+        create:
+          success: Gebruiker succesvol aangemaakt.
+      page_title:
+        index: "]-Inf, 1] {{ count }} gebruiker|]1, Inf [{{ count }} gebruikers"
+      properties:
+        username: Gebruikersnaam
+        name_prefix: Voorvoegsel
+        first_name: Voornaam
+        middle_name: Tussenvoegsel
+        last_name: Achternaam
+        name_suffix: Achtervoegsel
+        phone: Telefoon
+        avatar: Profielafbeelding
+        email: E-mail
+        catalog_locale: Catalogus lokalisatie
+        catalog_scope: Scope van catalogus
+        default_tree: Standaardstructuur
+        default_asset_tree: Standaard asset boom
+        product_grid_filters: Filters productraster
+        current_password: Huidig wachtwoord
+        new_password: Nieuw wachtwoord
+        new_password_repeat: Nieuw wachtwoord (herhalen)
+        password: Wachtwoord
+        password_repeat: Wachtwoord (herhalen)
+        last_logged_in: Laatste login
+        login_count: Aantal logins
+        ui_locale: Gebruikers Interface
+        timezone: Tijdzone
+        default_product_grid_view: Standaard Productweergave raster
+        default_published_product_grid_view: Standaard gepubliceerde product rasterweergave #EE Only
+        proposals_to_review_notification: Wanneer nieuw voorstel tot nakijken #EE Only
+        proposals_state_notifications: Wanneer voorstel is goedgekeurd of geweigerd #EE Only
+      meta:
+        created: Aangemaakt
+        updated: Bijgewerkt
+      module:
+        create:
+          button: Gebruiker aanmaken
+        delete:
+          confirm: Weet u zeker dat u deze gebruiker wilt verwijderen?
+        update:
+          additional: Aanvullend
+          groups_and_roles: Groepen en rollen
+          password: Wachtwoord
+          interfaces: Interfaces
+          notifications: Meldingen #TODO EE Only
+    role:
+      plural_label: Rollen
+      page_title:
+        index: "]-Inf, 1] {{ count }} rol|]1, Inf [{{ count }} rollen"
+      module:
+        create:
+          button: Rol aanmaken
+        delete:
+          confirm: Weet u zeker dat u deze rol wilt verwijderen?
+    group:
+      plural_label: Gebruikersgroepen
+      page_title:
+        index: "]-Inf, 1] {{ count }} groep|]1, Inf [{{ count }} groepen"
+      module:
+        create:
+          button: Groep aanmaken

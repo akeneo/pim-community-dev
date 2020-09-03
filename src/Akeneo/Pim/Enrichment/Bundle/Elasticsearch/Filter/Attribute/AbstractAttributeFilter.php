@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
