@@ -18,3 +18,4 @@ export * from './NumberAttributeCondition';
 export * from './DateAttributeCondition';
 export * from './BooleanAttributeCondition';
 export * from './SimpleMultiReferenceEntitiesAttributeCondition';
+export * from './PriceCollectionAttributeCondition';

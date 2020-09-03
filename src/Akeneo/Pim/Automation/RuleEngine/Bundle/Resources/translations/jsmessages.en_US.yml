@@ -313,6 +313,7 @@ pimee_catalog_rule:
         unknown_or_inactive_locale: 'The "{{ localeCode }}" locale does not exist or is not activated'
         unknown_or_inactive_currency: 'The "{{ currencyCode }}" currency does not exist or is not activated'
         unbound_locale: 'The "{{ localeCode }}" locale is not activated in the "{{ channelCode }}" channel'
+        unbound_currency: 'The "{{ currencyCode }}" currency is not activated in the "{{ channelCode }}" channel'
         locale_on_unlocalizable_attribute: This attribute is not localizable. Please remove the locale before you continue.
         unknown_scope: 'The "{{ scopeCode }}" channel does not exist'
         scope_on_unscopable_attribute: This attribute is not scopable. Please remove the channel before you continue.
