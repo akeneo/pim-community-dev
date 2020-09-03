@@ -161,6 +161,23 @@ pimee_catalog_rule:
                     select_reference_entity: Select your reference entities
                     select_asset: Select your assets
                     select_measurement_unit: Select your unit
+                set_associations:
+                    title: SET Associations
+                    helper: To set associations, please select your association type(s) and then, the products, product models or groups you want to associate to your product selection.
+                    select_association_type: Select your association type
+                    association_types: Association types
+                    select_title:
+                        products: Select your products
+                        product_models: Select your product models
+                        groups: Select your groups
+                    select:
+                        products: Products
+                        product_models: Product models
+                        groups: Groups
+                    counts:
+                        products: ]-Inf, 1]{{ count }} product|]1, +Inf[{{ count }} products
+                        product_models: ]-Inf, 1]{{ count }} product model|]1, +Inf[{{ count }} product models
+                        groups: ]-Inf, 1]{{ count }} group|]1, +Inf[{{ count }} groups
                 clear_attribute:
                     title: CLEAR Attribute value
                     subtitle: Select the attribute to clear

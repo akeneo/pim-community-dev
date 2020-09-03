@@ -16,6 +16,7 @@ import {
   getRemoveCategoriesModule,
   getRemoveGroupsActionModule,
   getSetActionModule,
+  getSetAssociationsActionModule,
   getSetCategoriesModule,
   getSetFamilyActionModule,
   getSetGroupsActionModule,
@@ -41,19 +42,21 @@ const getActionModule: (
     getClearGroupsActionModule,
     getRemoveCategoriesModule,
     getRemoveGroupsActionModule,
+    getSetAssociationsActionModule,
     getSetCategoriesModule,
     getSetFamilyActionModule,
     getSetGroupsActionModule,
     getSetStatusActionModule,
+    getCalculateActionModule,
+    getConcatenateActionModule,
+    getCopyActionModule,
     // Attribute values: they should be tested after the system field actions since their 'field' is dynamic
     getAddAttributeValueActionModule,
     getClearAttributeActionModule,
     getRemoveAttributeValueActionModule,
     // Fallbacks
+    getClearActionModule,
     getAddActionModule,
-    getCalculateActionModule,
-    getConcatenateActionModule,
-    getCopyActionModule,
     getSetActionModule,
   ];
 

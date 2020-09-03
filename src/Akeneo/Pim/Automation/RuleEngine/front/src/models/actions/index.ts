@@ -16,5 +16,6 @@ export * from './SetFamilyAction';
 export * from './SetCategoriesAction';
 export * from './RemoveCategoriesAction';
 export * from './RemoveGroupsAction';
+export * from './SetAssociationsAction';
 export * from './SetStatusAction';
 export * from './SetGroupsAction';

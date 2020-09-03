@@ -36,9 +36,11 @@ import {
   createSetStatusAction,
   createCalculateAction,
   createConcatenateAction,
+  createSetAssociationsAction,
 } from './actions';
 
 export const AvailableAddAction: { [key: string]: () => Action } = {
+  set_associations: createSetAssociationsAction,
   set_attribute: createSetAttributeAction,
   set_category: createSetCategoriesAction,
   set_family: createSetFamilyAction,
