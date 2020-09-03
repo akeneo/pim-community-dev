@@ -18,6 +18,8 @@ import { getBooleanAttributeConditionModule } from './BooleanAttributeCondition'
 import { getSimpleMultiReferenceEntitiesAttributeConditionModule } from './SimpleMultiReferenceEntitiesAttributeCondition';
 import { getTextareaAttributeConditionModule } from './TextareaAttributeCondition';
 import { getAssetCollectionAttributeConditionModule } from './AssetCollectionAttributeCondition';
+import { getPictureAttributeConditionModule } from './PictureAttributeCondition';
+import { getFileAttributeConditionModule } from './FileAttributeCondition';
 import { getPriceCollectionAttributeConditionModule } from './PriceCollectionAttributeCondition';
 
 export type ConditionModuleGuesser = (
@@ -37,6 +39,8 @@ const getConditionModule: (
     getCategoryConditionModule,
     getGroupsConditionModule,
     getStatusConditionModule,
+    getPictureAttributeConditionModule,
+    getFileAttributeConditionModule,
     getTextAttributeConditionModule,
     getTextareaAttributeConditionModule,
     getSimpleMultiOptionsAttributeConditionModule,

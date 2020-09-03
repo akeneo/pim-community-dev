@@ -251,6 +251,12 @@ pimee_catalog_rule:
             discard_changes: Your changes will be lost if you leave the page.
             please_select_attribute: Please select a target attribute first.
             unhandled_attribute_type: Sorry this attribute type is not managed yet. Please use the rules import.
+            empty_section:
+                set_up_action: Well done! You defined your product selection. Now it's time to set up your action.
+                set_up_condition: If you don't want to impact your whole catalog, please add at least one condition.
+                add_action: And then, add one or several actions to apply to your products/product models.
+                doc: You don't know what an action is?
+                doc_link: This article may help you.
         delete:
             description: Are you sure you want to delete this rule? It is not possible to undo this action.
             notification:

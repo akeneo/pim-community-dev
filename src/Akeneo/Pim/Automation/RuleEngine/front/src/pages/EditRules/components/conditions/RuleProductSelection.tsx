@@ -23,6 +23,8 @@ import {
   createSimpleMultiReferenceEntitiesAttributeCondition,
   createPriceCollectionAttributeCondition,
   AttributeType,
+  createPictureAttributeCondition,
+  createFileAttributeCondition,
 } from '../../../../models/';
 import { TextBoxBlue } from '../TextBoxBlue';
 import { useProductsCount } from '../../hooks';
@@ -37,6 +39,7 @@ import {
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
 import { Action } from '../../../../models/Action';
+import { EmptySectionMessage } from '../EmptySectionMessage';
 
 const Header = styled.header`
   font-weight: normal;
@@ -95,7 +98,9 @@ type Props = {
   currentCatalogLocale: LocaleCode;
   locales: Locale[];
   scopes: IndexedScopes;
-  conditions: Condition[];
+  conditions: (Condition | null)[];
+  handleAddCondition: (condition: Condition) => void;
+  handleDeleteCondition: (lineNumber: number) => void;
 };
 
 const RuleProductSelection: React.FC<Props> = ({
@@ -103,13 +108,11 @@ const RuleProductSelection: React.FC<Props> = ({
   locales,
   scopes,
   conditions,
+  handleAddCondition,
+  handleDeleteCondition,
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
-
-  const [conditionsState, setConditionsState] = React.useState<
-    (Condition | null)[]
-  >(conditions);
 
   const { getValues } = useFormContext();
 
@@ -133,7 +136,9 @@ const RuleProductSelection: React.FC<Props> = ({
       createAssetCollectionAttributeCondition,
       createBooleanAttributeCondition,
       createDateAttributeCondition,
+      createFileAttributeCondition,
       createNumberAttributeCondition,
+      createPictureAttributeCondition,
       createSimpleMultiOptionsAttributeCondition,
       createSimpleMultiReferenceEntitiesAttributeCondition,
       createTextAttributeCondition,
@@ -152,17 +157,8 @@ const RuleProductSelection: React.FC<Props> = ({
     throw new Error(`Unknown factory for field ${fieldCode}`);
   };
 
-  const append = (condition: Condition) => {
-    setConditionsState([...conditionsState, condition]);
-  };
-
-  const remove = (lineNumber: number) => {
-    conditionsState[lineNumber] = null;
-    setConditionsState([...conditionsState]);
-  };
-
-  const handleAddCondition = (fieldCode: string) => {
-    createCondition(fieldCode).then(condition => append(condition));
+  const addCondition = (fieldCode: string) => {
+    createCondition(fieldCode).then(condition => handleAddCondition(condition));
   };
 
   // Add here the fields handled by the rule conditions.
@@ -181,6 +177,8 @@ const RuleProductSelection: React.FC<Props> = ({
     AttributeType.ASSET_COLLECTION,
     AttributeType.BOOLEAN,
     AttributeType.DATE,
+    AttributeType.FILE,
+    AttributeType.IMAGE,
     AttributeType.NUMBER,
     AttributeType.OPTION_MULTI_SELECT,
     AttributeType.OPTION_SIMPLE_SELECT,
@@ -228,7 +226,7 @@ const RuleProductSelection: React.FC<Props> = ({
           />
           <AddConditionContainer>
             <AddFieldButton
-              handleAddField={handleAddCondition}
+              handleAddField={addCondition}
               isFieldAlreadySelected={isActiveConditionField}
               filterSystemFields={SYSTEM_FIELDS}
               filterAttributeTypes={ATTRIBUTE_TYPES}
@@ -256,7 +254,7 @@ const RuleProductSelection: React.FC<Props> = ({
       </SmallHelper>
       <div className='AknGrid AknGrid--unclickable'>
         <div className='AknGrid-body' data-testid={'condition-list'}>
-          {conditionsState.map((condition, i) => {
+          {conditions.map((condition, i) => {
             return (
               condition && (
                 <ConditionLine
@@ -266,7 +264,9 @@ const RuleProductSelection: React.FC<Props> = ({
                   locales={locales}
                   scopes={scopes}
                   currentCatalogLocale={currentCatalogLocale}
-                  deleteCondition={remove}
+                  deleteCondition={() => {
+                    handleDeleteCondition(i);
+                  }}
                 />
               )
             );
@@ -276,6 +276,17 @@ const RuleProductSelection: React.FC<Props> = ({
       <LegendSrOnly>
         {translate('pimee_catalog_rule.form.legend.product_selection')}
       </LegendSrOnly>
+      {!conditions.filter(Boolean).length && (
+        <EmptySectionMessage>
+          <div>
+            {translate(
+              'pimee_catalog_rule.form.edit.empty_section.set_up_condition'
+            )}
+            <br />
+            {translate('pimee_catalog_rule.form.edit.empty_section.add_action')}
+          </div>
+        </EmptySectionMessage>
+      )}
     </RuleProductSelectionFieldset>
   );
 };
