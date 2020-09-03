@@ -3,6 +3,7 @@ import React from 'react';
 import { ConditionLineProps } from '../../pages/EditRules/components/conditions/ConditionLineProps';
 import { Condition } from './Condition';
 import { getFamilyConditionModule } from './FamilyCondition';
+import { getIdentifierConditionModule } from './IdentifierCondition';
 import { getCategoryConditionModule } from './CategoryCondition';
 import { getTextAttributeConditionModule } from './TextAttributeCondition';
 import { getSimpleMultiOptionsAttributeConditionModule } from './SimpleMultiOptionsAttributeCondition';
@@ -21,6 +22,7 @@ import { getAssetCollectionAttributeConditionModule } from './AssetCollectionAtt
 import { getPictureAttributeConditionModule } from './PictureAttributeCondition';
 import { getFileAttributeConditionModule } from './FileAttributeCondition';
 import { getPriceCollectionAttributeConditionModule } from './PriceCollectionAttributeCondition';
+import { getIdentifierAttributeCondtionModule } from './IdentifierAttributeCondition';
 
 export type ConditionModuleGuesser = (
   json: any,
@@ -36,8 +38,10 @@ const getConditionModule: (
 ) => {
   const getConditionModuleFunctions: ConditionModuleGuesser[] = [
     getFamilyConditionModule,
+    getIdentifierConditionModule,
     getCategoryConditionModule,
     getGroupsConditionModule,
+    getIdentifierAttributeCondtionModule,
     getStatusConditionModule,
     getPictureAttributeConditionModule,
     getFileAttributeConditionModule,

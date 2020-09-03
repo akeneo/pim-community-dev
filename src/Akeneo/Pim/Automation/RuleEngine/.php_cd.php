@@ -45,8 +45,14 @@ $rules = [
         // TIP-1024: Drop UserContext
         'Akeneo\Pim\Permission\Bundle\User\UserContext',
 
-        // /srv/pim/src/Akeneo/Pim/Automation/RuleEngine/Bundle/Controller/InternalApi/GetCategoryTreeController.php
+        // internal API controllers
         'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators',
+        'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
+
+
     ])->in('Akeneo\Pim\Automation\RuleEngine\Bundle'),
     $builder->only([
         'Symfony\Component',

@@ -23,6 +23,7 @@ pimee_catalog_rule:
             groups: Groups
             categories: Categories
             completeness: Completeness
+            identifier: Identifier
             enabled: Status
             created: Created
             updated: Updated
