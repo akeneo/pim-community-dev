@@ -66,9 +66,8 @@ services:
     akeneo_connectivity.connection.webhook.client.guzzle:
         class: Akeneo\Connectivity\Connection\Infrastructure\Webhook\GuzzleWebhookClient
         arguments:
-            - '@akeneo_webhook.http_client'
             - '@akeneo_webhook.http_request_factory'
-            - '@logger'
+            - '@akeneo_webhook.http_request_sender'
 
     akeneo_connectivity.connection.webhook.event_builder:
         class: Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder

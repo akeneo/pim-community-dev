@@ -18,7 +18,7 @@ class RequestFactory
      * @param string $body Body of the request. Expected format is JSON but Content-Type header can be changed.
      * @param array{secret: string, ?headers: array<string, string>} $options The "secret" option is mandatory.
      */
-    public static function create(string $url, string $body, array $options): Request
+    public function create(string $url, string $body, array $options): Request
     {
         if (null === $secret = $options['secret'] ?? null) {
             throw new \InvalidArgumentException('The "secret" option is missing.');
