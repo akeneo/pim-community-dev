@@ -1,10 +1,14 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-9427: Update datagrid selection count when clearing filter
+
 # 3.2.67 (2020-08-07)
 
 ## Bug fixes:
 
--PIM-9380: Parts of the PIM are not translatable on Crowdin
+- PIM-9380: Parts of the PIM are not translatable on Crowdin
 
 # 3.2.66 (2020-08-04)
 
