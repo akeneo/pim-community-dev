@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+-PIM-9101: Be able to create a family, a family variant, a group type, an association type named "rest".
+
 # 3.2.67 (2020-08-07)
 
 ## Bug fixes:
