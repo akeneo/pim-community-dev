@@ -9,7 +9,6 @@ import {
   ConditionLineFormContainer,
   FieldColumn,
   OperatorColumn,
-  ValueColumn,
   ScopeColumn,
   LocaleColumn,
 } from '../style';
@@ -17,6 +16,7 @@ import {
   isNotAnEmptyOperator,
   isNotARangeOperator,
   isARangeOperator,
+  shouldRenderPresentValue,
 } from './dateConditionLines.utils';
 import { OperatorSelector } from '../../../../../components/Selectors/OperatorSelector';
 import { Select2SimpleSyncWrapper } from '../../../../../components';
@@ -41,9 +41,20 @@ import {
 import { Attribute, Locale } from '../../../../../models';
 import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
 
-const StyledSelect2Wrapper = styled.div`
-  width: 53%;
-  padding-right: 20px;
+const ValueColumn = styled.span<{ noValueSelection?: boolean }>`
+  &:not(:empty) {
+    display: inline-flex;
+    width: ${({ noValueSelection }) => (noValueSelection ? '139px' : '300px')};
+    margin: 0 20px 0 0;
+    min-height: 40px;
+    ${({ noValueSelection }) => (noValueSelection ? 'display: flex;' : '')};
+  }
+`;
+
+const StyledSelect2Wrapper = styled.div<{ noValueSelection?: boolean }>`
+  width: ${({ noValueSelection }) => (noValueSelection ? '100%' : '53%')};
+  padding-right: ${({ noValueSelection }) =>
+    noValueSelection ? '0px' : '20px'};
 `;
 
 type Props = {
@@ -126,6 +137,9 @@ const DateTemplateConditionLine: React.FC<Props> = ({
     return [];
   };
 
+  const noValueSelection = () =>
+    typeof value === 'string' && shouldRenderPresentValue(dateType, value);
+
   return (
     <ConditionLineFormContainer>
       <FieldColumn className={'AknGrid-bodyCell--highlight'}>
@@ -148,9 +162,9 @@ const DateTemplateConditionLine: React.FC<Props> = ({
         />
       </OperatorColumn>
       {isNotAnEmptyOperator(operator) && (
-        <ValueColumn>
+        <ValueColumn noValueSelection={noValueSelection()}>
           {isNotARangeOperator(operator) && (
-            <StyledSelect2Wrapper>
+            <StyledSelect2Wrapper noValueSelection={noValueSelection()}>
               <Select2SimpleSyncWrapper
                 data-testid={`date-type-${lineNumber}`}
                 data={dateTypeOptions}
