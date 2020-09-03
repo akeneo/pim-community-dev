@@ -20,6 +20,7 @@ import { getTextareaAttributeConditionModule } from './TextareaAttributeConditio
 import { getAssetCollectionAttributeConditionModule } from './AssetCollectionAttributeCondition';
 import { getPictureAttributeConditionModule } from './PictureAttributeCondition';
 import { getFileAttributeConditionModule } from './FileAttributeCondition';
+import { getPriceCollectionAttributeConditionModule } from './PriceCollectionAttributeCondition';
 
 export type ConditionModuleGuesser = (
   json: any,
@@ -49,6 +50,7 @@ const getConditionModule: (
     getDateSystemConditionModule,
     getSimpleMultiReferenceEntitiesAttributeConditionModule,
     getAssetCollectionAttributeConditionModule,
+    getPriceCollectionAttributeConditionModule,
     // Fallback
     getDateAttributeConditionModule,
     getPimConditionModule,

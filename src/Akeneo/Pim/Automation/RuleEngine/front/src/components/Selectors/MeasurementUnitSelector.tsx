@@ -84,22 +84,24 @@ const getMeasurementUnitValidator = (
 
 type Props = {
   attribute: Attribute;
-  name: string;
+  name?: string;
   label?: string;
   hiddenLabel?: boolean;
   value: string | null;
   onChange?: (value: string | null) => void;
   placeholder?: string;
+  allowClear?: boolean;
+  containerCssClass?: string;
 };
 
 const MeasurementUnitSelector: React.FC<Props> = ({
   attribute,
-  name,
   label,
   hiddenLabel,
   value,
   onChange,
   placeholder,
+  allowClear,
   ...remainingProps
 }) => {
   const router = useBackboneRouter();
@@ -174,8 +176,7 @@ const MeasurementUnitSelector: React.FC<Props> = ({
           }
         )
       }
-      allowClear={true}
-      name={name}
+      allowClear={!!allowClear}
     />
   );
 };

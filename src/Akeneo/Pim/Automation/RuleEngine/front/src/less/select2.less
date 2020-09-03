@@ -13,8 +13,14 @@
     color: @AknGrey !important;
   }
 
+
   .select2-container.select2-allowclear .select2-choice .select2-chosen {
     width: calc(100% - 40px);
+    margin-right: 40px;
+    transition: width 0.2s ease;
+  }
+  .select2-container.select2-allowclear:hover .select2-choice .select2-chosen {
+    width: calc(100% - 70px);
   }
 
   .select2-container.add-conditions-button {
@@ -150,7 +156,8 @@
 .select2-drop.currency-dropdown,
 .select2-drop.calculate-operator-dropdown,
 .select2-drop.fields-selector-dropdown,
-.select2-drop.add-attribute-dropdown {
+.select2-drop.add-attribute-dropdown,
+.select2-drop.measurement-unit-selector-dropdown {
   .select2-results {
     font-size: 13px;
 
@@ -210,6 +217,13 @@
   border: 1px solid @AknRed100;
 }
 
+.select2-glued-container-error > .select2-container > .select2-choices,
+.select2-glued-container-error > .select2-container > .select2-choice,
+.select2-glued-container-error > .asset-selector-container > .select2-container > .select2-choices > .select2-search-field,
+.select2-glued-container-error > .record-selector-container > .select2-container > .select2-choices > .select2-search-field {
+  border-color: @AknRed100;
+}
+
 .select2-container.select2-container-disabled > a.select2-choice,
 .AknTextField[readonly]:not(.AknTextField--light),
 .AknTextField[disabled]:not(.AknTextField--light) {
@@ -219,4 +233,28 @@
   background-size: 16px;
   background-repeat: no-repeat;
   background-position: calc(100% - 10px) 10px;
+}
+
+.select2-container-operation-field-option {
+  border-color: @AknPurple100;
+}
+
+.select2-container-left-glued {
+  .select2-choice {
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+
+.select2-container-as-option {
+  .select2-chosen {
+    text-align: right;
+    text-transform: uppercase;
+    color: @AknGrey100;
+
+    .flag {
+      display: none;
+    }
+  }
 }

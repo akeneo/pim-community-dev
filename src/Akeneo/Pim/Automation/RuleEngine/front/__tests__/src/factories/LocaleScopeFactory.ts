@@ -64,4 +64,13 @@ export const scopes: IndexedScopes = {
     labels: { en_US: 'Mobile' },
     meta: {},
   },
+  print: {
+    code: 'print',
+    currencies: ['EUR'],
+    locales: [locales[0], locales[1]],
+    category_tree: 'master',
+    conversion_units: [],
+    labels: { en_US: 'Mobile' },
+    meta: {},
+  },
 };

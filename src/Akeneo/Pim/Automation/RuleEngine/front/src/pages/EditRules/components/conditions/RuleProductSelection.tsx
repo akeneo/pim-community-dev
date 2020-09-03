@@ -21,6 +21,7 @@ import {
   createTextareaAttributeCondition,
   createAssetCollectionAttributeCondition,
   createSimpleMultiReferenceEntitiesAttributeCondition,
+  createPriceCollectionAttributeCondition,
   AttributeType,
   createPictureAttributeCondition,
   createFileAttributeCondition,
@@ -142,6 +143,7 @@ const RuleProductSelection: React.FC<Props> = ({
       createSimpleMultiReferenceEntitiesAttributeCondition,
       createTextAttributeCondition,
       createTextareaAttributeCondition,
+      createPriceCollectionAttributeCondition,
     ];
 
     for (let i = 0; i < factories.length; i++) {
@@ -180,6 +182,7 @@ const RuleProductSelection: React.FC<Props> = ({
     AttributeType.NUMBER,
     AttributeType.OPTION_MULTI_SELECT,
     AttributeType.OPTION_SIMPLE_SELECT,
+    AttributeType.PRICE_COLLECTION,
     AttributeType.REFERENCE_ENTITY_COLLECTION,
     AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
     AttributeType.TEXT,

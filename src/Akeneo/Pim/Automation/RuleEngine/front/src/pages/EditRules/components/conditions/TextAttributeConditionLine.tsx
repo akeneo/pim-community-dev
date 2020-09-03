@@ -11,9 +11,8 @@ import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
-import { Attribute } from '../../../../models/Attribute';
+import { Attribute } from '../../../../models';
 import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepository';
-
 import { useControlledFormInputCondition } from '../../hooks';
 import { Operator } from '../../../../models/Operator';
 

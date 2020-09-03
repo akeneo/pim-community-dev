@@ -77,6 +77,9 @@ type Props = {
   disabled?: boolean;
   name?: string;
   validation?: { required?: string; validate?: (value: any) => string | true };
+  placeholder?: string;
+  containerCssClass?: string;
+  displayAsCode?: boolean;
 };
 
 const LocaleSelector: React.FC<Props> = ({
@@ -89,6 +92,8 @@ const LocaleSelector: React.FC<Props> = ({
   allowClear = false,
   disabled = false,
   validation,
+  placeholder,
+  displayAsCode = false,
   ...remainingProps
 }) => {
   const translate = useTranslate();
@@ -118,7 +123,9 @@ const LocaleSelector: React.FC<Props> = ({
       localeCode.split('_').length - 1
     ];
 
-    return `<i class="flag flag-${shortRegion}"}/>&nbsp;${locale.language}`;
+    return `<i class="flag flag-${shortRegion}"}/>&nbsp;${
+      displayAsCode ? locale.code : locale.language
+    }`;
   };
 
   const handleChange = (value: Select2Value) => {
@@ -137,7 +144,9 @@ const LocaleSelector: React.FC<Props> = ({
         hideSearch={true}
         formatResult={formatLocale}
         formatSelection={formatLocale}
-        placeholder={translate('pim_enrich.entity.locale.uppercase_label')}
+        placeholder={
+          placeholder || translate('pim_enrich.entity.locale.uppercase_label')
+        }
         value={value || null}
         onChange={handleChange}
         allowClear={allowClear}
