@@ -208,6 +208,7 @@ const SetAssociationsActionLine: React.FC<Props> = ({
                     key={`${associationValue.associationType.code}-${associationValue.target}`}
                     className={'AknCategoryTreeSelector-item'}>
                     <button
+                      data-testid={`association-type-selector-${associationValue.associationType.code}-${associationValue.target}`}
                       className={`AknTextField AknCategoryTreeSelector${
                         isCurrentAssociationTargetOrDefault(
                           associationValue.associationType,

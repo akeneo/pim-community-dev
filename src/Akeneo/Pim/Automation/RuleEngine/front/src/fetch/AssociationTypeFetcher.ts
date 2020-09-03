@@ -1,6 +1,6 @@
 import { Router } from '../dependenciesTools';
 import { httpGet } from './fetch';
-import { AssociationType } from '../models/AssociationType';
+import { AssociationType } from '../models';
 
 const fetchAllAssociationTypes = async (
   router: Router
