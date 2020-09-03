@@ -132,7 +132,11 @@ pim_reference_entity:
         title: Está un poco atestado por aquí, te mostramos {{ productCount }}/{{ totalCount }} productos.
         subtitle:
           usable_in_grid: Para descubrir todos los productos enlazados, simplemente haga clic a continuación!
+          not_usable_in_grid: Para descubrir todos los productos enlazados, el atributo del producto debe establecerse como "utilizable en la cuadrícula".
         button: Ver todos los productos
+      no_product:
+        title: No hay productos enlazados para el atributo de producto "{{ entityLabel }}"
+        subtitle: "Empieza a vincular productos a este atributo para verlos aquí"
     enrich:
       title: Registro de atributos
       code: Código

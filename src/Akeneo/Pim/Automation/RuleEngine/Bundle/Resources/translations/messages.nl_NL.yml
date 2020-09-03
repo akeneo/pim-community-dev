@@ -10,8 +10,25 @@ pimee_catalog_rule:
         conditions: Voorwaarde
         actions: Actie
         impacted_product_count:
+          label: Getroffen producten
+          count: '{0,1}%count% getroffen product|] 1, Inf [%count% getroffen producten'
           no_yet_calculated: Nog niet berekend
+      mass_edit_action:
+        impacted_product_count: Berekenen van de betrokken producten
+        execute: Voer uit
+        delete: Verwijderen
+  actions:
+    type:
+      "copy": Vervolgens wordt %from_field% gekopieerd in %to_field%
+      "copy_value": Vervolgens wordt %from_field% gekopieerd in %to_field%
+      "set": Vervolgens wordt %field% gevuld met %value%
+      "set_value": Vervolgens wordt %field% gevuld met %value%
+      "add": Vervolgens wordt %field% toegevoegd aan %value%
+      "remove": Vervolgens wordt %value% verwijderd van %field%
+    options:
+      include_children: en kinderen
   condition:
+    label: Als %field% %operator% %value%
     operators:
       "STARTS WITH": begint met
       "ENDS WITH": eindigt op
@@ -21,6 +38,8 @@ pimee_catalog_rule:
       "NOT EMPTY": is niet leeg
       "IN": in
       "NOT IN": niet in
+      "IN CHILDREN": in kinderen
+      "NOT IN CHILDREN": niet in kinderen
       "UNCLASSIFIED": is niet-geclassificeerd
       "IN OR UNCLASSIFIED": is niet-geclassificeerd of in
       "BETWEEN": tussen
@@ -37,6 +56,7 @@ pimee_catalog_rule:
     rule:
       view_permissions: Regels weergeven
       delete_permissions: Verwijder regels
+      impacted_product_count_permissions: Bereken de getroffen producten voor de regels
       execute_permissions: Voer regels uit
   attribute:
     tab:
@@ -48,7 +68,6 @@ pimee_catalog_rule:
   product:
     tooltip:
       product_attribute_affected_by_a_rule.content: De waarde van deze kenmerk kan afkomstig zijn van de regel(s) <strong>%rule%</strong>. Dit betekent dat als de voorwaarde voor de regel geldig zijn, uw wijzigingen zal worden overschreven.
-      variant_attribute_affected_by_a_rule.content: Variant groep kenmerken hebben voorrang op de kenmerken van de producten. Dit betekent dat elk kenmerk van deze variant groep de overeenkomende waarde in de staande producten overschrijft. De regel(s) <strong>%rule%</strong>, zal niet worden toegepast op de producten.
       loading.title: Laden...
     history: Toegepaste regel "%rule%"
   product_value:
@@ -62,28 +81,14 @@ pimee_catalog_rule:
   notification:
     rule:
       executed: Uitvoering van de voltooide regel(s)
+    mass_edit_rule:
+      success: Bereken de getroffen producten voor de beëindigde regels
+      error: Er is een fout opgetreden tijdens het berekenen van de getroffen producten voor de regels
 btn:
   Execute rules: Voer regels uit
-rule: Regelinstellingen
 mass_edit_rule: Regelinstellingen
 job_execution.summary.rule_calculated: Aantal regels
-batch_jobs:
-  yml_rule_import:
-    label: Regel importeren in YAML
-    import.label: Regel importeren
-  yml_rule_export:
-    label: Regel exporteren in YAML
-    export.label: Regel exporteren
-  rule_impacted_product_count:
-    execute_rules.label: Uitvoering van regels
-  csv_product_import_with_rules:
-    label: Product import in CSV met regels
-    execute_rules.label: Uitvoering van regels
-    validation.label: Bestandsvalidatie
-    import.label: Productimport
-    import_associations.label: Productassociatie import
-  xlsx_product_import_with_rules:
-    execute_rules.label: Uitvoering van regels
-    validation.label: Bestandsvalidatie
-    import.label: Productimport
-    import_associations.label: Productassociatie import
+pim_datagrid:
+  cells:
+    type:
+      mass_edit_rule: Regelinstellingen

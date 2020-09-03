@@ -1,0 +1,25 @@
+akeneo_franklin_insights:
+  entity:
+    identifier_mapping:
+      fields:
+        status:
+          active: Actief
+          inactive: Inactief
+    attributes_mapping:
+      fields:
+        franklin_insights:
+          active: Actief
+          inactive: Inactief
+    product_subscription:
+      constraint:
+        product_subscription_with_same_identifier_already_exist: 'Een ander product met ten minste één identieke id is al geabonneerd.'
+  product:
+    edit:
+      btn.push: Gegevens suggereren
+  connection:
+    flash:
+      invalid: Sorry, ongeldige activeringscode. Probeer het opnieuw met een geldige code.
+      error: Sorry, er is iets fout gegaan.
+    module:
+      activation:
+        activated: 'Geactiveerd'
