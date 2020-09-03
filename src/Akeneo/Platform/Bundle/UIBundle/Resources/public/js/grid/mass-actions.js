@@ -148,11 +148,12 @@ define(
              * - The events of the sub extensions are lost after re-render.
              */
             updateView() {
-                const selectionState = this.datagrid?.getSelectionState();
-
                 let count = this.count;
-                if (undefined !== selectionState && !selectionState.inset) {
-                    count = this.collection.state.totalRecords - Object.keys(selectionState.selectedModels).length;
+                if (this.datagrid) {
+                    const selectionState = this.datagrid.getSelectionState();
+                    if (!selectionState.inset) {
+                        count = this.collection.state.totalRecords - Object.keys(selectionState.selectedModels).length;
+                    }
                 }
 
                 if (count > 0) {
