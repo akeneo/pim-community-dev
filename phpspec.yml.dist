@@ -156,6 +156,11 @@ suites:
         psr4_prefix: Akeneo\Tool\Bundle\VersioningBundle
         spec_path: src/Akeneo/Tool/Bundle/VersioningBundle
         src_path: src/Akeneo/Tool/Bundle/VersioningBundle
+    WebhookBundle:
+        namespace: Akeneo\Tool\Bundle\WebhookBundle
+        psr4_prefix: Akeneo\Tool\Bundle\WebhookBundle
+        spec_path: src/Akeneo/Tool/Bundle/WebhookBundle
+        src_path: src/Akeneo/Tool/Bundle/WebhookBundle
 
     ## Pim Components
     Api:
