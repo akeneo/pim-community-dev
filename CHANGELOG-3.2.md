@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.68 (2020-09-03)
+
 ## Bug fixes:
 
 - PIM-9402: Add new ES filters for EMPTY operator
