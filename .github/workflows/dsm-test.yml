@@ -56,7 +56,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Deploy storybook to a staging folder
-      -   name: Build storybook to deploy it to a staging env
+      -   name: Build staging env
           run: cd akeneo-design-system && yarn run storybook:build
       -   name: Deploy to gh-pages
           uses: peaceiris/actions-gh-pages@v3.7.0-6
