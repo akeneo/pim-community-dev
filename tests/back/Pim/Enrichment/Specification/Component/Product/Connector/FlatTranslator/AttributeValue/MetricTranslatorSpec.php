@@ -39,8 +39,8 @@ class MetricTranslatorSpec extends ObjectBehavior
             'POUND' => 'Livre',
         ]);
 
-        $this->translate('weight-fr_FR-unit', ['measurement_family_code' => 'Weight'], ['MICROGRAM', 'ONCE', 'unknown', 'POUND'], 'fr_FR')
-            ->shouldReturn(['Microgramme', 'Once française', '[unknown]', 'Livre']);
+        $this->translate('weight-fr_FR-unit', ['measurement_family_code' => 'Weight'], ['MICROGRAM', 'ONCE', 'unknown', 'POUND', ''], 'fr_FR')
+            ->shouldReturn(['Microgramme', 'Once française', '[unknown]', 'Livre', '']);
     }
 
     function it_should_throw_when_reference_data_is_not_set(
