@@ -39,6 +39,10 @@ class MetricTranslator implements FlatAttributeValueTranslatorInterface
         );
 
         return array_map(function ($value) use ($unitTranslations) {
+            if (empty($value)) {
+                return $value;
+            }
+
             return $unitTranslations[$value] ?? sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $value);
         }, $values);
     }
