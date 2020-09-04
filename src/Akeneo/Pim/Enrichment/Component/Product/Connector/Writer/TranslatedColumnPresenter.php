@@ -50,7 +50,7 @@ class TranslatedColumnPresenter implements ColumnPresenterInterface
                 return $columnTranslation;
             }
 
-            return sprintf('%s-%s', $columnTranslation, $code);
+            return sprintf('%s - %s', $columnTranslation, $code);
         }, $columns);
     }
 

@@ -27,10 +27,10 @@ class TranslatedColumnPresenterSpec extends ObjectBehavior
         ];
 
         $this->present($data, ['with_label' => true, 'header_with_label' => true])->shouldReturn([
-            'Marque-brand',
-            'Marque-camera_brand',
-            'Taille-size',
-            'Taille-objective_size',
+            'Marque - brand',
+            'Marque - camera_brand',
+            'Taille - size',
+            'Taille - objective_size',
         ]);
     }
 
@@ -48,8 +48,8 @@ class TranslatedColumnPresenterSpec extends ObjectBehavior
             '[sku]',
             'Description',
             'Nom',
-            'Marque-brand',
-            'Marque-camera_brand',
+            'Marque - brand',
+            'Marque - camera_brand',
         ]);
     }
 }
