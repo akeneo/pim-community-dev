@@ -1,34 +1,34 @@
 <?php
 
-namespace AkeneoTestEnterprise\Pim\Permission\Integration\Export\Product;
+namespace AkeneoTestEnterprise\Pim\Permission\Integration\Export\ProductModel;
 
 use Akeneo\AssetManager\Infrastructure\Symfony\Command\Installer\FixturesLoader as AssetManagerFixturesLoader;
 use Akeneo\ReferenceEntity\Common\Helper\FixturesLoader as ReferenceEntityFixturesLoader;
-use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase as ExportTestCase;
+use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 
-class ExportProductsWithLabelsIntegration extends ExportTestCase
+class ExportProductModelsWithLabelsIntegration extends AbstractExportTestCase
 {
-    public function testProductExportWithLabels()
+    public function testProductModelExportWithLabels()
     {
         $expectedCsvWithTranslations = <<<CSV
-[sku];Catégories;Activé;Famille;Groupes;"Collection images";"Les designers";"Les couleurs"
-a_product;;Oui;[clothing];;Nike,Addidas;"Philippe Starck";"Philippe Starck,Marc Jacobs"
+[code];"Variante de famille";Parent;Catégories;"Collection images";"Les designers";"Les couleurs"
+apollon;"Vêtement par couleur";;;Nike,Addidas;"Philippe Starck";"Philippe Starck,Marc Jacobs"
 
 CSV;
-        $this->assertProductExport(
+        $this->assertProductModelExport(
             $expectedCsvWithTranslations,
             ['header_with_label' => true, 'with_label' => true, 'withHeader' => true, 'file_locale' => 'fr_FR']
         );
     }
 
-    public function testProductExportWithMissingLabelsForTheLocale()
+    public function testProductModelExportWithMissingLabelsForTheLocale()
     {
         $expectedCsvWithNoTranslations = <<<CSV
-[sku];[categories];[enabled];[family];[groups];[assets];[creator];[designer_influence]
-a_product;;[yes];[clothing];;[nike],[addidas];[starck];[starck],[jacobs]
+[code];[family_variant];[parent];[categories];[assets];[creator];[designer_influence]
+apollon;[clothing_color];;;[nike],[addidas];[starck];[starck],[jacobs]
 
 CSV;
-        $this->assertProductExport(
+        $this->assertProductModelExport(
             $expectedCsvWithNoTranslations,
             ['header_with_label' => true, 'with_label' => true, 'withHeader' => true, 'file_locale' => 'unknown_locale']
         );
@@ -39,6 +39,17 @@ CSV;
      */
     protected function loadFixtures(): void
     {
+        $this->createAttribute([
+            'code'        => 'main_color',
+            'type'        => 'pim_catalog_simpleselect',
+            'group'       => 'attributeGroupA',
+            'localizable' => false,
+            'scopable'    => false,
+            'labels' => [
+                'fr_FR' => 'Couleur principale'
+            ]
+        ]);
+
         // Reference entities
         /** @var ReferenceEntityFixturesLoader $referenceEntityFixturesLoader */
         $referenceEntityFixturesLoader = $this->get('akeneoreference_entity.tests.helper.fixtures_loader');
@@ -106,22 +117,35 @@ CSV;
         $this->createFamily(
             [
                 'code' => 'clothing',
-                'attributes' => ['sku', 'creator', 'designer_influence', 'assets'],
+                'attributes' => ['sku', 'creator', 'designer_influence', 'assets', 'main_color'],
                 'labels' => [],
             ]
         );
 
-        // Products
-        $this->createVariantProduct(
-            'a_product',
+        $this->createFamilyVariant([
+            'code' => 'clothing_color',
+            'family' => 'clothing',
+            'variant_attribute_sets' => [
+                [
+                    'level' => 1,
+                    'axes' => ['main_color'],
+                    'attributes' => ['sku'],
+                ],
+            ],
+            'labels' => [
+                'fr_FR' => 'Vêtement par couleur'
+            ]
+        ]);
+
+        $this->createProductModel(
             [
-                'family' => 'clothing',
-                'categories' => [],
+                'code' => 'apollon',
+                'family_variant' => 'clothing_color',
                 'values' => [
                     'creator' => [['data' => 'starck', 'locale' => null, 'scope' => null]],
                     'designer_influence' => [['data' => ['starck', 'jacobs'], 'locale' => null, 'scope' => null]],
                     'assets' => [['data' => ['nike', 'addidas'], 'locale' => null, 'scope' => null]],
-                ],
+                ]
             ]
         );
     }
