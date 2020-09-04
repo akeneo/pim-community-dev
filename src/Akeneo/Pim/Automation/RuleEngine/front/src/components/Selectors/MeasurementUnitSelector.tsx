@@ -87,7 +87,7 @@ type Props = {
   name?: string;
   label?: string;
   hiddenLabel?: boolean;
-  value: string | null;
+  value: MeasurementUnitCode | null;
   onChange?: (value: string | null) => void;
   placeholder?: string;
   allowClear?: boolean;
