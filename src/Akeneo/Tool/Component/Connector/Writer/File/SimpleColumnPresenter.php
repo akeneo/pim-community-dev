@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Tool\Component\Connector\Writer\File;
 
-class NullColumnPresenter implements ColumnPresenterInterface
+class SimpleColumnPresenter implements ColumnPresenterInterface
 {
     public function present(array $data, array $context): array
     {

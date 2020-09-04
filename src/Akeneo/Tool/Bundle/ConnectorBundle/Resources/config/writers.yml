@@ -171,4 +171,4 @@ services:
 
     # Column presenter
     pim_connector.writer.file.default.column_presenter:
-        class: 'Akeneo\Tool\Component\Connector\Writer\File\NullColumnPresenter'
+        class: 'Akeneo\Tool\Component\Connector\Writer\File\SimpleColumnPresenter'

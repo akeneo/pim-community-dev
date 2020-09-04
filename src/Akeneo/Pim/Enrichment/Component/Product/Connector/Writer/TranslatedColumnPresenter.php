@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Writer;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\ColumnPresenterInterface;
 
 class TranslatedColumnPresenter implements ColumnPresenterInterface
@@ -17,9 +20,9 @@ class TranslatedColumnPresenter implements ColumnPresenterInterface
         return $this->removeCodeWhenTranslationIsNotDuplicated($columns, $duplicatedTranslations);
     }
 
-    private function findDuplicatedTranslations(array $columns)
+    private function findDuplicatedTranslations(array $columns): array
     {
-        $columnTranslations = array_map(function ($column) {
+        $columnTranslations = array_map(function (string $column) {
             return $this->extractColumnTranslation($column);
         }, $columns);
 
@@ -34,20 +37,25 @@ class TranslatedColumnPresenter implements ColumnPresenterInterface
             $context['header_with_label'];
     }
 
-    private function removeCodeWhenTranslationIsNotDuplicated(array $columns, array $duplicatedTranslations)
+    private function removeCodeWhenTranslationIsNotDuplicated(array $columns, array $duplicatedTranslations): array
     {
-        return array_map(function ($column) use ($duplicatedTranslations) {
-            $columnTranslation = $this->extractColumnTranslation($column);
+        return array_map(function (string $column) use ($duplicatedTranslations) {
+            list($code, $columnTranslation) = explode(
+                FlatTranslatorInterface::COLUMN_CODE_AND_TRANSLATION_SEPARATOR,
+                $column,
+                2
+            );
+
             if (!in_array($columnTranslation, $duplicatedTranslations)) {
                 return $columnTranslation;
             }
 
-            return $column;
+            return sprintf('%s-%s', $columnTranslation, $code);
         }, $columns);
     }
 
-    private function extractColumnTranslation(string $columnName)
+    private function extractColumnTranslation(string $columnName): string
     {
-        return explode('--', $columnName, 2)[1];
+        return explode(FlatTranslatorInterface::COLUMN_CODE_AND_TRANSLATION_SEPARATOR, $columnName, 2)[1];
     }
 }

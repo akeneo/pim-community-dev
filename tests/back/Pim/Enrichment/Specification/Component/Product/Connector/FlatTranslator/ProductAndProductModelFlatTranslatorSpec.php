@@ -102,25 +102,25 @@ class ProductAndProductModelFlatTranslatorSpec extends ObjectBehavior
             ->shouldReturn(
                 [
                     [
-                        '[sku]'                                 => 1151511,
-                        'Catégories'                            => 'master_femme_chaussures_sandales',
-                        'Description (Anglais Américain)'       => 'Ma description',
-                        'Activé'                                => 0,
-                        'Groupes'                               => 'group1',
-                        'Nom (Français Français)'               => 'Sandales dorées Femme',
-                        'Proposition achat croisés de modèles'  => 'Beau T-shirt,Beau chapeau',
-                        'Proposition achat croisés de produits' => 'Belle écharpe,Belle montre'
+                        'sku--[sku]'                                 => 1151511,
+                        'categories--Catégories'                            => 'master_femme_chaussures_sandales',
+                        'description-en_US--Description (Anglais Américain)'       => 'Ma description',
+                        'enabled--Activé'                                => 0,
+                        'groups--Groupes'                               => 'group1',
+                        'name-fr_FR--Nom (Français Français)'               => 'Sandales dorées Femme',
+                        'UP_SELL-product_models--Proposition achat croisés de modèles'  => 'Beau T-shirt,Beau chapeau',
+                        'UP_SELL-products--Proposition achat croisés de produits' => 'Belle écharpe,Belle montre'
                     ],
                     [
-                        '[sku]'                                 => 1151512,
-                        'Catégories'                            => 'master_femme_manteaux_manteaux_dhiver',
-                        'Description (Anglais Américain)'       => 'Ma description1',
-                        'Activé'                                => 1,
-                        'Groupes'                               => 'group2,group3',
-                        'Nom (Français Français)'               => 'Jupe imprimée Femme',
-                        'Proposition achat croisés de modèles'  => 'Beau T-shirt,Beau chapeau',
-                        'Proposition achat croisés de produits' => 'Belle écharpe,Belle montre',
-                        'Collection'                            => 'summer_2016'
+                        'sku--[sku]'                                 => 1151512,
+                        'categories--Catégories'                            => 'master_femme_manteaux_manteaux_dhiver',
+                        'description-en_US--Description (Anglais Américain)'       => 'Ma description1',
+                        'enabled--Activé'                                => 1,
+                        'groups--Groupes'                               => 'group2,group3',
+                        'name-fr_FR--Nom (Français Français)'               => 'Jupe imprimée Femme',
+                        'UP_SELL-product_models--Proposition achat croisés de modèles'  => 'Beau T-shirt,Beau chapeau',
+                        'UP_SELL-products--Proposition achat croisés de produits' => 'Belle écharpe,Belle montre',
+                        'collection--Collection'                            => 'summer_2016'
                     ]
                 ]
             );

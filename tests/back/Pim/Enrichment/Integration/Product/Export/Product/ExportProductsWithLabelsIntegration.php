@@ -12,9 +12,9 @@ class ExportProductsWithLabelsIntegration extends AbstractExportTestCase
     public function testProductExportWithLabels()
     {
         $expectedCsvWithTranslations = <<<CSV
-Activé;"Association avec des quantitées Modèles de produit";"Association avec des quantitées Modèles de produit Quantité";"Association avec des quantitées Produits";"Association avec des quantitées Produits Quantité";Catégories;Couleur;"Est-ce en vente ?";Famille;Groupes;"Nom (anglais États-Unis)";"Pack Groupes";"Pack Modèles de produit";"Pack Produits";Parent;"Remplacement Groupes";"Remplacement Modèles de produit";"Remplacement Produits";Taille;"Une métrique";"Une métrique (Unité)";"Vente croisée Groupes";"Vente croisée Modèles de produit";"Vente croisée Produits";"Vente incitative Groupes";"Vente incitative Modèles de produit";"Vente incitative Produits";[sku]
-Oui;;;;;T-shirt;Bleu,Rose;Oui;Vêtements;;;;;;"Tshirt Appolon";;;;"Taille M";12;Kilogramme;;;;;;;apollon_pink_m
-Oui;"Tshirt Appolon";5;"Tshirt Appolon";12;Été,T-shirt;Bleu,Rose;Non;Vêtements;;;;;;;;;;"Taille L";12;Kilogramme;;"Tshirt Appolon";"Tshirt Appolon";;;;summer_shirt
+[sku];Catégories;Activé;Famille;Parent;Groupes;Couleur;"Est-ce en vente ?";"Une métrique";"Une métrique (Unité)";"Nom (anglais États-Unis)";"Pack Groupes";"Pack Produits";"Pack Modèles de produit";"Association avec des quantitées Produits";"Association avec des quantitées Produits Quantité";"Association avec des quantitées Modèles de produit";"Association avec des quantitées Modèles de produit Quantité";Taille;"Remplacement Groupes";"Remplacement Produits";"Remplacement Modèles de produit";"Vente incitative Groupes";"Vente incitative Produits";"Vente incitative Modèles de produit";"Vente croisée Groupes";"Vente croisée Produits";"Vente croisée Modèles de produit"
+apollon_pink_m;T-shirt;Oui;Vêtements;"Tshirt Appolon";;Bleu,Rose;Oui;12;Kilogramme;;;;;;;;;"Taille M";;;;;;;;;
+summer_shirt;Été,T-shirt;Oui;Vêtements;;;Bleu,Rose;Non;12;Kilogramme;;;;;"Tshirt Appolon";12;"Tshirt Appolon";5;"Taille L";;;;;;;;"Tshirt Appolon";"Tshirt Appolon"
 
 CSV;
         $this->assertProductExport(
@@ -22,12 +22,13 @@ CSV;
             ['header_with_label' => true, 'with_label' => true, 'withHeader' => true, 'file_locale' => 'fr_FR']
         );
     }
+
     public function testProductExportWithMissingLabelsForTheLocale()
     {
         $expectedCsvWithNoTranslations = <<<CSV
-[categories];[color];[enabled];[family];[groups];[is_on_sale];[metric];"[metric] ([unit])";"[name] ([en_US])";"[PACK] [groups]";"[PACK] [products]";"[PACK] [product_models]";[parent];"[QUANTITY] [products]";"[QUANTITY] [products] [quantity]";"[QUANTITY] [product_models]";"[QUANTITY] [product_models] [quantity]";[size];[sku];"[SUBSTITUTION] [groups]";"[SUBSTITUTION] [products]";"[SUBSTITUTION] [product_models]";"[UPSELL] [groups]";"[UPSELL] [products]";"[UPSELL] [product_models]";"[X_SELL] [groups]";"[X_SELL] [products]";"[X_SELL] [product_models]"
-[tshirt];[blue],[pink];[yes];[clothing];;[yes];12;[KILOGRAM];;;;;[apollon];;;;;[m];apollon_pink_m;;;;;;;;;
-[summer],[tshirt];[blue],[pink];[yes];[clothing];;[no];12;[KILOGRAM];;;;;;[apollon_pink_m];12;[apollon];5;[l];summer_shirt;;;;;;;;[apollon_pink_m];[apollon]
+[sku];[categories];[enabled];[family];[parent];[groups];[color];[is_on_sale];[metric];"[metric] ([unit])";"[name] ([en_US])";"[PACK] [groups]";"[PACK] [products]";"[PACK] [product_models]";"[QUANTITY] [products]";"[QUANTITY] [products] [quantity]";"[QUANTITY] [product_models]";"[QUANTITY] [product_models] [quantity]";[size];"[SUBSTITUTION] [groups]";"[SUBSTITUTION] [products]";"[SUBSTITUTION] [product_models]";"[UPSELL] [groups]";"[UPSELL] [products]";"[UPSELL] [product_models]";"[X_SELL] [groups]";"[X_SELL] [products]";"[X_SELL] [product_models]"
+apollon_pink_m;[tshirt];[yes];[clothing];[apollon];;[blue],[pink];[yes];12;[KILOGRAM];;;;;;;;;[m];;;;;;;;;
+summer_shirt;[summer],[tshirt];[yes];[clothing];;;[blue],[pink];[no];12;[KILOGRAM];;;;;[apollon_pink_m];12;[apollon];5;[l];;;;;;;;[apollon_pink_m];[apollon]
 
 CSV;
         $this->assertProductExport(
