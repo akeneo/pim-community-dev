@@ -5,7 +5,7 @@ namespace Pim\Upgrade\Schema;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version_5_0_20200902110600_fix_connection_table extends AbstractMigration
+final class Version_5_0_20200826153300_add_primary_key_connection extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
