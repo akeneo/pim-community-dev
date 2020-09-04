@@ -45,7 +45,6 @@ class BusinessEventNormalizer implements NormalizerInterface, DenormalizerInterf
         }
 
         return new $type(
-            $data['name'],
             $data['author'],
             $data['data'],
             $data['timestamp'],
