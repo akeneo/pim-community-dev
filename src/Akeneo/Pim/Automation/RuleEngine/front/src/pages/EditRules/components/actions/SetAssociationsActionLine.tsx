@@ -14,9 +14,9 @@ import {
   useUserCatalogLocale,
 } from '../../../../dependenciesTools/hooks';
 import {
-  GroupCode,
   AssociationType,
   AssociationTypeCode,
+  GroupCode,
 } from '../../../../models';
 import {
   ActionGrid,
@@ -26,6 +26,7 @@ import {
 } from './ActionLine';
 import { Label } from '../../../../components/Labels';
 import { getAllAssociationTypes } from '../../../../repositories/AssociationTypeRepository';
+import { AssociationsGroupsSelector } from './association/AssociationsGroupsSelector';
 
 type Props = {
   action?: SetAssociationsAction;
@@ -50,6 +51,7 @@ const SetAssociationsActionLine: React.FC<Props> = ({
     fieldFormName,
     typeFormName,
     getValueFormValue,
+    setValueFormValue,
   } = useControlledFormInputAction<AssociationValue>(lineNumber); // TODO TYPE
 
   const [associationTypes, setAssociationTypes] = React.useState<
@@ -118,6 +120,30 @@ const SetAssociationsActionLine: React.FC<Props> = ({
     associationTypes?.find(
       associationType => associationType.code === associationTypeCode
     )?.labels?.[currentCatalogLocale] || `[${associationTypeCode}]`;
+
+  const formatAssociationValues = () => {
+    return Array.from(associationValues.entries()).reduce(
+      (result, [associationTarget, value]) => {
+        if (!result[associationTarget.associationTypeCode]) {
+          result[associationTarget.associationTypeCode] = {};
+        }
+        result[associationTarget.associationTypeCode][
+          associationTarget.target
+        ] = value;
+        return result;
+      },
+      {} as AssociationValue
+    );
+  };
+
+  const onGroupsChange = (
+    associationTarget: AssociationTarget,
+    groupCodes: GroupCode[]
+  ) => {
+    associationValues.set(associationTarget, groupCodes);
+    setAssociationValues(new Map(associationValues));
+    setValueFormValue(formatAssociationValues());
+  };
 
   return (
     <>
@@ -206,8 +232,24 @@ const SetAssociationsActionLine: React.FC<Props> = ({
                     `pimee_catalog_rule.form.edit.actions.set_associations.select.${currentAssociationTarget?.target}`
                   )} ${translate('pim_common.required_label')}`}
                 />
-                {JSON.stringify(
-                  associationValues.get(currentAssociationTarget)
+                {currentAssociationTarget.target === 'groups' ? (
+                  <AssociationsGroupsSelector
+                    groupCodes={
+                      associationValues.get(
+                        currentAssociationTarget
+                      ) as GroupCode[]
+                    }
+                    currentCatalogLocale={currentCatalogLocale}
+                    onChange={groupCodes =>
+                      onGroupsChange(currentAssociationTarget, groupCodes)
+                    }
+                  />
+                ) : (
+                  <>
+                    {JSON.stringify(
+                      associationValues.get(currentAssociationTarget)
+                    )}
+                  </>
                 )}
               </>
             )}
