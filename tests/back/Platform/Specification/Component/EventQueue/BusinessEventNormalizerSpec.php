@@ -44,7 +44,7 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
         $businessEvent = new MyBusinessEvent();
 
         $expected = [
-            'name' => 'product.updated',
+            'name' => 'my_business_event',
             'author' => 'magento_connection',
             'data' => [],
             'timestamp' => 123456,
@@ -57,7 +57,7 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
     public function it_denormalizes()
     {
         $data = [
-            'name' => 'product.updated',
+            'name' => 'my_business_event',
             'author' => 'magento_connection',
             'data' => [],
             'timestamp' => 123456,
@@ -71,12 +71,11 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
 class MyBusinessEvent extends BusinessEvent
 {
     public function __construct(
-        string $name = 'product.updated',
         string $author = 'magento_connection',
         array $data = [],
         ?int $timestamp = 123456,
         ?string $uuid = 'a1603650-e1a7-4e66-8251-87f93c500087'
     ) {
-        parent::__construct($name, $author, $data, $timestamp, $uuid);
+        parent::__construct('my_business_event', $author, $data, $timestamp, $uuid);
     }
 }
