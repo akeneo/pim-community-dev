@@ -14,8 +14,9 @@
     "test:unit:run": "jest --config ./jest.unit.config.js",
     "test:visual:run": "jest --config ./jest.visual.config.js",
     "test:unit:watch": "jest --watch",
-    "lint:fix": "echo 'prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.ts\";'",
-    "lint:check": "echo 'prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.ts\";'",
+    "eslint": "eslint --config .eslintrc.json --quiet src/**/*.tsx",
+    "lint:fix": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.ts\";",
+    "lint:check": "prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.ts\" && eslint --config .eslintrc.json --quiet src/**/*.{ts,tsx}",
     "storybook:start": "start-storybook -p 6006",
     "storybook:ci": "start-storybook -p 6006 --ci",
     "storybook:build": "build-storybook",
@@ -50,10 +51,11 @@
     "@types/styled-components": "^5.1.2",
     "@types/testing-library__jest-dom": "^5.9.2",
     "babel-loader": "8.0.5",
+    "eslint": "^7.8.1",
     "jest": "^26.3.0",
     "jest-image-snapshot": "^4.1.0",
     "jest-puppeteer": "^4.4.0",
-    "prettier": "^1.16.4",
+    "prettier": "^2.1.1",
     "puppeteer": "^5.2.1",
     "react-is": "^16.13.1",
     "rollup": "^2.23.1",
@@ -62,6 +64,6 @@
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "ts-jest": "^26.2.0",
-    "typescript": "^3.7.2"
+    "typescript": "^4.0.2"
   }
 }
