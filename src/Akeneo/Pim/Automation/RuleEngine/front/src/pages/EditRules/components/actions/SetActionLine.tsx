@@ -11,21 +11,21 @@ import {
 } from './ActionLine';
 import {
   AttributeLocaleScopeSelector,
+  AttributeValue,
+  isMeasurementValueFilled,
   MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION,
 } from './attribute';
 import { Attribute, AttributeType } from '../../../../models';
 import {
-  useTranslate,
   useBackboneRouter,
+  useTranslate,
 } from '../../../../dependenciesTools/hooks';
-import { AttributeValue } from './attribute';
 import { useControlledFormInputAction } from '../../hooks';
 import {
-  validateAttribute,
   useGetAttributeAtMount,
+  validateAttribute,
 } from './attribute/attribute.utils';
 import { SmallHelper } from '../../../../components/HelpersInfos';
-import { isMetricValueFilled } from './attribute/MetricValue';
 
 type Props = {
   action?: SetAction;
@@ -51,7 +51,7 @@ const SetActionLine: React.FC<Props> = ({
       value === undefined ||
       (attribute &&
         attribute.type === AttributeType.METRIC &&
-        !isMetricValueFilled(value))
+        !isMeasurementValueFilled(value))
     );
   };
 
