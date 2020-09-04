@@ -166,6 +166,7 @@ pimee_catalog_rule:
                     helper: To set associations, please select your association type(s) and then, the products, product models or groups you want to associate to your product selection.
                     select_association_type: Select your association type
                     association_types: Association types
+                    add_group: Add a group
                     select_title:
                         products: Select your products
                         product_models: Select your product models

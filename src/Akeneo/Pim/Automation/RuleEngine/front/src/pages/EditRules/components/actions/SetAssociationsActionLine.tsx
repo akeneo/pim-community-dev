@@ -52,7 +52,7 @@ const SetAssociationsActionLine: React.FC<Props> = ({
     typeFormName,
     getValueFormValue,
     setValueFormValue,
-  } = useControlledFormInputAction<AssociationValue>(lineNumber); // TODO TYPE
+  } = useControlledFormInputAction<AssociationValue>(lineNumber);
 
   const [associationTypes, setAssociationTypes] = React.useState<
     AssociationType[]
@@ -136,6 +136,12 @@ const SetAssociationsActionLine: React.FC<Props> = ({
     );
   };
 
+  const handleAssociationTargetDelete = (associationTarget: AssociationTarget) => {
+    associationValues.delete(associationTarget);
+    setAssociationValues(associationValues);
+    setValueFormValue(formatAssociationValues());
+  }
+
   const onGroupsChange = (
     associationTarget: AssociationTarget,
     groupCodes: GroupCode[]
@@ -211,6 +217,12 @@ const SetAssociationsActionLine: React.FC<Props> = ({
                             value.length
                           )}
                         </span>
+                        <span
+                          className='AknBadgedSelector-delete'
+                          tabIndex={0}
+                          onClick={() => handleAssociationTargetDelete(associationTarget)}
+                          role='button'
+                        />
                       </button>
                     </li>
                   );
@@ -237,7 +249,7 @@ const SetAssociationsActionLine: React.FC<Props> = ({
                     groupCodes={
                       associationValues.get(
                         currentAssociationTarget
-                      ) as GroupCode[]
+                      ) as GroupCode[] || []
                     }
                     currentCatalogLocale={currentCatalogLocale}
                     onChange={groupCodes =>
