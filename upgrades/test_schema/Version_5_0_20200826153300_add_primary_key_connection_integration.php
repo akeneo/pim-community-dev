@@ -32,6 +32,12 @@ class Version_5_0_20200826153300_add_primary_key_connection_integration extends 
         $this->reExecuteMigration('_4_0_20191014111427_create_connection_table');
         $this->reExecuteMigration(self::MIGRATION_LABEL);
 
+        $indexes = $this->schemaManager->listTableIndexes('akeneo_connectivity_connection');
+        $this->assertArrayHasKey('primary', $indexes);
+        $pkIndex = $indexes['primary'];
+        Assert::assertTrue($pkIndex->isPrimary());
+        Assert::assertEquals(['code'], $pkIndex->getColumns());
+
         Assert::assertTrue($this->schemaManager->tablesExist('akeneo_connectivity_connection'));
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
