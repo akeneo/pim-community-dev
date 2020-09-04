@@ -359,12 +359,12 @@ const ActionCategoriesSelector: React.FC<Props> = ({
                 return (
                   <li
                     key={categoryTree.code}
-                    className={'AknCategoryTreeSelector-item'}>
+                    className={'AknBadgedSelector-item'}>
                     <button
                       data-testid={`category-tree-selector-${categoryTree.code}`}
-                      className={`AknTextField AknCategoryTreeSelector${
+                      className={`AknTextField AknBadgedSelector${
                         getCurrentCategoryTreeOrDefault() === categoryTree
-                          ? ' AknCategoryTreeSelector--selected'
+                          ? ' AknBadgedSelector--selected'
                           : ''
                       }`}
                       onClick={e => {
@@ -373,7 +373,7 @@ const ActionCategoriesSelector: React.FC<Props> = ({
                       }}>
                       {categoryTree.labels[currentCatalogLocale] ||
                         `[${categoryTree.code}]`}
-                      <span className='AknCategoryTreeSelector-helper'>
+                      <span className='AknBadgedSelector-helper'>
                         {translate(
                           'pimee_catalog_rule.form.edit.actions.category.categories_selected',
                           {
@@ -383,7 +383,7 @@ const ActionCategoriesSelector: React.FC<Props> = ({
                         )}
                       </span>
                       <span
-                        className='AknCategoryTreeSelector-delete'
+                        className='AknBadgedSelector-delete'
                         tabIndex={0}
                         onClick={() => handleCategoryTreeDelete(categoryTree)}
                         role='button'
@@ -397,8 +397,8 @@ const ActionCategoriesSelector: React.FC<Props> = ({
               <div
                 className={
                   categoryTreesWithSelectedCategoriesMap.size === 0
-                    ? 'AknCategoryTreeSelector-new'
-                    : 'AknCategoryTreeSelector-item'
+                    ? 'AknBadgedSelector-new'
+                    : 'AknBadgedSelector-item'
                 }>
                 <Select2Wrapper
                   data-testid='category-tree-selector-new'
@@ -452,7 +452,7 @@ const ActionCategoriesSelector: React.FC<Props> = ({
                     return (
                       <li
                         key={category.code}
-                        className={'AknCategoryTreeSelector-item'}>
+                        className={'AknBadgedSelector-item'}>
                         <CategorySelector
                           data-testid={`category-selector-${category.code}`}
                           locale={currentCatalogLocale}

@@ -124,7 +124,7 @@ const SetAssociationsActionLine: React.FC<Props> = ({
       <Controller
         as={<input type='hidden' />}
         name={fieldFormName}
-        defaultValue='categories'
+        defaultValue='associations'
       />
       <Controller
         as={<input type='hidden' />}
@@ -163,12 +163,12 @@ const SetAssociationsActionLine: React.FC<Props> = ({
                   return (
                     <li
                       key={`${associationTarget.associationTypeCode}-${associationTarget.target}`}
-                      className={'AknCategoryTreeSelector-item'}>
+                      className={'AknBadgedSelector-item'}>
                       <button
                         data-testid={`association-type-selector-${associationTarget.associationTypeCode}-${associationTarget.target}`}
-                        className={`AknTextField AknCategoryTreeSelector${
+                        className={`AknTextField AknBadgedSelector${
                           isCurrentAssociationTargetOrDefault(associationTarget)
-                            ? ' AknCategoryTreeSelector--selected'
+                            ? ' AknBadgedSelector--selected'
                             : ''
                         }`}
                         onClick={e => {
@@ -178,7 +178,7 @@ const SetAssociationsActionLine: React.FC<Props> = ({
                         {getAssociationTypeLabel(
                           associationTarget.associationTypeCode
                         )}
-                        <span className='AknCategoryTreeSelector-helper'>
+                        <span className='AknBadgedSelector-helper'>
                           {translate(
                             `pimee_catalog_rule.form.edit.actions.set_associations.counts.${associationTarget.target}`,
                             { count: value.length },
