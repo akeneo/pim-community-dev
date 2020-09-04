@@ -13,7 +13,11 @@ import {
   useTranslate,
   useUserCatalogLocale,
 } from '../../../../dependenciesTools/hooks';
-import { GroupCode, AssociationType } from '../../../../models';
+import {
+  GroupCode,
+  AssociationType,
+  AssociationTypeCode,
+} from '../../../../models';
 import {
   ActionGrid,
   ActionLeftSide,
@@ -30,12 +34,8 @@ type Props = {
 type Target = 'products' | 'product_models' | 'groups';
 
 type AssociationTarget = {
-  associationType: AssociationType;
+  associationTypeCode: AssociationTypeCode;
   target: Target;
-};
-
-type AssociationValues = AssociationTarget & {
-  values: ProductIdentifier[] | GroupCode[];
 };
 
 const SetAssociationsActionLine: React.FC<Props> = ({
@@ -56,7 +56,7 @@ const SetAssociationsActionLine: React.FC<Props> = ({
     AssociationType[]
   >();
   const [associationValues, setAssociationValues] = React.useState<
-    AssociationValues[]
+    Map<AssociationTarget, ProductIdentifier[] | GroupCode[]>
   >();
   const [
     currentAssociationTarget,
@@ -70,42 +70,32 @@ const SetAssociationsActionLine: React.FC<Props> = ({
   }, []);
 
   React.useEffect(() => {
-    if (!associationTypes) {
-      return;
-    }
     const value = getValueFormValue() ?? {};
-    const associationValues: AssociationValues[] = [];
+    const associationValuesArray: any = [];
     Object.keys(value).forEach((associationTypeCode: string) => {
-      const associationType = associationTypes.find(
-        (associationType: AssociationType) =>
-          associationType.code === associationTypeCode
-      );
-      if (associationType) {
-        (['products', 'product_models', 'groups'] as Target[]).forEach(
-          target => {
-            if (
-              value[associationTypeCode][target] &&
-              Array.isArray(value[associationTypeCode][target])
-            ) {
-              const values = value[associationTypeCode][target] as
-                | ProductIdentifier[]
-                | GroupCode[];
-              associationValues.push({
-                associationType,
-                target,
-                values,
-              });
-            }
-          }
-        );
-      } else {
-        // TODO RUL-442 Manage unexisting association types
-      }
+      (['products', 'product_models', 'groups'] as Target[]).forEach(target => {
+        if (
+          Object.prototype.hasOwnProperty.call(
+            value[associationTypeCode],
+            target
+          )
+        ) {
+          associationValuesArray.push([
+            { associationTypeCode, target },
+            value[associationTypeCode][target],
+          ]);
+        }
+      });
     });
+    const associationValues = new Map<
+      AssociationTarget,
+      ProductIdentifier[] | GroupCode[]
+    >(associationValuesArray);
     setAssociationValues(associationValues);
-  }, [JSON.stringify(associationTypes)]);
+    setCurrentAssociationTarget(Array.from(associationValues.keys())[0]);
+  }, []);
 
-  if (!associationValues) {
+  if (!associationValues || !associationTypes) {
     return (
       <img
         src='/bundles/pimui/images//loader-V2.svg'
@@ -114,54 +104,20 @@ const SetAssociationsActionLine: React.FC<Props> = ({
     );
   }
 
-  const currentAssociationTargetOrDefault: () =>
-    | AssociationTarget
-    | undefined = () => {
-    if (currentAssociationTarget) {
-      return currentAssociationTarget;
-    }
-    if (associationValues.length) {
-      return {
-        associationType: associationValues[0].associationType,
-        target: associationValues[0].target,
-      };
-    }
-    return undefined;
-  };
-
-  const getMatchingAssociation = (
-    associationType: AssociationType,
-    target: Target
-  ) => {
-    return associationValues.find(associationValue => {
-      return (
-        associationValue.associationType.code === associationType.code &&
-        associationValue.target === target
-      );
-    });
-  };
-
-  const getCount = (associationType: AssociationType, target: Target) => {
-    const matching = getMatchingAssociation(associationType, target);
-    if (matching) {
-      return matching.values.length;
-    }
-
-    return 0;
-  };
-
-  const isCurrentAssociationTargetOrDefault = (
-    associationType: AssociationType,
-    target: Target
-  ) => {
+  const isCurrentAssociationTargetOrDefault: (
+    associationTarget: AssociationTarget
+  ) => boolean = ({ associationTypeCode, target }) => {
     return (
-      currentAssociationTargetOrDefault() &&
-      (currentAssociationTargetOrDefault() as AssociationTarget).associationType
-        .code === associationType.code &&
-      (currentAssociationTargetOrDefault() as AssociationTarget).target ===
-        target
+      !!currentAssociationTarget &&
+      currentAssociationTarget.associationTypeCode === associationTypeCode &&
+      currentAssociationTarget.target === target
     );
   };
+
+  const getAssociationTypeLabel = (associationTypeCode: AssociationTypeCode) =>
+    associationTypes?.find(
+      associationType => associationType.code === associationTypeCode
+    )?.labels?.[currentCatalogLocale] || `[${associationTypeCode}]`;
 
   return (
     <>
@@ -202,77 +158,56 @@ const SetAssociationsActionLine: React.FC<Props> = ({
               )} ${translate('pim_common.required_label')}`}
             />
             <ul>
-              {associationValues.map(associationValue => {
-                return (
-                  <li
-                    key={`${associationValue.associationType.code}-${associationValue.target}`}
-                    className={'AknCategoryTreeSelector-item'}>
-                    <button
-                      data-testid={`association-type-selector-${associationValue.associationType.code}-${associationValue.target}`}
-                      className={`AknTextField AknCategoryTreeSelector${
-                        isCurrentAssociationTargetOrDefault(
-                          associationValue.associationType,
-                          associationValue.target
-                        )
-                          ? ' AknCategoryTreeSelector--selected'
-                          : ''
-                      }`}
-                      onClick={e => {
-                        e.preventDefault();
-                        setCurrentAssociationTarget({
-                          associationType: associationValue.associationType,
-                          target: associationValue.target,
-                        });
-                      }}>
-                      {associationValue.associationType.labels[
-                        currentCatalogLocale
-                      ] || `[${associationValue.associationType.code}]`}
-                      <span className='AknCategoryTreeSelector-helper'>
-                        {translate(
-                          `pimee_catalog_rule.form.edit.actions.set_associations.counts.${associationValue.target}`,
-                          {
-                            count: getCount(
-                              associationValue.associationType,
-                              associationValue.target
-                            ),
-                          },
-                          getCount(
-                            associationValue.associationType,
-                            associationValue.target
-                          )
+              {Array.from(associationValues.entries()).map(
+                ([associationTarget, value]) => {
+                  return (
+                    <li
+                      key={`${associationTarget.associationTypeCode}-${associationTarget.target}`}
+                      className={'AknCategoryTreeSelector-item'}>
+                      <button
+                        data-testid={`association-type-selector-${associationTarget.associationTypeCode}-${associationTarget.target}`}
+                        className={`AknTextField AknCategoryTreeSelector${
+                          isCurrentAssociationTargetOrDefault(associationTarget)
+                            ? ' AknCategoryTreeSelector--selected'
+                            : ''
+                        }`}
+                        onClick={e => {
+                          e.preventDefault();
+                          setCurrentAssociationTarget(associationTarget);
+                        }}>
+                        {getAssociationTypeLabel(
+                          associationTarget.associationTypeCode
                         )}
-                      </span>
-                    </button>
-                  </li>
-                );
-              })}
+                        <span className='AknCategoryTreeSelector-helper'>
+                          {translate(
+                            `pimee_catalog_rule.form.edit.actions.set_associations.counts.${associationTarget.target}`,
+                            { count: value.length },
+                            value.length
+                          )}
+                        </span>
+                      </button>
+                    </li>
+                  );
+                }
+              )}
             </ul>
           </ActionLeftSide>
           <ActionRightSide>
-            {currentAssociationTargetOrDefault() && (
+            {currentAssociationTarget && (
               <>
                 <ActionTitle>
                   {translate(
-                    `pimee_catalog_rule.form.edit.actions.set_associations.select_title.${
-                      currentAssociationTargetOrDefault()?.target
-                    }`
+                    `pimee_catalog_rule.form.edit.actions.set_associations.select_title.${currentAssociationTarget.target}`
                   )}
                 </ActionTitle>
                 <Label
                   className='AknFieldContainer-label control-label'
                   label={`${translate(
-                    `pimee_catalog_rule.form.edit.actions.set_associations.select.${
-                      currentAssociationTargetOrDefault()?.target
-                    }`
+                    `pimee_catalog_rule.form.edit.actions.set_associations.select.${currentAssociationTarget?.target}`
                   )} ${translate('pim_common.required_label')}`}
                 />
                 {JSON.stringify(
-                  getMatchingAssociation(
-                    (currentAssociationTargetOrDefault() as AssociationTarget)
-                      .associationType,
-                    (currentAssociationTargetOrDefault() as AssociationTarget)
-                      .target
-                  )?.values
+                  associationValues.get(currentAssociationTarget)
                 )}
               </>
             )}

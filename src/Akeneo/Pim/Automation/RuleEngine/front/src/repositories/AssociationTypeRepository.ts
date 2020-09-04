@@ -1,4 +1,4 @@
-import { AssociationType } from '../models/';
+import { AssociationType, AssociationTypeCode } from '../models/';
 import { Router } from '../dependenciesTools';
 import { fetchAllAssociationTypes } from '../fetch/AssociationTypeFetcher';
 
@@ -14,4 +14,15 @@ const getAllAssociationTypes = async (
   return cachedAssociationTypes;
 };
 
-export { getAllAssociationTypes };
+const getAssociationTypeByCode = async (
+  code: AssociationTypeCode,
+  router: Router
+): Promise<AssociationType | undefined> => {
+  return (await getAllAssociationTypes(router)).find(
+    (associationType: AssociationType) => {
+      return associationType.code === code;
+    }
+  );
+};
+
+export { getAllAssociationTypes, getAssociationTypeByCode };
