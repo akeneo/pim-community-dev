@@ -88,7 +88,7 @@ const InputMeasurement: React.FC<Props> = ({
   return (
     <MeasurementContainer>
       <InputNumber
-        data-testid={id}
+        data-testid={`${id}-amount`}
         label={label}
         value={null === parsedValue.amount ? '' : parsedValue.amount}
         onChange={(event: any) => handleAmountChange(event.target.value)}
@@ -100,6 +100,7 @@ const InputMeasurement: React.FC<Props> = ({
       />
       <span className={`${hasError ? 'select2-glued-container-error' : ''}`}>
         <MeasurementUnitSelector
+          data-testid={`${id}-unit`}
           attribute={attribute}
           value={parsedValue.unit}
           onChange={unit => handleUnitChange(unit)}

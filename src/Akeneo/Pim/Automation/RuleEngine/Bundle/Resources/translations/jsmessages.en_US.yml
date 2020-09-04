@@ -315,6 +315,7 @@ pimee_catalog_rule:
         required_categories: At least one category is required for this action
         required_constant_for_operation: A constant value is required for this operation
         required_operator_for_operation: An operator is required for this operation
+        required_unit: A measurement unit is required
         division_by_zero: Divisions by zero are not possible
         two_operations_are_required: The operation list should contain 2 operations or more.
         two_items_are_required: The list should contain 2 items or more.
