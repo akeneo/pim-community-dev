@@ -2,3 +2,5 @@ pim_dashboard:
   widget:
     completeness:
       load_more: '加载更多...'
+pim_title:
+  pim_dashboard_index: 主界面
