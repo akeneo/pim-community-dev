@@ -1,0 +1,31 @@
+akeneo_franklin_insights:
+  entity:
+    attributes_mapping:
+      flash:
+        fail_to_retrieve_franklin_mapping: '属性映射现在不可用。请稍后再试。'
+      module:
+        index:
+          family_progress:
+            mapped_attribute: '{{ mapped_count }} 个属性已映射，{{ suggested_count }} 个已推荐'
+          suggested: 建议的
+    product_subscription:
+      constraint:
+        product_subscription_with_same_identifier_already_exist: '已经订阅了另一个具有至少一个相同标识符的产品。'
+    attribute_options_mapping:
+      flash:
+        load_failed: '更新失败'
+  connection:
+    flash:
+      error: 抱歉，发生了一个错误。
+  key_figures:
+    axis:
+      franklin_attribute_created: 属性已创建
+      franklin_attribute_added_to_family: 属性已添加到品类
+      credits_consumed: 已消耗积分
+      franklin_values_validated: 属性值已验证
+      franklin_values_in_error: 属性值错误
+      franklin_values_suggested: 建议的属性值
+      franklin_names_and_values_suggested: 建议的属性名和值
+batch_jobs:
+  default_steps:
+    notify_if_pending_attributes: 通知用户有待映射的属性
