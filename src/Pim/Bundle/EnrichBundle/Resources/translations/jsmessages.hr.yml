@@ -814,9 +814,6 @@ pim_enrich:
           label: Konfiguriraj
         confirm:
           label: Potvrdi
-pim_enrich.error:
-  http:
-    403: Forbidden. You are not allowed to access this page
 #Page titles
 page_title:
   oro_default: Nadzorna ploča
