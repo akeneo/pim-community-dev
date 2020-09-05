@@ -924,9 +924,6 @@ pim_enrich:
           label: Konfigurera
         confirm:
           label: Bekräfta
-pim_enrich.error:
-  http:
-    403: Forbidden. You are not allowed to access this page
 #Page titles
 page_title:
   oro_default: Instrumentpanel
