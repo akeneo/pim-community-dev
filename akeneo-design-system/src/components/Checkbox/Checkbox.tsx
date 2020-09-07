@@ -1,7 +1,6 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
-import {CheckIcon} from '../../icons/CheckIcon';
-import {PartialCheckIcon} from "../../icons/PartialCheckIcon";
+import {CheckIcon, PartialCheckIcon} from '../../icons';
 
 const Container = styled.div`
     display: flex;
