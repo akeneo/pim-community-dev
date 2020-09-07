@@ -7,9 +7,13 @@ import { Checkbox } from "./Checkbox.tsx";
   title="Components/Checkbox"
   component={Checkbox}
   argTypes={{
-    readOnly: {control: {type: 'boolean', default: 'false'}},
-    checked: {control: {type: 'boolean', default: 'false'}},
-    label: 'string',
+    readOnly: {control: {type: 'boolean'}},
+    checked: {control: {type: 'boolean'}},
+    label: {control: {type: 'text'}},
+    onChange: {action: 'Checkbox component onChange'},
+  }}
+  args={{
+    label: 'Checkbox'
   }}
 />
 
@@ -29,3 +33,28 @@ Use this playground to test the checkbox component
 
 <Props story="Standard" />
 
+## Variation on state
+<Story name="Checked">
+    {(args) => {
+        return (
+            <>
+                <Checkbox  {...args} checked={true} label={'Checkbox checked'}/>
+                <Checkbox  {...args} checked={false} undetermined={true} label={'Checkbox undetermined'}/>
+                <Checkbox  {...args} checked={false} label={'Checkboxs unchecked'}/>
+            </>
+        )
+    }}
+</Story>
+
+## Variation on disabled
+<Story name="Disabled">
+    {(args) => {
+        return (
+            <>
+                <Checkbox {...args} readOnly={true} checked={true} label={'Checked disabled'}/>
+                <Checkbox {...args} readOnly={true} checked={false} undetermined={true} label={'Undetermined disabled'}/>
+                <Checkbox {...args} readOnly={true} checked={false} label={'Unchecked disabled'}/>
+            </>
+        )
+    }}
+</Story>

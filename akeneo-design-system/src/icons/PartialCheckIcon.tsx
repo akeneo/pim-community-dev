@@ -1,10 +1,10 @@
 import React from 'react';
 
-const CheckIcon = ({width = 24, height = 24}) => (
+const PartialCheckIcon = ({width = 24, height = 24}) => (
     <svg width={width} height={height} viewBox="0 0 24 24">
         <path
+            d="M2 12.5h20"
             stroke="#FFFFFF"
-            d="M2.5 12l7.5 6.5L21.5 6"
             fill="none"
             fillRule="evenodd"
             strokeLinecap="round"
@@ -13,4 +13,4 @@ const CheckIcon = ({width = 24, height = 24}) => (
     </svg>
 );
 
-export {CheckIcon};
+export {PartialCheckIcon};
