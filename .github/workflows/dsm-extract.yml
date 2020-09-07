@@ -36,11 +36,15 @@ jobs:
                     repository: 'samirboulil/dsm'
                     path: external
             -   name: Bump package version
-                run: cd akeneo-design-system && node .github/workflows/bump-version.js $GITHUB_EVENT_PATH ../external/package.json
+                run: cd akeneo-design-system && node .github/workflows/bump-version.js $GITHUB_EVENT_PATH ../external/package.json ../commit-messages.txt
             -   uses: actions/upload-artifact@v1
                 with:
                     name: package
                     path: akeneo-design-system/package.json
+            -   uses: actions/upload-artifact@v1
+                with:
+                    name: commit-messages
+                    path: commit-messages.txt
     extract:
         name: Extract to DSM dedicated repo
         needs:
@@ -62,6 +66,14 @@ jobs:
                 with:
                     name: package
                     path: akeneo-design-system
+            -   name: Download the commit messages
+                uses: actions/download-artifact@v1
+                with:
+                    name: commit-messages
+                    path: ./
+            -   name: Set env variable for commit messages
+                run: echo "::set-output name=body::$(cat ./commit-messages.txt)"
+                id: commit_messages
             -   name: Pushes to dsm repository
                 uses: ./.github/actions/extract
                 env:
@@ -72,3 +84,4 @@ jobs:
                     destination-repository-name: 'dsm'
                     user-email: contact@akeneo.com
                     destination-branch: 'master'
+                    commit-messages: ${{ steps.commit_messages.outputs.body}}
