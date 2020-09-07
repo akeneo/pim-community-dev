@@ -87,3 +87,8 @@ services:
             - '@akeneo_connectivity_connection_persistence_query_select_connections_webhook'
             - '@akeneo_connectivity.connection.webhook.client.guzzle'
             - '@akeneo_connectivity.connection.webhook.event_builder'
+
+    akeneo_connectivity.connection.application.webhook.handler.get_connection_webhook:
+        class: Akeneo\Connectivity\Connection\Application\Webhook\Query\GetAConnectionWebhookHandler
+        arguments:
+            - '@akeneo_connectivity_connection.persistence.query.get_connection_webhook'

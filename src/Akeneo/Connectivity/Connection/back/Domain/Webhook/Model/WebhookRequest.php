@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\Webhook\Model;
 
+use Akeneo\Connectivity\Connection\Domain\Webhook\Model\ConnectionWebhook;
+
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)

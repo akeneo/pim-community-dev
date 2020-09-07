@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\Webhook\Model;
 
+use Akeneo\Connectivity\Connection\Domain\Webhook\Model\ConnectionWebhook;
 use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
 
 /**
