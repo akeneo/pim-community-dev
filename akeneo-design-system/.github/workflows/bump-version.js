@@ -53,8 +53,6 @@ const levelToBump = messages.reduce((currentBumpLevel, commit) => {
     return bumpLevel > currentBumpLevel ? bumpLevel : currentBumpLevel;
 }, BumpLevelEnum.Patch);
 
-console.log(githubEvent)
-
 const externalVersion = JSON.parse(fs.readFileSync(externalPackageJson)).version
 
 execSync(`npm --no-git-tag-version version ${externalVersion}`);
