@@ -16,6 +16,9 @@ inputs:
   user-email:
     description: 'Email for the git commit'
     required: true
+  commit-messages:
+    description: 'Messages to commit'
+    required: true
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -25,6 +28,7 @@ runs:
     - ${{ inputs.destination-repository-name }}
     - ${{ inputs.user-email }}
     - ${{ inputs.destination-branch }}
+    - ${{ inputs.commit-messages}}
 branding:
   icon: 'git-commit'
   color: 'green'

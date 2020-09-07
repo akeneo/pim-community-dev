@@ -6,6 +6,7 @@ GITHUB_USERNAME="$2"
 GITHUB_REPO="$3"
 USER_EMAIL="$4"
 BRANCH="$5"
+BODY="$6"
 
 CLONE_DIR=$(mktemp -d)
 
@@ -26,5 +27,5 @@ cd "$CLONE_DIR"
 git status
 
 git add .
-git commit --message "Update from https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA"
+git commit --message "$BODY"
 git push origin "$BRANCH"
