@@ -73,9 +73,6 @@ jobs:
                 with:
                     name: commit-messages
                     path: ./
-            -   name: Set env variable for commit messages
-                run: echo "::set-output name=body::$(cat ./commit-messages.txt)"
-                id: commit_messages
             -   name: Pushes to dsm repository
                 uses: ./.github/actions/extract
                 env:
@@ -86,4 +83,4 @@ jobs:
                     destination-repository-name: 'dsm'
                     user-email: contact@akeneo.com
                     destination-branch: 'master'
-                    commit-messages: ${{ steps.commit_messages.outputs.body}}
+                    commit-messages-filepath: '/github/workspace/commit-messages.txt'

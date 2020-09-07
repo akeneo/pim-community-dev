@@ -6,7 +6,7 @@ GITHUB_USERNAME="$2"
 GITHUB_REPO="$3"
 USER_EMAIL="$4"
 BRANCH="$5"
-BODY="$6"
+COMMIT_MESSAGES_FILEPATH="$6"
 
 CLONE_DIR=$(mktemp -d)
 
@@ -27,5 +27,5 @@ cd "$CLONE_DIR"
 git status
 
 git add .
-git commit --file "/github/workspace/commit-messages.txt"
+git commit --file "$COMMIT_MESSAGES_FILEPATH"
 git push origin "$BRANCH"
