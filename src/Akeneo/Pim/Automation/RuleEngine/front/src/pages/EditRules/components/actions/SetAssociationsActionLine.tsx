@@ -2,7 +2,6 @@ import React from 'react';
 import { Controller } from 'react-hook-form';
 import {
   AssociationValue,
-  ProductIdentifier,
   SetAssociationsAction,
 } from '../../../../models/actions';
 import { ActionLineProps } from './ActionLineProps';
@@ -27,6 +26,9 @@ import {
 import { Label } from '../../../../components/Labels';
 import { getAllAssociationTypes } from '../../../../repositories/AssociationTypeRepository';
 import { AssociationsGroupsSelector } from './association/AssociationsGroupsSelector';
+import { AssociationsIdentifiersSelector } from './association/AssociationsIdentifiersSelector';
+import { ProductModelCode } from '../../../../models/ProductModel';
+import { ProductIdentifier } from '../../../../models/Product';
 
 type Props = {
   action?: SetAssociationsAction;
@@ -58,7 +60,10 @@ const SetAssociationsActionLine: React.FC<Props> = ({
     AssociationType[]
   >();
   const [associationValues, setAssociationValues] = React.useState<
-    Map<AssociationTarget, ProductIdentifier[] | GroupCode[]>
+    Map<
+      AssociationTarget,
+      ProductIdentifier[] | GroupCode[] | ProductModelCode[]
+    >
   >();
   const [
     currentAssociationTarget,
@@ -86,7 +91,7 @@ const SetAssociationsActionLine: React.FC<Props> = ({
     });
     const associationValues = new Map<
       AssociationTarget,
-      ProductIdentifier[] | GroupCode[]
+      ProductIdentifier[] | GroupCode[] | ProductModelCode[]
     >(associationValuesArray);
     setAssociationValues(associationValues);
     setCurrentAssociationTarget(Array.from(associationValues.keys())[0]);
@@ -139,11 +144,11 @@ const SetAssociationsActionLine: React.FC<Props> = ({
     setValueFormValue(formatAssociationValues());
   };
 
-  const onGroupsChange = (
+  const handleChange = (
     associationTarget: AssociationTarget,
-    groupCodes: GroupCode[]
+    value: GroupCode[] | ProductModelCode[] | ProductIdentifier[]
   ) => {
-    associationValues.set(associationTarget, groupCodes);
+    associationValues.set(associationTarget, value);
     setAssociationValues(new Map(associationValues));
     setValueFormValue(formatAssociationValues());
   };
@@ -243,7 +248,7 @@ const SetAssociationsActionLine: React.FC<Props> = ({
                     `pimee_catalog_rule.form.edit.actions.set_associations.select.${currentAssociationTarget?.target}`
                   )} ${translate('pim_common.required_label')}`}
                 />
-                {currentAssociationTarget.target === 'groups' ? (
+                {currentAssociationTarget.target === 'groups' && (
                   <AssociationsGroupsSelector
                     groupCodes={
                       (associationValues.get(
@@ -252,15 +257,35 @@ const SetAssociationsActionLine: React.FC<Props> = ({
                     }
                     currentCatalogLocale={currentCatalogLocale}
                     onChange={groupCodes =>
-                      onGroupsChange(currentAssociationTarget, groupCodes)
+                      handleChange(currentAssociationTarget, groupCodes)
                     }
                   />
-                ) : (
-                  <>
-                    {JSON.stringify(
-                      associationValues.get(currentAssociationTarget)
-                    )}
-                  </>
+                )}
+                {currentAssociationTarget.target === 'products' && (
+                  <AssociationsIdentifiersSelector
+                    entityType='product'
+                    identifiers={
+                      (associationValues.get(
+                        currentAssociationTarget
+                      ) as ProductIdentifier[]) || []
+                    }
+                    onChange={productIdentifiers =>
+                      handleChange(currentAssociationTarget, productIdentifiers)
+                    }
+                  />
+                )}
+                {currentAssociationTarget.target === 'product_models' && (
+                  <AssociationsIdentifiersSelector
+                    entityType='product_model'
+                    identifiers={
+                      (associationValues.get(
+                        currentAssociationTarget
+                      ) as ProductModelCode[]) || []
+                    }
+                    onChange={productModelCodes =>
+                      handleChange(currentAssociationTarget, productModelCodes)
+                    }
+                  />
                 )}
               </>
             )}
