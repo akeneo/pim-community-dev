@@ -2,9 +2,9 @@ name: Extract DSM
 on:
     push:
         branches:
-            - dsm
-        paths:
-            - 'akeneo-design-system/**'
+            - RAC-202
+        # paths:
+        #     - 'akeneo-design-system/**'
 jobs:
     build:
         name: Create a lib build
@@ -18,6 +18,14 @@ jobs:
                     node-version: 13.13
             -   name: Install Packages
                 run: cd akeneo-design-system && yarn install
+            -   name: Checkout current branch
+                uses: actions/checkout@v2
+                with:
+                    repository: 'samirboulil/dsm'
+                    path: external
+
+            -   name: Bump package version
+                run: ls -la external
             -   name: Bump package version
                 run: cd akeneo-design-system && node .github/workflows/bump-version.js $GITHUB_EVENT_PATH && echo "::set-output name=new_version::$(node .github/workflows/get-version.js)"
                 id: generate_new_dsm_version
