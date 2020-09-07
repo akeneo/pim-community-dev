@@ -15,9 +15,8 @@ import { AttributeConditionLine } from './AttributeConditionLine';
 import { Operator } from '../../../../models/Operator';
 import { useGetAttributeAtMount } from '../actions/attribute/attribute.utils';
 import {
+  getMeasurementValidator,
   InputMeasurement,
-  isMeasurementAmountFilled,
-  isMeasurementUnitFilled,
   MeasurementData,
 } from '../../../../components/Inputs';
 
@@ -67,15 +66,7 @@ const MeasurementAttributeConditionLine: React.FC<MeasurementAttributeConditionL
           hasError={isFormFieldInError('value')}
           rules={{
             required: translate('pimee_catalog_rule.exceptions.required'),
-            validate: (value: any) => {
-              if (!isMeasurementAmountFilled(value)) {
-                return translate('pimee_catalog_rule.exceptions.required');
-              } else if (!isMeasurementUnitFilled(value)) {
-                return translate('pimee_catalog_rule.exceptions.required_unit');
-              }
-
-              return true;
-            },
+            validate: getMeasurementValidator(attribute, router, translate),
           }}
         />
       )}

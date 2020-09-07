@@ -9,7 +9,12 @@ import {
 import userEvent from '@testing-library/user-event';
 import { MeasurementAttributeCondition } from '../../../../../../src/models/conditions';
 import { Operator } from '../../../../../../src/models/Operator';
-import { createAttribute, locales, scopes } from '../../../../factories';
+import {
+  createAttribute,
+  locales,
+  measurementFamiliesResponse,
+  scopes,
+} from '../../../../factories';
 import { MeasurementAttributeConditionLine } from '../../../../../../src/pages/EditRules/components/conditions/MeasurementAttributeConditionLine';
 import { clearAttributeRepositoryCache } from '../../../../../../src/repositories/AttributeRepository';
 
@@ -22,48 +27,13 @@ describe('MeasurementAttributeConditionLine', () => {
   const attribute = createAttribute({
     code: 'weight',
     type: 'pim_catalog_metric',
-    metric_family: 'Weight',
+    metric_family: 'weight_metric_family',
     default_metric_unit: 'KILOGRAM',
     decimals_allowed: true,
     labels: {
       en_US: 'Weight',
     },
   });
-
-  const weightFamily = {
-    code: 'Weight',
-    labels: {
-      en_US: 'Weight',
-    },
-    standard_unit_code: 'KILOGRAM',
-    units: [
-      {
-        code: 'GRAM',
-        labels: {
-          en_US: 'Gram',
-        },
-        convert_from_standard: [{ operator: 'mul', value: '0.001' }],
-        symbol: 'g',
-      },
-      {
-        code: 'KILOGRAM',
-        labels: {
-          en_US: 'Kilogram',
-        },
-        convert_from_standard: [{ operator: 'mul', value: '1' }],
-        symbol: 'kg',
-      },
-      {
-        code: 'TON',
-        labels: {
-          en_US: 'Ton',
-        },
-        convert_from_standard: [{ operator: 'mul', value: '1000' }],
-        symbol: 't',
-      },
-    ],
-    is_locked: true,
-  };
 
   it('should display a measurement attribute condition line with scope and locale selector', async () => {
     fetchMock.mockResponse((request: Request) => {
@@ -72,7 +42,7 @@ describe('MeasurementAttributeConditionLine', () => {
       }
 
       if (request.url.includes('pim_enrich_measures_rest_index')) {
-        return Promise.resolve(JSON.stringify([weightFamily]));
+        return Promise.resolve(JSON.stringify(measurementFamiliesResponse));
       }
 
       throw new Error(`The "${request.url}" url is not mocked.`);
@@ -142,7 +112,6 @@ describe('MeasurementAttributeConditionLine', () => {
 
   it('should display or hide the measurement input depending on the operator', async () => {
     fetchMock.mockResponse((request: Request) => {
-      console.log(request.url);
       if (request.url.includes('pim_enrich_attribute_rest_get')) {
         return Promise.resolve(
           JSON.stringify({
@@ -154,7 +123,7 @@ describe('MeasurementAttributeConditionLine', () => {
       }
 
       if (request.url.includes('pim_enrich_measures_rest_index')) {
-        return Promise.resolve(JSON.stringify([weightFamily]));
+        return Promise.resolve(JSON.stringify(measurementFamiliesResponse));
       }
 
       throw new Error(`The "${request.url}" url is not mocked.`);

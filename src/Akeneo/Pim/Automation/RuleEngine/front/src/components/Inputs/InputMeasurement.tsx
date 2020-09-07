@@ -2,27 +2,35 @@ import React from 'react';
 import { useTranslate } from '../../dependenciesTools/hooks';
 import { Attribute, MeasurementUnitCode } from '../../models';
 import { InputNumber } from './';
-import { MeasurementUnitSelector } from '../Selectors/MeasurementUnitSelector';
+import {
+  getMeasurementUnitValidator,
+  MeasurementUnitSelector,
+} from '../Selectors/MeasurementUnitSelector';
 import styled from 'styled-components';
+import { Router, Translate } from '../../dependenciesTools';
 
 const MeasurementContainer = styled.div`
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  width: 100%;
 
   .AknNumberField {
     flex-basis: 50%;
-    max-width: 150px;
+    flex: 1;
   }
 
   .select2-container {
     flex-basis: 50%;
-    max-width: 150px;
+    min-width: 150px;
+    flex: 1;
   }
 
   label {
     flex-basis: 100%;
   }
 `;
+
+MeasurementContainer.displayName = 'MeasurementContainer';
 
 type MeasurementData = {
   unit: MeasurementUnitCode | null;
@@ -54,6 +62,27 @@ const parseMeasurementValue = (value: any): MeasurementData => {
   }
 
   return { unit: '', amount: null };
+};
+
+const getMeasurementValidator = (
+  attribute: Attribute,
+  router: Router,
+  translate: Translate
+) => {
+  return (value: any) => {
+    if (!isMeasurementAmountFilled(value)) {
+      return translate('pimee_catalog_rule.exceptions.required');
+    } else if (!isMeasurementUnitFilled(value)) {
+      return translate('pimee_catalog_rule.exceptions.required_unit');
+    } else {
+      const { validate } = getMeasurementUnitValidator(
+        attribute,
+        router,
+        translate
+      );
+      return validate(value.unit);
+    }
+  };
 };
 
 type Props = {
@@ -125,4 +154,5 @@ export {
   isMeasurementUnitFilled,
   isMeasurementAmountFilled,
   parseMeasurementValue,
+  getMeasurementValidator,
 };

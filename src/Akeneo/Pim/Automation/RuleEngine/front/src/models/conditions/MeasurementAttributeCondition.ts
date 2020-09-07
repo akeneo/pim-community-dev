@@ -24,7 +24,7 @@ type MeasurementAttributeCondition = {
   field: string;
   operator: Operator;
   value?: {
-    amount: number | null;
+    amount: number;
     unit: string;
   };
   locale?: string;
