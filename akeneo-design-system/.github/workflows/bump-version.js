@@ -65,4 +65,3 @@ console.log(execSync(`git rev-list ${githubEvent.before}..HEAD | xargs -n1 git l
 console.log('---------')
 
 fs.writeFileSync(commitMessagesFilepath, messages.join(' '));
-
