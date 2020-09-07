@@ -23,12 +23,10 @@ rm "$CLONE_DIR"/.gitignore
 
 cp -r "$FOLDER"/. "$CLONE_DIR"
 
-pwd
 cd "$CLONE_DIR"
-pwd
 git status
 
 git add .
-git commit --file "$FOLDER/commit-messages.txt"
+git commit --file "/github/workspace/commit-messages.txt"
 git push origin "$BRANCH"
 
