@@ -2,9 +2,9 @@ name: Extract DSM
 on:
     push:
         branches:
-            - RAC-202
-        # paths:
-        #     - 'akeneo-design-system/**'
+            - dsm
+        paths:
+            - 'akeneo-design-system/**'
 jobs:
     build:
         name: Create a lib build

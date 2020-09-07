@@ -15,7 +15,6 @@ jobs:
         run: |
           git config --global user.email "contact@akeneo.com" && \
           git config --global user.name "Github Actions" && \
-
           git tag -a v$(node .github/workflows/get-version.js) -m "Version $(node .github/workflows/get-version.js)"
       - name: Push tag
         run: git push origin v$(node .github/workflows/get-version.js)
