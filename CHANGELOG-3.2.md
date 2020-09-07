@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.69 (2020-09-07)
+
 ## Bug fixes:
 
 - PIM-9436: Filter out Reference Entity labels of disabled locales
