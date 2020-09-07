@@ -16,33 +16,29 @@ jobs:
                 uses: actions/setup-node@v1
                 with:
                     node-version: 13.13
-            -   name: Install Packages
-                run: cd akeneo-design-system && yarn install
-            -   name: Checkout current branch
+
+            -   name: Checkout external repo
                 uses: actions/checkout@v2
                 with:
                     repository: 'samirboulil/dsm'
                     path: external
 
+            -   name: Install Packages
+                run: cd akeneo-design-system && yarn install
+
             -   name: Bump package version
-                run: ls -la external
-            -   name: Bump package version
-                run: cd akeneo-design-system && node .github/workflows/bump-version.js $GITHUB_EVENT_PATH && echo "::set-output name=new_version::$(node .github/workflows/get-version.js)"
+                run: cd akeneo-design-system && node .github/workflows/bump-version.js $GITHUB_EVENT_PATH ./package.json ../external/package.json && echo "::set-output name=new_version::$(node .github/workflows/get-version.js)"
                 id: generate_new_dsm_version
-            -   name: Push updated version
-                # Check we are able to push on a protected branch (like master)
-                run: |
-                    git config --global user.email "contact@akeneo.com" && \
-                    git config --global user.name "Github Actions" && \
-                    git add akeneo-design-system/package.json && \
-                    git commit -m "Bump to version ${{steps.generate_new_dsm_version.outputs.new_version}}" && \
-                    git push
             -   name: Build library
                 run: cd akeneo-design-system && yarn run lib:build:prod
             -   uses: actions/upload-artifact@v1
                 with:
                     name: Lib
                     path: akeneo-design-system/lib
+            -   uses: actions/upload-artifact@v1
+                with:
+                    name: package
+                    path: akeneo-design-system/package.json
 
     extract:
         name: Extract to DSM dedicated repo
@@ -56,6 +52,11 @@ jobs:
                 with:
                     name: Lib
                     path: akeneo-design-system/lib
+            -   name: Download the package.json artifact
+                uses: actions/download-artifact@v1
+                with:
+                    name: package
+                    path: akeneo-design-system/package.json
             -   name: Pushes to dsm repository
                 uses: ./.github/actions/extract
                 env:

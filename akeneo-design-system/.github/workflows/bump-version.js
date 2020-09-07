@@ -5,9 +5,11 @@ const {execSync} = require('child_process');
 const fs = require('fs');
 
 const filePath = process.argv[2];
+const currentPackageJson = process.argv[3];
+const externalPackageJson = process.argv[4];
 
 if (typeof filePath === 'undefined') {
-    console.log(`usage: ${process.argv[0]} ${process.argv[1]} path_to_webhook_event.json`);
+    console.log(`usage: ${process.argv[0]} ${process.argv[1]} path_to_webhook_event.json current/package.json external/package.json`);
 
     return;
 }
@@ -50,6 +52,9 @@ const levelToBump = githubEvent.commits.reduce((currentBumpLevel, commit) => {
     return bumpLevel > currentBumpLevel ? bumpLevel : currentBumpLevel;
 }, BumpLevelEnum.Patch);
 
+const externalVersion = JSON.parse(fs.readFileSync(externalPackageJson)).version
+
+execSync(`npm --no-git-tag-version version ${externalVersion}`);
 execSync(`npm --no-git-tag-version version ${getBumpNameFromBumpLevel(levelToBump)}`);
 
-console.log(JSON.parse(fs.readFileSync('./package.json')).version);
+console.log(JSON.parse(fs.readFileSync(currentPackageJson)).version);
