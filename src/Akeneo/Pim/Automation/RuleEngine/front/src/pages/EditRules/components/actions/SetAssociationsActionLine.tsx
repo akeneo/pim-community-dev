@@ -131,11 +131,13 @@ const SetAssociationsActionLine: React.FC<Props> = ({
     );
   };
 
-  const handleAssociationTargetDelete = (associationTarget: AssociationTarget) => {
+  const handleAssociationTargetDelete = (
+    associationTarget: AssociationTarget
+  ) => {
     associationValues.delete(associationTarget);
     setAssociationValues(associationValues);
     setValueFormValue(formatAssociationValues());
-  }
+  };
 
   const onGroupsChange = (
     associationTarget: AssociationTarget,
@@ -215,7 +217,9 @@ const SetAssociationsActionLine: React.FC<Props> = ({
                         <span
                           className='AknBadgedSelector-delete'
                           tabIndex={0}
-                          onClick={() => handleAssociationTargetDelete(associationTarget)}
+                          onClick={() =>
+                            handleAssociationTargetDelete(associationTarget)
+                          }
                           role='button'
                         />
                       </button>
@@ -242,9 +246,9 @@ const SetAssociationsActionLine: React.FC<Props> = ({
                 {currentAssociationTarget.target === 'groups' ? (
                   <AssociationsGroupsSelector
                     groupCodes={
-                      associationValues.get(
+                      (associationValues.get(
                         currentAssociationTarget
-                      ) as GroupCode[] || []
+                      ) as GroupCode[]) || []
                     }
                     currentCatalogLocale={currentCatalogLocale}
                     onChange={groupCodes =>

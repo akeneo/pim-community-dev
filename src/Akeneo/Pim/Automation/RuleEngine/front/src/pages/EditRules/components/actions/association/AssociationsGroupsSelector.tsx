@@ -1,7 +1,7 @@
 import React from 'react';
 import { GroupCode } from '../../../../../models';
 import { GroupSelector } from '../../../../../components/Selectors/GroupSelector';
-import { useTranslate } from "../../../../../dependenciesTools/hooks";
+import { useTranslate } from '../../../../../dependenciesTools/hooks';
 
 type Props = {
   groupCodes: GroupCode[];
@@ -54,7 +54,9 @@ const AssociationsGroupsSelector: React.FC<Props> = ({
           id={'group-selector-new'}
           allowClear={false}
           hiddenLabel
-          placeholder={translate('pimee_catalog_rule.form.edit.actions.set_associations.add_group')}
+          placeholder={translate(
+            'pimee_catalog_rule.form.edit.actions.set_associations.add_group'
+          )}
           onSelecting={(event: any) => {
             event.preventDefault();
             setCloseTick(!closeTick);

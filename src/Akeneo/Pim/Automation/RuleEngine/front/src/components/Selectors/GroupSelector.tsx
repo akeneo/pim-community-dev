@@ -17,7 +17,6 @@ type Props = {
   currentCatalogLocale: LocaleCode;
   value: GroupCode;
   onChange?: (value: GroupCode) => void;
-  validation?: { required?: string; validate?: (value: any) => string | true };
   name?: string;
   allowClear?: boolean;
   id: string;
@@ -71,7 +70,6 @@ const GroupSelector: React.FC<Props> = ({
   currentCatalogLocale,
   value,
   onChange,
-  validation,
   id,
   ...remainingProps
 }) => {
@@ -109,7 +107,6 @@ const GroupSelector: React.FC<Props> = ({
       initSelection={(_element, callback) => {
         initSelectedGroup(router, value, callback);
       }}
-      validation={validation}
     />
   );
 };
