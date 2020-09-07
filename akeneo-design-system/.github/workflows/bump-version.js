@@ -48,7 +48,7 @@ const githubEvent = JSON.parse(rawdata);
 
 const lastCommits = (new String(execSync(`git rev-list ${githubEvent.before}..HEAD`))).split('\n');
 const messages = lastCommits.map(commit => new String(execSync(`git log -n 1 --pretty=format:%s ${commit}`)));
-fs.writeFileSync(commitMessagesFilepath, `Extract from https://github.com/${githubEvent.repository}/commit/${githubEvent.after}\nWith commits:\n${messages.join('\n')}`);
+fs.writeFileSync(commitMessagesFilepath, `Extract from https://github.com/${githubEvent.repository.full_name}/commit/${githubEvent.after}\nWith commits:\n${messages.join('\n')}`);
 
 const levelToBump = messages.reduce((currentBumpLevel, commit) => {
     const bumpLevel = getCommitMessageBumpLevel(commit);
