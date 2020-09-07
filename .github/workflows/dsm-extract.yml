@@ -35,6 +35,8 @@ jobs:
                 with:
                     repository: 'samirboulil/dsm'
                     path: external
+            -   name: Git log
+                run: git log
             -   name: Bump package version
                 run: cd akeneo-design-system && node .github/workflows/bump-version.js $GITHUB_EVENT_PATH ../external/package.json ../commit-messages.txt
             -   uses: actions/upload-artifact@v1
