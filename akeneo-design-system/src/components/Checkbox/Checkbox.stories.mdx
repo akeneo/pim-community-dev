@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Meta, Story, Preview, Props, ArgsTable, Canvas } from '@storybook/addon-docs/blocks';
+import { Meta, Story, ArgsTable, Canvas } from '@storybook/addon-docs/blocks';
 import { action } from "@storybook/addon-actions";
 import { Checkbox } from "./Checkbox.tsx";
 
@@ -23,15 +23,15 @@ import { Checkbox } from "./Checkbox.tsx";
 
 Use this playground to test the checkbox component
 
-<Preview>
+<Canvas>
   <Story name="Standard">
     {(args) => {
         return <Checkbox {...args}/>;
     }}
   </Story>
-</Preview>
+</Canvas>
 
-<Props story="Standard" />
+<ArgsTable story="Standard" />
 
 ## Variation on state
 <Story name="State">

@@ -1,4 +1,4 @@
-import { Meta, Story, Preview, Props, ArgsTable, Canvas } from '@storybook/addon-docs/blocks';
+import { Meta, Story, ArgsTable, Canvas } from '@storybook/addon-docs/blocks';
 import { action } from "@storybook/addon-actions";
 import { Dummy, Type } from "./Dummy.tsx";
 
@@ -20,13 +20,13 @@ The dummy component is a little bit dumb, but that's why it exists.
 
 Use this playground to test the dummy component
 
-<Preview>
+<Canvas>
   <Story name="Standard">
     {(args) => <Dummy {...args} >Coucou</Dummy>}
   </Story>
-</Preview>
+</Canvas>
 
-<Props story="Standard" />
+<ArgsTable story="Standard" />
 
 
 ## Variation on size
