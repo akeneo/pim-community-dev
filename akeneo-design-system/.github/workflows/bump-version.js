@@ -66,4 +66,3 @@ console.log('---------')
 
 fs.writeFileSync(commitMessagesFilepath, messages.join(' '));
 
-
