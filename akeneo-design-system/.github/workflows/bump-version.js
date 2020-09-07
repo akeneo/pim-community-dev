@@ -60,3 +60,4 @@ const externalVersion = JSON.parse(fs.readFileSync(externalPackageJson)).version
 
 execSync(`npm --no-git-tag-version version ${externalVersion}`);
 execSync(`npm --no-git-tag-version version ${getBumpNameFromBumpLevel(levelToBump)}`);
+
