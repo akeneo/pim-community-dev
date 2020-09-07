@@ -63,13 +63,13 @@ type CheckboxProps = {
     /**
      * Displays the value of the input, but does not allow changes.
      */
-    readOnly: boolean,
+    readOnly?: boolean,
 
     /**
      * The undetermined state comes into play when the checkbox contains a sublist of selections,
      * some of which are selected, and others aren't.
      */
-    undetermined: boolean,
+    undetermined?: boolean,
 
     /**
      * Provide a description of the Checkbox, the label appear on the right of the checkboxes.
@@ -86,6 +86,10 @@ type CheckboxProps = {
  * The checkboxes are applied when users can select all, several, or none of the options from a given list.
  */
 const Checkbox = ({label, checked, onChange, undetermined = false, readOnly = false}: CheckboxProps) => {
+    if (undefined === onChange && false === readOnly) {
+        throw new Error('A Checkbox element expect a onChange attribute if not readOnly');
+    }
+
     const handleChange = () => onChange && !readOnly && onChange(!checked);
 
     return (
