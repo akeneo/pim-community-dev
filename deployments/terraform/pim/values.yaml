@@ -183,6 +183,10 @@ pim:
       enabled: true
       pimCommand: "pimee:franklin-insights:quality-highlights:push-structure-and-products"
       schedule: "15 0,12 * * *"
+    webhook-consumer-process:
+      enabled: true
+      pimCommand: "messenger:consume webhook --time-limit=300"
+      schedule: "*/5 * * * *"
 
 # Onboarder
 onboarder:
