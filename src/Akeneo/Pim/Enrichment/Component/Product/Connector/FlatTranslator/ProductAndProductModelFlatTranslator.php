@@ -50,11 +50,18 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
         $this->headerRegistry->warmup(array_keys($flatItemsByColumnName), $locale);
 
         $results = [];
-        foreach ($flatItemsByColumnName as $columnName => $flatItemValues) {
-            $translator = $this->headerRegistry->getTranslator($columnName);
-            $columnLabelized = null !== $translator ? $translator->translate($columnName, $locale) :
-                sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $columnName);
-            $results[$columnLabelized] = $flatItemValues;
+        foreach ($flatItemsByColumnName as $columnCode => $flatItemValues) {
+            $translator = $this->headerRegistry->getTranslator($columnCode);
+            $columnLabelized = null !== $translator ? $translator->translate($columnCode, $locale) :
+                sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, $columnCode);
+
+            $columnName = sprintf('%s%s%s',
+                $columnCode,
+                FlatTranslatorInterface::COLUMN_CODE_AND_TRANSLATION_SEPARATOR,
+                $columnLabelized
+            );
+
+            $results[$columnName] = $flatItemValues;
         }
 
         return $results;
