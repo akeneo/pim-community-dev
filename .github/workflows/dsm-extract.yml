@@ -16,24 +16,31 @@ jobs:
                 uses: actions/setup-node@v1
                 with:
                     node-version: 13.13
-
-            -   name: Checkout external repo
-                uses: actions/checkout@v2
-                with:
-                    repository: 'samirboulil/dsm'
-                    path: external
-
             -   name: Install Packages
                 run: cd akeneo-design-system && yarn install
-
-            -   name: Bump package version
-                run: cd akeneo-design-system && node .github/workflows/bump-version.js $GITHUB_EVENT_PATH ./package.json ../external/package.json
             -   name: Build library
                 run: cd akeneo-design-system && yarn run lib:build:prod
             -   uses: actions/upload-artifact@v1
                 with:
                     name: Lib
                     path: akeneo-design-system/lib
+    bump:
+        name: Bump package version
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout current branch
+                uses: actions/checkout@v2
+            -   name: Use Node.js 13
+                uses: actions/setup-node@v1
+                with:
+                    node-version: 13.13
+            -   name: Checkout external repo
+                uses: actions/checkout@v2
+                with:
+                    repository: 'samirboulil/dsm'
+                    path: external
+            -   name: Bump package version
+                run: cd akeneo-design-system && node .github/workflows/bump-version.js $GITHUB_EVENT_PATH ./package.json ../external/package.json
             -   uses: actions/upload-artifact@v1
                 with:
                     name: package
@@ -41,7 +48,9 @@ jobs:
 
     extract:
         name: Extract to DSM dedicated repo
-        needs: build
+        needs:
+            - build
+            - bump
         runs-on: ubuntu-latest
         steps:
             -   name: Checkout the current branch
@@ -58,7 +67,7 @@ jobs:
                 uses: actions/download-artifact@v1
                 with:
                     name: package
-                    path: akeneo-design-system/package.json
+                    path: akeneo-design-system
             -   name: Pushes to dsm repository
                 uses: ./.github/actions/extract
                 env:
