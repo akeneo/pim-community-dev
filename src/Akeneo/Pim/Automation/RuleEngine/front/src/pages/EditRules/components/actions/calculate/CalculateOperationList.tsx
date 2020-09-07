@@ -7,7 +7,7 @@ import { useTranslate } from '../../../../../dependenciesTools/hooks';
 import { AttributeCode, AttributeType, Locale } from '../../../../../models';
 import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
 import { useControlledFormInputAction } from '../../../hooks';
-import { OperationLine } from './OperationLine';
+import { CalculateOperationLine } from './CalculateOperationLine';
 import { AddFieldButton } from '../../../../../components/Selectors/AddFieldButton';
 import { BlueGhostButton } from '../../../../../components/Buttons';
 
@@ -27,7 +27,6 @@ const CalculateOperationList: React.FC<Props> = ({
   const { formName, isFormFieldInError } = useControlledFormInputAction<
     string | null
   >(lineNumber);
-  const [version, setVersion] = React.useState<number>(1);
 
   const { fields, remove, move, append } = useFieldArray({
     name: formName('full_operation_list'),
@@ -35,7 +34,6 @@ const CalculateOperationList: React.FC<Props> = ({
 
   const removeOperation = (lineToRemove: number) => () => {
     remove(lineToRemove);
-    setVersion(version + 1);
   };
 
   const moveOperation = (
@@ -47,7 +45,6 @@ const CalculateOperationList: React.FC<Props> = ({
     }
 
     move(currentOperationLineNumber, newOperationLineNumber);
-    setVersion(version + 1);
   };
 
   const handleAddValue = () => {
@@ -56,7 +53,6 @@ const CalculateOperationList: React.FC<Props> = ({
     } else {
       append({ value: '' });
     }
-    setVersion(version + 1);
   };
 
   const handleAddAttribute = (attributeCode: AttributeCode) => {
@@ -65,7 +61,6 @@ const CalculateOperationList: React.FC<Props> = ({
     } else {
       append({ field: attributeCode });
     }
-    setVersion(version + 1);
   };
 
   const dragulaDecorator = React.useRef(null);
@@ -102,7 +97,7 @@ const CalculateOperationList: React.FC<Props> = ({
         {fields &&
           fields.map((sourceOrOperation: any, operationLineNumber) => {
             return (
-              <OperationLine
+              <CalculateOperationLine
                 key={sourceOrOperation.id}
                 baseFormName={`full_operation_list[${operationLineNumber}]`}
                 sourceOrOperation={sourceOrOperation}
@@ -111,7 +106,6 @@ const CalculateOperationList: React.FC<Props> = ({
                 lineNumber={lineNumber}
                 operationLineNumber={operationLineNumber}
                 removeOperation={removeOperation}
-                version={version}
                 isValue={
                   sourceOrOperation.hasOwnProperty('value') &&
                   typeof sourceOrOperation.value !== 'undefined'

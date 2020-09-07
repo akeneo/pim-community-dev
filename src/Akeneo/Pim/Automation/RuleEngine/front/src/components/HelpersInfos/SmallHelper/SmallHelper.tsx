@@ -66,7 +66,7 @@ const SmallErrorHelper = styled.div<{ level: Level }>`
     background: ${({ theme, level }) => getBackgroundColor(level, theme)};
     min-height: 44px;
     padding: 10px;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
   }
 `;
 

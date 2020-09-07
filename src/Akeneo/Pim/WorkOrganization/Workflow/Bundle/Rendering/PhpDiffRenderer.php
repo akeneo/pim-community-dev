@@ -39,6 +39,11 @@ class PhpDiffRenderer implements RendererInterface
      */
     public function renderDiff($before, $after)
     {
-        return $this->factory->create($before, $after)->render($this->renderer);
+        /*
+         * Workaround: we add "@" before the call to render to avoid warning in dev environment because of
+         * the methods Diff_SequenceMatcher::setSeq1 and Diff_SequenceMatcher::setSeq2.
+         * Both methods don't use the strict comparison (===), so an empty array equals to null.
+         */
+        return @$this->factory->create($before, $after)->render($this->renderer);
     }
 }

@@ -213,7 +213,8 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory'
+        'Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory',
+        'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface',
     ])->in('Akeneo\Pim\Permission\Component'),
 ];
 

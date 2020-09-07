@@ -127,11 +127,7 @@ test('I can see a backend validation error', async () => {
 });
 
 test('I can remove a recipient', async () => {
-  const recipients = [
-    {
-      email: 'hello@akeneo.com',
-    },
-  ];
+  const recipients = [{email: 'hello@akeneo.com'}];
   const mockOnRecipientsChange = jest.fn();
 
   await act(async () => {
@@ -141,10 +137,14 @@ test('I can remove a recipient', async () => {
     );
   });
 
-  const button = getByTitle(container, 'pim_common.delete');
+  // We select the row first to check it is also removed from the bulk selection
+  fireEvent.click(getByText(container, 'hello@akeneo.com'));
+
+  const button = getByTitle(container, 'pim_common.remove');
   fireEvent.click(button);
 
   expect(mockOnRecipientsChange).toHaveBeenCalledWith([]);
+  expect(queryByText(container, 'pim_common.delete')).not.toBeInTheDocument();
 });
 
 test('I can search recipients by email', async () => {
@@ -222,7 +222,7 @@ test('It can add multiple recipients at once (separated by comma, semicolon, spa
     );
   });
 
-  expect(getAllByTitle(container, 'pim_common.delete').length).toEqual(1);
+  expect(getAllByTitle(container, 'pim_common.remove').length).toEqual(1);
 
   const input = getByPlaceholderText(container, 'shared_catalog.recipients.placeholder');
   fireEvent.change(input, {
@@ -233,7 +233,7 @@ test('It can add multiple recipients at once (separated by comma, semicolon, spa
   });
   fireEvent.click(getByText(container, 'pim_common.add'));
 
-  expect(getAllByTitle(container, 'pim_common.delete').length).toEqual(5);
+  expect(getAllByTitle(container, 'pim_common.remove').length).toEqual(5);
   expect(mockOnRecipientsChange).toHaveBeenCalledWith([
     {email: 'coucou@akeneo.com'},
     {email: 'hello@akeneo.com'},
@@ -264,5 +264,32 @@ test('It does not add more than the recipient limit', async () => {
   });
   fireEvent.click(getByText(container, 'pim_common.add'));
 
-  expect(getAllByTitle(container, 'pim_common.delete').length).toBeLessThanOrEqual(MAX_RECIPIENT_COUNT);
+  expect(getAllByTitle(container, 'pim_common.remove').length).toBeLessThanOrEqual(MAX_RECIPIENT_COUNT);
+});
+
+test('I can bulk delete recipients', async () => {
+  const recipients = [{email: 'hello@akeneo.com'}, {email: 'coucou@akeneo.com'}, {email: 'bonjour@akeneo.com'}];
+  const mockOnRecipientsChange = jest.fn();
+
+  await act(async () => {
+    ReactDOM.render(
+      <Recipients recipients={recipients} validationErrors={[]} onRecipientsChange={mockOnRecipientsChange} />,
+      container
+    );
+  });
+
+  // Clicking twice on the same row to check toggling works -> hello@akeneo.com will not be removed
+  fireEvent.click(getByText(container, 'hello@akeneo.com'));
+  fireEvent.click(getByText(container, 'hello@akeneo.com'));
+  fireEvent.click(getByText(container, 'coucou@akeneo.com'));
+  fireEvent.click(getByText(container, 'pim_common.delete'));
+
+  expect(mockOnRecipientsChange).toHaveBeenCalledWith([{email: 'hello@akeneo.com'}, {email: 'bonjour@akeneo.com'}]);
+
+  // Now trying to select all and delete them
+  fireEvent.click(getByText(container, 'bonjour@akeneo.com'));
+  fireEvent.click(container.querySelector('#select-all-checkbox'));
+  fireEvent.click(getByText(container, 'pim_common.delete'));
+
+  expect(mockOnRecipientsChange).toHaveBeenCalledWith([]);
 });

@@ -41,9 +41,8 @@ type DateAttributeValueProps = {
   hasError?: boolean;
 };
 
-// Color is not present in theme ATM (discussed with the UI team)
 const CustomInputDate = styled(InputDate)`
-  color: #515d6d;
+  color: ${props => props.theme.color.grey140};
 `;
 
 const DateAttributeValue = forwardRef<

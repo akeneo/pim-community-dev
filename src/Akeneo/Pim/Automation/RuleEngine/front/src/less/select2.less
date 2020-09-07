@@ -10,11 +10,17 @@
   }
 
   .add-conditions-button .select2-default {
-    color: @AknGrey !important;
+    color: @AknGrey120 !important;
   }
+
 
   .select2-container.select2-allowclear .select2-choice .select2-chosen {
     width: calc(100% - 40px);
+    margin-right: 40px;
+    transition: width 0.2s ease;
+  }
+  .select2-container.select2-allowclear:hover .select2-choice .select2-chosen {
+    width: calc(100% - 70px);
   }
 
   .select2-container.add-conditions-button {
@@ -29,9 +35,13 @@
     padding: 0 10px;
     border-width: 1px;
     border-style: solid;
-    color: @AknGrey;
-    border-color: @AknMediumGrey;
+    color: @AknGrey120;
+    border-color: @AknGrey100;
     background-color: @AknWhite;
+
+    &:hover {
+      background-color: @AknGrey20;
+    }
 
     & > .select2-choice {
       height: auto;
@@ -39,6 +49,7 @@
       border: none;
       color: @AknGrey;
       padding-left: 0;
+      background-color: transparent;
 
       &.select2-dropdown-open {
         background: @AknWhite;
@@ -77,6 +88,10 @@
       color: @AknPurple100 !important;
       padding-left: 0;
 
+      &:hover {
+        color: @AknPurple120 !important;
+      }
+
       &.select2-dropdown-open {
         background: @AknWhite;
       }
@@ -102,6 +117,10 @@
     border-radius: 100px;
     height: 32px;
     line-height: 30px;
+
+    &:hover {
+      color: @AknBlue120 !important;
+    }
 
     .select2-arrow {
       background-image: url('/bundles/akeneopimruleengine/assets/icons/icon-down-blue.svg');
@@ -150,7 +169,8 @@
 .select2-drop.currency-dropdown,
 .select2-drop.calculate-operator-dropdown,
 .select2-drop.fields-selector-dropdown,
-.select2-drop.add-attribute-dropdown {
+.select2-drop.add-attribute-dropdown,
+.select2-drop.measurement-unit-selector-dropdown {
   .select2-results {
     font-size: 13px;
 
@@ -210,6 +230,13 @@
   border: 1px solid @AknRed100;
 }
 
+.select2-glued-container-error > .select2-container > .select2-choices,
+.select2-glued-container-error > .select2-container > .select2-choice,
+.select2-glued-container-error > .asset-selector-container > .select2-container > .select2-choices > .select2-search-field,
+.select2-glued-container-error > .record-selector-container > .select2-container > .select2-choices > .select2-search-field {
+  border-color: @AknRed100;
+}
+
 .select2-container.select2-container-disabled > a.select2-choice,
 .AknTextField[readonly]:not(.AknTextField--light),
 .AknTextField[disabled]:not(.AknTextField--light) {
@@ -219,4 +246,28 @@
   background-size: 16px;
   background-repeat: no-repeat;
   background-position: calc(100% - 10px) 10px;
+}
+
+.select2-container-operation-field-option {
+  border-color: @AknPurple100;
+}
+
+.select2-container-left-glued {
+  .select2-choice {
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+
+.select2-container-as-option {
+  .select2-chosen {
+    text-align: right;
+    text-transform: uppercase;
+    color: @AknGrey100;
+
+    .flag {
+      display: none;
+    }
+  }
 }
