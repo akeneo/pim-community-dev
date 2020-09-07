@@ -45,7 +45,6 @@ jobs:
                 with:
                     name: package
                     path: akeneo-design-system/package.json
-
     extract:
         name: Extract to DSM dedicated repo
         needs:
@@ -60,7 +59,6 @@ jobs:
                 with:
                     name: Lib
                     path: akeneo-design-system/lib
-
             -   name: Bump package version
                 run: rm akeneo-design-system/package.json
             -   name: Download the package.json artifact
