@@ -1,8 +1,7 @@
 import React from 'react';
 import { useTranslate } from '../../../../../dependenciesTools/hooks';
 import { IdentifiersSelector } from '../../../../../components/Selectors/IdentifierSelector';
-import { ProductIdentifier } from '../../../../../models/Product';
-import { ProductModelCode } from '../../../../../models/ProductModel';
+import { ProductIdentifier, ProductModelCode } from '../../../../../models';
 
 type Identifier = ProductIdentifier | ProductModelCode;
 

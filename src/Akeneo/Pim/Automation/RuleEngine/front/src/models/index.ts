@@ -8,3 +8,5 @@ export * from './Category';
 export * from './Attribute';
 export * from './Group';
 export * from './MeasurementFamily';
+export * from './Product';
+export * from './ProductModel';

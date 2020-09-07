@@ -16,6 +16,8 @@ import {
   AssociationType,
   AssociationTypeCode,
   GroupCode,
+  ProductModelCode,
+  ProductIdentifier,
 } from '../../../../models';
 import {
   ActionGrid,
@@ -27,8 +29,6 @@ import { Label } from '../../../../components/Labels';
 import { getAllAssociationTypes } from '../../../../repositories/AssociationTypeRepository';
 import { AssociationsGroupsSelector } from './association/AssociationsGroupsSelector';
 import { AssociationsIdentifiersSelector } from './association/AssociationsIdentifiersSelector';
-import { ProductModelCode } from '../../../../models/ProductModel';
-import { ProductIdentifier } from '../../../../models/Product';
 
 type Props = {
   action?: SetAssociationsAction;

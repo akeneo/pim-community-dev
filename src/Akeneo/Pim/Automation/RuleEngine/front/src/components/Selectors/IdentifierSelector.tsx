@@ -7,8 +7,7 @@ import {
   Select2Value,
 } from '../Select2Wrapper';
 import { useBackboneRouter, useTranslate } from '../../dependenciesTools/hooks';
-import { ProductIdentifier } from '../../models/Product';
-import { ProductModelCode } from '../../models/ProductModel';
+import { ProductIdentifier, ProductModelCode } from '../../models';
 
 type Identifier = ProductIdentifier | ProductModelCode;
 
