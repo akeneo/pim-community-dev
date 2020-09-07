@@ -1,6 +1,11 @@
-import React, {FormEvent} from 'react';
+import React from 'react';
 import styled, {css} from 'styled-components';
 import {CheckIcon} from '../../icons/CheckIcon';
+import {PartialCheckIcon} from "../../icons/PartialCheckIcon";
+
+const Container = styled.div`
+    display: flex;
+`;
 
 /**
  * @TODO use blue20 instead of #dee9f4
@@ -17,63 +22,78 @@ const CheckboxContainer = styled.div < {checked: boolean, readOnly: boolean } > 
     width: 20px;
     border: 1px solid #5992c7;
     border-radius: 3px;
-    display: inline-block;
+    outline: none;
 
     ${props =>
-        props.checked && css`
-            background-color: #5992c7
-        `
-    }
+        (props.checked) && css`
+            background-color: #5992c7;
+    `}
 
     ${props =>
         props.checked && props.readOnly && css`
-            background-color: #dee9f4
-            border-color: #bdd3e9
-        `
-    }
+            background-color: #dee9f4;
+            border-color: #bdd3e9;
+    `}
 
     ${props =>
         !props.checked && props.readOnly && css`
-            background-color: #f9f9fb
-            border-color: #a1a9b7
-        `
-    }
+            background-color: #f9f9fb;
+            border-color: #a1a9b7;
+    `}
 `;
 
 const LabelContainer = styled.div < {readOnly: boolean} > `
-    font-color: "#11324d";
+    color: #11324d;
     font-weight: 400;
     font-size: 15px;
     padding-left: 10px;
-    display: inline-block;
 
     ${props =>
         props.readOnly && `
-            font-color: "#a1a9b7";
-        `
-    }
+            color: #a1a9b7;
+    `}
 `;
 
 type CheckboxProps = {
+    /**
+     * State of the Checkbox
+     */
     checked: boolean,
+
+    /**
+     * Displays the value of the input, but does not allow changes.
+     */
     readOnly: boolean,
+
+    /**
+     * The undetermined state comes into play when the checkbox contains a sublist of selections,
+     * some of which are selected, and others aren't.
+     */
+    undetermined: boolean,
+
+    /**
+     * Provide a description of the Checkbox, the label appear on the right of the checkboxes.
+     */
     label?: string,
+
+    /**
+     * The handler called when clicking on Checkbox
+     */
     onChange?: (value: boolean) => void,
 };
 
 /**
  * The checkboxes are applied when users can select all, several, or none of the options from a given list.
  */
-const Checkbox = ({label, checked, onChange, readOnly = false}: CheckboxProps) => {
-    const handleChange = (e: FormEvent<HTMLDivElement>) => onChange && !readOnly && onChange(!checked);
-
-    console.log(checked);
-    console.log(readOnly);
+const Checkbox = ({label, checked, onChange, undetermined = false, readOnly = false}: CheckboxProps) => {
+    const handleChange = () => onChange && !readOnly && onChange(!checked);
 
     return (
-        <label>
-            <CheckboxContainer onClick={handleChange} checked={checked} readOnly={readOnly}>
-                {checked ? (
+        <Container onClick={handleChange}>
+            <CheckboxContainer checked={checked || undetermined} readOnly={readOnly}>
+                { undetermined ? (
+                    <PartialCheckIcon height={20} width={20}/>
+                ) : checked ? (
                     <CheckIcon height={20} width={20}/>
                 ) : null}
             </CheckboxContainer>
@@ -82,7 +102,7 @@ const Checkbox = ({label, checked, onChange, readOnly = false}: CheckboxProps) =
                     {label}
                 </LabelContainer>
             ) : null}
-        </label>
+        </Container>
     );
 };
 
