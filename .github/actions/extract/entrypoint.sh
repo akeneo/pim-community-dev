@@ -27,5 +27,5 @@ cd "$CLONE_DIR"
 git status
 
 git add .
-git commit --message "$BODY"
+git commit --file ./commit-messages.txt
 git push origin "$BRANCH"
