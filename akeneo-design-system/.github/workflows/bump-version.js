@@ -45,8 +45,9 @@ const getBumpNameFromBumpLevel = (bumpLevel) => {
 const rawdata = fs.readFileSync(filePath);
 const githubEvent = JSON.parse(rawdata);
 
-const messages = execSync(`git rev-list --ancestry-path ${githubEvent.before}...${githubEvent.after} | xargs -n1 git log -n 1 --pretty=format:%s`).split('\n');
-
+const messages = execSync(`git rev-list --ancestry-path ${githubEvent.before}...${githubEvent.after} | xargs -n1 git log -n 1 --pretty=format:%s`);
+console.log(messages);
+console.log(new String(messages));
 const levelToBump = messages.reduce((currentBumpLevel, commit) => {
     const bumpLevel = getCommitMessageBumpLevel(commit);
 
