@@ -1,5 +1,5 @@
 import React from 'react';
-import {addDecorator} from '@storybook/react';
+import {addDecorator, addParameters} from '@storybook/react';
 import {StoryStyle} from '../src/shared/global';
 
 addDecorator(story => (
@@ -7,3 +7,7 @@ addDecorator(story => (
     <StoryStyle>{story()}</StoryStyle>
   </>
 ));
+
+addParameters({
+    viewMode: 'docs'
+})

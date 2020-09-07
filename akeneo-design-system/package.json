@@ -41,7 +41,7 @@
     "@storybook/addon-actions": "^6.0.4",
     "@storybook/addon-essentials": "^6.0.4",
     "@storybook/addon-links": "^6.0.4",
-    "@storybook/react": "^6.0.4",
+    "@storybook/react": "^6.0.21",
     "@testing-library/jest-dom": "^5.11.3",
     "@testing-library/react": "^10.4.8",
     "@types/expect-puppeteer": "^4.4.3",
