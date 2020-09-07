@@ -6,9 +6,10 @@ const fs = require('fs');
 
 const filePath = process.argv[2];
 const externalPackageJson = process.argv[3];
+const commitMessagesFilepath = process.argv[4];
 
 if (typeof filePath === 'undefined') {
-    console.log(`usage: ${process.argv[0]} ${process.argv[1]} path_to_webhook_event.json external/package.json`);
+    console.log(`usage: ${process.argv[0]} ${process.argv[1]} path_to_webhook_event.json external/package.json commit-messages.txt`);
 
     return;
 }
@@ -45,7 +46,6 @@ const getBumpNameFromBumpLevel = (bumpLevel) => {
 const rawdata = fs.readFileSync(filePath);
 const githubEvent = JSON.parse(rawdata);
 
-
 const messages = (new String(execSync(`git rev-list --ancestry-path ${githubEvent.before}...${githubEvent.after} | xargs -n1 git log -n 1 --pretty=format:%s`))).split('\n');
 
 const levelToBump = messages.reduce((currentBumpLevel, commit) => {
@@ -58,3 +58,5 @@ const externalVersion = JSON.parse(fs.readFileSync(externalPackageJson)).version
 
 execSync(`npm --no-git-tag-version version ${externalVersion}`);
 execSync(`npm --no-git-tag-version version ${getBumpNameFromBumpLevel(levelToBump)}`);
+
+fs.writeFileSync(commitMessagesFilepath, messages);
