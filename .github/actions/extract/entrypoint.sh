@@ -29,3 +29,4 @@ git status
 git add .
 git commit --file ./commit-messages.txt
 git push origin "$BRANCH"
+
