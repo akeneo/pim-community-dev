@@ -59,10 +59,4 @@ const externalVersion = JSON.parse(fs.readFileSync(externalPackageJson)).version
 execSync(`npm --no-git-tag-version version ${externalVersion}`);
 execSync(`npm --no-git-tag-version version ${getBumpNameFromBumpLevel(levelToBump)}`);
 
-console.log(new String(execSync(`git rev-list ${githubEvent.before}..HEAD`)))
-console.log('---------')
-console.log(new String(execSync(`git rev-list ${githubEvent.before}..HEAD | xargs -n1 git log -n 1 --pretty=format:%s`)))
-console.log('---------')
-
-fs.writeFileSync(commitMessagesFilepath, messages.join(' '));
-
+fs.writeFileSync(commitMessagesFilepath, messages.join('\n'));
