@@ -22,7 +22,7 @@ class UnknownProductException extends \Exception implements
     public function __construct(string $productIdentifier)
     {
         $this->templatedErrorMessage = new TemplatedErrorMessage(
-            'The {product_identifier} product does not exist in your PIM.',
+            'The {product_identifier} product does not exist in your PIM or you do not have permission to access it.',
             ['product_identifier' => $productIdentifier]
         );
 
