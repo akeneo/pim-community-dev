@@ -30,17 +30,13 @@ jobs:
         steps:
             -   name: Checkout current branch
                 uses: actions/checkout@v2
-            -   name: Use Node.js 13
-                uses: actions/setup-node@v1
-                with:
-                    node-version: 13.13
             -   name: Checkout external repo
                 uses: actions/checkout@v2
                 with:
                     repository: 'samirboulil/dsm'
                     path: external
             -   name: Bump package version
-                run: cd akeneo-design-system && node .github/workflows/bump-version.js $GITHUB_EVENT_PATH ./package.json ../external/package.json
+                run: cd akeneo-design-system && node .github/workflows/bump-version.js $GITHUB_EVENT_PATH ../external/package.json
             -   uses: actions/upload-artifact@v1
                 with:
                     name: package
