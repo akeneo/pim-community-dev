@@ -30,6 +30,8 @@ jobs:
         steps:
             -   name: Checkout current branch
                 uses: actions/checkout@v2
+                with:
+                    fetch-depth: 0
             -   name: Checkout external repo
                 uses: actions/checkout@v2
                 with:
