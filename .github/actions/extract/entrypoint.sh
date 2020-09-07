@@ -23,7 +23,9 @@ rm "$CLONE_DIR"/.gitignore
 
 cp -r "$FOLDER"/. "$CLONE_DIR"
 
+pwd
 cd "$CLONE_DIR"
+pwd
 git status
 
 git add .
