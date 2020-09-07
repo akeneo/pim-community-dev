@@ -27,8 +27,7 @@ jobs:
                 run: cd akeneo-design-system && yarn install
 
             -   name: Bump package version
-                run: cd akeneo-design-system && node .github/workflows/bump-version.js $GITHUB_EVENT_PATH ./package.json ../external/package.json && echo "::set-output name=new_version::$(node .github/workflows/get-version.js)"
-                id: generate_new_dsm_version
+                run: cd akeneo-design-system && node .github/workflows/bump-version.js $GITHUB_EVENT_PATH ./package.json ../external/package.json
             -   name: Build library
                 run: cd akeneo-design-system && yarn run lib:build:prod
             -   uses: actions/upload-artifact@v1
@@ -52,6 +51,9 @@ jobs:
                 with:
                     name: Lib
                     path: akeneo-design-system/lib
+
+            -   name: Bump package version
+                run: rm akeneo-design-system/package.json
             -   name: Download the package.json artifact
                 uses: actions/download-artifact@v1
                 with:
