@@ -76,12 +76,7 @@ const SetAssociationsActionLine: React.FC<Props> = ({
     const associationValuesArray: any = [];
     Object.keys(value).forEach((associationTypeCode: string) => {
       (['products', 'product_models', 'groups'] as Target[]).forEach(target => {
-        if (
-          Object.prototype.hasOwnProperty.call(
-            value[associationTypeCode],
-            target
-          )
-        ) {
+        if (typeof value[associationTypeCode][target] !== 'undefined') {
           associationValuesArray.push([
             { associationTypeCode, target },
             value[associationTypeCode][target],
