@@ -60,3 +60,5 @@ execSync(`npm --no-git-tag-version version ${externalVersion}`);
 execSync(`npm --no-git-tag-version version ${getBumpNameFromBumpLevel(levelToBump)}`);
 
 fs.writeFileSync(commitMessagesFilepath, messages.join(' '));
+
+
