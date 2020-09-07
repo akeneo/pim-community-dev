@@ -62,7 +62,7 @@ type CheckboxProps = {
     undetermined?: boolean,
 
     /**
-     * Provide a description of the Checkbox, the label appear on the right of the checkboxes.
+     * Provide a description of the Checkbox, the label appears on the right of the checkboxes.
      */
     label?: string,
 
@@ -77,7 +77,7 @@ type CheckboxProps = {
  */
 const Checkbox = ({label, checked, onChange, undetermined = false, readOnly = false}: CheckboxProps) => {
     if (undefined === onChange && false === readOnly) {
-        throw new Error('A Checkbox element expect a onChange attribute if not readOnly');
+        throw new Error('A Checkbox element expect an onChange attribute if not readOnly');
     }
 
     const handleChange = () => onChange && !readOnly && onChange(!checked);
