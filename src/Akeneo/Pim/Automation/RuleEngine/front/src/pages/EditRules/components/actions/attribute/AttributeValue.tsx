@@ -32,7 +32,7 @@ import {
   InlineHelper,
 } from '../../../../../components/HelpersInfos';
 import { ActionFormContainer } from '../style';
-import { parseMeasurementValue } from '../../../../../components/Inputs';
+import { parseMeasurementValue } from '../../../../../models/Measurement';
 
 const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: AttributeType[] = [
   AttributeType.TEXT,

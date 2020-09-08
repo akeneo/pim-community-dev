@@ -17,8 +17,8 @@ import { useGetAttributeAtMount } from '../actions/attribute/attribute.utils';
 import {
   getMeasurementValidator,
   InputMeasurement,
-  MeasurementData,
 } from '../../../../components/Inputs';
+import { MeasurementData } from '../../../../models/Measurement';
 
 type MeasurementAttributeConditionLineProps = ConditionLineProps & {
   condition: MeasurementAttributeCondition;

@@ -8,6 +8,12 @@ import {
 } from '../Selectors/MeasurementUnitSelector';
 import styled from 'styled-components';
 import { Router, Translate } from '../../dependenciesTools';
+import {
+  isMeasurementAmountFilled,
+  isMeasurementUnitFilled,
+  MeasurementData,
+  parseMeasurementValue,
+} from '../../models/Measurement';
 
 const MeasurementContainer = styled.div<{ hiddenLabel: boolean }>`
   display: flex;
@@ -32,38 +38,6 @@ const MeasurementUnitContainer = styled.span`
 `;
 
 MeasurementContainer.displayName = 'MeasurementContainer';
-
-type MeasurementData = {
-  unit: MeasurementUnitCode | null;
-  amount: number | null;
-};
-
-const isMeasurementAmountFilled = (value: any): boolean => {
-  return (
-    value &&
-    Object.prototype.hasOwnProperty.call(value, 'amount') &&
-    value.amount !== '' &&
-    value.amount !== null
-  );
-};
-
-const isMeasurementUnitFilled = (value: any): boolean => {
-  return (
-    value && Object.prototype.hasOwnProperty.call(value, 'unit') && !!value.unit
-  );
-};
-
-const parseMeasurementValue = (value: any): MeasurementData => {
-  if (
-    value &&
-    Object.prototype.hasOwnProperty.call(value, 'amount') &&
-    Object.prototype.hasOwnProperty.call(value, 'unit')
-  ) {
-    return { unit: value.unit, amount: value.amount };
-  }
-
-  return { unit: '', amount: null };
-};
 
 const getMeasurementValidator = (
   attribute: Attribute,
@@ -148,11 +122,4 @@ const InputMeasurement: React.FC<Props> = ({
 
 InputMeasurement.displayName = 'InputMeasurement';
 
-export {
-  InputMeasurement,
-  MeasurementData,
-  isMeasurementUnitFilled,
-  isMeasurementAmountFilled,
-  parseMeasurementValue,
-  getMeasurementValidator,
-};
+export { InputMeasurement, getMeasurementValidator };

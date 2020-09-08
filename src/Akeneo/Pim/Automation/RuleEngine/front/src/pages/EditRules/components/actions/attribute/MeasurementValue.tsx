@@ -1,12 +1,12 @@
 import React from 'react';
 import { useUserCatalogLocale } from '../../../../../dependenciesTools/hooks';
-import {
-  InputMeasurement,
-  isMeasurementAmountFilled,
-  isMeasurementUnitFilled,
-} from '../../../../../components/Inputs';
+import { InputMeasurement } from '../../../../../components/Inputs';
 import { InputValueProps } from './AttributeValue';
 import { getAttributeLabel } from '../../../../../models';
+import {
+  isMeasurementAmountFilled,
+  isMeasurementUnitFilled,
+} from '../../../../../models/Measurement';
 
 const isMeasurementValueFilled = (value: any) => {
   return isMeasurementAmountFilled(value) && isMeasurementUnitFilled(value);
