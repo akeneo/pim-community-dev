@@ -19,7 +19,7 @@ const AssociationsIdentifiersSelector: React.FC<Props> = ({
   const translate = useTranslate();
   const [closeTick, setCloseTick] = React.useState<boolean>(false);
 
-  const handleSelect = (identifier: Identifier, index?: number) => {
+  const handleChange = (identifier: Identifier, index?: number) => {
     if (!identifier && typeof index !== 'undefined') {
       identifiers.splice(index, 1);
     } else if (!identifiers.includes(identifier)) {
@@ -43,7 +43,7 @@ const AssociationsIdentifiersSelector: React.FC<Props> = ({
               id={`product-or-product-model-selector-${identifier}`}
               allowClear={true}
               hiddenLabel
-              onChange={productIdentifier => handleSelect(productIdentifier, i)}
+              onChange={productIdentifier => handleChange(productIdentifier, i)}
               placeholder={' '} // A placeholder is needed for allowClear
             />
           </li>
@@ -62,7 +62,7 @@ const AssociationsIdentifiersSelector: React.FC<Props> = ({
           onSelecting={(event: any) => {
             event.preventDefault();
             setCloseTick(!closeTick);
-            handleSelect(event.val);
+            handleChange(event.val);
           }}
           closeTick={closeTick}
         />

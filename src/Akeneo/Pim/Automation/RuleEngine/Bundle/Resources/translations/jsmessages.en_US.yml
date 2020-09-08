@@ -169,6 +169,7 @@ pimee_catalog_rule:
                     add_group: Add a group
                     add_product: Add a product
                     add_product_model: Add a product model
+                    add_association_type: Add an association type
                     select_title:
                         products: Select your products
                         product_models: Select your product models

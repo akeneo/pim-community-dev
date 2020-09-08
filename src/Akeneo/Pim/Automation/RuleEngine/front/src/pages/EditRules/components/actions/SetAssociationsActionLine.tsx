@@ -16,8 +16,8 @@ import {
   AssociationType,
   AssociationTypeCode,
   GroupCode,
-  ProductModelCode,
   ProductIdentifier,
+  ProductModelCode,
 } from '../../../../models';
 import {
   ActionGrid,
@@ -26,17 +26,18 @@ import {
   ActionTitle,
 } from './ActionLine';
 import { Label } from '../../../../components/Labels';
-import { getAllAssociationTypes } from '../../../../repositories/AssociationTypeRepository';
+import { getAssociationTypesFromQuantified } from '../../../../repositories/AssociationTypeRepository';
 import { AssociationsGroupsSelector } from './association/AssociationsGroupsSelector';
 import { AssociationsIdentifiersSelector } from './association/AssociationsIdentifiersSelector';
+import { AddAssociationTypeButton } from './association/AddAssociationTypeButton';
 
 type Props = {
   action?: SetAssociationsAction;
 } & ActionLineProps;
 
-type Target = 'products' | 'product_models' | 'groups';
+export type Target = 'products' | 'product_models' | 'groups';
 
-type AssociationTarget = {
+export type AssociationTarget = {
   associationTypeCode: AssociationTypeCode;
   target: Target;
 };
@@ -71,7 +72,7 @@ const SetAssociationsActionLine: React.FC<Props> = ({
   ] = React.useState<AssociationTarget>();
 
   React.useEffect(() => {
-    getAllAssociationTypes(router).then(associationTypes => {
+    getAssociationTypesFromQuantified(router, false).then(associationTypes => {
       setAssociationTypes(associationTypes);
     });
   }, []);
@@ -150,6 +151,17 @@ const SetAssociationsActionLine: React.FC<Props> = ({
   ) => {
     associationValues.set(associationTarget, value);
     setAssociationValues(new Map(associationValues));
+    setValueFormValue(formatAssociationValues());
+  };
+
+  const handleAddAssociationType = (
+    associationTypeCode: AssociationTypeCode,
+    target: Target
+  ) => {
+    const associationTarget = { associationTypeCode, target };
+    associationValues.set(associationTarget, []);
+    setAssociationValues(new Map(associationValues));
+    setCurrentAssociationTarget(associationTarget);
     setValueFormValue(formatAssociationValues());
   };
 
@@ -232,6 +244,12 @@ const SetAssociationsActionLine: React.FC<Props> = ({
                   );
                 }
               )}
+              <li className={'AknBadgedSelector-item'}>
+                <AddAssociationTypeButton
+                  onAddAssociationType={handleAddAssociationType}
+                  selectedTargets={Array.from(associationValues.keys())}
+                />
+              </li>
             </ul>
           </ActionLeftSide>
           <ActionRightSide>
