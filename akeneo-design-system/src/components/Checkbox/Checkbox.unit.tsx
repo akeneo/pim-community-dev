@@ -1,5 +1,5 @@
 import React from 'react';
-import {fireEvent, render} from '@testing-library/react';
+import {fireEvent, render} from '../../shared/test-util';
 import {Checkbox} from './Checkbox';
 
 it('it calls onChange handler when user clicks on checkbox', () => {
@@ -29,5 +29,5 @@ it('it does not call onChange handler when read-only', () => {
 it('it cannot be instantiated without handler when not readonly', () => {
     expect(() => {
         render(<Checkbox checked={true} label="Checkbox"/>);
-    }).toThrow('A Checkbox element expect a onChange attribute if not readOnly');
+    }).toThrow('A Checkbox element expect an onChange attribute if not readOnly');
 });
