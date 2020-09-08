@@ -18,27 +18,40 @@ jobs:
                     node-version: 13.13
             -   name: Install Packages
                 run: cd akeneo-design-system && yarn install
-            -   name: Bump package version
-                run: cd akeneo-design-system && node .github/workflows/bump-version.js $GITHUB_EVENT_PATH && echo "::set-output name=new_version::$(node .github/workflows/get-version.js)"
-                id: generate_new_dsm_version
-            -   name: Push updated version
-                # Check we are able to push on a protected branch (like master)
-                run: |
-                    git config --global user.email "contact@akeneo.com" && \
-                    git config --global user.name "Github Actions" && \
-                    git add akeneo-design-system/package.json && \
-                    git commit -m "Bump to version ${{steps.generate_new_dsm_version.outputs.new_version}}" && \
-                    git push
             -   name: Build library
                 run: cd akeneo-design-system && yarn run lib:build:prod
             -   uses: actions/upload-artifact@v1
                 with:
                     name: Lib
                     path: akeneo-design-system/lib
-
+    bump:
+        name: Bump package version
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout current branch
+                uses: actions/checkout@v2
+                with:
+                    fetch-depth: 0
+            -   name: Checkout external repo
+                uses: actions/checkout@v2
+                with:
+                    repository: 'samirboulil/dsm'
+                    path: external
+            -   name: Bump package version
+                run: cd akeneo-design-system && node .github/workflows/bump-version.js $GITHUB_EVENT_PATH ../external/package.json ../commit-messages.txt
+            -   uses: actions/upload-artifact@v1
+                with:
+                    name: package
+                    path: akeneo-design-system/package.json
+            -   uses: actions/upload-artifact@v1
+                with:
+                    name: commit-messages
+                    path: commit-messages.txt
     extract:
         name: Extract to DSM dedicated repo
-        needs: build
+        needs:
+            - build
+            - bump
         runs-on: ubuntu-latest
         steps:
             -   name: Checkout the current branch
@@ -48,6 +61,18 @@ jobs:
                 with:
                     name: Lib
                     path: akeneo-design-system/lib
+            -   name: Bump package version
+                run: rm akeneo-design-system/package.json
+            -   name: Download the package.json artifact
+                uses: actions/download-artifact@v1
+                with:
+                    name: package
+                    path: akeneo-design-system
+            -   name: Download the commit messages
+                uses: actions/download-artifact@v1
+                with:
+                    name: commit-messages
+                    path: ./
             -   name: Pushes to dsm repository
                 uses: ./.github/actions/extract
                 env:
@@ -58,3 +83,4 @@ jobs:
                     destination-repository-name: 'dsm'
                     user-email: contact@akeneo.com
                     destination-branch: 'master'
+                    commit-messages-filepath: '/github/workspace/commit-messages.txt'
