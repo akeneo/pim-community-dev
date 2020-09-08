@@ -1,10 +1,12 @@
 pimee_catalog_rule:
+  overview: "]-Inf, 1]{{ count }} 个规则|]1, Inf[{{ count }} 个规则"
   execution_button: 执行规则
   selected: "]-Inf, 1]已选定 {{ count }} 个规则|]1, Inf[已选定 {{ count }} 个规则"
   dropdown:
     title: 其它操作
   popin:
     execute_rules:
+      confirm_title: 确认执行
       confirm_content: 确定要执行这些规则吗？(可能需要一段时间)
   notification:
     fail: 该操作未执行
@@ -27,17 +29,29 @@ pimee_catalog_rule:
       set.label: 设置成
       copy.label: 复制到
       add.label: 被添加到
+      remove.label: 从中移除
   datagrid:
     rule-grid:
+      actions:
+        execute:
+          confirm_title: 确认执行
+          confirm_content: 确定要执行这条规则吗？
       mass_edit_action:
+        confirm_title: 确认计算
         confirm_content: 确定要计算受这些规则影响的产品数量吗？
       mass_action:
         execute:
+          confirm_title: 确认执行
           confirm_content: 确定要执行这些规则吗？(可能需要一段时间)
           success: 规则执行已经启动。完成后会通知您。
           error: 执行规则时发生错误。
+          empty_selection: 没有选中规则。
         delete:
+          confirm_title: 确认执行
+          confirm_content: 确定要删除选中的规则吗？
+          success: 已成功删除规则。
           error: 删除规则时发生错误。
+          empty_selection: 没有选中规则。
   form:
     category:
       catalog: 目录
@@ -57,6 +71,10 @@ pimee_catalog_rule:
     tab:
       list: 规则生成器和属性选项卡
       rule_builder: 规则生成器
+    attribute:
+      tab:
+        rules:
+          title: 规则
     creation:
       helper: 规则引擎可以通过自动化操作，极大提升您的 PIM 生产率。
       english_flag: 英语标签
@@ -282,6 +300,9 @@ pimee_catalog_rule:
 pim_enrich:
   entity:
     rule:
+      module:
+        delete:
+          confirm: 确定要删除此规则？此操作无法撤消！
       flash:
         delete:
           success: 规则已成功删除
@@ -289,11 +310,15 @@ flash:
   rule:
     impacted_product_count: 已启动计算受影响产品数量的批量操作。完成后将通知您。
     executed: 规则执行已经启动。完成后会通知您。
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: 规则设置 
 batch_jobs:
+  add_attribute_value:
+    execute_rules.label: 执行规则
   default_steps:
     export_rules: 导出规则
     import_rules: 导入规则
     calculate_affected_products: 计算受影响的产品
+    execute_rules: 执行规则
   yml_rule_import:
     label: 以 YAML 格式导入规则
     import.label: 导入规则
@@ -302,5 +327,31 @@ batch_jobs:
     export.label: 导出规则
   rule_impacted_product_count:
     label: 受影响产品的数量
+    perform.label: 计数受影响的产品
+  csv_product_import_with_rules:
+    label: 以 CSV 格式导入产品及规则
+    import.label: 导入产品
+  csv_product_model_import_with_rules:
+    label: 以 CSV 格式导入产品模型及规则
+  xlsx_product_import_with_rules:
+    label: 以 XLSX 格式导入产品及规则
+    import.label: 导入产品
+  xlsx_product_model_import_with_rules:
+    label: 以 XLSX 格式导入产品模型及规则
+pim_notification:
+  types:
+    rule: 规则设置 
+    mass_edit_rule: 批量编辑规则
+    execute_rules: 执行规则
+pim_menu:
+  item:
+    rule: 规则
 pim_title:
+  pimee_catalog_rule_rule_index: 规则
   pimee_catalog_rule_edit: 编辑规则
+  pimee_catalog_rule_new: 规则
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        execute_rules: 执行规则
