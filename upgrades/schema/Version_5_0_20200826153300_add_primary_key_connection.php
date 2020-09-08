@@ -26,9 +26,6 @@ final class Version_5_0_20200826153300_add_primary_key_connection extends Abstra
         if ($this->indexExists('IDX_CONNECTIVITY_CONNECTION_code')) {
             $this->addSql('ALTER TABLE akeneo_connectivity_connection DROP INDEX IDX_CONNECTIVITY_CONNECTION_code');
         }
-        if ($this->indexExists('FK_APP_oro_user_app_user_id')) {
-            $this->addSql('ALTER TABLE akeneo_connectivity_connection DROP INDEX FK_APP_oro_user_app_user_id');
-        }
         if ($this->indexExists('code')) {
             $this->addSql('ALTER TABLE akeneo_connectivity_connection DROP INDEX code');
         }
