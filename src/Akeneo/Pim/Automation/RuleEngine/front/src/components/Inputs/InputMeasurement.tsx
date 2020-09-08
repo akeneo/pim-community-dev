@@ -9,25 +9,26 @@ import {
 import styled from 'styled-components';
 import { Router, Translate } from '../../dependenciesTools';
 
-const MeasurementContainer = styled.div`
+const MeasurementContainer = styled.div<{ hiddenLabel: boolean }>`
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: ${({ hiddenLabel }): string => (hiddenLabel ? 'nowrap' : 'wrap')};
   width: 100%;
 
   .AknNumberField {
     flex-basis: 50%;
     flex: 1;
-  }
-
-  .select2-container {
-    flex-basis: 50%;
-    min-width: 150px;
-    flex: 1;
+    max-width: 50%;
   }
 
   label {
     flex-basis: 100%;
   }
+`;
+
+const MeasurementUnitContainer = styled.span`
+  flex-basis: 50%;
+  max-width: 50%;
+  flex: 1;
 `;
 
 MeasurementContainer.displayName = 'MeasurementContainer';
@@ -115,7 +116,7 @@ const InputMeasurement: React.FC<Props> = ({
   };
 
   return (
-    <MeasurementContainer>
+    <MeasurementContainer hiddenLabel={!!hiddenLabel}>
       <InputNumber
         data-testid={`${id}-amount`}
         label={label}
@@ -127,21 +128,20 @@ const InputMeasurement: React.FC<Props> = ({
         step={attribute.decimals_allowed ? '' : 1}
         hiddenLabel={hiddenLabel}
       />
-      <span className={`${hasError ? 'select2-glued-container-error' : ''}`}>
+      <MeasurementUnitContainer
+        className={hasError ? 'select2-glued-container-error' : ''}>
         <MeasurementUnitSelector
           data-testid={`${id}-unit`}
           attribute={attribute}
           value={parsedValue.unit}
           onChange={unit => handleUnitChange(unit)}
           hiddenLabel={true}
-          containerCssClass={
-            'select2-container-left-glued select2-container-as-option'
-          }
+          containerCssClass={`select2-container-left-glued select2-container-as-option`}
           placeholder={translate(
             'pimee_catalog_rule.form.edit.actions.set_attribute.select_measurement_unit'
           )}
         />
-      </span>
+      </MeasurementUnitContainer>
     </MeasurementContainer>
   );
 };
