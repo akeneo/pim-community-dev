@@ -9,8 +9,8 @@ final class Version_5_0_20200826153300_add_primary_key_connection extends Abstra
 {
     public function up(Schema $schema): void
     {
-        $this->fixIndexes();
         $this->fixConstraints();
+        $this->fixIndexes();
     }
 
     public function down(Schema $schema): void
@@ -38,10 +38,10 @@ final class Version_5_0_20200826153300_add_primary_key_connection extends Abstra
     private function fixConstraints()
     {
         if ($this->constraintExists('FK_APP_oro_user_app_user_id')) {
-            $this->addSql('ALTER TABLE akeneo_connectivity_connection DROP CONSTRAINT FK_APP_oro_user_app_user_id');
+            $this->addSql('ALTER TABLE akeneo_connectivity_connection DROP FOREIGN KEY FK_APP_oro_user_app_user_id');
         }
         if ($this->constraintExists('FK_APP_pim_api_client_app_client_id')) {
-            $this->addSql('ALTER TABLE akeneo_connectivity_connection DROP CONSTRAINT FK_APP_pim_api_client_app_client_id');
+            $this->addSql('ALTER TABLE akeneo_connectivity_connection DROP FOREIGN KEY FK_APP_pim_api_client_app_client_id');
         }
 
         if (!$this->constraintExists('FK_CONNECTIVITY_CONNECTION_client_id')) {
