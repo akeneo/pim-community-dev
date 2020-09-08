@@ -15,6 +15,7 @@ pimee_catalog_rule:
       mass_edit_action:
         impacted_product_count: 计算受影响的产品
         execute: 执行
+        delete: 删除
   condition:
     fields:
       family: 品类
@@ -27,15 +28,30 @@ pimee_catalog_rule:
       updated: 已更新
     field_groups:
       system: 系统
+  acl_group:
+    rule: 规则
   acl:
     rule:
       edit_permissions: 编辑规则
+      view_permissions: 查看规则
+      delete_permissions: 删除规则
       impacted_product_count_permissions: 计算受规则影响的产品数量
       create_permissions: 创建规则
+      execute_permissions: 执行规则
+  attribute:
+    tab:
+      rule.title: 规则
+    grid:
+      is_smart.label: 智能
+    acl:
+      rule.view_permissions: 查看规则
+  product:
+    history: 应用规则"%rule%"
   steps:
     product_rule_definition_reader.title: 产品规则导入阅读器
     rule_definition_processor.title: 产品规则导入处理器
     product_rule_definition_writer.title: 产品规则导入编写器
+    rules_execution.title: 执行规则
   notification:
     execute_rules:
       success: 规则执行完成
@@ -53,11 +69,19 @@ pimee_catalog_rule:
       week: ']-Inf, -1[%absolute_count% 周前 |{-1}1 周前 |{1}1 周内|]1, +Inf[ %absolute_count% 周内'
       month: ']-Inf, -1[%absolute_count% 月前 |{-1}1 月前 |{1}1 月内|]1, +Inf[ %absolute_count% 月内'
       year: ']-Inf, -1[%absolute_count% 年前 |{-1}1 年前 |{1}1 年内|]1, +Inf[ %absolute_count% 年内'
+btn:
+  Execute rules: 执行规则
 job_execution:
   summary:
+    rule_calculated: 规则的数量
     read_rules: 读取规则
     selected_entities: 选定的产品/产品模型
     skipped_invalid: 跳过的产品/产品模型(无效)
     updated_entities: 更新的产品/产品模型
     executed_rules: 成功执行的规则
     errored_rules: 跳过的规则 (无效)
+pim_datagrid:
+  cells:
+    type:
+      mass_edit_rule: 规则设置 
+      execute_rules: 执行规则
