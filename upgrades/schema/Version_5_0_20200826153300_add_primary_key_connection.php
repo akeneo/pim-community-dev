@@ -9,8 +9,8 @@ final class Version_5_0_20200826153300_add_primary_key_connection extends Abstra
 {
     public function up(Schema $schema): void
     {
-        $this->fixIndexes();
         $this->fixConstraints();
+        $this->fixIndexes();
     }
 
     public function down(Schema $schema): void
