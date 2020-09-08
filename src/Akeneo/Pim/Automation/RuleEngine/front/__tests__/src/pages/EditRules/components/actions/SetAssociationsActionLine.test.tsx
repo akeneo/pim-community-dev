@@ -5,6 +5,7 @@ import {
   screen,
   renderWithProviders,
   waitForElementToBeRemoved,
+  fireEvent,
 } from '../../../../../../test-utils';
 import { SetAssociationsAction } from '../../../../../../src/models/actions';
 import { locales, scopes } from '../../../../factories';
@@ -35,18 +36,26 @@ const associationTypes: AssociationType[] = [
   },
 ];
 
+const response = (request: Request) => {
+  if (request.url.includes('pim_enrich_associationtype_rest_index')) {
+    return Promise.resolve(JSON.stringify(associationTypes));
+  }
+  throw new Error(`The "${request.url}" url is not mocked.`);
+};
+
+const toRegister = [
+  { name: 'content.actions[0].value', type: 'custom' },
+  { name: 'content.actions[0].field', type: 'custom' },
+  { name: 'content.actions[0].type', type: 'custom' },
+];
+
 describe('SetAssociationsActionLine', () => {
   beforeEach(() => {
     fetchMock.resetMocks();
   });
 
-  it('should display the set categories action line, and switch tree', async () => {
-    fetchMock.mockResponse((request: Request) => {
-      if (request.url.includes('pim_enrich_associationtype_rest_index')) {
-        return Promise.resolve(JSON.stringify(associationTypes));
-      }
-      throw new Error(`The "${request.url}" url is not mocked.`);
-    });
+  it('should display the set categories action line, switch type and delete it', async () => {
+    fetchMock.mockResponse(response);
 
     const action: SetAssociationsAction = {
       type: 'set',
@@ -67,12 +76,6 @@ describe('SetAssociationsActionLine', () => {
         actions: [action],
       },
     };
-
-    const toRegister = [
-      { name: 'content.actions[0].value', type: 'custom' },
-      { name: 'content.actions[0].field', type: 'custom' },
-      { name: 'content.actions[0].type', type: 'custom' },
-    ];
 
     renderWithProviders(
       <SetAssociationsActionLine
@@ -108,6 +111,8 @@ describe('SetAssociationsActionLine', () => {
         )
       ).toBeInTheDocument();
     });
+
+    // Switch type test
     await act(async () => {
       userEvent.click(
         await screen.findByTestId('association-type-selector-PACK-groups')
@@ -118,5 +123,213 @@ describe('SetAssociationsActionLine', () => {
         'pimee_catalog_rule.form.edit.actions.set_associations.select_title.groups'
       )
     ).toBeInTheDocument();
+
+    // Delete test
+    await act(async () => {
+      userEvent.click(
+        await screen.findByTestId('delete-association-type-button-PACK-groups')
+      );
+    });
+    expect(
+      screen.queryByTestId('association-type-selector-PACK-groups')
+    ).not.toBeInTheDocument();
+  });
+
+  it('should display products', async () => {
+    fetchMock.mockResponse(response);
+
+    const action: SetAssociationsAction = {
+      type: 'set',
+      field: 'associations',
+      value: {
+        X_SELL: {
+          products: ['product_1', 'product_2'],
+        },
+      },
+    };
+    const defaultValues = {
+      content: {
+        actions: [action],
+      },
+    };
+
+    renderWithProviders(
+      <SetAssociationsActionLine
+        action={action}
+        lineNumber={0}
+        locales={locales}
+        scopes={scopes}
+        currentCatalogLocale={'fr_FR'}
+        handleDelete={jest.fn()}
+      />,
+      { all: true },
+      { defaultValues, toRegister }
+    );
+
+    await waitForElementToBeRemoved(() =>
+      document.querySelector('img[alt="pim_common.loading"]')
+    ).then(async () => {
+      expect(
+        await screen.findByTestId('product-or-product-model-selector-product_1')
+      ).toBeInTheDocument();
+      expect(
+        await screen.findByTestId('product-or-product-model-selector-product_2')
+      ).toBeInTheDocument();
+
+      // When
+      userEvent.click(await screen.findByTestId('association-types-selector'));
+      expect(
+        (await screen.findByTestId('association-types-selector')).children
+          .length
+      ).toBeGreaterThan(1);
+      fireEvent.change(
+        await screen.findByTestId('association-types-selector'),
+        {
+          target: { value: 'products' },
+        }
+      );
+
+      // Then
+      expect(
+        screen.getByTestId('association-type-selector-PACK-products')
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByTestId('product-or-product-model-selector-product_1')
+      ).not.toBeInTheDocument();
+    });
+  });
+
+  it('should display product models', async () => {
+    fetchMock.mockResponse(response);
+
+    const action: SetAssociationsAction = {
+      type: 'set',
+      field: 'associations',
+      value: {
+        X_SELL: {
+          product_models: ['product_model_1', 'product_model_2'],
+        },
+      },
+    };
+    const defaultValues = {
+      content: {
+        actions: [action],
+      },
+    };
+
+    renderWithProviders(
+      <SetAssociationsActionLine
+        action={action}
+        lineNumber={0}
+        locales={locales}
+        scopes={scopes}
+        currentCatalogLocale={'fr_FR'}
+        handleDelete={jest.fn()}
+      />,
+      { all: true },
+      { defaultValues, toRegister }
+    );
+
+    await waitForElementToBeRemoved(() =>
+      document.querySelector('img[alt="pim_common.loading"]')
+    ).then(async () => {
+      expect(
+        await screen.findByTestId(
+          'product-or-product-model-selector-product_model_1'
+        )
+      ).toBeInTheDocument();
+      expect(
+        await screen.findByTestId(
+          'product-or-product-model-selector-product_model_2'
+        )
+      ).toBeInTheDocument();
+
+      // When
+      userEvent.click(await screen.findByTestId('association-types-selector'));
+      expect(
+        (await screen.findByTestId('association-types-selector')).children
+          .length
+      ).toBeGreaterThan(1);
+      fireEvent.change(
+        await screen.findByTestId('association-types-selector'),
+        {
+          target: { value: 'product_models' },
+        }
+      );
+
+      // Then
+      expect(
+        screen.getByTestId('association-type-selector-PACK-product_models')
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByTestId(
+          'product-or-product-model-selector-product_model_1'
+        )
+      ).not.toBeInTheDocument();
+    });
+  });
+
+  it('should display groups', async () => {
+    fetchMock.mockResponse(response);
+
+    const action: SetAssociationsAction = {
+      type: 'set',
+      field: 'associations',
+      value: {
+        X_SELL: {
+          groups: ['group_1', 'group_2'],
+        },
+      },
+    };
+    const defaultValues = {
+      content: {
+        actions: [action],
+      },
+    };
+
+    renderWithProviders(
+      <SetAssociationsActionLine
+        action={action}
+        lineNumber={0}
+        locales={locales}
+        scopes={scopes}
+        currentCatalogLocale={'fr_FR'}
+        handleDelete={jest.fn()}
+      />,
+      { all: true },
+      { defaultValues, toRegister }
+    );
+
+    await waitForElementToBeRemoved(() =>
+      document.querySelector('img[alt="pim_common.loading"]')
+    ).then(async () => {
+      expect(
+        await screen.findByTestId('group-selector-group_1')
+      ).toBeInTheDocument();
+      expect(
+        await screen.findByTestId('group-selector-group_2')
+      ).toBeInTheDocument();
+
+      // When
+      userEvent.click(await screen.findByTestId('association-types-selector'));
+      expect(
+        (await screen.findByTestId('association-types-selector')).children
+          .length
+      ).toBeGreaterThan(1);
+      fireEvent.change(
+        await screen.findByTestId('association-types-selector'),
+        {
+          target: { value: 'groups' },
+        }
+      );
+
+      // Then
+      expect(
+        screen.getByTestId('association-type-selector-PACK-groups')
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByTestId('group-selector-group_1')
+      ).not.toBeInTheDocument();
+    });
   });
 });

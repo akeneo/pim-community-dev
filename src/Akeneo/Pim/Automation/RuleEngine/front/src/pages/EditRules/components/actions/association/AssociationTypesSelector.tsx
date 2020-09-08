@@ -75,7 +75,10 @@ const AssociationTypesSelector: React.FC<Props> = ({ value, onChange }) => {
     setCurrentAssociationTarget(Array.from(associationValues.keys())[0]);
   }, []);
 
-  if (!associationValues || !associationTypes) {
+  if (
+    typeof associationValues === 'undefined' ||
+    typeof associationTypes === 'undefined'
+  ) {
     return (
       <img
         src='/bundles/pimui/images//loader-V2.svg'
@@ -118,7 +121,8 @@ const AssociationTypesSelector: React.FC<Props> = ({ value, onChange }) => {
     associationTarget: AssociationTarget
   ) => {
     associationValues.delete(associationTarget);
-    setAssociationValues(associationValues);
+    setAssociationValues(new Map(associationValues));
+    setCurrentAssociationTarget(Array.from(associationValues.keys())[0]);
     onChange(formatAssociationValues());
   };
 
@@ -187,6 +191,7 @@ const AssociationTypesSelector: React.FC<Props> = ({ value, onChange }) => {
                     <span
                       className='AknBadgedSelector-delete'
                       tabIndex={0}
+                      data-testid={`delete-association-type-button-${associationTarget.associationTypeCode}-${associationTarget.target}`}
                       onClick={() =>
                         handleAssociationTargetDelete(associationTarget)
                       }
@@ -201,6 +206,7 @@ const AssociationTypesSelector: React.FC<Props> = ({ value, onChange }) => {
             <AddAssociationTypeButton
               onAddAssociationType={handleAddAssociationType}
               selectedTargets={Array.from(associationValues.keys())}
+              data-testid={'association-types-selector'}
             />
           </li>
         </ul>

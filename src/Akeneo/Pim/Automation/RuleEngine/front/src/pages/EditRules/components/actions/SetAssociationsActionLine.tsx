@@ -58,8 +58,7 @@ const SetAssociationsActionLine: React.FC<Props> = ({
           'pimee_catalog_rule.form.edit.actions.set_associations.helper'
         )}
         handleDelete={handleDelete}
-        lineNumber={lineNumber}
-      >
+        lineNumber={lineNumber}>
         <AssociationTypesSelector
           value={getValueFormValue() ?? {}}
           onChange={setValueFormValue}

@@ -28,6 +28,7 @@ type AssociationTypeSelect2Option = Select2Option & {
 const AddAssociationTypeButton: React.FC<Props> = ({
   onAddAssociationType,
   selectedTargets,
+  ...remainingProps
 }) => {
   const router = useBackboneRouter();
   const translate = useTranslate();
@@ -106,6 +107,7 @@ const AddAssociationTypeButton: React.FC<Props> = ({
 
   return (
     <Select2Wrapper
+      {...remainingProps}
       label={''}
       data={data}
       multiple={false}
@@ -116,7 +118,7 @@ const AddAssociationTypeButton: React.FC<Props> = ({
       dropdownCssClass={'add-association-type-dropdown'}
       onSelecting={e => {
         e.preventDefault();
-        const associationTypeCode = e.object.association_type_code;
+        const associationTypeCode = e.object?.association_type_code;
         if (typeof associationTypeCode !== 'undefined') {
           onAddAssociationType(associationTypeCode, e.val);
           setCloseTick(!closeTick);
