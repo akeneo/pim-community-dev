@@ -25,7 +25,7 @@
     "strictPropertyInitialization": true,
     "suppressImplicitAnyIndexErrors": true,
     "target": "es6",
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "types": ["puppeteer", "jest-environment-puppeteer", "expect-puppeteer"]
   }
 }

@@ -27,7 +27,7 @@ jobs:
         if: failure()
         with:
           name: test-folder
-          path: akeneo-design-system/src
+          path: akeneo-design-system
 
       # Update visual by doing a pull request
       - name: Update visual tests
