@@ -5,7 +5,8 @@ import { Operator } from '../../../models/Operator';
 
 const useControlledFormInputCondition = <T>(lineNumber: number) => {
   const { watch, getValues, setValue, errors } = useFormContext();
-  const formName = (name: string) => `content.conditions[${lineNumber}].${name}`;
+  const formName = (name: string) =>
+    `content.conditions[${lineNumber}].${name}`;
   const fieldFormName = formName('field');
   const operatorFormName = formName('operator');
   const valueFormName = formName('value');

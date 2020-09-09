@@ -83,6 +83,7 @@ const registerActions = (register: Control['register'], actions: Action[]) => {
             'field',
             'items',
             'scope',
+            'scope',
             'locale',
             'include_children',
           ];
@@ -91,6 +92,8 @@ const registerActions = (register: Control['register'], actions: Action[]) => {
           fields = ['field', 'scope', 'locale', 'value'];
           break;
         default:
+          // Custom action. We need to register all the action keys.
+          fields = Object.keys(action);
           break;
       }
 

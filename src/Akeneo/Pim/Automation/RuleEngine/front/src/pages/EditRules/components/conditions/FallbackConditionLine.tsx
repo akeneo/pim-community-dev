@@ -1,29 +1,24 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
-import { FallbackCondition } from '../../../../models/conditions';
+import { Controller, useFormContext } from 'react-hook-form';
 import { ConditionLineProps } from './ConditionLineProps';
-import {useControlledFormInputCondition} from "../../hooks";
+import { useControlledFormInputCondition } from '../../hooks';
 
-type FallbackConditionLineProps = ConditionLineProps & {
-  condition: FallbackCondition;
-};
-
-const FallbackConditionLine: React.FC<FallbackConditionLineProps> = ({
-  condition,
+const FallbackConditionLine: React.FC<ConditionLineProps> = ({
   lineNumber,
 }) => {
-  const {
-    formName,
-    getFormValue,
-  } = useControlledFormInputCondition<boolean>(lineNumber);
+  const { watch } = useFormContext();
+  const { formName, getFormValue } = useControlledFormInputCondition<boolean>(
+    lineNumber
+  );
+  const getConditionValues = () => watch(`content.conditions[${lineNumber}]`);
 
   return (
     <div className={'AknGrid-bodyCell AknRule'}>
-      {JSON.stringify(condition)}
-      {Object.keys(condition).forEach((key: string) => (
+      {JSON.stringify(getConditionValues())}
+      {Object.keys(getConditionValues()).map((key: string) => (
         <Controller
           as={<span hidden />}
-          name={formName('key')}
+          name={formName(key)}
           defaultValue={getFormValue(key)}
           key={key}
         />
@@ -32,4 +27,4 @@ const FallbackConditionLine: React.FC<FallbackConditionLineProps> = ({
   );
 };
 
-export { FallbackConditionLine, FallbackConditionLineProps };
+export { FallbackConditionLine };
