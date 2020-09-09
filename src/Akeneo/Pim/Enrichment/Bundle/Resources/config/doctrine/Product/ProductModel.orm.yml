@@ -23,19 +23,15 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
             type: datetime
         root:
             type: integer
-            nullable: true
         level:
             type: integer
             column: lvl
-            nullable: true
         left:
             type: integer
             column: lft
-            nullable: true
         right:
             type: integer
             column: rgt
-            nullable: true
     manyToMany:
         categories:
             targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface
