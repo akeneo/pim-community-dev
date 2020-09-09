@@ -6,12 +6,11 @@ import {
   renderWithProviders,
   waitForElementToBeRemoved,
   fireEvent,
-} from '../../../../../../test-utils';
-import { SetAssociationsAction } from '../../../../../../src/models/actions';
-import { locales, scopes } from '../../../../factories';
-import { AssociationType } from '../../../../../../src/models';
+} from '../../../../../../../test-utils';
+import { AssociationValue } from '../../../../../../../src/models/actions';
+import { AssociationType } from '../../../../../../../src/models';
 import userEvent from '@testing-library/user-event';
-import { SetAssociationsActionLine } from '../../../../../../src/pages/EditRules/components/actions/SetAssociationsActionLine';
+import { AssociationTypesSelector } from '../../../../../../../src/pages/EditRules/components/actions/association/AssociationTypesSelector';
 
 const associationTypes: AssociationType[] = [
   {
@@ -43,12 +42,6 @@ const response = (request: Request) => {
   throw new Error(`The "${request.url}" url is not mocked.`);
 };
 
-const toRegister = [
-  { name: 'content.actions[0].value', type: 'custom' },
-  { name: 'content.actions[0].field', type: 'custom' },
-  { name: 'content.actions[0].type', type: 'custom' },
-];
-
 describe('SetAssociationsActionLine', () => {
   beforeEach(() => {
     fetchMock.resetMocks();
@@ -57,37 +50,21 @@ describe('SetAssociationsActionLine', () => {
   it('should display the set associations action line, switch type and delete it', async () => {
     fetchMock.mockResponse(response);
 
-    const action: SetAssociationsAction = {
-      type: 'set',
-      field: 'associations',
-      value: {
-        X_SELL: {
-          products: ['product_1', 'product_2'],
-          product_models: [],
-        },
-        PACK: {
-          product_models: ['product_model_1', 'product_model_2'],
-          groups: ['group_1'],
-        },
+    const onChange = jest.fn();
+    const value: AssociationValue = {
+      X_SELL: {
+        products: ['product_1', 'product_2'],
+        product_models: [],
       },
-    };
-    const defaultValues = {
-      content: {
-        actions: [action],
+      PACK: {
+        product_models: ['product_model_1', 'product_model_2'],
+        groups: ['group_1'],
       },
     };
 
     renderWithProviders(
-      <SetAssociationsActionLine
-        action={action}
-        lineNumber={0}
-        locales={locales}
-        scopes={scopes}
-        currentCatalogLocale={'fr_FR'}
-        handleDelete={jest.fn()}
-      />,
-      { all: true },
-      { defaultValues, toRegister }
+      <AssociationTypesSelector value={value} onChange={onChange} />,
+      { all: true }
     );
 
     await waitForElementToBeRemoved(() =>
@@ -133,37 +110,30 @@ describe('SetAssociationsActionLine', () => {
     expect(
       screen.queryByTestId('association-type-selector-PACK-groups')
     ).not.toBeInTheDocument();
+    expect(onChange).toHaveBeenLastCalledWith({
+      X_SELL: {
+        products: ['product_1', 'product_2'],
+        product_models: [],
+      },
+      PACK: {
+        product_models: ['product_model_1', 'product_model_2'],
+      },
+    });
   });
 
   it('should display products', async () => {
     fetchMock.mockResponse(response);
 
-    const action: SetAssociationsAction = {
-      type: 'set',
-      field: 'associations',
-      value: {
-        X_SELL: {
-          products: ['product_1', 'product_2'],
-        },
-      },
-    };
-    const defaultValues = {
-      content: {
-        actions: [action],
+    const onChange = jest.fn();
+    const value: AssociationValue = {
+      X_SELL: {
+        products: ['product_1', 'product_2'],
       },
     };
 
     renderWithProviders(
-      <SetAssociationsActionLine
-        action={action}
-        lineNumber={0}
-        locales={locales}
-        scopes={scopes}
-        currentCatalogLocale={'fr_FR'}
-        handleDelete={jest.fn()}
-      />,
-      { all: true },
-      { defaultValues, toRegister }
+      <AssociationTypesSelector value={value} onChange={onChange} />,
+      { all: true }
     );
 
     await waitForElementToBeRemoved(() =>
@@ -196,38 +166,26 @@ describe('SetAssociationsActionLine', () => {
       expect(
         screen.queryByTestId('product-or-product-model-selector-product_1')
       ).not.toBeInTheDocument();
+      expect(onChange).toHaveBeenLastCalledWith({
+        ...value,
+        PACK: { products: [] },
+      });
     });
   });
 
   it('should display product models', async () => {
     fetchMock.mockResponse(response);
 
-    const action: SetAssociationsAction = {
-      type: 'set',
-      field: 'associations',
-      value: {
-        X_SELL: {
-          product_models: ['product_model_1', 'product_model_2'],
-        },
-      },
-    };
-    const defaultValues = {
-      content: {
-        actions: [action],
+    const onChange = jest.fn();
+    const value: AssociationValue = {
+      X_SELL: {
+        product_models: ['product_model_1', 'product_model_2'],
       },
     };
 
     renderWithProviders(
-      <SetAssociationsActionLine
-        action={action}
-        lineNumber={0}
-        locales={locales}
-        scopes={scopes}
-        currentCatalogLocale={'fr_FR'}
-        handleDelete={jest.fn()}
-      />,
-      { all: true },
-      { defaultValues, toRegister }
+      <AssociationTypesSelector value={value} onChange={onChange} />,
+      { all: true }
     );
 
     await waitForElementToBeRemoved(() =>
@@ -266,38 +224,26 @@ describe('SetAssociationsActionLine', () => {
           'product-or-product-model-selector-product_model_1'
         )
       ).not.toBeInTheDocument();
+      expect(onChange).toHaveBeenLastCalledWith({
+        ...value,
+        PACK: { product_models: [] },
+      });
     });
   });
 
   it('should display groups', async () => {
     fetchMock.mockResponse(response);
 
-    const action: SetAssociationsAction = {
-      type: 'set',
-      field: 'associations',
-      value: {
-        X_SELL: {
-          groups: ['group_1', 'group_2'],
-        },
-      },
-    };
-    const defaultValues = {
-      content: {
-        actions: [action],
+    const onChange = jest.fn();
+    const value: AssociationValue = {
+      X_SELL: {
+        groups: ['group_1', 'group_2'],
       },
     };
 
     renderWithProviders(
-      <SetAssociationsActionLine
-        action={action}
-        lineNumber={0}
-        locales={locales}
-        scopes={scopes}
-        currentCatalogLocale={'fr_FR'}
-        handleDelete={jest.fn()}
-      />,
-      { all: true },
-      { defaultValues, toRegister }
+      <AssociationTypesSelector value={value} onChange={onChange} />,
+      { all: true }
     );
 
     await waitForElementToBeRemoved(() =>
@@ -330,6 +276,10 @@ describe('SetAssociationsActionLine', () => {
       expect(
         screen.queryByTestId('group-selector-group_1')
       ).not.toBeInTheDocument();
+      expect(onChange).toHaveBeenLastCalledWith({
+        ...value,
+        PACK: { groups: [] },
+      });
     });
   });
 });

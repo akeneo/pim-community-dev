@@ -2,7 +2,7 @@ import React from 'react';
 import { Controller } from 'react-hook-form';
 import {
   AssociationValue,
-  SetAssociationsAction,
+  AddAssociationsAction,
 } from '../../../../models/actions';
 import { ActionLineProps } from './ActionLineProps';
 import { useControlledFormInputAction } from '../../hooks';
@@ -12,7 +12,7 @@ import { AssociationTypeCode } from '../../../../models';
 import { AssociationTypesSelector } from './association/AssociationTypesSelector';
 
 type Props = {
-  action?: SetAssociationsAction;
+  action?: AddAssociationsAction;
 } & ActionLineProps;
 
 export type Target = 'products' | 'product_models' | 'groups';
@@ -22,7 +22,7 @@ export type AssociationTarget = {
   target: Target;
 };
 
-const SetAssociationsActionLine: React.FC<Props> = ({
+const AddAssociationsActionLine: React.FC<Props> = ({
   lineNumber,
   handleDelete,
 }) => {
@@ -31,8 +31,8 @@ const SetAssociationsActionLine: React.FC<Props> = ({
   const {
     fieldFormName,
     typeFormName,
-    valueFormName,
-    getValueFormValue,
+    itemsFormName,
+    getItemsFormValue,
     isFormFieldInError,
   } = useControlledFormInputAction<AssociationValue>(lineNumber);
 
@@ -44,7 +44,7 @@ const SetAssociationsActionLine: React.FC<Props> = ({
         defaultValue='associations'
         rules={{
           validate: _ =>
-            Object.keys(getValueFormValue() || {}).length
+            Object.keys(getItemsFormValue() || {}).length
               ? true
               : translate('pimee_catalog_rule.exceptions.required'),
         }}
@@ -52,24 +52,24 @@ const SetAssociationsActionLine: React.FC<Props> = ({
       <Controller
         as={<input type='hidden' />}
         name={typeFormName}
-        defaultValue='set'
+        defaultValue='add'
       />
       <ActionTemplate
         title={translate(
-          'pimee_catalog_rule.form.edit.actions.set_associations.title'
+          'pimee_catalog_rule.form.edit.actions.add_associations.title'
         )}
         helper={translate(
-          'pimee_catalog_rule.form.edit.actions.set_associations.helper'
+          'pimee_catalog_rule.form.edit.actions.add_associations.helper'
         )}
         legend={translate(
-          'pimee_catalog_rule.form.edit.actions.set_associations.helper'
+          'pimee_catalog_rule.form.edit.actions.add_associations.helper'
         )}
         handleDelete={handleDelete}
         lineNumber={lineNumber}>
         <Controller
           as={AssociationTypesSelector}
-          name={valueFormName}
-          value={getValueFormValue() ?? {}}
+          name={itemsFormName}
+          value={getItemsFormValue() ?? {}}
           hasError={isFormFieldInError('field')}
         />
       </ActionTemplate>
@@ -77,4 +77,4 @@ const SetAssociationsActionLine: React.FC<Props> = ({
   );
 };
 
-export { SetAssociationsActionLine };
+export { AddAssociationsActionLine };

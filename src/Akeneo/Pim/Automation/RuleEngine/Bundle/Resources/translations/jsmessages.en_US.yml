@@ -182,6 +182,9 @@ pimee_catalog_rule:
                         products: ]-Inf, 1]{{ count }} product|]1, +Inf[{{ count }} products
                         product_models: ]-Inf, 1]{{ count }} product model|]1, +Inf[{{ count }} product models
                         groups: ]-Inf, 1]{{ count }} group|]1, +Inf[{{ count }} groups
+                add_associations:
+                    title: ADD Associations
+                    helper: To add associations, please select your association type(s) and then, the products, product models or groups you want to associate to your product selection.
                 clear_attribute:
                     title: CLEAR Attribute value
                     subtitle: Select the attribute to clear

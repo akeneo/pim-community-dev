@@ -2,6 +2,7 @@ import React from 'react';
 import { ActionLineProps } from '../../pages/EditRules/components/actions/ActionLineProps';
 import {
   getAddActionModule,
+  getAddAssociationsActionModule,
   getAddAttributeValueActionModule,
   getAddCategoriesModule,
   getAddGroupsActionModule,
@@ -36,6 +37,7 @@ const getActionModule: (
 ) => Promise<React.FC<ActionLineProps>> = async (json, router) => {
   const getActionModuleFunctions: ActionModuleGuesser[] = [
     getAddCategoriesModule,
+    getAddAssociationsActionModule,
     getAddGroupsActionModule,
     getClearAssociationsActionModule,
     getClearCategoriesActionModule,

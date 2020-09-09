@@ -28,9 +28,14 @@ import {
 type Props = {
   value: AssociationValue;
   onChange: (value: AssociationValue) => void;
+  hasError?: boolean;
 };
 
-const AssociationTypesSelector: React.FC<Props> = ({ value, onChange }) => {
+const AssociationTypesSelector: React.FC<Props> = ({
+  value,
+  onChange,
+  hasError,
+}) => {
   const router = useBackboneRouter();
   const currentCatalogLocale = useUserCatalogLocale();
   const translate = useTranslate();
@@ -57,7 +62,7 @@ const AssociationTypesSelector: React.FC<Props> = ({ value, onChange }) => {
 
   React.useEffect(() => {
     const associationValuesArray: any = [];
-    Object.keys(value).forEach((associationTypeCode: string) => {
+    Object.keys(value || {}).forEach((associationTypeCode: string) => {
       (['products', 'product_models', 'groups'] as Target[]).forEach(target => {
         if (typeof value[associationTypeCode][target] !== 'undefined') {
           associationValuesArray.push([
@@ -143,6 +148,7 @@ const AssociationTypesSelector: React.FC<Props> = ({ value, onChange }) => {
     associationValues.delete(associationTarget);
     setAssociationValues(new Map(associationValues));
     setCurrentAssociationTarget({ ...Array.from(associationValues.keys())[0] });
+    onChange(formatAssociationValues());
   };
 
   const handleChange = (
@@ -221,7 +227,10 @@ const AssociationTypesSelector: React.FC<Props> = ({ value, onChange }) => {
               );
             }
           )}
-          <li className={'AknBadgedSelector-item'}>
+          <li
+            className={`AknBadgedSelector-item${
+              hasError ? ' select2-container-error' : ''
+            }`}>
             <AddAssociationTypeButton
               onAddAssociationType={handleAddAssociationType}
               selectedTargets={Array.from(associationValues.keys())}
