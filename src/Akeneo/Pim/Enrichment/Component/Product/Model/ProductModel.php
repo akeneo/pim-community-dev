@@ -39,16 +39,16 @@ class ProductModel implements ProductModelInterface
     protected $updated;
 
     /** @var int */
-    protected $root;
+    protected $root = 0;
 
     /** @var int */
-    protected $level;
+    protected $level = 0;
 
     /** @var int */
-    protected $left;
+    protected $left = 0;
 
     /** @var int */
-    protected $right;
+    protected $right = 0;
 
     /** @var Collection $categories */
     protected $categories;
