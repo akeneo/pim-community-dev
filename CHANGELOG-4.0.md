@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9436: Filter out Reference Entity & Asset Family labels of disabled locales
+- PIM-9437: Fix ListGrantedRootCategoriesWithCountIncludingSubCategories sort buffer
 
 # 4.0.55 (2020-09-03)
 
