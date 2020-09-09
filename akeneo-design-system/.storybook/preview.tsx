@@ -13,5 +13,5 @@ addDecorator(story => (
 addDecorator(withThemesProvider([AkeneoPim]))
 
 addParameters({
-    viewMode: 'docs'
+  viewMode: 'docs'
 })
