@@ -1,0 +1,100 @@
+pimee_enrich.acl.locale.edit_permissions: 管理区域设置权限
+pimee_enrich.acl.category.edit_permissions: 管理类别权限
+pimee_enrich.acl.attribute_group.edit_permissions: 管理属性组权限
+pimee_importexport.acl.export_profile.edit_permissions: 管理导出配置文件权限
+pimee_importexport.acl.import_profile.edit_permissions: 管理导入配置文件权限
+pimee_enrich.groups.label: 所有者组
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: 编辑属性
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: 添加产品值及权限
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: 更新产品值及权限
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: 移除产品值及权限
+edit_common_attributes_with_permission: 编辑属性及权限
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: 编辑属性及权限
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: 自定义区域设置的访问次数
+    nb_custom_category_accesses: 自定义类别的访问次数
+    nb_custom_attribute_group_accesses: 自定义属性组的访问次数
+job_profile.permissions:
+  execute.label: 允许执行作业配置文件
+  edit.label: 允许编辑作业配置文件
+pim_title.locale:
+  edit: "区域 %locale.code% |编辑"
+attribute group.permissions:
+  view.label: 允许查看属性
+  view.help: 允许查看该属性组中的产品
+  edit.label: 允许编辑属性
+  edit.help: 允许编辑该属性组中的产品
+  no_access_to_attributes: 您无权访问该产品的任何属性。请联系您的管理员。
+category.permissions:
+  view.label: 允许查看产品
+  view.help: 允许查看该类别中的产品
+  edit.label: 允许编辑产品
+  edit.help: 允许编辑该类别中的产品 （隐含查看权限）
+  own.label: 允许拥有产品
+  own.help: 允许查看、发布、取消发布、分类、关联此类别中的产品（隐含编辑权限）
+  no_access_to_products: 您无权访问任何树中的产品。请联系您的管理员
+  apply_on_children.label: 将更改应用于子级
+  apply_on_children.help: 在所有的子级中复制权限更改，子级的现有权限保留
+locale.permissions:
+  view.label: 允许查看信息
+  view.help: 允许查看此区域的信息
+  edit.label: 允许编辑信息
+  edit.help: 允许编辑该区域中的信息 （暗含查看权限）
+  no_access_to_products: 您无权访问任何已激活区域中的产品数据。请联系您的管理员
+flash.locale.updated: 区域设置和权限已更新
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: 您没有权限编辑产品"%identifiers%"。
+      page_title: 产品
+      page_subtitle: 批量编辑（1 个产品） |批量编辑（%count% 个产品）
+      title: 选择操作
+      subtitle: 请选择想对所选产品执行的操作 |请选择想对所选 %count% 个产品执行的操作
+      confirm: 您将要更新产品的以下信息，请确认。 |您将要更新 %count% 个产品的以下信息，请确认。
+      steps:
+        first: 选择产品
+        second: 选择操作
+        third: 配置
+        fourth: 确认
+    publish:
+      message:
+        error: 您不是该产品的所有者，您不能发布它。
+        warning: 你不是所有选定产品的所有者，您不能发布产品 "%notGranted%"。
+      not_editable: 您没有权限编辑产品"%identifiers%"。
+    unpublish:
+      message:
+        error: 您不是该产品的所有者，您不能取消发布。
+        warning: 您不是所有选定产品的所有者，您不能取消发布产品"%notGranted%"。
+        info: 将取消发布选定的产品 %nbProducts% 。
+      not_editable: 您没有权限编辑产品"%identifiers%"。
+    classify:
+      message:
+        error: 您不是该产品的所有者，您不能对其进行分类。
+        warning: 您不是所有选定产品的所有者，您不能对产品"%notGranted%"进行分类。
+    edit_common_attributes:
+      message:
+        error: 您不是该产品的所有者，您不能对其进行编辑。
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: 权限
+  acl.product_ownership.title: 所有权
+  attributes:
+    empty: 无
+  category:
+    tab:
+      permission:
+        title: 权限
+  groups:
+    label: 所有者组
+    empty: 无
+add_product_value_with_permission_and_rules:
+  steps.perform: 添加产品值
+update_product_value_with_permission_and_rules:
+  steps.perform: 更新产品值
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: 编辑属性
+  steps.edit_common_attributes_processor.title: 编辑属性
+pim_enrich_attribute_form:
+  isReadOnly: 只读
