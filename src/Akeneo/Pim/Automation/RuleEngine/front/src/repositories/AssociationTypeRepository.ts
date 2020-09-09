@@ -14,14 +14,13 @@ const getAllAssociationTypes = async (
   return cachedAssociationTypes;
 };
 
-const getAssociationTypesFromQuantified = async (
-  router: Router,
-  isQuantified: boolean
+const getQuantifiedAssociationTypes = async (
+  router: Router
 ): Promise<AssociationType[]> => {
   const associationTypes = await getAllAssociationTypes(router);
 
   return associationTypes.filter(
-    associationType => associationType.is_quantified === isQuantified
+    associationType => !associationType.is_quantified
   );
 };
 
@@ -38,6 +37,6 @@ const getAssociationTypeByCode = async (
 
 export {
   getAllAssociationTypes,
-  getAssociationTypesFromQuantified,
+  getQuantifiedAssociationTypes,
   getAssociationTypeByCode,
 };

@@ -6,7 +6,7 @@ import {
   ProductIdentifier,
   ProductModelCode,
 } from '../../../../../models';
-import { getAssociationTypesFromQuantified } from '../../../../../repositories/AssociationTypeRepository';
+import { getQuantifiedAssociationTypes } from '../../../../../repositories/AssociationTypeRepository';
 import { AssociationValue } from '../../../../../models/actions';
 import { AssociationTarget, Target } from '../SetAssociationsActionLine';
 import {
@@ -50,7 +50,7 @@ const AssociationTypesSelector: React.FC<Props> = ({ value, onChange }) => {
   ] = React.useState<AssociationTarget>();
 
   React.useEffect(() => {
-    getAssociationTypesFromQuantified(router, false).then(associationTypes => {
+    getQuantifiedAssociationTypes(router).then(associationTypes => {
       setAssociationTypes(associationTypes);
     });
   }, []);
@@ -87,13 +87,33 @@ const AssociationTypesSelector: React.FC<Props> = ({ value, onChange }) => {
     );
   }
 
+  const currentAssociationTargetOrDefault: () =>
+    | AssociationTarget
+    | undefined = () => {
+    if (!currentAssociationTarget) {
+      return Array.from(associationValues.keys())[0];
+    }
+    if (
+      Array.from(associationValues.keys()).some(
+        associationTarget =>
+          associationTarget.associationTypeCode ===
+            currentAssociationTarget.associationTypeCode &&
+          associationTarget.target === currentAssociationTarget.target
+      )
+    ) {
+      return currentAssociationTarget;
+    }
+    return Array.from(associationValues.keys())[0];
+  };
+
   const isCurrentAssociationTargetOrDefault: (
     associationTarget: AssociationTarget
   ) => boolean = ({ associationTypeCode, target }) => {
+    const current = currentAssociationTargetOrDefault();
     return (
-      !!currentAssociationTarget &&
-      currentAssociationTarget.associationTypeCode === associationTypeCode &&
-      currentAssociationTarget.target === target
+      !!current &&
+      current.associationTypeCode === associationTypeCode &&
+      current.target === target
     );
   };
 
@@ -122,8 +142,7 @@ const AssociationTypesSelector: React.FC<Props> = ({ value, onChange }) => {
   ) => {
     associationValues.delete(associationTarget);
     setAssociationValues(new Map(associationValues));
-    setCurrentAssociationTarget(Array.from(associationValues.keys())[0]);
-    onChange(formatAssociationValues());
+    setCurrentAssociationTarget({ ...Array.from(associationValues.keys())[0] });
   };
 
   const handleChange = (
@@ -212,55 +231,71 @@ const AssociationTypesSelector: React.FC<Props> = ({ value, onChange }) => {
         </ul>
       </ActionLeftSide>
       <ActionRightSide>
-        {currentAssociationTarget && (
+        {currentAssociationTargetOrDefault() && (
           <>
             <ActionTitle>
               {translate(
-                `pimee_catalog_rule.form.edit.actions.set_associations.select_title.${currentAssociationTarget.target}`
+                `pimee_catalog_rule.form.edit.actions.set_associations.select_title.${
+                  currentAssociationTargetOrDefault()?.target
+                }`
               )}
             </ActionTitle>
             <Label
               className='AknFieldContainer-label control-label'
               label={`${translate(
-                `pimee_catalog_rule.form.edit.actions.set_associations.select.${currentAssociationTarget?.target}`
+                `pimee_catalog_rule.form.edit.actions.set_associations.select.${
+                  currentAssociationTargetOrDefault()?.target
+                }`
               )} ${translate('pim_common.required_label')}`}
             />
-            {currentAssociationTarget.target === 'groups' && (
+            {(currentAssociationTargetOrDefault() as AssociationTarget)
+              .target === 'groups' && (
               <AssociationsGroupsSelector
                 groupCodes={
                   (associationValues.get(
-                    currentAssociationTarget
+                    currentAssociationTargetOrDefault() as AssociationTarget
                   ) as GroupCode[]) || []
                 }
                 currentCatalogLocale={currentCatalogLocale}
                 onChange={groupCodes =>
-                  handleChange(currentAssociationTarget, groupCodes)
+                  handleChange(
+                    currentAssociationTargetOrDefault() as AssociationTarget,
+                    groupCodes
+                  )
                 }
               />
             )}
-            {currentAssociationTarget.target === 'products' && (
+            {(currentAssociationTargetOrDefault() as AssociationTarget)
+              .target === 'products' && (
               <AssociationsIdentifiersSelector
                 entityType='product'
                 identifiers={
                   (associationValues.get(
-                    currentAssociationTarget
+                    currentAssociationTargetOrDefault() as AssociationTarget
                   ) as ProductIdentifier[]) || []
                 }
                 onChange={productIdentifiers =>
-                  handleChange(currentAssociationTarget, productIdentifiers)
+                  handleChange(
+                    currentAssociationTargetOrDefault() as AssociationTarget,
+                    productIdentifiers
+                  )
                 }
               />
             )}
-            {currentAssociationTarget.target === 'product_models' && (
+            {(currentAssociationTargetOrDefault() as AssociationTarget)
+              .target === 'product_models' && (
               <AssociationsIdentifiersSelector
                 entityType='product_model'
                 identifiers={
                   (associationValues.get(
-                    currentAssociationTarget
+                    currentAssociationTargetOrDefault() as AssociationTarget
                   ) as ProductModelCode[]) || []
                 }
                 onChange={productModelCodes =>
-                  handleChange(currentAssociationTarget, productModelCodes)
+                  handleChange(
+                    currentAssociationTargetOrDefault() as AssociationTarget,
+                    productModelCodes
+                  )
                 }
               />
             )}

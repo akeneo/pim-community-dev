@@ -54,7 +54,7 @@ describe('SetAssociationsActionLine', () => {
     fetchMock.resetMocks();
   });
 
-  it('should display the set categories action line, switch type and delete it', async () => {
+  it('should display the set associations action line, switch type and delete it', async () => {
     fetchMock.mockResponse(response);
 
     const action: SetAssociationsAction = {

@@ -4,7 +4,7 @@ import {
   Select2OptionGroup,
   Select2Wrapper,
 } from '../../../../../components/Select2Wrapper';
-import { getAssociationTypesFromQuantified } from '../../../../../repositories/AssociationTypeRepository';
+import { getQuantifiedAssociationTypes } from '../../../../../repositories/AssociationTypeRepository';
 import {
   useBackboneRouter,
   useTranslate,
@@ -23,6 +23,7 @@ type Props = {
 
 type AssociationTypeSelect2Option = Select2Option & {
   association_type_code: AssociationTypeCode;
+  target_text: string;
 };
 
 const AddAssociationTypeButton: React.FC<Props> = ({
@@ -52,7 +53,7 @@ const AddAssociationTypeButton: React.FC<Props> = ({
   };
 
   React.useEffect(() => {
-    getAssociationTypesFromQuantified(router, false).then(associationTypes =>
+    getQuantifiedAssociationTypes(router).then(associationTypes =>
       setAssociationTypes(associationTypes)
     );
   }, []);
@@ -75,6 +76,9 @@ const AddAssociationTypeButton: React.FC<Props> = ({
               id: target,
               text, // The text is set to the association type label to be able to search on it.
               association_type_code: associationType.code,
+              target_text: translate(
+                `pimee_catalog_rule.form.edit.actions.set_associations.select.${target}`
+              ),
             });
           }
         }
@@ -91,14 +95,7 @@ const AddAssociationTypeButton: React.FC<Props> = ({
   }, [typeof associationTypes, JSON.stringify(selectedTargets)]);
 
   const formatResult = (option: AssociationTypeSelect2Option) => {
-    // If there is no id, this is an option group, else this is a target.
-    return `<span>${
-      option.id
-        ? translate(
-            `pimee_catalog_rule.form.edit.actions.set_associations.select.${option.id}`
-          )
-        : option.text
-    }</span>`;
+    return `<span>${option.target_text || option.text}</span>`;
   };
 
   if (typeof data === 'undefined') {
