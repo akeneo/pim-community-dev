@@ -51,7 +51,7 @@ type CheckboxProps = {
   checked: boolean,
 
   /**
-   * Displays the value of the input, but does not allow changes.
+   * Displays the value of the input, but does not allow changes.s
    */
   readOnly?: boolean,
 
