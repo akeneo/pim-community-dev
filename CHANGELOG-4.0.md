@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.56 (2020-09-09)
+
 ## Bug fixes
 
 - PIM-9436: Filter out Reference Entity & Asset Family labels of disabled locales
