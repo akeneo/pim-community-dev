@@ -59,11 +59,11 @@ class ImageAsLabel
             }
         }
 
-        if ($levelContainingAttribute <= $productModel->getLevel()) {
+        if ($levelContainingAttribute <= $this->getLevel($productModel)) {
             return $productModel->getImage();
         }
 
-        $currentLevel = $productModel->getLevel();
+        $currentLevel = $this->getLevel($productModel);
         $entity = $productModel;
 
         do {
@@ -91,5 +91,10 @@ class ImageAsLabel
         } while ($currentLevel < $levelContainingAttribute);
 
         return $entity->getImage();
+    }
+
+    private function getLevel(ProductModelInterface $productModel): int
+    {
+        return $productModel->isRoot() ? 0 : 1;
     }
 }

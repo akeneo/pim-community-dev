@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9430: [Backport PIM-9110] Avoid deadlock error when loading product and product models in parallel with the API
+
 # 4.0.55 (2020-09-03)
 
 # 4.0.54 (2020-08-28)
