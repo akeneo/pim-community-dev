@@ -5,13 +5,15 @@ import { Operator } from '../../../models/Operator';
 
 const useControlledFormInputCondition = <T>(lineNumber: number) => {
   const { watch, getValues, setValue, errors } = useFormContext();
-  const fieldFormName = `content.conditions[${lineNumber}].field`;
-  const operatorFormName = `content.conditions[${lineNumber}].operator`;
-  const valueFormName = `content.conditions[${lineNumber}].value`;
-  const amountValueFormName = `content.conditions[${lineNumber}].value.amount`;
-  const currencyValueFormName = `content.conditions[${lineNumber}].value.currency`;
-  const scopeFormName = `content.conditions[${lineNumber}].scope`;
-  const localeFormName = `content.conditions[${lineNumber}].locale`;
+  const formName = (name: string) => `content.conditions[${lineNumber}].${name}`;
+  const fieldFormName = formName('field');
+  const operatorFormName = formName('operator');
+  const valueFormName = formName('value');
+  const amountValueFormName = formName('value.amount');
+  const currencyValueFormName = formName('value.currency');
+  const scopeFormName = formName('scope');
+  const localeFormName = formName('locale');
+  const getFormValue = (name: string) => get(getValues(), formName(name));
   const getOperatorFormValue = (): Operator =>
     get(getValues(), operatorFormName);
   const getValueFormValue = (): T => get(getValues(), valueFormName);
@@ -41,7 +43,9 @@ const useControlledFormInputCondition = <T>(lineNumber: number) => {
   watch(localeFormName);
 
   return {
+    formName,
     fieldFormName,
+    getFormValue,
     getLocaleFormValue,
     getOperatorFormValue,
     getScopeFormValue,
