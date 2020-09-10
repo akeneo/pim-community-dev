@@ -1,7 +1,6 @@
 import React from 'react';
-import {Checkbox} from 'akeneomeasure/shared/components/Checkbox';
 import styled from 'styled-components';
-import {ValidationError, InputErrors} from '@akeneo-pim-community/shared';
+import {ValidationError, InputErrors, Checkbox} from '@akeneo-pim-community/shared';
 
 const Label = styled.span`
   user-select: none;

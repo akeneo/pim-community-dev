@@ -1,5 +1,27 @@
 # 4.0.x
 
+# 4.0.54 (2020-08-28)
+
+## Improvement
+
+- PIM-9315: Improve error message when you have no rights on a product
+
+# 4.0.53 (2020-08-27)
+
+## Bug fixes
+
+- PIM-9426: Fix incorrect use of `Akeneo\Tool\Component\Batch\Item\InvalidItemInterface`
+
+# 4.0.52 (2020-08-24)
+
+# 4.0.51 (2020-08-21)
+
+## Bug fixes
+
+- PIM-9416: Add translation keys for mass delete action and corresponding message on the job page
+
+# 4.0.50 (2020-08-20)
+
 ## Bug fixes
 
 - PIM-9288: Product completeness was not up to date after deletion of an option for required attribute

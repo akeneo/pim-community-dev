@@ -1,6 +1,6 @@
 extensions:
     pim-user-create-modal:
-        module: pim/form/common/creation/modal
+        module: pim/form/common/creation/modal/create-user
         config:
             labels:
                 title: pim_common.create
