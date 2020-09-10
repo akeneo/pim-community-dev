@@ -24,3 +24,4 @@ export * from './BooleanAttributeCondition';
 export * from './SimpleMultiReferenceEntitiesAttributeCondition';
 export * from './PriceCollectionAttributeCondition';
 export * from './IdentifierAttributeCondition';
+export * from './EntityTypeCondition';

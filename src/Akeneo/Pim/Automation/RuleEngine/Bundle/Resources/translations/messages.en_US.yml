@@ -25,6 +25,7 @@ pimee_catalog_rule:
             completeness: Completeness
             identifier: Identifier
             enabled: Status
+            entity_type: Entity type
             created: Created
             updated: Updated
         field_groups:
