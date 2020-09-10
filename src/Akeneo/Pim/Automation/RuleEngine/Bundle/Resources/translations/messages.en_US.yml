@@ -24,6 +24,7 @@ pimee_catalog_rule:
             categories: Categories
             completeness: Completeness
             identifier: Identifier
+            parent: Parent
             enabled: Status
             created: Created
             updated: Updated
