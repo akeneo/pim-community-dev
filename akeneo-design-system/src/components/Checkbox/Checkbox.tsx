@@ -37,7 +37,7 @@ const CheckboxContainer = styled.div<{checked: boolean; readOnly: boolean} & Ake
   outline: none;
   background-color: ${getColor('grey20')};
 
-  ${(props) =>
+  ${props =>
     props.checked &&
     css`
       background-color: ${getColor('blue100')};
@@ -50,7 +50,7 @@ const CheckboxContainer = styled.div<{checked: boolean; readOnly: boolean} & Ake
       }
     `}
 
-  ${(props) =>
+  ${props =>
     props.checked &&
     props.readOnly &&
     css`
@@ -58,7 +58,7 @@ const CheckboxContainer = styled.div<{checked: boolean; readOnly: boolean} & Ake
       border-color: ${getColor('blue40')};
     `}
 
-  ${(props) =>
+  ${props =>
     !props.checked &&
     props.readOnly &&
     css`
@@ -73,7 +73,7 @@ const LabelContainer = styled.div<{readOnly: boolean} & AkeneoThemedProps>`
   font-size: 15px;
   padding-left: 10px;
 
-  ${(props) =>
+  ${props =>
     props.readOnly &&
     css`
       color: ${getColor('grey100')};
