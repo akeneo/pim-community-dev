@@ -15,6 +15,7 @@ const useControlledFormInputCondition = <T>(lineNumber: number) => {
   const scopeFormName = formName('scope');
   const localeFormName = formName('locale');
   const getFormValue = (name: string) => get(getValues(), formName(name));
+  const getFieldFormValue = (): string => get(getValues(), fieldFormName);
   const getOperatorFormValue = (): Operator =>
     get(getValues(), operatorFormName);
   const getValueFormValue = (): T => get(getValues(), valueFormName);
@@ -47,6 +48,7 @@ const useControlledFormInputCondition = <T>(lineNumber: number) => {
     formName,
     fieldFormName,
     getFormValue,
+    getFieldFormValue,
     getLocaleFormValue,
     getOperatorFormValue,
     getScopeFormValue,

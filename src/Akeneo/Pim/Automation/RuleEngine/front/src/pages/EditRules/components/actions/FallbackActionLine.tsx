@@ -30,7 +30,7 @@ const FallbackActionLine: React.FC<ActionLineProps> = ({
                   'Courier, "MS Courier New", Prestige, "Everson Mono"',
               }}>
               {JSON.stringify(getActionValues())}
-              {Object.keys(getActionValues()).map((key: string) => (
+              {Object.keys(getActionValues() ?? {}).map((key: string) => (
                 <Controller
                   as={<span hidden />}
                   name={formName(key)}
