@@ -11,6 +11,7 @@ import {
   getDateAttributeConditionModule,
   getDateSystemConditionModule,
   getFamilyConditionModule,
+  getFamilyVariantConditionModule,
   getFileAttributeConditionModule,
   getGroupsConditionModule,
   getIdentifierAttributeCondtionModule,
@@ -41,6 +42,7 @@ const getConditionModule: (
 ) => {
   const getConditionModuleFunctions: ConditionModuleGuesser[] = [
     getFamilyConditionModule,
+    getFamilyVariantConditionModule,
     getIdentifierConditionModule,
     getCategoryConditionModule,
     getGroupsConditionModule,

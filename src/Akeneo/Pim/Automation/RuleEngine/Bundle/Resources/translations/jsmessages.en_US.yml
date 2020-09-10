@@ -111,6 +111,7 @@ pimee_catalog_rule:
             preview: Preview
             fields:
                 family: Family
+                family_variant: Family variant
                 category: Category
                 identifier: Identifier
                 attribute: Attribute
@@ -327,6 +328,7 @@ pimee_catalog_rule:
         unknown_scope: 'The "{{ scopeCode }}" channel does not exist'
         scope_on_unscopable_attribute: This attribute is not scopable. Please remove the channel before you continue.
         unknown_families: "{1}The {{ familyCodes }} family does not exist|]1,+Inf[The {{ familyCodes }} families do not exist"
+        unknown_family_variants: "{1}The {{ familyVariantCodes }} family variant does not exist|]1,+Inf[The {{ familyVariantCodes }} family variants do not exist"
         unknown_attribute_options: "{1}The {{ attributeOptionCodes }} option does not exist|]1,+Inf[The {{ attributeOptionCodes }} options do not exist"
         unknown_attribute_code: "The {{ attributeCode }} attribute does not exist"
         unknown_categories: "{1}The {{ categoryCodes }} category does not exist.|]1, +Inf[The {{ categoryCodes }} categories do not exist"

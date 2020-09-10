@@ -6,6 +6,7 @@ export * from './DateSystemCondition';
 export * from './DateAttributeCondition';
 export * from './FallbackCondition';
 export * from './FamilyCondition';
+export * from './FamilyVariantCondition';
 export * from './MeasurementAttributeCondition';
 export * from './IdentifierCondition';
 export * from './FileAttributeCondition';

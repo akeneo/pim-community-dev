@@ -120,7 +120,7 @@ const FamilyVariantsSelector: React.FC<Props> = ({
     <Select2MultiAsyncWrapper
       {...remainingProps}
       name={name}
-      data-test-id={id}
+      data-testid={id}
       label={
         label || translate('pim_enrich.entity.family_variant.plural_label')
       }
