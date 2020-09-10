@@ -12,7 +12,7 @@
     "check-types:watch": "yarn check-types -- --watch",
     "test:run": "yarn test:unit:run",
     "test:unit:run": "jest --config ./jest.unit.config.js",
-    "test:visual:run": "jest --config ./jest.visual.config.js",
+    "test:visual:run": "yarn storybook:extract && jest --config ./jest.visual.config.js",
     "test:unit:watch": "jest --watch",
     "eslint": "eslint --config .eslintrc.json --quiet src/**/*.tsx",
     "lint:fix": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.{ts,tsx}\";",
@@ -20,6 +20,7 @@
     "storybook:start": "start-storybook -p 6006",
     "storybook:ci": "start-storybook -p 6006 --ci",
     "storybook:build": "build-storybook",
+    "storybook:extract": "yarn storybook:build && sb extract storybook-static stories.json",
     "lib:build:prod": "yarn prebuild && export NODE_ENV=production && rollup -c",
     "lib:build:watch": "yarn prebuild-watch && export NODE_ENV=dev && rollup --watch -c",
     "lib:build:analyze": "yarn build:prod --config-analyze"
@@ -41,6 +42,7 @@
     "@storybook/addon-actions": "^6.0.4",
     "@storybook/addon-essentials": "^6.0.4",
     "@storybook/addon-links": "^6.0.4",
+    "@storybook/cli": "^6.0.21",
     "@storybook/react": "^6.0.21",
     "@testing-library/jest-dom": "^5.11.3",
     "@testing-library/react": "^10.4.8",
@@ -69,7 +71,7 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "themeprovider-storybook": "^1.6.2",
     "ts-jest": "^26.2.0",
-    "typescript": "^4.0.2",
-    "tsconfig-paths-webpack-plugin": "^3.3.0"
+    "tsconfig-paths-webpack-plugin": "^3.3.0",
+    "typescript": "^4.0.2"
   }
 }

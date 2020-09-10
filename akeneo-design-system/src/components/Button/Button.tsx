@@ -125,13 +125,13 @@ const Container = styled.button<
   } & AkeneoThemedProps
 >`
   border-width: 1px;
-  border-style: ${props => (props.ghost ? 'solid' : 'none')};
+  border-style: ${(props) => (props.ghost ? 'solid' : 'none')};
   font-size: ${getFontSize('default')};
   font-weight: 400;
   text-transform: uppercase;
-  padding: ${props => (props.size === ButtonSize.Small ? '0 10px' : '0 15px')};
+  padding: ${(props) => (props.size === ButtonSize.Small ? '0 10px' : '0 15px')};
   border-radius: 16px;
-  height: ${props => (props.size === ButtonSize.Small ? '24px' : '32px')};
+  height: ${(props) => (props.size === ButtonSize.Small ? '24px' : '32px')};
 
   ${getColorStyle}
 
@@ -182,4 +182,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   }
 );
 
-export {Button};
+export {Button, ButtonLevel, ButtonSize};
