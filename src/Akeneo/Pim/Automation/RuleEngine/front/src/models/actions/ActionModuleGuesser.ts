@@ -7,7 +7,6 @@ import {
   getAddCategoriesModule,
   getAddGroupsActionModule,
   getCalculateActionModule,
-  getClearActionModule,
   getClearAssociationsActionModule,
   getClearAttributeActionModule,
   getClearCategoriesActionModule,
@@ -57,7 +56,6 @@ const getActionModule: (
     // Fallbacks
     getAddActionModule,
     getCalculateActionModule,
-    getClearActionModule,
     getConcatenateActionModule,
     getCopyActionModule,
     getSetActionModule,
