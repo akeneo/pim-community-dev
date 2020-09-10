@@ -17,8 +17,6 @@ jobs:
           node-version: 13.13
       - name: Install Packages
         run: cd akeneo-design-system && yarn install
-      - name: Launch lint checks
-        run: cd akeneo-design-system && yarn lint:check
       - name: Launch unit tests
         run: cd akeneo-design-system && yarn test:run
       - name: Launch visual tests
