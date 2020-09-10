@@ -18,7 +18,8 @@ jobs:
           git tag -a v$(node .github/workflows/get-version.js) -m "Version $(node .github/workflows/get-version.js)"
       - name: Push tag
         run: git push origin v$(node .github/workflows/get-version.js)
-      - uses: actions/setup-node@v1
+      - name: Prepare node to Publish
+        uses: actions/setup-node@v1
         with:
           node-version: 13.13
           registry-url: 'https://registry.npmjs.org'
