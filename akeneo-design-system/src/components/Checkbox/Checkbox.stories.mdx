@@ -58,3 +58,13 @@ Use this playground to test the checkbox component
     )
   }}
 </Story>
+
+## Animation
+<Story name="Animation">
+  {(args) => {
+    const [checked, setChecked] = useState(true);
+    return (
+      <Checkbox {...args} checked={checked} onChange={(newCheck) => setChecked(newCheck)}/>
+    )
+  }}
+</Story>
