@@ -86,7 +86,15 @@ define(
                     label: event.label,
                     route: event.code
                 };
-                this.tabs.push(tab);
+                const existingTab = this.tabs.find((currentTab) => currentTab.code === tab.code);
+
+                if (undefined === existingTab) {
+                    this.tabs.push(tab);
+                } else {
+                    existingTab.label = event.label;
+                    existingTab.isVisible = event.isVisible;
+                }
+
                 this.trigger('pim_menu:column:register_navigation_item', tab);
 
                 this.render();
