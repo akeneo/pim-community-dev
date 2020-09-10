@@ -79,13 +79,7 @@ const registerActions = (register: Control['register'], actions: Action[]) => {
           ];
           break;
         case 'remove':
-          fields = [
-            'field',
-            'items',
-            'scope',
-            'locale',
-            'include_children',
-          ];
+          fields = ['field', 'items', 'scope', 'locale', 'include_children'];
           break;
         case 'set':
           fields = ['field', 'scope', 'locale', 'value'];

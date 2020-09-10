@@ -22,6 +22,7 @@ const PimConditionLine: React.FC<ConditionLineProps> = ({ lineNumber }) => {
 
   const isMetric = (value: any): boolean => {
     return (
+      value !== null &&
       typeof value === 'object' &&
       typeof value.amount !== 'undefined' &&
       typeof value.unit !== 'undefined'
@@ -30,6 +31,7 @@ const PimConditionLine: React.FC<ConditionLineProps> = ({ lineNumber }) => {
 
   const isPrice = (value: any): boolean => {
     return (
+      value !== null &&
       typeof value === 'object' &&
       typeof value.amount !== 'undefined' &&
       typeof value.currency !== 'undefined'
