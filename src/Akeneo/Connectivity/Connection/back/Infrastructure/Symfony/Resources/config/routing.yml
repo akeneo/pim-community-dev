@@ -42,6 +42,12 @@ akeneo_connectivity_connection_audit_any:
     requirements:
         any: .*
 
+## Webhook
+akeneo_connectivity_connection_webhook:
+  path: '/connections/{code}/webhook'
+  requirements:
+    code: '[a-zA-Z0-9_]+'
+
 ## Settings
 akeneo_connectivity_connection_settings_index:
     path: '/connections'
