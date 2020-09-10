@@ -57,6 +57,12 @@ const fontSize: FontSize = {
 
 const pimTheme: Theme = {
   color,
+  palette: {
+    primary: 'green',
+    secondary: 'blue',
+    tertiary: 'grey',
+    danger: 'red',
+  },
   fontSize,
 };
 
