@@ -1,4 +1,4 @@
-name: Tag
+name: Tag & Publish to npm
 on:
   push:
     branches:
@@ -18,3 +18,12 @@ jobs:
           git tag -a v$(node .github/workflows/get-version.js) -m "Version $(node .github/workflows/get-version.js)"
       - name: Push tag
         run: git push origin v$(node .github/workflows/get-version.js)
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 13.13
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@samirboulil' # <= TODO: Change me
+      - run: yarn install
+      - run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

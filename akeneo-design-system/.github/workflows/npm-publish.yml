@@ -1,8 +1,11 @@
 name: Publish to NPM
+
 on:
+  repository_dispatch: ~
   push:
     tags:
       - v.*
+
 jobs:
   publish-npm:
     runs-on: ubuntu-latest
