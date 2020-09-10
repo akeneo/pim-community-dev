@@ -1,6 +1,6 @@
 import React, {ReactNode, Ref} from 'react';
 import styled, {css} from 'styled-components';
-import {AkeneoThemedProps, getColor, getFontSize} from 'theme';
+import {AkeneoThemedProps, getColor, getFontSize, getLevelColor, Level} from 'theme';
 import {Key} from 'shared/key';
 import {useShortcut} from 'hooks/use-shortcut';
 
@@ -9,19 +9,12 @@ enum ButtonSize {
   Default = 'default',
 }
 
-enum ButtonLevel {
-  Primary = 'primary',
-  Secondary = 'secondary',
-  Tertiary = 'tertiary',
-  Danger = 'danger',
-}
-
 type ButtonProps = {
   /**
    * Level of the button defining it's color and outline.
    * Possible values are: primary, secondary, tertiary, danger and ghost
    */
-  level: ButtonLevel;
+  level: Level;
 
   /**
    * When an action does not require primary dominance on the page.
@@ -64,24 +57,9 @@ type ButtonProps = {
   children: ReactNode;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const getLevelColor = (level: ButtonLevel): string => {
-  switch (level) {
-    case ButtonLevel.Primary:
-      return 'green';
-    case ButtonLevel.Secondary:
-      return 'blue';
-    case ButtonLevel.Tertiary:
-      return 'grey';
-    case ButtonLevel.Danger:
-      return 'red';
-    default:
-  }
-
-  throw new Error(`Level "${level}" is not supported`);
-};
-
-const getColorStyle = ({level, ghost, disabled}: {level: ButtonLevel; ghost: boolean; disabled: boolean}) => {
-  const levelColor = getLevelColor(level);
+const getColorStyle = (props: {level: Level; ghost: boolean; disabled: boolean} & AkeneoThemedProps) => {
+  const {level, ghost, disabled} = props;
+  const levelColor = getLevelColor(level)(props);
 
   if (ghost) {
     return css`
@@ -118,7 +96,7 @@ const getColorStyle = ({level, ghost, disabled}: {level: ButtonLevel; ghost: boo
 
 const Container = styled.button<
   {
-    level: ButtonLevel;
+    level: Level;
     ghost: boolean;
     disabled: boolean;
     size: ButtonSize;
@@ -145,7 +123,7 @@ const Container = styled.button<
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
-      level = ButtonLevel.Primary,
+      level = Level.Primary,
       ghost = false,
       disabled = false,
       size = ButtonSize.Default,
@@ -182,4 +160,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   }
 );
 
-export {Button, ButtonLevel, ButtonSize};
+export {Button, ButtonSize};
