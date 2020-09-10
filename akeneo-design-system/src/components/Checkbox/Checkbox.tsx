@@ -1,75 +1,82 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
+import {AkeneoThemedProps, getColor} from 'theme';
 import {CheckIcon, PartialCheckIcon} from '../../icons';
 
 const Container = styled.div`
-    display: flex;
+  display: flex;
 `;
 
-const CheckboxContainer = styled.div <{ checked: boolean, readOnly: boolean }>`
+const CheckboxContainer = styled.div<{checked: boolean; readOnly: boolean} & AkeneoThemedProps>`
   background-color: transparent;
   height: 20px;
   width: 20px;
-  border: 1px solid ${({theme}) => theme.palette.checkbox.borderColor};
+  border: 1px solid ${getColor('blue100')};
   border-radius: 3px;
   outline: none;
 
   ${props =>
-    (props.checked) && css`
-      background-color: ${({theme}) => theme.palette.checkbox.checked.backgroundColor};
-  `}
+    props.checked &&
+    css`
+      background-color: ${getColor('blue100')};
+    `}
 
   ${props =>
-    props.checked && props.readOnly && css`
-      background-color: ${({theme}) => theme.palette.checkbox.checkedAndDisabled.backgroundColor};
-      border-color: ${({theme}) => theme.palette.checkbox.checkedAndDisabled.borderColor};
-  `}
+    props.checked &&
+    props.readOnly &&
+    css`
+      background-color: ${getColor('blue20')};
+      border-color: ${getColor('blue40')};
+    `}
 
   ${props =>
-    !props.checked && props.readOnly && css`
-      background-color: ${({theme}) => theme.palette.checkbox.disabled.backgroundColor};
-      border-color: ${({theme}) => theme.palette.checkbox.disabled.borderColor};
-  `}
+    !props.checked &&
+    props.readOnly &&
+    css`
+      background-color: ${getColor('grey60')};
+      border-color: ${getColor('grey100')};
+    `}
 `;
 
-const LabelContainer = styled.div <{ readOnly: boolean }>`
-  color: ${({theme}) => theme.palette.formLabel.color};
+const LabelContainer = styled.div<{readOnly: boolean} & AkeneoThemedProps>`
+  color: ${getColor('grey140')};
   font-weight: 400;
   font-size: 15px;
   padding-left: 10px;
 
   ${props =>
-    props.readOnly && css`
-      color: ${({theme}) => theme.palette.formLabel.disabled.color};
-  `}
+    props.readOnly &&
+    css`
+      color: ${getColor('grey100')};
+    `}
 `;
 
 type CheckboxProps = {
   /**
    * State of the Checkbox
    */
-  checked: boolean,
+  checked: boolean;
 
   /**
    * Displays the value of the input, but does not allow changes.s
    */
-  readOnly?: boolean,
+  readOnly?: boolean;
 
   /**
    * The undetermined state comes into play when the checkbox contains a sublist of selections,
    * some of which are selected, and others aren't.
    */
-  undetermined?: boolean,
+  undetermined?: boolean;
 
   /**
    * Provide a description of the Checkbox, the label appears on the right of the checkboxes.
    */
-  label?: string,
+  label?: string;
 
   /**
    * The handler called when clicking on Checkbox
    */
-  onChange?: (value: boolean) => void,
+  onChange?: (value: boolean) => void;
 };
 
 /**
@@ -86,16 +93,12 @@ const Checkbox = ({label, checked, onChange, undetermined = false, readOnly = fa
     <Container onClick={handleChange}>
       <CheckboxContainer checked={checked || undetermined} readOnly={readOnly}>
         {undetermined ? (
-          <PartialCheckIcon height={20} width={20}/>
+          <PartialCheckIcon height={20} width={20} />
         ) : checked ? (
-          <CheckIcon height={20} width={20}/>
+          <CheckIcon height={20} width={20} />
         ) : null}
       </CheckboxContainer>
-      {label ? (
-        <LabelContainer readOnly={readOnly}>
-          {label}
-        </LabelContainer>
-      ) : null}
+      {label ? <LabelContainer readOnly={readOnly}>{label}</LabelContainer> : null}
     </Container>
   );
 };
