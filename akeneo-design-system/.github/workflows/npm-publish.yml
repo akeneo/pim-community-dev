@@ -1,0 +1,24 @@
+name: Publish to NPM
+
+on:
+  release:
+    types: [created]
+
+# To run manual tests call POST https://api.github.com/repos/SamirBoulil/dsm/dispatches
+# and uncomment below
+# on: repository_dispatch
+
+jobs:
+  publish-npm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 13.13
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@samirboulil' # <= TODO: Change me
+      - run: yarn
+      - run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
