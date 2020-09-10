@@ -62,7 +62,7 @@ const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
 
   return (
     <Line
-      action={action}
+      action={action} // Deprecated. Use react hook form values instead.
       lineNumber={lineNumber}
       handleDelete={handleDelete}
       currentCatalogLocale={currentCatalogLocale}

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { SetAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import {
@@ -27,11 +26,7 @@ import {
 } from './attribute/attribute.utils';
 import { SmallHelper } from '../../../../components/HelpersInfos';
 
-type Props = {
-  action?: SetAction;
-} & ActionLineProps;
-
-const SetActionLine: React.FC<Props> = ({
+const SetActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
   handleDelete,
   locales,

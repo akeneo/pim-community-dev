@@ -6,23 +6,11 @@ import {
   renderWithProviders,
   waitForElementToBeRemoved,
 } from '../../../../../../test-utils';
-import { SetCategoriesAction } from '../../../../../../src/models/actions';
 import { locales, scopes } from '../../../../factories';
 import { SetCategoriesActionLine } from '../../../../../../src/pages/EditRules/components/actions/SetCategoriesActionLine';
-import { CategoryCode } from '../../../../../../src/models';
 import { createCategory } from '../../../../factories/CategoryFactory';
 import userEvent from '@testing-library/user-event';
 import { clearCategoryRepositoryCache } from '../../../../../../src/repositories/CategoryRepository';
-
-const createSetCategoriesAction = (
-  categoryCodes: CategoryCode[]
-): SetCategoriesAction => {
-  return {
-    type: 'set',
-    field: 'categories',
-    value: categoryCodes,
-  };
-};
 
 describe('SetCategoriesActionLine', () => {
   beforeEach(() => {
@@ -68,7 +56,6 @@ describe('SetCategoriesActionLine', () => {
 
     renderWithProviders(
       <SetCategoriesActionLine
-        action={createSetCategoriesAction(['cat1', 'cat2', 'cat3'])}
         lineNumber={0}
         locales={locales}
         scopes={scopes}
@@ -153,11 +140,6 @@ describe('SetCategoriesActionLine', () => {
 
     renderWithProviders(
       <SetCategoriesActionLine
-        action={createSetCategoriesAction([
-          'cat1',
-          'unexistingCategory',
-          'cat3',
-        ])}
         lineNumber={0}
         locales={locales}
         scopes={scopes}

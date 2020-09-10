@@ -1,6 +1,5 @@
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { ConcatenateAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import { useControlledFormInputAction } from '../../hooks';
@@ -39,16 +38,12 @@ import {
 import { ConcatenatePreview } from './concatenate/ConcatenatePreview';
 import { ConcatenateSourceList } from './concatenate/ConcatenateSourceList';
 
-type Props = {
-  action: ConcatenateAction;
-} & ActionLineProps;
-
 const targetAttributeTypes: AttributeType[] = [
   AttributeType.TEXT,
   AttributeType.TEXTAREA,
 ];
 
-const ConcatenateActionLine: React.FC<Props> = ({
+const ConcatenateActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
   handleDelete,
   locales,

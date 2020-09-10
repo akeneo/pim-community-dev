@@ -1,6 +1,5 @@
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { AddAttributeValueAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import {
@@ -25,11 +24,7 @@ import {
   MANAGED_ATTRIBUTE_TYPES_FOR_ADD_ACTION,
 } from './attribute';
 
-type Props = {
-  action: AddAttributeValueAction;
-} & ActionLineProps;
-
-const AddAttributeValueActionLine: React.FC<Props> = ({
+const AddAttributeValueActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
   handleDelete,
   scopes,
