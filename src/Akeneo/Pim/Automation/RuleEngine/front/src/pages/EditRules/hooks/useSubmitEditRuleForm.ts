@@ -83,7 +83,6 @@ const registerActions = (register: Control['register'], actions: Action[]) => {
             'field',
             'items',
             'scope',
-            'scope',
             'locale',
             'include_children',
           ];
