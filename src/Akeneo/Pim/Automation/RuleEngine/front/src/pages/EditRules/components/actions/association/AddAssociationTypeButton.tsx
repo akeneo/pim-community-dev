@@ -14,10 +14,7 @@ import { AssociationType, AssociationTypeCode } from '../../../../../models';
 import { AssociationTarget, Target } from '../SetAssociationsActionLine';
 
 type Props = {
-  onAddAssociationType: (
-    associationTypeCode: AssociationTypeCode,
-    target: Target
-  ) => void;
+  onAddAssociationType: (associationTarget: AssociationTarget) => void;
   selectedTargets: AssociationTarget[];
 };
 
@@ -117,7 +114,7 @@ const AddAssociationTypeButton: React.FC<Props> = ({
         e.preventDefault();
         const associationTypeCode = e.object?.association_type_code;
         if (typeof associationTypeCode !== 'undefined') {
-          onAddAssociationType(associationTypeCode, e.val);
+          onAddAssociationType({ associationTypeCode: associationTypeCode, target: e.val });
           setCloseTick(!closeTick);
         }
       }}

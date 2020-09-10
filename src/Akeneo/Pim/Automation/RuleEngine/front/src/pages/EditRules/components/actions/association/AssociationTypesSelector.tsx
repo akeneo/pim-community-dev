@@ -1,12 +1,9 @@
 import React from 'react';
 import {
-  AssociationType,
-  AssociationTypeCode,
   GroupCode,
   ProductIdentifier,
   ProductModelCode,
 } from '../../../../../models';
-import { getQuantifiedAssociationTypes } from '../../../../../repositories/AssociationTypeRepository';
 import { AssociationValue } from '../../../../../models/actions';
 import { AssociationTarget, Target } from '../SetAssociationsActionLine';
 import {
@@ -16,14 +13,13 @@ import {
   ActionTitle,
 } from '../ActionLine';
 import { Label } from '../../../../../components/Labels';
-import { AddAssociationTypeButton } from './AddAssociationTypeButton';
 import { AssociationsGroupsSelector } from './AssociationsGroupsSelector';
 import { AssociationsIdentifiersSelector } from './AssociationsIdentifiersSelector';
 import {
-  useBackboneRouter,
   useTranslate,
   useUserCatalogLocale,
 } from '../../../../../dependenciesTools/hooks';
+import { AssociationTypeSwitcher } from "./AssociationTypeSwitcher";
 
 type Props = {
   value: AssociationValue;
@@ -36,13 +32,9 @@ const AssociationTypesSelector: React.FC<Props> = ({
   onChange,
   hasError,
 }) => {
-  const router = useBackboneRouter();
   const currentCatalogLocale = useUserCatalogLocale();
   const translate = useTranslate();
 
-  const [associationTypes, setAssociationTypes] = React.useState<
-    AssociationType[]
-  >();
   const [associationValues, setAssociationValues] = React.useState<
     Map<
       AssociationTarget,
@@ -53,12 +45,6 @@ const AssociationTypesSelector: React.FC<Props> = ({
     currentAssociationTarget,
     setCurrentAssociationTarget,
   ] = React.useState<AssociationTarget>();
-
-  React.useEffect(() => {
-    getQuantifiedAssociationTypes(router).then(associationTypes => {
-      setAssociationTypes(associationTypes);
-    });
-  }, []);
 
   React.useEffect(() => {
     const associationValuesArray: any = [];
@@ -80,10 +66,7 @@ const AssociationTypesSelector: React.FC<Props> = ({
     setCurrentAssociationTarget(Array.from(associationValues.keys())[0]);
   }, []);
 
-  if (
-    typeof associationValues === 'undefined' ||
-    typeof associationTypes === 'undefined'
-  ) {
+  if (typeof associationValues === 'undefined') {
     return (
       <img
         src='/bundles/pimui/images//loader-V2.svg'
@@ -110,22 +93,6 @@ const AssociationTypesSelector: React.FC<Props> = ({
     }
     return Array.from(associationValues.keys())[0];
   };
-
-  const isCurrentAssociationTargetOrDefault: (
-    associationTarget: AssociationTarget
-  ) => boolean = ({ associationTypeCode, target }) => {
-    const current = currentAssociationTargetOrDefault();
-    return (
-      !!current &&
-      current.associationTypeCode === associationTypeCode &&
-      current.target === target
-    );
-  };
-
-  const getAssociationTypeLabel = (associationTypeCode: AssociationTypeCode) =>
-    associationTypes?.find(
-      associationType => associationType.code === associationTypeCode
-    )?.labels?.[currentCatalogLocale] || `[${associationTypeCode}]`;
 
   const formatAssociationValues = () => {
     return Array.from(associationValues.entries()).reduce(
@@ -160,11 +127,7 @@ const AssociationTypesSelector: React.FC<Props> = ({
     onChange(formatAssociationValues());
   };
 
-  const handleAddAssociationType = (
-    associationTypeCode: AssociationTypeCode,
-    target: Target
-  ) => {
-    const associationTarget = { associationTypeCode, target };
+  const handleAddAssociationType = (associationTarget: AssociationTarget) => {
     associationValues.set(associationTarget, []);
     setAssociationValues(new Map(associationValues));
     setCurrentAssociationTarget(associationTarget);
@@ -185,59 +148,14 @@ const AssociationTypesSelector: React.FC<Props> = ({
             'pimee_catalog_rule.form.edit.actions.set_associations.association_types'
           )} ${translate('pim_common.required_label')}`}
         />
-        <ul>
-          {Array.from(associationValues.entries()).map(
-            ([associationTarget, value]) => {
-              return (
-                <li
-                  key={`${associationTarget.associationTypeCode}-${associationTarget.target}`}
-                  className={'AknBadgedSelector-item'}>
-                  <button
-                    data-testid={`association-type-selector-${associationTarget.associationTypeCode}-${associationTarget.target}`}
-                    className={`AknTextField AknBadgedSelector${
-                      isCurrentAssociationTargetOrDefault(associationTarget)
-                        ? ' AknBadgedSelector--selected'
-                        : ''
-                    }`}
-                    onClick={e => {
-                      e.preventDefault();
-                      setCurrentAssociationTarget(associationTarget);
-                    }}>
-                    {getAssociationTypeLabel(
-                      associationTarget.associationTypeCode
-                    )}
-                    <span className='AknBadgedSelector-helper'>
-                      {translate(
-                        `pimee_catalog_rule.form.edit.actions.set_associations.counts.${associationTarget.target}`,
-                        { count: value.length },
-                        value.length
-                      )}
-                    </span>
-                    <span
-                      className='AknBadgedSelector-delete'
-                      tabIndex={0}
-                      data-testid={`delete-association-type-button-${associationTarget.associationTypeCode}-${associationTarget.target}`}
-                      onClick={() =>
-                        handleAssociationTargetDelete(associationTarget)
-                      }
-                      role='button'
-                    />
-                  </button>
-                </li>
-              );
-            }
-          )}
-          <li
-            className={`AknBadgedSelector-item${
-              hasError ? ' select2-container-error' : ''
-            }`}>
-            <AddAssociationTypeButton
-              onAddAssociationType={handleAddAssociationType}
-              selectedTargets={Array.from(associationValues.keys())}
-              data-testid={'association-types-selector'}
-            />
-          </li>
-        </ul>
+        <AssociationTypeSwitcher
+          associationValues={associationValues}
+          handleAssociationTargetDelete={handleAssociationTargetDelete}
+          handleAddAssociationType={handleAddAssociationType}
+          setCurrentAssociationTarget={setCurrentAssociationTarget}
+          currentAssociationTarget={currentAssociationTargetOrDefault()}
+          hasError={!!hasError}
+        />
       </ActionLeftSide>
       <ActionRightSide>
         {currentAssociationTargetOrDefault() && (
