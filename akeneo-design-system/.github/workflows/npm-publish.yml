@@ -1,16 +1,8 @@
 name: Publish to NPM
-
-# on:
-#   release:
-#     types: [created]
 on:
   push:
     tags:
       - v.*
-# To run manual tests call POST https://api.github.com/repos/SamirBoulil/dsm/dispatches
-# and uncomment below
-# on: repository_dispatch
-
 jobs:
   publish-npm:
     runs-on: ubuntu-latest
