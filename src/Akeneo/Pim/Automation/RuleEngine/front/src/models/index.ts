@@ -3,6 +3,7 @@ export * from './Locale';
 export * from './RuleDefinition';
 export * from './Scope';
 export * from './Family';
+export * from './FamilyVariant';
 export * from './Category';
 export * from './Attribute';
 export * from './Group';
