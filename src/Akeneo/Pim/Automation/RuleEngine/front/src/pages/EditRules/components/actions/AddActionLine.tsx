@@ -24,34 +24,20 @@ const AddActionLine: React.FC<ActionLineProps> = ({
       <div className='AknGrid AknGrid--unclickable'>
         <div className='AknGrid-bodyRow AknGrid-bodyRow--highlight'>
           <div className='AknGrid-bodyCell'>
-            <Controller
-              as={<span hidden />}
-              name={formName('type')}
-              defaultValue={'add'}
-            />
-            <Controller
-              as={<span hidden />}
-              name={formName('field')}
-              defaultValue={getFormValue('field')}
-            />
-            <Controller
-              as={<span hidden />}
-              name={formName('items')}
-              defaultValue={getFormValue('items')}
-            />
-            {getFormValue('locale') && (
-              <Controller
-                as={<span hidden />}
-                name={formName('locale')}
-                defaultValue={getFormValue('locale')}
-              />
-            )}
-            {getFormValue('scope') && (
-              <Controller
-                as={<span hidden />}
-                name={formName('scope')}
-                defaultValue={getFormValue('scope')}
-              />
+            {['type', 'field', 'items', 'locale', 'scope'].map(
+              (key: string) => {
+                if (typeof getFormValue(key) === 'undefined') {
+                  return;
+                }
+                return (
+                  <Controller
+                    as={<span hidden />}
+                    name={formName('locale')}
+                    defaultValue={getFormValue('locale')}
+                    key={key}
+                  />
+                );
+              }
             )}
             {/* It is not translated since it is temporary. */}
             The value{items.length > 1 && 's'}&nbsp;
