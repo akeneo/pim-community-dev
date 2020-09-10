@@ -7,17 +7,18 @@ import {
   Select2Value,
 } from '../Select2Wrapper';
 import { Router } from '../../dependenciesTools';
-import { IndexedFamilies } from '../../fetch/FamilyFetcher';
-import { getFamiliesByIdentifiers } from '../../repositories/FamilyRepository';
-import { FamilyCode, LocaleCode } from '../../models';
 import { useBackboneRouter, useTranslate } from '../../dependenciesTools/hooks';
+import { FamilyVariantCode, LocaleCode } from '../../models';
+import { IndexedFamilyVariants } from '../../fetch/FamilyVariantFetcher';
+import { getFamilyVariantsByIdentifiers } from '../../repositories/FamilyVariantRepository';
 
 type Props = {
+  id: string;
   label?: string;
   hiddenLabel?: boolean;
   currentCatalogLocale: LocaleCode;
-  value: FamilyCode[];
-  onChange?: (value: FamilyCode[]) => void;
+  value: FamilyVariantCode[];
+  onChange?: (value: FamilyVariantCode[]) => void;
   validation?: { required?: string; validate?: (value: any) => string | true };
   name: string;
 };
@@ -38,59 +39,60 @@ const dataProvider = (
 };
 
 const handleResults = (
-  families: IndexedFamilies,
+  familyVariants: IndexedFamilyVariants,
   currentCatalogLocale: LocaleCode
 ) => {
   return {
-    more: 20 === Object.keys(families).length,
-    results: Object.keys(families).map(
-      (familyIdentifier): Select2Option => {
+    more: 20 === Object.keys(familyVariants).length,
+    results: Object.keys(familyVariants).map(
+      (familyVariantIdentifier): Select2Option => {
         return {
-          id: families[familyIdentifier].code,
+          id: familyVariants[familyVariantIdentifier].code,
           text:
-            families[familyIdentifier].labels[currentCatalogLocale] ||
-            `[${families[familyIdentifier].code}]`,
+            familyVariants[familyVariantIdentifier].labels[
+              currentCatalogLocale
+            ] || `[${familyVariants[familyVariantIdentifier].code}]`,
         };
       }
     ),
   };
 };
 
-const initSelectedFamilies = async (
+const initSelectedFamilyVariants = async (
   router: Router,
-  selectedFamilyCodes: FamilyCode[],
+  selectedFamilyVariantCodes: FamilyVariantCode[],
   currentCatalogLocale: LocaleCode,
   callback: InitSelectionCallback
 ): Promise<void> => {
-  const families: IndexedFamilies = await getFamiliesByIdentifiers(
-    selectedFamilyCodes,
+  const families: IndexedFamilyVariants = await getFamilyVariantsByIdentifiers(
+    selectedFamilyVariantCodes,
     router
   );
 
   callback(
-    selectedFamilyCodes.map(familyCode => {
-      return families[familyCode]
+    selectedFamilyVariantCodes.map(familyVariantCode => {
+      return families[familyVariantCode]
         ? {
-            id: familyCode,
+            id: familyVariantCode,
             text:
-              families[familyCode].labels[currentCatalogLocale] ||
-              `[${familyCode}]`,
+              families[familyVariantCode].labels[currentCatalogLocale] ||
+              `[${familyVariantCode}]`,
           }
         : {
-            id: familyCode,
-            text: `[${familyCode}]`,
+            id: familyVariantCode,
+            text: `[${familyVariantCode}]`,
           };
     })
   );
 };
 
-const FamiliesSelector: React.FC<Props> = ({
+const FamilyVariantsSelector: React.FC<Props> = ({
+  id,
   label,
   hiddenLabel = false,
   currentCatalogLocale,
   value,
   onChange,
-  validation,
   name,
   ...remainingProps
 }) => {
@@ -98,19 +100,19 @@ const FamiliesSelector: React.FC<Props> = ({
   const router = useBackboneRouter();
   const handleChange = (value: Select2Value[]) => {
     if (onChange) {
-      onChange(value as FamilyCode[]);
+      onChange(value as FamilyVariantCode[]);
     }
   };
 
   const ajax = React.useMemo<Select2Ajax>(() => {
     return {
-      url: router.generate('pim_enrich_family_rest_index'),
+      url: router.generate('pim_enrich_family_variant_rest_index'),
       quietMillis: 250,
       cache: true,
       data: (term: string, page: number) =>
         dataProvider(term, page, currentCatalogLocale),
-      results: (families: IndexedFamilies) =>
-        handleResults(families, currentCatalogLocale),
+      results: (familyVariants: IndexedFamilyVariants) =>
+        handleResults(familyVariants, currentCatalogLocale),
     };
   }, [currentCatalogLocale, router]);
 
@@ -118,17 +120,24 @@ const FamiliesSelector: React.FC<Props> = ({
     <Select2MultiAsyncWrapper
       {...remainingProps}
       name={name}
-      label={label || translate('pim_enrich.entity.family.plural_label')}
+      data-test-id={id}
+      label={
+        label || translate('pim_enrich.entity.family_variant.plural_label')
+      }
       hiddenLabel={hiddenLabel}
       value={value}
       onChange={handleChange}
       ajax={ajax}
       initSelection={(_element, callback) =>
-        initSelectedFamilies(router, value, currentCatalogLocale, callback)
+        initSelectedFamilyVariants(
+          router,
+          value,
+          currentCatalogLocale,
+          callback
+        )
       }
-      validation={validation}
     />
   );
 };
 
-export { FamiliesSelector };
+export { FamilyVariantsSelector };
