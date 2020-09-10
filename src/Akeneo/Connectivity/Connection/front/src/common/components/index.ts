@@ -24,6 +24,7 @@ import {Select} from './select/Select';
 import {Select2, Select2Configuration} from './Select2';
 import {SmallHelper} from './SmallHelper';
 import {Table, TableCell, TableHeaderCell, TableHeaderRow, TableRow} from './Table';
+import {ToggleButton} from './ToggleButton';
 import {Flag} from './Flag';
 import {Loading} from './Loading';
 
@@ -62,6 +63,7 @@ export {
     TableHeaderCell,
     TableHeaderRow,
     TableRow,
+    ToggleButton,
     EmptyState,
     Typography,
     Flag,
