@@ -1,0 +1,87 @@
+import { useState } from 'react';
+import { Meta, Story, ArgsTable, Canvas } from '@storybook/addon-docs/blocks';
+import { action } from "@storybook/addon-actions";
+import { Checkbox } from "./Checkbox.tsx";
+
+<Meta
+  title="Components/Checkbox"
+  component={Checkbox}
+  argTypes={{
+    readOnly: {control: {type: 'boolean'}},
+    checked: {control: {type: 'boolean'}},
+    label: {control: {type: 'text'}},
+    onChange: {action: 'Checkbox component onChange'},
+  }}
+  args={{
+    label: 'Checkbox'
+  }}
+/>
+
+# Checkbox
+
+## Usage
+The checkboxes are applied when users can select all, several, or none of the options from a given list.
+
+### Checkbox states
+The checkbox control allows three states: selected, unselected, and undetermined. The undetermined state comes into play when the checkbox contains a sublist of selections, some of which are selected, and others aren't.
+
+Users must be able to check the box by clicking directly on the box or by clicking on its label.
+
+### Content
+#### Title
+
+If necessary, a header can accompany a set of checkboxes to provide more context or clarity.
+
+#### Labels
+
+Always use clear and concise labels for the checkboxes. The labels appears on the right of the checkboxes.
+
+## Playground
+
+Use this playground to test the checkbox component
+
+<Canvas>
+  <Story name="Standard">
+    {(args) => {
+      return <Checkbox {...args}/>;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on state
+<Story name="State">
+  {(args) => {
+    return (
+      <>
+        <Checkbox  {...args} checked={true} label={'Checkbox checked'}/>
+        <Checkbox  {...args} checked={false} undetermined={true} label={'Checkbox undetermined'}/>
+        <Checkbox  {...args} checked={false} label={'Checkbox unchecked'}/>
+      </>
+    )
+  }}
+</Story>
+
+## Variation on disabled
+<Story name="Disabled">
+  {(args) => {
+    return (
+      <>
+        <Checkbox {...args} readOnly={true} checked={true} label={'Checked disabled'}/>
+        <Checkbox {...args} readOnly={true} checked={false} undetermined={true} label={'Undetermined disabled'}/>
+        <Checkbox {...args} readOnly={true} checked={false} label={'Unchecked disabled'}/>
+      </>
+    )
+  }}
+</Story>
+
+## Animation
+<Story name="Animation">
+  {(args) => {
+    const [checked, setChecked] = useState(true);
+    return (
+      <Checkbox {...args} checked={checked} onChange={(newCheck) => setChecked(newCheck)}/>
+    )
+  }}
+</Story>

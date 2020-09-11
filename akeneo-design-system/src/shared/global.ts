@@ -11,6 +11,10 @@ const StoryStyle = styled.div`
   color: #67768a;
   font-size: 13px;
   line-height: 20px;
+
+  & > * {
+    margin: 10px 0px;
+  }
 `;
 
 export {StoryStyle};
