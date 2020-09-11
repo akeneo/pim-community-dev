@@ -28,6 +28,8 @@
 - PIM-9391: Filter empty prices and measurement values
 - PIM-9407: Fix glitch in family variant selector if the family variant has no label
 - PIM-9425: Fix inaccurate attribute max characters
+- PIM-9443: Do not cache extensions.json
+
 
 ## New features
 
