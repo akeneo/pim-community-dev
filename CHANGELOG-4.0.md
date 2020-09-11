@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- AOB-1023: Fix duplicated assets menu in PEF
+
 # 4.0.56 (2020-09-09)
 
 ## Bug fixes
