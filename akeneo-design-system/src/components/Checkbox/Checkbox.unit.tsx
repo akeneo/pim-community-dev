@@ -23,6 +23,10 @@ it('it does not call onChange handler when read-only', () => {
 });
 
 it('it cannot be instantiated without handler when not readonly', () => {
+  jest.spyOn(console, 'error').mockImplementation(() => {
+    // do nothing.
+  });
+
   expect(() => {
     render(<Checkbox checked={true} label="Checkbox" />);
   }).toThrow('A Checkbox element expect an onChange attribute if not readOnly');

@@ -32,9 +32,10 @@ const CheckboxContainer = styled.div<{checked: boolean; readOnly: boolean} & Ake
   background-color: transparent;
   height: 20px;
   width: 20px;
-  border: 1px solid ${getColor('blue100')};
+  border: 1px solid ${getColor('grey80')};
   border-radius: 3px;
   outline: none;
+  background-color: ${getColor('grey20')};
 
   ${(props) =>
     props.checked &&
