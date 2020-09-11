@@ -1,6 +1,6 @@
-import React, {ReactNode} from 'react';
+import React from 'react';
 import styled, {css} from 'styled-components';
-import {AkeneoThemedProps, Level} from 'theme';
+import {AkeneoThemedProps, Level} from '../../theme';
 
 const BadgeContainer = styled.span<BadgeProps & AkeneoThemedProps>`
   height: 18px;
@@ -25,9 +25,9 @@ type BadgeProps = {
   level?: Level;
 
   /**
-   * Children of the Badge
+   * Children of the Badge, can only be string for a Badge.
    */
-  children?: ReactNode;
+  children?: string;
 };
 
 const Badge = ({level = 'primary', children}: BadgeProps) => {
