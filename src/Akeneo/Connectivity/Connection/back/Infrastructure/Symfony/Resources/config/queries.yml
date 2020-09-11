@@ -64,3 +64,8 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_connectivity.connection.persistence.query.get_connection_webhook:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalGetAConnectionWebhookQuery
+        arguments:
+            - '@database_connection'
+

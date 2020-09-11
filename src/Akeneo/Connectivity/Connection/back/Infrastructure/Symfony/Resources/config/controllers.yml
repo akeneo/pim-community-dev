@@ -26,3 +26,9 @@ services:
         class: 'Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\ErrorManagementController'
         arguments:
             - '@akeneo_connectivity.connection.application.error_management.handler.get_connection_business_errors'
+
+    akeneo_connectivity.connection.internal_api.controller.webhook:
+        public: true
+        class: 'Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\WebhookController'
+        arguments:
+            - '@akeneo_connectivity.connection.application.webhook.handler.get_connection_webhook'

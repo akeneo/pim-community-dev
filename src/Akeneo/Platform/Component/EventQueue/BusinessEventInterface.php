@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 
 namespace Akeneo\Platform\Component\EventQueue;
 
@@ -21,4 +21,3 @@ interface BusinessEventInterface
 
     public function getUuid();
 }
-
