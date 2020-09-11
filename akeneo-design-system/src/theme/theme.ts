@@ -66,12 +66,7 @@ type Theme = {
   color: Color;
 };
 
-enum Level {
-  Primary = 'primary',
-  Secondary = 'secondary',
-  Tertiary = 'tertiary',
-  Danger = 'danger',
-}
+type Level = 'primary' | 'secondary' | 'tertiary' | 'danger';
 
 const getColor = (color: string): ((props: AkeneoThemedProps) => string) => ({theme}: AkeneoThemedProps): string => {
   return theme.color[color] as string;
@@ -82,24 +77,6 @@ const getFontSize = (fontSize: string): ((props: AkeneoThemedProps) => string) =
   return theme.fontSize[fontSize] as string;
 };
 
-const getLevelColor = (level: Level): ((props: AkeneoThemedProps) => string) => ({
-  theme,
-}: AkeneoThemedProps): string => {
-  switch (level) {
-    case Level.Primary:
-      return theme.palette.primary;
-    case Level.Secondary:
-      return theme.palette.secondary;
-    case Level.Tertiary:
-      return theme.palette.tertiary;
-    case Level.Danger:
-      return theme.palette.danger;
-    default:
-  }
-
-  throw new Error(`Level "${level as string}" is not supported`);
-};
-
 export type AkeneoThemedProps<P = Record<string, unknown>> = ThemedStyledProps<P, Theme>;
-export type {Theme, FontSize, Color};
-export {getColor, getFontSize, getLevelColor, Level};
+export type {Theme, FontSize, Color, Level};
+export {getColor, getFontSize};
