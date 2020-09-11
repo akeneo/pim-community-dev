@@ -233,7 +233,7 @@ akeneo_connectivity.connection:
             not_auditable:
                 title: Unmonitored connection
                 description:
-                    1: To track errors on this connection,
+                    1: To track errors on this connection, 
                     2: activate monitoring
                     3: in the settings.
             not_data_source:
