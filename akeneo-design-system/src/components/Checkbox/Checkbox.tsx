@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
-import {AkeneoThemedProps, getColor} from 'theme';
+import {AkeneoThemedProps, getColor} from '../../theme';
 import {CheckIcon, PartialCheckIcon} from '../../icons';
 
 const Container = styled.div`
