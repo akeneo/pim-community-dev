@@ -26,6 +26,13 @@
     "suppressImplicitAnyIndexErrors": true,
     "target": "es6",
     "baseUrl": "./src",
-    "types": ["puppeteer", "jest-environment-puppeteer", "expect-puppeteer"]
+    "types": [
+      "puppeteer",
+      "jest-environment-puppeteer",
+      "expect-puppeteer",
+      "node",
+      "jest",
+      "@testing-library/jest-dom"
+    ]
   }
 }

@@ -1,6 +1,6 @@
 import React, {ReactNode, Ref} from 'react';
 import styled, {css} from 'styled-components';
-import {AkeneoThemedProps, getColor, getFontSize, getLevelColor, Level} from 'theme';
+import {AkeneoThemedProps, getColor, getFontSize, Level} from 'theme';
 import {Key} from 'shared/key';
 import {useShortcut} from 'hooks/use-shortcut';
 
@@ -59,7 +59,7 @@ type ButtonProps = {
 
 const getColorStyle = (props: {level: Level; ghost: boolean; disabled: boolean} & AkeneoThemedProps) => {
   const {level, ghost, disabled} = props;
-  const levelColor = getLevelColor(level)(props);
+  const levelColor = props.theme.palette[level];
 
   if (ghost) {
     return css`
@@ -103,13 +103,13 @@ const Container = styled.button<
   } & AkeneoThemedProps
 >`
   border-width: 1px;
-  border-style: ${(props) => (props.ghost ? 'solid' : 'none')};
+  border-style: ${props => (props.ghost ? 'solid' : 'none')};
   font-size: ${getFontSize('default')};
   font-weight: 400;
   text-transform: uppercase;
-  padding: ${(props) => (props.size === ButtonSize.Small ? '0 10px' : '0 15px')};
+  padding: ${props => (props.size === ButtonSize.Small ? '0 10px' : '0 15px')};
   border-radius: 16px;
-  height: ${(props) => (props.size === ButtonSize.Small ? '24px' : '32px')};
+  height: ${props => (props.size === ButtonSize.Small ? '24px' : '32px')};
 
   ${getColorStyle}
 
@@ -123,7 +123,7 @@ const Container = styled.button<
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
-      level = Level.Primary,
+      level = 'primary',
       ghost = false,
       disabled = false,
       size = ButtonSize.Default,
