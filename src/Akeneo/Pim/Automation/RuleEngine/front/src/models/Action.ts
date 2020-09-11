@@ -38,6 +38,7 @@ import {
   createCalculateAction,
   createConcatenateAction,
   createSetAssociationsAction,
+  createSetQuantifiedAssociationsAction,
 } from './actions';
 
 export const AvailableAddAction: { [key: string]: () => Action } = {
@@ -46,6 +47,7 @@ export const AvailableAddAction: { [key: string]: () => Action } = {
   set_category: createSetCategoriesAction,
   set_family: createSetFamilyAction,
   set_groups: createSetGroupsAction,
+  set_quantified_associations: createSetQuantifiedAssociationsAction,
   set_status: createSetStatusAction,
   clear_attribute: createClearAttributeAction,
   clear_associations: createClearAssociationsAction,

@@ -21,6 +21,7 @@ import {
   getSetCategoriesModule,
   getSetFamilyActionModule,
   getSetGroupsActionModule,
+  getSetQuantifiedAssociationsActionModule,
   getSetStatusActionModule,
 } from './';
 import { FallbackActionLine } from '../../pages/EditRules/components/actions/FallbackActionLine';
@@ -48,6 +49,7 @@ const getActionModule: (
     getSetCategoriesModule,
     getSetFamilyActionModule,
     getSetGroupsActionModule,
+    getSetQuantifiedAssociationsActionModule,
     getSetStatusActionModule,
     getCalculateActionModule,
     getConcatenateActionModule,

@@ -4,7 +4,6 @@ import {
   Select2OptionGroup,
   Select2Wrapper,
 } from '../../../../../components/Select2Wrapper';
-import { getQuantifiedAssociationTypes } from '../../../../../repositories/AssociationTypeRepository';
 import {
   useBackboneRouter,
   useTranslate,
@@ -12,10 +11,12 @@ import {
 } from '../../../../../dependenciesTools/hooks';
 import { AssociationType, AssociationTypeCode } from '../../../../../models';
 import { AssociationTarget, Target } from '../SetAssociationsActionLine';
+import { getAssociationTypesFromQuantified } from '../../../../../repositories/AssociationTypeRepository';
 
 type Props = {
   onAddAssociationType: (associationTarget: AssociationTarget) => void;
   selectedTargets: AssociationTarget[];
+  quantified: boolean;
 };
 
 type AssociationTypeSelect2Option = Select2Option & {
@@ -26,6 +27,7 @@ type AssociationTypeSelect2Option = Select2Option & {
 const AddAssociationTypeButton: React.FC<Props> = ({
   onAddAssociationType,
   selectedTargets,
+  quantified,
   ...remainingProps
 }) => {
   const router = useBackboneRouter();
@@ -50,9 +52,10 @@ const AddAssociationTypeButton: React.FC<Props> = ({
   };
 
   React.useEffect(() => {
-    getQuantifiedAssociationTypes(router).then(associationTypes =>
-      setAssociationTypes(associationTypes)
-    );
+    getAssociationTypesFromQuantified(
+      router,
+      quantified
+    ).then(associationTypes => setAssociationTypes(associationTypes));
   }, []);
 
   React.useEffect(() => {
@@ -114,7 +117,10 @@ const AddAssociationTypeButton: React.FC<Props> = ({
         e.preventDefault();
         const associationTypeCode = e.object?.association_type_code;
         if (typeof associationTypeCode !== 'undefined') {
-          onAddAssociationType({ associationTypeCode: associationTypeCode, target: e.val });
+          onAddAssociationType({
+            associationTypeCode: associationTypeCode,
+            target: e.val,
+          });
           setCloseTick(!closeTick);
         }
       }}

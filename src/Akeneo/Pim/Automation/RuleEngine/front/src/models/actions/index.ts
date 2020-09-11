@@ -19,4 +19,5 @@ export * from './RemoveCategoriesAction';
 export * from './RemoveGroupsAction';
 export * from './SetAssociationsAction';
 export * from './SetStatusAction';
+export * from './SetQuantifiedAssociationsAction';
 export * from './SetGroupsAction';
