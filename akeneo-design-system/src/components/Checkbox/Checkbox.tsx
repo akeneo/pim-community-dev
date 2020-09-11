@@ -15,7 +15,7 @@ to {
 `;
 
 const Container = styled.div`
-    display: flex;
+  display: flex;
 `;
 
 const TickIcon = styled(CheckIcon)`
@@ -27,7 +27,7 @@ const TickIcon = styled(CheckIcon)`
   transition: opacity 0.1s ease-out;
 `;
 
-const CheckboxContainer = styled.div <{ checked: boolean, readOnly: boolean }>`
+const CheckboxContainer = styled.div<{checked: boolean; readOnly: boolean}>`
   background-color: transparent;
   height: 20px;
   width: 20px;
@@ -35,8 +35,9 @@ const CheckboxContainer = styled.div <{ checked: boolean, readOnly: boolean }>`
   border-radius: 3px;
   outline: none;
 
-  ${props =>
-    (props.checked) && css`
+  ${(props) =>
+    props.checked &&
+    css`
       background-color: ${({theme}) => theme.palette.checkbox.checked.backgroundColor};
       ${TickIcon} {
         animation-delay: 0.2s;
@@ -45,59 +46,64 @@ const CheckboxContainer = styled.div <{ checked: boolean, readOnly: boolean }>`
         opacity: 1;
         transition-delay: 0s;
       }
-  `}
+    `}
 
-  ${props =>
-    props.checked && props.readOnly && css`
+  ${(props) =>
+    props.checked &&
+    props.readOnly &&
+    css`
       background-color: ${({theme}) => theme.palette.checkbox.checkedAndDisabled.backgroundColor};
       border-color: ${({theme}) => theme.palette.checkbox.checkedAndDisabled.borderColor};
-  `}
+    `}
 
-  ${props =>
-    !props.checked && props.readOnly && css`
+  ${(props) =>
+    !props.checked &&
+    props.readOnly &&
+    css`
       background-color: ${({theme}) => theme.palette.checkbox.disabled.backgroundColor};
       border-color: ${({theme}) => theme.palette.checkbox.disabled.borderColor};
-  `}
+    `}
 `;
 
-const LabelContainer = styled.div <{ readOnly: boolean }>`
+const LabelContainer = styled.div<{readOnly: boolean}>`
   color: ${({theme}) => theme.palette.formLabel.color};
   font-weight: 400;
   font-size: 15px;
   padding-left: 10px;
 
-  ${props =>
-    props.readOnly && css`
+  ${(props) =>
+    props.readOnly &&
+    css`
       color: ${({theme}) => theme.palette.formLabel.disabled.color};
-  `}
+    `}
 `;
 
 type CheckboxProps = {
   /**
    * State of the Checkbox
    */
-  checked: boolean,
+  checked: boolean;
 
   /**
    * Displays the value of the input, but does not allow changes.s
    */
-  readOnly?: boolean,
+  readOnly?: boolean;
 
   /**
    * The undetermined state comes into play when the checkbox contains a sublist of selections,
    * some of which are selected, and others aren't.
    */
-  undetermined?: boolean,
+  undetermined?: boolean;
 
   /**
    * Provide a description of the Checkbox, the label appears on the right of the checkboxes.
    */
-  label?: string,
+  label?: string;
 
   /**
    * The handler called when clicking on Checkbox
    */
-  onChange?: (value: boolean) => void,
+  onChange?: (value: boolean) => void;
 };
 
 /**
@@ -113,17 +119,9 @@ const Checkbox = ({label, checked, onChange, undetermined = false, readOnly = fa
   return (
     <Container onClick={handleChange}>
       <CheckboxContainer checked={checked || undetermined} readOnly={readOnly}>
-        {undetermined ? (
-          <PartialCheckIcon height={20} width={20}/>
-        ) :
-          <TickIcon height={20} width={20}/>
-        }
+        {undetermined ? <PartialCheckIcon height={20} width={20} /> : <TickIcon height={20} width={20} />}
       </CheckboxContainer>
-      {label ? (
-        <LabelContainer readOnly={readOnly}>
-          {label}
-        </LabelContainer>
-      ) : null}
+      {label ? <LabelContainer readOnly={readOnly}>{label}</LabelContainer> : null}
     </Container>
   );
 };

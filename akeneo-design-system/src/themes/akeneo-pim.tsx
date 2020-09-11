@@ -67,8 +67,8 @@ export default {
     formLabel: {
       color: colorRange.grey140,
       disabled: {
-        color: colorRange.grey100
+        color: colorRange.grey100,
       },
-    }
+    },
   },
 };
