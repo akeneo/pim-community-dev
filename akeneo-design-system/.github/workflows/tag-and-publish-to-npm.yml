@@ -23,7 +23,6 @@ jobs:
         with:
           node-version: 13.13
           registry-url: 'https://registry.npmjs.org'
-          scope: '@samirboulil' # <= TODO: Change me
       - run: yarn install
       - run: npm publish --access public
         env:
