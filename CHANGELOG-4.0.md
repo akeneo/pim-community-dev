@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9443: Do not cache extensions.json
+
 # 4.0.54 (2020-08-28)
 
 ## Improvement

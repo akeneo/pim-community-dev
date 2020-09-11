@@ -27,7 +27,7 @@ define(
         const loadConfig = function () {
             if (null === promise) {
                 promise = $.when(
-                    $.get('/js/extensions.json'),
+                    $.get('/js/extensions.json', {version: Math.random().toString(36).substring(7)}),
                     SecurityContext.initialize(),
                     FeatureFlags.initialize()
                 )
