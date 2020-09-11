@@ -8,14 +8,7 @@ monolog:
             type: stream
             path: '%kernel.logs_dir%/%kernel.environment%.log'
             level: info
-        quality:
-            type: stream
-            path:  "php://stderr"
-            level: info
-            channels: ['quality']
-            formatter: 'monolog.formatter.json'
         authentication:
             type: service
             id: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\DbTableLogHandler'
             channels: ['security']
-    channels: ['quality']
