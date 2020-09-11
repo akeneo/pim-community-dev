@@ -41,6 +41,7 @@ const CheckboxContainer = styled.div<{checked: boolean; readOnly: boolean} & Ake
     props.checked &&
     css`
       background-color: ${getColor('blue100')};
+      border-color: ${getColor('blue100')};
       ${TickIcon} {
         animation-delay: 0.2s;
         animation: ${checkTick} 0.2s ease-out forwards;
