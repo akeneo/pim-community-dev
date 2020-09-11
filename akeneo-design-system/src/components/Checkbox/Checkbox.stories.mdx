@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Meta, Story, ArgsTable, Canvas } from '@storybook/addon-docs/blocks';
 import { action } from "@storybook/addon-actions";
 import { Checkbox } from "./Checkbox.tsx";
+import { useArgs, updateArgs } from '@storybook/client-api';
 
 <Meta
   title="Components/Checkbox"
@@ -43,7 +44,9 @@ Use this playground to test the checkbox component
 <Canvas>
   <Story name="Standard">
     {(args) => {
-      return <Checkbox {...args}/>;
+      const [{ checked }, updateArgs] = useArgs();
+      const toggleChecked = () => updateArgs({ checked: !checked });
+      return <Checkbox {...args} onChange={toggleChecked} />;
     }}
   </Story>
 </Canvas>
