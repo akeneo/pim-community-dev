@@ -1,0 +1,83 @@
+import { useState } from 'react';
+import { Meta, Story, ArgsTable, Canvas } from '@storybook/addon-docs/blocks';
+import { action } from '@storybook/addon-actions';
+import { Helper } from './Helper.tsx';
+import { Container } from 'storybook/container';
+
+<Meta
+  title="Components/Helper"
+  component={Helper}
+  argTypes={{
+    type: {type: {control: {type: 'select', options: ['big', 'small', 'inline']}}},
+    level: {type: {control: {type: 'select', options: ['info', 'warning', 'error']}}}
+  }}
+  args={{
+    type: 'small'
+    level: 'info'
+  }}
+/>
+
+# Helper
+
+## Usage
+
+Allows to help the user by pushing contextual information.
+
+### Big helper
+
+Located at the top of a page, it helps the user on the page's features. A link guides the user to additional information. *i.e., the help center*
+
+### Small helper
+
+Located at the top of a section, just below the section title, it informs the user about the features of the section.
+
+### Inline helper
+
+Located just below a field, it indicates to the user:
+- The information expected in the field;
+- An alert on the information filled in by the user;
+- An error related to the information filled in by the user.
+
+## Playground
+
+Use this playground to test the helper component
+
+<Canvas>
+  <Story name="Standard">
+    {(args) => {
+        return <Helper {...args}>Big helper</Helper>;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on type
+<Canvas>
+  <Story name="type">
+      {(args) => {
+          return (
+              <Container>
+                  <Helper {...args} type="big" level="info" title="Big">Big</Helper>
+                  <Helper {...args} type="small" level="info">Small</Helper>
+                  <Helper {...args} type="inline" level="info">Inline</Helper>
+              </Container>
+          )
+      }}
+  </Story>
+</Canvas>
+
+## Variation on level
+<Canvas>
+  <Story name="level">
+      {(args) => {
+          return (
+              <Container>
+                  <Helper {...args} level="info" type="small">Info</Helper>
+                  <Helper {...args} level="warning" type="small">Warning</Helper>
+                  <Helper {...args} level="error" type="small">Error</Helper>
+              </Container>
+          )
+      }}
+  </Story>
+</Canvas>
