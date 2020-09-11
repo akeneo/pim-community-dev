@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet;
 
-
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Doctrine\DBAL\Connection;
@@ -20,6 +19,9 @@ final class LogMetricsTasklet implements TaskletInterface
 
     /** @var LoggerInterface */
     private $qualityLogger;
+    
+    /** @var StepExecution */
+    private $stepExecution;
 
     public function __construct(Connection $db, LoggerInterface $logger, LoggerInterface $qualityLogger)
     {
@@ -47,7 +49,6 @@ final class LogMetricsTasklet implements TaskletInterface
             ];
 
             $this->qualityLogger->error('Data Quality Insights periodic metrics log', $metrics);
-
         } catch (\Exception $exception) {
             $this->stepExecution->addFailureException($exception);
             $this->logger->error('Unable to log data quality insights metrics', [
@@ -59,18 +60,14 @@ final class LogMetricsTasklet implements TaskletInterface
 
     private function getTableSize(string $tableName): int
     {
-        //FIX ME: can we force the ANALYZE table once a day like this ?
-        $this->db->executeQuery(sprintf('ANALYZE TABLE %s', $tableName))->fetchAll();
-
         $query = <<<SQL
 SELECT ROUND((DATA_LENGTH + INDEX_LENGTH) / 1024 / 1024)
 FROM information_schema.TABLES WHERE TABLE_NAME = :tableName
 SQL;
-        try{
-            $size = $this->db->executeQuery($query, ['tableName' => $tableName],)->fetchColumn();
+        try {
+            $size = $this->db->executeQuery($query, ['tableName' => $tableName], )->fetchColumn();
             return intval($size);
-        }catch (\Exception $exception)
-        {
+        } catch (\Exception $exception) {
             //Maybe the user does not have the rights to query information_schema.
         }
 
