@@ -1,6 +1,5 @@
 import React from 'react';
 import { ActionLineProps } from '../../pages/EditRules/components/actions/ActionLineProps';
-import { Action } from '../Action';
 import {
   getAddActionModule,
   getAddAttributeValueActionModule,
@@ -28,15 +27,12 @@ import { Router } from '../../dependenciesTools';
 export type ActionModuleGuesser = (
   json: any,
   router: Router
-) => Promise<React.FC<ActionLineProps & { action: Action }> | null>;
+) => Promise<React.FC<ActionLineProps> | null>;
 
 const getActionModule: (
   json: any,
   router: Router
-) => Promise<React.FC<ActionLineProps & { action: Action }>> = async (
-  json,
-  router
-) => {
+) => Promise<React.FC<ActionLineProps>> = async (json, router) => {
   const getActionModuleFunctions: ActionModuleGuesser[] = [
     getAddCategoriesModule,
     getAddGroupsActionModule,

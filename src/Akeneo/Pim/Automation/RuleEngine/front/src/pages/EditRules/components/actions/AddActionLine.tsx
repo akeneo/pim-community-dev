@@ -32,8 +32,8 @@ const AddActionLine: React.FC<ActionLineProps> = ({
                 return (
                   <Controller
                     as={<span hidden />}
-                    name={formName('locale')}
-                    defaultValue={getFormValue('locale')}
+                    name={formName(key)}
+                    defaultValue={getFormValue(key)}
                     key={key}
                   />
                 );

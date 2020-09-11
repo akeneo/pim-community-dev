@@ -42,9 +42,7 @@ const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
 }) => {
   const router = useBackboneRouter();
   const translate = useTranslate();
-  const [Line, setLine] = React.useState<
-    React.FC<ActionLineProps & { action: Action }>
-  >();
+  const [Line, setLine] = React.useState<React.FC<ActionLineProps>>();
   React.useEffect(() => {
     getActionModule(action, router).then(module => setLine(() => module));
   }, []);
@@ -62,7 +60,6 @@ const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
 
   return (
     <Line
-      action={action} // Deprecated. Use react hook form values instead.
       lineNumber={lineNumber}
       handleDelete={handleDelete}
       currentCatalogLocale={currentCatalogLocale}
