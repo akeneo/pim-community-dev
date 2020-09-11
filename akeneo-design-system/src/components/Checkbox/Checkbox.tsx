@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, {css, keyframes} from 'styled-components';
+import {AkeneoThemedProps, getColor} from '../../theme';
 import {CheckIcon, PartialCheckIcon} from '../../icons';
 
 const checkTick = keyframes`
@@ -27,18 +28,18 @@ const TickIcon = styled(CheckIcon)`
   transition: opacity 0.1s ease-out;
 `;
 
-const CheckboxContainer = styled.div<{checked: boolean; readOnly: boolean}>`
+const CheckboxContainer = styled.div<{checked: boolean; readOnly: boolean} & AkeneoThemedProps>`
   background-color: transparent;
   height: 20px;
   width: 20px;
-  border: 1px solid ${({theme}) => theme.palette.checkbox.borderColor};
+  border: 1px solid ${getColor('blue100')};
   border-radius: 3px;
   outline: none;
 
   ${(props) =>
     props.checked &&
     css`
-      background-color: ${({theme}) => theme.palette.checkbox.checked.backgroundColor};
+      background-color: ${getColor('blue100')};
       ${TickIcon} {
         animation-delay: 0.2s;
         animation: ${checkTick} 0.2s ease-out forwards;
@@ -52,21 +53,21 @@ const CheckboxContainer = styled.div<{checked: boolean; readOnly: boolean}>`
     props.checked &&
     props.readOnly &&
     css`
-      background-color: ${({theme}) => theme.palette.checkbox.checkedAndDisabled.backgroundColor};
-      border-color: ${({theme}) => theme.palette.checkbox.checkedAndDisabled.borderColor};
+      background-color: ${getColor('blue20')};
+      border-color: ${getColor('blue40')};
     `}
 
   ${(props) =>
     !props.checked &&
     props.readOnly &&
     css`
-      background-color: ${({theme}) => theme.palette.checkbox.disabled.backgroundColor};
-      border-color: ${({theme}) => theme.palette.checkbox.disabled.borderColor};
+      background-color: ${getColor('grey60')};
+      border-color: ${getColor('grey100')};
     `}
 `;
 
-const LabelContainer = styled.div<{readOnly: boolean}>`
-  color: ${({theme}) => theme.palette.formLabel.color};
+const LabelContainer = styled.div<{readOnly: boolean} & AkeneoThemedProps>`
+  color: ${getColor('grey140')};
   font-weight: 400;
   font-size: 15px;
   padding-left: 10px;
@@ -74,7 +75,7 @@ const LabelContainer = styled.div<{readOnly: boolean}>`
   ${(props) =>
     props.readOnly &&
     css`
-      color: ${({theme}) => theme.palette.formLabel.disabled.color};
+      color: ${getColor('grey100')};
     `}
 `;
 

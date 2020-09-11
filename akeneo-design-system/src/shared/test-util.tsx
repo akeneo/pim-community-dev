@@ -1,10 +1,10 @@
 import React, {ComponentType, ReactElement, ReactNode} from 'react';
 import {render, RenderOptions} from '@testing-library/react';
-import AkeneoPim from '../themes/akeneo-pim';
 import {ThemeProvider} from 'styled-components';
+import {pimTheme} from '../theme/pim';
 
 const AllTheProviders = ({children}: {children: ReactNode}) => {
-  return <ThemeProvider theme={AkeneoPim}>{children}</ThemeProvider>;
+  return <ThemeProvider theme={pimTheme}>{children}</ThemeProvider>;
 };
 
 const customRender = (ui: ReactElement, options?: Omit<RenderOptions, 'queries'>) =>

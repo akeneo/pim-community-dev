@@ -1,8 +1,8 @@
 import React from 'react';
 import {addDecorator, addParameters} from '@storybook/react';
 import { withThemesProvider } from "themeprovider-storybook";
-import AkeneoPim from '../src/themes/akeneo-pim';
 import {StoryStyle} from '../src/shared/global';
+import {pimTheme} from '../src/theme/pim';
 
 addDecorator(story => (
   <>
@@ -10,8 +10,8 @@ addDecorator(story => (
   </>
 ));
 
-addDecorator(withThemesProvider([AkeneoPim]))
+addDecorator(withThemesProvider([pimTheme]))
 
 addParameters({
-  viewMode: 'docs'
-})
+  viewMode: 'docs',
+});
