@@ -1,13 +1,25 @@
 import React from 'react';
-import styled, {css} from 'styled-components';
+import styled, {css, keyframes} from 'styled-components';
 import {CheckIcon, PartialCheckIcon} from '../../icons';
+
+const checkTick = keyframes`
+  to {
+    stroke-dashoffset: 0;
+  }
+`;
+
+const uncheckTick = keyframes`
+to {
+    stroke-dashoffset: 20px;
+  }
+`;
 
 const Container = styled.div`
     display: flex;
 `;
 
 const TickIcon = styled(CheckIcon)`
-  animation: uncheckTick 0.2s ease-in forwards;
+  animation: ${uncheckTick} 0.2s ease-in forwards;
   opacity: 0;
   stroke-dasharray: 0px;
   stroke-dashoffset: 0;
@@ -28,7 +40,7 @@ const CheckboxContainer = styled.div <{ checked: boolean, readOnly: boolean }>`
       background-color: ${({theme}) => theme.palette.checkbox.checked.backgroundColor};
       ${TickIcon} {
         animation-delay: 0.2s;
-        animation: checkTick 0.2s ease-out forwards;
+        animation: ${checkTick} 0.2s ease-out forwards;
         stroke-dashoffset: 20px;
         opacity: 1;
         transition-delay: 0s;
