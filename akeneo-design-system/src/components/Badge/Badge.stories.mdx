@@ -7,9 +7,8 @@ import {Badge} from './Badge.tsx';
   component={Badge}
   argTypes={{
     level: {type: {control: {type: 'select', options: ['primary', 'secondary', 'tertiary', 'danger']}}},
-    children: {table: {disable: true}},
   }}
-  args={{level: 'primary'}}
+  args={{level: 'primary', children: 'Badge text'}}
 />
 
 # Badge
@@ -31,7 +30,7 @@ The status badge highlights the state of an item. *i.e.: enabled or disabled*.
 <Canvas>
   <Story name="Standard">
     {args => {
-      return <Badge {...args}>Badge</Badge>;
+      return <Badge {...args} />;
     }}
   </Story>
 </Canvas>
