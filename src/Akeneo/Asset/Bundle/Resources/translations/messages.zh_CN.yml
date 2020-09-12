@@ -1,43 +1,45 @@
 pimee_product_asset:
   acl:
     asset:
-      index: 增加资源
+      index: 丰富资产
       create: 创建资产
       remove: 移除资产
-      categories_view: 咨询资产的类别
+      categories_view: 查阅资产的类别
       mass_upload: 批量上传资产
+      remove_from_collection: 从资产集合中移除产品资产
     category_asset_picker:
       list: 在资产选取器中列出资产类别
     category:
-      create: 创建一个资产类别
-      edit: 编辑一个资产类别
-      list: 列出资产目录
-      remove: 删除资产类别
-      manage: 管理资产目录权限
-      history: 查看资产类别历史
+      create: 创建资产类别
+      edit: 编辑资产类别
+      list: 列出资产类别
+      remove: 移除资产类别
+      manage: 管理资产类别权限
+      history: 查看资产类别历史记录
   acl_group:
     asset: 产品资产
-    category: 资产分类
+    category: 资产类别
   enrich_asset:
     button:
       upload: 上传 
       delete: 删除
       download: 下载
       generate_from_reference: 从参考生成
-      reset_variations: 重置变化
+      reset_variations: 重置变体
+    confirmation.remove: 确定要移除资产"%asset%"吗？
     confirmation.subTitle: 资产
     grid:
       edit: 编辑资产的属性
     view:
-      title: 产品资源
+      title: 产品资产
       code: 代码
       description: 描述
-      end_of_use: 结束使用于
-      reference: 使用指南
+      end_of_use: 使用结束于
+      reference: 参考
       filename: 文件名
       width: 宽度
       height: 高度
-      resolution: 解析度
+      resolution: 分辨率
       colors: 色彩空间
       filesize: 文件大小
       filetype: 文件类型
@@ -45,39 +47,42 @@ pimee_product_asset:
       download: 下载
       tag: 标签
       no_reference: 尚未上传参考文件。
-      no_variation: 尚未生成差异文件
+      no_variation: 尚未生成变体文件。
     flash:
       update:
-        success: 资产已被更新。
-        error: 资产尚未更新成功。发生错误。
+        success: 资产已更新。
+        error: 资源未更新。发生错误。
       create:
-        success: 资产被创建。
-        error: 资产尚未创建成功。发生错误。
+        success: 资产已创建。
+        error: 资源未创建。发生错误。
       remove:
-        success: 资产被移除。
+        success: 资产已移除。
   enrich_reference:
     flash:
       delete:
-        success: 参考文件已被删除。
-        error: 参考文件尚未被删除。发生错误。
+        success: 参考文件已删除。
+        error: 参考文件未被删除。发生错误。
   enrich_variation:
     flash:
       transformation:
-        invalid_options: 由于无效的选项，不能生成变化%channel%
-        image_width_error: 无法生成变化 %channel%，因为上传的图像的宽度小于转换所需要的图像宽度。
-        image_height_error: 无法生成变化 %channel%，因为上传的图像的高度小于转换所需要的图像高度。
-        not_applicable: 无法生成变化 %channel%。
-        non_registered: 没有 %transformation% 变换注册在 mime 类型 %mimeType%下。无法生成变化 %channel%。
-        error: 无法生成变化 %channel%。
-        success: 变化文件已成功生成。
+        invalid_options: 由于选项无效，无法生成变体 %channel%
+        image_width_error: 由于上传图像的宽度小于转换所需要的图像宽度，无法生成变体 %channel%。
+        image_height_error: 由于上传图像的高度小于转换所需要的图像高度，无法生成变体 %channel%。
+        not_applicable: 无法生成变体 %channel%。
+        non_registered: 没有 %transformation% 转换注册在 mime 类型 %mimeType% 下。无法生成变体 %channel%。
+        missing_asset_transformation_for_channel: 无法生成变体 %channel%，请为此渠道设置资产转换。
+        error: 无法生成变体 %channel%。
+        success: 已成功生成变体文件。
       update:
-        success: 变化文件已经被更新。
-        error: 变化文件尚未更新。发生错误。
+        success: 变体文件已更新。
+        error: 变化文件未更新。发生错误。
       delete:
-        success: 变化文件已经被删除。
-        error: 变化文件尚未删除。发生错误。
+        success: 变体文件已删除。
+        error: 变化文件未删除。发生错误。
   popin.create:
-    title: 创建资产
+    title: 新建资产
+    confirm: 确认
+    cancel: 取消 
     is_localized: 可本地化
   menu: 资产
   page_tab:
@@ -94,7 +99,7 @@ pimee_product_asset:
   description:
     label: 描述
   endOfUse:
-    label: 结束使用于
+    label: 使用结束
   createdAt:
     label: 创建于
   updatedAt:
@@ -103,12 +108,12 @@ pimee_product_asset:
     label: 标签
   tabs:
     properties.title: 属性
-    variations.title: 变化
-    categories.title: 分类
+    variations.title: 变体
+    categories.title: 类别
   validation:
     code:
-      not_empty: 代码是必需的。它不能为空。
-      unique: 编号必须是唯一的。
+      not_empty: 代码为必填项，不能为空。
+      unique: 代码必须是唯一的。
       new_generation: 我们为您生成了一个新的。
   notAvailable:
     label: 不可用
@@ -116,65 +121,123 @@ pimee_product_asset:
     title: 资产
   mass_upload:
     menu: 上传资产
-    new: 将创建一个新的资产
+    new: 将创建新资产
     add_files: 添加文件
     start: 开始上传
     cancel: 取消上传
     import: 导入
-    executed: 执行的大规模上传
+    executed: 已执行批量上传
     error:
-      upload: 在上传的过程中发生了错误
-      code: 该资产有一个无效的编号格式
-      localizable: 一个资产存在但不可本地化
+      upload: 上传过程中发生错误
+      code: 资产代码格式无效
+      localizable: 资产存在但不可本地化
       invalid_locale: 区域设置被禁用或无效
   category:
-    menu: 资产分类
+    menu: 资产类别
     permissions:
       view.label: 允许查看资产
-      view.help: 允许查看该目录中的资产
+      view.help: 允许查看该类别中的资产
       edit.label: 允许编辑资产
-      edit.help: 允许编辑这一目录的资产（意味着查看权限）
-      no_access_to_products: 你无法访问任何树上的资产。请联系您的管理员。
-      apply_on_children.label: 将更改应用于子目录
-      apply_on_children.help: 在所有的子目录复制权限变更，在子目录中的现有权限保留。
+      edit.help: 允许编辑该类别中的资产（暗含查看权限）
+      no_access_to_products: 您无权访问任何树中的产品。请联系您的管理员
+      apply_on_children.label: 将更改应用于子级
+      apply_on_children.help: 在所有的子级中复制权限更改，子级的现有权限保留
   mass_edit_action:
     asset:
       page_title: 资产
-      page_subtitle: 批量编辑 （1 件资产） |批量编辑 （%count% 件资产）
-      confirm: 您将要更新该资产的以下信息，请确认。 |您将要更新 %count% 资产的以下信息，请确认。
+      page_subtitle: 批量编辑 （1 个资产） |批量编辑 （%count% 个资产）
+      confirm: 您将要更新资产的以下信息，请确认。|您将要更新 %count% 个资产的以下信息，请确认。
       steps:
         first: 选择资产
         second: 配置
         third: 确认
+  not_editable: 您对资产"%code%"没有编辑权限。
 pim_enrich:
   mass_edit_action:
     asset-classify-move:
-      label: 在目录中移动资源
-      description: 资源将被放入以下目录，现存的位置不会保留。
-      success_flash: 资源已经被移动到所选的目录中了。
-      launched_flash: 批量操作"移动到目录"已经启动。完成后会通知您。
+      label: 将资产移到类别
+      description: 资产将被放入以下类别，现存的位置不会保留。
+      success_flash: 资产已移到所选类别了
+      launched_flash: 批量操作"移动到类别"已经启动。完成后会通知您。
     add-tags-to-assets:
-      label: 将标签添加到资源
-      description: 标记将添加到的资产。如果一些标签不存在，则会被创建。
-      success_flash: 标记已添加到资源
-      launched_flash: 批量操作"加入到资源"已经启动。完成后会通知您。
+      label: 将标签添加到资产
+      description: 标签将添加到资产。如果有标签不存在，则会进行创建。
+      success_flash: 标签已添加到资产
+      launched_flash: 批量操作"将标签添加到资产"已经启动。完成后会通知您。
       message.error: 提供的标签不存在
 pim:
   grid:
     mass_action:
       mass_classify_assets: 分类
       add_tags_to_assets: 添加标签
-      delete_assets: 删除资源
+      delete_assets: 删除资产
 btn.create.asset: 创建资产
-btn.drag_or_upload: 拖放式操作可上传或点击这里
+btn.drag_or_upload: 拖放文件或点击这里
 job_execution.summary:
-  variations_not_generated: 没有被生成的变化
-  pimee_product_asset.mass_upload.new: 从文件创建的资源
-  pimee_product_asset.mass_upload.updated: 资产被更新
-  error: 资产文件处理错误
-  skipped_assets: 被略过的资产
+  variations_not_generated: 没有生成变体
+  pimee_product_asset.mass_upload.new: 从文件创建资产
+  pimee_product_asset.mass_upload.updated: 资产已更新
+  error: 资产文件处理出错
+  skipped_assets: 已跳过资产
 assets_mass_upload.steps:
-  asset_mass_upload.title: 资产大批上传
+  asset_mass_upload.title: 批量上传资产
 import_asset.steps.channel_configuration_processor.title: 处理渠道配置
-mass_upload: 批量上传资产
-pim_assets_collection: 资源集合
+pim_datagrid:
+  cells:
+    type:
+      mass_upload: 批量上传资产
+      compute_completeness_of_products_linked_to_assets: 计算与资源链接的产品的完整性
+pim_analytics:
+  info_type:
+    nb_assets: 资产数量
+pim_assets_collection: 资产集合
+akeneo_reference_entity: 参考实体单个链接
+akeneo_reference_entity_collection: 参考实体多个链接
+pim_api:
+  acl:
+    asset_category:
+      edit: 创建并更新资产类别
+      list: 列出资产类别
+    asset:
+      edit: 编辑资产并上传这些资产的参考和变体文件
+      list: 列出资产，并列出和下载这些资产的参考和变体文件
+  acl_group:
+    asset_category: 资产类别
+    asset: 资产
+pimee_enrich:
+  channel:
+    tab:
+      asset_transformation.title: 资产转换
+  asset_transformation:
+    not_found: 没有发现转换
+    title:
+      transformation: 转换
+      options: 选项
+    colorspace:
+      title: 色彩空间
+      options:
+        colorspace: '色彩空间 %value%'
+    resize:
+      title: 调整尺寸
+      options:
+        width: '宽度 %value%px'
+        height: '高度 %value%px '
+    resolution:
+      title: 分辨率
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: 比例
+      options:
+        width: '宽度 %value%px'
+        height: '高度 %value%px '
+        ratio: '比率 %value%%'
+    thumbnail:
+      title: 缩略图
+      options:
+        width: '宽度 %value%px'
+        height: '高度 %value%px '
+asset_tree:
+  remove:
+    error_linked: 无法删除此类别树，其已被设置为一个用户的默认资源类别树。

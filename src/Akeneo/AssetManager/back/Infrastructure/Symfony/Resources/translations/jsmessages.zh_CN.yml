@@ -1,0 +1,370 @@
+#pim_title:
+#akeneo_asset_manager_asset_family_index: Create a new entity
+#akeneo_asset_manager_asset_family_edit: Edit an asset family
+#akeneo_asset_manager_asset_edit: Edit an asset
+pim_asset_manager:
+  editor:
+    embedded:
+      invalid_link:
+        title: 可疑嵌入链接
+        message: 抱歉，我们不会显示该嵌入条目，但它将被正确保存
+  asset_collection:
+    asset_count: '{0} 无资产|{1} {{ resultCount }} 个资产|]1,Inf] {{ resultCount }} 个资产'
+    add_asset: '添加资产'
+    add_asset_title: '打开资产选择器，将资产添加到集合中'
+    no_asset_in_collection: '抱歉，此集合中没有资产。'
+    helper:
+      title: '欢迎来到新的产品资产管理区域！'
+      text: '品类 {{ family }} 没有资产集合！如何添加资产集合？'
+      link: '如何添加资产集合？'
+    no_asset:
+      title: '抱歉，此产品没有资产'
+      text: '品类 {{ family }} 没有资产集合！'
+    notification:
+      product_rule: '此集合可以通过以下产品规则更新：'
+      limit: '已达到每个集合的资产上限数目 {{ limit }} ，无法再将资产添加到集合中。'
+    remove_one_asset: 从资产集合中移除资产 {{ assetName }}
+    remove_all_assets: 移除所有资产
+    other_actions: 其他操作
+    open_other_actions: 打开其他操作
+    dismiss_other_actions: 取消其他操作
+    move_asset_to_left: 将资产 {{ assetName }} 移动到左侧
+    move_asset_to_right: 将资产 {{ assetName }} 移动到右侧
+    legacy_helper:
+      moved_to_assets_tab: 要查看资源集合 {{ label }}，请转到产品的资产部分。
+      is_missing_required: 资源集合 {{ label }} 是必需的。请在产品的资产部分里丰富它。
+  asset_picker:
+    title: 将资产添加到您的产品中
+    sub_title: 选择您要附加到集合 {{ attributeLabel }} 中的产品 {{ productLabel }} 的资产
+    no_result:
+      title: 抱歉，找不到与搜索相符的资产。
+      sub_title: 请用新的搜索条件再进行搜索
+    filter:
+      title: 资产筛选器
+    basket:
+      title: '{{ assetCount }} 个资产已选定|{{ assetCount }} 个资产已选定'
+      empty_title: 您的购物车为空
+      remove_one_asset: 从资产选择中移除资产 {{ assetName }}
+      remove_all_assets: 全部移除
+  asset_preview:
+    previous: 上一个资产
+    next: 下一个资产
+    empty_main_image: 此资产没有图像。
+    edit_asset: 编辑资产
+    download: 下载
+    copy_url: 复制 URL
+  close: 关闭模式
+  breadcrumb:
+    products: 产品
+  #app:
+  #image:
+  #wide:
+  #remove: Remove the image
+  #download: Download the image
+  #upload: Drag and drop to upload or click here
+  #small:
+  #remove: Remove
+  #download: Download
+  #upload: Drag and drop to upload
+  grid:
+    counter: '{{ resultCount }} 个结果'
+    counter_empty: '0 个结果'
+  asset_family:
+    #validation:
+    #code:
+    #pattern: 'This field may only contain letters, numbers and underscores.'
+    #should_be_unique: 'This code already exists for this entity.'
+    #limit_reached: 'You cannot create the asset family "{{ %asset_family_label% }}" because you have reached the limit of {{ %limit% }} asset families'
+    #button:
+    #save: Save
+    #save_permission: Save
+    #create: Create
+    #permission:
+    #title: Entity permissions
+    title: 资产
+  #breadcrumb: Asset Families
+  #img: The main image of the asset family named "{{ label }}"
+  #tab:
+  #assets: Assets
+  #attribute: Attributes
+  #properties: Properties
+  #permission: Permissions
+  #properties:
+  #title: Entity properties
+  #identifier: Code
+  #label: Label
+  #image: Image
+  #attribute:
+  #title: Asset attributes
+  #attribute:
+  #error:
+  #render_list: 'An error occured during the rendering of the "{{ %attribute_code% }}" attribute'
+  #render_edit: 'An error occured during the rendering of the "{{ %attribute_code% }}" attribute additional properties fields'
+  #module:
+  #delete:
+  #button: Delete entity
+  #confirm: Are you sure you want to delete this entity?
+  #index:
+  #grid:
+  #count: '{0} No Asset Family|{1} {{ count }} Asset Family|]1,Inf] {{ count }} Asset Families'
+  #help:
+  #title: 'Welcome to the Asset Families!'
+  #description_part_one: Enrich relevant information related to products (e.g. brands, manufacturers, colors, materials, ingredients...).
+  #description_part_two: It will enable you to provide a better Product Experience to your customers.
+  #description_part_three: Click on the “Create” button to create your 1st asset family, set its attributes and assets.
+  #description_part_four: Then, to link to products, create a product attribute type related to this asset family.
+  #description_part_five: For more details, we invite you to browse this article.
+  #create:
+  #header:
+  #title: Create
+  #subtitle: Asset Families
+  #title: Create a new entity
+  #input:
+  #label: Label
+  #code: Code (required)
+  #confirm: Save
+  #delete:
+  #message: Are you sure you want to delete the entity "{{ assetFamilyLabel }}"?
+  #title: Attribute
+  #notification:
+  #save:
+  #success: Asset family successfully updated.
+  #fail: An error occured during the save of the asset family
+  #create:
+  #success: Asset family successfully created.
+  #fail: An error occured during the creation of the asset family
+  #delete:
+  #success: Asset family successfully deleted.
+  #fail: An error occured during the deletion of the asset family
+  #permission:
+  #notification:
+  #save:
+  #success: Asset family permissions successfully updated.
+  #fail: At least one user group should have edit permission on this entity
+  #no_data:
+  #title: You have no user group
+  #subtitle: To manage permission on asset family you need to have at least one user group.
+  #link: Clic here to add your first user group
+  asset:
+    #validation:
+    #limit_reached: 'You cannot create the asset "{{ %asset_label% }}" because you have reached the limit of {{ %limit% }} assets for this asset family'
+    #code:
+    #pattern: 'This field may only contain letters, numbers and underscores.'
+    #should_be_unique: 'This code already exists for this entity.'
+    #no_data:
+    #title: There are no asset for {{ entityLabel }}
+    #subtitle: Click on the button "Add new" to create the first asset
+    #no_result:
+    #title: There are no result for your search
+    #subtitle: Try again with new search criteria.
+    selector:
+      no_value: 点击此处选择一个资产。
+    #error:
+    #value: Oops, it seems that the rendering of the "{{ fieldName }}" field failed. See the developer console for more details.
+    #button:
+    #save: Save
+    #create: Add new
+    #delete: Delete
+    #delete_all: Delete all assets
+    #back: Back to list
+    #product:
+    #attribute: Product attribute
+    #counter: '{{ totalCount }} result|{{ totalCount }} results'
+    #dropdown:
+    #attribute: Product attribute
+    #title: Products
+    #no_attribute:
+    #title: There is no product attribute linked to the asset family "{{ entityLabel }}"
+    #subtitle: "To start linking products to this asset family you can create a new one: "
+    #link: Create a new product attribute
+    #not_enough_items:
+    #title: Damn! You can see only {{ productCount }}/{{ totalCount }} products.
+    #subtitle:
+    #usable_in_grid: To discover all the products linked, just click below!
+    #not_usable_in_grid: To discover all the products linked, the product attribute must be set as "usable in grid".
+    #button: View all products
+    #no_product:
+    #title: There are no products linked for the product attribute "{{ entityLabel }}"
+    #subtitle: "Start linking products to this attribute to see them here"
+    #enrich:
+    #title: Asset attributes
+    #code: Code
+    #label: Label
+    #title: Assets
+    #create:
+    #header:
+    #title: Create
+    #subtitle: Asset Families
+    #title: Add new {{ entityLabel }}
+    #input:
+    #label: Label
+    #code: Code (required)
+    #create_another: Create another asset
+    #confirm: Save
+    #delete:
+    #message: Are you sure you want to delete the asset "{{ assetLabel }}"? If it's linked to products or assets, the links will be removed.
+    #title: Asset
+    #delete_all:
+    #confirm: Are you sure you want to delete all "{{ entityIdentifier }}" assets? If they are linked to products, the links to the products will be removed.
+    grid:
+      search: 搜索标签、代码和文本属性
+      filter:
+        completeness:
+          label: 完成
+          all: 所有
+          'yes': '是'
+          'no': '否　'
+        option:
+          all: 所有
+          no_value: 选择要过滤的选项
+          operator:
+            in: 在列表中
+      more_result:
+        title: 不是这样！
+        description: 您刚刚从 {{ total }} 个资产中滚动到了前 {{ maxDisplayedAssets }} 个结果。要查看更多信息，请尝试更具体的搜索条件。
+  #column:
+  #code: Code
+  #image: Image
+  #label: Label
+  #complete: Complete
+  #action: Actions
+  #completeness:
+  #title_no_required: No attribute required
+  #title_non_complete: 0 out of {{ required }} attributes complete
+  #title_ongoing: '{{ complete }} out of {{ required }} attributes complete'
+  #title_complete: All {{ required }} attributes complete
+  #tab:
+  #enrich: Enrich
+  #product: Products
+  #notification:
+  #save:
+  #success: Asset successfully updated.
+  #fail: An error occured during the save of the asset
+  #validation_error: The asset could not be updated
+  #create:
+  #success: Asset successfully created.
+  #fail: An error occured during the creation of the asset
+  #delete:
+  #success: Asset "{{ code }}" successfully deleted.
+  #fail: An error occured during the deletion of the asset
+  #delete_all:
+  #success: All "{{ entityIdentifier }}" assets successfully deleted.
+  #fail: An error occured during the deletion of all this asset family's assets
+  #completeness:
+  #label: Complete
+  attribute:
+    #validation:
+    #limit_reached: 'You cannot create the attribute "{{ %attribute_label% }}" because you have reached the limit of {{ %limit% }} attributes for this asset family'
+    #default:
+    #code: Code
+    #label: Label
+    #image: Image
+    #type:
+    #text: Text
+    #image: Image
+    #asset: Asset single link
+    #asset_collection: Asset multiple links
+    #option: Single option
+    #option_collection: Multiple options
+    #number: Number
+    is_required: 完成度必填
+#media_type_preview: Preview of media type
+#no_data:
+#title: There are no custom attributes for {{ entityLabel }}
+#subtitle: Click on the button "Add an attribute" to configure your first custom attribute
+#button:
+#add: Add an attribute
+#create:
+#header:
+#title: Create
+#subtitle: Asset Families
+#title: Add new asset attribute
+#description: The following parameters, except the label, cannot be updated after the attribute creation
+#input:
+#code: Code (required)
+#label: Label
+#type: Attribute type
+#asset_type: Asset family to link (required)
+#value_per_locale: Value per locale
+#value_per_channel: Value per channel
+#placeholder:
+#asset_type: Select your linked asset family
+#confirm: Save
+#edit:
+#delete: Delete the attribute
+#title: Edit attribute {{ code }}
+#save: Save
+#cancel: Cancel
+#input:
+#code: Code (required)
+#label: Label
+#type: Attribute type
+#asset_type: Related asset family (required)
+#value_per_locale: Value per locale
+#value_per_channel: Value per channel
+#is_required: Required for completeness
+#max_length: Max characters
+#textarea: Text Area
+#is_rich_text_editor: Rich Text Editor
+#max_file_size: Max file size (MB)
+#allowed_extensions: Allowed extensions
+#validation_rule: Validation rule
+#regular_expression: Regular expression
+#min_value: Min value
+#max_value: Max value
+#manage_options:
+#confirmation:
+#discard_changes: You will lose changes made to the list of options if you leave the page
+#quick_edit:
+#label: Manage options
+#option:
+#label:
+#placeholder: Write you new option label here
+#options:
+#validation_rule:
+#none: None
+#email: E-mail
+#regular_expression: Regular expression
+#url: URL
+#decimals_allowed: Decimal values allowed
+#delete:
+#message: Are you sure you want to delete the attribute "{{ attributeLabel }}"?
+#title: Attribute
+#notification:
+#list:
+#fail: An error occured during the update of the attribute list
+#save:
+#success: Attribute successfully updated.
+#fail: An error occured during the save of the attribute
+#validation_error: The attribute could not be updated
+#create:
+#success: Attribute successfully created.
+#fail: An error occured during the creation of the attribute
+#validation_error: The attribute could not be created
+#delete:
+#success: Attribute successfully deleted.
+#fail: An error occured during the deletion of the attribute
+#options:
+#no_value: Click here to select an option.
+#sub_title: Asset Families
+#helper:
+#title: Label translations
+#modal:
+#delete:
+#subtitle: Confirm deletion
+#button:
+#cancel: Cancel
+#confirm: Delete
+pim_enrich:
+  #confirmation:
+  #discard_changes: 'You will lose changes to the "{{ entity }}" entity if you leave the page.'
+  entity:
+    attribute:
+      property:
+        #type:
+        #pim_catalog_asset_collection: Asset multiple links
+        #section:
+        #type_specific: Type specific parameters
+        asset_family:
+          identifier: 相关资产品类（必填）
+          default_label: 请选择资产品类。

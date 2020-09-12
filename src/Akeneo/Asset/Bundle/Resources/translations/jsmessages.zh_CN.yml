@@ -1,3 +1,5 @@
+user:
+  asset_delay_reminder: 资产延迟提醒 （以天计）
 pimee_product_asset:
   form:
     product:
@@ -8,129 +10,232 @@ pimee_product_asset:
           cancel: 取消
           confirm: 确认
         title: 管理资产
+        description: 选择要附加到产品的资产
+        preview_title: 资产集合预览
+        download: 下载
+        remove: 移除
+        upload: 上传 
+        assetRemoveConfirmationLabel: 确定要移除此资产吗？
     asset:
-      not_empty: 代码是必需的。它不能为空。
+      not_empty: 代码为必填项，不能为空。
+      alpha_numeric_plus_underscore: 代码只能是字母数字或下划线。
+      unique: 代码必须是唯一的。我们已为您生成了一个新代码。
   enrich_asset:
     grid:
       edit: 编辑资产的属性
   enrich_variation:
     popin:
-      delete:
-        title: 确定删除
-        message: 确实要删除这个条目吗?
       reset:
-        title: 重置变化
-        message: 您确定要重置所有的差异吗？
+        title: 重置变体
+        message: 确定要重置所有的变体吗？
   mass_upload:
     menu: 上传资产
     btn:
-      remove_all_files: 删除所有文件
-      delete: 删除
+      remove_all_files: 移除所有文件
       import: 导入
       upload: 上传资产
     success:
-      new: 将创建一个新的资产
-      imported: 为资产处理，文件已经导入
-      canceled: 上传取消
-      deleted: 已上传的文件已被删除
+      new: 将创建新的资产
+      imported: 为处理资产，已导入文件
+      canceled: 上传已成功取消
+      deleted: 已成功删除上传的文件
+      need_refresh: <b>已启动资产导入</b><br> 要在产品表单中查看导入的资产，请在收到导入通知后，立即刷新产品页面。
     error:
-      list: 不能读取已经上传的文件
-      upload: 在上传的过程中发生了错误
-      delete: 无法从服务器中删除文件
-      import: ' 在导入的过程出现了错误'
-      filename: 该资产有一个无效的文件
-      code: 该资产有一个无效的编号格式
-      locale: 一个资产存在但不可本地化
+      list: 无法读取已上传的文件
+      upload: 上传过程中发生错误
+      delete: 无法从服务器删除文件
+      import: 导入过程中发生错误
+      filename: 资产文件名无效
+      code: 资产代码格式无效
+      locale: 资产存在但不可本地化
       invalid_locale: 区域设置被禁用或无效
-      exists: 具有相同名称的文件已经被导入了
+      exists: 已导入过具有相同名称的文件
       conflicts: 文件名称冲突
-    grid:
-      medias: 媒体
-      filename: 文件名
-      filetype: 文件类型
-      status: 状态
-      progress: 进度
-      actions: 操作
-    action:
-      cancel: 取消
-      remove: 删除
     status:
       added: 已添加
       queued: 排队中
       uploading: 上传中
-      error: 故障 
-      success: 保存成功
-    drag_and_drop: 拖放式操作可上传资产或点击这里
+      error: 错误
+      success: 成功
+    drag_and_drop: 拖放资产或点击这里
+    tabsection_title: 资产已上传
   datagrid:
     mass_action:
       delete:
-        success: 选定的产品被成功删除。
-        error: 当试图删除选定的资产时，发生了错误，请重试。
-        empty_selection: 尚未选定资产
-pim_dashboard:
+        confirm_content: 确定要删除选中的资产吗？
+        success: 选定的资产已成功删除。
+        error: 尝试删除选定的资源时发生错误，请重试。
+        empty_selection: 未选定资产
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_assets_collection: 资产集合
+pim_import_export:
   widget:
     last_operations:
       job_type:
         mass_upload: 批量上传
-page_title:
+        compute_completeness_of_products_linked_to_assets: 计算与资源链接的产品的完整性
+pim_title:
   pimee_product_asset_mass_upload: 上传资产
+  pimee_product_asset_index: 资产
+  pimee_product_asset_edit: 资产 {{ asset.label }} | 编辑
+  pimee_product_asset_view: 资产 {{ asset.label }} | 查看
+  pimee_asset_categorytree_index: 类别
+  pimee_asset_categorytree_edit: 类别 {{ category.label }} | 编辑
+  pimee_asset_categorytree_create: 类别 | 创建
 batch_jobs:
   apply_assets_mass_upload:
-    label: 资产大批上传
+    label: 批量上传资产
     perform.label: 批量上传
+  apply_assets_mass_upload_into_asset_collection:
+    label: 批量上传资产并添加到产品
+    perform.label: 批量上传资产并添加到产品
   yml_asset_channel_configuration_import:
-    label: 用 Yaml 导入资产通道配置
-    validation.label: 文件验证
-    import_asset.label: 用 Yaml 导入资产通道配置
+    import.label: 资产渠道配置导入
+    label: 以 Yaml 格式导入资产渠道配置
+    import_asset.label: 以 Yaml 格式导入资产渠道配置
   yml_asset_channel_configuration_export:
-    label: 用 Yaml 导出资产通道配置
-    export.label: 用 Yaml 导出资产通道配置
+    label: 以 Yaml 格式导出资产渠道配置
+    export.label: 以 Yaml 格式导出资产渠道配置
   csv_asset_import:
-    label: 从CSV文件中导入产品
-    validation.label: 文件验证
-    import_tags.label: 从CSV导入标签
-    import_asset.label: 从CSV文件中导入产品
+    label: 以 CSV 格式导入资产
+    import_tags.label: 以 CSV 格式导入标签
+    import_asset.label: 以 CSV 格式导入资产
   csv_asset_export:
-    label: 从CSV文件中导出资产
-    export.label: 从CSV文件中导出资产
+    label: 以 CSV 格式导出资产
+    export.label: 以 CSV 格式导出资产
   csv_asset_variation_export:
-    label: 在 CSV 导出资产变化
-    export.label: 在 CSV 导出资产变化
+    label: 以 CSV 格式导出资产变量
+    export.label: 以 CSV 格式导出资产变量
   csv_tag_import:
-    label: 从CSV导入标签
-    validation.label: 文件验证
-    import.label: 从CSV导入标签
+    label: 以 CSV 格式导入标签
+    import.label: 以 CSV 格式导入标签
   csv_asset_category_import:
-    label: 从CSV导入资产分类
-    validation.label: 文件验证
-    import_asset_category.label: 从CSV导入资产分类
+    label: 以 CSV 格式导入资产类别
+    import_asset_category.label: 以 CSV 格式导入资产类别
   csv_asset_configuration_import:
-    label: 用CSV 导入资产通道配置
-    validation.label: 文件验证
-    import_asset.label: 用CSV 导入资产通道配置
+    label: 以 CSV 格式导入资产渠道配置
+    import_asset.label: 以 CSV 格式导入资产渠道配置
   csv_asset_category_export:
-    label: 导出资产分类至CSV文件
-    export.label: 导出资产分类至CSV文件
+    label: 以 CSV 格式导出资产类别
+    export.label: 以 CSV 格式导出资产类别
   xlsx_tag_import:
-    label: 从XLSX文件中导入标签
-    validation.label: 文件验证
-    import.label: 从XLSX文件中导入标签
+    label: 以 XLSX 格式导入标签
+    import.label: 以 XLSX 格式导入标签
   xlsx_asset_import:
-    label: 从XLSX文件中导入资产
-    validation.label: 文件验证
-    import_tags.label: 从XLSX文件中导入标签
-    import_asset.label: 从XLSX文件中导入资产
+    label: 以 XLSX 格式导入资产
+    import_tags.label: 以 XLSX 格式导入标签
+    import_asset.label: 以 XLSX 格式导入资产
   xlsx_asset_category_import:
-    label: 从XLSX文件中导入资产分类
-    validation.label: 文件验证
-    import_asset_category.label: 从XLSX文件中导入资产分类
+    label: 以 XLSX 格式导入资产类别
+    import_asset_category.label: 以 XLSX 格式导入资产类别
   xlsx_asset_export:
-    label: 从XLSX文件中导出资产
-    export.label: 从XLSX文件中导出资产
+    label: 以 XLSX 格式导出资产
+    export.label: 以 XLSX 格式导出资产
   xlsx_asset_category_export:
-    label: 从XLSX文件中导出资产分类
-    export.label: 从XLSX文件中导出资产分类
+    label: 以 XLSX 格式导出资产类别
+    export.label: 以 XLSX 格式导出资产类别
+  xlsx_asset_variation_export:
+    label: 以 XLSX 格式导出资产变量
+    export.label: 以 XLSX 格式导出资产变量
   classify_assets:
-    perform.label: 在目录中移动资源
+    perform.label: 将资产移到类别
   add_tags_to_assets:
-    perform.label: 将标签添加到资源
+    perform.label: 将标签添加到资产
+  compute_completeness_of_products_linked_to_assets:
+    compute_completeness_of_products_linked_to_assets.label: 计算与资源链接的产品的完整性
+jstree:
+  asset:
+    all: 所有资产
+    unclassified: 未分类的资产
+asset_grid:
+  title: "]-Inf, 1]{{ count }} 个产品资产|]1, Inf[{{ count }} 个产品资产"
+  selected: 已选资产
+  label: 产品资产
+create_asset:
+  title: 创建资产
+pim_datagrid:
+  display_selector:
+    label: 显示
+    gallery: 图库
+    list: 列表
+  mass_action:
+    mass_edit:
+      asset_edit: 批量编辑资产
+pimee_enrich.entity.channel:
+  module:
+    asset_transformation:
+      title: 资产转换
+      not_found: 没有发现转换
+      transformation: 转换
+      options: 选项
+      colorspace:
+        title: 色彩空间
+        options:
+          colorspace: '色彩空间 %value%'
+      resize:
+        title: 调整尺寸
+        options:
+          width: '宽度 %value%px'
+          height: '高度 %value%px '
+      resolution:
+        title: 分辨率
+        options:
+          resolution: '%value%'
+          resolution-unit: '%value%'
+      scale:
+        title: 比例
+        options:
+          width: '宽度 %value%px'
+          height: '高度 %value%px '
+          ratio: '比率 %value%%'
+      thumbnail:
+        title: 缩略图
+        options:
+          width: '宽度 %value%px'
+          height: '高度 %value%px '
+pimee_enrich.mass_edit.asset:
+  title: 资产批量操作
+  confirm: "{1}您将要更新资产的以下信息，请确认。|]1, Inf[您将要更新 {{ itemsCount }} 个资产的以下信息，请确认。"
+  step:
+    select:
+      label: 选择资产
+    choose:
+      title: 资产批量操作
+      label_count: "]0, Inf[选择操作"
+    configure:
+      label: 配置
+    confirm:
+      label: 确认
+  operation:
+    add_tag:
+      label: 将标签添加到资产
+      description: 标签将被添加到资产。
+      label_count: "{1}将标签添加到 <span class=\"AknFullPage-title--highlight\">1 个资产</span>|]1, Inf[将标签添加到 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个资产</span>"
+      field: 标签
+      empty_selection: 请选择标签
+    add_to_category:
+      label: 按类别分类资产
+      description: 资产将被放入以下类别，现存的位置将丢失。
+      label_count: "{1}将 <span class=\"AknFullPage-title--highlight\">1 个资产</span>分类到类别|]1, Inf[将 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个资产</span>分类到类别"
+pim_catalog_volume:
+  section:
+    assets:
+      title: 资产上的轴
+      hint: 您可以在这里跟进与资产相关的量
+  axis:
+    count_assets: 资产
+    count_asset_categories: 资产类别
+    count_asset_category_trees: 资产类别树
+pim_menu:
+  tab:
+    asset: 资产
+  item:
+    asset_category: 资产类别
+    upload_asset: 上传资产
+pim_notification:
+  types:
+    mass_upload: 批量上传
