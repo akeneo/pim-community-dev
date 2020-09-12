@@ -19,3 +19,5 @@ pim_dashboard:
       load_more: '加载更多...'
     header:
       view_all: 查看全部
+pim_title:
+  pim_dashboard_index: 主界面
