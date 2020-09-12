@@ -1,2 +1,88 @@
+An identifier attribute already exists.: 标识符属性已存在。
+Attribute code may contain only letters, numbers and underscore: 属性代码只能包含字母、数字和下划线
+Attribute code may contain only letters (at least one), numbers and underscores: 属性代码只能包含字母（至少 1 个）、数字和下划线
 Attribute code may not contain line-feed characters: 属性代码不能包含换行字符
+Attribute group code may contain only letters, numbers and underscores: 属性代码只能包含字母（至少 1 个）、数字和下划线
+This attribute type can't be used as a grid filter: 此属性类型不能用作网格筛选器
+This code is not available: 此代码不可用
+This attribute type must be required: 此属性类型为必填项
+This attribute type can't be required: 此属性类型非必填项
+This attribute type can't have unique value: 此属性类型的值非唯一
+No default value may be specified for this attribute type: 此属性类型没有指定的默认值
+This value should be Yes or No: 此值应为 Yes 或 No
+This value should not be blank: 此值不能为空
+Option code may contain only letters, numbers and underscores: 选项代码仅可包含字母、数字和下划线
+Option code may contain only letters (at least one), numbers and underscores: 选项代码仅可包含字母（至少 1 个）、数字和下划线
+This value should not be a decimal.: 该值不应该为小数
+'The file extension is not allowed (allowed extensions: %extensions%).': '不允许的文件扩展名 (允许的扩展名︰ %extensions%)。'
+"The value %value% is already set on another product for the unique attribute %attribute%": 值 %value% 已经设置为另一个产品的唯一属性 %attribute%
+The same identifier is already set on another product: 已在另一产品上设置了同一标识符
 regex.comma_or_semicolon_or_surrounding_space.message: 此字段不应包含任何逗号、分号或前/后空格
+file.extensions.message: '不允许的文件扩展名 (允许的扩展名︰ %extensions%)。'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": 此类型的值需要使用 {{ decimal_separator }} 来分隔小数。
+"This type of value expects the use of dot (.) to separate decimals.": 此类型的值需要使用点（.）来分隔小数。
+"This type of value expects the use of comma (,) to separate decimals.": 此类型的值需要使用逗号（，）来分隔小数。
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": 此类型的值需要使用阿拉伯十进制分隔符（,）来分隔小数。
+"This type of value expects the use of the format {{ date_format }} for dates.": 此类型的值需要日期格式为 {{ date_format }} 。
+"The category \"%category%\" has to be a root category.": 类别“%category%”必须为根类别。
+"The attribute \"%attributeCode%\" does not exist.": 属性“%attributeCode%”不存在。
+"The attribute \"%attributeCode%\" is not a metric attribute.": 属性“%attributeCode%”不是公制属性。
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": 单位“%unitCode%”不存在，或不属于指定属性“%attributeCode%”的默认公制系统。
+"The currency \"%currency%\" has to be activated.": 货币“%currency%”必须激活。
+product_model.code.not_blank.message: 产品模型代码不可为空。
+product_model.code.unique.message: 另一产品模型上已经设置了同一代码。
+product_model.family_variant.not_blank.message: 产品模型品类变型不能为空。
+pim_catalog:
+  constraint:
+    can_have_family_variant_empty_axis_value: ' 属性"%attribute%"不能为空，因为其被定义为该实体的轴'
+    product_model_with_same_axis_value_already_exists: '无法为产品模型"%validated_entity%"上的属性轴"%attributes%"设置值"%values%"，因为产品模型"%sibling_with_same_value%"已具有该值'
+    variant_product_with_same_axis_value_already_exists: '无法为变型产品"%validated_entity%"上的属性轴"%attributes%"设置值"%values%"，因为变型产品"%sibling_with_same_value%"已具有该值'
+    can_have_family_variant_unexpected_attribute: '无法为此实体设置属性"%attribute%"，因为其不属于属性集'
+    cannot_have_product_model_as_parent: '产品模型"%product_model%"不能将产品模型"%parent_product_model%"作为父模型'
+    cannot_have_parent: '产品模型“%product_model%”不能有父模型'
+    attribute_does_not_belong_to_family: '属性"%attribute%"不属于品类"%family%'
+    variant_product_invalid_family: '变型产品品类必须与其父类相同'
+    php_int_max_reached: '最大数值必须小于 %php_int_max%。'
+    not_null_family: 品类不能为“空 (null)”，因为具有标识符"%sku%"的产品是变型产品。
+    variant_product_has_parent: '变型产品"%variant_product%"必须有父产品'
+    invalid_variant_product_parent: '变型产品"%variant_product%"不能以产品模型"%product_model%"作为父模型， (此产品模型只能有其他产品模型作为子模型)'
+    modified_variant_axis_value: '变型轴"%variant_axis%"不能修改，"%provided_value%" 已给定'
+    family_variant_attributes_unique: 属性必须是唯一的，"%attributes%" 在变型属性集中多次使用
+    family_variant_axes_unique: 变型轴必须是唯一的，"%attributes%" 在变型属性集中多次使用
+    family_variant_axes_immutable: '级别"%level%"的变量轴不能修改'
+    family_variant_axes_attribute_type_unique: 变量轴"%axis%"不能是唯一的或不能是标识符
+    family_variant_axes_attribute_type: 变量轴"%axis%"必须为布尔值，简单的选择，简单的参考数据，或度量值
+    family_variant_axes_wrong_type: 变量轴"%axis%"不能本地化，不能确定范围，也不是针对特定区域的
+    family_variant_axes_number_of_axes: '变体属性集不能超过 %max_axes_number% 个轴'
+    family_variant_no_axis: 级别"%level%"的属性集必须至少有一个属性定义为轴
+    family_variant_axis_level: 属性"%axis%"必须在设置为轴的同一变量属性集中设置为属性
+    family_variant_has_family_attribute: '属性"%attribute%"不能添加到"%family_variant%"品类变型中，因为其不是"%family%"品类的属性'
+    family_variant_level_do_not_exist: 没有针对级别"%level%"的变量属性集
+    family_variant_no_level: 品类变型中应至少有一个级别
+    family_variant_maximum_number_of_level: 品类变型的级别不能超过"%level%"个
+    family_variant_unique_attributes_in_last_level: 唯一的属性“%attribute%”必须在产品级别上设置
+    product_identifier: 这些标识符"%s"并不存在。
+    0: 发生意外错误。
+    100: 非预期的值
+    101: 此字段需要填入布尔值。
+    102: 此字段需要填入浮点值。
+    103: 此字段需要填入整数值。
+    104: 此字段需要填入数字值。
+    105: 此字段需要填入字符串值。
+    106: 此字段需要填入数组。
+    107: 此字段需要填入数组值。
+    200: 发生内部错误
+    201: 发生内部错误
+    202: 此字段需要填入数字值。
+    203: 此字段需要填入字符串值。
+    204: 此字段需要填入字符串值。
+    205: 发生内部错误
+    300: 此字段需要填入有效的实体代码。
+    301: 此字段需要填入有效的范围和区域。
+    302: 此字段需要填入有效的范围。
+    303: 此字段需要填入有效的关联格式。
+    pim_immutable_product_validator: 已在另一产品上设置了同一标识符
+    pim_immutable_product_model_validator: 另一产品模型上已经设置了同一代码。
+mass_edit:
+  edit_common_attributes:
+    invalid_values: 属性表单中存在错误
