@@ -1,71 +1,76 @@
 batch_jobs:
   csv_currency_export:
-    label: 货币导出为CSV
+    label: 以 CSV 格式导出货币
     export.label: 货币导出
   csv_currency_import:
-    label: 从CSV文件导入货币
-    import.label: 货币导入
+    label: 以 CSV 格式导入货币
+    import.label: 导入货币
   xlsx_currency_export:
-    label: 货币导出为XLSX文件
-    export.label: 货币导出
+    label: 以 XLSX 格式导出货币
+    export.label: 导出货币
   xlsx_currency_import:
-    label: 从SLSX文件导入货币
-    import.label: 货币导入
+    label: 以 XLSX 格式导入货币
+    import.label: 导入货币
   csv_locale_export:
-    label: 区域设置导出为CSV文件
-    export.label: 区域设置导出
+    label: 以 CSV 格式导出区域设置
+    export.label: 导出区域设置
   csv_locale_import:
-    label: 从CSV文件导入区域设置
-    import.label: 区域设置导入
+    label: 以 CSV 格式导入区域设置
+    import.label: 导入区域设置
   xlsx_locale_export:
-    label: 区域设置导出为CSV文件
+    label: 以 XLSX 格式导出区域设置
     export.label: 导出区域设置
   xlsx_locale_import:
-    label: 从XLSX文件导入区域设置
-    import.label: 区域设置导入
+    label: 以 XLSX 格式导入区域设置
+    import.label: 导入区域设置
   csv_channel_export:
-    label: 渠道导出为CSV文件
-    export.label: 渠道导出
+    label: 以 CSV 格式导出渠道
+    export.label: 导出渠道
   csv_channel_import:
-    label: 从CSV文件导入渠道
-    import.label: 渠道导入
+    label: 以 CSV 格式导入渠道
+    import.label: 导入渠道
   xlsx_channel_export:
-    label: 渠道导出为XLSX文件
-    export.label: 渠道导出
+    label: 以 XLSX 格式导出渠道
+    export.label: 导出渠道
   xlsx_channel_import:
-    label: 从XLSX文件导入渠道
-    import.label: 渠道导入
+    label: 以 XLSX 格式导入渠道
+    import.label: 导入渠道
 pim_enrich.entity.channel:
-  label: 频道
-  uppercase_label: 通道
+  label: 渠道
+  uppercase_label: 渠道
   flash:
     update:
       success: 渠道已成功更新。
-      fail: 渠道不能更新。
+      fail: 渠道无法更新。
     create:
       success: 渠道已成功创建。
-      fail: 渠道不能创建。
+      fail: 渠道无法创建。
     delete:
-      success: 通道已删除
-      fail: 不能删除此频道
+      success: 渠道已成功移除
+      fail: 无法删除此渠道
   page_title:
     index: "]-Inf, 1]{{ count }} 个渠道|]1, Inf[{{ count }} 个渠道"
   property:
-    category_tree: 目录树
+    category_tree: 类别树
     do_not_convert: 不转换
-    label_conversion_units: 在产品导出时，为每一个计量单位选择一个转位单位。
+    label_conversion_units: 在产品导出时，为每一个公制属性选择一个转位单位。
   module:
     create:
       button: 创建渠道
     delete:
-      confirm: 确定要删除这个频道吗？
+      confirm: 确定要删除此渠道吗？
 pim_enrich.entity.locale:
-  label: 区域
-  uppercase_label: 本地化语言
-  plural_label: 本地化语言
+  label: 区域设置
+  uppercase_label: 区域设置
+  plural_label: 区域设置
   page_title:
-    index: "]-Inf, 1]{{ count }} 区域|]1, Inf[{{ count }} 区域"
+    index: "]-Inf, 1]{{ count }} 个区域|]1, Inf[{{ count }} 个区域"
 pim_enrich.entity.currency:
   plural_label: 货币
   page_title:
     index: "]-Inf, 1]{{ count }} 种货币|]1, Inf[{{ count }} 种货币"
+flash:
+  currency:
+    error:
+      linked_to_channel: 不能禁用链接到渠道的货币
+    updated: 货币已成功更新

@@ -1,6 +1,6 @@
 pim_measure:
   families:
-    Area: 区
+    Area: 区域
     Binary: 二进制
     Decibel: 分贝
     Frequency: 频率
@@ -10,7 +10,7 @@ pim_measure:
     Voltage: 电压
     Intensity: 密度
     ElectricCharge: 电量
-    Duration: 持续
+    Duration: 持续时间
     Speed: 速度
     Temperature: 温度
     Volume: 体积
@@ -29,12 +29,12 @@ pim_measure:
     SQUARE_DECIMETER: 平方分米
     SQUARE_DEKAMETER: 平方分米
     SQUARE_FOOT: 平方英尺
-    SQUARE_FURLONG: 平方厘米
+    SQUARE_FURLONG: 方形弗隆
     SQUARE_HECTOMETER: 平方百米
     SQUARE_INCH: 平方英寸
     SQUARE_KILOMETER: 平方千米
     SQUARE_METER: 平方米
-    SQUARE_MIL: 平方英里
+    SQUARE_MIL: 平方密耳
     SQUARE_MILE: 平方英里
     SQUARE_MILLIMETER: 平方毫米
     SQUARE_YARD: 平方码
@@ -59,12 +59,12 @@ pim_measure:
     DECIMETER: 分米
     DEKAMETER: 十米
     FEET: 英尺
-    FURLONG: 浪
+    FURLONG: 弗隆
     INCH: 英寸
     HECTOMETER: 百米
     KILOMETER: 千米
     METER: 米
-    MIL: 毫升
+    MIL: 密耳
     MILE: 英里
     MILLIMETER: 毫米
     YARD: 码
@@ -158,20 +158,23 @@ pim_measure:
     LIVRE: 里弗
     MARC: 马克
     MILLIGRAM: 毫克
-    ONCE: 一次
+    ONCE: 盎司
     POUND: 磅
     TON: 吨
     #Pressure
-    BAR: 条形
+    BAR: 巴
     PASCAL: 帕斯卡
-    HECTOPASCAL: 百帕
-    MILLIBAR: 毫帕
+    HECTOPASCAL: 百帕斯卡
+    MILLIBAR: 毫巴
     ATM: 大气压
     PSI: 磅 / 平方英寸
     TORR: 托尔
     MMHG: 毫米汞柱
+    #Energy
+    CALORIE: 卡路里
     KILOCALORIE: 千卡
+    JOULE: 焦耳
     KILOJOULE: 千焦
     #CaseBox
     PIECE: 个
-    DOZEN: 打
+    DOZEN: 一打
