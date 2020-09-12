@@ -16,6 +16,7 @@ pim_dashboard:
         compute_product_models_descendants: Computează descendenții modelelor de produs
         compute_family_variant_structure_changes: Calculează schimbarile structurii de variantă de familie
         compute_completeness_of_products_family: Calculează completitudinea familiei de produse
+        mass_delete: Stergere multiplă de produse
     completeness:
       load_more: 'Încarcă mai multe...'
     header:
