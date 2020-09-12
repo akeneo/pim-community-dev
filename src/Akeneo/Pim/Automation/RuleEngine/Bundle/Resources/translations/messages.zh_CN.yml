@@ -2,7 +2,93 @@ pimee_catalog_rule:
   datagrid:
     rule-grid:
       actions:
+        delete: 删除
         execute: 执行
       title: 规则
+      column:
+        code: 代码
+        conditions: 条件
+        actions: 操作
+        impacted_product_count:
+          label: 受影响的产品
+          count: '{0,1}%count% 个受影响的产品 |]1，Inf [ %count% 个受影响的产品'
+          no_yet_calculated: 尚未计算
       mass_edit_action:
+        impacted_product_count: 计算受影响的产品
         execute: 执行
+        delete: 删除
+  actions:
+    type:
+      "copy": 则将 %from_field% 复制到 %to_field%
+      "copy_value": 则将 %from_field% 复制到 %to_field%
+      "set": 则将 %value% 设置到 %field%
+      "set_value": 则将 %value% 设置到 %field%
+      "add": 则将 %value% 添加到 %field%
+      "remove": 则从 %field% 中移除 %value%
+    options:
+      include_children: 及子项
+  condition:
+    label: 若 %field% %operator% %value%
+    operators:
+      "STARTS WITH": 开始于
+      "ENDS WITH": 结束于
+      "CONTAINS": 包含
+      "DOES NOT CONTAIN": 不包含
+      "EMPTY": 为空
+      "NOT EMPTY": 不为空
+      "IN": 在
+      "NOT IN": 不在
+      "IN CHILDREN": 在子级中
+      "NOT IN CHILDREN": 不在子级中
+      "UNCLASSIFIED": 未分类
+      "IN OR UNCLASSIFIED": 未分类或在
+      "BETWEEN": 介于
+      "NOT BETWEEN": 不介于
+      "=": 等于
+      "!=": 不等于
+      ">": 大于
+      ">=": 大于或等于
+      "<": 小于
+      "<=": 小于或等于
+  acl_group:
+    rule: 规则
+  acl:
+    rule:
+      view_permissions: 查看规则
+      delete_permissions: 删除规则
+      impacted_product_count_permissions: 计算此规则下受影响的产品
+      execute_permissions: 执行规则
+  attribute:
+    tab:
+      rule.title: 规则
+    grid:
+      is_smart.label: 智能
+    acl:
+      rule.view_permissions: 查看规则
+  product:
+    tooltip:
+      product_attribute_affected_by_a_rule.content: 此属性的值可以来自规则 <strong>%rule%</strong>。这意味着如果规则的条件是有效的，您的修改将被覆盖。
+      loading.title: 正在加载...
+    history: 应用规则"%rule%"
+  product_value:
+    tooltip:
+      affected_by.title: '受规则影响：'
+  steps:
+    product_rule_definition_reader.title: 产品规则导入阅读器
+    rule_definition_processor.title: 产品规则导入处理器
+    product_rule_definition_writer.title: 产品规则导入编写器
+    rules_execution.title: 执行规则
+  notification:
+    rule:
+      executed: 已完成规则执行
+    mass_edit_rule:
+      success: 已完成此规则下受影响产品的计算
+      error: 计算该规则下受影响的产品时发生错误
+btn:
+  Execute rules: 执行规则
+mass_edit_rule: 规则设置 
+job_execution.summary.rule_calculated: 规则的数量
+pim_datagrid:
+  cells:
+    type:
+      mass_edit_rule: 规则设置 

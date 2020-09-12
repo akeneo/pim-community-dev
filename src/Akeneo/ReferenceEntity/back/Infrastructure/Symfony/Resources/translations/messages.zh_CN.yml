@@ -1,2 +1,35 @@
+akeneo_referenceentity:
+  acl_group:
+    reference_entity: 参考实体
+  acl:
+    reference_entity:
+      create: 创建实例
+      edit: 编辑实体属性
+      delete: 删除实体
+      manage_permission: 管理参考实体权限
+    record:
+      create: 创建记录
+      edit: 编辑记录
+      delete: 删除记录
+      delete_all: 删除所有实体记录
+      list_product: 列出已链接到记录的产品
+    attribute:
+      create: 将属性添加到参考实体
+      edit: 编辑参考实体的属性
+      delete: 删除参考实体的属性
+    option:
+      edit: 编辑选项
+      delete: 移除选项
+pim_analytics:
+  info_type:
+    nb_reference_entities: 参考实体数
+    max_number_of_records_per_reference_entity: 每个参考实体的最大记录数
+    average_number_of_values_per_records: 所有参考实体上每个记录的值的平均数量
+    average_number_of_records_per_reference_entity: 每个参考实体的平均记录数
+    max_number_of_attributes_per_reference_entity: 每个参考实体的最大属性数
+    average_number_of_attributes_per_reference_entity: 每个参考实体的平均属性数
+    average_percentage_localizable_only_attributes: 每个参考实体可本地化属性的平均百分比
+    average_percentage_scopable_only_attributes: 每个参考实体可扩展属性的平均百分比
+    average_percentage_scopable_and_localizable_attributes: 每个参考实体可本地化和可扩展属性的平均百分比
 akeneo_reference_entity: 参考实体单个链接
 akeneo_reference_entity_collection: 参考实体多个链接
