@@ -1,90 +1,105 @@
 pimee_catalog_rule:
+  overview: "]-Inf, 1]{{ count }} 个规则|]1, Inf[{{ count }} 个规则"
   execution_button: 执行规则
+  selected: '选中的规则'
   popin:
     execute_rules:
-      confirm_content: 你确定要执行所有的规则吗？(这可能需要很长时间)
+      confirm_title: 确认执行
+      confirm_content: 确定要执行所有的规则吗？(这可能需要很长时间)
   notification:
+    fail: 无法执行该操作
     launched: 规则执行已经启动。完成后会通知您。
   attribute:
     list:
       code.label: 代码
-      condition.label: 条件：
+      condition.label: 条件
       action.label: 操作
-      no_rule_yet.label: 现在没有规则
+      no_rule_yet.label: 当前无规则
   rule:
     condition:
-      if.label: 如果：
+      if.label: 若
     action:
-      then.label: 然后
+      then.label: 则
       set_value.label: 设置成
       copy_value.label: 复制到
       set.label: 设置成
       copy.label: 复制到
-      add.label: 被加入到
+      add.label: 被添加到
       remove.label: 从中移除
   datagrid:
     rule-grid:
       actions:
         execute:
+          confirm_title: 确认执行
           confirm_content: 确定要执行这条规则吗？
-          confirm_ok: 好的
       mass_edit_action:
+        confirm_title: 确认计算
         confirm_content: 确定要计算受这些规则影响的产品吗？
-        confirm_ok: 好的
       mass_action:
         execute:
-          confirm_ok: 好的
-          confirm_content: 确定要执行被选定的规则吗？
-          success: 执行所选定规则的批量操作已经启动。当完成的时候，您将收到通知。
-          error: 在执行此规则时发生了一个错误
-          empty_selection: 没有选中的规则
+          confirm_title: 确认执行
+          confirm_content: 确定要执行选定的规则吗？
+          success: 执行选定规则的批量操作已启动。完成后将通知您
+          error: 执行规则时发生错误。
+          empty_selection: 没有选中规则。
         delete:
-          confirm_ok: 好的
-          confirm_title: 确定删除
-          confirm_content: 确定要删除所选中的规则吗？
-          success: 成功删除规则
-          error: 在删除规则时发生了错误
-          empty_selection: 没有选中的规则
+          confirm_title: 确认执行
+          confirm_content: 确定要删除选中的规则吗？
+          success: 已成功删除规则。
+          error: 删除规则时发生错误。
+          empty_selection: 没有选中规则。
   form:
     attribute:
       tab:
         rules:
           title: 规则
-confirmation:
-  remove:
-    rule: 是否确实要删除此规则？不能撤消此操作！
+pim_enrich:
+  entity:
+    rule:
+      module:
+        delete:
+          confirm: 确定要删除此规则？此操作无法撤消！
+pim_datagrid:
+  entity:
+    rule:
+      flash:
+        delete:
+          success: 规则已成功移除
 flash:
   rule:
-    removed: 规则成功被移除
-    impacted_product_count: 计算受此规则影响的产品批量操作已经启动。当完成的时候，您将收到通知。
+    impacted_product_count: 计算受此规则影响的产品批量操作已经启动。完成后会通知您。
     executed: 规则执行已经启动。完成后会通知您。
-pim_dashboard.widget.last_operations.job_type.mass_edit_rule: 规则设定
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: 规则设置 
 batch_jobs:
+  add_attribute_value:
+    execute_rules.label: 执行规则
+  default_steps:
+    execute_rules: 执行规则
   yml_rule_import:
-    label: 用YAML导入规则
+    label: 以 YAML 格式导入规则
     import.label: 导入规则
   yml_rule_export:
-    label: 用 YAML 导出规则
-    export.label: 规则导出
+    label: 以 YAML 格式导出规则
+    export.label: 导出规则
   rule_impacted_product_count:
     label: 受规则影响的产品
-    perform.label: 计算所影响的产品
-    execute_rules.label: 执行规则
+    perform.label: 计数受影响的产品
   csv_product_import_with_rules:
-    label: 按规则用CSV导入产品
-    execute_rules.label: 执行规则
-    validation.label: 文件验证
-    import.label: 产品导入
-    import_associations.label: 相关导入
+    label: 以 CSV 格式导入产品及规则
+    import.label: 导入产品
   csv_product_model_import_with_rules:
-    execute_rules.label: 执行规则
-    validation.label: 文件验证
+    label: 以 CSV 格式导入产品模型及规则
   xlsx_product_import_with_rules:
-    label: 按规则用XLSX导入产品
-    execute_rules.label: 执行规则
-    validation.label: 文件验证
-    import.label: 产品导入
-    import_associations.label: 相关导入
+    label: 以 XLSX 格式导入产品及规则
+    import.label: 导入产品
   xlsx_product_model_import_with_rules:
-    execute_rules.label: 执行规则
-    validation.label: 文件验证
+    label: 以 XLSX 格式导入产品模型及规则
+pim_notification:
+  types:
+    rule: 规则设置 
+    mass_edit_rule: 批量编辑规则
+pim_menu:
+  item:
+    rule: 规则
+pim_title:
+  pimee_catalog_rule_rule_index: 规则

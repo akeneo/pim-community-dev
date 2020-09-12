@@ -1,0 +1,5 @@
+pim_asset_manager:
+  product_value:
+    validation:
+      asset_multiple_link:
+        limit_reached: '您已达到每个集合的资产上限数目 %limit% ，无法再将资产添加到您的集合中。'
