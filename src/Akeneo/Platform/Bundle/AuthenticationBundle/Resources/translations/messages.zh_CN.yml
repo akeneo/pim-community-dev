@@ -1,0 +1,6 @@
+akeneo_authentication:
+  acl:
+    sso:
+      title: 管理单一登录 (SSO)
+  sso:
+    unknown_user_error: 您无权访问此应用程序。请联系您的管理员。

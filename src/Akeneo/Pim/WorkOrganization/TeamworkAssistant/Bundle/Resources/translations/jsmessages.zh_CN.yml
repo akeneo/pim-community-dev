@@ -1,3 +1,69 @@
+teamwork_assistant:
+  common:
+    required: 必填
+    warning: 不用担心，项目计算可能需要一些时间，所以您的项目暂时不可见。
+  grid:
+    view_selector:
+      create: 创建项目
+      edit: 编辑项目
+      remove: 删除项目
+      create_from_view: 从该视图创建项目
+      start_new_project: 开始新项目
+      confirmation:
+        remove: 确定要删除此项目吗？
+      projects: 项目
+  project:
+    label: 名称
+    locale: 区域设置
+    label_maxlength: 此值太长了。其不应超过 {{ max }} 个字符。
+    description: 描述
+    due_date: 截止日期
+    due_date_past: 不能选择过去的日期。
+    leaving_scope: 您正在离开项目范围。
+  edit_project_modal:
+    saved: 项目已保存。
+    title: 编辑项目
+  create_project_modal:
+    saved: 项目已保存，计算完成后会通知您。
+    title: 项目
+  widget:
+    no_project: 当前没有项目
+    no_project_create: 创建新项目
+    description: 描述
+    due_date: 截止日期
+    todo: 待办事项
+    in_progress: 正在进行中
+    done: 完成
+    all_contributors: 全部贡献者
+    you: 您
+    display_products: 显示产品
+    placeholder:
+      contributor_selector: 搜索贡献者
+      project_selector: 搜索项目
+    completeness:
+      to_start: 待开始产品
+      in_progress: 正在进行中的产品
+      done: 已完成的产品
+pim_datagrid:
+  view_selector:
+    project: 项目
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        refresh_project_completeness_calculation: 团队助理
+        project_calculation: 团队助理
+batch_jobs:
+  project_calculation:
+    project_calculation.label: 项目计算
+    prepare_project_calculation.label: 准备项目计算
+    clean_contributor_group.label: 查看用户对项目的区域设置的权限
+  refresh_project_completeness_calculation:
+    label: 刷新项目完成度
+    refresh_project_completeness_calculation.label: 刷新项目完成度
 pim_notification:
   types:
+    project_created: 您有一个新项目
+    project_finished: 项目已完成
+    project_calculation: 项目计算
     project_due_date: 项目截止日期

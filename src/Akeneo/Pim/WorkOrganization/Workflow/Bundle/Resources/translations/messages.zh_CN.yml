@@ -1,3 +1,164 @@
 pimee_workflow:
   product_draft:
+    author: 作者
     source: 来源
+    created: 提案时间
+    changes: 更改
+    locale: 区域设置上下文
+    product:
+      label: 产品标签
+    attribute:
+      label: 属性
+    status:
+      label: 状态
+      working_copy: 工作副本
+      in_progress: 正在处理
+      ready: 等待批准中
+      can_be_partially_reviewed: 可部分审查
+      can_not_be_approved: 不能审查
+      can_not_be_deleted: 不能删除
+    status_message:
+      can_be_partially_reviewed: 您仅能审查部分提案，因为 一些更改应用到了您不能编辑的值上。请联系您的管理员以更改您的权限。
+      can_not_be_approved: 您不能审查该提案，因为所有更改应用到了您不能编辑的值上。请联系您的管理员以更改您的权限。
+      can_not_be_deleted: 您不能删除该提案，因为所有更改应用到了您不能编辑的值上。请联系您的管理员以更改您的权限。
+      in_progress: 这项提案目前正在走流程中，尚未提交。
+    action:
+      approve: 全部批准
+      refuse: 全部拒绝
+      remove: 移除
+      partial_approve: 批准对产品 %product% 的属性 %attribute% 的更改
+      partial_reject: 拒绝对产品 %product% 的属性 %attribute% 的更改
+    notification:
+      partial_approve: '%owner% 已接受产品 %product% 的属性 %attributes% 的值'
+      partial_approve_number: '%owner% 已接受产品 %product% 的 %attributes_count% 个属性的值'
+      partial_reject: '%owner% 已拒绝产品 %product% 的属性 %attributes% 的值'
+      partial_reject_number: '%owner% 已拒绝产品 %product% 的 %attributes_count% 个属性的值'
+      partial_remove: '%owner% 已删除产品 %product% 的属性 %attributes% 的值'
+      partial_remove_number: '%owner% 已删除产品 %product% 的 %attributes_count% 个属性的值'
+      approve: '%owner% 已接受您对产品 %product% 的提案'
+      refuse: '%owner% 拒绝了您对产品 %product% 的提案'
+      remove: '%owner% 已删除您对产品 %product% 的提案'
+      mass_edit_sent_for_approval: '批量编辑 <strong>%jobLabel%</strong> 已完成：对于 %readProductsCount% 个产品，已生成 %sentForApprovalCount% 个提案'
+    mass_review_action:
+      approve: 批准所选全部项
+      refuse: 拒绝所选全部项
+      error:
+        draft_not_ready: 这项提案尚未准备好批准
+        not_product_owner: 您不拥有与该提案相关的产品
+        cannot_edit_attributes: 您不能编辑通过此提案修改的属性
+        invalid_draft: 由于以下错误，这项建议不能应用。%error%
+  proposal:
+    to_review: '%author.firstname% %author.lastname% 已发送针对产品 %product.label% 的提案以进行审查'
+    individual_import: '%author.firstname% %author.lastname% 已从作业导入发送提案以进行审查'
+    generic_import: 您有来自作业导入的提案要审查
+    original_value: 原始值
+    new_value: 新值
+    no_diff: 值"%value%"在提案和工作副本之间是相同的。
+    draft_in_progress: '%author% 正在为此产品拟定提案草稿。'
+  published_product:
+    index: 已发布的产品
+    title: 已发布的产品
+  acl.published_product:
+    index: 管理已发布的产品
+  product:
+    permission:
+      own: 审查/发布
+      edit: 编辑
+      view: 视图
+  steps:
+    product_draft_processor.title: 提案处理器
+    approve.title: 批准提案
+    refuse.title: 拒绝提案
+  mass_edit_action:
+    published:
+      page_title: 已发布的产品
+      page_subtitle: 批量编辑（1 个已发布的产品）|批量编辑（%count% 个已发布的产品）
+      title: 选择操作
+      subtitle: 请选择您要对所选已发布产品执行的操作 |请选择您要对所选的 %count% 个已发布的产品执行的操作
+      confirm: 您将要更新已发布产品的以下信息，请确认。 |您将要更新 %count% 个已发布产品的以下信息，请确认。
+      steps:
+        first: 选择已发布的产品
+        second: 选择操作
+        third: 配置
+        fourth: 确认
+btn:
+  publish: 发布
+  unpublish: 取消发布
+  save working copy: 保存工作副本
+  save working copy and next: 保存工作副本，并执行下一步
+  save working copy and finish: 保存工作副本，并完成
+  send for approval: 发送以进行审批
+  sent for approval: 发送以进行审批
+  editworkingcopy: 编辑工作副本
+flash:
+  product:
+    updated: 产品工作副本已更新
+    published: 产品已成功发布。
+    unpublished: 产品已成功取消发布。
+  product_draft:
+    updated: 草稿已成功保存
+    approve:
+      success: 提案已成功应用。
+      error: 由于以下错误，提案无法应用。%error%
+    refuse:
+      success: 提案已被拒绝。
+    remove:
+      success: 提案已被移除。
+pim_menu:
+  item:
+    published_product: 已发布的产品
+    proposal: 提案
+confirmation:
+  product:
+    publish: 确定要发布此产品吗？
+    unpublish: 确定要取消发布此产品吗？
+Attributes.title: 属性
+Completeness.title: 完成度
+publish_product.steps.publish_product_tasklet.title: 发布产品
+unpublish_product.steps.unpublish_product_tasklet.title: 取消发布产品
+approve_product_draft.steps.approve.title: 批准提案
+approve_product_draft.steps.refuse.title: 拒绝提案
+job_execution.summary:
+  approved: 已批准
+  refused: 已拒绝
+  mass_published: 产品已发布
+  mass_unpublished: 产品已取消发布
+  proposal: 已创建提案
+  proposal_deleted: 已删除提案
+  proposal_updated: 已更新提案
+  proposal_created: 已创建提案
+  proposal_skipped: 已略过提案（无差异）
+published products: 已发布的产品
+pim_analytics:
+  info_type:
+    nb_published_products: 已发布产品的数量
+    nb_product_drafts: 产品草稿数量
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: 待审查提案
+      date: 日期
+      author: 作者
+      product: 产品
+      review: 审查
+      empty: 没有要审查的产品草稿
+pim_enrich:
+  mass_edit_action:
+    publish:
+      label: 发布
+      description: 发布选定的产品，目前已发布的数据将会被当前的工作副本清除。
+      success_flash: 已成功发布选定的产品。
+      launched_flash: 正在运行发布产品的作业
+      message:
+        info: 将发布选定的产品 %nbProducts% 。
+    unpublish:
+      label: 取消发布
+      description: 取消发布所选的产品，目前已发布的数据将被擦除。
+      success_flash: 已成功取消发布所选定的产品。
+      launched_flash: 正在运行取消发布产品的作业
+      message:
+        info: 将取消发布选定的产品 %nbProducts% 。
+pimee_enrich:
+  product:
+    tab:
+      proposal.title: 提案

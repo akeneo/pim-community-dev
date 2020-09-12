@@ -3,20 +3,64 @@ pim_title:
   akeneo_asset_manager_asset_family_edit: 编辑资产品类
   akeneo_asset_manager_asset_edit: 编辑资产
 pim_asset_manager:
+  editor:
+    embedded:
+      invalid_link:
+        title: 可疑嵌入链接
+        message: 抱歉，我们不会显示该嵌入条目，但它将被正确保存
   result_counter: '{0} 无结果|{1} {{ count }} 个结果|]1,Inf] {{ count }} 个结果'
   asset_counter: '{0} 无资产|{1} {{ count }} 个资产|]1,Inf] {{ count }} 个资产'
   asset_collection:
+    add_asset: '添加资产'
     upload_asset: '上传资产'
+    add_asset_title: '打开资产选择器，将资产添加到集合中'
+    no_asset_in_collection: '抱歉，此集合中没有资产。'
     helper:
       title: '欢迎来到全新的产品资产管理空间！'
       text: '此品类没有资产集合。要参与这个新体验，只需在您的设置中添加资产集合属性即可。'
+      link: '如何添加资产集合？'
     no_asset:
       title: '抱歉，此产品没有资产。'
+    notification:
+      product_rule: '此集合可以通过以下产品规则更新：'
+      limit: '已达到每个集合的资产上限数目 {{ limit }} ，无法再将资产添加到集合中。'
+    edit_asset: 编辑资产
     remove_asset: 移除资产
+    remove_one_asset: 从资产集合中移除资产 {{ assetName }}
+    remove_all_assets: 移除所有资产
+    other_actions: 其他操作
+    open_other_actions: 打开其他操作
+    dismiss_other_actions: 取消其他操作
+    move_asset_to_left: 将资产 {{ assetName }} 移动到左侧
+    move_asset_to_right: 将资产 {{ assetName }} 移动到右侧
+    legacy_helper:
+      moved_to_assets_tab: 要查看资源集合 {{ label }}，请转到产品的资产部分。
+      is_missing_required: 资源集合 {{ label }} 是必需的。请在产品的资产部分里丰富它。
+  asset_picker:
+    title: 将资产添加到您的产品中
+    sub_title: 选择您要附加到集合 {{ attributeLabel }} 中的产品 {{ productLabel }} 的资产
+    no_result:
+      title: 抱歉，找不到与搜索相符的资产。
+      sub_title: 请用新的搜索条件再进行搜索
+    filter:
+      title: 资产筛选器
+    basket:
+      title: '{{ assetCount }} 个资产已选定|{{ assetCount }} 个资产已选定'
+      empty_title: 您的购物车为空
+      remove_one_asset: 从资产选择中移除资产 {{ assetName }}
+      remove_all_assets: 全部移除
   asset_preview:
+    previous: 上一个资产
+    next: 下一个资产
     empty_main_media: 此资产没有媒体。
     other_main_media: 我们无法生成此资产的预览。
+    edit_asset: 编辑资产
+    download: 下载
+    copy_url: 复制 URL
     error: 在渲染预览过程中发生错误
+  close: 关闭模式
+  breadcrumb:
+    products: 产品
   app:
     image:
       wide:
@@ -25,7 +69,11 @@ pim_asset_manager:
         upload: 拖放即可上传或点击这里
       small:
         remove: 移除
+        download: 下载
         upload: 拖放即可上传
+  grid:
+    counter: '{{ resultCount }} 个结果'
+    counter_empty: '0 个结果'
   asset_family:
     column:
       title: 资产导航
@@ -73,9 +121,11 @@ pim_asset_manager:
       execute_product_link_rules: 执行规则
     permission:
       title: 资产品类权限
+    title: 资产
     breadcrumb: 资产品类
     img: 资产品类的主媒体名称"{{ label }}"
     tab:
+      assets: 资产
       attribute: 属性
       properties: 属性
       permission: 权限
@@ -192,6 +242,7 @@ pim_asset_manager:
       title: 找不到与搜索相符的结果
       subtitle: 请用新的搜索条件再进行搜索。
     selector:
+      no_value: 点击此处选择一个资产。
       error:
         value: 哎呀，看来渲染"{{ fieldName }}"字段失败。详情请查看开发者控制台。
     button:
@@ -208,6 +259,7 @@ pim_asset_manager:
       counter: '{{ totalCount }} 个结果|{{ totalCount }} 个结果'
       dropdown:
         attribute: 产品属性
+      title: 产品
       no_attribute:
         title: 没有产品属性链接到资产品类"{{ entityLabel }}"
         subtitle: '要开始将产品链接到该资产品类，可新建一个： '
@@ -226,8 +278,10 @@ pim_asset_manager:
       title: 资产属性
       code: 代码
       label: 标签
+      edit_subsection: 编辑资产
       product_subsection: 链接的产品
       main_media_preview: 主要媒体预览
+    title: 资产
     create:
       header:
         title: 创建
@@ -244,6 +298,7 @@ pim_asset_manager:
       lines: 文件
       retry: 重试
       remove: 移除
+      remove_all: 全部移除
       confirm: 创建
       add_to_product: 添加到产品
       drop_or_click_here: 拖放文件或点击这里
@@ -273,10 +328,26 @@ pim_asset_manager:
     delete_all:
       confirm: 确定要删除所有的"{{ entityIdentifier }}"资产吗？ 如果它们与产品相关联，它们与产品的链接将被删除。
     grid:
+      search: 搜索标签、代码和文本属性
+      filter:
+        completeness:
+          label: 完成
+          all: 所有
+          'yes': '是'
+          'no': '否　'
+        option:
+          all: 所有
+          no_value: 选择要过滤的选项
+          operator:
+            in: 在列表中
+      more_result:
+        title: 不是这样！
+        description: 您刚刚从 {{ total }} 个资产中滚动到了前 {{ maxDisplayedAssets }} 个结果。要查看更多信息，请尝试更具体的搜索条件。
       column:
         code: 代码
         image: 图像
         label: 标签
+        complete: 完成
         action: 操作
       completeness:
         title_no_required: 不需要属性
@@ -285,6 +356,7 @@ pim_asset_manager:
         title_complete: 所有 {{ required }} 个属性已完成
     tab:
       enrich: 丰富
+      product: 产品
     notification:
       save:
         success: 资产已成功更新。
@@ -299,6 +371,8 @@ pim_asset_manager:
       delete_all:
         success: 所有的"{{ entityIdentifier }}"资产已成功删除。
         fail: 删除此资产品类的所有资产时发生错误
+    completeness:
+      label: 完成
   attribute:
     validation:
       limit_reached: '无法创建属性“{{ %attribute_label% }}"，因为已达到此资产品类的属性上限数目 {{ %limit% }} '
@@ -315,6 +389,7 @@ pim_asset_manager:
       option_collection: 多选
       number: 数量
       media_link: 媒体链接
+    is_required: 完成度必填
     is_read_only: UI 只读
     media_type_preview: 媒体类型预览
     no_data:
@@ -347,6 +422,7 @@ pim_asset_manager:
         code: 代码 (必填)
         label: 标签
         type: 属性类型
+        asset_type: 相关资产品类（必填）
         value_per_locale: 每个区域的值
         value_per_channel: 每个渠道的值
         is_required: 完成度必填
@@ -425,6 +501,9 @@ pim_enrich:
           pim_catalog_asset_collection: 资产集合
         section:
           type_specific: 输入特定参数
+        asset_family:
+          identifier: 相关资产品类（必填）
+          default_label: 请选择资产品类。
 permission:
   mass_action: 对所有组应用 {{ rightLevel }}
 #Analytics

@@ -47,6 +47,11 @@ pim_reference_entity:
         is_not_expected: '属性"%attribute_code%”不应有一个区域，因为其没有针对区域的值。'
         is_not_activated: '区域"%locale_identifier%"未激活。'
         is_not_activated_for_channel: '区域"%locale_identifier%"对于渠道"%channel_identifier%"未激活。'
+      number:
+        should_be_string: '此字段应该是字符串'
+        should_be_integer: '此字段应该是一个整数'
+        integer_too_long: '此整数过大'
+        should_be_numeric: '此字段应该是一个数值，使用右小数点分隔符'
   attribute:
     validation:
       options:
@@ -60,6 +65,12 @@ pim_reference_entity:
         should_be_an_integer: '此值应为整数。'
       max_file_size:
         should_be_a_number: '此值应为数字。'
+      min_value:
+        should_be_a_number: '此值应该是一个数字，使用右小数点分隔符'
+        cannot_be_greater_than_max: '最小值不能大于最大值'
+      max_value:
+        should_be_a_number: '此值应该是一个数字，使用右小数点分隔符'
+        cannot_be_lower_than_min: '最大值不能小于最小值'
       code:
         pattern: '此字段只能包含字母、数字和下划线。'
         reserved_codes: '代码不能是这些值中的任何一个：“{{ comma_separated_reserved_keywords }}”'
@@ -76,3 +87,13 @@ pim_reference_entity:
       record_type:
         is_required: '需要指定参考实体类型才能创建参考实体链接属性'
         reference_entity_should_exist: '未找到参考实体"%reference_entity_code%"。'
+      prefix:
+        should_not_be_empty: '前缀不能为空字符串。'
+      suffix:
+        should_not_be_empty: '后缀不能为空字符串。'
+      media_type:
+        not_expected: '指定的媒体类型不是预期的 (%supported_media_types%)。'
+  product_value:
+    validation:
+      record_should_exist: '属性"%attribute_code%"需要有效的记录代码。记录"%invalid_record%"不存在'
+      records_should_exist: '属性"%attribute_code%"需要有效的记录代码。以下记录不存在："%invalid_records%"'
