@@ -1,6 +1,5 @@
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { RemoveAttributeValueAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import {
@@ -25,11 +24,7 @@ import {
   MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION,
 } from './attribute';
 
-type Props = {
-  action: RemoveAttributeValueAction;
-} & ActionLineProps;
-
-const RemoveAttributeValueActionLine: React.FC<Props> = ({
+const RemoveAttributeValueActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
   handleDelete,
   scopes,

@@ -5,7 +5,6 @@ import {
   AddCategoriesAction,
   AddGroupsAction,
   CalculateAction,
-  ClearAction,
   ClearAssociationsAction,
   ClearAttributeAction,
   ClearCategoriesAction,
@@ -66,7 +65,6 @@ export type Action =
   | AddCategoriesAction
   | AddGroupsAction
   | CalculateAction
-  | ClearAction
   | ClearAttributeAction
   | ClearAssociationsAction
   | ClearCategoriesAction

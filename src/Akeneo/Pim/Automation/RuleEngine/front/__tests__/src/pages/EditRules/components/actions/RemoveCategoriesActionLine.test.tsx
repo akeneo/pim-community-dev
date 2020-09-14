@@ -6,23 +6,11 @@ import {
   renderWithProviders,
   waitForElementToBeRemoved,
 } from '../../../../../../test-utils';
-import { RemoveCategoriesAction } from '../../../../../../src/models/actions';
 import { locales, scopes } from '../../../../factories';
 import { RemoveCategoriesActionLine } from '../../../../../../src/pages/EditRules/components/actions/RemoveCategoriesActionLine';
-import { CategoryCode } from '../../../../../../src/models';
 import { createCategory } from '../../../../factories/CategoryFactory';
 import userEvent from '@testing-library/user-event';
 import { clearCategoryRepositoryCache } from '../../../../../../src/repositories/CategoryRepository';
-
-const createRemoveCategoriesAction = (
-  categoryCodes: CategoryCode[]
-): RemoveCategoriesAction => {
-  return {
-    type: 'remove',
-    field: 'categories',
-    items: categoryCodes,
-  };
-};
 
 describe('RemoveCategoriesActionLine', () => {
   beforeEach(() => {
@@ -69,7 +57,6 @@ describe('RemoveCategoriesActionLine', () => {
 
     renderWithProviders(
       <RemoveCategoriesActionLine
-        action={createRemoveCategoriesAction(['cat1', 'cat2', 'cat3'])}
         lineNumber={0}
         locales={locales}
         scopes={scopes}
@@ -164,11 +151,6 @@ describe('RemoveCategoriesActionLine', () => {
 
     renderWithProviders(
       <RemoveCategoriesActionLine
-        action={createRemoveCategoriesAction([
-          'cat1',
-          'unexistingCategory',
-          'cat3',
-        ])}
         lineNumber={0}
         locales={locales}
         scopes={scopes}

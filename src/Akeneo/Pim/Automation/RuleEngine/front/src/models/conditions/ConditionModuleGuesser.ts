@@ -1,28 +1,31 @@
 import { Router } from '../../dependenciesTools';
 import React from 'react';
 import { ConditionLineProps } from '../../pages/EditRules/components/conditions/ConditionLineProps';
-import { Condition } from './Condition';
-import { getFamilyConditionModule } from './FamilyCondition';
-import { getIdentifierConditionModule } from './IdentifierCondition';
-import { getCategoryConditionModule } from './CategoryCondition';
-import { getTextAttributeConditionModule } from './TextAttributeCondition';
-import { getSimpleMultiOptionsAttributeConditionModule } from './SimpleMultiOptionsAttributeCondition';
-import { getNumberAttributeConditionModule } from './NumberAttributeCondition';
-import { getPimConditionModule } from './PimCondition';
-import { getDateAttributeConditionModule } from './DateAttributeCondition';
 import { FallbackConditionLine } from '../../pages/EditRules/components/conditions/FallbackConditionLine';
-import { getCompletenessConditionModule } from './CompletenessCondition';
-import { getGroupsConditionModule } from './GroupCondition';
-import { getStatusConditionModule } from './StatusCondition';
-import { getDateSystemConditionModule } from './DateSystemCondition';
-import { getBooleanAttributeConditionModule } from './BooleanAttributeCondition';
-import { getSimpleMultiReferenceEntitiesAttributeConditionModule } from './SimpleMultiReferenceEntitiesAttributeCondition';
-import { getTextareaAttributeConditionModule } from './TextareaAttributeCondition';
-import { getAssetCollectionAttributeConditionModule } from './AssetCollectionAttributeCondition';
-import { getPictureAttributeConditionModule } from './PictureAttributeCondition';
-import { getFileAttributeConditionModule } from './FileAttributeCondition';
-import { getPriceCollectionAttributeConditionModule } from './PriceCollectionAttributeCondition';
-import { getIdentifierAttributeCondtionModule } from './IdentifierAttributeCondition';
+import {
+  Condition,
+  getAssetCollectionAttributeConditionModule,
+  getBooleanAttributeConditionModule,
+  getCategoryConditionModule,
+  getCompletenessConditionModule,
+  getDateAttributeConditionModule,
+  getDateSystemConditionModule,
+  getFamilyConditionModule,
+  getFileAttributeConditionModule,
+  getGroupsConditionModule,
+  getIdentifierAttributeCondtionModule,
+  getIdentifierConditionModule,
+  getMeasurementAttributeConditionModule,
+  getNumberAttributeConditionModule,
+  getPictureAttributeConditionModule,
+  getPimConditionModule,
+  getPriceCollectionAttributeConditionModule,
+  getSimpleMultiOptionsAttributeConditionModule,
+  getSimpleMultiReferenceEntitiesAttributeConditionModule,
+  getStatusConditionModule,
+  getTextareaAttributeConditionModule,
+  getTextAttributeConditionModule,
+} from './';
 
 export type ConditionModuleGuesser = (
   json: any,
@@ -55,8 +58,9 @@ const getConditionModule: (
     getSimpleMultiReferenceEntitiesAttributeConditionModule,
     getAssetCollectionAttributeConditionModule,
     getPriceCollectionAttributeConditionModule,
-    // Fallback
+    getMeasurementAttributeConditionModule,
     getDateAttributeConditionModule,
+    // Fallback
     getPimConditionModule,
   ];
 

@@ -5,7 +5,6 @@ import { createAttribute, locales, scopes } from '../../../../factories';
 import { clearAttributeRepositoryCache } from '../../../../../../src/repositories/AttributeRepository';
 import { AttributeType } from '../../../../../../src/models';
 import { AddAttributeValueActionLine } from '../../../../../../src/pages/EditRules/components/actions/AddAttributeValueActionLine';
-import { AddAttributeValueAction } from '../../../../../../src/models/actions';
 import userEvent from '@testing-library/user-event';
 
 describe('AddAttributeValueActionLine', () => {
@@ -67,7 +66,6 @@ describe('AddAttributeValueActionLine', () => {
 
     renderWithProviders(
       <AddAttributeValueActionLine
-        action={defaultValues.content.actions[0] as AddAttributeValueAction}
         lineNumber={0}
         locales={locales}
         scopes={scopes}

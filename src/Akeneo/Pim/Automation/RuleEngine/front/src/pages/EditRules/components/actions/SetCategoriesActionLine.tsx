@@ -6,13 +6,8 @@ import { Controller } from 'react-hook-form';
 import { ActionCategoriesSelector } from './ActionCategoriesSelector';
 import { useControlledFormInputAction } from '../../hooks';
 import { CategoryCode } from '../../../../models';
-import { SetCategoriesAction } from '../../../../models/actions';
 
-type Props = {
-  action: SetCategoriesAction;
-} & ActionLineProps;
-
-const SetCategoriesActionLine: React.FC<Props> = ({
+const SetCategoriesActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
   currentCatalogLocale,
   handleDelete,

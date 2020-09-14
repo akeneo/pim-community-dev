@@ -1,9 +1,9 @@
 import React from 'react';
 import {
   Attribute,
+  AttributeType,
   getAttributeLabel,
   ScopeCode,
-  AttributeType,
 } from '../../../../../models';
 import {
   useTranslate,
@@ -14,6 +14,7 @@ import {
   BooleanValue,
   DateValue,
   FallbackValue,
+  MeasurementValue,
   MultiReferenceEntityValue,
   MultiSelectValue,
   NumberValue,
@@ -31,7 +32,7 @@ import {
   InlineHelper,
 } from '../../../../../components/HelpersInfos';
 import { ActionFormContainer } from '../style';
-import { MetricValue, parseMetricValue } from './MetricValue';
+import { parseMeasurementValue } from '../../../../../models/Measurement';
 
 const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: AttributeType[] = [
   AttributeType.TEXT,
@@ -101,7 +102,12 @@ const getValueModule = (attribute: Attribute, props: InputValueProps) => {
         />
       );
     case AttributeType.METRIC:
-      return <MetricValue {...props} value={parseMetricValue(props.value)} />;
+      return (
+        <MeasurementValue
+          {...props}
+          value={parseMeasurementValue(props.value)}
+        />
+      );
     case AttributeType.ASSET_COLLECTION:
       return (
         <AssetCollectionValue

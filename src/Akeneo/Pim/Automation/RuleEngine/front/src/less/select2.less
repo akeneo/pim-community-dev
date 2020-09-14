@@ -160,6 +160,10 @@
   min-width: 300px;
 }
 
+.select2-drop.measurement-unit-selector-dropdown {
+  min-width: 150px;
+}
+
 .select2-drop.add-conditions-dropdown,
 .select2-drop.add-action-dropdown,
 .select2-drop.family-selector-dropdown,
@@ -249,7 +253,9 @@
 }
 
 .select2-container-operation-field-option {
-  border-color: @AknPurple100;
+  .select2-choice {
+    border-color: @AknPurple100;
+  }
 }
 
 .select2-container-left-glued {

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useGetAttributeAtMount } from './attribute/attribute.utils';
-import { CopyAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import {
@@ -85,11 +84,7 @@ const getSupportedTypes = (fromType: AttributeType) => {
   return (supportedTypes.get(fromType) || []).concat([fromType]);
 };
 
-type Props = {
-  action?: CopyAction;
-} & ActionLineProps;
-
-const CopyActionLine: React.FC<Props> = ({
+const CopyActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
   handleDelete,
   locales,
