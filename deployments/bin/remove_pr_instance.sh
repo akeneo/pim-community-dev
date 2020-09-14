@@ -28,7 +28,7 @@ for namespace in $(kubectl get ns | egrep 'srnt-pimci|srnt-pimup' | awk '{print 
         if [[ ${NS_AGE} == *h* ]]; then
             echo "---[TODELETE] namespace ${namespace} with status ${NS_STATUS} since ${NS_AGE} (instance_name=${INSTANCE_NAME})"
             delete_terraform_lockfile ${INSTANCE_NAME}
-            INSTANCE_NAME=${INSTANCE_NAME} make create-ci-release-files delete
+            INSTANCE_NAME=${INSTANCE_NAME} make delete-serenity
         fi
     fi
     # delete environments older than 24 hours
@@ -38,7 +38,7 @@ for namespace in $(kubectl get ns | egrep 'srnt-pimci|srnt-pimup' | awk '{print 
             if [[ ${AGE} -gt 23 ]]; then
                 echo "---[TODELETE] namespace ${namespace} with status ${NS_STATUS} since ${NS_AGE} (instance_name=${INSTANCE_NAME})"
                 delete_terraform_lockfile ${INSTANCE_NAME}
-                INSTANCE_NAME=${INSTANCE_NAME} make create-ci-release-files delete
+                INSTANCE_NAME=${INSTANCE_NAME} make delete-serenity
             fi
         fi
     fi
@@ -46,6 +46,6 @@ for namespace in $(kubectl get ns | egrep 'srnt-pimci|srnt-pimup' | awk '{print 
     if [[ ${NS_AGE} == *d* ]]; then
         echo "---[TODELETE] namespace ${namespace} with status ${NS_STATUS} since ${NS_AGE} (instance_name=${INSTANCE_NAME})"
         delete_terraform_lockfile ${INSTANCE_NAME}
-        INSTANCE_NAME=${INSTANCE_NAME} make create-ci-release-files delete
+        INSTANCE_NAME=${INSTANCE_NAME} make delete-serenity
     fi
 done

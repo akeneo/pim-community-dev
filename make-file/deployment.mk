@@ -21,7 +21,7 @@ CLUSTER_DNS_NAME ?= europe-west3-a-akecld-saas-$(ENV_NAME).$(ENV_NAME).cloud.ake
 GOOGLE_STORAGE_lOCATION ?= eu
 REGISTRY ?= eu.gcr.io
 HELM_REPO_PROD := akeneo-charts
-DEPLOYMENTS_INSTANCES_DIR = $(PWD)/deployments/instances
+DEPLOYMENTS_INSTANCES_DIR ?= $(PWD)/deployments/instances
 INSTANCE_DIR ?= $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
 
 ifeq ($(CI),true)
@@ -93,39 +93,15 @@ ifeq ($(INSTANCE_NAME_PREFIX),pimup32)
 endif
 
 .PHONY: delete
-delete: terraform-delete purge-release-all
-
-.PHONY: purge-release-all
-purge-release-all:
-	PV_NAME=$$(kubectl get -n $(PFID) pvc -l role=mysql-server -o jsonpath='{.items[*].spec.volumeName}') ;\
-	PD_NAME=$$(kubectl get pv "$${PV_NAME}" -o jsonpath='{..spec.gcePersistentDisk.pdName}') ;\
-	echo "PV/PD $${PV_NAME} / $${PD_NAME} will be deleted" ;\
-	helm delete $(PFID) --purge || echo "WARNING: FAILED helm delete --purge $(PFID)" ;\
-	kubectl delete all,pvc --all -n $(PFID) --force --grace-period=0 && echo "kubectl delete all,pvc forced OK" || echo "WARNING: FAILED kubectl delete all,pvc --all -n $(PFID) --force --grace-period=0" ;\
-	kubectl delete ns $(PFID) && echo "SUCCEED to delete ns $(PFID)" || echo "FAILED to delete ns $(PFID)" ;\
-	if [ -n "$${PV_NAME}" ]; then kubectl delete pv $${PV_NAME}  && echo "SUCCEED to delete pv $${PV_NAME}" || echo "FAILED to delete pv $${PV_NAME}"; fi ;\
-	if [ -n "$${PD_NAME}" ]; then \
-		for i in {1..6}; do \
-			gcloud --quiet compute disks delete $${PD_NAME} --project=$(GOOGLE_PROJECT_ID) --zone=$(GOOGLE_CLUSTER_ZONE) \
-			&& break \
-			|| sleep 10 ;\
-		done ;\
-	fi
-
-.PHONY: terraform-plan-destroy
-terraform-plan-destroy: terraform-init
-	cd $(INSTANCE_DIR) && terraform plan -destroy $(TF_INPUT_FALSE)
-
-.PHONY: terraform-delete
-terraform-delete: terraform-init
-	if [ -f "$(INSTANCE_DIR)/main.tf" ]; then \
+delete:
+	if [ -f "$(INSTANCE_DIR)/main.tf.json" ]; then \
 		cd $(INSTANCE_DIR) ;\
 		echo "Destroying $(INSTANCE_DIR) ..." ;\
-		terraform destroy $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE) ;\
+		INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(PWD)/deployments/bin/delete_srnt_instance.sh ;\
 	elif [ -f "$(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf" ]; then \
 		cd $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ;\
 		echo "Destroying $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ..." ;\
-		terraform destroy $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE) ;\
+		INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(PWD)/deployments/bin/delete_srnt_instance.sh ;\
 	fi
 
 .PHONY: create-ci-release-files
@@ -169,9 +145,9 @@ ifeq ($(INSTANCE_NAME_PREFIX),pimci-duplic)
 	yq w -i $(INSTANCE_DIR)/values.yaml mysql.common.persistentDisks[0] $(PFID)
 	yq w -i $(INSTANCE_DIR)/values.yaml mysql.mysql.userPassword test
 	yq w -i $(INSTANCE_DIR)/values.yaml mysql.mysql.rootPassword test
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultAdminUser.email "findUserInDatabase"
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultAdminUser.login "findUserInDatabase"
-	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultAdminUser.password "changePasswdInDatabase"
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultAdminUser.email "adminakeneo"
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultAdminUser.login "adminakeneo"
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultAdminUser.password "adminakeneo"
 	@echo "elasticsearch customization below must be removed after fix PIM-9283"
 	yq w -i $(INSTANCE_DIR)/values.yaml elasticsearch.client.resources.limits.memory "1024Mi"
 	yq w -i $(INSTANCE_DIR)/values.yaml elasticsearch.client.resources.requests.memory "512Mi"
@@ -180,9 +156,9 @@ endif
 .PHONY: create-pim-main-tf
 create-pim-main-tf: $(INSTANCE_DIR)
 ifeq ($(ACTIVATE_MONITORING),true)
-	cat $(PWD)/deployments/config/serenity_instance.tpl.tf $(PWD)/deployments/config/serenity_instance_monitoring.tpl.tf > $(INSTANCE_DIR)/serenity_instance.tpl.tf.tmp
+	jq -s '.[0] * .[1]' $(PWD)/deployments/config/serenity_instance.tpl.tf.json  $(PWD)/deployments/config/serenity_instance_monitoring.tpl.tf.json  > $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp
 else
-	cat $(PWD)/deployments/config/serenity_instance.tpl.tf > $(INSTANCE_DIR)/serenity_instance.tpl.tf.tmp
+	cat $(PWD)/deployments/config/serenity_instance.tpl.tf.json > $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp
 	@echo "-- WARNING: MONITORING is not activated on this PR. If your PR impact monitoring, please activate it."
 	@echo "To activate it show 'deactivate_monitoring' and 'ACTIVATE_MONITORING' on '.CircleCi/config.yml'"
 endif
@@ -195,8 +171,8 @@ endif
 	INSTANCE_NAME=$(INSTANCE_NAME) \
 	PFID=$(PFID) \
 	PIM_SRC_DIR=$(PIM_SRC_DIR) \
-	envsubst < $(INSTANCE_DIR)/serenity_instance.tpl.tf.tmp > $(INSTANCE_DIR)/main.tf
-	rm -rf $(INSTANCE_DIR)/serenity_instance.tpl.tf.tmp
+	envsubst < $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
+	rm -rf $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp && cat $(INSTANCE_DIR)/main.tf.json
 
 .PHONY: test-prod
 test-prod:
@@ -224,9 +200,15 @@ slack_helpdesk:
 
 .PHONY: delete_pr_environments_hourly
 delete_pr_environments_hourly:
-	bash $(PWD)/deployments/bin/remove_pr_instance.sh
+	bash $(PWD)/deployments/bin/remove_pr_instances.sh
+
+.PHONY: clone_serenity
+clone_serenity:
+	INSTANCE_NAME=${INSTANCE_NAME}  IMAGE_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME_PREFIX=pimci-duplic make create-ci-release-files && \
+	ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) SOURCE_PED_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/bin/clone_serenity.sh
 
 .PHONY: test_upgrade_from_serenity_customer_db_to_master
 test_upgrade_from_serenity_customer_db_to_master:
+	INSTANCE_NAME=${INSTANCE_NAME}  IMAGE_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME_PREFIX=pimci-duplic make create-ci-release-files && \
 	ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) SOURCE_PED_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/bin/clone_serenity.sh && \
-	INSTANCE_NAME_PREFIX=pimci-duplic INSTANCE_NAME=$${INSTANCE_NAME} IMAGE_TAG=$${CIRCLE_SHA1} make deploy-serenity
+	INSTANCE_NAME_PREFIX=pimci-duplic INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$${CIRCLE_SHA1} make deploy-serenity

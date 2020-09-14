@@ -1,0 +1,30 @@
+{
+  "module": {
+      "pim": {
+          "dns_external": "${INSTANCE_NAME}.${GOOGLE_MANAGED_ZONE_DNS}.",
+          "dns_internal": "${CLUSTER_DNS_NAME}",
+          "dns_zone": "${GOOGLE_MANAGED_ZONE_NAME}",
+          "google_project_id": "${GOOGLE_PROJECT_ID}",
+          "google_project_zone": "${GOOGLE_CLUSTER_ZONE}",
+          "google_storage_location": "EU",
+          "instance_name": "${INSTANCE_NAME}",
+          "papo_project_code": "NOT_ON_PAPO_${PFID}",
+          "pim_version": "${IMAGE_TAG}",
+          "source": "${PIM_SRC_DIR}/deployments/terraform"
+      }
+  },
+  "terraform": {
+      "required_version": "= 0.12.25",
+      "backend": {
+          "gcs": {
+              "bucket": "akecld-terraform-dev",
+              "prefix": "saas/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_ZONE}/${PFID}"
+          }
+      }
+  },
+  "provider": {
+    "google": {
+        "version": "~> 3.17.0"
+    }
+  }
+}
