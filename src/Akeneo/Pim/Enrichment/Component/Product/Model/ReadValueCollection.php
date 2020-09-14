@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
 /**
@@ -131,5 +133,15 @@ final class ReadValueCollection implements \Countable, \IteratorAggregate
         $filteredValues = array_filter($this->values, $filterBy);
 
         return new self(array_values($filteredValues));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function map(\Closure $mapFunction)
+    {
+        $transformedValues = array_map($mapFunction, $this->values);
+
+        return new self(array_values($transformedValues));
     }
 }
