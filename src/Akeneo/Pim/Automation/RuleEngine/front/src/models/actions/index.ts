@@ -8,6 +8,7 @@ export * from './ClearAttributeAction';
 export * from './ClearAssociationsAction';
 export * from './ClearCategoriesAction';
 export * from './ClearGroupsAction';
+export * from './ClearQuantifiedAssociationsAction';
 export * from './ConcatenateAction';
 export * from './CopyAction';
 export * from './RemoveAttributeValueAction';

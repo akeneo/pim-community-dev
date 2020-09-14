@@ -5,7 +5,7 @@ import { useTranslate } from '../../../../dependenciesTools/hooks';
 import { ActionLineProps } from './ActionLineProps';
 import { useControlledFormInputAction } from '../../hooks';
 
-const ClearAssociationsActionLine: React.FC<ActionLineProps> = ({
+const ClearQuantifiedAssociationsActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
   handleDelete,
 }) => {
@@ -19,7 +19,7 @@ const ClearAssociationsActionLine: React.FC<ActionLineProps> = ({
       <Controller
         name={fieldFormName}
         as={<input type='hidden' />}
-        defaultValue='associations'
+        defaultValue='quantified_associations'
       />
       <Controller
         name={typeFormName}
@@ -28,10 +28,10 @@ const ClearAssociationsActionLine: React.FC<ActionLineProps> = ({
       />
       <ActionTemplate
         title={translate(
-          'pimee_catalog_rule.form.edit.actions.clear_associations.title'
+          'pimee_catalog_rule.form.edit.actions.clear_quantified_associations.title'
         )}
-        helper={translate('pimee_catalog_rule.form.edit.actions.clear_associations.helper')}
-        legend={translate('pimee_catalog_rule.form.edit.actions.clear_associations.helper')}
+        helper={translate('pimee_catalog_rule.form.edit.actions.clear_quantified_associations.helper')}
+        legend={translate('pimee_catalog_rule.form.edit.actions.clear_quantified_associations.helper')}
         handleDelete={handleDelete}
         lineNumber={lineNumber}
       />
@@ -39,4 +39,4 @@ const ClearAssociationsActionLine: React.FC<ActionLineProps> = ({
   );
 };
 
-export { ClearAssociationsActionLine };
+export { ClearQuantifiedAssociationsActionLine };
