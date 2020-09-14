@@ -1,0 +1,227 @@
+pim_menu:
+  navigation_back:
+    connection: 返回连接
+  navigation_block:
+    connection: 连接导航
+  item:
+    connection_audit: 连接仪表板
+    connection_settings: 连接
+    connection_settings_edit: 连接设置
+    connection_monitoring: 监测
+pim_title:
+  akeneo_connectivity_connection_settings_index: 连接
+  akeneo_connectivity_connection_settings_edit: 连接设置
+  akeneo_connectivity_connection_settings_any: 连接设置
+  akeneo_connectivity_connection_audit_index: 连接仪表板
+  akeneo_connectivity_connection_audit_any: 连接仪表板
+  akeneo_connectivity_connection_error_management_dashboard: 连接仪表板
+  akeneo_connectivity_connection_error_management_connection_monitoring: 连接监测
+akeneo_connectivity.connection:
+  connections: 连接
+  secondary_actions:
+    title: 其他操作
+  connection:
+    code: 代码
+    label: 标签
+    flow_type: 流类型
+    image: 图像
+    auditable: 在仪表盘中跟踪此连接
+    client_id: 客户 ID
+    secret: 密钥
+    username: 用户名
+    password: 密码
+    user_role_id: 角色
+    user_group_id: 分组
+    constraint:
+      code:
+        required: 连接码必填。
+        invalid: 连接码只能包含字母、数字和下划线。
+        too_short: 连接码太短。应该有 3 个字符或更多。
+        too_long: 连接码太长。应该不多于 100 个字符。
+        must_be_unique: 连接码必须为唯一。
+      label:
+        required: 连接标签必填。
+        too_short: 连接标签太短。应该有 3 个字符或更多。
+        too_long: 连接标签太长。应该不多于 100 个字符。
+      flow_type:
+        invalid: 连接流类型只能是“数据源”、“数据目标”或“其它”。
+      image:
+        must_exist: 找不到图像。请重试。
+  flow_type:
+    data_source: 数据源 | 数据源
+    data_destination: 数据目标 | 数据目标
+    other: 其他 | 其他
+  connection_count: '{{ count }} 个连接 | {{ count }} 个连接'
+  no_connection:
+    title: 尚无连接声明。
+    message: 点击上面的“创建”按钮添加您的第一个连接或
+    message_link: 点击此处。
+  create_connection:
+    title: 创建新连接
+    description: 您可以创建最多 50 个连接。
+    flash:
+      success: 已成功创建连接。
+      error: 抱歉，创建连接时发生错误。
+  edit_connection:
+    subtitle: 设置 
+    flash:
+      success: 已成功更新连接。
+      error: 抱歉，编辑连接时发生错误。
+    image_uploader:
+      extension_not_allowed: 抱歉，您要上传的文件其扩展名不被允许。
+    credentials:
+      title: 凭据
+      helper:
+        message: '这是您的 {{ label }} 连接器使用的凭据。'
+        link: 在此处了解更多...
+      wrong_credentials_combinations:
+        single: 我们注意到，您在此连接中使用的用户名是 {{ wrong_username }} （上次使用时间为 {{ date }} 的 {{ time }}）。我们建议改用用户名 {{ good_username }}。
+        link: 了解使用它的理由。
+        link_list: 了解我们建议使用此用户名的理由。
+        several: 我们注意到，您在此连接中没有使用用户名 {{ good_username }} 。
+        list: '以下是过去 7 天使用过的用户名列表：'
+        username_date: '在 {{ date }} 的 {{ time }} 使用了 {{ wrong_username }} '
+      password_helper:
+        message: 如果您忘记了密码，您可在此处生成一个新密码。
+        link: 更多信息…
+      clear_password_helper:
+        message: 请确保保存此密码，因为我们不会向您显示第二次。
+        link: 更多信息…
+      action:
+        copy: 复制到剪切板
+        regenerate: 重新生成
+      flash:
+        copied: '{{name}} 已复制到剪贴板'
+    permissions:
+      title: 权限
+      helper:
+        message: '在本部分，您可以定义 {{ label }} 连接的权限。'
+        link: 了解更多关于连接权限的信息...
+      user_role_helper:
+        message: 默认角色“{{ role }}”不是您连接的最佳选择。我们强烈建议您选择专为您的连接需求定制的角色。
+        link: 更多信息在这里...
+      user_group_helper:
+        message: 我们强烈建议您选择专为您的连接需求定制的组。
+        link: 更多信息在这里...
+  regenerate_secret:
+    title: 确认重新生成
+    description: 确定要重新生成连接密钥吗？不明确产生的影响？
+    link: 此处可查看产生的影响。
+    action:
+      regenerate: 重新生成
+    flash:
+      success: 连接密钥已成功重新生成。
+      error: 抱歉，重新生成连接密钥时出错。
+  regenerate_password:
+    title: 确认重新生成
+    description: 确定要重新生成连接密码吗？不明确产生的影响？
+    link: 此处可查看产生的影响。
+    action:
+      regenerate: 重新生成
+    flash:
+      success: 连接密码已成功重新生成。
+      error: 抱歉，重新生成连接密码时出错。
+  delete_connection:
+    title: 确认删除 
+    description: 确定要删除此连接吗？不明确产生的影响？
+    link: 此处可查看产生的影响。
+    flash:
+      success: 已成功删除连接。
+  helper:
+    title: '👋 欢迎使用能够正确连接您的 PIM 的功能！'
+    description: 没有任何第三方整合的 PIM 是没有用处的。通过连接，您可以声明所有导入和推出 PIM 的数据流。
+    link: 想知道更多？您可以在这里了解什么是连接，以及如何充分利用它！
+  flow_type_helper:
+    message: 想知道什么是流类型？
+    link: 我们可以在这里帮助您！
+  auditable_helper:
+    message: 您只能跟踪“源”和“目的地”连接。
+    link: 更多信息…
+  edit_image:
+    upload_helper: 更改您的图像，拖放或
+    remove_helper: 移除图像
+    click_here: 单击此处
+    flash:
+      extension_not_allowed: 抱歉，您要上传的文件其扩展名不被允许。
+  grid.wrong_credentials_combination_helper: 下面的一些连接没有使用其连接用户名，已用黄色警告标志加以识别。
+  dashboard:
+    helper:
+      title: '👋 欢迎来到连接仪表板！'
+      description: 在这里，您将能够通过连接跟踪收集到您的 PIM 的所有数据流，以及通过连接发送到您渠道的所有数据流。
+      link: 想了解更多？看这里！
+    user_survey:
+      title: 想要在此仪表板上获得更多数据吗？
+      content: 您的反馈对我们非常宝贵。恳请您参与此简短调查，帮助我们选择下一个小部件！
+      button: 开始吧！
+    connection_selector:
+      title:
+        source: 源连接
+        destination: 目的地连接
+      all: 所有
+    charts:
+      inbound: 入站
+      outbound: 出站
+      number_of_products_created: 产品已创建
+      number_of_products_updated: 产品已更新
+      number_of_products_sent: 产品已发送
+      legend:
+        during_the_last_seven_days: '过去 7 天总计：'
+        today: 今天
+    error_management:
+      data_source_error_chart:
+        section:
+          title: 源连接错误
+          helper: 在这里可以查看错误总数，包括业务错误。
+        chart:
+          title: 每天的错误数
+      widget:
+        title: 每个源连接的业务错误
+        over_the_last_seven_days: 过去 7 天
+        business_errors: 业务错误
+    no_connection:
+      title:
+        default: 想要看到一些关于您的连接的精致图表？
+        data_source: 想要看到一些关于您的源连接的精致图表？
+        data_destination: 想要看到一些关于您的目的地连接的精致图表？
+      message_with_permission:
+        message: 创建并开始跟踪第一个
+        link: 这里。
+      message_without_permission:
+        message: 向您的管理员请求以创建一个连接。
+        link: 在此处了解更多关于连接的信息...
+  error_management:
+    connection_monitoring:
+      title: 监测
+      helper:
+        title: '{0} 您有 {{ count }} 个错误 |[1,Inf] 您有 {{ count }} 个错误'
+        description: 在这里，您可以看到过去 7 天内此连接的每个错误的详细信息。错误数限制为 100 个。
+        link: 要了解如何解决，请访问 API 帮助中心。
+      search_filter:
+        placeholder: 搜索错误消息
+        result_count: '{0} 无结果 |[1,Inf] {{ count }} 个结果'
+      error_list:
+        date_time_column:
+          title: 日期和时间
+        content_column:
+          title: 业务错误消息
+          product_name: 产品名称
+          with_id: 和 ID
+        details_column:
+          title: 详细信息
+          locale: 区域
+          channel: 渠道
+          family: 品类
+      no_error:
+        title: 太棒了！没有发现错误！
+      not_auditable:
+        title: 未受监测的连接
+        description:
+          1: 要跟踪此连接上的错误，
+          2: 请在设置中
+          3: 激活监测。
+      not_data_source:
+        title: 目前，监测页面仅对源连接可用。
+  runtime_error:
+    error_message: 哎呀！发生错误...
+    reload_helper: 请重新加载页面并重试。
+    reload_button: 重新加载

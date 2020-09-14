@@ -12,6 +12,8 @@ Akeneo\UserManagement\Component\Model\User:
                 min:        3
                 max:        255
             - Akeneo\UserManagement\Bundle\Validator\Constraints\ValueShouldNotContainsBlacklistedCharacters: ~
+        password:
+            - NotBlank:     ~
         email:
             - NotBlank:     ~
             - Length:

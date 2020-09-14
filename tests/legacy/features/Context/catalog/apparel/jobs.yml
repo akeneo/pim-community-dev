@@ -341,3 +341,8 @@ jobs:
         alias:     change_parent_product
         label:     Change parent product model
         type:      mass_edit
+    remove_non_existing_product_values:
+        connector: internal
+        alias:     remove_non_existing_product_values
+        label:     Remove non existing product values
+        type:      remove_non_existing_product_values

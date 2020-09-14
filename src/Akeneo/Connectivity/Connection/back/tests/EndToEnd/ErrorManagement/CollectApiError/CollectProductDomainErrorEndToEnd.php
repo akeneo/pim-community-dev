@@ -332,8 +332,8 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
 
         $expectedContent = [
             'type' => 'domain_error',
-            'message' => 'The unknown_product_identifier product does not exist in your PIM.',
-            'message_template' => 'The {product_identifier} product does not exist in your PIM.',
+            'message' => 'The unknown_product_identifier product does not exist in your PIM or you do not have permission to access it.',
+            'message_template' => 'The {product_identifier} product does not exist in your PIM or you do not have permission to access it.',
             'message_parameters' => ['product_identifier' => 'unknown_product_identifier']
         ];
         Assert::assertEquals($expectedContent, $doc['content']);

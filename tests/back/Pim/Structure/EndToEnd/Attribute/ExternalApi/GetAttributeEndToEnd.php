@@ -22,6 +22,10 @@ class GetAttributeEndToEnd extends ApiTestCase
     "code": "sku",
     "type": "pim_catalog_identifier",
     "group": "attributeGroupA",
+    "group_labels": {
+        "en_US": "Attribute group A",
+        "fr_FR": "Groupe d'attribut A"
+    },
     "unique": true,
     "useable_as_grid_filter": true,
     "allowed_extensions": [],

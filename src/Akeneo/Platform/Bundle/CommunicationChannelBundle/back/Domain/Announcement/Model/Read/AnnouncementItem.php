@@ -54,14 +54,17 @@ final class AnnouncementItem
         \DateTimeImmutable $endDate,
         array $tags
     ) {
+        $startDateWithoutTime = $startDate->setTime(0, 0);
+        $endDateWithoutTime = $endDate->setTime(0, 0);
+
         $this->id = $id;
         $this->title = $title;
         $this->description = $description;
         $this->img = $img;
         $this->altImg = $altImg;
         $this->link = $link;
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
+        $this->startDate = $startDateWithoutTime;
+        $this->endDate = $endDateWithoutTime;
         $this->tags = $tags;
     }
 
@@ -89,7 +92,7 @@ final class AnnouncementItem
      */
     public function shouldBeNotified(array $viewedAnnouncementIds): bool
     {
-        $currentDate = new \DateTimeImmutable();
+        $currentDate = new \DateTimeImmutable('today');
 
         return $this->startDate <= $currentDate && $currentDate <= $this->endDate && !in_array($this->id, $viewedAnnouncementIds);
     }

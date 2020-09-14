@@ -1,0 +1,13 @@
+pim_enrich.acl_group.measurements: 测量
+measurements:
+  acl:
+    manage_settings: 测量列表
+    family:
+      create: 创建测量单位群
+      edit:
+        properties: 编辑测量单位群的属性
+      delete: 删除测量单位群及其单位
+    unit:
+      add: 添加单位到测量单位群
+      edit: 编辑测量单位群的单位
+      delete: 删除测量单位群中的单位

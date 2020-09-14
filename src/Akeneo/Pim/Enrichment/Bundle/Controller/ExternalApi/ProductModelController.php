@@ -188,7 +188,7 @@ class ProductModelController
 
             $productModel = $this->getConnectorProductModels->fromProductModelCode($code, $user->getId());
         } catch (ObjectNotFoundException $e) {
-            throw new NotFoundHttpException(sprintf('Product model "%s" does not exist.', $code));
+            throw new NotFoundHttpException(sprintf('Product model "%s" does not exist or you do not have permission to access it.', $code));
         }
 
         return new JsonResponse(

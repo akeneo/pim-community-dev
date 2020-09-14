@@ -49,7 +49,7 @@ class ListProductGridAvailableColumnGroupsIntegration extends TestCase
         $expectedColumnGroups = [
             [
                 'code'  => 'system',
-                'count' => 11,
+                'count' => 12,
                 'label' => 'System',
             ],
             [

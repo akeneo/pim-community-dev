@@ -15,6 +15,13 @@ services:
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
+    pim_catalog.job.job_parameters.constraint_collection_provider.remove_non_existing_product_values:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Job\JobParameters\ConstraintCollectionProvider\RemoveNonExistingProductValues'
+        arguments:
+            - ['%pim_catalog.job.remove_non_existing_product_values.job_name%']
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
     akeneo_pim_enrichment.job.job_parameters.constraint_collection_provider.simple_csv_export:
         class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvExport'
         arguments:
