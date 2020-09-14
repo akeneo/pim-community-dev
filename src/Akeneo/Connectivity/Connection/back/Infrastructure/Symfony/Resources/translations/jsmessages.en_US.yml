@@ -232,3 +232,7 @@ akeneo_connectivity.connection:
         error_message: Oh snap! An error occurred...
         reload_helper: Please reload the page and try again.
         reload_button:  Reload
+    webhook:
+        constraint:
+            url:
+                invalid_format: Invalid url format.
