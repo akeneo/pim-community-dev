@@ -3,6 +3,7 @@ import { Meta, Story, ArgsTable, Canvas } from '@storybook/addon-docs/blocks';
 import { action } from '@storybook/addon-actions';
 import { Helper } from './Helper.tsx';
 import { Container } from 'storybook/container';
+import { useArgs, updateArgs } from '@storybook/client-api';
 
 <Meta
   title="Components/Helper"
@@ -12,7 +13,7 @@ import { Container } from 'storybook/container';
     level: {type: {control: {type: 'select', options: ['info', 'warning', 'error']}}}
   }}
   args={{
-    type: 'small'
+    type: 'small',
     level: 'info'
   }}
 />
@@ -45,7 +46,13 @@ Use this playground to test the helper component
 <Canvas>
   <Story name="Standard">
     {(args) => {
-        return <Helper {...args}>Big helper</Helper>;
+        const {type, level} = args;
+        const [{ title }, updateArgs] = useArgs();
+        if (type === 'big' && title === undefined) {
+            updateArgs({title: 'Big title'});
+        }
+
+        return <Helper {...args}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</Helper>;
     }}
   </Story>
 </Canvas>
