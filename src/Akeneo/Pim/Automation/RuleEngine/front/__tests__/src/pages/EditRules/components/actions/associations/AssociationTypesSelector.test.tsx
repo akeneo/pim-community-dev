@@ -65,7 +65,11 @@ describe('SetAssociationsActionLine', () => {
     };
 
     renderWithProviders(
-      <AssociationTypesSelector value={value} onChange={onChange} />,
+      <AssociationTypesSelector
+        value={value}
+        onChange={onChange}
+        required={false}
+      />,
       { all: true }
     );
 
@@ -134,7 +138,11 @@ describe('SetAssociationsActionLine', () => {
     };
 
     renderWithProviders(
-      <AssociationTypesSelector value={value} onChange={onChange} />,
+      <AssociationTypesSelector
+        value={value}
+        onChange={onChange}
+        required={false}
+      />,
       { all: true }
     );
 
@@ -186,7 +194,11 @@ describe('SetAssociationsActionLine', () => {
     };
 
     renderWithProviders(
-      <AssociationTypesSelector value={value} onChange={onChange} />,
+      <AssociationTypesSelector
+        value={value}
+        onChange={onChange}
+        required={false}
+      />,
       { all: true }
     );
 
@@ -244,7 +256,11 @@ describe('SetAssociationsActionLine', () => {
     };
 
     renderWithProviders(
-      <AssociationTypesSelector value={value} onChange={onChange} />,
+      <AssociationTypesSelector
+        value={value}
+        onChange={onChange}
+        required={false}
+      />,
       { all: true }
     );
 

@@ -63,6 +63,7 @@ const AddAssociationsActionLine: React.FC<ActionLineProps> = ({
           name={itemsFormName}
           value={getItemsFormValue() ?? {}}
           hasError={isFormFieldInError('field')}
+          required={true}
         />
       </ActionTemplate>
     </>

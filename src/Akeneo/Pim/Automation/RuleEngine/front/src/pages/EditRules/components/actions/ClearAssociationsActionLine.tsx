@@ -30,8 +30,12 @@ const ClearAssociationsActionLine: React.FC<ActionLineProps> = ({
         title={translate(
           'pimee_catalog_rule.form.edit.actions.clear_associations.title'
         )}
-        helper={translate('pimee_catalog_rule.form.edit.actions.clear_associations.helper')}
-        legend={translate('pimee_catalog_rule.form.edit.actions.clear_associations.helper')}
+        helper={translate(
+          'pimee_catalog_rule.form.edit.actions.clear_associations.helper'
+        )}
+        legend={translate(
+          'pimee_catalog_rule.form.edit.actions.clear_associations.helper'
+        )}
         handleDelete={handleDelete}
         lineNumber={lineNumber}
       />

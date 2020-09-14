@@ -18,17 +18,20 @@ import {
   QuantifiedTarget,
 } from '../SetQuantifiedAssociationsActionLine';
 import { QuantifiedAssociationsIdentifiersSelector } from './QuantifiedAssociationsIdentifiersSelector';
+import { EmptySourceHelper } from '../style';
 
 type Props = {
   value: QuantifiedAssociationValue;
   onChange: (value: QuantifiedAssociationValue) => void;
   hasError?: boolean;
+  required: boolean;
 };
 
 const QuantifiedAssociationTypesSelector: React.FC<Props> = ({
   value,
   onChange,
   hasError,
+  required,
 }) => {
   const translate = useTranslate();
 
@@ -183,7 +186,7 @@ const QuantifiedAssociationTypesSelector: React.FC<Props> = ({
                 `pimee_catalog_rule.form.edit.actions.set_associations.select.${
                   currentAssociationTargetOrDefault()?.target
                 }`
-              )} ${translate('pim_common.required_label')}`}
+              )} ${required ? translate('pim_common.required_label') : ''}`}
             />
             {(currentAssociationTargetOrDefault() as QuantifiedAssociationTarget)
               .target === 'products' && (
@@ -223,6 +226,18 @@ const QuantifiedAssociationTypesSelector: React.FC<Props> = ({
             )}
           </>
         )}
+        {!required &&
+          (
+            associationValues.get(
+              currentAssociationTargetOrDefault() as QuantifiedAssociationTarget
+            ) || []
+          ).length === 0 && (
+            <EmptySourceHelper>
+              {translate(
+                'pimee_catalog_rule.exceptions.empty_association_warning'
+              )}
+            </EmptySourceHelper>
+          )}
       </ActionRightSide>
     </ActionGrid>
   );

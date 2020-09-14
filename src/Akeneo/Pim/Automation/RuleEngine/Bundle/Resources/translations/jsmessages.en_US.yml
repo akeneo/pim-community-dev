@@ -371,6 +371,7 @@ pimee_catalog_rule:
         wrong_date_timespan: To define a valid timespan, please make sure your end date isn’t set before your start date.
         measurement_family_not_found: The "{{ measurement_code }}" measurement family does not exist
         unit_not_found: The "{{ unitCode }}" unit was not found in the "{{ measurement_code }}" measurement family
+        empty_association_warning: If you let this list empty, this rule will clear this association type.
 
 pim_enrich:
     entity:

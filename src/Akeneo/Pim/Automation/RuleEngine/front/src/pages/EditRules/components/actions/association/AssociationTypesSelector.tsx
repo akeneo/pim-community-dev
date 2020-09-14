@@ -20,17 +20,20 @@ import {
   useUserCatalogLocale,
 } from '../../../../../dependenciesTools/hooks';
 import { AssociationTypeSwitcher } from './AssociationTypeSwitcher';
+import { EmptySourceHelper } from '../style';
 
 type Props = {
   value: AssociationValue;
   onChange: (value: AssociationValue) => void;
   hasError?: boolean;
+  required: boolean;
 };
 
 const AssociationTypesSelector: React.FC<Props> = ({
   value,
   onChange,
   hasError,
+  required,
 }) => {
   const currentCatalogLocale = useUserCatalogLocale();
   const translate = useTranslate();
@@ -174,7 +177,7 @@ const AssociationTypesSelector: React.FC<Props> = ({
                 `pimee_catalog_rule.form.edit.actions.set_associations.select.${
                   currentAssociationTargetOrDefault()?.target
                 }`
-              )} ${translate('pim_common.required_label')}`}
+              )} ${required ? translate('pim_common.required_label') : ''}`}
             />
             {(currentAssociationTargetOrDefault() as AssociationTarget)
               .target === 'groups' && (
@@ -227,6 +230,18 @@ const AssociationTypesSelector: React.FC<Props> = ({
                 }
               />
             )}
+            {!required &&
+              (
+                associationValues.get(
+                  currentAssociationTargetOrDefault() as AssociationTarget
+                ) || []
+              ).length === 0 && (
+                <EmptySourceHelper>
+                  {translate(
+                    'pimee_catalog_rule.exceptions.empty_association_warning'
+                  )}
+                </EmptySourceHelper>
+              )}
           </>
         )}
       </ActionRightSide>

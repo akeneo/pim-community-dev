@@ -1,5 +1,5 @@
 import { ActionModuleGuesser } from './ActionModuleGuesser';
-import { ClearQuantifiedAssociationsActionLine } from "../../pages/EditRules/components/actions/ClearQuantifiedAssociationsActionLine";
+import { ClearQuantifiedAssociationsActionLine } from '../../pages/EditRules/components/actions/ClearQuantifiedAssociationsActionLine';
 
 export type ClearQuantifiedAssociationsAction = {
   type: 'clear';

@@ -17,15 +17,7 @@ import { Attribute, AttributeType } from '../../../../models';
 import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepository';
 import { useFormContext, Controller } from 'react-hook-form';
 import { useControlledFormInputAction } from '../../hooks';
-import styled from 'styled-components';
-
-const EmptySourceHelper = styled.div`
-  background-image: url('/bundles/pimui/images/icon-info.svg');
-  background-repeat: no-repeat;
-  padding-left: 28px;
-  height: 21px;
-  line-height: 21px;
-`;
+import { EmptySourceHelper } from './style';
 
 const getSupportedTypes = (fromType: AttributeType) => {
   const supportedTypes = new Map<AttributeType, AttributeType[]>([

@@ -30,8 +30,12 @@ const ClearQuantifiedAssociationsActionLine: React.FC<ActionLineProps> = ({
         title={translate(
           'pimee_catalog_rule.form.edit.actions.clear_quantified_associations.title'
         )}
-        helper={translate('pimee_catalog_rule.form.edit.actions.clear_quantified_associations.helper')}
-        legend={translate('pimee_catalog_rule.form.edit.actions.clear_quantified_associations.helper')}
+        helper={translate(
+          'pimee_catalog_rule.form.edit.actions.clear_quantified_associations.helper'
+        )}
+        legend={translate(
+          'pimee_catalog_rule.form.edit.actions.clear_quantified_associations.helper'
+        )}
         handleDelete={handleDelete}
         lineNumber={lineNumber}
       />

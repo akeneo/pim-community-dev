@@ -60,6 +60,7 @@ const SetQuantifiedAssociationsActionLine: React.FC<ActionLineProps> = ({
           name={valueFormName}
           value={getValueFormValue() ?? {}}
           hasError={isFormFieldInError('value')}
+          required={false}
           rules={{
             validate: (value: any) => {
               if (Object.keys(value || {}).length === 0) {
