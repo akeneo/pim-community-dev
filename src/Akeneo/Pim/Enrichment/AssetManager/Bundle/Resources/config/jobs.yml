@@ -104,3 +104,25 @@ services:
         class: 'Akeneo\Pim\Enrichment\AssetManager\Component\Connector\ArrayConverter\StandardToFlat\Asset'
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
+
+    # Flat value translator
+    pimee_connector.flat_translators.attribute_value_translator.reference_entity_multiple_link:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Connector\FlatTranslator\FlatAttributeValueTranslator\ReferenceEntityMultipleLinkValueTranslator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.enrich.find_records_labels_public_api'
+        tags:
+            - { name: pim_enrich.connector.flat_translators.attribute_value }
+
+    pimee_connector.flat_translators.attribute_value_translator.reference_entity_single_link:
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Connector\FlatTranslator\FlatAttributeValueTranslator\ReferenceEntitySimpleLinkValueTranslator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.enrich.find_records_labels_public_api'
+        tags:
+            - { name: pim_enrich.connector.flat_translators.attribute_value }
+
+    pimee_connector.flat_translators.attribute_value_translator.asset_collection:
+        class: Akeneo\Pim\Enrichment\AssetManager\Component\Connector\FlatTranslator\AttributeValueTranslator\AssetCollectionTranslator
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.enrich.find_asset_label_translation_public_api'
+        tags:
+            - { name: pim_enrich.connector.flat_translators.attribute_value }

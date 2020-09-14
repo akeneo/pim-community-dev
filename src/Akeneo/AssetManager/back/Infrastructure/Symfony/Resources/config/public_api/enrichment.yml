@@ -9,6 +9,11 @@ services:
         arguments:
             $allExistentAssetForAssetFamilyIdentifiers: '@akeneo_assetmanager.infrastructure.persistence.query.enrich.find_all_existent_assets_for_asset_family_identifiers_public_api'
 
+    akeneo_assetmanager.infrastructure.persistence.query.enrich.find_asset_label_translation_public_api:
+        class: Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\FindAssetLabelTranslation
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_labels_by_codes'
+
     # Enrichment > Reference entities
     pimee.asset_manager.enrichment.product.get_products_linked_to_a_asset_action:
         class: Akeneo\Pim\Enrichment\AssetManager\Component\Controller\Product\GetProductsLinkedToAAssetAction

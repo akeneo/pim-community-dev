@@ -38,6 +38,7 @@ class AkeneoPimWorkflowExtension extends Extension
         $loader->load('category_counters.yml');
         $loader->load('configurators.yml');
         $loader->load('connector/array_converters.yml');
+        $loader->load('connector/flat_translators.yml');
         $loader->load('connector/processors.yml');
         $loader->load('connector/readers.yml');
         $loader->load('connector/writers.yml');
