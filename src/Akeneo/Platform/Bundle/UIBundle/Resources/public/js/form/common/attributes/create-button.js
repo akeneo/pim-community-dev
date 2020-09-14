@@ -57,7 +57,10 @@ define(
              */
             getQueryParam: function (paramName) {
                 var url = location.href;
-                var params = url.substr(url.lastIndexOf('?') + 1);
+                if (-1 === url.lastIndexOf('?')) {
+                    return '';
+                }
+                var params = url.substring(url.lastIndexOf('?') + 1);
                 if (!params) {
                     return null;
                 }
