@@ -2,6 +2,7 @@ import { Operator } from '../Operator';
 import { ConditionFactory } from './Condition';
 import { ConditionModuleGuesser } from './ConditionModuleGuesser';
 import { FamilyVariantConditionLine } from '../../pages/EditRules/components/conditions/FamilyVariantConditionLine';
+import { FamilyVariantCode } from '../';
 
 const FIELD = 'family_variant';
 
@@ -13,9 +14,9 @@ const FamilyVariantOperators = [
 ];
 
 type FamilyVariantCondition = {
-  field: string;
+  field: 'family_variant';
   operator: Operator;
-  value: string[];
+  value: FamilyVariantCode[];
 };
 
 const operatorIsValid = (operator: any): boolean => {

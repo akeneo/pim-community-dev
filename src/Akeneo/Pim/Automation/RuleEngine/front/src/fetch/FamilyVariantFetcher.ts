@@ -1,11 +1,11 @@
 import { httpGet } from './fetch';
 import { Router } from '../dependenciesTools';
-import { FamilyVariant } from '../models/FamilyVariant';
+import { FamilyVariant, FamilyVariantCode } from '../models';
 
 type IndexedFamilyVariants = { [familyVariantCode: string]: FamilyVariant };
 
 const fetchFamilyVariantsByIdentifiers = async (
-  familyVariantIdentifiers: string[],
+  familyVariantIdentifiers: FamilyVariantCode[],
   router: Router
 ): Promise<IndexedFamilyVariants> => {
   const url = router.generate('pim_enrich_family_variant_rest_index', {

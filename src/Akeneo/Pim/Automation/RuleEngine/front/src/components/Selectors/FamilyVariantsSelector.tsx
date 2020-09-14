@@ -19,7 +19,6 @@ type Props = {
   currentCatalogLocale: LocaleCode;
   value: FamilyVariantCode[];
   onChange?: (value: FamilyVariantCode[]) => void;
-  validation?: { required?: string; validate?: (value: any) => string | true };
   name: string;
 };
 
