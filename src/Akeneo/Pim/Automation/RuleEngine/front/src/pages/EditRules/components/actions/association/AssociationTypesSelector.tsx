@@ -1,10 +1,10 @@
 import React from 'react';
 import {
+  AssociationValue,
   GroupCode,
   ProductIdentifier,
   ProductModelCode,
 } from '../../../../../models';
-import { AssociationValue } from '../../../../../models/actions';
 import { AssociationTarget, Target } from '../SetAssociationsActionLine';
 import {
   ActionGrid,

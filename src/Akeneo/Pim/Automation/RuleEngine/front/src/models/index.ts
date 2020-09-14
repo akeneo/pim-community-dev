@@ -1,4 +1,5 @@
 export * from './conditions';
+export * from './Association';
 export * from './AssociationType';
 export * from './Locale';
 export * from './RuleDefinition';

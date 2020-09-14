@@ -1,19 +1,6 @@
 import { ActionModuleGuesser } from './ActionModuleGuesser';
-import { ProductIdentifier, ProductModelCode } from '../';
 import { SetQuantifiedAssociationsActionLine } from '../../pages/EditRules/components/actions/SetQuantifiedAssociationsActionLine';
-
-export type QuantifiedAssociationValue = {
-  [associationTypeCode: string]: {
-    products?: {
-      identifier: ProductIdentifier;
-      quantity: number;
-    }[];
-    product_models?: {
-      identifier: ProductModelCode;
-      quantity: number;
-    }[];
-  };
-};
+import { QuantifiedAssociationValue } from '../Association';
 
 export type SetQuantifiedAssociationsAction = {
   type: 'set';

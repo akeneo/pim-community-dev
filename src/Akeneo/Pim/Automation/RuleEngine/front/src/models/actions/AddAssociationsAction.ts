@@ -1,6 +1,6 @@
 import { ActionModuleGuesser } from './ActionModuleGuesser';
 import { AddAssociationsActionLine } from '../../pages/EditRules/components/actions/AddAssociationsActionLine';
-import { AssociationValue } from './SetAssociationsAction';
+import { AssociationValue } from '../Association';
 
 export type AddAssociationsAction = {
   type: 'add';

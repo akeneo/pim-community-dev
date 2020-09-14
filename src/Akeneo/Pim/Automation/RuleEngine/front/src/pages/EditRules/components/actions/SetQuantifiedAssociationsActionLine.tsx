@@ -5,8 +5,10 @@ import { useControlledFormInputAction } from '../../hooks';
 import { ActionTemplate } from './ActionTemplate';
 import { useTranslate } from '../../../../dependenciesTools/hooks';
 import { QuantifiedAssociationTypesSelector } from './association/QuantifiedAssociationTypesSelector';
-import { AssociationTypeCode } from '../../../../models';
-import { QuantifiedAssociationValue } from '../../../../models/actions/SetQuantifiedAssociationsAction';
+import {
+  AssociationTypeCode,
+  QuantifiedAssociationValue,
+} from '../../../../models';
 
 export type QuantifiedTarget = 'products' | 'product_models';
 

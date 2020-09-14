@@ -1,5 +1,9 @@
 import React from 'react';
-import { ProductIdentifier, ProductModelCode } from '../../../../../models';
+import {
+  ProductIdentifier,
+  ProductModelCode,
+  QuantifiedAssociationValue,
+} from '../../../../../models';
 import {
   ActionGrid,
   ActionLeftSide,
@@ -9,7 +13,6 @@ import {
 import { Label } from '../../../../../components/Labels';
 import { useTranslate } from '../../../../../dependenciesTools/hooks';
 import { AssociationTypeSwitcher } from './AssociationTypeSwitcher';
-import { QuantifiedAssociationValue } from '../../../../../models/actions/SetQuantifiedAssociationsAction';
 import {
   QuantifiedAssociationTarget,
   QuantifiedTarget,

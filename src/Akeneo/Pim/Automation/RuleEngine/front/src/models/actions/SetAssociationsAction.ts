@@ -1,14 +1,6 @@
 import { ActionModuleGuesser } from './ActionModuleGuesser';
 import { SetAssociationsActionLine } from '../../pages/EditRules/components/actions/SetAssociationsActionLine';
-import { ProductIdentifier, ProductModelCode, GroupCode } from '../';
-
-export type AssociationValue = {
-  [associationTypeCode: string]: {
-    products?: ProductIdentifier[];
-    product_models?: ProductModelCode[];
-    groups?: GroupCode[];
-  };
-};
+import { AssociationValue } from '../Association';
 
 export type SetAssociationsAction = {
   type: 'set';

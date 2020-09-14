@@ -161,7 +161,7 @@ pimee_catalog_rule:
                     select_reference_entity: Select your reference entities
                     select_asset: Select your assets
                     select_measurement_unit: Select your unit
-                set_quantified_association:
+                set_quantified_associations:
                     title: SET Quantified associations
                     helper: To set quantified associations, please select your association type(s) and then, the products, product models or groups you want to associate to your product selection.
                 set_associations:

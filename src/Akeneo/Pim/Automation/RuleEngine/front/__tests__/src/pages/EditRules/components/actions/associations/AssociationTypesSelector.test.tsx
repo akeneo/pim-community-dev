@@ -7,8 +7,10 @@ import {
   waitForElementToBeRemoved,
   fireEvent,
 } from '../../../../../../../test-utils';
-import { AssociationValue } from '../../../../../../../src/models/actions';
-import { AssociationType } from '../../../../../../../src/models';
+import {
+  AssociationType,
+  AssociationValue,
+} from '../../../../../../../src/models';
 import userEvent from '@testing-library/user-event';
 import { AssociationTypesSelector } from '../../../../../../../src/pages/EditRules/components/actions/association/AssociationTypesSelector';
 

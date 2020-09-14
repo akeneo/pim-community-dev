@@ -1,19 +1,11 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
-import {
-  AssociationValue,
-  AddAssociationsAction,
-} from '../../../../models/actions';
 import { ActionLineProps } from './ActionLineProps';
 import { useControlledFormInputAction } from '../../hooks';
 import { ActionTemplate } from './ActionTemplate';
 import { useTranslate } from '../../../../dependenciesTools/hooks';
-import { AssociationTypeCode } from '../../../../models';
+import { AssociationTypeCode, AssociationValue } from '../../../../models';
 import { AssociationTypesSelector } from './association/AssociationTypesSelector';
-
-type Props = {
-  action?: AddAssociationsAction;
-} & ActionLineProps;
 
 export type Target = 'products' | 'product_models' | 'groups';
 
@@ -22,7 +14,7 @@ export type AssociationTarget = {
   target: Target;
 };
 
-const AddAssociationsActionLine: React.FC<Props> = ({
+const AddAssociationsActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
   handleDelete,
 }) => {
