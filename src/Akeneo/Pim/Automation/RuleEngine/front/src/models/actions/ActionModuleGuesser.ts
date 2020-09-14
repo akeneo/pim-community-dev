@@ -61,7 +61,6 @@ const getActionModule: (
     getClearAttributeActionModule,
     getRemoveAttributeValueActionModule,
     // Fallbacks
-    getClearActionModule,
     getAddActionModule,
     getSetActionModule,
   ];
