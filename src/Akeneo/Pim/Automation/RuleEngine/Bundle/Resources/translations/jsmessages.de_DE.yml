@@ -108,11 +108,16 @@ pimee_catalog_rule:
         pending: Berechne Produkte und Produktmodelle
         error: Berechnung von Produkten und Produktmodellen nicht möglich
       product_selection: Produktauswahl
+      preview: Vorschau
       fields:
         family: Produktfamilie
         category: Kategorie
         attribute: Attribut
         groups: Gruppen
+        measurement_unit: Maßeinheit
+        measurement_default_unit: "Standardeinheit ({{ unit }})"
+        currency: Währung
+        operator: Operator
       execute:
         button: Speichern und ausführen
         title: Speichern und die Regel ausführen
@@ -193,6 +198,20 @@ pimee_catalog_rule:
           title: Produkte aus Gruppen ENTFERNEN
           helper: Um Produkte aus Gruppen zu entfernen, wählen Sie bitte eine oder mehrere Gruppen
           subtitle: Gruppen auswählen
+        calculate:
+          title: BERECHNE Werte
+          helper: Um numerische Attributwerte zu berechnen, wählen Sie bitte Attribut(e) und/oder Wert(e) und wählen Sie dann das Zielattribut aus, in das das Ergebnis eingefügt werden soll. Bei Bedarf können Sie auch das Endergebnis abrunden.
+          add_value: Wert hinzufügen
+          add_attribute: Attribut hinzufügen
+          select_target: Ziel wählen
+          attribute_placeholder: Wähle ein Zielattribut
+          round_precision: Rundungsgenauigkeit
+          operator:
+            add: Hinzufügen
+            subtract: Subtrahieren
+            multiply: Multiplizieren
+            divide: Teilen
+            choose: Operator auswählen
       conditions:
         delete:
           label: Bedingung entfernen
@@ -276,11 +295,17 @@ pimee_catalog_rule:
     required_attribute: Ein Attribut ist erforderlich
     required_locale: Ein Gebietsschema ist erforderlich für das Attribut {{ attributeLabel }}
     required_scope: Ein Kanal ist erforderlich für das Attribut {{ attributeLabel }}
+    required_currency: Für das Attribut {{ attributeLabel }} ist eine Währung erforderlich
     required_locale_completeness: Ein Gebietsschema ist erforderlich für die Vollständigkeit
     required_scope_completeness: Für die Vollständigkeit ist ein Kanal erforderlich
     required_value: Für diese Aktion ist ein Wert erforderlich
     required_categories: Mindestens eine Kategorie ist für diese Aktion erforderlich
+    required_constant_for_operation: Für diesen Vorgang ist ein konstanter Wert erforderlich
+    required_operator_for_operation: Für diesen Vorgang ist ein Operator erforderlich
+    division_by_zero: Teilungen durch Null sind nicht möglich
+    two_operations_are_required: Die Operationsliste sollte mindestens 2 Operationen enthalten.
     unknown_or_inactive_locale: 'Die "{{ localeCode }}" Gebietsschema existiert nicht oder ist nicht aktiviert'
+    unknown_or_inactive_currency: 'Die "{{ currencyCode }}" Währung existiert nicht oder ist nicht aktiviert'
     unbound_locale: 'Die "{{ localeCode }}" Gebietsschema ist im "{{ channelCode }}" Kanal nicht aktiviert'
     locale_on_unlocalizable_attribute: Dieses Attribut ist nicht lokalisierbar. Bitte entfernen Sie das Gebietsschema, bevor Sie fortfahren.
     unknown_scope: 'Der "{{ scopeCode }}" Ausgabekanal existiert nicht'
@@ -297,6 +322,8 @@ pimee_catalog_rule:
     create_attribute_link: hier klicken, um das Attribut zu erstellen
     edit_unauthorize: Sie sind nicht berechtigt, Regeln zu bearbeiten
     wrong_date_timespan: Um eine gültige Zeitspanne zu definieren, stellen Sie bitte sicher, dass Ihr Enddatum nicht vor dem Startdatum festgelegt ist.
+    measurement_family_not_found: Die "{{ measurement_code }}" Messfamilie existiert nicht
+    unit_not_found: Die "{{ unitCode }}" Einheit wurde nicht in der "{{ measurement_code }}" Messfamilie gefunden
 pim_enrich:
   entity:
     rule:

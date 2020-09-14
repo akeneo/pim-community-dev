@@ -73,6 +73,10 @@ class PricesPresenter extends AbstractProductValuePresenter
      */
     protected function normalizeData($data)
     {
+        if (! is_iterable($data)) {
+            return [];
+        }
+
         $prices = [];
         $options = ['locale' => $this->localeResolver->getCurrentLocale()];
 

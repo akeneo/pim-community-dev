@@ -75,9 +75,6 @@ image:
 
 pim:
   comm_panel_api_url: null
-  franklin:
-    askFranklinUrl: "https://ask-franklin.cloud.akeneo.com"
-    askFranklinTimeout: 30
   hook:
     addAdmin:
       enabled: true
@@ -114,6 +111,9 @@ pim:
   elasticsearch:
     settings:
       totalFieldsLimit: 10000
+  dqi:
+    settings:
+      enabled: true
   defaultCatalog: src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
   defaultAdminUser:
     login: null # Fill me
@@ -209,6 +209,11 @@ onboarder:
     queueName: null
     maxReplicas: 10
   serviceAccount: null
+
+# shared-catalogs
+sharedCatalogs:
+  enabled: false
+
 
 mysql:
   image:

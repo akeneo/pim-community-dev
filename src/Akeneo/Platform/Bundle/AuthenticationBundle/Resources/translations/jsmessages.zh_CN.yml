@@ -1,0 +1,44 @@
+pim_menu.item.sso: 基于 SAML 的单点登录
+pim_title:
+  authentication_sso_configuration_edit: 基于 SAML 的单点登录配置
+authentication:
+  sso:
+    configuration:
+      download_logs_button: 下载日志
+      info:
+        update_successful: 配置已保存
+        update_failed: 无法保存配置
+        fields_not_ready: "配置现在无法保存。以下字段未就绪：{{ fields }}"
+      section:
+        activation:
+          title: SSO 激活
+          info:
+            description: 如果启用 SSO 身份验证，您当前的会话将变为无效。 保存配置后，您将被注销并重定向到您的身份验证提供商。
+        identity_provider:
+          title: 身份验证提供商（IdP）
+          info:
+            description: 您可以在此设定与 IdP 通信所需的所有参数。这些信息必须由您的 IdP 提供。请联系您的 SSO 管理员获取。
+        service_provider:
+          title: 服务提供商 (SP)
+          info:
+            description: 您可以在下面找到有关服务提供商的信息。这是自动生成的值，必要时可以编辑。这些信息必须提供给您的 SSO 管理员才能配置 IdP。
+      field:
+        activation:
+          label: SSO 已启用
+        entity_id:
+          label: 实体 ID
+        sign_on_url:
+          label: 登录网址
+        logout_url:
+          label: 退出 URL
+        certificate:
+          label: 证书
+          expiration_warning: 此证书于 {{date}} 过期。
+        private_key:
+          label: 私钥
+        metadata_url:
+          label: 元数据 URL
+          tooltip_label: 复制 URL
+        acs_url:
+          label: ACS URL
+          tooltip_label: 复制 URL

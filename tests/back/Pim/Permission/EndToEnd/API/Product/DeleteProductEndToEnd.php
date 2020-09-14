@@ -82,7 +82,7 @@ JSON;
     {
         $expectedResponseContent =
 <<<JSON
-{"code":404,"message":"Product \"product_not_viewable_by_redactor\" does not exist."}
+{"code":404,"message":"Product \"product_not_viewable_by_redactor\" does not exist or you do not have permission to access it."}
 JSON;
 
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');

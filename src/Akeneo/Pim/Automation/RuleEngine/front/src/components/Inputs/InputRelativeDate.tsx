@@ -36,10 +36,9 @@ const DateOptionsContainer = styled.ul`
   z-index: 2;
 `;
 
-// Color is not present in theme ATM (discussed with the UI team)
 const TimePeriodButtonContent = styled.div`
   align-items: center;
-  color: #515d6d;
+  color: ${props => props.theme.color.grey140};
   display: flex;
   height: 40px;
   padding-left: 10px;

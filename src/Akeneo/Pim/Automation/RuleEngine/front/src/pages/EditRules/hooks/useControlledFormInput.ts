@@ -5,42 +5,67 @@ import { Operator } from '../../../models/Operator';
 
 const useControlledFormInputCondition = <T>(lineNumber: number) => {
   const { watch, getValues, setValue, errors } = useFormContext();
-  const fieldFormName = `content.conditions[${lineNumber}].field`;
-  const operatorFormName = `content.conditions[${lineNumber}].operator`;
-  const valueFormName = `content.conditions[${lineNumber}].value`;
-  const scopeFormName = `content.conditions[${lineNumber}].scope`;
-  const localeFormName = `content.conditions[${lineNumber}].locale`;
+  const formName = (name: string) =>
+    `content.conditions[${lineNumber}].${name}`;
+  const fieldFormName = formName('field');
+  const operatorFormName = formName('operator');
+  const valueFormName = formName('value');
+  const amountValueFormName = formName('value.amount');
+  const currencyValueFormName = formName('value.currency');
+  const scopeFormName = formName('scope');
+  const localeFormName = formName('locale');
+  const getFormValue = (name: string) => get(getValues(), formName(name));
+  const getFieldFormValue = (): string => get(getValues(), fieldFormName);
   const getOperatorFormValue = (): Operator =>
     get(getValues(), operatorFormName);
   const getValueFormValue = (): T => get(getValues(), valueFormName);
+  const getAmountValueFormValue = (): T =>
+    get(getValues(), amountValueFormName);
+  const getCurrencyValueFormValue = (): T =>
+    get(getValues(), currencyValueFormName);
   const getScopeFormValue = (): ScopeCode => get(getValues(), scopeFormName);
   const getLocaleFormValue = (): LocaleCode => get(getValues(), localeFormName);
   const setOperatorFormValue = (data: Operator) =>
     setValue(operatorFormName, data);
   const setValueFormValue = (data?: T) => setValue(valueFormName, data);
+  const setAmountValueFormValue = (data?: T) =>
+    setValue(amountValueFormName, data);
+  const setCurrencyValueFormValue = (data?: T) =>
+    setValue(currencyValueFormName, data);
   const setScopeFormValue = (data: ScopeCode) => setValue(scopeFormName, data);
   const setLocaleFormValue = (data: LocaleCode) =>
     setValue(localeFormName, data);
-  const isFormFieldInError = (formName: string): boolean =>
-    typeof errors?.content?.conditions?.[lineNumber]?.[formName] === 'object';
+  const isFormFieldInError = (formName: string): boolean => {
+    const conditionErrors = errors?.content?.conditions?.[lineNumber] || {};
+    return typeof get(conditionErrors, formName) === 'object';
+  };
   watch(operatorFormName);
   watch(valueFormName);
   watch(scopeFormName);
   watch(localeFormName);
 
   return {
+    formName,
     fieldFormName,
+    getFormValue,
+    getFieldFormValue,
     getLocaleFormValue,
     getOperatorFormValue,
     getScopeFormValue,
     getValueFormValue,
+    getAmountValueFormValue,
+    getCurrencyValueFormValue,
     localeFormName,
     operatorFormName,
     scopeFormName,
+    amountValueFormName,
+    currencyValueFormName,
     setLocaleFormValue,
     setOperatorFormValue,
     setScopeFormValue,
     setValueFormValue,
+    setAmountValueFormValue,
+    setCurrencyValueFormValue,
     valueFormName,
     isFormFieldInError,
   };
@@ -48,8 +73,11 @@ const useControlledFormInputCondition = <T>(lineNumber: number) => {
 
 const useControlledFormInputAction = <T>(lineNumber: number) => {
   const { getValues, setValue, errors } = useFormContext();
-  const isFormFieldInError = (formName: string): boolean =>
-    typeof errors?.content?.actions?.[lineNumber]?.[formName] === 'object';
+  const isFormFieldInError = (formName: string): boolean => {
+    const actionErrors = errors?.content?.actions?.[lineNumber] || {};
+    return typeof get(actionErrors, formName) === 'object';
+  };
+
   const formName = (name: string) => `content.actions[${lineNumber}].${name}`;
   const fieldFormName = formName('field');
   const typeFormName = formName('type');

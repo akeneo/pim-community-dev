@@ -5,12 +5,12 @@ import { ActionTemplate } from './ActionTemplate';
 import { ActionTitle, AknActionFormContainer } from './ActionLine';
 import { StatusSelector } from '../../../../components/Selectors/StatusSelector';
 import { useControlledFormInputAction } from '../../hooks';
-import { SetStatusAction } from '../../../../models/actions';
 import { useTranslate } from '../../../../dependenciesTools/hooks';
 
-const SetStatusActionLine: React.FC<ActionLineProps & {
-  action: SetStatusAction;
-}> = ({ handleDelete, lineNumber }) => {
+const SetStatusActionLine: React.FC<ActionLineProps> = ({
+  handleDelete,
+  lineNumber,
+}) => {
   const translate = useTranslate();
 
   const {

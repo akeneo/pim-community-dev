@@ -3,6 +3,7 @@ import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/ident
 export enum MediaPreviewType {
   Preview = 'preview',
   Thumbnail = 'thumbnail',
+  ThumbnailSmall = 'thumbnail_small',
 }
 
 export type MediaPreview = {

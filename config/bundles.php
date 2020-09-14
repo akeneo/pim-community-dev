@@ -71,7 +71,6 @@ return [
     Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\AkeneoPimTeamworkAssistantBundle::class => ['all' => true],
     Akeneo\Pim\WorkOrganization\ProductRevert\AkeneoPimProductRevertBundle::class => ['all' => true],
     Akeneo\Pim\WorkOrganization\Workflow\Bundle\AkeneoPimWorkflowBundle::class => ['all' => true],
-    Akeneo\Pim\Automation\FranklinInsights\Infrastructure\Symfony\AkeneoFranklinInsightsBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\UIBundle\PimEnterpriseUIBundle::class => ['all' => true],
     Hslavich\OneloginSamlBundle\HslavichOneloginSamlBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\AuthenticationBundle\AkeneoAuthenticationBundle::class => ['all' => true],

@@ -15,7 +15,7 @@ aliases:
 
   - &dockerCloudDeployer
       docker:
-        - image: eu.gcr.io/akeneo-cloud/cloud-deployer:2.2
+        - image: eu.gcr.io/akeneo-cloud/cloud-deployer:2.3
           auth:
             username: _json_key  # default username when using a JSON key file to authenticate
             password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
@@ -179,7 +179,7 @@ jobs:
           name: Get Behat Suite name to run
           command: |
             TESTSUITE=$(echo $CIRCLE_BRANCH | sed -e 's/^.*-\([^-]*\)$/\1/g')
-            if ! [[ $TESTSUITE =~ ^(weasel|chipmunk|raccoon|franklin)$ ]] ; then
+            if ! [[ $TESTSUITE =~ ^(weasel|chipmunk|raccoon)$ ]] ; then
               TESTSUITE="all"
             fi
             echo "Behat Suite to run: "$TESTSUITE

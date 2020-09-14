@@ -1,5 +1,4 @@
 import React from 'react';
-import { RemoveCategoriesAction } from '../../../../models/actions';
 import { ActionLineProps } from './ActionLineProps';
 import { useTranslate } from '../../../../dependenciesTools/hooks';
 import { ActionTemplate } from './ActionTemplate';
@@ -8,11 +7,7 @@ import { ActionCategoriesSelector } from './ActionCategoriesSelector';
 import { useControlledFormInputAction } from '../../hooks';
 import { CategoryCode } from '../../../../models';
 
-type Props = {
-  action: RemoveCategoriesAction;
-} & ActionLineProps;
-
-const RemoveCategoriesActionLine: React.FC<Props> = ({
+const RemoveCategoriesActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
   currentCatalogLocale,
   handleDelete,

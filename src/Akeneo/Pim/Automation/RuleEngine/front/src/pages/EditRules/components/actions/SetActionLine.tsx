@@ -1,6 +1,5 @@
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { SetAction } from '../../../../models/actions';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import {
@@ -11,26 +10,23 @@ import {
 } from './ActionLine';
 import {
   AttributeLocaleScopeSelector,
+  AttributeValue,
+  isMeasurementValueFilled,
   MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION,
 } from './attribute';
-import { Attribute } from '../../../../models';
+import { Attribute, AttributeType } from '../../../../models';
 import {
-  useTranslate,
   useBackboneRouter,
+  useTranslate,
 } from '../../../../dependenciesTools/hooks';
-import { AttributeValue } from './attribute';
 import { useControlledFormInputAction } from '../../hooks';
 import {
-  validateAttribute,
   useGetAttributeAtMount,
+  validateAttribute,
 } from './attribute/attribute.utils';
 import { SmallHelper } from '../../../../components/HelpersInfos';
 
-type Props = {
-  action?: SetAction;
-} & ActionLineProps;
-
-const SetActionLine: React.FC<Props> = ({
+const SetActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
   handleDelete,
   locales,
@@ -42,12 +38,15 @@ const SetActionLine: React.FC<Props> = ({
     Attribute | null | undefined
   >(undefined);
 
-  const isValueFilled = (value?: any) => {
+  const isValueFilled = (value?: any, attribute?: Attribute | null) => {
     return !(
       value === '' ||
       (Array.isArray(value) && value.length === 0) ||
       value === null ||
-      value === undefined
+      value === undefined ||
+      (attribute &&
+        attribute.type === AttributeType.METRIC &&
+        !isMeasurementValueFilled(value))
     );
   };
 
@@ -92,7 +91,7 @@ const SetActionLine: React.FC<Props> = ({
         rules={{
           // We can not use 'required' validation rule a value can be "false" (for boolean).
           validate: value => {
-            return !isValueFilled(value)
+            return !isValueFilled(value, attribute)
               ? translate('pimee_catalog_rule.exceptions.required_value')
               : true;
           },
@@ -110,7 +109,7 @@ const SetActionLine: React.FC<Props> = ({
         )}
         handleDelete={handleDelete}
         lineNumber={lineNumber}>
-        {attribute && !isValueFilled(getValueFormValue()) && (
+        {attribute && !isValueFilled(getValueFormValue(), attribute) && (
           <SmallHelper level='info'>
             {translate(
               'pimee_catalog_rule.form.helper.set_attribute_info_clear'

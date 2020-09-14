@@ -1,6 +1,10 @@
 import React from 'react';
-import { Attribute, getAttributeLabel, ScopeCode } from '../../../../../models';
-import { AttributeType } from '../../../../../models/Attribute';
+import {
+  Attribute,
+  AttributeType,
+  getAttributeLabel,
+  ScopeCode,
+} from '../../../../../models';
 import {
   useTranslate,
   useUserCatalogLocale,
@@ -10,6 +14,7 @@ import {
   BooleanValue,
   DateValue,
   FallbackValue,
+  MeasurementValue,
   MultiReferenceEntityValue,
   MultiSelectValue,
   NumberValue,
@@ -27,6 +32,7 @@ import {
   InlineHelper,
 } from '../../../../../components/HelpersInfos';
 import { ActionFormContainer } from '../style';
+import { parseMeasurementValue } from '../../../../../models/Measurement';
 
 const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: AttributeType[] = [
   AttributeType.TEXT,
@@ -40,6 +46,7 @@ const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: AttributeType[] = [
   AttributeType.REFERENCE_ENTITY_COLLECTION,
   AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
   AttributeType.TEXTAREA,
+  AttributeType.METRIC,
 ];
 
 const MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION: Map<
@@ -92,6 +99,13 @@ const getValueModule = (attribute: Attribute, props: InputValueProps) => {
         <PriceCollectionValue
           {...props}
           value={parsePriceCollectionValue(props.value)}
+        />
+      );
+    case AttributeType.METRIC:
+      return (
+        <MeasurementValue
+          {...props}
+          value={parseMeasurementValue(props.value)}
         />
       );
     case AttributeType.ASSET_COLLECTION:

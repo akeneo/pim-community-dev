@@ -5,7 +5,6 @@ import {
   AddCategoriesAction,
   AddGroupsAction,
   CalculateAction,
-  ClearAction,
   ClearAssociationsAction,
   ClearAttributeAction,
   ClearCategoriesAction,
@@ -35,6 +34,8 @@ import {
   createSetFamilyAction,
   createSetGroupsAction,
   createSetStatusAction,
+  createCalculateAction,
+  createConcatenateAction,
 } from './actions';
 
 export const AvailableAddAction: { [key: string]: () => Action } = {
@@ -54,6 +55,8 @@ export const AvailableAddAction: { [key: string]: () => Action } = {
   remove_attribute_value: createRemoveAttributeValueAction,
   remove_category: createRemoveCategoriesAction,
   remove_groups: createRemoveGroupsAction,
+  calculate: createCalculateAction,
+  concatenate: createConcatenateAction,
 };
 
 export type Action =
@@ -62,7 +65,6 @@ export type Action =
   | AddCategoriesAction
   | AddGroupsAction
   | CalculateAction
-  | ClearAction
   | ClearAttributeAction
   | ClearAssociationsAction
   | ClearCategoriesAction

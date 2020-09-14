@@ -2,63 +2,213 @@ View the product: 查看产品
 Unpublish the product: 取消发布产品
 Approve: 批准
 Refuse: 拒绝
-Approve selected: 批准所选
-Refuse selected: 拒绝所选
-oro:
-  datagrid:
-    noentities:
-      proposal: 没有新的提案待审查
-    noresults:
-      proposal: 没有新的提案待审查。请尝试改变搜索条件。
+Approve selected: 批准所选项
+Refuse selected: 拒绝所选项
+pim_datagrid:
+  no_entities:
+    proposal: 没有待审查的提案。
+    product_draft: 没有待审查的产品草稿。
+  no_results:
+    proposal: 没有待审查的提案。请尝试更改搜索条件。
+    product_draft: 没有待审查的产品草稿。请尝试更改搜索条件。
 pimee_datagrid:
-  cell:
+  cells:
     expand:
-      expandText: 展开
-      collapseText: 折叠
+      expand_text: 展开
+      collapse_text: 折叠
 pimee_workflow:
   entity:
     published_product:
       btn:
         original_product: 编辑工作副本
     proposal:
-      modal.title: 留下你的评论 (可选-255 字符最大)
+      modal.title: 请留下您的评论 (可选，最多 255 个字符)
   proposal:
+    overview: "]-Inf, 1]{{ count }} 个提案|]1, Inf[{{ count }} 个提案"
+    selected: "]-Inf, 1]已选定 {{ count }} 个提案|]1, Inf[已选定 {{ count }} 个提案"
     mass_action_group:
       review:
         label: 批量操作
     partial_accept:
       modal.title: 批准部分信息
-      modal.label: 留下你的评论 (可选)
-      modal.error: 出现了一个错误，该建议不被部分批准
-      modal.success: 部分成功地验证了这项建议
+      modal.label: 请留下您的评论 (可选)
+      modal.error: 发生错误，提案尚未被部分批准
+      modal.success: 提案已成功部分验证
     partial_approve:
       modal:
         title: 部分批准更改
-        label: 留下你的评论 (可选)
-        error: 出现了一个错误，该建议不被部分批准
-        success: 更改已被批准
+        label: 请留下您的评论 (可选)
+        error: 发生错误，提案尚未被部分批准
+        success: 更改已成功批准
     partial_reject:
       modal:
         title: 部分拒绝更改
-        label: 留下你的评论 (可选)
-        error: 出现了一个错误，这项提案尚未被部分拒绝
-        success: 所做的更改已被拒绝
+        label: 请留下您的评论 (可选)
+        error: 发生错误，提案尚未被部分拒绝
+        success: 更改已成功拒绝
 batch_jobs:
   csv_published_product_export:
-    label: 用CSV格式导出已发布的产品
+    label: 以 CSV 格式导出已发布的产品
     export.label: 导出已发布的产品
   csv_product_proposal_import:
-    label: 在 CSV 导入产品的建议
-    import.label: 导入产品的建议
+    label: 以 CSV 格式导入产品提案
+    import.label: 导入产品提案
+  csv_product_model_proposal_import:
+    label: 以 CSV 格式导入产品模型提案
+    import.label: 以 CSV 格式导入产品模型提案
   approve_product_draft:
-    label: 同意提案
-    perform.label: 同意提案
+    label: 批准提案
+    perform.label: 批准提案
   refuse_product_draft:
-    label: 拒绝建议
-    perform.label: 拒绝建议
+    label: 拒绝提案
+    perform.label: 拒绝提案
   xlsx_published_product_export:
-    label: 导出已发布的产品至XLSX文件
+    label: 以 XLSX 格式导出已发布的产品
     export.label: 导出已发布的产品
   xlsx_product_proposal_import:
-    label: 从 XLSX导入产品提案
-    import.label: 从 XLSX导入产品提案
+    label: 以 XLSX 格式导入产品提案
+    import.label: 以 XLSX 格式导入产品提案
+  xlsx_product_model_proposal_import:
+    label: 以 XLSX 格式导入产品模型提案
+    import.label: 以 XLSX 格式导入产品模型提案
+  csv_published_product_quick_export:
+    export.label: 以 Csv 格式快速导出已发布的产品
+    perform.label: 以 Csv 格式快速导出已发布的产品
+  csv_published_product_grid_context_quick_export:
+    export.label: 以 Csv 格式网格上下文快速导出已发布的产品
+    perform.label: 以 Csv 格式网格上下文快速导出已发布的产品
+  xlsx_published_product_quick_export:
+    export.label: 以 Xlsx 格式快速导出已发布的产品
+    perform.label: 以 Xlsx 格式快速导出已发布的产品
+  xlsx_published_product_grid_context_quick_export:
+    export.label: 以 Xlsx 格式网格上下文快速导出已发布的产品
+    perform.label: 以 Xlsx 格式网格上下文快速导出已发布的产品
+  publish_product:
+    perform.label: 发布产品
+pim_notification:
+  types:
+    pimee_workflow_product_draft_notification_new_proposal: 新提案
+    pimee_workflow_import_notification_new_proposals: 导入的新提案
+    pimee_workflow_product_draft_notification_partial_approve: 提案部分被批准
+    pimee_workflow_product_draft_notification_partial_reject: 提案部分被拒绝
+    pimee_workflow_product_draft_notification_partial_remove: 提案部分被删除
+    pimee_workflow_product_draft_notification_approve: 提案被批准
+    pimee_workflow_product_draft_notification_refuse: 提案被拒绝
+    pimee_workflow_product_draft_notification_remove: 提案被删除
+    pimee_workflow_product_draft_notification_sent: 提案已发送
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: 日期
+      author: 作者
+      product: 产品
+      review: 审查
+      empty: 没有要审查的提案
+    header.view_all: 查看全部
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: 已发布
+      revert: 恢复
+    attribute:
+      can_be_updated_by_a_rule: "]-Inf, 1]此属性可通过以下规则更新：|]1, +Inf[此属性可通过以下规则更新："
+      value_updated: 此值被当前的草稿更新
+    meta:
+      published_version: 已发布的版本
+      owner_groups: 所有者组
+      draft_status: 草稿状态
+      draft:
+        in_progress: 正在处理
+        sent_for_approval: 等待批准中
+        working_copy: 工作副本
+    revert:
+      title: 恢复确认
+      content: 确定要恢复产品到这个版本吗？
+    publish:
+      title: 发布该产品
+      content: 确定要发布该产品吗？
+    unpublish:
+      title: 取消发布该产品
+      content: 确定要取消发布该产品吗？
+    copy:
+      working_copy: 工作副本
+      draft: 我的草稿
+      draft_of: "{{ author }} 的草稿"
+    approval:
+      send: 发送以进行审批
+      sent: 发送以进行审批
+      send_and_next: 发送并执行下一步
+      send_and_finish: 发送并完成
+pimee_enrich.entity.published_product:
+  flash:
+    publish:
+      success: 产品已成功发布
+      fail: 发布此产品失败
+    unpublish:
+      success: 产品已成功取消发布
+      fail: 取消发布此产品失败
+    revert:
+      success: 产品已成功恢复
+  page_title:
+    index: "]-Inf, 1]{{ count }} 个发布的产品|]1, Inf[{{ count }} 个发布的产品"
+  module:
+    publish:
+      label: 发布
+      publish_this_version: 发布此版本
+    unpublish:
+      label: 取消发布
+pimee_enrich.entity.product_draft:
+  flash:
+    approve:
+      success: 提案已成功应用。
+      fail: "由于以下错误，这项提案不能被应用：{{ error }}"
+    reject:
+      success: 提案已被拒绝。
+    remove:
+      success: 提案已被移除。
+    update:
+      success: 产品草稿已成功保存
+      fail: 产品草稿无法更新
+    create:
+      success: 产品草稿已发送等待审批
+      fail: 无法将此草稿发送以进行审批
+      skip: 产品草稿尚未发送供审批，因为没有修改任何值
+  module:
+    proposal:
+      accept: 接受提案
+      accept_selected: 接受选定的提案
+      reject: 拒绝提案
+      reject_selected: 拒绝选定的提案
+      remove: 移除提案
+      comment_title: 评论您的提案 （可选，最多 255 个字符）
+      comment_chars: 字符
+      confirm: 发送
+    edit:
+      discard_changes: 未保存的更改将会丢失。确定要在未保存的情况下，发送您的草稿以进行审批？
+      discard_changes_title: 确定要发送此草稿?
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: 发布
+      label_count: "{1}发布 <span class=\"AknFullPage-title--highlight\">1 个产品</span>|]1, Inf[发布 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个产品</span>"
+      description: 将发布产品
+      warning: 将发布选中的 {{ itemsCount }} 个产品。
+    unpublish:
+      label: 取消发布
+      label_count: "{1}取消发布 <span class=\"AknFullPage-title--highlight\">1 个产品</span>|]1, Inf[取消发布 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个产品</span>"
+      description: 将取消发布产品
+      warning: 将取消发布选中的 {{ itemsCount }} 个产品。
+pimee_enrich.entity.category:
+  flash:
+    remove:
+      error_linked: 无法删除链接到已发布产品的类别。
+pim_menu:
+  navigation:
+    published_products: 已发布的产品
+  item:
+    proposal: 提案
+    published_product: 已发布的产品
+pim_title:
+  pimee_workflow_proposal_index: 提案
+  pimee_workflow_published_product_index: 已发布的产品
+  pimee_workflow_published_product_view: 已发布的产品 {{ product.label }} | 查看

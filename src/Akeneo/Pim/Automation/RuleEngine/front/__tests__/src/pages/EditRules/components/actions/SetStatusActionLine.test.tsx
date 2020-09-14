@@ -3,16 +3,11 @@ import 'jest-fetch-mock';
 import { renderWithProviders, screen } from '../../../../../../test-utils';
 import { locales, scopes } from '../../../../factories';
 import { SetStatusActionLine } from '../../../../../../src/pages/EditRules/components/actions/SetStatusActionLine';
-import {
-  createSetStatusAction,
-  SetStatusAction,
-} from '../../../../../../src/models/actions';
 
 describe('SetStatusActionLine', () => {
   it('should be able to display a new set status action', async () => {
     renderWithProviders(
       <SetStatusActionLine
-        action={createSetStatusAction()}
         lineNumber={0}
         locales={locales}
         scopes={scopes}
@@ -36,11 +31,6 @@ describe('SetStatusActionLine', () => {
   });
 
   it('should be able to display an existing set status action', async () => {
-    const action: SetStatusAction = {
-      type: 'set',
-      field: 'enabled',
-      value: true,
-    };
     const defaultValues = {
       content: {
         actions: [
@@ -60,7 +50,6 @@ describe('SetStatusActionLine', () => {
 
     renderWithProviders(
       <SetStatusActionLine
-        action={action}
         lineNumber={0}
         locales={locales}
         scopes={scopes}

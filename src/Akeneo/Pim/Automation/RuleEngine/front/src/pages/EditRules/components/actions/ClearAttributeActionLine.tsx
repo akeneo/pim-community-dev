@@ -3,7 +3,6 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import { ActionTitle } from './ActionLine';
-import { ClearAttributeAction } from '../../../../models/actions';
 import { AttributeLocaleScopeSelector } from './attribute/AttributeLocaleScopeSelector';
 import {
   useTranslate,
@@ -16,11 +15,7 @@ import {
   useGetAttributeAtMount,
 } from './attribute/attribute.utils';
 
-type Props = {
-  action?: ClearAttributeAction;
-} & ActionLineProps;
-
-const ClearAttributeActionLine: React.FC<Props> = ({
+const ClearAttributeActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
   handleDelete,
   locales,

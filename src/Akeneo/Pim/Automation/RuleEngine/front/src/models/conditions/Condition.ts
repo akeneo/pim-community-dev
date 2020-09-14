@@ -13,6 +13,7 @@ import {
   TextareaAttributeCondition,
   BooleanAttributeCondition,
   GroupsCondition,
+  MeasurementAttributeCondition,
   NumberAttributeCondition,
   StatusCondition,
 } from './';
@@ -31,6 +32,7 @@ export type Condition =
   | TextareaAttributeCondition
   | BooleanAttributeCondition
   | GroupsCondition
+  | MeasurementAttributeCondition
   | NumberAttributeCondition
   | StatusCondition;
 

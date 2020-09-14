@@ -24,7 +24,7 @@ type Select2Ajax = {
   url: string;
   quietMillis?: number;
   cache?: boolean;
-  data: (
+  data?: (
     term: string,
     page: number
   ) => {

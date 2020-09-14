@@ -1,5 +1,27 @@
 # 4.0.x
 
+# 4.0.54 (2020-08-28)
+
+## Bug fixes
+
+- PIM-9418: Fix errors on proposals containing metric, price and asset collection attributes
+
+# 4.0.53 (2020-08-27)
+
+## Improvements
+
+- DAPI-1201: Remove unused ES index configuration file 
+- PIM-9315: Improve error message when you have no rights on a published product
+
+## Bug fixes
+
+- DAPI-1231: Fix possible ES conflicts when updating product rates
+- PIM-9424: Fix add attributes values mass action on reference entity multiple links attributes
+
+# 4.0.52 (2020-08-24)
+
+# 4.0.51 (2020-08-21)
+
 # 4.0.50 (2020-08-20)
 
 ## Bug fixes

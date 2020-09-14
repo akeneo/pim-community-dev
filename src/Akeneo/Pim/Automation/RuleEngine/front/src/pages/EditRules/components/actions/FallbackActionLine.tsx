@@ -1,19 +1,18 @@
 import React from 'react';
-import { FallbackAction } from '../../../../models/actions/FallbackAction';
+import { Controller, useFormContext } from 'react-hook-form';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
-import { useRegisterConsts } from '../../hooks/useRegisterConst';
+import { useControlledFormInputAction } from '../../hooks';
 
-type Props = {
-  action: FallbackAction;
-} & ActionLineProps;
-
-const FallbackActionLine: React.FC<Props> = ({
+const FallbackActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
-  action,
   handleDelete,
 }) => {
-  useRegisterConsts(action, `content.actions[${lineNumber}]`);
+  const { watch } = useFormContext();
+  const { formName, getFormValue } = useControlledFormInputAction<boolean>(
+    lineNumber
+  );
+  const getActionValues = () => watch(`content.actions[${lineNumber}]`);
 
   return (
     <ActionTemplate
@@ -30,7 +29,15 @@ const FallbackActionLine: React.FC<Props> = ({
                 fontFamily:
                   'Courier, "MS Courier New", Prestige, "Everson Mono"',
               }}>
-              {JSON.stringify(action)}
+              {JSON.stringify(getActionValues())}
+              {Object.keys(getActionValues() ?? {}).map((key: string) => (
+                <Controller
+                  as={<span hidden />}
+                  name={formName(key)}
+                  defaultValue={getFormValue(key)}
+                  key={key}
+                />
+              ))}
             </div>
           </div>
         </div>

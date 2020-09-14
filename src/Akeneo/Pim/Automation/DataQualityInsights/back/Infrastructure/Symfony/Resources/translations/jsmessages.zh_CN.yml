@@ -1,0 +1,39 @@
+akeneo_data_quality_insights:
+  product_evaluation:
+    criteria:
+      consistency_textarea_uppercase_words:
+        recommendation: 有大写问题的属性
+      consistency_textarea_lowercase_words:
+        recommendation: 有小写问题的属性
+      consistency_spelling:
+        recommendation: 属性有拼写问题
+      consistency_attribute_spelling:
+        recommendation: 有拼写错误的属性标签
+      consistency_attribute_option_spelling:
+        recommendation: 有拼写错误的属性选项
+    axis:
+      consistency:
+        title: 一致性
+        attributes_link: 显示所有可改进的属性
+        success: 您的产品数据完全一致。恭喜！
+  product_edit_form:
+    attribute_filter:
+      all_improvable_attributes: 所有可改进的属性
+    spellcheck_popover:
+      title: 更正
+      original_text_title: 原始
+      suggestions_title: 提案
+      ignore_all_suggestions_button_label: 忽略
+    back_to_products: 返回到产品
+  attribute_grid:
+    quality:
+      to_improve: 要改善
+      good: 良好
+      in_progress: 正在处理
+      n_a: N/A
+  attribute_edit_form:
+    quality_summary: 通过增强此属性，您将改进 {{ count }} 个产品的总体质量。
+  spellcheck:
+    popover:
+      default_aria_label: 拼写建议
+      aria_label: "拼写建议：{{ mistake }}"

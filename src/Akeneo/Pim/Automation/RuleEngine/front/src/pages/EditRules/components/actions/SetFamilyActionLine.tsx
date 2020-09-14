@@ -19,6 +19,7 @@ const SetFamilyActionLine: React.FC<ActionLineProps> = ({
     typeFormName,
     valueFormName,
     getValueFormValue,
+    isFormFieldInError,
   } = useControlledFormInputAction<string>(lineNumber);
 
   return (
@@ -46,7 +47,10 @@ const SetFamilyActionLine: React.FC<ActionLineProps> = ({
             'pimee_catalog_rule.form.edit.actions.set_family.subtitle'
           )}
         </ActionTitle>
-        <AknActionFormContainer>
+        <AknActionFormContainer
+          className={
+            isFormFieldInError('value') ? 'select2-container-error' : ''
+          }>
           <Controller
             as={FamilySelector}
             label={`${translate(
@@ -58,6 +62,11 @@ const SetFamilyActionLine: React.FC<ActionLineProps> = ({
               'pimee_catalog_rule.form.edit.actions.set_family.subtitle'
             )}
             name={valueFormName}
+            rules={{
+              required: translate(
+                'pimee_catalog_rule.exceptions.required_value'
+              ),
+            }}
           />
         </AknActionFormContainer>
       </ActionTemplate>

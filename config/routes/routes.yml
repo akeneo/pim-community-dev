@@ -20,9 +20,6 @@ pimee_asset_manager:
 pim_security:
     resource: "@AkeneoPimPermissionBundle/Resources/config/routing.yml"
 
-pim_franklin_insights:
-    resource: "@AkeneoFranklinInsightsBundle/Resources/config/routing.yml"
-
 pim_data_quality_insights:
     resource: "@AkeneoPimEnterpriseDataQualityInsightsBundle/Resources/config/routing.yml"
 

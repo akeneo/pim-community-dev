@@ -1,0 +1,135 @@
+pim_asset_manager:
+  asset_family:
+    validation:
+      code:
+        pattern: '此字段只能包含字母、数字和下划线。'
+        should_be_unique: '已存在代码为"%asset_family_identifier%"的资产品类'
+        limit_reached: '无法创建资产品类 “%asset_family_identifier%”，因为已达到资产品类的上限数目 %limit%'
+      assets:
+        should_have_no_asset: '您无法删除此品类，因为此品类存在资产'
+      asset_family_attributes:
+        should_not_be_linked: '您不能删除此品类，因为资产品类属性与此品类相关联。'
+      asset_family_permissions:
+        at_least_one_user_group_should_have_edit_permission: '至少有一个用户组应该有此品类的编辑权限'
+      product_attributes:
+        should_not_be_linked: '您无法删除此品类，因为其与一个资产集合链接。'
+      should_exist: '找不到资产品类 "%asset_family_code%" 。'
+      rule_template:
+        limit_reached: '您已达到资产品类“%asset_family_identifier%”的产品链接规则上限数 %limit%。'
+        product_selection_cannot_be_empty: '您必须在产品链接规则中指定至少一个产品选择'
+        product_assignment_cannot_be_empty: '您必须在产品链接规则中指定至少一个产品指派'
+        extrapolated_attribute_should_exist: '此资产品类不存在属性"%attribute_code%" '
+        extrapolated_attribute_type_should_be_supported: '此字段不支持类型为“%attribute_type%”的属性“%attribute_code%”，仅支持以下属性类型： %supported_attribute_type%'
+        channel_should_exist: '渠道"%channel_code%"不存在'
+        locale_should_exist: '区域设置 "%locale_code%"未激活或不存在'
+        extrapolated_attribute_type_should_not_have_one_value_per_channel: '属性"%attribute_code%"不能用于外插，因为它对每个渠道有一个值'
+        extrapolated_attribute_type_should_not_have_one_value_per_locale: '属性"%attribute_code%"不能用于外插，因为它对每个区域有一个值'
+        assignment_mode_not_supported: '在产品链接规则中发现无效的指派模式"%assignment_mode%"，而所需要的是“替换”或“添加”'
+        channel_not_supported_for_field: '您不能为字段"%product_field%"指定渠道'
+        locale_not_supported_for_field: '您不能为字段"%product_field%"指定区域'
+        assignmement_attribute_does_not_support_this_asset_family: '产品属性"%product_attribute_code%"不能包含资产品类"%asset_family_identifier%"中的资产'
+        assignmement_attribute_does_not_exist: '产品属性"%product_attribute_code%"不存在'
+        assignmement_attribute_is_not_an_asset_collection: '产品属性"%product_attribute_code%"不是类型资产集合的属性'
+      attribute_as_main_media:
+        not_found: '设置为资产品类主媒体的属性"%attribute_as_main_media%"不存在'
+        invalid_type: '设置为资产品类主媒体的属性类型应为：%valid_attribute_as_main_media_types%'
+      transformation:
+        limit_reached: '您已达到转换上限数目 %limit%'
+        same_operation_twice: '"%operation_type%" 运算不能在单个转换中定义两次'
+        source_can_not_be_a_target: '属性源"%attribute_code%"不能成为转换的属性目标。'
+        attribute_reference_should_exist: '此资产品类不存在属性"%attribute_code%" '
+        source_should_be_media_file: '源属性应为媒体类型文件。'
+        target_should_be_media_file: '目标属性应为媒体类型文件。'
+        filename_is_not_unique: '属性源"%attribute_code%"已存在文件名前缀为"%filename_prefix%"、后缀为"%filename_suffix%"的转换'
+        target_is_not_unique: '两个转换不能具有相同的目标。'
+        code_is_not_unique: '不能使用同一代码"%transformation_code%"定义两个转换'
+        filename_prefix_suffix_empty: '至少应该有属性文件名前缀或文件名后缀，且其中之一不应该是空字符串。'
+        empty_operation_list: '至少需要一个转换运算。'
+        unknown_extra_field: '属性 {{ field }} 为未知的多余属性。'
+      naming_convention:
+        property_should_exist: '该资产品类不存在属性"%property%"'
+        not_main_media_attribute_code: '属性必须匹配指定为主媒体的属性的代码'
+  asset:
+    validation:
+      code:
+        pattern: '此字段只能包含字母、数字和下划线。'
+        should_be_unique: '已存在代码为"%code%"的资产'
+        should_exist: '找不到资产'
+      text:
+        incompatible_with_regular_expression: '文本与正则表达式"%regular_expression% "不兼容'
+      file:
+        extension_not_allowed: '此属性不允许“%file_extension%"文件。允许的扩展名为： %allowed_file_extensions%'
+        file_size_exceeded: '此文件超出属性的最大文件大小设定。'
+        should_exist: '找不到文件"%file_path%"。'
+        target_readonly: '您不能更新"%attribute_code%"的值，因为它是一个转换的目标。'
+      option:
+        code_does_not_exist: '此属性不存在代码为"%option_code%"的选项'
+      option_collection:
+        codes_dont_exist: "此属性不存在以下选项代码：\"%option_codes%\""
+      asset:
+        should_exist: '找不到资产 %asset_code%。'
+      asset_collection:
+        should_exist: '找不到资产 "%asset_codes%" 。'
+      limit_reached: '无法创建资产“%asset_label%"，因为已达到此资产品类的资产上限数目 %limit%'
+      channel:
+        is_expected: '属性"%attribute_code%”应有一个渠道，因为其具有针对每个渠道的值。'
+        is_not_expected: '属性"%attribute_code%”不应有一个渠道，因为其没有针对渠道的值。'
+        should_exist: '渠道"%channel_identifier%"不存在。'
+      locale:
+        is_expected: '属性"%attribute_code%”应有一个区域设置，因为其有针对区域的值。'
+        is_not_expected: '属性"%attribute_code%”不应有一个区域设置，因为其没有针对区域的值。'
+        is_not_activated: '区域"%locale_identifier%"未激活。'
+        is_not_activated_for_channel: '区域"%locale_identifier%"对于渠道"%channel_identifier%"未激活。'
+      number:
+        should_be_string: '此字段应为字符串'
+        should_be_integer: '此字段应为整数'
+        integer_too_long: '此整数过大'
+        should_be_numeric: '此字段应该是一个数值，使用右小数点分隔符'
+      main_media:
+        not_main_media_attribute: '主媒体所需的属性应为"%main_media_attribute%"，而给定的是"%attribute%"。'
+  attribute:
+    validation:
+      options:
+        should_exist: '找不到此选项。'
+        duplicated: '选项“%option_code%”已存在'
+        too_many: '已达到每个属性 {{ limit }} 个属性选项的上限。'
+        code:
+          pattern: '此字段只能包含字母、数字和下划线。'
+          should_not_be_blank: '此选项的代码不应为空'
+      max_length:
+        should_be_an_integer: '此值应为整数。'
+      max_file_size:
+        should_be_a_number: '此值应为数字。'
+      min_value:
+        should_be_a_number: '此值应该是一个数字，使用右小数点分隔符'
+        cannot_be_greater_than_max: '最小值不能大于最大值'
+      max_value:
+        should_be_a_number: '此值应该是一个数字，使用右小数点分隔符'
+        cannot_be_lower_than_min: '最大值不能小于最小值'
+      code:
+        pattern: '此字段只能包含字母、数字和下划线。而给出的是"{{ value }}"。'
+        reserved_codes: '代码不能是这些值中的任何一个：“{{ comma_separated_reserved_keywords }}”'
+        should_not_exist: '对于资产品类"{{ asset_family_identifier }}"和属性代码"{{ code }}"，已存在属性。'
+        should_exist: '找不到该属性'
+      regular_expression:
+        invalid_regular_expression: '此正则表达式无效。有效的正则表达式诸如："/[a-z]+[0-9]*/"'
+        should_not_be_empty: '正则表达式不能为空。'
+      should_be_a_textarea_to_update_is_rich_text_editor: '简单文本属性不能用富文本编辑器'
+      should_be_a_simple_text_to_set_validation_rule_to_something_else_than_none: '文本区域属性不能有验证规则'
+      cannot_set_a_non_empty_regular_expression: '属性不应有正则表达式'
+      cannot_update_the_regular_expression: '无法在文本属性中设置正则表达式'
+      limit_reached: '无法创建属性“%attribute_label%"，因为已达到此资产品类的属性上限数目 %limit%'
+      asset_type:
+        is_required: '需要指定资产品类类型才能创建资产品类链接属性'
+        asset_family_should_exist: '找不到资产品类"%asset_family_code%" 。'
+      prefix:
+        should_not_be_empty: '前缀不能为空字符串。'
+      suffix:
+        should_not_be_empty: '后缀不能为空字符串。'
+      media_type:
+        not_expected: '指定的媒体类型不是预期的 (%supported_media_types%)。'
+      media_file:
+        cannot_contain_extension_separator: '扩展名不能包含给定的扩展分隔符 "."，给出的扩展名"%wrong_extension%"不正确。'
+        should_only_contain_lowercase_letters_and_numbers: '扩展名只能包含小写字母和数字，给出的扩展名"%wrong_extension%"不正确。'
+        cannot_be_longer_than_max: '扩展名不能超过 %expected_length% 个字符，而给出的长度为 %actual_length%。'
+        there_cannot_be_duplicated_extensions: '不能有重复的扩展名：发现重复扩展名 %duplicates%。'

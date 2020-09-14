@@ -108,11 +108,17 @@ pimee_catalog_rule:
                 pending: Calculating products and product models
                 error: Impossible to calculate products and product models
             product_selection: Product selection
+            preview: Preview
             fields:
                 family: Family
                 category: Category
+                identifier: Identifier
                 attribute: Attribute
                 groups: Groups
+                measurement_unit: Measurement unit
+                measurement_default_unit: "Default unit ({{ unit }})"
+                currency: Currency
+                operator: operator
             execute:
                 button: Save and execute
                 title: Save and execute the rule
@@ -154,6 +160,7 @@ pimee_catalog_rule:
                     attribute_placeholder: Select your target attribute
                     select_reference_entity: Select your reference entities
                     select_asset: Select your assets
+                    select_measurement_unit: Select your unit
                 clear_attribute:
                     title: CLEAR Attribute value
                     subtitle: Select the attribute to clear
@@ -193,6 +200,25 @@ pimee_catalog_rule:
                     title: REMOVE products from groups
                     helper: To remove products from groups, please select one or several groups
                     subtitle: Select your groups
+                calculate:
+                    title: CALCULATE values
+                    helper: To calculate numeric attribute values, please choose attribute(s) and/or value(s) and then, select the target attribute you want to put the result in. You can also round the final result if needed.
+                    add_value: Add value
+                    add_attribute: Add attribute
+                    select_target: Select your target
+                    attribute_placeholder: Select your target attribute
+                    round_precision: Round precision
+                    operator:
+                        add: Add
+                        subtract: Subtract
+                        multiply: Multiply
+                        divide: Divide
+                        choose: Choose your operator
+                concatenate:
+                    title: CONCATENATE values
+                    helper: To concatenate attribute values, please add the attributes and then, select the target attribute.
+                    date_format: Select a date format
+                    label_locale: Label locale
             conditions:
                 delete:
                     label: Remove condition
@@ -226,6 +252,12 @@ pimee_catalog_rule:
             discard_changes: Your changes will be lost if you leave the page.
             please_select_attribute: Please select a target attribute first.
             unhandled_attribute_type: Sorry this attribute type is not managed yet. Please use the rules import.
+            empty_section:
+                set_up_action: Well done! You defined your product selection. Now it's time to set up your action.
+                set_up_condition: If you don't want to impact your whole catalog, please add at least one condition.
+                add_action: And then, add one or several actions to apply to your products/product models.
+                doc: You don't know what an action is?
+                doc_link: This article may help you.
         delete:
             description: Are you sure you want to delete this rule? It is not possible to undo this action.
             notification:
@@ -276,12 +308,21 @@ pimee_catalog_rule:
         required_attribute: An attribute is required
         required_locale: A locale is required for the {{ attributeLabel }} attribute
         required_scope: A channel is required for the {{ attributeLabel }} attribute
+        required_currency: A currency is required for the {{ attributeLabel }} attribute
         required_locale_completeness: A locale is required for the completeness
         required_scope_completeness: A channel is required for the completeness
         required_value: A value is required for this action
         required_categories: At least one category is required for this action
+        required_constant_for_operation: A constant value is required for this operation
+        required_operator_for_operation: An operator is required for this operation
+        required_unit: A measurement unit is required
+        division_by_zero: Divisions by zero are not possible
+        two_operations_are_required: The operation list should contain 2 operations or more.
+        two_items_are_required: The list should contain 2 items or more.
         unknown_or_inactive_locale: 'The "{{ localeCode }}" locale does not exist or is not activated'
+        unknown_or_inactive_currency: 'The "{{ currencyCode }}" currency does not exist or is not activated'
         unbound_locale: 'The "{{ localeCode }}" locale is not activated in the "{{ channelCode }}" channel'
+        unbound_currency: 'The "{{ currencyCode }}" currency is not activated in the "{{ channelCode }}" channel'
         locale_on_unlocalizable_attribute: This attribute is not localizable. Please remove the locale before you continue.
         unknown_scope: 'The "{{ scopeCode }}" channel does not exist'
         scope_on_unscopable_attribute: This attribute is not scopable. Please remove the channel before you continue.
@@ -297,6 +338,8 @@ pimee_catalog_rule:
         create_attribute_link: click here to create the attribute
         edit_unauthorize: You are not allowed to edit rules
         wrong_date_timespan: To define a valid timespan, please make sure your end date isn’t set before your start date.
+        measurement_family_not_found: The "{{ measurement_code }}" measurement family does not exist
+        unit_not_found: The "{{ unitCode }}" unit was not found in the "{{ measurement_code }}" measurement family
 
 pim_enrich:
     entity:

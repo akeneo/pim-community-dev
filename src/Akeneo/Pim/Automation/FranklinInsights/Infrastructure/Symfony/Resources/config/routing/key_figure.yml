@@ -1,8 +1,0 @@
-akeneo_franklin_insights_key_figure_index:
-    path: /index
-    methods: [GET]
-
-akeneo_franklin_insights_key_figure_get_all:
-    path: /
-    methods: [GET]
-    defaults: { _controller: akeneo.pim.automation.franklin_insights.controller.key_figure:getAllAction }

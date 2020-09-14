@@ -38,57 +38,97 @@ const registerConditions = (
 
 const registerActions = (register: Control['register'], actions: Action[]) => {
   if (actions?.length) {
-    actions.forEach((_, index) => {
-      register({ name: `content.actions[${index}].field`, type: 'custom' });
-      register({ name: `content.actions[${index}].items`, type: 'custom' });
+    actions.forEach((action, index) => {
       register({ name: `content.actions[${index}].type`, type: 'custom' });
-      register({ name: `content.actions[${index}].value`, type: 'custom' });
-      register({ name: `content.actions[${index}].scope`, type: 'custom' });
-      register({ name: `content.actions[${index}].locale`, type: 'custom' });
-      register({
-        name: `content.actions[${index}].from_field`,
-        type: 'custom',
-      });
-      register({ name: `content.actions[${index}].to_field`, type: 'custom' });
-      register({
-        name: `content.actions[${index}].from_locale`,
-        type: 'custom',
-      });
-      register({ name: `content.actions[${index}].to_locale`, type: 'custom' });
-      register({
-        name: `content.actions[${index}].from_scope`,
-        type: 'custom',
-      });
-      register({ name: `content.actions[${index}].to_scope`, type: 'custom' });
-      register({
-        name: `content.actions[${index}].include_children`,
-        type: 'custom',
+
+      let fields: string[] = [];
+      switch (action.type) {
+        case 'add':
+          fields = ['field', 'items', 'scope', 'locale'];
+          break;
+        case 'calculate':
+          fields = [
+            'destination.field',
+            'destination.scope',
+            'destination.locale',
+            'destination.currency',
+            'destination.unit',
+            'round_precision',
+          ];
+          break;
+        case 'clear':
+          fields = ['field', 'scope', 'locale'];
+          break;
+        case 'concatenate':
+          fields = [
+            'to.field',
+            'to.scope',
+            'to.locale',
+            'to.currency',
+            'to.unit',
+          ];
+          break;
+        case 'copy':
+          fields = [
+            'from_field',
+            'from_scope',
+            'from_locale',
+            'to_field',
+            'to_scope',
+            'to_locale',
+          ];
+          break;
+        case 'remove':
+          fields = ['field', 'items', 'scope', 'locale', 'include_children'];
+          break;
+        case 'set':
+          fields = ['field', 'scope', 'locale', 'value'];
+          break;
+        default:
+          // Custom action. We need to register all the action keys.
+          fields = Object.keys(action);
+          break;
+      }
+
+      fields.forEach(field => {
+        register({
+          name: `content.actions[${index}].${field}`,
+          type: 'custom',
+        });
       });
     });
   }
 };
 
-const filterDataContentValues = (value: object) => {
-  return (
-    value !== null &&
-    Object.keys(value).length &&
-    Object.values(value).some(value => value != null)
-  );
-};
-
 const transformFormData = (formData: FormData): Payload => {
-  let conditions = formData?.content?.conditions;
-  if (conditions) {
-    conditions = formatDateLocaleTimeConditionsToBackend(conditions);
-  }
+  const conditions = formatDateLocaleTimeConditionsToBackend(
+    formData?.content?.conditions ?? []
+  );
+  const actions = formData?.content?.actions ?? [];
   return {
     code: formData.code,
     labels: formData.labels,
     priority: Number(formData.priority),
     content: {
-      conditions: conditions?.filter(filterDataContentValues) ?? [],
-      actions:
-        formData?.content?.actions?.filter(filterDataContentValues) ?? [],
+      conditions: conditions.filter(
+        condition => typeof condition?.field === 'string'
+      ),
+      actions: actions
+        .filter(action => typeof action?.type === 'string')
+        .map((action: any) => {
+          if (
+            action.type === 'calculate' &&
+            Array.isArray(action.full_operation_list)
+          ) {
+            [
+              action.source,
+              ...action.operation_list
+            ] = action.full_operation_list;
+            delete action.full_operation_list;
+          }
+
+          return action;
+        }),
     },
   };
 };
@@ -118,6 +158,20 @@ const doExecuteOnSave = async (
   }
 };
 
+const createCalculateDefaultValues = (formData: FormData): FormData => {
+  if (formData.content && formData.content.actions) {
+    formData.content.actions = formData.content.actions.map((action: any) => {
+      if (action && action.type === 'calculate') {
+        action.full_operation_list = [action.source, ...action.operation_list];
+      }
+
+      return action;
+    });
+  }
+
+  return formData;
+};
+
 const submitEditRuleForm = (
   ruleDefinitionCode: string,
   translate: Translate,
@@ -145,10 +199,10 @@ const submitEditRuleForm = (
       body: transformFormData(formData),
     });
     if (updateResponse.ok) {
+      formData = createCalculateDefaultValues(formData);
       reset(formData);
       registerConditions(register, formData.content?.conditions || []);
       registerActions(register, formData.content?.actions || []);
-
       if (executeOnSave) {
         doExecuteOnSave(router, translate, notify, ruleDefinitionCode);
       } else {
@@ -208,7 +262,9 @@ const useSubmitEditRuleForm = (
   ruleDefinition: RuleDefinition,
   locales: Locale[]
 ) => {
-  const defaultValues = createFormDefaultValues(ruleDefinition, locales);
+  const defaultValues = createCalculateDefaultValues(
+    createFormDefaultValues(ruleDefinition, locales)
+  );
   const formMethods = useForm<FormData>({
     defaultValues,
   });

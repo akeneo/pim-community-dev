@@ -15,12 +15,6 @@ import {
   locales,
   scopes,
 } from '../../../../factories';
-import { ClearAttributeAction } from '../../../../../../src/models/actions';
-
-const action: ClearAttributeAction = {
-  type: 'clear',
-  field: 'name',
-};
 
 describe('ClearAttributeActionLine', () => {
   beforeEach(() => {
@@ -211,7 +205,6 @@ describe('ClearAttributeActionLine', () => {
       <ClearAttributeActionLine
         currentCatalogLocale={'en-US'}
         lineNumber={1}
-        action={action}
         handleDelete={jest.fn()}
         locales={locales}
         scopes={scopes}

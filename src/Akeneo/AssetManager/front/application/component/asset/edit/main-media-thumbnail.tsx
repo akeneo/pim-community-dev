@@ -48,7 +48,7 @@ const Img = styled.img`
 export const DisconnectedMainMediaThumbnail = ({asset, context, reloadPreview}: MainMediaThumbnailProps) => {
   const url = getMediaPreviewUrl(getEditionAssetMainMediaThumbnail(asset, context.channel, context.locale));
   const label = getEditionAssetLabel(asset, context.locale);
-  const [regenerate, doRegenerate] = useRegenerate(url);
+  const [regenerate, doRegenerate, refreshedUrl] = useRegenerate(url);
 
   React.useEffect(() => {
     if (reloadPreview) {
@@ -62,7 +62,7 @@ export const DisconnectedMainMediaThumbnail = ({asset, context, reloadPreview}: 
     </div>
   ) : (
     <Container>
-      <Img alt={__('pim_asset_manager.asset.img', {label})} src={url} />
+      <Img alt={__('pim_asset_manager.asset.img', {label})} src={refreshedUrl} />
     </Container>
   );
 };

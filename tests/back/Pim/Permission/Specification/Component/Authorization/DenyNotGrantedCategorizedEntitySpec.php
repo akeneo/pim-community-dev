@@ -34,7 +34,7 @@ class DenyNotGrantedCategorizedEntitySpec extends ObjectBehavior
             ->shouldThrow(
                 new ResourceViewAccessDeniedException(
                     $productModel->getWrappedObject(),
-                    'Product model "product_model" does not exist.'
+                    'Product model "product_model" does not exist or you do not have permission to access it.'
                 )
             )
             ->during('denyIfNotGranted', [$productModel]);
@@ -63,7 +63,7 @@ class DenyNotGrantedCategorizedEntitySpec extends ObjectBehavior
             ->shouldThrow(
                 new ResourceViewAccessDeniedException(
                     $product->getWrappedObject(),
-                    'Product "product" does not exist.'
+                    'Product "product" does not exist or you do not have permission to access it.'
                 )
             )
             ->during('denyIfNotGranted', [$product]);
@@ -91,7 +91,7 @@ class DenyNotGrantedCategorizedEntitySpec extends ObjectBehavior
             ->shouldThrow(
                 new ResourceViewAccessDeniedException(
                     $categoryAware->getWrappedObject(),
-                    'This entity does not exist.'
+                    'This entity does not exist or you do not have permission to access it.'
                 )
             )
             ->during('denyIfNotGranted', [$categoryAware]);

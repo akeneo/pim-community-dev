@@ -1,4 +1,0 @@
-mappings:
-    properties:
-        franklin_subscription:
-            type: boolean

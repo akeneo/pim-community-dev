@@ -18,9 +18,6 @@ class EnterpriseNavigationContext extends BaseNavigationContext
         'Mass_upload show'   => 'MassUpload show',
         'proposals'          => 'Proposal index',
         'rules'              => 'Rule index',
-        'Franklin configuration' => 'FranklinInsights configuration index',
-        'Franklin identifiers mapping' => 'FranklinInsights mapping identifiers index',
-        'Franklin attributes mapping' => 'FranklinInsights mapping attributes index',
     ];
 
     /**

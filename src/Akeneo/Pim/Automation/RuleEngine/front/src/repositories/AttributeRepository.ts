@@ -1,4 +1,4 @@
-import { Attribute, AttributeCode } from '../models/Attribute';
+import { Attribute, AttributeCode } from '../models';
 import { Router } from '../dependenciesTools';
 import {
   fetchAttributeByIdentifier,

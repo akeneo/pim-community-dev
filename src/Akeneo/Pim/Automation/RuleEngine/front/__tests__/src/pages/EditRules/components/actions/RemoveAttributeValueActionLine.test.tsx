@@ -5,7 +5,6 @@ import { createAttribute, locales, scopes } from '../../../../factories';
 import { clearAttributeRepositoryCache } from '../../../../../../src/repositories/AttributeRepository';
 import { AttributeType } from '../../../../../../src/models';
 import { RemoveAttributeValueActionLine } from '../../../../../../src/pages/EditRules/components/actions/RemoveAttributeValueActionLine';
-import { RemoveAttributeValueAction } from '../../../../../../src/models/actions';
 import userEvent from '@testing-library/user-event';
 
 describe('RemoveAttributeValueActionLine', () => {
@@ -67,7 +66,6 @@ describe('RemoveAttributeValueActionLine', () => {
 
     renderWithProviders(
       <RemoveAttributeValueActionLine
-        action={defaultValues.content.actions[0] as RemoveAttributeValueAction}
         lineNumber={0}
         locales={locales}
         scopes={scopes}

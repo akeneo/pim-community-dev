@@ -2,59 +2,41 @@ pimee_catalog_rule:
   datagrid:
     rule-grid:
       actions:
-        delete: 删除
         execute: 执行
       title: 规则
       column:
-        code: 代码
-        conditions: 条件：
-        actions: 操作
+        label: 标签
         impacted_product_count:
           label: 受影响的产品
-          count: '{0,1}%count% 个受影响的产品 |]1，Inf [ %count%个受影响的产品'
+          count: '{0,1}%count% 个受影响的产品|]1,Inf[%count% 个受影响的产品'
           no_yet_calculated: 尚未计算
+        tags:
+          label: 操作
       mass_edit_action:
         impacted_product_count: 计算受影响的产品
         execute: 执行
         delete: 删除
-  actions:
-    type:
-      "copy": 然后将 %from_field% 复制到 %to_field%
-      "copy_value": 然后将 %from_field% 复制到 %to_field%
-      "set": 然后将 %value% 设置到 %field%
-      "set_value": 然后将 %value% 设置到 %field%
-      "add": 然后将 %value% 添加到 %field%
-      "remove": 然后从 %field% 中删除值 %value%
   condition:
-    label: 如果 %field% %operator% %value%
-    operators:
-      "STARTS WITH": 开始于
-      "ENDS WITH": 结束于
-      "CONTAINS": 包含
-      "DOES NOT CONTAIN": 不包含
-      "EMPTY": 为空
-      "NOT EMPTY": 不为空
-      "IN": 在
-      "NOT IN": 不在
-      "IN CHILDREN": 在子级中
-      "NOT IN CHILDREN": 不在子级中
-      "UNCLASSIFIED": 未分类
-      "IN OR UNCLASSIFIED": 未分类或在
-      "BETWEEN": 介于
-      "NOT BETWEEN": 不介于
-      "=": 等于
-      "!=": 不等于
-      ">": 大于
-      ">=": 大于或等于
-      "<": 小于
-      "<=": 小于等于
+    fields:
+      family: 品类
+      associations: 关联
+      groups: 分组
+      categories: 类别
+      completeness: 完成度
+      enabled: 状态
+      created: 已创建
+      updated: 已更新
+    field_groups:
+      system: 系统
   acl_group:
     rule: 规则
   acl:
     rule:
+      edit_permissions: 编辑规则
       view_permissions: 查看规则
       delete_permissions: 删除规则
-      impacted_product_count_permissions: 计算此规则下受影响的产品
+      impacted_product_count_permissions: 计算受规则影响的产品数量
+      create_permissions: 创建规则
       execute_permissions: 执行规则
   attribute:
     tab:
@@ -64,26 +46,42 @@ pimee_catalog_rule:
     acl:
       rule.view_permissions: 查看规则
   product:
-    tooltip:
-      product_attribute_affected_by_a_rule.content: 此属性的值可以来自规则 <strong>%rule%</strong>。这意味着如果规则的条件是有效的，您的修改将被覆盖。
-      loading.title: 正在加载...
     history: 应用规则"%rule%"
-  product_value:
-    tooltip:
-      affected_by.title: '被规则覆盖'
   steps:
     product_rule_definition_reader.title: 产品规则导入阅读器
     rule_definition_processor.title: 产品规则导入处理器
-    product_rule_definition_writer.title: 产品规则导入写
+    product_rule_definition_writer.title: 产品规则导入编写器
     rules_execution.title: 执行规则
   notification:
-    rule:
-      executed: 执行的规则完成
+    execute_rules:
+      success: 规则执行完成
+      warning: 规则执行完成，但有警告
+      error: 执行规则时发生错误
     mass_edit_rule:
-      success: 计算此规则下受影响的产品
-      error: 在计算在该规则下受影响的产品期间，发生了一个错误
+      success: 已完成此规则下受影响产品的计算
+      error: 计算受规则影响的产品数量时发生错误
+  datetime:
+    now: 现在
+    relative_date:
+      minute: ']-Inf, -1[%absolute_count% 分钟前 |{-1}1 分钟前 |{1}1 分钟内|]1, +Inf[ %absolute_count% 分钟内'
+      hour: ']-Inf, -1[%absolute_count% 小时前 |{-1}1 小时前 |{1}1 小时内|]1, +Inf[ %absolute_count% 小时内'
+      day: ']-Inf, -1[%absolute_count% 天前 |{-1}1 天前 |{1}1 天内|]1, +Inf[ %absolute_count% 天内'
+      week: ']-Inf, -1[%absolute_count% 周前 |{-1}1 周前 |{1}1 周内|]1, +Inf[ %absolute_count% 周内'
+      month: ']-Inf, -1[%absolute_count% 月前 |{-1}1 月前 |{1}1 月内|]1, +Inf[ %absolute_count% 月内'
+      year: ']-Inf, -1[%absolute_count% 年前 |{-1}1 年前 |{1}1 年内|]1, +Inf[ %absolute_count% 年内'
 btn:
   Execute rules: 执行规则
-rule: 规则设定
-mass_edit_rule: 规则设定
-job_execution.summary.rule_calculated: 规则的数量
+job_execution:
+  summary:
+    rule_calculated: 规则的数量
+    read_rules: 读取规则
+    selected_entities: 选定的产品/产品模型
+    skipped_invalid: 跳过的产品/产品模型(无效)
+    updated_entities: 更新的产品/产品模型
+    executed_rules: 成功执行的规则
+    errored_rules: 跳过的规则 (无效)
+pim_datagrid:
+  cells:
+    type:
+      mass_edit_rule: 规则设置 
+      execute_rules: 执行规则
