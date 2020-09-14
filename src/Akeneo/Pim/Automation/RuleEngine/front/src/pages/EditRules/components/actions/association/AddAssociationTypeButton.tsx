@@ -33,6 +33,9 @@ const AddAssociationTypeButton: React.FC<Props> = ({
   const router = useBackboneRouter();
   const translate = useTranslate();
   const currentCatalogLocale = useUserCatalogLocale();
+  const targets: Target[] = quantified
+    ? ['products', 'product_models']
+    : ['products', 'product_models', 'groups'];
 
   const [closeTick, setCloseTick] = React.useState<boolean>(false);
   const [data, setData] = React.useState<Select2OptionGroup[]>();
@@ -69,20 +72,18 @@ const AddAssociationTypeButton: React.FC<Props> = ({
       const text =
         associationType.labels[currentCatalogLocale] ||
         `[${associationType.code}]`;
-      (['products', 'product_models', 'groups'] as Target[]).forEach(
-        (target: Target) => {
-          if (!isFieldAlreadySelected(target, associationType.code)) {
-            children.push({
-              id: target,
-              text, // The text is set to the association type label to be able to search on it.
-              association_type_code: associationType.code,
-              target_text: translate(
-                `pimee_catalog_rule.form.edit.actions.set_associations.select.${target}`
-              ),
-            });
-          }
+      targets.forEach((target: Target) => {
+        if (!isFieldAlreadySelected(target, associationType.code)) {
+          children.push({
+            id: target,
+            text, // The text is set to the association type label to be able to search on it.
+            association_type_code: associationType.code,
+            target_text: translate(
+              `pimee_catalog_rule.form.edit.actions.set_associations.select.${target}`
+            ),
+          });
         }
-      );
+      });
       if (children.length) {
         data.push({
           id: '',

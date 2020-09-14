@@ -35,12 +35,6 @@ const SetQuantifiedAssociationsActionLine: React.FC<ActionLineProps> = ({
         as={<input type='hidden' />}
         name={fieldFormName}
         defaultValue='quantified_associations'
-        rules={{
-          validate: _ =>
-            Object.keys(getValueFormValue() || {}).length
-              ? true
-              : translate('pimee_catalog_rule.exceptions.required'),
-        }}
       />
       <Controller
         as={<input type='hidden' />}
@@ -63,7 +57,32 @@ const SetQuantifiedAssociationsActionLine: React.FC<ActionLineProps> = ({
           as={QuantifiedAssociationTypesSelector}
           name={valueFormName}
           value={getValueFormValue() ?? {}}
-          hasError={isFormFieldInError('field')}
+          hasError={isFormFieldInError('value')}
+          rules={{
+            validate: (value: any) => {
+              if (Object.keys(value || {}).length === 0) {
+                return translate('pimee_catalog_rule.exceptions.required');
+              }
+              if (
+                Object.values(
+                  value || {}
+                ).some((valueForAssociationType: any) =>
+                  Object.values(valueForAssociationType).some((values: any) =>
+                    values.some(
+                      (value: any) =>
+                        typeof value['identifier'] === 'undefined' ||
+                        typeof value['quantity'] === 'undefined'
+                    )
+                  )
+                )
+              ) {
+                return translate(
+                  'pimee_catalog_rule.exceptions.identifier_or_quantity_missing'
+                );
+              }
+              return true;
+            },
+          }}
         />
       </ActionTemplate>
     </>

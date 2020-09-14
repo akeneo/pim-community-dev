@@ -161,6 +161,9 @@ pimee_catalog_rule:
                     select_reference_entity: Select your reference entities
                     select_asset: Select your assets
                     select_measurement_unit: Select your unit
+                set_quantified_association:
+                    title: SET Quantified associations
+                    helper: To set quantified associations, please select your association type(s) and then, the products, product models or groups you want to associate to your product selection.
                 set_associations:
                     title: SET Associations
                     helper: To set associations, please select your association type(s) and then, the products, product models or groups you want to associate to your product selection.
@@ -343,6 +346,7 @@ pimee_catalog_rule:
         required_constant_for_operation: A constant value is required for this operation
         required_operator_for_operation: An operator is required for this operation
         required_unit: A measurement unit is required
+        identifier_or_quantity_missing: An identifier and a quantity are required for each element
         division_by_zero: Divisions by zero are not possible
         two_operations_are_required: The operation list should contain 2 operations or more.
         two_items_are_required: The list should contain 2 items or more.

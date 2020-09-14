@@ -18,7 +18,7 @@ export type QuantifiedAssociationValue = {
 export type SetQuantifiedAssociationsAction = {
   type: 'set';
   field: 'quantified_associations';
-  value?: QuantifiedAssociationValue;
+  value: QuantifiedAssociationValue;
 };
 
 export const getSetQuantifiedAssociationsActionModule: ActionModuleGuesser = json => {
@@ -35,4 +35,5 @@ export const getSetQuantifiedAssociationsActionModule: ActionModuleGuesser = jso
 export const createSetQuantifiedAssociationsAction = (): SetQuantifiedAssociationsAction => ({
   type: 'set',
   field: 'quantified_associations',
+  value: {},
 });
