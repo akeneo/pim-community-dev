@@ -61,6 +61,7 @@ const pimTheme: Theme = {
     primary: 'green',
     secondary: 'blue',
     tertiary: 'grey',
+    warning: 'yellow',
     danger: 'red',
   },
   fontSize,

@@ -60,13 +60,14 @@ type Theme = {
     primary: string;
     secondary: string;
     tertiary: string;
+    warning: string;
     danger: string;
   };
   fontSize: FontSize;
   color: Color;
 };
 
-type Level = 'primary' | 'secondary' | 'tertiary' | 'danger';
+type Level = 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
 
 const getColor = (color: string): ((props: AkeneoThemedProps) => string) => ({theme}: AkeneoThemedProps): string => {
   return theme.color[color] as string;
