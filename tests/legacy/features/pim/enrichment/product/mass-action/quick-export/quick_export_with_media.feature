@@ -29,7 +29,11 @@ Feature: Quick export many products with media from datagrid
   Scenario: Successfully quick export products and media as a XLSX file
     Given I am on the products grid
     When I select rows boots, sneakers
-    And I press "Excel (All attributes)" on the "Quick Export" dropdown button
+    And I press the "Quick Export" button
+    And I press the "XLSX" button
+    And I press the "All attributes" button
+    And I press the "With codes" button
+    And I press the "Export" button
     And I wait for the "xlsx_product_quick_export" quick export to finish
     And I am on the dashboard page
     Then I should have 1 new notification
@@ -50,7 +54,11 @@ Feature: Quick export many products with media from datagrid
   Scenario: Successfully quick export products with media without selecting the attribute media in the grid
     Given I am on the products grid
     When I select rows boots, sandals
-    And I press "CSV (Grid context)" on the "Quick Export" dropdown button
+    And I press the "Quick Export" button
+    And I press the "CSV" button
+    And I press the "Grid context" button
+    And I press the "With codes" button
+    And I press the "Export" button
     And I wait for the "csv_product_grid_context_quick_export" quick export to finish
     And I go on the last executed job resume of "csv_product_grid_context_quick_export"
     Then I should see the text "COMPLETED"

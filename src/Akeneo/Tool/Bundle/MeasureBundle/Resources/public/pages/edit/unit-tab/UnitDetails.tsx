@@ -16,9 +16,8 @@ import {Operation} from 'akeneomeasure/model/operation';
 import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
 import {UnitCode, getUnitLabel} from 'akeneomeasure/model/unit';
 import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteModal';
-import {useToggleState} from 'akeneomeasure/shared/hooks/use-toggle-state';
 import {useTranslate, useUserContext, useSecurity} from '@akeneo-pim-community/legacy-bridge';
-import {Button, filterErrors, ValidationError} from '@akeneo-pim-community/shared';
+import {Button, filterErrors, ValidationError, useToggleState} from '@akeneo-pim-community/shared';
 
 const Container = styled.div`
   margin-left: 40px;

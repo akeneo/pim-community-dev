@@ -16,7 +16,6 @@ import {
 } from 'akeneomeasure/shared/components/SecondaryActionsDropdownButton';
 import {useSaveMeasurementFamilySaver} from 'akeneomeasure/pages/edit/hooks/use-save-measurement-family-saver';
 import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
-import {useToggleState} from 'akeneomeasure/shared/hooks/use-toggle-state';
 import {CreateUnit} from 'akeneomeasure/pages/create-unit/CreateUnit';
 import {useUnsavedChanges} from 'akeneomeasure/shared/hooks/use-unsaved-changes';
 import {UnsavedChanges} from 'akeneomeasure/shared/components/UnsavedChanges';
@@ -43,6 +42,7 @@ import {
   filterErrors,
   ValidationError,
   partitionErrors,
+  useToggleState,
 } from '@akeneo-pim-community/shared';
 
 enum Tab {
