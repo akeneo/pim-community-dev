@@ -65,6 +65,7 @@ const MANAGED_ATTRIBUTE_TYPES_FOR_ADD_ACTION: Map<
   [AttributeType.OPTION_MULTI_SELECT, MultiSelectValue],
   [AttributeType.ASSET_COLLECTION, AssetCollectionValue],
   [AttributeType.REFERENCE_ENTITY_COLLECTION, MultiReferenceEntityValue],
+  [AttributeType.PRICE_COLLECTION, PriceCollectionValue],
 ]);
 
 type InputValueProps = {

@@ -352,6 +352,7 @@ pimee_catalog_rule:
         required_operator_for_operation: An operator is required for this operation
         required_unit: A measurement unit is required
         identifier_or_quantity_missing: An identifier and a quantity are required for each element
+        required_item: At least one item is required for this action
         division_by_zero: Divisions by zero are not possible
         two_operations_are_required: The operation list should contain 2 operations or more.
         two_items_are_required: The list should contain 2 items or more.
