@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - AOB-1023: Fix duplicated assets menu in PEF
+- PIM-9445: Fix boolean attribute is broken on compare/translate when the attribute is localisable or scopable
 
 # 4.0.56 (2020-09-09)
 
