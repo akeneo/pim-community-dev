@@ -20,7 +20,7 @@ const storiesDump = JSON.parse(storyFileContent) as StoriesDump;
 
 const stories = Object.values(storiesDump.stories);
 
-describe('Checkbox visual tests', () => {
+describe('Visual tests', () => {
   stories.map(story => {
     if (story.id.indexOf('components') !== 0) {
       return;
