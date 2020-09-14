@@ -6,6 +6,10 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueWithLinkedData;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueWithLinkedData;
 
 /**
  * This read model is dedicated to export product data for the connector, such as the API.
@@ -175,6 +179,64 @@ final class ConnectorProduct
             $this->quantifiedAssociations,
             array_merge($this->metadata, [$key => $value]),
             $this->values
+        );
+    }
+
+    /**
+     * @param array $optionLabels array of all the labels of options, indexed by option code
+     *                            ['option_code' => ['en_US' => 'translation']
+     */
+    public function buildLinkedData(array $optionLabels): ConnectorProduct
+    {
+        $values = $this->values->map(function (ValueInterface $value) use ($optionLabels) {
+            if ($value instanceof OptionValue) {
+                return new OptionValueWithLinkedData(
+                    $value->getAttributeCode(),
+                    $value->getData(),
+                    $value->getScopeCode(),
+                    $value->getLocaleCode(),
+                    [
+                        "attribute" => $value->getAttributeCode(),
+                        "code"=> $value->getData(),
+                        "labels" => $optionLabels[$value->getAttributeCode()][$value->getData()] ?? []
+                    ],
+                );
+            } elseif ($value instanceof OptionsValue) {
+                $linkedData = [];
+                foreach ($value->getData() as $optionCode) {
+                    $linkedData[$optionCode] = [
+                        "attribute" => $value->getAttributeCode(),
+                        "code"=> $optionCode,
+                        "labels" => $optionLabels[$value->getAttributeCode()][$optionCode] ?? [],
+                    ];
+                }
+
+                return new OptionsValueWithLinkedData(
+                    $value->getAttributeCode(),
+                    $value->getData(),
+                    $value->getScopeCode(),
+                    $value->getLocaleCode(),
+                    $linkedData
+                );
+            } else {
+                return $value;
+            }
+        });
+
+        return new self(
+            $this->id,
+            $this->identifier,
+            $this->createdDate,
+            $this->updatedDate,
+            $this->enabled,
+            $this->familyCode,
+            $this->categoryCodes,
+            $this->groupCodes,
+            $this->parentProductModelCode,
+            $this->associations,
+            $this->quantifiedAssociations,
+            $this->metadata,
+            $values
         );
     }
 
