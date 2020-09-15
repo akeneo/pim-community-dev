@@ -1,7 +1,7 @@
 {
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": ["./akeneo-design-system/tsconfig.lint.json"]
+    "project": ["tsconfig.lint.json"]
   },
   "plugins": ["@typescript-eslint", "react", "react-hooks"],
   "extends": [

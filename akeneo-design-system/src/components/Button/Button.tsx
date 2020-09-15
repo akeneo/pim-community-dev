@@ -1,6 +1,6 @@
 import React, {ReactNode, Ref} from 'react';
 import styled, {css} from 'styled-components';
-import {AkeneoThemedProps, getColor, getFontSize, Level} from '../../theme';
+import {AkeneoThemedProps, getColorForLevel, getFontSize, Level} from '../../theme';
 import {Key} from '../../shared/key';
 import {useShortcut} from '../../hooks/use-shortcut';
 
@@ -56,37 +56,36 @@ type ButtonProps = {
 
 const getColorStyle = (props: {level: Level; ghost: boolean; disabled: boolean} & AkeneoThemedProps) => {
   const {level, ghost, disabled} = props;
-  const levelColor = props.theme.palette[level];
 
   if (ghost) {
     return css`
-      color: ${getColor(`${levelColor}${disabled ? 80 : 120}`)};
+      color: ${getColorForLevel(level, disabled ? 80 : 120)};
       background-color: white;
-      border-color: ${getColor(`${levelColor}${disabled ? 60 : 100}`)};
+      border-color: ${getColorForLevel(level, disabled ? 60 : 100)};
 
       &:hover {
-        color: ${getColor(`${levelColor}140`)};
-        background-color: ${getColor(`${levelColor}20`)};
-        border-color: ${getColor(`${levelColor}120`)};
+        color: ${getColorForLevel(level, 140)};
+        background-color: ${getColorForLevel(level, 20)};
+        border-color: ${getColorForLevel(level, 120)};
       }
 
       &:active {
-        color: ${getColor(`${levelColor}140`)};
-        border-color: ${getColor(`${levelColor}140`)};
+        color: ${getColorForLevel(level, 140)};
+        border-color: ${getColorForLevel(level, 140)};
       }
     `;
   }
 
   return css`
     color: white;
-    background-color: ${getColor(`${levelColor}${disabled ? 40 : 100}`)};
+    background-color: ${getColorForLevel(level, disabled ? 40 : 100)};
 
     &:hover {
-      background-color: ${getColor(`${levelColor}120`)};
+      background-color: ${getColorForLevel(level, 120)};
     }
 
     &:active {
-      background-color: ${getColor(`${levelColor}140`)};
+      background-color: ${getColorForLevel(level, 140)};
     }
   `;
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
-import {AkeneoThemedProps, Level} from '../../theme';
+import {AkeneoThemedProps, getColor, getColorForLevel, getFontSize, Level} from '../../theme';
 
 const BadgeContainer = styled.span<BadgeProps & AkeneoThemedProps>`
   display: inline-block;
@@ -11,12 +11,12 @@ const BadgeContainer = styled.span<BadgeProps & AkeneoThemedProps>`
   border-radius: 2px;
   text-transform: uppercase;
   box-sizing: border-box;
-  background-color: ${({theme}: AkeneoThemedProps) => theme.color.white};
-  font-size: ${({theme}: AkeneoThemedProps) => theme.fontSize.small};
+  background-color: ${getColor('white')};
+  font-size: ${getFontSize('small')};
 
-  ${({level = 'primary', theme}: BadgeProps & AkeneoThemedProps) => css`
-    color: ${theme.color[`${theme.palette[level]}140`]};
-    border-color: ${theme.color[`${theme.palette[level]}100`]};
+  ${({level = 'primary'}: BadgeProps & AkeneoThemedProps) => css`
+    color: ${getColorForLevel(level, 140)};
+    border-color: ${getColorForLevel(level, 100)};
   `}
 `;
 
