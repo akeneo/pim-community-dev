@@ -1,6 +1,6 @@
 import React, {FormEvent} from 'react';
-import {TickIcon} from 'akeneomeasure/shared/icons/TickIcon';
 import styled, {css} from 'styled-components';
+import {TickIcon} from '../icons';
 
 const Tick = styled(TickIcon)`
   animation: uncheckTick 0.2s ease-in forwards;
@@ -12,9 +12,9 @@ const Tick = styled(TickIcon)`
 `;
 
 const Container = styled.div<{checked: boolean}>`
-  background-color: ${(props) => (props.checked ? props.theme.color.blue100 : props.theme.color.grey60)};
+  background-color: ${props => (props.checked ? props.theme.color.blue100 : props.theme.color.grey60)};
   border-radius: 2px;
-  border: 1px solid ${(props) => (props.checked ? props.theme.color.blue120 : props.theme.color.grey80)};
+  border: 1px solid ${props => (props.checked ? props.theme.color.blue120 : props.theme.color.grey80)};
   height: 18px;
   margin-right: 5px;
   outline: none;
@@ -25,14 +25,14 @@ const Container = styled.div<{checked: boolean}>`
     props.checked &&
     css`
       &:focus {
-        border: 1px solid ${(props) => props.theme.color.blue140};
+        border: 1px solid ${props => props.theme.color.blue140};
       }
       ${Tick} {
-          animation-delay: .2s;
-          animation: checkTick .2s ease-out forwards;
-          stroke-dashoffset: 17px;
-          opacity: 1;
-          transition-delay: 0s;
+        animation-delay: 0.2s;
+        animation: checkTick 0.2s ease-out forwards;
+        stroke-dashoffset: 17px;
+        opacity: 1;
+        transition-delay: 0s;
       }
     `}
 `;
@@ -46,26 +46,26 @@ const Checkbox = ({
   onChange,
   id = '',
   readOnly = false,
+  className = '',
 }: {
   value: boolean;
   id?: string;
   onChange?: (value: boolean) => void;
   readOnly?: boolean;
+  className?: string;
 }) => {
   if (undefined === onChange && false === readOnly) {
     throw new Error(`A Checkbox element expect a onChange attribute if not readOnly`);
   }
 
   return (
-    <Container
-      checked={value}
-      className={`${readOnly ? 'AknCheckbox--disabled' : ''}`}
-    >
+    <Container checked={value} className={`${readOnly ? 'AknCheckbox--disabled' : ''} ${className}`}>
       <Tick />
       <HiddenInput
+        checked={value}
         type="checkbox"
         id={id}
-        value={value ? 'true' : 'false'}
+        value={value.toString()}
         onChange={(e: FormEvent<HTMLInputElement>) => onChange && !readOnly && onChange(e.currentTarget.checked)}
         readOnly={readOnly}
       />

@@ -37,7 +37,7 @@ class UnknownProductExceptionSpec extends ObjectBehavior
 
     function it_returns_an_exception_message()
     {
-        $this->getMessage()->shouldReturn('The product_identifier product does not exist in your PIM.');
+        $this->getMessage()->shouldReturn('The product_identifier product does not exist in your PIM or you do not have permission to access it.');
     }
 
     function it_returns_a_message_template_and_parameters()
@@ -45,6 +45,6 @@ class UnknownProductExceptionSpec extends ObjectBehavior
         $templatedErrorMessage = $this->getTemplatedErrorMessage();
         $templatedErrorMessage->shouldBeAnInstanceOf(TemplatedErrorMessage::class);
         $templatedErrorMessage->__toString()
-            ->shouldReturn('The product_identifier product does not exist in your PIM.');
+            ->shouldReturn('The product_identifier product does not exist in your PIM or you do not have permission to access it.');
     }
 }

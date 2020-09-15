@@ -80,8 +80,14 @@ services:
         class: Akeneo\Connectivity\Connection\Application\ErrorManagement\Command\UpdateConnectionErrorCountHandler
         arguments:
             - '@akeneo_connectivity.connection.persistence.repository.error_count'
+            -
 
     akeneo_connectivity.connection.application.webhook.handler.check_webhook_url_accessibility:
         class: Akeneo\Connectivity\Connection\Application\Webhook\Command\CheckWebhookAccessibilityHandler
         arguments:
             - '@akeneo_webhook.http_client'
+
+    akeneo_connectivity.connection.application.webhook.handler.get_connection_webhook:
+        class: Akeneo\Connectivity\Connection\Application\Webhook\Query\GetAConnectionWebhookHandler
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.query.get_connection_webhook'

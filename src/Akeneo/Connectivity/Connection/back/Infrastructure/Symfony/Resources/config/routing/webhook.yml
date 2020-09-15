@@ -1,0 +1,6 @@
+get:
+  path: '/{code}/webhook'
+  defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.webhook:get }
+  methods: [GET]
+  requirements:
+    code: '[a-zA-Z0-9_]+'
