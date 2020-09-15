@@ -16,6 +16,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
@@ -31,10 +32,16 @@ class ConnectorReferenceEntityHydrator
     /** @var AbstractPlatform */
     private $platform;
 
+    /** @var FindActivatedLocalesInterface  */
+    private $findActivatedLocales;
+
+    // @todo merge master: make $findActivatedLocales mandatory
     public function __construct(
-        Connection $connection
+        Connection $connection,
+        FindActivatedLocalesInterface $findActivatedLocales = null
     ) {
         $this->platform = $connection->getDatabasePlatform();
+        $this->findActivatedLocales = $findActivatedLocales;
     }
 
     public function hydrate(array $row): ConnectorReferenceEntity
@@ -57,6 +64,12 @@ class ConnectorReferenceEntityHydrator
             $image = Image::fromFileInfo($file);
         }
 
+        // @todo merge master: remove null check
+        if (null !== $this->findActivatedLocales) {
+            $activatedLocales = $this->findActivatedLocales->findAll();
+            $labels = $this->getLabelsByActivatedLocales($labels, $activatedLocales);
+        }
+
         $connectorReferenceEntity = new ConnectorReferenceEntity(
             ReferenceEntityIdentifier::fromString($identifier),
             LabelCollection::fromArray($labels),
@@ -64,5 +77,17 @@ class ConnectorReferenceEntityHydrator
         );
 
         return $connectorReferenceEntity;
+    }
+
+    private function getLabelsByActivatedLocales(array $labels, array $activatedLocales): array
+    {
+        $filteredLabels = [];
+        foreach ($labels as $localeCode => $label) {
+            if (in_array($localeCode, $activatedLocales)) {
+                $filteredLabels[$localeCode] = $label;
+            }
+        }
+
+        return $filteredLabels;
     }
 }

@@ -336,6 +336,7 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\Hydrator\ConnectorReferenceEntityHydrator
         arguments:
             - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales'
 
     akeneo_referenceentity.infrastructure.persistence.record_item.hydrator.record_value:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordItem\RecordValueHydrator
