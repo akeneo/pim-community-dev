@@ -4,6 +4,7 @@
 
 - AOB-1023: Fix duplicated assets menu in PEF
 - PIM-9445: Fix boolean attribute is broken on compare/translate when the attribute is localisable or scopable
+- PIM-9439: Fix PEF shakes on product with lot of simple/multi select
 
 # 4.0.56 (2020-09-09)
 
