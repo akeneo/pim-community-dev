@@ -7,7 +7,7 @@ pim_title:
   pim_user_create: 'Usuarios | Crear'
   pim_user_role_update: 'Rol {{ role }} | Editar'
   pim_user_role_create: 'Rol | Crear'
-  pim_user_security_login: Ingresar
+  pim_user_security_login: Iniciar sesión
   pim_user_reset_reset: Reiniciar contraseña
   pim_user_reset_request: Contraseña olvidada
   pim_user_reset_check_email: Reiniciar contraseña | Verificar correo electrónico
@@ -15,8 +15,8 @@ pim_title:
   pim_user_group_update: 'Grupo {{ group }} | Editar'
 confirmation:
   remove:
-    user: '¿Seguro que desea eliminar este usuario?'
-    group: '¿Está seguro que desea eliminar este grupo?'
+    user: '¿Seguro que quiere eliminar este usuario?'
+    group: '¿Está seguro que quiere eliminar este grupo?'
 pim_enrich:
   entity:
     user:
@@ -26,7 +26,7 @@ pim_enrich:
           success: El usuario ha sido eliminado
       module:
         delete:
-          confirm: '¿Seguro que desea eliminar este usuario?'
+          confirm: '¿Seguro que quiere eliminar este usuario?'
 pim_user_management:
   entity:
     user:
@@ -43,31 +43,31 @@ pim_user_management:
       properties:
         username: Nombre de usuario
         name_prefix: Prefijo del nombre
-        first_name: Primer nombre
+        first_name: Nombre
         middle_name: Segundo nombre
-        last_name: Apellidos
+        last_name: Apellido
         name_suffix: Sufijo del nombre
         phone: Teléfono
         avatar: Avatar
-        email: Correo Electrónico
+        email: Correo Electronico
         catalog_locale: Local de catálogo
         catalog_scope: Ambito del Catálogo
-        default_tree: Árbol por defecto
-        default_asset_tree: Árbol por defecto de recursos
-        product_grid_filters: Filtros de grilla de productos
+        default_tree: Arbol por defecto
+        default_asset_tree: Árbol por defecto de recurso
+        product_grid_filters: Filtros de grilla de los productos
         current_password: Contraseña actual
         new_password: Nueva contraseña
-        new_password_repeat: Nueva contraseña (repetir)
+        new_password_repeat: Nueva contraseña (nuevamente)
         password: Contraseña
         password_repeat: Contraseña (repetir)
         last_logged_in: Último registro de ingreso
         login_count: Conteo de inicios de sesión
-        ui_locale: Idioma de la interfaz
+        ui_locale: Configuración regional de la interfaz
         timezone: Zona horaria
-        default_product_grid_view: Vista de cuadrícula de producto automática
-        default_published_product_grid_view: Vista por defecto de cuadrícula de productos publicados #EE Only
+        default_product_grid_view: Vista de grilla de producto por defecto
+        default_published_product_grid_view: Vista por defecto de grilla de productos publicados #EE Only
         proposals_to_review_notification: Si hay nuevas propuestas a revisar #EE Only
-        proposals_state_notifications: Cuando una nueva propuesta es aceptada o rachazada #EE Only
+        proposals_state_notifications: Cuando hay nueva propuesta es aceptada o rechazada #EE Only
       meta:
         created: Creado
         updated: actualizado
@@ -75,7 +75,7 @@ pim_user_management:
         create:
           button: Crear usuario
         delete:
-          confirm: '¿Seguro que desea eliminar este usuario?'
+          confirm: '¿Seguro que quiere eliminar este usuario?'
         update:
           additional: Adicional
           groups_and_roles: Grupos y roles
@@ -90,7 +90,7 @@ pim_user_management:
         create:
           button: Crear rol
         delete:
-          confirm: '¿Está seguro que desea eliminar este rol?'
+          confirm: '¿Está seguro que quiere eliminar este rol?'
     group:
       plural_label: Grupos de Usuario
       page_title:

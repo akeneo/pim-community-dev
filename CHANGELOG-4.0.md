@@ -1,5 +1,21 @@
 # 4.0.x
 
+# 4.0.57 (2020-09-15)
+
+## Bug fixes
+
+- AOB-1023: Fix duplicated assets menu in PEF
+- PIM-9445: Fix boolean attribute is broken on compare/translate when the attribute is localisable or scopable
+- PIM-9439: Fix PEF shakes on product with lot of simple/multi select
+
+# 4.0.56 (2020-09-09)
+
+## Bug fixes
+
+- PIM-9430: [Backport PIM-9110] Avoid deadlock error when loading product and product models in parallel with the API
+
+# 4.0.55 (2020-09-03)
+
 # 4.0.54 (2020-08-28)
 
 ## Improvement
