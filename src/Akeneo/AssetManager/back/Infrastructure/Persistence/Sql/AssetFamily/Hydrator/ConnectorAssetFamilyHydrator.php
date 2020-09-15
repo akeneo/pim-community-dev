@@ -46,13 +46,12 @@ class ConnectorAssetFamilyHydrator
     /** @var FindActivatedLocalesInterface  */
     private $findActivatedLocales;
 
-    // @todo merge master: make $findActivatedLocales mandatory
     public function __construct(
         Connection $connection,
         ConnectorProductLinkRulesHydrator $productLinkRulesHydrator,
         ConnectorTransformationCollectionHydrator $transformationCollectionHydrator,
         ConnectorNamingConventionHydrator $namingConventionHydrator,
-        FindActivatedLocalesInterface $findActivatedLocales = null
+        FindActivatedLocalesInterface $findActivatedLocales
     ) {
         $this->platform = $connection->getDatabasePlatform();
         $this->productLinkRulesHydrator = $productLinkRulesHydrator;
@@ -89,11 +88,8 @@ class ConnectorAssetFamilyHydrator
             $image = Image::fromFileInfo($file);
         }
 
-        // @todo merge master: remove null check
-        if (null !== $this->findActivatedLocales) {
-            $activatedLocales = $this->findActivatedLocales->findAll();
-            $labels = $this->getLabelsByActivatedLocales($labels, $activatedLocales);
-        }
+        $activatedLocales = $this->findActivatedLocales->findAll();
+        $labels = $this->getLabelsByActivatedLocales($labels, $activatedLocales);
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($identifier);
         $productLinkRules = $this->productLinkRulesHydrator->hydrate($ruleTemplates);

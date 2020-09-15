@@ -35,10 +35,9 @@ class ConnectorReferenceEntityHydrator
     /** @var FindActivatedLocalesInterface  */
     private $findActivatedLocales;
 
-    // @todo merge master: make $findActivatedLocales mandatory
     public function __construct(
         Connection $connection,
-        FindActivatedLocalesInterface $findActivatedLocales = null
+        FindActivatedLocalesInterface $findActivatedLocales
     ) {
         $this->platform = $connection->getDatabasePlatform();
         $this->findActivatedLocales = $findActivatedLocales;
@@ -64,19 +63,14 @@ class ConnectorReferenceEntityHydrator
             $image = Image::fromFileInfo($file);
         }
 
-        // @todo merge master: remove null check
-        if (null !== $this->findActivatedLocales) {
-            $activatedLocales = $this->findActivatedLocales->findAll();
-            $labels = $this->getLabelsByActivatedLocales($labels, $activatedLocales);
-        }
+        $activatedLocales = $this->findActivatedLocales->findAll();
+        $labels = $this->getLabelsByActivatedLocales($labels, $activatedLocales);
 
-        $connectorReferenceEntity = new ConnectorReferenceEntity(
+        return new ConnectorReferenceEntity(
             ReferenceEntityIdentifier::fromString($identifier),
             LabelCollection::fromArray($labels),
             $image
         );
-
-        return $connectorReferenceEntity;
     }
 
     private function getLabelsByActivatedLocales(array $labels, array $activatedLocales): array
