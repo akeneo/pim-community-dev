@@ -33,7 +33,10 @@ describe('Visual tests', () => {
 
       const image = await root.screenshot();
 
-      expect(image).toMatchImageSnapshot();
+      expect(image).toMatchImageSnapshot({
+        failureThreshold: 0.1,
+        failureThresholdType: 'percent',
+      });
     });
   });
 });
