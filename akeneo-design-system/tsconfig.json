@@ -25,7 +25,14 @@
     "strictPropertyInitialization": true,
     "suppressImplicitAnyIndexErrors": true,
     "target": "es6",
-    "baseUrl": ".",
-    "types": ["puppeteer", "jest-environment-puppeteer", "expect-puppeteer"]
+    "baseUrl": "./src",
+    "types": [
+      "puppeteer",
+      "jest-environment-puppeteer",
+      "expect-puppeteer",
+      "node",
+      "jest",
+      "@testing-library/jest-dom"
+    ]
   }
 }

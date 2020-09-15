@@ -1,4 +1,4 @@
-import {Theme, Color} from '../theme';
+import {Theme, Color, FontSize} from '../theme';
 
 const color: Color = {
   blue10: '#f5f9fc',
@@ -47,8 +47,24 @@ const color: Color = {
   yellow80: '#fac365',
 };
 
+const fontSize: FontSize = {
+  big: '15px',
+  bigger: '17px',
+  default: '13px',
+  small: '11px',
+  title: '28px',
+};
+
 const pimTheme: Theme = {
   color,
+  palette: {
+    primary: 'green',
+    secondary: 'blue',
+    tertiary: 'grey',
+    warning: 'yellow',
+    danger: 'red',
+  },
+  fontSize,
 };
 
 export {pimTheme};

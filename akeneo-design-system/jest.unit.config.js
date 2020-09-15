@@ -1,6 +1,5 @@
 module.exports = {
   clearMocks: true,
-  coverageDirectory: 'coverage',
   moduleFileExtensions: [
       'js',
       'ts',
@@ -11,5 +10,16 @@ module.exports = {
   testMatch: ['**/?(*.)+(unit).ts?(x)'],
   testPathIgnorePatterns: ['/node_modules/'],
   transform: {'^.+\\.tsx?$': 'ts-jest', '^.+\\.mdx$': '@storybook/addon-docs/jest-transform-mdx'},
-  transformIgnorePatterns: ['/node_modules/']
+  transformIgnorePatterns: ['/node_modules/'],
+  collectCoverage: true,
+  coveragePathIgnorePatterns: ['src/icons'],
+  coverageReporters: ['text-summary', 'html'],
+  coverageDirectory: 'coverage',
+  coverageThreshold: {
+    'global': {
+      statements: 100,
+      functions: 100,
+      lines: 100,
+    }
+  },
 };
