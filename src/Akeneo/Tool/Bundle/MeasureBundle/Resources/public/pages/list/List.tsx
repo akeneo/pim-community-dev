@@ -20,7 +20,6 @@ import {TablePlaceholder} from 'akeneomeasure/pages/common/Table';
 import {Direction} from 'akeneomeasure/model/direction';
 import {Button, SearchBar, NoDataSection, NoDataTitle, NoDataText} from '@akeneo-pim-community/shared';
 import {useTranslate, useUserContext, useSecurity, PimView} from '@akeneo-pim-community/legacy-bridge';
-import {Dummy} from 'akeneo-design-system';
 
 const useSorting = (
   defaultColumn: string
@@ -108,7 +107,6 @@ const List = () => {
       </PageHeader>
 
       <PageContent>
-        <Dummy size={40} onClick={() => console.log('coucou')}></Dummy>
         <Helper>
           <MeasurementFamilyIllustration size={80} />
           <HelperTitle>
