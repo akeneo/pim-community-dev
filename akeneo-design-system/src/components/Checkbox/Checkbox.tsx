@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, {css, keyframes} from 'styled-components';
-import {AkeneoThemedProps, getColor} from '../../theme';
-import {CheckIcon, PartialCheckIcon} from '../../icons';
+import {AkeneoThemedProps, getColor} from 'theme';
+import {CheckIcon, PartialCheckIcon} from 'icons';
 
 const checkTick = keyframes`
   to {

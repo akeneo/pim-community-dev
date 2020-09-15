@@ -1,8 +1,8 @@
 import React, {ReactNode, Ref} from 'react';
 import styled, {css} from 'styled-components';
-import {AkeneoThemedProps, getColorForLevel, getFontSize, Level} from '../../theme';
-import {Key} from '../../shared/key';
-import {useShortcut} from '../../hooks/use-shortcut';
+import {AkeneoThemedProps, getColorForLevel, getFontSize, Level} from 'theme';
+import {Key} from 'shared/key';
+import {useShortcut} from 'hooks/use-shortcut';
 
 type ButtonSize = 'small' | 'default';
 
