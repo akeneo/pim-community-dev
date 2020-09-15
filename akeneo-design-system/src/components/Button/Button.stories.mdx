@@ -8,7 +8,7 @@ import { Container } from 'storybook/container';
   title="Components/Button"
   component={Button}
   argTypes={{
-    level: {type: {control: {type: 'select', options: ['primary', 'secondary', 'tertiary', 'danger']}}},
+    level: {type: {control: {type: 'select', options: ['primary', 'secondary', 'tertiary', 'warning', 'danger']}}},
     ghost: {control: {type: 'boolean'}},
     disabled: {control: {type: 'boolean'}},
     size: {type: {control: {type: 'select', options: ['default', 'small']}}},
@@ -60,6 +60,7 @@ Use this playground to test the button component
                   <Button {...args} level="primary">Primary</Button>
                   <Button {...args} level="secondary">Secondary</Button>
                   <Button {...args} level="tertiary">Tertiary</Button>
+                  <Button {...args} level="warning">Warning</Button>
                   <Button {...args} level="danger">Danger</Button>
               </Container>
           )

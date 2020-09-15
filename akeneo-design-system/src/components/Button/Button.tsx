@@ -1,35 +1,32 @@
 import React, {ReactNode, Ref} from 'react';
 import styled, {css} from 'styled-components';
-import {AkeneoThemedProps, getColor, getFontSize, Level} from 'theme';
-import {Key} from 'shared/key';
-import {useShortcut} from 'hooks/use-shortcut';
+import {AkeneoThemedProps, getColor, getFontSize, Level} from '../../theme';
+import {Key} from '../../shared/key';
+import {useShortcut} from '../../hooks/use-shortcut';
 
-enum ButtonSize {
-  Small = 'small',
-  Default = 'default',
-}
+type ButtonSize = 'small' | 'default';
 
 type ButtonProps = {
   /**
    * Level of the button defining it's color and outline.
    * Possible values are: primary, secondary, tertiary, danger and ghost
    */
-  level: Level;
+  level?: Level;
 
   /**
    * When an action does not require primary dominance on the page.
    */
-  ghost: boolean;
+  ghost?: boolean;
 
   /**
    * Use when the user cannot proceed or until an input is collected.
    */
-  disabled: boolean;
+  disabled?: boolean;
 
   /**
    * Define the size of a button
    */
-  size: ButtonSize;
+  size?: ButtonSize;
 
   /**
    * Function called when the user clicks on the button or hit enter when focused
@@ -107,9 +104,9 @@ const Container = styled.button<
   font-size: ${getFontSize('default')};
   font-weight: 400;
   text-transform: uppercase;
-  padding: ${props => (props.size === ButtonSize.Small ? '0 10px' : '0 15px')};
+  padding: ${props => (props.size === 'small' ? '0 10px' : '0 15px')};
   border-radius: 16px;
-  height: ${props => (props.size === ButtonSize.Small ? '24px' : '32px')};
+  height: ${props => (props.size === 'small' ? '24px' : '32px')};
 
   ${getColorStyle}
 
@@ -126,7 +123,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       level = 'primary',
       ghost = false,
       disabled = false,
-      size = ButtonSize.Default,
+      size = 'default',
       ariaDescribedBy,
       ariaLabel,
       ariaLabelledBy,
@@ -137,7 +134,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     }: ButtonProps,
     forwardedRef: Ref<HTMLButtonElement>
   ) => {
-    useShortcut(Key.Enter, onClick);
+    useShortcut(Key.Enter, disabled ? () => null : onClick);
 
     return (
       <Container
@@ -152,6 +149,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={forwardedRef}
         role="button"
         type={type}
+        onClick={disabled ? null : onClick}
         {...rest}
       >
         {children}
@@ -160,4 +158,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   }
 );
 
-export {Button, ButtonSize};
+export {Button};
