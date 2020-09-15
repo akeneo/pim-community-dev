@@ -41,7 +41,7 @@ final class CheckWebhookAccessibilityHandler
 
         $checkResponse = [
             'success' => 'false',
-            'message' => 'Failed to connect to server'
+            'message' => 'Failed to connect to server',
         ];
 
         try {
