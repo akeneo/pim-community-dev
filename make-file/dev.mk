@@ -53,3 +53,4 @@ xdebug-off:
 database-test:
 	docker cp ./docker/create_db_test.sh $(shell docker-compose ps -q "mysql"):/docker-entrypoint-initdb.d/create_db_test.sh
 	docker-compose exec mysql sh -c "/bin/sh /docker-entrypoint-initdb.d/create_db_test.sh"
+	APP_ENV=test $(MAKE) database
