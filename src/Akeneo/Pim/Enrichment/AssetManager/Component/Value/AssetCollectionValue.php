@@ -42,11 +42,29 @@ class AssetCollectionValue extends AbstractValue implements AssetCollectionValue
     /**
      * {@inheritdoc}
      */
-    public function isEqual(ValueInterface $value): bool
+    public function isEqual(ValueInterface $other): bool
     {
-        return $this->getData() === $value->getData() &&
-            $this->scopeCode === $value->getScopeCode() &&
-            $this->localeCode === $value->getLocaleCode();
+        if ($this->scopeCode !== $other->getScopeCode()
+            || $this->localeCode !== $other->getLocaleCode()
+        ) {
+            return false;
+        }
+
+        if (count($this->getData()) !== count($other->getData())) {
+            return false;
+        }
+
+        foreach ($this->getData() as $assetCode) {
+            foreach ($other->getData() as $otherAssetCode) {
+                if ($assetCode->equals($otherAssetCode)) {
+                    continue 2;
+                }
+            }
+
+            return false;
+        }
+
+        return true;
     }
 
     /**

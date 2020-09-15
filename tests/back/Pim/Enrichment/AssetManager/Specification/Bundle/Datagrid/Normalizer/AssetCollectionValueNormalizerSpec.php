@@ -22,6 +22,8 @@ use Akeneo\AssetManager\Domain\Query\Asset\AssetDetails;
 use Akeneo\AssetManager\Domain\Query\Asset\FindAssetDetailsInterface;
 use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetCollectionValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
