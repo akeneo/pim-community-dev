@@ -20,8 +20,8 @@
     "storybook:ci": "start-storybook -p 6006 --ci",
     "storybook:build": "build-storybook",
     "storybook:extract": "yarn storybook:build && sb extract storybook-static stories.json",
-    "lib:build:prod": "yarn prebuild && export NODE_ENV=production && rollup -c",
-    "lib:build:watch": "yarn prebuild-watch && export NODE_ENV=dev && rollup --watch -c",
+    "lib:build:prod": "export NODE_ENV=production && yarn prebuild && rollup -c",
+    "lib:build:watch": "export NODE_ENV=dev && yarn prebuild-watch && rollup --watch -c",
     "lib:build:analyze": "yarn build:prod --config-analyze"
   },
   "author": "akeneo",
