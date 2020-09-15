@@ -78,6 +78,28 @@ const Select2Wrapper: typeof BaseWrapper = ({
     }
   };
 
+  const getSelect2ValueFromOptions = (
+    options: Select2Option[],
+    value: number | string | null
+  ): Select2Option | undefined => {
+    return options.find(option => option.id === value);
+  };
+
+  const getSelect2Value = (value: any) => {
+    if (options.length && options[0].hasOwnProperty('children')) {
+      const optionGroup:
+        | Select2OptionGroup
+        | undefined = (options as Select2OptionGroup[]).find(optionGroup => {
+        return getSelect2ValueFromOptions(optionGroup.children, value);
+      });
+      return optionGroup
+        ? getSelect2ValueFromOptions(optionGroup.children, value)
+        : undefined;
+    } else {
+      return getSelect2ValueFromOptions(options as Select2Option[], value);
+    }
+  };
+
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     if (onChange) {
       onChange(event.target.value);
@@ -86,6 +108,7 @@ const Select2Wrapper: typeof BaseWrapper = ({
       onSelecting({
         preventDefault: event.preventDefault.bind(event),
         val: event.target.value,
+        object: getSelect2Value(event.target.value),
       });
     }
   };

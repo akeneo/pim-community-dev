@@ -5,6 +5,8 @@ type Select2Option = {
   id: number | string | null;
   text: string;
   disabled?: boolean;
+} & {
+  [customKey: string]: any;
 };
 
 type Select2OptionGroup = {
@@ -60,6 +62,7 @@ type Select2GlobalProps = {
   hideSearch?: boolean;
   closeTick?: boolean;
   disabled?: boolean;
+  matcher?: (term: any, text: string) => boolean;
 };
 
 type Props = Select2GlobalProps & {
@@ -86,6 +89,7 @@ const Select2Wrapper: React.FC<Props> = ({
   onSelecting,
   value,
   onChange,
+  matcher,
   closeTick = false,
   hideSearch = false,
   allowClear = false,
@@ -118,6 +122,7 @@ const Select2Wrapper: React.FC<Props> = ({
         dropdownCssClass,
         hideSearch,
         allowClear,
+        matcher,
       };
       if (hideSearch) {
         options.minimumResultsForSearch = Infinity;

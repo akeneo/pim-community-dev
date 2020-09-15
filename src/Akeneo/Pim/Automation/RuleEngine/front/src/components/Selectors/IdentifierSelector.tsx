@@ -2,12 +2,12 @@ import React from 'react';
 import {
   InitSelectionCallback,
   Select2Ajax,
-  Select2MultiAsyncWrapper,
   Select2Option,
+  Select2SimpleAsyncWrapper,
   Select2Value,
 } from '../Select2Wrapper';
 import { useBackboneRouter, useTranslate } from '../../dependenciesTools/hooks';
-import { ProductModelCode, ProductIdentifier } from '../../models';
+import { ProductIdentifier, ProductModelCode } from '../../models';
 
 type Identifier = ProductIdentifier | ProductModelCode;
 
@@ -15,11 +15,14 @@ type Props = {
   label?: string;
   hiddenLabel?: boolean;
   entityType?: 'product' | 'product_model';
-  value: Identifier[];
-  onChange?: (value: Identifier[]) => void;
-  validation?: { required?: string; validate?: (value: any) => string | true };
-  name: string;
+  value: Identifier;
+  onChange?: (value: Identifier) => void;
+  name?: string;
   id: string;
+  closeTick?: boolean;
+  allowClear?: boolean;
+  placeholder?: string;
+  onSelecting?: (event: any) => void;
 };
 
 const dataProvider = (term: string, page: number, type?: string) => {
@@ -45,17 +48,10 @@ const handleResults = (json: Select2Results) => {
 };
 
 const initSelectedIdentifiers = (
-  selectedIdentifiers: Identifier[],
+  selectedIdentifier: Identifier,
   callback: InitSelectionCallback
 ): void => {
-  callback(
-    selectedIdentifiers.map(identifier => {
-      return {
-        id: identifier,
-        text: identifier,
-      };
-    })
-  );
+  callback({ id: selectedIdentifier, text: selectedIdentifier });
 };
 
 const IdentifiersSelector: React.FC<Props> = ({
@@ -63,17 +59,15 @@ const IdentifiersSelector: React.FC<Props> = ({
   hiddenLabel = false,
   value,
   onChange,
-  validation,
-  name,
   id,
   entityType,
   ...remainingProps
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
-  const handleChange = (value: Select2Value[]) => {
+  const handleChange = (value: Select2Value) => {
     if (onChange) {
-      onChange(value as Identifier[]);
+      onChange(value as Identifier);
     }
   };
 
@@ -91,9 +85,8 @@ const IdentifiersSelector: React.FC<Props> = ({
   }, [router]);
 
   return (
-    <Select2MultiAsyncWrapper
+    <Select2SimpleAsyncWrapper
       {...remainingProps}
-      name={name}
       label={label || translate('pim_common.identifier')}
       data-testid={id}
       hiddenLabel={hiddenLabel}
@@ -103,9 +96,8 @@ const IdentifiersSelector: React.FC<Props> = ({
       initSelection={(_element, callback) =>
         initSelectedIdentifiers(value, callback)
       }
-      validation={validation}
     />
   );
 };
 
-export { Identifier, IdentifiersSelector };
+export { IdentifiersSelector };

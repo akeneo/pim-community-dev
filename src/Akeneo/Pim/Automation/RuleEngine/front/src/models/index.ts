@@ -1,4 +1,6 @@
 export * from './conditions';
+export * from './Association';
+export * from './AssociationType';
 export * from './Locale';
 export * from './RuleDefinition';
 export * from './Scope';
@@ -8,3 +10,5 @@ export * from './Category';
 export * from './Attribute';
 export * from './Group';
 export * from './MeasurementFamily';
+export * from './Product';
+export * from './ProductModel';

@@ -18,3 +18,11 @@ export const SelectorBlock = styled.div`
 export const ErrorBlock = styled.div`
   margin-top: 5px;
 `;
+
+export const EmptySourceHelper = styled.div`
+  background-image: url('/bundles/pimui/images/icon-info.svg');
+  background-repeat: no-repeat;
+  padding-left: 28px;
+  height: 21px;
+  line-height: 21px;
+`;

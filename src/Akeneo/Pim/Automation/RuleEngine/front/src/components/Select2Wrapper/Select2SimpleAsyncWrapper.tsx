@@ -10,7 +10,7 @@ type Props = Select2GlobalProps & {
   onChange?: (value: Select2Value) => void;
   value?: Select2Value;
   ajax: Select2Ajax;
-  name: string;
+  name?: string;
   validation?: {
     required?: string;
     validate?: (value: any) => string | true | Promise<string | true>;
