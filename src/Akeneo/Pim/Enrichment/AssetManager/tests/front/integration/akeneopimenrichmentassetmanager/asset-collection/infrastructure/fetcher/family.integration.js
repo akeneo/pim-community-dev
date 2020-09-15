@@ -7,7 +7,7 @@ beforeEach(async () => {
   page.on('request', interceptedRequest => {
     // Intercept the call to get the family
     if (
-      'http://pim.com/configuration/family/rest/scanners' === interceptedRequest.url() &&
+      'http://pim.com/configuration/rest/family/scanners' === interceptedRequest.url() &&
       'GET' === interceptedRequest.method()
     ) {
       const family = {
