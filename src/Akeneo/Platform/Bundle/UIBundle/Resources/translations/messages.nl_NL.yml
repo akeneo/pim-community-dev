@@ -62,6 +62,14 @@ pim_common:
   name: Naam
   remove: Verwijder
   code: Code
+  products: Producten
+  product_models: Productmodels
+  categories: Categorieën
+  enabled: Ingeschakeld
+  family: Familie
+  groups: Groepen
+  yes: "Ja"
+  no: "Nee"
 pim_enrich:
   #ACLs
   acl:

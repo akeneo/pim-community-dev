@@ -131,6 +131,12 @@ pim_import_export:
             help: Signifie que l'historique des produits est automatiquement mis à jour, peut être désactivé pour améliorer les performances
           family_variant_column:
             title: Colonne variante de famille
+          with_label:
+            title: Avec libellés
+          header_with_label:
+            title: En-têtes avec libellés
+          file_locale:
+            title: Locale du fichier
       file_path: Chemin du fichier
   widget:
     last_operations:

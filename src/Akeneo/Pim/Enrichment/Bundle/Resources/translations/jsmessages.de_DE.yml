@@ -362,6 +362,9 @@ pim_datagrid:
       csv_grid_context: CSV (Kontextabhängig)
       xlsx_all: Excel (alle Attribute)
       xlsx_grid_context: Excel (Kontextabhängig)
+      configurator:
+        title: Wählen Sie eine Aktion aus
+        all_attributes: Alle Attribute
     mass_edit: Massenbearbeitung
     sequential_edit: Sequentielle Bearbeitung
     mass_delete: Mehrauswahl löschen

@@ -166,6 +166,7 @@ pim_common:
   done: 已完成
   edit: 编辑
   entity_updated: 有未保存的更改。
+  export: 导出
   from: 从
   general_properties: 常规属性
   history: 历史记录 

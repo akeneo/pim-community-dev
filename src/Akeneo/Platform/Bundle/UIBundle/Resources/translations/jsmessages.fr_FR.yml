@@ -166,6 +166,7 @@ pim_common:
   done: Fermer
   edit: Modifier
   entity_updated: Des modifications n'ont pas encore été sauvegardées.
+  export: Export
   from: De
   general_properties: Propriétés générales
   history: Historique
