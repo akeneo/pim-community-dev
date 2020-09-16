@@ -23,7 +23,8 @@ describe('every module is exported correctly', () => {
   const exportNames = Object.keys(Exports);
 
   [...getSubfolders(['src/components']), ...getIcons()].forEach(component => {
-    it(`Test ${component} is exported correctly. If this test failing, export ${component} component in the src/index.ts`, () =>
+    it(`Test ${component} is exported correctly.
+    If this test failing, export ${component} component in the src/index.ts`, () =>
       expect(exportNames).toContain(component));
   });
 });
