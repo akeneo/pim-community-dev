@@ -175,6 +175,10 @@ pim:
       enabled: true
       pimCommand: "pim:data-quality-insights:schedule-periodic-tasks"
       schedule: "15 0 * * *"
+    data-quality-insights-prepare-evaluations:
+      enabled: true
+      pimCommand: "pim:data-quality-insights:prepare-evaluations"
+      schedule: "*/10 * * * *"
     data-quality-insights-evaluations:
       enabled: true
       pimCommand: "pim:data-quality-insights:evaluations"

@@ -15,7 +15,7 @@ services:
     akeneo.pim.automation.data_quality_insights.create_missing_products_criteria_evaluations:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\PimEnterpriseCreateMissingCriteriaEvaluations
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpdatedProductsWithoutUpToDateEvaluationQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetUpdatedProductIdsQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductIdsWithOutdatedAttributeSpellcheckQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductIdsWithUpdatedFamilyAttributesListQuery'
             - '@akeneo.pim.automation.data_quality_insights.query.get_product_ids_with_outdated_attribute_option_spellcheck'
@@ -24,7 +24,7 @@ services:
     akeneo.pim.automation.data_quality_insights.create_missing_product_models_criteria_evaluations:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\PimEnterpriseCreateMissingCriteriaEvaluations
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpdatedProductModelsWithoutUpToDateEvaluationQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetUpdatedProductModelIdsQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelIdsWithOutdatedAttributeSpellcheckQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelIdsWithUpdatedFamilyAttributesListQuery'
             - '@akeneo.pim.automation.data_quality_insights.query.get_product_model_ids_with_outdated_attribute_option_spellcheck'

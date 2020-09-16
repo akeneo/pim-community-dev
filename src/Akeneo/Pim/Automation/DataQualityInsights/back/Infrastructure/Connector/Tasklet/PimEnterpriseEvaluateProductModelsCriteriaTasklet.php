@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Crea
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsToEvaluateQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\EvaluationsParameters;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\PrepareEvaluationsParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Psr\Log\LoggerInterface;
@@ -103,9 +103,9 @@ class PimEnterpriseEvaluateProductModelsCriteriaTasklet implements TaskletInterf
 
     private function updatedSince(): \DateTimeImmutable
     {
-        $evaluateFrom = $this->stepExecution->getJobParameters()->get(EvaluationsParameters::EVALUATE_FROM_FIELD);
+        $evaluateFrom = $this->stepExecution->getJobParameters()->get(PrepareEvaluationsParameters::UPDATED_SINCE_PARAMETER);
 
-        return \DateTimeImmutable::createFromFormat(EvaluationsParameters::EVALUATE_FROM_FORMAT, $evaluateFrom);
+        return \DateTimeImmutable::createFromFormat(PrepareEvaluationsParameters::UPDATED_SINCE_DATE_FORMAT, $evaluateFrom);
     }
 
     private function cleanCriteriaOfDeletedProductModels()
