@@ -18,21 +18,21 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderIn
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use Symfony\Component\Validator\Constraints;
 
-final class EvaluationsParameters implements ConstraintCollectionProviderInterface, DefaultValuesProviderInterface
+final class PrepareEvaluationsParameters implements ConstraintCollectionProviderInterface, DefaultValuesProviderInterface
 {
-    public const EVALUATE_FROM_FIELD = 'evaluate_from';
-    public const EVALUATE_FROM_FORMAT = 'Y-m-d H:i:s';
-    public const EVALUATE_FROM_DEFAULT_TIME = '-1 DAY';
+    public const UPDATED_SINCE_PARAMETER = 'updated_since';
+    public const UPDATED_SINCE_DATE_FORMAT = 'Y-m-d H:i:s';
+    public const UPDATED_SINCE_DEFAULT_TIME = '-1 DAY';
 
     public function getConstraintCollection(): Constraints\Collection
     {
         $dateConstraint = new Constraints\DateTime();
-        $dateConstraint->format = self::EVALUATE_FROM_FORMAT;
+        $dateConstraint->format = self::UPDATED_SINCE_DATE_FORMAT;
 
         return new Constraints\Collection(
             [
                 'fields' => [
-                    self::EVALUATE_FROM_FIELD => $dateConstraint,
+                    self::UPDATED_SINCE_PARAMETER => $dateConstraint,
                 ],
             ]
         );
@@ -41,12 +41,12 @@ final class EvaluationsParameters implements ConstraintCollectionProviderInterfa
     public function getDefaultValues(): array
     {
         return [
-            self::EVALUATE_FROM_FIELD => (new \DateTime(self::EVALUATE_FROM_DEFAULT_TIME))->format(self::EVALUATE_FROM_FORMAT),
+            self::UPDATED_SINCE_PARAMETER => (new \DateTime(self::UPDATED_SINCE_DEFAULT_TIME))->format(self::UPDATED_SINCE_DATE_FORMAT),
         ];
     }
 
     public function supports(JobInterface $job)
     {
-        return $job->getName() === 'data_quality_insights_evaluations';
+        return $job->getName() === 'data_quality_insights_prepare_evaluations';
     }
 }

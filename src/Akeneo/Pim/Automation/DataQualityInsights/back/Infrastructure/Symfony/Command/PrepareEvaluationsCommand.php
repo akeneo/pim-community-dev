@@ -15,14 +15,14 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Comma
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\AnotherJobStillRunningException;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\RunUniqueProcessJob;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\EvaluationsParameters;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\PrepareEvaluationsParameters;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class LaunchEvaluationsCommand extends Command
+class PrepareEvaluationsCommand extends Command
 {
     /** @var FeatureFlag */
     private $featureFlag;
@@ -36,27 +36,34 @@ class LaunchEvaluationsCommand extends Command
     ) {
         parent::__construct();
 
-        $this->featureFlag = $featureFlag;
         $this->runUniqueProcessJob = $runUniqueProcessJob;
+        $this->featureFlag = $featureFlag;
     }
 
     protected function configure()
     {
         $this
-            ->setName('pim:data-quality-insights:evaluations')
-            ->setDescription('Launch the evaluations of products and structure');
+            ->setName('pim:data-quality-insights:prepare-evaluations')
+            ->setDescription('Prepare the evaluations of products and structure');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if (! $this->featureFlag->isEnabled()) {
-            $output->writeln('<info>Data Quality Insights feature is disabled</info>');
+            $output->writeln('Data Quality Insights feature is disabled');
             return;
         }
 
         try {
-            $this->runUniqueProcessJob->run('data_quality_insights_evaluations', function (?JobExecution $lastJobExecution) {
-                return [];
+            $this->runUniqueProcessJob->run('data_quality_insights_prepare_evaluations', function (?JobExecution $lastJobExecution) {
+                $defaultFrom = new \DateTime(PrepareEvaluationsParameters::UPDATED_SINCE_DEFAULT_TIME);
+
+                $from = $defaultFrom;
+                if (null !== $lastJobExecution) {
+                    $from = max($lastJobExecution->getStartTime(), $defaultFrom);
+                }
+
+                return [PrepareEvaluationsParameters::UPDATED_SINCE_PARAMETER => $from->format(PrepareEvaluationsParameters::UPDATED_SINCE_DATE_FORMAT)];
             });
         } catch (AnotherJobStillRunningException $e) {
             exit(0);

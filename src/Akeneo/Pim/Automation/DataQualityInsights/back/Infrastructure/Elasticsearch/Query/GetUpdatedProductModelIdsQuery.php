@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductIdsQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
@@ -87,13 +88,15 @@ class GetUpdatedProductModelIdsQuery implements GetUpdatedProductIdsQueryInterfa
         return $this->esClient->search($query);
     }
 
-    private function formatProductModelId(array $productData): int
+    private function formatProductModelId(array $productData): ProductId
     {
         if (!isset($productData['_source']['id'])) {
             throw new \Exception('No id not found in source when searching updated product models');
         }
 
-        return intval(str_replace('product_model_', '', $productData['_source']['id']));
+        $productModelId = intval(str_replace('product_model_', '', $productData['_source']['id']));
+
+        return new ProductId($productModelId);
     }
 
     private function countUpdatedProductModels(array $query): int
