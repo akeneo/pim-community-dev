@@ -67,46 +67,31 @@ import * as Components from 'components';
     margin-bottom: 2px;
   }
 
-  .link-item img {
-    height: 40px;
-    width: 40px;
-    margin-right: 15px;
-    flex: none;
-  }
-
   .link-item span {
     font-size: 14px;
     line-height: 20px;
   }
 
-  .link-item .link-icon {
+  .link-item span.link-icon {
     margin-right: 10px;
     font-size: 40px;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    background-size: auto 20px;
+    background-repeat: no-repeat;
+    background-position: left center;
   }
 
-  .tip {
-    display: inline-block;
-    border-radius: 1em;
-    font-size: 11px;
-    line-height: 12px;
-    font-weight: 700;
-    background: #E7FDD8;
-    color: #66BF3C;
-    padding: 4px 12px;
+  .link-item div.link-icon {
     margin-right: 10px;
-    vertical-align: top;
-  }
-
-  .tip-wrapper {
-    font-size: 13px;
-    line-height: 20px;
-    margin-top: 40px;
-    margin-bottom: 40px;
-  }
-
-  .tip-wrapper code {
-    font-size: 12px;
-    display: inline-block;
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    line-height: 40px;
+    background-size: auto 30px;
+    background-repeat: no-repeat;
+    background-position: left center;
   }
 
 `}</style>
@@ -156,11 +141,10 @@ We recommend building UIs with a [**component-driven**](https://componentdriven.
 <div class="link-list">
   {Object.keys(Components).map(componentName => (
     <a key={componentName} class="link-item" onClick={linkTo(`Components/${componentName}`, 'Standard')}>
-      <span class="link-icon">
-        <img
-          src={`./all-visual-tsx-visual-tests-renders-components-${componentName.toLowerCase()}-standard-correctly-1-snap.png`}
-        />
-      </span>
+      <div
+        class="link-icon"
+        style={{backgroundImage: `url("./all-visual-tsx-visual-tests-renders-components-${componentName.toLowerCase()}-standard-correctly-1-snap.png")`}}
+      ></div>
       <span>
         <strong>{componentName}</strong>
         {Components[componentName].__docgenInfo.description}
@@ -169,6 +153,3 @@ We recommend building UIs with a [**component-driven**](https://componentdriven.
   ))}
 </div>
 <div class="subheading">Patterns</div>
-<div class="tip-wrapper">
-  <span class="tip">Tip</span>Edit the Markdown in <code>src/storybook-examples/welcome.mdx</code>
-</div>
