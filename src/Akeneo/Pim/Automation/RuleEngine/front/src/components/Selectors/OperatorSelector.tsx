@@ -10,6 +10,7 @@ type Props = {
   name: string;
   onChange?: (value: Operator) => void;
   hiddenLabel?: boolean;
+  disabled?: boolean;
 };
 
 const OperatorSelector: React.FC<Props> = ({

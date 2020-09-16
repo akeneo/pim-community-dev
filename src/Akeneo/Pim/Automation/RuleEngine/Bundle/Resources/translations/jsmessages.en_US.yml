@@ -121,6 +121,9 @@ pimee_catalog_rule:
                 measurement_default_unit: "Default unit ({{ unit }})"
                 currency: Currency
                 operator: operator
+                entity_type:
+                    label: Entity type
+                    placeholder: Please select an entity type
             execute:
                 button: Save and execute
                 title: Save and execute the rule
