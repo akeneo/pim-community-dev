@@ -44,16 +44,17 @@ class EvaluateUpdatedAttributeOptionsSpec extends ObjectBehavior
         $getAttributeOptionCodesToEvaluateQuery,
         $eventDispatcher
     ) {
+        $sinceDate = new \DateTimeImmutable('now -1day');
         $colorRed = new AttributeOptionCode(new AttributeCode('color'), 'red');
         $materialWood = new AttributeOptionCode(new AttributeCode('material'), 'wood');
 
-        $getAttributeOptionCodesToEvaluateQuery->execute()->willReturn(new \ArrayIterator([
+        $getAttributeOptionCodesToEvaluateQuery->execute($sinceDate)->willReturn(new \ArrayIterator([
             $colorRed, $materialWood
         ]));
 
         $colorRedSpellcheck = new AttributeOptionSpellcheck(
             $colorRed,
-            new \DateTimeImmutable(),
+            new \DateTimeImmutable('now -2days'),
             (new SpellcheckResultByLocaleCollection())
                 ->add(new LocaleCode('en_US'), SpellCheckResult::good())
                 ->add(new LocaleCode('fr_FR'), SpellCheckResult::toImprove())
@@ -61,7 +62,7 @@ class EvaluateUpdatedAttributeOptionsSpec extends ObjectBehavior
 
         $materialWoodSpellcheck = new AttributeOptionSpellcheck(
             $materialWood,
-            new \DateTimeImmutable(),
+            new \DateTimeImmutable('now -2days'),
             new SpellcheckResultByLocaleCollection()
         );
 
@@ -75,6 +76,6 @@ class EvaluateUpdatedAttributeOptionsSpec extends ObjectBehavior
 
         $attributeOptionSpellcheckRepository->deleteUnknownAttributeOptions()->shouldBeCalled();
 
-        $this->evaluateAll();
+        $this->evaluateSince($sinceDate);
     }
 }

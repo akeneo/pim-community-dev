@@ -45,9 +45,9 @@ class EvaluateUpdatedAttributeOptions
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function evaluateAll(): void
+    public function evaluateSince(\DateTimeImmutable $updatedSince): void
     {
-        $attributeOptionsToEvaluate = $this->getAttributeOptionCodesToEvaluateQuery->execute();
+        $attributeOptionsToEvaluate = $this->getAttributeOptionCodesToEvaluateQuery->execute($updatedSince);
 
         foreach ($attributeOptionsToEvaluate as $attributeOptionCode) {
             $this->evaluate($attributeOptionCode);

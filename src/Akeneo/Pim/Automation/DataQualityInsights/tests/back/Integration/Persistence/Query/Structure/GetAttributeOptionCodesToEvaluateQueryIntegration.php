@@ -32,34 +32,35 @@ class GetAttributeOptionCodesToEvaluateQueryIntegration extends TestCase
 
     public function test_it_returns_the_codes_of_the_attribute_options_that_need_to_be_evaluated()
     {
+        $now = new \DateTimeImmutable();
         $this->givenASimpleSelectAttribute('color');
         $this->givenASimpleSelectAttribute('brand');
 
-        $this->givenAnAttributeOptionWithAnUpToDateEvaluation('color', 'blue');
-        $this->givenAnUpdatedAttributeOptionWithoutUpToDateEvaluation('color', 'red');
-        $this->givenAnUpdatedAttributeOptionWithoutUpToDateEvaluation('brand', 'foo');
+        $this->givenAnAttributeOptionWithAnUpToDateEvaluation('color', 'blue', $now->modify('-10 minutes'));
+        $this->givenAnAttributeOptionWithAnUpToDateEvaluation('color', 'yellow', $now);
+        $this->givenAnUpdatedAttributeOptionWithoutUpToDateEvaluation('color', 'red', $now);
+        $this->givenAnUpdatedAttributeOptionWithoutUpToDateEvaluation('brand', 'foo', $now);
 
         $expectedAttributeOptions = [
+             new AttributeOptionCode(new AttributeCode('color'), 'yellow'),
              new AttributeOptionCode(new AttributeCode('color'), 'red'),
              new AttributeOptionCode(new AttributeCode('brand'), 'foo'),
         ];
 
-        $attributeOptionsToEvaluate = $this->get(GetAttributeOptionCodesToEvaluateQuery::class)->execute();
+        $attributeOptionsToEvaluate = $this->get(GetAttributeOptionCodesToEvaluateQuery::class)->execute($now->modify('-1 minute'));
 
         $this->assertEqualsCanonicalizing($expectedAttributeOptions, iterator_to_array($attributeOptionsToEvaluate));
     }
 
-    private function givenAnAttributeOptionWithAnUpToDateEvaluation(string $attributeCode, string $optionCode): void
+    private function givenAnAttributeOptionWithAnUpToDateEvaluation(string $attributeCode, string $optionCode, \DateTimeImmutable $now): void
     {
-        $now = new \DateTimeImmutable();
         $attributeOption = $this->createAttributeOption($attributeCode, $optionCode);
         $this->attributeOptionVersioningLoggedAt($attributeOption->getId(), $now);
         $this->createAttributeOptionSpellcheck($attributeCode, $optionCode, $now);
     }
 
-    private function givenAnUpdatedAttributeOptionWithoutUpToDateEvaluation(string $attributeCode, string $optionCode): void
+    private function givenAnUpdatedAttributeOptionWithoutUpToDateEvaluation(string $attributeCode, string $optionCode, \DateTimeImmutable $now): void
     {
-        $now = new \DateTimeImmutable();
         $attributeOption = $this->createAttributeOption($attributeCode, $optionCode);
         $this->updateAttributeOption($attributeOption, ['labels' => ['en_US' => 'Updated ' . $optionCode]]);
         $this->attributeOptionVersioningLoggedAt($attributeOption->getId(), $now);

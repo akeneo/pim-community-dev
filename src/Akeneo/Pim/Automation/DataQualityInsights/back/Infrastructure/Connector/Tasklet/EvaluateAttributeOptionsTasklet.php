@@ -14,20 +14,18 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributeOptions;
-use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Psr\Log\LoggerInterface;
 
 final class EvaluateAttributeOptionsTasklet implements TaskletInterface
 {
+    use EvaluationJobAwareTrait;
+
     /** @var EvaluateUpdatedAttributeOptions */
     private $evaluateUpdatedAttributeOptions;
 
     /** @var LoggerInterface */
     private $logger;
-
-    /** @var StepExecution */
-    private $stepExecution;
 
     public function __construct(EvaluateUpdatedAttributeOptions $evaluateUpdatedAttributeOptions, LoggerInterface $logger)
     {
@@ -35,15 +33,10 @@ final class EvaluateAttributeOptionsTasklet implements TaskletInterface
         $this->logger = $logger;
     }
 
-    public function setStepExecution(StepExecution $stepExecution)
-    {
-        $this->stepExecution = $stepExecution;
-    }
-
     public function execute()
     {
         try {
-            $this->evaluateUpdatedAttributeOptions->evaluateAll();
+            $this->evaluateUpdatedAttributeOptions->evaluateSince($this->updatedSince());
         } catch (\Exception $exception) {
             null !== $this->stepExecution && $this->stepExecution->addFailureException($exception);
             $this->logger->error('The evaluations of the attribute options has failed', [
