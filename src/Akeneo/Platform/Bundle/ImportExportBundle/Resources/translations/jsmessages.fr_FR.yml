@@ -133,10 +133,13 @@ pim_import_export:
             title: Colonne variante de famille
           with_label:
             title: Avec libellés
+            help: Définit si les données du fichier contient les libellés des valeurs plutôt que leurs codes.
           header_with_label:
             title: En-têtes avec libellés
+            help: Définit si les données du fichier contient les libellés des en-têtes plutôt que leurs codes.
           file_locale:
             title: Locale du fichier
+            help: Définit la langue dans laquelle les libellés vont être affichés.
       file_path: Chemin du fichier
   widget:
     last_operations:
