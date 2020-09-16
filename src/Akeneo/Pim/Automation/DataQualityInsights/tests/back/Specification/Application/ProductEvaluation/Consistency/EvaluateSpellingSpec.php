@@ -221,6 +221,127 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $this->evaluate($criterionEvaluation, $productValues)->shouldBeLike($expectedEvaluationResult);
     }
 
+    public function it_does_not_evaluate_invalid_text(
+        $textChecker,
+        $localesByChannelQuery,
+        $supportedLocaleValidator,
+        $filterProductValuesForSpelling
+    ) {
+        $productId = new ProductId(1);
+        $criterionEvaluation = new Write\CriterionEvaluation(
+            new CriterionCode(EvaluateSpelling::CRITERION_CODE),
+            $productId,
+            CriterionEvaluationStatus::pending()
+        );
+
+        $localesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection([
+            'ecommerce' => ['en_US'],
+        ]));
+
+        $attributeText = $this->givenALocalizableAttributeOfTypeText('a_text');
+        $attributeText2 = $this->givenALocalizableAttributeOfTypeText('a_second_text');
+        $attributeText3 = $this->givenALocalizableAttributeOfTypeText('a_third_text');
+        $attributeText4 = $this->givenALocalizableAttributeOfTypeText('a_fourth_text');
+        $attributeText5 = $this->givenALocalizableAttributeOfTypeText('a_fifth_text');
+        $attributeText6 = $this->givenALocalizableAttributeOfTypeText('a_sixth_text');
+        $attributeText7 = $this->givenALocalizableAttributeOfTypeText('a_seventh_text');
+        $attributeText8 = $this->givenALocalizableAttributeOfTypeText('a_eighth_text');
+        $attributeTextarea = $this->givenALocalizableAttributeOfTypeTextarea('a_textarea');
+
+        $textareaValues = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => 'CODE_1234',
+            ],
+        ], function ($value) { return $value; });
+
+        $textValues = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => '1234_code',
+            ],
+        ], function ($value) { return $value; });
+
+        $textValues2 = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => 'test@example.com',
+            ],
+        ], function ($value) { return $value; });
+
+        $textValues3 = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => '123456789',
+            ],
+        ], function ($value) { return $value; });
+
+        $textValues4 = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => '1234_4567',
+            ],
+        ], function ($value) { return $value; });
+
+        $textValues5 = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => 'code-1234',
+            ],
+        ], function ($value) { return $value; });
+
+        $textValues6 = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => '  CODE_1234  ',
+            ],
+        ], function ($value) { return $value; });
+
+        $textValues7 = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => '',
+            ],
+        ], function ($value) { return $value; });
+
+        $textValues8 = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => '   ',
+            ],
+        ], function ($value) { return $value; });
+
+        $productTextValues = new ProductValues($attributeText, $textValues);
+        $productTextValues2 = new ProductValues($attributeText2, $textValues2);
+        $productTextValues3 = new ProductValues($attributeText3, $textValues3);
+        $productTextValues4 = new ProductValues($attributeText4, $textValues4);
+        $productTextValues5 = new ProductValues($attributeText5, $textValues5);
+        $productTextValues6 = new ProductValues($attributeText6, $textValues6);
+        $productTextValues7 = new ProductValues($attributeText7, $textValues7);
+        $productTextValues8 = new ProductValues($attributeText8, $textValues8);
+        $productTextareaValues = new ProductValues($attributeTextarea, $textareaValues);
+
+        $productValues = (new ProductValuesCollection())
+            ->add($productTextValues)
+            ->add($productTextValues2)
+            ->add($productTextValues3)
+            ->add($productTextValues4)
+            ->add($productTextValues5)
+            ->add($productTextValues6)
+            ->add($productTextValues7)
+            ->add($productTextValues8)
+            ->add($productTextareaValues);
+
+        $filterProductValuesForSpelling->getTextValues($productValues)->willReturn(new \ArrayIterator([
+            $productTextValues, $productTextValues2, $productTextValues3, $productTextValues4, $productTextValues5, $productTextValues6, $productTextValues7, $productTextValues8
+        ]));
+        $filterProductValuesForSpelling->getTextareaValues($productValues)->willReturn(new \ArrayIterator([$productTextareaValues]));
+
+        $channelEcommerce = new ChannelCode('ecommerce');
+        $localeEn = new LocaleCode('en_US');
+
+        $supportedLocaleValidator->isSupported($localeEn)->willReturn(true);
+
+        $textChecker->check(Argument::cetera(), $localeEn)->shouldNotBeCalled();
+
+        $expectedEvaluationResult = (new Write\CriterionEvaluationResult())
+            ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::notApplicable())
+        ;
+
+        $this->evaluate($criterionEvaluation, $productValues)->shouldBeLike($expectedEvaluationResult);
+    }
+
     private function givenALocalizableAttributeOfTypeText(string $code): Attribute
     {
         return new Attribute(new AttributeCode($code), AttributeType::text(), true);
