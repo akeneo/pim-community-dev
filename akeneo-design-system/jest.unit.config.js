@@ -1,10 +1,7 @@
 module.exports = {
   clearMocks: true,
-  moduleFileExtensions: [
-      'js',
-      'ts',
-      'tsx',
-  ],
+  moduleFileExtensions: ['js', 'ts', 'tsx'],
+  moduleDirectories: ['node_modules', 'src'],
   roots: ['<rootDir>'],
   setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect'],
   testMatch: ['**/?(*.)+(unit).ts?(x)'],
@@ -16,10 +13,10 @@ module.exports = {
   coverageReporters: ['text-summary', 'html'],
   coverageDirectory: 'coverage',
   coverageThreshold: {
-    'global': {
+    global: {
       statements: 100,
       functions: 100,
       lines: 100,
-    }
+    },
   },
 };
