@@ -18,7 +18,7 @@
     "lint:fix": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.{ts,tsx}\" && yarn eslint --config .eslintrc.json --quiet **/src/**/*.{ts,tsx} --fix",
     "lint:check": "yarn prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{ts,tsx}\" && yarn eslint --config .eslintrc.json --quiet **/src/**/*.{ts,tsx}",
     "storybook:start": "yarn storybook:copy-public && yarn start-storybook -p 6006 -s ./public",
-    "storybook:ci": "yarn storybook:copy-public && yarn start-storybook -p 6006 --ci",
+    "storybook:ci": "yarn start-storybook -p 6006 --ci",
     "storybook:build": "yarn storybook:copy-public && yarn build-storybook",
     "storybook:copy-public": "cp ./src/__image_snapshots__/*standard-correctly-1-snap.png ./public/",
     "storybook:extract": "yarn build-storybook && sb extract storybook-static stories.json",
