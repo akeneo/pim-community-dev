@@ -17,9 +17,10 @@ import {
   createFileAttributeCondition,
   createGroupsCondition,
   createIdentifierAttributeCondition,
-  createMeasurementAttributeCondition,
   createIdentifierCondition,
+  createMeasurementAttributeCondition,
   createNumberAttributeCondition,
+  createParentCondition,
   createPictureAttributeCondition,
   createPriceCollectionAttributeCondition,
   createSimpleMultiOptionsAttributeCondition,
@@ -137,6 +138,7 @@ const RuleProductSelection: React.FC<Props> = ({
       createFamilyVariantCondition,
       createIdentifierCondition,
       createGroupsCondition,
+      createParentCondition,
       createStatusCondition,
       // Attributes
       createAssetCollectionAttributeCondition,
@@ -179,6 +181,7 @@ const RuleProductSelection: React.FC<Props> = ({
     'enabled',
     'identifier',
     'completeness',
+    'parent',
     'created',
     'updated',
   ];

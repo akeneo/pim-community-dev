@@ -18,6 +18,7 @@ export * from './TextAttributeCondition';
 export * from './TextareaAttributeCondition';
 export * from './GroupCondition';
 export * from './CategoryCondition';
+export * from './ParentCondition';
 export * from './NumberAttributeCondition';
 export * from './DateAttributeCondition';
 export * from './BooleanAttributeCondition';

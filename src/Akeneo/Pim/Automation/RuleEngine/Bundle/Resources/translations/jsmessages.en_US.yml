@@ -116,6 +116,7 @@ pimee_catalog_rule:
                 identifier: Identifier
                 attribute: Attribute
                 groups: Groups
+                parent: Parent
                 measurement_unit: Measurement unit
                 measurement_default_unit: "Default unit ({{ unit }})"
                 currency: Currency
