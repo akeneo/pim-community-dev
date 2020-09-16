@@ -36,7 +36,6 @@ return [
     FOS\OAuthServerBundle\FOSOAuthServerBundle::class => ['all' => true],
     Oneup\FlysystemBundle\OneupFlysystemBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\MessengerBundle\AkeneoMessengerBundle::class => ['all' => true],
-    Akeneo\Tool\Bundle\WebhookBundle\AkeneoWebhookBundle::class => ['all' => true],
 
     // PIM bundles
     Oro\Bundle\PimFilterBundle\PimFilterBundle::class => ['all' => true],
