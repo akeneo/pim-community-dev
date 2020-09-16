@@ -11,7 +11,7 @@ final class Version_5_0_20200520142835_create_rule_execution_job extends Abstrac
     public function up(Schema $schema) : void
     {
         $this->addSql(<<<SQL
-            INSERT INTO akeneo_pim.akeneo_batch_job_instance (code, label, job_name, status, connector, raw_parameters, type)
+            INSERT INTO akeneo_batch_job_instance (code, label, job_name, status, connector, raw_parameters, type)
             VALUES ('rule_engine_execute_rules', 'Execution of the rules', 'rule_engine_execute_rules', 0, 'Akeneo Rule Engine Connector', 'a:0:{}', 'execute_rules');
             SQL
         );

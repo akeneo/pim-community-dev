@@ -21,7 +21,7 @@ final class SqlGetUniqueAttributeCodes implements GetUniqueAttributeCodes
     {
         $query = <<<SQL
 SELECT attribute.code
-FROM akeneo_pim.pim_catalog_attribute attribute
+FROM pim_catalog_attribute attribute
 WHERE attribute.is_unique = 1
 SQL;
 

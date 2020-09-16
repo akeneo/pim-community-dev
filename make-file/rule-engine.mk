@@ -70,7 +70,7 @@ rule-engine-acceptance-back: var/tests/behat/rule-engine-acceptance
 
 .PHONY: rule-engine-integration-back
 rule-engine-integration-back: var/tests/behat/rule-engine-integration
-	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/Pim/Automation/RuleEngine/tests/behat.yml --profile integration --format pim --out var/tests/behat/rule-engine-integration --format progress --out std --colors $(O)
+	APP_ENV=test $(PHP_RUN) vendor/bin/behat --config src/Akeneo/Pim/Automation/RuleEngine/tests/behat.yml --profile integration --format pim --out var/tests/behat/rule-engine-integration --format progress --out std --colors $(O)
 
 .PHONY: rule-engine-unit-front
 rule-engine-unit-front:
