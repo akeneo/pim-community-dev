@@ -35,7 +35,7 @@ jobs:
             -   name: Checkout external repo
                 uses: actions/checkout@v2
                 with:
-                    repository: 'samirboulil/dsm'
+                    repository: 'akeneo/akeneo-design-system'
                     path: external
             -   name: Bump package version
                 run: cd akeneo-design-system && node .github/workflows/bump-version.js $GITHUB_EVENT_PATH ../external/package.json ../commit-messages.txt
@@ -79,8 +79,8 @@ jobs:
                     API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
                 with:
                     source-directory: akeneo-design-system
-                    destination-github-username: 'samirboulil'
-                    destination-repository-name: 'dsm'
+                    destination-github-username: 'akeneo'
+                    destination-repository-name: 'akeneo-design-system'
                     user-email: contact@akeneo.com
                     destination-branch: 'master'
                     commit-messages-filepath: '/github/workspace/commit-messages.txt'
