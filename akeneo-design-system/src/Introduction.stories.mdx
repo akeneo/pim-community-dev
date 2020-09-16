@@ -1,5 +1,6 @@
 import {Meta} from '@storybook/addon-docs/blocks';
 import {linkTo} from '@storybook/addon-links';
+import * as Components from 'components';
 
 <Meta title="Introduction" />
 
@@ -40,14 +41,13 @@ import {linkTo} from '@storybook/addon-links';
   }
 
   .link-item {
-    display: block;
     padding: 20px 30px 20px 15px;
     border: 1px solid #00000010;
     border-radius: 5px;
     transition: background 150ms ease-out, border 150ms ease-out, transform 150ms ease-out;
     color: #333333;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
   }
 
   .link-item:hover {
@@ -79,6 +79,11 @@ import {linkTo} from '@storybook/addon-links';
     line-height: 20px;
   }
 
+  .link-item .link-icon {
+    margin-right: 10px;
+    font-size: 40px;
+  }
+
   .tip {
     display: inline-block;
     border-radius: 1em;
@@ -104,10 +109,9 @@ import {linkTo} from '@storybook/addon-links';
     display: inline-block;
   }
 
-
 `}</style>
 
-# Welcome to Storybook
+# Welcome to Akeneo Design System
 
 Storybook helps you build UI components in isolation from your app's business logic, data, and context.
 That makes it easy to develop hard-to-reach states. Save these UI states as **stories** to revisit during development, testing, or QA.
@@ -116,60 +120,55 @@ Browse example stories now by navigating to them in the sidebar.
 View their code in the `src/storybook-examples` directory to learn how they work.
 We recommend building UIs with a [**component-driven**](https://componentdriven.org) process starting with atomic components and ending with pages.
 
-<div class="subheading">Configure</div>
+<div class="subheading">Guidelines</div>
+
 <div class="link-list">
   <a class="link-item" onClick={linkTo('Components/Button', 'Standard')}>
+    <span class="link-icon">🎨</span>
     <span>
-      <strong>Button</strong>
-      The Button component
-    </span>
-  </a>
-  <a class="link-item" href="https://storybook.js.org/docs/webpack" target="_blank">
-    <span>
-      <strong>Build configuration</strong>
-      How to customize webpack and Babel
+      <strong>Colors</strong>
+      The colors enhance the experience by providing visual clues and drawing attention to the main actions.
     </span>
   </a>
   <a class="link-item" href="https://storybook.js.org/docs/styling" target="_blank">
+    <span class="link-icon">💱</span>
     <span>
-      <strong>Styling</strong>
-      How to load and configure CSS libraries
+      <strong>Iconography</strong>
+      Icons are visual symbols used to represent ideas, objects or actions.
     </span>
   </a>
   <a class="link-item" href="https://storybook.js.org/docs/data" target="_blank">
+    <span class="link-icon">🖼</span>
     <span>
-      <strong>Data</strong>
-      Providers and mocking for data libraries
+      <strong>Illustrations</strong>
+      Illustrations are a visually and emotionally powerful tool.
+    </span>
+  </a>
+  <a class="link-item" href="https://storybook.js.org/docs/data" target="_blank">
+    <span class="link-icon">🅰</span>
+    <span>
+      <strong>Typography</strong>
+      Typography guides the users to read and understand the hierarchy of information.
     </span>
   </a>
 </div>
-<div class="subheading">Learn</div>
+<div class="subheading">Components</div>
 <div class="link-list">
-  <a class="link-item" href="https://storybook.js.org/docs" target="_blank">
-    <span>
-      <strong>Storybook documentation</strong>
-      Configure, customize, and extend
-    </span>
-  </a>
-  <a class="link-item" href="https://www.learnstorybook.com" target="_blank">
-    <span>
-      <strong>In-depth guides</strong>
-      Best practices from leading teams
-    </span>
-  </a>
-  <a class="link-item" href="https://github.com/storybookjs/storybook" target="_blank">
-    <span>
-      <strong>GitHub project</strong>
-      View the source and add issues
-    </span>
-  </a>
-  <a class="link-item" href="https://discord.gg/UUt2PJb" target="_blank">
-    <span>
-      <strong>Discord chat</strong>
-      Chat with maintainers and the community
-    </span>
-  </a>
+  {Object.keys(Components).map(componentName => (
+    <a key={componentName} class="link-item" onClick={linkTo(`Components/${componentName}`, 'Standard')}>
+      <span class="link-icon">
+        <img
+          src={`./all-visual-tsx-visual-tests-renders-components-${componentName.toLowerCase()}-standard-correctly-1-snap.png`}
+        />
+      </span>
+      <span>
+        <strong>{componentName}</strong>
+        {Components[componentName].__docgenInfo.description}
+      </span>
+    </a>
+  ))}
 </div>
+<div class="subheading">Patterns</div>
 <div class="tip-wrapper">
   <span class="tip">Tip</span>Edit the Markdown in <code>src/storybook-examples/welcome.mdx</code>
 </div>

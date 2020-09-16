@@ -16,7 +16,7 @@
     "test:unit:watch": "jest --watch",
     "lint:fix": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.{ts,tsx}\" && yarn eslint --config .eslintrc.json --quiet **/src/**/*.{ts,tsx} --fix",
     "lint:check": "yarn prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{ts,tsx}\" && yarn eslint --config .eslintrc.json --quiet **/src/**/*.{ts,tsx}",
-    "storybook:start": "start-storybook -p 6006",
+    "storybook:start": "start-storybook -p 6006 -s ./public",
     "storybook:ci": "start-storybook -p 6006 --ci",
     "storybook:build": "build-storybook",
     "storybook:extract": "yarn storybook:build && sb extract storybook-static stories.json",

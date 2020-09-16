@@ -32,6 +32,9 @@ type BadgeProps = {
   children?: string;
 };
 
+/**
+ * Badges are used for items that must be: tagged, categorized, organized by keywords, or to highlight information.
+ */
 const Badge = ({level = 'primary', children}: BadgeProps) => {
   return <BadgeContainer level={level}>{children}</BadgeContainer>;
 };

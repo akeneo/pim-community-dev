@@ -9,7 +9,7 @@ type ButtonSize = 'small' | 'default';
 type ButtonProps = {
   /**
    * Level of the button defining it's color and outline.
-   * Possible values are: primary, secondary, tertiary, danger and ghost
+   * Possible values are: primary, secondary, tertiary, danger and ghost.
    */
   level?: Level;
 
@@ -24,17 +24,17 @@ type ButtonProps = {
   disabled?: boolean;
 
   /**
-   * Define the size of a button
+   * Define the size of a button.
    */
   size?: ButtonSize;
 
   /**
-   * Function called when the user clicks on the button or hit enter when focused
+   * Function called when the user clicks on the button or hit enter when focused.
    */
   onClick: () => void;
 
   /**
-   * Accessibility label to describe shortly the button
+   * Accessibility label to describe shortly the button.
    */
   ariaLabel?: string;
 
@@ -49,7 +49,7 @@ type ButtonProps = {
   ariaDescribedBy?: string;
 
   /**
-   * Children of the button
+   * Children of the button.
    */
   children: ReactNode;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
@@ -116,6 +116,10 @@ const Container = styled.button<
   }
 `;
 
+/**
+ * Buttons express what action will occur when the users clicks.
+ * Buttons are used to initialize an action, either in the background or foreground of an experience.
+ */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {

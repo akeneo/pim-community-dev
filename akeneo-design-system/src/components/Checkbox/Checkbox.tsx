@@ -85,12 +85,12 @@ const LabelContainer = styled.div<{readOnly: boolean} & AkeneoThemedProps>`
 
 type CheckboxProps = {
   /**
-   * State of the Checkbox
+   * State of the Checkbox.
    */
   checked: boolean;
 
   /**
-   * Displays the value of the input, but does not allow changes.s
+   * Displays the value of the input, but does not allow changes.
    */
   readOnly?: boolean;
 
@@ -106,7 +106,7 @@ type CheckboxProps = {
   label?: string;
 
   /**
-   * The handler called when clicking on Checkbox
+   * The handler called when clicking on Checkbox.
    */
   onChange?: (value: boolean) => void;
 };
