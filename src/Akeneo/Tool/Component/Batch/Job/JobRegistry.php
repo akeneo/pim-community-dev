@@ -43,6 +43,10 @@ class JobRegistry
         $this->jobsByConnector[$connector][$job->getName()] = $job;
     }
 
+    /**
+     * @TODO RAC-267
+     * @deprecated
+     */
     public function remove($jobName, $jobType, $connector)
     {
         if (!isset($this->jobs[$jobName])) {
