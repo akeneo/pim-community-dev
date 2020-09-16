@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-9450: Fix error during family import, compute products/product models doesn't work when products/product models are skipped
+
 # 3.2.70 (2020-09-10)
 
 # 3.2.69 (2020-09-07)
