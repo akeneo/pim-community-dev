@@ -1,5 +1,4 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
-import {Container} from 'storybook/container';
 import {Badge} from './Badge.tsx';
 
 <Meta
@@ -43,7 +42,7 @@ The status badge highlights the state of an item. *i.e.: enabled or disabled*.
   <Story name="Level">
     {args => {
       return (
-        <Container>
+        <>
           <Badge {...args} level="primary">
             Primary
           </Badge>
@@ -59,7 +58,7 @@ The status badge highlights the state of an item. *i.e.: enabled or disabled*.
           <Badge {...args} level="danger">
             Danger
           </Badge>
-        </Container>
+        </>
       );
     }}
   </Story>

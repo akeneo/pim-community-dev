@@ -48,6 +48,7 @@ import * as Components from 'components';
     color: #333333;
     display: flex;
     align-items: center;
+    cursor: pointer;
   }
 
   .link-item:hover {
@@ -98,38 +99,31 @@ import * as Components from 'components';
 
 # Welcome to Akeneo Design System
 
-Storybook helps you build UI components in isolation from your app's business logic, data, and context.
-That makes it easy to develop hard-to-reach states. Save these UI states as **stories** to revisit during development, testing, or QA.
-
-Browse example stories now by navigating to them in the sidebar.
-View their code in the `src/storybook-examples` directory to learn how they work.
-We recommend building UIs with a [**component-driven**](https://componentdriven.org) process starting with atomic components and ending with pages.
-
 <div class="subheading">Guidelines</div>
 
 <div class="link-list">
-  <a class="link-item" onClick={linkTo('Components/Button', 'Standard')}>
+  <a class="link-item" onClick={linkTo('Guidelines/Colors', 'Standard')}>
     <span class="link-icon">🎨</span>
     <span>
       <strong>Colors</strong>
       The colors enhance the experience by providing visual clues and drawing attention to the main actions.
     </span>
   </a>
-  <a class="link-item" href="https://storybook.js.org/docs/styling" target="_blank">
+  <a class="link-item" onClick={linkTo('Guidelines/Iconography', 'Standard')}>
     <span class="link-icon">💱</span>
     <span>
       <strong>Iconography</strong>
       Icons are visual symbols used to represent ideas, objects or actions.
     </span>
   </a>
-  <a class="link-item" href="https://storybook.js.org/docs/data" target="_blank">
+  <a class="link-item" onClick={linkTo('Guidelines/Illustrations', 'Standard')}>
     <span class="link-icon">🖼</span>
     <span>
       <strong>Illustrations</strong>
       Illustrations are a visually and emotionally powerful tool.
     </span>
   </a>
-  <a class="link-item" href="https://storybook.js.org/docs/data" target="_blank">
+  <a class="link-item" onClick={linkTo('Guidelines/Typography', 'Standard')}>
     <span class="link-icon">🅰</span>
     <span>
       <strong>Typography</strong>
@@ -143,7 +137,9 @@ We recommend building UIs with a [**component-driven**](https://componentdriven.
     <a key={componentName} class="link-item" onClick={linkTo(`Components/${componentName}`, 'Standard')}>
       <div
         class="link-icon"
-        style={{backgroundImage: `url("./all-visual-tsx-visual-tests-renders-components-${componentName.toLowerCase()}-standard-correctly-1-snap.png")`}}
+        style={{
+          backgroundImage: `url("./all-visual-tsx-visual-tests-renders-components-${componentName.toLowerCase()}-standard-correctly-1-snap.png")`,
+        }}
       ></div>
       <span>
         <strong>{componentName}</strong>
@@ -153,3 +149,4 @@ We recommend building UIs with a [**component-driven**](https://componentdriven.
   ))}
 </div>
 <div class="subheading">Patterns</div>
+<div class="link-list">TODO</div>
