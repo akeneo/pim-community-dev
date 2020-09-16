@@ -77,7 +77,11 @@ const RemoveAttributeValueActionLine: React.FC<ActionLineProps> = ({
         as={<span hidden />}
         defaultValue={getItemsFormValue()}
         rules={{
-          required: translate('pimee_catalog_rule.exceptions.required_value'),
+          required: translate('pimee_catalog_rule.exceptions.required_item'),
+          validate: (value: any) =>
+            Array.isArray(value) && 0 === value.length
+              ? translate('pimee_catalog_rule.exceptions.required_item')
+              : true,
         }}
       />
       <ActionTemplate
