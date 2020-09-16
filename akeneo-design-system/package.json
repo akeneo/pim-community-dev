@@ -21,7 +21,7 @@
     "storybook:ci": "yarn storybook:copy-public && yarn start-storybook -p 6006 --ci",
     "storybook:build": "yarn storybook:copy-public && yarn build-storybook",
     "storybook:copy-public": "cp ./src/__image_snapshots__/*standard-correctly-1-snap.png ./public/",
-    "storybook:extract": "yarn storybook:build && sb extract storybook-static stories.json",
+    "storybook:extract": "yarn build-storybook && sb extract storybook-static stories.json",
     "lib:build:prod": "export NODE_ENV=production && yarn prebuild && rollup -c",
     "lib:build:watch": "export NODE_ENV=dev && yarn prebuild-watch && rollup --watch -c",
     "lib:build:analyze": "yarn build:prod --config-analyze"
