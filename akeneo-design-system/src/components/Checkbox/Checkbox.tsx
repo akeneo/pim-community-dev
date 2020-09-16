@@ -10,8 +10,8 @@ const checkTick = keyframes`
 `;
 
 const uncheckTick = keyframes`
-to {
-    stroke-dashoffset: 20px;
+  to {
+    stroke-dashoffset: 17px;
   }
 `;
 
@@ -22,7 +22,7 @@ const Container = styled.div`
 const TickIcon = styled(CheckIcon)`
   animation: ${uncheckTick} 0.2s ease-in forwards;
   opacity: 0;
-  stroke-dasharray: 0px;
+  stroke-dasharray: 17px;
   stroke-dashoffset: 0;
   transition-delay: 0.2s;
   transition: opacity 0.1s ease-out;
@@ -36,6 +36,8 @@ const CheckboxContainer = styled.div<{checked: boolean; readOnly: boolean} & Ake
   border-radius: 3px;
   outline: none;
   background-color: ${getColor('grey20')};
+  transition: background-color 0.2s ease-out;
+  box-sizing: border-box;
 
   ${props =>
     props.checked &&
@@ -45,7 +47,7 @@ const CheckboxContainer = styled.div<{checked: boolean; readOnly: boolean} & Ake
       ${TickIcon} {
         animation-delay: 0.2s;
         animation: ${checkTick} 0.2s ease-out forwards;
-        stroke-dashoffset: 20px;
+        stroke-dashoffset: 17px;
         opacity: 1;
         transition-delay: 0s;
       }
