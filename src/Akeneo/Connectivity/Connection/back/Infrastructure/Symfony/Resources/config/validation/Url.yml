@@ -1,0 +1,5 @@
+Akeneo\Connectivity\Connection\Application\Webhook\Command\UpdateConnectionWebhookCommand:
+  properties:
+    url:
+      - Url:
+          message: 'akeneo_connectivity.connection.webhook.error.wrong_url'

@@ -93,3 +93,9 @@ services:
             - '@akeneo_connectivity.connection.webhook.webhook_client'
             - '@akeneo_connectivity.connection.webhook.webhook_event_builder'
             - '@logger'
+
+    akeneo_connectivity.connection.application.webhook.handler.update_connection_webhook:
+      class: Akeneo\Connectivity\Connection\Application\Webhook\Command\UpdateConnectionWebhookHandler
+      arguments:
+        - '@akeneo_connectivity.connection.persistence.repository.webhook'
+        - '@validator'

@@ -208,6 +208,9 @@ akeneo_connectivity.connection:
         error:
             wrong_url: This value is not a valid URL.
             required: This field is required.
+        flash:
+            success: Event subscription successfully updated.
+            error: Sorry, an error occurred while editing the event subscription.
     error_management:
         connection_monitoring:
             title: Monitoring
