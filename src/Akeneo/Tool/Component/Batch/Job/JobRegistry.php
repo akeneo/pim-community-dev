@@ -43,6 +43,20 @@ class JobRegistry
         $this->jobsByConnector[$connector][$job->getName()] = $job;
     }
 
+    public function remove($jobName, $jobType, $connector)
+    {
+        if (!isset($this->jobs[$jobName])) {
+            throw new \InvalidArgumentException(
+                sprintf('The job "%s" does not exists', $jobName)
+            );
+        }
+
+        unset($this->jobs[$jobName]);
+        unset($this->jobsByType[$jobType][$jobName]);
+        unset($this->jobsByTypeGroupByConnector[$jobType][$connector][$jobName]);
+        unset($this->jobsByConnector[$connector][$jobName]);
+    }
+
     /**
      * @param string $jobName
      *
