@@ -71,12 +71,11 @@ jobs:
               publish_dir: ./akeneo-design-system/storybook-static
               destination_dir: ${{ github.event.number }}
               keep_files: true
-              external_repository: samirboulil/dsm # To change
+              external_repository: akeneo/akeneo-design-system
       - name: Comment PR to say that the staging is available
         uses: thollander/actions-comment-pull-request@master
         with:
-          # To change
           message: |
             A new version of the staging env has been deployed :tada:
-            Check it out here: https://samirboulil.github.io/dsm/${{ github.event.number }}/
+            Check it out here: https://akeneo.github.io/akeneo-design-system/${{ github.event.number }}/
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
