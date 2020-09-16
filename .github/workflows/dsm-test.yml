@@ -35,7 +35,7 @@ jobs:
       - name: Update visual tests
         if: failure() && steps.visual_test_execution.outcome == 'failure'
         # Here we add a "|| true" to the find command to avoid it to fail for no reason.
-        run: cd akeneo-design-system && find . -name '*__image_snapshots__*'  -exec rm -rf {} \; || true && yarn test:visual:run -u
+        run: cd akeneo-design-system && find . -name '*__image_snapshots__*'  -exec rm -rf {} \; || true && yarn test:visual:update
       - uses: mdecoleman/pr-branch-name@1.0.0
         if: failure() && steps.visual_test_execution.outcome == 'failure'
         id: extract_branch
