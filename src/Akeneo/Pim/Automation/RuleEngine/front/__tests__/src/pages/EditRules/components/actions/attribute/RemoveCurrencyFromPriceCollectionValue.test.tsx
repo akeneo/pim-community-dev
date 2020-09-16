@@ -55,7 +55,7 @@ describe('RemoveCurrencyFromPriceCollectionValue', () => {
     );
 
     expect(
-      await screen.findByText('pim_enrich.entity.currency.plural_label')
+      await screen.findByText('pim_enrich.entity.currency.plural_label pim_common.required_label')
     ).toBeInTheDocument();
     const currencyInput = screen.getByTestId('attribute-value-id');
     expect(currencyInput?.children?.length).toBe(4); // USD, EUR, JPY and an empty option as placeholder
@@ -102,7 +102,7 @@ describe('RemoveCurrencyFromPriceCollectionValue', () => {
     );
 
     expect(
-      await screen.findByText('pim_enrich.entity.currency.plural_label')
+      await screen.findByText('pim_enrich.entity.currency.plural_label pim_common.required_label')
     ).toBeInTheDocument();
 
     const currencyInput = screen.getByTestId('attribute-value-id');

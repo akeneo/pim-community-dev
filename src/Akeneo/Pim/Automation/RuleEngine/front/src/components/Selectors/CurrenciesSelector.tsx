@@ -9,12 +9,12 @@ type Props = {
   value: CurrencyCode[];
   onChange?: (value: CurrencyCode[]) => void;
   name: string;
-  availableCurrencies: CurrencyCode[];
+  availableCurrencyCodes: CurrencyCode[];
 };
 
 const CurrenciesSelector: React.FC<Props> = ({
   label,
-  availableCurrencies,
+  availableCurrencyCodes,
   onChange,
   ...remainingProps
 }) => {
@@ -24,7 +24,7 @@ const CurrenciesSelector: React.FC<Props> = ({
       onChange(value as CurrencyCode[]);
     }
   };
-  const currencyChoices = availableCurrencies.map(
+  const currencyChoices = availableCurrencyCodes.map(
     (currencyCode: CurrencyCode) => {
       return {
         id: currencyCode,
@@ -35,7 +35,12 @@ const CurrenciesSelector: React.FC<Props> = ({
 
   return (
     <Select2MultiSyncWrapper
-      label={label ?? translate('pim_enrich.entity.currency.plural_label')}
+      label={
+        label ||
+        `${translate('pim_enrich.entity.currency.plural_label')} ${translate(
+          'pim_common.required_label'
+        )}`
+      }
       data={currencyChoices}
       onChange={handleChange}
       allowClear={true}

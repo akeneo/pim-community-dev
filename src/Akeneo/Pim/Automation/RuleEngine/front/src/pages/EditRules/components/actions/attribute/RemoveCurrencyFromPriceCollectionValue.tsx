@@ -65,7 +65,7 @@ const RemoveCurrencyFromPriceCollectionValue: React.FC<InputValueProps> = ({
       data-testid={id}
       value={getSelectedCurrencyCodes()}
       name={name}
-      availableCurrencies={availableCurrencyCodes}
+      availableCurrencyCodes={availableCurrencyCodes}
       onChange={handleChange}
     />
   );
