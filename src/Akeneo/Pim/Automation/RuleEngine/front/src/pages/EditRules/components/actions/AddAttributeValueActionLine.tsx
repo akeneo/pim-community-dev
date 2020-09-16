@@ -116,12 +116,10 @@ const AddAttributeValueActionLine: React.FC<ActionLineProps> = ({
               locales={locales}
               onAttributeCodeChange={onAttributeChange}
               lineNumber={lineNumber}
-              filterAttributeTypes={Array.from(
-                MANAGED_ATTRIBUTE_TYPES_FOR_ADD_ACTION.keys()
-              )}
+              filterAttributeTypes={MANAGED_ATTRIBUTE_TYPES_FOR_ADD_ACTION}
               disabled={
                 !!attribute &&
-                !MANAGED_ATTRIBUTE_TYPES_FOR_ADD_ACTION.has(attribute.type)
+                !MANAGED_ATTRIBUTE_TYPES_FOR_ADD_ACTION.includes(attribute.type)
               }
             />
           </ActionLeftSide>
@@ -138,6 +136,7 @@ const AddAttributeValueActionLine: React.FC<ActionLineProps> = ({
               value={getItemsFormValue()}
               onChange={setItemsFormValue}
               scopeCode={getScopeFormValue()}
+              actionType={'add'}
             />
           </ActionRightSide>
         </ActionGrid>

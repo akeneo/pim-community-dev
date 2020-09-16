@@ -102,7 +102,10 @@ const Select2Wrapper: typeof BaseWrapper = ({
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     if (onChange) {
-      onChange(event.target.value);
+      const newValue = event.target.multiple
+        ? Array.from(event.target.selectedOptions).map(option => option.value)
+        : event.target.value;
+      onChange(newValue);
     }
     if (onSelecting) {
       onSelecting({

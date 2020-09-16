@@ -160,6 +160,7 @@ const SetActionLine: React.FC<ActionLineProps> = ({
               value={getValueFormValue()}
               onChange={setValueFormValue}
               scopeCode={getScopeFormValue()}
+              actionType={'set'}
             />
           </ActionRightSide>
         </ActionGrid>

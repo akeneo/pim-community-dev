@@ -40,6 +40,7 @@ const RemoveAttributeValueActionLine: React.FC<ActionLineProps> = ({
     fieldFormName,
     typeFormName,
     itemsFormName,
+    getScopeFormValue,
     getItemsFormValue,
     setFieldFormValue,
     setItemsFormValue,
@@ -115,12 +116,12 @@ const RemoveAttributeValueActionLine: React.FC<ActionLineProps> = ({
               locales={locales}
               onAttributeCodeChange={onAttributeChange}
               lineNumber={lineNumber}
-              filterAttributeTypes={Array.from(
-                MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION.keys()
-              )}
+              filterAttributeTypes={MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION}
               disabled={
                 !!attribute &&
-                !MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION.has(attribute.type)
+                !MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION.includes(
+                  attribute.type
+                )
               }
             />
           </ActionLeftSide>
@@ -136,6 +137,8 @@ const RemoveAttributeValueActionLine: React.FC<ActionLineProps> = ({
               name={itemsFormName}
               value={getItemsFormValue()}
               onChange={setItemsFormValue}
+              actionType={'remove'}
+              scopeCode={getScopeFormValue()}
             />
           </ActionRightSide>
         </ActionGrid>

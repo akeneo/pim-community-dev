@@ -33,6 +33,7 @@ import {
 } from '../../../../../components/HelpersInfos';
 import { ActionFormContainer } from '../style';
 import { parseMeasurementValue } from '../../../../../models/Measurement';
+import { RemoveCurrencyFromPriceCollectionValue } from './RemoveCurrencyFromPriceCollectionValue';
 
 const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: AttributeType[] = [
   AttributeType.TEXT,
@@ -49,24 +50,19 @@ const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: AttributeType[] = [
   AttributeType.METRIC,
 ];
 
-const MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION: Map<
-  AttributeType,
-  React.FC<InputValueProps>
-> = new Map([
-  [AttributeType.OPTION_MULTI_SELECT, MultiSelectValue],
-  [AttributeType.ASSET_COLLECTION, AssetCollectionValue],
-  [AttributeType.REFERENCE_ENTITY_COLLECTION, MultiReferenceEntityValue],
-]);
+const MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION: AttributeType[] = [
+  AttributeType.OPTION_MULTI_SELECT,
+  AttributeType.ASSET_COLLECTION,
+  AttributeType.REFERENCE_ENTITY_COLLECTION,
+  AttributeType.PRICE_COLLECTION,
+];
 
-const MANAGED_ATTRIBUTE_TYPES_FOR_ADD_ACTION: Map<
-  AttributeType,
-  React.FC<InputValueProps>
-> = new Map([
-  [AttributeType.OPTION_MULTI_SELECT, MultiSelectValue],
-  [AttributeType.ASSET_COLLECTION, AssetCollectionValue],
-  [AttributeType.REFERENCE_ENTITY_COLLECTION, MultiReferenceEntityValue],
-  [AttributeType.PRICE_COLLECTION, PriceCollectionValue],
-]);
+const MANAGED_ATTRIBUTE_TYPES_FOR_ADD_ACTION: AttributeType[] = [
+  AttributeType.OPTION_MULTI_SELECT,
+  AttributeType.ASSET_COLLECTION,
+  AttributeType.REFERENCE_ENTITY_COLLECTION,
+  AttributeType.PRICE_COLLECTION,
+];
 
 type InputValueProps = {
   id: string;
@@ -79,7 +75,11 @@ type InputValueProps = {
   scopeCode?: ScopeCode;
 };
 
-const getValueModule = (attribute: Attribute, props: InputValueProps) => {
+const getValueModule = (
+  attribute: Attribute,
+  props: InputValueProps,
+  actionType?: string
+) => {
   switch (attribute.type) {
     case AttributeType.TEXT:
       return <TextValue {...props} />;
@@ -96,7 +96,9 @@ const getValueModule = (attribute: Attribute, props: InputValueProps) => {
     case AttributeType.BOOLEAN:
       return <BooleanValue {...props} value={!!props.value} />;
     case AttributeType.PRICE_COLLECTION:
-      return (
+      return actionType === 'remove' ? (
+        <RemoveCurrencyFromPriceCollectionValue {...props} />
+      ) : (
         <PriceCollectionValue
           {...props}
           value={parsePriceCollectionValue(props.value)}
@@ -139,6 +141,7 @@ type Props = {
   label?: string;
   onChange: (value: any) => void;
   scopeCode?: ScopeCode;
+  actionType: string;
 };
 
 const isAttrNotSelected = (attribute: Attribute | null | undefined) =>
@@ -155,6 +158,7 @@ const AttributeValue: React.FC<Props> = ({
   label,
   onChange,
   scopeCode,
+  actionType,
 }) => {
   const translate = useTranslate();
   const catalogLocale = useUserCatalogLocale();
@@ -187,22 +191,23 @@ const AttributeValue: React.FC<Props> = ({
       );
     }
     if (attribute) {
-      const inputComponent = getValueModule(attribute, {
-        id,
-        attribute,
-        name,
-        label: `${getAttributeLabel(attribute, catalogLocale)} ${translate(
-          'pim_common.required_label'
-        )}`,
-        value,
-        onChange,
-        validation,
-        scopeCode,
-      });
-      if (inputComponent) {
-        return inputComponent;
-      } else {
-        return (
+      return (
+        getValueModule(
+          attribute,
+          {
+            id,
+            attribute,
+            name,
+            label: `${getAttributeLabel(attribute, catalogLocale)} ${translate(
+              'pim_common.required_label'
+            )}`,
+            value,
+            onChange,
+            validation,
+            scopeCode,
+          },
+          actionType
+        ) ?? (
           <FallbackValue
             id={id}
             label={label || getAttributeLabelIfNotNull(attribute)}
@@ -216,8 +221,8 @@ const AttributeValue: React.FC<Props> = ({
               </InlineHelper>
             </HelperContainer>
           </FallbackValue>
-        );
-      }
+        )
+      );
     }
     return null;
   };
