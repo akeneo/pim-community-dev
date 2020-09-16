@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import { Controller, useFormContext } from 'react-hook-form';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
@@ -25,6 +26,10 @@ import {
   validateAttribute,
 } from './attribute/attribute.utils';
 import { SmallHelper } from '../../../../components/HelpersInfos';
+
+const SmallHelperWrapper = styled.div`
+  margin: -14px 0 18px;
+`;
 
 const SetActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
@@ -110,11 +115,13 @@ const SetActionLine: React.FC<ActionLineProps> = ({
         handleDelete={handleDelete}
         lineNumber={lineNumber}>
         {attribute && !isValueFilled(getValueFormValue(), attribute) && (
-          <SmallHelper level='info'>
-            {translate(
-              'pimee_catalog_rule.form.helper.set_attribute_info_clear'
-            )}
-          </SmallHelper>
+          <SmallHelperWrapper>
+            <SmallHelper level='info'>
+              {translate(
+                'pimee_catalog_rule.form.helper.set_attribute_info_clear'
+              )}
+            </SmallHelper>
+          </SmallHelperWrapper>
         )}
         <ActionGrid>
           <ActionLeftSide>
