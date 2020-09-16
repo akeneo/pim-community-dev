@@ -358,7 +358,7 @@ jobs:
           - run:
                 name: Latest SaaS prod deployment on kubernetes
                 command: |
-                    ssh-keyscan github.com >> ~/.ssh/known_hosts
+                    export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
                     LATEST_RELEASE=$(git tag --list | grep -E "^v?[0-9.]+$" | sort -r | head -n 1)
                     echo $LATEST_RELEASE
                     INSTANCE_NAME=pimup-$IMAGE_TAG IMAGE_TAG=$LATEST_RELEASE make deploy-serenity
