@@ -2,9 +2,7 @@ services:
     pim_catalog.webhook.event_data_builder.product:
         class: Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductEventDataBuilder
         arguments:
-            - '@pim_catalog.builder.product'
-            - '@pim_catalog.updater.product'
-            - '@pim_catalog.validator.product'
+            - '@pim_api.repository.product'
             - '@pim_api.normalizer.product'
         tags:
             - { name: akeneo_connectivity.connection.webhook.event_data_builder }

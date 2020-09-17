@@ -8,6 +8,8 @@ use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
+use Akeneo\Connectivity\Connection\Domain\Webhook\WebhookEvent\WebhookEventBuildingFailedException;
+use Psr\Log\LoggerInterface;
 
 /**
  * @author    Thomas Galvaing <thomas.galvaing@akeneo.com>
@@ -25,14 +27,19 @@ final class SendBusinessEventToWebhooksHandler
     /** @var WebhookEventBuilder */
     private $builder;
 
+    /** @var LoggerInterface */
+    private $logger;
+
     public function __construct(
         SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
         WebhookClient $client,
-        WebhookEventBuilder $builder
+        WebhookEventBuilder $builder,
+        LoggerInterface $logger
     ) {
         $this->selectActiveWebhooksQuery = $selectActiveWebhooksQuery;
         $this->client = $client;
         $this->builder = $builder;
+        $this->logger = $logger;
     }
 
     public function handle(SendBusinessEventToWebhooksCommand $command): void
@@ -42,11 +49,20 @@ final class SendBusinessEventToWebhooksHandler
             return;
         }
 
-        $requests = function () use ($command, $webhooks) {
+        $businessEvent = $command->businessEvent();
+
+        $requests = function () use ($businessEvent, $webhooks) {
             foreach ($webhooks as $webhook) {
-                $event = $this->builder->build($command->businessEvent(), [
+                $context = [
                     'user_id' => $webhook->userId()
-                ]);
+                ];
+                try {
+                    $event = $this->builder->build($businessEvent, $context);
+                } catch (WebhookEventBuildingFailedException $exception) {
+                    $this->logger->error($exception->getMessage(), $exception->getContext());
+
+                    continue;
+                }
 
                 yield new WebhookRequest($webhook, $event);
             }
