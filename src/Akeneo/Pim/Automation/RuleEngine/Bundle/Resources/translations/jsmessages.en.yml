@@ -222,7 +222,6 @@ pimee_catalog_rule:
     helper:
       add_to_category: To add your product selection to one or more categories, please start by selecting your category trees and then, your categories.
       clear_attribute: To clear the attribute value, please start by selecting the attribute to clear.
-      clear_associations: All the associations for the selected products will be cleared.
       clear_categories: All the categories for the selected products will be cleared.
       clear_groups: All the groups for the selected products will be cleared.
       product_selection: "You must define your product selection in order to create your rule. If you don't know how, "

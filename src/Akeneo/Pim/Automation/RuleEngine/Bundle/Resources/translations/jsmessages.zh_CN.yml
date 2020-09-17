@@ -234,7 +234,6 @@ pimee_catalog_rule:
     helper:
       add_to_category: 要将产品选择添加到一个或多个类别，请先选择类别树，然后再选择类别。
       clear_attribute: 要清除属性值，请先选择要清除的属性。
-      clear_associations: 所选产品的所有关联将被清除。
       clear_categories: 所选产品的所有类别将被清除。
       clear_groups: 所选产品的所有组将被清除。
       product_selection: "您必须定义您的产品选择才能创建规则。如果您不知道该怎么办，"

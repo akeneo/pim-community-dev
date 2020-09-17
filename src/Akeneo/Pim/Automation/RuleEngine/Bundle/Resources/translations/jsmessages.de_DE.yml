@@ -253,7 +253,6 @@ pimee_catalog_rule:
     helper:
       add_to_category: Um Ihre Produktauswahl zu einer oder mehreren Kategorien hinzuzufügen, wählen Sie bitte zuerst Ihre Kategoriebäume und dann Ihre Kategorien.
       clear_attribute: Um den Attributwert zu löschen, wählen Sie bitte das zu löschende Attribut aus.
-      clear_associations: Alle Verbindungen ausgewählter Produkte werden gelöscht.
       clear_categories: Alle Kategorien für die ausgewählten Produkte werden gelöscht.
       clear_groups: Alle Gruppen für die ausgewählten Produkte werden gelöscht.
       product_selection: "Sie müssen Ihre Produktauswahl definieren, um Ihre Regel zu erstellen. Wenn Sie nicht wissen, wie,"
