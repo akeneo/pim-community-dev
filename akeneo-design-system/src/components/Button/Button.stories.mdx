@@ -1,8 +1,7 @@
-import { useState } from 'react';
-import { Meta, Story, ArgsTable, Canvas } from '@storybook/addon-docs/blocks';
-import { action } from '@storybook/addon-actions';
-import { Button } from './Button.tsx';
-import { Container } from 'storybook/container';
+import {useState} from 'react';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {action} from '@storybook/addon-actions';
+import {Button} from './Button.tsx';
 
 <Meta
   title="Components/Button"
@@ -15,7 +14,7 @@ import { Container } from 'storybook/container';
     onClick: {action: 'Click on the button'},
   }}
   args={{
-    level: 'primary'
+    level: 'primary',
   }}
 />
 
@@ -43,8 +42,8 @@ Use this playground to test the button component
 
 <Canvas>
   <Story name="Standard">
-    {(args) => {
-        return <Button {...args}>Primary</Button>;
+    {args => {
+      return <Button {...args}>Primary</Button>;
     }}
   </Story>
 </Canvas>
@@ -52,60 +51,86 @@ Use this playground to test the button component
 <ArgsTable story="Standard" />
 
 ## Variation on level
+
 <Canvas>
   <Story name="Level">
-      {(args) => {
-          return (
-              <Container>
-                  <Button {...args} level="primary">Primary</Button>
-                  <Button {...args} level="secondary">Secondary</Button>
-                  <Button {...args} level="tertiary">Tertiary</Button>
-                  <Button {...args} level="warning">Warning</Button>
-                  <Button {...args} level="danger">Danger</Button>
-              </Container>
-          )
-      }}
+    {args => {
+      return (
+        <>
+          <Button {...args} level="primary">
+            Primary
+          </Button>
+          <Button {...args} level="secondary">
+            Secondary
+          </Button>
+          <Button {...args} level="tertiary">
+            Tertiary
+          </Button>
+          <Button {...args} level="warning">
+            Warning
+          </Button>
+          <Button {...args} level="danger">
+            Danger
+          </Button>
+        </>
+      );
+    }}
   </Story>
 </Canvas>
 
 ## Variation on ghost
+
 <Canvas>
   <Story name="Ghost">
-      {(args) => {
-          return (
-              <Container>
-                  <Button {...args} ghost={false}>Default</Button>
-                  <Button {...args} ghost={true}>Ghost</Button>
-              </Container>
-          )
-      }}
+    {args => {
+      return (
+        <>
+          <Button {...args} ghost={false}>
+            Default
+          </Button>
+          <Button {...args} ghost={true}>
+            Ghost
+          </Button>
+        </>
+      );
+    }}
   </Story>
 </Canvas>
 
 ## Variation on disabled
+
 <Canvas>
   <Story name="Disabled">
-      {(args) => {
-          return (
-              <Container>
-                  <Button {...args} disabled={false}>Default</Button>
-                  <Button {...args} disabled={true}>Disabled</Button>
-              </Container>
-          )
-      }}
+    {args => {
+      return (
+        <>
+          <Button {...args} disabled={false}>
+            Default
+          </Button>
+          <Button {...args} disabled={true}>
+            Disabled
+          </Button>
+        </>
+      );
+    }}
   </Story>
 </Canvas>
 
 ## Variation on size
+
 <Canvas>
   <Story name="Size">
-      {(args) => {
-          return (
-              <Container>
-                  <Button {...args} size="default">Default</Button>
-                  <Button {...args} size="small">Small</Button>
-              </Container>
-          )
-      }}
+    {args => {
+      return (
+        <>
+          <Button {...args} size="default">
+            Default
+          </Button>
+          <Button {...args} size="small">
+            Small
+          </Button>
+        </>
+      );
+    }}
   </Story>
 </Canvas>

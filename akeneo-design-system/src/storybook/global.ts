@@ -11,9 +11,10 @@ const StoryStyle = styled.div`
   color: #67768a;
   font-size: 13px;
   line-height: 20px;
+  padding: 10px;
 
   & > * {
-    margin: 10px 0px;
+    margin: 0 10px 10px 0;
   }
 `;
 

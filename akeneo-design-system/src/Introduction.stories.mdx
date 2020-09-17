@@ -1,0 +1,152 @@
+import {Meta} from '@storybook/addon-docs/blocks';
+import {linkTo} from '@storybook/addon-links';
+import * as Components from 'components';
+
+<Meta title="Introduction" />
+
+<style>{`
+  .subheading {
+    --mediumdark: '#999999';
+    font-weight: 900;
+    font-size: 13px;
+    color: #999;
+    letter-spacing: 6px;
+    line-height: 24px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    margin-top: 40px;
+  }
+
+  .link-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    row-gap: 10px;
+  }
+
+  @media (min-width: 620px) {
+    .link-list {
+      row-gap: 20px;
+      column-gap: 20px;
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media all and (-ms-high-contrast:none) {
+  .link-list {
+      display: -ms-grid;
+      -ms-grid-columns: 1fr 1fr;
+      -ms-grid-rows: 1fr 1fr;
+    }
+  }
+
+  .link-item {
+    padding: 20px 30px 20px 15px;
+    border: 1px solid #00000010;
+    border-radius: 5px;
+    transition: background 150ms ease-out, border 150ms ease-out, transform 150ms ease-out;
+    color: #333333;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .link-item:hover {
+    border-color: #1EA7FD50;
+    transform: translate3d(0, -3px, 0);
+    box-shadow: rgba(0, 0, 0, 0.08) 0 3px 10px 0;
+  }
+
+  .link-item:active {
+    border-color: #1EA7FD;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .link-item strong {
+    font-weight: 700;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .link-item span {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .link-item span.link-icon {
+    margin-right: 10px;
+    font-size: 40px;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    background-size: auto 20px;
+    background-repeat: no-repeat;
+    background-position: left center;
+  }
+
+  .link-item div.link-icon {
+    margin-right: 10px;
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    line-height: 40px;
+    background-size: auto 30px;
+    background-repeat: no-repeat;
+    background-position: left center;
+  }
+
+`}</style>
+
+# Welcome to Akeneo Design System
+
+<div class="subheading">Guidelines</div>
+
+<div class="link-list">
+  <a class="link-item" onClick={linkTo('Guidelines/Colors', 'Standard')}>
+    <span class="link-icon">🎨</span>
+    <span>
+      <strong>Colors</strong>
+      The colors enhance the experience by providing visual clues and drawing attention to the main actions.
+    </span>
+  </a>
+  <a class="link-item" onClick={linkTo('Guidelines/Iconography', 'Standard')}>
+    <span class="link-icon">💱</span>
+    <span>
+      <strong>Iconography</strong>
+      Icons are visual symbols used to represent ideas, objects or actions.
+    </span>
+  </a>
+  <a class="link-item" onClick={linkTo('Guidelines/Illustrations', 'Standard')}>
+    <span class="link-icon">🖼</span>
+    <span>
+      <strong>Illustrations</strong>
+      Illustrations are a visually and emotionally powerful tool.
+    </span>
+  </a>
+  <a class="link-item" onClick={linkTo('Guidelines/Typography', 'Standard')}>
+    <span class="link-icon">🅰</span>
+    <span>
+      <strong>Typography</strong>
+      Typography guides the users to read and understand the hierarchy of information.
+    </span>
+  </a>
+</div>
+<div class="subheading">Components</div>
+<div class="link-list">
+  {Object.keys(Components).map(componentName => (
+    <a key={componentName} class="link-item" onClick={linkTo(`Components/${componentName}`, 'Standard')}>
+      <div
+        class="link-icon"
+        style={{
+          backgroundImage: `url("./all-visual-tsx-visual-tests-renders-components-${componentName.toLowerCase()}-standard-correctly-1-snap.png")`,
+        }}
+      ></div>
+      <span>
+        <strong>{componentName}</strong>
+        {Components[componentName].__docgenInfo.description}
+      </span>
+    </a>
+  ))}
+</div>
+<div class="subheading">Patterns</div>
+<div class="link-list">TODO</div>
