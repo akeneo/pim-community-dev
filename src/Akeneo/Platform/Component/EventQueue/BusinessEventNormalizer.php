@@ -16,7 +16,7 @@ class BusinessEventNormalizer implements NormalizerInterface, DenormalizerInterf
 {
     public function supportsNormalization($data, $format = null)
     {
-        return true;
+        return $data instanceof BusinessEvent;
     }
 
     public function supportsDenormalization($data, $type, $format = null)
@@ -29,17 +29,25 @@ class BusinessEventNormalizer implements NormalizerInterface, DenormalizerInterf
      */
     public function normalize($object, $format = null, array $context = [])
     {
+        if (false === $this->supportsNormalization($object, $format)) {
+            throw new \InvalidArgumentException();
+        }
+
         return [
-            'name' => $object->getName(),
-            'author' => $object->getAuthor(),
-            'data' => $object->getData(),
-            'timestamp' => $object->getTimestamp(),
-            'uuid' => $object->getUuid()
+            'name' => $object->name(),
+            'author' => $object->author(),
+            'data' => $object->data(),
+            'timestamp' => $object->timestamp(),
+            'uuid' => $object->uuid()
         ];
     }
 
     public function denormalize($data, $type, $format = null, array $context = [])
     {
+        if (false === $this->supportsDenormalization($data, $type, $format)) {
+            throw new \InvalidArgumentException();
+        }
+
         if (!class_exists($type)) {
             throw new RuntimeException(sprintf('The class "%s" is not defined.', $type));
         }

@@ -18,8 +18,8 @@ type Props = {
 export const EditForm: FC<Props> = ({webhook}) => {
     const translate = useContext(TranslateContext);
     const history = useHistory();
-    const {register, errors} = useForm();
-    const checkAccessibility = useCheckAccessibility(webhook);
+    const {register, errors, getValues} = useForm();
+    const checkAccessibility = useCheckAccessibility(webhook, getValues('url'));
 
     const [resultTestUrlMessage, setResultTestUrlMessage] = useState<string | null>();
     const [resultTestUrlCode, setResultTestUrlCode] = useState<number | null>();

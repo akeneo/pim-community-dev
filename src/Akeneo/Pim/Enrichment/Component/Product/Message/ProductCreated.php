@@ -2,20 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Message;
+namespace Akeneo\Pim\Enrichment\Component\Product\Message;
 
 use Akeneo\Platform\Component\EventQueue\BusinessEvent;
 
 /**
+ * Business event triggered when a product is created.
+ * The `data` property contains a product normalized to the standard format.
+ *
  * @copyright 202O Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class ProductCreated extends BusinessEvent
 {
-    const NAME = 'product.created';
-
-    public function __construct(string $author, array $data, $timestamp = null, $uuid = null)
+    public function name(): string
     {
-        parent::__construct(self::NAME, $author, $data, $timestamp, $uuid);
+        return 'product.created';
     }
 }

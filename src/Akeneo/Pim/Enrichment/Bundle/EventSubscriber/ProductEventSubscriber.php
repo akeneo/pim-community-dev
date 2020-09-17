@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
-use Akeneo\Pim\Enrichment\Bundle\Message\ProductCreated;
-use Akeneo\Pim\Enrichment\Bundle\Message\ProductUpdated;
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -47,8 +47,7 @@ final class ProductEventSubscriber implements EventSubscriberInterface
         }
 
         if (null === $user = $this->security->getUser()) {
-            // Throw | Skip | Ignore ?
-            return;
+            throw new \LogicException('User should not be null.');
         }
 
         $author = $user->getUsername();
