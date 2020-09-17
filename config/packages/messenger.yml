@@ -6,7 +6,7 @@ framework:
             business_event:
                 dsn: 'gps:'
                 options:
-                    project_id: '%env(GOOGLE_PROJECT_ID)%'
+                    project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
                     topic_name: '%env(PUBSUB_TOPIC_BUSINESS_EVENT)%'
                 retry_strategy:
                     max_retries: 0
@@ -17,7 +17,7 @@ framework:
             webhook:
                 dsn: 'gps:'
                 options:
-                    project_id: '%env(GOOGLE_PROJECT_ID)%'
+                    project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
                     topic_name: '%env(PUBSUB_TOPIC_BUSINESS_EVENT)%'
                     subscription_name: '%env(PUBSUB_SUBSCRIPTION_WEBHOOK)%'
                 retry_strategy:
