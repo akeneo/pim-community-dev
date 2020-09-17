@@ -11,6 +11,7 @@ import {
   Locale,
 } from '../../../../models';
 import {
+  createAttributeLink,
   fetchAttribute,
   useGetAttributeAtMount,
 } from './attribute/attribute.utils';
@@ -239,9 +240,10 @@ const ConcatenateActionLine: React.FC<ActionLineProps> = ({
                       'pimee_catalog_rule.exceptions.select_another_attribute'
                     )} ${translate('pimee_catalog_rule.exceptions.or')} `}
                     <a
-                      href={`#${router.generate(
-                        `pim_enrich_attribute_create`
-                      )}`}>
+                      href={createAttributeLink(
+                        router,
+                        getFormValue('to.field')
+                      )}>
                       {translate(
                         'pimee_catalog_rule.exceptions.create_attribute_link'
                       )}

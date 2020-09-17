@@ -48,4 +48,18 @@ const useGetAttributeAtMount = (
   }, []);
 };
 
-export { validateAttribute, useGetAttributeAtMount, fetchAttribute };
+const createAttributeLink = (
+  router: Router,
+  attributeCode?: AttributeCode | null
+) =>
+  `#${router.generate(`pim_enrich_attribute_index`, {
+    open_create_attribute_modal: '1',
+    code: attributeCode ?? '',
+  })}`;
+
+export {
+  validateAttribute,
+  useGetAttributeAtMount,
+  fetchAttribute,
+  createAttributeLink,
+};

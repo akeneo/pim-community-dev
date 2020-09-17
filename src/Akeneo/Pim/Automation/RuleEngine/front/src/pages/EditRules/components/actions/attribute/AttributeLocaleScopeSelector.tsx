@@ -26,7 +26,10 @@ import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
 import styled from 'styled-components';
 import { InlineHelper } from '../../../../../components/HelpersInfos/InlineHelper';
 import { ActionFormContainer } from '../style';
-import { fetchAttribute } from '../attribute/attribute.utils';
+import {
+  createAttributeLink,
+  fetchAttribute,
+} from '../attribute/attribute.utils';
 
 const SelectorBlock = styled.div`
   margin-bottom: 15px;
@@ -137,7 +140,7 @@ export const AttributeLocaleScopeSelector: React.FC<Props> = ({
               )} ${translate(
                 'pimee_catalog_rule.exceptions.select_another_attribute'
               )} ${translate('pimee_catalog_rule.exceptions.or')} `}
-              <a href={`#${router.generate(`pim_enrich_attribute_create`)}`}>
+              <a href={createAttributeLink(router, attributeCode)}>
                 {translate(
                   'pimee_catalog_rule.exceptions.create_attribute_link'
                 )}
