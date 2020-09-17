@@ -31,6 +31,7 @@ describe('Visual tests', () => {
       const root = await page.$('#root');
       if (null === root) return;
 
+      await new Promise(resolve => setTimeout(resolve, 500));
       const image = await root.screenshot();
 
       expect(image).toMatchImageSnapshot({
