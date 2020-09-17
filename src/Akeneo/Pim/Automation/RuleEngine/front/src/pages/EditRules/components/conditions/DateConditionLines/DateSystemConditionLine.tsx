@@ -22,7 +22,10 @@ import {
 } from './dateConditionLines.utils';
 
 import { DateTemplateConditionLine } from './DateTemplateConditionLine';
-import { ConditionLineFormAndErrorsContainer } from '../style';
+import {
+  ConditionLineErrorsContainer,
+  ConditionLineFormAndErrorsContainer,
+} from '../style';
 import { LineErrors } from '../../LineErrors';
 import { useDateConditionHandlers } from './dateConditionLines.hooks';
 
@@ -102,7 +105,9 @@ const DateSystemConditionLine: React.FC<Props> = ({
         title={translate(`pim_common.${condition.field}`)}
         value={getValueFormValue() || ''}
       />
-      <LineErrors lineNumber={lineNumber} type='conditions' />
+      <ConditionLineErrorsContainer>
+        <LineErrors lineNumber={lineNumber} type='conditions' />
+      </ConditionLineErrorsContainer>
     </ConditionLineFormAndErrorsContainer>
   );
 };

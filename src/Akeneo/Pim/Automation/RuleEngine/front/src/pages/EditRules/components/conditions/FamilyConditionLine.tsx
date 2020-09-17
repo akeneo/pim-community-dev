@@ -6,6 +6,7 @@ import { OperatorSelector } from '../../../../components/Selectors/OperatorSelec
 import { Operator } from '../../../../models/Operator';
 import { FamilyCode } from '../../../../models';
 import {
+  ConditionLineErrorsContainer,
   ConditionLineFormAndErrorsContainer,
   ConditionLineFormContainer,
   FieldColumn,
@@ -137,7 +138,9 @@ const FamilyConditionLine: React.FC<ConditionLineProps> = ({
           </ValueColumn>
         )}
       </ConditionLineFormContainer>
-      <LineErrors lineNumber={lineNumber} type='conditions' />
+      <ConditionLineErrorsContainer>
+        <LineErrors lineNumber={lineNumber} type='conditions' />
+      </ConditionLineErrorsContainer>
     </ConditionLineFormAndErrorsContainer>
   );
 };

@@ -8,7 +8,12 @@ import {
 import { ActionTemplate } from './ActionTemplate';
 import { useControlledFormInputAction } from '../../hooks';
 import { GroupCode } from '../../../../models';
-import { ActionTitle, AknActionFormContainer } from './ActionLine';
+import {
+  ActionGrid,
+  ActionTitle,
+  AknActionFormContainer,
+  ActionLeftSide,
+} from './ActionLine';
 import { GroupsSelector } from '../../../../components/Selectors/GroupsSelector';
 import { getGroupsByIdentifiers } from '../../../../repositories/GroupRepository';
 
@@ -93,24 +98,28 @@ const RemoveGroupsActionLine: React.FC<ActionLineProps> = ({
         )}
         handleDelete={handleDelete}
         lineNumber={lineNumber}>
-        <ActionTitle>
-          {translate(
-            'pimee_catalog_rule.form.edit.actions.remove_groups.subtitle'
-          )}
-        </ActionTitle>
-        <AknActionFormContainer>
-          <Controller
-            as={GroupsSelector}
-            id={`edit-rules-actions-${lineNumber}-items`}
-            label={`${translate(
-              'pim_enrich.mass_edit.product.operation.add_to_group.field'
-            )} ${translate('pim_common.required_label')}`}
-            currentCatalogLocale={currentCatalogLocale}
-            value={getItemsFormValue()}
-            rules={{ validate: validateGroupCodes }}
-            name={itemsFormName}
-          />
-        </AknActionFormContainer>
+        <ActionGrid>
+          <ActionLeftSide>
+            <ActionTitle>
+              {translate(
+                'pimee_catalog_rule.form.edit.actions.remove_groups.subtitle'
+              )}
+            </ActionTitle>
+            <AknActionFormContainer>
+              <Controller
+                as={GroupsSelector}
+                id={`edit-rules-actions-${lineNumber}-items`}
+                label={`${translate(
+                  'pim_enrich.mass_edit.product.operation.add_to_group.field'
+                )} ${translate('pim_common.required_label')}`}
+                currentCatalogLocale={currentCatalogLocale}
+                value={getItemsFormValue()}
+                rules={{ validate: validateGroupCodes }}
+                name={itemsFormName}
+              />
+            </AknActionFormContainer>
+          </ActionLeftSide>
+        </ActionGrid>
       </ActionTemplate>
     </>
   );

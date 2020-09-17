@@ -20,6 +20,7 @@ pimee_catalog_rule:
     condition:
         fields:
             family: Family
+            family_variant: Family variant
             associations: Associations
             groups: Groups
             categories: Categories

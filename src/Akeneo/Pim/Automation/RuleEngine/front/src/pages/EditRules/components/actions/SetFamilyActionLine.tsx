@@ -3,7 +3,12 @@ import { Controller } from 'react-hook-form';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
 import { FamilySelector } from '../../../../components/Selectors/FamilySelector';
-import { ActionTitle, AknActionFormContainer } from './ActionLine';
+import {
+  ActionGrid,
+  ActionTitle,
+  AknActionFormContainer,
+  ActionLeftSide,
+} from './ActionLine';
 import { useTranslate } from '../../../../dependenciesTools/hooks';
 import { useControlledFormInputAction } from '../../hooks';
 
@@ -42,33 +47,37 @@ const SetFamilyActionLine: React.FC<ActionLineProps> = ({
         legend='This feature is under development. Please use the import to manage your rules.'
         handleDelete={handleDelete}
         lineNumber={lineNumber}>
-        <ActionTitle>
-          {translate(
-            'pimee_catalog_rule.form.edit.actions.set_family.subtitle'
-          )}
-        </ActionTitle>
-        <AknActionFormContainer
-          className={
-            isFormFieldInError('value') ? 'select2-container-error' : ''
-          }>
-          <Controller
-            as={FamilySelector}
-            label={`${translate(
-              'pim_enrich.entity.family.uppercase_label'
-            )} ${translate('pim_common.required_label')}`}
-            currentCatalogLocale={currentCatalogLocale}
-            value={getValueFormValue()}
-            placeholder={translate(
-              'pimee_catalog_rule.form.edit.actions.set_family.subtitle'
-            )}
-            name={valueFormName}
-            rules={{
-              required: translate(
-                'pimee_catalog_rule.exceptions.required_value'
-              ),
-            }}
-          />
-        </AknActionFormContainer>
+        <ActionGrid>
+          <ActionLeftSide>
+            <ActionTitle>
+              {translate(
+                'pimee_catalog_rule.form.edit.actions.set_family.subtitle'
+              )}
+            </ActionTitle>
+            <AknActionFormContainer
+              className={
+                isFormFieldInError('value') ? 'select2-container-error' : ''
+              }>
+              <Controller
+                as={FamilySelector}
+                label={`${translate(
+                  'pim_enrich.entity.family.uppercase_label'
+                )} ${translate('pim_common.required_label')}`}
+                currentCatalogLocale={currentCatalogLocale}
+                value={getValueFormValue()}
+                placeholder={translate(
+                  'pimee_catalog_rule.form.edit.actions.set_family.subtitle'
+                )}
+                name={valueFormName}
+                rules={{
+                  required: translate(
+                    'pimee_catalog_rule.exceptions.required_value'
+                  ),
+                }}
+              />
+            </AknActionFormContainer>
+          </ActionLeftSide>
+        </ActionGrid>
       </ActionTemplate>
     </>
   );

@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { ConditionLineProps } from '../ConditionLineProps';
 import { DateAttributeCondition } from '../../../../../models/conditions';
-import { ConditionLineFormAndErrorsContainer } from '../style';
+import {
+  ConditionLineErrorsContainer,
+  ConditionLineFormAndErrorsContainer,
+} from '../style';
 import {
   useBackboneRouter,
   useTranslate,
@@ -121,7 +124,9 @@ const DateAttributeConditionLine: React.FC<DateAttributeConditionLineProps> = ({
         title={title}
         value={getValueFormValue()}
       />
-      <LineErrors lineNumber={lineNumber} type='conditions' />
+      <ConditionLineErrorsContainer>
+        <LineErrors lineNumber={lineNumber} type='conditions' />
+      </ConditionLineErrorsContainer>
     </ConditionLineFormAndErrorsContainer>
   );
 };
