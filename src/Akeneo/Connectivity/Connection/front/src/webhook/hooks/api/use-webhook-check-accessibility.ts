@@ -3,11 +3,11 @@ import {useRoute} from '../../../shared/router';
 import {Webhook} from '../../model/Webhook';
 import {WebhookAccessibility} from '../../model/WebhookAccessibility';
 
-const useCheckAccessibility = (webhook: Webhook, url: string) => {
+const useCheckAccessibility = (webhook: Webhook) => {
     const code = webhook.connectionCode;
     const route = useRoute('akeneo_connectivity_connection_webhook_rest_check_accessibility', {code});
 
-    return async () => {
+    return async (url: string) => {
         const result = await fetchResult<WebhookAccessibility, undefined>(route, {
             method: 'POST',
             headers: [['Content-type', 'application/json']],

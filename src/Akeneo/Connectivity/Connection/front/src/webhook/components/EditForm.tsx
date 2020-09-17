@@ -2,14 +2,14 @@ import React, {FC, useContext, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {useHistory} from 'react-router';
 import styled from 'styled-components';
-import {FormGroup, FormInput, ToggleButton, GreyLightButton} from '../../common/components';
+import {FormGroup, FormInput, GreyLightButton, ToggleButton} from '../../common/components';
 import {CopiableCredential} from '../../settings/components/credentials/CopiableCredential';
 import {RegenerateButton} from '../../settings/components/RegenerateButton';
+import {isOk} from '../../shared/fetch-result/result';
 import {Translate, TranslateContext, useTranslate} from '../../shared/translate';
+import {useCheckAccessibility} from '../hooks/api/use-webhook-check-accessibility';
 import {Webhook} from '../model/Webhook';
 import {WebhookAccessibility} from '../model/WebhookAccessibility';
-import {useCheckAccessibility} from '../hooks/api/use-webhook-check-accessibility';
-import {isOk} from '../../shared/fetch-result/result';
 
 type Props = {
     webhook: Webhook;
@@ -19,14 +19,14 @@ export const EditForm: FC<Props> = ({webhook}) => {
     const translate = useContext(TranslateContext);
     const history = useHistory();
     const {register, errors, getValues} = useForm();
-    const checkAccessibility = useCheckAccessibility(webhook, getValues('url'));
+    const checkAccessibility = useCheckAccessibility(webhook);
 
     const [resultTestUrlMessage, setResultTestUrlMessage] = useState<string | null>();
     const [resultTestUrlCode, setResultTestUrlCode] = useState<number | null>();
     const [resultTestUrlSuccess, setResultTestUrlSuccess] = useState<string | null>();
 
     const handleClickTestUrlButton = async () => {
-        const result = await checkAccessibility();
+        const result = await checkAccessibility(getValues('url'));
 
         if (isOk(result)) {
             setResultTestUrlMessage(result.value.message);

@@ -1,5 +1,8 @@
+import React, {useEffect} from 'react';
+import {useForm} from 'react-hook-form';
 import {useHistory, useParams} from 'react-router';
-import {Loading} from '../../common/components/Loading';
+import styled from 'styled-components';
+import defaultImageUrl from '../../common/assets/illustrations/NewAPI.svg';
 import {
     ApplyButton,
     Breadcrumb,
@@ -8,22 +11,19 @@ import {
     PageContent,
     PageHeader,
     Section,
-    SmallHelper
+    SmallHelper,
 } from '../../common/components';
+import {Loading} from '../../common/components/Loading';
+import {PimView} from '../../infrastructure/pim-view/PimView';
+import {useMediaUrlGenerator} from '../../settings/use-media-url-generator';
 import {BreadcrumbRouterLink} from '../../shared/router';
 import {Translate} from '../../shared/translate';
-import {PimView} from '../../infrastructure/pim-view/PimView';
-import React, {useEffect} from 'react';
-import {useWebhook} from '../hooks/api/use-webhook';
-import defaultImageUrl from '../../common/assets/illustrations/NewAPI.svg';
-import {useMediaUrlGenerator} from '../../settings/use-media-url-generator';
 import {EditForm} from '../components/EditForm';
-import styled from 'styled-components';
-import {useForm} from 'react-hook-form';
+import {useWebhook} from '../hooks/api/use-webhook';
 
 export const EditConnectionWebhook = () => {
     const history = useHistory();
-    const {connectionCode} = useParams<{ connectionCode: string }>();
+    const {connectionCode} = useParams<{connectionCode: string}>();
     const generateMediaUrl = useMediaUrlGenerator();
     const {loading, webhook} = useWebhook(connectionCode);
 
@@ -34,19 +34,19 @@ export const EditConnectionWebhook = () => {
     }, [loading, webhook]);
 
     if (loading || !webhook) {
-        return <Loading/>;
+        return <Loading />;
     }
 
     const breadcrumb = (
         <Breadcrumb>
             <BreadcrumbRouterLink route={'oro_config_configuration_system'}>
-                <Translate id='pim_menu.tab.system'/>
+                <Translate id='pim_menu.tab.system' />
             </BreadcrumbRouterLink>
             <BreadcrumbItem onClick={() => history.push('/connections')}>
-                <Translate id='pim_menu.item.connection_settings'/>
+                <Translate id='pim_menu.item.connection_settings' />
             </BreadcrumbItem>
             <BreadcrumbItem>
-                <Translate id='akeneo_connectivity.connection.webhook.title'/>
+                <Translate id='akeneo_connectivity.connection.webhook.title' />
             </BreadcrumbItem>
         </Breadcrumb>
     );
@@ -64,7 +64,9 @@ export const EditConnectionWebhook = () => {
                 breadcrumb={breadcrumb}
                 userButtons={userButtons}
                 imageSrc={
-                    null === webhook.connectionImage ? defaultImageUrl : generateMediaUrl(webhook.connectionImage, 'thumbnail')
+                    null === webhook.connectionImage
+                        ? defaultImageUrl
+                        : generateMediaUrl(webhook.connectionImage, 'thumbnail')
                 }
                 buttons={[<SaveButton key={0} />]}
                 state={<FormState />}
@@ -88,7 +90,7 @@ export const EditConnectionWebhook = () => {
                             </HelperLink>
                         </SmallHelper>
                     </div>
-                    <EditForm webhook={webhook}/>
+                    <EditForm webhook={webhook} />
                 </Layout>
             </PageContent>
         </form>
