@@ -27,11 +27,5 @@ class AkeneoSharedCatalogExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
-
-        $isEnabled = (bool)($_ENV['FLAG_SHARED_CATALOG_ENABLED'] ?? false);
-
-        if (!$isEnabled) {
-            $container->removeDefinition('akeneo.shared_catalog.job.product');
-        }
     }
 }
