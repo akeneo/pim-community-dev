@@ -12,6 +12,7 @@ pimee_catalog_rule:
                     no_yet_calculated: Not calculated yet
                 tags:
                     label: Actions
+                priority: Priority
             mass_edit_action:
                 impacted_product_count: Calculate the impacted products
                 execute: Execute

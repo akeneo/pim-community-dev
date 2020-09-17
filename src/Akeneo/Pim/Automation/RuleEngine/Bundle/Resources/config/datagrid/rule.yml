@@ -20,6 +20,10 @@ datagrid:
                 type: twig
                 template: AkeneoPimRuleEngineBundle:Rule:_impacted_product_count.html.twig
                 frontend_type: html
+            priority:
+                label: pimee_catalog_rule.datagrid.rule-grid.column.priority
+                frontend_type: integer
+                data_name: priority
             tags:
                 label: pimee_catalog_rule.datagrid.rule-grid.column.tags.label
                 frontend_type: tags
@@ -85,6 +89,8 @@ datagrid:
                     data_name: label
                 impactedSubjectCount:
                     data_name: r.impactedSubjectCount
+                priority:
+                    data_name: r.priority
             default:
                 label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
         mass_actions:

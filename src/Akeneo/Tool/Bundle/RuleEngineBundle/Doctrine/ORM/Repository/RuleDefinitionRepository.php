@@ -38,6 +38,7 @@ class RuleDefinitionRepository extends EntityRepository implements RuleDefinitio
             ->addSelect('r.code')
             ->addSelect('r.content')
             ->addSelect('r.impactedSubjectCount')
+            ->addSelect('r.priority')
             ->addSelect(sprintf('%s AS label', $labelExpr));
 
         return $qb;
