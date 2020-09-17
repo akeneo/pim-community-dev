@@ -18,14 +18,14 @@ class ConnectionWebhook
     /** @var bool */
     private $enabled;
 
-    /** @var Url */
+    /** @var ?Url */
     private $url;
 
-    public function __construct(string $code, bool $enabled, string $url)
+    public function __construct(string $code, bool $enabled, ?string $url)
     {
         $this->code = $code;
         $this->enabled = $enabled;
-        $this->url = new Url($url);
+        $this->url = $url ? new Url($url) : null;
     }
 
     public function code(): string
@@ -38,7 +38,7 @@ class ConnectionWebhook
         return $this->enabled;
     }
 
-    public function url(): Url
+    public function url(): ?Url
     {
         return $this->url;
     }

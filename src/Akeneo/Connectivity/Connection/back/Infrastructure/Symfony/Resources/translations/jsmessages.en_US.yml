@@ -208,6 +208,7 @@ akeneo_connectivity.connection:
         error:
             wrong_url: This value is not a valid URL.
             required: This field is required.
+            not_found: You are trying to update a connection that does not exist.
         flash:
             success: Event subscription successfully updated.
             error: Sorry, an error occurred while editing the event subscription.

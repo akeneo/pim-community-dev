@@ -8,7 +8,7 @@ namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UpdateConnectionWebhookCommand
+class UpdateWebhookCommand
 {
     /** @var string */
     private $code;
@@ -16,10 +16,10 @@ class UpdateConnectionWebhookCommand
     /** @var bool */
     private $enabled;
 
-    /** @var string */
+    /** @var ?string */
     private $url;
 
-    public function __construct(string $code, bool $enabled, string $url)
+    public function __construct(string $code, bool $enabled, ?string $url)
     {
         $this->code = $code;
         $this->enabled = $enabled;
@@ -36,7 +36,7 @@ class UpdateConnectionWebhookCommand
         return $this->enabled;
     }
 
-    public function url(): string
+    public function url(): ?string
     {
         return $this->url;
     }

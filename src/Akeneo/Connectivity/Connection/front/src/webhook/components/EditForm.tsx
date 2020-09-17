@@ -37,10 +37,6 @@ export const EditForm: FC<Props> = ({webhook}: Props) => {
                             value: getValues('enabled'),
                             message: 'akeneo_connectivity.connection.webhook.error.required',
                         },
-                        pattern: {
-                            value: new RegExp('^(https?|ftp):\\/\\/[^\\s/$.?#].[^\\s]*$'),
-                            message: 'akeneo_connectivity.connection.webhook.error.wrong_url',
-                        },
                     })}
                 />
             </FormGroup>

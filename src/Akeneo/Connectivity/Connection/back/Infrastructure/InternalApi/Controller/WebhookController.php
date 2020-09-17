@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Command\UpdateConnectionWebhookCommand;
-use Akeneo\Connectivity\Connection\Application\Webhook\Command\UpdateConnectionWebhookHandler;
+use Akeneo\Connectivity\Connection\Application\Webhook\Command\UpdateWebhookCommand;
+use Akeneo\Connectivity\Connection\Application\Webhook\Command\UpdateWebhookHandler;
 use Akeneo\Connectivity\Connection\Application\Webhook\Query\GetAConnectionWebhookHandler;
 use Akeneo\Connectivity\Connection\Application\Webhook\Query\GetAConnectionWebhookQuery;
+use Akeneo\Connectivity\Connection\Domain\DomainErrorInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\ConnectionWebhookNotFoundException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +22,7 @@ class WebhookController
     /** @var GetAConnectionWebhookHandler */
     private $getAConnectionWebhookHandler;
 
-    /** @var UpdateConnectionWebhookHandler */
+    /** @var UpdateWebhookHandler */
     private $updateConnectionWebhookHandler;
 
     /** @var SecurityFacade */
@@ -29,7 +31,7 @@ class WebhookController
     public function __construct(
         SecurityFacade $securityFacade,
         GetAConnectionWebhookHandler $getAConnectionWebhookHandler,
-        UpdateConnectionWebhookHandler $updateConnectionWebhookHandler
+        UpdateWebhookHandler $updateConnectionWebhookHandler
     ) {
         $this->getAConnectionWebhookHandler = $getAConnectionWebhookHandler;
         $this->updateConnectionWebhookHandler = $updateConnectionWebhookHandler;
@@ -57,14 +59,14 @@ class WebhookController
 
         try {
             $this->updateConnectionWebhookHandler->handle(
-                new UpdateConnectionWebhookCommand(
+                new UpdateWebhookCommand(
                     $request->get('code', ''),
                     $request->get('enabled'),
-                    $request->get('url', '')
+                    $request->get('url')
                 )
             );
-        } catch (\RuntimeException $runtimeException) {
-            return new JsonResponse($runtimeException->getMessage(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        } catch (ConnectionWebhookNotFoundException $webhookNotFoundException) {
+            return new JsonResponse($webhookNotFoundException->getMessage(), Response::HTTP_NOT_FOUND);
         } catch (ConstraintViolationListException $violationListException) {
             $errorList = $this->buildViolationResponse($violationListException->getConstraintViolationList());
 

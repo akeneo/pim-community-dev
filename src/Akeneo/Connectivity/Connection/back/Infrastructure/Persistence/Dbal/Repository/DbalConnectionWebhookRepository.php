@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Reposit
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Write\ConnectionWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\ConnectionWebhookRepository;
 use Doctrine\DBAL\Connection as DbalConnection;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -33,9 +34,12 @@ SQL;
         return $this->dbalConnection->executeUpdate(
             $query,
             [
-                'url' => (string) $connectionWebhook->url(),
+                'url' => $connectionWebhook->url(),
                 'enabled' => $connectionWebhook->enabled(),
                 'code' => $connectionWebhook->code(),
+            ],
+            [
+                'enabled' => Types::BOOLEAN,
             ]
         );
     }
