@@ -10,6 +10,7 @@ const unitConfig = {
     'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge',
     'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/components/Button.tsx',
     'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/components/Checkbox.tsx',
+    'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/components/Modal.tsx',
     'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/components/NoData.tsx',
     'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/icons',
     'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/illustrations',

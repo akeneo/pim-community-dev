@@ -173,6 +173,39 @@ extensions:
             label: pim_import_export.form.job_instance.tab.properties.with_media.title
             tooltip: pim_import_export.form.job_instance.tab.properties.with_media.help
 
+    pim-job-instance-csv-product-model-export-edit-properties-with-label:
+        module: pim/job/product/edit/field/with-label
+        parent: pim-job-instance-csv-product-model-export-edit-global
+        position: 190
+        targetZone: properties
+        config:
+            fieldCode: configuration.with_label
+            readOnly: false
+            label: pim_import_export.form.job_instance.tab.properties.with_label.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.with_label.help
+
+    pim-job-instance-csv-product-model-export-edit-properties-header-with-label:
+        module: pim/job/product/edit/field/header-with-label
+        parent: pim-job-instance-csv-product-model-export-edit-global
+        position: 200
+        targetZone: properties
+        config:
+            fieldCode: configuration.header_with_label
+            readOnly: false
+            label: pim_import_export.form.job_instance.tab.properties.header_with_label.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.header_with_label.help
+
+    pim-job-instance-csv-product-model-export-edit-properties-file-locale:
+        module: pim/job/product/edit/field/file-locale
+        parent: pim-job-instance-csv-product-model-export-edit-global
+        position: 210
+        targetZone: properties
+        config:
+            fieldCode: configuration.file_locale
+            readOnly: false
+            label: pim_import_export.form.job_instance.tab.properties.file_locale.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.file_locale.help
+
     pim-job-instance-csv-product-model-export-edit-content-structure:
         module: pim/job/product/edit/content/structure
         parent: pim-job-instance-csv-product-model-export-edit-content

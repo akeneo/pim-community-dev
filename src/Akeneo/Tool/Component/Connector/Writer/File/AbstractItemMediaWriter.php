@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Component\Connector\Writer\File;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
@@ -64,12 +65,16 @@ abstract class AbstractItemMediaWriter implements
     /** @var String */
     protected $jobParamFilePath;
 
+    /** @var FlatTranslatorInterface */
+    private $flatTranslator;
+
     /**
      * @param ArrayConverterInterface            $arrayConverter
      * @param BufferFactory                      $bufferFactory
      * @param FlatItemBufferFlusher              $flusher
      * @param AttributeRepositoryInterface       $attributeRepository
      * @param FileExporterPathGeneratorInterface $fileExporterPath
+     * @param FlatTranslatorInterface $flatTranslator
      * @param array                              $mediaAttributeTypes
      * @param String                             $jobParamFilePath
      */
@@ -79,6 +84,7 @@ abstract class AbstractItemMediaWriter implements
         FlatItemBufferFlusher $flusher,
         AttributeRepositoryInterface $attributeRepository,
         FileExporterPathGeneratorInterface $fileExporterPath,
+        FlatTranslatorInterface $flatTranslator,
         array $mediaAttributeTypes,
         string $jobParamFilePath = self::DEFAULT_FILE_PATH
     ) {
@@ -89,6 +95,7 @@ abstract class AbstractItemMediaWriter implements
         $this->mediaAttributeTypes = $mediaAttributeTypes;
         $this->fileExporterPath = $fileExporterPath;
         $this->jobParamFilePath = $jobParamFilePath;
+        $this->flatTranslator = $flatTranslator;
 
         $this->localFs = new Filesystem();
     }
@@ -128,9 +135,38 @@ abstract class AbstractItemMediaWriter implements
             $flatItems[] = $this->arrayConverter->convert($item, $converterOptions);
         }
 
+        if (!empty($items) && $parameters->has('withHeader') && true === $parameters->get('withHeader')) {
+            $flatItems = $this->fillMissingFlatItemValues($flatItems);
+        }
+
+        if ($parameters->has('with_label') && $parameters->get('with_label') && $parameters->has('file_locale')) {
+            $fileLocale = $parameters->get('file_locale');
+            $headerWithLabel = $parameters->has('header_with_label') && $parameters->get('header_with_label');
+            $scope = $parameters->get('filters')['structure']['scope'] ?? $parameters->get('scope');
+
+            $flatItems = $this->flatTranslator->translate($flatItems, $fileLocale, $scope, $headerWithLabel);
+        }
+
         $options = [];
         $options['withHeader'] = $parameters->get('withHeader');
+
         $this->flatRowBuffer->write($flatItems, $options);
+    }
+
+    private function fillMissingFlatItemValues(array $items): array
+    {
+        $additionalHeaders = $this->getAdditionalHeaders();
+        $additionalHeadersFilled = array_fill_keys($additionalHeaders, '');
+
+        $flatItemIndex = array_keys($items);
+        $additionalHeadersFilledInFlatItemFormat = array_fill_keys($flatItemIndex, $additionalHeadersFilled);
+
+        return array_replace_recursive($additionalHeadersFilledInFlatItemFormat, $items);
+    }
+
+    protected function getAdditionalHeaders()
+    {
+        return [];
     }
 
     /**

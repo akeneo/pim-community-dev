@@ -1,5 +1,21 @@
 # 3.0.x
 
+# 3.0.84 (2020-08-19)
+
+# 3.0.83 (2020-08-04)
+
+## Improvements
+
+- PIM-9383: Fix underscore JS dependency
+
+# 3.0.82 (2020-07-23)
+
+## Bug fixes
+
+- PIM-9282: Make calling attribute options via API case insensitive
+
+# 3.0.81 (2020-07-22)
+
 # 3.0.80 (2020-07-06)
 
 ## Bug fixes

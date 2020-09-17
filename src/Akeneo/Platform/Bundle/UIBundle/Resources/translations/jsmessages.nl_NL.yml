@@ -166,6 +166,7 @@ pim_common:
   done: Gedaan
   edit: Wijzig
   entity_updated: Er zijn niet-opgeslagen wijzigingen.
+  export: Exporteer
   from: Van
   general_properties: Algemene eigenschappen
   history: Geschiedenis

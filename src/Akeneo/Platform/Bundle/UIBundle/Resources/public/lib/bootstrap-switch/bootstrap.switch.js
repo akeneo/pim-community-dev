@@ -31,6 +31,10 @@
                 myClasses = el;
             });
 
+            if ($element.hasClass('has-switch')) {
+                return;
+            }
+
             $element.addClass('has-switch');
 
             if ($element.data('on') !== undefined)

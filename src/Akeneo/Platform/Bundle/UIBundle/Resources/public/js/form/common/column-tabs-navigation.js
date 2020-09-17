@@ -95,7 +95,6 @@ define(
                     existingTab.label = event.label;
                     existingTab.isVisible = event.isVisible;
                 }
-
                 this.trigger('pim_menu:column:register_navigation_item', tab);
 
                 this.render();

@@ -14,11 +14,10 @@ import {
 } from 'akeneomeasure/model/measurement-family';
 import {MeasurementFamilyTable} from 'akeneomeasure/pages/list/MeasurementFamilyTable';
 import {CreateMeasurementFamily} from 'akeneomeasure/pages/create-measurement-family/CreateMeasurementFamily';
-import {useToggleState} from 'akeneomeasure/shared/hooks/use-toggle-state';
 import {PageContent} from 'akeneomeasure/shared/components/PageContent';
 import {TablePlaceholder} from 'akeneomeasure/pages/common/Table';
 import {Direction} from 'akeneomeasure/model/direction';
-import {Button, SearchBar, NoDataSection, NoDataTitle, NoDataText} from '@akeneo-pim-community/shared';
+import {Button, SearchBar, NoDataSection, NoDataTitle, NoDataText, useToggleState} from '@akeneo-pim-community/shared';
 import {useTranslate, useUserContext, useSecurity, PimView} from '@akeneo-pim-community/legacy-bridge';
 
 const useSorting = (

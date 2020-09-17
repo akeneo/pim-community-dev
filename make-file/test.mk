@@ -73,7 +73,11 @@ endif
 ### Migration tests
 .PHONY: migration-back
 migration-back: var/tests/phpunit
+ifeq ($(CI),true)
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php PIM_Migration_Test
+else
+	APP_ENV=test $(PHP_RUN) ./vendor/bin/phpunit -c . --testsuite PIM_Migration_Test
+endif
 
 ### End to end tests
 .PHONY: end-to-end-back
