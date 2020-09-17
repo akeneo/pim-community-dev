@@ -28,7 +28,7 @@ import {
 import { SmallHelper } from '../../../../components/HelpersInfos';
 
 const SmallHelperWrapper = styled.div`
-  margin: -14px 0 18px;
+  margin: -6px 0 10px;
 `;
 
 const SetActionLine: React.FC<ActionLineProps> = ({
