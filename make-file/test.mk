@@ -84,11 +84,12 @@ endif
 ### Migration tests
 .PHONY: migration-back
 migration-back: var/tests/phpunit
-ifeq ($(CI),true)
 	cp vendor/akeneo/pim-community-dev/upgrades/schema/*.php upgrades/schema/.
+ifeq ($(CI),true)
 	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php PIM_Migration_Test
 else
-	@echo This step is only compatible with CircleCI Integration as it uses some CircleCI binaries to split the tests
+	@echo Migration files from CE copied into upgrade/ dir. Do not commit them.
+	APP_ENV=test $(PHP_RUN) ./vendor/bin/phpunit -c . --testsuite PIM_Migration_Test
 endif
 
 ### End to end tests

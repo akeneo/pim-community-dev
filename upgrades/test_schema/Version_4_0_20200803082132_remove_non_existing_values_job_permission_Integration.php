@@ -45,10 +45,6 @@ final class Version_4_0_20200803082132_remove_non_existing_values_job_permission
 
         $this->runMigration();
         $this->assertTrue($this->jobProfileAccessIsDefined());
-
-        # Run again to check the migration is idempotent
-        $this->runMigration();
-        $this->assertTrue($this->jobProfileAccessIsDefined());
     }
 
     private function runMigration(): void
