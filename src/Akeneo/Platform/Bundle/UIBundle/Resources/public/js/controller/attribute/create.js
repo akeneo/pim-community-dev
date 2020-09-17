@@ -25,11 +25,15 @@ function (_, BaseController, FormBuilder, fetcherRegistry) {
             fetcherRegistry.getFetcher('locale').clear();
             fetcherRegistry.getFetcher('measure').clear();
 
+            var code = this.getQueryParam(location.href, 'code');
             var type = this.getQueryParam(location.href, 'attribute_type');
 
             return FormBuilder.getFormMeta('pim-attribute-create-form')
                 .then(FormBuilder.buildForm)
                 .then((form) => {
+                    if (code) {
+                        form.setCode(code);
+                    }
                     form.setType(type);
 
                     return form.configure().then(() => {
@@ -41,7 +45,7 @@ function (_, BaseController, FormBuilder, fetcherRegistry) {
                         form.trigger('pim_enrich:form:can-leave', event);
                     });
 
-                    form.setData(this.getNewAttribute(type));
+                    form.setData(this.getNewAttribute(type, code));
 
                     form.setElement(this.$el).render();
 
@@ -58,17 +62,24 @@ function (_, BaseController, FormBuilder, fetcherRegistry) {
          * @return  {String}
          */
         getQueryParam: function (url, paramName) {
-            var params = url.substr(url.lastIndexOf('?') + 1);
+            if (-1 === url.lastIndexOf('?')) {
+                return '';
+            }
+            var params = url.substring(url.lastIndexOf('?') + 1);
             if (!params) {
                 return null;
             }
 
-            var paramsList = params.split('=');
-            if (!_.contains(paramsList, paramName)) {
-                return null;
-            }
+            var stringParams = params.split('&');
+            var objectParams = {};
+            stringParams.forEach(function (stringParam) {
+                var tab = stringParam.split('=');
+                if (tab.length === 2) {
+                    objectParams[tab[0]] = tab[1];
+                }
+            })
 
-            return paramsList[paramsList.indexOf(paramName) + 1];
+            return objectParams[paramName] ?? '';
         },
 
         /**
@@ -76,9 +87,9 @@ function (_, BaseController, FormBuilder, fetcherRegistry) {
          *
          * @return {Object}
          */
-        getNewAttribute: function (type) {
+        getNewAttribute: function (type, code) {
             return {
-                code: '',
+                code: code ?? '',
                 labels: {},
                 type: type,
                 available_locales: []
