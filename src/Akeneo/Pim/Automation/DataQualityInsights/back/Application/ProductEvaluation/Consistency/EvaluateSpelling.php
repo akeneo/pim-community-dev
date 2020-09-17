@@ -131,7 +131,7 @@ class EvaluateSpelling implements EvaluateCriterionInterface
             $attributeCode = $productValueByChannelAndLocale->getAttribute()->getCode();
             $productValue = $productValueByChannelAndLocale->getValueByChannelAndLocale($channelCode, $localeCode);
 
-            if ($productValue === null || $productValue === '') {
+            if (!$this->isValidValue($productValue)) {
                 continue;
             }
 
@@ -153,6 +153,28 @@ class EvaluateSpelling implements EvaluateCriterionInterface
     public function getCode(): CriterionCode
     {
         return new CriterionCode(self::CRITERION_CODE);
+    }
+
+    private function isValidValue($value): bool
+    {
+        if ($value === null || !is_string($value) || is_numeric($value)) {
+            return false;
+        }
+
+        $value = trim($value);
+
+        if (empty($value)) {
+            return false;
+        }
+
+        if (
+            preg_match_all("/[\S']+/", $value) === 1 &&
+            preg_match('~(@|^\d+|\d+[_\-]|[_\-]\d+)~', $value) === 1
+        ) {
+            return false;
+        }
+
+        return true;
     }
 
     private function computeProductValueRate(TextCheckResultCollection $checkTextResult, int $faultWeight): Rate

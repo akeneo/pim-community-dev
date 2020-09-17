@@ -8,7 +8,12 @@ import {
   useTranslate,
   useBackboneRouter,
 } from '../../../../dependenciesTools/hooks';
-import { ActionTitle, AknActionFormContainer } from './ActionLine';
+import {
+  ActionGrid,
+  ActionTitle,
+  AknActionFormContainer,
+  ActionLeftSide,
+} from './ActionLine';
 import { GroupsSelector } from '../../../../components/Selectors/GroupsSelector';
 import { getGroupsByIdentifiers } from '../../../../repositories/GroupRepository';
 
@@ -92,27 +97,31 @@ export const SetGroupsActionLine: React.FC<ActionLineProps> = ({
         )}
         handleDelete={handleDelete}
         lineNumber={lineNumber}>
-        <ActionTitle>
-          {translate(
-            'pimee_catalog_rule.form.edit.actions.set_groups.subtitle'
-          )}
-        </ActionTitle>
-        <AknActionFormContainer
-          className={
-            isFormFieldInError('value') ? 'select2-container-error' : ''
-          }>
-          <Controller
-            as={GroupsSelector}
-            id={`edit-rules-actions-${lineNumber}-value`}
-            label={`${translate(
-              'pim_enrich.mass_edit.product.operation.add_to_group.field'
-            )} ${translate('pim_common.required_label')}`}
-            currentCatalogLocale={currentCatalogLocale}
-            value={getValueFormValue()}
-            rules={{ validate: validateGroupCodes }}
-            name={valueFormName}
-          />
-        </AknActionFormContainer>
+        <ActionGrid>
+          <ActionLeftSide>
+            <ActionTitle>
+              {translate(
+                'pimee_catalog_rule.form.edit.actions.set_groups.subtitle'
+              )}
+            </ActionTitle>
+            <AknActionFormContainer
+              className={
+                isFormFieldInError('value') ? 'select2-container-error' : ''
+              }>
+              <Controller
+                as={GroupsSelector}
+                id={`edit-rules-actions-${lineNumber}-value`}
+                label={`${translate(
+                  'pim_enrich.mass_edit.product.operation.add_to_group.field'
+                )} ${translate('pim_common.required_label')}`}
+                currentCatalogLocale={currentCatalogLocale}
+                value={getValueFormValue()}
+                rules={{ validate: validateGroupCodes }}
+                name={valueFormName}
+              />
+            </AknActionFormContainer>
+          </ActionLeftSide>
+        </ActionGrid>
       </ActionTemplate>
     </>
   );

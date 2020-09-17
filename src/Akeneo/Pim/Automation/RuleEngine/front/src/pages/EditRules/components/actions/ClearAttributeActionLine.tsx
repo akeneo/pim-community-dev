@@ -2,7 +2,7 @@ import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { ActionTemplate } from './ActionTemplate';
 import { ActionLineProps } from './ActionLineProps';
-import { ActionTitle } from './ActionLine';
+import { ActionGrid, ActionTitle, ActionLeftSide } from './ActionLine';
 import { AttributeLocaleScopeSelector } from './attribute/AttributeLocaleScopeSelector';
 import {
   useTranslate,
@@ -63,29 +63,33 @@ const ClearAttributeActionLine: React.FC<ActionLineProps> = ({
         legend={translate('pimee_catalog_rule.form.helper.clear_attribute')}
         handleDelete={handleDelete}
         lineNumber={lineNumber}>
-        <ActionTitle>
-          {translate(
-            'pimee_catalog_rule.form.edit.actions.clear_attribute.subtitle'
-          )}
-        </ActionTitle>
-        <AttributeLocaleScopeSelector
-          attribute={attribute}
-          attributeId={`edit-rules-action-${lineNumber}-field`}
-          attributeLabel={`${translate(
-            'pimee_catalog_rule.form.edit.fields.attribute'
-          )} ${translate('pim_common.required_label')}`}
-          attributePlaceholder={translate(
-            'pimee_catalog_rule.form.edit.actions.clear_attribute.subtitle'
-          )}
-          attributeCode={getFieldFormValue() ?? ''}
-          scopeId={`edit-rules-action-${lineNumber}-scope`}
-          scopes={scopes}
-          localeId={`edit-rules-action-${lineNumber}-locale`}
-          locales={locales}
-          lineNumber={lineNumber}
-          attributeFormName={fieldFormName}
-          onAttributeCodeChange={onAttributeChange}
-        />
+        <ActionGrid>
+          <ActionLeftSide>
+            <ActionTitle>
+              {translate(
+                'pimee_catalog_rule.form.edit.actions.clear_attribute.subtitle'
+              )}
+            </ActionTitle>
+            <AttributeLocaleScopeSelector
+              attribute={attribute}
+              attributeId={`edit-rules-action-${lineNumber}-field`}
+              attributeLabel={`${translate(
+                'pimee_catalog_rule.form.edit.fields.attribute'
+              )} ${translate('pim_common.required_label')}`}
+              attributePlaceholder={translate(
+                'pimee_catalog_rule.form.edit.actions.clear_attribute.subtitle'
+              )}
+              attributeCode={getFieldFormValue() ?? ''}
+              scopeId={`edit-rules-action-${lineNumber}-scope`}
+              scopes={scopes}
+              localeId={`edit-rules-action-${lineNumber}-locale`}
+              locales={locales}
+              lineNumber={lineNumber}
+              attributeFormName={fieldFormName}
+              onAttributeCodeChange={onAttributeChange}
+            />
+          </ActionLeftSide>
+        </ActionGrid>
       </ActionTemplate>
     </>
   );

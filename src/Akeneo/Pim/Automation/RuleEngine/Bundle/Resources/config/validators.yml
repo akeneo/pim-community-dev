@@ -163,3 +163,13 @@ services:
             - '@akeneo_rule_engine.repository.rule_definition'
         tags:
             - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Automation\RuleEngine\Component\Validator\ProductSourceKeysValidator:
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Automation\RuleEngine\Component\Validator\TargetAcceptsNewLineValidator:
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: validator.constraint_validator }

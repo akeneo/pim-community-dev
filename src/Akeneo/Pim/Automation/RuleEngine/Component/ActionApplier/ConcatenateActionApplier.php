@@ -19,12 +19,15 @@ use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedActionForSubjectEven
 use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonApplicableActionException;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConcatenateActionInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSource;
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductTarget;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
@@ -35,16 +38,18 @@ use Webmozart\Assert\Assert;
  */
 final class ConcatenateActionApplier implements ActionApplierInterface
 {
-    /**
-     * Temporary separator. Should be customizable in RUL-26.
-     */
-    const SEPARATOR = ' ';
+    private const SEPARATOR_BETWEEN_TWO_FIELDS = ' ';
+    private const NEW_LINE_IN_WYSIWYG = '<br/>';
+    private const NEW_LINE_IN_NOT_WYSIWYG = "\n";
 
     /** @var PropertySetterInterface */
     private $propertySetter;
 
     /** @var ValueStringifierRegistry */
     private $valueStringifierRegistry;
+
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $attributeRepository;
 
     /** @var GetAttributes */
     private $getAttributes;
@@ -55,11 +60,13 @@ final class ConcatenateActionApplier implements ActionApplierInterface
     public function __construct(
         PropertySetterInterface $propertySetter,
         ValueStringifierRegistry $valueStringifierRegistry,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
         GetAttributes $getAttributes,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->propertySetter = $propertySetter;
         $this->valueStringifierRegistry = $valueStringifierRegistry;
+        $this->attributeRepository = $attributeRepository;
         $this->getAttributes = $getAttributes;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -136,44 +143,33 @@ final class ConcatenateActionApplier implements ActionApplierInterface
         EntityWithFamilyVariantInterface $entity,
         ProductConcatenateActionInterface $action
     ): void {
-        $stringValues = [];
+        $targetAttribute = $this->attributeRepository->findOneByIdentifier($action->getTarget()->getField());
+        $isTextAreaType = null !== $targetAttribute && $targetAttribute->getType() === AttributeTypes::TEXTAREA;
+        $isWysiwyg = $isTextAreaType && $targetAttribute->isWysiwygEnabled();
 
+        $data = '';
+        $lastSource = null;
         /** @var ProductSource $source */
         foreach ($action->getSourceCollection() as $source) {
-            $field = $source->getField();
-            $attribute = $this->getAttributes->forCode($field);
-            Assert::isInstanceOf(
-                $attribute,
-                Attribute::class,
-                sprintf('Attribute with code "%s" was not found', $field)
-            );
-            $attributeCode = $attribute->code();
-
-            $value = $entity->getValue($attributeCode, $source->getLocale(), $source->getScope());
-            if (null === $value) {
-                throw new NonApplicableActionException(
-                    sprintf('The value for the "%s" attribute is empty for the entity.', $attributeCode)
-                );
+            if (null !== $source->getField()) {
+                if (null !== $lastSource && null !== $lastSource->getField()) {
+                    $data .= static::SEPARATOR_BETWEEN_TWO_FIELDS;
+                }
+                $data .= $this->getStringValueFromFieldSource($entity, $source, $action->getTarget());
+            } elseif (null !== $source->getText()) {
+                $data .= $source->getText();
+            } elseif (null !== $source->isNewLine()) {
+                if (!$isTextAreaType) {
+                    continue;
+                }
+                $data .= $isWysiwyg ? static::NEW_LINE_IN_WYSIWYG : static::NEW_LINE_IN_NOT_WYSIWYG;
+            } else {
+                throw new \InvalidArgumentException('A source of concatenate action is not valid.');
             }
 
-            $stringifier = $this->getStringifier($attributeCode, $attribute->type());
-            $stringValue = $stringifier->stringify(
-                $value,
-                array_merge(
-                    $source->getOptions(),
-                    ['target_attribute_code' => $action->getTarget()->getField()]
-                )
-            );
-            if ('' === $stringValue) {
-                throw new NonApplicableActionException(
-                    sprintf('The value for the "%s" attribute is empty for the entity.', $attributeCode)
-                );
-            }
-
-            $stringValues[] = $stringValue;
+            $lastSource = $source;
         }
 
-        $data = implode(static::SEPARATOR, $stringValues);
         $target = $action->getTarget();
 
         $this->propertySetter->setData(
@@ -182,6 +178,44 @@ final class ConcatenateActionApplier implements ActionApplierInterface
             $data,
             ['locale' => $target->getLocale(), 'scope' => $target->getScope()]
         );
+    }
+
+    private function getStringValueFromFieldSource(
+        EntityWithFamilyVariantInterface $entity,
+        ProductSource $source,
+        ProductTarget $target
+    ): string {
+        $field = $source->getField();
+        $attribute = $this->getAttributes->forCode($field);
+        Assert::isInstanceOf(
+            $attribute,
+            Attribute::class,
+            sprintf('Attribute with code "%s" was not found', $field)
+        );
+        $attributeCode = $attribute->code();
+
+        $value = $entity->getValue($attributeCode, $source->getLocale(), $source->getScope());
+        if (null === $value) {
+            throw new NonApplicableActionException(
+                sprintf('The value for the "%s" attribute is empty for the entity.', $attributeCode)
+            );
+        }
+
+        $stringifier = $this->getStringifier($attributeCode, $attribute->type());
+        $stringValue = $stringifier->stringify(
+            $value,
+            array_merge(
+                $source->getOptions(),
+                ['target_attribute_code' => $target->getField()]
+            )
+        );
+        if ('' === $stringValue) {
+            throw new NonApplicableActionException(
+                sprintf('The value for the "%s" attribute is empty for the entity.', $attributeCode)
+            );
+        }
+
+        return $stringValue;
     }
 
     private function getStringifier(string $attributeCode, string $attributeType): ValueStringifierInterface

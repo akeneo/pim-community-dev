@@ -111,14 +111,19 @@ pimee_catalog_rule:
             preview: Preview
             fields:
                 family: Family
+                family_variant: Family variant
                 category: Category
                 identifier: Identifier
                 attribute: Attribute
                 groups: Groups
+                parent: Parent
                 measurement_unit: Measurement unit
                 measurement_default_unit: "Default unit ({{ unit }})"
                 currency: Currency
                 operator: operator
+                entity_type:
+                    label: Entity type
+                    placeholder: Please select an entity type
             execute:
                 button: Save and execute
                 title: Save and execute the rule
@@ -161,12 +166,43 @@ pimee_catalog_rule:
                     select_reference_entity: Select your reference entities
                     select_asset: Select your assets
                     select_measurement_unit: Select your unit
+                set_quantified_associations:
+                    title: SET Quantified associations
+                    helper: To set quantified associations, please select your association type(s) and then, the products, product models or groups you want to associate to your product selection.
+                set_associations:
+                    title: SET Associations
+                    helper: To set associations, please select your association type(s) and then, the products, product models or groups you want to associate to your product selection.
+                    select_association_type: Select your association type
+                    association_types: Association types
+                    add_group: Add a group
+                    add_product: Add a product
+                    add_product_model: Add a product model
+                    add_association_type: Add an association type
+                    select_title:
+                        products: Select your products
+                        product_models: Select your product models
+                        groups: Select your groups
+                    select:
+                        products: Products
+                        product_models: Product models
+                        groups: Groups
+                    counts:
+                        products: ]-Inf, 1]{{ count }} product|]1, +Inf[{{ count }} products
+                        product_models: ]-Inf, 1]{{ count }} product model|]1, +Inf[{{ count }} product models
+                        groups: ]-Inf, 1]{{ count }} group|]1, +Inf[{{ count }} groups
+                add_associations:
+                    title: ADD Associations
+                    helper: To add associations, please select your association type(s) and then, the products, product models or groups you want to associate to your product selection.
                 clear_attribute:
                     title: CLEAR Attribute value
                     subtitle: Select the attribute to clear
                     attribute_label: Attribute
                 clear_associations:
                     title: CLEAR Associations
+                    helper: All the associations for the selected products will be cleared.
+                clear_quantified_associations:
+                    title: CLEAR Quantified associations
+                    helper: All the quantified associations for the selected products will be cleared.
                 clear_categories:
                     title: CLEAR Categories
                 clear_groups:
@@ -217,8 +253,17 @@ pimee_catalog_rule:
                 concatenate:
                     title: CONCATENATE values
                     helper: To concatenate attribute values, please add the attributes and then, select the target attribute.
+                    select_target: Select your target
+                    attribute_placeholder: Select your target attribute
+                    add_text: Add text
+                    add_attribute: Add attribute
+                    add_new_line: Add line break
+                    line_break: Line break
                     date_format: Select a date format
                     label_locale: Label locale
+                    remove_new_line_confirm:
+                        label: Remove line break from operation list
+                        description: The new target attribute does not accept line breaks. This change will remove all line breaks.
             conditions:
                 delete:
                     label: Remove condition
@@ -266,7 +311,6 @@ pimee_catalog_rule:
         helper:
             add_to_category: To add your product selection to one or more categories, please start by selecting your category trees and then, your categories.
             clear_attribute: To clear the attribute value, please start by selecting the attribute to clear.
-            clear_associations: All the associations for the selected products will be cleared.
             clear_categories: All the categories for the selected products will be cleared.
             clear_groups: All the groups for the selected products will be cleared.
             product_selection: "You must define your product selection in order to create your rule. If you don't know how, "
@@ -316,6 +360,8 @@ pimee_catalog_rule:
         required_constant_for_operation: A constant value is required for this operation
         required_operator_for_operation: An operator is required for this operation
         required_unit: A measurement unit is required
+        identifier_or_quantity_missing: An identifier and a quantity are required for each element
+        required_item: At least one item is required for this action
         division_by_zero: Divisions by zero are not possible
         two_operations_are_required: The operation list should contain 2 operations or more.
         two_items_are_required: The list should contain 2 items or more.
@@ -327,6 +373,7 @@ pimee_catalog_rule:
         unknown_scope: 'The "{{ scopeCode }}" channel does not exist'
         scope_on_unscopable_attribute: This attribute is not scopable. Please remove the channel before you continue.
         unknown_families: "{1}The {{ familyCodes }} family does not exist|]1,+Inf[The {{ familyCodes }} families do not exist"
+        unknown_family_variants: "{1}The {{ familyVariantCodes }} family variant does not exist|]1,+Inf[The {{ familyVariantCodes }} family variants do not exist"
         unknown_attribute_options: "{1}The {{ attributeOptionCodes }} option does not exist|]1,+Inf[The {{ attributeOptionCodes }} options do not exist"
         unknown_attribute_code: "The {{ attributeCode }} attribute does not exist"
         unknown_categories: "{1}The {{ categoryCodes }} category does not exist.|]1, +Inf[The {{ categoryCodes }} categories do not exist"
@@ -340,6 +387,7 @@ pimee_catalog_rule:
         wrong_date_timespan: To define a valid timespan, please make sure your end date isn’t set before your start date.
         measurement_family_not_found: The "{{ measurement_code }}" measurement family does not exist
         unit_not_found: The "{{ unitCode }}" unit was not found in the "{{ measurement_code }}" measurement family
+        empty_association_warning: If you let this list empty, this rule will clear this association type.
 
 pim_enrich:
     entity:

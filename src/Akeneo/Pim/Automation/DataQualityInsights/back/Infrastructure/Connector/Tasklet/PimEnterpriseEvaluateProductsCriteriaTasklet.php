@@ -18,7 +18,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Crea
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsToEvaluateQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\EvaluationsParameters;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -26,6 +25,8 @@ use Psr\Log\LoggerInterface;
 
 final class PimEnterpriseEvaluateProductsCriteriaTasklet implements TaskletInterface
 {
+    use EvaluationJobAwareTrait;
+
     private const NB_PRODUCTS_MAX = 10000;
     private const BULK_SIZE = 100;
 
@@ -87,11 +88,6 @@ final class PimEnterpriseEvaluateProductsCriteriaTasklet implements TaskletInter
         }
     }
 
-    public function setStepExecution(StepExecution $stepExecution)
-    {
-        $this->stepExecution = $stepExecution;
-    }
-
     private function createMissingCriteriaEvaluations(): void
     {
         try {
@@ -107,13 +103,6 @@ final class PimEnterpriseEvaluateProductsCriteriaTasklet implements TaskletInter
                 ]
             );
         }
-    }
-
-    private function updatedSince(): \DateTimeImmutable
-    {
-        $evaluateFrom = $this->stepExecution->getJobParameters()->get(EvaluationsParameters::EVALUATE_FROM_FIELD);
-
-        return \DateTimeImmutable::createFromFormat(EvaluationsParameters::EVALUATE_FROM_FORMAT, $evaluateFrom);
     }
 
     private function cleanCriteriaOfDeletedProducts()

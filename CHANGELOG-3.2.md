@@ -1,5 +1,19 @@
 # 3.2.x
 
+# 3.2.70 (2020-09-10)
+
+# 3.2.69 (2020-09-07)
+
+## Bug fixes:
+
+- PIM-9436: Filter out Reference Entity labels of disabled locales
+
+# 3.2.68 (2020-09-03)
+
+## Bug fixes:
+
+- PIM-9402: Add new ES filters for EMPTY operator
+
 # 3.2.67 (2020-08-07)
 
 ## Bug fixes:

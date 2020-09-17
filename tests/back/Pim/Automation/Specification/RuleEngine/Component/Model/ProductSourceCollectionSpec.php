@@ -28,6 +28,8 @@ class ProductSourceCollectionSpec extends ObjectBehavior
         $this->beConstructedThrough('fromNormalized', [[
             ['field' => 'model'],
             ['field' => 'title'],
+            ['text' => 'a text'],
+            ['new_line' => null],
         ]]);
     }
 
@@ -44,9 +46,11 @@ class ProductSourceCollectionSpec extends ObjectBehavior
     function it_returns_the_product_sources()
     {
         $productSources = $this->getIterator();
-        $productSources->shouldHaveCount(2);
+        $productSources->shouldHaveCount(4);
         $productSources[0]->shouldBeAnInstanceOf(ProductSource::class);
         $productSources[1]->shouldBeAnInstanceOf(ProductSource::class);
+        $productSources[2]->shouldBeAnInstanceOf(ProductSource::class);
+        $productSources[3]->shouldBeAnInstanceOf(ProductSource::class);
     }
 
     function it_cannot_be_created_with_less_than_two_sources()

@@ -12,6 +12,7 @@ pimee_catalog_rule:
                     no_yet_calculated: Not calculated yet
                 tags:
                     label: Actions
+                priority: Priority
             mass_edit_action:
                 impacted_product_count: Calculate the impacted products
                 execute: Execute
@@ -19,12 +20,15 @@ pimee_catalog_rule:
     condition:
         fields:
             family: Family
+            family_variant: Family variant
             associations: Associations
             groups: Groups
             categories: Categories
             completeness: Completeness
             identifier: Identifier
+            parent: Parent
             enabled: Status
+            entity_type: Entity type
             created: Created
             updated: Updated
         field_groups:

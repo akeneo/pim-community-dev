@@ -4,28 +4,44 @@ import React from 'react';
 import { useFieldArray } from 'react-hook-form';
 import { Operation } from '../../../../../models/actions/Calculate/Operation';
 import { useTranslate } from '../../../../../dependenciesTools/hooks';
-import { AttributeCode, AttributeType, Locale } from '../../../../../models';
+import {
+  Attribute,
+  attributeAcceptsNewLine,
+  AttributeCode,
+  AttributeType,
+  Locale,
+} from '../../../../../models';
 import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
 import { useControlledFormInputAction } from '../../../hooks';
 import { AddFieldButton } from '../../../../../components/Selectors/AddFieldButton';
 import { ConcatenateSourceLine } from './ConcatenateSourceLine';
+import {
+  BlueGhostButton,
+  GreyGhostButton,
+} from '../../../../../components/Buttons';
 
 type Props = {
   lineNumber: number;
   onChange?: (value: Operation[]) => void;
   locales: Locale[];
   scopes: IndexedScopes;
+  attributeTarget: Attribute | null;
 };
 
 const ConcatenateSourceList: React.FC<Props> = ({
   lineNumber,
   locales,
   scopes,
+  attributeTarget,
 }) => {
   const translate = useTranslate();
   const { formName, isFormFieldInError } = useControlledFormInputAction<
     string | null
   >(lineNumber);
+  const [
+    operationLineToRemoveStack,
+    setOperationLineToRemoveStack,
+  ] = React.useState<number[]>([]);
 
   const { fields, remove, move, append } = useFieldArray({
     name: formName('from'),
@@ -48,6 +64,12 @@ const ConcatenateSourceList: React.FC<Props> = ({
 
   const handleAddAttribute = (attributeCode: AttributeCode) => {
     append({ field: attributeCode });
+  };
+  const handleAddText = (text: string) => {
+    append({ text });
+  };
+  const handleAddNewLine = () => {
+    append({ new_line: null });
   };
 
   const dragulaDecorator = React.useRef(null);
@@ -73,6 +95,28 @@ const ConcatenateSourceList: React.FC<Props> = ({
       );
     }
   }, [dragulaDecorator]);
+
+  React.useEffect(() => {
+    if (attributeTarget && !attributeAcceptsNewLine(attributeTarget)) {
+      const operationLineNumberToRemove: number[] = [];
+      fields.map((sourceOrOperation: any, operationLineNumber) => {
+        if ('undefined' !== typeof sourceOrOperation?.new_line) {
+          operationLineNumberToRemove.push(operationLineNumber);
+        }
+      });
+      setOperationLineToRemoveStack(operationLineNumberToRemove);
+    }
+  }, [attributeTarget]);
+
+  // We cannot remove multiple line in one render. We need to remove them one by one.
+  // See https://react-hook-form.com/v5/api#useFieldArray
+  React.useEffect(() => {
+    if (!operationLineToRemoveStack.length) {
+      return;
+    }
+    remove(operationLineToRemoveStack.pop());
+    setOperationLineToRemoveStack(operationLineToRemoveStack);
+  }, [JSON.stringify(operationLineToRemoveStack)]);
 
   return (
     <>
@@ -102,6 +146,19 @@ const ConcatenateSourceList: React.FC<Props> = ({
           })}
       </ul>
       <div className={'AknButtonList AknButtonList--single'}>
+        <BlueGhostButton
+          data-testid={`edit-rules-action-${lineNumber}-add-text`}
+          onClick={(e: any) => {
+            if (e) {
+              e.preventDefault();
+            }
+            handleAddText('');
+          }}
+          className={'AknButtonList-item'}>
+          {translate(
+            'pimee_catalog_rule.form.edit.actions.concatenate.add_text'
+          )}
+        </BlueGhostButton>
         <div className={'AknButtonList-item'}>
           <AddFieldButton
             data-testid={`edit-rules-action-${lineNumber}-add-attribute`}
@@ -124,10 +181,26 @@ const ConcatenateSourceList: React.FC<Props> = ({
             containerCssClass={'add-attribute-button'}
             dropdownCssClass={'add-attribute-dropdown'}
             placeholder={translate(
-              'pimee_catalog_rule.form.edit.actions.calculate.add_attribute'
+              'pimee_catalog_rule.form.edit.actions.concatenate.add_attribute'
             )}
           />
         </div>
+        {!attributeTarget ||
+          (attributeAcceptsNewLine(attributeTarget) && (
+            <GreyGhostButton
+              data-testid={`edit-rules-action-${lineNumber}-add-new-line`}
+              onClick={(e: any) => {
+                if (e) {
+                  e.preventDefault();
+                }
+                handleAddNewLine();
+              }}
+              className={'AknButtonList-item'}>
+              {translate(
+                'pimee_catalog_rule.form.edit.actions.concatenate.add_new_line'
+              )}
+            </GreyGhostButton>
+          ))}
       </div>
     </>
   );

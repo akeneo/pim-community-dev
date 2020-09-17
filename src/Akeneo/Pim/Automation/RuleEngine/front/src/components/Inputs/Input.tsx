@@ -13,6 +13,7 @@ type Props = {
   hiddenLabel?: boolean;
   hasError?: boolean;
   small?: boolean;
+  size?: number;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 const Input = forwardRef<HTMLInputElement, Props>(

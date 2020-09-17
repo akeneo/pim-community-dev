@@ -36,7 +36,7 @@ Feature: Execute concatenate rules
     Given A rule that concatenates given attribute values to a textarea attribute value
     When I execute the concatenate rule on products
     Then no exception has been thrown
-    And the en_US ecommerce description of "75025" should be "Crown Bolt 75025 SKU75025 100 MEGAHERTZ 99 EUR 2015-01-01 01/01/2015 40 this<br/>is<br/>the<br/>sub<br/>description color1 couleur 1 hdmi, usb, wi_fi HDMI, USB, Sans fil"
+    And the en_US ecommerce description of "75025" should be "Crown Bolt 75025 SKU75025 100 MEGAHERTZ 99 EUR 2015-01-01 01/01/2015 40 this<br/>is<br/>the<br/>sub<br/>description color1 couleur 1<br/>A text:hdmi, usb, wi_fi HDMI, USB, Sans fil"
     And the en_US ecommerce description of "75024" should be "this is the description"
 
   @acceptance-back
@@ -44,11 +44,11 @@ Feature: Execute concatenate rules
     Given A rule that concatenates rich textarea attribute value to a simple textarea attribute value
     When I execute the concatenate rule on products
     Then no exception has been thrown
-    And the unlocalized unscoped sub_description of "75025" should be "Crown Bolt this is the|NL|"description""
+    And the unlocalized unscoped sub_description of "75025" should be "Here is the result of the concatenate:|NL|Crown Bolt this is the|NL|"description""
 
   @acceptance-back
   Scenario: Execute concatenate rule on products of a family to a rich textarea attribute value
     Given A rule that concatenates simple textarea attribute value to a rich textarea attribute value
     When I execute the concatenate rule on products
     Then no exception has been thrown
-    And the en_US ecommerce description of "75025" should be "Crown Bolt this<br/>is<br/>the<br/>sub<br/>description"
+    And the en_US ecommerce description of "75025" should be "Here is the result of the concatenate:<br/>Crown Bolt this<br/>is<br/>the<br/>sub<br/>description"

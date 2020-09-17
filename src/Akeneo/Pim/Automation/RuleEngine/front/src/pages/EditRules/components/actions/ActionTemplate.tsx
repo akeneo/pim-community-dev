@@ -25,7 +25,7 @@ const StyledTitleHeader = styled.span`
 `;
 
 const MarginatedHeader = styled.div`
-  margin-bottom: 18px;
+  margin-bottom: 10px;
 `;
 
 const DeleteButton = createComponent({

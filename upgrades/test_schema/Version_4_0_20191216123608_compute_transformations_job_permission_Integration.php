@@ -48,10 +48,6 @@ class Version_4_0_20191216123608_compute_transformations_job_permission_Integrat
 
         $this->runMigration();
         $this->assertTrue($this->jobProfileAccessIsDefined());
-
-        # Run again to check the migration is idempotent
-        $this->runMigration();
-        $this->assertTrue($this->jobProfileAccessIsDefined());
     }
 
     private function runMigration(): void

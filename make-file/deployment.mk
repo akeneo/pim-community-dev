@@ -207,8 +207,8 @@ clone_serenity:
 	INSTANCE_NAME=${INSTANCE_NAME}  IMAGE_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME_PREFIX=pimci-duplic make create-ci-release-files && \
 	ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) SOURCE_PED_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/bin/clone_serenity.sh
 
-.PHONY: test_upgrade_from_serenity_customer_db_to_master
-test_upgrade_from_serenity_customer_db_to_master:
+.PHONY: test_upgrade_from_serenity_customer_db
+test_upgrade_from_serenity_customer_db:
 	INSTANCE_NAME=${INSTANCE_NAME}  IMAGE_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME_PREFIX=pimci-duplic make create-ci-release-files && \
 	ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) SOURCE_PED_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/bin/clone_serenity.sh && \
 	INSTANCE_NAME_PREFIX=pimci-duplic INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$${CIRCLE_SHA1} make deploy-serenity

@@ -14,7 +14,7 @@ const AknActionFormContainer = styled.div`
 
 const ActionTitle = styled.div`
   color: ${({ theme }): string => theme.color.purple100};
-  font-size: 18px;
+  font-size: 17px;
   line-height: 30px;
   margin-bottom: 15px;
 `;

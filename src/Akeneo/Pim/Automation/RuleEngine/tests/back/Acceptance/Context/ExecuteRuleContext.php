@@ -240,6 +240,8 @@ rules:
                   - field: color
                   - field: color
                     label_locale: fr_FR
+                  - new_line: ~
+                  - text: 'A text:'
                   - field: connectivity
                   - field: connectivity
                     label_locale: fr_FR
@@ -268,6 +270,8 @@ rules:
         actions:
             - type: concatenate
               from:
+                  - text: 'Here is the result of the concatenate:'
+                  - new_line: ~
                   - field: pim_brand
                   - field: description
                     scope: ecommerce
@@ -295,6 +299,8 @@ rules:
         actions:
             - type: concatenate
               from:
+                  - text: 'Here is the result of the concatenate:'
+                  - new_line: ~
                   - field: pim_brand
                   - field: sub_description
               to:

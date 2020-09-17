@@ -25,6 +25,7 @@ describe('AttributeValue', () => {
         name={'attribute-value-name'}
         value={'default'}
         onChange={jest.fn()}
+        actionType={'set'}
       />,
       { all: true }
     );
@@ -42,6 +43,7 @@ describe('AttributeValue', () => {
         name={'attribute-value-name'}
         value={'default'}
         onChange={jest.fn()}
+        actionType={'set'}
       />,
       { all: true }
     );
@@ -60,6 +62,7 @@ describe('AttributeValue', () => {
         name={'attribute-value-name'}
         value={'default'}
         onChange={jest.fn()}
+        actionType={'set'}
       />,
       { all: true }
     );
@@ -82,6 +85,7 @@ describe('AttributeValue', () => {
         name={'attribute-value-name'}
         value={'default'}
         onChange={jest.fn()}
+        actionType={'set'}
       />,
       { all: true }
     );
@@ -124,6 +128,7 @@ describe('AttributeValue', () => {
         name={'attribute-value-name'}
         value={'test2'}
         onChange={onChange}
+        actionType={'set'}
       />,
       { all: true }
     );
@@ -161,6 +166,7 @@ describe('AttributeValue', () => {
         attribute={attribute}
         name={'attribute-value-name'}
         onChange={onChange}
+        actionType={'set'}
       />,
       { all: true }
     );
@@ -191,6 +197,7 @@ describe('AttributeValue', () => {
         name={'attribute-value-name'}
         value={'default'}
         onChange={jest.fn()}
+        actionType={'set'}
       />,
       { all: true }
     );
@@ -217,6 +224,7 @@ describe('AttributeValue', () => {
         name={'attribute-value-name'}
         value={'default'}
         onChange={jest.fn()}
+        actionType={'set'}
       />,
       { all: true }
     );

@@ -87,6 +87,8 @@ rules:
                     label_locale: fr_FR
                   - field: designer
                     label_locale: fr_FR
+                  - new_line: ~
+                  - text: 'A text'
                   - field: designers
                     label_locale: fr_FR
               to:
@@ -224,6 +226,13 @@ rules:
                   - field: categories
                   - field: name
                     locale: en_US
+                  - field: pim_brand
+                    text: "akeneo"
+                  - field: pim_brand
+                    new_line: ~
+                  - text: "akeneo"
+                    new_line: ~
+                  - locale: en_US
               to:
                   field: description
                   locale: en_US
@@ -449,6 +458,34 @@ rules:
                     locale: en_US
               to:
                   field: sku
+YAML;
+        $this->importRules($rulesConfig);
+    }
+
+    /**
+     * @When /^I import a concatenate rule with new line and a text target attribute$/
+     */
+    public function importAConcatenateRuleWithNewLineAndATextTargetAttribute(): void
+    {
+        $rulesConfig = <<<YAML
+rules:
+    test1:
+        priority: 90
+        conditions:
+            - field: family
+              operator: IN
+              value:
+                  - camcorders
+        actions:
+            - type: concatenate
+              from:
+                  - field: pim_brand
+                  - new_line: ~
+                  - text: 'new product'
+                  - new_line: ~
+              to:
+                  field: name
+                  locale: en_US
 YAML;
         $this->importRules($rulesConfig);
     }

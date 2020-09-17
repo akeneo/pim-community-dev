@@ -40,6 +40,7 @@ const RemoveAttributeValueActionLine: React.FC<ActionLineProps> = ({
     fieldFormName,
     typeFormName,
     itemsFormName,
+    getScopeFormValue,
     getItemsFormValue,
     setFieldFormValue,
     setItemsFormValue,
@@ -76,7 +77,11 @@ const RemoveAttributeValueActionLine: React.FC<ActionLineProps> = ({
         as={<span hidden />}
         defaultValue={getItemsFormValue()}
         rules={{
-          required: translate('pimee_catalog_rule.exceptions.required_value'),
+          required: translate('pimee_catalog_rule.exceptions.required_item'),
+          validate: (value: any) =>
+            Array.isArray(value) && 0 === value.length
+              ? translate('pimee_catalog_rule.exceptions.required_item')
+              : true,
         }}
       />
       <ActionTemplate
@@ -115,12 +120,12 @@ const RemoveAttributeValueActionLine: React.FC<ActionLineProps> = ({
               locales={locales}
               onAttributeCodeChange={onAttributeChange}
               lineNumber={lineNumber}
-              filterAttributeTypes={Array.from(
-                MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION.keys()
-              )}
+              filterAttributeTypes={MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION}
               disabled={
                 !!attribute &&
-                !MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION.has(attribute.type)
+                !MANAGED_ATTRIBUTE_TYPES_FOR_REMOVE_ACTION.includes(
+                  attribute.type
+                )
               }
             />
           </ActionLeftSide>
@@ -136,6 +141,8 @@ const RemoveAttributeValueActionLine: React.FC<ActionLineProps> = ({
               name={itemsFormName}
               value={getItemsFormValue()}
               onChange={setItemsFormValue}
+              actionType={'remove'}
+              scopeCode={getScopeFormValue()}
             />
           </ActionRightSide>
         </ActionGrid>

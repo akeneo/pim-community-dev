@@ -1,4 +1,5 @@
 import React from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 import { Locale } from '../../../../../models';
 import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
 import { useControlledFormInputAction } from '../../../hooks';
@@ -6,6 +7,7 @@ import { useTranslate } from '../../../../../dependenciesTools/hooks';
 import styled from 'styled-components';
 import { AttributePropertiesSelector } from '../attribute/AttributePropertiesSelector';
 import { ConcatenateSource } from '../../../../../models/actions';
+import { InputText } from '../../../../../components/Inputs';
 
 const DeleteButton = styled.button`
   border: none;
@@ -34,7 +36,10 @@ const ConcatenateSourceLine: React.FC<OperationLineProps> = ({
   removeOperation,
 }) => {
   const translate = useTranslate();
-  const { formName } = useControlledFormInputAction<string | null>(lineNumber);
+  const { formName, isFormFieldInError } = useControlledFormInputAction<
+    string | null
+  >(lineNumber);
+  const { setValue, watch } = useFormContext();
 
   return (
     <li
@@ -47,14 +52,68 @@ const ConcatenateSourceLine: React.FC<OperationLineProps> = ({
             className={`AknRuleOperation-moveIcon`}
             role={'operation-item-move-handle'}
           />
-          <AttributePropertiesSelector
-            baseFormName={formName(baseFormName)}
-            operationLineNumber={operationLineNumber}
-            attributeCode={source.field}
-            locales={locales}
-            scopes={scopes}
-            isCurrencyRequired={false}
-          />
+          {source.field && (
+            <AttributePropertiesSelector
+              baseFormName={formName(baseFormName)}
+              operationLineNumber={operationLineNumber}
+              attributeCode={source.field}
+              locales={locales}
+              scopes={scopes}
+              isCurrencyRequired={false}
+            />
+          )}
+          {null !== source.text && 'undefined' !== typeof source.text && (
+            <>
+              <Controller
+                as={<span hidden />}
+                name={formName(`${baseFormName}.text`)}
+                defaultValue={
+                  watch(formName(`${baseFormName}.text`)) ?? source.text
+                }
+              />
+              <label
+                className={`AknInputSizer${
+                  isFormFieldInError(
+                    `full_operation_list[${operationLineNumber}].value`
+                  )
+                    ? 'AknInputSizer--error'
+                    : ''
+                }`}
+                data-value={
+                  watch(formName(`${baseFormName}.text`)) ?? source.text
+                }>
+                <InputText
+                  defaultValue={
+                    watch(formName(`${baseFormName}.text`)) ?? source.text
+                  }
+                  className={'AknInputSizer-input'}
+                  data-testid={`edit-rules-action-operation-list-${operationLineNumber}-text`}
+                  hiddenLabel={true}
+                  onChange={e => {
+                    setValue(
+                      formName(`${baseFormName}.text`),
+                      e.target.value ? e.target.value : ''
+                    );
+                  }}
+                  size={2}
+                />
+              </label>
+            </>
+          )}
+          {'undefined' !== typeof source.new_line && (
+            <>
+              <Controller
+                as={<span hidden />}
+                name={formName(`${baseFormName}.new_line`)}
+                defaultValue={null}
+              />
+              <span className={'AknRuleOperation-elementNewLine'}>
+                {translate(
+                  'pimee_catalog_rule.form.edit.actions.concatenate.line_break'
+                )}
+              </span>
+            </>
+          )}
         </div>
       </div>
       <div className={'AknRuleOperation-remove'}>

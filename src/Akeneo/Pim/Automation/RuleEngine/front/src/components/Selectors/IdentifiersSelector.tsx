@@ -7,8 +7,10 @@ import {
   Select2Value,
 } from '../Select2Wrapper';
 import { useBackboneRouter, useTranslate } from '../../dependenciesTools/hooks';
+import { ProductModelCode, ProductIdentifier } from '../../models';
 
-type Identifier = string;
+type Identifier = ProductIdentifier | ProductModelCode;
+
 type Props = {
   label?: string;
   hiddenLabel?: boolean;

@@ -5,6 +5,7 @@ import { CategoryOperators } from '../../../../models/conditions';
 import { Operator } from '../../../../models/Operator';
 import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
 import {
+  ConditionLineErrorsContainer,
   ConditionLineFormAndErrorsContainer,
   ConditionLineFormContainer,
   FieldColumn,
@@ -167,7 +168,9 @@ const CategoryConditionLine: React.FC<ConditionLineProps> = ({
           />
         )}
       </ConditionLineFormContainer>
-      <LineErrors lineNumber={lineNumber} type='conditions' />
+      <ConditionLineErrorsContainer>
+        <LineErrors lineNumber={lineNumber} type='conditions' />
+      </ConditionLineErrorsContainer>
     </ConditionLineFormAndErrorsContainer>
   );
 };

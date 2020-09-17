@@ -383,6 +383,7 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.asset_family.hydrator.connector_product_link_rules'
             - '@Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorTransformationCollectionHydrator'
             - '@Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorNamingConventionHydrator'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales'
 
     akeneo_assetmanager.infrastructure.persistence.asset_family.hydrator.connector_product_link_rules:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorProductLinkRulesHydrator

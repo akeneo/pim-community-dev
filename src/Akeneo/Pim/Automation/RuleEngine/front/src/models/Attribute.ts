@@ -104,10 +104,15 @@ const getAttributeLabel = (
   return attribute.labels[localeCode] || `[${attribute.code}]`;
 };
 
+const attributeAcceptsNewLine = (attribute: Attribute) => {
+  return attribute.type === AttributeType.TEXTAREA;
+};
+
 export {
   Attribute,
   validateLocalizableScopableAttribute,
   AttributeId,
   AttributeCode,
   getAttributeLabel,
+  attributeAcceptsNewLine,
 };

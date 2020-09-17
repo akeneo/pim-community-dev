@@ -81,9 +81,16 @@ const ConditionLineFormContainer = styled.div`
   display: flex;
 `;
 
+const ConditionLineErrorsContainer = styled.div`
+  &:not(:empty) {
+    margin-top: 10px;
+  }
+`;
+
 export {
   ConditionLineFormContainer,
   ConditionLineFormAndErrorsContainer,
+  ConditionLineErrorsContainer,
   ConditionErrorLine,
   FieldColumn,
   LocaleColumn,

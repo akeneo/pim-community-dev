@@ -20,5 +20,5 @@ interface GetAttributeOptionCodesToEvaluateQueryInterface
     /**
      * @return AttributeOptionCode[]
      */
-    public function execute(): iterable;
+    public function execute(\DateTimeImmutable $updatedSince): iterable;
 }

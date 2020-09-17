@@ -2,6 +2,7 @@ import React from 'react';
 import { ActionLineProps } from '../../pages/EditRules/components/actions/ActionLineProps';
 import {
   getAddActionModule,
+  getAddAssociationsActionModule,
   getAddAttributeValueActionModule,
   getAddCategoriesModule,
   getAddGroupsActionModule,
@@ -10,15 +11,18 @@ import {
   getClearAttributeActionModule,
   getClearCategoriesActionModule,
   getClearGroupsActionModule,
+  getClearQuantifiedAssociationsActionModule,
   getConcatenateActionModule,
   getCopyActionModule,
   getRemoveAttributeValueActionModule,
   getRemoveCategoriesModule,
   getRemoveGroupsActionModule,
   getSetActionModule,
+  getSetAssociationsActionModule,
   getSetCategoriesModule,
   getSetFamilyActionModule,
   getSetGroupsActionModule,
+  getSetQuantifiedAssociationsActionModule,
   getSetStatusActionModule,
 } from './';
 import { FallbackActionLine } from '../../pages/EditRules/components/actions/FallbackActionLine';
@@ -35,25 +39,29 @@ const getActionModule: (
 ) => Promise<React.FC<ActionLineProps>> = async (json, router) => {
   const getActionModuleFunctions: ActionModuleGuesser[] = [
     getAddCategoriesModule,
+    getAddAssociationsActionModule,
     getAddGroupsActionModule,
     getClearAssociationsActionModule,
     getClearCategoriesActionModule,
     getClearGroupsActionModule,
+    getClearQuantifiedAssociationsActionModule,
     getRemoveCategoriesModule,
     getRemoveGroupsActionModule,
+    getSetAssociationsActionModule,
     getSetCategoriesModule,
     getSetFamilyActionModule,
     getSetGroupsActionModule,
+    getSetQuantifiedAssociationsActionModule,
     getSetStatusActionModule,
+    getCalculateActionModule,
+    getConcatenateActionModule,
+    getCopyActionModule,
     // Attribute values: they should be tested after the system field actions since their 'field' is dynamic
     getAddAttributeValueActionModule,
     getClearAttributeActionModule,
     getRemoveAttributeValueActionModule,
     // Fallbacks
     getAddActionModule,
-    getCalculateActionModule,
-    getConcatenateActionModule,
-    getCopyActionModule,
     getSetActionModule,
   ];
 

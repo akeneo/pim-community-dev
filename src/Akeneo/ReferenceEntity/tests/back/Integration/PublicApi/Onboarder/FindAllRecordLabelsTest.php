@@ -58,6 +58,11 @@ class FindAllRecordLabelsTest extends SqlIntegrationTestCase
         $this->loadReferenceEntityAndRecords();
     }
 
+    private function resetDB(): void
+    {
+        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+    }
+
     /**
      * @test
      */
@@ -83,11 +88,6 @@ class FindAllRecordLabelsTest extends SqlIntegrationTestCase
            'dyson',
            'designer'
         ), $records);
-    }
-
-    private function resetDB(): void
-    {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 
     private function loadReferenceEntityAndRecords(): void

@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributeOptions;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\PrepareEvaluationsParameters;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Psr\Log\LoggerInterface;
@@ -30,10 +32,16 @@ final class EvaluateAttributeOptionsTaskletSpec extends ObjectBehavior
 
     public function it_does_not_crash_if_an_error_occurs_during_attribute_options_evaluations(
         $evaluateUpdatedAttributeOptions,
-        $stepExecution
+        $stepExecution,
+        JobParameters $jobParameters
     ) {
+        $dateString = '2020-01-01 00:00:00';
+        $date = new \DateTimeImmutable($dateString);
         $exception = new \Exception('fail');
-        $evaluateUpdatedAttributeOptions->evaluateAll()->willThrow($exception);
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get(PrepareEvaluationsParameters::UPDATED_SINCE_PARAMETER)->willReturn($dateString);
+        $evaluateUpdatedAttributeOptions->evaluateSince($date)->willThrow($exception);
         $stepExecution->addFailureException($exception)->shouldBeCalled();
 
         $this->execute();

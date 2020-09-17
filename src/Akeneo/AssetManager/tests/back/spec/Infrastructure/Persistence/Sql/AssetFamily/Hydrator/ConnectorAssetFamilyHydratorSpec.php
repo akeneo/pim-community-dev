@@ -21,6 +21,7 @@ use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorTransformationCollection;
+use Akeneo\AssetManager\Domain\Query\Locale\FindActivatedLocalesInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorAssetFamilyHydrator;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorNamingConventionHydrator;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorProductLinkRulesHydrator;
@@ -36,14 +37,17 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
         Connection $connection,
         ConnectorProductLinkRulesHydrator $productLinkRulesHydrator,
         ConnectorTransformationCollectionHydrator $transformationCollectionHydrator,
-        ConnectorNamingConventionHydrator $namingConventionHydrator
+        ConnectorNamingConventionHydrator $namingConventionHydrator,
+        FindActivatedLocalesInterface $findActivatedLocales
     ) {
         $connection->getDatabasePlatform()->willReturn(new MySqlPlatform());
+        $findActivatedLocales->findAll()->willReturn(['en_US', 'fr_FR']);
         $this->beConstructedWith(
             $connection,
             $productLinkRulesHydrator,
             $transformationCollectionHydrator,
-            $namingConventionHydrator
+            $namingConventionHydrator,
+            $findActivatedLocales
         );
     }
 
@@ -211,6 +215,50 @@ class ConnectorAssetFamilyHydratorSpec extends ObjectBehavior
             new ConnectorTransformationCollection([]),
             $namingConvention,
             AttributeCode::fromString('instructions')
+        );
+
+        $productLinkRulesHydrator->hydrate([])->willReturn([]);
+
+        $this->hydrate($row)->shouldBeLike($expectedAssetFamily);
+    }
+
+    function it_hydrates_an_asset_family_with_only_labels_from_activated_locales(
+        ConnectorProductLinkRulesHydrator $productLinkRulesHydrator,
+        ConnectorTransformationCollectionHydrator $transformationCollectionHydrator,
+        ConnectorNamingConventionHydrator $namingConventionHydrator
+    ) {
+        $row = [
+            'identifier'                  => 'designer',
+            'image_file_key'              => null,
+            'image_original_filename'     => null,
+            'labels'                      => json_encode([
+                'en_US' => 'Designer',
+                'fr_FR' => 'Designer',
+                'de_DE' => 'Ich bin ein designer',
+                'it_IT' => 'Sono un designer'
+            ]),
+            'rule_templates' => json_encode([]),
+            'transformations' => json_encode([['fake_transformation']]),
+            'naming_convention' => '{}',
+            'attribute_as_main_media' => 'media',
+        ];
+
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $transformationCollectionHydrator->hydrate([['fake_transformation']], $assetFamilyIdentifier)
+            ->willReturn(new ConnectorTransformationCollection([]));
+        $namingConventionHydrator->hydrate([], $assetFamilyIdentifier)->willReturn(new NullNamingConvention());
+
+        $expectedAssetFamily = new ConnectorAssetFamily(
+            $assetFamilyIdentifier,
+            LabelCollection::fromArray([
+                'en_US' => 'Designer',
+                'fr_FR' => 'Designer',
+            ]),
+            Image::createEmpty(),
+            [],
+            new ConnectorTransformationCollection([]),
+            new NullNamingConvention(),
+            AttributeCode::fromString('media')
         );
 
         $productLinkRulesHydrator->hydrate([])->willReturn([]);

@@ -1,5 +1,6 @@
 Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ProductSource:
     constraints:
+        - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ProductSourceKeys: ~
         - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsValidAttribute:
               attributeProperty: field
               channelProperty: scope
@@ -8,7 +9,8 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ProductSource:
     properties:
         field:
             - Type: string
-            - NotBlank: ~
+            - NotBlank:
+                  allowNull: true
             - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsAttribute: ~
             - Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IsValidSource: ~
         scope:
@@ -23,3 +25,6 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ProductSource:
         currency:
             - Type: string
             - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\ActiveCurrency: ~
+        text:
+            - Type: string
+        new_line: ~

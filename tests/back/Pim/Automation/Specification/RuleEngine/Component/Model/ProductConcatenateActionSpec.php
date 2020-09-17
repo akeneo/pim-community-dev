@@ -33,6 +33,8 @@ class ProductConcatenateActionSpec extends ObjectBehavior
             'from' => [
                 ['field' => 'model', 'scope' => 'ecommerce', 'locale' => 'en_US'],
                 ['field' => 'color'],
+                ['new_line' => null],
+                ['text' => 'this is a text'],
             ],
             'to' => ['field' => 'title', 'scope' => 'ecommerce', 'locale' => 'en_US'],
         ]);

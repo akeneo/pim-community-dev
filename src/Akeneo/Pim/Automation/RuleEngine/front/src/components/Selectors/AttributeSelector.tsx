@@ -33,7 +33,8 @@ type Props = {
   hiddenLabel?: boolean;
   currentCatalogLocale: LocaleCode;
   value: AttributeCode | null;
-  onChange: (value: AttributeCode) => void;
+  onSelecting?: (event: any) => void;
+  onChange?: (value: AttributeCode) => void;
   placeholder?: string;
   filterAttributeTypes?: string[];
   name: string;
@@ -141,7 +142,7 @@ const AttributeSelector: React.FC<Props> = ({
       hiddenLabel={hiddenLabel}
       dropdownCssClass={'fields-selector-dropdown'}
       value={value}
-      onChange={value => onChange(value as string)}
+      onChange={value => (onChange ? onChange(value as string) : null)}
       ajax={ajax}
       initSelection={(_element, callback) => {
         if (value) {

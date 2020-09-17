@@ -19,7 +19,11 @@ Feature: Import concatenate action rules
   @acceptance-back
   Scenario: Import a concatenate rule with invalid source attributes
     When I import a concatenate rule with invalid source attributes
-    Then an exception with message "actions[0].from[1].field: The \"categories\" attribute does not exist" has been thrown
+    And an exception with message "actions[0].from[1].field: The \"categories\" attribute does not exist" has been thrown
+    And an exception with message "actions[0].from[3]: A single key among \"field\", \"text\" or \"new_line\" is required, please select only one" has been thrown
+    And an exception with message "actions[0].from[4]: A single key among \"field\", \"text\" or \"new_line\" is required, please select only one" has been thrown
+    And an exception with message "actions[0].from[5]: A single key among \"field\", \"text\" or \"new_line\" is required, please select only one" has been thrown
+    And an exception with message "actions[0].from[6]: A single key among \"field\", \"text\" or \"new_line\" is required, please select one" has been thrown
 
   @acceptance-back
   Scenario: Import a concatenate rule with missing fields
@@ -36,3 +40,9 @@ Feature: Import concatenate action rules
   Scenario: Import a concatenate rule with invalid target attribute
     When I import a concatenate rule with non text target attribute
     Then an exception with message "actions[0].to.field: The \"sku\" attribute has an invalid \"pim_catalog_identifier\" attribute type. A pim_catalog_text | pim_catalog_textarea attribute is required" has been thrown
+
+  @acceptance-back
+  Scenario: Import a concatenate rule with new line and a text target attribute
+    When I import a concatenate rule with new line and a text target attribute
+    Then an exception with message "actions[0].from[1].new_line: The \"name\" target attribute does not accept new line" has been thrown
+    And an exception with message "actions[0].from[3].new_line: The \"name\" target attribute does not accept new line" has been thrown

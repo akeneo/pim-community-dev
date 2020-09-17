@@ -2,6 +2,7 @@ import React from 'react';
 import { Controller } from 'react-hook-form';
 import { ConditionLineProps } from './ConditionLineProps';
 import {
+  ConditionLineErrorsContainer,
   ConditionLineFormAndErrorsContainer,
   ConditionLineFormContainer,
   FieldColumn,
@@ -132,7 +133,9 @@ const CompletenessConditionLine: React.FC<ConditionLineProps> = ({
           />
         </LocaleColumn>
       </ConditionLineFormContainer>
-      <LineErrors lineNumber={lineNumber} type='conditions' />
+      <ConditionLineErrorsContainer>
+        <LineErrors lineNumber={lineNumber} type='conditions' />
+      </ConditionLineErrorsContainer>
     </ConditionLineFormAndErrorsContainer>
   );
 };

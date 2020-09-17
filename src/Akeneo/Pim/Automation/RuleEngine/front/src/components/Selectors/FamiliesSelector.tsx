@@ -123,9 +123,9 @@ const FamiliesSelector: React.FC<Props> = ({
       value={value}
       onChange={handleChange}
       ajax={ajax}
-      initSelection={(_element, callback) => {
-        initSelectedFamilies(router, value, currentCatalogLocale, callback);
-      }}
+      initSelection={(_element, callback) =>
+        initSelectedFamilies(router, value, currentCatalogLocale, callback)
+      }
       validation={validation}
     />
   );

@@ -18,13 +18,13 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Cons
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsWithOutdatedAttributeOptionSpellcheckQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsWithOutdatedAttributeSpellcheckQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsWithUpdatedFamilyAttributesListQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductsWithoutUpToDateEvaluationQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 
 final class PimEnterpriseCreateMissingCriteriaEvaluations implements CreateMissingCriteriaEvaluationsInterface
 {
-    /** @var GetUpdatedProductsWithoutUpToDateEvaluationQueryInterface */
-    private $getUpdatedProductsWithoutUpToDateEvaluationQuery;
+    /** @var GetUpdatedProductIdsQueryInterface */
+    private $getUpdatedProductIdsQuery;
 
     /** @var CreateCriteriaEvaluations */
     private $createProductsCriteriaEvaluations;
@@ -39,13 +39,13 @@ final class PimEnterpriseCreateMissingCriteriaEvaluations implements CreateMissi
     private $getProductIdsWithOutdatedAttributeOptionSpellcheckQuery;
 
     public function __construct(
-        GetUpdatedProductsWithoutUpToDateEvaluationQueryInterface $getUpdatedProductsWithoutUpToDateEvaluationQuery,
+        GetUpdatedProductIdsQueryInterface $getUpdatedProductIdsQuery,
         GetProductIdsWithOutdatedAttributeSpellcheckQueryInterface $getProductIdsWithOutdatedAttributeSpellcheckQuery,
         GetProductIdsWithUpdatedFamilyAttributesListQueryInterface $getProductIdsWithUpdatedFamilyAttributesListQuery,
         GetProductIdsWithOutdatedAttributeOptionSpellcheckQueryInterface $getProductIdsWithOutdatedAttributeOptionSpellcheckQuery,
         CreateCriteriaEvaluations $createProductsCriteriaEvaluations
     ) {
-        $this->getUpdatedProductsWithoutUpToDateEvaluationQuery = $getUpdatedProductsWithoutUpToDateEvaluationQuery;
+        $this->getUpdatedProductIdsQuery = $getUpdatedProductIdsQuery;
         $this->createProductsCriteriaEvaluations = $createProductsCriteriaEvaluations;
         $this->getProductIdsWithOutdatedAttributeSpellcheckQuery = $getProductIdsWithOutdatedAttributeSpellcheckQuery;
         $this->getProductIdsWithUpdatedFamilyAttributesListQuery = $getProductIdsWithUpdatedFamilyAttributesListQuery;
@@ -54,7 +54,7 @@ final class PimEnterpriseCreateMissingCriteriaEvaluations implements CreateMissi
 
     public function createForProductsUpdatedSince(\DateTimeImmutable $updatedSince, int $batchSize): void
     {
-        foreach ($this->getUpdatedProductsWithoutUpToDateEvaluationQuery->execute($updatedSince, $batchSize) as $productIds) {
+        foreach ($this->getUpdatedProductIdsQuery->since($updatedSince, $batchSize) as $productIds) {
             $this->createProductsCriteriaEvaluations->createAll($productIds);
         }
     }

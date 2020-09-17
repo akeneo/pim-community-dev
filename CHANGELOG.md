@@ -34,6 +34,7 @@
 - PIM-9392: Prevent generating asset thumbnail when file is too large
 - PIM-9411: Fix TWA project widget searching on all contributors
 - PIM-9372: Fix media-link thumbnail re-generation
+- PIM-9444: Fix locking issue on attribute table for retrieving the attribute options that need to be evaluated
 
 ## Improvements
 
@@ -62,6 +63,7 @@
 - RUL-28: Rule engine - As Peter, I'd like to calculate attribute values
 - AOB-277: Add an acl to allow a role member to view all job executions in last job execution grids, job tracker and last operations widget.
 - RAC-54: Add a new type of associations: Association with quantity
+- RAC-123: Add possibility to export product/product model with labels instead of code
 
 ## BC Breaks
 

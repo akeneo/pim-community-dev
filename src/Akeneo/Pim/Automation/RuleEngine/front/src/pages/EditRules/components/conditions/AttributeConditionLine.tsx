@@ -20,6 +20,7 @@ import {
   OperatorColumn,
   ScopeColumn,
   ValueColumn,
+  ConditionLineErrorsContainer,
 } from './style';
 import { IndexedScopes } from '../../../../repositories/ScopeRepository';
 import { LineErrors } from '../LineErrors';
@@ -184,7 +185,9 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
           </LocaleColumn>
         )}
       </ConditionLineFormContainer>
-      <LineErrors lineNumber={lineNumber} type='conditions' />
+      <ConditionLineErrorsContainer>
+        <LineErrors lineNumber={lineNumber} type='conditions' />
+      </ConditionLineErrorsContainer>
     </ConditionLineFormAndErrorsContainer>
   );
 };

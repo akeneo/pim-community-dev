@@ -174,6 +174,7 @@
 .select2-drop.calculate-operator-dropdown,
 .select2-drop.fields-selector-dropdown,
 .select2-drop.add-attribute-dropdown,
+.select2-drop.add-association-type-dropdown,
 .select2-drop.measurement-unit-selector-dropdown {
   .select2-results {
     font-size: 13px;
@@ -218,6 +219,20 @@
     }
   }
 }
+
+.select2-drop.add-association-type-dropdown {
+  .select2-results {
+    li.select2-result-with-children > .select2-result-label {
+      color: @AknDarkBlue;
+    }
+    .select2-result-sub {
+      & > li > .select2-result-label {
+        padding-left: 10px;
+      }
+    }
+  }
+}
+
 
 .select2-drop.calculate-operator-dropdown {
   min-width: 150px;
