@@ -9,7 +9,8 @@ module.exports = {
   transform: {'^.+\\.tsx?$': 'ts-jest', '^.+\\.mdx$': '@storybook/addon-docs/jest-transform-mdx'},
   transformIgnorePatterns: ['/node_modules/'],
   collectCoverage: true,
-  coveragePathIgnorePatterns: ['src/icons'],
+  collectCoverageFrom: ['src/**/*.ts?(x)'],
+  coveragePathIgnorePatterns: ['src/icons', 'src/storybook', 'src/all.visual.tsx'],
   coverageReporters: ['text-summary', 'html'],
   coverageDirectory: 'coverage',
   coverageThreshold: {
