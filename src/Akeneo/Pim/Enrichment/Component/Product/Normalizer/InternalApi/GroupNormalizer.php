@@ -56,7 +56,7 @@ class GroupNormalizer implements NormalizerInterface
     {
         $normalizedGroup = $this->groupNormalizer->normalize($group, 'standard', $context);
 
-//        $normalizedGroup['products'] = [];
+        $normalizedGroup['products'] = [];
 //        foreach ($group->getProducts() as $product) {
 //            $normalizedGroup['products'][] = $product->getIdentifier();
 //        }
