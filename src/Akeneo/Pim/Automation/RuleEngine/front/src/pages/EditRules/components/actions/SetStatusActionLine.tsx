@@ -2,7 +2,12 @@ import React from 'react';
 import { Controller } from 'react-hook-form';
 import { ActionLineProps } from './ActionLineProps';
 import { ActionTemplate } from './ActionTemplate';
-import { ActionTitle, AknActionFormContainer } from './ActionLine';
+import {
+  ActionTitle,
+  AknActionFormContainer,
+  ActionLeftSide,
+  ActionGrid,
+} from './ActionLine';
 import { StatusSelector } from '../../../../components/Selectors/StatusSelector';
 import { useControlledFormInputAction } from '../../hooks';
 import { useTranslate } from '../../../../dependenciesTools/hooks';
@@ -59,25 +64,29 @@ const SetStatusActionLine: React.FC<ActionLineProps> = ({
           'pimee_catalog_rule.form.edit.actions.set_status.helper'
         )}
         handleDelete={handleDelete}>
-        <ActionTitle>
-          {translate(
-            'pimee_catalog_rule.form.edit.actions.set_status.subtitle'
-          )}
-        </ActionTitle>
-        <AknActionFormContainer>
-          <StatusSelector
-            id={`edit-rules-actions-${lineNumber}-value`}
-            name={valueFormName}
-            label={`${translate('pim_common.status')} ${translate(
-              'pim_common.required_label'
-            )}`}
-            placeholder={translate(
-              'pimee_catalog_rule.form.edit.actions.set_status.placeholder'
-            )}
-            value={getValueFormValue()}
-            onChange={setValueFormValue}
-          />
-        </AknActionFormContainer>
+        <ActionGrid>
+          <ActionLeftSide>
+            <ActionTitle>
+              {translate(
+                'pimee_catalog_rule.form.edit.actions.set_status.subtitle'
+              )}
+            </ActionTitle>
+            <AknActionFormContainer>
+              <StatusSelector
+                id={`edit-rules-actions-${lineNumber}-value`}
+                name={valueFormName}
+                label={`${translate('pim_common.status')} ${translate(
+                  'pim_common.required_label'
+                )}`}
+                placeholder={translate(
+                  'pimee_catalog_rule.form.edit.actions.set_status.placeholder'
+                )}
+                value={getValueFormValue()}
+                onChange={setValueFormValue}
+              />
+            </AknActionFormContainer>
+          </ActionLeftSide>
+        </ActionGrid>
       </ActionTemplate>
     </>
   );
