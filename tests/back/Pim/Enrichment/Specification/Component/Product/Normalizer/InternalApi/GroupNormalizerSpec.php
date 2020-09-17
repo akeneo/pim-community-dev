@@ -43,10 +43,7 @@ class GroupNormalizerSpec extends ObjectBehavior
         $versionNormalizer,
         GroupInterface $tshirt,
         Version $oldestLog,
-        Version $newestLog,
-        ArrayCollection $products,
-        ProductInterface $product,
-        \ArrayIterator $productsIterator
+        Version $newestLog
     ) {
         $options = [
             'decimal_separator' => ',',
@@ -66,26 +63,13 @@ class GroupNormalizerSpec extends ObjectBehavior
         $versionNormalizer->normalize($oldestLog, 'internal_api')->willReturn('normalized_oldest_log');
         $versionNormalizer->normalize($newestLog, 'internal_api')->willReturn('normalized_newest_log');
 
-        $products->getIterator()->willReturn($productsIterator);
-        $productsIterator->rewind()->shouldBeCalled();
-        $productsCount = 1;
-        $productsIterator->valid()->will(
-            function () use (&$productsCount) {
-                return $productsCount-- > 0;
-            }
-        );
-        $productsIterator->next()->shouldBeCalled();
-        $productsIterator->current()->will(new ReturnPromise([$product]));
-
-        $product->getIdentifier()->willReturn(42);
         $tshirt->getId()->willReturn(12);
-        $tshirt->getProducts()->willReturn($products);
+        $tshirt->getProducts()->shouldNotBeCalled();
 
         $this->normalize($tshirt, 'internal_api', $options)->shouldReturn(
             [
                 'code'     => 'my_group',
                 'type'     => 'related',
-                'products' => [42],
                 'meta'     => [
                     'id'                => 12,
                     'form'              => 'pim-group-edit-form',
