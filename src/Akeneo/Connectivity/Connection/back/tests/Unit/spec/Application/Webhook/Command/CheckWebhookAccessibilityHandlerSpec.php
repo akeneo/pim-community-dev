@@ -37,11 +37,13 @@ class CheckWebhookAccessibilityHandlerSpec extends ObjectBehavior
 
         $client->send($request)->willReturn(new Response(200, [], null, '1.1', 'OK'));
 
-        $this->handle($checkWebhookAccessibilityCommand)->shouldReturn([
-            'success' => 'true',
-            'message' => 'OK',
-            'code' => 200,
-        ]);
+        $this->handle($checkWebhookAccessibilityCommand)->shouldReturn(
+            [
+                'success' => 'true',
+                'message' => 'OK',
+                'code' => 200,
+            ]
+        );
     }
 
     public function it_returns_fail_when_webhook_url_format_is_ko($client): void
@@ -51,10 +53,12 @@ class CheckWebhookAccessibilityHandlerSpec extends ObjectBehavior
 
         $client->send($request)->willReturn(new Response(200, [], null, '1.1', 'OK'));
 
-        $this->handle($checkWebhookAccessibilityCommand)->shouldReturn([
-            'success' => 'false',
-            'message' => 'akeneo_connectivity.connection.webhook.constraint.url.invalid_format',
-        ]);
+        $this->handle($checkWebhookAccessibilityCommand)->shouldReturn(
+            [
+                'success' => 'false',
+                'message' => 'akeneo_connectivity.connection.webhook.constraint.url.invalid_format',
+            ]
+        );
     }
 
     public function it_returns_fail_when_webhook_is_unavailable($client): void
@@ -66,11 +70,13 @@ class CheckWebhookAccessibilityHandlerSpec extends ObjectBehavior
 
         $client->send($request)->willThrow($requestException);
 
-        $this->handle($checkWebhookAccessibilityCommand)->shouldReturn([
-            'success' => 'false',
-            'message' => 'Unavailable For Legal Reasons',
-            'code' => 451,
-        ]);
+        $this->handle($checkWebhookAccessibilityCommand)->shouldReturn(
+            [
+                'success' => 'false',
+                'message' => 'Unavailable For Legal Reasons',
+                'code' => 451,
+            ]
+        );
     }
 
     public function it_returns_fail_when_webhook_url_is_not_reachable($client): void
@@ -81,10 +87,12 @@ class CheckWebhookAccessibilityHandlerSpec extends ObjectBehavior
 
         $client->send($request)->willThrow($connectException);
 
-        $this->handle($checkWebhookAccessibilityCommand)->shouldReturn([
-            'success' => 'false',
-            'message' => 'Failed to connect to server',
-        ]);
+        $this->handle($checkWebhookAccessibilityCommand)->shouldReturn(
+            [
+                'success' => 'false',
+                'message' => 'Failed to connect to server',
+            ]
+        );
     }
 
     public function it_returns_fail_when_not_a_request_exception_is_raised($client): void
@@ -95,10 +103,12 @@ class CheckWebhookAccessibilityHandlerSpec extends ObjectBehavior
 
         $client->send($request)->willThrow($transferException);
 
-        $this->handle($checkWebhookAccessibilityCommand)->shouldReturn([
-            'success' => 'false',
-            'message' => 'Failed to connect to server',
-        ]);
+        $this->handle($checkWebhookAccessibilityCommand)->shouldReturn(
+            [
+                'success' => 'false',
+                'message' => 'Failed to connect to server',
+            ]
+        );
     }
 }
 

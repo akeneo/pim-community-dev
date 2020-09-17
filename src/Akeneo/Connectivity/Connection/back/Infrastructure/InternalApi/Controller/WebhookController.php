@@ -19,8 +19,10 @@ class WebhookController
     /** @var CheckWebhookAccessibilityHandler */
     private $checkWebhookAccessibilityHandler;
 
-    public function __construct(GetAConnectionWebhookHandler $getAConnectionWebhookHandler, CheckWebhookAccessibilityHandler $checkWebhookAccessibilityHandler)
-    {
+    public function __construct(
+        GetAConnectionWebhookHandler $getAConnectionWebhookHandler,
+        CheckWebhookAccessibilityHandler $checkWebhookAccessibilityHandler
+    ) {
         $this->getAConnectionWebhookHandler = $getAConnectionWebhookHandler;
         $this->checkWebhookAccessibilityHandler = $checkWebhookAccessibilityHandler;
     }
@@ -41,7 +43,9 @@ class WebhookController
     public function checkWebhookAccessibility(Request $request): JsonResponse
     {
         $url = $request->get('url', '');
-        $checkWebhookAccessibility = $this->checkWebhookAccessibilityHandler->handle(new CheckWebhookAccessibilityCommand($url));
+        $checkWebhookAccessibility = $this->checkWebhookAccessibilityHandler->handle(
+            new CheckWebhookAccessibilityCommand($url)
+        );
 
         return new JsonResponse($checkWebhookAccessibility);
     }
