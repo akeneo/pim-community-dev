@@ -44,7 +44,7 @@ export const createAttribute = (data: { [key: string]: any }): Attribute => {
 export const attributeSelect2Response = [
   {
     id: 'marketing',
-    text: 'Marketting',
+    text: 'Marketing',
     children: [
       {
         id: 'name',

@@ -260,3 +260,62 @@
 .AknTextareaField--hide {
   display: none;
 }
+
+.AknInputSizer {
+  display: inline-grid;
+  vertical-align: top;
+  align-items: center;
+  position: relative;
+  border: 1px solid @AknBlue100;
+  border-radius: 2px;
+  padding: 0 15px;
+  margin: 0;
+  height: 40px;
+
+  &.stacked {
+    padding: .5em;
+    align-items: stretch;
+
+    &::after,
+    input,
+    textarea {
+      grid-area: 2 / 1;
+    }
+  }
+
+  &::after,
+  input,
+  textarea {
+    width: auto;
+    min-width: 1em;
+    grid-area: 1 / 2;
+    font: inherit;
+    margin: 0;
+    resize: none;
+    background: none;
+    appearance: none;
+    border: none;
+  }
+
+  input {
+    line-height: 40px;
+    height: 40px;
+  }
+
+  &::after {
+    content: attr(data-value) ' ';
+    visibility: hidden;
+    white-space: pre-wrap;
+  }
+
+  &:focus-within {
+    textarea:focus,
+    input:focus {
+      outline: none;
+    }
+  }
+
+  &--error {
+    border-color: @AknRed;
+  }
+}

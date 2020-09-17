@@ -3,9 +3,14 @@ import { ProductField } from './ProductField';
 import { ActionModuleGuesser } from './ActionModuleGuesser';
 import { LocaleCode } from '../Locale';
 
-export type ConcatenateSource = ProductField & {
+export type ConcatenateSource = {
+  field?: string | null;
+  locale?: string | null;
+  scope?: string | null;
   label_locale?: LocaleCode;
   format?: string;
+  text?: string | null;
+  new_line?: null;
 };
 
 export type ConcatenateAction = {

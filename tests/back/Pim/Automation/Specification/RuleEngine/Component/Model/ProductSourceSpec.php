@@ -57,12 +57,13 @@ class ProductSourceSpec extends ObjectBehavior
         $this->getOptions()->shouldBe(['options1' => 'value1']);
     }
 
-    function it_cannot_be_created_without_field()
+    function it_cannot_be_created_without_field_text_nor_new_line()
     {
         $this->beConstructedThrough('fromNormalized', [['locale' => 'en_US']]);
 
-        $this->shouldThrow(new \LogicException('Concatenate source configuration requires a "field" key.'))
-            ->duringInstantiation();
+        $this->shouldThrow(new \LogicException(
+            'Concatenate source configuration requires either a "field", "text" or "new_line" key.'
+        ))->duringInstantiation();
     }
 
     function it_can_be_created_without_scope_and_locale()
@@ -73,5 +74,31 @@ class ProductSourceSpec extends ObjectBehavior
         $this->getScope()->shouldBe(null);
         $this->getLocale()->shouldBe(null);
         $this->getOptions()->shouldBe([]);
+        $this->getText()->shouldBe(null);
+        $this->isNewLine()->shouldBe(null);
+    }
+
+    function it_can_be_created_with_a_text()
+    {
+        $this->beConstructedThrough('fromNormalized', [['text' => 'this is a text']]);
+
+        $this->getField()->shouldBe(null);
+        $this->getScope()->shouldBe(null);
+        $this->getLocale()->shouldBe(null);
+        $this->getOptions()->shouldBe([]);
+        $this->getText()->shouldBe('this is a text');
+        $this->isNewLine()->shouldBe(null);
+    }
+
+    function it_can_be_created_with_a_new_line()
+    {
+        $this->beConstructedThrough('fromNormalized', [['new_line' => null]]);
+
+        $this->getField()->shouldBe(null);
+        $this->getScope()->shouldBe(null);
+        $this->getLocale()->shouldBe(null);
+        $this->getOptions()->shouldBe([]);
+        $this->getText()->shouldBe(null);
+        $this->isNewLine()->shouldBe(true);
     }
 }

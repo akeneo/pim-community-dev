@@ -6,7 +6,7 @@ const GreyGhostButton = styled(CoreButton)`
   border-color: ${({ theme }): string => theme.color.grey100};
   background-color: ${({ theme }): string => theme.color.white};
   &:hover {
-    border-color: ${({ theme }): string => theme.color.grey20};
+    background-color: ${({ theme }): string => theme.color.grey20};
   }
   &:active {
     border-color: ${({ theme }): string => theme.color.grey140};

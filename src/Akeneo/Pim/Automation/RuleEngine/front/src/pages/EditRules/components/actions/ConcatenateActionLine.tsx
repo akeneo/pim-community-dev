@@ -5,6 +5,7 @@ import { ActionLineProps } from './ActionLineProps';
 import { useControlledFormInputAction } from '../../hooks';
 import {
   Attribute,
+  attributeAcceptsNewLine,
   AttributeCode,
   AttributeType,
   Locale,
@@ -37,6 +38,8 @@ import {
 } from '../../../../dependenciesTools/hooks';
 import { ConcatenatePreview } from './concatenate/ConcatenatePreview';
 import { ConcatenateSourceList } from './concatenate/ConcatenateSourceList';
+import { AlertDialog } from '../../../../components/AlertDialog/AlertDialog';
+import { useDialogState } from 'reakit';
 
 const targetAttributeTypes: AttributeType[] = [
   AttributeType.TEXT,
@@ -52,6 +55,7 @@ const ConcatenateActionLine: React.FC<ActionLineProps> = ({
   const translate = useTranslate();
   const router = useBackboneRouter();
   const currentCatalogLocale = useUserCatalogLocale();
+  const removeNewLineDialog = useDialogState();
   const { setValue, watch, getValues } = useFormContext();
   const {
     formName,
@@ -64,6 +68,10 @@ const ConcatenateActionLine: React.FC<ActionLineProps> = ({
   const [attributeTarget, setAttributeTarget] = React.useState<
     Attribute | null | undefined
   >(undefined);
+  const [
+    attributeTargetPending,
+    setAttributeTargetPending,
+  ] = React.useState<Attribute | null>(null);
 
   const scopeFormName = formName('to.scope');
   const getScopeFormValue = () => getFormValue('to.scope');
@@ -81,13 +89,45 @@ const ConcatenateActionLine: React.FC<ActionLineProps> = ({
     return [];
   };
 
+  const sourceListContainsNewLine = () => {
+    const sources = watch(formName('from'));
+    if (!Array.isArray(sources)) {
+      return false;
+    }
+
+    return sources.some(
+      (source: any) => typeof source.new_line !== 'undefined'
+    );
+  };
+
+  const validatePendingAttribute = () => {
+    if (!attributeTargetPending) {
+      return;
+    }
+    setValue(formName('to.field'), attributeTargetPending.code);
+    setAttributeTarget(attributeTargetPending);
+  };
+
   const handleTargetChange = (attributeCode: AttributeCode) => {
     const getAttribute = async (attributeCode: AttributeCode) => {
       const attribute = await fetchAttribute(router, attributeCode);
+      if (!attribute) {
+        return;
+      }
+      if (!attributeAcceptsNewLine(attribute) && sourceListContainsNewLine()) {
+        setAttributeTargetPending(attribute);
+        removeNewLineDialog.show();
+        return;
+      }
+      setValue(formName('to.field'), attribute.code);
       setAttributeTarget(attribute);
-      setValue(formName('to.field'), attribute?.code);
     };
     getAttribute(attributeCode);
+  };
+
+  const handleTargetSelecting = (event: any) => {
+    event.preventDefault();
+    handleTargetChange(event.val);
   };
 
   useGetAttributeAtMount(
@@ -150,12 +190,13 @@ const ConcatenateActionLine: React.FC<ActionLineProps> = ({
             lineNumber={lineNumber}
             locales={locales}
             scopes={scopes}
+            attributeTarget={attributeTarget ?? null}
           />
         </ActionLeftSide>
         <ActionRightSide>
           <ActionTitle>
             {translate(
-              'pimee_catalog_rule.form.edit.actions.calculate.select_target'
+              'pimee_catalog_rule.form.edit.actions.concatenate.select_target'
             )}
           </ActionTitle>
           <ActionFormContainer>
@@ -171,11 +212,23 @@ const ConcatenateActionLine: React.FC<ActionLineProps> = ({
                 )} ${translate('pim_common.required_label')}`}
                 currentCatalogLocale={currentCatalogLocale}
                 value={attributeTarget?.code || null}
-                onChange={handleTargetChange}
+                onSelecting={handleTargetSelecting}
                 placeholder={translate(
-                  'pimee_catalog_rule.form.edit.actions.calculate.attribute_placeholder'
+                  'pimee_catalog_rule.form.edit.actions.concatenate.attribute_placeholder'
                 )}
                 filterAttributeTypes={targetAttributeTypes}
+              />
+              <AlertDialog
+                dialog={removeNewLineDialog}
+                onValidate={validatePendingAttribute}
+                cancelLabel={translate('pim_common.cancel')}
+                confirmLabel={translate('pim_common.confirm')}
+                label={translate(
+                  'pimee_catalog_rule.form.edit.actions.concatenate.remove_new_line_confirm.label'
+                )}
+                description={translate(
+                  'pimee_catalog_rule.form.edit.actions.concatenate.remove_new_line_confirm.description'
+                )}
               />
               {null === attributeTarget && (
                 <ErrorBlock>

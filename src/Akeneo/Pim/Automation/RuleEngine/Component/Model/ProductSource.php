@@ -21,7 +21,7 @@ use Webmozart\Assert\Assert;
  */
 final class ProductSource
 {
-    /** @var string */
+    /** @var string|null */
     private $field;
 
     /** @var string|null */
@@ -30,18 +30,32 @@ final class ProductSource
     /** @var string|null */
     private $locale;
 
+    /** @var string|null */
+    private $text;
+
+    /** @var bool|null */
+    private $newLine;
+
     /** @var array */
     private $options;
 
-    private function __construct(string $field, ?string $scope, ?string $locale, array $options)
-    {
+    private function __construct(
+        ?string $field,
+        ?string $scope,
+        ?string $locale,
+        ?string $text,
+        ?bool $newLine,
+        array $options
+    ) {
         $this->field = $field;
         $this->scope = $scope;
         $this->locale = $locale;
+        $this->text = $text;
+        $this->newLine = $newLine;
         $this->options = $options;
     }
 
-    public function getField(): string
+    public function getField(): ?string
     {
         return $this->field;
     }
@@ -56,6 +70,16 @@ final class ProductSource
         return $this->scope;
     }
 
+    public function getText(): ?string
+    {
+        return $this->text;
+    }
+
+    public function isNewLine(): ?bool
+    {
+        return $this->newLine;
+    }
+
     public function getOptions(): array
     {
         return $this->options;
@@ -63,13 +87,72 @@ final class ProductSource
 
     public static function fromNormalized(array $normalized): self
     {
-        Assert::keyExists($normalized, 'field', 'Concatenate source configuration requires a "field" key.');
+        if (isset($normalized['text'])) {
+            return static::fromNormalizedText($normalized);
+        }
+        if (array_key_exists('new_line', $normalized)) {
+            return static::fromNormalizedNewLine($normalized);
+        }
+
+        if (isset($normalized['field'])) {
+            return static::fromNormalizedField($normalized);
+        }
+
+        throw new \InvalidArgumentException(
+            'Concatenate source configuration requires either a "field", "text" or "new_line" key.'
+        );
+    }
+
+    private static function fromNormalizedField(array $normalized): self
+    {
+        Assert::keyExists($normalized, 'field', 'Concatenate field source configuration requires a "field" key.');
 
         $options = $normalized;
         unset($options['field']);
         unset($options['scope']);
         unset($options['locale']);
+        unset($options['text']);
+        unset($options['newLine']);
 
-        return new self($normalized['field'], $normalized['scope'] ?? null, $normalized['locale'] ?? null, $options);
+        return new self(
+            $normalized['field'] ?? null,
+            $normalized['scope'] ?? null,
+            $normalized['locale'] ?? null,
+            null,
+            null,
+            $options
+        );
+    }
+
+    private static function fromNormalizedText(array $normalized): self
+    {
+        Assert::keyExists($normalized, 'text', 'Concatenate text source configuration requires a "text" key.');
+
+        return new self(
+            null,
+            null,
+            null,
+            $normalized['text'],
+            null,
+            []
+        );
+    }
+
+    private static function fromNormalizedNewLine(array $normalized): self
+    {
+        Assert::keyExists(
+            $normalized,
+            'new_line',
+            'Concatenate new line source configuration requires a "new_line" key.'
+        );
+
+        return new self(
+            null,
+            null,
+            null,
+            null,
+            true,
+            []
+        );
     }
 }

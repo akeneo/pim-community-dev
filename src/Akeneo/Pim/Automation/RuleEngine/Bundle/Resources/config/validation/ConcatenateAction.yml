@@ -1,4 +1,6 @@
 Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ConcatenateAction:
+    constraints:
+        -   \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\TargetAcceptsNewLine: ~
     properties:
         from:
             - NotNull:

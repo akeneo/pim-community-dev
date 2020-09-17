@@ -50,7 +50,7 @@ class OperandKeysValidatorSpec extends ObjectBehavior
     {
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
-        $this->validate(new Operand(['value' => 10.0]), new OperandKeys());
+        $this->validate(new Operand(['field' => 'foo']), new OperandKeys());
     }
 
     function it_does_not_build_a_violation_if_operand_has_a_field_with_other_options(ExecutionContextInterface $context)

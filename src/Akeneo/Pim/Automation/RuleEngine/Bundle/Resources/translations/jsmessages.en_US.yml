@@ -253,8 +253,17 @@ pimee_catalog_rule:
                 concatenate:
                     title: CONCATENATE values
                     helper: To concatenate attribute values, please add the attributes and then, select the target attribute.
+                    select_target: Select your target
+                    attribute_placeholder: Select your target attribute
+                    add_text: Add text
+                    add_attribute: Add attribute
+                    add_new_line: Add line break
+                    line_break: Line break
                     date_format: Select a date format
                     label_locale: Label locale
+                    remove_new_line_confirm:
+                        label: Remove line break from operation list
+                        description: The new target attribute does not accept line breaks. This change will remove all line breaks.
             conditions:
                 delete:
                     label: Remove condition

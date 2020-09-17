@@ -14,6 +14,8 @@ final class ProductSource
     public $labelLocale;
     public $format;
     public $currency;
+    public $text;
+    public $newLine;
 
     public function __construct(array $data)
     {
@@ -23,10 +25,20 @@ final class ProductSource
         $this->labelLocale = $data['label_locale'] ?? null;
         $this->format = $data['format'] ?? null;
         $this->currency = $data['currency'] ?? null;
+        $this->text = $data['text'] ?? null;
+        $this->newLine = array_key_exists('new_line', $data) ? true : null;
     }
 
     public function toArray(): array
     {
+        if (null !== $this->text) {
+            return ['text' => $this->text];
+        }
+
+        if (true === $this->newLine) {
+            return ['new_line' => null];
+        }
+
         Assert::stringNotEmpty($this->field);
         Assert::nullOrStringNotEmpty($this->scope);
         Assert::nullOrStringNotEmpty($this->locale);

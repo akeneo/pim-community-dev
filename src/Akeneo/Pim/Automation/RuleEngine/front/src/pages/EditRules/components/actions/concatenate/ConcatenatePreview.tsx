@@ -20,14 +20,20 @@ const ConcatenatePreview: React.FC<Props> = ({ lineNumber }) => {
       <div className={'AknRulePreviewBox-title'}>
         {translate('pimee_catalog_rule.form.edit.preview')}
       </div>
-      <div data-testid={'calculate-preview'}>
+      <div data-testid={'concatenate-preview'}>
         {Array.isArray(sources()) &&
           sources().length > 0 &&
           sources().map((source: ConcatenateSource, i: number) => {
+            const lastSource = i > 0 ? sources()[i - 1] : null;
+
             return (
               <span key={i}>
-                <AttributePreview attributeCode={source.field} />
-                &nbsp;
+                {source.field && lastSource?.field && <>&nbsp;</>}
+                {source.field && (
+                  <AttributePreview attributeCode={source.field} />
+                )}
+                {'undefined' !== typeof source.new_line && <br />}
+                {source.text}
               </span>
             );
           })}

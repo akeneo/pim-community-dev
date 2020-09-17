@@ -19,6 +19,7 @@ type color = {
   grey140: string;
   grey60: string;
   grey80: string;
+  grey20: string;
   purple100: string;
   purple120: string;
   purple140: string;
@@ -65,6 +66,7 @@ const color: color = {
   grey140: '#11324d',
   grey60: '#f9f9fb',
   grey80: '#d9dde2',
+  grey20: '#f6f7fb',
   purple100: '#9452ba',
   purple120: '#764194',
   purple140: '#58316f',
