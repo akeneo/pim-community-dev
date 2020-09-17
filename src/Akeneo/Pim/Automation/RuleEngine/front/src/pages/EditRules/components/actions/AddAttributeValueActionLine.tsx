@@ -40,6 +40,7 @@ const AddAttributeValueActionLine: React.FC<ActionLineProps> = ({
     fieldFormName,
     typeFormName,
     itemsFormName,
+    getScopeFormValue,
     getItemsFormValue,
     setFieldFormValue,
     setItemsFormValue,
@@ -72,7 +73,11 @@ const AddAttributeValueActionLine: React.FC<ActionLineProps> = ({
         as={<span hidden />}
         defaultValue={getItemsFormValue()}
         rules={{
-          required: translate('pimee_catalog_rule.exceptions.required_value'),
+          required: translate('pimee_catalog_rule.exceptions.required_item'),
+          validate: (value: any) =>
+            Array.isArray(value) && 0 === value.length
+              ? translate('pimee_catalog_rule.exceptions.required_item')
+              : true,
         }}
       />
       <ActionTemplate
@@ -111,12 +116,10 @@ const AddAttributeValueActionLine: React.FC<ActionLineProps> = ({
               locales={locales}
               onAttributeCodeChange={onAttributeChange}
               lineNumber={lineNumber}
-              filterAttributeTypes={Array.from(
-                MANAGED_ATTRIBUTE_TYPES_FOR_ADD_ACTION.keys()
-              )}
+              filterAttributeTypes={MANAGED_ATTRIBUTE_TYPES_FOR_ADD_ACTION}
               disabled={
                 !!attribute &&
-                !MANAGED_ATTRIBUTE_TYPES_FOR_ADD_ACTION.has(attribute.type)
+                !MANAGED_ATTRIBUTE_TYPES_FOR_ADD_ACTION.includes(attribute.type)
               }
             />
           </ActionLeftSide>
@@ -132,6 +135,8 @@ const AddAttributeValueActionLine: React.FC<ActionLineProps> = ({
               name={itemsFormName}
               value={getItemsFormValue()}
               onChange={setItemsFormValue}
+              scopeCode={getScopeFormValue()}
+              actionType={'add'}
             />
           </ActionRightSide>
         </ActionGrid>

@@ -13,7 +13,7 @@ const InputNumberWithHelper = React.forwardRef<
     return (
       <>
         <InputNumber
-          className={`AknTextField AknTextField--noRightRadius${
+          className={`AknTextField AknNumberField--hideArrows AknTextField--noRightRadius${
             hasError ? ' AknTextField--error' : ''
           }`}
           type='number'

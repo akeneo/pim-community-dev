@@ -134,6 +134,7 @@ const PriceCollectionValue: React.FC<InputValueProps> = ({
                   handleChange(currencyCode, event.target.value)
                 }
                 hiddenLabel
+                step={attribute?.decimals_allowed ? 0.01 : 1}
                 helper={currencyCode}
               />
             </div>
