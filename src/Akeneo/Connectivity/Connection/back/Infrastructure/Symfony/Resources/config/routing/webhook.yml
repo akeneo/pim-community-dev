@@ -4,7 +4,7 @@ get:
   methods: [GET]
   requirements:
     code: '[a-zA-Z0-9_]+'
-check_url:
+check_accessibility:
   path: '/{code}/webhook/check_accessibility'
   defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.webhook:checkWebhookAccessibility }
   methods: [POST]

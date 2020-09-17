@@ -207,6 +207,7 @@ akeneo_connectivity.connection:
             url: URL
             secret: Secret
             enabled: Event subscription activation
+            test: Test
     error_management:
         connection_monitoring:
             title: Monitoring

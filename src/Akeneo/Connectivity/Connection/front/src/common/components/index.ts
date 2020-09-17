@@ -4,6 +4,7 @@ import {Breadcrumb} from './breadcrumb/Breadcrumb';
 import {BreadcrumbItem} from './breadcrumb/BreadcrumbItem';
 import {ApplyButton} from './button/ApplyButton';
 import {GreyButton} from './button/GreyButton';
+import {GreyLightButton} from './button/GreyLightButton';
 import {IconButton} from './button/IconButton';
 import {ImportantButton} from './button/ImportantButton';
 import {DropdownLink, SecondaryActionsDropdownButton} from './button/SecondaryActionsDropdownButton';
@@ -41,6 +42,7 @@ export {
     FormGroup,
     FormInput,
     GreyButton,
+    GreyLightButton,
     Helper,
     HelperLink,
     HelperTitle,
