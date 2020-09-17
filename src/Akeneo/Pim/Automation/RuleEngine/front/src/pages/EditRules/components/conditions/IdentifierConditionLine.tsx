@@ -4,6 +4,7 @@ import { ConditionLineProps } from './ConditionLineProps';
 import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
 import { Operator } from '../../../../models/Operator';
 import {
+  ConditionLineErrorsContainer,
   ConditionLineFormAndErrorsContainer,
   ConditionLineFormContainer,
   FieldColumn,
@@ -125,7 +126,9 @@ const IdentifierConditionLine: React.FC<ConditionLineProps> = ({
           )}
         </ValueColumn>
       </ConditionLineFormContainer>
-      <LineErrors lineNumber={lineNumber} type='conditions' />
+      <ConditionLineErrorsContainer>
+        <LineErrors lineNumber={lineNumber} type='conditions' />
+      </ConditionLineErrorsContainer>
     </ConditionLineFormAndErrorsContainer>
   );
 };
