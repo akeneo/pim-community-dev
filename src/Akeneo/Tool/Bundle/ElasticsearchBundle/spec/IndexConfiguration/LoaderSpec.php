@@ -6,9 +6,14 @@ use PhpSpec\ObjectBehavior;
 
 class LoaderSpec extends ObjectBehavior
 {
-    function it_loads_the_configuration_from_a_single_file()
+    function let(ParameterBagInterface $parameterBag)
     {
-        $this->beConstructedWith([__DIR__ . '/conf1.yml']);
+        $parameterBag->resolveValue(Argument::any())->willReturnArgument();
+    }
+
+    function it_loads_the_configuration_from_a_single_file(ParameterBagInterface $parameterBag)
+    {
+        $this->beConstructedWith([__DIR__ . '/conf1.yml'], $parameterBag);
 
         $indexConfiguration = $this->load();
         $indexConfiguration->getSettings()->shouldReturn(
@@ -66,14 +71,15 @@ class LoaderSpec extends ObjectBehavior
         $indexConfiguration->getAliases()->shouldReturn([]);
     }
 
-    function it_loads_the_configuration_from_multiple_files()
+    function it_loads_the_configuration_from_multiple_files(ParameterBagInterface $parameterBag)
     {
         $this->beConstructedWith(
             [
                 __DIR__ . '/conf1.yml',
                 __DIR__ . '/conf2.yml',
                 __DIR__ . '/conf3.yml',
-            ]
+            ],
+            $parameterBag
         );
 
         $indexConfiguration = $this->load();
@@ -157,14 +163,15 @@ class LoaderSpec extends ObjectBehavior
         );
     }
 
-    function it_loads_the_compiled_configuration_from_multiple_files()
+    function it_loads_the_compiled_configuration_from_multiple_files(ParameterBagInterface $parameterBag)
     {
         $this->beConstructedWith(
             [
                 __DIR__ . '/conf1.yml',
                 __DIR__ . '/conf2.yml',
                 __DIR__ . '/conf3.yml',
-            ]
+            ],
+            $parameterBag
         );
 
         $indexConfiguration = $this->load();
@@ -249,14 +256,46 @@ class LoaderSpec extends ObjectBehavior
         ]);
     }
 
-    function it_throws_an_exception_when_a_file_is_not_readable()
+    function it_replaces_parameters_in_the_configuration(ParameterBagInterface $parameterBag)
+    {
+        $this->beConstructedWith(
+            [
+                __DIR__ . '/conf4.yml',
+            ],
+            $parameterBag
+        );
+        $parameterBag->resolveValue('%elasticsearch_total_fields_limit%')->willReturn(10000);
+
+        $indexConfiguration = $this->load();
+        $indexConfiguration->getSettings()->shouldReturn(
+            [
+                'analysis' => [
+                    'char_filter' => [
+                        'newline_pattern' => [
+                            'type' => 'pattern_replace',
+                            'pattern' => '\\n',
+                            'replacement' => '',
+                        ],
+                    ],
+                ],
+                'mapping' => [
+                    'total_fields' => [
+                        'limit' => 10000
+                    ]
+                ]
+            ]
+        );
+    }
+
+    function it_throws_an_exception_when_a_file_is_not_readable(ParameterBagInterface $parameterBag)
     {
         $this->beConstructedWith(
             [
                 __DIR__ . '/conf1.yml',
                 __DIR__ . '/do_not_exists.yml',
                 __DIR__ . '/conf2.yml',
-            ]
+            ],
+            $parameterBag
         );
 
         $this->shouldThrow('\Exception')->during('load');
