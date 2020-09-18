@@ -2,7 +2,6 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
-use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductIdentifiersByGroupInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
@@ -18,7 +17,6 @@ class GroupNormalizerSpec extends ObjectBehavior
         StructureVersionProviderInterface $structureVersionProvider,
         VersionManager $versionManager,
         NormalizerInterface $versionNormalizer,
-        ConverterInterface $converter,
         GetProductIdentifiersByGroupInterface $getProductIdentifiersByGroup
     ) {
         $this->beConstructedWith(
@@ -26,7 +24,6 @@ class GroupNormalizerSpec extends ObjectBehavior
             $structureVersionProvider,
             $versionManager,
             $versionNormalizer,
-            $converter,
             $getProductIdentifiersByGroup
         );
     }
@@ -66,12 +63,18 @@ class GroupNormalizerSpec extends ObjectBehavior
 
         $tshirt->getId()->willReturn(12);
 
-        $getProductIdentifiersByGroup->fetchByGroupId(12)->shouldBeCalled();
+        $getProductIdentifiersByGroup->fetchByGroupId(12)->shouldBeCalled()
+            ->willReturn(['product1', 'product2', 'product3']);
 
         $this->normalize($tshirt, 'internal_api', $options)->shouldReturn(
             [
                 'code' => 'my_group',
                 'type' => 'related',
+                'products' => [
+                    'product1',
+                    'product2',
+                    'product3',
+                ],
                 'meta' => [
                     'id' => 12,
                     'form' => 'pim-group-edit-form',
