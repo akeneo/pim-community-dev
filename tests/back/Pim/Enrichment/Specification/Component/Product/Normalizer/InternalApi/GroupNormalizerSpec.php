@@ -5,6 +5,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Inter
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductIdentifiersByGroupInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Tool\Component\Versioning\Model\Version;
@@ -20,14 +21,16 @@ class GroupNormalizerSpec extends ObjectBehavior
         StructureVersionProviderInterface $structureVersionProvider,
         VersionManager $versionManager,
         NormalizerInterface $versionNormalizer,
-        ConverterInterface $converter
+        ConverterInterface $converter,
+        GetProductIdentifiersByGroupInterface $getProductIdentifiersByGroup
     ) {
         $this->beConstructedWith(
             $normalizer,
             $structureVersionProvider,
             $versionManager,
             $versionNormalizer,
-            $converter
+            $converter,
+            $getProductIdentifiersByGroup
         );
     }
 
@@ -43,7 +46,8 @@ class GroupNormalizerSpec extends ObjectBehavior
         $versionNormalizer,
         GroupInterface $tshirt,
         Version $oldestLog,
-        Version $newestLog
+        Version $newestLog,
+        GetProductIdentifiersByGroupInterface $getProductIdentifiersByGroup
     ) {
         $options = [
             'decimal_separator' => ',',
@@ -64,7 +68,8 @@ class GroupNormalizerSpec extends ObjectBehavior
         $versionNormalizer->normalize($newestLog, 'internal_api')->willReturn('normalized_newest_log');
 
         $tshirt->getId()->willReturn(12);
-        $tshirt->getProducts()->shouldNotBeCalled();
+
+        $getProductIdentifiersByGroup->fetchByGroupId(12)->shouldBeCalled();
 
         $this->normalize($tshirt, 'internal_api', $options)->shouldReturn(
             [
