@@ -92,3 +92,4 @@ services:
             - '@akeneo_connectivity.connection.persistence.query.select_active_webhooks'
             - '@akeneo_connectivity.connection.webhook.webhook_client'
             - '@akeneo_connectivity.connection.webhook.webhook_event_builder'
+            - '@logger'
