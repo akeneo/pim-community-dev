@@ -21,7 +21,7 @@ class ConnectionWebhook
     /** @var ?Url */
     private $url;
 
-    public function __construct(string $code, bool $enabled, ?string $url)
+    public function __construct(string $code, bool $enabled, ?string $url = null)
     {
         $this->code = $code;
         $this->enabled = $enabled;

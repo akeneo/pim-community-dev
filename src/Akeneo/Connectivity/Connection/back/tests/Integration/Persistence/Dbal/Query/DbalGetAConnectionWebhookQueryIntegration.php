@@ -44,7 +44,6 @@ class DbalGetAConnectionWebhookQueryIntegration extends TestCase
     {
         $this->connectionLoader->createConnection('magento', 'Magento Connector', FlowType::DATA_DESTINATION, false);
         $erp = $this->connectionLoader->createConnection('erp', 'ERP Connector', FlowType::DATA_SOURCE, false);
-        $this->updateConnection($erp, null, null, 0);
 
         $webhook = $this->getAConnectionWebhookQuery->execute($erp->code());
 
