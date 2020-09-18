@@ -15,7 +15,7 @@ services:
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateSpelling:
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\TextChecker'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellMultipleChecker'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\FilterProductValuesForSpelling'

@@ -32,80 +32,50 @@ class FilterProductValuesForSpellingSpec extends ObjectBehavior
         $this->beConstructedWith($allActivatedLocalesQuery);
     }
 
-    public function it_returns_the_localizable_text_values_for_a_catalog_with_several_locales($allActivatedLocalesQuery)
+    public function it_returns_the_localizable_text_and_textarea_values_for_a_catalog_with_several_locales($allActivatedLocalesQuery)
     {
         $allActivatedLocalesQuery->execute()->willReturn(new LocaleCollection([new LocaleCode('en_US'), new LocaleCode('fr_FR')]));
 
         $localizableTextValues1 = $this->givenLocalizableTextValues('localizable_text_1');
         $localizableTextValues2 = $this->givenLocalizableTextValues('localizable_text_2');
+        $localizableTextareaValues = $this->givenLocalizableTextareaValues('localizable_textarea');
         $notLocalizableTextValues = $this->givenNotLocalizableTextValues('not_localizable_text');
-        $textareaValues = $this->givenLocalizableTextareaValues('a_textarea');
+        $notLocalizableTextareaValues = $this->givenNotLocalizableTextareaValues('not_localizable_textarea');
+        $simpleSelectValues = $this->givenLocalizableSimpleSelectValues('a_simple_select');
 
         $productValues = (new ProductValuesCollection())
             ->add($localizableTextValues1)
             ->add($localizableTextValues2)
+            ->add($localizableTextareaValues)
             ->add($notLocalizableTextValues)
-            ->add($textareaValues);
-
-        $returnedValues = $this->getTextValues($productValues)->getWrappedObject();
-
-        Assert::eq(iterator_to_array($returnedValues), [$localizableTextValues1, $localizableTextValues2]);
-    }
-
-    public function it_returns_the_localizable_textarea_values_for_a_catalog_with_several_locales($allActivatedLocalesQuery)
-    {
-        $allActivatedLocalesQuery->execute()->willReturn(new LocaleCollection([new LocaleCode('en_US'), new LocaleCode('fr_FR')]));
-
-        $localizableTextareaValues1 = $this->givenLocalizableTextareaValues('localizable_textarea_1');
-        $localizableTextareaValues2 = $this->givenLocalizableTextareaValues('localizable_textarea_2');
-        $notLocalizableTextareaValues = $this->givenNotLocalizableTextareaValues('not_localizable_textarea');
-        $textValues = $this->givenLocalizableTextValues('a_text');
-
-        $productValues = (new ProductValuesCollection())
-            ->add($localizableTextareaValues1)
-            ->add($localizableTextareaValues2)
             ->add($notLocalizableTextareaValues)
-            ->add($textValues);
+            ->add($simpleSelectValues);
 
-        $returnedValues = $this->getTextareaValues($productValues)->getWrappedObject();
+        $returnedValues = $this->getFilteredProductValues($productValues)->getWrappedObject();
 
-        Assert::eq(iterator_to_array($returnedValues), [$localizableTextareaValues1, $localizableTextareaValues2]);
+        Assert::eq($returnedValues, [$localizableTextValues1, $localizableTextValues2, $localizableTextareaValues]);
     }
 
-    public function it_returns_all_text_values_for_a_catalog_with_a_single_locale($allActivatedLocalesQuery)
+    public function it_returns_all_text_and_textarea_values_for_a_catalog_with_a_single_locale($allActivatedLocalesQuery)
     {
         $allActivatedLocalesQuery->execute()->willReturn(new LocaleCollection([new LocaleCode('en_US')]));
 
         $localizableTextValues = $this->givenLocalizableTextValues('localizable_text');
         $notLocalizableTextValues = $this->givenNotLocalizableTextValues('not_localizable_text');
-        $textareaValues = $this->givenLocalizableTextareaValues('a_textarea');
+        $localizableTextareaValues = $this->givenLocalizableTextareaValues('localizable_textarea');
+        $notLocalizableTextareaValues = $this->givenNotLocalizableTextareaValues('not_localizable_textarea');
+        $simpleSelectValues = $this->givenLocalizableSimpleSelectValues('a_simple_select');
 
         $productValues = (new ProductValuesCollection())
             ->add($localizableTextValues)
             ->add($notLocalizableTextValues)
-            ->add($textareaValues);
-
-        $returnedValues = $this->getTextValues($productValues)->getWrappedObject();
-
-        Assert::eq(iterator_to_array($returnedValues), [$localizableTextValues, $notLocalizableTextValues]);
-    }
-
-    public function it_returns_all_textarea_values_for_a_catalog_with_a_single_locale($allActivatedLocalesQuery)
-    {
-        $allActivatedLocalesQuery->execute()->willReturn(new LocaleCollection([new LocaleCode('en_US')]));
-
-        $localizableTextareaValues = $this->givenLocalizableTextareaValues('localizable_textarea_1');
-        $notLocalizableTextareaValues = $this->givenNotLocalizableTextareaValues('not_localizable_textarea');
-        $textValues = $this->givenLocalizableTextValues('a_text');
-
-        $productValues = (new ProductValuesCollection())
             ->add($localizableTextareaValues)
             ->add($notLocalizableTextareaValues)
-            ->add($textValues);
+            ->add($simpleSelectValues);
 
-        $returnedValues = $this->getTextareaValues($productValues)->getWrappedObject();
+        $returnedValues = $this->getFilteredProductValues($productValues)->getWrappedObject();
 
-        Assert::eq(iterator_to_array($returnedValues), [$localizableTextareaValues, $notLocalizableTextareaValues]);
+        Assert::eq($returnedValues, [$localizableTextValues, $notLocalizableTextValues, $localizableTextareaValues, $notLocalizableTextareaValues]);
     }
 
     private function givenLocalizableTextValues(string $attributeCode): ProductValues
@@ -135,6 +105,14 @@ class FilterProductValuesForSpellingSpec extends ObjectBehavior
     private function givenNotLocalizableTextareaValues(string $attributeCode): ProductValues
     {
         $attribute = new Attribute(new AttributeCode($attributeCode), AttributeType::textarea(), false);
+        $values = $this->createMinimalValues($attributeCode);
+
+        return new ProductValues($attribute, $values);
+    }
+
+    private function givenLocalizableSimpleSelectValues(string $attributeCode): ProductValues
+    {
+        $attribute = new Attribute(new AttributeCode($attributeCode), AttributeType::simpleSelect(), true);
         $values = $this->createMinimalValues($attributeCode);
 
         return new ProductValues($attribute, $values);

@@ -26,14 +26,14 @@ class FilterProductValuesForSpelling
         $this->allActivatedLocalesQuery = $allActivatedLocalesQuery;
     }
 
-    public function getTextValues(ProductValuesCollection $productValues): \Iterator
+    public function getFilteredProductValues(ProductValuesCollection $productValues): array
     {
-        return $this->isCatalogWithSingleLocale() ? $productValues->getTextValues() : $productValues->getLocalizableTextValues();
-    }
+        $isCatalogWithSingleLocale = $this->isCatalogWithSingleLocale();
 
-    public function getTextareaValues(ProductValuesCollection $productValues): \Iterator
-    {
-        return $this->isCatalogWithSingleLocale() ? $productValues->getTextareaValues() : $productValues->getLocalizableTextareaValues();
+        $textValues = $isCatalogWithSingleLocale ? $productValues->getTextValues() : $productValues->getLocalizableTextValues();
+        $textareaValues = $isCatalogWithSingleLocale ? $productValues->getTextareaValues() : $productValues->getLocalizableTextareaValues();
+
+        return array_merge(iterator_to_array($textValues), iterator_to_array($textareaValues));
     }
 
     private function isCatalogWithSingleLocale(): bool

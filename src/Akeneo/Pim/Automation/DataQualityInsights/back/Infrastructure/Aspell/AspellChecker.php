@@ -37,7 +37,7 @@ class AspellChecker implements TextChecker
     /** @var string */
     private $encoding;
 
-    /** @var GlobalOffsetCalculator */
+    /** @var AspellGlobalOffsetCalculator */
     private $globalOffsetCalculator;
 
     private $textCheckerDictionaryRepository;
