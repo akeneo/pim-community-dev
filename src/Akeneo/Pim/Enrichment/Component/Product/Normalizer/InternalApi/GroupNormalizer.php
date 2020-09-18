@@ -35,12 +35,13 @@ class GroupNormalizer implements NormalizerInterface
     /** @var GetProductIdentifiersByGroupInterface */
     private $getProductIdentifiersByGroup;
 
+    // todo master : remove nullable GetProductIdentifiersByGroupInterface
     public function __construct(
         NormalizerInterface $groupNormalizer,
         StructureVersionProviderInterface $structureVersionProvider,
         VersionManager $versionManager,
         NormalizerInterface $versionNormalizer,
-        GetProductIdentifiersByGroupInterface $getProductIdentifiersByGroup
+        GetProductIdentifiersByGroupInterface $getProductIdentifiersByGroup = null
     ) {
         $this->groupNormalizer = $groupNormalizer;
         $this->structureVersionProvider = $structureVersionProvider;
@@ -58,7 +59,15 @@ class GroupNormalizer implements NormalizerInterface
         $normalizedGroup = $this->groupNormalizer->normalize($group, 'standard', $context);
 
         $normalizedGroup['products'] = [];
-        $normalizedGroup['products'] = $this->getProductIdentifiersByGroup->fetchByGroupId($group->getId());
+
+        // todo master: remove nullable test and else clause
+        if (null !== $this->getProductIdentifiersByGroup) {
+            $normalizedGroup['products'] = $this->getProductIdentifiersByGroup->fetchByGroupId($group->getId());
+        } else {
+            foreach ($group->getProducts() as $product) {
+                $normalizedGroup['products'][] = $product->getIdentifier();
+            }
+        }
 
         $firstVersion = $this->versionManager->getOldestLogEntry($group);
         $lastVersion = $this->versionManager->getNewestLogEntry($group);
