@@ -31,9 +31,9 @@ final class GetProductIdentifiersByGroup implements GetProductIdentifiersByGroup
      */
     public function fetchByGroupId(int $groupId): array
     {
-        $sql = 'SELECT t0.identifier 
-            FROM pim_catalog_product t0 
-            INNER JOIN pim_catalog_group_product ON t0.id = pim_catalog_group_product.product_id 
+        $sql = 'SELECT identifier 
+            FROM pim_catalog_product products 
+            INNER JOIN pim_catalog_group_product ON products.id = pim_catalog_group_product.product_id 
             WHERE pim_catalog_group_product.group_id = :groupId';
 
         return $this->connection->executeQuery(
