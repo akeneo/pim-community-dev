@@ -136,6 +136,11 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo.pim.enrichment.product.query.product_identifiers_by_group:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetProductIdentifiersByGroup'
+        arguments:
+            - '@database_connection'
+
     akeneo.pim.enrichment.product.query.get_values_and_properties_from_product_identifiers:
         class: Akeneo\Pim\Enrichment\Bundle\Product\Query\Sql\GetValuesAndPropertiesFromProductIdentifiers
         arguments:
