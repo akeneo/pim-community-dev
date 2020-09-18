@@ -95,7 +95,7 @@ class SqlFindConnectorAttributeByIdentifierAndCodeTest extends SqlIntegrationTes
             AttributeIdentifier::create($referenceEntityIdentifier, 'main_image', 'test'),
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             AttributeCode::fromString('main_image'),
-            LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
+            LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo', 'es_ES' => 'Foto']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
