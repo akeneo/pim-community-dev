@@ -4,14 +4,11 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Inter
 
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductIdentifiersByGroupInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Tool\Component\Versioning\Model\Version;
-use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Promise\ReturnPromise;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class GroupNormalizerSpec extends ObjectBehavior
@@ -51,7 +48,7 @@ class GroupNormalizerSpec extends ObjectBehavior
     ) {
         $options = [
             'decimal_separator' => ',',
-            'date_format'       => 'dd/MM/yyyy',
+            'date_format' => 'dd/MM/yyyy',
         ];
 
         $groupNormalized = [
@@ -73,16 +70,16 @@ class GroupNormalizerSpec extends ObjectBehavior
 
         $this->normalize($tshirt, 'internal_api', $options)->shouldReturn(
             [
-                'code'     => 'my_group',
-                'type'     => 'related',
-                'meta'     => [
-                    'id'                => 12,
-                    'form'              => 'pim-group-edit-form',
+                'code' => 'my_group',
+                'type' => 'related',
+                'meta' => [
+                    'id' => 12,
+                    'form' => 'pim-group-edit-form',
                     'structure_version' => 1,
-                    'model_type'        => 'group',
-                    'created'           => 'normalized_oldest_log',
-                    'updated'           => 'normalized_newest_log',
-                ]
+                    'model_type' => 'group',
+                    'created' => 'normalized_oldest_log',
+                    'updated' => 'normalized_newest_log',
+                ],
             ]
         );
     }

@@ -35,12 +35,6 @@ class GroupNormalizer implements NormalizerInterface
     /** @var GetProductIdentifiersByGroupInterface */
     private $getProductIdentifiersByGroup;
 
-    /**
-     * @param NormalizerInterface               $groupNormalizer
-     * @param StructureVersionProviderInterface $structureVersionProvider
-     * @param VersionManager                    $versionManager
-     * @param NormalizerInterface               $versionNormalizer
-     */
     public function __construct(
         NormalizerInterface $groupNormalizer,
         StructureVersionProviderInterface $structureVersionProvider,
