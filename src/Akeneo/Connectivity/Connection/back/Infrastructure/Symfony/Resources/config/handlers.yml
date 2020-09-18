@@ -93,9 +93,11 @@ services:
             - '@akeneo_connectivity.connection.webhook.webhook_client'
             - '@akeneo_connectivity.connection.webhook.webhook_event_builder'
             - '@logger'
+            - '@security.token_storage'
+            - '@pim_user.repository.user'
 
     akeneo_connectivity.connection.application.webhook.handler.update_connection_webhook:
-      class: Akeneo\Connectivity\Connection\Application\Webhook\Command\UpdateWebhookHandler
-      arguments:
-        - '@akeneo_connectivity.connection.persistence.repository.webhook'
-        - '@validator'
+        class: Akeneo\Connectivity\Connection\Application\Webhook\Command\UpdateWebhookHandler
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.repository.webhook'
+            - '@validator'
