@@ -4,3 +4,10 @@ get:
   methods: [GET]
   requirements:
     code: '[a-zA-Z0-9_]+'
+
+update:
+  path: '/{code}/webhook'
+  defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.webhook:update }
+  methods: [POST]
+  requirements:
+    code: '[a-zA-Z0-9_]+'

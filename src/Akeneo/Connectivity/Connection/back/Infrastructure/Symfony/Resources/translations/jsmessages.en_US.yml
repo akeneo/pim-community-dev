@@ -205,6 +205,13 @@ akeneo_connectivity.connection:
             url: URL
             secret: Secret
             enabled: Event subscription activation
+        error:
+            wrong_url: This value is not a valid URL.
+            required: This field is required.
+            not_found: You are trying to update a connection that does not exist.
+        flash:
+            success: Event subscription successfully updated.
+            error: Sorry, an error occurred while editing the event subscription.
     error_management:
         connection_monitoring:
             title: Monitoring
@@ -233,7 +240,7 @@ akeneo_connectivity.connection:
             not_auditable:
                 title: Unmonitored connection
                 description:
-                    1: To track errors on this connection, 
+                    1: To track errors on this connection,
                     2: activate monitoring
                     3: in the settings.
             not_data_source:

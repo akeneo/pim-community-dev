@@ -1,0 +1,7 @@
+Akeneo\Connectivity\Connection\Domain\Webhook\Model\Write\ConnectionWebhook:
+    constraints:
+      - Akeneo\Connectivity\Connection\Application\Webhook\Validation\EnabledWebhookRequiresAnUrl: ~
+    properties:
+        url:
+            - Url:
+                message: 'akeneo_connectivity.connection.webhook.error.wrong_url'

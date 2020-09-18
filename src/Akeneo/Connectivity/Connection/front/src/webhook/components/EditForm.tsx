@@ -1,38 +1,43 @@
 import React, {FC, useContext} from 'react';
-import {TranslateContext} from '../../shared/translate';
-import {Webhook} from '../model/Webhook';
+import {useFormContext} from 'react-hook-form';
+import {useHistory} from 'react-router';
+import styled from 'styled-components';
 import {FormGroup, FormInput, ToggleButton} from '../../common/components';
 import {CopiableCredential} from '../../settings/components/credentials/CopiableCredential';
 import {RegenerateButton} from '../../settings/components/RegenerateButton';
-import {useHistory} from 'react-router';
-import styled from 'styled-components';
-import {useForm} from 'react-hook-form';
+import {TranslateContext} from '../../shared/translate';
+import {Webhook} from '../model/Webhook';
 
 type Props = {
     webhook: Webhook;
 };
 
-export const EditForm: FC<Props> = ({webhook}) => {
+export const EditForm: FC<Props> = ({webhook}: Props) => {
     const translate = useContext(TranslateContext);
     const history = useHistory();
-    const {register, errors} = useForm();
+    const {register, errors, getValues} = useFormContext();
 
     return (
         <>
-            <FormGroup label='akeneo_connectivity.connection.webhook.form.enabled' >
-                <ToggleButton isChecked={webhook.enabled} ref={register} name={'enabled'}/>
+            <FormGroup label='akeneo_connectivity.connection.webhook.form.enabled'>
+                <ToggleButton name='enabled' defaultChecked={getValues('enabled')} ref={register} />
             </FormGroup>
 
             <FormGroup
                 controlId='url'
                 label='akeneo_connectivity.connection.webhook.form.url'
-                errors={errors.url ? [errors.url] : undefined}
+                errors={errors.url ? [errors.url.message] : undefined}
             >
                 <FormInput
-                    type='url'
+                    type='text'
                     name='url'
-                    defaultValue={webhook.url ? webhook.url : undefined}
-                    ref={register}
+                    defaultValue={getValues('url')}
+                    ref={register({
+                        required: {
+                            value: getValues('enabled'),
+                            message: 'akeneo_connectivity.connection.webhook.error.required',
+                        },
+                    })}
                 />
             </FormGroup>
 
@@ -41,9 +46,9 @@ export const EditForm: FC<Props> = ({webhook}) => {
                     label={translate('akeneo_connectivity.connection.connection.secret')}
                     actions={
                         <RegenerateButton
-                            onClick={() => history.push(
-                                `/connections/${webhook.connectionCode}/webhook/regenerate-secret`
-                            )}
+                            onClick={() =>
+                                history.push(`/connections/${webhook.connectionCode}/webhook/regenerate-secret`)
+                            }
                         />
                     }
                 >
