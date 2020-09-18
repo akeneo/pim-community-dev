@@ -14,9 +14,17 @@ use Symfony\Component\Messenger\Transport\TransportInterface;
  */
 final class GpsTransportFactory implements TransportFactoryInterface
 {
+    /** @var PubSubClientFactory */
+    private $pubSubClientFactory;
+
+    public function __construct(PubSubClientFactory $pubSubClientFactory)
+    {
+        $this->pubSubClientFactory = $pubSubClientFactory;
+    }
+
     public function createTransport(string $dsn, array $options, SerializerInterface $serializer): TransportInterface
     {
-        $client = Client::fromDsn($dsn, $options);
+        $client = Client::fromDsn($this->pubSubClientFactory, $dsn, $options);
 
         $sender = new GpsSender($client->getTopic(), $serializer);
 

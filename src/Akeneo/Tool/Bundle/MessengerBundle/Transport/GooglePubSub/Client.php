@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub;
 
-use Google\Cloud\PubSub\PubSubClient;
 use Google\Cloud\PubSub\Subscription;
 use Google\Cloud\PubSub\Topic;
 
@@ -32,9 +31,9 @@ class Client
      *  } $options
      */
     public static function fromDsn(
+        PubSubClientFactory $pubSubClientFactory,
         string $dsn,
-        array $options = [],
-        PubSubClientFactory $pubSubClientFactory = null
+        array $options = []
     ): self {
         if (0 !== strpos($dsn, 'gps:')) {
             throw new \InvalidArgumentException(sprintf('DSN "%s" is invalid.', $dsn));
@@ -57,10 +56,10 @@ class Client
         }
 
         $client = new self(
+            $pubSubClientFactory,
             $options['project_id'],
             $options['topic_name'],
-            $options['subscription_name'],
-            $pubSubClientFactory
+            $options['subscription_name']
         );
 
         if (true === $options['auto_setup']) {
@@ -71,12 +70,12 @@ class Client
     }
 
     public function __construct(
+        PubSubClientFactory $pubSubClientFactory,
         string $projectId,
         string $topicName,
-        ?string $subscriptionName,
-        PubSubClientFactory $pubSubClientFactory = null
+        ?string $subscriptionName
     ) {
-        $pubSubClient = ($pubSubClientFactory ?? new PubSubClientFactory())->createPubSubClient([
+        $pubSubClient = $pubSubClientFactory->createPubSubClient([
             'projectId' => $projectId
         ]);
 
