@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes:
+
+- PIM-9451: Filter out Asset Manager attribute labels of disabled locales 
+ 
 # 4.0.57 (2020-09-15)
 
 # 4.0.56 (2020-09-09)

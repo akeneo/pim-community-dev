@@ -133,24 +133,28 @@ services:
         arguments:
             - '@database_connection'
             - '@akeneo_referenceentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+            - '@akeneo_referenceentity.infrastructure.persistence.inactive_label_filter'
 
     akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_by_identifier_and_code:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindConnectorAttributeByIdentifierAndCode
         arguments:
             - '@database_connection'
             - '@akeneo_referenceentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+            - '@akeneo_referenceentity.infrastructure.persistence.inactive_label_filter'
 
     akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_option:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindConnectorAttributeOption
         arguments:
             - '@database_connection'
             - '@akeneo_referenceentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+            - '@akeneo_referenceentity.infrastructure.persistence.inactive_label_filter'
 
     akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_options:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindConnectorAttributeOptions
         arguments:
             - '@database_connection'
             - '@akeneo_referenceentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+            - '@akeneo_referenceentity.infrastructure.persistence.inactive_label_filter'
 
     akeneo_referenceentity.infrastructure.persistence.query.find_connector_records_by_identifiers:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindConnectorRecordsByIdentifiers
@@ -476,6 +480,7 @@ services:
         arguments:
             - '@database_connection'
 
+
     # Reference entities permissions queries
     akeneo.referencentity.infrastructure.persistence.query.find_reference_entity_permissions_details:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntityPermission\SqlFindReferenceEntityPermissionsDetails
@@ -521,3 +526,8 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.cli.all_records_identifiers'
             - '@akeneo_referenceentity.infrastructure.persistence.sql.record.refresh_records.refresh_record'
+
+    akeneo_referenceentity.infrastructure.persistence.inactive_label_filter:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\InactiveLabelFilter
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales'

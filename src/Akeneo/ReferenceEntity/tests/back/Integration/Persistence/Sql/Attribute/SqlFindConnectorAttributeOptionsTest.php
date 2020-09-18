@@ -146,11 +146,11 @@ class SqlFindConnectorAttributeOptionsTest extends SqlIntegrationTestCase
         $optionCollectionAttribute->setOptions([
             AttributeOption::create(
                 OptionCode::fromString('french'),
-                LabelCollection::fromArray(['fr_FR' => 'Francais'])
+                LabelCollection::fromArray(['fr_FR' => 'Francais', 'es_ES' => 'Francés'])
             ),
             AttributeOption::create(
                 OptionCode::fromString('english'),
-                LabelCollection::fromArray(['fr_FR' => 'Angalis'])
+                LabelCollection::fromArray(['fr_FR' => 'Angalis', 'es_ES' => 'Inglés'])
             )
         ]);
 

@@ -19,6 +19,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttributeOption;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributeOptionsInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\InactiveLabelFilter;
 use Doctrine\DBAL\Connection;
 
 class SqlFindConnectorAttributeOptions implements FindConnectorAttributeOptionsInterface
@@ -29,13 +30,18 @@ class SqlFindConnectorAttributeOptions implements FindConnectorAttributeOptionsI
     /** @var AttributeHydratorRegistry */
     private $attributeHydratorRegistry;
 
-    /**
-     * @param Connection $sqlConnection
-     */
-    public function __construct(Connection $sqlConnection, AttributeHydratorRegistry $attributeHydratorRegistry)
-    {
+    /** @var InactiveLabelFilter */
+    private $inactiveLabelFilter;
+
+    // @todo merge master: make $inactiveLabelFilter mandatory
+    public function __construct(
+        Connection $sqlConnection,
+        AttributeHydratorRegistry $attributeHydratorRegistry,
+        InactiveLabelFilter $inactiveLabelFilter = null
+    ) {
         $this->sqlConnection = $sqlConnection;
         $this->attributeHydratorRegistry = $attributeHydratorRegistry;
+        $this->inactiveLabelFilter = $inactiveLabelFilter;
     }
 
     /**
@@ -86,9 +92,15 @@ SQL;
         $connectorOptions = [];
 
         foreach ($options as $option) {
+            $labels = $option['labels'];
+            // @todo merge master: remove null check
+            if (null !== $this->inactiveLabelFilter) {
+                $labels = $this->inactiveLabelFilter->filter($labels);
+            }
+
             $connectorOptions[] = new ConnectorAttributeOption(
                 OptionCode::fromString($option['code']),
-                LabelCollection::fromArray($option['labels'])
+                LabelCollection::fromArray($labels)
             );
         }
 
