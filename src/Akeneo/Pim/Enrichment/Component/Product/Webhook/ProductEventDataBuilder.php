@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Webhook;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\WebhookEvent\WebhookEventDataBuilder;
-use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilder;
+use Akeneo\Connectivity\Connection\Domain\Webhook\WebhookEvent\WebhookEventBuildingFailedException;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
-use Akeneo\Pim\Enrichment\Component\Product\Updater\ProductUpdater;
 use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -20,20 +19,14 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductEventDataBuilder implements WebhookEventDataBuilder
 {
-    private $productBuilder;
-    private $productUpdater;
-    private $productValidator;
+    private $productRepository;
     private $externalApiNormalizer;
 
     public function __construct(
-        ProductBuilder $productBuilder,
-        ProductUpdater $productUpdater,
-        ValidatorInterface $productValidator,
+        IdentifiableObjectRepositoryInterface $productRepository,
         NormalizerInterface $externalApiNormalizer
     ) {
-        $this->productBuilder = $productBuilder;
-        $this->productUpdater = $productUpdater;
-        $this->productValidator = $productValidator;
+        $this->productRepository = $productRepository;
         $this->externalApiNormalizer = $externalApiNormalizer;
     }
 
@@ -46,18 +39,16 @@ class ProductEventDataBuilder implements WebhookEventDataBuilder
             throw new \InvalidArgumentException();
         }
 
-        /*
         $data = $businessEvent->data();
 
-        $product = $this->productBuilder->createProduct($data['identifier'], $data['family'] ?? null);
-        $this->productUpdater->update($product, $data);
+        $product = $this->productRepository->findOneByIdentifier($data['identifier']);
+        if (null === $product) {
+            throw new WebhookEventBuildingFailedException($businessEvent, $context);
+        }
 
-        $this->productValidator->validate($product);
-
-        return $this->externalApiNormalizer->normalize($product, 'external_api');
-        */
-
-        return $businessEvent->data();
+        return [
+            'resource' => $this->externalApiNormalizer->normalize($product, 'external_api')
+        ];
     }
 
     public function supports(BusinessEventInterface $businessEvent): bool
