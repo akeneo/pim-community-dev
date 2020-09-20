@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
+use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
-use Akeneo\Connectivity\Connection\Domain\Webhook\WebhookEvent\WebhookEventBuildingFailedException;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
+use Akeneo\Platform\Component\Webhook\EventBuildingExceptionInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author    Thomas Galvaing <thomas.galvaing@akeneo.com>
@@ -25,6 +25,9 @@ final class SendBusinessEventToWebhooksHandler
     /** @var SelectActiveWebhooksQuery */
     private $selectActiveWebhooksQuery;
 
+    /** @var WebhookUserAuthenticator */
+    private $webhookUserAuthenticator;
+
     /** @var WebhookClient */
     private $client;
 
@@ -34,26 +37,18 @@ final class SendBusinessEventToWebhooksHandler
     /** @var LoggerInterface */
     private $logger;
 
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
-    /** @var ObjectRepository */
-    private $userRepository;
-
     public function __construct(
         SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
+        WebhookUserAuthenticator $webhookUserAuthenticator,
         WebhookClient $client,
         WebhookEventBuilder $builder,
-        LoggerInterface $logger,
-        TokenStorageInterface $tokenStorage,
-        ObjectRepository $userRepository
+        LoggerInterface $logger
     ) {
         $this->selectActiveWebhooksQuery = $selectActiveWebhooksQuery;
+        $this->webhookUserAuthenticator = $webhookUserAuthenticator;
         $this->client = $client;
         $this->builder = $builder;
         $this->logger = $logger;
-        $this->tokenStorage = $tokenStorage;
-        $this->userRepository = $userRepository;
     }
 
     public function handle(SendBusinessEventToWebhooksCommand $command): void
@@ -67,19 +62,12 @@ final class SendBusinessEventToWebhooksHandler
 
         $requests = function () use ($businessEvent, $webhooks) {
             foreach ($webhooks as $webhook) {
-                /** @var UserInterface $user */
-                if (null !== $user = $this->userRepository->find($webhook->userId())) {
-                    $this->tokenStorage->setToken(new UsernamePasswordToken($user, null, 'main', $user->getRoles()));
-                }
-
-                $context = [
-                    'user_id' => $webhook->userId()
-                ];
                 try {
-                    $event = $this->builder->build($businessEvent, $context);
-                } catch (WebhookEventBuildingFailedException $exception) {
-                    $this->logger->error($exception->getMessage(), $exception->getContext());
-
+                    $this->webhookUserAuthenticator->authenticate($webhook->userId());
+                    $event = $this->builder->build($businessEvent);
+                } catch (\Throwable $error) {
+                    // Handle error gracefully and continue the processing of other webhooks.
+                    $this->handleError($error, $webhook, $businessEvent);
                     continue;
                 }
 
@@ -88,5 +76,29 @@ final class SendBusinessEventToWebhooksHandler
         };
 
         $this->client->bulkSend($requests());
+    }
+
+    private function handleError(\Throwable $error, ActiveWebhook $webhook, BusinessEventInterface $businessEvent): void
+    {
+        $context = [
+            'webhook' => [
+                'connection_code' => $webhook->connectionCode(),
+                'user_id' => $webhook->userId(),
+            ],
+            'business_event' => [
+                'author' => $businessEvent->author(),
+                'name' => $businessEvent->name(),
+                'timestamp' => $businessEvent->timestamp(),
+                'uuid' => $businessEvent->uuid(),
+            ],
+        ];
+
+        if ($error instanceof WebhookEventDataBuilderNotFoundException) {
+            $this->logger->info($error->getMessage());
+        } elseif ($error instanceof EventBuildingExceptionInterface) {
+            $this->logger->warning('Webhook event building failed: ' . $error->getMessage(), $context);
+        } else {
+            $this->logger->critical((string) $error, $context);
+        }
     }
 }
