@@ -55,6 +55,10 @@ type AkeneoTheme = {
     default: string;
     small: string;
   };
+  font: {
+    default: string,
+    monospaced: string,
+  };
 };
 
 const akeneoTheme: AkeneoTheme = {
@@ -112,6 +116,10 @@ const akeneoTheme: AkeneoTheme = {
     default: '13px',
     small: '11px',
   },
+  font: {
+    default: '"Lato", "Helvetica Neue", Helvetica, Arial, sans-serif',
+    monospaced: 'Courier, "MS Courier New", Prestige, "Everson Mono',
+  }
 };
 
 export type AkeneoThemedProps<P = {}> = ThemedStyledProps<P, AkeneoTheme>;

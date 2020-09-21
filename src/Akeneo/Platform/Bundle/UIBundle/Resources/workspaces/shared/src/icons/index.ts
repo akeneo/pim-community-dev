@@ -3,6 +3,7 @@ export * from './CSVFileIcon';
 export * from './EditIcon';
 export * from './IconProps';
 export * from './InfoIcon';
+export * from './MoveIcon';
 export * from './SearchIcon';
 export * from './TickIcon';
 export * from './UnlinkIcon';

@@ -245,7 +245,9 @@ pim_enrich.entity.attribute_group:
             attributes_groups_selected: '{{ itemsCount }} group(s) selected'
         delete:
             confirm: Are you sure you want to delete this attribute group?
-
+    grid:
+        columns:
+            name: Attribute groups name
 pim_enrich.mass_edit.family:
     title: Families bulk action
     confirm: "{1}You are about to update a family with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} families with the following information, please confirm."
