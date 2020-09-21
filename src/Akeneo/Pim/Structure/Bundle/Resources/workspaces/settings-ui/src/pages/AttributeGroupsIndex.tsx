@@ -1,12 +1,28 @@
 import React, {FC} from 'react';
-import {PimView} from '@akeneo-pim-community/legacy-bridge';
+import {PageContent, PageHeader} from '@akeneo-pim-community/shared';
+import {
+    AttributeGroupsList,
+    AttributeGroupsBreadcrumb,
+    AttributeGroupsUserButtons,
+    AttributeGroupsCreateButton
+} from '../components';
+
+const translate = require('oro/translator');
+
+const breadcrumb = <AttributeGroupsBreadcrumb />;
+const userButtons = <AttributeGroupsUserButtons />;
+const buttons = [<AttributeGroupsCreateButton />];
 
 const AttributeGroupsIndex: FC = () => {
     return (
-        <PimView
-            className=''
-            viewName='pim-attribute-group-index'
-        />
+        <>
+            <PageHeader breadcrumb={breadcrumb} userButtons={userButtons} buttons={buttons}>
+                {translate('pim_enrich.entity.attribute_group.plural_label')}
+            </PageHeader>
+            <PageContent>
+                <AttributeGroupsList />
+            </PageContent>
+        </>
     );
 };
 
