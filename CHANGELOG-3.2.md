@@ -4,6 +4,7 @@
 
 - AOB-1080: Fix pim/onboarder logo submenu display under collapsed column
 - PIM-9450: Fix error during family import, compute products/product models doesn't work when products/product models are skipped
+- PIM-9453: Use specific query to fetch product identifiers linked to a group.
 
 # 3.2.70 (2020-09-10)
 

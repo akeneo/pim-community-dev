@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductIdentifiersByGroupInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -31,34 +32,41 @@ class GroupNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $versionNormalizer;
 
-    /**
-     * @param NormalizerInterface               $groupNormalizer
-     * @param StructureVersionProviderInterface $structureVersionProvider
-     * @param VersionManager                    $versionManager
-     * @param NormalizerInterface               $versionNormalizer
-     */
+    /** @var GetProductIdentifiersByGroupInterface */
+    private $getProductIdentifiersByGroup;
+
+    // todo master : remove nullable GetProductIdentifiersByGroupInterface
     public function __construct(
         NormalizerInterface $groupNormalizer,
         StructureVersionProviderInterface $structureVersionProvider,
         VersionManager $versionManager,
-        NormalizerInterface $versionNormalizer
+        NormalizerInterface $versionNormalizer,
+        GetProductIdentifiersByGroupInterface $getProductIdentifiersByGroup = null
     ) {
         $this->groupNormalizer = $groupNormalizer;
         $this->structureVersionProvider = $structureVersionProvider;
         $this->versionManager = $versionManager;
         $this->versionNormalizer = $versionNormalizer;
+        $this->getProductIdentifiersByGroup = $getProductIdentifiersByGroup;
     }
 
     /**
      * {@inheritdoc}
+     * @param GroupInterface $group
      */
     public function normalize($group, $format = null, array $context = [])
     {
         $normalizedGroup = $this->groupNormalizer->normalize($group, 'standard', $context);
 
         $normalizedGroup['products'] = [];
-        foreach ($group->getProducts() as $product) {
-            $normalizedGroup['products'][] = $product->getIdentifier();
+
+        // todo master: remove nullable test and else clause
+        if (null !== $this->getProductIdentifiersByGroup) {
+            $normalizedGroup['products'] = $this->getProductIdentifiersByGroup->fetchByGroupId($group->getId());
+        } else {
+            foreach ($group->getProducts() as $product) {
+                $normalizedGroup['products'][] = $product->getIdentifier();
+            }
         }
 
         $firstVersion = $this->versionManager->getOldestLogEntry($group);
@@ -72,12 +80,12 @@ class GroupNormalizer implements NormalizerInterface
             null;
 
         $normalizedGroup['meta'] = [
-            'id'                => $group->getId(),
-            'form'              => 'pim-group-edit-form',
+            'id' => $group->getId(),
+            'form' => 'pim-group-edit-form',
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
-            'model_type'        => 'group',
-            'created'           => $firstVersion,
-            'updated'           => $lastVersion,
+            'model_type' => 'group',
+            'created' => $firstVersion,
+            'updated' => $lastVersion,
         ];
 
         return $normalizedGroup;
