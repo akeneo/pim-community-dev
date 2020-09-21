@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9455: Make total_fields limit of elasticsearch configurable
+
 # 4.0.57 (2020-09-15)
 
 ## Bug fixes
