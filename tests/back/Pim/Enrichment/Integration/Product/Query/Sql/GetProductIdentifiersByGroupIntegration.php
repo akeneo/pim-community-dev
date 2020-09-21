@@ -23,7 +23,26 @@ class GetProductIdentifiersByGroupIntegration extends TestCase
     {
         parent::setUp();
 
-        $entityBuilder = new EntityBuilder($this->testKernel->getContainer());
+        $container = $this->testKernel->getContainer();
+
+        $entityBuilder = new EntityBuilder(
+            $container->get('akeneo_integration_tests.launcher.job_launcher'),
+            $container->get('validator'),
+            $container->get('pim_catalog.builder.entity_with_values'),
+            $container->get('pim_catalog.builder.product'),
+            $container->get('pim_catalog.updater.product'),
+            $container->get('pim_catalog.saver.product'),
+            $container->get('pim_catalog.factory.product_model'),
+            $container->get('pim_catalog.updater.product_model'),
+            $container->get('pim_catalog.saver.product_model'),
+            $container->get('pim_catalog.repository.family_variant'),
+            $container->get('pim_catalog.factory.family_variant'),
+            $container->get('pim_catalog.updater.family_variant'),
+            $container->get('pim_catalog.saver.family_variant'),
+            $container->get('pim_catalog.repository.attribute'),
+            $container->get('akeneo_elasticsearch.client.product_and_product_model')
+        );
+
         $this->givenFamily('aFamily');
         $this->givenGroups(['groupA', 'groupB']);
 
