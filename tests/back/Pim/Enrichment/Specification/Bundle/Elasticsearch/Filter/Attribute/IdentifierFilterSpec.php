@@ -220,6 +220,22 @@ class IdentifierFilterSpec extends ObjectBehavior
         )->during('addAttributeFilter', [$sku, Operators::EQUALS, ['sku-001'], null, null, []]);
     }
 
+    function it_throws_an_exception_when_the_given_value_is_null(
+        SearchQueryBuilder $sqb,
+        AttributeInterface $sku
+    ) {
+        $sku->getCode()->willReturn('sku');
+        $this->setQueryBuilder($sqb);
+
+        $this->shouldThrow(
+            InvalidPropertyTypeException::stringExpected(
+                'sku',
+                IdentifierFilter::class,
+                null
+            )
+        )->during('addAttributeFilter', [$sku, Operators::EQUALS, null, null, null, []]);
+    }
+
     function it_throws_an_exception_when_the_given_value_is_not_an_array_with_unsupported_operator_for_field_filter(
         SearchQueryBuilder $sqb,
         AttributeInterface $sku

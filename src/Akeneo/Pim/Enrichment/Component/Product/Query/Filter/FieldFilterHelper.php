@@ -117,7 +117,7 @@ class FieldFilterHelper
      */
     public static function checkString($field, $value, $className)
     {
-        if (!is_string($value) && null !== $value) {
+        if (!is_string($value)) {
             throw InvalidPropertyTypeException::stringExpected($field, $className, $value);
         }
     }

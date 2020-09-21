@@ -181,4 +181,12 @@ class IdentifierFilterIntegration extends AbstractProductQueryBuilderTestCase
 
         $this->executeFilter([['identifier', Operators::STARTS_WITH, ['string']]]);
     }
+
+    public function testErrorDataIsNull()
+    {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "identifier" expects a string as data, "NULL" given.');
+
+        $this->executeFilter([['identifier', Operators::EQUALS, null]]);
+    }
 }
