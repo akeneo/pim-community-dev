@@ -15,7 +15,7 @@ while ! docker-compose exec mysql mysql --protocol TCP -uroot -proot -e "show da
     sleep 1
 done
 
-echo "MySQL server is running!"
+echo "MySQL server is running! (after $COUNTER checks)"
 
 COUNTER=1
 echo "Waiting for Elasticsearch server…"
@@ -28,4 +28,4 @@ while ! docker-compose exec elasticsearch curl -s -k --fail "http://elasticsearc
     sleep 1
 done
 
-echo "Elasticsearch server is running!"
+echo "Elasticsearch server is running! (after $COUNTER checks)"
