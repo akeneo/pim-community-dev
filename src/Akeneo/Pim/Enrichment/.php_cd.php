@@ -129,7 +129,7 @@ $rules = [
         'Akeneo\Platform\Component\EventQueue\BusinessEvent',
 
         // Webhook API: event data building
-        'Akeneo\Platform\Component\Webhook\Exception\EventDataBuildingException',
+        'Akeneo\Platform\Component\Webhook\EventBuildingExceptionInterface',
         'Akeneo\Platform\Component\Webhook\EventDataBuilderInterface',
 
         // Required for NonExistentValuesFilter on channels and locales
