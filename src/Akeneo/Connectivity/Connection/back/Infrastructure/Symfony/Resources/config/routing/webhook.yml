@@ -4,9 +4,10 @@ get:
   methods: [GET]
   requirements:
     code: '[a-zA-Z0-9_]+'
+
 check_accessibility:
-  path: '/{code}/webhook/check_accessibility'
-  defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.webhook:checkWebhookAccessibility }
+  path: '/{code}/webhook/check_reachability'
+  defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.webhook:checkWebhookReachability }
   methods: [POST]
   requirements:
     code: '[a-zA-Z0-9_]+'

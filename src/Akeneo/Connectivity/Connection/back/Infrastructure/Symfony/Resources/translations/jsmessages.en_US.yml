@@ -200,9 +200,6 @@ akeneo_connectivity.connection:
         helper:
             message: Your connected app can subscribe to be notified of events in the Akeneo PIM (for example when a product is updated) at a URL you choose.
             link: Learn more about event subscriptions configuration...
-        constraint:
-            url:
-                invalid_format: Invalid url format.
         form:
             url: URL
             secret: Secret

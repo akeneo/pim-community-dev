@@ -32,4 +32,4 @@ services:
         class: 'Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\WebhookController'
         arguments:
             - '@akeneo_connectivity.connection.application.webhook.handler.get_connection_webhook'
-            - '@akeneo_connectivity.connection.application.webhook.handler.check_webhook_url_accessibility'
+            - '@akeneo_connectivity.connection.application.webhook.handler.check_url_reachability'
