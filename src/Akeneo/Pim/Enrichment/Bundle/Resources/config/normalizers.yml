@@ -61,6 +61,7 @@ services:
             - '@pim_structure_version.provider.structure_version.group'
             - '@pim_versioning.manager.version'
             - '@pim_enrich.normalizer.version'
+            - '@akeneo.pim.enrichment.product.query.product_identifiers_by_group'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
