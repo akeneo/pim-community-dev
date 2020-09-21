@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.71 (2020-09-21)
+
 ## Bug fixes:
 
 - AOB-1080: Fix pim/onboarder logo submenu display under collapsed column
