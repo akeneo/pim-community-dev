@@ -90,11 +90,10 @@ services:
         class: Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler
         arguments:
             - '@akeneo_connectivity.connection.persistence.query.select_active_webhooks'
+            - '@akeneo_connectivity.connection.webhook.webhook_user_authenticator'
             - '@akeneo_connectivity.connection.webhook.webhook_client'
             - '@akeneo_connectivity.connection.webhook.webhook_event_builder'
             - '@logger'
-            - '@security.token_storage'
-            - '@pim_user.repository.user'
 
     akeneo_connectivity.connection.application.webhook.handler.update_connection_webhook:
         class: Akeneo\Connectivity\Connection\Application\Webhook\Command\UpdateWebhookHandler

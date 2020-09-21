@@ -124,12 +124,13 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
         'Psr\Log\LoggerInterface',
 
-        // To validate: cross-cutting concerns of sending business events
+        // Event queue: business event
         'Akeneo\Platform\Component\EventQueue\BusinessEventInterface',
         'Akeneo\Platform\Component\EventQueue\BusinessEvent',
 
-        // To validate: decoupling of the data builder interface
-        'Akeneo\Connectivity\Connection\Domain\Webhook\WebhookEvent\WebhookEventDataBuilder',
+        // Webhook API: event data building
+        'Akeneo\Platform\Component\Webhook\EventBuildingExceptionInterface',
+        'Akeneo\Platform\Component\Webhook\EventDataBuilderInterface',
 
         // Required for NonExistentValuesFilter on channels and locales
         'Akeneo\Channel\Component\Query\PublicApi',
