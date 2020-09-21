@@ -3,6 +3,8 @@
 namespace spec\Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration;
 
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class LoaderSpec extends ObjectBehavior
 {
