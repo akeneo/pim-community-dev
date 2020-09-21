@@ -183,3 +183,7 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductIdsFromProductIdentifiersQuery:
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeGroupActivationQuery:
+        arguments:
+            - '@database_connection'
