@@ -37,6 +37,8 @@ parameters:
     # Maximum number of resources when updating a list of resources
     api_input_max_resources_number: 100
 
+    # env var default value if not present on server
+    env(APP_ELASTICSEARCH_TOTAL_FIELDS_LIMIT): 10000
     # Total fields limit of elasticsearch
     elasticsearch_total_fields_limit: '%env(APP_ELASTICSEARCH_TOTAL_FIELDS_LIMIT)%'
 
