@@ -1,8 +1,9 @@
 # 4.0.x
 
-## Bug fixes:
+## Bug fixes
 
 - PIM-9451: Filter out Asset Manager attribute labels of disabled locales 
+- PIM-9435: Fix duplicated listener
  
 # 4.0.57 (2020-09-15)
 
