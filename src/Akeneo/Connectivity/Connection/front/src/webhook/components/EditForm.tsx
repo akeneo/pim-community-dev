@@ -2,7 +2,7 @@ import React, {FC, useContext, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {useHistory} from 'react-router';
 import styled from 'styled-components';
-import {FormGroup, FormInput, GreyLightButton, ToggleButton} from '../../common/components';
+import {FormGroup, FormInput, GhostButton, ToggleButton} from '../../common/components';
 import {CopiableCredential} from '../../settings/components/credentials/CopiableCredential';
 import {RegenerateButton} from '../../settings/components/RegenerateButton';
 import {isOk} from '../../shared/fetch-result/result';
@@ -72,11 +72,11 @@ export const EditForm: FC<Props> = ({webhook}) => {
 
 const TestUrlButton: FC<{onClick: () => void}> = ({onClick}) => {
     return (
-        <GreyLightButtonContainer>
-            <GreyLightButton onClick={onClick} classNames={['AknButton--apply']}>
+        <GhostButtonContainer>
+            <GhostButton onClick={onClick}>
                 <Translate id='akeneo_connectivity.connection.webhook.form.test' />
-            </GreyLightButton>
-        </GreyLightButtonContainer>
+            </GhostButton>
+        </GhostButtonContainer>
     );
 };
 
@@ -88,6 +88,6 @@ export const CredentialList = styled.div`
     }
 `;
 
-const GreyLightButtonContainer = styled.span`
+const GhostButtonContainer = styled.span`
     margin-left: 10px;
 `;
