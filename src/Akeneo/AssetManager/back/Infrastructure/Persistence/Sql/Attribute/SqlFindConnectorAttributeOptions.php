@@ -15,7 +15,6 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
-use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttributeOption;
 use Akeneo\AssetManager\Domain\Query\Attribute\Connector\FindConnectorAttributeOptionsInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
@@ -33,13 +32,10 @@ class SqlFindConnectorAttributeOptions implements FindConnectorAttributeOptionsI
     /** @var InactiveLabelFilter */
     private $inactiveLabelFilter;
 
-    /**
-     * @param Connection $sqlConnection
-     */
     public function __construct(
         Connection $sqlConnection,
         AttributeHydratorRegistry $attributeHydratorRegistry,
-        InactiveLabelFilter $inactiveLabelFilter = null
+        InactiveLabelFilter $inactiveLabelFilter
     ) {
         $this->sqlConnection = $sqlConnection;
         $this->attributeHydratorRegistry = $attributeHydratorRegistry;
@@ -47,14 +43,17 @@ class SqlFindConnectorAttributeOptions implements FindConnectorAttributeOptionsI
     }
 
     /**
-     * @return ConnectorAttribute
+     * @return ConnectorAttributeOption[]
      */
     public function find(AssetFamilyIdentifier $assetFamilyIdentifier, AttributeCode $attributeCode): array
     {
         return $this->fetch($assetFamilyIdentifier, $attributeCode);
     }
 
-    private function fetch(AssetFamilyIdentifier $assetFamilyIdentifier, AttributeCode $attributeCode): array
+    /**
+     * @return ConnectorAttributeOption[]
+     */
+    private function fetch(AssetFamilyIdentifier $assetFamilyIdentifier, AttributeCode $attributeCode): ?array
     {
         $query = <<<SQL
         SELECT additional_properties
@@ -66,21 +65,21 @@ SQL;
             $query,
             [
                 'asset_family_identifier' => $assetFamilyIdentifier->normalize(),
-                'attribute_code' => (string) $attributeCode
+                'attribute_code' => (string) $attributeCode,
             ]
         );
 
         $result = $statement->fetch();
 
         if (!$result) {
-            return null;
+            return [];
         }
 
         return $this->hydrateAttributeOptions($result);
     }
 
     /**
-     * @return ConnectorAttribute
+     * @return ConnectorAttributeOption[]
      */
     private function hydrateAttributeOptions(array $result): array
     {
@@ -95,10 +94,7 @@ SQL;
 
         foreach ($options as $option) {
             $labels = $option['labels'];
-            // @todo merge master: remove null check
-            if (null !== $this->inactiveLabelFilter) {
-                $labels = $this->inactiveLabelFilter->filter($labels);
-            }
+            $labels = $this->inactiveLabelFilter->filter($labels);
 
             $connectorOptions[] = new ConnectorAttributeOption(
                 OptionCode::fromString($option['code']),

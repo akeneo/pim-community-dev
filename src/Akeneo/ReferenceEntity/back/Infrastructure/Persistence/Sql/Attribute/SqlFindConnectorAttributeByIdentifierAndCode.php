@@ -25,20 +25,16 @@ class SqlFindConnectorAttributeByIdentifierAndCode implements FindConnectorAttri
     /** @var InactiveLabelFilter */
     private $inactiveLabelFilter;
 
-    // @todo merge master: make $inactiveLabelFilter mandatory
     public function __construct(
         Connection $sqlConnection,
         AttributeHydratorRegistry $attributeHydratorRegistry,
-        InactiveLabelFilter $inactiveLabelFilter = null
+        InactiveLabelFilter $inactiveLabelFilter
     ) {
         $this->sqlConnection = $sqlConnection;
         $this->attributeHydratorRegistry = $attributeHydratorRegistry;
         $this->inactiveLabelFilter = $inactiveLabelFilter;
     }
 
-    /**
-     * @return ConnectorAttribute
-     */
     public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): ?ConnectorAttribute
     {
         return $this->fetch($referenceEntityIdentifier, $attributeCode);
@@ -79,18 +75,12 @@ SQL;
         return $this->hydrateAttribute($result);
     }
 
-    /**
-     * @return ConnectorAttribute
-     */
     private function hydrateAttribute(array $result): ConnectorAttribute
     {
         $hydratedAttribute = $this->attributeHydratorRegistry->getHydrator($result)->hydrate($result);
 
         $labels = json_decode($result['labels'], true);
-        // @todo merge master: remove null check
-        if ($this->inactiveLabelFilter !== null) {
-            $labels = $this->inactiveLabelFilter->filter($labels);
-        }
+        $labels = $this->inactiveLabelFilter->filter($labels);
 
         return new ConnectorAttribute(
             $hydratedAttribute->getCode(),
