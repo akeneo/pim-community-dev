@@ -85,18 +85,24 @@ SQL;
         $activatedLocales = $this->findActivatedLocales->findAll();
         $allAttributeDetails = [];
         foreach ($results as $result) {
+            $labels = json_decode($result['labels'], true);
+            $additionalProperties = json_decode($result['additional_properties'], true);
+            if (array_key_exists('options', $additionalProperties)) {
+                $additionalProperties['options'] = $this->filterActivatedLocaleOptions($additionalProperties['options'], $activatedLocales);
+            }
+
             $attributeDetails = new AttributeDetails();
             $attributeDetails->type = $result['attribute_type'];
             $attributeDetails->identifier = $result['identifier'];
             $attributeDetails->assetFamilyIdentifier = $result['asset_family_identifier'];
             $attributeDetails->code = $result['code'];
             $attributeDetails->order = (int) $result['attribute_order'];
-            $attributeDetails->labels = $this->getLabelsByActivatedLocale($result, $activatedLocales);
+            $attributeDetails->labels = $this->getLabelsByActivatedLocale($labels, $activatedLocales);
             $attributeDetails->isRequired = (bool) $result['is_required'];
             $attributeDetails->isReadOnly = (bool) $result['is_read_only'];
             $attributeDetails->valuePerChannel = (bool) $result['value_per_channel'];
             $attributeDetails->valuePerLocale = (bool) $result['value_per_locale'];
-            $attributeDetails->additionalProperties = json_decode($result['additional_properties'], true);
+            $attributeDetails->additionalProperties = $additionalProperties;
 
             $allAttributeDetails[] = $attributeDetails;
         }
@@ -104,15 +110,26 @@ SQL;
         return $allAttributeDetails;
     }
 
-    private function getLabelsByActivatedLocale(array $result, array $activatedLocales): array
+
+    private function filterActivatedLocaleOptions(array $options, array $activatedLocales)
     {
-        $labels = [];
-        foreach (json_decode($result['labels'], true) as $localeCode => $label) {
+        return array_map(function ($option) use ($activatedLocales) {
+            $option['labels'] = $this->getLabelsByActivatedLocale($option['labels'], $activatedLocales);
+
+            return $option;
+        }, $options);
+    }
+
+    // @todo merge master: use InactiveLabelFilter::filter
+    private function getLabelsByActivatedLocale(array $labels, array $activatedLocales): array
+    {
+        $result = [];
+        foreach ($labels as $localeCode => $label) {
             if (in_array($localeCode, $activatedLocales)) {
-                $labels[$localeCode] = $label;
+                $result[$localeCode] = $label;
             }
         }
 
-        return $labels;
+        return $result;
     }
 }
