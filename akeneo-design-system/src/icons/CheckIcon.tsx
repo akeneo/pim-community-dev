@@ -4,7 +4,7 @@ const CheckIcon = ({width = 18, height = 18, className = ''}: {width: number; he
   <svg width={width} height={height} viewBox="0 0 18 18">
     <path
       className={className}
-      stroke="#FFFFFF"
+      stroke="currentColor"
       d="M1.7 8l4.1 4 8-8"
       fill="none"
       strokeLinejoin="round"

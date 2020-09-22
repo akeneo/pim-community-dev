@@ -13,7 +13,7 @@ const PartialCheckIcon = ({
     <path
       className={className}
       d="M2 12.5h20"
-      stroke="#FFFFFF"
+      stroke="currentColor"
       strokeWidth={2}
       fill="none"
       fillRule="evenodd"

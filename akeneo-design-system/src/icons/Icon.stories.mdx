@@ -1,0 +1,70 @@
+import {useState} from 'react';
+import styled from 'styled-components';
+import {Meta} from '@storybook/addon-docs/blocks';
+import {linkTo} from '@storybook/addon-links';
+import * as Icons from './';
+
+<Meta title="Guidelines/Iconography" />
+
+export const IconGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 180px);
+    gap: 16px;
+`;
+
+export const IconCard = styled.div`
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-align: center;
+    border: 1px solid rgba(0,0,0,.1);
+    box-shadow: rgba(0,0,0,0.10) 0 1px 3px 0;
+    border-radius: 4px;
+`;
+
+export const IconContainer = styled.div`
+    height: 110px;
+    color: #A1A9B7;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(0,0,0,.1)
+`;
+
+export const LabelContainer = styled.div`
+    padding: 8px 0px;
+    max-width: 100%;
+    white-space: nowrap;
+    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+`;
+
+# Iconography
+Icons are visual symbols used to represent ideas, objects or actions. They communicate messages at a glance, allow interactivity and draw attention to important information.
+
+## Designing icons
+
+### Sizes
+
+Akeneo components typically use 18px icons on artboards. Icons on 16px, 24px, 32px and 48px artboards can also be used. Be sure icon size is consistent throughout your product.
+
+### Colors
+
+The icons are always stroke and monochromatic and must respect the color contrast. The color of the icon should reflect the importance of its action, which must always guide the user.
+
+## Icons
+<Canvas>
+  <Story name="Standard">
+    <IconGrid>
+      { Object.keys(Icons).map((iconName) => {
+        return (
+          <IconCard key={iconName}>
+            <IconContainer>
+              {React.createElement(Icons[iconName], {height: 105, width: 105})}
+            </IconContainer>
+            <LabelContainer>{iconName}</LabelContainer>
+          </IconCard>
+        )
+      })}
+    </IconGrid>
+  </Story>
+</Canvas>
