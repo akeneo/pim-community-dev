@@ -38,7 +38,7 @@ class GroupNormalizerSpec extends ObjectBehavior
         $structureVersionProvider,
         $versionManager,
         $versionNormalizer,
-        $getGroupProductIdentifiers,
+        GetGroupProductIdentifiers $getGroupProductIdentifiers,
         GroupInterface $tshirt,
         Version $oldestLog,
         Version $newestLog
