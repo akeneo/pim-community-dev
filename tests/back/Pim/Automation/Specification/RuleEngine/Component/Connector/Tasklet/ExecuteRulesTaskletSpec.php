@@ -64,7 +64,7 @@ class ExecuteRulesTaskletSpec extends ObjectBehavior
         $jobParameters->get('rule_codes')->willReturn([]);
         $jobParameters->get('dry_run')->willReturn(false);
 
-        $ruleDefinitionRepository->findAllOrderedByPriority()
+        $ruleDefinitionRepository->findEnabledOrderedByPriority()
                                  ->willReturn([new RuleDefinition(), new RuleDefinition(), new RuleDefinition()]);
 
         $stepExecution->setSummary(Argument::type('array'))->shouldBeCalled();
@@ -101,7 +101,7 @@ class ExecuteRulesTaskletSpec extends ObjectBehavior
     ) {
         $ruleDefinition1->getCode()->willReturn('my_rule_code');
         $ruleDefinition1->getContent()->willReturn(['normalized rule content']);
-        $ruleDefinitionRepository->findAllOrderedByPriority()->willReturn([$ruleDefinition1, $ruleDefinition2]);
+        $ruleDefinitionRepository->findEnabledOrderedByPriority()->willReturn([$ruleDefinition1, $ruleDefinition2]);
         $jobParameters->get('rule_codes')->willReturn([]);
         $jobParameters->get('dry_run')->willReturn(false);
         $jobParameters->get('stop_on_error')->willReturn(true);
@@ -143,7 +143,7 @@ class ExecuteRulesTaskletSpec extends ObjectBehavior
     ) {
         $ruleDefinition1->getCode()->willReturn('my_rule_code');
         $ruleDefinition1->getContent()->willReturn(['normalized rule content']);
-        $ruleDefinitionRepository->findAllOrderedByPriority()->willReturn([$ruleDefinition1, $ruleDefinition2]);
+        $ruleDefinitionRepository->findEnabledOrderedByPriority()->willReturn([$ruleDefinition1, $ruleDefinition2]);
         $jobParameters->get('rule_codes')->willReturn([]);
         $jobParameters->get('dry_run')->willReturn(false);
         $jobParameters->get('stop_on_error')->willReturn(false);

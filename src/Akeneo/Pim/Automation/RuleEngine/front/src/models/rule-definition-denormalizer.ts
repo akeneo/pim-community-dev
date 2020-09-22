@@ -50,6 +50,7 @@ const denormalize = async function(
   const code = json.code;
   const labels = json.labels || {};
   const priority = json.priority || 0;
+  const enabled = json.enabled;
 
   await prepareCacheAttributes(json, router);
 
@@ -58,6 +59,7 @@ const denormalize = async function(
     code,
     labels,
     priority,
+    enabled,
     conditions: json.content?.conditions || [],
     actions: json.content?.actions || [],
   };

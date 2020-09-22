@@ -1,0 +1,7 @@
+services:
+    pim_datagrid.extension.action.type.execute_rule:
+        public: true
+        class: Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\Extension\Action\ExecuteRuleAction
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.action.type, type: execute-rule }

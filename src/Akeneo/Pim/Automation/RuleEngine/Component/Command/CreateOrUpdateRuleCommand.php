@@ -33,11 +33,13 @@ class CreateOrUpdateRuleCommand
     public $actions;
     public $conditions;
     public $labels;
+    public $enabled;
 
     public function __construct(array $data)
     {
         $this->code = $data['code'] ?? null;
         $this->priority = $data['priority'] ?? null;
+        $this->enabled = $data['enabled'] ?? null;
 
         $conditions = $data['content']['conditions'] ?? $data['conditions'] ?? null;
         if (is_array($conditions)) {
@@ -78,6 +80,7 @@ class CreateOrUpdateRuleCommand
     {
         Assert::stringNotEmpty($this->code);
         Assert::nullOrInteger($this->priority);
+        Assert::nullOrBoolean($this->enabled);
         Assert::isArray($this->conditions);
         Assert::allIsInstanceOf($this->conditions, Condition::class);
         Assert::isArray($this->actions);
@@ -88,6 +91,7 @@ class CreateOrUpdateRuleCommand
         $normalized = [
             'code' => $this->code,
             'priority' => $this->priority ?? 0,
+            'enabled' => $this->enabled ?? true,
             'conditions' => array_map(function (Condition $condition): array {
                 return $condition->toArray();
             }, $this->conditions),

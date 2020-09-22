@@ -31,6 +31,7 @@ final class ExportRuleContext implements Context
 rules:
   set_name:
     priority: 10
+    enabled: true
     conditions:
       - field: sku
         operator: '='
@@ -44,7 +45,7 @@ rules:
       en_US: 'Set name'
       fr_FR: 'Change le nom'
   set_another_name:
-    priority: 20
+    enabled: false
     conditions:
       - field: sku
         operator: 'STARTS WITH'
@@ -239,6 +240,16 @@ YAML;
         $expectedLines = Yaml::parse(static::YAML_RULES_CONFIG);
         // The YAML writer does this merge before write the line. We do the same thing to compare.
         $normalizedRules = call_user_func_array('array_merge', static::$normalizedRules);
+
+        // Add default values to initial config
+        foreach ($expectedLines['rules'] as $code => $rule) {
+            if (!array_key_exists('priority', $rule)) {
+                $expectedLines['rules'][$code]['priority'] = 0;
+            }
+            if (!array_key_exists('enabled', $rule)) {
+                $expectedLines['rules'][$code]['enabled'] = true;
+            }
+        }
 
         Assert::eq($normalizedRules, $expectedLines['rules']);
     }

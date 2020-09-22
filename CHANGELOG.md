@@ -95,3 +95,5 @@
 - Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\Common\Saver\DelegatingProductSaver` to
   - remove `Symfony\Component\EventDispatcher\EventDispatcherInterface` and `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer`
   - add `Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface` (twice) and `Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface`
+- Change interface `Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface` to add `isEnabled` and `setEnabled` methods
+- Change interface `Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface` to rename `findAllOrderedByPriority` method by `findEnabledOrderedByPriority`

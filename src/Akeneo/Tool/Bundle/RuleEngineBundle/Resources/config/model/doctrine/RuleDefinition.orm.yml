@@ -31,6 +31,12 @@ Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition:
             type: integer
             nullable: true
             column: impacted_subject_count
+        enabled:
+            type: boolean
+            column: enabled
+            nullable: false
+            options:
+                default: true
     oneToMany:
         relations:
             targetEntity: Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleRelationInterface

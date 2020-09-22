@@ -12,6 +12,7 @@ Feature: Export rules
       """
       set_reference_data:
         priority: 10
+        enabled: true
         conditions:
           - field:    sleeve_color.code
             operator: IN
@@ -48,6 +49,7 @@ Feature: Export rules
     rules:
         set_reference_data:
             priority: 10
+            enabled: true
             conditions:
                 -
                     field: sleeve_color.code

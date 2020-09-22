@@ -40,8 +40,9 @@ class RuleDefinitionNormalizer implements NormalizerInterface, CacheableSupports
             'code'     => $ruleDefinition->getCode(),
             'type'     => $ruleDefinition->getType(),
             'priority' => $ruleDefinition->getPriority(),
+            'enabled' => $ruleDefinition->isEnabled(),
             'content'  => $ruleDefinition->getContent(),
-            'labels'   => $this->formatLabels($ruleDefinition)
+            'labels'   => $this->formatLabels($ruleDefinition),
         ];
     }
 

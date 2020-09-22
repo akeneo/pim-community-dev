@@ -101,6 +101,10 @@ pimee_catalog_rule:
             character_left: "]-Inf, 1]{{ count }} Character left|]1, +Inf[{{ count }} Characters left"
             priority:
                 label: Priority
+            status:
+                label: Status
+                enabled: Enabled
+                disabled: Disabled
             add_to_category: Add to category
             add_conditions: Add conditions
             products_count:

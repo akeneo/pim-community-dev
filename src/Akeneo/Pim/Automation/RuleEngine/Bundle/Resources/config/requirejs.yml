@@ -14,4 +14,5 @@ config:
         oro/datagrid/rules-action: akeneopimruleengine/datagrid/action/rules-action
         oro/datagrid/tags-cell: akeneopimruleengine/datagrid/cell/tags-cell.ts
         oro/datagrid/tags-cell-template: akeneopimruleengine/datagrid/cell/tags-cell.html
+        oro/datagrid/execute-rule-action: akeneopimruleengine/datagrid/action/execute-rule-action
         pimee/rules/create-button: akeneopimruleengine/pages/IndexRules/create-button.ts

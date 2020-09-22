@@ -24,11 +24,11 @@ use Doctrine\Common\Persistence\ObjectRepository;
 interface RuleDefinitionRepositoryInterface extends IdentifiableObjectRepositoryInterface, ObjectRepository
 {
     /**
-     * Retrieve all rule ordered by priority
+     * Retrieve all enabled rules ordered by priority
      *
      * @return RuleDefinitionInterface[]
      */
-    public function findAllOrderedByPriority();
+    public function findEnabledOrderedByPriority();
 
     /**
      * @return RuleQueryBuilder

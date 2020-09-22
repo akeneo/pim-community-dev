@@ -36,6 +36,7 @@ class RuleNormalizerSpec extends ObjectBehavior
             'conditions' => ['my conditions should be here'],
             'actions' => ['my actions should be there'],
         ]);
+        $definition->isEnabled()->willReturn(false);
         $translationEn = new RuleDefinitionTranslation();
         $translationEn->setLocale('en_US');
         $translationEn->setLabel('Tshirt price');
@@ -52,6 +53,7 @@ class RuleNormalizerSpec extends ObjectBehavior
                 'code' => 'camera_set_canon_brand',
                 'type' => 'foo',
                 'priority' => 100,
+                'enabled' => false,
                 'conditions' => ['my conditions should be here'],
                 'actions' => ['my actions should be there'],
                 'labels' => [

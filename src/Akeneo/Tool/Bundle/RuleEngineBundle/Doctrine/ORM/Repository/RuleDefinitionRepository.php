@@ -39,6 +39,7 @@ class RuleDefinitionRepository extends EntityRepository implements RuleDefinitio
             ->addSelect('r.content')
             ->addSelect('r.impactedSubjectCount')
             ->addSelect('r.priority')
+            ->addSelect('r.enabled')
             ->addSelect(sprintf('%s AS label', $labelExpr));
 
         return $qb;
@@ -47,9 +48,9 @@ class RuleDefinitionRepository extends EntityRepository implements RuleDefinitio
     /**
      * {@inheritdoc}
      */
-    public function findAllOrderedByPriority()
+    public function findEnabledOrderedByPriority()
     {
-        return $this->findBy([], ['priority' => 'DESC']);
+        return $this->findBy(['enabled' => true], ['priority' => 'DESC']);
     }
 
     /**

@@ -109,7 +109,7 @@ final class ExecuteRulesTasklet implements TaskletInterface
         if (!empty($ruleCodes)) {
             $ruleDefinitions = $this->ruleDefinitionRepository->findBy(['code' => $ruleCodes], ['priority' => 'DESC']);
         } else {
-            $ruleDefinitions = $this->ruleDefinitionRepository->findAllOrderedByPriority();
+            $ruleDefinitions = $this->ruleDefinitionRepository->findEnabledOrderedByPriority();
         }
         foreach ($ruleDefinitions as $ruleDefinition) {
             yield $ruleDefinition;

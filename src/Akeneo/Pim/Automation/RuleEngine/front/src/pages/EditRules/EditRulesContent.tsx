@@ -27,7 +27,7 @@ import { IndexedScopes } from '../../repositories/ScopeRepository';
 import { AddActionButton } from './components/actions/AddActionButton';
 import { Action } from '../../models/Action';
 import { httpDelete } from '../../fetch';
-import { NotificationLevel } from '../../dependenciesTools';
+import { NotificationLevel, Security } from '../../dependenciesTools';
 import { Dropdown } from '../../components/Dropdown';
 import { AlertDialog } from '../../components/AlertDialog/AlertDialog';
 
@@ -41,6 +41,7 @@ type Props = {
   locales: Locale[];
   scopes: IndexedScopes;
   setIsDirty: (isDirty: boolean) => void;
+  security: Security;
 };
 
 const EditRulesContent: React.FC<Props> = ({
@@ -49,6 +50,7 @@ const EditRulesContent: React.FC<Props> = ({
   locales,
   scopes,
   setIsDirty,
+  security,
 }) => {
   const translate = useTranslate();
   const userContext = useUserContext();
@@ -156,6 +158,9 @@ const EditRulesContent: React.FC<Props> = ({
 
   const saveAndExecuteDialog = useDialogState();
 
+  const userHasPermission = () =>
+    security.isGranted('pimee_catalog_rule_rule_execute_permissions');
+
   const handleSaveAndExecuteRule = () => {
     formMethods.register({ name: 'execute_on_save', value: true });
     onSubmit().then(() => {
@@ -191,22 +196,28 @@ const EditRulesContent: React.FC<Props> = ({
                 'pimee_catalog_rule.form.delete.description'
               )}
             />
-            <DialogDisclosure
-              {...saveAndExecuteDialog}
-              className='AknDropdown-menuLink'>
-              {translate('pimee_catalog_rule.form.edit.execute.button')}
-            </DialogDisclosure>
-            <AlertDialog
-              dialog={saveAndExecuteDialog}
-              onValidate={handleSaveAndExecuteRule}
-              cancelLabel={translate('pim_common.cancel')}
-              confirmLabel={translate('pim_common.confirm')}
-              label={translate('pimee_catalog_rule.form.edit.execute.title')}
-              description={translate(
-                'pimee_catalog_rule.form.edit.execute.description'
-              )}
-              illustrationClassName={'AknFullPage-illustration--rules'}
-            />
+            {userHasPermission() && formMethods.watch('enabled') && (
+              <>
+                <DialogDisclosure
+                  {...saveAndExecuteDialog}
+                  className='AknDropdown-menuLink'>
+                  {translate('pimee_catalog_rule.form.edit.execute.button')}
+                </DialogDisclosure>
+                <AlertDialog
+                  dialog={saveAndExecuteDialog}
+                  onValidate={handleSaveAndExecuteRule}
+                  cancelLabel={translate('pim_common.cancel')}
+                  confirmLabel={translate('pim_common.confirm')}
+                  label={translate(
+                    'pimee_catalog_rule.form.edit.execute.title'
+                  )}
+                  description={translate(
+                    'pimee_catalog_rule.form.edit.execute.description'
+                  )}
+                  illustrationClassName={'AknFullPage-illustration--rules'}
+                />
+              </>
+            )}
           </Dropdown>
         }
         secondaryButton={<AddActionButton handleAddAction={handleAddAction} />}>

@@ -9,6 +9,8 @@ type Props = {
   value: boolean;
   onChange?: (value: boolean) => void;
   readOnly?: boolean;
+  checkedLabel?: string;
+  uncheckedLabel?: string;
 };
 
 const InputBoolean: React.FC<Props> = ({
@@ -19,9 +21,17 @@ const InputBoolean: React.FC<Props> = ({
   onChange,
   readOnly = false,
   children,
+  checkedLabel,
+  uncheckedLabel,
 }) => {
   const translate = useTranslate();
   const [isChecked, setIsChecked] = React.useState<boolean>(value);
+
+  const getLabel = () => {
+    return isChecked
+      ? checkedLabel ?? translate('pim_common.yes')
+      : uncheckedLabel ?? translate('pim_common.no');
+  };
 
   return (
     <>
@@ -61,9 +71,7 @@ const InputBoolean: React.FC<Props> = ({
           }}
         />
         <span className='AknSwitch-slider' />
-        <span className='AknSwitch-text'>
-          {translate(isChecked ? 'pim_common.yes' : 'pim_common.no')}
-        </span>
+        <span className='AknSwitch-text'>{getLabel()}</span>
       </label>
     </>
   );

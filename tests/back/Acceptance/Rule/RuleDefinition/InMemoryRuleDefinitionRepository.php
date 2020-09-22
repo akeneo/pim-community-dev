@@ -68,9 +68,12 @@ class InMemoryRuleDefinitionRepository implements IdentifiableObjectRepositoryIn
         throw new NotImplementedException(__METHOD__);
     }
 
-    public function findAllOrderedByPriority()
+    public function findEnabledOrderedByPriority()
     {
         $ruleDefinitions = $this->ruleDefinitions->toArray();
+        $ruleDefinitions = array_filter($ruleDefinitions, function (RuleDefinitionInterface $ruleDefinition): bool {
+            return $ruleDefinition->isEnabled();
+        });
         usort($ruleDefinitions, function (RuleDefinitionInterface $rule1, RuleDefinitionInterface $rule2): int {
             return $rule2->getPriority() <=> $rule1->getPriority();
         });

@@ -1,0 +1,9 @@
+{% if value %}
+    <span class="AknRuleBadge AknRuleBadge--green">
+        {{ 'pimee_catalog_rule.status.enabled' | trans }}
+    </span>
+{% else %}
+    <span class="AknRuleBadge AknRuleBadge--red">
+        {{ 'pimee_catalog_rule.status.disabled' | trans }}
+    </span>
+{% endif %}

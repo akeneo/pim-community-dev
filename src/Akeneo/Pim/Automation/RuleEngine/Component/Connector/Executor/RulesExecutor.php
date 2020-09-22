@@ -55,7 +55,7 @@ class RulesExecutor implements ItemWriterInterface
         $entityIds = $this->getEntityIds($entitiesWithValues);
 
         if (!empty($entityIds)) {
-            $ruleDefinitions = $this->ruleRepository->findAllOrderedByPriority();
+            $ruleDefinitions = $this->ruleRepository->findEnabledOrderedByPriority();
 
             foreach ($ruleDefinitions as $ruleDefinition) {
                 $this->runner->run($ruleDefinition, ['selected_entities_with_values' => $entityIds]);

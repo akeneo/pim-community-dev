@@ -109,6 +109,7 @@ const transformFormData = (formData: FormData): Payload => {
     code: formData.code,
     labels: formData.labels,
     priority: Number(formData.priority),
+    enabled: formData.enabled,
     content: {
       conditions: conditions.filter(
         condition => typeof condition?.field === 'string'
@@ -245,6 +246,7 @@ const createFormDefaultValues = (
 ): FormData => ({
   code: ruleDefinition.code,
   priority: ruleDefinition.priority.toString(),
+  enabled: ruleDefinition.enabled,
   labels: locales.reduce(createLocalesLabels(ruleDefinition), {}),
   content: {
     conditions: formatDateLocaleTimeConditionsFromBackend(

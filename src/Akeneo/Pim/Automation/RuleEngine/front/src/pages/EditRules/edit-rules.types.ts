@@ -1,6 +1,7 @@
 type FormData = {
   code: string;
   priority: string;
+  enabled: boolean;
   labels: {
     [key: string]: string;
   };

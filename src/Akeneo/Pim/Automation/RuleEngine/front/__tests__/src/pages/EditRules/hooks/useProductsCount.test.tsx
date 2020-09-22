@@ -31,6 +31,7 @@ describe('useProductsCount', () => {
     const formValues = {
       code: 'code',
       priority: '0',
+      enabled: true,
       labels: { en_US: 'hello' },
       content: {
         conditions: [
@@ -72,6 +73,7 @@ describe('useProductsCount', () => {
     const formValues = {
       code: 'code',
       priority: '0',
+      enabled: true,
       labels: { en_US: 'hello' },
       content: {
         conditions: [

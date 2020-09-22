@@ -26,6 +26,7 @@ const transformFormData = (
   return {
     labels: { [currentCatalogLocale]: formData.label },
     priority: 0,
+    enabled: false,
     code: formData.code,
     content: {
       conditions: {},
