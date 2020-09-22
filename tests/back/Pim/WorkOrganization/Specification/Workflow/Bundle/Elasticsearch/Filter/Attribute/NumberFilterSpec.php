@@ -317,6 +317,27 @@ class NumberFilterSpec extends ObjectBehavior
         )->during('addAttributeFilter', [$size, Operators::LOWER_THAN, 'NOT_NUMERIC']);
     }
 
+    function it_throws_an_exception_when_the_given_value_is_null(
+        $attributePathResolver,
+        AttributeInterface $size,
+        SearchQueryBuilder $sqb
+    ) {
+        $size->getCode()->willReturn('size');
+        $size->getBackendType()->willReturn('decimal');
+
+        $attributePathResolver->getAttributePaths($size)->willReturn(['values.size-decimal.ecommerce.en_US']);
+
+        $this->setQueryBuilder($sqb);
+
+        $this->shouldThrow(
+            InvalidPropertyTypeException::numericExpected(
+                'size',
+                NumberFilter::class,
+                null
+            )
+        )->during('addAttributeFilter', [$size, Operators::LOWER_THAN, null]);
+    }
+
     function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(
         $attributePathResolver,
         AttributeInterface $size,
