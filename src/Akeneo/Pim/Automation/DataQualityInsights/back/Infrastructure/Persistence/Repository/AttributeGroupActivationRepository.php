@@ -12,7 +12,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeGroupActivationRepository implements AttributeGroupActivationRepositoryInterface
+final class AttributeGroupActivationRepository implements AttributeGroupActivationRepositoryInterface
 {
     /** @var Connection */
     protected $dbConnection;
