@@ -9,12 +9,13 @@ import {useArgs, updateArgs} from '@storybook/client-api';
   component={Checkbox}
   argTypes={{
     readOnly: {control: {type: 'boolean'}},
-    checked: {control: {type: 'boolean'}},
+    status: {type: {control: {type: 'select', options: ['checked', 'unchecked', 'undetermined']}}},
     label: {control: {type: 'text'}},
-    onChange: {action: 'Checkbox component onChange'},
+    onChange: {action: 'Checkbox component onChange'}
   }}
   args={{
     label: 'Checkbox',
+    status: 'checked'
   }}
 />
 
@@ -46,10 +47,13 @@ Use this playground to test the checkbox component
 
 <Canvas>
   <Story name="Standard">
-    {args => {
-      const [{checked}, updateArgs] = useArgs();
-      const toggleChecked = () => updateArgs({checked: !checked});
-      return <Checkbox {...args} onChange={toggleChecked} />;
+    {(args) => {
+      const [{status}, updateArgs] = useArgs();
+      const nextStatus = 'checked' === status ? 'unchecked' : 'checked';
+      const toggleChecked = () => {
+        updateArgs({status: nextStatus});
+      }
+      return <Checkbox {...args} status={status} onChange={toggleChecked} />;
     }}
   </Story>
 </Canvas>
@@ -57,44 +61,43 @@ Use this playground to test the checkbox component
 <ArgsTable story="Standard" />
 
 ## Variation on state
-
 <Canvas>
   <Story name="State">
-    {args => {
+    {(args) => {
       return (
         <>
-          <Checkbox {...args} checked={true} label={'Checkbox checked'} />
-          <Checkbox {...args} checked={false} undetermined={true} label={'Checkbox undetermined'} />
-          <Checkbox {...args} checked={false} label={'Checkbox unchecked'} />
+          <Checkbox  {...args} status="checked" label={'Checkbox checked'}/>
+          <Checkbox  {...args} status="undetermined" label={'Checkbox undetermined'}/>
+          <Checkbox  {...args} status="unchecked" label={'Checkbox unchecked'}/>
         </>
-      );
+      )
     }}
   </Story>
 </Canvas>
 
 ## Variation on disabled
-
 <Canvas>
   <Story name="Disabled">
-    {args => {
+    {(args) => {
       return (
         <>
-          <Checkbox {...args} readOnly={true} checked={true} label={'Checked disabled'} />
-          <Checkbox {...args} readOnly={true} checked={false} undetermined={true} label={'Undetermined disabled'} />
-          <Checkbox {...args} readOnly={true} checked={false} label={'Unchecked disabled'} />
+          <Checkbox {...args} readOnly={true} status="checked" label={'Checked disabled'}/>
+          <Checkbox {...args} readOnly={true} status="undetermined" label={'Undetermined disabled'}/>
+          <Checkbox {...args} readOnly={true} status="unchecked" label={'Unchecked disabled'}/>
         </>
-      );
+      )
     }}
   </Story>
 </Canvas>
 
 ## Animation
-
 <Canvas>
   <Story name="Animation">
-    {args => {
-      const [checked, setChecked] = useState(true);
-      return <Checkbox {...args} checked={checked} onChange={newCheck => setChecked(newCheck)} />;
+    {(args) => {
+      const [status, setStatus] = useState('checked');
+      return (
+        <Checkbox {...args} status={status} onChange={(newStatus) => setStatus(newStatus)}/>
+      )
     }}
   </Story>
 </Canvas>
