@@ -137,7 +137,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     }: ButtonProps,
     forwardedRef: Ref<HTMLButtonElement>
   ) => {
-    useShortcut(Key.Enter, disabled ? () => null : onClick);
+    const ref = useShortcut(Key.Enter, disabled ? () => null : onClick, forwardedRef);
 
     return (
       <Container
@@ -149,7 +149,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         aria-disabled={disabled}
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledBy}
-        ref={forwardedRef}
+        ref={ref}
         role="button"
         type={type}
         onClick={disabled ? null : onClick}

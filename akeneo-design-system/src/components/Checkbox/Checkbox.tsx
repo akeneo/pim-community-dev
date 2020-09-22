@@ -1,7 +1,21 @@
-import React from 'react';
+import React, {Ref, useState} from 'react';
 import styled, {css, keyframes} from 'styled-components';
 import {AkeneoThemedProps, getColor} from 'theme';
 import {CheckIcon, PartialCheckIcon} from 'icons';
+import {useShortcut} from 'hooks/use-shortcut';
+import {Key} from 'shared/key';
+import {uuid} from 'shared/uuid';
+
+const getAriaChecked = (status: CheckboxStatus): string => {
+  switch (status) {
+    case 'checked':
+      return 'true';
+    case 'unchecked':
+      return 'false';
+    case 'undetermined':
+      return 'mixed';
+  }
+};
 
 const checkTick = keyframes`
   to {
@@ -34,7 +48,7 @@ const CheckboxContainer = styled.div<{checked: boolean; readOnly: boolean} & Ake
   width: 20px;
   border: 1px solid ${getColor('grey80')};
   border-radius: 3px;
-  outline: none;
+  overflow: hidden;
   background-color: ${getColor('grey20')};
   transition: background-color 0.2s ease-out;
   box-sizing: border-box;
@@ -72,7 +86,7 @@ const CheckboxContainer = styled.div<{checked: boolean; readOnly: boolean} & Ake
     `}
 `;
 
-const LabelContainer = styled.div<{readOnly: boolean} & AkeneoThemedProps>`
+const LabelContainer = styled.label<{readOnly: boolean} & AkeneoThemedProps>`
   color: ${getColor('grey140')};
   font-weight: 400;
   font-size: 15px;
@@ -112,36 +126,56 @@ type CheckboxProps = {
 /**
  * The checkboxes are applied when users can select all, several, or none of the options from a given list.
  */
-const Checkbox = ({label, status, onChange, readOnly = false}: CheckboxProps): React.ReactElement => {
-  if (undefined === onChange && false === readOnly) {
-    throw new Error('A Checkbox element expect an onChange attribute if not readOnly');
-  }
-
-  const checked = 'checked' === status;
-  const undetermined = 'undetermined' === status;
-
-  const handleChange = () => {
-    if (!onChange || readOnly) return;
-
-    switch (status) {
-      case 'checked':
-        onChange('unchecked');
-        break;
-      case 'undetermined':
-      case 'unchecked':
-        onChange('checked');
-        break;
+const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
+  (
+    {label, status, onChange, readOnly = false}: CheckboxProps,
+    forwardedRef: Ref<HTMLDivElement>
+  ): React.ReactElement => {
+    if (undefined === onChange && false === readOnly) {
+      throw new Error('A Checkbox element expect an onChange attribute if not readOnly');
     }
-  };
 
-  return (
-    <Container onClick={handleChange}>
-      <CheckboxContainer checked={checked || undetermined} readOnly={readOnly}>
-        {undetermined ? <PartialCheckIcon height={20} width={20} /> : <TickIcon height={20} width={20} />}
-      </CheckboxContainer>
-      {label ? <LabelContainer readOnly={readOnly}>{label}</LabelContainer> : null}
-    </Container>
-  );
-};
+    const [id] = useState<string>(`checkbox_${uuid()}`);
+
+    const checked = 'checked' === status;
+    const undetermined = 'undetermined' === status;
+
+    const handleChange = () => {
+      if (!onChange || readOnly) return;
+
+      switch (status) {
+        case 'checked':
+          onChange('unchecked');
+          break;
+        case 'undetermined':
+        case 'unchecked':
+          onChange('checked');
+          break;
+      }
+    };
+    const ref = useShortcut(Key.Space, handleChange);
+
+    return (
+      <Container onClick={handleChange} ref={forwardedRef}>
+        <CheckboxContainer
+          checked={checked || undetermined}
+          readOnly={readOnly}
+          role="checkbox"
+          ref={ref}
+          aria-checked={getAriaChecked(status)}
+          tabIndex={readOnly ? -1 : 0}
+          aria-labelledby={id}
+        >
+          {undetermined ? <PartialCheckIcon height={20} width={20} /> : <TickIcon height={20} width={20} />}
+        </CheckboxContainer>
+        {label ? (
+          <LabelContainer id={id} readOnly={readOnly}>
+            {label}
+          </LabelContainer>
+        ) : null}
+      </Container>
+    );
+  }
+);
 
 export {Checkbox};
