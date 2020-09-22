@@ -16,7 +16,7 @@ namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesDetailsInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\InactiveLabelFilter;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\InactiveLabelFilter;
 use Doctrine\DBAL\Connection;
 
 /**
