@@ -52,6 +52,7 @@ class GroupNormalizer implements NormalizerInterface, CacheableSupportsMethodInt
 
     /**
      * {@inheritdoc}
+     * @param GroupInterface $group
      */
     public function normalize($group, $format = null, array $context = [])
     {
@@ -70,12 +71,12 @@ class GroupNormalizer implements NormalizerInterface, CacheableSupportsMethodInt
             null;
 
         $normalizedGroup['meta'] = [
-            'id'                => $group->getId(),
-            'form'              => 'pim-group-edit-form',
+            'id' => $group->getId(),
+            'form' => 'pim-group-edit-form',
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
-            'model_type'        => 'group',
-            'created'           => $firstVersion,
-            'updated'           => $lastVersion,
+            'model_type' => 'group',
+            'created' => $firstVersion,
+            'updated' => $lastVersion,
         ];
 
         return $normalizedGroup;
