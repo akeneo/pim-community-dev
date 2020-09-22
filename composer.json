@@ -52,6 +52,7 @@
         }
     },
     "require": {
+        "ext-json": "*",
         "akeneo/pim-community-dev": "dev-master",
         "akeneo/pim-onboarder": "^4.1.5",
         "guzzlehttp/guzzle": "6.3.3",
