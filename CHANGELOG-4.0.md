@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-9455: Make total_fields limit of elasticsearch configurable
 - PIM-9451: Filter out Asset Manager attribute labels of disabled locales 
 - PIM-9435: Fix duplicated listener
  
