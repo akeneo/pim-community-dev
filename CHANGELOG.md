@@ -36,6 +36,7 @@
 - PIM-9372: Fix media-link thumbnail re-generation
 - PIM-9444: Fix locking issue on attribute table for retrieving the attribute options that need to be evaluated
 - PIM-9441: Fix errors when importing a product proposal with several changes on the same attribute
+- PIM-9457: Remove option tab on attributes setting page when attribute is not simple/multi select
 
 ## Improvements
 
