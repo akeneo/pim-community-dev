@@ -5,6 +5,40 @@ import * as Icons from './';
 
 <Meta title="Guidelines/Iconography" />
 
+<style>{`
+  #icon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 180px);
+    gap: 16px;
+  }
+
+  #icon-grid .icon-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-align: center;
+    border: 1px solid rgba(0,0,0,.1);
+    box-shadow: rgba(0,0,0,0.10) 0 1px 3px 0;
+    border-radius: 4px;
+  }
+
+  #icon-grid .icon-card .icon-container {
+    height: 110px;
+    color: #A1A9B7;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(0,0,0,.1)
+  }
+
+  #icon-grid .icon-card .icon-label-container {
+    padding: 8px 0px;
+    max-width: 100%;
+    white-space: nowrap;
+    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+`}</style>
+
 # Iconography
 Icons are visual symbols used to represent ideas, objects or actions. They communicate messages at a glance, allow interactivity and draw attention to important information.
 
@@ -21,17 +55,15 @@ The icons are always stroke and monochromatic and must respect the color contras
 ## Icons
 <Canvas>
   <Story name="Standard">
-    <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, 180px)', gap: '16px'}}>
+    <div id="icon-grid">
       { Object.keys(Icons).map((iconName) => {
         return (
-          <div key={iconName} style={{display: 'flex', flexDirection: 'column', height: '100%', textAlign: 'center', border: '1px solid rgba(0,0,0,.1)', boxShadow: 'rgba(0,0,0,0.10) 0 1px 3px 0', borderRadius: '4px'}}>
-            <div style={{height: '110px', color: '#A1A9B7', overflow: 'hidden', borderBottom: '1px solid rgba(0,0,0,.1)'}}>
+          <div key={iconName} class="icon-card">
+            <div class="icon-container">
               {React.createElement(Icons[iconName], {height: 105, width: 105})}
             </div>
-            <div style={{padding: '8px 0px'}}>
-              <div style={{maxWidth: '100%', whiteSpace: 'nowrap', wordBreak: 'break-word', overflow: 'hidden', textOverflow: 'ellipsis'}}>
-                {iconName}
-              </div>
+            <div class="icon-label-container">
+              {iconName}
             </div>
           </div>
         )

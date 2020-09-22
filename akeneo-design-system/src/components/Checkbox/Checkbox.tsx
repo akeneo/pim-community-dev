@@ -38,7 +38,7 @@ const CheckboxContainer = styled.div<{checked: boolean; readOnly: boolean} & Ake
   background-color: ${getColor('grey20')};
   transition: background-color 0.2s ease-out;
   box-sizing: border-box;
-  color: #ffffff;
+  color: ${getColor('white')};
 
   ${props =>
     props.checked &&
