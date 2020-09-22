@@ -29,8 +29,8 @@
 - PIM-9407: Fix glitch in family variant selector if the family variant has no label
 - PIM-9425: Fix inaccurate attribute max characters
 - PIM-9443: Do not cache extensions.json
-- PIM-9454: Fix scalar value type check in PQB filters 
-
+- PIM-9454: Fix scalar value type check in PQB filters
+- PIM-9460: Fix performance issue on export
 
 ## New features
 
