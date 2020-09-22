@@ -3,15 +3,15 @@ import {AttributeGroup, AttributeGroupCollection, fromAttributeGroupsCollection}
 import {fetchAllAttributeGroups} from '../infrastructure/fetchers';
 
 const useAllAttributeGroups = (): AttributeGroup[] => {
-    const [attributeGroups, setAttributeGroups] = useState<AttributeGroup[]>([]);
+    const [groups, setGroups] = useState<AttributeGroup[]>([]);
 
     useEffect(() => {
         fetchAllAttributeGroups().then((collection: AttributeGroupCollection) => {
-            setAttributeGroups(fromAttributeGroupsCollection(collection));
+            setGroups(fromAttributeGroupsCollection(collection));
         });
     }, []);
 
-    return attributeGroups;
+    return groups;
 };
 
 export {useAllAttributeGroups};

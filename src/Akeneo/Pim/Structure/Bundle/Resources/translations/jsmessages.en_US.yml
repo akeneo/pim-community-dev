@@ -226,6 +226,7 @@ pim_enrich.entity.attribute_group:
     label: attribute group
     uppercase_label: Attribute group
     plural_label: Attribute groups
+    result_count: '{0}0 attribute groups|{1}1 attribute group|]1, Inf[{{ count }} attribute groups'
     show_more_attribute:
         title: It's a bit crowded around here, we show you {{ attributeCount }}/{{ totalAttributeCount }} attributes.
         subtitle: To discover all the attributes of this group, just click below!

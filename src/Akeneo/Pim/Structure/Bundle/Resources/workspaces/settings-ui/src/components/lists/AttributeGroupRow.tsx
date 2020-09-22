@@ -1,9 +1,9 @@
-import React, {FC} from 'react';
+import React, {FC, useCallback} from 'react';
 import styled from 'styled-components';
-import {MoveIcon, useAkeneoTheme} from '@akeneo-pim-community/shared';
+import {MoveIcon} from '@akeneo-pim-community/shared';
 import {TableRow, TableCell} from '../shared';
 import {AttributeGroup} from '../../models';
-import {useAttributeGroupLabel} from '../../hooks';
+import {useAttributeGroupLabel, useRedirectToAttributeGroup} from '../../hooks';
 
 type Props = {
     group: AttributeGroup;
@@ -22,17 +22,23 @@ const Label = styled.span`
 
 const AttributeGroupRow: FC<Props> = ({group, isSortable}) => {
     const label = useAttributeGroupLabel(group);
-    const theme = useAkeneoTheme();
+    const redirect = useRedirectToAttributeGroup();
+
+    const handleRedirectToGroup = useCallback(() => {
+        if (isSortable) {
+            redirect(group);
+        }
+    }, [redirect, group, isSortable]);
 
     return (
-        <TableRow>
+        <TableRow onClick={handleRedirectToGroup}>
             {isSortable && (
                 <TableCell>
                     <MoveIcon />
                 </TableCell>
             )}
             <TableCell>
-                <Label theme={theme}>{label}</Label>
+                <Label>{label}</Label>
             </TableCell>
         </TableRow>
     );

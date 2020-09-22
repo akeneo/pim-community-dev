@@ -6,4 +6,3 @@ export * from './TableFoot';
 export * from './TableHead';
 export * from './TableHeadCell';
 export * from './TableRow';
-export * from './TableSortLabel';
