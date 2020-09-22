@@ -6,10 +6,10 @@ import {FormGroup, FormInput, GreyLightButton, ToggleButton} from '../../common/
 import {CopiableCredential} from '../../settings/components/credentials/CopiableCredential';
 import {RegenerateButton} from '../../settings/components/RegenerateButton';
 import {isOk} from '../../shared/fetch-result/result';
-import {Translate, TranslateContext, useTranslate} from '../../shared/translate';
-import {useCheckAccessibility} from '../hooks/api/use-webhook-check-accessibility';
+import {Translate, TranslateContext} from '../../shared/translate';
+import {useCheckReachability} from '../hooks/api/use-webhook-check-reachability';
 import {Webhook} from '../model/Webhook';
-import {WebhookAccessibility} from '../model/WebhookAccessibility';
+import {WebhookReachability} from '../model/WebhookReachability';
 
 type Props = {
     webhook: Webhook;
@@ -18,20 +18,15 @@ type Props = {
 export const EditForm: FC<Props> = ({webhook}) => {
     const translate = useContext(TranslateContext);
     const history = useHistory();
-    const {register, errors, getValues} = useForm();
-    const checkAccessibility = useCheckAccessibility(webhook);
+    const {register, getValues} = useForm();
+    const checkReachability = useCheckReachability(webhook.connectionCode);
+    const [resultTestUrl, setResultTestUrl] = useState<WebhookReachability>();
 
-    const [resultTestUrlMessage, setResultTestUrlMessage] = useState<string | null>();
-    const [resultTestUrlCode, setResultTestUrlCode] = useState<number | null>();
-    const [resultTestUrlSuccess, setResultTestUrlSuccess] = useState<string | null>();
-
-    const handleClickTestUrlButton = async () => {
-        const result = await checkAccessibility(getValues('url'));
+    const handleTestUrl = async () => {
+        const result = await checkReachability(getValues('url'));
 
         if (isOk(result)) {
-            setResultTestUrlMessage(result.value.message);
-            setResultTestUrlCode(result.value.code);
-            setResultTestUrlSuccess(result.value.success);
+            setResultTestUrl(result.value);
         }
     };
 
@@ -44,7 +39,8 @@ export const EditForm: FC<Props> = ({webhook}) => {
             <FormGroup
                 controlId='url'
                 label='akeneo_connectivity.connection.webhook.form.url'
-                errors={errors.url ? [errors.url] : undefined}
+                errors={resultTestUrl && !resultTestUrl?.success ? [resultTestUrl.message] : undefined}
+                success={resultTestUrl && resultTestUrl?.success ? resultTestUrl.message : undefined}
             >
                 <>
                     <FormInput
@@ -53,12 +49,9 @@ export const EditForm: FC<Props> = ({webhook}) => {
                         defaultValue={webhook.url ? webhook.url : undefined}
                         ref={register}
                     />
-                    <TestUrlButton onClick={handleClickTestUrlButton} />
+                    <TestUrlButton onClick={handleTestUrl} />
                 </>
             </FormGroup>
-            {resultTestUrlMessage && (
-                <ResultTestUrl success={resultTestUrlSuccess} code={resultTestUrlCode} message={resultTestUrlMessage} />
-            )}
             <CredentialList>
                 <CopiableCredential
                     label={translate('akeneo_connectivity.connection.connection.secret')}
@@ -76,13 +69,6 @@ export const EditForm: FC<Props> = ({webhook}) => {
         </>
     );
 };
-export const CredentialList = styled.div`
-    display: grid;
-    grid-template: 'a a a' auto;
-    div {
-        border-top: 1px solid ${({theme}) => theme.color.grey80};
-    }
-`;
 
 const TestUrlButton: FC<{onClick: () => void}> = ({onClick}) => {
     return (
@@ -94,43 +80,12 @@ const TestUrlButton: FC<{onClick: () => void}> = ({onClick}) => {
     );
 };
 
-const ResultTestUrl: FC<WebhookAccessibility> = ({success, code, message}) => {
-    const translate = useTranslate();
-    const translatedMessage = message ? translate(message) : message;
-    const completedMessage = code ? code + ': ' + translatedMessage : translatedMessage;
-    return (
-        <div>
-            {'true' === success ? (
-                <OkStatus className='AknFieldContainer-validationError'>{completedMessage}</OkStatus>
-            ) : (
-                <KoStatus className='AknFieldContainer-validationError'>{completedMessage}</KoStatus>
-            )}
-        </div>
-    );
-};
-
-const OkStatus = styled.span`
-    display: flex;
-    align-items: baseline;
-    margin-top: -14px;
-    margin-bottom: 18px;
-    color: #67b373;
-    background: url('/bundles/pimui/images/icon-check-green.svg') no-repeat left center;
-    padding-left: 26px;
-    background-size: 20px;
-    background-position: top left;
-`;
-
-const KoStatus = styled.span`
-    display: flex;
-    align-items: baseline;
-    margin-top: -14px;
-    margin-bottom: 18px;
-    background: url('/bundles/pimui/images/icon-danger.svg') no-repeat left center;
-    color: #d4604f;
-    padding-left: 26px;
-    background-size: 20px;
-    background-position: top left;
+export const CredentialList = styled.div`
+    display: grid;
+    grid-template: 'a a a' auto;
+    div {
+        border-top: 1px solid ${({theme}) => theme.color.grey80};
+    }
 `;
 
 const GreyLightButtonContainer = styled.span`

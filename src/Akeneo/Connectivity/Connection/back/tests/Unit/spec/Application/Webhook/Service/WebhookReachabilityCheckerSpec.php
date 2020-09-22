@@ -35,7 +35,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
     public function it_checks_url_is_good_and_reachable($client, $validator): void
     {
         $validUrl = 'http://172.17.0.1:8000/webhook';
-        $ExpectedReachabilityStatus = new UrlReachabilityStatus(true, "200: OK");
+        $ExpectedReachabilityStatus = new UrlReachabilityStatus(true, "200 OK");
         $request = new Request($this->getWrappedObject()::POST, $validUrl);
 
         $client->send($request)->willReturn(new Response(200, [], null, '1.1', 'OK'));
@@ -91,7 +91,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
     public function it_checks_url_is_not_reachable_and_has_response($client, $validator): void
     {
         $validUrl = 'http://172.17.0.1:8000/webhook';
-        $ExpectedReachabilityStatus = new UrlReachabilityStatus(false, "451: Unavailable For Legal Reasons");
+        $ExpectedReachabilityStatus = new UrlReachabilityStatus(false, "451 Unavailable For Legal Reasons");
         $request = new Request($this->getWrappedObject()::POST, $validUrl);
         $response = new Response(451, [], null, '1.1', 'Unavailable For Legal Reasons');
         $requestException = new RequestException('RequestException message', $request, $response);

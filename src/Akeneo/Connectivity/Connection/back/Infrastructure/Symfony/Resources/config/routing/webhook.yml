@@ -5,7 +5,7 @@ get:
   requirements:
     code: '[a-zA-Z0-9_]+'
 
-check_accessibility:
+check_reachability:
   path: '/{code}/webhook/check_reachability'
   defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.webhook:checkWebhookReachability }
   methods: [POST]

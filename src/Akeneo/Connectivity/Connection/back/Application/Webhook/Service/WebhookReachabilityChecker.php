@@ -97,6 +97,6 @@ class WebhookReachabilityChecker
      */
     private function buildMessage(string $reasonPhrase, int $code = null): string
     {
-        return $code ? sprintf("%s: %s", $code, $reasonPhrase) : $reasonPhrase;
+        return $code ? sprintf("%s %s", $code, $reasonPhrase) : $reasonPhrase;
     }
 }

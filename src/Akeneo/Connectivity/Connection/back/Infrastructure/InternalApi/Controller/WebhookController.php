@@ -43,10 +43,10 @@ class WebhookController
     public function checkWebhookReachability(Request $request): JsonResponse
     {
         $url = $request->get('url', '');
-        $checkWebhookAccessibility = $this->checkWebhookReachabilityHandler->handle(
+        $checkWebhookReachability = $this->checkWebhookReachabilityHandler->handle(
             new CheckWebhookReachabilityCommand($url)
         );
 
-        return new JsonResponse($checkWebhookAccessibility->normalize());
+        return new JsonResponse($checkWebhookReachability->normalize());
     }
 }
