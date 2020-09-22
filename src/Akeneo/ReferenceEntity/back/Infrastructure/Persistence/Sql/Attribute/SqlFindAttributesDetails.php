@@ -16,7 +16,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\InactiveLabelFilter;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -28,16 +28,15 @@ class SqlFindAttributesDetails implements FindAttributesDetailsInterface
     /** @var Connection */
     private $sqlConnection;
 
-    /** @var FindActivatedLocalesInterface  */
-    private $findActivatedLocales;
+    /** @var InactiveLabelFilter */
+    private $inactiveLabelFilter;
 
-    /**
-     * @param Connection $sqlConnection
-     */
-    public function __construct(Connection $sqlConnection, FindActivatedLocalesInterface $findActivatedLocales)
-    {
+    public function __construct(
+        Connection $sqlConnection,
+        InactiveLabelFilter $inactiveLabelFilter
+    ) {
         $this->sqlConnection = $sqlConnection;
-        $this->findActivatedLocales = $findActivatedLocales;
+        $this->inactiveLabelFilter = $inactiveLabelFilter;
     }
 
     /**
@@ -81,13 +80,12 @@ SQL;
      */
     private function hydrateAttributesDetails(array $results): array
     {
-        $activatedLocales = $this->findActivatedLocales->findAll();
         $allAttributeDetails = [];
         foreach ($results as $result) {
             $labels = json_decode($result['labels'], true);
             $additionalProperties = json_decode($result['additional_properties'], true);
             if (array_key_exists('options', $additionalProperties)) {
-                $additionalProperties['options'] = $this->filterActivatedLocaleOptions($additionalProperties['options'], $activatedLocales);
+                $additionalProperties['options'] = $this->filterActivatedLocaleOptions($additionalProperties['options']);
             }
 
             $attributeDetails = new AttributeDetails();
@@ -96,7 +94,7 @@ SQL;
             $attributeDetails->referenceEntityIdentifier = $result['reference_entity_identifier'];
             $attributeDetails->code = $result['code'];
             $attributeDetails->order = (int) $result['attribute_order'];
-            $attributeDetails->labels = $this->getLabelsByActivatedLocale($labels, $activatedLocales);
+            $attributeDetails->labels = $this->inactiveLabelFilter->filter($labels);
             $attributeDetails->isRequired = (bool) $result['is_required'];
             $attributeDetails->valuePerChannel = (bool) $result['value_per_channel'];
             $attributeDetails->valuePerLocale = (bool) $result['value_per_locale'];
@@ -108,25 +106,12 @@ SQL;
         return $allAttributeDetails;
     }
 
-    private function filterActivatedLocaleOptions(array $options, array $activatedLocales)
+    private function filterActivatedLocaleOptions(array $options)
     {
-        return array_map(function ($option) use ($activatedLocales) {
-            $option['labels'] = $this->getLabelsByActivatedLocale($option['labels'], $activatedLocales);
+        return array_map(function ($option) {
+            $option['labels'] = $this->inactiveLabelFilter->filter($option['labels']);
 
             return $option;
         }, $options);
-    }
-
-    // @todo merge master: use InactiveLabelFilter::filter
-    private function getLabelsByActivatedLocale(array $labels, array $activatedLocales): array
-    {
-        $result = [];
-        foreach ($labels as $localeCode => $label) {
-            if (in_array($localeCode, $activatedLocales)) {
-                $result[$localeCode] = $label;
-            }
-        }
-
-        return $result;
     }
 }
