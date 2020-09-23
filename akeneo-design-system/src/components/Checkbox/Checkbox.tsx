@@ -1,21 +1,9 @@
-import React, {Ref, useState} from 'react';
+import React, {ReactNode, Ref, useState} from 'react';
 import styled, {css, keyframes} from 'styled-components';
 import {AkeneoThemedProps, getColor} from 'theme';
 import {CheckIcon, PartialCheckIcon} from 'icons';
-import {useShortcut} from 'hooks/use-shortcut';
-import {Key} from 'shared/key';
-import {uuid} from 'shared/uuid';
-
-const getAriaChecked = (status: CheckboxStatus): string => {
-  switch (status) {
-    case 'checked':
-      return 'true';
-    case 'unchecked':
-      return 'false';
-    case 'undetermined':
-      return 'mixed';
-  }
-};
+import {useShortcut} from 'hooks';
+import {Key, uuid} from 'shared';
 
 const checkTick = keyframes`
   to {
@@ -99,13 +87,13 @@ const LabelContainer = styled.label<{readOnly: boolean} & AkeneoThemedProps>`
     `}
 `;
 
-type CheckboxStatus = 'checked' | 'unchecked' | 'undetermined';
+type CheckboxChecked = 'true' | 'false' | 'mixed';
 
 type CheckboxProps = {
   /**
    * State of the Checkbox.
    */
-  status: CheckboxStatus;
+  checked: CheckboxChecked;
 
   /**
    * Displays the value of the input, but does not allow changes.
@@ -113,14 +101,14 @@ type CheckboxProps = {
   readOnly?: boolean;
 
   /**
-   * Provide a description of the Checkbox, the label appears on the right of the checkboxes.
-   */
-  label?: string;
-
-  /**
    * The handler called when clicking on Checkbox.
    */
-  onChange?: (value: CheckboxStatus) => void;
+  onChange?: (value: CheckboxChecked) => void;
+
+  /**
+   * Label of the checkbox.
+   */
+  children?: ReactNode;
 };
 
 /**
@@ -128,49 +116,53 @@ type CheckboxProps = {
  */
 const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
   (
-    {label, status, onChange, readOnly = false}: CheckboxProps,
+    {checked, onChange, readOnly = false, children}: CheckboxProps,
     forwardedRef: Ref<HTMLDivElement>
   ): React.ReactElement => {
-    if (undefined === onChange && false === readOnly) {
-      throw new Error('A Checkbox element expect an onChange attribute if not readOnly');
-    }
+    const [checkboxId] = useState<string>(`checkbox_${uuid()}`);
+    const [labelId] = useState<string>(`label_${uuid()}`);
 
-    const [id] = useState<string>(`checkbox_${uuid()}`);
-
-    const checked = 'checked' === status;
-    const undetermined = 'undetermined' === status;
+    const isChecked = 'true' === checked;
+    const isMixed = 'mixed' === checked;
 
     const handleChange = () => {
       if (!onChange || readOnly) return;
 
-      switch (status) {
-        case 'checked':
-          onChange('unchecked');
+      switch (checked) {
+        case 'true':
+          onChange('false');
           break;
-        case 'undetermined':
-        case 'unchecked':
-          onChange('checked');
+        case 'mixed':
+        case 'false':
+          onChange('true');
           break;
       }
     };
     const ref = useShortcut(Key.Space, handleChange);
+    const forProps = children
+      ? {
+          'aria-labelledby': labelId,
+          id: checkboxId,
+        }
+      : {};
 
     return (
-      <Container onClick={handleChange} ref={forwardedRef}>
+      <Container ref={forwardedRef}>
         <CheckboxContainer
-          checked={checked || undetermined}
+          checked={isChecked || isMixed}
           readOnly={readOnly}
           role="checkbox"
           ref={ref}
-          aria-checked={getAriaChecked(status)}
+          aria-checked={isChecked}
           tabIndex={readOnly ? -1 : 0}
-          aria-labelledby={id}
+          onClick={handleChange}
+          {...forProps}
         >
-          {undetermined ? <PartialCheckIcon height={20} width={20} /> : <TickIcon height={20} width={20} />}
+          {isMixed ? <PartialCheckIcon height={20} width={20} /> : <TickIcon height={20} width={20} />}
         </CheckboxContainer>
-        {label ? (
-          <LabelContainer id={id} readOnly={readOnly}>
-            {label}
+        {children ? (
+          <LabelContainer onClick={handleChange} id={labelId} readOnly={readOnly} htmlFor={checkboxId}>
+            {children}
           </LabelContainer>
         ) : null}
       </Container>

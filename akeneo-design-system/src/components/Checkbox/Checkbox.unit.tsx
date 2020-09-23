@@ -4,50 +4,56 @@ import {Checkbox} from './Checkbox';
 
 it('it calls onChange handler when user clicks on checkbox', () => {
   const onChange = jest.fn();
-  const {getByText} = render(<Checkbox status="checked" onChange={onChange} label="Checkbox" />);
+  const {getByText} = render(
+    <Checkbox checked="true" onChange={onChange}>
+      Checkbox
+    </Checkbox>
+  );
 
   const checkbox = getByText('Checkbox');
   fireEvent.click(checkbox);
 
-  expect(onChange).toBeCalledWith('unchecked');
+  expect(onChange).toBeCalledWith('false');
 });
 
 it('it calls onChange handler when user clicks on unchecked checkbox', () => {
   const onChange = jest.fn();
-  const {getByText} = render(<Checkbox status="unchecked" onChange={onChange} label="Checkbox" />);
+  const {getByText} = render(
+    <Checkbox checked="false" onChange={onChange}>
+      Checkbox
+    </Checkbox>
+  );
 
   const checkbox = getByText('Checkbox');
   fireEvent.click(checkbox);
 
-  expect(onChange).toBeCalledWith('checked');
+  expect(onChange).toBeCalledWith('true');
 });
 
 it('it calls onChange handler when user clicks on undetermined checkbox', () => {
   const onChange = jest.fn();
-  const {getByText} = render(<Checkbox status="undetermined" onChange={onChange} label="Checkbox" />);
+  const {getByText} = render(
+    <Checkbox checked="mixed" onChange={onChange}>
+      Checkbox
+    </Checkbox>
+  );
 
   const checkbox = getByText('Checkbox');
   fireEvent.click(checkbox);
 
-  expect(onChange).toBeCalledWith('checked');
+  expect(onChange).toBeCalledWith('true');
 });
 
 it('it does not call onChange handler when read-only', () => {
   const onChange = jest.fn();
-  const {getByText} = render(<Checkbox status="checked" readOnly={true} onChange={onChange} label="Checkbox" />);
+  const {getByText} = render(
+    <Checkbox checked="true" readOnly={true} onChange={onChange}>
+      Checkbox
+    </Checkbox>
+  );
 
   const checkbox = getByText('Checkbox');
   fireEvent.click(checkbox);
 
   expect(onChange).not.toBeCalled();
-});
-
-it('it cannot be instantiated without handler when not readonly', () => {
-  jest.spyOn(console, 'error').mockImplementation(() => {
-    // do nothing.
-  });
-
-  expect(() => {
-    render(<Checkbox status="checked" label="Checkbox" />);
-  }).toThrow('A Checkbox element expect an onChange attribute if not readOnly');
 });
