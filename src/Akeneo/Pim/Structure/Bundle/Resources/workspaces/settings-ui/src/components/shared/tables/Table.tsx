@@ -1,9 +1,6 @@
-import React, {FC} from 'react';
 import styled from 'styled-components';
 
-type Props = {};
-
-const AknTable = styled.table`
+const Table = styled.table`
   width: 100%;
   color: ${({theme}) => theme.color.grey140};
   border-collapse: collapse;
@@ -13,7 +10,6 @@ const AknTable = styled.table`
   }
 `;
 
-
 const TablePlaceholder = styled.div`
   display: grid;
   grid-row-gap: 10px;
@@ -22,11 +18,5 @@ const TablePlaceholder = styled.div`
     height: 54px;
   }
 `;
-
-const Table: FC<Props> = ({children}) => {
-    return (
-        <AknTable>{children}</AknTable>
-    );
-}
 
 export {Table, TablePlaceholder};

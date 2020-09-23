@@ -2,9 +2,9 @@ import React, {FC} from 'react';
 
 type Props = {};
 
-const TableFoot: FC<Props> = ({children}) => {
+const TableFoot: FC<Props> = ({children, ...props}) => {
     return (
-        <tfoot>{children}</tfoot>
+        <tfoot {...props}>{children}</tfoot>
     );
 }
 

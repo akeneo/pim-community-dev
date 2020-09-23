@@ -1,11 +1,7 @@
-import React, {FC} from 'react';
+import styled from 'styled-components';
 
-type Props = {};
+const TableHead = styled.thead`
 
-const TableHead: FC<Props> = ({children}) => {
-    return (
-        <thead>{children}</thead>
-    );
-}
+`;
 
 export {TableHead};

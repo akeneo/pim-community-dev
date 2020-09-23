@@ -1,12 +1,9 @@
-import React, {FC} from 'react';
 import styled, {css} from 'styled-components';
 
 type Props = {
-  onClick?: () => void;
   isSelected?: boolean;
 };
-
-const Row = styled.tr<Props>`
+const TableRow = styled.tr<Props>`
   cursor: pointer;
   height: 54px;
   border-bottom: 1px solid ${({theme}) => theme.color.grey70};
@@ -22,8 +19,5 @@ const Row = styled.tr<Props>`
     `}
 `;
 
-const TableRow: FC<Props> = ({children, ...props}) => {
-  return <Row {...props}>{children}</Row>;
-};
 
 export {TableRow};

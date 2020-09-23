@@ -4,10 +4,12 @@ import {Table, TableBody, TableContainer, TableHead, TableHeadCell, TableRow} fr
 import {useSortAttributeGroupsIsGranted} from '../../hooks';
 import {AttributeGroupRow} from './AttributeGroupRow';
 import {AttributeGroup} from "../../models";
+import {withDragState} from "../shared/hoc";
 
 type Props = {
     groups: AttributeGroup[];
 };
+
 const AttributeGroupsList: FC<Props> = ({groups}) => {
     const sortIsGranted = useSortAttributeGroupsIsGranted();
     const translate = useTranslate();
@@ -23,8 +25,8 @@ const AttributeGroupsList: FC<Props> = ({groups}) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {groups.map((group) => (
-                            <AttributeGroupRow key={group.code} group={group} isSortable={sortIsGranted} />
+                        {groups.map((group, index) => (
+                            <AttributeGroupRow key={group.code} group={group} isSortable={sortIsGranted} index={index} />
                         ))}
                     </TableBody>
                 </Table>
@@ -42,4 +44,6 @@ const AttributeGroupsList: FC<Props> = ({groups}) => {
    );
 };
 
-export {AttributeGroupsList};
+const DraggableList = withDragState(AttributeGroupsList);
+
+export {DraggableList as AttributeGroupsList};

@@ -1,11 +1,7 @@
-import React, {FC} from 'react';
+import styled from 'styled-components';
 
-type Props = {};
+const TableBody = styled.tbody`
 
-const TableBody: FC<Props> = ({children}) => {
-    return (
-        <tbody>{children}</tbody>
-    );
-}
+`;
 
 export {TableBody};

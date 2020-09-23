@@ -1,13 +1,13 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 import {useTranslate} from "@akeneo-pim-community/legacy-bridge";
 import {PageContent, PageHeader} from '@akeneo-pim-community/shared';
 import {
-    AttributeGroupsList,
     AttributeGroupsBreadcrumb,
-    AttributeGroupsUserButtons,
-    AttributeGroupsCreateButton
+    AttributeGroupsCreateButton,
+    AttributeGroupsList,
+    AttributeGroupsUserButtons
 } from '../components';
-import {useAllAttributeGroups} from "../hooks";
+import {useAttributeGroupsListState} from "../hooks";
 
 
 const breadcrumb = <AttributeGroupsBreadcrumb />;
@@ -15,8 +15,12 @@ const userButtons = <AttributeGroupsUserButtons />;
 const buttons = [<AttributeGroupsCreateButton />];
 
 const AttributeGroupsIndex: FC = () => {
-    const groups = useAllAttributeGroups();
+    const {groups, load} = useAttributeGroupsListState();
     const translate = useTranslate();
+
+    useEffect(() => {
+        load();
+    }, []);
 
     return (
         <>
