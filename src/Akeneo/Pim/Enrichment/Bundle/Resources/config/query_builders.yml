@@ -744,6 +744,7 @@ services:
             - 'Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder\ProductAndProductModelQueryBuilder'
             - '@akeneo.pim.enrichment.query.product_query_builder_from_size_factory.with_product_identifier_cursor'
             - '@pim_enrich.query.product_and_product_model_search_aggregator'
+            - '@pim_enrich.query.product_and_product_model_document_type_facet_query'
 
     pim_enrich.query.product_and_product_model_query_builder_from_size_factory:
         class: '%pim_enrich.query.elasticsearch.product_and_product_model_query_builder_factory.class%'
@@ -751,6 +752,7 @@ services:
             - '%pim_enrich.query.product_and_product_model_query_builder.class%'
             - '@pim_enrich.query.product_query_builder_from_size_factory.with_product_and_product_model_from_size_cursor'
             - '@pim_enrich.query.product_and_product_model_search_aggregator'
+            - '@pim_enrich.query.product_and_product_model_document_type_facet_query'
 
     pim_enrich.query.product_query_builder_from_size_factory.with_product_and_product_model_from_size_cursor:
         public: false
@@ -790,6 +792,10 @@ services:
     pim_enrich.query.product_and_product_model_query_sequential_edit_builder_factory:
         class: '%pim_enrich.query.elasticsearch.product_and_product_model_query_builder_factory.class%'
         arguments:
-        - '%pim_enrich.query.product_and_product_model_query_builder.class%'
-        - '@pim_enrich.query.product_query_sequential_edit_builder_factory'
-        - '@pim_enrich.query.product_and_product_model_search_aggregator'
+            - '%pim_enrich.query.product_and_product_model_query_builder.class%'
+            - '@pim_enrich.query.product_query_sequential_edit_builder_factory'
+            - '@pim_enrich.query.product_and_product_model_search_aggregator'
+            - '@pim_enrich.query.product_and_product_model_document_type_facet_query'
+
+    pim_enrich.query.product_and_product_model_document_type_facet_query:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Aggregation\ProductAndProductsModelDocumentTypeFacetQuery'

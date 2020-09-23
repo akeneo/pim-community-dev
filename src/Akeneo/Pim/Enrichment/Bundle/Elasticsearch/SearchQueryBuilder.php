@@ -47,6 +47,9 @@ class SearchQueryBuilder
     /** @var array */
     private $sortClauses = [];
 
+    /** @var array */
+    private $aggsClauses = [];
+
     /**
      * Adds a must_not clause to the query
      *
@@ -136,6 +139,13 @@ class SearchQueryBuilder
         return $this;
     }
 
+    public function addTermsAggregation(string $name, string $field): self
+    {
+        $this->aggsClauses[$name] = ['terms' => ['field' => $field]];
+
+        return $this;
+    }
+
     /**
      * Returns an Elastic search Query
      *
@@ -168,6 +178,10 @@ class SearchQueryBuilder
 
         if (!empty($this->sortClauses)) {
             $searchQuery['sort'] = $this->sortClauses;
+        }
+
+        if (!empty($this->aggsClauses)) {
+            $searchQuery['aggs'] = $this->aggsClauses;
         }
 
         return $searchQuery;

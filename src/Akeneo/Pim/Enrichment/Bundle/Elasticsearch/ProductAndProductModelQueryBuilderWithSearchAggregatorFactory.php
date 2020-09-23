@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Aggregation\ProductAndProductsModelDocumentTypeFacetQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 
@@ -23,14 +24,19 @@ class ProductAndProductModelQueryBuilderWithSearchAggregatorFactory implements P
     /** @var ProductAndProductModelSearchAggregator */
     private $searchAggregator;
 
+    /** @var ProductAndProductsModelDocumentTypeFacetQuery */
+    private $productAndProductsModelDocumentTypeFacetQuery;
+
     public function __construct(
         string $pqbClass,
         ProductQueryBuilderFactoryInterface $factory,
-        ProductAndProductModelSearchAggregator $searchAggregator = null
+        ProductAndProductModelSearchAggregator $searchAggregator = null,
+        ProductAndProductsModelDocumentTypeFacetQuery $productAndProductsModelDocumentTypeFacetQuery
     ) {
         $this->pqbClass = $pqbClass;
         $this->factory = $factory;
         $this->searchAggregator = $searchAggregator;
+        $this->productAndProductsModelDocumentTypeFacetQuery = $productAndProductsModelDocumentTypeFacetQuery;
     }
 
     /**
@@ -40,6 +46,10 @@ class ProductAndProductModelQueryBuilderWithSearchAggregatorFactory implements P
     {
         $basePqb = $this->factory->create($options);
 
-        return new $this->pqbClass($basePqb, $this->searchAggregator);
+        return new $this->pqbClass(
+            $basePqb,
+            $this->searchAggregator,
+            $this->productAndProductsModelDocumentTypeFacetQuery
+        );
     }
 }

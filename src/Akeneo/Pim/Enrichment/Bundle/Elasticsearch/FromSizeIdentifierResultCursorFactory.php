@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResultCursor;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Aggregation\ProductAndProductsModelDocumentTypeFacetQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -50,6 +50,21 @@ class FromSizeIdentifierResultCursorFactory implements CursorFactoryInterface
             // TODO: remove default type when TIP-1151 and TIP 1150 are done, as the document type will always exist
             $documentType = $hit['_source']['document_type'] ?? ProductInterface::class;
             $identifiers[] = new IdentifierResult($hit['_source']['identifier'], $documentType);
+        }
+
+        // @todo: this is an example of how we extract counts, not the final implementation ;) Not sure this code should be here
+        $documentTypeAggregation = $response['aggregations'][ProductAndProductsModelDocumentTypeFacetQuery::NAME] ?? null;
+        if (is_array($documentTypeAggregation)) {
+            foreach ($documentTypeAggregation['buckets'] ?? [] as $bucket) {
+                switch ($bucket['key']) {
+                    case ProductInterface::class:
+                        $productCount = $bucket['doc_count'];
+                        break;
+                    case ProductModelInterface::class:
+                        $productModelCount = $bucket['doc_count'];
+                        break;
+                }
+            }
         }
 
         return new IdentifierResultCursor($identifiers, $totalCount);

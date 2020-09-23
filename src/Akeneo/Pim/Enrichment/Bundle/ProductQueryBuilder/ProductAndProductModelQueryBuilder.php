@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelSearchAggregator;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Aggregation\ProductAndProductsModelDocumentTypeFacetQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
@@ -29,16 +30,17 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
     /** @var ProductAndProductModelSearchAggregator */
     private $searchAggregator;
 
-    /**
-     * @param ProductQueryBuilderInterface           $pqb
-     * @param ProductAndProductModelSearchAggregator $searchAggregator
-     */
+    /** @var ProductAndProductsModelDocumentTypeFacetQuery */
+    private $productAndProductsModelDocumentTypeFacetQuery;
+
     public function __construct(
         ProductQueryBuilderInterface $pqb,
-        ProductAndProductModelSearchAggregator $searchAggregator
+        ProductAndProductModelSearchAggregator $searchAggregator,
+        ProductAndProductsModelDocumentTypeFacetQuery $productAndProductsModelDocumentTypeFacetQuery
     ) {
         $this->pqb = $pqb;
         $this->searchAggregator = $searchAggregator;
+        $this->productAndProductsModelDocumentTypeFacetQuery = $productAndProductsModelDocumentTypeFacetQuery;
     }
 
     /**
@@ -86,6 +88,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
      */
     public function execute()
     {
+        $this->productAndProductsModelDocumentTypeFacetQuery->addTo($this->getQueryBuilder());
         if ($this->shouldFilterOnlyOnProducts()) {
             $this->addFilter('entity_type', Operators::EQUALS, ProductInterface::class);
 
