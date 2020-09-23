@@ -43,7 +43,13 @@ class InstallCommand extends Command
             ->setDescription('Akeneo PIM Application Installer.')
             ->addOption('force', null, InputOption::VALUE_NONE, 'Force installation')
             ->addOption('symlink', null, InputOption::VALUE_NONE, 'Install assets as symlinks')
-            ->addOption('clean', null, InputOption::VALUE_NONE, 'Clean previous install');
+            ->addOption('clean', null, InputOption::VALUE_NONE, 'Clean previous install')
+            ->addOption(
+                'doNotDropDatabase',
+                null,
+                InputOption::VALUE_NONE,
+                'Try to use an existing database if it already exists. Beware, the database data will still be deleted'
+            );
     }
 
     /**
@@ -75,7 +81,7 @@ class InstallCommand extends Command
         try {
             $this
                 ->checkStep()
-                ->databaseStep()
+                ->databaseStep(['--doNotDropDatabase' => $input->getOption('doNotDropDatabase')])
                 ->assetsStep($input);
         } catch (\Exception $e) {
             $output->writeln(sprintf('<error>Error during PIM installation. %s</error>', $e->getMessage()));
@@ -93,9 +99,9 @@ class InstallCommand extends Command
     /**
      * Step where configuration is checked
      *
+     * @return InstallCommand
      * @throws \RuntimeException
      *
-     * @return InstallCommand
      */
     protected function checkStep()
     {
@@ -106,12 +112,10 @@ class InstallCommand extends Command
 
     /**
      * Step where the database is built, the fixtures loaded and some command scripts launched
-     *
-     * @return InstallCommand
      */
-    protected function databaseStep()
+    protected function databaseStep(array $arguments = []): self
     {
-        $this->commandExecutor->runCommand('pim:installer:db');
+        $this->commandExecutor->runCommand('pim:installer:db', $arguments);
 
         return $this;
     }
@@ -138,7 +142,7 @@ class InstallCommand extends Command
      *
      * @return boolean
      */
-    protected function isPimInstalled(OutputInterface $output) : bool
+    protected function isPimInstalled(OutputInterface $output): bool
     {
         $output->writeln('<info>Check PIM installation</info>');
 
