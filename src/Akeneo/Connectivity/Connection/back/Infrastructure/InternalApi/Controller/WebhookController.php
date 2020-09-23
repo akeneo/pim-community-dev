@@ -58,7 +58,7 @@ class WebhookController
         }
 
         try {
-            $this->updateConnectionWebhookHandler->handle(
+            $webhook = $this->updateConnectionWebhookHandler->handle(
                 new UpdateWebhookCommand(
                     $request->get('code', ''),
                     $request->get('enabled'),
@@ -76,7 +76,7 @@ class WebhookController
             );
         }
 
-        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+        return new JsonResponse($webhook->normalize());
     }
 
     private function buildViolationResponse(ConstraintViolationListInterface $constraintViolationList): array

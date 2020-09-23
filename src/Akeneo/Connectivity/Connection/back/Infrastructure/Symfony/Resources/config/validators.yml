@@ -12,3 +12,10 @@ services:
             - '@akeneo_connectivity.connection.service.file_info.does_image_exist'
         tags:
             - { name: validator.constraint_validator, alias: connection_image_must_exist }
+
+    akeneo_connectivity.connection.validators.webhook.connection_must_exist:
+        class: Akeneo\Connectivity\Connection\Application\Webhook\Validation\ConnectionMustExistValidator
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.repository.connection'
+        tags:
+            - { name: validator.constraint_validator, alias: connection_must_exist }
