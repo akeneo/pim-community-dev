@@ -4,6 +4,12 @@
 
 - API-1201: [Backport] Be able to get attributes searching by codes 
 
+# 4.0.59 (2020-09-23)
+
+## Technical Improvements
+
+- PIM-9055: Allow not to drop an existing database during the install proces
+
 # 4.0.58 (2020-09-22)
 
 ## Bug fixes
@@ -17,10 +23,6 @@
 - AOB-1023: Fix duplicated assets menu in PEF
 - PIM-9445: Fix boolean attribute is broken on compare/translate when the attribute is localisable or scopable
 - PIM-9439: Fix PEF shakes on product with lot of simple/multi select
-
-## Technical Improvements
-
-- PIM-9055: Allow not to drop an existing database during the install proces
 
 # 4.0.56 (2020-09-09)
 
