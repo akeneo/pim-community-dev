@@ -379,7 +379,7 @@ pim_datagrid:
     delete_product: 删除产品
     change_status: 更改状态
     toggle_status: 切换状态
-    other: 其它操作
+    other: 其他操作
   empty_results:
     associated_product:
       hint: 没有关联产品

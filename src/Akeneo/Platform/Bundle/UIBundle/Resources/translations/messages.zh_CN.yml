@@ -46,7 +46,7 @@ pim_ui.system_config:
     loading_messages.tooltip: 全部可用的加载消息以换行符分隔
   group:
     loading_message.title: 加载消息
-other_actions: 其它操作
+other_actions: 其他操作
 pim_common:
   cancel: 取消
   save: 保存
