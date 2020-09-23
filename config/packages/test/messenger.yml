@@ -2,7 +2,3 @@ framework:
     messenger:
         transports:
             business_event: 'in-memory://'
-            webhook: 'in-memory://'
-
-        routing:
-            'Akeneo\Platform\Component\EventQueue\BusinessEvent': business_event
