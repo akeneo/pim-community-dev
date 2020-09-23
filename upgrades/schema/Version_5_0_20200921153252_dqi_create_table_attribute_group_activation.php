@@ -15,6 +15,10 @@ CREATE TABLE IF NOT EXISTS pim_data_quality_insights_attribute_group_activation 
     activated TINYINT NOT NULL,
     updated_at DATETIME NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT IGNORE INTO pim_data_quality_insights_attribute_group_activation (attribute_group_code, activated, updated_at)
+SELECT code, 1, created
+FROM pim_catalog_attribute_group;
 SQL
         );
     }
