@@ -19,7 +19,8 @@ mkdir -p $STANDARD_DISTRIB_DIR/src \
          $STANDARD_DISTRIB_DIR/public \
          $STANDARD_DISTRIB_DIR/config/packages/dev \
          $STANDARD_DISTRIB_DIR/config/services \
-         $STANDARD_DISTRIB_DIR/docker
+         $STANDARD_DISTRIB_DIR/docker \
+         $STANDARD_DISTRIB_DIR/docker/initdb.d
 
 # Provides the Apache and FPM configuration to run the PIM from Docker
 cp $DEV_DISTRIB_DIR/../pim-community-dev/docker/wait_docker_up.sh $STANDARD_DISTRIB_DIR/docker/
