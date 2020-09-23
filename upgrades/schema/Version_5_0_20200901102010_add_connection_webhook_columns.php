@@ -15,7 +15,7 @@ final class Version_5_0_20200901102010_add_connection_webhook_columns extends Ab
 ALTER TABLE akeneo_connectivity_connection
 ADD COLUMN webhook_url VARCHAR(255) NULL,
 ADD COLUMN webhook_secret VARCHAR(255) NULL,
-ADD COLUMN webhook_enabled TINYINT(1) DEFAULT 1 NOT NULL
+ADD COLUMN webhook_enabled TINYINT(1) DEFAULT 0 NOT NULL
 SQL);
     }
 

@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS akeneo_connectivity_connection(
     auditable TINYINT(1) DEFAULT 0 NOT NULL,
     webhook_url VARCHAR(255) NULL,
     webhook_secret VARCHAR(255) NULL,
-    webhook_enabled TINYINT(1) DEFAULT 1 NOT NULL,
+    webhook_enabled TINYINT(1) DEFAULT 0 NOT NULL,
     CONSTRAINT FK_CONNECTIVITY_CONNECTION_client_id FOREIGN KEY (client_id) REFERENCES pim_api_client (id),
     CONSTRAINT FK_CONNECTIVITY_CONNECTION_user_id FOREIGN KEY (user_id) REFERENCES oro_user (id)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB ROW_FORMAT = DYNAMIC

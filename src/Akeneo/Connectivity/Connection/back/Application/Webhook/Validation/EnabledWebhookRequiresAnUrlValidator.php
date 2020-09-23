@@ -24,7 +24,7 @@ class EnabledWebhookRequiresAnUrlValidator extends ConstraintValidator
             throw new UnexpectedTypeException($webhook, ConnectionWebhook::class);
         }
         if ($webhook->enabled() && (null === $webhook->url() || '' === (string) $webhook->url())) {
-            $this->context->buildViolation($constraint->message)->addViolation();
+            $this->context->buildViolation($constraint->message)->atPath('url')->addViolation();
         }
     }
 }
