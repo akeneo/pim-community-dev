@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\AttributeGroupActivation;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeGroupCode;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -13,4 +14,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\AttributeGroupActivat
 interface AttributeGroupActivationRepositoryInterface
 {
     public function save(AttributeGroupActivation $attributeGroupActivation): void;
+
+    public function remove(AttributeGroupCode $attributeGroupCode): void;
 }
