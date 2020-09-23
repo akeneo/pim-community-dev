@@ -39,6 +39,7 @@
 - PIM-9457: Remove option tab on attributes setting page when attribute is not simple/multi select
 - PIM-9454: Fix scalar value type check in PQB filters
 - PIM-9460: Fix performance issue on export
+- PIM-9458: Fix proposal creation when a user does not have permissions on attributes
 
 ## Improvements
 
