@@ -45,6 +45,7 @@ const CheckboxContainer = styled.div<{checked: boolean; readOnly: boolean} & Ake
     css`
       background-color: ${getColor('blue100')};
       border-color: ${getColor('blue100')};
+
       ${TickIcon} {
         animation-delay: 0.2s;
         animation: ${checkTick} 0.2s ease-out forwards;
@@ -84,22 +85,18 @@ const LabelContainer = styled.div<{readOnly: boolean} & AkeneoThemedProps>`
     `}
 `;
 
+type CheckboxStatus = 'checked' | 'unchecked' | 'undetermined';
+
 type CheckboxProps = {
   /**
    * State of the Checkbox.
    */
-  checked: boolean;
+  status: CheckboxStatus;
 
   /**
    * Displays the value of the input, but does not allow changes.
    */
   readOnly?: boolean;
-
-  /**
-   * The undetermined state comes into play when the checkbox contains a sublist of selections,
-   * some of which are selected, and others aren't.
-   */
-  undetermined?: boolean;
 
   /**
    * Provide a description of the Checkbox, the label appears on the right of the checkboxes.
@@ -109,18 +106,33 @@ type CheckboxProps = {
   /**
    * The handler called when clicking on Checkbox.
    */
-  onChange?: (value: boolean) => void;
+  onChange?: (value: CheckboxStatus) => void;
 };
 
 /**
  * The checkboxes are applied when users can select all, several, or none of the options from a given list.
  */
-const Checkbox = ({label, checked, onChange, undetermined = false, readOnly = false}: CheckboxProps) => {
+const Checkbox = ({label, status, onChange, readOnly = false}: CheckboxProps): React.ReactElement => {
   if (undefined === onChange && false === readOnly) {
     throw new Error('A Checkbox element expect an onChange attribute if not readOnly');
   }
 
-  const handleChange = () => onChange && !readOnly && onChange(!checked);
+  const checked = 'checked' === status;
+  const undetermined = 'undetermined' === status;
+
+  const handleChange = () => {
+    if (!onChange || readOnly) return;
+
+    switch (status) {
+      case 'checked':
+        onChange('unchecked');
+        break;
+      case 'undetermined':
+      case 'unchecked':
+        onChange('checked');
+        break;
+    }
+  };
 
   return (
     <Container onClick={handleChange}>
