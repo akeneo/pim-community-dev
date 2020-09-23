@@ -99,8 +99,9 @@ final class UpdateAttributeGroupActivationSubscriber implements EventSubscriberI
             $this->attributeGroupActivationRepository->remove($attributeGroupCode);
         } catch (\Throwable $exception) {
             $this->logger->error(
-                sprintf('Unable to remove attribute group activation for "%s"', $attributeGroup->getCode()),
+                'Unable to remove attribute group activation for "{attributegroup_code}"',
                 [
+                    'attributegroup_code' => $attributeGroup->getCode(),
                     'error_code' => 'unable_to_remove_attribute_group_activation',
                     'error_message' => $exception->getMessage(),
                 ]
