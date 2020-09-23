@@ -52,6 +52,11 @@ datagrid:
                 route: pimee_catalog_rule_rule_delete
                 params:
                     - id
+            toggle_rule_status:
+                type: url
+                route: pimee_enrich_rule_definition_status_change
+                params:
+                    - code
         actions:
             edit:
                 launcherOptions:
@@ -60,6 +65,13 @@ datagrid:
                 label:     pim_common.edit
                 link:      edit_link
                 rowAction: true
+                acl_resource: pimee_catalog_rule_rule_edit_permissions
+            toggle_status:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--switch
+                type:  toggle-rule-status
+                label: pim_datagrid.actions.toggle_status
+                link:  toggle_rule_status
                 acl_resource: pimee_catalog_rule_rule_edit_permissions
             execute:
                 launcherOptions:

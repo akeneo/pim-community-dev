@@ -5,3 +5,10 @@ services:
         shared: false
         tags:
             - { name: oro_datagrid.extension.action.type, type: execute-rule }
+
+    pim_datagrid.extension.action.type.toggle_rule_definition:
+        public: true
+        class: Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\Extension\Action\ToggleRuleStatusAction
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.action.type, type: toggle-rule-status }

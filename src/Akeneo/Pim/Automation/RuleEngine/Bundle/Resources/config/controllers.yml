@@ -88,3 +88,10 @@ services:
         public: true
         arguments:
             - '@akeneo.pim.enrichment.query.product_query_builder_from_size_factory.with_product_identifier_cursor'
+
+    pimee_enrich.controller.rule_definition.change_status:
+        class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi\ChangeRuleDefinitionStatusController'
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Automation\RuleEngine\Component\Handler\UpdateRuleStatusHandler'
+            - '@oro_security.security_facade'
