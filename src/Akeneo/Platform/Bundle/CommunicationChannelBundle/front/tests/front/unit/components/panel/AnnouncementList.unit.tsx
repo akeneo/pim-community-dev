@@ -137,6 +137,24 @@ test('it can open the read more link in a new tab', async () => {
   );
 });
 
+test('it does not generate Read more button when there is no link.', async () => {
+  const campaign = formatCampaign(expectedPimAnalyticsData.pim_edition, expectedPimAnalyticsData.pim_version);
+  useInfiniteScroll.mockReturnValue([
+    {
+      items: expectedAnnouncements,
+      isFetching: false,
+      hasError: false,
+    },
+    jest.fn(),
+  ]);
+
+  await act(async () =>
+      renderWithProviders(<AnnouncementList campaign={campaign} panelIsClosed={false} />, container as HTMLElement)
+  );
+
+  expect(container.querySelectorAll('ul li a').length).toEqual(1);
+});
+
 test('it can display a message when it has an error during the fetch', async () => {
   const campaign = formatCampaign(expectedPimAnalyticsData.pim_edition, expectedPimAnalyticsData.pim_version);
   useInfiniteScroll.mockReturnValue([
