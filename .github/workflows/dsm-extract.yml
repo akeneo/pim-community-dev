@@ -37,6 +37,7 @@ jobs:
                 with:
                     repository: 'akeneo/akeneo-design-system'
                     path: external
+                    token: ${{ secrets.API_TOKEN_GITHUB }}
             -   name: Bump package version
                 run: cd akeneo-design-system && node .github/workflows/bump-version.js $GITHUB_EVENT_PATH ../external/package.json ../commit-messages.txt
             -   uses: actions/upload-artifact@v1
