@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\R
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\AttributeGroupActivation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\AttributeGroupActivationRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeGroupCode;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -40,5 +41,14 @@ SQL;
                 'activated' => \PDO::PARAM_BOOL,
             ]
         );
+    }
+
+    public function remove(AttributeGroupCode $attributeGroupCode): void
+    {
+        $query = <<<SQL
+DELETE FROM pim_data_quality_insights_attribute_group_activation WHERE attribute_group_code = :attributeGroupCode;
+SQL;
+
+        $this->dbConnection->executeQuery($query, ['attributeGroupCode' => $attributeGroupCode]);
     }
 }
