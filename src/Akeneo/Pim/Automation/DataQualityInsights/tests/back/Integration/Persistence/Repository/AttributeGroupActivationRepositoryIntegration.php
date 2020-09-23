@@ -32,14 +32,46 @@ class AttributeGroupActivationRepositoryIntegration extends TestCase
         $this->assertAttributeGroupActivationExists($updatedAttributeGroupActivation);
     }
 
+    public function test_it_removes_an_attribute_group_activation(): void
+    {
+        $repository = $this->get(AttributeGroupActivationRepository::class);
+
+        $marketing = new AttributeGroupCode('marketing');
+        $marketingActivation = new AttributeGroupActivation($marketing, true);
+        $repository->save($marketingActivation);
+
+        $technical = new AttributeGroupCode('technical');
+        $technicalActivation = new AttributeGroupActivation($technical, false);
+        $repository->save($technicalActivation);
+
+        $repository->remove($marketing);
+
+        $this->assertAttributeGroupActivationDoesNotExist($marketingActivation);
+        $this->assertAttributeGroupActivationExists($technicalActivation);
+    }
+
     private function assertAttributeGroupActivationExists(AttributeGroupActivation $attributeGroupActivation): void
+    {
+        $attributeGroupActivationExists = $this->doesAttributeGroupActivationExist($attributeGroupActivation);
+
+        $this->assertTrue($attributeGroupActivationExists);
+    }
+
+    private function assertAttributeGroupActivationDoesNotExist(AttributeGroupActivation $attributeGroupActivation): void
+    {
+        $attributeGroupActivationExists = $this->doesAttributeGroupActivationExist($attributeGroupActivation);
+
+        $this->assertFalse($attributeGroupActivationExists);
+    }
+
+    private function doesAttributeGroupActivationExist(AttributeGroupActivation $attributeGroupActivation): bool
     {
         $query = <<<SQL
 SELECT 1 FROM pim_data_quality_insights_attribute_group_activation
 WHERE attribute_group_code = :attributeGroupCode AND activated = :activated;
 SQL;
 
-        $attributeGroupActivationExists = (bool) $this->get('database_connection')->executeQuery(
+        return (bool) $this->get('database_connection')->executeQuery(
             $query,
             [
                 'attributeGroupCode' => $attributeGroupActivation->getAttributeGroupCode(),
@@ -50,7 +82,5 @@ SQL;
                 'activated' => \PDO::PARAM_BOOL,
             ]
         )->fetchColumn();
-
-        $this->assertTrue($attributeGroupActivationExists);
     }
 }
