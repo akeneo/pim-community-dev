@@ -7,8 +7,10 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Contr
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\AttributeGroupActivation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\AttributeGroupActivationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeGroupCode;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -19,13 +21,23 @@ final class UpdateAttributeGroupActivationController
     /** @var AttributeGroupActivationRepositoryInterface */
     private $attributeGroupActivationRepository;
 
-    public function __construct(AttributeGroupActivationRepositoryInterface $attributeGroupActivationRepository)
-    {
+    /** @var SecurityFacade */
+    private $securityFacade;
+
+    public function __construct(
+        AttributeGroupActivationRepositoryInterface $attributeGroupActivationRepository,
+        SecurityFacade $securityFacade
+    ) {
         $this->attributeGroupActivationRepository = $attributeGroupActivationRepository;
+        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(Request $request)
     {
+        if (!$this->securityFacade->isGranted('akeneo_data_quality_insights_activation_attribute_group_edit')) {
+            throw new AccessDeniedException();
+        }
+
         try {
             $attributeGroupCode = new AttributeGroupCode($request->request->get('attribute_group_code'));
             $activated = $request->request->get('activated');

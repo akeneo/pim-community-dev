@@ -1,0 +1,4 @@
+akeneo_data_quality_insights_activation_attribute_group_edit:
+    type: action
+    label: akeneo_data_quality_insights.acl.activation.edit
+    group_name: pim_enrich.acl_group.attribute_group
