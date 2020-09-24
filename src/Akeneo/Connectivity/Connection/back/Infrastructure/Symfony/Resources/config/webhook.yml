@@ -2,6 +2,9 @@ services:
     akeneo_connectivity.connection.webhook.guzzle_client:
         class: GuzzleHttp\Client
 
+    akeneo_connectivity.connection.webhook.mock.guzzle_client:
+        class: Akeneo\Connectivity\Connection\Application\Webhook\Mock\MockGuzzleHttpClient
+
     akeneo_connectivity.connection.webhook.serializer.json_encoder:
         class: Symfony\Component\Serializer\Encoder\JsonEncoder
 

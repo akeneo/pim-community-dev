@@ -217,3 +217,9 @@ services:
         decoration_inner_name: akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes.sql
         arguments:
             - '@akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes.sql'
+
+    akeneo_connectivity.connection.webhook.service.reachability_checker:
+        class: Akeneo\Connectivity\Connection\Application\Webhook\Service\WebhookReachabilityChecker
+        arguments:
+            - '@akeneo_connectivity.connection.webhook.mock.guzzle_client'
+            - '@validator'

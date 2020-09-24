@@ -26,6 +26,14 @@ $rules = [
             'FOS\RestBundle\Serializer\Serializer',
 
             'Akeneo\Platform\Component\EventQueue\BusinessEventInterface',
+
+            'GuzzleHttp\Client',
+            'GuzzleHttp\Exception\RequestException',
+            'GuzzleHttp\Exception\GuzzleException',
+            'Psr\Http\Message\RequestInterface',
+            'GuzzleHttp\Psr7\Response',
+            'GuzzleHttp\Psr7\Request',
+            'Psr\Http\Message\ResponseInterface',
         ]
     )->in('Akeneo\Connectivity\Connection\Application'),
 
