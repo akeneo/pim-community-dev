@@ -3,12 +3,13 @@
 ## Technical Improvements
 
 - API-1201: [Backport] Be able to get attributes searching by codes 
+- API-1237: [Backport] Add filter on attribute types
 
 # 4.0.59 (2020-09-23)
 
 ## Technical Improvements
 
-- PIM-9055: Allow not to drop an existing database during the install proces
+- PIM-9055: Allow not to drop an existing database during the install process
 
 # 4.0.58 (2020-09-22)
 
