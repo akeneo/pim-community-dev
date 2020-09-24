@@ -36,7 +36,10 @@ FROM pim_catalog_product AS product
 INNER JOIN pim_catalog_family AS family ON family.id = product.family_id
 INNER JOIN pim_catalog_family_attribute AS family_attribute ON family.id = family_attribute.family_id
 INNER JOIN pim_catalog_attribute AS attribute ON family_attribute.attribute_id = attribute.id
+LEFT JOIN pim_catalog_attribute_group AS attribute_group ON attribute_group.id = attribute.group_id
+LEFT JOIN pim_data_quality_insights_attribute_group_activation AS attribute_group_activation ON attribute_group_activation.attribute_group_code = attribute_group.code
 WHERE product.id = :product_id
+    AND (attribute_group_activation.activated IS NULL OR attribute_group_activation.activated = 1)
 SQL;
 
         $statement = $this->connection->executeQuery(
