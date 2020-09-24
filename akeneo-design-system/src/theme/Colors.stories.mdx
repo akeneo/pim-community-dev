@@ -1,0 +1,32 @@
+import {useState} from 'react';
+import styled from 'styled-components';
+import {Meta} from '@storybook/addon-docs/blocks';
+import {linkTo} from '@storybook/addon-links';
+import {PreviewGrid, PreviewCard, PreviewContainer, LabelContainer} from 'shared/PreviewGallery'
+import {pimTheme} from './pim/index';
+
+<Meta title="Guidelines/Colors" />
+
+export const ColorContainer = styled(PreviewContainer)`
+  background-color: ${props => props.color};
+`;
+
+# Colors
+
+The colors enhance the experience by providing visual clues and drawing attention to the main actions. The colors indicate which elements are interactive, how they relate to other elements and their degree of visibility. The important elements should stand out the most.
+
+## Gallery
+<Canvas>
+  <Story name="Standard">
+    <PreviewGrid>
+      { Object.keys(pimTheme.color).map((colorName) => {
+        return (
+          <PreviewCard key={colorName}>
+            <ColorContainer color={pimTheme.color[colorName]} />
+            <LabelContainer>{colorName} ({pimTheme.color[colorName]})</LabelContainer>
+          </PreviewCard>
+        )
+      })}
+    </PreviewGrid>
+  </Story>
+</Canvas>
