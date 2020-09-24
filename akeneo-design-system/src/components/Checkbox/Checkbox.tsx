@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {ReactNode, Ref, useState} from 'react';
 import styled, {css, keyframes} from 'styled-components';
 import {AkeneoThemedProps, getColor} from 'theme';
 import {CheckIcon, PartialCheckIcon} from 'icons';
+import {useShortcut} from 'hooks';
+import {Key, uuid} from 'shared';
 
 const checkTick = keyframes`
   to {
@@ -34,7 +36,7 @@ const CheckboxContainer = styled.div<{checked: boolean; readOnly: boolean} & Ake
   width: 20px;
   border: 1px solid ${getColor('grey80')};
   border-radius: 3px;
-  outline: none;
+  overflow: hidden;
   background-color: ${getColor('grey20')};
   transition: background-color 0.2s ease-out;
   box-sizing: border-box;
@@ -72,7 +74,7 @@ const CheckboxContainer = styled.div<{checked: boolean; readOnly: boolean} & Ake
     `}
 `;
 
-const LabelContainer = styled.div<{readOnly: boolean} & AkeneoThemedProps>`
+const LabelContainer = styled.label<{readOnly: boolean} & AkeneoThemedProps>`
   color: ${getColor('grey140')};
   font-weight: 400;
   font-size: 15px;
@@ -85,13 +87,13 @@ const LabelContainer = styled.div<{readOnly: boolean} & AkeneoThemedProps>`
     `}
 `;
 
-type CheckboxStatus = 'checked' | 'unchecked' | 'undetermined';
+type CheckboxChecked = 'true' | 'false' | 'mixed';
 
 type CheckboxProps = {
   /**
    * State of the Checkbox.
    */
-  status: CheckboxStatus;
+  checked: CheckboxChecked;
 
   /**
    * Displays the value of the input, but does not allow changes.
@@ -99,49 +101,73 @@ type CheckboxProps = {
   readOnly?: boolean;
 
   /**
-   * Provide a description of the Checkbox, the label appears on the right of the checkboxes.
-   */
-  label?: string;
-
-  /**
    * The handler called when clicking on Checkbox.
    */
-  onChange?: (value: CheckboxStatus) => void;
+  onChange?: (value: CheckboxChecked) => void;
+
+  /**
+   * Label of the checkbox.
+   */
+  children?: ReactNode;
 };
 
 /**
  * The checkboxes are applied when users can select all, several, or none of the options from a given list.
  */
-const Checkbox = ({label, status, onChange, readOnly = false}: CheckboxProps): React.ReactElement => {
-  if (undefined === onChange && false === readOnly) {
-    throw new Error('A Checkbox element expect an onChange attribute if not readOnly');
+const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
+  (
+    {checked, onChange, readOnly = false, children}: CheckboxProps,
+    forwardedRef: Ref<HTMLDivElement>
+  ): React.ReactElement => {
+    const [checkboxId] = useState<string>(`checkbox_${uuid()}`);
+    const [labelId] = useState<string>(`label_${uuid()}`);
+
+    const isChecked = 'true' === checked;
+    const isMixed = 'mixed' === checked;
+
+    const handleChange = () => {
+      if (!onChange || readOnly) return;
+
+      switch (checked) {
+        case 'true':
+          onChange('false');
+          break;
+        case 'mixed':
+        case 'false':
+          onChange('true');
+          break;
+      }
+    };
+    const ref = useShortcut(Key.Space, handleChange);
+    const forProps = children
+      ? {
+          'aria-labelledby': labelId,
+          id: checkboxId,
+        }
+      : {};
+
+    return (
+      <Container ref={forwardedRef}>
+        <CheckboxContainer
+          checked={isChecked || isMixed}
+          readOnly={readOnly}
+          role="checkbox"
+          ref={ref}
+          aria-checked={isChecked}
+          tabIndex={readOnly ? -1 : 0}
+          onClick={handleChange}
+          {...forProps}
+        >
+          {isMixed ? <PartialCheckIcon height={20} width={20} /> : <TickIcon height={20} width={20} />}
+        </CheckboxContainer>
+        {children ? (
+          <LabelContainer onClick={handleChange} id={labelId} readOnly={readOnly} htmlFor={checkboxId}>
+            {children}
+          </LabelContainer>
+        ) : null}
+      </Container>
+    );
   }
-
-  const checked = 'checked' === status;
-  const undetermined = 'undetermined' === status;
-
-  const handleChange = () => {
-    if (!onChange || readOnly) return;
-
-    switch (status) {
-      case 'checked':
-        onChange('unchecked');
-        break;
-      case 'undetermined':
-      case 'unchecked':
-        onChange('checked');
-        break;
-    }
-  };
-
-  return (
-    <Container onClick={handleChange}>
-      <CheckboxContainer checked={checked || undetermined} readOnly={readOnly}>
-        {undetermined ? <PartialCheckIcon height={20} width={20} /> : <TickIcon height={20} width={20} />}
-      </CheckboxContainer>
-      {label ? <LabelContainer readOnly={readOnly}>{label}</LabelContainer> : null}
-    </Container>
-  );
-};
+);
 
 export {Checkbox};

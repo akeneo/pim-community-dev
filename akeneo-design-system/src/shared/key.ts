@@ -1,5 +1,5 @@
 enum Key {
-  Space = ' ',
+  Space = 'Space',
   Enter = 'Enter',
   NumpadEnter = 'NumpadEnter',
   Backspace = 'Backspace',
