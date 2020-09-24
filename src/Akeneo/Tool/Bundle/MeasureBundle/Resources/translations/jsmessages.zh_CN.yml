@@ -8,7 +8,7 @@ measurements:
   helper:
     title: 欢迎使用测量！
     text: 在这里，您可以建立自己的测量单位群及其测量单位，或添加测量单位到现有的测量单位群。
-    link: 想了解更多？立即开始！
+    link: 想了解更多？看这里！
   search:
     placeholder: 搜索标签或代码
   family:
@@ -16,7 +16,7 @@ measurements:
     not_found: 找不到测量单位群
     no_data:
       title: 抱歉，没有测量单位群！
-      link: 点击此处添加
+      link: 点击此处进行添加
     no_result:
       title: 抱歉，找不到与搜索相符的结果！
     standard_unit: 标准单位
