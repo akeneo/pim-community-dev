@@ -6,7 +6,10 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface as Ca
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\UnexpectedResultException;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validation;
 
 /**
  * Attribute repository for the API
@@ -44,15 +47,19 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
     }
 
     /**
-     * {@inheritdoc}
+     * Find resources with offset > $offset and filtered by $criteria
+     *
+     * @param array{string: array{operator: string, value: mixed}[]} $searchFilters
+     * @param array $orders
+     * @param int   $limit
+     * @param int   $offset
+     *
+     * @return array
      */
-    public function searchAfterOffset(array $criteria, array $orders, $limit, $offset)
+    public function searchAfterOffset(array $searchFilters, array $orders, $limit, $offset)
     {
         $qb = $this->createQueryBuilder('r');
-
-        foreach ($criteria as $field => $criterion) {
-            $qb->andWhere($qb->expr()->eq(sprintf('r.%s', $field), $qb->expr()->literal($criterion)));
-        }
+        $qb = $this->addFilters($qb, $searchFilters);
 
         foreach ($orders as $field => $sort) {
             $qb->addOrderBy(sprintf('r.%s', $field), $sort);
@@ -70,14 +77,11 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
     /**
      * {@inheritdoc}
      */
-    public function count(array $criteria = [])
+    public function count(array $searchFilters = [])
     {
         try {
             $qb = $this->createQueryBuilder('r');
-
-            foreach ($criteria as $field => $criterion) {
-                $qb->andWhere($qb->expr()->eq(sprintf('r.%s', $field), $qb->expr()->literal($criterion)));
-            }
+            $this->addFilters($qb, $searchFilters);
 
             return (int) $qb
                 ->select('COUNT(r.id)')
@@ -85,6 +89,71 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
                 ->getSingleScalarResult();
         } catch (UnexpectedResultException $e) {
             return 0;
+        }
+    }
+    protected function addFilters(QueryBuilder $qb, array $searchFilters): QueryBuilder
+    {
+        $this->validateSearchFilters($searchFilters);
+
+        foreach ($searchFilters as $property => $searchFilter) {
+            foreach ($searchFilter as $criterion) {
+                if ('IN' === $criterion['operator']) {
+                    $parameter = sprintf(':%s', $property);
+                    $qb->where($qb->expr()->in(sprintf('r.%s', $property), $parameter));
+                    $qb->setParameter($parameter, $criterion['value']);
+                }
+            }
+        }
+
+        return $qb;
+    }
+
+    protected function validateSearchFilters(array $searchFilters): void
+    {
+        if (empty($searchFilters)) {
+            return;
+        }
+        $availableSearchFilters = ['code'];
+        $validator = Validation::createValidator();
+        $constraints = [
+            'code' => new Assert\All([
+                new Assert\Collection([
+                    'operator' => new Assert\IdenticalTo([
+                        'value' => 'IN',
+                        'message' => 'In order to search on attribute codes you must use "IN" operator, {{ compared_value }} given.',
+                    ]),
+                    'value' => [
+                        new Assert\Type([
+                            'type' => 'array',
+                            'message' => 'In order to search on attribute codes you must send an array of attribute codes as value, {{ type }} given.'
+                        ]),
+                        new Assert\All([
+                            new Assert\Type('string')
+                        ])
+                    ],
+                ])
+            ])
+        ];
+
+        $exceptionMessage = '';
+        foreach ($searchFilters as $property => $searchFilter) {
+            if (!in_array($property, $availableSearchFilters)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Available search filters are "%s" and you tried to search on unavailable filter "%s"',
+                    implode(', ', $availableSearchFilters),
+                    $property
+                ));
+            }
+
+            $violations = $validator->validate($searchFilter, $constraints[$property]);
+            if (0 !== $violations->count()) {
+                foreach ($violations as $violation) {
+                    $exceptionMessage .= $violation->getMessage();
+                }
+            }
+        }
+        if ('' !== $exceptionMessage) {
+            throw new \InvalidArgumentException($exceptionMessage);
         }
     }
 

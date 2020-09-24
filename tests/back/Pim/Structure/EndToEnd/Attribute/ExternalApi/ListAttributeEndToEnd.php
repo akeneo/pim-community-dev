@@ -105,6 +105,45 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
     }
 
+    public function testAttributeSearchByCode()
+    {
+        $client = $this->createAuthenticatedClient();
+        $search = '{"code":[{"operator":"IN","value":["a_metric","a_multi_select", "a_metric_negative"]}]}';
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+
+        $client->request('GET', 'api/rest/v1/attributes?limit=2&page=1&with_count=true&search=' . $search);
+
+        $standardizedAttributes = $this->getStandardizedAttributes();
+
+        $expected = <<<JSON
+{
+	"_links": {
+		"self": {
+			"href": "http://localhost/api/rest/v1/attributes?page=1&limit=2&with_count=true&search={$searchEncoded}"
+		},
+		"first": {
+			"href": "http://localhost/api/rest/v1/attributes?page=1&limit=2&with_count=true&search={$searchEncoded}"
+		},
+		"next": {
+			"href": "http://localhost/api/rest/v1/attributes?page=2&limit=2&with_count=true&search={$searchEncoded}"
+		}
+	},
+	"current_page": 1,
+	"items_count": 3,
+    "_embedded" : {
+        "items" : [
+            {$standardizedAttributes['a_metric']},
+            {$standardizedAttributes['a_metric_negative']}
+        ]
+    }
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+    }
+
     public function testAttributesWithCount()
     {
         $client = $this->createAuthenticatedClient();
