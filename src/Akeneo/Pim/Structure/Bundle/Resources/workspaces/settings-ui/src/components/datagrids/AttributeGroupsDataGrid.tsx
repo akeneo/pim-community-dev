@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {useAttributeGroupPermissions, useAttributeGroupsListState} from '../../hooks';
+import {useAttributeGroupPermissions, useAttributeGroupsDataGridState} from '../../hooks';
 import {AttributeGroupRow} from './AttributeGroupRow';
 import {AttributeGroup} from "../../models";
 import {DataGrid} from "../shared";
@@ -9,8 +9,8 @@ type Props = {
     groups: AttributeGroup[];
 };
 
-const AttributeGroupsList: FC<Props> = ({groups}) => {
-    const {refreshOrder, compare} = useAttributeGroupsListState();
+const AttributeGroupsDataGrid: FC<Props> = ({groups}) => {
+    const {refreshOrder, compare} = useAttributeGroupsDataGridState();
     const {sortGranted, editGranted} = useAttributeGroupPermissions();
     const translate = useTranslate();
 
@@ -35,4 +35,4 @@ const AttributeGroupsList: FC<Props> = ({groups}) => {
    );
 };
 
-export {AttributeGroupsList};
+export {AttributeGroupsDataGrid};

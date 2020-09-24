@@ -4,10 +4,10 @@ import {PageContent, PageHeader} from '@akeneo-pim-community/shared';
 import {
     AttributeGroupsBreadcrumb,
     AttributeGroupsCreateButton,
-    AttributeGroupsList,
+    AttributeGroupsDataGrid,
     AttributeGroupsUserButtons
 } from '../components';
-import {useAttributeGroupsListState} from "../hooks";
+import {useAttributeGroupsDataGridState} from "../hooks";
 
 
 const breadcrumb = <AttributeGroupsBreadcrumb />;
@@ -15,7 +15,7 @@ const userButtons = <AttributeGroupsUserButtons />;
 const buttons = [<AttributeGroupsCreateButton />];
 
 const AttributeGroupsIndex: FC = () => {
-    const {groups, load} = useAttributeGroupsListState();
+    const {groups, load} = useAttributeGroupsDataGridState();
     const translate = useTranslate();
 
     useEffect(() => {
@@ -28,7 +28,7 @@ const AttributeGroupsIndex: FC = () => {
                 {translate('pim_enrich.entity.attribute_group.result_count', {count: groups.length.toString()}, groups.length)}
             </PageHeader>
             <PageContent>
-                <AttributeGroupsList groups={groups} />
+                <AttributeGroupsDataGrid groups={groups} />
             </PageContent>
         </>
     );

@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import styled from 'styled-components';
 import {AttributeGroup} from '../../models';
-import {useAttributeGroupLabel, useAttributeGroupsListState} from '../../hooks';
+import {useAttributeGroupLabel, useAttributeGroupsDataGridState} from '../../hooks';
 import {DataGrid} from "../shared/datagrids";
 
 type Props = {
@@ -21,7 +21,7 @@ const Label = styled.span`
 `;
 
 const AttributeGroupRow: FC<Props> = ({group, index, isEditable}) => {
-    const {saveOrder, redirect} = useAttributeGroupsListState();
+    const {saveOrder, redirect} = useAttributeGroupsDataGridState();
     const label = useAttributeGroupLabel(group);
 
     return (

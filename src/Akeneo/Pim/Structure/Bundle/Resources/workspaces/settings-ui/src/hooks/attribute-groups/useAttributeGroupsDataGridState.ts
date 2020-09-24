@@ -3,19 +3,19 @@ import {AttributeGroup, AttributeGroupCollection, fromAttributeGroupsCollection}
 import {useRedirectToAttributeGroup} from "./useRedirectToAttributeGroup";
 import {fetchAllAttributeGroups} from "../../infrastructure/fetchers";
 import {saveAttributeGroupsOrder} from "../../infrastructure/savers";
-import {AttributeGroupsListContext, AttributeGroupsListState} from "../../components/providers";
+import {AttributeGroupsDataGridContext, AttributeGroupsDataGridState} from "../../components/providers";
 
-const useAttributeGroupsListState = (): AttributeGroupsListState => {
-    const context = useContext(AttributeGroupsListContext);
+const useAttributeGroupsDataGridState = (): AttributeGroupsDataGridState => {
+    const context = useContext(AttributeGroupsDataGridContext);
 
     if (!context) {
-        throw new Error("[Context]: You are trying to use 'AttributeGroupsList' context outside Provider");
+        throw new Error("[Context]: You are trying to use 'AttributeGroupsDataGrid' context outside Provider");
     }
 
     return context;
 }
 
-const useInitialAttributeGroupsListState = (): AttributeGroupsListState => {
+const useInitialAttributeGroupsDataGridState = (): AttributeGroupsDataGridState => {
     const [groups, setGroups] = useState<AttributeGroup[]>([]);
 
     const redirect = useRedirectToAttributeGroup();
@@ -67,4 +67,4 @@ const useInitialAttributeGroupsListState = (): AttributeGroupsListState => {
     };
 };
 
-export {useAttributeGroupsListState, useInitialAttributeGroupsListState, AttributeGroupsListState}
+export {useAttributeGroupsDataGridState, useInitialAttributeGroupsDataGridState, AttributeGroupsDataGridState}
