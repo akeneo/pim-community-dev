@@ -1,9 +1,10 @@
-// import typescript from 'rollup-plugin-typescript2';
 import commonjs from 'rollup-plugin-commonjs';
 import babel from 'rollup-plugin-babel';
 import analyze from 'rollup-plugin-analyzer';
 import resolve from 'rollup-plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
+import react from 'react';
+import reactDom from 'react-dom';
 
 import pkg from './package.json';
 
@@ -20,7 +21,13 @@ const env = process.env.NODE_ENV;
 const plugins = [
     babel(babelConfig),
     resolve({extensions}),
-    commonjs(),
+    commonjs({
+        include: 'node_modules/**',
+        namedExports: {
+            react: Object.keys(react),
+            'react-dom': Object.keys(reactDom)
+        }
+    }),
     replace({'process.env.NODE_ENV': JSON.stringify(env)}),
 ];
 
