@@ -22,7 +22,6 @@ function($, __, SelectFilter, template) {
         },
 
         render: function() {
-            console.log(this.getValue().value);
             SelectFilter.prototype.render.apply(this, arguments);
             this._updateHighlight();
 
