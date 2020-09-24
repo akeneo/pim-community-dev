@@ -11,17 +11,17 @@ Developers are don't need to re-implement component on each bounded context/proj
 
 Because component implemented here are used several times they are most strongly tested unitary and visually 
 
-## How to see components and guidelines ?
+## How to see components and guidelines?
 
 This project use storybook to display components and guidelines. 
 
 **Preview**
 
-Version of master is available here: https://akeneo.github.io/akeneo-design-system/
+Latest version of master is available here: https://akeneo.github.io/akeneo-design-system/
 
 **Locally**
 
-This project required 
+This project required library ???? @TODO
 
 ```bash
 $ yarn install
@@ -30,38 +30,38 @@ $ yarn storybook:start
 
 Then open http://localhost:6006 on your browser. You don't have to relaunch the command at each change.
 
-## How to contribute ?
+## How to contribute?
 
 This project have been automatically extracted from the following mono-repository: https://github.com/akeneo/pim-community-dev.
 If you want to contribute please create a pull request in this repository.
 
-### What should be in Akeneo Design System ?
+### What should be in Akeneo Design System?
 
 This repository contains : 
 - Simple or complex (composition) components used several time in multiple projects/bounded contexts
 - Illustrations used several time in multiple projects/bounded contexts
 - Icons used by components in this repository
 - Basic hooks
-- Themes relative to projects
+- Specific themes of Akeneo products (PIM, Onboarder, Shared Catalogs)
 
-### What should not be in Akeneo Design System ?
+### What should not be in Akeneo Design System?
 
 - Specific view => each project should keep in charge of create 
 - Code relative to infrastructure (translation, routing, validation ...)
 - Logic specific to the domain
 
-### How to write a component ?
+### How to write a component?
 
 **@TODO Maybe move this into the DSM guideline**
-- Component should be strongly typed with Typescript
+- Component should be strongly typed with TypeScript
 - Component should be self documented, all props should describe itself through comment.
 - Component should be accessible
-- Component should not have hard coded color, it should use color in theme
+- Component should not have hardcoded color, it should use color in theme
 - Component should use CSS-in-JS
 - Simple components should be stateless
 - Coding style should follow rules defined in .eslintrc
 
-### How to write a story ?
+### How to write a story?
 
 **@TODO Maybe move this into the DSM guideline**
 
