@@ -1,4 +1,4 @@
 export * from './useAttributeGroupsListState';
 export * from './useAttributeGroupLabel';
-export * from './useSortAttributeGroupsIsGranted';
+export * from './useAttributeGroupPermissions';
 export * from './useRedirectToAttributeGroup';

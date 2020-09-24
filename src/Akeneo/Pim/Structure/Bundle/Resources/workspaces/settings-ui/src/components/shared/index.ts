@@ -1,2 +1,3 @@
 export * from './providers';
-export * from './tables';
+export * from './layouts';
+export * from './datagrids';

@@ -1,38 +1,38 @@
 import React, {FC} from 'react';
-import {PimView, useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {Table, TableBody, TableContainer, TableHead, TableHeadCell, TableRow} from '../shared';
-import {useSortAttributeGroupsIsGranted} from '../../hooks';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useAttributeGroupPermissions, useAttributeGroupsListState} from '../../hooks';
 import {AttributeGroupRow} from './AttributeGroupRow';
 import {AttributeGroup} from "../../models";
-import {withDragState} from "../shared/hoc";
+import {DataGrid} from "../shared";
 
 type Props = {
     groups: AttributeGroup[];
 };
 
 const AttributeGroupsList: FC<Props> = ({groups}) => {
-    const sortIsGranted = useSortAttributeGroupsIsGranted();
+    const {refreshOrder, compare} = useAttributeGroupsListState();
+    const {sortGranted, editGranted} = useAttributeGroupPermissions();
     const translate = useTranslate();
 
     return (
-        <TableContainer>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        {sortIsGranted && (<TableHeadCell />)}
-                        <TableHeadCell>{translate('pim_enrich.entity.attribute_group.grid.columns.name')}</TableHeadCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {groups.map((group, index) => (
-                        <AttributeGroupRow key={group.code} group={group} isSortable={sortIsGranted} index={index} />
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <DataGrid
+            isDraggable={sortGranted}
+            dataSource={groups}
+            handleAfterMove={refreshOrder}
+            compareData={compare}
+        >
+            <DataGrid.HeaderRow>
+                <DataGrid.Column>
+                    {translate('pim_enrich.entity.attribute_group.grid.columns.name')}
+                </DataGrid.Column>
+            </DataGrid.HeaderRow>
+            <DataGrid.Body>
+                {groups.map((group, index) => (
+                    <AttributeGroupRow key={group.code} group={group} isEditable={editGranted} index={index} />
+                ))}
+            </DataGrid.Body>
+        </DataGrid>
    );
 };
 
-const DraggableList = withDragState(AttributeGroupsList);
-
-export {DraggableList as AttributeGroupsList};
+export {AttributeGroupsList};

@@ -3,13 +3,13 @@ import {AttributeGroup, AttributeGroupCollection, fromAttributeGroupsCollection}
 import {useRedirectToAttributeGroup} from "./useRedirectToAttributeGroup";
 import {fetchAllAttributeGroups} from "../../infrastructure/fetchers";
 import {saveAttributeGroupsOrder} from "../../infrastructure/savers";
-import {AttributeGroupsListContext, AttributeGroupsListState, MovePosition} from "../../components/shared/providers";
+import {AttributeGroupsListContext, AttributeGroupsListState} from "../../components/providers";
 
 const useAttributeGroupsListState = (): AttributeGroupsListState => {
     const context = useContext(AttributeGroupsListContext);
 
     if (!context) {
-        throw new Error("[Context]: You are trying to use 'useContext' outside Provider");
+        throw new Error("[Context]: You are trying to use 'AttributeGroupsList' context outside Provider");
     }
 
     return context;
@@ -20,13 +20,13 @@ const useInitialAttributeGroupsListState = (): AttributeGroupsListState => {
 
     const redirect = useRedirectToAttributeGroup();
 
-    const refresh = useCallback((collection: AttributeGroupCollection) => {
-        setGroups(fromAttributeGroupsCollection(collection));
+    const refresh = useCallback((list: AttributeGroup[]) => {
+        setGroups(list);
     }, [setGroups]);
 
     const load = useCallback(async () => {
         return fetchAllAttributeGroups().then((collection: AttributeGroupCollection) => {
-            refresh(collection);
+            setGroups(fromAttributeGroupsCollection(collection));
         });
     }, [refresh]);
 
@@ -37,54 +37,33 @@ const useInitialAttributeGroupsListState = (): AttributeGroupsListState => {
             order[attributeGroup.code] = attributeGroup.sort_order;
         });
 
-        console.log('saveOrder', order);
-
         const collection = await saveAttributeGroupsOrder(order);
-        refresh(collection);
+        setGroups(fromAttributeGroupsCollection(collection));
     }, [groups, refresh]);
 
-    const move = useCallback((source: AttributeGroup, target: AttributeGroup, position: MovePosition) => {
-        const newGroups: AttributeGroup[] = [];
-        let order = 0;
-
-        groups.forEach((group) => {
-            if (group.code === source.code) {
-                return;
-            }
-
-            if (position == MovePosition.Up && group.code === target.code) {
-                newGroups.push({
-                    ...source,
-                    sort_order: order
-                });
-                order++;
-            }
-
-            newGroups.push({
-                ...group,
-                sort_order: order
-            });
-
-            order++;
-
-            if (position == MovePosition.Down && group.code === target.code) {
-                newGroups.push({
-                    ...source,
-                    sort_order: order
-                });
-                order++;
+    const refreshOrder = useCallback((list: AttributeGroup[]) => {
+        const reorderedGroups = list.map((item, index) => {
+            return {
+                ...item,
+                sort_order: index,
             }
         });
 
-        setGroups(newGroups);
-    }, [groups, setGroups]);
+        refresh(reorderedGroups);
+    }, [refresh]);
+
+    const compare = (source: AttributeGroup, target: AttributeGroup) => {
+        return source.code.localeCompare(target.code);
+    }
 
     return {
         groups,
         load,
         saveOrder,
-        move,
-        redirect
+        redirect,
+        refresh,
+        refreshOrder,
+        compare,
     };
 };
 

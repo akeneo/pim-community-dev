@@ -19,7 +19,7 @@ const AttributeGroupsIndex: FC = () => {
     const translate = useTranslate();
 
     useEffect(() => {
-        load();
+        (async() => load())();
     }, []);
 
     return (
