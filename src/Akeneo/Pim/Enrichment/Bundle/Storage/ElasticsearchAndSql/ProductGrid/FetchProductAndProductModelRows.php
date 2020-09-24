@@ -90,6 +90,17 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
             }
         }
 
-        return new Rows($sortedRows, $productAndProductModelIdentifiersCursor->count());
+        // @TODO: Temporary, it's for tests
+        $documentTypeAggregation = null;
+        if (method_exists($productAndProductModelIdentifiersCursor, 'getDocumentTypeAggregation')) {
+            $documentTypeAggregation = $productAndProductModelIdentifiersCursor->getDocumentTypeAggregation();
+        }
+
+        return new Rows(
+            $sortedRows,
+            $productAndProductModelIdentifiersCursor->count(),
+            $documentTypeAggregation ? $documentTypeAggregation->getCountForKey(ProductInterface::class) : null,
+            $documentTypeAggregation ? $documentTypeAggregation->getCountForKey(ProductModelInterface::class) : null
+        );
     }
 }

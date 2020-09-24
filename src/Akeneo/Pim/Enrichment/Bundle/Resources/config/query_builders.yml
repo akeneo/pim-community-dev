@@ -799,3 +799,6 @@ services:
 
     pim_enrich.query.product_and_product_model_document_type_facet_query:
         class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Aggregation\ProductAndProductsModelDocumentTypeFacetQuery'
+
+    pim_enrich.query.product_and_product_model_document_type_facet_factory:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Aggregation\ProductAndProductsModelDocumentTypeFacetFactory'

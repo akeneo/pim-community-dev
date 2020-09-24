@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Aggregation\Aggregation;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 
 /**
@@ -20,14 +21,14 @@ class IdentifierResultCursor implements CursorInterface
     /** @var int */
     private $totalCount;
 
-    /**
-     * @param array $identifiers
-     * @param int   $totalCount
-     */
-    public function __construct(array $identifiers, int $totalCount)
+    /** @var Aggregation|null */
+    private $documentTypeAggregation;
+
+    public function __construct(array $identifiers, int $totalCount, Aggregation $documentTypeAggregation = null)
     {
         $this->identifiers = new \ArrayIterator($identifiers);
         $this->totalCount = $totalCount;
+        $this->documentTypeAggregation = $documentTypeAggregation;
     }
 
     /**
@@ -76,5 +77,10 @@ class IdentifierResultCursor implements CursorInterface
     public function valid()
     {
         return $this->identifiers->valid();
+    }
+
+    public function getDocumentTypeAggregation(): ?Aggregation
+    {
+        return $this->documentTypeAggregation;
     }
 }

@@ -16,14 +16,19 @@ final class Rows
     /** @var int */
     private $totalCount;
 
-    /**
-     * @param Row[] $rows
-     * @param int   $totalCount
-     */
-    public function __construct(array $rows, int $totalCount)
+    /** @var int|null */
+    private $productCount;
+
+    /** @var int|null */
+    private $productModelCount;
+
+    /** TODO: $productCount and $productModelCount can be null? */
+    public function __construct(array $rows, int $totalCount, int $productCount = null, int $productModelCount= null)
     {
         $this->rows = $rows;
         $this->totalCount = $totalCount;
+        $this->productCount = $productCount;
+        $this->productModelCount = $productModelCount;
     }
 
     public function rows(): array
@@ -34,5 +39,15 @@ final class Rows
     public function totalCount(): int
     {
         return $this->totalCount;
+    }
+
+    public function productCount(): ?int
+    {
+        return $this->productCount;
+    }
+
+    public function productModelCount(): ?int
+    {
+        return $this->productModelCount;
     }
 }

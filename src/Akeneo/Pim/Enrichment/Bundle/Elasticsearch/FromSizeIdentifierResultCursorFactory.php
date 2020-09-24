@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Aggregation\ProductAndProductsModelDocumentTypeFacetFactory;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Aggregation\ProductAndProductsModelDocumentTypeFacetQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -20,12 +21,15 @@ class FromSizeIdentifierResultCursorFactory implements CursorFactoryInterface
     /** @var Client */
     private $esClient;
 
-    /**
-     * @param Client $esClient
-     */
-    public function __construct(Client $esClient)
-    {
+    /** @var ProductAndProductsModelDocumentTypeFacetFactory */
+    private $productAndProductsModelDocumentTypeFacetFactory;
+
+    public function __construct(
+        Client $esClient,
+        ProductAndProductsModelDocumentTypeFacetFactory $productAndProductsModelDocumentTypeFacetFactory = null
+    ) {
         $this->esClient = $esClient;
+        $this->productAndProductsModelDocumentTypeFacetFactory = $productAndProductsModelDocumentTypeFacetFactory;
     }
 
     /**
@@ -52,22 +56,12 @@ class FromSizeIdentifierResultCursorFactory implements CursorFactoryInterface
             $identifiers[] = new IdentifierResult($hit['_source']['identifier'], $documentType);
         }
 
-        // @todo: this is an example of how we extract counts, not the final implementation ;) Not sure this code should be here
-        $documentTypeAggregation = $response['aggregations'][ProductAndProductsModelDocumentTypeFacetQuery::NAME] ?? null;
-        if (is_array($documentTypeAggregation)) {
-            foreach ($documentTypeAggregation['buckets'] ?? [] as $bucket) {
-                switch ($bucket['key']) {
-                    case ProductInterface::class:
-                        $productCount = $bucket['doc_count'];
-                        break;
-                    case ProductModelInterface::class:
-                        $productModelCount = $bucket['doc_count'];
-                        break;
-                }
-            }
+        $documentTypeAggregation = null;
+        if ($this->productAndProductsModelDocumentTypeFacetFactory) {
+            $documentTypeAggregation = $this->productAndProductsModelDocumentTypeFacetFactory->build($response);
         }
 
-        return new IdentifierResultCursor($identifiers, $totalCount);
+        return new IdentifierResultCursor($identifiers, $totalCount, $documentTypeAggregation);
     }
 
     /**

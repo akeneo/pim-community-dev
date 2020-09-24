@@ -204,6 +204,8 @@ class Client
             'body' => $body,
         ];
 
+        $tmp = json_encode($body);
+
         return $this->client->search($params);
     }
 
