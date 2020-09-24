@@ -15,32 +15,21 @@ const AttributeGroupsList: FC<Props> = ({groups}) => {
     const translate = useTranslate();
 
     return (
-        <>
-            <TableContainer>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            {sortIsGranted && (<TableHeadCell />)}
-                            <TableHeadCell>{translate('pim_enrich.entity.attribute_group.grid.columns.name')}</TableHeadCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {groups.map((group, index) => (
-                            <AttributeGroupRow key={group.code} group={group} isSortable={sortIsGranted} index={index} />
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-
-            {/* @todo remove code after finishing dev */}
-            <hr />
-
-            <PimView
-                className=''
-                viewName='pim-attribute-group-index-list'
-            />
-
-        </>
+        <TableContainer>
+            <Table>
+                <TableHead>
+                    <TableRow>
+                        {sortIsGranted && (<TableHeadCell />)}
+                        <TableHeadCell>{translate('pim_enrich.entity.attribute_group.grid.columns.name')}</TableHeadCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {groups.map((group, index) => (
+                        <AttributeGroupRow key={group.code} group={group} isSortable={sortIsGranted} index={index} />
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
    );
 };
 

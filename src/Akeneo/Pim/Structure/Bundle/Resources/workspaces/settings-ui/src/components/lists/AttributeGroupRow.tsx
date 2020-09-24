@@ -76,14 +76,18 @@ const AttributeGroupRow: FC<Props> = ({group, isSortable, index}) => {
         handleDragEnd(event, () => {});
     }, [handleDragEnd, saveOrder]);
 
+    const isDragged = isSortable && dragItem !== null && dragItem.data.code === group.code;
+
     return (
         <TableRow
             onClick={handleRedirectToGroup}
             ref={rowRef}
+            isDragged={isDragged}
         >
             {isSortable && (
                 <TableCell
-                   draggable={true}
+                   width={40}
+                   isDraggable={true}
                    onDragStart={handleRowDragStart}
                    onDragOver={handleRowDragOver}
                    onDragEnter={handleRowDragEnter}

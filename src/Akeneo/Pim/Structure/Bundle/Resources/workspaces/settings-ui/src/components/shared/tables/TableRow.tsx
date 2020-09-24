@@ -2,7 +2,17 @@ import styled, {css} from 'styled-components';
 
 type Props = {
   isSelected?: boolean;
+  isDragged?: boolean;
 };
+
+const draggedStyle = css`
+    opacity: 0.2;
+`;
+
+const selectionStyle = css`
+  background-color: ${({theme}) => theme.color.blue20};
+`;
+
 const TableRow = styled.tr<Props>`
   cursor: pointer;
   height: 54px;
@@ -12,11 +22,9 @@ const TableRow = styled.tr<Props>`
     background-color: ${({theme}) => theme.color.grey60};
   }
 
-  ${({theme, isSelected}) =>
-    isSelected &&
-    css`
-      background-color: ${theme.color.blue20};
-    `}
+  ${(props) => props.isSelected && selectionStyle}
+  
+  ${(props) => props.isDragged && draggedStyle}
 `;
 
 

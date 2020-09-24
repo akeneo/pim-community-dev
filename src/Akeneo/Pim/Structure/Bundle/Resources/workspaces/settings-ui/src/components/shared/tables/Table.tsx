@@ -4,10 +4,6 @@ const Table = styled.table`
   width: 100%;
   color: ${({theme}) => theme.color.grey140};
   border-collapse: collapse;
-
-  td {
-    width: 25%;
-  }
 `;
 
 const TablePlaceholder = styled.div`
