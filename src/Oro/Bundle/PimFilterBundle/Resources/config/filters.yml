@@ -102,6 +102,14 @@ services:
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_enabled }
 
+    pim_filter.product_typology_filter:
+        class: Oro\Bundle\PimFilterBundle\Filter\Product\ProductTypologyFilter
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_typology }
+
     pim_filter.product_in_group_filter:
         class: '%pim_filter.product_in_group_filter.class%'
         arguments:

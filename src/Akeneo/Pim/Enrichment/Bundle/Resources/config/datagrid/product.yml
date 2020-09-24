@@ -255,6 +255,16 @@ datagrid:
                             multiple: true
                             attr:
                                 empty_choice: true
+                product_typology:
+                    label: 'pim_datagrid.filters.product_typology.label'
+                    data_name: product_typology
+                    type: product_typology
+                    ftype: choice
+                    options:
+                        field_options:
+                            choices:
+                                'pim_datagrid.filters.product_typology.simple': 'simple'
+                                'pim_datagrid.filters.product_typology.variant': 'variant'
                 groups:
                     type:      product_groups
                     label:     Groups
