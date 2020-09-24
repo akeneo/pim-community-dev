@@ -316,3 +316,12 @@ datagrid:
                         field_options:
                             attr:
                                 choice_list: true
+                identifier:
+                    type: product_value_string
+                    ftype: identifier
+                    label: pim_catalog_identifier
+                    data_name: identifier
+                    options:
+                        field_options:
+                            attr:
+                                choice_list: true
