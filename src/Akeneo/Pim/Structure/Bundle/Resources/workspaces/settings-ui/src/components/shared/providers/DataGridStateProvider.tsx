@@ -13,6 +13,8 @@ type MoveDropRowHandler = (event: React.DragEvent, handleDropRow: AfterDropRowHa
 type MoveEndRowHandler = (event: React.DragEvent) => void;
 
 type DataGridState<T> = {
+    draggedData: T|null,
+    draggedIndex: number;
     isDraggable: boolean;
     dataSource: T[];
     isDragged: (data: T) => boolean;
@@ -31,7 +33,11 @@ type Props<T> = {
     compareData: CompareRowDataHandler<T>;
 };
 
+const DEFAULT_DRAGGED_INDEX = -1;
+
 const DataGridStateContext = createContext<DataGridState<any>>({
+    draggedData: null,
+    draggedIndex: DEFAULT_DRAGGED_INDEX,
     isDraggable: false,
     dataSource: [],
     isDragged: () => false,
@@ -64,4 +70,5 @@ export {
     MoveDropRowHandler,
     MoveEndRowHandler,
     CompareRowDataHandler,
+    DEFAULT_DRAGGED_INDEX,
 }

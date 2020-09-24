@@ -16,15 +16,15 @@ const handleDragOver = <T extends {}>(
     activeDropZoneIndex: number,
     activeDropZoneData: T|null,
     dragDownCallback: Function,
-    dragUpCallback: Function
+    dragUpCallback: Function,
+    sameData: (source: T, target: T) => boolean
 ) => {
     event.stopPropagation();
     event.preventDefault();
     event.persist();
 
     const dropTarget = event.target as Element;
-
-    if (draggedData === null || draggedData === activeDropZoneData) {
+    if (draggedData === null || activeDropZoneData === null || sameData(draggedData, activeDropZoneData)) {
         return;
     }
 

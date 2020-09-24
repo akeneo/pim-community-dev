@@ -5,12 +5,11 @@ import {
     CompareRowDataHandler,
     DataGridState,
     DataGridStateContext,
+    DEFAULT_DRAGGED_INDEX,
     MoveDirection
 } from "../../components/shared";
 
 import {handleDragEnd, handleDragOver, handleDragStart, handleDrop,} from '../../events'
-
-const DEFAULT_DRAGGED_INDEX = -1;
 
 const useDataGridState = <T extends {}>(): DataGridState<T> => {
     const context = useContext(DataGridStateContext);
@@ -89,7 +88,7 @@ const useInitialDataGridState = <T extends {}>(
     }, [setDraggedData, setDraggedIndex]);
 
     const moveOver = useCallback((event: React.DragEvent, target: T, index: number) => {
-        handleDragOver(event, draggedIndex, draggedData, index, target, moveDown, moveUp);
+        handleDragOver(event, draggedIndex, draggedData, index, target, moveDown, moveUp, isSameData);
     }, [draggedData, draggedIndex, moveDown, moveUp]);
 
     const moveDrop = useCallback((event: React.DragEvent, handleDropRow: AfterDropRowHandler) => {
@@ -113,6 +112,8 @@ const useInitialDataGridState = <T extends {}>(
     }, [setDraggedData, setDraggedIndex]);
 
     return {
+        draggedData,
+        draggedIndex,
         isDraggable,
         dataSource,
         isDragged,
