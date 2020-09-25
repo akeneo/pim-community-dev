@@ -4,6 +4,7 @@ const PreviewGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, 170px);
   gap: 16px;
+  margin-bottom: 50px;
 `;
 
 const PreviewCard = styled.div`
@@ -32,4 +33,8 @@ const LabelContainer = styled.div`
   text-overflow: ellipsis;
 `;
 
-export {PreviewGrid, PreviewCard, PreviewContainer, LabelContainer};
+const SubTitle = styled.h2`
+  text-transform: Capitalize;
+`;
+
+export {PreviewGrid, PreviewCard, PreviewContainer, LabelContainer, SubTitle};
