@@ -9,7 +9,7 @@ job_execution.summary:
   process: 已处理
   update_products: 已更新产品
   process_products: 已处理产品
-  skip_products: 跳过的产品
+  skip_products: 已跳过产品
   displayed: 已显示第一次警告
   charset_validator:
     title: '文件编码：'
