@@ -232,7 +232,7 @@ config:
           module: pim/controller/attribute-group/create
           aclResourceId: pim_enrich_attributegroup_create
         pim_enrich_attributegroup_index:
-          module: pim/controller/attribute-group/index #pim/controller/common/index
+          module: pim/controller/attribute-group/index
           aclResourceId: pim_enrich_attributegroup_index
           config:
             entity: attribute-group
