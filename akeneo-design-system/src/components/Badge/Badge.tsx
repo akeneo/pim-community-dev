@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Ref} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getColorForLevel, getFontSize, Level} from 'theme';
 
@@ -35,8 +35,14 @@ type BadgeProps = {
 /**
  * Badges are used for items that must be: tagged, categorized, organized by keywords, or to highlight information.
  */
-const Badge = ({level = 'primary', children}: BadgeProps) => {
-  return <BadgeContainer level={level}>{children}</BadgeContainer>;
-};
+const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
+  ({level = 'primary', children, ...rest}: BadgeProps, forwardedRef: Ref<HTMLSpanElement>) => {
+    return (
+      <BadgeContainer level={level} ref={forwardedRef} {...rest}>
+        {children}
+      </BadgeContainer>
+    );
+  }
+);
 
 export {Badge};
