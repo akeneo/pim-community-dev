@@ -1,6 +1,6 @@
 teamwork_assistant:
   project:
-    required: 此值不应为空。
+    required: 该值不应为空。
     label_maxlength: 此值太长了。其不应超过 {{ max }} 个字符。
     project_identifier: 项目 {{ project }} 不存在。
     project_locale: 渠道 {{ channel }} 不支持区域 {{ locale }}。
@@ -15,7 +15,7 @@ teamwork_assistant:
     project_finished:
       contributor: 恭喜！您已 100% 完成 %project_label% 项目的产品。
       owner: '截止日期为 <strong>%due_date%</strong> 的项目 <strong>%project_label%</strong> 已完成。'
-      show: 展示
+      show: 显示
     due_date:
       contributor: 您已完成项目 %project_label% 的 %percent% 的产品。别忘了完成剩余产品，截止日期为 %due_date%。
       owner: '截止日期为 <strong>%due_date%</strong> 的项目 <strong>%project_label%</strong> 还未 100% 完成。'
