@@ -50,3 +50,20 @@ describe('Every module should support forwardRef', () => {
     });
   });
 });
+
+describe('Every module should support ...rest props', () => {
+  const components = getSubfolders(['src/components']);
+
+  components.forEach(component => {
+    it(`Test ${component} support ...rest props.
+        If this test is failing, add ...rest support on props to the "${component}" component`, () => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-var-requires
+      const module = require(`./components/${component}/${component}.tsx`);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      const Component = module[component];
+
+      const {container} = render(<Component data-my-attribute="my_value" />);
+      expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
+    });
+  });
+});
