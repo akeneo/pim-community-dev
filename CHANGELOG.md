@@ -33,6 +33,7 @@
 - PIM-9460: Fix performance issue on export
 - PIM-9461: Fix display of multiselect fields with a lot of selected options
 - PIM-9466: Fix selection counter in datagrid
+- GITHUB-12578: Fix trailing zeros when formatting numbers
 
 ## New features
 
