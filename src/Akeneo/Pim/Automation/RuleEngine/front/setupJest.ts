@@ -1,6 +1,7 @@
 import 'mutationobserver-shim';
 import 'jest-fetch-mock';
 import { GlobalWithFetchMock } from 'jest-fetch-mock';
+import 'core-js';
 
 const customGlobal: GlobalWithFetchMock = (global as unknown) as GlobalWithFetchMock;
 customGlobal.fetch = require('jest-fetch-mock');
