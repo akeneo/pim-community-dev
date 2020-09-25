@@ -51,7 +51,7 @@ class ProductEditDataFilter implements CollectionFilterInterface
         $product = $options['product'];
 
         foreach ($collection as $type => $data) {
-            if ($this->isAllowed($product, $type)) {
+            if (!empty($type) && $this->isAllowed($product, $type)) {
                 $newProductData[$type] = $this->filterData($type, $data);
             }
         }

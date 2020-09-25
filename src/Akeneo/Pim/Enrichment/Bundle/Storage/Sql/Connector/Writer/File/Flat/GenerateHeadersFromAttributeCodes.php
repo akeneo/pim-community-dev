@@ -50,17 +50,20 @@ SQL;
         )->fetchAll(\PDO::FETCH_COLUMN, 0);
 
         $attributesDataSql = <<<SQL
+            WITH attribute_specific_to_locales as (
+                 SELECT attribute_id, JSON_ARRAYAGG(l.code) AS specific_to_locales
+                 FROM pim_catalog_locale l
+                 JOIN pim_catalog_attribute_locale al ON al.locale_id = l.id
+                 GROUP BY al.attribute_id
+            )
+
             SELECT a.code,
                    a.is_scopable,
                    a.is_localizable,
                    a.attribute_type,
-                   (
-                     SELECT JSON_ARRAYAGG(l.code)
-                     FROM pim_catalog_locale l
-                     JOIN pim_catalog_attribute_locale al ON al.locale_id = l.id
-                     WHERE al.attribute_id = a.id
-                   ) AS specific_to_locales
+                   astl.specific_to_locales
             FROM pim_catalog_attribute a
+            LEFT JOIN attribute_specific_to_locales astl ON astl.attribute_id = a.id
             WHERE a.code IN (:attributeCodes)
             GROUP BY a.id;
 SQL;

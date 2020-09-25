@@ -498,7 +498,7 @@ jobs:
                 name: Start containers
                 command: |
                     docker load -i php-pim-image.tar
-                    APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
+                    APP_ENV=test C='mysql elasticsearch object-storage pubsub-emulator' make up
                     docker/wait_docker_up.sh
           - run:
                 name: Load make commands
@@ -506,8 +506,8 @@ jobs:
           - run:
                 name: Add configuration files to run the bundle tests from the PIM
                 command: |
-                    make clear-setup-parameters
-                    make setup-onboarder-parameters
+                    rm -f docker-compose.override.yml
+                    PIM_VERSION=master SETUP_FOR_CI=1 make setup-onboarder-parameters
                     PIM_VERSION=master make setup-onboarder-tests
                     docker-compose run --rm php php /usr/local/bin/composer dumpautoload
           - run:
@@ -524,7 +524,7 @@ jobs:
                 command: make test-spec
           - run:
                 name: Install Akeneo PIM with Onboarder specific configuration (channel, attribute, ...)
-                command: ENVIRONMENT=test make onboarder-install
+                command: ENVIRONMENT=test SETUP_FOR_CI=1 make onboarder-install
           - run:
                 name: Execute acceptance tests
                 command: make test-acceptance
@@ -537,6 +537,12 @@ jobs:
           - run:
                 name: Execute end-to-end tests
                 command: make test-end-to-end
+          - run:
+              name: Restart FPM with Onboarder feature turned off
+              command: make up APP_ENV=behat FLAG_ONBOARDER_ENABLED=0 C='fpm'
+          - run:
+              name: Execute end-to-end "Onboarder feature disabled" tests
+              command: make test-end-to-end-onboarder-disabled
           - store_test_results:
                 path: ~/project/pim/var/tests
           - store_artifacts:

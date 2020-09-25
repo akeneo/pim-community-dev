@@ -175,7 +175,9 @@ define(
                         .removeClass('AknSelectButton--partial');
                 }
 
-                this.$el.find('.count').text(count);
+                this.$el.find('.count').text(
+                    __(this.config.label, {count: count}, count)
+                );
             }
         });
     }

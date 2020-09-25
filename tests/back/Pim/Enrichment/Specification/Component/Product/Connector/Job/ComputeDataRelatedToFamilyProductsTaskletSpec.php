@@ -223,7 +223,7 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(2);
 
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
-        $cacheClearer->clear()->shouldBeCalledTimes(2);
+        $cacheClearer->clear()->shouldBeCalledTimes(3);
 
         $this->setStepExecution($stepExecution);
         $this->execute();

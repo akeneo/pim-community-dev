@@ -405,6 +405,10 @@ pim_datagrid:
     filters:
         label: Filters
         system: System
+        product_typology:
+            label: 'Product typology'
+            simple: 'Simple'
+            variant: 'Variant'
     search: Search on {{ label }}
 
 batch_jobs:
