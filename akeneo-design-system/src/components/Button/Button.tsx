@@ -162,3 +162,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 
 export {Button};
+export type {ButtonSize, Level as ButtonLevel};
