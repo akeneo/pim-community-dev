@@ -1,7 +1,4 @@
 import styled from 'styled-components';
 
-const TableFoot = styled.tfoot`
-
-`;
-
+const TableFoot = styled.tfoot({});
 export {TableFoot};
