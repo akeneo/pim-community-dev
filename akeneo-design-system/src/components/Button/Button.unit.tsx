@@ -1,5 +1,5 @@
 import React from 'react';
-import {fireEvent, render} from 'storybook/test-util';
+import {fireEvent, render} from '../../storybook/test-util';
 import {Button} from './Button';
 
 it('it calls onClick handler when user clicks on button', () => {

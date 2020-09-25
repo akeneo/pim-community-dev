@@ -24,8 +24,8 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "suppressImplicitAnyIndexErrors": true,
+    "removeComments": true,
     "target": "es6",
-    "baseUrl": "./src",
     "types": [
       "puppeteer",
       "jest-environment-puppeteer",

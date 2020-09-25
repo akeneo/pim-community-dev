@@ -1,5 +1,5 @@
 import {Ref, useCallback, useEffect, useRef} from 'react';
-import {Key} from 'shared';
+import {Key} from '../shared';
 
 /**
  * Hook to listen to keydown events on a DOM element (or document) and fire a callback

@@ -1,5 +1,5 @@
 import React from 'react';
-import {fireEvent, render} from 'storybook/test-util';
+import {fireEvent, render} from '../../storybook/test-util';
 import {Checkbox} from './Checkbox';
 
 it('it calls onChange handler when user clicks on checkbox', () => {

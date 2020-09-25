@@ -1,7 +1,7 @@
 import React from 'react';
 import {ThemeProvider} from 'styled-components';
 import {Badge} from './Badge';
-import {pimTheme} from 'theme/pim';
+import {pimTheme} from '../../theme/pim';
 import {render} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
