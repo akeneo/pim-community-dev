@@ -76,7 +76,7 @@ cache:
 vendor:
     # check if composer.json is out of sync with composer.lock
 	$(PHP_RUN) /usr/local/bin/composer validate --no-check-all
-	$(PHP_RUN) -d memory_limit=4G /usr/local/bin/composer install
+	$(PHP_RUN) /usr/local/bin/composer install
 
 .PHONY: check-requirements
 check-requirements:
