@@ -4,6 +4,7 @@ const PreviewGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, 170px);
   gap: 16px;
+  margin-bottom: 50px;
 `;
 
 const PreviewCard = styled.div`
