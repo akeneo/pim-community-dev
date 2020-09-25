@@ -1,6 +1,8 @@
 import {useEffect, useState} from 'react';
 import {useUserContext} from '@akeneo-pim-community/legacy-bridge';
 import {AttributeGroup} from '../../models';
+
+// @ts-ignore
 import {getLabel} from 'pimui/js/i18n';
 
 const useAttributeGroupLabel = (group: AttributeGroup): string => {

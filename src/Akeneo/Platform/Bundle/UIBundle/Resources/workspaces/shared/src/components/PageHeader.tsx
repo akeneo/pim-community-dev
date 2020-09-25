@@ -44,7 +44,7 @@ const PageHeader: FC<PageHeaderProps> = ({
     <div className="AknTitleContainer-line">
       {imageSrc && (
         <div className="AknImage AknImage--readOnly">
-          <img className="AknImage-display" src={imageSrc} />
+          <img className="AknImage-display" src={imageSrc} alt={title as string} />
         </div>
       )}
 
