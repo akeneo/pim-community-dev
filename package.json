@@ -82,7 +82,7 @@
     "html-webpack-inline-source-plugin": "0.0.10",
     "html-webpack-plugin": "3.2.0",
     "imports-loader": "0.8.0",
-    "jest": "^24.3.1",
+    "jest": "^26.4.0",
     "jest-fetch-mock": "^3.0.3",
     "loader-utils": "1.2.3",
     "mutationobserver-shim": "^0.3.5",
