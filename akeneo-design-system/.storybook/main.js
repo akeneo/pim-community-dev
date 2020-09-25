@@ -6,6 +6,10 @@ module.exports = {
     '../src/**/*.stories.mdx',
   ],
   'addons': [
+    {
+      name: '@storybook/addon-docs',
+      options: { transcludeMarkdown: true },
+    },
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     'themeprovider-storybook/register',

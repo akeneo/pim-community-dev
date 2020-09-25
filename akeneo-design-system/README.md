@@ -55,7 +55,8 @@ const App = () => {
       </ThemeProvider>
     </>
   )
-};```
+};
+```
 
 After you can include and render all needed components in your application:
 
