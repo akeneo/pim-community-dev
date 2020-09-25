@@ -12,7 +12,6 @@ Developers don't need to re-implement components on each bounded contexts/projec
 Because components implemented here are used several times they have to be tested unitary and visually.
 
 ## How to see components and guidelines?
-
 This project uses Storybook (https://storybook.js.org/) to display components and guidelines.
 
 **Preview**
@@ -31,7 +30,46 @@ $ yarn install
 $ yarn storybook:start
 ```
 
-Then open http://localhost:6006 on your browser. You don't have to relaunch the command at each time you make a component.
+Then open http://localhost:6006 on your browser.
+You don't have to relaunch the command at each time you create or update a component.
+
+## Using Akeneo Design System component in my project
+
+To add Akeneo Design System to your React application, run:
+```bash
+$ yarn add akeneo-design-system
+```
+
+Once the package installed, you should provide the theme related to your project at the top of your application:
+```tsx
+import React from 'react';
+import {ThemeProvider} from 'styled-components';
+{/* change with your theme path */}
+import {theme} from 'akeneo-design-system/theme/pim'
+
+const App = () => {
+  return (
+    <>
+      <ThemeProvider theme={theme}>
+        {/* All your application*/}
+      </ThemeProvider>
+    </>
+  )
+};```
+
+After you can include and render all needed components in your application:
+
+```tsx
+import { Badge } from 'akeneo-design-system'
+
+const MyHomePage = () => (
+  <div>
+    <Badge level="primary">Hello Word!</Badge>
+  </div>
+)
+```
+
+To know props of each component, visit page dedicated to the component here: https://akeneo.github.io/akeneo-design-system/, on playground section of each component, you can edit all properties and click on "Show code".
 
 ## How to contribute?
 
@@ -111,10 +149,8 @@ Unit tests are in the same directory of the component.
 
 ### Visual tests
 
-Visual test can be launched with the following command:
-```batch
-$ yarn test:visual:run
-```
-
-All components in storybook is automatically tested visually through snapshot comparison.
+All components in storybook are automatically tested visually through snapshot comparison.
 Normally, stories should describe all possible states, adding manually visual test should be an exception.
+
+Visual tests cannot be launched on your local computer, they are only launched by the continuous integration because the rendering is dependent on the platform.
+When you create a new story or you modify the visual of a component, continuous integration will automatically create and assign to you a pull request.
