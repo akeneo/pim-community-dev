@@ -1,7 +1,4 @@
-import {useState} from 'react';
-import styled from 'styled-components';
 import {Canvas, Meta, Story} from '@storybook/addon-docs/blocks';
-import {linkTo} from '@storybook/addon-links';
 import {PreviewGrid, PreviewCard, PreviewContainer, LabelContainer} from 'shared/PreviewGallery'
 import * as Icons from './';
 
@@ -24,13 +21,13 @@ The icons are always stroke and monochromatic and must respect the color contras
 <Canvas>
   <Story name="Standard">
     <PreviewGrid>
-      { Object.keys(Icons).map((iconName) => {
+      {Object.keys(Icons).map((iconName) => {
         return (
           <PreviewCard key={iconName}>
             <PreviewContainer>
               {React.createElement(Icons[iconName], {height: 105, width: 105})}
             </PreviewContainer>
-            <LabelContainer>{iconName}</LabelContainer>
+            <LabelContainer>{iconName.replace('Icon','')}</LabelContainer>
           </PreviewCard>
         )
       })}

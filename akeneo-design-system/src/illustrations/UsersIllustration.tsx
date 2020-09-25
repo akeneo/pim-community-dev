@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Users = ({width = 256, height = 256}: {width: number; height: number}) => (
+const UsersIllustration = ({width = 256, height = 256}: {width: number; height: number}) => (
   <svg width={width} height={height} viewBox="0 0 256 256">
     <defs>
       <path
@@ -138,4 +138,4 @@ const Users = ({width = 256, height = 256}: {width: number; height: number}) => 
   </svg>
 );
 
-export {Users};
+export {UsersIllustration};

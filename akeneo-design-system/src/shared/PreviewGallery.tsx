@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const PreviewGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, 180px);
+  grid-template-columns: repeat(auto-fill, 170px);
   gap: 16px;
 `;
 

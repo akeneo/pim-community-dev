@@ -1,7 +1,5 @@
-import {useContext} from 'react';
-import styled, {ThemeContext} from 'styled-components';
+import styled from 'styled-components';
 import {Canvas, Meta, Story} from '@storybook/addon-docs/blocks';
-import {linkTo} from '@storybook/addon-links';
 import {PreviewGrid, PreviewCard, PreviewContainer, LabelContainer} from 'shared/PreviewGallery'
 import {pimTheme} from './pim/index';
 
@@ -11,25 +9,20 @@ export const ColorContainer = styled(PreviewContainer)`
   background-color: ${props => props.color};
 `;
 
-export const ColorHexContainer = styled.span`
-  text-transform: uppercase;
-`;
-
 # Colors
 
-The colors enhance the experience by providing visual clues and drawing attention to the main actions. The colors indicate which elements are interactive, how they relate to other elements and their degree of visibility. The important elements should stand out the most.
+Colors enhance the experience by providing visual clues and drawing attention to the main actions. Colors indicate which elements are interactive, how they relate to other elements and their degree of visibility. Important elements should stand out the most.
 
 ## Gallery
 <Canvas>
   <Story name="Standard">
     <PreviewGrid>
-      { Object.keys(pimTheme.color).map((colorName) => {
+      {Object.keys(pimTheme.color).map((colorName) => {
         return (
           <PreviewCard key={colorName}>
             <ColorContainer color={pimTheme.color[colorName]} />
             <LabelContainer>
-              {colorName}
-              <ColorHexContainer> ({pimTheme.color[colorName]})</ColorHexContainer>
+              {colorName} ({pimTheme.color[colorName].toUpperCase()})
             </LabelContainer>
           </PreviewCard>
         )
