@@ -15,6 +15,7 @@ import {Button} from './Button.tsx';
   }}
   args={{
     level: 'primary',
+    children: 'Primary'
   }}
 />
 
@@ -43,7 +44,7 @@ Use this playground to test the button component
 <Canvas>
   <Story name="Standard">
     {args => {
-      return <Button {...args}>Primary</Button>;
+      return <Button {...args}/>;
     }}
   </Story>
 </Canvas>

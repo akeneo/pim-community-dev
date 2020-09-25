@@ -21,7 +21,10 @@ Latest version of master is available here: https://akeneo.github.io/akeneo-desi
 
 **Locally**
 
-This project required library ???? @TODO
+To build this project, should have the following installed package :
+- Yarn (https://classic.yarnpkg.com/fr/docs/install)
+
+You should execute the following commands:
 
 ```bash
 $ yarn install
@@ -38,15 +41,15 @@ If you want to contribute please create a pull request in this repository.
 ### What should be in Akeneo Design System?
 
 This repository contains : 
-- Simple or complex (composition) components used several time in multiple projects/bounded contexts
-- Illustrations used several time in multiple projects/bounded contexts
+- Simple and complex (composition) components used several times in multiple projects/bounded contexts
+- Illustrations used several times in multiple projects/bounded contexts
 - Icons used by components in this repository
 - Basic hooks
 - Specific themes of Akeneo products (PIM, Onboarder, Shared Catalogs)
 
 ### What should not be in Akeneo Design System?
 
-- Specific view => each project should keep in charge of create 
+- Specific view => each project should keep in charge of create her own view logic
 - Code relative to infrastructure (translation, routing, validation ...)
 - Logic specific to the domain
 
@@ -65,10 +68,11 @@ This repository contains :
 
 **@TODO Maybe move this into the DSM guideline**
 
-All stories should be in MDX format (https://mdxjs.com/)
-
-All stories components should follow this template : 
-
+- All stories should be in MDX format (https://mdxjs.com/)
+- All properties should editable by the user
+- Story should describe when component should be used
+- Story should display all possible variations
+- Story should follow this template :
 ```
 # Name of the component
 Introduction
@@ -85,6 +89,7 @@ Introduction
 ## Variations
 - Show all possible variations that allow user to have a better overview of the component capabilities
 ```
+
 ## Testing instructions
 
 There is two type of tests, unit and visual tests.
@@ -100,10 +105,15 @@ $ yarn test:unit:run
 $ yarn test:unit:watch
 ```
 
-Unit test should test all component behaviors => coverage of 100% is required for component in this project.
+Unit test should validate all component behaviors => coverage of 100% is required for component in this project.
 Unit tests are in the same directory of the component.
 
 ### Visual tests
 
+Visual test can be launched with the following command :
+```batch
+$ yarn test:visual:run
+```
+
 All components in storybook is automatically tested visually through snapshot comparison.
-Normally, stories should describe all state possible, adding manually visual test must be an exception.
+Normally, stories should describe all possible states, adding manually visual test must be an exception.
