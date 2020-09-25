@@ -392,6 +392,8 @@ pim_datagrid:
   filters:
     label: Filtres
     system: Système
+    product_typology:
+      variant: 'Variante'
   search: Rechercher sur {{ label }}
 batch_jobs:
   add_association:

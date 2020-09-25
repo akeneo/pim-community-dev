@@ -142,7 +142,7 @@ job_execution.summary:
   create: 已创建
   update: 已更新
   update_products: 已更新产品
-  skip_products: 跳过的产品
+  skip_products: 已跳过产品
   displayed: 已显示第一次警告
   charset_validator:
     title: 文件编码：
