@@ -96,12 +96,20 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
         $this->validateSearchFilters($searchFilters);
 
         foreach ($searchFilters as $property => $searchFilter) {
-            foreach ($searchFilter as $criterion) {
-                if ('IN' === $criterion['operator']) {
-                    $parameter = sprintf(':%s', $property);
-                    $qb->where($qb->expr()->in(sprintf('r.%s', $property), $parameter));
-                    $qb->setParameter($parameter, $criterion['value']);
+            foreach ($searchFilter as $key => $criterion) {
+                $parameter = sprintf(':%s_%s', $property, $key);
+                $field = sprintf('r.%s', $property);
+                switch ($criterion['operator']) {
+                    case 'IN':
+                        $qb->andWhere($qb->expr()->in($field, $parameter));
+                        break;
+                    case '>':
+                        $qb->andWhere($qb->expr()->gt($field, $parameter));
+                        break;
+                    default:
+                        throw new \InvalidArgumentException('Invalid operator for search query.');
                 }
+                $qb->setParameter($parameter, $criterion['value']);
             }
         }
 
@@ -113,7 +121,7 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
         if (empty($searchFilters)) {
             return;
         }
-        $availableSearchFilters = ['code'];
+        $availableSearchFilters = ['code', 'updated'];
         $validator = Validation::createValidator();
         $constraints = [
             'code' => new Assert\All([
@@ -132,8 +140,35 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
                         ])
                     ],
                 ])
-            ])
+            ]),
+            'type' => new Assert\All(
+                new Assert\Collection([
+                    'operator' => new Assert\IdenticalTo([
+                        'value' => 'IN',
+                        'message' => 'In order to search on attribute types you must use "IN" operator, {{ compared_value }} given.',
+                    ]),
+                    'value' => [
+                        new Assert\Type([
+                            'type' => 'array',
+                            'message' => 'In order to search on attribute types you must send an array of attribute types as value, {{ type }} given.'
+                        ]),
+                        new Assert\All([
+                            new Assert\Type('string')
+                        ])
+                    ],
+                ])
+            ),
+            'updated' => new Assert\All([
+                new Assert\Collection([
+                    'operator' => new Assert\IdenticalTo([
+                        'value' => '>',
+                        'message' => 'Searching on the "updated" property require the ">" (greater than) operator, {{ compared_value }} given.',
+                    ]),
+                    'value' => new Assert\DateTime(['format' => \DateTime::ATOM]),
+                ])
+            ]),
         ];
+        $availableSearchFilters = array_keys($constraints);
 
         $exceptionMessage = '';
         foreach ($searchFilters as $property => $searchFilter) {

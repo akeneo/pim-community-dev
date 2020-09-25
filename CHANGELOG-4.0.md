@@ -3,12 +3,13 @@
 ## Technical Improvements
 
 - API-1201: [Backport] Be able to get attributes searching by codes 
+- PIM-9469: [Backport] API-1232: Be able to get list of attribute from updated date from the API
 
 # 4.0.59 (2020-09-23)
 
 ## Technical Improvements
 
-- PIM-9055: Allow not to drop an existing database during the install proces
+- PIM-9055: Allow not to drop an existing database during the install process
 
 # 4.0.58 (2020-09-22)
 
@@ -188,7 +189,7 @@
 
 ## Bug fixes
 
-- PIM-9055: Allow not to drop an existing database during the install process
+- PIM-9260: do not use FPM memory_limit for CommandLauncher
 
 # 4.0.28 (2020-05-20)
 
