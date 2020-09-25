@@ -3,7 +3,7 @@
 ## Technical Improvements
 
 - API-1201: [Backport] Be able to get attributes searching by codes 
-- PIM-9469: [Backport] API-1237: Add filter on attribute types
+- PIM-9469: [Backport] API-1232: Be able to get list of attribute from updated date from the API
 
 # 4.0.59 (2020-09-23)
 
