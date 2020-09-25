@@ -7,6 +7,10 @@ type Props = {
 const filterableMixin = css`
   position: sticky;
   top: 44px;
+  
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const notFilterableMixin = css`
@@ -29,10 +33,4 @@ const TableHeadCell = styled.th<Props>`
   }
 `;
 
-const TableSortableHeadCell = styled(TableHeadCell)`
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-export {TableHeadCell, TableSortableHeadCell};
+export {TableHeadCell};

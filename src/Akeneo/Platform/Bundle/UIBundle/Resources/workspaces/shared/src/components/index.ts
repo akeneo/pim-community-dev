@@ -9,3 +9,4 @@ export * from './PageHeader';
 export * from './PageContent';
 export * from './breadcrumb/Breadcrumb';
 export * from './breadcrumb/BreadcrumbItem';
+export * from './LoadingPlaceholder';

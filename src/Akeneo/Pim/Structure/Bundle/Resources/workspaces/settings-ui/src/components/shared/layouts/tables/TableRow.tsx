@@ -27,5 +27,4 @@ const TableRow = styled.tr<Props>`
   ${(props) => props.isDragged && draggedStyle}
 `;
 
-
 export {TableRow};

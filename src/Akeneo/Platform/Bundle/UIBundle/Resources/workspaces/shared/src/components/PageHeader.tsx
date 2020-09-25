@@ -1,5 +1,11 @@
-import React, {Fragment, FC, ReactElement, ReactNode} from 'react';
+import React, {FC, Fragment, ReactElement, ReactNode} from 'react';
 import styled from 'styled-components';
+import {LoadingPlaceholderContainer} from "./LoadingPlaceholder";
+
+const PageHeaderPlaceholder = styled.div`
+  width: 200px;
+  height: 34px;
+`;
 
 const Header = styled.header`
   position: sticky;
@@ -22,6 +28,7 @@ type PageHeaderProps = {
   userButtons?: ReactNode;
   state?: ReactNode;
   imageSrc?: string;
+  showPlaceholder?: boolean;
 };
 
 const PageHeader: FC<PageHeaderProps> = ({
@@ -31,6 +38,7 @@ const PageHeader: FC<PageHeaderProps> = ({
   userButtons,
   state,
   imageSrc,
+  showPlaceholder
 }) => (
   <Header>
     <div className="AknTitleContainer-line">
@@ -56,7 +64,15 @@ const PageHeader: FC<PageHeaderProps> = ({
             </div>
           </div>
           <div className="AknTitleContainer-line">
-            <div className="AknTitleContainer-title">{title}</div>
+            <div className="AknTitleContainer-title">
+              {showPlaceholder ? (
+                  <LoadingPlaceholderContainer>
+                    <PageHeaderPlaceholder />
+                  </LoadingPlaceholderContainer>
+              ) : (
+                  <>{title}</>
+              )}
+            </div>
             <div className="AknTitleContainer-state">{state}</div>
           </div>
         </div>
@@ -65,4 +81,4 @@ const PageHeader: FC<PageHeaderProps> = ({
   </Header>
 );
 
-export {PageHeader};
+export {PageHeader, PageHeaderPlaceholder};
