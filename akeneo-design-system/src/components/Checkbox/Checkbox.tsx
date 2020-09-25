@@ -171,4 +171,3 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
 );
 
 export {Checkbox};
-export type {CheckboxChecked};

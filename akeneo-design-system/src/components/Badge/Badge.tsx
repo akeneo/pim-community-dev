@@ -46,4 +46,3 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
 );
 
 export {Badge};
-export type {Level as BadgeLevel};
