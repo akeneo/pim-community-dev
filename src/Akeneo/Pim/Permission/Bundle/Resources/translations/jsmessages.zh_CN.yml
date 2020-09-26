@@ -22,7 +22,7 @@ pimee_enrich.entity.attribute_group:
   module:
     permissions:
       added: 分组 {{ group }} 将被允许{{ permission }}属性组
-      view: 被允许查看属性
+      view: 允许查看属性
       edit: 允许编辑属性
       removed: 分组 {{ group }} 将不被允许{{ permission }}属性组
 pimee_enrich.entity.job_instance:

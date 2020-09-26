@@ -48,10 +48,10 @@ pim_enrich:
     product:
       not_editable: 您没有权限编辑产品"%identifiers%"。
       page_title: 产品
-      page_subtitle: 批量编辑（1 个产品） |批量编辑（%count% 个产品）
+      page_subtitle: 批量编辑（1 个产品） | 批量编辑（%count% 个产品）
       title: 选择操作
       subtitle: 请选择想对所选产品执行的操作 |请选择想对所选 %count% 个产品执行的操作
-      confirm: 您将要更新产品的以下信息，请确认。 |您将要更新 %count% 个产品的以下信息，请确认。
+      confirm: 您将要更新产品的以下信息，请确认。|您将要更新 %count% 个产品的以下信息，请确认。
       steps:
         first: 选择产品
         second: 选择操作

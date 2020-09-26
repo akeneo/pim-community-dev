@@ -33,8 +33,8 @@ akeneo_franklin_insights:
         catalog_attribute: 目录属性
         franklin_insights: Franklin 标识符状态
         status:
-          active: 活跃
-          inactive: 非活跃
+          active: 激活
+          inactive: 未激活
       constraint:
         duplicate_attribute_code: "允许每个目录属性有一个映射"
         missing_or_invalid_identifiers: "一些标识符映射密钥丢失或无效。应为：\"{{ expected }}\"，实际是 \"{{ given }}\"。"
@@ -47,7 +47,7 @@ akeneo_franklin_insights:
       label: 属性映射
       flash:
         do_not_map_attribute_success: '属性已成功更新。'
-        create_attribute_success: '{0} 抱歉，{{ requestCount }} 个属性中，没有一个被创建。|{1} 属性已成功创建并附加到品类 "{{ family }}"。|[2,Inf[  {{ requestCount }} 个属性中的 {{ successCount }} 个已成功创建并附加到品类 "{{ family }}”。'
+        create_attribute_success: '{0} 抱歉，{{ requestCount }} 个属性中，没有一个被创建。|{1} 属性已成功创建并附加到品类 "{{ family }}"。|[2,Inf[  {{ requestCount }} 个属性中的 {{ successCount }} 个已成功创建并附加到品类 "{{ family }}"。'
         create_attribute_error: '抱歉，创建或附加属性到品类时出错。'
         suggest_attribute_mapping_error: '目录属性"[{{ catalogAttributeCode }}]"已经映射到 Franklin 属性"{{ franklinAttributeLabel }}"。'
         add_attribute_to_family_success: '{1} 属性已成功附加到品类“{{ family }}”。 | [2,Inf[ 属性已成功附加到品类"{{ family }}"。'
@@ -60,8 +60,8 @@ akeneo_franklin_insights:
         franklin_insights:
           label: Franklin 属性状态
           pending: 待定
-          active: 活跃
-          inactive: 非活跃
+          active: 激活
+          inactive: 未激活
         create_attribute:
           btn: 创建属性
         add_attribute_to_family:
@@ -129,7 +129,7 @@ akeneo_franklin_insights:
           fail: '无法从 Franklin 取消订阅产品'
       constraint:
         family_required: '抱歉，需要产品品类才能将产品订阅到 Franklin Insights。'
-        no_identifiers_mapping: '请在订阅产品之前，在“设置 > Franklin Insights”中映射您的目录产品标识符。'
+        no_identifiers_mapping: '订阅产品之前，请在“设置 > Franklin Insights”中映射您的目录产品标识符。'
         insufficient_credits: "抱歉，订阅产品到 Franklin Insights 失败。您没有足够的积分。"
         invalid_mapped_values: '抱歉，订阅产品到 Franklin Insights 失败。请使用有效的标识符组合订阅产品。'
         data_provider_error: 'Franklin 在尝试订阅产品时返回错误' #TODO: check with POs
@@ -155,7 +155,7 @@ akeneo_franklin_insights:
         edit:
           title: '{{ familyLabel }} - {{ franklinAttributeLabel }} 属性选项'
           sub_title: '来认识 Franklin，您的<span class="AknDescriptionHeader-title--highlight">产品信息 AI 助理</span>！'
-          description: '为了帮助丰富您的目录，Franklin 需要知道相匹配的目录属性选项。<a href="https://help.akeneo.com/pim/articles/franklin-insights-mappings.html#attributes-and-options-mapping" target="_blank" class="AknDescriptionHeader-link">了解更多</a>'
+          description: '为了帮助丰富您的目录，Franklin 需要知道相匹配的目录属性选项。<a href="https://help.akeneo.com/pim/articles/franklin-insights-mappings.html#attributes-and-options-mapping" target="_blank" class="AknDescriptionHeader-link">阅读更多</a>'
   product:
     edit:
       btn.push: 建议数据
