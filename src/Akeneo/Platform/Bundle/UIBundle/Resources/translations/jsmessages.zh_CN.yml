@@ -1,5 +1,5 @@
 #ORO messages
-"Yes, I Agree": "是的，我同意"
+"Yes, I Agree": "是，我同意"
 "Yes, do it": "是，继续"
 "Ok, got it.": "好的，知道了"
 "Edit": "编辑"
@@ -103,9 +103,9 @@ oro_config:
           system_locale: 语言
         notification:
           title: 通知
-          system_notification: 新版本提醒
+          system_notification: 新版本通知
         loading_message:
-          title: 正在加载消息
+          title: 加载消息
           label: 启用加载消息
         loading_messages:
           label: 可用的加载消息
@@ -152,11 +152,11 @@ pim_common:
   and: 以及
   apply: 应用
   before: 之前
-  by: 截至
+  by: 由
   cancel: 取消
   code: 代码
   confirm: 确认
-  confirm_deletion: 确定删除
+  confirm_deletion: 确认删除
   confirm_revocation: 确认撤销
   create: 创建
   created: 已创建
@@ -170,27 +170,26 @@ pim_common:
   label: 标签
   label_translations: 标签翻译
   Label or identifier: 标签或标识符
-  less_than: 少于
-  loading: 正在加载...
+  less_than: 小于
+  loading: 加载...
   media_upload: 拖放即可上传或点击这里
   more_than: 多于
-  next: 下一页
+  next: 下一步
   "no": "否　"
   none: 无
   not_available: N/A
   now: 现在
   ok: 确定
   permissions: 权限
-  previous: 上一页
+  previous: 上一步
   properties: 属性
   remove: 移除
-  required_label: '（必填）'
   save: 保存
   search: 搜索
   select2:
-    search: 搜索中...
+    search: 搜索...
     no_match: 未找到匹配项
-    load_more: 正在加载更多的结果...
+    load_more: 加载更多结果...
   status: 状态
   to: 到
   type: 类型
@@ -205,7 +204,7 @@ pim_common:
     "<=": 小于或等于
     "<": 小于
     EMPTY: 为空
-    NOT EMPTY: 不是空的
+    NOT EMPTY: 不为空
     CONTAINS: 包含
     DOES NOT CONTAIN: 不包含
     STARTS WITH: 开始于
@@ -236,7 +235,7 @@ pim_enrich.entity.fallback:
       item_placeholder: 确定要删除此 {{ itemName }}？此操作不能撤消
     edit:
       leave: 确定要离开此页面？
-      discard_changes: 如果离开此页面，将会丢失对  {{ entity }} 的更改。
+      discard_changes: 如果离开此页面，将会丢失对 {{ entity }} 的更改。
       discard_changes_title: 是否确定?
 pim_enrich.entity.api_connection:
   flash:
@@ -274,15 +273,15 @@ pim_title:
   pim_enrich_categorytree_create_tree: 类别树|创建
   pim_enrich_attribute_index: 属性
   pim_enrich_attribute_create: 属性|创建
-  pim_enrich_attribute_edit: 属性 {{ attribute.label }} |编辑
+  pim_enrich_attribute_edit: 属性 {{ attribute.label }} | 编辑
   pim_enrich_product_index: 产品
-  pim_enrich_product_edit: 产品 {{ product.label }} |编辑
+  pim_enrich_product_edit: 产品 {{ product.label }} | 编辑
   pim_enrich_product_model_edit: 产品模型 {{ product.label }} | 编辑
   pim_enrich_family_index: 品类
-  pim_enrich_family_edit: 品类 {{ family.label }} |编辑
+  pim_enrich_family_edit: 品类 {{ family.label }} | 编辑
   pim_enrich_channel_index: 渠道
   pim_enrich_channel_create: 渠道|创建
-  pim_enrich_channel_edit: 渠道 {{ channel.label }} |编辑
+  pim_enrich_channel_edit: 渠道 {{ channel.label }} | 编辑
   pim_enrich_currency_index: 货币
   pim_enrich_locale_index: 区域设置
   pim_enrich_group_index: 分组

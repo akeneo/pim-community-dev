@@ -39,13 +39,13 @@ pim_import_export:
       job_content.title: 内容
 #Page titles:
 pim_title.export_profile.index: 导出配置文件管理
-pim_title.export_profile.edit: 导出配置文件 %job.label% |编辑
-pim_title.export_profile.show: 导出配置文件 %job.label% |显示
+pim_title.export_profile.edit: 导出配置文件 %job.label% | 编辑
+pim_title.export_profile.show: 导出配置文件 %job.label% | 显示
 pim_title.export_execution.index: 导出执行历史记录
 pim_title.export_execution.show: 导出执行|详细信息
 pim_title.import_profile.index: 导入配置文件管理
-pim_title.import_profile.edit: 导入配置文件 %job.label% |编辑
-pim_title.import_profile.show: 导入配置文件 %job.label% |显示
+pim_title.import_profile.edit: 导入配置文件 %job.label% | 编辑 
+pim_title.import_profile.show: 导入配置文件 %job.label% | 显示 
 pim_title.import_execution.index: 导入执行历史记录
 pim_title.import_execution.show: 导入执行|详细信息
 #Entity and page header titles
@@ -136,13 +136,13 @@ Download log: 下载日志
 Show profile: 显示配置文件
 execution details: 执行详细信息
 job_execution.summary:
-  read: 读取
+  read: 已读取
   write: 已写入
   skip: 已跳过
   create: 已创建
   update: 已更新
   update_products: 已更新产品
-  skip_products: 跳过的产品
+  skip_products: 已跳过产品
   displayed: 已显示第一次警告
   charset_validator:
     title: 文件编码：
@@ -150,7 +150,7 @@ job_execution.summary:
 Step: 步骤
 Status: 状态
 Warnings: 警告
-Summary: 概要
+Summary: 摘要
 Start: 开始
 End: 结束
 #Process tracker

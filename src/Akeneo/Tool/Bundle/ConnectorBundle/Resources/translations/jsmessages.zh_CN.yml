@@ -2,7 +2,7 @@
 batch_jobs:
   default_steps:
     validation: 文件验证
-    import_associations: 关联导入
+    import_associations: 导入关联
     import_root_product_model: 导入根产品模型
     import_sub_product_model: 导入子产品模型
     compute_data_related_to_family_root_product_models: 计算根产品模型数据
