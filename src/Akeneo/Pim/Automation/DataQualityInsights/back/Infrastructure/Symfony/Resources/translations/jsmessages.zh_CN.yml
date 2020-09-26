@@ -17,7 +17,7 @@ akeneo_data_quality_insights:
     legend:
       excellent: 优秀
       good: 良好
-      average: 普通
+      average: 平均
       below_average: 低于平均水平
       to_improve: 要改善
     category_modal_filter:
@@ -75,7 +75,7 @@ akeneo_data_quality_insights:
       all_improvable_attributes: 所有可改进的属性
     spellcheck_popover:
       title: 更正
-      original_text_title: 原始
+      original_text_title: 原始值
       suggestions_title: 提案
       ignore_all_suggestions_button_label: 忽略
     title_suggestion_popover:
