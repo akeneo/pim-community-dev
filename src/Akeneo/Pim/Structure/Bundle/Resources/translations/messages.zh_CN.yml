@@ -17,7 +17,7 @@ pim_enrich:
   mass_edit_action:
     family:
       page_title: 品类
-      page_subtitle: 批量编辑（1 个品类）|批量编辑（%count% 个品类）
+      page_subtitle: 批量编辑（1 个品类）| 批量编辑（%count% 个品类）
       title: 选择操作
       subtitle: 请选择想要对所选品类执行的操作 |请选择想要对所选的 %count% 个品类执行的操作
       confirm: 将要更新品类的以下信息，请确认。|将要更新 %count% 个品类的以下信息，请确认。
@@ -29,11 +29,11 @@ pim_enrich:
 pim_enrich_attribute_form:
   code: 代码
   type: 属性类型
-  reference_data_name: 引用数据名称
+  reference_data_name: 参考数据名称
   scopable: 每个渠道的值
   localizable: 每项区域设置的值
   unique: 唯一值
   availableLocales: 可用区域
-  locale_specific: 特定的区域
+  locale_specific: 区域特定
   group: 属性组
-  useableAsGridFilter: 可用在网格中
+  useableAsGridFilter: 在网格中可用

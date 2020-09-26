@@ -6,8 +6,8 @@ pim_enrich.entity.family:
     update:
       success: 品类已成功更新。
       fail: 品类更新时出错。
-      cant_remove_attribute_as_label: 不能删除用作标签的属性
-      cant_remove_attribute_as_image: 不能删除用作主图片的属性
+      cant_remove_attribute_as_label: 不能移除用作标签的属性
+      cant_remove_attribute_as_image: 不能移除用作主图片的属性
       cant_remove_attribute_used_as_axis: 无法移除此属性，其被用作品类变型中的变量轴
       fields_not_ready: "该品类目前无法保存。以下字段未准备好： {{ fields }}"
     create:
@@ -16,7 +16,7 @@ pim_enrich.entity.family:
       success: 品类已成功移除
       fail: 不能删除此品类
   property:
-    attribute_as_label: 属性作为标签
+    attribute_as_label: 用作标签的属性
     attribute_as_image: 用作主要图片的属性
     empty_attribute_as_image: 未选择
   page_title:
@@ -57,7 +57,7 @@ pim_enrich.entity.family_variant:
     create:
       label: 添加变型
       title: 新建品类变型
-      description: 在品类变型中，您可以定义变型产品的结构。选择管理的变量级别数，每个级别作为变量轴使用的属性，然后定义属性如何分配。
+      description: 在品类变型中，您可以定义带有变型的产品结构。 选择管理的变量级别数，每个级别作为变量轴使用的属性，然后定义属性如何分配。
       variant_levels: 变量级别
       axis_level: "变量轴级别 {{ level }}"
     update_translations:
@@ -89,7 +89,7 @@ pim_enrich.entity.association_type:
       success: 关联类型已成功创建
     delete:
       success: 关联类型已成功移除
-      fail: 不能删除此关联类型
+      fail: 无法删除此关联类型
   page_title:
     index: "]-Inf, 1]{{ count }} 个关联类型|]1, Inf[{{ count }} 个关联类型"
   module:
@@ -143,7 +143,7 @@ pim_enrich.entity.attribute:
       label: 属性组
       choose: 选择属性组
     is_locale_specific: 区域特定
-    localizable: 每个区域的值
+    localizable: 每项区域设置的值
     max_characters: 最大字符数
     max_file_size: 最大文件大小 (MB)
     metric_family:
@@ -152,8 +152,8 @@ pim_enrich.entity.attribute:
     minimum_input_length: 自动完成的最小长度
     name: 名称
     negative_allowed: 允许负值
-    number_max: 最大值
-    number_min: 最小值
+    number_max: 最大数
+    number_min: 最小数
     reference_data_name:
       label: 参考数据类型
       choose: 选择参考数据类型
@@ -163,7 +163,7 @@ pim_enrich.entity.attribute:
       pim_catalog_identifier: 标识符
       pim_catalog_text: 文本
       pim_catalog_textarea: 文本区域
-      pim_catalog_number: 数量
+      pim_catalog_number: 数字
       pim_catalog_price_collection: 价格
       pim_catalog_multiselect: 多选
       pim_catalog_simpleselect: 单选
@@ -175,7 +175,7 @@ pim_enrich.entity.attribute:
       pim_reference_data_simpleselect: 参考数据单选
       pim_reference_data_multiselect: 参考数据多选
     unique: 唯一值
-    useable_as_grid_filter: 可用在网格中
+    useable_as_grid_filter: 在网格中可用
     validation_regexp: 正则表达式
     validation_rule:
       label: 验证规则
@@ -185,7 +185,7 @@ pim_enrich.entity.attribute:
     wysiwyg_enabled: 富文本编辑器已启用
   module:
     add_attribute:
-      no_available_attributes: 没有需要添加的属性
+      no_available_attributes: 没有需要再添加的属性
       attributes_selected: "已选定 {{ itemsCount }} 项属性"
     create:
       button: 创建属性

@@ -16,7 +16,7 @@ pim_measure:
     Volume: 体积
     Weight: 重量
     Pressure: 压力
-    Energy: 能源
+    Energy: 能量
     CaseBox: 包装
   units:
     #Area
@@ -117,8 +117,8 @@ pim_measure:
     HOUR: 小时
     DAY: 天
     WEEK: 星期
-    MONTH: 月份
-    YEAR: 年份
+    MONTH: 月
+    YEAR: 年
     #Speed
     FOOT_PER_SECOND: 英尺/秒
     FOOT_PER_HOUR: 英尺/小时
@@ -168,7 +168,7 @@ pim_measure:
     MILLIBAR: 毫巴
     ATM: 大气压
     PSI: 磅 / 平方英寸
-    TORR: 托尔
+    TORR: 托
     MMHG: 毫米汞柱
     #Energy
     CALORIE: 卡路里
@@ -177,4 +177,3 @@ pim_measure:
     KILOJOULE: 千焦
     #CaseBox
     PIECE: 个
-    DOZEN: 一打

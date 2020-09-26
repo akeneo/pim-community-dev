@@ -24,7 +24,7 @@ pim_enrich.entity.product:
       already_in_upload: 在区域"{{ locale }}"和范围"{{ scope }}"中，已有针对此属性的文件在上传
       file_upload: 上传文件时发生错误
     delete:
-      success: 产品被成功删除。
+      success: 产品已成功删除。
       fail: 产品无法删除。
     create:
       success: 产品已成功创建
@@ -47,7 +47,7 @@ pim_enrich.entity.product:
     copy:
       label: 比较/翻译
       select: 选择
-      all_visible: 所有可见的
+      all_visible: 所有可见
       copy: 复制
     history:
       version: 版本
@@ -102,7 +102,7 @@ pim_enrich.entity.product:
       title: 更改产品品类
       merge_attributes: 当前属性将与新品类中的属性合并
       keep_attributes: 没有属性要移除。
-      change_family_to: 更改产品品类为
+      change_family_to: 更改品类为
       empty_selection: 选择品类
     basket:
       title: 购物车
@@ -117,7 +117,7 @@ pim_enrich.entity.product:
       header_comment: '{{ user }} 评论了产品'
       header_reply: '{{ user }} 回复了评论'
       delete_confirm: 确定要删除此评论吗？
-      removed_author: 已删除用户
+      removed_author: 已移除用户
     asset:
       title: 资产
 pim_enrich.entity.product_model:
@@ -135,7 +135,7 @@ pim_enrich.entity.product_model:
       fields_not_ready: "该产品模型目前无法保存。以下字段未准备好：{{ fields }}"
     delete:
       success: 产品模型已成功删除。
-      fail: 不能删除此产品模型
+      fail: 无法删除此产品模型
   choose: 选择产品模型
   property:
     family_variant: 变型
@@ -172,7 +172,7 @@ pim_enrich.entity.group:
     index: "]-Inf, 1]{{ count }} 个组|]1, Inf[{{ count }} 个组"
   module:
     create:
-      button: 创建分组
+      button: 创建组
     delete:
       confirm: 确定要删除此组吗？
 pim_enrich.entity.role:
@@ -235,7 +235,7 @@ pim_enrich.export.product:
       title: 完成度
       help: 按完成度选择要导出的产品。
       operators:
-        ALL: 在完成度上没有条件
+        ALL: 没有关于完成度的条件
         ">=": 至少在一个选定的区域完成
         "GREATER OR EQUALS THAN ON ALL LOCALES": 在所有选定的区域完成
         "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": 至少在一个选定的区域完成
@@ -300,9 +300,9 @@ pim_enrich.mass_edit.product:
       label_count: "{1}更改 <span class=\"AknFullPage-title--highlight\">1 个产品</span>的品类|]1, Inf[更改 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个产品</span>的品类"
       description: 选定产品的品类将更改为被选定的品类
     add_to_group:
-      label: 添加到分组
+      label: 添加到组
       label_count: "{1}添加 <span class=\"AknFullPage-title--highlight\">1 个产品</span>到组|]1, Inf[添加 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个产品</span>到组"
-      description: 选择一个组，将所选定的产品加入其中
+      description: 选择要将选定的产品加入其中的组
       field: 分组
       no_update: 请先选择一个组以继续
     add_to_category:
@@ -317,9 +317,9 @@ pim_enrich.mass_edit.product:
       label: 从类别中移除
       label_count: "{1}从类别中移除 <span class=\"AknFullPage-title--highlight\">1 个产品</span>|]1, Inf[从类别中移除 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个产品</span>"
       description: 产品将从以下类别中移除。
-      no_update: 没有选中的类别来从中删除选定的产品。
+      no_update: 没有选中的类别来从中移除选定的产品。
     add_to_existing_product_model:
-      label: 添加到现有产品模型
+      label: 添加到现有的产品模型
       label_count: "{1}添加 <span class=\"AknFullPage-title--highlight\">1 个产品</span>|到现有的产品模型|]1, Inf[添加 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个产品</span>到现有的产品模型"
       description: 选定的产品模型将收集这些产品，并使其通用属性更加丰富。
       no_update: 请先选择一个产品模型以继续
@@ -346,9 +346,9 @@ pim_datagrid:
       success: 选定的产品已成功删除。
       error: 尝试删除选定的产品时发生错误，请重试。
     quick_export:
-      csv_all: CSV （所有属性）
+      csv_all: CSV（所有属性）
       csv_grid_context: CSV（网格上下文）
-      xlsx_all: Excel （所有属性）
+      xlsx_all: Excel（所有属性）
       xlsx_grid_context: Excel（网格上下文）
     mass_edit: 批量操作
     sequential_edit: 顺序编辑
@@ -364,7 +364,7 @@ pim_datagrid:
     delete_product: 删除产品
     change_status: 更改状态
     toggle_status: 切换状态
-    other: 其它操作
+    other: 其他操作
   empty_results:
     associated_product:
       hint: 没有关联产品
@@ -386,8 +386,8 @@ batch_jobs:
     label: 添加到类别
     perform.label: 添加到类别
   add_to_existing_product_model:
-    label: 添加到现有产品模型
-    perform.label: 添加到现有产品模型
+    label: 添加到现有的产品模型
+    perform.label: 添加到现有的产品模型
   csv_product_grid_context_quick_export:
     quick_export.label: Csv 产品网格上下文快速导出
     quick_export_product_model.label: CSV 产品模型网格上下文快速导出
@@ -409,7 +409,7 @@ batch_jobs:
     cleaner.label: 清除属性文件
   compute_completeness_of_products_family:
     label: 计算完成度
-    perform.label: 计算完整性
+    perform.label: 计算完成度
   move_to_category:
     label: 移动到类别
     perform.label: 移动到类别
