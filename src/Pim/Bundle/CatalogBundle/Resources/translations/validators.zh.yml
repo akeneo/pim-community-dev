@@ -5,13 +5,13 @@ This attribute type can't be used as a grid filter: 此属性类型不能用作�
 This code is not available: 此代码不可用
 This attribute type must be required: 此属性类型为必填项
 This attribute type can't be required: 此属性类型非必填项
-This attribute type can't have unique value: 此属性类型不需要有唯一的值
-No default value may be specified for this attribute type: 对该属性类型可能没有指定默认的值
+This attribute type can't have unique value: 此属性类型的值非唯一
+No default value may be specified for this attribute type: 此属性类型没有指定的默认值
 This value should be Yes or No: 此值应为 Yes 或 No
 This value should not be blank: 该值不应为空
 Option code may contain only letters, numbers and underscores: 选项代码仅可包含字母、数字和下划线
 Option code may contain only letters (at least one), numbers and underscores: 选项代码仅可包含字母（至少 1 个）、数字和下划线
-This value should not be a decimal.: 该值不应为小数
+This value should not be a decimal.: 该值不应为小数。
 'The file extension is not allowed (allowed extensions: %extensions%).': '不允许的文件扩展名 (允许的扩展名︰ %extensions%)。'
 "The value %value% is already set on another product for the unique attribute %attribute%": 值 %value% 已经设置为另一个产品的唯一属性 %attribute%
 The same identifier is already set on another product: 已在另一产品上设置了同一标识符
@@ -33,12 +33,12 @@ pim_catalog:
     can_have_family_variant_unexpected_attribute: '无法为此实体设置属性"%attribute%"，因为其不属于属性集'
     cannot_have_product_model_as_parent: '产品模型"%product_model%"不能将产品模型"%parent_product_model%"作为父模型'
     cannot_have_parent: '产品模型“%product_model%”不能有父模型'
-    attribute_does_not_belong_to_family: '属性"%attribute%"不属于品类"%family%'
+    attribute_does_not_belong_to_family: '属性"%attribute%"不属于品类"%family%"'
     variant_product_invalid_family: '变型产品品类必须与其父类相同'
     php_int_max_reached: '最大数值必须小于 %php_int_max%。'
     not_null_family: 品类不能为“空 (null)”，因为具有标识符"%sku%"的产品是变型产品。
     variant_product_has_parent: '变型产品"%variant_product%"必须有父产品'
-    invalid_variant_product_parent: '变型产品"%variant_product%"不能以产品模型"%product_model%"作为父模型， (此产品模型只能有其他产品模型作为子类)'
+    invalid_variant_product_parent: '变型产品"%variant_product%"不能以产品模型"%product_model%"作为父模型， (此产品模型只能有其他产品模型作为子模型)'
     modified_variant_axis_value: '变型轴"%variant_axis%"不能修改，"%provided_value%" 已给定'
     family_variant_attributes_unique: 属性必须是唯一的，"%attributes%" 在变型属性集中多次使用
     family_variant_axes_unique: 变型轴必须是唯一的，"%attributes%" 在变型属性集中多次使用
@@ -63,7 +63,7 @@ pim_catalog:
     104: 此字段需要填入数字值。
     105: 此字段需要填入字符串值。
     106: 此字段需要填入数组
-    107: 此字段需要填入数组的数组。
+    107: 此字段需要填入数组值。
     200: 发生内部错误
     201: 发生内部错误
     202: 此字段需要填入数字值。

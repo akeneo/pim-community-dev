@@ -64,7 +64,7 @@ pim:
     price_filter:
       label: 货币
     category_filter:
-      done: 完成
+      done: 已完成
 #Column configuration
 Available Columns: 可用的列
 Displayed Columns: 选定的列
@@ -84,7 +84,7 @@ pim_datagrid:
     attribute_groups: 属性组
   mass_action:
     delete:
-      confirm_title: 确定删除
+      confirm_title: 确认删除 
       confirm_ok: 确定
       empty_selection: 没有选定的产品
 #Quick export
@@ -92,9 +92,9 @@ pim.grid.mass_action.quick_export.title: 快速导出
 pim.grid.mass_action.quick_export.launched: 快速导出已启动
 #Custom actions
 pim.grid.action.launch.title: 启动
-pim.grid.action.show.title: 展示
+pim.grid.action.show.title: 显示
 Please select view: 请选择视图
-Loading...: 正在加载...
+Loading...: 加载...
 View: 视图
 #Datetimepicker
 from: 从
@@ -122,7 +122,7 @@ grid.display_selector:
   list: 列表
 #Credentials cell
 Client ID: 客户 ID
-Secret: 秘密
+Secret: 密钥
 grid.empty_results:
   associated_product:
     hint: 没有关联产品

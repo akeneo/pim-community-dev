@@ -19,12 +19,12 @@ pim_connector:
 #Page titles
 page_title:
   pim_importexport_export_profile_index: 导出配置文件管理
-  pim_importexport_export_profile_edit: 导出配置文件 {{ job.label }} |编辑
+  pim_importexport_export_profile_edit: 导出配置文件 {{ job.label }} | 编辑
   pim_importexport_export_profile_show: 导出配置文件 {{ job.label }} |显示
   pim_importexport_export_execution_index: 导出执行历史记录
   pim_importexport_export_execution_show: 导出执行|详细信息
   pim_importexport_import_profile_index: 导入配置文件管理
-  pim_importexport_import_profile_edit: 导入配置文件 {{ job.label }} |编辑
+  pim_importexport_import_profile_edit: 导入配置文件 {{ job.label }} | 编辑
   pim_importexport_import_profile_show: 导入配置文件 {{ job.label }} |显示
   pim_importexport_import_execution_index: 导入执行历史记录
   pim_importexport_import_execution_show: 导入执行|详细信息

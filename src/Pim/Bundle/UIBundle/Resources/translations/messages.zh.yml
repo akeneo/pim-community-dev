@@ -12,8 +12,8 @@ Locale list: 本地化语言列表
 Logged in as: 登录身份
 Logout: 退出登录
 Login: 登录
-Previous: 前一个
-Next: 下一个
+Previous: 上一步
+Next: 下一步
 Channel list: 渠道列表
 Select file: 选择文件
 Change file: 更改文件
@@ -24,7 +24,7 @@ Cancel: 取消
 Get help: 获取帮助
 My User: 我的帐户
 oro.form.choose_value: 选择值....
-Read more: 了解更多
+Read more: 阅读更多
 oro.form.click_here_to_select: 单击此处进行选择...
 Add: 添加
 "Learn how to use this space": "了解如何使用此空间"
@@ -34,10 +34,10 @@ Favorites: 收藏夾
 Most Viewed: 查看最多
 "Add this page to favorites": "将此页添加到收藏夹"
 "Minimize the window to the pinbar": "最小化窗口到 pinbar"
-"Loading ...": "正在加载..."
+"Loading ...": "加载..."
 "Yes": "是"
 "No": "否　"
-required: '（必需）'
+required: '（必填）'
 pim_ui.system_config:
   form:
     loading_message_enabled.label: 启用加载消息
@@ -46,4 +46,4 @@ pim_ui.system_config:
     loading_messages.tooltip: 全部可用的加载消息以换行符分隔
   group:
     loading_message.title: 加载消息
-other_actions: 其它操作
+other_actions: 其他操作

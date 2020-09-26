@@ -11,7 +11,7 @@ pim_dashboard:
       title: 加载小部件时出错
       message: 小部件 '%alias%' 不存在
     completeness:
-      title: 渠道与区域设置的完整性
+      title: 在渠道与区域上的完成度
     last_operations:
       title: 最近的一些操作
       empty: 未找到操作
