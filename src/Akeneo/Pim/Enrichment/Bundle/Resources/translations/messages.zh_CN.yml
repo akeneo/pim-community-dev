@@ -1,5 +1,5 @@
 No products to remove: 没有要移除的产品
-"dot (.)": 点 （.）
+"dot (.)": 点（.）
 "comma (,)": 逗号（,）
 pim_enrich:
   #Category
@@ -15,10 +15,10 @@ pim_enrich:
     limit_exceeded: 请选择少于 %limit% 个的编辑条目
     product:
       page_title: 产品
-      page_subtitle: 批量编辑（1 个产品） |批量编辑（%count% 个产品）
+      page_subtitle: 批量编辑（1 个产品） |  批量编辑（%count% 个产品）
       title: 选择操作
       subtitle: 请选择想对所选产品执行的操作 |请选择想对所选 %count% 个产品执行的操作
-      confirm: 您将要更新产品的以下信息，请确认。 |您将要更新 %count% 个产品的以下信息，请确认。
+      confirm: 您将要更新产品的以下信息，请确认。|您将要更新 %count% 个产品的以下信息，请确认。
       steps:
         first: 选择产品
         second: 选择操作
@@ -41,7 +41,7 @@ pim_enrich:
         no_valid_attribute: 选定的属性无一可应用于该产品。
     classify-add:
       label: 添加到类别
-      description: 产品将被放入以下目录，现存的位置也会保留。
+      description: 产品将被放入以下类别，现存的位置也会保留。
       success_flash: 产品已被分类到所选的类别中了
       launched_flash: 批量操作"添加到类别"已经启动。完成后会通知您。
     classify-move:
@@ -56,14 +56,14 @@ pim_enrich:
       launched_flash: 批量操作"从类别中移除"已经启动。完成后会通知您。
     change-family:
       label: 更改品类
-      description: 选定产品的品类将更改为选定的品类
+      description: 选定产品的品类将更改为被选定的品类
       success_flash: 所选产品的品类已被成功更改
       launched_flash: 批量操作"更改品类"已经启动。完成后会通知您。
     add-to-groups:
       label: 添加到组
       description: 选择要将选定的产品加入其中的组
       success_flash: 产品已成功添加到所选的组
-      launched_flash: 产品已成功添加到所选的组
+      launched_flash: 批量操作"添加到组"已经启动。完成后会通知您。
       no_group: 目前没有组。请首先创建一个组。
     set-attribute-requirements:
       label: 设置属性要求

@@ -24,7 +24,7 @@ Get help: 获取帮助
 My User: 我的帐户
 oro.form.choose_value: 选择值....
 Read more: 阅读更多
-oro.form.click_here_to_select: 单击此处进行选择
+oro.form.click_here_to_select: 单击此处进行选择...
 Add: 添加
 "Learn how to use this space": "了解如何使用此空间"
 "How To Use Pinbar": "如何使用 Pinbar"
@@ -33,26 +33,26 @@ Favorites: 收藏夾
 Most Viewed: 查看最多
 "Add this page to favorites": "将此页添加到收藏夹"
 "Minimize the window to the pinbar": "最小化窗口到 pinbar"
-"Loading ...": "正在加载..."
+"Loading ...": "加载..."
 "Yes": "是"
 "No": "否　"
-required: '（必需）'
+required: '（必填）'
 The element could not be deleted: 无法删除该元素
 pim_ui.system_config:
   form:
     loading_message_enabled.label: 启用加载消息
-    loading_message_enabled.tooltip: 在等待页面加载时显示对用户友好的消息
+    loading_message_enabled.tooltip: 等待页面加载时显示用户友好消息
     loading_messages.label: 可用的加载消息
     loading_messages.tooltip: 全部可用的加载消息以换行符分隔
   group:
     loading_message.title: 加载消息
-other_actions: 其它操作
+other_actions: 其他操作
 pim_common:
   cancel: 取消
   save: 保存
   delete: 删除
   update: 更新
-  view: 视图
+  view: 查看
   edit: 编辑
   created: 已创建
   updated: 已更新
@@ -93,7 +93,7 @@ pim_enrich:
       history: 查看产品模型的历史记录
       remove: 移除产品模型
     category:
-      list: 列出目录
+      list: 列出类别
       create: 创建类别
       edit: 编辑类别
       remove: 移除类别
@@ -130,14 +130,14 @@ pim_enrich:
       index: 列出属性
       create: 创建属性
       edit: 编辑属性
-      remove: 删除属性
+      remove: 移除属性
       sort: 在属性组内对属性排序
       history: 查看属性历史记录
     group:
       index: 列出组
       create: 创建组
       edit: 编辑组
-      remove: 移除分组
+      remove: 移除组
       history: 查看组历史记录
     group_type:
       index: 列出组类型
@@ -172,19 +172,19 @@ pim_enrich:
   notification:
     settings:
       remove_completeness_for_channel_and_locale:
-        start: 已从渠道中移除区域设置。我们目前正在清理与之链接的一切内容。
+        start: 已从渠道中移除区域设置。我们目前正在清理与之链接的完成度。
         done: 移除渠道区域设置完成。
   create:
     attribute: 创建属性
     attribute group: 创建属性组
-    category: 创建分类
+    category: 创建类别
     tree: 创建树
     channel: 创建渠道
     currency: 创建货币
     family: 创建品类
     locale: 创建区域设置
     product: 创建产品
-    group: 创建分组
+    group: 创建组
     association type: 创建关联类型
     group type: 创建分组类型
     drag_or_upload: 拖放即可上传或点击这里
@@ -202,7 +202,7 @@ flash:
     removed: 条目已被删除
   attribute:
     identifier_not_removable: 标识符属性无法移除
-    used_as_conversion_unit: 此属性不能删除，因为它在渠道 %channelCodes% 中被用作转换单位。
+    used_as_conversion_unit: 此属性不能移除，因为其在渠道 %channelCodes% 中用作转换单位。
   category:
     removed: 类别已成功移除
   tree:
@@ -258,7 +258,6 @@ info:
 Created: 已创建
 Updated: 已更新
 Last update: 上次更新
-by: 由
 N/A: N/A
 Manage products: 管理产品
 Manage groups: 管理分组
@@ -266,9 +265,9 @@ Code: 代码
 Name: 名称
 Type: 类型
 Scope: 渠道
-Required: 必需
+Required: 必填
 Unique: 唯一
-Not required: 非必需
+Not required: 非必填
 Translatable: 可翻译
 Scopable: 范围允许
 Localizable: 可本地化
@@ -291,11 +290,11 @@ Defaultvalue: 默认值
 Variant: 变量
 Smart: 智能
 Useable as grid column: 可用作网格列
-Useable as grid filter: 可用在网格中
+Useable as grid filter: 在网格中可用
 Family: 品类
 Image: 图像
 Variant products: 变型产品
-Available locales: 可用区域
+Available locales: 可用的本地化语言
 Locale specific: 区域特定
 default: 默认
 Axis: 轴
@@ -341,8 +340,8 @@ Max characters: 最大字符数
 Validation rule: 验证规则
 Validation regexp: 验证正则表达式
 Wysiwyg enabled: 所见即所得已启用
-Number min: 最小值
-Number max: 最大值
+Number min: 最小数
+Number max: 最大数
 Decimals allowed: 允许小数
 Negative allowed: 允许负值
 Date min: 最小日期
@@ -365,7 +364,7 @@ Title: 标题
 pim_catalog_identifier: 标识符
 pim_catalog_text: 文本
 pim_catalog_textarea: 文本区域
-pim_catalog_number: 数量
+pim_catalog_number: 数字
 pim_catalog_price_collection: 价格
 pim_catalog_multiselect: 多选
 pim_catalog_simpleselect: 单选
@@ -423,7 +422,7 @@ Status: 状态
 #Versioning / history
 Change History: 更改历史记录
 Data Audit: 数据审计
-Data Audit - System: '数据审计-系统'
+Data Audit - System: '数据审计 - 系统'
 Action: 操作
 Version: 版本
 Entity type: 实体类型
@@ -452,17 +451,16 @@ oro.locale:
       parish: "行政区"
       state: "国家"
       island: "岛"
-      county: "县"
       area: "区域"
       prefecture: "县"
       department: "部门"
-      district: "区"
+      district: "地区"
       province: "省份"
   form:
     tooltip:
       locale: "选择用于格式化数字、 地址、 名称和日期的区域设置选项"
       location: "当选项”按地址中的国家来格式化地址“选项被禁用时，\"所在地\"将被用来格式化地址。"
-      format_address_by_address_country: "选择该选项时，将会使用他们所在的国家来格式化地址。不选择该选项时，将使用所在地的地址格式来格式化地址。"
+      format_address_by_address_country: "选择该选项时，将会使用他们所在的国家来格式化地址。不选择该选项时，将使用您所在地的地址格式来格式化地址"
       language: "选择想要使用的系统语言"
       timezone: "选择用于显示日期和时间的时区"
       currency: "选择默认货币"
@@ -480,7 +478,7 @@ pim_mass_edit:
       success: 快速导出 <strong>%label%</strong> 完成
     mass_delete:
       error: 批量删除 <strong>%label%</strong> 失败
-      warning: 批量删除 <strong>%label%</strong> 完成，但有一些警告
+      warning: 批量删除 <strong>%label%</strong> 已完成，但有一些警告
       success: 批量删除 <strong>%label%</strong> 已完成
 job_execution.summary:
   mass_edited: 已批量编辑
