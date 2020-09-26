@@ -76,7 +76,7 @@ job_execution:
     rule_calculated: 规则的数量
     read_rules: 读取规则
     selected_entities: 选定的产品/产品模型
-    skipped_invalid: 跳过的产品/产品模型(无效)
+    skipped_invalid: 已跳过产品/产品模型(无效)
     updated_entities: 更新的产品/产品模型
     executed_rules: 成功执行的规则
     errored_rules: 跳过的规则 (无效)

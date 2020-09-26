@@ -30,7 +30,7 @@ teamwork_assistant:
     owner_done: 已完成（项目概览）
   user:
     deletion:
-      user_linked_to_project: 此用户仍然链接到一个或多个项目。请删除在他的用户帐户中链接到的组。
+      user_linked_to_project: 此用户仍然链接到一个或多个项目。请移除在他的用户帐户中链接到的组。
       user_is_project_owner: 此用户仍然是一个或多个项目的负责人。请删除此用户的所有项目。
 job_execution:
   summary:

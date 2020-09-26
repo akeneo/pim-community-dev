@@ -111,7 +111,7 @@ pim_reference_entity:
       subtitle: 点击按钮“新增”来创建第一条记录
     no_result:
       title: 您的搜索没有结果
-      subtitle: 请用新的搜索条件再进行搜索
+      subtitle: 请用新的搜索条件再进行搜索。
     selector:
       no_value: 点击此处选择一条记录。
     error:

@@ -480,7 +480,7 @@ pim_asset_manager:
         fail: 保存属性时出错
         validation_error: 无法更新该属性
       create:
-        success: 属性成功创建。
+        success: 属性已成功创建。
         fail: 创建属性时发生错误
         validation_error: 无法创建该属性
       delete:
