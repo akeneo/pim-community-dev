@@ -15,7 +15,7 @@ Selected Rows: 选定的行
 "Revoke Confirmation": "确认撤销"
 Now: 现在
 Prev: 上一个
-Next: 下一个
+Next: 下一步
 Today: 今天
 Wk: 周
 Done: 完成
@@ -48,11 +48,11 @@ jstree:
     unclassified: 未分类的产品
   no_tree: 无可用的树
   include_sub: 包括子类别
-  loading: 正在加载 ...
+  loading: 加载 ...
 #Datetimepicker
 datetimepicker:
   days:
-    Sunday: 周日
+    Sunday: 星期天
     Monday: 周一
     Tuesday: 周二
     Wednesday: 周三

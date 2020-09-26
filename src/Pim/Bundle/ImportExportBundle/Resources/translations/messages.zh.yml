@@ -51,10 +51,10 @@ pim_title.import_execution.show: 导入执行|详细信息
 #Entity and page header titles
 export profile:
   title: 导出配置文件
-  edit: 编辑导出的配置文件
+  edit: 编辑导出配置文件
 import profile:
   title: 导入配置文件
-  edit: 编辑导入的配置文件
+  edit: 编辑导入配置文件
 #ACLs
 pim_importexport:
   acl:
@@ -96,9 +96,9 @@ btn:
   create:
     export profile: 创建导出配置文件
     import profile: 创建导入配置文件
-Upload and import now: 现在上传并导入
-import now: 现在导入
-export now: 现在导出
+Upload and import now: 立即上传并导入
+import now: 立即导入
+export now: 立即导出
 #Confirmation messages
 confirmation:
   remove:
@@ -141,16 +141,16 @@ job_execution.summary:
   skip: 已跳过
   create: 已创建
   update: 已更新
-  update_products: 已更新的产品
-  skip_products: 跳过的产品
+  update_products: 已更新产品
+  skip_products: 已跳过产品
   displayed: 已显示第一次警告
   charset_validator:
     title: '文件编码：'
-    skipped: 跳过，在白名单中扩展
-Step: 步
+    skipped: 已跳过，在白名单中扩展
+Step: 步骤
 Status: 状态
 Warnings: 警告
-Summary: 总结
+Summary: 摘要
 Start: 开始
 End: 结束
 #Process tracker

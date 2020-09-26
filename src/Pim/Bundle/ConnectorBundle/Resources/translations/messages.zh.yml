@@ -34,12 +34,12 @@ job_execution.summary:
   process: 已处理
   update_products: 已更新产品
   process_products: 已处理产品
-  skip_products: 跳过的产品
+  skip_products: 已跳过产品
   displayed: 已显示第一次警告
   charset_validator:
     title: '文件编码：'
     skipped: 已跳过，在白名单中扩展
-  product_skipped_no_diff: 跳过的产品（无差异）
+  product_skipped_no_diff: 已跳过产品（无差异）
   product_skipped_no_associations: 跳过的产品（没有检测到任何关联）
   product_model_skipped_no_associations: 跳过的产品模型（没有检测到任何关联）
   product_model_skipped_no_diff: 跳过的产品模型（无差异）
@@ -79,13 +79,13 @@ batch_jobs:
     label: 以 CSV 格式导入产品
     validation.label: 文件验证
     import.label: 导入产品
-    import_associations.label: 关联导入
+    import_associations.label: 导入关联
   csv_product_model_import:
     label: 以 CSV 格式导入产品模型
     validation.label: 文件验证
     import_root_product_model.label: 导入根产品模型
     import_sub_product_model.label: 导入子产品模型
-    import_product_model_descendants.label: 计算下级产品模型
+    import_product_model_descendants.label: 计算产品模型后代
   csv_category_import:
     label: 以 CSV 格式导入类别
     validation.label: 文件验证

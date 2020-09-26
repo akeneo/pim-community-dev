@@ -15,7 +15,7 @@ oro.filter.form.label_type_not_empty: 不为空
 oro.filter.form.label_type_in_list: 在列表中
 oro.filter.form.label_date_type_between: 介于
 oro.filter.form.label_date_type_not_between: 不介于
-oro.filter.form.label_date_type_more_than: 大于
+oro.filter.form.label_date_type_more_than: 多于
 oro.filter.form.label_date_type_less_than: 小于
-oro.filter.form.label_not_selected: 未选定
+oro.filter.form.label_not_selected: 未选择
 oro.filter.form.label_selected: 选定

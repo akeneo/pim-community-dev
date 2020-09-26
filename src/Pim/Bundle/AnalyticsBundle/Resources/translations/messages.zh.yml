@@ -16,7 +16,7 @@ pim_analytics:
     pim_environment: 环境
     pim_install_time: 安装时间
     registered_bundles: 已注册的包
-    nb_channels: 渠道数量：
+    nb_channels: 渠道数量
     nb_products: 产品数量
     nb_product_models: 产品模型数量
     nb_variant_products: 变型产品数量
@@ -40,7 +40,7 @@ pim_analytics:
     nb_product_values: 产品值数量
     avg_product_values_by_product: 按产品分列的产品值平均数
     avg_product_values_by_family: 按品类分列的潜在产品值的平均数
-    max_product_values_by_family: 按品类分列的潜在产品值的平均数
+    max_product_values_by_family: 按品类分列的潜在产品值的最大数
     pim_storage_version: 存储版本
     os_version: 操作系统版本
     php_version: PHP 版本

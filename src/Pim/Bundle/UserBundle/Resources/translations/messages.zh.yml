@@ -1,7 +1,7 @@
 pim_user:
   user:
     tab:
-      general.title: 一般信息
+      general.title: 常规​​​​​
       additional.title: 附加
       group_and_role.title: 分组和角色
       password.title: 密码
@@ -10,7 +10,7 @@ pim_user:
       interfaces.title: 界面
   group:
     tab:
-      general.title: 一般信息
+      general.title: 常规​​​​​
       users.title: 用户
 #user grids
 oro.user.controller:
@@ -52,11 +52,11 @@ Username: 用户名
 Password: 密码
 Password (again): 密码 (再输入一次)
 Re-enter password: 再次输入密码
-Name prefix: 名字前缀
+Name prefix: 名称前缀
 First name: 名
 Middle name: 中间名
 Last name: 姓
-Name suffix: 名字后缀
+Name suffix: 名称后缀
 Date of birth: 出生日期
 Avatar: 头像
 Additional emails: 附加电子邮件
@@ -74,7 +74,7 @@ Login count: 登录计数
 Additional Information: 更多信息
 Interfaces: 界面
 Basic Information: 基本信息
-Contact Information: 联系人信息
+Contact Information: 联系信息
 User name: 用户名
 Birthday: 出生日期
 API key: API 密钥
@@ -97,7 +97,7 @@ user:
 #Role
 Role: 角色
 Owner: 所有者
-General: 一般信息
+General: 常规​​​​​
 Entity: 实体
 Capabilities: 功能
 Save and close: 保存并关闭
@@ -158,7 +158,7 @@ user-group.overview: 分组
 Log in: 登录
 Remember me on this computer: 在这台计算机上记住我
 Forgot your password?: 忘记密码？
-Username or Email: 用户名或电子邮箱
+Username or Email: 用户名或电子邮件
 Forgot Password: 忘记密码
 Request: 请求
 Check Email: 检查电子邮件

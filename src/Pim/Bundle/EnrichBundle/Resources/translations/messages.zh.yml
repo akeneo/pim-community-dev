@@ -5,7 +5,7 @@ pim_enrich:
       attribute.title: 属性
       category.title: 类别
       association.title: 关联
-      completeness.title: 完整性
+      completeness.title: 完成度
       history.title: 历史记录 
     #Product comparison
     no_comparison_locale_available: 没有可供比较的其它本地化语言
@@ -73,7 +73,7 @@ pim_enrich:
     limit_exceeded: 请选择少于 %limit% 个的编辑条目
     product:
       page_title: 产品
-      page_subtitle: 批量编辑 （1 个产品） |批量编辑（%count% 个产品）
+      page_subtitle: 批量编辑（1 个产品） | 批量编辑（%count% 个产品）
       title: 选择操作
       subtitle: 请选择想要对所选产品执行的操作 |请选择想要对所选的 %count% 个产品执行的操作
       confirm: 您将要更新产品的以下信息，请确认。|您将要更新 %count% 个产品的以下信息，请确认。
@@ -84,7 +84,7 @@ pim_enrich:
         fourth: 确认
     family:
       page_title: 品类
-      page_subtitle: 批量编辑 （1 个品类）|批量编辑 （%count% 个品类）
+      page_subtitle: 批量编辑（1 个品类）| 批量编辑（%count% 个品类）
       title: 选择操作
       subtitle: 请选择想要对所选品类执行的操作 |请选择想要对所选的 %count% 个品类执行的操作
       confirm: 将要更新品类的以下信息，请确认。 |将要更新 %count% 个品类的以下信息，请确认。
@@ -100,7 +100,7 @@ pim_enrich:
       launched_flash: 批量操作"更改状态"已经启动。完成后会通知您。
     edit-common-attributes:
       label: 编辑属性
-      description: 将使用选定的本地化语言对应的数据来编缉所选定的产品属性。
+      description: 将使用选定的区域设置对应的数据来编缉所选定的产品属性。
       empty: 请选择要编辑的属性
       success_flash: 更新产品状态的作业正在运行
       launched_flash: 批量操作"编辑属性"已经启动。完成后会通知您。
@@ -120,12 +120,12 @@ pim_enrich:
       launched_flash: 批量操作"移动到类别"已经启动。完成后会通知您。
     classify-remove:
       label: 从类别中移除
-      description: 产品将从以下类别中删除。
+      description: 产品将从以下类别中移除。
       success_flash: 产品已从所选的类别中移除
       launched_flash: 批量操作"从类别中移除"已经启动。完成后会通知您。
     change-family:
       label: 更改品类
-      description: 选定产品的品类将更改为选定的品类
+      description: 选定产品的品类将更改为被选定的品类
       success_flash: 所选产品的品类已被成功更改
       launched_flash: 批量操作"更改品类"已经启动。完成后会通知您。
     add-to-groups:
@@ -261,7 +261,7 @@ pim_enrich:
   notification:
     settings:
       remove_completeness_for_channel_and_locale:
-        start: 已从渠道中移除区域设置。我们目前正在清理与之链接的一切内容。
+        start: 已从渠道中移除区域设置。我们目前正在清理与之链接的完成度。
         done: 移除渠道区域设置完成。
 #Entity and page header titles
 attribute:
@@ -345,7 +345,7 @@ btn:
   remove: 移除
   delete: 删除
   cancel: 取消
-  next: 下一个
+  next: 下一步
   back: 返回
   confirm: 确认
   to grid: 返回到网格
@@ -384,7 +384,7 @@ flash:
     updated: 属性已成功更新
     removed: 属性已成功移除
     identifier_not_removable: 标识符属性无法移除
-    used_as_conversion_unit: 此属性无法移除，因为其在渠道 %channelCodes% 中用作转换单位。
+    used_as_conversion_unit: 此属性不能移除，因为其在渠道 %channelCodes% 中用作转换单位。
   attribute group:
     created: 属性组已成功创建
     updated: 属性组已成功更新
@@ -448,9 +448,9 @@ info:
     products limit exceeded: 此类别包含的产品数量超过此操作所允许的数量（最多 %limit% 个产品）
   product:
     no available attributes: 没有需要再添加的属性
-    no family defined: 没有定义的品类
+    no family defined: 没有定义品类
     change family: 更改产品品类
-    change family to: 更改产品品类为
+    change family to: 更改品类为
     merge attributes: 当前属性将与新品类中的属性合并
     keep attributes: 没有属性要移除。
     number of associations: '%productCount% 个产品和 %groupCount% 个组'
@@ -516,7 +516,7 @@ Defaultvalue: 默认值
 Variant: 变型
 Smart: 智能
 Useable as grid column: 可用作网格列
-Useable as grid filter: 可用在网格中
+Useable as grid filter: 在网格中可用
 Family: 品类
 Image: 图像
 Variant products: 变型产品
@@ -533,12 +533,12 @@ Search: 搜索
 Choose the attribute type: 选择属性类型
 Choose the attribute group: 选择属性组
 Drag and drop a file or click here: 拖放文件或点击这里
-Drop an image or click here: 拖入一幅图片或点击这里
+Drop an image or click here: 拖入图像或点击这里
 Automatic option sorting: 自动对选项排序
 save_attribute_before_manage_option: 若要管理选项，请先保存属性
 Please select: 请选择
-Active: 活跃的
-Inactive: 非活跃的
+Active: 激活
+Inactive: 未激活
 Do not convert: 不转换
 Create: 创建
 Cancel: 取消
@@ -546,8 +546,8 @@ Choose a family: 选择品类
 Choose a unit: 选择单位
 No matches found: 未找到匹配项
 Category tree: 类别树
-Completeness: 完整性
-Attribute used as label: 属性作为标签
+Completeness: 完成度
+Attribute used as label: 用作标签的属性
 Credentials: 凭据
 #Scopes
 Global: 全局
@@ -567,9 +567,9 @@ Groups overview: 分组概述
 Max characters: 最大字符数
 Validation rule: 验证规则
 Validation regexp: 验证正则表达式
-Wysiwyg enabled: 所见即所得启用
-Number min: 最小编号
-Number max: 最大编号
+Wysiwyg enabled: 所见即所得已启用
+Number min: 最小数
+Number max: 最大数
 Decimals allowed: 允许小数
 Negative allowed: 允许负值
 Date min: 最小日期
@@ -580,7 +580,7 @@ Max file size: 最大文件大小 (MB)
 Allowed extensions: 允许的扩展名
 None: 无
 E-mail: 电子邮件
-URL: 链接地址
+URL: URL
 Regular expression: 正则表达式
 Minimum input length: 输入的最小长度
 Default: 默认
@@ -661,7 +661,7 @@ pim_enrich.mass_edit_action:
   limit_exceeded: 请选择少于 %limit% 个的编辑条目
   product:
     page_title: 产品
-    page_subtitle: 批量编辑 （1 个产品） |批量编辑 （%count% 个产品）
+    page_subtitle: 批量编辑（1 个产品） | 批量编辑（%count% 个产品）
     title: 选择操作
     subtitle: 请选择想要对所选产品执行的操作 |请选择想要对所选的 %count% 个产品执行的操作
     confirm: 您将要更新产品的以下信息，请确认。|您将要更新 %count% 个产品的以下信息，请确认。
@@ -672,7 +672,7 @@ pim_enrich.mass_edit_action:
       fourth: 确认
   family:
     page_title: 品类
-    page_subtitle: 批量编辑 （1 个品类） |批量编辑 （%count% 个品类）
+    page_subtitle: 批量编辑（1 个品类）| 批量编辑（%count% 个品类）
     title: 选择操作
     subtitle: 请选择想要对所选品类执行的操作 |请选择想要对所选的 %count% 个品类执行的操作
     confirm: 将要更新品类的以下信息，请确认。 |将要更新 %count% 个品类的以下信息，请确认。
@@ -687,7 +687,7 @@ pim_enrich.mass_edit_action:
     success_flash: 产品状态已更改
   edit-common-attributes:
     label: 编辑属性
-    description: 将使用选定的本地化语言对应的数据来编缉所选定的产品属性。
+    description: 将使用选定的区域设置对应的数据来编缉所选定的产品属性。
     empty: 请选择要编辑的属性
     success_flash: 产品属性已更新
     message.warning: 选定的产品中没有共同的属性。请更改您的选择。
@@ -698,7 +698,7 @@ pim_enrich.mass_edit_action:
     success_flash: 产品已被分类到所选的类别中了
   change-family:
     label: 更改品类
-    description: 选定产品的品类将更改为选定的品类
+    description: 选定产品的品类将更改为被选定的品类
     success_flash: 所选产品的品类已被成功更改
     no_family: 没有品类
   add-to-groups:
@@ -761,7 +761,7 @@ Data: 数据
 Author: 作者
 Logged at: 登录时间
 Deleted: 已删除
-Old values: 原值
+Old values: 旧值
 New values: 新值
 #Configuration
 System configuration: 系统配置
@@ -781,7 +781,7 @@ oro.locale:
       parish: "行政区"
       state: "国家"
       island: "岛"
-      county: "郡/县"
+      county: "县"
       area: "区域"
       prefecture: "县"
       department: "部门"
@@ -809,16 +809,16 @@ pim_mass_edit:
       success: 快速导出 <strong>%label%</strong> 完成
     mass_delete:
       error: 批量删除 <strong>%label%</strong> 失败
-      warning: 批量删除 <strong>%label%</strong> 完成，但有一些警告
-      success: 批量删除 <strong>%label%</strong> 完成
+      warning: 批量删除 <strong>%label%</strong> 已完成，但有一些警告
+      success: 批量删除 <strong>%label%</strong> 已完成
 job_execution.summary:
-  mass_edited: 批量编辑
+  mass_edited: 已批量编辑
   skip: 已跳过
-  skipped_products: 跳过的产品
-  skipped_attributes: 跳过的属性
-  skipped_families: 跳过的品类
-  deleted_products: 已删除的产品
-  deleted_product_models: 已删除的产品模型
+  skipped_products: 已跳过产品
+  skipped_attributes: 已跳过属性
+  skipped_families: 已跳过品类
+  deleted_products: 已删除产品
+  deleted_product_models: 已删除产品模型
 pim_mass_edit_execution_show: 批量编辑执行 |详细信息
 edit_common_attributes.steps.edit_common_attributes_processor.title: 编辑属性
 update_product_value.steps.update_product_value_processor.title: 更新产品值
@@ -850,7 +850,7 @@ batch_jobs:
     cleaner:
       label: 清除属性文件
   compute_completeness_of_products_family:
-    compute_completeness_of_products_family.label: 计算完整性
+    compute_completeness_of_products_family.label: 计算完成度
   add_to_category:
     label: 添加到类别
     perform:
@@ -913,4 +913,4 @@ pim_enrich_attribute_form:
   availableLocales: 可用区域
   locale_specific: 区域特定
   group: 属性组
-  useableAsGridFilter: 可用在网格中
+  useableAsGridFilter: 在网格中可用

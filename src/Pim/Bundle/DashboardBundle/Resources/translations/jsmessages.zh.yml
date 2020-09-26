@@ -15,7 +15,7 @@ pim_dashboard:
         quick_export: 快速导出
         compute_product_models_descendants: 计算产品模型后代
         compute_family_variant_structure_changes: 计算品类变型结构变化
-        compute_completeness_of_products_family: 计算产品品类的完整性
+        compute_completeness_of_products_family: 计算产品品类的完成度
         mass_delete: 批量删除产品
     completeness:
       load_more: '加载更多...'
