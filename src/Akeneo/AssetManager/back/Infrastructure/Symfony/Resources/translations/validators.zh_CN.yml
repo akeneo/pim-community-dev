@@ -13,7 +13,7 @@ pim_asset_manager:
         at_least_one_user_group_should_have_edit_permission: '至少有一个用户组应具备对此实体的编辑权限'
       product_attributes:
         should_not_be_linked: '由于产品属性与此实体相关，因此不能删除此实体'
-      should_exist: '找不到资产品类 "%asset_family_code%" 。'
+      should_exist: '找不到资产品类"%asset_family_code%" 。'
       rule_template:
         limit_reached: '无法创建资产品类“%asset_family_identifier%” ，因为已达到产品链接规则上限数目 %limit%'
         product_selection_cannot_be_empty: '您必须在产品链接规则中指定至少一个产品选择'
@@ -37,7 +37,6 @@ pim_asset_manager:
       text:
         incompatible_with_regular_expression: '文本与正则表达式"%regular_expression% "不兼容'
       file:
-        extension_not_allowed: '此属性不允许“%file_extension%"文件。允许的扩展名为： %allowed_file_extensions%'
         file_size_exceeded: '此文件超出属性的最大文件大小设定。'
         should_exist: '找不到文件"%file_path%"。'
       option:
@@ -48,14 +47,13 @@ pim_asset_manager:
         should_exist: '找不到资产 %asset_code%。'
       asset_collection:
         should_exist: '找不到资产 "%asset_codes%" 。'
-      limit_reached: '无法创建资产“%asset_label%"，因为已达到此资产品类的资产上限数目 %limit%'
+      limit_reached: '无法创建资产"%asset_label%"，因为已达到此资产品类的资产上限数目 %limit%'
       channel:
-        is_expected: '属性"%attribute_code%”应有一个渠道，因为其具有针对每个渠道的值。'
-        is_not_expected: '属性"%attribute_code%”不应有一个渠道，因为其没有针对渠道的值。'
+        is_expected: '属性"%attribute_code%"应有一个渠道，因为其具有针对每个渠道的值。'
         should_exist: '渠道"%channel_identifier%"不存在。'
       locale:
-        is_expected: '属性"%attribute_code%”应有一个区域设置，因为其有针对区域的值。'
-        is_not_expected: '属性"%attribute_code%”不应有一个区域设置，因为其没有针对区域的值。'
+        is_expected: '属性"%attribute_code%"应有一个区域设置，因为其有针对每个区域的值。'
+        is_not_expected: '属性"%attribute_code%"不应有一个区域，因为其没有针对每个区域的值。'
         is_not_activated: '区域"%locale_identifier%"未激活。'
         is_not_activated_for_channel: '区域"%locale_identifier%"对于渠道"%channel_identifier%"未激活。'
       number:
@@ -94,7 +92,7 @@ pim_asset_manager:
       should_be_a_simple_text_to_set_validation_rule_to_something_else_than_none: '文本区域属性不能有验证规则'
       cannot_set_a_non_empty_regular_expression: '属性不应有正则表达式'
       cannot_update_the_regular_expression: '无法在文本属性中设置正则表达式'
-      limit_reached: '无法创建属性“%attribute_label%"，因为已达到此资产品类的属性上限数目 %limit%'
+      limit_reached: '无法创建属性"%attribute_label%"，因为已达到此资产品类的属性上限数目 %limit%'
       asset_type:
         is_required: '需要指定资产品类类型才能创建资产品类链接属性'
         asset_family_should_exist: '找不到资产品类"%asset_family_code%" 。'

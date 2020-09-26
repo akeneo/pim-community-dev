@@ -11,7 +11,7 @@ pimee_workflow:
     status:
       label: 状态
       working_copy: 工作副本
-      in_progress: 正在处理
+      in_progress: 正在进行中
       ready: 等待批准中
       can_be_partially_reviewed: 可部分审查
       can_not_be_approved: 不能审查
@@ -45,7 +45,7 @@ pimee_workflow:
         draft_not_ready: 这项提案尚未准备好批准
         not_product_owner: 您不拥有与该提案相关的产品
         cannot_edit_attributes: 您不能编辑通过此提案修改的属性
-        invalid_draft: 由于以下错误，这项建议不能应用。%error%
+        invalid_draft: 由于以下错误，此提案无法应用。%error%
   proposal:
     to_review: '%author.firstname% %author.lastname% 已发送针对产品 %product.label% 的提案以进行审查'
     individual_import: '%author.firstname% %author.lastname% 已从作业导入发送提案以进行审查'
@@ -71,10 +71,10 @@ pimee_workflow:
   mass_edit_action:
     published:
       page_title: 已发布的产品
-      page_subtitle: 批量编辑（1 个已发布的产品）|批量编辑（%count% 个已发布的产品）
+      page_subtitle: 批量编辑（1 个已发布的产品）| 批量编辑（%count% 个已发布的产品）
       title: 选择操作
       subtitle: 请选择您要对所选已发布产品执行的操作 |请选择您要对所选的 %count% 个已发布的产品执行的操作
-      confirm: 您将要更新已发布产品的以下信息，请确认。 |您将要更新 %count% 个已发布产品的以下信息，请确认。
+      confirm: 您将要更新已发布产品的以下信息，请确认。|您将要更新 %count% 个已发布产品的以下信息，请确认。
       steps:
         first: 选择已发布的产品
         second: 选择操作

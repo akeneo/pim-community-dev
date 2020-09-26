@@ -1,6 +1,6 @@
 teamwork_assistant:
   project:
-    required: 此值不应为空。
+    required: 该值不应为空。
     label_maxlength: 此值太长了。其不应超过 {{ max }} 个字符。
     project_identifier: 项目 {{ project }} 不存在。
     project_locale: 渠道 {{ channel }} 不支持区域 {{ locale }}。
@@ -15,7 +15,7 @@ teamwork_assistant:
     project_finished:
       contributor: 恭喜！您已 100% 完成 %project_label% 项目的产品。
       owner: '截止日期为 %due_date% 的项目 %project_label% 已完成。'
-      show: 展示
+      show: 显示
     due_date:
       contributor: 您已完成项目 %project_label% 的 %percent% 的产品。别忘了完成剩余产品，截止日期为 %due_date%。
       owner: '截止日期为 %due_date% 的项目 %project_label% 尚未 100% 完成。'
@@ -30,7 +30,7 @@ teamwork_assistant:
     owner_done: 已完成（项目概览）
   user:
     deletion:
-      user_linked_to_project: 此用户仍然链接到一个或多个项目。请删除在他的用户帐户中链接到的组。
+      user_linked_to_project: 此用户仍然链接到一个或多个项目。请移除在他的用户帐户中链接到的组。
       user_is_project_owner: 此用户仍然是一个或多个项目的负责人。请删除此用户的所有项目。
 job_execution:
   summary:
