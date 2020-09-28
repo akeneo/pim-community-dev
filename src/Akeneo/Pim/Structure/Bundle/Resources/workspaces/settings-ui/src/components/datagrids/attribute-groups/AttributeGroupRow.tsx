@@ -1,8 +1,8 @@
 import React, {FC} from 'react';
 import styled from 'styled-components';
-import {AttributeGroup} from '../../models';
-import {useAttributeGroupLabel, useAttributeGroupsDataGridState} from '../../hooks';
-import {DataGrid} from '../shared/datagrids';
+import {AttributeGroup} from '../../../models';
+import {useAttributeGroupLabel, useAttributeGroupsDataGridState} from '../../../hooks';
+import {DataGrid} from '../../shared/datagrids';
 
 type Props = {
   group: AttributeGroup;

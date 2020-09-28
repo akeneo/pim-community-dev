@@ -1,1 +1,1 @@
-export * from './AttributeGroupsDataGrid';
+export * from './attribute-groups';

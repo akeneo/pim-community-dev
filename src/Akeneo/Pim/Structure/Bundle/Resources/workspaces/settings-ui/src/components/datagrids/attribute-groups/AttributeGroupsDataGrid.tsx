@@ -1,9 +1,9 @@
 import React, {FC} from 'react';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {useAttributeGroupPermissions, useAttributeGroupsDataGridState} from '../../hooks';
+import {useAttributeGroupPermissions, useAttributeGroupsDataGridState} from '../../../hooks';
 import {AttributeGroupRow} from './AttributeGroupRow';
-import {AttributeGroup} from '../../models';
-import {DataGrid} from '../shared';
+import {AttributeGroup} from '../../../models';
+import {DataGrid} from '../../shared';
 
 type Props = {
   groups: AttributeGroup[];
