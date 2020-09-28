@@ -1,23 +1,41 @@
-import React, {PropsWithChildren} from 'react';
+import React, {FC} from 'react';
+import styled, {css} from "styled-components";
 
-interface Props {
+type Props = {
     onClick?: () => void;
     isLast?: boolean;
 }
 
-const BreadcrumbItem = ({children: label, onClick, isLast}: PropsWithChildren<Props>) => {
-    const className = 'AknBreadcrumb-item' + (isLast ? ' AknBreadcrumb-item--final' : '');
-
-    if (onClick) {
-        return (
-            <span onClick={onClick} className={className + ' AknBreadcrumb-item--routable'}>
-                {label}
-            </span>
-        );
+const Item = styled.span<Props>`
+  display: inline;
+  
+  &:hover {
+    color: ${({theme}) => theme.color.grey120};
+  }
+  
+  &:after {
+    content: ' / ';
+  }
+  
+  ${(props) => (props.onClick && css`
+    cursor: pointer;
+  `)};
+  
+  ${(props) => (props.isLast && css`
+    color: ${({theme}) => theme.color.grey100};
+    &:after {
+      content: '';
     }
+    &:hover {
+      color: ${({theme}) => theme.color.grey100};
+    }
+  `)};
+`;
 
-    return <span className={className}>{label}</span>;
+const BreadcrumbItem: FC<Props> = ({children, ...props}) => {
+    return (
+        <Item {...props}>{children}</Item>
+    );
 };
-
 
 export {Props as BreadcrumbItemProps, BreadcrumbItem};
