@@ -1,13 +1,17 @@
 import React from 'react';
 import { ApplicationDependenciesProvider } from '../dependenciesTools';
-import ReactController from '../dependenciesTools/reactController/ReactController';
+import ReactController, {
+  RouteParams,
+} from '../dependenciesTools/reactController/ReactController';
 import { CreateRules as CreateRulesPage } from '../pages/CreateRules';
 
 class CreateRules extends ReactController {
-  reactElementToMount() {
+  reactElementToMount(routeParams: RouteParams) {
     return (
       <ApplicationDependenciesProvider>
-        <CreateRulesPage />
+        <CreateRulesPage
+          originalRuleCode={routeParams?.params?.originalRuleCode}
+        />
       </ApplicationDependenciesProvider>
     );
   }
@@ -20,8 +24,8 @@ class CreateRules extends ReactController {
     return super.initialize();
   }
 
-  renderRoute() {
-    return super.renderRoute();
+  renderRoute(routeParams: RouteParams) {
+    return super.renderRoute(routeParams);
   }
 }
 

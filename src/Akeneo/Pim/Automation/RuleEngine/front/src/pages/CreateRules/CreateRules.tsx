@@ -35,24 +35,35 @@ const transformFormData = (
   };
 };
 
-const CreateRules: React.FC = () => {
+type Props = {
+  originalRuleCode?: string;
+};
+
+const CreateRules: React.FC<Props> = ({ originalRuleCode }) => {
   const [pending, setPending] = React.useState(false);
   const translate = useTranslate();
   const router = useBackboneRouter();
   const userContext = useUserContext();
   const [urlRules, handleRulesRoute] = generateAndRedirect(
     router,
-    'pimee_catalog_rule_rule_index'
+    originalRuleCode
+      ? 'pimee_catalog_rule_edit'
+      : 'pimee_catalog_rule_rule_index',
+    originalRuleCode ? { code: originalRuleCode } : undefined
   );
   useDocumentEscapeKey(handleRulesRoute);
   const currentCatalogLocale = userContext.get('catalogLocale');
   const notify = useNotify();
   const onSubmit = async (formData: FormDataInput): Promise<any> => {
-    const postRule = generateUrl(router, 'pimee_enrich_rule_definition_create');
+    const url = originalRuleCode
+      ? generateUrl(router, 'pimee_enrich_rule_definition_duplicate', {
+          originalRuleCode,
+        })
+      : generateUrl(router, 'pimee_enrich_rule_definition_create');
     setPending(true);
     let result: any;
     try {
-      result = await httpPost(postRule, {
+      result = await httpPost(url, {
         body: transformFormData(formData, currentCatalogLocale),
       });
     } catch (error) {
@@ -96,7 +107,11 @@ const CreateRules: React.FC = () => {
                 {`${translate('pim_menu.item.rule')} /`}
               </div>
               <div className='AknFullPage-title'>
-                {translate('pimee_catalog_rule.form.creation.title')}
+                {originalRuleCode
+                  ? translate('pimee_catalog_rule.form.edit.duplicate.title', {
+                      originalRuleCode,
+                    })
+                  : translate('pimee_catalog_rule.form.creation.title')}
               </div>
               <SmallHelper>
                 {translate('pimee_catalog_rule.form.creation.helper')}
