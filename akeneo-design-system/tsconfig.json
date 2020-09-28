@@ -8,7 +8,7 @@
     "isolatedModules": true,
     "jsx": "react",
     "lib": ["es6", "dom"],
-    "module": "es6",
+    "module": "umd",
     "moduleResolution": "node",
     "noImplicitAny": true,
     "noImplicitReturns": true,
@@ -25,7 +25,8 @@
     "strictPropertyInitialization": true,
     "suppressImplicitAnyIndexErrors": true,
     "removeComments": true,
-    "target": "es6",
+    "target": "es5",
+    "baseUrl": "./src",
     "types": [
       "puppeteer",
       "jest-environment-puppeteer",

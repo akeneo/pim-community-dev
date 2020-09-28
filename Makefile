@@ -26,7 +26,7 @@ node_modules: dsm
 
 .PHONY: dsm
 dsm:
-	$(NODE_RUN) yarn --cwd=akeneo-design-system lib:build:prod
+	$(NODE_RUN) yarn --cwd=akeneo-design-system run build
 
 .PHONY: assets
 assets:

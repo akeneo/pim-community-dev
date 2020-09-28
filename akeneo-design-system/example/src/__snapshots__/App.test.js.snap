@@ -5,7 +5,7 @@ exports[`renders the expected elements 1`] = `
   <div>
     <div>
       <span
-        class="Badge__BadgeContainer-lzdgv6-0 kjexUy"
+        class="sc-eCApGN xDsQp"
       >
         Success
       </span>

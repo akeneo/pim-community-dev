@@ -4,7 +4,7 @@ module.exports = {
     headless: true,
   },
   server: {
-    command: 'yarn storybook:ci',
+    command: 'yarn storybook:ci:start',
     port: 6006,
     launchTimeout: 30000
   },
