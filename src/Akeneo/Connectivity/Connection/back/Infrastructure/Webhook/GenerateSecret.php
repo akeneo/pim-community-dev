@@ -15,10 +15,8 @@ class GenerateSecret implements GenerateSecretInterface
 {
     public function generate(): string
     {
-        try {
-            return Uuid::uuid4()->toString();
-        } catch (\Exception $exception) {
-            return uniqid();
-        }
+        $bytes = random_bytes(32);
+
+        return base_convert(bin2hex($bytes), 16, 36);
     }
 }
