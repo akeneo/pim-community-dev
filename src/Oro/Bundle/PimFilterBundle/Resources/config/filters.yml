@@ -110,6 +110,14 @@ services:
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_typology }
 
+    pim_filter.entity_type_filter:
+        class: Oro\Bundle\PimFilterBundle\Filter\Product\EntityTypeFilter
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: entity_type }
+
     pim_filter.product_in_group_filter:
         class: '%pim_filter.product_in_group_filter.class%'
         arguments:
