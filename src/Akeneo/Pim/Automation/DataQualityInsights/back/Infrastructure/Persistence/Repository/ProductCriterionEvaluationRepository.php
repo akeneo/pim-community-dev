@@ -19,7 +19,7 @@ use Doctrine\DBAL\Connection;
 
 final class ProductCriterionEvaluationRepository implements CriterionEvaluationRepositoryInterface
 {
-    private const DELETE_BATCH_SIZE = 1000;
+    private const DELETE_BATCH_SIZE = 10000;
 
     /** @var Connection */
     private $db;
