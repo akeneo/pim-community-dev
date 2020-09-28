@@ -24,7 +24,6 @@ To build this project, you need to have the following package installed:
 - Yarn (https://classic.yarnpkg.com/fr/docs/install)
 
 You should execute the following commands:
-
 ```bash
 $ yarn install
 $ yarn storybook:start
@@ -59,7 +58,6 @@ const App = () => {
 ```
 
 After you can include and render all needed components in your application:
-
 ```tsx
 import { Badge } from 'akeneo-design-system'
 
@@ -70,9 +68,9 @@ const MyHomePage = () => (
 )
 ```
 
-To know props of each component, visit page dedicated to the component here: https://akeneo.github.io/akeneo-design-system/, on playground section of each component, you can edit all properties and click on "Show code".
+To know props of each component, visit dedicated page to the component here: https://akeneo.github.io/akeneo-design-system/, at the playground section of each component, you can edit all properties and click on "Show code".
 
-## How to contribute?
+## Contribution
 
 This project has been automatically extracted from the following mono-repository: https://github.com/akeneo/pim-community-dev.
 If you want to contribute please create a pull request in this repository.
@@ -92,43 +90,9 @@ This repository contains:
 - Code relative to infrastructure (fetchers translation, routing, validation ...)
 - Logic specific to the domain
 
-### How to write a component?
+### How to contribute?
 
-- Component should be strongly typed with TypeScript
-- Component should be self documented, all props should describe itself through comment.
-- Component should be accessible
-- Component should not have hardcoded color, it should use color in theme
-- Component should use CSS-in-JS with [styled components](https://styled-components.com/docs)
-- Simple components should be stateless
-- Coding style should follow rules defined in .eslintrc
-- Component should manage forwardRef and ...props
-- Components should be keyboard accessible
-- Component should provide aria attributes if necessary
-- Components should follow the [compound components pattern](https://www.youtube.com/watch?v=hEGg-3pIHlE).
-
-### How to write a story?
-
-- All stories should be in [MDX format](https://mdxjs.com/)
-- All properties should be editable by the user
-- Story should describe when the component should be used
-- Story should display all possible variations
-- Story should follow this template:
-```
-# Name of the component
-Introduction
-
-## Usage
-- General guidance
-- Functionality
-
-## Playground
-- Visual
-- Show properties description
-- Possibility to interactivelly edit property values
-
-## Variations
-- Show all possible variations that allow user to have a better overview of the component capabilities
-```
+We have collected notes on how to contribute to this project in CONTRIBUTING.md.
 
 ## Testing instructions
 
@@ -150,7 +114,7 @@ Unit tests are in the same directory of the component.
 
 ### Visual tests
 
-All components in storybook are automatically tested visually through snapshot comparison.
+All components in Storybook are automatically tested visually through snapshot comparison.
 Normally, stories should describe all possible states, adding manually visual test should be an exception.
 
 Visual tests cannot be launched on your local computer, they are only launched by the continuous integration because the rendering is dependent on the platform.
