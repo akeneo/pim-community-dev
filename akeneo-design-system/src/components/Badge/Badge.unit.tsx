@@ -1,16 +1,10 @@
 import React from 'react';
-import {ThemeProvider} from 'styled-components';
 import {Badge} from './Badge';
-import {pimTheme} from 'theme/pim';
-import {render} from '@testing-library/react';
+import {render} from 'storybook/test-util';
 import '@testing-library/jest-dom/extend-expect';
 
 test('it renders its children properly', () => {
-  const {getByText} = render(
-    <ThemeProvider theme={pimTheme}>
-      <Badge>Badge content</Badge>
-    </ThemeProvider>
-  );
+  const {getByText} = render(<Badge>Badge content</Badge>);
 
   expect(getByText('Badge content')).toBeInTheDocument();
 });

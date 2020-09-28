@@ -55,23 +55,3 @@ it('it does not call onClick handler when user hit enter key on button', () => {
 
   expect(onClick).not.toBeCalled();
 });
-
-// it('it does not call onChange handler when read-only', () => {
-//   const onChange = jest.fn();
-//   const {getByText} = render(<Button checked={true} readOnly={true} onChange={onChange} label="Checkbox" />);
-
-//   const checkbox = getByText('Checkbox');
-//   fireEvent.click(checkbox);
-
-//   expect(onChange).not.toBeCalled();
-// });
-
-// it('it cannot be instantiated without handler when not readonly', () => {
-//   jest.spyOn(console, 'error').mockImplementation(() => {
-//     // do nothing.
-//   });
-
-//   expect(() => {
-//     render(<Button checked={true} label="Checkbox" />);
-//   }).toThrow('A Checkbox element expect an onChange attribute if not readOnly');
-// });

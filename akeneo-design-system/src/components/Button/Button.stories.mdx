@@ -1,16 +1,15 @@
 import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
-import {action} from '@storybook/addon-actions';
 import {Button} from './Button.tsx';
 
 <Meta
   title="Components/Button"
   component={Button}
   argTypes={{
-    level: {type: {control: {type: 'select', options: ['primary', 'secondary', 'tertiary', 'warning', 'danger']}}},
+    level: {control: {type: 'select', options: ['primary', 'secondary', 'tertiary', 'warning', 'danger']}},
     ghost: {control: {type: 'boolean'}},
     disabled: {control: {type: 'boolean'}},
-    size: {type: {control: {type: 'select', options: ['default', 'small']}}},
+    size: {control: {type: 'select', options: ['default', 'small']}},
     onClick: {action: 'Click on the button'},
   }}
   args={{
