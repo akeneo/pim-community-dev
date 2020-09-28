@@ -52,7 +52,7 @@ type CardProps = {
   isSelected?: boolean;
 
   /**
-   * The handler called when the Card is selected. When provided, the Card will display a Checkbox and become selectable.
+   * Handler called when the Card is selected. When provided, the Card will display a Checkbox and become selectable.
    */
   onSelectCard?: (isSelected: boolean) => void;
 
