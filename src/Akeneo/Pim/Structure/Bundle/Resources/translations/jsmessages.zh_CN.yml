@@ -6,8 +6,8 @@ pim_enrich.entity.family:
     update:
       success: 品类已成功更新。
       fail: 品类更新时出错。
-      cant_remove_attribute_as_label: 不能删除用作标签的属性
-      cant_remove_attribute_as_image: 不能删除用作主图片的属性
+      cant_remove_attribute_as_label: 不能移除用作标签的属性
+      cant_remove_attribute_as_image: 不能移除用作主图片的属性
       cant_remove_attribute_used_as_axis: 无法移除此属性，其被用作品类变型中的变量轴
       fields_not_ready: "该品类目前无法保存。以下字段未准备好： {{ fields }}"
     create:
@@ -193,7 +193,7 @@ pim_enrich.entity.attribute:
       pim_reference_data_simpleselect: 参考数据单选
       pim_reference_data_multiselect: 参考数据多选
     unique: 唯一值
-    useable_as_grid_filter: 可用在网格中
+    useable_as_grid_filter: 在网格中可用
     validation_regexp: 正则表达式
     validation_rule:
       label: 验证规则

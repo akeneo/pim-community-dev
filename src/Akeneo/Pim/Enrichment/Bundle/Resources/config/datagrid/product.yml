@@ -325,3 +325,12 @@ datagrid:
                         field_options:
                             attr:
                                 choice_list: true
+                entity_type:
+                    label: 'pim_datagrid.filters.entity_type.label'
+                    data_name: entity_type
+                    type: entity_type
+                    ftype: grouped-variant
+                    options:
+                        field_options:
+                            choices:
+                                'pim_datagrid.filters.entity_type.ungrouped': 'product'
