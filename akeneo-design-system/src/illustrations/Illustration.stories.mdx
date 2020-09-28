@@ -1,0 +1,27 @@
+import {Canvas, Meta, Story} from '@storybook/addon-docs/blocks';
+import {PreviewGrid, PreviewCard, PreviewContainer, LabelContainer} from 'shared/PreviewGallery'
+import * as Illustrations from './';
+
+<Meta title="Guidelines/Illustrations" />
+
+# Illustrations
+
+Illustrations are visually and emotionally powerful tool. Carefully identify the correct illustration in accordance with the content. If an illustration is used only as a decorative element, it can lose communication power and distract people. Use illustrations to encourage users who are frustrated, lost or have problems. For example, a page without results.
+
+## Gallery
+<Canvas>
+  <Story name="Standard">
+    <PreviewGrid>
+      {Object.keys(Illustrations).map((illustrationName) => {
+        return (
+          <PreviewCard key={illustrationName}>
+            <PreviewContainer>
+              {React.createElement(Illustrations[illustrationName], {height: 105, width: 105})}
+            </PreviewContainer>
+            <LabelContainer>{illustrationName.replace('Illustration','')}</LabelContainer>
+          </PreviewCard>
+        )
+      })}
+    </PreviewGrid>
+  </Story>
+</Canvas>

@@ -10,7 +10,13 @@ module.exports = {
   transformIgnorePatterns: ['/node_modules/'],
   collectCoverage: true,
   collectCoverageFrom: ['src/**/*.ts?(x)'],
-  coveragePathIgnorePatterns: ['src/icons', 'src/storybook', 'src/all.visual.tsx'],
+  coveragePathIgnorePatterns: [
+      'src/illustrations',
+      'src/icons',
+      'src/storybook',
+      'src/all.visual.tsx',
+      'src/shared/PreviewGallery'
+  ],
   coverageReporters: ['text-summary', 'html'],
   coverageDirectory: 'coverage',
   coverageThreshold: {
