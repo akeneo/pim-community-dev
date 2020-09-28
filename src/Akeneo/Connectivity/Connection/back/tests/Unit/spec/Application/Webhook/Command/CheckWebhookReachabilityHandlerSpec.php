@@ -5,8 +5,8 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\CheckWebhookReachabilityCommand;
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\CheckWebhookReachabilityHandler;
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\WebhookReachabilityChecker;
 use Akeneo\Connectivity\Connection\Domain\Webhook\DTO\UrlReachabilityStatus;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\WebhookReachabilityChecker;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
 

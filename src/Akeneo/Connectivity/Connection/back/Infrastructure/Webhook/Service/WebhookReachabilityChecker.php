@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Application\Webhook\Service;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service;
 
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\UrlReachabilityCheckerInterface;
 use Akeneo\Connectivity\Connection\Domain\Webhook\DTO\UrlReachabilityStatus;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
@@ -17,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class WebhookReachabilityChecker
+class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
 {
     /** @var string */
     const POST = 'POST';
@@ -46,10 +47,11 @@ class WebhookReachabilityChecker
      */
     public function check(string $url): UrlReachabilityStatus
     {
-        if (!$this->checkUrlFormat($url)) {
+        if (0 !== count($this->validator->validate($url, [new Assert\Url(), new Assert\NotBlank(),]))) {
+
             return new UrlReachabilityStatus(
                 false,
-                $this->buildMessage(self::WRONG_URL)
+                self::WRONG_URL
             );
         }
 
@@ -63,7 +65,7 @@ class WebhookReachabilityChecker
         } catch (GuzzleException $e) {
             if ($e instanceof RequestException && $e->hasResponse()) {
 
-                /** @var  ResponseInterface */
+                /** @var ResponseInterface */
                 $response = $e->getResponse();
 
                 return new UrlReachabilityStatus(
@@ -77,17 +79,6 @@ class WebhookReachabilityChecker
                 );
             }
         }
-    }
-
-    /**
-     * @param string $url
-     * @return bool
-     */
-    private function checkUrlFormat(string $url): bool
-    {
-        $violations = $this->validator->validate($url, [new Assert\Url(), new Assert\NotBlank(),]);
-
-        return 0 === count($violations);
     }
 
     /**

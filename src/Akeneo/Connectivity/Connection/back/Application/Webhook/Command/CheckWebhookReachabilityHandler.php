@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\WebhookReachabilityChecker;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\UrlReachabilityCheckerInterface;
 use Akeneo\Connectivity\Connection\Domain\Webhook\DTO\UrlReachabilityStatus;
 
 /**
@@ -13,10 +13,10 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\DTO\UrlReachabilityStatus;
  */
 final class CheckWebhookReachabilityHandler
 {
-    /** @var WebhookReachabilityChecker */
+    /** @var UrlReachabilityCheckerInterface */
     private $reachabilityChecker;
 
-    public function __construct(WebhookReachabilityChecker $reachabilityChecker)
+    public function __construct(UrlReachabilityCheckerInterface $reachabilityChecker)
     {
         $this->reachabilityChecker = $reachabilityChecker;
     }

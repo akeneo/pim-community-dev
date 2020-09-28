@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Service;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\WebhookReachabilityChecker;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\UrlReachabilityCheckerInterface;
 use Akeneo\Connectivity\Connection\Domain\Webhook\DTO\UrlReachabilityStatus;
 use GuzzleHttp\ClientInterface;
 use PhpSpec\ObjectBehavior;
@@ -29,7 +29,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(WebhookReachabilityChecker::class);
+        $this->shouldHaveType(UrlReachabilityCheckerInterface::class);
     }
 
     public function it_checks_url_is_good_and_reachable($client, $validator): void
