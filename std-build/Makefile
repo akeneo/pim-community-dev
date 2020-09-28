@@ -52,10 +52,10 @@ cache:
 	$(CMD_ON_PROJECT) rm -rf var/cache && $(PHP_RUN) bin/console cache:warmup
 
 composer.lock: composer.json
-	$(PHP_RUN) -d memory_limit=4G /usr/local/bin/composer update
+	$(PHP_RUN) /usr/local/bin/composer update
 
 vendor: composer.lock
-	$(PHP_RUN) -d memory_limit=4G /usr/local/bin/composer install
+	$(PHP_RUN) /usr/local/bin/composer install
 
 .PHONY: dependencies
 dependencies: vendor node_modules
