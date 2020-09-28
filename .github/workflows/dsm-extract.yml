@@ -19,7 +19,7 @@ jobs:
             -   name: Install Packages
                 run: cd akeneo-design-system && yarn install
             -   name: Build library
-                run: cd akeneo-design-system && yarn build
+                run: cd akeneo-design-system && yarn lib:build
             -   uses: actions/upload-artifact@v1
                 with:
                     name: Lib

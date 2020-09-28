@@ -18,7 +18,7 @@ jobs:
       - name: Install Packages
         run: cd akeneo-design-system && yarn install
       - name: Build lib
-        run: cd akeneo-design-system && yarn build
+        run: cd akeneo-design-system && yarn lib:build
       - name: Launch lint checks
         run: cd akeneo-design-system && yarn lint:check
       - name: Launch unit tests

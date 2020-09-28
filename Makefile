@@ -21,12 +21,13 @@ include make-file/*.mk
 ## Front
 ##
 .PHONY: node_modules
-node_modules: dsm
+node_modules:
 	$(YARN_RUN) install --frozen-lockfile
 
 .PHONY: dsm
 dsm:
-	$(NODE_RUN) yarn --cwd=akeneo-design-system run build
+	$(YARN_RUN) --cwd=akeneo-design-system install --frozen-lockfile
+	$(YARN_RUN) --cwd=akeneo-design-system run lib:build
 
 .PHONY: assets
 assets:
@@ -114,6 +115,7 @@ pim-behat:
 	APP_ENV=behat $(MAKE) cache
 	$(MAKE) assets
 	$(MAKE) css
+	$(MAKE) dsm
 	$(MAKE) javascript-dev
 	docker/wait_docker_up.sh
 	APP_ENV=behat $(MAKE) database
@@ -132,6 +134,7 @@ pim-dev:
 	APP_ENV=dev $(MAKE) cache
 	$(MAKE) assets
 	$(MAKE) css
+	$(MAKE) dsm
 	$(MAKE) javascript-dev
 	docker/wait_docker_up.sh
 	APP_ENV=dev O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" $(MAKE) database
@@ -142,6 +145,7 @@ pim-prod:
 	APP_ENV=prod $(MAKE) cache
 	$(MAKE) assets
 	$(MAKE) css
+	$(MAKE) dsm
 	$(MAKE) javascript-prod
 	docker/wait_docker_up.sh
 	APP_ENV=prod $(MAKE) database
