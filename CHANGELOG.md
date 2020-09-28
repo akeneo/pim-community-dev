@@ -52,6 +52,7 @@
 - PIM-9368: Allow minimum translation progress of 70% instead of 80%
 - PIM-9398: Add a primary key on connection table
 - PIM-9371: Disable save button when user creation form is not ready to submit
+- Use Composer 2.0 in Dockerfile
 
 # Technical Improvements
 
