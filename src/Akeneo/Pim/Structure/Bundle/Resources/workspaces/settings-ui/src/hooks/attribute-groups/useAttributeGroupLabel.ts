@@ -6,20 +6,18 @@ import {AttributeGroup} from '../../models';
 import {getLabel} from 'pimui/js/i18n';
 
 const useAttributeGroupLabel = (group: AttributeGroup): string => {
-    const [label, setLabel] = useState<string>(`[${group.code}]`);
-    const userContext = useUserContext();
+  const [label, setLabel] = useState<string>(`[${group.code}]`);
+  const userContext = useUserContext();
 
-    useEffect(() => {
-        if (userContext === null) {
-            return;
-        }
+  useEffect(() => {
+    if (userContext === null) {
+      return;
+    }
 
-        setLabel(
-            getLabel(group.labels, userContext.get('uiLocale'), group.code)
-        );
-    }, [group, userContext]);
+    setLabel(getLabel(group.labels, userContext.get('uiLocale'), group.code));
+  }, [group, userContext]);
 
-    return label;
+  return label;
 };
 
 export {useAttributeGroupLabel};

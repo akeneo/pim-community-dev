@@ -6,7 +6,7 @@ type Props = {
 };
 
 const draggedStyle = css`
-    opacity: 0.2;
+  opacity: 0.2;
 `;
 
 const selectionStyle = css`
@@ -22,9 +22,9 @@ const TableRow = styled.tr<Props>`
     background-color: ${({theme}) => theme.color.grey60};
   }
 
-  ${(props) => props.isSelected && selectionStyle}
-  
-  ${(props) => props.isDragged && draggedStyle}
+  ${props => props.isSelected && selectionStyle}
+
+  ${props => props.isDragged && draggedStyle}
 `;
 
 export {TableRow};

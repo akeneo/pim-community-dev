@@ -1,14 +1,10 @@
 import React, {FC} from 'react';
-import {TableBody} from "../layouts/tables";
+import {TableBody} from '../layouts/tables';
 
 type Props = {};
 
-const Body:FC<Props> = ({children})=> {
-    return (
-        <TableBody>
-            {children}
-        </TableBody>
-    );
+const Body: FC<Props> = ({children}) => {
+  return <TableBody>{children}</TableBody>;
 };
 
-export {Body}
+export {Body};

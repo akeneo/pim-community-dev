@@ -1,9 +1,15 @@
 {
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": ["./tsconfig.json"]
+    "project": [
+      "./tsconfig.json"
+    ]
   },
-  "plugins": ["@typescript-eslint", "react", "react-hooks"],
+  "plugins": [
+    "@typescript-eslint",
+    "react",
+    "react-hooks"
+  ],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
@@ -12,11 +18,25 @@
     "plugin:react/recommended"
   ],
   "rules": {
-    "@typescript-eslint/camelcase": ["error", {"properties": "never"}],
+    "@typescript-eslint/camelcase": [
+      "error",
+      {
+        "properties": "never"
+      }
+    ],
     "@typescript-eslint/explicit-function-return-type": "off",
-    "arrow-parens": ["warn", "as-needed"],
+    "arrow-parens": [
+      "warn",
+      "as-needed"
+    ],
     "indent": "off",
-    "max-len": ["error", {"code": 120, "ignoreStrings": true}],
+    "max-len": [
+      "error",
+      {
+        "code": 120,
+        "ignoreStrings": true
+      }
+    ],
     "newline-before-return": "off",
     "no-console": "warn",
     "react-hooks/exhaustive-deps": "warn",

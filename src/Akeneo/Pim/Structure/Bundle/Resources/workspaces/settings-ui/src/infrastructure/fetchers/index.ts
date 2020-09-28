@@ -1,1 +1,1 @@
-export * from './attributeGroupsFetcher'
+export * from './attributeGroupsFetcher';

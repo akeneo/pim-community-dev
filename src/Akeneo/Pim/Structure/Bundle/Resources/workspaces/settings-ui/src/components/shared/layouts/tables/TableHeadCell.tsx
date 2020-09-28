@@ -1,13 +1,13 @@
 import styled, {css} from 'styled-components';
 
 type Props = {
-    isFilterable?: boolean;
+  isFilterable?: boolean;
 };
 
 const filterableMixin = css`
   position: sticky;
   top: 44px;
-  
+
   &:hover {
     cursor: pointer;
   }
@@ -25,10 +25,8 @@ const TableHeadCell = styled.th<Props>`
   box-shadow: 0 1px 0 ${({theme}) => theme.color.grey120};
   background: ${({theme}) => theme.color.white};
   padding-top: 15px;
-  
-  ${(props) => props.isFilterable ? filterableMixin : notFilterableMixin}
 
-  :first-child {
+  ${props => (props.isFilterable ? filterableMixin : notFilterableMixin)} :first-child {
     padding-left: 20px;
   }
 `;
