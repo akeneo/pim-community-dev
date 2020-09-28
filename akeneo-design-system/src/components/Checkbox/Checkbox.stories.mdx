@@ -1,6 +1,5 @@
 import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
-import {action} from '@storybook/addon-actions';
 import {Checkbox} from './Checkbox.tsx';
 import {useArgs, updateArgs} from '@storybook/client-api';
 
@@ -9,7 +8,7 @@ import {useArgs, updateArgs} from '@storybook/client-api';
   component={Checkbox}
   argTypes={{
     readOnly: {control: {type: 'boolean'}},
-    checked: {type: {control: {type: 'select', options: ['true', 'false', 'mixed']}}},
+    checked: {control: {type: 'select', options: ['true', 'false', 'mixed']}},
     onChange: {action: 'Checkbox component onChange'},
   }}
   args={{
@@ -93,9 +92,9 @@ Use this playground to test the checkbox component
 <Canvas>
   <Story name="Animation">
     {(args) => {
-      const [checked, setchecked] = useState('true');
+      const [checked, setChecked] = useState('true');
       return (
-        <Checkbox {...args} checked={checked} onChange={(newChecked) => setchecked(newChecked)}/>
+        <Checkbox {...args} checked={checked} onChange={(newChecked) => setChecked(newChecked)}/>
       )
     }}
   </Story>
