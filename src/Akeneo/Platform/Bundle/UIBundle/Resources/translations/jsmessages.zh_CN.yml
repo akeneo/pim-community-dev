@@ -243,7 +243,7 @@ pim_enrich.entity.fallback:
       item_placeholder: 确定要删除此 {{ itemName }}？此操作不能撤消
     edit:
       leave: 确定要离开此页面？
-      discard_changes: 如果离开此页面，将会丢失对  {{ entity }} 的更改。
+      discard_changes: 如果离开此页面，将会丢失对 {{ entity }} 的更改。
       discard_changes_title: 是否确定?
 pim_enrich.entity.job_execution:
   page_title:

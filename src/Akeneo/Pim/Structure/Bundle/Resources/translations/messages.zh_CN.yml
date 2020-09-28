@@ -41,4 +41,4 @@ pim_enrich_attribute_form:
   availableLocales: 可用区域
   locale_specific: 区域特定
   group: 属性组
-  useableAsGridFilter: 可用在网格中
+  useableAsGridFilter: 在网格中可用

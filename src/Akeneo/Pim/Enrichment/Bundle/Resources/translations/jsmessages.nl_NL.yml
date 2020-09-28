@@ -387,6 +387,8 @@ pim_datagrid:
   filters:
     label: Filters
     system: Systeem
+    product_typology:
+      variant: 'Variant'
 batch_jobs:
   add_association:
     label: Associëren
