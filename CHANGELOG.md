@@ -60,7 +60,6 @@
 - CLOUD-1959: Use cloud-deployer 2.2 and terraform 0.12.25
 - MET-207: Asset Manager - As Peter, I would like to manually re-execute naming conventions
 - RUL-271: Rule engine - As Peter, I'd like to add a condition on a relative date for created/updated fields
-- Use Composer 2.0 in Dockerfile
 
 ## New features
 

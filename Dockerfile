@@ -102,7 +102,7 @@ RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") && \
 COPY docker/build/xdebug.ini /etc/php/7.3/cli/conf.d/99-akeneo-xdebug.ini
 COPY docker/build/xdebug.ini /etc/php/7.3/fpm/conf.d/99-akeneo-xdebug.ini
 
-COPY --from=composer:2.0 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 RUN chmod +x /usr/local/bin/composer
 
 # Make XDEBUG activable at container start
