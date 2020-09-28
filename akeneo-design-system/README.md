@@ -21,7 +21,7 @@ Latest version is available here: https://akeneo.github.io/akeneo-design-system/
 **Locally**
 
 To build this project, you need to have the following package installed:
-- Yarn (https://classic.yarnpkg.com/fr/docs/install)
+- Yarn (https://classic.yarnpkg.com/docs/install)
 
 You should execute the following commands:
 ```bash

@@ -1,11 +1,11 @@
-# Contribute
+# Contributing
 
-We prefer consistency above all. So that the best way to know how to do something could be to look around.
+We prefer consistency above all. So the best way to know how to do something could be to look around.
 
-## Add new component
+## Adding a new component
 
 Before writing a component you must know what problem it is supposed to solve and in what context to use it.
-Before add new component, please see if the component does not already exist, or the problem is not already solved by another component.
+Before adding a new component, please see if the component does not already exist, or the problem is not already solved by another component.
 
 - Create a branch (`git checkout -b branch_name`)
 - Create a new file related to your component `src/components/ComponentName/ComponentName.tsx`
@@ -13,8 +13,8 @@ Before add new component, please see if the component does not already exist, or
     - Add comment on all your properties (those comments will be displayed in Storybook)
     - Write related logic of the component
     - Add style in your component with [styled components](https://styled-components.com/docs).
-    - Add if necessary icons in the folder `src/icons/` (height and weight should be configurable)
-    - Add forwardRef management on your component (https://fr.reactjs.org/docs/forwarding-refs.html)
+    - Add (if necessary) icons in the folder `src/icons/` (color, height and weight should be configurable)
+    - Add forwardRef management on your component (https://reactjs.org/docs/forwarding-refs.html)
     - Forward ...props to your component
     - Add accessibility in your component (https://developer.mozilla.org/en-US/docs/Web/Accessibility)
 - Create a new file related to the stories of your component `src/components/ComponentName/ComponentName.stories.tsx`
@@ -37,7 +37,7 @@ If you update the style of one component, the visual test will fail. Github Acti
 
 Github Action will deploy a new version of the storybook give the url to designer for review.
 
-## Component guidelines
+## Components guidelines
 
 - Component should be strongly typed with TypeScript
 - All properties should be documented
@@ -133,6 +133,6 @@ _Show all possible variations that allow user to have a better overview of the c
 </Canvas>
 ```
 
-## Test guidelines
+## Tests guidelines
 - Test should use [Jest](https://jestjs.io/docs/en/getting-started)
 - Test should use [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
