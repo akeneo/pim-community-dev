@@ -89,3 +89,5 @@ parameters:
     count_product_model_values_limit: -1
     count_product_and_product_model_values_limit: -1
     count_users_limit: -1
+
+    comm_panel_api_url: 'https://pim-comm-panel.akeneo.com'

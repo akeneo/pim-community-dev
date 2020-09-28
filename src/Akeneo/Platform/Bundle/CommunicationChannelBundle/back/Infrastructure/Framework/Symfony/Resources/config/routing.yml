@@ -1,0 +1,14 @@
+akeneo_communication_channel_announcement_list_rest:
+    path: '/rest/announcements'
+    defaults: { _controller: akeneo_communication_channel.internal_api.announcement.list }
+    methods: [GET]
+
+akeneo_communication_channel_viewed_announcements_add_rest:
+    path: '/rest/viewed_announcements/add'
+    defaults: { _controller: akeneo_communication_channel.internal_api.announcement.add_viewed_announcements }
+    methods: [POST]
+
+akeneo_communication_channel_has_new_announcements_rest:
+    path: '/rest/new_announcements'
+    defaults: { _controller: akeneo_communication_channel.internal_api.announcement.has_new_announcements }
+    methods: [GET]

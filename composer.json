@@ -13,6 +13,7 @@
             "": "src/"
         },
         "psr-4": {
+            "Akeneo\\Platform\\CommunicationChannel\\": "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back",
             "Pim\\Upgrade\\": "upgrades/"
         },
         "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
@@ -27,7 +28,8 @@
             "Akeneo\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
             "Akeneo\\Test\\Integration\\": "tests/back/Integration/",
             "Akeneo\\Test\\Acceptance\\": "tests/back/Acceptance/",
-            "Akeneo\\Test\\Common\\": "tests/back/Common/"
+            "Akeneo\\Test\\Common\\": "tests/back/Common/",
+            "Akeneo\\Platform\\CommunicationChannel\\Test\\": "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests"
         },
         "classmap": [ "tests/back/Integration/AppKernelTest.php" ]
     },
@@ -108,7 +110,8 @@
         "liuggio/fastest": "1.6.*",
         "phpstan/phpstan": "^0.11.1",
         "phpstan/phpstan-symfony": "^0.11.1",
-        "league/flysystem-aws-s3-v3": "^1.0"
+        "league/flysystem-aws-s3-v3": "^1.0",
+        "mcustiel/phiremock": "1.12.1"
     },
     "suggest": {
         "akeneo/catalogs": "In order to install one of the Akeneo catalogs"

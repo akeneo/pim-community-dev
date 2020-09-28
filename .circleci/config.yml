@@ -109,6 +109,12 @@ jobs:
                 name: Acceptance back
                 command: docker-compose exec fpm vendor/bin/behat --strict -p acceptance -vv
                 when: always
+          - run:
+                name: Communication panel
+                command:
+                    make communication-channel-lint-back
+                    make communication-channel-coupling-back
+                    make communication-channel-unit-back
           - store_test_results:
                 path: var/tests
           - store_artifacts:

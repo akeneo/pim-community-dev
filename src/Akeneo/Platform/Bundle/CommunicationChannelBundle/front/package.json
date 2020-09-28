@@ -1,0 +1,12 @@
+{
+  "name": "@akeneo-pim-community/communication-channel",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "config": {
+    "generate_models_script": "./../../../../../../frontend/build/json-schema-to-typescript.js"
+  },
+  "scripts": {
+    "generate-models": "node $npm_package_config_generate_models_script src/definitions/ src/models/"
+  }
+}

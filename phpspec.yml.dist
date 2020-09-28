@@ -126,6 +126,13 @@ suites:
         spec_path: src/Akeneo/Tool/Bundle/VersioningBundle
         src_path: src/Akeneo/Tool/Bundle/VersioningBundle
 
+    ## Communication Channel context
+    CommunicationChannel:
+        namespace: Akeneo\Platform\CommunicationChannel
+        psr4_prefix: Akeneo\Platform\CommunicationChannel
+        spec_path: src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/Unit
+        src_path: src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back
+
     ## Pim Components
     Api:
         namespace: Akeneo\Tool\Component\Api

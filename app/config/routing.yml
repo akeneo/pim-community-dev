@@ -8,6 +8,9 @@ akeneo_pim_structure:
 akeneo_pim_enrichment:
     resource: "@AkeneoPimEnrichmentBundle/Resources/config/routing.yml"
 
+akeneo_communication_channel:
+    resource: "@AkeneoCommunicationChannelBundle/Resources/config/routing.yml"
+
 # PIM
 pim_analytics:
     resource: "@PimAnalyticsBundle/Resources/config/routing.yml"

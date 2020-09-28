@@ -1,0 +1,6 @@
+config:
+    paths:
+        akeneo/communication-channel: akeneocommunicationchannel/menu/communication-channel
+        akeneo/communication-channel/panel: akeneocommunicationchannel/bridge/view/panel.tsx
+
+        akeneo/template/menu/communication-channel: akeneocommunicationchannel/menu/communication-channel.html
