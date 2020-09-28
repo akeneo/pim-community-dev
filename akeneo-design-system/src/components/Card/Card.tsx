@@ -12,7 +12,7 @@ const CardContainer = styled.div<CardProps & AkeneoThemedProps>`
   background-color: ${getColor('white')};
   font-size: ${getFontSize('default')};
   color: ${getColor('grey120')};
-  cursor: ${({onSelectCard}: CardProps) => (undefined !== onSelectCard ? 'pointer' : 'default')};
+  cursor: ${({onClick}) => (undefined !== onClick ? 'pointer' : 'default')};
 
   img {
     box-sizing: border-box;

@@ -14,7 +14,7 @@ export const CardGrid = styled.div`
   title="Components/Card"
   component={Card}
   argTypes={{}}
-  args={{src: 'https://picsum.photos/200', children: 'Card text'}}
+  args={{src: 'https://picsum.photos/seed/akeneo/140', children: 'Card text'}}
 />
 
 # Card
@@ -52,7 +52,7 @@ gap: 20px;
       return (
         <CardGrid>
           {[...new Array(5)].map((_, index) => (
-            <Card {...args} key={index} src={`https://picsum.photos/14${index}`}>
+            <Card {...args} key={index} src={`https://picsum.photos/seed/akeneo${index}/140`}>
               Card {(index + 1).toString()}
             </Card>
           ))}
@@ -71,12 +71,17 @@ gap: 20px;
       const [secondSelected, setSecondSelected] = useState(false);
       return (
         <CardGrid>
-          <Card {...args} isSelected={firstSelected} onSelectCard={isSelected => setFirstSelected(isSelected)}>
+          <Card
+            {...args}
+            src="https://picsum.photos/seed/akened/140"
+            isSelected={firstSelected}
+            onSelectCard={isSelected => setFirstSelected(isSelected)}
+          >
             Selectable card
           </Card>
           <Card
             {...args}
-            src="https://picsum.photos/150"
+            src="https://picsum.photos/seed/akenee/140"
             isSelected={secondSelected}
             onSelectCard={isSelected => setSecondSelected(isSelected)}
           >
@@ -95,15 +100,15 @@ gap: 20px;
     {args => {
       return (
         <CardGrid>
-          <Card {...args} src={`https://picsum.photos/150`}>
+          <Card {...args} src={`https://picsum.photos/seed/akenea/140`}>
             <Badge level="danger">0%</Badge>
             Card not complete
           </Card>
-          <Card {...args} src={`https://picsum.photos/151`}>
+          <Card {...args} src={`https://picsum.photos/seed/akeneb/140`}>
             <Badge level="warning">50%</Badge>
             Card almost complete
           </Card>
-          <Card {...args} src={`https://picsum.photos/152`}>
+          <Card {...args} src={`https://picsum.photos/seed/akenec/140`}>
             <Badge level="primary">100%</Badge>
             Card complete
           </Card>
