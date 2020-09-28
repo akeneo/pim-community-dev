@@ -8,20 +8,20 @@ Before writing a component you must know what problem it is supposed to solve an
 Before add new component, please see if the component does not already exist, or the problem is not already solved by another component.
 
 - Create a branch (`git checkout -b branch_name`)
-- Create a new file related to your component src/components/`ComponentName/ComponentName.tsx`
-    - First of all define all properties that your component need to work, then type here the most strongly possible
+- Create a new file related to your component `src/components/ComponentName/ComponentName.tsx`
+    - First of all define all properties that your component need to work, then type them the most strongly possible
     - Add comment on all your properties (those comments will be displayed in Storybook)
     - Write related logic of the component
-    - Add style in your component with [styled components](https://styled-components.com/docs). Please use 
-    - Add if necessary icons in the folder src/`icons/` (height and weight should be configurable)
+    - Add style in your component with [styled components](https://styled-components.com/docs).
+    - Add if necessary icons in the folder `src/icons/` (height and weight should be configurable)
     - Add forwardRef management on your component (https://fr.reactjs.org/docs/forwarding-refs.html)
     - Forward ...props to your component
     - Add accessibility in your component (https://developer.mozilla.org/en-US/docs/Web/Accessibility)
-- Create a new file related to the stories of your component src/components/`ComponentName/ComponentName.stories.tsx`
+- Create a new file related to the stories of your component `src/components/ComponentName/ComponentName.stories.tsx`
     - Get the template from [Story template](#story-template) and replace `ComponentName` by your component name
     - Write `Usage introduction` and `General guidance` paragraph
     - Define all `argTypes`
-        - Use `control` when your property expects a value (string, number, boolean ...). Full list of control types: https://storybook.js.org/docs/react/essentials/controls#annotation.
+        - Use `control` when your property expects a value (string, number, boolean, enum ...), you can retrieve full list of control types here: https://storybook.js.org/docs/react/essentials/controls#annotation.
         - Use `action` when your property expects a callback relative to an action on the component
     - Define `arg` when you want a specific default value
     - Write all variations of your component
@@ -29,14 +29,13 @@ Before add new component, please see if the component does not already exist, or
     - Add unit tests to validate all component behaviours
 - Commit and push your change (Github Action will be automatically launched)
 - Github Action will assign you a pull request to alert you that new stories found, review it and merge it when it looks good for you
-- Github Action will deploy a new version of the storybook give the url to your designer for review
+- Github Action will deploy a new version of the storybook give the url to designer for review
 
 ## Update style of component
 
-If you update the style of one component, the visual test will fail.
+If you update the style of one component, the visual test will fail. Github Action will assign you a pull request to alert you that component changed, review it and merge it when it looks good for you.
 
-Github Action will assign you a pull request to alert you that component changed, review it and merge it when it looks good for you. 
-Github Action will deploy a new version of the storybook give the url to your designer for review.
+Github Action will deploy a new version of the storybook give the url to designer for review.
 
 ## Component guidelines
 
@@ -63,7 +62,6 @@ Github Action will deploy a new version of the storybook give the url to your de
 
 ```mdx
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
-import {action} from '@storybook/addon-actions';
 import {ComponentName} from './ComponentName';
 
 <Meta
@@ -137,4 +135,4 @@ _Show all possible variations that allow user to have a better overview of the c
 
 ## Test guidelines
 - Test should use [Jest](https://jestjs.io/docs/en/getting-started)
-- Test should use [React Testing Library](https://testing-library.com/docs/react-testing-library/intro) 
+- Test should use [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
