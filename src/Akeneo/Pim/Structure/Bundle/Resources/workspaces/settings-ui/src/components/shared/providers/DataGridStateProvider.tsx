@@ -13,7 +13,7 @@ type AfterDropRowHandler = () => void;
 type StartMoveRowHandler<T> = (event: React.DragEvent, source: T, index: number, rowElement: Element | null) => void;
 type MoveOverRowHandler<T> = (event: React.DragEvent, target: T, index: number) => void;
 type MoveDropRowHandler = (event: React.DragEvent, handleDropRow: AfterDropRowHandler) => void;
-type MoveEndRowHandler = (event: React.DragEvent) => void;
+type MoveEndRowHandler = (event: React.DragEvent, handleDropRow: AfterDropRowHandler) => void;
 
 type DataGridState<T> = {
   draggedData: T | null;

@@ -88,12 +88,13 @@ describe('useInitialDataGridState', () => {
     });
 
     act(() => {
-      result.current.moveEnd(dragEndEvent as any);
+      result.current.moveEnd(dragEndEvent as any, afterDropRowHandler);
     });
 
     expect(result.current.isDragged(dataSource[1])).toBeFalsy();
     expect(result.current.draggedData).toBeNull();
     expect(result.current.draggedIndex).toBe(-1);
+    expect(afterDropRowHandler).toBeCalled();
   });
 
   test('it moves item up', () => {
