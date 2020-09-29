@@ -50,6 +50,8 @@ datagrid:
                     data_name: startTime
                 status:
                     data_name: statusLabel
+                username:
+                    data_name: user
                 warning:
                     data_name: warningCount
             default:
@@ -64,6 +66,10 @@ datagrid:
                     type:      string
                     label:     Type
                     data_name: j.type
+                user:
+                    type:      string
+                    label:     User
+                    data_name: e.user
                 status:
                     type:             choice
                     data_name:        e.status
