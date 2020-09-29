@@ -5,5 +5,5 @@ import {Button, Props} from './Button';
 export const ImportantButton = ({classNames = [], ...props}: PropsWithChildren<Props>) => {
     classNames.push('AknButton--important');
 
-    return <Button {...props} classNames={classNames}></Button>;
+    return <Button {...props} classNames={classNames} />;
 };

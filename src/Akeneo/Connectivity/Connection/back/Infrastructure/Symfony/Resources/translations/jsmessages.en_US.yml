@@ -212,6 +212,15 @@ akeneo_connectivity.connection:
         flash:
             success: Event subscription successfully updated.
             error: Sorry, an error occurred while editing the event subscription.
+        regenerate_secret:
+            title: Confirm regeneration
+            description: Are you sure you want to regenerate the event subscription secret? Here is what will happen.
+            action:
+                regenerate: Regenerate
+            link: Here is what will happen.
+            flash:
+                success: Webhook secret successfully regenerated.
+                error: Sorry, an error occurred while regenerating the webhook secret.
     error_management:
         connection_monitoring:
             title: Monitoring
