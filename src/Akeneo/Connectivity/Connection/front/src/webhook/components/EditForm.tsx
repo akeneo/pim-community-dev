@@ -1,5 +1,5 @@
 import React, {FC, useContext, useState} from 'react';
-import {useForm} from 'react-hook-form';
+import {useFormContext} from 'react-hook-form';
 import {useHistory} from 'react-router';
 import styled from 'styled-components';
 import {FormGroup, FormInput, GhostButton, ToggleButton} from '../../common/components';
@@ -18,11 +18,10 @@ type Props = {
 export const EditForm: FC<Props> = ({webhook}: Props) => {
     const translate = useContext(TranslateContext);
     const history = useHistory();
-    const {register, getValues} = useForm();
     const checkReachability = useCheckReachability(webhook.connectionCode);
     const [resultTestUrl, setResultTestUrl] = useState<WebhookReachability>();
-    const {register, errors, getValues} = useFormContext();
-  
+    const {register, getValues} = useFormContext();
+
     const handleTestUrl = async () => {
         const result = await checkReachability(getValues('url'));
 
@@ -30,7 +29,7 @@ export const EditForm: FC<Props> = ({webhook}: Props) => {
             setResultTestUrl(result.value);
         }
     };
-    
+
     return (
         <>
             <FormGroup label='akeneo_connectivity.connection.webhook.form.enabled'>
