@@ -63,13 +63,13 @@ const getColorStyle = (props: {level: Level; ghost: boolean; disabled: boolean} 
       background-color: white;
       border-color: ${getColorForLevel(level, disabled ? 60 : 100)};
 
-      &:hover {
+      &:hover:not([disabled]) {
         color: ${getColorForLevel(level, 140)};
         background-color: ${getColorForLevel(level, 20)};
         border-color: ${getColorForLevel(level, 120)};
       }
 
-      &:active {
+      &:active:not([disabled]) {
         color: ${getColorForLevel(level, 140)};
         border-color: ${getColorForLevel(level, 140)};
       }
@@ -80,11 +80,11 @@ const getColorStyle = (props: {level: Level; ghost: boolean; disabled: boolean} 
     color: white;
     background-color: ${getColorForLevel(level, disabled ? 40 : 100)};
 
-    &:hover {
+    &:hover:not([disabled]) {
       background-color: ${getColorForLevel(level, 120)};
     }
 
-    &:active {
+    &:active:not([disabled]) {
       background-color: ${getColorForLevel(level, 140)};
     }
   `;
