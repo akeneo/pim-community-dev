@@ -1,5 +1,7 @@
 # 4.0.x
 
+- PIM-9467: Check for asset family existence is now case sensitive
+
 # 4.0.59 (2020-09-23)
 
 # 4.0.58 (2020-09-22)

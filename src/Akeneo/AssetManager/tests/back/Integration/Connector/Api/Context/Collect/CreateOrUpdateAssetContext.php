@@ -1137,4 +1137,28 @@ class CreateOrUpdateAssetContext implements Context
             [self::HOUSE_ASSET_CODE, self::PHONE_ASSET_CODE, self::FLOWER_ASSET_CODE]
         );
     }
+
+    /**
+     * @When the connector collects an asset for an asset family with the wrong case
+     */
+    public function theConnectorCollectsAnAssetForAnAssetFamilyWithTheWrongCase()
+    {
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'not_found_entity_asset_family_wrong_case.json'
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector that the asset family does not exist
+     */
+    public function thePimNotifiesTheConnectorThatTheAssetFamilyDoesNotExist()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'not_found_entity_asset_family_wrong_case.json'
+        );
+    }
 }

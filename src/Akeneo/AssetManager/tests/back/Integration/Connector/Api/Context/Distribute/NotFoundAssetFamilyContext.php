@@ -58,6 +58,19 @@ class NotFoundAssetFamilyContext implements Context
     }
 
     /**
+     * @When the connector requests for an asset of an existent asset family with the wrong case
+     */
+    public function theConnectorRequestsAnAssetOfAnExistentAssetFamilyWithTheWrongCase(): void
+    {
+        $client = $this->clientFactory->logIn('julia');
+        $this->notFoundAssetFamilyRequestContract = self::ASSET_REQUEST_CONTRACT_DIR . "not_found_asset_family_with_wrong_case.json";
+        $this->notFoundAssetFamilyResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            $this->notFoundAssetFamilyRequestContract
+        );
+    }
+
+    /**
      * @Then the PIM notifies the connector about an error indicating that the asset family does not exist
      */
     public function thePIMNotifiesAnErrorIndicatingThatTheAssetFamilyDoesNotExist(): void
@@ -82,6 +95,16 @@ class NotFoundAssetFamilyContext implements Context
     {
         $client = $this->clientFactory->logIn('julia');
         $this->notFoundAssetFamilyRequestContract = self::ASSET_FAMILY_REQUEST_CONTRACT_DIR. "not_found_asset_family.json";
+        $this->notFoundAssetFamilyResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundAssetFamilyRequestContract);
+    }
+
+    /**
+     * @When the connector requests an asset family with wrong case
+     */
+    public function theConnectorRequestsAnAssetFamilyWithWrongCase(): void
+    {
+        $client = $this->clientFactory->logIn('julia');
+        $this->notFoundAssetFamilyRequestContract = self::ASSET_FAMILY_REQUEST_CONTRACT_DIR. "not_found_asset_family_with_bad_case.json";
         $this->notFoundAssetFamilyResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundAssetFamilyRequestContract);
     }
 

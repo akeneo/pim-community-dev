@@ -1,0 +1,97 @@
+{
+  "request": {
+    "method": "PATCH",
+    "route": "akeneo_asset_manager_asset_family_rest_connector_create_or_update",
+    "query": {
+      "assetFamilyIdentifier": "BranD"
+    },
+    "body": {
+      "code": "BranD",
+      "labels": {
+        "en_US": "Brand english label",
+        "fr_FR": "Brand french label"
+      },
+      "attribute_as_main_media": "media",
+      "product_link_rules": [
+        {
+          "product_selections": [
+            {
+              "field": "sku",
+              "operator": "equals",
+              "value": "123134124123"
+            },
+            {
+              "field": "enabled",
+              "operator": "=",
+              "value": true
+            },
+            {
+              "field": "categories",
+              "operator": "IN CHILDREN",
+              "value": ["shoes", "tshirts"]
+            },
+            {
+              "field": "description",
+              "operator": "CONTAINS",
+              "value": "shoes",
+              "locale": null,
+              "channel": "ecommerce"
+            },
+            {
+              "field": "color",
+              "operator": "=",
+              "value": "yellow",
+              "locale": "en_US",
+              "channel": null
+            }
+          ],
+          "assign_assets_to": [
+            {
+              "mode": "add",
+              "attribute": "product_asset_collection"
+            }
+          ]
+        }
+      ],
+      "transformations": [
+        {
+          "label": "thumbnail_100x80",
+          "source": {
+            "attribute": "main_image",
+            "channel": null,
+            "locale": null
+          },
+          "target": {
+            "attribute": "thumbnail",
+            "channel": null,
+            "locale": null
+          },
+          "operations": [
+            {
+              "type": "thumbnail",
+              "parameters": {
+                "width": 100,
+                "height": 80
+              }
+            }
+          ],
+          "filename_prefix": "1_",
+          "filename_suffix": "_2"
+        }
+      ],
+      "naming_convention": {
+        "source": {"property":  "media", "locale": null, "channel": null},
+        "pattern": "/the_pattern/",
+        "abort_asset_creation_on_error": true
+      }
+    }
+  },
+  "response": {
+    "status": 422,
+    "body": {
+      "code": 422,
+      "message": "The \"brand\" asset family already exists. Creating an asset family with a different case is forbidden."
+    }
+  }
+}
+
