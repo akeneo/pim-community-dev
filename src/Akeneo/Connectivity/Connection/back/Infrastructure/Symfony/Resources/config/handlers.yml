@@ -100,3 +100,11 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.persistence.repository.webhook'
             - '@validator'
+            - '@akeneo_connectivity.connection.persistence.query.select_webhook_secret'
+            - '@akeneo_connectivity.connection.application.webhook.handler.generate_webhook_secret'
+
+    akeneo_connectivity.connection.application.webhook.handler.generate_webhook_secret:
+        class: Akeneo\Connectivity\Connection\Application\Webhook\Command\GenerateWebhookSecretHandler
+        arguments:
+            - '@akeneo_connectivity.connection.webhook.generate_secret'
+            - '@akeneo_connectivity.connection.persistence.query.save_webhook_secret'

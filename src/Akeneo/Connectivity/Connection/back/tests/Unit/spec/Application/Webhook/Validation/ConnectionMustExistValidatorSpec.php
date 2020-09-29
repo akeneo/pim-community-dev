@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection;
+namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Validation;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\CodeMustBeUnique;
 use Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\CodeMustBeUniqueValidator;
+use Akeneo\Connectivity\Connection\Application\Webhook\Validation\ConnectionMustExist;
+use Akeneo\Connectivity\Connection\Application\Webhook\Validation\ConnectionMustExistValidator;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
@@ -15,7 +17,7 @@ use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
-class CodeMustBeUniqueValidatorSpec extends ObjectBehavior
+class ConnectionMustExistValidatorSpec extends ObjectBehavior
 {
     public function let(ConnectionRepository $repository, ExecutionContextInterface $context): void
     {
@@ -25,7 +27,7 @@ class CodeMustBeUniqueValidatorSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(CodeMustBeUniqueValidator::class);
+        $this->shouldHaveType(ConnectionMustExistValidator::class);
     }
 
     public function it_is_a_constraint_validator(): void
@@ -33,40 +35,39 @@ class CodeMustBeUniqueValidatorSpec extends ObjectBehavior
         $this->shouldImplement(ConstraintValidatorInterface::class);
     }
 
-    public function it_validates_a_connection_code_must_be_unique($repository, $context): void
+    public function it_validates_that_a_connection_must_exist($repository, $context): void
     {
-        $constraint = new CodeMustBeUnique();
-        $repository->findOneByCode('magento')->willReturn(null);
+        $constraint = new ConnectionMustExist();
+        $magento = new Connection(
+            'magento',
+            'Magento connector',
+            FlowType::DATA_DESTINATION,
+            42,
+            50,
+            null,
+            true
+        );
+        $repository->findOneByCode('magento')->willReturn($magento);
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
-        $this->validate('magento', $constraint)->shouldReturn(null);
+        $this->validate('magento', $constraint);
     }
 
-    public function it_build_a_violation_if_the_code_is_not_unique(
+    public function it_build_a_violation_if_the_connection_does_not_exist(
         $repository,
         $context,
         ConstraintViolationBuilderInterface $builder
     ): void {
-        $constraint = new CodeMustBeUnique();
+        $constraint = new ConnectionMustExist();
         $repository
             ->findOneByCode('magento')
-            ->willReturn(
-                new Connection(
-                    'magento',
-                    'Magento connector',
-                    FlowType::DATA_DESTINATION,
-                    42,
-                    50,
-                    null,
-                    true
-                )
-            );
+            ->willReturn(null);
 
-        $context->buildViolation('akeneo_connectivity.connection.connection.constraint.code.must_be_unique')
+        $context->buildViolation('akeneo_connectivity.connection.webhook.constraint.connection_must_exist')
             ->shouldBeCalled()
             ->willReturn($builder);
         $builder->addViolation()->shouldBeCalled();
 
-        $this->validate('magento', $constraint)->shouldReturn(null);
+        $this->validate('magento', $constraint);
     }
 }

@@ -37,10 +37,11 @@ class UpdateWebhookEndToEnd extends WebTestCase
         );
         $result = json_decode($this->client->getResponse()->getContent(), true);
 
-        $expectedResult = null;
-
-        Assert::assertEquals(Response::HTTP_NO_CONTENT, $this->client->getResponse()->getStatusCode());
-        Assert::assertEquals($expectedResult, $result);
+        Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        Assert::assertEquals($connection->code(), $result['connectionCode']);
+        Assert::assertEquals(true, $result['enabled']);
+        Assert::assertEquals('http://valid-url.com', $result['url']);
+        Assert::assertIsString($result['secret']);
     }
 
     public function test_it_fails_to_update_a_webhook_to_enabled_without_url(): void
@@ -131,9 +132,18 @@ class UpdateWebhookEndToEnd extends WebTestCase
             json_encode($data)
         );
         $result = json_decode($this->client->getResponse()->getContent(), true);
-        $expectedResult = 'akeneo_connectivity.connection.webhook.error.not_found';
 
-        Assert::assertEquals(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+        $expectedResult = [
+            'errors' => [
+                [
+                    'field' => 'code',
+                    'message' => 'akeneo_connectivity.connection.webhook.constraint.connection_must_exist',
+                ],
+            ],
+            'message' => 'akeneo_connectivity.connection.constraint_violation_list_exception',
+        ];
+
+        Assert::assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $this->client->getResponse()->getStatusCode());
         Assert::assertEquals($expectedResult, $result);
     }
 
