@@ -13,7 +13,7 @@ it('it calls onChange handler when user clicks on checkbox', () => {
   const checkbox = getByText('Checkbox');
   fireEvent.click(checkbox);
 
-  expect(onChange).toBeCalledWith('false');
+  expect(onChange).toBeCalledWith(false);
 });
 
 it('it calls onChange handler when user clicks on unchecked checkbox', () => {
@@ -27,7 +27,7 @@ it('it calls onChange handler when user clicks on unchecked checkbox', () => {
   const checkbox = getByText('Checkbox');
   fireEvent.click(checkbox);
 
-  expect(onChange).toBeCalledWith('true');
+  expect(onChange).toBeCalledWith(true);
 });
 
 it('it calls onChange handler when user clicks on undetermined checkbox', () => {
@@ -41,7 +41,7 @@ it('it calls onChange handler when user clicks on undetermined checkbox', () => 
   const checkbox = getByText('Checkbox');
   fireEvent.click(checkbox);
 
-  expect(onChange).toBeCalledWith('true');
+  expect(onChange).toBeCalledWith(true);
 });
 
 it('it does not call onChange handler when read-only', () => {
