@@ -1,6 +1,10 @@
 import React, {FC, Fragment, ReactElement, ReactNode} from 'react';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import {LoadingPlaceholderContainer} from "./LoadingPlaceholder";
+
+type ButtonCollectionProps = {
+  userActionVisible: boolean;
+};
 
 const PageHeaderPlaceholder = styled.div`
   width: 200px;
@@ -16,10 +20,20 @@ const Header = styled.header`
   height: 130px;
 `;
 
-const ButtonCollection = styled.div.attrs(() => ({className: 'AknTitleContainer-actionsContainer AknButtonList'}))`
+const ButtonCollection = styled.div<ButtonCollectionProps>`
+  display: flex;
+  align-items: center;
+  margin-right: -10px;
+  
   > :not(:first-child) {
     margin-left: 10px;
   }
+  
+  ${(props) => props.userActionVisible && css`
+    border-left: 1px solid ${({theme}) => theme.color.grey80};
+    margin-left: 20px;
+    padding-left: 20px;
+  `}
 `;
 
 const LineContainer = styled.div`
@@ -120,7 +134,7 @@ const PageHeader: FC<PageHeaderProps> = ({
     <LineContainer>
       {imageSrc && (
         <ImageContainer>
-          <img className="AknImage-display" src={imageSrc} alt={title as string} />
+          <img src={imageSrc} alt={title as string} />
         </ImageContainer>
       )}
 
@@ -131,7 +145,7 @@ const PageHeader: FC<PageHeaderProps> = ({
             <ButtonsContainer>
               {userButtons}
               {buttons && (
-                <ButtonCollection>
+                <ButtonCollection userActionVisible={userButtons !== undefined}>
                   {buttons.map((button, index) => (
                     <Fragment key={index}>{button}</Fragment>
                   ))}
