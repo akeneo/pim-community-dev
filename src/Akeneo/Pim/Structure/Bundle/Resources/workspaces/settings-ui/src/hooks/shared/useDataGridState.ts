@@ -40,7 +40,7 @@ const useInitialDataGridState = <T extends {}>(
       let order = 0;
       let newIndex = DEFAULT_DRAGGED_INDEX;
 
-      dataSource.forEach(data => {
+      dataSource.forEach((data: T) => {
         if (isSameData(data, source)) {
           return;
         }

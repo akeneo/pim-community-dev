@@ -7,10 +7,6 @@ const useRedirectToAttributeGroup = () => {
 
   return useCallback(
     (group: AttributeGroup) => {
-      if (!router) {
-        return;
-      }
-
       const url = router.generate('pim_enrich_attributegroup_edit', {
         identifier: group.code,
       });

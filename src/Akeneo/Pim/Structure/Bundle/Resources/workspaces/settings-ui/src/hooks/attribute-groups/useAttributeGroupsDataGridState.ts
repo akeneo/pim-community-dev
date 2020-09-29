@@ -42,7 +42,7 @@ const useInitialAttributeGroupsDataGridState = (): AttributeGroupsDataGridState 
 
     const collection = await saveAttributeGroupsOrder(order);
     setGroups(fromAttributeGroupsCollection(collection));
-  }, [groups, refresh]);
+  }, [groups]);
 
   const refreshOrder = useCallback(
     (list: AttributeGroup[]) => {

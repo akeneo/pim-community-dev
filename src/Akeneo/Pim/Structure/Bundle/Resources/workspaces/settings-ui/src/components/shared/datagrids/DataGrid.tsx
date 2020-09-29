@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {PropsWithChildren} from 'react';
 import {Body} from './Body';
 import {Column} from './Column';
 import {HeaderRow} from './HeaderRow';
@@ -13,14 +13,13 @@ type Props<T> = {
   compareData: CompareRowDataHandler<T>;
 };
 
-type CompoundDataGrid<T> = FC<Props<T>> & {
-  Body: FC<T>;
-  Column: FC<T>;
-  HeaderRow: FC<T>;
-  Row: FC<T>;
-};
-
-const DataGrid: CompoundDataGrid<any> = ({children, isDraggable, dataSource, handleAfterMove, compareData}) => {
+const DataGrid = <T extends {}>({
+  children,
+  isDraggable,
+  dataSource,
+  handleAfterMove,
+  compareData,
+}: PropsWithChildren<Props<T>>) => {
   return (
     <DataGridStateProvider
       isDraggable={isDraggable || false}
@@ -34,6 +33,7 @@ const DataGrid: CompoundDataGrid<any> = ({children, isDraggable, dataSource, han
     </DataGridStateProvider>
   );
 };
+
 
 DataGrid.Body = Body;
 DataGrid.Column = Column;

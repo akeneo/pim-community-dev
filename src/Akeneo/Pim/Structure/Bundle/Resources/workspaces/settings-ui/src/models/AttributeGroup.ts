@@ -1,10 +1,12 @@
+type AttributeGroupLabels = {
+  [locale: string]: string;
+};
+
 type AttributeGroup = {
   code: string;
   sort_order: number;
   attributes: string[];
-  labels: {
-    [locale: string]: string;
-  };
+  labels: AttributeGroupLabels;
   permissions: {
     view: string[];
     edit: string[];
@@ -22,11 +24,9 @@ type AttributeGroupCollection = {
 };
 
 const fromAttributeGroupsCollection = (collection: AttributeGroupCollection): AttributeGroup[] => {
-  const groups = Object.values(collection).sort((groupA: AttributeGroup, groupB: AttributeGroup) => {
+  return Object.values(collection).sort((groupA: AttributeGroup, groupB: AttributeGroup) => {
     return groupA.sort_order - groupB.sort_order;
   });
-
-  return groups;
 };
 
-export {AttributeGroup, AttributeGroupCollection, fromAttributeGroupsCollection};
+export {AttributeGroup, AttributeGroupCollection, AttributeGroupLabels, fromAttributeGroupsCollection};

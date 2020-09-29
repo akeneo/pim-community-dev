@@ -1,4 +1,4 @@
 export * from './useAttributeGroupsDataGridState';
-export * from './useAttributeGroupLabel';
+export * from './useGetAttributeGroupLabel';
 export * from './useAttributeGroupPermissions';
 export * from './useRedirectToAttributeGroup';
