@@ -5,7 +5,7 @@ import {Checkbox} from './Checkbox';
 it('it calls onChange handler when user clicks on checkbox', () => {
   const onChange = jest.fn();
   const {getByText} = render(
-    <Checkbox checked="true" onChange={onChange}>
+    <Checkbox checked={true} onChange={onChange}>
       Checkbox
     </Checkbox>
   );
@@ -19,7 +19,7 @@ it('it calls onChange handler when user clicks on checkbox', () => {
 it('it calls onChange handler when user clicks on unchecked checkbox', () => {
   const onChange = jest.fn();
   const {getByText} = render(
-    <Checkbox checked="false" onChange={onChange}>
+    <Checkbox checked={false} onChange={onChange}>
       Checkbox
     </Checkbox>
   );
@@ -47,7 +47,7 @@ it('it calls onChange handler when user clicks on undetermined checkbox', () => 
 it('it does not call onChange handler when read-only', () => {
   const onChange = jest.fn();
   const {getByText} = render(
-    <Checkbox checked="true" readOnly={true} onChange={onChange}>
+    <Checkbox checked={true} readOnly={true} onChange={onChange}>
       Checkbox
     </Checkbox>
   );

@@ -87,7 +87,7 @@ const LabelContainer = styled.label<{readOnly: boolean} & AkeneoThemedProps>`
     `}
 `;
 
-type CheckboxChecked = 'true' | 'false' | 'mixed';
+type CheckboxChecked = boolean | 'mixed';
 
 type CheckboxProps = {
   /**
@@ -122,19 +122,19 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
     const [checkboxId] = useState<string>(`checkbox_${uuid()}`);
     const [labelId] = useState<string>(`label_${uuid()}`);
 
-    const isChecked = 'true' === checked;
+    const isChecked = true === checked;
     const isMixed = 'mixed' === checked;
 
     const handleChange = () => {
       if (!onChange || readOnly) return;
 
       switch (checked) {
-        case 'true':
-          onChange('false');
+        case true:
+          onChange(false);
           break;
         case 'mixed':
-        case 'false':
-          onChange('true');
+        case false:
+          onChange(true);
           break;
       }
     };
