@@ -3,18 +3,25 @@ import styled from 'styled-components';
 import {Badge, BadgeProps, Checkbox} from '../../components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 
+const Overlay = styled.div`
+  position: absolute;
+  background-color: ${getColor('grey140')};
+  opacity: 0%;
+  transition: opacity 0.3s ease-in;
+`;
+
 const CardContainer = styled.div<CardProps & AkeneoThemedProps>`
   position: relative;
   display: flex;
   flex-direction: column;
   width: ${({size}) => ('big' === size ? '200px' : '140px')};
   line-height: 20px;
-  background-color: ${getColor('white')};
   font-size: ${getFontSize('default')};
   color: ${getColor('grey120')};
   cursor: ${({onClick}) => (undefined !== onClick ? 'pointer' : 'default')};
 
-  img {
+  img,
+  ${Overlay} {
     box-sizing: border-box;
     border-style: solid;
     border-width: ${({isSelected}) => (isSelected ? '2px' : '1px')};
@@ -22,6 +29,10 @@ const CardContainer = styled.div<CardProps & AkeneoThemedProps>`
     width: ${({size}) => ('big' === size ? '200px' : '140px')};
     height: ${({size}) => ('big' === size ? '200px' : '140px')};
     margin-bottom: 7px;
+  }
+
+  :hover ${Overlay} {
+    opacity: 50%;
   }
 `;
 
@@ -36,6 +47,7 @@ const CardLabel = styled.div`
 
 const BadgeContainer = styled.div`
   position: absolute;
+  z-index: 5;
   top: 10px;
   right: 10px;
 `;
@@ -94,6 +106,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       <CardContainer ref={forwardedRef} size={size} isSelected={isSelected} onClick={toggleSelect} {...rest}>
         {0 < badges.length && <BadgeContainer>{badges[0]}</BadgeContainer>}
         <img src={src} alt={texts[0]} />
+        <Overlay />
         <CardLabel>
           {undefined !== onSelectCard && <Checkbox checked={isSelected} onChange={toggleSelect} />}
           {texts}
