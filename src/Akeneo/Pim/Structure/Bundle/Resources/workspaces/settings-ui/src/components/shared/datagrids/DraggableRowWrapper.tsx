@@ -36,7 +36,7 @@ const DraggableRowWrapper = <T extends {}>({
             moveDrop(event, handleDrop);
           }}
           onDragEnd={event => {
-            moveEnd(event);
+            moveEnd(event, handleDrop);
           }}
         >
           <MoveIcon />

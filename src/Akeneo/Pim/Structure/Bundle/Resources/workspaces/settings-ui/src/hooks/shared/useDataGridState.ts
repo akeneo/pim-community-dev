@@ -126,13 +126,18 @@ const useInitialDataGridState = <T extends {}>(
   );
 
   const moveEnd = useCallback(
-    (event: React.DragEvent) => {
+    (event: React.DragEvent, handleDropRow: AfterDropRowHandler) => {
       handleDragEnd(event, () => {
+        if (draggedData === null) {
+          return;
+        }
+
+        handleDropRow();
         setDraggedData(null);
         setDraggedIndex(DEFAULT_DRAGGED_INDEX);
       });
     },
-    [setDraggedData, setDraggedIndex]
+    [setDraggedData, setDraggedIndex, draggedData]
   );
 
   return {
