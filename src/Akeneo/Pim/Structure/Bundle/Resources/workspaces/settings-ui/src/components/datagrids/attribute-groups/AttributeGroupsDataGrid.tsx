@@ -1,5 +1,5 @@
-import React, {FC} from 'react';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import React, {FC, useEffect, useState} from 'react';
+import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
 import {useAttributeGroupPermissions, useAttributeGroupsDataGridState, useGetAttributeGroupLabel} from '../../../hooks';
 import {AttributeGroup} from '../../../models';
 import {DataGrid} from '../../shared';
@@ -16,13 +16,29 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups}) => {
   const {sortGranted, editGranted} = useAttributeGroupPermissions();
   const getLabel = useGetAttributeGroupLabel();
   const translate = useTranslate();
+  const userContext = useUserContext();
+  const [searchString, setSearchString] = useState('');
+  const [filteredGroups, setFilteredGroups] = useState<AttributeGroup[]>([]);
+
+  useEffect(() => {
+    setFilteredGroups(groups);
+  }, [groups]);
+
+  const onSearch = (searchValue: string) => {
+    setSearchString(searchValue);
+    setFilteredGroups(
+      Object.values(groups).filter((group: AttributeGroup) => group.labels[userContext.get('uiLocale')].toLowerCase().includes(searchValue.toLowerCase()))
+    );
+  };
 
   return (
     <DataGrid
       isDraggable={sortGranted}
-      dataSource={groups}
+      dataSource={filteredGroups}
       handleAfterMove={refreshOrder}
       compareData={compare}
+      searchValue={searchString}
+      onSearch={onSearch}
     >
       <DataGrid.HeaderRow>
         <DataGrid.Column>{translate('pim_enrich.entity.attribute_group.grid.columns.name')}</DataGrid.Column>
@@ -41,7 +57,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups}) => {
           (async () => saveOrder())();
         }}
       >
-        {groups.map((group) => (
+        {filteredGroups.map((group) => (
           <DataGrid.Row
             key={group.code}
             data={group}
