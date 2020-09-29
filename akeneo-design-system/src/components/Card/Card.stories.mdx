@@ -6,13 +6,13 @@ import {Badge} from '../../components';
 
 export const CardGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, 140px);
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 20px;
 `;
 
 export const BigCardGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, 200px);
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 40px;
 `;
 
@@ -47,7 +47,7 @@ When displayed in a grid, Cards should be spaced with at least `20px`.
 
 ```css
 display: grid;
-grid-template-columns: repeat(auto-fill, 140px); /* 200px when using the big variant */
+grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* 200px when using the big variant */
 gap: 20px; /* 40px when using the big variant */
 ```
 
@@ -156,7 +156,7 @@ gap: 20px; /* 40px when using the big variant */
             onSelectCard={isSelected => setSecondSelected(isSelected)}
           >
             <Badge level="warning">75%</Badge>
-            Badge & selectable 🤩
+            Badge &amp; selectable 🤩
           </Card>
         </BigCardGrid>
       );
