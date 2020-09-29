@@ -214,7 +214,7 @@ akeneo_connectivity.connection:
             error: Sorry, an error occurred while editing the event subscription.
         regenerate_secret:
             title: Confirm regeneration
-            description: Are you sure you want to regenerate the event subscription secret? Here is what will happen.
+            description: Are you sure you want to regenerate the event subscription secret?
             action:
                 regenerate: Regenerate
             link: Here is what will happen.
