@@ -21,6 +21,8 @@ const Overlay = styled.div`
   position: absolute;
   z-index: 2;
   top: 0;
+  width: 100%;
+  padding-bottom: 100%;
   background-color: ${getColor('grey140')};
   opacity: 0%;
   transition: opacity 0.3s ease-in;
@@ -47,10 +49,6 @@ const CardContainer = styled.div<CardProps & AkeneoThemedProps>`
     border-width: ${({isSelected}) => (isSelected ? '2px' : '1px')};
     border-color: ${({isSelected}) => (isSelected ? getColor('blue100') : getColor('grey100'))};
   }
-
-  :hover ${Overlay} {
-    opacity: 50%;
-  }
 `;
 
 const ImageContainer = styled.div`
@@ -62,9 +60,8 @@ const ImageContainer = styled.div`
     padding-bottom: 100%;
   }
 
-  ${Overlay} {
-    width: 100%;
-    padding-bottom: 100%;
+  :hover ${Overlay} {
+    opacity: 50%;
   }
 `;
 
