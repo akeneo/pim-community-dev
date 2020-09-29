@@ -50,7 +50,7 @@ SQL;
 SELECT identifier, raw_values
 FROM pim_catalog_product
 WHERE product_model_id = :parentId
-AND identifier != :identifier;
+AND id != :id
 SQL;
         } else {
             return [];
