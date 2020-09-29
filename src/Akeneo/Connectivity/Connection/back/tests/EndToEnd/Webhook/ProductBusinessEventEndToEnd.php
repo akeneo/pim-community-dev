@@ -54,7 +54,7 @@ JSON;
 
     public function test_update_product_add_business_event_to_queue()
     {
-        $this->createProduct('product_update_test');
+        $this->productLoader->create('product_update_test', []);
 
         $apiConnectionEcommerce = $this->createConnection('ecommerce', 'Ecommerce', FlowType::DATA_DESTINATION);
         $apiClient = $this->createAuthenticatedClient(
@@ -78,15 +78,6 @@ JSON;
         $envelopes = $transport->get();
         $this->assertCount(1, $envelopes);
         $this->assertInstanceOf('\Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated', $envelopes[0]->getMessage());
-    }
-
-    private function createProduct(string $identifier, array $data = []): ProductInterface
-    {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $this->get('pim_catalog.saver.product')->save($product);
-
-        return $product;
     }
 
     protected function getConfiguration(): Configuration
