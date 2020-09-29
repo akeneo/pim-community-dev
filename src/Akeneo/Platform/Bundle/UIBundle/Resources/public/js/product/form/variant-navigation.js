@@ -61,6 +61,7 @@ define([
      */
     configure: function () {
       this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
+      this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render.bind(this));
 
       return BaseForm.prototype.configure.apply(this, arguments);
     },
