@@ -1,9 +1,10 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useCallback, useEffect, useState} from 'react';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
 import {useAttributeGroupPermissions, useAttributeGroupsDataGridState, useGetAttributeGroupLabel} from '../../../hooks';
 import {AttributeGroup} from '../../../models';
 import {DataGrid} from '../../shared';
 import {ColumnLabel} from "./ColumnLabel";
+import {debounce} from 'lodash';
 
 const FeatureFlags = require("pim/feature-flags");
 
@@ -24,11 +25,17 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups}) => {
     setFilteredGroups(groups);
   }, [groups]);
 
+  const debouncedSearch = useCallback(
+    debounce((searchValue: string) => {
+      setFilteredGroups(
+        Object.values(groups).filter((group: AttributeGroup) => group.labels[userContext.get('uiLocale')].toLowerCase().includes(searchValue.toLowerCase()))
+      );
+    }, 300), [groups]
+  );
+
   const onSearch = (searchValue: string) => {
     setSearchString(searchValue);
-    setFilteredGroups(
-      Object.values(groups).filter((group: AttributeGroup) => group.labels[userContext.get('uiLocale')].toLowerCase().includes(searchValue.toLowerCase()))
-    );
+    debouncedSearch(searchValue);
   };
 
   return (
