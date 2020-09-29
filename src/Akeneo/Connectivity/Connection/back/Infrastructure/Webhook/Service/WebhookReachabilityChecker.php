@@ -43,7 +43,6 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
         $violations = $this->validator->validate($url, [new Assert\Url(), new Assert\NotBlank(),]);
 
         if (0 !== count($violations)) {
-
             return new UrlReachabilityStatus(
                 false,
                 $violations->get(0)->getMessage()

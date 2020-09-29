@@ -8,11 +8,11 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCred
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Test\Integration\Configuration;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\Request;
-use PHPUnit\Framework\Assert;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Assert;
 
 /**
  * @author    Thomas Galvaing <thomas.galvaing@akeneo.com>
@@ -170,4 +170,3 @@ class CheckWebhookReachabilityEndToEnd extends WebTestCase
         return $this->createConnection('sap', 'SAP', FlowType::DATA_SOURCE, true);
     }
 }
-
