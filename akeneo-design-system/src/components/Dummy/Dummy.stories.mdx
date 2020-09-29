@@ -1,0 +1,61 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Dummy} from './Dummy.tsx';
+
+<Meta
+  title="Components/Dummy"
+  component={Dummy}
+  argTypes={{
+    level: {control: {type: 'select', options: ['primary', 'secondary', 'tertiary', 'danger']}},
+  }}
+  args={{level: 'primary', children: 'Dummy text'}}
+/>
+
+# Dummy
+
+## Usage
+
+TODO
+
+### TODO
+
+TODO
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <Dummy {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on level
+
+<Canvas>
+  <Story name="Level">
+    {args => {
+      return (
+        <>
+          <Dummy {...args} level="primary">
+            Primary
+          </Dummy>
+          <Dummy {...args} level="secondary">
+            Secondary
+          </Dummy>
+          <Dummy {...args} level="tertiary">
+            Tertiary
+          </Dummy>
+          <Dummy {...args} level="warning">
+            Warning
+          </Dummy>
+          <Dummy {...args} level="danger">
+            Danger
+          </Dummy>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
