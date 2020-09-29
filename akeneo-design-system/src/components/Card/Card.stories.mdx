@@ -1,20 +1,8 @@
 import {useState} from 'react';
 import styled from 'styled-components';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
-import {Card} from './Card.tsx';
+import {Card, CardGrid} from './Card.tsx';
 import {Badge} from '../../components';
-
-export const CardGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 20px;
-`;
-
-export const BigCardGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 40px;
-`;
 
 <Meta
   title="Components/Card"
@@ -29,48 +17,28 @@ export const BigCardGrid = styled.div`
 Cards are used to have a good visual representation of the items to display. Cards can be used in a grid or in a collection.
 _Example: Assets manager or Connections._
 
+Cards should be displayed in a grid, therefore, a `CardGrid` component is also available with a convenient `size` prop. Possible values for the `size` prop are: `normal` or `big`.
+
 ## Playground
 
 <Canvas>
   <Story name="Standard">
     {args => {
-      return <Card {...args} />;
-    }}
-  </Story>
-</Canvas>
-
-<ArgsTable story="Standard" />
-
-## Grid
-
-When displayed in a grid, Cards should be spaced with at least `20px`.
-
-```css
-display: grid;
-grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* 200px when using the big variant */
-gap: 20px; /* 40px when using the big variant */
-```
-
-<Canvas>
-  <Story name="Grid">
-    {args => {
       return (
         <CardGrid>
-          {[...new Array(5)].map((_, index) => (
-            <Card {...args} key={index} src={`https://picsum.photos/seed/akeneo${index}/140`}>
-              Card {(index + 1).toString()}
-            </Card>
-          ))}
+          <Card {...args} />
         </CardGrid>
       );
     }}
   </Story>
 </Canvas>
 
-## Selection
+<ArgsTable story="Standard" />
+
+## Selectable
 
 <Canvas>
-  <Story name="Selection">
+  <Story name="Selectable">
     {args => {
       const [firstSelected, setFirstSelected] = useState(false);
       const [secondSelected, setSecondSelected] = useState(false);
@@ -123,7 +91,25 @@ gap: 20px; /* 40px when using the big variant */
   </Story>
 </Canvas>
 
-## Size
+## CardGrid
+
+<Canvas>
+  <Story name="CardGrid">
+    {args => {
+      return (
+        <CardGrid>
+          {[...new Array(5)].map((_, index) => (
+            <Card {...args} key={index} src={`https://picsum.photos/seed/akeneo${index}/140`}>
+              Card {(index + 1).toString()}
+            </Card>
+          ))}
+        </CardGrid>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Big CardGrid
 
 <Canvas>
   <Story name="Size">
@@ -131,17 +117,16 @@ gap: 20px; /* 40px when using the big variant */
       const [firstSelected, setFirstSelected] = useState(false);
       const [secondSelected, setSecondSelected] = useState(false);
       return (
-        <BigCardGrid>
-          <Card {...args} size="big" src={`https://picsum.photos/seed/akened/200`}>
+        <CardGrid size="big">
+          <Card {...args} src={`https://picsum.photos/seed/akened/200`}>
             This is a big Card
           </Card>
-          <Card {...args} size="big" src={`https://picsum.photos/seed/akenee/200`}>
+          <Card {...args} src={`https://picsum.photos/seed/akenee/200`}>
             <Badge level="primary">100%</Badge>
             This one even has a Badge
           </Card>
           <Card
             {...args}
-            size="big"
             src={`https://picsum.photos/seed/akenef/200`}
             isSelected={firstSelected}
             onSelectCard={isSelected => setFirstSelected(isSelected)}
@@ -150,7 +135,6 @@ gap: 20px; /* 40px when using the big variant */
           </Card>
           <Card
             {...args}
-            size="big"
             src={`https://picsum.photos/seed/akeneg/200`}
             isSelected={secondSelected}
             onSelectCard={isSelected => setSecondSelected(isSelected)}
@@ -158,7 +142,7 @@ gap: 20px; /* 40px when using the big variant */
             <Badge level="warning">75%</Badge>
             Badge &amp; selectable 🤩
           </Card>
-        </BigCardGrid>
+        </CardGrid>
       );
     }}
   </Story>

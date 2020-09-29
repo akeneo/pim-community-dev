@@ -1,13 +1,15 @@
 import React from 'react';
 import {fireEvent, render} from 'storybook/test-util';
-import {Card} from './Card';
+import {Card, CardGrid} from './Card';
 import {Badge} from '../../components';
 
 test('it renders its children properly', () => {
   const {getByText} = render(
-    <Card src="some.jpg">
-      <Badge>100%</Badge>Card text
-    </Card>
+    <CardGrid>
+      <Card src="some.jpg">
+        <Badge>100%</Badge>Card text
+      </Card>
+    </CardGrid>
   );
 
   expect(getByText('Card text')).toBeInTheDocument();

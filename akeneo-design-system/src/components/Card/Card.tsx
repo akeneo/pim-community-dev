@@ -3,6 +3,20 @@ import styled from 'styled-components';
 import {Badge, BadgeProps, Checkbox} from '../../components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 
+type CardGridProps = {
+  size?: 'normal' | 'big';
+};
+
+const CardGrid = styled.div<CardGridProps>`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(${({size}) => ('big' === size ? 200 : 140)}px, 1fr));
+  gap: ${({size}) => ('big' === size ? 40 : 20)}px;
+`;
+
+CardGrid.defaultProps = {
+  size: 'normal',
+};
+
 const Overlay = styled.div`
   position: absolute;
   background-color: ${getColor('grey140')};
@@ -14,21 +28,31 @@ const CardContainer = styled.div<CardProps & AkeneoThemedProps>`
   position: relative;
   display: flex;
   flex-direction: column;
-  width: ${({size}) => ('big' === size ? '200px' : '140px')};
+  width: 100%;
   line-height: 20px;
   font-size: ${getFontSize('default')};
   color: ${getColor('grey120')};
   cursor: ${({onClick}) => (undefined !== onClick ? 'pointer' : 'default')};
 
-  img,
-  ${Overlay} {
+  img {
+    position: absolute;
+    object-fit: contain;
+    width: 100%;
     box-sizing: border-box;
     border-style: solid;
     border-width: ${({isSelected}) => (isSelected ? '2px' : '1px')};
     border-color: ${({isSelected}) => (isSelected ? getColor('blue100') : getColor('grey100'))};
-    width: ${({size}) => ('big' === size ? '200px' : '140px')};
-    height: ${({size}) => ('big' === size ? '200px' : '140px')};
-    margin-bottom: 7px;
+  }
+
+  ::before {
+    content: '';
+    display: block;
+    padding-bottom: 100%;
+  }
+
+  ${Overlay} {
+    width: 100%;
+    padding-bottom: 100%;
   }
 
   :hover ${Overlay} {
@@ -39,6 +63,7 @@ const CardContainer = styled.div<CardProps & AkeneoThemedProps>`
 const CardLabel = styled.div`
   display: flex;
   align-items: center;
+  margin-top: 7px;
 
   > :first-child {
     margin-right: 6px;
@@ -57,11 +82,6 @@ type CardProps = {
    * Source URL of the image to display in the Card.
    */
   src: string;
-
-  /**
-   * Size of the Card.
-   */
-  size?: 'normal' | 'big';
 
   /**
    * Whether or not the Card is selected.
@@ -84,10 +104,7 @@ type CardProps = {
  * Cards can be used in a grid or in a collection.
  */
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  (
-    {src, size = 'normal', isSelected = false, onSelectCard, children, ...rest}: CardProps,
-    forwardedRef: Ref<HTMLDivElement>
-  ) => {
+  ({src, isSelected = false, onSelectCard, children, ...rest}: CardProps, forwardedRef: Ref<HTMLDivElement>) => {
     const badges: ReactElement<BadgeProps>[] = [];
     const texts: string[] = [];
     React.Children.forEach(children, child => {
@@ -103,7 +120,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     const toggleSelect = undefined !== onSelectCard ? () => onSelectCard(!isSelected) : undefined;
 
     return (
-      <CardContainer ref={forwardedRef} size={size} isSelected={isSelected} onClick={toggleSelect} {...rest}>
+      <CardContainer ref={forwardedRef} isSelected={isSelected} onClick={toggleSelect} {...rest}>
         {0 < badges.length && <BadgeContainer>{badges[0]}</BadgeContainer>}
         <img src={src} alt={texts[0]} />
         <Overlay />
@@ -116,4 +133,4 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
   }
 );
 
-export {Card};
+export {Card, CardGrid};
