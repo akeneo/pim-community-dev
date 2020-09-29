@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {useForm} from 'react-hook-form';
+import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
+import {FormContext, useForm, useFormContext} from 'react-hook-form';
 import {useHistory, useParams} from 'react-router';
 import styled from 'styled-components';
 import defaultImageUrl from '../../common/assets/illustrations/NewAPI.svg';
@@ -19,21 +19,53 @@ import {useMediaUrlGenerator} from '../../settings/use-media-url-generator';
 import {BreadcrumbRouterLink} from '../../shared/router';
 import {Translate} from '../../shared/translate';
 import {EditForm} from '../components/EditForm';
+import {useUpdateWebhook} from '../hooks/api/use-update-webhook';
 import {useWebhook} from '../hooks/api/use-webhook';
+import {isErr} from '../../shared/fetch-result/result';
+import {Webhook} from '../model/Webhook';
+
+export type FormInput = {
+    connectionCode: string;
+    url: string | null;
+    enabled: boolean;
+};
 
 export const EditConnectionWebhook = () => {
     const history = useHistory();
     const {connectionCode} = useParams<{connectionCode: string}>();
     const generateMediaUrl = useMediaUrlGenerator();
-    const {loading, webhook} = useWebhook(connectionCode);
+    const {loading, webhook: fetchedWebhook} = useWebhook(connectionCode);
+    const formMethods = useForm<FormInput>();
+    const [webhook, setWebhook] = useState<Webhook>(
+        fetchedWebhook ?
+            fetchedWebhook :
+            {
+                connectionCode: connectionCode,
+                enabled: false,
+                connectionImage: null,
+                secret: null,
+                url: null
+            }
+    );
 
     useEffect(() => {
-        if (!loading && !webhook) {
+        if (!loading && !fetchedWebhook) {
             history.push('/connections');
         }
-    }, [loading, webhook]);
+        if (!loading && fetchedWebhook) {
+            setWebhook(fetchedWebhook);
+        }
+    }, [loading, fetchedWebhook]);
 
-    if (loading || !webhook) {
+    useEffect(() => {
+        formMethods.reset({
+            connectionCode: webhook?.connectionCode,
+            enabled: webhook?.enabled,
+            url: webhook?.url,
+        });
+    }, [webhook]);
+
+    if (loading || !fetchedWebhook) {
         return <Loading />;
     }
 
@@ -59,54 +91,87 @@ export const EditConnectionWebhook = () => {
     );
 
     return (
-        <form>
-            <PageHeader
-                breadcrumb={breadcrumb}
-                userButtons={userButtons}
-                imageSrc={
-                    null === webhook.connectionImage
-                        ? defaultImageUrl
-                        : generateMediaUrl(webhook.connectionImage, 'thumbnail')
-                }
-                buttons={[<SaveButton key={0} />]}
-                state={<FormState />}
-            >
-                {webhook.connectionCode}
-            </PageHeader>
+        <FormContext {...formMethods}>
+            <form>
+                <PageHeader
+                    breadcrumb={breadcrumb}
+                    userButtons={userButtons}
+                    imageSrc={
+                        null === webhook.connectionImage
+                            ? defaultImageUrl
+                            : generateMediaUrl(webhook.connectionImage, 'thumbnail')
+                    }
+                    buttons={[<SaveButton key={0} code={connectionCode} webhook={webhook} setWebhook={setWebhook}/>]}
+                    state={<FormState />}
+                >
+                    {connectionCode}
+                </PageHeader>
 
-            <PageContent>
-                <Layout>
-                    <Section title={<Translate id='akeneo_connectivity.connection.webhook.event_subscription' />} />
-                    <div>
-                        <SmallHelper>
-                            <Translate id='akeneo_connectivity.connection.webhook.helper.message' />
-                            &nbsp;
-                            <HelperLink
-                                href='https://help.akeneo.com/pim/serenity/articles/manage-your-connections.html#subscribe-to-events'
-                                target='_blank'
-                                rel='noopener noreferrer'
-                            >
-                                <Translate id='akeneo_connectivity.connection.webhook.helper.link' />
-                            </HelperLink>
-                        </SmallHelper>
-                    </div>
-                    <EditForm webhook={webhook} />
-                </Layout>
-            </PageContent>
-        </form>
+                <PageContent>
+                    <Layout>
+                        <Section title={<Translate id='akeneo_connectivity.connection.webhook.event_subscription' />} />
+                        <div>
+                            <SmallHelper>
+                                <Translate id='akeneo_connectivity.connection.webhook.helper.message' />
+                                &nbsp;
+                                <HelperLink
+                                    href='https://help.akeneo.com/pim/serenity/articles/manage-your-connections.html#subscribe-to-events'
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                >
+                                    <Translate id='akeneo_connectivity.connection.webhook.helper.link' />
+                                </HelperLink>
+                            </SmallHelper>
+                        </div>
+                        <EditForm webhook={webhook} />
+                    </Layout>
+                </PageContent>
+            </form>
+        </FormContext>
     );
 };
 
-const SaveButton = () => {
-    const {formState, handleSubmit} = useForm();
-    const onSubmit = (values: any) => console.log(values);
+type SaveProps = {
+    code: string;
+    webhook: Webhook;
+    setWebhook: Dispatch<SetStateAction<Webhook>>;
+}
+const SaveButton = ({code, webhook, setWebhook}: SaveProps) => {
+    const {formState, getValues, triggerValidation, handleSubmit, setError} = useFormContext<FormInput>();
+    const updateWebhook = useUpdateWebhook(code);
+    const handleSave = async () => {
+        const values = getValues();
+        const isValid = await triggerValidation();
+        if (isValid) {
+            const result = await updateWebhook({
+                connectionCode: values.connectionCode,
+                enabled: values.enabled,
+                url: '' === values.url ? null : values.url,
+            });
+            if (!isErr(result)) {
+                setWebhook({
+                        ...webhook,
+                    connectionCode: result.value.connectionCode,
+                    enabled: result.value.enabled,
+                    url: result.value.url,
+                    secret: result.value.secret
+                });
+
+                return;
+            }
+            if (result.error.errors) {
+                result.error.errors.forEach((error) => {
+                    setError(error.field, 'validation', error.message);
+                });
+            }
+        }
+    };
 
     return (
         <ApplyButton
-            key={0}
-            onClick={handleSubmit(onSubmit)}
-            disabled={!formState.dirty || !formState.isValid || formState.isSubmitting}
+            disabled={!formState.dirty || formState.isSubmitting}
             classNames={['AknButtonList-item']}
+            onClick={handleSubmit(handleSave)}
         >
             <Translate id='pim_common.save' />
         </ApplyButton>
@@ -114,7 +179,7 @@ const SaveButton = () => {
 };
 
 const FormState = () => {
-    const {formState} = useForm();
+    const {formState} = useFormContext();
 
     return (
         (formState.dirty && (

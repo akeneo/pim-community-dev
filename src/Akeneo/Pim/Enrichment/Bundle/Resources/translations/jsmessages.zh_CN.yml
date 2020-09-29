@@ -362,6 +362,9 @@ pim_datagrid:
       csv_grid_context: CSV（网格上下文）
       xlsx_all: Excel （所有属性）
       xlsx_grid_context: Excel（网格上下文）
+      configurator:
+        title: 选择操作
+        all_attributes: 全部属性
     mass_edit: 批量操作
     sequential_edit: 顺序编辑
     mass_delete: 批量删除

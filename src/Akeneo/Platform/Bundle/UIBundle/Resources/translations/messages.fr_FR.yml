@@ -62,6 +62,18 @@ pim_common:
   name: Nom
   remove: Supprimer
   code: Code
+  quantity: Quantité
+  products: Produits
+  product_models: Modèles de produits
+  categories: Catégories
+  family_variant: Variante de famille
+  enabled: Activé
+  family: Famille
+  parent: Parent
+  groups: Groupes
+  unit: Unité
+  yes: "Oui"
+  no: "Non"
 pim_enrich:
   #ACLs
   acl:

@@ -13,27 +13,27 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductsWithoutUpToDateEvaluationQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductIdsQueryInterface;
 
 final class CreateMissingCriteriaEvaluations implements CreateMissingCriteriaEvaluationsInterface
 {
-    /** @var GetUpdatedProductsWithoutUpToDateEvaluationQueryInterface */
-    private $getUpdatedProductsWithoutUpToDateEvaluationQuery;
+    /** @var GetUpdatedProductIdsQueryInterface */
+    private $getUpdatedProductIdsQuery;
 
     /** @var CreateCriteriaEvaluations */
     private $createProductsCriteriaEvaluations;
 
     public function __construct(
-        GetUpdatedProductsWithoutUpToDateEvaluationQueryInterface $getUpdatedProductsWithoutUpToDateEvaluationQuery,
+        GetUpdatedProductIdsQueryInterface $getUpdatedProductIdsQuery,
         CreateCriteriaEvaluations $createProductsCriteriaEvaluations
     ) {
-        $this->getUpdatedProductsWithoutUpToDateEvaluationQuery = $getUpdatedProductsWithoutUpToDateEvaluationQuery;
+        $this->getUpdatedProductIdsQuery = $getUpdatedProductIdsQuery;
         $this->createProductsCriteriaEvaluations = $createProductsCriteriaEvaluations;
     }
 
     public function createForProductsUpdatedSince(\DateTimeImmutable $updatedSince, int $batchSize): void
     {
-        foreach ($this->getUpdatedProductsWithoutUpToDateEvaluationQuery->execute($updatedSince, $batchSize) as $productIds) {
+        foreach ($this->getUpdatedProductIdsQuery->since($updatedSince, $batchSize) as $productIds) {
             $this->createProductsCriteriaEvaluations->createAll($productIds);
         }
     }

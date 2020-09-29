@@ -69,3 +69,13 @@ services:
         class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalGetAConnectionWebhookQuery
         arguments:
             - '@database_connection'
+
+    akeneo_connectivity.connection.persistence.query.select_webhook_secret:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectWebhookSecretQuery
+        arguments:
+            - '@database_connection'
+
+    akeneo_connectivity.connection.persistence.query.save_webhook_secret:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSaveWebhookSecretQuery
+        arguments:
+            - '@database_connection'

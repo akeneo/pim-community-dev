@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub;
 
 use Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\GpsTransportFactory;
+use Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -13,6 +14,11 @@ use PhpSpec\ObjectBehavior;
  */
 class GpsTransportFactorySpec extends ObjectBehavior
 {
+    public function let(PubSubClientFactory $pubSubClientFactory): void
+    {
+        $this->beConstructedWith($pubSubClientFactory);
+    }
+
     public function it_is_initializable(): void
     {
         $this->shouldHaveType(GpsTransportFactory::class);

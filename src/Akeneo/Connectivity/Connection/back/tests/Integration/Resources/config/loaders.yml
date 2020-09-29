@@ -39,3 +39,8 @@ services:
             - '@pim_catalog.saver.product'
             - '@validator'
             - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    akeneo_connectivity.connection.fixtures.webhook_loader:
+        class: Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\WebhookLoader
+        arguments:
+            - '@database_connection'

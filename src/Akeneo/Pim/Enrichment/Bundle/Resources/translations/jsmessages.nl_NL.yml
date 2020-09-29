@@ -362,6 +362,9 @@ pim_datagrid:
       csv_grid_context: CSV (rastercontext)
       xlsx_all: Excel (alle attributen)
       xlsx_grid_context: Excel (rastercontext)
+      configurator:
+        title: Selecteer een actie
+        all_attributes: Alle attributen
     mass_edit: Bulk acties
     sequential_edit: Sequentiële bewerking
     mass_delete: Groepsgewijs verwijderen

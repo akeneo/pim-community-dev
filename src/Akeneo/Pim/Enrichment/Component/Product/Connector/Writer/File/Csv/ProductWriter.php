@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Csv;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromAttributeCodesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromFamilyCodesInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -50,6 +51,7 @@ class ProductWriter extends AbstractItemMediaWriter implements
         FileExporterPathGeneratorInterface $fileExporterPath,
         GenerateFlatHeadersFromFamilyCodesInterface $generateHeadersFromFamilyCodes,
         GenerateFlatHeadersFromAttributeCodesInterface $generateHeadersFromAttributeCodes,
+        FlatTranslatorInterface $flatTranslator,
         array $mediaAttributeTypes,
         string $jobParamFilePath = self::DEFAULT_FILE_PATH
     ) {
@@ -59,6 +61,7 @@ class ProductWriter extends AbstractItemMediaWriter implements
             $flusher,
             $attributeRepository,
             $fileExporterPath,
+            $flatTranslator,
             $mediaAttributeTypes,
             $jobParamFilePath
         );
@@ -94,28 +97,14 @@ class ProductWriter extends AbstractItemMediaWriter implements
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function flush()
-    {
-        $parameters = $this->stepExecution->getJobParameters();
-
-        if ($parameters->has('withHeader') && true === $parameters->get('withHeader')) {
-            $additionalHeaders = $this->getAdditionalHeaders($parameters);
-            $this->flatRowBuffer->addToHeaders($additionalHeaders);
-        }
-
-        parent::flush();
-    }
-
-    /**
      * Return additional headers, based on the requested attributes if any,
      * and from the families definition
      */
-    protected function getAdditionalHeaders(JobParameters $parameters): array
+    protected function getAdditionalHeaders(): array
     {
-        $filters = $parameters->get('filters');
+        $parameters = $this->stepExecution->getJobParameters();
 
+        $filters = $parameters->get('filters');
         $localeCodes = isset($filters['structure']['locales']) ? $filters['structure']['locales'] : [$parameters->get('locale')];
         $channelCode = isset($filters['structure']['scope']) ? $filters['structure']['scope'] : $parameters->get('scope');
 

@@ -6,7 +6,7 @@ import {ErrorBoundary} from './ErrorBoundary';
 const Index = () => (
     <ErrorBoundary>
         <Switch>
-            <Route path='/connections/:connectionCode/webhook'>
+            <Route path='/connections/:connectionCode/event-subscription'>
                 <EditConnectionWebhook />
             </Route>
         </Switch>

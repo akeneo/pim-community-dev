@@ -39,7 +39,7 @@ class DbalSelectActiveWebhooksQueryIntegration extends TestCase
         parent::setUp();
 
         $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
-        $this->selectActiveWebhooksQuery = $this->get('akeneo_connectivity.connection.persistence.query.select_connections_webhook');
+        $this->selectActiveWebhooksQuery = $this->get('akeneo_connectivity.connection.persistence.query.select_active_webhooks');
         $this->dbalConnection = $this->get('database_connection');
         $this->updateConnectionHandler = $this->get('akeneo_connectivity.connection.application.handler.update_connection');
     }

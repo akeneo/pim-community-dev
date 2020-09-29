@@ -105,6 +105,9 @@ config:
         oro/loading-mask:                       pimdatagrid/js/loading-mask
         oro/pageable-collection:                pimdatagrid/js/pageable-collection
 
+        pimdatagrid/datagrid/quickexport/component/QuickExportConfigurator:             pimdatagrid/js/datagrid/quickexport/component/QuickExportConfigurator.tsx
+
+
         oro/datagrid/product-and-product-model-image-cell: pimdatagrid/js/datagrid/cell/product-and-product-model-image-cell
         oro/datagrid/product-and-product-model-label-cell: pimdatagrid/js/datagrid/cell/product-and-product-model-label-cell
         oro/datagrid/attribute-header-cell:                pimdatagrid/js/datagrid/header-cell/attribute-header-cell.ts

@@ -39,6 +39,10 @@ final class InitializeJobs
         if (!$this->isJobInstanceAlreadyCreated('data_quality_insights_periodic_tasks')) {
             $this->createJobInstance('data_quality_insights_periodic_tasks');
         }
+
+        if (!$this->isJobInstanceAlreadyCreated('data_quality_insights_prepare_evaluations')) {
+            $this->createJobInstance('data_quality_insights_prepare_evaluations');
+        }
     }
 
     private function createJobInstance(string $jobName): void

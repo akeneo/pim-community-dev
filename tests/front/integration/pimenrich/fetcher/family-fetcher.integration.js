@@ -7,7 +7,7 @@ describe('Pimenrich > fetcher > family', () => {
 
   it('provide an empty list of axis', async () => {
     page.once('request', request => {
-      if (request.url().includes('/configuration/family/rest/camcorder/available_axes')) {
+      if (request.url().includes('/configuration/rest/family/camcorder/available-axes')) {
         request.respond({
           contentType: 'application/json',
           body: '[]',
@@ -28,7 +28,7 @@ describe('Pimenrich > fetcher > family', () => {
 
   it('provide an non empty list of axis', async () => {
     page.once('request', request => {
-      if (request.url().includes('/configuration/family/rest/camcorder/available_axes')) {
+      if (request.url().includes('/configuration/rest/family/camcorder/available-axes')) {
         request.respond({
           contentType: 'application/json',
           body: JSON.stringify([attribute]),

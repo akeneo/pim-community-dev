@@ -62,6 +62,14 @@ pim_common:
   name: 名称
   remove: 移除
   code: 代码
+  products: 产品
+  product_models: 产品模型
+  categories: 类别
+  enabled: 已启用
+  family: 品类
+  groups: 分组
+  yes: "是"
+  no: "否　"
 pim_enrich:
   #ACLs
   acl:

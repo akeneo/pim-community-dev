@@ -35,10 +35,10 @@ class ClientSpec extends ObjectBehavior
             ->willReturn($subscription);
 
         $this->beConstructedWith(
+            $pubSubClientFactory,
             self::PROJECT_ID,
             self::TOPIC_NAME,
-            self::SUBSCRIPTION_NAME,
-            $pubSubClientFactory
+            self::SUBSCRIPTION_NAME
         );
     }
 
@@ -54,14 +54,14 @@ class ClientSpec extends ObjectBehavior
         Subscription $subscription
     ): void {
         $this->beConstructedThrough('fromDsn', [
+            $pubSubClientFactory,
             'gps:',
             [
                 'project_id' => self::PROJECT_ID,
                 'topic_name' => self::TOPIC_NAME,
                 'subscription_name' => self::SUBSCRIPTION_NAME,
                 'auto_setup' => false,
-            ],
-            $pubSubClientFactory
+            ]
         ]);
         $pubSubClientFactory->createPubSubClient(['projectId' => self::PROJECT_ID])
             ->willReturn($pubSubClient);

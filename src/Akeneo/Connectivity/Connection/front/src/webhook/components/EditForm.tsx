@@ -15,13 +15,14 @@ type Props = {
     webhook: Webhook;
 };
 
-export const EditForm: FC<Props> = ({webhook}) => {
+export const EditForm: FC<Props> = ({webhook}: Props) => {
     const translate = useContext(TranslateContext);
     const history = useHistory();
     const {register, getValues} = useForm();
     const checkReachability = useCheckReachability(webhook.connectionCode);
     const [resultTestUrl, setResultTestUrl] = useState<WebhookReachability>();
-
+    const {register, errors, getValues} = useFormContext();
+  
     const handleTestUrl = async () => {
         const result = await checkReachability(getValues('url'));
 
@@ -29,11 +30,11 @@ export const EditForm: FC<Props> = ({webhook}) => {
             setResultTestUrl(result.value);
         }
     };
-
+    
     return (
         <>
             <FormGroup label='akeneo_connectivity.connection.webhook.form.enabled'>
-                <ToggleButton isChecked={webhook.enabled} ref={register} name={'enabled'} />
+                <ToggleButton name='enabled' defaultChecked={getValues('enabled')} ref={register} />
             </FormGroup>
 
             <FormGroup
@@ -44,10 +45,15 @@ export const EditForm: FC<Props> = ({webhook}) => {
             >
                 <>
                     <FormInput
-                        type='url'
+                        type='text'
                         name='url'
-                        defaultValue={webhook.url ? webhook.url : undefined}
-                        ref={register}
+                        defaultValue={getValues('url')}
+                        ref={register({
+                        required: {
+                            value: getValues('enabled'),
+                            message: 'akeneo_connectivity.connection.webhook.error.required',
+                        },
+                    })}
                     />
                     <TestUrlButton onClick={handleTestUrl} />
                 </>
