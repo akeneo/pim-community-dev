@@ -24,9 +24,6 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
     const POST = 'POST';
 
     /** @var string */
-    const WRONG_URL = 'akeneo_connectivity.connection.webhook.error.wrong_url';
-
-    /** @var string */
     const CONNECTION_FAILED = 'Failed to connect to server';
 
     /** @var ClientInterface */
@@ -47,11 +44,13 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
      */
     public function check(string $url): UrlReachabilityStatus
     {
-        if (0 !== count($this->validator->validate($url, [new Assert\Url(), new Assert\NotBlank(),]))) {
+        $violations = $this->validator->validate($url, [new Assert\Url(), new Assert\NotBlank(),]);
+
+        if (0 !== count($violations)) {
 
             return new UrlReachabilityStatus(
                 false,
-                self::WRONG_URL
+                $violations->get(0)->getMessage()
             );
         }
 
