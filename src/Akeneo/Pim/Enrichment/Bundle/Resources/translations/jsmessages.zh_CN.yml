@@ -389,6 +389,8 @@ pim_datagrid:
     system: 系统
     product_typology:
       variant: '变型'
+    entity_type:
+      label: '变型'
   search: 在 {{ label }} 上搜索
 batch_jobs:
   add_association:
