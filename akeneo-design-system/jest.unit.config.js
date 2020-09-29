@@ -5,7 +5,7 @@ module.exports = {
   roots: ['<rootDir>'],
   setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect'],
   testMatch: ['**/?(*.)+(unit).ts?(x)'],
-  testPathIgnorePatterns: ['/node_modules/'],
+  testPathIgnorePatterns: ['/node_modules/', '/generator/'],
   transform: {'^.+\\.tsx?$': 'ts-jest', '^.+\\.mdx$': '@storybook/addon-docs/jest-transform-mdx'},
   transformIgnorePatterns: ['/node_modules/'],
   collectCoverage: true,
@@ -14,6 +14,7 @@ module.exports = {
       'src/illustrations',
       'src/icons',
       'src/storybook',
+      'generator',
       'src/all.visual.tsx',
       'src/shared/PreviewGallery'
   ],
