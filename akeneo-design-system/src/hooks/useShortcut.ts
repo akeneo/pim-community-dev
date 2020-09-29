@@ -10,7 +10,7 @@ import {Key} from '../shared';
  */
 const useShortcut = <NodeType extends HTMLElement>(
   key: Key,
-  callback: () => void,
+  callback: (args?: any) => unknown,
   externalRef: Ref<NodeType> = null
 ): Ref<NodeType> => {
   const memoizedCallback = useCallback((event: KeyboardEvent) => (key === event.code ? callback() : null), [
