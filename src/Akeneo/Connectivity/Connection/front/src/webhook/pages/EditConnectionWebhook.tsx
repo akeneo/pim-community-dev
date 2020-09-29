@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import {FormContext, useForm, useFormContext} from 'react-hook-form';
 import {useHistory, useParams} from 'react-router';
 import styled from 'styled-components';
@@ -21,7 +21,8 @@ import {Translate} from '../../shared/translate';
 import {EditForm} from '../components/EditForm';
 import {useUpdateWebhook} from '../hooks/api/use-update-webhook';
 import {useWebhook} from '../hooks/api/use-webhook';
-import {isErr} from "../../shared/fetch-result/result";
+import {isErr} from '../../shared/fetch-result/result';
+import {Webhook} from '../model/Webhook';
 
 export type FormInput = {
     connectionCode: string;
@@ -33,23 +34,38 @@ export const EditConnectionWebhook = () => {
     const history = useHistory();
     const {connectionCode} = useParams<{connectionCode: string}>();
     const generateMediaUrl = useMediaUrlGenerator();
-    const {loading, webhook} = useWebhook(connectionCode);
+    const {loading, webhook: fetchedWebhook} = useWebhook(connectionCode);
     const formMethods = useForm<FormInput>();
+    const [webhook, setWebhook] = useState<Webhook>(
+        fetchedWebhook ?
+            fetchedWebhook :
+            {
+                connectionCode: connectionCode,
+                enabled: false,
+                connectionImage: null,
+                secret: null,
+                url: null
+            }
+    );
 
     useEffect(() => {
-        if (!loading && !webhook) {
+        if (!loading && !fetchedWebhook) {
             history.push('/connections');
         }
-        if (!loading && webhook) {
-            formMethods.reset({
-                connectionCode: webhook.connectionCode,
-                enabled: webhook.enabled,
-                url: webhook.url,
-            });
+        if (!loading && fetchedWebhook) {
+            setWebhook(fetchedWebhook);
         }
-    }, [loading, webhook]);
+    }, [loading, fetchedWebhook]);
 
-    if (loading || !webhook) {
+    useEffect(() => {
+        formMethods.reset({
+            connectionCode: webhook?.connectionCode,
+            enabled: webhook?.enabled,
+            url: webhook?.url,
+        });
+    }, [webhook]);
+
+    if (loading || !fetchedWebhook) {
         return <Loading />;
     }
 
@@ -85,10 +101,10 @@ export const EditConnectionWebhook = () => {
                             ? defaultImageUrl
                             : generateMediaUrl(webhook.connectionImage, 'thumbnail')
                     }
-                    buttons={[<SaveButton key={0} code={connectionCode} />]}
+                    buttons={[<SaveButton key={0} code={connectionCode} webhook={webhook} setWebhook={setWebhook}/>]}
                     state={<FormState />}
                 >
-                    {webhook.connectionCode}
+                    {connectionCode}
                 </PageHeader>
 
                 <PageContent>
@@ -115,8 +131,13 @@ export const EditConnectionWebhook = () => {
     );
 };
 
-const SaveButton = ({code}: {code: string}) => {
-    const {formState, getValues, triggerValidation, handleSubmit, setError, reset} = useFormContext<FormInput>();
+type SaveProps = {
+    code: string;
+    webhook: Webhook;
+    setWebhook: Dispatch<SetStateAction<Webhook>>;
+}
+const SaveButton = ({code, webhook, setWebhook}: SaveProps) => {
+    const {formState, getValues, triggerValidation, handleSubmit, setError} = useFormContext<FormInput>();
     const updateWebhook = useUpdateWebhook(code);
     const handleSave = async () => {
         const values = getValues();
@@ -128,10 +149,12 @@ const SaveButton = ({code}: {code: string}) => {
                 url: '' === values.url ? null : values.url,
             });
             if (!isErr(result)) {
-                reset({
-                    connectionCode: values.connectionCode,
-                    enabled: values.enabled,
-                    url: values.url,
+                setWebhook({
+                        ...webhook,
+                    connectionCode: result.value.connectionCode,
+                    enabled: result.value.enabled,
+                    url: result.value.url,
+                    secret: result.value.secret
                 });
 
                 return;

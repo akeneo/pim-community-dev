@@ -18,6 +18,12 @@ type ResultError = {
         message: string;
     }>;
 };
+type ResultOk = {
+    connectionCode: string;
+    url: string | null;
+    secret: string | null;
+    enabled: boolean;
+};
 
 export const useUpdateWebhook = (code: string) => {
     const url = useRoute('akeneo_connectivity_connection_webhook_rest_update', {code});
@@ -25,7 +31,7 @@ export const useUpdateWebhook = (code: string) => {
     const translate = useContext(TranslateContext);
 
     return async (data: RequestData) => {
-        const result = await fetchResult<never, ResultError>(url, {
+        const result = await fetchResult<ResultOk, ResultError>(url, {
             method: 'POST',
             headers: [['Content-type', 'application/json']],
             body: JSON.stringify({
