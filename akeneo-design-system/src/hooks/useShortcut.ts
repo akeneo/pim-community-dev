@@ -4,7 +4,7 @@ import {Key} from '../shared';
 /**
  * Hook to listen to keydown events on a DOM element (or document) and fire a callback
  *
- * @param key The key kress to listen to
+ * @param key The key press to listen to
  * @param callback What callback to call when the key is pressed
  * @param externalRef This ref will be used if provided
  */

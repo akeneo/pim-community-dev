@@ -77,11 +77,11 @@ Cards should be displayed in a grid, therefore, a `CardGrid` component is also a
             <Badge level="danger">0%</Badge>
             Card not complete
           </Card>
-          <Card {...args} src="https://picsum.photos/seed/akeneb/200/140">
+          <Card {...args} src="https://picsum.photos/seed/akeneb/200">
             <Badge level="warning">50%</Badge>
             Card almost complete
           </Card>
-          <Card {...args} src="https://picsum.photos/seed/akenec/140/200">
+          <Card {...args} src="https://picsum.photos/seed/akenec/200">
             <Badge level="primary">100%</Badge>
             Card complete
           </Card>
@@ -127,16 +127,16 @@ Here the `fit` prop is also set to `contain`.
       const [secondSelected, setSecondSelected] = useState(false);
       return (
         <CardGrid size="big">
-          <Card {...args} src={`https://picsum.photos/seed/akened/200`}>
+          <Card {...args} src="https://picsum.photos/seed/akened/200">
             This is a big Card
           </Card>
-          <Card {...args} src={`https://picsum.photos/seed/akenee/200`}>
+          <Card {...args} src="https://picsum.photos/seed/akenee/200">
             <Badge level="primary">100%</Badge>
             This one even has a Badge
           </Card>
           <Card
             {...args}
-            src={`https://picsum.photos/seed/akenef/200`}
+            src="https://picsum.photos/seed/akenef/200"
             isSelected={firstSelected}
             onSelectCard={isSelected => setFirstSelected(isSelected)}
           >
@@ -144,7 +144,7 @@ Here the `fit` prop is also set to `contain`.
           </Card>
           <Card
             {...args}
-            src={`https://picsum.photos/seed/akeneg/200`}
+            src="https://picsum.photos/seed/akeneg/200"
             isSelected={secondSelected}
             onSelectCard={isSelected => setSecondSelected(isSelected)}
           >
