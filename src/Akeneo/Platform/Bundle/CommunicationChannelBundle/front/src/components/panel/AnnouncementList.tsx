@@ -1,6 +1,7 @@
-import React, {useRef, useEffect, useCallback} from 'react';
+import {useRef, useEffect, useCallback} from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '../../legacy-bridge/src/hooks';
 import {AnnouncementComponent, EmptyAnnouncementList} from './announcement';
 import {Announcement} from '../../models/announcement';
 import {useInfiniteScroll} from '../../hooks/useInfiniteScroll';

@@ -1,7 +1,6 @@
 import {useState, useCallback, useEffect} from 'react';
-import {useRoute} from '@akeneo-pim-community/legacy-bridge';
-import {baseFetcher} from '@akeneo-pim-community/shared';
-import {validatePimAnalyticsData} from '../validator/pimAnalyticsData';
+import {useRoute} from '../legacy-bridge/src/hooks';
+import {baseFetcher} from '../shared/src/fetcher';
 
 type PimVersion = {
   edition: string;
@@ -24,7 +23,6 @@ const usePimVersion = (): {
   const updatePimVersion = useCallback(async () => {
     try {
       const data = await baseFetcher(route);
-      validatePimAnalyticsData(data);
 
       setPimVersion({
         data: {edition: data.pim_edition, version: data.pim_version},

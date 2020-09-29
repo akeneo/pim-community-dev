@@ -1,6 +1,6 @@
-import React from 'react';
-import {IconProps} from '@akeneo-pim-community/shared';
-import {useAkeneoTheme} from '@akeneo-pim-community/shared';
+import * as React from 'react';
+import {IconProps} from '../../shared/src/icons';
+import {useAkeneoTheme} from '../../shared/src/hooks';
 
 const MegaphoneIcon = ({title = 'Icons / megaphone', color, size = 24, ...props}: IconProps) => (
   <svg width={size} height={size} {...props} viewBox="0 0 24 24">

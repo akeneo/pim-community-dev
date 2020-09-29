@@ -220,6 +220,7 @@ pim_common:
         DOES NOT CONTAIN: Does not contain
         STARTS WITH: Starts with
         ENDS WITH: Ends with
+    read_more: Read more
 
 error:
     exception: Oh snap! A {{ status_code }} error occurred...

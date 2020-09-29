@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\CommunicationChannel\Infrastructure\Framework\Symfony\Installer;
 
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Infrastructure\Framework\Symfony\Installer\AssetsInstaller;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Platform\CommunicationChannel\Infrastructure\Framework\Symfony\Installer\Query\CreateViewedAnnouncementsTableQuery;
 use Doctrine\DBAL\Connection as DbalConnection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * @author    Christophe Chausseray <chausseray.christophe@gmail.com>
@@ -18,16 +20,26 @@ class InstallerSubscriber implements EventSubscriberInterface
 {
     private $dbalConnection;
 
-    public function __construct(DbalConnection $dbalConnection)
+    private $assetsInstaller;
+
+    public function __construct(DbalConnection $dbalConnection, AssetsInstaller $assetsInstaller)
     {
         $this->dbalConnection = $dbalConnection;
+        $this->assetsInstaller = $assetsInstaller;
     }
 
     public static function getSubscribedEvents()
     {
         return [
             InstallerEvents::POST_DB_CREATE => ['createCommunicationChannelTable'],
+            InstallerEvents::POST_ASSETS_DUMP => ['installAssets'],
         ];
+    }
+
+    public function installAssets(GenericEvent $event): void
+    {
+        $shouldSymlink = $event->getArgument('symlink');
+        $this->assetsInstaller->installAssets($shouldSymlink);
     }
 
     public function createCommunicationChannelTable(): void

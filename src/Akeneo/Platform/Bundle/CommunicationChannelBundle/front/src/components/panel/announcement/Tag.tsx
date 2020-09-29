@@ -1,6 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
-import {AkeneoThemedProps} from '@akeneo-pim-community/shared';
+import {AkeneoThemedProps} from '../../../shared/src/theme';
 
 type Tag = 'new' | 'updates';
 type TagProps = {

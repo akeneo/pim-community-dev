@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
 import {Announcement} from '../../../models/announcement';
 import {TagComponent} from './Tag';
@@ -6,7 +6,7 @@ import {Title} from './Title';
 import {Description} from './Description';
 import {Image} from './Image';
 import {LinkComponent} from './Link';
-import {AkeneoThemedProps} from '@akeneo-pim-community/shared';
+import {AkeneoThemedProps} from '../../../shared/src/theme';
 
 const Container = styled.li`
   margin: 20px 0;

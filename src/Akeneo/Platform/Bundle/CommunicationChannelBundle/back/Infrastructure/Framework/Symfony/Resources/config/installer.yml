@@ -3,5 +3,12 @@ services:
         class: Akeneo\Platform\CommunicationChannel\Infrastructure\Framework\Symfony\Installer\InstallerSubscriber
         arguments:
             - '@database_connection'
+            - '@akeneo_communication_channel.installer.assets_installer'
         tags:
             - { name: kernel.event_subscriber }
+
+    akeneo_communication_channel.installer.assets_installer:
+        class: Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Infrastructure\Framework\Symfony\Installer\AssetsInstaller
+        arguments:
+            - '@filesystem'
+            - '%kernel.project_dir%'

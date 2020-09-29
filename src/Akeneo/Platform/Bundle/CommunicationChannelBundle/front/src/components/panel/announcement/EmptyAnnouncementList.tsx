@@ -1,6 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
-import {NewsIllustration} from '@akeneo-pim-community/shared';
+import {NewsIllustration} from '../../../shared/src/illustrations';
 
 type EmptyAnnouncementListProps = {
   text: string;

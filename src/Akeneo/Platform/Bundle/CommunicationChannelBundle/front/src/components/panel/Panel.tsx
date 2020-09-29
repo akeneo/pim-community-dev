@@ -1,5 +1,7 @@
-import React, {useState, useEffect} from 'react';
-import {useTranslate, useMediator} from '@akeneo-pim-community/legacy-bridge';
+import {useState, useEffect} from 'react';
+import * as React from 'react';
+import {useTranslate} from '../../legacy-bridge/src/hooks';
+import {useMediator} from '../../legacy-bridge/src/hooks';
 import {usePimVersion} from '../../hooks/usePimVersion';
 import {HeaderPanel} from './Header';
 import {AnnouncementList} from './AnnouncementList';
@@ -20,7 +22,7 @@ const Panel = (): JSX.Element => {
   useEffect(() => {
       /* istanbul ignore next: can't test the callback function */
       mediator.on('communication-channel:panel:open', () => {
-        setIsOpened(true);
+          setIsOpened(true);
       });
       /* istanbul ignore next */
       mediator.on('communication-channel:panel:close', () => {

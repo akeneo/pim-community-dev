@@ -1,7 +1,7 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
-import {AkeneoThemedProps} from '@akeneo-pim-community/shared';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {AkeneoThemedProps} from '../../../shared/src/theme';
+import {useTranslate} from '../../../legacy-bridge/src/hooks';
 
 const Link = styled.a`
   border-radius: 16px;
