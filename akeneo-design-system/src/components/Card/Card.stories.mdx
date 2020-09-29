@@ -7,7 +7,7 @@ import {Badge} from '../../components';
 <Meta
   title="Components/Card"
   component={Card}
-  args={{src: 'https://picsum.photos/seed/akeneo/140', children: 'Card text'}}
+  args={{src: 'https://picsum.photos/seed/akeneo/200/140', children: 'Card text'}}
 />
 
 # Card
@@ -46,7 +46,7 @@ Cards should be displayed in a grid, therefore, a `CardGrid` component is also a
         <CardGrid>
           <Card
             {...args}
-            src="https://picsum.photos/seed/akened/140"
+            src="https://picsum.photos/seed/akened/200"
             isSelected={firstSelected}
             onSelectCard={isSelected => setFirstSelected(isSelected)}
           >
@@ -54,7 +54,7 @@ Cards should be displayed in a grid, therefore, a `CardGrid` component is also a
           </Card>
           <Card
             {...args}
-            src="https://picsum.photos/seed/akenee/140"
+            src="https://picsum.photos/seed/akenee/200"
             isSelected={secondSelected}
             onSelectCard={isSelected => setSecondSelected(isSelected)}
           >
@@ -73,15 +73,15 @@ Cards should be displayed in a grid, therefore, a `CardGrid` component is also a
     {args => {
       return (
         <CardGrid>
-          <Card {...args} src={`https://picsum.photos/seed/akenea/140`}>
+          <Card {...args} src="https://picsum.photos/seed/akenea/200">
             <Badge level="danger">0%</Badge>
             Card not complete
           </Card>
-          <Card {...args} src={`https://picsum.photos/seed/akeneb/140`}>
+          <Card {...args} src="https://picsum.photos/seed/akeneb/200/140">
             <Badge level="warning">50%</Badge>
             Card almost complete
           </Card>
-          <Card {...args} src={`https://picsum.photos/seed/akenec/140`}>
+          <Card {...args} src="https://picsum.photos/seed/akenec/140/200">
             <Badge level="primary">100%</Badge>
             Card complete
           </Card>
@@ -93,13 +93,22 @@ Cards should be displayed in a grid, therefore, a `CardGrid` component is also a
 
 ## CardGrid
 
+Here the `fit` prop is also set to `contain`.
+
 <Canvas>
   <Story name="CardGrid">
     {args => {
       return (
         <CardGrid>
           {[...new Array(5)].map((_, index) => (
-            <Card {...args} key={index} src={`https://picsum.photos/seed/akeneo${index}/140`}>
+            <Card
+              {...args}
+              key={index}
+              fit="contain"
+              src={`https://picsum.photos/seed/akeneo${index}/${index % 2 === 0 ? 200 : 120}/${
+                index % 2 === 0 ? 120 : 200
+              }`}
+            >
               Card {(index + 1).toString()}
             </Card>
           ))}

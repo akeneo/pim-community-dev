@@ -19,6 +19,8 @@ CardGrid.defaultProps = {
 
 const Overlay = styled.div`
   position: absolute;
+  z-index: 2;
+  top: 0;
   background-color: ${getColor('grey140')};
   opacity: 0%;
   transition: opacity 0.3s ease-in;
@@ -36,13 +38,23 @@ const CardContainer = styled.div<CardProps & AkeneoThemedProps>`
 
   img {
     position: absolute;
-    object-fit: contain;
+    top: 0;
+    object-fit: ${({fit}) => fit};
     width: 100%;
+    height: 100%;
     box-sizing: border-box;
     border-style: solid;
     border-width: ${({isSelected}) => (isSelected ? '2px' : '1px')};
     border-color: ${({isSelected}) => (isSelected ? getColor('blue100') : getColor('grey100'))};
   }
+
+  :hover ${Overlay} {
+    opacity: 50%;
+  }
+`;
+
+const ImageContainer = styled.div`
+  position: relative;
 
   ::before {
     content: '';
@@ -53,10 +65,6 @@ const CardContainer = styled.div<CardProps & AkeneoThemedProps>`
   ${Overlay} {
     width: 100%;
     padding-bottom: 100%;
-  }
-
-  :hover ${Overlay} {
-    opacity: 50%;
   }
 `;
 
@@ -84,6 +92,11 @@ type CardProps = {
   src: string;
 
   /**
+   * Should the image cover all the Card container or be contained in it.
+   */
+  fit?: 'cover' | 'contain';
+
+  /**
    * Whether or not the Card is selected.
    */
   isSelected?: boolean;
@@ -104,7 +117,10 @@ type CardProps = {
  * Cards can be used in a grid or in a collection.
  */
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({src, isSelected = false, onSelectCard, children, ...rest}: CardProps, forwardedRef: Ref<HTMLDivElement>) => {
+  (
+    {src, fit = 'cover', isSelected = false, onSelectCard, children, ...rest}: CardProps,
+    forwardedRef: Ref<HTMLDivElement>
+  ) => {
     const badges: ReactElement<BadgeProps>[] = [];
     const texts: string[] = [];
     React.Children.forEach(children, child => {
@@ -120,10 +136,12 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     const toggleSelect = undefined !== onSelectCard ? () => onSelectCard(!isSelected) : undefined;
 
     return (
-      <CardContainer ref={forwardedRef} isSelected={isSelected} onClick={toggleSelect} {...rest}>
+      <CardContainer ref={forwardedRef} fit={fit} isSelected={isSelected} onClick={toggleSelect} {...rest}>
         {0 < badges.length && <BadgeContainer>{badges[0]}</BadgeContainer>}
-        <img src={src} alt={texts[0]} />
-        <Overlay />
+        <ImageContainer>
+          <Overlay />
+          <img src={src} alt={texts[0]} />
+        </ImageContainer>
         <CardLabel>
           {undefined !== onSelectCard && <Checkbox checked={isSelected} onChange={toggleSelect} />}
           {texts}
