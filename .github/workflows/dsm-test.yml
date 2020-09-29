@@ -17,15 +17,22 @@ jobs:
           node-version: 13.13
       - name: Install Packages
         run: cd akeneo-design-system && yarn install
+      - name: Build lib
+        run: cd akeneo-design-system && yarn lib:build
       - name: Launch lint checks
         run: cd akeneo-design-system && yarn lint:check
       - name: Launch unit tests
-        run: cd akeneo-design-system && yarn test:run
-      - name: Launch lib build check
-        run: cd akeneo-design-system && yarn lib:build:check
+        run: cd akeneo-design-system && yarn test:unit:run
       - name: Launch visual tests
         run: cd akeneo-design-system && yarn test:visual:run
         id: visual_test_execution
+
+      # To check if the build is working, the directory `example` contains an integration of the lib
+      # with a few tests.
+      - name: Install example packages
+        run: cd akeneo-design-system/example && yarn install
+      - name: Launch example integration tests
+        run: cd akeneo-design-system/example && yarn test
 
       - uses: actions/upload-artifact@v2
         if: failure()

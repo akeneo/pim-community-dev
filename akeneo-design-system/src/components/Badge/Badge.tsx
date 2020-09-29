@@ -1,6 +1,6 @@
 import React, {Ref} from 'react';
 import styled, {css} from 'styled-components';
-import {AkeneoThemedProps, getColor, getColorForLevel, getFontSize, Level} from 'theme';
+import {AkeneoThemedProps, getColor, getColorForLevel, getFontSize, Level} from '../../theme';
 
 const BadgeContainer = styled.span<BadgeProps & AkeneoThemedProps>`
   display: inline-block;

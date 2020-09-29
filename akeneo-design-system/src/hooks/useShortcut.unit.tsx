@@ -1,8 +1,8 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import {useShortcut} from './useShortcut';
-import {Key} from 'shared/key';
-import {fireEvent, render} from 'storybook/test-util';
+import {Key} from '../shared';
+import {fireEvent, render} from '../storybook/test-util';
 
 const callback = jest.fn();
 const Dummy = () => {

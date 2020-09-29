@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders the expected elements 1`] = `
+<body>
+  <div>
+    <div>
+      <span
+        class="sc-eCApGN xDsQp"
+      >
+        Success
+      </span>
+      <hr />
+      <svg
+        height="24"
+        viewBox="0 0 18 18"
+        width="24"
+      >
+        <path
+          class=""
+          d="M1.7 8l4.1 4 8-8"
+          fill="none"
+          stroke="currentColor"
+          stroke-linejoin="round"
+          stroke-miterlimit="10"
+          stroke-width="1"
+        />
+      </svg>
+    </div>
+  </div>
+</body>
+`;

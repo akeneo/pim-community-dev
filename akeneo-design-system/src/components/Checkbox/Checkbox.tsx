@@ -1,9 +1,9 @@
 import React, {ReactNode, Ref, useState} from 'react';
 import styled, {css, keyframes} from 'styled-components';
-import {AkeneoThemedProps, getColor} from 'theme';
-import {CheckIcon, PartialCheckIcon} from 'icons';
-import {useShortcut} from 'hooks';
-import {Key, uuid} from 'shared';
+import {AkeneoThemedProps, getColor} from '../../theme';
+import {CheckIcon, PartialCheckIcon} from '../../icons';
+import {useShortcut} from '../../hooks';
+import {Key, uuid} from '../../shared';
 
 const checkTick = keyframes`
   to {
