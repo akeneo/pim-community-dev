@@ -40,7 +40,8 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups}) => {
 
   return (
     <DataGrid
-      isDraggable={sortGranted}
+      isReorderAllowed={sortGranted}
+      isReorderActive={filteredGroups.length === groups.length}
       dataSource={filteredGroups}
       handleAfterMove={refreshOrder}
       compareData={compare}

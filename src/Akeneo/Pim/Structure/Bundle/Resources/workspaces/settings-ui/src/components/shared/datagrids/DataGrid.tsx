@@ -8,7 +8,8 @@ import {Table, TableContainer} from '../layouts/tables';
 import {SearchBar} from '@akeneo-pim-community/shared/src';
 
 type Props<T> = {
-  isDraggable?: boolean;
+  isReorderAllowed?: boolean;
+  isReorderActive?: boolean;
   dataSource: T[];
   handleAfterMove: AfterMoveRowHandler<T>;
   compareData: CompareRowDataHandler<T>;
@@ -18,7 +19,8 @@ type Props<T> = {
 
 const DataGrid = <T extends {}>({
   children,
-  isDraggable,
+  isReorderAllowed,
+  isReorderActive,
   dataSource,
   handleAfterMove,
   compareData,
@@ -27,10 +29,12 @@ const DataGrid = <T extends {}>({
 }: PropsWithChildren<Props<T>>) => {
   return (
     <DataGridStateProvider
-      isDraggable={isDraggable || false}
+      isReorderAllowed={isReorderAllowed || false}
+      isReorderActive={isReorderActive || false}
       dataSource={dataSource}
       handleAfterMove={handleAfterMove}
       compareData={compareData}
+      isFilterable={onSearch !== undefined}
     >
       <TableContainer>
         {

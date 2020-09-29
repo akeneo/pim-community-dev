@@ -22,10 +22,12 @@ const useDataGridState = <T extends {}>(): DataGridState<T> => {
 };
 
 const useInitialDataGridState = <T extends {}>(
-  isDraggable: boolean,
+  isReorderAllowed: boolean,
   dataSource: T[],
   handleAfterMove: AfterMoveRowHandler<T>,
-  compareRowData: CompareRowDataHandler<T>
+  compareRowData: CompareRowDataHandler<T>,
+  isFilterable: boolean,
+  isReorderActive: boolean,
 ): DataGridState<T> => {
   const [draggedData, setDraggedData] = useState<T | null>(null);
   const [draggedIndex, setDraggedIndex] = useState<number>(DEFAULT_DRAGGED_INDEX);
@@ -143,7 +145,8 @@ const useInitialDataGridState = <T extends {}>(
   return {
     draggedData,
     draggedIndex,
-    isDraggable,
+    isReorderAllowed,
+    isReorderActive,
     dataSource,
     isDragged,
     moveUp,
@@ -152,6 +155,7 @@ const useInitialDataGridState = <T extends {}>(
     moveOver,
     moveDrop,
     moveEnd,
+    isFilterable,
   };
 };
 

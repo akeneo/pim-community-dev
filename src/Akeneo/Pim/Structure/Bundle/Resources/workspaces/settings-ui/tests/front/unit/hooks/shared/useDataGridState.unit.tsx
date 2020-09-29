@@ -13,9 +13,11 @@ describe('useInitialDataGridState', () => {
     isDraggable: boolean,
     dataSource: any[],
     handleAfterMove: AfterMoveRowHandler<any>,
-    compareRowData: CompareRowDataHandler<any>
+    compareRowData: CompareRowDataHandler<any>,
+    isFilterable: boolean,
+    isReorderActive: boolean
   ) => {
-    return renderHook(() => useInitialDataGridState(isDraggable, dataSource, handleAfterMove, compareRowData));
+    return renderHook(() => useInitialDataGridState(isDraggable, dataSource, handleAfterMove, compareRowData, isFilterable, isReorderActive));
   };
 
   beforeEach(() => {
@@ -32,7 +34,9 @@ describe('useInitialDataGridState', () => {
       false,
       [],
       () => {},
-      () => -1
+      () => -1,
+      false,
+      false
     );
 
     expect(result.current.draggedData).toBeNull();
@@ -54,7 +58,9 @@ describe('useInitialDataGridState', () => {
       true,
       dataSource,
       () => {},
-      (itemA: any, itemB: any) => (Object.is(itemA, itemB) ? 0 : -1)
+      (itemA: any, itemB: any) => (Object.is(itemA, itemB) ? 0 : -1),
+      false,
+      false
     );
     const element = document.createElement('div');
     const dragStartEvent = aDragEvent('dragstart', element);
@@ -100,9 +106,9 @@ describe('useInitialDataGridState', () => {
   test('it moves item up', () => {
     const dataSource = aListOfData();
     const afterMoveHandler = jest.fn();
-    const {result} = renderUseInitialDataGridState(true, dataSource, afterMoveHandler, (itemA: any, itemB: any) =>
+    const {result} = renderUseInitialDataGridState(true, dataSource, afterMoveHandler, ((itemA: any, itemB: any) =>
       Object.is(itemA, itemB) ? 0 : -1
-    );
+    ), false, false);
 
     act(() => {
       result.current.moveUp(dataSource[2], dataSource[1]);
@@ -115,9 +121,9 @@ describe('useInitialDataGridState', () => {
   test('it moves item down', () => {
     const dataSource = aListOfData();
     const afterMoveHandler = jest.fn();
-    const {result} = renderUseInitialDataGridState(true, dataSource, afterMoveHandler, (itemA: any, itemB: any) =>
+    const {result} = renderUseInitialDataGridState(true, dataSource, afterMoveHandler, ((itemA: any, itemB: any) =>
       Object.is(itemA, itemB) ? 0 : -1
-    );
+    ), false, false);
 
     act(() => {
       result.current.moveDown(dataSource[2], dataSource[3]);
