@@ -62,6 +62,7 @@ SQL;
             [
                 'parentId' => $entity->getParent()->getId(),
                 'identifier' => $identifier,
+                'id' => $entity->getId(),
             ]
         );
 
