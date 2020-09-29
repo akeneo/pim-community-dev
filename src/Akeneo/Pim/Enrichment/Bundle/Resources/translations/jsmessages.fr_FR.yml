@@ -361,6 +361,15 @@ pim_datagrid:
       csv_grid_context: CSV (contexte de la grille)
       xlsx_all: Excel (tous les attributs)
       xlsx_grid_context: Excel (contexte de la grille)
+      configurator:
+        subtitle: Export rapide
+        title: Sélectionnez une action
+        csv: CSV
+        xlsx: XLSX
+        grid_context: Contexte de la grille
+        all_attributes: Tous les attributs
+        with_codes: Avec codes
+        with_labels: Avec libellés
     mass_edit: Actions de masse
     sequential_edit: Modification séquentielle
     mass_delete: Suppression massive
@@ -383,6 +392,8 @@ pim_datagrid:
   filters:
     label: Filtres
     system: Système
+    product_typology:
+      variant: 'Variante'
   search: Rechercher sur {{ label }}
 batch_jobs:
   add_association:

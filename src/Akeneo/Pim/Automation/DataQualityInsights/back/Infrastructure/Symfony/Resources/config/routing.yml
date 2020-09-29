@@ -1,0 +1,49 @@
+akeneo_data_quality_insights_dashboard:
+    path: /data-quality-insights/dashboard
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\DashboardController
+        _feature: data_quality_insights
+    methods: [GET]
+
+akeneo_data_quality_insights_dashboard_overview:
+    path: /data-quality-insights/dashboard/overview/{channel}/{locale}/{timePeriod}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\DashboardOverviewController
+        _feature: data_quality_insights
+    methods: [GET]
+
+akeneo_data_quality_insights_dashboard_widget_families:
+    path: /data-quality-insights/dashboard/widget/families/{channel}/{locale}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\DashboardWidgetFamiliesController
+        _feature: data_quality_insights
+    methods: [GET]
+
+akeneo_data_quality_insights_dashboard_widget_categories:
+    path: /data-quality-insights/dashboard/widget/categories/{channel}/{locale}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\DashboardWidgetCategoriesController
+        _feature: data_quality_insights
+    methods: [GET]
+
+akeneo_data_quality_insights_product_axis_rates:
+    path: /data-quality-insights/product-axes-rates/{productId}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductAxesRatesController
+        _feature: data_quality_insights
+    methods: [GET]
+
+akeneo_data_quality_insights_product_evaluation:
+    path: /data-quality-insights/product-evaluation/{productId}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductEvaluationController
+        _feature: data_quality_insights
+    methods: [GET]
+
+akeneo_data_quality_insights_product_model_evaluation:
+    path: /data-quality-insights/product-model-evaluation/{productId}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductModelEvaluationController
+        _feature: data_quality_insights
+    methods: [GET]
+

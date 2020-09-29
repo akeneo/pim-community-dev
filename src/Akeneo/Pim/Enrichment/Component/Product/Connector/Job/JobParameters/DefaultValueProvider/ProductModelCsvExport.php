@@ -59,6 +59,9 @@ class ProductModelCsvExport implements DefaultValuesProviderInterface
         $parameters['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
         $parameters['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
         $parameters['with_media'] = true;
+        $parameters['with_label'] = false;
+        $parameters['header_with_label'] = false;
+        $parameters['file_locale'] = null;
 
         $channels = $this->channelRepository->getFullChannels();
         $defaultChannelCode = (0 !== count($channels)) ? $channels[0]->getCode() : null;

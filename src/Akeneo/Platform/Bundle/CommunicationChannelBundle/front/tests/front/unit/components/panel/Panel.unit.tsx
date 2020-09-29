@@ -19,10 +19,9 @@ beforeEach(() => {
 });
 afterEach(() => {
   document.body.removeChild(container);
-  container = null;
 });
 
-test('it displays a panel of announcements when it is a serenity version', async () => {
+test('it displays a panel of announcements', async () => {
   useHasNewAnnouncements.mockReturnValue(jest.fn());
   usePimVersion.mockReturnValue({
     data: {edition: 'Serenity', version: '192939349'},
@@ -40,19 +39,6 @@ test('it displays a panel of announcements when it is a serenity version', async
   await act(async () => renderWithProviders(<Panel />, container as HTMLElement));
 
   expect(getByText(container, 'akeneo_communication_channel.panel.title')).toBeInTheDocument();
-  expect(container.querySelector('ul')).toBeInTheDocument();
-});
-
-test('it displays an empty panel when it is not a serenity version', async () => {
-  usePimVersion.mockReturnValue({
-    data: {edition: 'CE', version: '4.0'},
-    hasError: false,
-  });
-
-  await act(async () => renderWithProviders(<Panel />, container as HTMLElement));
-
-  expect(getByText(container, 'akeneo_communication_channel.panel.title')).toBeInTheDocument();
-  expect(container.querySelector('ul')).not.toBeInTheDocument();
   expect(getByText(container, 'akeneo_communication_channel.panel.list.empty')).toBeInTheDocument();
 });
 

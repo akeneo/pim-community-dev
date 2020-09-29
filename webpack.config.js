@@ -227,7 +227,7 @@ const webpackConfig = {
   },
 
   watchOptions: {
-    ignored: /node_modules|var\/cache|vendor/,
+    ignored: /node_modules\/(?!@akeneo)|var\/cache|vendor/,
   },
 
   plugins: [
@@ -245,7 +245,7 @@ const webpackConfig = {
 
     // Ignore these directories when webpack watches for changes
     new webpack.WatchIgnorePlugin([
-      path.resolve(rootDir, './node_modules'),
+      /node_modules\/(?!@akeneo)/,
       path.resolve(rootDir, './app'),
       path.resolve(rootDir, './var'),
       path.resolve(rootDir, './vendor'),

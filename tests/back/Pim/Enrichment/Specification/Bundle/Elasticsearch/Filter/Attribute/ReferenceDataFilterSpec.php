@@ -96,7 +96,17 @@ class ReferenceDataFilterSpec extends ObjectBehavior
                 ],
             ]
         )->shouldBeCalled();
-        $sqb->addFilter(['exists' => ['field' => 'family.code']])->shouldBeCalled();
+        $sqb->addFilter(
+            [
+                'bool' => [
+                    'should' => [
+                        ['terms' => ['attributes_for_this_level' => ['color_attribute']]],
+                        ['terms' => ['attributes_of_ancestors' => ['color_attribute']]],
+                    ],
+                    'minimum_should_match' => 1,
+                ],
+            ]
+        )->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter($color, Operators::IS_EMPTY, null, 'en_US', 'ecommerce', []);

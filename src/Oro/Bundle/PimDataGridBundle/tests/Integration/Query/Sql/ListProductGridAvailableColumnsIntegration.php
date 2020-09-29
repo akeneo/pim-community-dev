@@ -53,7 +53,7 @@ class ListProductGridAvailableColumnsIntegration extends TestCase
             'label' => '[sku]'
         ];
 
-        for ($i = 1; $i < 14; $i++) {
+        for ($i = 1; $i < 13; $i++) {
             $code = "att_$i";
             $expectedColumns[$code] = [
                 'code' => $code,
@@ -67,6 +67,10 @@ class ListProductGridAvailableColumnsIntegration extends TestCase
         $this->assertSame($expectedColumns, $availableColumns);
 
         $expectedColumnsPage2 = [
+            'att_13' => [
+                'code' => 'att_13',
+                'label' => "Attribute 13",
+            ],
             'att_14' => [
                 'code' => 'att_14',
                 'label' => "Attribute 14",
@@ -252,6 +256,10 @@ class ListProductGridAvailableColumnsIntegration extends TestCase
                     'code' => 'parent',
                     'label' => 'Parent',
                 ],
+            'data_quality_insights_enrichment' => [
+                'code' => 'data_quality_insights_enrichment',
+                'label' => 'Enrichment',
+            ],
         ];
     }
 }

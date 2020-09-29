@@ -1,0 +1,34 @@
+services:
+    akeneo.pim.automation.data_quality_insights.command.launch_evaluations_command:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\LaunchEvaluationsCommand
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\RunUniqueProcessJob'
+            - '@akeneo.pim.automation.data_quality_insights.feature'
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\PrepareEvaluationsCommand:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\RunUniqueProcessJob'
+            - '@akeneo.pim.automation.data_quality_insights.feature'
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\SchedulePeriodicTasksCommand:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\SchedulePeriodicTasks'
+            - '@akeneo.pim.automation.data_quality_insights.feature'
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\PurgeOutdatedDataCommand:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\PurgeOutdatedData'
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\ConsolidateDashboardRatesCommand:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateDashboardRates'
+        tags:
+            - { name: 'console.command' }

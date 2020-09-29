@@ -15,12 +15,18 @@ use Akeneo\Test\Integration\TestCase;
  */
 class FamilyVariantSearchableRepositoryIntegration extends TestCase
 {
-    public function test_it_searches_family_variants_by_code()
+    /**
+     * @test
+     */
+    public function it_searches_family_variants_by_code()
     {
         static::assertCount(1, $this->searchFamilyVariant('by_size'));
         static::assertCount(1, $this->searchFamilyVariant('by_color'));
     }
 
+    /**
+     * @test
+     */
     public function it_searches_family_variants_by_label()
     {
         static::assertCount(2, $this->searchFamilyVariant('By'));
@@ -28,6 +34,14 @@ class FamilyVariantSearchableRepositoryIntegration extends TestCase
         static::assertCount(1, $this->searchFamilyVariant('color'));
         static::assertCount(1, $this->searchFamilyVariant('taille'));
         static::assertCount(0, $this->searchFamilyVariant('unexisting'));
+    }
+
+    /**
+     * @test
+     */
+    function it_searches_family_variants_by_identifiers()
+    {
+        static::assertCount(2, $this->searchFamilyVariant(null, ['identifiers' => ['by_size', 'unknown', 'by_color']]));
     }
 
     /**
@@ -153,12 +167,12 @@ class FamilyVariantSearchableRepositoryIntegration extends TestCase
     }
 
     /**
-     * @param string $search
+     * @param string|null $search
      *
      * @return FamilyVariantInterface[]
      */
-    private function searchFamilyVariant(string $search): array
+    private function searchFamilyVariant(?string $search, array $options = []): array
     {
-        return $this->get('pim_enrich.repository.family_variant.search')->findBySearch($search);
+        return $this->get('pim_enrich.repository.family_variant.search')->findBySearch($search, $options);
     }
 }

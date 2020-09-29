@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Decimal separator fetcher
+ * Decimal separator field
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)

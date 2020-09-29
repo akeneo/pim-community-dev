@@ -3,7 +3,7 @@
 namespace Akeneo\Tool\Component\Connector\Archiver;
 
 use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\InvalidItemsCollector;
-use Akeneo\Tool\Component\Batch\Item\InvalidItemInterface;
+use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -82,7 +82,7 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
 
         $invalidItemPositions = new ArrayCollection();
         foreach ($this->collector->getInvalidItems() as $invalidItem) {
-            if ($invalidItem instanceof InvalidItemInterface) {
+            if ($invalidItem instanceof FileInvalidItem) {
                 $invalidItemPositions->add($invalidItem->getItemPosition());
             }
         }

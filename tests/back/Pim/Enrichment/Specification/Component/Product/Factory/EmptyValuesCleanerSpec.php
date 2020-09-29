@@ -37,7 +37,25 @@ final class EmptyValuesCleanerSpec extends ObjectBehavior
                     'tablet' => [
                         '<all_locales>' => ['blue']
                     ]
-                ]
+                ],
+                'a_metric' => [
+                    '<all_channels>' => [
+                        'en_US' => [
+                            'amount' => 22,
+                            'unit' => 'KILOGRAM',
+                            'base_data' => 22000,
+                            'base_unit' => 'GRAM',
+                            'family' => 'Weight',
+                        ],
+                        'fr_FR' => [
+                            'amount' => null,
+                            'unit' => 'KILOGRAM',
+                            'base_data' => null,
+                            'base_unit' => 'GRAM',
+                            'family' => 'Weight',
+                        ],
+                    ]
+                ],
             ],
             'productB' => [
                 'an_attribute' => [
@@ -46,7 +64,7 @@ final class EmptyValuesCleanerSpec extends ObjectBehavior
                         'fr_FR' => 'a_value',
                         'be_BE' => ''
                     ]
-                ]
+                ],
             ]
         ];
 
@@ -61,14 +79,25 @@ final class EmptyValuesCleanerSpec extends ObjectBehavior
                     'tablet' => [
                         '<all_locales>' => ['blue']
                     ]
-                ]
+                ],
+                'a_metric' => [
+                    '<all_channels>' => [
+                        'en_US' => [
+                            'amount' => 22,
+                            'unit' => 'KILOGRAM',
+                            'base_data' => 22000,
+                            'base_unit' => 'GRAM',
+                            'family' => 'Weight',
+                        ],
+                    ]
+                ],
             ],
             'productB' => [
                 'an_attribute' => [
                     '<all_channels>' => [
                         'fr_FR' => 'a_value',
                     ]
-                ]
+                ],
             ]
         ];
 

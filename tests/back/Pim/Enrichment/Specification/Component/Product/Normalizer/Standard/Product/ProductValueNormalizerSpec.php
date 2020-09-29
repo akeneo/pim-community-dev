@@ -299,6 +299,43 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         );
     }
 
+    function it_normalizes_a_number_product_value_with_decimal_allowed_and_leading_zeros(
+        NormalizerInterface $normalizer,
+        ValueInterface $value,
+        GetAttributes $getAttributes
+    ) {
+        $normalizer->normalize('15.000000000', null, [])
+            ->shouldNotBeCalled();
+
+        $value->getData()->willReturn('15.000000000');
+        $value->getLocaleCode()->willReturn('en_US');
+        $value->getScopeCode()->willReturn('ecommerce');
+        $value->getAttributeCode()->willReturn('attribute_with_decimal_allowed');
+
+        $attribute = new Attribute(
+            'attribute_with_decimal_allowed',
+            AttributeTypes::NUMBER,
+            [],
+            true,
+            true,
+            null,
+            null,
+            true,
+            'decimal',
+            []
+        );
+
+        $getAttributes->forCode('attribute_with_decimal_allowed')->shouldBeCalled()->willReturn($attribute);
+
+        $this->normalize($value)->shouldReturn(
+            [
+                'locale' => 'en_US',
+                'scope'  => 'ecommerce',
+                'data'   => '15.0000',
+            ]
+        );
+    }
+
     function it_normalizes_a_simple_select(
         NormalizerInterface $normalizer,
         ValueInterface $value,

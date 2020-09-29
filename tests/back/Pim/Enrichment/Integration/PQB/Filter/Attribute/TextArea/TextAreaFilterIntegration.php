@@ -254,6 +254,14 @@ class TextAreaFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->executeFilter([['a_text_area', Operators::NOT_EQUAL, [[]]]]);
     }
 
+    public function testErrorDataIsNull()
+    {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "a_text_area" expects a string as data, "NULL" given.');
+
+        $this->executeFilter([['a_text_area', Operators::EQUALS, null]]);
+    }
+
     public function testErrorOperatorNotSupported()
     {
         $this->expectException(UnsupportedFilterException::class);
