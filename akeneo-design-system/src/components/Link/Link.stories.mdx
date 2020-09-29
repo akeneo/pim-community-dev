@@ -1,0 +1,38 @@
+import {useState} from 'react';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Link} from './Link.tsx';
+import {useArgs, updateArgs} from '@storybook/client-api';
+
+<Meta
+  title="Components/Link"
+  component={Link}
+  argTypes={{
+    disabled: {control: {type: 'boolean'}},
+    href: {control: {type: 'text'}}
+  }}
+  args={{
+    children: 'Link',
+    href: 'https://www.akeneo.com/'
+  }}
+/>
+
+# Link
+
+## Usage
+
+### Checkbox states
+
+
+## Playground
+
+Use this playground to test the link component
+
+<Canvas>
+  <Story name="Standard">
+    {(args) => {
+      return <Link {...args}/>;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
