@@ -113,18 +113,20 @@ const CreateRules: React.FC<Props> = ({ originalRuleCode }) => {
                     })
                   : translate('pimee_catalog_rule.form.creation.title')}
               </div>
-              <SmallHelper>
-                {translate('pimee_catalog_rule.form.creation.helper')}
-                &nbsp;
-                <a
-                  href='https://help.akeneo.com/pim/serenity/articles/get-started-with-the-rules-engine.html'
-                  target='_blank'
-                  rel='noopener noreferrer'>
-                  {translate(
-                    'pimee_catalog_rule.form.helper.product_selection_doc_link'
-                  )}
-                </a>
-              </SmallHelper>
+              {!originalRuleCode && (
+                <SmallHelper>
+                  {translate('pimee_catalog_rule.form.creation.helper')}
+                  &nbsp;
+                  <a
+                    href='https://help.akeneo.com/pim/serenity/articles/get-started-with-the-rules-engine.html'
+                    target='_blank'
+                    rel='noopener noreferrer'>
+                    {translate(
+                      'pimee_catalog_rule.form.helper.product_selection_doc_link'
+                    )}
+                  </a>
+                </SmallHelper>
+              )}
             </div>
             <CreateRulesForm
               onSubmit={onSubmit}
