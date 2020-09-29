@@ -10,10 +10,15 @@ export const CardGrid = styled.div`
   gap: 20px;
 `;
 
+export const BigCardGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 200px);
+  gap: 40px;
+`;
+
 <Meta
   title="Components/Card"
   component={Card}
-  argTypes={{}}
   args={{src: 'https://picsum.photos/seed/akeneo/140', children: 'Card text'}}
 />
 
@@ -42,8 +47,8 @@ When displayed in a grid, Cards should be spaced with at least `20px`.
 
 ```css
 display: grid;
-grid-template-columns: repeat(auto-fill, 140px);
-gap: 20px;
+grid-template-columns: repeat(auto-fill, 140px); /* 200px when using the big variant */
+gap: 20px; /* 40px when using the big variant */
 ```
 
 <Canvas>
@@ -113,6 +118,47 @@ gap: 20px;
             Card complete
           </Card>
         </CardGrid>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Size
+
+<Canvas>
+  <Story name="Size">
+    {args => {
+      const [firstSelected, setFirstSelected] = useState(false);
+      const [secondSelected, setSecondSelected] = useState(false);
+      return (
+        <BigCardGrid>
+          <Card {...args} size="big" src={`https://picsum.photos/seed/akened/200`}>
+            This is a big Card
+          </Card>
+          <Card {...args} size="big" src={`https://picsum.photos/seed/akenee/200`}>
+            <Badge level="primary">100%</Badge>
+            This one even has a Badge
+          </Card>
+          <Card
+            {...args}
+            size="big"
+            src={`https://picsum.photos/seed/akenef/200`}
+            isSelected={firstSelected}
+            onSelectCard={isSelected => setFirstSelected(isSelected)}
+          >
+            And this one is selectable
+          </Card>
+          <Card
+            {...args}
+            size="big"
+            src={`https://picsum.photos/seed/akeneg/200`}
+            isSelected={secondSelected}
+            onSelectCard={isSelected => setSecondSelected(isSelected)}
+          >
+            <Badge level="warning">75%</Badge>
+            Badge & selectable 🤩
+          </Card>
+        </BigCardGrid>
       );
     }}
   </Story>

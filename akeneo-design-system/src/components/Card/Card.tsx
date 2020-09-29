@@ -7,8 +7,8 @@ const CardContainer = styled.div<CardProps & AkeneoThemedProps>`
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 140px;
-  line-height: 16px;
+  width: ${({size}) => ('big' === size ? '200px' : '140px')};
+  line-height: 20px;
   background-color: ${getColor('white')};
   font-size: ${getFontSize('default')};
   color: ${getColor('grey120')};
@@ -19,8 +19,8 @@ const CardContainer = styled.div<CardProps & AkeneoThemedProps>`
     border-style: solid;
     border-width: ${({isSelected}) => (isSelected ? '2px' : '1px')};
     border-color: ${({isSelected}) => (isSelected ? getColor('blue100') : getColor('grey100'))};
-    width: 140px;
-    height: 140px;
+    width: ${({size}) => ('big' === size ? '200px' : '140px')};
+    height: ${({size}) => ('big' === size ? '200px' : '140px')};
     margin-bottom: 7px;
   }
 `;
@@ -47,6 +47,11 @@ type CardProps = {
   src: string;
 
   /**
+   * Size of the Card.
+   */
+  size?: 'normal' | 'big';
+
+  /**
    * Whether or not the Card is selected.
    */
   isSelected?: boolean;
@@ -67,7 +72,10 @@ type CardProps = {
  * Cards can be used in a grid or in a collection.
  */
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({src, isSelected = false, onSelectCard, children, ...rest}: CardProps, forwardedRef: Ref<HTMLDivElement>) => {
+  (
+    {src, size = 'normal', isSelected = false, onSelectCard, children, ...rest}: CardProps,
+    forwardedRef: Ref<HTMLDivElement>
+  ) => {
     const badges: ReactElement<BadgeProps>[] = [];
     const texts: string[] = [];
     React.Children.forEach(children, child => {
@@ -83,11 +91,11 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     const toggleSelect = undefined !== onSelectCard ? () => onSelectCard(!isSelected) : undefined;
 
     return (
-      <CardContainer ref={forwardedRef} isSelected={isSelected} onClick={toggleSelect} {...rest}>
+      <CardContainer ref={forwardedRef} size={size} isSelected={isSelected} onClick={toggleSelect} {...rest}>
         {0 < badges.length && <BadgeContainer>{badges[0]}</BadgeContainer>}
         <img src={src} alt={texts[0]} />
         <CardLabel>
-          {undefined !== onSelectCard && <Checkbox checked={isSelected ? 'true' : 'false'} onChange={toggleSelect} />}
+          {undefined !== onSelectCard && <Checkbox checked={isSelected} onChange={toggleSelect} />}
           {texts}
         </CardLabel>
       </CardContainer>
