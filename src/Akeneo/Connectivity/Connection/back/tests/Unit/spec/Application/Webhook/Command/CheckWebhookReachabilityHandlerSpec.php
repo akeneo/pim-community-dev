@@ -30,13 +30,13 @@ class CheckWebhookReachabilityHandlerSpec extends ObjectBehavior
     public function it_returns_url_reachability_status($reachabilityChecker): void
     {
         $command = new CheckWebhookReachabilityCommand('http://172.17.0.1:8000/webhook');
-        $ExpectedReachabilityStatus = new UrlReachabilityStatus(true, "200: OK");
+        $expectedUrlReachabilityStatus = new UrlReachabilityStatus(true, "200: OK");
 
-        $reachabilityChecker->check($command->webhookUrl())->willReturn($ExpectedReachabilityStatus);
+        $reachabilityChecker->check($command->webhookUrl())->willReturn($expectedUrlReachabilityStatus);
 
         $handleResult = $this->handle($command);
 
-        Assert::assertInstanceOf(UrlReachabilityStatus::class, $handleResult->getWrappedObject());
+        Assert::assertEquals($expectedUrlReachabilityStatus, $handleResult->getWrappedObject());
     }
 }
 

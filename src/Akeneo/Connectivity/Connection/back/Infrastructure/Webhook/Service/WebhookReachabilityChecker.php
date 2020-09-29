@@ -38,10 +38,6 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
         $this->validator = $validator;
     }
 
-    /**
-     * @param string $url
-     * @return UrlReachabilityStatus
-     */
     public function check(string $url): UrlReachabilityStatus
     {
         $violations = $this->validator->validate($url, [new Assert\Url(), new Assert\NotBlank(),]);
@@ -59,7 +55,7 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
 
             return new UrlReachabilityStatus(
                 true,
-                $this->buildMessage($response->getReasonPhrase(), $response->getStatusCode())
+                sprintf("%s %s", $response->getStatusCode(), $response->getReasonPhrase())
             );
         } catch (GuzzleException $e) {
             if ($e instanceof RequestException && $e->hasResponse()) {
@@ -69,24 +65,14 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
 
                 return new UrlReachabilityStatus(
                     false,
-                    $this->buildMessage($response->getReasonPhrase(), $response->getStatusCode())
+                    sprintf("%s %s", $response->getStatusCode(), $response->getReasonPhrase())
                 );
             } else {
                 return new UrlReachabilityStatus(
                     false,
-                    $this->buildMessage(self::CONNECTION_FAILED)
+                    self::CONNECTION_FAILED
                 );
             }
         }
-    }
-
-    /**
-     * @param string $reasonPhrase
-     * @param int|null $code
-     * @return string
-     */
-    private function buildMessage(string $reasonPhrase, int $code = null): string
-    {
-        return $code ? sprintf("%s %s", $code, $reasonPhrase) : $reasonPhrase;
     }
 }

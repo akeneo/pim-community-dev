@@ -21,10 +21,6 @@ final class CheckWebhookReachabilityHandler
         $this->reachabilityChecker = $reachabilityChecker;
     }
 
-    /**
-     * @param CheckWebhookReachabilityCommand $command
-     * @return UrlReachabilityStatus
-     */
     public function handle(CheckWebhookReachabilityCommand $command): UrlReachabilityStatus
     {
         return $this->reachabilityChecker->check($command->webhookUrl());

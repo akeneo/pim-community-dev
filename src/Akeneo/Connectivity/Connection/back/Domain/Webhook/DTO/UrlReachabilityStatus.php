@@ -22,17 +22,11 @@ class UrlReachabilityStatus
         $this->message = $message;
     }
 
-    /**
-     * @return bool
-     */
     public function success(): bool
     {
         return $this->success;
     }
 
-    /**
-     * @return string
-     */
     public function message(): string
     {
         return $this->message;

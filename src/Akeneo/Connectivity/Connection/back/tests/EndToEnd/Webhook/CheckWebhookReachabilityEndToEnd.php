@@ -37,7 +37,7 @@ class CheckWebhookReachabilityEndToEnd extends WebTestCase
 
         $this->client->request(
             'POST',
-            sprintf('/rest/connections/%s/webhook/check_reachability', $sapConnection->code()),
+            sprintf('/rest/connections/%s/webhook/check-reachability', $sapConnection->code()),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -57,7 +57,7 @@ class CheckWebhookReachabilityEndToEnd extends WebTestCase
 
         $this->client->request(
             'POST',
-            sprintf('/rest/connections/%s/webhook/check_reachability', $sapConnection->code()),
+            sprintf('/rest/connections/%s/webhook/check-reachability', $sapConnection->code()),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -77,7 +77,7 @@ class CheckWebhookReachabilityEndToEnd extends WebTestCase
 
         $this->client->request(
             'POST',
-            sprintf('/rest/connections/%s/webhook/check_reachability', $sapConnection->code()),
+            sprintf('/rest/connections/%s/webhook/check-reachability', $sapConnection->code()),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -110,7 +110,7 @@ class CheckWebhookReachabilityEndToEnd extends WebTestCase
 
         $this->client->request(
             'POST',
-            sprintf('/rest/connections/%s/webhook/check_reachability', $sapConnection->code()),
+            sprintf('/rest/connections/%s/webhook/check-reachability', $sapConnection->code()),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -142,7 +142,7 @@ class CheckWebhookReachabilityEndToEnd extends WebTestCase
 
         $this->client->request(
             'POST',
-            sprintf('/rest/connections/%s/webhook/check_reachability', $sapConnection->code()),
+            sprintf('/rest/connections/%s/webhook/check-reachability', $sapConnection->code()),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -160,17 +160,11 @@ class CheckWebhookReachabilityEndToEnd extends WebTestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    /**
-     * @return HandlerStack
-     */
     private function getHandlerStack(): HandlerStack
     {
         return $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
     }
 
-    /**
-     * @return ConnectionWithCredentials
-     */
     private function getConnection(): ConnectionWithCredentials
     {
         return $this->createConnection('sap', 'SAP', FlowType::DATA_SOURCE, true);

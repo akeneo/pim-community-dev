@@ -12,9 +12,5 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\DTO\UrlReachabilityStatus;
  */
 interface UrlReachabilityCheckerInterface
 {
-    /**
-     * @param string $url
-     * @return UrlReachabilityStatus
-     */
     public function check(string $url): UrlReachabilityStatus;
 }
