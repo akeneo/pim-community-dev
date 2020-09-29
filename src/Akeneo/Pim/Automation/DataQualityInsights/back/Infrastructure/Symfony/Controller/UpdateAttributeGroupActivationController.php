@@ -40,7 +40,7 @@ final class UpdateAttributeGroupActivationController
 
         try {
             $attributeGroupCode = new AttributeGroupCode($request->request->get('attribute_group_code'));
-            $activated = $request->request->get('activated');
+            $activated = $request->request->getBoolean('activated');
             $attributeGroupActivation = new AttributeGroupActivation($attributeGroupCode, $activated);
         } catch (\Throwable $e) {
             return new Response(null, Response::HTTP_UNPROCESSABLE_ENTITY);

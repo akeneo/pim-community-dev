@@ -68,5 +68,10 @@ akeneo_data_quality_insights:
         attribute_filter:
             all_missing_attributes: All missing attributes
 
+    attribute_group:
+        helper_dqi_info: The PX score calculation will only take into account attributes belonging to attribute groups activated on DQI.
+        helper_dqi_link: More info on our helpcenter.
+        activation: Activation
+
 pim_title:
     akeneo_data_quality_insights_dashboard: Data Quality Insights
