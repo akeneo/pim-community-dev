@@ -19,7 +19,14 @@ class WebhookRequestSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook'),
-            new WebhookEvent('product.created', '79fc4791-86d6-4d3b-93c5-76b787af9497', '2020-01-01T00:00:00+00:00', ['data'])
+            new WebhookEvent(
+                'product.created',
+                '79fc4791-86d6-4d3b-93c5-76b787af9497',
+                '2020-01-01T00:00:00+00:00',
+                'julia',
+                'staging.akeneo.com',
+                ['data']
+            )
         );
     }
 
@@ -43,27 +50,35 @@ class WebhookRequestSpec extends ObjectBehavior
     public function it_returns_a_content(): void
     {
         $this->content()
-            ->shouldReturn([
-                'action' => 'product.created',
-                'event_id' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
-                'event_date' => '2020-01-01T00:00:00+00:00',
-                'data' => ['data']
-            ]);
+            ->shouldReturn(
+                [
+                    'action' => 'product.created',
+                    'event_id' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
+                    'event_date' => '2020-01-01T00:00:00+00:00',
+                    'author' => 'julia',
+                    'pim_source' => 'staging.akeneo.com',
+                    'data' => ['data'],
+                ]
+            );
     }
 
     public function it_returns_metadata(): void
     {
         $this->metadata()
-            ->shouldReturn([
-                'webhook' => [
-                    'connection_code' => 'ecommerce',
-                    'url' => 'http://localhost/webhook',
-                ],
-                'event' => [
-                    'action' => 'product.created',
-                    'event_id' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
-                    'event_date' => '2020-01-01T00:00:00+00:00',
-                ],
-            ]);
+            ->shouldReturn(
+                [
+                    'webhook' => [
+                        'connection_code' => 'ecommerce',
+                        'url' => 'http://localhost/webhook',
+                    ],
+                    'event' => [
+                        'action' => 'product.created',
+                        'event_id' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
+                        'event_date' => '2020-01-01T00:00:00+00:00',
+                        'author' => 'julia',
+                        'pim_source' => 'staging.akeneo.com',
+                    ],
+                ]
+            );
     }
 }

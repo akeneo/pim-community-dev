@@ -23,15 +23,29 @@ class WebhookEvent
     /** @var array<mixed> */
     private $data;
 
+    /** @var string */
+    private $author;
+
+    /** @var string */
+    private $pimSource;
+
     /**
      * @param array<mixed> $data
      */
-    public function __construct(string $action, string $eventId, string $eventDate, array $data)
-    {
+    public function __construct(
+        string $action,
+        string $eventId,
+        string $eventDate,
+        string $author,
+        string $pimSource,
+        array $data
+    ) {
         $this->action = $action;
         $this->eventId = $eventId;
         $this->eventDate = $eventDate;
         $this->data = $data;
+        $this->author = $author;
+        $this->pimSource = $pimSource;
     }
 
     public function action(): string
@@ -47,6 +61,16 @@ class WebhookEvent
     public function eventDate(): string
     {
         return $this->eventDate;
+    }
+
+    public function author(): string
+    {
+        return $this->author;
+    }
+
+    public function pimSource(): string
+    {
+        return $this->pimSource;
     }
 
     /**

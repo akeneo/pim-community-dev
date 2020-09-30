@@ -45,11 +45,13 @@ class WebhookEventBuilderSpec extends ObjectBehavior
 
         $eventDataBuilder2->build($businessEvent)->willReturn(['data']);
 
-        $this->build($businessEvent)
+        $this->build($businessEvent, ['pim_source' => 'staging.akeneo.com'])
             ->shouldBeLike(new WebhookEvent(
                 'product.created',
                 'a20832d1-a1e6-4f39-99ea-a1dd859faddb',
                 '2020-09-11T08:49:21+00:00',
+                'julia',
+                'staging.akeneo.com',
                 ['data']
             ));
     }

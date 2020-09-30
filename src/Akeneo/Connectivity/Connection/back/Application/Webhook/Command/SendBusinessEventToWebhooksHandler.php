@@ -37,18 +37,23 @@ final class SendBusinessEventToWebhooksHandler
     /** @var LoggerInterface */
     private $logger;
 
+    /** @var string */
+    private $pimSource;
+
     public function __construct(
         SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
         WebhookUserAuthenticator $webhookUserAuthenticator,
         WebhookClient $client,
         WebhookEventBuilder $builder,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        string $pimSource
     ) {
         $this->selectActiveWebhooksQuery = $selectActiveWebhooksQuery;
         $this->webhookUserAuthenticator = $webhookUserAuthenticator;
         $this->client = $client;
         $this->builder = $builder;
         $this->logger = $logger;
+        $this->pimSource = $pimSource;
     }
 
     public function handle(SendBusinessEventToWebhooksCommand $command): void
@@ -64,7 +69,7 @@ final class SendBusinessEventToWebhooksHandler
             foreach ($webhooks as $webhook) {
                 try {
                     $this->webhookUserAuthenticator->authenticate($webhook->userId());
-                    $event = $this->builder->build($businessEvent);
+                    $event = $this->builder->build($businessEvent, ['pim_source' => $this->pimSource]);
                 } catch (\Throwable $error) {
                     // Handle error gracefully and continue the processing of other webhooks.
                     $this->handleError($error, $webhook, $businessEvent);
@@ -96,9 +101,9 @@ final class SendBusinessEventToWebhooksHandler
         if ($error instanceof WebhookEventDataBuilderNotFoundException) {
             $this->logger->info($error->getMessage());
         } elseif ($error instanceof EventBuildingExceptionInterface) {
-            $this->logger->warning('Webhook event building failed: ' . $error->getMessage(), $context);
+            $this->logger->warning('Webhook event building failed: '.$error->getMessage(), $context);
         } else {
-            $this->logger->critical((string) $error, $context);
+            $this->logger->critical((string)$error, $context);
         }
     }
 }

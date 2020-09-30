@@ -27,12 +27,17 @@ class WebhookEventBuilder
         $this->builders = $builders;
     }
 
-    public function build(BusinessEventInterface $businessEvent): WebhookEvent
+    /**
+     * @param array<mixed> $context
+     */
+    public function build(BusinessEventInterface $businessEvent, array $context = []): WebhookEvent
     {
         return new WebhookEvent(
             $businessEvent->name(),
             $businessEvent->uuid(),
             date(\DateTimeInterface::ATOM, $businessEvent->timestamp()),
+            $businessEvent->author(),
+            array_key_exists('pim_source', $context) ? $context['pim_source'] : '',
             $this->buildEventData($businessEvent)
         );
     }
