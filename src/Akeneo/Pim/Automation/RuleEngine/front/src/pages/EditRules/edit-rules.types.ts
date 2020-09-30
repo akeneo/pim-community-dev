@@ -7,6 +7,7 @@ type FormData = {
   };
   content: { conditions: any[]; actions: any[] };
   execute_on_save?: boolean;
+  duplicate_on_save?: boolean;
 };
 
 export { FormData };

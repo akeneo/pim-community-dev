@@ -1,7 +1,7 @@
 import React from 'react';
 import { Payload } from '../../../rules.types';
 import { httpGet, httpPut } from '../../../fetch';
-import { generateUrl } from '../../../dependenciesTools/hooks';
+import { generateUrl, redirectToUrl } from '../../../dependenciesTools/hooks';
 import { FormData } from '../edit-rules.types';
 import { Control, FormContextValues, useForm } from 'react-hook-form';
 import { Condition, Locale, RuleDefinition } from '../../../models';
@@ -159,6 +159,13 @@ const doExecuteOnSave = async (
   }
 };
 
+const doDuplicateOnSave = (router: Router, originalRuleCode: string) => {
+  const duplicateRuleUrl = generateUrl(router, 'pimee_catalog_rule_new', {
+    originalRuleCode,
+  });
+  redirectToUrl(router, duplicateRuleUrl);
+};
+
 const createCalculateDefaultValues = (formData: FormData): FormData => {
   if (formData.content && formData.content.actions) {
     formData.content.actions = formData.content.actions.map((action: any) => {
@@ -191,6 +198,10 @@ const submitEditRuleForm = (
       formData,
       'execute_on_save'
     );
+    const duplicateOnSave = Object.prototype.hasOwnProperty.call(
+      formData,
+      'duplicate_on_save'
+    );
     const updateRuleUrl = generateUrl(
       router,
       'pimee_enrich_rule_definition_update',
@@ -206,6 +217,8 @@ const submitEditRuleForm = (
       registerActions(register, formData.content?.actions || []);
       if (executeOnSave) {
         doExecuteOnSave(router, translate, notify, ruleDefinitionCode);
+      } else if (duplicateOnSave) {
+        doDuplicateOnSave(router, ruleDefinitionCode);
       } else {
         notify(
           NotificationLevel.SUCCESS,
