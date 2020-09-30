@@ -34,3 +34,4 @@ services:
             - '@oro_security.security_facade'
             - '@akeneo_connectivity.connection.application.webhook.handler.get_connection_webhook'
             - '@akeneo_connectivity.connection.application.webhook.handler.update_connection_webhook'
+            - '@akeneo_connectivity.connection.application.webhook.handler.generate_webhook_secret'
