@@ -26,8 +26,8 @@ const TableHeadCell = styled.th<Props>`
   background: ${({theme}) => theme.color.white};
   padding-top: 15px;
 
-  ${props => (props.isFilterable ? filterableMixin : notFilterableMixin)} :first-child {
-    padding-left: 20px;
+  ${props => (props.isFilterable ? filterableMixin : notFilterableMixin)} {
+    padding-left: 10px;
   }
 `;
 

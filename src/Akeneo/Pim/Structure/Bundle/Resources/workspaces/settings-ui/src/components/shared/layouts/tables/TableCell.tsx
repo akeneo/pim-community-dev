@@ -24,7 +24,7 @@ const TableCell = styled.td.attrs((props: Props) => ({
   color: ${({theme}) => theme.color.purple100};
   width: ${props => (props.width !== undefined ? props.width : 'auto')};
   font-weight: bold;
-  padding-left: 20px;
+  padding-left: 10px;
 
   ${props => props.isDraggable && (props.isActive === true) && draggableStyle}
   

@@ -39,6 +39,7 @@ const DraggableRowWrapper = <T extends {}>({
           onDragEnd={event => {
             moveEnd(event, handleDrop);
           }}
+          style={{lineHeight: '10px'}}
         >
           <MoveIcon />
         </TableCell>
