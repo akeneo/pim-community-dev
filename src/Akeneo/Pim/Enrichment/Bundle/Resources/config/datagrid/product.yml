@@ -10,6 +10,9 @@ datagrid:
                     label: pim_datagrid.display_selector.gallery
                     rowView: oro/datagrid/product-row
                     manageColumns: false
+            extraKeys:
+                - totalProducts
+                - totalProductModels
         source:
             acl_resource:      pim_enrich_product_index
             type:              pim_datasource_product
