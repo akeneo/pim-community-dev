@@ -60,3 +60,10 @@ akeneo_data_quality_insights_get_attribute_group_activation:
         _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetAttributeGroupActivationController
         _feature: data_quality_insights
     methods: [ GET ]
+
+akeneo_data_quality_insights_get_all_attribute_groups_activation:
+    path: /data-quality-insights/attribute-groups-activation
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetAllAttributeGroupsActivationController
+        _feature: data_quality_insights
+    methods: [ GET ]
