@@ -35,6 +35,7 @@ class AkeneoPimRuleEngineExtension extends AkeneoStorageUtilsExtension
         $loader->load('connector/tasklets.yml');
         $loader->load('connector/writers.yml');
         $loader->load('controllers.yml');
+        $loader->load('datagrid_actions.yml');
         $loader->load('datagrid_extensions.yml');
         $loader->load('datagrid_filters.yml');
         $loader->load('datagrid_handlers.yml');

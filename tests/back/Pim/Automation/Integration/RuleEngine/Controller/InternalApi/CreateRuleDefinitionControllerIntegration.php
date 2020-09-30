@@ -73,10 +73,31 @@ class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
         $expectedContent = $normalizedRuleDefinition;
         $expectedContent['id'] = $content['id'];
         $expectedContent['type'] = 'product';
+        $expectedContent['enabled'] = true;
 
         ksort($expectedContent);
         ksort($content);
         Assert::assertEquals($content, $expectedContent);
+    }
+
+    public function test_it_creates_a_disabled_rule_definition()
+    {
+        $this->enableAcl();
+        $normalizedRuleDefinition = [
+            'code' => '345',
+            'enabled' => false,
+            'content' => ['conditions' => [], 'actions' => []],
+            'priority' => 10,
+            'labels' => []
+        ];
+
+        $this->createRuleDefinition($normalizedRuleDefinition);
+
+        $response = $this->client->getResponse();
+        Assert::assertSame($response->getStatusCode(), Response::HTTP_OK);
+
+        $content = json_decode($response->getContent(), true);
+        Assert::assertFalse($content['enabled']);
     }
 
     public function test_it_creates_a_rule_definition_with_only_code()
@@ -84,6 +105,7 @@ class CreateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
         $this->enableAcl();
         $normalizedRuleDefinition = [
             'code' => 'my_new_code',
+            'enabled' => true,
             'content' => ['conditions' => [], 'actions' => []],
         ];
 

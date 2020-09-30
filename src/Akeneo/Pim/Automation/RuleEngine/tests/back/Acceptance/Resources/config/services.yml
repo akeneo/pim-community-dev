@@ -47,7 +47,6 @@ services:
     Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\ExecuteRuleContext:
         arguments:
             - '@pim_catalog.repository.product_without_permission'
-            - '@pimee_catalog_rule.executor.rules'
             - '@pimee_catalog_rule.processor.denormalization.rule_definition'
             - '@pimee_catalog_rule.applier.product.updater'
             - '@pimee_catalog_rule.applier.product.validator'

@@ -45,7 +45,7 @@ class GetRuleDefinitionControllerIntegration extends ControllerIntegrationTestCa
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_OK,
-            '{"id":' . $decodedContent['id'] . ',"code":"123","type":"add","priority":0,"content":{"conditions":[],"actions":[]},"labels":{"en_US":"123 english","fr_FR":"123 french"}}'
+            '{"id":' . $decodedContent['id'] . ',"code":"123","type":"add","priority":0,"enabled":true,"content":{"conditions":[],"actions":[]},"labels":{"en_US":"123 english","fr_FR":"123 french"}}'
         );
     }
 
@@ -64,7 +64,7 @@ class GetRuleDefinitionControllerIntegration extends ControllerIntegrationTestCa
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_OK,
-            '{"id":' . $decodedContent['id'] . ',"code":"234","type":"add","priority":0,"content":{"conditions":[{"field":"family","operator":"IN","values":["shoes"]}],"actions":[{"type":"clear","field":"category"}]},"labels":[]}'
+            '{"id":' . $decodedContent['id'] . ',"code":"234","type":"add","priority":0,"enabled":false,"content":{"conditions":[{"field":"family","operator":"IN","values":["shoes"]}],"actions":[{"type":"clear","field":"category"}]},"labels":[]}'
         );
     }
 
@@ -86,6 +86,7 @@ class GetRuleDefinitionControllerIntegration extends ControllerIntegrationTestCa
 
         $ruleDefinitions[] = (new RuleDefinition())
             ->setCode('123')
+            ->setEnabled(true)
             ->setContent([
                 'conditions' => [],
                 'actions' => [],
@@ -98,6 +99,7 @@ class GetRuleDefinitionControllerIntegration extends ControllerIntegrationTestCa
 
         $ruleDefinitions[] = (new RuleDefinition())
             ->setCode('234')
+            ->setEnabled(false)
             ->setContent([
                 'conditions' => [
                     ['field' => 'family', 'operator' => 'IN', 'values' => ['shoes']],

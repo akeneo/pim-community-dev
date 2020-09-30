@@ -396,6 +396,9 @@ jobs:
                 name: Production tests on upgraded env
                 command: INSTANCE_NAME=pimup-$IMAGE_TAG make test-prod
           - run:
+                name: Check that upgrader pod ran
+                command: kubectl get pods --namespace=srnt-pimup-$IMAGE_TAG | grep pim-upgrader
+          - run:
                 name: Prepare infrastructure artifacts
                 command: INSTANCE_NAME=pimup-$IMAGE_TAG make prepare-infrastructure-artifacts
                 when: on_fail
@@ -622,7 +625,7 @@ jobs:
                 name: Start containers
                 command: |
                     docker load -i php-pim-image.tar
-                    APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
+                    APP_ENV=test C='mysql elasticsearch object-storage pubsub-emulator' make up
                     docker/wait_docker_up.sh
           - run:
                 name: Load make commands
@@ -630,8 +633,8 @@ jobs:
           - run:
                 name: Add configuration files to run the bundle tests from the PIM
                 command: |
-                    make clear-setup-parameters
-                    make setup-onboarder-parameters
+                    rm -f docker-compose.override.yml
+                    PIM_VERSION=master SETUP_FOR_CI=1 make setup-onboarder-parameters
                     PIM_VERSION=master make setup-onboarder-tests
                     docker-compose run --rm php php /usr/local/bin/composer dumpautoload
           - run:
@@ -648,7 +651,7 @@ jobs:
                 command: make test-spec
           - run:
                 name: Install Akeneo PIM with Onboarder specific configuration (channel, attribute, ...)
-                command: ENVIRONMENT=test make onboarder-install
+                command: ENVIRONMENT=test SETUP_FOR_CI=1 make onboarder-install
           - run:
                 name: Execute acceptance tests
                 command: make test-acceptance

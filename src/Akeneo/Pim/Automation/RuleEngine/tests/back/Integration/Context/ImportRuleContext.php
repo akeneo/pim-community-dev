@@ -112,19 +112,41 @@ final class ImportRuleContext implements Context
     {
         Assert::notNull(static::$importedRules, 'No rule is imported.');
         $ruleDefinitions = $this->ruleDefinitionRepository->findAll();
+        $indexedRuleDefinitions = [];
+        foreach ($ruleDefinitions as $ruleDefinition) {
+            $indexedRuleDefinitions[$ruleDefinition->getCode()] = $ruleDefinition;
+        }
 
         foreach (static::$importedRules as $ruleCode => $content) {
-            /** @var RuleDefinitionInterface $ruleDefinition */
-            foreach ($ruleDefinitions as $ruleDefinition) {
-                if ($ruleDefinition->getCode() === $ruleCode) {
-                    $this->assertSameRuleContent($ruleDefinition->getContent(), $content);
+            $ruleDefinition = $indexedRuleDefinitions[$ruleCode] ?? null;
+            Assert::notNull($ruleDefinition, sprintf('The "%s" rule was not found.', $ruleCode));
 
-                    continue 2;
-                }
-            }
-
-            throw new \LogicException(sprintf('The "%s" rule was not found.', $ruleCode));
+            Assert::eq($ruleDefinition->getPriority(), $content['priority'] ?? 0);
+            Assert::eq($ruleDefinition->isEnabled(), $content['enabled'] ?? true);
+            unset($content['priority']);
+            unset($content['enabled']);
+            $this->assertSameRuleContent($ruleDefinition->getContent(), $content);
         }
+    }
+
+    /**
+     * @Then the :ruleCode rule is enabled
+     */
+    public function theRuleisEnabled(string $ruleCode)
+    {
+        $ruleDefinition = $this->ruleDefinitionRepository->findOneByIdentifier($ruleCode);
+        Assert::notNull($ruleDefinition, sprintf('The "%s" rule was not found.', $ruleCode));
+        Assert::true($ruleDefinition->isEnabled(), sprintf('The "%s" rule is disabled.', $ruleCode));
+    }
+
+    /**
+     * @Then the :ruleCode rule is disabled
+     */
+    public function theRuleisDisabled(string $ruleCode)
+    {
+        $ruleDefinition = $this->ruleDefinitionRepository->findOneByIdentifier($ruleCode);
+        Assert::notNull($ruleDefinition, sprintf('The "%s" rule was not found.', $ruleCode));
+        Assert::false($ruleDefinition->isEnabled(), sprintf('The "%s" rule is enabled.', $ruleCode));
     }
 
     /**

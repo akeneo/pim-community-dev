@@ -66,6 +66,12 @@ services:
             $lineNumberCalculator: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\Result\AspellLineNumberCalculator'
             $textCheckerDictionaryRepository: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\TextCheckerDictionaryRepository'
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellMultipleChecker:
+        arguments:
+            $checker: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellChecker'
+            $globalOffsetCalculator: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\Result\AspellGlobalOffsetCalculator'
+            $logger: '@monolog.logger.quality'
+
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellSpellerProvider:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionary'

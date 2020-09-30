@@ -14,13 +14,15 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateCriterionInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\MultipleTextsChecker;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\TextChecker;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\TextCheckFailedException;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Attribute;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
@@ -38,9 +40,6 @@ class EvaluateSpelling implements EvaluateCriterionInterface
     const TEXT_FAULT_WEIGHT = 24;
     const TEXTAREA_FAULT_WEIGHT = 12;
 
-    /** @var TextChecker */
-    private $textChecker;
-
     /** @var GetLocalesByChannelQueryInterface */
     private $localesByChannelQuery;
 
@@ -53,14 +52,17 @@ class EvaluateSpelling implements EvaluateCriterionInterface
     /** @var LoggerInterface */
     private $logger;
 
+    /** @var MultipleTextsChecker */
+    private $checker;
+
     public function __construct(
-        TextChecker $textChecker,
+        MultipleTextsChecker $checker,
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
         SupportedLocaleValidator $supportedLocaleValidator,
         FilterProductValuesForSpelling $filterProductValuesForSpelling,
         LoggerInterface $logger
     ) {
-        $this->textChecker = $textChecker;
+        $this->checker = $checker;
         $this->localesByChannelQuery = $localesByChannelQuery;
         $this->supportedLocaleValidator = $supportedLocaleValidator;
         $this->logger = $logger;
@@ -93,18 +95,14 @@ class EvaluateSpelling implements EvaluateCriterionInterface
         }
 
         try {
-            $textValues = $this->filterProductValuesForSpelling->getTextValues($productValues);
-            $textRates = $this->evaluateAttributesRates($channelCode, $localeCode, $textValues, self::TEXT_FAULT_WEIGHT);
+            $values = $this->filterProductValuesForSpelling->getFilteredProductValues($productValues);
 
-            $textareaValues = $this->filterProductValuesForSpelling->getTextareaValues($productValues);
-            $textareaRates = $this->evaluateAttributesRates($channelCode, $localeCode, $textareaValues, self::TEXTAREA_FAULT_WEIGHT);
+            $attributesRates = $this->evaluateAttributesRates($channelCode, $localeCode, $values);
         } catch (TextCheckFailedException $exception) {
             $this->logger->error('An error occurred during spelling evaluation', ['error_code' => 'error_during_spelling_evaluation', 'error_message' => $exception->getMessage()]);
             $evaluationResult->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::error());
             return;
         }
-
-        $attributesRates = array_merge($textRates, $textareaRates);
 
         if (empty($attributesRates)) {
             $evaluationResult->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::notApplicable());
@@ -124,30 +122,24 @@ class EvaluateSpelling implements EvaluateCriterionInterface
     /**
      * @throws TextCheckFailedException
      */
-    private function evaluateAttributesRates(ChannelCode $channelCode, LocaleCode $localeCode, \Iterator $productValues, int $faultWeight): array
+    private function evaluateAttributesRates(ChannelCode $channelCode, LocaleCode $localeCode, array $productValues): array
     {
-        $attributesRates = [];
-        foreach ($productValues as $productValueByChannelAndLocale) {
-            $attributeCode = $productValueByChannelAndLocale->getAttribute()->getCode();
-            $productValue = $productValueByChannelAndLocale->getValueByChannelAndLocale($channelCode, $localeCode);
+        list('values' => $values, 'weights' => $weights) = $this->prepareSpellCheck($productValues, $channelCode, $localeCode);
 
-            if (!$this->isValidValue($productValue)) {
-                continue;
-            }
-
-            $this->logger->info('spelling evaluation', [
-                'source' => 'evaluation',
-                'value' => $productValue,
-                'localeCode' => strval($localeCode),
-                'channelCode' => strval($channelCode)
-            ]);
-
-            $textCheckResult = $this->textChecker->check(strval($productValue), $localeCode);
-            $rate = $this->computeProductValueRate($textCheckResult, $faultWeight);
-            $attributesRates[strval($attributeCode)] = $rate;
+        if (empty($values)) {
+            return [];
         }
 
-        return $attributesRates;
+        $this->logger->info('spelling evaluation', [
+            'source' => 'evaluation',
+            'attributes' => array_keys($values),
+            'localeCode' => strval($localeCode),
+            'channelCode' => strval($channelCode)
+        ]);
+
+        $results = $this->checker->check($values, $localeCode);
+
+        return $this->computeSpellcheckResult($results, $weights);
     }
 
     public function getCode(): CriterionCode
@@ -194,5 +186,50 @@ class EvaluateSpelling implements EvaluateCriterionInterface
         return array_map(function (Rate $attributeRate) {
             return $attributeRate->toInt();
         }, $attributesRates);
+    }
+
+    private function prepareSpellCheck(array $productValues, ChannelCode $channelCode, LocaleCode $localeCode): array
+    {
+        $values = [];
+        $weights = [];
+
+        foreach ($productValues as $productValueByChannelAndLocale) {
+            $attribute = $productValueByChannelAndLocale->getAttribute();
+            $attributeCode = $attribute->getCode();
+            $productValue = $productValueByChannelAndLocale->getValueByChannelAndLocale($channelCode, $localeCode);
+
+            if (!$this->isValidValue($productValue)) {
+                continue;
+            }
+
+            $values[strval($attributeCode)] = $productValue;
+            $weights[strval($attributeCode)] = $this->getFaultWeight($attribute);
+        }
+
+        return [
+            'values' => $values,
+            'weights' => $weights,
+        ];
+    }
+
+    private function computeSpellcheckResult(array $results, array $weights): array
+    {
+        $attributesRates = [];
+        foreach ($results as $attributeCode => $result) {
+            $faultWeight = $weights[$attributeCode];
+
+            $rate = $this->computeProductValueRate($result, $faultWeight);
+            $attributesRates[$attributeCode] = $rate;
+        }
+        return $attributesRates;
+    }
+
+    private function getFaultWeight(Attribute $attribute): int
+    {
+        if ($attribute->getType()->equals(AttributeType::textarea())) {
+            return self::TEXTAREA_FAULT_WEIGHT;
+        }
+
+        return self::TEXT_FAULT_WEIGHT;
     }
 }

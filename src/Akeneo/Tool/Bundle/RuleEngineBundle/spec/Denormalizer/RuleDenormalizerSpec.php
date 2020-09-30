@@ -54,12 +54,14 @@ class RuleDenormalizerSpec extends ObjectBehavior
         $rule->addCondition($condition)->shouldBeCalled();
         $rule->addAction($setAction)->shouldBeCalled();
         $rule->addAction($copyAction)->shouldBeCalled();
+        $rule->setEnabled(false)->shouldBeCalled();
 
-        $chainedDernomalizer->denormalize($rawContent, Argument::cetera())->willReturn(['conditions' => [$condition], 'actions' => [$setAction, $copyAction]]);
+        $chainedDernomalizer->denormalize($rawContent, Argument::cetera())
+            ->willReturn(['conditions' => [$condition], 'actions' => [$setAction, $copyAction]]);
 
         // TODO: really spec it...
         $this->denormalize(
-            ['code' => 'discharge_fr_description', 'priority' => 10] + $rawContent,
+            ['code' => 'discharge_fr_description', 'priority' => 10, 'enabled' => false] + $rawContent,
             Argument::any(),
             Argument::any(),
             ['object' => $rule]

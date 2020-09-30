@@ -56,6 +56,7 @@ class RuleDefinitionNormalizerSpec extends ObjectBehavior
                 ]
             ]
         );
+        $ruleDefinition->isEnabled()->willReturn(false);
 
         $this->normalize($ruleDefinition, 'array', [])->shouldReturn(
             [
@@ -63,6 +64,7 @@ class RuleDefinitionNormalizerSpec extends ObjectBehavior
                 'code'     => 'set_tshirt_price',
                 'type'     => 'product',
                 'priority' => 0,
+                'enabled'  => false,
                 'content'  => [
                     'conditions' => [
                         ['field' => 'sku', 'operator' => 'CONTAINS', 'value' => 'AKNTS_PB'],

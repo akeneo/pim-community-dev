@@ -220,6 +220,7 @@ Feature: List all rules
     And the grid should contain 7 elements
     And I should be able to sort the rows by label
     And I should be able to sort the rows by priority
+    And I should be able to sort the rows by status
 
   Scenario: Successfully search rules
     Given I am on the rules page

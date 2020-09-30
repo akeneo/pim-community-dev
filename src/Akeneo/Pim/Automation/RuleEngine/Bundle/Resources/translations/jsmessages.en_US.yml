@@ -101,6 +101,10 @@ pimee_catalog_rule:
             character_left: "]-Inf, 1]{{ count }} Character left|]1, +Inf[{{ count }} Characters left"
             priority:
                 label: Priority
+            status:
+                label: Status
+                enabled: Enabled
+                disabled: Disabled
             add_to_category: Add to category
             add_conditions: Add conditions
             products_count:
@@ -128,6 +132,9 @@ pimee_catalog_rule:
                 button: Save and execute
                 title: Save and execute the rule
                 description: You will save the current rule and execute it in background. When it’s done, you will be notified.
+            duplicate:
+                button: Save and duplicate
+                title: Duplicate the "{{ originalRuleCode }}" rule
             actions:
                 add_action: Add action
                 add_category:
@@ -403,6 +410,9 @@ flash:
     rule:
         impacted_product_count: The bulk action to calculate the number of impacted products has been launched. You will be notified when it is done.
         executed: The rules execution has been launched. You will be notified when it is done.
+        enabled: The rule has been enabled
+        disabled: The rule has been disabled
+
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Rules settings
 
 batch_jobs:

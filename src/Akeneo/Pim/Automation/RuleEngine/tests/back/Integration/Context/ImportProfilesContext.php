@@ -90,6 +90,7 @@ final class ImportProfilesContext implements Context
         $this->entityManagerClearer = $entityManagerClearer;
         $this->kernelRootDir = $kernelRootDir;
     }
+
     /**
      * @Given /^the following ([^"]*) file to import:$/
      */

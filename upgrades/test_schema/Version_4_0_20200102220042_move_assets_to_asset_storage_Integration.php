@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Pimee\Upgrade\Schema\Tests;
 
 
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\PimEnterpriseEvaluateProductsCriteriaTasklet;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 

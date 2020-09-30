@@ -33,7 +33,7 @@ teamwork_assistant:
     due_date: 截止日期
     todo: 待办事项
     in_progress: 正在进行中
-    done: 完成
+    done: 已完成
     all_contributors: 全部贡献者
     you: 您
     display_products: 显示产品

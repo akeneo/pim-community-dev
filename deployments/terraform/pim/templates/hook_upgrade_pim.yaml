@@ -1,17 +1,16 @@
-{{ if .Values.pim.hook.upgradePim.enabled -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
   name: pim-upgrader
   labels:
-    component: "hook-upgrader" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+    component: "hook-upgrader"
     app.kubernetes.io/component: "hook-upgrader"
     {{- include "pim.standardLabels" . | indent 4 }}
     {{- include "pim.extraLabels" . | indent 4 }}
   annotations:
     # This is what defines this resource as a hook. Without this line, the
     # job is considered part of the release.
-    "helm.sh/hook": {{ .Values.pim.hook.upgradePim.hook | quote }}
+    "helm.sh/hook": "post-upgrade"
     {{- if .Values.pim.hook.intermediateUpgrades }}
     "helm.sh/hook-weight": {{ add (len .Values.pim.hook.intermediateUpgrades) 1 | quote }} # After last intermediate upgrade (As index start to 0, length is last index + 1)
     {{- else }}
@@ -22,7 +21,7 @@ spec:
   template:
     metadata:
       labels:
-        component: "hook-upgrader" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+        component: "hook-upgrader"
         app.kubernetes.io/component: "hook-upgrader"
         {{- include "pim.standardLabels" . | indent 8 }}
         {{- include "pim.extraLabels" . | indent 8 }}
@@ -73,4 +72,3 @@ spec:
             - key: akobOnboarderKey
               path: key.json
         {{- end }}
-{{- end }}

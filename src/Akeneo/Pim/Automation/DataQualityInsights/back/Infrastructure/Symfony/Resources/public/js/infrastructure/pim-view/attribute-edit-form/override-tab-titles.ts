@@ -50,8 +50,11 @@ export default class OverrideTabTitles implements OverrideTabTitlesInterface
       return;
     }
 
+    const registredTabs = tabs.getTabs();
+    const registredTab = registredTabs.find((activeTab: any) => activeTab.code === tabCode);
+
     const tab = tabs.getExtension(tabCode);
-    if (!tab) {
+    if (!tab || !registredTab) {
       return;
     }
 

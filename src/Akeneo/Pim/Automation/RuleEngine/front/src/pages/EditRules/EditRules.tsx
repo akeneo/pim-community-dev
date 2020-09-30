@@ -43,6 +43,7 @@ const EditRules: React.FC<Props> = ({ ruleDefinitionCode, setIsDirty }) => {
           locales={locales}
           scopes={scopes}
           setIsDirty={setIsDirty}
+          security={security}
         />
       )}
     </ThemeProvider>

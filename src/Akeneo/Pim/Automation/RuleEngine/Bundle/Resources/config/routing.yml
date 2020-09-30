@@ -49,6 +49,20 @@ pimee_enrich_rule_definition_update:
         ruleDefinitionCode: '[a-zA-Z0-9_]+'
     methods: [PUT]
 
+pimee_enrich_rule_definition_status_change:
+    path: /rest/rule_definition/{code}/status
+    defaults: { _controller: pimee_enrich.controller.rule_definition.change_status }
+    requirements:
+        ruleDefinitionCode: '[a-zA-Z0-9_]+'
+    methods: [PUT]
+
+pimee_enrich_rule_definition_duplicate:
+    path: /configuration/rules/duplicate/{originalRuleCode}
+    defaults: { _controller: pimee_enrich.controller.rule_definition.duplicate }
+    requirements:
+        originalRuleCode: '[a-zA-Z0-9_]+'
+    methods: [ POST ]
+
 pimee_enrich_rule_definition_get_impacted_product_count:
     path: /rest/rule_definition_impacted_product_count
     defaults: { _controller: pimee_enrich.controller.rule_definition.get_impacted_product_count }
@@ -60,7 +74,8 @@ pimee_enrich_rule_definition_get_available_fields:
     methods: [GET]
 
 pimee_catalog_rule_new:
-    path: /configuration/rules/create
+    path: /configuration/rules/create/{originalRuleCode}
+    defaults: { originalRuleCode: ~ }
 
 pimee_enrich_rule_definition_get_category_tree:
     path: /rest/rule_definition_get_category_tree/{categoryTreeId}

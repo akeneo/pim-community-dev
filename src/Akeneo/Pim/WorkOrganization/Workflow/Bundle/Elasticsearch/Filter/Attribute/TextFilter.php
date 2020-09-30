@@ -184,7 +184,7 @@ class TextFilter extends AbstractAttributeFilter implements AttributeFilterInter
      */
     protected function checkValue(AttributeInterface $attribute, $value)
     {
-        if (!is_string($value) && null !== $value) {
+        if (!is_string($value)) {
             throw InvalidPropertyTypeException::stringExpected($attribute->getCode(), static::class, $value);
         }
     }

@@ -12,6 +12,7 @@ use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\AssetManager\Domain\Query\Attribute\Connector\FindConnectorAttributeByIdentifierAndCodeInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\InactiveLabelFilter;
 use Doctrine\DBAL\Connection;
 
 class SqlFindConnectorAttributeByIdentifierAndCode implements FindConnectorAttributeByIdentifierAndCodeInterface
@@ -22,25 +23,30 @@ class SqlFindConnectorAttributeByIdentifierAndCode implements FindConnectorAttri
     /** @var AttributeHydratorRegistry */
     private $attributeHydratorRegistry;
 
-    /**
-     * @param Connection $sqlConnection
-     */
-    public function __construct(Connection $sqlConnection, AttributeHydratorRegistry $attributeHydratorRegistry)
-    {
+    /** @var InactiveLabelFilter */
+    private $inactiveLabelFilter;
+
+    public function __construct(
+        Connection $sqlConnection,
+        AttributeHydratorRegistry $attributeHydratorRegistry,
+        InactiveLabelFilter $inactiveLabelFilter
+    ) {
         $this->sqlConnection = $sqlConnection;
         $this->attributeHydratorRegistry = $attributeHydratorRegistry;
+        $this->inactiveLabelFilter = $inactiveLabelFilter;
     }
 
-    /**
-     * @return ConnectorAttribute
-     */
-    public function find(AssetFamilyIdentifier $assetFamilyIdentifier, AttributeCode $attributeCode): ?ConnectorAttribute
-    {
+    public function find(
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        AttributeCode $attributeCode
+    ): ?ConnectorAttribute {
         return $this->fetch($assetFamilyIdentifier, $attributeCode);
     }
 
-    private function fetch(AssetFamilyIdentifier $assetFamilyIdentifier, AttributeCode $attributeCode): ?ConnectorAttribute
-    {
+    private function fetch(
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        AttributeCode $attributeCode
+    ): ?ConnectorAttribute {
         $query = <<<SQL
         SELECT
             identifier,
@@ -62,7 +68,7 @@ SQL;
             $query,
             [
                 'asset_family_identifier' => $assetFamilyIdentifier->normalize(),
-                'attribute_code' => (string) $attributeCode
+                'attribute_code' => (string) $attributeCode,
             ]
         );
 
@@ -75,16 +81,16 @@ SQL;
         return $this->hydrateAttribute($result);
     }
 
-    /**
-     * @return ConnectorAttribute
-     */
     private function hydrateAttribute(array $result): ConnectorAttribute
     {
         $hydratedAttribute = $this->attributeHydratorRegistry->getHydrator($result)->hydrate($result);
 
+        $labels = json_decode($result['labels'], true);
+        $labels = $this->inactiveLabelFilter->filter($labels);
+
         return new ConnectorAttribute(
             $hydratedAttribute->getCode(),
-            LabelCollection::fromArray(json_decode($result['labels'], true)),
+            LabelCollection::fromArray($labels),
             $result['attribute_type'],
             AttributeValuePerLocale::fromBoolean($hydratedAttribute->hasValuePerLocale()),
             AttributeValuePerChannel::fromBoolean($hydratedAttribute->hasValuePerChannel()),

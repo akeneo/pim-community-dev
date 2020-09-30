@@ -1,0 +1,31 @@
+.AknRuleBadge {
+  line-height: 16px;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 2px;
+  background-color: @AknWhite;
+  padding: 0 6px;
+  font-size: @AknFontSizeSmall;
+  text-transform: uppercase;
+  display: inline-block;
+
+  &--green, &--primary {
+    color: @AknGreen140;
+    border-color: @AknGreen100;
+  }
+
+  &--blue, &--secondary {
+    color: @AknBlue140;
+    border-color: @AknBlue100;
+  }
+
+  &--grey, &--tertiary {
+    color: @AknGrey140;
+    border-color: @AknGrey100;
+  }
+
+  &--red, &--danger {
+    color: @AknRed140;
+    border-color: @AknRed100;
+  }
+}

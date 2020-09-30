@@ -15,21 +15,28 @@ datagrid:
             label:
                 label: pimee_catalog_rule.datagrid.rule-grid.column.label
                 frontend_type: label
+            tags:
+                label: pimee_catalog_rule.datagrid.rule-grid.column.tags.label
+                frontend_type: tags
+                data_name: content
+            priority:
+                label: pimee_catalog_rule.datagrid.rule-grid.column.priority
+                frontend_type: integer
+                data_name: priority
             impactedSubjectCount:
                 label: pimee_catalog_rule.datagrid.rule-grid.column.impacted_product_count.label
                 type: twig
                 template: AkeneoPimRuleEngineBundle:Rule:_impacted_product_count.html.twig
                 frontend_type: html
-            priority:
-                label: pimee_catalog_rule.datagrid.rule-grid.column.priority
-                frontend_type: integer
-                data_name: priority
-            tags:
-                label: pimee_catalog_rule.datagrid.rule-grid.column.tags.label
-                frontend_type: tags
-                data_name: content
+            status:
+                label: pimee_catalog_rule.datagrid.rule-grid.column.status
+                data_name: enabled
+                type: twig
+                frontend_type: html
+                template: AkeneoPimRuleEngineBundle:Rule:_enabled.html.twig
         properties:
             id: ~
+            enabled: ~
             edit_link:
                 type: url
                 route: pimee_catalog_rule_edit
@@ -45,6 +52,11 @@ datagrid:
                 route: pimee_catalog_rule_rule_delete
                 params:
                     - id
+            toggle_rule_status:
+                type: url
+                route: pimee_enrich_rule_definition_status_change
+                params:
+                    - code
         actions:
             edit:
                 launcherOptions:
@@ -54,10 +66,17 @@ datagrid:
                 link:      edit_link
                 rowAction: true
                 acl_resource: pimee_catalog_rule_rule_edit_permissions
+            toggle_status:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--switch
+                type:  toggle-rule-status
+                label: pim_datagrid.actions.toggle_status
+                link:  toggle_rule_status
+                acl_resource: pimee_catalog_rule_rule_edit_permissions
             execute:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--play
-                type: ajax
+                type: execute-rule
                 label: pimee_catalog_rule.datagrid.rule-grid.actions.execute
                 link: execute_link
                 acl_resource: pimee_catalog_rule_rule_execute_permissions
@@ -91,6 +110,8 @@ datagrid:
                     data_name: r.impactedSubjectCount
                 priority:
                     data_name: r.priority
+                status:
+                    data_name: r.enabled
             default:
                 label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
         mass_actions:

@@ -88,7 +88,7 @@ services:
       MYSQL_DATABASE: '${APP_DATABASE_NAME}'
       MYSQL_PASSWORD: '${APP_DATABASE_PASSWORD}'
     volumes:
-      - './docker/create_db_test.sh:/docker-entrypoint-initdb.d/create_db_test.sh:ro'
+      - './docker/initdb.d:/docker-entrypoint-initdb.d:ro'
     ports:
       - '${DOCKER_PORT_MYSQL:-33006}:3306'
     networks:

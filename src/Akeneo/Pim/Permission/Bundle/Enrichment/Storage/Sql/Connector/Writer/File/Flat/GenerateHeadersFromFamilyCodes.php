@@ -131,24 +131,29 @@ SQL;
     private function fetchGrantedAttributesData(array $familyCodes, int $userId): array
     {
         $attributesDataSql = <<<SQL
+            WITH attribute_specific_to_locales as (
+                 SELECT attribute_id, JSON_ARRAYAGG(l.code) AS specific_to_locales
+                 FROM pim_catalog_locale l
+                 JOIN pim_catalog_attribute_locale al ON al.locale_id = l.id
+                 GROUP BY al.attribute_id
+            )
             SELECT a.code,
                    a.is_scopable,
                    a.is_localizable,
                    a.attribute_type,
-                   (
-                     SELECT JSON_ARRAYAGG(l.code)
-                     FROM pim_catalog_locale l
-                     JOIN pim_catalog_attribute_locale al ON al.locale_id = l.id
-                     WHERE al.attribute_id = a.id
-                   ) AS specific_to_locales
-            FROM pim_catalog_family f
-              JOIN pim_catalog_family_attribute fa ON fa.family_id = f.id
-              JOIN pim_catalog_attribute a ON a.id = fa.attribute_id
+                   astl.specific_to_locales
+            FROM pim_catalog_attribute a
+              LEFT JOIN attribute_specific_to_locales astl ON astl.attribute_id = a.id
               JOIN pimee_security_attribute_group_access aga ON aga.attribute_group_id = a.group_id
               JOIN oro_user_access_group ug ON ug.group_id = aga.user_group_id
-            WHERE f.code IN (:familyCodes)
-              AND ug.user_id = :userId
+            WHERE ug.user_id = :userId
               AND aga.view_attributes = 1
+              AND a.id IN (
+                SELECT fa.attribute_id
+                FROM pim_catalog_family f
+                JOIN pim_catalog_family_attribute fa ON fa.family_id = f.id
+                WHERE f.code IN (:familyCodes)
+              )
             GROUP BY a.id;
 SQL;
 

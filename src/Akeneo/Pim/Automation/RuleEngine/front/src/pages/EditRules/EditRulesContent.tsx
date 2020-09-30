@@ -1,33 +1,32 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import { useDialogState, DialogDisclosure } from 'reakit/Dialog';
-import { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
+import { DialogDisclosure, useDialogState } from 'reakit/Dialog';
 import { FormContext } from 'react-hook-form';
 import * as akeneoTheme from '../../theme';
 import {
   AkeneoSpinner,
   BreadcrumbItem,
+  Content,
   LastBreadcrumbItem,
   RulesHeader,
-  Content,
 } from '../../components';
 import { EditRulesForm } from './components/EditRulesForm';
 import {
   generateAndRedirect,
+  generateUrl,
+  redirectToUrl,
   useBackboneRouter,
   useNotify,
   useTranslate,
   useUserContext,
-  generateUrl,
-  redirectToUrl,
 } from '../../dependenciesTools/hooks';
-import { Locale, RuleDefinition, Condition } from '../../models';
+import { Condition, Locale, RuleDefinition } from '../../models';
 import { useSubmitEditRuleForm } from './hooks';
 import { IndexedScopes } from '../../repositories/ScopeRepository';
 import { AddActionButton } from './components/actions/AddActionButton';
 import { Action } from '../../models/Action';
 import { httpDelete } from '../../fetch';
-import { NotificationLevel } from '../../dependenciesTools';
+import { NotificationLevel, Security } from '../../dependenciesTools';
 import { Dropdown } from '../../components/Dropdown';
 import { AlertDialog } from '../../components/AlertDialog/AlertDialog';
 
@@ -41,6 +40,7 @@ type Props = {
   locales: Locale[];
   scopes: IndexedScopes;
   setIsDirty: (isDirty: boolean) => void;
+  security: Security;
 };
 
 const EditRulesContent: React.FC<Props> = ({
@@ -49,6 +49,7 @@ const EditRulesContent: React.FC<Props> = ({
   locales,
   scopes,
   setIsDirty,
+  security,
 }) => {
   const translate = useTranslate();
   const userContext = useUserContext();
@@ -156,6 +157,9 @@ const EditRulesContent: React.FC<Props> = ({
 
   const saveAndExecuteDialog = useDialogState();
 
+  const userHasExecutePermission = () =>
+    security.isGranted('pimee_catalog_rule_rule_execute_permissions');
+
   const handleSaveAndExecuteRule = () => {
     formMethods.register({ name: 'execute_on_save', value: true });
     onSubmit().then(() => {
@@ -191,22 +195,43 @@ const EditRulesContent: React.FC<Props> = ({
                 'pimee_catalog_rule.form.delete.description'
               )}
             />
-            <DialogDisclosure
-              {...saveAndExecuteDialog}
-              className='AknDropdown-menuLink'>
-              {translate('pimee_catalog_rule.form.edit.execute.button')}
-            </DialogDisclosure>
-            <AlertDialog
-              dialog={saveAndExecuteDialog}
-              onValidate={handleSaveAndExecuteRule}
-              cancelLabel={translate('pim_common.cancel')}
-              confirmLabel={translate('pim_common.confirm')}
-              label={translate('pimee_catalog_rule.form.edit.execute.title')}
-              description={translate(
-                'pimee_catalog_rule.form.edit.execute.description'
-              )}
-              illustrationClassName={'AknFullPage-illustration--rules'}
-            />
+            {userHasExecutePermission() && formMethods.watch('enabled') && (
+              <>
+                <DialogDisclosure
+                  {...saveAndExecuteDialog}
+                  className='AknDropdown-menuLink'>
+                  {translate('pimee_catalog_rule.form.edit.execute.button')}
+                </DialogDisclosure>
+                <AlertDialog
+                  dialog={saveAndExecuteDialog}
+                  onValidate={handleSaveAndExecuteRule}
+                  cancelLabel={translate('pim_common.cancel')}
+                  confirmLabel={translate('pim_common.confirm')}
+                  label={translate(
+                    'pimee_catalog_rule.form.edit.execute.title'
+                  )}
+                  description={translate(
+                    'pimee_catalog_rule.form.edit.execute.description'
+                  )}
+                  illustrationClassName={'AknFullPage-illustration--rules'}
+                />
+              </>
+            )}
+            <button
+              type={'button'}
+              className={'AknDropdown-menuLink'}
+              onClick={event => {
+                event.preventDefault();
+                formMethods.register({
+                  name: 'duplicate_on_save',
+                  value: true,
+                });
+                onSubmit().then(() => {
+                  formMethods.unregister('duplicate_on_save');
+                });
+              }}>
+              {translate('pimee_catalog_rule.form.edit.duplicate.button')}
+            </button>
           </Dropdown>
         }
         secondaryButton={<AddActionButton handleAddAction={handleAddAction} />}>

@@ -15,7 +15,7 @@ services:
     ##
     # Published product events
     ##
-    pimee_workflow_versioning.event_listener.addversion:
+    pim_versioning.event_listener.addversion:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\SkipVersionListener'
         lazy: true
         arguments:

@@ -2,11 +2,14 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Runner;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonRunnableException;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCondition;
 use Akeneo\Pim\Automation\RuleEngine\Component\Runner\ProductRuleRunner;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\ApplierInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\BuilderInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\SelectorInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
@@ -46,13 +49,13 @@ class ProductRuleRunnerSpec extends ObjectBehavior
     }
 
     function it_runs_a_rule(
-        $builder,
-        $selector,
-        $applier,
-        RuleDefinitionInterface $definition,
-        RuleInterface $rule,
+        BuilderInterface $builder,
+        SelectorInterface $selector,
+        ApplierInterface $applier,
         RuleSubjectSetInterface $subjectSet
     ) {
+        $definition = new RuleDefinition();
+        $rule = new Rule($definition);
         $builder->build($definition)->shouldBeCalled()->willReturn($rule);
         $selector->select($rule)->shouldBeCalled()->willReturn($subjectSet);
         $applier->apply($rule, $subjectSet)->shouldBeCalled();
@@ -60,14 +63,27 @@ class ProductRuleRunnerSpec extends ObjectBehavior
         $this->run($definition);
     }
 
+    function it_cannot_run_a_disabled_rule(
+        BuilderInterface $builder
+    ) {
+        $definition = new RuleDefinition();
+        $rule = new Rule($definition);
+        $rule->setCode('foo');
+        $rule->setEnabled(false);
+        $builder->build($definition)->shouldBeCalled()->willReturn($rule);
+
+        $this->shouldThrow(new NonRunnableException('The "foo" rule is disabled.'))
+            ->during('run', [$definition]);
+    }
+
     function it_dries_run_a_rule(
-        $builder,
-        $selector,
-        $applier,
-        RuleDefinitionInterface $definition,
-        RuleInterface $rule,
+        BuilderInterface $builder,
+        SelectorInterface $selector,
+        ApplierInterface $applier,
         RuleSubjectSetInterface $subjectSet
     ) {
+        $definition = new RuleDefinition();
+        $rule = new Rule($definition);
         $builder->build($definition)->shouldBeCalled()->willReturn($rule);
         $selector->select($rule)->shouldBeCalled()->willReturn($subjectSet);
         $applier->apply(Argument::any())->shouldNotBeCalled();
@@ -76,14 +92,15 @@ class ProductRuleRunnerSpec extends ObjectBehavior
     }
 
     function it_runs_a_rule_on_a_subset_of_products(
-        $builder,
-        $selector,
-        $applier,
+        BuilderInterface $builder,
+        SelectorInterface $selector,
+        ApplierInterface $applier,
         RuleDefinitionInterface $definition,
         RuleInterface $rule,
         RuleSubjectSetInterface $subjectSet
     ) {
         $builder->build($definition)->shouldBeCalled()->willReturn($rule);
+        $rule->isEnabled()->willReturn(true);
         $rule->addCondition(Argument::any())->shouldBeCalled();
         $selector->select($rule)->shouldBeCalled()->willReturn($subjectSet);
         $applier->apply($rule, $subjectSet)->shouldBeCalled();
@@ -92,14 +109,15 @@ class ProductRuleRunnerSpec extends ObjectBehavior
     }
 
     function it_dries_run_a_rule_on_a_subset_of_products(
-        $builder,
-        $selector,
-        $applier,
+        BuilderInterface $builder,
+        SelectorInterface $selector,
+        ApplierInterface $applier,
         RuleDefinitionInterface $definition,
         RuleInterface $rule,
         RuleSubjectSetInterface $subjectSet
     ) {
         $builder->build($definition)->shouldBeCalled()->willReturn($rule);
+        $rule->isEnabled()->willReturn(true);
         $rule->addCondition(Argument::any())->shouldBeCalled();
         $selector->select($rule)->shouldBeCalled()->willReturn($subjectSet);
         $applier->apply(Argument::any())->shouldNotBeCalled();

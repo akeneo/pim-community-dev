@@ -1,8 +1,9 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { Locale } from '../../../models';
 import { InputNumber, InputText, FormSubsection } from '../../../components';
 import { useTranslate } from '../../../dependenciesTools/hooks';
+import InputBoolean from '../../../components/Inputs/InputBoolean';
 
 const LABEL_MAX_LENGTH = 255;
 
@@ -12,7 +13,7 @@ type Props = {
 
 const RuleProperties: React.FC<Props> = ({ locales }) => {
   const translate = useTranslate();
-  const { register } = useFormContext();
+  const { register, watch } = useFormContext();
 
   return (
     <>
@@ -37,6 +38,22 @@ const RuleProperties: React.FC<Props> = ({ locales }) => {
               id='edit-rules-input-priority'
               label={translate('pimee_catalog_rule.form.edit.priority.label')}
               ref={register}
+            />
+          </div>
+          <div className='AknFieldContainer'>
+            <Controller
+              as={InputBoolean}
+              name='enabled'
+              id='edit-rules-input-status'
+              label={translate('pimee_catalog_rule.form.edit.status.label')}
+              defaultValue={watch('enabled')}
+              value={watch('enabled')}
+              checkedLabel={translate(
+                'pimee_catalog_rule.form.edit.status.enabled'
+              )}
+              uncheckedLabel={translate(
+                'pimee_catalog_rule.form.edit.status.disabled'
+              )}
             />
           </div>
         </div>

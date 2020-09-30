@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context;
 
-use Akeneo\Pim\Automation\RuleEngine\Component\Connector\Executor\RulesExecutor;
 use Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Denormalization\RuleDefinitionProcessor;
 use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsUpdater;
 use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsValidator;
@@ -38,9 +37,6 @@ final class ExecuteRuleContext implements Context
     /** @var ProductRepositoryInterface */
     private $productRepository;
 
-    /** @var RulesExecutor */
-    private $rulesExecutor;
-
     /** @var RuleDefinitionProcessor */
     private $ruleDefinitionProcessor;
 
@@ -58,7 +54,6 @@ final class ExecuteRuleContext implements Context
 
     public function __construct(
         ProductRepositoryInterface $productRepository,
-        RulesExecutor $rulesExecutor,
         RuleDefinitionProcessor $ruleDefinitionProcessor,
         ProductsUpdater $productsUpdater,
         ProductsValidator $productsValidator,
@@ -66,7 +61,6 @@ final class ExecuteRuleContext implements Context
         BuilderInterface $builder
     ) {
         $this->productRepository = $productRepository;
-        $this->rulesExecutor = $rulesExecutor;
         $this->ruleDefinitionProcessor = $ruleDefinitionProcessor;
         $this->productsUpdater = $productsUpdater;
         $this->productsValidator = $productsValidator;
