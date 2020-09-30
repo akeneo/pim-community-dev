@@ -44,10 +44,7 @@ export const useUpdateWebhook = (code: string) => {
             if (result.error.errors) {
                 result.error.errors.forEach(({message}) => notify(NotificationLevel.ERROR, translate(message)));
             } else {
-                notify(
-                    NotificationLevel.ERROR,
-                    translate('akeneo_connectivity.connection.webhook.flash.error')
-                );
+                notify(NotificationLevel.ERROR, translate('akeneo_connectivity.connection.webhook.flash.error'));
             }
 
             return result;

@@ -37,15 +37,15 @@ export const EditConnectionWebhook = () => {
     const {loading, webhook: fetchedWebhook} = useWebhook(connectionCode);
     const formMethods = useForm<FormInput>();
     const [webhook, setWebhook] = useState<Webhook>(
-        fetchedWebhook ?
-            fetchedWebhook :
-            {
-                connectionCode: connectionCode,
-                enabled: false,
-                connectionImage: null,
-                secret: null,
-                url: null
-            }
+        fetchedWebhook
+            ? fetchedWebhook
+            : {
+                  connectionCode: connectionCode,
+                  enabled: false,
+                  connectionImage: null,
+                  secret: null,
+                  url: null,
+              }
     );
 
     useEffect(() => {
@@ -101,7 +101,7 @@ export const EditConnectionWebhook = () => {
                             ? defaultImageUrl
                             : generateMediaUrl(webhook.connectionImage, 'thumbnail')
                     }
-                    buttons={[<SaveButton key={0} code={connectionCode} webhook={webhook} setWebhook={setWebhook}/>]}
+                    buttons={[<SaveButton key={0} code={connectionCode} webhook={webhook} setWebhook={setWebhook} />]}
                     state={<FormState />}
                 >
                     {connectionCode}
@@ -135,7 +135,7 @@ type SaveProps = {
     code: string;
     webhook: Webhook;
     setWebhook: Dispatch<SetStateAction<Webhook>>;
-}
+};
 const SaveButton = ({code, webhook, setWebhook}: SaveProps) => {
     const {formState, getValues, triggerValidation, handleSubmit, setError} = useFormContext<FormInput>();
     const updateWebhook = useUpdateWebhook(code);
@@ -150,17 +150,17 @@ const SaveButton = ({code, webhook, setWebhook}: SaveProps) => {
             });
             if (!isErr(result)) {
                 setWebhook({
-                        ...webhook,
+                    ...webhook,
                     connectionCode: result.value.connectionCode,
                     enabled: result.value.enabled,
                     url: result.value.url,
-                    secret: result.value.secret
+                    secret: result.value.secret,
                 });
 
                 return;
             }
             if (result.error.errors) {
-                result.error.errors.forEach((error) => {
+                result.error.errors.forEach(error => {
                     setError(error.field, 'validation', error.message);
                 });
             }

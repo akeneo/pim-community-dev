@@ -47,7 +47,9 @@ export const EditForm: FC<Props> = ({webhook}: Props) => {
                     actions={
                         <RegenerateButton
                             onClick={() =>
-                                history.push(`/connections/${webhook.connectionCode}/event-subscription/regenerate-secret`)
+                                history.push(
+                                    `/connections/${webhook.connectionCode}/event-subscription/regenerate-secret`
+                                )
                             }
                         />
                     }
