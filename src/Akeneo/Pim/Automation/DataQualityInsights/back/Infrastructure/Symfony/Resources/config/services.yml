@@ -107,19 +107,13 @@ services:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\CalculateProductCompleteness
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductIdentifierFromProductIdQuery'
-            - '@akeneo.pim.automation.completeness_product_required_attributes_calculator'
+            - '@pim_catalog.completeness.calculator'
 
     akeneo.pim.automation.calculate_product_completeness_of_non_required_attributes:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\CalculateProductCompleteness
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductIdentifierFromProductIdQuery'
             - '@akeneo.pim.automation.completeness_product_non_required_attributes_calculator'
-
-    akeneo.pim.automation.completeness_product_required_attributes_calculator:
-        class: Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator
-        arguments:
-            - '@akeneo.pim.enrichment.completeness.query.get_product_masks'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\GetRequiredAttributesMasksQuery'
 
     akeneo.pim.automation.completeness_product_non_required_attributes_calculator:
         class: Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator

@@ -1,8 +1,5 @@
 akeneo_data_quality_insights:
     axis:
         enrichment: Enrichment
-    acl:
-        activation:
-            edit: Edit data quality insights activation
 
 Enrichment: Enrichment

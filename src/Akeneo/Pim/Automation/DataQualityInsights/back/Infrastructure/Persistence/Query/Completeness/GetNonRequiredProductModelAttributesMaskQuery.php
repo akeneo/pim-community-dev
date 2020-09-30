@@ -65,8 +65,6 @@ INNER JOIN pim_catalog_family_variant AS family_variant ON family_variant.id = p
 INNER JOIN pim_catalog_family AS family ON family.id = family_variant.family_id
 INNER JOIN pim_catalog_family_attribute AS family_attribute ON family_attribute.family_id = family.id
 INNER JOIN pim_catalog_attribute AS attribute ON attribute.id = family_attribute.attribute_id
-LEFT JOIN pim_catalog_attribute_group AS attribute_group ON attribute_group.id = attribute.group_id
-LEFT JOIN pim_data_quality_insights_attribute_group_activation AS attribute_group_activation ON attribute_group_activation.attribute_group_code = attribute_group.code
 JOIN (
     SELECT
         channel.id AS channel_id,
@@ -83,7 +81,6 @@ LEFT JOIN pim_catalog_attribute_requirement pcar
 WHERE product_model.id = :productModelId
     AND (pcar.attribute_id IS NULL OR pcar.required IS FALSE)
     AND (pcal.locale_id IS NULL OR pcal.locale_id = channel_locale.locale_id)
-    AND (attribute_group_activation.activated IS NULL OR attribute_group_activation.activated = 1)
     AND NOT EXISTS(
         SELECT 1
         FROM pim_catalog_variant_attribute_set_has_attributes AS attribute_set_attributes

@@ -76,12 +76,9 @@ JOIN (
 ) AS channel_locale ON channel_locale.channel_id = pcar.channel_id
 INNER JOIN pim_catalog_attribute AS attribute ON pcar.attribute_id = attribute.id
 LEFT JOIN pim_catalog_attribute_locale AS pcal ON attribute.id = pcal.attribute_id
-LEFT JOIN pim_catalog_attribute_group AS attribute_group ON attribute_group.id = attribute.group_id
-LEFT JOIN pim_data_quality_insights_attribute_group_activation AS attribute_group_activation ON attribute_group_activation.attribute_group_code = attribute_group.code
 WHERE product_model.id = :productModelId
     AND pcar.required is true
     AND (pcal.locale_id IS NULL OR pcal.locale_id = channel_locale.locale_id)
-    AND (attribute_group_activation.activated IS NULL OR attribute_group_activation.activated = 1)
     AND NOT EXISTS(
         SELECT 1
         FROM pim_catalog_variant_attribute_set_has_attributes AS attribute_set_attributes

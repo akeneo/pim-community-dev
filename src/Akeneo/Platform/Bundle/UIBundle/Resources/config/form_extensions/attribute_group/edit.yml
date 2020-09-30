@@ -144,24 +144,6 @@ extensions:
         config:
             fieldBaseId: pim_enrich_attribute_group_form_label_
 
-    pim-attribute-group-edit-form-properties-data-quality-insights-section:
-        module: pim/common/simple-view
-        parent: pim-attribute-group-edit-form-properties
-        targetZone: accordion
-        position: 120
-        feature: data_quality_insights
-        config:
-            template: pim/template/form/tab/section
-            templateParams:
-                sectionTitle: akeneo_data_quality_insights.title
-                dropZone: content
-
-    pim-attribute-group-edit-form-properties-data-quality-insights:
-        module: akeneo/data-quality-insights/infrastructure/attribute-group/dqi-activation
-        parent: pim-attribute-group-edit-form-properties-data-quality-insights-section
-        position: 100
-        feature: data_quality_insights
-
     pim-attribute-group-edit-form-attribute:
         module: pim/attribute-group-form/tab/attribute
         parent: pim-attribute-group-edit-form-form-tabs

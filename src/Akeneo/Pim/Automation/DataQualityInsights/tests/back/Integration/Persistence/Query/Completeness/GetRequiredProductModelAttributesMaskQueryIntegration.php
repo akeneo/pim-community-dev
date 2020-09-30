@@ -24,7 +24,6 @@ class GetRequiredProductModelAttributesMaskQueryIntegration extends Completeness
         $this->givenCurrencyForChannel([['code' => 'ecommerce', 'currencies' => ['USD']]]);
         $this->givenChannels([['code' => 'tablet', 'locales' => ['en_US', 'fr_FR'], 'labels' => ['en_US' => 'tablet', 'fr_FR' => 'Tablette'], 'currencies' => ['USD', 'EUR']]]);
 
-        $this->givenADeactivatedAttributeGroup('erp');
         $this->givenAttributes([
             ['code' => 'a_non_required_text', 'type' => AttributeTypes::TEXT],
             // A price because the handling is different than other attribute
@@ -43,9 +42,6 @@ class GetRequiredProductModelAttributesMaskQueryIntegration extends Completeness
             // Attributes for the family variant
             ['code' => 'a_required_variant_text', 'type' => AttributeTypes::TEXT],
             ['code' => 'a_variation_axis', 'type' => AttributeTypes::OPTION_SIMPLE_SELECT],
-            // Attributes required but deactivated from their attribute group
-            ['code' => 'a_required_deactivated_text', 'type' => AttributeTypes::TEXT, 'group' => 'erp'],
-            ['code' => 'a_required_deactivated_variant_text', 'type' => AttributeTypes::TEXT, 'group' => 'erp'],
         ]);
 
         $this->givenFamilies([
@@ -66,8 +62,6 @@ class GetRequiredProductModelAttributesMaskQueryIntegration extends Completeness
                     'a_localizable_scopable_locale_specific',
                     'a_variation_axis',
                     'a_required_variant_text',
-                    'a_required_deactivated_text',
-                    'a_required_deactivated_variant_text',
                 ],
                 'attribute_requirements' => [
                     'ecommerce' => [
@@ -78,8 +72,6 @@ class GetRequiredProductModelAttributesMaskQueryIntegration extends Completeness
                         'a_localizable_non_scopable_locale_specific',
                         'a_variation_axis',
                         'a_required_variant_text',
-                        'a_required_deactivated_text',
-                        'a_required_deactivated_variant_text',
                     ],
                     'tablet' => [
                         'sku',
@@ -93,8 +85,6 @@ class GetRequiredProductModelAttributesMaskQueryIntegration extends Completeness
                         'a_localizable_scopable_locale_specific',
                         'a_variation_axis',
                         'a_required_variant_text',
-                        'a_required_deactivated_text',
-                        'a_required_deactivated_variant_text',
                     ],
                 ]
             ],
@@ -107,7 +97,7 @@ class GetRequiredProductModelAttributesMaskQueryIntegration extends Completeness
                 [
                     'level' => 1,
                     'axes' => ['a_variation_axis'],
-                    'attributes' => ['a_variation_axis', 'sku', 'a_required_variant_text', 'a_required_deactivated_variant_text'],
+                    'attributes' => ['a_variation_axis', 'sku', 'a_required_variant_text'],
                 ],
             ],
         ]);

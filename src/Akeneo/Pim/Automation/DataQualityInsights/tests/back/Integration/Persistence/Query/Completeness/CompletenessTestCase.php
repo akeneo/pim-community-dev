@@ -13,10 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query\Completeness;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\AttributeGroupActivation;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeGroupCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeGroupActivationRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
 use Webmozart\Assert\Assert;
@@ -42,7 +39,7 @@ abstract class CompletenessTestCase extends TestCase
             );
 
             $errors = $this->get('validator')->validate($family);
-            Assert::count($errors, 0, sprintf('Family "%s" is invalid', $familyData['code']));
+            Assert::count($errors, 0);
 
             return $family;
         }, $familiesData);
@@ -72,7 +69,7 @@ abstract class CompletenessTestCase extends TestCase
                     'type' => $attributeData['type'],
                     'localizable' => $attributeData['localizable'] ?? false,
                     'scopable' => $attributeData['scopable'] ?? false,
-                    'group' => $attributeData['group'] ?? 'other',
+                    'group' => 'other',
                     'available_locales' => $attributeData['available_locales'] ?? [],
                     'decimals_allowed' => $attributeData['type'] === AttributeTypes::PRICE_COLLECTION ? false : null,
                 ]
@@ -153,15 +150,5 @@ abstract class CompletenessTestCase extends TestCase
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
         return new ProductId((int) $productModel->getId());
-    }
-
-    protected function givenADeactivatedAttributeGroup(string $code): void
-    {
-        $attributeGroup = $this->get('pim_catalog.factory.attribute_group')->create();
-        $this->get('pim_catalog.updater.attribute_group')->update($attributeGroup, ['code' => $code]);
-        $this->get('pim_catalog.saver.attribute_group')->save($attributeGroup);
-
-        $attributeGroupActivation = new AttributeGroupActivation(new AttributeGroupCode($code), false);
-        $this->get(AttributeGroupActivationRepository::class)->save($attributeGroupActivation);
     }
 }

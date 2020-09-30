@@ -64,8 +64,6 @@ SELECT
 FROM pim_catalog_family family
 LEFT JOIN pim_catalog_family_attribute family_attribute ON family_attribute.family_id = family.id
 LEFT JOIN pim_catalog_attribute attribute ON attribute.id = family_attribute.attribute_id
-LEFT JOIN pim_catalog_attribute_group AS attribute_group ON attribute_group.id = attribute.group_id
-LEFT JOIN pim_data_quality_insights_attribute_group_activation AS attribute_group_activation ON attribute_group_activation.attribute_group_code = attribute_group.code
 JOIN (
     SELECT
         channel.id AS channel_id,
@@ -82,7 +80,6 @@ LEFT JOIN pim_catalog_attribute_locale pcal ON attribute.id = pcal.attribute_id
 WHERE family.code IN (:familyCodes)
     AND (pcal.locale_id IS NULL OR pcal.locale_id = channel_locale.locale_id)
     AND (pcar.attribute_id IS NULL OR pcar.required IS FALSE)
-    AND (attribute_group_activation.activated IS NULL OR attribute_group_activation.activated = 1)
 GROUP BY family.code, channel_code, locale_code;
 SQL;
         $rows = $this->connection->executeQuery(
