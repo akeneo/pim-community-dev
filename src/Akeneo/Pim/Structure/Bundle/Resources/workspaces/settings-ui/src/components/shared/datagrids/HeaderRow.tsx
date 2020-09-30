@@ -10,7 +10,7 @@ const HeaderRow: FC<Props> = ({children}) => {
   return (
     <TableHead>
       <TableHeadRow>
-        {isDraggable && <TableHeadCell isFilterable={isFilterable} />}
+        {isDraggable && <TableHeadCell isFilterable={isFilterable} style={{width: 40}}/>}
         {React.Children.map(children, element => (
           <TableHeadCell isFilterable={isFilterable}>{element}</TableHeadCell>
         ))}
