@@ -17,6 +17,8 @@ jobs:
           node-version: 13.13
       - name: Install Packages
         run: cd akeneo-design-system && yarn install
+      - name: Add generated component
+        run: cd akeneo-design-system && ./bin/dsm generate Dummy
       - name: Build lib
         run: cd akeneo-design-system && yarn lib:build
       - name: Launch lint checks
@@ -45,6 +47,9 @@ jobs:
         if: failure() && steps.visual_test_execution.outcome == 'failure'
         # Here we add a "|| true" to the find command to avoid it to fail for no reason.
         run: cd akeneo-design-system && find . -name '*__image_snapshots__*'  -exec rm -rf {} \; || true && yarn test:visual:update
+      - name: Cleanup changes
+        if: failure() && steps.visual_test_execution.outcome == 'failure'
+        run: cd akeneo-design-system && git reset HEAD --hard && rm -rf src/components/Dummy
       - uses: mdecoleman/pr-branch-name@1.0.0
         if: failure() && steps.visual_test_execution.outcome == 'failure'
         id: extract_branch
