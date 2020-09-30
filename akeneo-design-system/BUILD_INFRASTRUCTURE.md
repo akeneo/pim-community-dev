@@ -50,6 +50,22 @@ If everything went right the github action deploy the storybook to the github pa
 After a pull request has been accepted and merged, we want to expose the new changes to external Akeneo products. To do so, we extract the `akeneo-design-system` subfolder from pim-community-dev to it's dedicated [external repository](https://github.com/akeneo/akeneo-design-system).
 This workflow is located in the [.github/workflows/dsm-extract.yml](https://github.com/akeneo/pim-community-dev/blob/master/.github/workflows/dsm-extract.yml) file. We will go over the important steps of this document but if you want to dive deeper, you can read it as it's self documented.
 
+### Workflow
+
 The first two jobs are run in parallel to build the lib and bump the lib version. Once it's done, we can extract it to the external repository.
 
+### How do we bump the lib version
+
 The important part here is to understand how we bump the version: We start by getting the current version number on the package.json from the external repository. Then we get all the commit messages on the merged pull request. We analyse their commit message to decide which version level we should bump (patch, minor, major). Once it's done, we can add the package.json before extracting the `akeneo-design-system` folder.
+
+## After extracting
+
+Once the akeneo design system has been extracted to the external repository we still need to tag it, release it and publish it. We also need to update the storybook to github pages.
+
+### Deploy storybook
+
+The deploy workflow is localted in the [akeneo-design-system/.github/workflows/deploy.yml](https://github.com/akeneo/pim-community-dev/blob/master/akeneo-design-system/.github/workflows/deploy.yml). It's a github action building the lib and pushing it to the gh-pages branch.
+
+### Tag and release
+
+The tag and release workflow is localted in the [akeneo-design-system/.github/workflows/tag-and-publish-to-npm.yml](https://github.com/akeneo/pim-community-dev/blob/master/akeneo-design-system/.github/workflows/tag-and-publish-to-npm.yml). It's a github action commiting the tag and pushing it to master. Then it release it on gituhb and push it to the npm registry.
