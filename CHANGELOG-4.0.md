@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Technical Improvements
+
+- PIM-9470: [Backport] API-1212: Add filters on family search + API-1247: Add filter on category codes
+
 # 4.0.60 (2020-09-30)
 
 ## Technical Improvements
