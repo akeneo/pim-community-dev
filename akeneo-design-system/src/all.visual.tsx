@@ -35,7 +35,7 @@ describe('Visual tests', () => {
       const image = await root.screenshot();
 
       expect(image).toMatchImageSnapshot({
-        failureThreshold: 0.1,
+        failureThreshold: 1,
         failureThresholdType: 'percent',
       });
     });
