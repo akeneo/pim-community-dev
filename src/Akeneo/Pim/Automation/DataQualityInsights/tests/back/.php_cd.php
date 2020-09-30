@@ -68,6 +68,9 @@ $rules = [
             'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
             'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',
 
+            //Subscribers for attribute group updates
+            'Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface',
+
             //Connector / (Tasklets, job parameters)
             'Akeneo\Tool\Component\Batch\Job\JobInterface',
             'Akeneo\Tool\Component\Batch\Job\JobParameters',

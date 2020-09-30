@@ -47,3 +47,16 @@ akeneo_data_quality_insights_product_model_evaluation:
         _feature: data_quality_insights
     methods: [GET]
 
+akeneo_data_quality_insights_update_attribute_group_activation:
+    path: /data-quality-insights/attribute-group-activation
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\UpdateAttributeGroupActivationController
+        _feature: data_quality_insights
+    methods: [ POST ]
+
+akeneo_data_quality_insights_get_attribute_group_activation:
+    path: /data-quality-insights/attribute-group-activation/{attributeGroupCode}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetAttributeGroupActivationController
+        _feature: data_quality_insights
+    methods: [ GET ]
