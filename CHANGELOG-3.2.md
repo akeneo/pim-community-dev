@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-9482: Fix view only permission issue on product attributes
+
 # 3.2.71 (2020-09-21)
 
 ## Bug fixes:
