@@ -6,7 +6,8 @@ namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Webhook;
 
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment\ProductLoader;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 
@@ -14,7 +15,7 @@ use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ProductBusinessEventEndToEnd extends ApiTestCase
+class ProduceBusinessEventEndToEnd extends ApiTestCase
 {
     /** @var ProductLoader */
     private $productLoader;
@@ -49,7 +50,7 @@ JSON;
 
         $envelopes = $transport->get();
         $this->assertCount(1, $envelopes);
-        $this->assertInstanceOf('\Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated', $envelopes[0]->getMessage());
+        $this->assertInstanceOf(ProductCreated::class, $envelopes[0]->getMessage());
     }
 
     public function test_update_product_add_business_event_to_queue()
@@ -77,7 +78,7 @@ JSON;
 
         $envelopes = $transport->get();
         $this->assertCount(1, $envelopes);
-        $this->assertInstanceOf('\Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated', $envelopes[0]->getMessage());
+        $this->assertInstanceOf(ProductUpdated::class, $envelopes[0]->getMessage());
     }
 
     protected function getConfiguration(): Configuration
