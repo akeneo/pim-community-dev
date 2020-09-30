@@ -4,8 +4,8 @@ import {
   AttributeGroupLabels
 } from "@akeneo-pim-community/settings-ui/src/models";
 
-const anAttributeGroup = (code: string, id?: number, labels?: AttributeGroupLabels, order?: number): AttributeGroup => {
-  return {
+const anAttributeGroup = (code: string, id?: number, labels?: AttributeGroupLabels, order?: number, isDqiActivated?: boolean): AttributeGroup => {
+  let group: AttributeGroup = {
     code: code || 'a_code',
     labels: labels || {},
     sort_order:  order || 1,
@@ -19,6 +19,11 @@ const anAttributeGroup = (code: string, id?: number, labels?: AttributeGroupLabe
       id: id || 1234
     },
   };
+  if (isDqiActivated != undefined) {
+    group.isDqiActivated = isDqiActivated;
+  }
+
+  return group;
 };
 
 type AttributeGroupData = {

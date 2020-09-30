@@ -1,0 +1,25 @@
+.AknDataQualityInsightsQualityBadge {
+    border-radius: 2px;
+    padding: 0px 6px;
+    display: inline-block;
+    line-height: 18px;
+    text-transform: uppercase;
+    font-size: 11px;
+
+    &--good {
+        color: @AknGreen140;
+        border: 1px @AknGreen100 solid;
+    }
+    &--to-improve {
+        color: @AknRed140;
+        border: 1px @AknRed100 solid;
+    }
+    &--in-progress {
+        color: @AknYellow140;
+        border: 1px @AknYellow100 solid;
+    }
+    &--n-a {
+        color: @AknSlateGrey;
+        border: 1px @AknGrey solid;
+    }
+}
