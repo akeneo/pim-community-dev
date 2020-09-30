@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateMissingCriteriaEvaluationsInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\PrepareEvaluationsParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -33,22 +32,16 @@ class PrepareProductModelsCriteriaEvaluationTasklet implements TaskletInterface
     /** @var LoggerInterface */
     private $logger;
 
-    /** @var CriterionEvaluationRepositoryInterface */
-    private $productModelCriterionEvaluationRepository;
-
     public function __construct(
         CreateMissingCriteriaEvaluationsInterface $createMissingCriteriaEvaluations,
-        LoggerInterface $logger,
-        CriterionEvaluationRepositoryInterface $productModelCriterionEvaluationRepository
+        LoggerInterface $logger
     ) {
         $this->createMissingCriteriaEvaluations = $createMissingCriteriaEvaluations;
         $this->logger = $logger;
-        $this->productModelCriterionEvaluationRepository = $productModelCriterionEvaluationRepository;
     }
 
     public function execute(): void
     {
-        $this->cleanCriteriaOfDeletedProductModels();
         $this->createMissingCriteriaEvaluations();
     }
 
@@ -78,10 +71,5 @@ class PrepareProductModelsCriteriaEvaluationTasklet implements TaskletInterface
         $evaluateFrom = $this->stepExecution->getJobParameters()->get(PrepareEvaluationsParameters::UPDATED_SINCE_PARAMETER);
 
         return \DateTimeImmutable::createFromFormat(PrepareEvaluationsParameters::UPDATED_SINCE_DATE_FORMAT, $evaluateFrom);
-    }
-
-    private function cleanCriteriaOfDeletedProductModels()
-    {
-        $this->productModelCriterionEvaluationRepository->deleteUnknownProductsEvaluations();
     }
 }

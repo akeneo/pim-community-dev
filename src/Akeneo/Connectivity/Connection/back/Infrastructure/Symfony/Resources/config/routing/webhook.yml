@@ -1,3 +1,10 @@
+regenerate_secret:
+  path: '/{code}/webhook/regenerate-secret'
+  defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.webhook:regenerateSecret }
+  methods: [GET]
+  requirements:
+    code: '[a-zA-Z0-9_]+'
+
 get:
   path: '/{code}/webhook'
   defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.webhook:get }

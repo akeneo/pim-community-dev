@@ -1,7 +1,7 @@
 batch_jobs:
   csv_currency_export:
     label: 以 CSV 格式导出货币
-    export.label: 货币导出
+    export.label: 导出货币
   csv_currency_import:
     label: 以 CSV 格式导入货币
     import.label: 导入货币

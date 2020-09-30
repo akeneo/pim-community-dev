@@ -5,5 +5,5 @@ import {Button, Props} from './Button';
 export const GreyButton = ({classNames = [], ...props}: PropsWithChildren<Props>) => {
     classNames.push('AknButton--grey');
 
-    return <Button {...props} classNames={classNames}></Button>;
+    return <Button {...props} classNames={classNames} />;
 };

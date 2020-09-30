@@ -1,5 +1,6 @@
 services:
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\LaunchEvaluationsCommand:
+    akeneo.pim.automation.data_quality_insights.command.launch_evaluations_command:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\LaunchEvaluationsCommand
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\RunUniqueProcessJob'
             - '@akeneo.pim.automation.data_quality_insights.feature'

@@ -5,11 +5,12 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\CheckWebhookReachabilityCommand;
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\CheckWebhookReachabilityHandler;
+use Akeneo\Connectivity\Connection\Application\Webhook\Command\GenerateWebhookSecretCommand;
+use Akeneo\Connectivity\Connection\Application\Webhook\Command\GenerateWebhookSecretHandler;
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\UpdateWebhookCommand;
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\UpdateWebhookHandler;
 use Akeneo\Connectivity\Connection\Application\Webhook\Query\GetAConnectionWebhookHandler;
 use Akeneo\Connectivity\Connection\Application\Webhook\Query\GetAConnectionWebhookQuery;
-use Akeneo\Connectivity\Connection\Domain\DomainErrorInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\ConnectionWebhookNotFoundException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -33,17 +34,21 @@ class WebhookController
     /** @var SecurityFacade */
     private $securityFacade;
   
+   /** @var GenerateWebhookSecretHandler */
+    private $generateWebhookSecretHandler;
+  
     public function __construct(
         SecurityFacade $securityFacade,
         GetAConnectionWebhookHandler $getAConnectionWebhookHandler,
         CheckWebhookReachabilityHandler $checkWebhookReachabilityHandler,
-        UpdateWebhookHandler $updateConnectionWebhookHandler
+        UpdateWebhookHandler $updateConnectionWebhookHandler,
+        GenerateWebhookSecretHandler $generateWebhookSecretHandler
     ) {
         $this->securityFacade = $securityFacade;
         $this->getAConnectionWebhookHandler = $getAConnectionWebhookHandler;
         $this->checkWebhookReachabilityHandler = $checkWebhookReachabilityHandler;
         $this->updateConnectionWebhookHandler = $updateConnectionWebhookHandler;
-        
+        $this->generateWebhookSecretHandler = $generateWebhookSecretHandler;
     }
 
     public function get(Request $request): JsonResponse
@@ -95,6 +100,19 @@ class WebhookController
         }
 
         return new JsonResponse($webhook->normalize());
+    }
+
+    public function regenerateSecret(Request $request): JsonResponse
+    {
+        try {
+            $this->generateWebhookSecretHandler->handle(
+                new GenerateWebhookSecretCommand($request->get('code', ''))
+            );
+
+            return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+        } catch (ConnectionWebhookNotFoundException $notFoundException) {
+            return new JsonResponse($notFoundException->getMessage(), Response::HTTP_NOT_FOUND);
+        }
     }
 
     private function buildViolationResponse(ConstraintViolationListInterface $constraintViolationList): array

@@ -43,10 +43,15 @@ akeneo_connectivity_connection_audit_any:
         any: .*
 
 ## Webhook
-akeneo_connectivity_connection_webhook:
-  path: '/connections/{code}/event-subscription'
-  requirements:
-    code: '[a-zA-Z0-9_]+'
+akeneo_connectivity_connection_webhook_regenerate_secret:
+    path: '/connections/{code}/event-subscription/regenerate-secret'
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
+akeneo_connectivity_connection_webhook_edit:
+    path: '/connections/{code}/event-subscription'
+    requirements:
+        code: '[a-zA-Z0-9_]+'
 
 ## Settings
 akeneo_connectivity_connection_settings_index:

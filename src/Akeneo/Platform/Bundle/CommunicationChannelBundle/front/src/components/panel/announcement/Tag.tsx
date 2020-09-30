@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps} from '@akeneo-pim-community/shared';
 
-type Tag = 'new' | 'updates';
+type Tag = 'new' | 'updates' | 'product_marketing';
 type TagProps = {
   tag: Tag;
 };
@@ -32,7 +32,12 @@ const StyledTag = styled.div`
           color: #763e9e;
           border: 1px solid #9452ba;
         `;
-
+      case 'product_marketing':
+        return `
+          background-color: #f0f7fc;
+          color: #3278b7;
+          border: 1px solid #4ca8e0;
+        `;
       default:
         return;
     }

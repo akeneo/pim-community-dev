@@ -130,6 +130,7 @@ class ComputeDataRelatedToFamilySubProductModelsTasklet implements TaskletInterf
                 continue;
             }
 
+            $skippedProductModels = [];
             $productModelsToSave = [];
             $productModels = $this->getSubProductModelsForFamily($family);
 
@@ -137,22 +138,21 @@ class ComputeDataRelatedToFamilySubProductModelsTasklet implements TaskletInterf
                 $this->keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$productModel]);
 
                 if (!$this->isValid($productModel)) {
+                    $skippedProductModels[] = $productModel;
                     $this->stepExecution->incrementSummaryInfo('skip');
-                    continue;
+                } else {
+                    $productModelsToSave[] = $productModel;
                 }
 
-                $productModelsToSave[] = $productModel;
-
-                if (0 === count($productModelsToSave) % $this->batchSize) {
+                if (0 === (count($productModelsToSave) + count($skippedProductModels)) % $this->batchSize) {
                     $this->saveProductsModel($productModelsToSave);
-                    $productModelsToSave= [];
+                    $productModelsToSave = [];
+                    $skippedProductModels = [];
                     $this->cacheClearer->clear();
                 }
             }
 
-            if (!empty($productModelsToSave)) {
-                $this->saveProductsModel($productModelsToSave);
-            }
+            $this->saveProductsModel($productModelsToSave);
         }
     }
 
@@ -181,6 +181,10 @@ class ComputeDataRelatedToFamilySubProductModelsTasklet implements TaskletInterf
      */
     private function saveProductsModel(array $productModels): void
     {
+        if (empty($productModels)) {
+            return;
+        }
+
         $this->productModelSaver->saveAll($productModels);
         $this->stepExecution->incrementSummaryInfo('process', count($productModels));
         $this->jobRepository->updateStepExecution($this->stepExecution);

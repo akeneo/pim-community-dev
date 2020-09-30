@@ -315,10 +315,6 @@ extensions:
         module: pim/job/common/edit/content/data/help
         parent: pim-job-instance-csv-product-model-export-edit-content-data
 
-    pim-job-instance-csv-product-model-export-edit-validation:
-        module: pim/job/common/edit/validation
-        parent: pim-job-instance-csv-product-model-export-edit
-
     pim-job-instance-csv-product-model-export-edit-content-data-add-filter:
         module: pim/job/product/edit/content/data/add-select/attribute
         parent: pim-job-instance-csv-product-model-export-edit-content-data

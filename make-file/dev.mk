@@ -48,9 +48,3 @@ xdebug-on:
 .PHONY: xdebug-off
 xdebug-off:
 	XDEBUG_ENABLED=0 $(MAKE) up
-
-.PHONY: database-test
-database-test:
-	docker cp ./docker/create_db_test.sh $(shell docker-compose ps -q "mysql"):/docker-entrypoint-initdb.d/create_db_test.sh
-	docker-compose exec mysql sh -c "/bin/sh /docker-entrypoint-initdb.d/create_db_test.sh"
-	APP_ENV=test $(MAKE) database

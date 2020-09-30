@@ -267,6 +267,28 @@ class MediaFilterSpec extends ObjectBehavior
         )->during('addAttributeFilter', [$name, Operators::CONTAINS, 123, 'en_US', 'ecommerce', []]);
     }
 
+    function it_throws_an_exception_when_the_given_value_is_null(
+        $filterValidator,
+        AttributeInterface $name,
+        SearchQueryBuilder $sqb
+    ) {
+        $name->getCode()->willReturn('an_image');
+        $name->getBackendType()->willReturn('media');
+
+        $filterValidator->validateLocaleForAttribute('an_image', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('an_image', 'ecommerce')->shouldBeCalled();
+
+        $this->setQueryBuilder($sqb);
+
+        $this->shouldThrow(
+            InvalidPropertyTypeException::stringExpected(
+                'an_image',
+                MediaFilter::class,
+                null
+            )
+        )->during('addAttributeFilter', [$name, Operators::CONTAINS, null, 'en_US', 'ecommerce', []]);
+    }
+
     function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(
         $filterValidator,
         AttributeInterface $name,
