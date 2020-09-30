@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.60 (2020-09-30)
+
 ## Technical Improvements
 
 - API-1201: [Backport] Be able to get attributes searching by codes 
