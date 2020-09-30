@@ -28,7 +28,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups}) => {
   const debouncedSearch = useCallback(
     debounce((searchValue: string) => {
       setFilteredGroups(
-        Object.values(groups).filter((group: AttributeGroup) => group.labels[userContext.get('uiLocale')].toLowerCase().includes(searchValue.toLowerCase()))
+        Object.values(groups).filter((group: AttributeGroup) => group.labels[userContext.get('uiLocale')].toLowerCase().includes(searchValue.toLowerCase().trim()))
       );
     }, 300), [groups]
   );
