@@ -1,18 +1,22 @@
-import { useState } from 'react';
-import { Meta, Story, ArgsTable, Canvas } from '@storybook/addon-docs/blocks';
-import { action } from '@storybook/addon-actions';
-import { Helper } from './Helper.tsx';
-import { Container } from 'storybook/container';
-import { useArgs, updateArgs } from '@storybook/client-api';
+import {useState} from 'react';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {action} from '@storybook/addon-actions';
+import {Helper, HelperTitle} from './Helper.tsx';
+import {useArgs, updateArgs} from '@storybook/client-api';
+import {Link} from '../Link/Link';
+import {UsersIllustration} from '../../illustrations';
 
 <Meta
   title="Components/Helper"
   component={Helper}
   argTypes={{
     type: {type: {control: {type: 'select', options: ['big', 'small', 'inline']}}},
-    level: {type: {control: {type: 'select', options: ['info', 'warning', 'error']}}}
+    level: {type: {control: {type: 'select', options: ['info', 'warning', 'error']}}},
+    children: {type: {control: {type: 'text'}}},
+    icon: {type: {control: {type: 'text'}}}
   }}
   args={{
+    children: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     type: 'small',
     level: 'info'
   }}
@@ -46,13 +50,7 @@ Use this playground to test the helper component
 <Canvas>
   <Story name="Standard">
     {(args) => {
-        const {type, level} = args;
-        const [{ title }, updateArgs] = useArgs();
-        if (type === 'big' && title === undefined) {
-            updateArgs({title: 'Big title'});
-        }
-
-        return <Helper {...args}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</Helper>;
+        return <Helper {...args}/>;
     }}
   </Story>
 </Canvas>
@@ -64,11 +62,18 @@ Use this playground to test the helper component
   <Story name="type">
       {(args) => {
           return (
-              <Container>
-                  <Helper {...args} type="big" level="info" title="Big">Big</Helper>
-                  <Helper {...args} type="small" level="info">Small</Helper>
-                  <Helper {...args} type="inline" level="info">Inline</Helper>
-              </Container>
+              <>
+                  <Helper {...args} type="big" level="info">
+                    <HelperTitle>Big</HelperTitle>
+                    Big helper
+                  </Helper>
+                  <Helper {...args} type="small" level="info">
+                    Small helper
+                  </Helper>
+                  <Helper {...args} type="inline" level="info">
+                    Inline helper
+                  </Helper>
+              </>
           )
       }}
   </Story>
@@ -79,11 +84,29 @@ Use this playground to test the helper component
   <Story name="level">
       {(args) => {
           return (
-              <Container>
+              <>
                   <Helper {...args} level="info" type="small">Info</Helper>
                   <Helper {...args} level="warning" type="small">Warning</Helper>
                   <Helper {...args} level="error" type="small">Error</Helper>
-              </Container>
+              </>
+          )
+      }}
+  </Story>
+</Canvas>
+
+## Variation on icon
+<Canvas>
+  <Story name="icon">
+      {(args) => {
+          return (
+              <>
+                  <Helper {...args} level="info" icon={<UsersIllustration/>}>
+                    <HelperTitle>Lorem ipsum dolor sit amet, consectetur adipiscing elit</HelperTitle>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    <br/>
+                    <Link href="https://www.akeneo.com">Mon petit test</Link>
+                  </Helper>
+              </>
           )
       }}
   </Story>

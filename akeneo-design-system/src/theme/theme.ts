@@ -38,6 +38,7 @@ type Color = {
   purple40: string;
   purple60: string;
   purple80: string;
+  red10: string;
   red100: string;
   red120: string;
   red140: string;
@@ -46,6 +47,7 @@ type Color = {
   red60: string;
   red80: string;
   white: string;
+  yellow10: string;
   yellow100: string;
   yellow120: string;
   yellow140: string;
