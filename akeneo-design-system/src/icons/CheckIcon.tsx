@@ -1,10 +1,12 @@
 import React from 'react';
+import {IconProps} from './IconProps';
 
-const CheckIcon = ({width = 18, height = 18, className = ''}: {width: number; height: number; className?: string}) => (
-  <svg width={width} height={height} viewBox="0 0 18 18">
+const CheckIcon = ({title, size = 18, color = 'currentColor', className, ...props}: IconProps) => (
+  <svg viewBox="0 0 18 18" width={size} height={size} {...props}>
+    {title && <title>{title}</title>}
     <path
       className={className}
-      stroke="currentColor"
+      stroke={color}
       d="M1.7 8l4.1 4 8-8"
       fill="none"
       strokeLinejoin="round"
