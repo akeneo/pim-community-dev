@@ -6,7 +6,7 @@ const MoreIcon = ({title, size = 24, color = 'currentColor', ...props}: IconProp
     {title && <title>{title}</title>}
     <path
       d="M3.5 10.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm8.5 0a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm8.5 0a1.5 1.5 0 110 3 1.5 1.5 0 010-3z"
-      fill="#A1A9B7"
+      fill={color}
       fillRule="evenodd"
     />
   </svg>

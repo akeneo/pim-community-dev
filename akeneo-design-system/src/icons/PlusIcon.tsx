@@ -6,7 +6,7 @@ const PlusIcon = ({title, size = 24, color = 'currentColor', ...props}: IconProp
     {title && <title>{title}</title>}
     <path
       d="M12 2v20m10-10H2"
-      stroke="#A1A9B7"
+      stroke={color}
       fill="none"
       fillRule="evenodd"
       strokeLinecap="round"

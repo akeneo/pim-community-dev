@@ -160,7 +160,7 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
           onClick={handleChange}
           {...forProps}
         >
-          {isMixed ? <CheckPartialIcon height={18} width={18} /> : <TickIcon height={20} width={20} />}
+          {isMixed ? <CheckPartialIcon size={18} /> : <TickIcon size={20} />}
         </CheckboxContainer>
         {children ? (
           <LabelContainer onClick={handleChange} id={labelId} readOnly={readOnly} htmlFor={checkboxId}>

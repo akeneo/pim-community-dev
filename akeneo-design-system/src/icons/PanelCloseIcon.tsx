@@ -6,7 +6,7 @@ const PanelCloseIcon = ({title, size = 24, color = 'currentColor', ...props}: Ic
     {title && <title>{title}</title>}
     <path
       d="M7 17.749V21H2V3h5v3.375M22 12H6h16zm-11 5l-5.5-5L11 7h0"
-      stroke="#A1A9B7"
+      stroke={color}
       fill="none"
       fillRule="evenodd"
       strokeLinecap="round"
