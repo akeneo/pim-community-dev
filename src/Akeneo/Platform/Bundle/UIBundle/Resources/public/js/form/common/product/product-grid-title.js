@@ -31,6 +31,14 @@ define(
        * {@inheritdoc}
        */
       render() {
+        if (!this.totalProducts && !this.totalProductModels) {
+          this.$el.html(
+            __(this.config.title, {count: this.count}, this.count)
+          );
+
+          return this;
+        }
+
         const productCount = __(
           'pim_enrich.entity.product.page_title.product',
           { count: this.totalProducts },
@@ -41,9 +49,16 @@ define(
           { count: this.totalProductModels },
           this.totalProductModels
         );
-        this.$el.html(
-          __('pim_enrich.entity.product.page_title.grid', { productCount, productModelCount })
-        );
+        if (this.totalProducts && !this.totalProductModels) {
+          this.$el.html(productCount);
+        } else if (!this.totalProducts && this.totalProductModels) {
+          this.$el.html(productModelCount);
+        } else {
+          this.$el.html(__(
+            'pim_enrich.entity.product.page_title.product_and_product_model',
+            { productCount, productModelCount }
+          ));
+        }
 
         return this;
       },

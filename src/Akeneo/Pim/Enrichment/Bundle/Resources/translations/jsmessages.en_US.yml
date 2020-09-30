@@ -34,7 +34,7 @@ pim_enrich.entity.product:
         index: "]-Inf, 1]{{ count }} result|]1, Inf[{{ count }} results"
         product: "]-Inf, 1]{{ count }} product|]1, Inf[{{ count }} products"
         product_model: "]-Inf, 1]{{ count }} product model|]1, Inf[{{ count }} product models"
-        grid: "{{ productCount }}, {{ productModelCount }}"
+        product_and_product_model: "{{ productCount }}, {{ productModelCount }}"
     module:
         create:
             subtitle: Create product
