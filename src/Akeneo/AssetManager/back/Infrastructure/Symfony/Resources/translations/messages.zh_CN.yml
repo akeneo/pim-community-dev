@@ -38,7 +38,7 @@ pim_import_export:
 pim_analytics:
   info_type:
     api_connection: API 连接数
-    nb_asset_families: 资产品类的数量
+    nb_asset_families: 资产品类数量
     max_number_of_assets_per_asset_family: 每个资产品类的最大资产数量
     average_number_of_values_per_assets: 每个资产的值的平均数量
     average_number_of_assets_per_asset_family: 每个资产品类的平均资产数量

@@ -7,6 +7,10 @@ akeneo_data_quality_insights:
         recommendation: Attributs pour lesquels des majuscules sont manquantes
       consistency_spelling:
         recommendation: Attributs contenant des fautes d'orthographe
+      consistency_attribute_spelling:
+        recommendation: Attributs contenant des fautes d'orthographe
+      consistency_attribute_option_spelling:
+        recommendation: Options d'attribut avec des fautes d'orthographe
     axis:
       consistency:
         title: Cohérence
@@ -20,7 +24,16 @@ akeneo_data_quality_insights:
       original_text_title: Original
       suggestions_title: Propositions
       ignore_all_suggestions_button_label: Ignorer
+    back_to_products: Retour au produit
   attribute_grid:
     quality:
       to_improve: A améliorer
       good: Bon
+      in_progress: En cours de calcul
+      n_a: N/A
+  attribute_edit_form:
+    quality_summary: En améliorant cet attribut, vous améliorerez la qualité globale de {{ count }} produits.
+  spellcheck:
+    popover:
+      default_aria_label: Correction orthographique
+      aria_label: "Suggestions orthographiques pour: {{ mistake }}"

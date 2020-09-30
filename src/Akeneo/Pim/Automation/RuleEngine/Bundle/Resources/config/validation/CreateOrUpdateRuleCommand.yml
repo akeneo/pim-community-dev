@@ -12,6 +12,8 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\CreateOrUpdateRuleCommand:
                 groups: ['create']
         priority:
             - Type: int
+        enabled:
+            - Type: boolean
         conditions:
             - NotNull:
                 message: pimee_catalog_rule.rule_definition.validation.conditions.missing_key

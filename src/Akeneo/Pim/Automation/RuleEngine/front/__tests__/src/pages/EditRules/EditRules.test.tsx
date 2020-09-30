@@ -21,6 +21,7 @@ const ruleDefinitionPayload = {
   code: ruleDefinitionCode,
   type: 'product',
   priority: 0,
+  enabled: true,
   content: { actions: [], conditions: [] },
   labels: {
     en_US: 'My code',
@@ -181,6 +182,12 @@ describe('EditRules', () => {
     expect(
       await findByLabelText('English (United States)')
     ).toBeInTheDocument();
+    expect(
+      await screen.findByText('pimee_catalog_rule.form.edit.status.label')
+    ).toBeInTheDocument();
+    expect(
+      await screen.findByText('pimee_catalog_rule.form.edit.status.enabled')
+    ).toBeInTheDocument();
   });
 
   it('should add a Family Line', async () => {
@@ -237,6 +244,58 @@ describe('EditRules', () => {
     );
     expect(await findByText('Family')).toBeInTheDocument();
     expect((await findByTestId('condition-list')).children.length).toEqual(1);
+  });
+
+  it('should be able to change the status', async () => {
+    // Given
+    fetchMock.mockResponse((request: Request) => {
+      if (
+        request.url.includes(
+          'pimee_enrich_rule_definition_get?%7B%22ruleCode%22:%22my_code%22%7D'
+        )
+      ) {
+        return Promise.resolve(
+          JSON.stringify({ ...ruleDefinitionPayload, enabled: false })
+        );
+      } else if (
+        request.url.includes(
+          'pim_enrich_locale_rest_index?%7B%22activated%22:true%7D'
+        )
+      ) {
+        return Promise.resolve(JSON.stringify(localesPayload));
+      } else if (request.url.includes('pim_enrich_channel_rest_index')) {
+        return Promise.resolve(JSON.stringify(scopesPayload));
+      }
+
+      throw new Error(`The "${request.url}" url is not mocked.`);
+    });
+    // When
+    render(
+      <EditRules
+        ruleDefinitionCode={ruleDefinitionCode}
+        setIsDirty={setIsDirty}
+      />,
+      {
+        legacy: true,
+      }
+    );
+    // Then
+    expect(
+      await screen.findByText('pimee_catalog_rule.form.edit.status.disabled')
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText('pimee_catalog_rule.form.edit.status.enabled')
+    ).not.toBeInTheDocument();
+
+    await act(async () => {
+      userEvent.click(await screen.findByTestId('edit-rules-input-status'));
+    });
+    expect(
+      await screen.findByText('pimee_catalog_rule.form.edit.status.enabled')
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText('pimee_catalog_rule.form.edit.status.disabled')
+    ).not.toBeInTheDocument();
   });
 
   it('should add an Action Line', async () => {

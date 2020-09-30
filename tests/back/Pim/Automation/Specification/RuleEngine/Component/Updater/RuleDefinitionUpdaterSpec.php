@@ -22,6 +22,7 @@ class RuleDefinitionUpdaterSpec extends ObjectBehavior
         $rule->getPriority()->willReturn(42);
         $rule->getType()->willReturn('product');
         $rule->getContent()->willReturn(['content of my rule']);
+        $rule->isEnabled()->willReturn(false);
 
         $labelEnUs = new RuleDefinitionTranslation();
         $labelEnUs->setLocale('en_US');
@@ -37,6 +38,7 @@ class RuleDefinitionUpdaterSpec extends ObjectBehavior
         $definition->setContent(['content of my rule'])->shouldBeCalled();
         $definition->setLabel('en_US', 'Label en_US')->shouldBeCalled();
         $definition->setLabel('fr_FR', 'Label fr_FR')->shouldBeCalled();
+        $definition->setEnabled(false)->shouldBeCalled();
 
         $this->fromRule($definition, $rule);
     }

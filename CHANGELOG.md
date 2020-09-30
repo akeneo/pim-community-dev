@@ -35,6 +35,11 @@
 - PIM-9411: Fix TWA project widget searching on all contributors
 - PIM-9372: Fix media-link thumbnail re-generation
 - PIM-9444: Fix locking issue on attribute table for retrieving the attribute options that need to be evaluated
+- PIM-9441: Fix errors when importing a product proposal with several changes on the same attribute
+- PIM-9457: Remove option tab on attributes setting page when attribute is not simple/multi select
+- PIM-9454: Fix scalar value type check in PQB filters
+- PIM-9460: Fix performance issue on export
+- PIM-9458: Fix proposal creation when a user does not have permissions on attributes
 
 ## Improvements
 
@@ -91,3 +96,5 @@
 - Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\Common\Saver\DelegatingProductSaver` to
   - remove `Symfony\Component\EventDispatcher\EventDispatcherInterface` and `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer`
   - add `Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface` (twice) and `Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface`
+- Change interface `Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface` to add `isEnabled` and `setEnabled` methods
+- Change interface `Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface` to rename `findAllOrderedByPriority` method by `findEnabledOrderedByPriority`

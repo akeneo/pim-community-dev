@@ -266,6 +266,29 @@ class TextAreaFilterSpec extends ObjectBehavior
         )->during('addAttributeFilter', [$description, Operators::CONTAINS, 123]);
     }
 
+    function it_throws_an_exception_when_the_given_value_is_null(
+        $attributePathResolver,
+        AttributeInterface $description,
+        SearchQueryBuilder $sqb
+    ) {
+        $description->getCode()->willReturn('description');
+        $description->getBackendType()->willReturn('textarea');
+
+        $attributePathResolver->getAttributePaths($description)->willReturn(
+            ['values.description-textarea.ecommerce.en_US']
+        );
+
+        $this->setQueryBuilder($sqb);
+
+        $this->shouldThrow(
+            InvalidPropertyTypeException::stringExpected(
+                'description',
+                TextAreaFilter::class,
+                null
+            )
+        )->during('addAttributeFilter', [$description, Operators::CONTAINS, null]);
+    }
+
     function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(
         $attributePathResolver,
         AttributeInterface $description,

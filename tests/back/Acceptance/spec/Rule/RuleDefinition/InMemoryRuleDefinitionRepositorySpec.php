@@ -68,7 +68,7 @@ class InMemoryRuleDefinitionRepositorySpec extends ObjectBehavior
             ->during('save', ['a_thing']);
     }
 
-    function it_returns_all_rule_definitions_ordered_by_priority()
+    function it_returns_enabled_rule_definitions_ordered_by_priority()
     {
         $ruleDefinition1 = new RuleDefinition();
         $ruleDefinition1->setCode('rule1');
@@ -82,8 +82,13 @@ class InMemoryRuleDefinitionRepositorySpec extends ObjectBehavior
         $ruleDefinition3->setCode('rule3');
         $ruleDefinition3->setPriority(200);
         $this->save($ruleDefinition3);
+        $ruleDefinition4 = new RuleDefinition();
+        $ruleDefinition4->setCode('rule4');
+        $ruleDefinition4->setPriority(200);
+        $ruleDefinition4->setEnabled(false);
+        $this->save($ruleDefinition4);
 
-        $list = $this->findAllOrderedByPriority();
+        $list = $this->findEnabledOrderedByPriority();
         $list->shouldBe([$ruleDefinition2, $ruleDefinition3, $ruleDefinition1]);
         $list[0]->getPriority()->shouldBe(300);
         $list[1]->getPriority()->shouldBe(200);

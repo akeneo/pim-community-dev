@@ -14,18 +14,21 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributeOptions;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\Evaluation;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Psr\Log\LoggerInterface;
 
 final class EvaluateAttributeOptionsTasklet implements TaskletInterface
 {
-    use EvaluationJobAwareTrait;
-
     /** @var EvaluateUpdatedAttributeOptions */
     private $evaluateUpdatedAttributeOptions;
 
     /** @var LoggerInterface */
     private $logger;
+
+    /** @var StepExecution */
+    private $stepExecution;
 
     public function __construct(EvaluateUpdatedAttributeOptions $evaluateUpdatedAttributeOptions, LoggerInterface $logger)
     {
@@ -36,7 +39,7 @@ final class EvaluateAttributeOptionsTasklet implements TaskletInterface
     public function execute()
     {
         try {
-            $this->evaluateUpdatedAttributeOptions->evaluateSince($this->updatedSince());
+            $this->evaluateUpdatedAttributeOptions->evaluateSince($this->evaluatedSince());
         } catch (\Exception $exception) {
             null !== $this->stepExecution && $this->stepExecution->addFailureException($exception);
             $this->logger->error('The evaluations of the attribute options has failed', [
@@ -45,5 +48,17 @@ final class EvaluateAttributeOptionsTasklet implements TaskletInterface
                 'step_execution_id' => $this->stepExecution->getId(),
             ]);
         }
+    }
+
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
+    }
+
+    private function evaluatedSince(): \DateTimeImmutable
+    {
+        $evaluatedSince = $this->stepExecution->getJobParameters()->get(Evaluation::EVALUATED_SINCE_PARAMETER);
+
+        return \DateTimeImmutable::createFromFormat(Evaluation::EVALUATED_SINCE_DATE_FORMAT, $evaluatedSince);
     }
 }

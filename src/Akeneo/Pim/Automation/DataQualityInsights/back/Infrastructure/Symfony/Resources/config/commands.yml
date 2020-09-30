@@ -33,3 +33,11 @@ services:
             $allActivatedLocalesQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetAllActivatedLocalesQuery'
         tags:
             - { name: 'console.command' }
+
+    akeneo.pim.automation.data_quality_insights.command.launch_evaluations_command:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\PimEnterpriseLaunchEvaluationsCommand
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\RunUniqueProcessJob'
+            - '@akeneo.pim.automation.data_quality_insights.feature'
+        tags:
+            - { name: 'console.command' }

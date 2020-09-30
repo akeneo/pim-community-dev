@@ -109,4 +109,8 @@ interface RuleDefinitionInterface
     public function getTranslations(): Collection;
 
     public function setLabel(string $locale, string $label): RuleDefinitionInterface;
+
+    public function isEnabled(): bool;
+
+    public function setEnabled(bool $enabled): RuleDefinitionInterface;
 }

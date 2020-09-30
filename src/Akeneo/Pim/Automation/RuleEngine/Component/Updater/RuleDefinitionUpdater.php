@@ -24,6 +24,7 @@ class RuleDefinitionUpdater implements RuleDefinitionUpdaterInterface
         $ruleDefinition->setPriority($rule->getPriority());
         $ruleDefinition->setType($rule->getType());
         $ruleDefinition->setContent($rule->getContent());
+        $ruleDefinition->setEnabled($rule->isEnabled());
         foreach ($rule->getTranslations() as $translation) {
             $ruleDefinition->setLabel($translation->getLocale(), $translation->getLabel());
         };

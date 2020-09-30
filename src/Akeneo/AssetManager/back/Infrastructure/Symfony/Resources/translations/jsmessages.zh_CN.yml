@@ -200,7 +200,7 @@ pim_asset_manager:
         success: 资产品类已成功更新。
         fail: 保存资产品类时发生错误
       create:
-        success: 资产品类已成功更新。
+        success: 资产品类已成功创建。
         fail: 创建资产品类时发生错误
       delete:
         success: 资产品类已成功删除。
@@ -242,7 +242,7 @@ pim_asset_manager:
     created_at: 已创建
     updated_at: 已更新
     validation:
-      limit_reached: '无法创建属性“{{ %asset_label% }}"，因为已达到此资产品类的属性上限数目 {{ %limit% }}'
+      limit_reached: '无法创建属性"{{ %asset_label% }}"，因为已达到此资产品类的属性上限数目 {{ %limit% }}'
       code:
         pattern: '此字段只能包含字母、数字和下划线。'
         should_be_unique: '此代码已经存在于另一个资产。'
@@ -390,7 +390,7 @@ pim_asset_manager:
       label: 完成
   attribute:
     validation:
-      limit_reached: '无法创建属性“{{ %attribute_label% }}"，因为已达到此资产品类的属性上限数目 {{ %limit% }} '
+      limit_reached: '无法创建属性"{{ %attribute_label% }}"，因为已达到此资产品类的属性上限数目 {{ %limit% }} '
     default:
       code: 代码
       label: 标签
@@ -423,7 +423,7 @@ pim_asset_manager:
         label: 标签
         type: 属性类型
         asset_type: 要链接的资产品类 (必填)
-        value_per_locale: 每个区域的值
+        value_per_locale: 每项区域设置的值
         value_per_channel: 每个渠道的值
       placeholder:
         asset_type: 选择您链接的资产品类
@@ -438,7 +438,7 @@ pim_asset_manager:
         label: 标签
         type: 属性类型
         asset_type: 相关资产品类（必填）
-        value_per_locale: 每个区域的值
+        value_per_locale: 每项区域设置的值
         value_per_channel: 每个渠道的值
         is_required: 完成度必填
         is_read_only: UI 只读
@@ -446,7 +446,7 @@ pim_asset_manager:
         textarea: 文本区域
         is_rich_text_editor: 富文本编辑器
         max_file_size: 最大文件大小 (MB)
-        allowed_extensions: 允许的文件扩展名
+        allowed_extensions: 允许的扩展名
         validation_rule: 验证规则
         regular_expression: 正则表达式
         min_value: 最小值
@@ -480,7 +480,7 @@ pim_asset_manager:
         fail: 保存属性时出错
         validation_error: 无法更新该属性
       create:
-        success: 属性成功创建。
+        success: 属性已成功创建。
         fail: 创建属性时发生错误
         validation_error: 无法创建该属性
       delete:
@@ -510,20 +510,18 @@ pim_asset_manager:
     asset_manager_execute_naming_convention:
       error: '对资产"{{ asset }}"执行命名约定失败'
 pim_enrich:
-  confirmation:
-    discard_changes: '如果离开页面，将丢失对"{{ entity }}"实体的更改。'
   entity:
     attribute:
       property:
         type:
           pim_catalog_asset_collection: 资产集合
         section:
-          type_specific: 输入特定参数
+          type_specific: 类型特定参数
         asset_family:
           identifier: 相关资产品类（必填）
           default_label: 请选择资产品类。
 permission:
-  mass_action: 对所有组应用 {{ rightLevel }}
+  mass_action: 对所有组应用 {{ rightLevel }} 权限
 #Analytics
 pim_catalog_volume:
   section:

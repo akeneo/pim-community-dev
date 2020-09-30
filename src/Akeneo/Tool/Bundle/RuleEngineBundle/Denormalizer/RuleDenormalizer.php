@@ -64,6 +64,10 @@ class RuleDenormalizer implements DenormalizerInterface, ChainedDenormalizerAwar
             $rule->setPriority((int) $data['priority']);
         }
 
+        if (isset($data['enabled'])) {
+            $rule->setEnabled($data['enabled']);
+        }
+
         $rawContent = ['conditions' => $data['conditions'], 'actions' => $data['actions']];
         $rule->setContent($rawContent);
 

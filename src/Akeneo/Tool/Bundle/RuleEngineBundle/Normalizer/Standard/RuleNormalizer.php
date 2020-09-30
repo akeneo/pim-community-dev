@@ -36,6 +36,7 @@ class RuleNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
             'code'       => $ruleDefinition->getCode(),
             'type'       => $ruleDefinition->getType(),
             'priority'   => $ruleDefinition->getPriority(),
+            'enabled'    => $ruleDefinition->isEnabled(),
             'conditions' => [],
             'actions'    => [],
             'labels'     => [],

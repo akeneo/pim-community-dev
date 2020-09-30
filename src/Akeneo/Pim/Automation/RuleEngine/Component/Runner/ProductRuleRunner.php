@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Runner;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonRunnableException;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\ApplierInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\BuilderInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\SelectorInterface;
@@ -66,6 +67,7 @@ class ProductRuleRunner implements DryRunnerInterface
     {
         $options = $this->resolveOptions($options);
         $rule = $this->loadRule($definition, $options);
+        $this->checkRuleIsEnabled($rule);
 
         $subjectSet = $this->selector->select($rule);
         if (!empty($subjectSet)) {
@@ -130,5 +132,14 @@ class ProductRuleRunner implements DryRunnerInterface
         }
 
         return $rule;
+    }
+
+    protected function checkRuleIsEnabled(RuleInterface $rule): void
+    {
+        if (!$rule->isEnabled()) {
+            throw new NonRunnableException(
+                sprintf('The "%s" rule is disabled.', $rule->getCode())
+            );
+        }
     }
 }

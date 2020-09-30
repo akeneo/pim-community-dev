@@ -43,7 +43,7 @@ class RulesExecutorSpec extends ObjectBehavior
         RuleDefinitionInterface $ruleDefinition1,
         RuleDefinitionInterface $ruleDefinition2
     ) {
-        $ruleRepository->findAllOrderedByPriority()->willReturn([$ruleDefinition1, $ruleDefinition2]);
+        $ruleRepository->findEnabledOrderedByPriority()->willReturn([$ruleDefinition1, $ruleDefinition2]);
 
         $productA->getId()->willReturn(42);
         $productB->getId()->willReturn(84);
@@ -67,7 +67,7 @@ class RulesExecutorSpec extends ObjectBehavior
         ProductModelInterface $productModel,
         RuleDefinitionInterface $ruleDefinition
     ) {
-        $ruleRepository->findAllOrderedByPriority()->willReturn([$ruleDefinition]);
+        $ruleRepository->findEnabledOrderedByPriority()->willReturn([$ruleDefinition]);
 
         $product->getId()->willReturn(42);
         $productModel->getId()->willReturn(null);
@@ -86,7 +86,7 @@ class RulesExecutorSpec extends ObjectBehavior
         ProductModelInterface $productModel,
         RuleDefinitionInterface $ruleDefinition
     ) {
-        $ruleRepository->findAllOrderedByPriority()->willReturn([$ruleDefinition]);
+        $ruleRepository->findEnabledOrderedByPriority()->willReturn([$ruleDefinition]);
 
         $product->getId()->willReturn(null);
         $productModel->getId()->willReturn(42);
@@ -105,7 +105,7 @@ class RulesExecutorSpec extends ObjectBehavior
         ProductModelInterface $productModel,
         RuleDefinitionInterface $ruleDefinition
     ) {
-        $ruleRepository->findAllOrderedByPriority()->willReturn([$ruleDefinition]);
+        $ruleRepository->findEnabledOrderedByPriority()->willReturn([$ruleDefinition]);
 
         $product->getId()->willReturn(null);
         $productModel->getId()->willReturn(null);

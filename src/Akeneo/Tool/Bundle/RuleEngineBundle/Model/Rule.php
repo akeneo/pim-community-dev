@@ -230,6 +230,24 @@ class Rule implements RuleInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function isEnabled(): bool
+    {
+        return $this->definition->isEnabled();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setEnabled(bool $enabled): RuleDefinitionInterface
+    {
+        $this->definition->setEnabled($enabled);
+
+        return $this;
+    }
+
+    /**
      * @inheritDoc
      */
     public function getTranslations(): Collection

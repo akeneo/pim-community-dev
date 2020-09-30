@@ -6,7 +6,7 @@ services:
     pimee_workflow.processor.denormalization.product_draft:
         class: '%pimee_workflow.processor.denormalization.product_draft.class%'
         arguments:
-            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_without_permission'
             - '@pim_catalog.updater.product'
             - '@pim_catalog.validator.product'
             - '@pimee_workflow.product.builder.draft'

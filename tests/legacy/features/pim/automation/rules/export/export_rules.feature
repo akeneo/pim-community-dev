@@ -10,6 +10,7 @@ Feature: Export rules
     """
     set_name:
       priority: 10
+      enabled: false
       conditions:
         - field: sku
           operator: '='
@@ -24,6 +25,7 @@ Feature: Export rules
         fr_FR: 'Met le nom'
     set_another_name:
       priority: 20
+      enabled: true
       conditions:
         - field: sku
           operator: 'STARTS WITH'
@@ -74,6 +76,7 @@ Feature: Export rules
     rules:
         set_name:
             priority: 10
+            enabled: false
             conditions:
                 -
                     field: sku
@@ -90,6 +93,7 @@ Feature: Export rules
                 fr_FR: 'Met le nom'
         set_another_name:
             priority: 20
+            enabled: true
             conditions:
                 -
                     field: sku
@@ -105,6 +109,7 @@ Feature: Export rules
             labels: {}
         copy_name_loafer:
             priority: 30
+            enabled: true
             conditions:
                 -
                     field: sku
@@ -124,6 +129,7 @@ Feature: Export rules
             labels: {}
         remove_categories:
             priority: 40
+            enabled: true
             conditions:
                 -
                     field: enabled

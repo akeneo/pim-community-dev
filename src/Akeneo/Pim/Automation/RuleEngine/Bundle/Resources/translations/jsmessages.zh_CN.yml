@@ -3,7 +3,7 @@ pimee_catalog_rule:
   execution_button: 执行规则
   selected: "]-Inf, 1]已选定 {{ count }} 个规则|]1, Inf[已选定 {{ count }} 个规则"
   dropdown:
-    title: 其它操作
+    title: 其他操作
   popin:
     execute_rules:
       confirm_title: 确认执行
@@ -125,11 +125,11 @@ pimee_catalog_rule:
         add_groups:
           title: 将产品添加到组
           helper: 要将产品添加到组，请选择一个或多个组
-          subtitle: 选择您的组
+          subtitle: 选择组
         set_groups:
           title: 设置产品组
           helper: 要设置产品组，请选择一个或多个组
-          subtitle: 选择您的组
+          subtitle: 选择组
         set_category:
           title: 设置类别
           helper: 要将您的产品选择设置到一个或多个类别，请先选择类别树，然后再选择类别
@@ -198,8 +198,8 @@ pimee_catalog_rule:
           label: 移除条件
           description: 确定要移除此条件吗？
         operators:
-          "STARTS WITH": 开头是
-          "ENDS WITH": 结尾是
+          "STARTS WITH": 开始于
+          "ENDS WITH": 结束于
           "CONTAINS": 包含
           "DOES NOT CONTAIN": 不包含
           "EMPTY": 为空

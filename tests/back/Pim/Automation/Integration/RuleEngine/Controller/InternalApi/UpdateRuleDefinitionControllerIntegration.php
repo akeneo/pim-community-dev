@@ -57,6 +57,7 @@ class UpdateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
             ],
             'type' => 'product',
             'priority' => 0,
+            'enabled' => false,
             'labels' => [
                 'en_US' => '123 english',
                 'fr_FR' => '123 french',
@@ -73,6 +74,36 @@ class UpdateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
         unset($content['id']);
 
         Assert::assertEqualsCanonicalizing($normalizedRuleDefinition, $content);
+    }
+
+    public function test_it_disables_and_enables_rule()
+    {
+        $this->enableAcl();
+        $normalizedRuleDefinition = [
+            'code' => '123',
+            'enabled' => false,
+            'content' => [
+                'conditions' => [],
+                'actions' => [
+                    ['type' => 'set', 'field' => 'a_text', 'value' => 'awesome-jacket'],
+                ]
+            ],
+            'type' => 'product',
+            'labels' => [],
+        ];
+
+        $this->updateRuleDefinition('123', $normalizedRuleDefinition);
+        $response = $this->client->getResponse();
+        Assert::assertSame($response->getStatusCode(), Response::HTTP_OK);
+        $content = json_decode($response->getContent(), true);
+        Assert::assertFalse($content['enabled']);
+
+        $normalizedRuleDefinition['enabled'] = true;
+        $this->updateRuleDefinition('123', $normalizedRuleDefinition);
+        $response = $this->client->getResponse();
+        Assert::assertSame($response->getStatusCode(), Response::HTTP_OK);
+        $content = json_decode($response->getContent(), true);
+        Assert::assertTrue($content['enabled']);
     }
 
     public function test_it_fails_on_non_existing_code()
@@ -108,6 +139,7 @@ class UpdateRuleDefinitionControllerIntegration extends ControllerIntegrationTes
                 ],
             ])
             ->setType('product')
+            ->setEnabled(true)
         ;
 
         $this->ruleDefinitionSaver->save($ruleDefinition);

@@ -14,6 +14,7 @@ Feature: Import rules
     """
     rules:
         set_reference_data:
+            enabled: false
             conditions:
                 - field:    sleeve_color.code
                   operator: IN
@@ -49,6 +50,7 @@ Feature: Import rules
     """
     set_reference_data:
         priority: 0
+        enabled: false
         conditions:
             - field:    sleeve_color.code
               operator: IN

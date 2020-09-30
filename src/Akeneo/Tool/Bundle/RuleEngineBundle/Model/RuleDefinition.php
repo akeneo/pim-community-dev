@@ -45,6 +45,9 @@ class RuleDefinition implements RuleDefinitionInterface
     /** @var Collection */
     protected $translations;
 
+    /** @var boolean */
+    protected $enabled = true;
+
     /**
      * Constructor
      */
@@ -175,6 +178,24 @@ class RuleDefinition implements RuleDefinitionInterface
     public function getRelations()
     {
         return $this->relations;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setEnabled(bool $enabled): RuleDefinitionInterface
+    {
+        $this->enabled = $enabled;
+
+        return $this;
     }
 
     /**

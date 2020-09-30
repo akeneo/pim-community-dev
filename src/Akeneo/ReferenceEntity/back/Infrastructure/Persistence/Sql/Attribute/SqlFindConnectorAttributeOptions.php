@@ -15,10 +15,10 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttributeOption;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributeOptionsInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\InactiveLabelFilter;
 use Doctrine\DBAL\Connection;
 
 class SqlFindConnectorAttributeOptions implements FindConnectorAttributeOptionsInterface
@@ -29,18 +29,19 @@ class SqlFindConnectorAttributeOptions implements FindConnectorAttributeOptionsI
     /** @var AttributeHydratorRegistry */
     private $attributeHydratorRegistry;
 
-    /**
-     * @param Connection $sqlConnection
-     */
-    public function __construct(Connection $sqlConnection, AttributeHydratorRegistry $attributeHydratorRegistry)
-    {
+    /** @var InactiveLabelFilter */
+    private $inactiveLabelFilter;
+
+    public function __construct(
+        Connection $sqlConnection,
+        AttributeHydratorRegistry $attributeHydratorRegistry,
+        InactiveLabelFilter $inactiveLabelFilter
+    ) {
         $this->sqlConnection = $sqlConnection;
         $this->attributeHydratorRegistry = $attributeHydratorRegistry;
+        $this->inactiveLabelFilter = $inactiveLabelFilter;
     }
 
-    /**
-     * @return ConnectorAttribute
-     */
     public function find(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): array
     {
         return $this->fetch($referenceEntityIdentifier, $attributeCode);
@@ -58,22 +59,19 @@ SQL;
             $query,
             [
                 'reference_entity_identifier' => $referenceEntityIdentifier->normalize(),
-                'attribute_code' => (string) $attributeCode
+                'attribute_code' => (string) $attributeCode,
             ]
         );
 
         $result = $statement->fetch();
 
         if (!$result) {
-            return null;
+            return [];
         }
 
         return $this->hydrateAttributeOptions($result);
     }
 
-    /**
-     * @return ConnectorAttribute
-     */
     private function hydrateAttributeOptions(array $result): array
     {
         $additionalProperties = json_decode($result['additional_properties'], true) ?? [];
@@ -86,9 +84,12 @@ SQL;
         $connectorOptions = [];
 
         foreach ($options as $option) {
+            $labels = $option['labels'];
+            $labels = $this->inactiveLabelFilter->filter($labels);
+
             $connectorOptions[] = new ConnectorAttributeOption(
                 OptionCode::fromString($option['code']),
-                LabelCollection::fromArray($option['labels'])
+                LabelCollection::fromArray($labels)
             );
         }
 

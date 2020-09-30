@@ -15,8 +15,8 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\Pr
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\FilterProductValuesForSpelling;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\MultipleTextsChecker;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\TextChecker;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\TextCheckFailedException;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Attribute;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
@@ -42,7 +42,7 @@ use Psr\Log\LoggerInterface;
 class EvaluateSpellingSpec extends ObjectBehavior
 {
     public function let(
-        TextChecker $textChecker,
+        MultipleTextsChecker $textChecker,
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
         SupportedLocaleValidator $supportedLocaleValidator,
         FilterProductValuesForSpelling $filterProductValuesForSpelling,
@@ -56,7 +56,6 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $localesByChannelQuery,
         $supportedLocaleValidator,
         $filterProductValuesForSpelling,
-        $logger,
         TextCheckResultCollection $textCheckResultTextareaEcommerceEn,
         TextCheckResultCollection $textCheckResultTextareaPrintEn,
         TextCheckResultCollection $textCheckResultTextareaEcommerceFr,
@@ -112,8 +111,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
             ->add($productTextValues)
             ->add($productTextareaValues);
 
-        $filterProductValuesForSpelling->getTextValues($productValues)->willReturn(new \ArrayIterator([$productTextValues]));
-        $filterProductValuesForSpelling->getTextareaValues($productValues)->willReturn(new \ArrayIterator([$productTextareaValues]));
+        $filterProductValuesForSpelling->getFilteredProductValues($productValues)->willReturn([$productTextValues, $productTextareaValues]);
 
         $channelEcommerce = new ChannelCode('ecommerce');
         $channelPrint = new ChannelCode('print');
@@ -132,14 +130,17 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $textCheckResultTextEcommerceFR->count()->willReturn(0);
         $textCheckResultTextPrintEn->count()->willReturn(1);
 
-        $logger->info(Argument::cetera())->shouldBeCalledTimes(6);
+        $textChecker
+            ->check(['a_text' => 'Typos happen.', 'a_textarea' => '<p>Typos hapen. </p>'], $localeEn)
+            ->willReturn(['a_text' => $textCheckResultTextEcommerceEn, 'a_textarea' => $textCheckResultTextareaEcommerceEn]);
 
-        $textChecker->check('<p>Typos hapen. </p>', $localeEn)->willReturn($textCheckResultTextareaEcommerceEn);
-        $textChecker->check('<p>Typos happen. </p>', $localeEn)->willReturn($textCheckResultTextareaPrintEn);
-        $textChecker->check('<p>Les fautes de frappe arrivent. </p>', $localeFr)->willReturn($textCheckResultTextareaEcommerceFr);
-        $textChecker->check('Typos happen.', $localeEn)->willReturn($textCheckResultTextEcommerceEn);
-        $textChecker->check('Les fautes de frappe arrivent', $localeFr)->willReturn($textCheckResultTextEcommerceFR);
-        $textChecker->check('Typos hapen.', $localeEn)->willReturn($textCheckResultTextPrintEn);
+        $textChecker
+            ->check(['a_text' => 'Les fautes de frappe arrivent', 'a_textarea' => '<p>Les fautes de frappe arrivent. </p>'], $localeFr)
+            ->willReturn(['a_text' => $textCheckResultTextEcommerceFR, 'a_textarea' => $textCheckResultTextareaEcommerceFr]);
+
+        $textChecker
+            ->check(['a_text' => 'Typos hapen.', 'a_textarea' => '<p>Typos happen. </p>'], $localeEn)
+            ->willReturn(['a_text' => $textCheckResultTextPrintEn, 'a_textarea' => $textCheckResultTextareaPrintEn]);
 
         $expectedEvaluationResult = (new Write\CriterionEvaluationResult())
             ->addRate($channelEcommerce, $localeEn, new Rate(94))
@@ -163,12 +164,11 @@ class EvaluateSpellingSpec extends ObjectBehavior
     }
 
     public function it_sets_status_in_error_when_the_text_checking_fails(
-        TextChecker $textChecker,
+        MultipleTextsChecker $textChecker,
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
         SupportedLocaleValidator $supportedLocaleValidator,
         TextCheckResultCollection $textCheckResultTextareaPrintEn,
-        FilterProductValuesForSpelling $filterProductValuesForSpelling,
-        $logger
+        FilterProductValuesForSpelling $filterProductValuesForSpelling
     ) {
         $productId = new ProductId(42);
         $criterionEvaluation = new Write\CriterionEvaluation(
@@ -192,8 +192,7 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $productTextValues = new ProductValues($attributeTextarea, $textareaValues);
         $productValues = (new ProductValuesCollection())->add($productTextValues);
 
-        $filterProductValuesForSpelling->getTextValues($productValues)->willReturn(new \ArrayIterator([$productTextValues]));
-        $filterProductValuesForSpelling->getTextareaValues($productValues)->willReturn(new \ArrayIterator([]));
+        $filterProductValuesForSpelling->getFilteredProductValues($productValues)->willReturn([$productTextValues]);
 
         $channelPrint = new ChannelCode('print');
         $localeEn = new LocaleCode('en_US');
@@ -202,13 +201,10 @@ class EvaluateSpellingSpec extends ObjectBehavior
         $supportedLocaleValidator->isSupported($localeEn)->willReturn(true);
         $supportedLocaleValidator->isSupported($localeFr)->willReturn(true);
 
-        $logger->error(Argument::cetera())->shouldBeCalled();
-        $logger->info(Argument::cetera())->shouldBeCalledTimes(2);
-
-        $textChecker->check('Success', $localeEn)->willReturn($textCheckResultTextareaPrintEn);
+        $textChecker->check(['a_textarea' => 'Success'], $localeEn)->willReturn(['a_textarea' => $textCheckResultTextareaPrintEn]);
         $textCheckResultTextareaPrintEn->count()->willReturn(0);
 
-        $textChecker->check('Fail', $localeFr)->willThrow(new TextCheckFailedException());
+        $textChecker->check(['a_textarea' => 'Fail'], $localeFr)->willThrow(new TextCheckFailedException());
 
         $expectedEvaluationResult = (new Write\CriterionEvaluationResult())
             ->addRate($channelPrint, $localeEn, new Rate(100))
@@ -323,10 +319,10 @@ class EvaluateSpellingSpec extends ObjectBehavior
             ->add($productTextValues8)
             ->add($productTextareaValues);
 
-        $filterProductValuesForSpelling->getTextValues($productValues)->willReturn(new \ArrayIterator([
-            $productTextValues, $productTextValues2, $productTextValues3, $productTextValues4, $productTextValues5, $productTextValues6, $productTextValues7, $productTextValues8
-        ]));
-        $filterProductValuesForSpelling->getTextareaValues($productValues)->willReturn(new \ArrayIterator([$productTextareaValues]));
+        $filterProductValuesForSpelling->getFilteredProductValues($productValues)->willReturn([
+            $productTextValues, $productTextValues2, $productTextValues3, $productTextValues4, $productTextValues5, $productTextValues6, $productTextValues7, $productTextValues8,
+            $productTextareaValues
+        ]);
 
         $channelEcommerce = new ChannelCode('ecommerce');
         $localeEn = new LocaleCode('en_US');

@@ -1,5 +1,13 @@
 # 4.0.x
 
+# 4.0.58 (2020-09-22)
+
+## Bug fixes
+
+- PIM-9455: Make total_fields limit of elasticsearch configurable
+- PIM-9451: Filter out Asset Manager attribute labels of disabled locales 
+- PIM-9435: Fix duplicated listener
+ 
 # 4.0.57 (2020-09-15)
 
 # 4.0.56 (2020-09-09)

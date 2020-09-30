@@ -118,7 +118,7 @@ pimee_enrich.entity.product:
       owner_groups: 所有者组
       draft_status: 草稿状态
       draft:
-        in_progress: 正在处理
+        in_progress: 正在进行中
         sent_for_approval: 等待批准中
         working_copy: 工作副本
     revert:

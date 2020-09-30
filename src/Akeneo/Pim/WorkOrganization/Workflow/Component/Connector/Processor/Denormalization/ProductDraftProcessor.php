@@ -125,7 +125,13 @@ class ProductDraftProcessor extends AbstractProcessor implements
             $this->skipItemWithConstraintViolations($item, $violations);
         }
 
-        return $this->buildDraft($product);
+        $productDraft = $this->buildDraft($product);
+
+        if (null !== $productDraft) {
+            $productDraft = $this->preventsProductDraftDuplication($productDraft, $identifier);
+        }
+
+        return $productDraft;
     }
 
     /**
@@ -217,5 +223,32 @@ class ProductDraftProcessor extends AbstractProcessor implements
     protected function getUsername(): string
     {
         return $this->tokenStorage->getToken()->getUsername();
+    }
+
+    /**
+     * Overwrites the previous processed product draft when there is one, to prevent duplication.
+     *
+     * @param EntityWithValuesDraftInterface $productDraft
+     * @param string $identifier
+     *
+     * @return EntityWithValuesDraftInterface
+     */
+    private function preventsProductDraftDuplication(EntityWithValuesDraftInterface $productDraft, string $identifier): ?EntityWithValuesDraftInterface
+    {
+        $executionContext = $this->stepExecution->getExecutionContext();
+        $processedProductDrafts = $executionContext->get('processed_items_batch') ?? [];
+
+        if (isset($processedProductDrafts[$identifier])) {
+            $processedProductDraft = $processedProductDrafts[$identifier];
+            $processedProductDraft->setValues($productDraft->getValues());
+            $processedProductDraft->setChanges($productDraft->getChanges());
+
+            return null;
+        }
+
+        $processedItemsBatch[$identifier] = $productDraft;
+        $executionContext->put('processed_items_batch', $processedItemsBatch);
+
+        return $productDraft;
     }
 }

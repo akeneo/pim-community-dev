@@ -1,5 +1,11 @@
 # 3.2.x
 
+# 3.2.71 (2020-09-21)
+
+## Bug fixes:
+
+- PIM-9451: Filter out Reference Entity attribute labels of disabled locales
+
 # 3.2.70 (2020-09-10)
 
 # 3.2.69 (2020-09-07)
