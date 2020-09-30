@@ -46,7 +46,7 @@ class ConsumeBusinessEventEndToEnd extends ApiTestCase
         $this->normalizer = $this->get('pim_catalog.normalizer.standard.product');
     }
 
-    public function test_consume_business_event_send_a_request()
+    public function test_it_sends_a_product_updated_webhook_event()
     {
         $connection = $this->connectionLoader->createConnection('ecommerce', 'Ecommerce', FlowType::DATA_DESTINATION, false);
         $this->webhookLoader->initWebhook($connection->code());
