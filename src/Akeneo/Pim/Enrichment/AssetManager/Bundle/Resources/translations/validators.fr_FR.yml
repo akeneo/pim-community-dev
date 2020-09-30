@@ -3,3 +3,4 @@ pim_asset_manager:
     validation:
       asset_multiple_link:
         limit_reached: 'Vous avez atteint la limite de %limit% ressources par collection, vous ne pouvez plus ajouter de ressource à votre collection.'
+      assets_should_belong_to_asset_family: 'Veuillez vous assurer que la ressource "%asset_code%" existe et appartient à la famille de ressources "%asset_family_identifier%" pour l''attribut "%attribute%".'
