@@ -346,6 +346,7 @@ pim_enrich.mass_edit.product:
       label_count: "{0}Modifier le modèle de produit parent de certains <span class=\"AknFullPage-title--highlight\">produits</span>|{1}Modifier le modèle de produit parent d' <span class=\"AknFullPage-title--highlight\">1 produit</span>|]1, Inf[Modifier le modèle de produit parent de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
       description: Le parent des produits variants et des sous modèles de produits sélectionnés dans la grille va être modifié avec ce modèle de produit.
 pim_datagrid:
+  no_entities: "Aucune {{ entityHint }} trouvée"
   mass_action_group:
     bulk_actions:
       label: Actions de masse
@@ -394,6 +395,8 @@ pim_datagrid:
     system: Système
     product_typology:
       variant: 'Variante'
+    entity_type:
+      label: 'Variante'
   search: Rechercher sur {{ label }}
 batch_jobs:
   add_association:
