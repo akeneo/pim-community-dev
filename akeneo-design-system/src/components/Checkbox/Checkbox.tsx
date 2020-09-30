@@ -1,4 +1,4 @@
-import React, {ReactNode, Ref, useState} from 'react';
+import React, {ReactNode, Ref, SyntheticEvent, useState} from 'react';
 import styled, {css, keyframes} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../theme';
 import {CheckIcon, PartialCheckIcon} from '../../icons';
@@ -125,7 +125,7 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
     const isChecked = true === checked;
     const isMixed = 'mixed' === checked;
 
-    const handleChange = () => {
+    const handleChange = (event: SyntheticEvent) => {
       if (!onChange || readOnly) return;
 
       switch (checked) {
@@ -137,6 +137,8 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
           onChange(true);
           break;
       }
+
+      event.stopPropagation();
     };
     const ref = useShortcut(Key.Space, handleChange);
     const forProps = children

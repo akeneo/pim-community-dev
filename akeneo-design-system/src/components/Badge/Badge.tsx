@@ -46,3 +46,4 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
 );
 
 export {Badge};
+export type {BadgeProps};

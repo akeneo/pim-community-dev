@@ -2,6 +2,11 @@ import {Meta} from '@storybook/addon-docs/blocks';
 import {linkTo} from '@storybook/addon-links';
 import * as Components from './components';
 
+<!-- If for some reason (not relevant, too small) you do not want your component
+to be featured on the Introduction Story, add its name to this list -->
+
+export const COMPONENTS_EXCLUDE = ['CardGrid'];
+
 <Meta title="Introduction" />
 
 <style>{`
@@ -133,20 +138,23 @@ import * as Components from './components';
 </div>
 <div class="subheading">Components</div>
 <div class="link-list">
-  {Object.keys(Components).map(componentName => (
-    <a key={componentName} class="link-item" onClick={linkTo(`Components/${componentName}`, 'Standard')}>
-      <div
-        class="link-icon"
-        style={{
-          backgroundImage: `url("./all-visual-tsx-visual-tests-renders-components-${componentName.toLowerCase()}-standard-correctly-1-snap.png")`,
-        }}
-      ></div>
-      <span>
-        <strong>{componentName}</strong>
-        {Components[componentName].__docgenInfo.description}
-      </span>
-    </a>
-  ))}
+  {Object.keys(Components)
+    .filter(componentName => !COMPONENTS_EXCLUDE.includes(componentName))
+    .map(componentName => (
+      <a key={componentName} class="link-item" onClick={linkTo(`Components/${componentName}`, 'Standard')}>
+        <div
+          class="link-icon"
+          style={{
+            backgroundImage: `url("./all-visual-tsx-visual-tests-renders-components-${componentName.toLowerCase()}-standard-correctly-1-snap.png")`,
+          }}
+        ></div>
+        <span>
+          <strong>{componentName}</strong>
+          {Components[componentName].__docgenInfo.description}
+        </span>
+      </a>
+    ))}
 </div>
 <div class="subheading">Patterns</div>
-<div class="link-list">TODO</div>
+
+`//TODO`

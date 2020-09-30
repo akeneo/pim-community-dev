@@ -42,6 +42,7 @@ it('it calls onChange handler when user clicks on undetermined checkbox', () => 
   fireEvent.click(checkbox);
 
   expect(onChange).toBeCalledWith(true);
+  expect(onChange).toBeCalledTimes(1);
 });
 
 it('it does not call onChange handler when read-only', () => {

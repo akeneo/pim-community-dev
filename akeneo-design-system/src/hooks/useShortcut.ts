@@ -4,13 +4,13 @@ import {Key} from '../shared';
 /**
  * Hook to listen to keydown events on a DOM element (or document) and fire a callback
  *
- * @param key The key kress to listen to
+ * @param key The key press to listen to
  * @param callback What callback to call when the key is pressed
  * @param externalRef This ref will be used if provided
  */
 const useShortcut = <NodeType extends HTMLElement>(
   key: Key,
-  callback: () => void,
+  callback: (args?: any) => unknown,
   externalRef: Ref<NodeType> = null
 ): Ref<NodeType> => {
   const memoizedCallback = useCallback((event: KeyboardEvent) => (key === event.code ? callback() : null), [
