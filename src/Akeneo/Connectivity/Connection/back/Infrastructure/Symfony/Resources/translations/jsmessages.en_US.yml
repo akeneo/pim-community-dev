@@ -194,7 +194,6 @@ akeneo_connectivity.connection:
             message_without_permission:
                 message: Ask your administrator to create one.
                 link: Learn more about connections here...
-
     webhook:
         title: Event subscription (BETA)
         event_subscription: Event subscription (bêta)
@@ -205,6 +204,7 @@ akeneo_connectivity.connection:
             url: URL
             secret: Secret
             enabled: Event subscription activation
+            test: Test
         error:
             wrong_url: This value is not a valid URL.
             required: This field is required.

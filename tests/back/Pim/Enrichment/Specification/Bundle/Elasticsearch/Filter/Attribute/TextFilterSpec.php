@@ -264,6 +264,28 @@ class TextFilterSpec extends ObjectBehavior
         )->during('addAttributeFilter', [$name, Operators::CONTAINS, 123, 'en_US', 'ecommerce', []]);
     }
 
+    function it_throws_an_exception_when_the_given_value_is_null(
+        ElasticsearchFilterValidator $filterValidator,
+        AttributeInterface $name,
+        SearchQueryBuilder $sqb
+    ) {
+        $name->getCode()->willReturn('name');
+        $name->getBackendType()->willReturn('text');
+
+        $filterValidator->validateLocaleForAttribute('name', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('name', 'ecommerce')->shouldBeCalled();
+
+        $this->setQueryBuilder($sqb);
+
+        $this->shouldThrow(
+            InvalidPropertyTypeException::stringExpected(
+                'name',
+                TextFilter::class,
+                123
+            )
+        )->during('addAttributeFilter', [$name, Operators::CONTAINS, 123, 'en_US', 'ecommerce', []]);
+    }
+
     function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(
         $filterValidator,
         AttributeInterface $name,

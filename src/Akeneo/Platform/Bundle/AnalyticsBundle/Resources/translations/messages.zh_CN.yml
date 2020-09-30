@@ -5,7 +5,7 @@ pim_analytics:
       notification.title: 通知
       version_update.title: 版本更新
     form:
-      version_update.label: 新版本提醒
+      version_update.label: 新版本通知
       version_update.tooltip: 向远程服务器发送请求以取得有关新补丁发布的信息
   system_info:
     title: 系统信息

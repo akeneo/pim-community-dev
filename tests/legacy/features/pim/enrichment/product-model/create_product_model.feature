@@ -13,7 +13,7 @@ Feature: Create a product model
   Scenario: Create a product model with a single level variant
     When I create a product model
     And I should see the Code, Family and Variant fields
-    And the field Variant should be disabled
+    And the field Variant (required) should be disabled
     When I fill in the following information in the popin:
       | Code    | shoes_variant |
       | Family  | Shoes         |
@@ -26,7 +26,7 @@ Feature: Create a product model
   Scenario: Create a product model with multiple level variant
     When I create a product model
     And I should see the Code, Family and Variant fields
-    And the field Variant should be disabled
+    And the field Variant (required) should be disabled
     When I fill in the following information in the popin:
       | Code    | clothing_color_and_size    |
       | Family  | Clothing                   |
@@ -47,7 +47,7 @@ Feature: Create a product model
       | code  | family  | variant-axes_1    | variant-attributes_1 | label-en_US |
       | tv    | led_tvs | display_diagonal  | name                 | LED TV      |
     And I should see the Code, Family and Variant fields
-    And the field Variant should be disabled
+    And the field Variant (required) should be disabled
     When I fill in the following information in the popin:
       | Code   | tv_display_diagonal |
       | Family | LED TVs             |
@@ -60,7 +60,7 @@ Feature: Create a product model
   Scenario: Create a product model with single variant and multiple axes
     When I create a product model
     And I should see the Code, Family and Variant fields
-    And the field Variant should be disabled
+    And the field Variant (required) should be disabled
     When I fill in the following information in the popin:
       | Code    | clothing_color_size    |
       | Family  | Clothing               |
@@ -75,7 +75,7 @@ Feature: Create a product model
       | code |
       | hats |
     And I should see the Code, Family and Variant fields
-    And the field Variant should be disabled
+    And the field Variant (required) should be disabled
     When I press the "Choose a family" button
     Then I should see the text "Accessories"
     And I should see the text "Clothing"
@@ -85,7 +85,7 @@ Feature: Create a product model
   Scenario: Select only child variant of family by default
     When I create a product model
     And I should see the Code, Family and Variant fields
-    And the field Variant should be disabled
+    And the field Variant (required) should be disabled
     When I fill in the following information in the popin:
       | Code   | accessories_size |
       | Family | Accessories      |
@@ -97,7 +97,7 @@ Feature: Create a product model
   Scenario: Display validation error for duplicate code
     When I create a product model
     And I should see the Code, Family and Variant fields
-    And the field Variant should be disabled
+    And the field Variant (required) should be disabled
     When I fill in the following information in the popin:
       | Code | artemis |
     And I press the "Save" button
@@ -106,7 +106,7 @@ Feature: Create a product model
   Scenario: Display validation error for missing family variant
     When I create a product model
     And I should see the Code, Family and Variant fields
-    And the field Variant should be disabled
+    And the field Variant (required) should be disabled
     When I fill in the following information in the popin:
       | Code | artemiz |
     And I press the "Save" button
@@ -171,8 +171,8 @@ Feature: Create a product model
     When I create a product model
     And I fill in the following information in the popin:
       | Family | Many variants |
-    And I open the Variant select field
+    And I open the Variant (required) select field
     Then I should see 20 items in the autocomplete
-    And I should not see the choices [variant_23] and [variant_30] in Variant
-    When I search "3" in the Variant select field
-    Then I should see the choices [variant_3], [variant_13], [variant_23] and [variant_30] in Variant
+    And I should not see the choices [variant_23] and [variant_30] in Variant (required)
+    When I search "3" in the Variant (required) select field
+    Then I should see the choices [variant_3], [variant_13], [variant_23] and [variant_30] in Variant (required)

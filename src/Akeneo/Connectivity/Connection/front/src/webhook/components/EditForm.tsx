@@ -1,12 +1,15 @@
-import React, {FC, useContext} from 'react';
+import React, {FC, useContext, useState} from 'react';
 import {useFormContext} from 'react-hook-form';
 import {useHistory} from 'react-router';
 import styled from 'styled-components';
-import {FormGroup, FormInput, ToggleButton} from '../../common/components';
+import {FormGroup, FormInput, GhostButton, ToggleButton} from '../../common/components';
 import {CopiableCredential} from '../../settings/components/credentials/CopiableCredential';
 import {RegenerateButton} from '../../settings/components/RegenerateButton';
-import {TranslateContext} from '../../shared/translate';
+import {isOk} from '../../shared/fetch-result/result';
+import {Translate, TranslateContext} from '../../shared/translate';
+import {useCheckReachability} from '../hooks/api/use-webhook-check-reachability';
 import {Webhook} from '../model/Webhook';
+import {WebhookReachability} from '../model/WebhookReachability';
 
 type Props = {
     webhook: Webhook;
@@ -15,7 +18,17 @@ type Props = {
 export const EditForm: FC<Props> = ({webhook}: Props) => {
     const translate = useContext(TranslateContext);
     const history = useHistory();
-    const {register, errors, getValues} = useFormContext();
+    const checkReachability = useCheckReachability(webhook.connectionCode);
+    const [resultTestUrl, setResultTestUrl] = useState<WebhookReachability>();
+    const {register, getValues} = useFormContext();
+
+    const handleTestUrl = async () => {
+        const result = await checkReachability(getValues('url'));
+
+        if (isOk(result)) {
+            setResultTestUrl(result.value);
+        }
+    };
 
     return (
         <>
@@ -26,21 +39,24 @@ export const EditForm: FC<Props> = ({webhook}: Props) => {
             <FormGroup
                 controlId='url'
                 label='akeneo_connectivity.connection.webhook.form.url'
-                errors={errors.url ? [errors.url.message] : undefined}
+                errors={resultTestUrl && !resultTestUrl?.success ? [resultTestUrl.message] : undefined}
+                success={resultTestUrl && resultTestUrl?.success ? resultTestUrl.message : undefined}
             >
-                <FormInput
-                    type='text'
-                    name='url'
-                    defaultValue={getValues('url')}
-                    ref={register({
+                <>
+                    <FormInput
+                        type='text'
+                        name='url'
+                        defaultValue={getValues('url')}
+                        ref={register({
                         required: {
                             value: getValues('enabled'),
                             message: 'akeneo_connectivity.connection.webhook.error.required',
                         },
                     })}
-                />
+                    />
+                    <TestUrlButton onClick={handleTestUrl} />
+                </>
             </FormGroup>
-
             <CredentialList>
                 <CopiableCredential
                     label={translate('akeneo_connectivity.connection.connection.secret')}
@@ -58,10 +74,25 @@ export const EditForm: FC<Props> = ({webhook}: Props) => {
         </>
     );
 };
+
+const TestUrlButton: FC<{onClick: () => void}> = ({onClick}) => {
+    return (
+        <GhostButtonContainer>
+            <GhostButton onClick={onClick}>
+                <Translate id='akeneo_connectivity.connection.webhook.form.test' />
+            </GhostButton>
+        </GhostButtonContainer>
+    );
+};
+
 export const CredentialList = styled.div`
     display: grid;
     grid-template: 'a a a' auto;
     div {
         border-top: 1px solid ${({theme}) => theme.color.grey80};
     }
+`;
+
+const GhostButtonContainer = styled.span`
+    margin-left: 10px;
 `;

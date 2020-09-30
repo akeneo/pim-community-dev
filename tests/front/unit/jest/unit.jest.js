@@ -38,7 +38,7 @@ const unitConfig = {
   },
   testRegex: '(tests/front/unit)(.*)(unit).(jsx?|tsx?)$',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  moduleDirectories: ['<rootDir>/node_modules', `<rootDir>/public/bundles/`],
+  moduleDirectories: ['node_modules', `<rootDir>/public/bundles/`],
   globals: {
     __moduleConfig: {},
     'ts-jest': {

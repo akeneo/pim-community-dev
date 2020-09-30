@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
 
+use Akeneo\Connectivity\Connection\Application\Webhook\Command\CheckWebhookReachabilityCommand;
+use Akeneo\Connectivity\Connection\Application\Webhook\Command\CheckWebhookReachabilityHandler;
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\GenerateWebhookSecretCommand;
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\GenerateWebhookSecretHandler;
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\UpdateWebhookCommand;
@@ -23,24 +25,29 @@ class WebhookController
     /** @var GetAConnectionWebhookHandler */
     private $getAConnectionWebhookHandler;
 
+    /** @var CheckWebhookReachabilityHandler */
+    private $checkWebhookReachabilityHandler;
+
     /** @var UpdateWebhookHandler */
     private $updateConnectionWebhookHandler;
 
     /** @var SecurityFacade */
     private $securityFacade;
-
-    /** @var GenerateWebhookSecretHandler */
+  
+   /** @var GenerateWebhookSecretHandler */
     private $generateWebhookSecretHandler;
-
+  
     public function __construct(
         SecurityFacade $securityFacade,
         GetAConnectionWebhookHandler $getAConnectionWebhookHandler,
+        CheckWebhookReachabilityHandler $checkWebhookReachabilityHandler,
         UpdateWebhookHandler $updateConnectionWebhookHandler,
         GenerateWebhookSecretHandler $generateWebhookSecretHandler
     ) {
-        $this->getAConnectionWebhookHandler = $getAConnectionWebhookHandler;
-        $this->updateConnectionWebhookHandler = $updateConnectionWebhookHandler;
         $this->securityFacade = $securityFacade;
+        $this->getAConnectionWebhookHandler = $getAConnectionWebhookHandler;
+        $this->checkWebhookReachabilityHandler = $checkWebhookReachabilityHandler;
+        $this->updateConnectionWebhookHandler = $updateConnectionWebhookHandler;
         $this->generateWebhookSecretHandler = $generateWebhookSecretHandler;
     }
 
@@ -57,6 +64,16 @@ class WebhookController
         return new JsonResponse($connectionWebhook->normalize());
     }
 
+    public function checkWebhookReachability(Request $request): JsonResponse
+    {
+        $url = $request->get('url', '');
+        $checkWebhookReachability = $this->checkWebhookReachabilityHandler->handle(
+            new CheckWebhookReachabilityCommand($url)
+        );
+
+        return new JsonResponse($checkWebhookReachability->normalize());
+    }
+  
     public function update(Request $request): JsonResponse
     {
         if (true !== $this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {

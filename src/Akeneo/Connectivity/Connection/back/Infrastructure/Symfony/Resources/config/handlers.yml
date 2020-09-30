@@ -81,6 +81,11 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.persistence.repository.error_count'
 
+    akeneo_connectivity.connection.application.webhook.handler.check_url_reachability:
+        class: Akeneo\Connectivity\Connection\Application\Webhook\Command\CheckWebhookReachabilityHandler
+        arguments:
+            - '@akeneo_connectivity.connection.webhook.service.url_reachability_checker'
+
     akeneo_connectivity.connection.application.webhook.handler.get_connection_webhook:
         class: Akeneo\Connectivity\Connection\Application\Webhook\Query\GetAConnectionWebhookHandler
         arguments:
