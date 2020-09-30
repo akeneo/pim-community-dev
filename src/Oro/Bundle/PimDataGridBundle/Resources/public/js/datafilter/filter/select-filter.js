@@ -163,13 +163,14 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
 
             this.$el.append(
                 this.template({
-                    label: this.label,
+                    __,
+                    label: __(this.label),
                     showLabel: this.showLabel,
                     options: options,
                     placeholder: this.placeholder,
                     nullLink: this.nullLink,
                     canDisable: this.canDisable,
-                    emptyValue: this.emptyValue
+                    emptyValue: this.emptyValue,
                 })
             );
 
@@ -195,7 +196,7 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
                     open: _.bind(function() {
                         this.selectWidget.onOpenDropdown();
                         this._setDropdownWidth();
-                        this.selectWidget.getWidget().find('input[type="search"]').attr('placeholder', this.label);
+                        this.selectWidget.getWidget().find('input[type="search"]').attr('placeholder', __(this.label));
                         this._updateCriteriaSelectorPosition();
                         this._setButtonPressed(this.$(this.containerSelector), true);
                         this.selectDropdownOpened = true;

@@ -109,6 +109,14 @@ class MediaFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->executeFilter([['an_image', Operators::CONTAINS, []]]);
     }
 
+    public function testErrorDataIsNull()
+    {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "an_image" expects a string as data, "NULL" given.');
+
+        $this->executeFilter([['an_image', Operators::EQUALS, null]]);
+    }
+
     public function testErrorOperatorNotSupported()
     {
         $this->expectException(UnsupportedFilterException::class);

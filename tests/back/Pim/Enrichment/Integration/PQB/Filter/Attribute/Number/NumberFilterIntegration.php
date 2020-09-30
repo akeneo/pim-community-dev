@@ -148,6 +148,14 @@ class NumberFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->executeFilter([['a_number_float_negative', Operators::NOT_EQUAL, 'string']]);
     }
 
+    public function testErrorDataIsNull()
+    {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "a_number_float_negative" expects a numeric as data, "NULL" given.');
+
+        $this->executeFilter([['a_number_float_negative', Operators::NOT_EQUAL, null]]);
+    }
+
     public function testErrorOperatorNotSupported()
     {
         $this->expectException(UnsupportedFilterException::class);
