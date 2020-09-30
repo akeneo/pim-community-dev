@@ -1,0 +1,13 @@
+<div class="AknActionButton AknActionButton--withoutBorder" data-toggle="dropdown">
+    <%- label %>:
+    <span class="AknActionButton-highlight"></span>
+    <span class="AknActionButton-caret"></span>
+</div>
+<ul class="AknDropdown-menu">
+    <div class="AknDropdown-menuTitle"><%- label %></div>
+    <% _.each(options, (option) => { %>
+        <li class="AknDropdown-menuLink">
+            <span class="display-grouped-item" data-value="<%- option.value %>"><%- __(option.label) %></span>
+        </li>
+    <% }) %>
+</ul>

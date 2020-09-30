@@ -255,6 +255,16 @@ datagrid:
                             multiple: true
                             attr:
                                 empty_choice: true
+                product_typology:
+                    label: 'pim_datagrid.filters.product_typology.label'
+                    data_name: product_typology
+                    type: product_typology
+                    ftype: choice
+                    options:
+                        field_options:
+                            choices:
+                                'pim_datagrid.filters.product_typology.simple': 'simple'
+                                'pim_datagrid.filters.product_typology.variant': 'variant'
                 groups:
                     type:      product_groups
                     label:     Groups
@@ -306,3 +316,21 @@ datagrid:
                         field_options:
                             attr:
                                 choice_list: true
+                identifier:
+                    type: product_value_string
+                    ftype: identifier
+                    label: pim_catalog_identifier
+                    data_name: identifier
+                    options:
+                        field_options:
+                            attr:
+                                choice_list: true
+                entity_type:
+                    label: 'pim_datagrid.filters.entity_type.label'
+                    data_name: entity_type
+                    type: entity_type
+                    ftype: grouped-variant
+                    options:
+                        field_options:
+                            choices:
+                                'pim_datagrid.filters.entity_type.ungrouped': 'product'

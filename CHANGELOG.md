@@ -29,8 +29,13 @@
 - PIM-9407: Fix glitch in family variant selector if the family variant has no label
 - PIM-9425: Fix inaccurate attribute max characters
 - PIM-9443: Do not cache extensions.json
-- PIM-9454: Fix scalar value type check in PQB filters 
-
+- PIM-9454: Fix scalar value type check in PQB filters
+- PIM-9460: Fix performance issue on export
+- PIM-9461: Fix display of multiselect fields with a lot of selected options
+- PIM-9466: Fix selection counter in datagrid
+- GITHUB-12578: Fix trailing zeros when formatting numbers
+- PIM-9440: Fix locked MySQL tables during removing DQI evaluations without product
+- PIM-9476: Fix locale selector behavior on the product edit form when the user doesn't have permissions to edit attributes
 
 ## New features
 

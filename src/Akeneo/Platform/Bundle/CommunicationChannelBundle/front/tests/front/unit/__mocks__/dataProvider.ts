@@ -14,10 +14,10 @@ export const getExpectedAnnouncements = () => {
       id: 'update-title_announcement_2-20-04-2020',
       title: 'Title announcement 2',
       description: 'Description announcement 2',
-      link: 'http://external-2.com',
+      link: null,
       img: null,
       altImg: null,
-      tags: ['tag'],
+      tags: ['product_marketing'],
       startDate: '20-04-2020',
     },
   ];

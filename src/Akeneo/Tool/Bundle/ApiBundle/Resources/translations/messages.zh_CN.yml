@@ -22,7 +22,7 @@ pim_api:
     channel:
       edit: 创建并更新渠道
       list: 列出渠道
-    locale.list: 列出区域
+    locale.list: 列出本地化语言
     currency.list: 列出货币
     association_type:
       edit: 创建并更新关联类型
