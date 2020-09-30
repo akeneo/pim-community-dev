@@ -1,100 +1,143 @@
-import React, {ReactNode} from 'react';
-import styled, {css} from "styled-components";
-import {AkeneoThemedProps} from '../../theme';
-import {InfoIcon, WarningIcon} from '../../icons';
+import React, {Children, isValidElement, ReactNode, Ref} from 'react';
+import styled, {css} from 'styled-components';
+import {AkeneoThemedProps, getColor} from '../../theme';
+import {InfoIcon, DangerIcon} from '../../icons';
+import {useContext} from 'react';
+import {ThemeContext} from 'styled-components';
 
-const getColorStyle = ({level, theme}: { level: Level } & AkeneoThemedProps) => {
-    switch (level) {
-        case 'info':
-            return css`
-                background: ${theme.color.grey120}
-                color: ${theme.color.grey120}
-            `;
-        case 'error':
-            return css`
-                background: ${theme.color.red120}
-                color: ${theme.color.red100}
-            `;
-        case 'warning':
-        default:
-            return css`
-                background: ${theme.color.yellow120}
-                color: ${theme.color.yellow120}
-            `;
-    }
-}
+const getBackgroundColor = (level: Level) => {
+  switch (level) {
+    case 'info':
+      return getColor('blue10');
+    case 'warning':
+      return getColor('yellow10');
+    case 'error':
+      return getColor('red10');
+  }
+};
 
-const Container = styled.div<{type: string; level: Level} & AkeneoThemedProps>`
+const getFontColor = (level: Level) => {
+  switch (level) {
+    case 'info':
+      return getColor('grey120');
+    case 'warning':
+      return getColor('yellow120');
+    case 'error':
+      return getColor('red120');
+  }
+};
+
+const getIcon = (level: Level, type: HelperType): JSX.Element => {
+  const theme = useContext(ThemeContext);
+  const size = type === 'inline' ? 16 : 20;
+
+  switch (level) {
+    case 'info':
+      return <InfoIcon width={size} height={size} color={theme.color.blue100} />;
+    case 'warning':
+      return <DangerIcon width={size} height={size} color={theme.color.yellow120} />;
+    case 'error':
+      return <DangerIcon width={size} height={size} color={theme.color.red120} />;
+  }
+};
+
+const getSeparatorColor = (level: Level) => {
+  switch (level) {
+    case 'info':
+      return getColor('grey80');
+    case 'warning':
+      return getColor('yellow120');
+    case 'error':
+      return getColor('red120');
+  }
+};
+
+const Container = styled.div<{type: HelperType; level: Level} & AkeneoThemedProps>`
   align-items: center;
   display: flex;
   font-weight: 600;
-  margin-bottom: 1px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   padding-right: 15px;
-  
-  ${getColorStyle}
-  
-  ${(props: any) => props.type === 'big' && css`font-size: big;`}
+  color: ${props => getFontColor(props.level)};
+
+  ${props =>
+    props.type !== 'inline' &&
+    css`
+      min-height: ${props.type === 'big' ? '100px' : '24px'};
+    `};
+
+  ${props =>
+    props.type !== 'inline' &&
+    css`
+      background-color: ${getBackgroundColor(props.level)};
+    `}
 `;
 
-const IconContainer = styled.span<{level: string} & AkeneoThemedProps>`
-  padding: 12px;
-  position: relative;
-  display: flex;
-  margin: 0 15px 0 0;
-
-  &:after {
-
-    content: '';
-    display: block;
-    height: 24px;
-    margin-top: -12px;
-    position: absolute;
-    right: 0;
-    top: 50%;
-    width: 1px;
-  }
-`
-
-const getIcon = (level: Level): JSX.Element => {
-    switch (level) {
-        case 'info':
-            return <InfoIcon color={'blue120'} />;
-        case 'error':
-            return <WarningIcon color={'red120'} />;
-        case 'warning':
-        default:
-            return <WarningIcon color={'yellow120'} />;
-    }
-};
+const IconContainer = styled.span<{level: Level; type: HelperType} & AkeneoThemedProps>`
+  ${props =>
+    props.type !== 'inline' &&
+    css`
+      padding: ${props => (props.type === 'big' ? '20px' : '12px')};
+      margin-right: 15px;
+      border-right: 1px solid ${getSeparatorColor(props.level)};
+    `};
+`;
 
 type Level = 'info' | 'warning' | 'error';
-type IconProps = {
-    level: Level;
-    icon?: ReactNode;
-}
-const Icon = ({level, icon}: IconProps) => (
-  <IconContainer level={level}>{icon || getIcon(level)}</IconContainer>
+type HelperType = 'big' | 'small' | 'inline';
+
+type HelperProps = {
+  /**
+   * Level of the helper defining it's color and icon.
+   */
+  level: Level;
+
+  /**
+   * Override the icon displayed, unless provided, the icon is mapped to the value of the level prop.
+   */
+  icon?: ReactNode;
+
+  /**
+   * Define the type of a helper.
+   */
+  type: HelperType;
+
+  /**
+   * The content of the component.
+   */
+  children: ReactNode;
+};
+
+const Helper = React.forwardRef<HTMLDivElement, HelperProps>(
+  ({type, level, children, icon, ...rest}: HelperProps, forwardedRef: Ref<HTMLDivElement>) => {
+    const titleChildren = Children.toArray(children).filter(
+      child => isValidElement(child) && child.type === HelperTitle
+    );
+    const descriptionChildren = Children.toArray(children).filter(
+      child => !isValidElement(child) || child.type !== HelperTitle
+    );
+
+    const resizedIcon = isValidElement(icon) && React.cloneElement(icon, {height: 120, width: 120});
+
+    return (
+      <Container ref={forwardedRef} type={type} level={level} {...rest}>
+        <IconContainer level={level} type={type}>
+          {resizedIcon || getIcon(level, type)}
+        </IconContainer>
+        <div>
+          {titleChildren}
+          {descriptionChildren}
+        </div>
+      </Container>
+    );
+  }
 );
 
-type HelperType = 'big' | 'small' | 'inline';
-type HelperProps = {
-    type: HelperType;
-    children: ReactNode;
-    title?: string;
-} & IconProps;
-const Helper = ({type, level, title, children, icon}: HelperProps) => {
-    if('big' === type && undefined === title) {
-       throw new Error('A big helper should have a title. None given.')
-    }
-    if ('big' !== type && title !== undefined) {
-        throw new Error('A small or inline helper cannot have title.')
-    }
+const HelperTitle = styled.div`
+  color: ${props => props.theme.color.grey140};
+  font-size: ${props => props.theme.fontSize.bigger};
+  font-weight: 600;
+`;
 
-    return <Container type={type} level={level}>
-        <Icon level={level} icon={icon} />
-        {title && <div>{title}</div>}
-        {children}
-    </Container>;
-}
-
-export {Helper};
+export {Helper, HelperTitle};
