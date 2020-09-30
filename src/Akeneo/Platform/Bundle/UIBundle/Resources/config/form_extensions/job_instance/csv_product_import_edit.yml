@@ -106,7 +106,6 @@ extensions:
             readOnly: false
             label: pim_import_export.form.job_instance.tab.properties.upload_allowed.title
             tooltip: pim_import_export.form.job_instance.tab.properties.upload_allowed.help
-            readOnly: false
 
     pim-job-instance-csv-product-import-edit-properties-delimiter:
         module: pim/job/common/edit/field/text

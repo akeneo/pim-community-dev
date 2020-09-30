@@ -100,6 +100,14 @@ class EntityTypeFilterSpec extends ObjectBehavior
         )->during('addFieldFilter', ['entity_type', Operators::EQUALS, 123]);
     }
 
+    function it_throws_if_the_given_value_is_null(SearchQueryBuilder $sqb)
+    {
+        $this->setQueryBuilder($sqb);
+        $this->shouldThrow(
+            InvalidPropertyTypeException::stringExpected('entity_type', EntityTypeFilter::class, 123)
+        )->during('addFieldFilter', ['entity_type', Operators::EQUALS, 123]);
+    }
+
     function it_throws_if_the_given_operator_is_not_supported(SearchQueryBuilder $sqb)
     {
         $this->setQueryBuilder($sqb);

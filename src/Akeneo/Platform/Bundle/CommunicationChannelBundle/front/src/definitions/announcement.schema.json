@@ -7,7 +7,7 @@
     "description": {"type": "string"},
     "img": {"type": ["string", "null"]},
     "altImg": {"type": ["string", "null"]},
-    "link": {"type": "string"},
+    "link": {"type": ["string", "null"]},
     "tags": {
       "type": "array",
       "items": {
