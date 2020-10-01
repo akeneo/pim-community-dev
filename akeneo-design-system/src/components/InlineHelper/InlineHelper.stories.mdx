@@ -1,14 +1,14 @@
 import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {action} from '@storybook/addon-actions';
-import {Helper, HelperTitle} from './Helper';
+import {InlineHelper} from './InlineHelper';
 import {useArgs, updateArgs} from '@storybook/client-api';
 import {Link} from '../Link/Link';
 import {UsersIllustration} from '../../illustrations';
 
 <Meta
-  title="Components/Helper"
-  component={Helper}
+  title="Components/InlineHelper"
+  component={InlineHelper}
   argTypes={{
     level: {control: {type: 'select', options: ['info', 'warning', 'error']}},
     children: {control: {type: 'text'}}
@@ -19,7 +19,7 @@ import {UsersIllustration} from '../../illustrations';
   }}
 />
 
-# Helper
+# Inline Helper
 
 ## Usage
 
@@ -27,16 +27,19 @@ Allows to help the user by pushing contextual information.
 
 ## General guidance
 
-Located at the top of a section, just below the section title, it informs the user about the features of the section.
+Located just below a field, it indicates to the user:
+- The information expected in the field;
+- An alert on the information filled in by the user;
+- An error related to the information filled in by the user.
 
 ## Playground
 
-Use this playground to test the helper component
+Use this playground to test the inline helper component
 
 <Canvas>
   <Story name="Standard">
     {(args) => {
-        return <Helper {...args}/>;
+        return <InlineHelper {...args}/>;
     }}
   </Story>
 </Canvas>
@@ -49,12 +52,11 @@ Use this playground to test the helper component
       {(args) => {
           return (
               <>
-                  <Helper {...args} level="info">Info</Helper>
-                  <Helper {...args} level="warning">Warning</Helper>
-                  <Helper {...args} level="error">Error</Helper>
+                  <InlineHelper {...args} level="info">Info</InlineHelper>
+                  <InlineHelper {...args} level="warning">Warning</InlineHelper>
+                  <InlineHelper {...args} level="error">Error</InlineHelper>
               </>
           )
       }}
   </Story>
 </Canvas>
-

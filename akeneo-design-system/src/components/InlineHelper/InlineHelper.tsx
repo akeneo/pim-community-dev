@@ -3,25 +3,14 @@ import styled from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../theme';
 import {InfoIcon, DangerIcon} from '../../icons';
 
-const getBackgroundColor = (level: Level) => {
-  switch (level) {
-    case 'info':
-      return getColor('blue10');
-    case 'warning':
-      return getColor('yellow10');
-    case 'error':
-      return getColor('red10');
-  }
-};
-
 const getFontColor = (level: Level) => {
   switch (level) {
     case 'info':
       return getColor('grey120');
     case 'warning':
-      return getColor('yellow120');
+      return getColor('grey120');
     case 'error':
-      return getColor('red120');
+      return getColor('red100');
   }
 };
 
@@ -30,31 +19,20 @@ const getIconColor = (level: Level) => {
     case 'info':
       return getColor('blue100');
     case 'warning':
-      return getColor('yellow120');
+      return getColor('yellow100');
     case 'error':
-      return getColor('red120');
+      return getColor('red100');
   }
 };
 
 const getIcon = (level: Level): JSX.Element => {
   switch (level) {
     case 'info':
-      return <InfoIcon width={20} height={20} />;
+      return <InfoIcon width={16} height={16} />;
     case 'warning':
-      return <DangerIcon width={20} height={20} />;
+      return <DangerIcon width={16} height={16} />;
     case 'error':
-      return <DangerIcon width={20} height={20} />;
-  }
-};
-
-const getSeparatorColor = (level: Level) => {
-  switch (level) {
-    case 'info':
-      return getColor('grey80');
-    case 'warning':
-      return getColor('yellow120');
-    case 'error':
-      return getColor('red120');
+      return <DangerIcon width={16} height={16} />;
   }
 };
 
@@ -64,15 +42,11 @@ const Container = styled.div<{level: Level} & AkeneoThemedProps>`
   font-weight: 600;
   padding-right: 15px;
   color: ${props => getFontColor(props.level)};
-  min-height: 24px;
-  background-color: ${props => getBackgroundColor(props.level)};
 `;
 
-const IconContainer = styled.span<{level: Level} & AkeneoThemedProps>`
-  height: 20px;
-  padding-right: 12px;
-  margin: 12px 15px 12px 12px;
-  border-right: 1px solid ${props => getSeparatorColor(props.level)};
+const IconContainer = styled.div<{level: Level} & AkeneoThemedProps>`
+  height: 16px;
+  margin-right: 4px;
   color: ${props => getIconColor(props.level)};
 `;
 
@@ -90,7 +64,7 @@ type HelperProps = {
   children: ReactNode;
 };
 
-const Helper = React.forwardRef<HTMLDivElement, HelperProps>(
+const InlineHelper = React.forwardRef<HTMLDivElement, HelperProps>(
   ({level, children, ...rest}: HelperProps, forwardedRef: Ref<HTMLDivElement>) => {
     return (
       <Container ref={forwardedRef} level={level} {...rest}>
@@ -101,4 +75,4 @@ const Helper = React.forwardRef<HTMLDivElement, HelperProps>(
   }
 );
 
-export {Helper};
+export {InlineHelper};

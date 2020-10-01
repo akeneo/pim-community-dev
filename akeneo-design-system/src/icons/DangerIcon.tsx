@@ -1,6 +1,6 @@
 import React from 'react';
 
-const DangerIcon = ({title = 'Warning', width = 24, height = 24, color = '#a1a9b7'}) => (
+const DangerIcon = ({title = 'Warning', width = 24, height = 24, color = 'currentColor'}) => (
   <svg width={width} height={height} viewBox="0 0 24 24">
     <title>{title}</title>
     <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" strokeLinecap="round" strokeLinejoin="round">
