@@ -2,11 +2,6 @@ services:
   akeneo_connectivity.connection.webhook.guzzle_handler:
     class: GuzzleHttp\HandlerStack
     factory: ['GuzzleHttp\HandlerStack', 'create']
-
-  akeneo_connectivity.connection.webhook.guzzle_client:
-    class: GuzzleHttp\Client
-    arguments:
-      - {handler: '@akeneo_connectivity.connection.webhook.guzzle_handler'}
       
   akeneo_connectivity.connection.webhook.guzzle_client:
     class: GuzzleHttp\Client

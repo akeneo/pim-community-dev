@@ -34,7 +34,7 @@ class WebhookController
     /** @var SecurityFacade */
     private $securityFacade;
   
-   /** @var GenerateWebhookSecretHandler */
+    /** @var GenerateWebhookSecretHandler */
     private $generateWebhookSecretHandler;
   
     public function __construct(
