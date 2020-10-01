@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Aggregation;
+namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Facet;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 

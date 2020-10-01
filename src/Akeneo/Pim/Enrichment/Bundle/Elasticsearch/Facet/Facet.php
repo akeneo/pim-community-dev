@@ -1,9 +1,10 @@
 <?php
 
-
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Aggregation;
+namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Facet;
+
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -18,14 +19,22 @@ final class Facet
     /** @var FacetItem[] */
     private $facetItems = [];
 
-    public function __construct(string $name)
+    private function __construct(string $name, array $facetItems)
     {
+        Assert::allIsInstanceOf($facetItems, FacetItem::class);
+
         $this->name = $name;
+        $this->facetItems = $facetItems;
     }
 
-    public function addFacetItem(string $key, int $count): void
+    public static function createEmptyWithName(string $name): Facet
     {
-        $this->facetItems[$key] =  new FacetItem($key, $count);
+        return new Facet($name, []);
+    }
+
+    public function addFacetItem(FacetItem $item): void
+    {
+        $this->facetItems[$item->getKey()] = $item;
     }
 
     public function getCountForKey(string $key): int

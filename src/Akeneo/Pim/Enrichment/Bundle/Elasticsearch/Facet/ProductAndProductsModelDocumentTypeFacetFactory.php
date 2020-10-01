@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Aggregation;
+namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Facet;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Result;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ResultInterface;
 use Webmozart\Assert\Assert;
 
@@ -28,9 +26,10 @@ final class ProductAndProductsModelDocumentTypeFacetFactory
             return null;
         }
 
-        $facet = new Facet(ProductAndProductsModelDocumentTypeFacetQuery::NAME);
+        $facet = Facet::createEmptyWithName(ProductAndProductsModelDocumentTypeFacetQuery::NAME);
         foreach ($documentTypeAggregation['buckets'] ?? [] as $bucket) {
-            $facet->addFacetItem($bucket['key'], $bucket['doc_count']);
+            $item = FacetItem::fromArray($bucket);
+            $facet->addFacetItem($item);
         }
 
         return $facet;
