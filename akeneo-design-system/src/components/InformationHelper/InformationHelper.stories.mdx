@@ -1,0 +1,62 @@
+import {useState} from 'react';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {action} from '@storybook/addon-actions';
+import {InformationHelper, HelperTitle} from './InformationHelper';
+import {useArgs, updateArgs} from '@storybook/client-api';
+import {Link} from '../Link/Link';
+import {UsersIllustration} from '../../illustrations';
+
+<Meta
+  title="Components/InformationHelper"
+  component={InformationHelper}
+  argTypes={{
+    children: {control: {type: 'text'}},
+    illustration: {control: {type: 'text'}}
+  }}
+  args={{
+    children: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    illustration: <UsersIllustration/>
+  }}
+/>
+
+# Information helper
+
+## Usage
+
+Allows to help the user by pushing contextual information.
+
+## General guidance
+
+Located at the top of a page, it helps the user on the page's features. A link guides the user to additional information. *i.e., the help center*
+
+## Playground
+
+Use this playground to test the helper component
+
+<Canvas>
+  <Story name="Standard">
+    {(args) => {
+        return <InformationHelper {...args}/>;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Composition with title and link
+Generally InformationHelper are composed of title and link
+
+<Canvas>
+  <Story name="level">
+      {(args) => {
+        return (
+          <InformationHelper illustration={<UsersIllustration/>}>
+            <HelperTitle>Lorem ipsum</HelperTitle>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            <br/>
+            <Link href="https://www.akeneo.com/">Link to related lorem ipsum</Link>
+          </InformationHelper>
+        );
+      }}
+  </Story>
+</Canvas>
