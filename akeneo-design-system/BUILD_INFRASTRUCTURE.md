@@ -32,7 +32,7 @@ We start by preparing the build environments (checkout branch, node version), ge
 ### The visual regression problem
 
 Visual regression tests are a complicated subject: checking that a component is rendering exactly the same as before on multiple OS is complicated. As every system renders fonts differently (even between version of the same system), it was impossible to run them locally.
-To fix this problem we decided to only check them on the CI and ease the way to update them by automate the process:
+To fix this problem we decided to only check them on the CI and ease the way to update them by automating the process:
 
 - On pull request, if a visual regression test is failing
 - We launch the tests again to update them
