@@ -62,6 +62,7 @@ type Theme = {
     tertiary: string;
     warning: string;
     danger: string;
+    logo: string;
   };
   fontSize: FontSize;
   color: Color;
