@@ -40,6 +40,11 @@ type LinkProps = {
   children: ReactNode;
 
   /**
+   * Define where to display the linked URL
+   */
+  target?: string;
+
+  /**
    * Provide the `href` attribute for the `<a>` node
    */
   href?: string;
@@ -47,14 +52,15 @@ type LinkProps = {
 
 const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
   (
-    {disabled = false, href, children, target, ...rest}: LinkProps,
+    {disabled = false, target = '_self', href, children, ...rest}: LinkProps,
     forwardedRef: Ref<HTMLAnchorElement>
   ): React.ReactElement => {
     return (
       <LinkContainer
         disabled={disabled}
         ref={forwardedRef}
-        rel={target === '__blank' ? 'noopener noreferrer' : ''}
+        target={target}
+        rel={target === '_blank' ? 'noopener noreferrer' : ''}
         {...(!disabled ? {href: href} : {})}
         {...rest}
       >
