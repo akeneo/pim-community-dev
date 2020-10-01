@@ -70,4 +70,4 @@ The deploy workflow is located in the [akeneo-design-system/.github/workflows/de
 
 ### Tag and release
 
-The tag and release workflow is localted in the [akeneo-design-system/.github/workflows/tag-and-publish-to-npm.yml](https://github.com/akeneo/pim-community-dev/blob/master/akeneo-design-system/.github/workflows/tag-and-publish-to-npm.yml). It's a github action commiting the tag and pushing it to master. Then it release it on gituhb and push it to the npm registry.
+The tag and release workflow is located in the [akeneo-design-system/.github/workflows/tag-and-publish-to-npm.yml](https://github.com/akeneo/pim-community-dev/blob/master/akeneo-design-system/.github/workflows/tag-and-publish-to-npm.yml) file. It's a Github action commiting the tag and pushing it to `master` and then publishes it on the npm registry.
