@@ -23,7 +23,7 @@ When adding a new component or improving an existing one, we want to make sure t
 
 ### Workflow
 
-All those tests are launched by the github action located in the [.github/workflows/dsm-test.yml](https://github.com/akeneo/pim-community-dev/blob/master/.github/workflows/dsm-test.yml) file on the pim-community-dev repository. We will go over the important steps of this document but if you want to dive deeper, you can read it as it's self documented
+All those tests are launched by the github action located in the [.github/workflows/dsm-test.yml](https://github.com/akeneo/pim-community-dev/blob/master/.github/workflows/dsm-test.yml) file on the pim-community-dev repository. We will go over the important steps of this document but if you want to dive deeper, you can read it as it's self-documented.
 
 This workflow launches on every pull requests targeting master with file modifications on the `akeneo-design-system` folder.
 
