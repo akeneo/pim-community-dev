@@ -1,9 +1,11 @@
 import {useCallback, useContext, useState} from 'react';
 import {AttributeGroup, AttributeGroupCollection, fromAttributeGroupsCollection} from '../../models';
 import {useRedirectToAttributeGroup} from './useRedirectToAttributeGroup';
-import {fetchAllAttributeGroups} from '../../infrastructure/fetchers';
+import {fetchAllAttributeGroups, fetchAllAttributeGroupsDqiStatus} from '../../infrastructure/fetchers';
 import {saveAttributeGroupsOrder} from '../../infrastructure/savers';
 import {AttributeGroupsDataGridContext, AttributeGroupsDataGridState} from '../../components/providers';
+
+const FeatureFlags = require("pim/feature-flags");
 
 const useAttributeGroupsDataGridState = (): AttributeGroupsDataGridState => {
   const context = useContext(AttributeGroupsDataGridContext);
@@ -28,7 +30,14 @@ const useInitialAttributeGroupsDataGridState = (): AttributeGroupsDataGridState 
   );
 
   const load = useCallback(async () => {
-    return fetchAllAttributeGroups().then((collection: AttributeGroupCollection) => {
+    return fetchAllAttributeGroups().then(async (collection: AttributeGroupCollection) => {
+      if (FeatureFlags.isEnabled('data_quality_insights')) {
+        const groupDqiStatuses = await fetchAllAttributeGroupsDqiStatus();
+        Object.entries(groupDqiStatuses).forEach(([groupCode, status]) => {
+          // @ts-ignore
+          collection[groupCode].isDqiActivated = status;
+        });
+      }
       setGroups(fromAttributeGroupsCollection(collection));
     });
   }, [refresh]);
@@ -40,8 +49,7 @@ const useInitialAttributeGroupsDataGridState = (): AttributeGroupsDataGridState 
       order[attributeGroup.code] = attributeGroup.sort_order;
     });
 
-    const collection = await saveAttributeGroupsOrder(order);
-    setGroups(fromAttributeGroupsCollection(collection));
+    await saveAttributeGroupsOrder(order);
   }, [groups]);
 
   const refreshOrder = useCallback(

@@ -72,6 +72,9 @@ akeneo_data_quality_insights:
         helper_dqi_info: The PX score calculation will only take into account attributes belonging to attribute groups activated on DQI.
         helper_dqi_link: More info on our helpcenter.
         activation: Activation
+        dqi_status: Data Quality Insights status
+        activated: Activated
+        disabled: Disabled
 
 pim_title:
     akeneo_data_quality_insights_dashboard: Data Quality Insights

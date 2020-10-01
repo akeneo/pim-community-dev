@@ -5,12 +5,17 @@ import {
   useInitialAttributeGroupsDataGridState
 } from '@akeneo-pim-community/settings-ui/src/hooks/attribute-groups';
 import {fetchAllAttributeGroups} from '@akeneo-pim-community/settings-ui/src/infrastructure/fetchers';
+import {fetchAllAttributeGroupsDqiStatus} from '@akeneo-pim-community/settings-ui/src/infrastructure/fetchers';
 import {saveAttributeGroupsOrder} from '@akeneo-pim-community/settings-ui/src/infrastructure/savers';
 import {anAttributeGroup} from '../../../utils/provideAttributeGroupHelper';
 import {act} from 'react-test-renderer';
 import {dependencies} from '@akeneo-pim-community/legacy-bridge';
 
+const FeatureFlags = require("pim/feature-flags");
+FeatureFlags.isEnabled.mockImplementation((feature: string) => false);
+
 jest.mock('@akeneo-pim-community/settings-ui/src/infrastructure/fetchers/attributeGroupsFetcher');
+jest.mock('@akeneo-pim-community/settings-ui/src/infrastructure/fetchers/attributeGroupDqiStatusFetcher');
 jest.mock('@akeneo-pim-community/settings-ui/src/infrastructure/savers/attributeGroupsSaver');
 
 describe('useInitialAttributeGroupsDataGridState', () => {
@@ -52,7 +57,7 @@ describe('useInitialAttributeGroupsDataGridState', () => {
     expect(result.current.compare(groupC, groupCBis)).toEqual(0);
   });
 
-  test('it loads the attribute groups list', async () => {
+  test('it loads the attribute groups list without the DQI feature', async () => {
     const groupA = anAttributeGroup('groupA', 1234,undefined, 3);
     const groupB = anAttributeGroup('groupB', 4321, undefined, 1);
     const groupC = anAttributeGroup('groupC', 4321, undefined, 2);
@@ -74,6 +79,43 @@ describe('useInitialAttributeGroupsDataGridState', () => {
       groupB,
       groupC,
       groupA
+    ]);
+  });
+
+  test('it loads the attribute groups list with the DQI feature', async () => {
+    FeatureFlags.isEnabled.mockImplementation((feature: string) => true);
+
+    const groupA = anAttributeGroup('groupA', 1234,undefined, 3);
+    const groupB = anAttributeGroup('groupB', 4321, undefined, 1);
+    const groupC = anAttributeGroup('groupC', 4321, undefined, 2);
+
+    const groupAWithDqi = anAttributeGroup('groupA', 1234,undefined, 3, true);
+    const groupBWithDqi = anAttributeGroup('groupB', 4321, undefined, 1, false);
+    const groupCWithDqi = anAttributeGroup('groupC', 4321, undefined, 2, true);
+
+    // @ts-ignore
+    fetchAllAttributeGroups.mockResolvedValue({
+      groupA,
+      groupB,
+      groupC,
+    });
+    // @ts-ignore
+    fetchAllAttributeGroupsDqiStatus.mockResolvedValue({
+      groupA: true,
+      groupB: false,
+      groupC: true,
+    });
+
+    const {result} = renderUseInitialAttributeGroupsDataGridState();
+
+    await act(async () => {
+      result.current.load();
+    });
+
+    expect(result.current.groups).toEqual([
+      groupBWithDqi,
+      groupCWithDqi,
+      groupAWithDqi
     ]);
   });
 

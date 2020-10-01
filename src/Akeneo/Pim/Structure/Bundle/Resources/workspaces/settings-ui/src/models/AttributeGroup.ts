@@ -17,6 +17,7 @@ type AttributeGroup = {
   meta: {
     id: number;
   };
+  isDqiActivated?: boolean;
 };
 
 type AttributeGroupCollection = {
