@@ -1,10 +1,5 @@
-import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
-import {action} from '@storybook/addon-actions';
 import {InlineHelper} from './InlineHelper';
-import {useArgs, updateArgs} from '@storybook/client-api';
-import {Link} from '../Link/Link';
-import {UsersIllustration} from '../../illustrations';
 
 <Meta
   title="Components/InlineHelper"
@@ -39,7 +34,7 @@ Use this playground to test the inline helper component
 <Canvas>
   <Story name="Standard">
     {(args) => {
-        return <InlineHelper {...args}/>;
+      return <InlineHelper {...args}/>;
     }}
   </Story>
 </Canvas>
@@ -49,14 +44,14 @@ Use this playground to test the inline helper component
 ## Variation on level
 <Canvas>
   <Story name="level">
-      {(args) => {
-          return (
-              <>
-                  <InlineHelper {...args} level="info">Info</InlineHelper>
-                  <InlineHelper {...args} level="warning">Warning</InlineHelper>
-                  <InlineHelper {...args} level="error">Error</InlineHelper>
-              </>
-          )
-      }}
+    {(args) => {
+      return (
+        <>
+          <InlineHelper {...args} level="info">Info</InlineHelper>
+          <InlineHelper {...args} level="warning">Warning</InlineHelper>
+          <InlineHelper {...args} level="error">Error</InlineHelper>
+        </>
+      )
+    }}
   </Story>
 </Canvas>

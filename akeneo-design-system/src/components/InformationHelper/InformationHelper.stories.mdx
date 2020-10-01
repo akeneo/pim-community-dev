@@ -1,21 +1,24 @@
-import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
-import {action} from '@storybook/addon-actions';
 import {InformationHelper, HelperTitle} from './InformationHelper';
-import {useArgs, updateArgs} from '@storybook/client-api';
 import {Link} from '../Link/Link';
 import {UsersIllustration} from '../../illustrations';
+import * as Illustrations from '../../illustrations';
+
+export const illustrationNames = Object.keys(Illustrations).reduce((accumulator, illustrationName) => {
+  accumulator[illustrationName] = illustrationName;
+  return accumulator;
+}, {});
 
 <Meta
   title="Components/InformationHelper"
   component={InformationHelper}
   argTypes={{
     children: {control: {type: 'text'}},
-    illustration: {control: {type: 'text'}}
+    illustration: {control: {type: 'select', 'options': {...illustrationNames}}}
   }}
   args={{
     children: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    illustration: <UsersIllustration/>
+    illustration: 'UsersIllustration'
   }}
 />
 
@@ -36,7 +39,8 @@ Use this playground to test the helper component
 <Canvas>
   <Story name="Standard">
     {(args) => {
-        return <InformationHelper {...args}/>;
+      const illustrationComponent = React.createElement(Illustrations[args.illustration]);
+      return <InformationHelper {...args} illustration={illustrationComponent}/>;
     }}
   </Story>
 </Canvas>
@@ -48,15 +52,15 @@ Generally InformationHelper are composed of title and link
 
 <Canvas>
   <Story name="level">
-      {(args) => {
-        return (
-          <InformationHelper illustration={<UsersIllustration/>}>
-            <HelperTitle>Lorem ipsum</HelperTitle>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            <br/>
-            <Link href="https://www.akeneo.com/">Link to related lorem ipsum</Link>
-          </InformationHelper>
-        );
-      }}
+    {(args) => {
+      return (
+        <InformationHelper illustration={<UsersIllustration/>}>
+          <HelperTitle>Lorem ipsum</HelperTitle>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          <br/>
+          <Link href="https://www.akeneo.com/">Link to related lorem ipsum</Link>
+        </InformationHelper>
+      );
+    }}
   </Story>
 </Canvas>
