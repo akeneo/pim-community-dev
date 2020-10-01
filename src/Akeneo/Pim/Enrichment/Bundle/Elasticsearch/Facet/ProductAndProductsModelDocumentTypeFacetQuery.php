@@ -13,7 +13,7 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class ProductAndProductsModelDocumentTypeFacetQuery
+class ProductAndProductsModelDocumentTypeFacetQuery
 {
     public const NAME = 'document_type_facet';
     private const FIELD = 'document_type';

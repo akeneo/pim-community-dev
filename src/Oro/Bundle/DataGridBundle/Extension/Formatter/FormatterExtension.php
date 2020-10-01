@@ -62,16 +62,17 @@ class FormatterExtension extends AbstractExtension
     {
         $rows = (array)$result->offsetGetOr('data', []);
 
-        $options = $config->offsetGetOr('options');
+        $options = $config->offsetGetOr('options', []);
         $extraKeys = $options['extraKeys'] ?? [];
+
+        foreach ($extraKeys as $extraKey) {
+            if (isset($rows[$extraKey])) {
+                $result->offsetSet($extraKey, $rows[$extraKey]);
+            }
+        }
 
         if (isset($rows['totalRecords'])) {
             $result->offsetSet('totalRecords', $rows['totalRecords']);
-            foreach ($extraKeys as $extraKey) {
-                if (isset($rows[$extraKey])) {
-                    $result->offsetSet($extraKey, $rows[$extraKey]);
-                }
-            }
             $rows = $rows['data'];
         }
 

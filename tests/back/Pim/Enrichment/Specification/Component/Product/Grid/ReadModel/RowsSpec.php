@@ -31,7 +31,7 @@ class RowsSpec extends ObjectBehavior
             new WriteValueCollection([ScalarValue::value('scalar_attribute', 'data')])
         );
 
-        $this->beConstructedWith([$row], 100);
+        $this->beConstructedWith([$row], 100, 80, 20);
     }
 
     function it_is_initializable()
@@ -42,6 +42,16 @@ class RowsSpec extends ObjectBehavior
     function it_has_the_total_number_of_returned_elements()
     {
         $this->totalCount()->shouldReturn(100);
+    }
+
+    function it_has_the_total_number_of_products()
+    {
+        $this->productCount()->shouldReturn(80);
+    }
+
+    function it_has_the_total_number_of_product_models()
+    {
+        $this->productModelCount()->shouldReturn(20);
     }
 
     function it_has_the_product_and_product_model_rows()

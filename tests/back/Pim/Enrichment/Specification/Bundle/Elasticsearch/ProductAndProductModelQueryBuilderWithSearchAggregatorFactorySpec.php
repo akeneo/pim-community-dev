@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Facet\ProductAndProductsModelDocumentTypeFacetQuery;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelSearchAggregator;
 use Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder\ProductAndProductModelQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -12,12 +13,14 @@ class ProductAndProductModelQueryBuilderWithSearchAggregatorFactorySpec extends 
 {
     function let(
         ProductQueryBuilderFactoryInterface $factory,
-        ProductAndProductModelSearchAggregator $resultAggregator
+        ProductAndProductModelSearchAggregator $resultAggregator,
+        ProductAndProductsModelDocumentTypeFacetQuery $productAndProductsModelDocumentTypeFacetQuery
     ) {
         $this->beConstructedWith(
             ProductAndProductModelQueryBuilder::class,
             $factory,
-            $resultAggregator
+            $resultAggregator,
+            $productAndProductsModelDocumentTypeFacetQuery
         );
     }
 
