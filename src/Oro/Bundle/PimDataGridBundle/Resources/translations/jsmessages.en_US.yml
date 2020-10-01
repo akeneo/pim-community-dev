@@ -62,6 +62,8 @@ pim_datagrid:
     quick_export:
       title: Quick Export
       success: Quick export has been launched
+      success_message: "To follow the progress of your export, {{ job_link }}"
+      job_link_label: take a look at the details of the execution
 
   action:
     default:
