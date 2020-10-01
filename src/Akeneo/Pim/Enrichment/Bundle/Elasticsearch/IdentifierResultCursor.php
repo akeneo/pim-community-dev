@@ -20,10 +20,10 @@ class IdentifierResultCursor implements CursorWithResultInterface
     /** @var int */
     private $totalCount;
 
-    /** @var Result|null */
+    /** @var ElasticsearchResult|null */
     private $result;
 
-    public function __construct(array $identifiers, int $totalCount, ?Result $result)
+    public function __construct(array $identifiers, int $totalCount, ?ElasticsearchResult $result)
     {
         $this->identifiers = new \ArrayIterator($identifiers);
         $this->totalCount = $totalCount;

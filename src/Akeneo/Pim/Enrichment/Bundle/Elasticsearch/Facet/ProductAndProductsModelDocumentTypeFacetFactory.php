@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Facet;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Result;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ElasticsearchResult;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ResultInterface;
 use Webmozart\Assert\Assert;
 
@@ -17,7 +17,7 @@ final class ProductAndProductsModelDocumentTypeFacetFactory
 {
     public function build(ResultInterface $result): ?Facet
     {
-        Assert::isInstanceOf($result, Result::class);
+        Assert::isInstanceOf($result, ElasticsearchResult::class);
 
         $rawResult = $result->getRawResult();
         $aggregations = $rawResult['aggregations'] ?? [];

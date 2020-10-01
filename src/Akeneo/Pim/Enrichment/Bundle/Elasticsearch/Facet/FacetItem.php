@@ -28,8 +28,10 @@ final class FacetItem
     public static function fromArray(array $array): FacetItem
     {
         Assert::keyExists($array, 'key');
+        Assert::stringNotEmpty($array['key']);
         Assert::keyExists($array, 'doc_count');
         Assert::integer($array['doc_count']);
+        Assert::greaterThanEq($array['doc_count'], 0);
 
         return new FacetItem($array['key'], $array['doc_count']);
     }

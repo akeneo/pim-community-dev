@@ -4,7 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResultCursor;
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Result;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ElasticsearchResult;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -61,7 +61,7 @@ class SearchAfterSizeIdentifierResultCursorFactorySpec extends ObjectBehavior
                 new IdentifierResult('product_model_2', ProductModelInterface::class),
             ],
             42,
-            new Result($result)
+            new ElasticsearchResult($result)
         ));
     }
 }

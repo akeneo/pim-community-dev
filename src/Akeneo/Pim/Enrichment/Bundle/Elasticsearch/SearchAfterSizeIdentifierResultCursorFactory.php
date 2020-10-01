@@ -58,7 +58,7 @@ class SearchAfterSizeIdentifierResultCursorFactory implements CursorFactoryInter
             $identifiers[] = new IdentifierResult($hit['_source']['identifier'], $documentType);
         }
 
-        return new IdentifierResultCursor($identifiers, $totalCount, new Result($response));
+        return new IdentifierResultCursor($identifiers, $totalCount, new ElasticsearchResult($response));
     }
 
     protected function resolveOptions(array $options): array
