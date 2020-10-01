@@ -1,7 +1,7 @@
 import React from 'react';
 
-const UsersIllustration = ({width = 256, height = 256}: {width: number; height: number}) => (
-  <svg width={width} height={height} viewBox="0 0 256 256">
+const UsersIllustration = ({size = 256}: {size: number}) => (
+  <svg width={size} height={size} viewBox="0 0 256 256">
     <defs>
       <path
         d="M39.471 137.5c0 49.573 40.186 89.759 89.758 89.759 49.573 0 89.759-40.186 89.759-89.759 0-49.572-40.186-89.759-89.759-89.759-49.572 0-89.758 40.187-89.758 89.759"

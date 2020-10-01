@@ -44,8 +44,7 @@ const InformationHelper = React.forwardRef<HTMLDivElement, HelperProps>(
       child => !isValidElement(child) || child.type !== HelperTitle
     );
 
-    const resizedIllustration =
-      isValidElement(illustration) && React.cloneElement(illustration, {height: 80, width: 80});
+    const resizedIllustration = isValidElement(illustration) && React.cloneElement(illustration, {size: 80});
 
     return (
       <Container ref={forwardedRef} {...rest}>
