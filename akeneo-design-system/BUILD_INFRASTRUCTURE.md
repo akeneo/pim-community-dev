@@ -2,7 +2,7 @@
 
 ## Introduction
 
-When we started to work on the DSM we set a goal to ourself to make it as easy as possible to contribute to it. We think that developer adoption will depend a lot on how easy it will be to contribute to it.
+When we started to work on the DSM we set a goal to ourselves to make it as easy as possible to contribute to it. We think that developer adoption will depend a lot on how easy it will be to contribute to it.
 
 One of the main painpoint when contributing is often not related to the code changes themself but more about things arround it:
 
