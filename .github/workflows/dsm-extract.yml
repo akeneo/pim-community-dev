@@ -25,7 +25,7 @@ jobs:
             -   name: Build library
                 run: cd akeneo-design-system && yarn lib:build
 
-            -   name: Upload the generated lib to artifact
+            -   name: Upload the generated lib as an artifact
                 uses: actions/upload-artifact@v1
                 with:
                     name: Lib
