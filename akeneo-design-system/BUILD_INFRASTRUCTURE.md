@@ -27,7 +27,7 @@ All those tests are launched by the github action located in the [.github/workfl
 
 This workflow launches on every pull requests targeting master with file modifications on the `akeneo-design-system` folder.
 
-We start by preparing the build environments (checout branch, node version), generate a bummy component to test it and then launch all tests suits (lint, unit and visual regression tests). We then build the example integration project to check that the lib works well in a "real" project.
+We start by preparing the build environments (checkout branch, node version), generate a Dummy component to test it and then launch all test suites (lint, unit and visual regression tests). We then build the example integration project to check that the lib works well in a "real" project.
 
 ### The visual regression problem
 
