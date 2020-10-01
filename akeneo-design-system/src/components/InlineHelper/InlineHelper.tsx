@@ -28,11 +28,11 @@ const getIconColor = (level: Level) => {
 const getIcon = (level: Level): JSX.Element => {
   switch (level) {
     case 'info':
-      return <InfoIcon width={16} height={16} />;
+      return <InfoIcon size={16} />;
     case 'warning':
-      return <DangerIcon width={16} height={16} />;
+      return <DangerIcon size={16} />;
     case 'error':
-      return <DangerIcon width={16} height={16} />;
+      return <DangerIcon size={16} />;
   }
 };
 
