@@ -55,7 +55,10 @@ The first two jobs are run in parallel to build the lib and bump the lib version
 
 ### How do we bump the lib version
 
-The important part here is to understand how we bump the version: We start by getting the current version number on the package.json from the external repository. Then we get all the commit messages on the merged pull request. We analyse their commit message to decide which version level we should bump (patch, minor, major). Once it's done, we can add the package.json before extracting the `akeneo-design-system` folder.
+The important part here is to understand how we bump the version:
+- We start by getting the current version number on the package.json from the external repository.
+- Then we get all the commit messages on the merged pull request. We analyse their commit message to decide which version level we should bump (patch, minor, major).
+- Once it's done, we can add the package.json before extracting the `akeneo-design-system` folder.
 
 ## After extracting
 
