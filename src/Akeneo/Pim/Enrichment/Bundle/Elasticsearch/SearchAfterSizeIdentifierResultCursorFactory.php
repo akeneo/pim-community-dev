@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\CursorWithResult;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResultCursor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
@@ -58,7 +58,7 @@ class SearchAfterSizeIdentifierResultCursorFactory implements CursorFactoryInter
             $identifiers[] = new IdentifierResult($hit['_source']['identifier'], $documentType);
         }
 
-        return new CursorWithResult($identifiers, $totalCount);
+        return new IdentifierResultCursor($identifiers, $totalCount, new Result($response));
     }
 
     protected function resolveOptions(array $options): array

@@ -9,11 +9,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductGrid\AssertRows;
-use AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductGrid\ProductGridFixturesLoader;
 use PHPUnit\Framework\Assert;
 
 class FetchProductAndProductModelRowsIntegration extends TestCase
@@ -50,16 +48,6 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
         );
 
         $rows = $query($queryParameters);
-
-        $anImage = new Attribute();
-        $anImage->setCode('an_image');
-
-        $aScopableImage = new Attribute();
-        $aScopableImage->setCode('a_scopable_image');
-        $aScopableImage->setScopable(true);
-
-        $sku = new Attribute();
-        $sku->setCode('sku');
 
         $akeneoImage = current($this
             ->get('akeneo_file_storage.repository.file_info')
@@ -100,6 +88,8 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
 
         Assert::assertSame(2, $rows->totalCount());
         AssertRows::same($expectedRows, $rows->rows());
+        Assert::assertSame(1, $rows->productCount());
+        Assert::assertSame(1, $rows->productModelCount());
     }
 
     /**

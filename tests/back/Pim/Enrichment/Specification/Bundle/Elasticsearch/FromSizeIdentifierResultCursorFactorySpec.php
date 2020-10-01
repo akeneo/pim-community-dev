@@ -3,7 +3,8 @@
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\CursorWithResult;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResultCursor;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Result;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -35,6 +36,14 @@ class FromSizeIdentifierResultCursorFactorySpec extends ObjectBehavior
             'from'  => 0,
         ];
 
+        $result = ['hits' => [
+            'total' => ['value' => 42, 'relation' => 'eq'],
+            'hits'  => [
+                ['_source' => ['identifier' => 'product_1', 'document_type' => ProductInterface::class]],
+                ['_source' => ['identifier' => 'product_model_2', 'document_type' => ProductModelInterface::class]],
+            ]
+        ]];
+
         $esClient->search(
             [
                 'sort' => ['_id' => 'asc'],
@@ -44,19 +53,15 @@ class FromSizeIdentifierResultCursorFactorySpec extends ObjectBehavior
                 'size' => 25,
                 'from' => 0
             ]
-        )->willReturn(['hits' => [
-            'total' => ['value' => 42, 'relation' => 'eq'],
-            'hits'  => [
-                ['_source' => ['identifier' => 'product_1', 'document_type' => ProductInterface::class]],
-                ['_source' => ['identifier' => 'product_model_2', 'document_type' => ProductModelInterface::class]]
-            ]
-        ]]);
+        )->willReturn($result);
 
-        $this->createCursor($esQuery, $options)->shouldBeLike(new CursorWithResult(
+        $this->createCursor($esQuery, $options)->shouldBeLike(new IdentifierResultCursor(
             [
                 new IdentifierResult('product_1', ProductInterface::class),
                 new IdentifierResult('product_model_2', ProductModelInterface::class),
-            ], 42
+            ],
+            42,
+            new Result($result)
         ));
     }
 }

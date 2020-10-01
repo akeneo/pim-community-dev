@@ -47,7 +47,7 @@ class FromSizeIdentifierResultCursorFactory implements CursorFactoryInterface
             $identifiers[] = new IdentifierResult($hit['_source']['identifier'], $documentType);
         }
 
-        return new CursorWithResult($identifiers, $totalCount, new Result($response));
+        return new IdentifierResultCursor($identifiers, $totalCount, new Result($response));
     }
 
     /**
