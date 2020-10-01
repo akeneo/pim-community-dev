@@ -1,7 +1,7 @@
 import React, {ReactNode, Ref, SyntheticEvent, useState} from 'react';
 import styled, {css, keyframes} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../theme';
-import {CheckIcon, PartialCheckIcon} from '../../icons';
+import {CheckIcon, CheckPartialIcon} from '../../icons';
 import {useShortcut} from '../../hooks';
 import {Key, uuid} from '../../shared';
 
@@ -160,7 +160,7 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
           onClick={handleChange}
           {...forProps}
         >
-          {isMixed ? <PartialCheckIcon height={20} width={20} /> : <TickIcon height={20} width={20} />}
+          {isMixed ? <CheckPartialIcon size={18} /> : <TickIcon size={20} />}
         </CheckboxContainer>
         {children ? (
           <LabelContainer onClick={handleChange} id={labelId} readOnly={readOnly} htmlFor={checkboxId}>

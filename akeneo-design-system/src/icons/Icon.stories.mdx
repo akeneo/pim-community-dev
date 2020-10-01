@@ -1,10 +1,20 @@
-import {Canvas, Meta, Story} from '@storybook/addon-docs/blocks';
-import {PreviewGrid, PreviewCard, PreviewContainer, LabelContainer} from 'shared/PreviewGallery'
+import {Canvas, Meta, Story, ArgsTable} from '@storybook/addon-docs/blocks';
+import {PreviewGrid, PreviewCard, PreviewContainer, LabelContainer} from 'shared/PreviewGallery';
 import * as Icons from './';
+import {pimTheme} from '../theme/pim/index';
+import {colors} from '../theme/Colors.stories.mdx';
 
-<Meta title="Guidelines/Iconography" />
+<Meta
+  title="Guidelines/Iconography"
+  argTypes={{
+    color: {control: {type: 'select', options: Object.values(colors).flat()}},
+    size: {control: {type: 'select', options: [16, 24, 32, 48]}},
+  }}
+  args={{color: 'grey', size: 24}}
+/>
 
 # Iconography
+
 Icons are visual symbols used to represent ideas, objects or actions. They communicate messages at a glance, allow interactivity and draw attention to important information.
 
 ## Designing icons
@@ -18,19 +28,26 @@ Akeneo components typically use 18px icons on artboards. Icons on 16px, 24px, 32
 The icons are always stroke and monochromatic and must respect the color contrast. The color of the icon should reflect the importance of its action, which must always guide the user.
 
 ## Icons
+
+<ArgsTable story="Standard" />
+
 <Canvas>
   <Story name="Standard">
-    <PreviewGrid>
-      {Object.keys(Icons).map((iconName) => {
-        return (
-          <PreviewCard key={iconName}>
-            <PreviewContainer>
-              {React.createElement(Icons[iconName], {height: 105, width: 105})}
-            </PreviewContainer>
-            <LabelContainer>{iconName.replace('Icon','')}</LabelContainer>
-          </PreviewCard>
-        )
-      })}
-    </PreviewGrid>
+    {args => {
+      return (
+        <PreviewGrid size={args.size}>
+          {Object.keys(Icons).map(iconName => {
+            return (
+              <PreviewCard key={iconName}>
+                <PreviewContainer>
+                  {React.createElement(Icons[iconName], {...args, color: pimTheme.color[`${args.color}100`]})}
+                </PreviewContainer>
+                <LabelContainer>{iconName.replace('Icon', '')}</LabelContainer>
+              </PreviewCard>
+            );
+          })}
+        </PreviewGrid>
+      );
+    }}
   </Story>
 </Canvas>

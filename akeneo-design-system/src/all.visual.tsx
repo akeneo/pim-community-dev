@@ -22,7 +22,7 @@ const stories = Object.values(storiesDump.stories);
 
 describe('Visual tests', () => {
   stories.map(story => {
-    if (story.id.indexOf('components') !== 0 && story.id.indexOf('guidelines') !== 0) {
+    if (story.id.indexOf('components') !== 0) {
       return;
     }
 

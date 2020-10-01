@@ -1,11 +1,15 @@
 import styled from 'styled-components';
 
-const PreviewGrid = styled.div`
+const PreviewGrid = styled.div<{width: number}>`
   display: grid;
-  grid-template-columns: repeat(auto-fill, 170px);
+  grid-template-columns: repeat(auto-fill, ${({width}) => width}px);
   gap: 16px;
   margin-bottom: 50px;
 `;
+
+PreviewGrid.defaultProps = {
+  width: 140,
+};
 
 const PreviewCard = styled.div`
   display: flex;
@@ -18,7 +22,7 @@ const PreviewCard = styled.div`
 `;
 
 const PreviewContainer = styled.div`
-  height: 110px;
+  padding: 20px;
   color: #a1a9b7;
   overflow: hidden;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
