@@ -2,8 +2,9 @@
 
 const fs = require('fs');
 const yargs = require('yargs');
+const glob = require('glob');
 
-const {ComponentName} = yargs
+const {_ : commandName, ComponentName, sourceFolder} = yargs
   .command('generate [ComponentName]', 'Generate a new component with the given name', yargs => {
     yargs.positional('ComponentName', {
       describe: 'The component name you want to create',
@@ -11,17 +12,39 @@ const {ComponentName} = yargs
     });
   })
   .check((argv, options) => {
-    if (argv.ComponentName[0] !== argv.ComponentName[0].toUpperCase()) {
-      throw new Error('The component name should be Capitalized (first letter uppercase)');
-    }
+    switch (argv._[0]) {
+      case 'metric':
+        if (undefined === argv.sourceFolder) {
+          throw new Error('The source folder argument is required');
+        }
+        if (!fs.existsSync(argv.sourceFolder)) {
+          throw new Error(`Source folder "${argv.sourceFolder}" does not exist`);
+        }
+        break;
+      case 'generate':
+        if (undefined === argv.ComponentName) {
+          throw new Error('The component name argument is required');
+        }
+        if (argv.ComponentName[0] !== argv.ComponentName[0].toUpperCase()) {
+          throw new Error('The component name should be Capitalized (first letter uppercase)');
+        }
 
-    if (fs.existsSync(`src/components/${argv.ComponentName}`)) {
-      throw new Error(`Component "${argv.ComponentName}" already exists`);
+        if (fs.existsSync(`src/components/${argv.ComponentName}`)) {
+          throw new Error(`Component "${argv.ComponentName}" already exists`);
+        }
+        break;
+      default:
+        break;
     }
 
     return true;
   })
-  .demandOption(['ComponentName'], 'Please provide a ComponentName as argument')
+  .command('metric [sourceFolder]', 'Display metric about DSM usage', yargs => {
+    yargs.positional('sourceFolder', {
+      describe: 'The folder to audit',
+      require: true,
+    });
+  })
   .help('h')
   .alias('h', 'help')
   .demandCommand(2).argv;
@@ -83,11 +106,94 @@ const exportComponentToIndex = async (path, componentName) => {
   fs.appendFileSync(path, `export * from './${componentName}/${componentName}';\n`);
 };
 
+const getTsxFiles = async (sourceFolder) => {
+  return new Promise((resolve, reject) => {
+    glob(`${sourceFolder}/**/*.tsx`, async (error, files) => {
+      if (null !== error) {reject(error); return;}
+
+      resolve(files);
+    })
+  });
+}
+
+/**
+ * Get file metrics regarding dsm usage
+ */
+const getFileMetrics = async (filePath) => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(filePath, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        const fileContent = data
+          .toString('utf8');
+
+        const isSVG = -1 !== fileContent.indexOf(`<svg `);
+        const isTest = -1 !== fileContent.indexOf(`from '@testing-library/react';`);
+        const isOther = !isSVG && !isTest;
+        const usesStyledComponents = -1 !== fileContent.indexOf(`from 'styled-components';`);
+        const usesPimShared = -1 !== fileContent.indexOf(`from '@akeneo-pim-community/shared';`);
+        const usesLegacyBridge = -1 !== fileContent.indexOf(`from '@akeneo-pim-community/legacy-bridge';`);
+        const usesDSM = -1 !== fileContent.indexOf(`from 'akeneo-design-system';`);
+
+        resolve({isSVG, isTest, isOther, usesStyledComponents, usesPimShared, usesLegacyBridge, usesDSM})
+      }
+    });
+  })
+}
+
+const compileMetrics = (metrics) => {
+  return metrics.reduce((result, metric) => (
+    Object.keys(metric).reduce((newMetric, key) => ({
+      ...result,
+      ...newMetric,
+      [key]: metric[key] ? result[key] + 1 : result[key],
+    }), {})
+  ), {
+    total: metrics.length,
+    isSVG: 0,
+    isTest: 0,
+    isOther: 0,
+    usesStyledComponents: 0,
+    usesPimShared: 0,
+    usesLegacyBridge: 0,
+    usesDSM: 0,
+  });
+
+
+
+
+  // ({
+  //   isSVG: metric.isSVG ? result.isSVG + 1 : result.isSVG,
+  //   isTest: metric.isTest ? result.isTest + 1 : result.isTest,
+  //   usesStyledComponents: metric.usesStyledComponents ? result.usesStyledComponents + 1 : result.usesStyledComponents,
+  //   usesPimShared: metric.usesPimShared ? result.usesPimShared + 1 : result.usesPimShared,
+  //   usesLegacyBridge: metric.usesLegacyBridge ? result.usesLegacyBridge + 1 : result.usesLegacyBridge,
+  // }), {isSVG: 0, isTest: 0, usesStyledComponents: 0, usesPimShared: 0, usesLegacyBridge: 0})
+}
+
 (async () => {
   try {
-    await copyComponentFolder('generator/components/MyComponent', `src/components/${ComponentName}`);
-    await renameComponentFolder('MyComponent', ComponentName);
-    exportComponentToIndex('src/components/index.ts', ComponentName);
+    switch (commandName[0]) {
+      case 'generate':
+        await copyComponentFolder('generator/components/MyComponent', `src/components/${ComponentName}`);
+        await renameComponentFolder('MyComponent', ComponentName);
+        exportComponentToIndex('src/components/index.ts', ComponentName);
+        break;
+      case 'metric':
+        const files = await getTsxFiles(sourceFolder);
+        const metrics = [];
+        for (const file of files) {
+          metrics.push(await getFileMetrics(file));
+        }
+
+        console.log(compileMetrics(metrics));
+
+        break;
+
+      default:
+        break;
+    }
   } catch (e) {
     console.error(e);
   }
