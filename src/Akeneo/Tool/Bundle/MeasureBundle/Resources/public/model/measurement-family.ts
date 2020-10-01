@@ -66,7 +66,7 @@ const addUnit = (measurementFamily: MeasurementFamily, unit: Unit): MeasurementF
 
 const removeUnit = (measurementFamily: MeasurementFamily, unitCode: UnitCode): MeasurementFamily => ({
   ...measurementFamily,
-  units: measurementFamily.units.filter(unit => unit.code !== unitCode),
+  units: measurementFamily.units.filter((unit) => unit.code !== unitCode),
 });
 
 const setUnitSymbol = (measurementFamily: MeasurementFamily, unitCode: UnitCode, value: string): MeasurementFamily => {
@@ -85,7 +85,7 @@ const setUnitSymbol = (measurementFamily: MeasurementFamily, unitCode: UnitCode,
 };
 
 const getUnit = (measurementFamily: MeasurementFamily, unitCode: UnitCode): Unit | undefined =>
-  measurementFamily.units.find(unit => unit.code === unitCode);
+  measurementFamily.units.find((unit) => unit.code === unitCode);
 
 const getUnitIndex = (measurementFamily: MeasurementFamily, unitCode: UnitCode): number => {
   const unit = getUnit(measurementFamily, unitCode);
