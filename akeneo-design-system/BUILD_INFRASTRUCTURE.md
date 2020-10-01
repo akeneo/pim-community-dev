@@ -17,7 +17,7 @@ In this document we will exlain how we automated those tasks to empower you to m
 
 When adding a new component or improving an existing one, we want to make sure that everything will work in production. To do so we have different gatekeepers:
 
-- Unit tests launched by jest
+- Unit tests launched by Jest
 - Visual regression tests using Puppeteer and Jest
 - Lint validation done by eslint and prettier
 
