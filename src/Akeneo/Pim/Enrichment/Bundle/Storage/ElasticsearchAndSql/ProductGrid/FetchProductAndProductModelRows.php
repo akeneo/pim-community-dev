@@ -11,7 +11,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Grid\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Rows;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -93,11 +92,12 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
             }
         }
 
-        // @todo: assert or condition?
-        Assert::implementsInterface($productAndProductModelIdentifiersCursor, CursorWithResultInterface::class);
-        $documentTypeFacet = $this->productAndProductsModelDocumentTypeFacetFactory->build(
-            $productAndProductModelIdentifiersCursor->getResult()
-        );
+        $documentTypeFacet = null;
+        if ($productAndProductModelIdentifiersCursor instanceof CursorWithResultInterface) {
+            $documentTypeFacet = $this->productAndProductsModelDocumentTypeFacetFactory->build(
+                $productAndProductModelIdentifiersCursor->getResult()
+            );
+        }
 
         return new Rows(
             $sortedRows,
