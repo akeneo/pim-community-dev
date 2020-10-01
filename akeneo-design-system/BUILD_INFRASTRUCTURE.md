@@ -62,7 +62,7 @@ The important part here is to understand how we bump the version:
 
 ## After extracting
 
-Once the akeneo design system has been extracted to the external repository we still need to tag it, release it and publish it. We also need to update the storybook to github pages.
+Once the akeneo design system has been extracted to the external repository we still need to tag it, release it and publish it. We also need to update the Storybook to Github pages.
 
 ### Deploy storybook
 
