@@ -198,7 +198,7 @@ describe('Test Asset create modal component', () => {
 
     await flushPromises();
 
-    expect(container.querySelector('img')?.src).toEqual('');
+    expect(container.querySelector('img')).not.toBeInTheDocument()
     expect(container.querySelector('[data-checked="true"]')).toBeInTheDocument();
     expect(getByText(container, asset.labels.en_US)).toBeInTheDocument();
   });

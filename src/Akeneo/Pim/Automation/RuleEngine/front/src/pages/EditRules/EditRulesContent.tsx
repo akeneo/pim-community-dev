@@ -87,7 +87,7 @@ const EditRulesContent: React.FC<Props> = ({
   }, [formMethods.formState.dirtyFields.size]);
 
   const title =
-    (formMethods.watch(`labels.${currentCatalogLocale}`) as string) ||
+    formMethods.watch(`labels.${currentCatalogLocale}`) ||
     `[${ruleDefinitionCode}]`;
 
   const appendAction = (action: Action) => {
@@ -173,7 +173,7 @@ const EditRulesContent: React.FC<Props> = ({
       <RulesHeader
         buttonLabel='pim_common.save'
         formId='edit-rules-form'
-        title={title}
+        title={title as string}
         unsavedChanges={formMethods.formState.dirty}
         saveable={!!actionsState.filter(Boolean).length}
         dropdown={

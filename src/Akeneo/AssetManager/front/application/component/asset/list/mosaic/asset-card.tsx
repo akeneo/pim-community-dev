@@ -96,7 +96,7 @@ const AssetCard = ({asset, context, isSelected, onSelectionChange, isDisabled, o
         }
       })
       .catch(() => {
-        setUrl('');
+        setUrl(null);
       });
 
     return () => {
@@ -120,7 +120,7 @@ const AssetCard = ({asset, context, isSelected, onSelectionChange, isDisabled, o
           }
         }}
       >
-        {null !== url && <Thumbnail src={url} />}
+          {null !== url && <Thumbnail src={url} />}
       </ImageContainer>
       {assetHasCompleteness(asset) && (
         <AssetCompleteness>

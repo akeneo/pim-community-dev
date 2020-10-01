@@ -45,13 +45,13 @@ const Action = styled.li`
   }
 `;
 
-const Button: React.FunctionComponent<{title: string; onAction: () => void}> = ({children, title, onAction}) => {
-  const Container = styled(TransparentButton)`
+const ButtonContainer = styled(TransparentButton)`
     margin: 0 10px;
-  `;
+`;
 
+const Button: React.FunctionComponent<{title: string; onAction: () => void}> = ({children, title, onAction}) => {
   return (
-    <Container
+    <ButtonContainer
       title={title}
       tabIndex={0}
       onClick={() => onAction()}
@@ -60,7 +60,7 @@ const Button: React.FunctionComponent<{title: string; onAction: () => void}> = (
       }}
     >
       {children}
-    </Container>
+    </ButtonContainer>
   );
 };
 
