@@ -1,7 +1,7 @@
 import React, {ReactNode, Ref} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../theme';
-import {InfoIcon, DangerIcon} from '../../icons';
+import {DangerIcon, InfoRoundIcon} from '../../icons';
 
 const getBackgroundColor = (level: Level) => {
   switch (level) {
@@ -39,7 +39,7 @@ const getIconColor = (level: Level) => {
 const getIcon = (level: Level): JSX.Element => {
   switch (level) {
     case 'info':
-      return <InfoIcon size={20} />;
+      return <InfoRoundIcon size={20} />;
     case 'warning':
       return <DangerIcon size={20} />;
     case 'error':
@@ -61,7 +61,7 @@ const getSeparatorColor = (level: Level) => {
 const Container = styled.div<{level: Level} & AkeneoThemedProps>`
   align-items: center;
   display: flex;
-  font-weight: 600;
+  font-weight: 400;
   padding-right: 15px;
   color: ${props => getFontColor(props.level)};
   min-height: 24px;
@@ -90,6 +90,7 @@ type HelperProps = {
   children: ReactNode;
 };
 
+/** Helper informs the user about the features of the section */
 const Helper = React.forwardRef<HTMLDivElement, HelperProps>(
   ({level, children, ...rest}: HelperProps, forwardedRef: Ref<HTMLDivElement>) => {
     return (

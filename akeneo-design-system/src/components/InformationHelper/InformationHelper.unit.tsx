@@ -1,6 +1,6 @@
 import React from 'react';
 import {render} from '../../storybook/test-util';
-import {HelperTitle, InformationHelper} from './InformationHelper';
+import {InformationHelper} from './InformationHelper';
 import {UsersIllustration} from '../../illustrations';
 
 describe('A helper', () => {
@@ -9,8 +9,7 @@ describe('A helper', () => {
     const helperMessage = 'A Helper message';
 
     const {getByText} = render(
-      <InformationHelper illustration={UsersIllustration}>
-        <HelperTitle>{helperTitle}</HelperTitle>
+      <InformationHelper title={helperTitle} illustration={UsersIllustration}>
         {helperMessage}
       </InformationHelper>
     );

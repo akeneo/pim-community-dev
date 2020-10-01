@@ -1,5 +1,7 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import LinkTo from '@storybook/addon-links/react';
 import {Helper} from './Helper';
+import {Link} from '../';
 
 <Meta
   title="Components/Helper"
@@ -52,3 +54,26 @@ Use this playground to test the helper component
     }}
   </Story>
 </Canvas>
+
+## Composition
+When more information can be found in another page, helper is combined with link component
+
+<Canvas>
+  <Story name="Composition">
+    {(args) => {
+      return (
+        <Helper level="info">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+          dolore magna aliqua. <Link target="_blank" href="https://www.akeneo.com/">Link to related lorem ipsum</Link>
+        </Helper>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Related components
+<ul>
+  <li><LinkTo kind="Components/InformationHelper" story="Standard">InformationHelper</LinkTo></li>
+  <li><LinkTo kind="Components/InlineHelper" story="Standard">InlineHelper</LinkTo></li>
+  <li><LinkTo kind="Components/Link" story="Standard">Link</LinkTo></li>
+</ul>

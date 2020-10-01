@@ -1,7 +1,7 @@
 import React, {ReactNode, Ref} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../theme';
-import {InfoIcon, DangerIcon} from '../../icons';
+import {InfoRoundIcon, DangerIcon} from '../../icons';
 
 const getFontColor = (level: Level) => {
   switch (level) {
@@ -28,7 +28,7 @@ const getIconColor = (level: Level) => {
 const getIcon = (level: Level): JSX.Element => {
   switch (level) {
     case 'info':
-      return <InfoIcon size={16} />;
+      return <InfoRoundIcon size={16} />;
     case 'warning':
       return <DangerIcon size={16} />;
     case 'error':
@@ -39,7 +39,7 @@ const getIcon = (level: Level): JSX.Element => {
 const Container = styled.div<{level: Level} & AkeneoThemedProps>`
   align-items: center;
   display: flex;
-  font-weight: 600;
+  font-weight: 400;
   padding-right: 15px;
   color: ${props => getFontColor(props.level)};
 `;
@@ -64,6 +64,7 @@ type HelperProps = {
   children: ReactNode;
 };
 
+/** InlineHelper inform user about field information */
 const InlineHelper = React.forwardRef<HTMLDivElement, HelperProps>(
   ({level, children, ...rest}: HelperProps, forwardedRef: Ref<HTMLDivElement>) => {
     return (
