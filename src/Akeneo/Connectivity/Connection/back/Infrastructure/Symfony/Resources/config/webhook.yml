@@ -7,6 +7,11 @@ services:
     class: GuzzleHttp\Client
     arguments:
       - {handler: '@akeneo_connectivity.connection.webhook.guzzle_handler'}
+      
+  akeneo_connectivity.connection.webhook.guzzle_client:
+    class: GuzzleHttp\Client
+    arguments:
+      - {handler: '@akeneo_connectivity.connection.webhook.guzzle_handler'}
 
   akeneo_connectivity.connection.webhook.serializer.json_encoder:
     class: Symfony\Component\Serializer\Encoder\JsonEncoder
