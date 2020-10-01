@@ -7,6 +7,7 @@ import {ColumnLabel} from "./ColumnLabel";
 import {debounce} from 'lodash';
 import {SearchBar} from "@akeneo-pim-community/shared/src";
 import {NoSearchResult} from "./NoSearchResult";
+import {StatusBadge} from "./StatusBadge";
 
 const FeatureFlags = require("pim/feature-flags");
 
@@ -88,9 +89,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups}) => {
               {
                 FeatureFlags.isEnabled('data_quality_insights') &&
                 <DataGrid.Column>
-                <span className={`AknDataQualityInsightsQualityBadge AknDataQualityInsightsQualityBadge--${group.isDqiActivated ? 'good' : 'to-improve'}`}>
-                  {translate(`akeneo_data_quality_insights.attribute_group.${group.isDqiActivated ? 'activated' : 'disabled'}`)}
-                </span>
+                  <StatusBadge isActivated={group.isDqiActivated ? true : false}/>
                 </DataGrid.Column>
               }
             </DataGrid.Row>
