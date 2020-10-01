@@ -18,7 +18,8 @@ type MoveEndRowHandler = (event: React.DragEvent, handleDropRow: AfterDropRowHan
 type DataGridState<T> = {
   draggedData: T | null;
   draggedIndex: number;
-  isDraggable: boolean;
+  isReorderAllowed: boolean;
+  isReorderActive: boolean;
   dataSource: T[];
   isDragged: (data: T) => boolean;
   moveUp: MoveRowHandler<T>;
@@ -27,13 +28,16 @@ type DataGridState<T> = {
   moveOver: MoveOverRowHandler<T>;
   moveDrop: MoveDropRowHandler;
   moveEnd: MoveEndRowHandler;
+  isFilterable: boolean;
 };
 
 type Props<T> = {
-  isDraggable: boolean;
+  isReorderAllowed: boolean;
+  isReorderActive: boolean;
   dataSource: T[];
   handleAfterMove: AfterMoveRowHandler<T>;
   compareData: CompareRowDataHandler<T>;
+  isFilterable: boolean;
 };
 
 const DEFAULT_DRAGGED_INDEX = -1;
@@ -41,7 +45,8 @@ const DEFAULT_DRAGGED_INDEX = -1;
 const DataGridStateContext = createContext<DataGridState<any>>({
   draggedData: null,
   draggedIndex: DEFAULT_DRAGGED_INDEX,
-  isDraggable: false,
+  isReorderAllowed: false,
+  isReorderActive: false,
   dataSource: [],
   isDragged: () => false,
   moveUp: () => {},
@@ -50,16 +55,19 @@ const DataGridStateContext = createContext<DataGridState<any>>({
   moveOver: () => {},
   moveDrop: () => {},
   moveEnd: () => {},
+  isFilterable: false,
 });
 
 const DataGridStateProvider = <T extends {}>({
   children,
-  isDraggable,
+  isReorderAllowed,
+  isReorderActive,
   dataSource,
   handleAfterMove,
   compareData,
+  isFilterable,
 }: PropsWithChildren<Props<T>>) => {
-  const state = useInitialDataGridState(isDraggable, dataSource, handleAfterMove, compareData);
+  const state = useInitialDataGridState(isReorderAllowed, dataSource, handleAfterMove, compareData, isFilterable, isReorderActive);
 
   return <DataGridStateContext.Provider value={state}>{children}</DataGridStateContext.Provider>;
 };

@@ -7,25 +7,31 @@ import {AfterMoveRowHandler, CompareRowDataHandler, DataGridStateProvider} from 
 import {Table, TableContainer} from '../layouts/tables';
 
 type Props<T> = {
-  isDraggable?: boolean;
+  isReorderAllowed?: boolean;
+  isReorderActive?: boolean;
   dataSource: T[];
   handleAfterMove: AfterMoveRowHandler<T>;
   compareData: CompareRowDataHandler<T>;
+  isFilterable?: boolean;
 };
 
 const DataGrid = <T extends {}>({
   children,
-  isDraggable,
+  isReorderAllowed,
+  isReorderActive,
   dataSource,
   handleAfterMove,
   compareData,
+  isFilterable,
 }: PropsWithChildren<Props<T>>) => {
   return (
     <DataGridStateProvider
-      isDraggable={isDraggable || false}
+      isReorderAllowed={isReorderAllowed || false}
+      isReorderActive={isReorderActive || false}
       dataSource={dataSource}
       handleAfterMove={handleAfterMove}
       compareData={compareData}
+      isFilterable={isFilterable === true}
     >
       <TableContainer>
         <Table>{children}</Table>

@@ -15,6 +15,7 @@ const Container = styled.div`
   top: 0;
   height: 44px;
   flex: 1;
+  z-index: 1;
 `;
 
 const SearchContainer = styled.div`

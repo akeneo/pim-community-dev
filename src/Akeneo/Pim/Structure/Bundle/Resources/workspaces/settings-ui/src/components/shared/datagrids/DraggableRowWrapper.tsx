@@ -18,14 +18,14 @@ const DraggableRowWrapper = <T extends {}>({
   rowRef,
   handleDrop,
 }: PropsWithChildren<Props<T>>) => {
-  const {isDraggable, moveOver, moveStart, moveDrop, moveEnd} = useDataGridState();
+  const {isReorderAllowed, moveOver, moveStart, moveDrop, moveEnd, isReorderActive} = useDataGridState();
 
   return (
     <>
-      {isDraggable && (
+      {isReorderAllowed && (
         <TableCell
-          width={40}
-          isDraggable={true}
+          isDraggable={isReorderAllowed}
+          isActive={isReorderActive}
           onDragStart={event => {
             moveStart(event, data, index, rowRef.current);
           }}
@@ -38,6 +38,7 @@ const DraggableRowWrapper = <T extends {}>({
           onDragEnd={event => {
             moveEnd(event, handleDrop);
           }}
+          style={{lineHeight: '10px'}}
         >
           <MoveIcon />
         </TableCell>
