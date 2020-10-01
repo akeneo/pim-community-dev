@@ -1,13 +1,17 @@
 import React from 'react';
+import {IconProps} from './IconProps';
 
-const DangerIcon = ({title = 'Warning', width = 24, height = 24, color = 'currentColor'}) => (
-  <svg width={width} height={height} viewBox="0 0 24 24">
-    <title>{title}</title>
-    <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" strokeLinecap="round" strokeLinejoin="round">
-      <g stroke={color}>
-        <path d="M13.7888544,3.57770876 L20.5527864,17.1055728 C21.0467649,18.0935298 20.6463162,19.2948759 19.6583592,19.7888544 C19.3806483,19.9277098 19.0744222,20 18.763932,20 L5.23606798,20 C4.13149848,20 3.23606798,19.1045695 3.23606798,18 C3.23606798,17.6895098 3.30835816,17.3832837 3.4472136,17.1055728 L10.2111456,3.57770876 C10.7051241,2.58975177 11.9064702,2.18930308 12.8944272,2.68328157 C13.281482,2.87680898 13.595327,3.19065396 13.7888544,3.57770876 Z M12.0002191,6.5 L12,13.5 M12.0002191,16 L12,17" />
-      </g>
-    </g>
+const DangerIcon = ({title, size = 24, color = 'currentColor', ...props}: IconProps) => (
+  <svg viewBox="0 0 24 24" width={size} height={size} {...props}>
+    {title && <title>{title}</title>}
+    <path
+      d="M13.789 3.578l6.764 13.528A2 2 0 0118.763 20H5.237a2 2 0 01-1.789-2.894l6.764-13.528a2 2 0 013.578 0zM12 6.5v7m0 2.5v1"
+      stroke={color}
+      fill="none"
+      fillRule="evenodd"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 );
 
