@@ -42,7 +42,7 @@ To fix this problem we decided to only check them on the CI and ease the way to 
 
 ### Show your work
 
-If everything went right the github action deploy the storybook to the github page of the eternal repository in a subfolder (the pull request id is used as folder name). A comment is then added to the pull request with a link to the staging environment.
+If everything went right, the Github action deploy the storybook to the Github page of the external repository in a subfolder (the pull request id is used as folder name). A comment is then added to the pull request with a link to the staging environment.
 
 ## On pull request merge
 
