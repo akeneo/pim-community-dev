@@ -24,7 +24,7 @@ jobs:
       - name: Generate a dummy component to test it with the others
         run: cd akeneo-design-system && ./bin/dsm generate Dummy
 
-      - name: Try to build the lib to make sure that it's buildable
+      - name: Make sure the lib build is successful
         run: cd akeneo-design-system && yarn lib:build
 
       - name: Launch lint checks
@@ -39,7 +39,7 @@ jobs:
 
       # To check if the build is working, the directory `example` contains an integration of the lib
       # with a few tests. In the next step we will build this example and validate that it's working properly
-      - name: Install example project node modules
+      - name: Install example project dependencies
         run: cd akeneo-design-system/example && yarn install
 
       - name: Launch example integration tests
@@ -63,7 +63,7 @@ jobs:
         # Here we add a "|| true" to the find command to avoid it to fail for no reason.
         run: cd akeneo-design-system && find . -name '*__image_snapshots__*'  -exec rm -rf {} \; || true && yarn test:visual:update
 
-      - name: Get the current branch name to expose it to next steps
+      - name: Get the current branch name to expose it later on
         uses: mdecoleman/pr-branch-name@1.0.0
         if: failure() && steps.visual_test_execution.outcome == 'failure'
         id: extract_branch

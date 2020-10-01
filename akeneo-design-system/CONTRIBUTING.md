@@ -1,6 +1,6 @@
 # Contributing
 
-As this design system will be used among multiple products and multiple teams, we prefer consistency above all. So the best way to know how to do something new could be to look around.
+As this design system will be used among multiple products and multiple teams, we prefer consistency above all. So the best way to know how to do something new is to look around.
 
 ## Adding a new component
 
@@ -9,7 +9,7 @@ Before adding a new component, please see if the component does not already exis
 
 - Create a branch (`git checkout -b branch_name`)
 - Create a new file related to your component `src/components/ComponentName/ComponentName.tsx`
-  - First of all define all properties that your component need to work, then type them the most strongly possible
+  - First of all define all properties that your component needs to work, then use typescript types to type them the most strongly possible
   - Add comment on all your properties (those comments will be displayed in Storybook)
   - Write related logic of the component
   - Add style in your component with [styled components](https://styled-components.com/docs).
