@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "08ed062abc1cfc9cc4ced1cdefeb7382",
+    "content-hash": "5f5f675e6ca77b9dcb7db45031ecae18",
     "packages": [
         {
             "name": "ass/xmlsecurity",
@@ -2198,23 +2198,23 @@
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "v1.3.1",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "a59da6cf61d80060647ff4d3eb2c03a2bc694646"
+                "reference": "60d379c243457e073cff02bc323a2a86cb355631"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/a59da6cf61d80060647ff4d3eb2c03a2bc694646",
-                "reference": "a59da6cf61d80060647ff4d3eb2c03a2bc694646",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/60d379c243457e073cff02bc323a2a86cb355631",
+                "reference": "60d379c243457e073cff02bc323a2a86cb355631",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.0"
+                "php": ">=5.5"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.0"
+                "symfony/phpunit-bridge": "^4.4 || ^5.1"
             },
             "type": "library",
             "extra": {
@@ -2245,20 +2245,20 @@
             "keywords": [
                 "promise"
             ],
-            "time": "2016-12-20T10:07:11+00:00"
+            "time": "2020-09-30T07:37:28+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.6.1",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "239400de7a173fe9901b9ac7c06497751f00727a"
+                "reference": "53330f47520498c0ae1f61f7e2c90f55690c06a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/239400de7a173fe9901b9ac7c06497751f00727a",
-                "reference": "239400de7a173fe9901b9ac7c06497751f00727a",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/53330f47520498c0ae1f61f7e2c90f55690c06a3",
+                "reference": "53330f47520498c0ae1f61f7e2c90f55690c06a3",
                 "shasum": ""
             },
             "require": {
@@ -2271,15 +2271,15 @@
             },
             "require-dev": {
                 "ext-zlib": "*",
-                "phpunit/phpunit": "~4.8.36 || ^5.7.27 || ^6.5.8"
+                "phpunit/phpunit": "~4.8.36 || ^5.7.27 || ^6.5.14 || ^7.5.20 || ^8.5.8 || ^9.3.10"
             },
             "suggest": {
-                "zendframework/zend-httphandlerrunner": "Emit PSR-7 responses"
+                "laminas/laminas-httphandlerrunner": "Emit PSR-7 responses"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.6-dev"
+                    "dev-master": "1.7-dev"
                 }
             },
             "autoload": {
@@ -2316,7 +2316,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2019-07-01T23:21:34+00:00"
+            "time": "2020-09-30T07:37:11+00:00"
         },
         {
             "name": "guzzlehttp/ringphp",
@@ -9476,16 +9476,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.155.4",
+            "version": "3.158.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "892ec081f4466ea023d6158d78b6a8b82d38c9ae"
+                "reference": "59345aa45161a8f83c3a0027a7df9567ae72cc85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/892ec081f4466ea023d6158d78b6a8b82d38c9ae",
-                "reference": "892ec081f4466ea023d6158d78b6a8b82d38c9ae",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/59345aa45161a8f83c3a0027a7df9567ae72cc85",
+                "reference": "59345aa45161a8f83c3a0027a7df9567ae72cc85",
                 "shasum": ""
             },
             "require": {
@@ -9557,7 +9557,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2020-09-28T18:13:43+00:00"
+            "time": "2020-10-01T18:41:53+00:00"
         },
         {
             "name": "behat/behat",
@@ -11430,16 +11430,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.47",
+            "version": "0.12.48",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "74325a6ae15378db0df71b969ded245378d2e058"
+                "reference": "d364cfbac9ffd869570cdfea7eaa6541c3dac666"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/74325a6ae15378db0df71b969ded245378d2e058",
-                "reference": "74325a6ae15378db0df71b969ded245378d2e058",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/d364cfbac9ffd869570cdfea7eaa6541c3dac666",
+                "reference": "d364cfbac9ffd869570cdfea7eaa6541c3dac666",
                 "shasum": ""
             },
             "require": {
@@ -11482,20 +11482,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-09-29T13:35:39+00:00"
+            "time": "2020-10-01T13:20:16+00:00"
         },
         {
             "name": "phpstan/phpstan-symfony",
-            "version": "0.12.7",
+            "version": "0.12.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-symfony.git",
-                "reference": "86bb993d4f343fd6ee5570633d3fbd08b4d4bc4a"
+                "reference": "34a3af9b797a6f7c2feaafc58adcf68a584e48ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-symfony/zipball/86bb993d4f343fd6ee5570633d3fbd08b4d4bc4a",
-                "reference": "86bb993d4f343fd6ee5570633d3fbd08b4d4bc4a",
+                "url": "https://api.github.com/repos/phpstan/phpstan-symfony/zipball/34a3af9b797a6f7c2feaafc58adcf68a584e48ee",
+                "reference": "34a3af9b797a6f7c2feaafc58adcf68a584e48ee",
                 "shasum": ""
             },
             "require": {
@@ -11552,7 +11552,7 @@
                 }
             ],
             "description": "Symfony Framework extensions and rules for PHPStan",
-            "time": "2020-07-21T14:56:43+00:00"
+            "time": "2020-10-01T11:10:28+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",

@@ -171,5 +171,10 @@
         "akeneo/measure-bundle": "0.6.0-dev",
         "akeneo/batch-bundle": "0.6.0-dev"
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "extra": {
+        "symfony": {
+            "require": "4.4.14"
+        }
+    }
 }
