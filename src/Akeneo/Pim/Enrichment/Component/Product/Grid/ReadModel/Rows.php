@@ -22,8 +22,7 @@ final class Rows
     /** @var int|null */
     private $productModelCount;
 
-    /** TODO: $productCount and $productModelCount can be null? */
-    public function __construct(array $rows, int $totalCount, int $productCount = null, int $productModelCount= null)
+    public function __construct(array $rows, int $totalCount, ?int $productCount, ?int $productModelCount)
     {
         $this->rows = $rows;
         $this->totalCount = $totalCount;

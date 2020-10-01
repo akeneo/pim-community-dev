@@ -2,16 +2,13 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Aggregation;
+
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Result;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ResultInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -20,20 +17,22 @@ namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Aggregation;
  */
 final class ProductAndProductsModelDocumentTypeFacetFactory
 {
-    public function build(array $queryResult): Aggregation
+    public function build(ResultInterface $result): ?Facet
     {
-        $aggregation = new Aggregation(ProductAndProductsModelDocumentTypeFacetQuery::NAME);
+        Assert::isInstanceOf($result, Result::class);
 
-        $aggregations = $queryResult['aggregations'] ?? [];
+        $rawResult = $result->getRawResult();
+        $aggregations = $rawResult['aggregations'] ?? [];
         $documentTypeAggregation = $aggregations[ProductAndProductsModelDocumentTypeFacetQuery::NAME] ?? null;
         if (!is_array($documentTypeAggregation)) {
-            return $aggregation;
+            return null;
         }
 
+        $facet = new Facet(ProductAndProductsModelDocumentTypeFacetQuery::NAME);
         foreach ($documentTypeAggregation['buckets'] ?? [] as $bucket) {
-            $aggregation->addBucket($bucket['key'], $bucket['doc_count']);
+            $facet->addFacetItem($bucket['key'], $bucket['doc_count']);
         }
 
-        return $aggregation;
+        return $facet;
     }
 }

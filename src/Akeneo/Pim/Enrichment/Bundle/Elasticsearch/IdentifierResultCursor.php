@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Aggregation\Aggregation;
-use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ResultInterface;
 
 /**
  * This cursor does not iterate through pages in Elasticsearch, because it's not needed for the datagrid or the API for example.
@@ -13,7 +12,7 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class IdentifierResultCursor implements CursorInterface
+class IdentifierResultCursor implements IdentifierResultCursorInterface
 {
     /** @var \ArrayIterator */
     private $identifiers;
@@ -21,14 +20,14 @@ class IdentifierResultCursor implements CursorInterface
     /** @var int */
     private $totalCount;
 
-    /** @var Aggregation|null */
-    private $documentTypeAggregation;
+    /** @var Result|null */
+    private $result;
 
-    public function __construct(array $identifiers, int $totalCount, Aggregation $documentTypeAggregation = null)
+    public function __construct(array $identifiers, int $totalCount, ?Result $result)
     {
         $this->identifiers = new \ArrayIterator($identifiers);
         $this->totalCount = $totalCount;
-        $this->documentTypeAggregation = $documentTypeAggregation;
+        $this->result = $result;
     }
 
     /**
@@ -79,8 +78,11 @@ class IdentifierResultCursor implements CursorInterface
         return $this->identifiers->valid();
     }
 
-    public function getDocumentTypeAggregation(): ?Aggregation
+    /**
+     * {@inheritdoc}
+     */
+    public function getResult(): ResultInterface
     {
-        return $this->documentTypeAggregation;
+        return $this->result;
     }
 }

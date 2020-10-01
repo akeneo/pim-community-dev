@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Aggregation\ProductAndProductsModelDocumentTypeFacetFactory;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResultCursorInterface;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Rows;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -28,22 +31,21 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
     /** @var Query\AddAdditionalProductModelPropertiesRegistry */
     private $addAdditionalProductModelPropertiesRegistry;
 
-    /**
-     * @param Sql\ProductGrid\FetchProductRowsFromIdentifiers   $fetchProductRowsFromIdentifiers
-     * @param Sql\ProductGrid\FetchProductModelRowsFromCodes    $fetchProductModelRowsFromCodes
-     * @param Query\AddAdditionalProductPropertiesRegistry      $addAdditionalProductProperties
-     * @param Query\AddAdditionalProductModelPropertiesRegistry $addAdditionalProductModelProperties
-     */
+    /** @var ProductAndProductsModelDocumentTypeFacetFactory */
+    private $productAndProductsModelDocumentTypeFacetFactory;
+
     public function __construct(
         Sql\ProductGrid\FetchProductRowsFromIdentifiers $fetchProductRowsFromIdentifiers,
         Sql\ProductGrid\FetchProductModelRowsFromCodes $fetchProductModelRowsFromCodes,
         Query\AddAdditionalProductPropertiesRegistry $addAdditionalProductProperties,
-        Query\AddAdditionalProductModelPropertiesRegistry $addAdditionalProductModelProperties
+        Query\AddAdditionalProductModelPropertiesRegistry $addAdditionalProductModelProperties,
+        ProductAndProductsModelDocumentTypeFacetFactory $productAndProductsModelDocumentTypeFacetFactory
     ) {
         $this->fetchProductRowsFromIdentifiers = $fetchProductRowsFromIdentifiers;
         $this->fetchProductModelRowsFromCodes = $fetchProductModelRowsFromCodes;
         $this->addAdditionalProductPropertiesRegistry = $addAdditionalProductProperties;
         $this->addAdditionalProductModelPropertiesRegistry = $addAdditionalProductModelProperties;
+        $this->productAndProductsModelDocumentTypeFacetFactory = $productAndProductsModelDocumentTypeFacetFactory;
     }
 
     /**
@@ -52,6 +54,7 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
     public function __invoke(Query\FetchProductAndProductModelRowsParameters $queryParameters): Rows
     {
         $productAndProductModelIdentifiersCursor = $queryParameters->productQueryBuilder()->execute();
+
         $identifiers = iterator_to_array($productAndProductModelIdentifiersCursor);
         $productIdentifiers = [];
         $productModelCodes = [];
@@ -90,17 +93,17 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
             }
         }
 
-        // @TODO: Temporary, it's for tests
-        $documentTypeAggregation = null;
-        if (method_exists($productAndProductModelIdentifiersCursor, 'getDocumentTypeAggregation')) {
-            $documentTypeAggregation = $productAndProductModelIdentifiersCursor->getDocumentTypeAggregation();
-        }
+        // @todo: assert or condition?
+        Assert::implementsInterface($productAndProductModelIdentifiersCursor, IdentifierResultCursorInterface::class);
+        $documentTypeFacet = $this->productAndProductsModelDocumentTypeFacetFactory->build(
+            $productAndProductModelIdentifiersCursor->getResult()
+        );
 
         return new Rows(
             $sortedRows,
             $productAndProductModelIdentifiersCursor->count(),
-            $documentTypeAggregation ? $documentTypeAggregation->getCountForKey(ProductInterface::class) : null,
-            $documentTypeAggregation ? $documentTypeAggregation->getCountForKey(ProductModelInterface::class) : null
+            $documentTypeFacet !== null ? $documentTypeFacet->getCountForKey(ProductInterface::class) : null,
+            $documentTypeFacet !== null ? $documentTypeFacet->getCountForKey(ProductModelInterface::class) : null
         );
     }
 }
