@@ -1,6 +1,6 @@
 # Contributing
 
-As this design system will be used among multiple products and multiple teams, we prefer consistency above all. So the best way to know how to do something new could be to look around.
+As this design system will be used among multiple products and multiple teams, we prefer consistency above all. So the best way to know how to do something new is to look around.
 
 ## Adding a new component
 
