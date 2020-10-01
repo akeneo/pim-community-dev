@@ -13,6 +13,7 @@ module.exports = {
   coveragePathIgnorePatterns: [
       'src/illustrations',
       'src/icons',
+      'src/theme',
       'src/storybook',
       'generator',
       'src/all.visual.tsx',
