@@ -5,6 +5,8 @@ import {AttributeGroup} from '../../../models';
 import {DataGrid} from '../../shared';
 import {ColumnLabel} from "./ColumnLabel";
 import {debounce} from 'lodash';
+import {SearchBar} from "@akeneo-pim-community/shared/src";
+import {NoSearchResult} from "./NoSearchResult";
 
 const FeatureFlags = require("pim/feature-flags");
 
@@ -38,53 +40,64 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups}) => {
     debouncedSearch(searchValue);
   };
 
+  if (searchString !== '' && filteredGroups.length === 0) {
+    return (
+      <>
+        <SearchBar count={filteredGroups.length} searchValue={searchString === undefined ? '' : searchString} onSearchChange={onSearch}/>
+        <NoSearchResult/>
+      </>
+    );
+  }
+
   return (
-    <DataGrid
-      isReorderAllowed={sortGranted}
-      isReorderActive={filteredGroups.length === groups.length}
-      dataSource={filteredGroups}
-      handleAfterMove={refreshOrder}
-      compareData={compare}
-      searchValue={searchString}
-      onSearch={onSearch}
-    >
-      <DataGrid.HeaderRow>
-        <DataGrid.Column>{translate('pim_enrich.entity.attribute_group.grid.columns.name')}</DataGrid.Column>
-        {
-          FeatureFlags.isEnabled('data_quality_insights') &&
-          <DataGrid.Column>{translate('akeneo_data_quality_insights.attribute_group.dqi_status')}</DataGrid.Column>
-        }
-      </DataGrid.HeaderRow>
-      <DataGrid.Body
-        onRowClick={(group: AttributeGroup) => {
-          if (editGranted) {
-            redirect(group);
-          }
-        }}
-        onRowMoveEnd={() => {
-          (async () => saveOrder())();
-        }}
+    <>
+      <SearchBar count={filteredGroups.length} searchValue={searchString === undefined ? '' : searchString} onSearchChange={onSearch}/>
+      <DataGrid
+        isReorderAllowed={sortGranted}
+        isReorderActive={filteredGroups.length === groups.length}
+        dataSource={filteredGroups}
+        handleAfterMove={refreshOrder}
+        compareData={compare}
+        isFilterable={true}
       >
-        {filteredGroups.map((group) => (
-          <DataGrid.Row
-            key={group.code}
-            data={group}
-          >
-            <DataGrid.Column>
-              <ColumnLabel>{getLabel(group)}</ColumnLabel>
-            </DataGrid.Column>
-            {
-              FeatureFlags.isEnabled('data_quality_insights') &&
-              <DataGrid.Column>
-              <span className={`AknDataQualityInsightsQualityBadge AknDataQualityInsightsQualityBadge--${group.isDqiActivated ? 'good' : 'to-improve'}`}>
-                {translate(`akeneo_data_quality_insights.attribute_group.${group.isDqiActivated ? 'activated' : 'disabled'}`)}
-              </span>
-              </DataGrid.Column>
+        <DataGrid.HeaderRow>
+          <DataGrid.Column>{translate('pim_enrich.entity.attribute_group.grid.columns.name')}</DataGrid.Column>
+          {
+            FeatureFlags.isEnabled('data_quality_insights') &&
+            <DataGrid.Column>{translate('akeneo_data_quality_insights.attribute_group.dqi_status')}</DataGrid.Column>
+          }
+        </DataGrid.HeaderRow>
+        <DataGrid.Body
+          onRowClick={(group: AttributeGroup) => {
+            if (editGranted) {
+              redirect(group);
             }
-          </DataGrid.Row>
-        ))}
-      </DataGrid.Body>
-    </DataGrid>
+          }}
+          onRowMoveEnd={() => {
+            (async () => saveOrder())();
+          }}
+        >
+          {filteredGroups.map((group) => (
+            <DataGrid.Row
+              key={group.code}
+              data={group}
+            >
+              <DataGrid.Column>
+                <ColumnLabel>{getLabel(group)}</ColumnLabel>
+              </DataGrid.Column>
+              {
+                FeatureFlags.isEnabled('data_quality_insights') &&
+                <DataGrid.Column>
+                <span className={`AknDataQualityInsightsQualityBadge AknDataQualityInsightsQualityBadge--${group.isDqiActivated ? 'good' : 'to-improve'}`}>
+                  {translate(`akeneo_data_quality_insights.attribute_group.${group.isDqiActivated ? 'activated' : 'disabled'}`)}
+                </span>
+                </DataGrid.Column>
+              }
+            </DataGrid.Row>
+          ))}
+        </DataGrid.Body>
+      </DataGrid>
+    </>
   );
 };
 

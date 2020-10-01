@@ -5,7 +5,6 @@ import {HeaderRow} from './HeaderRow';
 import {Row} from './Row';
 import {AfterMoveRowHandler, CompareRowDataHandler, DataGridStateProvider} from '../providers';
 import {Table, TableContainer} from '../layouts/tables';
-import {SearchBar} from '@akeneo-pim-community/shared/src';
 
 type Props<T> = {
   isReorderAllowed?: boolean;
@@ -13,8 +12,7 @@ type Props<T> = {
   dataSource: T[];
   handleAfterMove: AfterMoveRowHandler<T>;
   compareData: CompareRowDataHandler<T>;
-  searchValue?: string;
-  onSearch?: (searchValue: string) => void;
+  isFilterable?: boolean;
 };
 
 const DataGrid = <T extends {}>({
@@ -24,8 +22,7 @@ const DataGrid = <T extends {}>({
   dataSource,
   handleAfterMove,
   compareData,
-  searchValue,
-  onSearch,
+  isFilterable,
 }: PropsWithChildren<Props<T>>) => {
   return (
     <DataGridStateProvider
@@ -34,13 +31,9 @@ const DataGrid = <T extends {}>({
       dataSource={dataSource}
       handleAfterMove={handleAfterMove}
       compareData={compareData}
-      isFilterable={onSearch !== undefined}
+      isFilterable={isFilterable === true}
     >
       <TableContainer>
-        {
-          onSearch !== undefined &&
-          <SearchBar count={dataSource.length} searchValue={searchValue === undefined ? '' : searchValue} onSearchChange={onSearch}/>
-        }
         <Table>{children}</Table>
       </TableContainer>
     </DataGridStateProvider>

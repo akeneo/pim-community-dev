@@ -21,10 +21,11 @@ const notFilterableMixin = css`
 const TableHeadCell = styled.th<Props>`
   text-align: left;
   font-weight: normal;
-  height: calc(44px + 15px);
+  height: calc(44px + 20px);
   box-shadow: 0 1px 0 ${({theme}) => theme.color.grey120};
   background: ${({theme}) => theme.color.white};
-  padding-top: 15px;
+  padding-top: 25px;
+  z-index: 1;
 
   ${props => (props.isFilterable ? filterableMixin : notFilterableMixin)} {
     padding-left: 10px;

@@ -24,7 +24,6 @@ const DraggableRowWrapper = <T extends {}>({
     <>
       {isReorderAllowed && (
         <TableCell
-          width={40}
           isDraggable={isReorderAllowed}
           isActive={isReorderActive}
           onDragStart={event => {
