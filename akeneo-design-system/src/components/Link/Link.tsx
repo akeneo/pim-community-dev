@@ -50,6 +50,7 @@ type LinkProps = {
   href?: string;
 } & React.AnchorHTMLAttributes<HTMLAnchorElement>;
 
+/** Link redirect user to another page */
 const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
   (
     {disabled = false, target = '_self', href, children, ...rest}: LinkProps,

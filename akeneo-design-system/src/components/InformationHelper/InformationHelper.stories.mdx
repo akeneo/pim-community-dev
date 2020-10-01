@@ -1,5 +1,6 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
-import {InformationHelper, HelperTitle} from './InformationHelper';
+import LinkTo from '@storybook/addon-links/react';
+import {InformationHelper, HighlightTitle} from './InformationHelper';
 import {Link} from '../Link/Link';
 import {UsersIllustration} from '../../illustrations';
 import * as Illustrations from '../../illustrations';
@@ -13,12 +14,14 @@ export const illustrationNames = Object.keys(Illustrations).reduce((accumulator,
   title="Components/InformationHelper"
   component={InformationHelper}
   argTypes={{
-    children: {control: {type: 'text'}},
-    illustration: {control: {type: 'select', 'options': {...illustrationNames}}}
+    illustration: {control: {type: 'select', 'options': {...illustrationNames}}},
+    title: {control: {type: 'text'}},
+    children: {control: {type: 'text'}}
   }}
   args={{
-    children: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    illustration: 'UsersIllustration'
+    illustration: 'UsersIllustration',
+    title: 'Lorem ipsum.',
+    children: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
   }}
 />
 
@@ -47,20 +50,27 @@ Use this playground to test the helper component
 
 <ArgsTable story="Standard" />
 
-## Composition with title and link
-Generally InformationHelper are composed of title and link
+## Composition
+Generally InformationHelper contain also link.
+Title can also be composed of highlight.
 
 <Canvas>
   <Story name="Composition">
     {(args) => {
+      const title = (<>Lorem ipsum <HighlightTitle>dolor</HighlightTitle> sit amet</>)
       return (
-        <InformationHelper illustration={<UsersIllustration/>}>
-          <HelperTitle>Lorem ipsum</HelperTitle>
+        <InformationHelper title={title} illustration={<UsersIllustration/>}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          <br/>
-          <Link href="https://www.akeneo.com/">Link to related lorem ipsum</Link>
+          <Link target="_blank" href="https://www.akeneo.com/">Link to related lorem ipsum</Link>
         </InformationHelper>
       );
     }}
   </Story>
 </Canvas>
+
+## Related components
+<ul>
+  <li><LinkTo kind="Components/Helper" story="Standard">Helper</LinkTo></li>
+  <li><LinkTo kind="Components/InlineHelper" story="Standard">InlineHelper</LinkTo></li>
+  <li><LinkTo kind="Components/Link" story="Standard">Link</LinkTo></li>
+</ul>
