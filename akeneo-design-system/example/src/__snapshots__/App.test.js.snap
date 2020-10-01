@@ -16,7 +16,6 @@ exports[`renders the expected elements 1`] = `
         width="24"
       >
         <path
-          class=""
           d="M1.7 8l4.1 4 8-8"
           fill="none"
           stroke="currentColor"
