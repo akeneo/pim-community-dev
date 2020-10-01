@@ -38,7 +38,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $webhookUserAuthenticator,
             $client,
             $builder,
-            new NullLogger()
+            new NullLogger(),
+            'staging.akeneo.com'
         );
     }
 
@@ -60,10 +61,12 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $selectActiveWebhooksQuery->execute()->willReturn([$webhook]);
 
         $webhookUserAuthenticator->authenticate(0)->shouldBeCalled();
-        $builder->build($businessEvent)->willReturn(new WebhookEvent(
+        $builder->build($businessEvent, ['pim_source' => 'staging.akeneo.com'])->willReturn(new WebhookEvent(
             'product.created',
             '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
             '2020-01-01T00:00:00+00:00',
+            'julia',
+            'staging.akeneo.com',
             ['data']
         ));
 
@@ -79,6 +82,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                 'action' => 'product.created',
                 'event_id' => '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
                 'event_date' => '2020-01-01T00:00:00+00:00',
+                'author' => 'julia',
+                'pim_source' => 'staging.akeneo.com',
                 'data' => ['data']
             ], $requests[0]->content());
 
@@ -117,7 +122,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $selectActiveWebhooksQuery->execute()->willReturn([$webhook]);
 
         $webhookUserAuthenticator->authenticate(0)->shouldBeCalled();
-        $builder->build($businessEvent)->willThrow(\Exception::class);
+        $builder->build($businessEvent, ['pim_source' => 'staging.akeneo.com'])->willThrow(\Exception::class);
 
         $client->bulkSend(Argument::that(function (iterable $iterable) {
             $requests = iterator_to_array($iterable);

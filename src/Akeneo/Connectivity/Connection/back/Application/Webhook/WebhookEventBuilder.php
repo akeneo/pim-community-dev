@@ -27,12 +27,24 @@ class WebhookEventBuilder
         $this->builders = $builders;
     }
 
-    public function build(BusinessEventInterface $businessEvent): WebhookEvent
+    /**
+     * @param array<mixed> $context
+     */
+    public function build(BusinessEventInterface $businessEvent, array $context = []): WebhookEvent
     {
+        if (!array_key_exists(
+                'pim_source',
+                $context
+            ) || null === $context['pim_source'] || '' === $context['pim_source']) {
+            throw new \InvalidArgumentException("Context property 'pim_source' is mandatory");
+        }
+
         return new WebhookEvent(
             $businessEvent->name(),
             $businessEvent->uuid(),
             date(\DateTimeInterface::ATOM, $businessEvent->timestamp()),
+            $businessEvent->author(),
+            $context['pim_source'],
             $this->buildEventData($businessEvent)
         );
     }

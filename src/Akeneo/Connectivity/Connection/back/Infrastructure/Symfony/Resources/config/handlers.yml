@@ -99,6 +99,7 @@ services:
             - '@akeneo_connectivity.connection.webhook.webhook_client'
             - '@akeneo_connectivity.connection.webhook.webhook_event_builder'
             - '@logger'
+            - '%env(AKENEO_PIM_URL)%'
 
     akeneo_connectivity.connection.application.webhook.handler.update_connection_webhook:
         class: Akeneo\Connectivity\Connection\Application\Webhook\Command\UpdateWebhookHandler
