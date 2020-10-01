@@ -47,7 +47,7 @@ If everything went right, the Github action deploy the storybook to the Github p
 ## On pull request merge
 
 After a pull request has been accepted and merged, we want to expose the new changes to external Akeneo products. To do so, we extract the `akeneo-design-system` subfolder from `pim-community-dev` to its dedicated [external repository](https://github.com/akeneo/akeneo-design-system).
-This workflow is located in the [.github/workflows/dsm-extract.yml](https://github.com/akeneo/pim-community-dev/blob/master/.github/workflows/dsm-extract.yml) file. We will go over the important steps of this document but if you want to dive deeper, you can read it as it's self documented.
+This workflow is located in the [.github/workflows/dsm-extract.yml](https://github.com/akeneo/pim-community-dev/blob/master/.github/workflows/dsm-extract.yml) file. We will go over the important steps of this document but if you want to dive deeper, you can read it as it's self-documented.
 
 ### Workflow
 
