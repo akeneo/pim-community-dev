@@ -25,7 +25,7 @@ When adding a new component or improving an existing one, we want to make sure t
 
 All those tests are launched by the github action located in the [.github/workflows/dsm-test.yml](https://github.com/akeneo/pim-community-dev/blob/master/.github/workflows/dsm-test.yml) file on the pim-community-dev repository. We will go over the important steps of this document but if you want to dive deeper, you can read it as it's self-documented.
 
-This workflow launches on every pull requests targeting master with file modifications on the `akeneo-design-system` folder.
+This workflow launches on every pull requests targeting master with file modifications happening in the `akeneo-design-system` folder.
 
 We start by preparing the build environments (checkout branch, node version), generate a Dummy component to test it and then launch all test suites (lint, unit and visual regression tests). We then build the example integration project to check that the lib works well in a "real" project.
 
