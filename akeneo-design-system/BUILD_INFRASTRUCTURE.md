@@ -10,7 +10,6 @@ One of the main pain point when contributing is often not related to the code ch
 - review the changes
 - build the project
 - publish it
-- ...
 
 In this document we will exlain how we automated those tasks to empower you to maintain and improve the system.
 
