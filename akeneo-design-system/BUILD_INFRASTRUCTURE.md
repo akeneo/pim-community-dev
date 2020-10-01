@@ -66,7 +66,7 @@ Once the akeneo design system has been extracted to the external repository we s
 
 ### Deploy storybook
 
-The deploy workflow is localted in the [akeneo-design-system/.github/workflows/deploy.yml](https://github.com/akeneo/pim-community-dev/blob/master/akeneo-design-system/.github/workflows/deploy.yml). It's a github action building the lib and pushing it to the gh-pages branch.
+The deploy workflow is located in the [akeneo-design-system/.github/workflows/deploy.yml](https://github.com/akeneo/pim-community-dev/blob/master/akeneo-design-system/.github/workflows/deploy.yml) file. It's a Github action building the lib and pushing it to the `gh-pages` branch.
 
 ### Tag and release
 
