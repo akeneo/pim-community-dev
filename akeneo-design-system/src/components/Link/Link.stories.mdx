@@ -9,7 +9,8 @@ import {useArgs, updateArgs} from '@storybook/client-api';
   argTypes={{
     disabled: {control: {type: 'boolean'}},
     href: {control: {type: 'text'}},
-    target: {control: {type: 'select', options: ['default', '_blank', '_self', '_parent', '_top']}}
+    target: {control: {type: 'select', options: ['_blank', '_self', '_parent', '_top']}},
+    children: {control: {type: 'text'}}
   }}
   args={{
     children: 'Link',
@@ -42,7 +43,7 @@ Use this playground to test the link component
 
 ## Variation on status
 <Canvas>
-  <Story name="level">
+  <Story name="Level">
       {(args) => {
           return (
               <>
