@@ -48,11 +48,11 @@ export const EditForm: FC<Props> = ({webhook}: Props) => {
                         name='url'
                         defaultValue={getValues('url')}
                         ref={register({
-                        required: {
-                            value: getValues('enabled'),
-                            message: 'akeneo_connectivity.connection.webhook.error.required',
-                        },
-                    })}
+                            required: {
+                                value: getValues('enabled'),
+                                message: 'akeneo_connectivity.connection.webhook.error.required',
+                            },
+                        })}
                     />
                     <TestUrlButton onClick={handleTestUrl} />
                 </>
