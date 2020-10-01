@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Aggregation\ProductAndProductsModelDocumentTypeFacetFactory;
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResultCursorInterface;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\CursorWithResultInterface;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Rows;
@@ -94,7 +94,7 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
         }
 
         // @todo: assert or condition?
-        Assert::implementsInterface($productAndProductModelIdentifiersCursor, IdentifierResultCursorInterface::class);
+        Assert::implementsInterface($productAndProductModelIdentifiersCursor, CursorWithResultInterface::class);
         $documentTypeFacet = $this->productAndProductsModelDocumentTypeFacetFactory->build(
             $productAndProductModelIdentifiersCursor->getResult()
         );

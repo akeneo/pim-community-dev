@@ -12,7 +12,7 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface IdentifierResultCursorInterface extends CursorInterface
+interface CursorWithResultInterface extends CursorInterface
 {
     public function getResult(): ResultInterface;
 }
