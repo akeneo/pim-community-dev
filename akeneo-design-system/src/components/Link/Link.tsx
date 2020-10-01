@@ -15,13 +15,14 @@ const LinkContainer = styled.a<{disabled: boolean} & AkeneoThemedProps>`
         color: ${getColor('purple120')};
       }
 
-      &:focus {
+      &:focus:not(:active) {
         border-radius: 0px;
         box-shadow: 0px 0px 0px 2px rgba(74, 144, 226, 0.3);
         outline: none;
       }
 
       &:active {
+        outline: none;
         color: ${getColor('purple140')};
       }
     `};
