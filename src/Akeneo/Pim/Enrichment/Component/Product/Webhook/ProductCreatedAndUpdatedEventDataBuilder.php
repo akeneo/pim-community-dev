@@ -52,7 +52,7 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
         }
 
         return [
-            'resource' => $this->externalApiNormalizer->normalize($product, 'external_api')
+            'resource' => $this->externalApiNormalizer->normalize($product, 'external_api'),
         ];
     }
 }
