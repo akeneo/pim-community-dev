@@ -10,6 +10,7 @@ use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\WebhookLoader
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\MessageHandler\BusinessEventHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
@@ -92,6 +93,34 @@ class ConsumeBusinessEventEndToEnd extends ApiTestCase
         $handlerStack->push($history);
 
         $message = new ProductUpdated(
+            'ecommerce',
+            $this->normalizer->normalize($product, 'standard')
+        );
+
+        /** @var $businessEventHandler BusinessEventHandler */
+        $businessEventHandler = $this->get(BusinessEventHandler::class);
+        $businessEventHandler->__invoke($message);
+
+        $this->assertCount(1, $container);
+    }
+
+    public function test_it_sends_a_product_removed_webhook_event()
+    {
+        $connection = $this->connectionLoader->createConnection('ecommerce', 'Ecommerce', FlowType::DATA_DESTINATION, false);
+        $this->webhookLoader->initWebhook($connection->code());
+        $product = $this->productLoader->create('product_to_remove_test', []);
+
+        /** @var HandlerStack $handlerStack*/
+        $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
+        $handlerStack->setHandler(new MockHandler([
+            new Response(200),
+        ]));
+
+        $container = [];
+        $history = Middleware::history($container);
+        $handlerStack->push($history);
+
+        $message = new ProductRemoved(
             'ecommerce',
             $this->normalizer->normalize($product, 'standard')
         );
