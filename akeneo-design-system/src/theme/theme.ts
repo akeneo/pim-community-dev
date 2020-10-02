@@ -38,6 +38,7 @@ type Color = {
   purple40: string;
   purple60: string;
   purple80: string;
+  red10: string;
   red100: string;
   red120: string;
   red140: string;
@@ -46,6 +47,7 @@ type Color = {
   red60: string;
   red80: string;
   white: string;
+  yellow10: string;
   yellow100: string;
   yellow120: string;
   yellow140: string;
@@ -79,6 +81,10 @@ const getColorForLevel = (level: Level, gradient: number): ((props: AkeneoThemed
   return theme.color[`${theme.palette[level]}${gradient}`] as string;
 };
 
+const getBrandColor = (): ((props: AkeneoThemedProps) => string) => ({theme}: AkeneoThemedProps): string => {
+  return theme.palette.brand;
+};
+
 const getFontSize = (fontSize: string): ((props: AkeneoThemedProps) => string) => ({
   theme,
 }: AkeneoThemedProps): string => {
@@ -87,4 +93,4 @@ const getFontSize = (fontSize: string): ((props: AkeneoThemedProps) => string) =
 
 export type AkeneoThemedProps<P = Record<string, unknown>> = ThemedStyledProps<P, Theme>;
 export type {Theme, FontSize, Color, Level};
-export {getColor, getColorForLevel, getFontSize};
+export {getColor, getBrandColor, getColorForLevel, getFontSize};

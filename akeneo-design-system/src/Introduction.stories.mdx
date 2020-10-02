@@ -5,7 +5,7 @@ import * as Components from './components';
 <!-- If for some reason (not relevant, too small) you do not want your component
 to be featured on the Introduction Story, add its name to this list -->
 
-export const COMPONENTS_EXCLUDE = ['CardGrid'];
+export const COMPONENTS_EXCLUDE = ['CardGrid', 'HighlightTitle'];
 
 <Meta title="Introduction" />
 
@@ -145,7 +145,7 @@ export const COMPONENTS_EXCLUDE = ['CardGrid'];
         <div
           class="link-icon"
           style={{
-            backgroundImage: `url("./all-visual-tsx-visual-tests-renders-components-${componentName.toLowerCase()}-standard-correctly-1-snap.png")`,
+            backgroundImage: `url("./all-visual-tsx-visual-tests-renders-components-${componentName.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()}-standard-correctly-1-snap.png")`,
           }}
         ></div>
         <span>
