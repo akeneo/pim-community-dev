@@ -22,7 +22,7 @@ class DqiDashboardController extends BaseController {
   public renderForm() {
     return $.when(
       FormBuilder.build('akeneo-data-quality-insights-dqi-dashboard-index')
-    ).then((form: any, data = []) => {
+    ).then((form: any) => {
       form.setElement(this.$el).render();
       return form;
     });

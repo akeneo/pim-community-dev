@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9488: Fix not used variable during webpack run
+
 # 4.0.60 (2020-09-30)
 
 - PIM-9467: Check for asset family existence is now case sensitive
