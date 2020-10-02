@@ -98,7 +98,7 @@ type HelperProps = {
   inline?: boolean;
 
   /**
-   * Level of the helper defining it's color and icon.
+   * Level of the helper defining its color and icon.
    */
   level: Level;
 
@@ -116,7 +116,7 @@ const Helper = React.forwardRef<HTMLDivElement, HelperProps>(
         <IconContainer inline={inline} level={level}>
           {getIcon(level, inline)}
         </IconContainer>
-        <div>{children}</div>
+        {children}
       </Container>
     );
   }
