@@ -9,5 +9,8 @@
     "prettier": "prettier --config .prettierrc --write \"./{src,__tests__}/**/*.{ts,tsx}\"",
     "prettier-check": "prettier --check \"./src/**/*.{ts,tsx}\" --config .prettierrc"
   },
-  "private": true
+  "private": true,
+  "dependencies": {
+    "core-js": "^3.6.5"
+  }
 }

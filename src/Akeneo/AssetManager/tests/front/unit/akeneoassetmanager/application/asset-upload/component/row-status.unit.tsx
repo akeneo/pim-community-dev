@@ -126,9 +126,9 @@ describe('Test row-status component', () => {
     });
 
     const progressBar = getByTitle(container, 'pim_asset_manager.asset.upload.status.' + status);
-    const style = window.getComputedStyle(progressBar);
+
     expect(progressBar).not.toBeNull();
-    expect(style.width).toEqual('40%');
+    expect(progressBar.getAttribute('width')).toEqual('40');
   });
 
   test('It renders the UploadInProgress progress bar even with a progress too low', async () => {
@@ -144,9 +144,9 @@ describe('Test row-status component', () => {
     });
 
     const progressBar = getByTitle(container, 'pim_asset_manager.asset.upload.status.' + status);
-    const style = window.getComputedStyle(progressBar);
+
     expect(progressBar).not.toBeNull();
-    expect(style.width).toEqual('0%');
+    expect(progressBar.getAttribute('width')).toEqual('0');
   });
 
   test('It renders the UploadInProgress progress bar even with a progress too high', async () => {
@@ -162,9 +162,9 @@ describe('Test row-status component', () => {
     });
 
     const progressBar = getByTitle(container, 'pim_asset_manager.asset.upload.status.' + status);
-    const style = window.getComputedStyle(progressBar);
+
     expect(progressBar).not.toBeNull();
-    expect(style.width).toEqual('100%');
+    expect(progressBar.getAttribute('width')).toEqual('100');
   });
 
   test('It throws with an unknown status', async () => {

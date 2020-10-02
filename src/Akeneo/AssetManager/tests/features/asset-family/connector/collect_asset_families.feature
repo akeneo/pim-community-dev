@@ -16,6 +16,12 @@ Feature: Connection to MDM or ERP systems
     Then the properties of the asset family are correctly synchronized in the PIM with the information from the ERP
 
   @integration-back
+  Scenario: Notify an error when collecting an asset family that has the same code with a wrong case
+    Given the Brand asset family existing in the ERP and the PIM with different properties
+    When the connector collects an asset family with a code that already exists with wrong case
+    Then the PIM notifies the connector about an error indicating that the asset family has a code that already exist with wrong case
+
+  @integration-back
   Scenario: Notify an error when collecting an asset family that has an invalid format
     Given some asset families
     When the connector collects an asset family that has an invalid format

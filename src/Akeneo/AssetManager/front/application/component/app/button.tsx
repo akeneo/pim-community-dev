@@ -83,7 +83,7 @@ const StyledButton = styled.div<ButtonProps>`
 
     return `
       color: white;
-      background-color: ${(props.theme.color as any)[props.color + '100']}
+      background-color: ${(props.theme.color as any)[props.color + '100']};
       border: 1px solid transparent;
     `;
   }}

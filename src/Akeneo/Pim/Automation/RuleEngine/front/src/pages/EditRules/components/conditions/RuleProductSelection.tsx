@@ -98,7 +98,7 @@ const RuleProductSelectionFieldset = styled.fieldset<{ hasActions: boolean }>`
 `;
 
 const getValuesFromFormData = (getValues: Control['getValues']): FormData =>
-  getValues({ nest: true });
+  getValues({ nest: true }) as FormData;
 
 type Props = {
   currentCatalogLocale: LocaleCode;

@@ -95,3 +95,9 @@ Feature: Connection to DAM systems
     Given an asset of the Packshot asset family existing in the PIM
     When the connector deletes a wrong asset
     Then the PIM notifies the connector that the asset does not exist in the PIM
+
+  @integration-back
+  Scenario: Notify an error when collecting an asset for an asset family with the wrong case
+    Given an asset of the Packshot asset family existing in the PIM
+    When the connector collects an asset for an asset family with the wrong case
+    Then the PIM notifies the connector that the asset family does not exist

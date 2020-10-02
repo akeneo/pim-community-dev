@@ -1,0 +1,16 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_asset_manager_asset_family_rest_connector_get",
+    "query": {
+      "code": "BranD"
+    }
+  },
+  "response": {
+    "status": 404,
+    "body": {
+      "code": 404,
+      "message":"Asset family \"BranD\" does not exist."
+    }
+  }
+}

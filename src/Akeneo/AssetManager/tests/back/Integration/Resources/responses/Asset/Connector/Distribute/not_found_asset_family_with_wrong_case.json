@@ -1,0 +1,17 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_asset_manager_asset_rest_connector_get",
+    "query": {
+      "assetFamilyIdentifier": "BRAND",
+      "code": "Kartell"
+    }
+  },
+  "response": {
+    "status": 404,
+    "body": {
+      "code": 404,
+      "message":"Asset family \"BRAND\" does not exist."
+    }
+  }
+}
