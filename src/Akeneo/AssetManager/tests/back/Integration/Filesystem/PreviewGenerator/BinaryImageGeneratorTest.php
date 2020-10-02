@@ -11,6 +11,7 @@ use Akeneo\AssetManager\Infrastructure\Filesystem\PreviewGenerator\PreviewGenera
 use Akeneo\AssetManager\Integration\PreviewGeneratorIntegrationTestCase;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Model\Binary;
+use Prophecy\Argument;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -29,7 +30,7 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
         parent::setUp();
 
         $dataManager = $this->prophesize(DataManager::class);
-        $dataManager->find('am_binary_image_thumbnail', 'my_large_image.jpg')->willReturn(new Binary(str_repeat('a', 60000001), 'image/jpg'));
+        $dataManager->find(Argument::cetera())->willReturn(new Binary(str_repeat('a', 60000001), 'image/jpg'));
         $cacheManager = $this->get('liip_imagine.cache.manager');
         $filterManager = $this->get('liip_imagine.filter.manager');
         $defaultImageProvider = $this->get('pim_asset.provider.default_image');
