@@ -64,7 +64,7 @@ class SectionView extends BaseView {
    * @param sectionAxes
    */
   sectionHasData(sectionData: SectionData, sectionAxes: string[]): boolean {
-    return Object.keys(sectionData).filter(field => sectionAxes.includes(field)).length > 0;
+    return Object.keys(sectionData).filter((field) => sectionAxes.includes(field)).length > 0;
   }
 
   /**
@@ -82,7 +82,7 @@ class SectionView extends BaseView {
     }
 
     if (this.config.align === 'right') {
-      this.$el.addClass('AknCatalogVolume-axisContainer--right')
+      this.$el.addClass('AknCatalogVolume-axisContainer--right');
     }
 
     this.renderAxes(this.config.axes, sectionData);
@@ -107,7 +107,7 @@ class SectionView extends BaseView {
   getTemplateName(name: string): string {
     return name
       .toLowerCase()
-      .replace(/_(.)/g, letter => letter.toUpperCase())
+      .replace(/_(.)/g, (letter) => letter.toUpperCase())
       .replace(/_/g, '');
   }
 

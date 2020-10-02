@@ -1,5 +1,18 @@
 # 4.0.x
 
+# 4.0.60 (2020-09-30)
+
+## Technical Improvements
+
+- API-1201: [Backport] Be able to get attributes searching by codes 
+- PIM-9469: [Backport] API-1232: Be able to get list of attribute from updated date from the API
+
+# 4.0.59 (2020-09-23)
+
+## Technical Improvements
+
+- PIM-9055: Allow not to drop an existing database during the install process
+
 # 4.0.58 (2020-09-22)
 
 ## Bug fixes

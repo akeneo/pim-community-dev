@@ -186,8 +186,7 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
             ->createQueryBuilder('pm')
             ->where('pm.familyVariant = :familyVariant')
             ->setParameter('familyVariant', $familyVariant->getId())
-            ->addOrderBy('pm.root', 'ASC')
-            ->addOrderBy('pm.level', 'ASC')
+            ->addOrderBy('pm.parent', 'ASC')
         ;
 
         if (! empty($search)) {
