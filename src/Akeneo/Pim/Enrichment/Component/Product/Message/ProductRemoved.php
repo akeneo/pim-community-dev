@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Message;
 use Akeneo\Platform\Component\EventQueue\BusinessEvent;
 
 /**
- * Business event triggered when a product is created.
+ * Business event triggered when a product is removed.
  * The `data` property contains a product normalized to the standard format.
  *
  * @copyright 202O Akeneo SAS (http://www.akeneo.com)
