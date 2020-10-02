@@ -6,6 +6,10 @@ const useWebhook = (connectionCode: string) => {
         code: connectionCode,
     });
 
+    if (!loading && !data) {
+        throw new Error(`Webhook for connection '${connectionCode}' not found.`);
+    }
+
     return {loading, webhook: data};
 };
 

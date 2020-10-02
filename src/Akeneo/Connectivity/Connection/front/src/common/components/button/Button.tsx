@@ -1,29 +1,21 @@
-import React from 'react';
-import {PropsWithChildren} from 'react';
+import React, {ButtonHTMLAttributes, DetailedHTMLProps, forwardRef, ReactNode, Ref} from 'react';
 
-export interface Props {
-    onClick: () => void;
+export type Props = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & {
+    children?: ReactNode;
     count?: number;
-    disabled?: boolean;
     classNames?: string[];
-}
+};
 
-export const Button = ({
-    children,
-    onClick,
-    count,
-    disabled = 0 === count,
-    classNames = [],
-}: PropsWithChildren<Props>) => {
+export const Button = forwardRef(({children, count, classNames = [], ...props}: Props, ref: Ref<HTMLButtonElement>) => {
     classNames.push('AknButton');
-    if (disabled) {
+    if (props.disabled) {
         classNames.push('AknButton--disabled');
     }
 
     return (
-        <button type='button' onClick={onClick} className={classNames.join(' ')} disabled={disabled}>
+        <button type='button' {...props} ref={ref} className={`${props.className} ${classNames.join(' ')}`}>
             {children}
             {undefined !== count && <span className='AknButton--withSuffix'>{count}</span>}
         </button>
     );
-};
+});
