@@ -1,12 +1,11 @@
 name: Extract DSM
 on:
   push:
-  branches:
-    - dsm
-  paths:
-    - 'akeneo-design-system/**'
+    branches:
+      - dsm
+    paths:
+      - 'akeneo-design-system/**'
 jobs:
-
   build:
     name: Create a lib build
     runs-on: ubuntu-latest
