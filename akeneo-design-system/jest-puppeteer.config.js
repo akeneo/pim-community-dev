@@ -6,6 +6,6 @@ module.exports = {
   server: {
     command: 'yarn storybook:ci:start',
     port: 6006,
-    launchTimeout: 50000
+    launchTimeout: 90000
   },
 }

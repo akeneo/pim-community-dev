@@ -1,6 +1,6 @@
 # Contributing
 
-We prefer consistency above all. So the best way to know how to do something could be to look around.
+As this design system will be used among multiple products and multiple teams, we prefer consistency above all. So the best way to know how to do something new is to look around.
 
 ## Adding a new component
 
@@ -9,24 +9,24 @@ Before adding a new component, please see if the component does not already exis
 
 - Create a branch (`git checkout -b branch_name`)
 - Create a new file related to your component `src/components/ComponentName/ComponentName.tsx`
-    - First of all define all properties that your component need to work, then type them the most strongly possible
-    - Add comment on all your properties (those comments will be displayed in Storybook)
-    - Write related logic of the component
-    - Add style in your component with [styled components](https://styled-components.com/docs).
-    - Add (if necessary) icons in the folder `src/icons/` (color, height and weight should be configurable)
-    - Add forwardRef management on your component (https://reactjs.org/docs/forwarding-refs.html)
-    - Forward ...props to your component
-    - Add accessibility in your component (https://developer.mozilla.org/en-US/docs/Web/Accessibility)
+  - First of all define all properties that your component needs to work, then use typescript types to type them the most strongly possible
+  - Add comment on all your properties (those comments will be displayed in Storybook)
+  - Write related logic of the component
+  - Add style in your component with [styled components](https://styled-components.com/docs).
+  - Add (if necessary) icons in the folder `src/icons/` (color, height and weight should be configurable)
+  - Add forwardRef management on your component (https://reactjs.org/docs/forwarding-refs.html)
+  - Forward ...props to your component
+  - Add accessibility in your component (https://developer.mozilla.org/en-US/docs/Web/Accessibility)
 - Create a new file related to the stories of your component `src/components/ComponentName/ComponentName.stories.tsx`
-    - Get the template from [Story template](#story-template) and replace `ComponentName` by your component name
-    - Write `Usage introduction` and `General guidance` paragraph
-    - Define all `argTypes`
-        - Use `control` when your property expects a value (string, number, boolean, enum ...), you can retrieve full list of control types here: https://storybook.js.org/docs/react/essentials/controls#annotation.
-        - Use `action` when your property expects a callback relative to an action on the component
-    - Define `arg` when you want a specific default value
-    - Write all variations of your component
+  - Get the template from [Story template](#story-template) and replace `ComponentName` by your component name
+  - Write `Usage introduction` and `General guidance` paragraph
+  - Define all `argTypes`
+    - Use `control` when your property expects a value (string, number, boolean, enum ...), you can retrieve full list of control types here: https://storybook.js.org/docs/react/essentials/controls#annotation.
+    - Use `action` when your property expects a callback relative to an action on the component
+  - Define `arg` when you want a specific default value
+  - Write all variations of your component
 - Create a new file src/components/`ComponentName/ComponentName.unit.tsx`
-    - Add unit tests to validate all component behaviours
+  - Add unit tests to validate all component behaviours
 - Commit and push your change (Github Action will be automatically launched)
 - Github Action will assign you a pull request to alert you that new stories found, review it and merge it when it looks good for you
 - Github Action will deploy a new version of the storybook give the url to designer for review
@@ -78,23 +78,28 @@ import {ComponentName} from './ComponentName';
 />
 
 # Name of the component
+
 ## Usage
+
 _Describe what problem the component is supposed to solve_
 
 ### General guidance
+
 _Describe when the component should be used_
 _Describe each element on the component_
 
 ## Playground
+
 <Canvas>
   <Story name="Standard">
     {args => {
-      return <ComponentName {...args}/>;
+      return <ComponentName {...args} />;
     }}
   </Story>
 </Canvas>
 
 ## Variation through arg1
+
 _Show all possible variations that allow user to have a better overview of the component capabilities_
 
 <Canvas>
@@ -115,6 +120,7 @@ _Show all possible variations that allow user to have a better overview of the c
 </Canvas>
 
 ## Variation through arg2
+
 <Canvas>
   <Story name="Variation through arg2">
     {args => {
@@ -134,5 +140,6 @@ _Show all possible variations that allow user to have a better overview of the c
 ```
 
 ## Tests guidelines
+
 - Test should use [Jest](https://jestjs.io/docs/en/getting-started)
 - Test should use [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
