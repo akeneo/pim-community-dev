@@ -1,9 +1,8 @@
-import React from 'react';
-import {PropsWithChildren} from 'react';
+import React, {forwardRef, Ref} from 'react';
 import {Button, Props} from './Button';
 
-export const GreyButton = ({classNames = [], ...props}: PropsWithChildren<Props>) => {
+export const GreyButton = forwardRef(({classNames = [], ...props}: Props, ref: Ref<HTMLButtonElement>) => {
     classNames.push('AknButton--grey');
 
-    return <Button {...props} classNames={classNames} />;
-};
+    return <Button {...props} ref={ref} classNames={classNames}></Button>;
+});

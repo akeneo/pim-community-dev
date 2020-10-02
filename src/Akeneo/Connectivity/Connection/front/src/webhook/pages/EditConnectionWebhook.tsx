@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {FormContext, useForm, useFormContext} from 'react-hook-form';
 import {useHistory, useParams} from 'react-router';
 import styled from 'styled-components';
@@ -16,56 +16,44 @@ import {
 import {Loading} from '../../common/components/Loading';
 import {PimView} from '../../infrastructure/pim-view/PimView';
 import {useMediaUrlGenerator} from '../../settings/use-media-url-generator';
+import {isErr} from '../../shared/fetch-result/result';
 import {BreadcrumbRouterLink} from '../../shared/router';
 import {Translate} from '../../shared/translate';
 import {EditForm} from '../components/EditForm';
 import {useUpdateWebhook} from '../hooks/api/use-update-webhook';
 import {useWebhook} from '../hooks/api/use-webhook';
-import {isErr} from '../../shared/fetch-result/result';
 import {Webhook} from '../model/Webhook';
 
 export type FormInput = {
     connectionCode: string;
     url: string | null;
     enabled: boolean;
+    secret: string | null;
 };
 
-export const EditConnectionWebhook = () => {
+export const EditConnectionWebhook: FC = () => {
     const history = useHistory();
-    const {connectionCode} = useParams<{connectionCode: string}>();
     const generateMediaUrl = useMediaUrlGenerator();
-    const {loading, webhook: fetchedWebhook} = useWebhook(connectionCode);
     const formMethods = useForm<FormInput>();
-    const [webhook, setWebhook] = useState<Webhook>(
-        fetchedWebhook
-            ? fetchedWebhook
-            : {
-                  connectionCode: connectionCode,
-                  enabled: false,
-                  connectionImage: null,
-                  secret: null,
-                  url: null,
-              }
-    );
 
-    useEffect(() => {
-        if (!loading && !fetchedWebhook) {
-            history.push('/connections');
-        }
-        if (!loading && fetchedWebhook) {
-            setWebhook(fetchedWebhook);
-        }
-    }, [loading, fetchedWebhook]);
+    const {connectionCode} = useParams<{connectionCode: string}>();
+    const fetchedWebhook = useWebhook(connectionCode);
 
+    const [webhook, setWebhook] = useState(fetchedWebhook.webhook);
     useEffect(() => {
-        formMethods.reset({
-            connectionCode: webhook?.connectionCode,
-            enabled: webhook?.enabled,
-            url: webhook?.url,
-        });
+        if (!webhook) {
+            setWebhook(fetchedWebhook.webhook);
+        }
+    }, [fetchedWebhook]);
+
+    // Reset form on webhook change.
+    useEffect(() => {
+        if (webhook) {
+            formMethods.reset(webhook);
+        }
     }, [webhook]);
 
-    if (loading || !fetchedWebhook) {
+    if (fetchedWebhook.loading || !webhook) {
         return <Loading />;
     }
 
@@ -101,7 +89,7 @@ export const EditConnectionWebhook = () => {
                             ? defaultImageUrl
                             : generateMediaUrl(webhook.connectionImage, 'thumbnail')
                     }
-                    buttons={[<SaveButton key={0} code={connectionCode} webhook={webhook} setWebhook={setWebhook} />]}
+                    buttons={[<SaveButton key={0} webhook={webhook} setWebhook={webhook => setWebhook(webhook)} />]}
                     state={<FormState />}
                 >
                     {connectionCode}
@@ -131,39 +119,32 @@ export const EditConnectionWebhook = () => {
     );
 };
 
-type SaveProps = {
-    code: string;
+type SaveButtonProps = {
     webhook: Webhook;
-    setWebhook: Dispatch<SetStateAction<Webhook>>;
+    setWebhook: (webhook: Webhook) => void;
 };
-const SaveButton = ({code, webhook, setWebhook}: SaveProps) => {
+
+const SaveButton: FC<SaveButtonProps> = ({webhook, setWebhook}) => {
     const {formState, getValues, triggerValidation, handleSubmit, setError} = useFormContext<FormInput>();
-    const updateWebhook = useUpdateWebhook(code);
+    const updateWebhook = useUpdateWebhook(webhook.connectionCode);
     const handleSave = async () => {
-        const values = getValues();
+        const {enabled, url} = getValues();
         const isValid = await triggerValidation();
         if (isValid) {
             const result = await updateWebhook({
-                connectionCode: values.connectionCode,
-                enabled: values.enabled,
-                url: '' === values.url ? null : values.url,
+                connectionCode: webhook.connectionCode,
+                enabled,
+                url: '' === url ? null : url,
             });
-            if (!isErr(result)) {
-                setWebhook({
-                    ...webhook,
-                    connectionCode: result.value.connectionCode,
-                    enabled: result.value.enabled,
-                    url: result.value.url,
-                    secret: result.value.secret,
+            if (isErr(result)) {
+                result.error.errors.forEach(error => {
+                    setError(error.field, 'validation', error.message);
                 });
 
                 return;
             }
-            if (result.error.errors) {
-                result.error.errors.forEach(error => {
-                    setError(error.field, 'validation', error.message);
-                });
-            }
+
+            setWebhook({...result.value, connectionImage: webhook.connectionImage});
         }
     };
 
