@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductEventDataBuilder implements EventDataBuilderInterface
+class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterface
 {
     private $productRepository;
     private $externalApiNormalizer;
@@ -52,7 +52,7 @@ class ProductEventDataBuilder implements EventDataBuilderInterface
         }
 
         return [
-            'resource' => $this->externalApiNormalizer->normalize($product, 'external_api')
+            'resource' => $this->externalApiNormalizer->normalize($product, 'external_api'),
         ];
     }
 }
