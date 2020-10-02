@@ -30,7 +30,7 @@ const ContentContainer = styled.div`
   padding: 10px 0px 10px 0px;
 `;
 
-type HelperProps = {
+type InformationProps = {
   /**
    * Define the illustration showed at left of the component.
    */
@@ -48,8 +48,8 @@ type HelperProps = {
 };
 
 /** Information informs the user about the page's features */
-const Information = React.forwardRef<HTMLDivElement, HelperProps>(
-  ({illustration, title, children, ...rest}: HelperProps, forwardedRef: Ref<HTMLDivElement>) => {
+const Information = React.forwardRef<HTMLDivElement, InformationProps>(
+  ({illustration, title, children, ...rest}: InformationProps, forwardedRef: Ref<HTMLDivElement>) => {
     const resizedIllustration =
       isValidElement<IllustrationProps>(illustration) && React.cloneElement(illustration, {size: 80});
 
