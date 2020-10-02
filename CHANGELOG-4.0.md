@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.61 (2020-10-02)
+
 ## Bug fixes
 
 - PIM-9488: Fix not used variable during webpack run
