@@ -2,7 +2,6 @@
 
 namespace Specification\Akeneo\Pim\Permission\Component\Merger;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
@@ -55,14 +54,13 @@ class NotGrantedValuesMergerSpec extends ObjectBehavior
         $this->merge($filteredEntity, null)->shouldReturn($filteredEntity);
     }
 
-    function it_merges_values_in_product(
-        GetViewableAttributeCodesForUserInterface $getViewableAttributeCodes,
-        WriteValueCollectionFactory $valueCollectionFactory
-    ) {
+    function it_merges_values_in_product(GetViewableAttributeCodesForUserInterface $getViewableAttributeCodes)
+    {
         $fullProduct = new Product();
         $fullProduct->setValues(new WriteValueCollection(
             [
                 ScalarValue::value('123', 'a text'),
+                ScalarValue::value('not_granted_for_owner', 'foo'),
                 OptionValue::localizableValue('color', 'yellow', 'en_US'),
                 OptionValue::localizableValue('color', 'red', 'fr_FR'),
             ]
@@ -71,17 +69,19 @@ class NotGrantedValuesMergerSpec extends ObjectBehavior
         $filteredProduct = new Product();
         $filteredProduct->setValues(new WriteValueCollection(
            [
+               ScalarValue::value('not_granted_for_owner', 'bar'),
                OptionValue::localizableValue('color', 'blue', 'en_US'),
            ]
         ));
 
-        $getViewableAttributeCodes->forAttributeCodes(Argument::is(['123', 'color']), 42)->willReturn(['color']);
+        $getViewableAttributeCodes->forAttributeCodes(Argument::is(['123', 'not_granted_for_owner', 'color']), 42)->willReturn(['color']);
 
         $mergedEntity = $this->merge($filteredProduct, $fullProduct);
         $mergedEntity->shouldBeEqualTo($fullProduct);
         $mergedEntity->getValues()->shouldBeLike(new WriteValueCollection(
             [
                 ScalarValue::value('123', 'a text'),
+                ScalarValue::value('not_granted_for_owner', 'bar'),
                 OptionValue::localizableValue('color', 'red', 'fr_FR'),
                 OptionValue::localizableValue('color', 'blue', 'en_US'),
             ]
