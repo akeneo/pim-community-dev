@@ -6,7 +6,7 @@ const ImportYmlIllustration = ({title, size = 256}: IllustrationProps) => (
     {title && <title>{title}</title>}
     <defs>
       <path
-        id="prefix__a"
+        id="ImportYmlIllustration_prefix__a"
         d="M.544 47.233h5.234l7.904-2.028 3.096 2.028 7.106 1.664 10.609-1.664 6.667-4.281L45.805 0H8.778z"
       />
     </defs>
@@ -75,10 +75,10 @@ const ImportYmlIllustration = ({title, size = 256}: IllustrationProps) => (
         fill="#E1F2FF"
       />
       <g transform="translate(58.722 136.5)">
-        <mask id="prefix__b" fill="#fff">
-          <use xlinkHref="#prefix__a" />
+        <mask id="ImportYmlIllustration_prefix__b" fill="#fff">
+          <use xlinkHref="#ImportYmlIllustration_prefix__a" />
         </mask>
-        <g mask="url(#prefix__b)">
+        <g mask="url(#ImportYmlIllustration_prefix__b)">
           <path
             d="M6.447 80.865L4.4 76.326a4.171 4.171 0 01.813-4.629c3.421-3.482 7.413-4.8 10.587-6.462 5.878-3.08 9.398-3.533 14.854-4.912l2.916 6.884s-2.771.553-10.473 3.563c-2.383.932-10.002 9-14.673 10.89a1.535 1.535 0 01-1.976-.795"
             fill="#9452BA"

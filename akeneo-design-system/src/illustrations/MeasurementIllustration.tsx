@@ -5,7 +5,7 @@ const MeasurementIllustration = ({title, size = 256}: IllustrationProps) => (
   <svg width={size} height={size} viewBox="0 0 256 256">
     {title && <title>{title}</title>}
     <defs>
-      <path id="prefix__a" d="M2 44.109h35.465V90.5H0z" />
+      <path id="MeasurementIllustration_prefix__a" d="M2 44.109h35.465V90.5H0z" />
     </defs>
     <g fill="none" fillRule="evenodd">
       <path
@@ -216,10 +216,10 @@ const MeasurementIllustration = ({title, size = 256}: IllustrationProps) => (
         fill="#5E63B6"
       />
       <g transform="translate(13.083 117)">
-        <mask id="prefix__b" fill="#fff">
-          <use xlinkHref="#prefix__a" />
+        <mask id="MeasurementIllustration_prefix__b" fill="#fff">
+          <use xlinkHref="#MeasurementIllustration_prefix__a" />
         </mask>
-        <g mask="url(#prefix__b)">
+        <g mask="url(#MeasurementIllustration_prefix__b)">
           <path
             d="M64.336 103.776l-4.98-.062a4.171 4.171 0 01-3.851-2.693c-1.71-4.572-1.217-8.747-1.383-12.326-.307-6.63.77-10.011 1.826-15.538l7.472.266s-.67 2.746-1.197 10.998c-.163 2.553 3.93 12.869 3.669 17.9a1.535 1.535 0 01-1.556 1.455"
             fill="#9452BA"

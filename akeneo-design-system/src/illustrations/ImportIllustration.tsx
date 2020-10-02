@@ -6,7 +6,7 @@ const ImportIllustration = ({title, size = 256}: IllustrationProps) => (
     {title && <title>{title}</title>}
     <defs>
       <path
-        id="prefix__a"
+        id="ImportIllustration_prefix__a"
         d="M18.544 58.233h5.234l7.904-2.028 2.426 3.692h7.776l10.609-1.664 6.667-4.281L63.805 11H26.778z"
       />
     </defs>
@@ -82,10 +82,10 @@ const ImportIllustration = ({title, size = 256}: IllustrationProps) => (
         fill="#E1F2FF"
       />
       <g transform="translate(40.722 124.5)">
-        <mask id="prefix__b" fill="#fff">
-          <use xlinkHref="#prefix__a" />
+        <mask id="ImportIllustration_prefix__b" fill="#fff">
+          <use xlinkHref="#ImportIllustration_prefix__a" />
         </mask>
-        <g mask="url(#prefix__b)">
+        <g mask="url(#ImportIllustration_prefix__b)">
           <path
             d="M24.447 91.865L22.4 87.326a4.171 4.171 0 01.813-4.629c3.421-3.482 7.413-4.8 10.587-6.462 5.878-3.08 9.398-3.533 14.854-4.912l2.916 6.884s-2.771.553-10.473 3.563c-2.383.932-10.002 9-14.673 10.89a1.535 1.535 0 01-1.976-.795"
             fill="#9452BA"

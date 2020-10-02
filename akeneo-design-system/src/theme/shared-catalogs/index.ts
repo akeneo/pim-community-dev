@@ -10,7 +10,7 @@ const sharedCatalogsTheme: Theme = {
     tertiary: 'grey',
     warning: 'yellow',
     danger: 'red',
-    logo: color.yellow100,
+    brand: '#F9B53F',
   },
 };
 

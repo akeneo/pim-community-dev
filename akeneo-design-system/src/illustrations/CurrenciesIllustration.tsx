@@ -5,7 +5,7 @@ const CurrenciesIllustration = ({title, size = 256}: IllustrationProps) => (
   <svg width={size} height={size} viewBox="0 0 256 256">
     {title && <title>{title}</title>}
     <defs>
-      <path id="prefix__a" d="M107.092 69.398l-1.63 28.363 7.5 18.783 39.5-25.581-2.5-39.5z" />
+      <path id="CurrenciesIllustration_prefix__a" d="M107.092 69.398l-1.63 28.363 7.5 18.783 39.5-25.581-2.5-39.5z" />
     </defs>
     <g fill="none" fillRule="evenodd">
       <path
@@ -121,10 +121,10 @@ const CurrenciesIllustration = ({title, size = 256}: IllustrationProps) => (
       <path fill="#ACD3EF" d="M136.966 149.528h23.445v-2h-23.445z" />
       <path fill="#E1F2FF" d="M136.966 156.178h23.445" />
       <g transform="translate(85.537 92.537)">
-        <mask id="prefix__b" fill="#fff">
-          <use xlinkHref="#prefix__a" />
+        <mask id="CurrenciesIllustration_prefix__b" fill="#fff">
+          <use xlinkHref="#CurrenciesIllustration_prefix__a" />
         </mask>
-        <g mask="url(#prefix__b)">
+        <g mask="url(#CurrenciesIllustration_prefix__b)">
           <path
             d="M79.71 135.873l6.218-.731c2.136-.252 3.923-1.775 4.465-3.841 1.543-5.887.383-10.993.125-15.447-.48-8.25-2.266-12.298-4.306-19.004l-9.307 1.312s1.195 3.312 2.928 13.463c.536 3.14-3.238 16.454-2.257 22.652a1.922 1.922 0 002.135 1.596"
             fill="#9452BA"

@@ -5,7 +5,7 @@ const DefaultPictureIllustration = ({title, size = 256}: IllustrationProps) => (
   <svg width={size} height={size} viewBox="0 0 256 256">
     {title && <title>{title}</title>}
     <defs>
-      <path id="prefix__a" d="M0 88.72h114.093V0H0z" />
+      <path id="DefaultPictureIllustration_prefix__a" d="M0 88.72h114.093V0H0z" />
     </defs>
     <g fill="none" fillRule="evenodd">
       <path
@@ -19,10 +19,10 @@ const DefaultPictureIllustration = ({title, size = 256}: IllustrationProps) => (
       />
       <path d="M73.488 171.721h110a4 4 0 004-4v-100a4 4 0 00-4-4h-110a4 4 0 00-4 4v100a4 4 0 004 4z" fill="#F6F7FB" />
       <g transform="translate(71.395 81)">
-        <mask id="prefix__b" fill="#fff">
-          <use xlinkHref="#prefix__a" />
+        <mask id="DefaultPictureIllustration_prefix__b" fill="#fff">
+          <use xlinkHref="#DefaultPictureIllustration_prefix__a" />
         </mask>
-        <g mask="url(#prefix__b)">
+        <g mask="url(#DefaultPictureIllustration_prefix__b)">
           <path
             d="M72.708 152.188l6.354-.078c2.184-.028 4.15-1.376 4.916-3.405 2.183-5.78 1.553-11.057 1.765-15.582.392-8.38-.982-12.655-2.33-19.642l-9.536.336s.855 3.472 1.528 13.903c.208 3.228-5.016 16.269-4.682 22.63a1.951 1.951 0 001.985 1.838"
             fill="#9452BA"

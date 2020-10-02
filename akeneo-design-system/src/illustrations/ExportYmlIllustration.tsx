@@ -6,7 +6,7 @@ const ExportYmlIllustration = ({title, size = 256}: IllustrationProps) => (
     {title && <title>{title}</title>}
     <defs>
       <path
-        id="prefix__a"
+        id="ExportYmlIllustration_prefix__a"
         d="M27.447 57.46l10.537.633 5.463-.634 5.404-2.028 3.596 2.663 6.017 2.428 7.483-1.398 11.848-4.881 29.183-39.583L41.448 0l-32 11.049-9.448 23 9.447 16.5z"
       />
     </defs>
@@ -75,10 +75,10 @@ const ExportYmlIllustration = ({title, size = 256}: IllustrationProps) => (
         fill="#E1F2FF"
       />
       <g transform="translate(24 126)">
-        <mask id="prefix__b" fill="#fff">
-          <use xlinkHref="#prefix__a" />
+        <mask id="ExportYmlIllustration_prefix__b" fill="#fff">
+          <use xlinkHref="#ExportYmlIllustration_prefix__a" />
         </mask>
-        <g mask="url(#prefix__b)">
+        <g mask="url(#ExportYmlIllustration_prefix__b)">
           <path
             d="M63.028 112.325l4.98-.063a4.171 4.171 0 003.851-2.693c1.71-4.572 1.217-8.747 1.383-12.326.307-6.629-.77-10.01-1.826-15.538l-7.472.266s.67 2.746 1.197 10.998c.163 2.553-3.93 12.87-3.669 17.901.043.825.73 1.465 1.556 1.455"
             fill="#9452BA"

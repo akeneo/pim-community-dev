@@ -6,7 +6,7 @@ const ApiIllustration = ({title, size = 256}: IllustrationProps) => (
     {title && <title>{title}</title>}
     <defs>
       <path
-        id="prefix__a"
+        id="prefix__aApiIllustration"
         d="M0 31.046L19.25 1l53.57-1 16.653 9.864 9.918 28.47-15.418 14.03-13 5.5-7.447 3.013h-9.053l-7.5-3.013-7 1.5h-7.5z"
       />
     </defs>
@@ -82,10 +82,10 @@ const ApiIllustration = ({title, size = 256}: IllustrationProps) => (
         fill="#E1F2FF"
       />
       <g transform="translate(25.527 130.636)">
-        <mask id="prefix__b" fill="#fff">
-          <use xlinkHref="#prefix__a" />
+        <mask id="prefix__bApiIllustration" fill="#fff">
+          <use xlinkHref="#prefix__aApiIllustration" />
         </mask>
-        <g mask="url(#prefix__b)">
+        <g mask="url(#prefix__bApiIllustration)">
           <path
             d="M62.054 110.14l4.98-.062a4.171 4.171 0 003.851-2.693c1.71-4.572 1.217-8.747 1.383-12.326.307-6.63-.77-10.011-1.826-15.538l-7.472.266s.67 2.746 1.197 10.998c.163 2.553-3.93 12.869-3.669 17.9.043.826.73 1.466 1.556 1.455"
             fill="#9452BA"

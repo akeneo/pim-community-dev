@@ -8,7 +8,7 @@ const TimezoneIllustration = ({title, size = 256}: IllustrationProps) => (
 
     <defs>
       <path
-        id="prefix__a"
+        id="TimezoneIllustration_prefix__a"
         d="M.386 17.596L12 67.94l25.07.183 7.43-.183 5.11-1.737 4.39 3.37 11.053.367 15.023-6.312L101 0 16 1z"
       />
     </defs>
@@ -99,10 +99,10 @@ const TimezoneIllustration = ({title, size = 256}: IllustrationProps) => (
         fill="#E1F2FF"
       />
       <g transform="translate(23 136)">
-        <mask id="prefix__b" fill="#fff">
-          <use xlinkHref="#prefix__a" />
+        <mask id="TimezoneIllustration_prefix__b" fill="#fff">
+          <use xlinkHref="#TimezoneIllustration_prefix__a" />
         </mask>
-        <g mask="url(#prefix__b)">
+        <g mask="url(#TimezoneIllustration_prefix__b)">
           <path
             d="M64.581 117.776l4.98-.062a4.171 4.171 0 003.851-2.693c1.71-4.572 1.217-8.747 1.383-12.326.307-6.63-.77-10.011-1.826-15.538l-7.472.266s.67 2.746 1.197 10.998c.163 2.553-3.93 12.869-3.669 17.9.043.826.73 1.466 1.556 1.455"
             fill="#9452BA"

@@ -10,7 +10,7 @@ const pimTheme: Theme = {
     tertiary: 'grey',
     warning: 'yellow',
     danger: 'red',
-    logo: color.purple100,
+    brand: color.purple100,
   },
 };
 

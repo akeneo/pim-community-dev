@@ -2,11 +2,15 @@ import {ThemeProvider} from 'styled-components';
 import {Canvas, Meta, Story, ArgsTable} from '@storybook/addon-docs/blocks';
 import {PreviewGrid, PreviewCard, PreviewContainer, LabelContainer} from 'shared/PreviewGallery';
 import * as Illustrations from './';
-import {pimTheme as pim} from '../theme/pim';
-import {onboarderTheme as onboarder} from '../theme/onboarder';
-import {sharedCatalogsTheme as sharedCatalogs} from '../theme/shared-catalogs';
+import {pimTheme} from '../theme/pim';
+import {onboarderTheme} from '../theme/onboarder';
+import {sharedCatalogsTheme} from '../theme/shared-catalogs';
 
-export const themes = {pim, onboarder, sharedCatalogs};
+export const themes = {
+  PIM: pimTheme,
+  Onboarder: onboarderTheme,
+  'Shared Catalogs': sharedCatalogsTheme,
+};
 
 <Meta
   title="Guidelines/Illustrations"
@@ -14,7 +18,7 @@ export const themes = {pim, onboarder, sharedCatalogs};
     theme: {control: {type: 'select', options: Object.keys(themes)}},
     size: {control: {type: 'select', options: [128, 256]}},
   }}
-  args={{theme: 'pim', size: 128}}
+  args={{theme: 'PIM', size: 128}}
 />
 
 # Illustrations

@@ -5,9 +5,9 @@ const ExportCsvIllustration = ({title, size = 256}: IllustrationProps) => (
   <svg width={size} height={size} viewBox="0 0 256 256">
     {title && <title>{title}</title>}
     <defs>
-      <path id="prefix__a" d="M.605.602H100.5v130.823H.605z" />
+      <path id="ExportCsvIllustration_prefix__a" d="M.605.602H100.5v130.823H.605z" />
       <path
-        id="prefix__c"
+        id="ExportCsvIllustration_prefix__c"
         d="M27.447 57.46l10.537.633 5.463-.634 5.404-2.028 3.596 2.663 6.017 2.428 7.483-1.398 11.848-4.881 29.183-39.583L41.448 0l-32 11.049-9.448 23 9.447 16.5z"
       />
     </defs>
@@ -21,13 +21,13 @@ const ExportCsvIllustration = ({title, size = 256}: IllustrationProps) => (
         fill="#FFF"
       />
       <g transform="translate(81 35.398)">
-        <mask id="prefix__b" fill="#fff">
-          <use xlinkHref="#prefix__a" />
+        <mask id="ExportCsvIllustration_prefix__b" fill="#fff">
+          <use xlinkHref="#ExportCsvIllustration_prefix__a" />
         </mask>
         <path
           d="M3.825 2.602a1.22 1.22 0 00-1.22 1.219v124.385a1.22 1.22 0 001.22 1.219H97.28a1.22 1.22 0 001.22-1.22V24.829L75.41 2.602H3.825zM97.28 131.425H3.825a3.223 3.223 0 01-3.22-3.22V3.822A3.223 3.223 0 013.825.6h72.392L100.5 23.977v104.23a3.223 3.223 0 01-3.219 3.219z"
           fill="#5E63B6"
-          mask="url(#prefix__b)"
+          mask="url(#ExportCsvIllustration_prefix__b)"
         />
       </g>
       <path
@@ -84,10 +84,10 @@ const ExportCsvIllustration = ({title, size = 256}: IllustrationProps) => (
         fill="#E1F2FF"
       />
       <g transform="translate(24 126)">
-        <mask id="prefix__d" fill="#fff">
-          <use xlinkHref="#prefix__c" />
+        <mask id="ExportCsvIllustration_prefix__d" fill="#fff">
+          <use xlinkHref="#ExportCsvIllustration_prefix__c" />
         </mask>
-        <g mask="url(#prefix__d)">
+        <g mask="url(#ExportCsvIllustration_prefix__d)">
           <path
             d="M63.028 112.325l4.98-.063a4.171 4.171 0 003.851-2.693c1.71-4.572 1.217-8.747 1.383-12.326.307-6.629-.77-10.01-1.826-15.538l-7.472.266s.67 2.746 1.197 10.998c.163 2.553-3.93 12.87-3.669 17.901.043.825.73 1.465 1.556 1.455"
             fill="#9452BA"

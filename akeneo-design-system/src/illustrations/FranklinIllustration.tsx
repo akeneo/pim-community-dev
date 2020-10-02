@@ -5,7 +5,7 @@ const FranklinIllustration = ({title, size = 256}: IllustrationProps) => (
   <svg width={size} height={size} viewBox="0 0 256 256">
     {title && <title>{title}</title>}
     <defs>
-      <path id="prefix__a" d="M14.738 60l68 27.397 27.5-60.897L23.792 0z" />
+      <path id="FranklinIllustration_prefix__a" d="M14.738 60l68 27.397 27.5-60.897L23.792 0z" />
     </defs>
     <g fill="none" fillRule="evenodd">
       <path
@@ -76,10 +76,10 @@ const FranklinIllustration = ({title, size = 256}: IllustrationProps) => (
       <path d="M231.477 167.847c-.554 0-1 .447-1 1.001 0 .553.446 1 1 1h6.999a1 1 0 100-2.001h-6.999z" fill="#5E63B6" />
       <path d="M7.999 225.578a1 1 0 00-1 1.001 1 1 0 001 1h5.335a1 1 0 100-2.001H7.999z" fill="#9ACDED" />
       <g transform="translate(113.262 116.5)">
-        <mask id="prefix__b" fill="#fff">
-          <use xlinkHref="#prefix__a" />
+        <mask id="FranklinIllustration_prefix__b" fill="#fff">
+          <use xlinkHref="#FranklinIllustration_prefix__a" />
         </mask>
-        <g mask="url(#prefix__b)">
+        <g mask="url(#FranklinIllustration_prefix__b)">
           <path
             d="M52.295 123.914l4.846 1.144a4.171 4.171 0 004.39-1.681c2.764-4.023 3.296-8.193 4.323-11.625 1.902-6.358 1.675-9.9 1.987-15.519l-7.314-1.55s-.014 2.827-1.5 10.962c-.459 2.516-6.926 11.536-7.89 16.481a1.535 1.535 0 001.158 1.788"
             fill="#9452BA"

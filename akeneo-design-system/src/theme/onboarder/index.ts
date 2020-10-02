@@ -10,7 +10,7 @@ const onboarderTheme: Theme = {
     tertiary: 'grey',
     warning: 'yellow',
     danger: 'red',
-    logo: color.blue100,
+    brand: '#4CA8E0',
   },
 };
 
