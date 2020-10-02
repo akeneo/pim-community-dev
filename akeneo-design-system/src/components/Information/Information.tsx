@@ -1,7 +1,6 @@
-import React, {Children, isValidElement, ReactNode, Ref} from 'react';
+import React, {isValidElement, ReactNode, Ref} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getBrandColor, getColor, getFontSize} from '../../theme';
-import {Link} from '../Link/Link';
 import {IllustrationProps} from '../../illustrations/IllustrationProps';
 
 const Container = styled.div`
@@ -54,23 +53,12 @@ const Information = React.forwardRef<HTMLDivElement, HelperProps>(
     const resizedIllustration =
       isValidElement<IllustrationProps>(illustration) && React.cloneElement(illustration, {size: 80});
 
-    const linkChildren = Children.toArray(children).filter(child => isValidElement(child) && child.type === Link);
-    const descriptionChildren = Children.toArray(children).filter(
-      child => !isValidElement(child) || child.type !== Link
-    );
-
     return (
       <Container ref={forwardedRef} {...rest}>
         <IconContainer>{resizedIllustration}</IconContainer>
         <ContentContainer>
           <HelperTitle>{title}</HelperTitle>
-          {descriptionChildren}
-          {linkChildren ? (
-            <>
-              <br />
-              {linkChildren}
-            </>
-          ) : null}
+          {children}
         </ContentContainer>
       </Container>
     );
