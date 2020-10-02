@@ -23,13 +23,6 @@ services:
             - '%pim_catalog.entity.attribute_option.class%'
             - '@pim_catalog.repository.attribute_option'
 
-    pim_api.repository.attribute_group:
-        class: '%pim_api.repository.api_resource.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.attribute_group.class%'
-            - '@pim_catalog.repository.attribute_group'
-
     pim_api.repository.category:
         class: '%pim_api.repository.api_resource.class%'
         arguments:
