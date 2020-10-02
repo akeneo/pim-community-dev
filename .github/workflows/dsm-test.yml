@@ -87,7 +87,7 @@ jobs:
         if: failure() && steps.visual_test_execution.outcome == 'failure'
         with:
           message: |
-            Your visual regression tests are not passing ![Sad dog](https://emoji.slack-edge.com/T031L1UKF/sad-dog/ac79218e153de6de.jpg)
+            Your visual regression tests are not passing <img width="25" src="https://emoji.slack-edge.com/T031L1UKF/sad-dog/ac79218e153de6de.jpg" />
             Here is a pull request to fix them: https://github.com/${{ github.repository }}/pull/${{ steps.create_visual_pull_request.outputs.pull-request-number }} :tada:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
