@@ -64,7 +64,6 @@ class FormatterExtension extends AbstractExtension
 
         $options = $config->offsetGetOr('options', []);
         $extraKeys = $options['extraKeys'] ?? [];
-
         foreach ($extraKeys as $extraKey) {
             if (isset($rows[$extraKey])) {
                 $result->offsetSet($extraKey, $rows[$extraKey]);

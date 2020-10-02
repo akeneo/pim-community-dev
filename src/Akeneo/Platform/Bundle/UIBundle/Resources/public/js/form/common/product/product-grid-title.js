@@ -62,6 +62,5 @@ define(
 
         return this;
       },
-
     });
 });

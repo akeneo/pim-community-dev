@@ -9,11 +9,6 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Facet\Facet;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Facet\ProductAndProductsModelDocumentTypeFacetFactory;
 use PhpSpec\ObjectBehavior;
 
-/**
- * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
- * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
- */
 class ProductAndProductsModelDocumentTypeFacetFactorySpec extends ObjectBehavior
 {
     function it_is_instantiable()
