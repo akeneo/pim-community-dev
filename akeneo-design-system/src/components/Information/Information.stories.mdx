@@ -5,16 +5,11 @@ import {Link} from '../Link/Link';
 import {UsersIllustration} from '../../illustrations';
 import * as Illustrations from '../../illustrations';
 
-export const illustrationNames = Object.keys(Illustrations).reduce((accumulator, illustrationName) => {
-  accumulator[illustrationName] = illustrationName;
-  return accumulator;
-}, {});
-
 <Meta
   title="Components/Information"
   component={Information}
   argTypes={{
-    illustration: {control: {type: 'select', 'options': {...illustrationNames}}},
+    illustration: {control: {type: 'select', 'options': Object.keys(Illustrations)}},
     title: {control: {type: 'text'}},
     children: {control: {type: 'text'}}
   }}
