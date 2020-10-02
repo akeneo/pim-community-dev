@@ -135,8 +135,6 @@ class CategoryRepositoryApiResourceIntegration extends TestCase
         $this->createCategory(['code' => 'hat', 'parent' => 'accessories']);
         $this->createCategory(['code' => 'bob', 'parent' => 'hat']);
         $this->createCategory(['code' => 'melon', 'parent' => 'hat']);
-        $this->createCategory(['code' => 'ring', 'parent' => 'accessories']);
-        $this->createCategory(['code' => 'bracelet', 'parent' => 'accessories']);
 
         $this->createCategory(['code' => 'clothes']);
         $this->createCategory(['code' => 'men', 'parent' => 'clothes']);
