@@ -13,6 +13,7 @@ Feature: Display product datagrid row actions
 
   Scenario: Display row actions for product models
     When I am on the products grid
+    Then the title of the grid should be "6 products, 50 product models"
 
   Scenario: Display row actions for products and product models
     When I am on the products grid

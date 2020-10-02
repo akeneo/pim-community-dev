@@ -8,6 +8,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
 use Context\Page\Base\Grid;
 use Context\Spin\SpinCapableTrait;
+use Context\Spin\TimeoutException;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;
@@ -1285,6 +1286,35 @@ class DataGridContext extends PimContext implements PageObjectAware
             $filterName,
             $this->getDatagrid()->getCriteria($filterName)
         ));
+    }
+
+    /**
+     * @Then /^the title of the grid should be "(.*)"$/
+     */
+    public function theTitleOfTheGridShouldBe(string $title): void
+    {
+        $element = null;
+        $foundTitle = '';
+        try {
+            $this->spin(function () use ($title, &$foundTitle, &$element) {
+                $element = $this->getCurrentPage()->find('css', '.AknTitleContainer-title');
+                if (null === $element) {
+                    return false;
+                }
+
+                $foundTitle = $element->getText();
+
+                return $foundTitle === $title;
+            }, '');
+        } catch (TimeoutException $e) {
+            $message = null === $element ? 'The title was not found' : sprintf(
+                'The title does not match. Found: "%s", expected: "%s".',
+                $foundTitle,
+                $title
+            );
+
+            throw new TimeoutException($message);
+        }
     }
 
     /**
