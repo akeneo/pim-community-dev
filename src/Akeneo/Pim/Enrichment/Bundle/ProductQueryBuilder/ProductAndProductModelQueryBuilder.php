@@ -196,6 +196,13 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
      */
     private function shouldAggregateResults(): bool
     {
-        return !$this->hasRawFilter('field', 'parent') && !$this->hasRawFilter('field', 'id');
+        $hasParentField = $this->hasRawFilter('field', 'parent');
+        $hasIdField = $this->hasRawFilter('field', 'id');
+        $hasEntityTypeField = $this->hasRawFilter('field', 'entity_type');
+        
+        return
+            !$hasParentField &&
+            !$hasIdField &&
+            !$hasEntityTypeField;
     }
 }
