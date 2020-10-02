@@ -2,7 +2,11 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -20,12 +24,15 @@ class UniqueProductModelEntityValidator extends ConstraintValidator
     /** @var IdentifiableObjectRepositoryInterface */
     private $productModelRepository;
 
-    /**
-     * @param IdentifiableObjectRepositoryInterface $productModelRepository
-     */
-    public function __construct(IdentifiableObjectRepositoryInterface $productModelRepository)
-    {
+    /** @var UniqueValuesSet */
+    private $uniqueValuesSet;
+
+    public function __construct(
+        IdentifiableObjectRepositoryInterface $productModelRepository,
+        UniqueValuesSet $uniqueValuesSet
+    ) {
         $this->productModelRepository = $productModelRepository;
+        $this->uniqueValuesSet = $uniqueValuesSet;
     }
 
     /**
@@ -39,6 +46,19 @@ class UniqueProductModelEntityValidator extends ConstraintValidator
 
         if (!$entity instanceof ProductModelInterface) {
             throw new UnexpectedTypeException($constraint, ProductModelInterface::class);
+        }
+
+        $identifierValue = $this->getIdentifierValue($entity);
+        if (null === $identifierValue) {
+            return;
+        }
+
+        if (false === $this->uniqueValuesSet->addValue($identifierValue, $entity)) {
+            $this->context->buildViolation($constraint->message)
+                ->atPath('identifier')
+                ->addViolation();
+
+            return;
         }
 
         /**
@@ -57,5 +77,10 @@ class UniqueProductModelEntityValidator extends ConstraintValidator
                 ->atPath('code')
                 ->addViolation();
         }
+    }
+
+    private function getIdentifierValue(ProductModelInterface $entity): ValueInterface
+    {
+        return ScalarValue::value('code', $entity->getCode());
     }
 }
