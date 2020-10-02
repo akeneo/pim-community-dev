@@ -11,6 +11,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class ProductSaverSpec extends ObjectBehavior
 {
@@ -47,6 +48,52 @@ class ProductSaverSpec extends ObjectBehavior
         $this->save($product);
     }
 
+    function it_saves_a_just_created_single_product(
+        ObjectManager $objectManager,
+        EventDispatcherInterface $eventDispatcher,
+        ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
+        ProductInterface $product
+    ) {
+        $product->getId()->willReturn(null);
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $objectManager->persist($product)->shouldBeCalled();
+        $uniqueDataSynchronizer->synchronize($product)->shouldBeCalled();
+        $objectManager->flush()->shouldBeCalled();
+
+        $eventDispatcher->dispatch(
+            StorageEvents::POST_SAVE,
+            new GenericEvent(
+                $product->getWrappedObject(),
+                ['unitary' => true, 'created' => true]
+            )
+        )->shouldBeCalled();
+
+        $this->save($product);
+    }
+
+    function it_saves_an_already_created_single_product(
+        ObjectManager $objectManager,
+        EventDispatcherInterface $eventDispatcher,
+        ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
+        ProductInterface $product
+    ) {
+        $product->getId()->willReturn(1);
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $objectManager->persist($product)->shouldBeCalled();
+        $uniqueDataSynchronizer->synchronize($product)->shouldBeCalled();
+        $objectManager->flush()->shouldBeCalled();
+
+        $eventDispatcher->dispatch(
+            StorageEvents::POST_SAVE,
+            new GenericEvent(
+                $product->getWrappedObject(),
+                ['unitary' => true, 'created' => false]
+            )
+        )->shouldBeCalled();
+
+        $this->save($product);
+    }
+
     function it_saves_multiple_products(
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,
@@ -76,7 +123,11 @@ class ProductSaverSpec extends ObjectBehavior
         $objectManager->persist(Argument::any())->shouldNotBeCalled();
 
         $this
-            ->shouldThrow(new \InvalidArgumentException('Expects a Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface, "stdClass" provided'))
+            ->shouldThrow(
+                new \InvalidArgumentException(
+                    'Expects a Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface, "stdClass" provided'
+                )
+            )
             ->during('save', [$otherObject]);
     }
 
