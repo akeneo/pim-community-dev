@@ -1,7 +1,7 @@
 import {Theme} from '../theme';
 import {color, fontSize} from '../common';
 
-const pimTheme: Theme = {
+const onboarderTheme: Theme = {
   color,
   fontSize,
   palette: {
@@ -10,8 +10,8 @@ const pimTheme: Theme = {
     tertiary: 'grey',
     warning: 'yellow',
     danger: 'red',
-    brand: color.purple100,
+    brand: '#4CA8E0',
   },
 };
 
-export {pimTheme};
+export {onboarderTheme};

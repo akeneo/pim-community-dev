@@ -1,8 +1,25 @@
-import {Canvas, Meta, Story} from '@storybook/addon-docs/blocks';
+import {ThemeProvider} from 'styled-components';
+import {Canvas, Meta, Story, ArgsTable} from '@storybook/addon-docs/blocks';
 import {PreviewGrid, PreviewCard, PreviewContainer, LabelContainer} from 'shared/PreviewGallery';
 import * as Illustrations from './';
+import {pimTheme} from '../theme/pim';
+import {onboarderTheme} from '../theme/onboarder';
+import {sharedCatalogsTheme} from '../theme/shared-catalogs';
 
-<Meta title="Guidelines/Illustrations" />
+export const themes = {
+  PIM: pimTheme,
+  Onboarder: onboarderTheme,
+  'Shared Catalogs': sharedCatalogsTheme,
+};
+
+<Meta
+  title="Guidelines/Illustrations"
+  argTypes={{
+    theme: {control: {type: 'select', options: Object.keys(themes)}},
+    size: {control: {type: 'select', options: [128, 256]}},
+  }}
+  args={{theme: 'PIM', size: 128}}
+/>
 
 # Illustrations
 
@@ -10,19 +27,25 @@ Illustrations are visually and emotionally powerful tool. Carefully identify the
 
 ## Gallery
 
+<ArgsTable story="Standard" />
+
 <Canvas>
   <Story name="Standard">
-    <PreviewGrid width={168}>
-      {Object.keys(Illustrations).map(illustrationName => {
-        return (
-          <PreviewCard key={illustrationName}>
-            <PreviewContainer>
-              {React.createElement(Illustrations[illustrationName], {height: 128, width: 128})}
-            </PreviewContainer>
-            <LabelContainer>{illustrationName.replace('Illustration', '')}</LabelContainer>
-          </PreviewCard>
-        );
-      })}
-    </PreviewGrid>
+    {args => {
+      return (
+        <ThemeProvider theme={themes[args.theme]}>
+          <PreviewGrid width={args.size + 40}>
+            {Object.keys(Illustrations).map(illustrationName => {
+              return (
+                <PreviewCard key={illustrationName}>
+                  <PreviewContainer>{React.createElement(Illustrations[illustrationName], {...args})}</PreviewContainer>
+                  <LabelContainer>{illustrationName.replace('Illustration', '')}</LabelContainer>
+                </PreviewCard>
+              );
+            })}
+          </PreviewGrid>
+        </ThemeProvider>
+      );
+    }}
   </Story>
 </Canvas>
