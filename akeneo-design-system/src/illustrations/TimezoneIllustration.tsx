@@ -1,6 +1,5 @@
 import React from 'react';
 import {IllustrationProps} from './IllustrationProps';
-import {useTheme} from '../hooks';
 
 const TimezoneIllustration = ({title, size = 256}: IllustrationProps) => (
   <svg width={size} height={size} viewBox="0 0 256 256">
