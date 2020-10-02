@@ -1,6 +1,6 @@
 import React from 'react';
 import {render} from '../../storybook/test-util';
-import {InformationHelper} from './InformationHelper';
+import {Information} from './Information';
 import {UsersIllustration} from '../../illustrations';
 
 describe('A helper', () => {
@@ -9,9 +9,9 @@ describe('A helper', () => {
     const helperMessage = 'A Helper message';
 
     const {getByText} = render(
-      <InformationHelper title={helperTitle} illustration={UsersIllustration}>
+      <Information title={helperTitle} illustration={UsersIllustration}>
         {helperMessage}
-      </InformationHelper>
+      </Information>
     );
 
     expect(getByText(helperTitle)).toBeInTheDocument();

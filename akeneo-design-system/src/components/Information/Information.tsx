@@ -1,7 +1,7 @@
 import React, {Children, isValidElement, ReactNode, Ref} from 'react';
 import styled from 'styled-components';
 import {getColor, getFontSize} from '../../theme';
-import {Link} from '..';
+import {Link} from '../Link/Link';
 
 const Container = styled.div`
   align-items: center;
@@ -47,8 +47,8 @@ type HelperProps = {
   children: ReactNode;
 };
 
-/** InformationHelper informs the user about the page's features */
-const InformationHelper = React.forwardRef<HTMLDivElement, HelperProps>(
+/** Information informs the user about the page's features */
+const Information = React.forwardRef<HTMLDivElement, HelperProps>(
   ({illustration, title, children, ...rest}: HelperProps, forwardedRef: Ref<HTMLDivElement>) => {
     const resizedIllustration = isValidElement(illustration) && React.cloneElement(illustration, {size: 80});
 
@@ -79,4 +79,4 @@ const HighlightTitle = styled.span`
   color: ${getColor('purple100')};
 `;
 
-export {InformationHelper, HighlightTitle};
+export {Information, HighlightTitle};

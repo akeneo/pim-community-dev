@@ -1,6 +1,6 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import LinkTo from '@storybook/addon-links/react';
-import {InformationHelper, HighlightTitle} from './InformationHelper';
+import {Information, HighlightTitle} from './Information';
 import {Link} from '../Link/Link';
 import {UsersIllustration} from '../../illustrations';
 import * as Illustrations from '../../illustrations';
@@ -11,8 +11,8 @@ export const illustrationNames = Object.keys(Illustrations).reduce((accumulator,
 }, {});
 
 <Meta
-  title="Components/InformationHelper"
-  component={InformationHelper}
+  title="Components/Information"
+  component={Information}
   argTypes={{
     illustration: {control: {type: 'select', 'options': {...illustrationNames}}},
     title: {control: {type: 'text'}},
@@ -43,7 +43,7 @@ Use this playground to test the helper component
   <Story name="Standard">
     {(args) => {
       const illustrationComponent = React.createElement(Illustrations[args.illustration]);
-      return <InformationHelper {...args} illustration={illustrationComponent}/>;
+      return <Information {...args} illustration={illustrationComponent}/>;
     }}
   </Story>
 </Canvas>
@@ -52,7 +52,7 @@ Use this playground to test the helper component
 
 ## Composition
 
-Generally InformationHelper contain also link.
+Generally Information contain also link.
 Title can also be composed of highlight.
 
 <Canvas>
@@ -60,10 +60,10 @@ Title can also be composed of highlight.
     {(args) => {
       const title = (<>Lorem ipsum <HighlightTitle>dolor</HighlightTitle> sit amet</>)
       return (
-        <InformationHelper title={title} illustration={<UsersIllustration/>}>
+        <Information title={title} illustration={<UsersIllustration/>}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
           <Link target="_blank" href="https://www.akeneo.com/">Link to related lorem ipsum</Link>
-        </InformationHelper>
+        </Information>
       );
     }}
   </Story>
