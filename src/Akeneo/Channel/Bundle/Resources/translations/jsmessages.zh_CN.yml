@@ -1,7 +1,7 @@
 batch_jobs:
   csv_currency_export:
     label: 以 CSV 格式导出货币
-    export.label: 货币导出
+    export.label: 导出货币
   csv_currency_import:
     label: 以 CSV 格式导入货币
     import.label: 导入货币
@@ -53,7 +53,7 @@ pim_enrich.entity.channel:
   property:
     category_tree: 类别树
     do_not_convert: 不转换
-    label_conversion_units: 在产品导出时，为每一个公制属性选择一个转位单位。
+    label_conversion_units: 在产品导出时，为每一个公制属性选择一个转换单位。
   module:
     create:
       button: 创建渠道

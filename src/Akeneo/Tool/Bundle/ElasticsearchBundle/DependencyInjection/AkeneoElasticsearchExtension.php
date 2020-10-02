@@ -7,6 +7,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
@@ -54,7 +55,7 @@ class AkeneoElasticsearchExtension extends Extension
                 $index['service_name']
             );
             $container->register($configurationLoaderServiceName, Loader::class)
-                ->setArguments([$index['configuration_files']]);
+                ->setArguments([$index['configuration_files'], new Reference(ParameterBagInterface::class)]);
 
             $container->register($index['service_name'], Client::class)
                 ->setArguments([
