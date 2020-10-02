@@ -194,10 +194,10 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
      * But a proper solution would need too much reworks. So for now we only add this workaround.
      * It's acceptable that the product variants are not aggregated when filtering by Id, but not for other filters.
      *
-     * We don't want to aggregate neither if there is a filter on entity_type. The only possible value on this filter is the ProductInterface.
+     * We don't want to aggregate either if there is a filter on entity_type. The only possible value for this filter in the grid context is ProductInterface.
      * When this filter is added, it means that we want to return only simple and variant products; in other words, we don't want to
      * aggregate results.
-     * @see Oro\Bundle\PimFilterBundle\Filter\Product\EntityTypeFilter
+     * @see Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\EntityTypeFilter
      */
     private function shouldAggregateResults(): bool
     {
