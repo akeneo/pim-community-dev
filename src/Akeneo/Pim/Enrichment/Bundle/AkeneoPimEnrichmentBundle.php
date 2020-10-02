@@ -10,8 +10,8 @@ use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\Localization\Regis
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterAttributeConstraintGuessersPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterCategoryItemCounterPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterComparatorsPass;
-use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterCompleteCheckerPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterFilterPass;
+use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterFlatTranslatorPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterProductQueryFilterPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterProductQuerySorterPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterProductUpdaterPass;
@@ -60,6 +60,7 @@ class AkeneoPimEnrichmentBundle extends Bundle
             ->addCompilerPass(new RegisterCategoryItemCounterPass())
             ->addCompilerPass(new RegisterProductQueryFilterPass('product_and_product_model'))
             ->addCompilerPass(new ConfigureAxisValueLabelsNormalizerPass())
+            ->addCompilerPass(new RegisterFlatTranslatorPass())
         ;
 
         $mappings = [

@@ -1,5 +1,88 @@
 # 4.0.x
 
+# 4.0.60 (2020-09-30)
+
+## Technical Improvements
+
+- API-1201: [Backport] Be able to get attributes searching by codes 
+- PIM-9469: [Backport] API-1232: Be able to get list of attribute from updated date from the API
+
+# 4.0.59 (2020-09-23)
+
+## Technical Improvements
+
+- PIM-9055: Allow not to drop an existing database during the install process
+
+# 4.0.58 (2020-09-22)
+
+## Bug fixes
+
+- PIM-9455: Make total_fields limit of elasticsearch configurable
+
+# 4.0.57 (2020-09-15)
+
+## Bug fixes
+
+- AOB-1023: Fix duplicated assets menu in PEF
+- PIM-9445: Fix boolean attribute is broken on compare/translate when the attribute is localisable or scopable
+- PIM-9439: Fix PEF shakes on product with lot of simple/multi select
+
+# 4.0.56 (2020-09-09)
+
+## Bug fixes
+
+- PIM-9430: [Backport PIM-9110] Avoid deadlock error when loading product and product models in parallel with the API
+
+# 4.0.55 (2020-09-03)
+
+# 4.0.54 (2020-08-28)
+
+## Improvement
+
+- PIM-9315: Improve error message when you have no rights on a product
+
+# 4.0.53 (2020-08-27)
+
+## Bug fixes
+
+- PIM-9426: Fix incorrect use of `Akeneo\Tool\Component\Batch\Item\InvalidItemInterface`
+
+# 4.0.52 (2020-08-24)
+
+# 4.0.51 (2020-08-21)
+
+## Bug fixes
+
+- PIM-9416: Add translation keys for mass delete action and corresponding message on the job page
+
+# 4.0.50 (2020-08-20)
+
+## Bug fixes
+
+- PIM-9288: Product completeness was not up to date after deletion of an option for required attribute
+
+# 4.0.49 (2020-08-13)
+
+## Bug fixes
+
+- PIM-9401: Fix Elasticsearch filters with EMPTY operator
+
+# 4.0.48 (2020-08-12)
+
+## Bug fixes
+
+- PIM-9112: Fix empty values cleaner for metric with null values
+
+# 4.0.47 (2020-08-07)
+
+# 4.0.46 (2020-07-31)
+
+## Bug fixes
+
+- PIM-9379: attribute search by label was not working in attribute group add attributes
+
+# 4.0.45 (2020-07-31)
+
 # 4.0.44 (2020-07-28)
 
 # 4.0.43 (2020-07-27)

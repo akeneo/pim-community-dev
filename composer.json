@@ -15,7 +15,8 @@
         "psr-4": {
             "Pim\\Upgrade\\": "upgrades/",
             "Akeneo\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back",
-            "Akeneo\\Platform\\CommunicationChannel\\": "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back"
+            "Akeneo\\Platform\\CommunicationChannel\\": "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back",
+            "Akeneo\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/back"
         }
     },
     "autoload-dev": {
@@ -31,7 +32,8 @@
             "Akeneo\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
             "Akeneo\\Test\\": "tests/back/",
             "Pim\\Upgrade\\Schema\\Tests\\": "upgrades/test_schema/",
-            "Akeneo\\Platform\\CommunicationChannel\\Test\\": "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests"
+            "Akeneo\\Platform\\CommunicationChannel\\Test\\": "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests",
+            "Akeneo\\Test\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/tests/back"
         }
     },
     "require": {
@@ -136,7 +138,7 @@
         "behat/mink-selenium2-driver": "^1.3.1",
         "behat/symfony2-extension": "2.1.5",
         "phpspec/phpspec": "~6.0.0",
-        "phpspec/prophecy": "~1.9.0",
+        "phpspec/prophecy": "~1.10.0",
         "phpunit/phpunit": "^8.0",
         "sebastian/exporter": "~3.1.0",
         "sensiolabs/behat-page-object-extension": "2.1.0",

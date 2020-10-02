@@ -8,7 +8,7 @@ const userContext = require('pim/user-context');
 interface HeaderConfig {
   title: string;
   description: string;
-  link: string,
+  link: string;
 }
 
 /**
@@ -46,9 +46,9 @@ class HeaderView extends BaseView {
       const headerContents: string = this.headerTemplate({
         __: __,
         title: __(this.config.title)
-          .replace('{{values}}', productValues.value.toLocaleString(
-            userContext.get('uiLocale').split('_')[0],
-            {useGrouping: true})
+          .replace(
+            '{{values}}',
+            productValues.value.toLocaleString(userContext.get('uiLocale').split('_')[0], {useGrouping: true})
           )
           .replace('{{average}}', productValuesAverage.value.average),
         description: __(this.config.description).replace('{{link}}', this.config.link),

@@ -12,6 +12,10 @@ parameters:
     pim_catalog.compute_family_variant_structure_changes.tasklet_name: 'compute_family_variant_structure_changes'
     pim_catalog.compute_family_variant_structure_changes.connector_name: 'compute_family_variant_structure_changes'
 
+    pim_catalog.job.remove_non_existing_product_values.job_type: 'remove_non_existing_product_values'
+    pim_catalog.job.remove_non_existing_product_values.job_name: 'remove_non_existing_product_values'
+    pim_catalog.job.remove_non_existing_product_values.connector_name: 'remove_non_existing_product_values'
+
     pim_connector.job_name.xlsx_product_export: 'xlsx_product_export'
     pim_connector.job_name.xlsx_product_import: 'xlsx_product_import'
     pim_connector.job_name.xlsx_product_model_import: 'xlsx_product_model_import'
@@ -608,3 +612,17 @@ services:
             - ['@pim_enrich.step.change_parent.mass_edit']
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+
+    pim_enrich.job.remove_non_existing_product_values:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_catalog.job.remove_non_existing_product_values.job_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - ['@pim_enrich.step.remove_non_existing_product_values']
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: '%pim_catalog.job.remove_non_existing_product_values.connector_name%'
+                type: '%pim_catalog.job.remove_non_existing_product_values.job_type%'
+            - { name: akeneo_batch.job.not_visible }

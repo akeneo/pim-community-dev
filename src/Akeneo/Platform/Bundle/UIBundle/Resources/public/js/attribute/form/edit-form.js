@@ -23,6 +23,15 @@ define([
         },
 
         /**
+         * Sets the attribute code for dynamic tree building purpose at configuration time.
+         *
+         * @param {String} type
+         */
+        setCode: function (code) {
+            this.code = code;
+        },
+
+        /**
          * Sets the attribute type for dynamic tree building purpose at configuration time.
          *
          * @param {String} type

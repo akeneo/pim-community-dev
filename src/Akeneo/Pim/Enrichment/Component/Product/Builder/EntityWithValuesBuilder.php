@@ -30,7 +30,7 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
 
     /**
      * @param AttributeValuesResolverInterface $valuesResolver
-     * @param ValueFactory                     $productValueFactory
+     * @param ValueFactory $productValueFactory
      */
     public function __construct(
         AttributeValuesResolverInterface $valuesResolver,
@@ -53,6 +53,7 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
         $data
     ): ?ValueInterface {
         $attribute = $this->getAttributesQuery->forCode($attribute->getCode());
+        $data = $this->filterEmptyPricesAndMeasurements($attribute->type(), $data);
 
         $formerValue = $entityWithValues->getValue($attribute->code(), $localeCode, $channelCode);
         $isFormerValueFilled = null !== $formerValue && '' !== $formerValue && [] !== $formerValue;
@@ -76,6 +77,35 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
     private function isEmptyStringValue($value): bool
     {
         return is_string($value) && '' === trim($value);
+    }
+
+    /**
+     * Filter empty data for price collection and measurement attributes
+     * As their data is more complex than for other attribute types,
+     * it's not as easy to figure out if the value is empty
+     * However we only filter values that have the right format, because we want the
+     * value factory to throw an exception otherwise
+     */
+    private function filterEmptyPricesAndMeasurements(string $attributeType, $data)
+    {
+        if (AttributeTypes::METRIC === $attributeType) {
+            if (is_array($data) && array_key_exists('amount', $data) && null === $data['amount']) {
+                return null;
+            }
+        }
+
+        if (AttributeTypes::PRICE_COLLECTION === $attributeType) {
+            if (is_array($data)) {
+                foreach ($data as $index => $price) {
+                    // if the "amount" key does not exist, we don't filter it to let the ValueFactory throw an exception
+                    if (is_array($price) && array_key_exists('amount', $price) && null === $price['amount']) {
+                        unset($data[$index]);
+                    }
+                }
+            }
+        }
+
+        return $data;
     }
 
     private function createValue(

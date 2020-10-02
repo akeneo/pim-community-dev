@@ -142,6 +142,7 @@ $rules = [
         // TIP-921: PIM/Enrichment should not be linked to Channel
         'Akeneo\Channel\Component\Model\ChannelInterface',
         'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
+        'Akeneo\Channel\Component\Validator\Constraint\ActivatedLocale',
 
         // TIP-922: PIM/Enrichment should not be linked to Currency
         'Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface',

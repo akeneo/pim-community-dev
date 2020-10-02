@@ -1,98 +1,117 @@
 pim_user:
   user:
-    tab:
-      general.title: Algemeen
-      additional.title: Extra
+    title: Gebruiker
+    fields:
+      name_prefix: Voorvoegsel
+      email: E-mail
+      username: Gebruikersnaam
+      first_name: Voornaam
+      middle_name: Tussenvoegsel
+      last_name: Achternaam
+      name_suffix: Achtervoegsel
+      phone: Telefoon
+      date_of_birth: Geboortedatum
+      avatar: Profielafbeelding
+      timezone: Tijdzone
+      roles: Rollen
+      groups: Groepen
+      password: Wachtwoord
+      password_again: Voer wachtwoord opnieuw in
+      product_grid_filters: Filters productraster
+      catalog_locale: Catalogus lokalisatie
+      catalog_scope: Scope van catalogus
+      default_tree: Standaardstructuur
+      current_password: Huidig wachtwoord
+      new_password: Nieuw wachtwoord
+      new_password_again: Nieuw wachtwoord (herhalen)
+      default_grid_view:
+        none: Geen
+      default_product_grid_view:
+        label: Standaard Productweergave raster
+      ui_locale: Gebruikers Interface
+      last_logged_in: Laatst aangemeld
+      login_count: Aantal logins
+      user_salt: Hash Gebruiker
+      created: Aangemaakt
+      updated: Bijgewerkt
+      status: Status
+      capabilities: Mogelijkheden
+      has_role: Heeft rol
+      has_group: Heeft groep
+      active: Actief
+      inactive: Inactief
+    fields_errors:
+      new_password:
+        minimum_length: Het wachtwoord moet minstens 2 karakters bevatten
+      new_password_repeat:
+        not_match: Wachtwoord komt niet overeen
+      current_password:
+        wrong: Verkeerd wachtwoord
+    tabs:
+      general:
+        title: Algemeen
+        basic_information: Basisinformatie
+        contact_information: Contactinformatie
+      additional:
+        title: Aanvullend
+      additional_data:
+        title: Aanvullende gegevens
+      interfaces:
+        title: Interfaces
       group_and_role.title: Groepen en rollen
       password.title: Wachtwoord
       business_unit.title: Bedrijfsdivisies
       email_synchronization.title: Synchronisatie-instellingen voor e-mail
+    removed_user: Verwijderde gebruiker
+    login:
+      username_or_email: Gebruikersnaam of E-mail
+      remember_me: Onthoud mijn gegevens op deze computer
+      password_forgotten: Uw wachtwoord vergeten?
+      log_in: Login
+      forgot_password: Wachtwoord vergeten
+      request: Aanvragen
+      password_reset: Wachtwoord resetten
+      reset: Resetten
+      password_reset_email_sent: Er is een e-mail verzonden naar de gebruiker. Deze mail bevat een wachtwoord-reset link.
+      homepage: Ga naar de homepage
   group:
     tab:
       general.title: Algemeen
       users.title: Gebruikers
-oro.user.controller:
-  group.message.saved: "Groep opgeslagen"
-  role.message.saved: "Rol opgeslagen"
-  user.message.saved: "Gebruiker opgeslagen"
-  status.message.saved: "Status opgeslagen"
-oro.user.grid.users:
+  roles:
+    title: Rol
+    tab:
+      general: Algemeen
+      action: Machtigingen
+      users: Gebruikers
+  controller:
+    group:
+      message:
+        saved: "Groep opgeslagen"
+    role:
+      message:
+        saved: "Rol opgeslagen"
+    user:
+      message:
+        saved: "Gebruiker opgeslagen"
+pim_datagrid:
   columns:
-    username: "Gebruikersnaam"
-    email: "E-mail"
-    firstName: "Voornaam"
-    lastName: "Achternaam"
-    createdAt: "Aangemaakt op"
-    updatedAt: "Bijgewerkt op"
-    enabled: "Status"
-oro.user.grid.roles:
-  columns:
-    label: "Label"
-oro.user.grid.groups:
-  columns:
-    name: "Naam"
-pim_title:
-  user.index: Gebruikers
-  user_role.index: Rollen
-  user_group.index: Groepen
-  system_configuration.index: Configuratie
-user.title: Gebruiker
-user.overview: Gebruiker
-Users Management: Gebruikersbeheer
-Create user: Gebruiker aanmaken
-btn.create.user: Gebruiker aanmaken
-New user: Nieuwe gebruiker
-Additional: Extra
-Groups and Roles: Groepen en rollen
-Username: Gebruikersnaam
-Password: Wachtwoord
-Re-enter password: Voer wachtwoord opnieuw in
-Name prefix: Voorvoegsel
-First name: Voornaam
-Middle name: Tussenvoegsel
-Last name: Achternaam
-Name suffix: Achtervoegsel
-Date of birth: Geboortedatum
-Avatar: Profielafbeelding
-Additional emails: Extra e-mails
-Add another email: Een ander e-mailadres toevoegen
-Catalog locale: Catalogus lokalisatie
-Catalog scope: Scope van catalogus
-Default tree: Standaardstructuur
-Business Units: Bedrijfsdivisies
-Email synchronization settings: Synchronisatie-instellingen voor e-mail
-Host: Host
-Port: Poort
-Last logged in: Laatst aangemeld
-Login count: Aantal logins
-Additional Information: Extra informatie
-Basic Information: Algemene gegevens
-Contact Information: Contactinformatie
-User name: Gebruikersnaam
-Birthday: Verjaardag
-API key: API-sleutel
-Generate key: Sleutel genereren
-Primary: primaire
-Removed user: Verwijderde gebruiker
-user:
-  default_grid_view:
-    none: Geen
-  timezone: Tijdzone
-Role: Rol
-Owner: Eigenaar
-General: Algemeen
-Entity: Entiteit
-Capabilities: Mogelijkheden
-Save and close: Opslaan en sluiten
-Has role: Heeft rol
-role:
-  title: rol
-  overview: rol
-  edit: Rol bewerken
-  create: Rol aanmaken
-btn.create.role: Rol aanmaken
-rights:
-  action: Machtigingen
+    user:
+      createdAt: "Aangemaakt op"
+      updatedAt: "Bijgewerkt op"
+    roles:
+      label: "Label"
+    groups:
+      name: "Naam"
+confirmation:
+  remove:
+    role: Weet u zeker dat u deze rol wilt verwijderen?
+    user: Weet u zeker dat u deze gebruiker wilt verwijderen?
+flash:
+  role:
+    removed: Rol succesvol verwijderd
+  user:
+    removed: Gebruiker succesvol verwijderd
 oro_security:
   acl_group:
     user: Gebruikers
@@ -114,32 +133,11 @@ oro_security:
       create: Maak een gebruikersgroep
       edit: Bewerken van gebruikersgroepen
       delete: De gebruikersgroep van een verwijderen
+#Security
 (default): Standaardmachtiging op entiteiten
-VIEW: Bekijken
+VIEW: Bekijk
 CREATE: Aanmaken
-EDIT: Bewerken
+EDIT: Wijzig
 DELETE: Verwijderen
 ASSIGN: Toewijzen
 SHARE: Delen
-oro:
-  security:
-    access-level:
-      BASIC: Gebruiker
-      LOCAL: Bedrijfsdivisie
-      DEEP: Divisie
-      GLOBAL: Organisatie
-      SYSTEM: Systeem
-      NONE: Geen
-Create group: Groep aanmaken
-btn.create.user-group: Groep aanmaken
-Has group: Heeft groep
-Save and Close: Opslaan en sluiten
-user-group.overview: Groepen
-Log in: Login
-Remember me on this computer: Onthoud mijn gegevens op deze computer
-Forgot your password?: Uw wachtwoord vergeten?
-Username or Email: Gebruikersnaam of E-mail
-Forgot Password: Wachtwoord vergeten
-Request: Aanvragen
-Check Email: E-mail controleren
-Go to homepage: Ga naar de homepage

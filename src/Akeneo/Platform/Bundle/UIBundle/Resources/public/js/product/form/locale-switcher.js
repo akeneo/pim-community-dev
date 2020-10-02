@@ -14,7 +14,8 @@ define(
         'pim/form',
         'pim/template/product/locale-switcher',
         'pim/fetcher-registry',
-        'pim/i18n'
+        'pim/i18n',
+        'pim/user-context',
     ],
     function (
         _,
@@ -22,7 +23,8 @@ define(
         BaseForm,
         template,
         FetcherRegistry,
-        i18n
+        i18n,
+        UserContext
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -33,6 +35,7 @@ define(
             displayInline: false,
             displayLabel: true,
             config: {},
+            selectedLocale: null,
 
             /**
              * {@inheritdoc}
@@ -70,7 +73,10 @@ define(
                         };
                         this.getRoot().trigger('pim_enrich:form:locale_switcher:pre_render', params);
 
-                        let currentLocale = locales.find(locale => locale.code === params.localeCode);
+                        let currentLocale = locales.find(locale => locale.code === (this.selectedLocale ?
+                            this.selectedLocale :
+                            UserContext.get('catalogLocale'))
+                        );
                         if (undefined === currentLocale) {
                             currentLocale = _.first(locales);
                         }
@@ -110,6 +116,7 @@ define(
                     localeCode: event.currentTarget.dataset.locale,
                     context: this.config.context
                 });
+                this.selectedLocale = event.currentTarget.dataset.locale;
 
                 this.render();
             },

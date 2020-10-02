@@ -1,5 +1,38 @@
 # 3.2.x
 
+# 3.2.72 (2020-09-30)
+
+# 3.2.71 (2020-09-21)
+
+## Bug fixes:
+
+- AOB-1080: Fix pim/onboarder logo submenu display under collapsed column
+- PIM-9450: Fix error during family import, compute products/product models doesn't work when products/product models are skipped
+- PIM-9453: Use specific query to fetch product identifiers linked to a group.
+
+# 3.2.70 (2020-09-10)
+
+# 3.2.69 (2020-09-07)
+
+## Bug fixes:
+
+-PIM-9101: Be able to create a family, a family variant, a group type, an association type named "rest".
+
+# 3.2.68 (2020-09-03)
+
+## Bug fixes:
+
+- PIM-9427: Update datagrid selection count when clearing filter
+- PIM-9402: Add new ES filters for EMPTY operator
+
+# 3.2.67 (2020-08-07)
+
+## Bug fixes:
+
+- PIM-9380: Parts of the PIM are not translatable on Crowdin
+
+# 3.2.66 (2020-08-04)
+
 # 3.2.65 (2020-07-20)
 
 # 3.2.64 (2020-07-16)

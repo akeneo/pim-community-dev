@@ -94,6 +94,8 @@ class ProductExportController
         // If the parameter _displayedColumnOnly is set, it means it's a grid context. We didn't change the name of the
         // parameter to avoid BC.
         $withGridContext = (bool) $request->get('_displayedColumnsOnly');
+        $withLabels = (bool) $request->get('_withLabels');
+        $fileLocale = $request->get('_fileLocale');
         $jobCode = $request->get('_jobCode');
         $jobInstance = $this->jobInstanceRepo->findOneByIdentifier(['code' => $jobCode]);
 
@@ -125,6 +127,17 @@ class ProductExportController
                 $dynamicConfiguration,
                 [
                     'selected_properties' => $columns
+                ]
+            );
+        }
+
+        if ($withLabels) {
+            $dynamicConfiguration = array_merge(
+                $dynamicConfiguration,
+                [
+                    'with_label' => true,
+                    'header_with_label' => true,
+                    'file_locale' => $fileLocale
                 ]
             );
         }

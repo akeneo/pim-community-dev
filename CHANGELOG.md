@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-9408: Fix attribute group's updated_at field udpate
 - TIP-1513: Environment variables declared in the env were not loaded when using a compiled .env file
 - PIM-9274: Fix Yaml reader to display the number of lines read for incorrectly formatted files
 - TIP-1406: Add a tag to configure a DIC service based on a feature flag
@@ -24,6 +25,19 @@
 - PIM-9362: Adapt System Information twig file for a clear and a correct display of the number of API connections
 - PIM-9360: Fix PHP Warning raised in PriceComparator
 - PIM-9370: Fixes page freezing with a big number of attribute options
+- PIM-9391: Filter empty prices and measurement values
+- PIM-9407: Fix glitch in family variant selector if the family variant has no label
+- PIM-9425: Fix inaccurate attribute max characters
+- PIM-9443: Do not cache extensions.json
+- PIM-9454: Fix scalar value type check in PQB filters
+- PIM-9460: Fix performance issue on export
+- PIM-9461: Fix display of multiselect fields with a lot of selected options
+- PIM-9466: Fix selection counter in datagrid
+- GITHUB-12578: Fix trailing zeros when formatting numbers
+- PIM-9440: Fix locked MySQL tables during removing DQI evaluations without product
+- PIM-9476: Fix locale selector behavior on the product edit form when the user doesn't have permissions to edit attributes
+- PIM-9478: Allow the modification of the identifier on a variant product
+- PIM-9481: Fix the list of product models when trying to get them by family variant
 
 ## New features
 
@@ -31,6 +45,7 @@
 - MET-14: Measurements (or metrics) are now stored in database
 - AOB-277: Add an acl to allow a role member to view all job executions in last job execution grids, job tracker and last operations widget.
 - RAC-54: Add a new type of associations: Association with quantity
+- RAC-123: Add possibility to export product/product model with labels instead of code
 
 ## Improvements
 
@@ -40,6 +55,8 @@
 - API-1225: Be able to get attributes searching by updated date
 - API-1226: Be able to get attributes searching by a list of attribute types
 - PIM-9368: Allow minimum translation progress of 70% instead of 80%
+- PIM-9398: Add a primary key on connection table
+- PIM-9371: Disable save button when user creation form is not ready to submit
 
 # Technical Improvements
 

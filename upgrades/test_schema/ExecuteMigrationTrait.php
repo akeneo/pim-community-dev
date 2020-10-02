@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema\Tests;
 
-use Akeneo\Tool\Component\Console\CommandLauncher;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -15,26 +15,33 @@ use PHPUnit\Framework\Assert;
 trait ExecuteMigrationTrait
 {
     /**
-     * @param string $service
-     * @return mixed
+     * @return string
      */
-    abstract protected function get(string $service);
-
-    private function getCommandLauncher(): CommandLauncher
-    {
-        return $this->get('akeneo_integration_tests.migration_command_launcher');
-    }
+    abstract protected function getParameter(string $parameter);
 
     private function reExecuteMigration(string $migrationLabel): void
     {
-        $resultDown = $this->getCommandLauncher()->executeForeground(
-            sprintf('doctrine:migrations:execute %s --down -n', $migrationLabel)
-        );
-        Assert::assertEquals(1, $resultDown->getCommandStatus(), 'Migration should be irreversible.');
+        $pathFinder = new PhpExecutableFinder();
+        $phpCommand = $pathFinder->find();
 
-        $resultUp = $this->getCommandLauncher()->executeForeground(
-            sprintf('doctrine:migrations:execute %s --up -n', $migrationLabel)
+        $rootDir = $this->getParameter('kernel.project_dir');
+
+        $output = [];
+        $status = null;
+
+        exec(
+            sprintf('%s %s/bin/console doctrine:migrations:execute %s --down -n 2>&1', $phpCommand, $rootDir, $migrationLabel),
+            $output,
+            $status
         );
-        Assert::assertEquals(0, $resultUp->getCommandStatus(), \json_encode($resultUp->getCommandOutput()));
+
+        Assert::assertEquals(1, $status, 'Migration should be irreversible.');
+
+        exec(
+            sprintf('%s %s/bin/console doctrine:migrations:execute %s --up -n', $phpCommand, $rootDir, $migrationLabel),
+            $output,
+            $status
+        );
+        Assert::assertEquals(0, $status, \json_encode($output));
     }
 }

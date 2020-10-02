@@ -5,6 +5,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller\InternalApi;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Event\JobInstanceEvents;
+use Akeneo\Platform\Bundle\ImportExportBundle\Exception\JobInstanceCannotBeUpdatedException;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
@@ -342,6 +343,16 @@ class JobInstanceController
         }
 
         $data = json_decode($request->getContent(), true);
+
+        try {
+            $this->eventDispatcher->dispatch(
+                JobInstanceEvents::PRE_SAVE,
+                new GenericEvent($jobInstance, ['data' => $data])
+            );
+        } catch (JobInstanceCannotBeUpdatedException $e) {
+            return new JsonResponse(['message' => $e->getMessage()], 400);
+        }
+
         $filteredData = $this->inputFilter->filterCollection(
             $data,
             'pim.internal_api.job_instance.edit',

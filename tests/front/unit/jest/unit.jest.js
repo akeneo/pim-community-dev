@@ -9,6 +9,8 @@ const unitConfig = {
   coveragePathIgnorePatterns: [
     'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge',
     'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/components/Button.tsx',
+    'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/components/Checkbox.tsx',
+    'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/components/Modal.tsx',
     'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/components/NoData.tsx',
     'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/icons',
     'src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared/src/illustrations',
@@ -35,8 +37,12 @@ const unitConfig = {
     routes: '<rootDir>/public/js/routes.js',
   },
   testRegex: '(tests/front/unit)(.*)(unit).(jsx?|tsx?)$',
+  testPathIgnorePatterns: [
+      '/node_modules/',
+      '<rootDir>/src/Akeneo/Connectivity/',
+  ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  moduleDirectories: ['<rootDir>/node_modules', `<rootDir>/public/bundles/`],
+  moduleDirectories: ['node_modules', `<rootDir>/public/bundles/`],
   globals: {
     __moduleConfig: {},
     'ts-jest': {

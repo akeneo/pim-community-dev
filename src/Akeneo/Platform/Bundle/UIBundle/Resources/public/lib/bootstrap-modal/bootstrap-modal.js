@@ -108,7 +108,7 @@
         okText: 'OK',
         focusOk: true,
         okCloses: true,
-        cancelText: 'Cancel',
+        cancelText: _.__('pim_common.cancel'),
         allowCancel: true,
         escape: true,
         animate: false,

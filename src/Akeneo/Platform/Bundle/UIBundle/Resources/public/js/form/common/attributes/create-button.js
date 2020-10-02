@@ -50,6 +50,34 @@ define(
             },
 
             /**
+             * Extracts the value of a given parameter from the actual url.
+             *
+             * @param {String} paramName
+             * @return  {String}
+             */
+            getQueryParam: function (paramName) {
+                var url = location.href;
+                if (-1 === url.lastIndexOf('?')) {
+                    return '';
+                }
+                var params = url.substring(url.lastIndexOf('?') + 1);
+                if (!params) {
+                    return null;
+                }
+
+                var stringParams = params.split('&');
+                var objectParams = {};
+                stringParams.forEach(function (stringParam) {
+                    var tab = stringParam.split('=');
+                    if (tab.length === 2) {
+                        objectParams[tab[0]] = tab[1];
+                    }
+                })
+
+                return objectParams[paramName] ?? '';
+            },
+
+            /**
              * Create the dialog modal and bind clicks
              */
             createModal: function (attributeTypesMap) {
@@ -58,8 +86,9 @@ define(
                 var moduleConfig = __moduleConfig;
 
                 var modal = null;
+                var self = this;
 
-                $('#attribute-create-button').on('click', function () {
+                var openModal = function () {
                     if (modal) {
                         modal.open();
                     } else {
@@ -71,6 +100,11 @@ define(
                                 attributeTypes: attributeTypes,
                                 iconsMap: moduleConfig.attribute_icons,
                                 generateRoute: function (route, params) {
+                                    var code = self.getQueryParam('code');
+                                    if (code) {
+                                        params = { code: code, ...params };
+                                    }
+
                                     return Routing.generate(route, params);
                                 }
                             }),
@@ -90,7 +124,13 @@ define(
                         modal.close();
                         modal.$el.remove();
                     });
-                }.bind(this));
+                }.bind(this);
+
+                $('#attribute-create-button').on('click', openModal);
+
+                if (this.getQueryParam('open_create_attribute_modal')) {
+                    openModal();
+                }
             },
 
             /**

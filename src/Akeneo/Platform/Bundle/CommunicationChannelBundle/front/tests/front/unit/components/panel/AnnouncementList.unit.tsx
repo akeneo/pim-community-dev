@@ -20,6 +20,9 @@ let container: HTMLElement;
 beforeEach(() => {
   container = document.createElement('div');
   document.body.appendChild(container);
+
+  const handleHasNewAnnouncements = jest.fn();
+  useHasNewAnnouncements.mockReturnValue(handleHasNewAnnouncements);
 });
 afterEach(() => {
   document.body.removeChild(container);
@@ -30,6 +33,7 @@ test('it check if it has new announcements when the component is mounted', async
   const campaign = formatCampaign(expectedPimAnalyticsData.pim_edition, expectedPimAnalyticsData.pim_version);
   const handleHasNewAnnouncements = jest.fn();
   useHasNewAnnouncements.mockReturnValue(handleHasNewAnnouncements);
+
   useInfiniteScroll.mockReturnValue([
     {
       items: [],
@@ -63,6 +67,26 @@ test('it shows the announcements when we open the panel', async () => {
   );
 
   expect(container.querySelectorAll('ul li').length).toEqual(2);
+});
+
+test('it shows an empty list when there are no announcements', async () => {
+  const campaign = formatCampaign(expectedPimAnalyticsData.pim_edition, expectedPimAnalyticsData.pim_version);
+  const handleFetchingResults = jest.fn();
+  useInfiniteScroll.mockReturnValue([
+    {
+      items: [],
+      isFetching: false,
+      hasError: false,
+    },
+    handleFetchingResults,
+  ]);
+
+  await act(async () =>
+      renderWithProviders(<AnnouncementList campaign={campaign} panelIsClosed={false} />, container as HTMLElement)
+  );
+
+  expect(container.querySelectorAll('ul li').length).toEqual(0);
+  expect(getByText(container, 'akeneo_communication_channel.panel.list.empty')).toBeInTheDocument();
 });
 
 test('it can show for each announcement the information from the json', async () => {
@@ -111,6 +135,24 @@ test('it can open the read more link in a new tab', async () => {
   expect((container.querySelector(`a[title="${expectedAnnouncements[0].title}"]`) as HTMLLinkElement).target).toEqual(
     '_blank'
   );
+});
+
+test('it does not generate Read more button when there is no link.', async () => {
+  const campaign = formatCampaign(expectedPimAnalyticsData.pim_edition, expectedPimAnalyticsData.pim_version);
+  useInfiniteScroll.mockReturnValue([
+    {
+      items: expectedAnnouncements,
+      isFetching: false,
+      hasError: false,
+    },
+    jest.fn(),
+  ]);
+
+  await act(async () =>
+      renderWithProviders(<AnnouncementList campaign={campaign} panelIsClosed={false} />, container as HTMLElement)
+  );
+
+  expect(container.querySelectorAll('ul li a').length).toEqual(1);
 });
 
 test('it can display a message when it has an error during the fetch', async () => {

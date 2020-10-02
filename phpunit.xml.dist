@@ -52,6 +52,10 @@
             <directory suffix="Integration.php">src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/Integration</directory>
         </testsuite>
 
+        <testsuite name="Data_Quality_Insights">
+            <directory suffix="Integration.php">src/Akeneo/Pim/Automation/DataQualityInsights/tests/back/Integration</directory>
+        </testsuite>
+
         <testsuite name="End_to_End">
             <directory suffix="EndToEnd.php">tests/back</directory>
             <directory suffix="EndToEnd.php">src</directory>

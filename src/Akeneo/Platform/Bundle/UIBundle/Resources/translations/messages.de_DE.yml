@@ -62,6 +62,14 @@ pim_common:
   name: Name
   remove: Entfernen
   code: Code
+  products: Produkte
+  product_models: Produktmodelle
+  categories: Kategorien
+  enabled: Aktiviert
+  family: Produktfamilie
+  groups: Gruppen
+  yes: "Ja"
+  no: "Nein"
 pim_enrich:
   #ACLs
   acl:

@@ -13,7 +13,11 @@ Feature: Export products and product models
     When I display in the products grid the columns ID, Label, Model description
     And I search "amor"
     And I select row amor
-    And I press "CSV (Grid context)" on the "Quick Export" dropdown button
+    And I press the "Quick Export" button
+    And I press the "CSV" button
+    And I press the "Grid context" button
+    And I press the "With codes" button
+    And I press the "Export" button
     And I wait for the "csv_product_grid_context_quick_export" quick export to finish
     And I go on the last executed job resume of "csv_product_grid_context_quick_export"
     Then I should see the text "COMPLETED"
@@ -24,7 +28,11 @@ Feature: Export products and product models
     When I display in the products grid the columns ID, Label, Model description
     And I search "amor"
     And I select row amor
-    And I press "CSV (Grid context)" on the "Quick Export" dropdown button
+    And I press the "Quick Export" button
+    And I press the "CSV" button
+    And I press the "Grid context" button
+    And I press the "With codes" button
+    And I press the "Export" button
     And I wait for the "csv_product_grid_context_quick_export" quick export to finish
     And I go on the last executed job resume of "csv_product_grid_context_quick_export"
     Then I should see the text "COMPLETED"
@@ -37,7 +45,11 @@ Feature: Export products and product models
   Scenario: Successfully export all columns for quick export product models
     When I sort by "ID" value ascending
     And I select row amor
-    And I press "CSV (All attributes)" on the "Quick Export" dropdown button
+    And I press the "Quick Export" button
+    And I press the "CSV" button
+    And I press the "All attributes" button
+    And I press the "With codes" button
+    And I press the "Export" button
     And I wait for the "csv_product_quick_export" quick export to finish
     And I go on the last executed job resume of "csv_product_quick_export"
     Then I should see the text "COMPLETED"

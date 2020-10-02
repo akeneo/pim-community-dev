@@ -122,7 +122,17 @@ class TextAreaFilterSpec extends ObjectBehavior
                 ],
             ]
         )->shouldBeCalled();
-        $sqb->addFilter(['exists' => ['field' => 'family.code']])->shouldBeCalled();
+        $sqb->addFilter(
+            [
+                'bool' => [
+                    'should' => [
+                        ['terms' => ['attributes_for_this_level' => ['description']]],
+                        ['terms' => ['attributes_of_ancestors' => ['description']]],
+                    ],
+                    'minimum_should_match' => 1,
+                ],
+            ]
+        )->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter($description, Operators::IS_EMPTY, null, 'en_US', 'ecommerce', []);
@@ -258,6 +268,28 @@ class TextAreaFilterSpec extends ObjectBehavior
                 123
             )
         )->during('addAttributeFilter', [$description, Operators::CONTAINS, 123, 'en_US', 'ecommerce', []]);
+    }
+
+    function it_throws_an_exception_when_the_given_value_is_null(
+        $filterValidator,
+        AttributeInterface $description,
+        SearchQueryBuilder $sqb
+    ) {
+        $description->getCode()->willReturn('description');
+        $description->getBackendType()->willReturn('textarea');
+
+        $filterValidator->validateLocaleForAttribute('description', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('description', 'ecommerce')->shouldBeCalled();
+
+        $this->setQueryBuilder($sqb);
+
+        $this->shouldThrow(
+            InvalidPropertyTypeException::stringExpected(
+                'description',
+                TextAreaFilter::class,
+                null
+            )
+        )->during('addAttributeFilter', [$description, Operators::CONTAINS, null, 'en_US', 'ecommerce', []]);
     }
 
     function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(
