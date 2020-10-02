@@ -22,10 +22,8 @@ import {useArgs, updateArgs} from '@storybook/client-api';
 # Link
 
 ## Usage
+
 Allows to redirect user to another page.
-
-## General guidance
-
 
 ## Playground
 
@@ -42,15 +40,16 @@ Use this playground to test the link component
 <ArgsTable story="Standard" />
 
 ## Variation on status
+
 <Canvas>
   <Story name="Status">
-      {(args) => {
-          return (
-              <>
-                  <Link href="https://akeneo.com" disabled={false} {...args}>Enabled</Link>
-                  <Link href="https://akeneo.com" disabled={true} {...args}>Disabled</Link>
-              </>
-          )
-      }}
+    {(args) => {
+      return (
+        <>
+          <Link href="https://akeneo.com" disabled={false} {...args}>Enabled</Link>
+          <Link href="https://akeneo.com" disabled={true} {...args}>Disabled</Link>
+        </>
+      )
+    }}
   </Story>
 </Canvas>
