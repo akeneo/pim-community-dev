@@ -8,7 +8,8 @@ import {Link} from '../Link/Link';
   component={Helper}
   argTypes={{
     level: {control: {type: 'select', options: ['info', 'warning', 'error']}},
-    children: {control: {type: 'text'}}
+    children: {control: {type: 'text'}},
+    inline: {control: {type: 'boolean'}}
   }}
   args={{
     children: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
@@ -24,7 +25,11 @@ Allows to help the user by pushing contextual information.
 
 ## General guidance
 
-Located at the top of a section, just below the section title, it informs the user about the features of the section.
+It informs the user about :
+- The features of the section.
+- The information expected in the field.
+- An alert on the information filled in by the user.
+- An error related to the information filled in by the user.
 
 ## Playground
 
@@ -50,6 +55,22 @@ Use this playground to test the helper component
           <Helper {...args} level="info">Info</Helper>
           <Helper {...args} level="warning">Warning</Helper>
           <Helper {...args} level="error">Error</Helper>
+        </>
+      )
+    }}
+  </Story>
+</Canvas>
+
+## Inline
+
+<Canvas>
+  <Story name="Inline">
+    {(args) => {
+      return (
+        <>
+          <Helper {...args} inline={true} level="info">Info</Helper>
+          <Helper {...args} inline={true} level="warning">Warning</Helper>
+          <Helper {...args} inline={true} level="error">Error</Helper>
         </>
       )
     }}
