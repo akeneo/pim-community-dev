@@ -39,11 +39,11 @@ class ListConnectionEndToEnd extends WebTestCase
                 'flowType' => FlowType::OTHER,
                 'image' => null,
                 'auditable' => false,
-            ]
+            ],
         ];
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        Assert::assertEquals($expectedResult, $result);
+        Assert::assertEqualsCanonicalizing($expectedResult, $result);
     }
 
     protected function getConfiguration(): Configuration

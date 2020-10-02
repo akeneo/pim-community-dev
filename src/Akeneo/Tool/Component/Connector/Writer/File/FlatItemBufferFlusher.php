@@ -26,12 +26,13 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
     /** @var ColumnSorterInterface */
     protected $columnSorter;
 
-    /**
-     * @param ColumnSorterInterface $columnSorter
-     */
-    public function __construct(ColumnSorterInterface $columnSorter = null)
+    /** @var ColumnPresenterInterface */
+    private $columnPresenter;
+
+    public function __construct(ColumnPresenterInterface $columnPresenter, ColumnSorterInterface $columnSorter = null)
     {
         $this->columnSorter = $columnSorter;
+        $this->columnPresenter = $columnPresenter;
     }
 
     /**
@@ -77,12 +78,21 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
         $writtenFiles = [];
 
         $headers = $this->sortHeaders($buffer->getHeaders());
+        $headers = $this->columnPresenter->present($headers, $this->stepExecution->getJobParameters()->all());
+
         $hollowItem = array_fill_keys($headers, '');
 
         $writer = $this->getWriter($filePath, $writerOptions);
         $writer->addRow($headers);
 
         foreach ($buffer as $incompleteItem) {
+            $incompleteKeys = $this->columnPresenter->present(
+                array_keys($incompleteItem),
+                $this->stepExecution->getJobParameters()->all()
+            );
+
+            $incompleteItem = array_combine($incompleteKeys, $incompleteItem);
+
             $item = array_replace($hollowItem, $incompleteItem);
             $writer->addRow($item);
 
@@ -117,6 +127,8 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
         $fileCount = 1;
 
         $headers = $this->sortHeaders($buffer->getHeaders());
+        $headers = $this->columnPresenter->present($headers, $this->stepExecution->getJobParameters()->all());
+
         $hollowItem = array_fill_keys($headers, '');
 
         foreach ($buffer as $count => $incompleteItem) {
@@ -131,6 +143,13 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
                 $writer = $this->getWriter($filePath, $writerOptions);
                 $writer->addRow($headers);
             }
+
+            $incompleteKeys = $this->columnPresenter->present(
+                array_keys($incompleteItem),
+                $this->stepExecution->getJobParameters()->all()
+            );
+
+            $incompleteItem = array_combine($incompleteKeys, $incompleteItem);
 
             $item = array_replace($hollowItem, $incompleteItem);
             $writer->addRow($item);

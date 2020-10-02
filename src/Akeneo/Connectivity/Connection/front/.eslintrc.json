@@ -12,8 +12,16 @@
         "plugin:react/recommended"
     ],
     "rules": {
-        "@typescript-eslint/camelcase": ["error", {"properties": "never"}],
+        "@typescript-eslint/camelcase": "off",
         "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/no-unsafe-assignment": "off",
+        "@typescript-eslint/no-unsafe-member-access": "off",
+        "@typescript-eslint/no-unsafe-call": "off",
+        "@typescript-eslint/no-floating-promises": "off",
+        "@typescript-eslint/no-unsafe-return": "off",
+        "@typescript-eslint/ban-types": "off",
+        "@typescript-eslint/unbound-method": "off",
+        "@typescript-eslint/restrict-template-expressions": "off",
         "arrow-parens": ["warn", "as-needed"],
         "indent": "off",
         "max-len": ["error", {"code": 120, "ignoreStrings": true}],

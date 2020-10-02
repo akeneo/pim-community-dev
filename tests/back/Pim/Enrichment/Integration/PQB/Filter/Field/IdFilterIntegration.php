@@ -86,6 +86,14 @@ class IdFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->executeFilter([['id', Operators::EQUALS, ['string']]]);
     }
 
+    public function testErrorDataIsNull()
+    {
+        $this->expectException(InvalidPropertyTypeException::class);
+        $this->expectExceptionMessage('Property "id" expects a string as data, "NULL" given.');
+
+        $this->executeFilter([['id', Operators::EQUALS, null]]);
+    }
+
     public function testErrorOperatorNotSupported()
     {
         $this->expectException(UnsupportedFilterException::class);

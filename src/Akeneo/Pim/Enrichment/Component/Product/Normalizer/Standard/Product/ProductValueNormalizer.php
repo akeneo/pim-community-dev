@@ -133,18 +133,39 @@ class ProductValueNormalizer implements NormalizerInterface, CacheableSupportsMe
     }
 
     /**
-     * Cut all the ending zeros after coma if decimals are more than 4
-     * @return int|string
+     * Cut all the trailing zeros after comma if decimals are more than 4, or add trailing zeros to go to 4 digits.
+     *
+     * Expected return for number value:
+     *   15.00        => 15.0000
+     *   15.50        => 15.5000
+     *   15.500       => 15.5000
+     *   15.50787600  => 15.507876
+     *   15.000000    => 15.0000
+     *
+     * @param ValueInterface $value
+     * @param Attribute      $attribute
+     *
+     * @return string|int
      */
     private function formatNumber(ValueInterface $value, Attribute $attribute)
     {
         if (!$attribute->isDecimalsAllowed()) {
-            return (int)$value->getData();
+            return (int) $value->getData();
         }
 
         $data = $value->getData();
-        $formattedNumber = number_format($data, static::DECIMAL_PRECISION, '.', '');
+        $integer = substr($data, 0, strpos($data, '.') + 1);
+        $decimals = substr($data, strpos($data, '.') + 1);
 
-        return strlen($formattedNumber) >= strlen($data) ? $formattedNumber : rtrim($data, '0');
+        if (strlen($decimals) <= static::DECIMAL_PRECISION) {
+            return number_format($data, static::DECIMAL_PRECISION, '.', '');
+        }
+
+        return sprintf(
+            '%s%s%s',
+            $integer,
+            substr($decimals, 0, static::DECIMAL_PRECISION),
+            rtrim(substr($decimals, static::DECIMAL_PRECISION), '0')
+        );
     }
 }

@@ -30,7 +30,11 @@ Feature: Quick export many products with localized attributes from datagrid
     Given I am on the products grid
     And I switch the locale to "en_US"
     When I select rows boots, sneakers, sandals and pump
-    And I press "Excel (tous les attributs)" on the "Export rapide" dropdown button
+    And I press the "Export rapide" button
+    And I press the "XLSX" button
+    And I press the "Tous les attributs" button
+    And I press the "Avec codes" button
+    And I press the "Export" button
     And I wait for the "xlsx_product_quick_export" quick export to finish
     And I am on the dashboard page
     Then I should have 1 new notification

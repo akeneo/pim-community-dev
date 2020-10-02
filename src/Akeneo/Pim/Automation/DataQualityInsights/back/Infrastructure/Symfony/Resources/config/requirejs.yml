@@ -1,0 +1,31 @@
+config:
+    config:
+        pim/controller-registry:
+            controllers:
+                akeneo_data_quality_insights_dashboard:
+                    module: akeneo-data-quality-insights-dqi-dashboard-index
+
+    paths:
+        # Controller
+        akeneo-data-quality-insights-dqi-dashboard-index: akeneodataqualityinsights/js/controller/dqi-dashboard.ts
+
+        ## Product Grid
+        oro/datagrid/rate-badge-cell: akeneodataqualityinsights/js/infrastructure/datagrid/cell/rate-badge-cell.tsx
+
+        ## Product Edit Form
+        akeneo/data-quality-insights/view/dqi-dashboard/section: akeneodataqualityinsights/js/infrastructure/dqi-dashboard/section.tsx
+
+        ## Dashboard
+        akeneo/data-quality-insights/view/dqi-dashboard/locale-switcher: akeneodataqualityinsights/js/infrastructure/dqi-dashboard/locale-switcher.ts
+        akeneo/data-quality-insights/view/dqi-dashboard/channel-switcher: akeneodataqualityinsights/js/infrastructure/dqi-dashboard/channel-switcher.ts
+
+        # View
+        ## Product Edit Form
+        akeneo/data-quality-insights/infrastructure/product-edit-form/data-quality-insights-overview: akeneodataqualityinsights/js/infrastructure/product-edit-form/data-quality-insights-overview.tsx
+        akeneo/data-quality-insights/infrastructure/product-edit-form/data-quality-insights-app: akeneodataqualityinsights/js/infrastructure/product-edit-form/data-quality-insights-app.tsx
+        akeneo/data-quality-insights/infrastructure/product-edit-form/data-quality-insights-tab-content: akeneodataqualityinsights/js/infrastructure/product-edit-form/data-quality-insights-tab-content.tsx
+        akeneo/data-quality-insights/infrastructure/product-edit-form/attributes-tab-content: akeneodataqualityinsights/js/infrastructure/product-edit-form/attributes-tab-content.tsx
+
+        # Components
+        ## Product Edit Form
+        pim/product-edit-form/attribute-filter-all-missing-attributes: akeneodataqualityinsights/js/infrastructure/product-edit-form/attribute-filter-all-missing-attributes.ts

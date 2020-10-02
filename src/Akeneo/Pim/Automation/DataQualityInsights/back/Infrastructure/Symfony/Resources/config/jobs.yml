@@ -1,0 +1,183 @@
+services:
+    #Jobs
+    akeneo.pim.automation.data_quality_insights.job.prepare_evaluations:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'data_quality_insights_prepare_evaluations'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo.pim.automation.data_quality_insights.connector.step.prepare_products_criteria_evaluation'
+                - '@akeneo.pim.automation.data_quality_insights.connector.step.prepare_product_models_criteria_evaluation'
+        tags:
+            - { name: akeneo_batch.job, connector: 'Data Quality Insights Connector', type: 'data_quality_insights' }
+            - name: akeneo_batch.job.not_visible
+
+    akeneo.pim.automation.data_quality_insights.job.evaluations:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'data_quality_insights_evaluations'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo.pim.automation.data_quality_insights.connector.step.evaluate_products_criteria'
+                - '@akeneo.pim.automation.data_quality_insights.connector.step.evaluate_product_models_criteria'
+        tags:
+            - { name: akeneo_batch.job, connector: 'Data Quality Insights Connector', type: 'data_quality_insights' }
+            - name: akeneo_batch.job.not_visible
+
+    akeneo.pim.automation.data_quality_insights.job.periodic_tasks:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'data_quality_insights_periodic_tasks'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo.pim.automation.data_quality_insights.connector.step.consolidate_dashboard_rates'
+                - '@akeneo.pim.automation.data_quality_insights.connector.step.purge_outdated_data'
+                - '@akeneo.pim.automation.data_quality_insights.connector.step.remove_evaluations_without_product'
+                - '@akeneo.pim.automation.data_quality_insights.connector.step.log_metrics'
+        tags:
+            - { name: akeneo_batch.job, connector: 'Data Quality Insights Connector', type: 'data_quality_insights' }
+            - name: akeneo_batch.job.not_visible
+
+    #Steps
+    akeneo.pim.automation.data_quality_insights.connector.step.evaluate_products_criteria:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'evaluate_products_criteria'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo.pim.automation.data_quality_insights.connector.tasklet.evaluate_product_criteria'
+
+    akeneo.pim.automation.data_quality_insights.connector.step.evaluate_product_models_criteria:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'evaluate_product_models_criteria'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo.pim.automation.data_quality_insights.connector.tasklet.evaluate_product_models_criteria'
+            -
+    akeneo.pim.automation.data_quality_insights.connector.step.prepare_products_criteria_evaluation:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'prepare_products_criteria_evaluation'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo.pim.automation.data_quality_insights.infrastructure.connector.tasklet.prepare_products_criteria_evaluation'
+
+    akeneo.pim.automation.data_quality_insights.connector.step.prepare_product_models_criteria_evaluation:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'prepare_product_models_criteria_evaluation'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo.pim.automation.data_quality_insights.infrastructure.connector.tasklet.prepare_product_models_criteria_evaluation'
+
+    akeneo.pim.automation.data_quality_insights.connector.step.consolidate_dashboard_rates:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'consolidate_dashboard_rates'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\ConsolidateDashboardRatesTasklet'
+
+    akeneo.pim.automation.data_quality_insights.connector.step.purge_outdated_data:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'purge_outdated_data'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\PurgeOutdatedDataTasklet'
+
+    akeneo.pim.automation.data_quality_insights.connector.step.log_metrics:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'log_metrics'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\LogMetricsTasklet'
+
+    akeneo.pim.automation.data_quality_insights.connector.step.remove_evaluations_without_product:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'remove_evaluations_without_product'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\RemoveEvaluationsWithoutProductTasklet'
+
+    #Tasklets
+    akeneo.pim.automation.data_quality_insights.connector.tasklet.evaluate_product_criteria:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateProductsCriteriaTasklet
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.evaluate_products_pending_criteria'
+            - '@akeneo.pim.automation.data_quality_insights.consolidate_product_axes_rates'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates'
+            - '@akeneo.pim.automation.data_quality_insights.query.get_product_ids_to_evaluate'
+
+    akeneo.pim.automation.data_quality_insights.connector.tasklet.evaluate_product_models_criteria:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateProductModelsCriteriaTasklet
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.evaluate_product_models_pending_criteria'
+            - '@akeneo.pim.automation.data_quality_insights.consolidate_product_model_axes_rates'
+            - '@akeneo.pim.automation.data_quality_insights.query.get_product_model_ids_to_evaluate'
+
+    akeneo.pim.automation.data_quality_insights.infrastructure.connector.tasklet.prepare_products_criteria_evaluation:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\PrepareProductsCriteriaEvaluationTasklet
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.create_missing_products_criteria_evaluations'
+            - '@logger'
+
+    akeneo.pim.automation.data_quality_insights.infrastructure.connector.tasklet.prepare_product_models_criteria_evaluation:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\PrepareProductModelsCriteriaEvaluationTasklet
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.create_missing_product_models_criteria_evaluations'
+            - '@logger'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\ConsolidateDashboardRatesTasklet:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateDashboardRates'
+            - '@logger'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\PurgeOutdatedDataTasklet:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\PurgeOutdatedData'
+            - '@logger'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\LogMetricsTasklet:
+        arguments:
+            - '@database_connection'
+            - '@logger'
+            - '@monolog.logger.quality'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\RemoveEvaluationsWithoutProductTasklet:
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation'
+            - '@akeneo.pim.automation.data_quality_insights.repository.product_model_criterion_evaluation'
+            - '@logger'
+
+    #Job parameters
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\PrepareEvaluationsParameters:
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\PeriodicTasksParameters:
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    #Job launchers
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\SchedulePeriodicTasks:
+        arguments:
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo_batch_queue.queue.job_execution_message_repository'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\RunUniqueProcessJob:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@akeneo_batch_queue.manager.job_execution_manager'
+            - '@akeneo_batch.job_repository'
+            - '@logger'
+            - '%kernel.project_dir%'

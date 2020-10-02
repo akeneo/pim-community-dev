@@ -9,7 +9,7 @@ aliases:
 
   - &dockerCloudDeployer
       docker:
-        - image: eu.gcr.io/akeneo-cloud/cloud-deployer:2.2
+        - image: eu.gcr.io/akeneo-cloud/cloud-deployer:2.3
           auth:
             username: _json_key  # default username when using a JSON key file to authenticate
             password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
@@ -36,6 +36,9 @@ jobs:
           name: Require proper dev CE branch
           command: |
             sed -i "s|\"akeneo/pim-community-dev\": \"dev-master|\"akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}|" composer.json
+      - run:
+          name: Persist default IMAGE_TAG to be the repo last commit SHA1
+          command: echo export IMAGE_TAG=$CIRCLE_SHA1 >> persisted_env_vars
       - persist_to_workspace:
           root: ~/
           paths:
@@ -60,7 +63,7 @@ jobs:
       image: ubuntu-1604:201903-01
     steps:
       - attach_workspace:
-           at: ~/
+            at: ~/
       - run:
           name: Copy docker-compose.override.yml.dist
           command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
@@ -93,10 +96,10 @@ jobs:
           name: Change owner on project dir after restoring cache
           command: sudo chown -R 1000:1000 ../project
       - run:
-            name: Install back and front dependencies
-            command: make dependencies
-            environment:
-                YARN_REGISTRY: "http://registry.yarnpkg.com"
+          name: Install back and front dependencies
+          command: make dependencies
+          environment:
+            YARN_REGISTRY: "http://registry.yarnpkg.com"
       - run:
           name: Check PIM requirements
           command: |
@@ -196,7 +199,7 @@ jobs:
           name: Get Behat Suite name to run
           command: |
             TESTSUITE=$(echo $CIRCLE_BRANCH | sed -e 's/^.*-\([^-]*\)$/\1/g')
-            if ! [[ $TESTSUITE =~ ^(weasel|chipmunk|raccoon|franklin)$ ]] ; then
+            if ! [[ $TESTSUITE =~ ^(weasel|chipmunk|raccoon)$ ]] ; then
               TESTSUITE="all"
             fi
             echo "Behat Suite to run: "$TESTSUITE
@@ -238,8 +241,8 @@ jobs:
           - image: alpine/git
       steps:
           - run:
-                name: Success
-                command: echo "The build has run with success! Let's merge :)"
+              name: Success
+              command: echo "The build has run with success! Let's merge :)"
 
   test_front_static_acceptance_and_integration:
       machine:
@@ -308,12 +311,74 @@ jobs:
           - attach_workspace:
                 at: ~/
           - set_gcloud_config_dev
+          - restore_persisted_env_vars
           - run:
               name: Build PROD PIM docker image
-              command: IMAGE_TAG=$CIRCLE_SHA1 IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S) make php-image-prod
+              command: IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S) make php-image-prod
           - run:
               name: Push PROD PIM image on docker registry
-              command: IMAGE_TAG=$CIRCLE_SHA1 make push-php-image-prod
+              command: make push-php-image-prod
+
+  test_deploy:
+      environment:
+        <<: *envVarsDeployDev
+      <<: *dockerCloudDeployer
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - restore_persisted_env_vars
+          - run:
+              name: Deploy PIM on kubernetes
+              command: make deploy-serenity
+          - run:
+              name: Test PIM connexion on kubernetes
+              command: make test-prod
+          - run:
+              name: Prepare infrastructure artifacts
+              command: make prepare-infrastructure-artifacts
+              when: on_fail
+          - store_artifacts:
+              path: ~/artifacts/infra
+          - run:
+              name: Remove env on kubernetes
+              command: make delete
+              when: always
+
+  test_upgrade_from_last_release:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployer
+      steps:
+          - attach_workspace:
+                at: ~/
+          - add_ssh_keys
+          - set_gcloud_config_dev
+          - restore_persisted_env_vars
+          - run:
+                name: Latest SaaS prod deployment on kubernetes
+                command: |
+                    export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
+                    LATEST_RELEASE=$(git tag --list | grep -E "^v?[0-9]+$" | sort -r | head -n 1)
+                    echo $LATEST_RELEASE
+                    INSTANCE_NAME=pimup-$IMAGE_TAG IMAGE_TAG=$LATEST_RELEASE make deploy-serenity
+          - run:
+                name: Upgrade
+                command: |
+                    INSTANCE_NAME=pimup-$IMAGE_TAG make deploy-serenity
+          - run:
+                name: Production tests on upgraded env
+                command: INSTANCE_NAME=pimup-$IMAGE_TAG make test-prod
+          - run:
+                name: Prepare infrastructure artifacts
+                command: INSTANCE_NAME=pimup-$IMAGE_TAG make prepare-infrastructure-artifacts
+                when: on_fail
+          - store_artifacts:
+                path: ~/artifacts/infra
+          - run:
+                name: Remove upgraded env
+                command: INSTANCE_NAME_PREFIX=pimup make delete
+                when: always
 
   deploy_pr_environment:
       environment:
@@ -323,56 +388,40 @@ jobs:
           - attach_workspace:
                 at: ~/
           - set_gcloud_config_dev
+          - restore_persisted_env_vars
           - run:
                 name: Deploy PR environment
                 command: |
-                    ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=${CIRCLE_SHA1} make create-ci-release-files
-                    ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=${CIRCLE_SHA1} make deploy
+                    if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
+                    echo "This environment will be available at https://pimci-pr-${CIRCLE_PULL_REQUEST##*/}.dev.cloud.akeneo.com once deployed :) "
+          - run:
+                name: Deploy PR environment
+                command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} ACTIVATE_MONITORING=false make deploy-serenity
           - run:
               name: Prepare infrastructure artifacts
-              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=${CIRCLE_SHA1} make prepare-infrastructure-artifacts
+              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} make prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
           - run:
               name: Remove env on kubernetes
-              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} IMAGE_TAG=${CIRCLE_SHA1} make delete
+              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} make delete
               when: on_fail
 
-  test_upgrade_from_serenity_to_master:
+  delete_pr_environment:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
       steps:
           - attach_workspace:
                 at: ~/
-          - add_ssh_keys
           - set_gcloud_config_dev
           - run:
-                name: Latest SaaS prod deployment on kubernetes
+                name: delete environments
                 command: |
-                    ssh-keyscan github.com >> ~/.ssh/known_hosts
-                    LATEST_RELEASE=$(git tag --list | grep -E "^v?[0-9]+$" | sort -r | head -n 1)
-                    echo $LATEST_RELEASE
-                    INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$LATEST_RELEASE make create-ci-release-files
-                    INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$LATEST_RELEASE make deploy
-          - run:
-                name: Upgrade version to master
-                command: |
-                    INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
-                    INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$CIRCLE_SHA1 make deploy
-          - run:
-                name: Production tests on upgraded env
-                command: INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$CIRCLE_SHA1 make test-prod
-          - run:
-                name: Prepare infrastructure artifacts
-                command: INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$CIRCLE_SHA1 make prepare-infrastructure-artifacts
-                when: on_fail
-          - store_artifacts:
-                path: ~/artifacts/infra
-          - run:
-                name: Remove upgraded env
-                command: INSTANCE_NAME_PREFIX=pimup IMAGE_TAG=$CIRCLE_SHA1 make delete
+                    if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
+                    echo "remove env from 'deploy_pr_environment'"
+                    INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} make delete-serenity
 
   test_back_missing_structure_migrations:
       machine:
@@ -399,9 +448,7 @@ jobs:
                 command: sudo chown -R 1000:1000 ../project
         -   run:
                 name: Test missing database and index structure migrations
-                command: vendor/akeneo/pim-community-dev/.circleci/detect_structure_changes.sh ${CIRCLE_BRANCH}
-        - store_artifacts:
-              path: /tmp/structure_changes
+                command: vendor/akeneo/pim-community-dev/.circleci/detect_structure_changes.sh $CIRCLE_BRANCH
 
   test_back_data_migrations:
       machine:
@@ -451,7 +498,7 @@ jobs:
                 name: Start containers
                 command: |
                     docker load -i php-pim-image.tar
-                    APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
+                    APP_ENV=test C='mysql elasticsearch object-storage pubsub-emulator' make up
                     docker/wait_docker_up.sh
           - run:
                 name: Load make commands
@@ -459,8 +506,8 @@ jobs:
           - run:
                 name: Add configuration files to run the bundle tests from the PIM
                 command: |
-                    make clear-setup-parameters
-                    make setup-onboarder-parameters
+                    rm -f docker-compose.override.yml
+                    PIM_VERSION=master SETUP_FOR_CI=1 make setup-onboarder-parameters
                     PIM_VERSION=master make setup-onboarder-tests
                     docker-compose run --rm php php /usr/local/bin/composer dumpautoload
           - run:
@@ -477,7 +524,7 @@ jobs:
                 command: make test-spec
           - run:
                 name: Install Akeneo PIM with Onboarder specific configuration (channel, attribute, ...)
-                command: ENVIRONMENT=test make onboarder-install
+                command: ENVIRONMENT=test SETUP_FOR_CI=1 make onboarder-install
           - run:
                 name: Execute acceptance tests
                 command: make test-acceptance
@@ -490,6 +537,12 @@ jobs:
           - run:
                 name: Execute end-to-end tests
                 command: make test-end-to-end
+          - run:
+              name: Restart FPM with Onboarder feature turned off
+              command: make up APP_ENV=behat FLAG_ONBOARDER_ENABLED=0 C='fpm'
+          - run:
+              name: Execute end-to-end "Onboarder feature disabled" tests
+              command: make test-end-to-end-onboarder-disabled
           - store_test_results:
                 path: ~/project/pim/var/tests
           - store_artifacts:
@@ -516,6 +569,12 @@ workflows:
           - build_prod:
                 requires:
                     - checkout_ee
+          - test_deploy:
+                requires:
+                    - build_prod
+          - test_upgrade_from_last_release:
+                requires:
+                    - test_deploy
           - deploy_pr_environment?:
                 type: approval
                 filters:
@@ -524,12 +583,20 @@ workflows:
                             - master
                 requires:
                     - build_prod
+          - delete_pr_environment:
+                requires:
+                    - delete_pr_environment?
+          - delete_pr_environment?:
+                type: approval
+                filters:
+                    branches:
+                        ignore:
+                            - master
+                requires:
+                    - deploy_pr_environment
           - deploy_pr_environment:
                 requires:
                     - deploy_pr_environment?
-          - test_upgrade_from_serenity_to_master:
-                requires:
-                    - build_prod
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -568,7 +635,7 @@ workflows:
                 requires:
                     - test_back_behat_legacy
                     - test_back_performance
-                    - test_upgrade_from_serenity_to_master
+                    - test_upgrade_from_last_release
           - ready_to_build_only_ce?:
                 type: approval
                 filters:
@@ -641,7 +708,7 @@ workflows:
           - test_back_data_migrations:
                 requires:
                     - build_dev
-          - test_upgrade_from_serenity_to_master:
+          - test_upgrade_from_last_release:
                 requires:
                     - build_prod
 
@@ -670,3 +737,13 @@ commands:
           shell: "/bin/bash -eo pipefail"
           command: |
             IMAGE_TAG=$CIRCLE_SHA1 make create-ci-release-files
+
+  restore_persisted_env_vars:
+    description: "Restore env vars that have been persisted by the previous job."
+    steps:
+      - run:
+         name: Restore persisted env vars
+         command: |
+            echo "Persisted env vars:"
+            cat persisted_env_vars
+            cat persisted_env_vars >> $BASH_ENV

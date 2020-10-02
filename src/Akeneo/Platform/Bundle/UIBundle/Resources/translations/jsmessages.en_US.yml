@@ -176,6 +176,7 @@ pim_common:
     done: Done
     edit: Edit
     entity_updated: There are unsaved changes.
+    export: Export
     from: From
     general_properties: General properties
     history: History

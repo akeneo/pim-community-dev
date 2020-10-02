@@ -346,6 +346,7 @@ pim_enrich.mass_edit.product:
       label_count: "{0}Ändern Sie das übergeordnete Produktmodell von <span class=\"AknFullPage-title--highlight\">Produkten</span>|{1}Ändern Sie das übergeordnete Produktmodell von <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|]1, Inf[Übergeordneten Produktmodell von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten ändern</span>"
       description: Das übergeordnete Element der Variantenprodukte oder Sub Produktmodelle die im Raster ausgewählt wurden, werden zu dem gewählten Produktmodell geändert.
 pim_datagrid:
+  no_entities: "Kein {{ entityHint }} gefunden"
   mass_action_group:
     bulk_actions:
       label: Massenbearbeitung
@@ -361,6 +362,9 @@ pim_datagrid:
       csv_grid_context: CSV (Kontextabhängig)
       xlsx_all: Excel (alle Attribute)
       xlsx_grid_context: Excel (Kontextabhängig)
+      configurator:
+        title: Wählen Sie eine Aktion aus
+        all_attributes: Alle Attribute
     mass_edit: Massenbearbeitung
     sequential_edit: Sequentielle Bearbeitung
     mass_delete: Mehrauswahl löschen
@@ -383,6 +387,10 @@ pim_datagrid:
   filters:
     label: Filter
     system: System
+    product_typology:
+      variant: 'Variante'
+    entity_type:
+      label: 'Variante'
   search: Suche in {{ label }}
 batch_jobs:
   add_association:

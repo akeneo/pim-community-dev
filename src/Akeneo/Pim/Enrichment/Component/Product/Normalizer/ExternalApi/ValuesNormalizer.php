@@ -7,6 +7,8 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueWithLinkedData;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueWithLinkedData;
 use Akeneo\Tool\Component\Api\Hal\Link;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -33,9 +35,18 @@ final class ValuesNormalizer
     {
         $normalizedValues = [];
         foreach ($values as $value) {
-            $normalizedValue = $this->valueNormalizer->normalize($value, 'standard');
-            if ($value instanceof MediaValue) {
-                $normalizedValue = $this->addHalLink($value, $normalizedValue);
+            if ($value instanceof OptionValueWithLinkedData || $value instanceof OptionsValueWithLinkedData) {
+                $normalizedValue = [
+                    'locale' => $value->getLocaleCode(),
+                    'scope' => $value->getScopeCode(),
+                    'data' => $value->getData(),
+                    'linked_data' => $value->getLinkedData(),
+                ];
+            } else {
+                $normalizedValue = $this->valueNormalizer->normalize($value, 'standard');
+                if ($value instanceof MediaValue) {
+                    $normalizedValue = $this->addHalLink($value, $normalizedValue);
+                }
             }
 
             $normalizedValues[$value->getAttributeCode()][] = $normalizedValue;

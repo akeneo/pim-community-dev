@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Component\Connector\Writer\File;
 
+use Akeneo\Tool\Component\Connector\Writer\File\ColumnPresenterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -25,14 +26,17 @@ class FlatItemBufferFlusherSpec extends ObjectBehavior
         $this->shouldHaveType(FlatItemBufferFlusher::class);
     }
 
-    function let(ColumnSorterInterface $columnSorter, StepExecution $stepExecution)
-    {
+    function let(
+        ColumnSorterInterface $columnSorter,
+        StepExecution $stepExecution,
+        ColumnPresenterInterface $columnPresenter
+    ) {
         $this->directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'spec' . DIRECTORY_SEPARATOR;
 
         $this->filesystem = new Filesystem();
         $this->filesystem->mkdir($this->directory);
-
-        $this->beConstructedWith($columnSorter);
+        $columnPresenter->present(Argument::any(), Argument::any())->willReturnArgument();
+        $this->beConstructedWith($columnPresenter, $columnSorter);
 
         $this->setStepExecution($stepExecution);
     }

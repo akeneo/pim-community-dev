@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider;
 
+use Akeneo\Channel\Component\Validator\Constraint\ActivatedLocale;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Channel;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FilterStructureLocale;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Constraints for product CSV export
@@ -46,6 +49,29 @@ class ProductCsvExport implements ConstraintCollectionProviderInterface
         $constraintFields = $baseConstraint->fields;
         $constraintFields['decimalSeparator'] = new NotBlank(['groups' => ['Default', 'FileConfiguration']]);
         $constraintFields['dateFormat'] = new NotBlank(['groups' => ['Default', 'FileConfiguration']]);
+        $constraintFields['with_label'] = new Type(
+            [
+                'type'   => 'bool',
+                'groups' => ['Default', 'FileConfiguration'],
+            ]
+        );
+        $constraintFields['header_with_label'] = new Type(
+            [
+                'type'   => 'bool',
+                'groups' => ['Default', 'FileConfiguration'],
+            ]
+        );
+        $constraintFields['file_locale'] = [
+            new ActivatedLocale(['groups' => ['Default', 'FileConfiguration']]),
+            new Callback(function ($value, ExecutionContextInterface $context) {
+                $fields = $context->getRoot();
+                if (true === $fields['with_label'] && empty($value)) {
+                    $context
+                        ->buildViolation('The locale cannot be empty.')
+                        ->addViolation();
+                }
+            })
+        ];
         $constraintFields['with_media'] = new Type(
             [
                 'type'   => 'bool',

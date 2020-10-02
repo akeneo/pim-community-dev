@@ -358,6 +358,7 @@ pim_enrich.mass_edit.product:
             description: The parent of the variant products or sub-product models selected in the grid will be changed to the chosen product model.
 
 pim_datagrid:
+    no_entities: "No {{ entityHint }} found"
     mass_action_group:
         bulk_actions:
             label: Bulk Actions
@@ -373,6 +374,15 @@ pim_datagrid:
             csv_grid_context: CSV (Grid context)
             xlsx_all: Excel (All attributes)
             xlsx_grid_context: Excel (Grid context)
+            configurator:
+                subtitle: Quick export
+                title: Select your action
+                csv: CSV
+                xlsx: XLSX
+                grid_context: Grid context
+                all_attributes: All attributes
+                with_codes: With codes
+                with_labels: With labels
         mass_edit: Bulk actions
         sequential_edit: Sequential edit
         mass_delete: Mass delete
@@ -395,6 +405,14 @@ pim_datagrid:
     filters:
         label: Filters
         system: System
+        product_typology:
+            label: 'Product typology'
+            simple: 'Simple'
+            variant: 'Variant'
+        entity_type:
+            label: 'Variant'
+            grouped: 'Grouped'
+            ungrouped: 'Ungrouped'
     search: Search on {{ label }}
 
 batch_jobs:

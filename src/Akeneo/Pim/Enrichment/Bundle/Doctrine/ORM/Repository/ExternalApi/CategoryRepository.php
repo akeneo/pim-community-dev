@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ExternalApi;
@@ -102,13 +103,33 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                 $parameter = sprintf(':%s_%s', $property, $key);
                 $field = sprintf('r.%s', $property);
                 switch ($criterion['operator']) {
+                    case '=':
+                        if ('parent' === $property) {
+                            $parentCategory = $this->createQueryBuilder('pr')
+                                ->where('pr.code = :parent_code')
+                                ->setParameter('parent_code', $criterion['value'])
+                                ->getQuery()
+                                ->getOneOrNullResult();
+
+                            if (!$parentCategory) {
+                                throw new \InvalidArgumentException(sprintf('Parent code %s does not exist.', $criterion['value']));
+                            }
+
+                            $qb->andWhere($qb->expr()->gt('r.left', $parentCategory->getLeft()));
+                            $qb->andWhere($qb->expr()->lt('r.right', $parentCategory->getRight()));
+                            $qb->andWhere($qb->expr()->eq('r.root', $parentCategory->getRoot()));
+                        } else {
+                            $qb->andWhere($qb->expr()->eq($field, $parameter));
+                            $qb->setParameter($parameter, $criterion['value']);
+                        }
+                        break;
                     case 'IN':
                         $qb->andWhere($qb->expr()->in($field, $parameter));
+                        $qb->setParameter($parameter, $criterion['value']);
                         break;
                     default:
                         throw new \InvalidArgumentException('Invalid operator for search query.');
                 }
-                $qb->setParameter($parameter, $criterion['value']);
             }
         }
 
@@ -137,6 +158,20 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                         new Assert\All([
                             new Assert\Type('string')
                         ])
+                    ],
+                ])
+            ]),
+            'parent' => new Assert\All([
+                new Assert\Collection([
+                    'operator' => new Assert\IdenticalTo([
+                        'value' => '=',
+                        'message' => 'In order to search on category parent you must use "=" operator, {{ compared_value }} given.',
+                    ]),
+                    'value' => [
+                        new Assert\Type([
+                            'type' => 'string',
+                            'message' => 'In order to search on category parent you must send a parent code category as value, {{ type }} given.'
+                        ]),
                     ],
                 ])
             ]),

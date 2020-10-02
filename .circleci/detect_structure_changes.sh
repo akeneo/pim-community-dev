@@ -67,6 +67,9 @@ fi
 echo "Export env vars from .env..."
 export $(cat .env)
 
+echo "Use the database akeneo_pim_test..."
+echo "APP_DATABASE_NAME=akeneo_pim_test" >> .env.test.local
+
 echo "Clean cache..."
 APP_ENV=test make cache
 
@@ -101,6 +104,9 @@ fi
 
 echo "Export env vars from .env..."
 export $(cat .env)
+
+echo "Use the database akeneo_pim_test..."
+echo "APP_DATABASE_NAME=akeneo_pim_test" >> .env.test.local
 
 echo "Clean cache..."
 APP_ENV=test make cache

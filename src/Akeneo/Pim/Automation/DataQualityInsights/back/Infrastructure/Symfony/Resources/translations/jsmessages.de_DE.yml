@@ -1,0 +1,68 @@
+akeneo_data_quality_insights:
+  title: Datenqualitätseinsichten
+  dqi_dashboard:
+    menu: Datenqualitätseinsichten
+    title: Datenqualitätsübersicht
+    helper:
+      title: Einführung der Datenqualität in Akeneo
+      description: Mit dem Dashboard für Datenqualität können Sie die Qualität Ihrer Katalogdaten messen.
+      help_center: Weitere Informationen finden Sie in unserem Hilfe-Center.
+    no_data_title: Leider haben wir noch nicht genügend Daten, um die Datenqualitätsübersicht anzuzeigen.
+    no_data_subtitle: Bitte kommen Sie später wieder.
+    time_period:
+      label: Zeitraum
+      daily: Täglich
+      weekly: Wöchentlich
+      monthly: Monatlich
+    legend:
+      excellent: Ausgezeichnet
+      good: Gut
+      average: Durchschnittlich
+      below_average: Unterdurchschnittlich
+      to_improve: Zu verbessern
+    average_grade: Durchschnittsnote
+    category_modal_filter:
+      subtitle: Nach Kategorie filtern
+      message: Wähle die Kategorie, die du auf deinem Dashboard erkunden möchtest
+    widgets:
+      family_modal:
+        subtitle: Familien hinzufügen
+        message: Wählen Sie die Familien, die in Ihrem Dashboard hinzugefügt werden sollen
+        max_families_msg: Sie können leider nicht mehr als {{ count }} Familien auf Ihrem Dashboard hinzufügen
+      category_modal:
+        subtitle: Kategorien hinzufügen
+        message: Wählen Sie die Kategorien, die in Ihrem Dashboard hinzugefügt werden sollen
+        max_categories_msg: Du kannst nicht mehr als {{ count }} Kategorien auf deinem Dashboard hinzufügen
+      add_families: Familien hinzufügen
+      add_categories: Kategorien hinzufügen
+      title: Titel
+      no_family_helper_msg: Wählen Sie die Familien, für die Sie die Datenqualität messen möchten
+      no_category_helper_msg: Wählen Sie die Kategorien, für die Sie die Datenqualität messen möchten
+      see_in_grid: Im Raster sehen
+    time_axis:
+      day: Tag
+  product_evaluation:
+    criteria:
+      completeness_of_required_attributes:
+        recommendation: Erforderliche Attribute mit fehlenden Werten
+      completeness_of_non_required_attributes:
+        recommendation: Nicht benötigte Attribute mit fehlenden Werten
+    axis:
+      enrichment:
+        title: Anreicherung
+        attributes_link: Fehlende Attribute anzeigen
+        success: Ihre Produktdaten sind vollständig angereichert. Herzlichen Glückwunsch!
+    messages:
+      error:
+        axis_error: Aufgrund eines Fehlers konnte die Bewertung nicht vollständig berechnet werden. Versuchen Sie es später erneut.
+        criterion_error: Bewertung konnte nicht berechnet werden.
+      success:
+        criterion: Alles in Ordnung.
+      grading_in_progress: Bewertung läuft.
+      axis_grading_in_progress: Bewertung wird durchgeführt. Bitte kommen Sie später wieder.
+      too_many_attributes: Sie haben {{ count }} Attribute zu verbessern.
+  product_edit_form:
+    attribute_filter:
+      all_missing_attributes: Alle fehlenden Attribute
+pim_title:
+  akeneo_data_quality_insights_dashboard: Datenqualitätseinsichten

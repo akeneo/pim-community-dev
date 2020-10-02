@@ -231,7 +231,17 @@ class NumberFilterSpec extends ObjectBehavior
                 ],
             ]
         )->shouldBeCalled();
-        $sqb->addFilter(['exists' => ['field' => 'family.code']])->shouldBeCalled();
+        $sqb->addFilter(
+            [
+                'bool' => [
+                    'should' => [
+                        ['terms' => ['attributes_for_this_level' => ['size']]],
+                        ['terms' => ['attributes_of_ancestors' => ['size']]],
+                    ],
+                    'minimum_should_match' => 1,
+                ],
+            ]
+        )->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter($size, Operators::IS_EMPTY, null, 'en_US', 'ecommerce', []);
@@ -288,6 +298,28 @@ class NumberFilterSpec extends ObjectBehavior
                 'NOT_NUMERIC'
             )
         )->during('addAttributeFilter', [$size, Operators::LOWER_THAN, 'NOT_NUMERIC', 'en_US', 'ecommerce', []]);
+    }
+
+    function it_throws_an_exception_when_the_given_value_is_null(
+        $filterValidator,
+        AttributeInterface $size,
+        SearchQueryBuilder $sqb
+    ) {
+        $size->getCode()->willReturn('size');
+        $size->getBackendType()->willReturn('decimal');
+
+        $filterValidator->validateLocaleForAttribute('size', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('size', 'ecommerce')->shouldBeCalled();
+
+        $this->setQueryBuilder($sqb);
+
+        $this->shouldThrow(
+            InvalidPropertyTypeException::numericExpected(
+                'size',
+                NumberFilter::class,
+                null
+            )
+        )->during('addAttributeFilter', [$size, Operators::LOWER_THAN, null, 'en_US', 'ecommerce', []]);
     }
 
     function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(

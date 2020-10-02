@@ -24,13 +24,15 @@ export const reducer: Reducer<State, Actions> = (state, action) => {
                     (connections, connection) => ({
                         ...connections,
                         [connection.code]: {
-                            clientId: '',
-                            secret: '',
-                            username: '',
-                            password: null,
-                            auditable: false,
-                            userRoleId: '',
-                            userGroupId: null,
+                            ...{
+                                clientId: '',
+                                secret: '',
+                                username: '',
+                                password: null,
+                                auditable: false,
+                                userRoleId: '',
+                                userGroupId: null,
+                            },
                             ...state[connection.code],
                             ...connection,
                         },

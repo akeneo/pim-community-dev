@@ -14,7 +14,8 @@ define(
         'pim/product/add-select/attribute',
         'pim/fetcher-registry',
         'pim/formatter/choices/base',
-        'pim/common/add-select/line'
+        'pim/common/add-select/line',
+        'pim/user-context',
     ],
     function (
         $,
@@ -22,7 +23,8 @@ define(
         AddAttributeSelect,
         FetcherRegistry,
         ChoicesFormatter,
-        LineView
+        LineView,
+        UserContext
     ) {
         return AddAttributeSelect.extend({
             lineView: LineView,
@@ -49,7 +51,10 @@ define(
                 return FetcherRegistry.getFetcher('attribute').search({
                         identifiers: this.getParent().getOtherAttributes().join(','),
                         rights: 0,
-                        search: options.term
+                        search: options.term,
+                        options: {
+                          locale: UserContext.get('catalogLocale'),
+                        },
                     }).then(this.prepareChoices)
                     .then(function (choices) {
                         options.callback({
