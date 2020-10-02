@@ -39,7 +39,7 @@ class SqlFindConnectorAssetFamilyByAssetFamilyIdentifier implements FindConnecto
         $this->assetFamilyHydrator = $hydrator;
     }
 
-    public function find(AssetFamilyIdentifier $identifier): ?ConnectorAssetFamily
+    public function find(AssetFamilyIdentifier $identifier, bool $caseSensitive = true): ?ConnectorAssetFamily
     {
         $sql = <<<SQL
         SELECT
@@ -54,8 +54,9 @@ class SqlFindConnectorAssetFamilyByAssetFamilyIdentifier implements FindConnecto
         FROM akeneo_asset_manager_asset_family as re
         LEFT JOIN akeneo_asset_manager_attribute ama ON re.attribute_as_main_media = ama.identifier
         LEFT JOIN akeneo_file_storage_file_info AS fi ON fi.file_key = re.image
-        WHERE re.identifier = :identifier;
+        WHERE {binary} re.identifier = :identifier;
 SQL;
+        $sql = str_replace('{binary}', $caseSensitive ? 'BINARY' : '', $sql);
 
         $statement = $this->connection->executeQuery(
             $sql,

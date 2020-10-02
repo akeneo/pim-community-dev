@@ -1,0 +1,18 @@
+{
+    "request": {
+        "method": "PATCH",
+        "route": "akeneo_asset_manager_asset_rest_connector_create_or_update",
+        "query": {
+            "assetFamilyIdentifier": "PACKSHOT",
+            "code": "new_asset"
+        },
+        "body": {}
+    },
+    "response": {
+        "status": 404,
+        "body":  {
+            "code": 404,
+            "message": "Asset family \"PACKSHOT\" does not exist."
+        }
+    }
+}

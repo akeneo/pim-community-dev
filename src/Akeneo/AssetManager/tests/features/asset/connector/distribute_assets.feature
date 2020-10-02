@@ -22,6 +22,12 @@ Feature: Connection to e-commerce platforms and marketplaces
     Then the PIM notifies the connector about an error indicating that the asset family does not exist
 
   @integration-back
+  Scenario: Notify an error when getting an asset of an existent asset family with the wrong case
+    Given the Kartell asset for the Brand asset family
+    When the connector requests for an asset of an existent asset family with the wrong case
+    Then the PIM notifies the connector about an error indicating that the asset family does not exist
+
+  @integration-back
   Scenario: Get all the assets of a given asset family
     Given 7 assets for the Brand asset family
     When the connector requests all assets of the Brand asset family

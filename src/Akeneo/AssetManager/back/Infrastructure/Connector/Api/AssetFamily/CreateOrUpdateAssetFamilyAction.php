@@ -20,6 +20,7 @@ use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyH
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
 use Akeneo\AssetManager\Domain\Query\File\FindFileDataByFileKeyInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetFamilyNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\AssetFamily\JsonSchema\AssetFamilyValidator;
 use Akeneo\AssetManager\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
@@ -99,7 +100,7 @@ class CreateOrUpdateAssetFamilyAction
         }
 
         $createAssetFamilyCommand = null;
-        $shouldBeCreated = !$this->assetFamilyExists->withIdentifier($assetFamilyIdentifier);
+        $shouldBeCreated = $this->shouldAssetFamilyBeCreated($assetFamilyIdentifier);
         if (true === $shouldBeCreated) {
             $createAssetFamilyCommand = new CreateAssetFamilyCommand(
                 $normalizedAssetFamily['code'],
@@ -152,6 +153,23 @@ class CreateOrUpdateAssetFamilyAction
         $responseStatusCode = true === $shouldBeCreated ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
 
         return Response::create('', $responseStatusCode, $headers);
+    }
+
+    private function shouldAssetFamilyBeCreated(AssetFamilyIdentifier $assetFamilyIdentifier): bool
+    {
+        try {
+            $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
+        } catch (AssetFamilyNotFoundException $e) {
+            return true;
+        }
+
+        if (!$assetFamily->getIdentifier()->equals($assetFamilyIdentifier)) {
+            throw new UnprocessableEntityHttpException(sprintf(
+                'The "%s" asset family already exists. Creating an asset family with a different case is forbidden.',
+                (string) $assetFamily->getIdentifier()
+            ));
+        }
+        return false;
     }
 
     private function getNormalizedAssetFamily(string $content): array

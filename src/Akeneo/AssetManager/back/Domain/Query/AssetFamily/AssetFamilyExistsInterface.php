@@ -21,5 +21,5 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
  */
 interface AssetFamilyExistsInterface
 {
-    public function withIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier): bool;
+    public function withIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier, bool $caseSensitive = true): bool;
 }

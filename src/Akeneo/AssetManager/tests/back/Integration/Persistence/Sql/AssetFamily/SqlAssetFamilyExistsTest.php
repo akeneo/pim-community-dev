@@ -47,6 +47,18 @@ class SqlAssetFamilyExistsTest extends SqlIntegrationTestCase
         $this->assertFalse($this->assetFamilyExists->withIdentifier(AssetFamilyIdentifier::fromString('manufacturer')));
     }
 
+    /**
+     * @test
+     */
+    public function it_can_be_case_sensitive_or_insensitive()
+    {
+        $this->loadAssetFamilyDesigner();
+        $this->assertTrue($this->assetFamilyExists->withIdentifier(AssetFamilyIdentifier::fromString('designer')));
+
+        $this->assertTrue($this->assetFamilyExists->withIdentifier(AssetFamilyIdentifier::fromString('DESIGNER'), false));
+        $this->assertFalse($this->assetFamilyExists->withIdentifier(AssetFamilyIdentifier::fromString('DESIGNER'), true));
+    }
+
     private function resetDB(): void
     {
         $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
