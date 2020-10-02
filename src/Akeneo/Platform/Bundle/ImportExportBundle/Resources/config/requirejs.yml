@@ -4,3 +4,5 @@ config:
 
         pim/importexport/template/widget/last-operations-widget: pimimportexport/templates/last-operations-widget.html
         pim/importexport/template/widget/view-all-btn: pimimportexport/templates/view-all-btn.html
+
+        oro/datagrid/job-status-cell: pimimportexport/js/job-status-cell.tsx

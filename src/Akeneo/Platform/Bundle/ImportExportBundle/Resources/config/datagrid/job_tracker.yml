@@ -23,9 +23,8 @@ datagrid:
                 frontendType: label
             status:
                 label:         Status
-                type:          twig
-                template:      PimImportExportBundle:Property:status.html.twig
-                frontend_type: html
+                type:          field
+                frontend_type: job-status
             warning:
                 label:         Warnings
                 type:          twig
