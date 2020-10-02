@@ -20,13 +20,13 @@ export const TestUrlButton: FC<Props> = ({onClick, disabled, loading}) => {
 };
 
 const Button = styled(GhostButton)`
-    margin-left: 10px;
     display: flex;
-    align-items: center;
+    flex: 1 0 auto;
+    margin-left: 10px;
 `;
 
 const Loader = styled(LoaderIcon)`
-    width: 32px;
     height: 32px;
     margin-right: 5px;
+    width: 13px;
 `;

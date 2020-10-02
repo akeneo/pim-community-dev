@@ -38,6 +38,7 @@ export const CopiableCredential: FC<Props> = ({label, children: value, actions, 
                 <>
                     {actions}
                     <IconButton
+                        type='button'
                         onClick={handleCopy}
                         title={translate('akeneo_connectivity.connection.edit_connection.credentials.action.copy')}
                     >
