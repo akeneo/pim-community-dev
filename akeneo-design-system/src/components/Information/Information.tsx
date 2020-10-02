@@ -1,7 +1,8 @@
 import React, {Children, isValidElement, ReactNode, Ref} from 'react';
 import styled from 'styled-components';
-import {getColor, getFontSize} from '../../theme';
+import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Link} from '../Link/Link';
+import {IllustrationProps} from '../../illustrations/IllustrationProps';
 
 const Container = styled.div`
   align-items: center;
@@ -50,7 +51,8 @@ type HelperProps = {
 /** Information informs the user about the page's features */
 const Information = React.forwardRef<HTMLDivElement, HelperProps>(
   ({illustration, title, children, ...rest}: HelperProps, forwardedRef: Ref<HTMLDivElement>) => {
-    const resizedIllustration = isValidElement(illustration) && React.cloneElement(illustration, {size: 80});
+    const resizedIllustration =
+      isValidElement<IllustrationProps>(illustration) && React.cloneElement(illustration, {size: 80});
 
     const linkChildren = Children.toArray(children).filter(child => isValidElement(child) && child.type === Link);
     const descriptionChildren = Children.toArray(children).filter(
@@ -75,8 +77,8 @@ const Information = React.forwardRef<HTMLDivElement, HelperProps>(
   }
 );
 
-const HighlightTitle = styled.span`
-  color: ${getColor('purple100')};
+const HighlightTitle = styled.span<AkeneoThemedProps>`
+  color: ${props => props.theme.palette.brand};
 `;
 
 export {Information, HighlightTitle};

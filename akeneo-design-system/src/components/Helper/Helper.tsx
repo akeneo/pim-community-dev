@@ -92,7 +92,8 @@ const IconContainer = styled.span<{level: Level; inline: boolean} & AkeneoThemed
 
 type HelperProps = {
   /**
-   * Define the style of helper. Inline helper are located just below a field, normal helper are located below the section title.
+   * Define the style of helper. Inline helper are located just below a field, normal helper are located below
+   * the section title.
    */
   inline?: boolean;
 

@@ -1,12 +1,17 @@
 import React from 'react';
 import {render} from '../../storybook/test-util';
-import {Information} from './Information';
+import {HighlightTitle, Information} from './Information';
 import {UsersIllustration} from '../../illustrations';
 
 describe('A helper', () => {
-  it('renders an information helper', () => {
-    const helperTitle = 'Helper title';
+  it('it renders an information helper', () => {
     const helperMessage = 'A Helper message';
+    const helperTitle = (
+      <>
+        <HighlightTitle>Highlight</HighlightTitle>
+        helper title
+      </>
+    );
 
     const {getByText} = render(
       <Information title={helperTitle} illustration={UsersIllustration}>
@@ -14,7 +19,8 @@ describe('A helper', () => {
       </Information>
     );
 
-    expect(getByText(helperTitle)).toBeInTheDocument();
+    expect(getByText('Highlight')).toBeInTheDocument();
+    expect(getByText('helper title')).toBeInTheDocument();
     expect(getByText(helperMessage)).toBeInTheDocument();
   });
 });
