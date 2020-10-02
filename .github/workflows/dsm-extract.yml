@@ -2,7 +2,7 @@ name: Extract DSM
 on:
   push:
     branches:
-      - dsm
+      - master
     paths:
       - 'akeneo-design-system/**'
 jobs:
