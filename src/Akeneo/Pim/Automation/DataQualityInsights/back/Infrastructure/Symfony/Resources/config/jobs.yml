@@ -125,13 +125,13 @@ services:
     akeneo.pim.automation.data_quality_insights.infrastructure.connector.tasklet.prepare_products_criteria_evaluation:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\PrepareProductsCriteriaEvaluationTasklet
         arguments:
-            - '@akeneo.pim.automation.data_quality_insights.create_missing_products_criteria_evaluations'
+            - '@akeneo.pim.automation.data_quality_insights.mark_product_criteria_to_evaluate'
             - '@logger'
 
     akeneo.pim.automation.data_quality_insights.infrastructure.connector.tasklet.prepare_product_models_criteria_evaluation:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\PrepareProductModelsCriteriaEvaluationTasklet
         arguments:
-            - '@akeneo.pim.automation.data_quality_insights.create_missing_product_models_criteria_evaluations'
+            - '@akeneo.pim.automation.data_quality_insights.mark_product_model_criteria_to_evaluate'
             - '@logger'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\ConsolidateDashboardRatesTasklet:

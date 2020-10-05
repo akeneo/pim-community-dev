@@ -15,7 +15,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluatio
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductIdsQueryInterface;
 
-final class CreateMissingCriteriaEvaluations implements CreateMissingCriteriaEvaluationsInterface
+final class MarkCriteriaToEvaluate implements MarkCriteriaToEvaluateInterface
 {
     /** @var GetUpdatedProductIdsQueryInterface */
     private $getUpdatedProductIdsQuery;
@@ -31,7 +31,7 @@ final class CreateMissingCriteriaEvaluations implements CreateMissingCriteriaEva
         $this->createProductsCriteriaEvaluations = $createProductsCriteriaEvaluations;
     }
 
-    public function createForProductsUpdatedSince(\DateTimeImmutable $updatedSince, int $batchSize): void
+    public function forUpdatesSince(\DateTimeImmutable $updatedSince, int $batchSize): void
     {
         foreach ($this->getUpdatedProductIdsQuery->since($updatedSince, $batchSize) as $productIds) {
             $this->createProductsCriteriaEvaluations->createAll($productIds);
