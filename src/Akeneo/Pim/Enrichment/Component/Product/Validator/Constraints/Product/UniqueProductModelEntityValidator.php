@@ -55,7 +55,7 @@ class UniqueProductModelEntityValidator extends ConstraintValidator
 
         if (false === $this->uniqueValuesSet->addValue($identifierValue, $entity)) {
             $this->context->buildViolation($constraint->message)
-                ->atPath('identifier')
+                ->atPath('code')
                 ->addViolation();
 
             return;
