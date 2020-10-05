@@ -106,6 +106,7 @@ final class ComputeFamilyVariantStructureChangesTaskletIntegration extends TestC
         $productModel = $this->get('pim_catalog.factory.product_model')->create();
         $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
         $errors = $this->get('pim_catalog.validator.product')->validate($productModel);
+        $this->get('pim_catalog.validator.unique_value_set')->reset();
 
         foreach ($errors as $error) {
             print_r($error->__toString() . "\n");
