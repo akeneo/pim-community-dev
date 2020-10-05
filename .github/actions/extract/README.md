@@ -1,27 +1,20 @@
 # github-action-push-to-another-repository
 
-Used to push generated files from a directory from Git Action step into another repository on Github.
-
-E.g.
-Repository pandoc-test contains Markdown and a Git Action to generate, using Pandoc, an output: HTML, PDF, odt, epub, etc.
-
-Repository pandoc-test-output: contains only the generated files from the first Git Action. Pushed here with github-action-push-to-another-repository
-
-And pandoc-test-output can have Git Pages to give access to the files (or just links to the raw version of the files)
+Used to push generated files from a directory from Github Action step into another repository on Github.
 
 ## Inputs
 
 ### `source-directory` (argument)
 
-From the repository that this Git Action is executed the directory that contains the files to be pushed into the repository.
+From the repository that this Github Action is executed the directory that contains the files to be pushed into the repository.
 
 ### `destination-github-username` (argument)
 
-For the repository `https://github.com/cpina/push-to-another-repository-output` is `cpina`. It's also used for the `Author:` in the generated git messages.
+For the repository `https://github.com/akeneo/akeneo-design-system` is `akeneo`. It's also used for the `Author:` in the generated git messages.
 
 ### `destination-repository-name` (argument)
 
-For the repository `https://github.com/cpina/push-to-another-repository-output` is `push-to-another-repository-output`
+For the repository `https://github.com/akeneo/akeneo-design-system` is `akeneo-design-system`
 
 ### `destination-branch` (argument)
 
@@ -29,7 +22,7 @@ The branch that will be pushed on the destination-repository-name.
 
 ### `commit-messages-filepath` (argument)
 
-The filepath to the file containing messages
+The filepath to the file containing commit messages
 
 ### `user-email` (argument)
 
