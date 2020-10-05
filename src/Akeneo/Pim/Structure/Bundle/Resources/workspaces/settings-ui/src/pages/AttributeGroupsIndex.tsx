@@ -9,10 +9,6 @@ import {
 } from '../components';
 import {useAttributeGroupsDataGridState, useMountedRef} from '../hooks';
 
-const breadcrumb = <AttributeGroupsBreadcrumb />;
-const userButtons = <AttributeGroupsUserButtons />;
-const buttons = [<AttributeGroupsCreateButton />];
-
 const AttributeGroupsIndex: FC = () => {
   const [showPlaceholder, setShowPlaceholder] = useState(true);
   const mounted = useMountedRef();
@@ -30,8 +26,23 @@ const AttributeGroupsIndex: FC = () => {
 
   return (
     <>
-      <PageHeader breadcrumb={breadcrumb} userButtons={userButtons} buttons={buttons} showPlaceholder={showPlaceholder}>
-        {translate('pim_enrich.entity.attribute_group.result_count', {count: groups.length.toString()}, groups.length)}
+      <PageHeader showPlaceholder={showPlaceholder}>
+        <PageHeader.Breadcrumb>
+          <AttributeGroupsBreadcrumb />
+        </PageHeader.Breadcrumb>
+        <PageHeader.UserActions>
+          <AttributeGroupsUserButtons />
+        </PageHeader.UserActions>
+        <PageHeader.Actions>
+          <AttributeGroupsCreateButton />
+        </PageHeader.Actions>
+        <PageHeader.Title>
+          {translate(
+            'pim_enrich.entity.attribute_group.result_count',
+            {count: groups.length.toString()},
+            groups.length
+          )}
+        </PageHeader.Title>
       </PageHeader>
       <PageContent>
         <AttributeGroupsDataGrid groups={groups} />
