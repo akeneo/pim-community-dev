@@ -1,6 +1,7 @@
 pim_notification:
   types:
     settings: Paramètres
+    mass_delete: Suppression
 flash:
   comment:
     create:
@@ -333,6 +334,7 @@ pim_enrich.mass_edit.product:
       label_count: "{1}Changer le parent d'<span class=\"AknFullPage-title--highlight\">1 produit</span>|]1, Inf[Changer le parent de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
       description: Le parent des produits variants et des sous modèles de produits sélectionnés dans la grille va être modifié avec ce modèle de produit.
 pim_datagrid:
+  no_entities: "Aucune {{ entityHint }} trouvée"
   mass_action_group:
     bulk_actions:
       label: Actions de masse
@@ -429,3 +431,5 @@ batch_jobs:
     quick_export.label: Export rapide de produits en XLSX
     quick_export_product_model.label: Export rapide de modèles de produit en XLSX
     perform.label: Export rapide de produits en XLSX
+  default_steps:
+    delete_products_and_product_models: Supprimer les produits et les modèles de produits
