@@ -156,6 +156,8 @@ RUN mkdir var && \
     bin/console pim:installer:assets --clean && \
     yarnpkg install --frozen-lockfile && \
     yarnpkg run less && \
+    yarnpkg run --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system install --frozen-lockfile && \
+    yarnpkg run --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system run lib:build && \
     EDITION=cloud yarnpkg run webpack && \
     find . -type d -name node_modules | xargs rm -rf && \
     rm -rf public/test_dist && \
