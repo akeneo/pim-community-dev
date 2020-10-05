@@ -19,14 +19,14 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductModelCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterface
 {
-    private $productRepository;
+    private $productModelRepository;
     private $externalApiNormalizer;
 
     public function __construct(
-        IdentifiableObjectRepositoryInterface $productRepository,
+        IdentifiableObjectRepositoryInterface $productModelRepository,
         NormalizerInterface $externalApiNormalizer
     ) {
-        $this->productRepository = $productRepository;
+        $this->productModelRepository = $productModelRepository;
         $this->externalApiNormalizer = $externalApiNormalizer;
     }
 
@@ -46,7 +46,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilder implements EventDataBuilderI
 
         $data = $businessEvent->data();
 
-        $productModel = $this->productRepository->findOneByIdentifier($data['identifier']);
+        $productModel = $this->productModelRepository->findOneByIdentifier($data['identifier']);
         if (null === $productModel) {
             throw new ProductModelNotFoundException($data['identifier']);
         }

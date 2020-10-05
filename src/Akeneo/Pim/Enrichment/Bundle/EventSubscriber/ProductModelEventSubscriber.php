@@ -6,13 +6,13 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use  Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 
 /**
  * @author    Thomas Galvaing <thomas.galvaing@akeneo.com>
@@ -35,11 +35,11 @@ final class ProductModelEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            StorageEvents::POST_SAVE => ['produceModelBusinessSaveEvent', 1000],
+            StorageEvents::POST_SAVE => ['produceBusinessSaveEvent', 1000],
         ];
     }
 
-    public function produceModelBusinessSaveEvent(GenericEvent $event): void
+    public function produceBusinessSaveEvent(GenericEvent $event): void
     {
         /** @var ProductModelInterface */
         $productModel = $event->getSubject();
