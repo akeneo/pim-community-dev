@@ -320,7 +320,6 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         $pqb->addFilter('parent', Argument::cetera())->shouldNotBeCalled();
         $pqb->execute()->willReturn($cursor);
         $pqb->getQueryBuilder()->willReturn($sqb);
-        $searchAggregator->aggregateResults($sqb, $rawFilters)->shouldBeCalled();
 
         $this->execute()->shouldReturn($cursor);
     }
@@ -479,6 +478,36 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
                 'type'     => 'field'
             ],
             [
+                'field'    => 'foo',
+                'operator' => 'CONTAINS',
+                'value'    => '42',
+                'context'  => [],
+                'type'     => 'attribute'
+            ],
+        ];
+        $pqb->getRawFilters()->willReturn($rawFilters);
+
+        $sqb->addFilter(Argument::cetera())->shouldNotBeCalled();
+
+        $pqb->execute()->willReturn($cursor);
+        $pqb->getQueryBuilder()->willReturn($sqb);
+        $searchAggregator->aggregateResults($sqb, $rawFilters)->shouldNotBeCalled();
+        $this->execute()->shouldReturn($cursor);
+    }
+
+    function it_does_not_aggregate_when_there_is_a_filter_on_entity_type(
+        $pqb,
+        $searchAggregator,
+        CursorInterface $cursor,
+        SearchQueryBuilder $sqb
+    ) {
+        $rawFilters = [
+            [
+                'field'    => 'entity_type',
+                'operator' => 'EQUALS',
+                'value'    => 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+                'type'     => 'field'
+            ], [
                 'field'    => 'foo',
                 'operator' => 'CONTAINS',
                 'value'    => '42',
