@@ -11,7 +11,7 @@ final class Version_5_0_20200921153252_dqi_create_table_attribute_group_activati
     {
         $this->addSql(<<<SQL
 CREATE TABLE IF NOT EXISTS pim_data_quality_insights_attribute_group_activation (
-    attribute_group_code VARCHAR(15) NOT NULL PRIMARY KEY,
+    attribute_group_code VARCHAR(100) NOT NULL PRIMARY KEY,
     activated TINYINT NOT NULL,
     updated_at DATETIME NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
