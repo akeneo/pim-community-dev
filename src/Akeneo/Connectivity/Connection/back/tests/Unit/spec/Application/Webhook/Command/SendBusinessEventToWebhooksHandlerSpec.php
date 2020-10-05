@@ -15,6 +15,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
 use Akeneo\Platform\Component\EventQueue\BusinessEvent;
 use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
+use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
 use Prophecy\Argument;
@@ -54,21 +55,30 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $client,
         $builder
     ): void {
+        $user = new User();
         $businessEvent = $this->createBusinessEvent('julia', ['data']);
         $command = new SendBusinessEventToWebhooksCommand($businessEvent);
 
         $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/');
         $selectActiveWebhooksQuery->execute()->willReturn([$webhook]);
 
-        $webhookUserAuthenticator->authenticate(0)->shouldBeCalled();
-        $builder->build($businessEvent, ['pim_source' => 'staging.akeneo.com'])->willReturn(new WebhookEvent(
-            'product.created',
-            '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
-            '2020-01-01T00:00:00+00:00',
-            'julia',
-            'staging.akeneo.com',
-            ['data']
-        ));
+        $webhookUserAuthenticator->authenticate(0)->shouldBeCalled()->willReturn($user);
+        $builder->build(
+            $businessEvent,
+            [
+                'pim_source' => 'staging.akeneo.com',
+                'user' => $user,
+            ]
+        )->willReturn(
+            new WebhookEvent(
+                'product.created',
+                '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
+                '2020-01-01T00:00:00+00:00',
+                'julia',
+                'staging.akeneo.com',
+                ['data']
+            )
+        );
 
         $client->bulkSend(Argument::that(function (iterable $iterable) {
             $requests = iterator_to_array($iterable);
@@ -109,20 +119,27 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $this->handle($command);
     }
 
-    public function it_handle_error_gracefully(
+    public function it_handles_error_gracefully(
         $selectActiveWebhooksQuery,
         $webhookUserAuthenticator,
         $client,
         $builder
     ): void {
+        $user = new User();
         $businessEvent = $this->createBusinessEvent('julia', ['data']);
         $command = new SendBusinessEventToWebhooksCommand($businessEvent);
 
         $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/');
         $selectActiveWebhooksQuery->execute()->willReturn([$webhook]);
 
-        $webhookUserAuthenticator->authenticate(0)->shouldBeCalled();
-        $builder->build($businessEvent, ['pim_source' => 'staging.akeneo.com'])->willThrow(\Exception::class);
+        $webhookUserAuthenticator->authenticate(0)->shouldBeCalled()->willReturn($user);
+        $builder->build(
+            $businessEvent,
+            [
+                'pim_source' => 'staging.akeneo.com',
+                'user' => $user,
+            ]
+        )->willThrow(\Exception::class);
 
         $client->bulkSend(Argument::that(function (iterable $iterable) {
             $requests = iterator_to_array($iterable);

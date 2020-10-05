@@ -68,8 +68,14 @@ final class SendBusinessEventToWebhooksHandler
         $requests = function () use ($businessEvent, $webhooks) {
             foreach ($webhooks as $webhook) {
                 try {
-                    $this->webhookUserAuthenticator->authenticate($webhook->userId());
-                    $event = $this->builder->build($businessEvent, ['pim_source' => $this->pimSource]);
+                    $user = $this->webhookUserAuthenticator->authenticate($webhook->userId());
+                    $event = $this->builder->build(
+                        $businessEvent,
+                        [
+                            'pim_source' => $this->pimSource,
+                            'user' => $user,
+                        ]
+                    );
                 } catch (\Throwable $error) {
                     // Handle error gracefully and continue the processing of other webhooks.
                     $this->handleError($error, $webhook, $businessEvent);

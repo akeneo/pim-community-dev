@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductModelNotFou
 use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -37,8 +38,15 @@ class ProductModelCreatedAndUpdatedEventDataBuilder implements EventDataBuilderI
 
     /**
      * @param ProductModelUpdated|ProductModelCreated $businessEvent
+     * @param array<mixed> $context
+     *
+     * @return array<mixed>
+     *
+     * @throws \InvalidArgumentException
+     * @throws ProductModelNotFoundException
+     * @throws ExceptionInterface
      */
-    public function build(BusinessEventInterface $businessEvent): array
+    public function build(BusinessEventInterface $businessEvent, array $context = []): array
     {
         if (false === $this->supports($businessEvent)) {
             throw new \InvalidArgumentException();

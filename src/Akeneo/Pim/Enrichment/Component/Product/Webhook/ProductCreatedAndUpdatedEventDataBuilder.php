@@ -37,8 +37,15 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
 
     /**
      * @param ProductCreated|ProductUpdated $businessEvent
+     * @param array $context
+     *
+     * @return array
+     *
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @throws ProductNotFoundException
+     * @throws \InvalidArgumentException
      */
-    public function build(BusinessEventInterface $businessEvent): array
+    public function build(BusinessEventInterface $businessEvent, array $context = []): array
     {
         if (false === $this->supports($businessEvent)) {
             throw new \InvalidArgumentException();

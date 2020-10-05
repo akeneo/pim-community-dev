@@ -10,7 +10,10 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Platform\Component\EventQueue\BusinessEvent;
 use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
+use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
 /**
  * @author    Thomas Galvaing <thomas.galvaing@akeneo.com>
@@ -33,6 +36,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
 
     public function it_builds_a_webhook_event($eventDataBuilder1, $eventDataBuilder2): void
     {
+        $user = new User();
         $businessEvent = $this->createBusinessEvent(
             'julia',
             ['data'],
@@ -43,9 +47,21 @@ class WebhookEventBuilderSpec extends ObjectBehavior
         $eventDataBuilder1->supports($businessEvent)->willReturn(false);
         $eventDataBuilder2->supports($businessEvent)->willReturn(true);
 
-        $eventDataBuilder2->build($businessEvent)->willReturn(['data']);
+        $eventDataBuilder2->build(
+            $businessEvent,
+            [
+                'pim_source' => 'staging.akeneo.com',
+                'user' => $user,
+            ]
+        )->willReturn(['data']);
 
-        $this->build($businessEvent, ['pim_source' => 'staging.akeneo.com'])
+        $this->build(
+            $businessEvent,
+            [
+                'pim_source' => 'staging.akeneo.com',
+                'user' => $user,
+            ]
+        )
             ->shouldBeLike(
                 new WebhookEvent(
                     'product.created',
@@ -62,6 +78,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
     {
         $this->beConstructedWith([]);
 
+        $user = new User();
         $businessEvent = $this->createBusinessEvent(
             'julia',
             ['data'],
@@ -70,13 +87,66 @@ class WebhookEventBuilderSpec extends ObjectBehavior
         );
 
         $this->shouldThrow(WebhookEventDataBuilderNotFoundException::class)
+            ->during('build', [$businessEvent, ['pim_source' => 'staging.akeneo.com', 'user' => $user]]);
+    }
+
+    public function it_throws_an_exception_if_there_is_no_pim_source_in_context(): void
+    {
+        $user = new User();
+        $businessEvent = $this->createBusinessEvent(
+            'julia',
+            ['data'],
+            1599814161,
+            'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
+        );
+
+        $this->shouldThrow(MissingOptionsException::class)
+            ->during('build', [$businessEvent, ['user' => $user]]);
+    }
+
+    public function it_throws_an_exception_if_pim_source_is_empty(): void
+    {
+        $user = new User();
+        $businessEvent = $this->createBusinessEvent(
+            'julia',
+            ['data'],
+            1599814161,
+            'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
+        );
+
+        $this->shouldThrow(InvalidOptionsException::class)
+            ->during('build', [$businessEvent, ['pim_source' => '', 'user' => $user]]);
+    }
+
+    public function it_throws_an_exception_if_pim_source_is_null(): void
+    {
+        $user = new User();
+        $businessEvent = $this->createBusinessEvent(
+            'julia',
+            ['data'],
+            1599814161,
+            'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
+        );
+
+        $this->shouldThrow(InvalidOptionsException::class)
+            ->during('build', [$businessEvent, ['pim_source' => null, 'user' => $user]]);
+    }
+
+    public function it_throws_an_exception_if_there_is_no_user_in_context(): void
+    {
+        $businessEvent = $this->createBusinessEvent(
+            'julia',
+            ['data'],
+            1599814161,
+            'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
+        );
+
+        $this->shouldThrow(MissingOptionsException::class)
             ->during('build', [$businessEvent, ['pim_source' => 'staging.akeneo.com']]);
     }
 
-    public function it_throws_an_exception_if_there_is_no_pim_source_in_context(
-        $eventDataBuilder1,
-        $eventDataBuilder2
-    ): void {
+    public function it_throws_an_exception_if_the_user_has_not_the_good_type(): void
+    {
         $businessEvent = $this->createBusinessEvent(
             'julia',
             ['data'],
@@ -84,53 +154,8 @@ class WebhookEventBuilderSpec extends ObjectBehavior
             'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
         );
 
-        $eventDataBuilder1->supports($businessEvent)->willReturn(false);
-        $eventDataBuilder2->supports($businessEvent)->willReturn(true);
-
-        $eventDataBuilder2->build($businessEvent)->willReturn(['data']);
-
-        $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('build', [$businessEvent]);
-    }
-
-    public function it_throws_an_exception_if_pim_source_is_empty(
-        $eventDataBuilder1,
-        $eventDataBuilder2
-    ): void {
-        $businessEvent = $this->createBusinessEvent(
-            'julia',
-            ['data'],
-            1599814161,
-            'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
-        );
-
-        $eventDataBuilder1->supports($businessEvent)->willReturn(false);
-        $eventDataBuilder2->supports($businessEvent)->willReturn(true);
-
-        $eventDataBuilder2->build($businessEvent)->willReturn(['data']);
-
-        $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('build', [$businessEvent, ['pim_source' => '']]);
-    }
-
-    public function it_throws_an_exception_if_pim_source_is_null(
-        $eventDataBuilder1,
-        $eventDataBuilder2
-    ): void {
-        $businessEvent = $this->createBusinessEvent(
-            'julia',
-            ['data'],
-            1599814161,
-            'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
-        );
-
-        $eventDataBuilder1->supports($businessEvent)->willReturn(false);
-        $eventDataBuilder2->supports($businessEvent)->willReturn(true);
-
-        $eventDataBuilder2->build($businessEvent)->willReturn(['data']);
-
-        $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('build', [$businessEvent, ['pim_source' => null]]);
+        $this->shouldThrow(InvalidOptionsException::class)
+            ->during('build', [$businessEvent, ['pim_source' => 'staging.akeneo.com', 'user' => 'not_ok']]);
     }
 
     private function createBusinessEvent(
