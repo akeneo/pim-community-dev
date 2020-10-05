@@ -52,7 +52,7 @@ class ProductGridFilters extends BaseMultiSelectAsync {
   protected convertBackendItem(item: NormalizedAttribute): Object {
     return {
       id: item.code,
-      text: i18n.getLabel(item.labels, UserContext.get('catalogLocale'), item.code),
+      text: __(i18n.getLabel(item.labels, UserContext.get('catalogLocale'), item.code)),
       group: {
         text: (
           item.group ?

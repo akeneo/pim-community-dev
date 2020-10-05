@@ -413,6 +413,26 @@ pim_datagrid:
             label: 'Variant'
             grouped: 'Grouped'
             ungrouped: 'Ungrouped'
+        family:
+            label: Family
+        groups:
+            label: Groups
+        enabled:
+            label: Status
+        scope:
+            label: Scope
+        completeness:
+            label: Complete
+        created:
+            label: Created At
+        updated:
+            label: Updated At
+        label_or_identifier:
+            label: Label or identifier
+        parent:
+            label: Parent
+        identifier:
+            label: Identifier
     search: Search on {{ label }}
 
 batch_jobs:

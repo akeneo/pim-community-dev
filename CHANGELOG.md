@@ -39,6 +39,7 @@
 - PIM-9478: Allow the modification of the identifier on a variant product
 - PIM-9481: Fix the list of product models when trying to get them by family variant
 - GITHUB-12899: Fix error shown when importing product models with the same code
+- PIM-9491: Translate product grid filters in user additional settings
 
 ## New features
 

@@ -248,7 +248,7 @@ datagrid:
             columns:
                 family:
                     type:      product_family
-                    label:     Family
+                    label:     'pim_datagrid.filters.family.label'
                     data_name: family
                     options:
                         field_options:
@@ -267,7 +267,7 @@ datagrid:
                                 'pim_datagrid.filters.product_typology.variant': 'variant'
                 groups:
                     type:      product_groups
-                    label:     Groups
+                    label:     'pim_datagrid.filters.groups.label'
                     data_name: groups
                     options:
                         field_options:
@@ -275,7 +275,7 @@ datagrid:
                 enabled:
                     type:      product_enabled
                     ftype:     choice
-                    label:     Status
+                    label:     'pim_datagrid.filters.enabled.label'
                     data_name: enabled
                     options:
                         field_options:
@@ -284,31 +284,31 @@ datagrid:
                                 Disabled: 0
                 scope:
                     type:      product_scope
-                    label:     Scope
+                    label:     'pim_datagrid.filters.scope.label'
                     data_name: values.scope
                     options:
                         field_options:
                             choices: '@pim_catalog.repository.channel->getLabelsIndexedByCode(@pim_user.context.user->getCurrentLocaleCode())'
                 completeness:
                     type:      product_and_product_model_completeness
-                    label:     Complete
+                    label:     'pim_datagrid.filters.completeness.label'
                     data_name: ratio
                 created:
                     type:      product_date
                     ftype:     date
                     data_name: created
-                    label:     Created At
+                    label:     'pim_datagrid.filters.created.label'
                 updated:
                     type:      product_date
                     ftype:     date
                     data_name: updated
-                    label:     Updated At
+                    label:     'pim_datagrid.filters.updated.label'
                 label_or_identifier:
                     type: label_or_identifier
-                    label: Label or identifier
+                    label: 'pim_datagrid.filters.label_or_identifier.label'
                     data_name: label_or_identifier
                 parent:
-                    label:         Parent
+                    label:         'pim_datagrid.filters.parent.label'
                     data_name:     parent
                     type:          product_value_string
                     ftype:         parent
@@ -319,7 +319,7 @@ datagrid:
                 identifier:
                     type: product_value_string
                     ftype: identifier
-                    label: pim_catalog_identifier
+                    label: 'pim_datagrid.filters.identifier.label'
                     data_name: identifier
                     options:
                         field_options:
