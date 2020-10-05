@@ -705,7 +705,7 @@ config:
     pim/product-edit-form/attributes/variant-axes:           pimui/js/product/form/attributes/variant-axes
     pim/product-edit-form/product-and-product-model-picker:  pimui/js/product/form/product-and-product-model-picker
     pim/product-edit-form/attributes/read-only-parent-attributes: pimui/js/product/form/attributes/read-only-parent-attributes
-    pim/product/product-grid-title:                          pimui/js/form/common/product/product-grid-title
+    pim/product/product-grid-title:                          pimui/js/form/common/product/product-grid-title.ts
 
     # Product model
     pim/product-model-edit-form/product-model-label: pimui/js/product-model/form/product-model-label
