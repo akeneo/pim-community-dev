@@ -78,7 +78,7 @@ jobs:
           name: Lib
           path: akeneo-design-system/lib
 
-      - name: Bump package version
+      - name: Remove current package.json
         run: rm akeneo-design-system/package.json
 
       - name: Download the package.json artifact
