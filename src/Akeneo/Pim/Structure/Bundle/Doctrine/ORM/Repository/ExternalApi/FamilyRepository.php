@@ -127,7 +127,7 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
                 new Assert\Collection([
                     'operator' => new Assert\IdenticalTo([
                         'value' => 'IN',
-                        'message' => 'In order to search on family codes you must use "IN" operator, {{ compared_value }} given.',
+                        'message' => 'In order to search on family codes you must use "IN" operator, {{ value }} given.',
                     ]),
                     'value' => [
                         new Assert\Type([
@@ -144,7 +144,7 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
                 new Assert\Collection([
                     'operator' => new Assert\IdenticalTo([
                         'value' => '>',
-                        'message' => 'Searching on the "updated" property require the ">" (greater than) operator, {{ compared_value }} given.',
+                        'message' => 'Searching on the "updated" property require the ">" (greater than) operator, {{ value }} given.',
                     ]),
                     'value' => new Assert\DateTime(['format' => \DateTime::ATOM]),
                 ])
