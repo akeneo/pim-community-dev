@@ -29,6 +29,11 @@ yarn.lock: package.json
 node_modules: yarn.lock
 	$(YARN_RUN) install --frozen-lockfile --check-files
 
+.PHONY: dsm
+dsm:
+	$(YARN_RUN) --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system install --frozen-lockfile
+	$(YARN_RUN) --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system run lib:build
+
 .PHONY: assets
 assets:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/bundles public/js
@@ -40,27 +45,27 @@ css:
 	$(YARN_RUN) run less
 
 .PHONY: javascript-prod
-javascript-prod:
+javascript-prod: dsm
 	$(NODE_RUN) rm -rf public/dist
 	$(DOCKER_COMPOSE) run -e EDITION=cloud --rm node yarn run webpack
 
 .PHONY: javascript-prod-onprem-paas
-javascript-prod-onprem-paas:
+javascript-prod-onprem-paas: dsm
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack
 
 .PHONY: javascript-dev
-javascript-dev:
+javascript-dev: dsm
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack-dev
 
 .PHONY: javascript-dev-strict
-javascript-dev-strict:
+javascript-dev-strict: dsm
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack-dev --strict
 
 .PHONY: javascript-test
-javascript-test:
+javascript-test: dsm
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack-test
 
