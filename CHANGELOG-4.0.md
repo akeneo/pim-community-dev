@@ -4,6 +4,8 @@
 
 - PIM-9472: [Backport] API-1253: Add attr group labels inside attribute end-point + API-1260: Add search filters on attribute groups
 
+# 4.0.61 (2020-10-02)
+
 # 4.0.60 (2020-09-30)
 
 ## Technical Improvements
