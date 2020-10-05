@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9490: [Backport] PIM-9461: Fix display of multiselect fields with a lot of selected options
+
 # 4.0.61 (2020-10-02)
 
 # 4.0.60 (2020-09-30)
