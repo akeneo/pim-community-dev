@@ -21,12 +21,12 @@ final class ProductAndProductsModelDocumentTypeFacetFactory
 
         $rawResult = $result->getRawResult();
         $aggregations = $rawResult['aggregations'] ?? [];
-        $documentTypeAggregation = $aggregations[ProductAndProductsModelDocumentTypeFacetQuery::NAME] ?? null;
+        $documentTypeAggregation = $aggregations[FacetOnDocumentType::NAME] ?? null;
         if (!is_array($documentTypeAggregation)) {
             return null;
         }
 
-        $facet = Facet::createEmptyWithName(ProductAndProductsModelDocumentTypeFacetQuery::NAME);
+        $facet = Facet::createEmptyWithName(FacetOnDocumentType::NAME);
         foreach ($documentTypeAggregation['buckets'] ?? [] as $bucket) {
             $item = FacetItem::fromArray($bucket);
             $facet->addFacetItem($item);

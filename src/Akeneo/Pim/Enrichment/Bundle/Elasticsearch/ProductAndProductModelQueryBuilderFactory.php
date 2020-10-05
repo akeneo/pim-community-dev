@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Facet\FacetOnDocumentTypeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
@@ -38,21 +39,17 @@ class ProductAndProductModelQueryBuilderFactory implements ProductQueryBuilderFa
     /** @var ProductQueryBuilderOptionsResolverInterface */
     protected $optionsResolver;
 
-    /**
-     * @param string                                      $pqbClass
-     * @param AttributeRepositoryInterface                $attributeRepository
-     * @param FilterRegistryInterface                     $filterRegistry
-     * @param SorterRegistryInterface                     $sorterRegistry
-     * @param CursorFactoryInterface                      $cursorFactory
-     * @param ProductQueryBuilderOptionsResolverInterface $optionsResolver
-     */
+    /** @var FacetOnDocumentTypeInterface */
+    protected $facetOnDocumentType;
+
     public function __construct(
         string $pqbClass,
         AttributeRepositoryInterface $attributeRepository,
         FilterRegistryInterface $filterRegistry,
         SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory,
-        ProductQueryBuilderOptionsResolverInterface $optionsResolver
+        ProductQueryBuilderOptionsResolverInterface $optionsResolver,
+        FacetOnDocumentTypeInterface $facetOnDocumentType
     ) {
         $this->pqbClass = $pqbClass;
         $this->attributeRepository = $attributeRepository;
@@ -60,6 +57,7 @@ class ProductAndProductModelQueryBuilderFactory implements ProductQueryBuilderFa
         $this->sorterRegistry = $sorterRegistry;
         $this->cursorFactory = $cursorFactory;
         $this->optionsResolver = $optionsResolver;
+        $this->facetOnDocumentType = $facetOnDocumentType;
     }
 
     /**
@@ -90,6 +88,10 @@ class ProductAndProductModelQueryBuilderFactory implements ProductQueryBuilderFa
             $pqbOptions['from'] = $options['from'];
         }
 
+        if (isset($options['with_document_type_facet'])) {
+            $pqbOptions['with_document_type_facet'] = $options['with_document_type_facet'];
+        }
+
         $pqb = $this->createProductQueryBuilder($pqbOptions);
         $pqb->setQueryBuilder(new SearchQueryBuilder());
 
@@ -101,23 +103,17 @@ class ProductAndProductModelQueryBuilderFactory implements ProductQueryBuilderFa
         return $pqb;
     }
 
-    /**
-     * @param array $options
-     *
-     * @return ProductQueryBuilderInterface
-     */
     protected function createProductQueryBuilder(array $options): ProductQueryBuilderInterface
     {
-        $pqb = new $this->pqbClass(
+        return new $this->pqbClass(
             $this->attributeRepository,
             $this->filterRegistry,
             $this->sorterRegistry,
             $this->cursorFactory,
             $this->optionsResolver,
+            $this->facetOnDocumentType,
             $options
         );
-
-        return $pqb;
     }
 
     /**
@@ -159,7 +155,8 @@ class ProductAndProductModelQueryBuilderFactory implements ProductQueryBuilderFa
             'search_after',
             'search_after_unique_key',
             'limit',
-            'from'
+            'from',
+            'with_document_type_facet',
         ]);
         $resolver->setDefaults([
             'repository_method'     => 'createQueryBuilder',

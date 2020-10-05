@@ -66,6 +66,7 @@ services:
             - '@pim_catalog.query.sorter.registry'
             - '@pim_catalog.factory.product_cursor'
             - '@pim_catalog.query.product_query_builder_resolver'
+            - '@pim_enrich.query.product_and_product_model_document_type_facet_query'
 
     pim_catalog.query.product_query_builder_search_after_size_factory:
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
@@ -76,6 +77,7 @@ services:
             - '@pim_catalog.query.sorter.registry'
             - '@pim_catalog.factory.product_search_after_size_cursor'
             - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
+            - '@pim_enrich.query.product_and_product_model_document_type_facet_query'
 
     pim_catalog.query.product_query_builder_search_after_size_factory_external_api:
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
@@ -86,6 +88,7 @@ services:
             - '@pim_catalog.query.sorter.registry'
             - '@akeneo.pim.enrichment.factory.product_identifier_cursor_search_after_size_cursor'
             - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
+            - '@pim_enrich.query.product_and_product_model_document_type_facet_query'
 
     pim_catalog.query.product_model_query_builder_search_after_size_factory_external_api:
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
@@ -96,6 +99,7 @@ services:
             - '@pim_catalog.query.sorter.registry'
             - '@akeneo.pim.enrichment.factory.product_model_identifier_cursor_search_after_size_cursor'
             - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
+            - '@pim_enrich.query.product_and_product_model_document_type_facet_query'
 
     pim_catalog.query.product_query_builder_from_size_factory:
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
@@ -106,6 +110,7 @@ services:
             - '@pim_catalog.query.sorter.registry'
             - '@pim_catalog.factory.product_from_size_cursor'
             - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
+            - '@pim_enrich.query.product_and_product_model_document_type_facet_query'
 
     pim_catalog.query.product_query_builder_from_size_factory_external_api:
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
@@ -116,6 +121,7 @@ services:
             - '@pim_catalog.query.sorter.registry'
             - '@akeneo.pim.enrichment.factory.product_identifier_cursor_from_size_cursor'
             - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
+            - '@pim_enrich.query.product_and_product_model_document_type_facet_query'
 
     pim_catalog.query.product_model_query_builder_from_size_factory_external_api:
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
@@ -126,6 +132,7 @@ services:
             - '@pim_catalog.query.sorter.registry'
             - '@akeneo.pim.enrichment.factory.product_model_identifier_cursor_from_size_cursor'
             - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
+            - '@pim_enrich.query.product_and_product_model_document_type_facet_query'
 
     pim_catalog.query.product_model_query_builder_factory:
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
@@ -136,6 +143,7 @@ services:
             - '@pim_catalog.query.sorter.registry'
             - '@pim_catalog.factory.product_model_cursor'
             - '@pim_catalog.query.product_query_builder_resolver'
+            - '@pim_enrich.query.product_and_product_model_document_type_facet_query'
 
     pim_catalog.query.product_model_query_builder_from_size_factory:
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
@@ -146,6 +154,7 @@ services:
             - '@pim_catalog.query.sorter.registry'
             - '@pim_catalog.factory.product_model_from_size_cursor'
             - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
+            - '@pim_enrich.query.product_and_product_model_document_type_facet_query'
 
     pim_catalog.query.product_model_query_builder_search_after_size_factory:
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
@@ -156,6 +165,7 @@ services:
             - '@pim_catalog.query.sorter.registry'
             - '@pim_catalog.factory.product_model_search_after_size_cursor'
             - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
+            - '@pim_enrich.query.product_and_product_model_document_type_facet_query'
 
     pim_catalog.query.product_and_product_model_query_builder_factory:
         class: '%pim_catalog.query.elasticsearch.product_and_model_query_builder_factory.class%'
@@ -166,6 +176,7 @@ services:
             - '@pim_catalog.query.sorter.registry'
             - '@pim_catalog.factory.product_and_product_model_cursor'
             - '@pim_catalog.query.product_query_builder_resolver'
+            - '@pim_enrich.query.product_and_product_model_document_type_facet_query'
 
     pim_catalog.factory.product_and_product_model_cursor:
         public: false
@@ -737,6 +748,7 @@ services:
             - '@pim_catalog.query.sorter.registry'
             - '@akeneo.pim.enrichment.factory.product_and_product_model_identifier_cursor_from_size_cursor'
             - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
+            - '@pim_enrich.query.product_and_product_model_document_type_facet_query'
 
     akeneo.pim.enrichment.query.product_and_product_model_query_builder_from_size_factory.with_product_identifier_cursor:
         class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelQueryBuilderWithSearchAggregatorFactory'
@@ -744,7 +756,6 @@ services:
             - 'Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder\ProductAndProductModelQueryBuilder'
             - '@akeneo.pim.enrichment.query.product_query_builder_from_size_factory.with_product_identifier_cursor'
             - '@pim_enrich.query.product_and_product_model_search_aggregator'
-            - '@pim_enrich.query.product_and_product_model_document_type_facet_query'
 
     pim_enrich.query.product_and_product_model_query_builder_from_size_factory:
         class: '%pim_enrich.query.elasticsearch.product_and_product_model_query_builder_factory.class%'
@@ -752,7 +763,6 @@ services:
             - '%pim_enrich.query.product_and_product_model_query_builder.class%'
             - '@pim_enrich.query.product_query_builder_from_size_factory.with_product_and_product_model_from_size_cursor'
             - '@pim_enrich.query.product_and_product_model_search_aggregator'
-            - '@pim_enrich.query.product_and_product_model_document_type_facet_query'
 
     pim_enrich.query.product_query_builder_from_size_factory.with_product_and_product_model_from_size_cursor:
         public: false
@@ -764,6 +774,7 @@ services:
             - '@pim_catalog.query.sorter.registry'
             - '@pim_enrich.factory.product_and_product_model_from_size_cursor'
             - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
+            - '@pim_enrich.query.product_and_product_model_document_type_facet_query'
 
     pim_enrich.query.product_query_sequential_edit_builder_factory:
         class: '%pim_catalog.query.elasticsearch.product_and_model_query_builder_factory.class%'
@@ -774,6 +785,7 @@ services:
             - '@pim_catalog.query.sorter.registry'
             - '@pim_enrich.factory.sequential_edit_product_cursor'
             - '@pim_catalog.query.product_query_builder_resolver'
+            - '@pim_enrich.query.product_and_product_model_document_type_facet_query'
 
     pim_enrich.factory.sequential_edit_product_cursor:
         class: '%akeneo_elasticsearch.cursor.cursor_factory.class%'
@@ -798,7 +810,7 @@ services:
             - '@pim_enrich.query.product_and_product_model_document_type_facet_query'
 
     pim_enrich.query.product_and_product_model_document_type_facet_query:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Facet\ProductAndProductsModelDocumentTypeFacetQuery'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Facet\FacetOnDocumentType'
 
     pim_enrich.query.product_and_product_model_document_type_facet_factory:
         class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Facet\ProductAndProductsModelDocumentTypeFacetFactory'

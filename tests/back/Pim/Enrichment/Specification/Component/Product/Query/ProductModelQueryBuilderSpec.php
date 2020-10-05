@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Query;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Facet\FacetOnDocumentTypeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
@@ -28,8 +29,8 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
         FilterRegistryInterface $filterRegistry,
         SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory,
-        SearchQueryBuilder $searchQb,
-        ProductQueryBuilderOptionsResolverInterface $optionsResolver
+        ProductQueryBuilderOptionsResolverInterface $optionsResolver,
+        FacetOnDocumentTypeInterface $facetOnDocumentType
     ) {
         $defaultContext = ['locale' => 'en_US', 'scope' => 'print'];
         $this->beConstructedWith(
@@ -38,10 +39,10 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
             $sorterRegistry,
             $cursorFactory,
             $optionsResolver,
-            $defaultContext
+            $facetOnDocumentType,
+            $defaultContext,
         );
         $optionsResolver->resolve($defaultContext)->willReturn($defaultContext);
-        $this->setQueryBuilder($searchQb);
     }
 
     function it_is_a_product_model_query_builder()
@@ -53,9 +54,10 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
         CursorFactoryInterface $cursorFactory,
         CursorInterface $cursor,
         FieldFilterInterface $filterField,
-        $filterRegistry
-    )
-    {
+        SearchQueryBuilder $searchQb,
+        FilterRegistryInterface $filterRegistry
+    ) {
+        $this->setQueryBuilder($searchQb);
         $filterRegistry->getFieldFilter('entity_type', '=')->willReturn($filterField);
         $cursorFactory->createCursor(Argument::any(), [] )->shouldBeCalled()->willReturn($cursor);
         $filterField->setQueryBuilder(Argument::any())->shouldBeCalled();
@@ -70,11 +72,15 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         $this->execute()->shouldReturn($cursor);
-
     }
 
-    function it_adds_a_field_filter($repository, $filterRegistry, FieldFilterInterface $filter)
-    {
+    function it_adds_a_field_filter(
+        AttributeRepositoryInterface $repository,
+        FilterRegistryInterface $filterRegistry,
+        SearchQueryBuilder $searchQb,
+        FieldFilterInterface $filter
+    ) {
+        $this->setQueryBuilder($searchQb);
         $repository->findOneByIdentifier('id')->willReturn(null);
         $filterRegistry->getFieldFilter('id', '=')->willReturn($filter);
         $filter->setQueryBuilder(Argument::any())->shouldBeCalled();
@@ -91,11 +97,13 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
     }
 
     function it_adds_a_field_filter_even_if_an_attribute_is_similar(
-        $repository,
-        $filterRegistry,
+        AttributeRepositoryInterface $repository,
+        FilterRegistryInterface $filterRegistry,
+        SearchQueryBuilder $searchQb,
         AttributeInterface $attribute,
         FieldFilterInterface $filter
     ) {
+        $this->setQueryBuilder($searchQb);
         $repository->findOneByIdentifier('id')->willReturn($attribute);
         $attribute->getCode()->willReturn('ID');
         $filterRegistry->getFieldFilter('id', '=')->willReturn($filter);
@@ -113,11 +121,13 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
     }
 
     function it_adds_an_attribute_filter(
-        $repository,
-        $filterRegistry,
+        AttributeRepositoryInterface $repository,
+        FilterRegistryInterface $filterRegistry,
+        SearchQueryBuilder $searchQb,
         AttributeFilterInterface $filter,
         AttributeInterface $attribute
     ) {
+        $this->setQueryBuilder($searchQb);
         $repository->findOneByIdentifier('sku')->willReturn($attribute);
         $attribute->getCode()->willReturn('sku');
         $filterRegistry->getAttributeFilter($attribute, '=')->willReturn($filter);
@@ -136,12 +146,11 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
     }
 
     function it_adds_a_non_empty_family_filter_when_adding_an_empty_attribute_filter(
-        $repository,
-        $filterRegistry,
-        $searchQb,
+        AttributeRepositoryInterface $repository,
+        FilterRegistryInterface $filterRegistry,
+        SearchQueryBuilder $searchQb,
         AttributeFilterInterface $textFilter,
-        FieldFilterInterface $familyFilter,
-        AttributeInterface $name
+        FieldFilterInterface $familyFilter
     ) {
         $name = new Attribute();
         $name->setCode('name');
@@ -172,12 +181,18 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
             'print',
             ['locale' => 'en_US', 'scope' => 'print']
         )->shouldBeCalled();
+        $this->setQueryBuilder($searchQb);
 
         $this->addFilter('name', 'EMPTY', null, []);
     }
 
-    function it_adds_a_field_sorter($repository, $sorterRegistry, FieldSorterInterface $sorter)
-    {
+    function it_adds_a_field_sorter(
+        AttributeRepositoryInterface $repository,
+        SorterRegistryInterface $sorterRegistry,
+        SearchQueryBuilder $searchQb,
+        FieldSorterInterface $sorter
+    ) {
+        $this->setQueryBuilder($searchQb);
         $repository->findOneBy(['code' => 'id'])->willReturn(null);
         $sorterRegistry->getFieldSorter('id')->willReturn($sorter);
         $sorter->setQueryBuilder(Argument::any())->shouldBeCalled();
@@ -187,11 +202,13 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
     }
 
     function it_adds_an_attribute_sorter(
-        $repository,
-        $sorterRegistry,
+        AttributeRepositoryInterface $repository,
+        SorterRegistryInterface $sorterRegistry,
+        SearchQueryBuilder $searchQb,
         AttributeSorterInterface $sorter,
         AttributeInterface $attribute
     ) {
+        $this->setQueryBuilder($searchQb);
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isLocaleSpecific()->willReturn(false);
@@ -205,11 +222,13 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
     }
 
     function it_adds_an_attribute_sorter_on_localizable_attribute(
-        $repository,
-        $sorterRegistry,
+        AttributeRepositoryInterface $repository,
+        SorterRegistryInterface $sorterRegistry,
+        SearchQueryBuilder $searchQb,
         AttributeSorterInterface $sorter,
         AttributeInterface $attribute
     ) {
+        $this->setQueryBuilder($searchQb);
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isLocaleSpecific()->willReturn(false);
@@ -223,11 +242,13 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
     }
 
     function it_adds_an_attribute_sorter_on_local_specific_attribute(
-        $repository,
-        $sorterRegistry,
+        AttributeRepositoryInterface $repository,
+        SorterRegistryInterface $sorterRegistry,
+        SearchQueryBuilder $searchQb,
         AttributeSorterInterface $sorter,
         AttributeInterface $attribute
     ) {
+        $this->setQueryBuilder($searchQb);
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isLocaleSpecific()->willReturn(true);
@@ -241,11 +262,13 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
     }
 
     function it_adds_an_attribute_sorter_on_scopable_attribute(
-        $repository,
-        $sorterRegistry,
+        AttributeRepositoryInterface $repository,
+        SorterRegistryInterface $sorterRegistry,
+        SearchQueryBuilder $searchQb,
         AttributeSorterInterface $sorter,
         AttributeInterface $attribute
     ) {
+        $this->setQueryBuilder($searchQb);
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isLocaleSpecific()->willReturn(false);
@@ -259,11 +282,13 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
     }
 
     function it_adds_an_attribute_sorter_on_scopable_and_localizable_attribute(
-        $repository,
-        $sorterRegistry,
+        AttributeRepositoryInterface $repository,
+        SorterRegistryInterface $sorterRegistry,
+        SearchQueryBuilder $searchQb,
         AttributeSorterInterface $sorter,
         AttributeInterface $attribute
     ) {
+        $this->setQueryBuilder($searchQb);
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isLocaleSpecific()->willReturn(false);
@@ -276,8 +301,10 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
         $this->addSorter('name', 'DESC', ['locale' => 'de_DE', 'scope' => 'ecommerce']);
     }
 
-    function it_provides_a_query_builder_once_configured($searchQb)
+    function it_provides_a_query_builder_once_configured(SearchQueryBuilder $searchQb)
     {
+        $this->setQueryBuilder($searchQb);
+
         $this->getQueryBuilder()->shouldReturn($searchQb);
     }
 
@@ -287,12 +314,13 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
     }
 
     function it_executes_the_query(
-        $searchQb,
+        SearchQueryBuilder $searchQb,
         CursorFactoryInterface $cursorFactory,
         CursorInterface $cursor,
         FieldFilterInterface $filterField,
-        $filterRegistry
+        FilterRegistryInterface $filterRegistry
     ) {
+        $this->setQueryBuilder($searchQb);
         $filterRegistry->getFieldFilter('entity_type', '=')->willReturn($filterField);
         $searchQb->getQuery()->willReturn([]);
         $cursorFactory->createCursor(Argument::any(), [] )->shouldBeCalled()->willReturn($cursor);
@@ -300,13 +328,47 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
         $this->execute()->shouldReturn($cursor);
     }
 
+    function it_adds_the_document_type_facet_and_executes_the_query(
+        AttributeRepositoryInterface $repository,
+        FilterRegistryInterface $filterRegistry,
+        SorterRegistryInterface $sorterRegistry,
+        CursorFactoryInterface $cursorFactory,
+        SearchQueryBuilder $searchQb,
+        ProductQueryBuilderOptionsResolverInterface $optionsResolver,
+        FacetOnDocumentTypeInterface $facetOnDocumentType,
+        CursorInterface $cursor,
+        FieldFilterInterface $filterField
+    ) {
+        $defaultContext = ['locale' => 'en_US', 'scope' => 'print', 'with_document_type_facet' => true];
+        $this->beConstructedWith(
+            $repository,
+            $filterRegistry,
+            $sorterRegistry,
+            $cursorFactory,
+            $optionsResolver,
+            $facetOnDocumentType,
+            $defaultContext,
+        );
+        $optionsResolver->resolve($defaultContext)->willReturn($defaultContext);
+        $this->setQueryBuilder($searchQb);
+
+        $filterRegistry->getFieldFilter('entity_type', '=')->willReturn($filterField);
+        $searchQb->getQuery()->willReturn([]);
+        $cursorFactory->createCursor(Argument::any(), [] )->shouldBeCalled()->willReturn($cursor);
+        $facetOnDocumentType->add($searchQb)->shouldBeCalledOnce();
+
+        $this->execute()->shouldReturn($cursor);
+    }
+
     function it_provides_the_raw_filters(
-        $repository,
-        $filterRegistry,
+        AttributeRepositoryInterface $repository,
+        FilterRegistryInterface $filterRegistry,
+        SearchQueryBuilder $searchQb,
         FieldFilterInterface $filterField,
         AttributeFilterInterface $filterAttribute,
         AttributeInterface $attribute
     ) {
+        $this->setQueryBuilder($searchQb);
         $repository->findOneByIdentifier('id')->willReturn(null);
         $filterRegistry->getFieldFilter('id', '=')->willReturn($filterField);
 

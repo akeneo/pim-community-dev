@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Facet\FacetOnDocumentTypeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderOptionsResolverInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\SorterRegistryInterface;
@@ -18,16 +19,17 @@ class ProductAndProductModelQueryBuilderFactorySpec extends ObjectBehavior
         FilterRegistryInterface $filterRegistry,
         SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory,
-        ProductQueryBuilderOptionsResolverInterface $optionsResolver
-    )
-    {
+        ProductQueryBuilderOptionsResolverInterface $optionsResolver,
+        FacetOnDocumentTypeInterface $facetOnDocumentType
+    ) {
         $this->beConstructedWith(
             ProductAndProductModelQueryBuilder::class,
             $attributeRepository,
             $filterRegistry,
             $sorterRegistry,
             $cursorFactory,
-            $optionsResolver
+            $optionsResolver,
+            $facetOnDocumentType
         );
     }
 

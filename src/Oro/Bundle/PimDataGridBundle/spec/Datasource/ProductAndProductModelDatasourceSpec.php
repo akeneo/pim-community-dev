@@ -47,7 +47,7 @@ class ProductAndProductModelDatasourceSpec extends ObjectBehavior
         $this->shouldImplement(ParameterizableInterface::class);
     }
 
-    function it_fetch_product_and_product_model_rows(
+    function it_fetches_product_and_product_model_rows(
         $pqbFactory,
         $rowNormalizer,
         $query,
@@ -88,6 +88,7 @@ class ProductAndProductModelDatasourceSpec extends ObjectBehavior
             'from'                  => 0,
             'default_locale'        => 'fr_FR',
             'default_scope'         => 'ecommerce',
+            'with_document_type_facet' => true,
         ])->willReturn($pqb);
 
         $pqb->getQueryBuilder()->shouldBeCalledTimes(1);
@@ -185,6 +186,7 @@ class ProductAndProductModelDatasourceSpec extends ObjectBehavior
             'from'                  => 0,
             'default_locale'        => 'fr_FR',
             'default_scope'         => 'ecommerce',
+            'with_document_type_facet' => true,
         ])->willReturn($pqb);
 
         $pqb->getQueryBuilder()->shouldBeCalledTimes(1);

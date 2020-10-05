@@ -38,7 +38,7 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
 
         $pqb = $this
             ->get('akeneo.pim.enrichment.query.product_and_product_model_query_builder_from_size_factory.with_product_identifier_cursor')
-            ->create(['limit' => 10]);
+            ->create(['limit' => 10, 'with_document_type_facet' => true]);
         $query = $this->get('akeneo.pim.enrichment.product.grid.query.fetch_product_and_product_model_rows');
         $queryParameters = new FetchProductAndProductModelRowsParameters(
             $pqb,

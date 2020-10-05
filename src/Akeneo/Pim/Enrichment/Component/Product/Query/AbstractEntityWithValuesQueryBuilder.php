@@ -4,6 +4,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Query;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Facet\FacetOnDocumentTypeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
@@ -39,23 +40,19 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
     /** @var ProductQueryBuilderOptionsResolverInterface */
     protected $optionResolver;
 
+    /** @var FacetOnDocumentTypeInterface */
+    protected $facetOnDocumentType;
+
     /** @var array */
     protected $rawFilters = [];
 
-    /**
-     * @param AttributeRepositoryInterface                $attributeRepository
-     * @param FilterRegistryInterface                     $filterRegistry
-     * @param SorterRegistryInterface                     $sorterRegistry
-     * @param CursorFactoryInterface                      $cursorFactory
-     * @param ProductQueryBuilderOptionsResolverInterface $optionResolver
-     * @param array                                       $defaultContext
-     */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         FilterRegistryInterface $filterRegistry,
         SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory,
         ProductQueryBuilderOptionsResolverInterface $optionResolver,
+        FacetOnDocumentTypeInterface $facetOnDocumentType,
         array $defaultContext
     ) {
         $this->attributeRepository = $attributeRepository;
@@ -63,6 +60,7 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
         $this->sorterRegistry = $sorterRegistry;
         $this->cursorFactory = $cursorFactory;
         $this->optionResolver = $optionResolver;
+        $this->facetOnDocumentType = $facetOnDocumentType;
 
         $this->defaultContext = $this->optionResolver->resolve($defaultContext);
     }
@@ -72,6 +70,10 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
      */
     public function execute()
     {
+        if ($this->defaultContext['with_document_type_facet'] ?? false) {
+            $this->facetOnDocumentType->add($this->qb);
+        }
+
         $allowedCursorOptions = ['page_size', 'search_after', 'search_after_unique_key', 'limit', 'from'];
         $cursorOptions = array_filter(
             $this->defaultContext,
