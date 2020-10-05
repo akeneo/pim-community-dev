@@ -432,6 +432,10 @@ Updated At: Mis à jour le
 Enabled: Activé
 Disabled: Désactivé
 Status: État
+pim_datagrid:
+  filters:
+    product_typology:
+      label: Typologie de produit
 #Versioning / history
 Change History: Historique des modifications
 Data Audit: Historique des données
