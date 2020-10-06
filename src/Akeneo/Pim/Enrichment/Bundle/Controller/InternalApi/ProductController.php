@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParent;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -99,27 +100,9 @@ class ProductController
     /** @var Client */
     private $productAndProductModelClient;
 
-    /**
-     * @param ProductRepositoryInterface    $productRepository
-     * @param CursorableRepositoryInterface $cursorableRepository
-     * @param AttributeRepositoryInterface  $attributeRepository
-     * @param ObjectUpdaterInterface        $productUpdater
-     * @param SaverInterface                $productSaver
-     * @param NormalizerInterface           $normalizer
-     * @param ValidatorInterface            $validator
-     * @param UserContext                   $userContext
-     * @param ObjectFilterInterface         $objectFilter
-     * @param CollectionFilterInterface     $productEditDataFilter
-     * @param RemoverInterface              $productRemover
-     * @param ProductBuilderInterface       $productBuilder
-     * @param AttributeConverterInterface   $localizedConverter
-     * @param FilterInterface               $emptyValuesFilter
-     * @param ConverterInterface            $productValueConverter
-     * @param NormalizerInterface           $constraintViolationNormalizer
-     * @param ProductBuilderInterface       $variantProductBuilder
-     * @param AttributeFilterInterface      $productAttributeFilter
-     * @param Client                        $productAndProductModelClient
-     */
+    /** @var RemoveParent */
+    private $removeParent;
+
     public function __construct(
         ProductRepositoryInterface $productRepository,
         CursorableRepositoryInterface $cursorableRepository,
@@ -139,7 +122,8 @@ class ProductController
         NormalizerInterface $constraintViolationNormalizer,
         ProductBuilderInterface $variantProductBuilder,
         AttributeFilterInterface $productAttributeFilter,
-        Client $productAndProductModelClient
+        Client $productAndProductModelClient,
+        RemoveParent $removeParent
     ) {
         $this->productRepository = $productRepository;
         $this->cursorableRepository = $cursorableRepository;
@@ -160,6 +144,7 @@ class ProductController
         $this->variantProductBuilder = $variantProductBuilder;
         $this->productAttributeFilter = $productAttributeFilter;
         $this->productAndProductModelClient = $productAndProductModelClient;
+        $this->removeParent = $removeParent;
     }
 
     /**
@@ -361,6 +346,47 @@ class ProductController
         $this->productSaver->save($product);
 
         return new JsonResponse();
+    }
+
+    /**
+     * Converts a variant product into a simple product
+     *
+     * @AclAncestor("pim_enrich_product_convert_variant_into_simple")
+     */
+    public function convertToSimpleProductAction(Request $request, int $id): Response
+    {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
+        $product = $this->findProductOr404($id);
+        if ($this->objectFilter->filterObject($product, 'pim.internal_api.product.edit')) {
+            throw new AccessDeniedHttpException();
+        }
+
+        if (!$product->isVariant()) {
+            // TODO Throw a correct exception
+            throw new BadRequestHttpException(sprintf('The "%s" product is not variant', $product->getIdentifier()));
+        }
+
+        $this->removeParent->from($product);
+
+        $violations = $this->validator->validate($product);
+        if (0 === $violations->count()) {
+            $this->productSaver->save($product);
+
+            $normalizedProduct = $this->normalizer->normalize(
+                $product,
+                'internal_api',
+                $this->getNormalizationContext()
+            );
+
+            return new JsonResponse($normalizedProduct);
+        }
+
+        $normalizedViolations = $this->normalizeViolations($violations, $product);
+
+        return new JsonResponse($normalizedViolations, 400);
     }
 
     /**

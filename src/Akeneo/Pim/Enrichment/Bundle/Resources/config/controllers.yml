@@ -157,6 +157,7 @@ services:
             - '@pim_catalog.builder.product'
             - '@pim_enrich.filter.product_attribute_filter'
             - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
 
     pim_enrich.controller.rest.product_comment:
         public: true
