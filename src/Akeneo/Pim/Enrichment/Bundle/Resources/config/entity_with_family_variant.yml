@@ -15,3 +15,8 @@ services:
         arguments:
             - '@pim_catalog.repository.product_model'
             - '@event_dispatcher'
+
+    pim_catalog.entity_with_family_variant.remove_parent_from_product:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParent'
+        arguments:
+            - '@event_dispatcher'
