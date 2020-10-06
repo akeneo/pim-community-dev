@@ -68,19 +68,6 @@ class AttributeGroupController
     /** @var array */
     protected $apiConfiguration;
 
-    /**
-     * @param ApiResourceRepositoryInterface $repository
-     * @param NormalizerInterface            $normalizer
-     * @param ParameterValidatorInterface    $parameterValidator
-     * @param PaginatorInterface             $paginator
-     * @param SimpleFactoryInterface         $factory
-     * @param ObjectUpdaterInterface         $updater
-     * @param ValidatorInterface             $validator
-     * @param RouterInterface                $router
-     * @param SaverInterface                 $saver
-     * @param StreamResourceResponse         $partialUpdateStreamResource
-     * @param array                          $apiConfiguration
-     */
     public function __construct(
         ApiResourceRepositoryInterface $repository,
         NormalizerInterface $normalizer,
@@ -153,14 +140,22 @@ class AttributeGroupController
         ];
 
         $queryParameters = array_merge($defaultParameters, $request->query->all());
+        $searchFilters = json_decode($queryParameters['search'] ?? '[]', true);
+        if (null === $searchFilters) {
+            throw new BadRequestHttpException('The search query parameter must be a valid JSON.');
+        }
 
         $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
-        $attributeGroups = $this->repository->searchAfterOffset(
-            [],
-            ['code' => 'ASC'],
-            $queryParameters['limit'],
-            $offset
-        );
+        try {
+            $attributeGroups = $this->repository->searchAfterOffset(
+                $searchFilters,
+                ['code' => 'ASC'],
+                $queryParameters['limit'],
+                $offset
+            );
+        } catch (\InvalidArgumentException $exception) {
+            throw new BadRequestHttpException($exception->getMessage(), $exception);
+        }
 
         $parameters = [
             'query_parameters' => $queryParameters,
@@ -168,7 +163,7 @@ class AttributeGroupController
             'item_route_name'  => 'pim_api_attribute_group_get',
         ];
 
-        $count = true === $request->query->getBoolean('with_count') ? $this->repository->count() : null;
+        $count = true === $request->query->getBoolean('with_count') ? $this->repository->count($searchFilters) : null;
         $paginatedAttributeGroups = $this->paginator->paginate(
             $this->normalizer->normalize($attributeGroups, 'external_api'),
             $parameters,
