@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ResultAwareInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Facet\ProductAndProductsModelDocumentTypeFacetFactory;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Rows;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ResultAwareInterface;
 
 /**
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
