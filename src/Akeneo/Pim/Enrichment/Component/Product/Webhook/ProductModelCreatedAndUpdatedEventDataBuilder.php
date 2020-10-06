@@ -46,9 +46,10 @@ class ProductModelCreatedAndUpdatedEventDataBuilder implements EventDataBuilderI
 
         $data = $businessEvent->data();
 
-        $productModel = $this->productModelRepository->findOneByIdentifier($data['identifier']);
+        $productModel = $this->productModelRepository->findOneByIdentifier($data['code']);
+
         if (null === $productModel) {
-            throw new ProductModelNotFoundException($data['identifier']);
+            throw new ProductModelNotFoundException($data['code']);
         }
 
         return [

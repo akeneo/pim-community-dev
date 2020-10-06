@@ -43,6 +43,7 @@ final class ProductModelEventSubscriber implements EventSubscriberInterface
     {
         /** @var ProductModelInterface */
         $productModel = $event->getSubject();
+
         if (false === $productModel instanceof ProductModelInterface) {
             return;
         }
