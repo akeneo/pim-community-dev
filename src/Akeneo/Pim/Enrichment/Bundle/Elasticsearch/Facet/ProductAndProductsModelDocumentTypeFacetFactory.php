@@ -26,12 +26,11 @@ final class ProductAndProductsModelDocumentTypeFacetFactory
             return null;
         }
 
-        $facet = Facet::createEmptyWithName(FacetOnDocumentType::NAME);
+        $counts = [];
         foreach ($documentTypeAggregation['buckets'] ?? [] as $bucket) {
-            $item = FacetItem::fromArray($bucket);
-            $facet->addFacetItem($item);
+            $counts[$bucket['key']] = $bucket['doc_count'];
         }
 
-        return $facet;
+        return Facet::create(FacetOnDocumentType::NAME, $counts);
     }
 }

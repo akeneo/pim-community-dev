@@ -19,31 +19,22 @@ final class Facet
     /** @var string */
     private $name;
 
-    /** @var FacetItem[] */
-    private $facetItems = [];
+    /** @var array */
+    private $counts = [];
 
-    private function __construct(string $name, array $facetItems)
+    private function __construct(string $name, array $counts)
     {
-        Assert::allIsInstanceOf($facetItems, FacetItem::class);
-
         $this->name = $name;
-        $this->facetItems = $facetItems;
+        $this->counts = $counts;
     }
 
-    public static function createEmptyWithName(string $name): Facet
+    public static function create(string $name, array $counts): Facet
     {
-        return new Facet($name, []);
-    }
-
-    public function addFacetItem(FacetItem $item): void
-    {
-        $this->facetItems[$item->getKey()] = $item;
+        return new Facet($name, $counts);
     }
 
     public function getCountForKey(string $key): int
     {
-        $facetItem = $this->facetItems[$key] ?? null;
-
-        return null !== $facetItem ? $facetItem->getCount() : 0;
+        return $this->counts[$key] ?? 0;
     }
 }
