@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9490: [Backport] PIM-9461: Fix display of multiselect fields with a lot of selected options
+- PIM-9493: Attributes with no values are well rendered in PDF
 
 ## Technical Improvements
 
