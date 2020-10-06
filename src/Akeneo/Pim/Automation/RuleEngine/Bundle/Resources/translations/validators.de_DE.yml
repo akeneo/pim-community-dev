@@ -40,6 +40,9 @@ pimee_catalog_rule:
           missing_to_field_key: 'Der "to_field" Schlüssel fehlt oder leer'
         concatenate:
           invalid_source: 'Sie können keine Daten aus dem "{{ field }}" Feld zusammenfassen'
+          missing_source_key: 'Ein einziger Schlüssel unter "Feld", "Text" oder "Neue Zeile" ist erforderlich, bitte wählen Sie einen'
+          only_one_source_key_expected: 'Eine einzelne Taste unter "Feld", "Text" oder "Neue Zeile" ist erforderlich, bitte wählen Sie nur einen aus'
+          text_target_does_not_accept_new_line: 'Das "{{ targetField }}" Ziel-Attribut akzeptiert keine neue Zeile'
           unexpected_source_option: 'Der Schlüssel {{ key }} ist für das Attribut {{ attribute }} irrelevant'
           missing_from_key: 'Der "von" Schlüssel fehlt oder leer'
           missing_to_key: 'Der "bis" Schlüssel fehlt oder leer'

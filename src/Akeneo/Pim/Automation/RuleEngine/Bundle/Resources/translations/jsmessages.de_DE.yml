@@ -101,6 +101,10 @@ pimee_catalog_rule:
       character_left: "]-Inf, 1]{{ count }} Zeichen übrig|]1, +Inf[{{ count }} Zeichen übrig"
       priority:
         label: Priorität
+      status:
+        label: Status
+        enabled: Aktiviert
+        disabled: Deaktiviert
       add_to_category: Zu Kategorie hinzufügen
       add_conditions: Füge Bedingungen hinzu
       products_count:
@@ -111,17 +115,26 @@ pimee_catalog_rule:
       preview: Vorschau
       fields:
         family: Produktfamilie
+        family_variant: Varianten der Produktfamilien
         category: Kategorie
+        identifier: Identifikator
         attribute: Attribut
         groups: Gruppen
+        parent: Eltern
         measurement_unit: Maßeinheit
         measurement_default_unit: "Standardeinheit ({{ unit }})"
         currency: Währung
         operator: Operator
+        entity_type:
+          label: Entitätstyp
+          placeholder: Bitte einen Entitätstyp auswählen
       execute:
         button: Speichern und ausführen
         title: Speichern und die Regel ausführen
         description: Sie speichern die aktuelle Regel und führen sie im Hintergrund aus. Wenn sie abgeschlossen ist, werden Sie benachrichtigt.
+      duplicate:
+        button: Speichern und duplizieren
+        title: Die "{{ originalRuleCode }}" Regel duplizieren
       actions:
         add_action: Aktion hinzufügen
         add_category:
@@ -159,12 +172,44 @@ pimee_catalog_rule:
           attribute_placeholder: Wähle ein Zielattribut
           select_reference_entity: Wählen Sie Ihre Referenz-Entität
           select_asset: Wählen Sie Ihre Assets
+          select_measurement_unit: Wählen Sie Ihre Einheit
+        set_quantified_associations:
+          title: WÄHLE Quantifizierte Verbindungen
+          helper: Um quantifizierte Verbindungen festzulegen, wählen Sie bitte Ihren Verbindungstyp aus und dann die Produkte, Produktmodelle oder Gruppen, die Sie Ihrer Produktauswahl zuordnen möchten.
+        set_associations:
+          title: WÄHLE Verbindungen
+          helper: Um Verbindungen festzulegen, wählen Sie bitte Ihren Verbandstyp aus und dann die Produkte, Produktmodelle oder Gruppen, die Sie Ihrer Produktauswahl zuordnen möchten.
+          select_association_type: Wählen Sie Ihren Verbindungstyp
+          association_types: Verbindungstypen
+          add_group: Neue Gruppe
+          add_product: Produkt hinzufügen
+          add_product_model: Produktmodell hinzufügen
+          add_association_type: Verbindungstyp hinzufügen
+          select_title:
+            products: Wählen Sie Ihre Produkte
+            product_models: Wählen Sie Ihre Produktmodelle
+            groups: Gruppen auswählen
+          select:
+            products: Produkte
+            product_models: Produktmodelle
+            groups: Gruppen
+          counts:
+            products: ']-Inf, 1]{{ count }} Produkt|]1, +Inf[{{ count }} Produkte'
+            product_models: ']-Inf, 1]{{ count }} Produktmodell|]1, +Inf[{{ count }} Produktmodelle'
+            groups: ']-Inf, 1]{{ count }} Gruppe|]1, +Inf[{{ count }} Gruppen'
+        add_associations:
+          title: Verbindungen HINZUFÜGEN
+          helper: Um Verbindungen hinzuzufügen, wählen Sie bitte Ihren Verbindungstyp aus und dann die Produkte, Produktmodelle oder Gruppen, die Sie Ihrer Produktauswahl zuordnen möchten.
         clear_attribute:
           title: LÖSCHE Attributwert
           subtitle: Attribut zum Löschen auswählen
           attribute_label: Attribut
         clear_associations:
           title: Verknüpfungen LÖSCHEN
+          helper: Alle Verbindungen für die ausgewählten Produkte werden gelöscht.
+        clear_quantified_associations:
+          title: LÖSCHE Quantifizierte Verbindungen
+          helper: Alle quantifizierten Verbindungen für die ausgewählten Produkte werden gelöscht.
         clear_categories:
           title: LÖSCHE Kategorien
         clear_groups:
@@ -212,6 +257,20 @@ pimee_catalog_rule:
             multiply: Multiplizieren
             divide: Teilen
             choose: Operator auswählen
+        concatenate:
+          title: VERKETTE Werte
+          helper: Um Attributwerte zu verketten, fügen Sie bitte die Attribute hinzu und wählen Sie dann das Zielattribut aus.
+          select_target: Ziel wählen
+          attribute_placeholder: Wähle ein Zielattribut
+          add_text: Text hinzufügen
+          add_attribute: Attribut hinzufügen
+          add_new_line: Zeilenumbruch hinzufügen
+          line_break: Zeilenumbruch
+          date_format: 'Wähle das Datumsformat:'
+          label_locale: Label Gebietsschema
+          remove_new_line_confirm:
+            label: Zeilenumbruch von der Liste entfernen
+            description: Das neue Ziel-Attribut akzeptiert keine Zeilenumbrüche. Diese Änderung wird alle Zeilenumbrüche entfernen.
       conditions:
         delete:
           label: Bedingung entfernen
@@ -245,6 +304,12 @@ pimee_catalog_rule:
       discard_changes: Ihre Änderungen gehen verloren, wenn Sie die Seite verlassen.
       please_select_attribute: Bitte wählen Sie zuerst ein Zielattribut aus.
       unhandled_attribute_type: Entschuldigung, dieser Attributtyp wird noch nicht verwaltet. Bitte verwenden Sie den Regel-Import.
+      empty_section:
+        set_up_action: Gut gemacht! Sie haben Ihre Produktauswahl definiert. Jetzt ist es an der Zeit, Ihre Aktion einzurichten.
+        set_up_condition: Wenn Sie Ihren gesamten Katalog nicht beeinflussen möchten, fügen Sie bitte mindestens eine Bedingung hinzu.
+        add_action: Und dann fügen Sie eine oder mehrere Aktionen für Ihre Produkte/Produktmodelle hinzu.
+        doc: Sie wissen nicht, was eine Aktion ist?
+        doc_link: Dieser Artikel kann Ihnen helfen.
     delete:
       description: Sind Sie sicher, dass Sie diese Regel löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.
       notification:
@@ -301,15 +366,21 @@ pimee_catalog_rule:
     required_categories: Mindestens eine Kategorie ist für diese Aktion erforderlich
     required_constant_for_operation: Für diesen Vorgang ist ein konstanter Wert erforderlich
     required_operator_for_operation: Für diesen Vorgang ist ein Operator erforderlich
+    required_unit: Eine Maßeinheit ist erforderlich
+    identifier_or_quantity_missing: Ein Bezeichner und eine Menge sind für jedes Element erforderlich
+    required_item: Mindestens ein Element ist für diese Aktion erforderlich
     division_by_zero: Teilungen durch Null sind nicht möglich
     two_operations_are_required: Die Operationsliste sollte mindestens 2 Operationen enthalten.
+    two_items_are_required: Die Liste sollte mindestens 2 Einträge enthalten.
     unknown_or_inactive_locale: 'Die "{{ localeCode }}" Gebietsschema existiert nicht oder ist nicht aktiviert'
     unknown_or_inactive_currency: 'Die "{{ currencyCode }}" Währung existiert nicht oder ist nicht aktiviert'
     unbound_locale: 'Die "{{ localeCode }}" Gebietsschema ist im "{{ channelCode }}" Kanal nicht aktiviert'
+    unbound_currency: 'Die "{{ currencyCode }}" Währung ist im "{{ channelCode }}" Kanal nicht aktiviert'
     locale_on_unlocalizable_attribute: Dieses Attribut ist nicht lokalisierbar. Bitte entfernen Sie das Gebietsschema, bevor Sie fortfahren.
     unknown_scope: 'Der "{{ scopeCode }}" Ausgabekanal existiert nicht'
     scope_on_unscopable_attribute: Dieses Attribut ist nicht skopierbar. Bitte entfernen Sie das Gebietsschema, bevor Sie fortfahren.
     unknown_families: "{1}Die {{ familyCodes }} Familie existiert nicht|]1,+Inf[Die {{ familyCodes }} Familien existieren nicht"
+    unknown_family_variants: "{1}Die {{ familyVariantCodes }} Familienvariante existiert nicht|]1,+Inf[Die {{ familyVariantCodes }} Familienvarianten existieren nicht"
     unknown_attribute_options: "{1}Die {{ attributeOptionCodes }} Option existiert nicht|]1,+Inf[Die {{ attributeOptionCodes }} Optionen existieren nicht"
     unknown_attribute_code: "Das Attribut {{ attributeCode }} existiert nicht"
     unknown_categories: "{1}Die Kategorie {{ categoryCodes }} existiert nicht.|]1, +Inf[Die Kategorien {{ categoryCodes }} existieren nicht"
@@ -323,6 +394,7 @@ pimee_catalog_rule:
     wrong_date_timespan: Um eine gültige Zeitspanne zu definieren, stellen Sie bitte sicher, dass Ihr Enddatum nicht vor dem Startdatum festgelegt ist.
     measurement_family_not_found: Die "{{ measurement_code }}" Messfamilie existiert nicht
     unit_not_found: Die "{{ unitCode }}" Einheit wurde nicht in der "{{ measurement_code }}" Messfamilie gefunden
+    empty_association_warning: Wenn Sie diese Liste leer lassen, wird diese Regel diesen Verbindungstyp löschen.
 pim_enrich:
   entity:
     rule:
@@ -336,6 +408,8 @@ flash:
   rule:
     impacted_product_count: Die Massen-Aktion zur Berechnung der Anzahl der betroffenen Produkte wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
     executed: Die Anwendung der Regeln wurde gestartet. Sie werden benachrichtigt, sobald der Vorgang abgeschlossen ist.
+    enabled: Die Regel wurde aktiviert
+    disabled: Die Regel wurde deaktiviert
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regeleinstellungen
 batch_jobs:
   add_attribute_value:
