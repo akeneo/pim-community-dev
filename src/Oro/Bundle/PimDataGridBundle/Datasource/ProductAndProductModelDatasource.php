@@ -97,8 +97,8 @@ class ProductAndProductModelDatasource extends Datasource
         $normalizedRows = [
             'data' => [],
             'totalRecords' => $rows->totalCount(),
-            'totalProducts' => $rows->productCount(),
-            'totalProductModels' => $rows->productModelCount(),
+            'totalProducts' => $rows->totalProductCount(),
+            'totalProductModels' => $rows->totalProductModelCount(),
         ];
 
         foreach ($rows->rows() as $row) {

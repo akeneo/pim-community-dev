@@ -17,17 +17,17 @@ final class Rows
     private $totalCount;
 
     /** @var int|null */
-    private $productCount;
+    private $totalProductCount;
 
     /** @var int|null */
-    private $productModelCount;
+    private $totalProductModelCount;
 
-    public function __construct(array $rows, int $totalCount, ?int $productCount, ?int $productModelCount)
+    public function __construct(array $rows, int $totalCount, ?int $totalProductCount, ?int $totalProductModelCount)
     {
         $this->rows = $rows;
         $this->totalCount = $totalCount;
-        $this->productCount = $productCount;
-        $this->productModelCount = $productModelCount;
+        $this->totalProductCount = $totalProductCount;
+        $this->totalProductModelCount = $totalProductModelCount;
     }
 
     public function rows(): array
@@ -40,13 +40,13 @@ final class Rows
         return $this->totalCount;
     }
 
-    public function productCount(): ?int
+    public function totalProductCount(): ?int
     {
-        return $this->productCount;
+        return $this->totalProductCount;
     }
 
-    public function productModelCount(): ?int
+    public function totalProductModelCount(): ?int
     {
-        return $this->productModelCount;
+        return $this->totalProductModelCount;
     }
 }
