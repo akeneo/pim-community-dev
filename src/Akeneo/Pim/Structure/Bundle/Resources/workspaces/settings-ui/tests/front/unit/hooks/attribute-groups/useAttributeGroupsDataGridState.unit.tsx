@@ -24,11 +24,11 @@ describe('useInitialAttributeGroupsDataGridState', () => {
   }
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.restoreAllMocks();
+    jest.resetAllMocks();
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    jest.resetAllMocks();
   });
 
   test('it initializes the state for AttributeGroups datagrid', () => {
@@ -238,7 +238,6 @@ describe('useInitialAttributeGroupsDataGridState', () => {
       groupA: 1,
       groupB: 2,
     });
-
 
     expect(result.current.groups).toEqual([
       groupCBis,
