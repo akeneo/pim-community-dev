@@ -124,6 +124,15 @@ extensions:
         aclResourceId: pim_enrich_product_edit_attributes
         position: 80
 
+    pim-product-edit-form-convert-to-simple-product:
+        module: pim/product-edit-form/convert-to-simple-product
+        parent: pim-product-edit-form-secondary-actions
+        targetZone: secondary-actions
+        aclResourceId: pim_enrich_product_convert_variant_into_simple
+        position: 90
+        config:
+            url: pim_enrich_product_rest_convert_to_simple
+
     pim-product-edit-form-save-buttons:
         module: pim/form/common/save-buttons
         parent: pim-product-edit-form
