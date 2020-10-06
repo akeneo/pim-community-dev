@@ -27,7 +27,6 @@ const HintIcon = styled.div<Level>`
 const HintTitle = styled.div`
     border-left: 1px solid ${({theme}) => theme.color.grey80};
     flex-grow: 1;
-    font-weight: 600;
     padding-left: 16px;
     margin: 10px 0;
     margin-right: 10px;

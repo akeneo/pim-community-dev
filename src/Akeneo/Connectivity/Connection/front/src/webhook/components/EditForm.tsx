@@ -20,7 +20,7 @@ export const EditForm: FC<Props> = ({webhook}: Props) => {
     const translate = useContext(TranslateContext);
     const history = useHistory();
 
-    const {register, getValues, errors, setError} = useFormContext();
+    const {register, getValues, errors, setError, clearError} = useFormContext();
 
     const checkReachability = useCheckReachability(webhook.connectionCode);
     const [testUrl, setTestUrl] = useState<{checking: boolean; status?: WebhookReachability}>({
@@ -28,6 +28,7 @@ export const EditForm: FC<Props> = ({webhook}: Props) => {
     });
 
     const handleTestUrl = async () => {
+        clearError('url');
         setTestUrl({checking: true});
 
         const result = await checkReachability(getValues('url'));
@@ -64,6 +65,7 @@ export const EditForm: FC<Props> = ({webhook}: Props) => {
                                 message: 'akeneo_connectivity.connection.webhook.error.required',
                             },
                         })}
+                        onKeyDown={handleTestUrl}
                     />
                     <TestUrlButton
                         onClick={handleTestUrl}
@@ -72,24 +74,22 @@ export const EditForm: FC<Props> = ({webhook}: Props) => {
                     />
                 </>
             </FormGroup>
-            {webhook.secret && (
-                <CredentialList>
-                    <CopiableCredential
-                        label={translate('akeneo_connectivity.connection.connection.secret')}
-                        actions={
-                            <RegenerateButton
-                                onClick={() =>
-                                    history.push(
-                                        `/connections/${webhook.connectionCode}/event-subscription/regenerate-secret`
-                                    )
-                                }
-                            />
-                        }
-                    >
-                        {webhook.secret}
-                    </CopiableCredential>
-                </CredentialList>
-            )}
+            <CredentialList>
+                <CopiableCredential
+                    label={translate('akeneo_connectivity.connection.connection.secret')}
+                    actions={
+                        <RegenerateButton
+                            onClick={() =>
+                                history.push(
+                                    `/connections/${webhook.connectionCode}/event-subscription/regenerate-secret`
+                                )
+                            }
+                        />
+                    }
+                >
+                    {webhook.secret || ''}
+                </CopiableCredential>
+            </CredentialList>
         </>
     );
 };

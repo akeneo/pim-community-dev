@@ -3,16 +3,7 @@ import {FormContext, useForm, useFormContext} from 'react-hook-form';
 import {useHistory, useParams} from 'react-router';
 import styled from 'styled-components';
 import defaultImageUrl from '../../common/assets/illustrations/NewAPI.svg';
-import {
-    ApplyButton,
-    Breadcrumb,
-    BreadcrumbItem,
-    HelperLink,
-    PageContent,
-    PageHeader,
-    Section,
-    SmallHelper,
-} from '../../common/components';
+import {ApplyButton, Breadcrumb, BreadcrumbItem, PageContent, PageHeader, Section} from '../../common/components';
 import {Loading} from '../../common/components/Loading';
 import {PimView} from '../../infrastructure/pim-view/PimView';
 import {useMediaUrlGenerator} from '../../settings/use-media-url-generator';
@@ -20,6 +11,7 @@ import {isErr} from '../../shared/fetch-result/result';
 import {BreadcrumbRouterLink} from '../../shared/router';
 import {Translate} from '../../shared/translate';
 import {EditForm} from '../components/EditForm';
+import {EventSubscriptionHelper} from '../components/EventSubscriptionHelper';
 import {useUpdateWebhook} from '../hooks/api/use-update-webhook';
 import {useWebhook} from '../hooks/api/use-webhook';
 import {Webhook} from '../model/Webhook';
@@ -98,19 +90,7 @@ export const EditConnectionWebhook: FC = () => {
                 <PageContent>
                     <Layout>
                         <Section title={<Translate id='akeneo_connectivity.connection.webhook.event_subscription' />} />
-                        <div>
-                            <SmallHelper>
-                                <Translate id='akeneo_connectivity.connection.webhook.helper.message' />
-                                &nbsp;
-                                <HelperLink
-                                    href='https://help.akeneo.com/pim/serenity/articles/manage-your-connections.html#subscribe-to-events'
-                                    target='_blank'
-                                    rel='noopener noreferrer'
-                                >
-                                    <Translate id='akeneo_connectivity.connection.webhook.helper.link' />
-                                </HelperLink>
-                            </SmallHelper>
-                        </div>
+                        <EventSubscriptionHelper />
                         <EditForm webhook={webhook} />
                     </Layout>
                 </PageContent>
