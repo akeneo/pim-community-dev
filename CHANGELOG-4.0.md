@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9490: [Backport] PIM-9461: Fix display of multiselect fields with a lot of selected options
+
 ## Technical Improvements
 
 - PIM-9472: [Backport] API-1253: Add attr group labels inside attribute end-point + API-1260: Add search filters on attribute groups
