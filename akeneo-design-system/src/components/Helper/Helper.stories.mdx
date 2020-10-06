@@ -1,0 +1,100 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import LinkTo from '@storybook/addon-links/react';
+import {Helper} from './Helper';
+import {Link} from '../Link/Link';
+
+<Meta
+  title="Components/Helper"
+  component={Helper}
+  argTypes={{
+    children: {control: {type: 'text'}},
+  }}
+  args={{
+    children: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    level: 'info'
+  }}
+/>
+
+# Helper
+
+## Usage
+
+Allows to help the user by pushing contextual information.
+
+## General guidance
+
+It informs the user about :
+- The features of the section.
+- The information expected in the field.
+- An alert on the information filled in by the user.
+- An error related to the information filled in by the user.
+
+## Playground
+
+Use this playground to test the helper component
+
+<Canvas>
+  <Story name="Standard">
+    {(args) => {
+      return <Helper {...args}/>;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on level
+
+<Canvas>
+  <Story name="Level">
+    {(args) => {
+      return (
+        <>
+          <Helper {...args} level="info">Info</Helper>
+          <Helper {...args} level="warning">Warning</Helper>
+          <Helper {...args} level="error">Error</Helper>
+        </>
+      )
+    }}
+  </Story>
+</Canvas>
+
+## Inline
+
+<Canvas>
+  <Story name="Inline">
+    {(args) => {
+      return (
+        <>
+          <Helper {...args} inline={true} level="info">Info</Helper>
+          <Helper {...args} inline={true} level="warning">Warning</Helper>
+          <Helper {...args} inline={true} level="error">Error</Helper>
+        </>
+      )
+    }}
+  </Story>
+</Canvas>
+
+## Composition
+
+When more information can be found in another page, helper is combined with Link component
+
+<Canvas>
+  <Story name="Composition">
+    {(args) => {
+      return (
+        <Helper level="info">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+          dolore magna aliqua. <Link target="_blank" href="https://www.akeneo.com/">Link to related lorem ipsum</Link>
+        </Helper>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Related components
+
+<ul>
+  <li><LinkTo kind="Components/Information" story="Standard">Information</LinkTo></li>
+  <li><LinkTo kind="Components/Link" story="Standard">Link</LinkTo></li>
+</ul>
