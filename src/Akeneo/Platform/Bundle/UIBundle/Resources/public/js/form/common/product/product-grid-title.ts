@@ -1,6 +1,4 @@
-import BaseGridTitle = require('pim/common/grid-title');
-import BaseView = require('pimui/js/view/base');
-
+const BaseGridTitle = require('pim/common/grid-title');
 const __ = require('oro/translator');
 
 class ProductGridTitle extends BaseGridTitle {
@@ -22,7 +20,7 @@ class ProductGridTitle extends BaseGridTitle {
   /**
    * {@inheritdoc}
    */
-  render(): BaseView {
+  render(): ProductGridTitle {
     if (!this.totalProducts && !this.totalProductModels) {
       this.$el.html(
         __(this.config.title, {count: this.count}, this.count)
