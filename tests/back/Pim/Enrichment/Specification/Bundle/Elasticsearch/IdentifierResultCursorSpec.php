@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ElasticsearchResult;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ResultAwareInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ResultInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
@@ -18,6 +19,11 @@ class IdentifierResultCursorSpec extends ObjectBehavior
     function it_is_a_cursor()
     {
         $this->shouldImplement(CursorInterface::class);
+    }
+
+    function it_is_aware_of_the_result()
+    {
+        $this->shouldImplement(ResultAwareInterface::class);
     }
 
     function it_is_countable()

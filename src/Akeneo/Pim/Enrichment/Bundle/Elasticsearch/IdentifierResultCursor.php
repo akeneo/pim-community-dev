@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\ResultAwareInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ResultInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 
 /**
  * This cursor does not iterate through pages in Elasticsearch, because it's not needed for the datagrid or the API for example.
@@ -12,7 +14,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ResultInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class IdentifierResultCursor implements CursorWithResultInterface
+class IdentifierResultCursor implements CursorInterface, ResultAwareInterface
 {
     /** @var \ArrayIterator */
     private $identifiers;

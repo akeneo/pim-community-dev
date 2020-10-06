@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\CursorWithResultInterface;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ResultAwareInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Facet\ProductAndProductsModelDocumentTypeFacetFactory;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query;
@@ -93,7 +93,7 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
         }
 
         $documentTypeFacet = null;
-        if ($productAndProductModelIdentifiersCursor instanceof CursorWithResultInterface) {
+        if ($productAndProductModelIdentifiersCursor instanceof ResultAwareInterface) {
             $documentTypeFacet = $this->productAndProductsModelDocumentTypeFacetFactory->build(
                 $productAndProductModelIdentifiersCursor->getResult()
             );
