@@ -465,6 +465,8 @@ pim_datagrid:
     filters:
         product_typology:
             label: Product typology
+        entity_type:
+            label: Variant
         family:
             label: Family
         groups:

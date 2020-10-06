@@ -19,7 +19,7 @@ services:
             - '@pim_enrich.repository.attribute.search'
             - '@pim_enrich.normalizer.attribute'
             - '@pim_user.context.user'
-            - '@pim_catalog.localization.translator.label'
+            - '@translator.default'
 
     akeneo.pim.enrichment.category.category_tree.list_root_categories_with_count_handler:
         class: 'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListRootCategoriesWithCountHandler'

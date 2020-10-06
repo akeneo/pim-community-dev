@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
-use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -12,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Translation\Translator;
 
 /**
  * Controller to list the filters in the product grid.
@@ -37,8 +37,8 @@ class ProductGridFilterController
     /** @var UserContext */
     private $userContext;
 
-    /** @var LabelTranslatorInterface */
-    private $labelTranslator;
+    /** @var Translator */
+    private $translator;
 
     /**
      * @param Manager                       $datagridManager
@@ -46,7 +46,7 @@ class ProductGridFilterController
      * @param SearchableRepositoryInterface $attributeSearchRepository
      * @param NormalizerInterface           $lightAttributeNormalizer
      * @param UserContext                   $userContext
-     * @param LabelTranslatorInterface      $labelTranslator
+     * @param Translator                    $translator
      */
     public function __construct(
         Manager $datagridManager,
@@ -54,14 +54,14 @@ class ProductGridFilterController
         SearchableRepositoryInterface $attributeSearchRepository,
         NormalizerInterface $lightAttributeNormalizer,
         UserContext $userContext,
-        LabelTranslatorInterface $labelTranslator
+        Translator $translator
     ) {
         $this->datagridManager = $datagridManager;
         $this->tokenStorage = $tokenStorage;
         $this->attributeSearchRepository = $attributeSearchRepository;
         $this->lightAttributeNormalizer = $lightAttributeNormalizer;
         $this->userContext = $userContext;
-        $this->labelTranslator = $labelTranslator;
+        $this->translator = $translator;
     }
 
     /**
@@ -141,7 +141,7 @@ class ProductGridFilterController
 
         $formattedSystemFilters = [];
         foreach ($systemFilters as $code => $systemFilter) {
-            $label = $this->labelTranslator->translate($systemFilter['label'], $locale, $systemFilter['label']);
+            $label = $this->translator->trans($systemFilter['label'], [], null, $locale);
             if (!in_array($code, ['scope', 'locale']) && (
                     '' === $search || strpos($code, $search) !== false || strpos($label, $search) !== false
                 )) {
