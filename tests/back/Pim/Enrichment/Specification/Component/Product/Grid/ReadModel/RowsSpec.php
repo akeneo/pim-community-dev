@@ -46,12 +46,12 @@ class RowsSpec extends ObjectBehavior
 
     function it_has_the_total_number_of_products()
     {
-        $this->productCount()->shouldReturn(80);
+        $this->totalProductCount()->shouldReturn(80);
     }
 
     function it_has_the_total_number_of_product_models()
     {
-        $this->productModelCount()->shouldReturn(20);
+        $this->totalProductModelCount()->shouldReturn(20);
     }
 
     function it_has_the_product_and_product_model_rows()
