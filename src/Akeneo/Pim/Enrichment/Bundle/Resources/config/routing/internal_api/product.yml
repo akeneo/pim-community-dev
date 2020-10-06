@@ -44,6 +44,13 @@ pim_enrich_product_remove_attribute_rest:
         attributeId: '\d+'
     methods: [DELETE]
 
+pim_enrich_product_rest_convert_to_simple:
+    path: /rest/{id}/convert-to-simple
+    defaults: { _controller: pim_enrich.controller.rest.product:convertToSimpleProductAction }
+    requirements:
+        id: '[0-9a-f]+'
+    methods: [POST]
+
 pim_enrich_product_comments_rest_get:
     path: /{id}/comments
     defaults: { _controller: pim_enrich.controller.rest.product_comment:getAction }
