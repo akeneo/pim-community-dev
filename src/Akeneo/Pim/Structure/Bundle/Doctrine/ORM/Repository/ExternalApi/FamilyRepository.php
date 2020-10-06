@@ -169,7 +169,7 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
             }
         }
         if (!empty($exceptionMessages)) {
-            throw new \InvalidArgumentException(implode( ' ', $exceptionMessages));
+            throw new \InvalidArgumentException(implode(' ', $exceptionMessages));
         }
     }
 }
