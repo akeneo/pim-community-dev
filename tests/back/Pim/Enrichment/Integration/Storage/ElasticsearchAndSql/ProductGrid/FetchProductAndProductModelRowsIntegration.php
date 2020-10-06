@@ -88,8 +88,8 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
 
         Assert::assertSame(2, $rows->totalCount());
         AssertRows::same($expectedRows, $rows->rows());
-        Assert::assertSame(1, $rows->productCount());
-        Assert::assertSame(1, $rows->productModelCount());
+        Assert::assertSame(1, $rows->totalProductCount());
+        Assert::assertSame(1, $rows->totalProductModelCount());
     }
 
     /**
