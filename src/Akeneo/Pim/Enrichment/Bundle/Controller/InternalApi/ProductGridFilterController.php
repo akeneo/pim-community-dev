@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
+use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -36,25 +37,31 @@ class ProductGridFilterController
     /** @var UserContext */
     private $userContext;
 
+    /** @var LabelTranslatorInterface */
+    private $labelTranslator;
+
     /**
      * @param Manager                       $datagridManager
      * @param TokenStorageInterface         $tokenStorage
      * @param SearchableRepositoryInterface $attributeSearchRepository
      * @param NormalizerInterface           $lightAttributeNormalizer
      * @param UserContext                   $userContext
+     * @param LabelTranslatorInterface      $labelTranslator
      */
     public function __construct(
         Manager $datagridManager,
         TokenStorageInterface $tokenStorage,
         SearchableRepositoryInterface $attributeSearchRepository,
         NormalizerInterface $lightAttributeNormalizer,
-        UserContext $userContext
+        UserContext $userContext,
+        LabelTranslatorInterface $labelTranslator
     ) {
         $this->datagridManager = $datagridManager;
         $this->tokenStorage = $tokenStorage;
         $this->attributeSearchRepository = $attributeSearchRepository;
         $this->lightAttributeNormalizer = $lightAttributeNormalizer;
         $this->userContext = $userContext;
+        $this->labelTranslator = $labelTranslator;
     }
 
     /**
@@ -134,7 +141,7 @@ class ProductGridFilterController
 
         $formattedSystemFilters = [];
         foreach ($systemFilters as $code => $systemFilter) {
-            $label = $systemFilter['label'];
+            $label = $this->labelTranslator->translate($systemFilter['label'], $locale, $systemFilter['label']);
             if (!in_array($code, ['scope', 'locale']) && (
                     '' === $search || strpos($code, $search) !== false || strpos($label, $search) !== false
                 )) {
