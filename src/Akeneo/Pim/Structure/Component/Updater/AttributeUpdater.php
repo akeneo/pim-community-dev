@@ -102,7 +102,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
             }
 
-            foreach ($data as $key => $value) {
+            foreach ($this->filterReadOnlyFields($data) as $key => $value) {
                 if (null !== $value && !is_scalar($value)) {
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         $field,
@@ -348,5 +348,14 @@ class AttributeUpdater implements ObjectUpdaterInterface
         }
 
         return new \DateTime($date);
+    }
+
+    private function filterReadOnlyFields(array $dataToFilter) : array
+    {
+        $readOnlyFields = ['group_labels'];
+
+        return array_filter($dataToFilter, function ($key) use ($readOnlyFields) {
+            return !in_array($key, $readOnlyFields);
+        }, ARRAY_FILTER_USE_KEY);
     }
 }
