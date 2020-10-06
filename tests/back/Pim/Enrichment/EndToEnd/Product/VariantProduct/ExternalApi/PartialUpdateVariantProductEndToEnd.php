@@ -1130,50 +1130,6 @@ JSON;
         $this->assertSameProducts($expectedProduct, 'apollon_optionb_false');
     }
 
-
-    public function testProductVariantPartialUpdateNewAxisValues(): void
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
-            <<<JSON
-    {
-        "identifier": "apollon_optionb_false",
-        "enabled": false,
-        "groups": [],
-        "parent": "amor",
-        "categories": [],
-        "values": {
-          "a_yes_no": [
-            {
-              "locale": null,
-              "scope": null,
-              "data": true
-            }
-          ]
-        }
-    }
-JSON;
-
-        $client->request('PATCH', 'api/rest/v1/products/apollon_optionb_false', [], [], [], $data);
-
-        $expectedContent = [
-            'code'    => 422,
-            'message' => 'Validation failed.',
-            'errors'  => [
-                [
-                    'property' => 'attribute',
-                    'message'  => 'Variant axis "a_yes_no" cannot be modified, "true" given',
-                ],
-            ],
-        ];
-
-        $response = $client->getResponse();
-
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-    }
-
     public function testProductVariantPartialUpdateWhenProductValueAddedOnAttribute(): void
     {
         $client = $this->createAuthenticatedClient();
