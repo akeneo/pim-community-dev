@@ -84,6 +84,9 @@ jobs:
                 name: Start containers
                 command: docker-compose up -d fpm
           - run:
+                name: Check legacy translations
+                command: .circleci/find_legacy_translations.sh
+          - run:
                 name: PhpSpec
                 command: docker-compose exec -T fpm vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
           - run:
