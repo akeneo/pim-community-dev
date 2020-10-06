@@ -702,6 +702,7 @@ config:
     pim/product-edit-form/attributes:                        pimui/js/product/form/attributes
     pim/product-edit-form/creation/identifier:               pimui/js/product/form/creation/identifier
     pim/product-edit-form/start-copy:                        pimui/js/product/form/start-copy
+    pim/product-edit-form/convert-to-simple-product:         pimui/js/product/form/convert-to-simple-product.ts
     pim/product-edit-form/variant-navigation:                pimui/js/product/form/variant-navigation
     pim/product-edit-form/attributes/variant-axes:           pimui/js/product/form/attributes/variant-axes
     pim/product-edit-form/product-and-product-model-picker:  pimui/js/product/form/product-and-product-model-picker
@@ -1107,6 +1108,7 @@ config:
     pim/template/product/sequential-edit:                pimui/templates/product/sequential-edit.html
     pim/template/product/download-pdf:                   pimui/templates/product/download-pdf.html
     pim/template/product/start-copy:                     pimui/templates/product/start-copy.html
+    pim/template/product/convert-to-simple-product:      pimui/templates/product/convert-to-simple-product.html
     pim/template/product/meta/status-switcher:           pimui/templates/product/meta/status-switcher.html
     pim/template/product/meta/family:                    pimui/templates/product/meta/family.html
     pim/template/product/meta/family-variant:            pimui/templates/product/meta/family-variant.html
