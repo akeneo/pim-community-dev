@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 jobs:
   setup:
     machine:
@@ -255,6 +255,9 @@ jobs:
             command: docker-compose run --rm node yarn run integration
             when: always
 
+orbs:
+    pull-up: akeneo-orbs/pull-up@1.0
+
 workflows:
   version: 2
   pull_request:
@@ -264,7 +267,7 @@ workflows:
                 filters:
                     branches:
                         ignore:
-                            - master
+                            - "3.2"
           - setup:
                 requires:
                     - wait_for_user_approval
@@ -311,3 +314,18 @@ workflows:
           - back_behat_legacy:
                 requires:
                     - back_phpunit_end_to_end
+
+  pull_up:
+      jobs:
+          - pull-up/pull-up:
+                from: "3.2"
+                into: "4.0"
+                branch_prefix: "32_to_40"
+                checkout_ours: 'src/Akeneo/Platform/CommunityVersion.php **/translations/*.yml'
+                github_token: MICHEL_TAG_TOKEN
+                github_username: "micheltag"
+                slack_webhook: "${SLACK_URL_PULL_UP}"
+                filters:
+                    branches:
+                        only:
+                            - "3.2"
