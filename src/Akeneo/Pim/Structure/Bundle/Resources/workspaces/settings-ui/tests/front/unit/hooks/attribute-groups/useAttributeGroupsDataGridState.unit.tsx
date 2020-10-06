@@ -1,8 +1,8 @@
 import React from 'react';
 import {renderHookWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import {
-  useAttributeGroupsDataGridState,
-  useInitialAttributeGroupsDataGridState
+  useAttributeGroupsIndexState,
+  useInitialAttributeGroupsIndexState
 } from '@akeneo-pim-community/settings-ui/src/hooks/attribute-groups';
 import {fetchAllAttributeGroups} from '@akeneo-pim-community/settings-ui/src/infrastructure/fetchers';
 import {saveAttributeGroupsOrder} from '@akeneo-pim-community/settings-ui/src/infrastructure/savers';
@@ -15,7 +15,7 @@ jest.mock('@akeneo-pim-community/settings-ui/src/infrastructure/savers/attribute
 
 describe('useInitialAttributeGroupsDataGridState', () => {
   const renderUseInitialAttributeGroupsDataGridState = () => {
-    return renderHookWithProviders(useInitialAttributeGroupsDataGridState);
+    return renderHookWithProviders(useInitialAttributeGroupsIndexState);
   }
   beforeEach(() => {
     jest.clearAllMocks();
@@ -221,7 +221,7 @@ describe('useInitialAttributeGroupsDataGridState', () => {
 
 describe('useAttributeGroupsDataGridState', () => {
   const renderUseAttributeGroupsDataGridState = () => {
-    return renderHookWithProviders(useAttributeGroupsDataGridState);
+    return renderHookWithProviders(useAttributeGroupsIndexState);
   }
   beforeEach(() => {
     jest.clearAllMocks();

@@ -1,1 +1,1 @@
-export * from './AttributeGroupsDataGridProvider';
+export * from './AttributeGroupsIndexProvider';

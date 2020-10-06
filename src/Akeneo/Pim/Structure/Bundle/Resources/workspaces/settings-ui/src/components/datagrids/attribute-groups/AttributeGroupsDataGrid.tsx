@@ -1,16 +1,16 @@
 import React, {FC} from 'react';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {useAttributeGroupPermissions, useAttributeGroupsDataGridState, useGetAttributeGroupLabel} from '../../../hooks';
+import {useAttributeGroupPermissions, useAttributeGroupsIndexState, useGetAttributeGroupLabel} from '../../../hooks';
 import {AttributeGroup} from '../../../models';
 import {DataGrid} from '../../shared';
-import {ColumnLabel} from "./ColumnLabel";
+import {CellLabel} from "./CellLabel";
 
 type Props = {
   groups: AttributeGroup[];
 };
 
 const AttributeGroupsDataGrid: FC<Props> = ({groups}) => {
-  const {refreshOrder, compare, saveOrder, redirect} = useAttributeGroupsDataGridState();
+  const {refreshOrder, compare, saveOrder, redirect} = useAttributeGroupsIndexState();
   const {sortGranted, editGranted} = useAttributeGroupPermissions();
   const getLabel = useGetAttributeGroupLabel();
   const translate = useTranslate();
@@ -23,7 +23,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups}) => {
       compareData={compare}
     >
       <DataGrid.HeaderRow>
-        <DataGrid.Column>{translate('pim_enrich.entity.attribute_group.grid.columns.name')}</DataGrid.Column>
+        <DataGrid.Cell>{translate('pim_enrich.entity.attribute_group.grid.columns.name')}</DataGrid.Cell>
       </DataGrid.HeaderRow>
       <DataGrid.Body
         onRowClick={(group: AttributeGroup) => {
@@ -40,9 +40,9 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups}) => {
             key={group.code}
             data={group}
           >
-            <DataGrid.Column>
-              <ColumnLabel>{getLabel(group)}</ColumnLabel>
-            </DataGrid.Column>
+            <DataGrid.Cell>
+              <CellLabel>{getLabel(group)}</CellLabel>
+            </DataGrid.Cell>
           </DataGrid.Row>
         ))}
       </DataGrid.Body>

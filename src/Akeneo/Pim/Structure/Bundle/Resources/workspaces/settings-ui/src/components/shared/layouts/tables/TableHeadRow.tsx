@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const TableHeadRow = styled.tr`
   cursor: auto;
-  height: calc(44px + 15px);
+  height: 59px;
   color: ${({theme}) => theme.color.grey140};
   font-size: 13px;
   font-family: ${({theme}) => theme.font.default};

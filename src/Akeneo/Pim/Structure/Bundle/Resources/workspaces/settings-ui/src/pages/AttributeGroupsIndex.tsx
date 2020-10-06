@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useEffect} from 'react';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {PageContent, PageHeader} from '@akeneo-pim-community/shared';
 import {
@@ -7,26 +7,21 @@ import {
   AttributeGroupsDataGrid,
   AttributeGroupsUserButtons,
 } from '../components';
-import {useAttributeGroupsDataGridState, useMountedRef} from '../hooks';
+import {useAttributeGroupsIndexState} from '../hooks';
 
 const AttributeGroupsIndex: FC = () => {
-  const [showPlaceholder, setShowPlaceholder] = useState(true);
-  const mounted = useMountedRef();
-  const {groups, load} = useAttributeGroupsDataGridState();
+  const {groups, load, isPending} = useAttributeGroupsIndexState();
   const translate = useTranslate();
 
   useEffect(() => {
     (async () => {
       await load();
-      if (mounted.current) {
-        setShowPlaceholder(false);
-      }
     })();
   }, []);
 
   return (
     <>
-      <PageHeader showPlaceholder={showPlaceholder}>
+      <PageHeader showPlaceholder={isPending}>
         <PageHeader.Breadcrumb>
           <AttributeGroupsBreadcrumb />
         </PageHeader.Breadcrumb>

@@ -1,22 +1,23 @@
 import {useCallback, useContext, useState} from 'react';
-import {AttributeGroup, AttributeGroupCollection, fromAttributeGroupsCollection} from '../../models';
+import {AttributeGroup, AttributeGroupCollection, toSortedAttributeGroupsArray} from '../../models';
 import {useRedirectToAttributeGroup} from './useRedirectToAttributeGroup';
 import {fetchAllAttributeGroups} from '../../infrastructure/fetchers';
 import {saveAttributeGroupsOrder} from '../../infrastructure/savers';
-import {AttributeGroupsDataGridContext, AttributeGroupsDataGridState} from '../../components/providers';
+import {AttributeGroupsIndexContext, AttributeGroupsIndexState} from '../../components/providers';
 
-const useAttributeGroupsDataGridState = (): AttributeGroupsDataGridState => {
-  const context = useContext(AttributeGroupsDataGridContext);
+const useAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
+  const context = useContext(AttributeGroupsIndexContext);
 
   if (!context) {
-    throw new Error("[Context]: You are trying to use 'AttributeGroupsDataGrid' context outside Provider");
+    throw new Error("[Context]: You are trying to use 'AttributeGroupsIndex' context outside Provider");
   }
 
   return context;
 };
 
-const useInitialAttributeGroupsDataGridState = (): AttributeGroupsDataGridState => {
+const useInitialAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
   const [groups, setGroups] = useState<AttributeGroup[]>([]);
+  const [isPending, setIsPending] = useState(true);
 
   const redirect = useRedirectToAttributeGroup();
 
@@ -28,8 +29,10 @@ const useInitialAttributeGroupsDataGridState = (): AttributeGroupsDataGridState 
   );
 
   const load = useCallback(async () => {
+    setIsPending(true);
     return fetchAllAttributeGroups().then((collection: AttributeGroupCollection) => {
-      setGroups(fromAttributeGroupsCollection(collection));
+      setGroups(toSortedAttributeGroupsArray(collection));
+      setIsPending(false);
     });
   }, [refresh]);
 
@@ -41,7 +44,7 @@ const useInitialAttributeGroupsDataGridState = (): AttributeGroupsDataGridState 
     });
 
     const collection = await saveAttributeGroupsOrder(order);
-    setGroups(fromAttributeGroupsCollection(collection));
+    setGroups(toSortedAttributeGroupsArray(collection));
   }, [groups]);
 
   const refreshOrder = useCallback(
@@ -70,7 +73,8 @@ const useInitialAttributeGroupsDataGridState = (): AttributeGroupsDataGridState 
     refresh,
     refreshOrder,
     compare,
+    isPending,
   };
 };
 
-export {useAttributeGroupsDataGridState, useInitialAttributeGroupsDataGridState, AttributeGroupsDataGridState};
+export {useAttributeGroupsIndexState, useInitialAttributeGroupsIndexState, AttributeGroupsIndexState};

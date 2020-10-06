@@ -23,10 +23,10 @@ type AttributeGroupCollection = {
   [group: string]: AttributeGroup;
 };
 
-const fromAttributeGroupsCollection = (collection: AttributeGroupCollection): AttributeGroup[] => {
+const toSortedAttributeGroupsArray = (collection: AttributeGroupCollection): AttributeGroup[] => {
   return Object.values(collection).sort((groupA: AttributeGroup, groupB: AttributeGroup) => {
     return groupA.sort_order - groupB.sort_order;
   });
 };
 
-export {AttributeGroup, AttributeGroupCollection, AttributeGroupLabels, fromAttributeGroupsCollection};
+export {AttributeGroup, AttributeGroupCollection, AttributeGroupLabels, toSortedAttributeGroupsArray};
