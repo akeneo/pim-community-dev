@@ -1,14 +1,12 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import styled from 'styled-components';
 import {useTranslate, useNotify, NotificationLevel} from '@akeneo-pim-community/legacy-bridge';
-import {useTheme, BrokenLinkIcon, AssociationTypesIllustration} from 'akeneo-design-system';
+import {BrokenLinkIcon, AssociationTypesIllustration, Helper} from 'akeneo-design-system';
 import {
   Button,
   SearchBar,
   NoDataSection,
   NoDataTitle,
-  HelperRibbon,
-  HelperLevel,
   ValidationError,
   getErrorsForPath,
   formatParameters,
@@ -82,7 +80,6 @@ const QuantifiedAssociations = ({
 }: QuantifiedAssociationsProps) => {
   const translate = useTranslate();
   const notify = useNotify();
-  const theme = useTheme();
   const [rowCollection, setRowCollection] = useState<Row[]>(
     quantifiedAssociationToRowCollection(quantifiedAssociations, errors)
   );
@@ -145,14 +142,14 @@ const QuantifiedAssociations = ({
   return (
     <>
       {MAX_LIMIT <= newAndUpdatedCount && (
-        <HelperRibbon level={HelperLevel.HELPER_LEVEL_INFO}>
+        <Helper level="info">
           {translate('pim_enrich.entity.product.module.associations.limit_reached', {maxLimit: MAX_LIMIT.toString()})}
-        </HelperRibbon>
+        </Helper>
       )}
       {hasUpdatedVariant && (
-        <HelperRibbon level={HelperLevel.HELPER_LEVEL_INFO} icon={<BrokenLinkIcon color={theme.color.blue100} />}>
+        <Helper level="info" icon={<BrokenLinkIcon />}>
           {translate('pim_enrich.entity.product.module.associations.variant_updated')}
-        </HelperRibbon>
+        </Helper>
       )}
       <SearchBar
         placeholder={translate('pim_enrich.entity.product.module.associations.search.placeholder')}

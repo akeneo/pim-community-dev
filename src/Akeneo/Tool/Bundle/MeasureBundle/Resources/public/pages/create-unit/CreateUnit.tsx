@@ -1,5 +1,5 @@
 import React, {FormEvent, useCallback, useContext, useRef, useState} from 'react';
-import {MeasurementIllustration} from 'akeneo-design-system';
+import {Helper, MeasurementIllustration} from 'akeneo-design-system';
 import {Subsection} from 'akeneomeasure/shared/components/Subsection';
 import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
@@ -21,8 +21,6 @@ import {useTranslate, useNotify, NotificationLevel, useUserContext} from '@akene
 import {
   Button,
   useAutoFocus,
-  HelperRibbon,
-  HelperLevel,
   filterErrors,
   ValidationError,
   useShortcut,
@@ -113,11 +111,7 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
           subtitle={`${__('measurements.title.measurement')} / ${measurementFamilyLabel}`}
         />
         <Subsection>
-          {measurementFamily.is_locked && (
-            <HelperRibbon level={HelperLevel.HELPER_LEVEL_WARNING}>
-              {__('measurements.unit.will_be_read_only')}
-            </HelperRibbon>
-          )}
+          {measurementFamily.is_locked && <Helper level="warning">{__('measurements.unit.will_be_read_only')}</Helper>}
           <FormGroup>
             <TextField
               ref={firstFieldRef}
