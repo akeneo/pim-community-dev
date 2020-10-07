@@ -35,15 +35,8 @@ import {
   PimView,
   useSecurity,
 } from '@akeneo-pim-community/legacy-bridge';
-import {
-  Button,
-  HelperRibbon,
-  HelperLevel,
-  filterErrors,
-  ValidationError,
-  partitionErrors,
-  useToggleState,
-} from '@akeneo-pim-community/shared';
+import {Button, filterErrors, ValidationError, partitionErrors, useToggleState} from '@akeneo-pim-community/shared';
+import {Helper} from 'akeneo-design-system';
 
 enum Tab {
   Units = 'units',
@@ -90,9 +83,9 @@ const Errors = ({errors}: {errors: ValidationError[]}) => {
   return (
     <>
       {errors.map((error: ValidationError, index: number) => (
-        <HelperRibbon level={HelperLevel.HELPER_LEVEL_ERROR} key={index}>
+        <Helper level="error" key={index}>
           {error.message}
-        </HelperRibbon>
+        </Helper>
       ))}
     </>
   );
@@ -294,9 +287,7 @@ const Edit = () => {
             ))}
           </Tabs>
           <Errors errors={[...unitsErrors.filter(error => error.propertyPath === 'units'), ...otherErrors]} />
-          {measurementFamily.is_locked && (
-            <HelperRibbon level={HelperLevel.HELPER_LEVEL_WARNING}>{__('measurements.family.is_locked')}</HelperRibbon>
-          )}
+          {measurementFamily.is_locked && <Helper level="warning">{__('measurements.family.is_locked')}</Helper>}
         </TabsContainer>
         <Container>
           {currentTab === Tab.Units && null !== selectedUnitCode && (
