@@ -9,6 +9,8 @@ services:
             - '@pim_connector.reader.file.csv_locale'
             - '@pim_connector.processor.denormalization.locale'
             - '@pim_connector.writer.database.locale'
+            - 100
+            - '@akeneo_batch.query.get_job_execution_status'
 
     pim_connector.step.csv_locale_export.export:
         class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
@@ -19,6 +21,8 @@ services:
             - '@pim_connector.reader.database.locale'
             - '@pim_connector.processor.normalization.locale'
             - '@pim_connector.writer.file.csv_locale'
+            - 100
+            - '@akeneo_batch.query.get_job_execution_status'
 
     pim_connector.step.xlsx_locale_import.import:
         class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
