@@ -1,9 +1,9 @@
 import React, {createContext, FC} from 'react';
 import {AttributeGroup} from '../../models';
-import {useInitialAttributeGroupsDataGridState} from '../../hooks/attribute-groups';
+import {useInitialAttributeGroupsIndexState} from '../../hooks/attribute-groups';
 import {AfterMoveRowHandler, CompareRowDataHandler} from '../shared/providers';
 
-type AttributeGroupsDataGridState = {
+type AttributeGroupsIndexState = {
   groups: AttributeGroup[];
   saveOrder: () => Promise<void>;
   load: () => Promise<void>;
@@ -11,9 +11,10 @@ type AttributeGroupsDataGridState = {
   refresh: (refreshedGroups: AttributeGroup[]) => void;
   refreshOrder: AfterMoveRowHandler<AttributeGroup>;
   compare: CompareRowDataHandler<AttributeGroup>;
+  isPending: boolean;
 };
 
-const AttributeGroupsDataGridContext = createContext<AttributeGroupsDataGridState>({
+const AttributeGroupsIndexContext = createContext<AttributeGroupsIndexState>({
   groups: [],
   saveOrder: async () => {},
   load: async () => {},
@@ -21,11 +22,12 @@ const AttributeGroupsDataGridContext = createContext<AttributeGroupsDataGridStat
   refresh: () => {},
   refreshOrder: () => {},
   compare: () => -1,
+  isPending: true,
 });
 
-const AttributeGroupsDataGridProvider: FC = ({children}) => {
-  const state = useInitialAttributeGroupsDataGridState();
-  return <AttributeGroupsDataGridContext.Provider value={state}>{children}</AttributeGroupsDataGridContext.Provider>;
+const AttributeGroupsIndexProvider: FC = ({children}) => {
+  const state = useInitialAttributeGroupsIndexState();
+  return <AttributeGroupsIndexContext.Provider value={state}>{children}</AttributeGroupsIndexContext.Provider>;
 };
 
-export {AttributeGroupsDataGridProvider, AttributeGroupsDataGridState, AttributeGroupsDataGridContext};
+export {AttributeGroupsIndexProvider, AttributeGroupsIndexState, AttributeGroupsIndexContext};

@@ -2,8 +2,8 @@ import React, {FC} from 'react';
 
 type Props = {};
 
-const Column: FC<Props> = ({children}) => {
+const Cell: FC<Props> = ({children}) => {
   return <>{children}</>;
 };
 
-export {Column};
+export {Cell};

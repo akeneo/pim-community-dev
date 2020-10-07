@@ -1,6 +1,6 @@
-import React, {PropsWithChildren} from 'react';
+import React, {Children, isValidElement, PropsWithChildren} from 'react';
 import {Body} from './Body';
-import {Column} from './Column';
+import {Cell} from './Cell';
 import {HeaderRow} from './HeaderRow';
 import {Row} from './Row';
 import {AfterMoveRowHandler, CompareRowDataHandler, DataGridStateProvider} from '../providers';
@@ -17,8 +17,8 @@ type Props<T> = {
 
 const DataGrid = <T extends {}>({
   children,
-  isReorderAllowed,
-  isReorderActive,
+  isReorderAllowed = false,
+  isReorderActive = false,
   dataSource,
   handleAfterMove,
   compareData,
@@ -26,15 +26,25 @@ const DataGrid = <T extends {}>({
 }: PropsWithChildren<Props<T>>) => {
   return (
     <DataGridStateProvider
-      isReorderAllowed={isReorderAllowed || false}
-      isReorderActive={isReorderActive || false}
+      isReorderAllowed={isReorderAllowed}
+      isReorderActive={isReorderActive}
       dataSource={dataSource}
       handleAfterMove={handleAfterMove}
       compareData={compareData}
       isFilterable={isFilterable === true}
     >
       <TableContainer>
-        <Table>{children}</Table>
+        <Table>
+          {Children.map(children, (child) => {
+            if (isValidElement(child) && (child.type === HeaderRow)) {
+              return React.cloneElement(child, {
+                isDraggable: isReorderAllowed
+              });
+            }
+
+            return child;
+          })}
+        </Table>
       </TableContainer>
     </DataGridStateProvider>
   );
@@ -42,7 +52,7 @@ const DataGrid = <T extends {}>({
 
 
 DataGrid.Body = Body;
-DataGrid.Column = Column;
+DataGrid.Cell = Cell;
 DataGrid.HeaderRow = HeaderRow;
 DataGrid.Row = Row;
 

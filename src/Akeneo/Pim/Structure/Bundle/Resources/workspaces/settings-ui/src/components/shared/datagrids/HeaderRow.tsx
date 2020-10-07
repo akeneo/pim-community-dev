@@ -2,11 +2,12 @@ import React, {FC} from 'react';
 import {TableHead, TableHeadCell, TableHeadRow} from '../layouts/tables';
 import {useDataGridState} from "../../../hooks/shared";
 
-type Props = {};
+type Props = {
+  isDraggable?: boolean
+};
 
-const HeaderRow: FC<Props> = ({children}) => {
+const HeaderRow: FC<Props> = ({children, isDraggable = false}) => {
   const {isFilterable} = useDataGridState();
-  const isDraggable = true;
   return (
     <TableHead>
       <TableHeadRow>

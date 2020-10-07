@@ -14,7 +14,7 @@ type Props<T> = {
   handleDrop?: AfterDropRowHandler;
 };
 
-const Row = <T extends {}>({children, index, data, handleDrop, handleClick}: PropsWithChildren<Props<T>>) => {
+const Row = <T extends {}>({children, index = 0, data, handleDrop, handleClick}: PropsWithChildren<Props<T>>) => {
   const {isDragged} = useDataGridState();
   const rowRef = useRef(null);
 
@@ -29,7 +29,7 @@ const Row = <T extends {}>({children, index, data, handleDrop, handleClick}: Pro
       }}
     >
       <DraggableRowWrapper
-        index={index || 0}
+        index={index}
         data={data}
         rowRef={rowRef}
         handleDrop={handleDrop ? handleDrop : () => {}}

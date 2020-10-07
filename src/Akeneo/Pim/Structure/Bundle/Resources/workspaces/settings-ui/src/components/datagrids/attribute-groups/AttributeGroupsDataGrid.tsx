@@ -1,9 +1,9 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
-import {useAttributeGroupPermissions, useAttributeGroupsDataGridState, useGetAttributeGroupLabel} from '../../../hooks';
+import {useAttributeGroupPermissions, useAttributeGroupsIndexState, useGetAttributeGroupLabel} from '../../../hooks';
 import {AttributeGroup} from '../../../models';
 import {DataGrid} from '../../shared';
-import {ColumnLabel} from "./ColumnLabel";
+import {CellLabel} from "./CellLabel";
 import {debounce} from 'lodash';
 import {SearchBar} from "@akeneo-pim-community/shared/src";
 import {NoSearchResult} from "./NoSearchResult";
@@ -16,7 +16,7 @@ type Props = {
 };
 
 const AttributeGroupsDataGrid: FC<Props> = ({groups}) => {
-  const {refreshOrder, compare, saveOrder, redirect} = useAttributeGroupsDataGridState();
+  const {refreshOrder, compare, saveOrder, redirect} = useAttributeGroupsIndexState();
   const {sortGranted, editGranted} = useAttributeGroupPermissions();
   const getLabel = useGetAttributeGroupLabel();
   const translate = useTranslate();
@@ -62,7 +62,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups}) => {
         isFilterable={true}
       >
         <DataGrid.HeaderRow>
-          <DataGrid.Column>{translate('pim_enrich.entity.attribute_group.grid.columns.name')}</DataGrid.Column>
+          <DataGrid.Cell>{translate('pim_enrich.entity.attribute_group.grid.columns.name')}</DataGrid.Cell>
           {
             FeatureFlags.isEnabled('data_quality_insights') &&
             <DataGrid.Column>{translate('akeneo_data_quality_insights.attribute_group.dqi_status')}</DataGrid.Column>
@@ -83,9 +83,9 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups}) => {
               key={group.code}
               data={group}
             >
-              <DataGrid.Column>
-                <ColumnLabel>{getLabel(group)}</ColumnLabel>
-              </DataGrid.Column>
+              <DataGrid.Cell>
+                <CellLabel>{getLabel(group)}</CellLabel>
+              </DataGrid.Cell>
               {
                 FeatureFlags.isEnabled('data_quality_insights') &&
                 <DataGrid.Column>

@@ -1,24 +1,25 @@
 import {useCallback, useContext, useState} from 'react';
-import {AttributeGroup, AttributeGroupCollection, fromAttributeGroupsCollection} from '../../models';
+import {AttributeGroup, AttributeGroupCollection, toSortedAttributeGroupsArray} from '../../models';
 import {useRedirectToAttributeGroup} from './useRedirectToAttributeGroup';
 import {fetchAllAttributeGroups, fetchAllAttributeGroupsDqiStatus} from '../../infrastructure/fetchers';
 import {saveAttributeGroupsOrder} from '../../infrastructure/savers';
-import {AttributeGroupsDataGridContext, AttributeGroupsDataGridState} from '../../components/providers';
+import {AttributeGroupsIndexContext, AttributeGroupsIndexState} from '../../components/providers';
 
 const FeatureFlags = require("pim/feature-flags");
 
-const useAttributeGroupsDataGridState = (): AttributeGroupsDataGridState => {
-  const context = useContext(AttributeGroupsDataGridContext);
+const useAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
+  const context = useContext(AttributeGroupsIndexContext);
 
   if (!context) {
-    throw new Error("[Context]: You are trying to use 'AttributeGroupsDataGrid' context outside Provider");
+    throw new Error("[Context]: You are trying to use 'AttributeGroupsIndex' context outside Provider");
   }
 
   return context;
 };
 
-const useInitialAttributeGroupsDataGridState = (): AttributeGroupsDataGridState => {
+const useInitialAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
   const [groups, setGroups] = useState<AttributeGroup[]>([]);
+  const [isPending, setIsPending] = useState(true);
 
   const redirect = useRedirectToAttributeGroup();
 
@@ -30,6 +31,7 @@ const useInitialAttributeGroupsDataGridState = (): AttributeGroupsDataGridState 
   );
 
   const load = useCallback(async () => {
+    setIsPending(true);
     return fetchAllAttributeGroups().then(async (collection: AttributeGroupCollection) => {
       if (FeatureFlags.isEnabled('data_quality_insights')) {
         const groupDqiStatuses = await fetchAllAttributeGroupsDqiStatus();
@@ -38,7 +40,8 @@ const useInitialAttributeGroupsDataGridState = (): AttributeGroupsDataGridState 
           collection[groupCode].isDqiActivated = status;
         });
       }
-      setGroups(fromAttributeGroupsCollection(collection));
+      setGroups(toSortedAttributeGroupsArray(collection));
+      setIsPending(false);
     });
   }, [refresh]);
 
@@ -78,7 +81,8 @@ const useInitialAttributeGroupsDataGridState = (): AttributeGroupsDataGridState 
     refresh,
     refreshOrder,
     compare,
+    isPending,
   };
 };
 
-export {useAttributeGroupsDataGridState, useInitialAttributeGroupsDataGridState, AttributeGroupsDataGridState};
+export {useAttributeGroupsIndexState, useInitialAttributeGroupsIndexState, AttributeGroupsIndexState};

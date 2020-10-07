@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const ColumnLabel = styled.span`
+const CellLabel = styled.span`
   width: 71px;
   height: 16px;
   color: ${({theme}) => theme.color.purple100};
@@ -10,4 +10,4 @@ const ColumnLabel = styled.span`
   font-style: italic;
 `;
 
-export {ColumnLabel};
+export {CellLabel};
