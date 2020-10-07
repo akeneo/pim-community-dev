@@ -35,9 +35,9 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
 
     public function it_builds_product_model_removed_event(): void
     {
-        $this->build(new ProductModelRemoved('julia', ['identifier' => 'product_identifier']))->shouldReturn(
+        $this->build(new ProductModelRemoved('julia', ['code' => 'product_identifier']))->shouldReturn(
             [
-                'resource' => ['identifier' => 'product_identifier'],
+                'resource' => ['code' => 'product_identifier'],
             ]
         );
     }
@@ -46,7 +46,7 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
     {
         $this->shouldThrow(new \InvalidArgumentException())->during(
             'build',
-            [new ProductCreated('julia', ['identifier' => 'product_identifier'])]
+            [new ProductCreated('julia', ['code' => 'product_identifier'])]
         );
     }
 }
