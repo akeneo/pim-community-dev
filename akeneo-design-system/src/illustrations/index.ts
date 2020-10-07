@@ -36,6 +36,7 @@ export * from './MarketplaceIllustration';
 export * from './MeasurementIllustration';
 export * from './MediaFileIllustration';
 export * from './MoneyIllustration';
+export * from './NewsIllustration';
 export * from './NoResultsIllustration';
 export * from './ProductCategoryIllustration';
 export * from './ProductModelIllustration';

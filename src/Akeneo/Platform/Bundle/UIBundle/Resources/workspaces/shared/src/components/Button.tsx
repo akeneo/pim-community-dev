@@ -1,6 +1,6 @@
 import React, {forwardRef, ButtonHTMLAttributes} from 'react';
 import styled, {css} from 'styled-components';
-import {AkeneoThemedProps} from '../theme';
+import {AkeneoThemedProps} from 'akeneo-design-system';
 
 type ButtonProps = {
   size?: 'micro' | 'default';

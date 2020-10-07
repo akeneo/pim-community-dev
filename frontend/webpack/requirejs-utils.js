@@ -77,7 +77,6 @@ const utils = {
           'require-context': path.resolve(sourceDir, './frontend/webpack/require-context.js'),
           'module-registry': path.resolve(baseDir, './public/js/module-registry.js'),
           routes: path.resolve(baseDir, './public/js/routes.js'),
-          'akeneo-design-system': path.resolve(sourceDir, './akeneo-design-system/lib/index.js'),
           'fos-routing-base': path.resolve(
             baseDir,
             './vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.js'

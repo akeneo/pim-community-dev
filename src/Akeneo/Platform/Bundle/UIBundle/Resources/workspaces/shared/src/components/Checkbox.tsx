@@ -1,8 +1,8 @@
 import React, {FormEvent} from 'react';
 import styled, {css} from 'styled-components';
-import {TickIcon} from '../icons';
+import {CheckIcon} from 'akeneo-design-system';
 
-const Tick = styled(TickIcon)`
+const Tick = styled(CheckIcon)`
   animation: uncheckTick 0.2s ease-in forwards;
   opacity: 0;
   stroke-dasharray: 17px;

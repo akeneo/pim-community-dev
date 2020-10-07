@@ -1,5 +1,5 @@
 import React, {FormEvent, useCallback, useState} from 'react';
-import {MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasurementFamilyIllustration';
+import {MeasurementIllustration} from 'akeneo-design-system';
 import {Subsection, SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
 import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
@@ -67,7 +67,7 @@ const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
   return (
     <Modal>
       <ModalCloseButton title={__('pim_common.close')} onClick={() => handleClose()} />
-      <ModalBodyWithIllustration illustration={<MeasurementFamilyIllustration />}>
+      <ModalBodyWithIllustration illustration={<MeasurementIllustration />}>
         <ModalTitle
           title={__('measurements.family.add_new_measurement_family')}
           subtitle={__('measurements.title.measurement')}

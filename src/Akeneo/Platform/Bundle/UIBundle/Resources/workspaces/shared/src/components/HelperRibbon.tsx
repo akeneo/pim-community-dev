@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import React, {PropsWithChildren, ReactNode} from 'react';
-import {WarningIcon, InfoIcon} from '../icons';
-import {akeneoTheme} from '../theme';
+import {pimTheme as akeneoTheme, InfoIcon, DangerIcon} from 'akeneo-design-system';
 
 enum HelperLevel {
   HELPER_LEVEL_WARNING = 'warning',
@@ -38,10 +37,10 @@ const getIcon = (level: HelperLevel): JSX.Element => {
     case HelperLevel.HELPER_LEVEL_INFO:
       return <InfoIcon color={akeneoTheme.color.blue120} />;
     case HelperLevel.HELPER_LEVEL_ERROR:
-      return <WarningIcon color={akeneoTheme.color.red120} />;
+      return <DangerIcon color={akeneoTheme.color.red120} />;
     case HelperLevel.HELPER_LEVEL_WARNING:
     default:
-      return <WarningIcon color={akeneoTheme.color.yellow120} />;
+      return <DangerIcon color={akeneoTheme.color.yellow120} />;
   }
 };
 

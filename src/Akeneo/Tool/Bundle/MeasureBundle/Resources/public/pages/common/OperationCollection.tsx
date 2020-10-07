@@ -1,9 +1,7 @@
 import React, {useState, useContext, useCallback, useEffect, ChangeEvent} from 'react';
 import styled, {css, ThemeContext} from 'styled-components';
 import {ConfigContext} from 'akeneomeasure/context/config-context';
-import {DownIcon} from 'akeneomeasure/shared/icons/DownIcon';
-import {LockIcon} from 'akeneomeasure/shared/icons/LockIcon';
-import {SubArrowRightIcon} from 'akeneomeasure/shared/icons/SubArrowRightIcon';
+import {ArrowDownIcon, LockIcon, ArrowIcon, CloseIcon} from 'akeneo-design-system';
 import {Operation, Operator, emptyOperation} from 'akeneomeasure/model/operation';
 import {Input, InputContainer} from 'akeneomeasure/shared/components/TextField';
 import {useLocalizedNumber} from 'akeneomeasure/shared/hooks/use-localized-number';
@@ -11,7 +9,6 @@ import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {
   Button,
   TransparentButton,
-  CloseIcon,
   ValidationError,
   filterErrors,
   getErrorsForPath,
@@ -43,7 +40,7 @@ const OperationCollectionLabel = styled.div`
   margin-bottom: 10px;
 `;
 
-const StyledArrow = styled(SubArrowRightIcon)`
+const StyledArrow = styled(ArrowIcon)`
   margin: 0 4px 10px 2px;
 `;
 
@@ -190,7 +187,7 @@ const OperationCollection = ({
                   {readOnly ? (
                     <LockIcon color={akeneoTheme.color.grey100} size={18} />
                   ) : (
-                    <DownIcon color={akeneoTheme.color.grey100} size={18} />
+                    <ArrowDownIcon color={akeneoTheme.color.grey100} size={18} />
                   )}
                 </OperationOperator>
                 {!readOnly && openOperatorSelector === index && (

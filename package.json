@@ -26,7 +26,7 @@
     "less-watch": "SHELL=/bin/bash chokidar --verbose \"{$npm_package_config_source/src,src,public/bundles}/**/*.{less,css}\" -c \"yarn run less --dev\"",
     "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js",
     "generate-models": "yarn --cwd=node_modules/@akeneo-pim-community/communication-channel generate-models",
-    "dsm-watch": "concurrently \"yarn webpack-watch\" \"yarn --cwd=akeneo-design-system lib:build:watch\""
+    "dsm-watch": "concurrently \"yarn webpack-watch\" \"yarn --cwd=akeneo-design-system lib:watch\""
   },
   "repository": {
     "type": "git",
@@ -111,6 +111,7 @@
   },
   "dependencies": {
     "ajv": "^6.10.2",
+    "akeneo-design-system": "link:./akeneo-design-system",
     "babel-polyfill": "6.26.0",
     "backbone": "0.9.10",
     "css-loader": "^3.3.0",
