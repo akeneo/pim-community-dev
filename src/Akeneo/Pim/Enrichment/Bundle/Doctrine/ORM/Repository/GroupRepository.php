@@ -37,12 +37,16 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
                 ->setParameter('search', "%$search%");
         }
 
-        if (isset($options['ids'])) {
+        // both "ids" and "identifiers" are used in those options, which is never validated.
+        // To avoid any BC, we will allow both.
+        $ids = $options['ids'] ?? $options['identifiers'] ?? [];
+
+        if (!empty($ids)) {
             $qb
                 ->andWhere(
                     $qb->expr()->in(sprintf('o.%s', $identifier), ':ids')
                 )
-                ->setParameter('ids', $options['ids']);
+                ->setParameter('ids', $ids);
         }
 
         if (isset($options['limit']) && isset($options['page'])) {
