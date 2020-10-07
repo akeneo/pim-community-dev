@@ -71,6 +71,7 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Remove Dummy component
+        if: failure() && steps.visual_test_execution.outcome == 'failure'
         run: rm -rf akeneo-design-system/src/components/Dummy
 
       - name: Push to a new branch and create pull request targeting the current one
