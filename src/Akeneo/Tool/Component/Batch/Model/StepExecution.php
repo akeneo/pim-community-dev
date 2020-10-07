@@ -77,6 +77,11 @@ class StepExecution
     /** @var array */
     private $summary = [];
 
+    private $trackingData = [
+        'totalItems' => 0,
+        'processCount' => 0
+    ];
+
     /**
      * Constructor with mandatory properties.
      *
@@ -218,6 +223,39 @@ class StepExecution
         $this->writeCount = $writeCount;
 
         return $this;
+    }
+
+    public function setTotalItems(int $totalItems): void
+    {
+        $this->trackingData['totalItems'] = $totalItems;
+    }
+
+    public function getTotalItems(): int
+    {
+        return $this->trackingData['totalItems'];
+    }
+
+    public function incrementProcessedCount($increment)
+    {
+        $this->trackingData['processCount'] += $increment;
+        if ($this->trackingData['processCount'] > $this->getTotalItems()) {
+            $this->setTotalItems($this->trackingData['processCount']);
+        }
+    }
+
+    public function getProcessCount(): int
+    {
+        return $this->trackingData['processCount'];
+    }
+
+    public function getTrackingData(): array
+    {
+        return $this->trackingData;
+    }
+
+    public function setTrackingData(array $trackingData): void
+    {
+        $this->trackingData = $trackingData;
     }
 
     /**

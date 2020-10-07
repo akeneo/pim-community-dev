@@ -23,7 +23,6 @@ const JobStatusBadge = ({jobId, status}: { jobId: string; status: string }) => {
         }
       );
       const newJobStatus = await response.json();
-      console.log(newJobStatus)
       setStatus({
         ...jobStatus,
         currentStep: newJobStatus.currentStep,

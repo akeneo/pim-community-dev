@@ -57,6 +57,9 @@ Akeneo\Tool\Component\Batch\Model\StepExecution:
         summary:
             type: array
             column: summary
+        trackingData:
+            type: json
+            column: tracking_data
     oneToMany:
         warnings:
             targetEntity: Akeneo\Tool\Component\Batch\Model\Warning

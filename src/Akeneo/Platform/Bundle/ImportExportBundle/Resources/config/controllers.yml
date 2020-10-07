@@ -61,6 +61,7 @@ services:
         arguments:
             - '@akeneo_batch_queue.manager.job_execution_manager'
             - '@pim_enrich.repository.job_execution'
+            - '@akeneo_batch.job.job_registry'
 
     pim_enrich.controller.job_tracker:
         public: true

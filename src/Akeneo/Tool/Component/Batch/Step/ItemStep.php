@@ -9,6 +9,7 @@ use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Model\Warning;
@@ -21,7 +22,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class ItemStep extends AbstractStep
+class ItemStep extends AbstractStep implements TrackableStep
 {
     /** @var ItemReaderInterface */
     protected $reader = null;
@@ -104,6 +105,10 @@ class ItemStep extends AbstractStep
 
         $this->initializeStepElements($stepExecution);
 
+        if ($this->reader instanceof TrackableItemReaderInterface) {
+            $stepExecution->setTotalItems($this->reader->count());
+        }
+
         while (true) {
             try {
                 $readItem = $this->reader->read();
@@ -126,6 +131,7 @@ class ItemStep extends AbstractStep
             if ($batchCount >= $this->batchSize) {
                 if (!empty($itemsToWrite)) {
                     $this->write($itemsToWrite);
+                    $stepExecution->incrementProcessedCount(count($itemsToWrite));
                     $itemsToWrite = [];
                 }
 
@@ -137,6 +143,7 @@ class ItemStep extends AbstractStep
 
         if (!empty($itemsToWrite)) {
             $this->write($itemsToWrite);
+            $stepExecution->incrementProcessedCount(count($itemsToWrite));
         }
 
         if ($batchCount > 0) {
