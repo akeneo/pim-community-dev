@@ -16,7 +16,7 @@ jobs:
       - name: Install node 13.13 for the rest of the workflow
         uses: actions/setup-node@v1
         with:
-        node-version: 13.13
+          node-version: 13.13
 
       - name: Install node modules
         run: cd akeneo-design-system && yarn install
@@ -53,13 +53,13 @@ jobs:
 
       - uses: actions/upload-artifact@v1
         with:
-        name: package
-        path: akeneo-design-system/package.json
+          name: package
+          path: akeneo-design-system/package.json
 
       - uses: actions/upload-artifact@v1
         with:
-        name: commit-messages
-        path: commit-messages.txt
+          name: commit-messages
+          path: commit-messages.txt
 
   # Now that the lib is built and the version is bumped, we can extract it to the external repository
   extract:
