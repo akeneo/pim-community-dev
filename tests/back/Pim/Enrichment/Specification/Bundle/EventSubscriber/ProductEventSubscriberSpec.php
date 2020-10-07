@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductEventSubscriber;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
@@ -14,8 +15,6 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 
 class ProductEventSubscriberSpec extends ObjectBehavior
 {

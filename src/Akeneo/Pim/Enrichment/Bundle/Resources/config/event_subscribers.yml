@@ -183,3 +183,11 @@ services:
             - '@Symfony\Component\Messenger\MessageBusInterface'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModelEventSubscriber:
+        arguments:
+            - '@security.helper'
+            - '@pim_catalog.normalizer.standard.product_model'
+            - '@Symfony\Component\Messenger\MessageBusInterface'
+        tags:
+            - { name: kernel.event_subscriber }
