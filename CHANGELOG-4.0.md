@@ -7,6 +7,7 @@
 ## Technical Improvements
 
 - PIM-9472: [Backport] API-1253: Add attr group labels inside attribute end-point + API-1260: Add search filters on attribute groups
+- PIM-9470: [Backport] API-1212: Add filters on family search + API-1247: Add filter on category codes + API-1251: Add ability to get categories filtered by parent
 
 # 4.0.61 (2020-10-02)
 
