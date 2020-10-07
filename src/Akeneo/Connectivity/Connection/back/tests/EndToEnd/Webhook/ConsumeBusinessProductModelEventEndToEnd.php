@@ -105,7 +105,7 @@ class ConsumeBusinessProductModelEventEndToEnd extends ApiTestCase
         $productModel = $this->loadProductModel();
 
         $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
-        $handlerStack->setHandler(new MockHandler([new Response(200),]));
+        $handlerStack->setHandler(new MockHandler([new Response(200)]));
 
         $container = [];
         $history = Middleware::history($container);
