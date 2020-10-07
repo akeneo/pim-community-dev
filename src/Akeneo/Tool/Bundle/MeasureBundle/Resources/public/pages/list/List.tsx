@@ -3,7 +3,7 @@ import {useHistory} from 'react-router-dom';
 import {PageHeader, PageHeaderPlaceholder} from 'akeneomeasure/shared/components/PageHeader';
 import {Breadcrumb} from 'akeneomeasure/shared/components/Breadcrumb';
 import {BreadcrumbItem} from 'akeneomeasure/shared/components/BreadcrumbItem';
-import {MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasurementFamilyIllustration';
+import {MeasurementIllustration} from 'akeneo-design-system';
 import {HelperTitle, HelperText, Helper} from 'akeneomeasure/shared/components/Helper';
 import {Link} from 'akeneomeasure/shared/components/Link';
 import {useMeasurementFamilies} from 'akeneomeasure/hooks/use-measurement-families';
@@ -107,7 +107,7 @@ const List = () => {
 
       <PageContent>
         <Helper>
-          <MeasurementFamilyIllustration size={80} />
+          <MeasurementIllustration size={80} />
           <HelperTitle>
             👋 {__('measurements.helper.title')}
             <HelperText>
@@ -128,7 +128,7 @@ const List = () => {
         )}
         {null !== filteredMeasurementFamilies && 0 === measurementFamiliesCount && (
           <NoDataSection>
-            <MeasurementFamilyIllustration size={256} />
+            <MeasurementIllustration />
             <NoDataTitle>{__('measurements.family.no_data.title')}</NoDataTitle>
             <NoDataText>
               <Link onClick={openCreateModal}>{__('measurements.family.no_data.link')}</Link>
@@ -145,7 +145,7 @@ const List = () => {
             />
             {0 === filteredMeasurementFamiliesCount && (
               <NoDataSection>
-                <MeasurementFamilyIllustration size={256} />
+                <MeasurementIllustration />
                 <NoDataTitle>{__('measurements.family.no_result.title')}</NoDataTitle>
               </NoDataSection>
             )}

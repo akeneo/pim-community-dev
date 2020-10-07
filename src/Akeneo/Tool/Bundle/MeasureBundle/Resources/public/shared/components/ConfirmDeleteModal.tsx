@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {TrashIllustration} from 'akeneomeasure/shared/illustrations/TrashIllustration';
+import {DeleteIllustration} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {
   Button,
@@ -39,7 +39,7 @@ const ConfirmDeleteModal = ({description, onConfirm, onCancel}: ConfirmModalProp
   return (
     <Modal>
       <ModalCloseButton title={__('pim_common.close')} onClick={onCancel} />
-      <ModalBodyWithIllustration illustration={<TrashIllustration size={210} />}>
+      <ModalBodyWithIllustration illustration={<DeleteIllustration size={210} />}>
         <StyledTitle title={__('pim_common.confirm_deletion')} />
         <ModalDescription>{description}</ModalDescription>
         <ButtonContainer>

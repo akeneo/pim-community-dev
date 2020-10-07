@@ -1,16 +1,14 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import styled from 'styled-components';
 import {useTranslate, useNotify, NotificationLevel} from '@akeneo-pim-community/legacy-bridge';
+import {useTheme, BrokenLinkIcon, AssociationTypesIllustration} from 'akeneo-design-system';
 import {
   Button,
   SearchBar,
   NoDataSection,
   NoDataTitle,
-  AssociationTypeIllustration,
   HelperRibbon,
   HelperLevel,
-  UnlinkIcon,
-  useAkeneoTheme,
   ValidationError,
   getErrorsForPath,
   formatParameters,
@@ -84,7 +82,7 @@ const QuantifiedAssociations = ({
 }: QuantifiedAssociationsProps) => {
   const translate = useTranslate();
   const notify = useNotify();
-  const theme = useAkeneoTheme();
+  const theme = useTheme();
   const [rowCollection, setRowCollection] = useState<Row[]>(
     quantifiedAssociationToRowCollection(quantifiedAssociations, errors)
   );
@@ -152,7 +150,7 @@ const QuantifiedAssociations = ({
         </HelperRibbon>
       )}
       {hasUpdatedVariant && (
-        <HelperRibbon level={HelperLevel.HELPER_LEVEL_INFO} icon={<UnlinkIcon color={theme.color.blue100} />}>
+        <HelperRibbon level={HelperLevel.HELPER_LEVEL_INFO} icon={<BrokenLinkIcon color={theme.color.blue100} />}>
           {translate('pim_enrich.entity.product.module.associations.variant_updated')}
         </HelperRibbon>
       )}
@@ -171,7 +169,7 @@ const QuantifiedAssociations = ({
       )}
       {null === products ? null : 0 === filteredCollectionWithProducts.length ? (
         <NoDataSection>
-          <AssociationTypeIllustration size={256} />
+          <AssociationTypesIllustration size={256} />
           <NoDataTitle>
             {translate(
               '' === searchValue
