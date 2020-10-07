@@ -548,4 +548,30 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
 
         $this->execute()->shouldReturn($cursor);
     }
+
+    function it_does_not_add_a_default_filter_on_parents_and_does_not_aggregate_when_there_is_a_filter_on_label_or_identifier(
+        $pqb,
+        $searchAggregator,
+        CursorInterface $cursor,
+        SearchQueryBuilder $sqb
+    ) {
+        $rawFilters = [
+            [
+                'field'    => 'label_or_identifier',
+                'operator' => '=',
+                'value'    => 'id7',
+                'context'  => [],
+                'type'     => 'field'
+            ],
+        ];
+
+        $pqb->getRawFilters()->willReturn($rawFilters);
+
+        $pqb->addFilter('parent', Argument::cetera())->shouldNotBeCalled();
+        $pqb->execute()->willReturn($cursor);
+        $pqb->getQueryBuilder()->willReturn($sqb);
+        $searchAggregator->aggregateResults($sqb, $rawFilters)->shouldNotBeCalled();
+
+        $this->execute()->shouldReturn($cursor);
+    }
 }
