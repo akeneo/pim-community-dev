@@ -58,53 +58,41 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
     public function it_builds_product_created_event($productModelRepository, $externalApiNormalizer): void
     {
         $productModel = new ProductModel();
-        $productModel->setCode('pm');
+        $productModel->setCode('polo_col_mao');
 
-        $productModelRepository->findOneByIdentifier('pm_identifier')->willReturn($productModel);
-        $externalApiNormalizer->normalize($productModel, 'external_api')->willReturn(['code' => 'pm',]);
+        $productModelRepository->findOneByIdentifier('polo_col_mao')->willReturn($productModel);
+        $externalApiNormalizer->normalize($productModel, 'external_api')->willReturn(['code' => 'polo_col_mao',]);
 
-        $this->build(new ProductModelCreated('julia', ['identifier' => 'pm_identifier']))->shouldReturn(
-            ['resource' => ['code' => 'pm'],]
+        $this->build(new ProductModelCreated('julia', ['code' => 'polo_col_mao']))->shouldReturn(
+            ['resource' => ['code' => 'polo_col_mao'],]
         );
     }
 
     public function it_builds_product_updated_event($productModelRepository, $externalApiNormalizer): void
     {
         $productModel = new ProductModel();
-        $productModel->setCode('pm');
+        $productModel->setCode('polo_col_mao');
 
-        $productModelRepository->findOneByIdentifier('pm_identifier')->willReturn($productModel);
-        $externalApiNormalizer->normalize($productModel, 'external_api')->willReturn(['code' => 'pm',]);
+        $productModelRepository->findOneByIdentifier('polo_col_mao')->willReturn($productModel);
+        $externalApiNormalizer->normalize($productModel, 'external_api')->willReturn(['code' => 'polo_col_mao',]);
 
-        $this->build(new ProductModelUpdated('julia', ['identifier' => 'pm_identifier']))->shouldReturn(
-            ['resource' => ['code' => 'pm'],]
+        $this->build(new ProductModelUpdated('julia', ['code' => 'polo_col_mao']))->shouldReturn(
+            ['resource' => ['code' => 'polo_col_mao'],]
         );
     }
 
     public function it_does_not_build_other_business_event(): void
     {
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('build', [new ProductUpdated('julia', ['identifier' => 'pm_identifier'])]);
-
-        $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('build', [new ProductCreated('julia', ['identifier' => 'pm_identifier'])]);
-
-        $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('build', [new ProductRemoved('julia', ['identifier' => 'pm_identifier'])]);
-
-        $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('build', [new AnotherBusinessEvent('julia', ['identifier' => 'pm_identifier'])]);
+            ->during('build', [new AnotherBusinessEvent('julia', ['code' => 'polo_col_mao'])]);
     }
 
     public function it_does_not_build_if_product_model_was_not_found($productModelRepository): void
     {
-        $productModelRepository->findOneByIdentifier('pm_identifier')->willReturn(null);
+        $productModelRepository->findOneByIdentifier('polo_col_mao')->willReturn(null);
 
         $this->shouldThrow(ProductModelNotFoundException::class)
-            ->during('build', [new ProductModelCreated('julia', ['identifier' => 'pm_identifier'])]);
-
-        $this->shouldThrow(ProductModelNotFoundException::class)
-            ->during('build', [new ProductModelUpdated('julia', ['identifier' => 'pm_identifier'])]);
+            ->during('build', [new ProductModelUpdated('julia', ['code' => 'polo_col_mao'])]);
     }
 }
 

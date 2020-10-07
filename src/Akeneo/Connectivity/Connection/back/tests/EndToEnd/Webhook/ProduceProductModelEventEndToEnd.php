@@ -42,7 +42,7 @@ class ProduceProductModelEventEndToEnd extends ApiTestCase
         $this->productModelLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.product_model');
     }
 
-    public function test_create_product_model_add_business_event_to_queue()
+    public function test_update_product_model_add_business_event_to_queue()
     {
         $this->attributeLoader->create(
             [
