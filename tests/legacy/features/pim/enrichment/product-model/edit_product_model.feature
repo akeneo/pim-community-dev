@@ -45,14 +45,6 @@ Feature: Edit a product model
     Then the field Notice should be read only
     And I should see the text "This attribute can be updated in the common attributes."
 
-  @critical
-  Scenario: Variant axes attributes are read only
-    Given I am logged in as "Mary"
-    And I edit the "apollon_blue" product model
-    And I visit the "Product" group
-    Then the field Color (variant axis) should be read only
-    And I should see the text "Color (Variant axis)"
-
   @jira https://akeneo.atlassian.net/browse/PIM-6861
   Scenario: Display a product model without any children
     Given I am logged in as "Mary"

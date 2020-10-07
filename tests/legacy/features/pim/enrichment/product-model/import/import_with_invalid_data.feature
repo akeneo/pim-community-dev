@@ -31,34 +31,6 @@ Feature: Skip invalid product models through CSV
       ;;clothing_color_size;master_men;Spring2017;description;Blazers_1654;100 EUR;;;;;;;
       """
 
-  @critical
-  Scenario: The variant axis values of a product model are immutable
-    Given the following root product model:
-      | code     | parent   | family_variant      | categories         | collection | description-en_US-ecommerce | erp_name-en_US | price   |
-      | code-001 |          | clothing_color_size | master_men         | Spring2017 | description                 | Blazers_1654   | 100 EUR |
-    And the following sub product model:
-      | code     | parent   | family_variant      | categories         | color | variation_name-en_US | composition |
-      | code-002 | code-001 | clothing_color_size | master_men_blazers | blue  | Blazers              | composition |
-    And the following CSV file to import:
-      """
-      code;parent;family_variant;color
-      code-002;code-001;clothing_color_size;red
-      """
-    And the following job "csv_catalog_modeling_product_model_import" configuration:
-      | filePath          | %file to import% |
-      | enabledComparison | no               |
-    When I am on the "csv_catalog_modeling_product_model_import" import job page
-    And I launch the import job
-    And I wait for the "csv_catalog_modeling_product_model_import" job to finish
-    Then I should see job execution status "COMPLETED"
-    And I should see the text "skipped 1"
-    And I should see the text "Variant axis \"color\" cannot be modified, \"[red]\" given"
-    And the invalid data file of "csv_catalog_modeling_product_model_import" should contain:
-      """
-      code;parent;family_variant;color
-      code-002;code-001;clothing_color_size;red
-      """
-
   Scenario: Skip a product model if its combination of axes values exist more than once in an import file
     Given the following root product model:
       | code     | parent   | family_variant      | categories         | collection | description-en_US-ecommerce | erp_name-en_US | price   |
