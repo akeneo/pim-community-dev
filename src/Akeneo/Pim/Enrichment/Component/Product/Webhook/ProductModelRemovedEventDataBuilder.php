@@ -31,7 +31,7 @@ class ProductModelRemovedEventDataBuilder implements EventDataBuilderInterface
         $data = $businessEvent->data();
 
         return [
-            'resource' => ['identifier' => $data['code']]
+            'resource' => ['code' => $data['code']]
         ];
     }
 }
