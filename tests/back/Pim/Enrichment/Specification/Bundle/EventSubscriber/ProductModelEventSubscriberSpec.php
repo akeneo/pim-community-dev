@@ -53,7 +53,7 @@ class ProductModelEventSubscriberSpec extends ObjectBehavior
 
         $normalizer->normalize($productModel, 'standard')->willReturn(
             [
-                'code' => 12,
+                'code' => 'my_product_model',
             ]
         );
 
@@ -106,4 +106,3 @@ class ProductModelEventSubscriberSpec extends ObjectBehavior
         };
     }
 }
-
