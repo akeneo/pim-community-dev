@@ -20,17 +20,17 @@ const Container = styled.div`
   }
 `;
 
-type Props = {
+type IllustrationProps = {
   src: string;
   title?: string;
 };
 
-const Illustration: FC<Props> = ({src, title}) => {
+const Illustration: FC<IllustrationProps> = ({src, title = ''}) => {
   return (
     <Container>
-      <img src={src} alt={title || ''} />
+      <img src={src} alt={title} />
     </Container>
   );
 };
 
-export {Illustration, Props};
+export {Illustration, IllustrationProps};
