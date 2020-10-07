@@ -1,5 +1,7 @@
-<div class="AknBadge AknBadge--big <%- badgeClass %> completeness-badge" data-toggle="dropdown">
-    <%- label %>: <%- ratio %>% <img src="bundles/pimui/images/icon-down-white.svg" class="AknBadge-icon">
+<div class="AknCompletenessDropdown completeness-badge" data-toggle="dropdown">
+    <span class="AknCompletenessDropdown-label"><%- label %>:</span>
+    <span class="AknCompletenessDropdown-badge AknBadge <%- badgeClass %>"><%- ratio %>%</span>
+    <span class="AknCompletenessDropdown-icon AknActionButton-caret"></span>
 </div>
 
 <div class="AknCompletenessPanel-block AknDropdown-menu AknDropdown-menu-expanded">
