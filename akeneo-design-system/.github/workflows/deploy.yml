@@ -13,7 +13,7 @@ jobs:
       - name: Install node 13.13 for the rest of the workflow
         uses: actions/setup-node@v1
         with:
-        node-version: 13.13
+          node-version: 13.13
 
       - name: Install node modules
         run: cd akeneo-design-system && yarn install
