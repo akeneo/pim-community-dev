@@ -119,7 +119,7 @@ const Helper = React.forwardRef<HTMLDivElement, HelperProps>(
         <IconContainer inline={inline} level={level}>
           {React.cloneElement(undefined === icon ? getIcon(level) : icon, {size: inline ? 16 : 20})}
         </IconContainer>
-        {children}
+        <div>{children}</div>
       </Container>
     );
   }
