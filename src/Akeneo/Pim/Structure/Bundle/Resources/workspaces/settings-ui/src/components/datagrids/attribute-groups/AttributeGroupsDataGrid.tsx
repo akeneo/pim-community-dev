@@ -65,7 +65,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups}) => {
           <DataGrid.Cell>{translate('pim_enrich.entity.attribute_group.grid.columns.name')}</DataGrid.Cell>
           {
             FeatureFlags.isEnabled('data_quality_insights') &&
-            <DataGrid.Column>{translate('akeneo_data_quality_insights.attribute_group.dqi_status')}</DataGrid.Column>
+            <DataGrid.Cell>{translate('akeneo_data_quality_insights.attribute_group.dqi_status')}</DataGrid.Cell>
           }
         </DataGrid.HeaderRow>
         <DataGrid.Body
@@ -88,9 +88,9 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups}) => {
               </DataGrid.Cell>
               {
                 FeatureFlags.isEnabled('data_quality_insights') &&
-                <DataGrid.Column>
+                <DataGrid.Cell>
                   <StatusBadge isActivated={group.isDqiActivated ? true : false}/>
-                </DataGrid.Column>
+                </DataGrid.Cell>
               }
             </DataGrid.Row>
           ))}

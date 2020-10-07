@@ -28,10 +28,10 @@ const DataGrid = <T extends {}>({
     <DataGridStateProvider
       isReorderAllowed={isReorderAllowed}
       isReorderActive={isReorderActive}
+      isFilterable={isFilterable === true}
       dataSource={dataSource}
       handleAfterMove={handleAfterMove}
       compareData={compareData}
-      isFilterable={isFilterable === true}
     >
       <TableContainer>
         <Table>

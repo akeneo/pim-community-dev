@@ -36,8 +36,7 @@ const useInitialAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
       if (FeatureFlags.isEnabled('data_quality_insights')) {
         const groupDqiStatuses = await fetchAllAttributeGroupsDqiStatus();
         Object.entries(groupDqiStatuses).forEach(([groupCode, status]) => {
-          // @ts-ignore
-          collection[groupCode].isDqiActivated = status;
+          collection[groupCode].isDqiActivated = status as boolean;
         });
       }
       setGroups(toSortedAttributeGroupsArray(collection));

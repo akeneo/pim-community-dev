@@ -45,7 +45,7 @@ const DraggableRowWrapper = <T extends {}>({
       )}
       {React.Children.map(children, element => {
         return React.cloneElement(element as ReactElement, {
-          draggable: true,
+          draggable: isReorderAllowed && isReorderActive,
           onDragStart: (event: React.DragEvent) => {
             event.stopPropagation();
             event.preventDefault();
