@@ -37,6 +37,10 @@ const unitConfig = {
     routes: '<rootDir>/public/js/routes.js',
   },
   testRegex: '(tests/front/unit)(.*)(unit).(jsx?|tsx?)$',
+  testPathIgnorePatterns: [
+      '/node_modules/',
+      '<rootDir>/src/Akeneo/Connectivity/',
+  ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleDirectories: ['node_modules', `<rootDir>/public/bundles/`],
   globals: {

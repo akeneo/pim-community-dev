@@ -6,5 +6,5 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 export default interface NormalizedAttributeGroup {
-  labels: { [locale: string]: string };
+  labels: {[locale: string]: string};
 }

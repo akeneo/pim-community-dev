@@ -1,0 +1,87 @@
+#!/usr/bin/env node
+
+const fs = require('fs');
+const yargs = require('yargs');
+
+const {ComponentName} = yargs
+  .command('generate [ComponentName]', 'Generate a new component with the given name', yargs => {
+    yargs.positional('ComponentName', {
+      describe: 'The component name you want to create',
+      require: true,
+    });
+  })
+  .check((argv, options) => {
+    if (argv.ComponentName[0] !== argv.ComponentName[0].toUpperCase()) {
+      throw new Error('The component name should be Capitalized (first letter uppercase)');
+    }
+
+    if (fs.existsSync(`src/components/${argv.ComponentName}`)) {
+      throw new Error(`Component "${argv.ComponentName}" already exists`);
+    }
+
+    return true;
+  })
+  .demandOption(['ComponentName'], 'Please provide a ComponentName as argument')
+  .help('h')
+  .alias('h', 'help')
+  .demandCommand(2).argv;
+
+/**
+ * Copy Component files
+ */
+const copyComponentFolder = (source, target) => {
+  const dummyComponentName = source.split('/').pop();
+  const targetComponentName = target.split('/').pop();
+
+  fs.mkdirSync(target);
+  const files = fs.readdirSync(source);
+  files.forEach(filePath => {
+    fs.createReadStream(`${source}/${filePath}`).pipe(
+      fs.createWriteStream(`${target}/${filePath.replace(dummyComponentName, targetComponentName)}`)
+    );
+  });
+};
+
+/**
+ * Search and replace in Component files
+ */
+const replaceInFile = async (file, search, replace) => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(file, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        const replacedData = data
+          .toString('utf8')
+          .replace(new RegExp(search, 'g'), replace)
+          .replace(new RegExp(search.toLowerCase(), 'g'), replace.toLowerCase());
+
+        fs.writeFileSync(file, replacedData);
+        resolve();
+      }
+    });
+  });
+};
+const renameComponentFolder = async (sourceComponentName, targetComponentName) => {
+  const files = fs.readdirSync(`src/components/${targetComponentName}`);
+  for (const iterator of files) {
+    await replaceInFile(`src/components/${targetComponentName}/${iterator}`, sourceComponentName, targetComponentName);
+  }
+};
+
+/**
+ * Add component to export
+ */
+const exportComponentToIndex = async (path, componentName) => {
+  fs.appendFileSync(path, `export * from './${componentName}/${componentName}';\n`);
+};
+
+(async () => {
+  try {
+    copyComponentFolder('generator/components/MyComponent', `src/components/${ComponentName}`);
+    await renameComponentFolder('MyComponent', ComponentName);
+    exportComponentToIndex('src/components/index.ts', ComponentName);
+  } catch (e) {
+    console.error(e);
+  }
+})();

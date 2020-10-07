@@ -45,17 +45,17 @@ WHERE parent_id = :parentId
 AND code != :identifier;
 SQL;
         } elseif ($entity instanceof ProductInterface) {
-            $identifier = $entity->getIdentifier();
+            $identifier = $entity->getId() ?? 0;
             $sql = <<<SQL
 SELECT identifier, raw_values
 FROM pim_catalog_product
 WHERE product_model_id = :parentId
-AND identifier != :identifier;
+AND id != :identifier
 SQL;
         } else {
             return [];
         }
-
+        
         $valuesOfSiblings = [];
         $rows = $this->connection->executeQuery(
             $sql,

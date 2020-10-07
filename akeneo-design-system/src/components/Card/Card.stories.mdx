@@ -1,0 +1,158 @@
+import {useState} from 'react';
+import styled from 'styled-components';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Card, CardGrid} from './Card.tsx';
+import {Badge} from '../../components';
+
+<Meta
+  title="Components/Card"
+  component={Card}
+  args={{src: 'https://picsum.photos/seed/akeneo/200/140', children: 'Card text'}}
+/>
+
+# Card
+
+## Usage
+
+Cards are used to have a good visual representation of the items to display. Cards can be used in a grid or in a collection.
+_Example: Assets manager or Connections._
+
+Cards should be displayed in a grid, therefore, a `CardGrid` component is also available with a convenient `size` prop. Possible values for the `size` prop are: `normal` or `big`.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return (
+        <CardGrid>
+          <Card {...args} />
+        </CardGrid>
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Selectable
+
+<Canvas>
+  <Story name="Selectable">
+    {args => {
+      const [firstSelected, setFirstSelected] = useState(false);
+      const [secondSelected, setSecondSelected] = useState(false);
+      return (
+        <CardGrid>
+          <Card
+            {...args}
+            src="https://picsum.photos/seed/akened/200"
+            isSelected={firstSelected}
+            onSelectCard={isSelected => setFirstSelected(isSelected)}
+          >
+            Selectable card
+          </Card>
+          <Card
+            {...args}
+            src="https://picsum.photos/seed/akenee/200"
+            isSelected={secondSelected}
+            onSelectCard={isSelected => setSecondSelected(isSelected)}
+          >
+            Another one
+          </Card>
+        </CardGrid>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With Badges
+
+<Canvas>
+  <Story name="With Badges">
+    {args => {
+      return (
+        <CardGrid>
+          <Card {...args} src="https://picsum.photos/seed/akenea/200">
+            <Badge level="danger">0%</Badge>
+            Card not complete
+          </Card>
+          <Card {...args} src="https://picsum.photos/seed/akeneb/200">
+            <Badge level="warning">50%</Badge>
+            Card almost complete
+          </Card>
+          <Card {...args} src="https://picsum.photos/seed/akenec/200">
+            <Badge level="primary">100%</Badge>
+            Card complete
+          </Card>
+        </CardGrid>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## CardGrid
+
+Here the `fit` prop is also set to `contain`.
+
+<Canvas>
+  <Story name="CardGrid">
+    {args => {
+      return (
+        <CardGrid>
+          {[...new Array(5)].map((_, index) => (
+            <Card
+              {...args}
+              key={index}
+              fit="contain"
+              src={`https://picsum.photos/seed/akeneo${index}/${index % 2 === 0 ? 200 : 120}/${
+                index % 2 === 0 ? 120 : 200
+              }`}
+            >
+              Card {(index + 1).toString()}
+            </Card>
+          ))}
+        </CardGrid>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Big CardGrid
+
+<Canvas>
+  <Story name="Size">
+    {args => {
+      const [firstSelected, setFirstSelected] = useState(false);
+      const [secondSelected, setSecondSelected] = useState(false);
+      return (
+        <CardGrid size="big">
+          <Card {...args} src="https://picsum.photos/seed/akened/200">
+            This is a big Card
+          </Card>
+          <Card {...args} src="https://picsum.photos/seed/akenee/200">
+            <Badge level="primary">100%</Badge>
+            This one even has a Badge
+          </Card>
+          <Card
+            {...args}
+            src="https://picsum.photos/seed/akenef/200"
+            isSelected={firstSelected}
+            onSelectCard={isSelected => setFirstSelected(isSelected)}
+          >
+            And this one is selectable
+          </Card>
+          <Card
+            {...args}
+            src="https://picsum.photos/seed/akeneg/200"
+            isSelected={secondSelected}
+            onSelectCard={isSelected => setSecondSelected(isSelected)}
+          >
+            <Badge level="warning">75%</Badge>
+            Badge &amp; selectable 🤩
+          </Card>
+        </CardGrid>
+      );
+    }}
+  </Story>
+</Canvas>
