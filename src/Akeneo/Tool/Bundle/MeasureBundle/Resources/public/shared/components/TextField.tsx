@@ -15,7 +15,7 @@ const Input = styled.input`
 
 const InputContainer = styled.div<{readOnly?: boolean; invalid: boolean}>`
   border: 1px solid ${props => props.theme.color.grey80};
-  background-color: ${props => (props.readOnly ? props.theme.color.grey80 : 'inherit')};
+  background-color: ${props => (props.readOnly ? props.theme.color.grey60 : 'inherit')};
   cursor: ${props => (props.readOnly ? 'not-allowed' : 'inherit')};
   height: 40px;
   display: flex;

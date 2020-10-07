@@ -16,32 +16,32 @@ test('it renders its children properly', () => {
   expect(getByText('100%')).toBeInTheDocument();
 });
 
-test('it calls onSelectCard handler when clicked on', () => {
-  const onSelectCard = jest.fn();
+test('it calls onSelect handler when clicked on', () => {
+  const onSelect = jest.fn();
   const {getByText} = render(
-    <Card src="some.jpg" isSelected={false} onSelectCard={onSelectCard}>
+    <Card src="some.jpg" isSelected={false} onSelect={onSelect}>
       Card text
     </Card>
   );
 
   fireEvent.click(getByText('Card text'));
 
-  expect(onSelectCard).toBeCalledWith(true);
-  expect(onSelectCard).toBeCalledTimes(1);
+  expect(onSelect).toBeCalledWith(true);
+  expect(onSelect).toBeCalledTimes(1);
 });
 
-test('it calls onSelectCard handler only once when clicking on the Checkbox', () => {
-  const onSelectCard = jest.fn();
+test('it calls onSelect handler only once when clicking on the Checkbox', () => {
+  const onSelect = jest.fn();
   const {getByRole} = render(
-    <Card src="some.jpg" isSelected={false} onSelectCard={onSelectCard}>
+    <Card src="some.jpg" isSelected={false} onSelect={onSelect}>
       Card text
     </Card>
   );
 
   fireEvent.click(getByRole('checkbox'));
 
-  expect(onSelectCard).toBeCalledWith(true);
-  expect(onSelectCard).toBeCalledTimes(1);
+  expect(onSelect).toBeCalledWith(true);
+  expect(onSelect).toBeCalledTimes(1);
 });
 
 test('it does not display a Checkbox if no handler is provided', () => {
@@ -56,7 +56,7 @@ test('it does not display a Checkbox if no handler is provided', () => {
 
 test('it displays a Checkbox if a handler is provided', () => {
   const {queryByRole} = render(
-    <Card src="some.jpg" onSelectCard={jest.fn()}>
+    <Card src="some.jpg" onSelect={jest.fn()}>
       <Badge>100%</Badge>Card text
     </Card>
   );
