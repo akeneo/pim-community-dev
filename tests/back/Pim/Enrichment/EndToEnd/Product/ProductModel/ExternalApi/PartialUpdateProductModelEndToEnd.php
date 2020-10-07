@@ -199,6 +199,35 @@ JSON;
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
+    public function testUpdateAxisSubProductModel()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+{
+    "code": "sub_sweat",
+    "family_variant": "familyVariantA1",
+    "parent": "sweat",
+    "values": {
+        "a_simple_select": [
+            {
+            "locale": null,
+            "scope": null,
+            "data": "optionA"
+            }
+        ]
+    }
+}
+JSON;
+
+        $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+    }
+
     public function testUpdateSubProductModelWithNoParentGiven()
     {
         $client = $this->createAuthenticatedClient();
