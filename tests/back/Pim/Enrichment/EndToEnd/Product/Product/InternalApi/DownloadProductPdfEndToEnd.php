@@ -68,7 +68,7 @@ class DownloadProductPdfEndToEnd extends InternalApiTestCase
 
     private function createProduct($identifier, array $data = []): ProductInterface
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
+        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier, 'familyA');
         $this->get('pim_catalog.updater.product')->update($product, $data);
 
         $errors = $this->get('pim_catalog.validator.product')->validate($product);
