@@ -128,7 +128,6 @@ class ProductModelContext extends PimContext
         $productModel = $this->getProductModel($productModelCode);
 
         $this->productModelUpdater->update($productModel, ['parent' => $rootProductModelCode]);
-        $this->validateProduct($productModel);
         $this->productSaver->save($productModel);
     }
 

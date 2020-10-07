@@ -20,6 +20,10 @@ interface FamilyFilterProps {
   familyCode: string | null;
 }
 
+const FamilyLabel = styled.span`
+  text-transform: capitalize;
+`;
+
 const FamilyFilter: FunctionComponent<FamilyFilterProps> = ({familyCode}) => {
   const [isFilterDisplayed, setIsFilterDisplayed] = useState(false);
   const [filteredFamilies, setFilteredFamilies] = useState<Family[]>([]);
@@ -73,10 +77,6 @@ const FamilyFilter: FunctionComponent<FamilyFilterProps> = ({familyCode}) => {
     const currentFamily: any = Object.values(families).find((family: any) => family.code === familyCode);
     currentFamilyLabel = currentFamily.labels[uiLocale];
   }
-
-  const FamilyLabel = styled.span`
-    text-transform: capitalize;
-  `;
 
   return (
 

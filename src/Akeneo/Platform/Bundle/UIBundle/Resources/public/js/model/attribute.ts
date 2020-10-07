@@ -7,7 +7,7 @@
  */
 export default interface NormalizedAttribute {
   code: string;
-  labels: { [locale: string]: string };
+  labels: {[locale: string]: string};
   group: string;
   type: string;
 }

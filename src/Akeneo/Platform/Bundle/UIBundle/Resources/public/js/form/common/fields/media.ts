@@ -25,7 +25,7 @@ class MediaField extends BaseField {
     this.events = {
       'change input[type="file"]': this.uploadMedia,
       'click .clear-field': this.clearField,
-      'click .open-media': this.openMedia
+      'click .open-media': this.openMedia,
     };
   }
 
@@ -33,29 +33,30 @@ class MediaField extends BaseField {
    * {@inheritdoc}
    */
   getTemplateContext() {
-    return BaseField.prototype.getTemplateContext.apply(this, arguments)
-      .then((templateContext: any) => {
-        templateContext.mediaUrlGenerator = MediaUrlGenerator;
+    return BaseField.prototype.getTemplateContext.apply(this, arguments).then((templateContext: any) => {
+      templateContext.mediaUrlGenerator = MediaUrlGenerator;
 
-        return templateContext;
-      });
+      return templateContext;
+    });
   }
 
   /**
    * {@inheritdoc}
    */
   renderInput(templateContext: any) {
-    return this.template(Object.assign(templateContext, {
-      media: this.getFormData()[this.fieldName],
-      readOnly: this.readOnly,
-      uploadLabel: __('pim_common.media_upload')
-    }));
+    return this.template(
+      Object.assign(templateContext, {
+        media: this.getFormData()[this.fieldName],
+        readOnly: this.readOnly,
+        uploadLabel: __('pim_common.media_upload'),
+      })
+    );
   }
 
-  private handleProcess(e: { loaded: number, total: number }) {
+  private handleProcess(e: {loaded: number; total: number}) {
     this.$('> .akeneo-media-uploader-field .progress').css({opacity: 1});
     this.$('> .akeneo-media-uploader-field .progress .bar').css({
-      width: ((e.loaded / e.total) * 100) + '%'
+      width: (e.loaded / e.total) * 100 + '%',
     });
   }
 
@@ -82,30 +83,34 @@ class MediaField extends BaseField {
       cache: false,
       processData: false,
       xhr: () => {
-        const myXhr = (<any> $.ajaxSettings).xhr();
+        const myXhr = (<any>$.ajaxSettings).xhr();
         if (myXhr.upload) {
           myXhr.upload.addEventListener('progress', this.handleProcess.bind(this), false);
         }
 
         return myXhr;
-      }
-    }).done((data) => {
-      this.setUploadContextValue(data);
-      this.render();
-    }).fail((xhr) => {
-      const message = xhr.responseJSON && xhr.responseJSON.message ?
-        xhr.responseJSON.message :
-        __('pim_enrich.entity.product.error.upload');
-      Messenger.enqueueMessage('error', message);
-    }).always(() => {
-      this.$('> .akeneo-media-uploader-field .progress').css({opacity: 0});
-    });
+      },
+    })
+      .done((data) => {
+        this.setUploadContextValue(data);
+        this.render();
+      })
+      .fail((xhr) => {
+        const message =
+          xhr.responseJSON && xhr.responseJSON.message
+            ? xhr.responseJSON.message
+            : __('pim_enrich.entity.product.error.upload');
+        Messenger.enqueueMessage('error', message);
+      })
+      .always(() => {
+        this.$('> .akeneo-media-uploader-field .progress').css({opacity: 0});
+      });
   }
 
   private clearField() {
     this.updateModel({
       filePath: null,
-      originalFilename: null
+      originalFilename: null,
     });
 
     this.render();
@@ -114,9 +119,9 @@ class MediaField extends BaseField {
   private openMedia() {
     const mediaUrl = MediaUrlGenerator.getMediaShowUrl(this.getFormData()[this.fieldName].filePath, 'preview');
     if (mediaUrl) {
-      (<any> $).slimbox(mediaUrl, '', {overlayOpacity: 0.3});
+      (<any>$).slimbox(mediaUrl, '', {overlayOpacity: 0.3});
     }
   }
 }
 
-export = MediaField
+export = MediaField;

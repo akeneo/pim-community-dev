@@ -11,14 +11,14 @@ type ValidationError = {
 
 const filterErrors = (errors: ValidationError[], propertyPath: string): ValidationError[] =>
   errors
-    .filter(error => error.propertyPath.startsWith(propertyPath))
-    .map(error => ({...error, propertyPath: error.propertyPath.replace(propertyPath, '')}));
+    .filter((error) => error.propertyPath.startsWith(propertyPath))
+    .map((error) => ({...error, propertyPath: error.propertyPath.replace(propertyPath, '')}));
 
 const getErrorsForPath = (errors: ValidationError[], propertyPath: string): ValidationError[] =>
-  errors.filter(error => error.propertyPath === propertyPath);
+  errors.filter((error) => error.propertyPath === propertyPath);
 
 const formatParameters = (errors: ValidationError[]): ValidationError[] =>
-  errors.map(error => ({
+  errors.map((error) => ({
     ...error,
     parameters: Object.keys(error.parameters).reduce(
       (result, key) => ({
@@ -46,7 +46,7 @@ const partitionErrors = (
   const results: ValidationError[][] = [];
   let restErrors = [...errors];
 
-  conditions.forEach(condition => {
+  conditions.forEach((condition) => {
     const [match, rest] = partition<ValidationError>(restErrors, condition);
     results.push(match);
     restErrors = rest;

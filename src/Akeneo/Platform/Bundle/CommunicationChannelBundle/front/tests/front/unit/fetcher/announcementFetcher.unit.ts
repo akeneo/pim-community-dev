@@ -31,10 +31,7 @@ test('it can fetch the announcement items after a given id', async () => {
 
 test('it can validates the anouncement items', async () => {
   console.error = jest.fn();
-  fetchMockResponseOnce(
-    `/rest/announcements`,
-    JSON.stringify({items: [{wrong_property: 'wrong_property'}]})
-  );
+  fetchMockResponseOnce(`/rest/announcements`, JSON.stringify({items: [{wrong_property: 'wrong_property'}]}));
 
   await expect(fetchAnnouncements(null)).rejects.toThrowError();
   expect(console.error).toHaveBeenCalledTimes(1);

@@ -131,6 +131,15 @@ pim_import_export:
             help: Bedeutet, dass sich die Änderungsverfolgung von Produkten automatisch aktualisiert. Um die Systemleistung zu verbessern, kann diese Funktion ausgeschaltet werden
           family_variant_column:
             title: Produktfamilie Varianten Spalte
+          with_label:
+            title: Mit Labels
+            help: Legen Sie fest, ob die Exportdatei die Labels der Werte anstelle von Wertecodes anzeigt
+          header_with_label:
+            title: Kopfzeilen mit Labels
+            help: Legen Sie fest, ob die Exportdatei die Labels der Kopfzeilen anstelle der Header-Codes anzeigt
+          file_locale:
+            title: Datei Gebietsschema
+            help: Definieren Sie das Gebietsschema, in dem die Labels angezeigt werden
       file_path: Dateipfad
   widget:
     last_operations:

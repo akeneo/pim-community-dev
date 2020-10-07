@@ -363,8 +363,14 @@ pim_datagrid:
       xlsx_all: Excel (alle Attribute)
       xlsx_grid_context: Excel (Kontextabhängig)
       configurator:
+        subtitle: Schnellexport
         title: Wählen Sie eine Aktion aus
+        csv: CSV
+        xlsx: XLSX
+        grid_context: Raster-Kontext
         all_attributes: Alle Attribute
+        with_codes: Mit Codes
+        with_labels: Mit Labels
     mass_edit: Massenbearbeitung
     sequential_edit: Sequentielle Bearbeitung
     mass_delete: Mehrauswahl löschen
@@ -388,9 +394,13 @@ pim_datagrid:
     label: Filter
     system: System
     product_typology:
+      label: 'Produkt-Typologie'
+      simple: 'Einfach'
       variant: 'Variante'
     entity_type:
       label: 'Variante'
+      grouped: 'Gruppiert'
+      ungrouped: 'Ungruppiert'
   search: Suche in {{ label }}
 batch_jobs:
   add_association:

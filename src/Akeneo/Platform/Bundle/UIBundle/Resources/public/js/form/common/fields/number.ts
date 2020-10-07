@@ -8,7 +8,7 @@ const template = require('pim/template/form/common/fields/number');
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 class NumberField extends BaseText {
-    readonly template = _.template(template);
+  readonly template = _.template(template);
 }
 
-export  = NumberField;
+export = NumberField;

@@ -36,6 +36,10 @@
 - GITHUB-12578: Fix trailing zeros when formatting numbers
 - PIM-9440: Fix locked MySQL tables during removing DQI evaluations without product
 - PIM-9476: Fix locale selector behavior on the product edit form when the user doesn't have permissions to edit attributes
+- PIM-9478: Allow the modification of the identifier on a variant product
+- PIM-9481: Fix the list of product models when trying to get them by family variant
+- GITHUB-12899: Fix error shown when importing product models with the same code
+- PIM-9494: Fix the performances of attribute-select-filter on long lists of AttributeOptions
 
 ## New features
 
