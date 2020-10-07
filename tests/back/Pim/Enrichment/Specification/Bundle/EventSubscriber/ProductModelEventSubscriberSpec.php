@@ -71,7 +71,7 @@ class ProductModelEventSubscriberSpec extends ObjectBehavior
 
         $result = $this->produceBusinessRemoveEvent(new GenericEvent('NOT_A_PRODUCT_MODEL'));
 
-        Assert::assertEquals(null, $result->getWrappedObject());
+        Assert::assertCount(0, $messageBus->messages);
     }
 
     function it_does_not_produce_business_remove_event_because_there_is_no_logged_user(

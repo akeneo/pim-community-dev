@@ -101,7 +101,7 @@ class ProductEventSubscriberSpec extends ObjectBehavior
 
         $result = $this->produceBusinessSaveEvent(new GenericEvent('NOT_A_PRODUCT', ['updated' => true]));
 
-        Assert::assertEquals(null, $result->getWrappedObject());
+        Assert::assertCount(0, $messageBus->messages);
     }
 
     function it_does_not_produce_business_save_event_because_there_is_no_logged_user(
@@ -159,7 +159,7 @@ class ProductEventSubscriberSpec extends ObjectBehavior
 
         $result = $this->produceBusinessRemoveEvent(new GenericEvent('NOT_A_PRODUCT'));
 
-        Assert::assertEquals(null, $result->getWrappedObject());
+        Assert::assertCount(0, $messageBus->messages);
     }
 
     function it_does_not_produce_business_remove_event_because_there_is_no_logged_user(
