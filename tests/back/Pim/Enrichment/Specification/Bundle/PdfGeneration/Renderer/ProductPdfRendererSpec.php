@@ -72,7 +72,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
     ) {
         $blender->getUsedAttributeCodes()->willReturn(['color']);
         $blender->getFamily()->willReturn($family);
-        $family->getAttributes()->willReturn([$color]);
+        $family->getAttributeCodes()->willReturn(['color']);
 
         $color->getGroup()->willReturn($design);
         $design->getLabel()->willReturn('Design');
@@ -116,7 +116,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $attributeRepository
     ) {
         $blender->getFamily()->willReturn($family);
-        $family->getAttributes()->willReturn([$mainImage]);
+        $family->getAttributeCodes()->willReturn(['main_image']);
 
         $mainImage->isLocalizable()->willReturn(true);
         $mainImage->isScopable()->willReturn(true);

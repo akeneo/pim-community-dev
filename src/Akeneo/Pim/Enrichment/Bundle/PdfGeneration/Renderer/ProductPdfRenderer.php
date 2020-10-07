@@ -133,9 +133,14 @@ class ProductPdfRenderer implements RendererInterface
     protected function getGroupedAttributes(ProductInterface $product): array
     {
         $groups = [];
-        $productFamily = $product->getFamily();
-        $attributesFromFamily = $productFamily ? $productFamily->getAttributes() : [];
-        foreach ($attributesFromFamily as $attribute) {
+
+        $attributeCodes = $product->getUsedAttributeCodes();
+        if ($product->getFamily()) {
+            $attributeCodes = array_unique(array_merge($attributeCodes, $product->getFamily()->getAttributeCodes()));
+        }
+
+        foreach ($attributeCodes as $attributeCode) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
             if (null !== $attribute) {
                 $groupLabel = $attribute->getGroup()->getLabel();
                 if (!isset($groups[$groupLabel])) {
