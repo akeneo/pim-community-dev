@@ -139,7 +139,7 @@ class SearchQueryBuilder
         return $this;
     }
 
-    public function addTermsAggregation(string $name, string $field): self
+    public function addFacet(string $name, string $field): self
     {
         $this->aggsClauses[$name] = ['terms' => ['field' => $field]];
 

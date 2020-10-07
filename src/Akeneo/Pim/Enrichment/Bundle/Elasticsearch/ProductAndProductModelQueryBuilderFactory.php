@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
-use Akeneo\Pim\Enrichment\Component\Product\Query\Facet\FacetOnDocumentTypeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
@@ -39,17 +38,13 @@ class ProductAndProductModelQueryBuilderFactory implements ProductQueryBuilderFa
     /** @var ProductQueryBuilderOptionsResolverInterface */
     protected $optionsResolver;
 
-    /** @var FacetOnDocumentTypeInterface */
-    protected $facetOnDocumentType;
-
     public function __construct(
         string $pqbClass,
         AttributeRepositoryInterface $attributeRepository,
         FilterRegistryInterface $filterRegistry,
         SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory,
-        ProductQueryBuilderOptionsResolverInterface $optionsResolver,
-        FacetOnDocumentTypeInterface $facetOnDocumentType
+        ProductQueryBuilderOptionsResolverInterface $optionsResolver
     ) {
         $this->pqbClass = $pqbClass;
         $this->attributeRepository = $attributeRepository;
@@ -57,7 +52,6 @@ class ProductAndProductModelQueryBuilderFactory implements ProductQueryBuilderFa
         $this->sorterRegistry = $sorterRegistry;
         $this->cursorFactory = $cursorFactory;
         $this->optionsResolver = $optionsResolver;
-        $this->facetOnDocumentType = $facetOnDocumentType;
     }
 
     /**
@@ -111,7 +105,6 @@ class ProductAndProductModelQueryBuilderFactory implements ProductQueryBuilderFa
             $this->sorterRegistry,
             $this->cursorFactory,
             $this->optionsResolver,
-            $this->facetOnDocumentType,
             $options
         );
     }

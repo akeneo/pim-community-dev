@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Query;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Facet\FacetOnDocumentTypeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\AbstractEntityWithValuesQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
@@ -29,8 +29,7 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
         FilterRegistryInterface $filterRegistry,
         SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory,
-        ProductQueryBuilderOptionsResolverInterface $optionsResolver,
-        FacetOnDocumentTypeInterface $facetOnDocumentType
+        ProductQueryBuilderOptionsResolverInterface $optionsResolver
     ) {
         $defaultContext = ['locale' => 'en_US', 'scope' => 'print'];
         $this->beConstructedWith(
@@ -39,7 +38,6 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
             $sorterRegistry,
             $cursorFactory,
             $optionsResolver,
-            $facetOnDocumentType,
             $defaultContext,
         );
         $optionsResolver->resolve($defaultContext)->willReturn($defaultContext);
@@ -335,7 +333,6 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
         CursorFactoryInterface $cursorFactory,
         SearchQueryBuilder $searchQb,
         ProductQueryBuilderOptionsResolverInterface $optionsResolver,
-        FacetOnDocumentTypeInterface $facetOnDocumentType,
         CursorInterface $cursor,
         FieldFilterInterface $filterField
     ) {
@@ -346,7 +343,6 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
             $sorterRegistry,
             $cursorFactory,
             $optionsResolver,
-            $facetOnDocumentType,
             $defaultContext,
         );
         $optionsResolver->resolve($defaultContext)->willReturn($defaultContext);
@@ -355,7 +351,7 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
         $filterRegistry->getFieldFilter('entity_type', '=')->willReturn($filterField);
         $searchQb->getQuery()->willReturn([]);
         $cursorFactory->createCursor(Argument::any(), [] )->shouldBeCalled()->willReturn($cursor);
-        $facetOnDocumentType->add($searchQb)->shouldBeCalledOnce();
+        $searchQb->addFacet('document_type_facet', 'document_type')->shouldBeCalledOnce();
 
         $this->execute()->shouldReturn($cursor);
     }

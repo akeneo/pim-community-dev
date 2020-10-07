@@ -2,7 +2,6 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
-use Akeneo\Pim\Enrichment\Component\Product\Query\Facet\FacetOnDocumentTypeInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
@@ -22,8 +21,7 @@ class ProductQueryBuilderFactorySpec extends ObjectBehavior
         FilterRegistryInterface $filterRegistry,
         SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory,
-        ProductQueryBuilderOptionsResolverInterface $optionsResolver,
-        FacetOnDocumentTypeInterface $facetOnDocumentType
+        ProductQueryBuilderOptionsResolverInterface $optionsResolver
     ) {
         $this->beConstructedWith(
             ProductQueryBuilder::class,
@@ -31,8 +29,7 @@ class ProductQueryBuilderFactorySpec extends ObjectBehavior
             $filterRegistry,
             $sorterRegistry,
             $cursorFactory,
-            $optionsResolver,
-            $facetOnDocumentType
+            $optionsResolver
         );
     }
 

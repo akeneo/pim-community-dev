@@ -3,7 +3,6 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Query;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Facet\FacetOnDocumentTypeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
@@ -30,8 +29,7 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory,
         SearchQueryBuilder $searchQb,
-        ProductQueryBuilderOptionsResolverInterface $optionsResolver,
-        FacetOnDocumentTypeInterface $facetOnDocumentType
+        ProductQueryBuilderOptionsResolverInterface $optionsResolver
     ) {
         $defaultContext = ['locale' => 'en_US', 'scope' => 'print'];
         $this->beConstructedWith(
@@ -40,7 +38,6 @@ class ProductQueryBuilderSpec extends ObjectBehavior
             $sorterRegistry,
             $cursorFactory,
             $optionsResolver,
-            $facetOnDocumentType,
             $defaultContext
         );
         $optionsResolver->resolve($defaultContext)->willReturn($defaultContext);

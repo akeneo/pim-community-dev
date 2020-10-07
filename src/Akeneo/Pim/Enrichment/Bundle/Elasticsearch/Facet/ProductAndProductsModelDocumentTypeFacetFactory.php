@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Facet;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ElasticsearchResult;
+use Akeneo\Pim\Enrichment\Component\Product\Query\AbstractEntityWithValuesQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ResultInterface;
 use Webmozart\Assert\Assert;
 
@@ -19,9 +20,10 @@ final class ProductAndProductsModelDocumentTypeFacetFactory
     {
         Assert::isInstanceOf($result, ElasticsearchResult::class);
 
+        $facetName = AbstractEntityWithValuesQueryBuilder::DOCUMENT_TYPE_FACET_NAME;
         $rawResult = $result->getRawResult();
         $aggregations = $rawResult['aggregations'] ?? [];
-        $documentTypeAggregation = $aggregations[FacetOnDocumentType::NAME] ?? null;
+        $documentTypeAggregation = $aggregations[$facetName] ?? null;
         if (!is_array($documentTypeAggregation)) {
             return null;
         }
@@ -31,6 +33,6 @@ final class ProductAndProductsModelDocumentTypeFacetFactory
             $counts[$bucket['key']] = $bucket['doc_count'];
         }
 
-        return Facet::create(FacetOnDocumentType::NAME, $counts);
+        return Facet::create($facetName, $counts);
     }
 }
