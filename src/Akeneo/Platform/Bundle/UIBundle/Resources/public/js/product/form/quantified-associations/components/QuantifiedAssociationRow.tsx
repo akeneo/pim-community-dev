@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
 import {useTranslate, useRoute} from '@akeneo-pim-community/legacy-bridge';
-import {TransparentButton, filterErrors, InputErrors} from '@akeneo-pim-community/shared';
+import {filterErrors, InputErrors} from '@akeneo-pim-community/shared';
 import {BrokenLinkIcon, EditIcon, CloseIcon, useTheme} from 'akeneo-design-system';
 import {ProductType, Row, QuantifiedLink, MAX_QUANTITY} from '../models';
 import {useProductThumbnail} from '../hooks';
@@ -88,13 +88,17 @@ const RowActions = styled.div`
   justify-content: flex-end;
 `;
 
-const RowAction = styled(TransparentButton)`
+const RowAction = styled.div`
+  height: 20px;
+  color: ${({theme}) => theme.color.grey100};
+  cursor: pointer;
+
   :not(:first-child) {
     margin-left: 20px;
   }
 
   a {
-    display: flex;
+    color: inherit;
   }
 `;
 

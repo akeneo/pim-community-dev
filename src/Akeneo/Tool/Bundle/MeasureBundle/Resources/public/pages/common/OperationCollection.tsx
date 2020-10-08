@@ -1,14 +1,12 @@
 import React, {useState, useContext, useCallback, useEffect, ChangeEvent} from 'react';
 import styled, {css, ThemeContext} from 'styled-components';
 import {ConfigContext} from 'akeneomeasure/context/config-context';
-import {ArrowDownIcon, LockIcon, ArrowIcon, CloseIcon} from 'akeneo-design-system';
+import {ArrowDownIcon, LockIcon, ArrowIcon, CloseIcon, Button} from 'akeneo-design-system';
 import {Operation, Operator, emptyOperation} from 'akeneomeasure/model/operation';
 import {Input, InputContainer} from 'akeneomeasure/shared/components/TextField';
 import {useLocalizedNumber} from 'akeneomeasure/shared/hooks/use-localized-number';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {
-  Button,
-  TransparentButton,
   ValidationError,
   filterErrors,
   getErrorsForPath,
@@ -104,7 +102,9 @@ const OperatorOption = styled.div<{isSelected?: boolean}>`
     `}
 `;
 
-const RemoveOperationButton = styled(TransparentButton)`
+const RemoveOperationButton = styled.div`
+  display: flex;
+  cursor: pointer;
   margin-left: 10px;
 `;
 
@@ -237,8 +237,8 @@ const OperationCollection = ({
       {!readOnly && (
         <Footer>
           <Button
-            color="grey"
-            outline={true}
+            level="tertiary"
+            ghost={true}
             disabled={config.operations_max <= operations.length}
             onClick={() => onOperationsChange([...operations, emptyOperation()])}
           >

@@ -1,5 +1,5 @@
 import React, {FormEvent, useCallback, useContext, useRef, useState} from 'react';
-import {Helper, MeasurementIllustration} from 'akeneo-design-system';
+import {Helper, MeasurementIllustration, Button} from 'akeneo-design-system';
 import {Subsection} from 'akeneomeasure/shared/components/Subsection';
 import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
@@ -19,7 +19,6 @@ import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollectio
 import {ConfigContext} from 'akeneomeasure/context/config-context';
 import {useTranslate, useNotify, NotificationLevel, useUserContext} from '@akeneo-pim-community/legacy-bridge';
 import {
-  Button,
   useAutoFocus,
   filterErrors,
   ValidationError,

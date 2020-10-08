@@ -1,5 +1,5 @@
 import React, {FormEvent, useCallback, useState} from 'react';
-import {Helper, MeasurementIllustration} from 'akeneo-design-system';
+import {Helper, MeasurementIllustration, Button} from 'akeneo-design-system';
 import {Subsection, SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
 import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
@@ -13,7 +13,6 @@ import {useForm} from 'akeneomeasure/hooks/use-form';
 import {MeasurementFamilyCode} from 'akeneomeasure/model/measurement-family';
 import {useTranslate, useNotify, NotificationLevel, useUserContext} from '@akeneo-pim-community/legacy-bridge';
 import {
-  Button,
   ValidationError,
   getErrorsForPath,
   useShortcut,

@@ -3,9 +3,8 @@ import {useHistory} from 'react-router-dom';
 import {PageHeader, PageHeaderPlaceholder} from 'akeneomeasure/shared/components/PageHeader';
 import {Breadcrumb} from 'akeneomeasure/shared/components/Breadcrumb';
 import {BreadcrumbItem} from 'akeneomeasure/shared/components/BreadcrumbItem';
-import {MeasurementIllustration} from 'akeneo-design-system';
+import {MeasurementIllustration, Link, Button} from 'akeneo-design-system';
 import {HelperTitle, HelperText, Helper} from 'akeneomeasure/shared/components/Helper';
-import {Link} from 'akeneomeasure/shared/components/Link';
 import {useMeasurementFamilies} from 'akeneomeasure/hooks/use-measurement-families';
 import {
   sortMeasurementFamily,
@@ -17,7 +16,7 @@ import {CreateMeasurementFamily} from 'akeneomeasure/pages/create-measurement-fa
 import {PageContent} from 'akeneomeasure/shared/components/PageContent';
 import {TablePlaceholder} from 'akeneomeasure/pages/common/Table';
 import {Direction} from 'akeneomeasure/model/direction';
-import {Button, SearchBar, NoDataSection, NoDataTitle, NoDataText, useToggleState} from '@akeneo-pim-community/shared';
+import {SearchBar, NoDataSection, NoDataTitle, NoDataText, useToggleState} from '@akeneo-pim-community/shared';
 import {useTranslate, useUserContext, useSecurity, PimView} from '@akeneo-pim-community/legacy-bridge';
 
 const useSorting = (

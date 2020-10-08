@@ -35,8 +35,8 @@ import {
   PimView,
   useSecurity,
 } from '@akeneo-pim-community/legacy-bridge';
-import {Button, filterErrors, ValidationError, partitionErrors, useToggleState} from '@akeneo-pim-community/shared';
-import {Helper} from 'akeneo-design-system';
+import {filterErrors, ValidationError, partitionErrors, useToggleState} from '@akeneo-pim-community/shared';
+import {Helper, Button} from 'akeneo-design-system';
 
 enum Tab {
   Units = 'units',
@@ -213,8 +213,8 @@ const Edit = () => {
   if (isGranted('akeneo_measurements_measurement_unit_add')) {
     buttons.push(
       <Button
-        color="blue"
-        outline={true}
+        level="secondary"
+        ghost={true}
         onClick={openAddUnitModal}
         disabled={config.units_max <= measurementFamily.units.length}
       >

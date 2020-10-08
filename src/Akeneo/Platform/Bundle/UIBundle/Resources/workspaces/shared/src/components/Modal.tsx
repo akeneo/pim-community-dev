@@ -1,7 +1,6 @@
 import React, {PropsWithChildren, ReactElement, ButtonHTMLAttributes} from 'react';
 import styled from 'styled-components';
-import {useTheme, CloseIcon} from 'akeneo-design-system';
-import {Button} from '../components';
+import {useTheme, CloseIcon, Button} from 'akeneo-design-system';
 
 const Modal = styled.div`
   position: fixed;

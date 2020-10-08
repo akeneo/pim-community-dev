@@ -1,9 +1,8 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import styled from 'styled-components';
 import {useTranslate, useNotify, NotificationLevel} from '@akeneo-pim-community/legacy-bridge';
-import {BrokenLinkIcon, AssociationTypesIllustration, Helper} from 'akeneo-design-system';
+import {BrokenLinkIcon, AssociationTypesIllustration, Helper, Button} from 'akeneo-design-system';
 import {
-  Button,
   SearchBar,
   NoDataSection,
   NoDataTitle,
@@ -159,7 +158,7 @@ const QuantifiedAssociations = ({
       />
       {!isCompact && (
         <Buttons>
-          <Button color="blue" onClick={handleAdd}>
+          <Button level="secondary" onClick={handleAdd}>
             {translate('pim_enrich.entity.product.module.associations.add_associations')}
           </Button>
         </Buttons>
