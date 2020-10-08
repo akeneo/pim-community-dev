@@ -1291,30 +1291,14 @@ class DataGridContext extends PimContext implements PageObjectAware
     /**
      * @Then /^the title of the grid should be "(.*)"$/
      */
-    public function theTitleOfTheGridShouldBe(string $title): void
+    public function theTitleOfTheGridShouldBe(string $expectedTitle): void
     {
-        $element = null;
-        $foundTitle = '';
-        try {
-            $this->spin(function () use ($title, &$foundTitle, &$element) {
-                $element = $this->getCurrentPage()->find('css', '.AknTitleContainer-title');
-                if (null === $element) {
-                    return false;
-                }
-
-                $foundTitle = $element->getText();
-
-                return $foundTitle === $title;
-            }, '');
-        } catch (TimeoutException $e) {
-            $message = null === $element ? 'The title was not found' : sprintf(
-                'The title does not match. Found: "%s", expected: "%s".',
-                $foundTitle,
-                $title
-            );
-
-            throw new TimeoutException($message);
-        }
+        $foundTitle = $this->getCurrentPage()->getTitle();
+        Assert::assertSame($expectedTitle, $foundTitle, sprintf(
+            'The title does not match. Found: "%s", expected: "%s".',
+            $foundTitle,
+            $expectedTitle
+        ));
     }
 
     /**
