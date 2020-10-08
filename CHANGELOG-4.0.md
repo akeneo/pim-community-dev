@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.63 (2020-10-08)
+
 ## Bug fixes
 
 - PIM-9497: Improve performances of SQL query about product model children completeness
