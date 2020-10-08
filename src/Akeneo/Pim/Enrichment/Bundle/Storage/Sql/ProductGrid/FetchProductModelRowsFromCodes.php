@@ -175,7 +175,11 @@ SQL;
             FROM 
                 pim_catalog_product_model pm
                 LEFT JOIN pim_catalog_product_model pm_child ON pm_child.parent_id = pm.id
-                LEFT JOIN pim_catalog_product p_child ON p_child.product_model_id = COALESCE(pm_child.id, pm.id)
+                LEFT JOIN pim_catalog_product p_child ON (
+                    p_child.product_model_id = pm_child.id
+                    OR
+                    p_child.product_model_id = pm.id
+                )
                 LEFT JOIN pim_catalog_completeness completeness ON completeness.product_id = p_child.id
                 LEFT JOIN pim_catalog_channel channel ON channel.id = completeness.channel_id
                 LEFT JOIN pim_catalog_locale locale ON locale.id = completeness.locale_id
