@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Cli;
@@ -78,7 +79,8 @@ class CreateConnectionCommand extends Command
         $code = $input->getArgument('code');
         $label = $input->getOption('label') ?? $code;
         $flowType = $input->getOption('flow-type');
-        $auditable = $input->getOption('auditable') !== false;
+        $auditable = /* --auditable */ null === $input->getOption('auditable')
+            || /* --auditable=true|false */ false !== filter_var($input->getOption('auditable'), FILTER_VALIDATE_BOOLEAN);
 
         try {
             $command = new CreationCommand($code, $label, $flowType, $auditable);
