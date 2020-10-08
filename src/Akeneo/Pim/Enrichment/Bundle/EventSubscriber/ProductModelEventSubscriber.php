@@ -3,8 +3,9 @@
 declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
-
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -34,8 +35,35 @@ final class ProductModelEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
+            StorageEvents::POST_SAVE => ['produceBusinessSaveEvent', 1000],
             StorageEvents::POST_REMOVE => ['produceBusinessRemoveEvent', 1000],
         ];
+    }
+
+    public function produceBusinessSaveEvent(GenericEvent $event): void
+    {
+        /** @var ProductModelInterface */
+        $productModel = $event->getSubject();
+
+        if (false === $productModel instanceof ProductModelInterface) {
+            return;
+        }
+
+        if (null === $user = $this->security->getUser()) {
+            throw new \LogicException('User should not be null.');
+        }
+
+        $author = $user->getUsername();
+        $data = $this->normalizer->normalize($productModel, 'standard');
+
+        $message = null;
+        if ($event->hasArgument('created') && true === $event->getArgument('created')) {
+            $message = new ProductModelCreated($author, $data);
+        } else {
+            $message = new ProductModelUpdated($author, $data);
+        }
+
+        $this->messageBus->dispatch($message);
     }
 
     public function produceBusinessRemoveEvent(GenericEvent $event): void
