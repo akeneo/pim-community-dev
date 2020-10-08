@@ -4,7 +4,7 @@ parameters:
     # Any changes to the following values should also be applied to 'requirejs.yml'
     akeneo_measurement.validation.measurement_family.operations_max: 5
     akeneo_measurement.validation.measurement_family.units_max: 50
-    akeneo_measurement.validation.measurement_family.families_max: 100
+    akeneo_measurement.validation.measurement_family.families_max: 300
 
 services:
     akeneo_measure.measure_converter:
