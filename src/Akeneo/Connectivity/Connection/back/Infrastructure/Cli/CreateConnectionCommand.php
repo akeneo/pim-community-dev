@@ -90,6 +90,7 @@ class CreateConnectionCommand extends Command
                 sprintf('Secret: %s', $connectionWithCredentials->secret()),
                 sprintf('Username: %s', $connectionWithCredentials->username()),
                 sprintf('Password: %s', $connectionWithCredentials->password()),
+                sprintf('Auditable: %s', $connectionWithCredentials->auditable() ? 'yes' : 'no'),
             ]);
         } catch (ConstraintViolationListException $exceptionList) {
             foreach ($exceptionList->getConstraintViolationList() as $e) {
