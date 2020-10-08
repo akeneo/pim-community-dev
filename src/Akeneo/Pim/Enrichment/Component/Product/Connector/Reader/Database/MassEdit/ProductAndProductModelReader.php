@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
@@ -26,7 +27,8 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 class ProductAndProductModelReader implements
     ItemReaderInterface,
     InitializableInterface,
-    StepExecutionAwareInterface
+    StepExecutionAwareInterface,
+    TrackableItemReaderInterface
 {
     /** @var ProductQueryBuilderFactoryInterface */
     private $pqbFactory;
@@ -72,6 +74,11 @@ class ProductAndProductModelReader implements
 
         $filters = $this->getConfiguredFilters();
         $this->productsAndProductModels = $this->getCursor($filters, $channel);
+    }
+
+    public function count(): int
+    {
+        return $this->productsAndProductModels->count();
     }
 
     /**

@@ -235,7 +235,7 @@ class StepExecution
         return $this->trackingData['totalItems'];
     }
 
-    public function incrementProcessedCount($increment)
+    public function incrementProcessedCount($increment = 1)
     {
         $this->trackingData['processCount'] += $increment;
         if ($this->trackingData['processCount'] > $this->getTotalItems()) {

@@ -42,8 +42,12 @@ class MassEditStep extends AbstractStep
      */
     protected function doExecute(StepExecution $stepExecution)
     {
+        $stepExecution->setTotalItems(1);
+
         $this->cleaner->setStepExecution($stepExecution);
         $this->cleaner->execute();
+
+        $stepExecution->incrementProcessedCount();
     }
 
     /**
@@ -68,6 +72,6 @@ class MassEditStep extends AbstractStep
 
     public function isTrackable(): bool
     {
-        return false;
+        return true;
     }
 }

@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Structure\Component\Reader\Database\MassEdit;
 
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInterface
+class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInterface, TrackableItemReaderInterface
 {
     /** @var StepExecution */
     protected $stepExecution;
@@ -31,6 +32,13 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
     public function __construct(FamilyRepositoryInterface $familyRepository)
     {
         $this->familyRepository = $familyRepository;
+    }
+
+    public function count(): int
+    {
+        $filters = $this->getConfiguredFilters();
+
+        return count($this->extractFamilyIds($filters));
     }
 
     /**
@@ -62,6 +70,17 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
         $this->stepExecution = $stepExecution;
     }
 
+    private function extractFamilyIds(array $filters): array
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setRequired(['field', 'operator', 'value']);
+
+        $filter = current($filters);
+        $filter = $resolver->resolve($filter);
+
+        return $filter['value'];
+    }
+
     /**
      * Get families with given $filters.
      * In this particular case, we'll only have 1 filter based on ids
@@ -73,13 +92,7 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
      */
     protected function getFamilies(array $filters)
     {
-        $resolver = new OptionsResolver();
-        $resolver->setRequired(['field', 'operator', 'value']);
-
-        $filter = current($filters);
-        $filter = $resolver->resolve($filter);
-
-        $familiesIds = $filter['value'];
+        $familiesIds = $this->extractFamilyIds($filters);
 
         foreach ($familiesIds as $familyId) {
             $family = $this->familyRepository->find($familyId);

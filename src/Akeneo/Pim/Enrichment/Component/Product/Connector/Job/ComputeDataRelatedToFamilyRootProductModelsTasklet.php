@@ -16,6 +16,7 @@ use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
+use Akeneo\Tool\Component\Connector\Step\TrackableTaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -35,7 +36,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInterface, InitializableInterface
+class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInterface, InitializableInterface, TrackableTaskletInterface
 {
     /** @var StepExecution */
     private $stepExecution;
@@ -158,6 +159,7 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
             }
 
             $this->saveProductsModel($productModelsToSave);
+            $this->stepExecution->incrementProcessedCount();
         }
     }
 
@@ -167,6 +169,11 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
     public function initialize()
     {
         $this->cacheClearer->clear();
+    }
+
+    public function isTrackable(): bool
+    {
+        return $this->familyReader instanceof TrackableItemReaderInterface;
     }
 
     /**
@@ -192,7 +199,6 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
 
         $this->productModelSaver->saveAll($productModels);
         $this->stepExecution->incrementSummaryInfo('process', count($productModels));
-        $this->stepExecution->incrementProcessedCount(count($productModels));
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 

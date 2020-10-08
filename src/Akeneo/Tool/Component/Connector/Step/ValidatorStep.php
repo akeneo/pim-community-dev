@@ -41,8 +41,10 @@ class ValidatorStep extends AbstractStep
      */
     protected function doExecute(StepExecution $stepExecution)
     {
+        $stepExecution->setTotalItems(1);
         $this->charsetValidator->setStepExecution($stepExecution);
         $this->charsetValidator->validate();
+        $stepExecution->incrementProcessedCount();
     }
 
     /**
@@ -55,6 +57,6 @@ class ValidatorStep extends AbstractStep
 
     public function isTrackable(): bool
     {
-        return false; /* @TODO */
+        return true;
     }
 }

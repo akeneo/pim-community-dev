@@ -8,8 +8,10 @@ use Akeneo\Pim\Structure\Component\AttributeGroup\Query\FindAttributeGroupOrders
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
+use Akeneo\Tool\Component\Connector\Step\TrackableTaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -24,7 +26,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface
+class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface, TrackableTaskletInterface
 {
     /** @var StepExecution */
     private $stepExecution;
@@ -66,11 +68,20 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface
         $this->stepExecution = $stepExecution;
     }
 
+    public function isTrackable(): bool
+    {
+        return $this->attributeGroupReader instanceof TrackableItemReaderInterface;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function execute()
     {
+        if ($this->attributeGroupReader instanceof TrackableItemReaderInterface) {
+            $this->stepExecution->setTotalItems($this->attributeGroupReader->count());
+        }
+
         while (true) {
             try {
                 $attributeGroupItem = $this->attributeGroupReader->read();
@@ -87,6 +98,7 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface
 
             if (null === $attributeGroup) {
                 $this->stepExecution->incrementSummaryInfo('skip');
+                $this->stepExecution->incrementProcessedCount();
 
                 continue;
             }
@@ -108,6 +120,7 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface
                 $violations = $this->validator->validate($attributeGroup);
 
                 if ($violations->count() > 0) {
+                    $this->stepExecution->incrementProcessedCount();
                     $this->stepExecution->incrementSummaryInfo('skip');
 
                     continue;
@@ -118,6 +131,8 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface
             } else {
                 $this->stepExecution->incrementSummaryInfo('skip');
             }
+
+            $this->stepExecution->incrementProcessedCount();
         }
     }
 }

@@ -44,7 +44,7 @@ services:
             - '@event_dispatcher'
             - '@pim_catalog.filter.chained'
             - '@oneup_flysystem.jobs_storage_filesystem'
-
+            - '@pim_import_export.registry.not_visible_jobs'
     pim_enrich.controller.rest.job_execution:
         public: true
         class: 'Akeneo\Platform\Bundle\ImportExportBundle\Controller\InternalApi\JobExecutionController'

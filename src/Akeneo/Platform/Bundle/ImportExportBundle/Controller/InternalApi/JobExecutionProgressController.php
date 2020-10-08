@@ -7,6 +7,7 @@ use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Component\Batch\Step\StepInterface;
 use Akeneo\Tool\Component\Batch\Step\TrackableStep;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -78,9 +79,11 @@ class JobExecutionProgressController
                 'duration' => $duration,
             ];
 
-//            $step = $job->getStep($stepExecution->getStepName());
-            $normalizedStep['item_processed'] = $stepExecution->getProcessCount();
-            $normalizedStep['total_item'] = $stepExecution->getTotalItems();
+            $step = $job->getStep($stepExecution->getStepName());
+            if ($step instanceof StepInterface && $step->isTrackable()) {
+                $normalizedStep['item_processed'] = $stepExecution->getProcessCount();
+                $normalizedStep['total_item'] = $stepExecution->getTotalItems();
+            }
 
             $normalizedSteps[] = $normalizedStep;
         }

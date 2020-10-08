@@ -12,9 +12,11 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
+use Akeneo\Tool\Component\Connector\Step\TrackableTaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -34,7 +36,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, InitializableInterface
+class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, InitializableInterface, TrackableTaskletInterface
 {
     /** @var StepExecution */
     private $stepExecution;
@@ -103,6 +105,10 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
     {
         $this->initialize();
 
+        if ($this->familyReader instanceof TrackableItemReaderInterface) {
+            $this->stepExecution->setTotalItems($this->familyReader->count());
+        }
+
         while (true) {
             try {
                 $familyItem = $this->familyReader->read();
@@ -148,6 +154,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
             $this->saveProducts($productsToSave);
 
             $this->cacheClearer->clear();
+            $this->stepExecution->incrementProcessedCount();
         }
     }
 
@@ -157,6 +164,11 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
     public function initialize()
     {
         $this->cacheClearer->clear();
+    }
+
+    public function isTrackable(): bool
+    {
+        return $this->familyReader instanceof TrackableItemReaderInterface;
     }
 
     /**
