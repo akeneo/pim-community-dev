@@ -8,6 +8,7 @@ import {AxisRatesOverviewPortal,} from "./component/ProductEditForm";
 import {AxesContextProvider} from "./context/AxesContext";
 import {DataQualityInsightsTabContent} from "./component/ProductEditForm/TabContent";
 import AttributesTabContent from "./component/ProductEditForm/TabContent/AttributesTabContent";
+import {AkeneoThemeProvider} from "@akeneo-pim-community/shared/src";
 
 interface ProductEditFormAppProps {
   catalogChannel: string;
@@ -17,18 +18,20 @@ interface ProductEditFormAppProps {
 
 const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product, catalogChannel, catalogLocale}) => {
   return (
-    <Provider store={productEditFormStore}>
-      <CatalogContextListener catalogChannel={catalogChannel} catalogLocale={catalogLocale} />
-      <PageContextListener />
-      <ProductContextListener product={product} productFetcher={fetchProduct}/>
+    <AkeneoThemeProvider>
+      <Provider store={productEditFormStore}>
+        <CatalogContextListener catalogChannel={catalogChannel} catalogLocale={catalogLocale} />
+        <PageContextListener />
+        <ProductContextListener product={product} productFetcher={fetchProduct}/>
 
-      <AttributesTabContent product={product}/>
+        <AttributesTabContent product={product}/>
 
-      <AxesContextProvider axes={['enrichment']}>
-        <DataQualityInsightsTabContent product={product} productEvaluationFetcher={fetchProductDataQualityEvaluation}/>
-        <AxisRatesOverviewPortal />
-      </AxesContextProvider>
-    </Provider>
+        <AxesContextProvider axes={['enrichment']}>
+          <DataQualityInsightsTabContent product={product} productEvaluationFetcher={fetchProductDataQualityEvaluation}/>
+          <AxisRatesOverviewPortal />
+        </AxesContextProvider>
+      </Provider>
+    </AkeneoThemeProvider>
   );
 };
 
