@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
@@ -66,7 +67,8 @@ class RemoveParentSpec extends ObjectBehavior
         ProductModelInterface $someProductModel,
         ProductModelInterface $otherProductModel,
         GroupInterface $someGroup,
-        GroupInterface $otherGroup
+        GroupInterface $otherGroup,
+        QuantifiedAssociationCollection $ancestorQuantifiedAssociations
     ) {
         $allValues = new WriteValueCollection(
             [
@@ -103,6 +105,8 @@ class RemoveParentSpec extends ObjectBehavior
         );
 
         $parentProductModel->getCode()->willReturn('tshirt_model');
+        $parentProductModel->getParent()->willReturn(null);
+        $parentProductModel->getQuantifiedAssociations()->willReturn($ancestorQuantifiedAssociations);
         $product->getParent()->willReturn($parentProductModel);
 
         // values
@@ -128,6 +132,8 @@ class RemoveParentSpec extends ObjectBehavior
         $association->addProductModel($otherProductModel)->shouldNotBeCalled();
         $associatedGroups->contains($otherGroup)->shouldBeCalled()->willReturn(true);
         $association->addGroup($otherGroup)->shouldNotBeCalled();
+
+        $product->mergeQuantifiedAssociations($ancestorQuantifiedAssociations)->shouldBeCalled();
 
         $parentProductModel->removeProduct($product)->shouldBeCalled();
         $product->setParent(null)->shouldBeCalled();

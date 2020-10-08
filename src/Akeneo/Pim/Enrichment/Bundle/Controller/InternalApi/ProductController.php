@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParent;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -29,6 +30,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -100,7 +103,7 @@ class ProductController
     /** @var Client */
     private $productAndProductModelClient;
 
-    /** @var RemoveParent */
+    /** @var RemoveParentInterface */
     private $removeParent;
 
     public function __construct(
@@ -122,8 +125,8 @@ class ProductController
         NormalizerInterface $constraintViolationNormalizer,
         ProductBuilderInterface $variantProductBuilder,
         AttributeFilterInterface $productAttributeFilter,
-        Client $productAndProductModelClient,
-        RemoveParent $removeParent
+        RemoveParentInterface $removeParent,
+        Client $productAndProductModelClient
     ) {
         $this->productRepository = $productRepository;
         $this->cursorableRepository = $cursorableRepository;
@@ -143,8 +146,8 @@ class ProductController
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
         $this->variantProductBuilder = $variantProductBuilder;
         $this->productAttributeFilter = $productAttributeFilter;
-        $this->productAndProductModelClient = $productAndProductModelClient;
         $this->removeParent = $removeParent;
+        $this->productAndProductModelClient = $productAndProductModelClient;
     }
 
     /**
@@ -365,11 +368,14 @@ class ProductController
         }
 
         if (!$product->isVariant()) {
-            // TODO Throw a correct exception
             throw new BadRequestHttpException(sprintf('The "%s" product is not variant', $product->getIdentifier()));
         }
 
-        $this->removeParent->from($product);
+        try {
+            $this->removeParent->from($product);
+        } catch (AccessDeniedException $e) {
+            throw new AccessDeniedHttpException();
+        }
 
         $violations = $this->validator->validate($product);
         if (0 === $violations->count()) {

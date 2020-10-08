@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
@@ -27,6 +28,26 @@ class ConvertVariantIntoSimpleProductIntegration extends TestCase
         $initialCategories = $this->product->getCategoryCodes();
         $initialAssociations = $this->get('pim_catalog.normalizer.standard.product.associations')
                                     ->normalize($this->product, 'standard');
+        $expectedQuantifiedAssociations = [
+            'quantified' => [
+                'products' => [
+                    [
+                        'identifier' => 'other',
+                        'quantity' => 10,
+                    ],
+                    [
+                        'identifier' => 'random',
+                        'quantity' => 2,
+                    ],
+                ],
+                'product_models' => [
+                    [
+                        'identifier' => 'pm_1',
+                        'quantity' => 5,
+                    ],
+                ],
+            ],
+        ];
 
         $this->convertToSimpleProduct($this->product);
 
@@ -35,6 +56,7 @@ class ConvertVariantIntoSimpleProductIntegration extends TestCase
         $this->assertValues($this->product, $initialValues);
         $this->assertCategories($this->product, $initialCategories);
         $this->assertAssociations($this->product, $initialAssociations);
+        $this->assertQuantifiedAssociations($this->product, $expectedQuantifiedAssociations);
 
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
         $productFromDb = $this->get('pim_catalog.repository.product')->findOneByIdentifier('variant');
@@ -44,6 +66,7 @@ class ConvertVariantIntoSimpleProductIntegration extends TestCase
         $this->assertValues($productFromDb, $initialValues);
         $this->assertCategories($productFromDb, $initialCategories);
         $this->assertAssociations($productFromDb, $initialAssociations);
+        $this->assertQuantifiedAssociations($productFromDb, $expectedQuantifiedAssociations);
     }
 
     protected function setUp(): void
@@ -59,6 +82,11 @@ class ConvertVariantIntoSimpleProductIntegration extends TestCase
 
     private function loadFixtures()
     {
+        $associationType = new AssociationType();
+        $associationType->setCode('quantified');
+        $associationType->setIsQuantified(true);
+        $this->get('pim_catalog.saver.association_type')->save($associationType);
+
         $this->createProduct('random', ['family' => 'familyA']);
         $this->createProduct('other', ['family' => 'familyA1']);
         $this->createProductModel(['code' => 'pm_1', 'family_variant' => 'familyVariantA1']);
@@ -107,6 +135,22 @@ class ConvertVariantIntoSimpleProductIntegration extends TestCase
                         'groups' => ['groupA'],
                     ],
                 ],
+                'quantified_associations' => [
+                    'quantified' => [
+                        'product_models' => [
+                            [
+                                'identifier' => 'pm_1',
+                                'quantity' => 5,
+                            ]
+                        ],
+                        'products' => [
+                            [
+                                'identifier' => 'other',
+                                'quantity' => 10,
+                            ]
+                        ]
+                    ],
+                ],
             ]
         );
 
@@ -147,6 +191,16 @@ class ConvertVariantIntoSimpleProductIntegration extends TestCase
                         'groups' => ['groupB'],
                     ],
                 ],
+                'quantified_associations' => [
+                    'quantified' => [
+                        'products' => [
+                            [
+                                'identifier' => 'random',
+                                'quantity' => 2,
+                            ],
+                        ]
+                    ]
+                ]
             ]
         );
         $this->get('pim_catalog.validator.unique_value_set')->reset();
@@ -203,6 +257,11 @@ class ConvertVariantIntoSimpleProductIntegration extends TestCase
                 $actualAssociatedGroupCodes
             );
         }
+    }
+
+    private function assertQuantifiedAssociations(ProductInterface $product, array $expectedQuantifiedAssociations): void
+    {
+        Assert::assertEqualsCanonicalizing($expectedQuantifiedAssociations, $product->getQuantifiedAssociations()->normalize());
     }
 
     private function convertToSimpleProduct(ProductInterface $product): void
