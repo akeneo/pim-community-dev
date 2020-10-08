@@ -58,7 +58,7 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQuery implements
     {
         $familyVariantIds = $this->retrieveFamilyVariantsWithAttributeGroupActivationUpdatedSince($updatedSince);
 
-$query = <<<SQL
+        $query = <<<SQL
 SELECT DISTINCT product_model.id
 FROM pim_catalog_product_model AS product_model
 INNER JOIN pim_data_quality_insights_product_model_criteria_evaluation AS evaluation 
@@ -111,7 +111,7 @@ SQL;
     {
         $familyVariantIds = $this->retrieveLevelTwoFamilyVariantsWithAttributeGroupActivationUpdatedSince($updatedSince);
 
-$query = <<<SQL
+        $query = <<<SQL
 SELECT DISTINCT product_model.id
 FROM pim_catalog_product_model AS product_model
 INNER JOIN pim_data_quality_insights_product_model_criteria_evaluation AS evaluation 
