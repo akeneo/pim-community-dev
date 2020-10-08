@@ -117,6 +117,9 @@ $rules = [
             'Doctrine\ORM\EntityManager',
             'Symfony\Component\Process',
 
+            //Security
+            'Oro\Bundle\SecurityBundle\SecurityFacade',
+
             //External dependencies
             'Doctrine\DBAL',
             'Doctrine\Common\Persistence\ObjectRepository',
