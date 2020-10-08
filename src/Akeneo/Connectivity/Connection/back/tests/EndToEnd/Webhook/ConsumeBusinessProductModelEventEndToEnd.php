@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Webhook;
 
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\ConnectionLoader;
-use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Structure\AttributeLoader;
-use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Structure\FamilyLoader;
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment\FamilyVariantLoader;
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment\ProductModelLoader;
+use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Structure\AttributeLoader;
+use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Structure\FamilyLoader;
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\WebhookLoader;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\MessageHandler\BusinessEventHandler;
@@ -60,37 +60,37 @@ class ConsumeBusinessProductModelEventEndToEnd extends ApiTestCase
         $this->normalizer = $this->get('pim_catalog.normalizer.standard.product_model');
     }
 
-//    public function test_it_sends_a_product_model_created_webhook_event()
-//    {
-//        $connection = $this->connectionLoader->createConnection(
-//            'ecommerce',
-//            'Ecommerce',
-//            FlowType::DATA_DESTINATION,
-//            false
-//        );
-//
-//        $this->webhookLoader->initWebhook($connection->code());
-//
-//        $productModel = $this->loadProductModel();
-//
-//        $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
-//        $handlerStack->setHandler(new MockHandler([new Response(200)]));
-//
-//        $container = [];
-//        $history = Middleware::history($container);
-//        $handlerStack->push($history);
-//
-//        $message = new ProductModelCreated(
-//            'author',
-//            $this->normalizer->normalize($productModel, 'standard')
-//        );
-//
-//        /** @var $businessEventHandler BusinessEventHandler */
-//        $businessEventHandler = $this->get(BusinessEventHandler::class);
-//        $businessEventHandler->__invoke($message);
-//
-//        $this->assertCount(1, $container);
-//    }
+    public function test_it_sends_a_product_model_created_webhook_event()
+    {
+        $connection = $this->connectionLoader->createConnection(
+            'ecommerce',
+            'Ecommerce',
+            FlowType::DATA_DESTINATION,
+            false
+        );
+
+        $this->webhookLoader->initWebhook($connection->code());
+
+        $productModel = $this->loadProductModel();
+
+        $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
+        $handlerStack->setHandler(new MockHandler([new Response(200)]));
+
+        $container = [];
+        $history = Middleware::history($container);
+        $handlerStack->push($history);
+
+        $message = new ProductModelCreated(
+            'author',
+            $this->normalizer->normalize($productModel, 'standard')
+        );
+
+        /** @var $businessEventHandler BusinessEventHandler */
+        $businessEventHandler = $this->get(BusinessEventHandler::class);
+        $businessEventHandler->__invoke($message);
+
+        $this->assertCount(1, $container);
+    }
 
     public function test_it_sends_a_product_model_updated_webhook_event()
     {

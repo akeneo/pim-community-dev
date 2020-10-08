@@ -1,16 +1,16 @@
-import React, { FC, useContext, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
-import { useHistory } from 'react-router';
+import React, {FC, useContext, useState} from 'react';
+import {useFormContext} from 'react-hook-form';
+import {useHistory} from 'react-router';
 import styled from 'styled-components';
-import { FormGroup, FormInput, ToggleButton } from '../../common/components';
-import { CopiableCredential } from '../../settings/components/credentials/CopiableCredential';
-import { RegenerateButton } from '../../settings/components/RegenerateButton';
-import { isErr } from '../../shared/fetch-result/result';
-import { TranslateContext } from '../../shared/translate';
-import { useCheckReachability } from '../hooks/api/use-webhook-check-reachability';
-import { Webhook } from '../model/Webhook';
-import { WebhookReachability } from '../model/WebhookReachability';
-import { TestUrlButton } from './TestUrlButton';
+import {FormGroup, FormInput, ToggleButton} from '../../common/components';
+import {CopiableCredential} from '../../settings/components/credentials/CopiableCredential';
+import {RegenerateButton} from '../../settings/components/RegenerateButton';
+import {isErr} from '../../shared/fetch-result/result';
+import {TranslateContext} from '../../shared/translate';
+import {useCheckReachability} from '../hooks/api/use-webhook-check-reachability';
+import {Webhook} from '../model/Webhook';
+import {WebhookReachability} from '../model/WebhookReachability';
+import {TestUrlButton} from './TestUrlButton';
 
 type Props = {
     webhook: Webhook;
@@ -65,7 +65,7 @@ export const EditForm: FC<Props> = ({webhook}: Props) => {
                                 message: 'akeneo_connectivity.connection.webhook.error.required',
                             },
                         })}
-                        onKeyDown={(event) => 'enter' === event.key && handleTestUrl()}
+                        onKeyDown={event => 'enter' === event.key && handleTestUrl()}
                     />
                     <TestUrlButton
                         onClick={handleTestUrl}

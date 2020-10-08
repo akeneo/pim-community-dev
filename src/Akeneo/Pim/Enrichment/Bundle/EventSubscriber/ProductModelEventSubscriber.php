@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
+
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
@@ -57,7 +58,8 @@ final class ProductModelEventSubscriber implements EventSubscriberInterface
         $data = $this->normalizer->normalize($productModel, 'standard');
 
         $message = null;
-        if ($event->hasArgument('created') && true === $event->getArgument('created')) {
+
+        if ($event->hasArgument('is_new') && true === $event->getArgument('is_new')) {
             $message = new ProductModelCreated($author, $data);
         } else {
             $message = new ProductModelUpdated($author, $data);
