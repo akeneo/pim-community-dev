@@ -1,7 +1,7 @@
 import React, {useState, useEffect, ChangeEvent} from 'react';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {WarningIcon, useAkeneoTheme, CloseIcon} from '@akeneo-pim-community/shared';
+import {CloseIcon, Helper} from 'akeneo-design-system';
 
 const PLACEHOLDER_PATH = '/bundles/pimui/images/illustrations/Import.svg';
 const ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png'];
@@ -43,20 +43,6 @@ const ImagePlaceholder = styled.div`
   margin: 8px 0;
 `;
 
-const InputError = styled.div`
-  align-items: center;
-  color: ${({theme}) => theme.color.red100};
-  display: flex;
-  font-size: 11px;
-  font-style: normal;
-  line-height: 13px;
-  margin: 6px 0;
-
-  svg {
-    margin: 0 6px 0 0;
-  }
-`;
-
 const RemoveButton = styled(CloseIcon)`
   position: absolute;
   top: 10px;
@@ -88,7 +74,6 @@ const ImageUploader = ({image, validationErrors, onChange}: ImageUploaderProps) 
   const [currentImage, setCurrentImage] = useState<string | null>(image);
   const [errors, setErrors] = useState<string[]>([]);
   const translate = useTranslate();
-  const theme = useAkeneoTheme();
 
   const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
     if (null !== event.target.files && event.target.files[0]) {
@@ -148,10 +133,7 @@ const ImageUploader = ({image, validationErrors, onChange}: ImageUploaderProps) 
         )}
       </FileInputContainer>
       {errors.map(error => (
-        <InputError key={error}>
-          <WarningIcon color={theme.color.red100} size={18} />
-          {error}
-        </InputError>
+        <Helper inline={true} level="error">{error}</Helper>
       ))}
     </Container>
   );

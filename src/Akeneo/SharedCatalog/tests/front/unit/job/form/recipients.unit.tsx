@@ -9,6 +9,7 @@ import {
   fireEvent,
   getByTitle,
   getByText,
+  getAllByRole,
   getByPlaceholderText,
   getAllByTitle,
 } from '@testing-library/react';
@@ -288,7 +289,8 @@ test('I can bulk delete recipients', async () => {
 
   // Now trying to select all and delete them
   fireEvent.click(getByText(container, 'bonjour@akeneo.com'));
-  fireEvent.click(container.querySelector('#select-all-checkbox'));
+  //TODO fix this, Checkbox without label can not be clicked...
+  fireEvent.click(getAllByRole(container, 'checkbox').pop());
   fireEvent.click(getByText(container, 'pim_common.delete'));
 
   expect(mockOnRecipientsChange).toHaveBeenCalledWith([]);

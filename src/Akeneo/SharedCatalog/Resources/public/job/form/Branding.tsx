@@ -1,8 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
-import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
+import styled, {ThemeProvider} from 'styled-components';
 import {DependenciesProvider, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {ImageUploader} from './ImageUploader';
+import {pimTheme} from 'akeneo-design-system';
 
 const Container = styled.div`
   margin-top: 40px;
@@ -24,9 +24,9 @@ type BrandingProps = {
 
 const Branding = (props: BrandingProps) => (
   <DependenciesProvider>
-    <AkeneoThemeProvider>
+    <ThemeProvider theme={pimTheme}>
       <BrandingForm {...props} />
-    </AkeneoThemeProvider>
+    </ThemeProvider>
   </DependenciesProvider>
 );
 
