@@ -150,8 +150,10 @@ JSON;
         $transport = self::$container->get('messenger.transport.business_event');
 
         $envelopes = $transport->get();
-        $this->assertCount(1, $envelopes);
-        $this->assertInstanceOf(ProductModelRemoved::class, $envelopes[0]->getMessage());
+
+        $this->assertCount(2, $envelopes);
+        $this->assertInstanceOf(ProductModelUpdated::class, $envelopes[0]->getMessage());
+        $this->assertInstanceOf(ProductModelRemoved::class, $envelopes[1]->getMessage());
     }
 
     protected function getConfiguration(): Configuration
