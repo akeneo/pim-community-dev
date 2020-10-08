@@ -17,18 +17,18 @@ class ProductGridTitle extends BaseGridTitle {
     return BaseGridTitle.prototype.setupCount.apply(this, arguments);
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  render(): ProductGridTitle {
-    if (!this.totalProducts && !this.totalProductModels) {
-      this.$el.html(
-        __(this.config.title, {count: this.count}, this.count)
-      );
+  private inLoadingStatus(): boolean
+  {
+    return null === this.count && null === this.totalProducts && null === this.totalProductModels;
+  }
 
-      return this;
-    }
+  private hasTotalProductCountOrProductModelCount(): boolean
+  {
+    return !!this.totalProducts || !!this.totalProductModels;
+  }
 
+  private renderProductAndProductModelCounts(): ProductGridTitle
+  {
     const productCount = __(
       'pim_enrich.entity.product.page_title.product',
       { count: this.totalProducts },
@@ -53,6 +53,24 @@ class ProductGridTitle extends BaseGridTitle {
     return this;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  render(): ProductGridTitle {
+    if (this.inLoadingStatus()) {
+      return this;
+    }
+
+    if (this.hasTotalProductCountOrProductModelCount()) {
+      return this.renderProductAndProductModelCounts();
+    }
+
+    this.$el.html(
+      __(this.config.title, {count: this.count}, this.count)
+    );
+
+    return this;
+  }
 }
 
 export = ProductGridTitle;
