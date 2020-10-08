@@ -22,3 +22,11 @@ services:
             - '@pim_api.normalizer.product_model'
         tags:
             - { name: akeneo_connectivity.connection.webhook.event_data_builder }
+
+    pim_catalog.webhook.event_data_builder.product_model_removed:
+        class: Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductModelRemovedEventDataBuilder
+        arguments:
+            - '@pim_api.repository.product_model'
+            - '@pim_api.normalizer.product_model'
+        tags:
+            - { name: akeneo_connectivity.connection.webhook.event_data_builder }

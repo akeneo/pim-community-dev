@@ -1,16 +1,16 @@
-import React, {FC, useContext, useState} from 'react';
-import {useFormContext} from 'react-hook-form';
-import {useHistory} from 'react-router';
+import React, { FC, useContext, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
-import {FormGroup, FormInput, ToggleButton} from '../../common/components';
-import {CopiableCredential} from '../../settings/components/credentials/CopiableCredential';
-import {RegenerateButton} from '../../settings/components/RegenerateButton';
-import {isErr} from '../../shared/fetch-result/result';
-import {TranslateContext} from '../../shared/translate';
-import {useCheckReachability} from '../hooks/api/use-webhook-check-reachability';
-import {Webhook} from '../model/Webhook';
-import {WebhookReachability} from '../model/WebhookReachability';
-import {TestUrlButton} from './TestUrlButton';
+import { FormGroup, FormInput, ToggleButton } from '../../common/components';
+import { CopiableCredential } from '../../settings/components/credentials/CopiableCredential';
+import { RegenerateButton } from '../../settings/components/RegenerateButton';
+import { isErr } from '../../shared/fetch-result/result';
+import { TranslateContext } from '../../shared/translate';
+import { useCheckReachability } from '../hooks/api/use-webhook-check-reachability';
+import { Webhook } from '../model/Webhook';
+import { WebhookReachability } from '../model/WebhookReachability';
+import { TestUrlButton } from './TestUrlButton';
 
 type Props = {
     webhook: Webhook;
@@ -20,7 +20,7 @@ export const EditForm: FC<Props> = ({webhook}: Props) => {
     const translate = useContext(TranslateContext);
     const history = useHistory();
 
-    const {register, getValues, errors, setError} = useFormContext();
+    const {register, getValues, errors, setError, clearError} = useFormContext();
 
     const checkReachability = useCheckReachability(webhook.connectionCode);
     const [testUrl, setTestUrl] = useState<{checking: boolean; status?: WebhookReachability}>({
@@ -28,6 +28,7 @@ export const EditForm: FC<Props> = ({webhook}: Props) => {
     });
 
     const handleTestUrl = async () => {
+        clearError('url');
         setTestUrl({checking: true});
 
         const result = await checkReachability(getValues('url'));
@@ -64,6 +65,7 @@ export const EditForm: FC<Props> = ({webhook}: Props) => {
                                 message: 'akeneo_connectivity.connection.webhook.error.required',
                             },
                         })}
+                        onKeyDown={(event) => 'enter' === event.key && handleTestUrl()}
                     />
                     <TestUrlButton
                         onClick={handleTestUrl}
@@ -72,24 +74,22 @@ export const EditForm: FC<Props> = ({webhook}: Props) => {
                     />
                 </>
             </FormGroup>
-            {webhook.secret && (
-                <CredentialList>
-                    <CopiableCredential
-                        label={translate('akeneo_connectivity.connection.connection.secret')}
-                        actions={
-                            <RegenerateButton
-                                onClick={() =>
-                                    history.push(
-                                        `/connections/${webhook.connectionCode}/event-subscription/regenerate-secret`
-                                    )
-                                }
-                            />
-                        }
-                    >
-                        {webhook.secret}
-                    </CopiableCredential>
-                </CredentialList>
-            )}
+            <CredentialList>
+                <CopiableCredential
+                    label={translate('akeneo_connectivity.connection.connection.secret')}
+                    actions={
+                        <RegenerateButton
+                            onClick={() =>
+                                history.push(
+                                    `/connections/${webhook.connectionCode}/event-subscription/regenerate-secret`
+                                )
+                            }
+                        />
+                    }
+                >
+                    {webhook.secret || ''}
+                </CopiableCredential>
+            </CredentialList>
         </>
     );
 };

@@ -13,6 +13,7 @@ use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\WebhookLoader
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\MessageHandler\BusinessEventHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Test\Integration\Configuration;
@@ -59,37 +60,37 @@ class ConsumeBusinessProductModelEventEndToEnd extends ApiTestCase
         $this->normalizer = $this->get('pim_catalog.normalizer.standard.product_model');
     }
 
-    public function test_it_sends_a_product_model_created_webhook_event()
-    {
-        $connection = $this->connectionLoader->createConnection(
-            'ecommerce',
-            'Ecommerce',
-            FlowType::DATA_DESTINATION,
-            false
-        );
-
-        $this->webhookLoader->initWebhook($connection->code());
-
-        $productModel = $this->loadProductModel();
-
-        $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
-        $handlerStack->setHandler(new MockHandler([new Response(200)]));
-
-        $container = [];
-        $history = Middleware::history($container);
-        $handlerStack->push($history);
-
-        $message = new ProductModelCreated(
-            'author',
-            $this->normalizer->normalize($productModel, 'standard')
-        );
-
-        /** @var $businessEventHandler BusinessEventHandler */
-        $businessEventHandler = $this->get(BusinessEventHandler::class);
-        $businessEventHandler->__invoke($message);
-
-        $this->assertCount(1, $container);
-    }
+//    public function test_it_sends_a_product_model_created_webhook_event()
+//    {
+//        $connection = $this->connectionLoader->createConnection(
+//            'ecommerce',
+//            'Ecommerce',
+//            FlowType::DATA_DESTINATION,
+//            false
+//        );
+//
+//        $this->webhookLoader->initWebhook($connection->code());
+//
+//        $productModel = $this->loadProductModel();
+//
+//        $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
+//        $handlerStack->setHandler(new MockHandler([new Response(200)]));
+//
+//        $container = [];
+//        $history = Middleware::history($container);
+//        $handlerStack->push($history);
+//
+//        $message = new ProductModelCreated(
+//            'author',
+//            $this->normalizer->normalize($productModel, 'standard')
+//        );
+//
+//        /** @var $businessEventHandler BusinessEventHandler */
+//        $businessEventHandler = $this->get(BusinessEventHandler::class);
+//        $businessEventHandler->__invoke($message);
+//
+//        $this->assertCount(1, $container);
+//    }
 
     public function test_it_sends_a_product_model_updated_webhook_event()
     {
@@ -113,6 +114,35 @@ class ConsumeBusinessProductModelEventEndToEnd extends ApiTestCase
 
         $message = new ProductModelUpdated(
             'author',
+            $this->normalizer->normalize($productModel, 'standard')
+        );
+
+        /** @var $businessEventHandler BusinessEventHandler */
+        $businessEventHandler = $this->get(BusinessEventHandler::class);
+        $businessEventHandler->__invoke($message);
+
+        $this->assertCount(1, $container);
+    }
+
+    public function test_it_sends_a_product_model_removed_webhook_event()
+    {
+        $connection = $this->connectionLoader->createConnection('ecommerce', 'Ecommerce', FlowType::DATA_DESTINATION, false);
+        $this->webhookLoader->initWebhook($connection->code());
+
+        $productModel = $this->loadProductModel();
+
+        /** @var HandlerStack $handlerStack*/
+        $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
+        $handlerStack->setHandler(new MockHandler([
+            new Response(200),
+        ]));
+
+        $container = [];
+        $history = Middleware::history($container);
+        $handlerStack->push($history);
+
+        $message = new ProductModelRemoved(
+            'ecommerce',
             $this->normalizer->normalize($productModel, 'standard')
         );
 
