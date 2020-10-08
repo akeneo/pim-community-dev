@@ -9,10 +9,12 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\AttributeGroupActivat
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeGroupCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeGroupActivationRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Test\Integration\TestCase;
 use Webmozart\Assert\Assert;
 
@@ -30,14 +32,53 @@ class DataQualityInsightsTestCase extends TestCase
     protected function createProduct(string $identifier, array $data = []): ProductInterface
     {
         $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
 
-        $errors = $this->get('pim_catalog.validator.product')->validate($product);
-        Assert::count($errors, 0, 'Invalid product');
+        if (!empty($data)) {
+            $this->get('pim_catalog.updater.product')->update($product, $data);
+            $errors = $this->get('pim_catalog.validator.product')->validate($product);
+            Assert::count($errors, 0, 'Invalid product');
+        }
 
         $this->get('pim_catalog.saver.product')->save($product);
 
         return $product;
+    }
+
+    protected function createProductModel(string $code, string $familyVariant, array $data = []): ProductModelInterface
+    {
+        $productModel = $this->get('akeneo_integration_tests.catalog.product_model.builder')
+            ->withCode($code)
+            ->withFamilyVariant($familyVariant)
+            ->build();
+
+        if (!empty($data)) {
+            $this->get('pim_catalog.updater.product')->update($productModel, $data);
+            $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
+            Assert::count($errors, 0, 'Invalid product model');
+        }
+
+        $this->get('pim_catalog.saver.product_model')->save($productModel);
+
+        return $productModel;
+    }
+
+    protected function createSubProductModel(string $code, string $familyVariant, string $parent, array $data = []): ProductModelInterface
+    {
+        $productModel = $this->get('akeneo_integration_tests.catalog.product_model.builder')
+            ->withCode($code)
+            ->withFamilyVariant($familyVariant)
+            ->withParent($parent)
+            ->build();
+
+        if (!empty($data)) {
+            $this->get('pim_catalog.updater.product')->update($productModel, $data);
+            $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
+            Assert::count($errors, 0, 'Invalid product model');
+        }
+
+        $this->get('pim_catalog.saver.product_model')->save($productModel);
+
+        return $productModel;
     }
 
     protected function createFamily(string $code, array $data = []): FamilyInterface
@@ -52,6 +93,21 @@ class DataQualityInsightsTestCase extends TestCase
         $this->get('pim_catalog.saver.family')->save($family);
 
         return $family;
+    }
+
+    protected function createFamilyVariant(string $code, string $family, array $data = []): FamilyVariantInterface
+    {
+        $data = array_merge(['code' => $code, 'family' => $family], $data);
+
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, $data);
+
+        $errors = $this->get('validator')->validate($familyVariant);
+        Assert::count($errors, 0);
+
+        $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
+
+        return $familyVariant;
     }
 
     protected function createAttribute(string $code, array $data = []): AttributeInterface
@@ -78,6 +134,21 @@ class DataQualityInsightsTestCase extends TestCase
         $this->get('pim_catalog.saver.attribute_group')->save($attributeGroup);
 
         return $attributeGroup;
+    }
+
+    protected function createAttributeOptions(string $attributeCode, array $optionsCodes): void
+    {
+        $attributeOptions = [];
+        foreach ($optionsCodes as $optionCode) {
+            $attributeOption = $this->get('pim_catalog.factory.attribute_option')->create();
+            $this->get('pim_catalog.updater.attribute_option')->update($attributeOption, [
+                'code' => $optionCode,
+                'attribute' => $attributeCode,
+            ]);
+            $attributeOptions[] = $attributeOption;
+        }
+
+        $this->get('pim_catalog.saver.attribute_option')->saveAll($attributeOptions);
     }
 
     protected function createAttributeGroupActivation(string $code, bool $activated = true, ?\DateTimeImmutable $updatedAt = null): AttributeGroupActivation
@@ -112,6 +183,21 @@ SQL;
             'status' => $status,
             'evaluatedAt' => $evaluatedAt->format(Clock::TIME_FORMAT),
             'productId' => $productId,
+        ]);
+    }
+
+    protected function updateProductModelEvaluationsAt(int $productModelId, string $status, \DateTimeImmutable $evaluatedAt): void
+    {
+        $query = <<<SQL
+UPDATE pim_data_quality_insights_product_model_criteria_evaluation 
+SET status = :status, evaluated_at = :evaluatedAt
+WHERE product_id = :productModelId;
+SQL;
+
+        $this->get('database_connection')->executeQuery($query, [
+            'status' => $status,
+            'evaluatedAt' => $evaluatedAt->format(Clock::TIME_FORMAT),
+            'productModelId' => $productModelId,
         ]);
     }
 }
