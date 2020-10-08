@@ -36,13 +36,17 @@ class ConvertToSimpleProduct extends BaseView {
 
     public render(): BaseView {
         const formData = this.getFormData();
-        if ('product' === formData.meta.model_type && null !== formData.parent) {
+        if ('product' === formData.meta.model_type && null !== formData.parent && this.isAuthorized()) {
             this.$el.html(this.template({
                 label: __('pim_enrich.entity.product.module.convert_variant_to_simple.label'),
             }));
         }
 
         return BaseView.prototype.render.apply(this, arguments);
+    }
+
+    protected isAuthorized(): boolean {
+        return true;
     }
 
     private convert() {

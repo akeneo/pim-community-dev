@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant;
 
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\Event\ParentHasBeenRemovedFromVariantProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -16,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RemoveParent
+class RemoveParent implements RemoveParentInterface
 {
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
@@ -37,19 +38,37 @@ class RemoveParent
             return;
         }
 
+        $this->mergeValues($product);
+        $this->mergeCategories($product);
+        $this->mergeAssociations($product);
+        $this->mergeQuantifiedAssociations($product);
+
+        $parent = $product->getParent();
+        $parent->removeProduct($product);
+        $product->setParent(null);
+
+        $this->eventDispatcher->dispatch(new ParentHasBeenRemovedFromVariantProduct($product, $parent->getCode()));
+    }
+
+    private function mergeValues(ProductInterface $product): void
+    {
         // getValues() returns all product values (including values inherited from ancestors),
         // whereas setValues only sets values at the product level
         $product->setValues($product->getValues());
+    }
 
-        // categories
-        $ownCategories = $product->getCategoriesForVariation();
+    private function mergeCategories(ProductInterface $product): void
+    {
+        $productCategories = $product->getCategoriesForVariation();
         foreach ($product->getCategories() as $category) {
-            if (!$ownCategories->contains($category)) {
-                $ownCategories->add($category);
+            if (!$productCategories->contains($category)) {
+                $productCategories->add($category);
             }
         }
+    }
 
-        // associations
+    private function mergeAssociations(ProductInterface $product): void
+    {
         foreach ($product->getAllAssociations() as $association) {
             $productAssociation = $product->getAssociationForTypeCode($association->getAssociationType()->getCode());
             if (null === $productAssociation) {
@@ -73,13 +92,14 @@ class RemoveParent
                 }
             }
         }
+    }
 
-        // TODO quantified associations
-
+    private function mergeQuantifiedAssociations(ProductInterface $product): void
+    {
         $parent = $product->getParent();
-        $parent->removeProduct($product);
-        $product->setParent(null);
-
-        $this->eventDispatcher->dispatch(new ParentHasBeenRemovedFromVariantProduct($product, $parent->getCode()));
+        while (null !== $parent) {
+            $product->mergeQuantifiedAssociations($parent->getQuantifiedAssociations());
+            $parent = $parent->getParent();
+        }
     }
 }
