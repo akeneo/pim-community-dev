@@ -101,7 +101,7 @@ const RowAction = styled(TransparentButton)`
 type QuantifiedAssociationRowProps = {
   row: Row;
   parentQuantifiedLink: QuantifiedLink | undefined;
-  isCompact: boolean;
+  isCompact?: boolean;
   onChange: (row: Row) => void;
   onRemove: (row: Row) => void;
 };
@@ -109,7 +109,7 @@ type QuantifiedAssociationRowProps = {
 const QuantifiedAssociationRow = ({
   row,
   parentQuantifiedLink,
-  isCompact,
+  isCompact = false,
   onChange,
   onRemove,
 }: QuantifiedAssociationRowProps) => {

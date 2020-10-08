@@ -65,7 +65,7 @@ type QuantifiedAssociationsProps = {
   quantifiedAssociations: QuantifiedAssociation;
   parentQuantifiedAssociations: QuantifiedAssociation;
   errors: ValidationError[];
-  isCompact: boolean;
+  isCompact?: boolean;
   onAssociationsChange: (quantifiedAssociations: QuantifiedAssociation) => void;
   onOpenPicker: () => Promise<Row[]>;
 };
@@ -74,7 +74,7 @@ const QuantifiedAssociations = ({
   quantifiedAssociations,
   parentQuantifiedAssociations,
   errors,
-  isCompact,
+  isCompact = false,
   onOpenPicker,
   onAssociationsChange,
 }: QuantifiedAssociationsProps) => {

@@ -1,9 +1,8 @@
 import React from 'react';
-import '@testing-library/jest-dom/extend-expect';
 import {act, getByText, getAllByText} from '@testing-library/react';
 import {AnnouncementList} from '@akeneo-pim-community/communication-channel/src/components/panel/AnnouncementList';
 import {formatCampaign} from '@akeneo-pim-community/communication-channel/src/tools/formatCampaign';
-import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderDOMWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import {getExpectedAnnouncements, getExpectedPimAnalyticsData} from '../../__mocks__/dataProvider';
 import {useHasNewAnnouncements} from '@akeneo-pim-community/communication-channel/src/hooks/useHasNewAnnouncements';
 import {useInfiniteScroll} from '@akeneo-pim-community/communication-channel/src/hooks/useInfiniteScroll';
@@ -44,7 +43,7 @@ test('it check if it has new announcements when the component is mounted', async
   ]);
 
   await act(async () =>
-    renderWithProviders(<AnnouncementList campaign={campaign} panelIsOpened={true} />, container as HTMLElement)
+    renderDOMWithProviders(<AnnouncementList campaign={campaign} panelIsOpened={true} />, container as HTMLElement)
   );
 
   expect(handleHasNewAnnouncements).toBeCalledTimes(1);
@@ -63,7 +62,7 @@ test('it shows the announcements when we open the panel', async () => {
   ]);
 
   await act(async () =>
-    renderWithProviders(<AnnouncementList campaign={campaign} panelIsClosed={false} />, container as HTMLElement)
+    renderDOMWithProviders(<AnnouncementList campaign={campaign} panelIsClosed={false} />, container as HTMLElement)
   );
 
   expect(container.querySelectorAll('ul li').length).toEqual(2);
@@ -82,7 +81,7 @@ test('it shows an empty list when there are no announcements', async () => {
   ]);
 
   await act(async () =>
-      renderWithProviders(<AnnouncementList campaign={campaign} panelIsClosed={false} />, container as HTMLElement)
+    renderDOMWithProviders(<AnnouncementList campaign={campaign} panelIsClosed={false} />, container as HTMLElement)
   );
 
   expect(container.querySelectorAll('ul li').length).toEqual(0);
@@ -101,7 +100,7 @@ test('it can show for each announcement the information from the json', async ()
   ]);
 
   await act(async () =>
-    renderWithProviders(<AnnouncementList campaign={campaign} panelIsClosed={false} />, container as HTMLElement)
+    renderDOMWithProviders(<AnnouncementList campaign={campaign} panelIsClosed={false} />, container as HTMLElement)
   );
 
   expect(getByText(container, expectedAnnouncements[0].title)).toBeInTheDocument();
@@ -126,7 +125,7 @@ test('it can open the read more link in a new tab', async () => {
   ]);
 
   await act(async () =>
-    renderWithProviders(<AnnouncementList campaign={campaign} panelIsClosed={false} />, container as HTMLElement)
+    renderDOMWithProviders(<AnnouncementList campaign={campaign} panelIsClosed={false} />, container as HTMLElement)
   );
 
   expect((container.querySelector(`a[title="${expectedAnnouncements[0].title}"]`) as HTMLLinkElement).href).toEqual(
@@ -149,7 +148,7 @@ test('it does not generate Read more button when there is no link.', async () =>
   ]);
 
   await act(async () =>
-      renderWithProviders(<AnnouncementList campaign={campaign} panelIsClosed={false} />, container as HTMLElement)
+    renderDOMWithProviders(<AnnouncementList campaign={campaign} panelIsClosed={false} />, container as HTMLElement)
   );
 
   expect(container.querySelectorAll('ul li a').length).toEqual(1);
@@ -167,7 +166,7 @@ test('it can display a message when it has an error during the fetch', async () 
   ]);
 
   await act(async () =>
-    renderWithProviders(<AnnouncementList campaign={campaign} panelIsClosed={false} />, container as HTMLElement)
+    renderDOMWithProviders(<AnnouncementList campaign={campaign} panelIsClosed={false} />, container as HTMLElement)
   );
 
   expect(container.querySelectorAll('ul li').length).toEqual(0);
@@ -190,7 +189,7 @@ test('it updates the new announcements when closing the panel', async () => {
   useAddViewedAnnouncements.mockReturnValue(handleAddViewedAnnouncements);
 
   await act(async () =>
-    renderWithProviders(<AnnouncementList campaign={campaign} panelIsClosed={true} />, container as HTMLElement)
+    renderDOMWithProviders(<AnnouncementList campaign={campaign} panelIsClosed={true} />, container as HTMLElement)
   );
 
   expect(handleAddViewedAnnouncements).toBeCalledWith([expectedAnnouncements[0]]);

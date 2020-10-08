@@ -96,17 +96,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # If everything went well, we deploy a staging env to send it to review to our beloved UX designer team
-      -   name: Build staging env
-          run: cd akeneo-design-system && yarn run storybook:build
+      - name: Build staging env
+        run: cd akeneo-design-system && yarn run storybook:build
 
-      -   name: Deploy to gh-pages on the external repository (in a subfolder)
-          uses: peaceiris/actions-gh-pages@v3.7.0-6
-          with:
-              personal_token: ${{ secrets.DSM_EXTERNAL_TOKEN }}
-              publish_dir: ./akeneo-design-system/storybook-static
-              destination_dir: ${{ github.event.number }}
-              keep_files: true
-              external_repository: akeneo/akeneo-design-system
+      - name: Deploy to gh-pages on the external repository (in a subfolder)
+        uses: peaceiris/actions-gh-pages@v3.7.0-6
+        with:
+          personal_token: ${{ secrets.DSM_EXTERNAL_TOKEN }}
+          publish_dir: ./akeneo-design-system/storybook-static
+          destination_dir: ${{ github.event.number }}
+          keep_files: true
+          external_repository: akeneo/akeneo-design-system
 
       - name: Comment PR to say that the staging env is available
         uses: thollander/actions-comment-pull-request@master
