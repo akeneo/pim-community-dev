@@ -65,7 +65,7 @@ const akeneoTheme: AkeneoTheme = {
   color: {
     grey60: '#f9f9fb',
     grey70: '#e8ebee',
-    grey80: '#d9dde2',
+    grey80: '#c7cbd4',
     grey100: '#a1a9b7',
     grey120: '#67768a',
     grey140: '#11324d',
