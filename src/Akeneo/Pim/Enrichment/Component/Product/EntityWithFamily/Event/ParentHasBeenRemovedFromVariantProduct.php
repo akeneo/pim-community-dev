@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\Event;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Symfony\Contracts\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
