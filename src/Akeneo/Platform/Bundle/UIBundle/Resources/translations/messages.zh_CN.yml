@@ -298,7 +298,7 @@ Defaultvalue: 默认值
 Variant: 变量
 Smart: 智能
 Useable as grid column: 可用作网格列
-Useable as grid filter: 可用在网格中
+Useable as grid filter: 在网格中可用
 Family: 品类
 Image: 图像
 Variant products: 变型产品
@@ -491,7 +491,7 @@ pim_mass_edit:
 job_execution.summary:
   mass_edited: 已批量编辑
   skip: 已跳过
-  skipped_products: 跳过的产品
+  skipped_products: 已跳过产品
   skipped_attributes: 已跳过属性
   skipped_families: 已跳过品类
   deleted_products: 已删除产品

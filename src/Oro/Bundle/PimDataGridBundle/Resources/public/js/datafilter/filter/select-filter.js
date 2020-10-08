@@ -163,13 +163,14 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
 
             this.$el.append(
                 this.template({
+                    __,
                     label: __(this.label),
                     showLabel: this.showLabel,
                     options: options,
                     placeholder: this.placeholder,
                     nullLink: this.nullLink,
                     canDisable: this.canDisable,
-                    emptyValue: this.emptyValue
+                    emptyValue: this.emptyValue,
                 })
             );
 

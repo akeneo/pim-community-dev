@@ -125,7 +125,7 @@ pim_import_export:
             help: 是否启用导入的产品
           enabled_comparison:
             title: 比对值
-            help: 开启原始值与导入值的比较。如果导入值与原始值比较接近，可以加快导入速度。
+            help: 开启原始值与导入值的比较。如果导入值与原始值比较接近，可以加快导入速度
           real_time_versioning:
             title: 实时历史记录更新
             help: 自动更新产品的历史记录，可将其关闭以提高性能

@@ -48,17 +48,17 @@ const newAndUpdatedQuantifiedAssociationsCount = (
   parentQuantifiedAssociations: QuantifiedAssociation,
   quantifiedAssociations: QuantifiedAssociation
 ): number => {
-  const newAndUpdatedProductQuantifiedLinks = quantifiedAssociations.products.filter(quantifiedLink => {
+  const newAndUpdatedProductQuantifiedLinks = quantifiedAssociations.products.filter((quantifiedLink) => {
     const parentQuantifiedLink = parentQuantifiedAssociations.products.find(
-      parentQuantifiedLink => quantifiedLink.identifier === parentQuantifiedLink.identifier
+      (parentQuantifiedLink) => quantifiedLink.identifier === parentQuantifiedLink.identifier
     );
 
     return undefined === parentQuantifiedLink || parentQuantifiedLink.quantity !== quantifiedLink.quantity;
   });
 
-  const newAndUpdatedProductModelQuantifiedLinks = quantifiedAssociations.product_models.filter(quantifiedLink => {
+  const newAndUpdatedProductModelQuantifiedLinks = quantifiedAssociations.product_models.filter((quantifiedLink) => {
     const parentQuantifiedLink = parentQuantifiedAssociations.product_models.find(
-      parentQuantifiedLink => quantifiedLink.identifier === parentQuantifiedLink.identifier
+      (parentQuantifiedLink) => quantifiedLink.identifier === parentQuantifiedLink.identifier
     );
 
     return undefined === parentQuantifiedLink || parentQuantifiedLink.quantity !== quantifiedLink.quantity;
@@ -71,16 +71,16 @@ const hasUpdatedQuantifiedAssociations = (
   parentQuantifiedAssociations: QuantifiedAssociation,
   quantifiedAssociations: QuantifiedAssociation
 ): boolean =>
-  quantifiedAssociations.products.some(quantifiedLink => {
+  quantifiedAssociations.products.some((quantifiedLink) => {
     const parentQuantifiedLink = parentQuantifiedAssociations.products.find(
-      parentQuantifiedLink => quantifiedLink.identifier === parentQuantifiedLink.identifier
+      (parentQuantifiedLink) => quantifiedLink.identifier === parentQuantifiedLink.identifier
     );
 
     return undefined !== parentQuantifiedLink && parentQuantifiedLink.quantity !== quantifiedLink.quantity;
   }) ||
-  quantifiedAssociations.product_models.some(quantifiedLink => {
+  quantifiedAssociations.product_models.some((quantifiedLink) => {
     const parentQuantifiedLink = parentQuantifiedAssociations.product_models.find(
-      parentQuantifiedLink => quantifiedLink.identifier === parentQuantifiedLink.identifier
+      (parentQuantifiedLink) => quantifiedLink.identifier === parentQuantifiedLink.identifier
     );
 
     return undefined !== parentQuantifiedLink && parentQuantifiedLink.quantity !== quantifiedLink.quantity;

@@ -102,7 +102,7 @@ pim_enrich.entity.product:
         placeholder: 搜索标签或标识符
       no_result: 抱歉，找不到与搜索相符的结果。
       no_data: 没有关联的产品。
-      remove: 删除关联
+      remove: 移除关联
       edit: 编辑产品
       limit_reached: 添加到此产品的关联不能超过 {{ maxLimit }} 个。
       variant_updated: 您已更新变型的数量，此数量将不再同步。
@@ -330,7 +330,7 @@ pim_enrich.mass_edit.product:
       label: 从类别中移除
       label_count: "{0}从类别中移除一些<span class=\"AknFullPage-title--highlight\">产品</span>|{1}从类别中移除 <span class=\"AknFullPage-title--highlight\">1 件产品</span>|]1, Inf[从类别中移除 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>"
       description: 产品将从以下类别中移除。
-      no_update: 没有选中的类别来从中删除选定的产品。
+      no_update: 没有选中的类别来从中移除选定的产品。
     add_to_existing_product_model:
       label: 添加到现有的产品模型
       label_count: "{0}将一些<span class=\"AknFullPage-title--highlight\">产品</span>添加到现有的产品模型|{1}将 <span class=\"AknFullPage-title--highlight\">1 件产品</span>添加到现有的产品模型|]1, Inf[将 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>添加到现有的产品模型"
@@ -387,6 +387,10 @@ pim_datagrid:
   filters:
     label: 筛选器
     system: 系统
+    product_typology:
+      variant: '变型'
+    entity_type:
+      label: '变型'
   search: 在 {{ label }} 上搜索
 batch_jobs:
   add_association:
@@ -448,5 +452,5 @@ batch_jobs:
     perform.label: XLSX 产品快速导出
 error:
   removing:
-    group: 无法删除分组
-    association type: 无法删除关联类型
+    group: 无法移除分组
+    association type: 无法移除关联类型
