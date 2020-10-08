@@ -4,6 +4,7 @@ namespace Akeneo\Tool\Component\Connector\Reader\File\Yaml;
 
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
+use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
@@ -18,7 +19,7 @@ use Symfony\Component\Yaml\Yaml;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Reader implements FileReaderInterface
+class Reader implements FileReaderInterface, TrackableItemReaderInterface
 {
     /** @var ArrayConverterInterface */
     protected $converter;
@@ -72,6 +73,16 @@ class Reader implements FileReaderInterface
     public function getCodeField()
     {
         return $this->codeField;
+    }
+
+    public function count(): int
+    {
+        $fileData = $this->getFileData();
+        if ($this->multiple) {
+            $fileData = $fileData[0];
+        }
+
+        return count($fileData);
     }
 
     /**
@@ -131,6 +142,7 @@ class Reader implements FileReaderInterface
                 $this->stepExecution->setSummary(['item_position' => 0]);
             }
         }
+
         $fileData = current(Yaml::parse($fileContent));
         if (null === $fileData) {
             return null;

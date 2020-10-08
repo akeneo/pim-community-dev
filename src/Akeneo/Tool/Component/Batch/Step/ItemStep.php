@@ -22,7 +22,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class ItemStep extends AbstractStep implements TrackableStep
+class ItemStep extends AbstractStep
 {
     /** @var ItemReaderInterface */
     protected $reader = null;
@@ -93,6 +93,11 @@ class ItemStep extends AbstractStep implements TrackableStep
     public function getWriter()
     {
         return $this->writer;
+    }
+
+    public function isTrackable(): bool
+    {
+        return $this->reader instanceof TrackableItemReaderInterface;
     }
 
     /**

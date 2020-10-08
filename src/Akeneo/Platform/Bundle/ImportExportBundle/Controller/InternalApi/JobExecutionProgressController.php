@@ -78,11 +78,9 @@ class JobExecutionProgressController
                 'duration' => $duration,
             ];
 
-            $step = $job->getStep($stepExecution->getStepName());
-            if ($step instanceof TrackableStep) {
-                $normalizedStep['item_processed'] = $stepExecution->getProcessCount();
-                $normalizedStep['total_item'] = $stepExecution->getTotalItems();
-            }
+//            $step = $job->getStep($stepExecution->getStepName());
+            $normalizedStep['item_processed'] = $stepExecution->getProcessCount();
+            $normalizedStep['total_item'] = $stepExecution->getTotalItems();
 
             $normalizedSteps[] = $normalizedStep;
         }

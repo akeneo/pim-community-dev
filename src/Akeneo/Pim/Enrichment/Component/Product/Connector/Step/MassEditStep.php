@@ -65,4 +65,9 @@ class MassEditStep extends AbstractStep
 
         return $this;
     }
+
+    public function isTrackable(): bool
+    {
+        return false;
+    }
 }

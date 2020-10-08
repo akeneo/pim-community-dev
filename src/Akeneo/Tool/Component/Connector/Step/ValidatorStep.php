@@ -52,4 +52,9 @@ class ValidatorStep extends AbstractStep
     {
         return $this->charsetValidator;
     }
+
+    public function isTrackable(): bool
+    {
+        return false; /* @TODO */
+    }
 }

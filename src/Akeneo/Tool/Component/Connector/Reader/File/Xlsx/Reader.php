@@ -4,6 +4,7 @@ namespace Akeneo\Tool\Component\Connector\Reader\File\Xlsx;
 
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
+use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
@@ -19,7 +20,7 @@ use Akeneo\Tool\Component\Connector\Reader\File\FileReaderInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Reader implements FileReaderInterface
+class Reader implements FileReaderInterface, TrackableItemReaderInterface
 {
     /** @var FileIteratorFactory */
     protected $fileIteratorFactory;
@@ -51,31 +52,34 @@ class Reader implements FileReaderInterface
         $this->options = $options;
     }
 
+    public function count(): int
+    {
+        $filePath = $this->getFilePath();
+        $fileIterator = $this->getFileIterator($filePath);
+
+        return iterator_count($fileIterator);
+    }
+
     /**
      * {@inheritdoc}
      */
     public function read()
     {
-        $jobParameters = $this->stepExecution->getJobParameters();
-        $filePath = $jobParameters->get('filePath');
-        if (null === $this->fileIterator) {
-            $this->fileIterator = $this->fileIteratorFactory->create($filePath, $this->options);
-            $this->fileIterator->rewind();
-        }
+        $filePath = $this->getFilePath();
+        $fileIterator = $this->getFileIterator($filePath);
+        $fileIterator->next();
 
-        $this->fileIterator->next();
-
-        if ($this->fileIterator->valid() && null !== $this->stepExecution) {
+        if ($fileIterator->valid() && null !== $this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('item_position');
         }
 
-        $data = $this->fileIterator->current();
+        $data = $fileIterator->current();
 
         if (null === $data) {
             return null;
         }
 
-        $headers = $this->fileIterator->getHeaders();
+        $headers = $fileIterator->getHeaders();
 
         $countHeaders = count($headers);
         $countData = count($data);
@@ -88,7 +92,7 @@ class Reader implements FileReaderInterface
             $data = array_merge($data, $missingValues);
         }
 
-        $item = array_combine($this->fileIterator->getHeaders(), $data);
+        $item = array_combine($fileIterator->getHeaders(), $data);
 
         try {
             $item = $this->converter->convert($item, $this->getArrayConverterOptions());
@@ -179,5 +183,22 @@ class Reader implements FileReaderInterface
                 ]
             );
         }
+    }
+
+    private function getFilePath(): string
+    {
+        $jobParameters = $this->stepExecution->getJobParameters();
+
+        return $jobParameters->get('filePath');
+    }
+
+    private function getFileIterator($filePath): FileIteratorInterface
+    {
+        if (null === $this->fileIterator) {
+            $this->fileIterator = $this->fileIteratorFactory->create($filePath, $this->options);
+            $this->fileIterator->rewind();
+        }
+
+        return $this->fileIterator;
     }
 }

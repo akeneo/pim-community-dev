@@ -12,6 +12,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -114,6 +115,10 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
     {
         $this->initialize();
 
+        if ($this->familyReader instanceof TrackableItemReaderInterface) {
+            $this->stepExecution->setTotalItems($this->familyReader->count());
+        }
+
         while (true) {
             try {
                 $familyItem = $this->familyReader->read();
@@ -187,6 +192,7 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
 
         $this->productModelSaver->saveAll($productModels);
         $this->stepExecution->incrementSummaryInfo('process', count($productModels));
+        $this->stepExecution->incrementProcessedCount(count($productModels));
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 

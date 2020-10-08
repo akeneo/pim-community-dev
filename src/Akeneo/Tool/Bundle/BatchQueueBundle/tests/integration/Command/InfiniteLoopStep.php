@@ -33,4 +33,9 @@ class InfiniteLoopStep implements StepInterface
             sleep(1000000);
         }
     }
+
+    public function isTrackable(): bool
+    {
+        return false;
+    }
 }

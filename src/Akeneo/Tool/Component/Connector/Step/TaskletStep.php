@@ -42,6 +42,11 @@ class TaskletStep extends AbstractStep
         $this->tasklet->execute();
     }
 
+    public function isTrackable(): bool
+    {
+        return $this->tasklet instanceof TrackableTaskletInterface;
+    }
+
     /**
      * @return TaskletInterface
      */
