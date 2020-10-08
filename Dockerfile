@@ -23,36 +23,38 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
     apt-get update && \
     apt-get --no-install-recommends --no-install-suggests --yes --quiet install \
         apt-transport-https \
+        aspell \
+        aspell-en aspell-es aspell-de aspell-fr aspell-it aspell-sv aspell-da aspell-nl aspell-no aspell-pt-br \
         ca-certificates \
         curl \
-        libcurl4-openssl-dev \
-        libssl-dev \
+        ghostscript \
         gpg \
         gpg-agent \
-        ghostscript \
-        aspell \
-        aspell-en aspell-es aspell-de aspell-fr aspell-it aspell-sv aspell-da aspell-nl aspell-no aspell-pt-br && \
+        libcurl4-openssl-dev \
+        libssl-dev && \
     apt-get clean && \
     apt-get --yes autoremove --purge && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     apt-get update && \
-    apt-get --yes install imagemagick libmagickcore-6.q16-2-extra \
-        php7.3-fpm \
-        php7.3-cli \
-        php7.3-intl \
-        php7.3-opcache \
-        php7.3-mysql \
-        php7.3-zip \
-        php7.3-xml \
-        php7.3-curl \
-        php7.3-mbstring \
-        php7.3-bcmath \
-        php7.3-imagick \
-        php7.3-gd \
-        php7.3-apcu \
-        php7.3-exif \
+    apt-get --yes install \
+        ca-certificates \
+        imagemagick \
+        libmagickcore-6.q16-2-extra \
         php-memcached \
-        ca-certificates && \
+        php7.3-apcu \
+        php7.3-bcmath \
+        php7.3-cli \
+        php7.3-curl \
+        php7.3-exif \
+        php7.3-fpm \
+        php7.3-gd \
+        php7.3-imagick \
+        php7.3-intl \
+        php7.3-mbstring \
+        php7.3-mysql \
+        php7.3-opcache \
+        php7.3-xml \
+        php7.3-zip && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     ln -s /usr/sbin/php-fpm7.3 /usr/local/sbin/php-fpm && \
@@ -77,8 +79,14 @@ FROM base AS dev
 ENV PHP_CONF_OPCACHE_VALIDATE_TIMESTAMP=1
 
 RUN apt-get update && \
-    apt-get --yes install git unzip curl \
-        default-mysql-client php7.3-xdebug procps perceptualdiff && \
+    apt-get --yes install \
+        curl \
+        default-mysql-client \ 
+        git \
+        perceptualdiff \
+        php7.3-xdebug \ 
+        procps \
+        unzip &&\
     phpdismod xdebug && \
     mkdir /etc/php/7.3/enable-xdebug && \
     ln -s /etc/php/7.3/mods-available/xdebug.ini /etc/php/7.3/enable-xdebug/xdebug.ini && \
@@ -124,7 +132,9 @@ FROM dev AS builder
 ARG COMPOSER_AUTH
 
 RUN apt-get update && \
-    apt-get --yes install yarnpkg nodejs && \
+    apt-get --yes install \
+        yarnpkg \
+        nodejs && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -136,6 +146,7 @@ COPY public public
 COPY frontend frontend
 COPY src src
 COPY upgrades upgrades
+COPY akeneo-design-system akeneo-design-system
 COPY composer.json package.json yarn.lock .env tsconfig.json *.js .
 
 ENV APP_ENV=prod
@@ -156,8 +167,9 @@ RUN mkdir var && \
     bin/console pim:installer:assets --clean && \
     yarnpkg install --frozen-lockfile && \
     yarnpkg run less && \
-    yarnpkg --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system install --frozen-lockfile && \
-    yarnpkg --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system run lib:build && \
+    (test -d vendor/akeneo/pim-community-dev/akeneo-design-system && \
+        { yarnpkg --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system install --frozen-lockfile;yarnpkg --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system run lib:build; } || \
+        { yarnpkg --cwd=akeneo-design-system install --frozen-lockfile; yarnpkg --cwd=akeneo-design-system run lib:build; } ) && \ 
     EDITION=cloud yarnpkg run webpack && \
     find . -type d -name node_modules | xargs rm -rf && \
     rm -rf public/test_dist && \
