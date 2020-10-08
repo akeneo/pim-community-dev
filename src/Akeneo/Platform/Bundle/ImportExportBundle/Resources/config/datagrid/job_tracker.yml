@@ -21,6 +21,10 @@ datagrid:
                 label: pim_datagrid.column.username
                 data_name: user
                 frontendType: label
+            nice:
+                label: pim_datagrid.column.nice
+                data_name: nice
+                frontendType: label
             status:
                 label:         Status
                 type:          twig
