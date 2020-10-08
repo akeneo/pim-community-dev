@@ -100,7 +100,7 @@ class ProduceProductModelEventEndToEnd extends ApiTestCase
     }
 JSON;
 
-        $apiClient->request('PATCH', 'api/rest/v1/product-models', [], [], [], $data);
+        $apiClient->request('PATCH', 'api/rest/v1/product-models/product_model', [], [], [], $data);
 
         $transport = self::$container->get('messenger.transport.business_event');
         $envelopes = $transport->get();
