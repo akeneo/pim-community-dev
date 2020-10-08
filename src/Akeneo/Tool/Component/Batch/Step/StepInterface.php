@@ -33,6 +33,4 @@ interface StepInterface
      * @throws JobInterruptedException if the step is interrupted externally
      */
     public function execute(StepExecution $stepExecution);
-
-    public function isTrackable(): bool;
 }

@@ -56,6 +56,7 @@ class FlatFileIterator implements FileIteratorInterface
         $this->type = $type;
         $this->filePath = $filePath;
         $this->fileInfo = new \SplFileInfo($filePath);
+
         if (!$this->fileInfo->isFile()) {
             throw new FileNotFoundException(sprintf('File "%s" could not be found', $this->filePath));
         }
