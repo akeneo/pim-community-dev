@@ -148,9 +148,6 @@ ifeq ($(INSTANCE_NAME_PREFIX),pimci-duplic)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultAdminUser.email "adminakeneo"
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultAdminUser.login "adminakeneo"
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultAdminUser.password "adminakeneo"
-	@echo "elasticsearch customization below must be removed after fix PIM-9283"
-	yq w -i $(INSTANCE_DIR)/values.yaml elasticsearch.client.resources.limits.memory "1024Mi"
-	yq w -i $(INSTANCE_DIR)/values.yaml elasticsearch.client.resources.requests.memory "512Mi"
 endif
 
 .PHONY: create-pim-main-tf

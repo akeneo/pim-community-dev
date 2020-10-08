@@ -396,6 +396,9 @@ jobs:
                 name: Production tests on upgraded env
                 command: INSTANCE_NAME=pimup-$IMAGE_TAG make test-prod
           - run:
+                name: Check that upgrader pod ran
+                command: kubectl get pods --namespace=srnt-pimup-$IMAGE_TAG | grep pim-upgrader
+          - run:
                 name: Prepare infrastructure artifacts
                 command: INSTANCE_NAME=pimup-$IMAGE_TAG make prepare-infrastructure-artifacts
                 when: on_fail
@@ -950,71 +953,6 @@ workflows:
                     - test_back_behat_legacy
                     - test_back_data_migrations
                     - test_deploy
-                    - test_upgrade_from_last_release
-
-  nightly-beta:
-      triggers:
-          - schedule:
-                cron: "0 4 * * *"
-                filters:
-                    branches:
-                        only:
-                            - master
-
-      jobs:
-          - checkout
-          - build_dev:
-                is_pull_request: false
-                requires:
-                    - checkout
-          - build_prod:
-                is_pull_request: false
-                requires:
-                    - checkout
-          - test_deploy:
-                requires:
-                    - build_prod
-          - test_upgrade_from_32:
-                requires:
-                    - build_prod
-          - test_upgrade_from_last_release:
-                requires:
-                    - build_prod
-          - test_upgrade_from_serenity_customer_db:
-                requires:
-                    - build_prod
-          - test_back_static_and_acceptance:
-                requires:
-                    - build_dev
-          - test_front_static_acceptance_and_integration:
-                requires:
-                    - build_dev
-          - test_back_phpunit:
-                requires:
-                    - build_dev
-          - test_onboarder_bundle:
-                requires:
-                    - build_dev
-          - test_back_behat_legacy:
-                requires:
-                    - build_dev
-          - test_back_data_migrations:
-                requires:
-                    - build_dev
-          - test_back_performance:
-                requires:
-                    - build_dev
-          - release-beta:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-                    - test_back_phpunit
-                    - test_onboarder_bundle
-                    - test_back_performance
-                    - test_back_behat_legacy
-                    - test_back_data_migrations
-                    - test_deploy
-                    - test_upgrade_from_32
                     - test_upgrade_from_last_release
 
   on_demand:

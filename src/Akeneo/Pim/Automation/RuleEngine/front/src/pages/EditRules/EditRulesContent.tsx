@@ -1,27 +1,26 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import { useDialogState, DialogDisclosure } from 'reakit/Dialog';
-import { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
+import { DialogDisclosure, useDialogState } from 'reakit/Dialog';
 import { FormContext } from 'react-hook-form';
 import * as akeneoTheme from '../../theme';
 import {
   AkeneoSpinner,
   BreadcrumbItem,
+  Content,
   LastBreadcrumbItem,
   RulesHeader,
-  Content,
 } from '../../components';
 import { EditRulesForm } from './components/EditRulesForm';
 import {
   generateAndRedirect,
+  generateUrl,
+  redirectToUrl,
   useBackboneRouter,
   useNotify,
   useTranslate,
   useUserContext,
-  generateUrl,
-  redirectToUrl,
 } from '../../dependenciesTools/hooks';
-import { Locale, RuleDefinition, Condition } from '../../models';
+import { Condition, Locale, RuleDefinition } from '../../models';
 import { useSubmitEditRuleForm } from './hooks';
 import { IndexedScopes } from '../../repositories/ScopeRepository';
 import { AddActionButton } from './components/actions/AddActionButton';
@@ -88,7 +87,7 @@ const EditRulesContent: React.FC<Props> = ({
   }, [formMethods.formState.dirtyFields.size]);
 
   const title =
-    (formMethods.watch(`labels.${currentCatalogLocale}`) as string) ||
+    formMethods.watch(`labels.${currentCatalogLocale}`) ||
     `[${ruleDefinitionCode}]`;
 
   const appendAction = (action: Action) => {
@@ -158,7 +157,7 @@ const EditRulesContent: React.FC<Props> = ({
 
   const saveAndExecuteDialog = useDialogState();
 
-  const userHasPermission = () =>
+  const userHasExecutePermission = () =>
     security.isGranted('pimee_catalog_rule_rule_execute_permissions');
 
   const handleSaveAndExecuteRule = () => {
@@ -174,7 +173,7 @@ const EditRulesContent: React.FC<Props> = ({
       <RulesHeader
         buttonLabel='pim_common.save'
         formId='edit-rules-form'
-        title={title}
+        title={title as string}
         unsavedChanges={formMethods.formState.dirty}
         saveable={!!actionsState.filter(Boolean).length}
         dropdown={
@@ -196,7 +195,7 @@ const EditRulesContent: React.FC<Props> = ({
                 'pimee_catalog_rule.form.delete.description'
               )}
             />
-            {userHasPermission() && formMethods.watch('enabled') && (
+            {userHasExecutePermission() && formMethods.watch('enabled') && (
               <>
                 <DialogDisclosure
                   {...saveAndExecuteDialog}
@@ -218,6 +217,21 @@ const EditRulesContent: React.FC<Props> = ({
                 />
               </>
             )}
+            <button
+              type={'button'}
+              className={'AknDropdown-menuLink'}
+              onClick={event => {
+                event.preventDefault();
+                formMethods.register({
+                  name: 'duplicate_on_save',
+                  value: true,
+                });
+                onSubmit().then(() => {
+                  formMethods.unregister('duplicate_on_save');
+                });
+              }}>
+              {translate('pimee_catalog_rule.form.edit.duplicate.button')}
+            </button>
           </Dropdown>
         }
         secondaryButton={<AddActionButton handleAddAction={handleAddAction} />}>

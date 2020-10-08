@@ -30,8 +30,8 @@ class InMemoryAssetFamilyExists implements AssetFamilyExistsInterface
         $this->assetFamilyRepository = $assetFamilyRepository;
     }
 
-    public function withIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier): bool
+    public function withIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier, bool $caseSensitive = true): bool
     {
-        return $this->assetFamilyRepository->hasAssetFamily($assetFamilyIdentifier);
+        return $this->assetFamilyRepository->hasAssetFamily($assetFamilyIdentifier, $caseSensitive);
     }
 }

@@ -61,14 +61,15 @@ class InMemoryAssetFamilyRepository implements AssetFamilyRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getByIdentifier(AssetFamilyIdentifier $identifier): AssetFamily
+    public function getByIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier): AssetFamily
     {
-        $assetFamily = $this->assetFamilies[(string) $identifier] ?? null;
-        if (null === $assetFamily) {
-            throw AssetFamilyNotFoundException::withIdentifier($identifier);
+        foreach ($this->assetFamilies as $identifier => $assetFamily) {
+            if (strtolower($identifier) === strtolower((string) $assetFamilyIdentifier)) {
+                return $assetFamily;
+            }
         }
 
-        return $assetFamily;
+        throw AssetFamilyNotFoundException::withIdentifier($assetFamilyIdentifier);
     }
 
     /**
@@ -89,9 +90,19 @@ class InMemoryAssetFamilyRepository implements AssetFamilyRepositoryInterface
         return count($this->assetFamilies);
     }
 
-    public function hasAssetFamily(AssetFamilyIdentifier $identifier): bool
+    public function hasAssetFamily(AssetFamilyIdentifier $identifier, bool $caseSensitive = true): bool
     {
-        return isset($this->assetFamilies[(string) $identifier]);
+        if (true === $caseSensitive) {
+            return isset($this->assetFamilies[(string)$identifier]);
+        }
+
+        foreach (array_keys($this->assetFamilies) as $assetFamilyIdentifier) {
+            if (strtolower($assetFamilyIdentifier) === strtolower((string)$identifier)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function all(): \Iterator

@@ -68,7 +68,8 @@ class AssetFamilyIdentifierShouldBeUniqueValidator extends ConstraintValidator
     {
         $assetFamilyIdentifier = $command->identifier;
         $alreadyExists = $this->assetFamilyExists->withIdentifier(
-            AssetFamilyIdentifier::fromString($assetFamilyIdentifier)
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            false
         );
         if ($alreadyExists) {
             $this->context->buildViolation(AssetFamilyIdentifierShouldBeUnique::ERROR_MESSAGE)

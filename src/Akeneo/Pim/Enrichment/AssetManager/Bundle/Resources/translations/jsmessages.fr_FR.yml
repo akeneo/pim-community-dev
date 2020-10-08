@@ -6,3 +6,21 @@ batch_jobs:
     label: Export des ressources en XLSX
     export.label: Export des ressources
 akeneo_assetmanager.export.assets.filter.asset_family: Famille de ressources
+pim_analytics:
+  info_type:
+    api_connection: Nombre de connexions API
+    nb_asset_families: Nombre de familles de ressources
+    max_number_of_assets_per_asset_family: Nombre maximum de ressources par famille de ressources
+    max_number_of_attributes_per_asset_family: Nombre maximum d'attributs par famille de ressources
+    average_number_of_assets_per_asset_family: Nombre moyen de ressources par famille de ressources
+    average_number_of_values_per_assets: Nombre moyen de valeurs par ressource
+    average_number_of_attributes_per_asset_family: Nombre moyen d'attributs par famille de ressources
+    data_source:
+      tracked: Destination de données suivie
+      untracked: Destination de données non suivie
+    data_destination:
+      tracked: Source de données suivie
+      untracked: Source de données non suivie
+    other:
+      tracked: Autres suivis
+      untracked: Autres non suivis

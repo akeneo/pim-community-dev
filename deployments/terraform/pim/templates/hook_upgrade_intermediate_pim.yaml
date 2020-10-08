@@ -5,21 +5,21 @@ kind: Job
 metadata:
   name: pim-intermediate-upgrader-{{ $upgradeVersion }}
   labels:
-    component: "hook-upgrader" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+    component: "hook-upgrader"
     app.kubernetes.io/component: "hook-upgrader"
     {{- include "pim.standardLabels" $tplCtx | indent 4 }}
     {{- include "pim.extraLabels" $tplCtx | indent 4 }}
   annotations:
     # This is what defines this resource as a hook. Without this line, the
     # job is considered part of the release.
-    "helm.sh/hook": {{ $tplCtx.Values.pim.hook.upgradePim.hook | quote }}
+    "helm.sh/hook": "post-upgrade"
     "helm.sh/hook-weight": {{ add $upgradeIndex 1 | quote }}
     "helm.sh/hook-delete-policy": "before-hook-creation"
 spec:
   template:
     metadata:
       labels:
-        component: "hook-upgrader" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+        component: "hook-upgrader"
         app.kubernetes.io/component: "hook-upgrader"
         {{- include "pim.standardLabels" $tplCtx | indent 8 }}
         {{- include "pim.extraLabels" $tplCtx | indent 8 }}
@@ -49,7 +49,7 @@ spec:
               mountPath: /var/secrets/google/srnt.json
               subPath: srnt.json
               readOnly: true
-            {{- if .Values.onboarder.enabled }}
+            {{- if $tplCtx.Values.onboarder.enabled }}
             - name: google-cloud-onboarder-key
               mountPath: /var/secrets/google/key.json
               subPath: key.json
@@ -62,7 +62,7 @@ spec:
             items:
             - key: srntPimStorageKey
               path: srnt.json
-        {{- if .Values.onboarder.enabled }}
+        {{- if $tplCtx.Values.onboarder.enabled }}
         - name: google-cloud-onboarder-key
           secret:
             secretName: pim-secrets

@@ -132,6 +132,9 @@ pimee_catalog_rule:
                 button: Save and execute
                 title: Save and execute the rule
                 description: You will save the current rule and execute it in background. When it’s done, you will be notified.
+            duplicate:
+                button: Save and duplicate
+                title: Duplicate the "{{ originalRuleCode }}" rule
             actions:
                 add_action: Add action
                 add_category:

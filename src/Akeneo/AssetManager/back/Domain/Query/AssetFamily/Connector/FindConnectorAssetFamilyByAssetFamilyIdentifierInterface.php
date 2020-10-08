@@ -17,5 +17,5 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 interface FindConnectorAssetFamilyByAssetFamilyIdentifierInterface
 {
-    public function find(AssetFamilyIdentifier $assetFamilyIdentifier): ?ConnectorAssetFamily;
+    public function find(AssetFamilyIdentifier $assetFamilyIdentifier, bool $caseSensitive = true): ?ConnectorAssetFamily;
 }

@@ -38,8 +38,19 @@ class InMemoryFindConnectorAssetFamilyByAssetFamilyIdentifier implements FindCon
      * {@inheritdoc}
      */
     public function find(
-        AssetFamilyIdentifier $assetFamilyIdentifier
+        AssetFamilyIdentifier $assetFamilyIdentifier,
+        bool $caseSensitive = true
     ): ?ConnectorAssetFamily {
-        return $this->results[(string) $assetFamilyIdentifier] ?? null;
+        if ($caseSensitive) {
+            return $this->results[(string) $assetFamilyIdentifier] ?? null;
+        }
+
+        foreach ($this->results as $identifier => $assetFamily) {
+            if (strtolower($identifier) === strtolower((string) $assetFamilyIdentifier)) {
+                return $assetFamily;
+            }
+        }
+
+        return null;
     }
 }

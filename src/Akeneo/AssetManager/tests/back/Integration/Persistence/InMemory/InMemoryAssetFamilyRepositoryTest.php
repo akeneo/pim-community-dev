@@ -54,6 +54,21 @@ class InMemoryAssetFamilyRepositoryTest extends TestCase
     /**
      * @test
      */
+    public function it_returns_an_asset_family_with_case_insensitive_search()
+    {
+        $identifier = AssetFamilyIdentifier::fromString('asset_family_identifier');
+        $assetFamily = AssetFamily::create($identifier, [], Image::createEmpty(), RuleTemplateCollection::empty());
+
+        $this->assetFamilyRepository->create($assetFamily);
+
+        $identifier = AssetFamilyIdentifier::fromString('asset_FAMILY_identifier');
+        $assetFamilyFound = $this->assetFamilyRepository->getByIdentifier($identifier);
+        Assert::assertTrue($assetFamily->equals($assetFamilyFound));
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_when_creating_an_asset_family_with_the_same_identifier()
     {
         $identifier = AssetFamilyIdentifier::fromString('asset_family_identifier');
@@ -100,11 +115,27 @@ class InMemoryAssetFamilyRepositoryTest extends TestCase
      */
     public function it_tells_if_the_repository_has_the_asset_family()
     {
-        $anotherIdentifier = AssetFamilyIdentifier::fromString('another_identifier');
-        $identifier = AssetFamilyIdentifier::fromString('asset_family_identifier');
-        $this->assetFamilyRepository->create(AssetFamily::create($identifier, [], Image::createEmpty(), RuleTemplateCollection::empty()));
-        Assert::assertTrue($this->assetFamilyRepository->hasAssetFamily($identifier));
-        Assert::assertFalse($this->assetFamilyRepository->hasAssetFamily($anotherIdentifier));
+        $existentIdentifier = AssetFamilyIdentifier::fromString('asset_family_identifier');
+        $this->assetFamilyRepository->create(AssetFamily::create($existentIdentifier, [], Image::createEmpty(), RuleTemplateCollection::empty()));
+
+        Assert::assertTrue($this->assetFamilyRepository->hasAssetFamily(
+                AssetFamilyIdentifier::fromString('asset_family_identifier')
+            )
+        );
+        Assert::assertTrue(
+            $this->assetFamilyRepository->hasAssetFamily(
+                AssetFamilyIdentifier::fromString('ASSET_FAMILY_IDENTIFIER'),
+                false
+            )
+        );
+        Assert::assertFalse(
+            $this->assetFamilyRepository->hasAssetFamily(
+                AssetFamilyIdentifier::fromString('ASSET_FAMILY_IDENTIFIER'),
+                true
+            )
+        );
+
+        Assert::assertFalse($this->assetFamilyRepository->hasAssetFamily(AssetFamilyIdentifier::fromString('other')));
     }
 
     /**
