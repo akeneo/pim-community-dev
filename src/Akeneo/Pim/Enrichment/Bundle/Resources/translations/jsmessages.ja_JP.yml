@@ -83,14 +83,29 @@ pim_enrich.entity.product:
       save_and_next: 保存して次へ
       save_and_finish: 保存して終了
     associations:
+      title: 関連 ({{ count }})
       none_exist: 関連タイプがありません。
       show_products: 商品を表示
       show_groups: グループを表示
       number_of_associations: "商品{{ productCount }} 、商品モデル {{ productModelCount }} 、グループ{{ groupCount }}"
+      number_of_quantified_associations: "{{ productCount }} 製品と {{ productModelCount }} 製品モデル"
       association_type_selector: 関連タイプ
       target: ターゲット
       manage: 関連性{{ associationType }} を追加
+      manage_description: 製品に関連付けたい製品を選択してください "{{ productLabel }}"
+      mass_edit_description: 選択した {{ productCount }} の製品に関連付けたい製品を選択してください
       add_associations: 関連性を追加
+      variant_products: バリエーション商品
+      quantified:
+        quantity: 数量
+      search:
+        placeholder: ラベルまたは識別子で検索
+      no_result: 検索結果がありません
+      no_data: 関連商品はありません
+      remove: 関連付けを削除
+      edit: 製品の編集
+      limit_reached: この製品に {{ maxLimit }} 件以上の関連付けを追加することはできません。
+      variant_updated: バリエーションの数量を更新しました。数量は同期されません。
     attribute_filter:
       display: 表示
       all: 属性全部
@@ -331,6 +346,7 @@ pim_enrich.mass_edit.product:
       label_count: "{0} <span class=\"AknFullPage-title--highlight\">商品</span>の数点が属する上位商品モデルを変更|{1}<span class=\"AknFullPage-title--highlight\">商品</span>の1点が属する上位商品モデルを変更|]1, Inf[<span class=\"AknFullPage-title--highlight\">商品</span>の{{ itemsCount }}点が属する上位商品モデルを変更"
       description: この一覧表で選択されたバリエーション商品の上位もしくはサブ商品モデルの上位は選択された商品モデルに変更されます
 pim_datagrid:
+  no_entities: "{{ entityHint }} は見つかりませんでした。"
   mass_action_group:
     bulk_actions:
       label: 一括操作
@@ -346,12 +362,15 @@ pim_datagrid:
       csv_grid_context: CSV (グリッドコンテキスト)
       xlsx_all: Excel (すべての属性)
       xlsx_grid_context: Excel(グリッドコンテキスト)
+      configurator:
+        subtitle: クイックエクスポート
+        title: アクションを選択
+        csv: CSV形式
+        xlsx: XLSX形式
+        all_attributes: 属性全部
     mass_edit: 一括操作
     sequential_edit: 連続編集
     mass_delete: 一括削除
-    selected:
-      family: 選択済のファミリー
-      product: 選択済の結果
   view_selector:
     view: 表示
   actions:
@@ -368,6 +387,10 @@ pim_datagrid:
   filters:
     label: フィルタ
     system: システム
+    product_typology:
+      variant: 'バリエーション'
+    entity_type:
+      label: 'バリエーション'
 batch_jobs:
   add_association:
     label: 関連付ける

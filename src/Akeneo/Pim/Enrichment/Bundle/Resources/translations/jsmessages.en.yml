@@ -364,6 +364,9 @@ pim_datagrid:
       xlsx_grid_context: Excel (Grid context)
       configurator:
         title: Select your action
+        csv: CSV
+        xlsx: XLSX
+        grid_context: Grid context
         all_attributes: All attributes
     mass_edit: Bulk actions
     sequential_edit: Sequential edit

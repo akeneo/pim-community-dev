@@ -165,6 +165,7 @@ pim_common:
   done: 完了
   edit: 編集
   entity_updated: 保存されていない変更があります。
+  export: エクスポート
   from: 開始
   general_properties: プロパティ全般
   history: 履歴

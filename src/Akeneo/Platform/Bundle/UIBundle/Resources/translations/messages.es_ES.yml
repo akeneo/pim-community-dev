@@ -61,6 +61,15 @@ pim_common:
   properties: Propiedades
   name: Nombre
   remove: Eliminar
+  code: Código
+  products: Productos
+  product_models: Modelos de producto
+  categories: Categorías
+  enabled: Habilitado
+  family: Familia
+  groups: Grupos
+  yes: "Sí"
+  no: "No"
 pim_enrich:
   #ACLs
   acl:
@@ -154,8 +163,6 @@ pim_enrich:
       remove: Remover las asociaciones de un producto
     job_tracker:
       index: Visualizar los procesos ejecutados
-    api_connection:
-      manage: Gestionar las conexiones API
   acl_group:
     association_type: Tipos de asociaciones
     attribute: Atributos
@@ -347,8 +354,8 @@ Decimals allowed: Permite decimales
 Negative allowed: Permitir valores negativos
 Date min: Fecha min
 Date max: Fecha máx
-Metric family: Familia métrica
-Default metric unit: Unidad métrica predeterminada
+Metric family: Familia de medición
+Default metric unit: Unidad de medición por defecto
 Max file size: Tamaño máximo de archivo (MB)
 Allowed extensions: Extensiones permitidas
 None: Ninguna
@@ -373,7 +380,7 @@ pim_catalog_file: Archivo
 pim_catalog_image: Imagen
 pim_catalog_boolean: "Si/No"
 pim_catalog_date: Fecha
-pim_catalog_metric: Métrica
+pim_catalog_metric: Medida
 pim_reference_data_simpleselect: Selección simple de datos de referencia
 pim_reference_data_multiselect: Selección múltiple de datos de referencia
 #Locales

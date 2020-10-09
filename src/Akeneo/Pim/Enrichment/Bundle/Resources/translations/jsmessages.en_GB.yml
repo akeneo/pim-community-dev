@@ -346,6 +346,7 @@ pim_enrich.mass_edit.product:
       label_count: "{0}Change parent product model of some <span class=\"AknFullPage-title--highlight\">products</span>|{1}Change parent product model of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change parent product model of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
       description: The parent of the variant products or sub-product models selected in the grid will be changed to the chosen product model.
 pim_datagrid:
+  no_entities: "No {{ entityHint }} found"
   mass_action_group:
     bulk_actions:
       label: Bulk Actions
@@ -362,8 +363,14 @@ pim_datagrid:
       xlsx_all: Excel (All attributes)
       xlsx_grid_context: Excel (Grid context)
       configurator:
+        subtitle: Quick export
         title: Select your action
+        csv: CSV
+        xlsx: XLSX
+        grid_context: Grid context
         all_attributes: All attributes
+        with_codes: With codes
+        with_labels: With labels
     mass_edit: Bulk actions
     sequential_edit: Sequential edit
     mass_delete: Mass delete
@@ -387,9 +394,13 @@ pim_datagrid:
     label: Filters
     system: System
     product_typology:
+      label: 'Product typology'
+      simple: 'Simple'
       variant: 'Variant'
     entity_type:
       label: 'Variant'
+      grouped: 'Grouped'
+      ungrouped: 'Ungrouped'
   search: Search on {{ label }}
 batch_jobs:
   add_association:
