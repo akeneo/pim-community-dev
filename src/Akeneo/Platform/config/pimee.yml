@@ -64,6 +64,7 @@ hslavich_onelogin_saml:
         x509cert: 'SSO_SP_CLIENT_PUBLIC_KEY_VALUE'
         privateKey: 'SSO_SP_CLIENT_PRIVATE_KEY_VALUE'
     # Optional settings
+    baseurl: '%env(AKENEO_PIM_URL)%/saml'
     security:
         authnRequestsSigned: true
         wantNameId: false
