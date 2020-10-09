@@ -29,6 +29,9 @@ const unitConfig = {
     'pim/router': '<rootDir>/public/bundles/pimui/js/router.js',
     routing: '<rootDir>/public/bundles/pimui/js/fos-routing-wrapper.js',
     routes: '<rootDir>/public/js/routes.js',
+    '^react$': '<rootDir>/node_modules/react',
+    '^react-dom$': '<rootDir>/node_modules/react-dom',
+    '^styled-components$': '<rootDir>/node_modules/styled-components',
   },
   testRegex: '(tests/front/unit)(.*)(unit).(jsx?|tsx?)$',
   testPathIgnorePatterns: [
