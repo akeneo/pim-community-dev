@@ -668,6 +668,9 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setParent(ProductModelInterface $parent = null): void
     {
+        if (null === $parent) {
+            $this->familyVariant = null;
+        }
         $this->parent = $parent;
     }
 
