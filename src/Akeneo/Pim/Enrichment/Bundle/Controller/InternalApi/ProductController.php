@@ -352,7 +352,7 @@ class ProductController
     /**
      * Converts a variant product into a simple product
      *
-     * @AclAncestor("pim_enrich_product_convert_variant_into_simple")
+     * @AclAncestor("pim_enrich_product_convert_variant_to_simple")
      */
     public function convertToSimpleProductAction(Request $request, int $id): Response
     {
