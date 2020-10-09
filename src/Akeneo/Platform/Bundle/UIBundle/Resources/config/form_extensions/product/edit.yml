@@ -43,6 +43,15 @@ extensions:
         targetZone: secondary-actions
         position: 30
 
+    pim-product-edit-form-convert-to-simple-product:
+        module: pimee/product-edit-form/convert-to-simple-product
+        parent: pim-product-edit-form-secondary-actions
+        targetZone: secondary-actions
+        aclResourceId: pim_enrich_product_convert_variant_to_simple
+        position: 80
+        config:
+            url: pim_enrich_product_rest_convert_to_simple
+
     pim-product-edit-form-duplicate:
         module: pimee/product-edit-form/duplicate
         parent: pim-product-edit-form-secondary-actions
