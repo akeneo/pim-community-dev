@@ -32,15 +32,18 @@ final class GpsReceiver implements ReceiverInterface
 
     public function get(): iterable
     {
-        $messages = $this->subscription->pull([
-            'maxMessages' => 1,
-            'returnImmediately' => true,
-        ]);
-        if (0 === count($messages)) {
+        $message = $this->pullMessage();
+        if (null === $message) {
             return [];
         }
 
-        $message = $messages[0];
+        // We dont want to retry messages.
+        if (null !== $message->deliveryAttempt() && $message->deliveryAttempt() > 0) {
+            $this->rejectMessage($message);
+
+            return $this->get();
+        }
+
         $envelope = $this->serializer->decode([
             'body' => $message->data(),
             'headers' => $message->attributes(),
@@ -60,7 +63,29 @@ final class GpsReceiver implements ReceiverInterface
 
     public function reject(Envelope $envelope): void
     {
-        $this->subscription->acknowledge($this->getNativeMessage($envelope));
+        $this->rejectMessage($this->getNativeMessage($envelope));
+    }
+
+    private function pullMessage(): ?Message
+    {
+        $messages = $this->subscription->pull([
+            'maxMessages' => 1,
+            'returnImmediately' => true,
+        ]);
+        if (0 === count($messages)) {
+            return null;
+        }
+
+        return $messages[0];
+    }
+
+    /**
+     * Resets the acknowledge deadline for the message without acknowledging it.
+     * This will make the message available for redelivery.
+     */
+    private function rejectMessage(Message $message): void
+    {
+        $this->subscription->modifyAckDeadline($message, 0);
     }
 
     private function getNativeMessage(Envelope $envelope): Message

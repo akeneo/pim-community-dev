@@ -87,7 +87,7 @@ class GpsReceiverSpec extends ObjectBehavior
 
         $envelope = new Envelope((object)['message' => 'My message!'], [new NativeMessageStamp($gpsMessage)]);
 
-        $subscription->acknowledge($gpsMessage)
+        $subscription->modifyAckDeadline($gpsMessage, 0)
             ->shouldBeCalled();
 
         $this->reject($envelope);
