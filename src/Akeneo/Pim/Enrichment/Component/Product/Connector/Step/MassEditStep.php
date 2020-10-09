@@ -7,7 +7,6 @@ use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\AbstractStep;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
-use Akeneo\Tool\Component\Batch\Step\TrackableStepInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -17,7 +16,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MassEditStep extends AbstractStep implements TrackableStepInterface
+class MassEditStep extends AbstractStep
 {
     /** @var StepExecutionAwareInterface */
     protected $cleaner;
@@ -43,12 +42,8 @@ class MassEditStep extends AbstractStep implements TrackableStepInterface
      */
     protected function doExecute(StepExecution $stepExecution)
     {
-        $stepExecution->setTotalItems(1);
-
         $this->cleaner->setStepExecution($stepExecution);
         $this->cleaner->execute();
-
-        $stepExecution->incrementProcessedCount();
     }
 
     /**
@@ -69,10 +64,5 @@ class MassEditStep extends AbstractStep implements TrackableStepInterface
         $this->cleaner = $cleaner;
 
         return $this;
-    }
-
-    public function isTrackable(): bool
-    {
-        return true;
     }
 }

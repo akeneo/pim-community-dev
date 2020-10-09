@@ -12,7 +12,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
-use Akeneo\Tool\Component\Connector\Step\TrackableTaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -24,7 +23,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface, TrackableTaskletInterface
+class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
 {
     /** @var StepExecution */
     private $stepExecution;
@@ -91,11 +90,6 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface, T
         $this->stepExecution = $stepExecution;
     }
 
-    public function isTrackable(): bool
-    {
-        return true;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -104,7 +98,6 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface, T
         $jobParameters = $this->stepExecution->getJobParameters();
         $familyVariantCodes = $jobParameters->get('family_variant_codes');
 
-        $this->stepExecution->setTotalItems(count($familyVariantCodes));
         foreach ($familyVariantCodes as $familyVariantCode) {
             $familyVariant = $this->familyVariantRepository->findOneByIdentifier($familyVariantCode);
             $levelNumber = $familyVariant->getNumberOfLevel();
@@ -120,8 +113,6 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface, T
 
                 $levelNumber--;
             }
-
-            $this->stepExecution->incrementProcessedCount();
         }
     }
 

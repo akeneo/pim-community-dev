@@ -136,10 +136,10 @@ class ItemStep extends AbstractStep implements TrackableStepInterface
             if ($batchCount >= $this->batchSize) {
                 if (!empty($itemsToWrite)) {
                     $this->write($itemsToWrite);
-                    $stepExecution->incrementProcessedCount(count($itemsToWrite));
                     $itemsToWrite = [];
                 }
 
+                $stepExecution->incrementProcessedItems(count($itemsToWrite));
                 $this->getJobRepository()->updateStepExecution($stepExecution);
                 $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
                 $batchCount = 0;
@@ -148,7 +148,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface
 
         if (!empty($itemsToWrite)) {
             $this->write($itemsToWrite);
-            $stepExecution->incrementProcessedCount(count($itemsToWrite));
+            $stepExecution->incrementProcessedItems(count($itemsToWrite));
         }
 
         if ($batchCount > 0) {

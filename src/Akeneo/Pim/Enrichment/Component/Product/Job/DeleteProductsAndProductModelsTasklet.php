@@ -170,7 +170,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
             }
             $products->next();
             $this->stepExecution->incrementReadCount();
-            $this->stepExecution->incrementProcessedCount();
+            $this->stepExecution->incrementProcessedItems();
         }
 
         if (!empty($entitiesToRemove)) {

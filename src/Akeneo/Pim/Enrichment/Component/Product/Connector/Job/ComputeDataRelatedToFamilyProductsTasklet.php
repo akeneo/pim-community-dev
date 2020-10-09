@@ -122,6 +122,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
             $family = $this->familyRepository->findOneByIdentifier($familyItem['code']);
             if (null === $family) {
                 $this->stepExecution->incrementSummaryInfo('skip');
+                $this->stepExecution->incrementProcessedItems();
                 continue;
             }
 
@@ -145,6 +146,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
 
                 if (0 === (count($productsToSave) + count($skippedProducts)) % $this->batchSize) {
                     $this->saveProducts($productsToSave);
+                    $this->jobRepository->updateStepExecution($this->stepExecution);
                     $productsToSave = [];
                     $skippedProducts = [];
                     $this->cacheClearer->clear();
@@ -152,9 +154,10 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
             }
 
             $this->saveProducts($productsToSave);
+            $this->stepExecution->incrementProcessedItems();
+            $this->jobRepository->updateStepExecution($this->stepExecution);
 
             $this->cacheClearer->clear();
-            $this->stepExecution->incrementProcessedCount();
         }
     }
 
@@ -194,7 +197,6 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
 
         $this->productSaver->saveAll($products);
         $this->stepExecution->incrementSummaryInfo('process', count($products));
-        $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 
     /**

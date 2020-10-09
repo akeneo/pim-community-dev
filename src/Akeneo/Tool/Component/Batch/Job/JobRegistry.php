@@ -105,10 +105,6 @@ class JobRegistry
         return $this->jobsByType[$jobType];
     }
 
-    public function getAllTypes()
-    {
-        return array_keys($this->jobsByTypeGroupByConnector);
-    }
     /**
      * @param string $jobType
      *

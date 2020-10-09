@@ -6,11 +6,9 @@ use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Event\JobInstanceEvents;
 use Akeneo\Platform\Bundle\ImportExportBundle\Exception\JobInstanceCannotBeUpdatedException;
-use Akeneo\Platform\Bundle\ImportExportBundle\Registry\NotVisibleJobsRegistry;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
-use Akeneo\Tool\Component\Batch\Job\Job;
 use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Tool\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
@@ -104,10 +102,6 @@ class JobInstanceController
 
     /** @var FilesystemInterface */
     protected $filesystem;
-    /**
-     * @var NotVisibleJobsRegistry
-     */
-    private $notVisibleJobsRegistry;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
@@ -149,8 +143,7 @@ class JobInstanceController
         JobInstanceFactory $jobInstanceFactory,
         EventDispatcherInterface $eventDispatcher,
         CollectionFilterInterface $inputFilter,
-        FilesystemInterface $filesystem,
-        NotVisibleJobsRegistry $notVisibleJobsRegistry
+        FilesystemInterface $filesystem
     ) {
         $this->repository            = $repository;
         $this->jobRegistry           = $jobRegistry;
@@ -171,7 +164,6 @@ class JobInstanceController
         $this->eventDispatcher       = $eventDispatcher;
         $this->inputFilter           = $inputFilter;
         $this->filesystem            = $filesystem;
-        $this->notVisibleJobsRegistry = $notVisibleJobsRegistry;
     }
 
     /**
@@ -529,24 +521,9 @@ class JobInstanceController
     {
         $jobType = $request->query->get('jobType');
         $choices = [];
-        $jobNotVisible = $this->notVisibleJobsRegistry->getCodes();
-
-        $types = $this->jobRegistry->getAllTypes();
-        foreach ($types as $jobType) {
-            foreach ($this->jobRegistry->allByTypeGroupByConnector($jobType) as $connector => $jobs) {
-                foreach ($jobs as $key => $job) {
-                    /** @var Job $job */
-                    if (in_array($job->getName(), $jobNotVisible)) {
-                        continue;
-                    }
-
-                    foreach ($job->getStepNames() as $stepName) {
-                        $step = $job->getStep($stepName);
-                        if(! $step->isTrackable()) {
-                            $choices[$connector][$key][$job->getName()][$stepName] = $step->isTrackable();
-                        }
-                    }
-                }
+        foreach ($this->jobRegistry->allByTypeGroupByConnector($jobType) as $connector => $jobs) {
+            foreach ($jobs as $key => $job) {
+                $choices[$connector][$key] = $job->getName();
             }
         }
 

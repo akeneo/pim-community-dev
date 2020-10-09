@@ -78,8 +78,8 @@ class StepExecution
     private $summary = [];
 
     private $trackingData = [
+        'processedItems' => 0,
         'totalItems' => 0,
-        'processCount' => 0
     ];
 
     /**
@@ -235,17 +235,17 @@ class StepExecution
         return $this->trackingData['totalItems'];
     }
 
-    public function incrementProcessedCount($increment = 1)
+    public function incrementProcessedItems($increment = 1)
     {
-        $this->trackingData['processCount'] += $increment;
-        if ($this->trackingData['processCount'] > $this->getTotalItems()) {
-            $this->setTotalItems($this->trackingData['processCount']);
+        $this->trackingData['processedItems'] += $increment;
+        if ($this->trackingData['processedItems'] > $this->getTotalItems()) {
+            $this->setTotalItems($this->trackingData['processedItems']);
         }
     }
 
-    public function getProcessCount(): int
+    public function getProcessedItems(): int
     {
-        return $this->trackingData['processCount'];
+        return $this->trackingData['processedItems'];
     }
 
     public function getTrackingData(): array

@@ -1,6 +1,6 @@
-import ReactDOM from "react-dom";
-import React from "react";
-import JobStatusBadge = require("./job-status-badge");
+import ReactDOM from 'react-dom';
+import React from 'react';
+import JobStatusBadge = require('./job-status-badge');
 const StringCell = require('oro/datagrid/string-cell');
 
 class JobStatusCell extends StringCell {

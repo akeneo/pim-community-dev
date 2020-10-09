@@ -133,6 +133,7 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
             $family = $this->familyRepository->findOneByIdentifier($familyItem['code']);
             if (null === $family) {
                 $this->stepExecution->incrementSummaryInfo('skip');
+                $this->stepExecution->incrementProcessedItems();
                 continue;
             }
 
@@ -152,6 +153,7 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
 
                 if (0 === (count($productModelsToSave) + count($skippedProductModels)) % $this->batchSize) {
                     $this->saveProductsModel($productModelsToSave);
+                    $this->jobRepository->updateStepExecution($this->stepExecution);
                     $productModelsToSave = [];
                     $skippedProductModels = [];
                     $this->cacheClearer->clear();
@@ -159,7 +161,8 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
             }
 
             $this->saveProductsModel($productModelsToSave);
-            $this->stepExecution->incrementProcessedCount();
+            $this->stepExecution->incrementProcessedItems();
+            $this->jobRepository->updateStepExecution($this->stepExecution);
         }
     }
 
@@ -199,7 +202,6 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
 
         $this->productModelSaver->saveAll($productModels);
         $this->stepExecution->incrementSummaryInfo('process', count($productModels));
-        $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 
     /**
