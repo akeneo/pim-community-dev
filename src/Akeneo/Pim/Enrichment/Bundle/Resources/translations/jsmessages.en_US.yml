@@ -54,10 +54,10 @@ pim_enrich.entity.product:
             all_visible: All visible
             copy: Copy
         convert_variant_to_simple:
-            label: Convert into a simple product
+            label: Convert to a simple product
             dialog:
                 title: Confirm conversion
-                content: "Are you sure you want to convert this variant product to a simple product? It will inherit its parent’s values, categories and associations."
+                content: "Are you sure you want to convert this variant product to a simple product? It will keep all its former values, categories and associations"
         history:
             version: Version
             author: Author
