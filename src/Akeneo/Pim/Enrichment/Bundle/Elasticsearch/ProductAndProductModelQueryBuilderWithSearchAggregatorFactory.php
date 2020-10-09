@@ -26,7 +26,7 @@ class ProductAndProductModelQueryBuilderWithSearchAggregatorFactory implements P
     public function __construct(
         string $pqbClass,
         ProductQueryBuilderFactoryInterface $factory,
-        ProductAndProductModelSearchAggregator $searchAggregator = null
+        ProductAndProductModelSearchAggregator $searchAggregator
     ) {
         $this->pqbClass = $pqbClass;
         $this->factory = $factory;
@@ -40,6 +40,9 @@ class ProductAndProductModelQueryBuilderWithSearchAggregatorFactory implements P
     {
         $basePqb = $this->factory->create($options);
 
-        return new $this->pqbClass($basePqb, $this->searchAggregator);
+        return new $this->pqbClass(
+            $basePqb,
+            $this->searchAggregator
+        );
     }
 }
