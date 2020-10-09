@@ -13,7 +13,8 @@ define(
                 container: '#flash-messages .flash-messages-holder',
                 delay: false,
                 template: _.template(flashMessageTemplate),
-                flash: true
+                flash: true,
+                messageTitle: null
             },
 
             /**
@@ -50,7 +51,7 @@ define(
                 var $el = $(opt.template({
                     type: type,
                     message: message,
-                    messageTitle: '',
+                    messageTitle: opt.messageTitle,
                     delay: delay,
                     icon: this.getIcon(type),
                     closeIcon: this.getCloseIcon(type)

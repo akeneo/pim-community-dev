@@ -10,6 +10,7 @@ use Oro\Bundle\PimDataGridBundle\Adapter\GridFilterAdapterInterface;
 use Oro\Bundle\PimDataGridBundle\Datasource\ProductAndProductModelDatasource;
 use Oro\Bundle\PimDataGridBundle\Datasource\ProductDatasource;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionDispatcher;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -145,9 +146,11 @@ class ProductExportController
         $configuration = array_merge($rawParameters, $dynamicConfiguration);
         $configuration['user_to_notify'] = $this->getUser()->getUsername();
 
-        $this->jobLauncher->launch($jobInstance, $this->getUser(), $configuration);
+        $jobExecution = $this->jobLauncher->launch($jobInstance, $this->getUser(), $configuration);
 
-        return new Response();
+        return new JsonResponse([
+            'job_id' => $jobExecution->getId(),
+        ]);
     }
 
     /**

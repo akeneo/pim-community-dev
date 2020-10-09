@@ -60,6 +60,7 @@
 - PIM-9368: Allow minimum translation progress of 70% instead of 80%
 - PIM-9398: Add a primary key on connection table
 - PIM-9371: Disable save button when user creation form is not ready to submit
+- RAC-178: When launching a job, the notification contains a link to the job status
 
 # Technical Improvements
 
