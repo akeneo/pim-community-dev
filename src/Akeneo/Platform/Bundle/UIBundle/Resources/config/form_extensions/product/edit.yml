@@ -128,7 +128,7 @@ extensions:
         module: pim/product-edit-form/convert-to-simple-product
         parent: pim-product-edit-form-secondary-actions
         targetZone: secondary-actions
-        aclResourceId: pim_enrich_product_convert_variant_into_simple
+        aclResourceId: pim_enrich_product_convert_variant_to_simple
         position: 90
         config:
             url: pim_enrich_product_rest_convert_to_simple
