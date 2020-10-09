@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModelEventSubscriber;
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
@@ -38,8 +41,6 @@ class ProductModelEventSubscriberSpec extends ObjectBehavior
         );
     }
 
-    // TODO : API-1309: product model created
-    /*
     function it_produces_a_product_model_created_event(
         UserInterface $user,
         $security,
@@ -47,15 +48,20 @@ class ProductModelEventSubscriberSpec extends ObjectBehavior
     ) {
         $productModel = new ProductModel();
         $productModel->setCode('polo_col_mao');
+
         $messageBus = $this->getMessageBus();
         $this->beConstructedWith($security, $normalizer, $messageBus);
+
         $user->getUsername()->willReturn('julia');
         $security->getUser()->willReturn($user);
+
         $normalizer->normalize($productModel, 'standard')->willReturn(['code' => 'polo_col_mao',]);
-        $this->produceBusinessSaveEvent(new GenericEvent($productModel, ['created' => true]));
+
+        $this->produceBusinessSaveEvent(new GenericEvent($productModel, ['is_new' => true]));
+
         Assert::assertCount(1, $messageBus->messages);
+        Assert::assertInstanceOf(ProductModelCreated::class, $messageBus->messages[0]);
     }
-    */
 
     function it_produces_a_product_model_updated_event(
         UserInterface $user,
@@ -76,6 +82,7 @@ class ProductModelEventSubscriberSpec extends ObjectBehavior
         $this->produceBusinessSaveEvent(new GenericEvent($productModel));
 
         Assert::assertCount(1, $messageBus->messages);
+        Assert::assertInstanceOf(ProductModelUpdated::class, $messageBus->messages[0]);
     }
 
     function it_does_not_produce_business_save_event_because_event_subject_is_not_a_product_model(
@@ -131,6 +138,7 @@ class ProductModelEventSubscriberSpec extends ObjectBehavior
         $this->produceBusinessRemoveEvent(new GenericEvent($productModel));
 
         Assert::assertCount(1, $messageBus->messages);
+        Assert::assertInstanceOf(ProductModelRemoved::class, $messageBus->messages[0]);
     }
 
     function it_does_not_produce_business_remove_event_because_event_subject_is_not_a_product(
