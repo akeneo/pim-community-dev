@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-9501: [Backport] PIM-9494: Fix the performances of attribute-select-filter on long lists of AttributeOptions
+
 # 3.2.72 (2020-09-30)
 
 # 3.2.71 (2020-09-21)
