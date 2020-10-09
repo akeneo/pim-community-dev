@@ -1,111 +1,64 @@
 'use strict';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import '@testing-library/jest-dom/extend-expect';
-import {
-  act,
-  queryByText,
-  fireEvent,
-  getByTitle,
-  getByText,
-  getAllByRole,
-  getByPlaceholderText,
-  getAllByTitle,
-} from '@testing-library/react';
+import {render, screen, fireEvent} from '@testing-library/react';
 import Recipients, {MAX_RECIPIENT_COUNT} from 'akeneosharedcatalog/job/form/recipients';
 
-let container: HTMLElement;
-
-beforeEach(() => {
-  container = document.createElement('div');
-  document.body.appendChild(container);
-});
-
-afterEach(() => {
-  document.body.removeChild(container);
-});
-
-test('It renders without errors', async () => {
-  await act(async () => {
-    ReactDOM.render(<Recipients recipients={[]} validationErrors={[]} onRecipientsChange={jest.fn()} />, container);
-  });
-});
-
-test('I can see the existing recipients', async () => {
+test('I can see the existing recipients', () => {
   const emails = ['hello@akeneo.com', 'bonjour@akeneo.com'];
   const recipients = emails.map(email => ({
     email: email,
   }));
 
-  await act(async () => {
-    ReactDOM.render(
-      <Recipients recipients={recipients} validationErrors={[]} onRecipientsChange={jest.fn()} />,
-      container
-    );
-  });
+  render(<Recipients recipients={recipients} validationErrors={[]} onRecipientsChange={jest.fn()} />);
 
-  expect(getByText(container, 'hello@akeneo.com')).toBeInTheDocument();
-  expect(getByText(container, 'bonjour@akeneo.com')).toBeInTheDocument();
+  expect(screen.getByText('hello@akeneo.com')).toBeInTheDocument();
+  expect(screen.getByText('bonjour@akeneo.com')).toBeInTheDocument();
 });
 
-test('I can add a valid email', async () => {
+test('I can add a valid email', () => {
   const email = 'hello@akeneo.com';
   const mockOnRecipientsChange = jest.fn();
 
-  await act(async () => {
-    ReactDOM.render(
-      <Recipients recipients={[]} validationErrors={[]} onRecipientsChange={mockOnRecipientsChange} />,
-      container
-    );
-  });
+  render(<Recipients recipients={[]} validationErrors={[]} onRecipientsChange={mockOnRecipientsChange} />);
 
-  const input = getByPlaceholderText(container, 'shared_catalog.recipients.placeholder');
+  const input = screen.getByPlaceholderText('shared_catalog.recipients.placeholder');
   fireEvent.change(input, {target: {value: email}});
-  const button = getByText(container, 'pim_common.add');
+  const button = screen.getByText('pim_common.add');
   fireEvent.click(button);
 
   expect(mockOnRecipientsChange).toHaveBeenCalledWith([{email}]);
 });
 
-test('I cannot add an invalid email', async () => {
+test('I cannot add an invalid email', () => {
   const email = 'INVALID';
   const mockOnRecipientsChange = jest.fn();
 
-  await act(async () => {
-    ReactDOM.render(
-      <Recipients recipients={[]} validationErrors={[]} onRecipientsChange={mockOnRecipientsChange} />,
-      container
-    );
-  });
+  render(<Recipients recipients={[]} validationErrors={[]} onRecipientsChange={mockOnRecipientsChange} />);
 
-  const input = getByPlaceholderText(container, 'shared_catalog.recipients.placeholder');
+  const input = screen.getByPlaceholderText('shared_catalog.recipients.placeholder');
   fireEvent.change(input, {target: {value: email}});
-  const button = getByText(container, 'pim_common.add');
+  const button = screen.getByText('pim_common.add');
   fireEvent.click(button);
 
-  expect(getByText(container, 'shared_catalog.recipients.invalid_email')).toBeInTheDocument();
+  expect(screen.getByText('shared_catalog.recipients.invalid_email')).toBeInTheDocument();
 });
 
-test('I cannot add a duplicate email', async () => {
+test('I cannot add a duplicate email', () => {
   const email = 'michel@akeneo.com';
   const mockOnRecipientsChange = jest.fn();
 
-  await act(async () => {
-    ReactDOM.render(
-      <Recipients recipients={[{email}]} validationErrors={[]} onRecipientsChange={mockOnRecipientsChange} />,
-      container
-    );
-  });
+  render(<Recipients recipients={[{email}]} validationErrors={[]} onRecipientsChange={mockOnRecipientsChange} />);
 
-  const input = getByPlaceholderText(container, 'shared_catalog.recipients.placeholder') as HTMLInputElement;
+  const input = screen.getByPlaceholderText('shared_catalog.recipients.placeholder') as HTMLInputElement;
   fireEvent.change(input, {target: {value: email}});
   fireEvent.keyDown(input, {key: 'Enter', code: 'Enter', keyCode: 13, charCode: 13});
 
-  expect(getByText(container, 'shared_catalog.recipients.duplicates')).toBeInTheDocument();
+  expect(screen.getByText('shared_catalog.recipients.duplicates')).toBeInTheDocument();
 });
 
-test('I can see a backend validation error', async () => {
+test('I can see a backend validation error', () => {
   const recipients = [
     {
       email: 'INVALID',
@@ -117,124 +70,96 @@ test('I can see a backend validation error', async () => {
     },
   };
 
-  await act(async () => {
-    ReactDOM.render(
-      <Recipients recipients={recipients} validationErrors={validationErrors} onRecipientsChange={jest.fn()} />,
-      container
-    );
-  });
+  render(<Recipients recipients={recipients} validationErrors={validationErrors} onRecipientsChange={jest.fn()} />);
 
-  expect(getByText(container, 'invalid_email_message')).toBeInTheDocument();
+  expect(screen.getByText('invalid_email_message')).toBeInTheDocument();
 });
 
-test('I can remove a recipient', async () => {
+test('I can remove a recipient', () => {
   const recipients = [{email: 'hello@akeneo.com'}];
   const mockOnRecipientsChange = jest.fn();
 
-  await act(async () => {
-    ReactDOM.render(
-      <Recipients recipients={recipients} validationErrors={[]} onRecipientsChange={mockOnRecipientsChange} />,
-      container
-    );
-  });
+  render(<Recipients recipients={recipients} validationErrors={[]} onRecipientsChange={mockOnRecipientsChange} />);
 
   // We select the row first to check it is also removed from the bulk selection
-  fireEvent.click(getByText(container, 'hello@akeneo.com'));
+  fireEvent.click(screen.getByText('hello@akeneo.com'));
 
-  const button = getByTitle(container, 'pim_common.remove');
+  const button = screen.getByTitle('pim_common.remove');
   fireEvent.click(button);
 
   expect(mockOnRecipientsChange).toHaveBeenCalledWith([]);
-  expect(queryByText(container, 'pim_common.delete')).not.toBeInTheDocument();
+  expect(screen.queryByText('pim_common.delete')).not.toBeInTheDocument();
 });
 
-test('I can search recipients by email', async () => {
+test('I can search recipients by email', () => {
   const recipients = [{email: 'hello@akeneo.com'}, {email: 'coucou@akeneo.com'}];
   const mockOnRecipientsChange = jest.fn();
 
-  await act(async () => {
-    ReactDOM.render(
-      <Recipients recipients={recipients} validationErrors={[]} onRecipientsChange={mockOnRecipientsChange} />,
-      container
-    );
-  });
+  render(<Recipients recipients={recipients} validationErrors={[]} onRecipientsChange={mockOnRecipientsChange} />);
 
-  const searchInput = getByTitle(container, 'pim_common.search') as HTMLInputElement;
+  const searchInput = screen.getByTitle('pim_common.search') as HTMLInputElement;
 
-  expect(queryByText(container, 'hello@akeneo.com')).toBeInTheDocument();
-  expect(queryByText(container, 'coucou@akeneo.com')).toBeInTheDocument();
+  expect(screen.queryByText('hello@akeneo.com')).toBeInTheDocument();
+  expect(screen.queryByText('coucou@akeneo.com')).toBeInTheDocument();
 
   fireEvent.change(searchInput, {target: {value: 'coucou'}});
 
-  expect(queryByText(container, 'hello@akeneo.com')).not.toBeInTheDocument();
-  expect(queryByText(container, 'coucou@akeneo.com')).toBeInTheDocument();
+  expect(screen.queryByText('hello@akeneo.com')).not.toBeInTheDocument();
+  expect(screen.queryByText('coucou@akeneo.com')).toBeInTheDocument();
 
   fireEvent.change(searchInput, {target: {value: 'unknown'}});
 
-  expect(queryByText(container, 'hello@akeneo.com')).not.toBeInTheDocument();
-  expect(queryByText(container, 'coucou@akeneo.com')).not.toBeInTheDocument();
+  expect(screen.queryByText('hello@akeneo.com')).not.toBeInTheDocument();
+  expect(screen.queryByText('coucou@akeneo.com')).not.toBeInTheDocument();
 });
 
-test('It displays a message when no result is found', async () => {
+test('It displays a message when no result is found', () => {
   const recipients = [{email: 'hello@akeneo.com'}];
   const mockOnRecipientsChange = jest.fn();
 
-  await act(async () => {
-    ReactDOM.render(
-      <Recipients recipients={recipients} validationErrors={[]} onRecipientsChange={mockOnRecipientsChange} />,
-      container
-    );
-  });
+  render(<Recipients recipients={recipients} validationErrors={[]} onRecipientsChange={mockOnRecipientsChange} />);
 
-  const searchInput = getByTitle(container, 'pim_common.search') as HTMLInputElement;
+  const searchInput = screen.getByTitle('pim_common.search') as HTMLInputElement;
   fireEvent.change(searchInput, {target: {value: 'NOT FOUND'}});
 
-  expect(getByText(container, 'shared_catalog.recipients.no_result')).toBeInTheDocument();
+  expect(screen.getByText('shared_catalog.recipients.no_result')).toBeInTheDocument();
 });
 
-test('It displays a helper when the max limit is reached', async () => {
+test('It displays a helper when the max limit is reached', () => {
   const recipients = [];
   for (let i = 0; i < MAX_RECIPIENT_COUNT; i++) {
     recipients.push({email: `michel${i}@akeneo.com`});
   }
   const mockOnRecipientsChange = jest.fn();
 
-  await act(async () => {
-    ReactDOM.render(
-      <Recipients recipients={recipients} validationErrors={[]} onRecipientsChange={mockOnRecipientsChange} />,
-      container
-    );
-  });
+  render(<Recipients recipients={recipients} validationErrors={[]} onRecipientsChange={mockOnRecipientsChange} />);
 
-  expect(getByText(container, 'shared_catalog.recipients.max_limit_reached')).toBeInTheDocument();
+  expect(screen.getByText('shared_catalog.recipients.max_limit_reached')).toBeInTheDocument();
 });
 
-test('It can add multiple recipients at once (separated by comma, semicolon, space or new line) and filters out duplicates', async () => {
+test('It can add multiple recipients at once (separated by comma, semicolon, space or new line) and filters out duplicates', () => {
   const mockOnRecipientsChange = jest.fn();
 
-  await act(async () => {
-    ReactDOM.render(
-      <Recipients
-        recipients={[{email: 'coucou@akeneo.com'}]}
-        validationErrors={[]}
-        onRecipientsChange={mockOnRecipientsChange}
-      />,
-      container
-    );
-  });
+  render(
+    <Recipients
+      recipients={[{email: 'coucou@akeneo.com'}]}
+      validationErrors={[]}
+      onRecipientsChange={mockOnRecipientsChange}
+    />
+  );
 
-  expect(getAllByTitle(container, 'pim_common.remove').length).toEqual(1);
+  expect(screen.getAllByTitle('pim_common.remove').length).toEqual(1);
 
-  const input = getByPlaceholderText(container, 'shared_catalog.recipients.placeholder');
+  const input = screen.getByPlaceholderText('shared_catalog.recipients.placeholder');
   fireEvent.change(input, {
     target: {
       value: `coucou@akeneo.com,hello@akeneo.com;INVALID bonjour@akeneo.com nice@raccoon.net
  ANOTHER_INVALID salut@michel.fr salut@michel.fr`,
     },
   });
-  fireEvent.click(getByText(container, 'pim_common.add'));
+  fireEvent.click(screen.getByText('pim_common.add'));
 
-  expect(getAllByTitle(container, 'pim_common.remove').length).toEqual(5);
+  expect(screen.getAllByTitle('pim_common.remove').length).toEqual(5);
   expect(mockOnRecipientsChange).toHaveBeenCalledWith([
     {email: 'coucou@akeneo.com'},
     {email: 'hello@akeneo.com'},
@@ -244,54 +169,43 @@ test('It can add multiple recipients at once (separated by comma, semicolon, spa
   ]);
 });
 
-test('It does not add more than the recipient limit', async () => {
+test('It does not add more than the recipient limit', () => {
   const recipients = [];
   for (let i = 0; i < MAX_RECIPIENT_COUNT - 2; i++) {
     recipients.push({email: `michel${i}@akeneo.com`});
   }
 
-  await act(async () => {
-    ReactDOM.render(
-      <Recipients recipients={recipients} validationErrors={[]} onRecipientsChange={jest.fn()} />,
-      container
-    );
-  });
+  render(<Recipients recipients={recipients} validationErrors={[]} onRecipientsChange={jest.fn()} />);
 
-  const input = getByPlaceholderText(container, 'shared_catalog.recipients.placeholder');
+  const input = screen.getByPlaceholderText('shared_catalog.recipients.placeholder');
   fireEvent.change(input, {
     target: {
       value: `coucou@akeneo.com,hello@akeneo.com;salut@michel.fr hey@nice-domain.io`,
     },
   });
-  fireEvent.click(getByText(container, 'pim_common.add'));
+  fireEvent.click(screen.getByText('pim_common.add'));
 
-  expect(getAllByTitle(container, 'pim_common.remove').length).toBeLessThanOrEqual(MAX_RECIPIENT_COUNT);
+  expect(screen.getAllByTitle('pim_common.remove').length).toBeLessThanOrEqual(MAX_RECIPIENT_COUNT);
 });
 
-test('I can bulk delete recipients', async () => {
+test('I can bulk delete recipients', () => {
   const recipients = [{email: 'hello@akeneo.com'}, {email: 'coucou@akeneo.com'}, {email: 'bonjour@akeneo.com'}];
   const mockOnRecipientsChange = jest.fn();
 
-  await act(async () => {
-    ReactDOM.render(
-      <Recipients recipients={recipients} validationErrors={[]} onRecipientsChange={mockOnRecipientsChange} />,
-      container
-    );
-  });
+  render(<Recipients recipients={recipients} validationErrors={[]} onRecipientsChange={mockOnRecipientsChange} />);
 
   // Clicking twice on the same row to check toggling works -> hello@akeneo.com will not be removed
-  fireEvent.click(getByText(container, 'hello@akeneo.com'));
-  fireEvent.click(getByText(container, 'hello@akeneo.com'));
-  fireEvent.click(getByText(container, 'coucou@akeneo.com'));
-  fireEvent.click(getByText(container, 'pim_common.delete'));
+  fireEvent.click(screen.getByText('hello@akeneo.com'));
+  fireEvent.click(screen.getByText('hello@akeneo.com'));
+  fireEvent.click(screen.getByText('coucou@akeneo.com'));
+  fireEvent.click(screen.getByText('pim_common.delete'));
 
   expect(mockOnRecipientsChange).toHaveBeenCalledWith([{email: 'hello@akeneo.com'}, {email: 'bonjour@akeneo.com'}]);
 
   // Now trying to select all and delete them
-  fireEvent.click(getByText(container, 'bonjour@akeneo.com'));
-  //TODO fix this, Checkbox without label can not be clicked...
-  fireEvent.click(getAllByRole(container, 'checkbox').pop());
-  fireEvent.click(getByText(container, 'pim_common.delete'));
+  fireEvent.click(screen.getByText('bonjour@akeneo.com'));
+  fireEvent.click(screen.getByTitle('pim_common.all'));
+  fireEvent.click(screen.getByText('pim_common.delete'));
 
   expect(mockOnRecipientsChange).toHaveBeenCalledWith([]);
 });

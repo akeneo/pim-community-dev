@@ -171,8 +171,8 @@ const Recipients = ({recipients, validationErrors, onRecipientsChange}: Recipien
   const inputRef = useRef<null | HTMLTextAreaElement>(null);
 
   const handleAddNewRecipient = useCallback(
-    (event?: SyntheticEvent) => {
-      event?.preventDefault();
+    (event: SyntheticEvent) => {
+      event.preventDefault();
 
       if (emailIsDuplicated || !emailIsValid || '' === recipientToAdd) return;
 
@@ -332,7 +332,7 @@ const Recipients = ({recipients, validationErrors, onRecipientsChange}: Recipien
       {0 < recipientSelection.length && (
         <Footer>
           <Checkbox
-            role="select-all-checkbox"
+            title={translate('pim_common.all')}
             checked={currentRecipients.every(recipient => recipientSelection.includes(recipient))}
             onChange={checked => setRecipientSelection(true === checked ? currentRecipients : [])}
           />
