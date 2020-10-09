@@ -63,7 +63,16 @@ describe('AttributeGroupsHelper', () => {
   });
 
   test('Product without an evaluation', async () => {
-    const {result} = await renderUseProductEvaluatedAttributeGroups(getInitialState(false));
+    const {result} = await renderUseProductEvaluatedAttributeGroups(getInitialState('ecommerce', 'en_US', false));
+
+    expect(fetchAllAttributeGroupsDqiStatus).not.toHaveBeenCalled();
+    expect(fetchAttributeGroupsByCode).not.toHaveBeenCalled();
+    expect(result.current.allGroupsEvaluated).toEqual(false);
+    expect(result.current.evaluatedGroups).toEqual(null);
+  });
+
+  test('Product with a pending evaluation', async () => {
+    const {result} = await renderUseProductEvaluatedAttributeGroups(getInitialState('mobile', 'de_DE', true));
 
     expect(fetchAllAttributeGroupsDqiStatus).not.toHaveBeenCalled();
     expect(fetchAttributeGroupsByCode).not.toHaveBeenCalled();
@@ -80,9 +89,9 @@ const renderUseProductEvaluatedAttributeGroups = (initialState: any) => {
   return renderHook(() => useProductEvaluatedAttributeGroups(), {wrapper});
 };
 
-function getInitialState(initAxisRates: boolean = true) {
+function getInitialState(channel = 'ecommerce', locale = 'en_US', initProductEvaluation: boolean = true) {
   let state = {
-    catalogContext: {channel: 'ecommerce', locale: 'en_US'},
+    catalogContext: {channel: channel, locale: locale},
     product: {
       categories: [],
       enabled: true,
@@ -121,22 +130,82 @@ function getInitialState(initAxisRates: boolean = true) {
         }
       }
     },
-    productAxesRates: {}
+    productEvaluation: {}
   };
 
-  if (initAxisRates) {
-    state.productAxesRates = {
+  if (initProductEvaluation) {
+    state.productEvaluation = {
       1: {
-        consistency: {
-          code: 'consistency',
-          rates: {
-            ecommerce: {
-              en_US: 'A',
+        enrichment: {
+          ecommerce: {
+            de_DE: {
+              rate: {
+                value: null,
+                rank: null
+              },
+              criteria: []
+            },
+            en_US: {
+              rate: {
+                value: 47,
+                rank: 'E'
+              },
+              criteria: []
+            },
+          },
+          mobile: {
+            de_DE: {
+              rate: {
+                value: null,
+                rank: null
+              },
+              criteria: []
+            },
+            en_US: {
+              rate: {
+                value: 45,
+                rank: 'E'
+              },
+              criteria: []
             }
           },
+        },
+        consistency: {
+          ecommerce: {
+            de_DE: {
+              rate: {
+                value: null,
+                rank: null
+              },
+              criteria: []
+            },
+            en_US: {
+              rate: {
+                value: 94,
+                rank: 'A'
+              },
+              criteria: []
+            }
+          },
+          mobile: {
+            de_DE: {
+              rate: {
+                value: null,
+                rank: null
+              },
+              criteria: []
+            },
+            en_US: {
+              rate: {
+                value: null,
+                rank: null
+              },
+              criteria: []
+            }
+          }
         }
       }
-    }
+    };
   }
 
   return state;
