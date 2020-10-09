@@ -74,20 +74,6 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributeOptions'
             - '@logger'
 
-    akeneo.pim.automation.data_quality_insights.infrastructure.connector.tasklet.prepare_products_criteria_evaluation:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\PimEnterprisePrepareProductsCriteriaEvaluationTasklet
-        arguments:
-            - '@akeneo.pim.automation.data_quality_insights.create_missing_products_criteria_evaluations'
-            - '@logger'
-            - '@akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation'
-
-    akeneo.pim.automation.data_quality_insights.infrastructure.connector.tasklet.prepare_product_models_criteria_evaluation:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\PimEnterprisePrepareProductModelsCriteriaEvaluationTasklet
-        arguments:
-            - '@akeneo.pim.automation.data_quality_insights.create_missing_product_models_criteria_evaluations'
-            - '@logger'
-            - '@akeneo.pim.automation.data_quality_insights.repository.product_model_criterion_evaluation'
-
     #Job parameters
     akeneo.pim.automation.data_quality_insights.job_parameters.default_values_provider.evaluate_products_criteria:
         class: Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyDefaultValuesProvider
