@@ -1,4 +1,4 @@
-import React, {ReactNode, Ref} from 'react';
+import React, {ReactNode, Ref, SyntheticEvent} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColorForLevel, getFontSize, Level} from '../../theme';
 import {Key, Override} from '../../shared';
@@ -33,7 +33,7 @@ type ButtonProps = Override<
     /**
      * Function called when the user clicks on the button or hit enter when focused.
      */
-    onClick: () => void;
+    onClick: (event: SyntheticEvent) => void;
 
     /**
      * Accessibility label to describe shortly the button.

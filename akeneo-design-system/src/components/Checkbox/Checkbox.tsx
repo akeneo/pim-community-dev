@@ -119,7 +119,7 @@ type CheckboxProps = Override<
  */
 const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
   (
-    {checked, onChange, readOnly = false, children, ...rest}: CheckboxProps,
+    {checked, onChange, readOnly = false, children, title, ...rest}: CheckboxProps,
     forwardedRef: Ref<HTMLDivElement>
   ): React.ReactElement => {
     const [checkboxId] = useState<string>(`checkbox_${uuid()}`);
@@ -156,6 +156,7 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
         <CheckboxContainer
           checked={isChecked || isMixed}
           readOnly={readOnly}
+          title={title}
           role="checkbox"
           ref={ref}
           aria-checked={isChecked}

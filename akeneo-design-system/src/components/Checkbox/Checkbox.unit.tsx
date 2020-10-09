@@ -58,3 +58,13 @@ it('it does not call onChange handler when read-only', () => {
 
   expect(onChange).not.toBeCalled();
 });
+
+it('it calls onChange handler when user clicks on checkbox with no label', () => {
+  const onChange = jest.fn();
+  const {getByTitle} = render(<Checkbox title="nice-checkbox" checked={false} onChange={onChange} />);
+
+  fireEvent.click(getByTitle('nice-checkbox'));
+
+  expect(onChange).toBeCalledWith(true, expect.anything());
+  expect(onChange).toBeCalledTimes(1);
+});
