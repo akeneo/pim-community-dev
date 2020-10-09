@@ -20,9 +20,9 @@ pim_enrich_product_remove:
     type: action
     label: pim_enrich.acl.product.remove
     group_name: pim_enrich.acl_group.product
-pim_enrich_product_convert_variant_into_simple:
+pim_enrich_product_convert_variant_to_simple:
     type: action
-    label: pim_enrich.acl.product.convert_variant_into_simple
+    label: pim_enrich.acl.product.convert_variant_to_simple
     group_name: pim_enrich.acl_group.product
 pim_enrich_product_remove_attribute:
     type: action

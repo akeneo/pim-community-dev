@@ -57,7 +57,7 @@ pim_enrich.entity.product:
             label: Convert to a simple product
             dialog:
                 title: Confirm conversion
-                content: "Are you sure you want to convert this variant product to a simple product? It will keep all its former values, categories and associations"
+                content: "Are you sure you want to convert this variant product to a simple product? All of its former values, categories and associations will be saved"
         history:
             version: Version
             author: Author
