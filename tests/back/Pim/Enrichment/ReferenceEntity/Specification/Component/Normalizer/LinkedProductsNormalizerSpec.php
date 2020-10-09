@@ -37,7 +37,7 @@ class LinkedProductsNormalizerSpec extends ObjectBehavior
 
         $imageNormalizer->normalize($image, $localeCode, $channelCode)->willReturn(['image' => 'info']);
 
-        $this->normalize(new Rows([$row], 15), $channelCode, $localeCode)->shouldReturn(
+        $this->normalize(new Rows([$row], 15, 8, 7), $channelCode, $localeCode)->shouldReturn(
             [
                 [
                     'id'                             => $technicalId,
@@ -65,7 +65,7 @@ class LinkedProductsNormalizerSpec extends ObjectBehavior
 
         $imageNormalizer->normalize($image, $localeCode, $channelCode)->willReturn(['image' => 'info']);
 
-        $this->normalize(new Rows([$row], 10), $channelCode, $localeCode)->shouldReturn(
+        $this->normalize(new Rows([$row], 10, 6, 4), $channelCode, $localeCode)->shouldReturn(
             [
                 [
                     'id'                             => $technicalId,

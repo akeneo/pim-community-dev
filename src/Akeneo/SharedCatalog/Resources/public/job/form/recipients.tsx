@@ -1,25 +1,18 @@
 import React, {useState, useEffect, useRef, useCallback, ChangeEvent, SyntheticEvent} from 'react';
-import styled from 'styled-components';
-import {
-  AkeneoThemeProvider,
-  Button,
-  CloseIcon,
-  WarningIcon,
-  Key,
-  useAutoFocus,
-  useShortcut,
-  useAkeneoTheme,
-  SearchBar,
-  HelperLevel,
-  HelperRibbon,
-  AkeneoThemedProps,
-  NoResultsIllustration,
-  UserSurveyIllustration,
-  InfoIcon,
-  Checkbox,
-} from '@akeneo-pim-community/shared';
+import styled, {ThemeProvider} from 'styled-components';
+import {Key, useAutoFocus, useShortcut, SearchBar} from '@akeneo-pim-community/shared';
 import {DependenciesProvider, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {HeaderCell, LabelCell, Row, Table} from 'akeneosharedcatalog/common/Table';
+import {
+  AkeneoThemedProps,
+  Button,
+  Checkbox,
+  CloseIcon,
+  Helper,
+  NoResultsIllustration,
+  pimTheme,
+  SurveyIllustration,
+} from 'akeneo-design-system';
 
 const MAX_RECIPIENT_COUNT = 500;
 
@@ -66,7 +59,7 @@ const Input = styled.textarea<{isInvalid: boolean}>`
   border: 1px solid;
   border-color: ${({theme, isInvalid}: AkeneoThemedProps & {isInvalid: boolean}) =>
     isInvalid ? theme.color.red100 : theme.color.grey80};
-  color: ${({theme}: AkeneoThemedProps) => theme.color.grey140};
+  color: ${({theme}: AkeneoThemedProps & {isInvalid: boolean}) => theme.color.grey140};
   height: auto;
   line-height: 15px;
   min-height: 40px;
@@ -78,8 +71,8 @@ const Input = styled.textarea<{isInvalid: boolean}>`
   resize: none;
 
   :disabled {
-    color: ${({theme}: AkeneoThemedProps) => theme.color.grey60};
-    background-color: ${({theme}: AkeneoThemedProps) => theme.color.grey60};
+    color: ${({theme}: AkeneoThemedProps & {isInvalid: boolean}) => theme.color.grey60};
+    background-color: ${({theme}: AkeneoThemedProps & {isInvalid: boolean}) => theme.color.grey60};
     background-image: url('/bundles/pimui/images/icon-lock2.svg');
     background-size: 18px;
     background-position: 98% center;
@@ -96,22 +89,9 @@ const ErrorMessage = styled.span`
   margin: 0 0 0 20px;
 `;
 
-const InputError = styled.div`
-  align-items: center;
-  color: ${({theme}: AkeneoThemedProps) => theme.color.red100};
-  display: flex;
-  font-size: 11px;
-  font-style: normal;
-  line-height: 13px;
-  margin: 6px 0;
-
-  svg {
-    margin: 0 6px 0 0;
-  }
-`;
-
 const ActionCell = styled(LabelCell)`
   width: 50px !important;
+  color: ${({theme}: AkeneoThemedProps) => theme.color.grey100};
 
   svg {
     margin-top: 6px;
@@ -127,17 +107,6 @@ const NoResults = styled.div`
   margin-top: 40px;
 `;
 
-const InputHelper = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: ${({theme}: AkeneoThemedProps) => theme.fontSize.small};
-  padding: 3px 0;
-
-  svg {
-    margin-right: 4px;
-  }
-`;
-
 const InputWithButton = styled.div`
   display: flex;
   align-items: center;
@@ -147,7 +116,7 @@ const InputWithButton = styled.div`
 const RecipientCheckbox = styled(Checkbox)`
   position: absolute;
   right: 100%;
-  opacity: ${({value}) => (value ? 1 : 0)};
+  opacity: ${({checked}) => (checked ? 1 : 0)};
   margin-right: 10px;
 `;
 
@@ -184,16 +153,15 @@ const ItemsCount = styled.div`
 const Container = (props: RecipientsProps) => {
   return (
     <DependenciesProvider>
-      <AkeneoThemeProvider>
+      <ThemeProvider theme={pimTheme}>
         <Recipients {...props} />
-      </AkeneoThemeProvider>
+      </ThemeProvider>
     </DependenciesProvider>
   );
 };
 
 const Recipients = ({recipients, validationErrors, onRecipientsChange}: RecipientsProps) => {
   const translate = useTranslate();
-  const theme = useAkeneoTheme();
   const [currentRecipients, setCurrentRecipients] = useState<Recipient[]>(recipients);
   const [recipientToAdd, setRecipientToAdd] = useState<string>('');
   const [emailIsValid, setEmailIsValid] = useState<boolean>(true);
@@ -271,10 +239,8 @@ const Recipients = ({recipients, validationErrors, onRecipientsChange}: Recipien
 
   return (
     <Body>
-      <HelperRibbon level={HelperLevel.HELPER_LEVEL_INFO}>{translate('shared_catalog.recipients.helper')}</HelperRibbon>
-      {'string' === typeof validationErrors && (
-        <HelperRibbon level={HelperLevel.HELPER_LEVEL_ERROR}>{translate(validationErrors)}</HelperRibbon>
-      )}
+      <Helper level="info">{translate('shared_catalog.recipients.helper')}</Helper>
+      {'string' === typeof validationErrors && <Helper level="error">{translate(validationErrors)}</Helper>}
       <Form>
         <InputContainer>
           {translate('shared_catalog.recipients.add')}
@@ -291,31 +257,28 @@ const Recipients = ({recipients, validationErrors, onRecipientsChange}: Recipien
               }}
             />
             <Button
-              color="grey"
+              level="tertiary"
               onClick={handleAddNewRecipient}
               disabled={emailIsDuplicated || '' === recipientToAdd || maxRecipientLimitReached}
-              outline={true}
+              ghost={true}
             >
               {translate('pim_common.add')}
             </Button>
           </InputWithButton>
           {maxRecipientLimitReached && (
-            <InputHelper>
-              <InfoIcon size={18} color={theme.color.blue100} />
+            <Helper inline={true} level="info">
               {translate('shared_catalog.recipients.max_limit_reached')}
-            </InputHelper>
+            </Helper>
           )}
           {false === emailIsValid && (
-            <InputError>
-              <WarningIcon color={theme.color.red100} size={18} />
+            <Helper inline={true} level="error">
               {translate('shared_catalog.recipients.invalid_email')}
-            </InputError>
+            </Helper>
           )}
           {true === emailIsDuplicated && (
-            <InputError>
-              <WarningIcon color={theme.color.red100} size={18} />
+            <Helper inline={true} level="error">
               {translate('shared_catalog.recipients.duplicates')}
-            </InputError>
+            </Helper>
           )}
         </InputContainer>
       </Form>
@@ -340,7 +303,7 @@ const Recipients = ({recipients, validationErrors, onRecipientsChange}: Recipien
             return (
               <Row key={`${recipient.email}-${index}`}>
                 <Cell onClick={handleCheckboxChange}>
-                  <RecipientCheckbox value={recipientSelection.includes(recipient)} onChange={handleCheckboxChange} />
+                  <RecipientCheckbox checked={recipientSelection.includes(recipient)} onChange={handleCheckboxChange} />
                   {recipient.email}
                   {validationErrors[index] && <ErrorMessage>{validationErrors[index].email}</ErrorMessage>}
                 </Cell>
@@ -354,7 +317,7 @@ const Recipients = ({recipients, validationErrors, onRecipientsChange}: Recipien
       </Table>
       {0 === currentRecipients.length ? (
         <NoResults>
-          <UserSurveyIllustration size={80} />
+          <SurveyIllustration size={80} />
           {translate('shared_catalog.recipients.no_data')}
         </NoResults>
       ) : (
@@ -368,13 +331,11 @@ const Recipients = ({recipients, validationErrors, onRecipientsChange}: Recipien
       )}
       {0 < recipientSelection.length && (
         <Footer>
-          <label htmlFor="select-all-checkbox">
-            <Checkbox
-              id="select-all-checkbox"
-              value={currentRecipients.every(recipient => recipientSelection.includes(recipient))}
-              onChange={value => setRecipientSelection(value ? currentRecipients : [])}
-            />
-          </label>
+          <Checkbox
+            title={translate('pim_common.all')}
+            checked={currentRecipients.every(recipient => recipientSelection.includes(recipient))}
+            onChange={checked => setRecipientSelection(true === checked ? currentRecipients : [])}
+          />
           <ItemsCount>
             {translate(
               'pim_common.items_selected',
@@ -383,7 +344,7 @@ const Recipients = ({recipients, validationErrors, onRecipientsChange}: Recipien
             )}
           </ItemsCount>
           <Button
-            color="red"
+            level="danger"
             onClick={() => {
               setCurrentRecipients(currentRecipients =>
                 currentRecipients.filter(currentRecipient => !recipientSelection.includes(currentRecipient))

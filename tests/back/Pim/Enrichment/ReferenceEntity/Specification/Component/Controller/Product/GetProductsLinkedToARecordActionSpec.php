@@ -97,7 +97,7 @@ class GetProductsLinkedToARecordActionSpec extends ObjectBehavior
             $rows[] = $this->row();
         }
 
-        return new Rows($rows, 30);
+        return new Rows($rows, 30, 20, 10);
     }
 
     private function row(): Row
