@@ -64,7 +64,7 @@ class ProductSaverSpec extends ObjectBehavior
             StorageEvents::POST_SAVE,
             new GenericEvent(
                 $product->getWrappedObject(),
-                ['unitary' => true, 'created' => true]
+                ['unitary' => true, 'is_new' => true]
             )
         )->shouldBeCalled();
 
@@ -87,7 +87,7 @@ class ProductSaverSpec extends ObjectBehavior
             StorageEvents::POST_SAVE,
             new GenericEvent(
                 $product->getWrappedObject(),
-                ['unitary' => true, 'created' => false]
+                ['unitary' => true, 'is_new' => false]
             )
         )->shouldBeCalled();
 
