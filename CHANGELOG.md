@@ -121,6 +121,7 @@
 - Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\Common\Saver\DelegatingProductSaver` to
   - remove `Symfony\Component\EventDispatcher\EventDispatcherInterface` and `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer`
   - add `Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface` (twice) and `Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface`
+- Change constructor of `\Akeneo\Pim\Permission\Component\Merger\MergeDataOnProduct` to add `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface`
 - Change interface `Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface` to add `isEnabled` and `setEnabled` methods
 - Change interface `Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface` to rename `findAllOrderedByPriority` method by `findEnabledOrderedByPriority`
 - Change constructor of `Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi\GetCategoriesController` to replace `ObjectFilterInterface $objectFilter` by `CollectionFilterInterface $collectionFilter`
