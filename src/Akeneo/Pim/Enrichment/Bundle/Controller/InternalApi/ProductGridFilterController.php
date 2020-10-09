@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Translation\Translator;
 
 /**
  * Controller to list the filters in the product grid.
@@ -36,25 +37,31 @@ class ProductGridFilterController
     /** @var UserContext */
     private $userContext;
 
+    /** @var Translator */
+    private $translator;
+
     /**
      * @param Manager                       $datagridManager
      * @param TokenStorageInterface         $tokenStorage
      * @param SearchableRepositoryInterface $attributeSearchRepository
      * @param NormalizerInterface           $lightAttributeNormalizer
      * @param UserContext                   $userContext
+     * @param Translator                    $translator
      */
     public function __construct(
         Manager $datagridManager,
         TokenStorageInterface $tokenStorage,
         SearchableRepositoryInterface $attributeSearchRepository,
         NormalizerInterface $lightAttributeNormalizer,
-        UserContext $userContext
+        UserContext $userContext,
+        Translator $translator
     ) {
         $this->datagridManager = $datagridManager;
         $this->tokenStorage = $tokenStorage;
         $this->attributeSearchRepository = $attributeSearchRepository;
         $this->lightAttributeNormalizer = $lightAttributeNormalizer;
         $this->userContext = $userContext;
+        $this->translator = $translator;
     }
 
     /**
@@ -134,7 +141,7 @@ class ProductGridFilterController
 
         $formattedSystemFilters = [];
         foreach ($systemFilters as $code => $systemFilter) {
-            $label = $systemFilter['label'];
+            $label = $this->translator->trans($systemFilter['label'], [], null, $locale);
             if (!in_array($code, ['scope', 'locale']) && (
                     '' === $search || strpos($code, $search) !== false || strpos($label, $search) !== false
                 )) {
