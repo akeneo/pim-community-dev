@@ -176,7 +176,7 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductEventSubscriber:
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductBusinessEventSubscriber:
         arguments:
             - '@security.helper'
             - '@pim_catalog.normalizer.standard.product'
@@ -184,7 +184,7 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModelEventSubscriber:
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductModelBusinessEventSubscriber:
         arguments:
             - '@security.helper'
             - '@pim_catalog.normalizer.standard.product_model'

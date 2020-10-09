@@ -2,13 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent;
 
-use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModelEventSubscriber;
-use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
-use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
-use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductBusinessEventSubscriber;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
@@ -19,7 +16,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ProductModelEventSubscriberSpec extends ObjectBehavior
+class DispatchProductBusinessEventSubscriberSpec extends ObjectBehavior
 {
     function let(Security $security, NormalizerInterface $normalizer, MessageBusInterface $messageBus)
     {
@@ -28,7 +25,7 @@ class ProductModelEventSubscriberSpec extends ObjectBehavior
 
     function it_is_initializable(): void
     {
-        $this->shouldHaveType(ProductModelEventSubscriber::class);
+        $this->shouldHaveType(DispatchProductBusinessEventSubscriber::class);
     }
 
     function it_returns_subscribed_events(): void
@@ -41,13 +38,14 @@ class ProductModelEventSubscriberSpec extends ObjectBehavior
         );
     }
 
-    function it_produces_a_product_model_created_event(
+    function it_produces_a_product_created_event(
         UserInterface $user,
         $security,
         $normalizer
     ) {
-        $productModel = new ProductModel();
-        $productModel->setCode('polo_col_mao');
+        $product = new Product();
+        $product->setId(1);
+        $product->setIdentifier('product_identifier');
 
         $messageBus = $this->getMessageBus();
         $this->beConstructedWith($security, $normalizer, $messageBus);
@@ -55,21 +53,26 @@ class ProductModelEventSubscriberSpec extends ObjectBehavior
         $user->getUsername()->willReturn('julia');
         $security->getUser()->willReturn($user);
 
-        $normalizer->normalize($productModel, 'standard')->willReturn(['code' => 'polo_col_mao',]);
+        $normalizer->normalize($product, 'standard')->willReturn(
+            [
+                'id' => 1,
+                'identifier' => 'product_identifier',
+            ]
+        );
 
-        $this->produceBusinessSaveEvent(new GenericEvent($productModel, ['is_new' => true]));
+        $this->produceBusinessSaveEvent(new GenericEvent($product, ['created' => true]));
 
         Assert::assertCount(1, $messageBus->messages);
-        Assert::assertInstanceOf(ProductModelCreated::class, $messageBus->messages[0]);
     }
 
-    function it_produces_a_product_model_updated_event(
+    function it_produces_a_product_updated_event(
         UserInterface $user,
         $security,
         $normalizer
     ) {
-        $productModel = new ProductModel();
-        $productModel->setCode('polo_col_mao');
+        $product = new Product();
+        $product->setId(1);
+        $product->setIdentifier('product_identifier');
 
         $messageBus = $this->getMessageBus();
         $this->beConstructedWith($security, $normalizer, $messageBus);
@@ -77,22 +80,26 @@ class ProductModelEventSubscriberSpec extends ObjectBehavior
         $user->getUsername()->willReturn('julia');
         $security->getUser()->willReturn($user);
 
-        $normalizer->normalize($productModel, 'standard')->willReturn(['code' => 'polo_col_mao',]);
+        $normalizer->normalize($product, 'standard')->willReturn(
+            [
+                'id' => 1,
+                'identifier' => 'product_identifier',
+            ]
+        );
 
-        $this->produceBusinessSaveEvent(new GenericEvent($productModel));
+        $this->produceBusinessSaveEvent(new GenericEvent($product, ['updated' => true]));
 
         Assert::assertCount(1, $messageBus->messages);
-        Assert::assertInstanceOf(ProductModelUpdated::class, $messageBus->messages[0]);
     }
 
-    function it_does_not_produce_business_save_event_because_event_subject_is_not_a_product_model(
+    function it_does_not_produce_business_save_event_because_event_subject_is_not_a_product(
         $security,
         $normalizer
     ) {
         $messageBus = $this->getMessageBus();
         $this->beConstructedWith($security, $normalizer, $messageBus);
 
-        $result = $this->produceBusinessSaveEvent(new GenericEvent('NOT_A_PRODUCT_MODEL'));
+        $result = $this->produceBusinessSaveEvent(new GenericEvent('NOT_A_PRODUCT', ['updated' => true]));
 
         Assert::assertCount(0, $messageBus->messages);
     }
@@ -105,14 +112,15 @@ class ProductModelEventSubscriberSpec extends ObjectBehavior
         $messageBus = $this->getMessageBus();
         $this->beConstructedWith($security, $normalizer, $messageBus);
 
-        $productModel = new ProductModel();
-        $productModel->setCode('polo_col_mao');
+        $product = new Product();
+        $product->setId(1);
+        $product->setIdentifier('product_identifier');
 
         $security->getUser()->willReturn(null);
 
         $this->shouldThrow(
             new \LogicException('User should not be null.')
-        )->during('produceBusinessSaveEvent', [new GenericEvent($productModel)]);
+        )->during('produceBusinessSaveEvent', [new GenericEvent($product, ['created' => true])]);
     }
 
     function it_does_produce_business_remove_event(
@@ -120,8 +128,9 @@ class ProductModelEventSubscriberSpec extends ObjectBehavior
         $security,
         $normalizer
     ) {
-        $productModel = new ProductModel();
-        $productModel->setCode('my_product_model');
+        $product = new Product();
+        $product->setId(1);
+        $product->setIdentifier('product_identifier');
 
         $messageBus = $this->getMessageBus();
         $this->beConstructedWith($security, $normalizer, $messageBus);
@@ -129,16 +138,16 @@ class ProductModelEventSubscriberSpec extends ObjectBehavior
         $user->getUsername()->willReturn('julia');
         $security->getUser()->willReturn($user);
 
-        $normalizer->normalize($productModel, 'standard')->willReturn(
+        $normalizer->normalize($product, 'standard')->willReturn(
             [
-                'code' => 'my_product_model',
+                'id' => 1,
+                'identifier' => 'product_identifier',
             ]
         );
 
-        $this->produceBusinessRemoveEvent(new GenericEvent($productModel));
+        $this->produceBusinessRemoveEvent(new GenericEvent($product));
 
         Assert::assertCount(1, $messageBus->messages);
-        Assert::assertInstanceOf(ProductModelRemoved::class, $messageBus->messages[0]);
     }
 
     function it_does_not_produce_business_remove_event_because_event_subject_is_not_a_product(
@@ -148,7 +157,7 @@ class ProductModelEventSubscriberSpec extends ObjectBehavior
         $messageBus = $this->getMessageBus();
         $this->beConstructedWith($security, $normalizer, $messageBus);
 
-        $result = $this->produceBusinessRemoveEvent(new GenericEvent('NOT_A_PRODUCT_MODEL'));
+        $result = $this->produceBusinessRemoveEvent(new GenericEvent('NOT_A_PRODUCT'));
 
         Assert::assertCount(0, $messageBus->messages);
     }
@@ -160,14 +169,15 @@ class ProductModelEventSubscriberSpec extends ObjectBehavior
         $messageBus = $this->getMessageBus();
         $this->beConstructedWith($security, $normalizer, $messageBus);
 
-        $productModel = new ProductModel();
-        $productModel->setCode('pm');
+        $product = new Product();
+        $product->setId(1);
+        $product->setIdentifier('product_identifier');
 
         $security->getUser()->willReturn(null);
 
         $this->shouldThrow(
             new \LogicException('User should not be null.')
-        )->during('produceBusinessRemoveEvent', [new GenericEvent($productModel)]);
+        )->during('produceBusinessRemoveEvent', [new GenericEvent($product)]);
     }
 
     private function getMessageBus()
@@ -185,3 +195,4 @@ class ProductModelEventSubscriberSpec extends ObjectBehavior
         };
     }
 }
+
