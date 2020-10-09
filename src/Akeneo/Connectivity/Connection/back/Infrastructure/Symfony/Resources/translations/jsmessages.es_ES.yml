@@ -1,0 +1,85 @@
+pim_menu:
+  navigation_back:
+    connection: Volver a conexiones
+  navigation_block:
+    connection: Navegación de conexión
+  item:
+    connection_settings_edit: Ajustes de conexión
+    connection_monitoring: Monitoreo
+pim_title:
+  akeneo_connectivity_connection_settings_edit: Ajustes de conexión
+  akeneo_connectivity_connection_settings_any: Ajustes de conexión
+  akeneo_connectivity_connection_error_management_connection_monitoring: Monitoreo de conexión
+akeneo_connectivity.connection:
+  connection:
+    auditable: Rastrea esta conexión en el tablero
+  edit_connection:
+    credentials:
+      wrong_credentials_combinations:
+        single: Notamos que está utilizando el nombre de usuario {{wrong_username}} para esta conexión (último uso el {{date}} a las {{time}}). Recomendamos usar el nombre de usuario {{good_username}} en su lugar.
+        link: Descubre por qué deberías usarlo.
+        link_list: Descubre por qué recomendamos usar este nombre de usuario.
+        several: Notamos que no está utilizando el nombre de usuario {{good_username}} para esta conexión.
+        list: 'Aquí está la lista de nombres de usuario que se utilizaron en los últimos 7 días:'
+        username_date: '{{ wrong_username }} el {{ date }} a las {{ time }}'
+  auditable_helper:
+    message: Solo puede realizar un seguimiento de las conexiones "Origen" y "Destino".
+  grid.wrong_credentials_combination_helper: Algunas de las conexiones a continuación no utilizan sus nombres de usuario de conexión. Se identifican con una señal de alerta amarilla.
+  dashboard:
+    connection_selector:
+      title:
+        destination: Conexiones de destino
+    charts:
+      inbound: Entrante
+      outbound: Saliente
+      number_of_products_created: Productos creados
+      number_of_products_updated: Productos actualizados
+      number_of_products_sent: Productos enviados
+      legend:
+        during_the_last_seven_days: 'Total en los últimos 7 días:'
+    error_management:
+      data_source_error_chart:
+        section:
+          title: Error en las conexiones de origen
+          helper: Aquí puede ver el número total de errores, incluyendo errores de negocio.
+        chart:
+          title: Número de errores por día
+      widget:
+        over_the_last_seven_days: En los últimos 7 días
+    no_connection:
+      title:
+        data_source: '¿Quieres ver algunos gráficos elegantes sobre tus conexiones de origen?'
+        data_destination: '¿Quieres ver algunos gráficos elegantes sobre tus conexiones de destino?'
+      message_with_permission:
+        message: Crea y comienza a rastrear tu primer
+  error_management:
+    connection_monitoring:
+      title: Monitoreo
+      helper:
+        title: '{0} Tienes {{ count }} error |[1,Inf] Tienes {{ count }} errores'
+        description: Aquí puedes ver los detalles de cada error para esta conexión en los últimos 7 días. El número de error está limitado a 100 errores.
+        link: Para entender cómo resolver esto, por favor visite el centro de ayuda de API.
+      search_filter:
+        placeholder: Buscar en mensajes de error
+        result_count: '{0} Ningún resultado |[1,Inf] {{ count }} resultados'
+      error_list:
+        date_time_column:
+          title: Día y hora
+        content_column:
+          product_name: Nombre del producto
+          with_id: con el ID
+        details_column:
+          title: Detalles
+          locale: Local
+          channel: Canal
+          family: Familia
+      no_error:
+        title: '¡Impresionante! ¡No se ha encontrado ningún error!'
+      not_auditable:
+        title: Conexión sin monitoreo
+        description:
+          1: Para rastrear errores en esta conexión,
+          2: activar monitoreo
+          3: en la configuración.
+      not_data_source:
+        title: Por ahora, la página de monitoreo sólo está disponible para conexión fuente.

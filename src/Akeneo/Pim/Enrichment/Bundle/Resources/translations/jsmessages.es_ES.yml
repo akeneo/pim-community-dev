@@ -70,7 +70,7 @@ pim_enrich.entity.product:
       locale_unavailable: Este campo traducible no está disponible para el local '{{ locale }}' y el canal '{{ channel }}'
       to_fill_count: "{1}1 atributo requerido faltante|]1, Inf[{{ count }} atributos requeridos faltantes"
       add_attribute_option: Agregar opción de atributo
-      add_option: Agregar una opción
+      add_option: Añadir opción
     completeness:
       title: Completitud
       complete: Completo
@@ -83,16 +83,29 @@ pim_enrich.entity.product:
       save_and_next: Guardar y siguiente
       save_and_finish: Guardar y finalizar
     associations:
-      title: Asociaciones
+      title: Asociaciones ({{ count }})
       none_exist: Ningún tipo de asociaciones existente.
       show_products: Mostrar productos
       show_groups: Mostrar grupos
       number_of_associations: "{{ productCount }} producto(s), {{ productModelCount }} módulo(s) de producto y {{ groupCount }} grupo(s)"
+      number_of_quantified_associations: "{{ productCount }} producto(s) y {{ productModelCount }} modelo(s) de producto(s)"
       association_type_selector: Tipo de asociación
       target: Objetivo
       manage: Agregar {{ associationType }} asociaciones
-      manage_description: Selecciona los productos que quieres asociar con el producto actual
+      manage_description: Seleccione los productos que desea asociar con el producto "{{ productLabel }}"
+      mass_edit_description: Seleccione los productos que desea asociar a los {{ productCount }} productos seleccionados
       add_associations: Agregar asociaciones
+      variant_products: Productos variantes
+      quantified:
+        quantity: Cantidad
+      search:
+        placeholder: Buscar en etiqueta o identificador
+      no_result: Su búsqueda no obtuvo ningún resultado.
+      no_data: No hay productos asociados.
+      remove: Eliminar asociación
+      edit: Editar producto
+      limit_reached: No puede añadir más de {{ maxLimit }} asociaciones a este producto.
+      variant_updated: Ha actualizado una cantidad sobre una variante, las cantidades ya no se sincronizarán.
     attribute_filter:
       display: Mostrar
       all: Todos los atributos
@@ -263,7 +276,7 @@ pim_enrich.export.product:
     title: Configuración global
 pim_enrich.mass_edit.product:
   title: Productos de acción masiva
-  confirm: "{1}Está a punto de actualizar un producto con la siguiente información, por favor confirme.|]1, Inf[Está a punto de actualizar {{ itemsCount }} productos con la información siguiente, por favor confirme."
+  confirm: "{0}Está a punto de actualizar algunos productos con la siguiente información, por favor confirme.{1}Está a punto de actualizar un producto con la siguiente información, por favor confirme. ]1, Inf[Estás a punto de actualizar {{ itemsCount }} productos con la siguiente información, por favor confirme."
   step:
     select:
       label: Seleccione los productos
@@ -283,56 +296,57 @@ pim_enrich.mass_edit.product:
       select_attributes: Seleccionar atributos
     change_status:
       label: Cambiar el estado
-      label_count: "{1}Cambiar el estado de <span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[Cambiar el estado de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
+      label_count: "{0}Cambiar el estado de algunos productos <span class=\"AknFullPage-title--highlight\"></span>|{1}Cambiar el estado de <span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[Cambiar el estado de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
       description: Los productos seleccionados serán habilitados o inhabilitados.
       field: Para habilitar
     edit_common:
       label: Editar los valores de atributos
-      label_count: "{1}Editar valores de atributos de<span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[Editar valores de atributos de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
+      label_count: "{0}Editar valores de atributos de algunos <span class=\"AknFullPage-title--highlight\">productos</span>|{1}Editar valores de atributos de <span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[Editar valores de atributos de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
       description: Se editarán sólo los atributos pertenecientes a las familias de los productos seleccionados con los siguientes datos para el local {{ locale }} y el canal de {{ scope }}.
       no_update: Por favor, seleccione al menos un campo para actualizar
     add_attribute_value:
       label: Añadir valores de atributos
-      label_count: "{1}Añadir valores de atributos para <span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[Añadir valores de atributos para <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
+      label_count: "{0}Añadir valores de atributos para algunos <span class=\"AknFullPage-title--highlight\">productos</span>|{1}Añadir valores de atributos para <span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[Añadir valores de atributos para <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
       description: Sólo los atributos de valor múltiple pertenecientes a las familias de los productos serán editados con la siguiente data para la local {{ locale }} y el canal {{ scope }}. Los valores de atributos son mantenidos, lo valores previos no.
     change_family:
       label: Cambiar familia
-      label_count: "{1}Cambiar la familia de <span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[Cambiar la familia de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
+      label_count: "{0}Cambiar la familia de algunos <span class=\"AknFullPage-title--highlight\">productos</span>|{1}Cambiar la familia de <span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[Cambiar la familia de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
       description: La familia de los productos seleccionados se cambiará a la familia elegida
     add_to_group:
       label: Agregar a grupos
-      label_count: "{1}Añadir <span class=\"AknFullPage-title--highlight\">1 producto</span> a grupos|]1, Inf[Añadir <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> a grupos"
+      label_count: "{0}Añadir algunos <span class=\"AknFullPage-title--highlight\">productos</span> a grupos|{1}Añadir <span class=\"AknFullPage-title--highlight\">1 producto</span> a grupos|]1, Inf[Añadir <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> a grupos"
       description: Seleccione los grupos en los cuales agregará los productos seleccionados
       field: Grupos
       no_update: Por favor, seleccione un grupo antes de continuar
     add_to_category:
       label: Agregar a categorias
-      label_count: "{1}Añadir <span class=\"AknFullPage-title--highlight\">1 producto</span> a categorías|]1, Inf[Añadir <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> a categorías"
+      label_count: "{0}Añadir algunos <span class=\"AknFullPage-title--highlight\">productos</span> a categorías|{1}Añadir <span class=\"AknFullPage-title--highlight\">1 producto</span> a categorías|]1, Inf[Añadir <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> a categorías"
       description: El producto será clasificado en las siguientes categorías, la clasificación actual se mantendrá.
     move_to_category:
       label: Mover entre categorias
-      label_count: "{1}Mover <span class=\"AknFullPage-title--highlight\">1 producto</span> entre categorías|]1, Inf[Mover <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> entre categorías"
+      label_count: "{0}Mover algunos <span class=\"AknFullPage-title--highlight\">productos</span> entre categorías|{1}Mover <span class=\"AknFullPage-title--highlight\">1 producto</span> entre categorías|]1, Inf[Mover <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> entre categorías"
       description: Los productos serán clasificados en las siguientes categorías, la clasificación actual no se mantendrá.
     remove_from_category:
       label: Eliminar de las categorías
-      label_count: "{1}Eliminar <span class=\"AknFullPage-title--highlight\">1 producto</span> de categorías|]1, Inf[Eliminar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> de categorías"
+      label_count: "{0}Eliminar algunos <span class=\"AknFullPage-title--highlight\">productos</span> de categorías|{1}Eliminar <span class=\"AknFullPage-title--highlight\">1 producto</span> de categorías|]1, Inf[Eliminar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> de categorías"
       description: Se eliminarán los productos de las siguientes categorías.
       no_update: No hay una categoría seleccionada de la cual remover los productos.
     add_to_existing_product_model:
       label: Agregar a un modelo de producto existente
-      label_count: "{1}Añadir <span class=\"AknFullPage-title--highlight\">1 producto</span> a un modelo de producto existente|]1, Inf[Añadir <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> a un modelo de producto existente"
+      label_count: "{0}Añadir algunos <span class=\"AknFullPage-title--highlight\">productos</span> a un modelo de producto existente |{1}Añadir <span class=\"AknFullPage-title--highlight\">1 producto</span> a un modelo de producto existente|]1, Inf[Añadir <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> a un modelo de producto existente"
       description: El modelo de producto seleccionado reunirá los productos y permitirá el enrequecimiento de sus propiedades comunes.
       no_update: Por favor, seleccione un modelo de producto antes de continuar
     associate_to_product_and_product_model:
       label: Asociar
-      label_count: "{1}Asociar <span class=\"AknFullPage-title--highlight\">1 producto</span> a productos o modelos de productos|]1, Inf[Asociar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> a productos o modelos de producto"
+      label_count: "{0}Asociar algunos <span class=\"AknFullPage-title--highlight\">productos</span> a productos o modelos de productos |{1}Asociar <span class=\"AknFullPage-title--highlight\">1 producto</span> a productos o modelos de producto|]1, Inf[Asociar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> a productos o modelos de productos"
       description: Los productos seleccionados en las cuadrícula serán asociados con los productos seleccionados y modelos del producto para el tipo de asociación escogido
       validate: Por favor agregue una asociación antes de continuar con el siguiente espacio
     change_parent_product_model:
       label: Cambiar el modelo de producto de padre
-      label_count: "{1}Cambiar el modelo de producto padre de <span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[Cambiar el modelo de producto padre de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
+      label_count: "{0}Cambiar modelo de producto padre de algunos <span class=\"AknFullPage-title--highlight\">productos</span>|{1}Cambiar modelo de producto padre de <span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[Cambiar modelo de producto padre de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
       description: El padre de los productos variantes o modelos de sub-productos seleccionados en la cuadrícula serán modificados al modelo de producto seleccionado.
 pim_datagrid:
+  no_entities: "No se encontró {{ entityHint }}"
   mass_action_group:
     bulk_actions:
       label: Acciones en Masa
@@ -348,12 +362,15 @@ pim_datagrid:
       csv_grid_context: CSV (contexto de la grilla)
       xlsx_all: Excel (todos los atributos)
       xlsx_grid_context: Excel (contexto de la cuadrícula)
+      configurator:
+        title: Seleccione su acción
+        all_attributes: Todos los atributos
     mass_edit: Acciones en masa
     sequential_edit: Edición secuencial
     mass_delete: Eliminación masiva
     selected:
-      family: familias seleccionadas
-      product: Resultados seleccionados
+      family: "]-Inf, 1]{{ count }} familia seleccionada|]1, Inf[{{ count }} familias seleccionadas"
+      product: "]-Inf, 1]{{ count }} resultado seleccionado|]1, Inf[{{ count }} resultados seleccionados"
   view_selector:
     view: Vistas
   actions:
@@ -370,6 +387,10 @@ pim_datagrid:
   filters:
     label: Filtros
     system: Sistema
+    product_typology:
+      variant: 'Variante'
+    entity_type:
+      label: 'Variante'
 batch_jobs:
   add_association:
     label: Asociar
@@ -428,3 +449,7 @@ batch_jobs:
     quick_export.label: Exportación rápida de producto en XSLX
     quick_export_product_model.label: Exportación rápida de modelo de producto en XSLX
     perform.label: Exportación rápida de producto en XSLX
+error:
+  removing:
+    group: Imposible eliminar grupo
+    association type: Imposible eliminar el tipo de asociación

@@ -26,6 +26,10 @@ pim_enrich:
         second: Seleccione una operación
         third: Configuración
         fourth: Confirmación
+  entity:
+    association_type:
+      property:
+        is_quantified: Asociación con cantidad
 pim_enrich_attribute_form:
   code: Código
   type: Tipo de atributo

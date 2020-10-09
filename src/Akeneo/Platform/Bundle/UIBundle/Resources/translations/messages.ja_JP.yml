@@ -62,6 +62,14 @@ pim_common:
   name: 名前
   remove: 削除
   code: コード
+  products: 商品
+  product_models: 商品モデル
+  categories: カテゴリ
+  enabled: 有効
+  family: ファミリー
+  groups: グループ
+  yes: "はい"
+  no: "いいえ"
 pim_enrich:
   #ACLs
   acl:
