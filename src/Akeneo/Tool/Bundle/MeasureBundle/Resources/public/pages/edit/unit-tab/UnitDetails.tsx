@@ -17,7 +17,8 @@ import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
 import {UnitCode, getUnitLabel} from 'akeneomeasure/model/unit';
 import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteModal';
 import {useTranslate, useUserContext, useSecurity} from '@akeneo-pim-community/legacy-bridge';
-import {Button, filterErrors, ValidationError, useToggleState} from '@akeneo-pim-community/shared';
+import {filterErrors, ValidationError, useToggleState} from '@akeneo-pim-community/shared';
+import {Button} from 'akeneo-design-system';
 
 const Container = styled.div`
   margin-left: 40px;
@@ -140,7 +141,7 @@ const UnitDetails = ({
           !measurementFamily.is_locked &&
           selectedUnitCode !== measurementFamily.standard_unit_code && (
             <Footer>
-              <Button color="red" outline={true} onClick={openConfirmDeleteUnitModal}>
+              <Button level="danger" ghost={true} onClick={openConfirmDeleteUnitModal}>
                 {__('measurements.unit.delete.button')}
               </Button>
             </Footer>

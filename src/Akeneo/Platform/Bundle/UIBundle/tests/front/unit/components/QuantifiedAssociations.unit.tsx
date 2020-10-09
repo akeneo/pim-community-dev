@@ -1,12 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import {act, getByText, fireEvent, queryByText, getAllByTitle} from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
-import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
-import {DependenciesProvider, dependencies} from '@akeneo-pim-community/legacy-bridge';
+import {dependencies} from '@akeneo-pim-community/legacy-bridge';
 import {QuantifiedAssociations} from '../../../../Resources/public/js/product/form/quantified-associations/components/QuantifiedAssociations';
 import {ProductType} from '../../../../Resources/public/js/product/form/quantified-associations/models';
 import {queryByDisplayValue} from '@testing-library/dom';
+import {renderDOMWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 
 jest.mock('pimui/js/product/form/quantified-associations/hooks/useProducts.ts', () => ({
   useProducts: (identifiers: {products: string[]; product_models: string[]}) => {
@@ -57,18 +55,14 @@ const quantifiedAssociationCollection = {
 
 test('It displays quantified association rows for a quantified association collection', async () => {
   await act(async () => {
-    ReactDOM.render(
-      <DependenciesProvider>
-        <AkeneoThemeProvider>
-          <QuantifiedAssociations
-            quantifiedAssociations={quantifiedAssociationCollection}
-            parentQuantifiedAssociations={{products: [{identifier: 'bag', quantity: 1}], product_models: []}}
-            errors={[]}
-            onAssociationsChange={jest.fn()}
-            onOpenPicker={jest.fn()}
-          />
-        </AkeneoThemeProvider>
-      </DependenciesProvider>,
+    renderDOMWithProviders(
+      <QuantifiedAssociations
+        quantifiedAssociations={quantifiedAssociationCollection}
+        parentQuantifiedAssociations={{products: [{identifier: 'bag', quantity: 1}], product_models: []}}
+        errors={[]}
+        onAssociationsChange={jest.fn()}
+        onOpenPicker={jest.fn()}
+      />,
       container
     );
   });
@@ -89,18 +83,14 @@ test('It displays quantified association rows for a quantified association colle
 
 test('It displays no rows and a no data information when the quantified association collection is empty', async () => {
   await act(async () => {
-    ReactDOM.render(
-      <DependenciesProvider>
-        <AkeneoThemeProvider>
-          <QuantifiedAssociations
-            quantifiedAssociations={{products: [], product_models: []}}
-            parentQuantifiedAssociations={{products: [], product_models: []}}
-            errors={[]}
-            onAssociationsChange={jest.fn()}
-            onOpenPicker={jest.fn()}
-          />
-        </AkeneoThemeProvider>
-      </DependenciesProvider>,
+    renderDOMWithProviders(
+      <QuantifiedAssociations
+        quantifiedAssociations={{products: [], product_models: []}}
+        parentQuantifiedAssociations={{products: [], product_models: []}}
+        errors={[]}
+        onAssociationsChange={jest.fn()}
+        onOpenPicker={jest.fn()}
+      />,
       container
     );
   });
@@ -114,18 +104,14 @@ test('It triggers the onChange event when a quantity is changed', async () => {
   const onChange = jest.fn();
 
   await act(async () => {
-    ReactDOM.render(
-      <DependenciesProvider>
-        <AkeneoThemeProvider>
-          <QuantifiedAssociations
-            quantifiedAssociations={quantifiedAssociationCollection}
-            parentQuantifiedAssociations={{products: [], product_models: []}}
-            errors={[]}
-            onAssociationsChange={onChange}
-            onOpenPicker={jest.fn()}
-          />
-        </AkeneoThemeProvider>
-      </DependenciesProvider>,
+    renderDOMWithProviders(
+      <QuantifiedAssociations
+        quantifiedAssociations={quantifiedAssociationCollection}
+        parentQuantifiedAssociations={{products: [], product_models: []}}
+        errors={[]}
+        onAssociationsChange={onChange}
+        onOpenPicker={jest.fn()}
+      />,
       container
     );
   });
@@ -147,18 +133,14 @@ test('It triggers the onRowDelete event when the remove button is clicked', asyn
   const onChange = jest.fn();
 
   await act(async () => {
-    ReactDOM.render(
-      <DependenciesProvider>
-        <AkeneoThemeProvider>
-          <QuantifiedAssociations
-            quantifiedAssociations={quantifiedAssociationCollection}
-            parentQuantifiedAssociations={{products: [], product_models: []}}
-            errors={[]}
-            onAssociationsChange={onChange}
-            onOpenPicker={jest.fn()}
-          />
-        </AkeneoThemeProvider>
-      </DependenciesProvider>,
+    renderDOMWithProviders(
+      <QuantifiedAssociations
+        quantifiedAssociations={quantifiedAssociationCollection}
+        parentQuantifiedAssociations={{products: [], product_models: []}}
+        errors={[]}
+        onAssociationsChange={onChange}
+        onOpenPicker={jest.fn()}
+      />,
       container
     );
   });
@@ -181,33 +163,29 @@ test('It adds products when the user confirm the picker', async () => {
   };
 
   await act(async () => {
-    ReactDOM.render(
-      <DependenciesProvider>
-        <AkeneoThemeProvider>
-          <QuantifiedAssociations
-            quantifiedAssociations={smallQuantifiedAssociationCollection}
-            parentQuantifiedAssociations={{products: [], product_models: []}}
-            onAssociationsChange={onChange}
-            errors={[]}
-            onOpenPicker={() =>
-              Promise.resolve([
-                {
-                  productType: ProductType.ProductModel,
-                  quantifiedLink: {identifier: 'braided-hat', quantity: 1},
-                  product: null,
-                  errors: [],
-                },
-                {
-                  productType: ProductType.Product,
-                  quantifiedLink: {identifier: 'bag', quantity: 1},
-                  product: null,
-                  errors: [],
-                },
-              ])
-            }
-          />
-        </AkeneoThemeProvider>
-      </DependenciesProvider>,
+    renderDOMWithProviders(
+      <QuantifiedAssociations
+        quantifiedAssociations={smallQuantifiedAssociationCollection}
+        parentQuantifiedAssociations={{products: [], product_models: []}}
+        onAssociationsChange={onChange}
+        errors={[]}
+        onOpenPicker={() =>
+          Promise.resolve([
+            {
+              productType: ProductType.ProductModel,
+              quantifiedLink: {identifier: 'braided-hat', quantity: 1},
+              product: null,
+              errors: [],
+            },
+            {
+              productType: ProductType.Product,
+              quantifiedLink: {identifier: 'bag', quantity: 1},
+              product: null,
+              errors: [],
+            },
+          ])
+        }
+      />,
       container
     );
   });
@@ -227,22 +205,18 @@ test('It adds products when the user confirm the picker', async () => {
 
 test('It displays no table rows when the quantified association collection is null', async () => {
   await act(async () => {
-    ReactDOM.render(
-      <DependenciesProvider>
-        <AkeneoThemeProvider>
-          <QuantifiedAssociations
-            quantifiedAssociations={{
-              //The useProducts mock defined above will simulate loading thanks to the 'null' identifier
-              products: [{identifier: 'null', quantity: 2}],
-              product_models: [],
-            }}
-            errors={[]}
-            parentQuantifiedAssociations={{products: [], product_models: []}}
-            onAssociationsChange={jest.fn()}
-            onOpenPicker={jest.fn()}
-          />
-        </AkeneoThemeProvider>
-      </DependenciesProvider>,
+    renderDOMWithProviders(
+      <QuantifiedAssociations
+        quantifiedAssociations={{
+          //The useProducts mock defined above will simulate loading thanks to the 'null' identifier
+          products: [{identifier: 'null', quantity: 2}],
+          product_models: [],
+        }}
+        errors={[]}
+        parentQuantifiedAssociations={{products: [], product_models: []}}
+        onAssociationsChange={jest.fn()}
+        onOpenPicker={jest.fn()}
+      />,
       container
     );
   });
@@ -252,26 +226,22 @@ test('It displays no table rows when the quantified association collection is nu
 
 test('It notifies when a root error is detected', async () => {
   await act(async () => {
-    ReactDOM.render(
-      <DependenciesProvider>
-        <AkeneoThemeProvider>
-          <QuantifiedAssociations
-            quantifiedAssociations={quantifiedAssociationCollection}
-            errors={[
-              {
-                propertyPath: '',
-                message: 'an error occured',
-                messageTemplate: 'an.error.occured',
-                invalidValue: '',
-                parameters: {},
-              },
-            ]}
-            parentQuantifiedAssociations={{products: [], product_models: []}}
-            onAssociationsChange={jest.fn()}
-            onOpenPicker={jest.fn()}
-          />
-        </AkeneoThemeProvider>
-      </DependenciesProvider>,
+    renderDOMWithProviders(
+      <QuantifiedAssociations
+        quantifiedAssociations={quantifiedAssociationCollection}
+        errors={[
+          {
+            propertyPath: '',
+            message: 'an error occured',
+            messageTemplate: 'an.error.occured',
+            invalidValue: '',
+            parameters: {},
+          },
+        ]}
+        parentQuantifiedAssociations={{products: [], product_models: []}}
+        onAssociationsChange={jest.fn()}
+        onOpenPicker={jest.fn()}
+      />,
       container
     );
   });
@@ -281,26 +251,22 @@ test('It notifies when a root error is detected', async () => {
 
 test('It notifies when a product error is detected', async () => {
   await act(async () => {
-    ReactDOM.render(
-      <DependenciesProvider>
-        <AkeneoThemeProvider>
-          <QuantifiedAssociations
-            quantifiedAssociations={quantifiedAssociationCollection}
-            errors={[
-              {
-                propertyPath: '.products',
-                message: 'a product error occured',
-                messageTemplate: 'a.product.error.occured',
-                invalidValue: '',
-                parameters: {},
-              },
-            ]}
-            parentQuantifiedAssociations={{products: [], product_models: []}}
-            onAssociationsChange={jest.fn()}
-            onOpenPicker={jest.fn()}
-          />
-        </AkeneoThemeProvider>
-      </DependenciesProvider>,
+    renderDOMWithProviders(
+      <QuantifiedAssociations
+        quantifiedAssociations={quantifiedAssociationCollection}
+        errors={[
+          {
+            propertyPath: '.products',
+            message: 'a product error occured',
+            messageTemplate: 'a.product.error.occured',
+            invalidValue: '',
+            parameters: {},
+          },
+        ]}
+        parentQuantifiedAssociations={{products: [], product_models: []}}
+        onAssociationsChange={jest.fn()}
+        onOpenPicker={jest.fn()}
+      />,
       container
     );
   });
@@ -310,26 +276,22 @@ test('It notifies when a product error is detected', async () => {
 
 test('It notifies when a product model error is detected', async () => {
   await act(async () => {
-    ReactDOM.render(
-      <DependenciesProvider>
-        <AkeneoThemeProvider>
-          <QuantifiedAssociations
-            quantifiedAssociations={quantifiedAssociationCollection}
-            errors={[
-              {
-                propertyPath: '.product_models',
-                message: 'a product model error occured',
-                messageTemplate: 'a.product.model.error.occured',
-                invalidValue: '',
-                parameters: {},
-              },
-            ]}
-            parentQuantifiedAssociations={{products: [], product_models: []}}
-            onAssociationsChange={jest.fn()}
-            onOpenPicker={jest.fn()}
-          />
-        </AkeneoThemeProvider>
-      </DependenciesProvider>,
+    renderDOMWithProviders(
+      <QuantifiedAssociations
+        quantifiedAssociations={quantifiedAssociationCollection}
+        errors={[
+          {
+            propertyPath: '.product_models',
+            message: 'a product model error occured',
+            messageTemplate: 'a.product.model.error.occured',
+            invalidValue: '',
+            parameters: {},
+          },
+        ]}
+        parentQuantifiedAssociations={{products: [], product_models: []}}
+        onAssociationsChange={jest.fn()}
+        onOpenPicker={jest.fn()}
+      />,
       container
     );
   });

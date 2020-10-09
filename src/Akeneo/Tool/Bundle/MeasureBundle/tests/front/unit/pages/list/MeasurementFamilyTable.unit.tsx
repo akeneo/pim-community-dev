@@ -1,12 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import {Router} from 'react-router';
 import {act, fireEvent, getByTitle} from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
-import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
 import {MeasurementFamilyTable} from 'akeneomeasure/pages/list/MeasurementFamilyTable';
 import {createMemoryHistory} from 'history';
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {renderDOMWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 
 const measurementFamilies = [
   {
@@ -57,17 +54,9 @@ test('It displays an empty table', async () => {
   const history = createMemoryHistory();
 
   await act(async () => {
-    ReactDOM.render(
+    renderDOMWithProviders(
       <Router history={history}>
-        <DependenciesProvider>
-          <AkeneoThemeProvider>
-            <MeasurementFamilyTable
-              measurementFamilies={[]}
-              toggleSortDirection={() => {}}
-              getSortDirection={() => {}}
-            />
-          </AkeneoThemeProvider>
-        </DependenciesProvider>
+        <MeasurementFamilyTable measurementFamilies={[]} toggleSortDirection={() => {}} getSortDirection={() => {}} />
       </Router>,
       container
     );
@@ -81,17 +70,13 @@ test('It displays some measurement families', async () => {
   const history = createMemoryHistory();
 
   await act(async () => {
-    ReactDOM.render(
+    renderDOMWithProviders(
       <Router history={history}>
-        <DependenciesProvider>
-          <AkeneoThemeProvider>
-            <MeasurementFamilyTable
-              measurementFamilies={measurementFamilies}
-              toggleSortDirection={() => {}}
-              getSortDirection={() => {}}
-            />
-          </AkeneoThemeProvider>
-        </DependenciesProvider>
+        <MeasurementFamilyTable
+          measurementFamilies={measurementFamilies}
+          toggleSortDirection={() => {}}
+          getSortDirection={() => {}}
+        />
       </Router>,
       container
     );
@@ -110,17 +95,13 @@ test('It toggles the sort direction on the columns', async () => {
   };
 
   await act(async () => {
-    ReactDOM.render(
+    renderDOMWithProviders(
       <Router history={history}>
-        <DependenciesProvider>
-          <AkeneoThemeProvider>
-            <MeasurementFamilyTable
-              measurementFamilies={measurementFamilies}
-              toggleSortDirection={(columnCode: string) => (sortDirections[columnCode] = 'Descending')}
-              getSortDirection={(columnCode: string) => sortDirections[columnCode]}
-            />
-          </AkeneoThemeProvider>
-        </DependenciesProvider>
+        <MeasurementFamilyTable
+          measurementFamilies={measurementFamilies}
+          toggleSortDirection={(columnCode: string) => (sortDirections[columnCode] = 'Descending')}
+          getSortDirection={(columnCode: string) => sortDirections[columnCode]}
+        />
       </Router>,
       container
     );
@@ -145,17 +126,13 @@ test('It changes the history when clicking on a row', async () => {
   const history = createMemoryHistory();
 
   await act(async () => {
-    ReactDOM.render(
+    renderDOMWithProviders(
       <Router history={history}>
-        <DependenciesProvider>
-          <AkeneoThemeProvider>
-            <MeasurementFamilyTable
-              measurementFamilies={measurementFamilies}
-              toggleSortDirection={() => {}}
-              getSortDirection={() => {}}
-            />
-          </AkeneoThemeProvider>
-        </DependenciesProvider>
+        <MeasurementFamilyTable
+          measurementFamilies={measurementFamilies}
+          toggleSortDirection={() => {}}
+          getSortDirection={() => {}}
+        />
       </Router>,
       container
     );

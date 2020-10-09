@@ -1,7 +1,7 @@
 import React, {ChangeEventHandler, InputHTMLAttributes, RefObject, useContext} from 'react';
 import styled, {css, ThemeContext} from 'styled-components';
 import {Flag} from 'akeneomeasure/shared/components/Flag';
-import {LockIcon} from 'akeneomeasure/shared/icons/LockIcon';
+import {LockIcon} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {ValidationError, InputErrors} from '@akeneo-pim-community/shared';
 
@@ -15,7 +15,7 @@ const Input = styled.input`
 
 const InputContainer = styled.div<{readOnly?: boolean; invalid: boolean}>`
   border: 1px solid ${props => props.theme.color.grey80};
-  background-color: ${props => (props.readOnly ? props.theme.color.grey70 : 'inherit')};
+  background-color: ${props => (props.readOnly ? props.theme.color.grey60 : 'inherit')};
   cursor: ${props => (props.readOnly ? 'not-allowed' : 'inherit')};
   height: 40px;
   display: flex;

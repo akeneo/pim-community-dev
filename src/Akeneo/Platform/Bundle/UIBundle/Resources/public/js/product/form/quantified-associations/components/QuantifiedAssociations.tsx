@@ -1,16 +1,11 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import styled from 'styled-components';
 import {useTranslate, useNotify, NotificationLevel} from '@akeneo-pim-community/legacy-bridge';
+import {BrokenLinkIcon, AssociationTypesIllustration, Helper, Button} from 'akeneo-design-system';
 import {
-  Button,
   SearchBar,
   NoDataSection,
   NoDataTitle,
-  AssociationTypeIllustration,
-  HelperRibbon,
-  HelperLevel,
-  UnlinkIcon,
-  useAkeneoTheme,
   ValidationError,
   getErrorsForPath,
   formatParameters,
@@ -69,7 +64,7 @@ type QuantifiedAssociationsProps = {
   quantifiedAssociations: QuantifiedAssociation;
   parentQuantifiedAssociations: QuantifiedAssociation;
   errors: ValidationError[];
-  isCompact: boolean;
+  isCompact?: boolean;
   onAssociationsChange: (quantifiedAssociations: QuantifiedAssociation) => void;
   onOpenPicker: () => Promise<Row[]>;
 };
@@ -78,13 +73,12 @@ const QuantifiedAssociations = ({
   quantifiedAssociations,
   parentQuantifiedAssociations,
   errors,
-  isCompact,
+  isCompact = false,
   onOpenPicker,
   onAssociationsChange,
 }: QuantifiedAssociationsProps) => {
   const translate = useTranslate();
   const notify = useNotify();
-  const theme = useAkeneoTheme();
   const [rowCollection, setRowCollection] = useState<Row[]>(
     quantifiedAssociationToRowCollection(quantifiedAssociations, errors)
   );
@@ -147,14 +141,14 @@ const QuantifiedAssociations = ({
   return (
     <>
       {MAX_LIMIT <= newAndUpdatedCount && (
-        <HelperRibbon level={HelperLevel.HELPER_LEVEL_INFO}>
+        <Helper level="info">
           {translate('pim_enrich.entity.product.module.associations.limit_reached', {maxLimit: MAX_LIMIT.toString()})}
-        </HelperRibbon>
+        </Helper>
       )}
       {hasUpdatedVariant && (
-        <HelperRibbon level={HelperLevel.HELPER_LEVEL_INFO} icon={<UnlinkIcon color={theme.color.blue100} />}>
+        <Helper level="info" icon={<BrokenLinkIcon />}>
           {translate('pim_enrich.entity.product.module.associations.variant_updated')}
-        </HelperRibbon>
+        </Helper>
       )}
       <SearchBar
         placeholder={translate('pim_enrich.entity.product.module.associations.search.placeholder')}
@@ -164,14 +158,14 @@ const QuantifiedAssociations = ({
       />
       {!isCompact && (
         <Buttons>
-          <Button color="blue" onClick={handleAdd}>
+          <Button level="secondary" onClick={handleAdd}>
             {translate('pim_enrich.entity.product.module.associations.add_associations')}
           </Button>
         </Buttons>
       )}
       {null === products ? null : 0 === filteredCollectionWithProducts.length ? (
         <NoDataSection>
-          <AssociationTypeIllustration size={256} />
+          <AssociationTypesIllustration size={256} />
           <NoDataTitle>
             {translate(
               '' === searchValue

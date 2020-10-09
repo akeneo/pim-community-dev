@@ -2,16 +2,20 @@ import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import LinkTo from '@storybook/addon-links/react';
 import {Helper} from './Helper';
 import {Link} from '../Link/Link';
+import * as Icons from '../../icons';
 
 <Meta
   title="Components/Helper"
   component={Helper}
   argTypes={{
     children: {control: {type: 'text'}},
+    icon: {control: {type: 'select', options: [undefined, ...Object.keys(Icons)]}},
   }}
   args={{
-    children: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    level: 'info'
+    children:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    level: 'info',
+    icon: undefined,
   }}
 />
 
@@ -24,6 +28,7 @@ Allows to help the user by pushing contextual information.
 ## General guidance
 
 It informs the user about :
+
 - The features of the section.
 - The information expected in the field.
 - An alert on the information filled in by the user.
@@ -35,8 +40,10 @@ Use this playground to test the helper component
 
 <Canvas>
   <Story name="Standard">
-    {(args) => {
-      return <Helper {...args}/>;
+    {args => {
+      return (
+        <Helper {...args} icon={undefined === Icons[args.icon] ? undefined : React.createElement(Icons[args.icon])} />
+      );
     }}
   </Story>
 </Canvas>
@@ -47,14 +54,20 @@ Use this playground to test the helper component
 
 <Canvas>
   <Story name="Level">
-    {(args) => {
+    {args => {
       return (
         <>
-          <Helper {...args} level="info">Info</Helper>
-          <Helper {...args} level="warning">Warning</Helper>
-          <Helper {...args} level="error">Error</Helper>
+          <Helper {...args} level="info">
+            Info
+          </Helper>
+          <Helper {...args} level="warning">
+            Warning
+          </Helper>
+          <Helper {...args} level="error">
+            Error
+          </Helper>
         </>
-      )
+      );
     }}
   </Story>
 </Canvas>
@@ -63,30 +76,61 @@ Use this playground to test the helper component
 
 <Canvas>
   <Story name="Inline">
-    {(args) => {
+    {args => {
       return (
         <>
-          <Helper {...args} inline={true} level="info">Info</Helper>
-          <Helper {...args} inline={true} level="warning">Warning</Helper>
-          <Helper {...args} inline={true} level="error">Error</Helper>
+          <Helper {...args} inline={true} level="info">
+            Info
+          </Helper>
+          <Helper {...args} inline={true} level="warning">
+            Warning
+          </Helper>
+          <Helper {...args} inline={true} level="error">
+            Error
+          </Helper>
         </>
-      )
+      );
     }}
   </Story>
 </Canvas>
 
 ## Composition
 
-When more information can be found in another page, helper is combined with Link component
+When more information can be found in another page, Helper is combined with Link component.
 
 <Canvas>
   <Story name="Composition">
-    {(args) => {
+    {args => {
       return (
         <Helper level="info">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-          dolore magna aliqua. <Link target="_blank" href="https://www.akeneo.com/">Link to related lorem ipsum</Link>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+          magna aliqua.{' '}
+          <Link target="_blank" href="https://www.akeneo.com/">
+            Link to related lorem ipsum
+          </Link>
         </Helper>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With custom Icon
+
+<Canvas>
+  <Story name="Custom Icon">
+    {args => {
+      return (
+        <>
+          <Helper {...args} level="info" icon={<Icons.BrokenLinkIcon />}>
+            Info
+          </Helper>
+          <Helper {...args} level="warning" icon={<Icons.MegaphoneIcon />}>
+            Warning
+          </Helper>
+          <Helper {...args} level="error" inline={true} icon={<Icons.UnviewIcon />}>
+            Error level and inline
+          </Helper>
+        </>
       );
     }}
   </Story>
@@ -95,6 +139,14 @@ When more information can be found in another page, helper is combined with Link
 ## Related components
 
 <ul>
-  <li><LinkTo kind="Components/Information" story="Standard">Information</LinkTo></li>
-  <li><LinkTo kind="Components/Link" story="Standard">Link</LinkTo></li>
+  <li>
+    <LinkTo kind="Components/Information" story="Standard">
+      Information
+    </LinkTo>
+  </li>
+  <li>
+    <LinkTo kind="Components/Link" story="Standard">
+      Link
+    </LinkTo>
+  </li>
 </ul>

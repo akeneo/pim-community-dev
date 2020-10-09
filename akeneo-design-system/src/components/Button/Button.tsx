@@ -1,58 +1,61 @@
-import React, {ReactNode, Ref} from 'react';
+import React, {ReactNode, Ref, SyntheticEvent} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColorForLevel, getFontSize, Level} from '../../theme';
-import {Key} from '../../shared';
+import {Key, Override} from '../../shared';
 import {useShortcut} from '../../hooks';
 
 type ButtonSize = 'small' | 'default';
 
-type ButtonProps = {
-  /**
-   * Level of the button defining it's color and outline.
-   * Possible values are: primary, secondary, tertiary, danger and ghost.
-   */
-  level?: Level;
+type ButtonProps = Override<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  {
+    /**
+     * Level of the button defining it's color and outline.
+     * Possible values are: primary, secondary, tertiary, danger and ghost.
+     */
+    level?: Level;
 
-  /**
-   * When an action does not require primary dominance on the page.
-   */
-  ghost?: boolean;
+    /**
+     * When an action does not require primary dominance on the page.
+     */
+    ghost?: boolean;
 
-  /**
-   * Use when the user cannot proceed or until an input is collected.
-   */
-  disabled?: boolean;
+    /**
+     * Use when the user cannot proceed or until an input is collected.
+     */
+    disabled?: boolean;
 
-  /**
-   * Define the size of a button.
-   */
-  size?: ButtonSize;
+    /**
+     * Define the size of a button.
+     */
+    size?: ButtonSize;
 
-  /**
-   * Function called when the user clicks on the button or hit enter when focused.
-   */
-  onClick: () => void;
+    /**
+     * Function called when the user clicks on the button or hit enter when focused.
+     */
+    onClick: (event: SyntheticEvent) => void;
 
-  /**
-   * Accessibility label to describe shortly the button.
-   */
-  ariaLabel?: string;
+    /**
+     * Accessibility label to describe shortly the button.
+     */
+    ariaLabel?: string;
 
-  /**
-   * Define which element is the label of this button for accessibility purposes. Expect a DOM node id.
-   */
-  ariaLabelledBy?: string;
+    /**
+     * Define which element is the label of this button for accessibility purposes. Expect a DOM node id.
+     */
+    ariaLabelledBy?: string;
 
-  /**
-   * Define what element is describing this button for accessibility purposes. Expect a DOM node id.
-   */
-  ariaDescribedBy?: string;
+    /**
+     * Define what element is describing this button for accessibility purposes. Expect a DOM node id.
+     */
+    ariaDescribedBy?: string;
 
-  /**
-   * Children of the button.
-   */
-  children: ReactNode;
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+    /**
+     * Children of the button.
+     */
+    children: ReactNode;
+  }
+>;
 
 const getColorStyle = (props: {level: Level; ghost: boolean; disabled: boolean} & AkeneoThemedProps) => {
   const {level, ghost, disabled} = props;
