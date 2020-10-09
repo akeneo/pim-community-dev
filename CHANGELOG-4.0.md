@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes:
+
+- PIM-9492-4.0: [Backport] PIM-9109: Fix SSO not working behind reverse proxy.
+
 # 4.0.63 (2020-10-08)
 
 # 4.0.62 (2020-10-07)

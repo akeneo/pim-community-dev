@@ -51,7 +51,7 @@
     "require": {
         "akeneo/pim-community-dev": "4.0.x-dev@dev",
         "guzzlehttp/guzzle": "6.3.3",
-        "hslavich/oneloginsaml-bundle": "1.4.0",
+        "hslavich/oneloginsaml-bundle": "1.4.1",
         "justinrainbow/json-schema": "^5.2",
         "phpspec/php-diff": "1.0.2",
         "phpseclib/phpseclib": "~2.0",
