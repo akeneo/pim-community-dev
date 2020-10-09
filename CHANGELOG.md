@@ -78,6 +78,7 @@
 - RAC-123: Add possibility to export product/product model with labels instead of code
 - RAC-271: Add possibility to declare jobs as stoppable and stop them from the UI
 - RAC-277: Add job progress and remaining time in the UI
+- PM2020-25: Convert a variant to a simple product
 
 ## Improvements
 
@@ -122,6 +123,7 @@
     - add `Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface $productEditDataFilter`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductController` to
     - add `Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface $productEditDataFilter`
+    - add `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface $removeParent`
 - Change constructor of `Akeneo\Pim\Structure\Component\Validator\Constraints\ValidMetricValidator` to
     - remove `array $measures`
     - add `Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider $provider`
