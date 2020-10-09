@@ -1,5 +1,4 @@
 import {EventsHash} from 'backbone';
-import * as _ from 'underscore';
 
 import BaseView = require('pimui/js/view/base');
 const Dialog = require('pim/dialog');
@@ -8,14 +7,11 @@ const messenger = require('oro/messenger');
 const Routing = require('routing');
 const router = require('pim/router');
 
-const template = require('pim/template/product/convert-to-simple-product');
-
 interface Config {
     url: string;
 }
 
 class ConvertToSimpleProduct extends BaseView {
-    private readonly template = _.template(template);
 
     private readonly config: Config;
 
@@ -37,9 +33,7 @@ class ConvertToSimpleProduct extends BaseView {
     public render(): BaseView {
         const formData = this.getFormData();
         if ('product' === formData.meta.model_type && null !== formData.parent && this.isAuthorized()) {
-            this.$el.html(this.template({
-                label: __('pim_enrich.entity.product.module.convert_variant_to_simple.label'),
-            }));
+            this.$el.html(__('pim_enrich.entity.product.module.convert_variant_to_simple.label'));
         }
 
         return BaseView.prototype.render.apply(this, arguments);
@@ -60,7 +54,6 @@ class ConvertToSimpleProduct extends BaseView {
                     id: this.getFormData().meta.id,
                 }), {
                     headers: {
-                        'Content-Type': 'application/json',
                         'X-Requested-With': 'XMLHttpRequest'
                     },
                     method: 'POST',
@@ -73,7 +66,8 @@ class ConvertToSimpleProduct extends BaseView {
                         }
                     })
                     .catch((e) => {
-                        console.log(e);
+                        console.error(e);
+                        messenger.notify('error', __('pim_enrich.entity.product.flash.update.fail'));
                     })
                     .finally(() => {
                         router.hideLoadingMask();
