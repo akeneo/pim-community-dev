@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant;
 
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\Event\ParentHasBeenRemovedFromVariantProduct;
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Transforms a variant product into a non variant product. This is done by adding all the values, categories and
@@ -29,9 +29,7 @@ class RemoveParent implements RemoveParentInterface
 
     public function from(ProductInterface $product): void
     {
-        if (!$product->isVariant()) {
-            throw new \InvalidArgumentException('Cannot remove parent from a non variant product');
-        }
+        Assert::true($product->isVariant(), 'Cannot remove parent from a non variant product');
 
         if (null === $product->getId()) {
             // irrelevant at product creation
@@ -52,8 +50,8 @@ class RemoveParent implements RemoveParentInterface
 
     private function mergeValues(ProductInterface $product): void
     {
-        // getValues() returns all product values (including values inherited from ancestors),
-        // whereas setValues only sets values at the product level
+        /* getValues() returns all product values (including values inherited from ancestors),
+           whereas setValues only sets values at the product level */
         $product->setValues($product->getValues());
     }
 

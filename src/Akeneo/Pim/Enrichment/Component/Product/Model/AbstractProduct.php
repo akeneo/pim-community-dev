@@ -771,6 +771,9 @@ abstract class AbstractProduct implements ProductInterface
         $formerParentCode = $this->parent ? $this->parent->getCode() : null;
         $newParentCode = $parent ? $parent->getCode() : null;
         if ($formerParentCode !== $newParentCode) {
+            if (null === $newParentCode) {
+                $this->familyVariant = null;
+            }
             $this->dirty = true;
         }
         $this->parent = $parent;
