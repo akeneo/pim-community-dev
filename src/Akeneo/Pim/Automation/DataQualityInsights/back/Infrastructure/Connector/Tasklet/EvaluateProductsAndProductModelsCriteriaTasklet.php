@@ -22,7 +22,7 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
 final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletInterface
 {
-    private const LIMIT_PER_LOOP = 500;
+    private const LIMIT_PER_LOOP = 1000;
     private const BULK_SIZE = 100;
     private const TIMEBOX_IN_SECONDS_ALLOWED = 1700; // ~28 minutes
 
@@ -116,7 +116,6 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
             return true;
         }
 
-        sleep(5);
         return false;
     }
 }
