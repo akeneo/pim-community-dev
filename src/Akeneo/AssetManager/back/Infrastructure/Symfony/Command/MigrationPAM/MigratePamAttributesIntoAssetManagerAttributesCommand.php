@@ -99,7 +99,7 @@ SQL;
         $sqlCount = <<<SQL
 SELECT COUNT(1)
 FROM pim_catalog_attribute 
-WHERE attribute_type='pim_assets_collection' OR attribute_type='pim_catalog_asset_collection'
+WHERE (attribute_type='pim_assets_collection' OR attribute_type='pim_catalog_asset_collection')
 AND code IN (:attributeCodes)
 SQL;
         $statement = $this->connection->executeQuery($sqlCount,
@@ -111,11 +111,11 @@ SQL;
         $sql = <<<SQL
 UPDATE pim_catalog_attribute 
 SET attribute_type='pim_catalog_asset_collection', properties=:properties
-WHERE attribute_type='pim_assets_collection' OR attribute_type='pim_catalog_asset_collection'
+WHERE (attribute_type='pim_assets_collection' OR attribute_type='pim_catalog_asset_collection')
 AND code IN (:attributeCodes)
 SQL;
 
-        $this->connection->executeQuery($sql,
+        $this->connection->executeUpdate($sql,
             [
                 'attributeCodes' => $attributeCodes,
                 'properties' => serialize(['reference_data_name' => $this->assetFamilyCode])
