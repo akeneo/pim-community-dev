@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation;
 
-interface CreateMissingCriteriaEvaluationsInterface
+interface MarkCriteriaToEvaluateInterface
 {
-    public function createForProductsUpdatedSince(\DateTimeImmutable $updatedSince, int $batchSize): void;
+    public function forUpdatesSince(\DateTimeImmutable $since, int $batchSize): void;
 }

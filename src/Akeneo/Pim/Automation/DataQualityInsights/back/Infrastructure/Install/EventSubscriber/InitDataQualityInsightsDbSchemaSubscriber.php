@@ -83,7 +83,7 @@ CREATE TABLE pim_data_quality_insights_dashboard_rates_projection (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE pim_data_quality_insights_attribute_group_activation (
-    attribute_group_code VARCHAR(15) NOT NULL PRIMARY KEY,
+    attribute_group_code VARCHAR(100) NOT NULL PRIMARY KEY,
     activated TINYINT NOT NULL,
     updated_at DATETIME NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
