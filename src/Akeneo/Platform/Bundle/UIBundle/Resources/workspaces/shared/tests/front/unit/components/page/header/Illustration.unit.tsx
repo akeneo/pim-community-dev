@@ -3,15 +3,16 @@ import {render} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {Illustration, IllustrationProps} from '@akeneo-pim-community/shared/src/components/page/header/Illustration';
-import {AkeneoThemeProvider} from '@akeneo-pim-community/shared/src//theme';
+import {pimTheme} from "akeneo-design-system";
+import {ThemeProvider} from "styled-components";
 
 describe('Page Header Illustration', () => {
   const renderWithContext = (props: IllustrationProps) => {
     return render(
       <DependenciesProvider>
-        <AkeneoThemeProvider>
+        <ThemeProvider theme={pimTheme}>
           <Illustration {...props} />
-        </AkeneoThemeProvider>
+        </ThemeProvider>
       </DependenciesProvider>
     );
   };

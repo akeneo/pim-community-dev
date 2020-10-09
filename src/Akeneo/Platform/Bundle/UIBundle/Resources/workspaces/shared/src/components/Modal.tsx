@@ -1,8 +1,6 @@
 import React, {ButtonHTMLAttributes, PropsWithChildren, ReactElement} from 'react';
 import styled from 'styled-components';
-import {useAkeneoTheme} from '../hooks';
-import {CloseIcon} from '../icons';
-import {Button} from './Button';
+import {useTheme, CloseIcon, Button} from 'akeneo-design-system';
 
 const Modal = styled.div`
   position: fixed;
@@ -43,7 +41,7 @@ const ModalConfirmButton = styled(Button)`
 `;
 
 const ModalCloseButton = ({title, ...props}: ButtonHTMLAttributes<HTMLButtonElement>) => {
-  const akeneoTheme = useAkeneoTheme();
+  const akeneoTheme = useTheme();
 
   return (
     <ModalCloseButtonContainer tabIndex={0} title={title} aria-label={title} {...props}>

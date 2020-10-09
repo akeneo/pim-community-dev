@@ -3,7 +3,7 @@ import styled, {css, keyframes} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../theme';
 import {CheckIcon, CheckPartialIcon} from '../../icons';
 import {useShortcut} from '../../hooks';
-import {Key, uuid} from '../../shared';
+import {Key, Override, uuid} from '../../shared';
 
 const checkTick = keyframes`
   to {
@@ -89,34 +89,37 @@ const LabelContainer = styled.label<{readOnly: boolean} & AkeneoThemedProps>`
 
 type CheckboxChecked = boolean | 'mixed';
 
-type CheckboxProps = {
-  /**
-   * State of the Checkbox.
-   */
-  checked: CheckboxChecked;
+type CheckboxProps = Override<
+  React.HTMLAttributes<HTMLDivElement>,
+  {
+    /**
+     * State of the Checkbox.
+     */
+    checked: CheckboxChecked;
 
-  /**
-   * Displays the value of the input, but does not allow changes.
-   */
-  readOnly?: boolean;
+    /**
+     * Displays the value of the input, but does not allow changes.
+     */
+    readOnly?: boolean;
 
-  /**
-   * The handler called when clicking on Checkbox.
-   */
-  onChange?: (value: CheckboxChecked) => void;
+    /**
+     * The handler called when clicking on Checkbox.
+     */
+    onChange?: (value: CheckboxChecked, event: SyntheticEvent) => void;
 
-  /**
-   * Label of the checkbox.
-   */
-  children?: ReactNode;
-};
+    /**
+     * Label of the checkbox.
+     */
+    children?: ReactNode;
+  }
+>;
 
 /**
  * The checkboxes are applied when users can select all, several, or none of the options from a given list.
  */
 const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
   (
-    {checked, onChange, readOnly = false, children, ...rest}: CheckboxProps,
+    {checked, onChange, readOnly = false, children, title, ...rest}: CheckboxProps,
     forwardedRef: Ref<HTMLDivElement>
   ): React.ReactElement => {
     const [checkboxId] = useState<string>(`checkbox_${uuid()}`);
@@ -130,11 +133,11 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
 
       switch (checked) {
         case true:
-          onChange(false);
+          onChange(false, event);
           break;
         case 'mixed':
         case false:
-          onChange(true);
+          onChange(true, event);
           break;
       }
 
@@ -153,6 +156,7 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
         <CheckboxContainer
           checked={isChecked || isMixed}
           readOnly={readOnly}
+          title={title}
           role="checkbox"
           ref={ref}
           aria-checked={isChecked}

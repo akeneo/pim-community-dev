@@ -1,22 +1,19 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, {ThemeProvider} from 'styled-components';
 import {DependenciesProvider, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {
-  AkeneoThemeProvider,
   Modal,
   useToggleState,
   ModalCloseButton,
   useShortcut,
   Key,
   ModalConfirmButton,
-  AkeneoThemedProps,
-  CSVFileIcon,
-  XLSXFileIcon,
   useStorageState,
 } from '@akeneo-pim-community/shared';
 import {Form, FormValue} from './Form';
 import {Select} from './Select';
 import {Option} from './Option';
+import {AkeneoThemedProps, FileXlsxIcon, FileCsvIcon, pimTheme} from 'akeneo-design-system';
 
 const Container = styled.div`
   color: ${({theme}: AkeneoThemedProps) => theme.color.grey140};
@@ -63,9 +60,9 @@ type QuickExportConfiguratorProps = {
 
 const QuickExportConfigurator = (props: QuickExportConfiguratorProps) => (
   <DependenciesProvider>
-    <AkeneoThemeProvider>
+    <ThemeProvider theme={pimTheme}>
       <QuickExportConfiguratorContainer {...props} />
-    </AkeneoThemeProvider>
+    </ThemeProvider>
   </DependenciesProvider>
 );
 
@@ -117,11 +114,11 @@ const QuickExportConfiguratorContainer = ({
               <Form value={formValue} onChange={setFormValue}>
                 <Select name="type">
                   <Option value="csv" title={translate('pim_datagrid.mass_action.quick_export.configurator.csv')}>
-                    <CSVFileIcon size={48} />
+                    <FileCsvIcon size={48} />
                     {translate('pim_datagrid.mass_action.quick_export.configurator.csv')}
                   </Option>
                   <Option value="xlsx" title={translate('pim_datagrid.mass_action.quick_export.configurator.xlsx')}>
-                    <XLSXFileIcon size={48} />
+                    <FileXlsxIcon size={48} />
                     {translate('pim_datagrid.mass_action.quick_export.configurator.xlsx')}
                   </Option>
                 </Select>

@@ -8,7 +8,8 @@ import {AxisRatesOverviewPortal,} from "./component/ProductEditForm";
 import {AxesContextProvider} from "./context/AxesContext";
 import {DataQualityInsightsTabContent} from "./component/ProductEditForm/TabContent";
 import AttributesTabContent from "./component/ProductEditForm/TabContent/AttributesTabContent";
-import {AkeneoThemeProvider} from "@akeneo-pim-community/shared/src";
+import {pimTheme} from "akeneo-design-system";
+import {ThemeProvider} from "styled-components";
 
 interface ProductEditFormAppProps {
   catalogChannel: string;
@@ -18,7 +19,7 @@ interface ProductEditFormAppProps {
 
 const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product, catalogChannel, catalogLocale}) => {
   return (
-    <AkeneoThemeProvider>
+    <ThemeProvider theme={pimTheme}>
       <Provider store={productEditFormStore}>
         <CatalogContextListener catalogChannel={catalogChannel} catalogLocale={catalogLocale} />
         <PageContextListener />
@@ -31,7 +32,7 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
           <AxisRatesOverviewPortal />
         </AxesContextProvider>
       </Provider>
-    </AkeneoThemeProvider>
+    </ThemeProvider>
   );
 };
 

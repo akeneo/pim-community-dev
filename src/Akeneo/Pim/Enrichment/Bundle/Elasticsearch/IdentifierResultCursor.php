@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\ResultAwareInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ResultInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 
 /**
@@ -12,7 +14,7 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class IdentifierResultCursor implements CursorInterface
+class IdentifierResultCursor implements CursorInterface, ResultAwareInterface
 {
     /** @var \ArrayIterator */
     private $identifiers;
@@ -20,14 +22,14 @@ class IdentifierResultCursor implements CursorInterface
     /** @var int */
     private $totalCount;
 
-    /**
-     * @param array $identifiers
-     * @param int   $totalCount
-     */
-    public function __construct(array $identifiers, int $totalCount)
+    /** @var ElasticsearchResult */
+    private $result;
+
+    public function __construct(array $identifiers, int $totalCount, ElasticsearchResult $result)
     {
         $this->identifiers = new \ArrayIterator($identifiers);
         $this->totalCount = $totalCount;
+        $this->result = $result;
     }
 
     /**
@@ -76,5 +78,13 @@ class IdentifierResultCursor implements CursorInterface
     public function valid()
     {
         return $this->identifiers->valid();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getResult(): ResultInterface
+    {
+        return $this->result;
     }
 }

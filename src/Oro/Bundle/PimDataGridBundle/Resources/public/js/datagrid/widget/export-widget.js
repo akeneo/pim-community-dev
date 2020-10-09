@@ -1,22 +1,53 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'oro/messenger', 'oro/error'],
-    function ($, _, Backbone, messenger, Error) {
+    [
+        'jquery',
+        'underscore',
+        'backbone',
+        'oro/messenger',
+        'oro/error',
+        'routing'
+    ],
+    function (
+        $,
+        _,
+        Backbone,
+        messenger,
+        Error,
+        Routing
+    ) {
         'use strict';
 
         return Backbone.View.extend({
 
             action: null,
 
+            jobExportLinkTemplate: '<a href="<%= url %>" target="_blank"><%= label %></a>',
+
             initialize: function (action) {
                 this.action = action;
             },
 
             run: function () {
+                const JobExportLinkTemplate = this.jobExportLinkTemplate;
+
                 $.get(this.action.getLinkWithParameters())
-                    .done(function () {
+                    .done(function (data) {
+                        const jobUrl = '#' + Routing.generate('pim_enrich_job_tracker_show', {id: data.job_id});
+                        const jobLink = _.template(JobExportLinkTemplate)({
+                           url: jobUrl,
+                           label:  _.__('pim_datagrid.mass_action.quick_export.job_link_label'),
+                        });
+                        const messageTitle = _.__('pim_datagrid.mass_action.quick_export.success');
+                        const message = _.__('pim_datagrid.mass_action.quick_export.success_message', {
+                            job_link: jobLink,
+                        });
+
                         messenger.notify(
                             'success',
-                            _.__('pim_datagrid.mass_action.quick_export.success')
+                            message,
+                            {
+                                messageTitle: messageTitle,
+                            }
                         );
                     })
                     .fail(function (jqXHR) {

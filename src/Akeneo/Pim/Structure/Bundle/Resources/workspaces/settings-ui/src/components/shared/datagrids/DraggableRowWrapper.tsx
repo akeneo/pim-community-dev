@@ -1,8 +1,8 @@
 import React, {PropsWithChildren, ReactElement, RefObject} from 'react';
 import {TableCell} from '../layouts/tables';
-import {MoveIcon} from '@akeneo-pim-community/shared/src';
 import {useDataGridState} from '../../../hooks';
 import {AfterDropRowHandler} from '../providers';
+import {RowIcon} from "akeneo-design-system";
 
 type Props<T> = {
   data: T;
@@ -40,7 +40,7 @@ const DraggableRowWrapper = <T extends {}>({
           }}
           style={{lineHeight: '10px'}}
         >
-          <MoveIcon />
+          <RowIcon shapeRendering="crispEdges"/>
         </TableCell>
       )}
       {React.Children.map(children, element => {

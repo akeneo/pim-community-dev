@@ -2,7 +2,8 @@ import React from 'react';
 import {render} from '@testing-library/react';
 import {DependenciesProvider} from "@akeneo-pim-community/legacy-bridge";
 import {Breadcrumb, BreadcrumbItem} from "../../../../../src/components";
-import {AkeneoThemeProvider} from "../../../../../src/theme";
+import {pimTheme} from "akeneo-design-system";
+import {ThemeProvider} from "styled-components";
 
 describe('Breadcrumb', () => {
     const renderWithContext = (items: any[]) => {
@@ -10,13 +11,13 @@ describe('Breadcrumb', () => {
 
         return render(
             <DependenciesProvider>
-                <AkeneoThemeProvider>
+                <ThemeProvider theme={pimTheme}>
                     <Breadcrumb {...props}>
                         {items.map((item, index) => (
                             <BreadcrumbItem key={index}>{item}</BreadcrumbItem>
                         ))}
                     </Breadcrumb>
-                </AkeneoThemeProvider>
+                </ThemeProvider>
             </DependenciesProvider>
         );
     };

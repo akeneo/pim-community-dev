@@ -38,14 +38,6 @@ class ProductAndProductModelQueryBuilderFactory implements ProductQueryBuilderFa
     /** @var ProductQueryBuilderOptionsResolverInterface */
     protected $optionsResolver;
 
-    /**
-     * @param string                                      $pqbClass
-     * @param AttributeRepositoryInterface                $attributeRepository
-     * @param FilterRegistryInterface                     $filterRegistry
-     * @param SorterRegistryInterface                     $sorterRegistry
-     * @param CursorFactoryInterface                      $cursorFactory
-     * @param ProductQueryBuilderOptionsResolverInterface $optionsResolver
-     */
     public function __construct(
         string $pqbClass,
         AttributeRepositoryInterface $attributeRepository,
@@ -90,6 +82,10 @@ class ProductAndProductModelQueryBuilderFactory implements ProductQueryBuilderFa
             $pqbOptions['from'] = $options['from'];
         }
 
+        if (isset($options['with_document_type_facet'])) {
+            $pqbOptions['with_document_type_facet'] = $options['with_document_type_facet'];
+        }
+
         $pqb = $this->createProductQueryBuilder($pqbOptions);
         $pqb->setQueryBuilder(new SearchQueryBuilder());
 
@@ -101,14 +97,9 @@ class ProductAndProductModelQueryBuilderFactory implements ProductQueryBuilderFa
         return $pqb;
     }
 
-    /**
-     * @param array $options
-     *
-     * @return ProductQueryBuilderInterface
-     */
     protected function createProductQueryBuilder(array $options): ProductQueryBuilderInterface
     {
-        $pqb = new $this->pqbClass(
+        return new $this->pqbClass(
             $this->attributeRepository,
             $this->filterRegistry,
             $this->sorterRegistry,
@@ -116,8 +107,6 @@ class ProductAndProductModelQueryBuilderFactory implements ProductQueryBuilderFa
             $this->optionsResolver,
             $options
         );
-
-        return $pqb;
     }
 
     /**
@@ -159,7 +148,8 @@ class ProductAndProductModelQueryBuilderFactory implements ProductQueryBuilderFa
             'search_after',
             'search_after_unique_key',
             'limit',
-            'from'
+            'from',
+            'with_document_type_facet',
         ]);
         $resolver->setDefaults([
             'repository_method'     => 'createQueryBuilder',

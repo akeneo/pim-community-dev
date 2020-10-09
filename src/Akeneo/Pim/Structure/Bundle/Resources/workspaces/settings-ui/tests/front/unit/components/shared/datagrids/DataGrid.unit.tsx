@@ -2,17 +2,18 @@ import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import {render} from '@testing-library/react';
 import {DataGrid} from "@akeneo-pim-community/settings-ui/src/components/shared/datagrids";
-import {AkeneoThemeProvider} from "@akeneo-pim-community/shared/src";
+import {pimTheme} from "akeneo-design-system";
+import {ThemeProvider} from "styled-components";
 import {DependenciesProvider} from "@akeneo-pim-community/legacy-bridge";
 
 const renderDataGridWithProviders = (dataSource: any[], content: JSX.Element) => {
   return render(
     <DependenciesProvider>
-      <AkeneoThemeProvider>
+      <ThemeProvider theme={pimTheme}>
         <DataGrid dataSource={[]} handleAfterMove={() => {}} compareData={() => -1}>
           {content}
         </DataGrid>
-      </AkeneoThemeProvider>
+      </ThemeProvider>
     </DependenciesProvider>
   );
 }

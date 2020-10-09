@@ -1,16 +1,17 @@
 import React from 'react';
 import {act, fireEvent, render} from '@testing-library/react';
 import {DependenciesProvider} from "@akeneo-pim-community/legacy-bridge";
-import {AkeneoThemeProvider} from "../../../../../src/theme";
+import {pimTheme} from "akeneo-design-system";
+import {ThemeProvider} from "styled-components";
 import {BreadcrumbItem} from "../../../../../src/components";
 
 describe('Breadcrumb', () => {
     const renderWithContext = (item: any, props: {onClick?: () => void}) => {
         return render(
             <DependenciesProvider>
-                <AkeneoThemeProvider>
+                <ThemeProvider theme={pimTheme}>
                     <BreadcrumbItem {...props}>{item}</BreadcrumbItem>
-                </AkeneoThemeProvider>
+                </ThemeProvider>
             </DependenciesProvider>
         );
     };

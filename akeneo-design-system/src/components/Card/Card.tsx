@@ -2,6 +2,7 @@ import React, {Ref, ReactNode, isValidElement, ReactElement} from 'react';
 import styled from 'styled-components';
 import {Badge, BadgeProps, Checkbox} from '../../components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
+import {Override} from '../../shared';
 
 type CardGridProps = {
   size?: 'normal' | 'big';
@@ -82,32 +83,35 @@ const BadgeContainer = styled.div`
   right: 10px;
 `;
 
-type CardProps = {
-  /**
-   * Source URL of the image to display in the Card.
-   */
-  src: string;
+type CardProps = Override<
+  React.HTMLAttributes<HTMLDivElement>,
+  {
+    /**
+     * Source URL of the image to display in the Card.
+     */
+    src: string;
 
-  /**
-   * Should the image cover all the Card container or be contained in it.
-   */
-  fit?: 'cover' | 'contain';
+    /**
+     * Should the image cover all the Card container or be contained in it.
+     */
+    fit?: 'cover' | 'contain';
 
-  /**
-   * Whether or not the Card is selected.
-   */
-  isSelected?: boolean;
+    /**
+     * Whether or not the Card is selected.
+     */
+    isSelected?: boolean;
 
-  /**
-   * Handler called when the Card is selected. When provided, the Card will display a Checkbox and become selectable.
-   */
-  onSelectCard?: (isSelected: boolean) => void;
+    /**
+     * Handler called when the Card is selected. When provided, the Card will display a Checkbox and become selectable.
+     */
+    onSelect?: (isSelected: boolean) => void;
 
-  /**
-   * Children of the Card, contains the text to display below the image and can also contain a Badge component.
-   */
-  children: ReactNode;
-};
+    /**
+     * Children of the Card, contains the text to display below the image and can also contain a Badge component.
+     */
+    children: ReactNode;
+  }
+>;
 
 /**
  * Cards are used to have a good visual representation of the items to display.
@@ -115,7 +119,7 @@ type CardProps = {
  */
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   (
-    {src, fit = 'cover', isSelected = false, onSelectCard, children, ...rest}: CardProps,
+    {src, fit = 'cover', isSelected = false, onSelect, children, ...rest}: CardProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
     const badges: ReactElement<BadgeProps>[] = [];
@@ -130,7 +134,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       }
     });
 
-    const toggleSelect = undefined !== onSelectCard ? () => onSelectCard(!isSelected) : undefined;
+    const toggleSelect = undefined !== onSelect ? () => onSelect(!isSelected) : undefined;
 
     return (
       <CardContainer ref={forwardedRef} fit={fit} isSelected={isSelected} onClick={toggleSelect} {...rest}>
@@ -140,7 +144,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
           <img src={src} alt={texts[0]} />
         </ImageContainer>
         <CardLabel>
-          {undefined !== onSelectCard && <Checkbox checked={isSelected} onChange={toggleSelect} />}
+          {undefined !== onSelect && <Checkbox checked={isSelected} onChange={toggleSelect} />}
           {texts}
         </CardLabel>
       </CardContainer>

@@ -16,7 +16,7 @@ jobs:
           node-version: 13.13
 
       - name: Install node modules
-        run: cd akeneo-design-system && yarn install
+        run: yarn install
 
       - name: Build storybook
         run: yarn run storybook:build
