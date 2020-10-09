@@ -14,7 +14,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
-class ConvertVariantIntoSimpleProductIntegration extends TestCase
+class ConvertVariantToSimpleProductIntegration extends TestCase
 {
     /** @var ProductInterface */
     private $product;
