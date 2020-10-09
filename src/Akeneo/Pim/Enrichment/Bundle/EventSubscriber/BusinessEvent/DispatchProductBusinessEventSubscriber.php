@@ -56,7 +56,7 @@ final class DispatchProductBusinessEventSubscriber implements EventSubscriberInt
         $data = $this->normalizer->normalize($product, 'standard');
 
         $message = null;
-        if ($event->hasArgument('created') && true === $event->getArgument('created')) {
+        if ($event->hasArgument('is_new') && true === $event->getArgument('is_new')) {
             $message = new ProductCreated($author, $data);
         } else {
             $message = new ProductUpdated($author, $data);
