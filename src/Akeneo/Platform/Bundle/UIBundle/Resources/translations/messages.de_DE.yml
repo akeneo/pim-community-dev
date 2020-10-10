@@ -436,6 +436,18 @@ pim_datagrid:
   filters:
     product_typology:
       label: Produkt-Typologie
+    entity_type:
+      label: Variante
+    family:
+      label: Produktfamilie
+    groups:
+      label: Gruppen
+    enabled:
+      label: Status
+    completeness:
+      label: Vollständig
+    identifier:
+      label: Kennung
 #Versioning / history
 Change History: Änderungshistorie
 Data Audit: Datenhistorie

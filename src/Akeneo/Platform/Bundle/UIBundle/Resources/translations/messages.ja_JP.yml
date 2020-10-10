@@ -424,6 +424,20 @@ Updated At: '更新:'
 Enabled: 有効
 Disabled: 無効
 Status: ステータス
+pim_datagrid:
+  filters:
+    entity_type:
+      label: バリエーション
+    family:
+      label: ファミリー
+    groups:
+      label: グループ
+    enabled:
+      label: ステータス
+    completeness:
+      label: 完了
+    identifier:
+      label: 識別子
 #Versioning / history
 Change History: 変更履歴
 Data Audit: データ監査

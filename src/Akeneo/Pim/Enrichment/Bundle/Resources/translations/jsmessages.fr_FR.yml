@@ -401,6 +401,16 @@ pim_datagrid:
       label: 'Variante'
       grouped: 'Groupé'
       ungrouped: 'Dégroupé'
+    family:
+      label: Famille
+    groups:
+      label: Groupes
+    enabled:
+      label: État
+    completeness:
+      label: Complet
+    identifier:
+      label: Identifiant
   search: Rechercher sur {{ label }}
 batch_jobs:
   add_association:
