@@ -1,0 +1,58 @@
+pim_analytics:
+  new_patch_available: Доступний новий патч
+  system_config:
+    group:
+      notification.title: Сповіщення
+      version_update.title: Оновлення версії
+    form:
+      version_update.label: Сповіщення про нові версії
+      version_update.tooltip: Надішліть запит на віддалений сервер для отримання інформації про випуск нових оновлень
+  system_info:
+    title: Інформація про систему
+    download: TXT
+  info_type:
+    pim_edition: Видання
+    pim_version: Версія
+    pim_storage_driver: Сховище
+    pim_environment: Середовище
+    pim_install_time: Час встановлення
+    registered_bundles: Зареєстровані вузли
+    nb_channels: Кількість каналів
+    nb_products: Кількість продуктів
+    nb_product_models: Кількість моделей продуктів
+    nb_variant_products: Кількість варіантів продуктів
+    nb_family_variants: Кількість варіантів сімейств
+    nb_attributes: Кількість атрибутів
+    nb_scopable_attributes: Кількість видимих атрибутів
+    nb_localizable_attributes: Кількість атрибутів, які локалізуються
+    nb_scopable_localizable_attributes: Кількість видимих атрибутів та атрибутів, які локалізуються
+    nb_useable_as_grid_filter_attributes: Кількість атрибутів, які використовуються в табличному представленні
+    avg_percentage_scopable_attributes_per_family: Середній відсоток видимих атрибутів на сімейство (%)
+    avg_percentage_localizable_attributes_per_family: Середній відсоток атрибутів, які локалізуються, на сімейство (%)
+    avg_percentage_scopable_localizable_attributes_per_family: Середній відсоток видимих атрибутів ті атрибутів, які локалізуються, на сімейство (%)
+    nb_locales: Кількість локалей
+    nb_families: Кількість сімей
+    nb_users: Кількість користувачів
+    nb_categories: Кількість категорій
+    nb_category_trees: Кількість дерев категорій
+    max_category_in_one_category: Максимальна кількість підкатегорій в одній категорії
+    max_category_levels: Максимальна кількість рівнів категорій
+    nb_product_values: Кількість значень в продукті
+    avg_product_values_by_product: Середня кількість значень продукту запродуктами
+    avg_product_values_by_family: Середня кількість можливих значень продукту за сімействами
+    max_product_values_by_family: Максимальна кількість можливих значень продукту за сімействами
+    pim_storage_version: Версія сховища
+    os_version: Версія ОС
+    php_version: Версія PHP
+    mysql_version: Версія MySQL
+    mariadb_version: Версія MariaDB
+    mongodb_version: Версія MongoDB
+    server_version: Версія серверу
+    php_extensions: Розширення PHP
+    email_domains: Пов'язані домени електронної пошти
+  acl:
+    system_info:
+      index: Інформація про систему
+pim_menu:
+  item:
+    system_info: Інформація про систему

@@ -1,0 +1,378 @@
+pim_notification:
+  types:
+    settings: Налаштування
+flash:
+  comment:
+    create:
+      success: Ваш коментар був створений успішно.
+    delete:
+      success: Ваш коментар вилучено успішно.
+    reply:
+      success: Ваша відповідь створена успішно.
+pim_enrich.entity.product:
+  label: продукт
+  uppercase_label: Продукт
+  plural_label: Продукти
+  flash:
+    update:
+      success: Продукт успішно оновлено.
+      fail: Не вдалось оновити продукт.
+      fields_not_ready: "Продукт не можна зберегти прямо зараз. Наступні обов'язкові поля не заповнені: {{ fields }}"
+      already_in_upload: Файл вже знаходиться у вивантаженні для цього атрибута в локалі "{{ locale }}" і видимості "{{ scope }}"
+    delete:
+      success: Продукт успішно видалено.
+      fail: Не вдалося видалити продукт.
+    create:
+      success: Продукт успішно створено
+      fail: У продукта не зазначений атрибут в якості ідентифікатора, або ви не маєте прав для його змін.
+  module:
+    create:
+      subtitle: Створити продукт
+      title: Виберіть дію
+      choose_family: Виберіть сімейство
+      choose_family_variant: Виберіть різновид сімейства
+    variant_navigation:
+      common: Загальні
+    status:
+      enabled: Ввімкнено
+      disabled: Вимкнено
+    download_pdf:
+      label: PDF
+    copy:
+      label: Порівняти / Перекласти
+      select: Виберіть
+      all_visible: Всі видимі
+      copy: Копія
+    history:
+      version: Версія
+      author: Автор
+      logged_at: Увійти в
+      from: З
+      modified: Змінено
+      old_value: Старе значення
+      new_value: Нове значення
+    meta:
+      updated: Останнє оновлення
+      groups: Групи
+    show_group:
+      title: Група {{ group }}
+      view_group: Переглянути групу
+      more_products: '{{ count }} більше продуктів...'
+    attribute:
+      remove_optional: Видалити цей атрибут
+      locale_specific_unavailable: Поле, яке локалізується, не доступно для цієї мови
+      locale_unavailable: Поле, яке локалізується, не доступно для мови '{{ locale }}' і каналу '{{ channel }}'
+      add_attribute_option: Додати опцію атрибута
+      add_option: Додати параметр
+    completeness:
+      title: Ступінь заповненості
+      complete: Завершено
+      no_family: Сімейство не визначено. Будь ласка, визначіть сімейство для обчислення ступеню заповненості цього продукту.
+      no_completeness: Ви щойно змінили сімейство продукту. Будь ласка, збережіть його першим для обчислення ступеню заповненості для нового сімейства.
+    sequential_edit:
+      item_limit: Тільки перша 1000 елементів з ({{ count }} вибраних відображується при послідовному редагуванні
+      empty: Пошук не дав результатів, будь ласка, змініть умови пошуку
+      save_and_next: Зберегти й далі
+      save_and_finish: Зберегти і завершити
+    associations:
+      title: Асоціації
+      none_exist: Типи асоціацій не існуюють.
+      show_products: Показати продукти
+      show_groups: Відображати групи
+      number_of_associations: "{{ productCount }} продукт(и), {{ productModelCount }} модель(і) продуктів {{ groupCount }} група(и)"
+      association_type_selector: Тип асоціацій
+      target: Ціль
+      manage: Додати {{ associationType }} асоціацій
+      manage_description: Выберіть продукти, які ви бажаєте пов'язати з поточним продуктом
+      add_associations: Додати асоціації
+    attribute_filter:
+      display: Показати
+      all: Всі атрибути
+      missing_required: Всі обов'язкові атрибути, яких не вистачає
+      at_this_level: Всі специфічні атрибути рівня
+    change_family:
+      title: Змінити сімейство продуктів
+      merge_attributes: Поточні атрибути буде об'єднано з іншими в нову родину.
+      keep_attributes: Атрибути не буде видалено.
+      change_family_to: Змінити сімейство на
+      empty_selection: Виберіть сімейство
+    basket:
+      title: Кошик
+      empty_basket: Кошик пустий
+    delete:
+      confirm: Ви впевнені, що ви хочете видалити цей продукт?
+    comment:
+      post: Додати новий коментар
+      reply: Відповісти
+      title: Коментарі
+      empty: Без коментарів на даний момент
+      header_comment: 'Комментар користувача {{ user }} щодо продукту'
+      header_reply: 'відповідь користувача {{ user }} на коментар'
+      delete_confirm: Ви впевнені, що хочете видалити цей коментар?
+      removed_author: Вилучений користувач
+pim_enrich.entity.product_model:
+  uppercase_label: Модель продукту
+  plural_label: Моделі продукту
+  flash:
+    create:
+      success: Модель продукту успішно створено
+      product_model_added: Модель продукту успішно додана до моделі продукту
+      variant_product_added: Різновид продукту успішно доданий до моделі продукту
+    update:
+      success: Модель продукту успішно оновлено. Коефіціент заповненості цього різновиду продуктів буде перераховано.
+      fail: Не вдалось оновити модель продукту.
+      fields_not_ready: "Продукт не можна зберегти прямо зараз. Наступні обов'язкові поля не заповнені: {{ fields }}"
+    delete:
+      success: Модель продукту успішно видалено.
+  choose: Обрати модель продукту
+  property:
+    family_variant: Варіант
+  module:
+    create:
+      title: Створити модель продукту
+      content: Модель продукту збирає різні продукти та полегшує збагачення їх загальних властивостей.
+    attribute:
+      read_only_parent_attribute_from_common: Цей атрибут можна оновити в загальних атрибутах.
+      read_only_parent_attribute_from_model: "Цей атрибут можна оновити в атрибутах конфігурацій {{ axes }}"
+    variant_axis:
+      create: Додати новий
+      create_label: "Додати нові {{ axes }}"
+      required_label: '(варіант конфігураційного атрибуту)'
+    delete:
+      confirm: Ви дійсно бажаєте видалити цю модель продукту? Всі дочірні елементи, моделі і варіації продукту також будуть видалені.
+      confirm_for_products_and_product_models: Ви дійсно бажаєте видалити вибрані продукти і моделі продуктів? Всі дочірні елементи моделей продуктів також будуть видалені.
+pim_enrich.entity.group:
+  label: Група
+  flash:
+    update:
+      success: Групу успішно оновлено.
+      fail: Не вдалося оновити групу.
+      fields_not_ready: "Група не може бути збережена прямо зараз. Наступні обов'язкові поля не заповнені: {{ fields }}"
+    create:
+      success: Групу успішно створено
+    delete:
+      success: Групу успішно видалено
+      fail: Не можна видалити цю групу
+  module:
+    create:
+      button: Створити групу
+    delete:
+      confirm: Ви впевнені, що ви хочете видалити цю групу?
+pim_enrich.entity.category:
+  label: категорія
+  uppercase_label: Категорія
+  plural_label: Категорії
+pim_enrich.export.product:
+  data:
+    title: Фільтрувати за продуктами
+  structure:
+    title: Фільтрувати дані
+  filter:
+    channel:
+      help: Канал визначає зону видимості продуктів, локалі, які використовуються для вибраних даних, та дерево категорій для вибраних продуктів.
+    locales:
+      help: "Локалі визначають значення локалізованих даних для експорту. Наприклад, лише інформація по продукції французькою мовою."
+    attributes:
+      label: "{0}всі атрибути|{1}один атрибут вибрано|] 1, Inf [{{ count }} атрибутів вибрано"
+      help: "Виберіть відомості про продукт для експорту. Наприклад, тільки технічні атрибути."
+      empty: Буде експортовано всі атрибути
+      modal:
+        title: Выбір атрибутів
+    attributes_selector:
+      attributes: "Пошук у {{ itemsCount }} атрибутах"
+      selected: "Вибрані атрибути"
+      clear: Очистити
+      all_group: Всі групи
+      empty_selection: Буде експортовано всі атрибути
+      description: Виберіть відомості про продукт для експорту
+    family:
+      title: Сімейство
+      help: "Виберіть продукти для експорту за сімейством. Наприклад, експортувати лише взуття і сукні."
+      operators:
+        IN: У списку
+        "NOT IN": Немає у списку
+        EMPTY: Продукти, які не мають сімейства
+        "NOT EMPTY": Продукти, які мають сімейство
+      empty_selection: Жодних умов по сімействах
+    updated:
+      title: Умова часу
+      operators:
+        ALL: Немає умов
+        "SINCE LAST N DAYS": Продукти, оновлені протягом останніх n днів (наприклад, 6)
+        ">": Продукти, оновлені з цієї дати
+        "SINCE LAST JOB": Продукти, оновлені з моменту останнього експорту
+    enabled:
+      title: Статус
+      help: "Виберіть продукти для їхнього експорту за статусом. Наприклад, експорт товарів незалежно від їхнього статусу."
+      value:
+        enabled: Ввімкнено
+        disabled: Вимкнено
+    completeness:
+      title: Ступінь заповненості
+      help: Виберіть продукти для їхнього експорту за повнотою заповненості.
+      operators:
+        ALL: Немає умови щодо повноти заповненості
+        ">=": Заповнений принаймні за одною вибраною локаллю
+        "GREATER OR EQUALS THAN ON ALL LOCALES": Заповнений за всіма вибраними локалями
+        "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Заповнений принаймні за одною вибраною локаллю
+        LOWER THAN ON ALL LOCALES: Не заповнений за жодною локаллю
+        AT LEAST COMPLETE: Принаймні один продукт-нащадок заповнений на одній вибраний локалі
+        ALL COMPLETE: Всі продукти-нащадки заповнені за всіма вибраними локалями
+      empty_selection: Виберіть сімейство
+    category:
+      title: Категорія
+      help: Для вибору продуктів для експорту використовуйте категорії продуктів з дерева (визначеного у вибраному вище каналі)
+    identifier:
+      title: Ідентифікатор
+      help: Використовуйте ідентифікатори продуктів, які ви бажаєте експортувати, розділені комами, пробіламии або розривами рядків
+    string:
+      operators:
+        ALL: Всі
+    select:
+      operators:
+        IN: У списку
+    date:
+      operators:
+        BETWEEN: Між
+        NOT BETWEEN: Не між
+  global_settings:
+    title: Глобальні налаштування
+pim_enrich.mass_edit.product:
+  title: Масові дії по продуктах
+  step:
+    select:
+      label: Вибрати продукти
+    choose:
+      title: Масові дії по продуктах
+    configure:
+      label: Налаштувати
+    confirm:
+      label: Підтвердити
+    launched:
+      label: Була розпочата масова дія "{{ operation }}". Ви будете повідомлені по її завершенню.
+  operation:
+    common:
+      select_attributes: Виберіть атрибути
+    change_status:
+      label: Змінити статус
+      description: Вибрані продукти будуть увімкнені або вимкнені.
+      field: Увімкнути
+    edit_common:
+      label: Змінити значення атрибутів
+      description: Тільки атрибути, які належать до сімейства вибраних продуктів, будуть редагуватися для локалі Змінити статус {{ locale }} та каналу {{ scope }}.
+    add_attribute_value:
+      label: Додайте значення атрибутів
+      description: Тільки атрибуті, які мають декілька значень, будут редагуватися для {{ locale }} и {{ scope }}. Нові значення атрибутів додаються, попередні значення зберігаються.
+    change_family:
+      label: Змінити сімейство
+      description: Сімейство вибраних продуктів буде змінено на вибране сімейство
+    add_to_group:
+      label: Додати до групи
+      description: Виберіть групи, до яких додати вибрані продукти
+      field: Групи
+    add_to_category:
+      label: Додати до категорій
+      description: Продукти будуть класифіковані в наступні категорії, існуюча класифікація збережена.
+    move_to_category:
+      label: Перемістити між категоріями
+      description: Продукти будуть класифіковані в наступні категорії, існуюча класифікація не збережена.
+    remove_from_category:
+      label: Видалити з категорій
+      description: Продукти будуть видалені з наступних категорій.
+    add_to_existing_product_model:
+      label: Додати до існуючої моделі продукту
+      description: Вибрана модель продукту поєднає продукти і дозволить поповнити їхні загальні властивості.
+    associate_to_product_and_product_model:
+      label: Пов'язати
+      description: Вибрані в таблиці продукти будуть пов'язані з вибраними продуктами і моделями продуктів для вибраного типу зв'язку
+      validate: Будь ласка, додайте зв'язок до переходу до наступного кроку
+    change_parent_product_model:
+      label: Змінити батьківську модель продукту
+      description: Вибрана в таблиці батьківська модель продукту або підлегла модель продукту буде змінена на вибрану модель продукту.
+pim_datagrid:
+  mass_action_group:
+    bulk_actions:
+      label: Масові дії
+    quick_export:
+      label: Швидкий експорт
+  mass_action:
+    delete:
+      confirm_content: Ви справді бажаєте видалити вибрані продукти?
+      success: Вибрані продукти успішно видалені.
+    quick_export:
+      csv_all: CSV (всі атрибути)
+      csv_grid_context: CSV (видимі стовпці)
+      xlsx_all: Excel (всі атрибути)
+      xlsx_grid_context: Excel (видимі стовпці)
+    mass_edit: Масові дії
+    sequential_edit: Послідовне редагування
+    mass_delete: Масове видалення
+    selected:
+      family: вибрані сімейства
+      product: вибрані результати
+  view_selector:
+    view: Представлення
+  actions:
+    edit_product_attributes: Зміна атрибутів продукту
+    classify_product: Класифікувати продукт
+    delete_product: Видалити продукт
+    change_status: Змінити статус
+    toggle_status: Переключити статус
+    other: Інші дії
+  empty_results:
+    associated_product:
+      hint: Немає пов'язаних продуктів
+      subHint: 'Натисніть на кнопку "Додати асоціації" щоб додати зв''язки до цього продукту'
+  filters:
+    label: Фільтри
+    system: Система
+batch_jobs:
+  add_association:
+    label: Пов'язати
+    perform.label: Пов'язати
+  add_attribute_value:
+    label: Додати значення атрибутів
+    perform.label: Додати значення атрибутів
+  add_product_value:
+    label: Додати значення продукту
+    perform.label: Додати значення продукту
+  add_to_category:
+    label: Додати до категорії
+    perform.label: Додати до категорії
+  add_to_existing_product_model:
+    label: Додати до існуючої моделі продукту
+    perform.label: Додати до існуючої моделі продукту
+  csv_product_grid_context_quick_export:
+    quick_export.label: Швидкий експорт контексту сітки в CSV
+    quick_export_product_model.label: Швидкий експорт в CSV моделей продуктів в вигляді представлення даних у таблиці
+    perform.label: Швидкий експорт контексту сітки в CSV
+  csv_product_quick_export:
+    quick_export.label: Швидкий експорт в Csv
+    quick_export_product_model.label: Швидкий експорт моделі продукту в CSV
+    perform.label: Швидкий експорт в Csv
+  delete_products_and_product_models:
+    label: Масове видалення продуктів
+    perform.label: Масове видалення продуктів
+  change_parent_product:
+    label: Зміна батьківської моделі продукту
+    perform.label: Зміна батьківської моделі продукту
+  edit_common_attributes:
+    label: Редагувати атрибути
+    perform.label: Редагувати атрибути
+    clean.label: Очищення файлів для атрибутів
+    cleaner.label: Очищення файлів для атрибутів
+  compute_completeness_of_products_family:
+    label: Обчислення повноти даних
+    perform.label: Обчислення повноти даних
+  move_to_category:
+    label: Перенести до категорії
+    perform.label: Перенести до категорії
+  update_product_value:
+    label: Оновити значення продукту
+    perform.label: Оновити значення продукту
+  remove_from_category:
+    label: Видалити з категорії
+    perform.label: Видалити з категорії
+  set_attribute_requirements:
+    label: Встановити обов'язковість/ необов'язковість атрибутів
+    perform.label: Встановити обов'язковість/ необов'язковість атрибутів
