@@ -158,6 +158,8 @@ asset_grid:
 create_asset:
   title: 자산 만들기
 pim_datagrid:
+  display_selector:
+    gallery: 갤러리
   mass_action:
     mass_edit:
       asset_edit: 자산 대량 편집

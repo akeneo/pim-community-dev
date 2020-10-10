@@ -81,6 +81,8 @@ pimee_product_asset:
         error: Le fichier de variation n'a pas été supprimé. Une erreur s'est produite.
   popin.create:
     title: Créer une nouvelle ressource
+    confirm: Valider
+    cancel: Annuler
     is_localized: Localisable
   menu: Ressources
   page_tab:
