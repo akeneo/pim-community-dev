@@ -81,6 +81,8 @@ pimee_product_asset:
         error: Il file di variazione non è stato eliminato. Si è verificato un errore.
   popin.create:
     title: Crea un nuovo asset
+    confirm: Conferma
+    cancel: Annulla
     is_localized: Localizzabile
   menu: Asset
   page_tab:

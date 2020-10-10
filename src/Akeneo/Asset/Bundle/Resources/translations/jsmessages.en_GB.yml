@@ -158,6 +158,10 @@ asset_grid:
 create_asset:
   title: Create an asset
 pim_datagrid:
+  display_selector:
+    label: Display
+    gallery: Gallery
+    list: List
   mass_action:
     mass_edit:
       asset_edit: Mass edit assets
