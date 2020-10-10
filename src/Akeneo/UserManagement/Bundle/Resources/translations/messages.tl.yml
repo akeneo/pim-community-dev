@@ -1,0 +1,131 @@
+pim_user:
+  user:
+    title: Gumamit
+    fields:
+      name_prefix: Pangalan ng prefix
+      email: E-mail
+      username: Username
+      first_name: Pangalan
+      middle_name: Gitnang pangalan
+      last_name: Apelyido
+      name_suffix: Pangalan ng suffix
+      date_of_birth: Petsa ng kapanganakan
+      avatar: Avatar
+      timezone: Timezone
+      roles: Mga tungkulin
+      groups: Mga pangkat
+      password: Password
+      password_again: Muling i-type ang password
+      product_grid_filters: Produkto ng grid ng mga filter
+      catalog_locale: Katalog lokal
+      catalog_scope: Katalog ng scope
+      default_tree: Default puno
+      current_password: Kasalukuyang password
+      new_password: Bagong password
+      new_password_again: Bagong password (ulit)
+      default_grid_view:
+        none: Wala
+      default_product_grid_view:
+        label: E-default ng tingnan ang grid ng produkto
+      ui_locale: UI lokal
+      last_logged_in: Huling naitala
+      login_count: Bilang ng pag-login
+      user_salt: Gumagamit ng asin
+      created: Nilikga
+      updated: Na-update
+      status: Katayuan
+      capabilities: Mga kakayahan
+      has_role: May tungkulin
+      has_group: May grupo
+      active: Aktibo
+      inactive: Hindi aktibo
+    tabs:
+      general:
+        title: Panlahat
+        contact_information: Impormasyon ng kontak
+      additional:
+        title: Karagdagan
+      interfaces:
+        title: Mga interface
+      group_and_role.title: Mga grupo at mga tungkulin
+      password.title: Password
+      business_unit.title: Mga yunit ng negosyo
+      email_synchronization.title: Sinkronisasyon ng email settings
+    removed_user: Tanggalin ang gumagamit
+    login:
+      username_or_email: Pangalan ginamit o email
+      remember_me: Tandaan mo ako sa kompyuter na ito
+      password_forgotten: Nakalimutan ang iyong password?
+      log_in: Log in
+      forgot_password: Nakalimutang password
+      request: Hiniling
+      reset: I-reset
+      password_reset_email_sent: Ang email ay naihatid na sa %email%. Ito ay naglalaman ng isang link na kailangan mong pindutin para ma-reset mo ang iyong password.
+      homepage: Pumunta sa homepage
+  group:
+    tab:
+      general.title: Panlahat
+      users.title: Mga gumagamit
+  roles:
+    title: Tungkulin
+    tab:
+      general: Panlahat
+      action: Mga pahintulot
+      users: Mga gumamit
+  controller:
+    group:
+      message:
+        saved: "Naka-save na grupo"
+    role:
+      message:
+        saved: "Naka-save na tungkulin"
+    user:
+      message:
+        saved: "I-save ang user"
+pim_datagrid:
+  columns:
+    user:
+      createdAt: "Ginawa sa"
+      updatedAt: "Na-update sa"
+    roles:
+      label: "Label"
+    groups:
+      name: "Pangalan"
+confirmation:
+  remove:
+    role: Sigurado ka bang gusto mong burahin ang tungkulin na ito?
+    user: Sigurado ka bang gusto mong burahin ang gumagamit nito?
+flash:
+  role:
+    removed: Ang role ay matagumpay na inalis
+  user:
+    removed: Ang tagagamit ay matagumpay na natanggal
+oro_security:
+  acl_group:
+    user: Mga gumamit
+    role: Mga tungkulin
+    group: Mga grupo
+  acl:
+    user:
+      view: Listahan ng mga gumagamit
+      create: Lumikha ng gumagamit
+      edit: E-edit ang mga gumagamit
+      delete: Mag-tanggal ng gumagamit
+    role:
+      view: Mga listahan ng mga tungkulin
+      create: Lumikha ng grupo
+      edit: Mag-edit ng mga tungkulin
+      delete: Mag-tanggal ng isang tungkulin
+    group:
+      view: Listahan ng mga grupo ng gumagamit
+      create: Maglikha ng isang grupo ng gumagamit
+      edit: Mag-edit ng mga grupo ng gumagamit
+      delete: Mag-alis ng isang grupo ng gumagamit
+#Security
+(default): Mag-default ng pahintulot sa mga entity
+VIEW: Tingnan
+CREATE: Lumikha
+EDIT: Baguhin
+DELETE: Burahin
+ASSIGN: Itinakda
+SHARE: Ibahagi
