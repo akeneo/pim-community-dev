@@ -12,6 +12,8 @@ pimee_catalog_rule:
           no_yet_calculated: Not calculated yet
         tags:
           label: Actions
+        priority: Priority
+        status: Status
       mass_edit_action:
         impacted_product_count: Calculate the impacted products
         execute: Execute
@@ -19,9 +21,17 @@ pimee_catalog_rule:
   condition:
     fields:
       family: Family
+      family_variant: Family variant
       associations: Associations
       groups: Groups
       categories: Categories
+      completeness: Completeness
+      identifier: Identifier
+      parent: Parent
+      enabled: Status
+      entity_type: Entity type
+      created: Created
+      updated: Updated
     field_groups:
       system: System
   acl_group:
@@ -65,6 +75,9 @@ pimee_catalog_rule:
       week: ']-Inf, -1[%absolute_count% weeks ago|{-1}1 week ago|{1}in 1 week|]1, +Inf[in %absolute_count% weeks'
       month: ']-Inf, -1[%absolute_count% months ago|{-1}1 month ago|{1}in 1 month|]1, +Inf[in %absolute_count% months'
       year: ']-Inf, -1[%absolute_count% years ago|{-1}1 year ago|{1}in 1 year|]1, +Inf[in %absolute_count% years'
+  status:
+    enabled: Enabled
+    disabled: Disabled
 btn:
   Execute rules: Execute rules
 job_execution:
