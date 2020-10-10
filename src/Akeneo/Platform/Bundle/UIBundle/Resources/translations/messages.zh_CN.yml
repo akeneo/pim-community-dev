@@ -427,6 +427,20 @@ Updated At: 更新于
 Enabled: 已启用
 Disabled: 已禁用
 Status: 状态
+pim_datagrid:
+  filters:
+    entity_type:
+      label: 变量
+    family:
+      label: 品类
+    groups:
+      label: 分组
+    enabled:
+      label: 状态
+    completeness:
+      label: 完成
+    identifier:
+      label: 标识符
 #Versioning / history
 Change History: 更改历史记录
 Data Audit: 数据审计

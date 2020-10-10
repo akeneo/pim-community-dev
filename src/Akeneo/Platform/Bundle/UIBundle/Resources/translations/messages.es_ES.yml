@@ -427,6 +427,20 @@ Updated At: Actualizado el
 Enabled: Habilitado
 Disabled: Inhabilitado
 Status: Estado
+pim_datagrid:
+  filters:
+    entity_type:
+      label: Variante
+    family:
+      label: Familia
+    groups:
+      label: Grupos
+    enabled:
+      label: Estado
+    completeness:
+      label: Completo
+    identifier:
+      label: Identificador
 #Versioning / history
 Change History: Historial de cambios
 Data Audit: Auditoría de datos
