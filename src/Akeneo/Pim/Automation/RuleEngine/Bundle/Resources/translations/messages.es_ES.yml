@@ -2,61 +2,38 @@ pimee_catalog_rule:
   datagrid:
     rule-grid:
       actions:
-        delete: Borrar
         execute: Ejecutar
       title: Reglas
       column:
-        code: Código
-        conditions: Condición
-        actions: Acción
+        label: Etiqueta
         impacted_product_count:
-          label: Productos afectados
-          count: '{0,1}%count% producto afectado|]1,Inf[%count% productos afectados'
-          no_yet_calculated: Aún no calculados
+          no_yet_calculated: Aún no calculado
+        tags:
+          label: Acciones
       mass_edit_action:
-        impacted_product_count: Calcular los productos afectados
         execute: Ejecutar
         delete: Borrar
-  actions:
-    type:
-      "copy": Entonces %from_field% es copiado en %to_field%
-      "copy_value": Entonces %from_field% es copiado en %to_field%
-      "set": Entonces %value% es establecido en %field%
-      "set_value": Entonces %value% es establecido en %field%
-      "add": Entonces %value% es agregado en %field%
-      "remove": Entonces %value% es eliminado de %field%
-    options:
-      include_children: y niños
   condition:
-    label: Si %field% %operator% %value%
-    operators:
-      "STARTS WITH": comienza con
-      "ENDS WITH": termina por
-      "CONTAINS": contiene
-      "DOES NOT CONTAIN": no contiene
-      "EMPTY": está vacía
-      "NOT EMPTY": no está vacío
-      "IN": en
-      "NOT IN": no en
-      "IN CHILDREN": en descendiente
-      "NOT IN CHILDREN": no en descendiente
-      "UNCLASSIFIED": sin clasificar
-      "IN OR UNCLASSIFIED": sin clasificar o dentro
-      "BETWEEN": entre
-      "NOT BETWEEN": no entre
-      "=": igual
-      "!=": no es igual a
-      ">": mayor que
-      ">=": igual o mayor que
-      "<": menor que
-      "<=": igual o menor que
+    fields:
+      family: Familia
+      associations: Asociaciones
+      groups: Grupos
+      categories: Categorías
+      identifier: Identificador
+      enabled: Estado
+      created: Creado
+      updated: Actualizado
+    field_groups:
+      system: Sistema
   acl_group:
     rule: Reglas
   acl:
     rule:
+      edit_permissions: Editar reglas
       view_permissions: Ver reglas
       delete_permissions: Eliminar reglas
-      impacted_product_count_permissions: Calcular los productos afectados por las reglas
+      impacted_product_count_permissions: Calcular el número de productos afectados por las reglas
+      create_permissions: Crear reglas
       execute_permissions: Ejecutar reglas
   attribute:
     tab:
@@ -66,29 +43,31 @@ pimee_catalog_rule:
     acl:
       rule.view_permissions: Ver reglas
   product:
-    tooltip:
-      product_attribute_affected_by_a_rule.content: El valor de este atributo puede provenir de las reglas <strong>%rule%</strong>. Esto significa que si las condiciones de la regla son válidas, su modificación será invalidada.
-      loading.title: Cargando...
     history: Regla aplicada "%rule%"
-  product_value:
-    tooltip:
-      affected_by.title: 'Afectada por la(s) regla(s):'
   steps:
-    product_rule_definition_reader.title: Lector de reglas de importación de productos
-    rule_definition_processor.title: Procesador de reglas de importación de productos
-    product_rule_definition_writer.title: Editor de reglas de importación de productos
     rules_execution.title: Ejecución de las reglas
-  notification:
-    rule:
-      executed: Ejecución de la(s) regla(s) finalizada
-    mass_edit_rule:
-      success: Cálculo de productos afectados por las reglas finalizado
-      error: Un error ocurrió durante el cálculo de los productos afectados por la(s) regla(s)
+  datetime:
+    now: ahora
+    relative_date:
+      minute: ']-Inf, -1[ hace %absolute_count% minutos|{-1}hace 1 minuto|{1}en 1 minuto|]1, +Inf[en %absolute_count% minutos'
+      hour: ']-Inf, -1[ hace %absolute_count% horas|{-1}hace 1 hora|{1}en 1 hora|]1, +Inf[en %absolute_count% horas'
+      day: ']-Inf, -1[ hace %absolute_count% días|{-1}hace 1 día|{1}en 1 día|]1, +Inf[en %absolute_count% días'
+      week: ']-Inf, -1[ hace %absolute_count% semanas|{-1}hace 1 semana|{1}en 1 semana|]1, +Inf[en %absolute_count% semanas'
+      month: ']-Inf, -1[ hace %absolute_count% meses|{-1}hace 1 mes|{1}en 1 mes|]1, +Inf[en %absolute_count% meses'
+      year: ']-Inf, -1[ hace %absolute_count% años|{-1}hace 1 año|{1}en 1 año|]1, +Inf[en %absolute_count% años'
 btn:
   Execute rules: Ejecutar reglas
-mass_edit_rule: Configuración de reglas
-job_execution.summary.rule_calculated: Número de reglas
+job_execution:
+  summary:
+    rule_calculated: Número de reglas
+    read_rules: leer reglas
+    selected_entities: productos seleccionados / modelos de productos
+    skipped_invalid: productos omitidos / modelos de productos (inválidos)
+    updated_entities: productos actualizados / modelos de productos
+    executed_rules: reglas ejecutadas con éxito
+    errored_rules: reglas omitidas (inválidas)
 pim_datagrid:
   cells:
     type:
       mass_edit_rule: Configuración de reglas
+      execute_rules: Ejecución de las reglas

@@ -1,0 +1,23 @@
+akeneo_data_quality_insights:
+  product_evaluation:
+    criteria:
+      consistency_textarea_uppercase_words:
+        recommendation: Atributos con problemas en mayúsculas
+      consistency_textarea_lowercase_words:
+        recommendation: Atributos con incidencias en minúsculas
+      consistency_attribute_spelling:
+        recommendation: Etiquetas de atributo con errores de ortografía
+      consistency_attribute_option_spelling:
+        recommendation: Opción(es) de atributo con errores tipográficos
+  product_edit_form:
+    back_to_products: Volver a los productos
+  attribute_grid:
+    quality:
+      in_progress: Procesando
+      n_a: N/A
+  attribute_edit_form:
+    quality_summary: Al mejorar este atributo mejorarás la calidad total de {{ count }} productos.
+  spellcheck:
+    popover:
+      default_aria_label: Sugerencias ortográficas
+      aria_label: "Sugerencias ortográficas para: {{ mistake }}"

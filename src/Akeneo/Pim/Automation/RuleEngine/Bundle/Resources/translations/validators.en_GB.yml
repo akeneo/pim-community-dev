@@ -23,6 +23,7 @@ pimee_catalog_rule:
         unknown_scope: 'The "{{ attributeCode }}" attribute requires an existing scope'
       invalid_code: 'The rule code must only contain letters, numbers and underscores'
       conditions:
+        missing_key: 'The "conditions" key is missing or empty'
         missing_value_key: 'The "value" key is missing or empty'
         missing_operator_key: 'The "operator" key is missing or empty'
         existing_field: 'The "{{ field }}" field cannot be filtered or cannot be used with the "{{ operator }}" operator'
@@ -39,6 +40,9 @@ pimee_catalog_rule:
           missing_to_field_key: 'The "to_field" key is missing or empty'
         concatenate:
           invalid_source: 'You cannot concatenate data from the "{{ field }}" field'
+          missing_source_key: 'A single key among "field", "text" or "new_line" is required, please select one'
+          only_one_source_key_expected: 'A single key among "field", "text" or "new_line" is required, please select only one'
+          text_target_does_not_accept_new_line: 'The "{{ targetField }}" target attribute does not accept new line'
           unexpected_source_option: 'The {{ key }} key is irrelevant for the {{ attribute }} attribute'
           missing_from_key: 'The "from" key is missing or empty'
           missing_to_key: 'The "to" key is missing or empty'
