@@ -20,6 +20,9 @@ services:
     pim_serializer:
         class: 'Symfony\Component\Serializer\Serializer'
 
+    pim_domain_error_serializer:
+        class: 'Symfony\Component\Serializer\Serializer'
+
     # Encoders
     serializer.encoder.json:
         public: false
@@ -32,3 +35,4 @@ services:
             - { name: pim_storage_serializer.encoder, priority: 90 }
             - { name: pim_datagrid_serializer.encoder, priority: 90 }
             - { name: pim_internal_api_serializer.encoder, priority: 90 }
+            - { name: pim_domain_error_serializer.encoder, priority: 90 }
