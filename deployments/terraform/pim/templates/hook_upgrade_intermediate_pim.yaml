@@ -49,7 +49,7 @@ spec:
               mountPath: /var/secrets/google/srnt.json
               subPath: srnt.json
               readOnly: true
-            {{- if .Values.onboarder.enabled }}
+            {{- if $tplCtx.Values.onboarder.enabled }}
             - name: google-cloud-onboarder-key
               mountPath: /var/secrets/google/key.json
               subPath: key.json
@@ -62,7 +62,7 @@ spec:
             items:
             - key: srntPimStorageKey
               path: srnt.json
-        {{- if .Values.onboarder.enabled }}
+        {{- if $tplCtx.Values.onboarder.enabled }}
         - name: google-cloud-onboarder-key
           secret:
             secretName: pim-secrets

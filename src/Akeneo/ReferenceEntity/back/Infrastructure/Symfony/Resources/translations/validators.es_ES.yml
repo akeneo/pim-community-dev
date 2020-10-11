@@ -8,7 +8,7 @@ pim_reference_entity:
       records:
         should_have_no_record: 'No puede eliminar esta entidad debido a que existen registros para esta entidad'
       reference_entity_attributes:
-        should_not_be_linked: 'No puede eliminar esta entidad debido a que ciertos atributos de entidad de referencia están relacionados a esta entidad'
+        should_not_be_linked: 'Para eliminar esta entidad de referencia, primero revise los atributos en todas sus entidades de referencia y luego elimine las vinculadas a esta'
       reference_entity_permissions:
         at_least_one_user_group_should_have_edit_permission: 'Al menos un grupo de usuarios debe tener permiso de edición sobre esta entidad'
       product_attributes:
@@ -21,7 +21,9 @@ pim_reference_entity:
         should_be_unique: 'El código de registro ya existe para la entidad de referencia "%reference_entity_identifier%" y el código de registro "%code%"'
         should_exist: 'No se encontró el registro'
       text:
-        incompatible_with_regular_expression: 'El texto es incompatible con la expresión regular "%regular_expression%"'
+        incompatible_with_regular_expression: 'Por favor, introduzca un texto que satisfaga la expresión regular: "%regular_expression%"'
+        invalid_email: 'Por favor, introduzca una dirección de correo electrónico: xxxx@xx.xx'
+        invalid_url: 'Por favor, introduzca una URL: http(s)://xxxx.XXX'
       file:
         extension_not_allowed: 'Los archivos "%file_extension%" no están permitidos para este atributo. Las extensiones permitidas son: %allowed_file_extensions%'
         file_size_exceeded: 'El archivo excede el tamaño máximo del archivo establecido para el atributo.'

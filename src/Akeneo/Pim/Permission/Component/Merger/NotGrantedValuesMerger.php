@@ -23,7 +23,6 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * Merge not granted values with new values. Example:
@@ -142,11 +141,12 @@ class NotGrantedValuesMerger implements NotGrantedDataMergerInterface
             );
             $grantedLocaleCodes = $this->getViewableLocaleCodesForUser->fetchAll($userId);
 
+            // Add not granted original values if they don't exist in the new values
             foreach ($originalValues as $key => $originalValue) {
-                if (!isset($grantedAttributeCodes[$originalValue->getAttributeCode()]) ||
-                    ($originalValue->isLocalizable() && !in_array($originalValue->getLocaleCode(), $grantedLocaleCodes))
+                if ((!isset($grantedAttributeCodes[$originalValue->getAttributeCode()]) ||
+                    ($originalValue->isLocalizable() && !in_array($originalValue->getLocaleCode(), $grantedLocaleCodes)))
+                    && !$newValues->containsKey($key)
                 ) {
-                    Assert::false($newValues->containsKey($key));
                     $newValues->add($originalValue);
                 }
             }

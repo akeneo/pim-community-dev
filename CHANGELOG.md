@@ -40,6 +40,7 @@
 - PIM-9454: Fix scalar value type check in PQB filters
 - PIM-9460: Fix performance issue on export
 - PIM-9458: Fix proposal creation when a user does not have permissions on attributes
+- PIM-9489: Fix exception wrongly thrown when merging not granted values
 
 ## Improvements
 

@@ -3,6 +3,7 @@ pim_common:
   recipients: Empfänger
   branding: Branding
   result_count: "{0}0 Ergebnisse|{1}1 Ergebnis|]1, Inf[{{ itemsCount }} Ergebnisse"
+  items_selected: "{0}0 Elemente ausgewählt|{1}1 Element ausgewählt|]1, Inf [{{ itemsCount }} Elemente ausgewählt"
 shared_catalog:
   recipients:
     add: Füge hier Benutzer E-Mail hinzu

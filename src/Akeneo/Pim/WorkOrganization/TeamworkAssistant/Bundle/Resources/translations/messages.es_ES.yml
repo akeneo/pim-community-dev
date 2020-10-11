@@ -13,11 +13,9 @@ teamwork_assistant:
     message: Tiene nuevos productos a enriquecer para "%project_label%". La fecha de vencimiento es "%due_date%".
     project_finished:
       contributor: '¡Felicitaciones! Ha realizado el 100% de los productos en %project_label%.'
-      owner: '%project_label% para el %due_date% está listo.'
       show: Mostrar
     due_date:
       contributor: Ha realizado un %percent%% de los productos del proyecto %project_label%. No olvide rellenar los productos pendientes para el %due_date%.
-      owner: '%project_label% al %due_date% no está 100% completo.'
       start: Iniciar
   datagrid:
     project_completeness: Progreso del proyecto
@@ -27,6 +25,9 @@ teamwork_assistant:
     owner_todo: Pendientes (resumen del proyecto)
     owner_in_progress: En progreso (resumen del proyecto)
     owner_done: Hecho (resumen del proyecto)
+  user:
+    deletion:
+      user_linked_to_project: Este usuario está todavía vinculado a uno o más proyectos(s). Por favor, elimina los grupos a los que está vinculado en su cuenta de usuario.
 job_execution:
   summary:
     processed_products: Productos procesados

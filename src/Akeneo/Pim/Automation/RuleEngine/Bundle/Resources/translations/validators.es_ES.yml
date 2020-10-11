@@ -1,0 +1,58 @@
+pimee_catalog_rule:
+  rule_definition:
+    validation:
+      locale:
+        unknown: 'El local "{{ locale_code }}" no existe o no está activado'
+      currency:
+        unknown: 'Se requiere una moneda válida, la moneda "{{ currency }}" no existe o no está activada'
+        missing_key: 'Falta la clave "{{ key }}" o está vacía'
+        unexpected_key: 'La clave {{ key }} es irrelevante'
+      measurement:
+        invalid_unit: 'El código de unidad "{{ unitCode }}" no existe o no pertenece a la familia de medida del atributo "{{ attributeCode }}"'
+        invalid_attribute_type: 'La clave {{ key }} es irrelevante para el atributo {{ attributeCode }}'
+      attribute:
+        unknown: 'El atributo "{{ code }}" no existe'
+        unexpected_type: 'El atributo "{{ attribute_code }}" tiene un tipo de atributo no válido de "{{ invalid_type }}". Se requiere un atributo {{ expected_types }}'
+        missing_locale: 'El atributo "{{ attributeCode }}" requiere un local'
+        unexpected_locale: 'El atributo "{{ attributeCode }}" no requiere una localidad, por favor elimínalo'
+        unknown_locale: 'El atributo "{{ attributeCode }}" requiere un local existente y activado, por favor asegúrese de que su local existe y está activado'
+        invalid_specific_locale: 'El atributo "{{ attributeCode }}" es específico de cada idioma y requiere uno de los siguientes lugares: {{ expectedLocales }}'
+        locale_not_bound_to_channel: 'No hay ningún local de "{{ invalidLocale }}" en el canal "{{ channelCode }}"'
+        missing_scope: 'El atributo "{{ attributeCode }}" requiere un ámbito'
+        unexpected_scope: 'El atributo "{{ attributeCode }}" no requiere un ámbito de aplicación, por favor elimínalo'
+        unknown_scope: 'El atributo "{{ attributeCode }}" requiere un ámbito existente'
+      invalid_code: 'El código de regla solo debe contener letras, números y guiones bajos'
+      conditions:
+        missing_key: 'Falta la clave "condiciones" o está vacía'
+        missing_value_key: 'Falta la clave "valor" o está vacía'
+        missing_operator_key: 'Falta la clave "operador" o está vacía'
+        existing_field: 'El campo "{{ field }}" no puede ser filtrado o no puede ser utilizado con el operador "{{ operator }}"'
+        missing_field_key: 'Falta la clave "campo" o está vacía'
+      actions:
+        missing_key: 'Falta la clave "acciones" o está vacía'
+        add:
+          invalid_field: 'No puede agregar elementos al campo "{{ field }}"'
+        clear:
+          invalid_field: 'No se pueden borrar los datos del campo "{{ field }}"'
+        copy:
+          invalid_fields: 'No puede copiar datos del campo "{{ from_field }}" al campo "{{ to_field }}"'
+          missing_from_field_key: 'Falta la clave "from_field" o está vacía'
+          missing_to_field_key: 'Falta la clave "to_field" o está vacía'
+        concatenate:
+          invalid_source: 'No se pueden concatenar los datos del campo "{{ field }}"'
+          unexpected_source_option: 'La clave {{ key }} es irrelevante para el atributo {{ attribute }}'
+          missing_from_key: 'Falta la clave "desde" o está vacía'
+          missing_to_key: 'Falta la clave "a" o está vacía'
+          source_count: 'Este valor debe contener al menos 2 elementos'
+        calculate:
+          division_by_zero: 'Divisiones por cero no son posibles'
+          missing_operand_key: 'Se requiere la clave "valor" o "campo", pero ambos faltan o están vacíos'
+          only_one_key_expected: 'Se requiere la clave "valor" o "campo", por favor elija una'
+          unexpected_key: 'La clave "{{ key }}" es irrelevante'
+          invalid_operator: 'Este valor debe ser "add", "subtract", "multiply" o "divide"'
+        remove:
+          invalid_field: 'No puede eliminar elementos del campo "{{ field }}"'
+        set:
+          invalid_field: 'No puede establecer datos en el campo "{{ field }}"'
+        custom:
+          unkown_type: 'Tipo de acción desconocido'
