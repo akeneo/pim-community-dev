@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import {AkeneoThemedProps, CloseIcon, useAkeneoTheme} from '@akeneo-pim-community/shared';
+import {AkeneoThemedProps, useTheme, CloseIcon, MegaphoneIcon} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {MegaphoneIcon} from '../icons/Megaphone';
 
 const Container = styled.div`
   margin-right: 30px;
@@ -44,7 +43,7 @@ type HeaderPanelProps = {
 
 const HeaderPanel = ({title, onClickCloseButton}: HeaderPanelProps): JSX.Element => {
   const __ = useTranslate();
-  const akeneoTheme = useAkeneoTheme();
+  const akeneoTheme = useTheme();
 
   return (
     <Container>

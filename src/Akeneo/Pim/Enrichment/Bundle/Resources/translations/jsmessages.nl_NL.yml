@@ -391,6 +391,16 @@ pim_datagrid:
       variant: 'Variant'
     entity_type:
       label: 'Variant'
+    family:
+      label: Familie
+    groups:
+      label: Groepen
+    enabled:
+      label: Status
+    completeness:
+      label: Compleet
+    identifier:
+      label: Identifier
 batch_jobs:
   add_association:
     label: Associëren

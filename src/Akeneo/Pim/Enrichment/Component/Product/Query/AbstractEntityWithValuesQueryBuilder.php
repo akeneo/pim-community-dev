@@ -18,6 +18,9 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 
 class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterface
 {
+    public const DOCUMENT_TYPE_FACET_NAME = 'document_type_facet';
+    private const DOCUMENT_TYPE_FIELD = 'document_type';
+
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
@@ -42,14 +45,6 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
     /** @var array */
     protected $rawFilters = [];
 
-    /**
-     * @param AttributeRepositoryInterface                $attributeRepository
-     * @param FilterRegistryInterface                     $filterRegistry
-     * @param SorterRegistryInterface                     $sorterRegistry
-     * @param CursorFactoryInterface                      $cursorFactory
-     * @param ProductQueryBuilderOptionsResolverInterface $optionResolver
-     * @param array                                       $defaultContext
-     */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         FilterRegistryInterface $filterRegistry,
@@ -72,6 +67,10 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
      */
     public function execute()
     {
+        if ($this->defaultContext['with_document_type_facet'] ?? false) {
+            $this->getQueryBuilder()->addFacet(self::DOCUMENT_TYPE_FACET_NAME, self::DOCUMENT_TYPE_FIELD);
+        }
+
         $allowedCursorOptions = ['page_size', 'search_after', 'search_after_unique_key', 'limit', 'from'];
         $cursorOptions = array_filter(
             $this->defaultContext,

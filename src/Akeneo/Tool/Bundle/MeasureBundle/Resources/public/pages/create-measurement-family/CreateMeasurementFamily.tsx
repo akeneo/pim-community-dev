@@ -1,5 +1,5 @@
 import React, {FormEvent, useCallback, useState} from 'react';
-import {MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasurementFamilyIllustration';
+import {Helper, MeasurementIllustration, Button} from 'akeneo-design-system';
 import {Subsection, SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
 import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
@@ -13,9 +13,6 @@ import {useForm} from 'akeneomeasure/hooks/use-form';
 import {MeasurementFamilyCode} from 'akeneomeasure/model/measurement-family';
 import {useTranslate, useNotify, NotificationLevel, useUserContext} from '@akeneo-pim-community/legacy-bridge';
 import {
-  Button,
-  HelperRibbon,
-  HelperLevel,
   ValidationError,
   getErrorsForPath,
   useShortcut,
@@ -41,7 +38,7 @@ const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
 
   const handleClose = useCallback(onClose, [onClose]);
 
-  useShortcut(Key.Escape, handleClose);
+  useShortcut(Key.Escape, () => handleClose());
 
   const handleSave = useCallback(async () => {
     try {
@@ -67,7 +64,7 @@ const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
   return (
     <Modal>
       <ModalCloseButton title={__('pim_common.close')} onClick={() => handleClose()} />
-      <ModalBodyWithIllustration illustration={<MeasurementFamilyIllustration />}>
+      <ModalBodyWithIllustration illustration={<MeasurementIllustration />}>
         <ModalTitle
           title={__('measurements.family.add_new_measurement_family')}
           subtitle={__('measurements.title.measurement')}
@@ -95,9 +92,7 @@ const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
         </Subsection>
         <Subsection>
           <SubsectionHeader>{__('measurements.family.standard_unit')}</SubsectionHeader>
-          <HelperRibbon level={HelperLevel.HELPER_LEVEL_WARNING}>
-            {__('measurements.family.standard_unit_is_not_editable_after_creation')}
-          </HelperRibbon>
+          <Helper level="warning">{__('measurements.family.standard_unit_is_not_editable_after_creation')}</Helper>
           <FormGroup>
             <TextField
               id="measurements.measurement_family.create.standard_unit_code"

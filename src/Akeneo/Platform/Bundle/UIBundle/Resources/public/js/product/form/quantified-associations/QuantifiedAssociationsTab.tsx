@@ -1,13 +1,14 @@
 import React from 'react';
+import {ThemeProvider} from 'styled-components';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
 import {QuantifiedAssociationsProps, QuantifiedAssociations} from './components';
+import {pimTheme} from 'akeneo-design-system';
 
 const QuantifiedAssociationsTab = (props: QuantifiedAssociationsProps) => (
   <DependenciesProvider>
-    <AkeneoThemeProvider>
+    <ThemeProvider theme={pimTheme}>
       <QuantifiedAssociations {...props} />
-    </AkeneoThemeProvider>
+    </ThemeProvider>
   </DependenciesProvider>
 );
 

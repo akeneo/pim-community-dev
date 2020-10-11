@@ -29,10 +29,6 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
     /** @var ProductAndProductModelSearchAggregator */
     private $searchAggregator;
 
-    /**
-     * @param ProductQueryBuilderInterface           $pqb
-     * @param ProductAndProductModelSearchAggregator $searchAggregator
-     */
     public function __construct(
         ProductQueryBuilderInterface $pqb,
         ProductAndProductModelSearchAggregator $searchAggregator
@@ -193,9 +189,21 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
      * Ideally we should fix this aggregation, because it happens for some other filters than the Id (per instance for the group and the dates)
      * But a proper solution would need too much reworks. So for now we only add this workaround.
      * It's acceptable that the product variants are not aggregated when filtering by Id, but not for other filters.
+     *
+     * We don't want to aggregate either if there is a filter on entity_type. The only possible value for this filter in the grid context is ProductInterface.
+     * When this filter is added, it means that we want to return only simple and variant products; in other words, we don't want to
+     * aggregate results.
+     * @see Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\EntityTypeFilter
      */
     private function shouldAggregateResults(): bool
     {
-        return !$this->hasRawFilter('field', 'parent') && !$this->hasRawFilter('field', 'id');
+        $hasParentField = $this->hasRawFilter('field', 'parent');
+        $hasIdField = $this->hasRawFilter('field', 'id');
+        $hasEntityTypeField = $this->hasRawFilter('field', 'entity_type');
+
+        return
+            !$hasParentField &&
+            !$hasIdField &&
+            !$hasEntityTypeField;
     }
 }

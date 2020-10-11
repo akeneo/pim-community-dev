@@ -38,6 +38,10 @@
 - PIM-9476: Fix locale selector behavior on the product edit form when the user doesn't have permissions to edit attributes
 - PIM-9478: Allow the modification of the identifier on a variant product
 - PIM-9481: Fix the list of product models when trying to get them by family variant
+- GITHUB-12899: Fix error shown when importing product models with the same code
+- PIM-9491: Translate product grid filters in user additional settings
+- PIM-9494: Fix the performances of attribute-select-filter on long lists of AttributeOptions
+- PIM-9496: Change date format in the locale it_IT from dd/MM/yy to dd/MM/yyyy
 
 ## New features
 
@@ -57,6 +61,7 @@
 - PIM-9368: Allow minimum translation progress of 70% instead of 80%
 - PIM-9398: Add a primary key on connection table
 - PIM-9371: Disable save button when user creation form is not ready to submit
+- RAC-178: When launching a job, the notification contains a link to the job status
 
 # Technical Improvements
 
@@ -99,6 +104,12 @@
     - add `Akeneo\Pim\Enrichment\Component\Product\Query\GetGroupProductIdentifiers`
 - Change constructor of `Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute` to
     - add `(string) $defaultMetricUnit`    
+- Change constructor of `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResultCursor` to add `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ElasticsearchResult $result`
+- Change constructor of `Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid\FetchProductAndProductModelRows` to add `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Facet\ProductAndProductsModelDocumentTypeFacetFactory $productAndProductsModelDocumentTypeFacetFactory`
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Rows` to
+    - add `?int $totalProductCount`
+    - add `?int $totalProductModelCount`
+- Change constructor of `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelQueryBuilderWithSearchAggregatorFactory` to make not nullable the third parameter `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelSearchAggregator $searchAggregator`
 - Change `Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager` to remove method `setMeasureConfig(array $config)`
 - Remove `Akeneo\Tool\Bundle\MeasureBundle\DependencyInjection\Configuration`
 - Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\AreaFamilyInterface`

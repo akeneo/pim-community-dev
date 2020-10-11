@@ -62,12 +62,16 @@ pim_common:
   name: Name
   remove: Entfernen
   code: Code
+  quantity: Quantität
   products: Produkte
   product_models: Produktmodelle
   categories: Kategorien
+  family_variant: Varianten der Produktfamilien
   enabled: Aktiviert
   family: Produktfamilie
+  parent: Eltern
   groups: Gruppen
+  unit: Einheit
   yes: "Ja"
   no: "Nein"
 pim_enrich:
@@ -428,6 +432,22 @@ Updated At: Aktualisiert am
 Enabled: Aktiviert
 Disabled: Deaktiviert
 Status: Status
+pim_datagrid:
+  filters:
+    product_typology:
+      label: Produkt-Typologie
+    entity_type:
+      label: Variante
+    family:
+      label: Produktfamilie
+    groups:
+      label: Gruppen
+    enabled:
+      label: Status
+    completeness:
+      label: Vollständig
+    identifier:
+      label: Kennung
 #Versioning / history
 Change History: Änderungshistorie
 Data Audit: Datenhistorie

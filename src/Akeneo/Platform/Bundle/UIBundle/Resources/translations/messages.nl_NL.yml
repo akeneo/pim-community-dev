@@ -428,6 +428,20 @@ Updated At: Bijgewerkt op
 Enabled: Ingeschakeld
 Disabled: Uitgeschakeld
 Status: Status
+pim_datagrid:
+  filters:
+    entity_type:
+      label: Variant
+    family:
+      label: Familie
+    groups:
+      label: Groepen
+    enabled:
+      label: Status
+    completeness:
+      label: Voltooien
+    identifier:
+      label: Id
 #Versioning / history
 Change History: Geschiedenis van wijzigingen
 Data Audit: Gegevens audit

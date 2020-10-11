@@ -96,7 +96,9 @@ class ProductAndProductModelDatasource extends Datasource
 
         $normalizedRows = [
             'data' => [],
-            'totalRecords' => $rows->totalCount()
+            'totalRecords' => $rows->totalCount(),
+            'totalProducts' => $rows->totalProductCount(),
+            'totalProductModels' => $rows->totalProductModelCount(),
         ];
 
         foreach ($rows->rows() as $row) {
@@ -129,6 +131,7 @@ class ProductAndProductModelDatasource extends Datasource
         $factoryConfig['default_scope'] = $this->getConfiguration('scope_code');
         $factoryConfig['limit'] = (int) $this->getConfiguration(PagerExtension::PER_PAGE_PARAM);
         $factoryConfig['from'] = (int) $this->getConfiguration('from', false) ?? 0;
+        $factoryConfig['with_document_type_facet'] = true;
 
         $this->pqb = $this->factory->create($factoryConfig);
         $this->qb = $this->pqb->getQueryBuilder();

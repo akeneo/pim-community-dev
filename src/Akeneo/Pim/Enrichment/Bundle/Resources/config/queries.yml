@@ -47,6 +47,7 @@ services:
             - '@akeneo.pim.enrichment.product.grid.query.fetch_product_model_rows_from_codes'
             - '@akeneo.pim.enrichment.product.grid.query.add_additional_product_properties'
             - '@akeneo.pim.enrichment.product.grid.query.add_additional_product_model_properties'
+            - '@pim_enrich.query.product_and_product_model_document_type_facet_factory'
 
     akeneo.pim.enrichment.product.grid.query.fetch_product_model_rows_from_codes:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\FetchProductModelRowsFromCodes'

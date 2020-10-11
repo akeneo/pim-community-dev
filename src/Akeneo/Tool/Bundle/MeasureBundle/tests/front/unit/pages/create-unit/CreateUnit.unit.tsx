@@ -1,12 +1,10 @@
 'use strict';
 
 import React from 'react';
-import * as ReactDOM from 'react-dom';
 import '@testing-library/jest-dom/extend-expect';
 import {act, fireEvent, getAllByRole, getByLabelText, getByText} from '@testing-library/react';
-import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
 import {CreateUnit} from 'akeneomeasure/pages/create-unit/CreateUnit';
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {renderDOMWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 
 declare global {
   namespace NodeJS {
@@ -65,12 +63,8 @@ const measurementFamily = Object.freeze({
 
 test('It renders without errors', async () => {
   await act(async () => {
-    ReactDOM.render(
-      <DependenciesProvider>
-        <AkeneoThemeProvider>
-          <CreateUnit measurementFamily={measurementFamily} onClose={() => {}} onNewUnit={() => {}} />
-        </AkeneoThemeProvider>
-      </DependenciesProvider>,
+    renderDOMWithProviders(
+      <CreateUnit measurementFamily={measurementFamily} onClose={() => {}} onNewUnit={() => {}} />,
       container
     );
   });
@@ -86,12 +80,8 @@ test('I can fill the fields, validate and the modal is closed.', async () => {
   global.fetch = mockFetch;
 
   await act(async () => {
-    ReactDOM.render(
-      <DependenciesProvider>
-        <AkeneoThemeProvider>
-          <CreateUnit measurementFamily={measurementFamily} onClose={mockOnClose} onNewUnit={mockOnNewUnit} />
-        </AkeneoThemeProvider>
-      </DependenciesProvider>,
+    renderDOMWithProviders(
+      <CreateUnit measurementFamily={measurementFamily} onClose={mockOnClose} onNewUnit={mockOnNewUnit} />,
       container
     );
   });
@@ -156,12 +146,8 @@ test('I can submit invalid values and have the errors displayed.', async () => {
   global.fetch = mockFetch;
 
   await act(async () => {
-    ReactDOM.render(
-      <DependenciesProvider>
-        <AkeneoThemeProvider>
-          <CreateUnit measurementFamily={measurementFamily} onClose={mockOnClose} onNewUnit={mockOnNewUnit} />
-        </AkeneoThemeProvider>
-      </DependenciesProvider>,
+    renderDOMWithProviders(
+      <CreateUnit measurementFamily={measurementFamily} onClose={mockOnClose} onNewUnit={mockOnNewUnit} />,
       container
     );
   });

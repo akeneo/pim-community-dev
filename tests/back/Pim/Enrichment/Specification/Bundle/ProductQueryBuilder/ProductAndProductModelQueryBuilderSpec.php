@@ -13,10 +13,8 @@ use Prophecy\Argument;
 
 class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
 {
-    function let(
-        ProductQueryBuilderInterface $pqb,
-        ProductAndProductModelSearchAggregator $searchAggregator
-    ) {
+    function let(ProductQueryBuilderInterface $pqb, ProductAndProductModelSearchAggregator $searchAggregator)
+    {
         $this->beConstructedWith($pqb, $searchAggregator);
     }
 
@@ -56,8 +54,8 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
     }
 
     function it_executes_the_query_and_aggregate_results(
-        $pqb,
-        $searchAggregator,
+        ProductQueryBuilderInterface $pqb,
+        ProductAndProductModelSearchAggregator $searchAggregator,
         CursorInterface $cursor,
         SearchQueryBuilder $sqb
     ) {
@@ -97,8 +95,8 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
     }
 
     function it_executes_the_query_by_adding_a_filter_on_attributes_and_categories(
-        $pqb,
-        $searchAggregator,
+        ProductQueryBuilderInterface $pqb,
+        ProductAndProductModelSearchAggregator $searchAggregator,
         CursorInterface $cursor,
         SearchQueryBuilder $sqb
     ) {
@@ -122,8 +120,8 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
     }
 
     function it_executes_the_query_with_operator_is_empty_on_an_attribute(
-        $pqb,
-        $searchAggregator,
+        ProductQueryBuilderInterface $pqb,
+        ProductAndProductModelSearchAggregator $searchAggregator,
         CursorInterface $cursor,
         SearchQueryBuilder $sqb
     ) {
@@ -175,8 +173,8 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
     }
 
     function it_does_not_add_a_default_filter_on_parents_when_there_is_a_source_attribute_filter(
-        $pqb,
-        $searchAggregator,
+        ProductQueryBuilderInterface $pqb,
+        ProductAndProductModelSearchAggregator $searchAggregator,
         CursorInterface $cursor,
         SearchQueryBuilder $sqb
     ) {
@@ -200,8 +198,8 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
     }
 
     function it_does_not_add_a_default_filter_on_parents_when_there_is_a_source_parent_filter(
-        $pqb,
-        $searchAggregator,
+        ProductQueryBuilderInterface $pqb,
+        ProductAndProductModelSearchAggregator $searchAggregator,
         CursorInterface $cursor,
         SearchQueryBuilder $sqb
     ) {
@@ -225,8 +223,8 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
     }
 
     function it_does_not_add_a_default_filter_on_parents_nor_group_when_there_is_a_filter_on_enabled(
-        $pqb,
-        $searchAggregator,
+        ProductQueryBuilderInterface $pqb,
+        ProductAndProductModelSearchAggregator $searchAggregator,
         CursorInterface $cursor,
         SearchQueryBuilder $sqb
     ) {
@@ -251,8 +249,8 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
     }
 
     function it_does_not_add_a_default_filter_on_parents_when_there_is_a_source_id_filter(
-        $pqb,
-        $searchAggregator,
+        ProductQueryBuilderInterface $pqb,
+        ProductAndProductModelSearchAggregator $searchAggregator,
         CursorInterface $cursor,
         SearchQueryBuilder $sqb
     ) {
@@ -276,8 +274,8 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
     }
 
     function it_does_not_add_a_default_filter_on_parents_when_there_is_a_source_identifier_filter(
-        $pqb,
-        $searchAggregator,
+        ProductQueryBuilderInterface $pqb,
+        ProductAndProductModelSearchAggregator $searchAggregator,
         CursorInterface $cursor,
         SearchQueryBuilder $sqb
     ) {
@@ -301,8 +299,8 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
     }
 
     function it_does_not_add_a_default_filter_on_parents_when_there_is_a_source_entity_type_filter(
-        $pqb,
-        $searchAggregator,
+        ProductQueryBuilderInterface $pqb,
+        ProductAndProductModelSearchAggregator $searchAggregator,
         CursorInterface $cursor,
         SearchQueryBuilder $sqb
     ) {
@@ -320,14 +318,13 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         $pqb->addFilter('parent', Argument::cetera())->shouldNotBeCalled();
         $pqb->execute()->willReturn($cursor);
         $pqb->getQueryBuilder()->willReturn($sqb);
-        $searchAggregator->aggregateResults($sqb, $rawFilters)->shouldBeCalled();
 
         $this->execute()->shouldReturn($cursor);
     }
 
     function it_does_not_add_a_default_filter_on_parents_when_there_is_a_source_ancestor_filter(
-        $pqb,
-        $searchAggregator,
+        ProductQueryBuilderInterface $pqb,
+        ProductAndProductModelSearchAggregator $searchAggregator,
         CursorInterface $cursor,
         SearchQueryBuilder $sqb
     ) {
@@ -351,8 +348,8 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
     }
 
     function it_does_not_add_a_default_filter_on_parents_when_there_is_a_source_ancestor_or_self_filter(
-        $pqb,
-        $searchAggregator,
+        ProductQueryBuilderInterface $pqb,
+        ProductAndProductModelSearchAggregator $searchAggregator,
         CursorInterface $cursor,
         SearchQueryBuilder $sqb
     ) {
@@ -376,8 +373,8 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
     }
 
     function it_does_not_add_a_default_filter_on_parents_when_there_is_a_filter_on_category_with_operator_IN_LIST(
-        $pqb,
-        $searchAggregator,
+        ProductQueryBuilderInterface $pqb,
+        ProductAndProductModelSearchAggregator $searchAggregator,
         CursorInterface $cursor,
         SearchQueryBuilder $sqb
     ) {
@@ -401,8 +398,8 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
     }
 
     function it_does_not_add_a_default_filter_on_parents_when_there_is_a_filter_on_category_with_operator_IN_CHILDREN(
-        $pqb,
-        $searchAggregator,
+        ProductQueryBuilderInterface $pqb,
+        ProductAndProductModelSearchAggregator $searchAggregator,
         CursorInterface $cursor,
         SearchQueryBuilder $sqb
     ) {
@@ -426,8 +423,8 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
     }
 
     function it_does_not_aggregate_when_there_is_a_filter_on_parent(
-        $pqb,
-        $searchAggregator,
+        ProductQueryBuilderInterface $pqb,
+        ProductAndProductModelSearchAggregator $searchAggregator,
         CursorInterface $cursor,
         SearchQueryBuilder $sqb
     ) {
@@ -465,8 +462,8 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
     }
 
     function it_does_not_aggregate_when_there_is_a_filter_on_id(
-        $pqb,
-        $searchAggregator,
+        ProductQueryBuilderInterface $pqb,
+        ProductAndProductModelSearchAggregator $searchAggregator,
         CursorInterface $cursor,
         SearchQueryBuilder $sqb
     ) {
@@ -496,9 +493,39 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         $this->execute()->shouldReturn($cursor);
     }
 
-    function it_does_not_add_a_default_filter_on_parents_when_there_is_a_filter_on_groups(
+    function it_does_not_aggregate_when_there_is_a_filter_on_entity_type(
         $pqb,
         $searchAggregator,
+        CursorInterface $cursor,
+        SearchQueryBuilder $sqb
+    ) {
+        $rawFilters = [
+            [
+                'field'    => 'entity_type',
+                'operator' => 'EQUALS',
+                'value'    => 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+                'type'     => 'field'
+            ], [
+                'field'    => 'foo',
+                'operator' => 'CONTAINS',
+                'value'    => '42',
+                'context'  => [],
+                'type'     => 'attribute'
+            ],
+        ];
+        $pqb->getRawFilters()->willReturn($rawFilters);
+
+        $sqb->addFilter(Argument::cetera())->shouldNotBeCalled();
+
+        $pqb->execute()->willReturn($cursor);
+        $pqb->getQueryBuilder()->willReturn($sqb);
+        $searchAggregator->aggregateResults($sqb, $rawFilters)->shouldNotBeCalled();
+        $this->execute()->shouldReturn($cursor);
+    }
+
+    function it_does_not_add_a_default_filter_on_parents_when_there_is_a_filter_on_groups(
+        ProductQueryBuilderInterface $pqb,
+        ProductAndProductModelSearchAggregator $searchAggregator,
         CursorInterface $cursor,
         SearchQueryBuilder $sqb
     ) {

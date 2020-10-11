@@ -2,6 +2,7 @@
 
 namespace spec\Oro\Bundle\PimDataGridBundle\Datasource;
 
+use Akeneo\Pim\Enrichment\Component\Product\Grid\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Rows;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
@@ -15,7 +16,6 @@ use Oro\Bundle\PimDataGridBundle\Datasource\ParameterizableInterface;
 use Oro\Bundle\PimDataGridBundle\Datasource\ProductAndProductModelDatasource;
 use Oro\Bundle\PimDataGridBundle\Extension\Pager\PagerExtension;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Grid\Query;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -47,7 +47,7 @@ class ProductAndProductModelDatasourceSpec extends ObjectBehavior
         $this->shouldImplement(ParameterizableInterface::class);
     }
 
-    function it_fetch_product_and_product_model_rows(
+    function it_fetches_product_and_product_model_rows(
         $pqbFactory,
         $rowNormalizer,
         $query,
@@ -88,6 +88,7 @@ class ProductAndProductModelDatasourceSpec extends ObjectBehavior
             'from'                  => 0,
             'default_locale'        => 'fr_FR',
             'default_scope'         => 'ecommerce',
+            'with_document_type_facet' => true,
         ])->willReturn($pqb);
 
         $pqb->getQueryBuilder()->shouldBeCalledTimes(1);
@@ -111,7 +112,7 @@ class ProductAndProductModelDatasourceSpec extends ObjectBehavior
             ['attribute_1', 'attribute_2'],
             'ecommerce',
             'fr_FR'
-        ))->willReturn(new Rows([$row], 1));
+        ))->willReturn(new Rows([$row], 1, 1, 0));
         $this->process($datagrid, $config);
 
         $rowNormalizer->normalize($row, 'datagrid', [
@@ -141,9 +142,11 @@ class ProductAndProductModelDatasourceSpec extends ObjectBehavior
 
         $results = $this->getResults();
         $results->shouldBeArray();
-        $results->shouldHaveCount(2);
+        $results->shouldHaveCount(4);
         $results->shouldHaveKey('data');
         $results->shouldHaveKeyWithValue('totalRecords', 1);
+        $results->shouldHaveKeyWithValue('totalProducts', 1);
+        $results->shouldHaveKeyWithValue('totalProductModels', 0);
         $results['data']->shouldBeArray();
         $results['data']->shouldHaveCount(1);
         $results['data']->shouldBeAnArrayOfInstanceOf(ResultRecord::class);
@@ -183,6 +186,7 @@ class ProductAndProductModelDatasourceSpec extends ObjectBehavior
             'from'                  => 0,
             'default_locale'        => 'fr_FR',
             'default_scope'         => 'ecommerce',
+            'with_document_type_facet' => true,
         ])->willReturn($pqb);
 
         $pqb->getQueryBuilder()->shouldBeCalledTimes(1);

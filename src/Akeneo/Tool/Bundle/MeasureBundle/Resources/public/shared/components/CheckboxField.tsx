@@ -1,10 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
-import {ValidationError, InputErrors, Checkbox} from '@akeneo-pim-community/shared';
-
-const Label = styled.span`
-  user-select: none;
-`;
+import {ValidationError, InputErrors} from '@akeneo-pim-community/shared';
+import {Checkbox} from 'akeneo-design-system';
 
 type CheckboxFieldProps = {
   id: string;
@@ -21,8 +17,9 @@ const CheckboxField = ({id, label, readOnly, value, onChange, errors}: CheckboxF
     <div className="AknFieldContainer">
       <div className="AknFieldContainer-inputContainer">
         <label className="AknFieldContainer-label" htmlFor={id}>
-          <Checkbox id={id} value={value} onChange={onChange} readOnly={readOnly} />
-          <Label>{label}</Label>
+          <Checkbox id={id} checked={value} onChange={value => onChange(true === value)} readOnly={readOnly}>
+            {label}
+          </Checkbox>
         </label>
       </div>
       {errors && <InputErrors errors={errors} />}

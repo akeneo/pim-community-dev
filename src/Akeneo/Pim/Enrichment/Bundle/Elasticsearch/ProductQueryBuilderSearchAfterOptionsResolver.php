@@ -31,7 +31,7 @@ class ProductQueryBuilderSearchAfterOptionsResolver implements ProductQueryBuild
     protected function createOptionsResolver()
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefined(['locale', 'scope', 'limit', 'search_after', 'search_after_unique_key']);
+        $resolver->setDefined(['locale', 'scope', 'limit', 'search_after', 'search_after_unique_key', 'with_document_type_facet']);
         $resolver->setRequired(['locale', 'scope', 'limit']);
 
         $resolver->setAllowedTypes('locale', ['string', 'null']);
@@ -39,6 +39,7 @@ class ProductQueryBuilderSearchAfterOptionsResolver implements ProductQueryBuild
         $resolver->setAllowedTypes('limit', 'int');
         $resolver->setAllowedTypes('search_after', 'array');
         $resolver->setAllowedTypes('search_after_unique_key', ['string', 'null']);
+        $resolver->setAllowedTypes('with_document_type_facet', ['bool', 'null']);
 
         return $resolver;
     }

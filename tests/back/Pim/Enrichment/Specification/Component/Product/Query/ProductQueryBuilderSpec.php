@@ -54,8 +54,7 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         CursorInterface $cursor,
         FieldFilterInterface $filterField,
         $filterRegistry
-    )
-    {
+    ) {
         $filterRegistry->getFieldFilter('entity_type', '=')->willReturn($filterField);
         $cursorFactory->createCursor(Argument::any(), [] )->shouldBeCalled()->willReturn($cursor);
         $filterField->setQueryBuilder(Argument::any())->shouldBeCalled();
