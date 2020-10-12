@@ -4,7 +4,7 @@
         <%- entity.label %>
     </span>
     <% if (entity.completeness) { %>
-        <span class="AknVariantNavigation-listProductModelCompleteness AknVariantNavigation-listProductCompleteness--<%- getClass(entity.completeness.ratio) %>">
+        <span class="AknBadge AknBadge--<%- getClass(entity.completeness.ratio) %>">
             <%- entity.completeness.display %>
         </span>
     <% } %>
