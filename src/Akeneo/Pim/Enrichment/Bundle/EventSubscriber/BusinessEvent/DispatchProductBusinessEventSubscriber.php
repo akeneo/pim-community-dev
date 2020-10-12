@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
+namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 202O Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ProductEventSubscriber implements EventSubscriberInterface
+final class DispatchProductBusinessEventSubscriber implements EventSubscriberInterface
 {
     private $security;
     private $normalizer;
@@ -56,7 +56,7 @@ final class ProductEventSubscriber implements EventSubscriberInterface
         $data = $this->normalizer->normalize($product, 'standard');
 
         $message = null;
-        if ($event->hasArgument('created') && true === $event->getArgument('created')) {
+        if ($event->hasArgument('is_new') && true === $event->getArgument('is_new')) {
             $message = new ProductCreated($author, $data);
         } else {
             $message = new ProductUpdated($author, $data);
