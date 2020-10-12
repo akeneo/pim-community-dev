@@ -75,9 +75,9 @@ class ConvertToSimpleProduct extends BaseView {
                     });
             },
             null,
-            'family-variants',
+            null,
             'pim_common.confirm',
-            'pim_common.cancel'
+            'products'
         )
     }
 }
