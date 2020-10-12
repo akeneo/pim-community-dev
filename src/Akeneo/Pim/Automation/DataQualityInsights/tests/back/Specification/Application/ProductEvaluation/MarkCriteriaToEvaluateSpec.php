@@ -33,7 +33,7 @@ final class MarkCriteriaToEvaluateSpec extends ObjectBehavior
         );
     }
 
-    public function it_creates_missing_criterion_evaluations_for_products_updated_since_a_given_date(
+    public function it_marks_criteria_to_evaluate_for_updates_since_a_given_date(
         $getUpdatedProductIdsQuery,
         $getProductIdsImpactedByAttributeGroupActivationQuery,
         $createProductsCriteriaEvaluations
