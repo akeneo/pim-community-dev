@@ -67,7 +67,9 @@ pim_common:
   categories: 类别
   enabled: 已启用
   family: 品类
+  parent: '父目录:'
   groups: 分组
+  unit: 单位
   yes: "是"
   no: "否　"
 pim_enrich:
@@ -439,6 +441,14 @@ pim_datagrid:
       label: 状态
     completeness:
       label: 完成
+    created:
+      label: 创建于
+    updated:
+      label: 更新于
+    label_or_identifier:
+      label: 标签或标识符
+    parent:
+      label: 父级
     identifier:
       label: 标识符
 #Versioning / history

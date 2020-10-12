@@ -444,8 +444,18 @@ pim_datagrid:
       label: Gruppen
     enabled:
       label: Status
+    scope:
+      label: Gültigkeitsbereich
     completeness:
       label: Vollständig
+    created:
+      label: Erstellt am
+    updated:
+      label: Aktualisiert am
+    label_or_identifier:
+      label: Label oder Identifikator
+    parent:
+      label: Eltern
     identifier:
       label: Kennung
 #Versioning / history

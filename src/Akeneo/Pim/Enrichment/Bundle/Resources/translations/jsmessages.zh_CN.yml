@@ -363,7 +363,10 @@ pim_datagrid:
       xlsx_all: Excel（所有属性）
       xlsx_grid_context: Excel（网格上下文）
       configurator:
+        subtitle: 快速导出
         title: 选择操作
+        csv: CSV
+        xlsx: XLSX
         all_attributes: 全部属性
     mass_edit: 批量操作
     sequential_edit: 顺序编辑
@@ -397,8 +400,18 @@ pim_datagrid:
       label: 分组
     enabled:
       label: 状态
+    scope:
+      label: 范围
     completeness:
       label: 完成
+    created:
+      label: 创建于
+    updated:
+      label: 更新于
+    label_or_identifier:
+      label: 标签或标识符
+    parent:
+      label: 父级
     identifier:
       label: 标识符
   search: 在 {{ label }} 上搜索

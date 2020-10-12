@@ -31,8 +31,8 @@ pim_enrich.entity.product:
       fail: No attribute is configured as a product identifier or you don't have the rights to edit it.
   page_title:
     index: "]-Inf, 1]{{ count }} result|]1, Inf[{{ count }} results"
-    product: "]-Inf, 1]{{ count }} product|]1, +Inf[{{ count }} products"
-    product_model: "]-Inf, 1]{{ count }} product model|]1, +Inf[{{ count }} product models"
+    product: "]-Inf, 1]{{ count }} product|]1, Inf[{{ count }} products"
+    product_model: "]-Inf, 1]{{ count }} product model|]1, Inf[{{ count }} product models"
     product_and_product_model: "{{ productCount }}, {{ productModelCount }}"
   module:
     create:
@@ -70,7 +70,7 @@ pim_enrich.entity.product:
     attribute:
       remove_optional: Remove this attribute
       locale_specific_unavailable: This locale specific field is not available in this locale
-      locale_unavailable: This localisable field is not available for locale '{{ locale }}' and channel '{{ channel }}'
+      locale_unavailable: This localizable field is not available for locale '{{ locale }}' and channel '{{ channel }}'
       to_fill_count: "{1}1 missing required attribute|]1, Inf[{{ count }} missing required attributes"
       add_attribute_option: Add attribute option
       add_option: Add option
@@ -78,7 +78,7 @@ pim_enrich.entity.product:
       title: Completeness
       complete: Complete
       no_family: No family defined. Please define a family to calculate the completeness of this product.
-      no_completeness: You changed the family of the product. Please first save it to calculate the completeness for the new family.
+      no_completeness: You just changed the family of the product. Please save it first to calculate the completeness for the new family.
       missing_values: "{1}1 missing value|]1, Inf[{{ count }} missing values"
     sequential_edit:
       item_limit: Only first 1000 items shown in this sequential edit ({{ count }} selected)
@@ -100,11 +100,11 @@ pim_enrich.entity.product:
       add_associations: Add associations
       variant_products: Variant products
       quantified:
-        quantity: Quantities
+        quantity: Quantity
       search:
         placeholder: Search on label or identifier
       no_result: Sorry, there is no result for your search.
-      no_data: There are no associated products
+      no_data: There are no associated products.
       remove: Remove association
       edit: Edit product
       limit_reached: You cannot add more than {{ maxLimit }} associations to this product.
@@ -113,7 +113,7 @@ pim_enrich.entity.product:
       display: Display
       all: All attributes
       missing_required: All missing required attributes
-      at_this_level: All level-specific attributes
+      at_this_level: All level specific attributes
     change_family:
       title: Change the product family
       merge_attributes: Current attributes will be merged with the ones in the new family.
@@ -132,7 +132,7 @@ pim_enrich.entity.product:
       empty: No comment for now
       header_comment: '{{ user }} comments the product'
       header_reply: '{{ user }} replies to the comment'
-      delete_confirm: Voulez-vous vraiment supprimer ce commentaire ?
+      delete_confirm: Are you sure you want to delete this comment?
       removed_author: Removed user
     asset:
       title: Assets
@@ -211,7 +211,7 @@ pim_enrich.export.product:
     channel:
       help: The channel defines the scope for product values, the locales used to select data, and the tree used to select products.
     locales:
-      help: "The locales defines the localised product values to export. Ex: only product information in French."
+      help: "The locales defines the localized product values to export. Ex: only product information in French."
     attributes:
       label: "{0}All attributes|{1}One attribute selected|]1,Inf[{{ count }} attributes selected"
       help: "Select the product information to export. Ex: only the technical attributes."
@@ -279,7 +279,7 @@ pim_enrich.export.product:
     title: Global settings
 pim_enrich.mass_edit.product:
   title: Products bulk action
-  confirm: "Select the products you want to associate to the {{ productCount }} selected product(s)"
+  confirm: "{0}You are about to update some products with the following information, please confirm.|{1}You are about to update a product with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} products with the following information, please confirm."
   step:
     select:
       label: Choose products
@@ -293,7 +293,7 @@ pim_enrich.mass_edit.product:
     launch_error:
       label: An error occurred during the launching of the mass edit operation
     launched:
-      label: The bulk action "{{ operation }}" has been launched. You will be notified when it is completed.
+      label: The bulk action "{{ operation }}" has been launched. You will be notified when it is done.
   operation:
     common:
       select_attributes: Select attributes
@@ -318,9 +318,9 @@ pim_enrich.mass_edit.product:
     add_to_group:
       label: Add to groups
       label_count: "{0}Add some <span class=\"AknFullPage-title--highlight\">products</span> to groups|{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to groups|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to groups"
-      description: Select the groups in which you want to add the selected products
+      description: Select the groups in which to add the selected products
       field: Groups
-      no_update: Please select a group before continuing
+      no_update: Please select a group before to continue
     add_to_category:
       label: Add to categories
       label_count: "{0}Add some <span class=\"AknFullPage-title--highlight\">products</span> to categories|{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to categories|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to categories"
@@ -359,7 +359,7 @@ pim_datagrid:
     delete:
       confirm_content: Are you sure you want to delete the selected products?
       success: Selected products successfully deleted.
-      error: An error occurred when trying to delete selected products, please try again.
+      error: Error occurred when trying to delete selected products, please try again.
     quick_export:
       csv_all: CSV (All attributes)
       csv_grid_context: CSV (Grid context)
@@ -378,7 +378,7 @@ pim_datagrid:
     sequential_edit: Sequential edit
     mass_delete: Mass delete
     selected:
-      family: "]-Inf, 1]{{ count }} family selected|]1, +Inf[{{ count }} families selected"
+      family: "]-Inf, 1]{{ count }} family selected|]1, Inf[{{ count }} families selected"
       product: "]-Inf, 1]{{ count }} result selected|]1, Inf[{{ count }} results selected"
   view_selector:
     view: Views
