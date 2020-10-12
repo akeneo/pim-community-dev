@@ -322,6 +322,9 @@ jobs:
           - store_artifacts:
                 path: var/logs
 
+orbs:
+    pull-up: akeneo-orbs/pull-up@1.0
+
 workflows:
   version: 2
   pull_request:
@@ -331,7 +334,7 @@ workflows:
                 filters:
                     branches:
                         ignore:
-                            - master
+                            - "3.2"
           - checkout:
                 requires:
                     - wait_for_user_approval
@@ -447,3 +450,18 @@ workflows:
                     - back_behat_legacy
                     - test_back_performance
                     - test_back_data_migrations
+
+  pull_up:
+      jobs:
+          - pull-up/pull-up:
+               from: "4.0"
+               into: "master"
+               branch_prefix: "40_to_master"
+               checkout_ours: 'src/Akeneo/Platform/EnterpriseVersion.php **/translations/*.yml'
+               github_token: MICHEL_TAG_TOKEN
+               github_username: "micheltag"
+               slack_webhook: "${SLACK_URL_PULL_UP}"
+               filters:
+                   branches:
+                       only:
+                           - "4.0"
