@@ -32,11 +32,22 @@ class GuzzleWebhookClient implements WebhookClient
     /** @var LoggerInterface */
     private $logger;
 
-    public function __construct(ClientInterface $client, EncoderInterface $encoder, LoggerInterface $logger)
-    {
+    /** @var array{concurrency: ?int, timeout: ?float} */
+    private $config;
+
+    /**
+     * @param array{concurrency: ?int, timeout: ?float} $config
+     */
+    public function __construct(
+        ClientInterface $client,
+        EncoderInterface $encoder,
+        LoggerInterface $logger,
+        array $config
+    ) {
         $this->client = $client;
         $this->encoder = $encoder;
         $this->logger = $logger;
+        $this->config = $config;
     }
 
     public function bulkSend(iterable $webhookRequests): void
@@ -65,9 +76,9 @@ class GuzzleWebhookClient implements WebhookClient
         };
 
         $pool = new Pool($this->client, $guzzleRequests(), [
-            'concurrency' => 5,
+            'concurrency' => $this->config['concurrency'] ?? null,
             'options' => [
-                'timeout' => 3
+                'timeout' => $this->config['timeout'] ?? null
             ],
             'fulfilled' => function (Response $response, int $index) use (&$logContexts) {
                 $this->logger->info(

@@ -27,7 +27,12 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
 {
     public function let(): void
     {
-        $this->beConstructedWith(new Client(), new JsonEncoder(), new NullLogger());
+        $this->beConstructedWith(
+            new Client(),
+            new JsonEncoder(),
+            new NullLogger(),
+            []
+        );
     }
 
     public function it_is_initializable(): void
@@ -43,7 +48,12 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         $handlerStack = HandlerStack::create();
         $handlerStack->push($history);
 
-        $this->beConstructedWith(new Client(['handler' => $handlerStack]), new JsonEncoder(), new NullLogger());
+        $this->beConstructedWith(
+            new Client(['handler' => $handlerStack]),
+            new JsonEncoder(),
+            new NullLogger(),
+            []
+        );
 
         $request1 = new WebhookRequest(
             new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook1'),
