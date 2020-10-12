@@ -79,6 +79,9 @@ jobs:
       - name: Launch unit tests
         run: cd akeneo-design-system && yarn test:unit:run
 
+      - name: Build storybook
+        run: cd akeneo-design-system && yarn storybook:build
+
       - name: Launch visual tests
         run: cd akeneo-design-system && yarn test:visual:run
         id: visual_test_execution
@@ -148,10 +151,6 @@ jobs:
             Your visual regression tests are not passing <img width="25" src="https://emoji.slack-edge.com/T031L1UKF/sad-dog/ac79218e153de6de.jpg" />
             Here is a pull request to fix them: https://github.com/${{ github.repository }}/pull/${{ steps.create_visual_pull_request.outputs.pull-request-number }} :tada:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # If everything went well, we deploy a staging env to send it to review to our beloved UX designer team
-      - name: Build staging env
-        run: cd akeneo-design-system && yarn run storybook:build
 
       - name: Deploy to gh-pages on the external repository (in a subfolder)
         uses: peaceiris/actions-gh-pages@v3.7.0-6
