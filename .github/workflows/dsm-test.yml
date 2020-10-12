@@ -85,17 +85,17 @@ jobs:
 
       # To check if the build is working, the directory `example` contains an integration of the lib
       # with a few tests. In the next step we will build this example and validate that it's working properly
-      # - name: Install example project dependencies
-      #   run: cd akeneo-design-system/example && yarn install
+      - name: Install example project dependencies
+        run: cd akeneo-design-system/example && yarn install
 
-      # - name: Launch example integration tests
-      #   run: cd akeneo-design-system && yarn lib:build && cd example && yarn test
+      - name: Launch example integration tests
+        run: cd akeneo-design-system && yarn lib:build && cd example && yarn test
 
       - name: Upload the src folder on failure for debugging purposes
         uses: actions/upload-artifact@v2
         if: failure()
         with:
-          name: test-folder
+          name: src-folder
           path: akeneo-design-system/src
 
       # In this next section (only launched if the visual regression failed) we will update the visual snapshots
@@ -161,3 +161,10 @@ jobs:
             A new version of the staging env has been deployed :tada:
             Check it out here: https://akeneo.github.io/akeneo-design-system/${{ github.event.number }}/
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload the lib folder on failure for debugging purposes
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: lib-folder
+          path: akeneo-design-system/lib
