@@ -21,10 +21,6 @@ datagrid:
                 label: pim_datagrid.column.username
                 data_name: user
                 frontendType: label
-            nice:
-                label: pim_datagrid.column.nice
-                data_name: nice
-                frontendType: label
             status:
                 label:         Status
                 type:          twig
@@ -43,6 +39,11 @@ datagrid:
                 type:      navigate
                 label:     pim_datagrid.action.show.title
                 link:      show_link
+                rowAction: true
+            stop:
+                type:      stop-job
+                label: Stop the job
+                icon:
                 rowAction: true
         sorters:
             columns:
@@ -83,6 +84,8 @@ datagrid:
                             choices: '%akeneo_batch.job.batch_status.class%::getAllLabels()'
         properties:
             id: ~
+            jobCode: ~
+            isStopable: ~
             show_link:
                 type: url
                 params:

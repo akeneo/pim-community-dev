@@ -22,7 +22,7 @@ use Symfony\Component\Filesystem\Filesystem;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class Job implements JobInterface
+class Job implements JobInterface, StoppableJobInterface
 {
     /** @var string */
     protected $name;

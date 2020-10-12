@@ -1,7 +1,9 @@
 <?php
 
-namespace Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\Orm;
+namespace Akeneo\Platform\Bundle\ImportExportBundle\Datagrid;
 
+use Akeneo\Tool\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Component\Batch\Job\StoppableJobInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\HydratorInterface;
 
@@ -13,13 +15,28 @@ use Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\HydratorInterface;
 class JobExecutionResultRecordHydrator implements HydratorInterface
 {
     /**
+     * Connector registry
+     *
+     * @var JobRegistry
+     */
+    protected $registry;
+
+    /**
+     * @param JobRegistry $registry
+     */
+    public function __construct(JobRegistry $registry)
+    {
+        $this->registry = $registry;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function hydrate($qb, array $options = [])
     {
         $records = [];
         foreach ($qb->getQuery()->execute() as $record) {
-            $records[] = new ResultRecord(array_merge($record, ['nice' => 'yolo']));
+            $records[] = new ResultRecord(array_merge($record, ['isStopable' => $this->registry->get($record['jobName']) instanceof StoppableJobInterface]));
         }
 
         return $records;
