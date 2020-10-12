@@ -25,8 +25,8 @@ const Coucou = React.forwardRef<HTMLSpanElement, CoucouProps>(
   ({level = 'primary', children, ...rest}: CoucouProps, forwardedRef: Ref<HTMLSpanElement>) => {
     return (
       <CoucouContainer level={level} ref={forwardedRef} {...rest}>
-        DSM demo
         {children}
+        <span>ddd</span>
       </CoucouContainer>
     );
   }
