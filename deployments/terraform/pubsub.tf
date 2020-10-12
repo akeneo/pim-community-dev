@@ -25,7 +25,12 @@ resource "google_pubsub_topic" "job-queue" {
 resource "google_pubsub_subscription" "webhook" {
   name                 = "${local.pfid}-webhook"
   topic                = google_pubsub_topic.business-event.name
+
   ack_deadline_seconds = 600
+  expiration_policy {
+    ttl = ""
+  }
+  message_retention_duration = "3600s"
 
   labels = {
     pfid = local.pfid
