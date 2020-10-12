@@ -27,9 +27,11 @@ describe('Every module is exported correctly', () => {
   const components = [...getSubfolders(['src/components']), ...getIcons()];
 
   components.forEach(component => {
-    it(`Test ${component} is exported correctly.
-        If this test is failing, export "${component}" component in src/index.ts`, () =>
-      expect(exportNames).toContain(component));
+    test.concurrent(
+      `Test ${component} is exported correctly.
+        If this test is failing, export "${component}" component in src/index.ts`,
+      async () => expect(exportNames).toContain(component)
+    );
   });
 });
 
@@ -37,17 +39,20 @@ describe('Every module should support forwardRef', () => {
   const components = getSubfolders(['src/components']);
 
   components.forEach(component => {
-    it(`Test ${component} support forwardRef.
-        If this test is failing, add forwardRef support to the "${component}" component`, () => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-var-requires
-      const module = require(`./components/${component}/${component}.tsx`);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-      const Component = module[component];
+    test.concurrent(
+      `Test ${component} support forwardRef.
+        If this test is failing, add forwardRef support to the "${component}" component`,
+      async () => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-var-requires
+        const module = require(`./components/${component}/${component}.tsx`);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+        const Component = module[component];
 
-      const ref = {current: null};
-      render(<Component ref={ref} />);
-      expect(ref.current).not.toBe(null);
-    });
+        const ref = {current: null};
+        render(<Component ref={ref} />);
+        expect(ref.current).not.toBe(null);
+      }
+    );
   });
 });
 
@@ -55,15 +60,18 @@ describe('Every module should support ...rest props', () => {
   const components = getSubfolders(['src/components']);
 
   components.forEach(component => {
-    it(`Test ${component} support ...rest props.
-        If this test is failing, add ...rest support on props to the "${component}" component`, () => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-var-requires
-      const module = require(`./components/${component}/${component}.tsx`);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-      const Component = module[component];
+    test.concurrent(
+      `Test ${component} support ...rest props.
+        If this test is failing, add ...rest support on props to the "${component}" component`,
+      async () => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-var-requires
+        const module = require(`./components/${component}/${component}.tsx`);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+        const Component = module[component];
 
-      const {container} = render(<Component data-my-attribute="my_value" />);
-      expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
-    });
+        const {container} = render(<Component data-my-attribute="my_value" />);
+        expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
+      }
+    );
   });
 });

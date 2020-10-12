@@ -5,7 +5,7 @@ module.exports = {
   roots: ['<rootDir>'],
   setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect'],
   testMatch: ['**/?(*.)+(unit).ts?(x)'],
-  testPathIgnorePatterns: ['/node_modules/', '/generator/'],
+  testPathIgnorePatterns: ['/node_modules/', '/generator/', 'src/illustrations/', 'src/icons/'],
   transform: {'^.+\\.tsx?$': 'ts-jest', '^.+\\.mdx$': '@storybook/addon-docs/jest-transform-mdx'},
   transformIgnorePatterns: ['/node_modules/'],
   collectCoverage: true,
