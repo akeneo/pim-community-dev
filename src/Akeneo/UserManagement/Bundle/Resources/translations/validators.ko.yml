@@ -1,3 +1,0 @@
-pim_user:
-  min_role: "역할을 {{ limit }}개 이상 선택해야 합니다.|역할을 {{ limit }}개 이상 선택해야 합니다."
-  password_match: "암호 필드가 일치해야 합니다."

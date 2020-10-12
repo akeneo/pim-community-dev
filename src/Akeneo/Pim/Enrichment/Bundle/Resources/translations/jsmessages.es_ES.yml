@@ -333,6 +333,7 @@ pim_enrich.mass_edit.product:
       label_count: "{1}Cambiar el modelo de producto padre de <span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[Cambiar el modelo de producto padre de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
       description: El padre de los productos variantes o modelos de sub-productos seleccionados en la cuadrícula serán modificados al modelo de producto seleccionado.
 pim_datagrid:
+  no_entities: "No se encontró {{ entityHint }}"
   mass_action_group:
     bulk_actions:
       label: Acciones en Masa
