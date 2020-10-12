@@ -10,6 +10,7 @@ module.exports = {
   transformIgnorePatterns: ['/node_modules/'],
   collectCoverage: true,
   collectCoverageFrom: ['src/**/*.ts?(x)'],
+  cacheDirectory: '/tmp/jest',
   coveragePathIgnorePatterns: [
       'src/illustrations',
       'src/icons',

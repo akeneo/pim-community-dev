@@ -65,8 +65,8 @@ jobs:
         env:
           cache-name: cache-jest-cache
         with:
-          path: .jest-cache
-          key: ${{ runner.os }}-jest
+          path: /tmp/jest/**
+          key: ${{ runner.os }}-jest-tmp
 
       - name: Launch unit tests
         run: cd akeneo-design-system && yarn test:unit:run
