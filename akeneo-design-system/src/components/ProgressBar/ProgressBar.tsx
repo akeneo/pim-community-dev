@@ -99,7 +99,7 @@ type ProgressBarProps = {
  */
 const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
   (
-    {color, percent, title, progressLabel, height = 'small', ...rest}: ProgressBarProps,
+    {color, percent = 0, title, progressLabel, height = 'small', ...rest}: ProgressBarProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
     return (

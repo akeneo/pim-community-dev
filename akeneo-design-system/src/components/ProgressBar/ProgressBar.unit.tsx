@@ -27,8 +27,9 @@ test('it renders a progress bar with sanitized percent', () => {
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '100');
 });
 
-test('it renders a large progress bar', () => {
-  render(<ProgressBar height="large" percent={50} color={'#f9b53f'} />);
+test.each([['large'], ['small']])('it renders a %s progress bar', (height: string) => {
+  // @ts-ignore
+  render(<ProgressBar height={height} percent={50} color={'#f9b53f'} />);
 
   expect(screen.getByRole('progressbar')).toBeInTheDocument();
 });
