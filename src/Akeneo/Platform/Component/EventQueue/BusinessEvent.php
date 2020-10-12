@@ -13,17 +13,20 @@ use Ramsey\Uuid\Uuid;
 abstract class BusinessEvent implements BusinessEventInterface
 {
     private $author;
+    private $authorType;
     private $data;
     private $timestamp;
     private $uuid;
 
     public function __construct(
         string $author,
+        string $authorType,
         array $data,
         int $timestamp = null,
         string $uuid = null
     ) {
         $this->author = $author;
+        $this->authorType = $authorType;
         $this->data = $data;
         $this->timestamp = $timestamp ?? time();
         $this->uuid = $uuid ?? Uuid::uuid4()->toString();
@@ -34,6 +37,11 @@ abstract class BusinessEvent implements BusinessEventInterface
     public function author(): string
     {
         return $this->author;
+    }
+
+    public function authorType(): string
+    {
+        return $this->authorType;
     }
 
     public function data(): array

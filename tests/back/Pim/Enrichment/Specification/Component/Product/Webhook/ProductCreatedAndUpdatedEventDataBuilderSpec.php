@@ -32,17 +32,17 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
 
     public function it_supports_product_created_event(): void
     {
-        $this->supports(new ProductCreated('julia', ['data']))->shouldReturn(true);
+        $this->supports(new ProductCreated('julia', 'ui', ['data']))->shouldReturn(true);
     }
 
     public function it_supports_product_updated_event(): void
     {
-        $this->supports(new ProductUpdated('julia', ['data']))->shouldReturn(true);
+        $this->supports(new ProductUpdated('julia', 'ui', ['data']))->shouldReturn(true);
     }
 
     public function it_does_not_supports_other_business_event(): void
     {
-        $this->supports(new ProductRemoved('julia', ['data']))->shouldReturn(false);
+        $this->supports(new ProductRemoved('julia', 'ui', ['data']))->shouldReturn(false);
     }
 
 
@@ -59,7 +59,7 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
             ]
         );
 
-        $this->build(new ProductCreated('julia', ['identifier' => 'product_identifier']))->shouldReturn(
+        $this->build(new ProductCreated('julia', 'ui', ['identifier' => 'product_identifier']))->shouldReturn(
             [
                 'resource' => ['identifier' => 'product_identifier'],
             ]
@@ -79,7 +79,7 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
             ]
         );
 
-        $this->build(new ProductUpdated('julia', ['identifier' => 'product_identifier']))->shouldReturn(
+        $this->build(new ProductUpdated('julia', 'ui', ['identifier' => 'product_identifier']))->shouldReturn(
             [
                 'resource' => ['identifier' => 'product_identifier'],
             ]
@@ -93,7 +93,7 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         $product->setIdentifier('product_identifier');
 
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('build', [new ProductRemoved('julia', ['identifier' => 'product_identifier'])]);
+            ->during('build', [new ProductRemoved('julia', 'ui', ['identifier' => 'product_identifier'])]);
     }
 
     public function it_does_not_build_if_product_was_not_found($productRepository): void
@@ -101,6 +101,6 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier('product_identifier')->willReturn(null);
 
         $this->shouldThrow(ProductNotFoundException::class)
-            ->during('build', [new ProductCreated('julia', ['identifier' => 'product_identifier'])]);
+            ->during('build', [new ProductCreated('julia', 'ui', ['identifier' => 'product_identifier'])]);
     }
 }

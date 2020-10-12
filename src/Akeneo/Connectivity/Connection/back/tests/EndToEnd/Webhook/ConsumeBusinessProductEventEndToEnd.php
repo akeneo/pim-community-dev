@@ -66,6 +66,7 @@ class ConsumeBusinessProductEventEndToEnd extends ApiTestCase
 
         $message = new ProductCreated(
             'ecommerce',
+            'api',
             $this->normalizer->normalize($product, 'standard')
         );
 
@@ -94,6 +95,7 @@ class ConsumeBusinessProductEventEndToEnd extends ApiTestCase
 
         $message = new ProductUpdated(
             'ecommerce',
+            'api',
             $this->normalizer->normalize($product, 'standard')
         );
 
@@ -122,6 +124,7 @@ class ConsumeBusinessProductEventEndToEnd extends ApiTestCase
 
         $message = new ProductRemoved(
             'ecommerce',
+            'api',
             $this->normalizer->normalize($product, 'standard')
         );
 

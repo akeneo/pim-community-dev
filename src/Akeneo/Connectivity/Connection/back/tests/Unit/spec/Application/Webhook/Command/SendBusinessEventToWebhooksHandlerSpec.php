@@ -54,7 +54,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $client,
         $builder
     ): void {
-        $businessEvent = $this->createBusinessEvent('julia', ['data']);
+        $businessEvent = $this->createBusinessEvent('julia', 'ui', ['data']);
         $command = new SendBusinessEventToWebhooksCommand($businessEvent);
 
         $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/');
@@ -66,6 +66,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
             '2020-01-01T00:00:00+00:00',
             'julia',
+            'ui',
             'staging.akeneo.com',
             ['data']
         ));
@@ -83,6 +84,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                 'event_id' => '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
                 'event_date' => '2020-01-01T00:00:00+00:00',
                 'author' => 'julia',
+                'author_type' => 'ui',
                 'pim_source' => 'staging.akeneo.com',
                 'data' => ['data']
             ], $requests[0]->content());
@@ -98,7 +100,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $webhookUserAuthenticator,
         $client
     ): void {
-        $businessEvent = $this->createBusinessEvent('julia', ['data']);
+        $businessEvent = $this->createBusinessEvent('julia', 'ui', ['data']);
         $command = new SendBusinessEventToWebhooksCommand($businessEvent);
 
         $selectActiveWebhooksQuery->execute()->willReturn([]);
@@ -115,7 +117,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $client,
         $builder
     ): void {
-        $businessEvent = $this->createBusinessEvent('julia', ['data']);
+        $businessEvent = $this->createBusinessEvent('julia', 'ui', ['data']);
         $command = new SendBusinessEventToWebhooksCommand($businessEvent);
 
         $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/');
@@ -135,9 +137,9 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $this->handle($command);
     }
 
-    private function createBusinessEvent(string $author, array $data): BusinessEventInterface
+    private function createBusinessEvent(string $author, string $authorType, array $data): BusinessEventInterface
     {
-        return new class ($author, $data) extends BusinessEvent
+        return new class ($author, $authorType, $data) extends BusinessEvent
         {
             public function name(): string
             {

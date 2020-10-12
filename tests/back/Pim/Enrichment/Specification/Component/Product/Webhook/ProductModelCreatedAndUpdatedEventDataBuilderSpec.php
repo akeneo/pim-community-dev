@@ -40,19 +40,19 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
 
     public function it_supports_product_model_created_event(): void
     {
-        $this->supports(new ProductModelCreated('julia', ['data']))->shouldReturn(true);
+        $this->supports(new ProductModelCreated('julia', 'ui', ['data']))->shouldReturn(true);
     }
 
     public function it_supports_product_model_updated_event(): void
     {
-        $this->supports(new ProductModelUpdated('julia', ['data']))->shouldReturn(true);
+        $this->supports(new ProductModelUpdated('julia', 'ui', ['data']))->shouldReturn(true);
     }
 
     public function it_does_not_supports_other_business_event(): void
     {
-        $this->supports(new ProductRemoved('julia', ['data']))->shouldReturn(false);
-        $this->supports(new ProductCreated('julia', ['data']))->shouldReturn(false);
-        $this->supports(new ProductUpdated('julia', ['data']))->shouldReturn(false);
+        $this->supports(new ProductRemoved('julia', 'ui', ['data']))->shouldReturn(false);
+        $this->supports(new ProductCreated('julia', 'ui', ['data']))->shouldReturn(false);
+        $this->supports(new ProductUpdated('julia', 'ui', ['data']))->shouldReturn(false);
     }
 
     public function it_builds_product_created_event($productModelRepository, $externalApiNormalizer): void
@@ -63,7 +63,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         $productModelRepository->findOneByIdentifier('polo_col_mao')->willReturn($productModel);
         $externalApiNormalizer->normalize($productModel, 'external_api')->willReturn(['code' => 'polo_col_mao',]);
 
-        $this->build(new ProductModelCreated('julia', ['code' => 'polo_col_mao']))->shouldReturn(
+        $this->build(new ProductModelCreated('julia', 'ui', ['code' => 'polo_col_mao']))->shouldReturn(
             ['resource' => ['code' => 'polo_col_mao'],]
         );
     }
@@ -76,7 +76,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         $productModelRepository->findOneByIdentifier('polo_col_mao')->willReturn($productModel);
         $externalApiNormalizer->normalize($productModel, 'external_api')->willReturn(['code' => 'polo_col_mao',]);
 
-        $this->build(new ProductModelUpdated('julia', ['code' => 'polo_col_mao']))->shouldReturn(
+        $this->build(new ProductModelUpdated('julia', 'ui', ['code' => 'polo_col_mao']))->shouldReturn(
             ['resource' => ['code' => 'polo_col_mao'],]
         );
     }
@@ -84,7 +84,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
     public function it_does_not_build_other_business_event(): void
     {
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('build', [new AnotherBusinessEvent('julia', ['code' => 'polo_col_mao'])]);
+            ->during('build', [new AnotherBusinessEvent('julia', 'ui', ['code' => 'polo_col_mao'])]);
     }
 
     public function it_does_not_build_if_product_model_was_not_found($productModelRepository): void
@@ -92,7 +92,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         $productModelRepository->findOneByIdentifier('polo_col_mao')->willReturn(null);
 
         $this->shouldThrow(ProductModelNotFoundException::class)
-            ->during('build', [new ProductModelUpdated('julia', ['code' => 'polo_col_mao'])]);
+            ->during('build', [new ProductModelUpdated('julia', 'ui', ['code' => 'polo_col_mao'])]);
     }
 }
 

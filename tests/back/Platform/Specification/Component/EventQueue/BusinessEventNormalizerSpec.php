@@ -7,7 +7,6 @@ namespace Specification\Akeneo\Platform\Component\EventQueue;
 use Akeneo\Platform\Component\EventQueue\BusinessEvent;
 use Akeneo\Platform\Component\EventQueue\BusinessEventNormalizer;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -29,7 +28,7 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
 
     public function it_supports_normalization_of_business_event(): void
     {
-        $businessEvent = new class ('author', ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends BusinessEvent
+        $businessEvent = new class ('ecommerce_connection', 'api', ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends BusinessEvent
         {
             public function name(): string
             {
@@ -51,7 +50,7 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_a_business_event()
     {
-        $businessEvent = new class ('author', ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends BusinessEvent
+        $businessEvent = new class ('ecommerce_connection', 'api', ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends BusinessEvent
         {
             public function name(): string
             {
@@ -61,7 +60,8 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
 
         $expected = [
             'name' => 'event_name',
-            'author' => 'author',
+            'author' => 'ecommerce_connection',
+            'author_type' => 'api',
             'data' => ['data'],
             'timestamp' => 0,
             'uuid' => 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba',
@@ -78,7 +78,7 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
 
     public function it_supports_denormalization_of_business_event(): void
     {
-        $businessEvent = new class ('author', ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends BusinessEvent
+        $businessEvent = new class ('author', 'api', ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends BusinessEvent
         {
             public function name(): string
             {
@@ -98,7 +98,7 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
 
     public function it_denormalizes_a_business_event()
     {
-        $businessEvent = new class ('author', ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends BusinessEvent
+        $businessEvent = new class ('author', 'api', ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends BusinessEvent
         {
             public function name(): string
             {
@@ -109,6 +109,7 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
         $data = [
             'name' => 'event_name',
             'author' => 'author',
+            'author_type' => 'api',
             'data' => ['data'],
             'timestamp' => 0,
             'uuid' => 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba',

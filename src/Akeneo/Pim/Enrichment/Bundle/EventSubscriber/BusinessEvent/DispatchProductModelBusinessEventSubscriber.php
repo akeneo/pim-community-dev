@@ -54,14 +54,15 @@ final class DispatchProductModelBusinessEventSubscriber implements EventSubscrib
         }
 
         $author = $user->getUsername();
+        $authorType = $user->getType();
         $data = $this->normalizer->normalize($productModel, 'standard');
 
         $message = null;
 
         if ($event->hasArgument('is_new') && true === $event->getArgument('is_new')) {
-            $message = new ProductModelCreated($author, $data);
+            $message = new ProductModelCreated($author, $authorType, $data);
         } else {
-            $message = new ProductModelUpdated($author, $data);
+            $message = new ProductModelUpdated($author, $authorType, $data);
         }
 
         $this->messageBus->dispatch($message);
@@ -80,9 +81,10 @@ final class DispatchProductModelBusinessEventSubscriber implements EventSubscrib
         }
 
         $author = $user->getUsername();
+        $authorType = $user->getType();
         $data = $this->normalizeProductModelData($productModel);
 
-        $message = new ProductModelRemoved($author, $data);
+        $message = new ProductModelRemoved($author, $authorType, $data);
 
         $this->messageBus->dispatch($message);
     }

@@ -25,17 +25,17 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
 
     public function it_supports_product_model_removed_event(): void
     {
-        $this->supports(new ProductModelRemoved('julia', ['data']))->shouldReturn(true);
+        $this->supports(new ProductModelRemoved('julia', 'ui', ['data']))->shouldReturn(true);
     }
 
     public function it_does_not_supports_other_business_event(): void
     {
-        $this->supports(new ProductCreated('julia', ['data']))->shouldReturn(false);
+        $this->supports(new ProductCreated('julia', 'ui', ['data']))->shouldReturn(false);
     }
 
     public function it_builds_product_model_removed_event(): void
     {
-        $this->build(new ProductModelRemoved('julia', ['code' => 'product_identifier']))->shouldReturn(
+        $this->build(new ProductModelRemoved('julia', 'ui', ['code' => 'product_identifier']))->shouldReturn(
             [
                 'resource' => ['code' => 'product_identifier'],
             ]
@@ -46,7 +46,7 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
     {
         $this->shouldThrow(new \InvalidArgumentException())->during(
             'build',
-            [new ProductCreated('julia', ['code' => 'product_identifier'])]
+            [new ProductCreated('julia', 'ui', ['code' => 'product_identifier'])]
         );
     }
 }

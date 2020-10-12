@@ -1092,6 +1092,11 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
     public function isApiUser(): bool
     {
         return self::TYPE_API === $this->type;

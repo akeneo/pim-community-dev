@@ -18,6 +18,7 @@ class ProductModelRemovedSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             'author',
+            'api',
             ['data'],
             1598953500,
             'a23e4567-e89b-12d3-a456-426614175000'
@@ -42,6 +43,11 @@ class ProductModelRemovedSpec extends ObjectBehavior
     public function it_returns_the_author(): void
     {
         $this->author()->shouldReturn('author');
+    }
+
+    public function it_returns_the_author_type(): void
+    {
+        $this->authorType()->shouldReturn('api');
     }
 
     public function it_returns_the_data(): void

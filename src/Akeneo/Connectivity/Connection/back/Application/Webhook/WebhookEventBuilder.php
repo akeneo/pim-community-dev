@@ -44,6 +44,7 @@ class WebhookEventBuilder
             $businessEvent->uuid(),
             date(\DateTimeInterface::ATOM, $businessEvent->timestamp()),
             $businessEvent->author(),
+            $businessEvent->authorType(),
             $context['pim_source'],
             $this->buildEventData($businessEvent)
         );

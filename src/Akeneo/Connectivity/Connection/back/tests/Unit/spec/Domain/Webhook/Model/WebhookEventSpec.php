@@ -20,6 +20,7 @@ class WebhookEventSpec extends ObjectBehavior
             '21f7f779-f094-4305-8ee4-65fdddd5a418',
             '2020-01-01T00:00:00+00:00',
             'julia',
+            'ui',
             'staging.akeneo.com',
             ['data']
         );
@@ -52,6 +53,12 @@ class WebhookEventSpec extends ObjectBehavior
     {
         $this->author()
             ->shouldReturn('julia');
+    }
+
+    public function it_returns_an_author_type(): void
+    {
+        $this->authorType()
+            ->shouldReturn('ui');
     }
 
     public function it_returns_a_pim_source(): void

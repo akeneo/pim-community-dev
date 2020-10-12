@@ -14,6 +14,8 @@ interface BusinessEventInterface
 
     public function author(): string;
 
+    public function authorType(): string;
+
     public function data(): array;
 
     public function timestamp(): int;

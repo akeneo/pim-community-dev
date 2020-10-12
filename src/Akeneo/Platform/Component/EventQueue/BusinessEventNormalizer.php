@@ -36,6 +36,7 @@ class BusinessEventNormalizer implements NormalizerInterface, DenormalizerInterf
         return [
             'name' => $object->name(),
             'author' => $object->author(),
+            'author_type' => $object->authorType(),
             'data' => $object->data(),
             'timestamp' => $object->timestamp(),
             'uuid' => $object->uuid()
@@ -54,6 +55,7 @@ class BusinessEventNormalizer implements NormalizerInterface, DenormalizerInterf
 
         return new $type(
             $data['author'],
+            $data['author_type'],
             $data['data'],
             $data['timestamp'],
             $data['uuid']

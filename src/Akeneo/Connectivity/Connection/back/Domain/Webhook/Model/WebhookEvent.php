@@ -27,6 +27,9 @@ class WebhookEvent
     private $author;
 
     /** @var string */
+    private $authorType;
+
+    /** @var string */
     private $pimSource;
 
     /**
@@ -37,6 +40,7 @@ class WebhookEvent
         string $eventId,
         string $eventDate,
         string $author,
+        string $authorType,
         string $pimSource,
         array $data
     ) {
@@ -45,6 +49,7 @@ class WebhookEvent
         $this->eventDate = $eventDate;
         $this->data = $data;
         $this->author = $author;
+        $this->authorType = $authorType;
         $this->pimSource = $pimSource;
     }
 
@@ -66,6 +71,11 @@ class WebhookEvent
     public function author(): string
     {
         return $this->author;
+    }
+
+    public function authorType(): string
+    {
+        return $this->authorType;
     }
 
     public function pimSource(): string

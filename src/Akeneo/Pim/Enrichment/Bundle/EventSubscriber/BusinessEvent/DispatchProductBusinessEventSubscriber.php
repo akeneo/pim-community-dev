@@ -53,13 +53,14 @@ final class DispatchProductBusinessEventSubscriber implements EventSubscriberInt
         }
 
         $author = $user->getUsername();
+        $authorType = $user->getType();
         $data = $this->normalizeProductData($product);
 
         $message = null;
         if ($event->hasArgument('is_new') && true === $event->getArgument('is_new')) {
-            $message = new ProductCreated($author, $data);
+            $message = new ProductCreated($author, $authorType, $data);
         } else {
-            $message = new ProductUpdated($author, $data);
+            $message = new ProductUpdated($author, $authorType, $data);
         }
 
         $this->messageBus->dispatch($message);
@@ -78,9 +79,10 @@ final class DispatchProductBusinessEventSubscriber implements EventSubscriberInt
         }
 
         $author = $user->getUsername();
+        $authorType = $user->getType();
         $data = $this->normalizeProductData($product);
 
-        $message = new ProductRemoved($author, $data);
+        $message = new ProductRemoved($author, $authorType, $data);
 
         $this->messageBus->dispatch($message);
     }

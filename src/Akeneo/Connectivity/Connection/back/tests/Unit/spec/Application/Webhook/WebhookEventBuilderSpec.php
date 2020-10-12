@@ -35,6 +35,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
     {
         $businessEvent = $this->createBusinessEvent(
             'julia',
+            'ui',
             ['data'],
             1599814161,
             'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
@@ -52,6 +53,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
                     'a20832d1-a1e6-4f39-99ea-a1dd859faddb',
                     '2020-09-11T08:49:21+00:00',
                     'julia',
+                    'ui',
                     'staging.akeneo.com',
                     ['data']
                 )
@@ -64,6 +66,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
 
         $businessEvent = $this->createBusinessEvent(
             'julia',
+            'ui',
             ['data'],
             1599814161,
             'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
@@ -79,6 +82,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
     ): void {
         $businessEvent = $this->createBusinessEvent(
             'julia',
+            'ui',
             ['data'],
             1599814161,
             'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
@@ -99,6 +103,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
     ): void {
         $businessEvent = $this->createBusinessEvent(
             'julia',
+            'ui',
             ['data'],
             1599814161,
             'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
@@ -119,6 +124,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
     ): void {
         $businessEvent = $this->createBusinessEvent(
             'julia',
+            'ui',
             ['data'],
             1599814161,
             'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
@@ -135,11 +141,12 @@ class WebhookEventBuilderSpec extends ObjectBehavior
 
     private function createBusinessEvent(
         string $author,
+        string $authorType,
         array $data,
         int $timestamp,
         string $uuid
     ): BusinessEventInterface {
-        return new class ($author, $data, $timestamp, $uuid) extends BusinessEvent {
+        return new class ($author, $authorType, $data, $timestamp, $uuid) extends BusinessEvent {
             public function name(): string
             {
                 return 'product.created';

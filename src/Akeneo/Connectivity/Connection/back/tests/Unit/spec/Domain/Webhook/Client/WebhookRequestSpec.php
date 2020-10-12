@@ -24,6 +24,7 @@ class WebhookRequestSpec extends ObjectBehavior
                 '79fc4791-86d6-4d3b-93c5-76b787af9497',
                 '2020-01-01T00:00:00+00:00',
                 'julia',
+                'ui',
                 'staging.akeneo.com',
                 ['data']
             )
@@ -56,6 +57,7 @@ class WebhookRequestSpec extends ObjectBehavior
                     'event_id' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
                     'event_date' => '2020-01-01T00:00:00+00:00',
                     'author' => 'julia',
+                    'author_type' => 'ui',
                     'pim_source' => 'staging.akeneo.com',
                     'data' => ['data'],
                 ]
@@ -76,6 +78,7 @@ class WebhookRequestSpec extends ObjectBehavior
                         'event_id' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
                         'event_date' => '2020-01-01T00:00:00+00:00',
                         'author' => 'julia',
+                        'author_type' => 'ui',
                         'pim_source' => 'staging.akeneo.com',
                     ],
                 ]

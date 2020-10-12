@@ -50,6 +50,7 @@ class WebhookRequest
      *  event_id: string,
      *  event_date: string,
      *  author: string,
+     *  author_type: string,
      *  pim_source: string,
      *  data: array
      * }
@@ -61,6 +62,7 @@ class WebhookRequest
             'event_id' => $this->event->eventId(),
             'event_date' => $this->event->eventDate(),
             'author' => $this->event->author(),
+            'author_type' => $this->event->authorType(),
             'pim_source' => $this->event->pimSource(),
             'data' => $this->event->data(),
         ];
@@ -79,6 +81,7 @@ class WebhookRequest
      *      event_id: string,
      *      event_date: string,
      *      author: string,
+     *      author_type: string,
      *      pim_source: string
      *  }
      * }
@@ -95,6 +98,7 @@ class WebhookRequest
                 'event_id' => $this->event->eventId(),
                 'event_date' => $this->event->eventDate(),
                 'author' => $this->event->author(),
+                'author_type' => $this->event->authorType(),
                 'pim_source' => $this->event->pimSource(),
             ],
         ];
