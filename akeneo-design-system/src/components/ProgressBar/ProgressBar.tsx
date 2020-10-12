@@ -40,7 +40,7 @@ const ProgressBarFill = styled.div<{width: number; color: string}>`
   position: absolute;
   top: 0;
   transition: width 0.3s;
-  width: ${props => props.width + '%'};
+  width: ${props => props.width.toString() + '%'};
 `;
 
 const getHeight = (height: ProgressBarHeight): string => {
