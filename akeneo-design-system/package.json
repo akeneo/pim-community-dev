@@ -4,7 +4,7 @@
   "description": "Akeneo design system",
   "main": "lib/index.js",
   "scripts": {
-    "lib:build": "rimraf lib && tsc -p ./tsconfig.build.json",
+    "lib:build": "tsc -p ./tsconfig.build.json",
     "lib:watch": "rimraf lib && tsc -p ./tsconfig.build.json --watch",
     "test": "yarn lint:check && yarn test:unit:run && yarn test:visual:run",
     "test:unit:run": "jest --config ./jest.unit.config.js",

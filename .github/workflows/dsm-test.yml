@@ -18,11 +18,27 @@ jobs:
         with:
           node-version: 13.13
 
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: '**/akeneo-design-system/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/akeneo-design-system/yarn.lock') }}
+
       - name: Install node modules
         run: cd akeneo-design-system && yarn install
 
       - name: Generate a dummy component to test it with the others
         run: cd akeneo-design-system && ./bin/dsm generate Dummy
+
+      - name: Cache typescript build
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-typescript-build
+        with:
+          path: '**/akeneo-design-system/tsconfig.build.tsbuildinfo'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/tsconfig.json') }}
 
       - name: Make sure the lib build is successful
         run: cd akeneo-design-system && yarn lib:build
