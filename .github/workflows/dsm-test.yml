@@ -26,6 +26,16 @@ jobs:
           path: '**/akeneo-design-system/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/akeneo-design-system/yarn.lock') }}
 
+      - uses: actions/cache@v2
+        name: Cache yarn cache
+        env:
+          cache-name: cache-yarn-cache
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/akeneo-design-system/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn
+
       - name: Install node modules
         run: cd akeneo-design-system && yarn install
 
@@ -45,6 +55,16 @@ jobs:
 
       - name: Launch lint checks
         run: cd akeneo-design-system && yarn lint:check
+
+      - uses: actions/cache@v2
+        name: Cache jest cache
+        env:
+          cache-name: cache-jest-cache
+        with:
+          path: .jest-cache
+          key: ${{ runner.os }}-jest
+          restore-keys: |
+            ${{ runner.os }}-jest
 
       - name: Launch unit tests
         run: cd akeneo-design-system && yarn test:unit:run
