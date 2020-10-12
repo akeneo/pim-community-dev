@@ -52,7 +52,15 @@ jobs:
           cache-name: cache-typescript-build
         with:
           path: '**/akeneo-design-system/tsconfig.build.tsbuildinfo'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/tsconfig.json') }}
+          key: ${{ runner.os }}-typescript-${{ hashFiles('**/src') }}
+
+      - name: Cache lib build
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-lib-build
+        with:
+          path: '**/akeneo-design-system/lib'
+          key: ${{ runner.os }}-lib-${{ hashFiles('**/src') }}
 
       - name: Make sure the lib build is successful
         run: cd akeneo-design-system && yarn lib:build
@@ -89,7 +97,7 @@ jobs:
         run: cd akeneo-design-system/example && yarn install
 
       - name: Launch example integration tests
-        run: cd akeneo-design-system && yarn lib:build && cd example && yarn test
+        run: cd akeneo-design-system/example && yarn test
 
       - name: Upload the src folder on failure for debugging purposes
         uses: actions/upload-artifact@v2
