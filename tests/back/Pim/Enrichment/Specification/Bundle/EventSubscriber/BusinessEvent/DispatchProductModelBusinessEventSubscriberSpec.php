@@ -55,7 +55,10 @@ class DispatchProductModelBusinessEventSubscriberSpec extends ObjectBehavior
         $user->getUsername()->willReturn('julia');
         $security->getUser()->willReturn($user);
 
-        $normalizer->normalize($productModel, 'standard')->willReturn(['code' => 'polo_col_mao',]);
+        $normalizer->normalize($productModel, 'standard')->willReturn([
+            'code' => 'polo_col_mao',
+            'categories' => ['a_category'],
+        ]);
 
         $this->produceBusinessSaveEvent(new GenericEvent($productModel, ['is_new' => true]));
 
@@ -77,7 +80,10 @@ class DispatchProductModelBusinessEventSubscriberSpec extends ObjectBehavior
         $user->getUsername()->willReturn('julia');
         $security->getUser()->willReturn($user);
 
-        $normalizer->normalize($productModel, 'standard')->willReturn(['code' => 'polo_col_mao',]);
+        $normalizer->normalize($productModel, 'standard')->willReturn([
+            'code' => 'polo_col_mao',
+            'categories' => ['a_category'],
+        ]);
 
         $this->produceBusinessSaveEvent(new GenericEvent($productModel));
 
@@ -92,13 +98,12 @@ class DispatchProductModelBusinessEventSubscriberSpec extends ObjectBehavior
         $messageBus = $this->getMessageBus();
         $this->beConstructedWith($security, $normalizer, $messageBus);
 
-        $result = $this->produceBusinessSaveEvent(new GenericEvent('NOT_A_PRODUCT_MODEL'));
+        $this->produceBusinessSaveEvent(new GenericEvent('NOT_A_PRODUCT_MODEL'));
 
         Assert::assertCount(0, $messageBus->messages);
     }
 
     function it_does_not_produce_business_save_event_because_there_is_no_logged_user(
-        UserInterface $user,
         $security,
         $normalizer
     ) {
@@ -132,6 +137,7 @@ class DispatchProductModelBusinessEventSubscriberSpec extends ObjectBehavior
         $normalizer->normalize($productModel, 'standard')->willReturn(
             [
                 'code' => 'my_product_model',
+                'categories' => ['a_category'],
             ]
         );
 
@@ -148,7 +154,7 @@ class DispatchProductModelBusinessEventSubscriberSpec extends ObjectBehavior
         $messageBus = $this->getMessageBus();
         $this->beConstructedWith($security, $normalizer, $messageBus);
 
-        $result = $this->produceBusinessRemoveEvent(new GenericEvent('NOT_A_PRODUCT_MODEL'));
+        $this->produceBusinessRemoveEvent(new GenericEvent('NOT_A_PRODUCT_MODEL'));
 
         Assert::assertCount(0, $messageBus->messages);
     }
@@ -172,7 +178,8 @@ class DispatchProductModelBusinessEventSubscriberSpec extends ObjectBehavior
 
     private function getMessageBus()
     {
-        return new class() implements MessageBusInterface {
+        return new class () implements MessageBusInterface
+        {
 
             public $messages = [];
 

@@ -53,7 +53,7 @@ final class DispatchProductBusinessEventSubscriber implements EventSubscriberInt
         }
 
         $author = $user->getUsername();
-        $data = $this->normalizer->normalize($product, 'standard');
+        $data = $this->normalizeProductData($product);
 
         $message = null;
         if ($event->hasArgument('is_new') && true === $event->getArgument('is_new')) {
@@ -78,10 +78,20 @@ final class DispatchProductBusinessEventSubscriber implements EventSubscriberInt
         }
 
         $author = $user->getUsername();
-        $data = $this->normalizer->normalize($product, 'standard');
+        $data = $this->normalizeProductData($product);
 
         $message = new ProductRemoved($author, $data);
 
         $this->messageBus->dispatch($message);
+    }
+
+    private function normalizeProductData(ProductInterface $product): array
+    {
+        $standard = $this->normalizer->normalize($product, 'standard');
+
+        return [
+            'identifier' => $standard['identifier'],
+            'categories' => $standard['categories'],
+        ];
     }
 }
