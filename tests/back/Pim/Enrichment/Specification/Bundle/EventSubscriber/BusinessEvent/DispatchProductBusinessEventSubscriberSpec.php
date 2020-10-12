@@ -44,7 +44,6 @@ class DispatchProductBusinessEventSubscriberSpec extends ObjectBehavior
         $normalizer
     ) {
         $product = new Product();
-        $product->setId(1);
         $product->setIdentifier('product_identifier');
 
         $messageBus = $this->getMessageBus();
@@ -55,8 +54,8 @@ class DispatchProductBusinessEventSubscriberSpec extends ObjectBehavior
 
         $normalizer->normalize($product, 'standard')->willReturn(
             [
-                'id' => 1,
                 'identifier' => 'product_identifier',
+                'categories' => ['a_category'],
             ]
         );
 
@@ -71,7 +70,6 @@ class DispatchProductBusinessEventSubscriberSpec extends ObjectBehavior
         $normalizer
     ) {
         $product = new Product();
-        $product->setId(1);
         $product->setIdentifier('product_identifier');
 
         $messageBus = $this->getMessageBus();
@@ -82,8 +80,8 @@ class DispatchProductBusinessEventSubscriberSpec extends ObjectBehavior
 
         $normalizer->normalize($product, 'standard')->willReturn(
             [
-                'id' => 1,
                 'identifier' => 'product_identifier',
+                'categories' => ['a_category'],
             ]
         );
 
@@ -99,13 +97,12 @@ class DispatchProductBusinessEventSubscriberSpec extends ObjectBehavior
         $messageBus = $this->getMessageBus();
         $this->beConstructedWith($security, $normalizer, $messageBus);
 
-        $result = $this->produceBusinessSaveEvent(new GenericEvent('NOT_A_PRODUCT', ['updated' => true]));
+        $this->produceBusinessSaveEvent(new GenericEvent('NOT_A_PRODUCT', ['updated' => true]));
 
         Assert::assertCount(0, $messageBus->messages);
     }
 
     function it_does_not_produce_business_save_event_because_there_is_no_logged_user(
-        UserInterface $user,
         $security,
         $normalizer
     ) {
@@ -113,7 +110,6 @@ class DispatchProductBusinessEventSubscriberSpec extends ObjectBehavior
         $this->beConstructedWith($security, $normalizer, $messageBus);
 
         $product = new Product();
-        $product->setId(1);
         $product->setIdentifier('product_identifier');
 
         $security->getUser()->willReturn(null);
@@ -129,7 +125,6 @@ class DispatchProductBusinessEventSubscriberSpec extends ObjectBehavior
         $normalizer
     ) {
         $product = new Product();
-        $product->setId(1);
         $product->setIdentifier('product_identifier');
 
         $messageBus = $this->getMessageBus();
@@ -140,8 +135,8 @@ class DispatchProductBusinessEventSubscriberSpec extends ObjectBehavior
 
         $normalizer->normalize($product, 'standard')->willReturn(
             [
-                'id' => 1,
                 'identifier' => 'product_identifier',
+                'categories' => ['a_category'],
             ]
         );
 
@@ -157,7 +152,7 @@ class DispatchProductBusinessEventSubscriberSpec extends ObjectBehavior
         $messageBus = $this->getMessageBus();
         $this->beConstructedWith($security, $normalizer, $messageBus);
 
-        $result = $this->produceBusinessRemoveEvent(new GenericEvent('NOT_A_PRODUCT'));
+        $this->produceBusinessRemoveEvent(new GenericEvent('NOT_A_PRODUCT'));
 
         Assert::assertCount(0, $messageBus->messages);
     }
@@ -170,7 +165,6 @@ class DispatchProductBusinessEventSubscriberSpec extends ObjectBehavior
         $this->beConstructedWith($security, $normalizer, $messageBus);
 
         $product = new Product();
-        $product->setId(1);
         $product->setIdentifier('product_identifier');
 
         $security->getUser()->willReturn(null);
@@ -182,7 +176,8 @@ class DispatchProductBusinessEventSubscriberSpec extends ObjectBehavior
 
     private function getMessageBus()
     {
-        return new class() implements MessageBusInterface {
+        return new class () implements MessageBusInterface
+        {
 
             public $messages = [];
 
@@ -195,4 +190,3 @@ class DispatchProductBusinessEventSubscriberSpec extends ObjectBehavior
         };
     }
 }
-

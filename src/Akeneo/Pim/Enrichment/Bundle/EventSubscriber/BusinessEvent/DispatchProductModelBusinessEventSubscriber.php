@@ -7,7 +7,6 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -70,9 +69,9 @@ final class DispatchProductModelBusinessEventSubscriber implements EventSubscrib
 
     public function produceBusinessRemoveEvent(GenericEvent $event): void
     {
-        /** @var ProductInterface */
-        $product = $event->getSubject();
-        if (false === $product instanceof ProductModelInterface) {
+        /** @var ProductModelInterface */
+        $productModel = $event->getSubject();
+        if (false === $productModel instanceof ProductModelInterface) {
             return;
         }
 
@@ -81,10 +80,20 @@ final class DispatchProductModelBusinessEventSubscriber implements EventSubscrib
         }
 
         $author = $user->getUsername();
-        $data = $this->normalizer->normalize($product, 'standard');
+        $data = $this->normalizeProductModelData($productModel);
 
         $message = new ProductModelRemoved($author, $data);
 
         $this->messageBus->dispatch($message);
+    }
+
+    private function normalizeProductModelData(ProductModelInterface $productModel): array
+    {
+        $standard = $this->normalizer->normalize($productModel, 'standard');
+
+        return [
+            'code' => $standard['code'],
+            'categories' => $standard['categories'],
+        ];
     }
 }
