@@ -3,6 +3,7 @@ import {TableCell} from '../layouts/tables';
 import {useDataGridState} from '../../../hooks';
 import {AfterDropRowHandler} from '../providers';
 import {RowIcon} from "akeneo-design-system";
+import styled from 'styled-components';
 
 type Props<T> = {
   data: T;
@@ -10,6 +11,11 @@ type Props<T> = {
   handleDrop: AfterDropRowHandler;
   rowRef: RefObject<HTMLElement>;
 };
+
+const DraggableCell = styled(TableCell)`
+  line-height: 10px;
+  color: ${({theme}) => theme.color.grey100};
+`;
 
 const DraggableRowWrapper = <T extends {}>({
   children,
@@ -23,7 +29,7 @@ const DraggableRowWrapper = <T extends {}>({
   return (
     <>
       {isReorderAllowed && (
-        <TableCell
+        <DraggableCell
           isDraggable={isReorderAllowed}
           isActive={isReorderActive}
           onDragStart={event => {
@@ -38,10 +44,9 @@ const DraggableRowWrapper = <T extends {}>({
           onDragEnd={event => {
             moveEnd(event, handleDrop);
           }}
-          style={{lineHeight: '10px'}}
         >
           <RowIcon shapeRendering="crispEdges"/>
-        </TableCell>
+        </DraggableCell>
       )}
       {React.Children.map(children, element => {
         return React.cloneElement(element as ReactElement, {
