@@ -89,7 +89,7 @@ jobs:
           cache-name: cache-example-node-modules
         with:
           path: '**/akeneo-design-system/example/node_modules'
-          key: ${{ runner.os }}-example-modules-${{ hashFiles('**/akeneo-design-system/example/yarn.lock') }}
+          key: ${{ runner.os }}-example-node-modules-${{ hashFiles('**/akeneo-design-system/example/yarn.lock') }}
 
       # To check if the build is working, the directory `example` contains an integration of the lib
       # with a few tests. In the next step we will build this example and validate that it's working properly
