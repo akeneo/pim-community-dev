@@ -239,9 +239,8 @@ class NavigationContext extends PimContext implements PageObjectAware
      */
     public function iShouldNotBeAbleToAccessThePage($not, $page)
     {
+        $this->iAmOnThePage($page);
         $this->spin(function () use ($not, $page) {
-            $this->iAmOnThePage($page);
-
             if (!$not) {
                 $this->assertSession()->pageTextNotContains('Forbidden');
 
