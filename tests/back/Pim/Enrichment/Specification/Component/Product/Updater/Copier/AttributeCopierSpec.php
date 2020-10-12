@@ -253,7 +253,7 @@ class AttributeCopierSpec extends ObjectBehavior
         );
     }
 
-    function it_does_not_copy_null_values(
+    function it_copies_null_values(
         $builder,
         $attrValidatorHelper,
         $normalizer,
@@ -276,8 +276,8 @@ class AttributeCopierSpec extends ObjectBehavior
 
         $product->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
         $builder
-            ->addOrReplaceValue(Argument::cetera())
-            ->shouldNotBeCalled();
+            ->addOrReplaceValue($product, $toAttribute, $toLocale, $toScope, null)
+            ->shouldBeCalled();
 
         $this->copyAttributeData(
             $product,
