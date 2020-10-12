@@ -52,6 +52,7 @@ parameters:
     pim_enrich.job.name.set_attribute_requirements: 'set_attribute_requirements'
     pim_enrich.job.name.delete_products_and_product_models: 'delete_products_and_product_models'
     pim_enrich.job.name.change_parent_product: 'change_parent_product'
+    pim_enrich.job.name.convert_to_simple_product: 'convert_to_simple_product'
     pim_enrich.job.simple_job.class: Akeneo\Tool\Component\Batch\Job\Job
     pim_enrich.step.item_step.class: Akeneo\Tool\Component\Batch\Step\ItemStep
     pim_enrich.job.quick_export_type: quick_export
@@ -636,6 +637,18 @@ services:
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+
+    pim_enrich.job.convert_to_simple_product:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.convert_to_simple_product%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.convert_to_simple_product.mass_edit'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+
 
     pim_enrich.job.delete_products_and_product_models:
         class: '%pim_connector.job.simple_job.class%'
