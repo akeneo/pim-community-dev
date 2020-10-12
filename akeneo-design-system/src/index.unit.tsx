@@ -30,7 +30,11 @@ describe('Every module is exported correctly', () => {
     test.concurrent(
       `Test ${component} is exported correctly.
         If this test is failing, export "${component}" component in src/index.ts`,
-      async () => expect(exportNames).toContain(component)
+      async () => {
+        expect(exportNames).toContain(component);
+
+        return Promise.resolve();
+      }
     );
   });
 });
@@ -51,6 +55,7 @@ describe('Every module should support forwardRef', () => {
         const ref = {current: null};
         render(<Component ref={ref} />);
         expect(ref.current).not.toBe(null);
+        return Promise.resolve();
       }
     );
   });
@@ -71,6 +76,8 @@ describe('Every module should support ...rest props', () => {
 
         const {container} = render(<Component data-my-attribute="my_value" />);
         expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
+
+        return Promise.resolve();
       }
     );
   });
