@@ -31,7 +31,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
             new Client(),
             new JsonEncoder(),
             new NullLogger(),
-            ['concurrency' => 1, 'timeout' => 1]
+            []
         );
     }
 
@@ -52,7 +52,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
             new Client(['handler' => $handlerStack]),
             new JsonEncoder(),
             new NullLogger(),
-            ['concurrency' => 1, 'timeout' => 1]
+            []
         );
 
         $request1 = new WebhookRequest(

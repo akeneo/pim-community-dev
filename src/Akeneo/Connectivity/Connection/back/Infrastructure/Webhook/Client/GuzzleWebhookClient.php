@@ -32,11 +32,11 @@ class GuzzleWebhookClient implements WebhookClient
     /** @var LoggerInterface */
     private $logger;
 
-    /** @var array{concurrency: int, timeout: float} */
+    /** @var array{concurrency: ?int, timeout: ?float} */
     private $config;
 
     /**
-     * @param array{concurrency: int, timeout: float} $config
+     * @param array{concurrency: ?int, timeout: ?float} $config
      */
     public function __construct(
         ClientInterface $client,
@@ -76,9 +76,9 @@ class GuzzleWebhookClient implements WebhookClient
         };
 
         $pool = new Pool($this->client, $guzzleRequests(), [
-            'concurrency' => $this->config['concurrency'],
+            'concurrency' => $this->config['concurrency'] ?? null,
             'options' => [
-                'timeout' => $this->config['timeout']
+                'timeout' => $this->config['timeout'] ?? null
             ],
             'fulfilled' => function (Response $response, int $index) use (&$logContexts) {
                 $this->logger->info(
