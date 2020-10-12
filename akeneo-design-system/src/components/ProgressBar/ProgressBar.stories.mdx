@@ -1,0 +1,69 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {ProgressBar} from './ProgressBar.tsx';
+
+<Meta
+  title="Components/ProgressBar"
+  component={ProgressBar}
+  argTypes={{
+    color: {control: {type: 'text'}},
+  }}
+  args={{
+    color: '#f9b53f',
+    title: 'Lorem Ipsum is simply dummy text',
+    progressLabel: '30 minutes left',
+    percent: '50'
+  }}
+/>
+
+# ProgressBar
+
+## Usage
+One of the most important rules in UI / UX design is visibility of system state. The goal behind this rule is pretty obvious: To minimize user stress, you need to provide them with feedback on what is going on with the app within a reasonable amount of time. Don't let users guess, tell them what's going on. And one of the most common forms of this type of feedback is a progress indicator.
+
+### Types of Progress bars
+**Determinate:** when indicators are determinate they indicate how long an operation will take when the percentage complete is detectable.
+
+**Indeterminate**: when indicators are indeterminate they request that the user waits while something finishes when it’s not necessary to indicate how long it will take.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <ProgressBar {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on color
+
+<Canvas>
+  <Story name="Size">
+    {args => {
+      return (
+        <>
+          <ProgressBar {...args} percent={50} color="#67b373"/>
+          <ProgressBar {...args} percent={50} color="#f9b53f"/>
+          <ProgressBar {...args} percent={50} color="#5992c7"/>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on height
+
+<Canvas>
+  <Story name="Height">
+    {args => {
+      return (
+        <>
+          <ProgressBar {...args} percent={50} height="small"/>
+          <ProgressBar {...args} percent={50} height="large"/>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
