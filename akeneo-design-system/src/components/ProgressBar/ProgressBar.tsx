@@ -74,12 +74,12 @@ type ProgressBarProps = {
   color: string;
 
   /**
-   * The percent of the progress bar (from 0 to 100).
+   * The progression of the progress bar in percentage (from 0 to 100).
    */
   percent: number;
 
   /**
-   * Define the progress bar title.
+   * The progress bar title.
    */
   title?: string;
 
