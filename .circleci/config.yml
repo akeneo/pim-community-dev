@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 jobs:
   build_dev:
     machine:
@@ -76,6 +76,9 @@ jobs:
           - run:
                 name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
                 command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Check legacy translations
+                command: .circleci/find_legacy_translations.sh
           - run:
                 name: Check Pullup
                 command: make check-pullup
@@ -268,7 +271,7 @@ workflows:
                 filters:
                     branches:
                         ignore:
-                            - master
+                            - "4.0"
           - build_dev:
                 requires:
                     - wait_for_user_approval
