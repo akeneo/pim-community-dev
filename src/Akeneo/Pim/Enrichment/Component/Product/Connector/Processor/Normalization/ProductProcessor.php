@@ -121,7 +121,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
      */
     protected function fetchMedia(EntityWithFamilyInterface $product, $directory)
     {
-        if (!$product instanceof ProductInterface || !$product instanceof ProductModelInterface) {
+        if (!$product instanceof ProductInterface && !$product instanceof ProductModelInterface) {
             throw new \InvalidArgumentException(sprintf(
                 'Entity must be a product or a product model, instance of \'%s\' given',
                 get_class($product)

@@ -80,7 +80,7 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
 
         foreach ($associationAwareEntities as $associationAwareEntity) {
             if (!$associationAwareEntity instanceof ProductInterface
-                || !$associationAwareEntity instanceof ProductModelInterface
+                && !$associationAwareEntity instanceof ProductModelInterface
             ) {
                 throw new \InvalidArgumentException(sprintf(
                     'Entity must be a product or a product model, instance of \'%s\' given',

@@ -178,7 +178,7 @@ final class LightEntityWithFamilyVariantNormalizer implements NormalizerInterfac
 
     private function getIdentifier(EntityWithFamilyVariantInterface $entity): string
     {
-        if (!$entity instanceof ProductInterface || !$entity instanceof ProductModelInterface) {
+        if (!$entity instanceof ProductInterface && !$entity instanceof ProductModelInterface) {
             throw new \InvalidArgumentException(sprintf(
                 'Entity must be a product or a product model, instance of \'%s\' given',
                 get_class($entity)
