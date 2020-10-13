@@ -138,10 +138,7 @@
     - replace `Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface $productModelSaver` by `Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface $productModelSaver`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Command\RemoveCompletenessForChannelAndLocaleCommand` to
     - replace `Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface $channelSaver` by `Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface $channelSaver`
-- Interface `Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface` now also extends `Doctrine\Common\Persistence\ObjectRepository`
-- Add method `getChannels()` in `Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface` interface
-- Add method `getLabel(): string` in `Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface` interface
-- Change `Akeneo\Pim\Enrichment\Component\Comment\Model\UserInterface` to use `Akeneo\UserManagement\Component\Model\UserInterface` instead of `Symfony\Component\Security\Core\User\UserInterface`
+- Add `getChannels()` and `getLabel(): string` methods in `Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface` interface
 
 ### CLI commands
 
