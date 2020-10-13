@@ -59,7 +59,6 @@ const getSeparatorColor = (level: Level) => {
 };
 
 const Container = styled.div<{level: Level; inline: boolean} & AkeneoThemedProps>`
-  align-items: center;
   display: flex;
   font-weight: 400;
   padding-right: 20px;
@@ -77,22 +76,18 @@ type Level = 'info' | 'warning' | 'error';
 
 const IconContainer = styled.span<{level: Level; inline: boolean} & AkeneoThemedProps>`
   height: ${({inline}) => (inline ? '16px' : '20px')};
-  padding-right: ${({inline}) => (inline ? '4px' : '10px')};
+  margin: ${({inline}) => (inline ? '2px 0' : '12px 10px')};
   color: ${props => getIconColor(props.level, props.inline)};
-
-  ${props =>
-    !props.inline &&
-    css`
-      margin: 10px;
-      border-right: 1px solid ${getSeparatorColor(props.level)};
-    `}
 `;
 
-const TextContainer = styled.div<{inline: boolean}>`
-  ${({inline}) =>
+const TextContainer = styled.div<{level: Level; inline: boolean} & AkeneoThemedProps>`
+  padding-left: ${({inline}) => (inline ? '4px' : '10px')};
+
+  ${({inline, level}) =>
     !inline &&
     css`
-      margin: 10px 0;
+      margin: 12px 0;
+      border-left: 1px solid ${getSeparatorColor(level)};
     `}
 `;
 
@@ -127,7 +122,9 @@ const Helper = React.forwardRef<HTMLDivElement, HelperProps>(
         <IconContainer inline={inline} level={level}>
           {React.cloneElement(undefined === icon ? getIcon(level) : icon, {size: inline ? 16 : 20})}
         </IconContainer>
-        <TextContainer inline={inline}>{children}</TextContainer>
+        <TextContainer level={level} inline={inline}>
+          {children}
+        </TextContainer>
       </Container>
     );
   }
