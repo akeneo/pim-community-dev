@@ -92,7 +92,7 @@ type ProgressBarProps = {
    * Define the height of the progress bar.
    */
   height?: ProgressBarHeight;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
 /**
  * Progress bar to provide users with feedback on what is going on.
