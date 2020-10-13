@@ -1,0 +1,64 @@
+pimee_catalog_rule:
+  rule_definition:
+    validation:
+      locale:
+        unknown: 'The "{{ locale_code }}" locale does not exist or is not activated'
+      currency:
+        unknown: 'A valid currency is required, the "{{ currency }}" currency does not exist or is not activated'
+        missing_key: 'The "{{ key }}" key is missing or empty'
+        unexpected_key: 'The {{ key }} key is irrelevant'
+      measurement:
+        invalid_unit: 'The "{{ unitCode }}" unit code does not exist or does not belong to the measurement family of the "{{ attributeCode }}" attribute'
+        invalid_attribute_type: 'The {{ key }} key is irrelevant for the {{ attributeCode }} attribute'
+      attribute:
+        unknown: 'The "{{ code }}" attribute does not exist'
+        unexpected_type: 'The "{{ attribute_code }}" attribute has an invalid "{{ invalid_type }}" attribute type. A {{ expected_types }} attribute is required'
+        missing_locale: 'The "{{ attributeCode }}" attribute requires a locale'
+        unexpected_locale: 'The "{{ attributeCode }}" attribute does not require a locale, please remove it'
+        unknown_locale: 'The "{{ attributeCode }}" attribute requires an existing and activated locale, please make sure your locale exists and is activated'
+        invalid_specific_locale: 'The "{{ attributeCode }}" attribute is locale-specific and requires one of the following locales: {{ expectedLocales }}'
+        locale_not_bound_to_channel: 'There is no "{{ invalidLocale }}" locale in the "{{ channelCode }}" channel'
+        missing_scope: 'The "{{ attributeCode }}" attribute requires a scope'
+        unexpected_scope: 'The "{{ attributeCode }}" attribute does not require a scope, please remove it'
+        unknown_scope: 'The "{{ attributeCode }}" attribute requires an existing scope'
+      invalid_code: 'The rule code must only contain letters, numbers and underscores'
+      conditions:
+        missing_key: 'The "conditions" key is missing or empty'
+        missing_value_key: 'The "value" key is missing or empty'
+        missing_operator_key: 'The "operator" key is missing or empty'
+        existing_field: 'The "{{ field }}" field cannot be filtered or cannot be used with the "{{ operator }}" operator'
+        missing_field_key: 'The "field" key is missing or empty'
+      actions:
+        missing_key: 'The "actions" key is missing or empty'
+        add:
+          invalid_field: 'You cannot add items to the "{{ field }}" field'
+        clear:
+          invalid_field: 'You cannot clear data from the "{{ field }}" field'
+        copy:
+          invalid_fields: 'You cannot copy data from the "{{ from_field }}" field to the "{{ to_field }}" field'
+          missing_from_field_key: 'The "from_field" key is missing or empty'
+          missing_to_field_key: 'The "to_field" key is missing or empty'
+        concatenate:
+          invalid_source: 'You cannot concatenate data from the "{{ field }}" field'
+          missing_source_key: 'A single key among "field", "text" or "new_line" is required, please select one'
+          only_one_source_key_expected: 'A single key among "field", "text" or "new_line" is required, please select only one'
+          text_target_does_not_accept_new_line: 'The "{{ targetField }}" target attribute does not accept new line'
+          unexpected_source_option: 'The {{ key }} key is irrelevant for the {{ attribute }} attribute'
+          missing_from_key: 'The "from" key is missing or empty'
+          missing_to_key: 'The "to" key is missing or empty'
+          source_count: 'This value should contain at least 2 elements'
+        calculate:
+          division_by_zero: 'Divisions by zero are not possible'
+          missing_operand_key: 'Either the "value" or "field" key is required, but both are missing or empty'
+          only_one_key_expected: 'Either the "value" or "field" key is required, please choose one'
+          unexpected_key: 'The "{{ key }}" key is irrelevant'
+          invalid_operator: 'This value should be either "add", "subtract", "multiply" or "divide"'
+        remove:
+          invalid_field: 'You cannot remove items from the "{{ field }}" field'
+          include_children_option: 'The "include_children" option can only be applied with the "categories" field'
+        set:
+          invalid_field: 'You cannot set data to the "{{ field }}" field'
+          missing_value_key: 'The "value" key is missing or empty'
+        custom:
+          unkown_type: 'Unknown action type'
+          missing_type_key: 'The "type" key is missing or empty'
