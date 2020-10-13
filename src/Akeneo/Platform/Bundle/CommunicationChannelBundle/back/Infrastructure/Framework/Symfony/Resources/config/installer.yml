@@ -4,11 +4,18 @@ services:
         arguments:
             - '@database_connection'
             - '@akeneo_communication_channel.installer.assets_installer'
+            - '@akeneo_communication_channel.installer.frontend_dependencies'
         tags:
             - { name: kernel.event_subscriber }
 
     akeneo_communication_channel.installer.assets_installer:
         class: Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Infrastructure\Framework\Symfony\Installer\AssetsInstaller
+        arguments:
+            - '@filesystem'
+            - '%kernel.project_dir%'
+
+    akeneo_communication_channel.installer.frontend_dependencies:
+        class: Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Infrastructure\Framework\Symfony\Installer\FrontendDependencies
         arguments:
             - '@filesystem'
             - '%kernel.project_dir%'

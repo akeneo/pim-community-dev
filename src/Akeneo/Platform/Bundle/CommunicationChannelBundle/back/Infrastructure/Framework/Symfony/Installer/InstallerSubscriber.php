@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\CommunicationChannel\Infrastructure\Framework\Symfony\Installer;
 
 use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Infrastructure\Framework\Symfony\Installer\AssetsInstaller;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Infrastructure\Framework\Symfony\Installer\FrontendDependencies;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Platform\CommunicationChannel\Infrastructure\Framework\Symfony\Installer\Query\CreateViewedAnnouncementsTableQuery;
 use Doctrine\DBAL\Connection as DbalConnection;
@@ -22,17 +23,20 @@ class InstallerSubscriber implements EventSubscriberInterface
 
     private $assetsInstaller;
 
-    public function __construct(DbalConnection $dbalConnection, AssetsInstaller $assetsInstaller)
+    private $frontendDependencies;
+
+    public function __construct(DbalConnection $dbalConnection, AssetsInstaller $assetsInstaller, FrontendDependencies $frontendDependencies)
     {
         $this->dbalConnection = $dbalConnection;
         $this->assetsInstaller = $assetsInstaller;
+        $this->frontendDependencies = $frontendDependencies;
     }
 
     public static function getSubscribedEvents()
     {
         return [
             InstallerEvents::POST_DB_CREATE => ['createCommunicationChannelTable'],
-            InstallerEvents::POST_ASSETS_DUMP => ['installAssets'],
+            InstallerEvents::POST_ASSETS_DUMP => [['installAssets'], ['addRequiredDependencies']],
         ];
     }
 
@@ -40,6 +44,11 @@ class InstallerSubscriber implements EventSubscriberInterface
     {
         $shouldSymlink = $event->getArgument('symlink');
         $this->assetsInstaller->installAssets($shouldSymlink);
+    }
+
+    public function addRequiredDependencies(GenericEvent $event): void
+    {
+        $this->frontendDependencies->addRequiredDependencies();
     }
 
     public function createCommunicationChannelTable(): void
