@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Symfony;
 
-use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterSerializerPass;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -14,11 +12,4 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class AkeneoConnectivityConnectionBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
-    {
-        $container->addCompilerPass(new RegisterSerializerPass('akeneo_connectivity.connection.serializer'));
-    }
 }

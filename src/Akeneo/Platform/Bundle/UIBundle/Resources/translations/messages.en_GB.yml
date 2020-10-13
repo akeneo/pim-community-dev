@@ -444,8 +444,18 @@ pim_datagrid:
       label: Groups
     enabled:
       label: Status
+    scope:
+      label: Scope
     completeness:
       label: Complete
+    created:
+      label: Created At
+    updated:
+      label: Updated At
+    label_or_identifier:
+      label: Label or identifier
+    parent:
+      label: Parent
     identifier:
       label: Identifier
 #Versioning / history

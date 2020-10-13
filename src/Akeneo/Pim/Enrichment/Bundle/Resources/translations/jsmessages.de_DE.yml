@@ -31,6 +31,9 @@ pim_enrich.entity.product:
       fail: Es ist kein Attribut als Kennung konfiguriert oder Sie haben keine Rechte die Kennung zu bearbeiten.
   page_title:
     index: "] -Inf, 1] {{ count }} Ergebnis|] 1, Inf[{{ count }} Ergebnisse"
+    product: "]-Inf, 1]{{ count }} Produkt|]1, +Inf[{{ count }} Produkte"
+    product_model: "]-Inf, 1]{{ count }} Produktmodell|]1, +Inf[{{ count }} Produktmodelle"
+    product_and_product_model: "{{ productCount }}, {{ productModelCount }}"
   module:
     create:
       subtitle: Produkt anlegen
@@ -407,8 +410,18 @@ pim_datagrid:
       label: Gruppen
     enabled:
       label: Status
+    scope:
+      label: Gültigkeitsbereich
     completeness:
       label: Vollständig
+    created:
+      label: Erstellt am
+    updated:
+      label: Aktualisiert am
+    label_or_identifier:
+      label: Label oder Identifikator
+    parent:
+      label: Eltern
     identifier:
       label: Kennung
   search: Suche in {{ label }}
