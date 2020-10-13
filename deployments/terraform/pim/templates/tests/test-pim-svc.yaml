@@ -15,6 +15,6 @@ spec:
         value: "X-AUTH-TOKEN: {{ required ".Values.pim.monitoring.authenticationToken" .Values.pim.monitoring.authenticationToken}}"
     command: ["/bin/sh", "-c"]
     args:
-    - curl -L -m 10 -H "${MONITORING_AUTHENTICATION_TOKEN}" ${TARGET};
-    - curl -L -m 10 -s -o /dev/null -w "%{http_code}" -H "${MONITORING_AUTHENTICATION_TOKEN}" ${TARGET} | grep 200;
+    - curl -L --retry 5 --retry-delay 5 -m 10 -H "${MONITORING_AUTHENTICATION_TOKEN}" ${TARGET};
+    - curl -L --retry 5 --retry-delay 5 -m 10 -s -o /dev/null -w "%{http_code}" -H "${MONITORING_AUTHENTICATION_TOKEN}" ${TARGET} | grep 200;
   restartPolicy: Never

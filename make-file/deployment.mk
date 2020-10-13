@@ -23,6 +23,7 @@ REGISTRY ?= eu.gcr.io
 HELM_REPO_PROD := akeneo-charts
 DEPLOYMENTS_INSTANCES_DIR ?= $(PWD)/deployments/instances
 INSTANCE_DIR ?= $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
+MAX_DNS_TEST_TIMEOUT ?= 300
 
 ifeq ($(CI),true)
 	TF_INPUT_FALSE ?= -input=false
@@ -174,6 +175,12 @@ endif
 .PHONY: test-prod
 test-prod:
 	export KUBECONFIG=$(INSTANCE_DIR)/.kubeconfig
+	FN_1=5;	FN_2=0;\
+	while ! host $(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS); do \
+			TIME_TO_SLEEP=`expr $${FN_1} + $${FN_2}`; FN_1=$${FN_2}; FN_2=$${TIME_TO_SLEEP}; \
+			if [ $${TIME_TO_SLEEP} -gt $(MAX_DNS_TEST_TIMEOUT) ]; then echo 'DNS resolution issue on "$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS)"';exit 1; fi; \
+		echo 'Waiting for DNS "$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS)" to be ready'; sleep $${TIME_TO_SLEEP} ; \
+	done
 	helm test --debug --logs ${PFID}
 
 .PHONY: release
