@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\CommunicationChannel\Infrastructure\Persistence\Dbal\Query;
 
 use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Query\FindViewedAnnouncementIdsInterface;
+use Akeneo\Platform\CommunicationChannel\Infrastructure\Framework\Symfony\Installer\Query\CreateViewedAnnouncementsTableQuery;
 use Doctrine\DBAL\Connection as DbalConnection;
 use Doctrine\DBAL\FetchMode;
 
@@ -28,6 +29,8 @@ class DbalFindViewedAnnouncementIds implements FindViewedAnnouncementIdsInterfac
      */
     public function byUserId(int $userId): array
     {
+        $this->dbalConnection->exec(CreateViewedAnnouncementsTableQuery::QUERY);
+
         $query = <<<SQL
             SELECT announcement_id
             FROM akeneo_communication_channel_viewed_announcements

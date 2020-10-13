@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\CommunicationChannel\Infrastructure\Persistence\Dbal\Repository;
 
 use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Repository\ViewedAnnouncementRepositoryInterface;
+use Akeneo\Platform\CommunicationChannel\Infrastructure\Framework\Symfony\Installer\Query\CreateViewedAnnouncementsTableQuery;
 use Doctrine\DBAL\Connection as DbalConnection;
 
 /**
@@ -27,6 +28,8 @@ class DbalViewedAnnouncementRepository implements ViewedAnnouncementRepositoryIn
      */
     public function create(array $viewedAnnouncements): void
     {
+        $this->dbalConnection->exec(CreateViewedAnnouncementsTableQuery::QUERY);
+
         $values = $parameters = [];
         foreach ($viewedAnnouncements as $index => $viewedAnnouncement) {
             $values[] = <<<SQL
