@@ -26,27 +26,13 @@ jobs:
           path: '**/akeneo-design-system/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/akeneo-design-system/yarn.lock') }}
 
-      - name: Get yarn cache path
-        id: yarn-cache
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - uses: actions/cache@v2
-        name: Cache yarn cache
-        env:
-          cache-name: cache-yarn-cache
-        with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/akeneo-design-system/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn
-
       - name: Install node modules
         run: cd akeneo-design-system && yarn install
 
       - name: Generate a dummy component to test it with the others
         run: cd akeneo-design-system && ./bin/dsm generate Dummy
 
-      - name: Cache typescript build
+      - name: Cache TypeScript build
         uses: actions/cache@v2
         env:
           cache-name: cache-typescript-build
@@ -168,10 +154,3 @@ jobs:
             A new version of the staging env has been deployed :tada:
             Check it out here: https://akeneo.github.io/akeneo-design-system/${{ github.event.number }}/
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload the lib folder on failure for debugging purposes
-        uses: actions/upload-artifact@v2
-        if: failure()
-        with:
-          name: lib-folder
-          path: akeneo-design-system/lib
