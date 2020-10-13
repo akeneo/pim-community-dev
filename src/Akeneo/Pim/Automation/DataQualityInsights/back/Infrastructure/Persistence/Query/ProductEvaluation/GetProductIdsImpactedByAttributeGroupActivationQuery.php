@@ -6,7 +6,6 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsImpactedByAttributeGroupActivationQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Doctrine\DBAL\Connection;
 
@@ -33,25 +32,13 @@ final class GetProductIdsImpactedByAttributeGroupActivationQuery implements GetP
         }
 
         $query = <<<SQL
-SELECT DISTINCT product.id
-FROM pim_catalog_product AS product
-INNER JOIN pim_data_quality_insights_product_criteria_evaluation AS evaluation 
-    ON evaluation.product_id = product.id
-    AND evaluation.evaluated_at < :updatedSince
-    AND evaluation.status != :pending
-WHERE product.family_id IN (:families)
+SELECT product.id FROM pim_catalog_product AS product WHERE product.family_id IN (:families)
 SQL;
 
         $stmt = $this->dbConnection->executeQuery(
             $query,
-            [
-                'updatedSince' => $updatedSince->format(Clock::TIME_FORMAT),
-                'pending' => CriterionEvaluationStatus::PENDING,
-                'families' => $impactedFamilies
-            ],
-            [
-                'families' => Connection::PARAM_INT_ARRAY,
-            ]
+            ['families' => $impactedFamilies],
+            ['families' => Connection::PARAM_INT_ARRAY,]
         );
 
         $productIds = [];

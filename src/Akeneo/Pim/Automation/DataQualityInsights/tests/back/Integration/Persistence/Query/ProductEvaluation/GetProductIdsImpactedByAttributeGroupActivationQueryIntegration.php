@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\tests\back\Integration\Persistence\Query\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductIdsImpactedByAttributeGroupActivationQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
@@ -28,13 +27,11 @@ final class GetProductIdsImpactedByAttributeGroupActivationQueryIntegration exte
         $this->createFamily('impacted_family_A', ['attributes' => ['name', 'ean']]);
         $this->createFamily('impacted_family_B', ['attributes' => ['brand', 'uuid']]);
 
-        $expectedProductIds[] = $this->createProductEvaluatedAt('expected_product_A', ['family' => 'impacted_family_A'], $updatedSince->modify('-1 second'));
-        $expectedProductIds[] = $this->createProductEvaluatedAt('expected_product_B', ['family' => 'impacted_family_B'], $updatedSince->modify('-1 minute'));
-        $expectedProductIds[] = $this->createProductEvaluatedAt('expected_product_C', ['family' => 'impacted_family_B'], $updatedSince->modify('-1 hour'));
+        $expectedProducts[] = $this->createProduct('expected_product_A', ['family' => 'impacted_family_A']);
+        $expectedProducts[] = $this->createProduct('expected_product_B', ['family' => 'impacted_family_B']);
+        $expectedProducts[] = $this->createProduct('expected_product_C', ['family' => 'impacted_family_B']);
 
-        $this->createProductEvaluatedAt('impacted_but_already_evaluated_product', ['family' => 'impacted_family_A'], $updatedSince->modify('+1 second'));
-        $this->createProductEvaluatedAt('not_impacted_product', ['family' => 'not_impacted_family'], $updatedSince->modify('-1 hour'));
-        $this->createProductWithPendingEvaluations('impacted_product_but_pending_evaluation', ['family' => 'impacted_family_B'], $updatedSince->modify('-1 minute'));
+        $this->createProduct('not_impacted_product', ['family' => 'not_impacted_family']);
 
         $productIds = $this->get(GetProductIdsImpactedByAttributeGroupActivationQuery::class)->updatedSince($updatedSince, 2);
         $productIds = iterator_to_array($productIds);
@@ -42,6 +39,10 @@ final class GetProductIdsImpactedByAttributeGroupActivationQueryIntegration exte
         $this->assertCount(2, $productIds);
         $this->assertCount(2, $productIds[0]);
         $this->assertCount(1, $productIds[1]);
+
+        $expectedProductIds = array_map(function ($product) {
+            return new ProductId($product->getId());
+        }, $expectedProducts);
 
         $this->assertEqualsCanonicalizing($expectedProductIds, array_merge($productIds[0], $productIds[1]));
     }
@@ -57,21 +58,5 @@ final class GetProductIdsImpactedByAttributeGroupActivationQueryIntegration exte
         $this->createAttributeGroupActivation($code, $activated, $activationUpdatedAt);
 
         return $attributeGroup->getId();
-    }
-
-    private function createProductEvaluatedAt(string $identifier, array $data, \DateTimeImmutable $evaluatedAt): ProductId
-    {
-        $product = $this->createProduct($identifier, $data);
-        $this->updateProductEvaluationsAt($product->getId(), CriterionEvaluationStatus::DONE, $evaluatedAt);
-
-        return new ProductId($product->getId());
-    }
-
-    private function createProductWithPendingEvaluations(string $identifier, array $data, \DateTimeImmutable $evaluatedAt): ProductId
-    {
-        $product = $this->createProduct($identifier, $data);
-        $this->updateProductEvaluationsAt($product->getId(), CriterionEvaluationStatus::PENDING, $evaluatedAt);
-
-        return new ProductId($product->getId());
     }
 }
