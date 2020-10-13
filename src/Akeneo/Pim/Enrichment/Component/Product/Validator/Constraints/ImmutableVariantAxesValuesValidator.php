@@ -6,7 +6,8 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -44,8 +45,11 @@ class ImmutableVariantAxesValuesValidator extends ConstraintValidator
      */
     public function validate($entity, Constraint $constraint): void
     {
-        if (!$entity instanceof EntityWithFamilyVariantInterface) {
-            throw new UnexpectedTypeException($constraint, EntityWithFamilyVariantInterface::class);
+        if (!$entity instanceof ProductInterface || !$entity instanceof ProductModelInterface) {
+            throw new \InvalidArgumentException(sprintf(
+                'Entity must be a product or a product model, instance of \'%s\' given',
+                get_class($entity)
+            ));
         }
 
         if (!$constraint instanceof ImmutableVariantAxesValues) {

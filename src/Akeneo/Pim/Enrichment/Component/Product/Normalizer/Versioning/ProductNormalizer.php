@@ -13,6 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\EntityWithQuantifiedAssociations\QuantifiedAssociationsNormalizer;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Tool\Component\Normalizer\GetNormalizer;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -116,7 +117,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         foreach ($values as $value) {
             $normalizedValues = array_replace(
                 $normalizedValues,
-                $this->serializer->normalize($value, $format, $context)
+                GetNormalizer::fromSerializer($this->serializer)->normalize($value, $format, $context)
             );
         }
         ksort($normalizedValues);
@@ -234,7 +235,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      *
      * @return array
      */
-    protected function normalizeAssociations($associations = []): array
+    protected function normalizeAssociations($associations): array
     {
         $results = [];
         foreach ($associations as $association) {

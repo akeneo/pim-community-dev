@@ -5,11 +5,13 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\CheckAttributeEditable;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyAdderInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Processor to add attribute value in a mass edit (for multi select attributes).
@@ -173,6 +175,13 @@ class AddAttributeValueProcessor extends AbstractProcessor
      */
     protected function addWarning(EntityWithFamilyInterface $entity): void
     {
+        if (!$entity instanceof ProductInterface || !$entity instanceof ProductModelInterface) {
+            throw new \InvalidArgumentException(sprintf(
+                'Entity must be a product or a product model, instance of \'%s\' given',
+                get_class($entity)
+            ));
+        }
+
         $this->stepExecution->addWarning(
             'pim_enrich.mass_edit_action.edit-common-attributes.message.no_valid_attribute',
             [],

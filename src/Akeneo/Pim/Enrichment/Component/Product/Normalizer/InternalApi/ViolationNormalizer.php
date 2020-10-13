@@ -74,6 +74,10 @@ class ViolationNormalizer implements NormalizerInterface, CacheableSupportsMetho
      */
     protected function getStandardPath(ConstraintViolationInterface $violation)
     {
+        if (!method_exists($violation, 'getConstraint')) {
+            throw new \InvalidArgumentException("Object violation must have a 'getConstraint()' method.");
+        }
+
         $constraint = $violation->getConstraint();
 
         $shouldNormalizePropertyPath = (bool)($constraint->payload['normalize_property_path'] ?? true);

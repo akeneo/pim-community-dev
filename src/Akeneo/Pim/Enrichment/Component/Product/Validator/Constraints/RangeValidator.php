@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\RangeValidator as BaseRangeValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Webmozart\Assert\Assert;
 
 /**
  * Validator for range constraint
@@ -99,6 +100,7 @@ class RangeValidator extends BaseRangeValidator
 
     private function validateDateTime(\DateTimeInterface $dateTime, Constraint $constraint): void
     {
+        Assert::isInstanceOf($constraint, Range::class);
         if ($constraint->min && $dateTime < $constraint->min) {
             $this->context->buildViolation(
                 $constraint->minDateMessage,

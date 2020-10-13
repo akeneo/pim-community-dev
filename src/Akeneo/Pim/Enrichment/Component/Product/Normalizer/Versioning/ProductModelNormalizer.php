@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\EntityWithQuantifiedAssociations\QuantifiedAssociationsNormalizer;
+use Akeneo\Tool\Component\Normalizer\GetNormalizer;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -104,7 +105,7 @@ class ProductModelNormalizer implements NormalizerInterface, SerializerAwareInte
 
         $normalizedValues = [];
         foreach ($values as $value) {
-            $normalizedValue = $this->serializer->normalize($value, $format, $context);
+            $normalizedValue = GetNormalizer::fromSerializer($this->serializer)->normalize($value, $format, $context);
             $normalizedValues = array_replace($normalizedValues, $normalizedValue);
         }
         ksort($normalizedValues);

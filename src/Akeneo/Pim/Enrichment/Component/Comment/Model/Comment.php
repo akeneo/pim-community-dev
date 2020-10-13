@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Comment\Model;
 
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Comment model

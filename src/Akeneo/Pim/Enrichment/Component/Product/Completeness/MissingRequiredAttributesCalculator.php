@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Completeness;
 
+use Akeneo\Pim\Enrichment\Component\Assert\Assert;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetRequiredAttributesMasks;
 
 /**
@@ -41,6 +43,13 @@ class MissingRequiredAttributesCalculator
     public function fromEntityWithFamily(
         EntityWithFamilyInterface $entityWithFamily
     ): ProductCompletenessWithMissingAttributeCodesCollection {
+        if (!$entityWithFamily instanceof ProductInterface || !$entityWithFamily instanceof ProductModelInterface) {
+            throw new \InvalidArgumentException(sprintf(
+                'Entity must be a product or a product model, instance of \'%s\' given',
+                get_class($entityWithFamily)
+            ));
+        }
+
         if (null === $entityWithFamily->getFamily()) {
             return new ProductCompletenessWithMissingAttributeCodesCollection($entityWithFamily->getId(), []);
         }

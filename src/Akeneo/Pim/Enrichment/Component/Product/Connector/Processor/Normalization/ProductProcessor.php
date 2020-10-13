@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalizat
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\FilterValues;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -120,6 +121,13 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
      */
     protected function fetchMedia(EntityWithFamilyInterface $product, $directory)
     {
+        if (!$product instanceof ProductInterface || !$product instanceof ProductModelInterface) {
+            throw new \InvalidArgumentException(sprintf(
+                'Entity must be a product or a product model, instance of \'%s\' given',
+                get_class($product)
+            ));
+        }
+
         $identifier = $product instanceof ProductModelInterface ? $product->getCode() : $product->getIdentifier();
         $this->mediaFetcher->fetchAll($product->getValues(), $directory, $identifier);
 

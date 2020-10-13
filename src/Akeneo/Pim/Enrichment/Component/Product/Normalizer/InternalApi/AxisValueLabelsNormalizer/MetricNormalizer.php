@@ -7,7 +7,9 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisVal
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\MetricLocalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\MetricNormalizer as StandardMetricNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Webmozart\Assert\Assert;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -34,6 +36,7 @@ class MetricNormalizer implements AxisValueLabelsNormalizer
      */
     public function normalize(ValueInterface $value, string $locale): string
     {
+        Assert::implementsInterface($value, MetricValueInterface::class);
         $context = ['locale' => $locale];
 
         $normalizedMetric = $this->metricNormalizer->normalize($value, 'standard', $context);

@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Updater;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderRegistryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AttributeAdderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\FieldAdderInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -58,8 +59,13 @@ class PropertyAdder implements PropertyAdderInterface
         if ($adder instanceof AttributeAdderInterface) {
             $attribute = $this->getAttribute($field);
             $adder->addAttributeData($product, $attribute, $data, $options);
-        } else {
+        } elseif ($adder instanceof FieldAdderInterface) {
             $adder->addFieldData($product, $field, $data, $options);
+        } else {
+            throw new \RuntimeException(sprintf(
+                "The adder must implements AttributeAdderInterface or FieldAdderInterface, '%s' given",
+                get_class($adder)
+            ));
         }
 
         return $this;

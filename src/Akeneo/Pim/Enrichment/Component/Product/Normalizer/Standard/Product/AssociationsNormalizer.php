@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -78,6 +79,15 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
         $data = [];
 
         foreach ($associationAwareEntities as $associationAwareEntity) {
+            if (!$associationAwareEntity instanceof ProductInterface
+                || !$associationAwareEntity instanceof ProductModelInterface
+            ) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Entity must be a product or a product model, instance of \'%s\' given',
+                    get_class($associationAwareEntity)
+                ));
+            }
+
             foreach ($associationAwareEntity->getAssociations() as $association) {
                 $code = $association->getAssociationType()->getCode();
 

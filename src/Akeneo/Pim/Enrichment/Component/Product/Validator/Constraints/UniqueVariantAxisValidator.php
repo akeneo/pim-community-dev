@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFa
 use Akeneo\Pim\Enrichment\Component\Product\Exception\AlreadyExistingAxisValueCombinationException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetValuesOfSiblings;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueAxesCombinationSet;
@@ -213,17 +214,15 @@ class UniqueVariantAxisValidator extends ConstraintValidator
         ])->atPath('attribute')->addViolation();
     }
 
-    /**
-     * @param EntityWithFamilyVariantInterface $entity
-     *
-     * @return string
-     */
     private function getEntityIdentifier(EntityWithFamilyVariantInterface $entity): string
     {
-        if ($entity instanceof ProductInterface) {
-            return $entity->getIdentifier();
+        if (!$entity instanceof ProductInterface || !$entity instanceof ProductModelInterface) {
+            throw new \InvalidArgumentException(sprintf(
+                'Entity must be a product or a product model, instance of \'%s\' given',
+                get_class($entity)
+            ));
         }
 
-        return $entity->getCode();
+        return $entity instanceof ProductInterface ? $entity->getIdentifier() : $entity->getCode();
     }
 }

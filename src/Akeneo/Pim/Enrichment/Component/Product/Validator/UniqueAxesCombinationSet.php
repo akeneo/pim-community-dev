@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Validator;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\AlreadyExistingAxisValueCombinationException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 
 /**
  * Contains the state of the unique axis values combination for an entity with family variant.
@@ -91,17 +92,15 @@ class UniqueAxesCombinationSet
         }
     }
 
-    /**
-     * @param EntityWithFamilyVariantInterface $entity
-     *
-     * @return string
-     */
     private function getEntityIdentifier(EntityWithFamilyVariantInterface $entity): string
     {
-        if ($entity instanceof ProductInterface) {
-            return $entity->getIdentifier();
+        if (!$entity instanceof ProductInterface || !$entity instanceof ProductModelInterface) {
+            throw new \InvalidArgumentException(sprintf(
+                'Entity must be a product or a product model, instance of \'%s\' given',
+                get_class($entity)
+            ));
         }
 
-        return $entity->getCode();
+        return $entity instanceof ProductInterface ? $entity->getIdentifier() : $entity->getCode();
     }
 }

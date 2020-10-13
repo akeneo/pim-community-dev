@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\Normalizer\GetNormalizer;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -101,7 +102,7 @@ class ValueNormalizer implements NormalizerInterface, SerializerAwareInterface, 
             } elseif ('options' === $backendType && $data instanceof Collection && $data->isEmpty() === false) {
                 $data = $this->sortOptions($data, $attribute);
                 $context['field_name'] = $fieldName;
-                $result = $this->serializer->normalize($data, $format, $context);
+                $result = GetNormalizer::fromSerializer($this->serializer)->normalize($data, $format, $context);
             } else {
                 $context['field_name'] = $fieldName;
                 if ('metric' === $backendType) {
@@ -110,7 +111,7 @@ class ValueNormalizer implements NormalizerInterface, SerializerAwareInterface, 
                     $context['value'] = $entity;
                 }
 
-                $result = $this->serializer->normalize($data, $format, $context);
+                $result = GetNormalizer::fromSerializer($this->serializer)->normalize($data, $format, $context);
             }
         }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -18,14 +19,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
  */
 class CheckAttributeEditable
 {
-    /**
-     * @param EntityWithFamilyInterface $entity
-     * @param AttributeInterface        $attribute
-     *
-     * @return bool
-     * @throws \Exception
-     */
-    public function isEditable(EntityWithFamilyInterface $entity, AttributeInterface $attribute): bool
+    public function isEditable(EntityWithFamilyVariantInterface $entity, AttributeInterface $attribute): bool
     {
         $family = $entity->getFamily();
 

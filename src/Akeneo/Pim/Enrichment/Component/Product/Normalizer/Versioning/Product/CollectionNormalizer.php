@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product;
 
+use Akeneo\Tool\Component\Normalizer\GetNormalizer;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
@@ -45,7 +46,7 @@ class CollectionNormalizer implements NormalizerInterface, SerializerAwareInterf
     {
         $result = [];
         foreach ($object as $item) {
-            $normalizedItem = $this->serializer->normalize($item, $format, $context);
+            $normalizedItem = GetNormalizer::fromSerializer($this->serializer)->normalize($item, $format, $context);
             if (is_array($normalizedItem)) {
                 foreach ($normalizedItem as $key => $value) {
                     if (array_key_exists($key, $result)) {

@@ -24,13 +24,13 @@ abstract class AbstractAssociation implements AssociationInterface
     /** @var EntityWithAssociationsInterface */
     protected $owner;
 
-    /** @var ProductInterface[] */
+    /** @var ArrayCollection<ProductInterface> */
     protected $products;
 
-    /** @var ProductModelInterface[] */
+    /** @var ArrayCollection<ProductModelInterface> */
     protected $productModels;
 
-    /** @var GroupInterface[] */
+    /** @var ArrayCollection<GroupInterface> */
     protected $groups;
 
     /** @var array */
@@ -220,6 +220,17 @@ abstract class AbstractAssociation implements AssociationInterface
      */
     public function getReference()
     {
-        return $this->owner ? $this->owner->getIdentifier() . '.' . $this->associationType->getCode() : null;
+        if (!$this->owner) {
+            return null;
+        }
+
+        if (!$this->owner instanceof ProductInterface || !$this->owner instanceof ProductModelInterface) {
+            throw new \InvalidArgumentException(sprintf(
+                'Owner must be a product or a product model, instance of \'%s\' given',
+                get_class($this->owner)
+            ));
+        }
+
+        return $this->owner->getIdentifier() . '.' . $this->associationType->getCode();
     }
 }
