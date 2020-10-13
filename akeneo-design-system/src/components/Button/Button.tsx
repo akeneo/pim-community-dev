@@ -1,8 +1,8 @@
 import React, {ReactNode, Ref, SyntheticEvent} from 'react';
 import styled, {css} from 'styled-components';
-import {AkeneoThemedProps, getColorForLevel, getFontSize, Level} from '../../theme';
-import {Key, Override} from '../../shared';
 import {useShortcut} from '../../hooks';
+import {Key, Override} from '../../shared';
+import {AkeneoThemedProps, getColorForLevel, getFontSize, Level} from '../../theme';
 
 type ButtonSize = 'small' | 'default';
 
@@ -101,6 +101,9 @@ const Container = styled.button<
     size: ButtonSize;
   } & AkeneoThemedProps
 >`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-width: 1px;
   border-style: ${props => (props.ghost ? 'solid' : 'none')};
   font-size: ${getFontSize('default')};
