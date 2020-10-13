@@ -67,6 +67,29 @@ class JobExecutionController
             throw new NotFoundHttpException('Akeneo\Tool\Component\Batch\Model\JobExecution entity not found');
         }
 
+        $jobExecution = $this->jobExecutionManager->resolveJobExecutionStatus($jobExecution);
+
+        $context = ['limit_warnings' => 100];
+
+        $jobResponse = $this->normalizer->normalize($jobExecution, 'internal_api', $context);
+
+        $jobResponse['meta'] = [
+            'logExists'     => file_exists($jobExecution->getLogFile()),
+            'archives'      => $this->archives($jobExecution),
+            'id'            => $identifier,
+        ];
+
+        return new JsonResponse($jobResponse);
+    }
+
+    /**
+     * @param object $jobExecution
+     *
+     * @return array
+     *
+     */
+    private function archives(object $jobExecution): array
+    {
         $archives = [];
         foreach ($this->archivist->getArchives($jobExecution) as $archiveName => $files) {
             $label = $this->translator->transChoice(
@@ -79,18 +102,6 @@ class JobExecutionController
             ];
         }
 
-        $jobExecution = $this->jobExecutionManager->resolveJobExecutionStatus($jobExecution);
-
-        $context = ['limit_warnings' => 100];
-
-        $jobResponse = $this->normalizer->normalize($jobExecution, 'internal_api', $context);
-
-        $jobResponse['meta'] = [
-            'logExists'           => file_exists($jobExecution->getLogFile()),
-            'archives'      => $archives,
-            'id'            => $identifier
-        ];
-
-        return new JsonResponse($jobResponse);
-    }
+        return $archives;
+}
 }

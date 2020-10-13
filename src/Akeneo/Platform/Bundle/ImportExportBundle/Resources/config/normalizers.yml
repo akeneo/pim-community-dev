@@ -30,7 +30,7 @@ services:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
     pim_enrich.normalizer.job_execution:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\JobExecutionNormalizer'
+        class: Akeneo\Platform\Bundle\ImportExportBundle\Normalizer\InternalApi\JobExecutionNormalizer
         arguments:
             - '@pim_import_export.normalizer.job_execution'
             - '@pim_user.context.user'

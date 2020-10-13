@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
+namespace Akeneo\Platform\Bundle\ImportExportBundle\Normalizer\InternalApi;
 
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
@@ -43,11 +43,14 @@ class JobExecutionNormalizer implements NormalizerInterface, CacheableSupportsMe
             return $this->jobExecutionStandardNormalizer->normalize($jobExecution, 'standard', $context);
         }
 
-        return $this->jobExecutionStandardNormalizer->normalize(
+        $normalizedJobExecution = $this->jobExecutionStandardNormalizer->normalize(
             $jobExecution,
             'standard',
             array_merge($context, ['locale' => $this->userContext->getUiLocaleCode(), 'timezone' => $timezone])
         );
+//        $normalizedJobExecution['tracking'] = $this->normalizeTracking();
+
+        return $normalizedJobExecution;
     }
 
     /**
@@ -61,5 +64,10 @@ class JobExecutionNormalizer implements NormalizerInterface, CacheableSupportsMe
     public function hasCacheableSupportsMethod(): bool
     {
         return true;
+    }
+
+    private function normalizeTracking(): array
+    {
+
     }
 }

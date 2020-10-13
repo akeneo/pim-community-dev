@@ -44,9 +44,10 @@ class JobExecutionProgressController
             throw new NotFoundHttpException('Akeneo\Tool\Component\Batch\Model\JobExecution entity not found');
         }
         $jobExecution = $this->jobExecutionManager->resolveJobExecutionStatus($jobExecution);
+        $jobName = $jobExecution->getJobInstance()->getJobName();
 
         /* What do we do if we have a UndefinedJobException ? */
-        $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
+        $job = $this->jobRegistry->get($jobName);
 
         $stepExecutions = $jobExecution->getStepExecutions();
         $normalizedSteps = [];
