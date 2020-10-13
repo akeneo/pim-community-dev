@@ -19,8 +19,7 @@ class ProductAndProductModelQueryBuilderFactorySpec extends ObjectBehavior
         SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory,
         ProductQueryBuilderOptionsResolverInterface $optionsResolver
-    )
-    {
+    ) {
         $this->beConstructedWith(
             ProductAndProductModelQueryBuilder::class,
             $attributeRepository,

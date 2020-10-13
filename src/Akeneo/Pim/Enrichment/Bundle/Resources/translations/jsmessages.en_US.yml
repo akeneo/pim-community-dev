@@ -32,6 +32,9 @@ pim_enrich.entity.product:
             fail: No attribute is configured as a product identifier or you don't have the rights to edit it.
     page_title:
         index: "]-Inf, 1]{{ count }} result|]1, Inf[{{ count }} results"
+        product: "]-Inf, 1]{{ count }} product|]1, Inf[{{ count }} products"
+        product_model: "]-Inf, 1]{{ count }} product model|]1, Inf[{{ count }} product models"
+        product_and_product_model: "{{ productCount }}, {{ productModelCount }}"
     module:
         create:
             subtitle: Create product
@@ -413,6 +416,26 @@ pim_datagrid:
             label: 'Variant'
             grouped: 'Grouped'
             ungrouped: 'Ungrouped'
+        family:
+            label: Family
+        groups:
+            label: Groups
+        enabled:
+            label: Status
+        scope:
+            label: Scope
+        completeness:
+            label: Complete
+        created:
+            label: Created At
+        updated:
+            label: Updated At
+        label_or_identifier:
+            label: Label or identifier
+        parent:
+            label: Parent
+        identifier:
+            label: Identifier
     search: Search on {{ label }}
 
 batch_jobs:

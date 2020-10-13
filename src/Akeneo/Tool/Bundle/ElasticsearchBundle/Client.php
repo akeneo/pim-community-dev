@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\ElasticsearchBundle;
 
-use Akeneo\Platform\CommunityVersion;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\IndexationException;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\MissingIdentifierException;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;

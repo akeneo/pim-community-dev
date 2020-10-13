@@ -6,9 +6,11 @@ parameters:
     pim_catalog.localization.factory.date.formats:
         en_US: 'MM/dd/yyyy'
         fr_FR: 'dd/MM/yyyy'
+        it_IT: 'dd/MM/yyyy'
     pim_catalog.localization.factory.datetime.formats:
         en_US: 'MM/dd/yyyy hh:mm a'
         fr_FR: 'dd/MM/yyyy HH:mm'
+        it_IT: 'dd/MM/yyyy HH:mm'
     pim_catalog.localization.factory.currency.formats:
         en_US: '¤#,##0.00'
         fr_FR: '#,##0.00 ¤'

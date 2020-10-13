@@ -1,6 +1,6 @@
 import React, {ReactNode, isValidElement, Children, cloneElement, ButtonHTMLAttributes} from 'react';
 import styled from 'styled-components';
-import {useAkeneoTheme, IconProps, AkeneoThemedProps} from '@akeneo-pim-community/shared';
+import {AkeneoThemedProps, useTheme, IconProps} from 'akeneo-design-system';
 
 const OptionContainer = styled.button<{isSelected: boolean; withIcon: boolean}>`
   width: 128px;
@@ -11,11 +11,11 @@ const OptionContainer = styled.button<{isSelected: boolean; withIcon: boolean}>`
   flex-direction: column;
   align-items: center;
   border: 1px solid;
-  border-color: ${({theme, isSelected}: AkeneoThemedProps & {isSelected: boolean}) =>
+  border-color: ${({theme, isSelected}: AkeneoThemedProps & {isSelected: boolean; withIcon: boolean}) =>
     isSelected ? theme.color.blue100 : theme.color.grey80};
-  background-color: ${({theme, isSelected}: AkeneoThemedProps & {isSelected: boolean}) =>
+  background-color: ${({theme, isSelected}: AkeneoThemedProps & {isSelected: boolean; withIcon: boolean}) =>
     isSelected ? theme.color.blue20 : theme.color.white};
-  color: ${({theme, isSelected}: AkeneoThemedProps & {isSelected: boolean}) =>
+  color: ${({theme, isSelected}: AkeneoThemedProps & {isSelected: boolean; withIcon: boolean}) =>
     isSelected ? theme.color.blue100 : 'inherit'};
   cursor: ${({onClick}) => (onClick ? 'pointer' : 'default')};
 
@@ -33,7 +33,7 @@ type OptionProps = {
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Option = ({isSelected, children, onSelect, isDisabled, title}: OptionProps) => {
-  const theme = useAkeneoTheme();
+  const theme = useTheme();
   const withIcon = Children.toArray(children).some((child: ReactNode) => isValidElement<IconProps>(child));
 
   return (

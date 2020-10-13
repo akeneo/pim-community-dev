@@ -365,6 +365,9 @@ pim_datagrid:
       xlsx_grid_context: Excel (Grid context)
       configurator:
         title: Select your action
+        csv: CSV
+        xlsx: XLSX
+        grid_context: Grid context
         all_attributes: All attributes
     mass_edit: Bulk actions
     sequential_edit: Sequential edit
@@ -392,6 +395,16 @@ pim_datagrid:
       variant: 'Variant'
     entity_type:
       label: 'Variant'
+    family:
+      label: Family
+    groups:
+      label: Groups
+    enabled:
+      label: Status
+    completeness:
+      label: Complete
+    identifier:
+      label: Identifier
   search: Search on {{ label }}
 batch_jobs:
   add_association:

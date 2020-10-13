@@ -48,7 +48,7 @@ Cards should be displayed in a grid, therefore, a `CardGrid` component is also a
             {...args}
             src="https://picsum.photos/seed/akened/200"
             isSelected={firstSelected}
-            onSelectCard={isSelected => setFirstSelected(isSelected)}
+            onSelect={isSelected => setFirstSelected(isSelected)}
           >
             Selectable card
           </Card>
@@ -56,7 +56,7 @@ Cards should be displayed in a grid, therefore, a `CardGrid` component is also a
             {...args}
             src="https://picsum.photos/seed/akenee/200"
             isSelected={secondSelected}
-            onSelectCard={isSelected => setSecondSelected(isSelected)}
+            onSelect={isSelected => setSecondSelected(isSelected)}
           >
             Another one
           </Card>
@@ -138,7 +138,7 @@ Here the `fit` prop is also set to `contain`.
             {...args}
             src="https://picsum.photos/seed/akenef/200"
             isSelected={firstSelected}
-            onSelectCard={isSelected => setFirstSelected(isSelected)}
+            onSelect={isSelected => setFirstSelected(isSelected)}
           >
             And this one is selectable
           </Card>
@@ -146,7 +146,7 @@ Here the `fit` prop is also set to `contain`.
             {...args}
             src="https://picsum.photos/seed/akeneg/200"
             isSelected={secondSelected}
-            onSelectCard={isSelected => setSecondSelected(isSelected)}
+            onSelect={isSelected => setSecondSelected(isSelected)}
           >
             <Badge level="warning">75%</Badge>
             Badge &amp; selectable 🤩

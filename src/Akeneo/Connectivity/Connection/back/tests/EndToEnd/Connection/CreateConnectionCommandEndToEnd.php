@@ -41,6 +41,7 @@ class CreateConnectionCommandEndToEnd extends CommandTestCase
         $this->assertRegExp('/Client ID: [A-Za-z0-9_]*\n/', $output);
         $this->assertRegExp('/Username: magento_[0-9]{4}\n/', $output);
         $this->assertRegExp('/Password: [A-Za-z0-9]*\n/', $output);
+        $this->assertRegExp('/Auditable: (yes|no)\n/', $output);
         $this->assertStringContainsString('Code: magento', $output);
     }
 

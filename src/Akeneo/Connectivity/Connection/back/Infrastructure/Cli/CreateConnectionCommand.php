@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Cli;
@@ -60,6 +61,13 @@ class CreateConnectionCommand extends Command
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Label of the connection. Default will be the provided code.'
+            )
+            ->addOption(
+                'auditable',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'If you want the connection to be auditable.',
+                false
             );
     }
 
@@ -71,9 +79,11 @@ class CreateConnectionCommand extends Command
         $code = $input->getArgument('code');
         $label = $input->getOption('label') ?? $code;
         $flowType = $input->getOption('flow-type');
+        $auditable = /* --auditable */ null === $input->getOption('auditable')
+            || /* --auditable=true|false */ false !== filter_var($input->getOption('auditable'), FILTER_VALIDATE_BOOLEAN);
 
         try {
-            $command = new CreationCommand($code, $label, $flowType, false);
+            $command = new CreationCommand($code, $label, $flowType, $auditable);
             $connectionWithCredentials = $this->createConnection->handle($command);
             $output->writeln([
                 '<info>A new connection has been created with the following settings:</info>',
@@ -82,6 +92,7 @@ class CreateConnectionCommand extends Command
                 sprintf('Secret: %s', $connectionWithCredentials->secret()),
                 sprintf('Username: %s', $connectionWithCredentials->username()),
                 sprintf('Password: %s', $connectionWithCredentials->password()),
+                sprintf('Auditable: %s', $connectionWithCredentials->auditable() ? 'yes' : 'no'),
             ]);
         } catch (ConstraintViolationListException $exceptionList) {
             foreach ($exceptionList->getConstraintViolationList() as $e) {

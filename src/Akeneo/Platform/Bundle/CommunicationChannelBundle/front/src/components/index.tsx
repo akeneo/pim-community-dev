@@ -1,13 +1,14 @@
 import React from 'react';
+import {ThemeProvider} from 'styled-components';
+import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
 import {Panel} from './panel';
 
 const Index = () => (
   <DependenciesProvider>
-    <AkeneoThemeProvider>
+    <ThemeProvider theme={pimTheme}>
       <Panel />
-    </AkeneoThemeProvider>
+    </ThemeProvider>
   </DependenciesProvider>
 );
 

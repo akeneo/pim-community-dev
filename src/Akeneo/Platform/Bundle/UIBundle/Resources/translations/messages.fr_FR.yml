@@ -436,6 +436,28 @@ pim_datagrid:
   filters:
     product_typology:
       label: Typologie de produit
+    entity_type:
+      label: Groupe de variantes
+    family:
+      label: Famille
+    groups:
+      label: Groupes
+    enabled:
+      label: État
+    scope:
+      label: Canal
+    completeness:
+      label: Complet
+    created:
+      label: Crée le
+    updated:
+      label: Mis à jour le
+    label_or_identifier:
+      label: Libellé ou identifiant
+    parent:
+      label: Parent
+    identifier:
+      label: Identifiant
 #Versioning / history
 Change History: Historique des modifications
 Data Audit: Historique des données

@@ -29,10 +29,6 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
     /** @var ProductAndProductModelSearchAggregator */
     private $searchAggregator;
 
-    /**
-     * @param ProductQueryBuilderInterface           $pqb
-     * @param ProductAndProductModelSearchAggregator $searchAggregator
-     */
     public function __construct(
         ProductQueryBuilderInterface $pqb,
         ProductAndProductModelSearchAggregator $searchAggregator

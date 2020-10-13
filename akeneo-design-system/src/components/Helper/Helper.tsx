@@ -1,7 +1,7 @@
-import React, {ReactNode, Ref} from 'react';
+import React, {ReactElement, ReactNode, Ref} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../theme';
-import {DangerIcon, InfoRoundIcon} from '../../icons';
+import {DangerIcon, IconProps, InfoRoundIcon} from '../../icons';
 
 const getBackgroundColor = (level: Level) => {
   switch (level) {
@@ -36,16 +36,14 @@ const getIconColor = (level: Level, inline: boolean) => {
   }
 };
 
-const getIcon = (level: Level, inline: boolean): JSX.Element => {
-  const iconSize = inline ? 16 : 20;
-
+const getIcon = (level: Level): JSX.Element => {
   switch (level) {
     case 'info':
-      return <InfoRoundIcon size={iconSize} />;
+      return <InfoRoundIcon />;
     case 'warning':
-      return <DangerIcon size={iconSize} />;
+      return <DangerIcon />;
     case 'error':
-      return <DangerIcon size={iconSize} />;
+      return <DangerIcon />;
   }
 };
 
@@ -100,7 +98,12 @@ type HelperProps = {
   /**
    * Level of the helper defining its color and icon.
    */
-  level: Level;
+  level?: Level;
+
+  /**
+   * Icon to display. If not provided, the Helper will display the corresponding level Icon.
+   */
+  icon?: ReactElement<IconProps>;
 
   /**
    * The content of the component.
@@ -110,13 +113,13 @@ type HelperProps = {
 
 /** Helper informs the user about the features of the section */
 const Helper = React.forwardRef<HTMLDivElement, HelperProps>(
-  ({level, inline = false, children, ...rest}: HelperProps, forwardedRef: Ref<HTMLDivElement>) => {
+  ({level = 'info', inline = false, icon, children, ...rest}: HelperProps, forwardedRef: Ref<HTMLDivElement>) => {
     return (
       <Container ref={forwardedRef} level={level} inline={inline} {...rest}>
         <IconContainer inline={inline} level={level}>
-          {getIcon(level, inline)}
+          {React.cloneElement(undefined === icon ? getIcon(level) : icon, {size: inline ? 16 : 20})}
         </IconContainer>
-        {children}
+        <div>{children}</div>
       </Container>
     );
   }

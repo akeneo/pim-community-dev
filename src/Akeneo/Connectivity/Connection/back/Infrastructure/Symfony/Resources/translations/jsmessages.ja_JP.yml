@@ -1,12 +1,21 @@
 pim_menu:
+  navigation_back:
+    connection: コネクションに戻る
+  navigation_block:
+    connection: 接続ナビゲーション
   item:
     connection_audit: 接続ダッシュボード
     connection_settings: 接続
+    connection_settings_edit: 接続設定
+    connection_monitoring: モニタリング
 pim_title:
   akeneo_connectivity_connection_settings_index: 接続
+  akeneo_connectivity_connection_settings_edit: 接続設定
+  akeneo_connectivity_connection_settings_any: 接続設定
   akeneo_connectivity_connection_audit_index: 接続ダッシュボード
   akeneo_connectivity_connection_audit_any: 接続ダッシュボード
   akeneo_connectivity_connection_error_management_dashboard: 接続ダッシュボード
+  akeneo_connectivity_connection_error_management_connection_monitoring: 接続監視
 akeneo_connectivity.connection:
   connections: 接続
   secondary_actions:
@@ -147,6 +156,7 @@ akeneo_connectivity.connection:
     connection_selector:
       title:
         source: ソース接続
+        destination: 接続宛先
       all: すべて
     charts:
       inbound: 受信
@@ -157,6 +167,17 @@ akeneo_connectivity.connection:
       legend:
         during_the_last_seven_days: '過去7日間の合計:'
         today: 本日
+    error_management:
+      data_source_error_chart:
+        section:
+          title: ソース接続時のエラー
+          helper: ここでは、ビジネスエラーを含むエラーの合計数を確認できます。
+        chart:
+          title: 1日あたりのエラー数
+      widget:
+        title: ソース接続ごとのビジネスエラー
+        over_the_last_seven_days: 過去１週間
+        business_errors: ビジネスエラー
     no_connection:
       title:
         default: 接続について想定図の表示を希望しますか？
@@ -168,6 +189,38 @@ akeneo_connectivity.connection:
       message_without_permission:
         message: 管理者に連絡して新規作成。
         link: 接続について、こちらでさらに詳しく…
+  error_management:
+    connection_monitoring:
+      title: モニタリング
+      helper:
+        title: '{0} あなたには {{ count }} エラーがあります |[1,Inf] あなたには {{ count }} エラーがあります'
+        description: ここでは、過去7日間のこの接続の各エラーの詳細を見ることができます。エラー番号は100個までです。
+        link: 解決方法については、APIヘルプセンターを参照してください。
+      search_filter:
+        placeholder: エラーメッセージを検索
+        result_count: '{0} 結果なし |[1,Inf] {{ count }} 結果'
+      error_list:
+        date_time_column:
+          title: 日にちと時間
+        content_column:
+          title: ビジネスエラーメッセージ
+          product_name: 商品名
+          with_id: ID
+        details_column:
+          title: 詳細
+          locale: 地域
+          channel: チャンネル
+          family: ファミリー
+      no_error:
+        title: 素晴らしい！エラーが見つかりませんでした！
+      not_auditable:
+        title: 監視されていない接続
+        description:
+          1: この接続のエラーを追跡するには
+          2: モニタリングの有効化
+          3: 設定
+      not_data_source:
+        title: 今のところ、モニタリングページはソース接続のみとなっています。
   runtime_error:
     error_message: 申し訳ありません！ エラーが発生しました…
     reload_helper: ページをリロードして再試行してください。

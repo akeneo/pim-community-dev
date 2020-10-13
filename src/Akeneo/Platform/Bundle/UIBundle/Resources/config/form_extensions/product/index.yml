@@ -26,7 +26,7 @@ extensions:
             logout: pim_menu.user.logout
 
     pim-product-index-grid-title:
-        module: pim/common/grid-title
+        module: pim/product/product-grid-title
         parent: pim-product-index
         targetZone: title
         config:

@@ -31,6 +31,9 @@ pim_enrich.entity.product:
       fail: Aucun attribut n'est configuré comme identifiant produit ou vous ne disposez pas des droits pour le modifier.
   page_title:
     index: "]-Inf, 1]{{ count }} résultat|]1, Inf[{{ count }} résultats"
+    product: "]-Inf, 1]{{ count }} produit|]1, Inf[{{ count }} produits"
+    product_model: "]-Inf, 1]{{ count }} modèle de produit|]1, Inf[{{ count }} modèles de produits"
+    product_and_product_model: "{{ productCount }}, {{ productModelCount }}"
   module:
     create:
       subtitle: Créer un produit
@@ -401,6 +404,26 @@ pim_datagrid:
       label: 'Variante'
       grouped: 'Groupé'
       ungrouped: 'Dégroupé'
+    family:
+      label: Famille
+    groups:
+      label: Groupes
+    enabled:
+      label: État
+    scope:
+      label: Canal
+    completeness:
+      label: Complet
+    created:
+      label: Crée le
+    updated:
+      label: Mis à jour le
+    label_or_identifier:
+      label: Libellé ou identifiant
+    parent:
+      label: Parent
+    identifier:
+      label: Identifiant
   search: Rechercher sur {{ label }}
 batch_jobs:
   add_association:

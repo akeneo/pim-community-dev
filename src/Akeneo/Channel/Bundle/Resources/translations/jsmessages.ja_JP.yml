@@ -53,6 +53,7 @@ pim_enrich.entity.channel:
   property:
     category_tree: カテゴリツリー
     do_not_convert: 変換しない
+    label_conversion_units: 商品のエクスポート時に使用する各計量属性のための変換ユニットを選択してください
   module:
     create:
       button: チャンネルを作成
