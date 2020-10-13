@@ -79,11 +79,20 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
                 $evaluationCount = $this->evaluatePendingProductCriteria();
                 $continueToEvaluateProducts = $evaluationCount > 0;
             }
+
             if ($continueToEvaluateProductModels) {
                 $evaluationCount = $this->evaluatePendingProductModelCriteria();
                 $continueToEvaluateProductModels = $evaluationCount > 0;
             }
-        } while ($this->isTimeboxReached($startTime) === false && ($continueToEvaluateProducts || $continueToEvaluateProductModels));
+
+            if($continueToEvaluateProducts === false && $continueToEvaluateProductModels === false)
+            {
+                sleep(60);
+                $continueToEvaluateProducts = true;
+                $continueToEvaluateProductModels = true;
+            }
+
+        } while ($this->isTimeboxReached($startTime) === false);
     }
 
     public function setStepExecution(StepExecution $stepExecution)
