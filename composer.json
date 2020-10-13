@@ -17,8 +17,8 @@
             "Pim\\Upgrade\\": "upgrades/",
             "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/back",
             "Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/back",
-            "Akeneo\\Pim\\Automation\\FranklinInsights\\": "src/Akeneo/Pim/Automation/FranklinInsights"
-        },
+            "Akeneo\\Pim\\Automation\\FranklinInsights\\": "src/Akeneo/Pim/Automation/FranklinInsights",
+            "Akeneo\\Platform\\CommunicationChannel\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back"},
         "classmap": [
             "app/AppKernel.php",
             "app/AppCache.php",
@@ -51,7 +51,7 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "3.2.x-dev@dev",
+        "akeneo/pim-community-dev": "dev-GITHUB-APD-227@dev",
         "phpspec/php-diff": "1.0.2",
         "guzzlehttp/guzzle": "6.3.3",
         "webmozart/assert": "1.3",
