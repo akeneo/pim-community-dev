@@ -40,3 +40,5 @@ parameters:
     tmp_storage_dir:      '%kernel.root_dir%/../var/cache/tmp/pim/file_storage'
     upload_tmp_dir:       '%kernel.root_dir%/../var/cache/tmp/pim/upload_tmp_dir'
     pimee_mass_edit_asset_batch_size: 5
+
+    comm_panel_api_url: 'http://localhost:8088' # avoid to call the external service in the CI
