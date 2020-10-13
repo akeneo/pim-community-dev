@@ -57,7 +57,7 @@ class CheckRequirementsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         foreach ($this->configurationRegistry->all() as $configuration) {
             $output->writeln('');
@@ -69,6 +69,8 @@ class CheckRequirementsCommand extends Command
                 $this->checkConfiguration($checker, $configuration, $output);
             }
         }
+
+        return 0;
     }
 
     /**

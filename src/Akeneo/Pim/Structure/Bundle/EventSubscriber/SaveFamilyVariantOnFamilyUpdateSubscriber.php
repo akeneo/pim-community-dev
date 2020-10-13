@@ -25,7 +25,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
     /** @var ValidatorInterface */
     private $validator;
 
-    /** @var BulkSaverInterface */
+    /** @var SaverInterface */
     private $familyVariantSaver;
 
     /** @var BulkSaverInterface */

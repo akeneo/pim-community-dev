@@ -29,6 +29,7 @@ lint-back:
 	$(MAKE) data-quality-insights-lint-back
 	$(MAKE) data-quality-insights-phpstan
 	$(MAKE) enrichment-lint-back
+	$(MAKE) structure-lint-back
 
 .PHONY: lint-front
 lint-front:

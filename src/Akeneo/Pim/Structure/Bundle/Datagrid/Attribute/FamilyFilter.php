@@ -11,6 +11,10 @@ class FamilyFilter extends ChoiceFilter
 {
     public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
+        if (!method_exists($ds, 'getQueryBuilder')) {
+            throw new \InvalidArgumentException('The $ds argument must have a \'getQueryBuilder\' method.');
+        }
+
         $data = $this->parseData($data);
 
         if (!$data || !isset($data['value']) || !is_array($data['value'])) {

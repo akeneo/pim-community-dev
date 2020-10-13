@@ -19,6 +19,9 @@ class ReferenceDataUniqueCodeChecker extends AbstractReferenceDataUniqueCodeChec
     protected function getCodeFieldMapping($referenceDataClass)
     {
         $metadata = $this->om->getClassMetadata($referenceDataClass);
+        if (!method_exists($metadata, 'getFieldMapping')) {
+            throw new \RuntimeException();
+        }
 
         return $metadata->getFieldMapping('code');
     }

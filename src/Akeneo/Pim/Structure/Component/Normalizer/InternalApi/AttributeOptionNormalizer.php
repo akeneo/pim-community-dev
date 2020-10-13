@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Structure\Component\Normalizer\InternalApi;
 
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
+use Akeneo\Tool\Component\Normalizer\GetNormalizer;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
@@ -54,7 +55,8 @@ class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareI
             $this->ensureEmptyOptionValues($object->getOptionValues()) :
             $object->getOptionValues();
 
-        $normalizedValues = $this->serializer->normalize($optionsValues, $format, $context);
+        $normalizedValues = GetNormalizer::fromSerializer($this->serializer)
+            ->normalize($optionsValues, $format, $context);
 
         return [
             'id'           => $object->getId(),

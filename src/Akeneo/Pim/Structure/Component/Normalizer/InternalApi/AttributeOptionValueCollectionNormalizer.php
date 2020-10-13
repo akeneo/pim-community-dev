@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Structure\Component\Normalizer\InternalApi;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
+use Akeneo\Tool\Component\Normalizer\GetNormalizer;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -28,7 +29,8 @@ class AttributeOptionValueCollectionNormalizer implements NormalizerInterface, S
         $normalizedItems = [];
 
         foreach ($object as $item) {
-            $normalizedItems[$item->getLocale()] = $this->serializer->normalize($item, $format, $context);
+            $normalizedItems[$item->getLocale()] = GetNormalizer::fromSerializer($this->serializer)
+                ->normalize($item, $format, $context);
         }
 
         return $normalizedItems;
