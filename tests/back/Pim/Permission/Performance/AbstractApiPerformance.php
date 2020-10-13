@@ -65,7 +65,7 @@ abstract class AbstractApiPerformance extends WebTestCase
         $consoleApp->run($input, $output);
 
         $content = $output->fetch();
-        preg_match('/Client ID: (.+)\nSecret: (.+)\nUsername: (.+)\nPassword: (.+)$/', $content, $matches);
+        preg_match('/Client ID: (.+)\nSecret: (.+)\nUsername: (.+)\nPassword: (.+)\n/', $content, $matches);
 
         return [$matches[1], $matches[2], $matches[3], $matches[4]];
     }

@@ -25,7 +25,7 @@ pimee_workflow:
       modal.title: Hacer un comentario (opcional - 255 caracteres max.)
   proposal:
     overview: "]-Inf, 1]{{ count }} propuesta|]1, Inf[{{ count }} propuestas"
-    selected: propuestas seleccionadas
+    selected: "]-Inf, 1]{{ count }} propuesta seleccionada|]1, Inf[{{ count }} propuestas seleccionadas"
     mass_action_group:
       review:
         label: Acción en masa
@@ -104,7 +104,7 @@ pimee_enrich.entity.product:
       published: Publicado
       revert: Restaurar
     attribute:
-      can_be_updated_by_a_rule: "Este atributo se puede actualizar por una regla: {{ rule }}"
+      can_be_updated_by_a_rule: "]-Inf, 1]Este atributo puede ser actualizado por una regla:|]1, +Inf[Este atributo puede ser actualizado por las reglas:"
       value_updated: Este valor se actualizará para el proyecto actual
     meta:
       published_version: Versión publicada
@@ -191,6 +191,10 @@ pimee_enrich.mass_edit.product:
       label_count: "{1}No publicar <span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[No publicar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
       description: Los productos serán despublicados
       warning: Los {{ itemsCount }} productos seleccionados serán quitados de la publicación.
+pimee_enrich.entity.category:
+  flash:
+    remove:
+      error_linked: No se puede eliminar una categoría vinculada a un producto publicado.
 pim_menu:
   navigation:
     published_products: Productos publicados

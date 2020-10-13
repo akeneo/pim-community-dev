@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateMissingCriteriaEvaluationsInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Psr\Log\LoggerInterface;
 
@@ -30,22 +29,16 @@ class PimEnterprisePrepareProductModelsCriteriaEvaluationTasklet implements Task
     /** @var LoggerInterface */
     private $logger;
 
-    /** @var CriterionEvaluationRepositoryInterface */
-    private $productModelCriterionEvaluationRepository;
-
     public function __construct(
         CreateMissingCriteriaEvaluationsInterface $createMissingCriteriaEvaluations,
-        LoggerInterface $logger,
-        CriterionEvaluationRepositoryInterface $productModelCriterionEvaluationRepository
+        LoggerInterface $logger
     ) {
         $this->createMissingCriteriaEvaluations = $createMissingCriteriaEvaluations;
         $this->logger = $logger;
-        $this->productModelCriterionEvaluationRepository = $productModelCriterionEvaluationRepository;
     }
 
     public function execute(): void
     {
-        $this->cleanCriteriaOfDeletedProductModels();
         $this->createMissingCriteriaEvaluations();
     }
 
@@ -64,10 +57,5 @@ class PimEnterprisePrepareProductModelsCriteriaEvaluationTasklet implements Task
                 ]
             );
         }
-    }
-
-    private function cleanCriteriaOfDeletedProductModels()
-    {
-        $this->productModelCriterionEvaluationRepository->deleteUnknownProductsEvaluations();
     }
 }

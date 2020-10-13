@@ -52,7 +52,7 @@ const EmptySectionMessage: React.FC<Props> = ({
       <LinkSection>
         {translate('pimee_catalog_rule.form.edit.empty_section.doc')}{' '}
         <a
-          href='https://help.akeneo.com/pim/serenity/articles/get-started-with-the-rules-engine.html'
+          href='https://help.akeneo.com/pim/serenity/articles/manage-your-rules.html#add-actions'
           target='blank'
           rel='noopener noreferrer'>
           {translate('pimee_catalog_rule.form.edit.empty_section.doc_link')}
