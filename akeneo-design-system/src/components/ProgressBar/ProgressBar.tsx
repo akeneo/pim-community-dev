@@ -40,7 +40,7 @@ const ProgressBarFill = styled.div<{width: number; color: string}>`
   position: absolute;
   top: 0;
   transition: width 0.3s;
-  width: ${props => props.width.toString() + '%'};
+  width: ${({width}) => `${width}%`};
 `;
 
 const getHeight = (height: ProgressBarHeight): string => {
@@ -99,7 +99,7 @@ type ProgressBarProps = {
  */
 const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
   (
-    {color, percent = 0, title, progressLabel, height = 'small', ...rest}: ProgressBarProps,
+    {color, percent, title, progressLabel, height = 'small', ...rest}: ProgressBarProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
     return (
