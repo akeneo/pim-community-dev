@@ -28,11 +28,12 @@ class FilterUtility
     }
 
     /**
-     * Applies filter to query by attribute
+     * Applies filter to query by field
      *
      * @param mixed $value
      */
     public function applyFilter(FilterDatasourceAdapterInterface $ds, string $field, string $operator, $value)
     {
+        throw new \RuntimeException('Not implemented. Use your own FilterUtility to implement this method.');
     }
 }
