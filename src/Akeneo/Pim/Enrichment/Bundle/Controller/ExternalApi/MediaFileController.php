@@ -36,6 +36,7 @@ use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -213,10 +214,8 @@ class MediaFileController
     public function downloadAction(Request $request, $code)
     {
         $filename = urldecode($code);
-        if (!$this->mediaRepository instanceof ObjectRepository) {
-            throw new \RuntimeException();
-        }
 
+        Assert::implementsInterface($this->mediaRepository, ObjectRepository::class);
         $fileInfo = $this->mediaRepository->findOneBy([
             'key'     => $filename,
             'storage' => FileStorage::CATALOG_STORAGE_ALIAS
