@@ -20,7 +20,6 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('cli.yml');
         $loader->load('controllers.yml');
-        $loader->load('documentation.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('handlers.yml');
         $loader->load('install.yml');
