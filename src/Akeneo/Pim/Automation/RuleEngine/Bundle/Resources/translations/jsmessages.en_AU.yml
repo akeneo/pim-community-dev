@@ -1,0 +1,457 @@
+pimee_catalog_rule:
+  overview: "]-Inf, 1]{{ count }} rule|]1, Inf[{{ count }} rules"
+  execution_button: Execute rules
+  selected: "]-Inf, 1]{{ count }} rule selected|]1, Inf[{{ count }} rules selected"
+  dropdown:
+    title: Other actions
+  popin:
+    execute_rules:
+      confirm_title: Confirm execution
+      confirm_content: Are you sure you want to execute the rules? (It could take a while)
+  notification:
+    fail: The action was not performed
+    launched: The rules execution has been launched. You will be notified when it is done.
+  attribute:
+    list:
+      code.label: Code
+      condition.label: Condition
+      action.label: Action
+      no_rule_yet.label: No rules for now
+  rule:
+    value: Value
+    include_children: Include children
+    condition:
+      if.label: if
+    action:
+      then.label: then
+      set_value.label: is set into
+      copy_value.label: is copied into
+      set.label: is set into
+      copy.label: is copied into
+      add.label: is added into
+      remove.label: is removed from
+  datagrid:
+    rule-grid:
+      actions:
+        execute:
+          confirm_title: Confirm execution
+          confirm_content: Are you sure you want to execute the rule?
+      mass_edit_action:
+        confirm_title: Confirm calculation
+        confirm_content: Are you sure you want to calculate the number of products impacted by the rules?
+      mass_action:
+        execute:
+          confirm_title: Confirm execution
+          confirm_content: Are you sure you want to execute the rules? (It could take a while)
+          success: The rules execution has been launched. You will be notified when it is done.
+          error: An error occurred during the execution of the rules.
+          empty_selection: No rules selected.
+        delete:
+          confirm_title: Confirm execution
+          confirm_content: Are you sure you want to delete the selected rules?
+          success: You successfuly deleted the rules.
+          error: An error occurred during the deletion of the rules.
+          empty_selection: No rules selected.
+  form:
+    category:
+      catalog: Catalog
+      select: Select a category
+      open_tree: Open category tree
+      tree: Category Tree
+      menu: Select a category tree
+      folder:
+        selected: Folder selected
+        not_selected: Folder
+      folders:
+        selected: Folders selected
+        not_selected: Folders
+      arrow:
+        open: Open branch category
+        close: Close branch category
+    tab:
+      list: Rule builder and properties tabs
+      rule_builder: Rules builder
+    attribute:
+      tab:
+        rules:
+          title: Rules
+    creation:
+      helper: The rules engine can radically boost your productivity in the PIM by automating actions,
+      english_flag: Label for English
+      title: Create a new rule
+      notification:
+        success: Rule created successfully
+        failed: Rule creation failed
+      constraint:
+        code:
+          required: A rule code is required.
+          too_short: "The rule code is too short. It requires {{ characterLimit }} characters or more."
+          allowed_characters: The rule code can only contain alphanumeric and underscore characters.
+          unique: This code is already used.
+      cross_link: Leave create rule form
+    edit:
+      header:
+        welcome: Welcome to your new rules engine area!
+        description: To create a rule, you must define your product selection, and then add one or several actions.
+        documentation_link: Click here to discover the full extent of the rules engine capabilities.
+      properties:
+        section:
+          general: General parameters
+          labels: Label translations
+      character_left: "]-Inf, 1]{{ count }} Character left|]1, +Inf[{{ count }} Characters left"
+      priority:
+        label: Priority
+      status:
+        label: Status
+        enabled: Enabled
+        disabled: Disabled
+      add_to_category: Add to category
+      add_conditions: Add conditions
+      products_count:
+        complete: "]-Inf, 1]{{ count }} product and product model|]1, +Inf[{{ count }} products and product models"
+        pending: Calculating products and product models
+        error: Impossible to calculate products and product models
+      product_selection: Product selection
+      preview: Preview
+      fields:
+        family: Family
+        family_variant: Family variant
+        category: Category
+        identifier: Identifier
+        attribute: Attribute
+        groups: Groups
+        parent: Parent
+        measurement_unit: Measurement unit
+        measurement_default_unit: "Default unit ({{ unit }})"
+        currency: Currency
+        operator: operator
+        entity_type:
+          label: Entity type
+          placeholder: Please select an entity type
+      execute:
+        button: Save and execute
+        title: Save and execute the rule
+        description: You will save the current rule and execute it in background. When it’s done, you will be notified.
+      duplicate:
+        button: Save and duplicate
+        title: Duplicate the "{{ originalRuleCode }}" rule
+      actions:
+        add_action: Add action
+        add_category:
+          title: ADD Categories
+          helper: To add your product selection to one or more categories, please start by selecting your category trees and then, your categories
+        add_groups:
+          title: ADD Products to groups
+          helper: To add products to groups, please select one or several groups
+          subtitle: Select your groups
+        set_groups:
+          title: SET Product groups
+          helper: To set the product groups, please select one or several groups
+          subtitle: Select your groups
+        set_category:
+          title: SET Categories
+          helper: To set your product selection to one or more categories, please start by selecting your category trees and then, your categories
+        category:
+          select_category_trees: Select your category trees
+          select_category_tree: Select your category tree
+          select_categories: Select your categories
+          select_category: Select your category
+          category_tree: Category tree
+          categories_selected: "]-Inf, 1]{{ count }} category selected|]1, +Inf[{{ count }} categories selected"
+          no_category_tree: Please, select a category tree first
+          remove_unknown_category: " Click here to remove this category."
+        set_family:
+          title: SET Family
+          subtitle: Select your family
+        set_attribute:
+          title: SET Attribute value
+          helper: To set values to your attribute, please start by selecting your target attribute and then, the value you want to set
+          target_subtitle: Select your target
+          value_subtitle: Define your value
+          attribute_label: Attribute
+          attribute_placeholder: Select your target attribute
+          select_reference_entity: Select your reference entities
+          select_asset: Select your assets
+          select_measurement_unit: Select your unit
+        set_quantified_associations:
+          title: SET Quantified associations
+          helper: To set quantified associations, please select your association type(s) and then, the products, product models or groups you want to associate to your product selection.
+        set_associations:
+          title: SET Associations
+          helper: To set associations, please select your association type(s) and then, the products, product models or groups you want to associate to your product selection.
+          select_association_type: Select your association type
+          association_types: Association types
+          add_group: Add a group
+          add_product: Add a product
+          add_product_model: Add a product model
+          add_association_type: Add an association type
+          select_title:
+            products: Select your products
+            product_models: Select your product models
+            groups: Select your groups
+          select:
+            products: Products
+            product_models: Product models
+            groups: Groups
+          counts:
+            products: ']-Inf, 1]{{ count }} product|]1, +Inf[{{ count }} products'
+            product_models: ']-Inf, 1]{{ count }} product model|]1, +Inf[{{ count }} product models'
+            groups: ']-Inf, 1]{{ count }} group|]1, +Inf[{{ count }} groups'
+        add_associations:
+          title: ADD Associations
+          helper: To add associations, please select your association type(s) and then, the products, product models or groups you want to associate to your product selection.
+        clear_attribute:
+          title: CLEAR Attribute value
+          subtitle: Select the attribute to clear
+          attribute_label: Attribute
+        clear_associations:
+          title: CLEAR Associations
+          helper: All the associations for the selected products will be cleared.
+        clear_quantified_associations:
+          title: CLEAR Quantified associations
+          helper: All the quantified associations for the selected products will be cleared.
+        clear_categories:
+          title: CLEAR Categories
+        clear_groups:
+          title: CLEAR Groups
+        remove_category:
+          title: REMOVE Categories
+          helper: To remove your product selection from one or more categories, please start by selecting your category trees and then, your categories
+        remove_attribute_value:
+          title: REMOVE Attribute value
+          helper: To remove values from your attribute, please start by selecting your target attribute and then, the values you want to remove.
+          value_subtitle: Define your values to remove
+        add_attribute_value:
+          title: ADD Attribute value
+          helper: To add values to your attribute, please start by selecting your target attribute and then, the values you want to add.
+          value_subtitle: Define your values to add
+        copy:
+          title: COPY Attribute value
+          helper: To copy values from an attribute to another, please start by selecting your source attribute and then, your target attribute.
+          select_source: Select your source
+          select_target: Select your target
+          no_source: Please, select your source attribute first
+        delete:
+          label: Remove action
+          description: Are you sure you want to remove this action?
+        set_status:
+          title: SET Status
+          subtitle: Define your status
+          helper: To set a status to products, please select a status in the list below
+          placeholder: Select your status
+        remove_groups:
+          title: REMOVE products from groups
+          helper: To remove products from groups, please select one or several groups
+          subtitle: Select your groups
+        calculate:
+          title: CALCULATE values
+          helper: To calculate numeric attribute values, please choose attribute(s) and/or value(s) and then, select the target attribute you want to put the result in. You can also round the final result if needed.
+          add_value: Add value
+          add_attribute: Add attribute
+          select_target: Select your target
+          attribute_placeholder: Select your target attribute
+          round_precision: Round precision
+          operator:
+            add: Add
+            subtract: Subtract
+            multiply: Multiply
+            divide: Divide
+            choose: Choose your operator
+        concatenate:
+          title: CONCATENATE values
+          helper: To concatenate attribute values, please add the attributes and then, select the target attribute.
+          select_target: Select your target
+          attribute_placeholder: Select your target attribute
+          add_text: Add Text
+          add_attribute: Add attribute
+          add_new_line: Add Line Break
+          line_break: Line break
+          date_format: Select a date format
+          label_locale: Label locale
+          remove_new_line_confirm:
+            label: Remove line break from operation list
+            description: The new target attribute does not accept line breaks. This change will remove all line breaks.
+      conditions:
+        delete:
+          label: Remove condition
+          description: Are you sure you want to remove this condition?
+        operators:
+          "STARTS WITH": starts with
+          "ENDS WITH": ends with
+          "CONTAINS": contains
+          "DOES NOT CONTAIN": does not contain
+          "EMPTY": is empty
+          "NOT EMPTY": is not empty
+          "IN": in
+          "NOT IN": not in
+          "IN CHILDREN": in children
+          "NOT IN CHILDREN": not in children
+          "UNCLASSIFIED": is unclassified
+          "IN OR UNCLASSIFIED": is unclassified or in
+          "BETWEEN": between
+          "NOT BETWEEN": not between
+          "=": equals
+          "!=": does not equal
+          ">": greater than
+          ">=": equals or greater than
+          "<": less than
+          "<=": equals or less than
+      notification:
+        success: Rule updated successfully
+        failed: Rule update failed
+        execute_success: Rule successfully updated and executed
+        execute_failed: The rule was saved but there was an error during the execution
+      discard_changes: Your changes will be lost if you leave the page.
+      please_select_attribute: Please select a target attribute first.
+      unhandled_attribute_type: Sorry this attribute type is not managed yet. Please use the rules import.
+      empty_section:
+        set_up_action: Well done! You defined your product selection. Now it's time to set up your action.
+        set_up_condition: If you don't want to impact your whole catalog, please add at least one condition.
+        add_action: And then, add one or several actions to apply to your products/product models.
+        doc: You don't know what an action is?
+        doc_link: This article may help you.
+    delete:
+      description: Are you sure you want to delete this rule? It is not possible to undo this action.
+      notification:
+        failed: Rule deletion failed
+        success: Rule successfully deleted
+    helper:
+      add_to_category: To add your product selection to one or more categories, please start by selecting your category trees and then, your categories.
+      clear_attribute: To clear the attribute value, please start by selecting the attribute to clear.
+      clear_categories: All the categories for the selected products will be cleared.
+      clear_groups: All the groups for the selected products will be cleared.
+      product_selection: "You must define your product selection in order to create your rule. If you don't know how, "
+      product_selection_doc_link: take a look at this article.
+      set_attribute_info_clear: You must define the value to set. If you want to clear the attribute value, please use the Clear attribute value action.
+    legend:
+      add_to_category: Create an action
+      product_selection: Create a condition
+    tree:
+      item:
+        selected: Item selected
+        not_selected: Select item
+    date:
+      operators:
+        specific_date: Specific date
+      label:
+        date_type: Choose a date type
+        operator: Choose an operator
+        date: Choose a date
+        relative_date: Choose a date
+        locale: Choose a locale
+        scope: Choose a scope
+        period: Choose a time unit
+        open_period: Open time unit menu
+        date_from: Choose a starting date
+        date_to: Choose an ending date
+        date_past: Date in the past
+        date_future: Date in the future
+        date_present: Today
+      day: "]-Inf, 1] Day|]1, +Inf[ Days"
+      week: "]-Inf, 1] Week|]1, +Inf[ Weeks"
+      month: "]-Inf, 1] Month|]1, +Inf[ Months"
+      year: "]-Inf, 1] Year|]1, +Inf[ Years"
+      hour: "]-Inf, 1] Hour|]1, +Inf[ Hours"
+      minute: "]-Inf, 1] Minute|]1, +Inf[ Minutes"
+  exceptions:
+    loading: An error occurred during rule definition loading.
+    required: This field is required
+    required_attribute: An attribute is required
+    required_locale: A locale is required for the {{ attributeLabel }} attribute
+    required_scope: A channel is required for the {{ attributeLabel }} attribute
+    required_currency: A currency is required for the {{ attributeLabel }} attribute
+    required_locale_completeness: A locale is required for the completeness
+    required_scope_completeness: A channel is required for the completeness
+    required_value: A value is required for this action
+    required_categories: At least one category is required for this action
+    required_constant_for_operation: A constant value is required for this operation
+    required_operator_for_operation: An operator is required for this operation
+    required_unit: A measurement unit is required
+    identifier_or_quantity_missing: An identifier and a quantity are required for each element
+    required_item: At least one item is required for this action
+    division_by_zero: Divisions by zero are not possible
+    two_operations_are_required: The operation list should contain 2 operations or more.
+    two_items_are_required: The list should contain 2 items or more.
+    unknown_or_inactive_locale: 'The "{{ localeCode }}" locale does not exist or is not activated'
+    unknown_or_inactive_currency: 'The "{{ currencyCode }}" currency does not exist or is not activated'
+    unbound_locale: 'The "{{ localeCode }}" locale is not activated in the "{{ channelCode }}" channel'
+    unbound_currency: 'The "{{ currencyCode }}" currency is not activated in the "{{ channelCode }}" channel'
+    locale_on_unlocalizable_attribute: This attribute is not localizable. Please remove the locale before you continue.
+    unknown_scope: 'The "{{ scopeCode }}" channel does not exist'
+    scope_on_unscopable_attribute: This attribute is not scopable. Please remove the channel before you continue.
+    unknown_families: "{1}The {{ familyCodes }} family does not exist|]1,+Inf[The {{ familyCodes }} families do not exist"
+    unknown_family_variants: "{1}The {{ familyVariantCodes }} family variant does not exist|]1,+Inf[The {{ familyVariantCodes }} family variants do not exist"
+    unknown_attribute_options: "{1}The {{ attributeOptionCodes }} option does not exist|]1,+Inf[The {{ attributeOptionCodes }} options do not exist"
+    unknown_attribute_code: "The {{ attributeCode }} attribute does not exist"
+    unknown_categories: "{1}The {{ categoryCodes }} category does not exist.|]1, +Inf[The {{ categoryCodes }} categories do not exist"
+    unknown_attribute: "This attribute does not exist."
+    unknown_groups: "{1} The {{ groupCodes }} group does not exist|]1, +Inf[The following groups do not exist: {{ groupCodes }}"
+    select_another_attribute_or_remove_action: "Select another attribute or remove this action."
+    select_another_attribute: "Select another attribute"
+    or: or
+    create_attribute_link: click here to create the attribute
+    edit_unauthorize: You are not allowed to edit rules
+    wrong_date_timespan: To define a valid timespan, please make sure your end date isn’t set before your start date.
+    measurement_family_not_found: The "{{ measurement_code }}" measurement family does not exist
+    unit_not_found: The "{{ unitCode }}" unit was not found in the "{{ measurement_code }}" measurement family
+    empty_association_warning: If you let this list empty, this rule will clear this association type.
+pim_enrich:
+  entity:
+    rule:
+      module:
+        delete:
+          confirm: Are you sure you want to delete this rule? It is not possible to undo this action
+      flash:
+        delete:
+          success: Rule successfully deleted
+flash:
+  rule:
+    impacted_product_count: The bulk action to calculate the number of impacted products has been launched. You will be notified when it is done.
+    executed: The rules execution has been launched. You will be notified when it is done.
+    enabled: The rule has been enabled
+    disabled: The rule has been disabled
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Rules settings
+batch_jobs:
+  add_attribute_value:
+    execute_rules.label: Rules execution
+  default_steps:
+    export_rules: Rules export
+    import_rules: Rules import
+    calculate_affected_products: Calculate affected products
+    execute_rules: Rules execution
+  yml_rule_import:
+    label: Rules import in YAML
+    import.label: Rules import
+  yml_rule_export:
+    label: Rules export in YAML
+    export.label: Rules export
+  rule_impacted_product_count:
+    label: Number of impacted products
+    perform.label: Count impacted products
+  csv_product_import_with_rules:
+    label: Product import in CSV with rules
+    import.label: Product import
+  csv_product_model_import_with_rules:
+    label: Product model import in CSV with rules
+  xlsx_product_import_with_rules:
+    label: Product import in XLSX with rules
+    import.label: Product import
+  xlsx_product_model_import_with_rules:
+    label: Product model import in XLSX with rules
+pim_notification:
+  types:
+    rule: Rules Settings
+    mass_edit_rule: Mass edit rule
+    execute_rules: Rules execution
+pim_menu:
+  item:
+    rule: Rules
+pim_title:
+  pimee_catalog_rule_rule_index: Rules
+  pimee_catalog_rule_edit: Edit rule
+  pimee_catalog_rule_new: Rules
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        execute_rules: Rules execution

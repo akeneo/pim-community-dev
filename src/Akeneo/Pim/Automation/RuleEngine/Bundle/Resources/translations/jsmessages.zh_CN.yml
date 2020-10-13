@@ -101,6 +101,10 @@ pimee_catalog_rule:
       character_left: "]-Inf, 1]剩余 {{ count }} 个字符|]1, +Inf[剩余 {{ count }} 个字符"
       priority:
         label: 优先级
+      status:
+        label: 状态
+        enabled: 已启用
+        disabled: 已禁用
       add_to_category: 添加到类别
       add_conditions: 添加条件
       products_count:
@@ -108,11 +112,19 @@ pimee_catalog_rule:
         pending: 计算产品和产品模型
         error: 无法计算产品和产品模型
       product_selection: 产品选择
+      preview: 预览
       fields:
         family: 品类
+        family_variant: 品类变型
         category: 类别
+        identifier: 标识符
         attribute: 属性
         groups: 分组
+        parent: 父级
+        currency: 货币
+        operator: 运算符
+        entity_type:
+          label: 实体类型
       execute:
         button: 保存并执行
         title: 保存并执行规则
@@ -154,6 +166,13 @@ pimee_catalog_rule:
           attribute_placeholder: 选择目标属性
           select_reference_entity: 选择参考实体
           select_asset: 选择资产
+        set_associations:
+          select_title:
+            groups: 选择组
+          select:
+            products: 商品
+            product_models: 产品模型
+            groups: 分组
         clear_attribute:
           title: 清除属性值
           subtitle: 选择要清除的属性 
