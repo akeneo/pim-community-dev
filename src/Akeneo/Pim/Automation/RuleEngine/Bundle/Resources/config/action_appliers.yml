@@ -8,7 +8,7 @@ services:
     pimee_catalog_rule.action_applier.setter:
         class: '%pimee_catalog_rule.action_applier.setter.class%'
         arguments:
-            - '@pim_catalog.updater.property_setter'
+            - '@pim_catalog.updater.entity_with_values_property_setter_without_permission'
             - '@pim_catalog.repository.attribute'
         tags:
             - { name: akeneo_rule_engine.action_applier, priority: 100 }

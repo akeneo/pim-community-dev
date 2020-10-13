@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9680: Fix filtering exports with reference entity attributes
+- PIM-9695: Backport of PIM-9503, ignore permissions when executing rules in a job step
 
 # 4.0.94 (2021-02-17)
 
