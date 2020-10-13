@@ -470,7 +470,7 @@ services:
     pim_enrich.step.convert_to_simple_product.mass_edit:
         class: '%pim_connector.step.item_step.class%'
         arguments:
-            - 'convert_to_simple_product'
+            - 'perform'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_enrich.reader.database.products_and_variant_products_of_product_models'

@@ -799,6 +799,7 @@ config:
     pim/mass-edit-form/product/edit-common-attributes:                   pimui/js/mass-edit/form/product/edit-common-attributes
     pim/mass-edit-form/product/add-attribute-values:                     pimui/js/mass-edit/form/product/edit-common-attributes
     pim/mass-edit-form/product/update-entity-with-family-variant-parent: pimui/js/mass-edit/form/product/update-entity-with-family-variant-parent
+    pim/mass-edit-form/product/convert-to-simple-product:                pimui/js/mass-edit/form/product/convert-to-simple-product.ts
     pim/mass-edit-form/product/change-family:                            pimui/js/mass-edit/form/product/change-family
     pim/mass-edit-form/product/add-to-group:                             pimui/js/mass-edit/form/product/add-to-group
     pim/mass-edit-form/product/category:                                 pimui/js/mass-edit/form/product/category
