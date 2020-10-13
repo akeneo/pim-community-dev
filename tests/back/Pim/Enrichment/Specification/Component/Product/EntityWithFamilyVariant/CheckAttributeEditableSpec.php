@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant;
 
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\CheckAttributeEditable;
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -21,7 +21,7 @@ class CheckAttributeEditableSpec extends ObjectBehavior
     }
 
     function it_is_editable_if_the_entity_has_no_family(
-        EntityWithFamilyInterface $entity,
+        EntityWithFamilyVariantInterface $entity,
         AttributeInterface $attribute
     ) {
         $entity->getFamily()->willReturn(null);
@@ -29,7 +29,7 @@ class CheckAttributeEditableSpec extends ObjectBehavior
     }
 
     function it_is_not_editable_if_the_attribute_is_not_part_of_the_family(
-        EntityWithFamilyInterface $entity,
+        EntityWithFamilyVariantInterface $entity,
         FamilyInterface $family,
         AttributeInterface $attribute
     ) {
