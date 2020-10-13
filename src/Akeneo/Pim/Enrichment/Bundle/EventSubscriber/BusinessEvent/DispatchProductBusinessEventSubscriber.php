@@ -91,11 +91,9 @@ final class DispatchProductBusinessEventSubscriber implements EventSubscriberInt
 
     private function normalizeProductData(ProductInterface $product): array
     {
-        $standard = $this->normalizer->normalize($product, 'standard');
-
         return [
-            'identifier' => $standard['identifier'],
-            'categories' => $standard['categories'],
+            'identifier' => $product->getIdentifier(),
+            'categories' => $product->getCategoryCodes(),
         ];
     }
 }

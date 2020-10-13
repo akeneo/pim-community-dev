@@ -93,11 +93,9 @@ final class DispatchProductModelBusinessEventSubscriber implements EventSubscrib
 
     private function normalizeProductModelData(ProductModelInterface $productModel): array
     {
-        $standard = $this->normalizer->normalize($productModel, 'standard');
-
         return [
-            'code' => $standard['code'],
-            'categories' => $standard['categories'],
+            'code' => $productModel->getCode(),
+            'categories' => $productModel->getCategoryCodes(),
         ];
     }
 }
