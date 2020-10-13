@@ -7,13 +7,13 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEve
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductBusinessEventSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class DispatchProductBusinessEventSubscriberSpec extends ObjectBehavior
@@ -50,6 +50,7 @@ class DispatchProductBusinessEventSubscriberSpec extends ObjectBehavior
         $this->beConstructedWith($security, $normalizer, $messageBus);
 
         $user->getUsername()->willReturn('julia');
+        $user->getType()->willReturn('ui');
         $security->getUser()->willReturn($user);
 
         $normalizer->normalize($product, 'standard')->willReturn(
@@ -76,6 +77,7 @@ class DispatchProductBusinessEventSubscriberSpec extends ObjectBehavior
         $this->beConstructedWith($security, $normalizer, $messageBus);
 
         $user->getUsername()->willReturn('julia');
+        $user->getType()->willReturn('ui');
         $security->getUser()->willReturn($user);
 
         $normalizer->normalize($product, 'standard')->willReturn(
@@ -131,6 +133,7 @@ class DispatchProductBusinessEventSubscriberSpec extends ObjectBehavior
         $this->beConstructedWith($security, $normalizer, $messageBus);
 
         $user->getUsername()->willReturn('julia');
+        $user->getType()->willReturn('ui');
         $security->getUser()->willReturn($user);
 
         $normalizer->normalize($product, 'standard')->willReturn(
