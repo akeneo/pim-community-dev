@@ -46,7 +46,7 @@ const AttributeGroupsHelper = ({evaluatedAttributeGroups, allGroupsEvaluated, lo
             <span dangerouslySetInnerHTML={{
               __html: translate(
                 'akeneo_data_quality_insights.attribute_group.all_groups_evaluated',
-                {link: "https://help.akeneo.com"}
+                {link: "https://help.akeneo.com/pim/serenity/articles/manage-data-quality.html"}
               )
             }}/> :
             <>
