@@ -50,7 +50,9 @@ final class DispatchProductModelBusinessEventSubscriber implements EventSubscrib
         }
 
         if (null === $user = $this->security->getUser()) {
-            throw new \LogicException('User should not be null.');
+            // TODO: https://akeneo.atlassian.net/browse/CXP-443
+            // throw new \LogicException('User should not be null.');
+            return;
         }
 
         $author = $user->getUsername();
@@ -76,7 +78,9 @@ final class DispatchProductModelBusinessEventSubscriber implements EventSubscrib
         }
 
         if (null === $user = $this->security->getUser()) {
-            throw new \LogicException('User should not be null.');
+            // TODO: https://akeneo.atlassian.net/browse/CXP-443
+            // throw new \LogicException('User should not be null.');
+            return;
         }
 
         $author = $user->getUsername();
