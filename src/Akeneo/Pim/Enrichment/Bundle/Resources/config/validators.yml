@@ -334,6 +334,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductModelEntityValidator'
         arguments:
             - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.validator.unique_value_set'
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_product_model_validator_entity }
 
