@@ -47,7 +47,7 @@ class BaseFieldSorter implements FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction, $locale = null, $channel = null)
+    public function addFieldSorter($field, $direction, $locale = null, $channel = null): void
     {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the sorter.');

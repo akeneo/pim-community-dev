@@ -7,6 +7,7 @@ use Akeneo\Tool\Component\Classification\Model\CategoryInterface as BaseCategory
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
@@ -49,4 +50,11 @@ interface CategoryInterface extends
      * @return Collection of ProductModelInterface
      */
     public function getProductModels(): Collection;
+
+    /**
+     * Returns the channels linked to the category
+     */
+    public function getChannels(): ArrayCollection;
+
+    public function getLabel(): string;
 }

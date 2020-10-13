@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Command;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,18 +26,18 @@ class RefreshProductCommand extends Command
 {
     protected static $defaultName = 'pim:product:refresh';
 
-    /** @var SaverInterface */
+    /** @var BulkSaverInterface */
     private $productSaver;
 
-    /** @var SaverInterface */
+    /** @var BulkSaverInterface */
     private $productModelSaver;
 
     /** @var ProductQueryBuilderFactoryInterface */
     private $productQueryBuilderFactory;
 
     public function __construct(
-        SaverInterface $productSaver,
-        SaverInterface $productModelSaver,
+        BulkSaverInterface $productSaver,
+        BulkSaverInterface $productModelSaver,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
     ) {
         parent::__construct();
@@ -65,7 +65,7 @@ class RefreshProductCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $identifiers = $input->getArgument('identifiers');
 
@@ -83,5 +83,7 @@ class RefreshProductCommand extends Command
 
         $this->productSaver->saveAll($productsToSave['products']);
         $this->productModelSaver->saveAll($productsToSave['product_models']);
+
+        return 0;
     }
 }

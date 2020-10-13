@@ -22,6 +22,7 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\FileBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -97,26 +98,6 @@ class MediaFileController
     /** @var array */
     protected $apiConfiguration;
 
-    /**
-     * @param ApiResourceRepositoryInterface        $mediaRepository
-     * @param NormalizerInterface                   $normalizer
-     * @param ParameterValidatorInterface           $parameterValidator
-     * @param PaginatorInterface                    $paginator
-     * @param FilesystemProvider                    $filesystemProvider
-     * @param FileFetcherInterface                  $fileFetcher
-     * @param IdentifiableObjectRepositoryInterface $productRepository
-     * @param ObjectUpdaterInterface                $productUpdater
-     * @param SaverInterface                        $productSaver
-     * @param ValidatorInterface                    $validator
-     * @param SaverInterface                        $fileInfoSaver
-     * @param FileStorerInterface                   $fileStorer
-     * @param RemoverInterface                      $remover
-     * @param RouterInterface                       $router
-     * @param IdentifiableObjectRepositoryInterface $productModelRepository
-     * @param ObjectUpdaterInterface                $productModelUpdater
-     * @param SaverInterface                        $productModelSaver
-     * @param array                                 $apiConfiguration
-     */
     public function __construct(
         ApiResourceRepositoryInterface $mediaRepository,
         NormalizerInterface $normalizer,
@@ -232,6 +213,10 @@ class MediaFileController
     public function downloadAction(Request $request, $code)
     {
         $filename = urldecode($code);
+        if (!$this->mediaRepository instanceof ObjectRepository) {
+            throw new \RuntimeException();
+        }
+
         $fileInfo = $this->mediaRepository->findOneBy([
             'key'     => $filename,
             'storage' => FileStorage::CATALOG_STORAGE_ALIAS

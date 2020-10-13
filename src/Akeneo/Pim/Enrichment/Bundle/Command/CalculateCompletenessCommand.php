@@ -77,6 +77,8 @@ class CalculateCompletenessCommand extends Command
         $progressBar->finish();
         $output->writeln('');
         $output->writeln('<info>Completeness successfully computed.</info>');
+
+        return 0;
     }
 
     private function getTotalNumberOfProducts(): int

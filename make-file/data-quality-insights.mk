@@ -17,6 +17,7 @@ data-quality-insights-unit-back:
 .PHONY: data-quality-insights-lint-back
 data-quality-insights-lint-back:
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/Pim/Automation/DataQualityInsights/back
+	$(PHP_RUN) vendor/bin/phpstan analyse --level=2 src/Akeneo/Pim/Automation/DataQualityInsights/back
 
 .PHONY: data-quality-insights-cs-fix
 data-quality-insights-cs-fix:

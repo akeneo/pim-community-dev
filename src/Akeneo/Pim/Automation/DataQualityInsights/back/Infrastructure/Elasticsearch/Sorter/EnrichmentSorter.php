@@ -19,7 +19,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 
 final class EnrichmentSorter extends BaseFieldSorter
 {
-    public function addFieldSorter($field, $direction, $locale = null, $channel = null)
+    public function addFieldSorter($field, $direction, $locale = null, $channel = null): void
     {
         $field = sprintf('rates.enrichment.%s.%s', $channel, $locale);
 

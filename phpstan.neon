@@ -1,10 +1,13 @@
 includes:
     - vendor/phpstan/phpstan-symfony/extension.neon
+    - vendor/phpstan/phpstan-webmozart-assert/extension.neon
 parameters:
     reportUnmatchedIgnoredErrors: false
     symfony:
         container_xml_path: %rootDir%/../../../var/cache/dev/srcKernelDevDebugContainer.xml
     ignoreErrors:
         - '#Unsafe usage of new static\(\)\.#'
+        - '#Method Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface\:\:dispatch\(\) invoked with 2 parameters, 1 required\.#'
+        - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\).#'
     excludes_analyse:
         - %currentWorkingDirectory%/src/Akeneo/Pim/Automation/DataQualityInsights/tests

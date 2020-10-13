@@ -398,4 +398,15 @@ class CategoryRepository extends NestedTreeRepository implements
     {
         return $this->getChildrenQueryBuilder($category, false, null, 'ASC', $includeNode);
     }
+
+
+    public function persistAsNextSiblingOf(CategoryInterface $node, CategoryInterface $sibling)
+    {
+        parent::persistAsNextSiblingOf($node, $sibling);
+    }
+
+    public function persistAsFirstChildOf(CategoryInterface $node, CategoryInterface $parent)
+    {
+        parent::persistAsFirstChildOf($node, $parent);
+    }
 }

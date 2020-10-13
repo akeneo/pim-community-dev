@@ -45,8 +45,7 @@ SQL;
             [$productIds],
             [\Doctrine\DBAL\Connection::PARAM_INT_ARRAY]
         );
-        $count = $stmt->rowCount();
 
-        return $count;
+        return count($stmt->fetchAll());
     }
 }
