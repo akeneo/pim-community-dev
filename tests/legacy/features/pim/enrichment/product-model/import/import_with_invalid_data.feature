@@ -155,3 +155,21 @@ Feature: Skip invalid product models through CSV
       code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;ean;sku;weight
       code-003;code-001;clothing_color_size;master_men_blazers;;;;;blue;Blazers;composition;;;;
       """
+
+  Scenario: Skip a product model with a code that has just been created
+    Given the following root product model:
+      | code     | parent   | family_variant      | categories         | collection | description-en_US-ecommerce | erp_name-en_US | price   |
+      | code-001 |          | clothing_color_size | master_men         | Spring2017 | description                 | Blazers_1654   | 100 EUR |
+    And the following CSV file to import:
+      """
+      code;parent;family_variant;color
+      code-002;code-001;clothing_color_size;red
+      code-002;code-001;clothing_color_size;red
+      """
+    And the following job "csv_catalog_modeling_product_model_import" configuration:
+      | filePath          | %file to import% |
+      | enabledComparison | no               |
+    When I am on the "csv_catalog_modeling_product_model_import" import job page
+    And I launch the import job
+    And I wait for the "csv_catalog_modeling_product_model_import" job to finish
+    Then I should see the text "The same code is already set on another product model"

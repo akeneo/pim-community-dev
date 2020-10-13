@@ -52,6 +52,7 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         AttributeInterface $releaseDate,
         ProductInterface $product,
         ConstraintViolationBuilderInterface $constraintViolationBuilder,
+        UniqueValuesSet $uniqueValuesSet,
         $context,
         $uniqueDataRepository,
         $attributeRepository
@@ -64,6 +65,7 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         $value->getAttributeCode()->willReturn('release_date');
         $value->__toString()->willReturn('2015-16-03');
 
+        $uniqueValuesSet->addValue($value, $product)->willReturn(true);
         $uniqueDataRepository->uniqueDataExistsInAnotherProduct($value, $product)->willReturn(true);
 
         $context->buildViolation(Argument::cetera())->willReturn($constraintViolationBuilder);
