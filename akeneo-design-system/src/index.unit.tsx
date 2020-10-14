@@ -31,8 +31,6 @@ describe('Every module is exported correctly', () => {
     test(`Test ${component} is exported correctly.
         If this test is failing, export "${component}" component in src/index.ts`, () => {
       expect(exportNames).toContain(component);
-
-      return Promise.resolve();
     });
   });
 });
