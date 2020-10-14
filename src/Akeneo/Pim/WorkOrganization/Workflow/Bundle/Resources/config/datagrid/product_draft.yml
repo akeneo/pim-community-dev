@@ -71,3 +71,10 @@ datagrid:
                     data_name: createdAt
             default:
                 createdAt: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+    product-grid:
+        filters:
+            columns:
+                draft_status:
+                    type: draft_status
+                    label: Draft Status
+                    data_name: draft_status

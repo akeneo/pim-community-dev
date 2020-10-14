@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Improvements:
+
+- PIM-9507: Make Draft Status available as a default user filter
+
 # 3.2.74 (2020-10-09)
 
 ## Bug fixes:
