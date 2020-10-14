@@ -202,7 +202,7 @@ class Category extends BaseCategory implements CategoryInterface
     /**
      * Returns the channels linked to the category
      */
-    public function getChannels(): ArrayCollection
+    public function getChannels(): Collection
     {
         return $this->channels;
     }
