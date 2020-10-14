@@ -17,15 +17,15 @@ const getSubfolders = (paths: string[]) =>
     []
   );
 
-const getIcons = () =>
+const getFiles = (path: string) =>
   fs
-    .readdirSync('src/icons')
+    .readdirSync(path)
     .filter(file => 'tsx' === file.split('.').pop())
     .map(file => file.split('.')[0]);
 
 describe('Every module is exported correctly', () => {
   const exportNames = Object.keys(Exports);
-  const components = [...getSubfolders(['src/components']), ...getIcons()];
+  const components = [...getSubfolders(['src/components']), ...getFiles('src/icons'), ...getFiles('src/illustrations')];
 
   components.forEach(component => {
     test(`Test ${component} is exported correctly.
