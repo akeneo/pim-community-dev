@@ -47,7 +47,7 @@ describe('AttributeGroupsHelper', () => {
     expect(fetchAllAttributeGroupsDqiStatus).toHaveBeenCalledTimes(1);
     expect(fetchAttributeGroupsByCode).not.toHaveBeenCalled();
     expect(result.current.allGroupsEvaluated).toEqual(true);
-    expect(result.current.evaluatedGroups).toEqual({});
+    expect(result.current.evaluatedGroups).toEqual(null);
   });
 
   test('Product with 3 attribute groups, all disabled', async () => {
@@ -60,24 +60,6 @@ describe('AttributeGroupsHelper', () => {
     expect(fetchAttributeGroupsByCode).not.toHaveBeenCalled();
     expect(result.current.allGroupsEvaluated).toEqual(false);
     expect(result.current.evaluatedGroups).toEqual({});
-  });
-
-  test('Product without an evaluation', async () => {
-    const {result} = await renderUseProductEvaluatedAttributeGroups(getInitialState('ecommerce', 'en_US', false));
-
-    expect(fetchAllAttributeGroupsDqiStatus).not.toHaveBeenCalled();
-    expect(fetchAttributeGroupsByCode).not.toHaveBeenCalled();
-    expect(result.current.allGroupsEvaluated).toEqual(false);
-    expect(result.current.evaluatedGroups).toEqual(null);
-  });
-
-  test('Product with a pending evaluation', async () => {
-    const {result} = await renderUseProductEvaluatedAttributeGroups(getInitialState('mobile', 'de_DE', true));
-
-    expect(fetchAllAttributeGroupsDqiStatus).not.toHaveBeenCalled();
-    expect(fetchAttributeGroupsByCode).not.toHaveBeenCalled();
-    expect(result.current.allGroupsEvaluated).toEqual(false);
-    expect(result.current.evaluatedGroups).toEqual(null);
   });
 });
 
