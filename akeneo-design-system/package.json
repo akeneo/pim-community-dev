@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "lib:build": "tsc -p ./tsconfig.build.json",
-    "lib:watch": "rimraf lib && tsc -p ./tsconfig.build.json --watch",
+    "lib:watch": "tsc -p ./tsconfig.build.json --watch",
     "test": "yarn lint:check && yarn test:unit:run && yarn test:visual:run",
     "test:unit:run": "jest --config ./jest.unit.config.js",
     "test:unit:watch": "jest --config ./jest.unit.config.js --watch",
