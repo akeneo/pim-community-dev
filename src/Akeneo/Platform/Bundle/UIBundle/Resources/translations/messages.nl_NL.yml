@@ -100,7 +100,6 @@ pim_enrich:
       edit_attributes: Wijzig attributen van een productmodel
       categories_view: Raadpleeg de categorieën van een productmodel
       history: Bekijk productmodel-geschiedenis
-      remove: Productmodel verwijderen
     category:
       list: Categorieën oplijsten
       create: Categorie aanmaken
