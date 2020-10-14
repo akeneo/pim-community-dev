@@ -14,20 +14,20 @@ class StepExecutionTracking
     /** @var string */
     public $name;
 
-    /** @var bool */
-    public $isTrackable;
-
     /** @var string */
     public $status;
 
     /** @var boolean */
-    public $hasWarning;
+    public $isTrackable = false;
 
     /** @var boolean */
-    public $hasError;
+    public $hasWarning  = false;
+
+    /** @var boolean */
+    public $hasError = false;
 
     /** @var int */
-    public $duration;
+    public $duration = 0;
 
     /** @var int */
     public $processedItems = 0;

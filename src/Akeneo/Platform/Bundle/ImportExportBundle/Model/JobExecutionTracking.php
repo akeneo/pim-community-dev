@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Model;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Query\StepExecutionTracking;
-
 /**
  * {description}
  *
@@ -24,7 +22,7 @@ class JobExecutionTracking
     /** @var int */
     public $totalSteps;
 
-    /** @var StepExecutionTracking */
+    /** @var StepExecutionTracking[] */
     public $steps;
 
 }

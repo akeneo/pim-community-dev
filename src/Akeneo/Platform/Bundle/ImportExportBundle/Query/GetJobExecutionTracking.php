@@ -6,6 +6,13 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Query;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Model\JobExecutionTracking;
 use Akeneo\Platform\Bundle\ImportExportBundle\Model\StepExecutionTracking;
+use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository;
+use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Step\TrackableStepInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -14,49 +21,112 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Model\StepExecutionTracking;
  */
 class GetJobExecutionTracking
 {
+    /** @var JobRegistry */
+    private $jobRegistry;
+
+    /** @var JobExecutionRepository */
+    private $jobExecutionRepository;
+
+    /** @var JobExecutionManager */
+    private $jobExecutionManager;
+
+    /** @var ClockInterface */
+    private $clock;
+
+    public function __construct(
+        JobRegistry $jobRegistry,
+        JobExecutionRepository $jobExecutionRepository,
+        JobExecutionManager $jobExecutionManager,
+        ClockInterface $clock
+    ) {
+        $this->jobRegistry = $jobRegistry;
+        $this->jobExecutionRepository = $jobExecutionRepository;
+        $this->jobExecutionManager = $jobExecutionManager;
+        $this->clock = $clock;
+    }
 
     public function execute(int $jobExecutionId): JobExecutionTracking
     {
-        $expectedJobExecutionTracking = new JobExecutionTracking();
-        $expectedJobExecutionTracking->status = 'IN PROGRESS';
-        $expectedJobExecutionTracking->currentStep = 2;
-        $expectedJobExecutionTracking->totalSteps = 3;
+        $jobExecution = $this->jobExecutionRepository->find($jobExecutionId);
+        if (!$jobExecution instanceof JobExecution) {
+            throw new \Exception(); //@TODO create execution + test
+        }
 
-        $expectedStepExecutionTracking1 = new StepExecutionTracking();
-        $expectedStepExecutionTracking1->isTrackable = false;
-        $expectedStepExecutionTracking1->name = 'validation';
-        $expectedStepExecutionTracking1->status = 'COMPLETED';
-        $expectedStepExecutionTracking1->duration = 5;
-        $expectedStepExecutionTracking1->hasError = false;
-        $expectedStepExecutionTracking1->hasWarning = true;
-        $expectedStepExecutionTracking1->processedItems = 0;
-        $expectedStepExecutionTracking1->totalItems = 0;
+        $jobExecution = $this->jobExecutionManager->resolveJobExecutionStatus($jobExecution);
+        $jobName = $jobExecution->getJobInstance()->getJobName();
 
-        $expectedStepExecutionTracking2 = new StepExecutionTracking();
-        $expectedStepExecutionTracking2->isTrackable = true;
-        $expectedStepExecutionTracking2->name = 'import';
-        $expectedStepExecutionTracking2->status = 'IN PROGRESS';
-//        $expectedStepExecutionTracking2->duration = 0;
-        $expectedStepExecutionTracking2->hasError = false;
-        $expectedStepExecutionTracking2->hasWarning = false;
-        $expectedStepExecutionTracking2->processedItems = 10;
-        $expectedStepExecutionTracking2->totalItems = 100;
+        /* What do we do if we have a UndefinedJobException ? */
+        $job = $this->jobRegistry->get($jobName);
 
-        $expectedStepExecutionTracking3 = new StepExecutionTracking();
-        $expectedStepExecutionTracking3->isTrackable = true;
-        $expectedStepExecutionTracking3->name = 'import_associations';
-        $expectedStepExecutionTracking3->status = 'NOT STARTED';
-        $expectedStepExecutionTracking2->duration = 0;
-        $expectedStepExecutionTracking3->hasError = false;
-        $expectedStepExecutionTracking3->hasWarning = false;
-        $expectedStepExecutionTracking3->processedItems = 0;
-        $expectedStepExecutionTracking3->totalItems = 0;
+        $stepExecutions = $jobExecution->getStepExecutions();
 
-        $expectedJobExecutionTracking->steps = [
-            $expectedStepExecutionTracking1,
-            $expectedStepExecutionTracking2
-        ];
+        $jobExecutionTracking = new JobExecutionTracking();
+        $jobExecutionTracking->status = $this->getMappedStatus($jobExecution->getStatus());
+        $jobExecutionTracking->currentStep = count($jobExecution->getStepExecutions());
+        $jobExecutionTracking->totalSteps = count($job->getSteps());
 
-        return $expectedJobExecutionTracking;
+        $stepsExecutionTracking = [];
+        foreach ($stepExecutions as $stepExecution) {
+            $duration = $this->calculateDuration($stepExecution);
+
+            $stepExecutionTracking = new StepExecutionTracking();
+            $stepExecutionTracking->name = $stepExecution->getStepName();
+            $stepExecutionTracking->status = $this->getMappedStatus($stepExecution->getStatus());
+            $stepExecutionTracking->duration = $duration;
+            $stepExecutionTracking->hasError = count($stepExecution->getErrors()) !== 0;
+            $stepExecutionTracking->hasWarning = count($stepExecution->getWarnings()) !== 0;
+
+            $step = $job->getStep($stepExecution->getStepName());
+            if ($step instanceof TrackableStepInterface && $step->isTrackable()) {
+                $stepExecutionTracking->isTrackable = true;
+                $stepExecutionTracking->processedItems = $stepExecution->getProcessedItems();
+                $stepExecutionTracking->totalItems = $stepExecution->getTotalItems();
+            }
+
+            $stepsExecutionTracking[] = $stepExecutionTracking;
+        }
+
+        $jobExecutionTracking->steps = $stepsExecutionTracking;
+
+        return $jobExecutionTracking;
+    }
+
+
+    private function getMappedStatus(BatchStatus $batchStatus)
+    {
+        switch ($batchStatus->getValue()) {
+            case BatchStatus::STOPPING:
+            case BatchStatus::STOPPED:
+            case BatchStatus::FAILED:
+            case BatchStatus::ABANDONED:
+            case BatchStatus::UNKNOWN:
+            case BatchStatus::COMPLETED:
+                return 'COMPLETED';
+                break;
+            case BatchStatus::STARTING:
+                return 'NOT STARTED';
+                break;
+            case BatchStatus::STARTED:
+                return 'IN PROGRESS';
+                break;
+            default:
+                throw new \Exception('Not implemented');
+        }
+    }
+
+    private function calculateDuration(StepExecution $stepExecution): int
+    {
+        $now = $this->clock->now();
+        $status = $this->getMappedStatus($stepExecution->getStatus());
+        if ($status === 'NOT STARTED') {
+            return 0;
+        }
+
+        $duration = $now->getTimestamp() - $stepExecution->getStartTime()->getTimestamp();
+        if ($stepExecution->getEndTime()) {
+            $duration = $stepExecution->getEndTime()->getTimestamp() - $stepExecution->getStartTime()->getTimestamp();
+        }
+
+        return $duration;
     }
 }

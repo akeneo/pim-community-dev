@@ -43,6 +43,7 @@ class JobExecutionProgressController
         if (null === $jobExecution) {
             throw new NotFoundHttpException('Akeneo\Tool\Component\Batch\Model\JobExecution entity not found');
         }
+
         $jobExecution = $this->jobExecutionManager->resolveJobExecutionStatus($jobExecution);
         $jobName = $jobExecution->getJobInstance()->getJobName();
 
