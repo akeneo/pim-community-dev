@@ -28,15 +28,12 @@ describe('Every module is exported correctly', () => {
   const components = [...getSubfolders(['src/components']), ...getIcons()];
 
   components.forEach(component => {
-    test.concurrent(
-      `Test ${component} is exported correctly.
-        If this test is failing, export "${component}" component in src/index.ts`,
-      async () => {
-        expect(exportNames).toContain(component);
+    test(`Test ${component} is exported correctly.
+        If this test is failing, export "${component}" component in src/index.ts`, () => {
+      expect(exportNames).toContain(component);
 
-        return Promise.resolve();
-      }
-    );
+      return Promise.resolve();
+    });
   });
 });
 
