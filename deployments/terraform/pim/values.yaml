@@ -182,10 +182,6 @@ pim:
       enabled: true
       pimCommand: "pim:data-quality-insights:evaluations"
       schedule: "*/30 * * * *"
-    franklin-insights-quality-highlights-push:
-      enabled: true
-      pimCommand: "pimee:franklin-insights:quality-highlights:push-structure-and-products"
-      schedule: "15 0,12 * * *"
 
 # Onboarder
 onboarder:
