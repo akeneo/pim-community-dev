@@ -1,5 +1,11 @@
 # 3.2.x
 
+# 3.2.75 (2020-10-14)
+
+## Bug fixes:
+
+- GITHUB-12899: Fix error shown when importing product models with the same code
+
 # 3.2.74 (2020-10-09)
 
 # 3.2.73 (2020-10-09)
