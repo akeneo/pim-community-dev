@@ -1,8 +1,9 @@
+import React, {FC, ForwardRefRenderFunction, PropsWithRef} from 'react';
 import * as Exports from './index';
+import * as Components from './components';
 import fs from 'fs';
 import '@testing-library/jest-dom/extend-expect';
 import {render} from 'storybook/test-util';
-import React from 'react';
 
 const getSubfolders = (paths: string[]) =>
   paths.reduce(
@@ -40,45 +41,26 @@ describe('Every module is exported correctly', () => {
 });
 
 describe('Every module should support forwardRef', () => {
-  const components = getSubfolders(['src/components']);
+  Object.keys(Components).forEach(component => {
+    test(`Test ${component} support forwardRef.
+        If this test is failing, add forwardRef support to the "${component}" component`, () => {
+      const Component = Components[component] as ForwardRefRenderFunction<Element, PropsWithRef<any>>;
+      const ref = {current: null};
 
-  components.forEach(component => {
-    test.concurrent(
-      `Test ${component} support forwardRef.
-        If this test is failing, add forwardRef support to the "${component}" component`,
-      async () => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-var-requires
-        const module = require(`./components/${component}/${component}.tsx`);
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-        const Component = module[component];
-
-        const ref = {current: null};
-        render(<Component ref={ref} />);
-        expect(ref.current).not.toBe(null);
-        return Promise.resolve();
-      }
-    );
+      render(<Component ref={ref} />);
+      expect(ref.current).not.toBe(null);
+    });
   });
 });
 
 describe('Every module should support ...rest props', () => {
-  const components = getSubfolders(['src/components']);
+  Object.keys(Components).forEach(component => {
+    test(`Test ${component} support ...rest props.
+        If this test is failing, add ...rest support on props to the "${component}" component`, () => {
+      const Component = Components[component] as FC;
 
-  components.forEach(component => {
-    test.concurrent(
-      `Test ${component} support ...rest props.
-        If this test is failing, add ...rest support on props to the "${component}" component`,
-      async () => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-var-requires
-        const module = require(`./components/${component}/${component}.tsx`);
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-        const Component = module[component];
-
-        const {container} = render(<Component data-my-attribute="my_value" />);
-        expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
-
-        return Promise.resolve();
-      }
-    );
+      const {container} = render(<Component data-my-attribute="my_value" />);
+      expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
+    });
   });
 });
