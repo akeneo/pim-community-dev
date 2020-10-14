@@ -27,35 +27,36 @@ describe('Every module is exported correctly', () => {
   const exportNames = Object.keys(Exports);
   const components = [...getSubfolders(['src/components']), ...getFiles('src/icons'), ...getFiles('src/illustrations')];
 
-  components.forEach(component => {
-    test(`Test ${component} is exported correctly.
-        If this test is failing, export "${component}" component in src/index.ts`, () => {
-      expect(exportNames).toContain(component);
-    });
-  });
+  test.each(components)(
+    `Test %s is exported correctly.
+    If this test is failing, export the Component in src/index.ts`,
+    componentName => expect(exportNames).toContain(componentName)
+  );
 });
 
-describe('Every module should support forwardRef', () => {
-  Object.keys(Components).forEach(component => {
-    test(`Test ${component} support forwardRef.
-        If this test is failing, add forwardRef support to the "${component}" component`, () => {
+describe('Every Component should support forwardRef', () => {
+  test.each(Object.keys(Components))(
+    `Test %s support forwardRef.
+    If this test is failing, add forwardRef support to the Component`,
+    component => {
       const Component = Components[component] as ForwardRefRenderFunction<Element, PropsWithRef<any>>;
       const ref = {current: null};
 
       render(<Component ref={ref} />);
       expect(ref.current).not.toBe(null);
-    });
-  });
+    }
+  );
 });
 
-describe('Every module should support ...rest props', () => {
-  Object.keys(Components).forEach(component => {
-    test(`Test ${component} support ...rest props.
-        If this test is failing, add ...rest support on props to the "${component}" component`, () => {
+describe('Every Component should support ...rest props', () => {
+  test.each(Object.keys(Components))(
+    `Test %s support ...rest props.
+    If this test is failing, add ...rest prop support on the Component`,
+    component => {
       const Component = Components[component] as FC;
 
       const {container} = render(<Component data-my-attribute="my_value" />);
       expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
-    });
-  });
+    }
+  );
 });
