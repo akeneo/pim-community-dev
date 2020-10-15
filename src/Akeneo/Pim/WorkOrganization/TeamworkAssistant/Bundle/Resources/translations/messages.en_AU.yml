@@ -1,24 +1,24 @@
 teamwork_assistant:
   project:
-    required: This value cannot be empty.
-    label_maxlength: This value is too long. It should have {{ max }} characters.
-    project_identifier: The project {{ project }} does not exist.
+    required: This value should not be blank.
+    label_maxlength: This value is too long. It should have {{ max }} characters or less.
+    project_identifier: The project {{ project }} doesn't exist.
     project_locale: The locale {{ locale }} is not supported by the channel {{ channel }}.
-    project_due_date: You cannot select a date in the past.
+    project_due_date: You can't select a date in the past.
   notification:
     project_calculation:
       error: Project's calculation for <strong>%project_label%</strong> failed
-      warning: Project's calculation for <strong>%project_label%</strong> ended with some warnings
+      warning: Project's calculation for <strong>%project_label%</strong> finished with some warnings
       success: The project <strong>%project_label%</strong> is ready and the contributors are notified. Let's start!
       start: Start
     message: You have new products to enrich for "%project_label%". Due date is "%due_date%".
     project_finished:
-      contributor: Congrats! You're 100% of products done with %project_label%.
-      owner: 'The projet <strong>%project_label%</strong> due for the <strong>%due_date%</strong> is finished.'
+      contributor: Congrats! You're 100% of done product done with %project_label%.
+      owner: 'The project <strong>%project_label%</strong> due for the <strong>%due_date%</strong> is finished.'
       show: Show
     due_date:
-      contributor: You are %percent%% of products done with %project_label%. Do not forget to fill in the last products for %due_date%.
-      owner: 'The projet <strong>%project_label%</strong> due for the <strong>%due_date%</strong> is not 100% done.'
+      contributor: You're %percent%% of product done with %project_label%. Don't forget, to fill in the last products for the %due_date%.
+      owner: 'The project <strong>%project_label%</strong> due for the <strong>%due_date%</strong> is not 100% done.'
       start: Start
   datagrid:
     project_completeness: Project progress
@@ -30,7 +30,7 @@ teamwork_assistant:
     owner_done: Done (project overview)
   user:
     deletion:
-      user_linked_to_project: This user cannot be deleted because he/she is still linked to one or more project(s). Please remove the groups he/she is linked to in his/her user account.
+      user_linked_to_project: This user is still linked to one or more project(s). Please remove the groups he is linked to in his user account.
       user_is_project_owner: This user is still owner of one or more projects. Please delete all this user's projects.
 job_execution:
   summary:

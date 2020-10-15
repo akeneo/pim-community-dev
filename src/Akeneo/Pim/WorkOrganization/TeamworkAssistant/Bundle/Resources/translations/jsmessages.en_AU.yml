@@ -1,7 +1,7 @@
 teamwork_assistant:
   common:
     required: Required
-    warning: Project calculation may take a while so your project may not be visible right away.
+    warning: Don't worry, project calculation may take a while, so your project may not be visible right away.
   grid:
     view_selector:
       create: Create project
@@ -15,11 +15,11 @@ teamwork_assistant:
   project:
     label: Name
     locale: Locale
-    label_maxlength: This value is too long. It should have {{ max }} characters.
+    label_maxlength: This value is too long. It should have {{ max }} characters or less.
     description: Description
     due_date: Due Date
-    due_date_past: You cannot select a date in the past.
-    leaving_scope: You are leaving the project's scope.
+    due_date_past: You can't select a date in the past.
+    leaving_scope: You're leaving project scope.
   edit_project_modal:
     saved: The project has been saved.
     title: Edit project
@@ -27,7 +27,7 @@ teamwork_assistant:
     saved: The project has been saved, you will be notified when the calculation is done.
     title: Project
   widget:
-    no_project: You have no current projects
+    no_project: You have no current project
     no_project_create: create a new project
     description: Description
     due_date: Due date

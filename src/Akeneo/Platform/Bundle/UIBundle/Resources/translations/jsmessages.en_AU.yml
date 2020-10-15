@@ -1,0 +1,9 @@
+user:
+  email_notifications: Email notifications
+pimee_enrich.entity.product:
+  duplicate:
+    title: Duplicate the product {{ product_identifier }}
+    button: Duplicate
+    flash:
+      success: The product {{ product_identifier }} has been duplicated with success.
+      success_with_attribute_codes: The product {{ product_identifier }} has been duplicated with success. You need to enrich the {{ unique_attribute_codes }} with unique values

@@ -1,21 +1,25 @@
 pimee_catalog_rule:
   overview: "]-Inf, 1]{{ count }} regla|]1, Inf[{{ count }} reglas"
   execution_button: Ejecutar reglas
-  selected: 'reglas seleccionadas'
+  selected: "]-Inf, 1]{{ count }} regla seleccionada|]1, Inf[{{ count }} reglas seleccionadas"
+  dropdown:
+    title: Otras acciones
   popin:
     execute_rules:
       confirm_title: Confirmar la ejecución
-      confirm_content: '¿Está seguro que desea ejecutar todas las reglas? (esto puede tomar algún tiempo)'
+      confirm_content: '¿Está seguro de que desea ejecutar las reglas? (Podría tomar un tiempo)'
   notification:
-    fail: La acción no puede ser realizada
+    fail: La acción no se realizó
     launched: La ejecución de la(s) regla(s) ha sido lanzada. Será notificado una vez finalizada.
   attribute:
     list:
       code.label: Código
       condition.label: Condición
       action.label: Acción
-      no_rule_yet.label: Ninguna regla por el momento
+      no_rule_yet.label: No hay reglas por ahora
   rule:
+    value: Valor
+    include_children: Incluye hijos
     condition:
       if.label: si
     action:
@@ -34,12 +38,12 @@ pimee_catalog_rule:
           confirm_content: '¿Está seguro que desea ejecutar esta regla?'
       mass_edit_action:
         confirm_title: Confirmar el cálculo
-        confirm_content: '¿Está seguro que desea calcular los productos afectados por la regla?'
+        confirm_content: '¿Está seguro de que desea calcular el número de productos afectados por las reglas?'
       mass_action:
         execute:
           confirm_title: Confirmar la ejecución
-          confirm_content: '¿Está seguro que desea ejecutar las reglas seleccionadas?'
-          success: La acción en masa para ejecutar las reglas seleccionadas ha sido lanzada. Será notificado una vez finalizada
+          confirm_content: '¿Está seguro de que desea ejecutar las reglas? (Podría tomar un tiempo)'
+          success: La ejecución de la(s) regla(s) ha sido lanzada. Será notificado una vez finalizada.
           error: Se ha producido un error durante la ejecución de las reglas.
           empty_selection: Ninguna regla seleccionada.
         delete:
@@ -49,40 +53,273 @@ pimee_catalog_rule:
           error: Se ha producido un error durante la eliminación de las reglas.
           empty_selection: Ninguna regla seleccionada.
   form:
+    category:
+      catalog: Catálogo
+      select: Selecciona una categoría
+      open_tree: Abrir árbol de categorías
+      tree: Árbol de Categorías
+      menu: Seleccione un árbol de categorías
+      folder:
+        selected: Carpeta seleccionada
+        not_selected: Carpeta
+      folders:
+        selected: Carpetas seleccionadas
+        not_selected: Carpetas
+    tab:
+      list: Constructor de reglas y pestañas de propiedades
+      rule_builder: Constructor de reglas
     attribute:
       tab:
         rules:
           title: Reglas
+    creation:
+      helper: El motor de reglas puede aumentar radicalmente su productividad en el PIM automatizando acciones,
+      english_flag: Etiqueta para Inglés
+      title: Crear una nueva regla
+      notification:
+        success: Regla creada con éxito
+        failed: Error al crear la regla
+      constraint:
+        code:
+          required: Se requiere un código de regla.
+          too_short: "El código de regla es demasiado corto. Requiere {{ characterLimit }} caracteres o más."
+          allowed_characters: El código de regla sólo puede contener caracteres alfanuméricos y guiones bajos.
+          unique: El código ya está usado.
+      cross_link: Deja el formulario de creación de regla
+    edit:
+      header:
+        welcome: '¡Bienvenido a su nuevo área de motor de reglas!'
+        description: Para crear una regla, debe definir su selección de producto y, a continuación, añadir una o varias acciones.
+        documentation_link: Haga clic aquí para descubrir el alcance completo de las capacidades del motor de reglas.
+      properties:
+        section:
+          general: Parámetros generales
+          labels: Traducciones de etiqueta
+      character_left: "]-Inf, 1]{{ count }} Caracteres restantes|]1, +Inf[{{ count }} Caracteres restantes"
+      priority:
+        label: Prioridad
+      add_to_category: Agregar a la categoría
+      add_conditions: Agregar condiciones
+      products_count:
+        complete: "]-Inf, 1]{{ count }} modelo de producto y producto|]1, +Inf[{{ count }} modelos de productos y productos"
+        pending: Calculando productos y modelos de productos
+        error: Imposible calcular productos y modelos de productos
+      product_selection: Selección de producto
+      preview: Previsualizar
+      fields:
+        family: Familia
+        category: Categoría
+        attribute: Atributo
+        groups: Grupos
+        measurement_unit: Unidad de medida
+        measurement_default_unit: "Unidad por defecto ({{ unit }})"
+        currency: Moneda
+        operator: operador
+      execute:
+        button: Guardar y ejecutar
+        title: Guardar y ejecutar la regla
+        description: Guardarás la regla actual y la ejecutarás en segundo plano. Cuando termines, serás notificado.
+      actions:
+        add_action: Añadir acción
+        add_category:
+          title: AÑADIR categorías
+          helper: Para añadir su selección de productos a una o más categorías, comience seleccionando sus árboles de categorías y luego, sus categorías
+        add_groups:
+          title: AÑADIR productos a grupos
+          helper: Para agregar productos a grupos, por favor seleccione uno o varios grupos
+          subtitle: Selecciona tus grupos
+        set_groups:
+          title: Configurar grupos de productos
+          helper: Para establecer los grupos de productos, seleccione uno o varios grupos
+          subtitle: Selecciona tus grupos
+        set_category:
+          helper: Para establecer su selección de productos en una o más categorías, por favor comience seleccionando sus árboles de categorías y luego, sus categorías
+        category:
+          select_category_trees: Selecciona tus árboles de categorías
+          select_category_tree: Seleccione su árbol de categorías
+          select_categories: Seleccione sus categorías
+          select_category: Seleccione su categoría
+          category_tree: Árbol de categorías
+          categories_selected: "]-Inf, 1]{{ count }} categoría seleccionada|]1, +Inf[{{ count }} categorías seleccionadas"
+          no_category_tree: Por favor, seleccione primero un árbol de categorías
+          remove_unknown_category: " Haga clic aquí para eliminar esta categoría."
+        set_family:
+          subtitle: Selecciona tu familia
+        set_attribute:
+          helper: Para establecer los valores de su atributo, comience seleccionando su atributo de destino y luego, el valor que desea establecer
+          value_subtitle: Definir su valor
+          attribute_label: Atributo
+          attribute_placeholder: Seleccione su atributo de destino
+          select_reference_entity: Seleccione sus entidades de referencia
+          select_asset: Seleccione sus activos
+        remove_category:
+          helper: Para eliminar su selección de productos de una o más categorías, comience seleccionando sus árboles de categorías y luego, sus categorías
+        remove_attribute_value:
+          helper: Para eliminar los valores de su atributo, comience seleccionando su atributo de destino y luego, los valores que desea eliminar.
+          value_subtitle: Defina sus valores a eliminar
+        add_attribute_value:
+          helper: Para añadir valores a su atributo, comience seleccionando su atributo de destino y, a continuación, los valores que desea añadir.
+          value_subtitle: Defina sus valores a añadir
+        copy:
+          helper: Para copiar valores de un atributo a otro, por favor comience seleccionando su atributo fuente y luego, su atributo destino.
+          select_source: Seleccione su fuente
+          select_target: Selecciona tu objetivo
+          no_source: Por favor, selecciona primero tu atributo de origen
+        delete:
+          label: Eliminar acción
+          description: '¿Está seguro que desea eliminar esta acción?'
+        set_status:
+          title: Establecer Estado
+          subtitle: Definir su estado
+          helper: Para establecer un estado a los productos, por favor seleccione un estado en la lista de abajo
+          placeholder: Seleccione su estado
+        remove_groups:
+          title: ELIMINAR productos de grupos
+          helper: Para eliminar productos de grupos, por favor seleccione uno o varios grupos
+          subtitle: Selecciona tus grupos
+        calculate:
+          helper: Para calcular los valores numéricos de los atributos, elija atributo(s) y/o valor(es) y, a continuación, seleccione el atributo de destino en el que desea poner el resultado. También puede redondear el resultado final si es necesario.
+          add_value: Añadir valor
+          add_attribute: Añadir atributo
+          select_target: Selecciona tu objetivo
+          attribute_placeholder: Seleccione su atributo de destino
+          operator:
+            add: Añadir
+            subtract: Sustraer
+            multiply: Multiplicar
+            divide: Dividir
+            choose: Elige tu operador
+        concatenate:
+          helper: Para concatenar los valores de los atributos, agregue los atributos y, a continuación, seleccione el atributo destino.
+          date_format: Seleccione un formato de fecha
+      conditions:
+        delete:
+          label: Eliminar condición
+        operators:
+          "STARTS WITH": empieza por
+          "ENDS WITH": termina con
+          "CONTAINS": contiene
+          "DOES NOT CONTAIN": no contiene
+          "EMPTY": Está vacío
+          "NOT EMPTY": no está vacío
+          "UNCLASSIFIED": sin clasificar
+          "IN OR UNCLASSIFIED": no está clasificado o en
+          "BETWEEN": entre
+          "=": igual
+          "!=": no es igual a
+          "<": es inferior a
+          "<=": igual o menor que
+      notification:
+        success: Regla actualizada correctamente
+        failed: Error al actualizar la regla
+        execute_success: Regla actualizada y ejecutada correctamente
+        execute_failed: La regla fue guardada pero hubo un error durante la ejecución
+      discard_changes: Los cambios se perderán si abandonas la página.
+      please_select_attribute: Por favor, seleccione un atributo de destino primero.
+      unhandled_attribute_type: Lo sentimos, este tipo de atributo no está administrado todavía. Por favor, utilice las reglas de importación.
+      empty_section:
+        set_up_action: '¡Bien hecho! Has definido tu selección de producto. Ahora es el momento de configurar tu acción.'
+    delete:
+      description: '¿Está seguro que desea eliminar esta regla? No es posible deshacer esta acción.'
+      notification:
+        failed: Error al eliminar la regla
+        success: Regla eliminada correctamente
+    helper:
+      add_to_category: Para añadir su selección de productos a una o más categorías, comience seleccionando sus árboles de categorías y luego, sus categorías
+    legend:
+      add_to_category: Crear una acción
+    tree:
+      item:
+        not_selected: Seleccionar elemento
+    date:
+      operators:
+        specific_date: Fecha específica
+      label:
+        date_type: Elija un tipo de fecha
+        operator: Selecciona un operador
+        date: Elige una fecha.
+        relative_date: Elige una fecha.
+        locale: Elegir un local
+        period: Elija una unidad de tiempo
+        open_period: Abrir menú de unidad de tiempo
+        date_from: Elija una fecha de inicio
+        date_to: Elija una fecha de fin
+        date_past: Fecha en el pasado
+        date_future: Fecha en el futuro
+        date_present: Hoy
+      day: "]-Inf, 1] Día|]1, +Inf[ Días"
+      week: "]-Inf, 1] Semana|]1, +Inf[ Semanas"
+      month: "]-Inf, 1] Mes|]1, +Inf[ Meses"
+      year: "]-Inf, 1] Año|]1, +Inf[ Años"
+      hour: "]-Inf, 1] Hora|]1, +Inf[ Horas"
+      minute: "]-Inf, 1] Minuto|]1, +Inf[ Minutos"
+  exceptions:
+    loading: Se ha producido un error durante la carga de la definición de regla.
+    required: Este campo es obligatorio.
+    required_attribute: Se requiere un atributo
+    required_locale: Se requiere un local para el atributo {{ attributeLabel }}
+    required_scope: Se requiere un canal para el atributo {{ attributeLabel }}
+    required_currency: Se requiere una moneda para el atributo {{ attributeLabel }}
+    required_locale_completeness: Se requiere un local para la integridad
+    required_scope_completeness: Se requiere un canal para la integridad
+    required_value: Se requiere un valor para esta acción
+    required_categories: Se requiere al menos una categoría para esta acción
+    required_constant_for_operation: Se requiere un valor constante para esta operación
+    required_operator_for_operation: Se requiere un operador para esta operación
+    division_by_zero: Divisiones por cero no son posibles
+    two_operations_are_required: La lista de operaciones debe contener 2 operaciones o más.
+    two_items_are_required: La lista debe contener 2 elementos o más.
+    unknown_or_inactive_locale: 'El local "{{ localeCode }}" no existe o no está activado'
+    unknown_or_inactive_currency: 'La moneda "{{ currencyCode }}" no existe o no está activada'
+    unbound_locale: 'El local "{{ localeCode }}" no está activado en el canal "{{ channelCode }}"'
+    unbound_currency: 'La moneda "{{ currencyCode }}" no está activada en el canal "{{ channelCode }}"'
+    locale_on_unlocalizable_attribute: Este atributo no es localizable. Por favor, elimine el local antes de continuar.
+    unknown_scope: 'El canal "{{ scopeCode }}" no existe'
+    scope_on_unscopable_attribute: Este atributo no es rastreable. Por favor, elimine el canal antes de continuar.
+    unknown_families: "{1}La familia {{ familyCodes }} no existe|]1,+Inf[Las {{ familyCodes }} familias no existen"
+    unknown_attribute_options: "{1}La opción {{ attributeOptionCodes }} no existe|]1,+Inf[Las opciones {{ attributeOptionCodes }} no existen"
+    unknown_attribute_code: "El atributo {{ attributeCode }} no existe"
+    unknown_categories: "{1}La categoría {{ categoryCodes }} no existe.|]1, +Inf[Las {{ categoryCodes }} categorías no existen"
+    unknown_attribute: "Este atributo no existe."
+    unknown_groups: "{1} El grupo {{ groupCodes }} no existe|]1, +Inf[Los siguientes grupos no existen: {{ groupCodes }}"
+    select_another_attribute_or_remove_action: "Seleccione otro atributo o elimine esta acción."
+    select_another_attribute: "Seleccione otro atributo"
+    or: o
+    create_attribute_link: haz clic aquí para crear el atributo
+    edit_unauthorize: No tienes permisos para editar reglas
+    wrong_date_timespan: Para definir un lapso de tiempo válido, asegúrese de que su fecha de fin no está establecida antes de su fecha de inicio.
+    measurement_family_not_found: La familia de medida "{{ measurement_code }}" no existe
+    unit_not_found: La unidad de medida "{{ unitCode }}" no se encontró en la familia de medida "{{ measurement_code }}"
 pim_enrich:
   entity:
     rule:
       module:
         delete:
           confirm: '¿Está seguro que desea eliminar esta regla? No es posible deshacer esta acción'
-pim_datagrid:
-  entity:
-    rule:
       flash:
         delete:
-          success: Regla eliminada con éxito
+          success: Regla eliminada correctamente
 flash:
   rule:
-    impacted_product_count: La acción en bloque para ejecutar las reglas seleccionadas ha sido lanzada. Será notificado una vez finalizada.
-    executed: La ejecución de la regla ha sido lanzada. Será notificado una vez finalizada.
+    impacted_product_count: La acción en masa para calcular el número de productos impactados ha sido lanzada. Se le notificará cuando termine.
+    executed: La ejecución de la(s) regla(s) ha sido lanzada. Será notificado una vez finalizada.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Configuración de reglas
 batch_jobs:
   add_attribute_value:
     execute_rules.label: Ejecución de las reglas
   default_steps:
+    export_rules: Exportar reglas
+    import_rules: Importar reglas
+    calculate_affected_products: Calcular los productos afectados
     execute_rules: Ejecución de las reglas
   yml_rule_import:
-    label: Importación de regla en YAML
-    import.label: Importación de regla
+    label: Importar reglas en YAML
+    import.label: Importar reglas
   yml_rule_export:
-    label: Exportación de regla en YAML
-    export.label: Exportación de regla
+    label: Exportar reglas en YAML
+    export.label: Exportar reglas
   rule_impacted_product_count:
-    label: Productos afectados por las reglas
+    label: Número de productos impactados
     perform.label: Cuenta de productos afectados
   csv_product_import_with_rules:
     label: Importar productos en CSV con reglas
@@ -98,8 +335,16 @@ pim_notification:
   types:
     rule: Configuración de reglas
     mass_edit_rule: Regla de edición masiva
+    execute_rules: Ejecución de las reglas
 pim_menu:
   item:
     rule: Reglas
 pim_title:
   pimee_catalog_rule_rule_index: Reglas
+  pimee_catalog_rule_edit: Editar regla
+  pimee_catalog_rule_new: Reglas
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        execute_rules: Ejecución de las reglas

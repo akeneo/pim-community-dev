@@ -3,6 +3,12 @@ pim_enrich:
     attribute:
       property:
         is_read_only: Sólo lectura
+pimee_import_export:
+  entity:
+    job_instance:
+      flash:
+        update:
+          fail_empty_permission: Debe seleccionar al menos uno permitido para editar el trabajo
 pimee_enrich.entity.category:
   module:
     permissions:

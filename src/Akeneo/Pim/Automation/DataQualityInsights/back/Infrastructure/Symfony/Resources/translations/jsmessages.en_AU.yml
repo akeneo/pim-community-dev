@@ -2,9 +2,9 @@ akeneo_data_quality_insights:
   product_evaluation:
     criteria:
       consistency_textarea_uppercase_words:
-        recommendation: Attributes with uppercases issues
+        recommendation: Attributes with uppercase issues
       consistency_textarea_lowercase_words:
-        recommendation: Attributes with lowercases issues
+        recommendation: Attributes with lowercase issues
       consistency_spelling:
         recommendation: Attributes with spelling issues
       consistency_attribute_spelling:

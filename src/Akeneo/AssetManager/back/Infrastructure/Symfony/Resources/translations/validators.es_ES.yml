@@ -3,17 +3,21 @@ pim_asset_manager:
     validation:
       code:
         pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
-      asset_family_permissions:
-        at_least_one_user_group_should_have_edit_permission: 'Al menos un grupo de usuarios debe tener permiso de edición sobre esta entidad'
       product_attributes:
-        should_not_be_linked: 'No puede eliminar esta entidad debido a que ciertos atributos de productos están relacionados a esta entidad'
+        should_not_be_linked: 'No puede eliminar esta familia porque una colección de recursos está vinculada a esta familia.'
       rule_template:
+        limit_reached: 'Ha alcanzado el límite de %limit% reglas de enlace de producto para la familia de activos "%asset_family_identifier%".'
         extrapolated_attribute_should_exist: 'El atributo "%attribute_code%" no existe para esta familia de recursos'
         extrapolated_attribute_type_should_be_supported: 'El atributo "%attribute_code%" de tipo "%attribute_type%" no es compatible, sólo los siguientes tipos de atributos son soportados para este campo: %supported_attribute_type%'
         channel_should_exist: 'El canal "%channel_code%" no existe'
         locale_should_exist: 'El local "%locale_code%" no está activado o no existe'
         extrapolated_attribute_type_should_not_have_one_value_per_channel: 'El atributo "%attribute_code%" no puede ser usado para la extrapolación porque tiene un valor por canal'
         extrapolated_attribute_type_should_not_have_one_value_per_locale: 'El atributo "%attribute_code%" no puede ser usado para la extrapolación porque tiene un valor por local'
+      transformation:
+        attribute_reference_should_exist: 'El atributo "%attribute_code%" no existe para esta familia de recursos'
+        unknown_extra_field: 'No se esperaba la propiedad {{ field }}.'
+      naming_convention:
+        not_main_media_attribute_code: 'La propiedad debe coincidir con el código del atributo definido como medio principal'
   asset:
     validation:
       code:

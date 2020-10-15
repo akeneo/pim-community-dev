@@ -1921,7 +1921,7 @@ ajv@^6.1.0, ajv@^6.10.0, ajv@^6.10.2, ajv@^6.12.3, ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-"akeneo-design-system@link:./vendor/akeneo/pim-community-dev/akeneo-design-system":
+"akeneo-design-system@link:vendor/akeneo/pim-community-dev/akeneo-design-system":
   version "0.0.0"
   uid ""
 

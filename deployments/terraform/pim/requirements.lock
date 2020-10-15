@@ -1,7 +1,7 @@
 dependencies:
 - name: mysql
   repository: gs://akeneo-charts/
-  version: 2.0.1
+  version: 2.0.4
 - name: elasticsearch
   repository: https://kubernetes-charts.storage.googleapis.com
   version: 1.32.4
