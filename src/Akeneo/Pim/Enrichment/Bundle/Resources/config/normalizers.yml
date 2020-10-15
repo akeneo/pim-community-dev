@@ -208,3 +208,18 @@ services:
             - '@pim_catalog.completeness.missing_required_attributes_calculator'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 110 }
+
+    pim_enrich.normalizer.product_domain_error:
+        class: 'Akeneo\Pim\Enrichment\Component\Error\Normalizer\ProductDomainErrorNormalizer'
+        arguments:
+            - '@pim_enrich.error.documentation_builder_registry'
+        tags:
+            - { name: pim_domain_error_serializer.normalizer, priority: 100 }
+            
+    pim_enrich.normalizer.constraint_violation:
+        class: 'Akeneo\Pim\Enrichment\Component\Error\Normalizer\ConstraintViolationNormalizer'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_enrich.error.documentation_builder_registry'
+        tags:
+            - { name: pim_domain_error_serializer.normalizer, priority: 100 }

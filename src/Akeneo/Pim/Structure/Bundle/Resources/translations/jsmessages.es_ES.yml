@@ -78,8 +78,19 @@ pim_enrich.entity.attribute_option:
     edit:
       cancel_title: Cancelar modificación
       cancel_description: Atención, se perderán los datos no guardados. ¿Seguro que quiere cancelar la modificación de esta nueva opción?
+      options_labels: Opciones de etiquetas
+      options_settings: Ajustes de opciones
+      options_codes: Opciones de código
+      option_code: Opción de código
+      new_option_code: nueva_opcion
+      no_options_msg: '¡Lo sentimos, no hay opciones!'
+      add_option: Haga clic aquí para agregar uno
+      delete_confirmation_title_msg: '¿Eliminar "{{ optionCode }}" de sus opciones?'
+      delete_confirmation_subtitle_msg: '¿Está seguro de que desea eliminar esta opción? Esta acción no se puede deshacer.'
 pim_enrich.entity.association_type:
   label: tipo de asociación
+  property:
+    is_quantified: Asociación con cantidad
   flash:
     update:
       success: Tipo de asociación actualizado correctamente.
@@ -94,6 +105,7 @@ pim_enrich.entity.association_type:
     index: "]-Inf, 1]{{ count }} tipo de asociación|]1, Inf[{{ count }}tipos de asociaciones"
   module:
     create:
+      title: Crear un nuevo tipo de asociación
       button: Crear un tipo de asociación
     delete:
       confirm: '¿Está seguro que desea eliminar este tipo de asociación?'
@@ -137,7 +149,7 @@ pim_enrich.entity.attribute:
     date_min: Fecha min
     decimals_allowed: Valores decimales permitidos
     default_metric_unit:
-      label: Unidad métrica predeterminada
+      label: Unidad de medición por defecto
       choose: Elegir una unidad
     group:
       label: Grupo de atributos
@@ -147,7 +159,6 @@ pim_enrich.entity.attribute:
     max_characters: Caracteres Max
     max_file_size: Tamaño máximo de archivo (MB)
     metric_family:
-      label: Familia métrica
       choose: Seleccionar familia
     minimum_input_length: Longitud mínima para la autocompleción
     name: Nombre
@@ -171,7 +182,7 @@ pim_enrich.entity.attribute:
       pim_catalog_image: Imagen
       pim_catalog_boolean: "Si/No"
       pim_catalog_date: Fecha
-      pim_catalog_metric: Métrica
+      pim_catalog_metric: Medida
       pim_reference_data_simpleselect: Selección simple de datos de referencia
       pim_reference_data_multiselect: Selección múltiple de datos de referencia
     unique: Valor único

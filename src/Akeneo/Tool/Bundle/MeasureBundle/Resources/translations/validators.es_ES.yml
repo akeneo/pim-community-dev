@@ -1,0 +1,13 @@
+pim_measurements:
+  validation:
+    common:
+      code:
+        pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
+        limit_reached: 'No puede crear la familia de medición "%measurement_family_code%" porque ha alcanzado el límite de %limit% familias de medición'
+    measurement_family:
+      standard_unit_code:
+        is_required: 'La unidad estándar es necesaria.'
+        should_be_in_the_list_of_units: 'El código estándar de unidad "%standard_unit_code%" no existe en la lista de unidades para la familia de medida "%measurement_family_code%".'
+        cannot_be_changed: 'El código de unidad estándar de la familia de medición "%measurement_family_code%" no se puede cambiar'
+        operation_should_be_multiply_by_one: 'El código de unidad estándar de la familia de medida "%measurement_family_code%" debe ser una operación multiplicada por 1'
+      should_contain_max_elements: 'Has alcanzado el límite de %limit% familias de medición.'

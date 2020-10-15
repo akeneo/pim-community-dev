@@ -1901,7 +1901,7 @@ ajv@^6.12.3:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-"akeneo-design-system@link:./akeneo-design-system":
+"akeneo-design-system@link:akeneo-design-system":
   version "0.0.0"
   uid ""
 

@@ -131,6 +131,8 @@ pim_import_export:
             help: 自动更新产品的历史记录，可将其关闭以提高性能
           family_variant_column:
             title: 品类变型列
+          with_label:
+            title: 有标签
       file_path: 文件路径
   widget:
     last_operations:

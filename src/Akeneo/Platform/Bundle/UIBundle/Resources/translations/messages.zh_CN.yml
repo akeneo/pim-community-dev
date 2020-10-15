@@ -67,7 +67,9 @@ pim_common:
   categories: 类别
   enabled: 已启用
   family: 品类
+  parent: '父目录:'
   groups: 分组
+  unit: 单位
   yes: "是"
   no: "否　"
 pim_enrich:
@@ -100,7 +102,6 @@ pim_enrich:
       edit_attributes: 编辑产品模型的属性
       categories_view: 查阅产品模型的类别
       history: 查看产品模型的历史记录
-      remove: 移除产品模型
     category:
       list: 列出类别
       create: 创建类别
@@ -427,6 +428,28 @@ Updated At: 更新于
 Enabled: 已启用
 Disabled: 已禁用
 Status: 状态
+pim_datagrid:
+  filters:
+    entity_type:
+      label: 变量
+    family:
+      label: 品类
+    groups:
+      label: 分组
+    enabled:
+      label: 状态
+    completeness:
+      label: 完成
+    created:
+      label: 创建于
+    updated:
+      label: 更新于
+    label_or_identifier:
+      label: 标签或标识符
+    parent:
+      label: 父级
+    identifier:
+      label: 标识符
 #Versioning / history
 Change History: 更改历史记录
 Data Audit: 数据审计

@@ -45,6 +45,7 @@ class AkeneoPimEnrichmentExtension extends Extension
         $loader->load('context.yml');
         $loader->load('converters.yml');
         $loader->load('cursors.yml');
+        $loader->load('documentation.yml');
         $loader->load('elasticsearch.yml');
         $loader->load('enrichment_follow_up.yml');
         $loader->load('entities.yml');
