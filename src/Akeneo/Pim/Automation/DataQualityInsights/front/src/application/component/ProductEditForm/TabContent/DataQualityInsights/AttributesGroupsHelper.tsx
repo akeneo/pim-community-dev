@@ -33,8 +33,8 @@ type Props = {
 };
 
 const AttributeGroupsHelper = ({evaluatedAttributeGroups, allGroupsEvaluated, locale}: Props) => {
-  if (evaluatedAttributeGroups === null) {
-    return (<></>);
+  if (!allGroupsEvaluated && (evaluatedAttributeGroups === null || Object.keys(evaluatedAttributeGroups).length === 0)) {
+    return <></>
   }
 
   return (
@@ -52,7 +52,7 @@ const AttributeGroupsHelper = ({evaluatedAttributeGroups, allGroupsEvaluated, lo
             <>
               {translate('akeneo_data_quality_insights.attribute_group.used_groups_helper')}&nbsp;
               <span data-testid='dqi-evaluated-attribute-groups'>
-                {Object.entries(evaluatedAttributeGroups)
+                {evaluatedAttributeGroups && Object.entries(evaluatedAttributeGroups)
                   .map(([_, group]:[string, AttributeGroup]) => group.labels[locale])
                   .join(', ')
                 }.

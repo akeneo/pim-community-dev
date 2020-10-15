@@ -6,7 +6,7 @@ import {
   useFetchProductDataQualityEvaluation,
   useProductEvaluatedAttributeGroups
 } from "../../../../infrastructure/hooks";
-import {Evaluation, Product} from '../../../../domain';
+import {Evaluation, Product, ProductEvaluation} from '../../../../domain';
 import TabContentWithPortalDecorator from "../../TabContentWithPortalDecorator";
 import {PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME, PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME} from '../../../constant';
 import ProductEvaluationFetcher from "../../../../infrastructure/fetcher/ProductEditForm/ProductEvaluationFetcher";
@@ -21,12 +21,27 @@ export interface DataQualityInsightsTabContentProps {
   product: Product;
 }
 
+const isProductEvaluationPending = (evaluation: ProductEvaluation | undefined, channel: string, locale: string) => {
+  if (!evaluation || Object.keys(evaluation).length === 0) {
+    return true;
+  }
+
+  const axisInProgress: any = Object.keys(evaluation).filter((axisCode: string) => {
+    const axisEvaluation: Evaluation = _get(evaluation, [axisCode, channel, locale]);
+
+    return axisEvaluation.rate?.value === null;
+  });
+
+  return axisInProgress.length > 0;
+}
+
 const BaseDataQualityInsightsTabContent: FunctionComponent<DataQualityInsightsTabContentProps> = ({productEvaluationFetcher}: DataQualityInsightsTabContentProps) => {
   const {locale, channel} = useCatalogContext();
   const productEvaluation = useFetchProductDataQualityEvaluation(productEvaluationFetcher);
   const {evaluatedGroups, allGroupsEvaluated} = useProductEvaluatedAttributeGroups();
 
-  if (evaluatedGroups !== null && Object.keys(evaluatedGroups).length === 0 && !allGroupsEvaluated) {
+  const hasEvaluation = channel && locale && !isProductEvaluationPending(productEvaluation, channel, locale);
+  if (locale && channel && evaluatedGroups !== null && Object.keys(evaluatedGroups).length === 0 && !hasEvaluation) {
     return (<NoAttributeGroups/>);
   }
 
@@ -34,7 +49,7 @@ const BaseDataQualityInsightsTabContent: FunctionComponent<DataQualityInsightsTa
     <>
       {locale && channel && productEvaluation && (
         <>
-          <AttributeGroupsHelper evaluatedAttributeGroups={evaluatedGroups} allGroupsEvaluated={allGroupsEvaluated} locale={locale}/>
+          {hasEvaluation && <AttributeGroupsHelper evaluatedAttributeGroups={evaluatedGroups} allGroupsEvaluated={allGroupsEvaluated} locale={locale}/>}
           {Object.entries(productEvaluation).map(([code, axisEvaluationData]) => {
             const axisEvaluation: Evaluation = _get(axisEvaluationData, [channel, locale], {
               rate: {
