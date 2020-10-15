@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultIds;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
 
@@ -35,11 +36,19 @@ final class GetCriteriaEvaluationsByProductIdQuery implements GetCriteriaEvaluat
     /** @var string */
     private $tableName;
 
-    public function __construct(Connection $db, Clock $clock, string $tableName)
-    {
+    /** @var TransformCriterionEvaluationResultIds */
+    private $transformCriterionEvaluationResultIds;
+
+    public function __construct(
+        Connection $db,
+        Clock $clock,
+        TransformCriterionEvaluationResultIds $transformCriterionEvaluationResultIds,
+        string $tableName
+    ) {
         $this->db = $db;
         $this->clock = $clock;
         $this->tableName = $tableName;
+        $this->transformCriterionEvaluationResultIds = $transformCriterionEvaluationResultIds;
     }
 
     public function execute(ProductId $productId): Read\CriterionEvaluationCollection
@@ -84,6 +93,8 @@ SQL;
         }
 
         $rawResult = json_decode($rawResult, true, JSON_THROW_ON_ERROR);
+        $rawResult = $this->transformCriterionEvaluationResultIds->transformToCodes($rawResult);
+
         $rates = ChannelLocaleRateCollection::fromArrayInt($rawResult['rates'] ?? []);
         $status = CriterionEvaluationResultStatusCollection::fromArrayString($rawResult['status'] ?? []);
 

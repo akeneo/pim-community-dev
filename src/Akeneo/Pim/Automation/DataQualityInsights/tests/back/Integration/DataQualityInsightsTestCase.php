@@ -48,6 +48,24 @@ class DataQualityInsightsTestCase extends TestCase
         );
     }
 
+    protected function deleteAllProductCriterionEvaluations(): void
+    {
+        $this->get('database_connection')->executeQuery('DELETE FROM pim_data_quality_insights_product_criteria_evaluation');
+    }
+
+    protected function deleteAllProductModelCriterionEvaluations(): void
+    {
+        $this->get('database_connection')->executeQuery('DELETE FROM pim_data_quality_insights_product_model_criteria_evaluation');
+    }
+
+    protected function deleteProductModelCriterionEvaluations(int $productModelId): void
+    {
+        $this->get('database_connection')->executeQuery(
+            'DELETE FROM pim_data_quality_insights_product_model_criteria_evaluation WHERE product_id = :productId',
+            ['productId' => $productModelId]
+        );
+    }
+
     protected function createProduct(string $identifier, array $data = []): ProductInterface
     {
         $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
@@ -59,6 +77,14 @@ class DataQualityInsightsTestCase extends TestCase
         }
 
         $this->get('pim_catalog.saver.product')->save($product);
+
+        return $product;
+    }
+
+    protected function createProductWithoutEvaluations(string $identifier, array $data = []): ProductInterface
+    {
+        $product = $this->createProduct($identifier, $data);
+        $this->deleteProductCriterionEvaluations($product->getId());
 
         return $product;
     }
@@ -97,6 +123,14 @@ class DataQualityInsightsTestCase extends TestCase
         }
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
+
+        return $productModel;
+    }
+
+    protected function createProductModelWithoutEvaluations(string $code, string $familyVariant, array $data = []): ProductModelInterface
+    {
+        $productModel = $this->createProductModel($code, $familyVariant, $data);
+        $this->deleteProductModelCriterionEvaluations($productModel->getId());
 
         return $productModel;
     }
