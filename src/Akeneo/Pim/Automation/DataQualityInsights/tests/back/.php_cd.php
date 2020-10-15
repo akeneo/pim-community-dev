@@ -143,7 +143,9 @@ $rules = [
             'Mekras\Speller',
             'League\Flysystem',
 
+            // Common Dependencies
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
+            'Akeneo\Tool\Component\StorageUtils\Cache\LRUCache',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure'),
 ];
