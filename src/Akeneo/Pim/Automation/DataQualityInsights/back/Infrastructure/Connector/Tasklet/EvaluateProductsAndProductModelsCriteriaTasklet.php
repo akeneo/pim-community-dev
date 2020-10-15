@@ -85,13 +85,11 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
                 $continueToEvaluateProductModels = $evaluationCount > 0;
             }
 
-            if($continueToEvaluateProducts === false && $continueToEvaluateProductModels === false)
-            {
+            if ($continueToEvaluateProducts === false && $continueToEvaluateProductModels === false) {
                 sleep(60);
                 $continueToEvaluateProducts = true;
                 $continueToEvaluateProductModels = true;
             }
-
         } while ($this->isTimeboxReached($startTime) === false);
     }
 
