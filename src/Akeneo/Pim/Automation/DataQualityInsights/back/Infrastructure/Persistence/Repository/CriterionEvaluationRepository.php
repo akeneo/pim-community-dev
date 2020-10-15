@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\R
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultCodes;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\DeadlockException;
 
@@ -23,9 +24,13 @@ class CriterionEvaluationRepository
     /** @var Connection */
     protected $dbConnection;
 
-    public function __construct(Connection $dbConnection)
+    /** @var TransformCriterionEvaluationResultCodes */
+    private $transformCriterionEvaluationResult;
+
+    public function __construct(Connection $dbConnection, TransformCriterionEvaluationResultCodes $transformCriterionEvaluationResult)
     {
         $this->dbConnection = $dbConnection;
+        $this->transformCriterionEvaluationResult = $transformCriterionEvaluationResult;
     }
 
     public function createCriterionEvaluationsForProducts(Write\CriterionEvaluationCollection $criteriaEvaluations): void
@@ -177,11 +182,19 @@ SQL;
 
     private function formatCriterionEvaluationResult(?Write\CriterionEvaluationResult $criterionEvaluationResult): ?string
     {
-        return null !== $criterionEvaluationResult ? json_encode([
+        if (null === $criterionEvaluationResult) {
+            return null;
+        }
+
+        $formattedCriterionEvaluationResult = [
             'rates' => $criterionEvaluationResult->getRates()->toArrayInt(),
             'status' => $criterionEvaluationResult->getStatus()->toArrayString(),
             'data' => $criterionEvaluationResult->getDataToArray(),
-        ]) : null;
+        ];
+
+        $formattedCriterionEvaluationResult = $this->transformCriterionEvaluationResult->transformToIds($formattedCriterionEvaluationResult);
+
+        return json_encode($formattedCriterionEvaluationResult);
     }
 
     private function formatDate(?\DateTimeImmutable $date): ?string

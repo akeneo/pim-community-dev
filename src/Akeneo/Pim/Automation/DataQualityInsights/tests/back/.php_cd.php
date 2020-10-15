@@ -153,7 +153,9 @@ $rules = [
             'League\Flysystem',
             'Webmozart\Assert\Assert',
 
+            // Common Dependencies
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
+            'Akeneo\Tool\Component\StorageUtils\Cache\LRUCache',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure'),
 ];

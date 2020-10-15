@@ -5,6 +5,7 @@ services:
         arguments:
             - '@database_connection'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultIds'
             - '%akeneo.pim.automation.data_quality_insights.persistence.product_criterion_evaluation_table%'
 
     akeneo.pim.automation.data_quality_insights.query.get_product_model_criteria_evaluations:
@@ -12,6 +13,7 @@ services:
         arguments:
             - '@database_connection'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultIds'
             - '%akeneo.pim.automation.data_quality_insights.persistence.product_model_criterion_evaluation_table%'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery:
