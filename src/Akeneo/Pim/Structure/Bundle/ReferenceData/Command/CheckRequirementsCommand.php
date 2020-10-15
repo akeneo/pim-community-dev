@@ -9,7 +9,6 @@ use Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker\ReferenceDataNa
 use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
 use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,7 +27,7 @@ class CheckRequirementsCommand extends Command
     /** @var ConfigurationRegistryInterface */
     private $configurationRegistry;
 
-    /** @var EntityManagerInterface */
+    /** @var ObjectManager */
     private $entityManager;
 
     /** @var string */
