@@ -1,5 +1,4 @@
 # Akeneo Design System Repository
-![Preview](public/preview.png)
 
 ## What is a design system?
 
