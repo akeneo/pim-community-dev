@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence;
+namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Transformation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\ConvertCriterionEvaluationResultCodes;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultCodes;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ConvertCriterionEvaluationResultCodesIntegration extends DataQualityInsightsTestCase
+final class TransformCriterionEvaluationResultCodesIntegration extends DataQualityInsightsTestCase
 {
-    public function test_it_converts_a_criterion_evaluation_result_from_codes_to_ids()
+    public function test_it_transforms_a_criterion_evaluation_result_from_codes_to_ids()
     {
         $ecommerceId = $this->createChannel('ecommerce', ['locales' => ['en_US', 'fr_FR']])->getId();
         $mobileId = $this->createChannel('mobile', ['locales' => ['en_US', 'de_DE']])->getId();
@@ -65,7 +65,7 @@ final class ConvertCriterionEvaluationResultCodesIntegration extends DataQuality
         ];
 
         $expectedEvaluationResult = [
-            ConvertCriterionEvaluationResultCodes::PROPERTIES_ID['data'] => [
+            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data'] => [
                 $ecommerceId => [
                     $enUsId => [
                         $nameId => 50,
@@ -80,7 +80,7 @@ final class ConvertCriterionEvaluationResultCodesIntegration extends DataQuality
                     $deDeId => [],
                 ],
             ],
-            ConvertCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => [
+            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => [
                 $ecommerceId => [
                     $enUsId => 25,
                     $frFrId => 75,
@@ -90,19 +90,19 @@ final class ConvertCriterionEvaluationResultCodesIntegration extends DataQuality
                     $deDeId => null,
                 ],
             ],
-            ConvertCriterionEvaluationResultCodes::PROPERTIES_ID['status'] => [
+            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['status'] => [
                 $ecommerceId => [
-                    $enUsId => ConvertCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::DONE],
-                    $frFrId => ConvertCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::IN_PROGRESS],
+                    $enUsId => TransformCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::DONE],
+                    $frFrId => TransformCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::IN_PROGRESS],
                 ],
                 $mobileId => [
-                    $enUsId => ConvertCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::ERROR],
-                    $deDeId => ConvertCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::NOT_APPLICABLE],
+                    $enUsId => TransformCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::ERROR],
+                    $deDeId => TransformCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::NOT_APPLICABLE],
                 ],
             ]
         ];
 
-        $convertedEvaluationResult = $this->get(ConvertCriterionEvaluationResultCodes::class)->convertToIds($evaluationResult);
+        $convertedEvaluationResult = $this->get(TransformCriterionEvaluationResultCodes::class)->transformToIds($evaluationResult);
 
         $this->assertEquals($expectedEvaluationResult, $convertedEvaluationResult);
     }

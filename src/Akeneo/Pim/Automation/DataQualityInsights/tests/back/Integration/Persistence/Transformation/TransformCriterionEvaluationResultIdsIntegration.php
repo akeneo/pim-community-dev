@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence;
+namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Transformation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\ConvertCriterionEvaluationResultCodes;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\ConvertCriterionEvaluationResultIds;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultCodes;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultIds;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ConvertCriterionEvaluationResultIdsIntegration extends DataQualityInsightsTestCase
+final class TransformCriterionEvaluationResultIdsIntegration extends DataQualityInsightsTestCase
 {
-    public function test_it_converts_a_criterion_evaluation_result_from_ids_to_codes()
+    public function test_it_transforms_a_criterion_evaluation_result_from_ids_to_codes()
     {
         $ecommerceId = $this->createChannel('ecommerce', ['locales' => ['en_US', 'fr_FR']])->getId();
         $mobileId = $this->createChannel('mobile', ['locales' => ['en_US', 'de_DE']])->getId();
@@ -26,7 +26,7 @@ final class ConvertCriterionEvaluationResultIdsIntegration extends DataQualityIn
         $descriptionId = $this->createAttribute('description')->getId();
 
         $evaluationResult = [
-            ConvertCriterionEvaluationResultCodes::PROPERTIES_ID['data'] => [
+            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data'] => [
                 $ecommerceId => [
                     $enUsId => [
                         $nameId => 50,
@@ -41,7 +41,7 @@ final class ConvertCriterionEvaluationResultIdsIntegration extends DataQualityIn
                     $deDeId => [],
                 ],
             ],
-            ConvertCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => [
+            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => [
                 $ecommerceId => [
                     $enUsId => 25,
                     $frFrId => 75,
@@ -51,14 +51,14 @@ final class ConvertCriterionEvaluationResultIdsIntegration extends DataQualityIn
                     $deDeId => null,
                 ],
             ],
-            ConvertCriterionEvaluationResultCodes::PROPERTIES_ID['status'] => [
+            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['status'] => [
                 $ecommerceId => [
-                    $enUsId => ConvertCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::DONE],
-                    $frFrId => ConvertCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::IN_PROGRESS],
+                    $enUsId => TransformCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::DONE],
+                    $frFrId => TransformCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::IN_PROGRESS],
                 ],
                 $mobileId => [
-                    $enUsId => ConvertCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::ERROR],
-                    $deDeId => ConvertCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::NOT_APPLICABLE],
+                    $enUsId => TransformCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::ERROR],
+                    $deDeId => TransformCriterionEvaluationResultCodes::STATUS_ID[CriterionEvaluationResultStatus::NOT_APPLICABLE],
                 ],
             ]
         ];
@@ -103,7 +103,7 @@ final class ConvertCriterionEvaluationResultIdsIntegration extends DataQualityIn
             ]
         ];
 
-        $convertedEvaluationResult = $this->get(ConvertCriterionEvaluationResultIds::class)->convertToCodes($evaluationResult);
+        $convertedEvaluationResult = $this->get(TransformCriterionEvaluationResultIds::class)->transformToCodes($evaluationResult);
 
         $this->assertEquals($expectedEvaluationResult, $convertedEvaluationResult);
     }
