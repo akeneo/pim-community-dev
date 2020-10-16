@@ -12,7 +12,9 @@ use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Step\StepInterface;
 use Akeneo\Tool\Component\Batch\Step\TrackableStepInterface;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -66,14 +68,32 @@ class GetJobExecutionTracking
         $jobExecutionTracking->totalSteps = count($job->getSteps());
 
         $stepsExecutionTracking = [];
-        foreach ($stepExecutions as $stepExecution) {
+
+        /** @TODO add JobWithStepsInterface to asset getSteps exist*/
+        /** @var StepInterface $step */
+        foreach ($job->getSteps() as $step) {
+            $stepName = $step->getName();
+            $stepExecutionIndex = $this->searchMatchingStepExecutionIndex($stepExecutions, $stepName);
+            if ($stepExecutionIndex === -1) {
+                $stepExecutionTracking = new StepExecutionTracking();
+                $stepExecutionTracking->name = $stepName;
+                $stepExecutionTracking->status = 'NOT STARTED';
+                if ($step instanceof TrackableStepInterface && $step->isTrackable()) {
+                    $stepExecutionTracking->isTrackable = true;
+                }
+
+                $stepsExecutionTracking[] = $stepExecutionTracking;
+                continue;
+            }
+
+            $stepExecution = $stepExecutions[$stepExecutionIndex];
             $duration = $this->calculateDuration($stepExecution);
 
             $stepExecutionTracking = new StepExecutionTracking();
-            $stepExecutionTracking->name = $stepExecution->getStepName();
+            $stepExecutionTracking->name = $stepName;
             $stepExecutionTracking->status = $this->getMappedStatus($stepExecution->getStatus());
             $stepExecutionTracking->duration = $duration;
-            $stepExecutionTracking->hasError = count($stepExecution->getErrors()) !== 0;
+            $stepExecutionTracking->hasError = count($stepExecution->getFailureExceptions()) !== 0 || count($stepExecution->getErrors()) !== 0;
             $stepExecutionTracking->hasWarning = count($stepExecution->getWarnings()) !== 0;
 
             $step = $job->getStep($stepExecution->getStepName());
@@ -84,6 +104,8 @@ class GetJobExecutionTracking
             }
 
             $stepsExecutionTracking[] = $stepExecutionTracking;
+
+            unset($stepExecutions[$stepExecutionIndex]);
         }
 
         $jobExecutionTracking->steps = $stepsExecutionTracking;
@@ -128,5 +150,17 @@ class GetJobExecutionTracking
         }
 
         return $duration;
+    }
+
+    private function searchMatchingStepExecutionIndex(PersistentCollection $stepExecutions, string $stepName)
+    {
+        foreach ($stepExecutions as $stepExecutionIndex => $stepExecution) {
+            if ($stepExecution->getStepName() === $stepName) {
+                return $stepExecutionIndex;
+            }
+        }
+
+        /** @TODO maybe use Exception */
+        return -1;
     }
 }

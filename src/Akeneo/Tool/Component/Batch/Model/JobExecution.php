@@ -293,7 +293,6 @@ class JobExecution
         return $this->user;
     }
 
-
     /**
      * Sets the user who launched the job
      *
