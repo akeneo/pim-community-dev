@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\R
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\ConvertCriterionEvaluationResultCodes;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\DeadlockException;
 
@@ -23,9 +24,13 @@ class CriterionEvaluationRepository
     /** @var Connection */
     protected $dbConnection;
 
-    public function __construct(Connection $dbConnection)
+    /** @var ConvertCriterionEvaluationResultCodes */
+    private $convertCriterionEvaluationResult;
+
+    public function __construct(Connection $dbConnection, ConvertCriterionEvaluationResultCodes $convertCriterionEvaluationResult)
     {
         $this->dbConnection = $dbConnection;
+        $this->convertCriterionEvaluationResult = $convertCriterionEvaluationResult;
     }
 
     public function createCriterionEvaluationsForProducts(Write\CriterionEvaluationCollection $criteriaEvaluations): void
@@ -177,11 +182,19 @@ SQL;
 
     private function formatCriterionEvaluationResult(?Write\CriterionEvaluationResult $criterionEvaluationResult): ?string
     {
-        return null !== $criterionEvaluationResult ? json_encode([
+        if (null === $criterionEvaluationResult) {
+            return null;
+        }
+
+        $formattedCriterionEvaluationResult = [
             'rates' => $criterionEvaluationResult->getRates()->toArrayInt(),
             'status' => $criterionEvaluationResult->getStatus()->toArrayString(),
             'data' => $criterionEvaluationResult->getDataToArray(),
-        ]) : null;
+        ];
+
+        $formattedCriterionEvaluationResult = $this->convertCriterionEvaluationResult->convertToIds($formattedCriterionEvaluationResult);
+
+        return json_encode($formattedCriterionEvaluationResult);
     }
 
     private function formatDate(?\DateTimeImmutable $date): ?string
