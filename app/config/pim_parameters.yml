@@ -110,5 +110,3 @@ parameters:
     count_users_limit: -1
 
     env(AKENEO_PIM_URL): 'http://localhost'
-
-    comm_panel_api_url: 'https://pim-comm-panel.akeneo.com'
