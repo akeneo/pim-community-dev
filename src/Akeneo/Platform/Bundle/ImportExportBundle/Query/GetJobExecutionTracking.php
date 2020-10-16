@@ -9,6 +9,7 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Model\StepExecutionTracking;
 use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -56,63 +57,85 @@ class GetJobExecutionTracking
 
         $jobExecution = $this->jobExecutionManager->resolveJobExecutionStatus($jobExecution);
         $jobName = $jobExecution->getJobInstance()->getJobName();
+        $stepExecutions = $jobExecution->getStepExecutions();
 
         /* What do we do if we have a UndefinedJobException ? */
         $job = $this->jobRegistry->get($jobName);
-
-        $stepExecutions = $jobExecution->getStepExecutions();
 
         $jobExecutionTracking = new JobExecutionTracking();
         $jobExecutionTracking->status = $this->getMappedStatus($jobExecution->getStatus());
         $jobExecutionTracking->currentStep = count($jobExecution->getStepExecutions());
         $jobExecutionTracking->totalSteps = count($job->getSteps());
-
-        $stepsExecutionTracking = [];
-
-        /** @TODO add JobWithStepsInterface to asset getSteps exist*/
-        /** @var StepInterface $step */
-        foreach ($job->getSteps() as $step) {
-            $stepName = $step->getName();
-            $stepExecutionIndex = $this->searchMatchingStepExecutionIndex($stepExecutions, $stepName);
-            if ($stepExecutionIndex === -1) {
-                $stepExecutionTracking = new StepExecutionTracking();
-                $stepExecutionTracking->name = $stepName;
-                $stepExecutionTracking->status = 'NOT STARTED';
-                if ($step instanceof TrackableStepInterface && $step->isTrackable()) {
-                    $stepExecutionTracking->isTrackable = true;
-                }
-
-                $stepsExecutionTracking[] = $stepExecutionTracking;
-                continue;
-            }
-
-            $stepExecution = $stepExecutions[$stepExecutionIndex];
-            $duration = $this->calculateDuration($stepExecution);
-
-            $stepExecutionTracking = new StepExecutionTracking();
-            $stepExecutionTracking->name = $stepName;
-            $stepExecutionTracking->status = $this->getMappedStatus($stepExecution->getStatus());
-            $stepExecutionTracking->duration = $duration;
-            $stepExecutionTracking->hasError = count($stepExecution->getFailureExceptions()) !== 0 || count($stepExecution->getErrors()) !== 0;
-            $stepExecutionTracking->hasWarning = count($stepExecution->getWarnings()) !== 0;
-
-            $step = $job->getStep($stepExecution->getStepName());
-            if ($step instanceof TrackableStepInterface && $step->isTrackable()) {
-                $stepExecutionTracking->isTrackable = true;
-                $stepExecutionTracking->processedItems = $stepExecution->getProcessedItems();
-                $stepExecutionTracking->totalItems = $stepExecution->getTotalItems();
-            }
-
-            $stepsExecutionTracking[] = $stepExecutionTracking;
-
-            unset($stepExecutions[$stepExecutionIndex]);
-        }
-
-        $jobExecutionTracking->steps = $stepsExecutionTracking;
+        $jobExecutionTracking->steps = $this->getStepExecutionTracking($job, $stepExecutions);
 
         return $jobExecutionTracking;
     }
 
+    private function getStepExecutionTracking(JobInterface $job, $stepExecutions): array
+    {
+        $stepsExecutionTracking = [];
+
+        /** @TODO add JobWithStepsInterface to assert getSteps function exist */
+        /** @var StepInterface $step */
+        foreach ($job->getSteps() as $step) {
+            $stepName = $step->getName();
+            $stepExecutionIndex = $this->searchFirstMatchingStepExecutionIndex($stepExecutions, $stepName);
+            if ($stepExecutionIndex === -1) {
+                $stepsExecutionTracking[] = $this->createStepExecutionTrackingNotStartedFromStep($step);
+                continue;
+            }
+
+            $stepExecution = $stepExecutions[$stepExecutionIndex];
+            $stepsExecutionTracking[] = $this->createStepExecutionTrackingFromStepAndStepExecution($step, $stepExecution);
+            unset($stepExecutions[$stepExecutionIndex]);
+        }
+
+        return $stepsExecutionTracking;
+    }
+
+    private function searchFirstMatchingStepExecutionIndex(PersistentCollection $stepExecutions, string $stepName)
+    {
+        foreach ($stepExecutions as $stepExecutionIndex => $stepExecution) {
+            if ($stepExecution->getStepName() === $stepName) {
+                return $stepExecutionIndex;
+            }
+        }
+
+        /** @TODO maybe use Exception */
+        return -1;
+    }
+
+    private function createStepExecutionTrackingNotStartedFromStep(StepInterface $step)
+    {
+        $stepExecutionTracking = new StepExecutionTracking();
+        $stepExecutionTracking->name = $step->getName();
+        $stepExecutionTracking->status = 'NOT STARTED';
+        if ($step instanceof TrackableStepInterface && $step->isTrackable()) {
+            $stepExecutionTracking->isTrackable = true;
+        }
+
+        return $stepExecutionTracking;
+    }
+
+    private function createStepExecutionTrackingFromStepAndStepExecution(StepInterface $step, StepExecution $stepExecution)
+    {
+        $duration = $this->calculateDuration($stepExecution);
+
+        $stepExecutionTracking = new StepExecutionTracking();
+        $stepExecutionTracking->name = $step->getName();
+        $stepExecutionTracking->status = $this->getMappedStatus($stepExecution->getStatus());
+        $stepExecutionTracking->duration = $duration;
+        $stepExecutionTracking->hasError = count($stepExecution->getFailureExceptions()) !== 0 || count($stepExecution->getErrors()) !== 0;
+        $stepExecutionTracking->hasWarning = count($stepExecution->getWarnings()) !== 0;
+
+        if ($step instanceof TrackableStepInterface && $step->isTrackable()) {
+            $stepExecutionTracking->isTrackable = true;
+            $stepExecutionTracking->processedItems = $stepExecution->getProcessedItems();
+            $stepExecutionTracking->totalItems = $stepExecution->getTotalItems();
+        }
+
+        return $stepExecutionTracking;
+    }
 
     private function getMappedStatus(BatchStatus $batchStatus)
     {
@@ -150,17 +173,5 @@ class GetJobExecutionTracking
         }
 
         return $duration;
-    }
-
-    private function searchMatchingStepExecutionIndex(PersistentCollection $stepExecutions, string $stepName)
-    {
-        foreach ($stepExecutions as $stepExecutionIndex => $stepExecution) {
-            if ($stepExecution->getStepName() === $stepName) {
-                return $stepExecutionIndex;
-            }
-        }
-
-        /** @TODO maybe use Exception */
-        return -1;
     }
 }
