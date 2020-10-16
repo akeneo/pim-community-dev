@@ -2,6 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\InstallerBundle;
 
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Infrastructure\Framework\Symfony\Installer\FrontendDependencies;
 use Composer\Script\Event;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -20,6 +21,12 @@ class ComposerScripts
      */
     public static function copyUpgradesFiles(Event $event)
     {
+        // dirty hack to add missing dependencies for the communication panel and avoid BC
+        // because pim:assets:install command is not executed after composer update in EE standard
+        $projectDir = $event->getComposer()->getConfig()->get('vendor-dir') . DIRECTORY_SEPARATOR . '..';
+        $frontendDependencies = new FrontendDependencies(new Filesystem(), $projectDir);
+        $frontendDependencies->addRequiredDependencies();
+
         $event->getIO()->write('Copying migration folder from Akeneo PIM dependency to standard version.');
 
         static::copyUpgradesFolder($event);
