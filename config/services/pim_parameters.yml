@@ -73,3 +73,6 @@ parameters:
 
     # url to request to fetch announcements in the communication panel
     comm_panel_api_url: '%env(COMM_PANEL_API_URL)%'
+
+    webhook_concurrency: 5
+    webhook_timeout: 0.5

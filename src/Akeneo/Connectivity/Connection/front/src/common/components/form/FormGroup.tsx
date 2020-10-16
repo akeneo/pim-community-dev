@@ -1,6 +1,7 @@
 import React, {cloneElement, ComponentProps, ReactElement, ReactNode} from 'react';
 import styled from 'styled-components';
 import {FormControlError} from './FormControlError';
+import {FormControlSuccess} from './FormControlSuccess';
 import {FormInput} from './FormInput';
 import {FormLabel} from './FormLabel';
 
@@ -9,31 +10,34 @@ interface Props {
     controlId?: string;
     label?: string;
     errors?: string[];
+    success?: string;
     required?: boolean;
     helper?: ReactNode;
 }
 
-export const FormGroup = ({children: control, controlId, label, errors, helper, required = false}: Props) => (
+export const FormGroup = ({children: control, controlId, label, errors, success, helper, required = false}: Props) => (
     <div className='AknFieldContainer'>
         {label && (
             <div className='AknFieldContainer-header'>
                 <FormLabel id={controlId} label={label} required={required || control.props.required} />
             </div>
         )}
-
         <InputContainer className='AknFieldContainer-inputContainer'>
             {cloneElement(control, {id: controlId})}
         </InputContainer>
-
         {helper && (
             <div className='AknFieldContainer-footer'>
                 <FormControlHelper>{helper}</FormControlHelper>
             </div>
         )}
-
         {errors && errors.length > 0 && (
             <div className='AknFieldContainer-footer'>
                 <FormControlErrors errors={errors} />
+            </div>
+        )}
+        {success && (
+            <div className='AknFieldContainer-footer'>
+                <FormControlSuccess success={success} />
             </div>
         )}
     </div>
