@@ -27,6 +27,7 @@ lint-back:
 	$(MAKE) connectivity-connection-lint-back
 	$(MAKE) communication-channel-lint-back
 	$(MAKE) data-quality-insights-lint-back
+	$(MAKE) data-quality-insights-phpstan
 	$(MAKE) enrichment-lint-back
 
 .PHONY: lint-front
