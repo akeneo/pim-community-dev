@@ -1,0 +1,61 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Yolo} from './Yolo.tsx';
+
+<Meta
+  title="Components/Yolo"
+  component={Yolo}
+  argTypes={{
+    level: {control: {type: 'select', options: ['primary', 'secondary', 'tertiary', 'danger']}},
+  }}
+  args={{level: 'primary', children: 'Yolo text'}}
+/>
+
+# Yolo
+
+## Usage
+
+TODO
+
+### TODO
+
+TODO
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <Yolo {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on level
+
+<Canvas>
+  <Story name="Level">
+    {args => {
+      return (
+        <>
+          <Yolo {...args} level="primary">
+            Primary
+          </Yolo>
+          <Yolo {...args} level="secondary">
+            Secondary
+          </Yolo>
+          <Yolo {...args} level="tertiary">
+            Tertiary
+          </Yolo>
+          <Yolo {...args} level="warning">
+            Warning
+          </Yolo>
+          <Yolo {...args} level="danger">
+            Danger
+          </Yolo>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
