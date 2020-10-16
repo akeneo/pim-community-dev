@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence;
+namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation;
 
 use Akeneo\Tool\Component\StorageUtils\Cache\LRUCache;
 use Doctrine\DBAL\Connection;
@@ -11,7 +11,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ConvertCriterionEvaluationResultIds
+final class TransformCriterionEvaluationResultIds
 {
     private const LRU_CACHE_SIZE = 1000;
 
@@ -33,25 +33,25 @@ final class ConvertCriterionEvaluationResultIds
         $this->attributeCodesByIds = new LRUCache(self::LRU_CACHE_SIZE);
     }
 
-    public function convertToCodes(array $evaluationResult): array
+    public function transformToCodes(array $evaluationResult): array
     {
         $resultByCodes = [];
-        $propertiesIds = ConvertCriterionEvaluationResultCodes::PROPERTIES_ID;
+        $propertiesIds = TransformCriterionEvaluationResultCodes::PROPERTIES_ID;
         $propertiesCodes = array_flip($propertiesIds);
 
         foreach ($evaluationResult as $propertyId => $propertyData) {
             switch ($propertyId) {
                 case $propertiesIds['data']:
-                    $propertyDataByCodes = ['attributes_with_rates' => $this->convertResultAttributeRatesIdsToCodes($propertyData)];
+                    $propertyDataByCodes = ['attributes_with_rates' => $this->transformResultAttributeRatesIdsToCodes($propertyData)];
                     break;
                 case $propertiesIds['rates']:
-                    $propertyDataByCodes = $this->convertRatesIdsToCodes($propertyData);
+                    $propertyDataByCodes = $this->transformRatesIdsToCodes($propertyData);
                     break;
                 case $propertiesIds['status']:
-                    $propertyDataByCodes = $this->convertStatusIdsToCodes($propertyData);
+                    $propertyDataByCodes = $this->transformStatusIdsToCodes($propertyData);
                     break;
                 default:
-                    throw new CriterionEvaluationResultConversionFailedException(sprintf('Unknown property id "%s"', $propertyId));
+                    throw new CriterionEvaluationResultTransformationFailedException(sprintf('Unknown property id "%s"', $propertyId));
             }
 
             $resultByCodes[$propertiesCodes[$propertyId]] = $propertyDataByCodes;
@@ -60,7 +60,7 @@ final class ConvertCriterionEvaluationResultIds
         return $resultByCodes;
     }
 
-    private function convertChannelLocaleDataFromIdsToCodes(array $channelLocaleData, \Closure $convertData): array
+    private function transformChannelLocaleDataFromIdsToCodes(array $channelLocaleData, \Closure $transformData): array
     {
         $channelLocaleDataByCodes = [];
 
@@ -76,16 +76,16 @@ final class ConvertCriterionEvaluationResultIds
                     continue;
                 }
 
-                $channelLocaleDataByCodes[$channelCode][$localeCode] = $convertData($data);
+                $channelLocaleDataByCodes[$channelCode][$localeCode] = $transformData($data);
             }
         }
 
         return $channelLocaleDataByCodes;
     }
 
-    private function convertResultAttributeRatesIdsToCodes(array $resultAttributeIdsRates): array
+    private function transformResultAttributeRatesIdsToCodes(array $resultAttributeIdsRates): array
     {
-        return $this->convertChannelLocaleDataFromIdsToCodes($resultAttributeIdsRates, function (array $attributeRates) {
+        return $this->transformChannelLocaleDataFromIdsToCodes($resultAttributeIdsRates, function (array $attributeRates) {
             $attributeCodesRates = [];
             $attributesCodes = $this->getAttributesCodes(array_keys($attributeRates));
 
@@ -100,19 +100,19 @@ final class ConvertCriterionEvaluationResultIds
         });
     }
 
-    private function convertRatesIdsToCodes(array $ratesIds): array
+    private function transformRatesIdsToCodes(array $ratesIds): array
     {
-        return $this->convertChannelLocaleDataFromIdsToCodes($ratesIds, function ($rate) {
+        return $this->transformChannelLocaleDataFromIdsToCodes($ratesIds, function ($rate) {
             return $rate;
         });
     }
 
-    private function convertStatusIdsToCodes(array $statusIds): array
+    private function transformStatusIdsToCodes(array $statusIds): array
     {
-        $statusCodes = array_flip(ConvertCriterionEvaluationResultCodes::STATUS_ID);
-        return $this->convertChannelLocaleDataFromIdsToCodes($statusIds, function ($statusId) use ($statusCodes) {
+        $statusCodes = array_flip(TransformCriterionEvaluationResultCodes::STATUS_ID);
+        return $this->transformChannelLocaleDataFromIdsToCodes($statusIds, function ($statusId) use ($statusCodes) {
             if (!isset($statusCodes[$statusId])) {
-                throw new CriterionEvaluationResultConversionFailedException(sprintf('Unknown status id "%s"', $statusId));
+                throw new CriterionEvaluationResultTransformationFailedException(sprintf('Unknown status id "%s"', $statusId));
             }
 
             return $statusCodes[$statusId];
