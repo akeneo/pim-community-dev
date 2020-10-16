@@ -24,6 +24,7 @@ const SquadReview = React.forwardRef<HTMLSpanElement, SquadReviewProps>(
     return (
       <SquadReviewContainer level={level} ref={forwardedRef} {...rest}>
         {children}
+        <span>Hello Squad review</span>
       </SquadReviewContainer>
     );
   }
