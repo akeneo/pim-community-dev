@@ -140,6 +140,7 @@
     - replace `Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface $channelSaver` by `Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface $channelSaver`
 - Add `getChannels()` and `getLabel()` methods in `Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface` interface
 - Change `addFieldSorter()` method of `Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface` to return `Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface`
+- The `Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface` interface now also extends `Doctrine\Common\Persistence\ObjectRepository` interface
 
 ### CLI commands
 

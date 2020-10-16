@@ -215,7 +215,6 @@ class MediaFileController
     {
         $filename = urldecode($code);
 
-        Assert::implementsInterface($this->mediaRepository, ObjectRepository::class);
         $fileInfo = $this->mediaRepository->findOneBy([
             'key'     => $filename,
             'storage' => FileStorage::CATALOG_STORAGE_ALIAS
