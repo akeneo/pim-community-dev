@@ -1,0 +1,61 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {SquadReview} from './SquadReview.tsx';
+
+<Meta
+  title="Components/SquadReview"
+  component={SquadReview}
+  argTypes={{
+    level: {control: {type: 'select', options: ['primary', 'secondary', 'tertiary', 'danger']}},
+  }}
+  args={{level: 'primary', children: 'SquadReview text'}}
+/>
+
+# SquadReview
+
+## Usage
+
+TODO
+
+### TODO
+
+TODO
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <SquadReview {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on level
+
+<Canvas>
+  <Story name="Level">
+    {args => {
+      return (
+        <>
+          <SquadReview {...args} level="primary">
+            Primary
+          </SquadReview>
+          <SquadReview {...args} level="secondary">
+            Secondary
+          </SquadReview>
+          <SquadReview {...args} level="tertiary">
+            Tertiary
+          </SquadReview>
+          <SquadReview {...args} level="warning">
+            Warning
+          </SquadReview>
+          <SquadReview {...args} level="danger">
+            Danger
+          </SquadReview>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
