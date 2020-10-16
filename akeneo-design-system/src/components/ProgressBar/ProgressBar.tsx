@@ -1,6 +1,6 @@
 import React, {Ref} from 'react';
-import styled from 'styled-components';
-import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
+import styled, {css} from 'styled-components';
+import {AkeneoThemedProps, getColor, getColorForLevel, getFontSize, Level} from '../../theme';
 
 const ProgressBarContainer = styled.div``;
 
@@ -33,14 +33,18 @@ const ProgressBarBackground = styled.div<{height: ProgressBarHeight} & AkeneoThe
   position: relative;
 `;
 
-const ProgressBarFill = styled.div<{width: number; color: string}>`
-  background: ${props => props.color};
+const ProgressBarFill = styled.div.attrs<{width: number; level: Level}>(props => ({
+  style: {width: props.width},
+}))<{level: Level}>`
+  ${({level}: {level: Level} & AkeneoThemedProps) => css`
+    background: ${getColorForLevel(level, 100)};
+  `}
+
   height: 100%;
   left: 0;
   position: absolute;
   top: 0;
   transition: width 0.3s;
-  width: ${({width}) => `${width}%`};
 `;
 
 const getHeight = (height: ProgressBarHeight): string => {
@@ -69,14 +73,19 @@ type ProgressBarHeight = 'small' | 'large';
 
 type ProgressBarProps = {
   /**
-   * Define the color of the progress bar.
+   * Define the level of the progress bar.
    */
-  color: string;
+  level: Level;
 
   /**
    * The progression of the progress bar in percentage (from 0 to 100).
    */
   percent: number;
+
+  /**
+   * Is the style of the progress bar should be light
+   */
+  light: boolean;
 
   /**
    * The progress bar title.
@@ -99,7 +108,7 @@ type ProgressBarProps = {
  */
 const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
   (
-    {color, percent, title, progressLabel, height = 'small', ...rest}: ProgressBarProps,
+    {level, percent, title, progressLabel, height = 'small', ...rest}: ProgressBarProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
     return (
@@ -117,7 +126,7 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
           aria-valuemax="100"
           height={height}
         >
-          <ProgressBarFill color={color} width={sanitizePercent(percent)} />
+          <ProgressBarFill level={level} width={sanitizePercent(percent)} />
         </ProgressBarBackground>
       </ProgressBarContainer>
     );
