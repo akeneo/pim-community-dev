@@ -1,4 +1,6 @@
 import React, {FC} from 'react';
+import {Badge} from 'akeneo-design-system';
+import {getQualityBadgeLevel} from "../../helper";
 
 const translate = require('oro/translator');
 
@@ -7,15 +9,10 @@ type QualityBadgeProps = {
 };
 
 const QualityBadge: FC<QualityBadgeProps> = ({label}) => {
-  const classList: string[] = [
-    'AknDataQualityInsightsQualityBadge',
-    ` AknDataQualityInsightsQualityBadge--${label.replace('_', '-')}`
-  ];
-
   return (
-    <span className={classList.join(' ')}>
+    <Badge level={getQualityBadgeLevel(label)}>
       {translate(`akeneo_data_quality_insights.attribute_grid.quality.${label}`)}
-    </span>
+    </Badge>
   );
 }
 

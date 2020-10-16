@@ -94,6 +94,10 @@ pim:
       enabled: true
       pimCommand: "akeneo:batch:job-queue-consumer-daemon"
       replicas: 1
+    webhook-consumer-process:
+      enabled: true
+      pimCommand: "messenger:consume webhook --time-limit=300"
+      replicas: 1
   replicas: 2
   extraLabels: {}
   secret: null # Generate me with `uuidgen`

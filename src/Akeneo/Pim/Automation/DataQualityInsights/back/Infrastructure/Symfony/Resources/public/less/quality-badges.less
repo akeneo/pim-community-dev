@@ -1,26 +1,32 @@
 .AknDataQualityInsightsQualityBadge {
-    border-radius: 2px;
-    padding: 0px 6px;
+    /** DSM Badge **/
     display: inline-block;
-    line-height: 18px;
+    height: 18px;
+    line-height: 16px;
+    border: 1px solid @AknGrey100;
+    padding: 0 6px;
+    border-radius: 2px;
     text-transform: uppercase;
-    font-size: 11px;
-    background-color: @AknWhite;
+    box-sizing: border-box;
+    background: @AknWhite;
+    font-size: @AknFontSizeSmall;
+    color: @AknGrey140;
+    font-weight: normal;
 
     &--good {
         color: @AknGreen140;
-        border: 1px @AknGreen100 solid;
+        border-color: @AknGreen100;
     }
     &--to-improve {
         color: @AknRed140;
-        border: 1px @AknRed100 solid;
+        border-color: @AknRed100;
     }
     &--in-progress {
         color: @AknYellow140;
-        border: 1px @AknYellow100 solid;
+        border-color: @AknYellow100;
     }
     &--n-a {
-        color: @AknSlateGrey;
-        border: 1px @AknGrey solid;
+        color: @AknGrey140;
+        border-color: @AknGrey100;
     }
 }
