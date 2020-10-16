@@ -47,6 +47,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         $this->validateProduct($product);
 
         $options['unitary'] = true;
+        $options['is_new'] = null === $product->getId();
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
 
@@ -77,8 +78,15 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($products, $options));
 
-        foreach ($products as $product) {
-            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
+        $areProductsNew = array_map(function ($product) {
+            return null === $product->getId();
+        }, $products);
+
+        foreach ($products as $i => $product) {
+            $this->eventDispatcher->dispatch(
+                StorageEvents::PRE_SAVE,
+                new GenericEvent($product, array_merge($options, ['is_new' => $areProductsNew[$i]]))
+            );
             $this->uniqueDataSynchronizer->synchronize($product);
 
             $this->objectManager->persist($product);
@@ -86,11 +94,17 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
 
         $this->objectManager->flush();
 
-        foreach ($products as $product) {
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
+        foreach ($products as $i => $product) {
+            $this->eventDispatcher->dispatch(
+                StorageEvents::POST_SAVE,
+                new GenericEvent($product, array_merge($options, ['is_new' => $areProductsNew[$i]]))
+            );
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($products, $options));
+        $this->eventDispatcher->dispatch(
+            StorageEvents::POST_SAVE_ALL,
+            new GenericEvent($products, $options)
+        );
     }
 
     protected function validateProduct($product)

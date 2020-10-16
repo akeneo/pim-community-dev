@@ -1,0 +1,5 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\MessageHandler\BusinessEventHandler:
+        arguments:
+            - '@akeneo_connectivity.connection.application.webhook.handler.send_business_event_to_webhooks'
+        tags: [messenger.message_handler]

@@ -7,6 +7,12 @@ config:
                 akeneo_connectivity_connection_error_management_connection_monitoring:
                     module: pim/controller/connectivity/connection/error-management
                     aclResourceId: akeneo_connectivity_connection_manage_settings
+                akeneo_connectivity_connection_webhook_edit:
+                    module: pim/controller/connectivity/connection/webhook
+                    aclResourceId: akeneo_connectivity_connection_manage_settings
+                akeneo_connectivity_connection_webhook_regenerate_secret:
+                    module: pim/controller/connectivity/connection/webhook
+                    aclResourceId: akeneo_connectivity_connection_manage_settings
                 akeneo_connectivity_connection_settings_index:
                     module: pim/controller/connectivity/connection/settings
                     aclResourceId: akeneo_connectivity_connection_manage_settings
@@ -24,6 +30,7 @@ config:
     paths:
         pim/controller/connectivity/connection/settings: akeneoconnectivityconnection/js/controller/settings.tsx
         pim/controller/connectivity/connection/error-management: akeneoconnectivityconnection/js/controller/error-management.tsx
+        pim/controller/connectivity/connection/webhook: akeneoconnectivityconnection/js/controller/webhook.tsx
         pim/controller/connectivity/connection/audit: akeneoconnectivityconnection/js/controller/audit.tsx
 
         pim/menu/connectivity/connection/connection-params-provider: akeneoconnectivityconnection/js/menu/connection-params-provider.ts
