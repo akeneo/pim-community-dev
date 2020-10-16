@@ -62,6 +62,7 @@
 - PIM-9398: Add a primary key on connection table
 - PIM-9371: Disable save button when user creation form is not ready to submit
 - RAC-178: When launching a job, the notification contains a link to the job status
+- PIM-9485: Change ACL name “Remove a product model” to “Remove a product model (including children)”
 
 # Technical Improvements
 

@@ -102,7 +102,6 @@ pim_enrich:
       edit_attributes: 编辑产品模型的属性
       categories_view: 查阅产品模型的类别
       history: 查看产品模型的历史记录
-      remove: 移除产品模型
     category:
       list: 列出类别
       create: 创建类别

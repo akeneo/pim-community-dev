@@ -27,10 +27,24 @@ class LabelOrIdentifierFilterIntegration extends AbstractProductAndProductModelQ
     public function testSearch()
     {
         $result = $this->executeFilter([['label_or_identifier', Operators::CONTAINS, 'hat', ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
-        $this->assert($result, ['model-braided-hat', '1111111240']);
+        $this->assert($result, ['model-braided-hat', '1111111240', 'braided-hat-m', 'braided-hat-xxxl']);
 
         $result = $this->executeFilter([['label_or_identifier', Operators::CONTAINS, 'ha', ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
-        $this->assert($result, ['model-braided-hat', 'hades', '1111111240']);
+        $this->assert($result, [
+            'model-braided-hat',
+            'hades',
+            'braided-hat-m',
+            'braided-hat-xxxl',
+            '1111111234',
+            '1111111235',
+            '1111111236',
+            '1111111237',
+            '1111111238',
+            '1111111239',
+            '1111111240',
+            'hades_blue',
+            'hades_red',
+        ]);
     }
 
     public function testSearchOnLabelAndCompleteness()
@@ -39,6 +53,6 @@ class LabelOrIdentifierFilterIntegration extends AbstractProductAndProductModelQ
             ['label_or_identifier', Operators::CONTAINS, 'hat', ['locale' => 'en_US', 'scope' => 'ecommerce']],
             ['completeness', Operators::AT_LEAST_COMPLETE, null, ['locale' => 'en_US', 'scope' => 'ecommerce']]
         ]);
-        $this->assert($result, ['model-braided-hat']);
+        $this->assert($result, ['model-braided-hat', 'braided-hat-m', 'braided-hat-xxxl']);
     }
 }
