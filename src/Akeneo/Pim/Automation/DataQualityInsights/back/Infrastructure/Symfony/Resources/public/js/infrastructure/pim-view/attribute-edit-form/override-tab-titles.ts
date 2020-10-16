@@ -67,7 +67,7 @@ export default class OverrideTabTitles implements OverrideTabTitlesInterface
   }
 
   private renderTabTitle(tabModule: View, title: string, errorCount: number) {
-    const errorCountLabel = `<span class="AknDataQualityInsightsQualityBadge AknDataQualityInsightsQualityBadge--to-improve AknDataQualityInsightsQualityBadge--attribute-label-tab">${errorCount}</span>`;
+    const errorCountLabel = `<span class="AknBadge AknBadge--important AknDataQualityInsightsQualityBadge--attribute-label-tab">${errorCount}</span>`;
 
     tabModule.trigger('tab:register', {
       code: tabModule.code,
