@@ -189,6 +189,14 @@ akeneo_connectivity.connection:
       message_without_permission:
         message: Demandez à votre administrateur d'en créer une.
         link: En savoir plus sur les connexions ici...
+  webhook:
+    form:
+      secret: Secret
+    regenerate_secret:
+      title: Confirmer la régénération
+      action:
+        regenerate: Régénérer
+      link: Découvrez-les ici.
   error_management:
     connection_monitoring:
       title: Supervision
