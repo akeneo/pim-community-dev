@@ -1,0 +1,166 @@
+#Entities
+Job: Jobb
+Connector: Tilkobler
+pim_import_export:
+  job: Jobb
+  connector: Tilkobler
+  ## Job status
+  status:
+    0: Klar
+  batch_status:
+    1: Fullført
+    2: Starter
+    3: Startet
+    4: Stopper
+    5: Stoppet
+    6: Mislyktes
+    7: Overgitt
+    8: Ukjent
+  download_archive:
+    archive: last ned generert arkiv|last ned generert arkiv
+    output: last ned generert fil |last ned genererte filer
+    input: last ned les fil|last ned lese filer
+    invalid_xlsx: ugyldig nedlastingsdata
+    invalid_csv: ugyldig nedlastingsdata
+  notification:
+    export:
+      error: Eksport <strong>%label%</strong> mislyktes
+      warning: Eksport <strong>%label%</strong> ferdig med noen advarsler
+      success: Eksport <strong>%label%</strong> ferdig
+    import:
+      error: Import <strong>%label%</strong> mislyktes
+      warning: Import <strong>%label%</strong> ferdig med noen advarsler
+      success: Import <strong>%label%</strong> ferdig
+  list: Velg en jobb
+  job_profile:
+    tab:
+      property.title: Generelle egenskaper
+      history.title: Historie
+      job_content.title: Innhold
+#Page titles:
+pim_title.export_profile.index: Behandle eksportprofiler
+pim_title.export_profile.edit: Eksporter profil %job.label% | Rediger
+pim_title.export_profile.show: Eksporter profil %job.label% | Vis
+pim_title.export_execution.index: Eksporter gjennomførings-historikk
+pim_title.export_execution.show: Eksporter aktiviteter | Detaljer
+pim_title.import_profile.index: Importer profilhåndtering
+pim_title.import_profile.edit: Eksporter profil %job.label% | Rediger
+pim_title.import_profile.show: Eksporter profil %job.label% | Vis
+pim_title.import_execution.index: Importer aktivitetshistorikk
+pim_title.import_execution.show: Importer aktiviteter | Detaljer
+#Entity and page header titles
+export profile:
+  title: eksporter profil
+  edit: rediger eksportprofil
+import profile:
+  title: importer profil
+  edit: rediger importprofil
+#ACLs
+pim_importexport:
+  acl:
+    export_profile:
+      index: Vis liste eksportprofil
+      create: Opprett en eksportprofil
+      show: Vis en eksportprofil
+      edit: Rediger en eksportprofil
+      remove: Fjern en eksportprofil
+      launch: Kjør en eksportprofil
+      property_edit: Rediger eksportprofilens generelle egenskaper
+      property_show: Vis eksportprofilens generelle egenskaper
+      history: Vis historikk eksportprofil
+      content_edit: Rediger en eksportprofils innhold
+      content_show: Vis en eksportprofils innhold
+    import_profile:
+      index: Vis liste importprofil
+      create: Opprett en importprofil
+      show: Vis en importprofil
+      edit: Rediger en importprofil
+      remove: Fjern en importprofil
+      launch: Kjør en importprofil
+      history: Vis historikk profilhistorikk
+    export_execution:
+      index: Vis liste eksportrapporter
+      show: Vis detaljer eksportrapporter
+      dl_log: Last ned logg eksportrapport
+      dl_files: Last ned eksporterte filer
+    import_execution:
+      index: Vis liste importrapport
+      show: Vis detaljer importrapporter
+      dl_log: Last ned logg importrapport
+      dl_files: Last ned importerte filer
+  acl_group:
+    export: Eksporter profiler
+    import: Importer profiler
+#Buttons
+btn:
+  create:
+    export profile: opprett eksportprofil
+    import profile: opprett importprofil
+Upload and import now: Last opp og importer nå
+import now: Importer nå
+export now: Eksporter nå
+#Confirmation messages
+confirmation:
+  remove:
+    export profile: Er du sikker på at du vil slette eksportprofilen %name%?
+    import profile: Er du sikker på at du vil slette importprofilen %name%?
+#Flash messages
+flash:
+  export:
+    created: Eksporten er ble opprettet
+    removed: Eksporten har blitt slettet
+    updated: Eksporten har blitt oppdatert
+    running: Eksporten kjører
+  import:
+    created: Importen har blitt opprettet
+    removed: Importen er slettet
+    updated: Importen har blitt oppdatert
+    running: Importen kjører
+#Tabs
+General properties: Generelle egenskaper
+History: Historie
+pane.accordion:
+  properties: Egenskaper
+  global_settings: Globale innstillinger
+  filters: Filtre
+#Popin titles
+popin.create:
+  export_profile.title: Opprett en ny eksportprofil
+  import_profile.title: Opprett en ny importprofil
+#Job execution
+'Display item': Vis element
+'Hide item': Skjul element
+'Collecting data about job execution...': Samler data for utførelse av jobb...
+'You must select a file to upload': Du må velge en fil til opplasting
+Download log: Nedlastingshistorikk
+Show profile: Vis profil
+execution details: detaljer kjøring
+job_execution.summary:
+  read: les
+  write: skrevet av
+  skip: hoppet over
+  create: opprettet
+  update: oppdatert
+  update_products: oppdaterte produkter
+  skip_products: hoppet over produkter
+  displayed: første advarsler vises
+  charset_validator:
+    title: '-Koding:'
+    skipped: hoppet over, utvidelsen i hvitlisten
+Step: Steg
+Status: Status
+Warnings: Advarsler
+Summary: Oppsummering
+Start: Start
+End: Slutt
+#Process tracker
+set_attribute_requirements: Definer attributtkrav
+COMPLETED: Fullført
+STARTING: Starter
+STARTED: Startet
+STOPPING: Stopper
+STOPPED: Stoppet
+FAILED: Mislyktes
+ABANDONED: Gitt opp
+UNKNOWN: Ukjent
+warning.label: Advarsel
