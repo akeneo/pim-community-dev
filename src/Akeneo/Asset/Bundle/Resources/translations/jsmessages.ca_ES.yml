@@ -157,6 +157,9 @@ asset_grid:
 create_asset:
   title: Crear un recurs
 pim_datagrid:
+  display_selector:
+    gallery: Galeria
+    list: Llista
   mass_action:
     mass_edit:
       asset_edit: Editar en massa els recursos
