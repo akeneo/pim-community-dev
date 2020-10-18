@@ -4,8 +4,8 @@
   "description": "Akeneo design system",
   "main": "lib/index.js",
   "scripts": {
-    "lib:build": "rimraf lib && tsc -p ./tsconfig.build.json",
-    "lib:watch": "rimraf lib && tsc -p ./tsconfig.build.json --watch",
+    "lib:build": "tsc -p ./tsconfig.build.json",
+    "lib:watch": "tsc -p ./tsconfig.build.json --watch",
     "test": "yarn lint:check && yarn test:unit:run && yarn test:visual:run",
     "test:unit:run": "jest --config ./jest.unit.config.js",
     "test:unit:watch": "jest --config ./jest.unit.config.js --watch",
@@ -17,7 +17,7 @@
     "storybook:build": "yarn storybook:copy-public && yarn build-storybook -s ./public",
     "storybook:ci:start": "yarn start-storybook -p 6006 --ci",
     "storybook:copy-public": "cp ./src/__image_snapshots__/*standard-correctly-1-snap.png ./public/",
-    "storybook:extract": "yarn build-storybook && sb extract storybook-static stories.json"
+    "storybook:extract": "sb extract storybook-static stories.json"
   },
   "author": "akeneo",
   "license": "OSL-3.0",
@@ -48,6 +48,7 @@
     "eslint": "^7.8.1",
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-hooks": "^4.1.0",
+    "http-server": "^0.12.3",
     "jest": "^26.3.0",
     "jest-image-snapshot": "^4.1.0",
     "jest-puppeteer": "^4.4.0",

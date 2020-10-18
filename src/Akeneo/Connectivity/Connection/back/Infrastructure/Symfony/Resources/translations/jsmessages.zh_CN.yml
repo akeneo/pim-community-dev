@@ -189,6 +189,14 @@ akeneo_connectivity.connection:
       message_without_permission:
         message: 向您的管理员请求以创建一个连接。
         link: 在此处了解更多关于连接的信息...
+  webhook:
+    form:
+      secret: 密钥
+    regenerate_secret:
+      title: 确认重新生成
+      action:
+        regenerate: 重新生成
+      link: 此处可查看产生的影响。
   error_management:
     connection_monitoring:
       title: 监测

@@ -23,7 +23,6 @@ export * from './ExportXlsxIllustration';
 export * from './ExportYmlIllustration';
 export * from './FamilyIllustration';
 export * from './FamilyVariantIllustration';
-export * from './FranklinIllustration';
 export * from './GraphIllustration';
 export * from './GroupsIllustration';
 export * from './ImportCsvIllustration';

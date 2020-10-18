@@ -73,7 +73,7 @@ pim_enrich.entity.product:
       add_option: 添加选项
     completeness:
       title: 完成度
-      complete: 完成
+      complete: 完成度
       no_family: 没有定义品类。请定义一个品类来计算该产品的完成度。
       no_completeness: 您只是改变了该产品的品类。请先保存以计算新品类的完成度。
       missing_values: "{1}缺少 1 个值|]1，Inf[缺少 {{ count }} 个值"

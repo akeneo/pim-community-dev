@@ -122,7 +122,9 @@
         "symfony/templating": "4.4.7",
         "symfony/proxy-manager-bridge": "4.4.7",
         "justinrainbow/json-schema": "^5.2",
-        "guzzlehttp/guzzle": "6.3.3"
+        "guzzlehttp/guzzle": "6.3.3",
+        "symfony/messenger": "^4.4",
+        "google/cloud-pubsub": "1.24"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "0.3.*",

@@ -3,8 +3,7 @@ import {useHistory} from 'react-router-dom';
 import {PageHeader, PageHeaderPlaceholder} from 'akeneomeasure/shared/components/PageHeader';
 import {Breadcrumb} from 'akeneomeasure/shared/components/Breadcrumb';
 import {BreadcrumbItem} from 'akeneomeasure/shared/components/BreadcrumbItem';
-import {MeasurementIllustration, Link, Button} from 'akeneo-design-system';
-import {HelperTitle, HelperText, Helper} from 'akeneomeasure/shared/components/Helper';
+import {MeasurementIllustration, Link, Button, Information} from 'akeneo-design-system';
 import {useMeasurementFamilies} from 'akeneomeasure/hooks/use-measurement-families';
 import {
   sortMeasurementFamily,
@@ -105,19 +104,12 @@ const List = () => {
       </PageHeader>
 
       <PageContent>
-        <Helper>
-          <MeasurementIllustration size={80} />
-          <HelperTitle>
-            👋 {__('measurements.helper.title')}
-            <HelperText>
-              {__('measurements.helper.text')}
-              <br />
-              <Link href="https://help.akeneo.com/pim/articles/what-about-measurements.html" target="_blank">
-                {__('measurements.helper.link')}
-              </Link>
-            </HelperText>
-          </HelperTitle>
-        </Helper>
+        <Information illustration={<MeasurementIllustration />} title={`👋  ${__('measurements.helper.title')}`}>
+          <p>{__('measurements.helper.text')}</p>
+          <Link href="https://help.akeneo.com/pim/articles/what-about-measurements.html" target="_blank">
+            {__('measurements.helper.link')}
+          </Link>
+        </Information>
         {null === filteredMeasurementFamilies && (
           <TablePlaceholder className={`AknLoadingPlaceHolderContainer`}>
             {[...Array(5)].map((_e, i) => (

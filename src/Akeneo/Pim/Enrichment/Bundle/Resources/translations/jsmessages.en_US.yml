@@ -77,7 +77,7 @@ pim_enrich.entity.product:
             add_option: Add option
         completeness:
             title: Completeness
-            complete: Complete
+            complete: Completeness
             no_family: No family defined. Please define a family to calculate the completeness of this product.
             no_completeness: You just changed the family of the product. Please save it first to calculate the completeness for the new family.
             missing_values: "{1}1 missing value|]1, Inf[{{ count }} missing values"

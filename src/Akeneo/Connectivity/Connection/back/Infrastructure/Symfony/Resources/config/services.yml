@@ -62,3 +62,13 @@ services:
             - '@akeneo_connectivity.connection.persistence.repository.business_error'
             - '@akeneo_connectivity.connection.application.error_management.handler.update_connection_error_count'
             - '@akeneo_connectivity.connection.exception_serializer'
+
+    akeneo_connectivity.connection.webhook.service.url_reachability_checker:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\WebhookReachabilityChecker
+        arguments:
+            - '@akeneo_connectivity.connection.webhook.guzzle_client'
+            - '@validator'
+
+    akeneo_connectivity.connection.webhook.generate_secret:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Webhook\GenerateSecret
+

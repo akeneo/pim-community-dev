@@ -93,7 +93,6 @@ export * from './ProductIcon';
 export * from './ProductModelIcon';
 export * from './PublishIcon';
 export * from './RefreshIcon';
-export * from './RobotIcon';
 export * from './RowIcon';
 export * from './SearchIcon';
 export * from './SectionIcon';
