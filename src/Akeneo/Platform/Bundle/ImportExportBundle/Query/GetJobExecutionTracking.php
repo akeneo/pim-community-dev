@@ -15,6 +15,7 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepInterface;
 use Akeneo\Tool\Component\Batch\Step\TrackableStepInterface;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\PersistentCollection;
 
 /**
@@ -52,7 +53,7 @@ class GetJobExecutionTracking
     {
         $jobExecution = $this->jobExecutionRepository->find($jobExecutionId);
         if (!$jobExecution instanceof JobExecution) {
-            throw new \Exception(); //@TODO create execution + test
+            throw new \RuntimeException('The JobExecutionTracking query expect to find an existing JobExecution');
         }
 
         $jobExecution = $this->jobExecutionManager->resolveJobExecutionStatus($jobExecution);
@@ -71,7 +72,7 @@ class GetJobExecutionTracking
         return $jobExecutionTracking;
     }
 
-    private function getStepExecutionTracking(JobInterface $job, $stepExecutions): array
+    private function getStepExecutionTracking(JobInterface $job, Collection $stepExecutions): array
     {
         $stepsExecutionTracking = [];
 
@@ -93,7 +94,7 @@ class GetJobExecutionTracking
         return $stepsExecutionTracking;
     }
 
-    private function searchFirstMatchingStepExecutionIndex(PersistentCollection $stepExecutions, string $stepName)
+    private function searchFirstMatchingStepExecutionIndex(Collection $stepExecutions, string $stepName): int
     {
         foreach ($stepExecutions as $stepExecutionIndex => $stepExecution) {
             if ($stepExecution->getStepName() === $stepName) {
@@ -105,7 +106,7 @@ class GetJobExecutionTracking
         return -1;
     }
 
-    private function createStepExecutionTrackingNotStartedFromStep(StepInterface $step)
+    private function createStepExecutionTrackingNotStartedFromStep(StepInterface $step): StepExecutionTracking
     {
         $stepExecutionTracking = new StepExecutionTracking();
         $stepExecutionTracking->name = $step->getName();
@@ -117,7 +118,7 @@ class GetJobExecutionTracking
         return $stepExecutionTracking;
     }
 
-    private function createStepExecutionTrackingFromStepAndStepExecution(StepInterface $step, StepExecution $stepExecution)
+    private function createStepExecutionTrackingFromStepAndStepExecution(StepInterface $step, StepExecution $stepExecution): StepExecutionTracking
     {
         $duration = $this->calculateDuration($stepExecution);
 
@@ -137,7 +138,7 @@ class GetJobExecutionTracking
         return $stepExecutionTracking;
     }
 
-    private function getMappedStatus(BatchStatus $batchStatus)
+    private function getMappedStatus(BatchStatus $batchStatus): string
     {
         switch ($batchStatus->getValue()) {
             case BatchStatus::STOPPING:
@@ -158,7 +159,7 @@ class GetJobExecutionTracking
                 return 'IN PROGRESS';
                 break;
             default:
-                throw new \Exception('Not implemented');
+                throw new \RuntimeException(sprintf('Batch status "%s" unsupported', $batchStatus->getValue()));
         }
     }
 

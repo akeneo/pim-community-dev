@@ -78,7 +78,7 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
             ->willReturn($jobExecutionTracking);
 
         $jobExecutionTrackingNormalizer
-            ->normalize($jobExecutionTracking, 'standard')
+            ->normalize($jobExecutionTracking)
             ->willReturn([
                 // TODO use const instead
                 'status' => 'IN PROGRESS',
@@ -126,7 +126,7 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
             ->willReturn($jobExecutionTracking);
 
         $jobExecutionTrackingNormalizer
-            ->normalize($jobExecutionTracking, 'standard')
+            ->normalize($jobExecutionTracking)
             ->willReturn('NORMALIZED_JOB_EXECUTION_TRACKING_PLACEHOLDER');
 
         $jobExecutionStandardNormalizer

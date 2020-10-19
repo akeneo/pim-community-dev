@@ -61,8 +61,7 @@ class JobExecutionNormalizer implements NormalizerInterface, CacheableSupportsMe
             $context
         );
         $normalizedJobExecution['tracking'] = $this->jobExecutionTrackingNormalizer->normalize(
-            $this->getJobExecutionTracking->execute($jobExecution->getId()),
-            'standard'
+            $this->getJobExecutionTracking->execute($jobExecution->getId())
         );
 
         return $normalizedJobExecution;
