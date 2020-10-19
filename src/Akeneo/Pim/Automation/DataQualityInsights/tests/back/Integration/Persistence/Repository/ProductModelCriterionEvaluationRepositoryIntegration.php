@@ -26,7 +26,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
-use Ramsey\Uuid\Uuid;
 
 final class ProductModelCriterionEvaluationRepositoryIntegration extends TestCase
 {
@@ -152,38 +151,6 @@ final class ProductModelCriterionEvaluationRepositoryIntegration extends TestCas
         $this->assertCriterionEvaluationEquals($criterionEvaluationB, $rawCriterionEvaluationB);
     }
 
-    public function test_it_deletes_all_the_evaluations_of_unknown_product_models()
-    {
-        $existingProductModelId = $this->createProductModel();
-        $unknownProductModelId = new ProductId(666666);
-
-        $criteria = (new Write\CriterionEvaluationCollection)
-            ->add(new Write\CriterionEvaluation(
-                new CriterionCode('completeness'),
-                $existingProductModelId,
-                CriterionEvaluationStatus::pending()
-            ))
-            ->add(new Write\CriterionEvaluation(
-                new CriterionCode('completeness'),
-                $unknownProductModelId,
-                CriterionEvaluationStatus::pending()
-            ))
-            ->add(new Write\CriterionEvaluation(
-                new CriterionCode('spelling'),
-                $unknownProductModelId,
-                CriterionEvaluationStatus::error()
-            ));
-
-        $this->productModelCriterionEvaluationRepository->create($criteria);
-        $this->assertCountProductModelCriterionEvaluations(3);
-
-        $this->productModelCriterionEvaluationRepository->deleteUnknownProductsEvaluations();
-
-        $evaluations = $this->findAllProductModelEvaluations();
-        $this->assertCount(1, $evaluations);
-        $this->assertSame(strval($existingProductModelId), $evaluations[0]['product_id']);
-    }
-
     private function buildCollection(): Write\CriterionEvaluationCollection
     {
         return (new Write\CriterionEvaluationCollection)
@@ -248,19 +215,6 @@ SQL;
             'status' => $criterionEvaluation->getResult()->getStatus()->toArrayString(),
             'data' => $criterionEvaluation->getResult()->getDataToArray(),
         ], json_decode($rawCriterionEvaluation['result'], true));
-    }
-
-    private function createProductModel()
-    {
-        $product = $this->get('akeneo_integration_tests.catalog.product_model.builder')
-            ->withCode(strval(Uuid::uuid4()))
-            ->withFamilyVariant('familyVariantA1')
-            ->build();
-        $this->get('pim_catalog.saver.product_model')->save($product);
-
-        $this->clearAllEvaluations();
-
-        return new ProductId((int) $product->getId());
     }
 
     private function clearAllEvaluations(): void
