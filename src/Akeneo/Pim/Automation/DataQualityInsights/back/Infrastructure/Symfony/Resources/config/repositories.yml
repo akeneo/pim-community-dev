@@ -36,3 +36,7 @@ services:
       Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardRatesProjectionRepository:
           arguments:
               - '@database_connection'
+
+      Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeGroupActivationRepository:
+          arguments:
+              - '@database_connection'

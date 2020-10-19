@@ -14,10 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Attribute;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\AttributeGroupActivation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeGroupCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluableAttributesByProductQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeGroupActivationRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
 use Webmozart\Assert\Assert;
@@ -31,6 +34,8 @@ class GetEvaluableAttributesByProductQueryIntegration extends TestCase
 
     public function test_it_returns_the_evaluable_attributes_of_a_product()
     {
+        $this->givenADeactivatedAttributeGroup('erp');
+
         $this->createAttributes([
             ['code' => 'a_boolean', 'type' => AttributeTypes::BOOLEAN],
             ['code' => 'a_localizable_textarea', 'type' => AttributeTypes::TEXTAREA, 'scopable' => true, 'localizable' => true],
@@ -38,6 +43,7 @@ class GetEvaluableAttributesByProductQueryIntegration extends TestCase
             ['code' => 'a_localizable_text', 'type' => AttributeTypes::TEXT, 'scopable' => true, 'localizable' => true],
             ['code' => 'a_not_localizable_text', 'type' => AttributeTypes::TEXT, 'scopable' => false, 'localizable' => false],
             ['code' => 'a_text_of_another_family', 'type' => AttributeTypes::TEXT, 'scopable' => true, 'localizable' => true],
+            ['code' => 'a_deactivated_text', 'type' => AttributeTypes::TEXT, 'scopable' => true, 'localizable' => true, 'group' => 'erp'],
         ]);
 
         $this->createFamily([
@@ -49,6 +55,7 @@ class GetEvaluableAttributesByProductQueryIntegration extends TestCase
                 'a_readonly_textarea',
                 'a_localizable_text',
                 'a_not_localizable_text',
+                'a_deactivated_text',
             ],
         ]);
 
@@ -97,7 +104,7 @@ class GetEvaluableAttributesByProductQueryIntegration extends TestCase
                     'type' => $attributeData['type'],
                     'localizable' => $attributeData['localizable'] ?? false,
                     'scopable' => $attributeData['scopable'] ?? false,
-                    'group' => 'other',
+                    'group' => $attributeData['group'] ?? 'other',
                 ]
             );
 
@@ -118,5 +125,15 @@ class GetEvaluableAttributesByProductQueryIntegration extends TestCase
         Assert::count($errors, 0);
 
         $this->get('pim_catalog.saver.family')->save($family);
+    }
+
+    private function givenADeactivatedAttributeGroup(string $code): void
+    {
+        $attributeGroup = $this->get('pim_catalog.factory.attribute_group')->create();
+        $this->get('pim_catalog.updater.attribute_group')->update($attributeGroup, ['code' => $code]);
+        $this->get('pim_catalog.saver.attribute_group')->save($attributeGroup);
+
+        $attributeGroupActivation = new AttributeGroupActivation(new AttributeGroupCode($code), false);
+        $this->get(AttributeGroupActivationRepository::class)->save($attributeGroupActivation);
     }
 }
