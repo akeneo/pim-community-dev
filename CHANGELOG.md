@@ -163,6 +163,7 @@
 - Change `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\ProductNormalizer` to implements `Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface` instead of `Symfony\Component\Serializer\SerializerAwareInterface`. That means:
     - the `setSerializer()` method and the `$serializer` property are removed
     - the `setNormalizer()` method and the `$normalizer` property are added
+- Remove `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ViolationNormalizer` class, it is replaced by `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ConstraintViolationNormalizer`
 
 ### CLI commands
 
