@@ -5,6 +5,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller\InternalApi;
 use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -68,13 +69,7 @@ class JobExecutionController
         return new JsonResponse($jobResponse);
     }
 
-    /**
-     * @param object $jobExecution
-     *
-     * @return array
-     *
-     */
-    private function archives(object $jobExecution): array
+    private function archives(JobExecution $jobExecution): array
     {
         $archives = [];
         foreach ($this->archivist->getArchives($jobExecution) as $archiveName => $files) {
