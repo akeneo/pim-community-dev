@@ -24,6 +24,7 @@
     "react/display-name": "off",
     "react/prop-types": "off"
   },
+  "ignorePatterns": ["src/illustrations/**", "src/icons/**"],
   "settings": {
     "react": {
       "version": "detect"

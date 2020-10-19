@@ -266,7 +266,7 @@ class CompletenessContext extends PimContext
             $badge = $this->getCurrentPage()->find('css', '.completeness-badge');
             $badgeAmount = $badge->getText();
 
-            return strtolower($badgeAmount) === strtolower($completenessAmount);
+            return strtolower(trim($badgeAmount)) === strtolower($completenessAmount);
         }, sprintf('The completeness badge does not show the amount "%s".', $completenessAmount));
     }
 }

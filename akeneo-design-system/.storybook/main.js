@@ -16,7 +16,8 @@ module.exports = {
     '@storybook/addon-a11y'
   ],
   webpackFinal: async (config) => {
-    return {...config,
+    return {
+      ...config,
       resolve: {
         ...config.resolve,
         plugins: [

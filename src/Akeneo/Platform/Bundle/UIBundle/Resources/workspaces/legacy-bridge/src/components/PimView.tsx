@@ -5,7 +5,7 @@ import {useViewBuilder} from '../hooks';
 
 type Props = {
   viewName: string;
-  className: string;
+  className?: string;
 };
 
 const StyledPimView = styled.div<{rendered: boolean}>`

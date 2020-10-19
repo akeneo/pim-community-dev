@@ -36,6 +36,8 @@ import fetchProductModelEvaluation from './infrastructure/fetcher/ProductEditFor
 
 import {CriterionEvaluationResult, ProductEvaluation} from "./domain";
 
+import {AttributeGroupDQIActivation} from './application/component/AttributeGroup/AttributeGroupDQIActivation';
+
 export {
     Rate,
     Dashboard,
@@ -65,4 +67,5 @@ export {
     fetchProductDataQualityEvaluation,
     fetchProductModelEvaluation,
     ProductEvaluation, CriterionEvaluationResult,
+    AttributeGroupDQIActivation,
 };

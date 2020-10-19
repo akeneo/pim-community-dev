@@ -1,0 +1,9 @@
+services:
+    pim_enrich.messenger.serializer.business_event:
+        class: Akeneo\Tool\Bundle\MessengerBundle\Serialization\JsonSerializer
+        arguments:
+            - !tagged pim_enrich.messenger.normalizer.business_event
+
+    Akeneo\Platform\Component\EventQueue\BusinessEventNormalizer:
+        tags:
+            - { name: pim_enrich.messenger.normalizer.business_event, priority: 0 }

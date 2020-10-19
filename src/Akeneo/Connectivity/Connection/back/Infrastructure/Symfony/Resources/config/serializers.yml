@@ -2,27 +2,4 @@ services:
     akeneo_connectivity.connection.exception_serializer:
         class: FOS\RestBundle\Serializer\SymfonySerializerAdapter
         arguments:
-            - '@akeneo_connectivity.connection.serializer'
-
-    akeneo_connectivity.connection.serializer:
-        class: 'Symfony\Component\Serializer\Serializer'
-
-    akeneo_connectivity.connection.encoder.json:
-        class: 'Symfony\Component\Serializer\Encoder\JsonEncoder'
-        tags:
-            - { name:  akeneo_connectivity.connection.serializer.encoder, priority: 100 }
-
-    akeneo_connectivity.connection.normalizer.constraint_violation:
-        class: 'Akeneo\Connectivity\Connection\Infrastructure\Normalizer\ConstraintViolationNormalizer'
-        arguments:
-            - '@pim_catalog.repository.cached_attribute'
-            - '@akeneo_connectivity.connection.error_management.documentation_builder_registry'
-        tags:
-            - { name:  akeneo_connectivity.connection.serializer.normalizer, priority: 100 }
-
-    akeneo_connectivity.connection.normalizer.product_domain_error:
-        class: 'Akeneo\Connectivity\Connection\Infrastructure\Normalizer\ProductDomainErrorNormalizer'
-        arguments:
-            - '@akeneo_connectivity.connection.error_management.documentation_builder_registry'
-        tags:
-            - { name:  akeneo_connectivity.connection.serializer.normalizer, priority: 100 }
+            - '@pim_domain_error_serializer'

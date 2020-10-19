@@ -4,6 +4,7 @@ import {Breadcrumb} from './breadcrumb/Breadcrumb';
 import {BreadcrumbItem} from './breadcrumb/BreadcrumbItem';
 import {ApplyButton} from './button/ApplyButton';
 import {GreyButton} from './button/GreyButton';
+import {GhostButton} from './button/GhostButton';
 import {IconButton} from './button/IconButton';
 import {ImportantButton} from './button/ImportantButton';
 import {DropdownLink, SecondaryActionsDropdownButton} from './button/SecondaryActionsDropdownButton';
@@ -24,6 +25,7 @@ import {Select} from './select/Select';
 import {Select2, Select2Configuration} from './Select2';
 import {SmallHelper} from './SmallHelper';
 import {Table, TableCell, TableHeaderCell, TableHeaderRow, TableRow} from './Table';
+import {ToggleButton} from './ToggleButton';
 import {Flag} from './Flag';
 import {Loading} from './Loading';
 
@@ -40,6 +42,7 @@ export {
     FormGroup,
     FormInput,
     GreyButton,
+    GhostButton,
     Helper,
     HelperLink,
     HelperTitle,
@@ -62,6 +65,7 @@ export {
     TableHeaderCell,
     TableHeaderRow,
     TableRow,
+    ToggleButton,
     EmptyState,
     Typography,
     Flag,

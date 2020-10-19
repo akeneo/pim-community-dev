@@ -29,3 +29,6 @@ config:
         # Components
         ## Product Edit Form
         pim/product-edit-form/attribute-filter-all-missing-attributes: akeneodataqualityinsights/js/infrastructure/product-edit-form/attribute-filter-all-missing-attributes.ts
+
+        ## Attribute group
+        akeneo/data-quality-insights/infrastructure/attribute-group/dqi-activation: akeneodataqualityinsights/js/infrastructure/attribute-group/dqi-activation.tsx

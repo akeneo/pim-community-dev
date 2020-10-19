@@ -1,4 +1,4 @@
-import React, {PropsWithChildren, ReactElement, ButtonHTMLAttributes} from 'react';
+import React, {ButtonHTMLAttributes, PropsWithChildren, ReactElement} from 'react';
 import styled from 'styled-components';
 import {useTheme, CloseIcon, Button} from 'akeneo-design-system';
 
