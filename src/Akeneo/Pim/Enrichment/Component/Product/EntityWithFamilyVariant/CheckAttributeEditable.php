@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterfa
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * This service checks if an attribute of an entity with family is editable.
@@ -19,7 +20,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
  */
 class CheckAttributeEditable
 {
-    public function isEditable(EntityWithFamilyVariantInterface $entity, AttributeInterface $attribute): bool
+    public function isEditable(EntityWithFamilyInterface $entity, AttributeInterface $attribute): bool
     {
         $family = $entity->getFamily();
 
@@ -35,6 +36,7 @@ class CheckAttributeEditable
             return true;
         }
 
+        Assert::implementsInterface($entity, EntityWithFamilyVariantInterface::class);
         $familyVariant = $entity->getFamilyVariant();
         if (null === $familyVariant) {
             throw new \Exception('A family variant was expected for the entity.');
