@@ -24,13 +24,13 @@ abstract class AbstractAssociation implements AssociationInterface
     /** @var EntityWithAssociationsInterface */
     protected $owner;
 
-    /** @var ArrayCollection<ProductInterface> */
+    /** @var Collection<ProductInterface> */
     protected $products;
 
-    /** @var ArrayCollection<ProductModelInterface> */
+    /** @var Collection<ProductModelInterface> */
     protected $productModels;
 
-    /** @var ArrayCollection<GroupInterface> */
+    /** @var Collection<GroupInterface> */
     protected $groups;
 
     /** @var array */
@@ -224,7 +224,7 @@ abstract class AbstractAssociation implements AssociationInterface
             return null;
         }
 
-        if (!$this->owner instanceof ProductInterface || !$this->owner instanceof ProductModelInterface) {
+        if (!$this->owner instanceof ProductInterface && !$this->owner instanceof ProductModelInterface) {
             throw new \InvalidArgumentException(sprintf(
                 'Owner must be a product or a product model, instance of \'%s\' given',
                 get_class($this->owner)
