@@ -35,7 +35,8 @@ final class TransformCriterionEvaluationResultIds
         foreach ($evaluationResult as $propertyId => $propertyData) {
             switch ($propertyId) {
                 case $propertiesIds['data']:
-                    $propertyDataByCodes = ['attributes_with_rates' => $this->transformResultAttributeRatesIdsToCodes($propertyData)];
+
+                    $propertyDataByCodes = $this->transformResultAttributeRatesIdsToCodes($propertyData);
                     break;
                 case $propertiesIds['rates']:
                     $propertyDataByCodes = $this->transformRatesIdsToCodes($propertyData);
@@ -78,7 +79,7 @@ final class TransformCriterionEvaluationResultIds
 
     private function transformResultAttributeRatesIdsToCodes(array $resultAttributeIdsRates): array
     {
-        return $this->transformChannelLocaleDataFromIdsToCodes($resultAttributeIdsRates, function (array $attributeRates) {
+        $attributesRates = $this->transformChannelLocaleDataFromIdsToCodes($resultAttributeIdsRates, function (array $attributeRates) {
             $attributeCodesRates = [];
             $attributesCodes = $this->attributes->getCodesByIds(array_keys($attributeRates));
 
@@ -91,6 +92,8 @@ final class TransformCriterionEvaluationResultIds
 
             return $attributeCodesRates;
         });
+
+        return empty($attributesRates) ? [] : ['attributes_with_rates' => $attributesRates];
     }
 
     private function transformRatesIdsToCodes(array $ratesIds): array

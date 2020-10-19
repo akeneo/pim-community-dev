@@ -30,6 +30,16 @@ class DataQualityInsightsTestCase extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
+    protected function deleteAllProductCriterionEvaluations(): void
+    {
+        $this->get('database_connection')->executeQuery('DELETE FROM pim_data_quality_insights_product_criteria_evaluation');
+    }
+
+    protected function deleteAllProductModelCriterionEvaluations(): void
+    {
+        $this->get('database_connection')->executeQuery('DELETE FROM pim_data_quality_insights_product_model_criteria_evaluation');
+    }
+
     protected function createProduct(string $identifier, array $data = []): ProductInterface
     {
         $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
