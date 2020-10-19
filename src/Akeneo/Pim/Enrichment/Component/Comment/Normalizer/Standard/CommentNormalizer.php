@@ -64,13 +64,9 @@ class CommentNormalizer implements NormalizerInterface, SerializerAwareInterface
      */
     protected function normalizeChildren(array $children, array $context = [])
     {
-        if (!$this->serializer instanceof NormalizerInterface) {
-            throw new \LogicException('Serializer must be a normalizer');
-        }
-
         $comments = [];
         foreach ($children as $child) {
-            $comments[] = $this->serializer->normalize($child, 'standard', $context);
+            $comments[] = GetNormalizer::fromSerializer($this->serializer)->normalize($child, 'standard', $context);
         }
 
         return $comments;
