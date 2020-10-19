@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
-use Akeneo\Tool\Component\StorageUtils\Cache\LRUCache;
-use Doctrine\DBAL\Connection;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -14,8 +12,6 @@ use Doctrine\DBAL\Connection;
  */
 final class TransformCriterionEvaluationResultCodes
 {
-    private const LRU_CACHE_SIZE = 1000;
-
     public const PROPERTIES_ID = [
         'data' => 1,
         'rates' => 2,
@@ -29,22 +25,20 @@ final class TransformCriterionEvaluationResultCodes
         CriterionEvaluationResultStatus::NOT_APPLICABLE => 4,
     ];
 
-    /** @var Connection */
-    private $dbConnection;
+    /** @var Attributes */
+    private $attributes;
 
-    /** @var null|array */
-    private $channelIdsByCodes;
+    /** @var Channels */
+    private $channels;
 
-    /** @var null|array */
-    private $localeIdsByCodes;
+    /** @var Locales */
+    private $locales;
 
-    /** @var LRUCache */
-    private $attributeIdsByCodes;
-
-    public function __construct(Connection $dbConnection)
+    public function __construct(Attributes $attributes, Channels $channels, Locales $locales)
     {
-        $this->dbConnection = $dbConnection;
-        $this->attributeIdsByCodes = new LRUCache(self::LRU_CACHE_SIZE);
+        $this->attributes = $attributes;
+        $this->channels = $channels;
+        $this->locales = $locales;
     }
 
     public function transformToIds(array $evaluationResult): array
@@ -77,13 +71,13 @@ final class TransformCriterionEvaluationResultCodes
         $channelLocaleDataByIds = [];
 
         foreach ($channelLocaleData as $channel => $localeData) {
-            $channelId = $this->getChannelId($channel);
+            $channelId = $this->channels->getIdByCode($channel);
             if (null === $channelId) {
                 continue;
             }
 
             foreach ($localeData as $locale => $data) {
-                $localeId = $this->getLocaleId($locale);
+                $localeId = $this->locales->getIdByCode($locale);
                 if (null === $localeId) {
                     continue;
                 }
@@ -101,7 +95,7 @@ final class TransformCriterionEvaluationResultCodes
 
         return $this->transformChannelLocaleDataFromCodesToIds($resultAttributeCodesRates, function (array $attributeRates) {
             $attributeIdsRates = [];
-            $attributesIds = $this->getAttributesIds(array_keys($attributeRates));
+            $attributesIds = $this->attributes->getIdsByCodes(array_keys($attributeRates));
 
             foreach ($attributeRates as $attributeCode => $attributeRate) {
                 $attributeId = $attributesIds[$attributeCode] ?? null;
@@ -129,64 +123,6 @@ final class TransformCriterionEvaluationResultCodes
             }
 
             return self::STATUS_ID[$statusCode];
-        });
-    }
-
-    private function getChannelId(string $code): ?int
-    {
-        if (null === $this->channelIdsByCodes) {
-            $this->loadChannels();
-        }
-
-        return $this->channelIdsByCodes[$code] ?? null;
-    }
-
-    private function loadChannels(): void
-    {
-        $this->channelIdsByCodes = [];
-
-        $channels = $this->dbConnection->executeQuery(
-            'SELECT JSON_OBJECTAGG(code, id) FROM pim_catalog_channel;'
-        )->fetchColumn();
-
-        if (false !== $channels) {
-            $this->channelIdsByCodes = json_decode($channels, true);
-        }
-    }
-
-    private function getLocaleId(string $code): ?int
-    {
-        if (null === $this->localeIdsByCodes) {
-            $this->loadLocales();
-        }
-
-        return $this->localeIdsByCodes[$code] ?? null;
-    }
-
-
-    private function loadLocales(): void
-    {
-        $this->localeIdsByCodes = [];
-
-        $locales = $this->dbConnection->executeQuery(
-            'SELECT JSON_OBJECTAGG(code, id) FROM pim_catalog_locale WHERE is_activated = 1;'
-        )->fetchColumn();
-
-        if (false !== $locales) {
-            $this->localeIdsByCodes = json_decode($locales, true);
-        }
-    }
-
-    private function getAttributesIds(array $attributesCodes): array
-    {
-        return $this->attributeIdsByCodes->getForKeys($attributesCodes, function ($attributesCodes) {
-            $attributesIds = $this->dbConnection->executeQuery(
-                'SELECT JSON_OBJECTAGG(code, id) FROM pim_catalog_attribute WHERE code IN (:codes);',
-                ['codes' => $attributesCodes],
-                ['codes' => Connection::PARAM_STR_ARRAY]
-            )->fetchColumn();
-
-            return false === $attributesIds ? [] : json_decode($attributesIds, true);
         });
     }
 }
