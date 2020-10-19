@@ -13,9 +13,9 @@ $builder = new RuleBuilder();
 $rules = [
     $builder->only(
         [
-            'Akeneo\Platform\CommunicationChannel\Domain',
+            'Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Domain',
         ]
-    )->in('Akeneo\Platform\CommunicationChannel\Application'),
+    )->in('Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Application'),
 ];
 
 $config = new Configuration($rules, $finder);

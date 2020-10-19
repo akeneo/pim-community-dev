@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\CommunicationChannel\Application\Announcement\Query;
+namespace Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Application\Announcement\Query;
 
-use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Query\FindNewAnnouncementIdsInterface;
-use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Query\FindViewedAnnouncementIdsInterface;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Domain\Announcement\Query\FindNewAnnouncementIdsInterface;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Domain\Announcement\Query\FindViewedAnnouncementIdsInterface;
 
 /**
  * @author Christophe Chausseray <chaauseray.christophe@gmail.com>

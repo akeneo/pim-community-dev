@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\CommunicationChannel\Application\Announcement\Query;
+namespace Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Application\Announcement\Query;
 
-use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Model\Read\AnnouncementItem;
-use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Query\FindAnnouncementItemsInterface;
-use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Query\FindViewedAnnouncementIdsInterface;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Domain\Announcement\Model\Read\AnnouncementItem;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Domain\Announcement\Query\FindAnnouncementItemsInterface;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Domain\Announcement\Query\FindViewedAnnouncementIdsInterface;
 
 /**
  * @author Christophe Chausseray <chausseray.christophe@gmail.com>

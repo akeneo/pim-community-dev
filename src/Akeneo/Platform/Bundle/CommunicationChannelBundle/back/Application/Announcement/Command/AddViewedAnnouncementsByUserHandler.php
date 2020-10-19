@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\CommunicationChannel\Application\Announcement\Command;
+namespace Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Application\Announcement\Command;
 
-use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Model\Write\ViewedAnnouncement;
-use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Repository\ViewedAnnouncementRepositoryInterface;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Domain\Announcement\Model\Write\ViewedAnnouncement;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Domain\Announcement\Repository\ViewedAnnouncementRepositoryInterface;
 
 /**
  * @author Christophe Chausseray <chausseray.christophe@gmail.com>

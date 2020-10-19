@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\CommunicationChannel\Test\Integration\Delivery\InternalApi\Announcement;
+namespace Akeneo\Platform\Bundle\CommunicationChannelBundle\back\tests\Integration\Delivery\InternalApi\Announcement;
 
-use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Model\Read\AnnouncementItem;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Domain\Announcement\Model\Read\AnnouncementItem;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Platform\CommunicationChannel\Application\Announcement\Command;
+namespace spec\Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Application\Announcement\Command;
 
-use Akeneo\Platform\CommunicationChannel\Application\Announcement\Command\AddViewedAnnouncementsByUserCommand;
-use Akeneo\Platform\CommunicationChannel\Application\Announcement\Command\AddViewedAnnouncementsByUserHandler;
-use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Repository\ViewedAnnouncementRepositoryInterface;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Application\Announcement\Command\AddViewedAnnouncementsByUserCommand;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Application\Announcement\Command\AddViewedAnnouncementsByUserHandler;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Domain\Announcement\Repository\ViewedAnnouncementRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\CommunicationChannel\Test\Integration\Delivery\InternalApi\Announcement;
+namespace Akeneo\Platform\Bundle\CommunicationChannelBundle\back\tests\Integration\Delivery\InternalApi\Announcement;
 
-use Akeneo\Platform\CommunicationChannel\Infrastructure\CommunicationChannel\LocalFilestorage\LocalFilestorageFindAnnouncementItems;
-use Akeneo\Platform\CommunicationChannel\Test\Integration\WebTestCase;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Infrastructure\CommunicationChannel\LocalFilestorage\LocalFilestorageFindAnnouncementItems;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\tests\Integration\WebTestCase;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;

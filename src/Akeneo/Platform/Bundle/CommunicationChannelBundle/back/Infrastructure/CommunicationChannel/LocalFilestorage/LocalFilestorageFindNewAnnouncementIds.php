@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\CommunicationChannel\Infrastructure\CommunicationChannel\LocalFilestorage;
+namespace Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Infrastructure\CommunicationChannel\LocalFilestorage;
 
-use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Query\FindNewAnnouncementIdsInterface;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Domain\Announcement\Query\FindNewAnnouncementIdsInterface;
 
 /**
  * @author Christophe Chausseray <chausseray.christophe@gmail.com>

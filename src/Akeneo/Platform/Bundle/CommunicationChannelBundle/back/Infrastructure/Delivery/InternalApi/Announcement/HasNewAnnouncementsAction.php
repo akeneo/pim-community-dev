@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\CommunicationChannel\Infrastructure\Delivery\InternalApi\Announcement;
+namespace Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Infrastructure\Delivery\InternalApi\Announcement;
 
-use Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\HasNewAnnouncementsHandler;
-use Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\HasNewAnnouncementsQuery;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Application\Announcement\Query\HasNewAnnouncementsHandler;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Application\Announcement\Query\HasNewAnnouncementsQuery;
 use Akeneo\Platform\VersionProviderInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;

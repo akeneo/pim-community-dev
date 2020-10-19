@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\CommunicationChannel\Domain\Announcement\Query;
+namespace Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Domain\Announcement\Query;
 
-use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Model\Read\AnnouncementItem;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Domain\Announcement\Model\Read\AnnouncementItem;
 
 /**
  * @author Christophe Chausseray <chausseray.christophe@gmail.com>

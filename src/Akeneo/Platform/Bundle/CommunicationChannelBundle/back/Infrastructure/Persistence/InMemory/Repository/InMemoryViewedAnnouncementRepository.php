@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\CommunicationChannel\Infrastructure\Persistence\InMemory\Repository;
+namespace Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Infrastructure\Persistence\InMemory\Repository;
 
-use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Repository\ViewedAnnouncementRepositoryInterface;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Domain\Announcement\Repository\ViewedAnnouncementRepositoryInterface;
 
 /**
  * @author    Christophe Chausseray <chausseray.christophe@gmail.com>

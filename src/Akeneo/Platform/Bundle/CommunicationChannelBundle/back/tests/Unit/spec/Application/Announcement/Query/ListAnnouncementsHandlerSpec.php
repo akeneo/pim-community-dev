@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Platform\CommunicationChannel\Application\Announcement\Query;
+namespace spec\Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Application\Announcement\Query;
 
-use Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\ListAnnouncementsHandler;
-use Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\ListAnnouncementsQuery;
-use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Model\Read\AnnouncementItem;
-use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Query\FindAnnouncementItemsInterface;
-use Akeneo\Platform\CommunicationChannel\Infrastructure\Persistence\InMemory\Query\InMemoryFindViewedAnnouncementIds;
-use Akeneo\Platform\CommunicationChannel\Infrastructure\Persistence\InMemory\Repository\InMemoryViewedAnnouncementRepository;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Application\Announcement\Query\ListAnnouncementsHandler;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Application\Announcement\Query\ListAnnouncementsQuery;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Domain\Announcement\Model\Read\AnnouncementItem;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Domain\Announcement\Query\FindAnnouncementItemsInterface;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Infrastructure\Persistence\InMemory\Query\InMemoryFindViewedAnnouncementIds;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Infrastructure\Persistence\InMemory\Repository\InMemoryViewedAnnouncementRepository;
 use DateTimeImmutable;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

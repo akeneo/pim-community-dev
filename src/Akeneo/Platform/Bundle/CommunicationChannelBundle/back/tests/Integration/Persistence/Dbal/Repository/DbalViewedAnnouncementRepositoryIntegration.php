@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\CommunicationChannel\Test\Integration\Persistence\Dbal\Repository;
+namespace Akeneo\Platform\Bundle\CommunicationChannelBundle\back\tests\Integration\Persistence\Dbal\Repository;
 
-use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Model\Write\ViewedAnnouncement;
-use Akeneo\Platform\CommunicationChannel\Infrastructure\Persistence\Dbal\Repository\DbalViewedAnnouncementRepository;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Domain\Announcement\Model\Write\ViewedAnnouncement;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Infrastructure\Persistence\Dbal\Repository\DbalViewedAnnouncementRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection as DbalConnection;

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Platform\CommunicationChannel\Application\Announcement\Query;
+namespace spec\Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Application\Announcement\Query;
 
-use Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\HasNewAnnouncementsHandler;
-use Akeneo\Platform\CommunicationChannel\Application\Announcement\Query\HasNewAnnouncementsQuery;
-use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Query\FindNewAnnouncementIdsInterface;
-use Akeneo\Platform\CommunicationChannel\Infrastructure\Persistence\InMemory\Query\InMemoryFindViewedAnnouncementIds;
-use Akeneo\Platform\CommunicationChannel\Infrastructure\Persistence\InMemory\Repository\InMemoryViewedAnnouncementRepository;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Application\Announcement\Query\HasNewAnnouncementsHandler;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Application\Announcement\Query\HasNewAnnouncementsQuery;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Domain\Announcement\Query\FindNewAnnouncementIdsInterface;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Infrastructure\Persistence\InMemory\Query\InMemoryFindViewedAnnouncementIds;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Infrastructure\Persistence\InMemory\Repository\InMemoryViewedAnnouncementRepository;
 use PhpSpec\ObjectBehavior;
 
 class HasNewAnnouncementsHandlerSpec extends ObjectBehavior

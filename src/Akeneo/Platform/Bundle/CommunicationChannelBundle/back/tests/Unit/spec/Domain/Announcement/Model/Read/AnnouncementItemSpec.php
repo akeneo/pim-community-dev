@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Platform\CommunicationChannel\Domain\Announcement\Model\Read;
+namespace spec\Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Domain\Announcement\Model\Read;
 
-use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Model\Read\AnnouncementItem;
+use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Domain\Announcement\Model\Read\AnnouncementItem;
 use DateTimeImmutable;
 use PhpSpec\ObjectBehavior;
 

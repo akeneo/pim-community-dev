@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\CommunicationChannel\Application\Announcement\Command;
+namespace Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Application\Announcement\Command;
 
 /**
  * @author Christophe Chausseray <chausseray.christophe@gmail.com>

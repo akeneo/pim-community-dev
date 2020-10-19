@@ -13,7 +13,6 @@
             "": "src/"
         },
         "psr-4": {
-            "Akeneo\\Platform\\CommunicationChannel\\": "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back",
             "Pim\\Upgrade\\": "upgrades/"
         },
         "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
@@ -28,8 +27,7 @@
             "Akeneo\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
             "Akeneo\\Test\\Integration\\": "tests/back/Integration/",
             "Akeneo\\Test\\Acceptance\\": "tests/back/Acceptance/",
-            "Akeneo\\Test\\Common\\": "tests/back/Common/",
-            "Akeneo\\Platform\\CommunicationChannel\\Test\\": "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests"
+            "Akeneo\\Test\\Common\\": "tests/back/Common/"
         },
         "classmap": [ "tests/back/Integration/AppKernelTest.php" ]
     },

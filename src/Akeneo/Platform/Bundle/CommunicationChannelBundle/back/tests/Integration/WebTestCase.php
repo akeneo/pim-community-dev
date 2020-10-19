@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\CommunicationChannel\Test\Integration;
+namespace Akeneo\Platform\Bundle\CommunicationChannelBundle\back\tests\Integration;
 
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\UserManagement\Component\Model\UserInterface;

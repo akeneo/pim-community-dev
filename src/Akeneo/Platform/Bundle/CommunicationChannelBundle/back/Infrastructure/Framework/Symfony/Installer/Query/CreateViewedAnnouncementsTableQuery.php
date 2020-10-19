@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\CommunicationChannel\Infrastructure\Framework\Symfony\Installer\Query;
+namespace Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Infrastructure\Framework\Symfony\Installer\Query;
 
 /**
  * @author    Christophe Chausseray <chausseray.christophe@gmail.com>
