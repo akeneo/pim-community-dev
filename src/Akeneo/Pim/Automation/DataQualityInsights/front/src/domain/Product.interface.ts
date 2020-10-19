@@ -8,6 +8,7 @@ export default interface Product {
   updated: string|null;
 }
 
+
 interface Meta {
   id: number | null;
   label: {
