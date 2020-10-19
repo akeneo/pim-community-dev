@@ -9,26 +9,25 @@ define(
     ],
     function(_, __, AbstractAction, Router) {
         return AbstractAction.extend({
+            initialize: function(options) {
+                AbstractAction.prototype.initialize.apply(this, arguments);
+
+                const isStoppable = options.model.get('isStoppable') === '1';
+                this.launcherOptions = {
+                    ...this.launcherOptions,
+                    className: `${this.launcherOptions.className} ${isStoppable ? '' : ' AknButton--hidden'}`
+                };
+
+            },
+
             /**
              * {@inheritdoc}
              */
             execute: function() {
-              debugger;
-              console.log(this.model);
-                // var route = null;
-                // var productType = this.model.get('product_type');
-
-                // if ('product' === productType) {
-                //     route = 'pim_enrich_product_edit';
-                // } else if ('product_model' === productType) {
-                //     route = 'pim_enrich_product_model_edit';
-                // } else {
-                //     Router.displayErrorPage(__('error.common'), 400);
-
-                //     return;
-                // }
-
-                // Router.redirectToRoute(route, {id: this.model.get('technical_id')});
+                const isStoppable = this.model.get('isStoppable') === '1';
+                if (isStoppable) {
+                    AbstractAction.prototype.execute.apply(this, arguments);
+                }
             }
         });
     }

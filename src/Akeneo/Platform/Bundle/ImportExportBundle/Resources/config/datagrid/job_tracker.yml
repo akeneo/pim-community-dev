@@ -35,14 +35,16 @@ datagrid:
         actions:
             view:
                 launcherOptions:
-                    className: AknIconButton AknIconButton--small AknIconButton--view
+                    className: AknButton AknButton--small AknButton--greyLight
                 type:      navigate
                 label:     pim_datagrid.action.show.title
                 link:      show_link
                 rowAction: true
             stop:
+                launcherOptions:
+                    className: AknButton AknButton--small AknButton--importantLight
                 type:      stop-job
-                label: Stop the job
+                label: pim_datagrid.action.stop.title
                 icon:
                 rowAction: true
         sorters:

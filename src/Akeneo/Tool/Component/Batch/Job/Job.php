@@ -210,6 +210,11 @@ class Job implements JobInterface, StoppableJobInterface
         }
     }
 
+    public function isStoppable(): bool
+    {
+        return $this->stoppable;
+    }
+
     /**
      * Handler of steps sequentially as provided, checking each one for success
      * before moving to the next. Returns the last {@link StepExecution}

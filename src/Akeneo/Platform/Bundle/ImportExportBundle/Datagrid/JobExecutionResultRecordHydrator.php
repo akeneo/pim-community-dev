@@ -35,7 +35,12 @@ class JobExecutionResultRecordHydrator implements HydratorInterface
     {
         $records = [];
         foreach ($qb->getQuery()->execute() as $record) {
-            $records[] = new ResultRecord(array_merge($record, ['isStoppable' => $this->registry->get($record['jobName']) instanceof StoppableJobInterface]));
+            $job = $this->registry->get($record['jobName']);
+
+            $records[] = new ResultRecord(array_merge(
+                $record,
+                ['isStoppable' => $job instanceof StoppableJobInterface && $job->isStoppable() ? 1 : 0]
+            ));
         }
 
         return $records;

@@ -73,6 +73,8 @@ pim_datagrid:
       no_items: Please, select item to perform action.
     show:
       title: Show
+    stop:
+      title: Stop
 
   filters:
     common:
