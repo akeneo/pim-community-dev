@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit;
 
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -29,11 +31,13 @@ class ConvertToSimpleProductProcessor extends AbstractProcessor
 
     public function process($product)
     {
+        Assert::isInstanceOf($product, ProductInterface::class);
+
         if (!$product->isVariant()) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
             $this->stepExecution->addWarning(
-                'Cannot convert a non-variant product',
-                [],
+                'pim_enrich.mass_edit_action.convert_to_simple_product.error.non_variant_product',
+                ['{{ identifier }}' => $product->getIdentifier()],
                 new DataInvalidItem($product)
             );
 
