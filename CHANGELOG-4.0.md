@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.65 (2020-10-19)
+
 ## Improvements
 
 - PIM-9506-4.0: Make "image" the default media type for media link asset attributes
