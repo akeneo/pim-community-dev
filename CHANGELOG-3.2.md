@@ -4,7 +4,7 @@
 
 - GITHUB-APD-227: add the PIM communication channel
 
-Two frontend dependencies are required for the backport of this feature (@types/react-dom, react-markdown). Therefore, it will add these dependencies in the file`package.json` of your project automatically when executing `composer update` or `composer install`.  
+Four frontend dependencies are required for the backport of this feature (@types/react-dom, react-markdown, styled-components, types/styled-components). Therefore, it will add these dependencies in the file`package.json` of your project automatically when executing `composer update` or `composer install`.  
 
 Please commit changes of the file `package.json` in your CVS.
 

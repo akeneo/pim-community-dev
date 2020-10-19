@@ -51,12 +51,20 @@ class FrontendDependencies
 
         $dependencyAdded = false;
 
-        if (!isset($package['dependencies']['@types/react-dom'])) {
+        if (!isset($package['dependencies']['@types/react-dom']) && !isset($package['devDependencies']['@types/react-dom'])) {
             $package['dependencies']['@types/react-dom'] = '^16.8.0';
             $dependencyAdded = true;
         }
-        if (!isset($package['dependencies']['react-markdown'])) {
+        if (!isset($package['dependencies']['react-markdown']) && !isset($package['devDependencies']['react-markdown'])) {
             $package['dependencies']['react-markdown'] = '^4.3.1';
+            $dependencyAdded = true;
+        }
+        if (!isset($package['dependencies']['styled-components']) && !isset($package['devDependencies']['styled-components'])) {
+            $package['dependencies']['styled-components'] = '^4.3.2';
+            $dependencyAdded = true;
+        }
+        if (!isset($package['dependencies']['@types/styled-components']) && !isset($package['devDependencies']['@types/styled-components'])) {
+            $package['dependencies']['@types/styled-components'] = '^4.1.18';
             $dependencyAdded = true;
         }
 
