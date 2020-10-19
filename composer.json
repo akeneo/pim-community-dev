@@ -89,7 +89,8 @@
         "liuggio/fastest": "1.6.*",
         "phpstan/phpstan": "^0.12.25",
         "phpstan/phpstan-symfony": "^0.12.6",
-        "mcustiel/phiremock": "1.12.1"
+        "mcustiel/phiremock": "1.12.1",
+        "phpstan/phpstan-webmozart-assert": "^0.12.7"
     },
     "repositories": [
         {

@@ -126,6 +126,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\MissingRequiredAttributesNormalizerInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses',
+        'Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
