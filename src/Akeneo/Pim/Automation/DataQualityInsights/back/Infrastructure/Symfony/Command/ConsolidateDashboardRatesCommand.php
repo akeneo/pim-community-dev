@@ -53,5 +53,7 @@ final class ConsolidateDashboardRatesCommand extends Command
         $output->writeln(sprintf('Start to consolidate the dashboard rates for %s.', $consolidationDate->format('Y-m-d')));
         $this->consolidateDashboardRates->consolidate($consolidationDate);
         $output->writeln('Consolidation done.');
+
+        return 0;
     }
 }
