@@ -32,13 +32,6 @@ class JobExecutionController
     /** @var NormalizerInterface */
     private $normalizer;
 
-    /**
-     * @param TranslatorInterface    $translator
-     * @param JobExecutionArchivist  $archivist
-     * @param JobExecutionManager    $jobExecutionManager
-     * @param JobExecutionRepository $jobExecutionRepo
-     * @param NormalizerInterface    $normalizer
-     */
     public function __construct(
         TranslatorInterface $translator,
         JobExecutionArchivist $archivist,
@@ -53,14 +46,7 @@ class JobExecutionController
         $this->normalizer = $normalizer;
     }
 
-    /**
-     * Get jobs
-     *
-     * @param $identifier
-     *
-     * @return JsonResponse
-     */
-    public function getAction($identifier)
+    public function getAction($identifier): JsonResponse
     {
         $jobExecution = $this->jobExecutionRepo->find($identifier);
         if (null === $jobExecution) {
@@ -74,9 +60,9 @@ class JobExecutionController
         $jobResponse = $this->normalizer->normalize($jobExecution, 'internal_api', $context);
 
         $jobResponse['meta'] = [
-            'logExists'     => file_exists($jobExecution->getLogFile()),
-            'archives'      => $this->archives($jobExecution),
-            'id'            => $identifier,
+            'logExists' => file_exists($jobExecution->getLogFile()),
+            'archives' => $this->archives($jobExecution),
+            'id' => $identifier,
         ];
 
         return new JsonResponse($jobResponse);
@@ -92,10 +78,7 @@ class JobExecutionController
     {
         $archives = [];
         foreach ($this->archivist->getArchives($jobExecution) as $archiveName => $files) {
-            $label = $this->translator->transChoice(
-                sprintf('pim_enrich.entity.job_execution.module.download.%s', $archiveName),
-                count($files)
-            );
+            $label = $this->translator->trans(sprintf('pim_enrich.entity.job_execution.module.download.%s', $archiveName));
             $archives[$archiveName] = [
                 'label' => $label,
                 'files' => $files,
@@ -103,5 +86,5 @@ class JobExecutionController
         }
 
         return $archives;
-}
+    }
 }

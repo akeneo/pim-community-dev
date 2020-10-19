@@ -6,12 +6,9 @@ namespace AkeneoTest\Platform\Integration\ImportExport\Repository\InternalApi;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Model\JobExecutionTracking;
 use Akeneo\Platform\Bundle\ImportExportBundle\Model\StepExecutionTracking;
-use Akeneo\Platform\Bundle\ImportExportBundle\Query\ClockInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Query\GetJobExecutionTracking;
-use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobInstanceRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use AkeneoTest\Platform\Integration\ImportExport\Utils\FrozenClock;
 use Doctrine\DBAL\Connection;
 
@@ -29,6 +26,8 @@ class GetJobExecutionTrackingIntegration extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+
+        self::$container->set('pim_import_export.clock', new FrozenClock());
 
         $this->sqlConnection = $this->get('database_connection');
         $this->getJobExecutionTracking = $this->get('pim_import_export.query.get_job_execution_tracking');
@@ -96,7 +95,7 @@ VALUES (:job_instance_id, null, 'admin', 2, null, null, '2020-10-16 09:38:16', n
 SQL;
         $this->sqlConnection->executeUpdate($insertJobExecution, ['job_instance_id' => $JobInstanceId]);
 
-        return (int) $this->sqlConnection->lastInsertId();
+        return (int)$this->sqlConnection->lastInsertId();
     }
 
     private function thereIsAJobTerminated()
@@ -110,7 +109,7 @@ VALUES
 	(:job_instance_id, 86472, 'admin', 1, '2020-10-13 13:05:49', '2020-10-13 13:06:10', '2020-10-13 13:05:45', '2020-10-13 13:06:09', '2020-10-13 13:06:09', 'COMPLETED', '', 'a:0:{}', '', '{}');
 SQL;
         $this->sqlConnection->executeUpdate($insertJobExecution, ['job_instance_id' => $JobInstanceId]);
-        $jobExecutionId = (int) $this->sqlConnection->lastInsertId();
+        $jobExecutionId = (int)$this->sqlConnection->lastInsertId();
 
         $insertStepExecutions = <<<SQL
 INSERT INTO `akeneo_batch_step_execution` (`job_execution_id`, `step_name`, `status`, `read_count`, `write_count`, `filter_count`, `start_time`, `end_time`, `exit_code`, `exit_description`, `terminate_only`, `failure_exceptions`, `errors`, `summary`, `tracking_data`)
@@ -136,7 +135,7 @@ VALUES
 	(:job_instance_id, 86472, 'admin', 3, '2020-10-13 13:05:49', '2020-10-13 13:05:49', '2020-10-13 13:05:45', '2020-10-13 13:05:48', '2020-10-13 13:05:48', 'STARTED', '', 'a:0:{}', '', '{}');
 SQL;
         $this->sqlConnection->executeUpdate($insertJobExecution, ['job_instance_id' => $JobInstanceId]);
-        $jobExecutionId = (int) $this->sqlConnection->lastInsertId();
+        $jobExecutionId = (int)$this->sqlConnection->lastInsertId();
 
         $insertStepExecutions = <<<SQL
 INSERT INTO `akeneo_batch_step_execution` (`job_execution_id`, `step_name`, `status`, `read_count`, `write_count`, `filter_count`, `start_time`, `end_time`, `exit_code`, `exit_description`, `terminate_only`, `failure_exceptions`, `errors`, `summary`, `tracking_data`)
@@ -170,7 +169,7 @@ VALUES (:job_instance_id, 55, 'admin', 6, '2020-10-16 09:50:28', '2020-10-16 09:
 SQL;
 
         $this->sqlConnection->executeUpdate($insertJobExecution, ['job_instance_id' => $JobInstanceId]);
-        $jobExecutionId = (int) $this->sqlConnection->lastInsertId();
+        $jobExecutionId = (int)$this->sqlConnection->lastInsertId();
 
         $insertStepExecutions = <<<SQL
 INSERT INTO akeneo_batch_step_execution (job_execution_id, step_name, status, read_count, write_count, filter_count, start_time, end_time, exit_code, exit_description, terminate_only, failure_exceptions, errors, summary, tracking_data)

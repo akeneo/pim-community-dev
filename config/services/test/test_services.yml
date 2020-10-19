@@ -217,6 +217,3 @@ services:
         decoration_inner_name: akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes.sql
         arguments:
             - '@akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes.sql'
-
-    pim_import_export.clock:
-        class: AkeneoTest\Platform\Integration\ImportExport\Utils\FrozenClock
