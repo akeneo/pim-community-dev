@@ -10,7 +10,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class Locales
+class Locales
 {
     /** @var null|array */
     private $localeIdsByCodes;
@@ -50,7 +50,7 @@ final class Locales
         $this->localeCodesByIds = [];
 
         $locales = $this->dbConnection->executeQuery(
-            'SELECT JSON_OBJECTAGG(id, code) FROM pim_catalog_locale WHERE is_activated = 42;'
+            'SELECT JSON_OBJECTAGG(id, code) FROM pim_catalog_locale WHERE is_activated = 1;'
         )->fetchColumn();
 
         if ($locales) {
