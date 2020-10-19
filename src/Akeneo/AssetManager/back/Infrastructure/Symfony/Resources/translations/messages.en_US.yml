@@ -65,10 +65,14 @@ pim_datagrid:
     cells:
         type:
             asset_manager_execute_naming_convention: Execute Asset Family naming convention
+            asset_manager_link_assets_to_products: Link assets to products
+            asset_manager_compute_transformations: Compute asset transformations
 
 batch_jobs:
     default_steps:
         execute_naming_convention: Execute Asset Family naming convention
+        link_assets_to_products: Link assets to products
+        compute_transformations: Compute asset transformations
 
 job_execution:
     summary:
