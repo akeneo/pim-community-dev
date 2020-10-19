@@ -146,12 +146,15 @@ class GetJobExecutionTracking
             case BatchStatus::ABANDONED:
             case BatchStatus::UNKNOWN:
             case BatchStatus::COMPLETED:
+                // TODO use const instead
                 return 'COMPLETED';
                 break;
             case BatchStatus::STARTING:
+                // TODO use const instead
                 return 'NOT STARTED';
                 break;
             case BatchStatus::STARTED:
+                // TODO use const instead
                 return 'IN PROGRESS';
                 break;
             default:

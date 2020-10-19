@@ -34,5 +34,7 @@ services:
         arguments:
             - '@pim_import_export.normalizer.job_execution'
             - '@pim_user.context.user'
+            - '@pim_import_export.query.get_job_execution_tracking'
+            - '@serializer'
         tags:
             - { name: pim_internal_api_serializer.normalizer}

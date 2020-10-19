@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\Bundle\ImportExportBundle\Normalizer\InternalApi;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Model\JobExecutionTracking;
 use Akeneo\Platform\Bundle\ImportExportBundle\Normalizer\InternalApi\JobExecutionNormalizer;
+use Akeneo\Platform\Bundle\ImportExportBundle\Query\GetJobExecutionTracking;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use PhpSpec\ObjectBehavior;
@@ -17,9 +19,18 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class JobExecutionNormalizerSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $jobExecutionStandardNormalizer, UserContext $userContext)
-    {
-        $this->beConstructedWith($jobExecutionStandardNormalizer, $userContext);
+    function let(
+        NormalizerInterface $jobExecutionStandardNormalizer,
+        UserContext $userContext,
+        GetJobExecutionTracking $getJobExecutionTracking,
+        NormalizerInterface $jobExecutionTrackingNormalizer
+    ) {
+        $this->beConstructedWith(
+            $jobExecutionStandardNormalizer,
+            $userContext,
+            $getJobExecutionTracking,
+            $jobExecutionTrackingNormalizer
+        );
     }
 
     function it_is_a_job_execution_normalizer()
@@ -39,9 +50,15 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($object, 'standard')->shouldReturn(false);
     }
 
-    function it_normalizes_a_job_execution($jobExecutionStandardNormalizer, $userContext)
-    {
-        $jobExecution = new JobExecution();
+    function it_normalizes_a_job_execution(
+        NormalizerInterface $jobExecutionStandardNormalizer,
+        UserContext $userContext,
+        GetJobExecutionTracking $getJobExecutionTracking,
+        NormalizerInterface $jobExecutionTrackingNormalizer,
+        JobExecution $jobExecution,
+        JobExecutionTracking $jobExecutionTracking
+    ) {
+        $jobExecution->getId()->willReturn(1);
 
         $userContext->getUserTimezone()->willReturn('Europe/Paris');
         $userContext->getUiLocaleCode()->willReturn('en_US');
@@ -56,20 +73,61 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
                 'jobInstance'    => ['Normalized job instance with datetime in user timezone']
             ]);
 
+        $getJobExecutionTracking
+            ->execute(1)
+            ->willReturn($jobExecutionTracking);
+
+        $jobExecutionTrackingNormalizer
+            ->normalize($jobExecutionTracking, 'standard')
+            ->willReturn([
+                // TODO use const instead
+                'status' => 'IN PROGRESS',
+                'currentStep' => 1,
+                'totalSteps' => 2,
+                'steps' => [
+                    ['name' => 'foo'],
+                    ['name' => 'bar'],
+                ]
+            ]);
+
         $this->normalize($jobExecution, 'internal_api')->shouldReturn([
             'failures'       => ['Such error'],
             'stepExecutions' => ['**exportExecution**', '**cleanExecution**'],
             'isRunning'      => true,
             'status'         => 'COMPLETED',
-            'jobInstance'    => ['Normalized job instance with datetime in user timezone']
+            'jobInstance'    => ['Normalized job instance with datetime in user timezone'],
+            'tracking'       => [
+                // TODO use const instead
+                'status' => 'IN PROGRESS',
+                'currentStep' => 1,
+                'totalSteps' => 2,
+                'steps' => [
+                    ['name' => 'foo'],
+                    ['name' => 'bar'],
+                ]
+            ],
         ]);
     }
 
-    function it_normalizes_a_job_execution_without_user_in_the_user_context($jobExecutionStandardNormalizer, $userContext)
-    {
-        $jobExecution = new JobExecution();
+    function it_normalizes_a_job_execution_without_user_in_the_user_context(
+        NormalizerInterface $jobExecutionStandardNormalizer,
+        UserContext $userContext,
+        GetJobExecutionTracking $getJobExecutionTracking,
+        NormalizerInterface $jobExecutionTrackingNormalizer,
+        JobExecution $jobExecution,
+        JobExecutionTracking $jobExecutionTracking
+    ) {
+        $jobExecution->getId()->willReturn(1);
 
         $userContext->getUserTimezone()->willThrow(\RuntimeException::class);
+
+        $getJobExecutionTracking
+            ->execute(1)
+            ->willReturn($jobExecutionTracking);
+
+        $jobExecutionTrackingNormalizer
+            ->normalize($jobExecutionTracking, 'standard')
+            ->willReturn('NORMALIZED_JOB_EXECUTION_TRACKING_PLACEHOLDER');
 
         $jobExecutionStandardNormalizer
             ->normalize($jobExecution, 'standard', [])
@@ -86,7 +144,8 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
             'stepExecutions' => ['**exportExecution**', '**cleanExecution**'],
             'isRunning'      => true,
             'status'         => 'COMPLETED',
-            'jobInstance'    => ['Normalized job instance with datetime in server timezone']
+            'jobInstance'    => ['Normalized job instance with datetime in server timezone'],
+            'tracking'       => 'NORMALIZED_JOB_EXECUTION_TRACKING_PLACEHOLDER',
         ]);
     }
 }
