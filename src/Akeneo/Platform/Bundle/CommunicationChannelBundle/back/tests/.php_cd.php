@@ -16,20 +16,6 @@ $rules = [
             'Akeneo\Platform\CommunicationChannel\Domain',
         ]
     )->in('Akeneo\Platform\CommunicationChannel\Application'),
-
-    $builder->only(
-        [
-            'Akeneo\Platform\CommunicationChannel\Application',
-            'Akeneo\Platform\CommunicationChannel\Domain',
-            'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
-            'Akeneo\Platform\VersionProviderInterface',
-            'Akeneo\UserManagement\Bundle\Context\UserContext',
-            'Symfony\Component',
-            'Doctrine\DBAL\Connection',
-            'Doctrine\DBAL\FetchMode',
-            'GuzzleHttp\Client'
-        ]
-    )->in('Akeneo\Platform\CommunicationChannel\Infrastructure'),
 ];
 
 $config = new Configuration($rules, $finder);

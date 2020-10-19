@@ -111,7 +111,7 @@ jobs:
                 when: always
           - run:
                 name: Communication panel
-                command:
+                command: |
                     make communication-channel-lint-back
                     make communication-channel-coupling-back
                     make communication-channel-unit-back
