@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Tool\Component\Batch\Step;
 
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
@@ -44,24 +46,14 @@ class ItemStep extends AbstractStep implements StoppableStepInterface
     /** @var bool */
     private $stoppable = false;
 
-    /**
-     * @param string                   $name
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param JobRepositoryInterface   $jobRepository
-     * @param ItemReaderInterface      $reader
-     * @param ItemProcessorInterface   $processor
-     * @param ItemWriterInterface      $writer
-     * @param integer                  $batchSize
-     * @param SqlGetJobExecutionStatus $sqlGetJobExecutionStatus
-     */
     public function __construct(
-        $name,
+        string $name,
         EventDispatcherInterface $eventDispatcher,
         JobRepositoryInterface $jobRepository,
         ItemReaderInterface $reader,
         ItemProcessorInterface $processor,
         ItemWriterInterface $writer,
-        $batchSize = 100,
+        int $batchSize = 100,
         SqlGetJobExecutionStatus $sqlGetJobExecutionStatus = null
     ) {
         parent::__construct($name, $eventDispatcher, $jobRepository);
@@ -103,7 +95,7 @@ class ItemStep extends AbstractStep implements StoppableStepInterface
         return $this->writer;
     }
 
-    public function setStoppable(bool $stoppable)
+    public function setStoppable(bool $stoppable): void
     {
         $this->stoppable = $stoppable;
     }

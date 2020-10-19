@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Tool\Component\Batch\Job;
 
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
@@ -42,15 +44,8 @@ class Job implements JobInterface, StoppableJobInterface
     /** @var Filesystem */
     protected $filesystem;
 
-    /**
-     * @param string                   $name
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param JobRepositoryInterface   $jobRepository
-     * @param StepInterface[]          $steps
-     * @param bool                     $stoppable
-     */
     public function __construct(
-        $name,
+        string $name,
         EventDispatcherInterface $eventDispatcher,
         JobRepositoryInterface $jobRepository,
         array $steps = [],
@@ -245,6 +240,7 @@ class Job implements JobInterface, StoppableJobInterface
             $jobExecution->setStatus($stepExecution->getStatus());
             $jobExecution->setExitStatus($stepExecution->getExitStatus());
             $this->jobRepository->updateJobExecution($jobExecution);
+
             return;
         }
 

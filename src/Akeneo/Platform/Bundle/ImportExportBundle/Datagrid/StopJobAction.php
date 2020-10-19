@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Datagrid;
 
 use Oro\Bundle\DataGridBundle\Extension\Action\Actions\AbstractAction;

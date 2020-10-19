@@ -85,7 +85,7 @@ datagrid:
         properties:
             id: ~
             jobCode: ~
-            isStopable: ~
+            isStoppable: ~
             show_link:
                 type: url
                 params:

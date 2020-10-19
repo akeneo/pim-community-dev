@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Tool\Component\Batch\Step;
 
 /**
@@ -9,5 +11,5 @@ namespace Akeneo\Tool\Component\Batch\Step;
  */
 interface StoppableStepInterface
 {
-    public function setStoppable(bool $stoppable);
+    public function setStoppable(bool $stoppable): void;
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Datagrid;
 
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
@@ -21,9 +23,6 @@ class JobExecutionResultRecordHydrator implements HydratorInterface
      */
     protected $registry;
 
-    /**
-     * @param JobRegistry $registry
-     */
     public function __construct(JobRegistry $registry)
     {
         $this->registry = $registry;
@@ -36,7 +35,7 @@ class JobExecutionResultRecordHydrator implements HydratorInterface
     {
         $records = [];
         foreach ($qb->getQuery()->execute() as $record) {
-            $records[] = new ResultRecord(array_merge($record, ['isStopable' => $this->registry->get($record['jobName']) instanceof StoppableJobInterface]));
+            $records[] = new ResultRecord(array_merge($record, ['isStoppable' => $this->registry->get($record['jobName']) instanceof StoppableJobInterface]));
         }
 
         return $records;
