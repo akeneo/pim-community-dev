@@ -25,6 +25,10 @@ use Doctrine\ORM\PersistentCollection;
  */
 class GetJobExecutionTracking
 {
+    private const TRACKING_STATUS_COMPLETED = 'COMPLETED';
+    private const TRACKING_STATUS_NOT_STARTED = 'NOT_STARTED';
+    private const TRACKING_STATUS_IN_PROGRESS = 'IN_PROGRESS';
+
     /** @var JobRegistry */
     private $jobRegistry;
 
@@ -110,7 +114,7 @@ class GetJobExecutionTracking
     {
         $stepExecutionTracking = new StepExecutionTracking();
         $stepExecutionTracking->name = $step->getName();
-        $stepExecutionTracking->status = 'NOT STARTED';
+        $stepExecutionTracking->status = self::TRACKING_STATUS_NOT_STARTED;
         if ($step instanceof TrackableStepInterface && $step->isTrackable()) {
             $stepExecutionTracking->isTrackable = true;
         }
@@ -147,17 +151,11 @@ class GetJobExecutionTracking
             case BatchStatus::ABANDONED:
             case BatchStatus::UNKNOWN:
             case BatchStatus::COMPLETED:
-                // TODO use const instead
-                return 'COMPLETED';
-                break;
+                return self::TRACKING_STATUS_COMPLETED;
             case BatchStatus::STARTING:
-                // TODO use const instead
-                return 'NOT STARTED';
-                break;
+                return self::TRACKING_STATUS_NOT_STARTED;
             case BatchStatus::STARTED:
-                // TODO use const instead
-                return 'IN PROGRESS';
-                break;
+                return self::TRACKING_STATUS_IN_PROGRESS;
             default:
                 throw new \RuntimeException(sprintf('Batch status "%s" unsupported', $batchStatus->getValue()));
         }
@@ -167,7 +165,7 @@ class GetJobExecutionTracking
     {
         $now = $this->clock->now();
         $status = $this->getMappedStatus($stepExecution->getStatus());
-        if ($status === 'NOT STARTED') {
+        if ($status === self::TRACKING_STATUS_NOT_STARTED) {
             return 0;
         }
 

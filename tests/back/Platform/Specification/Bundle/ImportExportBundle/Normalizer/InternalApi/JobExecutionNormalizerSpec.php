@@ -80,8 +80,7 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
         $jobExecutionTrackingNormalizer
             ->normalize($jobExecutionTracking)
             ->willReturn([
-                // TODO use const instead
-                'status' => 'IN PROGRESS',
+                'status' => 'IN_PROGRESS',
                 'currentStep' => 1,
                 'totalSteps' => 2,
                 'steps' => [
@@ -97,8 +96,7 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
             'status'         => 'COMPLETED',
             'jobInstance'    => ['Normalized job instance with datetime in user timezone'],
             'tracking'       => [
-                // TODO use const instead
-                'status' => 'IN PROGRESS',
+                'status' => 'IN_PROGRESS',
                 'currentStep' => 1,
                 'totalSteps' => 2,
                 'steps' => [
