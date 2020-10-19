@@ -10,8 +10,7 @@ services:
             -
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.evaluate_attributes'
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.evaluate_attribute_options'
-                - '@akeneo.pim.automation.data_quality_insights.connector.step.evaluate_products_criteria'
-                - '@akeneo.pim.automation.data_quality_insights.connector.step.evaluate_product_models_criteria'
+                - '@akeneo.pim.automation.data_quality_insights.connector.step.evaluate_products_and_product_models_criteria'
         tags:
             - { name: akeneo_batch.job, connector: 'Data Quality Insights Connector', type: 'data_quality_insights' }
             - name: akeneo_batch.job.not_visible
@@ -72,18 +71,6 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateAttributeOptionsTasklet:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributeOptions'
-            - '@logger'
-
-    akeneo.pim.automation.data_quality_insights.infrastructure.connector.tasklet.prepare_products_criteria_evaluation:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\PimEnterprisePrepareProductsCriteriaEvaluationTasklet
-        arguments:
-            - '@akeneo.pim.automation.data_quality_insights.create_missing_products_criteria_evaluations'
-            - '@logger'
-
-    akeneo.pim.automation.data_quality_insights.infrastructure.connector.tasklet.prepare_product_models_criteria_evaluation:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\PimEnterprisePrepareProductModelsCriteriaEvaluationTasklet
-        arguments:
-            - '@akeneo.pim.automation.data_quality_insights.create_missing_product_models_criteria_evaluations'
             - '@logger'
 
     #Job parameters
