@@ -3,11 +3,10 @@
 namespace Akeneo\Pim\Enrichment\Component\Comment\Normalizer\Standard;
 
 use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
-use Akeneo\Tool\Component\Normalizer\GetNormalizer;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerAwareInterface;
-use Symfony\Component\Serializer\SerializerAwareTrait;
 
 /**
  * Standard Comment normalizer
@@ -16,25 +15,23 @@ use Symfony\Component\Serializer\SerializerAwareTrait;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CommentNormalizer implements NormalizerInterface, SerializerAwareInterface, CacheableSupportsMethodInterface
+class CommentNormalizer implements NormalizerInterface, NormalizerAwareInterface, CacheableSupportsMethodInterface
 {
-    use SerializerAwareTrait;
+    use NormalizerAwareTrait;
 
     /**
      * {@inheritdoc}
      */
     public function normalize($comment, $format = null, array $context = [])
     {
-        $normalizer = GetNormalizer::fromSerializer($this->serializer);
-
         $data = [
             'id'           => $comment->getId(),
             'resourceName' => $comment->getResourceName(),
             'resourceId'   => $comment->getResourceId(),
             'author'       => $this->normalizeAuthor($comment),
             'body'         => $comment->getBody(),
-            'created'      => $normalizer->normalize($comment->getCreatedAt(), 'standard', $context),
-            'replied'      => $normalizer->normalize($comment->getRepliedAt(), 'standard', $context),
+            'created'      => $this->normalizer->normalize($comment->getCreatedAt(), 'standard', $context),
+            'replied'      => $this->normalizer->normalize($comment->getRepliedAt(), 'standard', $context),
             'replies'      => $this->normalizeChildren($comment->getChildren()->toArray(), $context),
         ];
 
@@ -66,7 +63,7 @@ class CommentNormalizer implements NormalizerInterface, SerializerAwareInterface
     {
         $comments = [];
         foreach ($children as $child) {
-            $comments[] = GetNormalizer::fromSerializer($this->serializer)->normalize($child, 'standard', $context);
+            $comments[] = $this->normalizer->normalize($child, 'standard', $context);
         }
 
         return $comments;

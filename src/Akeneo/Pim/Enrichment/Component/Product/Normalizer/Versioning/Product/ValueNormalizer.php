@@ -6,14 +6,13 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Tool\Component\Normalizer\GetNormalizer;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerAwareInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Normalize a product value into an array
@@ -22,13 +21,12 @@ use Symfony\Component\Serializer\SerializerInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ValueNormalizer implements NormalizerInterface, SerializerAwareInterface, CacheableSupportsMethodInterface
+class ValueNormalizer implements NormalizerInterface, NormalizerAwareInterface, CacheableSupportsMethodInterface
 {
+    use NormalizerAwareTrait;
+
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
-
-    /** @var SerializerInterface */
-    protected $serializer;
 
     /** @var string[] */
     protected $supportedFormats = ['csv', 'flat'];
@@ -47,14 +45,6 @@ class ValueNormalizer implements NormalizerInterface, SerializerAwareInterface, 
         $this->attributeRepository = $attributeRepository;
         $this->attributeOptionRepository = $attributeOptionRepository;
         $this->precision = $precision;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setSerializer(SerializerInterface $serializer)
-    {
-        $this->serializer = $serializer;
     }
 
     /**
@@ -102,7 +92,7 @@ class ValueNormalizer implements NormalizerInterface, SerializerAwareInterface, 
             } elseif ('options' === $backendType && $data instanceof Collection && $data->isEmpty() === false) {
                 $data = $this->sortOptions($data, $attribute);
                 $context['field_name'] = $fieldName;
-                $result = GetNormalizer::fromSerializer($this->serializer)->normalize($data, $format, $context);
+                $result = $this->normalizer->normalize($data, $format, $context);
             } else {
                 $context['field_name'] = $fieldName;
                 if ('metric' === $backendType) {
@@ -111,7 +101,7 @@ class ValueNormalizer implements NormalizerInterface, SerializerAwareInterface, 
                     $context['value'] = $entity;
                 }
 
-                $result = GetNormalizer::fromSerializer($this->serializer)->normalize($data, $format, $context);
+                $result = $this->normalizer->normalize($data, $format, $context);
             }
         }
 
