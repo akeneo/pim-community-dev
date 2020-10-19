@@ -141,6 +141,8 @@
 - Add `getChannels()` and `getLabel()` methods in `Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface` interface
 - Change `addFieldSorter()` method of `Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface` to return `Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface`
 - The `Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface` interface now also extends `Doctrine\Common\Persistence\ObjectRepository` interface
+- Rename the `$objectFilter` property in `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\CategoryController` to `$collectionFilter`
+- Change constructor of `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\SqlGetConnectorProducts` to replace `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $attributeRepository` by `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface $attributeRepository`
 
 ### CLI commands
 
