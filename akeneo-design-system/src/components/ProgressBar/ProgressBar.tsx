@@ -34,7 +34,7 @@ const ProgressBarBackground = styled.div<{height: ProgressBarHeight} & AkeneoThe
 `;
 
 const ProgressBarFill = styled.div.attrs<{width: number; level: Level}>(props => ({
-  style: {width: props.width},
+  style: {width: props.width + '%'},
 }))<{level: Level}>`
   ${({level}: {level: Level} & AkeneoThemedProps) => css`
     background: ${getColorForLevel(level, 100)};
