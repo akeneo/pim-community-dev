@@ -10,7 +10,7 @@ Feature: Display a completeness dropdown on products
 
   Scenario: The dropdown displays completeness information for the variant product
     Given I am on the "1111111112" product page
-    Then I should see the text "Complete: 54%"
+    Then I should see the text "Completeness: 54%"
     When I open the completeness dropdown
     And I should see the completeness in the dropdown:
       | locale | state   | missing_values | ratio | missing_required_attributes                                                                   |

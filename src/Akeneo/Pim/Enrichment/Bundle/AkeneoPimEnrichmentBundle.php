@@ -56,6 +56,7 @@ class AkeneoPimEnrichmentBundle extends Bundle
             ->addCompilerPass(new RegisterSerializerPass('pim_storage_serializer'))
             ->addCompilerPass(new RegisterSerializerPass('pim_datagrid_serializer'))
             ->addCompilerPass(new RegisterSerializerPass('pim_serializer'))
+            ->addCompilerPass(new RegisterSerializerPass('pim_domain_error_serializer'))
             ->addCompilerPass(new RegisterRendererPass())
             ->addCompilerPass(new RegisterCategoryItemCounterPass())
             ->addCompilerPass(new RegisterProductQueryFilterPass('product_and_product_model'))

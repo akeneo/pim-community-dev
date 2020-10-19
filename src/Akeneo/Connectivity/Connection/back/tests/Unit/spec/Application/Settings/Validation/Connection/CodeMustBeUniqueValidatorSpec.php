@@ -6,9 +6,7 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Settings\Validation\Co
 
 use Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\CodeMustBeUnique;
 use Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\CodeMustBeUniqueValidator;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ClientId;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
 use PhpSpec\ObjectBehavior;

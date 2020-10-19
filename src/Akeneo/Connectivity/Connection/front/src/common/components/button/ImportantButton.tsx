@@ -1,9 +1,8 @@
-import React from 'react';
-import {PropsWithChildren} from 'react';
+import React, {forwardRef, Ref} from 'react';
 import {Button, Props} from './Button';
 
-export const ImportantButton = ({classNames = [], ...props}: PropsWithChildren<Props>) => {
+export const ImportantButton = forwardRef(({classNames = [], ...props}: Props, ref: Ref<HTMLButtonElement>) => {
     classNames.push('AknButton--important');
 
-    return <Button {...props} classNames={classNames}></Button>;
-};
+    return <Button {...props} ref={ref} classNames={classNames}></Button>;
+});

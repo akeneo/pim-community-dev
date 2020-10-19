@@ -56,7 +56,8 @@ define(
                 this.$el.html(
                     this.template({
                         color: this.badgeCssClass(completeProducts, totalProducts),
-                        label: this.badgeLabel(completeProducts, totalProducts)
+                        label: this.badgeLabel(),
+                        ratio: this.ratioLabel(completeProducts, totalProducts),
                     })
                 );
             },
@@ -85,17 +86,14 @@ define(
             /**
              * Return the label of the badge
              *
-             * @param {int} completeProducts
-             * @param {int} totalProducts
-             *
              * @returns {string}
              */
-            badgeLabel: function (completeProducts, totalProducts) {
-                return __(
-                    'pim_enrich.entity.product_model.module.completeness.variant_product',
-                    { complete: completeProducts, total: totalProducts },
-                    completeProducts
-                );
+            badgeLabel: function () {
+                return __('pim_enrich.entity.product_model.module.completeness.label');
+            },
+
+            ratioLabel: function (completeProducts, totalProducts) {
+                return `${completeProducts} / ${totalProducts}`;
             }
         });
     }

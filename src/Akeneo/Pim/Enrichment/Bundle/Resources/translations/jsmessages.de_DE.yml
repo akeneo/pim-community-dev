@@ -76,7 +76,7 @@ pim_enrich.entity.product:
       add_option: Option hinzufügen
     completeness:
       title: Vollständigkeit
-      complete: Vollständig
+      complete: Vollständigkeit
       no_family: Keine Produktfamilie zugewiesen. Bitte wählen Sie eine Produktfamilie, um die Vollständigkeit dieses Produkts zu berechnen.
       no_completeness: Sie haben gerade die Produktfamilie geändert. Bitte speichern Sie zuerst, um die Vollständigkeit für die neue Produktfamilie zu berechnen.
       missing_values: "{1}1 fehlender Wert|] 1, Inf [{{ count }} fehlende Werte"
@@ -374,6 +374,8 @@ pim_datagrid:
         all_attributes: Alle Attribute
         with_codes: Mit Codes
         with_labels: Mit Labels
+      success_message: "Du kannst {{ job_link }} folgen."
+      job_link_label: der Fortschritt der Ausführung hier
     mass_edit: Massenbearbeitung
     sequential_edit: Sequentielle Bearbeitung
     mass_delete: Mehrauswahl löschen

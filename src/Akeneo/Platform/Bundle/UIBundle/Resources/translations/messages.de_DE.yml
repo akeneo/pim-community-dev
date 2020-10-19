@@ -104,7 +104,7 @@ pim_enrich:
       edit_attributes: Attribute eines Produktmodells bearbeiten
       categories_view: Die Kategorien eines Produktmodells anzeigen
       history: Produkthistorie ansehen
-      remove: Produktmodell löschen
+      remove: Entfernen eines Produktmodells (einschließlich Kinder)
     category:
       list: Kategorien auflisten
       create: Eine Kategorie anlegen

@@ -18,18 +18,18 @@ class AkeneoConnectivityConnectionExtension extends Extension
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('install.yml');
-        $loader->load('services.yml');
-        $loader->load('validators.yml');
-        $loader->load('wrong_credentials_connection.yml');
-
         $loader->load('cli.yml');
-        $loader->load('handlers.yml');
-        $loader->load('queries.yml');
-        $loader->load('repositories.yml');
         $loader->load('controllers.yml');
         $loader->load('event_subscribers.yml');
+        $loader->load('handlers.yml');
+        $loader->load('install.yml');
+        $loader->load('message_handler.yml');
+        $loader->load('queries.yml');
+        $loader->load('repositories.yml');
         $loader->load('serializers.yml');
-        $loader->load('documentation.yml');
+        $loader->load('services.yml');
+        $loader->load('validators.yml');
+        $loader->load('webhook.yml');
+        $loader->load('wrong_credentials_connection.yml');
     }
 }

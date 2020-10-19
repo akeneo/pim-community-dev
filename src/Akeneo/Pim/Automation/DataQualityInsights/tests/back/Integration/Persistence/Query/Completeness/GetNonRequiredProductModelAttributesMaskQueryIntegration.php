@@ -24,6 +24,7 @@ class GetNonRequiredProductModelAttributesMaskQueryIntegration extends Completen
         $this->givenCurrencyForChannel([['code' => 'ecommerce', 'currencies' => ['USD']]]);
         $this->givenChannels([['code' => 'tablet', 'locales' => ['en_US', 'fr_FR'], 'labels' => ['en_US' => 'tablet', 'fr_FR' => 'Tablette'], 'currencies' => ['USD', 'EUR']]]);
 
+        $this->givenADeactivatedAttributeGroup('erp');
         $this->givenAttributes([
             ['code' => 'a_required_text', 'type' => AttributeTypes::TEXT],
             ['code' => 'a_required_text_for_ecommerce_only', 'type' => AttributeTypes::TEXT, 'scopable' => true],
@@ -44,6 +45,9 @@ class GetNonRequiredProductModelAttributesMaskQueryIntegration extends Completen
             // Attributes for the family variant
             ['code' => 'a_required_variant_text', 'type' => AttributeTypes::TEXT],
             ['code' => 'a_variation_axis', 'type' => AttributeTypes::OPTION_SIMPLE_SELECT],
+            // Attributes non required but deactivated from their attribute group
+            ['code' => 'a_deactivated_text', 'type' => AttributeTypes::TEXT, 'group' => 'erp'],
+            ['code' => 'a_deactivated_variant_text', 'type' => AttributeTypes::TEXT, 'group' => 'erp'],
         ]);
 
         $this->givenFamilies([
@@ -66,6 +70,8 @@ class GetNonRequiredProductModelAttributesMaskQueryIntegration extends Completen
                     'a_required_locale_specific_fr',
                     'a_variation_axis',
                     'a_required_variant_text',
+                    'a_deactivated_text',
+                    'a_deactivated_variant_text',
                 ],
                 'attribute_requirements' => [
                     'ecommerce' => [
@@ -93,7 +99,7 @@ class GetNonRequiredProductModelAttributesMaskQueryIntegration extends Completen
                 [
                     'level' => 1,
                     'axes' => ['a_variation_axis'],
-                    'attributes' => ['a_variation_axis', 'sku', 'a_required_variant_text'],
+                    'attributes' => ['a_variation_axis', 'sku', 'a_required_variant_text', 'a_deactivated_variant_text'],
                 ],
             ],
         ]);
