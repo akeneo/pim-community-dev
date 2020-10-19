@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Comment\Normalizer\Standard;
 
 use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
+use Akeneo\Tool\Component\Normalizer\GetNormalizer;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -24,9 +25,7 @@ class CommentNormalizer implements NormalizerInterface, SerializerAwareInterface
      */
     public function normalize($comment, $format = null, array $context = [])
     {
-        if (!$this->serializer instanceof NormalizerInterface) {
-            throw new \LogicException('Serializer must be a normalizer');
-        }
+        $normalizer = GetNormalizer::fromSerializer($this->serializer);
 
         $data = [
             'id'           => $comment->getId(),
@@ -34,8 +33,8 @@ class CommentNormalizer implements NormalizerInterface, SerializerAwareInterface
             'resourceId'   => $comment->getResourceId(),
             'author'       => $this->normalizeAuthor($comment),
             'body'         => $comment->getBody(),
-            'created'      => $this->serializer->normalize($comment->getCreatedAt(), 'standard', $context),
-            'replied'      => $this->serializer->normalize($comment->getRepliedAt(), 'standard', $context),
+            'created'      => $normalizer->normalize($comment->getCreatedAt(), 'standard', $context),
+            'replied'      => $normalizer->normalize($comment->getRepliedAt(), 'standard', $context),
             'replies'      => $this->normalizeChildren($comment->getChildren()->toArray(), $context),
         ];
 
