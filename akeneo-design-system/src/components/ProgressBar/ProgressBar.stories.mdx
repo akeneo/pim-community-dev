@@ -4,11 +4,8 @@ import {ProgressBar} from './ProgressBar.tsx';
 <Meta
   title="Components/ProgressBar"
   component={ProgressBar}
-  argTypes={{
-    color: {control: {type: 'text'}},
-  }}
   args={{
-    color: '#f9b53f',
+    level: 'primary',
     title: 'Lorem Ipsum is simply dummy text',
     progressLabel: '30 minutes left',
     percent: '50'
@@ -37,16 +34,51 @@ One of the most important rules in UI / UX design is visibility of system state.
 
 <ArgsTable story="Standard" />
 
-## Variation on color
+## Variation on progress
 
 <Canvas>
-  <Story name="Size">
+  <Story name="Progress">
     {args => {
       return (
         <>
-          <ProgressBar {...args} percent={25} color="#67b373"/>
-          <ProgressBar {...args} percent={50} color="#f9b53f"/>
-          <ProgressBar {...args} percent={75} color="#5992c7"/>
+          <ProgressBar {...args} progressLabel="0%" percent={0} />
+          <ProgressBar {...args} progressLabel="25%" percent={25} />
+          <ProgressBar {...args} progressLabel="50%" percent={50} />
+          <ProgressBar {...args} progressLabel="100%" percent={100} />
+          <ProgressBar {...args} progressLabel="indeterminate" percent='indeterminate' />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on level
+
+<Canvas>
+  <Story name="Level">
+    {args => {
+      return (
+        <>
+          <ProgressBar {...args} title="Primary" level="primary" />
+          <ProgressBar {...args} title="Secondary" level="secondary" />
+          <ProgressBar {...args} title="Tertiary" level="tertiary" />
+          <ProgressBar {...args} title="Warning" level="warning" />
+          <ProgressBar {...args} title="Danger" level="danger" />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on light
+
+<Canvas>
+  <Story name="Light">
+    {args => {
+      return (
+        <>
+          <ProgressBar {...args} title="Default" light={false} />
+          <ProgressBar {...args} title="Light" light={true} />
         </>
       );
     }}
@@ -60,8 +92,27 @@ One of the most important rules in UI / UX design is visibility of system state.
     {args => {
       return (
         <>
-          <ProgressBar {...args} percent={50} height="small"/>
-          <ProgressBar {...args} percent={50} height="large"/>
+          <ProgressBar {...args} title="Small" size="small" />
+          <ProgressBar {...args} title="Large" size="large" />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on size
+
+<Canvas>
+  <Story name="Size">
+    {args => {
+      return (
+        <>
+          <div>
+            <ProgressBar {...args}/>
+          </div>
+          <div style={{width: '300px'}}>
+            <ProgressBar {...args}/>
+          </div>
         </>
       );
     }}
