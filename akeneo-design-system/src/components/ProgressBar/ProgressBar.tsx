@@ -1,8 +1,8 @@
 import React, {Ref, useEffect, useRef, useState} from 'react';
 import styled, {css, keyframes} from 'styled-components';
 import {AkeneoThemedProps, getColor, getColorForLevel, getFontSize, Level} from '../../theme';
-import {useWindowSize} from "../../hooks/useWindowSize";
-import {uuid} from "../../shared";
+import {useWindowSize} from '../../hooks/useWindowSize';
+import {uuid} from '../../shared';
 
 const ProgressBarContainer = styled.div``;
 
@@ -18,8 +18,8 @@ const Header = styled.div<{isMinimized: boolean} & AkeneoThemedProps>`
   font-size: ${getFontSize('default')};
   margin-bottom: -4px;
   ${props =>
-  props.isMinimized &&
-  css`
+    props.isMinimized &&
+    css`
       flex-direction: column;
       margin-bottom: 0px;
     `}
@@ -48,10 +48,12 @@ const ProgressBarBackground = styled.div<{size: ProgressBarSize} & AkeneoThemedP
   position: relative;
 `;
 
-const ProgressBarFill = styled.div.attrs<{width: number; level: Level; indeterminate: boolean, light: boolean}>(props => ({
-  style: {width: props.width + '%'},
-}))<{level: Level, light: boolean} & AkeneoThemedProps>`
-  ${({level, light}: {level: Level, light: boolean} & AkeneoThemedProps) => css`
+const ProgressBarFill = styled.div.attrs<{width: number; level: Level; indeterminate: boolean; light: boolean}>(
+  props => ({
+    style: {width: `${props.width}%`},
+  })
+)<{level: Level; light: boolean} & AkeneoThemedProps>`
+  ${({level, light}: {level: Level; light: boolean} & AkeneoThemedProps) => css`
     background: ${getColorForLevel(level, light ? 60 : 100)};
   `}
 
@@ -61,21 +63,23 @@ const ProgressBarFill = styled.div.attrs<{width: number; level: Level; indetermi
   top: 0;
   transition: width 0.3s;
 
-  ${props => props.indeterminate && css`
-    background-image: linear-gradient(
-      315deg,
-      rgba(255,255,255,0.6) 25%,
-      rgba(255,255,255,0.4) 25%,
-      rgba(255,255,255,0.4) 50%,
-      rgba(255,255,255,0.6) 50%,
-      rgba(255,255,255,0.6) 75%,
-      rgba(255,255,255,0.4) 75%,
-      rgba(255,255,255,0.4) 100%
-    );
-    background-size: 20px 20px;
-    transition: width 200ms ease;
-    animation: ${progressBarAnimation} 1s linear infinite;
-  `}
+  ${props =>
+    props.indeterminate &&
+    css`
+      background-image: linear-gradient(
+        315deg,
+        rgba(255, 255, 255, 0.6) 25%,
+        rgba(255, 255, 255, 0.4) 25%,
+        rgba(255, 255, 255, 0.4) 50%,
+        rgba(255, 255, 255, 0.6) 50%,
+        rgba(255, 255, 255, 0.6) 75%,
+        rgba(255, 255, 255, 0.4) 75%,
+        rgba(255, 255, 255, 0.4) 100%
+      );
+      background-size: 20px 20px;
+      transition: width 200ms ease;
+      animation: ${progressBarAnimation} 1s linear infinite;
+    `}
 `;
 
 const getHeightFromSize = (size: ProgressBarSize): string => {
@@ -109,14 +113,15 @@ type ProgressBarProps = {
   level: Level;
 
   /**
-   * The progression of the progress bar in percentage (from 0 to 100) when type is determinate, when type is indeterminate use indeterminate.
+   * The progression of the progress bar in percentage (from 0 to 100) when type is determinate,
+   * when type is indeterminate use indeterminate.
    */
   percent: number | 'indeterminate';
 
   /**
    * Is the style of the progress bar should be light
    */
-  light: boolean;
+  light?: boolean;
 
   /**
    * The progress bar title.
@@ -139,21 +144,23 @@ type ProgressBarProps = {
  */
 const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
   (
-    {level, percent, title, progressLabel, light, size = 'small', ...rest}: ProgressBarProps,
+    {level, percent, title, progressLabel, light = false, size = 'small', ...rest}: ProgressBarProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
     const [labelId] = useState<string>(`label_${uuid()}`);
     const [progressBarId] = useState<string>(`progress_${uuid()}`);
     const [isMinimized, setIsMinimized] = useState(false);
-    const ref = null === forwardedRef ? useRef<HTMLDivElement>(null) : forwardedRef;
+
+    const internalRef = useRef<HTMLDivElement>(null);
+    const ref = null === forwardedRef ? internalRef : forwardedRef;
 
     const windowSize = useWindowSize();
     useEffect(() => {
-      if(typeof ref !== 'function' && null !== ref.current) {
+      if (typeof ref !== 'function' && null !== ref.current) {
         const element = (ref.current as unknown) as HTMLDivElement;
         setIsMinimized(element.getBoundingClientRect().width <= 300);
       }
-    }, [windowSize])
+    }, [windowSize]);
 
     const progressBarProps = {};
     if (percent !== 'indeterminate') {
@@ -170,17 +177,19 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
       <ProgressBarContainer ref={ref} {...rest}>
         {(title || progressLabel) && (
           <Header isMinimized={isMinimized}>
-            <Title id={labelId} htmlFor={progressBarId}>{title}</Title>
+            <Title id={labelId} htmlFor={progressBarId}>
+              {title}
+            </Title>
             <ProgressLabel>{progressLabel}</ProgressLabel>
           </Header>
         )}
-        <ProgressBarBackground
-          id={progressBarId}
-          role="progressbar"
-          {...progressBarProps}
-          size={size}
-        >
-          <ProgressBarFill level={level} light={light} indeterminate={percent === 'indeterminate'} width={computeWidthFromPercent(percent)} />
+        <ProgressBarBackground id={progressBarId} role="progressbar" {...progressBarProps} size={size}>
+          <ProgressBarFill
+            level={level}
+            light={light}
+            indeterminate={percent === 'indeterminate'}
+            width={computeWidthFromPercent(percent)}
+          />
         </ProgressBarBackground>
       </ProgressBarContainer>
     );
