@@ -46,7 +46,7 @@ describe('Attribute actions', () => {
       detail: {
         code: 'an_attribute',
       }
-    })
+    });
     const product = aProduct();
     const {getByText} = renderAttribute('an_attribute', 'an_attribute_label', null, 'an_axis', product);
 

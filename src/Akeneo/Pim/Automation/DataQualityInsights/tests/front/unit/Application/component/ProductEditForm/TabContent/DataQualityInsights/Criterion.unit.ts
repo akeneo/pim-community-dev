@@ -135,6 +135,7 @@ describe('Criterion for variant product ', () => {
 describe('Criterion user actions', () => {
     beforeEach(() => {
         jest.resetAllMocks();
+        sessionStorage.clear();
     });
 
     afterAll(() => {
