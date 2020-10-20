@@ -86,12 +86,12 @@ class GetJobExecutionTracking
             $stepName = $step->getName();
             $stepExecutionIndex = $this->searchFirstMatchingStepExecutionIndex($stepExecutions, $stepName);
             if ($stepExecutionIndex === -1) {
-                $stepsExecutionTracking[] = $this->createStepExecutionTrackingNotStartedFromStep($step);
+                $stepsExecutionTracking[] = $this->createStepExecutionTrackingNotStartedFromStep($job, $step);
                 continue;
             }
 
             $stepExecution = $stepExecutions[$stepExecutionIndex];
-            $stepsExecutionTracking[] = $this->createStepExecutionTrackingFromStepAndStepExecution($step, $stepExecution);
+            $stepsExecutionTracking[] = $this->createStepExecutionTrackingFromStepAndStepExecution($job, $step, $stepExecution);
             unset($stepExecutions[$stepExecutionIndex]);
         }
 
@@ -110,10 +110,11 @@ class GetJobExecutionTracking
         return -1;
     }
 
-    private function createStepExecutionTrackingNotStartedFromStep(StepInterface $step): StepExecutionTracking
+    private function createStepExecutionTrackingNotStartedFromStep(JobInterface $job, StepInterface $step): StepExecutionTracking
     {
         $stepExecutionTracking = new StepExecutionTracking();
-        $stepExecutionTracking->name = $step->getName();
+        $stepExecutionTracking->jobName = $job->getName();
+        $stepExecutionTracking->stepName = $step->getName();
         $stepExecutionTracking->status = self::TRACKING_STATUS_NOT_STARTED;
         if ($step instanceof TrackableStepInterface && $step->isTrackable()) {
             $stepExecutionTracking->isTrackable = true;
@@ -122,12 +123,13 @@ class GetJobExecutionTracking
         return $stepExecutionTracking;
     }
 
-    private function createStepExecutionTrackingFromStepAndStepExecution(StepInterface $step, StepExecution $stepExecution): StepExecutionTracking
+    private function createStepExecutionTrackingFromStepAndStepExecution(JobInterface $job, StepInterface $step, StepExecution $stepExecution): StepExecutionTracking
     {
         $duration = $this->computeDuration($stepExecution);
 
         $stepExecutionTracking = new StepExecutionTracking();
-        $stepExecutionTracking->name = $step->getName();
+        $stepExecutionTracking->jobName = $job->getName();
+        $stepExecutionTracking->stepName = $step->getName();
         $stepExecutionTracking->status = $this->getMappedStatus($stepExecution->getStatus());
         $stepExecutionTracking->duration = $duration;
         $stepExecutionTracking->hasError = count($stepExecution->getFailureExceptions()) !== 0 || count($stepExecution->getErrors()) !== 0;

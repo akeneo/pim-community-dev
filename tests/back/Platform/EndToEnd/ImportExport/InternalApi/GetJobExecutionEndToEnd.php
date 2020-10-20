@@ -150,7 +150,8 @@ SQL;
                 'totalSteps' => 3,
                 'steps' => [
                     [
-                        'name' => 'validation',
+                        'jobName' => 'csv_product_import',
+                        'stepName' => 'validation',
                         'status' => 'COMPLETED',
                         'isTrackable' => false,
                         'hasWarning' => false,
@@ -160,7 +161,8 @@ SQL;
                         'totalItems' => 0,
                     ],
                     [
-                        'name' => 'import',
+                        'jobName' => 'csv_product_import',
+                        'stepName' => 'import',
                         'status' => 'COMPLETED',
                         'isTrackable' => true,
                         'hasWarning' => false,
@@ -170,7 +172,8 @@ SQL;
                         'totalItems' => 100,
                     ],
                     [
-                        'name' => 'import_associations',
+                        'jobName' => 'csv_product_import',
+                        'stepName' => 'import_associations',
                         'status' => 'COMPLETED',
                         'isTrackable' => true,
                         'hasWarning' => false,

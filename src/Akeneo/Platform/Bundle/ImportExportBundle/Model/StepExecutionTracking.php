@@ -12,7 +12,10 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Model;
 class StepExecutionTracking
 {
     /** @var string */
-    public $name;
+    public $jobName;
+
+    /** @var string */
+    public $stepName;
 
     /** @var string */
     public $status;
