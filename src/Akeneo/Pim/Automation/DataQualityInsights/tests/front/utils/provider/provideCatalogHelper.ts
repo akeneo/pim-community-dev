@@ -45,7 +45,6 @@ const aVariantProduct = (
     variant_navigation: VariantNavigation[] = [{axes: {en_US: 'Model'}, selected: {id: 12}}, {axes: {en_US: 'Axis Model'}, selected: {id: 123}}],
     variant_attribute_sets: VariantAttributeSet[] = [{attributes: ['a_parent_attribute']}, {attributes: ['an_axis_attribute']}],
     parent_attributes: string[] = ['a_parent_attribute'],
-
 ): Product => {
     return  {
         categories: [],
@@ -70,11 +69,11 @@ const aVariantProduct = (
 };
 
 const aProductModel = (
-    id: number = 1234,
+    id: number = 12,
     level: number = 0,
     labels: Labels = {},
     family: string = 'a_family',
-    attributes_for_this_level: string[] = ['an_attribute'],
+    attributes_for_this_level: string[] = ['a_model_attribute'],
     variant_navigation: VariantNavigation[] = [{axes: {en_US: 'Model'}, selected: {id: 12}}, {axes: {en_US: 'Axis Model'}, selected: {id: 123}}],
     variant_attribute_sets: VariantAttributeSet[] = [{attributes: ['a_variant_attribute_from_child_level']}],
     parent_attributes: string[] = [],
