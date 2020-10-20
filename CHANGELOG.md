@@ -44,6 +44,7 @@
 - PIM-9491: Translate product grid filters in user additional settings
 - PIM-9494: Fix the performances of attribute-select-filter on long lists of AttributeOptions
 - PIM-9496: Change date format in the locale it_IT from dd/MM/yy to dd/MM/yyyy
+- PIM-9519: Fix translation key for datagrid search field
 
 ## New features
 
