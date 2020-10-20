@@ -7,7 +7,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Validator;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\AlreadyExistingAxisValueCombinationException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 
 /**
  * Contains the state of the unique axis values combination for an entity with family variant.
@@ -52,11 +51,10 @@ class UniqueAxesCombinationSet
     {
         $familyVariantCode = $entity->getFamilyVariant()->getCode();
         $parentCode = $entity->getParent()->getCode();
-        $identifier = $this->getEntityIdentifier($entity);
 
         if (isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination])) {
             $cachedIdentifier = $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination];
-            if ($cachedIdentifier !== $identifier) {
+            if ($cachedIdentifier !== $entity->getIdentifier()) {
                 if ($entity instanceof ProductInterface) {
                     throw new AlreadyExistingAxisValueCombinationException(
                         $cachedIdentifier,
@@ -88,19 +86,7 @@ class UniqueAxesCombinationSet
         }
 
         if (!isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination])) {
-            $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination] = $identifier;
+            $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination] = $entity->getIdentifier();
         }
-    }
-
-    private function getEntityIdentifier(EntityWithFamilyVariantInterface $entity): string
-    {
-        if (!$entity instanceof ProductInterface && !$entity instanceof ProductModelInterface) {
-            throw new \InvalidArgumentException(sprintf(
-                'Entity must be a product or a product model, instance of \'%s\' given',
-                get_class($entity)
-            ));
-        }
-
-        return $entity instanceof ProductInterface ? $entity->getIdentifier() : $entity->getCode();
     }
 }

@@ -89,7 +89,7 @@ final class LightEntityWithFamilyVariantNormalizer implements NormalizerInterfac
 
         return [
             'id' => $entity->getId(),
-            'identifier' => $this->getIdentifier($entity),
+            'identifier' => $entity->getIdentifier(),
             'labels' => [$localeCode => $entity->getLabel($localeCode, $channelCode)],
             'axes_values_labels' => $this->getAxesLabel($entity, $localeCode),
             'order' => $this->getOrder($entity),
@@ -174,18 +174,6 @@ final class LightEntityWithFamilyVariantNormalizer implements NormalizerInterfac
         }
 
         return $orderArray;
-    }
-
-    private function getIdentifier(EntityWithFamilyVariantInterface $entity): string
-    {
-        if (!$entity instanceof ProductInterface && !$entity instanceof ProductModelInterface) {
-            throw new \InvalidArgumentException(sprintf(
-                'Entity must be a product or a product model, instance of \'%s\' given',
-                get_class($entity)
-            ));
-        }
-
-        return $entity instanceof ProductModelInterface ? $entity->getCode() : $entity->getIdentifier();
     }
 
     private function getProductModelCompleteness(ProductModelInterface $entity, string $channelCode, string $localeCode): array

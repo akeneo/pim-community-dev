@@ -19,6 +19,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class ImmutableVariantAxesValuesValidatorSpec extends ObjectBehavior
@@ -47,7 +48,7 @@ class ImmutableVariantAxesValuesValidatorSpec extends ObjectBehavior
         UserInterface $entity,
         ImmutableVariantAxesValues $constraint
     ) {
-        $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [
+        $this->shouldThrow(UnexpectedTypeException::class)->during('validate', [
             $entity,
             $constraint
         ]);
@@ -57,7 +58,7 @@ class ImmutableVariantAxesValuesValidatorSpec extends ObjectBehavior
         EntityWithFamilyVariantInterface $entity,
         VariantProductParent $constraint
     ) {
-        $this->shouldThrow(\InvalidArgumentException::class)->during('validate', [
+        $this->shouldThrow(UnexpectedTypeException::class)->during('validate', [
             $entity,
             $constraint
         ]);

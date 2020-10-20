@@ -174,13 +174,6 @@ class AddAttributeValueProcessor extends AbstractProcessor
      */
     protected function addWarning(EntityWithFamilyInterface $entity): void
     {
-        if (!$entity instanceof ProductInterface && !$entity instanceof ProductModelInterface) {
-            throw new \InvalidArgumentException(sprintf(
-                'Entity must be a product or a product model, instance of \'%s\' given',
-                get_class($entity)
-            ));
-        }
-
         $this->stepExecution->addWarning(
             'pim_enrich.mass_edit_action.edit-common-attributes.message.no_valid_attribute',
             [],
@@ -188,7 +181,7 @@ class AddAttributeValueProcessor extends AbstractProcessor
                 [
                     'class'  => ClassUtils::getClass($entity),
                     'id'     => $entity->getId(),
-                    'string' => $entity instanceof ProductInterface ? $entity->getIdentifier() : $entity->getCode(),
+                    'string' => $entity->getIdentifier(),
                 ]
             )
         );

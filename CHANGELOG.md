@@ -164,6 +164,7 @@
     - the `setSerializer()` method and the `$serializer` property are removed
     - the `setNormalizer()` method and the `$normalizer` property are added
 - Remove `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ViolationNormalizer` class, it is replaced by `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ConstraintViolationNormalizer`
+- Change `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface` to add `getId()` and `getIdentifier()` methods
 
 ### CLI commands
 
