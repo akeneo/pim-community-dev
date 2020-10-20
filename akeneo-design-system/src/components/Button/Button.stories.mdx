@@ -14,7 +14,7 @@ import {Button} from './Button.tsx';
   }}
   args={{
     level: 'primary',
-    children: 'Primary'
+    children: 'Primary',
   }}
 />
 
@@ -40,10 +40,12 @@ For sets of buttons, use specific labels, such as Save or Discard, instead of us
 
 Use this playground to test the button component
 
+TODO add Variarion with Link
+
 <Canvas>
   <Story name="Standard">
     {args => {
-      return <Button {...args}/>;
+      return <Button {...args} />;
     }}
   </Story>
 </Canvas>
