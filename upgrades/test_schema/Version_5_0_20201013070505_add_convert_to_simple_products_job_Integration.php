@@ -15,8 +15,8 @@ class Version_5_0_20201013070505_add_convert_to_simple_products_job_Integration 
 {
     use ExecuteMigrationTrait;
 
-    private const JOB_CODE = 'convert_to_simple_product';
-    private const MIGRATION_LABEL = '_5_0_20201013070505_add_convert_to_simple_product_job';
+    private const JOB_CODE = 'convert_to_simple_products';
+    private const MIGRATION_LABEL = '_5_0_20201013070505_add_convert_to_simple_products_job';
 
     /**
      * @test
