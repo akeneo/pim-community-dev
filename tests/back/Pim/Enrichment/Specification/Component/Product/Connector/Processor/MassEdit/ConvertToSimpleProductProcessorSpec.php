@@ -40,11 +40,12 @@ class ConvertToSimpleProductProcessorSpec extends ObjectBehavior
     function it_skips_the_product_if_it_is_not_variant(StepExecution $stepExecution, ProductInterface $product)
     {
         $product->isVariant()->willReturn(false);
+        $product->getIdentifier()->willReturn('foo');
 
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalled();
         $stepExecution->addWarning(
-            'Cannot convert a non-variant product',
-            [],
+            'pim_enrich.mass_edit_action.convert_to_simple_products.warning.non_variant_product',
+            ['{{ identifier }}' => 'foo'],
             Argument::type(DataInvalidItem::class)
         )->shouldBeCalled();
 

@@ -155,7 +155,7 @@ services:
                 - 'edit_common_attributes'
                 - 'add_to_existing_product_model'
                 - 'change_parent_product'
-                - 'convert_to_simple_product'
+                - 'convert_to_simple_products'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
