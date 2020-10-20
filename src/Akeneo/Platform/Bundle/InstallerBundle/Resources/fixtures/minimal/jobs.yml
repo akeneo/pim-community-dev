@@ -64,10 +64,10 @@ jobs:
         alias:     change_parent_product
         label:     Change parent product model
         type:      mass_edit
-    convert_to_simple_product:
+    convert_to_simple_products:
         connector: Akeneo Mass Edit Connector
-        alias:     convert_to_simple_product
-        label:     Convert to simple product
+        alias:     convert_to_simple_products
+        label:     Convert to simple products
         type:      mass_edit
     delete_products_and_product_models:
         connector: Akeneo Mass Edit Connector
