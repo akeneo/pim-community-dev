@@ -109,9 +109,10 @@ final class ProductCriterionEvaluationRepositoryIntegration extends DataQualityI
 
     public function test_it_updates_product_criteria_evaluations()
     {
-        $productId = new ProductId($this->createProduct('ziggy')->getId());
         $this->createAttribute('description');
         $this->createChannel('mobile', ['locales' => ['en_US']]);
+
+        $productId = new ProductId($this->createProduct('ziggy')->getId());
 
         $criterionEvaluationA = new Write\CriterionEvaluation(
             new CriterionCode('completeness'),
