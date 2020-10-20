@@ -36,7 +36,7 @@ class ConvertToSimpleProductProcessor extends AbstractProcessor
         if (!$product->isVariant()) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
             $this->stepExecution->addWarning(
-                'pim_enrich.mass_edit_action.convert_to_simple_product.error.non_variant_product',
+                'pim_enrich.mass_edit_action.convert_to_simple_products.warning.non_variant_product',
                 ['{{ identifier }}' => $product->getIdentifier()],
                 new DataInvalidItem($product)
             );
