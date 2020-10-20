@@ -57,6 +57,8 @@ const Criterion: FunctionComponent<CriterionProps> = ({criterionEvaluation, axis
         </span>
         <span className="CriterionSuccessTick"/>
       </div>;
+  } else if(criterionEvaluation.code === 'missing_image_attribute' && criterionEvaluation.improvable_attributes.length === 0) {
+    criterionContent = <span className="NotApplicableAttribute">{__('akeneo_data_quality_insights.product_evaluation.messages.add_image_attribute_recommendation')}</span>;
   } else {
     criterionContent = <RecommendationAttributesList criterion={criterion} attributes={attributes} product={product} axis={axis} evaluation={evaluation}/>;
   }

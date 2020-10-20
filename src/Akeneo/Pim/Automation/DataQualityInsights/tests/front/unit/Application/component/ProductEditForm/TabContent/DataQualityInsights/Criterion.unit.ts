@@ -96,6 +96,20 @@ describe('Criterion for simple product', () => {
     ).toBeInTheDocument();
     expect(getByText('an_attribute')).toBeInTheDocument();
   });
+
+  test('it displays proper recommendation when product do not have image attribute', () => {
+      const criterionRate = aRate(0, 'E');
+      const criterion = aCriterion('missing_image_attribute', CRITERION_DONE, criterionRate, []);
+      const rate = aRate();
+      const evaluation = anEvaluation(rate, [criterion]);
+
+      const {getByText} = renderCriterion(criterion, 'enrichment', evaluation);
+
+      expect(
+          getByText('akeneo_data_quality_insights.product_evaluation.criteria.missing_image_attribute.recommendation' + ':')
+      ).toBeInTheDocument();
+      expect(getByText('akeneo_data_quality_insights.product_evaluation.messages.add_image_attribute_recommendation')).toBeInTheDocument();
+  });
 });
 
 describe('Criterion for product model', () => {
