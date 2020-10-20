@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-9514: Fix check on API completness for product model
 - PIM-9408: Fix attribute group's updated_at field udpate
 - TIP-1513: Environment variables declared in the env were not loaded when using a compiled .env file
 - PIM-9274: Fix Yaml reader to display the number of lines read for incorrectly formatted files
