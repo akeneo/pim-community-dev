@@ -764,6 +764,7 @@ config:
     pim/job/execution/show-profile:                              pimui/js/job/execution/show-profile
     pim/job/execution/download-archives-buttons:                 pimui/js/job/execution/download-archives-buttons
     pim/job/execution/download-log:                              pimui/js/job/execution/download-log
+    pim/job/execution/progress:                                  pimui/js/job/execution/progress
     pim/job/product/edit/content:                                pimui/js/job/product/edit/content
 
     # Filters

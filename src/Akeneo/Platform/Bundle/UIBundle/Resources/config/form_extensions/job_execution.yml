@@ -69,6 +69,12 @@ extensions:
             label: pim_common.status
             valuePath: status
 
+    pim-job-execution-form-progress:
+        module: pim/job/execution/progress
+        parent: pim-job-execution-form
+        targetZone: content
+        position: 95
+
     pim-job-execution-form-label:
         module: pim/job/common/label
         parent: pim-job-execution-form
