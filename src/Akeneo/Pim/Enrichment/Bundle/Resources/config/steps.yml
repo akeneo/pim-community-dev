@@ -424,7 +424,7 @@ services:
             - '@pim_enrich.writer.database.product_and_product_model_writer'
             - '%pim_job_product_batch_size%'
 
-    pim_enrich.step.convert_to_simple_product.mass_edit:
+    pim_enrich.step.convert_to_simple_products.mass_edit:
         class: '%pim_connector.step.item_step.class%'
         arguments:
             - 'perform'

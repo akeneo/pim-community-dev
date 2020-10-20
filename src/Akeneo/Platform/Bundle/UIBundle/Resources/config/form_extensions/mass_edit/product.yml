@@ -192,11 +192,11 @@ extensions:
         position: 210
         config:
             title: pim_enrich.mass_edit.product.title
-            label: pim_enrich.mass_edit.product.operation.convert_to_simple_product.label
-            labelCount: pim_enrich.mass_edit.product.operation.convert_to_simple_product.label_count
-            description: pim_enrich.mass_edit.product.operation.convert_to_simple_product.description
-            code: convert_to_simple_product
-            jobInstanceCode: convert_to_simple_product
+            label: pim_enrich.mass_edit.product.operation.convert_to_simple_products.label
+            labelCount: pim_enrich.mass_edit.product.operation.convert_to_simple_products.label_count
+            description: pim_enrich.mass_edit.product.operation.convert_to_simple_products.description
+            code: convert_to_simple_products
+            jobInstanceCode: convert_to_simple_products
             icon: icon-model
             illustration: products
 
