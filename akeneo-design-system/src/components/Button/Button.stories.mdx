@@ -1,6 +1,8 @@
 import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Button} from './Button.tsx';
+import {Link} from '../Link/Link.tsx';
+import LinkTo from '@storybook/addon-links/react';
 
 <Meta
   title="Components/Button"
@@ -40,8 +42,6 @@ For sets of buttons, use specific labels, such as Save or Discard, instead of us
 
 Use this playground to test the button component
 
-TODO add Variarion with Link
-
 <Canvas>
   <Story name="Standard">
     {args => {
@@ -51,6 +51,22 @@ TODO add Variarion with Link
 </Canvas>
 
 <ArgsTable story="Standard" />
+
+## Usage with Link children
+
+If you want your button to act like a <LinkTo kind="Components/Link" story="Standard">Link</LinkTo> (with "open in a new tab" feature of cmd/ctrl + click), you can put a Link in the children of the button. In this case, the onClick prop should not be set and only one link is allowed inside the `Button` element.
+
+<Canvas>
+  <Story name="Link">
+    {args => {
+      return (
+        <Button {...{...args, onClick: undefined}}>
+          <Link href={"https://google.com"}>I am a Link</Link>
+        </Button>
+      );
+    }}
+  </Story>
+</Canvas>
 
 ## Variation on level
 
