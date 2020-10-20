@@ -23,6 +23,9 @@ use Doctrine\Common\Util\ClassUtils;
  */
 class StepExecution
 {
+    private const TRACKING_DATA_PROCESSED_ITEMS = 'processedItems';
+    private const TRACKING_DATA_TOTAL_ITEMS = 'totalItems';
+
     /** @var integer */
     private $id;
 
@@ -79,8 +82,8 @@ class StepExecution
 
     /** @var array */
     private $trackingData = [
-        'processedItems' => 0,
-        'totalItems' => 0,
+        self::TRACKING_DATA_PROCESSED_ITEMS => 0,
+        self::TRACKING_DATA_TOTAL_ITEMS => 0,
     ];
 
     /**
@@ -554,25 +557,25 @@ class StepExecution
 
     public function setTotalItems(int $totalItems): void
     {
-        $this->trackingData['totalItems'] = $totalItems;
+        $this->trackingData[self::TRACKING_DATA_TOTAL_ITEMS] = $totalItems;
     }
 
     public function getTotalItems(): int
     {
-        return $this->trackingData['totalItems'];
+        return $this->trackingData[self::TRACKING_DATA_TOTAL_ITEMS];
     }
 
     public function incrementProcessedItems($increment = 1)
     {
-        $this->trackingData['processedItems'] += $increment;
-        if ($this->trackingData['processedItems'] > $this->getTotalItems()) {
-            $this->setTotalItems($this->trackingData['processedItems']);
+        $this->trackingData[self::TRACKING_DATA_PROCESSED_ITEMS] += $increment;
+        if ($this->trackingData[self::TRACKING_DATA_PROCESSED_ITEMS] > $this->getTotalItems()) {
+            $this->setTotalItems($this->trackingData[self::TRACKING_DATA_PROCESSED_ITEMS]);
         }
     }
 
     public function getProcessedItems(): int
     {
-        return $this->trackingData['processedItems'];
+        return $this->trackingData[self::TRACKING_DATA_PROCESSED_ITEMS];
     }
 
     public function getTrackingData(): array
