@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes:
+
+- PIM-9510: Fix asset collection attributes that couldn't be added in the "Add attributes values" mass action
+
 # 4.0.65 (2020-10-19)
 
 ## Improvements
