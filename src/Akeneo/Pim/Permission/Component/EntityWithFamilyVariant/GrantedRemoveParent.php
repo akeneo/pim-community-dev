@@ -40,7 +40,7 @@ class GrantedRemoveParent implements RemoveParentInterface
         if (!$this->authorizationChecker->isGranted(Attributes::OWN, $product)) {
             throw new ResourceAccessDeniedException(
                 $product,
-                'pim_enrich.mass_edit_action.convert_to_simple_product.message.error'
+                'pim_enrich.mass_edit_action.convert_to_simple_products.message.error'
             );
         }
 

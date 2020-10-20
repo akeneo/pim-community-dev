@@ -18,10 +18,10 @@ use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use PHPUnit\Framework\Assert;
 use Pim\Upgrade\Schema\Tests\ExecuteMigrationTrait;
 
-class Version_5_0_20201013071343_add_convert_simple_product_job_permissions_Integration extends TestCase
+class Version_5_0_20201013071343_add_convert_simple_products_job_permissions_Integration extends TestCase
 {
-    private const MIGRATION_LABEL = '_5_0_20201013071343_add_convert_simple_product_job_permissions';
-    private const JOB_CODE = 'convert_to_simple_product';
+    private const MIGRATION_LABEL = '_5_0_20201013071343_add_convert_simple_products_job_permissions';
+    private const JOB_CODE = 'convert_to_simple_products';
 
     use ExecuteMigrationTrait;
 

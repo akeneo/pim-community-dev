@@ -10,9 +10,9 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Adds default permissions for the new convert_to_simple_products mass edit job
  */
-final class Version_5_0_20201013071343_add_convert_simple_product_job_permissions extends AbstractMigration
+final class Version_5_0_20201013071343_add_convert_simple_products_job_permissions extends AbstractMigration
 {
-    private const JOB_NAME = 'convert_to_simple_product';
+    private const JOB_NAME = 'convert_to_simple_products';
 
     public function up(Schema $schema): void
     {
