@@ -9,8 +9,8 @@ use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetDescendantVariantProductIdentifiers;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Orchestrator for below jobs on update:
@@ -51,7 +51,7 @@ final class ComputeProductAndAncestorsSubscriber implements EventSubscriberInter
         ];
     }
 
-    public function onProductModelSave(Event $event): void
+    public function onProductModelSave(GenericEvent $event): void
     {
         $productModel = $event->getSubject();
         if (!$productModel instanceof ProductModelInterface) {
@@ -65,7 +65,7 @@ final class ComputeProductAndAncestorsSubscriber implements EventSubscriberInter
         $this->computeAndIndexFromProductModelCodes([$productModel->getCode()]);
     }
 
-    public function onProductModelSaveAll(Event $event): void
+    public function onProductModelSaveAll(GenericEvent $event): void
     {
         $productModels = $event->getSubject();
         if (!is_array($productModels)) {

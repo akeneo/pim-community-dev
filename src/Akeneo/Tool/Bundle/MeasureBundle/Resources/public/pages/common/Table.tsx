@@ -25,7 +25,7 @@ const Row = styled.tr<{isSelected?: boolean}>`
   border-bottom: 1px solid ${props => props.theme.color.grey80};
 
   :hover {
-    background-color: ${props => props.theme.color.grey60};
+    background-color: ${props => props.theme.color.blue20};
   }
 
   ${props =>
