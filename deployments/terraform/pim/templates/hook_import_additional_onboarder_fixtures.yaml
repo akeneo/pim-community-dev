@@ -33,30 +33,7 @@ spec:
         - name: update-family-requirements
           image:  {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'su www-data -s /bin/bash -c "cd /srv/pim && bin/console akeneo:batch:job csv_family_import -c ''{\"filePath\": \"/srv/pim/vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/setup/family_requirements.csv\"}''"']
-          envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
-          env:
-            - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }
-            - { name: MAILER_PASSWORD, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerPassword } } }
-            - { name: APP_DATABASE_PASSWORD, valueFrom: { secretKeyRef: { name: pim-secrets, key: mysqlPimUserPassword } } }
-            - { name: GOOGLE_NAMESPACE, valueFrom: { fieldRef: { fieldPath: metadata.namespace } } }
-            - { name: GOOGLE_POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
-{{- if .Values.common.phpConfCLI }}
-{{ toYaml .Values.common.phpConfCLI  | indent 12 }}
-{{- end }}
-          volumeMounts:
-            - name: google-cloud-pim-storage-key
-              mountPath: /var/secrets/google/srnt.json
-              subPath: srnt.json
-              readOnly: true
-            - name: google-cloud-onboarder-key
-              mountPath: /var/secrets/google/key.json
-              subPath: key.json
-              readOnly: true
-        - name: update-channel-activated-locales
-          image:  {{ template "pim.imageNameAndTag" . }}
-          imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'su www-data -s /bin/bash -c "cd /srv/pim && bin/console akeneo:batch:job csv_channel_import -c ''{\"filePath\": \"/srv/pim/vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/setup/channels.csv\"}''"']
+          command: ['sh', '-c', 'su www-data -s /bin/bash -c "/srv/pim/vendor/akeneo/pim-onboarder/bin/load-additional-fixtures.sh"']
           envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
           env:
             - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }
