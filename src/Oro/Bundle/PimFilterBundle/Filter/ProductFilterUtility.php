@@ -15,9 +15,14 @@ use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
 class ProductFilterUtility extends BaseFilterUtility
 {
     /**
-     * {@inheritdoc}
+     * Applies filter to query by attribute
+     *
+     * @param FilterDatasourceAdapterInterface $ds
+     * @param string                           $field
+     * @param string                           $operator
+     * @param mixed                            $value
      */
-    public function applyFilter(FilterDatasourceAdapterInterface $ds, string $field, string $operator, $value)
+    public function applyFilter(FilterDatasourceAdapterInterface $ds, $field, $operator, $value)
     {
         $ds->getProductQueryBuilder()->addFilter($field, $operator, $value);
     }

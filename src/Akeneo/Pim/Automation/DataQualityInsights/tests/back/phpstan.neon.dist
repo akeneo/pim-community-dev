@@ -1,6 +1,4 @@
-includes:
-    - %rootDir%/../../../vendor/phpstan/phpstan-webmozart-assert/extension.neon
 parameters:
-    level: 5
+    level: 1
     paths:
         - %rootDir%/../../../src/Akeneo/Pim/Automation/DataQualityInsights/back

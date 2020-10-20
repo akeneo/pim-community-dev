@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field;
 
-use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 
 /**
@@ -21,13 +20,13 @@ class CompletenessSorter extends BaseFieldSorter
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction, $locale = null, $channel = null): FieldSorterInterface
+    public function addFieldSorter($field, $direction, $locale = null, $channel = null)
     {
         $this->checkLocaleAndChannel($locale, $channel);
 
         $field .= sprintf('.%s.%s', $channel, $locale);
 
-        return parent::addFieldSorter($field, $direction, $locale, $channel);
+        parent::addFieldSorter($field, $direction, $locale, $channel);
     }
 
     /**

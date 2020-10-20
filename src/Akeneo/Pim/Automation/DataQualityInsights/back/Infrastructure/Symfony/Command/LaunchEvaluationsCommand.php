@@ -51,7 +51,7 @@ class LaunchEvaluationsCommand extends Command
     {
         if (! $this->featureFlag->isEnabled()) {
             $output->writeln('<info>Data Quality Insights feature is disabled</info>');
-            return 0;
+            return;
         }
 
         try {
@@ -61,7 +61,5 @@ class LaunchEvaluationsCommand extends Command
         } catch (AnotherJobStillRunningException $e) {
             exit(0);
         }
-
-        return 0;
     }
 }

@@ -4,7 +4,6 @@ namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ExternalApi\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface as CatalogProductRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
@@ -15,14 +14,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProductRepository extends EntityRepository implements ProductRepositoryInterface
 {
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var CatalogProductRepositoryInterface */
     protected $productRepository;
 
-    public function __construct(
-        EntityManager $em,
-        string $className,
-        IdentifiableObjectRepositoryInterface $productRepository
-    ) {
+    /**
+     * @param EntityManager                     $em
+     * @param string                            $className
+     * @param CatalogProductRepositoryInterface $productRepository
+     */
+    public function __construct(EntityManager $em, $className, CatalogProductRepositoryInterface $productRepository)
+    {
         parent::__construct($em, $em->getClassMetadata($className));
 
         $this->productRepository = $productRepository;

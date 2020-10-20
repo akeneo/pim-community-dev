@@ -3,7 +3,6 @@
 namespace Akeneo\Tool\Component\Api\Repository;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
 
 /**
  * This interface should be used for simple entities on the API,
@@ -13,6 +12,6 @@ use Doctrine\Common\Persistence\ObjectRepository;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ApiResourceRepositoryInterface extends PageableRepositoryInterface, IdentifiableObjectRepositoryInterface, ObjectRepository
+interface ApiResourceRepositoryInterface extends PageableRepositoryInterface, IdentifiableObjectRepositoryInterface
 {
 }

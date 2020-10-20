@@ -51,7 +51,7 @@ class PrepareEvaluationsCommand extends Command
     {
         if (! $this->featureFlag->isEnabled()) {
             $output->writeln('Data Quality Insights feature is disabled');
-            return 0;
+            return;
         }
 
         try {
@@ -68,7 +68,5 @@ class PrepareEvaluationsCommand extends Command
         } catch (AnotherJobStillRunningException $e) {
             exit(0);
         }
-
-        return 0;
     }
 }

@@ -52,6 +52,7 @@ class ProductModelDescendantsAndAncestorsIndexer
      * Indexes the given product models with children (subtrees made of product variants and product models).
      *
      * @param string[] $productModelCodes
+     * @param array    $options
      */
     public function indexFromProductModelCodes(array $productModelCodes): void
     {

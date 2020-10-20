@@ -47,7 +47,7 @@ final class RemoveEvaluationsWithoutProductTasklet implements TaskletInterface
         try {
             $this->productCriterionEvaluationRepository->deleteUnknownProductsEvaluations();
             $this->productModelCriterionEvaluationRepository->deleteUnknownProductsEvaluations();
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
             $this->stepExecution->addFailureException($exception);
             $this->logger->error('Remove evaluations without product failed.', [
                 'step_execution_id' => $this->stepExecution->getId(),

@@ -36,7 +36,7 @@ class InGroupSorter extends BaseFieldSorter implements FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction, $locale = null, $channel = null): FieldSorterInterface
+    public function addFieldSorter($field, $direction, $locale = null, $channel = null)
     {
         $groupId = str_replace('in_group_', '', $field);
 
@@ -84,8 +84,6 @@ class InGroupSorter extends BaseFieldSorter implements FieldSorterInterface
             default:
                 throw InvalidDirectionException::notSupported($direction, static::class);
         }
-
-        return $this;
     }
 
     /**

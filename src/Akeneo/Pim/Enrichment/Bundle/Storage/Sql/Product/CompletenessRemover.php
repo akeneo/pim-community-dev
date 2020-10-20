@@ -45,11 +45,8 @@ SQL;
             [$productIds],
             [\Doctrine\DBAL\Connection::PARAM_INT_ARRAY]
         );
+        $count = $stmt->rowCount();
 
-        if (!method_exists($stmt, 'rowCount')) {
-            throw new \RuntimeException('Cannot find the count of rows.');
-        }
-
-        return $stmt->rowCount();
+        return $count;
     }
 }

@@ -22,8 +22,8 @@ const useJobExecutionProgress = (jobExecutionId: string, jobExecutionStatus: Job
 
       const response = await fetch(
         Routing.generate(
-          'pim_enrich_job_execution_progress_rest_get',
-          {jobExecutionId}),
+          'pim_enrich_job_execution_rest_get',
+          {identifier: jobExecutionId}),
         {
           method: 'GET',
           headers: [

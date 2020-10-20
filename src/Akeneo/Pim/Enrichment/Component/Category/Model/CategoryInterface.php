@@ -49,11 +49,4 @@ interface CategoryInterface extends
      * @return Collection of ProductModelInterface
      */
     public function getProductModels(): Collection;
-
-    /**
-     * Returns the channels linked to the category
-     */
-    public function getChannels(): Collection;
-
-    public function getLabel(): string;
 }

@@ -87,8 +87,6 @@ abstract class AbstractAttributeSorter implements AttributeSorterInterface
             default:
                 throw InvalidDirectionException::notSupported($direction, static::class);
         }
-
-        return $this;
     }
 
     /**

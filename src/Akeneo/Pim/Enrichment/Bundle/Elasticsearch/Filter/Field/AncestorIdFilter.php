@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * An ancestor is a product model that is either a parent or a grand parent.
@@ -34,7 +35,7 @@ class AncestorIdFilter extends AbstractFieldFilter
 {
     private const ANCESTOR_ID_ES_FIELD = 'ancestors.ids';
 
-    /** @var ProductModelRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     private $productModelRepository;
 
     /**

@@ -5,7 +5,6 @@ namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface;
 
 /**
  * Family sorter for an Elasticsearch query.
@@ -33,7 +32,7 @@ class FamilySorter extends BaseFieldSorter
         $this->localeRepository = $localeRepository;
     }
 
-    public function addFieldSorter($field, $direction, $locale = null, $channel = null): FieldSorterInterface
+    public function addFieldSorter($field, $direction, $locale = null, $channel = null)
     {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the sorter.');
@@ -96,7 +95,5 @@ class FamilySorter extends BaseFieldSorter
             default:
                 throw InvalidDirectionException::notSupported($direction, static::class);
         }
-
-        return $this;
     }
 }

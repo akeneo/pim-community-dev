@@ -16,11 +16,10 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field\BaseFieldSorter;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface;
 
 final class EnrichmentSorter extends BaseFieldSorter
 {
-    public function addFieldSorter($field, $direction, $locale = null, $channel = null): FieldSorterInterface
+    public function addFieldSorter($field, $direction, $locale = null, $channel = null)
     {
         $field = sprintf('rates.enrichment.%s.%s', $channel, $locale);
 
@@ -44,7 +43,5 @@ final class EnrichmentSorter extends BaseFieldSorter
         ];
 
         $this->searchQueryBuilder->addSort($sortClause);
-
-        return $this;
     }
 }

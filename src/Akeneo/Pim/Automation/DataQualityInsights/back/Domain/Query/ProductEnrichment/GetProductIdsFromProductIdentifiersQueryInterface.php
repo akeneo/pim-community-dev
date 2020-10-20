@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 interface GetProductIdsFromProductIdentifiersQueryInterface
 {
     /**
-     * @param string[] $productIdentifiers
+     * @param string[]
      *
      * @return ProductId[]
      */
