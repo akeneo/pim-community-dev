@@ -124,7 +124,7 @@ class GetJobExecutionTracking
 
     private function createStepExecutionTrackingFromStepAndStepExecution(StepInterface $step, StepExecution $stepExecution): StepExecutionTracking
     {
-        $duration = $this->calculateDuration($stepExecution);
+        $duration = $this->computeDuration($stepExecution);
 
         $stepExecutionTracking = new StepExecutionTracking();
         $stepExecutionTracking->name = $step->getName();
@@ -161,7 +161,7 @@ class GetJobExecutionTracking
         }
     }
 
-    private function calculateDuration(StepExecution $stepExecution): int
+    private function computeDuration(StepExecution $stepExecution): int
     {
         $now = $this->clock->now();
         $status = $this->getMappedStatus($stepExecution->getStatus());
