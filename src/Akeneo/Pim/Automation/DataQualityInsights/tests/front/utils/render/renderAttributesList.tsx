@@ -5,6 +5,30 @@ import {renderWithAppContextHelper} from './renderWithAppContextHelper';
 import AttributesListWithVariations from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/AttributesListWithVariations';
 import {Product} from '@akeneo-pim-community/data-quality-insights/src/domain';
 import AttributeWithRecommendation from '@akeneo-pim-community/data-quality-insights/src/domain/AttributeWithRecommendation.interface';
+import AttributesList from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/AttributesList';
+
+const renderAttributesList = (
+  product: Product,
+  criterion: string,
+  axis: string,
+  attributes: AttributeWithRecommendation[],
+  evaluation: Evaluation,
+  appState = {}
+) => {
+  const Component: FC = () => (
+    <AxesContextProvider axes={[axis]}>
+      <AttributesList
+        product={product}
+        criterionCode={criterion}
+        attributes={attributes}
+        axis={axis}
+        evaluation={evaluation}
+      />
+    </AxesContextProvider>
+  );
+
+  return renderWithAppContextHelper(<Component />, appState);
+};
 
 const renderAttributesListWithVariations = (
   product: Product,
@@ -31,4 +55,4 @@ const renderAttributesListWithVariations = (
   return renderWithAppContextHelper(<Component />, appState);
 };
 
-export {renderAttributesListWithVariations};
+export {renderAttributesList, renderAttributesListWithVariations};
