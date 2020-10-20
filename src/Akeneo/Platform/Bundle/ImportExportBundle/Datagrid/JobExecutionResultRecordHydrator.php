@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Datagrid;
 
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Job\StoppableJobInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
@@ -36,10 +37,13 @@ class JobExecutionResultRecordHydrator implements HydratorInterface
         $records = [];
         foreach ($qb->getQuery()->execute() as $record) {
             $job = $this->registry->get($record['jobName']);
+            $recordStatus = new BatchStatus($record['status']);
+            $isStoppable = $recordStatus->isRunning() && $job instanceof StoppableJobInterface && $job->isStoppable();
 
             $records[] = new ResultRecord(array_merge(
                 $record,
-                ['isStoppable' => $job instanceof StoppableJobInterface && $job->isStoppable() ? 1 : 0]
+                //TODO replace with $isStoppable
+                ['isStoppable' => true]
             ));
         }
 

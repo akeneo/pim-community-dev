@@ -5,12 +5,16 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller\Ui;
 use Akeneo\Platform\Bundle\ImportExportBundle\Event\JobExecutionEvents;
 use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository;
 use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Query\SqlUpdateJobExecutionStatus;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -39,25 +43,23 @@ class JobTrackerController extends Controller
     /** @var array */
     protected $jobSecurityMapping;
 
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param JobExecutionRepository   $jobExecutionRepo
-     * @param JobExecutionArchivist    $archivist
-     * @param SecurityFacade           $securityFacade
-     * @param array                    $jobSecurityMapping
-     */
+    /** @var SqlUpdateJobExecutionStatus */
+    private $updateJobExecutionStatus;
+
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         JobExecutionRepository $jobExecutionRepo,
         JobExecutionArchivist $archivist,
         SecurityFacade $securityFacade,
-        $jobSecurityMapping
+        $jobSecurityMapping,
+        SqlUpdateJobExecutionStatus $updateJobExecutionStatus
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->jobExecutionRepo = $jobExecutionRepo;
         $this->archivist = $archivist;
         $this->securityFacade = $securityFacade;
         $this->jobSecurityMapping = $jobSecurityMapping;
+        $this->updateJobExecutionStatus = $updateJobExecutionStatus;
     }
 
     /**
@@ -104,5 +106,16 @@ class JobTrackerController extends Controller
         }
 
         return $this->securityFacade->isGranted($this->jobSecurityMapping[$jobExecutionType], $object);
+    }
+
+    /**
+     * Set the Job status to Stopping
+     */
+    public function stopJobAction(int $id): JsonResponse
+    {
+        $this->updateJobExecutionStatus->updateByJobExecutionId($id, new BatchStatus(BatchStatus::STOPPING));
+
+        //TODO send meaningful message
+        return new JsonResponse(['successful' => true]);
     }
 }

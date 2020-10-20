@@ -32,21 +32,12 @@ datagrid:
                 data_name:     warningCount
                 template:      PimImportExportBundle:Property:warning.html.twig
                 frontend_type: html
-        actions:
-            view:
-                launcherOptions:
-                    className: AknButton AknButton--small AknButton--greyLight
-                type:      navigate
-                label:     pim_datagrid.action.show.title
-                link:      show_link
-                rowAction: true
-            stop:
-                launcherOptions:
-                    className: AknButton AknButton--small AknButton--importantLight
-                type:      stop-job
-                label: pim_datagrid.action.stop.title
-                icon:
-                rowAction: true
+            actions:
+                label: ~
+                type: field
+                frontend_type: actions
+                # todo fix this
+                data_name: warningCount
         sorters:
             columns:
                 job:
@@ -88,8 +79,3 @@ datagrid:
             id: ~
             jobCode: ~
             isStoppable: ~
-            show_link:
-                type: url
-                params:
-                    - id
-                route: pim_enrich_job_tracker_show
