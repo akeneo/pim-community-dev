@@ -61,9 +61,11 @@ pim_datagrid:
   cells:
     type:
       asset_manager_execute_naming_convention: Exécuter la convention de nommage pour toutes les ressources de la famille
+      asset_manager_link_assets_to_products: Lier les ressources aux produits
 batch_jobs:
   default_steps:
     execute_naming_convention: Exécuter la convention de nommage pour toutes les ressources de la famille
+    link_assets_to_products: Lier les ressources aux produits
 job_execution:
   summary:
     assets: Ressources
