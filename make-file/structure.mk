@@ -55,7 +55,3 @@
 .PHONY: structure-coupling-back
 structure-coupling-back:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Structure/.php_cd.php src/Akeneo/Pim/Structure
-
-.PHONY: structure-lint-back
-structure-lint-back:
-	$(PHP_RUN) vendor/bin/phpstan analyse --level=2 src/Akeneo/Pim/Structure
