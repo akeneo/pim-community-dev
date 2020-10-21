@@ -543,7 +543,8 @@ config:
     pim/tree/associate:                 pimui/js/tree-associate.jstree
     pim/tree/manage:                    pimui/js/tree-manage.jstree
     pim/attributeoptionview:            pimui/js/pim-attributeoptionview
-    pim/i18n:                           pimui/js/i18n.ts
+    pim/i18n:                           pimui/js/i18n
+    pim/intl-duration:                  pimui/js/intl-duration
     pim/user-context:                   pimui/js/user-context
     pim/date-context:                   pimui/js/date-context
     pim/error:                          pimui/js/error/error
