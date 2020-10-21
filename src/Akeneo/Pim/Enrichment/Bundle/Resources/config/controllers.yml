@@ -70,6 +70,7 @@ services:
             - '@event_dispatcher'
             - '@pim_api.checker.duplicate_value'
             - '@logger'
+            - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
 
     pim_api.controller.product_model:
         public: true
