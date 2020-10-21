@@ -1,13 +1,8 @@
-import React, {FunctionComponent} from 'react';
+import React, {FC} from 'react';
 
 const __ = require('oro/translator');
 
-interface AxisErrorProps {
-
-}
-
-const AxisError: FunctionComponent<AxisErrorProps> = () => {
-
+const AxisError: FC= () => {
   return (
       <div className="NoRateWindow">
         <span className="NoRateIconWindow"/>
@@ -16,4 +11,4 @@ const AxisError: FunctionComponent<AxisErrorProps> = () => {
   );
 };
 
-export default AxisError;
+export {AxisError};
