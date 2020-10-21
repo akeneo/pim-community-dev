@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\KeyIndicator;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleDataScalarCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetProductsKeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Doctrine\DBAL\Connection;
@@ -60,34 +61,28 @@ final class GetProductsEnrichmentStatusQuery implements GetProductsKeyIndicator
     {
         $query = $this->buildQuery($localesByChannel);
 
-        $result = [];
+        $stmt = $this->db->executeQuery($query, ['productIds' => $productIds], ['productIds' => Connection::PARAM_INT_ARRAY]);
+        $productsResults = [];
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $productsResults[$row['product_id']] = $row;
+        }
+
+        $ProductStatus = [];
         foreach ($productIds as $productId) {
-            foreach ($localesByChannel as $channel => $locales) {
-                foreach ($locales as $locale) {
-                    $result[$productId][$channel][$locale] = null;
-                }
-            }
+            $productResults = $productsResults[$productId] ?? [];
+            $channelLocaleStatus = ChannelLocaleDataScalarCollection::filledWith($localesByChannel, function ($channel, $locale) use ($productResults, $familyNumberOfAttributes) {
+                $numberOfAttributesWithNoValue = $productResults[$channel.$locale] ?? null;
+
+                return null !== $numberOfAttributesWithNoValue ? $this->computeEnrichmentRatioStatus($familyNumberOfAttributes, $numberOfAttributesWithNoValue) : null;
+            });
+
+            $ProductStatus[$productId] = $channelLocaleStatus->toArray();
         }
 
-        $rows = $this->db
-            ->executeQuery($query, ['productIds' => $productIds], ['productIds' => Connection::PARAM_INT_ARRAY])
-            ->fetchAll();
-
-        foreach ($rows as $row) {
-            foreach ($localesByChannel as $channel => $locales) {
-                foreach ($locales as $locale) {
-                    $numberOfAttributesWithNoValue = $row[$channel.$locale];
-                    if ($numberOfAttributesWithNoValue !== null) {
-                        $result[$row['product_id']][$channel][$locale] = $this->computeEnrichmentRatioStatus($familyNumberOfAttributes, $numberOfAttributesWithNoValue);
-                    }
-                }
-            }
-        }
-
-        return $result;
+        return $ProductStatus;
     }
 
-    private function computeEnrichmentRatioStatus(int $familyNumberOfAttributes, $numberOfMissingAttributes): bool
+    private function computeEnrichmentRatioStatus(int $familyNumberOfAttributes, int $numberOfMissingAttributes): bool
     {
         return ($familyNumberOfAttributes - $numberOfMissingAttributes) / $familyNumberOfAttributes * 100 >= self::GOOD_ENRICHEMENT_RATIO;
     }
