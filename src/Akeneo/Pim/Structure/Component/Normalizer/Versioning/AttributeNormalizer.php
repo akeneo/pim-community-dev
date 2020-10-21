@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Structure\Component\Normalizer\Versioning;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Webmozart\Assert\Assert;
@@ -85,7 +85,7 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
     protected function normalizeOptions(AttributeInterface $attribute): ?string
     {
         $options = $attribute->getOptions();
-        Assert::isInstanceOf($options, ArrayCollection::class);
+        Assert::implementsInterface($options, Collection::class);
         if ($options->isEmpty()) {
             return null;
         }
