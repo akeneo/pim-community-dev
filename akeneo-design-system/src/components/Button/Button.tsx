@@ -2,7 +2,7 @@ import React, {isValidElement, ReactNode, Ref, RefAttributes, SyntheticEvent, us
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColorForLevel, getFontSize, Level} from '../../theme';
 import {Override} from '../../shared';
-import {Link, LinkProps} from 'components';
+import {Link, LinkProps} from '../../components';
 
 type ButtonSize = 'small' | 'default';
 
@@ -122,7 +122,6 @@ const Container = styled.button<
   a:hover {
     color: inherit;
     text-decoration: none;
-    cursor: inherit;
   }
 `;
 
