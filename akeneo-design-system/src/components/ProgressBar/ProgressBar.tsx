@@ -1,7 +1,6 @@
-import React, {Ref, useEffect, useRef, useState} from 'react';
+import React, {Ref, useState} from 'react';
 import styled, {css, keyframes} from 'styled-components';
 import {AkeneoThemedProps, getColor, getColorForLevel, getFontSize, Level} from '../../theme';
-import {useWindowSize} from '../../hooks/useWindowSize';
 import {uuid} from '../../shared';
 
 const ProgressBarContainer = styled.div``;
