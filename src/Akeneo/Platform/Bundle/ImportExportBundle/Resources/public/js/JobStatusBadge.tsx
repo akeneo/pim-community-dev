@@ -21,7 +21,7 @@ type JobExecutionStatusProps = {
 };
 
 const jobStatusLabel = (jobExecutionProgress: JobExecutionProgress): string => {
-  if (jobExecutionProgress.status !== 'STARTED') {
+  if (jobExecutionProgress.status !== 'STARTING' && jobExecutionProgress.status !== 'STARTED') {
     return jobExecutionProgress.status;
   }
 

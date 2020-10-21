@@ -1,6 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {renderHook, act} from '@testing-library/react-hooks';
+import {renderHook} from '@testing-library/react-hooks';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {JobStatus, useJobExecutionProgress} from "../../../../Resources/public/js/useJobExecutionProgress";
 
@@ -12,6 +12,7 @@ declare global {
   }
 }
 
+// TODO: Should I move this to the custom hook file ?
 type backendJobExecutionProgress = { tracking: { currentStep: number; totalSteps: number; steps: ({ hasWarning: boolean; hasError: boolean })[]; status: string } };
 
 const wrapper = ({children}) => <DependenciesProvider>{children}</DependenciesProvider>;
@@ -37,14 +38,6 @@ test('It returns the fetched job execution status', async () => {
         currentStep: 1,
         totalSteps: 10,
         steps: [
-          {
-            hasWarning: false,
-            hasError: false
-          },
-          {
-            hasWarning: false,
-            hasError: false
-          },
           {
             hasWarning: false,
             hasError: false
