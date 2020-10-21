@@ -9,14 +9,14 @@ const ActionsContainer = styled.div`
 `;
 
 type ActionsProps = {
-  jobId: string;
+  id: string;
   isStoppable: boolean;
 };
 
-const Actions = ({jobId, isStoppable}: ActionsProps) => {
+const Actions = ({id, isStoppable}: ActionsProps) => {
   const translate = useTranslate();
-  const showRoute = useRoute('pim_enrich_job_tracker_show', {id: jobId});
-  const stopRoute = useRoute('pim_enrich_job_tracker_rest_stop', {id: jobId});
+  const showRoute = useRoute('pim_enrich_job_tracker_show', {id});
+  const stopRoute = useRoute('pim_enrich_job_tracker_rest_stop', {id});
 
   const stopJob = () => {
     fetch(stopRoute);
@@ -36,4 +36,4 @@ const Actions = ({jobId, isStoppable}: ActionsProps) => {
   );
 };
 
-export {Actions};
+export default Actions;

@@ -34,6 +34,10 @@ datagrid:
                 frontend_type: html
             actions:
                 label: ~
+                component: pimimportexport/js/datagrid/Actions
+                props:
+                    id: string
+                    isStoppable: boolean
                 type: field
                 frontend_type: actions
                 # todo fix this
