@@ -21,7 +21,7 @@ check-sf-services:
 lint-back:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
-	$(DOCKER_COMPOSE) run -u www-data --rm php vendor/bin/phpstan analyse src/Akeneo/Pim -l 1
+	${PHP_RUN} -d memory_limit=4G vendor/bin/phpstan analyse src/Akeneo/Pim -l 1
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
 	$(MAKE) connectivity-connection-lint-back
