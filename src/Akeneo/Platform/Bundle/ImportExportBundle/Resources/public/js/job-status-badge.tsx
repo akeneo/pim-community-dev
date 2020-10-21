@@ -1,5 +1,5 @@
 import React from "react";
-import {JobExecutionProgress, JobStatus, useJobExecutionProgress} from "./useJobExecutionStatus";
+import {JobExecutionProgress, JobStatus, useJobExecutionProgress} from "./useJobExecutionProgress";
 import {Badge} from "akeneo-design-system";
 
 type BadgeLevel = 'danger' | 'warning' | 'primary';
