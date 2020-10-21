@@ -1,12 +1,12 @@
-import React, {FC} from 'react';
+import React, {Children, FC, ReactElement} from 'react';
 import {Evaluation} from '../../../../../domain';
-import CriteriaList from './CriteriaList';
 import {AxisError, AxisGradingInProgress, AxisHeader} from './Axis';
 import {
   CRITERION_ERROR,
   CRITERION_IN_PROGRESS,
   CriterionEvaluationResult,
 } from '../../../../../domain/Evaluation.interface';
+import Criterion from './Criterion';
 
 interface AxisEvaluationProps {
   evaluation?: Evaluation;
@@ -25,7 +25,7 @@ const isAxisGradingInProgress = (criteria: CriterionEvaluationResult[]) => {
     .length > 0;
 };
 
-const defaultEvaluation: Evaluation = {
+const evaluationPlaceholder: Evaluation = {
   rate: {
     value: null,
     rank: null,
@@ -33,10 +33,14 @@ const defaultEvaluation: Evaluation = {
   criteria: [],
 };
 
-const AxisEvaluation: FC<AxisEvaluationProps> = ({evaluation = defaultEvaluation, axis}) => {
+const AxisEvaluation: FC<AxisEvaluationProps> = ({children, evaluation = evaluationPlaceholder, axis}) => {
   const criteria = evaluation.criteria || [];
   const axisHasError: boolean = isAxisInError(criteria);
   const axisGradingInProgress: boolean = isAxisGradingInProgress(criteria);
+
+  const getCriterionEvaluation = (code: string): CriterionEvaluationResult|undefined => {
+    return criteria.find((criterion) => criterion.code === code);
+  };
 
   return (
     <div className='AknSubsection AxisEvaluationContainer'>
@@ -45,7 +49,23 @@ const AxisEvaluation: FC<AxisEvaluationProps> = ({evaluation = defaultEvaluation
       { axisHasError && (<AxisError/>) }
       { axisGradingInProgress && !axisHasError && (<AxisGradingInProgress/>) }
 
-      <CriteriaList axis={axis} criteria={criteria} evaluation={evaluation}/>
+      {Children.map(children, ((child) => {
+        const element = child as ReactElement;
+        if (element.type === Criterion) {
+          const criterionEvaluation = getCriterionEvaluation(element.props.code);
+
+          if (!criterionEvaluation) {
+            return;
+          }
+
+          return React.cloneElement(element, {
+            axis,
+            evaluation,
+            criterionEvaluation
+          });
+        }
+        return child;
+      }))}
     </div>
   )
 };

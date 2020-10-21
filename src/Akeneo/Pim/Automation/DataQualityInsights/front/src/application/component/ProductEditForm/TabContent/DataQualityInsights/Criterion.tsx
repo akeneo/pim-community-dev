@@ -19,20 +19,39 @@ import {
 const __ = require('oro/translator');
 
 interface CriterionProps {
-  criterionEvaluation: CriterionEvaluationResult;
-  axis: string;
-  evaluation: Evaluation;
+  code: string;
+  criterionEvaluation?: CriterionEvaluationResult;
+  axis?: string;
+  evaluation?: Evaluation;
 }
 
 const isSuccess = (rate: Rate) => {
   return rate && rate.value === MAX_RATE;
 };
 
-const Criterion: FunctionComponent<CriterionProps> = ({criterionEvaluation, axis, evaluation}) => {
+const criterionPlaceholder: CriterionEvaluationResult = {
+  rate: {
+    value: null,
+    rank: null,
+  },
+  code: '',
+  status: 'not_applicable',
+  improvable_attributes: []
+
+};
+const evaluationPlaceholder: Evaluation = {
+  rate: {
+    value: null,
+    rank: null,
+  },
+  criteria: [],
+};
+
+const Criterion: FunctionComponent<CriterionProps> = ({code, criterionEvaluation = criterionPlaceholder, axis = '', evaluation = evaluationPlaceholder}) => {
   const product = useProduct();
   const family = useFetchProductFamilyInformation();
 
-  const criterion = criterionEvaluation.code;
+  const criterion = code;
   const attributes = criterionEvaluation.improvable_attributes || [] as string[];
 
   let criterionContent: any;

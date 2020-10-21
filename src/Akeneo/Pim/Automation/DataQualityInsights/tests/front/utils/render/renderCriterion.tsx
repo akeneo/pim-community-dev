@@ -6,6 +6,7 @@ import Criterion from '@akeneo-pim-community/data-quality-insights/src/applicati
 import {renderWithAppContextHelper} from './renderWithAppContextHelper';
 
 const renderCriterion = (
+  code: string,
   criterionEvaluation: CriterionEvaluationResult,
   axis: string,
   evaluation: Evaluation,
@@ -13,7 +14,7 @@ const renderCriterion = (
 ) => {
   const Component: FC = () => (
     <AxesContextProvider axes={[axis]}>
-      <Criterion criterionEvaluation={criterionEvaluation} axis={axis} evaluation={evaluation} />
+      <Criterion code={code} criterionEvaluation={criterionEvaluation} axis={axis} evaluation={evaluation} />
     </AxesContextProvider>
   );
 

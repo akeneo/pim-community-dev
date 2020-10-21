@@ -11,6 +11,7 @@ import AttributesTabContent from './component/ProductEditForm/TabContent/Attribu
 import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
 import AxisEvaluation from './component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation';
+import Criterion from "./component/ProductEditForm/TabContent/DataQualityInsights/Criterion";
 
 interface ProductEditFormAppProps {
   catalogChannel: string;
@@ -30,7 +31,11 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
 
         <AxesContextProvider axes={['enrichment']}>
           <DataQualityInsightsTabContent product={product} productEvaluationFetcher={fetchProductDataQualityEvaluation}>
-            <AxisEvaluation axis={'enrichment'} />
+            <AxisEvaluation axis={'enrichment'}>
+              <Criterion code={'completeness_of_required_attributes'} />
+              <Criterion code={'completeness_of_non_required_attributes'} />
+              <Criterion code={'missing_image_attribute'} />
+            </AxisEvaluation>
           </DataQualityInsightsTabContent>
           <AxisRatesOverviewPortal />
         </AxesContextProvider>

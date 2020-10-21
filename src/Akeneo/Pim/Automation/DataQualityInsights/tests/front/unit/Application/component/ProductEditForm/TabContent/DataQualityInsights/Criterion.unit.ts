@@ -31,7 +31,7 @@ describe('Criterion for simple product', () => {
     const rate = aRate();
     const evaluation = anEvaluation(rate, [criterion]);
 
-    const {getByText} = renderCriterion(criterion, 'an_axis', evaluation);
+    const {getByText} = renderCriterion('a_criterion', criterion, 'an_axis', evaluation);
 
     expect(
       getByText('akeneo_data_quality_insights.product_evaluation.criteria.a_criterion.recommendation' + ':')
@@ -46,7 +46,7 @@ describe('Criterion for simple product', () => {
     const rate = aRate();
     const evaluation = anEvaluation(rate, [criterion]);
 
-    const {getByText} = renderCriterion(criterion, 'an_axis', evaluation);
+    const {getByText} = renderCriterion('a_criterion', criterion, 'an_axis', evaluation);
 
     expect(
       getByText('akeneo_data_quality_insights.product_evaluation.criteria.a_criterion.recommendation' + ':')
@@ -61,7 +61,7 @@ describe('Criterion for simple product', () => {
     const rate = aRate();
     const evaluation = anEvaluation(rate, [criterion]);
 
-    const {getByText} = renderCriterion(criterion, 'an_axis', evaluation);
+    const {getByText} = renderCriterion('a_criterion', criterion, 'an_axis', evaluation);
 
     expect(
       getByText('akeneo_data_quality_insights.product_evaluation.criteria.a_criterion.recommendation' + ':')
@@ -75,7 +75,7 @@ describe('Criterion for simple product', () => {
     const rate = aRate();
     const evaluation = anEvaluation(rate, [criterion]);
 
-    const {getByText} = renderCriterion(criterion, 'an_axis', evaluation);
+    const {getByText} = renderCriterion('a_criterion', criterion, 'an_axis', evaluation);
 
     expect(
       getByText('akeneo_data_quality_insights.product_evaluation.criteria.a_criterion.recommendation' + ':')
@@ -89,7 +89,7 @@ describe('Criterion for simple product', () => {
     const rate = aRate();
     const evaluation = anEvaluation(rate, [criterion]);
 
-    const {getByText} = renderCriterion(criterion, 'an_axis', evaluation);
+    const {getByText} = renderCriterion('a_criterion', criterion, 'an_axis', evaluation);
 
     expect(
       getByText('akeneo_data_quality_insights.product_evaluation.criteria.a_criterion.recommendation' + ':')
@@ -103,7 +103,7 @@ describe('Criterion for simple product', () => {
       const rate = aRate();
       const evaluation = anEvaluation(rate, [criterion]);
 
-      const {getByText} = renderCriterion(criterion, 'enrichment', evaluation);
+      const {getByText} = renderCriterion('missing_image_attribute', criterion, 'enrichment', evaluation);
 
       expect(
           getByText('akeneo_data_quality_insights.product_evaluation.criteria.missing_image_attribute.recommendation' + ':')
@@ -120,7 +120,7 @@ describe('Criterion for product model', () => {
         const evaluation = anEvaluation(rate, [criterion]);
         const productModel = aProductModel();
 
-        const {getByText} = renderCriterion(criterion, 'an_axis', evaluation, {
+        const {getByText} = renderCriterion('a_criterion', criterion, 'an_axis', evaluation, {
           product: productModel
         });
 
@@ -137,7 +137,7 @@ describe('Criterion for variant product ', () => {
         const evaluation = anEvaluation(rate, [criterion]);
         const variantProduct = aVariantProduct();
 
-        const {getByText} = renderCriterion(criterion, 'an_axis', evaluation, {
+        const {getByText} = renderCriterion('a_criterion', criterion, 'an_axis', evaluation, {
           product: variantProduct
         });
 
@@ -164,7 +164,7 @@ describe('Criterion user actions', () => {
         const product = aProduct(1234);
         const family = aFamily('a_family', 4321);
 
-        const {getByText} = renderCriterion(criterion, 'an_axis', evaluation, {
+        const {getByText} = renderCriterion(ATTRIBUTE_SPELLING_CRITERION_CODE, criterion, 'an_axis', evaluation, {
             families: {
                 a_family: family
             },
@@ -187,7 +187,7 @@ describe('Criterion user actions', () => {
         const product = aProduct(1234);
         const family = aFamily('a_family', 4321);
 
-        const {getByText} = renderCriterion(criterion, 'an_axis', evaluation, {
+        const {getByText} = renderCriterion(ATTRIBUTE_OPTION_SPELLING_CRITERION_CODE, criterion, 'an_axis', evaluation, {
             families: {
                 a_family: family
             },
