@@ -16,6 +16,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQueryHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ListProductsQueryValidator;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Event\ProductDomainErrorEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
@@ -57,6 +58,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -164,6 +166,9 @@ class ProductController
 
     private GetProductsWithQualityScoresInterface $getProductsWithQualityScores;
 
+    /** @var RemoveParentInterface */
+    private $removeParent;
+
     public function __construct(
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
@@ -196,7 +201,8 @@ class ProductController
         EventDispatcherInterface $eventDispatcher,
         DuplicateValueChecker $duplicateValueChecker,
         LoggerInterface $logger,
-        GetProductsWithQualityScoresInterface $getProductsWithQualityScores
+        GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
+        RemoveParentInterface $removeParent
     ) {
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
@@ -230,6 +236,7 @@ class ProductController
         $this->duplicateValueChecker = $duplicateValueChecker;
         $this->logger = $logger;
         $this->getProductsWithQualityScores = $getProductsWithQualityScores;
+        $this->removeParent = $removeParent;
     }
 
     /**
@@ -440,6 +447,12 @@ class ProductController
                 throw new UnprocessableEntityHttpException($exception->getMessage());
             }
             $isCreation = true;
+        } elseif ($this->needUpdateFromVariantToSimple($product, $data, $isCreation)) {
+            try {
+                $this->removeParent->from($product);
+            } catch (AccessDeniedException $exception) {
+                throw new UnprocessableEntityHttpException($exception->getMessage());
+            }
         }
 
         $data = $this->orderData($data);
@@ -740,6 +753,21 @@ class ProductController
     {
         return !$isCreation && !$product->isVariant() &&
             isset($data['parent']) && '' !== $data['parent'];
+    }
+
+    /**
+     * It is a conversion from variant product to simple product if we are updating a variant product,
+     * and 'parent' is explicitly null
+     *
+     * @param ProductInterface $product
+     * @param array $data
+     * @param bool $isCreation
+     *
+     * @return bool
+     */
+    protected function needUpdateFromVariantToSimple(ProductInterface $product, array $data, bool $isCreation): bool
+    {
+        return !$isCreation && $product->isVariant() && array_key_exists('parent', $data) && null === $data['parent'];
     }
 
     private function normalizeProductsList(ConnectorProductList $connectorProductList, ListProductsQuery $query): array

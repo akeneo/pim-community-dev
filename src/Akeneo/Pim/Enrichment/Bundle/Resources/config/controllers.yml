@@ -71,6 +71,7 @@ services:
             - '@pim_api.checker.duplicate_value'
             - '@logger'
             - '@akeneo.pim.enrichment.use_cases.get_products_with_quality_scores'
+            - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
 
     pim_api.controller.product_model:
         public: true
