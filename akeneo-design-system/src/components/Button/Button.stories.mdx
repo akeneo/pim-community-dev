@@ -60,8 +60,10 @@ If you want your button to act like a <LinkTo kind="Components/Link" story="Stan
   <Story name="Link">
     {args => {
       return (
-        <Button {...{...args, onClick: undefined}}>
-          <Link href={"https://google.com"}>I am a Link</Link>
+        <Button {...args} onClick={undefined}>
+          <Link href="https://google.com" target="_blank">
+            I am a Link
+          </Link>
         </Button>
       );
     }}
