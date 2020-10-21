@@ -16,10 +16,10 @@ const selectionStyle = css`
 const TableRow = styled.tr<Props>`
   cursor: pointer;
   height: 54px;
-  border-bottom: 1px solid ${({theme}) => theme.color.grey70};
+  border-bottom: 1px solid ${({theme}) => theme.color.grey60};
 
   :hover {
-    background-color: ${({theme}) => theme.color.grey60};
+    background-color: ${({theme}) => theme.color.blue20};
   }
 
   ${props => props.isSelected && selectionStyle}

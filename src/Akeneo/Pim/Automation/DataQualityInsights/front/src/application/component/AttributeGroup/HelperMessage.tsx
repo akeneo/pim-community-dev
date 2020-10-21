@@ -32,7 +32,7 @@ const HelperMessage: FC = () => {
             <HelperIcon/>
             <div>
                 {translate('akeneo_data_quality_insights.attribute_group.helper_dqi_info')}&nbsp;
-                <HelperLink href="https://help.akeneo.com" target="_blank">
+                <HelperLink href="https://help.akeneo.com/pim/serenity/articles/understand-data-quality.html" target="_blank">
                     {translate('akeneo_data_quality_insights.attribute_group.helper_dqi_link')}
                 </HelperLink>
             </div>

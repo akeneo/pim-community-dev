@@ -13,17 +13,25 @@ $builder = new RuleBuilder();
 $rules = [
     $builder->only(
         [
-            'Akeneo\Connectivity\Connection\Application',
             'Akeneo\Connectivity\Connection\Domain',
 
             // Dependency on Symfony Validator to ease validation
             'Symfony\Component\Validator',
+            'Symfony\Component\Security',
+
+            'Doctrine\Common\Persistence\ObjectRepository',
 
             'Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
 
+            // TODO: Fix serializer usage to not depends on FOSRestBundle inside Application.
             'FOS\RestBundle\Context\Context',
-            'FOS\RestBundle\Serializer\Serializer'
+            'FOS\RestBundle\Serializer\Serializer',
+
+            'Psr\Log\LoggerInterface',
+
+            'Akeneo\Platform\Component\EventQueue',
+            'Akeneo\Platform\Component\Webhook',
         ]
     )->in('Akeneo\Connectivity\Connection\Application'),
 
@@ -131,7 +139,6 @@ $rules = [
     $builder->only(
         [
             'Symfony\Component',
-            'Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterSerializerPass',
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\Symfony'),
 ];

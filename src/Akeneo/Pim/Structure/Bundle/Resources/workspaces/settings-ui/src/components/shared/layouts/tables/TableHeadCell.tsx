@@ -24,7 +24,7 @@ const TableHeadCell = styled.th<Props>`
   height: calc(44px + 20px);
   box-shadow: 0 1px 0 ${({theme}) => theme.color.grey120};
   background: ${({theme}) => theme.color.white};
-  padding-top: 25px;
+  padding-top: 15px;
   z-index: 1;
 
   ${props => (props.isFilterable ? filterableMixin : notFilterableMixin)} {

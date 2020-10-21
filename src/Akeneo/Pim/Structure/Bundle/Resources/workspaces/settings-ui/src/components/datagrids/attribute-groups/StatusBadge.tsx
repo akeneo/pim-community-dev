@@ -23,6 +23,8 @@ const Badge = styled.div<Props>`
   line-height: 18px;
   text-transform: uppercase;
   font-size: 11px;
+  font-weight: normal;
+  background-color: ${({theme}) => theme.color.white};
   
   ${props => (props.isActivated ? activatedMixin : disabledMixin)}
 `;

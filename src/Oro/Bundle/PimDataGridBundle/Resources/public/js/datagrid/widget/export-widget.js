@@ -21,7 +21,7 @@ define(
 
             action: null,
 
-            jobExportLinkTemplate: '<a href="<%= url %>" target="_blank"><%= label %></a>',
+            jobExportLinkTemplate: '<a href="<%= url %>"><%= label %></a>',
 
             initialize: function (action) {
                 this.action = action;

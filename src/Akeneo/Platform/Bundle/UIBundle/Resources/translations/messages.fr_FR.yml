@@ -104,7 +104,6 @@ pim_enrich:
       edit_attributes: Modifier les attributs du modèle de produit
       categories_view: Afficher les catégories d'un modèle de produit
       history: Afficher l'historique d'un modèle de produit
-      remove: Supprimer un modèle de produit
     category:
       list: Liste des catégories
       create: Créer une catégorie
@@ -436,6 +435,28 @@ pim_datagrid:
   filters:
     product_typology:
       label: Typologie de produit
+    entity_type:
+      label: Groupe de variantes
+    family:
+      label: Famille
+    groups:
+      label: Groupes
+    enabled:
+      label: État
+    scope:
+      label: Canal
+    completeness:
+      label: Complet
+    created:
+      label: Crée le
+    updated:
+      label: Mis à jour le
+    label_or_identifier:
+      label: Libellé ou identifiant
+    parent:
+      label: Parent
+    identifier:
+      label: Identifiant
 #Versioning / history
 Change History: Historique des modifications
 Data Audit: Historique des données

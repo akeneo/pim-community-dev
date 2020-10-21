@@ -10,7 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInte
 use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -58,7 +58,7 @@ class RemoveCompletenessForChannelAndLocaleCommand extends Command
     /** @var LocaleRepositoryInterface */
     private $localeRepository;
 
-    /** @var SaverInterface */
+    /** @var BulkSaverInterface */
     private $channelSaver;
 
     public function __construct(
@@ -68,7 +68,7 @@ class RemoveCompletenessForChannelAndLocaleCommand extends Command
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
-        SaverInterface $channelSaver,
+        BulkSaverInterface $channelSaver,
         string $rootDir,
         string $env,
         int $productBatchSize
@@ -204,6 +204,8 @@ class RemoveCompletenessForChannelAndLocaleCommand extends Command
                 $username
             )
         );
+
+        return 0;
     }
 
     /**

@@ -20,10 +20,6 @@ class SearchAfterSizeIdentifierResultCursorFactory implements CursorFactoryInter
     /** @var Client */
     private $esClient;
 
-    /**
-     * @param Client $esClient
-     * @param string $indexType
-     */
     public function __construct(Client $esClient)
     {
         $this->esClient = $esClient;

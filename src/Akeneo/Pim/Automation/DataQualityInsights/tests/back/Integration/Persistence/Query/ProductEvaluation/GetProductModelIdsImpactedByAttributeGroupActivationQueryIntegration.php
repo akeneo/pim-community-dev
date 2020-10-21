@@ -43,13 +43,9 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQueryIntegration
 
         $this->givenARootProductModelNotImpactedBecauseOfItsVariantFamily();
         $this->givenARootProductModelNotImpactedBecauseOfItsLevelOneAttributes();
-        $this->givenAnImpactedRootProductModelButAlreadyEvaluated();
-        $this->givenAnImpactedRootProductModelButWithEvaluationInPending();
 
         $this->givenASubProductModelNotImpactedBecauseOfItsVariantFamily();
         $this->givenASubProductModelNotImpactedBecauseOfItsLevelTwoAttributes();
-        $this->givenAnImpactedSubProductModelButAlreadyEvaluated();
-        $this->givenAnImpactedSubProductModelButWithEvaluationInPending();
 
         $productModelIds = iterator_to_array($this->get(GetProductModelIdsImpactedByAttributeGroupActivationQuery::class)
             ->updatedSince($this->updatedSince, 2));
@@ -72,7 +68,6 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQueryIntegration
         ]);
 
         $productModel = $this->createProductModel('ImpactedRootProductModelWithASingleVariationLevel', 'impacted_family_variant_A');
-        $this->updateProductModelEvaluationsAt($productModel->getId(), CriterionEvaluationStatus::DONE, $this->updatedSince->modify('-1 day'));
 
         return new ProductId($productModel->getId());
     }
@@ -96,7 +91,6 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQueryIntegration
         ]);
 
         $productModel = $this->createProductModel('ImpactedRootProductModelWithTwoVariationLevels', 'impacted_family_variant_A2');
-        $this->updateProductModelEvaluationsAt($productModel->getId(), CriterionEvaluationStatus::DONE, $this->updatedSince->modify('-3 hour'));
 
         return new ProductId($productModel->getId());
     }
@@ -104,7 +98,6 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQueryIntegration
     private function givenAnotherImpactedRootProductModelWithTwoVariationLevels(): ProductId
     {
         $productModel = $this->createProductModel('AnotherImpactedRootProductModelWithTwoVariationLevels', 'impacted_family_variant_A2');
-        $this->updateProductModelEvaluationsAt($productModel->getId(), CriterionEvaluationStatus::DONE, $this->updatedSince->modify('-1 second'));
 
         return new ProductId($productModel->getId());
     }
@@ -122,8 +115,7 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQueryIntegration
             ],
         ]);
 
-        $productModel = $this->createProductModel('RootProductModelNotImpactedBecauseOfItsVariantFamily', 'not_impacted_family_variant_A');
-        $this->updateProductModelEvaluationsAt($productModel->getId(), CriterionEvaluationStatus::DONE, $this->updatedSince->modify('-1 day'));
+        $this->createProductModel('RootProductModelNotImpactedBecauseOfItsVariantFamily', 'not_impacted_family_variant_A');
     }
 
     private function givenARootProductModelNotImpactedBecauseOfItsLevelOneAttributes(): void
@@ -138,27 +130,12 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQueryIntegration
             ],
         ]);
 
-        $productModel = $this->createProductModel('RootProductModelNotImpactedBecauseOfItsLevelOneAttributes', 'remove_impact_family_variant_A');
-        $this->updateProductModelEvaluationsAt($productModel->getId(), CriterionEvaluationStatus::DONE, $this->updatedSince->modify('-1 day'));
-    }
-
-    private function givenAnImpactedRootProductModelButAlreadyEvaluated(): void
-    {
-        $productModel = $this->createProductModel('ImpactedRootProductModelButAlreadyEvaluated', 'impacted_family_variant_A');
-        $this->updateProductModelEvaluationsAt($productModel->getId(), CriterionEvaluationStatus::DONE, $this->updatedSince->modify('+1 second'));
-    }
-
-
-    private function givenAnImpactedRootProductModelButWithEvaluationInPending(): void
-    {
-        $productModel = $this->createProductModel('ImpactedRootProductModelButWithEvaluationInPending', 'impacted_family_variant_A');
-        $this->updateProductModelEvaluationsAt($productModel->getId(), CriterionEvaluationStatus::PENDING, $this->updatedSince->modify('-1 month'));
+        $this->createProductModel('RootProductModelNotImpactedBecauseOfItsLevelOneAttributes', 'remove_impact_family_variant_A');
     }
 
     private function givenASubProductModelImpactedByACommonAttribute(): ProductId
     {
         $subProductModel = $this->createSubProductModel('SubProductModelImpactedByACommonAttribute', 'impacted_family_variant_A2', 'ImpactedRootProductModelWithTwoVariationLevels');
-        $this->updateProductModelEvaluationsAt($subProductModel->getId(), CriterionEvaluationStatus::DONE, $this->updatedSince->modify('-3 minute'));
 
         return new ProductId($subProductModel->getId());
     }
@@ -183,7 +160,6 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQueryIntegration
 
         $parent = $this->createProductModel('ParentSubProductModelImpactedByALevelOneVariantAttribute', 'impacted_family_variant_B2');
         $subProductModel = $this->createSubProductModel('SubProductModelImpactedByALevelOneVariantAttribute', 'impacted_family_variant_B2', $parent->getCode());
-        $this->updateProductModelEvaluationsAt($subProductModel->getId(), CriterionEvaluationStatus::DONE, $this->updatedSince->modify('-5 minute'));
 
         return new ProductId($subProductModel->getId());
     }
@@ -207,8 +183,7 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQueryIntegration
         ]);
 
         $parent = $this->createProductModel('ParentSubProductModelNotImpactedBecauseOfItsVariantFamily', 'not_impacted_family_variant_B2');
-        $subProductModel = $this->createSubProductModel('SubProductModelNotImpactedBecauseOfItsVariantFamily', 'not_impacted_family_variant_B2', $parent->getCode());
-        $this->updateProductModelEvaluationsAt($subProductModel->getId(), CriterionEvaluationStatus::DONE, $this->updatedSince);
+        $this->createSubProductModel('SubProductModelNotImpactedBecauseOfItsVariantFamily', 'not_impacted_family_variant_B2', $parent->getCode());
     }
 
     public function givenASubProductModelNotImpactedBecauseOfItsLevelTwoAttributes(): void
@@ -229,22 +204,7 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQueryIntegration
         ]);
 
         $parent = $this->createProductModel('ParentSubProductModelNotImpactedBecauseOfItsLevelTwoAttributes', 'remove_impact_family_variant_A2');
-        $this->updateProductModelEvaluationsAt($parent->getId(), CriterionEvaluationStatus::DONE, $this->updatedSince->modify('-3 hour'));
-
-        $subProductModel = $this->createSubProductModel('SubProductModelNotImpactedBecauseOfItsLevelTwoAttributes', 'remove_impact_family_variant_A2', $parent->getCode());
-        $this->updateProductModelEvaluationsAt($subProductModel->getId(), CriterionEvaluationStatus::DONE, $this->updatedSince->modify('-3 hour'));
-    }
-
-    private function givenAnImpactedSubProductModelButAlreadyEvaluated(): void
-    {
-        $subProductModel = $this->createSubProductModel('ImpactedSubProductModelButAlreadyEvaluated', 'impacted_family_variant_A2', 'ImpactedRootProductModelWithTwoVariationLevels');
-        $this->updateProductModelEvaluationsAt($subProductModel->getId(), CriterionEvaluationStatus::DONE, $this->updatedSince->modify('+3 minute'));
-    }
-
-    private function givenAnImpactedSubProductModelButWithEvaluationInPending(): void
-    {
-        $subProductModel = $this->createSubProductModel('ImpactedSubProductModelButWithEvaluationInPending', 'impacted_family_variant_A2', 'ImpactedRootProductModelWithTwoVariationLevels');
-        $this->updateProductModelEvaluationsAt($subProductModel->getId(), CriterionEvaluationStatus::PENDING, $this->updatedSince->modify('-6 minute'));
+        $this->createSubProductModel('SubProductModelNotImpactedBecauseOfItsLevelTwoAttributes', 'remove_impact_family_variant_A2', $parent->getCode());
     }
 
     private function createAttributeGroupWithAttributes(string $code, array $attributes, bool $activated, \DateTimeImmutable $activationUpdatedAt): int

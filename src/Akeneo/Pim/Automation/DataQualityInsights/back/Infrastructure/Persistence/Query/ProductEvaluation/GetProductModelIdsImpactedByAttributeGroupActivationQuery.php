@@ -6,7 +6,6 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsImpactedByAttributeGroupActivationQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\ResultStatement;
@@ -61,24 +60,14 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQuery implements
         $query = <<<SQL
 SELECT DISTINCT product_model.id
 FROM pim_catalog_product_model AS product_model
-INNER JOIN pim_data_quality_insights_product_model_criteria_evaluation AS evaluation 
-    ON evaluation.product_id = product_model.id
-    AND evaluation.evaluated_at < :updatedSince
-    AND evaluation.status != :pending
 WHERE product_model.family_variant_id IN (:familyVariants)
     AND product_model.parent_id IS NULL
 SQL;
 
         return $this->dbConnection->executeQuery(
             $query,
-            [
-                'updatedSince' => $updatedSince->format(Clock::TIME_FORMAT),
-                'pending' => CriterionEvaluationStatus::PENDING,
-                'familyVariants' => $familyVariantIds
-            ],
-            [
-                'familyVariants' => Connection::PARAM_INT_ARRAY,
-            ]
+            ['familyVariants' => $familyVariantIds],
+            ['familyVariants' => Connection::PARAM_INT_ARRAY]
         );
     }
 
@@ -114,24 +103,14 @@ SQL;
         $query = <<<SQL
 SELECT DISTINCT product_model.id
 FROM pim_catalog_product_model AS product_model
-INNER JOIN pim_data_quality_insights_product_model_criteria_evaluation AS evaluation 
-    ON evaluation.product_id = product_model.id
-    AND evaluation.evaluated_at < :updatedSince
-    AND evaluation.status != :pending
 WHERE product_model.family_variant_id IN (:familyVariants)
     AND product_model.parent_id IS NOT NULL
 SQL;
 
         return $this->dbConnection->executeQuery(
             $query,
-            [
-                'updatedSince' => $updatedSince->format(Clock::TIME_FORMAT),
-                'pending' => CriterionEvaluationStatus::PENDING,
-                'familyVariants' => $familyVariantIds
-            ],
-            [
-                'familyVariants' => Connection::PARAM_INT_ARRAY,
-            ]
+            ['familyVariants' => $familyVariantIds],
+            ['familyVariants' => Connection::PARAM_INT_ARRAY,]
         );
     }
 

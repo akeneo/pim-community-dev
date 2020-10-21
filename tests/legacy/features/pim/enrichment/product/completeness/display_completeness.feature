@@ -89,10 +89,10 @@ Feature: Display the completeness of a product
     Given I am on the "sneakers" product page
     When I visit the "Completeness" column tab
     And I switch the scope to "Tablet"
-    Then the completeness badge label should show "Complete: 88%"
+    Then the completeness badge label should show "Completeness: 88%"
     When I switch the locale to "fr_FR"
-    Then the completeness badge label should show "Complete: 77%"
+    Then the completeness badge label should show "Completeness: 77%"
     When I switch the scope to "Mobile"
-    Then the completeness badge label should show "Complete: 100%"
+    Then the completeness badge label should show "Completeness: 100%"
     When I switch the locale to "en_US"
-    Then the completeness badge label should show "Complete: 100%"
+    Then the completeness badge label should show "Completeness: 100%"

@@ -109,13 +109,6 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.consolidate_product_model_axes_rates'
             - '@akeneo.pim.automation.data_quality_insights.query.get_product_model_ids_to_evaluate'
 
-    akeneo.pim.automation.data_quality_insights.connector.tasklet.evaluate_product_models_criteria:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateProductModelsCriteriaTasklet
-        arguments:
-            - '@akeneo.pim.automation.data_quality_insights.evaluate_product_models_pending_criteria'
-            - '@akeneo.pim.automation.data_quality_insights.consolidate_product_model_axes_rates'
-            - '@akeneo.pim.automation.data_quality_insights.query.get_product_model_ids_to_evaluate'
-
     akeneo.pim.automation.data_quality_insights.infrastructure.connector.tasklet.prepare_products_criteria_evaluation:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\PrepareProductsCriteriaEvaluationTasklet
         arguments:

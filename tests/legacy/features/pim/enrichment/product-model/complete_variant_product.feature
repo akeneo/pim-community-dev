@@ -10,12 +10,12 @@ Feature: Complete variant product
   Scenario: Update the complete variant product when I change the locale and the channel
     When I am logged in as "Mary"
     And I edit the "model-braided-hat" product model
-    Then I should see the text "2 / 2 variant products"
+    Then I should see the text "Variant: 2 / 2"
     When I switch the locale to "fr_FR"
-    Then I should see the text "1 / 2 variant product"
+    Then I should see the text "Variant: 1 / 2"
     When I switch the scope to "mobile"
     And I switch the locale to "de_DE"
-    Then I should see the text "0 / 2 variant product"
+    Then I should see the text "Variant: 0 / 2"
 
   Scenario: Try to display the complete variant product for a product model without child
     When I am logged in as "Mary"

@@ -13,7 +13,7 @@ const theme = {
         grey140: '#11324d',
         grey20: '#f6f7fb',
         grey60: '#e8ebee',
-        grey80: '#d9dde2',
+        grey80: '#c7cbd4',
         purple100: '#9452ba',
         red100: '#d4604f',
         yellow10: '#fef7ec',

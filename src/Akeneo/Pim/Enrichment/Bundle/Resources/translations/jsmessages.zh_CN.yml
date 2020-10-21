@@ -73,7 +73,7 @@ pim_enrich.entity.product:
       add_option: 添加选项
     completeness:
       title: 完成度
-      complete: 完成
+      complete: 完成度
       no_family: 没有定义品类。请定义一个品类来计算该产品的完成度。
       no_completeness: 您只是改变了该产品的品类。请先保存以计算新品类的完成度。
       missing_values: "{1}缺少 1 个值|]1，Inf[缺少 {{ count }} 个值"
@@ -363,7 +363,10 @@ pim_datagrid:
       xlsx_all: Excel（所有属性）
       xlsx_grid_context: Excel（网格上下文）
       configurator:
+        subtitle: 快速导出
         title: 选择操作
+        csv: CSV
+        xlsx: XLSX
         all_attributes: 全部属性
     mass_edit: 批量操作
     sequential_edit: 顺序编辑
@@ -391,6 +394,26 @@ pim_datagrid:
       variant: '变型'
     entity_type:
       label: '变型'
+    family:
+      label: 品类
+    groups:
+      label: 分组
+    enabled:
+      label: 状态
+    scope:
+      label: 范围
+    completeness:
+      label: 完成
+    created:
+      label: 创建于
+    updated:
+      label: 更新于
+    label_or_identifier:
+      label: 标签或标识符
+    parent:
+      label: 父级
+    identifier:
+      label: 标识符
   search: 在 {{ label }} 上搜索
 batch_jobs:
   add_association:
