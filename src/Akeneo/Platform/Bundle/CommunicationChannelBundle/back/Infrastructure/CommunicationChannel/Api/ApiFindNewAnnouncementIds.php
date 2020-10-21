@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Infrastructure\CommunicationChannel\Api;
 
 use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Domain\Announcement\Query\FindNewAnnouncementIdsInterface;
-use GuzzleHttp\Client;
 
 /**
  * @author Christophe Chausseray <chausseray.christophe@gmail.com>
@@ -16,12 +15,12 @@ final class ApiFindNewAnnouncementIds implements FindNewAnnouncementIdsInterface
 {
     private const BASE_URI = '/new_announcements';
 
-    /** @var Client */
-    private $client;
+    /** @var string */
+    private $url;
 
     public function __construct(string $apiUrl)
     {
-        $this->client = new Client(['base_uri' => $apiUrl]);
+        $this->url = $apiUrl . self::BASE_URI;
     }
 
     public function find(string $pimEdition, string $pimVersion, string $locale): array
@@ -31,16 +30,24 @@ final class ApiFindNewAnnouncementIds implements FindNewAnnouncementIdsInterface
             'pim_version' => $pimVersion,
             'locale' => $locale,
         ];
-        $response = $this->client->request('GET', self::BASE_URI, ['query' => $queryParameters]);
-        if ($response->getStatusCode() !== 200) {
+
+        $queryParameters = \http_build_query($queryParameters, '', '&');
+        $url =$this->url . '?' . $queryParameters;
+        $body = \file_get_contents($url, false, \stream_context_create(['http' => ['ignore_errors' => true]]));
+
+        $statusHeader = $http_response_header[0];
+        preg_match('#HTTP/[0-9\.]+\s+([0-9]+)#', $statusHeader, $match);
+        $httpStatusCode = (int) $match[1];
+
+        if ($httpStatusCode !== 200) {
             throw new \RuntimeException(
                 sprintf(
                     'Error occurred when fetching the announcements with status code "%s". Please check the logs of the external service.',
-                    $response->getStatusCode()
+                    $httpStatusCode
                 )
             );
         }
 
-        return json_decode((string) $response->getBody(), true);
+        return json_decode((string) $body, true);
     }
 }

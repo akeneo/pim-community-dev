@@ -6,7 +6,6 @@ namespace Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Infrastructure\
 
 use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Domain\Announcement\Model\Read\AnnouncementItem;
 use Akeneo\Platform\Bundle\CommunicationChannelBundle\back\Domain\Announcement\Query\FindAnnouncementItemsInterface;
-use GuzzleHttp\Client;
 
 /**
  * @author Christophe Chausseray <chausseray.christophe@gmail.com>
@@ -17,12 +16,12 @@ final class ApiFindAnnouncementItems implements FindAnnouncementItemsInterface
 {
     private const BASE_URI = '/announcements';
 
-    /** @var Client */
-    private $client;
+    /** @var string */
+    private $url;
 
     public function __construct(string $apiUrl)
     {
-        $this->client = new Client(['base_uri' => $apiUrl]);
+        $this->url = $apiUrl . self::BASE_URI;
     }
 
     public function byPimVersion(string $pimEdition, string $pimVersion, string $locale, ?string $searchAfter): array
@@ -36,16 +35,24 @@ final class ApiFindAnnouncementItems implements FindAnnouncementItemsInterface
             $queryParameters['search_after'] = $searchAfter;
         }
 
-        $response = $this->client->request('GET', self::BASE_URI, ['query' => $queryParameters]);
-        if ($response->getStatusCode() !== 200) {
+        $queryParameters = \http_build_query($queryParameters, '', '&');
+        $url =$this->url . '?' . $queryParameters;
+        $body = \file_get_contents($url, false, \stream_context_create(['http' => ['ignore_errors' => true]]));
+
+        $statusHeader = $http_response_header[0];
+        preg_match('#HTTP/[0-9\.]+\s+([0-9]+)#', $statusHeader, $match);
+        $httpStatusCode = (int) $match[1];
+
+        if ($httpStatusCode !== 200) {
             throw new \RuntimeException(
                 sprintf(
                     'Error occurred when fetching the announcements with status code "%s". Please check the logs of the external service.',
-                    $response->getStatusCode()
+                    $httpStatusCode
                 )
             );
         }
-        $content = json_decode((string) $response->getBody(), true)['data'];
+
+        $content = \json_decode($body, true)['data'];
 
         return array_map(function ($announcement) {
             return $this->getAnnouncementItem($announcement);
