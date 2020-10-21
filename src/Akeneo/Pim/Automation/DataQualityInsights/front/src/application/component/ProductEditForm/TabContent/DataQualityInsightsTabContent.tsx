@@ -1,18 +1,18 @@
-import React, {Fragment, FunctionComponent} from 'react';
+import React, {Children, FC, FunctionComponent, ReactElement} from 'react';
 import {get as _get} from 'lodash';
-import AxisEvaluation from "./DataQualityInsights/AxisEvaluation";
+import AxisEvaluation from './DataQualityInsights/AxisEvaluation';
 import {
   useCatalogContext,
   useFetchProductDataQualityEvaluation,
-  useProductEvaluatedAttributeGroups
-} from "../../../../infrastructure/hooks";
+  useProductEvaluatedAttributeGroups,
+} from '../../../../infrastructure/hooks';
 import {Evaluation, Product, ProductEvaluation} from '../../../../domain';
-import TabContentWithPortalDecorator from "../../TabContentWithPortalDecorator";
+import TabContentWithPortalDecorator from '../../TabContentWithPortalDecorator';
 import {PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME, PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME} from '../../../constant';
-import ProductEvaluationFetcher from "../../../../infrastructure/fetcher/ProductEditForm/ProductEvaluationFetcher";
-import usePageContext from "../../../../infrastructure/hooks/ProductEditForm/usePageContext";
-import {AttributeGroupsHelper} from "./DataQualityInsights/AttributesGroupsHelper";
-import {NoAttributeGroups} from "./DataQualityInsights/NoAttributeGroups";
+import ProductEvaluationFetcher from '../../../../infrastructure/fetcher/ProductEditForm/ProductEvaluationFetcher';
+import usePageContext from '../../../../infrastructure/hooks/ProductEditForm/usePageContext';
+import {AttributeGroupsHelper} from './DataQualityInsights/AttributesGroupsHelper';
+import {NoAttributeGroups} from './DataQualityInsights/NoAttributeGroups';
 
 export const CONTAINER_ELEMENT_ID = 'data-quality-insights-product-tab-content';
 
@@ -33,9 +33,9 @@ const isProductEvaluationPending = (evaluation: ProductEvaluation | undefined, c
   });
 
   return axisInProgress.length > 0;
-}
+};
 
-const BaseDataQualityInsightsTabContent: FunctionComponent<DataQualityInsightsTabContentProps> = ({productEvaluationFetcher}: DataQualityInsightsTabContentProps) => {
+const BaseDataQualityInsightsTabContent: FC<DataQualityInsightsTabContentProps> = ({children, productEvaluationFetcher}) => {
   const {locale, channel} = useCatalogContext();
   const productEvaluation = useFetchProductDataQualityEvaluation(productEvaluationFetcher);
   const {evaluatedGroups, allGroupsEvaluated} = useProductEvaluatedAttributeGroups();
@@ -50,23 +50,23 @@ const BaseDataQualityInsightsTabContent: FunctionComponent<DataQualityInsightsTa
       {locale && channel && productEvaluation && (
         <>
           {hasEvaluation && <AttributeGroupsHelper evaluatedAttributeGroups={evaluatedGroups} allGroupsEvaluated={allGroupsEvaluated} locale={locale}/>}
-          {Object.entries(productEvaluation).map(([code, axisEvaluationData]) => {
-            const axisEvaluation: Evaluation = _get(axisEvaluationData, [channel, locale], {
-              rate: {
-                value: null,
-                rank: null,
-              },
-              criteria: [],
-            });
+          {Children.map(children, (child => {
+            const element = child as ReactElement;
+            if (element.type === AxisEvaluation) {
+              const axisEvaluation: Evaluation = _get(productEvaluation, [element.props.axis, channel, locale], {
+                rate: {
+                  value: null,
+                  rank: null,
+                },
+                criteria: [],
+              });
 
-            return (
-              <Fragment key={`axis-${code}`} >
-                {axisEvaluation && (
-                  <AxisEvaluation evaluation={axisEvaluation} axis={code} />
-                )}
-              </Fragment>
-            );
-          })}
+              return React.cloneElement(element, {
+                evaluation: axisEvaluation
+              });
+            }
+            return child;
+          }))}
         </>
       )}
     </>

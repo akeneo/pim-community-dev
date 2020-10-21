@@ -1,22 +1,22 @@
-import React, {FunctionComponent} from 'react';
+import React, {FC} from 'react';
 import {uniq as _uniq} from 'lodash';
 
 import Rate from '@akeneo-pim-community/data-quality-insights/src/application/component/Rate';
-import AllAttributesLink from "./AllAttributesLink";
-import {Evaluation} from "../../../../../domain";
-import CriteriaList from "./CriteriaList";
-import AxisError from "./AxisError";
+import AllAttributesLink from './AllAttributesLink';
+import {Evaluation} from '../../../../../domain';
+import CriteriaList from './CriteriaList';
+import AxisError from './AxisError';
 import {
   CRITERION_ERROR,
   CRITERION_IN_PROGRESS,
-  CriterionEvaluationResult
-} from "../../../../../domain/Evaluation.interface";
-import AxisGradingInProgress from "./AxisGradingInProgress";
+  CriterionEvaluationResult,
+} from '../../../../../domain/Evaluation.interface';
+import AxisGradingInProgress from './AxisGradingInProgress';
 
 const __ = require('oro/translator');
 
 interface AxisEvaluationProps {
-  evaluation: Evaluation;
+  evaluation?: Evaluation;
   axis: string;
 }
 
@@ -49,7 +49,15 @@ const isAxisGradingInProgress = (criteria: CriterionEvaluationResult[]) => {
     .length > 0;
 };
 
-const AxisEvaluation: FunctionComponent<AxisEvaluationProps> = ({evaluation, axis}) => {
+const defaultEvaluation: Evaluation = {
+  rate: {
+    value: null,
+    rank: null,
+  },
+  criteria: [],
+};
+
+const AxisEvaluation: FC<AxisEvaluationProps> = ({evaluation = defaultEvaluation, axis}) => {
   const criteria = evaluation.criteria || [];
   const allAttributes = getAxisAttributesWithRecommendations(criteria);
   const axisHasError: boolean = isAxisInError(criteria);

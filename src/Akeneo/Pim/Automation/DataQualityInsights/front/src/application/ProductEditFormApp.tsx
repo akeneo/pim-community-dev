@@ -1,15 +1,16 @@
 import React, {FunctionComponent} from 'react';
-import {Provider} from "react-redux";
-import {productEditFormStore} from "../infrastructure/store";
-import {CatalogContextListener, PageContextListener, ProductContextListener} from "./listener";
-import {Product} from "../domain";
+import {Provider} from 'react-redux';
+import {productEditFormStore} from '../infrastructure/store';
+import {CatalogContextListener, PageContextListener, ProductContextListener} from './listener';
+import {Product} from '../domain';
 import {fetchProduct, fetchProductDataQualityEvaluation} from '../infrastructure/fetcher';
-import {AxisRatesOverviewPortal,} from "./component/ProductEditForm";
-import {AxesContextProvider} from "./context/AxesContext";
-import {DataQualityInsightsTabContent} from "./component/ProductEditForm/TabContent";
-import AttributesTabContent from "./component/ProductEditForm/TabContent/AttributesTabContent";
-import {pimTheme} from "akeneo-design-system";
-import {ThemeProvider} from "styled-components";
+import {AxisRatesOverviewPortal} from './component/ProductEditForm';
+import {AxesContextProvider} from './context/AxesContext';
+import {DataQualityInsightsTabContent} from './component/ProductEditForm/TabContent';
+import AttributesTabContent from './component/ProductEditForm/TabContent/AttributesTabContent';
+import {pimTheme} from 'akeneo-design-system';
+import {ThemeProvider} from 'styled-components';
+import AxisEvaluation from './component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation';
 
 interface ProductEditFormAppProps {
   catalogChannel: string;
@@ -28,7 +29,9 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
         <AttributesTabContent product={product}/>
 
         <AxesContextProvider axes={['enrichment']}>
-          <DataQualityInsightsTabContent product={product} productEvaluationFetcher={fetchProductDataQualityEvaluation}/>
+          <DataQualityInsightsTabContent product={product} productEvaluationFetcher={fetchProductDataQualityEvaluation}>
+            <AxisEvaluation axis={'enrichment'} />
+          </DataQualityInsightsTabContent>
           <AxisRatesOverviewPortal />
         </AxesContextProvider>
       </Provider>
