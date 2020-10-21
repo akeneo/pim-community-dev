@@ -4,11 +4,14 @@ import {ProgressBar} from './ProgressBar.tsx';
 <Meta
   title="Components/ProgressBar"
   component={ProgressBar}
+  argTypes={{
+    percent: {control: {type: 'range', min: 0, max: 100, step: 1}},
+  }}
   args={{
     level: 'primary',
     title: 'Lorem Ipsum is simply dummy text',
     progressLabel: '30 minutes left',
-    percent: '50'
+    percent: 50
   }}
 />
 
