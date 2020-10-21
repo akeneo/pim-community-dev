@@ -7,7 +7,7 @@ import Evaluation, {
   CRITERION_NOT_APPLICABLE,
   CriterionEvaluationResult,
 } from '../../../../../domain/Evaluation.interface';
-import {Recommendation, RecommendationType} from './Recommendation';
+import {Recommendation, RecommendationAttributesList, RecommendationType} from './Recommendation';
 import {
   ATTRIBUTE_OPTION_SPELLING_CRITERION_CODE,
   ATTRIBUTE_SPELLING_CRITERION_CODE,
@@ -15,7 +15,6 @@ import {
 } from '../../../../constant';
 import {isProductModel, isSimpleProduct} from '../../../../helper/ProductEditForm/Product';
 import {useFetchProductFamilyInformation, useProduct} from '../../../../../infrastructure/hooks';
-import RecommendationAttributesList from './RecommendationAttributesList';
 import {
   redirectToAttributeGridFilteredByFamilyAndQuality,
   redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes,

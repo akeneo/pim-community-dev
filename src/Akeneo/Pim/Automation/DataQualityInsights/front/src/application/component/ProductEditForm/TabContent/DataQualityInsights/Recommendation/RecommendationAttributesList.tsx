@@ -3,8 +3,8 @@ import {useCatalogContext, useFetchProductFamilyInformation} from '../../../../.
 import AttributeWithRecommendation from '../../../../../../domain/AttributeWithRecommendation.interface';
 import AttributesList from '../AttributesList';
 import AttributesListWithVariations from '../AttributesListWithVariations';
-import {isSimpleProduct} from "../../../../../helper/ProductEditForm/Product";
-import {Evaluation, Product} from "../../../../../../domain";
+import {isSimpleProduct} from '../../../../../helper/ProductEditForm/Product';
+import {Evaluation, Product} from '../../../../../../domain';
 
 interface RecommendationAttributesListProps {
   criterion: string;
@@ -64,4 +64,4 @@ const RecommendationAttributesList: FunctionComponent<RecommendationAttributesLi
   )
 };
 
-export default RecommendationAttributesList;
+export {RecommendationAttributesList};
