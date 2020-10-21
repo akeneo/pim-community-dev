@@ -115,9 +115,13 @@ class DispatchProductModelBusinessEventSubscriberSpec extends ObjectBehavior
 
         $security->getUser()->willReturn(null);
 
-        $this->shouldThrow(
-            new \LogicException('User should not be null.')
-        )->during('produceBusinessSaveEvent', [new GenericEvent($productModel)]);
+        // $this->shouldThrow(
+        //     new \LogicException('User should not be null.')
+        // )->during('produceBusinessSaveEvent', [new GenericEvent($productModel)]);
+
+        // TODO: https://akeneo.atlassian.net/browse/CXP-443
+        $this->produceBusinessSaveEvent(new GenericEvent($productModel));
+        Assert::assertCount(0, $messageBus->messages);
     }
 
     function it_does_produce_business_remove_event(
@@ -171,9 +175,13 @@ class DispatchProductModelBusinessEventSubscriberSpec extends ObjectBehavior
 
         $security->getUser()->willReturn(null);
 
-        $this->shouldThrow(
-            new \LogicException('User should not be null.')
-        )->during('produceBusinessRemoveEvent', [new GenericEvent($productModel)]);
+        // $this->shouldThrow(
+        //     new \LogicException('User should not be null.')
+        // )->during('produceBusinessRemoveEvent', [new GenericEvent($productModel)]);
+
+        // TODO: https://akeneo.atlassian.net/browse/CXP-443
+        $this->produceBusinessRemoveEvent(new GenericEvent($productModel));
+        Assert::assertCount(0, $messageBus->messages);
     }
 
     private function getMessageBus()

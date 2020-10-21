@@ -7,10 +7,12 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ElasticsearchFilterValidator;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Webmozart\Assert\Assert;
 
 /**
  * Reference data filter for an Elasticsearch query
@@ -168,6 +170,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         }
 
         $referenceDataRepository = $this->referenceDataRepositoryResolver->resolve($attribute->getReferenceDataName());
+        Assert::implementsInterface($referenceDataRepository, ReferenceDataRepositoryInterface::class);
         $existingReferenceData =  $referenceDataRepository->findCodesByIdentifiers($values);
         $referenceDataCodes = array_map(
             function ($referenceData) {

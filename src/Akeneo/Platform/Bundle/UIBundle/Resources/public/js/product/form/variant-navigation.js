@@ -373,14 +373,14 @@ define(
              */
             getCompletenessBadgeClass: function (ratio) {
                 if (0 === ratio) {
-                    return 'empty';
+                    return 'important';
                 }
 
                 if (100 === ratio) {
-                    return 'complete';
+                    return 'success';
                 }
 
-                return 'incomplete';
+                return 'warning';
             },
 
             /**

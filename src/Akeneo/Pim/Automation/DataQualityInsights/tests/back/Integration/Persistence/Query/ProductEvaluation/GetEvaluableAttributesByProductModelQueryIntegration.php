@@ -14,10 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Attribute;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\AttributeGroupActivation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeGroupCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluableAttributesByProductModelQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeGroupActivationRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
 use Webmozart\Assert\Assert;
@@ -33,9 +36,12 @@ class GetEvaluableAttributesByProductModelQueryIntegration extends TestCase
     {
         parent::setUp();
 
+        $this->givenADeactivatedAttributeGroup('erp');
+
         $this->addAttributesToFamilyA([
             ['code' => 'a_readonly_textarea', 'type' => AttributeTypes::TEXTAREA, 'properties' => ['is_read_only' => true], 'localizable' => true],
             ['code' => 'a_localizable_text', 'type' => AttributeTypes::TEXT, 'scopable' => true, 'localizable' => true],
+            ['code' => 'a_deactivated_text', 'type' => AttributeTypes::TEXT, 'scopable' => true, 'localizable' => true, 'group' => 'erp'],
         ]);
     }
 
@@ -145,7 +151,7 @@ class GetEvaluableAttributesByProductModelQueryIntegration extends TestCase
                     'type' => $attributeData['type'],
                     'localizable' => $attributeData['localizable'] ?? false,
                     'scopable' => $attributeData['scopable'] ?? false,
-                    'group' => 'other',
+                    'group' => $attributeData['group'] ?? 'other',
                 ]
             );
 
@@ -164,5 +170,15 @@ class GetEvaluableAttributesByProductModelQueryIntegration extends TestCase
             'attributes' => array_merge($family->getAttributeCodes(), $attributeCodes)
         ]);
         $this->get('pim_catalog.saver.family')->save($family);
+    }
+
+    private function givenADeactivatedAttributeGroup(string $code): void
+    {
+        $attributeGroup = $this->get('pim_catalog.factory.attribute_group')->create();
+        $this->get('pim_catalog.updater.attribute_group')->update($attributeGroup, ['code' => $code]);
+        $this->get('pim_catalog.saver.attribute_group')->save($attributeGroup);
+
+        $attributeGroupActivation = new AttributeGroupActivation(new AttributeGroupCode($code), false);
+        $this->get(AttributeGroupActivationRepository::class)->save($attributeGroupActivation);
     }
 }

@@ -49,5 +49,7 @@ class QueryHelpProductModelCommand extends Command
     {
         $this->fieldDumper->dump($output);
         $this->attributeDumper->dump($output);
+
+        return 0;
     }
 }

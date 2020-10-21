@@ -76,7 +76,7 @@ pim_enrich.entity.product:
       add_option: Add option
     completeness:
       title: Completeness
-      complete: Complete
+      complete: Completeness
       no_family: No family defined. Please define a family to calculate the completeness of this product.
       no_completeness: You changed the family of the product. Please first save it to calculate the completeness for the new family.
       missing_values: "{1}1 missing value|]1, Inf[{{ count }} missing values"
@@ -374,6 +374,8 @@ pim_datagrid:
         all_attributes: All attributes
         with_codes: With codes
         with_labels: With labels
+      success_message: "You can follow {{ job_link }}."
+      job_link_label: the progress of the execution here
     mass_edit: Bulk actions
     sequential_edit: Sequential edit
     mass_delete: Mass delete

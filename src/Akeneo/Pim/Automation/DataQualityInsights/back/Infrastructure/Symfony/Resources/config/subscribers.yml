@@ -31,3 +31,11 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\AttributeGroup\UpdateAttributeGroupActivationSubscriber:
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.feature'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeGroupActivationRepository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeGroupActivationQuery'
+            - '@logger'
+        tags:
+            - { name: kernel.event_subscriber }

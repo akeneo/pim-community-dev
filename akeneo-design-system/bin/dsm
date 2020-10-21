@@ -29,17 +29,24 @@ const {ComponentName} = yargs
 /**
  * Copy Component files
  */
-const copyComponentFolder = (source, target) => {
+const copyComponentFolder = async (source, target) => {
   const dummyComponentName = source.split('/').pop();
   const targetComponentName = target.split('/').pop();
 
   fs.mkdirSync(target);
   const files = fs.readdirSync(source);
-  files.forEach(filePath => {
-    fs.createReadStream(`${source}/${filePath}`).pipe(
-      fs.createWriteStream(`${target}/${filePath.replace(dummyComponentName, targetComponentName)}`)
-    );
-  });
+  await Promise.all(
+    files.map(
+      filePath =>
+        new Promise(resolve => {
+          const writeStream = fs.createWriteStream(
+            `${target}/${filePath.replace(dummyComponentName, targetComponentName)}`
+          );
+          writeStream.on('finish', resolve);
+          fs.createReadStream(`${source}/${filePath}`).pipe(writeStream);
+        })
+    )
+  );
 };
 
 /**
@@ -78,7 +85,7 @@ const exportComponentToIndex = async (path, componentName) => {
 
 (async () => {
   try {
-    copyComponentFolder('generator/components/MyComponent', `src/components/${ComponentName}`);
+    await copyComponentFolder('generator/components/MyComponent', `src/components/${ComponentName}`);
     await renameComponentFolder('MyComponent', ComponentName);
     exportComponentToIndex('src/components/index.ts', ComponentName);
   } catch (e) {
