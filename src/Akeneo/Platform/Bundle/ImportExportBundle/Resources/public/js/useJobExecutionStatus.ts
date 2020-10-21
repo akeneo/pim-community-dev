@@ -7,19 +7,23 @@ type JobExecutionProgress = {
   status: JobStatus;
   currentStep: number;
   totalSteps: number;
+  hasWarning: boolean;
+  hasError: boolean;
 }
 
 const useJobExecutionProgress = (jobExecutionId: string, jobExecutionStatus: JobStatus): JobExecutionProgress => {
   const [jobExecutionProgress, setProgress] = useState<JobExecutionProgress>({
     status: jobExecutionStatus,
     currentStep: 0,
-    totalSteps: 0
+    totalSteps: 0,
+    hasWarning: false,
+    hasError: false,
   });
 
   useEffect(() => {
     let isMounted = true;
-    const fetchData = async () => {
 
+    const fetchData = async () => {
       const response = await fetch(
         Routing.generate(
           'pim_enrich_job_execution_rest_get',
@@ -35,10 +39,14 @@ const useJobExecutionProgress = (jobExecutionId: string, jobExecutionStatus: Job
       const newJobStatus = await response.json();
 
       if (!isMounted) return;
+      let hasWarning = newJobStatus.tracking.steps.some((step: {hasWarning: boolean}) => step.hasWarning);
+      let hasError = newJobStatus.tracking.steps.some((step: {hasError: boolean}) => step.hasError);
       setProgress({
         ...jobExecutionProgress,
-        currentStep: newJobStatus.currentStep,
-        totalSteps: newJobStatus.totalSteps,
+        currentStep: newJobStatus.tracking.currentStep,
+        totalSteps: newJobStatus.tracking.totalSteps,
+        hasWarning,
+        hasError
       });
     }
 
@@ -56,4 +64,4 @@ const useJobExecutionProgress = (jobExecutionId: string, jobExecutionStatus: Job
 }
 
 export {useJobExecutionProgress};
-export type {JobStatus};
+export type {JobExecutionProgress, JobStatus};

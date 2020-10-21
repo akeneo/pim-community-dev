@@ -1,29 +1,38 @@
 import React from "react";
-import {JobStatus, useJobExecutionProgress} from "./useJobExecutionStatus";
+import {JobExecutionProgress, JobStatus, useJobExecutionProgress} from "./useJobExecutionStatus";
 import {Badge} from "akeneo-design-system";
 
+type BadgeLevel = 'danger' | 'warning' | 'primary';
 
-// const badgeLevel = (jobStatus: Job): string => {
-//   if (jobStatus.hasError) {
-//     return 'danger';
-//   }
-//   if (jobStatus.hasWarning) {
-//     return 'secondary';
-//   }
-//
-//   return 'primary';
-// }
+const badgeLevel = (jobStatus: JobExecutionProgress): BadgeLevel => {
+  if (jobStatus.hasError) {
+    return 'danger';
+  }
+  if (jobStatus.hasWarning) {
+    return 'warning';
+  }
+
+  return 'primary';
+}
 
 type JobExecutionStatusProps = {
   jobExecutionId: string;
   status: JobStatus;
 };
 
+const jobStatusLabel = (jobExecutionProgress: JobExecutionProgress): string => {
+  if (jobExecutionProgress.status !== 'STARTED') {
+    return jobExecutionProgress.status;
+  }
+
+  return `${jobExecutionProgress.status} ${jobExecutionProgress.currentStep}/${jobExecutionProgress.totalSteps}`;
+}
+
 const JobExecutionStatus = ({jobExecutionId, status}: JobExecutionStatusProps) => {
   const jobExecutionProgress = useJobExecutionProgress(jobExecutionId, status)
-  // const level = badgeLevel(jobExecutionProgress.status);
+  const level = badgeLevel(jobExecutionProgress);
 
-  return <Badge>{jobExecutionProgress.status === 'STARTED' ? `${jobExecutionProgress.status} ${jobExecutionProgress.currentStep}/${jobExecutionProgress.totalSteps}` : jobExecutionProgress.status}</Badge>
+  return <Badge level={level}>{jobStatusLabel(jobExecutionProgress)}</Badge>
 }
 
 export = JobExecutionStatus;
