@@ -50,10 +50,7 @@ const useJobExecutionProgress = (jobExecutionId: string, jobExecutionStatus: Job
       });
     }
 
-    if ('STARTING' === jobExecutionStatus
-      || 'STARTED' === jobExecutionStatus) {
-      fetchData()
-    }
+    fetchData()
 
     return () => {
       isMounted = false;

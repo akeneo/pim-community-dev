@@ -5,7 +5,7 @@ import {Badge} from "akeneo-design-system";
 type BadgeLevel = 'danger' | 'warning' | 'primary';
 
 const badgeLevel = (jobStatus: JobExecutionProgress): BadgeLevel => {
-  if (jobStatus.hasError) {
+  if (jobStatus.status === 'FAILED' || jobStatus.hasError) {
     return 'danger';
   }
   if (jobStatus.hasWarning) {
