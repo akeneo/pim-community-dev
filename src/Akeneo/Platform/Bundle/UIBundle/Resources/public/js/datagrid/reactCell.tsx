@@ -19,12 +19,13 @@ const convertToType = (type: string, value: string) => {
 
 type PropTypes = {[key: string]: string | number | boolean};
 
-class ActionsCell extends StringCell {
+class ReactCell extends StringCell {
   render() {
     const extraOptions = this.options.column.attributes.extraOptions;
     const Component = requireContext(extraOptions.component).default;
     const props = Object.keys(extraOptions.props).reduce((result: PropTypes, key) => {
       result[key] = convertToType(extraOptions.props[key], this.model.get(key));
+
       return result;
     }, {});
 
@@ -40,4 +41,5 @@ class ActionsCell extends StringCell {
     return this;
   }
 }
-export = ActionsCell;
+
+export = ReactCell;

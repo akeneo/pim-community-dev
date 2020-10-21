@@ -34,12 +34,12 @@ datagrid:
                 frontend_type: html
             actions:
                 label: ~
+                frontend_type: react
+                type: field
                 component: pimimportexport/js/datagrid/Actions
                 props:
                     id: string
                     isStoppable: boolean
-                type: field
-                frontend_type: actions
                 # todo fix this
                 data_name: warningCount
         sorters:
