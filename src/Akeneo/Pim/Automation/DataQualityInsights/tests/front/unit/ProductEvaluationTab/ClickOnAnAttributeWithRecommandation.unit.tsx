@@ -4,17 +4,16 @@ import {Provider} from 'react-redux';
 import '@testing-library/jest-dom/extend-expect';
 import {fireEvent, render} from '@testing-library/react';
 
-import RecommendationAttributesList
-  from '@akeneo-pim-community/data-quality-insights//src/application/component/ProductEditForm/TabContent/DataQualityInsights/RecommendationAttributesList';
+import {RecommendationAttributesList} from '@akeneo-pim-community/data-quality-insights//src/application/component/ProductEditForm/TabContent/DataQualityInsights/';
 import {Evaluation, Product} from '@akeneo-pim-community/data-quality-insights//src/domain';
 import {createStoreWithInitialState} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/store/productEditFormStore';
-import {DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE} from "@akeneo-pim-community/data-quality-insights//src/application/listener";
+import {DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE} from '@akeneo-pim-community/data-quality-insights//src/application/listener';
 import {
   ATTRIBUTE_TO_IMPROVE_SESSION_STORAGE_KEY,
-  PRODUCT_MODEL_ATTRIBUTES_TAB_NAME
-} from '@akeneo-pim-community/data-quality-insights//src/application/constant';
+  PRODUCT_MODEL_ATTRIBUTES_TAB_NAME,
+} from '@akeneo-pim-community/data-quality-insights/src/application/constant';
 
-beforeEach(() =>  {
+beforeEach(() => {
   jest.resetModules();
   sessionStorage.clear();
 });
