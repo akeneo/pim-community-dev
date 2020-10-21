@@ -59,3 +59,9 @@ it('it does not call onClick handler when user hit enter key on button', () => {
 
   expect(onClick).not.toBeCalled();
 });
+
+it('it displays an anchor when providing a `href`', () => {
+  render(<Button href="https://akeneo.com/">Hello</Button>);
+
+  expect(screen.getByText('Hello').closest('a')).toHaveAttribute('href', 'https://akeneo.com/');
+});
