@@ -1,33 +1,23 @@
-import React from 'react';
+import React from "react";
 import {fireEvent} from '@testing-library/react';
 import {
-    aCriterion,
-    aFamily,
-    anEvaluation,
-    aProduct,
-    aProductModel,
-    aRate,
-    aVariantProduct,
-    renderCriterion
+  aCriterion,
+  aFamily,
+  anEvaluation,
+  aProduct,
+  aProductModel,
+  aRate,
+  aVariantProduct,
+  renderCriterion,
 } from '../../../../../../utils';
 import {
-    CRITERION_DONE,
-    CRITERION_ERROR,
-    CRITERION_IN_PROGRESS,
-    CRITERION_NOT_APPLICABLE,
+  CRITERION_DONE,
+  CRITERION_ERROR,
+  CRITERION_IN_PROGRESS,
+  CRITERION_NOT_APPLICABLE,
 } from '@akeneo-pim-community/data-quality-insights/src/domain/Evaluation.interface';
-import {
-    redirectToAttributeGridFilteredByFamilyAndQuality,
-    redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes
-} from "@akeneo-pim-community/data-quality-insights/src/infrastructure/AttributeGridRouter";
-import {
-    ATTRIBUTE_OPTION_SPELLING_CRITERION_CODE,
-    ATTRIBUTE_SPELLING_CRITERION_CODE,
-    BACK_LINK_SESSION_STORAGE_KEY
-} from "@akeneo-pim-community/data-quality-insights/src/application/constant";
-import {Recommendation} from "@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights";
-
-jest.mock("@akeneo-pim-community/data-quality-insights/src/infrastructure/AttributeGridRouter");
+import {ATTRIBUTE_SPELLING_CRITERION_CODE} from '@akeneo-pim-community/data-quality-insights/src/application/constant';
+import {Recommendation} from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights';
 
 describe('Criterion for simple product', () => {
   test('it displays error message when status is error', () => {
@@ -125,7 +115,7 @@ describe('Criterion for product model', () => {
         const evaluation = anEvaluation(rate, [criterion]);
         const productModel = aProductModel();
 
-        const {getByText} = renderCriterion('a_criterion', criterion, 'an_axis', evaluation, undefined, {
+        const {getByText} = renderCriterion('a_criterion', criterion, 'an_axis', evaluation, undefined, undefined, {
           product: productModel
         });
 
@@ -142,7 +132,7 @@ describe('Criterion for variant product ', () => {
         const evaluation = anEvaluation(rate, [criterion]);
         const variantProduct = aVariantProduct();
 
-        const {getByText} = renderCriterion('a_criterion', criterion, 'an_axis', evaluation, undefined, {
+        const {getByText} = renderCriterion('a_criterion', criterion, 'an_axis', evaluation, undefined, undefined, {
           product: variantProduct
         });
 
@@ -161,49 +151,25 @@ describe('Criterion user actions', () => {
         jest.restoreAllMocks();
     });
 
-    test('it redirects to the attribute grid filtered by family, quality and selected attributes types when criterion is attribute spelling', () => {
+    test('it handles the follow criterion action when it is defined and user clicks on the row', () => {
+        const handleFollowCriterion = jest.fn();
+
         const criterionRate = aRate(85, 'B');
-        const criterion = aCriterion(ATTRIBUTE_SPELLING_CRITERION_CODE, CRITERION_DONE, criterionRate, ['an_attribute']);
+        const criterion = aCriterion('a_criterion', CRITERION_DONE, criterionRate, ['an_attribute']);
         const rate = aRate();
         const evaluation = anEvaluation(rate, [criterion]);
         const product = aProduct(1234);
         const family = aFamily('a_family', 4321);
 
-        const {getByText} = renderCriterion(ATTRIBUTE_SPELLING_CRITERION_CODE, criterion, 'an_axis', evaluation, undefined, {
+        const {getByText} = renderCriterion(ATTRIBUTE_SPELLING_CRITERION_CODE, criterion, 'an_axis', evaluation, undefined, handleFollowCriterion, {
             families: {
                 a_family: family
             },
             product
         });
 
-        fireEvent.click(getByText('an_attribute'));
+        fireEvent.click(getByText('an_attribute')); // the user can click anywhere on the row
 
-        const backLink = JSON.parse(sessionStorage.getItem(BACK_LINK_SESSION_STORAGE_KEY) as string);
-        expect(backLink.route).toBe('pim_enrich_product_edit');
-        expect(backLink.routeParams.id).toBe(1234);
-        expect(redirectToAttributeGridFilteredByFamilyAndQuality).toHaveBeenCalledWith(4321);
-    });
-    test('it redirects to the attribute grid filtered by family, quality and selected attributes types when criterion is attribute option spelling', () => {
-
-        const criterionRate = aRate(85, 'B');
-        const criterion = aCriterion(ATTRIBUTE_OPTION_SPELLING_CRITERION_CODE, CRITERION_DONE, criterionRate, ['an_attribute']);
-        const rate = aRate();
-        const evaluation = anEvaluation(rate, [criterion]);
-        const product = aProduct(1234);
-        const family = aFamily('a_family', 4321);
-
-        const {getByText} = renderCriterion(ATTRIBUTE_OPTION_SPELLING_CRITERION_CODE, criterion, 'an_axis', evaluation, undefined, {
-            families: {
-                a_family: family
-            },
-            product
-        });
-
-        fireEvent.click(getByText('an_attribute'));
-
-        const backLink = JSON.parse(sessionStorage.getItem(BACK_LINK_SESSION_STORAGE_KEY) as string);
-        expect(backLink.route).toBe('pim_enrich_product_edit');
-        expect(backLink.routeParams.id).toBe(1234);
-        expect(redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes).toHaveBeenCalledWith(4321);
+        expect(handleFollowCriterion).toHaveBeenCalledWith(criterion, family, product);
     });
 });
