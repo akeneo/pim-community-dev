@@ -24,7 +24,7 @@ const Actions = ({jobId, isStoppable}: ActionsProps) => {
 
   return (
     <ActionsContainer>
-      <Button size="small" ghost={true} level="tertiary" onClick={() => {}}>
+      <Button size="small" ghost={true} level="tertiary">
         <Link href={`#${showRoute}`}>{translate('pim_datagrid.action.show.title')}</Link>
       </Button>
       {isStoppable && (
