@@ -65,3 +65,52 @@ it('it displays an anchor when providing a `href`', () => {
 
   expect(screen.getByText('Hello').closest('a')).toHaveAttribute('href', 'https://akeneo.com/');
 });
+
+test('it throws when trying to pass href and onClick', () => {
+  const mockConsole = jest.spyOn(console, 'error').mockImplementation();
+
+  const buttonRender = () =>
+    render(
+      <Button href="http://google.com" onClick={() => {}}>
+        invalid button
+      </Button>
+    );
+
+  expect(buttonRender).toThrowError();
+
+  mockConsole.mockRestore();
+});
+
+test('it throws when trying to pass href and onClick', () => {
+  const mockConsole = jest.spyOn(console, 'error').mockImplementation();
+
+  expect(() => {
+    render(<Button onClick={() => {}} href="#nice">Hello</Button>);
+  }).toThrowError();
+
+  mockConsole.mockRestore();
+});
+
+test('it does not trigger onClick when disabled', () => {
+  const onClick = jest.fn();
+  render(
+    <Button disabled={true} onClick={onClick}>
+      Hello
+    </Button>
+  );
+
+  const button = screen.getByText('Hello');
+  fireEvent.click(button);
+
+  expect(onClick).not.toBeCalled();
+});
+test('it does not trigger onClick when onClick is undefined', () => {
+  render(
+    <Button>
+      Hello
+    </Button>
+  );
+
+  const button = screen.getByText('Hello');
+  fireEvent.click(button);
+});
