@@ -58,7 +58,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -447,12 +446,6 @@ class ProductController
                 throw new UnprocessableEntityHttpException($exception->getMessage());
             }
             $isCreation = true;
-        } elseif ($this->needUpdateFromVariantToSimple($product, $data, $isCreation)) {
-            try {
-                $this->removeParent->from($product);
-            } catch (AccessDeniedException $exception) {
-                throw new UnprocessableEntityHttpException($exception->getMessage());
-            }
         }
 
         $data = $this->orderData($data);
@@ -534,6 +527,10 @@ class ProductController
         }
 
         try {
+            if ($this->needUpdateFromVariantToSimple($product, $data, null === $product->getId())) {
+                $this->removeParent->from($product);
+            }
+
             if (isset($data['parent']) || $product->isVariant()) {
                 $data = $this->productAttributeFilter->filter($data);
             }
