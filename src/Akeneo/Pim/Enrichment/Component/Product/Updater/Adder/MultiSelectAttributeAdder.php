@@ -4,8 +4,10 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Adder;
 
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Webmozart\Assert\Assert;
 
 /**
  * Sets a multi select value in many entities
@@ -70,6 +72,7 @@ class MultiSelectAttributeAdder extends AbstractAttributeAdder
         $optionsValue = $entityWithValues->getValue($attribute->getCode(), $locale, $scope);
 
         if (null !== $optionsValue) {
+            Assert::isInstanceOf($optionsValue, OptionsValueInterface::class);
             foreach ($optionsValue->getOptionCodes() as $optionValue) {
                 if (!in_array($optionValue, $optionCodes)) {
                     $optionCodes[] = $optionValue;

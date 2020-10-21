@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Normalize a metric data
@@ -68,6 +69,9 @@ class MetricNormalizer extends AbstractValueDataNormalizer implements CacheableS
      */
     public function doNormalize($object, $format = null, array $context = [])
     {
+        Assert::implementsInterface($object, MetricInterface::class);
+
+        return $object->getData();
     }
 
     /**

@@ -114,7 +114,7 @@ class Category extends BaseCategory implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslation(?string $locale = null)
+    public function getTranslation(?string $locale = null): ?CategoryTranslationInterface
     {
         $locale = ($locale) ? $locale : $this->locale;
         if (null === $locale) {
@@ -173,11 +173,6 @@ class Category extends BaseCategory implements CategoryInterface
         return CategoryTranslation::class;
     }
 
-    /**
-     * Get label
-     *
-     * @return string
-     */
     public function getLabel(): string
     {
         $translated = ($this->getTranslation()) ? $this->getTranslation()->getLabel() : null;

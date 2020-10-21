@@ -42,6 +42,8 @@ abstract class AbstractReferenceData implements ReferenceDataInterface
     public function setCode($code)
     {
         $this->code = $code;
+
+        return $this;
     }
 
     /**
