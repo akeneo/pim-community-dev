@@ -39,10 +39,13 @@ const ProgressLabel = styled.div`
   flex-basis: auto;
   flex-shrink: 1;
   margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const ProgressBarBackground = styled.div<{size: ProgressBarSize} & AkeneoThemedProps>`
-  background: ${getColor('grey80')};
+  background: ${getColor('grey60')};
   height: ${props => getHeightFromSize(props.size)};
   overflow: hidden;
   position: relative;
