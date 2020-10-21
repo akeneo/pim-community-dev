@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 
 /**
  * Detaches a variant product from its parent, turning it into a simple product
@@ -18,7 +18,7 @@ interface RemoveParentInterface
     /**
      * @param ProductInterface $product
      *
-     * @throws AccessDeniedException
+     * @throws InvalidArgumentException
      */
     public function from(ProductInterface $product): void;
 }

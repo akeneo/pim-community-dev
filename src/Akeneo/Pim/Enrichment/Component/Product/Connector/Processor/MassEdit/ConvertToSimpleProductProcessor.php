@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
 
@@ -46,7 +46,7 @@ class ConvertToSimpleProductProcessor extends AbstractProcessor
 
         try {
             $this->removeParent->from($product);
-        } catch (AccessDeniedException $e) {
+        } catch (InvalidArgumentException $e) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
             $this->stepExecution->addWarning($e->getMessage(), [], new DataInvalidItem($product));
 
