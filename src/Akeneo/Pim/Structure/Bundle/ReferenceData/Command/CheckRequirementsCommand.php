@@ -28,19 +28,19 @@ class CheckRequirementsCommand extends Command
     private $configurationRegistry;
 
     /** @var ObjectManager */
-    private $entityManager;
+    private $objectManager;
 
     /** @var string */
     private $referenceDataInterface;
 
     public function __construct(
         ConfigurationRegistryInterface $configurationRegistry,
-        ObjectManager $entityManager,
+        ObjectManager $objectManager,
         string $referenceDataInterface
     ) {
         parent::__construct();
         $this->configurationRegistry = $configurationRegistry;
-        $this->entityManager = $entityManager;
+        $this->objectManager = $objectManager;
         $this->referenceDataInterface = $referenceDataInterface;
     }
 
@@ -80,7 +80,7 @@ class CheckRequirementsCommand extends Command
         $checkers = [];
         $checkers[] = new ReferenceDataNameChecker();
         $checkers[] = new ReferenceDataInterfaceChecker($this->referenceDataInterface);
-        $checkers[] = new ReferenceDataUniqueCodeChecker($this->entityManager);
+        $checkers[] = new ReferenceDataUniqueCodeChecker($this->objectManager);
 
         return $checkers;
     }

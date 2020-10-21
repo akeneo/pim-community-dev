@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirement;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRequirementRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Webmozart\Assert\Assert;
@@ -24,6 +25,7 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
     public function getFullRequirementsQB(FamilyInterface $family, $localeCode)
     {
         $repository = $this->getEntityManager()->getRepository(AttributeRequirement::class);
+        Assert::isInstanceOf($repository, AttributeRequirementRepositoryInterface::class);
         Assert::isInstanceOf($repository, EntityRepository::class);
         $qb = $repository
             ->createQueryBuilder('r')
