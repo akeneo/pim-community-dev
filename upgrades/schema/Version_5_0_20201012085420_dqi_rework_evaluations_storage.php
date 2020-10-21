@@ -43,13 +43,15 @@ SQL
         $this->addSql(<<<SQL
 INSERT IGNORE INTO pim_data_quality_insights_product_criteria_evaluation (product_id, criterion_code, evaluated_at, status)
 SELECT evaluation_dep.product_id, evaluation_dep.criterion_code, evaluation_dep.evaluated_at, 'pending'
-FROM pim_data_quality_insights_product_criteria_evaluation_dep AS evaluation_dep;
+FROM pim_data_quality_insights_product_criteria_evaluation_dep AS evaluation_dep
+WHERE evaluation_dep.criterion_code != 'consistency_text_title_formatting';
 
 DROP TABLE pim_data_quality_insights_product_criteria_evaluation_dep;
 
 INSERT IGNORE INTO pim_data_quality_insights_product_model_criteria_evaluation (product_id, criterion_code, evaluated_at, status)
 SELECT evaluation_dep.product_id, evaluation_dep.criterion_code, evaluation_dep.evaluated_at, 'pending'
-FROM pim_data_quality_insights_product_model_criteria_evaluation_dep AS evaluation_dep;
+FROM pim_data_quality_insights_product_model_criteria_evaluation_dep AS evaluation_dep
+WHERE evaluation_dep.criterion_code != 'consistency_text_title_formatting';
 
 DROP TABLE pim_data_quality_insights_product_model_criteria_evaluation_dep;
 SQL
