@@ -61,9 +61,11 @@ pim_datagrid:
   cells:
     type:
       asset_manager_execute_naming_convention: Asset-Familien-Namenskonvention ausführen
+      asset_manager_link_assets_to_products: Assets mit Produkten verknüpfen
 batch_jobs:
   default_steps:
     execute_naming_convention: Asset-Familien-Namenskonvention ausführen
+    link_assets_to_products: Assets mit Produkten verknüpfen
 job_execution:
   summary:
     assets: Assets
