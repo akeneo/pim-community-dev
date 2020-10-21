@@ -29,7 +29,6 @@ class PimImportExportExtension extends Extension
         $loader->load('datagrid_listeners.yml');
         $loader->load('factory.yml');
         $loader->load('grid.yml');
-        $loader->load('datagrid_actions.yml');
         $loader->load('normalizers.yml');
         $loader->load('queries.yml');
         $loader->load('registries.yml');
