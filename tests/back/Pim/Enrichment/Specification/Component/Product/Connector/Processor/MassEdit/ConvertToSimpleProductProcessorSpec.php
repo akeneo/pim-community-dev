@@ -11,7 +11,7 @@ use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -58,7 +58,7 @@ class ConvertToSimpleProductProcessorSpec extends ObjectBehavior
         ProductInterface $product
     ) {
         $product->isVariant()->willReturn(true);
-        $removeParent->from($product)->shouldBeCalled()->willThrow(new AccessDeniedException('error'));
+        $removeParent->from($product)->shouldBeCalled()->willThrow(new InvalidArgumentException('error'));
 
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalled();
         $stepExecution->addWarning('error', [], Argument::type(DataInvalidItem::class))->shouldBeCalled();
