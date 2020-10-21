@@ -12,8 +12,8 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
-use Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\PimFilterBundle\Datasource\FilterProductDatasourceAdapterInterface;
 
 /**
@@ -44,7 +44,7 @@ class ProductDraftFilterUtility extends BaseFilterUtility
      * @param string                           $operator
      * @param mixed                            $value
      */
-    public function applyFilter(FilterDatasourceAdapterInterface $ds, $field, $operator, $value)
+    public function applyFilter(FilterDatasourceAdapterInterface $ds, string $field, string $operator, $value)
     {
         if ($ds instanceof FilterProductDatasourceAdapterInterface) {
             $ds->getProductQueryBuilder()->addFilter($field, $operator, $value);

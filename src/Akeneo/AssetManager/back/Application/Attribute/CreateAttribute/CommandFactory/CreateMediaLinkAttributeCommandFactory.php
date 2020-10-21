@@ -32,7 +32,7 @@ class CreateMediaLinkAttributeCommandFactory extends AbstractCreateAttributeComm
     public function create(array $normalizedCommand): AbstractCreateAttributeCommand
     {
         $this->checkCommonProperties($normalizedCommand);
-        $normalizedCommand['media_type'] = isset($normalizedCommand['media_type']) ? $normalizedCommand['media_type'] : MediaType::OTHER;
+        $normalizedCommand['media_type'] = isset($normalizedCommand['media_type']) ? $normalizedCommand['media_type'] : MediaType::IMAGE;
         $this->checkAdditionalProperties($normalizedCommand);
 
         $command = new CreateMediaLinkAttributeCommand(

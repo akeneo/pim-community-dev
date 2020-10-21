@@ -41,6 +41,9 @@
 - PIM-9460: Fix performance issue on export
 - PIM-9458: Fix proposal creation when a user does not have permissions on attributes
 - PIM-9489: Fix exception wrongly thrown when merging not granted values
+- PIM-9503: Ignore permissions when executing rules in a job step
+- PIM-9504: Fix the selection of the category tree when a user creates a rule
+- PIM-9500bis: Add "asset_manager_link_assets_to_products" and "asset_manager_compute_transformations" type and job translations.
 
 ## Improvements
 
@@ -61,6 +64,7 @@
 - CLOUD-1959: Use cloud-deployer 2.2 and terraform 0.12.25
 - MET-207: Asset Manager - As Peter, I would like to manually re-execute naming conventions
 - RUL-271: Rule engine - As Peter, I'd like to add a condition on a relative date for created/updated fields
+- PIM-9506: Make "image" the default media type for media link asset attributes
 
 ## New features
 

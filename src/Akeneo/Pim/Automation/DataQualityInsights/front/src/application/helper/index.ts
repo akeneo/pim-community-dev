@@ -18,6 +18,8 @@ import HighlightElement, {
 } from "./EditorHighlight/HighlightElement";
 import MistakeElement from "./EditorHighlight/MistakeElement";
 
+export * from './getQualityBadgeLevel';
+
 export {
   WidgetElement, createWidget, WidgetsCollection, EditorTypes, getEditorType,
   EditorElement, getEditorContent, setEditorContent, isTextInput, isTextArea, convertHtmlContent,

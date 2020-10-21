@@ -18,16 +18,12 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Cons
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsWithOutdatedAttributeOptionSpellcheckQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsWithOutdatedAttributeSpellcheckQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsWithUpdatedFamilyAttributesListQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 
-final class PimEnterpriseCreateMissingCriteriaEvaluations implements CreateMissingCriteriaEvaluationsInterface
+final class PimEnterpriseMarkCriteriaToEvaluate implements MarkCriteriaToEvaluateInterface
 {
-    /** @var GetUpdatedProductIdsQueryInterface */
-    private $getUpdatedProductIdsQuery;
-
-    /** @var CreateCriteriaEvaluations */
-    private $createProductsCriteriaEvaluations;
+    /** @var MarkCriteriaToEvaluateInterface */
+    private $markCriteriaToEvaluate;
 
     /** @var GetProductIdsWithOutdatedAttributeSpellcheckQueryInterface */
     private $getProductIdsWithOutdatedAttributeSpellcheckQuery;
@@ -38,28 +34,31 @@ final class PimEnterpriseCreateMissingCriteriaEvaluations implements CreateMissi
     /** @var GetProductIdsWithOutdatedAttributeOptionSpellcheckQueryInterface */
     private $getProductIdsWithOutdatedAttributeOptionSpellcheckQuery;
 
+    /** @var CreateCriteriaEvaluations */
+    private $createProductsCriteriaEvaluations;
+
     public function __construct(
-        GetUpdatedProductIdsQueryInterface $getUpdatedProductIdsQuery,
+        MarkCriteriaToEvaluateInterface $markCriteriaToEvaluate,
         GetProductIdsWithOutdatedAttributeSpellcheckQueryInterface $getProductIdsWithOutdatedAttributeSpellcheckQuery,
         GetProductIdsWithUpdatedFamilyAttributesListQueryInterface $getProductIdsWithUpdatedFamilyAttributesListQuery,
         GetProductIdsWithOutdatedAttributeOptionSpellcheckQueryInterface $getProductIdsWithOutdatedAttributeOptionSpellcheckQuery,
         CreateCriteriaEvaluations $createProductsCriteriaEvaluations
     ) {
-        $this->getUpdatedProductIdsQuery = $getUpdatedProductIdsQuery;
-        $this->createProductsCriteriaEvaluations = $createProductsCriteriaEvaluations;
+        $this->markCriteriaToEvaluate = $markCriteriaToEvaluate;
         $this->getProductIdsWithOutdatedAttributeSpellcheckQuery = $getProductIdsWithOutdatedAttributeSpellcheckQuery;
         $this->getProductIdsWithUpdatedFamilyAttributesListQuery = $getProductIdsWithUpdatedFamilyAttributesListQuery;
         $this->getProductIdsWithOutdatedAttributeOptionSpellcheckQuery = $getProductIdsWithOutdatedAttributeOptionSpellcheckQuery;
+        $this->createProductsCriteriaEvaluations = $createProductsCriteriaEvaluations;
     }
 
-    public function createForProductsUpdatedSince(\DateTimeImmutable $updatedSince, int $batchSize): void
+    public function forUpdatesSince(\DateTimeImmutable $since, int $batchSize): void
     {
-        foreach ($this->getUpdatedProductIdsQuery->since($updatedSince, $batchSize) as $productIds) {
-            $this->createProductsCriteriaEvaluations->createAll($productIds);
-        }
+        $this->markCriteriaToEvaluate->forUpdatesSince($since, $batchSize);
+
+        $this->createForProductsImpactedByStructureUpdatedSince($since, $batchSize);
     }
 
-    public function createForProductsImpactedByStructureUpdatedSince(\DateTimeImmutable $updatedSince, int $batchSize): void
+    private function createForProductsImpactedByStructureUpdatedSince(\DateTimeImmutable $updatedSince, int $batchSize): void
     {
         $attributeSpellcheckCriterionCode = new CriterionCode(EvaluateAttributeSpelling::CRITERION_CODE);
         $attributeOptionSpellcheckCriterionCode = new CriterionCode(EvaluateAttributeOptionSpelling::CRITERION_CODE);

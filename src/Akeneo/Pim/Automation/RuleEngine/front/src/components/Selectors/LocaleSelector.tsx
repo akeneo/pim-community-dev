@@ -44,15 +44,17 @@ const getLocaleValidation = (
         );
       }
       if (!availableLocales.some(locale => locale.code === localeCode)) {
-        return attribute.scopable
-          ? translate('pimee_catalog_rule.exceptions.unbound_locale', {
-              localeCode,
-              channelCode,
-            })
-          : translate(
-              'pimee_catalog_rule.exceptions.unknown_or_inactive_locale',
-              { localeCode }
-            );
+        if (!!channelCode && attribute.scopable) {
+          return translate('pimee_catalog_rule.exceptions.unbound_locale', {
+            localeCode,
+            channelCode,
+          });
+        } else if (!attribute.scopable) {
+          return translate(
+            'pimee_catalog_rule.exceptions.unknown_or_inactive_locale',
+            { localeCode }
+          );
+        }
       }
     } else {
       if (localeCode) {

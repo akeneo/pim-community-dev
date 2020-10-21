@@ -92,6 +92,7 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\AdditionalProperty',
             'Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductModelProperties',
             'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions',
             'Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException',
             'Akeneo\Tool\Bundle\ElasticsearchBundle\Client',

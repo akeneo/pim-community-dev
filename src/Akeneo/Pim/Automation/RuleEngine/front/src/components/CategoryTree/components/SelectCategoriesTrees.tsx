@@ -82,7 +82,10 @@ const SelectCategoriesTrees: React.FC<Props> = ({
   return (
     <>
       <CategoryTop>
-        <CategoryButtonMenu aria-haspopup='listbox' {...menu}>
+        <CategoryButtonMenu
+          aria-haspopup='listbox'
+          {...menu}
+          onClick={() => menu.toggle()}>
           <span>
             {translate('pimee_catalog_rule.form.category.catalog')}:&nbsp;
           </span>

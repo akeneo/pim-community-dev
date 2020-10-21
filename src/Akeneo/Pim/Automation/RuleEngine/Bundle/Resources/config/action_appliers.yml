@@ -10,7 +10,7 @@ services:
     pimee_catalog_rule.action_applier.setter:
         class: '%pimee_catalog_rule.action_applier.setter.class%'
         arguments:
-            - '@pim_catalog.updater.property_setter'
+            - '@pim_catalog.updater.entity_with_values_property_setter_without_permission'
             - '@akeneo.pim.structure.query.get_attributes'
             - '@event_dispatcher'
         tags:
@@ -56,7 +56,7 @@ services:
     pimee_catalog_rule.action_applier.concatenate:
         class: '%pimee_catalog_rule.action_applier.concatenate.class%'
         arguments:
-            - '@pim_catalog.updater.property_setter'
+            - '@pim_catalog.updater.entity_with_values_property_setter_without_permission'
             - '@Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\ValueStringifierRegistry'
             - '@pim_catalog.repository.cached_attribute'
             - '@akeneo.pim.structure.query.get_attributes'
@@ -70,7 +70,7 @@ services:
             - '@akeneo.pim.structure.query.get_attributes'
             - '@Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate\GetOperandValue'
             - '@pim_standard_format_serializer'
-            - '@pim_catalog.updater.property_setter'
+            - '@pim_catalog.updater.entity_with_values_property_setter_without_permission'
             - '@event_dispatcher'
         tags:
             - { name: akeneo_rule_engine.action_applier, priority: 100 }

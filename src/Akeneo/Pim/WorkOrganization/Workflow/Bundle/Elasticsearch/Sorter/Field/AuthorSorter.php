@@ -14,6 +14,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Sorter\Field
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field\BaseFieldSorter;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface;
 
 /**
  * @author Philippe Mossière <philippe.mossiere@akeneo.com>
@@ -22,7 +23,7 @@ class AuthorSorter extends BaseFieldSorter
 {
     const AUTHOR_KEY = 'author';
 
-    public function addFieldSorter($field, $direction, $locale = null, $channel = null)
+    public function addFieldSorter($field, $direction, $locale = null, $channel = null): FieldSorterInterface
     {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the sorter.');
@@ -54,5 +55,7 @@ class AuthorSorter extends BaseFieldSorter
             default:
                 throw InvalidDirectionException::notSupported($direction, static::class);
         }
+
+        return $this;
     }
 }
