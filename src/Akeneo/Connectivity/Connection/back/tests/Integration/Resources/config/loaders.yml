@@ -39,3 +39,25 @@ services:
             - '@pim_catalog.saver.product'
             - '@validator'
             - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    akeneo_connectivity.connection.fixtures.enrichment.product_model:
+        class: 'Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment\ProductModelLoader'
+        arguments:
+            - '@pim_catalog.factory.product_model'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.saver.product_model'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    akeneo_connectivity.connection.fixtures.enrichment.family_variant:
+        class: 'Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment\FamilyVariantLoader'
+        arguments:
+            - '@pim_catalog.factory.family_variant'
+            - '@pim_catalog.updater.family_variant'
+            - '@validator'
+            - '@pim_catalog.saver.family_variant'
+
+    akeneo_connectivity.connection.fixtures.webhook_loader:
+        class: Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\WebhookLoader
+        arguments:
+            - '@database_connection'

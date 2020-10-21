@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Oro\Bundle\PimDataGridBundle\Normalizer\IdEncoder;
@@ -804,4 +805,83 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
         $this->assert($result, $expectedResult);
     }
 
+    public function testQuickSearchOnLabelOrIdentifierReturnsProductModelSubProductModelAndVariants(): void
+    {
+        $result = $this->executeFilter(
+            [
+                ['label_or_identifier', Operators::CONTAINS, 'apollon'],
+            ]
+        );
+
+        $expectedResult = [
+            '1111111119', // inherit label of its parent (apollon_blue)
+            '1111111120',
+            '1111111121',
+            '1111111122',
+            '1111111123',
+            '1111111124',
+            '1111111125',
+            '1111111126',
+            '1111111127',
+            '1111111128',
+            '1111111129',
+            '1111111130',
+            '1111111131',
+            'apollon',
+            'apollon_blue',
+            'apollon_pink',
+            'apollon_red',
+            'apollon_yellow',
+        ];
+        $this->assert($result, $expectedResult);
+    }
+
+    public function testQuickSearchOnLabelOrIdentifierReturnsSubProductModelAndVariants(): void
+    {
+        $result = $this->executeFilter(
+            [
+                ['label_or_identifier', Operators::CONTAINS, 'apollon blue'],
+            ]
+        );
+
+        $expectedResult = [
+            '1111111119',
+            '1111111120',
+            '1111111121',
+            'apollon_blue',
+        ];
+        $this->assert($result, $expectedResult);
+    }
+
+    public function testQuickSearchOnLabelOrIdentifierInUngroupedModeReturnsVariantsOnly(): void
+    {
+        $result = $this->executeFilter(
+            [
+                ['label_or_identifier', Operators::CONTAINS, 'apollon'],
+                $this->getUngroupedRawFilter(),
+            ]
+        );
+
+        $expectedResult = [
+            '1111111119',
+            '1111111120',
+            '1111111121',
+            '1111111122',
+            '1111111123',
+            '1111111124',
+            '1111111125',
+            '1111111126',
+            '1111111127',
+            '1111111128',
+            '1111111129',
+            '1111111130',
+            '1111111131',
+        ];
+        $this->assert($result, $expectedResult);
+    }
+
+    private function getUngroupedRawFilter(): array
+    {
+        return ['entity_type', Operators::EQUALS, ProductInterface::class];
+    }
 }

@@ -54,7 +54,7 @@ class ValueFactory
         if (null === $this->valueFactories) {
             Assert::allIsInstanceOf($this->notIndexedValuesFactories, SingleValueFactory::class);
 
-            /** @var ValueFactory $readValueFactory */
+            /** @var SingleValueFactory $readValueFactory */
             foreach ($this->notIndexedValuesFactories as $readValueFactory) {
                 $this->valueFactories[$readValueFactory->supportedAttributeType()] = $readValueFactory;
             }

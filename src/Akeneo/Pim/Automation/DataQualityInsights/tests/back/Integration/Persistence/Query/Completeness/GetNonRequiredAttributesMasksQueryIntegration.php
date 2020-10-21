@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query\Completeness;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\GetNonRequiredAttributesMasksQuery;
-use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query\Completeness\CompletenessTestCase;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Webmozart\Assert\Assert;
 
@@ -28,6 +27,7 @@ class GetNonRequiredAttributesMasksQueryIntegration extends CompletenessTestCase
 
         $this->givenChannels([['code' => 'tablet', 'locales' => ['en_US', 'fr_FR'], 'labels' => ['en_US' => 'tablet', 'fr_FR' => 'Tablette'], 'currencies' => ['USD', 'EUR']]]);
 
+        $this->givenADeactivatedAttributeGroup('erp');
         $this->givenAttributes([
             ['code' => 'a_required_text', 'type' => AttributeTypes::TEXT],
             ['code' => 'a_required_text_for_ecommerce_only', 'type' => AttributeTypes::TEXT, 'scopable' => true],
@@ -45,6 +45,8 @@ class GetNonRequiredAttributesMasksQueryIntegration extends CompletenessTestCase
             ['code' => 'a_non_localizable_scopable_locale_specific_fr_us', 'type' => AttributeTypes::TEXT, 'scopable' => true, 'available_locales' => ['fr_FR', 'en_US']],
             ['code' => 'a_localizable_scopable_locale_specific_fr', 'type' => AttributeTypes::TEXT, 'localizable' => true, 'scopable' => true, 'available_locales' => ['fr_FR']],
             ['code' => 'a_required_locale_specific_fr', 'type' => AttributeTypes::TEXT, 'available_locales' => ['fr_FR']],
+            // Attribute required but deactivated from its attribute group
+            ['code' => 'a_required_deactivated_text', 'type' => AttributeTypes::TEXT, 'group' => 'erp'],
         ]);
 
         $this->givenFamilies([
@@ -55,6 +57,7 @@ class GetNonRequiredAttributesMasksQueryIntegration extends CompletenessTestCase
                     'a_price',
                     'a_localizable_non_scopable_price',
                     'a_required_text',
+                    'a_required_deactivated_text',
                     'a_required_text_for_ecommerce_only',
                     'a_non_localizable_non_scopable_text',
                     'a_localizable_non_scopable_text',
@@ -70,26 +73,30 @@ class GetNonRequiredAttributesMasksQueryIntegration extends CompletenessTestCase
                     'ecommerce' => [
                         'sku',
                         'a_required_text',
+                        'a_required_deactivated_text',
                         'a_required_text_for_ecommerce_only',
                     ],
                     'tablet' => [
                         'sku',
                         'a_required_text',
+                        'a_required_deactivated_text',
                         'a_required_locale_specific_fr',
                     ],
                 ]
             ],
             [
                 'code' => 'familyB',
-                'attribute_codes' => ['sku', 'a_required_text'],
+                'attribute_codes' => ['sku', 'a_required_text', 'a_required_deactivated_text'],
                 'attribute_requirements' => [
                     'ecommerce' => [
                         'sku',
                         'a_required_text',
+                        'a_required_deactivated_text',
                     ],
                     'tablet' => [
                         'sku',
                         'a_required_text',
+                        'a_required_deactivated_text',
                     ],
                 ]
             ],

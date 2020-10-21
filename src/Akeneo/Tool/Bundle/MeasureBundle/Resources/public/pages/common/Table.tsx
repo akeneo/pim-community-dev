@@ -22,10 +22,10 @@ const TablePlaceholder = styled.div`
 const Row = styled.tr<{isSelected?: boolean}>`
   cursor: pointer;
   height: 54px;
-  border-bottom: 1px solid ${props => props.theme.color.grey70};
+  border-bottom: 1px solid ${props => props.theme.color.grey80};
 
   :hover {
-    background-color: ${props => props.theme.color.grey60};
+    background-color: ${props => props.theme.color.blue20};
   }
 
   ${props =>

@@ -1,21 +1,14 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
 import {useTranslate, useRoute} from '@akeneo-pim-community/legacy-bridge';
-import {
-  TransparentButton,
-  EditIcon,
-  CloseIcon,
-  UnlinkIcon,
-  useAkeneoTheme,
-  filterErrors,
-  InputErrors,
-} from '@akeneo-pim-community/shared';
+import {filterErrors, InputErrors} from '@akeneo-pim-community/shared';
+import {BrokenLinkIcon, EditIcon, CloseIcon, useTheme} from 'akeneo-design-system';
 import {ProductType, Row, QuantifiedLink, MAX_QUANTITY} from '../models';
 import {useProductThumbnail} from '../hooks';
 
 const Container = styled.tr`
   height: 74px;
-  border-bottom: 1px solid ${({theme}) => theme.color.grey70};
+  border-bottom: 1px solid ${({theme}) => theme.color.grey80};
 
   td:first-child {
     padding-left: 15px;
@@ -95,20 +88,24 @@ const RowActions = styled.div`
   justify-content: flex-end;
 `;
 
-const RowAction = styled(TransparentButton)`
+const RowAction = styled.div`
+  height: 20px;
+  color: ${({theme}) => theme.color.grey100};
+  cursor: pointer;
+
   :not(:first-child) {
     margin-left: 20px;
   }
 
   a {
-    display: flex;
+    color: inherit;
   }
 `;
 
 type QuantifiedAssociationRowProps = {
   row: Row;
   parentQuantifiedLink: QuantifiedLink | undefined;
-  isCompact: boolean;
+  isCompact?: boolean;
   onChange: (row: Row) => void;
   onRemove: (row: Row) => void;
 };
@@ -116,7 +113,7 @@ type QuantifiedAssociationRowProps = {
 const QuantifiedAssociationRow = ({
   row,
   parentQuantifiedLink,
-  isCompact,
+  isCompact = false,
   onChange,
   onRemove,
 }: QuantifiedAssociationRowProps) => {
@@ -124,7 +121,7 @@ const QuantifiedAssociationRow = ({
   const isProductModel = ProductType.ProductModel === row.productType;
   const productEditUrl = useRoute(`pim_enrich_${row.productType}_edit`, {id: row.product?.id.toString() || ''});
   const thumbnailUrl = useProductThumbnail(row.product);
-  const blueColor = useAkeneoTheme().color.blue100;
+  const blueColor = useTheme().color.blue100;
 
   return (
     <>
@@ -211,7 +208,7 @@ const QuantifiedAssociationRow = ({
               <RowActions>
                 {undefined !== parentQuantifiedLink &&
                   parentQuantifiedLink.quantity !== row.quantifiedLink.quantity && (
-                    <UnlinkIcon
+                    <BrokenLinkIcon
                       color={blueColor}
                       title={translate('pim_enrich.entity.product.module.associations.quantified.unlinked')}
                     />

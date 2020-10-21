@@ -26,3 +26,13 @@ services:
         class: 'Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\ErrorManagementController'
         arguments:
             - '@akeneo_connectivity.connection.application.error_management.handler.get_connection_business_errors'
+
+    akeneo_connectivity.connection.internal_api.controller.webhook:
+        public: true
+        class: 'Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\WebhookController'
+        arguments:
+            - '@oro_security.security_facade'
+            - '@akeneo_connectivity.connection.application.webhook.handler.get_connection_webhook'
+            - '@akeneo_connectivity.connection.application.webhook.handler.check_url_reachability'
+            - '@akeneo_connectivity.connection.application.webhook.handler.update_connection_webhook'
+            - '@akeneo_connectivity.connection.application.webhook.handler.generate_webhook_secret'

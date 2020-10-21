@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateMissingCriteriaEvaluationsInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\MarkCriteriaToEvaluateInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\PrepareEvaluationsParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -27,28 +26,22 @@ final class PrepareProductsCriteriaEvaluationTasklet implements TaskletInterface
     /** @var StepExecution */
     private $stepExecution;
 
-    /** @var CreateMissingCriteriaEvaluationsInterface */
-    private $createMissingProductsCriteriaEvaluations;
+    /** @var MarkCriteriaToEvaluateInterface */
+    private $markProductCriteriaToEvaluate;
 
     /** @var LoggerInterface */
     private $logger;
 
-    /** @var CriterionEvaluationRepositoryInterface */
-    private $productCriterionEvaluationRepository;
-
     public function __construct(
-        CreateMissingCriteriaEvaluationsInterface $createMissingProductsCriteriaEvaluations,
-        LoggerInterface $logger,
-        CriterionEvaluationRepositoryInterface $productCriterionEvaluationRepository
+        MarkCriteriaToEvaluateInterface $markProductCriteriaToEvaluate,
+        LoggerInterface $logger
     ) {
-        $this->createMissingProductsCriteriaEvaluations = $createMissingProductsCriteriaEvaluations;
+        $this->markProductCriteriaToEvaluate = $markProductCriteriaToEvaluate;
         $this->logger = $logger;
-        $this->productCriterionEvaluationRepository = $productCriterionEvaluationRepository;
     }
 
     public function execute(): void
     {
-        $this->cleanCriteriaOfDeletedProducts();
         $this->createMissingCriteriaEvaluations();
     }
 
@@ -61,12 +54,12 @@ final class PrepareProductsCriteriaEvaluationTasklet implements TaskletInterface
     {
         try {
             $updatedSince = $this->updatedSince();
-            $this->createMissingProductsCriteriaEvaluations->createForProductsUpdatedSince($updatedSince, self::BULK_SIZE);
+            $this->markProductCriteriaToEvaluate->forUpdatesSince($updatedSince, self::BULK_SIZE);
         } catch (\Throwable $exception) {
             $this->logger->error(
-                'Unable to create all missing criteria evaluations for the products',
+                'Failed to mark product criteria to evaluate',
                 [
-                    'error_code' => 'unable_to_create_missing_product_criteria_evaluation',
+                    'error_code' => 'failed_to_mark_product_criteria_to_evaluate',
                     'error_message' => $exception->getMessage(),
                 ]
             );
@@ -78,10 +71,5 @@ final class PrepareProductsCriteriaEvaluationTasklet implements TaskletInterface
         $evaluateFrom = $this->stepExecution->getJobParameters()->get(PrepareEvaluationsParameters::UPDATED_SINCE_PARAMETER);
 
         return \DateTimeImmutable::createFromFormat(PrepareEvaluationsParameters::UPDATED_SINCE_DATE_FORMAT, $evaluateFrom);
-    }
-
-    private function cleanCriteriaOfDeletedProducts()
-    {
-        $this->productCriterionEvaluationRepository->deleteUnknownProductsEvaluations();
     }
 }

@@ -98,6 +98,7 @@ class LinkedProductsNormalizerSpec extends ObjectBehavior
             ]
         ];
 
-        $this->normalize(new Rows([$productRow, $productModelRow], 2), 'ecommerce', 'en_US')->shouldReturn($expected);
+        $this->normalize(new Rows([$productRow, $productModelRow], 2, 2, 0), 'ecommerce', 'en_US')
+            ->shouldReturn($expected);
     }
 }

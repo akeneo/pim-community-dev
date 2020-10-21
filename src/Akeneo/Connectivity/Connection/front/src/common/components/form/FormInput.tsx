@@ -1,7 +1,7 @@
 import React, {DetailedHTMLProps, InputHTMLAttributes, forwardRef, Ref} from 'react';
 
 interface Props {
-    type: 'text';
+    type: 'text' | 'url';
 }
 
 type InputProps = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;

@@ -2,9 +2,6 @@
   "testPathIgnorePatterns": [
     "node_modules"
   ],
-  "projects": [
-    "<rootDir>/public/bundles"
-  ],
   "moduleDirectories": [
     "node_modules",
     "public/bundles"

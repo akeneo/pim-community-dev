@@ -73,7 +73,7 @@ pim_enrich.entity.product:
       add_option: Optie toevoegen
     completeness:
       title: Volledigheid
-      complete: Compleet
+      complete: Volledigheid
       no_family: Geen familie gedefinieerd. Gelieve een familie te definiëren om de volledigheid van dit product te berekenen.
       no_completeness: Je hebt net de familie van dit product gewijzigd. Gelieve deze eerst te bewaren om de volledigheid van de nieuwe familie te kunnen berekenen.
       missing_values: "{1}1 ontbrekende waarde|]1, Inf[{{ count }} ontbrekende waarden"
@@ -389,6 +389,18 @@ pim_datagrid:
     system: Systeem
     product_typology:
       variant: 'Variant'
+    entity_type:
+      label: 'Variant'
+    family:
+      label: Familie
+    groups:
+      label: Groepen
+    enabled:
+      label: Status
+    completeness:
+      label: Compleet
+    identifier:
+      label: Identifier
 batch_jobs:
   add_association:
     label: Associëren

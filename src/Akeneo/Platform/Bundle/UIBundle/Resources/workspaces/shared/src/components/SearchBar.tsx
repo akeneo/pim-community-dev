@@ -1,8 +1,7 @@
 import React, {ChangeEvent, useRef} from 'react';
 import styled from 'styled-components';
-import {SearchIcon} from '../icons';
 import {useAutoFocus} from '../hooks';
-import {AkeneoThemedProps} from '../theme';
+import {AkeneoThemedProps, SearchIcon} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const Container = styled.div`
@@ -15,6 +14,7 @@ const Container = styled.div`
   top: 0;
   height: 44px;
   flex: 1;
+  z-index: 1;
 `;
 
 const SearchContainer = styled.div`

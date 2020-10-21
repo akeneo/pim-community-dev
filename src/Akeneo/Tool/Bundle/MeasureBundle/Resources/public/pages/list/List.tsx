@@ -3,9 +3,7 @@ import {useHistory} from 'react-router-dom';
 import {PageHeader, PageHeaderPlaceholder} from 'akeneomeasure/shared/components/PageHeader';
 import {Breadcrumb} from 'akeneomeasure/shared/components/Breadcrumb';
 import {BreadcrumbItem} from 'akeneomeasure/shared/components/BreadcrumbItem';
-import {MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasurementFamilyIllustration';
-import {HelperTitle, HelperText, Helper} from 'akeneomeasure/shared/components/Helper';
-import {Link} from 'akeneomeasure/shared/components/Link';
+import {MeasurementIllustration, Link, Button, Information} from 'akeneo-design-system';
 import {useMeasurementFamilies} from 'akeneomeasure/hooks/use-measurement-families';
 import {
   sortMeasurementFamily,
@@ -17,7 +15,7 @@ import {CreateMeasurementFamily} from 'akeneomeasure/pages/create-measurement-fa
 import {PageContent} from 'akeneomeasure/shared/components/PageContent';
 import {TablePlaceholder} from 'akeneomeasure/pages/common/Table';
 import {Direction} from 'akeneomeasure/model/direction';
-import {Button, SearchBar, NoDataSection, NoDataTitle, NoDataText, useToggleState} from '@akeneo-pim-community/shared';
+import {SearchBar, NoDataSection, NoDataTitle, NoDataText, useToggleState} from '@akeneo-pim-community/shared';
 import {useTranslate, useUserContext, useSecurity, PimView} from '@akeneo-pim-community/legacy-bridge';
 
 const useSorting = (
@@ -106,19 +104,12 @@ const List = () => {
       </PageHeader>
 
       <PageContent>
-        <Helper>
-          <MeasurementFamilyIllustration size={80} />
-          <HelperTitle>
-            👋 {__('measurements.helper.title')}
-            <HelperText>
-              {__('measurements.helper.text')}
-              <br />
-              <Link href="https://help.akeneo.com/pim/articles/what-about-measurements.html" target="_blank">
-                {__('measurements.helper.link')}
-              </Link>
-            </HelperText>
-          </HelperTitle>
-        </Helper>
+        <Information illustration={<MeasurementIllustration />} title={`👋  ${__('measurements.helper.title')}`}>
+          <p>{__('measurements.helper.text')}</p>
+          <Link href="https://help.akeneo.com/pim/articles/what-about-measurements.html" target="_blank">
+            {__('measurements.helper.link')}
+          </Link>
+        </Information>
         {null === filteredMeasurementFamilies && (
           <TablePlaceholder className={`AknLoadingPlaceHolderContainer`}>
             {[...Array(5)].map((_e, i) => (
@@ -128,7 +119,7 @@ const List = () => {
         )}
         {null !== filteredMeasurementFamilies && 0 === measurementFamiliesCount && (
           <NoDataSection>
-            <MeasurementFamilyIllustration size={256} />
+            <MeasurementIllustration />
             <NoDataTitle>{__('measurements.family.no_data.title')}</NoDataTitle>
             <NoDataText>
               <Link onClick={openCreateModal}>{__('measurements.family.no_data.link')}</Link>
@@ -145,7 +136,7 @@ const List = () => {
             />
             {0 === filteredMeasurementFamiliesCount && (
               <NoDataSection>
-                <MeasurementFamilyIllustration size={256} />
+                <MeasurementIllustration />
                 <NoDataTitle>{__('measurements.family.no_result.title')}</NoDataTitle>
               </NoDataSection>
             )}

@@ -20,10 +20,6 @@ class SearchAfterSizeIdentifierResultCursorFactory implements CursorFactoryInter
     /** @var Client */
     private $esClient;
 
-    /**
-     * @param Client $esClient
-     * @param string $indexType
-     */
     public function __construct(Client $esClient)
     {
         $this->esClient = $esClient;
@@ -58,7 +54,7 @@ class SearchAfterSizeIdentifierResultCursorFactory implements CursorFactoryInter
             $identifiers[] = new IdentifierResult($hit['_source']['identifier'], $documentType);
         }
 
-        return new IdentifierResultCursor($identifiers, $totalCount);
+        return new IdentifierResultCursor($identifiers, $totalCount, new ElasticsearchResult($response));
     }
 
     protected function resolveOptions(array $options): array

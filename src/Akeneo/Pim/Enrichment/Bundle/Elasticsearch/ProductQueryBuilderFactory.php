@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderOptionsResolverInterface;
@@ -44,14 +40,6 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
     /** @var ProductQueryBuilderOptionsResolverInterface */
     protected $optionsResolver;
 
-    /**
-     * @param string                                      $pqbClass
-     * @param AttributeRepositoryInterface                $attributeRepository
-     * @param FilterRegistryInterface                     $filterRegistry
-     * @param SorterRegistryInterface                     $sorterRegistry
-     * @param CursorFactoryInterface                      $cursorFactory
-     * @param ProductQueryBuilderOptionsResolverInterface $optionsResolver
-     */
     public function __construct(
         string $pqbClass,
         AttributeRepositoryInterface $attributeRepository,

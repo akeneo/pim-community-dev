@@ -6,7 +6,7 @@ import {Title} from './Title';
 import {Description} from './Description';
 import {Image} from './Image';
 import {LinkComponent} from './Link';
-import {AkeneoThemedProps} from '@akeneo-pim-community/shared';
+import {AkeneoThemedProps} from 'akeneo-design-system';
 
 const Container = styled.li`
   margin: 20px 0;

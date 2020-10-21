@@ -23,4 +23,4 @@ class UserMainImage extends MainImage {
   }
 }
 
-export = UserMainImage
+export = UserMainImage;

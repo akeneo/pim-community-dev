@@ -2,7 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
@@ -36,17 +38,12 @@ class UniqueValuesSet
 
     /**
      * Return true if value has been added, else if value already exists inside the set
-     *
-     * @param ValueInterface   $productValue
-     * @param ProductInterface $product
-     *
-     * @return bool
      */
-    public function addValue(ValueInterface $productValue, ProductInterface $product)
+    public function addValue(ValueInterface $value, EntityWithValuesInterface $entity): bool
     {
-        $identifier = $this->getProductId($product);
-        $data = $productValue->__toString();
-        $attributeCode = $productValue->getAttributeCode();
+        $identifier = $this->getEntityId($entity);
+        $data = $value->__toString();
+        $attributeCode = $value->getAttributeCode();
 
         if (isset($this->uniqueValues[$attributeCode][$data])) {
             $storedIdentifier = $this->uniqueValues[$attributeCode][$data];
@@ -66,23 +63,20 @@ class UniqueValuesSet
         return true;
     }
 
-    /**
-     * @return array
-     */
-    public function getUniqueValues()
+    public function getUniqueValues(): array
     {
         return $this->uniqueValues;
     }
 
     /**
-     * spl_object_hash for new product and id when product exists
-     *
-     * @param ProductInterface $product
-     *
-     * @return string
+     * spl_object_hash for new entity and id when entity exists
      */
-    protected function getProductId(ProductInterface $product)
+    protected function getEntityId(EntityWithValuesInterface $entity): string
     {
-        return $product->getId() ? $product->getId() : spl_object_hash($product);
+        if ($entity instanceof ProductInterface || $entity instanceof ProductModelInterface) {
+            return $entity->getId() ? $entity->getId() : spl_object_hash($entity);
+        }
+
+        return spl_object_hash($entity);
     }
 }

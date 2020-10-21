@@ -463,7 +463,11 @@ class ColumnSelector extends BaseView {
    * Get a list of the selected columns (from all the loaded ones)
    */
   getColumnsBySelected(selected = true): {[name: string]: Column} {
-    return _.pick(this.loadedColumns, (column: Column) => column.selected === selected);
+    return _.pick(
+      this.loadedColumns,
+      (column: Column) => column.selected === selected
+    ) as {[name: string]: Column};
+    // I don't really know what would be a better solution as I don't know this file
   }
 
   /**

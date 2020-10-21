@@ -232,7 +232,7 @@ config:
           module: pim/controller/attribute-group/create
           aclResourceId: pim_enrich_attributegroup_create
         pim_enrich_attributegroup_index:
-          module: pim/controller/common/index
+          module: pim/controller/attribute-group/index
           aclResourceId: pim_enrich_attributegroup_index
           config:
             entity: attribute-group
@@ -525,6 +525,7 @@ config:
     pim/controller/user:                   pimui/js/controller/user
     pim/controller/attribute-group/edit:   pimui/js/controller/attribute-group/edit
     pim/controller/attribute-group/create: pimui/js/controller/attribute-group/create
+    pim/controller/attribute-group/index:  akeneopimstructure/js/controller/AttributeGroupsSettings
     pim/controller/attribute/edit:         pimui/js/controller/attribute/edit
     pim/controller/attribute/create:       pimui/js/controller/attribute/create
     pim/controller/mass-edit:              pimui/js/controller/mass-edit
@@ -705,6 +706,7 @@ config:
     pim/product-edit-form/attributes/variant-axes:           pimui/js/product/form/attributes/variant-axes
     pim/product-edit-form/product-and-product-model-picker:  pimui/js/product/form/product-and-product-model-picker
     pim/product-edit-form/attributes/read-only-parent-attributes: pimui/js/product/form/attributes/read-only-parent-attributes
+    pim/product/product-grid-title:                          pimui/js/form/common/product/product-grid-title.ts
 
     # Product model
     pim/product-model-edit-form/product-model-label: pimui/js/product-model/form/product-model-label

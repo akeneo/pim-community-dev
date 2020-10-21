@@ -46,10 +46,12 @@ final class SchedulePeriodicTasksCommand extends Command
     {
         if (! $this->featureFlag->isEnabled()) {
             $output->writeln('Data Quality Insights feature is disabled');
-            return;
+            return 0;
         }
         $this->schedulePeriodicTasks->schedule(new \DateTimeImmutable('-1 DAY'));
 
         $output->writeln('Data-Quality-Insights periodic tasks have been scheduled');
+
+        return 0;
     }
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {AkeneoThemedProps} from '@akeneo-pim-community/shared';
+import {AkeneoThemedProps} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const Link = styled.a`

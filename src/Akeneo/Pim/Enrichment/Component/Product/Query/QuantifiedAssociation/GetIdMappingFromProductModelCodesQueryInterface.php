@@ -16,7 +16,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\IdMappin
 interface GetIdMappingFromProductModelCodesQueryInterface
 {
     /**
-     * @param string[]
+     * @param string[] $productModelCodes
      *
      * @return IdMapping
      */

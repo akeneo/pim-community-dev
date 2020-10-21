@@ -1,5 +1,19 @@
 @import '../../base/variables';
 
+.AknCompletenessDropdown {
+  color: @AknGrey140;
+  font-size: @AknDefaultFontSize;
+  font-weight: normal;
+
+  &-label {}
+  &-badge {
+    height: 18px;
+  }
+  &-icon {
+    vertical-align: middle;
+  }
+}
+
 .AknCompletenessPanel {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); // This means: create as many columns as needed with the same width, and width must be 300px minimum.

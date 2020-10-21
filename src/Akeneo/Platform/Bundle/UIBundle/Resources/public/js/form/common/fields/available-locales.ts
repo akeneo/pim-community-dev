@@ -10,7 +10,7 @@ const FetcherRegistry = require('pim/fetcher-registry');
 type InterfaceNormalizedLocale = {
   code: string;
   label: string;
-}
+};
 
 class AvailableLocales extends BaseSelect {
   /**
@@ -19,7 +19,8 @@ class AvailableLocales extends BaseSelect {
   configure() {
     return $.when(
       BaseSelect.prototype.configure.apply(this, arguments),
-      FetcherRegistry.getFetcher('locale').fetchActivated()
+      FetcherRegistry.getFetcher('locale')
+        .fetchActivated()
         .then((availableLocales: InterfaceNormalizedLocale[]) => {
           this.config.choices = availableLocales;
         })
@@ -29,8 +30,8 @@ class AvailableLocales extends BaseSelect {
   /**
    * {@inheritdoc}
    */
-  formatChoices(locales: InterfaceNormalizedLocale[]): { [key:string] : string } {
-    return locales.reduce((result: { [key:string] : string }, locale: InterfaceNormalizedLocale) => {
+  formatChoices(locales: InterfaceNormalizedLocale[]): {[key: string]: string} {
+    return locales.reduce((result: {[key: string]: string}, locale: InterfaceNormalizedLocale) => {
       result[locale.code] = locale.label;
 
       return result;

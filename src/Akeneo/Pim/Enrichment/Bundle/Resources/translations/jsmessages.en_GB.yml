@@ -31,6 +31,9 @@ pim_enrich.entity.product:
       fail: No attribute is configured as a product identifier or you don't have the rights to edit it.
   page_title:
     index: "]-Inf, 1]{{ count }} result|]1, Inf[{{ count }} results"
+    product: "]-Inf, 1]{{ count }} product|]1, +Inf[{{ count }} products"
+    product_model: "]-Inf, 1]{{ count }} product model|]1, +Inf[{{ count }} product models"
+    product_and_product_model: "{{ productCount }}, {{ productModelCount }}"
   module:
     create:
       subtitle: Create product
@@ -73,7 +76,7 @@ pim_enrich.entity.product:
       add_option: Add option
     completeness:
       title: Completeness
-      complete: Complete
+      complete: Completeness
       no_family: No family defined. Please define a family to calculate the completeness of this product.
       no_completeness: You changed the family of the product. Please first save it to calculate the completeness for the new family.
       missing_values: "{1}1 missing value|]1, Inf[{{ count }} missing values"
@@ -346,6 +349,7 @@ pim_enrich.mass_edit.product:
       label_count: "{0}Change parent product model of some <span class=\"AknFullPage-title--highlight\">products</span>|{1}Change parent product model of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change parent product model of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
       description: The parent of the variant products or sub-product models selected in the grid will be changed to the chosen product model.
 pim_datagrid:
+  no_entities: "No {{ entityHint }} found"
   mass_action_group:
     bulk_actions:
       label: Bulk Actions
@@ -362,8 +366,16 @@ pim_datagrid:
       xlsx_all: Excel (All attributes)
       xlsx_grid_context: Excel (Grid context)
       configurator:
+        subtitle: Quick export
         title: Select your action
+        csv: CSV
+        xlsx: XLSX
+        grid_context: Grid context
         all_attributes: All attributes
+        with_codes: With codes
+        with_labels: With labels
+      success_message: "You can follow {{ job_link }}."
+      job_link_label: the progress of the execution here
     mass_edit: Bulk actions
     sequential_edit: Sequential edit
     mass_delete: Mass delete
@@ -387,7 +399,33 @@ pim_datagrid:
     label: Filters
     system: System
     product_typology:
+      label: 'Product typology'
+      simple: 'Simple'
       variant: 'Variant'
+    entity_type:
+      label: 'Variant'
+      grouped: 'Grouped'
+      ungrouped: 'Ungrouped'
+    family:
+      label: Family
+    groups:
+      label: Groups
+    enabled:
+      label: Status
+    scope:
+      label: Scope
+    completeness:
+      label: Complete
+    created:
+      label: Created At
+    updated:
+      label: Updated At
+    label_or_identifier:
+      label: Label or identifier
+    parent:
+      label: Parent
+    identifier:
+      label: Identifier
   search: Search on {{ label }}
 batch_jobs:
   add_association:

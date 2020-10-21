@@ -28,15 +28,15 @@ const useProducts = (identifiers: AssociationIdentifiers): Product[] => {
       ? identifiers
       : {
           products: identifiers.products.filter(
-            identifier =>
+            (identifier) =>
               !products.some(
-                product => product.identifier === identifier && product.document_type === ProductType.Product
+                (product) => product.identifier === identifier && product.document_type === ProductType.Product
               )
           ),
           product_models: identifiers.product_models.filter(
-            identifier =>
+            (identifier) =>
               !products.some(
-                product => product.identifier === identifier && product.document_type === ProductType.ProductModel
+                (product) => product.identifier === identifier && product.document_type === ProductType.ProductModel
               )
           ),
         };
@@ -50,7 +50,7 @@ const useProducts = (identifiers: AssociationIdentifiers): Product[] => {
 
       const newProducts = await productFetcher(url, identifiersToFetch);
 
-      if (isSubscribed) setProducts(currentProducts => [...newProducts, ...currentProducts]);
+      if (isSubscribed) setProducts((currentProducts) => [...newProducts, ...currentProducts]);
     })();
 
     return () => {

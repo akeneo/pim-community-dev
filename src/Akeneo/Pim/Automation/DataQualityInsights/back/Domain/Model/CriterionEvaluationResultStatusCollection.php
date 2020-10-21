@@ -48,7 +48,7 @@ final class CriterionEvaluationResultStatusCollection implements \IteratorAggreg
 
     public function getIterator(): \Iterator
     {
-        return new \ArrayIterator($this->resultsStatus);
+        return $this->resultsStatus->getIterator();
     }
 
     public static function fromArrayString(array $rawStatusCollection): self

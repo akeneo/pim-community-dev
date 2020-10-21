@@ -28,7 +28,8 @@
                                         <br>
                                     {% endfor %}
                                 {% else %}
-                                    {{ infoLevel1|join('<br>')|raw }}
+                                    {{ infoLevel2 }}
+                                    <br>
                                 {% endif %}
                             {% endfor %}
                         {% else %}
@@ -47,12 +48,12 @@
                 'pim/fetcher-registry',
                 'pim/form-builder'
             ],
-            function(
+            function (
                 Breadcrumbs,
                 FetcherRegistry,
                 FormBuilder
             ) {
-                $(function() {
+                $(function () {
                     var breadcrumbs = new Breadcrumbs({
                         config: {
                             tab: 'pim-menu-system',

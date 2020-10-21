@@ -1,5 +1,5 @@
 import React, {FormEvent, useCallback, useContext, useRef, useState} from 'react';
-import {MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasurementFamilyIllustration';
+import {Helper, MeasurementIllustration, Button} from 'akeneo-design-system';
 import {Subsection} from 'akeneomeasure/shared/components/Subsection';
 import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
@@ -19,10 +19,7 @@ import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollectio
 import {ConfigContext} from 'akeneomeasure/context/config-context';
 import {useTranslate, useNotify, NotificationLevel, useUserContext} from '@akeneo-pim-community/legacy-bridge';
 import {
-  Button,
   useAutoFocus,
-  HelperRibbon,
-  HelperLevel,
   filterErrors,
   ValidationError,
   useShortcut,
@@ -107,17 +104,13 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
   return (
     <Modal>
       <ModalCloseButton title={__('pim_common.close')} onClick={handleClose} />
-      <ModalBodyWithIllustration illustration={<MeasurementFamilyIllustration />}>
+      <ModalBodyWithIllustration illustration={<MeasurementIllustration />}>
         <ModalTitle
           title={__('measurements.unit.add_new')}
           subtitle={`${__('measurements.title.measurement')} / ${measurementFamilyLabel}`}
         />
         <Subsection>
-          {measurementFamily.is_locked && (
-            <HelperRibbon level={HelperLevel.HELPER_LEVEL_WARNING}>
-              {__('measurements.unit.will_be_read_only')}
-            </HelperRibbon>
-          )}
+          {measurementFamily.is_locked && <Helper level="warning">{__('measurements.unit.will_be_read_only')}</Helper>}
           <FormGroup>
             <TextField
               ref={firstFieldRef}

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import {MeasurementFamily, filterOnLabelOrCode, getUnitIndex} from 'akeneomeasure/model/measurement-family';
-import {MeasurementFamilyIllustration} from 'akeneomeasure/shared/illustrations/MeasurementFamilyIllustration';
+import {MeasurementIllustration} from 'akeneo-design-system';
 import {Table, HeaderCell} from 'akeneomeasure/pages/common/Table';
 import {UnitCode} from 'akeneomeasure/model/unit';
 import {UnitDetails} from 'akeneomeasure/pages/edit/unit-tab/UnitDetails';
@@ -59,7 +59,7 @@ const UnitTab = ({
           />
           {0 === filteredUnits.length && (
             <NoDataSection>
-              <MeasurementFamilyIllustration size={256} />
+              <MeasurementIllustration size={256} />
               <NoDataTitle>{__('measurements.family.no_result.title')}</NoDataTitle>
             </NoDataSection>
           )}

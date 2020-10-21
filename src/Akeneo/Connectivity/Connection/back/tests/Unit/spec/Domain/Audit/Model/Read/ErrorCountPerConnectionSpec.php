@@ -37,4 +37,10 @@ class ErrorCountPerConnectionSpec extends ObjectBehavior
             'ecommerce' => 8,
         ]);
     }
+
+    public function it_normalizes_when_zero_error_count_per_connection(): void
+    {
+        $this->beConstructedWith([]);
+        $this->normalize()->shouldReturn([]);
+    }
 }

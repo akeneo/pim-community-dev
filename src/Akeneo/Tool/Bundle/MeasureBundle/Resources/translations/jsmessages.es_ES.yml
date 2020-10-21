@@ -1,0 +1,48 @@
+pim_menu.item:
+  measurements: Medidas
+pim_title:
+  akeneo_measurements_settings_index: Medidas
+  akeneo_measurements_settings_any: Medidas
+measurements:
+  helper:
+    title: '¡Bienvenido a las mediciones!'
+  search:
+    placeholder: Buscar en etiqueta o código
+  family:
+    tab:
+      units: Unidades
+      properties: Propiedades
+  unit:
+    title: Editar {{ unitLabel }}
+    symbol: Símbolo
+    delete:
+      button: Eliminar unidad
+      confirm: '¿Está seguro que desea eliminar esta unidad de medida?'
+    add: Añadir unidad
+    add_new: Añadir una nueva unidad
+    operation:
+      add: Añadir nueva operación
+      placeholder: Valor de la operación
+    operator:
+      add: Añadir
+      mul: Multiplicar
+      div: Dividir
+      select: Seleccione su operador
+    create_another: Crear otra unidad
+  list:
+    header:
+      standard_unit: Unidad estándar
+      unit_count: Número de unidades
+  validation:
+    unit:
+      code:
+        must_be_unique: 'Este código de unidad ya existe.'
+  create_family:
+    flash:
+      error: Lo sentimos, se ha producido un error al crear la familia de medición.
+  title:
+    measurement: Medida
+  add_unit:
+    flash:
+      success: Unidad añadida correctamente.
+      error: Lo sentimos, ha ocurrido un error al añadir la unidad.
