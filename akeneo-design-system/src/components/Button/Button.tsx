@@ -1,8 +1,7 @@
-import React, {isValidElement, ReactNode, Ref, RefAttributes, SyntheticEvent, useRef} from 'react';
+import React, {ReactNode, Ref, SyntheticEvent} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColorForLevel, getFontSize, Level} from '../../theme';
 import {Override} from '../../shared';
-import {Link, LinkProps} from '../../components';
 
 type ButtonSize = 'small' | 'default';
 
@@ -34,6 +33,11 @@ type ButtonProps = Override<
      * Function called when the user clicks on the button or hit enter when focused.
      */
     onClick?: (event: SyntheticEvent) => void;
+
+    /**
+     * Url to go to if the button is clicked. This allow your button to open in a new tab in case of cmd/ctrl + click
+     */
+    href?: string;
 
     /**
      * Accessibility label to describe shortly the button.
@@ -93,40 +97,37 @@ const getColorStyle = (props: {level: Level; ghost: boolean; disabled: boolean} 
   `;
 };
 
-const Container = styled.button<
-  {
-    level: Level;
-    ghost: boolean;
-    disabled: boolean;
-    size: ButtonSize;
-  } & AkeneoThemedProps
+const ContainerStyle = css<
+{
+  level: Level;
+  ghost: boolean;
+  disabled: boolean;
+  size: ButtonSize;
+} & AkeneoThemedProps
 >`
+  display: inline-block;
   border-width: 1px;
-  border-style: ${props => (props.ghost ? 'solid' : 'none')};
+  border-style: ${({ghost}) => (ghost ? 'solid' : 'none')};
   font-size: ${getFontSize('default')};
   font-weight: 400;
   text-transform: uppercase;
-  padding: ${props => (props.size === 'small' ? '0 10px' : '0 15px')};
+  padding: ${({size}) => (size === 'small' ? '0 10px' : '0 15px')};
   border-radius: 16px;
-  height: ${props => (props.size === 'small' ? '24px' : '32px')};
+  height: ${({size}) => (size === 'small' ? '24px' : '32px')};
+  line-height: ${({size}) => (size === 'small' ? '24px' : '32px')};
+  cursor: ${({disabled}) => (disabled ? 'not-allowed' : 'pointer')};
 
   ${getColorStyle}
+`;
 
-  cursor: pointer;
+const ButtonContainer = styled.button`${ContainerStyle}`;
 
-  &:disabled {
-    cursor: not-allowed;
-  }
-
-  a,
-  a:hover {
-    color: inherit;
-    text-decoration: none;
-  }
+const LinkContainer = styled.a`
+  text-decoration: none;
+  ${ContainerStyle}
 `;
 
 /**
- * TODO throw if using <a>
  * Buttons express what action will occur when the users clicks.
  * Buttons are used to initialize an action, either in the background or foreground of an experience.
  */
@@ -137,6 +138,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       ghost = false,
       disabled = false,
       size = 'default',
+      href,
       ariaDescribedBy,
       ariaLabel,
       ariaLabelledBy,
@@ -147,36 +149,20 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     }: ButtonProps,
     forwardedRef: Ref<HTMLButtonElement>
   ) => {
-    const linkRef = useRef<HTMLAnchorElement>(null);
-
-    const mappedChildren = React.Children.map(children, child => {
-      if (isValidElement<LinkProps & RefAttributes<HTMLAnchorElement>>(child) && child.type === Link) {
-        if (undefined !== onClick) {
-          throw new Error('Button can not have both `onClick` and a Link as child');
-        }
-
-        if (1 < React.Children.count(children)) {
-          throw new Error('Link can only be the single child of a Button');
-        }
-
-        return React.cloneElement(child, {ref: linkRef, disabled});
-      } else {
-        return child;
-      }
-    });
+    if (undefined !== href && undefined !== onClick) {
+      throw new Error('Button cannot have both `href` and `onClick` props');
+    }
 
     const handleAction = (event: SyntheticEvent) => {
-      if (disabled) return;
+      if (disabled || undefined === onClick) return;
 
-      if (null !== linkRef.current) {
-        linkRef.current.click();
-      } else {
-        undefined !== onClick && onClick(event);
-      }
+      onClick(event);
     };
 
+    const Component = undefined !== href ? LinkContainer : ButtonContainer;
+
     return (
-      <Container
+      <Component
         level={level}
         ghost={ghost}
         disabled={disabled}
@@ -189,10 +175,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         role="button"
         type={type}
         onClick={handleAction}
+        href={disabled ? undefined : href}
         {...rest}
       >
-        {mappedChildren}
-      </Container>
+        {children}
+      </Component>
     );
   }
 );
