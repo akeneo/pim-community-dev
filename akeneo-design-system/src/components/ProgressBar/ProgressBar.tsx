@@ -169,10 +169,10 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
       <ProgressBarContainer ref={forwardedRef} {...rest}>
         {(title || progressLabel) && (
           <Header>
-            <Title id={labelId} htmlFor={progressBarId}>
+            <Title title={title} id={labelId} htmlFor={progressBarId}>
               {title}
             </Title>
-            <ProgressLabel>{progressLabel}</ProgressLabel>
+            <ProgressLabel title={progressLabel}>{progressLabel}</ProgressLabel>
           </Header>
         )}
         <ProgressBarBackground id={progressBarId} role="progressbar" {...progressBarProps} size={size}>
