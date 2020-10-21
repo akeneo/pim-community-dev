@@ -65,7 +65,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $env = $input->getOption('env');
@@ -78,7 +78,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         if (!$answer) {
             $io->text('That\'s ok, see you!');
 
-            return;
+            return 0;
         }
 
         $io->text([
@@ -95,6 +95,8 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         $this->cleanProducts($products, $progressBar, $this->productBatchSize, $this->entityManagerClearer, $env, $this->kernelRootDir);
         $io->newLine();
         $io->text(sprintf('%d products well cleaned', $products->count()));
+
+        return 0;
     }
 
     /**
