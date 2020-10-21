@@ -98,12 +98,12 @@ const getColorStyle = (props: {level: Level; ghost: boolean; disabled: boolean} 
 };
 
 const ContainerStyle = css<
-{
-  level: Level;
-  ghost: boolean;
-  disabled: boolean;
-  size: ButtonSize;
-} & AkeneoThemedProps
+  {
+    level: Level;
+    ghost: boolean;
+    disabled: boolean;
+    size: ButtonSize;
+  } & AkeneoThemedProps
 >`
   display: inline-block;
   border-width: 1px;
@@ -120,7 +120,9 @@ const ContainerStyle = css<
   ${getColorStyle}
 `;
 
-const ButtonContainer = styled.button`${ContainerStyle}`;
+const ButtonContainer = styled.button`
+  ${ContainerStyle}
+`;
 
 const LinkContainer = styled.a`
   text-decoration: none;
