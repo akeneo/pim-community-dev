@@ -4,7 +4,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Twig;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterRegistryInterface;
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Twig_SimpleFunction;
 

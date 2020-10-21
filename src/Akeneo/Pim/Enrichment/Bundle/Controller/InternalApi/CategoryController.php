@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
-use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
+use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Twig\CategoryExtension;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -26,25 +26,19 @@ class CategoryController
     /** @var NormalizerInterface */
     protected $normalizer;
 
-    /** @var ObjectFilterInterface */
-    protected $objectFilter;
+    /** @var CollectionFilterInterface */
+    protected $collectionFilter;
 
-    /**
-     * @param CategoryRepositoryInterface $repository
-     * @param CategoryExtension           $twigExtension
-     * @param NormalizerInterface         $normalizer
-     * @param ObjectFilterInterface       $objectFilter
-     */
     public function __construct(
         CategoryRepositoryInterface $repository,
         CategoryExtension $twigExtension,
         NormalizerInterface $normalizer,
-        ObjectFilterInterface $objectFilter
+        CollectionFilterInterface $collectionFilter
     ) {
         $this->repository = $repository;
         $this->twigExtension = $twigExtension;
         $this->normalizer = $normalizer;
-        $this->objectFilter = $objectFilter;
+        $this->collectionFilter = $collectionFilter;
     }
 
     /**
@@ -53,9 +47,9 @@ class CategoryController
      * @param Request $request    The request object
      * @param int     $identifier The parent category identifier
      *
-     * @return array
+     * @return JsonResponse
      */
-    public function listSelectedChildrenAction(Request $request, $identifier)
+    public function listSelectedChildrenAction(Request $request, $identifier): JsonResponse
     {
         $parent = $this->repository->findOneByIdentifier($identifier);
 
@@ -97,7 +91,7 @@ class CategoryController
             ]
         );
 
-        $categories = $this->objectFilter->filterCollection($categories, 'pim.internal_api.product_category.view');
+        $categories = $this->collectionFilter->filterCollection($categories, 'pim.internal_api.product_category.view');
 
         return new JsonResponse(
             $this->normalizer->normalize($categories, 'internal_api')

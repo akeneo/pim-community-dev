@@ -18,7 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ReadValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
@@ -51,7 +51,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
     /** @var ReadValueCollectionFactory */
     private $readValueCollectionFactory;
 
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
     public function __construct(
@@ -63,7 +63,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         GetProductModelQuantifiedAssociationsByProductIdentifiers $getProductModelQuantifiedAssociationsByProductIdentifiers,
         GetCategoryCodesByProductIdentifiers $getCategoryCodesByProductIdentifiers,
         ReadValueCollectionFactory $readValueCollectionFactory,
-        IdentifiableObjectRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository
     ) {
         $this->getProductQuantifiedAssociationsByProductIdentifiers = $getProductQuantifiedAssociationsByProductIdentifiers;
         $this->getProductModelQuantifiedAssociationsByProductIdentifiers = $getProductModelQuantifiedAssociationsByProductIdentifiers;
