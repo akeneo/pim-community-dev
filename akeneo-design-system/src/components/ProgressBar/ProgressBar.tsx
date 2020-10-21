@@ -11,34 +11,32 @@ const progressBarAnimation = keyframes`
   to { background-position: 20px 0; }
 `;
 
-const Header = styled.div<{isMinimized: boolean} & AkeneoThemedProps>`
+const Header = styled.div`
   display: flex;
   align-items: stretch;
   flex-direction: row;
   font-size: ${getFontSize('default')};
   margin-bottom: -4px;
-  ${props =>
-    props.isMinimized &&
-    css`
-      flex-direction: column;
-      margin-bottom: 0px;
-    `}
+  flex-flow: row wrap;
 `;
 
 const Title = styled.div`
   color: ${getColor('grey140')};
-  flex-shrink: 1;
+  padding-right: 20px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 100%;
   flex-grow: 1;
-  padding-right: 20px;
+  flex-basis: calc(calc(301px - 100%) * 999);
 `;
 
 const ProgressLabel = styled.div`
   color: ${getColor('grey120')};
-  flex-shrink: 0;
   padding-bottom: 4px;
+  flex-grow: 0;
+  flex-basis: auto;
+  flex-shrink: 1;
 `;
 
 const ProgressBarBackground = styled.div<{size: ProgressBarSize} & AkeneoThemedProps>`
@@ -149,18 +147,6 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
   ) => {
     const [labelId] = useState<string>(`label_${uuid()}`);
     const [progressBarId] = useState<string>(`progress_${uuid()}`);
-    const [isMinimized, setIsMinimized] = useState(false);
-
-    const internalRef = useRef<HTMLDivElement>(null);
-    const ref = null === forwardedRef ? internalRef : forwardedRef;
-
-    const windowSize = useWindowSize();
-    useEffect(() => {
-      if (typeof ref !== 'function' && null !== ref.current) {
-        const element = (ref.current as unknown) as HTMLDivElement;
-        setIsMinimized(element.getBoundingClientRect().width <= 300);
-      }
-    }, [windowSize]);
 
     const progressBarProps = {};
     if (percent !== 'indeterminate') {
@@ -174,9 +160,9 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
     }
 
     return (
-      <ProgressBarContainer ref={ref} {...rest}>
+      <ProgressBarContainer ref={forwardedRef} {...rest}>
         {(title || progressLabel) && (
-          <Header isMinimized={isMinimized}>
+          <Header>
             <Title id={labelId} htmlFor={progressBarId}>
               {title}
             </Title>
