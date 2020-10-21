@@ -17,7 +17,7 @@ it('it calls onClick handler when user clicks on button', () => {
   expect(onClick).toBeCalled();
 });
 
-it('it calls onClick handler when user hit enter key on button', () => {
+it('it calls onClick handler when user hit enter key on button', async () => {
   const onClick = jest.fn();
   render(
     <Button ghost={true} onClick={onClick}>
@@ -27,7 +27,7 @@ it('it calls onClick handler when user hit enter key on button', () => {
 
   const button = screen.getByText('Hello');
   button.focus();
-  userEvent.type(button, '{enter}');
+  await userEvent.type(button, '{enter}');
 
   expect(onClick).toBeCalled();
 });
