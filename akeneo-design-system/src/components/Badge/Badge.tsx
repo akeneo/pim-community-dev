@@ -1,8 +1,9 @@
-import React, {Ref} from 'react';
+import React, {Ref, useContext} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getColorForLevel, getFontSize, Level} from '../../theme';
+import {LoadingContext, placeholderStyle} from 'shared/LoadingContext';
 
-const BadgeContainer = styled.span<BadgeProps & AkeneoThemedProps>`
+const BadgeContainer = styled.span<{load: boolean} & BadgeProps & AkeneoThemedProps>`
   display: inline-block;
   height: 18px;
   line-height: 16px;
@@ -19,6 +20,15 @@ const BadgeContainer = styled.span<BadgeProps & AkeneoThemedProps>`
     color: ${getColorForLevel(level, 140)};
     border-color: ${getColorForLevel(level, 100)};
   `}
+
+  ${props =>
+    props.load
+      ? css`
+          ${placeholderStyle}
+          color: transparent;
+          min-width: 10px;
+        `
+      : ''}
 `;
 
 type BadgeProps = {
@@ -38,8 +48,10 @@ type BadgeProps = {
  */
 const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
   ({level = 'primary', children, ...rest}: BadgeProps, forwardedRef: Ref<HTMLSpanElement>) => {
+    const loading = useContext(LoadingContext);
+
     return (
-      <BadgeContainer level={level} ref={forwardedRef} {...rest}>
+      <BadgeContainer level={level} ref={forwardedRef} load={loading} {...rest}>
         {children}
       </BadgeContainer>
     );

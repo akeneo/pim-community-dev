@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Button} from './Button.tsx';
+import {Loading} from 'shared/LoadingContext';
 
 <Meta
   title="Components/Button"
@@ -129,6 +130,34 @@ Use this playground to test the button component
           <Button {...args} size="small">
             Small
           </Button>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Loading button
+
+<Canvas>
+  <Story name="Loading">
+    {args => {
+      return (
+        <>
+          <Loading loading={false}>
+            <Button {...args}>
+              Small
+            </Button>
+            <Loading loading={true}>
+              <Button {...args}>
+                Small
+              </Button>
+              <Loading loading={false}>
+                <Button {...args}>
+                  Small
+                </Button>
+              </Loading>
+            </Loading>
+          </Loading>
         </>
       );
     }}

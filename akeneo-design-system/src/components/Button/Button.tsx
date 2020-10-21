@@ -1,8 +1,9 @@
-import React, {ReactNode, Ref, SyntheticEvent} from 'react';
+import React, {ReactNode, Ref, SyntheticEvent, useContext} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColorForLevel, getFontSize, Level} from '../../theme';
 import {Key, Override} from '../../shared';
 import {useShortcut} from '../../hooks';
+import {LoadingContext, placeholderStyle} from 'shared/LoadingContext';
 
 type ButtonSize = 'small' | 'default';
 
@@ -99,6 +100,7 @@ const Container = styled.button<
     ghost: boolean;
     disabled: boolean;
     size: ButtonSize;
+    load: boolean;
   } & AkeneoThemedProps
 >`
   border-width: 1px;
@@ -117,6 +119,14 @@ const Container = styled.button<
   &:disabled {
     cursor: not-allowed;
   }
+
+  ${props =>
+    props.load
+      ? css`
+          ${placeholderStyle}
+          color: transparent;
+        `
+      : ''}
 `;
 
 /**
@@ -141,6 +151,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     forwardedRef: Ref<HTMLButtonElement>
   ) => {
     const ref = useShortcut(Key.Enter, disabled ? () => null : onClick, forwardedRef);
+    const loading = useContext(LoadingContext);
 
     return (
       <Container
@@ -156,6 +167,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         role="button"
         type={type}
         onClick={disabled ? null : onClick}
+        load={loading}
         {...rest}
       >
         {children}

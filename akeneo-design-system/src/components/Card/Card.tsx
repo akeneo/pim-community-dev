@@ -1,8 +1,9 @@
-import React, {Ref, ReactNode, isValidElement, ReactElement} from 'react';
-import styled from 'styled-components';
+import React, {Ref, ReactNode, isValidElement, ReactElement, useContext} from 'react';
+import styled, {css} from 'styled-components';
 import {Badge, BadgeProps, Checkbox} from '../../components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
+import {LoadingContext, placeholderStyle} from 'shared/LoadingContext';
 
 type CardGridProps = {
   size?: 'normal' | 'big';
@@ -52,7 +53,7 @@ const CardContainer = styled.div<CardProps & AkeneoThemedProps>`
   }
 `;
 
-const ImageContainer = styled.div`
+const ImageContainer = styled.div<{load: boolean} & AkeneoThemedProps>`
   position: relative;
 
   ::before {
@@ -64,9 +65,21 @@ const ImageContainer = styled.div`
   :hover ${Overlay} {
     opacity: 50%;
   }
+
+  ${props =>
+    props.load
+      ? css`
+          ${placeholderStyle}
+          border-radius: 3px;
+
+          & img {
+            opacity: 0;
+          }
+        `
+      : ''}
 `;
 
-const CardLabel = styled.div`
+const CardLabel = styled.div<{load: boolean} & AkeneoThemedProps>`
   display: flex;
   align-items: center;
   margin-top: 7px;
@@ -74,6 +87,28 @@ const CardLabel = styled.div`
   > :first-child {
     margin-right: 6px;
   }
+
+  & label {
+    font-size: 13px;
+    color: ${getColor('grey120')};
+    ${props =>
+      props.load
+        ? css`
+            color: transparent;
+          `
+        : ''}
+  }
+`;
+
+const Text = styled.span<{load: boolean}>`
+  ${props =>
+    props.load
+      ? css`
+          ${placeholderStyle}
+          color: transparent;
+          border-radius: 3px;
+        `
+      : ''}
 `;
 
 const BadgeContainer = styled.div`
@@ -135,17 +170,23 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     });
 
     const toggleSelect = undefined !== onSelect ? () => onSelect(!isSelected) : undefined;
+    const loading = useContext(LoadingContext);
 
     return (
       <CardContainer ref={forwardedRef} fit={fit} isSelected={isSelected} onClick={toggleSelect} {...rest}>
         {0 < badges.length && <BadgeContainer>{badges[0]}</BadgeContainer>}
-        <ImageContainer>
-          <Overlay />
+        <ImageContainer load={loading}>
+          {!loading && <Overlay />}
           <img src={src} alt={texts[0]} />
         </ImageContainer>
-        <CardLabel>
-          {undefined !== onSelect && <Checkbox checked={isSelected} onChange={toggleSelect} />}
-          {texts}
+        <CardLabel load={loading}>
+          {undefined !== onSelect ? (
+            <Checkbox checked={isSelected} onChange={toggleSelect}>
+              {texts}
+            </Checkbox>
+          ) : (
+            <Text load={loading}>{texts}</Text>
+          )}
         </CardLabel>
       </CardContainer>
     );

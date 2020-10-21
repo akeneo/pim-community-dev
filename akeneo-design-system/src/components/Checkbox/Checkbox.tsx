@@ -1,9 +1,10 @@
-import React, {ReactNode, Ref, SyntheticEvent, useState} from 'react';
+import React, {ReactNode, Ref, SyntheticEvent, useContext, useState} from 'react';
 import styled, {css, keyframes} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../theme';
 import {CheckIcon, CheckPartialIcon} from '../../icons';
 import {useShortcut} from '../../hooks';
 import {Key, Override, uuid} from '../../shared';
+import {LoadingContext, placeholderStyle} from 'shared/LoadingContext';
 
 const checkTick = keyframes`
   to {
@@ -72,19 +73,36 @@ const CheckboxContainer = styled.div<{checked: boolean; readOnly: boolean} & Ake
       background-color: ${getColor('grey60')};
       border-color: ${getColor('grey100')};
     `}
+
+  ${props =>
+    props.load
+      ? css`
+          ${placeholderStyle}
+        `
+      : ''}
 `;
 
-const LabelContainer = styled.label<{readOnly: boolean} & AkeneoThemedProps>`
+const LabelContainer = styled.label<{readOnly: boolean; load: boolean} & AkeneoThemedProps>`
   color: ${getColor('grey140')};
   font-weight: 400;
   font-size: 15px;
-  padding-left: 10px;
+  margin-left: 10px;
 
   ${props =>
     props.readOnly &&
     css`
       color: ${getColor('grey100')};
     `}
+
+  ${props =>
+    props.load
+      ? css`
+          ${placeholderStyle}
+          color: transparent;
+          border-radius: 3px;
+          min-width: 50px;
+        `
+      : ''}
 `;
 
 type CheckboxChecked = boolean | 'mixed';
@@ -124,6 +142,7 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
   ): React.ReactElement => {
     const [checkboxId] = useState<string>(`checkbox_${uuid()}`);
     const [labelId] = useState<string>(`label_${uuid()}`);
+    const loading = useContext(LoadingContext);
 
     const isChecked = true === checked;
     const isMixed = 'mixed' === checked;
@@ -162,12 +181,17 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
           aria-checked={isChecked}
           tabIndex={readOnly ? -1 : 0}
           onClick={handleChange}
+          load={loading}
           {...forProps}
         >
-          {isMixed ? <CheckPartialIcon size={18} /> : <TickIcon size={20} />}
+          {isMixed ? (
+            <CheckPartialIcon size={18} color={loading ? 'transparent' : 'white'} />
+          ) : (
+            <TickIcon size={20} color={loading ? 'transparent' : 'white'} />
+          )}
         </CheckboxContainer>
         {children ? (
-          <LabelContainer onClick={handleChange} id={labelId} readOnly={readOnly} htmlFor={checkboxId}>
+          <LabelContainer onClick={handleChange} id={labelId} readOnly={readOnly} htmlFor={checkboxId} load={loading}>
             {children}
           </LabelContainer>
         ) : null}
