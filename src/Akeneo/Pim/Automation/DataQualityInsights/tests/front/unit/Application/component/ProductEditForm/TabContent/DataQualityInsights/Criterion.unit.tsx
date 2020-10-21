@@ -1,17 +1,20 @@
+import React from 'react';
 import {fireEvent} from '@testing-library/react';
 import {
-    aCriterion, aFamily,
-    anEvaluation, aProduct,
+    aCriterion,
+    aFamily,
+    anEvaluation,
+    aProduct,
     aProductModel,
     aRate,
     aVariantProduct,
     renderCriterion
 } from '../../../../../../utils';
 import {
-  CRITERION_DONE,
-  CRITERION_ERROR,
-  CRITERION_IN_PROGRESS,
-  CRITERION_NOT_APPLICABLE,
+    CRITERION_DONE,
+    CRITERION_ERROR,
+    CRITERION_IN_PROGRESS,
+    CRITERION_NOT_APPLICABLE,
 } from '@akeneo-pim-community/data-quality-insights/src/domain/Evaluation.interface';
 import {
     redirectToAttributeGridFilteredByFamilyAndQuality,
@@ -22,6 +25,7 @@ import {
     ATTRIBUTE_SPELLING_CRITERION_CODE,
     BACK_LINK_SESSION_STORAGE_KEY
 } from "@akeneo-pim-community/data-quality-insights/src/application/constant";
+import {Recommendation} from "@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights";
 
 jest.mock("@akeneo-pim-community/data-quality-insights/src/infrastructure/AttributeGridRouter");
 
@@ -97,18 +101,19 @@ describe('Criterion for simple product', () => {
     expect(getByText('an_attribute')).toBeInTheDocument();
   });
 
-  test('it displays proper recommendation when product do not have image attribute', () => {
+  test('it displays custom recommendation', () => {
       const criterionRate = aRate(0, 'E');
-      const criterion = aCriterion('missing_image_attribute', CRITERION_DONE, criterionRate, []);
+      const criterion = aCriterion('a_criterion', CRITERION_DONE, criterionRate, []);
       const rate = aRate();
       const evaluation = anEvaluation(rate, [criterion]);
+      const recommendation = <Recommendation>a_custom_recommendation</Recommendation>;
 
-      const {getByText} = renderCriterion('missing_image_attribute', criterion, 'enrichment', evaluation);
+      const {getByText} = renderCriterion('a_criterion', criterion, 'enrichment', evaluation, recommendation);
 
       expect(
-          getByText('akeneo_data_quality_insights.product_evaluation.criteria.missing_image_attribute.recommendation' + ':')
+          getByText('akeneo_data_quality_insights.product_evaluation.criteria.a_criterion.recommendation' + ':')
       ).toBeInTheDocument();
-      expect(getByText('akeneo_data_quality_insights.product_evaluation.messages.add_image_attribute_recommendation')).toBeInTheDocument();
+      expect(getByText('a_custom_recommendation')).toBeInTheDocument();
   });
 });
 
@@ -120,7 +125,7 @@ describe('Criterion for product model', () => {
         const evaluation = anEvaluation(rate, [criterion]);
         const productModel = aProductModel();
 
-        const {getByText} = renderCriterion('a_criterion', criterion, 'an_axis', evaluation, {
+        const {getByText} = renderCriterion('a_criterion', criterion, 'an_axis', evaluation, undefined, {
           product: productModel
         });
 
@@ -137,7 +142,7 @@ describe('Criterion for variant product ', () => {
         const evaluation = anEvaluation(rate, [criterion]);
         const variantProduct = aVariantProduct();
 
-        const {getByText} = renderCriterion('a_criterion', criterion, 'an_axis', evaluation, {
+        const {getByText} = renderCriterion('a_criterion', criterion, 'an_axis', evaluation, undefined, {
           product: variantProduct
         });
 
@@ -164,7 +169,7 @@ describe('Criterion user actions', () => {
         const product = aProduct(1234);
         const family = aFamily('a_family', 4321);
 
-        const {getByText} = renderCriterion(ATTRIBUTE_SPELLING_CRITERION_CODE, criterion, 'an_axis', evaluation, {
+        const {getByText} = renderCriterion(ATTRIBUTE_SPELLING_CRITERION_CODE, criterion, 'an_axis', evaluation, undefined, {
             families: {
                 a_family: family
             },
@@ -187,7 +192,7 @@ describe('Criterion user actions', () => {
         const product = aProduct(1234);
         const family = aFamily('a_family', 4321);
 
-        const {getByText} = renderCriterion(ATTRIBUTE_OPTION_SPELLING_CRITERION_CODE, criterion, 'an_axis', evaluation, {
+        const {getByText} = renderCriterion(ATTRIBUTE_OPTION_SPELLING_CRITERION_CODE, criterion, 'an_axis', evaluation, undefined, {
             families: {
                 a_family: family
             },
