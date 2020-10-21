@@ -1,10 +1,10 @@
 import React, {FunctionComponent} from 'react';
-import {useCatalogContext, useFetchProductFamilyInformation} from '../../../../../infrastructure/hooks';
-import AttributeWithRecommendation from '../../../../../domain/AttributeWithRecommendation.interface';
-import AttributesList from './AttributesList';
-import AttributesListWithVariations from './AttributesListWithVariations';
-import {isSimpleProduct} from "../../../../helper/ProductEditForm/Product";
-import {Evaluation, Product} from "../../../../../domain";
+import {useCatalogContext, useFetchProductFamilyInformation} from '../../../../../../infrastructure/hooks';
+import AttributeWithRecommendation from '../../../../../../domain/AttributeWithRecommendation.interface';
+import AttributesList from '../AttributesList';
+import AttributesListWithVariations from '../AttributesListWithVariations';
+import {isSimpleProduct} from "../../../../../helper/ProductEditForm/Product";
+import {Evaluation, Product} from "../../../../../../domain";
 
 interface RecommendationAttributesListProps {
   criterion: string;
