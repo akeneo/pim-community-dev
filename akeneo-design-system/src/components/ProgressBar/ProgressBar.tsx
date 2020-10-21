@@ -15,7 +15,6 @@ const Header = styled.div`
   align-items: stretch;
   flex-direction: row;
   font-size: ${getFontSize('default')};
-  margin-bottom: -4px;
   flex-flow: row wrap;
 `;
 
@@ -27,15 +26,19 @@ const Title = styled.div`
   text-overflow: ellipsis;
   max-width: 100%;
   flex-grow: 1;
-  flex-basis: calc(calc(301px - 100%) * 999);
+  margin-bottom: -4px;
+
+  /* When header div is greater than 300px the flex-basic is negative, progress label is on same line */
+  /* When header div is lower than 300px the flex-basic is positive, progress label is move to new line */
+  flex-basis: calc((301px - 100%) * 999);
 `;
 
 const ProgressLabel = styled.div`
   color: ${getColor('grey120')};
-  padding-bottom: 4px;
   flex-grow: 0;
   flex-basis: auto;
   flex-shrink: 1;
+  margin-bottom: 4px;
 `;
 
 const ProgressBarBackground = styled.div<{size: ProgressBarSize} & AkeneoThemedProps>`
@@ -89,7 +92,7 @@ const getHeightFromSize = (size: ProgressBarSize): string => {
   }
 };
 
-const computeWidthFromPercent = (percent: number | 'indeterminate'): number => {
+const computeWidthFromPercent = (percent: ProgressBarPercent): number => {
   if (percent === 'indeterminate' || percent > 100) {
     return 100;
   }
@@ -102,6 +105,7 @@ const computeWidthFromPercent = (percent: number | 'indeterminate'): number => {
 };
 
 type ProgressBarSize = 'small' | 'large';
+type ProgressBarPercent = number | 'indeterminate';
 
 type ProgressBarProps = {
   /**
@@ -111,12 +115,12 @@ type ProgressBarProps = {
 
   /**
    * The progression of the progress bar in percentage (from 0 to 100) when type is determinate,
-   * when type is indeterminate use indeterminate.
+   * when type is indeterminate use `indeterminate`.
    */
-  percent: number | 'indeterminate';
+  percent: ProgressBarPercent;
 
   /**
-   * Is the style of the progress bar should be light
+   * Whether the style of the progress bar should be light
    */
   light?: boolean;
 
