@@ -418,7 +418,17 @@ JSON;
         $data = '{"categories": ["view_category"]}';
         $this->assertUpdated('colored_sized_sweat_own', $data);
         $this->assertUpdated('colored_sized_shoes_own', $data);
+    }
 
+    public function testConvertVariantToSimpleOnNonOwnedProduct()
+    {
+        $this->loader->loadProductModelsFixturesForCategoryPermissions();
+
+        $message = "You cannot convert this variant product as you don't have own permissions on its categories.";
+
+        $data = '{"parent": null}';
+        $this->assertUnauthorized('colored_sized_sweat_edit', $data, $message);
+        $this->assertUnauthorized('colored_sized_shoes_edit', $data, $message);
     }
 
     /**
@@ -450,7 +460,7 @@ JSON;
         $client->request('PATCH', 'api/rest/v1/products/' . $identifier, [], [], [], $data);
         $response = $client->getResponse();
 
-        $expected = sprintf('{"code":%d,"message":"%s"}', Response::HTTP_FORBIDDEN, addslashes($message));
+        $expected = sprintf('{"code":%d,"message":"%s"}', Response::HTTP_FORBIDDEN, addcslashes($message, '"\\'));
 
         Assert::assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
         Assert::assertEquals($expected, $response->getContent());
@@ -480,7 +490,7 @@ JSON;
             }
 JSON;
 
-        $expected = sprintf($error, Response::HTTP_UNPROCESSABLE_ENTITY, addslashes($message));
+        $expected = sprintf($error, Response::HTTP_UNPROCESSABLE_ENTITY, addcslashes($message, '"\\'));
 
         Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
         Assert::assertJsonStringEqualsJsonString($expected, $response->getContent());

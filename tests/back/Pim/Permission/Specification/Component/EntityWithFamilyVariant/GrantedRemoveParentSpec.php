@@ -6,9 +6,9 @@ use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParent
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\EntityWithFamilyVariant\GrantedRemoveParent;
-use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 
 class GrantedRemoveParentSpec extends ObjectBehavior
 {
@@ -28,10 +28,10 @@ class GrantedRemoveParentSpec extends ObjectBehavior
         ProductInterface $product
     ) {
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
-        $this->shouldThrow(ResourceAccessDeniedException::class)->during('from', [$product]);
+        $this->shouldThrow(InvalidArgumentException::class)->during('from', [$product]);
     }
 
-    function it_removes_the_parent_from_a_variant_product_if_the_user_oowns_the_product(
+    function it_removes_the_parent_from_a_variant_product_if_the_user_owns_the_product(
         AuthorizationCheckerInterface $authorizationChecker,
         RemoveParentInterface $baseRemoveParent,
         ProductInterface $product

@@ -83,9 +83,8 @@ pim_enrich:
         edit_common_attributes:
             message:
                 error: You're not the owner of the product, you can't edit it.
-        convert_to_simple_products:
-            message:
-                error: You cannot convert this variant product as you don't have own permissions on its categories.
+
+You cannot convert this variant product as you don't have own permissions on its categories.: "You cannot convert this variant product as you don't have own permissions on its categories."
 
 pimee_enrich:
     attribute_group:

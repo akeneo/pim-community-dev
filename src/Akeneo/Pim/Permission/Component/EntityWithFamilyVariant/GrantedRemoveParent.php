@@ -16,8 +16,8 @@ namespace Akeneo\Pim\Permission\Component\EntityWithFamilyVariant;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
-use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 
 class GrantedRemoveParent implements RemoveParentInterface
 {
@@ -38,9 +38,8 @@ class GrantedRemoveParent implements RemoveParentInterface
     public function from(ProductInterface $product): void
     {
         if (!$this->authorizationChecker->isGranted(Attributes::OWN, $product)) {
-            throw new ResourceAccessDeniedException(
-                $product,
-                'pim_enrich.mass_edit_action.convert_to_simple_products.message.error'
+            throw new InvalidArgumentException(
+                'You cannot convert this variant product as you don\'t have own permissions on its categories.'
             );
         }
 
