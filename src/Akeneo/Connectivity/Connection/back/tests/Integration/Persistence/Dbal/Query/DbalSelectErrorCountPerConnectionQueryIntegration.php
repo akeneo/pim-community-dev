@@ -72,7 +72,7 @@ class DbalSelectErrorCountPerConnectionQueryIntegration extends TestCase
             new ErrorCount('no_error', 0),
         ]);
 
-        Assert::assertEquals($expectedResult, $result);
+        $this->assertEqualsCanonicalizing($expectedResult, $result);
     }
 
     protected function getConfiguration(): Configuration
