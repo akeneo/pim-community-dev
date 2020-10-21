@@ -6,8 +6,8 @@ namespace Specification\Akeneo\Pim\Structure\Bundle\Datagrid\Attribute;
 
 use Akeneo\Pim\Structure\Bundle\Datagrid\Attribute\FamilyFilter;
 use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\FilterBundle\Datasource\Orm\OrmFilterDatasourceAdapter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
+use Oro\Bundle\PimFilterBundle\Datasource\Orm\OrmFilterDatasourceAdapter;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;
