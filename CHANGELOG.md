@@ -67,6 +67,8 @@
 
 # Technical Improvements
 
+- Upgrade to php7.4
+
 ## Classes
 
 ## BC breaks
