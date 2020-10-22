@@ -21,7 +21,7 @@ use Symfony\Component\Filesystem\Filesystem;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class Job implements JobInterface
+class Job implements JobInterface, JobWithStepsInterface
 {
     /** @var string */
     protected $name;
@@ -67,12 +67,7 @@ class Job implements JobInterface
         return $this->name;
     }
 
-    /**
-     * Return all the steps
-     *
-     * @return array steps
-     */
-    public function getSteps()
+    public function getSteps(): array
     {
         return $this->steps;
     }
