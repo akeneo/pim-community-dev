@@ -148,7 +148,7 @@ class LightEntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         FileInfoInterface $fileInfo
     ) {
         $productModel->getId()->willReturn(56);
-        $productModel->getCode()->willReturn('my_tshirt_model');
+        $productModel->getIdentifier()->willReturn('my_tshirt_model');
         $productModel->getLabel('en_US', 'ecommerce')->willReturn('Green t-shirt model');
         $productModel->getValue('color')->willReturn(OptionValue::value('color', 'green'));
 

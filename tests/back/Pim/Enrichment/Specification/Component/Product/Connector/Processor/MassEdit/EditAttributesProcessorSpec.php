@@ -4,8 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Proces
 
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\CheckAttributeEditable;
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -264,8 +263,7 @@ class EditAttributesProcessorSpec extends ObjectBehavior
         $attributeRepository,
         $checkAttributeEditable,
         FilterInterface $productModelEmptyValuesFilter,
-        EntityWithFamilyInterface $entityWithFamily,
-        ConstraintViolationListInterface $violations,
+        EntityWithFamilyVariantInterface $entityWithFamily,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         JobParameters $jobParameters,

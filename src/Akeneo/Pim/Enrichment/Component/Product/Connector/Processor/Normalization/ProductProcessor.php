@@ -120,8 +120,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
      */
     protected function fetchMedia(EntityWithFamilyInterface $product, $directory)
     {
-        $identifier = $product instanceof ProductModelInterface ? $product->getCode() : $product->getIdentifier();
-        $this->mediaFetcher->fetchAll($product->getValues(), $directory, $identifier);
+        $this->mediaFetcher->fetchAll($product->getValues(), $directory, $product->getIdentifier());
 
         foreach ($this->mediaFetcher->getErrors() as $error) {
             $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));

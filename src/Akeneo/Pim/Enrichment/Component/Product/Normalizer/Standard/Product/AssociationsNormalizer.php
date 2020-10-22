@@ -5,9 +5,11 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Normalize associations into an array
@@ -78,6 +80,9 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
         $data = [];
 
         foreach ($associationAwareEntities as $associationAwareEntity) {
+            Assert::implementsInterface($associationAwareEntity, EntityWithAssociationsInterface::class);
+            Assert::implementsInterface($associationAwareEntity, EntityWithValuesInterface::class);
+
             foreach ($associationAwareEntity->getAssociations() as $association) {
                 $code = $association->getAssociationType()->getCode();
 

@@ -47,13 +47,6 @@ interface ProductInterface extends
     public function setId($id);
 
     /**
-     * Get the identifier of the product
-     *
-     * @return string
-     */
-    public function getIdentifier();
-
-    /**
      * @param string|null $identifierValue
      *
      * @return ProductInterface

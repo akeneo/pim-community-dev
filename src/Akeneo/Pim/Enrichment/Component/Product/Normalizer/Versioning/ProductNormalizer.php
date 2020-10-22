@@ -15,9 +15,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\EntityWithQuan
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerAwareInterface;
-use Symfony\Component\Serializer\SerializerAwareTrait;
 
 /**
  * A normalizer to transform a product entity into a flat array
@@ -26,9 +26,9 @@ use Symfony\Component\Serializer\SerializerAwareTrait;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface, CacheableSupportsMethodInterface
+class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface, CacheableSupportsMethodInterface
 {
-    use SerializerAwareTrait;
+    use NormalizerAwareTrait;
 
     /** @staticvar string */
     protected const FIELD_FAMILY = 'family';
@@ -116,7 +116,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         foreach ($values as $value) {
             $normalizedValues = array_replace(
                 $normalizedValues,
-                $this->serializer->normalize($value, $format, $context)
+                $this->normalizer->normalize($value, $format, $context)
             );
         }
         ksort($normalizedValues);
@@ -234,7 +234,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      *
      * @return array
      */
-    protected function normalizeAssociations($associations = []): array
+    protected function normalizeAssociations($associations): array
     {
         $results = [];
         foreach ($associations as $association) {

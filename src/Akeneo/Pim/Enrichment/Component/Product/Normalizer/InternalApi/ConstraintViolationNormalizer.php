@@ -5,14 +5,15 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 use Doctrine\Common\Inflector\Inflector;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Validator\ConstraintViolationInterface;
+use Symfony\Component\Validator\ConstraintViolation;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Yohan Blain <yohan.blain@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ViolationNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class ConstraintViolationNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @var string[] */
     protected $supportedFormats = ['internal_api'];
@@ -22,6 +23,7 @@ class ViolationNormalizer implements NormalizerInterface, CacheableSupportsMetho
      */
     public function normalize($violation, $format = null, array $context = [])
     {
+        Assert::isInstanceOf($violation, ConstraintViolation::class);
         $path = $this->getStandardPath($violation);
         $translate = (bool)($context['translate'] ?? true);
 
@@ -54,7 +56,7 @@ class ViolationNormalizer implements NormalizerInterface, CacheableSupportsMetho
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ConstraintViolationInterface && in_array($format, $this->supportedFormats);
+        return $data instanceof ConstraintViolation && in_array($format, $this->supportedFormats);
     }
 
     public function hasCacheableSupportsMethod(): bool
@@ -68,11 +70,11 @@ class ViolationNormalizer implements NormalizerInterface, CacheableSupportsMetho
      * entity property (example: 'metricFamily' -> 'metric_family').
      * If the constraint is global and has no explicit path defined in its payload, it returns null.
      *
-     * @param ConstraintViolationInterface $violation
+     * @param ConstraintViolation $violation
      *
      * @return string|null
      */
-    protected function getStandardPath(ConstraintViolationInterface $violation)
+    protected function getStandardPath(ConstraintViolation $violation)
     {
         $constraint = $violation->getConstraint();
 
