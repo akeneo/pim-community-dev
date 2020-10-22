@@ -1255,3 +1255,7 @@ config:
     pim/edition: pimui/js/pim-edition.ts
     pim/job/common/edit/field/file-path: pimui/js/job/common/edit/field/file-path.ts
     pim/job/common/edit/field/allow-file-upload: pimui/js/job/common/edit/field/allow-file-upload.ts
+
+    akeneo/communication-channel: pimui/communicationchannel/menu/communication-channel
+    akeneo/communication-channel/panel: pimui/communicationchannel/bridge/view/panel.tsx
+    akeneo/template/menu/communication-channel: pimui/communicationchannel/menu/communication-channel.html

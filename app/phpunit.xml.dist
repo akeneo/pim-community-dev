@@ -36,5 +36,9 @@
             <directory suffix="EndToEnd.php">../src</directory>
         </testsuite>
 
+        <testsuite name="Akeneo_Communication_Channel_Integration">
+            <directory suffix="Integration.php">../src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/Integration</directory>
+        </testsuite>
+
     </testsuites>
 </phpunit>

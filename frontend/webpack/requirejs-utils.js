@@ -83,6 +83,18 @@ const utils = {
             jquery: require.resolve('jquery'),
             underscore: require.resolve('underscore'),
             'pim/dropzonejs': require.resolve('dropzone'),
+            '@akeneo-pim-community/communication-channel': path.resolve(
+                baseDir,
+                'web/bundles/akeneocommunicationchannel-react/index.ts'
+            ),
+            '@akeneo-pim-community/legacy-bridge': path.resolve(
+                baseDir,
+                'web/bundles/akeneocommunicationchannel-react/legacy-bridge/src/index.ts'
+            ),
+            '@akeneo-pim-community/shared': path.resolve(
+                baseDir,
+                'web/bundles/akeneocommunicationchannel-react/shared/src/index.ts'
+            ),
         });
 
         return { config, aliases };

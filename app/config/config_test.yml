@@ -2,6 +2,7 @@ imports:
     - { resource: config_dev.yml }
     - { resource: parameters_test.yml }
     - { resource: security_test.yml }
+    - { resource: ../../src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/Integration/Resources/config/in_memory.yml }
 
 framework:
     test: ~
@@ -27,3 +28,5 @@ parameters:
     catalog_storage_dir:  '%kernel.root_dir%/../var/cache/file_storage/catalog'
     tmp_storage_dir:      '%kernel.root_dir%/../var/cache/tmp/pim/file_storage'
     upload_tmp_dir:       '%kernel.root_dir%/../var/cache/tmp/pim/upload_tmp_dir'
+
+    comm_panel_api_url: 'http://localhost:8088'
