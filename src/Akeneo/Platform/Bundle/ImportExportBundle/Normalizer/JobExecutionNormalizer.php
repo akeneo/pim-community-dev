@@ -39,13 +39,13 @@ class JobExecutionNormalizer implements NormalizerInterface, SerializerAwareInte
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($jobExecution, $format = null, array $context = [])
     {
         if (!$this->serializer instanceof NormalizerInterface) {
             throw new \RuntimeException(
                 sprintf(
                     'Cannot normalize job execution of "%s" because injected serializer is not a normalizer',
-                    $object->getLabel()
+                    $jobExecution->getLabel()
                 )
             );
         }
@@ -55,14 +55,14 @@ class JobExecutionNormalizer implements NormalizerInterface, SerializerAwareInte
                 function ($exception) {
                     return $this->translator->trans($exception['message'], $exception['messageParameters']);
                 },
-                $object->getFailureExceptions()
+                $jobExecution->getFailureExceptions()
             ),
-            'stepExecutions' => $this->normalizeStepExecutions($object->getStepExecutions(), $format, $context),
-            'isRunning'      => $object->isRunning(),
+            'stepExecutions' => $this->normalizeStepExecutions($jobExecution->getStepExecutions(), $format, $context),
+            'isRunning'      => $jobExecution->isRunning(),
             'status'         => $this->translator->trans(
-                sprintf('pim_import_export.batch_status.%d', $object->getStatus()->getValue())
+                sprintf('pim_import_export.batch_status.%d', $jobExecution->getStatus()->getValue())
             ),
-            'jobInstance'    => $this->jobInstanceNormalizer->normalize($object->getJobInstance(), 'standard', $context)
+            'jobInstance'    => $this->jobInstanceNormalizer->normalize($jobExecution->getJobInstance(), 'standard', $context),
         ];
     }
 

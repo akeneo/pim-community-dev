@@ -5,6 +5,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller\InternalApi;
 use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -32,13 +33,6 @@ class JobExecutionController
     /** @var NormalizerInterface */
     private $normalizer;
 
-    /**
-     * @param TranslatorInterface    $translator
-     * @param JobExecutionArchivist  $archivist
-     * @param JobExecutionManager    $jobExecutionManager
-     * @param JobExecutionRepository $jobExecutionRepo
-     * @param NormalizerInterface    $normalizer
-     */
     public function __construct(
         TranslatorInterface $translator,
         JobExecutionArchivist $archivist,
@@ -53,30 +47,11 @@ class JobExecutionController
         $this->normalizer = $normalizer;
     }
 
-    /**
-     * Get jobs
-     *
-     * @param $identifier
-     *
-     * @return JsonResponse
-     */
-    public function getAction($identifier)
+    public function getAction($identifier): JsonResponse
     {
         $jobExecution = $this->jobExecutionRepo->find($identifier);
         if (null === $jobExecution) {
             throw new NotFoundHttpException('Akeneo\Tool\Component\Batch\Model\JobExecution entity not found');
-        }
-
-        $archives = [];
-        foreach ($this->archivist->getArchives($jobExecution) as $archiveName => $files) {
-            $label = $this->translator->transChoice(
-                sprintf('pim_enrich.entity.job_execution.module.download.%s', $archiveName),
-                count($files)
-            );
-            $archives[$archiveName] = [
-                'label' => $label,
-                'files' => $files,
-            ];
         }
 
         $jobExecution = $this->jobExecutionManager->resolveJobExecutionStatus($jobExecution);
@@ -86,11 +61,25 @@ class JobExecutionController
         $jobResponse = $this->normalizer->normalize($jobExecution, 'internal_api', $context);
 
         $jobResponse['meta'] = [
-            'logExists'           => file_exists($jobExecution->getLogFile()),
-            'archives'      => $archives,
-            'id'            => $identifier
+            'logExists' => file_exists($jobExecution->getLogFile()),
+            'archives' => $this->archives($jobExecution),
+            'id' => $identifier,
         ];
 
         return new JsonResponse($jobResponse);
+    }
+
+    private function archives(JobExecution $jobExecution): array
+    {
+        $archives = [];
+        foreach ($this->archivist->getArchives($jobExecution) as $archiveName => $files) {
+            $label = $this->translator->trans(sprintf('pim_enrich.entity.job_execution.module.download.%s', $archiveName));
+            $archives[$archiveName] = [
+                'label' => $label,
+                'files' => $files,
+            ];
+        }
+
+        return $archives;
     }
 }
