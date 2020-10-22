@@ -1,0 +1,6 @@
+pim_dashboard:
+  widget:
+    completeness:
+      load_more: 'Завантажити більше...'
+pim_title:
+  pim_dashboard_index: Панель керування

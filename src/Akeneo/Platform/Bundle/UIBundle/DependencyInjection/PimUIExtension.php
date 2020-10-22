@@ -35,6 +35,12 @@ class PimUIExtension extends Extension
         $loader->load('services.yml');
         $loader->load('view_elements.yml');
 
+        $loaderCommunicationPanel = new YamlFileLoader($container, new FileLocator(__DIR__ .'/../../CommunicationChannelBundle/back/Infrastructure/Framework/Symfony/Resources/config'));
+        $loaderCommunicationPanel->load('announcement_list.yml');
+        $loaderCommunicationPanel->load('has_new_announcements.yml');
+        $loaderCommunicationPanel->load('installer.yml');
+        $loaderCommunicationPanel->load('viewed_announcements.yml');
+
         $container->setParameter('pim_ui.wrap_class', 'block-wrap');
         $this->placeholdersConfig($config, $container);
     }

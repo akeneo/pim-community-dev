@@ -89,6 +89,18 @@ const utils = {
             baseDir,
             'public/bundles/akeneoconnectivityconnection-react/index.ts'
           ),
+          '@akeneo-pim-community/communication-channel': path.resolve(
+              baseDir,
+              'public/bundles/akeneocommunicationchannel-react/index.ts'
+          ),
+          '@akeneo-pim-community/legacy-bridge': path.resolve(
+              baseDir,
+              'public/bundles/akeneocommunicationchannel-react/legacy-bridge/src/index.ts'
+          ),
+          '@akeneo-pim-community/shared': path.resolve(
+              baseDir,
+              'public/bundles/akeneocommunicationchannel-react/shared/src/index.ts'
+          ),
         });
 
         return { config, aliases };
