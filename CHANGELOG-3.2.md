@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes:
+
+- PIM-9523: Fix pressure measure multiplicator error
+
 # 3.2.75 (2020-10-14)
 
 ## Bug fixes:

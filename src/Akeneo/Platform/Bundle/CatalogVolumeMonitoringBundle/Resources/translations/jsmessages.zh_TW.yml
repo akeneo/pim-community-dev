@@ -1,0 +1,31 @@
+pim_catalog_volume:
+  product_values: "您的PIM中有 <span>{{values}}</span>產品價值！一般而言，它就是<span>{{average}}</span>每個產品的產品價值！&nbsp;💪"
+  product_values_description: '您擁有的產品價值越多，您的PIM越有價值，您的投資回報率就越高！ 更多詳細信息<a href="{{link}}" target="_blank">請查看此處</a>'
+  section:
+    product_values:
+      hint: '您知道PIM中產品總值直接鏈接到以下軸嗎？<br/>要了解更多詳細信息，我們邀請您<a href =“ {{link}}” target =“ _ blank” >瀏覽本文</a>。'
+      title: 利用產品價值數量的軸
+    catalog_structure:
+      hint: 您可能知道，良好的類別結構很重要，也是實現高效的條件。以下是監視類別結構的各個軸。
+      title: 與類別結構有關的軸
+    variant_modelling:
+      hint: 如果您正在使用變量建模，則以下是可幫助您監視體積的軸。
+      title: 有關變體建模的軸
+  axis:
+    count_products: 產品
+    average_max_attributes_per_family: 每個品類的屬性
+    count_channels: 渠道
+    count_locales: 區域（已激活）
+    count_scopable_attributes: 適用屬性
+    count_localizable_and_scopable_attributes: 可本地化和適用屬性
+    count_localizable_attributes: 可本地化的屬性
+    count_families: 品類
+    count_attributes: 屬性
+    average_max_options_per_attribute: 屬性選項
+    count_categories: 類別
+    count_category_trees: 類別目錄
+    count_variant_products: 變量產品
+    count_product_models: 產品型號
+    warning: 哇哦！您用此軸創下了記錄！ 如果您需要任何幫助，請隨時與我們聯繫。
+  mean: '平均值：'
+  max: '最大值：'
