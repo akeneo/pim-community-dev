@@ -20,6 +20,7 @@ define(
             events: {
                 'click .data': 'toggleDisplayWarning'
             },
+            expandedWarnings: {},
 
             /**
              * Display or hide a warning details
@@ -28,10 +29,8 @@ define(
             toggleDisplayWarning: function (event) {
                 var stepIndex = event.currentTarget.dataset.stepIndex;
                 var warningIndex = event.currentTarget.dataset.warningIndex;
-                var model = this.getFormData();
-                model.stepExecutions[stepIndex].warnings[warningIndex].expanded =
-                    !model.stepExecutions[stepIndex].warnings[warningIndex].expanded;
-
+                // var model = this.getFormData();
+                this.expandedWarnings[stepIndex] = [warningIndex];
                 this.render();
             },
 
@@ -67,7 +66,8 @@ define(
                     status: model.status,
                     failures: model.failures,
                     id: model.meta.id,
-                    translateStepExecutionLabel: this.translateStepExecutionLabel
+                    translateStepExecutionLabel: this.translateStepExecutionLabel,
+                    expandedWarnings: this.expandedWarnings
                 }));
 
                 return this;
