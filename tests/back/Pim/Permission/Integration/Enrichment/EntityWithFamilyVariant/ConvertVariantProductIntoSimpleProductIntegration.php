@@ -19,12 +19,12 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;
 use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 
 class ConvertVariantProductIntoSimpleProductIntegration extends TestCase
 {
@@ -36,7 +36,7 @@ class ConvertVariantProductIntoSimpleProductIntegration extends TestCase
         $nonGrantedProduct = $this->get('pim_catalog.repository.product')->findOneByIdentifier('non_viewable_product');
         $this->loginAsMary();
 
-        $this->expectException(ResourceAccessDeniedException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->convertToSimpleProduct($nonGrantedProduct);
     }
 

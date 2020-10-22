@@ -84,7 +84,7 @@ pim_enrich:
             message:
                 error: You're not the owner of the product, you can't edit it.
 
-You cannot convert this variant product as you don't have own permissions on its categories.: "You cannot convert this variant product as you don't have own permissions on its categories."
+To be able to convert this variant product you need to have the 'Own' permission on its categories.: "To be able to convert this variant product you need to have the 'Own' permission on its categories."
 
 pimee_enrich:
     attribute_group:

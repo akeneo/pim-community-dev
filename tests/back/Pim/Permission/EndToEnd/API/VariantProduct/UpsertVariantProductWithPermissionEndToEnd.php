@@ -424,7 +424,7 @@ JSON;
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
 
-        $message = "You cannot convert this variant product as you don't have own permissions on its categories.";
+        $message = "To be able to convert this variant product you need to have the 'Own' permission on its categories.";
 
         $data = '{"parent": null}';
         $this->assertUnauthorized('colored_sized_sweat_edit', $data, $message);

@@ -39,7 +39,7 @@ class GrantedRemoveParent implements RemoveParentInterface
     {
         if (!$this->authorizationChecker->isGranted(Attributes::OWN, $product)) {
             throw new InvalidArgumentException(
-                'You cannot convert this variant product as you don\'t have own permissions on its categories.'
+                'To be able to convert this variant product you need to have the \'Own\' permission on its categories.'
             );
         }
 
