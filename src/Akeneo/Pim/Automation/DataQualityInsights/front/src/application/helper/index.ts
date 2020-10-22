@@ -5,11 +5,11 @@ import WidgetElement, {
   WidgetsCollection,
 } from "./EditorHighlight/WidgetElement";
 import EditorElement, {
+  convertHtmlContent,
   getEditorContent,
   isTextArea,
   isTextInput,
   setEditorContent,
-  convertHtmlContent,
 } from "./EditorHighlight/EditorElement";
 import HighlightElement, {
   createHighlight,
@@ -19,6 +19,7 @@ import HighlightElement, {
 import MistakeElement from "./EditorHighlight/MistakeElement";
 
 export * from './getQualityBadgeLevel';
+export * from './UserActions';
 
 export {
   WidgetElement, createWidget, WidgetsCollection, EditorTypes, getEditorType,

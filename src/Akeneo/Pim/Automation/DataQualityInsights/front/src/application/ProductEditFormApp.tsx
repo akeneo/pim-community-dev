@@ -1,12 +1,7 @@
 import React, {FunctionComponent} from 'react';
 import {Provider} from "react-redux";
 import {productEditFormStore} from "../infrastructure/store";
-import {
-  CriterionEvaluationResult,
-  Family,
-  MAX_RATE,
-  Product
-} from "@akeneo-pim-community/data-quality-insights/src/domain";
+import {CriterionEvaluationResult, MAX_RATE, Product} from "@akeneo-pim-community/data-quality-insights/src/domain";
 import {
   CatalogContextListener,
   PageContextListener,
@@ -23,14 +18,16 @@ import {Recommendation} from "@akeneo-pim-community/data-quality-insights/src/ap
 import {AxisRatesOverviewPortal} from "@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm";
 import {fetchProductDataQualityEvaluation} from "@akeneo-pim-community/data-quality-insights/src";
 import {AxesContextProvider} from "@akeneo-pim-community/data-quality-insights/src/application/context/AxesContext";
-import {
-  redirectToAttributeGridFilteredByFamilyAndQuality,
-  redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes
-} from "@akeneo-pim-community/data-quality-insights/src/infrastructure/AttributeGridRouter";
+
 import {CRITERION_DONE} from "@akeneo-pim-community/data-quality-insights/src/domain/Evaluation.interface";
 import {ThemeProvider} from "styled-components";
 import {pimTheme} from "akeneo-design-system";
-import {BACK_LINK_SESSION_STORAGE_KEY} from "../index";
+import {
+  checkFollowingAttributeOptionSpellingCriterionActive,
+  checkFollowingAttributeSpellingCriterionActive,
+  followAttributeOptionSpellingCriterion,
+  followAttributeSpellingCriterion
+} from "./helper";
 
 const translate = require('oro/translator');
 
@@ -40,38 +37,9 @@ interface ProductEditFormAppProps {
   product: Product;
 }
 
-const followAttributeSpellingCriterion = (criterionEvaluation: CriterionEvaluationResult, family: Family|null, product: Product) => {
-  if (family === null || criterionEvaluation.status !== CRITERION_DONE && criterionEvaluation.rate.value === MAX_RATE) {
-    return;
-  }
-  window.sessionStorage.setItem(BACK_LINK_SESSION_STORAGE_KEY, JSON.stringify({
-    label: translate('akeneo_data_quality_insights.product_edit_form.back_to_products'),
-    route: 'pim_enrich_product_edit',
-    routeParams: {id: product.meta.id},
-    displayLinkRoutes: [
-      'pim_enrich_attribute_index',
-      'pim_enrich_attribute_edit',
 
-    ],
-  }));
-  redirectToAttributeGridFilteredByFamilyAndQuality(family.meta.id);
-};
-
-const followAttributeOptionSpellingCriterion = (criterionEvaluation: CriterionEvaluationResult, family: Family|null, product: Product) => {
-  if (family === null || criterionEvaluation.status !== CRITERION_DONE || criterionEvaluation.rate.value === MAX_RATE) {
-    return;
-  }
-  window.sessionStorage.setItem(BACK_LINK_SESSION_STORAGE_KEY, JSON.stringify({
-    label: translate('akeneo_data_quality_insights.product_edit_form.back_to_products'),
-    route: 'pim_enrich_product_edit',
-    routeParams: {id: product.meta.id},
-    displayLinkRoutes: [
-      'pim_enrich_attribute_index',
-      'pim_enrich_attribute_edit',
-
-    ],
-  }));
-  redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes(family.meta.id);
+const checkFollowingCriterionActive = (criterionEvaluation: CriterionEvaluationResult) => {
+  return criterionEvaluation.status !== CRITERION_DONE && criterionEvaluation.rate.value !== MAX_RATE
 };
 
 const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product, catalogChannel, catalogLocale}) => {
@@ -101,8 +69,8 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
               <Criterion code={'consistency_textarea_lowercase_words'}/>
               <Criterion code={'consistency_textarea_uppercase_words'}/>
               <Criterion code={'consistency_text_title_formatting'}/>
-              <Criterion code={'consistency_attribute_spelling'} followCriterion={followAttributeSpellingCriterion}/>
-              <Criterion code={'consistency_attribute_option_spelling'} followCriterion={followAttributeOptionSpellingCriterion}/>
+              <Criterion code={'consistency_attribute_spelling'} follow={followAttributeSpellingCriterion} isFollowingActive={checkFollowingAttributeSpellingCriterionActive}/>
+              <Criterion code={'consistency_attribute_option_spelling'} follow={followAttributeOptionSpellingCriterion} isFollowingActive={checkFollowingAttributeOptionSpellingCriterionActive}/>
             </AxisEvaluation>
           </DataQualityInsightsTabContent>
           <AxisRatesOverviewPortal />
