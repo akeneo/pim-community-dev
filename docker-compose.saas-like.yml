@@ -67,7 +67,7 @@ services:
       - 'pim'
 
   memcached:
-    image: 'memcached'
+    image: 'memcached:1.6.7'
     networks:
       - 'pim'
 
