@@ -367,5 +367,6 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_enrich.step.set_attribute_requirements.mass_edit'
+                - '@pim_connector.step.mass_edit_family.compute_data_related_to_family_products'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }

@@ -171,6 +171,15 @@ services:
             - '@validator'
             - '%pim_job_product_batch_size%'
 
+    pim_connector.tasklet.mass_edit_family.compute_completeness_of_family_products:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeCompletenessOfFamilyProductsTasklet'
+        arguments:
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_enrich.connector.reader.mass_edit.family'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo_batch.job_repository'
+            - '@pim_catalog.completeness.product.compute_and_persist'
+
     pim_connector.tasklet.xlsx_family.compute_data_related_to_family_root_product_models:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyRootProductModelsTasklet'
         arguments:
