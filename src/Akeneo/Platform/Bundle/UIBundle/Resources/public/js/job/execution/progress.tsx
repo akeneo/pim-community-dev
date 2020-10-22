@@ -2,6 +2,8 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import {formatSecondsIntl} from 'pimui/js/intl-duration';
 import BaseView = require('pimui/js/view/base');
+import styled, {ThemeProvider} from 'styled-components';
+import {ProgressBar, Level, pimTheme} from 'akeneo-design-system';
 
 const __ = require('oro/translator');
 
@@ -18,28 +20,12 @@ type StepExecutionTracking = {
   totalItems: number;
 }
 
-// TODO replace by DSM component when finished
-type Level = 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
-type ProgressBarSize = 'small' | 'large';
-type ProgressBarProps = {
-  level: Level;
-  percent: number | 'indeterminate';
-  light?: boolean;
-  title?: string;
-  progressLabel?: string;
-  size?: ProgressBarSize;
-};
-
-// TODO replace by DSM component when finished
-const ProgressBar = (props: ProgressBarProps) => {
-  return (
-    <div>
-      <div>{props.title}</div>
-      <div>{props.progressLabel}</div>
-      <div>{props.percent}%</div>
-    </div>
-  );
-};
+const Container = styled.div`
+  display: grid;
+  grid-auto-flow: column;
+  grid-gap: 5px;
+  grid-auto-columns: 1fr;
+`;
 
 const guessStepExecutionTrackingLevel = (step: StepExecutionTracking): Level => {
   if (step.hasError) {
@@ -96,17 +82,20 @@ class JobExecutionProgress extends BaseView {
     const data = this.getRoot().getFormData();
 
     ReactDOM.render(
-      <div>
-        {data.tracking.steps.map((step: StepExecutionTracking, i: number) => (
-          <ProgressBar
-            key={i}
-            title={getStepExecutionTrackingTitle(step)}
-            progressLabel={getStepExecutionTrackingProgressLabel(step)}
-            level={guessStepExecutionTrackingLevel(step)}
-            percent={computeStepExecutionTrackingPercent(step)}
-          />
-        ))}
-      </div>,
+      <ThemeProvider theme={pimTheme}>
+        <Container>
+          {data.tracking.steps.map((step: StepExecutionTracking, i: number) => (
+            <ProgressBar
+              key={i}
+              title={getStepExecutionTrackingTitle(step)}
+              progressLabel={getStepExecutionTrackingProgressLabel(step)}
+              level={guessStepExecutionTrackingLevel(step)}
+              percent={computeStepExecutionTrackingPercent(step)}
+              size="large"
+            />
+          ))}
+        </Container>
+      </ThemeProvider>,
       this.el,
     );
     return this;

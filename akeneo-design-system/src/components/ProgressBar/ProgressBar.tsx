@@ -155,6 +155,11 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
     const [progressBarId] = useState<string>(`progress_${uuid()}`);
 
     const progressBarProps = {};
+
+    if (percent !== 'indeterminate' && isNaN(percent)) {
+      percent = 'indeterminate';
+    }
+
     if (percent !== 'indeterminate') {
       progressBarProps['aria-valuenow'] = computeWidthFromPercent(percent);
       progressBarProps['aria-valuemin'] = 0;
