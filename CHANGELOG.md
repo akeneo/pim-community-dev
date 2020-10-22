@@ -70,7 +70,8 @@
 
 # Technical Improvements
 
-- Upgrade to php7.4
+- TIP-1233: Upgrade to php7.4
+- CPM-38: Upgrade Symfony to 4.4.15
 
 ## Classes
 
