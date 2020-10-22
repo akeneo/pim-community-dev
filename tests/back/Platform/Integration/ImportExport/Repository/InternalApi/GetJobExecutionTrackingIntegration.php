@@ -191,43 +191,10 @@ SQL;
         $expectedJobExecutionTracking->currentStep = 0;
         $expectedJobExecutionTracking->totalSteps = 3;
 
-        $expectedStepExecutionTracking1 = new StepExecutionTracking();
-        $expectedStepExecutionTracking1->isTrackable = false;
-        $expectedStepExecutionTracking1->jobName = 'csv_product_import';
-        $expectedStepExecutionTracking1->stepName = 'validation';
-        $expectedStepExecutionTracking1->status = 'STARTING';
-        $expectedStepExecutionTracking1->duration = 0;
-        $expectedStepExecutionTracking1->hasError = false;
-        $expectedStepExecutionTracking1->hasWarning = false;
-        $expectedStepExecutionTracking1->processedItems = 0;
-        $expectedStepExecutionTracking1->totalItems = 0;
-
-        $expectedStepExecutionTracking2 = new StepExecutionTracking();
-        $expectedStepExecutionTracking2->isTrackable = true;
-        $expectedStepExecutionTracking2->jobName = 'csv_product_import';
-        $expectedStepExecutionTracking2->stepName = 'import';
-        $expectedStepExecutionTracking2->status = 'STARTING';
-        $expectedStepExecutionTracking2->duration = 0;
-        $expectedStepExecutionTracking2->hasError = false;
-        $expectedStepExecutionTracking2->hasWarning = false;
-        $expectedStepExecutionTracking2->processedItems = 0;
-        $expectedStepExecutionTracking2->totalItems = 0;
-
-        $expectedStepExecutionTracking3 = new StepExecutionTracking();
-        $expectedStepExecutionTracking3->isTrackable = true;
-        $expectedStepExecutionTracking3->jobName = 'csv_product_import';
-        $expectedStepExecutionTracking3->stepName = 'import_associations';
-        $expectedStepExecutionTracking3->status = 'STARTING';
-        $expectedStepExecutionTracking3->duration = 0;
-        $expectedStepExecutionTracking3->hasError = false;
-        $expectedStepExecutionTracking3->hasWarning = false;
-        $expectedStepExecutionTracking3->processedItems = 0;
-        $expectedStepExecutionTracking3->totalItems = 0;
-
         $expectedJobExecutionTracking->steps = [
-            $expectedStepExecutionTracking1,
-            $expectedStepExecutionTracking2,
-            $expectedStepExecutionTracking3
+            $this->getValidationStepExecutionTracking(),
+            $this->getImportStepExecutionTracking(),
+            $this->getImportAssociationsStepExecutionTracking()
         ];
 
         return $expectedJobExecutionTracking;
@@ -240,38 +207,18 @@ SQL;
         $expectedJobExecutionTracking->currentStep = 2;
         $expectedJobExecutionTracking->totalSteps = 3;
 
-        $expectedStepExecutionTracking1 = new StepExecutionTracking();
-        $expectedStepExecutionTracking1->isTrackable = false;
-        $expectedStepExecutionTracking1->jobName = 'csv_product_import';
-        $expectedStepExecutionTracking1->stepName = 'validation';
+        $expectedStepExecutionTracking1 = $this->getValidationStepExecutionTracking();
         $expectedStepExecutionTracking1->status = 'COMPLETED';
         $expectedStepExecutionTracking1->duration = 5;
-        $expectedStepExecutionTracking1->hasError = false;
         $expectedStepExecutionTracking1->hasWarning = true;
-        $expectedStepExecutionTracking1->processedItems = 0;
-        $expectedStepExecutionTracking1->totalItems = 0;
 
-        $expectedStepExecutionTracking2 = new StepExecutionTracking();
-        $expectedStepExecutionTracking2->isTrackable = true;
-        $expectedStepExecutionTracking2->jobName = 'csv_product_import';
-        $expectedStepExecutionTracking2->stepName = 'import';
+        $expectedStepExecutionTracking2 = $this->getImportStepExecutionTracking();
         $expectedStepExecutionTracking2->status = 'STARTED';
         $expectedStepExecutionTracking2->duration = 7;
-        $expectedStepExecutionTracking2->hasError = false;
-        $expectedStepExecutionTracking2->hasWarning = false;
         $expectedStepExecutionTracking2->processedItems = 10;
         $expectedStepExecutionTracking2->totalItems = 100;
 
-        $expectedStepExecutionTracking3 = new StepExecutionTracking();
-        $expectedStepExecutionTracking3->isTrackable = true;
-        $expectedStepExecutionTracking3->jobName = 'csv_product_import';
-        $expectedStepExecutionTracking3->stepName = 'import_associations';
-        $expectedStepExecutionTracking3->status = 'STARTING';
-        $expectedStepExecutionTracking3->duration = 0;
-        $expectedStepExecutionTracking3->hasError = false;
-        $expectedStepExecutionTracking3->hasWarning = false;
-        $expectedStepExecutionTracking3->processedItems = 0;
-        $expectedStepExecutionTracking3->totalItems = 0;
+        $expectedStepExecutionTracking3 = $this->getImportAssociationsStepExecutionTracking();
 
         $expectedJobExecutionTracking->steps = [
             $expectedStepExecutionTracking1,
@@ -289,38 +236,19 @@ SQL;
         $expectedJobExecutionTracking->currentStep = 3;
         $expectedJobExecutionTracking->totalSteps = 3;
 
-        $expectedStepExecutionTracking1 = new StepExecutionTracking();
-        $expectedStepExecutionTracking1->isTrackable = false;
-        $expectedStepExecutionTracking1->jobName = 'csv_product_import';
-        $expectedStepExecutionTracking1->stepName = 'validation';
+        $expectedStepExecutionTracking1 = $this->getValidationStepExecutionTracking();
         $expectedStepExecutionTracking1->status = 'COMPLETED';
         $expectedStepExecutionTracking1->duration = 5;
-        $expectedStepExecutionTracking1->hasError = false;
-        $expectedStepExecutionTracking1->hasWarning = false;
-        $expectedStepExecutionTracking1->processedItems = 0;
-        $expectedStepExecutionTracking1->totalItems = 0;
 
-        $expectedStepExecutionTracking2 = new StepExecutionTracking();
-        $expectedStepExecutionTracking2->isTrackable = true;
-        $expectedStepExecutionTracking2->jobName = 'csv_product_import';
-        $expectedStepExecutionTracking2->stepName = 'import';
+        $expectedStepExecutionTracking2 = $this->getImportStepExecutionTracking();
         $expectedStepExecutionTracking2->status = 'COMPLETED';
         $expectedStepExecutionTracking2->duration = 14;
-        $expectedStepExecutionTracking2->hasError = false;
-        $expectedStepExecutionTracking2->hasWarning = false;
         $expectedStepExecutionTracking2->processedItems = 10;
         $expectedStepExecutionTracking2->totalItems = 100;
 
-        $expectedStepExecutionTracking3 = new StepExecutionTracking();
-        $expectedStepExecutionTracking3->isTrackable = true;
-        $expectedStepExecutionTracking3->jobName = 'csv_product_import';
-        $expectedStepExecutionTracking3->stepName = 'import_associations';
+        $expectedStepExecutionTracking3 = $this->getImportAssociationsStepExecutionTracking();
         $expectedStepExecutionTracking3->status = 'COMPLETED';
         $expectedStepExecutionTracking3->duration = 1;
-        $expectedStepExecutionTracking3->hasError = false;
-        $expectedStepExecutionTracking3->hasWarning = false;
-        $expectedStepExecutionTracking3->processedItems = 0;
-        $expectedStepExecutionTracking3->totalItems = 0;
 
         $expectedJobExecutionTracking->steps = [
             $expectedStepExecutionTracking1,
@@ -338,38 +266,20 @@ SQL;
         $expectedJobExecutionTracking->currentStep = 2;
         $expectedJobExecutionTracking->totalSteps = 3;
 
-        $expectedStepExecutionTracking1 = new StepExecutionTracking();
-        $expectedStepExecutionTracking1->isTrackable = false;
-        $expectedStepExecutionTracking1->jobName = 'csv_product_import';
-        $expectedStepExecutionTracking1->stepName = 'validation';
+        $expectedStepExecutionTracking1 = $this->getValidationStepExecutionTracking();
         $expectedStepExecutionTracking1->status = 'COMPLETED';
         $expectedStepExecutionTracking1->duration = 5;
-        $expectedStepExecutionTracking1->hasError = false;
-        $expectedStepExecutionTracking1->hasWarning = false;
-        $expectedStepExecutionTracking1->processedItems = 0;
-        $expectedStepExecutionTracking1->totalItems = 0;
 
-        $expectedStepExecutionTracking2 = new StepExecutionTracking();
-        $expectedStepExecutionTracking2->isTrackable = true;
-        $expectedStepExecutionTracking2->jobName = 'csv_product_import';
-        $expectedStepExecutionTracking2->stepName = 'import';
+        $expectedStepExecutionTracking2 = $this->getImportStepExecutionTracking();
         $expectedStepExecutionTracking2->status = 'FAILED';
         $expectedStepExecutionTracking2->duration = 14;
         $expectedStepExecutionTracking2->hasError = true;
-        $expectedStepExecutionTracking2->hasWarning = false;
         $expectedStepExecutionTracking2->processedItems = 10;
         $expectedStepExecutionTracking2->totalItems = 100;
 
-        $expectedStepExecutionTracking3 = new StepExecutionTracking();
-        $expectedStepExecutionTracking3->isTrackable = true;
-        $expectedStepExecutionTracking3->jobName = 'csv_product_import';
-        $expectedStepExecutionTracking3->stepName = 'import_associations';
+        $expectedStepExecutionTracking3 = $this->getImportAssociationsStepExecutionTracking();
         $expectedStepExecutionTracking3->status = 'STARTING';
         $expectedStepExecutionTracking3->duration = 0;
-        $expectedStepExecutionTracking3->hasError = false;
-        $expectedStepExecutionTracking3->hasWarning = false;
-        $expectedStepExecutionTracking3->processedItems = 0;
-        $expectedStepExecutionTracking3->totalItems = 0;
 
         $expectedJobExecutionTracking->steps = [
             $expectedStepExecutionTracking1,
@@ -378,5 +288,53 @@ SQL;
         ];
 
         return $expectedJobExecutionTracking;
+    }
+
+    private function getValidationStepExecutionTracking()
+    {
+        $stepExecutionTracking = new StepExecutionTracking();
+        $stepExecutionTracking->isTrackable = false;
+        $stepExecutionTracking->jobName = 'csv_product_import';
+        $stepExecutionTracking->stepName = 'validation';
+        $stepExecutionTracking->status = 'STARTING';
+        $stepExecutionTracking->duration = 0;
+        $stepExecutionTracking->hasError = false;
+        $stepExecutionTracking->hasWarning = false;
+        $stepExecutionTracking->processedItems = 0;
+        $stepExecutionTracking->totalItems = 0;
+
+        return $stepExecutionTracking;
+    }
+
+    private function getImportStepExecutionTracking()
+    {
+        $stepExecutionTracking = new StepExecutionTracking();
+        $stepExecutionTracking->isTrackable = true;
+        $stepExecutionTracking->jobName = 'csv_product_import';
+        $stepExecutionTracking->stepName = 'import';
+        $stepExecutionTracking->status = 'STARTING';
+        $stepExecutionTracking->duration = 0;
+        $stepExecutionTracking->hasError = false;
+        $stepExecutionTracking->hasWarning = false;
+        $stepExecutionTracking->processedItems = 0;
+        $stepExecutionTracking->totalItems = 0;
+
+        return $stepExecutionTracking;
+    }
+
+    private function getImportAssociationsStepExecutionTracking()
+    {
+        $stepExecutionTracking = new StepExecutionTracking();
+        $stepExecutionTracking->isTrackable = true;
+        $stepExecutionTracking->jobName = 'csv_product_import';
+        $stepExecutionTracking->stepName = 'import_associations';
+        $stepExecutionTracking->status = 'STARTING';
+        $stepExecutionTracking->duration = 0;
+        $stepExecutionTracking->hasError = false;
+        $stepExecutionTracking->hasWarning = false;
+        $stepExecutionTracking->processedItems = 0;
+        $stepExecutionTracking->totalItems = 0;
+
+        return $stepExecutionTracking;
     }
 }
