@@ -29,8 +29,16 @@ define(
             toggleDisplayWarning: function (event) {
                 var stepIndex = event.currentTarget.dataset.stepIndex;
                 var warningIndex = event.currentTarget.dataset.warningIndex;
-                // var model = this.getFormData();
-                this.expandedWarnings[stepIndex] = [parseInt(warningIndex)];
+                if (this.expandedWarnings[stepIndex]) {
+                    if (this.expandedWarnings[stepIndex].includes(parseInt(warningIndex))) {
+                        const warningIndexToRemove = this.expandedWarnings[stepIndex].indexOf(parseInt(warningIndex));
+                        this.expandedWarnings[stepIndex].splice(warningIndexToRemove, 1);
+                    } else {
+                        this.expandedWarnings[stepIndex].push(parseInt(warningIndex));
+                    }
+                } else {
+                    this.expandedWarnings[stepIndex] = [parseInt(warningIndex)];
+                }
                 this.render();
             },
 
@@ -39,7 +47,6 @@ define(
              */
             initialize: function (config) {
                 this.config = config.config;
-
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
 
@@ -47,6 +54,7 @@ define(
              * {@inheritdoc}
              */
             configure: function () {
+                this.expandedWarnings = {};
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
