@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\KeyIndicator;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
@@ -20,6 +11,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesB
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Doctrine\DBAL\Connection;
 
+/**
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 final class GetProductsEnrichmentStatusQuery implements GetProductsKeyIndicator
 {
     private const GOOD_ENRICHMENT_RATIO = 80;
@@ -149,7 +144,7 @@ SQL;
 
     private function groupProductsByFamily(array $productIds): array
     {
-        $productIds = array_map(fn(ProductId $productId) => $productId->toInt(), $productIds);
+        $productIds = array_map(fn (ProductId $productId) => $productId->toInt(), $productIds);
 
         $query = <<<SQL
 SELECT JSON_OBJECTAGG(products_by_family.family_id, products_by_family.product_ids)

@@ -34,7 +34,7 @@ class UpdateProductsIndex
 
     public function execute(array $productIds): void
     {
-        $productIds = array_map(fn(int $productId) => new ProductId($productId), $productIds);
+        $productIds = array_map(fn (int $productId) => new ProductId($productId), $productIds);
 
         $productsAxesRanks = $this->getLatestProductAxesRanksQuery->byProductIds($productIds);
         $productsKeyIndicators = $this->getProductsKeyIndicators->get($productIds);
