@@ -68,7 +68,7 @@ class Attributes
                 ['codes' => Connection::PARAM_STR_ARRAY]
             )->fetchColumn();
 
-            return false === $attributesIds ? [] : json_decode($attributesIds, true);
+            return !$attributesIds ? [] : json_decode($attributesIds, true);
         });
     }
 

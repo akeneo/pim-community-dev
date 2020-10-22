@@ -30,6 +30,32 @@ class DataQualityInsightsTestCase extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
+    protected function deleteAllProductCriterionEvaluations(): void
+    {
+        $this->get('database_connection')->executeQuery('DELETE FROM pim_data_quality_insights_product_criteria_evaluation');
+    }
+
+    protected function deleteProductCriterionEvaluations(int $productId): void
+    {
+        $this->get('database_connection')->executeQuery(
+            'DELETE FROM pim_data_quality_insights_product_criteria_evaluation WHERE product_id = :productId',
+            ['productId' => $productId]
+        );
+    }
+
+    protected function deleteAllProductModelCriterionEvaluations(): void
+    {
+        $this->get('database_connection')->executeQuery('DELETE FROM pim_data_quality_insights_product_model_criteria_evaluation');
+    }
+
+    protected function deleteProductModelCriterionEvaluations(int $productModelId): void
+    {
+        $this->get('database_connection')->executeQuery(
+            'DELETE FROM pim_data_quality_insights_product_model_criteria_evaluation WHERE product_id = :productId',
+            ['productId' => $productModelId]
+        );
+    }
+
     protected function createProduct(string $identifier, array $data = []): ProductInterface
     {
         $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
@@ -41,6 +67,14 @@ class DataQualityInsightsTestCase extends TestCase
         }
 
         $this->get('pim_catalog.saver.product')->save($product);
+
+        return $product;
+    }
+
+    protected function createProductWithoutEvaluations(string $identifier, array $data = []): ProductInterface
+    {
+        $product = $this->createProduct($identifier, $data);
+        $this->deleteProductCriterionEvaluations($product->getId());
 
         return $product;
     }
@@ -59,6 +93,14 @@ class DataQualityInsightsTestCase extends TestCase
         }
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
+
+        return $productModel;
+    }
+
+    protected function createProductModelWithoutEvaluations(string $code, string $familyVariant, array $data = []): ProductModelInterface
+    {
+        $productModel = $this->createProductModel($code, $familyVariant, $data);
+        $this->deleteProductModelCriterionEvaluations($productModel->getId());
 
         return $productModel;
     }
@@ -109,6 +151,21 @@ class DataQualityInsightsTestCase extends TestCase
         $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
 
         return $familyVariant;
+    }
+
+    protected function createMinimalFamilyAndFamilyVariant(string $familyCode, string $familyVariantCode): void
+    {
+        $this->createAttribute('color', ['type' => AttributeTypes::OPTION_SIMPLE_SELECT]);
+        $this->createFamily($familyCode, ['attributes' => ['color']]);
+        $this->createFamilyVariant($familyVariantCode, $familyCode, [
+            'variant_attribute_sets' => [
+                [
+                    'level' => 1,
+                    'axes' => ['color'],
+                    'attributes' => [],
+                ],
+            ]
+        ]);
     }
 
     protected function createAttribute(string $code, array $data = []): AttributeInterface
