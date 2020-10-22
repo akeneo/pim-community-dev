@@ -25,7 +25,7 @@ import {
   checkFollowingAttributeSpellingCriterionActive,
   followAttributeOptionSpellingCriterion,
   followAttributeSpellingCriterion
-} from "./helper";
+} from "./user-actions";
 
 const translate = require('oro/translator');
 

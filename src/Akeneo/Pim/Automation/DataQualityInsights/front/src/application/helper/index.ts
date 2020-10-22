@@ -19,7 +19,6 @@ import HighlightElement, {
 import MistakeElement from "./EditorHighlight/MistakeElement";
 
 export * from './getQualityBadgeLevel';
-export * from './UserActions';
 
 export {
   WidgetElement, createWidget, WidgetsCollection, EditorTypes, getEditorType,

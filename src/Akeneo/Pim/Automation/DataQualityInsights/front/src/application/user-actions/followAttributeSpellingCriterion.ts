@@ -1,5 +1,4 @@
-import {redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes} from "@akeneo-pim-community/data-quality-insights/src/infrastructure/AttributeGridRouter";
-import {BACK_LINK_SESSION_STORAGE_KEY} from "../../../index";
+import {redirectToAttributeGridFilteredByFamilyAndQuality} from "@akeneo-pim-community/data-quality-insights/src/infrastructure/AttributeGridRouter";
 import {
   CriterionEvaluationResult,
   Family,
@@ -8,11 +7,12 @@ import {
 } from "@akeneo-pim-community/data-quality-insights/src/domain";
 import {CRITERION_DONE} from "@akeneo-pim-community/data-quality-insights/src/domain/Evaluation.interface";
 import {isProductModel} from "@akeneo-pim-community/data-quality-insights/src/application/helper";
+import {BACK_LINK_SESSION_STORAGE_KEY} from '@akeneo-pim-community/data-quality-insights/src/application/constant';
 
 const translate = require('oro/translator');
 
-const followAttributeOptionSpellingCriterion = (criterionEvaluation: CriterionEvaluationResult, family: Family|null, product: Product) => {
-  if (family === null || criterionEvaluation.status === CRITERION_DONE || criterionEvaluation.rate.value === MAX_RATE) {
+const followAttributeSpellingCriterion = (criterionEvaluation: CriterionEvaluationResult, family: Family|null, product: Product) => {
+  if (family === null || criterionEvaluation.status === CRITERION_DONE && criterionEvaluation.rate.value === MAX_RATE) {
     return;
   }
   window.sessionStorage.setItem(BACK_LINK_SESSION_STORAGE_KEY, JSON.stringify({
@@ -25,15 +25,16 @@ const followAttributeOptionSpellingCriterion = (criterionEvaluation: CriterionEv
 
     ],
   }));
-  redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes(family.meta.id);
+  redirectToAttributeGridFilteredByFamilyAndQuality(family.meta.id);
 };
 
-const checkFollowingAttributeOptionSpellingCriterionActive = (criterionEvaluation: CriterionEvaluationResult) => {
+const checkFollowingAttributeSpellingCriterionActive = (criterionEvaluation: CriterionEvaluationResult) => {
   return (
-    criterionEvaluation.code === 'consistency_attribute_option_spelling' &&
+    criterionEvaluation.code === 'consistency_attribute_spelling' &&
     criterionEvaluation.status !== CRITERION_DONE &&
     criterionEvaluation.rate.value !== MAX_RATE
   );
 };
 
-export {followAttributeOptionSpellingCriterion, checkFollowingAttributeOptionSpellingCriterionActive};
+
+export {followAttributeSpellingCriterion, checkFollowingAttributeSpellingCriterionActive};
