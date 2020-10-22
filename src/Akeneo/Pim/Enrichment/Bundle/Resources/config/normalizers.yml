@@ -178,7 +178,7 @@ services:
             - '@pim_enrich.normalizer.entity_with_family_variant'
 
     pim_enrich.normalizer.violation:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ViolationNormalizer'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ConstraintViolationNormalizer'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 100 }
 
@@ -215,7 +215,7 @@ services:
             - '@pim_enrich.error.documentation_builder_registry'
         tags:
             - { name: pim_domain_error_serializer.normalizer, priority: 100 }
-            
+
     pim_enrich.normalizer.constraint_violation:
         class: 'Akeneo\Pim\Enrichment\Component\Error\Normalizer\ConstraintViolationNormalizer'
         arguments:

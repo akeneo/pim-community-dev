@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\CheckAttributeEditable;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -178,7 +179,7 @@ class EditAttributesProcessor extends AbstractProcessor
                 [
                     'class'  => ClassUtils::getClass($entity),
                     'id'     => $entity->getId(),
-                    'string' => $entity instanceof ProductInterface ? $entity->getIdentifier() : $entity->getCode(),
+                    'string' => $entity->getIdentifier(),
                 ]
             )
         );

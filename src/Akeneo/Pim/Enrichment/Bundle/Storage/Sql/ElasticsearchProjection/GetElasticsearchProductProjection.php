@@ -342,14 +342,14 @@ SQL;
     /**
      * Create value collection for several products in batch to minimize IO and improve performance.
      *
-     * @param [
+     * @param array $rows [
      *          [
      *              'identifier' => 'foo',
      *              'raw_values' => ['attribute' => ['channel' => ['locale' => 'data' ]]]
      *          ]
      *        ]
      *
-     * @return [
+     * @return array [
      *          'foo' => [
      *              'identifier' => 'foo',
      *              'raw_values' => ['attribute' => ['channel' => ['locale' => 'data' ]]]

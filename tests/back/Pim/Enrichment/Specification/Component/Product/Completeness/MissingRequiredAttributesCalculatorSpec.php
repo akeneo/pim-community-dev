@@ -38,7 +38,7 @@ class MissingRequiredAttributesCalculatorSpec extends ObjectBehavior
         $family->setCode('accessories');
         $entityWithFamily->getFamily()->willReturn($family);
         $entityWithFamily->getId()->willReturn(42);
-        $entityWithFamily->getCode()->willReturn('my_bag');
+        $entityWithFamily->getIdentifier()->willReturn('my_bag');
         $values = new WriteValueCollection();
         $entityWithFamily->getValues()->willReturn($values);
 

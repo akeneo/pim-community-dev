@@ -333,4 +333,20 @@ final class InMemoryCategoryRepository implements
     {
         throw new NotImplementedException(__METHOD__);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function persistAsNextSiblingOf(CategoryInterface $node, CategoryInterface $sibling)
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function persistAsFirstChildOf(CategoryInterface $node, CategoryInterface $parent)
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
 }

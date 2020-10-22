@@ -76,8 +76,7 @@ class AttributeCopierSpec extends ObjectBehavior
         $normalizer,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
-        ProductInterface $product1,
-        ProductInterface $product2,
+        ProductInterface $product,
         ScalarValue $fromValue
     ) {
         $fromLocale = 'fr_FR';
@@ -98,33 +97,23 @@ class AttributeCopierSpec extends ObjectBehavior
                 'data' => true
             ]);
 
-        $normalizer->normalize(null, 'standard')->shouldBeCalled()->willReturn(null);
-
-        $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromValue);
+        $product->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromValue);
         $builder
-            ->addOrReplaceValue($product1, $toAttribute, $toLocale, $toScope, true)
+            ->addOrReplaceValue($product, $toAttribute, $toLocale, $toScope, true)
             ->shouldBeCalled();
 
-        $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
-        $builder
-            ->addOrReplaceValue($product2, $toAttribute, $toLocale, $toScope, null)
-            ->shouldBeCalled();
-
-        $products = [$product1, $product2];
-        foreach ($products as $product) {
-            $this->copyAttributeData(
-                $product,
-                $product,
-                $fromAttribute,
-                $toAttribute,
-                [
-                    'from_locale' => $fromLocale,
-                    'to_locale' => $toLocale,
-                    'from_scope' => $fromScope,
-                    'to_scope' => $toScope
-                ]
-            );
-        }
+        $this->copyAttributeData(
+            $product,
+            $product,
+            $fromAttribute,
+            $toAttribute,
+            [
+                'from_locale' => $fromLocale,
+                'to_locale' => $toLocale,
+                'from_scope' => $fromScope,
+                'to_scope' => $toScope
+            ]
+        );
     }
 
     function it_copies_a_date_value_to_a_product_value(
@@ -133,8 +122,7 @@ class AttributeCopierSpec extends ObjectBehavior
         $normalizer,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
-        ProductInterface $product1,
-        ProductInterface $product2,
+        ProductInterface $product,
         ScalarValue $fromValue,
         ScalarValue $toValue
     ) {
@@ -155,34 +143,24 @@ class AttributeCopierSpec extends ObjectBehavior
             'data' => '1970-01-01'
         ]);
 
-        $normalizer->normalize(null, 'standard')->shouldBeCalled()->willReturn(null);
-
-        $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromValue);
+        $product->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromValue);
         $builder
-            ->addOrReplaceValue($product1, $toAttribute, $toLocale, $toScope, '1970-01-01')
+            ->addOrReplaceValue($product, $toAttribute, $toLocale, $toScope, '1970-01-01')
             ->shouldBeCalled()
             ->willReturn($toValue);
 
-        $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
-        $builder
-            ->addOrReplaceValue($product2, $toAttribute, $toLocale, $toScope, null)
-            ->shouldBeCalled();
-
-        $products = [$product1, $product2];
-        foreach ($products as $product) {
-            $this->copyAttributeData(
-                $product,
-                $product,
-                $fromAttribute,
-                $toAttribute,
-                [
-                    'from_locale' => $fromLocale,
-                    'to_locale' => $toLocale,
-                    'from_scope' => $fromScope,
-                    'to_scope' => $toScope
-                ]
-            );
-        }
+        $this->copyAttributeData(
+            $product,
+            $product,
+            $fromAttribute,
+            $toAttribute,
+            [
+                'from_locale' => $fromLocale,
+                'to_locale' => $toLocale,
+                'from_scope' => $fromScope,
+                'to_scope' => $toScope
+            ]
+        );
     }
 
     function it_copies_number_value_to_a_product_value(
@@ -191,8 +169,7 @@ class AttributeCopierSpec extends ObjectBehavior
         $normalizer,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
-        ProductInterface $product1,
-        ProductInterface $product2,
+        ProductInterface $product,
         ScalarValue $fromValue
     ) {
         $fromLocale = 'fr_FR';
@@ -212,33 +189,23 @@ class AttributeCopierSpec extends ObjectBehavior
             'data' => 123
         ]);
 
-        $normalizer->normalize(null, 'standard')->shouldBeCalled()->willReturn(null);
-
-        $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromValue);
+        $product->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromValue);
         $builder
-            ->addOrReplaceValue($product1, $toAttribute, $toLocale, $toScope, 123)
+            ->addOrReplaceValue($product, $toAttribute, $toLocale, $toScope, 123)
             ->shouldBeCalled();
 
-        $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
-        $builder
-            ->addOrReplaceValue($product2, $toAttribute, $toLocale, $toScope, null)
-            ->shouldBeCalled();
-
-        $products = [$product1, $product2];
-        foreach ($products as $product) {
-            $this->copyAttributeData(
-                $product,
-                $product,
-                $fromAttribute,
-                $toAttribute,
-                [
-                    'from_locale' => $fromLocale,
-                    'to_locale' => $toLocale,
-                    'from_scope' => $fromScope,
-                    'to_scope' => $toScope
-                ]
-            );
-        }
+        $this->copyAttributeData(
+            $product,
+            $product,
+            $fromAttribute,
+            $toAttribute,
+            [
+                'from_locale' => $fromLocale,
+                'to_locale' => $toLocale,
+                'from_scope' => $fromScope,
+                'to_scope' => $toScope
+            ]
+        );
     }
 
     function it_copies_text_value_to_a_product_value(
@@ -247,8 +214,7 @@ class AttributeCopierSpec extends ObjectBehavior
         $normalizer,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
-        ProductInterface $product1,
-        ProductInterface $product2,
+        ProductInterface $product,
         ScalarValue $fromValue
     ) {
         $fromLocale = 'fr_FR';
@@ -268,33 +234,63 @@ class AttributeCopierSpec extends ObjectBehavior
             'data' => 'data'
         ]);
 
-        $normalizer->normalize(null, 'standard')->shouldBeCalled()->willReturn(null);
-
-        $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromValue);
+        $product->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromValue);
         $builder
-            ->addOrReplaceValue($product1, $toAttribute, $toLocale, $toScope, 'data')
+            ->addOrReplaceValue($product, $toAttribute, $toLocale, $toScope, 'data')
             ->shouldBeCalled();
 
-        $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
+        $this->copyAttributeData(
+            $product,
+            $product,
+            $fromAttribute,
+            $toAttribute,
+            [
+                'from_locale' => $fromLocale,
+                'to_locale' => $toLocale,
+                'from_scope' => $fromScope,
+                'to_scope' => $toScope
+            ]
+        );
+    }
+
+    function it_copies_null_values(
+        $builder,
+        $attrValidatorHelper,
+        $normalizer,
+        AttributeInterface $fromAttribute,
+        AttributeInterface $toAttribute,
+        ProductInterface $product
+    ) {
+        $fromLocale = 'fr_FR';
+        $toLocale = 'fr_FR';
+        $toScope = 'mobile';
+        $fromScope = 'mobile';
+
+        $fromAttribute->getCode()->willReturn('fromAttributeCode');
+        $toAttribute->getCode()->willReturn('toAttributeCode');
+
+        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
+
+        $normalizer->normalize(Argument::cetera())->shouldNotBeCalled();
+
+        $product->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
         $builder
-            ->addOrReplaceValue($product2, $toAttribute, $toLocale, $toScope, null)
+            ->addOrReplaceValue($product, $toAttribute, $toLocale, $toScope, null)
             ->shouldBeCalled();
 
-        $products = [$product1, $product2];
-        foreach ($products as $product) {
-            $this->copyAttributeData(
-                $product,
-                $product,
-                $fromAttribute,
-                $toAttribute,
-                [
-                    'from_locale' => $fromLocale,
-                    'to_locale' => $toLocale,
-                    'from_scope' => $fromScope,
-                    'to_scope' => $toScope
-                ]
-            );
-        }
+        $this->copyAttributeData(
+            $product,
+            $product,
+            $fromAttribute,
+            $toAttribute,
+            [
+                'from_locale' => $fromLocale,
+                'to_locale' => $toLocale,
+                'from_scope' => $fromScope,
+                'to_scope' => $toScope
+            ]
+        );
     }
 
     function it_throws_an_exception_when_locale_is_expected(

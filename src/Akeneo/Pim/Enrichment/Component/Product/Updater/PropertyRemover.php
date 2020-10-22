@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Updater;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\AttributeRemoverInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\FieldRemoverInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\RemoverRegistryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
@@ -58,8 +59,13 @@ class PropertyRemover implements PropertyRemoverInterface
         if ($remover instanceof AttributeRemoverInterface) {
             $attribute = $this->getAttribute($field);
             $remover->removeAttributeData($entityWithValues, $attribute, $data, $options);
-        } else {
+        } elseif ($remover instanceof FieldRemoverInterface) {
             $remover->removeFieldData($entityWithValues, $field, $data, $options);
+        } else {
+            throw new \RuntimeException(sprintf(
+                "The remover must implements AttributeRemoverInterface or FieldRemoverInterface, '%s' given",
+                get_class($remover)
+            ));
         }
 
         return $this;

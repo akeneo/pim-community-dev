@@ -249,7 +249,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
     ) {
         $axes = [$color];
 
-        $entity->getCode()->willReturn('entity_code');
+        $entity->getIdentifier()->willReturn('entity_code');
         $entity->getParent()->willReturn($parent);
         $entity->getFamilyVariant()->willReturn($familyVariant);
         $entity->getValuesForVariation()->willReturn($values);
@@ -370,7 +370,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
     ) {
         $axes = [$color, $size];
 
-        $entity->getCode()->willReturn('entity_code');
+        $entity->getIdentifier()->willReturn('entity_code');
         $entity->getParent()->willReturn($parent);
         $entity->getFamilyVariant()->willReturn($familyVariant);
         $entity->getValuesForVariation()->willReturn($values);
@@ -510,7 +510,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $color->getCode()->willReturn('color');
         $getValuesOfSiblings->for($entity1, ['color'])->willReturn([]);
 
-        $entity2->getCode()->willReturn('entity_2');
+        $entity2->getIdentifier()->willReturn('entity_2');
         $entity2->getParent()->willReturn($parent);
         $entity2->getFamilyVariant()->willReturn($familyVariant);
         $getValuesOfSiblings->for($entity2, ['color'])->willReturn([]);

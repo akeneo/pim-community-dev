@@ -396,7 +396,7 @@ services:
         tags:
             - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
 
-    pim_catalog.query.elasticsearch.filter.completeness:
+    pim_catalog.query.elasticsearch.filter.product_and_product_model.completeness:
         class: '%pim_catalog.query.elasticsearch.filter.completeness.class%'
         arguments:
             - ['completeness']
@@ -411,6 +411,17 @@ services:
                 - '<'
         tags:
             - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.product_model.completeness:
+        class: '%pim_catalog.query.elasticsearch.filter.completeness.class%'
+        arguments:
+            - ['completeness']
+            -
+              - 'AT LEAST COMPLETE'
+              - 'AT LEAST INCOMPLETE'
+              - 'ALL COMPLETE'
+              - 'ALL INCOMPLETE'
+        tags:
             - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
 
     pim_catalog.query.elasticsearch.filter.parent:
