@@ -5,7 +5,7 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpToDateLatestProductAxesRanksQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductsKeyIndicators'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\GetRatesForProductProjection:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\GetDataQualityInsightsPropertiesForProductProjection:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpToDateLatestProductAxesRanksQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductIdsFromProductIdentifiersQuery'

@@ -52,6 +52,7 @@ final class GetProductsEnrichmentStatusQueryIntegration extends DataQualityInsig
 
         $productIds = array_keys($expectedProductsEnrichmentStatus);
         $productIds[] = 12346; // Unknown product
+        $productIds = array_map(fn(int $productId) => new ProductId($productId), $productIds);
 
         $productsEnrichmentStatus = $this->get(GetProductsEnrichmentStatusQuery::class)->execute($productIds);
 

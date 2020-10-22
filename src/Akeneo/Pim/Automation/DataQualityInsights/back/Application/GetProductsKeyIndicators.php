@@ -2,21 +2,17 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetProductsKeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
-final class GetProductsKeyIndicators
+/**
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+class GetProductsKeyIndicators
 {
     private GetLocalesByChannelQueryInterface $getLocalesByChannelQuery;
 
@@ -29,13 +25,19 @@ final class GetProductsKeyIndicators
         $this->keyIndicatorQueries = $keyIndicatorQueries;
     }
 
-    public function get(array $productIds)
+    /**
+     * @param ProductId[] $productIds
+     *
+     * @return array
+     */
+    public function get(array $productIds): array
     {
         $localesByChannel = $this->getLocalesByChannelQuery->getArray();
         $keyIndicatorsResultsByName = $this->executeAllKeyIndicatorsQueries($productIds);
 
         $productsKeyIndicators = [];
         foreach ($productIds as $productId) {
+            $productId = $productId->toInt();
             foreach ($localesByChannel as $channel => $locales) {
                 foreach ($locales as $locale) {
                     foreach ($keyIndicatorsResultsByName as $keyIndicatorName => $keyIndicatorResultsByProduct) {

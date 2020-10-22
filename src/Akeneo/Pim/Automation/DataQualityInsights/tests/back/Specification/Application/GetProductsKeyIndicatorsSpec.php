@@ -6,6 +6,7 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetProductsKeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -32,7 +33,7 @@ final class GetProductsKeyIndicatorsSpec extends ObjectBehavior
             'mobile' => ['en_US'],
         ]);
 
-        $productIds = [13, 42];
+        $productIds = [new ProductId(13), new ProductId(42)];
 
         $expectedKeyIndicators = [
             13 => [
