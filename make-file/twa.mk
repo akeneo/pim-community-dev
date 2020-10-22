@@ -53,7 +53,7 @@
 #
 
 .PHONY: twa-coupling-back
-twa-coupling-back: vendor
+twa-coupling-back:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/WorkOrganization/TeamworkAssistant/.php_cd.php src/Akeneo/Pim/WorkOrganization/TeamworkAssistant
 
 .PHONY: twa-behat-legacy

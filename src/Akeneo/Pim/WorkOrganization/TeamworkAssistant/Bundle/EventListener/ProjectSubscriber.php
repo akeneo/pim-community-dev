@@ -67,7 +67,7 @@ class ProjectSubscriber implements EventSubscriberInterface
             $project->getLocale()->getCode()
         );
 
-        $project->setCode($projectCode);
+        $project->setCode($projectCode->__toString());
         $datagridView->setLabel((string)$projectCode);
     }
 
