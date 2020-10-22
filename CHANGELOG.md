@@ -46,6 +46,7 @@
 - PIM-9496: Change date format in the locale it_IT from dd/MM/yy to dd/MM/yyyy
 - PIM-9519: Fix translation key for datagrid search field
 - PIM-9517: Fix locale selector default value on localizable attributes in product exports
+- PIM-9499: Fix warning display when a job is running with warnings
 
 ## New features
 
