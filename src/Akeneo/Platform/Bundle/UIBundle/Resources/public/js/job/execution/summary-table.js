@@ -30,7 +30,7 @@ define(
                 var stepIndex = event.currentTarget.dataset.stepIndex;
                 var warningIndex = event.currentTarget.dataset.warningIndex;
                 // var model = this.getFormData();
-                this.expandedWarnings[stepIndex] = [warningIndex];
+                this.expandedWarnings[stepIndex] = [parseInt(warningIndex)];
                 this.render();
             },
 
