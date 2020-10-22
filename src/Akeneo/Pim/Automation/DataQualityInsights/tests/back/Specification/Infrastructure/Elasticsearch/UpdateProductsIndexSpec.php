@@ -2,17 +2,9 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductsKeyIndicators;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Enrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRankCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisRankCollection;
@@ -25,23 +17,28 @@ use Akeneo\Pim\Automation\DataQualityInsights\tests\back\Specification\Domain\Mo
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PhpSpec\ObjectBehavior;
 
-class IndexProductRatesSpec extends ObjectBehavior
+class UpdateProductsIndexSpec extends ObjectBehavior
 {
-    public function let(Client $esClient, GetLatestProductAxesRanksQueryInterface $getLatestProductAxesRanksQuery)
-    {
-        $this->beConstructedWith($esClient, $getLatestProductAxesRanksQuery);
+    public function let(
+        Client $esClient,
+        GetLatestProductAxesRanksQueryInterface $getLatestProductAxesRanksQuery,
+        GetProductsKeyIndicators $getProductsKeyIndicators
+    ) {
+        $this->beConstructedWith($esClient, $getLatestProductAxesRanksQuery, $getProductsKeyIndicators);
     }
 
-    public function it_indexes_product_rates(
-        Client $esClient,
-        GetLatestProductAxesRanksQueryInterface $getLatestProductAxesRanksQuery
+    public function it_updates_products_index(
+        $esClient,
+        $getLatestProductAxesRanksQuery,
+        $getProductsKeyIndicators
     ) {
         $consistency = new Consistency();
         $enrichment = new Enrichment();
         $channelEcommerce = new ChannelCode('ecommerce');
         $localeEn = new LocaleCode('en_US');
+        $productIds = [new ProductId(123), new ProductId(456), new ProductId(42)];
 
-        $getLatestProductAxesRanksQuery->byProductIds([new ProductId(123), new ProductId(456), new ProductId(42)])->willReturn([
+        $getLatestProductAxesRanksQuery->byProductIds($productIds)->willReturn([
             123 => (new AxisRankCollection())
                 ->add($consistency->getCode(), (new ChannelLocaleRankCollection())
                     ->addRank($channelEcommerce, $localeEn, Rank::fromInt(1))
@@ -58,12 +55,44 @@ class IndexProductRatesSpec extends ObjectBehavior
                 ),
         ]);
 
+        $productsKeyIndicators = [
+            123 => [
+                'ecommerce' => [
+                    'en_US' => [
+                        'good_enrichment' => true,
+                        'has_image' => false,
+                    ],
+                ],
+            ],
+            456 => [
+                'ecommerce' => [
+                    'en_US' => [
+                        'good_enrichment' => true,
+                        'has_image' => true,
+                    ],
+                ],
+            ],
+            42 => [
+                'ecommerce' => [
+                    'en_US' => [
+                        'good_enrichment' => null,
+                        'has_image' => null,
+                    ],
+                ],
+            ],
+        ];
+
+        $getProductsKeyIndicators->get($productIds)->willReturn($productsKeyIndicators);
+
         $esClient->updateByQuery([
             'script' => [
-                'source' => "ctx._source.rates = params",
+                'inline' => "ctx._source.rates = params.rates; ctx._source.data_quality_insights = params.data_quality_insights;",
                 'params' => [
-                    'consistency' => ['ecommerce' => ['en_US' => 1]],
-                    'enrichment' => ['ecommerce' => ['en_US' => 2]],
+                    'rates' => [
+                        'consistency' => ['ecommerce' => ['en_US' => 1]],
+                        'enrichment' => ['ecommerce' => ['en_US' => 2]],
+                    ],
+                    'data_quality_insights' => ['key_indicators' => $productsKeyIndicators[123]],
                 ],
             ],
             'query' => [
@@ -74,10 +103,13 @@ class IndexProductRatesSpec extends ObjectBehavior
         ])->shouldBeCalled();
         $esClient->updateByQuery([
             'script' => [
-                'source' => "ctx._source.rates = params",
+                'inline' => "ctx._source.rates = params.rates; ctx._source.data_quality_insights = params.data_quality_insights;",
                 'params' => [
-                    'consistency' => ['ecommerce' => ['en_US' => 3]],
-                    'enrichment' => ['ecommerce' => ['en_US' => 5]],
+                    'rates' => [
+                        'consistency' => ['ecommerce' => ['en_US' => 3]],
+                        'enrichment' => ['ecommerce' => ['en_US' => 5]],
+                    ],
+                    'data_quality_insights' => ['key_indicators' => $productsKeyIndicators[456]],
                 ],
             ],
             'query' => [

@@ -103,7 +103,7 @@ services:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.evaluate_products_pending_criteria'
             - '@akeneo.pim.automation.data_quality_insights.consolidate_product_axes_rates'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductsIndex'
             - '@akeneo.pim.automation.data_quality_insights.query.get_product_ids_to_evaluate'
             - '@akeneo.pim.automation.data_quality_insights.evaluate_product_models_pending_criteria'
             - '@akeneo.pim.automation.data_quality_insights.consolidate_product_model_axes_rates'
