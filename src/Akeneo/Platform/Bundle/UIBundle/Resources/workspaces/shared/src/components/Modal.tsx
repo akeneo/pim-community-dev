@@ -16,6 +16,7 @@ const Modal = styled.div`
   overflow: hidden;
   align-items: center;
   padding: 20px 0;
+  cursor: default;
 `;
 
 const ModalCloseButtonContainer = styled.button`

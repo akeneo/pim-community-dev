@@ -14,8 +14,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -28,23 +26,12 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class JobTrackerController extends Controller
 {
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    /** @var JobExecutionRepository */
-    protected $jobExecutionRepo;
-
-    /** @var JobExecutionArchivist */
-    protected $archivist;
-
-    /** @var SecurityFacade */
-    protected $securityFacade;
-
-    /** @var array */
-    protected $jobSecurityMapping;
-
-    /** @var SqlUpdateJobExecutionStatus */
-    private $updateJobExecutionStatus;
+    protected EventDispatcherInterface $eventDispatcher;
+    protected JobExecutionRepository $jobExecutionRepo;
+    protected JobExecutionArchivist $archivist;
+    protected SecurityFacade $securityFacade;
+    protected array $jobSecurityMapping;
+    private SqlUpdateJobExecutionStatus $updateJobExecutionStatus;
 
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
@@ -68,10 +55,8 @@ class JobTrackerController extends Controller
      * @param int    $id
      * @param string $archiver
      * @param string $key
-     *
-     * @return StreamedResponse
      */
-    public function downloadFilesAction($id, $archiver, $key)
+    public function downloadFilesAction($id, $archiver, $key): StreamedFileResponse
     {
         $jobExecution = $this->jobExecutionRepo->find($id);
 
@@ -95,10 +80,8 @@ class JobTrackerController extends Controller
      *
      * @param JobExecution  $jobExecution
      * @param mixed $object The object
-     *
-     * @return bool
      */
-    protected function isJobGranted($jobExecution, $object = null)
+    protected function isJobGranted($jobExecution, $object = null): bool
     {
         $jobExecutionType = $jobExecution->getJobInstance()->getType();
         if (!array_key_exists($jobExecutionType, $this->jobSecurityMapping)) {

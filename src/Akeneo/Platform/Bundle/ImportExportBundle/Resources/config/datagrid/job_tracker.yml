@@ -39,8 +39,9 @@ datagrid:
                 component: pimimportexport/js/datagrid/Actions
                 props:
                     id: string
+                    jobLabel: string
                     isStoppable: boolean
-                # todo fix this
+                # TODO fix this
                 data_name: warningCount
         sorters:
             columns:
@@ -81,5 +82,5 @@ datagrid:
                             choices: '%akeneo_batch.job.batch_status.class%::getAllLabels()'
         properties:
             id: ~
-            jobCode: ~
+            jobLabel: ~
             isStoppable: ~

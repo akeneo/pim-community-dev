@@ -17,12 +17,7 @@ use Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\HydratorInterface;
  */
 class JobExecutionResultRecordHydrator implements HydratorInterface
 {
-    /**
-     * Connector registry
-     *
-     * @var JobRegistry
-     */
-    protected $registry;
+    private JobRegistry $registry;
 
     public function __construct(JobRegistry $registry)
     {

@@ -76,8 +76,9 @@ pim_datagrid:
     stop:
       title: Stop
       confirmation:
-        title: Confirmation
+        title: Stop {{ jobLabel }}
         content: Do you really want to stop this job?
+        ok: Stop the job
 
   filters:
     common:
