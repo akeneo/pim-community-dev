@@ -21,6 +21,8 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
     private const BULK_SIZE = 100;
     private const TIMEBOX_IN_SECONDS_ALLOWED = 1700; // ~28 minutes
 
+    private ?StepExecution $stepExecution;
+
     private EvaluatePendingCriteria $evaluatePendingProductCriteria;
 
     private ConsolidateAxesRates $consolidateProductAxisRates;

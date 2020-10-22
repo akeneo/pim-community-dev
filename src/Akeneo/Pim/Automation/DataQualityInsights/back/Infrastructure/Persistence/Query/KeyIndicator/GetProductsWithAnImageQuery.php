@@ -2,23 +2,19 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\KeyIndicator;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetProductsKeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
+/**
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 final class GetProductsWithAnImageQuery implements GetProductsKeyIndicator
 {
-    private $getLocalesByChannelQuery;
+    private GetLocalesByChannelQueryInterface $getLocalesByChannelQuery;
 
     public function __construct(GetLocalesByChannelQueryInterface $getLocalesByChannelQuery)
     {
@@ -32,6 +28,7 @@ final class GetProductsWithAnImageQuery implements GetProductsKeyIndicator
 
     public function execute(array $productIds): array
     {
+        $productIds = array_map(fn (ProductId $productId) => $productId->toInt(), $productIds);
         $localesByChannel = $this->getLocalesByChannelQuery->getArray();
 
         $result = [];
