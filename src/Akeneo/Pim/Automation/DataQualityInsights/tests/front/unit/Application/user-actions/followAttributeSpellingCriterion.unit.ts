@@ -1,14 +1,16 @@
 import {followAttributeSpellingCriterion} from "@akeneo-pim-ee/data-quality-insights/src/application";
-import {BACK_LINK_SESSION_STORAGE_KEY} from "@akeneo-pim-ee/data-quality-insights/src";
-import {redirectToAttributeGridFilteredByFamilyAndQuality} from "@akeneo-pim-community/data-quality-insights/src/infrastructure/AttributeGridRouter";
+import {redirectToAttributeGridFilteredByFamilyAndQuality} from "@akeneo-pim-ee/data-quality-insights/src/infrastructure/navigation/AttributeGridRouter";
+import {BACK_LINK_SESSION_STORAGE_KEY} from '@akeneo-pim-community/data-quality-insights/src/application/constant';
+import {aCriterion, aFamily, aProduct, aProductModel, aRate} from "../../../utils/provider";
 
-jest.mock('@akeneo-pim-community/data-quality-insights/src/infrastructure/AttributeGridRouter');
+jest.mock('@akeneo-pim-ee/data-quality-insights/src/infrastructure/navigation/AttributeGridRouter');
 
 describe('followAttributeSpellingCriterion', () => {
   beforeEach(() => {
     jest.resetAllMocks();
     sessionStorage.clear();
   });
+  afterAll(() => jest.resetAllMocks())
 
   test('it does not redirects when family is not defined', () => {
     const criterionRate = aRate(85, 'B');

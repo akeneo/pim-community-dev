@@ -1,4 +1,4 @@
-import {redirectToAttributeGridFilteredByFamilyAndQuality} from "@akeneo-pim-community/data-quality-insights/src/infrastructure/AttributeGridRouter";
+import {redirectToAttributeGridFilteredByFamilyAndQuality} from "@akeneo-pim-ee/data-quality-insights/src/infrastructure/navigation/AttributeGridRouter";
 import {
   CriterionEvaluationResult,
   Family,
@@ -12,7 +12,7 @@ import {BACK_LINK_SESSION_STORAGE_KEY} from '@akeneo-pim-community/data-quality-
 const translate = require('oro/translator');
 
 const followAttributeSpellingCriterion = (criterionEvaluation: CriterionEvaluationResult, family: Family|null, product: Product) => {
-  if (family === null || criterionEvaluation.status === CRITERION_DONE && criterionEvaluation.rate.value === MAX_RATE) {
+  if (family === null || criterionEvaluation.status !== CRITERION_DONE || criterionEvaluation.rate.value === MAX_RATE) {
     return;
   }
   window.sessionStorage.setItem(BACK_LINK_SESSION_STORAGE_KEY, JSON.stringify({
