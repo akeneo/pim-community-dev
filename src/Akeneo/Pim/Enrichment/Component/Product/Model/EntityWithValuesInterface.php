@@ -13,6 +13,16 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 interface EntityWithValuesInterface
 {
     /**
+     * @return mixed
+     */
+    public function getId();
+
+    /**
+     * @return mixed
+     */
+    public function getIdentifier();
+
+    /**
      * @return array
      */
     public function getRawValues();

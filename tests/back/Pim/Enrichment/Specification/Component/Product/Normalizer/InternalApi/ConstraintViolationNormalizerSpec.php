@@ -7,7 +7,7 @@ use Akeneo\Pim\Structure\Component\Validator\Constraints\ValidMetric;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\ConstraintViolation;
 
-class ViolationNormalizerSpec extends ObjectBehavior
+class ConstraintViolationNormalizerSpec extends ObjectBehavior
 {
     function it_supports_constraint_violation(ConstraintViolation $violation)
     {

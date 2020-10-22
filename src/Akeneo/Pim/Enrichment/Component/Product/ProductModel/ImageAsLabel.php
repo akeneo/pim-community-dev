@@ -7,7 +7,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\VariantProductRepositoryInterface;
 
 /**
@@ -24,13 +23,9 @@ class ImageAsLabel
     /** @var ProductModelRepositoryInterface */
     private $productModelRepository;
 
-    /** @var ProductRepositoryInterface */
+    /** @var VariantProductRepositoryInterface */
     private $productRepository;
 
-    /**
-     * @param ProductModelRepositoryInterface   $productModelRepository
-     * @param VariantProductRepositoryInterface $productRepository
-     */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
         VariantProductRepositoryInterface $productRepository

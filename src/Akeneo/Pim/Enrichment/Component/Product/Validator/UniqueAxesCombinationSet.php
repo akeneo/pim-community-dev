@@ -51,11 +51,10 @@ class UniqueAxesCombinationSet
     {
         $familyVariantCode = $entity->getFamilyVariant()->getCode();
         $parentCode = $entity->getParent()->getCode();
-        $identifier = $this->getEntityIdentifier($entity);
 
         if (isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination])) {
             $cachedIdentifier = $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination];
-            if ($cachedIdentifier !== $identifier) {
+            if ($cachedIdentifier !== $entity->getIdentifier()) {
                 if ($entity instanceof ProductInterface) {
                     throw new AlreadyExistingAxisValueCombinationException(
                         $cachedIdentifier,
@@ -87,21 +86,7 @@ class UniqueAxesCombinationSet
         }
 
         if (!isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination])) {
-            $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination] = $identifier;
+            $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination] = $entity->getIdentifier();
         }
-    }
-
-    /**
-     * @param EntityWithFamilyVariantInterface $entity
-     *
-     * @return string
-     */
-    private function getEntityIdentifier(EntityWithFamilyVariantInterface $entity): string
-    {
-        if ($entity instanceof ProductInterface) {
-            return $entity->getIdentifier();
-        }
-
-        return $entity->getCode();
     }
 }

@@ -90,6 +90,14 @@ class ProductModelSpec extends ObjectBehavior
         $this->getCategoryCodes()->shouldReturn(['foobar']);
     }
 
+    function it_returns_the_code_as_identifier()
+    {
+        $this->getIdentifier()->shouldReturn(null);
+
+        $this->setCode('the_code');
+        $this->getIdentifier()->shouldReturn('the_code');
+    }
+
     function it_gets_the_label_regardless_of_the_specified_scope_if_the_attribute_as_label_is_not_scopable(
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
@@ -123,8 +131,7 @@ class ProductModelSpec extends ObjectBehavior
         FamilyInterface $family,
         AttributeInterface $attributeAsLabel,
         WriteValueCollection $values,
-        ValueInterface $mobileNameValue,
-        ValueInterface $ecommerceNameValue
+        ValueInterface $mobileNameValue
     ) {
         $familyVariant->getFamily()->willReturn($family);
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
@@ -215,9 +222,7 @@ class ProductModelSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
         AttributeInterface $attributeAsLabel,
-        WriteValueCollection $values,
-        ValueInterface $mobileNameValue,
-        ValueInterface $ecommerceNameValue
+        WriteValueCollection $values
     ) {
         $familyVariant->getFamily()->willReturn($family);
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
