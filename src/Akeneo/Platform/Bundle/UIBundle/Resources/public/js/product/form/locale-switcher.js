@@ -67,16 +67,17 @@ define(
                     .done(function (locales) {
                         this.$el.removeClass('open');
 
-                        const params = {
-                            localeCode: _.first(locales).code,
-                            context: this.config.context
-                        };
+                        const params = {};
                         this.getRoot().trigger('pim_enrich:form:locale_switcher:pre_render', params);
 
-                        let currentLocale = locales.find(locale => locale.code === (this.selectedLocale ?
+                        const defaultLocaleCode = this.selectedLocale ?
                             this.selectedLocale :
-                            UserContext.get('catalogLocale'))
-                        );
+                            (params.localeCode ? params.localeCode : UserContext.get('catalogLocale'));
+
+                        let currentLocale = defaultLocaleCode && locales.find(locale => {
+                            return locale.code === defaultLocaleCode;
+                        });
+
                         if (undefined === currentLocale) {
                             currentLocale = _.first(locales);
                         }

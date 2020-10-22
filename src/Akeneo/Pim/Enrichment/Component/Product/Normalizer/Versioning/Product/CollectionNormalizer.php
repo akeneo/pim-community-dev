@@ -5,9 +5,9 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerAwareInterface;
-use Symfony\Component\Serializer\SerializerAwareTrait;
 
 /**
  * Normalize a doctrine collection
@@ -18,9 +18,9 @@ use Symfony\Component\Serializer\SerializerAwareTrait;
  *
  * @see       Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer
  */
-class CollectionNormalizer implements NormalizerInterface, SerializerAwareInterface, CacheableSupportsMethodInterface
+class CollectionNormalizer implements NormalizerInterface, NormalizerAwareInterface, CacheableSupportsMethodInterface
 {
-    use SerializerAwareTrait;
+    use NormalizerAwareTrait;
 
     /** @var string[] */
     protected $supportedFormats = ['flat'];
@@ -45,7 +45,7 @@ class CollectionNormalizer implements NormalizerInterface, SerializerAwareInterf
     {
         $result = [];
         foreach ($object as $item) {
-            $normalizedItem = $this->serializer->normalize($item, $format, $context);
+            $normalizedItem = $this->normalizer->normalize($item, $format, $context);
             if (is_array($normalizedItem)) {
                 foreach ($normalizedItem as $key => $value) {
                     if (array_key_exists($key, $result)) {

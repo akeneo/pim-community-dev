@@ -117,6 +117,10 @@ class MeasureConverter
     {
         $processedValue = (string) $value;
 
+        if (!is_numeric($processedValue)) {
+            return '0';
+        }
+
         switch ($operator) {
             case "div":
                 if ($operand !== '0') {

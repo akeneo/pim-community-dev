@@ -4,7 +4,9 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValueInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Philippe Mossière <philippe.mossiere@akeneo.com>
@@ -19,7 +21,7 @@ class ReferenceDataCollectionNormalizer extends AbstractProductValueNormalizer i
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ReferenceDataCollectionValue && (
-                ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format
+            ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format
         );
     }
 
@@ -33,6 +35,8 @@ class ReferenceDataCollectionNormalizer extends AbstractProductValueNormalizer i
      */
     protected function getNormalizedData(ValueInterface $value)
     {
+        Assert::implementsInterface($value, ReferenceDataCollectionValueInterface::class);
+
         return $value->getReferenceDataCodes();
     }
 }
