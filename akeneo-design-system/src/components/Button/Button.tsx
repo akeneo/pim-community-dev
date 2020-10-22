@@ -6,11 +6,11 @@ import {Override} from '../../shared';
 type ButtonSize = 'small' | 'default';
 
 type ButtonProps = Override<
-  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  React.ButtonHTMLAttributes<HTMLButtonElement> & React.AnchorHTMLAttributes<HTMLAnchorElement>,
   {
     /**
      * Level of the button defining it's color and outline.
-     * Possible values are: primary, secondary, tertiary, danger and ghost.
+     * Possible values are: primary, secondary, tertiary, warning & danger.
      */
     level?: Level;
 
@@ -61,9 +61,11 @@ type ButtonProps = Override<
   }
 >;
 
-const getColorStyle = (props: {level: Level; ghost: boolean; disabled: boolean} & AkeneoThemedProps) => {
-  const {level, ghost, disabled} = props;
-
+const getColorStyle = ({
+  level,
+  ghost,
+  disabled,
+}: {level: Level; ghost: boolean; disabled: boolean} & AkeneoThemedProps) => {
   if (ghost) {
     return css`
       color: ${getColorForLevel(level, disabled ? 80 : 120)};
@@ -107,14 +109,15 @@ const ContainerStyle = css<
 >`
   display: inline-block;
   border-width: 1px;
-  border-style: ${({ghost}) => (ghost ? 'solid' : 'none')};
   font-size: ${getFontSize('default')};
   font-weight: 400;
   text-transform: uppercase;
-  padding: ${({size}) => (size === 'small' ? '0 10px' : '0 15px')};
   border-radius: 16px;
+  border-style: ${({ghost}) => (ghost ? 'solid' : 'none')};
+  padding: ${({size}) => (size === 'small' ? '0 10px' : '0 15px')};
   height: ${({size}) => (size === 'small' ? '24px' : '32px')};
   line-height: ${({size}) => (size === 'small' ? '24px' : '32px')};
+  outline-color: ${({level}) => getColorForLevel(level, 100)};
   cursor: ${({disabled}) => (disabled ? 'not-allowed' : 'pointer')};
 
   ${getColorStyle}
