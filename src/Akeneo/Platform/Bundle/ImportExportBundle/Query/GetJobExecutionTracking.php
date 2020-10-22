@@ -93,8 +93,8 @@ class GetJobExecutionTracking
         $jobExecutionTracking->currentStep = count($jobExecution->getStepExecutions());
         $jobExecutionTracking->totalSteps = count($jobExecution->getStepExecutions());
         $jobExecutionTracking->steps = $this->createStepExecutionsTrackingWithoutJob(
+            $stepExecutions,
             $jobExecution->getJobInstance()->getCode(),
-            $stepExecutions
         );
 
         return $jobExecutionTracking;
@@ -182,7 +182,7 @@ class GetJobExecutionTracking
         return $duration;
     }
 
-    private function createStepExecutionsTrackingWithoutJob(string $jobName, array $stepExecutions)
+    private function createStepExecutionsTrackingWithoutJob(Collection $stepExecutions, string $jobName)
     {
         $stepExecutionsTracking = [];
         /** @var StepExecution $stepExecution */

@@ -35,7 +35,7 @@ class GetJobExecutionTrackingIntegration extends TestCase
         $this->clock = $this->get('pim_import_export.clock');
     }
 
-    public function testItFetchesTheJobExecutionTrackingForAJobExecutionNotStarted()
+    public function testItFetchesTheJobExecutionTrackingForAJobExecutionNotStarted(): void
     {
         $jobExecutionId = $this->thereIsAJobNotStarted();
 
@@ -57,7 +57,7 @@ class GetJobExecutionTrackingIntegration extends TestCase
         self::assertEquals($expectedJobExecutionTracking, $jobExecutionTracking);
     }
 
-    public function testItFetchesTheJobExecutionTrackingForAJobExecutionTerminated()
+    public function testItFetchesTheJobExecutionTrackingForAJobExecutionTerminated(): void
     {
         $jobExecutionId = $this->thereIsAJobTerminated();
 
@@ -68,13 +68,24 @@ class GetJobExecutionTrackingIntegration extends TestCase
         self::assertEquals($expectedJobExecutionTracking, $jobExecutionTracking);
     }
 
-    public function testItFetchesTheJobExecutionTrackingForAJobExecutionFailed()
+    public function testItFetchesTheJobExecutionTrackingForAJobExecutionFailed(): void
     {
         $jobExecutionId = $this->thereIsAJobFailed();
 
         $jobExecutionTracking = $this->getJobExecutionTracking->execute($jobExecutionId);
 
         $expectedJobExecutionTracking = $this->expectedJobExecutionTrackingFailed();
+
+        self::assertEquals($expectedJobExecutionTracking, $jobExecutionTracking);
+    }
+
+    public function testItFetchesTheJobExecutionTrackingEvenIfJobDoesNotExistAnymore(): void
+    {
+        $jobExecutionId = $this->thereIsAJobExecutionOfJobThatDoesNotExistAnymore();
+
+        $jobExecutionTracking = $this->getJobExecutionTracking->execute($jobExecutionId);
+
+        $expectedJobExecutionTracking = $this->expectedJobExecutionTrackingOfJobThatDoesNotExistAnymore();
 
         self::assertEquals($expectedJobExecutionTracking, $jobExecutionTracking);
     }
@@ -87,7 +98,7 @@ class GetJobExecutionTrackingIntegration extends TestCase
         return $this->catalog->useTechnicalCatalog();
     }
 
-    private function thereIsAJobNotStarted()
+    private function thereIsAJobNotStarted(): int
     {
         $JobInstanceId = $this->sqlConnection->executeQuery('SELECT id FROM akeneo_batch_job_instance WHERE code = "csv_product_import";')->fetchColumn();
         $insertJobExecution = <<<SQL
@@ -99,7 +110,7 @@ SQL;
         return (int)$this->sqlConnection->lastInsertId();
     }
 
-    private function thereIsAJobTerminated()
+    private function thereIsAJobTerminated(): int
     {
         $this->clock->setDateTime(new \DateTime('2020-10-13 14:06:02', new \DateTimeZone('UTC')));
 
@@ -184,6 +195,33 @@ SQL;
         return $jobExecutionId;
     }
 
+    private function thereIsAJobExecutionOfJobThatDoesNotExistAnymore(): int
+    {
+        $this->clock->setDateTime(new \DateTime('2020-10-13 13:06:02', new \DateTimeZone('UTC')));
+
+        $this->sqlConnection->executeUpdate("INSERT INTO akeneo_batch_job_instance(code, label, job_name, status, connector, raw_parameters, type) VALUES ('my_custom_job_deleted', 'My custom job deleted', 'my_custom_job_deleted', 0, 'My connector', 'a:0:{}', 'export');");
+        $jobInstanceId = (int)$this->sqlConnection->lastInsertId();
+
+        $insertJobExecution = <<<SQL
+INSERT INTO akeneo_batch_job_execution (job_instance_id, pid, user, status, start_time, end_time, create_time, updated_time, health_check_time, exit_code, exit_description, failure_exceptions, log_file, raw_parameters)
+VALUES (:job_instance_id, 55, 'admin', 1, '2020-10-16 09:50:28', '2020-10-16 09:50:42', '2020-10-16 09:50:26', '2020-10-16 09:50:42', '2020-10-16 09:50:42', 'COMPLETED', '', 'a:0:{}', '/srv/pim/var/logs/batch/26/batch_753d665999a008628d64a94e0ae83a52cc8f7d87.log', '{}');
+SQL;
+
+        $this->sqlConnection->executeUpdate($insertJobExecution, ['job_instance_id' => $jobInstanceId]);
+        $jobExecutionId = (int)$this->sqlConnection->lastInsertId();
+
+        $insertStepExecutions = <<<SQL
+INSERT INTO akeneo_batch_step_execution (job_execution_id, step_name, status, read_count, write_count, filter_count, start_time, end_time, exit_code, exit_description, terminate_only, failure_exceptions, errors, summary, tracking_data)
+VALUES
+    (:job_execution_id, 'first_step', 1, 0, 0, 0, '2020-10-16 09:50:28', '2020-10-16 09:50:33', 'COMPLETED', '', 0, 'a:0:{}', 'a:0:{}', 'a:1:{s:23:"charset_validator.title";s:8:"UTF-8 OK";}', '{"totalItems": 0, "processedItems": 0}'),
+    (:job_execution_id, 'second_step', 1, 0, 0, 0, '2020-10-16 09:50:33', '2020-10-16 09:50:42', 'COMPLETED', '', 0, 'a:0:{}', 'a:0:{}', 'a:1:{s:13:"item_position";i:1;}', '{"totalItems": 100, "processedItems": 10}');
+SQL;
+
+        $this->sqlConnection->executeUpdate($insertStepExecutions, ['job_execution_id' => $jobExecutionId]);
+
+        return $jobExecutionId;
+    }
+
     private function expectedJobExecutionTrackingNotStarted(): JobExecutionTracking
     {
         $expectedJobExecutionTracking = new JobExecutionTracking();
@@ -259,7 +297,7 @@ SQL;
         return $expectedJobExecutionTracking;
     }
 
-    private function expectedJobExecutionTrackingFailed()
+    private function expectedJobExecutionTrackingFailed(): JobExecutionTracking
     {
         $expectedJobExecutionTracking = new JobExecutionTracking();
         $expectedJobExecutionTracking->status = 'FAILED';
@@ -290,7 +328,36 @@ SQL;
         return $expectedJobExecutionTracking;
     }
 
-    private function getValidationStepExecutionTracking()
+    private function expectedJobExecutionTrackingOfJobThatDoesNotExistAnymore(): JobExecutionTracking
+    {
+        $expectedJobExecutionTracking = new JobExecutionTracking();
+        $expectedJobExecutionTracking->status = 'COMPLETED';
+        $expectedJobExecutionTracking->currentStep = 2;
+        $expectedJobExecutionTracking->totalSteps = 2;
+
+        $stepExecutionTracking1 = new StepExecutionTracking();
+        $stepExecutionTracking1->jobName = 'my_custom_job_deleted';
+        $stepExecutionTracking1->stepName = 'first_step';
+        $stepExecutionTracking1->status = 'COMPLETED';
+        $stepExecutionTracking1->duration = 5;
+        $stepExecutionTracking1->isTrackable = false;
+
+        $stepExecutionTracking2 = new StepExecutionTracking();
+        $stepExecutionTracking2->jobName = 'my_custom_job_deleted';
+        $stepExecutionTracking2->stepName = 'second_step';
+        $stepExecutionTracking2->status = 'COMPLETED';
+        $stepExecutionTracking2->duration = 9;
+        $stepExecutionTracking2->isTrackable = false;
+
+        $expectedJobExecutionTracking->steps = [
+            $stepExecutionTracking1,
+            $stepExecutionTracking2,
+        ];
+
+        return $expectedJobExecutionTracking;
+    }
+
+    private function getValidationStepExecutionTracking(): StepExecutionTracking
     {
         $stepExecutionTracking = new StepExecutionTracking();
         $stepExecutionTracking->isTrackable = false;
@@ -306,7 +373,7 @@ SQL;
         return $stepExecutionTracking;
     }
 
-    private function getImportStepExecutionTracking()
+    private function getImportStepExecutionTracking(): StepExecutionTracking
     {
         $stepExecutionTracking = new StepExecutionTracking();
         $stepExecutionTracking->isTrackable = true;
@@ -322,7 +389,7 @@ SQL;
         return $stepExecutionTracking;
     }
 
-    private function getImportAssociationsStepExecutionTracking()
+    private function getImportAssociationsStepExecutionTracking(): StepExecutionTracking
     {
         $stepExecutionTracking = new StepExecutionTracking();
         $stepExecutionTracking->isTrackable = true;
