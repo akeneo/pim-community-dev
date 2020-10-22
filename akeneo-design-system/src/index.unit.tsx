@@ -1,6 +1,6 @@
 import React, {FC, ForwardRefRenderFunction, PropsWithRef} from 'react';
 import * as Exports from './index';
-import * as Components from './components';
+import * as Components from './components/Components';
 import fs from 'fs';
 import '@testing-library/jest-dom/extend-expect';
 import {render} from 'storybook/test-util';
@@ -25,7 +25,11 @@ const getFiles = (path: string) =>
 
 describe('Every module is exported correctly', () => {
   const exportNames = Object.keys(Exports);
-  const components = [...getSubfolders(['src/components']), ...getFiles('src/icons'), ...getFiles('src/illustrations')];
+  const components = [
+    ...getSubfolders(['src/components/Patterns', 'src/components/Components']),
+    ...getFiles('src/components/Guidelines/Icons'),
+    ...getFiles('src/components/Guidelines/Illustrations')
+  ];
 
   test.each(components)(
     `Test %s is exported correctly.
