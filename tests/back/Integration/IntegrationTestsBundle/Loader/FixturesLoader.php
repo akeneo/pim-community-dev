@@ -198,7 +198,8 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     protected function getHashForFiles(array $files): string
     {
-        $hashes = array_map('sha1_file', $files);
+        $realFiles = array_filter($files, function ($entry) { return is_file($entry); });
+        $hashes = array_map('sha1_file', $realFiles);
 
         return sha1(implode(':', $hashes));
     }
