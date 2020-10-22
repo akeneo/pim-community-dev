@@ -60,6 +60,7 @@ Akeneo\Tool\Component\Batch\Model\StepExecution:
         trackingData:
             type: json
             column: tracking_data
+            nullable: true
     oneToMany:
         warnings:
             targetEntity: Akeneo\Tool\Component\Batch\Model\Warning
