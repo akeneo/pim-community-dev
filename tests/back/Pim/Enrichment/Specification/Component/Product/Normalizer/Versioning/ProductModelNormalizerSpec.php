@@ -4,27 +4,27 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning;
 
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\EntityWithQuantifiedAssociations\QuantifiedAssociationsNormalizer;
-use Doctrine\Common\Collections\ArrayCollection;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\ProductModelNormalizer;
-use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\EntityWithQuantifiedAssociations\QuantifiedAssociationsNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\ProductModelNormalizer;
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Serializer;
 
 class ProductModelNormalizerSpec extends ObjectBehavior
 {
-    function let(QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer)
+    function let(QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer, NormalizerInterface $normalizer)
     {
         $this->beConstructedWith($quantifiedAssociationsNormalizer);
+        $this->setNormalizer($normalizer);
     }
 
     function it_is_initializable()
@@ -47,7 +47,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_root_product_model(
-        Serializer $serializer,
+        NormalizerInterface $normalizer,
         ProductModelInterface $productModel,
         ValueInterface $sku,
         WriteValueCollection $values,
@@ -55,8 +55,6 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer
     ) {
-        $this->setSerializer($serializer);
-
         $familyVariant->getCode()->willReturn('family_variant_2');
         $productModel->getCode()->willReturn('product_model_1');
         $productModel->getFamilyVariant()->willReturn($familyVariant);
@@ -72,7 +70,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $iterator->next()->shouldBeCalled();
 
         $quantifiedAssociationsNormalizer->normalize($productModel, 'flat', Argument::any())->shouldBeCalled()->willReturn([]);
-        $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
+        $normalizer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
 
         $this->normalize($productModel, 'flat', [])->shouldReturn(
             [
@@ -86,7 +84,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_sub_product_model(
-        Serializer $serializer,
+        NormalizerInterface $normalizer,
         ProductModelInterface $productModel,
         ProductModelInterface $parent,
         ValueInterface $sku,
@@ -95,8 +93,6 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer
     ) {
-        $this->setSerializer($serializer);
-
         $familyVariant->getCode()->willReturn('family_variant_2');
         $productModel->getCode()->willReturn('product_model_1');
         $productModel->getFamilyVariant()->willReturn($familyVariant);
@@ -113,7 +109,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $iterator->next()->shouldBeCalled();
 
         $quantifiedAssociationsNormalizer->normalize($productModel, 'flat', Argument::any())->shouldBeCalled()->willReturn([]);
-        $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
+        $normalizer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
 
         $this->normalize($productModel, 'flat', [])->shouldReturn(
             [
@@ -127,7 +123,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_product_model_with_associations(
-        Serializer $serializer,
+        NormalizerInterface $normalizer,
         ProductModelInterface $productModel,
         ValueInterface $sku,
         WriteValueCollection $values,
@@ -145,8 +141,6 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         ProductModelInterface $associatedProductModel2,
         QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer
     ) {
-        $this->setSerializer($serializer);
-
         $familyVariant->getCode()->willReturn('family_variant_2');
         $productModel->getCode()->willReturn('product_model_1');
         $productModel->getFamilyVariant()->willReturn($familyVariant);
@@ -166,7 +160,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             'set-product_models' => 'obi,one',
             'set-product_models-quantity' => '0|1',
         ]);
-        $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
+        $normalizer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
 
         $crossSell->getCode()->willReturn('cross_sell');
         $myCrossSell->getAssociationType()->willReturn($crossSell);

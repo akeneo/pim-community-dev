@@ -7,20 +7,20 @@ use Akeneo\Pim\Enrichment\Component\Comment\Normalizer\Standard\CommentNormalize
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class CommentNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer)
+    function let(NormalizerInterface $normalizer)
     {
-        $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
-        $this->setSerializer($serializer);
+        $this->setNormalizer($normalizer);
     }
 
     function it_is_initializable()
     {
         $this->shouldHaveType(CommentNormalizer::class);
-        $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\SerializerAwareInterface');
+        $this->shouldImplement(NormalizerAwareInterface::class);
     }
 
     function it_is_a_normalizer()
@@ -36,11 +36,15 @@ class CommentNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization(new \stdClass(), 'other_format')->shouldReturn(false);
     }
 
-    function it_normalizes_comment($serializer, CommentInterface $comment, CommentInterface $childComment, UserInterface $author)
-    {
+    function it_normalizes_comment(
+        NormalizerInterface $normalizer,
+        CommentInterface $comment,
+        CommentInterface $childComment,
+        UserInterface $author
+    ) {
         $dateTime = new \DateTime('2015-05-23 15:55:50');
 
-        $serializer
+        $normalizer
             ->normalize($dateTime, 'standard', [])
             ->shouldBeCalled()
             ->willReturn('2015-05-23T15:55:50+01:00');
@@ -48,7 +52,7 @@ class CommentNormalizerSpec extends ObjectBehavior
         $children = new ArrayCollection();
         $children->add($childComment);
 
-        $serializer
+        $normalizer
             ->normalize($childComment, 'standard', [])
             ->shouldBeCalled()
             ->willReturn([
@@ -110,14 +114,14 @@ class CommentNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_comment_whose_author_was_removed(
-        $serializer,
+        NormalizerInterface $normalizer,
         CommentInterface $comment
     ) {
         $dateTime = new \DateTime('2015-05-23 15:55:50');
-        $serializer
+        $normalizer
             ->normalize($dateTime, 'standard', [])
             ->willReturn('2015-05-23T15:55:50+01:00');
-        $serializer->normalize(null, 'standard', [])->willReturn(null);
+        $normalizer->normalize(null, 'standard', [])->willReturn(null);
         $comment->getId()->willReturn(42);
         $comment->getResourceName()->willReturn('Product');
         $comment->getResourceId()->willReturn('100');

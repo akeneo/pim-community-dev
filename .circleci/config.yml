@@ -74,15 +74,15 @@ jobs:
                   name: Build the latest EE Docker images
                   command: |
                       make php-image-dev
-                      docker save -o php-pim-image.tar akeneo/pim-dev/php:7.3
+                      docker save -o php-pim-image.tar akeneo/pim-dev/php:7.4
       - unless:
             condition: << parameters.is_ee_built >>
             steps:
               - run:
                   name: Save the CE image as a tar
                   command: |
-                      docker pull akeneo/pim-php-dev:4.0
-                      docker save -o php-pim-image.tar akeneo/pim-php-dev:4.0
+                      docker pull akeneo/pim-php-dev:master
+                      docker save -o php-pim-image.tar akeneo/pim-php-dev:master
       - run:
           name: Setup tests results folder and log folder
           command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer
