@@ -71,7 +71,7 @@ test('it throws when trying to pass href and onClick', () => {
 
   expect(() => {
     render(
-      <Button onClick={() => {}} href="#nice">
+      <Button onClick={jest.fn()} href="#nice">
         Hello
       </Button>
     );
