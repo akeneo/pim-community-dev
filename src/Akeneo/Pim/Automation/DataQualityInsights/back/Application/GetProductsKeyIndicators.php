@@ -15,14 +15,13 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetProductsKeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
 final class GetProductsKeyIndicators
 {
-    private $getLocalesByChannelQuery;
+    private GetLocalesByChannelQueryInterface $getLocalesByChannelQuery;
 
     /** @var GetProductsKeyIndicator[] */
-    private $keyIndicatorQueries;
+    private iterable $keyIndicatorQueries;
 
     public function __construct(GetLocalesByChannelQueryInterface $getLocalesByChannelQuery, iterable $keyIndicatorQueries)
     {
@@ -33,20 +32,20 @@ final class GetProductsKeyIndicators
     public function get(array $productIds)
     {
         $localesByChannel = $this->getLocalesByChannelQuery->getArray();
-        $keyIndicatorsResults = $this->executeAllKeyIndicatorsQueries($productIds);
+        $keyIndicatorsResultsByName = $this->executeAllKeyIndicatorsQueries($productIds);
 
-        $result = [];
+        $productsKeyIndicators = [];
         foreach ($productIds as $productId) {
             foreach ($localesByChannel as $channel => $locales) {
                 foreach ($locales as $locale) {
-                    foreach ($keyIndicatorsResults as $indicatorName => $keyIndicatorsResult) {
-                        $result[$productId][$channel][$locale][$indicatorName] = array_key_exists($productId, $keyIndicatorsResult) ? $keyIndicatorsResult[$productId][$channel][$locale] : null;
+                    foreach ($keyIndicatorsResultsByName as $keyIndicatorName => $keyIndicatorResultsByProduct) {
+                        $productsKeyIndicators[$productId][$channel][$locale][$keyIndicatorName] = $keyIndicatorResultsByProduct[$productId][$channel][$locale] ?? null;
                     }
                 }
             }
         }
 
-        return $result;
+        return $productsKeyIndicators;
     }
 
     private function executeAllKeyIndicatorsQueries(array $productIds): array
