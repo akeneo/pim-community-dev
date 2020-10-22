@@ -15,11 +15,14 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid;
 
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\PimDataGridBundle\Extension\Sorter\SorterInterface;
+use Oro\Bundle\PimFilterBundle\Datasource\FilterProductDatasourceAdapterInterface;
+use Webmozart\Assert\Assert;
 
 final class ConsistencySorter implements SorterInterface
 {
     public function apply(DatasourceInterface $datasource, $field, $direction)
     {
+        Assert::implementsInterface($datasource, FilterProductDatasourceAdapterInterface::class);
         $datasource->getProductQueryBuilder()->addSorter($field, $direction);
     }
 }

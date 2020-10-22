@@ -6,8 +6,8 @@ use Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\Extension\Filter\Orm\Attrib
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
-use PhpSpec\ObjectBehavior;
 use Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class IsSmartFilterSpec extends ObjectBehavior

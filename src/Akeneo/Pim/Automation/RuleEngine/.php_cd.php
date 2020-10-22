@@ -24,6 +24,7 @@ $rules = [
         'Oro\Bundle\PimDataGridBundle',
         'Oro\Bundle\DataGridBundle',
         'Oro\Bundle\FilterBundle',
+        'Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface',
 
         // TIP-960: Rule Engine should not be linked to Attribute
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
@@ -51,6 +52,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators',
         'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
+        'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',
 
 
     ])->in('Akeneo\Pim\Automation\RuleEngine\Bundle'),

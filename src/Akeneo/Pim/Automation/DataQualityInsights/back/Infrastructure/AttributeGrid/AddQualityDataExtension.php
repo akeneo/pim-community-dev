@@ -21,6 +21,8 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
+use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceInterface as PimDatasourceInterface;
+use Webmozart\Assert\Assert;
 
 class AddQualityDataExtension extends AbstractExtension
 {
@@ -43,6 +45,7 @@ class AddQualityDataExtension extends AbstractExtension
 
     public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
     {
+        Assert::implementsInterface($datasource, PimDatasourceInterface::class);
         $qb = $datasource->getQueryBuilder();
         $rootAlias = current($qb->getRootAliases());
 
@@ -52,7 +55,7 @@ class AddQualityDataExtension extends AbstractExtension
                 AttributeQuality::class,
                 self::ATTRIBUTE_QUALITY_ALIAS,
                 Expr\Join::WITH,
-                $qb->expr()->eq($rootAlias . '.code', self::ATTRIBUTE_QUALITY_ALIAS . '.attributeCode')
+                (string) $qb->expr()->eq($rootAlias . '.code', self::ATTRIBUTE_QUALITY_ALIAS . '.attributeCode')
             );
     }
 }

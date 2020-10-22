@@ -168,7 +168,7 @@ class RuleRelationManager
     }
 
     /**
-     * @param $resourceName
+     * @param string $resourceName
      *
      * @throws \InvalidArgumentException
      *

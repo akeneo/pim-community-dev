@@ -21,6 +21,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyVariantRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\BuilderInterface;
@@ -372,6 +373,7 @@ final class ExecuteRuleContext implements Context
             // in this case, it's a simple string comparison
             // example: 180.00 EUR, 220.00 USD
 
+            Assert::implementsInterface($productValue, PriceCollectionValueInterface::class);
             $price = $productValue->getPrice($priceCurrency);
 
             if ($value === null) {
@@ -455,6 +457,7 @@ final class ExecuteRuleContext implements Context
             // in this case, it's a simple string comparison
             // example: 180.00 EUR, 220.00 USD
 
+            Assert::implementsInterface($productValue, PriceCollectionValueInterface::class);
             $price = $productValue->getPrice($priceCurrency);
             Assert::eq($price->getData(), $value);
         } elseif ('date' === $attribute->getBackendType()) {

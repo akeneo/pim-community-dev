@@ -71,6 +71,8 @@ final class HealthCheckCommand extends Command
         if (count($productModelsIds = $input->getOption('productModels')) > 0) {
             $this->outputTargetedProductModelsInfo($io, $productModelsIds);
         }
+
+        return 0;
     }
 
     private function outputCatalogInfo(SymfonyStyle $io)

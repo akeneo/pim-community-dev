@@ -25,6 +25,7 @@ use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Remove action interface used in product rules.
@@ -63,6 +64,7 @@ class RemoverActionApplier implements ActionApplierInterface
      */
     public function applyAction(ActionInterface $action, array $entitiesWithValues = []): array
     {
+        Assert::implementsInterface($action, ProductRemoveActionInterface::class);
         $impactedItems = $this->getImpactedItems($action);
         foreach ($entitiesWithValues as $index => $entityWithValues) {
             try {

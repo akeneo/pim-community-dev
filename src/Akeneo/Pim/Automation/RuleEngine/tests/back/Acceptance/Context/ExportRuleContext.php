@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Denormalizati
 use Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Normalization\RuleDefinitionProcessor as RuleDefinitionNormalizerProcessor;
 use Akeneo\Test\Pim\Automation\RuleEngine\Common\Context\ExceptionContext;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Behat\Context\Context;
 use Symfony\Component\Yaml\Yaml;
 use Webmozart\Assert\Assert;
@@ -261,6 +262,7 @@ YAML;
         foreach ($normalizedRules['rules'] as $code => $normalizedRule) {
             $normalizedRule['code'] = $code;
             $ruleDefinition = $this->ruleDefinitionDenormalizerProcessor->process($normalizedRule);
+            Assert::implementsInterface($this->ruleDefinitionRepository, SaverInterface::class);
             $this->ruleDefinitionRepository->save($ruleDefinition);
         }
     }

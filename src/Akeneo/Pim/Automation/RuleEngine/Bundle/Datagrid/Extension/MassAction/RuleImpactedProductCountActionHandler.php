@@ -14,10 +14,12 @@ namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\Extension\MassAction;
 use Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\MassActionEvents;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
+use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Event\MassActionEvent;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Mass calculation of count of impacted products by rules
@@ -52,6 +54,7 @@ class RuleImpactedProductCountActionHandler implements MassActionHandlerInterfac
         $this->eventDispatcher->dispatch(MassActionEvents::MASS_RULE_IMPACTED_PRODUCT_COUNT_PRE_HANDLER, $massActionEvent);
 
         $datasource = $datagrid->getDatasource();
+        Assert::implementsInterface($datasource, DatasourceInterface::class);
         $datasource->setHydrator($this->hydrator);
 
         $results = $datasource->getResults();

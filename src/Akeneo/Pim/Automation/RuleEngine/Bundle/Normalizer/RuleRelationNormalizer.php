@@ -72,7 +72,7 @@ class RuleRelationNormalizer implements NormalizerInterface, CacheableSupportsMe
     {
         $result = [];
         foreach ($ruleRelation->getRuleDefinition()->getTranslations() as $translation) {
-            /** @var $translation RuleDefinitionTranslationInterface */
+            /** @var RuleDefinitionTranslationInterface $translation */
             $result[$translation->getLocale()] = $translation->getLabel();
         }
 

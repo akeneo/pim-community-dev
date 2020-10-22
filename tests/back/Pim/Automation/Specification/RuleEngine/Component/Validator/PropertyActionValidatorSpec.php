@@ -3,7 +3,6 @@
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\SetAction;
-use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCopyAction;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetActionInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\PropertyAction;
 use Akeneo\Pim\Automation\RuleEngine\Component\Validator\PropertyActionValidator;
@@ -16,7 +15,6 @@ use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierRegistryInterfac
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -48,8 +46,7 @@ class PropertyActionValidatorSpec extends ObjectBehavior
         $this->shouldHaveType(ConstraintValidator::class);
     }
 
-    function it_throws_exception_if_it_is_not_an_action(Constraint $constraint) {
-
+    function it_throws_exception_if_it_is_not_an_action(PropertyAction $constraint) {
         $this->shouldThrow(
             new \LogicException('Action of type "object" can not be validated.')
         )->during('validate', [new \stdClass(), $constraint]);

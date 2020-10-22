@@ -41,7 +41,9 @@ final class EvaluateAttributeOptionsTasklet implements TaskletInterface
         try {
             $this->evaluateUpdatedAttributeOptions->evaluateSince($this->evaluatedSince());
         } catch (\Exception $exception) {
-            null !== $this->stepExecution && $this->stepExecution->addFailureException($exception);
+            if (null !== $this->stepExecution) {
+                $this->stepExecution->addFailureException($exception);
+            }
             $this->logger->error('The evaluations of the attribute options has failed', [
                 'error_code' => 'attribute_options_evaluation_failed',
                 'error_message' => $exception->getMessage(),
