@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductsKeyIndicators;
@@ -19,16 +10,17 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
-class IndexProductRates
+/**
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+class UpdateProductsIndex
 {
-    /** @var Client */
-    private $esClient;
+    private Client $esClient;
 
-    /** @var GetLatestProductAxesRanksQueryInterface */
-    private $getLatestProductAxesRanksQuery;
+    private GetLatestProductAxesRanksQueryInterface $getLatestProductAxesRanksQuery;
 
-    /** @var GetProductsKeyIndicators */
-    private $getProductsKeyIndicators;
+    private GetProductsKeyIndicators $getProductsKeyIndicators;
 
     public function __construct(
         Client $esClient,
@@ -42,21 +34,24 @@ class IndexProductRates
 
     public function execute(array $productIds): void
     {
-        $productsAxesRanks = $this->getLatestProductAxesRanksQuery->byProductIds(
-            array_map(function ($productId) {
-                return new ProductId($productId);
-            }, $productIds)
-        );
+        $productIds = array_map(fn(int $productId) => new ProductId($productId), $productIds);
+
+        $productsAxesRanks = $this->getLatestProductAxesRanksQuery->byProductIds($productIds);
         $productsKeyIndicators = $this->getProductsKeyIndicators->get($productIds);
 
         foreach ($productIds as $productId) {
-            $axesRanks = array_key_exists($productId, $productsAxesRanks) ? $productsAxesRanks[$productId] : [];
-            $keyIndicators = array_key_exists($productId, $productsKeyIndicators) ? $productsKeyIndicators[$productId] : [];
-            $this->indexProductRanks($productId, $axesRanks, $keyIndicators);
+            $productId = $productId->toInt();
+            if (!array_key_exists($productId, $productsAxesRanks)) {
+                continue;
+            }
+            $axesRanks = $productsAxesRanks[$productId];
+            $keyIndicators = $productsKeyIndicators[$productId] ?? [];
+
+            $this->updateProductIndex($productId, $axesRanks, $keyIndicators);
         }
     }
 
-    private function indexProductRanks(int $productId, ?AxisRankCollection $productAxesRanks, ?array $keyIndicators): void
+    private function updateProductIndex(int $productId, ?AxisRankCollection $productAxesRanks, ?array $keyIndicators): void
     {
         $this->esClient->updateByQuery(
             [
@@ -64,7 +59,7 @@ class IndexProductRates
                     'inline' => "ctx._source.rates = params.rates; ctx._source.data_quality_insights = params.data_quality_insights;",
                     'params' => [
                         'rates' => ($productAxesRanks ? $productAxesRanks->toArrayInt() : []),
-                        'data_quality_insights' => ['key_indicators' => ($keyIndicators ? $keyIndicators : [])],
+                        'data_quality_insights' => ['key_indicators' => $keyIndicators ?? []],
                     ],
                 ],
                 'query' => [
