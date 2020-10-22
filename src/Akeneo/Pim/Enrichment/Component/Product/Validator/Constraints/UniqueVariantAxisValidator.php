@@ -208,22 +208,8 @@ class UniqueVariantAxisValidator extends ConstraintValidator
         $this->context->buildViolation($message, [
             '%values%' => $combination,
             '%attributes%' => $axesCodes,
-            '%validated_entity%' => $this->getEntityIdentifier($entityWithFamilyVariant),
+            '%validated_entity%' => $entityWithFamilyVariant->getIdentifier(),
             '%sibling_with_same_value%' => $siblingIdentifier,
         ])->atPath('attribute')->addViolation();
-    }
-
-    /**
-     * @param EntityWithFamilyVariantInterface $entity
-     *
-     * @return string
-     */
-    private function getEntityIdentifier(EntityWithFamilyVariantInterface $entity): string
-    {
-        if ($entity instanceof ProductInterface) {
-            return $entity->getIdentifier();
-        }
-
-        return $entity->getCode();
     }
 }

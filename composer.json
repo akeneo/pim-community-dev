@@ -37,7 +37,7 @@
         }
     },
     "require": {
-        "php": "7.3.*",
+        "php": "7.4.*",
         "ext-apcu": "*",
         "ext-bcmath": "*",
         "ext-curl": ">=7.0",
@@ -139,7 +139,7 @@
         "behat/mink-extension": "2.3.1",
         "behat/mink-selenium2-driver": "^1.3.1",
         "behat/symfony2-extension": "2.1.5",
-        "phpspec/phpspec": "~6.0.0",
+        "phpspec/phpspec": "~6.2.1",
         "phpspec/prophecy": "~1.10.0",
         "phpunit/phpunit": "^8.0",
         "sebastian/exporter": "~3.1.0",
@@ -150,7 +150,8 @@
         "phpstan/phpstan": "^0.12.25",
         "phpstan/phpstan-symfony": "^0.12.6",
         "league/flysystem-aws-s3-v3": "^1.0",
-        "mcustiel/phiremock": "1.12.1"
+        "mcustiel/phiremock": "1.12.1",
+        "phpstan/phpstan-webmozart-assert": "^0.12.7"
     },
     "conflict": {
         "symfony/symfony": "*"

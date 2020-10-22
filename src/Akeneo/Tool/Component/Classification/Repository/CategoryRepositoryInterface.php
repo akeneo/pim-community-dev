@@ -170,4 +170,14 @@ interface CategoryRepositoryInterface extends
      * @return array Multi-dimensional array representing the tree
      */
     public function getFilledTree(CategoryInterface $root, Collection $categories);
+
+    /**
+     * @see Gedmo\Tree\Entity\Repository
+     */
+    public function persistAsNextSiblingOf(CategoryInterface $node, CategoryInterface $sibling);
+
+    /**
+     * @see Gedmo\Tree\Entity\Repository
+     */
+    public function persistAsFirstChildOf(CategoryInterface $node, CategoryInterface $parent);
 }

@@ -47,7 +47,7 @@ class MetricComparator implements ComparatorInterface
             return null;
         }
 
-        if (null === $data['data']['amount']) {
+        if (!isset($data['data']['amount'])) {
             return [
                 'scope' => $data['scope'],
                 'locale' => $data['locale'],

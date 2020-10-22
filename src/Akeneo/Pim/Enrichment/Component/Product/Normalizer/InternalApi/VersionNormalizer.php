@@ -8,9 +8,11 @@ use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Version normalizer
@@ -124,6 +126,7 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
             if (null === $user) {
                 $userName = sprintf('%s - %s', $author, $this->translator->trans('pim_user.user.removed_user'));
             } else {
+                Assert::isInstanceOf($user, UserInterface::class);
                 $userName = sprintf('%s %s', $user->getFirstName(), $user->getLastName());
             }
 
