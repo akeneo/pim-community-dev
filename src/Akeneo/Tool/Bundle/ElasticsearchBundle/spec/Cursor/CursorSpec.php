@@ -77,7 +77,7 @@ class CursorSpec extends ObjectBehavior
             ])
             ->willReturn([
                 'hits' => [
-                    'total' => 4,
+                    'total' => ['value' => 4],
                     'hits' => [
                         [
                             '_source' => ['identifier' => 'fum'],
@@ -94,7 +94,7 @@ class CursorSpec extends ObjectBehavior
                 'search_after' => [1490810565000, '#fum']
             ])->willReturn([
                 'hits' => [
-                    'total' => 4,
+                    'total' => ['value' => 4],
                     'hits' => []
                 ]
             ]);

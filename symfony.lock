@@ -344,7 +344,7 @@
         "version": "v0.3.3"
     },
     "php": {
-        "version": "7.3"
+        "version": "7.4"
     },
     "php-cs-fixer/diff": {
         "version": "v1.3.0"
@@ -372,6 +372,9 @@
     },
     "phpstan/phpstan-symfony": {
         "version": "0.11.6"
+    },
+    "phpstan/phpstan-webmozart-assert": {
+        "version": "0.12.7"
     },
     "phpunit/php-code-coverage": {
         "version": "7.0.8"
