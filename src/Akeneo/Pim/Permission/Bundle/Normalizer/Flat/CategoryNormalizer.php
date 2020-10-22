@@ -52,16 +52,16 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
         $normalizedCategory = $this->categoryNormalizer->normalize($category, $format, $context);
 
         $normalizedCategory['view_permission'] = implode(
-            array_map('strval', $this->accessManager->getViewUserGroups($category)),
-            ','
+            ',',
+            array_map('strval', $this->accessManager->getViewUserGroups($category))
         );
         $normalizedCategory['edit_permission'] = implode(
-            array_map('strval', $this->accessManager->getEditUserGroups($category)),
-            ','
+            ',',
+            array_map('strval', $this->accessManager->getEditUserGroups($category))
         );
         $normalizedCategory['own_permission'] = implode(
-            array_map('strval', $this->accessManager->getOwnUserGroups($category)),
-            ','
+            ',',
+            array_map('strval', $this->accessManager->getOwnUserGroups($category))
         );
 
         return $normalizedCategory;

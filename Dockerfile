@@ -27,11 +27,15 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
         aspell-en aspell-es aspell-de aspell-fr aspell-it aspell-sv aspell-da aspell-nl aspell-no aspell-pt-br \
         ca-certificates \
         curl \
+        wget \
         ghostscript \
         gpg \
         gpg-agent \
         libcurl4-openssl-dev \
         libssl-dev && \
+     wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg &&\
+        sh -c 'echo "deb https://packages.sury.org/php/ buster main" > /etc/apt/sources.list.d/php.list' &&\
+    apt-get update && \
     apt-get clean && \
     apt-get --yes autoremove --purge && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
@@ -41,23 +45,23 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
         imagemagick \
         libmagickcore-6.q16-2-extra \
         php-memcached \
-        php7.3-apcu \
-        php7.3-bcmath \
-        php7.3-cli \
-        php7.3-curl \
-        php7.3-exif \
-        php7.3-fpm \
-        php7.3-gd \
-        php7.3-imagick \
-        php7.3-intl \
-        php7.3-mbstring \
-        php7.3-mysql \
-        php7.3-opcache \
-        php7.3-xml \
-        php7.3-zip && \
+        php7.4-fpm \
+        php7.4-cli \
+        php7.4-intl \
+        php7.4-opcache \
+        php7.4-mysql \
+        php7.4-zip \
+        php7.4-xml \
+        php7.4-curl \
+        php7.4-mbstring \
+        php7.4-bcmath \
+        php7.4-imagick \
+        php7.4-gd \
+        php7.4-apcu \
+        php7.4-exif && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
-    ln -s /usr/sbin/php-fpm7.3 /usr/local/sbin/php-fpm && \
+    ln -s /usr/sbin/php-fpm7.4 /usr/local/sbin/php-fpm && \
     usermod --uid 1000 www-data && groupmod --gid 1000 www-data && \
     mkdir /srv/pim && \
     usermod -d /srv/pim www-data && \
@@ -67,9 +71,9 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
 RUN sed -i '/<!-- <policy domain="module" rights="none" pattern="{PS,PDF,XPS}" \/> -->/c\  <policy domain="module" rights="read|write" pattern="{PS,PDF,XPS}" \/>' /etc/ImageMagick-6/policy.xml
 RUN sed -i '/<policy domain="coder" rights="none" pattern="PDF" \/>/c\  <policy domain="coder" rights="read|write" pattern="PDF" \/>' /etc/ImageMagick-6/policy.xml
 
-COPY docker/php.ini /etc/php/7.3/cli/conf.d/99-akeneo.ini
-COPY docker/php.ini /etc/php/7.3/fpm/conf.d/99-akeneo.ini
-COPY docker/fpm.conf /etc/php/7.3/fpm/pool.d/zzz-akeneo.conf
+COPY docker/php.ini /etc/php/7.4/cli/conf.d/99-akeneo.ini
+COPY docker/php.ini /etc/php/7.4/fpm/conf.d/99-akeneo.ini
+COPY docker/fpm.conf /etc/php/7.4/fpm/pool.d/zzz-akeneo.conf
 
 #
 # Image used for development
@@ -81,16 +85,16 @@ ENV PHP_CONF_OPCACHE_VALIDATE_TIMESTAMP=1
 RUN apt-get update && \
     apt-get --yes install \
         curl \
-        default-mysql-client \ 
+        default-mysql-client \
         git \
         perceptualdiff \
-        php7.3-xdebug \ 
+        php7.4-xdebug \
         procps \
         unzip &&\
     phpdismod xdebug && \
-    mkdir /etc/php/7.3/enable-xdebug && \
-    ln -s /etc/php/7.3/mods-available/xdebug.ini /etc/php/7.3/enable-xdebug/xdebug.ini && \
-    sed -i "s#listen = /run/php/php7.3-fpm.sock#listen = 9000#g" /etc/php/7.3/fpm/pool.d/www.conf && \
+    mkdir /etc/php/7.4/enable-xdebug && \
+    ln -s /etc/php/7.4/mods-available/xdebug.ini /etc/php/7.4/enable-xdebug/xdebug.ini && \
+    sed -i "s#listen = /run/php/php7.4-fpm.sock#listen = 9000#g" /etc/php/7.4/fpm/pool.d/www.conf && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -99,16 +103,16 @@ RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") && \
     mkdir -p /tmp/blackfire && \
     tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire && \
     mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get('extension_dir');")/blackfire.so && \
-    printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > /etc/php/7.3/cli/conf.d/blackfire.ini && \
-    printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > /etc/php/7.3/fpm/conf.d/blackfire.ini && \
+    printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > /etc/php/7.4/cli/conf.d/blackfire.ini && \
+    printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > /etc/php/7.4/fpm/conf.d/blackfire.ini && \
     rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz && \
     mkdir -p /tmp/blackfire && \
     curl -A "Docker" -L https://blackfire.io/api/v1/releases/client/linux_static/amd64 | tar zxp -C /tmp/blackfire && \
     mv /tmp/blackfire/blackfire /usr/bin/blackfire && \
     rm -Rf /tmp/blackfire
 
-COPY docker/build/xdebug.ini /etc/php/7.3/cli/conf.d/99-akeneo-xdebug.ini
-COPY docker/build/xdebug.ini /etc/php/7.3/fpm/conf.d/99-akeneo-xdebug.ini
+COPY docker/build/xdebug.ini /etc/php/7.4/cli/conf.d/99-akeneo-xdebug.ini
+COPY docker/build/xdebug.ini /etc/php/7.4/fpm/conf.d/99-akeneo-xdebug.ini
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 RUN chmod +x /usr/local/bin/composer
@@ -169,7 +173,7 @@ RUN mkdir var && \
     yarnpkg run less && \
     (test -d vendor/akeneo/pim-community-dev/akeneo-design-system && \
         { yarnpkg --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system install --frozen-lockfile;yarnpkg --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system run lib:build; } || \
-        { yarnpkg --cwd=akeneo-design-system install --frozen-lockfile; yarnpkg --cwd=akeneo-design-system run lib:build; } ) && \ 
+        { yarnpkg --cwd=akeneo-design-system install --frozen-lockfile; yarnpkg --cwd=akeneo-design-system run lib:build; } ) && \
     EDITION=cloud yarnpkg run webpack && \
     find . -type d -name node_modules | xargs rm -rf && \
     rm -rf public/test_dist && \
