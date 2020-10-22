@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.76 (2020-10-22)
+
 ## Features:
 
 - GITHUB-APD-227: add the PIM communication channel
