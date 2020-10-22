@@ -13,18 +13,19 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\KeyIndicator;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleDataScalarCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetProductsKeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Doctrine\DBAL\Connection;
 
 final class GetProductsEnrichmentStatusQuery implements GetProductsKeyIndicator
 {
-    private const GOOD_ENRICHEMENT_RATIO = 80;
+    private const GOOD_ENRICHMENT_RATIO = 80;
 
-    private $db;
+    private Connection $db;
 
-    private $getLocalesByChannelQuery;
+    private GetLocalesByChannelQueryInterface $getLocalesByChannelQuery;
 
     public function __construct(Connection $db, GetLocalesByChannelQueryInterface $getLocalesByChannelQuery)
     {
@@ -39,7 +40,6 @@ final class GetProductsEnrichmentStatusQuery implements GetProductsKeyIndicator
 
     public function execute(array $productIds): array
     {
-        $localesByChannel = $this->getLocalesByChannelQuery->getArray();
         $productIdsByFamilyId = $this->groupProductsByFamily($productIds);
 
         //To handle a edge case where there is only product(s) without families
@@ -49,42 +49,80 @@ final class GetProductsEnrichmentStatusQuery implements GetProductsKeyIndicator
 
         $numberOfAttributesByFamilyId = $this->getNumberOfAttributesByFamilyId(array_keys($productIdsByFamilyId));
 
-        $result = [];
+        $productsEnrichmentStatus = [];
         foreach ($productIdsByFamilyId as $familyId => $familyProductIds) {
-            $result += $this->getProductEnrichmentStatusByChannelAndLocale($familyProductIds, $localesByChannel, $numberOfAttributesByFamilyId[$familyId]);
+            $productsEnrichmentStatus += $this->getProductEnrichmentStatusByChannelAndLocale($familyProductIds, $numberOfAttributesByFamilyId[$familyId] ?? 0);
         }
 
-        return $result;
+        return $productsEnrichmentStatus;
     }
 
-    private function getProductEnrichmentStatusByChannelAndLocale(array $productIds, array $localesByChannel, int $familyNumberOfAttributes): array
+    private function getProductEnrichmentStatusByChannelAndLocale(array $productIds, int $familyNumberOfAttributes): array
     {
-        $query = $this->buildQuery($localesByChannel);
+        $localesByChannel = $this->getLocalesByChannelQuery->getArray();
+        $numberOfEmptyValuesByProduct = $this->retrieveNumberOfEmptyValuesByProduct($productIds);
 
-        $stmt = $this->db->executeQuery($query, ['productIds' => $productIds], ['productIds' => Connection::PARAM_INT_ARRAY]);
-        $productsResults = [];
-        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-            $productsResults[$row['product_id']] = $row;
-        }
-
-        $ProductStatus = [];
+        $productEnrichmentStatus = [];
         foreach ($productIds as $productId) {
-            $productResults = $productsResults[$productId] ?? [];
-            $channelLocaleStatus = ChannelLocaleDataScalarCollection::filledWith($localesByChannel, function ($channel, $locale) use ($productResults, $familyNumberOfAttributes) {
-                $numberOfAttributesWithNoValue = $productResults[$channel.$locale] ?? null;
-
-                return null !== $numberOfAttributesWithNoValue ? $this->computeEnrichmentRatioStatus($familyNumberOfAttributes, $numberOfAttributesWithNoValue) : null;
-            });
-
-            $ProductStatus[$productId] = $channelLocaleStatus->toArray();
+            $numberOfEmptyValues = $numberOfEmptyValuesByProduct[$productId] ?? [];
+            foreach ($localesByChannel as $channel => $locales) {
+                foreach ($locales as $locale) {
+                    $productEnrichmentStatus[$productId][$channel][$locale] =
+                        $this->computeEnrichmentRatioStatus($familyNumberOfAttributes, $numberOfEmptyValues[$channel.$locale] ?? null);
+                }
+            }
         }
 
-        return $ProductStatus;
+        return $productEnrichmentStatus;
     }
 
-    private function computeEnrichmentRatioStatus(int $familyNumberOfAttributes, int $numberOfMissingAttributes): bool
+    private function retrieveNumberOfEmptyValuesByProduct(array $productIds): array
     {
-        return ($familyNumberOfAttributes - $numberOfMissingAttributes) / $familyNumberOfAttributes * 100 >= self::GOOD_ENRICHEMENT_RATIO;
+        $selectQueryParts = [];
+        foreach ($this->getLocalesByChannelQuery->getArray() as $channel => $locales) {
+            foreach ($locales as $locale) {
+                $selectQueryParts[] = "SUM(JSON_LENGTH(JSON_EXTRACT(result, '$.data.attributes_with_rates.$channel.$locale'))) as $channel$locale";
+            }
+        }
+        $fieldsQuery = join(',', $selectQueryParts);
+
+        $query = <<<SQL
+SELECT product_id, $fieldsQuery
+FROM pim_data_quality_insights_product_criteria_evaluation
+WHERE product_id IN(:productIds) AND criterion_code IN(:criterionCodes)
+GROUP BY product_id;
+SQL;
+
+        $stmt = $this->db->executeQuery(
+            $query,
+            [
+                'productIds' => $productIds,
+                'criterionCodes' => [
+                    EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE,
+                    EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE,
+                ]
+            ],
+            [
+                'productIds' => Connection::PARAM_INT_ARRAY,
+                'criterionCodes' => Connection::PARAM_STR_ARRAY,
+            ]
+        );
+
+        $numberOfEmptyValuesByProduct = [];
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $numberOfEmptyValuesByProduct[$row['product_id']] = $row;
+        }
+
+        return $numberOfEmptyValuesByProduct;
+    }
+
+    private function computeEnrichmentRatioStatus(int $familyNumberOfAttributes, $numberOfMissingAttributes): ?bool
+    {
+        if (null === $numberOfMissingAttributes || 0 === $familyNumberOfAttributes) {
+            return null;
+        }
+
+        return ($familyNumberOfAttributes - $numberOfMissingAttributes) / $familyNumberOfAttributes * 100 >= self::GOOD_ENRICHMENT_RATIO;
     }
 
     private function getNumberOfAttributesByFamilyId(array $familyIds): array
@@ -108,7 +146,6 @@ SQL;
         return $numberOfAttributesByFamily;
     }
 
-    //Could be extracted in a separated query if necessary (POC Laurent)
     private function groupProductsByFamily(array $productIds): array
     {
         $query = <<<SQL
@@ -129,24 +166,5 @@ SQL;
         }
 
         return json_decode($result, true);
-    }
-
-    private function buildQuery(array $localesByChannel): string
-    {
-        $selectQueryParts = [];
-        foreach ($localesByChannel as $channel => $locales) {
-            foreach ($locales as $locale) {
-                $selectQueryParts[] = "SUM(JSON_LENGTH(JSON_EXTRACT(result, '$.data.attributes_with_rates.$channel.$locale'))) as $channel$locale";
-            }
-        }
-        $fieldsQuery = join(',', $selectQueryParts);
-
-        return <<<SQL
-SELECT product_id, $fieldsQuery
-FROM pim_data_quality_insights_product_criteria_evaluation
-WHERE product_id IN(:productIds)
-AND criterion_code IN('completeness_of_non_required_attributes', 'completeness_of_required_attributes')
-GROUP BY product_id;
-SQL;
     }
 }
