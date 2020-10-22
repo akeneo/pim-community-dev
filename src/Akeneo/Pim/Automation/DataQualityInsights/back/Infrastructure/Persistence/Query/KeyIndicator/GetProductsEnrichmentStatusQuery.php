@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enri
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetProductsKeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Doctrine\DBAL\Connection;
 
 final class GetProductsEnrichmentStatusQuery implements GetProductsKeyIndicator
@@ -148,6 +149,8 @@ SQL;
 
     private function groupProductsByFamily(array $productIds): array
     {
+        $productIds = array_map(fn(ProductId $productId) => $productId->toInt(), $productIds);
+
         $query = <<<SQL
 SELECT JSON_OBJECTAGG(products_by_family.family_id, products_by_family.product_ids)
 FROM (

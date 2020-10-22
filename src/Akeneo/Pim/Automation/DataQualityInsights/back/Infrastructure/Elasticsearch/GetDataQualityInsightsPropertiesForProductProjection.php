@@ -2,33 +2,24 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductsKeyIndicators;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdsFromProductIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductAxesRanksQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface;
 
-final class GetRatesForProductProjection implements GetAdditionalPropertiesForProductProjectionInterface
+/**
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+final class GetDataQualityInsightsPropertiesForProductProjection implements GetAdditionalPropertiesForProductProjectionInterface
 {
-    /** @var GetProductIdsFromProductIdentifiersQueryInterface */
-    private $getProductIdsFromProductIdentifiersQuery;
+    private GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery;
 
-    /** @var GetLatestProductAxesRanksQueryInterface */
-    private $getLatestProductAxesRanksQuery;
+    private GetLatestProductAxesRanksQueryInterface $getLatestProductAxesRanksQuery;
 
-    /** @var GetProductsKeyIndicators */
-    private $getProductsKeyIndicators;
+    private GetProductsKeyIndicators $getProductsKeyIndicators;
 
     public function __construct(
         GetLatestProductAxesRanksQueryInterface $getLatestProductAxesRanksQuery,
@@ -47,11 +38,7 @@ final class GetRatesForProductProjection implements GetAdditionalPropertiesForPr
     {
         $productIds = $this->getProductIdsFromProductIdentifiersQuery->execute($productIdentifiers);
         $productAxesRanks = $this->getLatestProductAxesRanksQuery->byProductIds($productIds);
-        $productKeyIndicators = $this->getProductsKeyIndicators->get(
-            array_map(function (ProductId $productId) {
-                return $productId->toInt();
-            }, $productIds)
-        );
+        $productKeyIndicators = $this->getProductsKeyIndicators->get($productIds);
 
         $additionalProperties = [];
         foreach ($productIds as $productIdentifier => $productId) {
