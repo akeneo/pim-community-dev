@@ -91,7 +91,7 @@ class CursorSpec extends ObjectBehavior
             ])
             ->willReturn([
                 'hits' => [
-                    'total' => 4,
+                    'total' => ['value' => 4],
                     'hits' => [
                         [
                             '_source' => ['identifier' => 'a-root-product-model', 'document_type' => ProductModelInterface::class],
@@ -112,7 +112,7 @@ class CursorSpec extends ObjectBehavior
                 'track_total_hits' => true,
             ])->willReturn([
             'hits' => [
-                'total' => 4,
+                'total' => ['value' => 4],
                 'hits' => []
             ]
         ]);
@@ -166,7 +166,7 @@ class CursorSpec extends ObjectBehavior
             ])
             ->willReturn([
                 'hits' => [
-                    'total' => 4,
+                    'total' => ['value' => 4],
                     'hits' => [
                         [
                             '_source' => ['identifier' => 'foo', 'document_type' => ProductModelInterface::class],
@@ -187,7 +187,7 @@ class CursorSpec extends ObjectBehavior
                 'track_total_hits' => true,
             ])->willReturn([
             'hits' => [
-                'total' => 4,
+                'total' => ['value' => 4],
                 'hits' => []
             ]
         ]);

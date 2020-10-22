@@ -4,43 +4,40 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning;
 
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\EntityWithQuantifiedAssociations\QuantifiedAssociationsNormalizer;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
-use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\EntityWithQuantifiedAssociations\QuantifiedAssociationsNormalizer;
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerAwareInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductNormalizerSpec extends ObjectBehavior
 {
     function let(
-        SerializerInterface $serializer,
+        NormalizerInterface $normalizer,
         CollectionFilterInterface $filter,
         QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer
     ) {
-        $serializer->implement(NormalizerInterface::class);
-
         $this->beConstructedWith($quantifiedAssociationsNormalizer, $filter);
-        $this->setSerializer($serializer);
+        $this->setNormalizer($normalizer);
     }
 
-    function it_is_a_serializer_aware_normalizer()
+    function it_is_a_normalizer_aware_normalizer()
     {
         $this->shouldBeAnInstanceOf(NormalizerInterface::class);
-        $this->shouldBeAnInstanceOf(SerializerAwareInterface::class);
+        $this->shouldImplement(NormalizerAwareInterface::class);
     }
 
     function it_supports_flat_normalization_of_product(ProductInterface $product)
@@ -55,7 +52,7 @@ class ProductNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_variant_product(
         $filter,
-        $serializer,
+        NormalizerInterface $normalizer,
         ProductInterface $product,
         ValueInterface $sku,
         WriteValueCollection $values,
@@ -83,7 +80,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $filter->filterCollection($values, 'pim.transform.product_value.flat', Argument::cetera())->willReturn([$sku]);
 
         $quantifiedAssociationsNormalizer->normalize($product, 'flat', Argument::any())->shouldBeCalled()->willReturn([]);
-        $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
+        $normalizer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
 
         $this->normalize($product, 'flat', [])->shouldReturn(
             [
@@ -104,7 +101,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         WriteValueCollection $values,
         FamilyInterface $family,
         QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer,
-        $serializer
+        NormalizerInterface $normalizer
     ) {
         $family->getCode()->willReturn('shoes');
 
@@ -125,7 +122,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $filter->filterCollection($values, 'pim.transform.product_value.flat', Argument::cetera())->willReturn([$sku]);
 
         $quantifiedAssociationsNormalizer->normalize($product, 'flat', Argument::any())->shouldBeCalled()->willReturn([]);
-        $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
+        $normalizer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
 
         $this->normalize($product, 'flat', [])->shouldReturn(
             [
@@ -156,7 +153,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         ValueInterface $skuAssocProduct2,
         WriteValueCollection $values,
         FamilyInterface $family,
-        $serializer
+        NormalizerInterface $normalizer
     ) {
         $family->getCode()->willReturn('shoes');
 
@@ -214,7 +211,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             'set-product_models-quantity' => '0|1',
         ]);
 
-        $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
+        $normalizer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
 
         $this->normalize($product, 'flat', [])->shouldReturn(
             [
@@ -240,7 +237,7 @@ class ProductNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_product_with_a_multiselect_value(
         $filter,
-        $serializer,
+        NormalizerInterface $normalizer,
         ProductInterface $product,
         ValueInterface $sku,
         ValueInterface $colors,
@@ -273,8 +270,8 @@ class ProductNormalizerSpec extends ObjectBehavior
             ->filterCollection($values, 'pim.transform.product_value.flat', Argument::cetera())
             ->willReturn([$sku, $colors]);
 
-        $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
-        $serializer->normalize($colors, 'flat', Argument::any())->willReturn(['colors' => 'red, blue']);
+        $normalizer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
+        $normalizer->normalize($colors, 'flat', Argument::any())->willReturn(['colors' => 'red, blue']);
         $quantifiedAssociationsNormalizer->normalize($product, 'flat', Argument::any())->shouldBeCalled()->willReturn([]);
 
         $this->normalize($product, 'flat', [])->shouldReturn(
@@ -298,7 +295,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         WriteValueCollection $values,
         ProductPriceInterface $productPrice,
         FamilyInterface $family,
-        SerializerInterface $serializer,
+        NormalizerInterface $normalizer,
         QuantifiedAssociationsNormalizer $quantifiedAssociationsNormalizer
     ) {
         $family->getCode()->willReturn('shoes');
@@ -332,7 +329,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         );
 
         $quantifiedAssociationsNormalizer->normalize($product, 'flat', Argument::any())->shouldBeCalled()->willReturn([]);
-        $serializer->normalize($price, 'flat', Argument::any())->willReturn(['price-EUR' => '356.00']);
+        $normalizer->normalize($price, 'flat', Argument::any())->willReturn(['price-EUR' => '356.00']);
 
         $this->normalize($product, 'flat', ['price-EUR' => ''])->shouldReturn(
             [

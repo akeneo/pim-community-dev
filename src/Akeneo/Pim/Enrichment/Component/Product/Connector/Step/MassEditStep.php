@@ -6,7 +6,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\Item\MassEdit\TemporaryFil
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\AbstractStep;
-use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -18,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class MassEditStep extends AbstractStep
 {
-    /** @var StepExecutionAwareInterface */
+    /** @var TemporaryFileCleaner */
     protected $cleaner;
 
     /**
@@ -46,20 +45,12 @@ class MassEditStep extends AbstractStep
         $this->cleaner->execute();
     }
 
-    /**
-     * @return TemporaryFileCleaner
-     */
-    public function getCleaner()
+    public function getCleaner(): TemporaryFileCleaner
     {
         return $this->cleaner;
     }
 
-    /**
-     * @param StepExecutionAwareInterface $cleaner
-     *
-     * @return MassEditStep
-     */
-    public function setCleaner(StepExecutionAwareInterface $cleaner)
+    public function setCleaner(TemporaryFileCleaner $cleaner): MassEditStep
     {
         $this->cleaner = $cleaner;
 

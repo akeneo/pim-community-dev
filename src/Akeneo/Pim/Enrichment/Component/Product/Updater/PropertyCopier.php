@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Updater;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AttributeCopierInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\CopierRegistryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\FieldCopierInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -78,8 +79,13 @@ class PropertyCopier implements PropertyCopierInterface
                 $toAttribute,
                 $options
             );
-        } else {
+        } elseif ($copier instanceof FieldCopierInterface) {
             $copier->copyFieldData($fromEntityWithValues, $toEntityWithValues, $fromField, $toField, $options);
+        } else {
+            throw new \RuntimeException(sprintf(
+                "The copier must implements AttributeCopierInterface or FieldCopierInterface, '%s' given",
+                get_class($copier)
+            ));
         }
 
         return $this;

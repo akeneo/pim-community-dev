@@ -153,7 +153,7 @@ class AttributeColumnInfoExtractor
                 $isScopable ? 'a scope' : 'no scope',
                 $isPrice ? 'an optional currency' : 'no currency',
             ];
-            $expected = implode($expected, ', ');
+            $expected = implode(', ', $expected);
 
             throw new \InvalidArgumentException(
                 sprintf(
