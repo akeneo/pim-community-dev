@@ -3,7 +3,7 @@ import {
   DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES,
   DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES
 } from '../../../../listener';
-import {isRootProductModel, isSimpleProduct, isVariantProduct} from '../../../../helper/ProductEditForm/Product';
+import {isRootProductModel, isSimpleProduct, isVariantProduct} from '../../../../helper/ProductHelper';
 import {Product} from '../../../../../domain';
 import {ATTRIBUTE_TO_IMPROVE_SESSION_STORAGE_KEY, PRODUCT_MODEL_ATTRIBUTES_TAB_NAME} from '../../../../constant';
 

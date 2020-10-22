@@ -1,7 +1,7 @@
 import React, {FunctionComponent, ReactElement} from 'react';
 import {DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE} from "../../../../listener";
 import {Product} from "../../../../../domain";
-import {isSimpleProduct} from "../../../../helper/ProductEditForm/Product";
+import {isSimpleProduct} from "../../../../helper/ProductHelper";
 import {
   ATTRIBUTE_TO_IMPROVE_SESSION_STORAGE_KEY,
   MAX_VARIATION_LEVELS,

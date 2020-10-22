@@ -1,7 +1,7 @@
 import {AttributeWithRecommendation, Evaluation, Product} from '../../../../../domain';
 import React from 'react';
 import AttributesList from './AttributesList';
-import {isRootProductModel} from "../../../../helper/ProductEditForm/Product";
+import {isRootProductModel} from "../../../../helper/ProductHelper";
 import {ROOT_PRODUCT_MODEL_LEVEL} from "../../../../constant";
 
 const __ = require('oro/translator');

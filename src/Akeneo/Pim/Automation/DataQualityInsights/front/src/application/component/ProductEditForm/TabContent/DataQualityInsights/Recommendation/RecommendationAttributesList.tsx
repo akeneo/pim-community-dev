@@ -3,7 +3,7 @@ import {useCatalogContext, useFetchProductFamilyInformation} from '../../../../.
 import AttributeWithRecommendation from '../../../../../../domain/AttributeWithRecommendation.interface';
 import AttributesList from '../AttributesList';
 import AttributesListWithVariations from '../AttributesListWithVariations';
-import {isSimpleProduct} from '../../../../../helper/ProductEditForm/Product';
+import {isSimpleProduct} from '../../../../../helper/ProductHelper';
 import {Evaluation, Product} from '../../../../../../domain';
 
 interface RecommendationAttributesListProps {

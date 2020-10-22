@@ -1,5 +1,5 @@
 import React, {FC, ReactElement, ReactNode, useMemo} from 'react';
-import {Family, MAX_RATE, Product, Rate} from '../../../../../domain';
+import {Family, Product} from '../../../../../domain';
 import Evaluation, {
   CRITERION_ERROR,
   CRITERION_IN_PROGRESS,
@@ -7,42 +7,22 @@ import Evaluation, {
   CriterionEvaluationResult,
 } from '../../../../../domain/Evaluation.interface';
 import {Recommendation, RecommendationAttributesList, RecommendationType} from './Recommendation';
-import {isSimpleProduct} from '../../../../helper/ProductEditForm/Product';
 import {useFetchProductFamilyInformation, useProduct} from '../../../../../infrastructure/hooks';
+import {criterionPlaceholder, evaluationPlaceholder, isSimpleProduct, isSuccess} from '../../../../helper';
 
-const __ = require('oro/translator');
+const translate = require('oro/translator');
 
 type FollowCriterionHandler = (criterionEvaluation: CriterionEvaluationResult, family: Family|null, product: Product) => void;
+type CheckFollowingCriterionActive = (criterionEvaluation: CriterionEvaluationResult, family: Family|null, product: Product) => boolean;
 
 interface CriterionProps {
   code: string;
   criterionEvaluation?: CriterionEvaluationResult;
   axis?: string;
   evaluation?: Evaluation;
-  followCriterion?: FollowCriterionHandler;
+  follow?: FollowCriterionHandler;
+  isFollowingActive?: CheckFollowingCriterionActive;
 }
-
-const isSuccess = (rate: Rate) => {
-  return rate && rate.value === MAX_RATE;
-};
-
-const criterionPlaceholder: CriterionEvaluationResult = {
-  rate: {
-    value: null,
-    rank: null,
-  },
-  code: '',
-  status: 'not_applicable',
-  improvable_attributes: []
-
-};
-const evaluationPlaceholder: Evaluation = {
-  rate: {
-    value: null,
-    rank: null,
-  },
-  criteria: [],
-};
 
 const buildRecommendation = (recommendationContent: ReactNode|null, criterionEvaluation: CriterionEvaluationResult, evaluation: Evaluation, product: Product, axis: string): ReactElement => {
   const criterion = criterionEvaluation.code;
@@ -73,11 +53,14 @@ const buildRecommendation = (recommendationContent: ReactNode|null, criterionEva
   );
 };
 
-const Criterion: FC<CriterionProps> = ({children, code, criterionEvaluation = criterionPlaceholder, axis = '', evaluation = evaluationPlaceholder, followCriterion}) => {
+const Criterion: FC<CriterionProps> = ({children, code, criterionEvaluation = criterionPlaceholder, axis = '', evaluation = evaluationPlaceholder, follow, isFollowingActive = () => false}) => {
   const criterion = code;
   const product = useProduct();
   const family = useFetchProductFamilyInformation();
-  const isClickable = followCriterion !== undefined;
+  const isClickable = isFollowingActive(criterionEvaluation, family, product) && (follow !== undefined);
+  const handleFollowingCriterion = (!isClickable || follow === undefined) ? undefined : () => {
+    follow(criterionEvaluation, family, product)
+  };
 
   const recommendation = useMemo(() => {
     return buildRecommendation(children, criterionEvaluation, evaluation, product, axis);
@@ -85,16 +68,14 @@ const Criterion: FC<CriterionProps> = ({children, code, criterionEvaluation = cr
 
   const rowProps = {
     className: `AknVerticalList-item ${isClickable ? 'AknVerticalList-item--clickable' : ''}`,
-    onClick: followCriterion === undefined ? undefined : () => {
-      followCriterion(criterionEvaluation, family, product)
-    },
+    onClick: handleFollowingCriterion,
   }
 
   return (
     <li data-testid={"dqiProductEvaluationCriterion"} {...rowProps}>
       <div className={`CriterionMessage ${!isSimpleProduct(product) ? 'CriterionMessage--Variant' : ''}`}>
         <span className="CriterionRecommendationMessage">
-          {__(`akeneo_data_quality_insights.product_evaluation.criteria.${criterion}.recommendation`)}:&nbsp;
+          {translate(`akeneo_data_quality_insights.product_evaluation.criteria.${criterion}.recommendation`)}:&nbsp;
         </span>
         {recommendation}
       </div>
@@ -103,4 +84,4 @@ const Criterion: FC<CriterionProps> = ({children, code, criterionEvaluation = cr
 };
 
 export default Criterion;
-export type {FollowCriterionHandler};
+export type {FollowCriterionHandler, CheckFollowingCriterionActive};

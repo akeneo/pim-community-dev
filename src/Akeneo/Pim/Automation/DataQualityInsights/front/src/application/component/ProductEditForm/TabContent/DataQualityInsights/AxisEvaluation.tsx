@@ -7,6 +7,7 @@ import {
   CriterionEvaluationResult,
 } from '../../../../../domain/Evaluation.interface';
 import Criterion from './Criterion';
+import {evaluationPlaceholder} from '../../../../helper';
 
 interface AxisEvaluationProps {
   evaluation?: Evaluation;
@@ -23,14 +24,6 @@ const isAxisGradingInProgress = (criteria: CriterionEvaluationResult[]) => {
   return criteria
     .filter((criterionEvaluation: CriterionEvaluationResult) => criterionEvaluation.status === CRITERION_IN_PROGRESS)
     .length > 0;
-};
-
-const evaluationPlaceholder: Evaluation = {
-  rate: {
-    value: null,
-    rank: null,
-  },
-  criteria: [],
 };
 
 const AxisEvaluation: FC<AxisEvaluationProps> = ({children, evaluation = evaluationPlaceholder, axis}) => {

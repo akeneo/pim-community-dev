@@ -1,4 +1,4 @@
-import {Product} from "../../../domain";
+import {Product} from "../../domain";
 
 export const isSimpleProduct = ((product: Product) => product.meta.level === null);
 
