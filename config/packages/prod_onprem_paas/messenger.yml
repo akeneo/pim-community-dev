@@ -1,4 +1,0 @@
-framework:
-    messenger:
-        transports:
-            business_event: 'in-memory://'

@@ -25,7 +25,7 @@ datagrid:
                 label:         Status
                 frontend_type: react
                 type: field
-                component: pimimportexport/js/JobStatusBadge
+                component: pimimportexport/js/JobExecutionStatus
                 props:
                     status: string
                     currentStep: integer
