@@ -8,7 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 
-/**a
+/**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
