@@ -130,7 +130,7 @@ jobs:
           assignees: ${{ github.actor }}
 
       - name: Comment current PR to notify that new visual snapshots are available
-        uses: thollander/actions-comment-pull-request@master
+        uses: vinodsai-a/actions-comment-pull-request@master
         if: failure() && steps.visual_test_execution.outcome == 'failure'
         with:
           message: |
@@ -148,7 +148,7 @@ jobs:
           external_repository: akeneo/akeneo-design-system
 
       - name: Comment PR to say that the staging env is available
-        uses: thollander/actions-comment-pull-request@master
+        uses: vinodsai-a/actions-comment-pull-request@master
         with:
           message: |
             A new version of the staging env has been deployed :tada:
