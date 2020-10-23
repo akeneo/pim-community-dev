@@ -2,7 +2,7 @@ import AttributeWithRecommendation from '../../../../../domain/AttributeWithReco
 import Attribute from './Attribute';
 import React from 'react';
 import {CriterionEvaluationResult, Evaluation, Product} from '../../../../../domain';
-import TooManyAttributesLink from "./TooManyAttributesLink";
+import {TooManyAttributesLink} from "./TooManyAttributesLink";
 import {uniq as _uniq} from 'lodash';
 
 const __ = require('oro/translator');
