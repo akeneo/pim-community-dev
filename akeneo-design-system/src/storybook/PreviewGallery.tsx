@@ -37,8 +37,8 @@ const LabelContainer = styled.div`
   text-overflow: ellipsis;
 `;
 
-const SubTitle = styled.h2`
+const Subtitle = styled.h2`
   text-transform: Capitalize;
 `;
 
-export {PreviewGrid, PreviewCard, PreviewContainer, LabelContainer, SubTitle};
+export {PreviewGrid, PreviewCard, PreviewContainer, LabelContainer, Subtitle};

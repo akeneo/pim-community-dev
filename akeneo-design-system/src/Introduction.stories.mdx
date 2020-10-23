@@ -145,7 +145,9 @@ export const COMPONENTS_EXCLUDE = ['CardGrid', 'HighlightTitle'];
         <div
           class="link-icon"
           style={{
-            backgroundImage: `url("./all-visual-tsx-visual-tests-renders-components-${componentName.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()}-standard-correctly-1-snap.png")`,
+            backgroundImage: `url("./all-visual-tsx-visual-tests-renders-components-${componentName
+              .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+              .toLowerCase()}-standard-correctly-1-snap.png")`,
           }}
         ></div>
         <span>
@@ -157,4 +159,12 @@ export const COMPONENTS_EXCLUDE = ['CardGrid', 'HighlightTitle'];
 </div>
 <div class="subheading">Patterns</div>
 
-`//TODO`
+<div class="link-list">
+  <a class="link-item" onClick={linkTo('Patterns/Overlays', 'Confirm Modal')}>
+    <span class="link-icon">✅</span>
+    <span>
+      <strong>Overlays</strong>
+      Confirm Modal is a nice Overlay
+    </span>
+  </a>
+</div>
