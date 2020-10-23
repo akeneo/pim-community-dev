@@ -10,7 +10,7 @@ type Labels = {
 const aProduct = (
     id: number = 1234,
     labels: Labels = {},
-    identifier: string = 'idx_1234', 
+    identifier: string = 'idx_1234',
     family: string = 'a_family'
 ): Product => {
     return  {
@@ -123,7 +123,8 @@ const anAttribute = (
     id: number = 1234,
     type: string = 'a_type',
     group: string ='an_attribute_group',
-    labels: Labels = {}
+    labels: Labels = {},
+    reference_data_name: string = 'a_reference_data',
 ): Attribute => {
     return {
         code,
@@ -132,7 +133,8 @@ const anAttribute = (
         group,
         meta: {
             id
-        }
+        },
+        reference_data_name
     };
 }
 

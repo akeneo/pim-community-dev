@@ -1,7 +1,7 @@
 import useFetchProductDataQualityEvaluation
   from "@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks/ProductEditForm/useFetchProductDataQualityEvaluation";
-import useFetchProductFamilyInformation
-  from "@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks/ProductEditForm/useFetchProductFamilyInformation";
+import useProductFamily
+  from "@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks/ProductEditForm/useProductFamily";
 import useCatalogContext
   from "@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks/ProductEditForm/useCatalogContext";
 import useProduct
@@ -23,7 +23,7 @@ import useFetchIgnoreTextIssue from "./EditorHighlight/Spellcheck/useFetchIgnore
 
 export {
   useFetchProductDataQualityEvaluation,
-  useFetchProductFamilyInformation,
+  useProductFamily,
   useCatalogContext,
   useProduct,
   useFetchProductAxisRates,

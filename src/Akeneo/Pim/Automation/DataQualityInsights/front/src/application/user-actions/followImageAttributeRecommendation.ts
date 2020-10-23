@@ -1,0 +1,30 @@
+import {
+  followAttributeRecommendation,
+  FollowAttributeRecommendationHandler
+} from "@akeneo-pim-community/data-quality-insights/src/application/user-actions"
+import {Attribute, Family} from "@akeneo-pim-community/data-quality-insights/src/domain"
+
+const router = require('pim/router');
+
+const ASSET_COLLECTION_TYPE = 'pim_catalog_asset_collection';
+
+const findAttribute = (code: string, family: Family|null): Attribute|undefined => {
+  if (!family) {
+    return undefined;
+  }
+
+  return family.attributes.find((attribute) => attribute.code === code);
+}
+
+const followImageAttributeRecommendation: FollowAttributeRecommendationHandler = (attributeCode, product, family) => {
+  const attribute = findAttribute(attributeCode, family);
+
+  if (!attribute || attribute.type !== ASSET_COLLECTION_TYPE) {
+    followAttributeRecommendation(attributeCode, product, family);
+    return
+  }
+
+  localStorage.setItem('akeneo.asset_manager.grid.current_asset_family', attribute.reference_data_name as string);
+  router.redirectToRoute('akeneo_asset_manager_asset_family_index');
+};
+export {followImageAttributeRecommendation};

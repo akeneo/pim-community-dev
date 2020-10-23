@@ -24,7 +24,7 @@ import {
   checkFollowingAttributeOptionSpellingCriterionActive,
   checkFollowingAttributeSpellingCriterionActive,
   followAttributeOptionSpellingCriterion,
-  followAttributeSpellingCriterion
+  followAttributeSpellingCriterion, followImageAttributeRecommendation
 } from "./user-actions";
 
 const translate = require('oro/translator');
@@ -50,7 +50,7 @@ const ProductModelEditFormApp: FunctionComponent<ProductModelEditFormAppProps> =
             <AxisEvaluation axis={'enrichment'}>
               <Criterion code={'completeness_of_non_required_attributes'}/>
               <Criterion code={'completeness_of_required_attributes'}/>
-              <Criterion code={'missing_image_attribute'}>
+              <Criterion code={'missing_image_attribute'} followAttributeRecommendation={followImageAttributeRecommendation}>
                 <Recommendation supports={(criterion => criterion.improvable_attributes.length === 0)}>
                   <span className="NotApplicableAttribute">{translate('akeneo_data_quality_insights.product_evaluation.messages.add_image_attribute_recommendation')}</span>
                 </Recommendation>
@@ -62,8 +62,14 @@ const ProductModelEditFormApp: FunctionComponent<ProductModelEditFormAppProps> =
               <Criterion code={'consistency_textarea_lowercase_words'}/>
               <Criterion code={'consistency_textarea_uppercase_words'}/>
               <Criterion code={'consistency_text_title_formatting'}/>
-              <Criterion code={'consistency_attribute_spelling'} follow={followAttributeSpellingCriterion} isFollowingActive={checkFollowingAttributeSpellingCriterionActive}/>
-              <Criterion code={'consistency_attribute_option_spelling'} follow={followAttributeOptionSpellingCriterion} isFollowingActive={checkFollowingAttributeOptionSpellingCriterionActive}/>
+              <Criterion code={'consistency_attribute_spelling'}
+                 followCriterionRecommendation={followAttributeSpellingCriterion}
+                 isFollowingCriterionRecommendationAllowed={checkFollowingAttributeSpellingCriterionActive}
+              />
+              <Criterion code={'consistency_attribute_option_spelling'}
+                 followCriterionRecommendation={followAttributeOptionSpellingCriterion}
+                 isFollowingCriterionRecommendationAllowed={checkFollowingAttributeOptionSpellingCriterionActive}
+              />
             </AxisEvaluation>
           </DataQualityInsightsTabContent>
         </AxesContextProvider>

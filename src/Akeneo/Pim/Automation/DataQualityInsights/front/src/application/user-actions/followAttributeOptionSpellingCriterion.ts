@@ -32,7 +32,7 @@ const followAttributeOptionSpellingCriterion = (criterionEvaluation: CriterionEv
 const checkFollowingAttributeOptionSpellingCriterionActive = (criterionEvaluation: CriterionEvaluationResult) => {
   return (
     criterionEvaluation.code === 'consistency_attribute_option_spelling' &&
-    criterionEvaluation.status !== CRITERION_DONE &&
+    criterionEvaluation.status === CRITERION_DONE &&
     criterionEvaluation.rate.value !== MAX_RATE
   );
 };
