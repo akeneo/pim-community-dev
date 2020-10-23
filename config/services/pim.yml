@@ -13,6 +13,7 @@
 #
 parameters:
     pim_job_product_batch_size: 100
+    comm_panel_api_url: 'https://pim-comm-panel.akeneo.com'
 
 services:
     oro.cache.abstract:
