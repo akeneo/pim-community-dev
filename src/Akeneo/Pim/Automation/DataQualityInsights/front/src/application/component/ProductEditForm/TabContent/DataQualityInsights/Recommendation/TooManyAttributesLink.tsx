@@ -1,6 +1,6 @@
 import React, {FunctionComponent} from 'react';
-import {Product} from '../../../../../domain';
-import {followAttributesListRecommendation, FollowAttributesListRecommendationHandler} from '../../../../user-actions';
+import {followAttributesListRecommendation, FollowAttributesListRecommendationHandler} from '../../../../../user-actions';
+import {useProduct} from '../../../../../../infrastructure/hooks';
 
 const translate = require('oro/translator');
 
@@ -8,7 +8,6 @@ interface TooManyAttributesLinkProps {
   axis: string;
   attributes: string[];
   numOfAttributes : number;
-  product: Product;
   followRecommendation?: FollowAttributesListRecommendationHandler;
 }
 
@@ -16,9 +15,9 @@ const TooManyAttributesLink: FunctionComponent<TooManyAttributesLinkProps> = ({
     axis,
     attributes,
     numOfAttributes,
-    product,
     followRecommendation = followAttributesListRecommendation
 }) => {
+  const product = useProduct();
   return (
     <>
       <button

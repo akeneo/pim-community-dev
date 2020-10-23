@@ -1,34 +1,31 @@
-import {renderAttributesListWithVariations} from '../../../../../../utils/render';
-import {anEvaluation, aProductModel, aVariantProduct} from '../../../../../../utils/provider';
-import AttributeWithRecommendation from '@akeneo-pim-community/data-quality-insights/src/domain/AttributeWithRecommendation.interface';
+import {renderRecommendationWithAttributesList} from '../../../../../../../utils/render';
+import {anEvaluation, aProductModel, aVariantProduct} from '../../../../../../../utils/provider';
 
-describe('AttributesListWithVariations', () => {
+describe('RecommendationWithAttributesList', () => {
   test('it displays list of attributes for Root product model', () => {
     const rootProductModel = aProductModel();
-    const attributes: AttributeWithRecommendation[] = [{code: 'an_attribute', label: 'An attribute'}];
+    const attributes: string[] = ['an_attribute'];
     const evaluation = anEvaluation();
 
-    const {getByText} = renderAttributesListWithVariations(
+    const {getByText} = renderRecommendationWithAttributesList(
       rootProductModel,
       'a_criterion',
-      'en_US',
       'an_axis',
       attributes,
       evaluation
     );
 
-    expect(getByText('An attribute')).toBeInTheDocument();
+    expect(getByText('an_attribute')).toBeInTheDocument();
   });
 
   test('it displays list of attributes for sub product model', () => {
     const subProductModel = aProductModel(1234, 1);
-    const attributes: AttributeWithRecommendation[] = [{code: 'an_attribute', label: 'An attribute'}];
+    const attributes: string[] = ['an_attribute'];
     const evaluation = anEvaluation();
 
-    const {getByText, getByTestId} = renderAttributesListWithVariations(
+    const {getByText, getByTestId} = renderRecommendationWithAttributesList(
       subProductModel,
       'a_criterion',
-      'en_US',
       'an_axis',
       attributes,
       evaluation
@@ -36,18 +33,17 @@ describe('AttributesListWithVariations', () => {
 
     expect(getByTestId('attributes-level-0')).toBeInTheDocument();
     expect(getByTestId('attributes-level-1')).toBeInTheDocument();
-    expect(getByText('An attribute')).toBeInTheDocument();
+    expect(getByText('an_attribute')).toBeInTheDocument();
   });
 
   test('it displays list of attributes for product variant', () => {
     const variantProduct = aVariantProduct();
-    const attributes: AttributeWithRecommendation[] = [{code: 'an_attribute', label: 'An attribute'}];
+    const attributes: string[] = ['an_attribute'];
     const evaluation = anEvaluation();
 
-    const {getByText, getByTestId} = renderAttributesListWithVariations(
+    const {getByText, getByTestId} = renderRecommendationWithAttributesList(
       variantProduct,
       'a_criterion',
-      'en_US',
       'an_axis',
       attributes,
       evaluation
@@ -55,7 +51,7 @@ describe('AttributesListWithVariations', () => {
 
     expect(getByTestId('attributes-level-0')).toBeInTheDocument();
     expect(getByTestId('attributes-level-1')).toBeInTheDocument();
-    expect(getByText('An attribute')).toBeInTheDocument();
+    expect(getByText('an_attribute')).toBeInTheDocument();
   });
 
   test('it displays list of attributes for product variant with multiple levels of variations', () => {
@@ -73,13 +69,12 @@ describe('AttributesListWithVariations', () => {
       ],
       [{attributes: ['a_root_attribute']}, {attributes: ['an_level1_attribute']}, {attributes: ['an_level2_attribute']}]
     );
-    const attributes: AttributeWithRecommendation[] = [{code: 'an_attribute', label: 'An attribute'}];
+    const attributes: string[] = ['an_attribute'];
     const evaluation = anEvaluation();
 
-    const {getByText, getByTestId} = renderAttributesListWithVariations(
+    const {getByText, getByTestId} = renderRecommendationWithAttributesList(
       variantProduct,
       'a_criterion',
-      'en_US',
       'an_axis',
       attributes,
       evaluation
@@ -87,6 +82,6 @@ describe('AttributesListWithVariations', () => {
 
     expect(getByTestId('attributes-level-0')).toBeInTheDocument();
     expect(getByTestId('attributes-level-1')).toBeInTheDocument();
-    expect(getByText('An attribute')).toBeInTheDocument();
+    expect(getByText('an_attribute')).toBeInTheDocument();
   });
 });

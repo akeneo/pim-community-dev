@@ -6,8 +6,8 @@ import Evaluation, {
   CRITERION_NOT_APPLICABLE,
   CriterionEvaluationResult,
 } from '../../../../../domain/Evaluation.interface';
-import {Recommendation, RecommendationAttributesList, RecommendationType} from './Recommendation';
-import {useFetchProductFamilyInformation, useProduct} from '../../../../../infrastructure/hooks';
+import {Recommendation, RecommendationType, RecommendationWithAttributesList} from './Recommendation';
+import {useProduct, useProductFamily} from '../../../../../infrastructure/hooks';
 import {criterionPlaceholder, evaluationPlaceholder, isSimpleProduct, isSuccess} from '../../../../helper';
 import {
   AllowFollowingCriterionRecommendation,
@@ -50,7 +50,12 @@ const buildRecommendation = (
   } else if (criterionEvaluation.status === CRITERION_NOT_APPLICABLE) {
     return <Recommendation type={RecommendationType.NOT_APPLICABLE} />;
   } else if (isSuccess(criterionEvaluation.rate) && attributes.length == 0) {
-    return <Recommendation type={RecommendationType.SUCCESS} />;
+    return (
+      <div className="CriterionSuccessContainer">
+        <Recommendation type={RecommendationType.SUCCESS} />
+        <span className="CriterionSuccessTick" />
+      </div>
+    );
   }
 
   if (recommendationContent !== undefined) {
@@ -64,7 +69,7 @@ const buildRecommendation = (
   }
 
   return (
-    <RecommendationAttributesList
+    <RecommendationWithAttributesList
       criterion={criterion}
       attributes={attributes}
       product={product}
@@ -89,7 +94,7 @@ const Criterion: FC<CriterionProps> = ({
 }) => {
   const criterion = code;
   const product = useProduct();
-  const family = useFetchProductFamilyInformation();
+  const family = useProductFamily();
   const isClickable = isFollowingCriterionRecommendationAllowed(criterionEvaluation, family, product);
   const handleFollowingCriterionRecommendation = (!isClickable || followCriterionRecommendation === undefined) ? undefined : () => {
     followCriterionRecommendation(criterionEvaluation, family, product);

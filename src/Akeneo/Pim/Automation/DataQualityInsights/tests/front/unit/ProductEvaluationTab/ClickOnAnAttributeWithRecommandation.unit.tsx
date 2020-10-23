@@ -4,7 +4,7 @@ import {Provider} from 'react-redux';
 import '@testing-library/jest-dom/extend-expect';
 import {fireEvent, render} from '@testing-library/react';
 
-import {RecommendationAttributesList} from '@akeneo-pim-community/data-quality-insights//src/application/component/ProductEditForm/TabContent/DataQualityInsights/';
+import {RecommendationWithAttributesList} from '@akeneo-pim-community/data-quality-insights//src/application/component/ProductEditForm/TabContent/DataQualityInsights/';
 import {Evaluation, Product} from '@akeneo-pim-community/data-quality-insights//src/domain';
 import {createStoreWithInitialState} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/store/productEditFormStore';
 import {DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE} from '@akeneo-pim-community/data-quality-insights//src/application/listener';
@@ -43,7 +43,7 @@ const evaluation: Evaluation = {
 describe('Click on improvable or missing attributes', () => {
   test('Simple product', async () => {
     const product = buildSimpleProduct();
-    const {getAllByTestId} = renderWithRedux(product, <RecommendationAttributesList product={product} attributes={['description', 'title', 'weight']} axis={'consistency'} criterion={'consistency_spelling'} evaluation={evaluation}/>);
+    const {getAllByTestId} = renderWithRedux(product, <RecommendationWithAttributesList product={product} attributes={['description', 'title', 'weight']} axis={'consistency'} criterion={'consistency_spelling'} evaluation={evaluation}/>);
     ['description', 'title', 'weight'].forEach((attributeCode: string, index: number) => {
       fireEvent.click(getAllByTestId('dqiAttributeWithRecommendation')[index].parentElement);
       assertAttributeClickSendsAnEvent(attributeCode, index);
@@ -52,7 +52,7 @@ describe('Click on improvable or missing attributes', () => {
 
   test('Third level variant product', async () => {
     const product = buildThirdLevelProduct();
-    const {getAllByTestId} = renderWithRedux(product, <RecommendationAttributesList product={product} attributes={['description', 'title', 'weight']} axis={'consistency'} criterion={'consistency_spelling'} evaluation={evaluation}/>);
+    const {getAllByTestId} = renderWithRedux(product, <RecommendationWithAttributesList product={product} attributes={['description', 'title', 'weight']} axis={'consistency'} criterion={'consistency_spelling'} evaluation={evaluation}/>);
     await fireEvent.click(getAllByTestId('dqiAttributeWithRecommendation')[0].parentElement);
     expect(sessionStorage.getItem(ATTRIBUTE_TO_IMPROVE_SESSION_STORAGE_KEY)).toBe('description');
     expect(sessionStorage.getItem('current_column_tab')).toBe(PRODUCT_MODEL_ATTRIBUTES_TAB_NAME);
@@ -71,7 +71,7 @@ describe('Click on improvable or missing attributes', () => {
 
   test('Second level variant product', async () => {
     const product = buildSecondLevelProduct();
-    const {getAllByTestId} = renderWithRedux(product, <RecommendationAttributesList product={product} attributes={['description', 'title']} axis={'consistency'} criterion={'consistency_spelling'} evaluation={evaluation}/>);
+    const {getAllByTestId} = renderWithRedux(product, <RecommendationWithAttributesList product={product} attributes={['description', 'title']} axis={'consistency'} criterion={'consistency_spelling'} evaluation={evaluation}/>);
     fireEvent.click(getAllByTestId('dqiAttributeWithRecommendation')[0].parentElement);
     expect(sessionStorage.getItem(ATTRIBUTE_TO_IMPROVE_SESSION_STORAGE_KEY)).toBe('description');
     expect(sessionStorage.getItem('current_column_tab')).toBe(PRODUCT_MODEL_ATTRIBUTES_TAB_NAME);

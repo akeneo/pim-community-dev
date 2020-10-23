@@ -2,7 +2,7 @@ import {useSelector} from 'react-redux';
 
 import {ProductEditFormState} from "../../store";
 
-const useFetchProductFamilyInformation = () => {
+const useProductFamily = () => {
   return useSelector((state: ProductEditFormState) => {
     const product = state.product;
     const familyCode = product.family;
@@ -10,4 +10,4 @@ const useFetchProductFamilyInformation = () => {
   });
 };
 
-export default useFetchProductFamilyInformation;
+export default useProductFamily;

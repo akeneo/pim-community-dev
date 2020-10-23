@@ -1,12 +1,11 @@
 import React, {FunctionComponent, ReactElement} from 'react';
-import {Product} from '../../../../../domain';
-import {followAttributeRecommendation, FollowAttributeRecommendationHandler} from '../../../../user-actions';
+import {followAttributeRecommendation, FollowAttributeRecommendationHandler} from '../../../../../user-actions';
+import {useProduct, useProductFamily} from '../../../../../../infrastructure/hooks';
 
 interface AttributeProps {
   attributeCode: string;
   label: string;
   separator: ReactElement | null;
-  product: Product;
   followRecommendation?: FollowAttributeRecommendationHandler;
 }
 
@@ -15,9 +14,11 @@ const Attribute: FunctionComponent<AttributeProps> = ({
   attributeCode,
   label,
   separator,
-  product,
   followRecommendation = followAttributeRecommendation,
 }) => {
+  const product = useProduct();
+  const family = useProductFamily();
+
   const content = (
     <>
       <span data-testid={'dqiAttributeWithRecommendation'}>{label}</span>
@@ -28,7 +29,7 @@ const Attribute: FunctionComponent<AttributeProps> = ({
   return (
     <button
       className="AknActionButton AknActionButton--withoutBorder AknDataQualityInsightsAttribute AknDataQualityInsightsAttribute--link"
-      onClick={() => followRecommendation(attributeCode, product)}
+      onClick={() => followRecommendation(attributeCode, product, family)}
     >
       {content}
     </button>

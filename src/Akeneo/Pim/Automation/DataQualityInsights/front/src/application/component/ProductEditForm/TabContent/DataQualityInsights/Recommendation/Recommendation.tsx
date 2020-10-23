@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {CriterionEvaluationResult} from "../../../../../../domain";
+import {CriterionEvaluationResult} from '../../../../../../domain';
 
 // @todo[DAPI-1339] use the "useTranslate" hook from legacy-bridge workspace
 const translate = require('oro/translator');
@@ -11,6 +11,7 @@ enum RecommendationType {
   NOT_APPLICABLE = 'not_applicable',
   OTHER = 'other,',
 }
+
 type SupportsRecommendationHandler = (criterion: CriterionEvaluationResult) => boolean;
 
 type Props = {
@@ -41,12 +42,9 @@ const Recommendation: FC<Props> = ({children, type = RecommendationType.OTHER}) 
 
   if (type === RecommendationType.SUCCESS) {
     return (
-      <div className="CriterionSuccessContainer">
-        <span className="CriterionSuccessMessage">
-          {translate(`akeneo_data_quality_insights.product_evaluation.messages.success.criterion`)}
-        </span>
-        <span className="CriterionSuccessTick" />
-      </div>
+      <span className="CriterionSuccessMessage">
+        {translate(`akeneo_data_quality_insights.product_evaluation.messages.success.criterion`)}
+      </span>
     );
   }
 

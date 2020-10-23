@@ -1,12 +1,12 @@
 import {fetchAllAttributeGroupsDqiStatus, fetchAttributeGroupsByCode} from '../../fetcher';
 import {useEffect, useState} from "react";
-import {useCatalogContext, useFetchProductFamilyInformation, useProductEvaluation} from "../index";
+import {useCatalogContext, useProductFamily, useProductEvaluation} from "../index";
 import {Attribute, Family as FamilyInformation} from "../../../domain";
 import {AttributeGroupCollection} from "@akeneo-pim-community/settings-ui/src/models";
 import {useMountedRef} from "@akeneo-pim-community/settings-ui/src/hooks";
 
 const useProductEvaluatedAttributeGroups = () => {
-  const family = useFetchProductFamilyInformation();
+  const family = useProductFamily();
   const {locale, channel} = useCatalogContext();
   const {evaluation} = useProductEvaluation();
   const [attributeGroupsStatus, setAttributeGroupsStatus] = useState<null | object>(null);

@@ -1,6 +1,6 @@
 import React, {useLayoutEffect, useState} from "react";
 import {useDispatch} from "react-redux";
-import {useFetchProductFamilyInformation, usePageContext, useProduct} from "../../../infrastructure/hooks";
+import {useProductFamily, usePageContext, useProduct} from "../../../infrastructure/hooks";
 import {showDataQualityInsightsAttributeToImproveAction} from "../../../infrastructure/reducer";
 
 const handleScrollToAttribute = (attribute: string) => {
@@ -48,7 +48,7 @@ const handleFocusOnAttribute = (attribute: Element) => {
 };
 
 const AttributeToImproveContextListener = () => {
-  const family = useFetchProductFamilyInformation();
+  const family = useProductFamily();
   const {attributesTabIsLoading, attributeToImprove} = usePageContext();
   const product = useProduct();
   const [isAttributeDisplayed, setIsAttributeDisplayed] = useState(false);

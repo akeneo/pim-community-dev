@@ -1,2 +1,2 @@
 export * from './Recommendation';
-export * from './RecommendationAttributesList';
+export * from './RecommendationWithAttributesList';

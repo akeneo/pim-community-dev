@@ -1,4 +1,4 @@
-import {Product} from '../../domain';
+import {Family, Product} from '../../domain';
 import {isSimpleProduct} from '../helper';
 import {DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE} from '../listener';
 import {
@@ -11,7 +11,7 @@ import {
 
 const Router = require('pim/router');
 
-type FollowAttributeRecommendationHandler = (attributeCode: string, product: Product) => void;
+type FollowAttributeRecommendationHandler = (attributeCode: string, product: Product, family: Family|null) => void;
 
 const followAttributeRecommendation: FollowAttributeRecommendationHandler = (
   attributeCode: string,
