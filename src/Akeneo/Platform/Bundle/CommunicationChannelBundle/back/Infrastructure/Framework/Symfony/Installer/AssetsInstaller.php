@@ -29,7 +29,7 @@ class AssetsInstaller
     public function installAssets(bool $shouldSymlink): void
     {
         $originDir = __DIR__ . '/../../../../../front/src';
-        $targetDir = $this->projectDir . '/web/bundles/akeneocommunicationchannel-react';
+        $targetDir = $this->projectDir . '/public/bundles/akeneocommunicationchannel-react';
         if ($shouldSymlink) {
             $this->relativeSymlinkWithFallback($originDir, $targetDir);
         } else {
