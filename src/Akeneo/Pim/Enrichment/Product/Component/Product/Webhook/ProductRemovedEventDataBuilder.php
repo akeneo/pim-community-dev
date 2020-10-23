@@ -10,6 +10,7 @@ use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
+ * a
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
 class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
