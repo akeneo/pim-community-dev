@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Structure\Component\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Webmozart\Assert\Assert;
 
 /**
  * Attribute option
@@ -214,7 +215,7 @@ class AttributeOption implements AttributeOptionInterface
     public function getOptionValue()
     {
         $locale = $this->locale;
-        $values = $this->getOptionValues()->filter(
+        $values = $this->optionValues->filter(
             function ($value) use ($locale) {
                 if ($value->getLocale() === $locale) {
                     return true;
