@@ -1,14 +1,14 @@
 import React from "react";
-import {JobExecutionProgress, JobStatus, useJobExecutionProgress} from "./useJobExecutionProgress";
 import {Badge} from "akeneo-design-system";
 
+type JobStatus = 'COMPLETED' | 'STARTING' | 'STARTED' | 'STOPPING' | 'STOPPED' | 'FAILED' | 'ABANDONED' | 'UNKNOWN';
 type BadgeLevel = 'danger' | 'warning' | 'primary';
 
-const badgeLevel = (jobStatus: JobExecutionProgress): BadgeLevel => {
-  if (jobStatus.status === 'FAILED' || jobStatus.hasError) {
+const badgeLevel = (status: JobStatus, hasError: boolean, hasWarning: boolean): BadgeLevel => {
+  if (status === 'FAILED' || hasError) {
     return 'danger';
   }
-  if (jobStatus.hasWarning) {
+  if (hasWarning) {
     return 'warning';
   }
 
@@ -18,21 +18,24 @@ const badgeLevel = (jobStatus: JobExecutionProgress): BadgeLevel => {
 type JobExecutionStatusProps = {
   jobExecutionId: string;
   status: JobStatus;
+  currentStep: number;
+  totalSteps: number;
+  hasWarning: boolean;
+  hasError: boolean;
 };
 
-const jobStatusLabel = (jobExecutionProgress: JobExecutionProgress): string => {
-  if (jobExecutionProgress.status !== 'STARTING' && jobExecutionProgress.status !== 'STARTED') {
-    return jobExecutionProgress.status;
+const jobStatusLabel = (status: JobStatus, currentStep: number, totalSteps: number): string => {
+  if (status !== 'STARTING' && status !== 'STARTED') {
+    return status;
   }
 
-  return `${jobExecutionProgress.status} ${jobExecutionProgress.currentStep}/${jobExecutionProgress.totalSteps}`;
+  return `${status} ${currentStep}/${totalSteps}`;
 }
 
-const JobExecutionStatus = ({jobExecutionId, status}: JobExecutionStatusProps) => {
-  const jobExecutionProgress = useJobExecutionProgress(jobExecutionId, status)
-  const level = badgeLevel(jobExecutionProgress);
+const JobExecutionStatus = ({status, currentStep, totalSteps, hasWarning, hasError}: JobExecutionStatusProps) => {
+  const level = badgeLevel(status, hasError, hasWarning);
 
-  return <Badge level={level}>{jobStatusLabel(jobExecutionProgress)}</Badge>
+  return <Badge level={level}>{jobStatusLabel(status, currentStep, totalSteps)}</Badge>
 }
 
-export = JobExecutionStatus;
+export default JobExecutionStatus;
