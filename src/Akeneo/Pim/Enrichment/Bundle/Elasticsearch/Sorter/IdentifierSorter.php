@@ -38,6 +38,8 @@ class IdentifierSorter extends BaseFieldSorter implements AttributeSorterInterfa
     public function addAttributeSorter(AttributeInterface $attribute, $direction, $locale = null, $channel = null)
     {
         $this->addFieldSorter('identifier', $direction);
+
+        return $this;
     }
 
     /**

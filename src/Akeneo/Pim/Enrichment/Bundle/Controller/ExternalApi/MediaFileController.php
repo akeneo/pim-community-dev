@@ -97,26 +97,6 @@ class MediaFileController
     /** @var array */
     protected $apiConfiguration;
 
-    /**
-     * @param ApiResourceRepositoryInterface        $mediaRepository
-     * @param NormalizerInterface                   $normalizer
-     * @param ParameterValidatorInterface           $parameterValidator
-     * @param PaginatorInterface                    $paginator
-     * @param FilesystemProvider                    $filesystemProvider
-     * @param FileFetcherInterface                  $fileFetcher
-     * @param IdentifiableObjectRepositoryInterface $productRepository
-     * @param ObjectUpdaterInterface                $productUpdater
-     * @param SaverInterface                        $productSaver
-     * @param ValidatorInterface                    $validator
-     * @param SaverInterface                        $fileInfoSaver
-     * @param FileStorerInterface                   $fileStorer
-     * @param RemoverInterface                      $remover
-     * @param RouterInterface                       $router
-     * @param IdentifiableObjectRepositoryInterface $productModelRepository
-     * @param ObjectUpdaterInterface                $productModelUpdater
-     * @param SaverInterface                        $productModelSaver
-     * @param array                                 $apiConfiguration
-     */
     public function __construct(
         ApiResourceRepositoryInterface $mediaRepository,
         NormalizerInterface $normalizer,
@@ -232,6 +212,7 @@ class MediaFileController
     public function downloadAction(Request $request, $code)
     {
         $filename = urldecode($code);
+
         $fileInfo = $this->mediaRepository->findOneBy([
             'key'     => $filename,
             'storage' => FileStorage::CATALOG_STORAGE_ALIAS

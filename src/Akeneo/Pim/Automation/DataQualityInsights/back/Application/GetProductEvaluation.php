@@ -17,7 +17,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Axis
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisEvaluation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationResult;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AxisCode;
@@ -56,7 +55,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
  */
 class GetProductEvaluation
 {
-    /** @var GetCriteriaEvaluationsByProductIdQueryInterface */
+    /** @var GetProductEvaluationQueryInterface */
     private $getProductEvaluationQuery;
 
     /** @var GetLocalesByChannelQueryInterface */

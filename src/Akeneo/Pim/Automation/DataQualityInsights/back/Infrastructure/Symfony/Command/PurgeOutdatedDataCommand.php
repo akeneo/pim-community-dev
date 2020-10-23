@@ -66,14 +66,14 @@ final class PurgeOutdatedDataCommand extends Command
         }
 
         if (!$this->confirmPurge($purgeType, $input, $output)) {
-            return;
+            return 0;
         }
 
         if (null === $purgeType) {
             $this->purgeProductAxisRates($purgeDate, $output);
             $this->purgeDashboardProjectionRates($purgeDate, $output);
 
-            return;
+            return 0;
         }
 
         switch ($purgeType) {
@@ -86,6 +86,8 @@ final class PurgeOutdatedDataCommand extends Command
             default:
                 throw new \InvalidArgumentException(sprintf('Purge type "%s" does not exist.', $purgeType));
         }
+
+        return 0;
     }
 
     private function purgeProductAxisRates(\DateTimeImmutable $purgeDate, OutputInterface $output): void

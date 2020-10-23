@@ -379,14 +379,14 @@ SQL;
     /**
      * Create value collection for several product models in batch to minimize IO and improve performance.
      *
-     * @param [
+     * @param array $rows [
      *          [
      *              'code' => 'foo',
      *              'raw_values' => ['attribute' => ['channel' => ['locale' => 'data' ]]]
      *          ]
      *        ]
      *
-     * @return [
+     * @return array [
      *          'foo' => [
      *              'code' => 'foo',
      *              'raw_values' => ['attribute' => ['channel' => ['locale' => 'data' ]]]

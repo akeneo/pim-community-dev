@@ -74,6 +74,8 @@ class EntityTypeFilter extends AbstractFieldFilter implements FieldFilterInterfa
                 ],
             ]
         );
+
+        return $this;
     }
 
     private function assertIsString($field, $value): void
