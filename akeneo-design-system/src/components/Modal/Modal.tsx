@@ -50,6 +50,7 @@ const ModalChildren = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px 0;
+  width: 480px;
 `;
 
 //TODO add DSM component
