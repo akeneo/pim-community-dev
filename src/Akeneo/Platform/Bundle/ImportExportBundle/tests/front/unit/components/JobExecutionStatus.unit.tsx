@@ -1,8 +1,7 @@
 import React from 'react';
 import {act, screen} from '@testing-library/react';
 import {renderDOMWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
-import JobExecutionStatus = require("../../../../Resources/public/js/JobStatusBadge");
-import {JobStatus} from "../../../../Resources/public/js/useJobExecutionProgress";
+import JobExecutionStatus, {JobStatus} from "../../../../Resources/public/js/JobExecutionStatus";
 
 declare global {
   namespace NodeJS {
@@ -28,7 +27,7 @@ test.each<JobStatus>(['COMPLETED', 'STOPPING', 'STOPPED', 'FAILED', 'ABANDONED',
 ('It displays the job progress badge without the progress', (jobStatus) => {
 
   renderDOMWithProviders(
-    <JobExecutionStatus jobExecutionId='123' status={jobStatus}/>,
+    <JobExecutionStatus status={jobStatus} currentStep={1} totalSteps={3} hasError={false} hasWarning={false} />,
     container
   );
 
@@ -37,32 +36,15 @@ test.each<JobStatus>(['COMPLETED', 'STOPPING', 'STOPPED', 'FAILED', 'ABANDONED',
 
 test.each<JobStatus>(['STARTING', 'STARTED'])
 ('It displays the job progress badge with the progress', async (jobStatus) => {
-  global.fetch = jest.fn().mockImplementation(async () => {
-    return ({
-      json: () =>
-        Promise.resolve({
-          tracking:
-            {
-              status: 'IN PROGRESS',
-              currentStep: 1,
-              totalSteps: 10,
-              steps: [
-                {
-                  hasWarning: false,
-                  hasError: false
-                }
-              ]
-            },
-        }),
-    });
-  });
+  const currentStep = 1;
+  const totalSteps = 10;
 
   await act(async () => {
     renderDOMWithProviders(
-      <JobExecutionStatus jobExecutionId='123' status={jobStatus} />,
+      <JobExecutionStatus status={jobStatus} currentStep={currentStep} totalSteps={totalSteps} hasError={false} hasWarning={false} />,
       container
     );
   });
 
-  expect(screen.getByText(`${jobStatus} 1/10`)).toBeInTheDocument()
+  expect(screen.getByText(`${jobStatus} ${currentStep}/${totalSteps}`)).toBeInTheDocument()
 });

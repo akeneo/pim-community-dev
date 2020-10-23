@@ -16,7 +16,6 @@ const badgeLevel = (status: JobStatus, hasError: boolean, hasWarning: boolean): 
 }
 
 type JobExecutionStatusProps = {
-  jobExecutionId: string;
   status: JobStatus;
   currentStep: number;
   totalSteps: number;
@@ -39,3 +38,4 @@ const JobExecutionStatus = ({status, currentStep, totalSteps, hasWarning, hasErr
 }
 
 export default JobExecutionStatus;
+export type {JobStatus};
