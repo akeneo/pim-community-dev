@@ -59,8 +59,8 @@ abstract class ApiTestCase extends WebTestCase
     /**
      * Adds a valid access token to the client, so it is included in all its requests.
      *
-     * @param array  $options
-     * @param array  $server
+     * @param array $options
+     * @param array $server
      * @param string $clientId
      * @param string $secret
      * @param string $username
@@ -110,11 +110,11 @@ abstract class ApiTestCase extends WebTestCase
     /**
      * Creates a new OAuth client and returns its client id and secret.
      *
-     * @deprecated
-     *
      * @param string|null $label
      *
      * @return string[]
+     * @deprecated
+     *
      */
     protected function createOAuthClient(?string $label = null): array
     {
@@ -168,17 +168,19 @@ abstract class ApiTestCase extends WebTestCase
     protected function authenticate($clientId, $secret, $username, $password)
     {
         $webClient = static::createClient(['debug' => false]);
-        $webClient->request('POST', 'api/oauth/v1/token',
+        $webClient->request(
+            'POST',
+            'api/oauth/v1/token',
             [
-                'username'   => $username,
-                'password'   => $password,
+                'username' => $username,
+                'password' => $password,
                 'grant_type' => 'password',
             ],
             [],
             [
                 'PHP_AUTH_USER' => $clientId,
-                'PHP_AUTH_PW'   => $secret,
-                'CONTENT_TYPE'  => 'application/json',
+                'PHP_AUTH_PW' => $secret,
+                'CONTENT_TYPE' => 'application/json',
             ]
         );
 
@@ -187,7 +189,7 @@ abstract class ApiTestCase extends WebTestCase
 
         return [
             $responseBody['access_token'],
-            $responseBody['refresh_token']
+            $responseBody['refresh_token'],
         ];
     }
 
@@ -228,15 +230,15 @@ abstract class ApiTestCase extends WebTestCase
      *
      * @param string $name
      *
+     * @return string
      * @throws \Exception if no fixture $name has been found
      *
-     * @return string
      */
     protected function getFixturePath(string $name): string
     {
         $configuration = $this->getConfiguration();
         foreach ($configuration->getFixtureDirectories() as $fixtureDirectory) {
-            $path = $fixtureDirectory . DIRECTORY_SEPARATOR . $name;
+            $path = $fixtureDirectory.DIRECTORY_SEPARATOR.$name;
             if (is_file($path) && false !== realpath($path)) {
                 return realpath($path);
             }
@@ -266,11 +268,11 @@ abstract class ApiTestCase extends WebTestCase
      *
      * @param string $method
      * @param string $uri
-     * @param array  $parameters
-     * @param array  $files
-     * @param array  $server
+     * @param array $parameters
+     * @param array $files
+     * @param array $server
      * @param string $content
-     * @param bool   $changeHistory
+     * @param bool $changeHistory
      * @param string $username
      * @param string $password
      *
@@ -289,11 +291,13 @@ abstract class ApiTestCase extends WebTestCase
     ) {
         $streamedContent = '';
 
-        ob_start(function ($buffer) use (&$streamedContent) {
-            $streamedContent .= $buffer;
+        ob_start(
+            function ($buffer) use (&$streamedContent) {
+                $streamedContent .= $buffer;
 
-            return '';
-        });
+                return '';
+            }
+        );
 
         $client = $this->createAuthenticatedClient([], [], null, null, $username, $password);
         $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
@@ -303,7 +307,7 @@ abstract class ApiTestCase extends WebTestCase
 
         $response = [
             'http_response' => $client->getResponse(),
-            'content'       => $streamedContent,
+            'content' => $streamedContent,
         ];
 
         return $response;
@@ -311,35 +315,24 @@ abstract class ApiTestCase extends WebTestCase
 
     protected function createAdminUser(): UserInterface
     {
-        $user = $this->get('pim_user.factory.user')->create();
-        $user->setUsername(self::USERNAME);
-        $user->setPlainPassword(self::PASSWORD);
-        $user->setEmail('admin@example.com');
-        $user->setSalt('E1F53135E559C253');
-        $user->setFirstName('John');
-        $user->setLastName('Doe');
+        return $this->createAndSaveUser(
+            self::USERNAME,
+            self::PASSWORD,
+            'admin@example.com',
+            'John',
+            'Doe'
+        );
+    }
 
-        $this->get('pim_user.manager')->updatePassword($user);
-
-        $adminRole = $this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');
-        if (null !== $adminRole) {
-            $user->addRole($adminRole);
-        }
-
-        $userRole = $this->get('pim_user.repository.role')->findOneByIdentifier(User::ROLE_DEFAULT);
-        if (null !== $userRole) {
-            $user->removeRole($userRole);
-        }
-
-        $group = $this->get('pim_user.repository.group')->findOneByIdentifier('IT support');
-        if (null !== $group) {
-            $user->addGroup($group);
-        }
-
-        $this->get('validator')->validate($user);
-        $this->get('pim_user.saver.user')->save($user);
-
-        return $user;
+    protected function createUser(string $username): UserInterface
+    {
+        return $this->createAndSaveUser(
+            $username,
+            $username,
+            sprintf('%s@example.com', $username),
+            ucfirst($username),
+            ucfirst($username)
+        );
     }
 
     /**
@@ -366,5 +359,43 @@ abstract class ApiTestCase extends WebTestCase
         ];
 
         return strtr(rawurlencode($string), $toReplace);
+    }
+
+    private function createAndSaveUser(
+        string $username,
+        string $password,
+        string $email,
+        string $firstName,
+        string $latName
+    ): UserInterface {
+        $user = $this->get('pim_user.factory.user')->create();
+        $user->setUsername($username);
+        $user->setPlainPassword($password);
+        $user->setEmail($email);
+        $user->setSalt('E1F53135E559C253');
+        $user->setFirstName($firstName);
+        $user->setLastName($latName);
+
+        $this->get('pim_user.manager')->updatePassword($user);
+
+        $adminRole = $this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');
+        if (null !== $adminRole) {
+            $user->addRole($adminRole);
+        }
+
+        $userRole = $this->get('pim_user.repository.role')->findOneByIdentifier(User::ROLE_DEFAULT);
+        if (null !== $userRole) {
+            $user->removeRole($userRole);
+        }
+
+        $group = $this->get('pim_user.repository.group')->findOneByIdentifier('IT support');
+        if (null !== $group) {
+            $user->addGroup($group);
+        }
+
+        $this->get('validator')->validate($user);
+        $this->get('pim_user.saver.user')->save($user);
+
+        return $user;
     }
 }

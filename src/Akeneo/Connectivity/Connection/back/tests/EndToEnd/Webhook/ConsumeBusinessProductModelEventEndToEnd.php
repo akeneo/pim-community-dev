@@ -16,6 +16,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use GuzzleHttp\Handler\MockHandler;
@@ -62,6 +63,7 @@ class ConsumeBusinessProductModelEventEndToEnd extends ApiTestCase
 
     public function test_it_sends_a_product_model_created_webhook_event()
     {
+        $author = Author::fromUser($this->createAdminUser());
         $connection = $this->connectionLoader->createConnection(
             'ecommerce',
             'Ecommerce',
@@ -81,8 +83,7 @@ class ConsumeBusinessProductModelEventEndToEnd extends ApiTestCase
         $handlerStack->push($history);
 
         $message = new ProductModelCreated(
-            'author',
-            'api',
+            $author,
             $this->normalizer->normalize($productModel, 'standard')
         );
 
@@ -95,6 +96,7 @@ class ConsumeBusinessProductModelEventEndToEnd extends ApiTestCase
 
     public function test_it_sends_a_product_model_updated_webhook_event()
     {
+        $author = Author::fromUser($this->createAdminUser());
         $connection = $this->connectionLoader->createConnection(
             'ecommerce',
             'Ecommerce',
@@ -114,8 +116,7 @@ class ConsumeBusinessProductModelEventEndToEnd extends ApiTestCase
         $handlerStack->push($history);
 
         $message = new ProductModelUpdated(
-            'eccomerce',
-            'api',
+            $author,
             $this->normalizer->normalize($productModel, 'standard')
         );
 
@@ -128,6 +129,7 @@ class ConsumeBusinessProductModelEventEndToEnd extends ApiTestCase
 
     public function test_it_sends_a_product_model_removed_webhook_event()
     {
+        $author = Author::fromUser($this->createAdminUser());
         $connection = $this->connectionLoader->createConnection('ecommerce', 'Ecommerce', FlowType::DATA_DESTINATION, false);
         $this->webhookLoader->initWebhook($connection->code());
 
@@ -144,8 +146,7 @@ class ConsumeBusinessProductModelEventEndToEnd extends ApiTestCase
         $handlerStack->push($history);
 
         $message = new ProductModelRemoved(
-            'ecommerce',
-            'api',
+            $author,
             $this->normalizer->normalize($productModel, 'standard')
         );
 

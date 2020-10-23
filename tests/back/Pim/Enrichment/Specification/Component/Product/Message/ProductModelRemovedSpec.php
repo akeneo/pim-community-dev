@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Message;
 
+use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
 use Akeneo\Platform\Component\EventQueue\BusinessEvent;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -14,11 +16,16 @@ use PhpSpec\ObjectBehavior;
  */
 class ProductModelRemovedSpec extends ObjectBehavior
 {
-    public function let(): void
+    public function let(UserInterface $user): void
     {
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(true);
+
+        $author = Author::fromUser($user->getWrappedObject());
         $this->beConstructedWith(
-            'author',
-            'api',
+            $author,
             ['data'],
             1598953500,
             'a23e4567-e89b-12d3-a456-426614175000'
@@ -40,14 +47,14 @@ class ProductModelRemovedSpec extends ObjectBehavior
         $this->name()->shouldReturn('product_model.removed');
     }
 
-    public function it_returns_the_author(): void
+    public function it_returns_the_author_name(): void
     {
-        $this->author()->shouldReturn('author');
+        $this->author()->name()->shouldReturn('julia');
     }
 
     public function it_returns_the_author_type(): void
     {
-        $this->authorType()->shouldReturn('api');
+        $this->author()->type()->shouldReturn('api');
     }
 
     public function it_returns_the_data(): void

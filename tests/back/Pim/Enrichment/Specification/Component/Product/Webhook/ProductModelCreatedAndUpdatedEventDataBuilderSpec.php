@@ -12,7 +12,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductModelNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductModelCreatedAndUpdatedEventDataBuilder;
+use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BusinessEvent;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -38,61 +40,109 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         $this->shouldImplement(EventDataBuilderInterface::class);
     }
 
-    public function it_supports_product_model_created_event(): void
+    public function it_supports_product_model_created_event(UserInterface $user): void
     {
-        $this->supports(new ProductModelCreated('julia', 'ui', ['data']))->shouldReturn(true);
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+        $author = Author::fromUser($user->getWrappedObject());
+
+        $this->supports(new ProductModelCreated($author, ['data']))->shouldReturn(true);
     }
 
-    public function it_supports_product_model_updated_event(): void
+    public function it_supports_product_model_updated_event(UserInterface $user): void
     {
-        $this->supports(new ProductModelUpdated('julia', 'ui', ['data']))->shouldReturn(true);
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+        $author = Author::fromUser($user->getWrappedObject());
+
+        $this->supports(new ProductModelUpdated($author, ['data']))->shouldReturn(true);
     }
 
-    public function it_does_not_supports_other_business_event(): void
+    public function it_does_not_supports_other_business_event(UserInterface $user): void
     {
-        $this->supports(new ProductRemoved('julia', 'ui', ['data']))->shouldReturn(false);
-        $this->supports(new ProductCreated('julia', 'ui', ['data']))->shouldReturn(false);
-        $this->supports(new ProductUpdated('julia', 'ui', ['data']))->shouldReturn(false);
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+        $author = Author::fromUser($user->getWrappedObject());
+
+        $this->supports(new ProductRemoved($author, ['data']))->shouldReturn(false);
+        $this->supports(new ProductCreated($author, ['data']))->shouldReturn(false);
+        $this->supports(new ProductUpdated($author, ['data']))->shouldReturn(false);
     }
 
-    public function it_builds_product_created_event($productModelRepository, $externalApiNormalizer): void
-    {
+    public function it_builds_product_created_event(
+        $productModelRepository,
+        $externalApiNormalizer,
+        UserInterface $user
+    ): void {
         $productModel = new ProductModel();
         $productModel->setCode('polo_col_mao');
+
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+        $author = Author::fromUser($user->getWrappedObject());
 
         $productModelRepository->findOneByIdentifier('polo_col_mao')->willReturn($productModel);
         $externalApiNormalizer->normalize($productModel, 'external_api')->willReturn(['code' => 'polo_col_mao',]);
 
-        $this->build(new ProductModelCreated('julia', 'ui', ['code' => 'polo_col_mao']))->shouldReturn(
+        $this->build(new ProductModelCreated($author, ['code' => 'polo_col_mao']))->shouldReturn(
             ['resource' => ['code' => 'polo_col_mao'],]
         );
     }
 
-    public function it_builds_product_updated_event($productModelRepository, $externalApiNormalizer): void
-    {
+    public function it_builds_product_updated_event(
+        $productModelRepository,
+        $externalApiNormalizer,
+        UserInterface $user
+    ): void {
         $productModel = new ProductModel();
         $productModel->setCode('polo_col_mao');
+
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+        $author = Author::fromUser($user->getWrappedObject());
 
         $productModelRepository->findOneByIdentifier('polo_col_mao')->willReturn($productModel);
         $externalApiNormalizer->normalize($productModel, 'external_api')->willReturn(['code' => 'polo_col_mao',]);
 
-        $this->build(new ProductModelUpdated('julia', 'ui', ['code' => 'polo_col_mao']))->shouldReturn(
+        $this->build(new ProductModelUpdated($author, ['code' => 'polo_col_mao']))->shouldReturn(
             ['resource' => ['code' => 'polo_col_mao'],]
         );
     }
 
-    public function it_does_not_build_other_business_event(): void
+    public function it_does_not_build_other_business_event(UserInterface $user): void
     {
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+        $author = Author::fromUser($user->getWrappedObject());
+
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('build', [new AnotherBusinessEvent('julia', 'ui', ['code' => 'polo_col_mao'])]);
+            ->during('build', [new AnotherBusinessEvent($author, ['code' => 'polo_col_mao'])]);
     }
 
-    public function it_does_not_build_if_product_model_was_not_found($productModelRepository): void
+    public function it_does_not_build_if_product_model_was_not_found($productModelRepository, UserInterface $user): void
     {
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+        $author = Author::fromUser($user->getWrappedObject());
+
         $productModelRepository->findOneByIdentifier('polo_col_mao')->willReturn(null);
 
         $this->shouldThrow(ProductModelNotFoundException::class)
-            ->during('build', [new ProductModelUpdated('julia', 'ui', ['code' => 'polo_col_mao'])]);
+            ->during('build', [new ProductModelUpdated($author, ['code' => 'polo_col_mao'])]);
     }
 }
 

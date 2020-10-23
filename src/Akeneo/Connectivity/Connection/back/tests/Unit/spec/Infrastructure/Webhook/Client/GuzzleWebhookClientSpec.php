@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
+use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client\GuzzleWebhookClient;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client\Signature;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
@@ -40,7 +42,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(GuzzleWebhookClient::class);
     }
 
-    public function it_sends_webhook_requests_in_bulk(): void
+    public function it_sends_webhook_requests_in_bulk(UserInterface $user): void
     {
         $container = [];
         $history = Middleware::history($container);
@@ -55,14 +57,19 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
             []
         );
 
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+
+        $author = Author::fromUser($user->getWrappedObject());
         $request1 = new WebhookRequest(
             new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook1'),
             new WebhookEvent(
                 'product.created',
                 '7abae2fe-759a-4fce-aa43-f413980671b3',
                 '2020-01-01T00:00:00+00:00',
-                'julia',
-                'ui',
+                $author,
                 'staging.akeneo.com',
                 ['data_1']
             )
@@ -74,8 +81,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
                 'product.created',
                 '7abae2fe-759a-4fce-aa43-f413980671b3',
                 '2020-01-01T00:00:00+00:00',
-                'julia',
-                'ui',
+                $author,
                 'staging.akeneo.com',
                 ['data_2']
             )

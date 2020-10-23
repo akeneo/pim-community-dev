@@ -12,9 +12,7 @@ interface BusinessEventInterface
 {
     public function name(): string;
 
-    public function author(): string;
-
-    public function authorType(): string;
+    public function author(): Author;
 
     public function data(): array;
 

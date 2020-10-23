@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Component\EventQueue;
 
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Symfony\Component\Serializer\Exception\RuntimeException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -14,6 +16,14 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class BusinessEventNormalizer implements NormalizerInterface, DenormalizerInterface
 {
+    /** @var UserRepositoryInterface */
+    private $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof BusinessEvent;
@@ -35,11 +45,11 @@ class BusinessEventNormalizer implements NormalizerInterface, DenormalizerInterf
 
         return [
             'name' => $object->name(),
-            'author' => $object->author(),
-            'author_type' => $object->authorType(),
+            'author' => $object->author()->name(),
+            'author_type' => $object->author()->type(),
             'data' => $object->data(),
             'timestamp' => $object->timestamp(),
-            'uuid' => $object->uuid()
+            'uuid' => $object->uuid(),
         ];
     }
 
@@ -53,9 +63,16 @@ class BusinessEventNormalizer implements NormalizerInterface, DenormalizerInterf
             throw new RuntimeException(sprintf('The class "%s" is not defined.', $type));
         }
 
+        $user = $this->userRepository->findOneByIdentifier($data['author']);
+
+        if (!$user instanceof UserInterface) {
+            throw new \LogicException('User not found.');
+        }
+
+        $author = Author::fromUser($user);
+
         return new $type(
-            $data['author'],
-            $data['author_type'],
+            $author,
             $data['data'],
             $data['timestamp'],
             $data['uuid']

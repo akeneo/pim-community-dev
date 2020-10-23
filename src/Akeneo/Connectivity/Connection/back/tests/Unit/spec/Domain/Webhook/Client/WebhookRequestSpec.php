@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Domain\Webhook\Client;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
+use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use PhpSpec\ObjectBehavior;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -15,16 +17,21 @@ use PhpSpec\ObjectBehavior;
  */
 class WebhookRequestSpec extends ObjectBehavior
 {
-    public function let(): void
+    public function let(UserInterface $user): void
     {
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+
+        $author = Author::fromUser($user->getWrappedObject());
         $this->beConstructedWith(
             new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook'),
             new WebhookEvent(
                 'product.created',
                 '79fc4791-86d6-4d3b-93c5-76b787af9497',
                 '2020-01-01T00:00:00+00:00',
-                'julia',
-                'ui',
+                $author,
                 'staging.akeneo.com',
                 ['data']
             )

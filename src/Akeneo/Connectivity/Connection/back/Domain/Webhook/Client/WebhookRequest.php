@@ -61,8 +61,8 @@ class WebhookRequest
             'action' => $this->event->action(),
             'event_id' => $this->event->eventId(),
             'event_date' => $this->event->eventDate(),
-            'author' => $this->event->author(),
-            'author_type' => $this->event->authorType(),
+            'author' => $this->event->author()->name(),
+            'author_type' => $this->event->author()->type(),
             'pim_source' => $this->event->pimSource(),
             'data' => $this->event->data(),
         ];
@@ -97,8 +97,8 @@ class WebhookRequest
                 'action' => $this->event->action(),
                 'event_id' => $this->event->eventId(),
                 'event_date' => $this->event->eventDate(),
-                'author' => $this->event->author(),
-                'author_type' => $this->event->authorType(),
+                'author' => $this->event->author()->name(),
+                'author_type' => $this->event->author()->type(),
                 'pim_source' => $this->event->pimSource(),
             ],
         ];

@@ -8,7 +8,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -21,12 +23,20 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 final class DispatchProductBusinessEventSubscriber implements EventSubscriberInterface
 {
+    /** @var Security */
     private $security;
+
+    /** @var NormalizerInterface */
     private $normalizer;
+
+    /** @var MessageBusInterface */
     private $messageBus;
 
-    public function __construct(Security $security, NormalizerInterface $normalizer, MessageBusInterface $messageBus)
-    {
+    public function __construct(
+        Security $security,
+        NormalizerInterface $normalizer,
+        MessageBusInterface $messageBus
+    ) {
         $this->security = $security;
         $this->normalizer = $normalizer;
         $this->messageBus = $messageBus;
@@ -48,19 +58,14 @@ final class DispatchProductBusinessEventSubscriber implements EventSubscriberInt
             return;
         }
 
-        if (null === $user = $this->security->getUser()) {
-            throw new \LogicException('User should not be null.');
-        }
-
-        $author = $user->getUsername();
-        $authorType = $user->getType();
+        $author = $this->getAuthor();
         $data = $this->normalizeProductData($product);
 
         $message = null;
         if ($event->hasArgument('is_new') && true === $event->getArgument('is_new')) {
-            $message = new ProductCreated($author, $authorType, $data);
+            $message = new ProductCreated($author, $data);
         } else {
-            $message = new ProductUpdated($author, $authorType, $data);
+            $message = new ProductUpdated($author, $data);
         }
 
         $this->messageBus->dispatch($message);
@@ -74,17 +79,24 @@ final class DispatchProductBusinessEventSubscriber implements EventSubscriberInt
             return;
         }
 
-        if (null === $user = $this->security->getUser()) {
+        $author = $this->getAuthor();
+        $data = $this->normalizeProductData($product);
+
+        $message = new ProductRemoved($author, $data);
+
+        $this->messageBus->dispatch($message);
+    }
+
+    private function getAuthor(): Author
+    {
+        /** @var UserInterface $user */
+        $user = $this->security->getUser();
+
+        if (!$user) {
             throw new \LogicException('User should not be null.');
         }
 
-        $author = $user->getUsername();
-        $authorType = $user->getType();
-        $data = $this->normalizeProductData($product);
-
-        $message = new ProductRemoved($author, $authorType, $data);
-
-        $this->messageBus->dispatch($message);
+        return Author::fromUser($user);
     }
 
     private function normalizeProductData(ProductInterface $product): array

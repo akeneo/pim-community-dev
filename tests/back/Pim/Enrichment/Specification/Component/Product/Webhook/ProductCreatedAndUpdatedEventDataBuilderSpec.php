@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Webhook;
 
+use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
@@ -12,6 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductNotFoundExc
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductCreatedAndUpdatedEventDataBuilder;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -30,27 +32,54 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         $this->shouldImplement(EventDataBuilderInterface::class);
     }
 
-    public function it_supports_product_created_event(): void
+    public function it_supports_product_created_event(UserInterface $user): void
     {
-        $this->supports(new ProductCreated('julia', 'ui', ['data']))->shouldReturn(true);
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+        $author = Author::fromUser($user->getWrappedObject());
+
+        $this->supports(new ProductCreated($author, ['data']))->shouldReturn(true);
     }
 
-    public function it_supports_product_updated_event(): void
+    public function it_supports_product_updated_event(UserInterface $user): void
     {
-        $this->supports(new ProductUpdated('julia', 'ui', ['data']))->shouldReturn(true);
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+        $author = Author::fromUser($user->getWrappedObject());
+
+        $this->supports(new ProductUpdated($author, ['data']))->shouldReturn(true);
     }
 
-    public function it_does_not_supports_other_business_event(): void
+    public function it_does_not_supports_other_business_event(UserInterface $user): void
     {
-        $this->supports(new ProductRemoved('julia', 'ui', ['data']))->shouldReturn(false);
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+        $author = Author::fromUser($user->getWrappedObject());
+
+        $this->supports(new ProductRemoved($author, ['data']))->shouldReturn(false);
     }
 
 
-    public function it_builds_product_created_event($productRepository, $externalApiNormalizer): void
-    {
+    public function it_builds_product_created_event(
+        $productRepository,
+        $externalApiNormalizer,
+        UserInterface $user
+    ): void {
         $product = new Product();
         $product->setId(1);
         $product->setIdentifier('product_identifier');
+
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+        $author = Author::fromUser($user->getWrappedObject());
 
         $productRepository->findOneByIdentifier('product_identifier')->willReturn($product);
         $externalApiNormalizer->normalize($product, 'external_api')->willReturn(
@@ -59,18 +88,27 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
             ]
         );
 
-        $this->build(new ProductCreated('julia', 'ui', ['identifier' => 'product_identifier']))->shouldReturn(
+        $this->build(new ProductCreated($author, ['identifier' => 'product_identifier']))->shouldReturn(
             [
                 'resource' => ['identifier' => 'product_identifier'],
             ]
         );
     }
 
-    public function it_builds_product_updated_event($productRepository, $externalApiNormalizer): void
-    {
+    public function it_builds_product_updated_event(
+        $productRepository,
+        $externalApiNormalizer,
+        UserInterface $user
+    ): void {
         $product = new Product();
         $product->setId(1);
         $product->setIdentifier('product_identifier');
+
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+        $author = Author::fromUser($user->getWrappedObject());
 
         $productRepository->findOneByIdentifier('product_identifier')->willReturn($product);
         $externalApiNormalizer->normalize($product, 'external_api')->willReturn(
@@ -79,28 +117,40 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
             ]
         );
 
-        $this->build(new ProductUpdated('julia', 'ui', ['identifier' => 'product_identifier']))->shouldReturn(
+        $this->build(new ProductUpdated($author, ['identifier' => 'product_identifier']))->shouldReturn(
             [
                 'resource' => ['identifier' => 'product_identifier'],
             ]
         );
     }
 
-    public function it_does_not_build_other_business_event(): void
+    public function it_does_not_build_other_business_event(UserInterface $user): void
     {
         $product = new Product();
         $product->setId(1);
         $product->setIdentifier('product_identifier');
+
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+        $author = Author::fromUser($user->getWrappedObject());
 
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('build', [new ProductRemoved('julia', 'ui', ['identifier' => 'product_identifier'])]);
+            ->during('build', [new ProductRemoved($author, ['identifier' => 'product_identifier'])]);
     }
 
-    public function it_does_not_build_if_product_was_not_found($productRepository): void
+    public function it_does_not_build_if_product_was_not_found($productRepository, UserInterface $user): void
     {
         $productRepository->findOneByIdentifier('product_identifier')->willReturn(null);
 
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+        $author = Author::fromUser($user->getWrappedObject());
+
         $this->shouldThrow(ProductNotFoundException::class)
-            ->during('build', [new ProductCreated('julia', 'ui', ['identifier' => 'product_identifier'])]);
+            ->during('build', [new ProductCreated($author, ['identifier' => 'product_identifier'])]);
     }
 }

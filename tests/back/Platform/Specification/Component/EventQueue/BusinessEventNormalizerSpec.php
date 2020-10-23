@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\Component\EventQueue;
 
+use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BusinessEvent;
 use Akeneo\Platform\Component\EventQueue\BusinessEventNormalizer;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -16,6 +20,12 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class BusinessEventNormalizerSpec extends ObjectBehavior
 {
+    public function let(
+        UserRepositoryInterface $userRepository
+    ): void {
+        $this->beConstructedWith($userRepository);
+    }
+
     public function it_is_initializable(): void
     {
         $this->shouldHaveType(BusinessEventNormalizer::class);
@@ -26,10 +36,15 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
         $this->shouldImplement(NormalizerInterface::class);
     }
 
-    public function it_supports_normalization_of_business_event(): void
+    public function it_supports_normalization_of_business_event(UserInterface $user): void
     {
-        $businessEvent = new class ('ecommerce_connection', 'api', ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends BusinessEvent
-        {
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+        $author = Author::fromUser($user->getWrappedObject());
+
+        $businessEvent = new class ($author, ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends BusinessEvent {
             public function name(): string
             {
                 return 'event_name';
@@ -48,10 +63,15 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
             ->shouldReturn(false);
     }
 
-    public function it_normalizes_a_business_event()
+    public function it_normalizes_a_business_event(UserInterface $user)
     {
-        $businessEvent = new class ('ecommerce_connection', 'api', ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends BusinessEvent
-        {
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+        $author = Author::fromUser($user->getWrappedObject());
+
+        $businessEvent = new class ($author, ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends BusinessEvent {
             public function name(): string
             {
                 return 'event_name';
@@ -60,8 +80,8 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
 
         $expected = [
             'name' => 'event_name',
-            'author' => 'ecommerce_connection',
-            'author_type' => 'api',
+            'author' => 'julia',
+            'author_type' => 'ui',
             'data' => ['data'],
             'timestamp' => 0,
             'uuid' => 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba',
@@ -76,10 +96,15 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
         $this->shouldImplement(DenormalizerInterface::class);
     }
 
-    public function it_supports_denormalization_of_business_event(): void
+    public function it_supports_denormalization_of_business_event(UserInterface $user): void
     {
-        $businessEvent = new class ('author', 'api', ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends BusinessEvent
-        {
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+        $author = Author::fromUser($user->getWrappedObject());
+
+        $businessEvent = new class ($author, ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends BusinessEvent {
             public function name(): string
             {
                 return 'event_name';
@@ -96,10 +121,17 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
             ->shouldReturn(false);
     }
 
-    public function it_denormalizes_a_business_event()
+    public function it_denormalizes_a_business_event(UserInterface $user, $userRepository)
     {
-        $businessEvent = new class ('author', 'api', ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends BusinessEvent
-        {
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+        $author = Author::fromUser($user->getWrappedObject());
+
+        $userRepository->findOneByIdentifier(Argument::any())->willReturn($user);
+
+        $businessEvent = new class ($author, ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends BusinessEvent {
             public function name(): string
             {
                 return 'event_name';
@@ -109,7 +141,7 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
         $data = [
             'name' => 'event_name',
             'author' => 'author',
-            'author_type' => 'api',
+            'author_type' => 'ui',
             'data' => ['data'],
             'timestamp' => 0,
             'uuid' => 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba',
