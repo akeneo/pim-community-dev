@@ -271,9 +271,9 @@ class FamilyController
      * @param Request         $request
      * @param FamilyInterface $family
      *
-     * @return JsonResponse
+     * @return Response
      */
-    protected function saveFamily(Request $request, FamilyInterface $family): JsonResponse
+    protected function saveFamily(Request $request, FamilyInterface $family): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');

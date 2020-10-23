@@ -5,8 +5,10 @@ namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirement;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRequirementRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
+use Webmozart\Assert\Assert;
 
 /**
  * Repository
@@ -22,8 +24,10 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
      */
     public function getFullRequirementsQB(FamilyInterface $family, $localeCode)
     {
-        $qb = $this->getEntityManager()
-            ->getRepository(AttributeRequirement::class)
+        $repository = $this->getEntityManager()->getRepository(AttributeRequirement::class);
+        Assert::isInstanceOf($repository, AttributeRequirementRepositoryInterface::class);
+        Assert::isInstanceOf($repository, EntityRepository::class);
+        $qb = $repository
             ->createQueryBuilder('r')
             ->select('r, a, t')
             ->leftJoin('r.attribute', 'a');
@@ -42,15 +46,9 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
     }
 
     /**
-     * Get families with family variants
-     *
-     * @param  string $search
-     * @param  array  $options
-     * @param  int    $limit
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function getWithVariants($search = null, array $options = [], int $limit = null): array
+    public function getWithVariants(string $search = null, array $options = [], int $limit = null): array
     {
         $qb = $this->createQueryBuilder('f')->where('f.familyVariants IS NOT EMPTY');
 
