@@ -1,0 +1,54 @@
+import {useState} from 'react';
+import {ThemeProvider} from 'styled-components';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Button, Modal, Surtitle, Title, ButtonsContainer} from '../components';
+import {DeleteIllustration} from '../illustrations';
+import {themes} from '../storybook/themes';
+
+<Meta
+  title="Patterns/Overlays"
+  argTypes={{
+    theme: {control: {type: 'select', options: Object.keys(themes)}},
+  }}
+  args={{theme: 'PIM'}}
+/>
+
+# Overlays
+
+Overlays communicate information through a secondary window and allow the user to keep the context of a particular job. Use overlays when an action requires the user’s full attention to prevent him from being distracted by the rest of the content.
+
+## Usage
+
+Overlays interrupt the user workflow by design. They are the most effective when a task must be completed before a user is allowed to continue. Although useful when used correctly, the overlay should be used with moderation to minimize the disruption of the user experience.
+
+## Confirm Modal
+
+<ArgsTable story="Confirm Modal" />
+
+<Canvas>
+  <Story name="Confirm Modal">
+    {args => {
+      const [isOpen, setOpen] = useState(false);
+      const open = () => setOpen(true);
+      const close = () => setOpen(false);
+      return (
+        <ThemeProvider theme={themes[args.theme]}>
+          <Modal isOpen={isOpen} onClose={close} illustration={<DeleteIllustration />}>
+            <Surtitle>Products</Surtitle>
+            <Title>Confirm deletion</Title>
+            Are you sure you want to delete this product?
+            <ButtonsContainer>
+              <Button level="tertiary" onClick={close}>
+                Cancel
+              </Button>
+              <Button level="danger" onClick={close}>
+                Delete
+              </Button>
+            </ButtonsContainer>
+          </Modal>
+          <Button onClick={open}>Open Confirm Modal</Button>
+        </ThemeProvider>
+      );
+    }}
+  </Story>
+</Canvas>
