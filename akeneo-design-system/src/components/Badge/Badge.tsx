@@ -13,6 +13,7 @@ const BadgeContainer = styled.span<BadgeProps & AkeneoThemedProps>`
   box-sizing: border-box;
   background-color: ${getColor('white')};
   font-size: ${getFontSize('small')};
+  font-weight: normal;
 
   ${({level = 'primary'}: BadgeProps & AkeneoThemedProps) => css`
     color: ${getColorForLevel(level, 140)};

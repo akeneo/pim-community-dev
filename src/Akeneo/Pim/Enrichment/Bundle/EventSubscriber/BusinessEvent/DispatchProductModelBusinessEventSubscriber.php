@@ -80,7 +80,7 @@ final class DispatchProductModelBusinessEventSubscriber implements EventSubscrib
         if (false === $productModel instanceof ProductModelInterface) {
             return;
         }
-
+      
         $author = $this->getAuthor();
         $data = $this->normalizeProductModelData($productModel);
 
@@ -95,7 +95,9 @@ final class DispatchProductModelBusinessEventSubscriber implements EventSubscrib
         $user = $this->security->getUser();
 
         if (!$user) {
-            throw new \LogicException('User should not be null.');
+            // TODO: https://akeneo.atlassian.net/browse/CXP-443
+            // throw new \LogicException('User should not be null.');
+            return;
         }
 
         return Author::fromUser($user);
@@ -103,11 +105,9 @@ final class DispatchProductModelBusinessEventSubscriber implements EventSubscrib
 
     private function normalizeProductModelData(ProductModelInterface $productModel): array
     {
-        $standard = $this->normalizer->normalize($productModel, 'standard');
-
         return [
-            'code' => $standard['code'],
-            'categories' => $standard['categories'],
+            'code' => $productModel->getCode(),
+            'categories' => $productModel->getCategoryCodes(),
         ];
     }
 }

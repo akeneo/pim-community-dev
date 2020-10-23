@@ -34,7 +34,8 @@
       "node",
       "jest",
       "@testing-library/jest-dom"
-    ]
+    ],
+    "incremental": true
   },
   "include": ["src"]
 }

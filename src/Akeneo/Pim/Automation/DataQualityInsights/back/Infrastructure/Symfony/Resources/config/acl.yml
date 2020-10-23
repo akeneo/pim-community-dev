@@ -1,0 +1,4 @@
+akeneo_data_quality_insights_activation_attribute_group_edit:
+    type: action
+    label: akeneo_data_quality_insights.acl.activation_attribute_group.edit
+    group_name: akeneo_data_quality_insights.acl_group.dqi

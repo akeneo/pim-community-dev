@@ -104,7 +104,7 @@ pim_enrich:
       edit_attributes: Attribute eines Produktmodells bearbeiten
       categories_view: Die Kategorien eines Produktmodells anzeigen
       history: Produkthistorie ansehen
-      remove: Produktmodell löschen
+      remove: Entfernen eines Produktmodells (einschließlich Kinder)
     category:
       list: Kategorien auflisten
       create: Eine Kategorie anlegen
@@ -444,8 +444,18 @@ pim_datagrid:
       label: Gruppen
     enabled:
       label: Status
+    scope:
+      label: Gültigkeitsbereich
     completeness:
       label: Vollständig
+    created:
+      label: Erstellt am
+    updated:
+      label: Aktualisiert am
+    label_or_identifier:
+      label: Label oder Identifikator
+    parent:
+      label: Eltern
     identifier:
       label: Kennung
 #Versioning / history

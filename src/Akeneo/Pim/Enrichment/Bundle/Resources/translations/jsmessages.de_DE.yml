@@ -31,6 +31,9 @@ pim_enrich.entity.product:
       fail: Es ist kein Attribut als Kennung konfiguriert oder Sie haben keine Rechte die Kennung zu bearbeiten.
   page_title:
     index: "] -Inf, 1] {{ count }} Ergebnis|] 1, Inf[{{ count }} Ergebnisse"
+    product: "]-Inf, 1]{{ count }} Produkt|]1, +Inf[{{ count }} Produkte"
+    product_model: "]-Inf, 1]{{ count }} Produktmodell|]1, +Inf[{{ count }} Produktmodelle"
+    product_and_product_model: "{{ productCount }}, {{ productModelCount }}"
   module:
     create:
       subtitle: Produkt anlegen
@@ -73,7 +76,7 @@ pim_enrich.entity.product:
       add_option: Option hinzufügen
     completeness:
       title: Vollständigkeit
-      complete: Vollständig
+      complete: Vollständigkeit
       no_family: Keine Produktfamilie zugewiesen. Bitte wählen Sie eine Produktfamilie, um die Vollständigkeit dieses Produkts zu berechnen.
       no_completeness: Sie haben gerade die Produktfamilie geändert. Bitte speichern Sie zuerst, um die Vollständigkeit für die neue Produktfamilie zu berechnen.
       missing_values: "{1}1 fehlender Wert|] 1, Inf [{{ count }} fehlende Werte"
@@ -371,6 +374,8 @@ pim_datagrid:
         all_attributes: Alle Attribute
         with_codes: Mit Codes
         with_labels: Mit Labels
+      success_message: "Du kannst {{ job_link }} folgen."
+      job_link_label: der Fortschritt der Ausführung hier
     mass_edit: Massenbearbeitung
     sequential_edit: Sequentielle Bearbeitung
     mass_delete: Mehrauswahl löschen
@@ -407,8 +412,18 @@ pim_datagrid:
       label: Gruppen
     enabled:
       label: Status
+    scope:
+      label: Gültigkeitsbereich
     completeness:
       label: Vollständig
+    created:
+      label: Erstellt am
+    updated:
+      label: Aktualisiert am
+    label_or_identifier:
+      label: Label oder Identifikator
+    parent:
+      label: Eltern
     identifier:
       label: Kennung
   search: Suche in {{ label }}

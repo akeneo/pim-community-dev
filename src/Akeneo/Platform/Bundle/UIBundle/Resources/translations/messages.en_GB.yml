@@ -104,7 +104,6 @@ pim_enrich:
       edit_attributes: Edit attributes of a product model
       categories_view: Consult the categories of a product model
       history: View product model history
-      remove: Remove a product model
     category:
       list: List categories
       create: Create a category
@@ -444,8 +443,18 @@ pim_datagrid:
       label: Groups
     enabled:
       label: Status
+    scope:
+      label: Scope
     completeness:
       label: Complete
+    created:
+      label: Created At
+    updated:
+      label: Updated At
+    label_or_identifier:
+      label: Label or identifier
+    parent:
+      label: Parent
     identifier:
       label: Identifier
 #Versioning / history

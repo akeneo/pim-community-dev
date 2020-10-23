@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Mapping;
 
+use PhpParser\Node\Arg;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -110,11 +111,12 @@ class ProductValueMetadataFactorySpec extends ObjectBehavior
         $guesser->guessConstraints($attribute)->willReturn([$class]);
 
         $class->getTargets()->willReturn(Constraint::CLASS_CONSTRAINT);
+        $metadata->addConstraint(Argument::any())->shouldBeCalled();
 
         $this->getMetadataFor($value);
     }
 
-    function it_does_not_support_multi_targets_constraint(
+    function it_supports_multi_targets_constraint(
         $guesser,
         $factory,
         ClassMetadata $metadata,
@@ -131,9 +133,9 @@ class ProductValueMetadataFactorySpec extends ObjectBehavior
         $guesser->guessConstraints($attribute)->willReturn([$multiTargets]);
 
         $multiTargets->getTargets()->willReturn([Constraint::PROPERTY_CONSTRAINT, Constraint::CLASS_CONSTRAINT]);
+        $metadata->addConstraint(Argument::any())->shouldBeCalled();
+        $metadata->addPropertyConstraint(Argument::cetera())->shouldBeCalled();
 
-        $this
-            ->shouldThrow(new \LogicException('No support provided for constraint on many targets'))
-            ->duringGetMetadataFor($value);
+        $this->getMetadataFor($value);
     }
 }

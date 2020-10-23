@@ -11,30 +11,28 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerAwareInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class ValueNormalizerSpec extends ObjectBehavior
 {
     function let(
-        SerializerInterface $serializer,
+        NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         IdentifiableObjectRepositoryInterface $attributeOptionRepository,
         AttributeInterface $simpleAttribute
     ) {
         $this->beConstructedWith($attributeRepository, $attributeOptionRepository, 4);
 
-        $serializer->implement(NormalizerInterface::class);
-        $this->setSerializer($serializer);
+        $this->setNormalizer($normalizer);
 
         $simpleAttribute->getCode()->willReturn('simple');
     }
 
-    function it_is_a_serializer_aware_normalizer()
+    function it_is_a_normalizer_aware_normalizer()
     {
         $this->shouldBeAnInstanceOf(NormalizerInterface::class);
-        $this->shouldBeAnInstanceOf(SerializerAwareInterface::class);
+        $this->shouldImplement(NormalizerAwareInterface::class);
     }
 
     function it_supports_csv_normalization_of_product_value(ValueInterface $value)
@@ -173,7 +171,7 @@ class ValueNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_value_with_a_collection_data(
         ValueInterface $value,
         AttributeInterface $simpleAttribute,
-        SerializerInterface $serializer,
+        NormalizerInterface $normalizer,
         $attributeRepository
     ) {
         $simpleAttribute->getType()->willReturn(AttributeTypes::OPTION_MULTI_SELECT);
@@ -190,14 +188,14 @@ class ValueNormalizerSpec extends ObjectBehavior
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $simpleAttribute->getBackendType()->willReturn('prices');
 
-        $serializer->normalize($collection, 'flat', ['field_name' => 'simple'])->shouldBeCalled()->willReturn(['simple' => 'red, blue']);
+        $normalizer->normalize($collection, 'flat', ['field_name' => 'simple'])->shouldBeCalled()->willReturn(['simple' => 'red, blue']);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => 'red, blue']);
     }
 
     function it_normalizes_a_value_with_an_array_data(
         ValueInterface $value,
         AttributeInterface $simpleAttribute,
-        SerializerInterface $serializer,
+        NormalizerInterface $normalizer,
         $attributeRepository
     ) {
         $simpleAttribute->getType()->willReturn(AttributeTypes::OPTION_MULTI_SELECT);
@@ -214,14 +212,14 @@ class ValueNormalizerSpec extends ObjectBehavior
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $simpleAttribute->getBackendType()->willReturn('prices');
 
-        $serializer->normalize(Argument::any(), 'flat', ['field_name' => 'simple'])->shouldBeCalled()->willReturn(['simple' => 'red, blue']);
+        $normalizer->normalize(Argument::any(), 'flat', ['field_name' => 'simple'])->shouldBeCalled()->willReturn(['simple' => 'red, blue']);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => 'red, blue']);
     }
 
     function it_normalizes_a_value_with_ordered_options_with_a_option_collection_data(
         ValueInterface $value,
         AttributeInterface $multiColorAttribute,
-        SerializerInterface $serializer,
+        NormalizerInterface $normalizer,
         AttributeOptionInterface $redOption,
         AttributeOptionInterface $blueOption,
         $attributeRepository,
@@ -248,7 +246,7 @@ class ValueNormalizerSpec extends ObjectBehavior
         $redOption->getSortOrder()->willReturn(10)->shouldBeCalled();
         $blueOption->getSortOrder()->willReturn(11)->shouldBeCalled();
 
-        $serializer->normalize(Argument::type('Doctrine\Common\Collections\ArrayCollection'), 'flat', ['field_name' => 'colors'])
+        $normalizer->normalize(Argument::type('Doctrine\Common\Collections\ArrayCollection'), 'flat', ['field_name' => 'colors'])
             ->shouldBeCalled()
             ->willReturn(['colors' => 'red, blue']);
 

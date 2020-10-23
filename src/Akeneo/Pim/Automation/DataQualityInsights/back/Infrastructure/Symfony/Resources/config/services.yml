@@ -107,13 +107,19 @@ services:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\CalculateProductCompleteness
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductIdentifierFromProductIdQuery'
-            - '@pim_catalog.completeness.calculator'
+            - '@akeneo.pim.automation.completeness_product_required_attributes_calculator'
 
     akeneo.pim.automation.calculate_product_completeness_of_non_required_attributes:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\CalculateProductCompleteness
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductIdentifierFromProductIdQuery'
             - '@akeneo.pim.automation.completeness_product_non_required_attributes_calculator'
+
+    akeneo.pim.automation.completeness_product_required_attributes_calculator:
+        class: Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator
+        arguments:
+            - '@akeneo.pim.enrichment.completeness.query.get_product_masks'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\GetRequiredAttributesMasksQuery'
 
     akeneo.pim.automation.completeness_product_non_required_attributes_calculator:
         class: Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator
@@ -135,16 +141,18 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\GetNonRequiredProductModelAttributesMaskQuery'
             - '@pim_catalog.repository.product_model'
 
-    akeneo.pim.automation.data_quality_insights.create_missing_products_criteria_evaluations:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateMissingCriteriaEvaluations
+    akeneo.pim.automation.data_quality_insights.mark_product_criteria_to_evaluate:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\MarkCriteriaToEvaluate
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetUpdatedProductIdsQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductIdsImpactedByAttributeGroupActivationQuery'
             - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
 
-    akeneo.pim.automation.data_quality_insights.create_missing_product_models_criteria_evaluations:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateMissingCriteriaEvaluations
+    akeneo.pim.automation.data_quality_insights.mark_product_model_criteria_to_evaluate:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\MarkCriteriaToEvaluate
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetUpdatedProductModelIdsQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelIdsImpactedByAttributeGroupActivationQuery'
             - '@akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\InitializeJobs:

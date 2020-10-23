@@ -47,7 +47,12 @@ class SetAttributeOptionSortOrderSubscriber implements EventSubscriberInterface
             return;
         }
         if ($subject instanceof AttributeInterface) {
-            $this->setSortOrders($subject->getOptions()->toArray());
+            $sortOrders = [];
+            foreach ($subject->getOptions() as $key => $options) {
+                $sortOrders[$key] = $options;
+            }
+
+            $this->setSortOrders($sortOrders);
         }
     }
 

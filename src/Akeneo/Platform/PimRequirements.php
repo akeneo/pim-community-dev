@@ -20,7 +20,7 @@ use Symfony\Requirements\Requirement;
  */
 class PimRequirements
 {
-    const REQUIRED_PHP_VERSION = '7.3.0';
+    const REQUIRED_PHP_VERSION = '7.4.0';
     const REQUIRED_GD_VERSION = '2.0';
     const REQUIRED_GHOSTSCRIPT_VERSION = '9.27';
     const REQUIRED_CURL_VERSION = '7.0';

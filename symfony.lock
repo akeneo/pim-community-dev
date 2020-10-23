@@ -274,6 +274,9 @@
     "league/flysystem-ziparchive": {
         "version": "1.0.3"
     },
+    "league/mime-type-detection": {
+        "version": "1.5.0"
+    },
     "liip/imagine-bundle": {
         "version": "1.8",
         "recipe": {
@@ -341,7 +344,7 @@
         "version": "v0.3.3"
     },
     "php": {
-        "version": "7.3"
+        "version": "7.4"
     },
     "php-cs-fixer/diff": {
         "version": "v1.3.0"
@@ -369,6 +372,9 @@
     },
     "phpstan/phpstan-symfony": {
         "version": "0.11.6"
+    },
+    "phpstan/phpstan-webmozart-assert": {
+        "version": "0.12.7"
     },
     "phpunit/php-code-coverage": {
         "version": "7.0.8"
@@ -638,6 +644,9 @@
             "src/Controller/.gitignore",
             "src/Kernel.php"
         ]
+    },
+    "symfony/http-client-contracts": {
+        "version": "v2.3.1"
     },
     "symfony/http-foundation": {
         "version": "v4.3.4"

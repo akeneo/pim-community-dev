@@ -99,6 +99,14 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
+    public function getIdentifier(): ?string
+    {
+        return $this->getCode();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setCode(string $code): void
     {
         $this->code = $code;

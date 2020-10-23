@@ -93,7 +93,9 @@ final class DispatchProductBusinessEventSubscriber implements EventSubscriberInt
         $user = $this->security->getUser();
 
         if (!$user) {
-            throw new \LogicException('User should not be null.');
+            // TODO: https://akeneo.atlassian.net/browse/CXP-443
+            // throw new \LogicException('User should not be null.');
+            return;
         }
 
         return Author::fromUser($user);
@@ -101,11 +103,9 @@ final class DispatchProductBusinessEventSubscriber implements EventSubscriberInt
 
     private function normalizeProductData(ProductInterface $product): array
     {
-        $standard = $this->normalizer->normalize($product, 'standard');
-
         return [
-            'identifier' => $standard['identifier'],
-            'categories' => $standard['categories'],
+            'identifier' => $product->getIdentifier(),
+            'categories' => $product->getCategoryCodes(),
         ];
     }
 }
