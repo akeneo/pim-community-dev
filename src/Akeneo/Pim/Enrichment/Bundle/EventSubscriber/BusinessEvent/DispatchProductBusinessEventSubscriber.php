@@ -58,7 +58,16 @@ final class DispatchProductBusinessEventSubscriber implements EventSubscriberInt
             return;
         }
 
-        $author = $this->getAuthor();
+        /** @var UserInterface $user */
+        $user = $this->security->getUser();
+
+        if (!$user) {
+            // TODO: https://akeneo.atlassian.net/browse/CXP-443
+            // throw new \LogicException('User should not be null.');
+            return;
+        }
+
+        $author = Author::fromUser($user);
         $data = $this->normalizeProductData($product);
 
         $message = null;
@@ -79,16 +88,6 @@ final class DispatchProductBusinessEventSubscriber implements EventSubscriberInt
             return;
         }
 
-        $author = $this->getAuthor();
-        $data = $this->normalizeProductData($product);
-
-        $message = new ProductRemoved($author, $data);
-
-        $this->messageBus->dispatch($message);
-    }
-
-    private function getAuthor(): Author
-    {
         /** @var UserInterface $user */
         $user = $this->security->getUser();
 
@@ -98,7 +97,12 @@ final class DispatchProductBusinessEventSubscriber implements EventSubscriberInt
             return;
         }
 
-        return Author::fromUser($user);
+        $author = Author::fromUser($user);
+        $data = $this->normalizeProductData($product);
+
+        $message = new ProductRemoved($author, $data);
+
+        $this->messageBus->dispatch($message);
     }
 
     private function normalizeProductData(ProductInterface $product): array
