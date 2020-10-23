@@ -36,7 +36,9 @@ const buildRecommendation = (
   criterionEvaluation: CriterionEvaluationResult,
   evaluation: Evaluation,
   product: Product,
-  axis: string
+  axis: string,
+  followAttributeRecommendation: FollowAttributeRecommendationHandler|undefined,
+  followAttributesListRecommendation: FollowAttributesListRecommendationHandler|undefined
 ): ReactElement => {
   const criterion = criterionEvaluation.code;
   const attributes = criterionEvaluation.improvable_attributes || ([] as string[]);
@@ -68,6 +70,8 @@ const buildRecommendation = (
       product={product}
       axis={axis}
       evaluation={evaluation}
+      followAttributeRecommendation={followAttributeRecommendation}
+      followAttributesListRecommendation={followAttributesListRecommendation}
     />
   );
 };
@@ -80,6 +84,8 @@ const Criterion: FC<CriterionProps> = ({
   evaluation = evaluationPlaceholder,
   followCriterionRecommendation = defaultFollowCriterionRecommendation,
   isFollowingCriterionRecommendationAllowed = defaultAllowFollowingCriterionRecommendation,
+  followAttributeRecommendation,
+  followAttributesListRecommendation
 }) => {
   const criterion = code;
   const product = useProduct();
@@ -90,8 +96,8 @@ const Criterion: FC<CriterionProps> = ({
   };
 
   const recommendation = useMemo(() => {
-    return buildRecommendation(children, criterionEvaluation, evaluation, product, axis);
-  }, [criterionEvaluation, children]);
+    return buildRecommendation(children, criterionEvaluation, evaluation, product, axis, followAttributeRecommendation, followAttributesListRecommendation);
+  }, [children, criterionEvaluation, evaluation, product, axis, followAttributeRecommendation, followAttributesListRecommendation]);
 
   const rowProps = {
     className: `AknVerticalList-item ${isClickable ? 'AknVerticalList-item--clickable' : ''}`,

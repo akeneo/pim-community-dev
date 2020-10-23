@@ -1,9 +1,10 @@
+import React, {FC} from 'react';
 import AttributeWithRecommendation from '../../../../../domain/AttributeWithRecommendation.interface';
-import Attribute from './Attribute';
-import React from 'react';
+import Attribute, {FollowAttributeRecommendationHandler} from './Attribute';
 import {CriterionEvaluationResult, Evaluation, Product} from '../../../../../domain';
-import {TooManyAttributesLink} from "./TooManyAttributesLink";
+import {TooManyAttributesLink} from './TooManyAttributesLink';
 import {uniq as _uniq} from 'lodash';
+import {FollowAttributesListRecommendationHandler} from '../../../../user-actions';
 
 const __ = require('oro/translator');
 
@@ -15,23 +16,21 @@ interface AttributesListProps {
   attributes: AttributeWithRecommendation[];
   axis: string;
   evaluation: Evaluation;
+  followAttributeRecommendation?: FollowAttributeRecommendationHandler;
+  followAttributesListRecommendation?: FollowAttributesListRecommendationHandler;
 }
 
 const getAxisAttributesWithRecommendations = (criteria: CriterionEvaluationResult[]): string[] => {
-  let  attributes: string[] = [];
+  let attributes: string[] = [];
 
-  criteria.map((criterion) => {
-    attributes = [
-      ...criterion.improvable_attributes,
-      ...attributes,
-    ];
+  criteria.map(criterion => {
+    attributes = [...criterion.improvable_attributes, ...attributes];
   });
 
   return _uniq(attributes);
 };
 
-const AttributesList = ({product, criterionCode, attributes, axis, evaluation}: AttributesListProps) => {
-
+const AttributesList: FC<AttributesListProps> = ({product, criterionCode, attributes, axis, evaluation, followAttributeRecommendation, followAttributesListRecommendation}) => {
   const criteria = evaluation.criteria || [];
   const allAttributes = getAxisAttributesWithRecommendations(criteria);
 
@@ -40,7 +39,7 @@ const AttributesList = ({product, criterionCode, attributes, axis, evaluation}: 
       <span className="CriterionSuccessMessage">
         {__(`akeneo_data_quality_insights.product_evaluation.messages.success.criterion`)}
       </span>
-    )
+    );
   }
 
   if (attributes.length <= MAX_ATTRIBUTES_DISPLAYED) {
@@ -49,8 +48,8 @@ const AttributesList = ({product, criterionCode, attributes, axis, evaluation}: 
         {attributes.map((attribute: AttributeWithRecommendation, index: number) => {
           const separator = (
             <>
-              {(index < (attributes.length - 1)) && <>,&thinsp;</>}
-              {(index === (attributes.length - 1)) && '.'}
+              {index < attributes.length - 1 && <>,&thinsp;</>}
+              {index === attributes.length - 1 && '.'}
             </>
           );
 
@@ -61,6 +60,7 @@ const AttributesList = ({product, criterionCode, attributes, axis, evaluation}: 
               label={attribute.label}
               separator={separator}
               product={product}
+              followRecommendation={followAttributeRecommendation}
             />
           );
         })}
@@ -68,7 +68,13 @@ const AttributesList = ({product, criterionCode, attributes, axis, evaluation}: 
     );
   } else {
     return (
-      <TooManyAttributesLink axis={axis} attributes={allAttributes} numOfAttributes={attributes.length} product={product}/>
+      <TooManyAttributesLink
+        axis={axis}
+        attributes={allAttributes}
+        numOfAttributes={attributes.length}
+        product={product}
+        followRecommendation={followAttributesListRecommendation}
+      />
     );
   }
 };

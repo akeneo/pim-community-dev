@@ -7,7 +7,7 @@ interface AttributeProps {
   label: string;
   separator: ReactElement | null;
   product: Product;
-  follow?: FollowAttributeRecommendationHandler;
+  followRecommendation?: FollowAttributeRecommendationHandler;
 }
 
 
@@ -16,7 +16,7 @@ const Attribute: FunctionComponent<AttributeProps> = ({
   label,
   separator,
   product,
-  follow = followAttributeRecommendation,
+  followRecommendation = followAttributeRecommendation,
 }) => {
   const content = (
     <>
@@ -28,7 +28,7 @@ const Attribute: FunctionComponent<AttributeProps> = ({
   return (
     <button
       className="AknActionButton AknActionButton--withoutBorder AknDataQualityInsightsAttribute AknDataQualityInsightsAttribute--link"
-      onClick={() => follow(attributeCode, product)}
+      onClick={() => followRecommendation(attributeCode, product)}
     >
       {content}
     </button>

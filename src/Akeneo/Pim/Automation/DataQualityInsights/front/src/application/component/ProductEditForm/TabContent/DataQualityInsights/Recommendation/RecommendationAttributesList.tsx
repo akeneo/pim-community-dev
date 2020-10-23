@@ -1,10 +1,14 @@
-import React, {FunctionComponent} from 'react';
+import React, {FC} from 'react';
 import {useCatalogContext, useFetchProductFamilyInformation} from '../../../../../../infrastructure/hooks';
 import AttributeWithRecommendation from '../../../../../../domain/AttributeWithRecommendation.interface';
 import AttributesList from '../AttributesList';
 import AttributesListWithVariations from '../AttributesListWithVariations';
-import {isSimpleProduct} from '../../../../../helper/ProductHelper';
+import {isSimpleProduct} from '../../../../../helper';
 import {Evaluation, Product} from '../../../../../../domain';
+import {
+  FollowAttributeRecommendationHandler,
+  FollowAttributesListRecommendationHandler,
+} from '../../../../../user-actions';
 
 interface RecommendationAttributesListProps {
   criterion: string;
@@ -12,6 +16,8 @@ interface RecommendationAttributesListProps {
   product: Product;
   axis: string;
   evaluation: Evaluation;
+  followAttributeRecommendation?: FollowAttributeRecommendationHandler;
+  followAttributesListRecommendation?: FollowAttributesListRecommendationHandler;
 }
 
 const getAttributeLabel = (attributeCode: string, productFamilyInformation: any, locale: string) => {
@@ -30,7 +36,15 @@ const getAttributeLabel = (attributeCode: string, productFamilyInformation: any,
   return attributeItem.labels[locale];
 };
 
-const RecommendationAttributesList: FunctionComponent<RecommendationAttributesListProps> = ({criterion, attributes, axis, evaluation, product}) => {
+const RecommendationAttributesList: FC<RecommendationAttributesListProps> = ({
+ criterion,
+ attributes,
+ axis,
+ evaluation,
+ product,
+ followAttributeRecommendation,
+ followAttributesListRecommendation
+}) => {
   const {locale} = useCatalogContext();
   const productFamilyInformation = useFetchProductFamilyInformation();
 
@@ -57,8 +71,25 @@ const RecommendationAttributesList: FunctionComponent<RecommendationAttributesLi
           <span className="NotApplicableAttribute">N/A</span> :
 
           isSimpleProduct(product)
-            ? <AttributesList product={product} criterionCode={criterion} attributes={sortedAttributes} axis={axis} evaluation={evaluation}/>
-            : <AttributesListWithVariations product={product} criterionCode={criterion} attributes={sortedAttributes} locale={locale as string} evaluation={evaluation} axis={axis}/>
+            ? <AttributesList
+                product={product}
+                criterionCode={criterion}
+                attributes={sortedAttributes}
+                axis={axis}
+                evaluation={evaluation}
+                followAttributeRecommendation={followAttributeRecommendation}
+                followAttributesListRecommendation={followAttributesListRecommendation}
+              />
+            : <AttributesListWithVariations
+                product={product}
+                criterionCode={criterion}
+                attributes={sortedAttributes}
+                locale={locale as string}
+                evaluation={evaluation}
+                axis={axis}
+                followAttributeRecommendation={followAttributeRecommendation}
+                followAttributesListRecommendation={followAttributesListRecommendation}
+              />
       }
     </>
   )

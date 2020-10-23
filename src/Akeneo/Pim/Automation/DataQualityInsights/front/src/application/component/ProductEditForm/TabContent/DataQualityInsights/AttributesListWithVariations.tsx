@@ -1,8 +1,12 @@
 import {AttributeWithRecommendation, Evaluation, Product} from '../../../../../domain';
-import React from 'react';
+import React, {FC} from 'react';
 import AttributesList from './AttributesList';
 import {isRootProductModel} from '../../../../helper';
 import {ROOT_PRODUCT_MODEL_LEVEL} from '../../../../constant';
+import {
+  FollowAttributeRecommendationHandler,
+  FollowAttributesListRecommendationHandler,
+} from '../../../../user-actions';
 
 const __ = require('oro/translator');
 
@@ -13,9 +17,11 @@ interface AttributesListWithVariationsProps {
   locale: string;
   axis: string;
   evaluation: Evaluation;
+  followAttributeRecommendation?: FollowAttributeRecommendationHandler;
+  followAttributesListRecommendation?: FollowAttributesListRecommendationHandler;
 }
 
-const AttributesListWithVariations = ({product, criterionCode, attributes, locale, axis, evaluation}: AttributesListWithVariationsProps) => {
+const AttributesListWithVariations: FC<AttributesListWithVariationsProps> = ({product, criterionCode, attributes, locale, axis, evaluation, followAttributeRecommendation, followAttributesListRecommendation}) => {
 
   const computeRootProductModelAttributesList = (attributes: AttributeWithRecommendation[]) => {
     let variantAttributes: string[] = [];
@@ -40,7 +46,15 @@ const AttributesListWithVariations = ({product, criterionCode, attributes, local
 
   return (
     isRootProductModel(product)
-      ? <AttributesList product={product} criterionCode={criterionCode} attributes={getLevelAttributes(attributes, ROOT_PRODUCT_MODEL_LEVEL)} axis={axis} evaluation={evaluation}/>
+      ? <AttributesList
+            product={product}
+            criterionCode={criterionCode}
+            attributes={getLevelAttributes(attributes, ROOT_PRODUCT_MODEL_LEVEL)}
+            axis={axis}
+            evaluation={evaluation}
+            followAttributeRecommendation={followAttributeRecommendation}
+            followAttributesListRecommendation={followAttributesListRecommendation}
+        />
       : <div className="CriterionVariantRecommendations">
         {product.meta.variant_navigation
           // @ts-ignore
@@ -49,7 +63,15 @@ const AttributesListWithVariations = ({product, criterionCode, attributes, local
             return (
               <div key={`variant-attributes-list-${level}`} className="attributeList" data-testid={`attributes-level-${level}`}>
                 <span>{level > 0 ? variant.axes[locale] : __('pim_enrich.entity.product.module.variant_navigation.common')}</span>:&thinsp;
-                <AttributesList product={product} criterionCode={criterionCode} attributes={getLevelAttributes(attributes, level)} axis={axis} evaluation={evaluation}/>
+                <AttributesList
+                    product={product}
+                    criterionCode={criterionCode}
+                    attributes={getLevelAttributes(attributes, level)}
+                    axis={axis}
+                    evaluation={evaluation}
+                    followAttributeRecommendation={followAttributeRecommendation}
+                    followAttributesListRecommendation={followAttributesListRecommendation}
+                />
               </div>
             )
         })}

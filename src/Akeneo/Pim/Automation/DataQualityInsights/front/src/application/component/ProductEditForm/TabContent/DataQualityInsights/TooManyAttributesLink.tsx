@@ -9,7 +9,7 @@ interface TooManyAttributesLinkProps {
   attributes: string[];
   numOfAttributes : number;
   product: Product;
-  follow?: FollowAttributesListRecommendationHandler;
+  followRecommendation?: FollowAttributesListRecommendationHandler;
 }
 
 const TooManyAttributesLink: FunctionComponent<TooManyAttributesLinkProps> = ({
@@ -17,13 +17,13 @@ const TooManyAttributesLink: FunctionComponent<TooManyAttributesLinkProps> = ({
     attributes,
     numOfAttributes,
     product,
-    follow = followAttributesListRecommendation
+    followRecommendation = followAttributesListRecommendation
 }) => {
   return (
     <>
       <button
           className="AknActionButton AknActionButton--withoutBorder AknDataQualityInsightsManyAttributes"
-          onClick={() => follow(product, attributes, axis)}
+          onClick={() => followRecommendation(product, attributes, axis)}
       >
         {translate('akeneo_data_quality_insights.product_evaluation.messages.too_many_attributes', {count: numOfAttributes})}
       </button>
