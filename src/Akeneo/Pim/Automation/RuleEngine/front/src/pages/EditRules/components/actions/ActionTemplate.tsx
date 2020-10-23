@@ -70,8 +70,6 @@ const ActionTemplate: React.FC<Props> = ({
             onValidate={() => {
               handleDelete();
             }}
-            cancelLabel={translate('pim_common.cancel')}
-            confirmLabel={translate('pim_common.confirm')}
             label={translate(
               'pimee_catalog_rule.form.edit.actions.delete.label'
             )}
