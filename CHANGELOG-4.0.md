@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.66 (2020-10-23)
+
 ## Bug fixes:
 
 - PIM-9509: SSO Identity Provider should accept URNs
