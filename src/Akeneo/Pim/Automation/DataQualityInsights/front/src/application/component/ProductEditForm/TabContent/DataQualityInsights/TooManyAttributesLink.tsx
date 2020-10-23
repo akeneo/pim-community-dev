@@ -1,6 +1,6 @@
 import React, {FunctionComponent} from 'react';
 import {Product} from '../../../../../domain';
-import {followAttributesListRecommendations} from '../../../../user-actions';
+import {followAttributesListRecommendation, FollowAttributesListRecommendationHandler} from '../../../../user-actions';
 
 const translate = require('oro/translator');
 
@@ -9,17 +9,15 @@ interface TooManyAttributesLinkProps {
   attributes: string[];
   numOfAttributes : number;
   product: Product;
-  follow?: FollowAttributesListRecommendationsHandler;
+  follow?: FollowAttributesListRecommendationHandler;
 }
-
-type FollowAttributesListRecommendationsHandler = (product: Product, attributes: string[], axis: string) => void;
 
 const TooManyAttributesLink: FunctionComponent<TooManyAttributesLinkProps> = ({
     axis,
     attributes,
     numOfAttributes,
     product,
-    follow = followAttributesListRecommendations
+    follow = followAttributesListRecommendation
 }) => {
   return (
     <>
@@ -34,4 +32,3 @@ const TooManyAttributesLink: FunctionComponent<TooManyAttributesLinkProps> = ({
 };
 
 export {TooManyAttributesLink};
-export type {FollowAttributesListRecommendationsHandler};

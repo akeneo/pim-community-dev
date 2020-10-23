@@ -3,8 +3,8 @@ import {CriterionEvaluationResult} from '@akeneo-pim-community/data-quality-insi
 import Evaluation from '@akeneo-pim-community/data-quality-insights/src/domain/Evaluation.interface';
 import {AxesContextProvider} from '@akeneo-pim-community/data-quality-insights/src/application/context/AxesContext';
 import Criterion, {
-    CheckFollowingCriterionActive,
-    FollowCriterionHandler,
+    AllowFollowingCriterionRecommendation,
+    FollowCriterionRecommendationHandler,
 } from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/Criterion';
 import {renderWithAppContextHelper} from './renderWithAppContextHelper';
 
@@ -14,8 +14,8 @@ const renderCriterion = (
   axis: string,
   evaluation: Evaluation,
   customContent: ReactElement | undefined = undefined,
-  handleFollowCriterion: FollowCriterionHandler | undefined = undefined,
-  checkFollowingActive: CheckFollowingCriterionActive | undefined = undefined,
+  handleFollowCriterion: FollowCriterionRecommendationHandler | undefined = undefined,
+  checkFollowingActive: AllowFollowingCriterionRecommendation | undefined = undefined,
   appState = {}
 ) => {
   const Component: FC = () => (
@@ -25,8 +25,8 @@ const renderCriterion = (
         criterionEvaluation={criterionEvaluation}
         axis={axis}
         evaluation={evaluation}
-        follow={handleFollowCriterion}
-        isFollowingActive={checkFollowingActive}
+        followCriterionRecommendation={handleFollowCriterion}
+        isFollowingCriterionRecommendationAllowed={checkFollowingActive}
       >
         {customContent}
       </Criterion>

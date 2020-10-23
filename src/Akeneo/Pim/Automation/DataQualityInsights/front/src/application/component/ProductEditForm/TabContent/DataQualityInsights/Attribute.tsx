@@ -1,6 +1,6 @@
 import React, {FunctionComponent, ReactElement} from 'react';
 import {Product} from '../../../../../domain';
-import {followAttributeRecommendation} from '../../../../user-actions';
+import {followAttributeRecommendation, FollowAttributeRecommendationHandler} from '../../../../user-actions';
 
 interface AttributeProps {
   attributeCode: string;
@@ -10,7 +10,6 @@ interface AttributeProps {
   follow?: FollowAttributeRecommendationHandler;
 }
 
-type FollowAttributeRecommendationHandler = (attributeCode: string, product: Product) => void;
 
 const Attribute: FunctionComponent<AttributeProps> = ({
   attributeCode,
@@ -37,3 +36,4 @@ const Attribute: FunctionComponent<AttributeProps> = ({
 };
 
 export default Attribute;
+export type {FollowAttributeRecommendationHandler};

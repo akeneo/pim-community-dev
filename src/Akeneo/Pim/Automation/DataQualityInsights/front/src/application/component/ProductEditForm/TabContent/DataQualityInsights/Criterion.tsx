@@ -1,5 +1,5 @@
 import React, {FC, ReactElement, ReactNode, useMemo} from 'react';
-import {Family, Product} from '../../../../../domain';
+import {Product} from '../../../../../domain';
 import Evaluation, {
   CRITERION_ERROR,
   CRITERION_IN_PROGRESS,
@@ -9,27 +9,26 @@ import Evaluation, {
 import {Recommendation, RecommendationAttributesList, RecommendationType} from './Recommendation';
 import {useFetchProductFamilyInformation, useProduct} from '../../../../../infrastructure/hooks';
 import {criterionPlaceholder, evaluationPlaceholder, isSimpleProduct, isSuccess} from '../../../../helper';
+import {
+  AllowFollowingCriterionRecommendation,
+  allowFollowingCriterionRecommendation as defaultAllowFollowingCriterionRecommendation,
+  FollowAttributeRecommendationHandler,
+  FollowAttributesListRecommendationHandler,
+  followCriterionRecommendation as defaultFollowCriterionRecommendation,
+  FollowCriterionRecommendationHandler,
+} from '../../../../user-actions';
 
 const translate = require('oro/translator');
-
-type FollowCriterionHandler = (
-  criterionEvaluation: CriterionEvaluationResult,
-  family: Family | null,
-  product: Product
-) => void;
-type CheckFollowingCriterionActive = (
-  criterionEvaluation: CriterionEvaluationResult,
-  family: Family | null,
-  product: Product
-) => boolean;
 
 interface CriterionProps {
   code: string;
   criterionEvaluation?: CriterionEvaluationResult;
   axis?: string;
   evaluation?: Evaluation;
-  follow?: FollowCriterionHandler;
-  isFollowingActive?: CheckFollowingCriterionActive;
+  isFollowingCriterionRecommendationAllowed?: AllowFollowingCriterionRecommendation;
+  followCriterionRecommendation?: FollowCriterionRecommendationHandler;
+  followAttributeRecommendation?: FollowAttributeRecommendationHandler,
+  followAttributesListRecommendation?: FollowAttributesListRecommendationHandler
 }
 
 const buildRecommendation = (
@@ -79,19 +78,16 @@ const Criterion: FC<CriterionProps> = ({
   criterionEvaluation = criterionPlaceholder,
   axis = '',
   evaluation = evaluationPlaceholder,
-  follow,
-  isFollowingActive = () => false,
+  followCriterionRecommendation = defaultFollowCriterionRecommendation,
+  isFollowingCriterionRecommendationAllowed = defaultAllowFollowingCriterionRecommendation,
 }) => {
   const criterion = code;
   const product = useProduct();
   const family = useFetchProductFamilyInformation();
-  const isClickable = isFollowingActive(criterionEvaluation, family, product) && follow !== undefined;
-  const handleFollowingCriterion =
-    !isClickable || follow === undefined
-      ? undefined
-      : () => {
-          follow(criterionEvaluation, family, product);
-        };
+  const isClickable = isFollowingCriterionRecommendationAllowed(criterionEvaluation, family, product);
+  const handleFollowingCriterionRecommendation = (!isClickable || followCriterionRecommendation === undefined) ? undefined : () => {
+    followCriterionRecommendation(criterionEvaluation, family, product);
+  };
 
   const recommendation = useMemo(() => {
     return buildRecommendation(children, criterionEvaluation, evaluation, product, axis);
@@ -99,7 +95,7 @@ const Criterion: FC<CriterionProps> = ({
 
   const rowProps = {
     className: `AknVerticalList-item ${isClickable ? 'AknVerticalList-item--clickable' : ''}`,
-    onClick: handleFollowingCriterion,
+    onClick: handleFollowingCriterionRecommendation,
   };
 
   return (
@@ -115,4 +111,3 @@ const Criterion: FC<CriterionProps> = ({
 };
 
 export default Criterion;
-export type {FollowCriterionHandler, CheckFollowingCriterionActive};
