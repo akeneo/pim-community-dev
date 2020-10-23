@@ -13,6 +13,7 @@ export default interface Attribute {
   is_read_only?: boolean;
   sort_order?: number;
   meta: AttributeMeta;
+  reference_data_name?: string;
 }
 
 interface AttributeMeta {
