@@ -38,7 +38,7 @@ services:
       - 'pim'
 
   node:
-    image: 'akeneo/node:10'
+    image: 'akeneo/node:12'
     environment:
       YARN_CACHE_FOLDER: '/home/node/.yarn'
     volumes:

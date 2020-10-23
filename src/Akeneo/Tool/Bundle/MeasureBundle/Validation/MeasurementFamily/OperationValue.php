@@ -11,6 +11,6 @@ class OperationValue extends Constraint
 
     public function getTargets()
     {
-        return self::CLASS_CONSTRAINT;
+        return [self::PROPERTY_CONSTRAINT, self::CLASS_CONSTRAINT];
     }
 }
