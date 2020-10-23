@@ -38,6 +38,7 @@ class JobExecutionResultRecordHydrator implements HydratorInterface
     {
         $records = [];
         foreach ($qb->getQuery()->execute() as $record) {
+            // TODO: Will be fixed by the "stoppable" stories
 //            $job = $this->registry->get($record['jobName']);
 //            $recordStatus = new BatchStatus($record['status']);
 //            $isStoppable = $recordStatus->isRunning() && $job instanceof StoppableJobInterface && $job->isStoppable();
