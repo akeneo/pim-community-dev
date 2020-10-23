@@ -20,7 +20,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AxisCode;
 
 final class PimEnterpriseAxisRegistry implements AxisRegistryInterface
 {
-    /** @var Axis */
+    /** @var array */
     private $axes;
 
     public function __construct()

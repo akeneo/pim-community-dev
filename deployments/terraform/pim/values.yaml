@@ -240,6 +240,7 @@ mysql:
       failureThreshold: 3
 
 memcached:
+  image: memcached:1.6.7
   fullnameOverride: memcached
   replicaCount: 1
   resources:

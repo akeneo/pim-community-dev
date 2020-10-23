@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Calculate;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\Operand;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
@@ -54,6 +55,7 @@ class GetOperandValue
                 return (float)$value->getData();
             case AttributeTypes::PRICE_COLLECTION:
                 Assert::string($operand->getCurrencyCode());
+                Assert::implementsInterface($value, PriceCollectionValueInterface::class);
                 $price = $value->getPrice($operand->getCurrencyCode());
 
                 return null !== $price ? (float) $price->getData() : null;

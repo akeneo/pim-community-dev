@@ -50,8 +50,7 @@ final class EvaluateAttributeOptionSpelling implements EvaluateCriterionInterfac
     {
         $localesByChannel = $this->localesByChannelQuery->getChannelLocaleCollection();
 
-        $this->optionsByAttribute = [];
-        $this->optionsSpellchecksByAttribute = [];
+        $this->resetOptionsByAttribute();
 
         foreach ($localesByChannel as $channelCode => $localesCodes) {
             foreach ($localesCodes as $localeCode) {
@@ -77,6 +76,12 @@ final class EvaluateAttributeOptionSpelling implements EvaluateCriterionInterfac
         }
 
         return $evaluationResult;
+    }
+
+    private function resetOptionsByAttribute(): void
+    {
+        $this->optionsByAttribute = [];
+        $this->optionsSpellchecksByAttribute = [];
     }
 
     private function buildOptionsListByAttribute(\Iterator $productValues, ChannelCode $channelCode, LocaleCode $localeCode)

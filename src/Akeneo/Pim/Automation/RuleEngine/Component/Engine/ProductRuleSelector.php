@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Engine;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConditionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\SelectorInterface;
@@ -22,6 +23,7 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Selects subjects impacted by a rule.
@@ -71,6 +73,7 @@ class ProductRuleSelector implements SelectorInterface
         $pqb = $this->queryBuilderFactory->create();
 
         foreach ($rule->getConditions() as $condition) {
+            Assert::implementsInterface($condition, ProductConditionInterface::class);
             $pqb->addFilter(
                 $condition->getField(),
                 $condition->getOperator(),

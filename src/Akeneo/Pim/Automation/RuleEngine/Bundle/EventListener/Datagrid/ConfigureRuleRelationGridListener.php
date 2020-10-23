@@ -11,8 +11,11 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Bundle\EventListener\Datagrid;
 
+use Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\ORM\QueryBuilder\RuleQueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
+use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Grid listener to configure the parameters of the rule grid in case it is displayed for a resource context
@@ -38,9 +41,12 @@ class ConfigureRuleRelationGridListener
     public function configure(BuildAfter $event)
     {
         $datasource = $event->getDatagrid()->getDatasource();
+        Assert::implementsInterface($datasource, DatasourceInterface::class);
 
         if (null !== $this->requestParams->get('resourceName', null)) {
-            $datasource->getQueryBuilder()->joinResource(
+            $ruleQueryBuilder = $datasource->getQueryBuilder();
+            Assert::isInstanceOf($ruleQueryBuilder, RuleQueryBuilder::class);
+            $ruleQueryBuilder->joinResource(
                 $this->requestParams->get('resourceName'),
                 $this->requestParams->get('resourceId')
             );

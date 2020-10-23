@@ -18,7 +18,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -36,7 +35,7 @@ class AssociationContext implements Context
     private $productSaver;
 
     public function __construct(
-        IdentifiableObjectRepositoryInterface $productRepository,
+        ProductRepositoryInterface $productRepository,
         ObjectUpdaterInterface $productUpdater,
         ProductSaver $productSaver
     ) {

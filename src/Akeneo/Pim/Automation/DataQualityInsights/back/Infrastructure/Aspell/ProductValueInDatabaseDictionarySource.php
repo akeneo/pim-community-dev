@@ -8,6 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Dictionary;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\LocaleCollection;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\ResultStatement;
+use Webmozart\Assert\Assert;
 
 final class ProductValueInDatabaseDictionarySource implements DictionarySource
 {
@@ -33,7 +34,9 @@ final class ProductValueInDatabaseDictionarySource implements DictionarySource
     {
         $keywords = [];
 
-        $this->db->getWrappedConnection()->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
+        $wrappedConnection = $this->db->getWrappedConnection();
+        Assert::isInstanceOf($wrappedConnection, \PDO::class);
+        $wrappedConnection->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
         $stmt = $this->getQuery($localeCollection);
 
         while ($result = $stmt->fetch()) {
@@ -78,7 +81,7 @@ final class ProductValueInDatabaseDictionarySource implements DictionarySource
         });
         asort($tab);
 
-        $this->db->getWrappedConnection()->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
+        $wrappedConnection->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
         return array_keys($tab);
     }
 

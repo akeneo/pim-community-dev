@@ -117,7 +117,7 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
         return \sprintf(
             '%s "%s"',
             $entity instanceof ProductModelInterface ? 'product model' : 'product',
-            $entity instanceof ProductModelInterface ? $entity->getCode() : $entity->getIdentifier(),
+            $entity->getIdentifier(),
         );
     }
 }

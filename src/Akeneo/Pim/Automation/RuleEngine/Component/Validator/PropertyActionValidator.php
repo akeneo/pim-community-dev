@@ -12,6 +12,7 @@
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ActionInterface;
+use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\PropertyAction;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -22,6 +23,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Validates if the action field supports the given data
@@ -64,6 +66,7 @@ class PropertyActionValidator extends ConstraintValidator
      */
     public function validate($action, Constraint $constraint)
     {
+        Assert::isInstanceOf($constraint, PropertyAction::class);
         if (!($action instanceof ActionInterface)) {
             throw new \LogicException(sprintf('Action of type "%s" can not be validated.', gettype($action)));
         }

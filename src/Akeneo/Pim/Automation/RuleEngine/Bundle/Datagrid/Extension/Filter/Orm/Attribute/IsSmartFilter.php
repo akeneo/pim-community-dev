@@ -15,7 +15,9 @@ use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\BooleanFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
+use Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface as PimFilterDatasourceAdapterInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Filter for the smart property of attribute
@@ -55,6 +57,7 @@ class IsSmartFilter extends BooleanFilter
             return false;
         }
 
+        Assert::implementsInterface($ds, PimFilterDatasourceAdapterInterface::class);
         $qb = $ds->getQueryBuilder();
         $rootAlias = current($qb->getRootAliases());
 

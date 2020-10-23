@@ -15,6 +15,8 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
+use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceInterface as PimDatasourceInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Datagrid extension for attribute grid to select the smart property of attributes
@@ -55,6 +57,7 @@ class IsSmartSelectorExtension extends AbstractExtension
      */
     public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
     {
+        Assert::implementsInterface($datasource, PimDatasourceInterface::class);
         $qb = $datasource->getQueryBuilder();
         $rootAlias = current($qb->getRootAliases());
 

@@ -23,6 +23,7 @@ use Akeneo\Test\Pim\Automation\RuleEngine\Common\Context\ExceptionContext;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\BuilderInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Symfony\Component\Yaml\Yaml;
@@ -392,6 +393,7 @@ YAML;
         foreach ($normalizedRules['rules'] as $code => $normalizedRule) {
             $normalizedRule['code'] = $code;
             $ruleDefinition = $this->ruleDefinitionProcessor->process($normalizedRule);
+            Assert::implementsInterface($this->ruleDefinitionRepository, SaverInterface::class);
             $this->ruleDefinitionRepository->save($ruleDefinition);
         }
     }
@@ -414,6 +416,8 @@ YAML;
      */
     private function executeRulesOnSubjects(array $rules, array $subjects): void
     {
+        Assert::implementsInterface($this->productRepository, SaverInterface::class);
+
         /** @var RuleInterface $rule */
         foreach ($rules as $rule) {
             try {
