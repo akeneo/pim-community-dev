@@ -64,7 +64,7 @@ class GetJobExecutionTracking
             $job = $this->jobRegistry->get($jobName);
 
             return $this->createJobExecutionTrackingWithJob($jobExecution, $job);
-        } catch(UndefinedJobException $e) {
+        } catch (UndefinedJobException $e) {
             return $this->createJobExecutionTrackingWithoutJob($jobExecution);
         }
     }
