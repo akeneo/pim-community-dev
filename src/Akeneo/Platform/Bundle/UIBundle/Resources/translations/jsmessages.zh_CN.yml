@@ -209,6 +209,7 @@ pim_common:
     DOES NOT CONTAIN: 不包含
     STARTS WITH: 开始于
     ENDS WITH: 结束于
+  read_more: 阅读更多
 error:
   exception: 哎呀 ！发生错误 {{ status_code }} ...
   forbidden: 您无权访问此页面
