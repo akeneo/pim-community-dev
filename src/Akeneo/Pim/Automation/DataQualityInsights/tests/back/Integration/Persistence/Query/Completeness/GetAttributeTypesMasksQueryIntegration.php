@@ -1,10 +1,9 @@
 <?php
 
 
-namespace Akeneo\Pim\Automation\DataQualityInsights\tests\back\Integration\Persistence\Query\Completeness;
+namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query\Completeness;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query\Completeness\CompletenessTestCase;
 
 class GetAttributeTypesMasksQueryIntegration extends CompletenessTestCase
 {
@@ -66,7 +65,7 @@ class GetAttributeTypesMasksQueryIntegration extends CompletenessTestCase
 
     public function test_it_retrieves_image_attributes()
     {
-        $result = $this->get('akeneo.pim.automation.data_quality_insights.infrastructure.persistence.query.get_missing_image_attributes_masks')->fromFamilyCodes(['familyA']);
+        $result = $this->get('akeneo.pim.automation.data_quality_insights.infrastructure.persistence.query.product.get_missing_image_attributes_masks')->fromFamilyCodes(['familyA']);
         $familyAMask = $result['familyA'];
 
         $this->assertCount(3, $familyAMask->masks());
