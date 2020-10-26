@@ -41,10 +41,6 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetAttributeAsMainTitleFromProductId:
-        arguments:
-            - '@database_connection'
-
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetCategoryChildrenIdsQuery:
         arguments:
             - '@database_connection'
@@ -96,10 +92,6 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetIgnoredProductTitleSuggestionQuery:
-        arguments:
-            - '@database_connection'
-
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetProductIdsToEvaluateQuery:
         arguments:
             - '@database_connection'
@@ -107,6 +99,7 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetUpdatedProductsWithoutUpToDateEvaluationQuery:
         arguments:
             - '@database_connection'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetUpdatedProductIdsQuery'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\GetUpToDateLatestProductEvaluationQuery:
         arguments:

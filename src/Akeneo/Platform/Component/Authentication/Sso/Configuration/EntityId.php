@@ -21,13 +21,18 @@ namespace Akeneo\Platform\Component\Authentication\Sso\Configuration;
  */
 final class EntityId
 {
+    /**
+     * @link https://www.oreilly.com/library/view/regular-expressions-cookbook/9781449327453/ch08s06.html
+     */
+    public const URN_PATTERN = '/^urn:[a-z0-9()+,\-.:=@;$_!*\'%\/?#]+$/i';
+
     /** @var string */
     private $entityId;
 
     public function __construct(string $entityId)
     {
-        if (!filter_var($entityId, FILTER_VALIDATE_URL)) {
-            throw new \InvalidArgumentException(sprintf('Value must be a valid URL, "%s" given.', $entityId));
+        if (!filter_var($entityId, FILTER_VALIDATE_URL) && !$this->isValidUrn($entityId)) {
+            throw new \InvalidArgumentException(sprintf('Value must be a valid URL or URN, "%s" given.', $entityId));
         }
 
         $this->entityId = $entityId;
@@ -36,5 +41,10 @@ final class EntityId
     public function __toString(): string
     {
         return $this->entityId;
+    }
+
+    private function isValidUrn(string $uri): bool
+    {
+        return preg_match(self::URN_PATTERN, $uri) === 1;
     }
 }

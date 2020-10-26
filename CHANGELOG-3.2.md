@@ -1,5 +1,63 @@
 # 3.2.x
 
+# 3.2.75 (2020-10-14)
+
+## Improvements:
+
+- PIM-9507: Make Draft Status available as a default user filter
+
+# 3.2.74 (2020-10-09)
+
+## Bug fixes:
+
+- PIM-9492: [Backport] PIM-9109: Fix SSO not working behind reverse proxy.
+
+# 3.2.72 (2020-09-30)
+
+## Bug fixes:
+
+- PIM-9482: Fix view only permission issue on product attributes
+
+# 3.2.71 (2020-09-21)
+
+## Bug fixes:
+
+- PIM-9451: Filter out Reference Entity attribute labels of disabled locales
+
+# 3.2.70 (2020-09-10)
+
+# 3.2.69 (2020-09-07)
+
+## Bug fixes:
+
+- PIM-9436: Filter out Reference Entity labels of disabled locales
+
+# 3.2.68 (2020-09-03)
+
+## Bug fixes:
+
+- PIM-9402: Add new ES filters for EMPTY operator
+
+# 3.2.67 (2020-08-07)
+
+## Bug fixes:
+
+-PIM-9380: Parts of the PIM are not translatable on Crowdin
+
+# 3.2.66 (2020-08-04)
+
+## Improvements
+
+- PIM-9383: Fix underscore JS dependency
+
+# 3.2.65 (2020-07-20)
+
+# 3.2.64 (2020-07-16)
+
+## Bug fixes:
+
+- PIM-9331: Fix reference entity linked records migration
+
 # 3.2.63 (2020-07-07)
 
 # 3.2.62 (2020-07-02)

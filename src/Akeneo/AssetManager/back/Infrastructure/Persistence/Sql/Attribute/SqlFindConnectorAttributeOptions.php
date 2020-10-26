@@ -19,6 +19,7 @@ use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttributeOption;
 use Akeneo\AssetManager\Domain\Query\Attribute\Connector\FindConnectorAttributeOptionsInterface;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\InactiveLabelFilter;
 use Doctrine\DBAL\Connection;
 
 class SqlFindConnectorAttributeOptions implements FindConnectorAttributeOptionsInterface
@@ -29,13 +30,20 @@ class SqlFindConnectorAttributeOptions implements FindConnectorAttributeOptionsI
     /** @var AttributeHydratorRegistry */
     private $attributeHydratorRegistry;
 
+    /** @var InactiveLabelFilter */
+    private $inactiveLabelFilter;
+
     /**
      * @param Connection $sqlConnection
      */
-    public function __construct(Connection $sqlConnection, AttributeHydratorRegistry $attributeHydratorRegistry)
-    {
+    public function __construct(
+        Connection $sqlConnection,
+        AttributeHydratorRegistry $attributeHydratorRegistry,
+        InactiveLabelFilter $inactiveLabelFilter = null
+    ) {
         $this->sqlConnection = $sqlConnection;
         $this->attributeHydratorRegistry = $attributeHydratorRegistry;
+        $this->inactiveLabelFilter = $inactiveLabelFilter;
     }
 
     /**
@@ -86,9 +94,15 @@ SQL;
         $connectorOptions = [];
 
         foreach ($options as $option) {
+            $labels = $option['labels'];
+            // @todo merge master: remove null check
+            if (null !== $this->inactiveLabelFilter) {
+                $labels = $this->inactiveLabelFilter->filter($labels);
+            }
+
             $connectorOptions[] = new ConnectorAttributeOption(
                 OptionCode::fromString($option['code']),
-                LabelCollection::fromArray($option['labels'])
+                LabelCollection::fromArray($labels)
             );
         }
 

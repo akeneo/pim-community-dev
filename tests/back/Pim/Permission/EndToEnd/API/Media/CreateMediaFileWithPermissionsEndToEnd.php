@@ -96,7 +96,7 @@ class CreateMediaFileWithPermissionsEndToEnd extends AbstractMediaFileTestCase
         $expected = <<<JSON
 {
     "code": 404,
-    "message": "Product \"product_not_viewable_by_redactor\" does not exist."
+    "message": "Product \"product_not_viewable_by_redactor\" does not exist or you do not have permission to access it."
 }
 JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());

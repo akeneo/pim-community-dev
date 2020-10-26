@@ -156,7 +156,7 @@ JSON;
     {"identifier": "toto"}
 JSON;
         $expectedContent = <<<JSON
-{"line":1,"identifier":"product_not_viewable_by_redactor","status_code":404,"message":"Product \"product_not_viewable_by_redactor\" does not exist."}
+{"line":1,"identifier":"product_not_viewable_by_redactor","status_code":404,"message":"Product \"product_not_viewable_by_redactor\" does not exist or you do not have permission to access it."}
 {"line":2,"identifier":"toto","status_code":201}
 JSON;
         $response = $this->executeAndCheckStreamRequest($data);
@@ -369,7 +369,7 @@ JSON;
     {"identifier": "another_without_category", "associations": {"PACK": {"products": ["product_not_viewable_by_redactor"]}}}
 JSON;
         $expectedContent = <<<JSON
-{"line":1,"identifier":"product_not_viewable_by_redactor","status_code":404,"message":"Product \"product_not_viewable_by_redactor\" does not exist."}
+{"line":1,"identifier":"product_not_viewable_by_redactor","status_code":404,"message":"Product \"product_not_viewable_by_redactor\" does not exist or you do not have permission to access it."}
 {"line":2,"identifier":"another_without_category","status_code":422,"message":"Property \"associations\" expects a valid product identifier. The product does not exist, \"product_not_viewable_by_redactor\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
 JSON;
         $response = $this->executeAndCheckStreamRequest($data);

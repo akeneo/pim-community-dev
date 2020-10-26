@@ -1,0 +1,524 @@
+pim_title:
+  akeneo_asset_manager_asset_family_index: Asset Manager
+  akeneo_asset_manager_asset_family_edit: Edit an asset family
+  akeneo_asset_manager_asset_edit: Edit an asset
+pim_asset_manager:
+  editor:
+    embedded:
+      invalid_link:
+        title: Suspicious embedded link
+        message: Sorry, we do not display this embed item but it will be correctly saved
+  result_counter: '{0} No result|{1} {{ count }} result|]1,Inf] {{ count }} results'
+  asset_counter: '{0} No asset|{1} {{ count }} asset|]1,Inf] {{ count }} assets'
+  asset_collection:
+    add_asset: 'Add asset'
+    upload_asset: 'Upload asset'
+    add_asset_title: 'Open the asset picker to add assets to the collection'
+    no_asset_in_collection: 'Sorry, there is no asset in this collection.'
+    helper:
+      title: 'Welcome to your brand new product asset management space!'
+      text: 'There is no asset collection for this family. To take part of this new experience, just add an asset collection attribute in your settings.'
+      link: 'How to add an asset collection?'
+    no_asset:
+      title: 'Sorry, there is no asset for this product.'
+    notification:
+      product_rule: 'This collection can be updated by a product rule:'
+      limit: 'You have reached the limit of {{ limit }} assets per collection, you can no longer add assets to your collection.'
+    edit_asset: Edit asset
+    remove_asset: Remove asset
+    remove_one_asset: Remove asset {{ assetName }} from asset collection
+    remove_all_assets: Remove all assets
+    other_actions: Other actions
+    open_other_actions: Open other actions
+    dismiss_other_actions: Dismiss other actions
+    move_asset_to_left: Move asset {{ assetName }} to the left
+    move_asset_to_right: Move asset {{ assetName }} to the right
+    legacy_helper:
+      moved_to_assets_tab: To see the asset collection {{ label }}, go to the product's assets section.
+      is_missing_required: The asset collection {{ label }} is required. Enrich it in the product's assets section.
+  asset_picker:
+    title: Add assets to your product
+    sub_title: Choose the assets you want to attach to your product {{ productLabel }} in {{ attributeLabel }} collection
+    no_result:
+      title: Sorry, there is no asset for your search
+      sub_title: Try again with new search criteria
+    filter:
+      title: Asset filters
+    basket:
+      title: '{{ assetCount }} asset selected|{{ assetCount }} assets selected'
+      empty_title: Your basket is empty
+      remove_one_asset: Remove asset {{ assetName }} from asset selection
+      remove_all_assets: Remove all
+  asset_preview:
+    previous: Previous asset
+    next: Next asset
+    empty_main_media: This asset has no media.
+    other_main_media: We cannot generate the preview of this asset.
+    edit_asset: Edit asset
+    download: Download
+    copy_url: Copy URL
+    error: An error occurred during the rendering of the preview
+  close: Close the modal
+  breadcrumb:
+    products: Products
+  app:
+    image:
+      wide:
+        remove: Remove the file
+        download: Download the file
+        upload: Drag and drop to upload or click here
+      small:
+        remove: Remove
+        download: Download
+        upload: Drag and drop to upload
+  grid:
+    counter: '{{ resultCount }} results'
+    counter_empty: '0 result'
+  asset_family:
+    column:
+      title: Asset navigation
+      selector:
+        title: Asset families
+        no_data: No asset family available
+    validation:
+      code:
+        pattern: 'This field may only contain letters, numbers and underscores.'
+        should_be_unique: 'An asset family already exists with code "{{ %asset_family_identifier% }}"'
+        limit_reached: 'You cannot create the asset family "{{ %asset_family_label% }}" because you have reached the limit of {{ %limit% }} asset families'
+      transformation:
+        limit_reached: 'You have reached the limit of {{ %limit% }} transformations'
+        same_operation_twice: 'The operation "{{ %operation_type% }}" cannot be defined twice in a single transformation'
+        source_can_not_be_a_target: 'The attribute source "{{ %attribute_code% }}" cannot be an attribute target of a transformation.'
+        attribute_reference_should_exist: 'The attribute "{{ %attribute_code% }}" does not exist for this asset family'
+        filename_is_not_unique: 'A transformation with filename''s prefix "{{ %filename_prefix% }}" and suffix "{{ %filename_suffix% }}" already exists for attribute source "{{ %attribute_code% }}"'
+        code_is_not_unique: 'You cannot define two transformations with the same code "{{ %transformation_code% }}"'
+        unknown_extra_field: 'The property {{ {{ field }} }} was not expected.'
+      naming_convention:
+        property_should_exist: 'The property "{{ %property% }}" does not exist for this asset family'
+        not_main_media_attribute_code: 'Property must match the code of the attribute defined as main media'
+      rule_template:
+        limit_reached: 'You have reached the limit of {{ %limit% }} product link rules for the "{{ %asset_family_identifier% }}" asset family.'
+        product_selection_cannot_be_empty: 'You must specify at least one product selection in your product link rule'
+        product_assignment_cannot_be_empty: 'You must specify at least one product assignment in your product link rule'
+        extrapolated_attribute_should_exist: 'The attribute "{{ %attribute_code% }}" does not exist for this asset family'
+        extrapolated_attribute_type_should_be_supported: 'The attribute "{{ %attribute_code% }}" of type "{{ %attribute_type% }}" is not supported, only the following attribute types are supported for this field: {{ %supported_attribute_type% }}'
+        channel_should_exist: 'The channel "{{ %channel_code% }}" does not exist'
+        locale_should_exist: 'The locale "{{ %locale_code% }}" is not activated or does not exist'
+        extrapolated_attribute_type_should_not_have_one_value_per_channel: 'The attribute "{{ %attribute_code% }}" cannot be used for extrapolation because it has one value per channel'
+        extrapolated_attribute_type_should_not_have_one_value_per_locale: 'The attribute "{{ %attribute_code% }}" cannot be used for extrapolation because it has one value per locale'
+        assignment_mode_not_supported: 'Invalid assignment mode "{{ %assignment_mode% }}" found in a product link rule, expected to be "replace" or "add"'
+        channel_not_supported_for_field: 'You cannot specify a channel for the field "{{ %product_field% }}"'
+        locale_not_supported_for_field: 'You cannot specify a locale for the field "{{ %product_field% }}"'
+        assignmement_attribute_does_not_support_this_asset_family: 'The product attribute "{{ %product_attribute_code% }}" cannot contain assets of asset family "{{ %asset_family_identifier% }}"'
+        assignmement_attribute_does_not_exist: 'product attribute "{{ %product_attribute_code% }}" does not exist'
+        assignmement_attribute_is_not_an_asset_collection: 'product attribute "{{ %product_attribute_code% }}" is not an attribute of type asset collection'
+    button:
+      save: Save
+      save_permission: Save
+      create: Create an asset family
+      edit: Edit family
+      view: View family
+      execute_product_link_rules: Execute rules
+    permission:
+      title: Asset family permissions
+    title: Assets
+    breadcrumb: Asset families
+    img: The main media of the asset family named "{{ label }}"
+    tab:
+      assets: Assets
+      attribute: Attributes
+      properties: Properties
+      permission: Permissions
+      transformations: Transformations
+      product_link_rules: Product link rules
+    transformations:
+      help:
+        title: 'Welcome to your new asset management area!'
+        description: 'You can define here up to 10 transformations by asset family.'
+        link: 'If you want to dig into the new Asset Manager transformations, click here'
+      subsection: 'Transformation properties'
+    product_link_rules:
+      naming_convention_subsection: 'Naming convention properties'
+      product_link_rules_subsection: 'Product link rules properties'
+      help:
+        title: 'Welcome to your new asset management area!'
+        description: 'You can define here up to 2 product link rules by asset family.'
+        link: 'If you want to dig into the Product Link Rules feature, click here'
+      execute_rules:
+        confirm_title: Confirm execution
+        confirm_content: Are you sure you want to execute all the rules? (this could take a long time)
+        execute_rules: Execute rules
+        cancel: Cancel
+    properties:
+      title: Asset family properties
+      identifier: Code
+      label: Label
+      media_file: Media file
+      attribute_as_main_media: Attribute as main media
+    attribute:
+      title: Asset attributes
+      attribute:
+        error:
+          render_list: 'An error occurred during the rendering of the "{{ %attribute_code% }}" attribute'
+          render_edit: 'An error occurred during the rendering of the "{{ %attribute_code% }}" attribute additional properties fields'
+    module:
+      delete:
+        button: Delete asset family
+        confirm: Are you sure you want to delete this asset family?
+    index:
+      grid:
+        count: '{0} No Asset Family|{1} {{ count }} Asset Family|]1,Inf] {{ count }} Asset Families'
+        help:
+          title: 'Welcome to the Asset Families!'
+          description_part_one: Enrich relevant information related to products (e.g. brands, manufacturers, colours, materials, ingredients...).
+          description_part_two: It will enable you to provide a better Product Experience to your customers.
+          description_part_three: Click on the “Create” button to create your 1st asset family, set its attributes and assets.
+          description_part_four: Then, to link to products, create a product attribute type related to this asset family.
+          description_part_five: For more details, we invite you to browse this article.
+    create:
+      header:
+        title: Create
+      subtitle: Asset Families
+      title: Create a new asset family
+      input:
+        label: Label
+        code: Code (required)
+      confirm: Save
+    delete:
+      message: Are you sure you want to delete the asset family "{{ assetFamilyLabel }}"?
+      title: Attribute
+    edit:
+      discard_changes: You will lose changes to the asset family "{{ assetFamilyLabel }}" if you leave the page.
+    notification:
+      save:
+        success: Asset family successfully updated.
+        fail: An error occurred during the save of the asset family
+      create:
+        success: Asset family successfully created.
+        fail: An error occurred during the creation of the asset family
+      delete:
+        success: Asset family successfully deleted.
+        fail: An error occurred during the deletion of the asset family
+      compute_transformations:
+        success: Transformations have been launched. Once this job is finished, you will see your new variations updated in your assets.
+        fail: An error occurred when trying to compute the transformations
+      execute_product_link_rules:
+        success: Product link rules have been launched
+        fail: An error occurred when trying to launch the product link rules
+    helper:
+      title: Welcome to the Asset Manager!
+      no_asset:
+        text: There is no asset in the {{ family }} family. Click on "Create" and choose whether you want to create an empty asset or mass upload assets.
+      no_asset_family:
+        text: A library that gathers your assets (images, videos, documents...), filtered by asset families. Create your 1st asset family, set its attributes and upload assets!
+        link: For more details, we invite you to browse this article.
+    no_data:
+      no_asset:
+        title: Sorry, there is no asset!
+        link: Click here to add an asset
+      no_asset_family:
+        title: Sorry, there is no asset family!
+        link: Click here to add an asset family
+  permission:
+    notification:
+      save:
+        success: Asset family permissions successfully updated.
+        fail: At least one user group should have edit permission on this asset family
+    no_data:
+      title: You have no user group
+      subtitle: To manage permission on asset family you need to have at least one user group.
+      link: Click here to add your first user group
+  asset:
+    img: The main media of the asset named "{{ label }}"
+    validation:
+      limit_reached: 'You cannot create the asset "{{ %asset_label% }}" because you have reached the limit of {{ %limit% }} assets for this asset family'
+      code:
+        pattern: 'This field may only contain letters, numbers and underscores.'
+        should_be_unique: 'This code already exists for another asset.'
+    no_data:
+      title: There is no asset for {{ entityLabel }}
+      subtitle: Click on the button "Add new" to create the first asset
+    no_result:
+      title: There is no result for your search
+      subtitle: Try again with new search criteria.
+    selector:
+      no_value: Click here to select an asset.
+      error:
+        value: Oops, it seems that the rendering of the "{{ fieldName }}" field failed. See the developer console for more details.
+    button:
+      save: Save
+      create: Create an asset
+      mass_upload: Mass upload
+      delete: Delete
+      delete_all: Delete all assets
+      back: Back to list
+      launch_transformations: Launch transformations
+      fullscreen: Fullscreen
+    product:
+      attribute: Product attribute
+      counter: '{{ totalCount }} result|{{ totalCount }} results'
+      dropdown:
+        attribute: Product attribute
+      title: Products
+      no_attribute:
+        title: There is no product attribute linked to the asset family "{{ entityLabel }}"
+        subtitle: 'To start linking products to this asset family you can create a new one: '
+        link: Create a new product attribute
+      not_enough_items:
+        title: Damn! You can see only {{ productCount }}/{{ totalCount }} products.
+        subtitle:
+          usable_in_grid: To discover all the linked products, click just below!
+          not_usable_in_grid: To discover all the linked products, the product attribute must be set as "usable in grid".
+        button: View all products
+      no_product:
+        title: This asset is not linked to any product via the "{{ entityLabel }}" product attribute
+        subtitle: 'Start linking products to this attribute to see them here'
+    no_linked_products: This asset is not linked to products
+    enrich:
+      title: Asset attributes
+      code: Code
+      label: Label
+      edit_subsection: Edit asset
+      product_subsection: Linked products
+      main_media_preview: Main media preview
+    title: Assets
+    create:
+      header:
+        title: Create
+      subtitle: Asset Families
+      title: Add new asset in {{ entityLabel }}
+      input:
+        label: Label
+        code: Code (required)
+        create_another: Create another asset
+      confirm: Save
+    upload:
+      line_count: '[0,1]{{ count }} file|]1,Inf] {{ count }} files'
+      title: Upload assets
+      lines: Files
+      retry: Retry
+      remove: Remove
+      remove_all: Remove all
+      confirm: Create
+      add_to_product: Add to product
+      drop_or_click_here: Drag and drop your files or click here
+      will_appear_here: Upload assets and they will appear just here!
+      files_limit: You are trying to upload too many files, only the first {{ limit }} will be uploaded.
+      discard_changes: You will lose your assets if you close this modal without creating them.
+      disabled_for_media_link: You cannot upload assets in this family as the attribute used as main media is a media link attribute
+      upload_failure: An error occurred when uploading the file.
+      cannot_retry: An error occurred when trying to upload the file.
+      list:
+        asset: Asset
+        filename: Filename
+        code: Code (required)
+        locale: Locale (required)
+        channel: Channel (required)
+        status: Status
+      status:
+        waiting_for_upload: not uploaded
+        upload_in_progress: in progress
+        uploaded: uploaded
+        valid: ready to create
+        invalid: error
+        created: created
+    delete:
+      message: Are you sure you want to delete the asset "{{ assetLabel }}"? If it's linked to products, the links will be removed.
+      title: Asset
+    delete_all:
+      confirm: Are you sure you want to delete all "{{ entityIdentifier }}" assets? If they are linked to products, the links to the products will be removed.
+    grid:
+      search: Search on label, code and text attributes
+      filter:
+        completeness:
+          label: Complete
+          all: All
+          'yes': 'Yes'
+          'no': 'No'
+        option:
+          all: All
+          no_value: Select an option to filter
+          operator:
+            in: In list
+      more_result:
+        title: That's not it!
+        description: You just scrolled through the first {{ maxDisplayedAssets }} results out of {{ total }} assets. To see more, try with more specific search criteria.
+      column:
+        code: Code
+        image: Image
+        label: Label
+        complete: Complete
+        action: Actions
+      completeness:
+        title_no_required: No attribute required
+        title_non_complete: 0 out of {{ required }} attributes complete
+        title_ongoing: '{{ complete }} out of {{ required }} attributes complete'
+        title_complete: All {{ required }} attributes complete
+    tab:
+      enrich: Enrich
+      product: Products
+    notification:
+      save:
+        success: Asset successfully updated.
+        fail: An error occurred during the save of the asset
+        validation_error: The asset could not be updated
+      create:
+        success: Asset successfully created.
+        fail: An error occurred during the creation of the asset
+      delete:
+        success: Asset "{{ code }}" successfully deleted.
+        fail: An error occurred during the deletion of the asset
+      delete_all:
+        success: All "{{ entityIdentifier }}" assets successfully deleted.
+        fail: An error occurred during the deletion of all this asset family's assets
+    completeness:
+      label: Complete
+  attribute:
+    validation:
+      limit_reached: 'You cannot create the attribute "{{ %attribute_label% }}" because you have reached the limit of {{ %limit% }} attributes for this asset family'
+    default:
+      code: Code
+      label: Label
+      media_file: Media file
+    type:
+      text: Text
+      media_file: Media file
+      asset: Asset single link
+      asset_collection: Asset collection
+      option: Single option
+      option_collection: Multiple options
+      number: Number
+      media_link: Media link
+    is_required: required for completeness
+    is_read_only: Read only in the UI
+    media_type_preview: Preview of media type
+    no_data:
+      title: There are no custom attributes for {{ entityLabel }}
+      subtitle: Click on the button "Add an attribute" to configure your first custom attribute
+    button:
+      add: Add an attribute
+    create:
+      header:
+        title: Create
+      subtitle: Asset Families
+      title: Add new asset attribute
+      description: The following parameters, except the label, cannot be updated after the attribute creation
+      input:
+        code: Code (required)
+        label: Label
+        type: Attribute type
+        asset_type: Asset family to link (required)
+        value_per_locale: Value per locale
+        value_per_channel: Value per channel
+      placeholder:
+        asset_type: Select your linked asset family
+      confirm: Save
+    edit:
+      delete: Delete the attribute
+      title: Edit attribute {{ code }}
+      save: Save
+      cancel: Cancel
+      input:
+        code: Code (required)
+        label: Label
+        type: Attribute type
+        asset_type: Related asset family (required)
+        value_per_locale: Value per locale
+        value_per_channel: Value per channel
+        is_required: Required for completeness
+        is_read_only: Read only in the UI
+        max_length: Max characters
+        textarea: Text Area
+        is_rich_text_editor: Rich Text Editor
+        max_file_size: Max file size (MB)
+        allowed_extensions: Allowed extensions
+        validation_rule: Validation rule
+        regular_expression: Regular expression
+        min_value: Min value
+        max_value: Max value
+        manage_options:
+          confirmation:
+            discard_changes: You will lose changes made to the list of options if you leave the page
+          quick_edit:
+            label: Manage options
+          option:
+            label:
+              placeholder: Write your new option label here
+        options:
+          validation_rule:
+            none: None
+            email: E-mail
+            regular_expression: Regular expression
+            url: URL
+        decimals_allowed: Decimal values allowed
+        prefix: Prefix
+        suffix: Suffix
+        media_type: Media type
+    delete:
+      message: Are you sure you want to delete the attribute "{{ attributeLabel }}"?
+      title: Attribute
+    notification:
+      list:
+        fail: An error occurred during the update of the attribute list
+      save:
+        success: Attribute successfully updated.
+        fail: An error occurred during the save of the attribute
+        validation_error: The attribute could not be updated
+      create:
+        success: Attribute successfully created.
+        fail: An error occurred during the creation of the attribute
+        validation_error: The attribute could not be created
+      delete:
+        success: Attribute successfully deleted.
+        fail: An error occurred during the deletion of the attribute
+    options:
+      no_value: Click here to select an option.
+      sub_title: Asset Families
+      helper:
+        title: Label translations
+    media_link:
+      placeholder: Put your media link here
+      read_only: This media link is read only
+      reload: Reload the media link thumbnail
+    media_file:
+      placeholder: Drag and drop to upload or click here
+      read_only: This media file is read only
+      uploading: Uploading...
+    used_as_transformation_target: This field is read only as it is used as a target in an asset transformation.
+  modal:
+    delete:
+      subtitle: Confirm deletion
+      button:
+        cancel: Cancel
+        confirm: Delete
+pim_enrich:
+  confirmation:
+    discard_changes: 'You will lose changes to the "{{ entity }}" entity if you leave the page.'
+  entity:
+    attribute:
+      property:
+        type:
+          pim_catalog_asset_collection: Asset collection
+        section:
+          type_specific: Type-specific parameters
+        asset_family:
+          identifier: Related asset family (required)
+          default_label: Please select an asset family
+permission:
+  mass_action: Apply {{ rightLevel }} right on all groups
+#Analytics
+pim_catalog_volume:
+  section:
+    asset_family:
+      title: Axes on asset families
+      hint: If you are using the asset families, here are the axes to help you monitor your volume.
+  axis:
+    count_asset_family: Asset families
+    average_max_assets_per_asset_family: Assets per asset family
+    average_max_attributes_per_asset_family: Attributes per asset family
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        asset_manager_compute_transformations: "Compute asset transformations"
+        asset_manager_link_assets_to_products: "Link assets to products"

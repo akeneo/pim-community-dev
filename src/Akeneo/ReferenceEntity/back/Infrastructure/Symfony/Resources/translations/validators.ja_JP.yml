@@ -8,7 +8,7 @@ pim_reference_entity:
       records:
         should_have_no_record: '記録がこのエンティティ―のために現存するため、該当エンティティ―を削除できません'
       reference_entity_attributes:
-        should_not_be_linked: '参照エンティティの属性がこのエンティティ―のために関連づけされているため、該当エンティティ―を削除できません'
+        should_not_be_linked: 'この参照エンティティを削除するには、最初にすべての参照エンティティの属性を確認してから、これにリンクされているものを削除してください'
       reference_entity_permissions:
         at_least_one_user_group_should_have_edit_permission: 'このエンティティに対する編集権限を少なくとも1つのユーザグループに付与する必要があります'
       product_attributes:
@@ -20,6 +20,10 @@ pim_reference_entity:
         pattern: 'このフィールドに含めることができるのは半角英数字とアンダースコアのみです。'
         should_be_unique: '記録コードは参照エンティティ「%reference_entity_identifier%」に対して現存しており記録コードは「%code%」です'
         should_exist: '記録が検出できませんでした'
+      text:
+        incompatible_with_regular_expression: '正規表現を満たすテキストを入力してください: "{{ %regular_expression% }}"'
+        invalid_email: 'メールアドレスを入力してください。'
+        invalid_url: 'URLを入力してください: http(s)://xxxx.XXX'
       file:
         extension_not_allowed: 'ファイル「%file_extension%」はこの属性に対して許可されていません。許可されているのは次の拡張子です:%allowed_file_extensions%'
         file_size_exceeded: 'このファイルは、該当の属性に設定された最大ファイルサイズを超過しています。'

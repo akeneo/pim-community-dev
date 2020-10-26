@@ -1,5 +1,155 @@
 # 4.0.x
 
+# 4.0.66 (2020-10-23)
+
+## Bug fixes:
+
+- PIM-9509: SSO Identity Provider should accept URNs
+
+## Bug fixes:
+
+- PIM-9510: Fix asset collection attributes that couldn't be added in the "Add attributes values" mass action
+
+# 4.0.65 (2020-10-19)
+
+## Improvements
+
+- PIM-9506-4.0: Make "image" the default media type for media link asset attributes
+
+# 4.0.64 (2020-10-09)
+
+## Bug fixes:
+
+- PIM-9492-4.0: [Backport] PIM-9109: Fix SSO not working behind reverse proxy.
+
+# 4.0.63 (2020-10-08)
+
+# 4.0.62 (2020-10-07)
+
+# 4.0.61 (2020-10-02)
+
+## Bug fixes
+
+- PIM-9488: Fix not used variable during webpack run
+
+# 4.0.60 (2020-09-30)
+
+- PIM-9467: Check for asset family existence is now case sensitive
+
+# 4.0.59 (2020-09-23)
+
+# 4.0.58 (2020-09-22)
+
+## Bug fixes
+
+- PIM-9455: Make total_fields limit of elasticsearch configurable
+- PIM-9451: Filter out Asset Manager attribute labels of disabled locales 
+- PIM-9435: Fix duplicated listener
+ 
+# 4.0.57 (2020-09-15)
+
+# 4.0.56 (2020-09-09)
+
+## Bug fixes
+
+- PIM-9436: Filter out Reference Entity & Asset Family labels of disabled locales
+- PIM-9437: Fix ListGrantedRootCategoriesWithCountIncludingSubCategories sort buffer
+
+# 4.0.55 (2020-09-03)
+
+# 4.0.54 (2020-08-28)
+
+## Bug fixes
+
+- PIM-9418: Fix errors on proposals containing metric, price and asset collection attributes
+
+# 4.0.53 (2020-08-27)
+
+## Improvements
+
+- DAPI-1201: Remove unused ES index configuration file 
+- PIM-9315: Improve error message when you have no rights on a published product
+
+## Bug fixes
+
+- DAPI-1231: Fix possible ES conflicts when updating product rates
+- PIM-9424: Fix add attributes values mass action on reference entity multiple links attributes
+
+# 4.0.52 (2020-08-24)
+
+# 4.0.51 (2020-08-21)
+
+# 4.0.50 (2020-08-20)
+
+## Bug fixes
+
+- PIM-9288: Product completeness was not up to date after deletion of an option for required attribute
+- PIM-9397: Dispatch missing pre_ready event during bulk actions when "Send for approval" is checked
+
+# 4.0.49 (2020-08-13)
+
+## Bug fixes:
+
+- PIM-9401: Fix Elasticsearch filters with EMPTY operator
+
+# 4.0.48 (2020-08-12)
+
+## Bug fixes
+
+- PIM-9387: Fix product model proposal with empty values
+
+## Technical Improvements
+
+- PIM-9381: add new asset clear thumbnail cache command 
+
+# 4.0.47 (2020-08-07)
+
+## Bug fixes
+- PIM-9386: Notification reminder message not compliant
+- PIM-9385: Fix fatal error: Out of Sort memory on Record query 
+
+# 4.0.46 (2020-07-31)
+
+## Bug fixes
+
+- PIM-9382: Fix fatal error on rule execution
+
+# 4.0.45 (2020-07-31)
+
+## Bug fixes
+
+- PIM-9375: API Asset - add an error message
+- PIM-9373: The Compare feature filters are not displayed on the product model parent level
+
+# 4.0.44 (2020-07-28)
+
+## Bug fixes
+
+- PIM-9374: Fix search by code on asset collection attribute
+
+# 4.0.43 (2020-07-27)
+
+## Bug fixes
+
+- PIM-9304: Fix slow query used to retrieve products to evaluate
+
+# 4.0.42 (2020-07-22)
+
+## Bug fixes
+
+- PIM-9365: Fix PDF previews' background being black
+- PIM-9366: Add a warning message when importing a product with asset that doesn't belong to the linked asset family
+
+# 4.0.41 (2020-07-20)
+
+# 4.0.40 (2020-07-13)
+
+## Bug fixes
+
+- PIM-9351: Fix the thumbnail preview of transparent PDFs in the asset manager
+- PIM-9350: Fix the thumbnail preview of any PDFs in the asset manager
+- PIM-9355: Fix product link rules for assets targeting both product & product models
+
 # 4.0.39 (2020-07-08)
 
 # 4.0.38 (2020-07-07)

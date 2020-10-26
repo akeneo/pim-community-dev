@@ -331,7 +331,7 @@ workflows:
                 filters:
                     branches:
                         ignore:
-                            - master
+                            - "4.0"
           - checkout:
                 requires:
                     - wait_for_user_approval

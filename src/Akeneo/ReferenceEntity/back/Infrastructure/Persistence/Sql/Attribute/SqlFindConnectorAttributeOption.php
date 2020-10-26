@@ -19,6 +19,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttributeOption;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributeOptionInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\InactiveLabelFilter;
 use Doctrine\DBAL\Connection;
 
 class SqlFindConnectorAttributeOption implements FindConnectorAttributeOptionInterface
@@ -29,13 +30,18 @@ class SqlFindConnectorAttributeOption implements FindConnectorAttributeOptionInt
     /** @var AttributeHydratorRegistry */
     private $attributeHydratorRegistry;
 
-    /**
-     * @param Connection $sqlConnection
-     */
-    public function __construct(Connection $sqlConnection, AttributeHydratorRegistry $attributeHydratorRegistry)
-    {
+    /** @var InactiveLabelFilter */
+    private $inactiveLabelFilter;
+
+    // @todo merge master: make $inactiveLabelFilter mandatory
+    public function __construct(
+        Connection $sqlConnection,
+        AttributeHydratorRegistry $attributeHydratorRegistry,
+        InactiveLabelFilter $inactiveLabelFilter = null
+    ) {
         $this->sqlConnection = $sqlConnection;
         $this->attributeHydratorRegistry = $attributeHydratorRegistry;
+        $this->inactiveLabelFilter = $inactiveLabelFilter;
     }
 
     /**
@@ -93,9 +99,15 @@ SQL;
             return null;
         }
 
+        $labels = $matchingOption['labels'];
+        // @todo merge master: remove null check
+        if ($this->inactiveLabelFilter !== null) {
+            $labels = $this->inactiveLabelFilter->filter($labels);
+        }
+
         $connectorOption = new ConnectorAttributeOption(
             OptionCode::fromString($matchingOption['code']),
-            LabelCollection::fromArray($matchingOption['labels'])
+            LabelCollection::fromArray($labels)
         );
 
         return $connectorOption;

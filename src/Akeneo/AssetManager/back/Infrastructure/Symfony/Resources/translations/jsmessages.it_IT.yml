@@ -100,7 +100,7 @@ pim_asset_manager:
     img: Il media principale della famiglia di asset denominato "{{ label }}"
     tab:
       assets: Attività
-      attribute: Atributi
+      attribute: Attributi
       properties: Proprietà
       permission: Permessi
       transformations: Trasformazioni

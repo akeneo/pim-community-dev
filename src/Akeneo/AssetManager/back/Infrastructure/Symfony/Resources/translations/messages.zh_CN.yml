@@ -1,0 +1,43 @@
+akeneo_assetmanager:
+  acl_group:
+    asset_manager: 资产管理器
+  acl:
+    asset_family:
+      create: 创建资产品类
+      edit: 编辑资产品类属性
+      delete: 删除资产品类
+      manage_permission: 管理资产品类权限
+      manage_transformation: 管理资产品类转换
+      manage_product_link_rule: 管理资产品类产品链接规则
+      execute_product_link_rule: 对资产品类的所有资产执行产品链接规则
+    asset:
+      create: 创建资产
+      edit: 编辑资产
+      delete: 删除资产
+      delete_all: 删除所有资产
+      list_product: 列出已链接到资产的产品
+    attribute:
+      create: 将属性添加到资产品类
+      edit: 编辑资产品类的属性
+      delete: 删除资产品类的属性
+    option:
+      edit: 编辑选项
+      delete: 移除选项
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        asset_manager_compute_transformations: "计算资产转换"
+        asset_manager_link_assets_to_products: "将资产链接到产品"
+#pim_analytics:
+#info_type:
+#nb_asset_families: Number of asset families
+#max_number_of_assets_per_asset_family: Max number of assets per asset family
+#average_number_of_values_per_assets: Average number of values per asset on all asset families
+#average_number_of_assets_per_asset_family: Average number of assets per asset family
+#max_number_of_attributes_per_asset_family: Max number of attributes per asset family
+#average_number_of_attributes_per_asset_family: Average number of attributes per asset family
+#average_percentage_localizable_only_attributes: Average percentage of localizable only attributes per asset family
+#average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per asset family
+#average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family
+pim_catalog_asset_collection: 资产集合

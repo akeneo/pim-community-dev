@@ -56,8 +56,7 @@ class PdfLoader implements LoaderInterface
         $imagick->readImageBlob($file);
         $imagick->setIteratorIndex(0);
         $imagick->setResolution(72, 72);
-        $imagick->setImageFormat('png');
-        $imagick->resetIterator();
+        $imagick->setImageFormat('png64');
 
         $content = $imagick->getImageBlob();
         $imagick->destroy();

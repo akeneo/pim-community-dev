@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\FilterProductValuesHelper;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -59,6 +60,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         AttributeGroupInterface $design,
         AttributeInterface $color,
         ValueInterface $blue,
+        FamilyInterface $family,
         $attributeRepository
     ) {
         $filterHelper->filter([$blue], 'en_US')->willReturn([$blue]);
@@ -67,6 +69,8 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $blender->getUsedAttributeCodes()->willReturn(['color']);
         $blenderValues->getAttributeCodes()->willReturn(['color']);
         $blenderValues->toArray()->willReturn([$blue]);
+        $blender->getFamily()->willReturn($family);
+        $family->getAttributeCodes()->willReturn(['color']);
 
         $blue->getAttributeCode()->willReturn('color');
         $attributeRepository->findOneByIdentifier('color')->willReturn($color);
@@ -110,6 +114,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         AttributeInterface $mainImage,
         ValueInterface $productValue,
         FileInfoInterface $fileInfo,
+        FamilyInterface $family,
         $attributeRepository
     ) {
         $mainImage->isScopable()->willReturn(true);
@@ -119,6 +124,8 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $blender->getValues()->willReturn($blenderValues);
         $blender->getUsedAttributeCodes()->willReturn(['main_image']);
         $blenderValues->toArray()->willReturn([$productValue]);
+        $blender->getFamily()->willReturn($family);
+        $family->getAttributeCodes()->willReturn(['main_image']);
 
         $blenderValues->getAttributeCodes()->willReturn(['main_image']);
         $blender->getValue('main_image', 'en_US', 'ecommerce')->willReturn($productValue);

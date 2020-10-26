@@ -1,0 +1,17 @@
+extensions:
+    pim-mass-product-add-form-add-attribute:
+        module: pim/product/add-select/attribute
+        parent: pim-mass-product-add-form-attributes
+        targetZone: other-actions
+        position: 90
+        config:
+            attributeTypes:
+                - 'pim_catalog_multiselect'
+                - 'pim_reference_data_multiselect'
+                - 'akeneo_reference_entity_collection'
+                - 'pim_catalog_asset_collection'
+            select2:
+                placeholder: 'pim_enrich.mass_edit.product.operation.common.select_attributes'
+            events:
+                disable: 'mass-edit:form:lock'
+                enable: 'mass-edit:form:unlock'

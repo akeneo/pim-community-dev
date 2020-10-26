@@ -60,7 +60,26 @@ class ListGrantedRootCategoriesWithCountIncludingSubCategories implements Query\
     private function getRootCategories(int $userId, string $translationLocaleCode): array
     {
         $sql = <<<SQL
-            SELECT
+            WITH child AS (
+                SELECT 
+                    child.root as root_id,
+                    JSON_ARRAYAGG(child.code) as children_codes
+                FROM 
+                    pim_catalog_category child
+                WHERE 
+                    child.parent_id IS NOT NULL
+                   AND EXISTS (
+                        SELECT * FROM pimee_security_product_category_access ca
+                        JOIN oro_user_access_group ag ON ag.group_id = ca.user_group_id
+                        WHERE
+                            ca.category_id = child.id
+                            AND ca.view_items = 1
+                            AND ag.user_id = :user_id_1
+                    ) 
+                GROUP BY 
+                    child.root
+            )
+            SELECT /*+ SET_VAR(group_concat_max_len = 1000000) SET_VAR(sort_buffer_size = 524288) */
                 root.id as root_id,
                 root.code as root_code, 
                 child.children_codes,
@@ -68,26 +87,7 @@ class ListGrantedRootCategoriesWithCountIncludingSubCategories implements Query\
             FROM 
                 pim_catalog_category AS root
                 LEFT JOIN pim_catalog_category_translation ct ON ct.foreign_key = root.id AND ct.locale = :locale
-                LEFT JOIN
-                (
-                    SELECT 
-                        child.root as root_id,
-                        JSON_ARRAYAGG(child.code) as children_codes
-                    FROM 
-                        pim_catalog_category child
-                    WHERE 
-                        child.parent_id IS NOT NULL
-                       AND EXISTS (
-                            SELECT * FROM pimee_security_product_category_access ca
-                            JOIN oro_user_access_group ag ON ag.group_id = ca.user_group_id
-                            WHERE
-                                ca.category_id = child.id
-                                AND ca.view_items = 1
-                                AND ag.user_id = :user_id_1
-                        ) 
-                    GROUP BY 
-                        child.root
-                ) AS child ON root.id = child.root_id
+                LEFT JOIN child ON root.id = child.root_id
             WHERE 
                 root.parent_id IS NULL
                 AND EXISTS (

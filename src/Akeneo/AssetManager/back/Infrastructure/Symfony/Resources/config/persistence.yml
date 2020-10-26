@@ -138,24 +138,28 @@ services:
         arguments:
             - '@database_connection'
             - '@akeneo_assetmanager.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+            - '@akeneo_assetmanager.infrastructure.persistence.inactive_label_filter'
 
     akeneo_assetmanager.infrastructure.persistence.query.find_connector_attribute_by_identifier_and_code:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindConnectorAttributeByIdentifierAndCode
         arguments:
             - '@database_connection'
             - '@akeneo_assetmanager.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+            - '@akeneo_assetmanager.infrastructure.persistence.inactive_label_filter'
 
     akeneo_assetmanager.infrastructure.persistence.query.find_connector_attribute_option:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindConnectorAttributeOption
         arguments:
             - '@database_connection'
             - '@akeneo_assetmanager.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+            - '@akeneo_assetmanager.infrastructure.persistence.inactive_label_filter'
 
     akeneo_assetmanager.infrastructure.persistence.query.find_connector_attribute_options:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindConnectorAttributeOptions
         arguments:
             - '@database_connection'
             - '@akeneo_assetmanager.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+            - '@akeneo_assetmanager.infrastructure.persistence.inactive_label_filter'
 
     akeneo_assetmanager.infrastructure.persistence.query.find_connector_assets_by_identifiers:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindConnectorAssetsByIdentifiers
@@ -383,6 +387,7 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.asset_family.hydrator.connector_product_link_rules'
             - '@Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorTransformationCollectionHydrator'
             - '@Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorNamingConventionHydrator'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales'
 
     akeneo_assetmanager.infrastructure.persistence.asset_family.hydrator.connector_product_link_rules:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\Hydrator\ConnectorProductLinkRulesHydrator
@@ -565,3 +570,8 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.cli.all_assets_identifiers'
             - '@akeneo_assetmanager.infrastructure.persistence.sql.asset.refresh_assets.refresh_asset'
+
+    akeneo_assetmanager.infrastructure.persistence.inactive_label_filter:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\InactiveLabelFilter
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales'

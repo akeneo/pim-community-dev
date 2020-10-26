@@ -1,0 +1,52 @@
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        is_read_only: 只读
+pimee_enrich.entity.category:
+  module:
+    permissions:
+      grant: 分组 <strong>{{ group }}</strong> 将<strong>会{{ permission }}</strong>在该类别中
+      revoke: 分组 <strong>{{ group }}</strong> 将<strong>不会{{ permission }}</strong>在该类别中
+pimee_enrich.entity.locale:
+  module:
+    permissions:
+      grant: 分组 <strong>{{ group }}</strong> 将<strong>会{{ permission }}</strong>在该区域中
+      revoke: 分组 <strong>{{ group }}</strong> 将<strong>不会{{ permission }}</strong>在该区域中
+pimee_enrich.entity.attribute group:
+  module:
+    permissions:
+      grant: 分组 <strong>{{ group }}</strong> 将 <strong>会{{ permission }}</strong>在该属性组中
+      revoke: 分组 <strong>{{ group }}</strong> 将<strong>不会{{ permission }}</strong>在该属性组中
+pimee_enrich.entity.attribute_group:
+  module:
+    permissions:
+      added: 分组 {{ group }} 将被允许{{ permission }}属性组
+      view: 允许查看属性
+      edit: 允许编辑属性
+      removed: 分组 {{ group }} 将不被允许{{ permission }}属性组
+pimee_enrich.entity.job_instance:
+  module:
+    permissions:
+      added: 分组 {{ group }} 将被允许{{ permission }}作业配置文件
+      execute: 允许执行作业配置文件
+      edit: 允许编辑作业配置文件
+      removed: 分组 {{ group }} 将不被允许{{ permission }}作业配置文件
+batch_jobs:
+  add_product_value_with_permission_and_rules:
+    label: 添加产品值与权限检查及规则应用
+    perform.label: 添加产品值
+  update_product_value_with_permission_and_rules:
+    label: 更新产品值与权限检查及规则应用
+    perform.label: 更新产品值
+  remove_product_value_with_permission_and_rules:
+    label: 移除产品值与权限检查及规则应用
+    perform.label: 移除产品值
+  edit_common_attributes_with_permission_and_rules:
+    label: 编辑属性与权限检查及规则应用
+    perform.label: 编辑属性
+    cleaner.label: 清理临时文件
+  default_steps:
+    send_for_approval: 发送以进行审批
+pim_title:
+  pimee_enrich_locale_edit: 区域设置 | 编辑

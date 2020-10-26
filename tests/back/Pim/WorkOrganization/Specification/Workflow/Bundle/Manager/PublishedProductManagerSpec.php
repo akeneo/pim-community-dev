@@ -198,6 +198,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $unpublisher->unpublish($fullPublished2)->shouldBeCalled();
 
         $eventDispatcher->dispatch(PublishedProductEvents::PRE_UNPUBLISH, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(PublishedProductEvents::POST_UNPUBLISH, Argument::cetera())->shouldBeCalled();
 
         $bulkRemover->removeAll([$fullPublished1, $fullPublished2])->shouldBeCalled();
 

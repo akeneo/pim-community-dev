@@ -1,0 +1,522 @@
+pim_title:
+  akeneo_asset_manager_asset_family_index: 资产管理器
+  akeneo_asset_manager_asset_family_edit: 编辑资产品类
+  akeneo_asset_manager_asset_edit: 编辑资产
+pim_asset_manager:
+  editor:
+    embedded:
+      invalid_link:
+        title: 可疑嵌入链接
+        message: 抱歉，我们不会显示该嵌入条目，但它将被正确保存
+  result_counter: '{0} 无结果|{1} {{ count }} 个结果|]1,Inf] {{ count }} 个结果'
+  asset_counter: '{0} 无资产|{1} {{ count }} 个资产|]1,Inf] {{ count }} 个资产'
+  asset_collection:
+    add_asset: '添加资产'
+    upload_asset: '上传资产'
+    add_asset_title: '打开资产选择器，将资产添加到集合中'
+    no_asset_in_collection: '抱歉，此集合中没有资产。'
+    helper:
+      title: '欢迎来到全新的产品资产管理空间！'
+      text: '此品类没有资产集合。要参与这个新体验，只需在您的设置中添加资产集合属性即可。'
+      link: '如何添加资产集合？'
+    no_asset:
+      title: '抱歉，此产品没有资产。'
+    notification:
+      product_rule: '此集合可以通过以下产品规则更新：'
+      limit: '已达到每个集合的资产上限数目 {{ limit }} ，无法再将资产添加到集合中。'
+    edit_asset: 编辑资产
+    remove_asset: 移除资产
+    remove_one_asset: 从资产集合中移除资产 {{ assetName }}
+    remove_all_assets: 移除所有资产
+    other_actions: 其他操作
+    open_other_actions: 打开其他操作
+    dismiss_other_actions: 取消其他操作
+    move_asset_to_left: 将资产 {{ assetName }} 移动到左侧
+    move_asset_to_right: 将资产 {{ assetName }} 移动到右侧
+    legacy_helper:
+      moved_to_assets_tab: 要查看资源集合 {{ label }}，请转到产品的资产部分。
+      is_missing_required: 资源集合 {{ label }} 是必需的。请在产品的资产部分里丰富它。
+  asset_picker:
+    title: 将资产添加到您的产品中
+    sub_title: 选择您要附加到集合 {{ attributeLabel }} 中的产品 {{ productLabel }} 的资产
+    no_result:
+      title: 抱歉，找不到与搜索相符的资产。
+      sub_title: 请用新的搜索条件再进行搜索
+    filter:
+      title: 资产筛选器
+    basket:
+      title: '{{ assetCount }} 个资产已选定|{{ assetCount }} 个资产已选定'
+      empty_title: 您的购物车为空
+      remove_one_asset: 从资产选择中移除资产 {{ assetName }}
+      remove_all_assets: 全部移除
+  asset_preview:
+    previous: 上一个资产
+    next: 下一个资产
+    empty_main_media: 此资产没有媒体。
+    other_main_media: 我们无法生成此资产的预览。
+    edit_asset: 编辑资产
+    download: 下载
+    copy_url: 复制 URL
+    error: 在渲染预览过程中发生错误
+  close: 关闭模式
+  breadcrumb:
+    products: 产品
+  app:
+    image:
+      wide:
+        remove: 移除文件
+        download: 下载文件
+        upload: 拖放即可上传或点击这里
+      small:
+        remove: 移除
+        download: 下载
+        upload: 拖放即可上传
+  grid:
+    counter: '{{ resultCount }} 个结果'
+    counter_empty: '0 个结果'
+  asset_family:
+    column:
+      title: 资产导航
+      selector:
+        title: 资产品类
+        no_data: 没有可用的资产品类
+    validation:
+      code:
+        pattern: '此字段只能包含字母、数字和下划线。'
+        should_be_unique: '已存在代码为"{{ %asset_family_identifier% }}"的资产品类'
+        limit_reached: '无法创建资产品类“{{ %asset_family_label% }}” ，因为已经达到了资产品类的上限数目 {{ %limit% }}'
+      transformation:
+        limit_reached: '您已达到转换的上限数目 {{ %limit% }} '
+        same_operation_twice: '运算"{{ %operation_type% }}"不能在单个转换中定义两次'
+        source_can_not_be_a_target: '属性源"{{ %attribute_code% }}"不能是转换的属性目标。'
+        attribute_reference_should_exist: '此资产品类不存在属性"{{ %attribute_code% }}" '
+        filename_is_not_unique: '属性源"{{ %attribute_code% }}"已存在一个文件名前缀为"{{ %filename_prefix% }}"、后缀为 "{{ %filename_suffix% }}"的转换'
+        code_is_not_unique: '您不能使用同一个代码"{{ %transformation_code% }}"定义两个转换'
+        unknown_extra_field: '属性 {{ {{ field }} }} 为未知多余的属性。'
+      naming_convention:
+        property_should_exist: '该资产品类不存在属性"{{ %property% }}"。'
+        not_main_media_attribute_code: '属性必须匹配指定为主媒体的属性的代码'
+      rule_template:
+        limit_reached: '您已达到资产品类 {{ %asset_family_identifier% }} 的产品链接规则上限数"{{ %limit% }}"。'
+        product_selection_cannot_be_empty: '您必须在产品链接规则中指定至少一个产品选择'
+        product_assignment_cannot_be_empty: '您必须在产品链接规则中指定至少一个产品指派'
+        extrapolated_attribute_should_exist: '此资产品类不存在属性"{{ %attribute_code% }}" '
+        extrapolated_attribute_type_should_be_supported: '不支持类型为"{{ %attribute_type% }}"的属性"{{ %attribute_code% }}"。此字段只支持以下属性类型： {{ %supported_attribute_type% }}'
+        channel_should_exist: '渠道 "{{ %channel_code% }}" 不存在'
+        locale_should_exist: '区域设置 "{{ %locale_code% }}"未激活或不存在'
+        extrapolated_attribute_type_should_not_have_one_value_per_channel: '属性"{{ %attribute_code% }}"不能用于外插，因为它对每个渠道有一个值'
+        extrapolated_attribute_type_should_not_have_one_value_per_locale: '属性"{{ %attribute_code% }}"不能用于外插，因为它对每个区域有一个值'
+        assignment_mode_not_supported: '在产品链接规则中发现无效的指派模式"{{ %assignment_mode% }}"，而所需要的是“替换”或“添加”'
+        channel_not_supported_for_field: '您不能为字段"{{ %product_field% }}"指定渠道'
+        locale_not_supported_for_field: '您不能为字段"{{ %product_field% }}"指定区域'
+        assignmement_attribute_does_not_support_this_asset_family: '产品属性"{{ %product_attribute_code% }}"不能包含资产品类"{{ %asset_family_identifier% }}"中的资产'
+        assignmement_attribute_does_not_exist: '产品属性"{{ %product_attribute_code% }}"不存在'
+        assignmement_attribute_is_not_an_asset_collection: '产品属性"{{ %product_attribute_code% }}"不是类型资产集合的属性'
+    button:
+      save: 保存
+      save_permission: 保存
+      create: 创建资产品类
+      edit: 编辑品类
+      view: 查看品类
+      execute_product_link_rules: 执行规则
+    permission:
+      title: 资产品类权限
+    title: 资产
+    breadcrumb: 资产品类
+    img: 资产品类的主媒体名称"{{ label }}"
+    tab:
+      assets: 资产
+      attribute: 属性
+      properties: 属性
+      permission: 权限
+      transformations: 转换
+      product_link_rules: 产品链接规则
+    transformations:
+      help:
+        title: '欢迎来到您的新资产管理区域！'
+        description: '您可以根据资产品类在此定义最多 10 个转换。'
+        link: '如果您想要挖掘新的资产管理器的各种转换，请点击此处'
+      subsection: '转换属性'
+    product_link_rules:
+      naming_convention_subsection: '命名约定属性'
+      product_link_rules_subsection: '产品链接规则属性'
+      help:
+        title: '欢迎来到您的新资产管理区域！'
+        description: '您可以根据资产品类在此定义最多 2 个产品链接规则。'
+        link: '如果您想要挖掘产品链接规则功能，请点击此处'
+      execute_rules:
+        confirm_title: 确认执行
+        confirm_content: 确定要执行所有的规则吗？(可能需要一段时间)
+        execute_rules: 执行规则
+        cancel: 取消
+    properties:
+      title: 资产品类属性
+      identifier: 代码
+      label: 标签
+      media_file: 媒体文件
+      attribute_as_main_media: 作为主媒体的属性
+    attribute:
+      title: 资产属性
+      attribute:
+        error:
+          render_list: '在渲染属性"{{ %attribute_code% }}"时发生错误'
+          render_edit: '在渲染属性"{{ %attribute_code% }}"附加属性字段时发生错误'
+    module:
+      delete:
+        button: 删除资产品类
+        confirm: 确定要删除此资产品类吗？
+    index:
+      grid:
+        count: '{0} 无资产品类|{1} {{ count }} 个资产品类|]1,Inf] {{ count }} 个资产品类'
+        help:
+          title: '欢迎来到资产品类！'
+          description_part_one: 丰富与产品有关的相关信息（例如：品牌、制造商、颜色、材料、成份等）。
+          description_part_two: 这将使您能够为您的客户提供更好的产品体验。
+          description_part_three: 点击"创建"按钮来创建您的第一个资产品类，设置其属性和资产。
+          description_part_four: 然后，为了链接到产品，请创建与此资产品类相关的产品属性类型。
+          description_part_five: 欲了解更多详情，敬请浏览此文章。
+    create:
+      header:
+        title: 创建
+      subtitle: 资产品类
+      title: 创建新的资产品类
+      input:
+        label: 标签
+        code: 代码 (必填)
+      confirm: 保存
+    delete:
+      message: 确定要删除资产品类“{{ assetFamilyLabel }} ”吗？
+      title: 属性
+    edit:
+      discard_changes: 如果离开页面，您将丢失对资产品类"{{ assetFamilyLabel }}"的更改。
+    notification:
+      save:
+        success: 资产品类已成功更新。
+        fail: 保存资产品类时发生错误
+      create:
+        success: 资产品类已成功创建。
+        fail: 创建资产品类时发生错误
+      delete:
+        success: 资产品类已成功删除。
+        fail: 删除资产品类时出错
+      compute_transformations:
+        success: 转换已启动。一旦完成此作业，您将看到您的资产中更新的新变体。
+        fail: 尝试计算转换时出错
+      execute_product_link_rules:
+        success: 已启动产品链接规则
+        fail: 尝试启动产品链接规则时出错
+    helper:
+      title: 欢迎来到资产管理器！
+      no_asset:
+        text: 品类 {{ family }} 中没有资产。点击“创建”并选择要创建一个空的资产还是批量上传资产。
+      no_asset_family:
+        text: 这是一个收集您的资产（图像、视频、文档...）的库，按资产品类进行筛选。创建您的第一个资产品类，设置其属性并上传资产！
+        link: 欲了解更多详情，敬请浏览此文章。
+    no_data:
+      no_asset:
+        title: 抱歉，没有任何资产！
+        link: 点击此处添加资产
+      no_asset_family:
+        title: 抱歉，没有任何资产品类！
+        link: 点击此处添加资产品类
+  permission:
+    notification:
+      save:
+        success: 资产品类权限已成功更新。
+        fail: 至少一个用户组应该有此资产品类的编辑权限
+    no_data:
+      title: 您没有任何用户组
+      subtitle: 要管理资产品类权限，您需要至少有一个用户组。
+      link: 点击此处添加您的第一个用户组
+  asset:
+    img: 资产的主媒体名称 "{{ label }}"
+    validation:
+      limit_reached: '无法创建属性"{{ %asset_label% }}"，因为已达到此资产品类的属性上限数目 {{ %limit% }}'
+      code:
+        pattern: '此字段只能包含字母、数字和下划线。'
+        should_be_unique: '此代码已经存在于另一个资产。'
+    no_data:
+      title: '{{ entityLabel }} 没有资产'
+      subtitle: 点击按钮“新增”来创建第一个资产
+    no_result:
+      title: 找不到与搜索相符的结果
+      subtitle: 请用新的搜索条件再进行搜索。
+    selector:
+      no_value: 点击此处选择一个资产。
+      error:
+        value: 哎呀，看来渲染"{{ fieldName }}"字段失败。详情请查看开发者控制台。
+    button:
+      save: 保存
+      create: 创建资产
+      mass_upload: 批量上传
+      delete: 删除
+      delete_all: 删除所有资产
+      back: 返回列表　
+      launch_transformations: 启动转换
+      fullscreen: 全屏
+    product:
+      attribute: 产品属性
+      counter: '{{ totalCount }} 个结果|{{ totalCount }} 个结果'
+      dropdown:
+        attribute: 产品属性
+      title: 产品
+      no_attribute:
+        title: 没有产品属性链接到资产品类"{{ entityLabel }}"
+        subtitle: '要开始将产品链接到该资产品类，可新建一个： '
+        link: 创建新的产品属性
+      not_enough_items:
+        title: 糟糕！您只能查看 {{ productCount }}/{{ totalCount }} 产品。
+        subtitle:
+          usable_in_grid: 要发现所有链接的产品，请点击下方！
+          not_usable_in_grid: 要发现所有链接的产品，产品属性必须设置为“在网格中可用”。
+        button: 查看所有产品
+      no_product:
+        title: 此资产没有通过"{{ entityLabel }}"产品属性链接到任何产品
+        subtitle: '开始链接产品到此属性以在这里查看产品'
+    no_linked_products: 此资产未链接到产品
+    enrich:
+      title: 资产属性
+      code: 代码
+      label: 标签
+      edit_subsection: 编辑资产
+      product_subsection: 链接的产品
+      main_media_preview: 主要媒体预览
+    title: 资产
+    create:
+      header:
+        title: 创建
+      subtitle: 资产品类
+      title: 在 {{ entityLabel }} 中添加新资产
+      input:
+        label: 标签
+        code: 代码 (必填)
+        create_another: 创建另一个资产
+      confirm: 保存
+    upload:
+      line_count: '[0,1]{{ count }} 个文件|]1,Inf] {{ count }} 个文件'
+      title: 上传资产
+      lines: 文件
+      retry: 重试
+      remove: 移除
+      remove_all: 全部移除
+      confirm: 创建
+      add_to_product: 添加到产品
+      drop_or_click_here: 拖放文件或点击这里
+      will_appear_here: 上传资产，它们将在这里显示！
+      files_limit: 您正在尝试上传的文件太多，只有前 {{ limit }} 个将被上传。
+      discard_changes: 如果您关闭此模式而不创建资产，您将丢失您的资产。
+      disabled_for_media_link: 您不能上传此品类中的资产，因为用作主要媒体属性的是一个媒体链接属性
+      upload_failure: 上传文件时出错。
+      cannot_retry: 尝试上传文件时出错。
+      list:
+        asset: 资产
+        filename: 文件名
+        code: 代码 (必填)
+        locale: 区域 (必填)
+        channel: 渠道 (必填)
+        status: 状态
+      status:
+        waiting_for_upload: 未上传
+        upload_in_progress: 进行中
+        uploaded: 已上传
+        valid: 准备创建
+        invalid: 错误
+        created: 已创建
+    delete:
+      message: 确定要删除资产"{{ assetLabel }}"吗？如果其与产品相关联，链接将被移除。
+      title: 资产
+    delete_all:
+      confirm: 确定要删除所有的"{{ entityIdentifier }}"资产吗？ 如果它们与产品相关联，它们与产品的链接将被删除。
+    grid:
+      search: 搜索标签、代码和文本属性
+      filter:
+        completeness:
+          label: 完成
+          all: 所有
+          'yes': '是'
+          'no': '否　'
+        option:
+          all: 所有
+          no_value: 选择要过滤的选项
+          operator:
+            in: 在列表中
+      more_result:
+        title: 不是这样！
+        description: 您刚刚从 {{ total }} 个资产中滚动到了前 {{ maxDisplayedAssets }} 个结果。要查看更多信息，请尝试更具体的搜索条件。
+      column:
+        code: 代码
+        image: 图像
+        label: 标签
+        complete: 完成
+        action: 操作
+      completeness:
+        title_no_required: 不需要属性
+        title_non_complete: 已完成 {{ required }} 个属性中的 0 个
+        title_ongoing: '已完成 {{ required }} 个属性中的 {{ complete }} 个'
+        title_complete: 所有 {{ required }} 个属性已完成
+    tab:
+      enrich: 丰富
+      product: 产品
+    notification:
+      save:
+        success: 资产已成功更新。
+        fail: 保存资产时出错
+        validation_error: 无法更新资产
+      create:
+        success: 资产已成功创建。
+        fail: 创建资产时发生错误
+      delete:
+        success: 已成功删除资产"{{ code }}" 。
+        fail: 删除资产时出错
+      delete_all:
+        success: 所有的"{{ entityIdentifier }}"资产已成功删除。
+        fail: 删除此资产品类的所有资产时发生错误
+    completeness:
+      label: 完成
+  attribute:
+    validation:
+      limit_reached: '无法创建属性"{{ %attribute_label% }}"，因为已达到此资产品类的属性上限数目 {{ %limit% }} '
+    default:
+      code: 代码
+      label: 标签
+      media_file: 媒体文件
+    type:
+      text: 文本
+      media_file: 媒体文件
+      asset: 资产单个链接
+      asset_collection: 资产集合
+      option: 单选
+      option_collection: 多选
+      number: 数量
+      media_link: 媒体链接
+    is_required: 完成度必填
+    is_read_only: UI 只读
+    media_type_preview: 媒体类型预览
+    no_data:
+      title: '{{ entityLabel }} 没有自定义属性'
+      subtitle: 点击按钮“添加属性”来配置您的第一个自定义属性
+    button:
+      add: 添加属性
+    create:
+      header:
+        title: 创建
+      subtitle: 资产品类
+      title: 添加新的资产属性
+      description: 除标签外，下列参数不能在创建属性后更新
+      input:
+        code: 代码 (必填)
+        label: 标签
+        type: 属性类型
+        asset_type: 要链接的资产品类 (必填)
+        value_per_locale: 每项区域设置的值
+        value_per_channel: 每个渠道的值
+      placeholder:
+        asset_type: 选择您链接的资产品类
+      confirm: 保存
+    edit:
+      delete: 删除此属性
+      title: 编辑属性 {{ code }}
+      save: 保存
+      cancel: 取消
+      input:
+        code: 代码 (必填)
+        label: 标签
+        type: 属性类型
+        asset_type: 相关资产品类（必填）
+        value_per_locale: 每项区域设置的值
+        value_per_channel: 每个渠道的值
+        is_required: 完成度必填
+        is_read_only: UI 只读
+        max_length: 最大字符数
+        textarea: 文本区域
+        is_rich_text_editor: 富文本编辑器
+        max_file_size: 最大文件大小 (MB)
+        allowed_extensions: 允许的扩展名
+        validation_rule: 验证规则
+        regular_expression: 正则表达式
+        min_value: 最小值
+        max_value: 最大值
+        manage_options:
+          confirmation:
+            discard_changes: 如果离开此页面，将丢失对选项列表所作的更改
+          quick_edit:
+            label: 管理选项
+          option:
+            label:
+              placeholder: 在此处写下新选项标签
+        options:
+          validation_rule:
+            none: 无
+            email: 电子邮件
+            regular_expression: 正则表达式
+            url: URL
+        decimals_allowed: 允许小数值
+        prefix: 前缀
+        suffix: 后缀
+        media_type: 媒体类型
+    delete:
+      message: 确定要删除属性"{{ attributeLabel }}"吗？
+      title: 属性
+    notification:
+      list:
+        fail: 更新属性列表时出错
+      save:
+        success: 属性已成功更新。
+        fail: 保存属性时出错
+        validation_error: 无法更新该属性
+      create:
+        success: 属性已成功创建。
+        fail: 创建属性时发生错误
+        validation_error: 无法创建该属性
+      delete:
+        success: 属性已成功删除。
+        fail: 删除属性时出错
+    options:
+      no_value: 点击此处选择一个选项。
+      sub_title: 资产品类
+      helper:
+        title: 标签翻译
+    media_link:
+      placeholder: 将您的媒体链接置于此处
+      read_only: 此媒体链接为只读
+      reload: 重新加载媒体链接缩略图
+    media_file:
+      placeholder: 拖放即可上传或点击这里
+      read_only: 此媒体文件为只读
+      uploading: 正在上传...
+    used_as_transformation_target: 此字段为只读，因其被用作一个资产转换中的目标。
+  modal:
+    delete:
+      subtitle: 确认删除
+      button:
+        cancel: 取消
+        confirm: 删除
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_catalog_asset_collection: 资产集合
+        section:
+          type_specific: 类型特定参数
+        asset_family:
+          identifier: 相关资产品类（必填）
+          default_label: 请选择资产品类。
+permission:
+  mass_action: 对所有组应用 {{ rightLevel }} 权限
+#Analytics
+pim_catalog_volume:
+  section:
+    asset_family:
+      title: 资产品类的轴
+      hint: 如果您正在使用资产品类，此处是帮助您监控量的轴。
+  axis:
+    count_asset_family: 资产品类
+    average_max_assets_per_asset_family: 每个资产品类的资产
+    average_max_attributes_per_asset_family: 每个资产品类的属性
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        asset_manager_compute_transformations: "计算资产转换"
+        asset_manager_link_assets_to_products: "将资产链接到产品"

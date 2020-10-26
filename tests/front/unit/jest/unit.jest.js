@@ -19,7 +19,6 @@ const eeConfig = {
     'akeneoassetmanager/infrastructure/fetcher',
     'akeneoassetmanager/application/component/app/select2',
     'akeneoassetmanager/platform/component/common/checkbox',
-    'akeneofranklininsights/react',
     'akeneodataqualityinsights/react',
     'akeneoassetmanager/application/component/asset/index/completeness-filter',
     'akeneoassetmanager/application/component/asset/list/search-bar/search-field', // cannot trigger re-render
@@ -41,7 +40,6 @@ const eeConfig = {
     'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/assets-collection/infrastructure/fetcher',
     'src/Akeneo/Pim/Enrichment/AssetManager/Bundle/Resources/public/platform/component/common/checkbox',
     'src/Akeneo/AssetManager/front/infrastructure/fetcher',
-    'src/Akeneo/Pim/Automation/FranklinInsights/Infrastructure/Symfony/Resources/public/react',
     'src/Akeneo/Pim/Automation/DataQualityInsights/front',
     'src/Akeneo/AssetManager/front/application/component/asset/index/completeness-filter',
     'src/Akeneo/AssetManager/front/application/component/asset/list/search-bar/search-field', // cannot test hooks + asynchronous fetching + cannot trigger re-render

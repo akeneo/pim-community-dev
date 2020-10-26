@@ -1,11 +1,45 @@
 teamwork_assistant:
+  project:
+    required: 该值不应为空。
+    label_maxlength: 此值太长了。其不应超过 {{ max }} 个字符。
+    project_identifier: 项目 {{ project }} 不存在。
+    project_locale: 渠道 {{ channel }} 不支持区域 {{ locale }}。
+    project_due_date: 不能选择过去的日期。
   notification:
     project_calculation:
+      error: <strong>%project_label%</strong> 项目计算失败
+      warning: <strong>%project_label%</strong> 项目计算已完成，但有些警告信息
+      success: 项目 <strong>%project_label%</strong> 准备就绪，且已通知贡献者，让我们开始吧！
       start: 开始
+    message: 您有新产品丰富“%project_label%”。截止日期为“%due_date%”。
     project_finished:
-      show: 展示
+      contributor: 恭喜！您已 100% 完成 %project_label% 项目的产品。
+      owner: '截止日期为 <strong>%due_date%</strong> 的项目 <strong>%project_label%</strong> 已完成。'
+      show: 显示
     due_date:
+      contributor: 您已完成项目 %project_label% 的 %percent% 的产品。别忘了完成剩余产品，截止日期为 %due_date%。
+      owner: '截止日期为 <strong>%due_date%</strong> 的项目 <strong>%project_label%</strong> 还未 100% 完成。'
       start: 开始
   datagrid:
-    contributor_in_progress: 正在处理
+    project_completeness: 项目进度
+    contributor_todo: 待办事项
+    contributor_in_progress: 正在进行中
     contributor_done: 已完成
+    owner_todo: 待办事项（项目概览）
+    owner_in_progress: 进行中（项目概览）
+    owner_done: 已完成（项目概览）
+  user:
+    deletion:
+      user_linked_to_project: 此用户仍然链接到一个或多个项目。请移除在他的用户帐户中链接到的组。
+      user_is_project_owner: 此用户仍然是一个或多个项目的负责人。请删除此用户的所有项目。
+job_execution:
+  summary:
+    processed_products: 已处理产品
+pim_analytics:
+  info_type:
+    nb_projects: 项目数量
+pim_datagrid:
+  cells:
+    type:
+      project_calculation: 项目计算
+      refresh_project_completeness_calculation: 刷新项目完成度计算

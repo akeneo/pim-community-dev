@@ -8,8 +8,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\Cre
 use Akeneo\Pim\Automation\DataQualityInsights\Application\CriteriaEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\FeatureFlag;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Events\TitleSuggestionIgnoredEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Events\WordIgnoredEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -34,44 +32,30 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
     /** @var ConsolidateProductAxisRates */
     private $consolidateProductAxisRates;
 
-    /** @var IndexProductRates */
-    private $indexProductRates;
-
     public function __construct(
         FeatureFlag $dataQualityInsightsFeature,
         CreateProductsCriteriaEvaluations $createProductsCriteriaEvaluations,
         LoggerInterface $logger,
         EvaluatePendingCriteria $evaluatePendingCriteria,
-        ConsolidateProductAxisRates $consolidateProductAxisRates,
-        IndexProductRates $indexProductRates
+        ConsolidateProductAxisRates $consolidateProductAxisRates
     ) {
         $this->dataQualityInsightsFeature = $dataQualityInsightsFeature;
         $this->createProductsCriteriaEvaluations = $createProductsCriteriaEvaluations;
         $this->logger = $logger;
         $this->evaluatePendingCriteria = $evaluatePendingCriteria;
         $this->consolidateProductAxisRates = $consolidateProductAxisRates;
-        $this->indexProductRates = $indexProductRates;
     }
 
     public static function getSubscribedEvents()
     {
         return [
             WordIgnoredEvent::WORD_IGNORED => 'onIgnoredWord',
-            TitleSuggestionIgnoredEvent::TITLE_SUGGESTION_IGNORED => 'onIgnoredTitleSuggestion',
-            StorageEvents::POST_SAVE => 'onPostSave',
+            // Priority greater than zero to ensure that the evaluation is done prior to the re-indexation of the product in ES
+            StorageEvents::POST_SAVE => ['onPostSave', 10],
         ];
     }
 
     public function onIgnoredWord(WordIgnoredEvent $event)
-    {
-        if (! $this->dataQualityInsightsFeature->isEnabled()) {
-            return;
-        }
-
-        $this->initializeCriteria($event->getProductId()->toInt());
-    }
-
-    public function onIgnoredTitleSuggestion(TitleSuggestionIgnoredEvent $event)
     {
         if (! $this->dataQualityInsightsFeature->isEnabled()) {
             return;
@@ -99,7 +83,6 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
         $this->initializeCriteria($productId);
         $this->evaluatePendingCriteria->evaluateSynchronousCriteria([$productId]);
         $this->consolidateProductAxisRates->consolidate([$productId]);
-        $this->indexProductRates->execute([$productId]);
     }
 
     private function initializeCriteria($productId)

@@ -98,7 +98,7 @@ class SqlFindConnectorAttributeByIdentifierAndCodeTest extends SqlIntegrationTes
             AttributeIdentifier::create($assetFamilyIdentifier, 'main_image', 'test'),
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AttributeCode::fromString('main_image'),
-            LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
+            LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo', 'es_ES' => 'Foto']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeIsReadOnly::fromBoolean(false),

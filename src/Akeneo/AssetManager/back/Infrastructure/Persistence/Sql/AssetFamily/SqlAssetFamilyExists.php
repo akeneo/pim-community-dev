@@ -16,8 +16,6 @@ namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyExistsInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\Statement;
-use Doctrine\DBAL\Types\Type;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -33,33 +31,28 @@ class SqlAssetFamilyExists implements AssetFamilyExistsInterface
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function withIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier): bool
+    public function withIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier, bool $caseSensitive = true): bool
     {
-        $statement = $this->executeQuery($assetFamilyIdentifier);
+        $actualIdentifier = $this->executeQuery($assetFamilyIdentifier);
+        if (null === $actualIdentifier) {
+            return false;
+        }
 
-        return $this->isIdentifierExisting($statement);
+        return $caseSensitive ? $actualIdentifier->equals($assetFamilyIdentifier) : true;
     }
 
-    private function executeQuery(AssetFamilyIdentifier $assetFamilyIdentifier): Statement
+    private function executeQuery(AssetFamilyIdentifier $assetFamilyIdentifier): ?AssetFamilyIdentifier
     {
         $query = <<<SQL
-        SELECT EXISTS (
-            SELECT 1
-            FROM akeneo_asset_manager_asset_family
-            WHERE identifier = :identifier 
-        ) as is_existing
+    SELECT identifier
+    FROM akeneo_asset_manager_asset_family
+    WHERE identifier = :identifier
 SQL;
-        $statement = $this->sqlConnection->executeQuery($query, ['identifier' => (string) $assetFamilyIdentifier]);
+        $result = $this->sqlConnection->executeQuery(
+            $query,
+            ['identifier' => (string) $assetFamilyIdentifier]
+        )->fetchColumn();
 
-        return $statement;
-    }
-
-    private function isIdentifierExisting(Statement $statement): bool
-    {
-        $platform = $this->sqlConnection->getDatabasePlatform();
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
-        $isExisting = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
-
-        return $isExisting;
+        return is_string($result) ? AssetFamilyIdentifier::fromString($result) : null;
     }
 }

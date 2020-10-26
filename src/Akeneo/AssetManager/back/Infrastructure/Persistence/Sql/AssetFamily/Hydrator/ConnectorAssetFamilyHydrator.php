@@ -18,6 +18,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
+use Akeneo\AssetManager\Domain\Query\Locale\FindActivatedLocalesInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -42,16 +43,22 @@ class ConnectorAssetFamilyHydrator
     /** @var ConnectorNamingConventionHydrator */
     private $namingConventionHydrator;
 
+    /** @var FindActivatedLocalesInterface  */
+    private $findActivatedLocales;
+
+    // @todo merge master: make $findActivatedLocales mandatory
     public function __construct(
         Connection $connection,
         ConnectorProductLinkRulesHydrator $productLinkRulesHydrator,
         ConnectorTransformationCollectionHydrator $transformationCollectionHydrator,
-        ConnectorNamingConventionHydrator $namingConventionHydrator
+        ConnectorNamingConventionHydrator $namingConventionHydrator,
+        FindActivatedLocalesInterface $findActivatedLocales = null
     ) {
         $this->platform = $connection->getDatabasePlatform();
         $this->productLinkRulesHydrator = $productLinkRulesHydrator;
         $this->transformationCollectionHydrator = $transformationCollectionHydrator;
         $this->namingConventionHydrator = $namingConventionHydrator;
+        $this->findActivatedLocales = $findActivatedLocales;
     }
 
     public function hydrate(array $row): ConnectorAssetFamily
@@ -82,6 +89,12 @@ class ConnectorAssetFamilyHydrator
             $image = Image::fromFileInfo($file);
         }
 
+        // @todo merge master: remove null check
+        if (null !== $this->findActivatedLocales) {
+            $activatedLocales = $this->findActivatedLocales->findAll();
+            $labels = $this->getLabelsByActivatedLocales($labels, $activatedLocales);
+        }
+
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($identifier);
         $productLinkRules = $this->productLinkRulesHydrator->hydrate($ruleTemplates);
         $readTransformations = $this->transformationCollectionHydrator->hydrate(
@@ -102,5 +115,17 @@ class ConnectorAssetFamilyHydrator
             $readNamingConvention,
             $attributeAsMainMediaCode
         );
+    }
+
+    private function getLabelsByActivatedLocales(array $labels, array $activatedLocales): array
+    {
+        $filteredLabels = [];
+        foreach ($labels as $localeCode => $label) {
+            if (in_array($localeCode, $activatedLocales)) {
+                $filteredLabels[$localeCode] = $label;
+            }
+        }
+
+        return $filteredLabels;
     }
 }

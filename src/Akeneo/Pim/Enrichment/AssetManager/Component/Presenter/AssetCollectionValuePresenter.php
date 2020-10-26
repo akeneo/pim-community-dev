@@ -37,6 +37,10 @@ class AssetCollectionValuePresenter extends AbstractProductValuePresenter
      */
     protected function normalizeData($assetCollection)
     {
+        if (!is_iterable($assetCollection)) {
+            return [];
+        }
+
         return array_map(function (AssetCode $assetCode) {
             return $assetCode->normalize();
         }, $assetCollection);

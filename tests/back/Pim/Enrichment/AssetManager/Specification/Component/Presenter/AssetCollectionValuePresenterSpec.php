@@ -36,4 +36,11 @@ class AssetCollectionValuePresenterSpec extends ObjectBehavior
 
         $this->present([$foo, $bar], ['data' => ['foo', 'bar', 'baz']])->shouldReturn('diff between two collections');
     }
+
+    function it_presents_without_error_old_null_data(RendererInterface $renderer)
+    {
+        $this->setRenderer($renderer);
+        $renderer->renderDiff([], ['foo', 'bar', 'baz'])->willReturn([]);
+        $this->present(null, ['data' => ['foo', 'bar', 'baz']])->shouldReturn([]);
+    }
 }

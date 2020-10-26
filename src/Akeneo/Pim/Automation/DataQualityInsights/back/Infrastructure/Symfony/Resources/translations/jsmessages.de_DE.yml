@@ -50,8 +50,6 @@ akeneo_data_quality_insights:
         recommendation: Attribute mit Großbuchstaben
       consistency_textarea_lowercase_words:
         recommendation: Attribute mit Kleinbuchstaben
-      consistency_text_title_formatting:
-        recommendation: Attribute mit Formatierungsvorschlägen
       consistency_spelling:
         recommendation: Attribute mit Schreibproblemen
     axis:

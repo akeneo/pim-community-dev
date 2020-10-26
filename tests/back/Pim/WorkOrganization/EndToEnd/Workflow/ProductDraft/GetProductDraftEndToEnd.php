@@ -99,7 +99,7 @@ JSON;
 
         $expectedResponseContent =
 <<<JSON
-{"code":404,"message":"Product \\"product_with_draft\\" does not exist."}
+{"code":404,"message":"Product \\"product_with_draft\\" does not exist or you do not have permission to access it."}
 JSON;
 
         $response = $clientAsMary->getResponse();

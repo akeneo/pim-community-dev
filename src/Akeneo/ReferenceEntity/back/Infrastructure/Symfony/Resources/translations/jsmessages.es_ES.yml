@@ -102,6 +102,10 @@ pim_reference_entity:
       code:
         pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
         should_be_unique: 'El código ya existe para esta entidad.'
+      text:
+        incompatible_with_regular_expression: 'Por favor, introduzca un texto que satisfaga la expresión regular: "{{ %regular_expression% }}"'
+        invalid_email: 'Por favor, introduzca una dirección de correo electrónico: xxxx@xx.xx'
+        invalid_url: 'Por favor, introduzca una URL: http(s)://xxxx.XXX'
     no_data:
       title: No hay ningún registro para {{ entityLabel }}
       subtitle: Haga clic en el botón "Agregar nuevo" para crear el primer registro
@@ -132,7 +136,11 @@ pim_reference_entity:
         title: Está un poco atestado por aquí, te mostramos {{ productCount }}/{{ totalCount }} productos.
         subtitle:
           usable_in_grid: Para descubrir todos los productos enlazados, simplemente haga clic a continuación!
+          not_usable_in_grid: Para descubrir todos los productos enlazados, el atributo del producto debe establecerse como "utilizable en la cuadrícula".
         button: Ver todos los productos
+      no_product:
+        title: No hay productos enlazados para el atributo de producto "{{ entityLabel }}"
+        subtitle: "Empieza a vincular productos a este atributo para verlos aquí"
     enrich:
       title: Registro de atributos
       code: Código

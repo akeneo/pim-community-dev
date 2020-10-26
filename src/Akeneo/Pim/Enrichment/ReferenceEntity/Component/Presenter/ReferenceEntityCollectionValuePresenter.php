@@ -35,6 +35,10 @@ class ReferenceEntityCollectionValuePresenter extends AbstractProductValuePresen
      */
     protected function normalizeData($recordCollection)
     {
+        if (!is_iterable($recordCollection)) {
+            return [];
+        }
+
         return array_map(function (RecordCode $recordCode) {
             return $recordCode->normalize();
         }, $recordCollection);

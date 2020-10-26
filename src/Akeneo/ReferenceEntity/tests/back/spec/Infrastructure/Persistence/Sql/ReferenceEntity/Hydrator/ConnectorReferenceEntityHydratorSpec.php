@@ -16,6 +16,7 @@ namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEn
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\Hydrator\ConnectorReferenceEntityHydrator;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
@@ -26,10 +27,12 @@ use PhpSpec\ObjectBehavior;
 class ConnectorReferenceEntityHydratorSpec extends ObjectBehavior
 {
     function let(
-        Connection $connection
+        Connection $connection,
+        FindActivatedLocalesInterface $findActivatedLocales
     ) {
         $connection->getDatabasePlatform()->willReturn(new MySqlPlatform());
-        $this->beConstructedWith($connection);
+        $findActivatedLocales->findAll()->willReturn(['en_US', 'fr_FR']);
+        $this->beConstructedWith($connection, $findActivatedLocales);
     }
 
     function it_is_initializable()
@@ -73,6 +76,31 @@ class ConnectorReferenceEntityHydratorSpec extends ObjectBehavior
             'labels'                      => json_encode([
                 'en_US' => 'Designer',
                 'fr_FR' => 'Designer',
+            ])
+        ];
+
+        $expectedReferenceEntity = new ConnectorReferenceEntity(
+            ReferenceEntityIdentifier::fromString('designer'),
+            LabelCollection::fromArray([
+                'en_US' => 'Designer',
+                'fr_FR' => 'Designer',
+            ]),
+            Image::createEmpty()
+        );
+
+        $this->hydrate($row)->shouldBeLike($expectedReferenceEntity);
+    }
+
+    function it_hydrates_a_reference_entity_with_only_labels_from_activated_locales() {
+        $row = [
+            'identifier'                  => 'designer',
+            'image_file_key'              => null,
+            'image_original_filename'     => null,
+            'labels'                      => json_encode([
+                'en_US' => 'Designer',
+                'fr_FR' => 'Designer',
+                'de_DE' => 'Ich bin ein designer',
+                'it_IT' => 'Sono un designer'
             ])
         ];
 

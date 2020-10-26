@@ -369,6 +369,29 @@ class CreateOrUpdateAssetFamilyContext implements Context
     }
 
     /**
+     * @When the connector collects an asset family with a code that already exists with wrong case
+     */
+    public function collectAnAssetFamilyWithACodeThatAlreadyExistsWithWrongCase()
+    {
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_asset_family_with_bad_case_code.json'
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about an error indicating that the asset family has a code that already exist with wrong case
+     */
+    public function thePimNotifiesTheConnectorAboutAnErrorIndicatingThatTheAssetFamilyHasACodeThatAlreadyExistWithWrongCase()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_asset_family_with_bad_case_code.json'
+        );
+    }
+
+    /**
      * @When the connector collects an asset family whose data does not comply with the business rules
      */
     public function theConnectorCollectsAnAssetFamilyWhoseDataDoesNotComplyWithTheBusinessRules()

@@ -1,0 +1,6 @@
+pim_asset_manager:
+  product_value:
+    validation:
+      asset_multiple_link:
+        limit_reached: '您已达到每个集合的资产上限数目 %limit% ，无法再将资产添加到您的集合中。'
+      assets_should_belong_to_asset_family: '请确保资产"%asset_code%"存在且属于"%attribute%"属性的 "%asset_family_identifier%"资产品类。'

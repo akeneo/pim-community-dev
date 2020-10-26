@@ -204,7 +204,7 @@ pim_asset_manager:
         fail: An error occurred when trying to compute the transformations
       execute_product_link_rules:
         success: Product link rules have been launched
-        fail: An error occured when trying to launch the product link rules
+        fail: An error occurred when trying to launch the product link rules
     helper:
       title: Welcome to the Asset Manager!
       no_asset:
