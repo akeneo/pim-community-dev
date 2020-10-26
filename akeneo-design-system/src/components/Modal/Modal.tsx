@@ -1,6 +1,6 @@
-import React, {ReactElement, Ref} from 'react';
-import styled from 'styled-components';
-import {getColor, getFontSize} from '../../theme';
+import React, {ForwardRefExoticComponent, ReactElement, Ref, RefAttributes} from 'react';
+import styled, {StyledComponent} from 'styled-components';
+import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {CloseIcon} from '../../icons';
 import {IllustrationProps} from '../../illustrations/IllustrationProps';
 import {useShortcut} from '../../hooks';
@@ -53,15 +53,15 @@ const ModalChildren = styled.div`
   width: 480px;
 `;
 
-//TODO add DSM component
-const Surtitle = styled.div`
+//TODO extract to Typography RAC-331
+const SectionTitle = styled.div<{size?: 'big' | 'small' | 'default'; color?: string} & AkeneoThemedProps>`
   height: 20px;
-  color: ${getColor('brand', 120)};
-  font-size: ${getFontSize('default')};
+  color: ${({color}) => getColor(color ?? 'grey', 120)};
+  font-size: ${({size}) => getFontSize(size ?? 'default')};
   text-transform: uppercase;
 `;
 
-//TODO add DSM component
+//TODO extract to Typography RAC-331
 const Title = styled.div`
   display: flex;
   align-items: center;
@@ -69,13 +69,6 @@ const Title = styled.div`
   color: ${getColor('grey', 140)};
   font-size: ${getFontSize('title')};
   margin-bottom: 10px;
-`;
-
-//TODO add DSM component
-const ButtonsContainer = styled.div`
-  display: flex;
-  gap: 10px;
-  margin: 20px 0;
 `;
 
 type ModalProps = {
@@ -100,10 +93,14 @@ type ModalProps = {
   children?: string;
 };
 
+type ModalComponent = ForwardRefExoticComponent<ModalProps & RefAttributes<HTMLDivElement>> & {
+  BottomButtons?: StyledComponent<'div', {}>;
+};
+
 /**
- * Modal component.
+ * The Modal Component is used to display a secondary window over the content.
  */
-const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
+const Modal: ModalComponent = React.forwardRef<HTMLDivElement, ModalProps>(
   ({isOpen, onClose, illustration, children, ...rest}: ModalProps, forwardedRef: Ref<HTMLDivElement>) => {
     useShortcut(Key.Escape, onClose, forwardedRef);
 
@@ -114,19 +111,25 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
         <ModalCloseButton onClick={onClose}>
           <CloseIcon size={20} />
         </ModalCloseButton>
-        <ModalContent>
-          {undefined !== illustration && (
-            <>
-              {React.cloneElement(illustration, {size: 220})}
-              <Separator />
-            </>
-          )}
-          <ModalChildren>{children}</ModalChildren>
-        </ModalContent>
+        {undefined === illustration ? (
+          children
+        ) : (
+          <ModalContent>
+            {React.cloneElement(illustration, {size: 220})}
+            <Separator />
+            <ModalChildren>{children}</ModalChildren>
+          </ModalContent>
+        )}
       </ModalContainer>
     );
   }
 );
 
+Modal.BottomButtons = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+`;
+
 export {Modal};
-export {Surtitle, Title, ButtonsContainer};
+export {SectionTitle, Title};

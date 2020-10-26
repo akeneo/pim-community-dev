@@ -1,7 +1,6 @@
 import React from 'react';
 import {Modal} from './Modal';
-import {render, screen} from '../../storybook/test-util';
-import '@testing-library/jest-dom/extend-expect';
+import {fireEvent, render, screen} from '../../storybook/test-util';
 
 test('it renders its children properly', () => {
   render(
@@ -21,4 +20,32 @@ test('it does not display its children if it is closed', () => {
   );
 
   expect(screen.queryByText('Modal content')).not.toBeInTheDocument();
+});
+
+test('it calls the onClose handler when clicking on the close button', () => {
+  const onClose = jest.fn();
+
+  render(
+    <Modal isOpen={true} onClose={onClose}>
+      Modal content
+    </Modal>
+  );
+
+  fireEvent.click(screen.getByRole('button'));
+
+  expect(onClose).toBeCalledTimes(1);
+});
+
+test('it calls the onClose handler when hitting the Escape key', () => {
+  const onClose = jest.fn();
+
+  render(
+    <Modal isOpen={true} onClose={onClose}>
+      Modal content
+    </Modal>
+  );
+
+  fireEvent.keyDown(document, {key: 'Escape', code: 'Escape'});
+
+  expect(onClose).toBeCalledTimes(1);
 });
