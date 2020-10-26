@@ -13,6 +13,8 @@ use League\Flysystem\Filesystem;
  */
 final class DeleteOrphanJobExecutionDirectories
 {
+    private const BATCH_SIZE = 100;
+
     /** @var Filesystem */
     private $archivistFilesystem;
 
@@ -27,18 +29,44 @@ final class DeleteOrphanJobExecutionDirectories
 
     public function execute(): void
     {
-        $paths = $this->archivistFilesystem->listFiles('.', true);
+        $pathsByBatch = $this->getPathsByBatch();
 
-        $jobExecutionIds = $this->getJobExecutionIdsFromPaths($paths);
-        $existingJobExecutionIds = $this->getExistingJobExecutionIds($jobExecutionIds);
-        $this->deleteOrphanJobExecutionDirectories($paths, $existingJobExecutionIds);
+        foreach ($pathsByBatch as $paths) {
+            $jobExecutionIds = $this->getJobExecutionIdsFromPaths($paths);
+            $existingJobExecutionIds = $this->getExistingJobExecutionIds($jobExecutionIds);
+            $this->deleteOrphanJobExecutionDirectories($paths, $existingJobExecutionIds);
+        }
+    }
+
+    private function getPathsByBatch(): \Iterator
+    {
+        $paths = [];
+        $firstLevelPaths = $this->archivistFilesystem->listPaths('.', false);
+        foreach ($firstLevelPaths as $firstLevelPath) {
+            $secondLevelPaths = $this->archivistFilesystem->listPaths($firstLevelPath, false);
+            foreach ($secondLevelPaths as $secondLevelPath) {
+                $thirdLevelPaths = $this->archivistFilesystem->listPaths($secondLevelPath, false);
+                foreach ($thirdLevelPaths as $thirdLevelPath) {
+                    $paths[] = $thirdLevelPath;
+
+                    if (count($paths) >= self::BATCH_SIZE) {
+                        yield $paths;
+                        $paths = [];
+                    }
+                }
+            }
+        }
+
+        if (count($paths) > 0) {
+            yield $paths;
+        }
     }
 
     private function getJobExecutionIdsFromPaths(array $paths): array
     {
         $jobExecutionIds = [];
         foreach ($paths as $path) {
-            $directories = explode(DIRECTORY_SEPARATOR, $path['dirname']);
+            $directories = explode(DIRECTORY_SEPARATOR, $path);
             if (!isset($directories[2])) {
                 continue;
             }
@@ -65,12 +93,12 @@ final class DeleteOrphanJobExecutionDirectories
     private function deleteOrphanJobExecutionDirectories(array $paths, array $existingJobExecutionIds): void
     {
         foreach ($paths as $path) {
-            $directories = explode(DIRECTORY_SEPARATOR, $path['dirname']);
+            $directories = explode(DIRECTORY_SEPARATOR, $path);
             if (!isset($directories[2])) {
                 continue;
             }
 
-            [$jobExecutionType, $jobName, $jobExecutionId] = explode(DIRECTORY_SEPARATOR, $path['dirname']);
+            [$jobExecutionType, $jobName, $jobExecutionId] = explode(DIRECTORY_SEPARATOR, $path);
             $pathToDelete = $jobExecutionType . DIRECTORY_SEPARATOR . $jobName . DIRECTORY_SEPARATOR . $jobExecutionId;
 
             if (!in_array($jobExecutionId, $existingJobExecutionIds) && $this->archivistFilesystem->has($pathToDelete)) {

@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9518: Improve performance of SQL query about fetching images from product model codes
+- PIM-9524: improve purge job execution to limit the out of memory errors
 
 # 4.0.66 (2020-10-23)
 
