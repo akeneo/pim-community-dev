@@ -2,6 +2,7 @@ import {Theme} from '../theme';
 import {color, fontSize, palette} from '../common';
 
 const pimTheme: Theme = {
+  name: 'PIM',
   color: {
     ...color,
     brand20: '#eadcf1',

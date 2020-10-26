@@ -73,6 +73,7 @@ type Palette = {
 };
 
 type Theme = {
+  name: string;
   palette: Palette;
   fontSize: FontSize;
   color: Color;

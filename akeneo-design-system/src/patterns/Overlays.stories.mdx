@@ -1,17 +1,9 @@
 import {useState} from 'react';
-import {ThemeProvider} from 'styled-components';
-import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Meta, Story, Canvas} from '@storybook/addon-docs/blocks';
 import {Button, Modal, Surtitle, Title, ButtonsContainer} from '../components';
 import {DeleteIllustration} from '../illustrations';
-import {themes} from '../storybook/themes';
 
-<Meta
-  title="Patterns/Overlays"
-  argTypes={{
-    theme: {control: {type: 'select', options: Object.keys(themes)}},
-  }}
-  args={{theme: 'PIM'}}
-/>
+<Meta title="Patterns/Overlays" />
 
 # Overlays
 
@@ -23,8 +15,6 @@ Overlays interrupt the user workflow by design. They are the most effective when
 
 ## Confirm Modal
 
-<ArgsTable story="Confirm Modal" />
-
 <Canvas>
   <Story name="Confirm Modal">
     {args => {
@@ -32,7 +22,7 @@ Overlays interrupt the user workflow by design. They are the most effective when
       const open = () => setOpen(true);
       const close = () => setOpen(false);
       return (
-        <ThemeProvider theme={themes[args.theme]}>
+        <>
           <Modal isOpen={isOpen} onClose={close} illustration={<DeleteIllustration />}>
             <Surtitle>Products</Surtitle>
             <Title>Confirm deletion</Title>
@@ -47,7 +37,7 @@ Overlays interrupt the user workflow by design. They are the most effective when
             </ButtonsContainer>
           </Modal>
           <Button onClick={open}>Open Confirm Modal</Button>
-        </ThemeProvider>
+        </>
       );
     }}
   </Story>
