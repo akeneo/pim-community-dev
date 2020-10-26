@@ -16,7 +16,6 @@ namespace Akeneo\Pim\Enrichment\AssetManager\Bundle\Datagrid\Filter\ProductValue
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\FindExistingAssetCodesInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
-use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
@@ -39,15 +38,6 @@ class AssetFamilyAssetFilter extends ChoiceFilter
     /** @var FindExistingAssetCodesInterface */
     private $existingAssetCodesQuery;
 
-    /**
-     * Constructor
-     *
-     * @param FormFactoryInterface           $factory
-     * @param ProductFilterUtility           $util
-     * @param UserContext                    $userContext
-     * @param AttributeRepositoryInterface   $attributeRepository
-     * @param ConfigurationRegistryInterface $registry
-     */
     public function __construct(
         FormFactoryInterface $factory,
         ProductFilterUtility $util,

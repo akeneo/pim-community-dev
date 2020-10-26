@@ -24,7 +24,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ElasticsearchFilterValidator;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 
 /**
@@ -35,7 +34,7 @@ class AssetFamilyFilter extends AbstractAttributeFilter implements AttributeFilt
     /** @var AssetExistsInterface */
     private $assetExists;
 
-    /** @var ConfigurationRegistryInterface */
+    /** @var AssetFamilyExistsInterface */
     private $assetFamilyExists;
 
     /**

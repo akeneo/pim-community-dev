@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Datagrid\Filter\ProductValue;
 
-use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
@@ -39,15 +38,6 @@ class ReferenceEntityRecordFilter extends ChoiceFilter
     /** @var FindExistingRecordCodesInterface */
     private $existingRecordCodesQuery;
 
-    /**
-     * Constructor
-     *
-     * @param FormFactoryInterface           $factory
-     * @param ProductFilterUtility           $util
-     * @param UserContext                    $userContext
-     * @param AttributeRepositoryInterface   $attributeRepository
-     * @param ConfigurationRegistryInterface $registry
-     */
     public function __construct(
         FormFactoryInterface $factory,
         ProductFilterUtility $util,
