@@ -1,9 +1,7 @@
 import React, {useState, useEffect, ChangeEvent} from 'react';
 import styled from 'styled-components';
-// @todo pull-up master: change to '@akeneo-pim-community/legacy-bridge'
-import {useTranslate} from 'akeneosharedcatalog/akeneo-pim-community/legacy-bridge';
-// @todo pull-up master: change to '@akeneo-pim-community/shared'
-import {WarningIcon, useAkeneoTheme, CloseIcon} from 'akeneosharedcatalog/akeneo-pim-community/shared';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {WarningIcon, useAkeneoTheme, CloseIcon} from '@akeneo-pim-community/shared';
 
 const PLACEHOLDER_PATH = '/bundles/pimui/images/illustrations/Import.svg';
 const ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png'];

@@ -94,3 +94,13 @@ services:
             - '@pim_catalog.query.sorter.registry'
             - '@akeneo.pim.enrichment.factory.product_identifier_cursor_search_after_size_cursor'
             - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
+
+    Akeneo\SharedCatalog\Command\SharedCatalogFixturesCommand:
+        arguments:
+            - '@database_connection'
+            - '@validator'
+            - '@pim_user.factory.user'
+            - '@pim_user.updater.user'
+            - '@pim_user.saver.user'
+        tags:
+            - { name: console.command }

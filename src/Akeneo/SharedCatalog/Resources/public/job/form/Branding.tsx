@@ -1,9 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-// @todo pull-up master: change to '@akeneo-pim-community/shared'
-import {AkeneoThemeProvider} from 'akeneosharedcatalog/akeneo-pim-community/shared';
-// @todo pull-up master: change to '@akeneo-pim-community/legacy-bridge'
-import {DependenciesProvider, useTranslate} from 'akeneosharedcatalog/akeneo-pim-community/legacy-bridge';
+import {AkeneoThemeProvider} from '@akeneo-pim-community/shared';
+import {DependenciesProvider, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {ImageUploader} from './ImageUploader';
 
 const Container = styled.div`
