@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Status } from '../../../rules.constants';
-import { useTranslate } from '../../../dependenciesTools/hooks';
+import {Status} from '../../../rules.constants';
+import {useTranslate} from '../../../dependenciesTools/hooks';
 
 type Props = {
   count: number;
@@ -12,7 +12,7 @@ const CountPending = styled.span`
   opacity: 0.5;
 `;
 
-const ProductsCount: React.FC<Props> = ({ status, count }) => {
+const ProductsCount: React.FC<Props> = ({status, count}) => {
   const translate = useTranslate();
 
   return (
@@ -42,4 +42,4 @@ const ProductsCount: React.FC<Props> = ({ status, count }) => {
   );
 };
 
-export { ProductsCount };
+export {ProductsCount};

@@ -1,8 +1,8 @@
-import { denormalize } from '../models/rule-definition-denormalizer';
-import { Router } from '../dependenciesTools/provider/applicationDependenciesProvider.type';
-import { RuleDefinition } from '../models/RuleDefinition';
-import { httpGet } from './fetch';
-import { ServerException } from '../exceptions';
+import {denormalize} from '../models/rule-definition-denormalizer';
+import {Router} from '../dependenciesTools/provider/applicationDependenciesProvider.type';
+import {RuleDefinition} from '../models/RuleDefinition';
+import {httpGet} from './fetch';
+import {ServerException} from '../exceptions';
 
 export const getRuleDefinitionByCode = async (
   ruleDefinitionCode: string,

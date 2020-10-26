@@ -1,10 +1,10 @@
-import { ConditionFactory } from './Condition';
+import {ConditionFactory} from './Condition';
 import React from 'react';
-import { Operator } from '../Operator';
-import { CategoryCode } from '../Category';
-import { CategoryConditionLine } from '../../pages/EditRules/components/conditions/CategoryConditionLine';
-import { ConditionModuleGuesser } from './ConditionModuleGuesser';
-import { ConditionLineProps } from '../../pages/EditRules/components/conditions/ConditionLineProps';
+import {Operator} from '../Operator';
+import {CategoryCode} from '../Category';
+import {CategoryConditionLine} from '../../pages/EditRules/components/conditions/CategoryConditionLine';
+import {ConditionModuleGuesser} from './ConditionModuleGuesser';
+import {ConditionLineProps} from '../../pages/EditRules/components/conditions/ConditionLineProps';
 
 const FIELD = 'categories';
 

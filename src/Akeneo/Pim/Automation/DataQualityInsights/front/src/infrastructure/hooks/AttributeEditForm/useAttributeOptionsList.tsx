@@ -1,11 +1,11 @@
-import {useEffect, useState} from "react";
+import {useEffect, useState} from 'react';
 
 import {
   ATTRIBUTE_OPTIONS_LIST_LOADED,
-  AttributeOptionsListStateEvent
-} from "akeneopimstructure/js/attribute-option/hooks";
+  AttributeOptionsListStateEvent,
+} from 'akeneopimstructure/js/attribute-option/hooks';
 
-import {Attribute} from "@akeneo-pim-community/data-quality-insights/src/domain";
+import {Attribute} from '@akeneo-pim-community/data-quality-insights/src/domain';
 
 export type AttributeOptionsListState = AttributeOptionsListStateEvent;
 
@@ -17,11 +17,13 @@ export const initialAttributeOptionsListState = {
 };
 
 export const useAttributeOptionsList = (attribute: Attribute) => {
-  const [attributeOptionsState, setAttributeOptionsState] = useState<AttributeOptionsListState>(initialAttributeOptionsListState);
+  const [attributeOptionsState, setAttributeOptionsState] = useState<AttributeOptionsListState>(
+    initialAttributeOptionsListState
+  );
 
   useEffect(() => {
     const handleListLoaded = (event: CustomEvent<AttributeOptionsListStateEvent>) => {
-      setAttributeOptionsState(event.detail)
+      setAttributeOptionsState(event.detail);
     };
 
     window.addEventListener(ATTRIBUTE_OPTIONS_LIST_LOADED, handleListLoaded as EventListener);
@@ -34,4 +36,4 @@ export const useAttributeOptionsList = (attribute: Attribute) => {
   return {
     ...attributeOptionsState,
   };
-}
+};

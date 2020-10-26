@@ -1,19 +1,18 @@
-import React, {FunctionComponent, useEffect} from "react";
-import {useDispatch} from "react-redux";
-import WidgetsList from "./Attributes/EditorHighlight/WidgetsList";
-import Popover from "./Attributes/EditorHighlight/Popover";
-import {TextAttributesContextListener} from "../../../listener";
-import {Product} from "../../../../domain";
+import React, {FunctionComponent, useEffect} from 'react';
+import {useDispatch} from 'react-redux';
+import WidgetsList from './Attributes/EditorHighlight/WidgetsList';
+import Popover from './Attributes/EditorHighlight/Popover';
+import {TextAttributesContextListener} from '../../../listener';
+import {Product} from '../../../../domain';
 import {
   ATTRIBUTE_TO_IMPROVE_SESSION_STORAGE_KEY,
   PRODUCT_ATTRIBUTES_TAB_NAME,
-  PRODUCT_MODEL_ATTRIBUTES_TAB_NAME
-} from "@akeneo-pim-community/data-quality-insights/src/application/constant";
-import {AttributeToImproveContextListener} from "@akeneo-pim-community/data-quality-insights/src/application/listener";
-import {showDataQualityInsightsAttributeToImproveAction} from "@akeneo-pim-community/data-quality-insights/src/infrastructure/reducer";
-import TabContentWithPortalDecorator
-  from "@akeneo-pim-community/data-quality-insights/src/application/component/TabContentWithPortalDecorator";
-import {usePageContext} from "@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks";
+  PRODUCT_MODEL_ATTRIBUTES_TAB_NAME,
+} from '@akeneo-pim-community/data-quality-insights/src/application/constant';
+import {AttributeToImproveContextListener} from '@akeneo-pim-community/data-quality-insights/src/application/listener';
+import {showDataQualityInsightsAttributeToImproveAction} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/reducer';
+import TabContentWithPortalDecorator from '@akeneo-pim-community/data-quality-insights/src/application/component/TabContentWithPortalDecorator';
+import {usePageContext} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks';
 
 export const CONTAINER_ELEMENT_ID = 'attributes-product-tab-content-dqi';
 
@@ -27,17 +26,18 @@ const BaseAttributesTabContent: FunctionComponent<AttributesTabContentProps> = (
       <TextAttributesContextListener />
       <AttributeToImproveContextListener />
 
-      <WidgetsList/>
-      <Popover/>
+      <WidgetsList />
+      <Popover />
     </>
   );
 };
 
-const AttributesTabContent: FunctionComponent<AttributesTabContentProps> = (props) => {
+const AttributesTabContent: FunctionComponent<AttributesTabContentProps> = props => {
   const dispatchAction = useDispatch();
 
   const {product} = props;
-  const tabName = product.meta.model_type === "product" ? PRODUCT_ATTRIBUTES_TAB_NAME : PRODUCT_MODEL_ATTRIBUTES_TAB_NAME;
+  const tabName =
+    product.meta.model_type === 'product' ? PRODUCT_ATTRIBUTES_TAB_NAME : PRODUCT_MODEL_ATTRIBUTES_TAB_NAME;
 
   useEffect(() => {
     const attributeToImprove = sessionStorage.getItem(ATTRIBUTE_TO_IMPROVE_SESSION_STORAGE_KEY);
@@ -47,10 +47,13 @@ const AttributesTabContent: FunctionComponent<AttributesTabContentProps> = (prop
     }
   }, []);
 
-  return TabContentWithPortalDecorator(BaseAttributesTabContent, usePageContext)({
+  return TabContentWithPortalDecorator(
+    BaseAttributesTabContent,
+    usePageContext
+  )({
     ...props,
     containerId: CONTAINER_ELEMENT_ID,
-    tabName: tabName
+    tabName: tabName,
   });
 };
 

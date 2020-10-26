@@ -1,8 +1,6 @@
 import {AttributeCreateFormApp, AttributeEditFormApp, ProductEditFormApp, ProductModelEditFormApp} from './application';
-import fetchProductDataQualityEvaluation
-  from "@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/ProductEditForm/fetchProductDataQualityEvaluation";
-import fetchProductModelEvaluation
-  from "@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/ProductEditForm/fetchProductModelEvaluation";
+import fetchProductDataQualityEvaluation from '@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/ProductEditForm/fetchProductDataQualityEvaluation';
+import fetchProductModelEvaluation from '@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/ProductEditForm/fetchProductModelEvaluation';
 
 import {
   ATTRIBUTES_TAB_CONTENT_CONTAINER_ELEMENT_ID,
@@ -13,13 +11,13 @@ import {
   PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME,
 } from '@akeneo-pim-community/data-quality-insights/src/application/constant';
 
-import {CriterionEvaluationResult, ProductEvaluation} from "./domain";
+import {CriterionEvaluationResult, ProductEvaluation} from './domain';
 
 import BackLinkButton from './application/component/BackLinkButton';
 import {
   DATA_QUALITY_INSIGHTS_AXIS_RATES_OVERVIEW_SIDEBAR_CONTAINER_ELEMENT_ID,
-  DATA_QUALITY_INSIGHTS_TAB_CONTENT_CONTAINER_ELEMENT_ID
-} from "@akeneo-pim-community/data-quality-insights/src";
+  DATA_QUALITY_INSIGHTS_TAB_CONTENT_CONTAINER_ELEMENT_ID,
+} from '@akeneo-pim-community/data-quality-insights/src';
 
 export {
   ProductEditFormApp,
@@ -33,7 +31,8 @@ export {
   PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME,
   fetchProductDataQualityEvaluation,
   fetchProductModelEvaluation,
-  ProductEvaluation, CriterionEvaluationResult,
+  ProductEvaluation,
+  CriterionEvaluationResult,
   AttributeEditFormApp,
   AttributeCreateFormApp,
   BACK_LINK_SESSION_STORAGE_KEY,

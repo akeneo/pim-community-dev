@@ -1,6 +1,6 @@
-import { Router } from '../dependenciesTools';
-import { Locale } from '../models';
-import { fetchActivatedLocales } from '../fetch/LocaleFetcher';
+import {Router} from '../dependenciesTools';
+import {Locale} from '../models';
+import {fetchActivatedLocales} from '../fetch/LocaleFetcher';
 
 let cacheActivatedLocales: Locale[];
 
@@ -36,4 +36,4 @@ const checkLocaleExists = async (
   return null !== (await getActivatedLocaleByCode(localeCode, router));
 };
 
-export { getActivatedLocales, getActivatedLocaleByCode, checkLocaleExists };
+export {getActivatedLocales, getActivatedLocaleByCode, checkLocaleExists};

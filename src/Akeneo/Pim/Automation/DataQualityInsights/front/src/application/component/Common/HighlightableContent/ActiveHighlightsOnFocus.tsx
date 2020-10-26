@@ -1,5 +1,5 @@
-import React, {FC, useEffect} from "react";
-import {useHighlightableContentContext} from "../../../context/HighlightableContentContext";
+import React, {FC, useEffect} from 'react';
+import {useHighlightableContentContext} from '../../../context/HighlightableContentContext';
 
 const ActiveHighlightsOnFocus: FC<{}> = () => {
   const {element, activate, isActive} = useHighlightableContentContext();
@@ -9,7 +9,7 @@ const ActiveHighlightsOnFocus: FC<{}> = () => {
       if (!isActive) {
         activate();
       }
-    }
+    };
 
     if (element !== null) {
       element.addEventListener('focus', handleFocus as EventListener);
@@ -22,7 +22,7 @@ const ActiveHighlightsOnFocus: FC<{}> = () => {
     };
   }, [element, activate]);
 
-  return (<></>);
-}
+  return <></>;
+};
 
 export default ActiveHighlightsOnFocus;

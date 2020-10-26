@@ -9,10 +9,10 @@ type Props = {
 const defaultClassName = 'AknBreadcrumb-item AknBreadcrumb-item--routable';
 
 const StyledAnchor = styled.a`
-  color: ${({ theme }): string => theme.color.grey120};
+  color: ${({theme}): string => theme.color.grey120};
 `;
 
-const BreadcrumbItem: React.FC<Props> = ({ children, href, onClick }) => {
+const BreadcrumbItem: React.FC<Props> = ({children, href, onClick}) => {
   return (
     <StyledAnchor className={defaultClassName} href={href} onClick={onClick}>
       {children}
@@ -20,7 +20,7 @@ const BreadcrumbItem: React.FC<Props> = ({ children, href, onClick }) => {
   );
 };
 
-const LastBreadcrumbItem: React.FC = ({ children }) => {
+const LastBreadcrumbItem: React.FC = ({children}) => {
   return (
     <span className={`${defaultClassName} AknBreadcrumb-item--final`}>
       {children}
@@ -31,4 +31,4 @@ const LastBreadcrumbItem: React.FC = ({ children }) => {
 BreadcrumbItem.displayName = 'BreadcrumbItem';
 LastBreadcrumbItem.displayName = 'LastBreadcrumbItem';
 
-export { BreadcrumbItem, LastBreadcrumbItem };
+export {BreadcrumbItem, LastBreadcrumbItem};

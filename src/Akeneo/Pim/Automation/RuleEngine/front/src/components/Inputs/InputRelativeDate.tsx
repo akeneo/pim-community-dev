@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useMenuState, Menu, MenuItem, MenuButton } from 'reakit/Menu';
-import { Input, InputProps } from './Input';
-import { Translate } from '../../dependenciesTools';
+import React, {useState, useEffect} from 'react';
+import {useMenuState, Menu, MenuItem, MenuButton} from 'reakit/Menu';
+import {Input, InputProps} from './Input';
+import {Translate} from '../../dependenciesTools';
 import styled from 'styled-components';
 
 type TimePeriodId = string;
@@ -66,9 +66,9 @@ const StyledMenuButton = styled(MenuButton)`
 `;
 
 const StyledMenuItem = styled(MenuItem)`
-  background: ${({ theme }) => theme.color.white};
+  background: ${({theme}) => theme.color.white};
   border: none;
-  color: ${({ theme }) => theme.color.grey120};
+  color: ${({theme}) => theme.color.grey120};
   height: inherit;
   margin-bottom: 2px 0;
   padding: 0 20px;
@@ -98,7 +98,7 @@ const getTimePeriodTextFromId = (
   timeValue: string
 ) => {
   const timePeriod = timePeriodOptions.find(
-    ({ id }) => id === timePeriodSelected
+    ({id}) => id === timePeriodSelected
   );
   if (!timePeriod) {
     return null;
@@ -125,7 +125,7 @@ const InputRelativeDate = React.forwardRef<
     },
     forwardedRef: React.Ref<HTMLInputElement>
   ) => {
-    const menu = useMenuState({ wrap: 'vertical' });
+    const menu = useMenuState({wrap: 'vertical'});
     const [timePeriodSelected, setTimePeriodSelected] = useState<TimePeriodId>(
       currentTimePeriod
     );
@@ -196,7 +196,7 @@ const InputRelativeDate = React.forwardRef<
           aria-label={translateLabel(
             'pimee_catalog_rule.form.date.label.period'
           )}
-          style={{ transform: 'translate3d(0px, 39px, 0px)' }}>
+          style={{transform: 'translate3d(0px, 39px, 0px)'}}>
           <DateOptionsContainer tabIndex={-1} role='listbox'>
             {timePeriodOptions.map(dateTimeOpt => (
               <StyledOptionLi key={dateTimeOpt.id} role='option'>
@@ -217,4 +217,4 @@ const InputRelativeDate = React.forwardRef<
 
 InputRelativeDate.displayName = 'InputRelativeDate';
 
-export { InputRelativeDate };
+export {InputRelativeDate};

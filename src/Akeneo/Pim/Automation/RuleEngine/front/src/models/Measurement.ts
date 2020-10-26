@@ -1,4 +1,4 @@
-import { MeasurementUnitCode } from './MeasurementFamily';
+import {MeasurementUnitCode} from './MeasurementFamily';
 
 type MeasurementData = {
   unit: MeasurementUnitCode | null;
@@ -26,10 +26,10 @@ const parseMeasurementValue = (value: any): MeasurementData => {
     Object.prototype.hasOwnProperty.call(value, 'amount') &&
     Object.prototype.hasOwnProperty.call(value, 'unit')
   ) {
-    return { unit: value.unit, amount: value.amount };
+    return {unit: value.unit, amount: value.amount};
   }
 
-  return { unit: '', amount: null };
+  return {unit: '', amount: null};
 };
 
 export {

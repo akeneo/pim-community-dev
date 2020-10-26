@@ -1,8 +1,8 @@
 import React from 'react';
 import 'jest-fetch-mock';
-import { renderWithProviders, screen } from '../../../../../../test-utils';
-import { locales, scopes } from '../../../../factories';
-import { SetGroupsActionLine } from '../../../../../../src/pages/EditRules/components/actions/SetGroupsActionLine';
+import {renderWithProviders, screen} from '../../../../../../test-utils';
+import {locales, scopes} from '../../../../factories';
+import {SetGroupsActionLine} from '../../../../../../src/pages/EditRules/components/actions/SetGroupsActionLine';
 
 describe('SetGroupsActionLine', () => {
   beforeEach(() => {
@@ -18,7 +18,7 @@ describe('SetGroupsActionLine', () => {
         currentCatalogLocale={'en_US'}
         handleDelete={jest.fn()}
       />,
-      { all: true }
+      {all: true}
     );
     expect(
       await screen.findByText(
@@ -40,8 +40,8 @@ describe('SetGroupsActionLine', () => {
         return Promise.resolve(
           JSON.stringify({
             results: [
-              { id: 'tshirts', text: 'T-shirts' },
-              { id: 'winter', text: 'Winter' },
+              {id: 'tshirts', text: 'T-shirts'},
+              {id: 'winter', text: 'Winter'},
             ],
           })
         );
@@ -62,9 +62,9 @@ describe('SetGroupsActionLine', () => {
       },
     };
     const toRegister = [
-      { name: 'content.actions[0].type', type: 'custom' },
-      { name: 'content.actions[0].field', type: 'custom' },
-      { name: 'content.actions[0].value', type: 'custom' },
+      {name: 'content.actions[0].type', type: 'custom'},
+      {name: 'content.actions[0].field', type: 'custom'},
+      {name: 'content.actions[0].value', type: 'custom'},
     ];
 
     renderWithProviders(
@@ -75,8 +75,8 @@ describe('SetGroupsActionLine', () => {
         currentCatalogLocale={'en_US'}
         handleDelete={jest.fn()}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
     expect(
       await screen.findByText(

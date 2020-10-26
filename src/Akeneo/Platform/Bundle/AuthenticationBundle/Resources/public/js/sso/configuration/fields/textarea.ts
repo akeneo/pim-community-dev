@@ -1,4 +1,4 @@
-import * as _ from "underscore"
+import * as _ from 'underscore';
 
 const BaseTextarea = require('pim/form/common/fields/textarea');
 const template = require('pim/template/form/common/fields/textarea-monospaced');

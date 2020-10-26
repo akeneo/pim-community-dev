@@ -1,8 +1,8 @@
 import React from 'react';
-import { useUserCatalogLocale } from '../../../../../dependenciesTools/hooks';
-import { InputValueProps } from './AttributeValue';
-import { getAttributeLabel } from '../../../../../models';
-import { SimpleOptionSelector } from '../../../../../components/Selectors/SimpleOptionSelector';
+import {useUserCatalogLocale} from '../../../../../dependenciesTools/hooks';
+import {InputValueProps} from './AttributeValue';
+import {getAttributeLabel} from '../../../../../models';
+import {SimpleOptionSelector} from '../../../../../components/Selectors/SimpleOptionSelector';
 
 const SimpleSelectValue: React.FC<InputValueProps> = ({
   id,
@@ -27,4 +27,4 @@ const SimpleSelectValue: React.FC<InputValueProps> = ({
   );
 };
 
-export { SimpleSelectValue };
+export {SimpleSelectValue};

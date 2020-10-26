@@ -1,7 +1,7 @@
 import React from 'react';
-import { CreateRulesForm } from '../../../../../../src/pages/CreateRules/components/CreateRulesForm';
+import {CreateRulesForm} from '../../../../../../src/pages/CreateRules/components/CreateRulesForm';
 import userEvent from '@testing-library/user-event';
-import { render, screen, act, fireEvent } from '../../../../../../test-utils';
+import {render, screen, act, fireEvent} from '../../../../../../test-utils';
 
 describe('CreateRulesForm', () => {
   test('should display the form', async () => {
@@ -35,7 +35,7 @@ describe('CreateRulesForm', () => {
   test('should submit the form with code and label input values', async () => {
     // Given
     const translate = jest.fn((key: string) => key);
-    const onSubmit = jest.fn(() => Promise.resolve({ ok: true }));
+    const onSubmit = jest.fn(() => Promise.resolve({ok: true}));
 
     // When
     render(

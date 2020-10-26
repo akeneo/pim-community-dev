@@ -1,10 +1,10 @@
 import React from 'react';
-import { InputValueProps } from './AttributeValue';
-import { CurrenciesSelector } from '../../../../../components/Selectors/CurrenciesSelector';
-import { getScopeByCode } from '../../../../../repositories/ScopeRepository';
-import { getAllCurrencies } from '../../../../../repositories/CurrencyRepository';
-import { useBackboneRouter } from '../../../../../dependenciesTools/hooks';
-import { CurrencyCode } from '../../../../../models/Currency';
+import {InputValueProps} from './AttributeValue';
+import {CurrenciesSelector} from '../../../../../components/Selectors/CurrenciesSelector';
+import {getScopeByCode} from '../../../../../repositories/ScopeRepository';
+import {getAllCurrencies} from '../../../../../repositories/CurrencyRepository';
+import {useBackboneRouter} from '../../../../../dependenciesTools/hooks';
+import {CurrencyCode} from '../../../../../models/Currency';
 
 const RemoveCurrencyFromPriceCollectionValue: React.FC<InputValueProps> = ({
   id,
@@ -24,7 +24,7 @@ const RemoveCurrencyFromPriceCollectionValue: React.FC<InputValueProps> = ({
         value
           .filter(currencyCode => availableCurrencyCodes.includes(currencyCode))
           .map(currencyCode => {
-            return { amount: 0, currency: currencyCode };
+            return {amount: 0, currency: currencyCode};
           })
       );
     }
@@ -71,4 +71,4 @@ const RemoveCurrencyFromPriceCollectionValue: React.FC<InputValueProps> = ({
   );
 };
 
-export { RemoveCurrencyFromPriceCollectionValue };
+export {RemoveCurrencyFromPriceCollectionValue};

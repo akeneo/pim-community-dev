@@ -4,4 +4,4 @@ enum Status {
   'COMPLETE',
 }
 
-export { Status };
+export {Status};

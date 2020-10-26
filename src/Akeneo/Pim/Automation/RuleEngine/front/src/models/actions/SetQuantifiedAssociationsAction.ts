@@ -1,6 +1,6 @@
-import { ActionModuleGuesser } from './ActionModuleGuesser';
-import { SetQuantifiedAssociationsActionLine } from '../../pages/EditRules/components/actions/SetQuantifiedAssociationsActionLine';
-import { QuantifiedAssociationValue } from '../Association';
+import {ActionModuleGuesser} from './ActionModuleGuesser';
+import {SetQuantifiedAssociationsActionLine} from '../../pages/EditRules/components/actions/SetQuantifiedAssociationsActionLine';
+import {QuantifiedAssociationValue} from '../Association';
 
 export type SetQuantifiedAssociationsAction = {
   type: 'set';

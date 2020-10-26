@@ -21,7 +21,10 @@ import {
   fetchFamily,
 } from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/family';
 import {fetchRuleRelations} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/rule-relation';
-import {attributeGroupFetcher, fetchAssetAttributeGroups} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute-group';
+import {
+  attributeGroupFetcher,
+  fetchAssetAttributeGroups,
+} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/attribute-group';
 
 jest.mock('pim/fetcher-registry', () => {});
 jest.mock('pimee/rule-manager', () => {});
@@ -396,10 +399,10 @@ test('It should be able to dispatch an action to update the rule relation list',
 test('It should update the attribute group list', () => {
   const state = {attributes: [], attributeGroups: {}, channels: [], family: null, ruleRelations: []};
   const attributeGroups = {
-    'marketing': {
-      'code': 'marketing',
-      'sort_order': 1,
-      'labels': {'en_US': 'Marketing Label US', 'fr_FR': 'Marketing Label FR', 'de_DE': 'Marketing Label DE'},
+    marketing: {
+      code: 'marketing',
+      sort_order: 1,
+      labels: {en_US: 'Marketing Label US', fr_FR: 'Marketing Label FR', de_DE: 'Marketing Label DE'},
     },
   };
   const newState = structureReducer(state, {
@@ -412,10 +415,10 @@ test('It should update the attribute group list', () => {
 
 test('It should be able to select attribute groups from the state', () => {
   const attributeGroups = {
-    'marketing': {
-      'code': 'marketing',
-      'sort_order': 1,
-      'labels': {'en_US': 'Marketing Label US', 'fr_FR': 'Marketing Label FR', 'de_DE': 'Marketing Label DE'},
+    marketing: {
+      code: 'marketing',
+      sort_order: 1,
+      labels: {en_US: 'Marketing Label US', fr_FR: 'Marketing Label FR', de_DE: 'Marketing Label DE'},
     },
   };
   const state = {
@@ -429,10 +432,10 @@ test('It should be able to select attribute groups from the state', () => {
 
 test('It should be able to dispatch an action to update the attribute group list', async () => {
   const attributeGroups = {
-    'marketing': {
-      'code': 'marketing',
-      'sort_order': 1,
-      'labels': {'en_US': 'Marketing Label US', 'fr_FR': 'Marketing Label FR', 'de_DE': 'Marketing Label DE'},
+    marketing: {
+      code: 'marketing',
+      sort_order: 1,
+      labels: {en_US: 'Marketing Label US', fr_FR: 'Marketing Label FR', de_DE: 'Marketing Label DE'},
     },
   };
   const dispatch = jest.fn();

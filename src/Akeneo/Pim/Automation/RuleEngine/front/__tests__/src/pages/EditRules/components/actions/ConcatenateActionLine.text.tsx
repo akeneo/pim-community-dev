@@ -7,7 +7,7 @@ import {
   fireEvent,
 } from '../../../../../../test-utils';
 import userEvent from '@testing-library/user-event';
-import { clearAttributeRepositoryCache } from '../../../../../../src/repositories/AttributeRepository';
+import {clearAttributeRepositoryCache} from '../../../../../../src/repositories/AttributeRepository';
 import {
   attributeSelect2Response,
   createAttribute,
@@ -15,8 +15,8 @@ import {
   locales,
   scopes,
 } from '../../../../factories';
-import { ConcatenateActionLine } from '../../../../../../src/pages/EditRules/components/actions/ConcatenateActionLine';
-import { AttributeType } from '../../../../../../src/models';
+import {ConcatenateActionLine} from '../../../../../../src/pages/EditRules/components/actions/ConcatenateActionLine';
+import {AttributeType} from '../../../../../../src/models';
 
 const defaultValues = {
   content: {
@@ -59,9 +59,9 @@ const defaultValues = {
 };
 
 const toRegister = [
-  { name: '`content.actions[0].to.field`', type: 'custom' },
-  { name: '`content.actions[0].to.locale`', type: 'custom' },
-  { name: '`content.actions[0].to.scope`', type: 'custom' },
+  {name: '`content.actions[0].to.field`', type: 'custom'},
+  {name: '`content.actions[0].to.locale`', type: 'custom'},
+  {name: '`content.actions[0].to.scope`', type: 'custom'},
 ];
 
 const descriptionAttribute = createAttribute({
@@ -150,8 +150,8 @@ describe('ConcatenateActionLine', () => {
         currentCatalogLocale={'en_US'}
         handleDelete={() => {}}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     expect(
@@ -188,8 +188,8 @@ describe('ConcatenateActionLine', () => {
         currentCatalogLocale={'en_US'}
         handleDelete={() => {}}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     expect(
@@ -212,7 +212,7 @@ describe('ConcatenateActionLine', () => {
       fireEvent.change(
         await screen.findByTestId('edit-rules-action-0-add-attribute'),
         {
-          target: { value: 'brand' },
+          target: {value: 'brand'},
         }
       );
     });
@@ -230,8 +230,8 @@ describe('ConcatenateActionLine', () => {
         currentCatalogLocale={'en_US'}
         handleDelete={() => {}}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     expect(
@@ -266,8 +266,8 @@ describe('ConcatenateActionLine', () => {
         currentCatalogLocale={'en_US'}
         handleDelete={() => {}}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     expect(
@@ -306,8 +306,8 @@ describe('ConcatenateActionLine', () => {
         currentCatalogLocale={'en_US'}
         handleDelete={() => {}}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     expect(

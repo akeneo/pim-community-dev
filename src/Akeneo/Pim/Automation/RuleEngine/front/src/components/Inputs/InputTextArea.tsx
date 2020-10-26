@@ -1,11 +1,11 @@
 import React from 'react';
-import { Label } from '../Labels';
+import {Label} from '../Labels';
 
 type Props = React.InputHTMLAttributes<HTMLTextAreaElement> & {
   label: string;
 };
 
-const InputTextArea: React.FC<Props> = ({ label, ...remainingProps }) => {
+const InputTextArea: React.FC<Props> = ({label, ...remainingProps}) => {
   return (
     <>
       <Label label={label} />
@@ -16,4 +16,4 @@ const InputTextArea: React.FC<Props> = ({ label, ...remainingProps }) => {
 
 InputTextArea.displayName = 'InputTextArea';
 
-export { InputTextArea };
+export {InputTextArea};

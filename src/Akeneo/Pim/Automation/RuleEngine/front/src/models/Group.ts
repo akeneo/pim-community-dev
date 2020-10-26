@@ -5,4 +5,4 @@ type Group = {
   label: string;
 };
 
-export { Group, GroupCode };
+export {Group, GroupCode};

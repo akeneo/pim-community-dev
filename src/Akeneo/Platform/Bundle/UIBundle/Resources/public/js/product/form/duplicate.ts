@@ -9,7 +9,7 @@ const SecurityContext = require('pim/security-context');
 const template = require('pimee/template/product/form/duplicate');
 
 interface Config {
-    form: string;
+  form: string;
 }
 
 class Duplicate extends BaseView {
@@ -28,7 +28,7 @@ class Duplicate extends BaseView {
    */
   public events(): EventsHash {
     return {
-      'click': this.openFormModal
+      click: this.openFormModal,
     };
   }
 
@@ -39,7 +39,7 @@ class Duplicate extends BaseView {
       true === this.getFormData().meta.is_owner &&
       null === this.getFormData().parent
     ) {
-       this.$el.html(this.template({'__': __}));
+      this.$el.html(this.template({__: __}));
     }
 
     return BaseView.prototype.render.apply(this, arguments);
@@ -47,9 +47,9 @@ class Duplicate extends BaseView {
 
   private openFormModal() {
     return FormBuilder.build(this.config.form).then((modal: any) => {
-        modal.setProductIdToDuplicate(this.getFormData().meta.id);
-        modal.setProductIdentifierToDuplicate(this.getFormData().identifier);
-        modal.open();
+      modal.setProductIdToDuplicate(this.getFormData().meta.id);
+      modal.setProductIdentifierToDuplicate(this.getFormData().identifier);
+      modal.open();
     });
   }
 }

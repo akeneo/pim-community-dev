@@ -7,7 +7,7 @@ import {
   fireEvent,
 } from '../../../../../../../test-utils';
 import userEvent from '@testing-library/user-event';
-import { clearAttributeRepositoryCache } from '../../../../../../../src/repositories/AttributeRepository';
+import {clearAttributeRepositoryCache} from '../../../../../../../src/repositories/AttributeRepository';
 import {
   attributeSelect2Response,
   createAttribute,
@@ -15,8 +15,8 @@ import {
   locales,
   scopes,
 } from '../../../../../factories';
-import { CalculateOperationList } from '../../../../../../../src/pages/EditRules/components/actions/calculate/CalculateOperationList';
-import { AttributeType } from '../../../../../../../src/models';
+import {CalculateOperationList} from '../../../../../../../src/pages/EditRules/components/actions/calculate/CalculateOperationList';
+import {AttributeType} from '../../../../../../../src/models';
 
 jest.mock('../../../../../../../src/components/Select2Wrapper/Select2Wrapper');
 jest.mock(
@@ -139,8 +139,8 @@ describe('CalculateOperationList', () => {
         scopes={scopes}
         locales={locales}
       />,
-      { all: true },
-      { defaultValues }
+      {all: true},
+      {defaultValues}
     );
 
     expect(await screen.findByText('PriceUS')).toBeInTheDocument();
@@ -168,8 +168,8 @@ describe('CalculateOperationList', () => {
         scopes={scopes}
         locales={locales}
       />,
-      { all: true },
-      { defaultValues }
+      {all: true},
+      {defaultValues}
     );
 
     expect(await screen.findByText('Margin')).toBeInTheDocument();
@@ -226,8 +226,8 @@ describe('CalculateOperationList', () => {
         scopes={scopes}
         locales={locales}
       />,
-      { all: true },
-      { defaultValues }
+      {all: true},
+      {defaultValues}
     );
 
     expect(await screen.findByText('Margin')).toBeInTheDocument();
@@ -250,8 +250,8 @@ describe('CalculateOperationList', () => {
         scopes={scopes}
         locales={locales}
       />,
-      { all: true },
-      { defaultValues }
+      {all: true},
+      {defaultValues}
     );
 
     expect(await screen.findByText('Margin')).toBeInTheDocument();
@@ -266,7 +266,7 @@ describe('CalculateOperationList', () => {
     fireEvent.change(
       await screen.findByTestId('edit-rules-action-0-add-attribute'),
       {
-        target: { value: 'description' },
+        target: {value: 'description'},
       }
     );
     expect(await screen.findByText('DescriptionUS')).toBeInTheDocument();

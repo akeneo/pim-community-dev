@@ -1,6 +1,6 @@
-import { SetCategoriesActionLine } from '../../pages/EditRules/components/actions/SetCategoriesActionLine';
-import { ActionModuleGuesser } from './ActionModuleGuesser';
-import { CategoryCode } from '../Category';
+import {SetCategoriesActionLine} from '../../pages/EditRules/components/actions/SetCategoriesActionLine';
+import {ActionModuleGuesser} from './ActionModuleGuesser';
+import {CategoryCode} from '../Category';
 
 export type SetCategoriesAction = {
   type: 'set';

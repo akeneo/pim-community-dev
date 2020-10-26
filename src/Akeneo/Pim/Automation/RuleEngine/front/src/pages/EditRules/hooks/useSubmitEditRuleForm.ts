@@ -1,22 +1,22 @@
 import React from 'react';
-import { Payload } from '../../../rules.types';
-import { httpGet, httpPut } from '../../../fetch';
-import { generateUrl, redirectToUrl } from '../../../dependenciesTools/hooks';
-import { FormData } from '../edit-rules.types';
-import { Control, FormContextValues, useForm } from 'react-hook-form';
-import { Condition, Locale, RuleDefinition } from '../../../models';
+import {Payload} from '../../../rules.types';
+import {httpGet, httpPut} from '../../../fetch';
+import {generateUrl, redirectToUrl} from '../../../dependenciesTools/hooks';
+import {FormData} from '../edit-rules.types';
+import {Control, FormContextValues, useForm} from 'react-hook-form';
+import {Condition, Locale, RuleDefinition} from '../../../models';
 import {
   NotificationLevel,
   Notify,
   Router,
   Translate,
 } from '../../../dependenciesTools';
-import { Action } from '../../../models/Action';
+import {Action} from '../../../models/Action';
 import {
   formatDateLocaleTimeConditionsFromBackend,
   formatDateLocaleTimeConditionsToBackend,
 } from '../components/conditions/DateConditionLines/dateConditionLines.utils';
-import { getErrorPath } from './ErrorPathResolver';
+import {getErrorPath} from './ErrorPathResolver';
 
 const registerConditions = (
   register: Control['register'],
@@ -24,14 +24,14 @@ const registerConditions = (
 ) => {
   if (conditions?.length) {
     conditions.forEach((_, index) => {
-      register({ name: `content.conditions[${index}].field`, type: 'custom' });
+      register({name: `content.conditions[${index}].field`, type: 'custom'});
       register({
         name: `content.conditions[${index}].operator`,
         type: 'custom',
       });
-      register({ name: `content.conditions[${index}].value`, type: 'custom' });
-      register({ name: `content.conditions[${index}].scope`, type: 'custom' });
-      register({ name: `content.conditions[${index}].locale`, type: 'custom' });
+      register({name: `content.conditions[${index}].value`, type: 'custom'});
+      register({name: `content.conditions[${index}].scope`, type: 'custom'});
+      register({name: `content.conditions[${index}].locale`, type: 'custom'});
     });
   }
 };
@@ -39,7 +39,7 @@ const registerConditions = (
 const registerActions = (register: Control['register'], actions: Action[]) => {
   if (actions?.length) {
     actions.forEach((action, index) => {
-      register({ name: `content.actions[${index}].type`, type: 'custom' });
+      register({name: `content.actions[${index}].type`, type: 'custom'});
 
       let fields: string[] = [];
       switch (action.type) {
@@ -143,7 +143,7 @@ const doExecuteOnSave = async (
   const executeRuleUrl = generateUrl(
     router,
     'pimee_catalog_rule_rule_execute',
-    { code }
+    {code}
   );
   const executeResponse = await httpGet(executeRuleUrl);
   if (executeResponse.ok) {
@@ -205,7 +205,7 @@ const submitEditRuleForm = (
     const updateRuleUrl = generateUrl(
       router,
       'pimee_enrich_rule_definition_update',
-      { ruleDefinitionCode }
+      {ruleDefinitionCode}
     );
     const updateResponse = await httpPut(updateRuleUrl, {
       body: transformFormData(formData),
@@ -228,7 +228,7 @@ const submitEditRuleForm = (
     } else {
       const errors = await updateResponse.json();
       errors.forEach(
-        (error: { global: boolean; message: string; path: string }) => {
+        (error: {global: boolean; message: string; path: string}) => {
           setError(
             getErrorPath(formData, error.path),
             'validate',
@@ -246,7 +246,7 @@ const submitEditRuleForm = (
 };
 
 const createLocalesLabels = (ruleDefinition: RuleDefinition) => (
-  labels: { [key: string]: string },
+  labels: {[key: string]: string},
   locale: Locale
 ) => ({
   ...labels,
@@ -283,7 +283,7 @@ const useSubmitEditRuleForm = (
   const formMethods = useForm<FormData>({
     defaultValues,
   });
-  const { reset, register, handleSubmit, setError } = formMethods;
+  const {reset, register, handleSubmit, setError} = formMethods;
   React.useEffect(() => {
     registerConditions(register, ruleDefinition.conditions);
     registerActions(register, ruleDefinition.actions);
@@ -305,4 +305,4 @@ const useSubmitEditRuleForm = (
   };
 };
 
-export { useSubmitEditRuleForm };
+export {useSubmitEditRuleForm};

@@ -1,7 +1,7 @@
 type CategoryTreeModel = {
   code: string;
   id: number;
-  labels: { [key: string]: string };
+  labels: {[key: string]: string};
   parent: string | null;
 };
 

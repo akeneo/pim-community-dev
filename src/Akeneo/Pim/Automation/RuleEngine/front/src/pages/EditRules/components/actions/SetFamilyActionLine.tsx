@@ -1,16 +1,16 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
-import { ActionTemplate } from './ActionTemplate';
-import { ActionLineProps } from './ActionLineProps';
-import { FamilySelector } from '../../../../components/Selectors/FamilySelector';
+import {Controller} from 'react-hook-form';
+import {ActionTemplate} from './ActionTemplate';
+import {ActionLineProps} from './ActionLineProps';
+import {FamilySelector} from '../../../../components/Selectors/FamilySelector';
 import {
   ActionGrid,
   ActionTitle,
   AknActionFormContainer,
   ActionLeftSide,
 } from './ActionLine';
-import { useTranslate } from '../../../../dependenciesTools/hooks';
-import { useControlledFormInputAction } from '../../hooks';
+import {useTranslate} from '../../../../dependenciesTools/hooks';
+import {useControlledFormInputAction} from '../../hooks';
 
 const SetFamilyActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
@@ -83,4 +83,4 @@ const SetFamilyActionLine: React.FC<ActionLineProps> = ({
   );
 };
 
-export { SetFamilyActionLine };
+export {SetFamilyActionLine};

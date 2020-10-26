@@ -1,6 +1,6 @@
-import { RemoveAttributeValueActionLine } from '../../pages/EditRules/components/actions/RemoveAttributeValueActionLine';
-import { ProductField } from './ProductField';
-import { ActionModuleGuesser } from './ActionModuleGuesser';
+import {RemoveAttributeValueActionLine} from '../../pages/EditRules/components/actions/RemoveAttributeValueActionLine';
+import {ProductField} from './ProductField';
+import {ActionModuleGuesser} from './ActionModuleGuesser';
 
 export type RemoveAttributeValueAction = {
   type: 'remove';

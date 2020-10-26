@@ -1,4 +1,4 @@
-import { View } from 'backbone';
+import {View} from 'backbone';
 
 enum NotificationLevel {
   INFO = 'info',
@@ -9,18 +9,18 @@ enum NotificationLevel {
 
 type Notify = (level: NotificationLevel, message: string) => void;
 
-type RouteParams = { [param: string]: any };
+type RouteParams = {[param: string]: any};
 
 type Router = {
   generate: (route: string, parameters?: RouteParams) => string;
   redirect: (fragment: string, options?: object) => void;
 };
 
-type Security = { isGranted: (acl: string) => boolean };
+type Security = {isGranted: (acl: string) => boolean};
 
 type Translate = (
   id: string,
-  placeholders?: { [name: string]: string | number },
+  placeholders?: {[name: string]: string | number},
   count?: number
 ) => string;
 

@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
-import { getRuleDefinitionByCode } from '../../../fetch/RuleDefinitionFetcher';
-import { Locale, RuleDefinition } from '../../../models';
-import { Router, Security, Translate } from '../../../dependenciesTools';
+import {useState, useEffect} from 'react';
+import {getRuleDefinitionByCode} from '../../../fetch/RuleDefinitionFetcher';
+import {Locale, RuleDefinition} from '../../../models';
+import {Router, Security, Translate} from '../../../dependenciesTools';
 import {
   getAllScopes,
   IndexedScopes,
 } from '../../../repositories/ScopeRepository';
-import { getActivatedLocales } from '../../../repositories/LocaleRepository';
-import { ServerException } from '../../../exceptions';
+import {getActivatedLocales} from '../../../repositories/LocaleRepository';
+import {ServerException} from '../../../exceptions';
 
 type Error = {
   exception: any;
@@ -62,7 +62,7 @@ const useInitEditRules = (
           });
         } else {
           console.error(exception);
-          setError({ exception, status: true, statusCode: 500 });
+          setError({exception, status: true, statusCode: 500});
         }
       });
   }, []);
@@ -74,4 +74,4 @@ const useInitEditRules = (
   };
 };
 
-export { useInitEditRules };
+export {useInitEditRules};

@@ -1,7 +1,7 @@
-import { Operator } from '../Operator';
-import { GroupsConditionLine } from '../../pages/EditRules/components/conditions/GroupsConditionLine';
-import { ConditionFactory } from './Condition';
-import { ConditionModuleGuesser } from './ConditionModuleGuesser';
+import {Operator} from '../Operator';
+import {GroupsConditionLine} from '../../pages/EditRules/components/conditions/GroupsConditionLine';
+import {ConditionFactory} from './Condition';
+import {ConditionModuleGuesser} from './ConditionModuleGuesser';
 
 const FIELD = 'groups';
 

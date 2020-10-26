@@ -6,8 +6,8 @@ import {
   Select2Option,
   Select2Value,
 } from '../Select2Wrapper';
-import { useBackboneRouter, useTranslate } from '../../dependenciesTools/hooks';
-import { ProductModelCode, ProductIdentifier } from '../../models';
+import {useBackboneRouter, useTranslate} from '../../dependenciesTools/hooks';
+import {ProductModelCode, ProductIdentifier} from '../../models';
 
 type Identifier = ProductIdentifier | ProductModelCode;
 
@@ -17,7 +17,7 @@ type Props = {
   entityType?: 'product' | 'product_model';
   value: Identifier[];
   onChange?: (value: Identifier[]) => void;
-  validation?: { required?: string; validate?: (value: any) => string | true };
+  validation?: {required?: string; validate?: (value: any) => string | true};
   name: string;
   id: string;
 };
@@ -108,4 +108,4 @@ const IdentifiersSelector: React.FC<Props> = ({
   );
 };
 
-export { Identifier, IdentifiersSelector };
+export {Identifier, IdentifiersSelector};

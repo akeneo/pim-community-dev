@@ -1,6 +1,6 @@
-import { AssociationType, AssociationTypeCode } from '../models/';
-import { Router } from '../dependenciesTools';
-import { fetchAllAssociationTypes } from '../fetch/AssociationTypeFetcher';
+import {AssociationType, AssociationTypeCode} from '../models/';
+import {Router} from '../dependenciesTools';
+import {fetchAllAssociationTypes} from '../fetch/AssociationTypeFetcher';
 
 let cachedAssociationTypes: AssociationType[] | undefined;
 

@@ -1,20 +1,20 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
+import {Controller} from 'react-hook-form';
 import {
   NumberAttributeCondition,
   NumberAttributeOperators,
 } from '../../../../models/conditions';
-import { ConditionLineProps } from './ConditionLineProps';
-import { InputNumber } from '../../../../components/Inputs';
-import { AttributeConditionLine } from './AttributeConditionLine';
+import {ConditionLineProps} from './ConditionLineProps';
+import {InputNumber} from '../../../../components/Inputs';
+import {AttributeConditionLine} from './AttributeConditionLine';
 import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
-import { Attribute } from '../../../../models';
-import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepository';
-import { Operator } from '../../../../models/Operator';
-import { useControlledFormInputCondition } from '../../hooks';
+import {Attribute} from '../../../../models';
+import {getAttributeByIdentifier} from '../../../../repositories/AttributeRepository';
+import {Operator} from '../../../../models/Operator';
+import {useControlledFormInputCondition} from '../../hooks';
 
 type NumberAttributeConditionLineProps = ConditionLineProps & {
   condition: NumberAttributeCondition;
@@ -69,4 +69,4 @@ const NumberAttributeConditionLine: React.FC<NumberAttributeConditionLineProps> 
   );
 };
 
-export { NumberAttributeConditionLine, NumberAttributeConditionLineProps };
+export {NumberAttributeConditionLine, NumberAttributeConditionLineProps};

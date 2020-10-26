@@ -1,17 +1,17 @@
 import React from 'react';
-import { useDialogState, DialogDisclosure } from 'reakit/Dialog';
-import { AlertDialog } from '../../../../components/AlertDialog/AlertDialog';
-import { PimConditionLine } from './PimConditionLine';
-import { FallbackConditionLine } from './FallbackConditionLine';
+import {useDialogState, DialogDisclosure} from 'reakit/Dialog';
+import {AlertDialog} from '../../../../components/AlertDialog/AlertDialog';
+import {PimConditionLine} from './PimConditionLine';
+import {FallbackConditionLine} from './FallbackConditionLine';
 import styled from 'styled-components';
-import { Condition, Locale, LocaleCode } from '../../../../models';
-import { IndexedScopes } from '../../../../repositories/ScopeRepository';
-import { ConditionLineProps } from './ConditionLineProps';
+import {Condition, Locale, LocaleCode} from '../../../../models';
+import {IndexedScopes} from '../../../../repositories/ScopeRepository';
+import {ConditionLineProps} from './ConditionLineProps';
 import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
-import { getConditionModule } from '../../../../models/conditions/ConditionModuleGuesser';
+import {getConditionModule} from '../../../../models/conditions/ConditionModuleGuesser';
 
 const DeleteButton = styled(DialogDisclosure)`
   border: none;
@@ -44,7 +44,7 @@ const ConditionLine: React.FC<Props> = ({
   const dialog = useDialogState();
   const router = useBackboneRouter();
   const [Line, setLine] = React.useState<
-    React.FC<ConditionLineProps & { condition: Condition }>
+    React.FC<ConditionLineProps & {condition: Condition}>
   >();
   React.useEffect(() => {
     getConditionModule(condition, router).then(module => setLine(() => module));
@@ -100,4 +100,4 @@ const ConditionLine: React.FC<Props> = ({
   );
 };
 
-export { ConditionLine };
+export {ConditionLine};

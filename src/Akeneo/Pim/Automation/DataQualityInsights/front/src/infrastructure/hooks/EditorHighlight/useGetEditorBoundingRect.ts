@@ -1,5 +1,5 @@
-import {useEffect, useLayoutEffect, useState} from "react";
-import {EditorElement} from "../../../application/helper";
+import {useEffect, useLayoutEffect, useState} from 'react';
+import {EditorElement} from '../../../application/helper';
 
 const initialBoundingClientRect: DOMRect = {
   x: 0,
@@ -10,26 +10,24 @@ const initialBoundingClientRect: DOMRect = {
   bottom: 0,
   left: 0,
   right: 0,
-  toJSON: () => {}
+  toJSON: () => {},
 };
 
 const useGetEditorBoundingClientRect = (editor: EditorElement) => {
-  const [editorBoundingClientRect, setEditorBoundingClientRect] = useState(
-    initialBoundingClientRect
-  );
+  const [editorBoundingClientRect, setEditorBoundingClientRect] = useState(initialBoundingClientRect);
 
   useEffect(() => {
     setEditorBoundingClientRect(editor.getBoundingClientRect());
 
     return () => {
       setEditorBoundingClientRect(initialBoundingClientRect);
-    }
+    };
   }, [editor.id]);
 
   useEffect(() => {
     let lastBoundingClientRect = initialBoundingClientRect;
     let ticking = false;
-    let requestAnimationFrameId: number|null = null;
+    let requestAnimationFrameId: number | null = null;
 
     const handleResize = () => {
       lastBoundingClientRect = editor.getBoundingClientRect();
@@ -42,9 +40,9 @@ const useGetEditorBoundingClientRect = (editor: EditorElement) => {
         ticking = true;
       }
     };
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
-    const editorResizeObserver = new ResizeObserver((entries) => {
+    const editorResizeObserver = new ResizeObserver(entries => {
       for (let entry of entries) {
         if (entry.target === editor) {
           handleResize();
@@ -62,7 +60,7 @@ const useGetEditorBoundingClientRect = (editor: EditorElement) => {
         requestAnimationFrameId = null;
       }
 
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
       editorResizeObserver.unobserve(editor);
       editorResizeObserver.disconnect();
     };
@@ -71,7 +69,7 @@ const useGetEditorBoundingClientRect = (editor: EditorElement) => {
   useEffect(() => {
     let lastBoundingClientRect = initialBoundingClientRect;
     let ticking = false;
-    let requestAnimationFrameId: number|null = null;
+    let requestAnimationFrameId: number | null = null;
 
     const handleScroll = () => {
       lastBoundingClientRect = editor.getBoundingClientRect();
@@ -84,7 +82,7 @@ const useGetEditorBoundingClientRect = (editor: EditorElement) => {
         ticking = true;
       }
     };
-    document.addEventListener("scroll", handleScroll, true);
+    document.addEventListener('scroll', handleScroll, true);
 
     return () => {
       ticking = true;
@@ -94,13 +92,13 @@ const useGetEditorBoundingClientRect = (editor: EditorElement) => {
         requestAnimationFrameId = null;
       }
 
-      document.removeEventListener("scroll", handleScroll);
+      document.removeEventListener('scroll', handleScroll);
     };
   }, [editor]);
 
   useLayoutEffect(() => {
     let ticking = false;
-    let requestAnimationFrameId: number|null = null;
+    let requestAnimationFrameId: number | null = null;
 
     const observer = new MutationObserver(() => {
       if (!ticking) {
@@ -115,7 +113,7 @@ const useGetEditorBoundingClientRect = (editor: EditorElement) => {
 
     observer.observe(document, {
       childList: true,
-      subtree: true
+      subtree: true,
     });
 
     return () => {
@@ -126,12 +124,12 @@ const useGetEditorBoundingClientRect = (editor: EditorElement) => {
         window.cancelAnimationFrame(requestAnimationFrameId);
         requestAnimationFrameId = null;
       }
-    }
-  }, [editor])
+    };
+  }, [editor]);
 
   return {
     editorBoundingClientRect,
-    setEditorBoundingClientRect
+    setEditorBoundingClientRect,
   };
 };
 

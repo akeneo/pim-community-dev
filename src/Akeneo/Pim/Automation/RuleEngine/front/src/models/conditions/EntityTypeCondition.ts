@@ -1,7 +1,7 @@
-import { Operator } from '../Operator';
-import { ConditionFactory } from './Condition';
-import { ConditionModuleGuesser } from './ConditionModuleGuesser';
-import { EntityTypeConditionLine } from '../../pages/EditRules/components/conditions/EntityTypeConditionLine';
+import {Operator} from '../Operator';
+import {ConditionFactory} from './Condition';
+import {ConditionModuleGuesser} from './ConditionModuleGuesser';
+import {EntityTypeConditionLine} from '../../pages/EditRules/components/conditions/EntityTypeConditionLine';
 
 const FIELD = 'entity_type';
 

@@ -1,8 +1,8 @@
-import { Router } from '../dependenciesTools';
-import { Locale, Scope } from '../models';
-import { fetchAllScopes } from '../fetch/ScopeFetcher';
+import {Router} from '../dependenciesTools';
+import {Locale, Scope} from '../models';
+import {fetchAllScopes} from '../fetch/ScopeFetcher';
 
-type IndexedScopes = { [scopeCode: string]: Scope };
+type IndexedScopes = {[scopeCode: string]: Scope};
 
 let cachedScopes: IndexedScopes;
 

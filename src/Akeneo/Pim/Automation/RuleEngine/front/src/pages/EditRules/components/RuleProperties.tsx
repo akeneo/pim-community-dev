@@ -1,8 +1,8 @@
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
-import { Locale } from '../../../models';
-import { InputNumber, InputText, FormSubsection } from '../../../components';
-import { useTranslate } from '../../../dependenciesTools/hooks';
+import {Controller, useFormContext} from 'react-hook-form';
+import {Locale} from '../../../models';
+import {InputNumber, InputText, FormSubsection} from '../../../components';
+import {useTranslate} from '../../../dependenciesTools/hooks';
 import InputBoolean from '../../../components/Inputs/InputBoolean';
 
 const LABEL_MAX_LENGTH = 255;
@@ -11,9 +11,9 @@ type Props = {
   locales?: Locale[];
 };
 
-const RuleProperties: React.FC<Props> = ({ locales }) => {
+const RuleProperties: React.FC<Props> = ({locales}) => {
   const translate = useTranslate();
-  const { register, watch } = useFormContext();
+  const {register, watch} = useFormContext();
 
   return (
     <>
@@ -86,4 +86,4 @@ const RuleProperties: React.FC<Props> = ({ locales }) => {
 
 RuleProperties.displayName = 'RuleProperties';
 
-export { RuleProperties };
+export {RuleProperties};

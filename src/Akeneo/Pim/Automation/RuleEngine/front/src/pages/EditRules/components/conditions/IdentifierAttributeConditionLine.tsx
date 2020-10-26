@@ -1,6 +1,6 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
-import { ConditionLineProps } from './ConditionLineProps';
+import {Controller} from 'react-hook-form';
+import {ConditionLineProps} from './ConditionLineProps';
 import {
   Attribute,
   IdentifierAttributeCondition,
@@ -10,11 +10,11 @@ import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
-import { useControlledFormInputCondition } from '../../hooks';
-import { AttributeConditionLine } from './AttributeConditionLine';
-import { InputText } from '../../../../components';
-import { useGetAttributeAtMount } from '../actions/attribute/attribute.utils';
-import { Operator } from '../../../../models/Operator';
+import {useControlledFormInputCondition} from '../../hooks';
+import {AttributeConditionLine} from './AttributeConditionLine';
+import {InputText} from '../../../../components';
+import {useGetAttributeAtMount} from '../actions/attribute/attribute.utils';
+import {Operator} from '../../../../models/Operator';
 import {
   Identifier,
   IdentifiersSelector,

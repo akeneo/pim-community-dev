@@ -1,7 +1,7 @@
 import React from 'react';
-import { useUserCatalogLocale } from '../../../../../dependenciesTools/hooks';
-import { InputValueProps } from './AttributeValue';
-import { getAttributeLabel } from '../../../../../models';
+import {useUserCatalogLocale} from '../../../../../dependenciesTools/hooks';
+import {InputValueProps} from './AttributeValue';
+import {getAttributeLabel} from '../../../../../models';
 import InputBoolean from '../../../../../components/Inputs/InputBoolean';
 
 const BooleanValue: React.FC<InputValueProps> = ({
@@ -28,4 +28,4 @@ const BooleanValue: React.FC<InputValueProps> = ({
   );
 };
 
-export { BooleanValue };
+export {BooleanValue};

@@ -4,4 +4,4 @@ const NodeContainer = styled.ul`
   padding-left: 18px;
 `;
 
-export { NodeContainer };
+export {NodeContainer};

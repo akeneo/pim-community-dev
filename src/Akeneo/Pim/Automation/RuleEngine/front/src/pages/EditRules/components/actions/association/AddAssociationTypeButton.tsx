@@ -9,9 +9,9 @@ import {
   useTranslate,
   useUserCatalogLocale,
 } from '../../../../../dependenciesTools/hooks';
-import { AssociationType, AssociationTypeCode } from '../../../../../models';
-import { AssociationTarget, Target } from '../SetAssociationsActionLine';
-import { getAssociationTypesFromQuantified } from '../../../../../repositories/AssociationTypeRepository';
+import {AssociationType, AssociationTypeCode} from '../../../../../models';
+import {AssociationTarget, Target} from '../SetAssociationsActionLine';
+import {getAssociationTypesFromQuantified} from '../../../../../repositories/AssociationTypeRepository';
 
 type Props = {
   onAddAssociationType: (associationTarget: AssociationTarget) => void;
@@ -133,4 +133,4 @@ const AddAssociationTypeButton: React.FC<Props> = ({
   );
 };
 
-export { AddAssociationTypeButton };
+export {AddAssociationTypeButton};

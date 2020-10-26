@@ -1,11 +1,11 @@
-import React, { useRef, useEffect } from 'react';
+import React, {useRef, useEffect} from 'react';
 import styled from 'styled-components';
-import { useForm, ErrorMessage, FormContext } from 'react-hook-form';
-import { InputErrorMsg } from '../../../../components/InputErrorMsg';
-import { FlagLabel } from '../../../../components/Labels';
-import { InputText } from '../../../../components/Inputs';
-import { PrimaryButton } from '../../../../components/Buttons';
-import { Translate } from '../../../../dependenciesTools';
+import {useForm, ErrorMessage, FormContext} from 'react-hook-form';
+import {InputErrorMsg} from '../../../../components/InputErrorMsg';
+import {FlagLabel} from '../../../../components/Labels';
+import {InputText} from '../../../../components/Inputs';
+import {PrimaryButton} from '../../../../components/Buttons';
+import {Translate} from '../../../../dependenciesTools';
 
 const inputCodeErrorMsgId = 'inputCodeErrMsg';
 const inputCodeName = 'code';
@@ -46,7 +46,7 @@ const initialCustomErrors: CustomErrors = {
   [inputLabelName]: [],
 };
 
-const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
+const CreateRulesForm: React.FC<Props> = ({locale, onSubmit, translate}) => {
   const inputCodeRef = useRef<HTMLInputElement>();
   const [customErrors, setCustomErrors] = React.useState<CustomErrors>(
     initialCustomErrors
@@ -54,7 +54,7 @@ const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
   const formMethods = useForm<FormDataInput>({
     mode: 'onChange',
   });
-  const { errors, formState, handleSubmit, register } = formMethods;
+  const {errors, formState, handleSubmit, register} = formMethods;
 
   const codeInputRegisterConfig = {
     required: translate(
@@ -64,7 +64,7 @@ const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
       value: 3,
       message: translate(
         'pimee_catalog_rule.form.creation.constraint.code.too_short',
-        { characterLimit: '3' }
+        {characterLimit: '3'}
       ),
     },
     pattern: {
@@ -106,7 +106,7 @@ const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
   }, [customErrors]);
 
   const resetCodeCustomErrors = () =>
-    setCustomErrors({ ...customErrors, code: [] });
+    setCustomErrors({...customErrors, code: []});
 
   return (
     <FormContext {...formMethods}>
@@ -145,7 +145,7 @@ const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
                       </InputErrorMsg>
                     ))}
                   <ErrorMessage errors={errors} name={inputCodeName}>
-                    {({ message }) => (
+                    {({message}) => (
                       <InputErrorMsg>
                         {translate(message as string)}
                       </InputErrorMsg>
@@ -175,7 +175,7 @@ const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
                       </InputErrorMsg>
                     ))}
                   <ErrorMessage errors={errors} name={inputLabelName}>
-                    {({ message }) => (
+                    {({message}) => (
                       <InputErrorMsg id={inputLabelErrorMsgId}>
                         {translate(message as string)}
                       </InputErrorMsg>
@@ -202,4 +202,4 @@ const CreateRulesForm: React.FC<Props> = ({ locale, onSubmit, translate }) => {
   );
 };
 
-export { CreateRulesForm, FormDataInput };
+export {CreateRulesForm, FormDataInput};

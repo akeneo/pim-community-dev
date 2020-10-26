@@ -1,11 +1,11 @@
 import React from 'react';
-import { usePopoverState, Popover, PopoverDisclosure } from 'reakit/Popover';
+import {usePopoverState, Popover, PopoverDisclosure} from 'reakit/Popover';
 import styled from 'styled-components';
-import { useTranslate } from '../../dependenciesTools/hooks';
-import { color } from '../../theme';
+import {useTranslate} from '../../dependenciesTools/hooks';
+import {color} from '../../theme';
 
 type Props = {
-  predefinedFormats: { [key: string]: string };
+  predefinedFormats: {[key: string]: string};
   onChange: (dateFormat: string) => void;
   value: string;
   defaultFormat: string;
@@ -20,14 +20,14 @@ const DateFormatPopover = styled(Popover)`
   padding: 12px 20px 20px 20px;
 `;
 
-const PopoverItem = styled.li<{ selected: boolean }>`
+const PopoverItem = styled.li<{selected: boolean}>`
   cursor: pointer;
   height: 34px;
   line-height: 34px;
   padding: 0 6px;
-  color: ${({ theme, selected }) =>
+  color: ${({theme, selected}) =>
     selected ? theme.color.purple100 : 'inherit'};
-  background: ${({ selected }) => (selected ? '#F9F9FB' : 'inherit')};
+  background: ${({selected}) => (selected ? '#F9F9FB' : 'inherit')};
   &:hover {
     background: #f9f9fb;
   }
@@ -50,7 +50,7 @@ export const DateFormatSelector: React.FC<Props> = ({
   defaultFormat,
 }) => {
   const translate = useTranslate();
-  const popover = usePopoverState({ gutter: 0, placement: 'top-end' });
+  const popover = usePopoverState({gutter: 0, placement: 'top-end'});
   const PopoverButton = (
     <button type='button'>
       {value || defaultFormat}

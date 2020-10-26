@@ -1,4 +1,4 @@
-import { MeasurementFamily } from '../../../src/models';
+import {MeasurementFamily} from '../../../src/models';
 
 export const measurementFamiliesResponse: MeasurementFamily[] = [
   {

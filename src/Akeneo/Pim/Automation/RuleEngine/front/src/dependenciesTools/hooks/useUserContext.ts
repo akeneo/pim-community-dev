@@ -1,9 +1,9 @@
-import { useApplicationContext } from './useApplicationContext';
-import { UserContext } from '../provider/applicationDependenciesProvider.type';
-import { LocaleCode, ScopeCode } from '../../models';
+import {useApplicationContext} from './useApplicationContext';
+import {UserContext} from '../provider/applicationDependenciesProvider.type';
+import {LocaleCode, ScopeCode} from '../../models';
 
 export const useUserContext = (): UserContext => {
-  const { user } = useApplicationContext();
+  const {user} = useApplicationContext();
   if (user) {
     return user;
   }

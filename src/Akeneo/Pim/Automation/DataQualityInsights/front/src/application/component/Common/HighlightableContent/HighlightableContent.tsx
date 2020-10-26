@@ -1,9 +1,9 @@
-import React, {FC, useState} from "react";
+import React, {FC, useState} from 'react';
 
-import useHighlightsContainerState from "../../../../infrastructure/hooks/Common/useHighlightsContainerState";
-import {HighlightsContainerWithPortal} from "./HighlightsContainer";
-import {HighlightsContainerContextProvider} from "../../../context/HighlightsContainerContext";
-import {useHighlightsContext} from "../../../context/HighlightsContext";
+import useHighlightsContainerState from '../../../../infrastructure/hooks/Common/useHighlightsContainerState';
+import {HighlightsContainerWithPortal} from './HighlightsContainer';
+import {HighlightsContainerContextProvider} from '../../../context/HighlightsContainerContext';
+import {useHighlightsContext} from '../../../context/HighlightsContext';
 
 type HighlightableContentProps = {
   element: Element;
@@ -18,7 +18,12 @@ const HighlightableContent: FC<HighlightableContentProps> = ({element, baseId, c
 
   return (
     <>
-      <HighlightsContainerContextProvider dimension={dimension} position={position} scrollPosition={scrollPosition} element={element}>
+      <HighlightsContainerContextProvider
+        dimension={dimension}
+        position={position}
+        scrollPosition={scrollPosition}
+        element={element}
+      >
         <HighlightsContainerWithPortal highlights={highlights} rootElement={root} containerId={containerId}>
           {children}
         </HighlightsContainerWithPortal>

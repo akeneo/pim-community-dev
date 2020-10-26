@@ -1,8 +1,8 @@
 import React from 'react';
-import { useUserCatalogLocale } from '../../../../../dependenciesTools/hooks';
-import { InputMeasurement } from '../../../../../components/Inputs';
-import { InputValueProps } from './AttributeValue';
-import { getAttributeLabel } from '../../../../../models';
+import {useUserCatalogLocale} from '../../../../../dependenciesTools/hooks';
+import {InputMeasurement} from '../../../../../components/Inputs';
+import {InputValueProps} from './AttributeValue';
+import {getAttributeLabel} from '../../../../../models';
 import {
   isMeasurementAmountFilled,
   isMeasurementUnitFilled,
@@ -31,4 +31,4 @@ const MeasurementValue: React.FC<InputValueProps> = ({
   );
 };
 
-export { MeasurementValue, isMeasurementValueFilled };
+export {MeasurementValue, isMeasurementValueFilled};

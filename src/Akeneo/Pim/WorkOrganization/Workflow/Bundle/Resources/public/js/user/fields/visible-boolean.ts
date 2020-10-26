@@ -7,7 +7,7 @@ const UserContext = require('pim/user-context');
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
 class VisibleBoolean extends BaseBoolean {
-  private visible: (boolean|null) = null;
+  private visible: boolean | null = null;
 
   /**
    * {@inheritdoc}
@@ -29,4 +29,4 @@ class VisibleBoolean extends BaseBoolean {
   }
 }
 
-export = VisibleBoolean
+export = VisibleBoolean;

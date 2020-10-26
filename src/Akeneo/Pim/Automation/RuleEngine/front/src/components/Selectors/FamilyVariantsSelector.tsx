@@ -6,11 +6,11 @@ import {
   Select2Option,
   Select2Value,
 } from '../Select2Wrapper';
-import { Router } from '../../dependenciesTools';
-import { useBackboneRouter, useTranslate } from '../../dependenciesTools/hooks';
-import { FamilyVariantCode, LocaleCode } from '../../models';
-import { IndexedFamilyVariants } from '../../fetch/FamilyVariantFetcher';
-import { getFamilyVariantsByIdentifiers } from '../../repositories/FamilyVariantRepository';
+import {Router} from '../../dependenciesTools';
+import {useBackboneRouter, useTranslate} from '../../dependenciesTools/hooks';
+import {FamilyVariantCode, LocaleCode} from '../../models';
+import {IndexedFamilyVariants} from '../../fetch/FamilyVariantFetcher';
+import {getFamilyVariantsByIdentifiers} from '../../repositories/FamilyVariantRepository';
 
 type Props = {
   id: string;
@@ -139,4 +139,4 @@ const FamilyVariantsSelector: React.FC<Props> = ({
   );
 };
 
-export { FamilyVariantsSelector };
+export {FamilyVariantsSelector};

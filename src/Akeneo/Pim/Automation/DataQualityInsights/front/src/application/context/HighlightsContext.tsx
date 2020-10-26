@@ -1,5 +1,5 @@
-import React, {createContext, FC, useContext} from "react";
-import {HighlightElement} from "../helper";
+import React, {createContext, FC, useContext} from 'react';
+import {HighlightElement} from '../helper';
 
 export type HighlightsContextState = {
   highlights: HighlightElement[];
@@ -12,13 +12,9 @@ HighlightsContext.displayName = 'HighlightsContext';
 
 export const useHighlightsContext = (): HighlightsContextState => {
   return useContext(HighlightsContext);
-}
+};
 
 type ProviderProps = HighlightsContextState;
 export const HighlightsContextProvider: FC<ProviderProps> = ({children, ...initialState}) => {
-  return (
-    <HighlightsContext.Provider value={initialState}>
-      {children}
-    </HighlightsContext.Provider>
-  );
-}
+  return <HighlightsContext.Provider value={initialState}>{children}</HighlightsContext.Provider>;
+};

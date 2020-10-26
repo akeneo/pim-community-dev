@@ -10,12 +10,12 @@ test('It should render the rule notification when the attribute can be updated b
   const ruleRelations = [
     {
       attribute: 'packshot',
-      rule: 'set_packshot'
-    }
+      rule: 'set_packshot',
+    },
   ];
   const {getByText} = render(
     <ThemeProvider theme={akeneoTheme}>
-      <RuleNotification attributeCode={attributeCode} ruleRelations={ruleRelations}/>
+      <RuleNotification attributeCode={attributeCode} ruleRelations={ruleRelations} />
     </ThemeProvider>
   );
 
@@ -28,16 +28,16 @@ test('It should render multiple rule notifications when the attribute can be upd
   const ruleRelations = [
     {
       attribute: 'packshot',
-      rule: 'set_packshot'
+      rule: 'set_packshot',
     },
     {
       attribute: 'packshot',
-      rule: 'set_packshot_image'
-    }
+      rule: 'set_packshot_image',
+    },
   ];
   const {getByText} = render(
     <ThemeProvider theme={akeneoTheme}>
-      <RuleNotification attributeCode={attributeCode} ruleRelations={ruleRelations}/>
+      <RuleNotification attributeCode={attributeCode} ruleRelations={ruleRelations} />
     </ThemeProvider>
   );
 
@@ -49,12 +49,12 @@ test('It should not render the rule notification when the attribute can not be u
   const ruleRelations = [
     {
       attribute: 'packshot',
-      rule: 'set_packshot'
-    }
+      rule: 'set_packshot',
+    },
   ];
   const {container} = render(
     <ThemeProvider theme={akeneoTheme}>
-      <RuleNotification attributeCode={attributeCode} ruleRelations={ruleRelations}/>
+      <RuleNotification attributeCode={attributeCode} ruleRelations={ruleRelations} />
     </ThemeProvider>
   );
 

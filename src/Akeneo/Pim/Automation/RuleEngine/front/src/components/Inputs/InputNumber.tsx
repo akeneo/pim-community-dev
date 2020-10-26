@@ -1,9 +1,9 @@
 import React from 'react';
-import { Input, InputProps } from './Input';
+import {Input, InputProps} from './Input';
 
 const InputNumber = React.forwardRef<HTMLInputElement, InputProps>(
   (props, forwardedRef: React.Ref<HTMLInputElement>) => {
-    const { hasError, className, ...remainingProps } = props;
+    const {hasError, className, ...remainingProps} = props;
     return (
       <Input
         className={
@@ -20,4 +20,4 @@ const InputNumber = React.forwardRef<HTMLInputElement, InputProps>(
 
 InputNumber.displayName = 'InputNumber';
 
-export { InputNumber };
+export {InputNumber};

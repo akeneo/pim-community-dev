@@ -6,38 +6,37 @@ let page = global.__PAGE__;
 beforeEach(async () => {
   page.on('request', interceptedRequest => {
     // Intercept the call to get all the permissions
-    if (
-      'http://pim.com/permissions/rest' === interceptedRequest.url() &&
-      'GET' === interceptedRequest.method()
-    ) {
+    if ('http://pim.com/permissions/rest' === interceptedRequest.url() && 'GET' === interceptedRequest.method()) {
       const permissions = {
-        locales: [{
+        locales: [
+          {
             code: 'en_US',
             view: true,
-            edit: true
+            edit: true,
           },
           {
             code: 'fr_FR',
             view: true,
-            edit: true
-          }
+            edit: true,
+          },
         ],
-        attribute_groups: [{
+        attribute_groups: [
+          {
             code: 'marketing',
             view: true,
-            edit: true
+            edit: true,
           },
           {
             code: 'technical',
             view: true,
-            edit: true
-          }
+            edit: true,
+          },
         ],
         categories: {
           VIEW_ITEMS: ['master'],
           EDIT_ITEMS: ['scanners'],
-          OWN_PRODUCTS: ['master']
-        }
+          OWN_PRODUCTS: ['master'],
+        },
       };
 
       interceptedRequest.respond({
@@ -54,10 +53,9 @@ it('It fetches all permissions', async () => {
   // It fetches all permissions
   const response = await page.evaluate(async () => {
     // Sometimes this test fails on circle ci. This wait should mitigate that
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 500));
 
-    const fetchPermissions =
-      require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/permission')
+    const fetchPermissions = require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/permission')
       .fetchPermissions;
     const fetcherRegistry = require('pim/fetcher-registry');
     fetcherRegistry.initialize();
@@ -67,32 +65,34 @@ it('It fetches all permissions', async () => {
 
   // Check the family returned by the fetcher is the expected one
   expect(response).toEqual({
-    locales: [{
+    locales: [
+      {
         code: 'en_US',
         view: true,
-        edit: true
+        edit: true,
       },
       {
         code: 'fr_FR',
         view: true,
-        edit: true
-      }
+        edit: true,
+      },
     ],
-    attributeGroups: [{
+    attributeGroups: [
+      {
         code: 'marketing',
         view: true,
-        edit: true
+        edit: true,
       },
       {
         code: 'technical',
         view: true,
-        edit: true
-      }
+        edit: true,
+      },
     ],
     categories: {
       VIEW_ITEMS: ['master'],
       EDIT_ITEMS: ['scanners'],
-      OWN_PRODUCTS: ['master']
-    }
+      OWN_PRODUCTS: ['master'],
+    },
   });
 });
