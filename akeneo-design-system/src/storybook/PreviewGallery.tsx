@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {AkeneoThemedProps} from '../theme';
+import {AkeneoThemedProps, getColor} from '../theme';
 
 const PreviewGrid = styled.div<{width: number}>`
   display: grid;
@@ -48,8 +48,8 @@ const Content = styled.div<{width: number; height: number} & AkeneoThemedProps>`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid ${({theme}: AkeneoThemedProps) => theme.color.blue40};
-  background-color: ${({theme}: AkeneoThemedProps) => theme.color.blue10};
+  border: 1px solid ${getColor('blue', 40)};
+  background-color: ${getColor('blue', 10)};
   margin-top: 30px;
 `;
 
