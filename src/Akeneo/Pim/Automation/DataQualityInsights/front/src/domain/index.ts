@@ -12,6 +12,7 @@ import Axis, {AxesCollection} from "./Axis.interface";
 import Rates from "./Rates.interface";
 import AttributeWithRecommendation from "./AttributeWithRecommendation.interface";
 import Evaluation, {ProductEvaluation, AxisEvaluation, CriterionEvaluationResult, Status} from "./Evaluation.interface";
+import {KeyIndicator, keyIndicatorMap, Tips, Tip} from './KeyIndicator';
 
 export {
   Family,
@@ -27,4 +28,5 @@ export {
   AttributeWithRecommendation,
   Evaluation, ProductEvaluation, AxisEvaluation, CriterionEvaluationResult,
   Status,
+  KeyIndicator, keyIndicatorMap, Tips, Tip,
 };

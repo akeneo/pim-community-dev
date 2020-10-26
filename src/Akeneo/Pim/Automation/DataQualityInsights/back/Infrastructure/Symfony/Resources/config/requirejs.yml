@@ -12,8 +12,9 @@ config:
         ## Product Grid
         oro/datagrid/rate-badge-cell: akeneodataqualityinsights/js/infrastructure/datagrid/cell/rate-badge-cell.tsx
 
-        ## Product Edit Form
+        ## Dashboard
         akeneo/data-quality-insights/view/dqi-dashboard/section: akeneodataqualityinsights/js/infrastructure/dqi-dashboard/section.tsx
+        akeneo/data-quality-insights/view/dqi-dashboard/base-dashboard: akeneodataqualityinsights/js/infrastructure/dqi-dashboard/base-dashboard.ts
 
         ## Dashboard
         akeneo/data-quality-insights/view/dqi-dashboard/locale-switcher: akeneodataqualityinsights/js/infrastructure/dqi-dashboard/locale-switcher.ts

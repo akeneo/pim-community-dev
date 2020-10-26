@@ -8,6 +8,7 @@ import useFetchProductAxisRates from "./ProductEditForm/useFetchProductAxisRates
 import usePageContext from "./ProductEditForm/usePageContext";
 import useProductEvaluation from "./ProductEditForm/useProductEvaluation";
 import {useProductEvaluatedAttributeGroups} from "./AttributeGroup/useProductEvaluatedAttributeGroups";
+import {useFetchKeyIndicators} from "./Dashboard/useFetchKeyIndicators";
 
 export {
   useFetchDqiDashboardData,
@@ -20,4 +21,5 @@ export {
   usePageContext,
   useProductEvaluation,
   useProductEvaluatedAttributeGroups,
+  useFetchKeyIndicators,
 }
