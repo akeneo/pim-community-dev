@@ -96,7 +96,7 @@ pim:
       replicas: 1
     webhook-consumer-process:
       enabled: true
-      pimCommand: "messenger:consume webhook --time-limit=300"
+      pimCommand: "messenger:consume webhook --time-limit=300 --quiet"
       replicas: 1
   replicas: 2
   extraLabels: {}
