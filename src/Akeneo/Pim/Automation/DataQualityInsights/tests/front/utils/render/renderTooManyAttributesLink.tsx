@@ -20,5 +20,4 @@ const renderTooManyAttributesLink = (
   return renderWithAppContextHelper(<Component />, appState);
 };
 
-
 export {renderTooManyAttributesLink};

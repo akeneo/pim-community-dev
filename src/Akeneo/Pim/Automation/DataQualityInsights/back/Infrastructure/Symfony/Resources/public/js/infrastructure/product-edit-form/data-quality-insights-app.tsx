@@ -31,7 +31,7 @@ interface ScopeEvent {
   context: string;
 }
 
-interface FilterAttributesEvent{
+interface FilterAttributesEvent {
   attributes: string[];
 }
 
@@ -51,17 +51,25 @@ interface LevelNavigationEvent {
 class DataQualityInsightsApp extends BaseView {
   public configure() {
     this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', (event: LocaleEvent) => {
-      window.dispatchEvent(new CustomEvent(CATALOG_CONTEXT_LOCALE_CHANGED, {detail: {
-        locale: event.localeCode,
-        context: event.context
-      }}));
+      window.dispatchEvent(
+        new CustomEvent(CATALOG_CONTEXT_LOCALE_CHANGED, {
+          detail: {
+            locale: event.localeCode,
+            context: event.context,
+          },
+        })
+      );
     });
 
     this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:change', (event: ScopeEvent) => {
-      window.dispatchEvent(new CustomEvent(CATALOG_CONTEXT_CHANNEL_CHANGED, {detail: {
-        channel: event.scopeCode,
-        context: event.context
-      }}));
+      window.dispatchEvent(
+        new CustomEvent(CATALOG_CONTEXT_CHANNEL_CHANGED, {
+          detail: {
+            channel: event.scopeCode,
+            context: event.context,
+          },
+        })
+      );
     });
 
     window.addEventListener(DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE, (() => {
@@ -69,20 +77,30 @@ class DataQualityInsightsApp extends BaseView {
       this.redirectToProductEditForm();
     }) as EventListener);
 
-    window.addEventListener(DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES, ((_: CustomEvent<FilterAttributesEvent>) => {
-      this.getRoot().trigger('pim_enrich:form:switch_values_filter', 'all_missing_attributes');
-      this.redirectToProductEditForm();
-    }));
+    window.addEventListener(
+      DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES,
+      (_: CustomEvent<FilterAttributesEvent>) => {
+        this.getRoot().trigger('pim_enrich:form:switch_values_filter', 'all_missing_attributes');
+        this.redirectToProductEditForm();
+      }
+    );
 
-    window.addEventListener(DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES, ((_: CustomEvent<FilterAttributesEvent>) => {
-      this.getRoot().trigger('pim_enrich:form:switch_values_filter', 'all_improvable_attributes');
-      this.redirectToProductEditForm();
-    }));
+    window.addEventListener(
+      DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES,
+      (_: CustomEvent<FilterAttributesEvent>) => {
+        this.getRoot().trigger('pim_enrich:form:switch_values_filter', 'all_improvable_attributes');
+        this.redirectToProductEditForm();
+      }
+    );
 
     this.listenTo(this.getRoot(), 'column-tab:select-tab', ({target}: TabEvent) => {
-      window.dispatchEvent(new CustomEvent(PRODUCT_TAB_CHANGED, {detail: {
-        currentTab: target.dataset.tab,
-      }}));
+      window.dispatchEvent(
+        new CustomEvent(PRODUCT_TAB_CHANGED, {
+          detail: {
+            currentTab: target.dataset.tab,
+          },
+        })
+      );
     });
 
     this.listenTo(this.getRoot(), 'pim_enrich:form:attributes:render:before', () => {
@@ -101,12 +119,20 @@ class DataQualityInsightsApp extends BaseView {
       window.dispatchEvent(new Event(DATA_QUALITY_INSIGHTS_PRODUCT_SAVED));
     });
 
-    this.listenTo(this.getRoot(), 'pim:product:variant-navigation:navigate-to-level:before', (event: LevelNavigationEvent) => {
-      window.dispatchEvent(new CustomEvent(PRODUCT_MODEL_LEVEL_CHANGED, {detail: {
-          id: event.id,
-          model_type: event.model_type,
-        }}));
-    });
+    this.listenTo(
+      this.getRoot(),
+      'pim:product:variant-navigation:navigate-to-level:before',
+      (event: LevelNavigationEvent) => {
+        window.dispatchEvent(
+          new CustomEvent(PRODUCT_MODEL_LEVEL_CHANGED, {
+            detail: {
+              id: event.id,
+              model_type: event.model_type,
+            },
+          })
+        );
+      }
+    );
 
     window.dispatchEvent(new Event(DATA_QUALITY_INSIGHTS_PRODUCT_SAVED));
 
@@ -114,21 +140,21 @@ class DataQualityInsightsApp extends BaseView {
   }
 
   public redirectToProductEditForm() {
-
     const productData = this.getFormData();
-    const tab = productData.meta.model_type === 'product_model' ? PRODUCT_MODEL_ATTRIBUTES_TAB_NAME : PRODUCT_ATTRIBUTES_TAB_NAME;
+    const tab =
+      productData.meta.model_type === 'product_model' ? PRODUCT_MODEL_ATTRIBUTES_TAB_NAME : PRODUCT_ATTRIBUTES_TAB_NAME;
 
     this.getRoot().trigger('column-tab:change-tab', {
       currentTarget: {
         dataset: {
-          tab: tab
-        }
+          tab: tab,
+        },
       },
       target: {
         dataset: {
-          tab: tab
-        }
-      }
+          tab: tab,
+        },
+      },
     });
   }
 
@@ -138,10 +164,11 @@ class DataQualityInsightsApp extends BaseView {
     const productData = this.getFormData();
 
     ReactDOM.render(
-      productData.meta.model_type === 'product_model'
-        ? <ProductModelEditFormApp catalogLocale={catalogLocale} catalogChannel={catalogChannel} product={productData} />
-        : <ProductEditFormApp catalogLocale={catalogLocale} catalogChannel={catalogChannel} product={productData} />
-    ,
+      productData.meta.model_type === 'product_model' ? (
+        <ProductModelEditFormApp catalogLocale={catalogLocale} catalogChannel={catalogChannel} product={productData} />
+      ) : (
+        <ProductEditFormApp catalogLocale={catalogLocale} catalogChannel={catalogChannel} product={productData} />
+      ),
       this.el
     );
 

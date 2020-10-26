@@ -55,7 +55,7 @@ type ModalWithIllustrationProps = {
 };
 
 const ModalBodyWithIllustration = ({illustration, children}: PropsWithChildren<ModalWithIllustrationProps>) => (
-  <div className='AknFullPage-content AknFullPage-content--withIllustration'>
+  <div className="AknFullPage-content AknFullPage-content--withIllustration">
     <div>{illustration}</div>
     <div>{children}</div>
   </div>
@@ -78,8 +78,8 @@ type ModalTitleProps = {
 
 const ModalTitle = ({title, subtitle, ...props}: ModalTitleProps) => (
   <ModalTitleContainer {...props}>
-    {subtitle && <div className='AknFullPage-subTitle'>{subtitle}</div>}
-    <div className='AknFullPage-title'>{title}</div>
+    {subtitle && <div className="AknFullPage-subTitle">{subtitle}</div>}
+    <div className="AknFullPage-title">{title}</div>
   </ModalTitleContainer>
 );
 

@@ -45,7 +45,7 @@ describe('Attribute actions', () => {
     const expectedEvent = new CustomEvent(DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE, {
       detail: {
         code: 'an_attribute',
-      }
+      },
     });
     const product = aProduct();
     const {getByText} = renderAttribute('an_attribute', 'an_attribute_label', null, 'an_axis', product);
@@ -59,16 +59,9 @@ describe('Attribute actions', () => {
     const expectedEvent = new CustomEvent(DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE, {
       detail: {
         code: 'an_attribute',
-      }
-    })
-    const product = aVariantProduct(
-        1234,
-        {},
-        1,
-        'idx_1234',
-        'a_family',
-        ['an_axis_attribute','an_attribute']
-    );
+      },
+    });
+    const product = aVariantProduct(1234, {}, 1, 'idx_1234', 'a_family', ['an_axis_attribute', 'an_attribute']);
     const {getByText} = renderAttribute('an_attribute', 'an_attribute_label', null, 'an_axis', product);
 
     fireEvent.click(getByText('an_attribute_label'));
@@ -80,8 +73,8 @@ describe('Attribute actions', () => {
     const expectedEvent = new CustomEvent(DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE, {
       detail: {
         code: 'a_model_attribute',
-      }
-    })
+      },
+    });
     const product = aProductModel();
     const {getByText} = renderAttribute('a_model_attribute', 'a_model_attribute_label', null, 'an_axis', product);
 
@@ -92,17 +85,26 @@ describe('Attribute actions', () => {
 
   test('it redirects to the attribute on parent product model Form when it is a variant product with 1 level of variation', () => {
     const product = aVariantProduct(
-        1234,
-        {en_US: 'A variant product'},
-        1,
-        'idx_1234',
-        'a_family',
-        ['a_variant_attribute', 'a_second_variant_attribute'],
-        [{axes: {en_US: 'Model'}, selected: {id: 123}}, {axes: {en_US: 'A variant product'}, selected: {id: 1234}}],
-        [{attributes: ['a_variant_level_1_attribute, another_parent_level_1_attribute']}],
-        ['a_variant_level_1_attribute', 'another_parent_level_1_attribute']
+      1234,
+      {en_US: 'A variant product'},
+      1,
+      'idx_1234',
+      'a_family',
+      ['a_variant_attribute', 'a_second_variant_attribute'],
+      [
+        {axes: {en_US: 'Model'}, selected: {id: 123}},
+        {axes: {en_US: 'A variant product'}, selected: {id: 1234}},
+      ],
+      [{attributes: ['a_variant_level_1_attribute, another_parent_level_1_attribute']}],
+      ['a_variant_level_1_attribute', 'another_parent_level_1_attribute']
     );
-    const {getByText} = renderAttribute('another_parent_level_1_attribute', 'another_parent_level_1_attribute_label', null, 'an_axis', product);
+    const {getByText} = renderAttribute(
+      'another_parent_level_1_attribute',
+      'another_parent_level_1_attribute_label',
+      null,
+      'an_axis',
+      product
+    );
 
     fireEvent.click(getByText('another_parent_level_1_attribute_label'));
 
@@ -113,17 +115,30 @@ describe('Attribute actions', () => {
 
   test('it redirects to the attribute on product model level 1 Form when it is a variant product with 2 levels of variations', () => {
     const product = aVariantProduct(
-        1234,
-        {en_US: 'A variant product'},
-        2,
-        'idx_1234',
-        'a_family',
-        ['a_variant_attribute', 'a_second_variant_attribute'],
-        [{axes: {en_US: 'Model'}, selected: {id: 12}}, {axes: {en_US: 'Model With Primary Axis'}, selected: {id: 123}}, {axes: {en_US: 'A variant product'}, selected: {id: 1234}}],
-        [{attributes: ['a_variant_level_1_attribute, another_parent_level_1_attribute']}, {attributes: ['a_variant_level_2_attribute', 'another_parent_level_2_attribute']}],
-        ['a_variant_level_2_attribute', 'another_parent_level_2_attribute']
+      1234,
+      {en_US: 'A variant product'},
+      2,
+      'idx_1234',
+      'a_family',
+      ['a_variant_attribute', 'a_second_variant_attribute'],
+      [
+        {axes: {en_US: 'Model'}, selected: {id: 12}},
+        {axes: {en_US: 'Model With Primary Axis'}, selected: {id: 123}},
+        {axes: {en_US: 'A variant product'}, selected: {id: 1234}},
+      ],
+      [
+        {attributes: ['a_variant_level_1_attribute, another_parent_level_1_attribute']},
+        {attributes: ['a_variant_level_2_attribute', 'another_parent_level_2_attribute']},
+      ],
+      ['a_variant_level_2_attribute', 'another_parent_level_2_attribute']
     );
-    const {getByText} = renderAttribute('another_parent_level_2_attribute', 'another_parent_level_2_attribute_label', null, 'an_axis', product);
+    const {getByText} = renderAttribute(
+      'another_parent_level_2_attribute',
+      'another_parent_level_2_attribute_label',
+      null,
+      'an_axis',
+      product
+    );
 
     fireEvent.click(getByText('another_parent_level_2_attribute_label'));
 
@@ -134,17 +149,30 @@ describe('Attribute actions', () => {
 
   test('it redirects to the attribute on product model root Form when it is a variant product with 2 levels of variations', () => {
     const product = aVariantProduct(
-        1234,
-        {en_US: 'A variant product'},
-        2,
-        'idx_1234',
-        'a_family',
-        ['a_variant_attribute', 'a_second_variant_attribute'],
-        [{axes: {en_US: 'Model'}, selected: {id: 12}}, {axes: {en_US: 'Model With Primary Axis'}, selected: {id: 123}}, {axes: {en_US: 'A variant product'}, selected: {id: 1234}}],
-        [{attributes: ['a_variant_level_1_attribute, another_parent_level_1_attribute']}, {attributes: ['a_variant_level_2_attribute', 'another_parent_level_2_attribute']}],
-        ['a_variant_level_2_attribute', 'another_parent_level_2_attribute']
+      1234,
+      {en_US: 'A variant product'},
+      2,
+      'idx_1234',
+      'a_family',
+      ['a_variant_attribute', 'a_second_variant_attribute'],
+      [
+        {axes: {en_US: 'Model'}, selected: {id: 12}},
+        {axes: {en_US: 'Model With Primary Axis'}, selected: {id: 123}},
+        {axes: {en_US: 'A variant product'}, selected: {id: 1234}},
+      ],
+      [
+        {attributes: ['a_variant_level_1_attribute, another_parent_level_1_attribute']},
+        {attributes: ['a_variant_level_2_attribute', 'another_parent_level_2_attribute']},
+      ],
+      ['a_variant_level_2_attribute', 'another_parent_level_2_attribute']
     );
-    const {getByText} = renderAttribute('another_parent_level_1_attribute', 'another_parent_level_1_attribute_label', null, 'an_axis', product);
+    const {getByText} = renderAttribute(
+      'another_parent_level_1_attribute',
+      'another_parent_level_1_attribute_label',
+      null,
+      'an_axis',
+      product
+    );
 
     fireEvent.click(getByText('another_parent_level_1_attribute_label'));
 

@@ -1,5 +1,2 @@
-import productEditFormStore, {ProductEditFormState} from "./productEditFormStore";
-export {
-  productEditFormStore,
-  ProductEditFormState,
-}
+import productEditFormStore, {ProductEditFormState} from './productEditFormStore';
+export {productEditFormStore, ProductEditFormState};

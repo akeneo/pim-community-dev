@@ -21,5 +21,4 @@ const renderAttribute = (
   return renderWithAppContextHelper(<Component />, appState);
 };
 
-
 export {renderAttribute};

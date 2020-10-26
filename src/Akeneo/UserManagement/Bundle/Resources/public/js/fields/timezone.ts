@@ -7,7 +7,7 @@ class TimezoneField extends BaseSelect {
   configure() {
     BaseSelect.prototype.configure.apply(this, arguments);
     this.config.choices = {
-      'Africa': {
+      Africa: {
         'Africa/Abidjan': 'Abidjan GMT (UTC+00:00)',
         'Africa/Accra': 'Accra GMT (UTC+00:00)',
         'Africa/Addis_Ababa': 'Addis Ababa EAT (UTC+03:00)',
@@ -59,9 +59,9 @@ class TimezoneField extends BaseSelect {
         'Africa/Sao_Tome': 'Sao Tome GMT (UTC+00:00)',
         'Africa/Tripoli': 'Tripoli EET (UTC+02:00)',
         'Africa/Tunis': 'Tunis CET (UTC+01:00)',
-        'Africa/Windhoek': 'Windhoek WAT (UTC+01:00)'
+        'Africa/Windhoek': 'Windhoek WAT (UTC+01:00)',
       },
-      'America': {
+      America: {
         'America/Adak': 'Adak HDT (UTC-09:00)',
         'America/Anchorage': 'Anchorage AKDT (UTC-08:00)',
         'America/Anguilla': 'Anguilla AST (UTC-04:00)',
@@ -209,7 +209,7 @@ class TimezoneField extends BaseSelect {
         'America/Yakutat': 'Yakutat AKDT (UTC-08:00)',
         'America/Yellowknife': 'Yellowknife MDT (UTC-06:00)',
       },
-      'Antarctica': {
+      Antarctica: {
         'Antarctica/Casey': 'Casey AWST (UTC+08:00)',
         'Antarctica/Davis': 'Davis DAVT (UTC+07:00)',
         'Antarctica/DumontDUrville': 'DumontDUrville DDUT (UTC+10:00)',
@@ -220,12 +220,12 @@ class TimezoneField extends BaseSelect {
         'Antarctica/Rothera': 'Rothera ROTT (UTC-03:00)',
         'Antarctica/Syowa': 'Syowa SYOT (UTC+03:00)',
         'Antarctica/Troll': 'Troll CEST (UTC+02:00)',
-        'Antarctica/Vostok': 'Vostok VOST (UTC+06:00)'
+        'Antarctica/Vostok': 'Vostok VOST (UTC+06:00)',
       },
-      'Arctic': {
-        'Arctic/Longyearbyen': 'Longyearbyen CEST (UTC+02:00)'
+      Arctic: {
+        'Arctic/Longyearbyen': 'Longyearbyen CEST (UTC+02:00)',
       },
-      'Asia': {
+      Asia: {
         'Asia/Aden': 'Aden AST (UTC+03:00)',
         'Asia/Almaty': 'Almaty +06 (UTC+06:00)',
         'Asia/Amman': 'Amman EEST (UTC+03:00)',
@@ -305,9 +305,9 @@ class TimezoneField extends BaseSelect {
         'Asia/Vladivostok': 'Vladivostok VLAT (UTC+10:00)',
         'Asia/Yakutsk': 'Yakutsk YAKT (UTC+09:00)',
         'Asia/Yekaterinburg': 'Yekaterinburg YEKT (UTC+05:00)',
-        'Asia/Yerevan': 'Yerevan AMT (UTC+04:00)'
+        'Asia/Yerevan': 'Yerevan AMT (UTC+04:00)',
       },
-      'Atlantic': {
+      Atlantic: {
         'Atlantic/Azores': 'Azores AZOST (UTC+00:00)',
         'Atlantic/Bermuda': 'Bermuda ADT (UTC-03:00)',
         'Atlantic/Canary': 'Canary WEST (UTC+01:00)',
@@ -317,9 +317,9 @@ class TimezoneField extends BaseSelect {
         'Atlantic/Reykjavik': 'Reykjavik GMT (UTC+00:00)',
         'Atlantic/South_Georgia': 'South Georgia GST (UTC-02:00)',
         'Atlantic/St_Helena': 'St Helena GMT (UTC+00:00)',
-        'Atlantic/Stanley': 'Stanley FKST (UTC-03:00)'
+        'Atlantic/Stanley': 'Stanley FKST (UTC-03:00)',
       },
-      'Australia': {
+      Australia: {
         'Australia/Adelaide': 'Adelaide ACST (UTC+09:30)',
         'Australia/Brisbane': 'Brisbane AEST (UTC+10:00)',
         'Australia/Broken_Hill': 'Broken Hill ACST (UTC+09:30)',
@@ -331,9 +331,9 @@ class TimezoneField extends BaseSelect {
         'Australia/Lord_Howe': 'Lord Howe LHST (UTC+10:30)',
         'Australia/Melbourne': 'Melbourne AEST (UTC+10:00)',
         'Australia/Perth': 'Perth AWST (UTC+08:00)',
-        'Australia/Sydney': 'Sydney AEST (UTC+10:00)'
+        'Australia/Sydney': 'Sydney AEST (UTC+10:00)',
       },
-      'Europe': {
+      Europe: {
         'Europe/Amsterdam': 'Amsterdam CEST (UTC+02:00)',
         'Europe/Andorra': 'Andorra CEST (UTC+02:00)',
         'Europe/Astrakhan': 'Astrakhan +04 (UTC+04:00)',
@@ -394,7 +394,7 @@ class TimezoneField extends BaseSelect {
         'Europe/Zaporozhye': 'Zaporozhye EEST (UTC+03:00)',
         'Europe/Zurich': 'Zurich CEST (UTC+02:00)',
       },
-      'Indian': {
+      Indian: {
         'Indian/Antananarivo': 'Antananarivo EAT (UTC+03:00)',
         'Indian/Chagos': 'Chagos IOT (UTC+06:00)',
         'Indian/Christmas': 'Christmas CXT (UTC+07:00)',
@@ -405,9 +405,9 @@ class TimezoneField extends BaseSelect {
         'Indian/Maldives': 'Maldives MVT (UTC+05:00)',
         'Indian/Mauritius': 'Mauritius MUT (UTC+04:00)',
         'Indian/Mayotte': 'Mayotte EAT (UTC+03:00)',
-        'Indian/Reunion': 'Reunion RET (UTC+04:00)'
+        'Indian/Reunion': 'Reunion RET (UTC+04:00)',
       },
-      'Pacific': {
+      Pacific: {
         'Pacific/Apia': 'Apia WSST (UTC+13:00)',
         'Pacific/Auckland': 'Auckland NZST (UTC+12:00)',
         'Pacific/Bougainville': 'Bougainville BST (UTC+11:00)',
@@ -446,22 +446,20 @@ class TimezoneField extends BaseSelect {
         'Pacific/Tarawa': 'Tarawa GILT (UTC+12:00)',
         'Pacific/Tongatapu': 'Tongatapu TOT (UTC+13:00)',
         'Pacific/Wake': 'Wake WAKT (UTC+12:00)',
-        'Pacific/Wallis': 'Wallis WFT (UTC+12:00)'
+        'Pacific/Wallis': 'Wallis WFT (UTC+12:00)',
       },
-      'Other': {
-        'UTC': 'UTC'
-      }
+      Other: {
+        UTC: 'UTC',
+      },
     };
   }
 
   /**
    * {@inheritdoc}
    */
-  formatChoices(
-    timezones: { [key: string]: { [key: string] : string } }
-  ): { [key: string]: { [key: string] : string } } {
+  formatChoices(timezones: {[key: string]: {[key: string]: string}}): {[key: string]: {[key: string]: string}} {
     return timezones;
   }
 }
 
-export = TimezoneField
+export = TimezoneField;
