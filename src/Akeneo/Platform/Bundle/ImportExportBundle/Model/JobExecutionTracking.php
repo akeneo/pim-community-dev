@@ -22,4 +22,26 @@ class JobExecutionTracking
 
     /** @var StepExecutionTracking[] */
     public $steps;
+
+    public function hasError(): bool
+    {
+        return array_reduce(
+            $this->steps,
+            static function (bool $hasError, StepExecutionTracking $stepExecutionTracking) {
+                return $hasError || $stepExecutionTracking->hasError;
+            },
+            false
+        );
+    }
+
+    public function hasWarning(): bool
+    {
+        return array_reduce(
+            $this->steps,
+            static function (bool $hasWarning, StepExecutionTracking $stepExecutionTracking) {
+                return $hasWarning || $stepExecutionTracking->hasWarning;
+            },
+            false
+        );
+    }
 }

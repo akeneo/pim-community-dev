@@ -51,8 +51,8 @@ class JobExecutionResultRecordHydrator implements HydratorInterface
                         'isStoppable'     => true,
                         'currentStep'     => $jobExecutionTracking->currentStep,
                         'totalSteps'       => $jobExecutionTracking->totalSteps,
-                        'hasError'        => false,
-                        'hasWarning' => false
+                        'hasError'        => $jobExecutionTracking->hasError(),
+                        'hasWarning' => $jobExecutionTracking->hasWarning()
                     ]
                 )
             );
