@@ -13,9 +13,9 @@ define([
   'pim/fetcher-registry',
   'pim/user-context',
   'pim/provider/to-fill-field-provider',
-], function($, _, BaseForm, fetcherRegistry, UserContext, toFillFieldProvider) {
+], function ($, _, BaseForm, fetcherRegistry, UserContext, toFillFieldProvider) {
   return BaseForm.extend({
-    configure: function() {
+    configure: function () {
       this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
 
       return BaseForm.prototype.configure.apply(this, arguments);
@@ -24,7 +24,7 @@ define([
     /**
      * {@inheritDoc}
      */
-    addFieldExtension: function(event) {
+    addFieldExtension: function (event) {
       const scope = UserContext.get('catalogScope');
       const locale = UserContext.get('catalogLocale');
       const fieldsToFill = toFillFieldProvider.getMissingRequiredFields(this.getFormData(), scope, locale);
