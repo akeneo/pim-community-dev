@@ -358,7 +358,8 @@ SQL;
                 continue;
             }
 
-            $productModels[$row['code']] = [$row['attribute_code'] => \json_decode($row['image_values'], true)];
+            $imageValues = \json_decode($row['image_values'], true);
+            $productModels[$row['code']] = $imageValues ? [$row['attribute_code'] => $imageValues] : [];
             $productModelsInfo[$row['code']]['is_scopable'] = $row['is_scopable'] ? $channelCode : null;
             $productModelsInfo[$row['code']]['is_localizable'] = $row['is_localizable'] ? $channelCode : null;
             $productModelsInfo[$row['code']]['attribute_code'] = $row['attribute_code'];
