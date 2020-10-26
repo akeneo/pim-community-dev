@@ -94,7 +94,7 @@ type ModalProps = {
 };
 
 type ModalComponent = ForwardRefExoticComponent<ModalProps & RefAttributes<HTMLDivElement>> & {
-  BottomButtons?: StyledComponent<'div', {}>;
+  BottomButtons?: StyledComponent<'div', any, any, never>;
 };
 
 /**
