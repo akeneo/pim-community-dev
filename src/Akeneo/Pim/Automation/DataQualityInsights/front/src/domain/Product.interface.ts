@@ -1,4 +1,7 @@
 export default interface Product {
+  code?: string; // Product model code
+  parent?: string; // Product model parent code
+  family_variant?: string; // Product model family variant name
   categories: string[];
   enabled: boolean;
   family: string | null;
@@ -7,6 +10,7 @@ export default interface Product {
   created: string|null;
   updated: string|null;
 }
+
 
 interface Meta {
   id: number | null;
@@ -23,7 +27,7 @@ interface Meta {
   parent_attributes: string[],
 }
 
-interface VariantNavigation {
+export interface VariantNavigation {
   axes: {
     [locale: string]: string;
   };
@@ -32,6 +36,6 @@ interface VariantNavigation {
   };
 }
 
-interface VariantAttributeSet {
+export interface VariantAttributeSet {
   attributes: string[];
 }

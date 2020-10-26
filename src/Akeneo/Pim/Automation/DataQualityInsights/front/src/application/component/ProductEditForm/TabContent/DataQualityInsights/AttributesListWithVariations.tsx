@@ -22,6 +22,7 @@ const AttributesListWithVariations = ({product, criterionCode, attributes, local
     product.meta.family_variant.variant_attribute_sets.forEach((value: any) => {
       variantAttributes = [...variantAttributes, ...value.attributes];
     });
+
     return attributes.filter((attribute: AttributeWithRecommendation) => {
       return !variantAttributes.includes(attribute.code);
     });
@@ -46,7 +47,7 @@ const AttributesListWithVariations = ({product, criterionCode, attributes, local
           .filter((_: any, level) => level <= product.meta.level)
           .map((variant: any, level: number) => {
             return (
-              <div key={`variant-attributes-list-${level}`} className="attributeList">
+              <div key={`variant-attributes-list-${level}`} className="attributeList" data-testid={`attributes-level-${level}`}>
                 <span>{level > 0 ? variant.axes[locale] : __('pim_enrich.entity.product.module.variant_navigation.common')}</span>:&thinsp;
                 <AttributesList product={product} criterionCode={criterionCode} attributes={getLevelAttributes(attributes, level)} axis={axis} evaluation={evaluation}/>
               </div>
