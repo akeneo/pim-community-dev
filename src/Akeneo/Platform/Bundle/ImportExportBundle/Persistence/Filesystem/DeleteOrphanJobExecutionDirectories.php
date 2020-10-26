@@ -29,7 +29,7 @@ final class DeleteOrphanJobExecutionDirectories
 
     public function execute(): void
     {
-        $pathsByBatch = $this->getPathsByBatch();
+        $pathsByBatch = $this->getPathsAtLevel3ByBatch();
 
         foreach ($pathsByBatch as $paths) {
             $jobExecutionIds = $this->getJobExecutionIdsFromPaths($paths);
@@ -38,7 +38,7 @@ final class DeleteOrphanJobExecutionDirectories
         }
     }
 
-    private function getPathsByBatch(): \Iterator
+    private function getPathsAtLevel3ByBatch(): \Iterator
     {
         $paths = [];
         $firstLevelPaths = $this->archivistFilesystem->listPaths('.', false);
