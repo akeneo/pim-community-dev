@@ -7,58 +7,48 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'jquery',
-        'underscore',
-        'pim/product-fetcher',
-        'pim/user-context',
-        'oro/mediator',
-        'routing'
-    ],
-    function (
-        $,
-        _,
-        ProductFetcher,
-        UserContext,
-        mediator,
-        Routing
-    ) {
-        return ProductFetcher.extend({
-            /**
-             * @param {Object} options
-             */
-            initialize: function (options) {
-                this.options = options || {};
+define(['jquery', 'underscore', 'pim/product-fetcher', 'pim/user-context', 'oro/mediator', 'routing'], function (
+  $,
+  _,
+  ProductFetcher,
+  UserContext,
+  mediator,
+  Routing
+) {
+  return ProductFetcher.extend({
+    /**
+     * @param {Object} options
+     */
+    initialize: function (options) {
+      this.options = options || {};
 
-                ProductFetcher.prototype.initialize.apply(this, [options]);
-            },
+      ProductFetcher.prototype.initialize.apply(this, [options]);
+    },
 
-            /**
-             * {@inheritdoc}
-             */
-            getIdentifierField: function () {
-                return $.Deferred().resolve('code');
-            },
+    /**
+     * {@inheritdoc}
+     */
+    getIdentifierField: function () {
+      return $.Deferred().resolve('code');
+    },
 
-            /**
-             * Fetch all children of the given parent.
-             *
-             * @return {Promise}
-             */
-            fetchChildren: function (parentId) {
-                if (!_.has(this.options.urls, 'children')) {
-                    return $.Deferred().reject().promise();
-                }
+    /**
+     * Fetch all children of the given parent.
+     *
+     * @return {Promise}
+     */
+    fetchChildren: function (parentId) {
+      if (!_.has(this.options.urls, 'children')) {
+        return $.Deferred().reject().promise();
+      }
 
-                return $.getJSON(
-                    Routing.generate(this.options.urls.children), {
-                        id: parentId,
-                        scope: UserContext.get('catalogScope'),
-                        locale: UserContext.get('catalogLocale')
-                    }
-                ).then(_.identity).promise();
-            }
-        });
-    }
-);
+      return $.getJSON(Routing.generate(this.options.urls.children), {
+        id: parentId,
+        scope: UserContext.get('catalogScope'),
+        locale: UserContext.get('catalogLocale'),
+      })
+        .then(_.identity)
+        .promise();
+    },
+  });
+});
