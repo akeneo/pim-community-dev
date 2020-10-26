@@ -47,6 +47,7 @@ const FamilyFilter: FunctionComponent<FamilyFilterProps> = ({familyCode}) => {
     setFilteredFamilies(
       // @ts-ignore
       Object.values(families).filter((family: any) =>
+        // @ts-ignore
         family.labels[uiLocale].toLowerCase().includes(searchString.toLowerCase())
       )
     );
