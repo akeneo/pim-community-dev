@@ -1,6 +1,6 @@
-import {useEffect, useLayoutEffect, useState, RefObject} from "react";
+import {useEffect, useLayoutEffect, useState, RefObject} from 'react';
 
-const useGetChartScalingSizeRatio = (chartContainerRef: RefObject<Element|null>, initialWidth: number) => {
+const useGetChartScalingSizeRatio = (chartContainerRef: RefObject<Element | null>, initialWidth: number) => {
   const [scaleRatio, setScaleRatio] = useState(1);
 
   useEffect(() => {
@@ -15,22 +15,22 @@ const useGetChartScalingSizeRatio = (chartContainerRef: RefObject<Element|null>,
       const rect = chartContainerRef.current.getBoundingClientRect();
       lastScaleRatio = 1;
       if (rect.width > initialWidth) {
-        lastScaleRatio = (rect.width/ initialWidth);
+        lastScaleRatio = rect.width / initialWidth;
       }
 
       if (!ticking) {
-        window.requestAnimationFrame(function() {
+        window.requestAnimationFrame(function () {
           setScaleRatio(lastScaleRatio);
           ticking = false;
         });
         ticking = true;
       }
     };
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
     return () => {
       ticking = true;
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
@@ -39,15 +39,15 @@ const useGetChartScalingSizeRatio = (chartContainerRef: RefObject<Element|null>,
       const rect = chartContainerRef.current.getBoundingClientRect();
 
       if (rect.width > initialWidth) {
-        setScaleRatio(rect.width/ initialWidth);
+        setScaleRatio(rect.width / initialWidth);
       }
     }
   }, [chartContainerRef, initialWidth]);
 
   return {
     upScalingRatio: scaleRatio,
-    downScalingRatio: 1/scaleRatio
-  }
+    downScalingRatio: 1 / scaleRatio,
+  };
 };
 
 export default useGetChartScalingSizeRatio;

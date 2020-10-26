@@ -1,8 +1,8 @@
-import React, {ChangeEvent, FunctionComponent, useEffect, useRef, useState} from "react";
-import useFetchFamilies from "../../../../../infrastructure/hooks/Dashboard/useFetchFamilies";
-import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY} from "../../../../constant/Dashboard";
-import styled from "styled-components";
-import {debounce} from "lodash";
+import React, {ChangeEvent, FunctionComponent, useEffect, useRef, useState} from 'react';
+import useFetchFamilies from '../../../../../infrastructure/hooks/Dashboard/useFetchFamilies';
+import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY} from '../../../../constant/Dashboard';
+import styled from 'styled-components';
+import {debounce} from 'lodash';
 
 const __ = require('oro/translator');
 const UserContext = require('pim/user-context');
@@ -44,14 +44,22 @@ const FamilyFilter: FunctionComponent<FamilyFilterProps> = ({familyCode}) => {
       setFilteredFamilies(families);
       return;
     }
-    // @ts-ignore
-    setFilteredFamilies(Object.values(families).filter((family: any) => family.labels[uiLocale].toLowerCase().includes(searchString.toLowerCase())));
+    setFilteredFamilies(
+      // @ts-ignore
+      Object.values(families).filter((family: any) =>
+        family.labels[uiLocale].toLowerCase().includes(searchString.toLowerCase())
+      )
+    );
   }, [families, searchString]);
 
   const handleClickFamily = (familyCode: string | null) => {
-    window.dispatchEvent(new CustomEvent(DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY, {detail: {
-        familyCode: familyCode
-      }}));
+    window.dispatchEvent(
+      new CustomEvent(DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY, {
+        detail: {
+          familyCode: familyCode,
+        },
+      })
+    );
     setIsFilterDisplayed(false);
     setSearchString(null);
   };
@@ -69,34 +77,42 @@ const FamilyFilter: FunctionComponent<FamilyFilterProps> = ({familyCode}) => {
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside, true);
-    }
+    };
   }, []);
 
   let currentFamilyLabel = __('pim_common.all');
-  if(familyCode !== null && Object.keys(families).length > 0) {
+  if (familyCode !== null && Object.keys(families).length > 0) {
     const currentFamily: any = Object.values(families).find((family: any) => family.code === familyCode);
     currentFamilyLabel = currentFamily.labels[uiLocale];
   }
 
   return (
-
     <div className="AknFilterBox-filterContainer">
       <div className="AknFilterBox-filter" onClick={() => setIsFilterDisplayed(true)} data-testid={'dqiFamilyFilter'}>
         <span className="AknFilterBox-filterLabel">{__('pim_enrich.entity.family.uppercase_label')}</span>
         <button type="button" className="AknFilterBox-filterCriteria ui-multiselect">
-          <span> {currentFamilyLabel ? currentFamilyLabel : "[" + familyCode + "]"}</span>
-          <span className="AknFilterBox-filterCaret"/>
+          <span> {currentFamilyLabel ? currentFamilyLabel : '[' + familyCode + ']'}</span>
+          <span className="AknFilterBox-filterCaret" />
         </button>
       </div>
 
       {isFilterDisplayed && (
-        <div ref={ref} id="AknFamily-filter" className="ui-multiselect-menu ui-widget ui-widget-content ui-corner-all AknFilterBox-filterCriteria select-filter-widget multiselect-filter-widget">
+        <div
+          ref={ref}
+          id="AknFamily-filter"
+          className="ui-multiselect-menu ui-widget ui-widget-content ui-corner-all AknFilterBox-filterCriteria select-filter-widget multiselect-filter-widget"
+        >
           <div className="ui-widget-header ui-corner-all ui-multiselect-header ui-helper-clearfix ui-multiselect-hasfilter">
             <div className="ui-multiselect-filter">
-              <input autoFocus={true} placeholder={__('pim_enrich.entity.family.uppercase_label')} type="search" onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                event.persist();
-                debounceOnSearch(event)
-              }}/>
+              <input
+                autoFocus={true}
+                placeholder={__('pim_enrich.entity.family.uppercase_label')}
+                type="search"
+                onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                  event.persist();
+                  debounceOnSearch(event);
+                }}
+              />
             </div>
           </div>
           <ul className="ui-multiselect-checkboxes ui-helper-reset">
@@ -107,23 +123,27 @@ const FamilyFilter: FunctionComponent<FamilyFilterProps> = ({familyCode}) => {
                 </label>
               </li>
             )}
-            {filteredFamilies && Object.entries(filteredFamilies).map(([identifier, family]:[string, Family]) => {
-              return (
-                <li key={identifier}>
-                  <label onClick={() => handleClickFamily(family.code)} className={family.code === familyCode ? 'ui-state-active' : ''} data-testid={`dqiFamily_${family.code}`}>
-                    <FamilyLabel>{family.labels[uiLocale] ? family.labels[uiLocale] : "[" + family.code + "]"}</FamilyLabel>
-                  </label>
-                </li>
-              )
-            })}
+            {filteredFamilies &&
+              Object.entries(filteredFamilies).map(([identifier, family]: [string, Family]) => {
+                return (
+                  <li key={identifier}>
+                    <label
+                      onClick={() => handleClickFamily(family.code)}
+                      className={family.code === familyCode ? 'ui-state-active' : ''}
+                      data-testid={`dqiFamily_${family.code}`}
+                    >
+                      <FamilyLabel>
+                        {family.labels[uiLocale] ? family.labels[uiLocale] : '[' + family.code + ']'}
+                      </FamilyLabel>
+                    </label>
+                  </li>
+                );
+              })}
           </ul>
         </div>
       )}
-
     </div>
-
-  )
-
+  );
 };
 
 export default FamilyFilter;
