@@ -9,6 +9,7 @@ use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Model\Warning;
@@ -96,7 +97,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface
 
     public function isTrackable(): bool
     {
-        return true; // @TODO validate reader is trackable
+        return $this->reader instanceof TrackableItemReaderInterface;
     }
 
     /**
@@ -108,6 +109,10 @@ class ItemStep extends AbstractStep implements TrackableStepInterface
         $batchCount = 0;
 
         $this->initializeStepElements($stepExecution);
+
+        if ($this->isTrackable()) {
+            $stepExecution->setTotalItems($this->getCountFromTrackableItemReader());
+        }
 
         while (true) {
             try {
@@ -131,6 +136,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface
             if ($batchCount >= $this->batchSize) {
                 if (!empty($itemsToWrite)) {
                     $this->write($itemsToWrite);
+                    $stepExecution->incrementProcessedItems(count($itemsToWrite));
                     $itemsToWrite = [];
                 }
 
@@ -142,6 +148,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface
 
         if (!empty($itemsToWrite)) {
             $this->write($itemsToWrite);
+            $stepExecution->incrementProcessedItems(count($itemsToWrite));
         }
 
         if ($batchCount > 0) {
@@ -248,5 +255,14 @@ class ItemStep extends AbstractStep implements TrackableStepInterface
             'processor' => $this->processor,
             'writer'    => $this->writer
         ];
+    }
+
+    private function getCountFromTrackableItemReader(): int
+    {
+        if (!$this->reader instanceof TrackableItemReaderInterface) {
+            throw new \RuntimeException('The reader should implement TrackableItemReaderInterface');
+        }
+
+        return $this->reader->count();
     }
 }
