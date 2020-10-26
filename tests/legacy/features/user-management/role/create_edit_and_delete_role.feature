@@ -20,12 +20,13 @@ Feature: Create and delete a user role
     When I save the role
     Then I should see the text "VeryDummyRole"
     When I am on the role index page
+    Then I should see roles "Administrator, VeryDummyRole"
     And I click on the "Delete" action of the row which contains "VeryDummyRole"
     Then I should see a confirm dialog with the following content:
       | title   | Confirm deletion                           |
       | content | Are you sure you want to delete this role? |
     When I confirm the deletion
-    Then I should not see the text "VeryDummyRole"
+    Then I should not see role "VeryDummyRole"
     When I click on the "Delete" action of the row which contains "Administrator"
     And I cancel the deletion
-    And I should see the text "Administrator"
+    And I should see role "Administrator"
