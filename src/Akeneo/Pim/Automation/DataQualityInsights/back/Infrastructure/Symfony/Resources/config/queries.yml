@@ -106,3 +106,21 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeQuery:
         arguments:
             - '@database_connection'
+
+    akeneo.pim.automation.data_quality_insights.infrastructure.persistence.query.product.get_missing_image_attributes_masks:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\GetAttributeTypesMasksQuery
+        arguments:
+            $connection: '@database_connection'
+            $attributeTypes:
+                - !php/const Akeneo\Pim\Structure\Component\AttributeTypes::IMAGErm
+                - !php/const Akeneo\Pim\Structure\Component\AttributeTypes::ASSET_COLLECTION
+                - !php/const Akeneo\Pim\Structure\Component\AttributeTypes::LEGACY_ASSET_COLLECTION
+
+    akeneo.pim.automation.data_quality_insights.infrastructure.persistence.query.product_model.get_missing_image_attributes_masks:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\GetAttributeTypesProductModelMasksQuery
+        arguments:
+            $connection: '@database_connection'
+            $attributeTypes:
+                - !php/const Akeneo\Pim\Structure\Component\AttributeTypes::IMAGE
+                - !php/const Akeneo\Pim\Structure\Component\AttributeTypes::ASSET_COLLECTION
+                - !php/const Akeneo\Pim\Structure\Component\AttributeTypes::LEGACY_ASSET_COLLECTION
