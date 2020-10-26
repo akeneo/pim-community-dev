@@ -317,10 +317,12 @@ SQL;
                 FROM pim_catalog_product_model root
                     INNER JOIN pim_catalog_product_model sub ON sub.parent_id = root.id
                     INNER JOIN pim_catalog_product product ON product.product_model_id = sub.id
+                WHERE root.code = :code
                 UNION ALL
                 SELECT root.code as root_code, product.family_id, product.raw_values, product.created
                 FROM pim_catalog_product_model root
                     INNER JOIN pim_catalog_product product ON product.product_model_id = root.id
+                WHERE root.code = :code
             )
             SELECT product_child.root_code as code,
                    a_image.code as attribute_code,
