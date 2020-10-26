@@ -45,3 +45,4 @@ services:
 
     akeneo_batch.job.job_registry:
         class: '%akeneo_batch.job.job_registry.class%'
+        public: true
