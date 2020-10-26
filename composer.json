@@ -122,7 +122,7 @@
         "symfony/templating": "4.4.15",
         "symfony/proxy-manager-bridge": "4.4.15",
         "justinrainbow/json-schema": "^5.2",
-        "guzzlehttp/guzzle": "6.3.3",
+        "guzzlehttp/guzzle": "6.5.3",
         "symfony/messenger": "^4.4",
         "google/cloud-pubsub": "1.24"
     },
