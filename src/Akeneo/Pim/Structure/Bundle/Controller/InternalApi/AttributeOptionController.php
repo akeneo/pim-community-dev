@@ -169,7 +169,7 @@ class AttributeOptionController
      * @param Request $request
      * @param int     $attributeId
      *
-     * @return FormInterface|RedirectResponse
+     * @return Response
      *
      * @AclAncestor("pim_enrich_attribute_edit")
      */
@@ -196,7 +196,7 @@ class AttributeOptionController
      * @param Request $request
      * @param int     $attributeOptionId
      *
-     * @return FormInterface|RedirectResponse
+     * @return Response
      *
      * @AclAncestor("pim_enrich_attribute_edit")
      */

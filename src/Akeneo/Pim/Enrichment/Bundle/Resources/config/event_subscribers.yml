@@ -175,19 +175,3 @@ services:
             - '@doctrine'
         tags:
             - { name: kernel.event_subscriber }
-
-    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductBusinessEventSubscriber:
-        arguments:
-            - '@security.helper'
-            - '@pim_catalog.normalizer.standard.product'
-            - '@Symfony\Component\Messenger\MessageBusInterface'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductModelBusinessEventSubscriber:
-        arguments:
-            - '@security.helper'
-            - '@pim_catalog.normalizer.standard.product_model'
-            - '@Symfony\Component\Messenger\MessageBusInterface'
-        tags:
-            - { name: kernel.event_subscriber }

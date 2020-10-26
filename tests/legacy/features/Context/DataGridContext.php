@@ -824,7 +824,6 @@ class DataGridContext extends PimContext implements PageObjectAware
             return true;
         }, sprintf('Can\'t filter by %s with operator %s and value %s', $filterName, $operator, $value));
 
-
         $gridContainer = $this->getElementFromDatagrid('Grid container');
 
         $loadingMask = $gridContainer->find('css', '.loading-mask .loading-mask');
