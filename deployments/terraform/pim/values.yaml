@@ -87,7 +87,7 @@ pim:
     type: RollingUpdate
   # Any changes on the `daemons` configuration and you need to update the
   # `deployments/terraform/helm.tf` script to stop & restart daemons while a
-  # migraton is running.
+  # migration is running.
   daemons:
     all-but-linking-assets-to-products:
       enabled: true
