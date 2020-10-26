@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import {Canvas, Meta, Story} from '@storybook/addon-docs/blocks';
 import {PreviewGrid, PreviewCard, PreviewContainer, LabelContainer, Subtitle} from '../storybook/PreviewGallery';
-import {themes} from '../storybook/themes';
+import {themes} from '../theme';
 
 <Meta title="Guidelines/Colors" />
 
@@ -21,11 +21,10 @@ Colors enhance the experience by providing visual clues and drawing attention to
   <Story name="Standard">
     <div>
       <h1>Brand colors</h1>
-      {Object.keys(themes).map(themeName => {
-        const theme = themes[themeName];
+      {themes.map(theme => {
         return (
-          <div key={themeName}>
-            <Subtitle>{themeName}</Subtitle>
+          <div key={theme.name}>
+            <Subtitle>{theme.name}</Subtitle>
             <PreviewGrid>
               {Object.keys(theme.color)
                 .filter(colorCode => 0 === colorCode.indexOf('brand'))
@@ -50,14 +49,15 @@ Colors enhance the experience by providing visual clues and drawing attention to
           <div key={color}>
             <Subtitle>{color}</Subtitle>
             <PreviewGrid>
-              {Object.keys(themes.PIM.color)
+              {Object.keys(themes[0].color)
                 .filter(colorCode => 0 === colorCode.indexOf(color))
                 .map(colorCode => {
+                  const color = themes[0].color[colorCode];
                   return (
                     <PreviewCard key={colorCode}>
-                      <ColorContainer color={themes.PIM.color[colorCode]} />
+                      <ColorContainer color={color} />
                       <LabelContainer>{colorCode}</LabelContainer>
-                      <LabelContainer>{themes.PIM.color[colorCode].toUpperCase()}</LabelContainer>
+                      <LabelContainer>{color.toUpperCase()}</LabelContainer>
                     </PreviewCard>
                   );
                 })}

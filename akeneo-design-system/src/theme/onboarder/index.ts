@@ -2,6 +2,7 @@ import {Theme} from '../theme';
 import {color, fontSize, palette} from '../common';
 
 const onboarderTheme: Theme = {
+  name: 'Onboarder',
   color: {
     ...color,
     brand20: '#DBEDF8',

@@ -2,6 +2,7 @@ import {Theme} from '../theme';
 import {color, fontSize, palette} from '../common';
 
 const sharedCatalogsTheme: Theme = {
+  name: 'Shared Catalogs',
   color: {
     ...color,
     brand20: '#FDF0D8',
