@@ -1,4 +1,5 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import LinkTo from '@storybook/addon-links/react';
 import {useArgs, updateArgs} from '@storybook/client-api';
 import {Modal} from './Modal';
 import {Button} from '../Button/Button';
@@ -19,11 +20,8 @@ import * as Illustrations from '../../illustrations';
 
 ## Usage
 
-TODO
-
-### TODO
-
-TODO
+The Modal Component is the main Component of the Overlay pattern and is used to display a secondary window over the content.
+It can be used with or without an Illustration and adapts its content accordingly.
 
 ## Playground
 
@@ -44,7 +42,7 @@ TODO
                 : React.createElement(Illustrations[args.illustration])
             }
           />
-          <Button onClick={open}>Open Raphael Modal</Button>
+          <Button onClick={open}>Open Modal</Button>
         </>
       );
     }}
@@ -52,3 +50,7 @@ TODO
 </Canvas>
 
 <ArgsTable story="Standard" />
+
+## Examples of Usage
+
+A few examples of usage of the `Modal` Component can be found on the <LinkTo kind="Patterns/Overlays" story="Confirm Modal">Overlays story.</LinkTo>

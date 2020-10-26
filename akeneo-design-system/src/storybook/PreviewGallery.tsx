@@ -41,4 +41,15 @@ const Subtitle = styled.h2`
   text-transform: Capitalize;
 `;
 
-export {PreviewGrid, PreviewCard, PreviewContainer, LabelContainer, Subtitle};
+const Content = styled.div<{width: number; height: number}>`
+  width: ${({width}) => width}px;
+  height: ${({height}) => height}px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid ${({theme}) => theme.color.blue40};
+  background-color: ${({theme}) => theme.color.blue10};
+  margin-top: 30px;
+`;
+
+export {PreviewGrid, PreviewCard, PreviewContainer, LabelContainer, Subtitle, Content};
