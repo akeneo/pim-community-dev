@@ -131,5 +131,4 @@ Modal.BottomButtons = styled.div`
   margin-top: 20px;
 `;
 
-export {Modal};
-export {SectionTitle, Title};
+export {Modal, SectionTitle, Title};
