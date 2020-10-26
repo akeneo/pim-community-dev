@@ -336,8 +336,6 @@ SQL;
             FROM product_child
                 JOIN pim_catalog_family f ON f.id = product_child.family_id
                 JOIN pim_catalog_attribute a_image ON a_image.id = f.image_attribute_id
-            WHERE
-                product_child.root_code = :code
             HAVING
                 image_value IS NOT NULL AND JSON_TYPE(image_value) != 'NULL'
             ORDER BY 
