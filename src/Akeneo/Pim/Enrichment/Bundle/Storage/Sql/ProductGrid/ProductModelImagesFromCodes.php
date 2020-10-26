@@ -328,7 +328,7 @@ SQL;
                    a_image.code as attribute_code,
                    a_image.is_localizable,
                    a_image.is_scopable,
-                   product_child.raw_values,
+                   JSON_EXTRACT(product_child.raw_values, CONCAT('$.', a_image.code)) as image_values,
                    JSON_EXTRACT(
                        product_child.raw_values,
                        CONCAT('$."', a_image.code, '".', IF(is_scopable = 1, '":channel_code"', '"<all_channels>"'), '.', IF(is_localizable = 1, '":locale_code"', '"<all_locales>"'))
@@ -358,9 +358,7 @@ SQL;
                 continue;
             }
 
-            $rawValues = json_decode($row['raw_values'], true);
-            $filteredRawValues = array_intersect_key($rawValues, [$row['attribute_code'] => true]);
-            $productModels[$row['code']] = $filteredRawValues;
+            $productModels[$row['code']] = [$row['attribute_code'] => \json_decode($row['image_values'], true)];
             $productModelsInfo[$row['code']]['is_scopable'] = $row['is_scopable'] ? $channelCode : null;
             $productModelsInfo[$row['code']]['is_localizable'] = $row['is_localizable'] ? $channelCode : null;
             $productModelsInfo[$row['code']]['attribute_code'] = $row['attribute_code'];
