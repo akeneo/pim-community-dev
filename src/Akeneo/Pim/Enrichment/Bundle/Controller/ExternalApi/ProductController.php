@@ -526,7 +526,7 @@ class ProductController
         }
 
         try {
-            if ($this->needUpdateFromVariantToSimple($product, $data, null === $product->getId())) {
+            if ($this->needUpdateFromVariantToSimple($product, $data)) {
                 $this->removeParent->from($product);
             }
 
@@ -752,18 +752,20 @@ class ProductController
     }
 
     /**
-     * It is a conversion from variant product to simple product if we are updating a variant product,
-     * and 'parent' is explicitly null
+     * It is a conversion from variant product to simple product if
+     * - the product already exists
+     * - it is a variant product
+     * - and 'parent' is explicitly null
      *
      * @param ProductInterface $product
      * @param array $data
-     * @param bool $isCreation
      *
      * @return bool
      */
-    protected function needUpdateFromVariantToSimple(ProductInterface $product, array $data, bool $isCreation): bool
+    protected function needUpdateFromVariantToSimple(ProductInterface $product, array $data): bool
     {
-        return !$isCreation && $product->isVariant() && array_key_exists('parent', $data) && null === $data['parent'];
+        return null !== $product->getId() && $product->isVariant() &&
+            array_key_exists('parent', $data) && null === $data['parent'];
     }
 
     private function normalizeProductsList(ConnectorProductList $connectorProductList, ListProductsQuery $query): array
