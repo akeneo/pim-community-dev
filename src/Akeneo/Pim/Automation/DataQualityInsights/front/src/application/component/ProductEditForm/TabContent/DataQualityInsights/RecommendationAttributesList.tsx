@@ -34,15 +34,17 @@ const RecommendationAttributesList: FunctionComponent<RecommendationAttributesLi
   const {locale} = useCatalogContext();
   const productFamilyInformation = useFetchProductFamilyInformation();
 
-  let attributesLabels: AttributeWithRecommendation[] = [];
-  if (locale && productFamilyInformation) {
-    attributesLabels = attributes.map((attributeCode: string) => {
-      return {
-        code: attributeCode,
-        label: getAttributeLabel(attributeCode, productFamilyInformation, locale),
-      }
-    });
-  }
+  const attributesLabels: AttributeWithRecommendation[] = attributes.map((attributeCode: string) => {
+    let label: string = attributeCode;
+    if (locale && productFamilyInformation)  {
+      label = getAttributeLabel(attributeCode, productFamilyInformation, locale)
+    }
+
+    return {
+      code: attributeCode,
+      label,
+    }
+  });
 
   const sortedAttributes = Object.values(attributesLabels).sort((attribute1: AttributeWithRecommendation, attribute2: AttributeWithRecommendation) => {
     return attribute1.label.localeCompare(attribute2.label, undefined , {sensitivity: 'base'});
