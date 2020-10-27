@@ -293,10 +293,11 @@ class ProductReaderSpec extends ObjectBehavior
         $cursor->count()->willReturn($expectedCount);
 
         $this->initialize();
-        $this->count()->shouldReturn(1);
+        $this->count()->shouldReturn($expectedCount);
     }
 
-    function it_throws_if_the_reader_is_not_initialized() {
+    function it_throws_if_the_reader_is_not_initialized()
+    {
         $this->shouldThrow(\RuntimeException::class)
             ->during('count');
     }
