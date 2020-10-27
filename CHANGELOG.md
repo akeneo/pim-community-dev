@@ -74,6 +74,7 @@
 - CPM-38: Upgrade Symfony to 4.4.15
 - CPM-33: Upgrade node to 12.19
 - CPM-33: Upgrade npm to 6.14
+- BH-143: Use Composer v2.0
 
 ## Classes
 
