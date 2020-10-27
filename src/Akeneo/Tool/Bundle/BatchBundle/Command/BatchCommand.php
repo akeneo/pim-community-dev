@@ -7,6 +7,7 @@ namespace Akeneo\Tool\Bundle\BatchBundle\Command;
 use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Tool\Bundle\BatchBundle\Notification\Notifier;
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
@@ -219,7 +220,13 @@ class BatchCommand extends Command
 
         $verbose = $input->getOption('verbose');
         $exitCode = null;
-        if (ExitStatus::COMPLETED === $jobExecution->getExitStatus()->getExitCode()) {
+        if (
+            ExitStatus::COMPLETED === $jobExecution->getExitStatus()->getExitCode() ||
+            (
+                ExitStatus::STOPPED === $jobExecution->getExitStatus()->getExitCode() &&
+                BatchStatus::STOPPED === $jobExecution->getStatus()->getValue()
+            )
+        ) {
             $nbWarnings = 0;
             /** @var StepExecution $stepExecution */
             foreach ($jobExecution->getStepExecutions() as $stepExecution) {

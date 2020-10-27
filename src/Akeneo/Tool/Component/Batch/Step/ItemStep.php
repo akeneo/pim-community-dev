@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Tool\Component\Batch\Step;
 
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
@@ -9,9 +11,12 @@ use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Model\Warning;
+use Akeneo\Tool\Component\Batch\Query\SqlGetJobExecutionStatus;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -21,7 +26,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class ItemStep extends AbstractStep
+class ItemStep extends AbstractStep implements StoppableStepInterface
 {
     /** @var ItemReaderInterface */
     protected $reader = null;
@@ -38,29 +43,25 @@ class ItemStep extends AbstractStep
     /** @var StepExecution */
     protected $stepExecution = null;
 
-    /**
-     * @param string                   $name
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param JobRepositoryInterface   $jobRepository
-     * @param ItemReaderInterface      $reader
-     * @param ItemProcessorInterface   $processor
-     * @param ItemWriterInterface      $writer
-     * @param integer                  $batchSize
-     */
+    /** @var bool */
+    private $stoppable = false;
+
     public function __construct(
-        $name,
+        string $name,
         EventDispatcherInterface $eventDispatcher,
         JobRepositoryInterface $jobRepository,
         ItemReaderInterface $reader,
         ItemProcessorInterface $processor,
         ItemWriterInterface $writer,
-        $batchSize = 100
+        int $batchSize = 100,
+        SqlGetJobExecutionStatus $sqlGetJobExecutionStatus = null
     ) {
         parent::__construct($name, $eventDispatcher, $jobRepository);
 
         $this->reader = $reader;
         $this->processor = $processor;
         $this->writer = $writer;
+        $this->sqlGetJobExecutionStatus = $sqlGetJobExecutionStatus;
         $this->batchSize = $batchSize;
     }
 
@@ -92,6 +93,11 @@ class ItemStep extends AbstractStep
     public function getWriter()
     {
         return $this->writer;
+    }
+
+    public function setStoppable(bool $stoppable): void
+    {
+        $this->stoppable = $stoppable;
     }
 
     /**
@@ -132,6 +138,20 @@ class ItemStep extends AbstractStep
                 $this->getJobRepository()->updateStepExecution($stepExecution);
                 $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
                 $batchCount = 0;
+
+                if (
+                    $this->stoppable &&
+                    null !== $this->sqlGetJobExecutionStatus &&
+                    BatchStatus::STOPPING === $this->sqlGetJobExecutionStatus->getByJobExecutionId(
+                        $stepExecution->getJobExecution()->getId()
+                    )->getValue()
+                ) {
+                    $stepExecution->setExitStatus(new ExitStatus(ExitStatus::STOPPED));
+                    $stepExecution->setStatus(new BatchStatus(BatchStatus::STOPPED));
+                    $this->getJobRepository()->updateStepExecution($stepExecution);
+
+                    break;
+                }
             }
         }
 
