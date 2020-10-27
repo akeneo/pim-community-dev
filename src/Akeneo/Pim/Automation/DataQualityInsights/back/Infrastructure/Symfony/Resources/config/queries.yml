@@ -204,14 +204,14 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo.pim.automation.data_quality_insights.infrastructure.persistence.query.product.get_missing_image_attributes_masks:
+    akeneo.pim.automation.data_quality_insights.query.product.get_missing_image_attributes_masks:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\GetAttributeTypesMasksQuery
         arguments:
             $connection: '@database_connection'
             $attributeTypes:
                 - !php/const Akeneo\Pim\Structure\Component\AttributeTypes::IMAGE
 
-    akeneo.pim.automation.data_quality_insights.infrastructure.persistence.query.product_model.get_missing_image_attributes_masks:
+    akeneo.pim.automation.data_quality_insights.query.product_model.get_missing_image_attributes_masks:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\GetAttributeTypesProductModelMasksQuery
         arguments:
             $connection: '@database_connection'

@@ -73,7 +73,7 @@ class GetAttributeTypesProductModelMasksQueryIntegration extends CompletenessTes
         ]);
 
         $productModelId = $this->givenAProductModel('a_product_model', 'familyA_variant1');
-        $attributesMask = $this->get('akeneo.pim.automation.data_quality_insights.infrastructure.persistence.query.product_model.get_missing_image_attributes_masks')->execute($productModelId);
+        $attributesMask = $this->get('akeneo.pim.automation.data_quality_insights.query.product_model.get_missing_image_attributes_masks')->execute($productModelId);
 
         $ecommerceEnUsMask = $attributesMask->requiredAttributesMaskForChannelAndLocale('ecommerce', 'en_US');
         $tabletEnUS = $attributesMask->requiredAttributesMaskForChannelAndLocale('tablet', 'en_US');
@@ -160,7 +160,7 @@ class GetAttributeTypesProductModelMasksQueryIntegration extends CompletenessTes
         ]);
 
         $productModelId = $this->givenAProductModel('a_root_product_model', 'familyA_variant2');
-        $attributesMask = $this->get('akeneo.pim.automation.data_quality_insights.infrastructure.persistence.query.product_model.get_missing_image_attributes_masks')->execute($productModelId);
+        $attributesMask = $this->get('akeneo.pim.automation.data_quality_insights.query.product_model.get_missing_image_attributes_masks')->execute($productModelId);
 
         $this->assertEqualsCanonicalizing([
             'an_image-<all_channels>-<all_locales>',
@@ -172,7 +172,7 @@ class GetAttributeTypesProductModelMasksQueryIntegration extends CompletenessTes
         ], $attributesMask->requiredAttributesMaskForChannelAndLocale('tablet', 'fr_FR')->mask());
 
         $subProductModelId = $this->givenASubProductModel('a_sub_product_model', 'familyA_variant2', 'a_root_product_model');
-        $attributesMask = $this->get('akeneo.pim.automation.data_quality_insights.infrastructure.persistence.query.product_model.get_missing_image_attributes_masks')->execute($subProductModelId);
+        $attributesMask = $this->get('akeneo.pim.automation.data_quality_insights.query.product_model.get_missing_image_attributes_masks')->execute($subProductModelId);
 
         $this->assertEqualsCanonicalizing([
             'an_image-<all_channels>-<all_locales>',
