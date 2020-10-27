@@ -7,13 +7,17 @@ import {Button, pimTheme} from 'akeneo-design-system';
 type StopJobActionProps = {
   id: string;
   isStoppable: boolean;
+  refresh: () => void;
 };
 
-const StopJobAction = ({id, isStoppable}: StopJobActionProps) => {
+const StopJobAction = ({id, isStoppable, refresh}: StopJobActionProps) => {
   const translate = useTranslate();
   const stopRoute = useRoute('pim_enrich_job_tracker_rest_stop', {id});
 
-  const stopJob = () => fetch(stopRoute);
+  const stopJob = async () => {
+    await fetch(stopRoute);
+    refresh();
+  };
 
   if (!isStoppable) return null;
 
@@ -27,7 +31,11 @@ const StopJobAction = ({id, isStoppable}: StopJobActionProps) => {
 class StopJob extends ReactView {
   reactElementToMount() {
     const data = this.getRoot().getFormData();
-    const props = {id: data.meta.id, isStoppable: Boolean(data.isStoppable)};
+    const props = {
+      id: data.meta.id,
+      isStoppable: Boolean(data.isStoppable),
+      refresh: () => this.getRoot().render(),
+    };
 
     return (
       <DependenciesProvider>
