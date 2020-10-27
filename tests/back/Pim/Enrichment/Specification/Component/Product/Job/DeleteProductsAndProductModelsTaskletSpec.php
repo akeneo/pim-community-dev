@@ -89,17 +89,20 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $rootProductModelCursor->valid()->willReturn(true, true, false);
         $rootProductModelCursor->current()->willReturn($product123, $product456);
         $rootProductModelCursor->next()->shouldBeCalled();
+        $rootProductModelCursor->count()->willReturn(2);
 
         $subProductModelPQB->addFilter('entity_type', Operators::EQUALS, ProductModelInterface::class)->shouldBeCalled();
         $subProductModelPQB->addFilter('parent', Operators::IS_NOT_EMPTY, null)->shouldBeCalled();
         $subProductModelPQB->execute()->willReturn($subProductModelCursor);
         $subProductModelCursor->valid()->willReturn(false);
+        $subProductModelCursor->count()->willReturn(1);
 
         $variantProductsPQB->addFilter('entity_type', Operators::EQUALS, ProductInterface::class)->shouldBeCalled();
         $variantProductsPQB->execute()->willReturn($variantProductsCursor);
         $variantProductsCursor->valid()->willReturn(true, false);
         $variantProductsCursor->current()->willReturn($product789);
         $variantProductsCursor->next()->shouldBeCalled();
+        $variantProductsCursor->count()->willReturn(1);
 
         $filter
             ->filterObject(Argument::any(), 'pim.enrich.product.delete')
@@ -113,6 +116,7 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $productRemover->removeAll([$product123, $product456])->shouldBeCalled();
         $productModelRemover->removeAll([])->shouldBeCalled();
 
+        $stepExecution->setTotalItems(4)->shouldBeCalled();
         $stepExecution->addSummaryInfo('deleted_products', 0)->shouldBeCalled();
         $stepExecution->addSummaryInfo('deleted_product_models', 0)->shouldBeCalled();
         $stepExecution->incrementReadCount()->shouldBeCalledTimes(3);
@@ -167,6 +171,7 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $rootProductModelCursor->valid()->willReturn(true, false);
         $rootProductModelCursor->current()->willReturn($productModel789);
         $rootProductModelCursor->next()->shouldBeCalled();
+        $rootProductModelCursor->count()->willReturn(1);
 
         $subProductModelPQB->addFilter('entity_type', Operators::EQUALS, ProductModelInterface::class)->shouldBeCalled();
         $subProductModelPQB->addFilter('parent', Operators::IS_NOT_EMPTY, null)->shouldBeCalled();
@@ -174,10 +179,12 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $subProductModelCursor->valid()->willReturn(true, true, false);
         $subProductModelCursor->current()->willReturn($productModel123, $productModel456);
         $subProductModelCursor->next()->shouldBeCalled();
+        $subProductModelCursor->count()->willReturn(2);
 
         $variantProductsPQB->addFilter('entity_type', Operators::EQUALS, ProductInterface::class)->shouldBeCalled();
         $variantProductsPQB->execute()->willReturn($variantProductsCursor);
         $variantProductsCursor->valid()->willReturn(false);
+        $variantProductsCursor->count()->willReturn(1);
 
         $filter
             ->filterObject(Argument::any(), 'pim.enrich.product.delete')
@@ -197,6 +204,7 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $productModelRemover->removeAll([$productModel789])->shouldBeCalled();
         $productRemover->removeAll([])->shouldBeCalled();
 
+        $stepExecution->setTotalItems(4)->shouldBeCalled();
         $stepExecution->addSummaryInfo('deleted_products', 0)->shouldBeCalled();
         $stepExecution->addSummaryInfo('deleted_product_models', 0)->shouldBeCalled();
         $stepExecution->incrementReadCount()->shouldBeCalledTimes(3);
@@ -261,6 +269,7 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $rootProductModelCursor->valid()->willReturn(true, true, false);
         $rootProductModelCursor->current()->willReturn($productModel3, $product6);
         $rootProductModelCursor->next()->shouldBeCalled();
+        $rootProductModelCursor->count()->willReturn(2);
 
         $subProductModelPQB->addFilter('entity_type', Operators::EQUALS, ProductModelInterface::class)->shouldBeCalled();
         $subProductModelPQB->addFilter('parent', Operators::IS_NOT_EMPTY, null)->shouldBeCalled();
@@ -268,12 +277,14 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $subProductModelCursor->valid()->willReturn(true, true, false);
         $subProductModelCursor->current()->willReturn($productModel1, $productModel2);
         $subProductModelCursor->next()->shouldBeCalled();
+        $subProductModelCursor->count()->willReturn(2);
 
         $variantProductsPQB->addFilter('entity_type', Operators::EQUALS, ProductInterface::class)->shouldBeCalled();
         $variantProductsPQB->execute()->willReturn($variantProductsCursor);
         $variantProductsCursor->valid()->willReturn(true, true, false);
         $variantProductsCursor->current()->willReturn($product4, $product5);
         $variantProductsCursor->next()->shouldBeCalled();
+        $variantProductsCursor->count()->willReturn(2);
 
         $filter
             ->filterObject(Argument::any(), 'pim.enrich.product.delete')
@@ -303,6 +314,7 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $productModelRemover->removeAll([$productModel3])->shouldBeCalled();
         $productRemover->removeAll([$product6])->shouldBeCalled();
 
+        $stepExecution->setTotalItems(6)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('deleted_product_models', 1)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('deleted_products', 1)->shouldBeCalled();
 
@@ -365,15 +377,18 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $rootProductModelCursor->valid()->willReturn(true, true, true, true, false);
         $rootProductModelCursor->current()->willReturn($productModel1, $productModel2, $product1, $product2);
         $rootProductModelCursor->next()->shouldBeCalled();
+        $rootProductModelCursor->count()->willReturn(4);
 
         $subProductModelPQB->addFilter('entity_type', Operators::EQUALS, ProductModelInterface::class)->shouldBeCalled();
         $subProductModelPQB->addFilter('parent', Operators::IS_NOT_EMPTY, null)->shouldBeCalled();
         $subProductModelPQB->execute()->willReturn($subProductModelCursor);
         $subProductModelCursor->valid()->willReturn(false);
+        $subProductModelCursor->count()->willReturn(1);
 
         $variantProductsPQB->addFilter('entity_type', Operators::EQUALS, ProductInterface::class)->shouldBeCalled();
         $variantProductsPQB->execute()->willReturn($variantProductsCursor);
         $variantProductsCursor->valid()->willReturn(false);
+        $variantProductsCursor->count()->willReturn(1);
 
         $filter
             ->filterObject($productModel1, 'pim.enrich.product.delete')
@@ -395,6 +410,7 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn(true);
 
+        $stepExecution->setTotalItems(6)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
         $stepExecution->addSummaryInfo('deleted_products', 0)->shouldBeCalled();
         $stepExecution->addSummaryInfo('deleted_product_models', 0)->shouldBeCalled();
