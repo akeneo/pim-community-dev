@@ -29,12 +29,21 @@ const StopJobAction = ({id, isStoppable, refresh}: StopJobActionProps) => {
 };
 
 class StopJob extends ReactView {
+  /**
+   * {@inheritdoc}
+   */
+  configure () {
+      this.listenTo(this.getRoot(), 'pim-job-execution-form:auto-update', this.render);
+
+      return ReactView.prototype.configure.apply(this, arguments);
+  }
+
   reactElementToMount() {
-    const data = this.getRoot().getFormData();
+    const data = this.getFormData();
     const props = {
       id: data.meta.id,
       isStoppable: Boolean(data.isStoppable),
-      refresh: () => this.getRoot().render(),
+      refresh: () => this.getRoot().trigger('pim-job-execution-form:request-fetch-data'),
     };
 
     return (

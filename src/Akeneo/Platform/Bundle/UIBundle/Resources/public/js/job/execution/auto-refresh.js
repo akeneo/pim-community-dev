@@ -46,6 +46,9 @@ define(
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim-job-execution-form:start-auto-update', this.startAutoUpdate);
                 this.listenTo(this.getRoot(), 'pim-job-execution-form:stop-auto-update', this.stopAll);
+                this.listenTo(this.getRoot(), 'pim-job-execution-form:request-fetch-data', () => {
+                    this.fetchData(this.getFormData())
+                });
 
                 // Clear interval/timeout when changing the page
                 Backbone.Router.prototype.on('route', this.stopAll.bind(this));
@@ -86,7 +89,6 @@ define(
              * @param jobExecution
              */
             fetchData: function (jobExecution) {
-
                 if (jobExecution.isRunning) {
                     this.setStatus('isLoading');
                     var jobId = jobExecution.meta.id;
@@ -94,6 +96,7 @@ define(
                         .then(function (newJobExecution) {
                             this.setData(newJobExecution);
                             this.render();
+                            this.getRoot().trigger('pim-job-execution-form:auto-update')
                             this.restartAutoRefreshTimeout();
                         }.bind(this));
                 } else {
