@@ -4,6 +4,7 @@ namespace Akeneo\Tool\Component\Connector\Reader\Database;
 
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 
@@ -17,7 +18,8 @@ use Doctrine\Common\Persistence\ObjectRepository;
 class Reader extends AbstractReader implements
     ItemReaderInterface,
     InitializableInterface,
-    StepExecutionAwareInterface
+    StepExecutionAwareInterface,
+    TrackableItemReaderInterface
 {
     /** @var ObjectRepository */
     protected $repository;
@@ -36,5 +38,10 @@ class Reader extends AbstractReader implements
     protected function getResults()
     {
         return new \ArrayIterator($this->repository->findAll());
+    }
+
+    public function count(): int
+    {
+        return\count($this->repository->findAll());
     }
 }
