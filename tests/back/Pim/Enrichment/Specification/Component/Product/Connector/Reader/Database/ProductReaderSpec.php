@@ -51,7 +51,7 @@ class ProductReaderSpec extends ObjectBehavior
         JobParameters $jobParameters
     ) {
         $filters = [
-            'data' => [
+            'data'      => [
                 [
                     'field'    => 'enabled',
                     'operator' => '=',
@@ -127,7 +127,7 @@ class ProductReaderSpec extends ObjectBehavior
         JobParameters $jobParameters
     ) {
         $filters = [
-            'data' => [
+            'data'      => [
                 [
                     'field'    => 'completeness',
                     'operator' => '>=',
@@ -190,7 +190,7 @@ class ProductReaderSpec extends ObjectBehavior
         JobParameters $jobParameters
     ) {
         $filters = [
-            'data' => [
+            'data'      => [
                 [
                     'field'    => 'completeness',
                     'operator' => '>=',
@@ -236,5 +236,68 @@ class ProductReaderSpec extends ObjectBehavior
         $this->read()->shouldReturn($product2);
         $this->read()->shouldReturn($product3);
         $this->read()->shouldReturn(null);
+    }
+
+    function it_return_product_count(
+        $pqbFactory,
+        $channelRepository,
+        $stepExecution,
+        ChannelInterface $channel,
+        ProductQueryBuilderInterface $pqb,
+        CursorInterface $cursor,
+        JobParameters $jobParameters
+    ) {
+        $filters = [
+            'data'      => [
+                [
+                    'field'    => 'enabled',
+                    'operator' => '=',
+                    'value'    => true
+                ],
+                [
+                    'field'    => 'family',
+                    'operator' => 'IN',
+                    'value'    => [
+                        'camcorder'
+                    ]
+                ],
+                [
+                    'field'    => 'completeness',
+                    'operator' => '>=',
+                    'value'    => 100
+                ]
+            ],
+            'structure' => [
+                'scope'   => 'mobile',
+                'locales' => ['fr_FR', 'en_US'],
+            ]
+        ];
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($filters);
+
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
+        $channel->getCode()->willReturn('mobile');
+
+        $pqbFactory->create(['default_scope' => 'mobile'])
+            ->shouldBeCalled()
+            ->willReturn($pqb);
+        $pqb->addFilter('enabled', Operators::EQUALS, true, [])->shouldBeCalled();
+        $pqb->addFilter('family', Operators::IN_LIST, ['camcorder'], [])->shouldBeCalled();
+        $pqb->addFilter('completeness', Operators::GREATER_OR_EQUAL_THAN, 100, [])->shouldBeCalled();
+        $pqb->execute()
+            ->shouldBeCalled()
+            ->willReturn($cursor);
+
+        $expectedCount = 10;
+        $cursor->count()->willReturn($expectedCount);
+
+        $this->initialize();
+        $this->count()->shouldReturn(1);
+    }
+
+    function it_throws_if_the_reader_is_not_initialized() {
+        $this->shouldThrow(\RuntimeException::class)
+            ->during('count');
     }
 }
