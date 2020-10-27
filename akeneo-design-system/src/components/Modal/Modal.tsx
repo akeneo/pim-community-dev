@@ -1,10 +1,10 @@
-import React, {ForwardRefExoticComponent, ReactElement, Ref, RefAttributes} from 'react';
+import React, {ReactElement, Ref, RefAttributes} from 'react';
 import styled, {StyledComponent} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {CloseIcon} from '../../icons';
 import {IllustrationProps} from '../../illustrations/IllustrationProps';
 import {useShortcut} from '../../hooks';
-import {Key} from '../../shared';
+import {Key, Component} from '../../shared';
 
 const ModalContainer = styled.div`
   position: fixed;
@@ -93,13 +93,10 @@ type ModalProps = {
   children?: string;
 };
 
-type ModalComponent = ForwardRefExoticComponent<ModalProps & RefAttributes<HTMLDivElement>> & {
+type ModalComponent = Component<ModalProps & RefAttributes<HTMLDivElement>> & {
   BottomButtons?: StyledComponent<'div', any, any, never>;
 };
 
-/**
- * The Modal Component is used to display a secondary window over the content.
- */
 const Modal: ModalComponent = React.forwardRef<HTMLDivElement, ModalProps>(
   ({isOpen, onClose, illustration, children, ...rest}: ModalProps, forwardedRef: Ref<HTMLDivElement>) => {
     useShortcut(Key.Escape, onClose, forwardedRef);
@@ -130,5 +127,8 @@ Modal.BottomButtons = styled.div`
   gap: 10px;
   margin-top: 20px;
 `;
+
+Modal.__docgenInfo = {description: 'The Modal Component is used to display a secondary window over the content.'};
+Modal.displayName = 'Modal';
 
 export {Modal, SectionTitle, Title};

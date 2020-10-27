@@ -51,6 +51,18 @@ It can be used with or without an Illustration and adapts its content accordingl
 
 <ArgsTable story="Standard" />
 
-## Examples of Usage
+## Usage with Composition
+
+The Modal Component also exposes a `BottomButtons` Component that is helpful to display Buttons at the bottom of the Modal children. It can be used as simply as this:
+
+```jsx
+<Modal>
+  Lorem ipsum dolor sit amet
+  <Modal.BottomButtons>
+    <Button>Cancel</Button>
+    <Button>Confirm</Button>
+  </Modal.BottomButtons>
+</Modal>
+```
 
 A few examples of usage of the `Modal` Component can be found on the <LinkTo kind="Patterns/Overlays" story="Confirm Modal">Overlays story.</LinkTo>
