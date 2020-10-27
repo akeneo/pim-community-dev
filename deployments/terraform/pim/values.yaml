@@ -97,10 +97,6 @@ pim:
       enabled: true
       pimCommand: "akeneo:batch:job-queue-consumer-daemon"
       replicas: 1
-    webhook-consumer-process:
-      enabled: true
-      pimCommand: "messenger:consume webhook --time-limit=300 --quiet"
-      replicas: 1
   replicas: 2
   extraLabels: {}
   secret: null # Generate me with `uuidgen`
@@ -185,6 +181,10 @@ pim:
       enabled: true
       pimCommand: "pim:data-quality-insights:evaluations"
       schedule: "*/30 * * * *"
+    webhook-consumer-process:
+      enabled: true
+      pimCommand: "messenger:consume webhook --sleep=1 --memory-limit=384M --time-limit=300 --quiet"
+      schedule: "*/5 * * * *"
 
 # Onboarder
 onboarder:
