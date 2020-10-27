@@ -104,7 +104,6 @@ jobs:
           - run:
                 name: Communication panel
                 command: |
-                    make communication-channel-lint-back
                     make communication-channel-coupling-back
                     make communication-channel-unit-back
           - store_test_results:
