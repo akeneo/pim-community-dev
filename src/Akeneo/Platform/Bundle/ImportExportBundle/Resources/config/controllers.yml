@@ -64,3 +64,4 @@ services:
             - '@pim_connector.event_listener.archivist'
             - '@oro_security.security_facade'
             - {'import': 'pim_importexport_import_profile_show', 'export': 'pim_importexport_export_profile_show'}
+            - '@akeneo_batch.query.update_job_execution_status'
