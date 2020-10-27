@@ -760,6 +760,7 @@ class DataGridContext extends PimContext implements PageObjectAware
      * @Then /^I should see users? (.*)$/
      * @Then /^I should see famil(?:y|ies) (.*)$/
      * @Then /^I should see client(?:|s) (.*)$/
+     * @Then /^I should see roles? (.*)$/
      */
     public function iShouldSeeEntities($elements)
     {
@@ -789,6 +790,7 @@ class DataGridContext extends PimContext implements PageObjectAware
      * @Then /^I should not see users? (.*)$/
      * @Then /^I should not see famil(?:y|ies) (.*)$/
      * @Then /^I should not see client(?:|s) (.*)$/
+     * @Then /^I should not see roles? (.*)$/
      */
     public function iShouldNotSeeEntities($entities)
     {
@@ -823,7 +825,6 @@ class DataGridContext extends PimContext implements PageObjectAware
 
             return true;
         }, sprintf('Can\'t filter by %s with operator %s and value %s', $filterName, $operator, $value));
-
 
         $gridContainer = $this->getElementFromDatagrid('Grid container');
 
