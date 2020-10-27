@@ -32,7 +32,7 @@ class DuplicateProductController
     /** @var DuplicateProductHandler */
     private $duplicateProductHandler;
 
-    /** @var ProductRepository */
+    /** @var ProductRepositoryInterface */
     private $productRepository;
 
     /** @var NormalizerInterface */

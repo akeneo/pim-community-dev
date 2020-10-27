@@ -88,8 +88,6 @@ const ConditionLine: React.FC<Props> = ({
           onValidate={() => {
             deleteCondition(lineNumber);
           }}
-          cancelLabel={translate('pim_common.cancel')}
-          confirmLabel={translate('pim_common.confirm')}
           label={translate(
             'pimee_catalog_rule.form.edit.conditions.delete.label'
           )}
