@@ -6,8 +6,8 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Webhook;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
-use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\NotGrantedCategoryException;
+use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductNotFoundException;
 use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
