@@ -54,7 +54,6 @@ class JobExecutionNormalizer implements NormalizerInterface, SerializerAwareInte
         $job = $this->jobRegistry->get($jobInstance->getJobName());
         $isRunning = $object->isRunning();
         $isStoppable = $isRunning && $job instanceof StoppableJobInterface && $job->isStoppable();
-        $isStoppable = true;
 
         return [
             'failures'       => array_map(

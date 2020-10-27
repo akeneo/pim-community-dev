@@ -73,6 +73,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_connector.step.csv_attribute.export'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
 
