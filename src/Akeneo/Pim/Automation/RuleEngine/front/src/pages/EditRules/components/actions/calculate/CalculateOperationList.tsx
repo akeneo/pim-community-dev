@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Dragula = require('react-dragula');
 import React from 'react';
-import { useFieldArray } from 'react-hook-form';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 import { Operation } from '../../../../../models/actions/Calculate/Operation';
 import { useTranslate } from '../../../../../dependenciesTools/hooks';
 import { AttributeCode, AttributeType, Locale } from '../../../../../models';
@@ -31,6 +31,7 @@ const CalculateOperationList: React.FC<Props> = ({
   const { fields, remove, move, append } = useFieldArray({
     name: formName('full_operation_list'),
   });
+  const { watch } = useFormContext();
 
   const removeOperation = (lineToRemove: number) => () => {
     remove(lineToRemove);
@@ -77,7 +78,8 @@ const CalculateOperationList: React.FC<Props> = ({
           sibling: HTMLElement
         ) => {
           const origin = Number(el.dataset.lineNumber);
-          let target = Number(sibling?.dataset?.lineNumber || fields.length);
+          const fields: [] = watch(formName('full_operation_list')) ?? [];
+          let target = Number(sibling?.dataset?.lineNumber ?? fields.length);
           if (target > origin) {
             target--;
           }
@@ -86,6 +88,17 @@ const CalculateOperationList: React.FC<Props> = ({
       );
     }
   }, [dragulaDecorator]);
+
+  const isSourceOrOperationAValue = (sourceOrOperation: any): boolean => {
+    if (!sourceOrOperation.hasOwnProperty('value')) {
+      return false;
+    }
+
+    return (
+      !sourceOrOperation.hasOwnProperty('field') ||
+      typeof sourceOrOperation.value !== 'undefined'
+    );
+  };
 
   return (
     <>
@@ -106,10 +119,7 @@ const CalculateOperationList: React.FC<Props> = ({
                 lineNumber={lineNumber}
                 operationLineNumber={operationLineNumber}
                 removeOperation={removeOperation}
-                isValue={
-                  sourceOrOperation.hasOwnProperty('value') &&
-                  typeof sourceOrOperation.value !== 'undefined'
-                }
+                isValue={isSourceOrOperationAValue(sourceOrOperation)}
               />
             );
           })}

@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Dragula = require('react-dragula');
 import React from 'react';
-import { useFieldArray } from 'react-hook-form';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 import { Operation } from '../../../../../models/actions/Calculate/Operation';
 import { useTranslate } from '../../../../../dependenciesTools/hooks';
 import {
@@ -38,6 +38,7 @@ const ConcatenateSourceList: React.FC<Props> = ({
   const { formName, isFormFieldInError } = useControlledFormInputAction<
     string | null
   >(lineNumber);
+  const { watch } = useFormContext();
   const [
     operationLineToRemoveStack,
     setOperationLineToRemoveStack,
@@ -86,7 +87,8 @@ const ConcatenateSourceList: React.FC<Props> = ({
           sibling: HTMLElement
         ) => {
           const origin = Number(el.dataset.lineNumber);
-          let target = Number(sibling?.dataset?.lineNumber || fields.length);
+          const fields: [] = watch(formName('from')) ?? [];
+          let target = Number(sibling?.dataset?.lineNumber ?? fields.length);
           if (target > origin) {
             target--;
           }

@@ -36,10 +36,16 @@ const ConcatenateSourceLine: React.FC<OperationLineProps> = ({
   removeOperation,
 }) => {
   const translate = useTranslate();
-  const { formName, isFormFieldInError } = useControlledFormInputAction<
-    string | null
-  >(lineNumber);
+  const {
+    formName,
+    getFormValue,
+    isFormFieldInError,
+  } = useControlledFormInputAction<string | null>(lineNumber);
   const { setValue, watch } = useFormContext();
+
+  const getText = () =>
+    getFormValue(formName(`${baseFormName}.text`)) ?? source.text;
+  watch(formName(`${baseFormName}.text`));
 
   return (
     <li
@@ -67,9 +73,7 @@ const ConcatenateSourceLine: React.FC<OperationLineProps> = ({
               <Controller
                 as={<span hidden />}
                 name={formName(`${baseFormName}.text`)}
-                defaultValue={
-                  watch(formName(`${baseFormName}.text`)) ?? source.text
-                }
+                defaultValue={getText()}
               />
               <label
                 className={`AknInputSizer${
@@ -79,13 +83,9 @@ const ConcatenateSourceLine: React.FC<OperationLineProps> = ({
                     ? 'AknInputSizer--error'
                     : ''
                 }`}
-                data-value={
-                  watch(formName(`${baseFormName}.text`)) ?? source.text
-                }>
+                data-value={getText()}>
                 <InputText
-                  defaultValue={
-                    watch(formName(`${baseFormName}.text`)) ?? source.text
-                  }
+                  defaultValue={getText()}
                   className={'AknInputSizer-input'}
                   data-testid={`edit-rules-action-operation-list-${operationLineNumber}-text`}
                   hiddenLabel={true}

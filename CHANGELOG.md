@@ -45,6 +45,7 @@
 - PIM-9504: Fix the selection of the category tree when a user creates a rule
 - PIM-9500bis: Add "asset_manager_link_assets_to_products" and "asset_manager_compute_transformations" type and job translations.
 - PIM-9529: Fix translation in rule engine edit page
+- PIM-9536: Fix unexpected behaviors on drag&drop in rules edit page (calculate and concatenate actions)
 
 ## Improvements
 
