@@ -35,7 +35,7 @@ class InstallerSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            InstallerEvents::POST_ASSETS_DUMP => [['installAssets'], ['addRequiredDependencies']],
+            InstallerEvents::POST_ASSETS_DUMP => [['installAssets']],
         ];
     }
 
@@ -43,10 +43,5 @@ class InstallerSubscriber implements EventSubscriberInterface
     {
         $shouldSymlink = $event->getArgument('symlink');
         $this->assetsInstaller->installAssets($shouldSymlink);
-    }
-
-    public function addRequiredDependencies(GenericEvent $event): void
-    {
-        $this->frontendDependencies->addRequiredDependencies();
     }
 }
