@@ -97,7 +97,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
             ->during('build', [new ProductModelUpdated('julia', ['code' => 'polo_col_mao'])]);
     }
 
-    public function it_does_raise_a_granted_category_exception($productModelRepository)
+    public function it_raises_a_not_granted_category_exception($productModelRepository)
     {
         $productModel = new ProductModel();
         $productModel->setCode('polo_col_mao');
