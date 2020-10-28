@@ -128,6 +128,8 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
             $family = $this->familyRepository->findOneByIdentifier($familyItem['code']);
             if (null === $family) {
                 $this->stepExecution->incrementSummaryInfo('skip');
+                $this->stepExecution->incrementProcessedItems();
+
                 continue;
             }
 
@@ -140,6 +142,8 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
 
                 if (!$this->isValid($productModel)) {
                     $this->stepExecution->incrementSummaryInfo('skip');
+                    $this->stepExecution->incrementProcessedItems();
+
                     $skippedProductModels[] = $productModel;
                 } else {
                     $productModelsToSave[] = $productModel;

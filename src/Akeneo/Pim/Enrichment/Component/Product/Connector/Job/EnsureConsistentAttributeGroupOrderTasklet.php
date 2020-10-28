@@ -8,6 +8,7 @@ use Akeneo\Pim\Structure\Component\AttributeGroup\Query\FindAttributeGroupOrders
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -24,7 +25,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface
+class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface, TrackableTaskletInterface
 {
     /** @var StepExecution */
     private $stepExecution;
@@ -87,6 +88,7 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface
 
             if (null === $attributeGroup) {
                 $this->stepExecution->incrementSummaryInfo('skip');
+                $this->stepExecution->incrementProcessedItems();
 
                 continue;
             }
@@ -109,15 +111,23 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface
 
                 if ($violations->count() > 0) {
                     $this->stepExecution->incrementSummaryInfo('skip');
+                    $this->stepExecution->incrementProcessedItems();
 
                     continue;
                 }
 
                 $this->attributeGroupSaver->save($attributeGroup);
                 $this->stepExecution->incrementSummaryInfo('process');
+                $this->stepExecution->incrementProcessedItems();
             } else {
                 $this->stepExecution->incrementSummaryInfo('skip');
+                $this->stepExecution->incrementProcessedItems();
             }
         }
+    }
+
+    public function count(): int
+    {
+        return $this->attributeGroupReader->count();
     }
 }

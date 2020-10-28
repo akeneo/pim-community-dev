@@ -122,6 +122,8 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
             $family = $this->familyRepository->findOneByIdentifier($familyItem['code']);
             if (null === $family) {
                 $this->stepExecution->incrementSummaryInfo('skip');
+                $this->stepExecution->incrementProcessedItems();
+
                 continue;
             }
 
@@ -135,6 +137,8 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
 
                     if (!$this->isValid($product)) {
                         $this->stepExecution->incrementSummaryInfo('skip');
+                        $this->stepExecution->incrementProcessedItems();
+
                         $skippedProducts[] = $product;
                     } else {
                         $productsToSave[] = $product;
