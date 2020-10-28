@@ -54,14 +54,26 @@ final class DeleteOrphanJobExecutionDirectories
     private function getPathsAtLevel3ByBatch(): \Iterator
     {
         $paths = [];
-        $firstLevelPaths = $this->archivistFilesystem->listPaths('.', false);
-        foreach ($firstLevelPaths as $firstLevelPath) {
-            $secondLevelPaths = $this->archivistFilesystem->listPaths($firstLevelPath, false);
-            foreach ($secondLevelPaths as $secondLevelPath) {
-                $thirdLevelPaths = $this->archivistFilesystem->listPaths($secondLevelPath, false);
-                foreach ($thirdLevelPaths as $thirdLevelPath) {
-                    $paths[] = $thirdLevelPath;
+        $directoryFilterFunction = function (array $content) {
+            return $content['type'] === 'dir';
+        };
 
+        $firstLevelContents = array_filter(
+            $this->archivistFilesystem->listContents('.', false),
+            $directoryFilterFunction
+        );
+        foreach ($firstLevelContents as $firstLevelContent) {
+            $secondLevelContents = array_filter(
+                $this->archivistFilesystem->listContents($firstLevelContent['path'], false),
+                $directoryFilterFunction
+            );
+            foreach ($secondLevelContents as $secondLevelContent) {
+                $thirdLevelPaths = array_filter(
+                    $this->archivistFilesystem->listContents($secondLevelContent['path'], false),
+                    $directoryFilterFunction
+                );
+                foreach ($thirdLevelPaths as $thirdLevelPath) {
+                    $paths[] = $thirdLevelPath['path'];
                     if (count($paths) >= self::BATCH_SIZE) {
                         yield $paths;
                         $paths = [];
