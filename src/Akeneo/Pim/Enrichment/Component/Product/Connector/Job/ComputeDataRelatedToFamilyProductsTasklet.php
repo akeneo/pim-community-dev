@@ -12,6 +12,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -34,7 +35,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, InitializableInterface
+class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, InitializableInterface, TrackableTaskletInterface
 {
     /** @var StepExecution */
     private $stepExecution;
@@ -96,13 +97,17 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
         $this->stepExecution = $stepExecution;
     }
 
+    public function count(): int
+    {
+        return $this->computeTotalItemsToProcess();
+    }
+
     /**
      * {@inheritdoc}
      */
     public function execute()
     {
         $this->initialize();
-        $this->computeTotalItemsToProcess();
 
         while (true) {
             try {
@@ -183,6 +188,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
 
         $this->productSaver->saveAll($products);
         $this->stepExecution->incrementSummaryInfo('process', count($products));
+        $this->stepExecution->incrementProcessedItems(count($products));
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 
@@ -199,26 +205,55 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
         return $pqb->execute();
     }
 
-//    private function computeTotalItemsToProcess(): void
-//    {
-//
-//        $familyCodes = [];
-//        while (true) {
-//            try {
-//                $familyItem = $this->familyReader->read();
-//                if (null === $familyItem) {
-//                    break;
-//                }
-//            } catch (InvalidItemException $e) {
-//                continue;
-//            }
-//            $familyCodes[] = $familyItem['code'];
-//
-//            if (\count($familyCodes) % 100 === 0) {
-//
-//            }
-//        }
-//
-//        $this->familyReader->
-//    }
+    /**
+     * Quentin raised some concerns regarding the ability to rewind the familyReader (which can be seen as a cursor)
+     * in a shared environment.
+     *
+     * @throws \Exception
+     */
+    private function computeTotalItemsToProcess(): int
+    {
+        $this->familyReader->rewind();
+
+        $familyCodes = [];
+        $totalProductsToProcess = 0;
+        while (true) {
+            try {
+                $familyItem = $this->familyReader->read();
+                if (null === $familyItem) {
+                    break;
+                }
+            } catch (InvalidItemException $e) {
+                continue;
+            }
+            $familyCodes[] = $familyItem['code'];
+
+            if (\count($familyCodes) % 100 === 0) {
+                $totalProductsToProcess += $this->countProducts($familyCodes);
+                $familyCodes = [];
+            }
+        }
+        $totalProductsToProcess += $this->countProducts($familyCodes);
+
+        $this->familyReader->rewind();
+
+        return $totalProductsToProcess;
+    }
+
+    private function countProducts(array $familyCodes): int
+    {
+        $pqb = $this->productQueryBuilderFactory->create(
+            [
+                'filters' => [
+                    [
+                        'field'    => 'family',
+                        'operator' => Operators::IN_LIST,
+                        'value'    => $familyCodes
+                    ]
+                ]
+            ]
+        );
+
+        return $pqb->execute()->count();
+    }
 }

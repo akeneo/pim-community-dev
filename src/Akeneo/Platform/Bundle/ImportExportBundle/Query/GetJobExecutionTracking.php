@@ -16,7 +16,6 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepInterface;
 use Akeneo\Tool\Component\Batch\Step\TrackableStepInterface;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\PersistentCollection;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
