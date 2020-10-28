@@ -43,6 +43,17 @@ const buildRecommendation = (
   const criterion = criterionEvaluation.code;
   const attributes = criterionEvaluation.improvable_attributes || ([] as string[]);
 
+  // Display a specific recommendation
+  if (recommendationContent !== undefined) {
+    const element = recommendationContent as ReactElement;
+    if (
+        element.type === Recommendation &&
+        (element.props.supports === undefined || element.props.supports(criterionEvaluation))
+    ) {
+      return element;
+    }
+  }
+
   if (criterionEvaluation.status === CRITERION_ERROR) {
     return <Recommendation type={RecommendationType.ERROR} />;
   } else if (criterionEvaluation.status === CRITERION_IN_PROGRESS) {
@@ -56,16 +67,6 @@ const buildRecommendation = (
         <span className="CriterionSuccessTick" />
       </div>
     );
-  }
-
-  if (recommendationContent !== undefined) {
-    const element = recommendationContent as ReactElement;
-    if (
-      element.type === Recommendation &&
-      (element.props.supports === undefined || element.props.supports(criterionEvaluation))
-    ) {
-      return element;
-    }
   }
 
   return (
