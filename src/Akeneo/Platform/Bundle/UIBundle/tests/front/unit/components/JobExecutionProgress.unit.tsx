@@ -1,3 +1,4 @@
+import ReactDOM from 'react-dom';
 import {screen} from '@testing-library/react';
 import '@testing-library/jest-dom';
 
@@ -12,11 +13,20 @@ afterEach(() => {
 
 const mockGetFormData = jest.fn();
 
-class BaseViewMock {
+abstract class BaseViewMock {
   el: HTMLElement;
 
   constructor(container: HTMLElement) {
     this.el = container;
+  }
+
+  abstract reactElementToMount(): JSX.Element;
+
+  render() {
+    ReactDOM.render(
+      this.reactElementToMount(),
+      this.el
+    );
   }
 
   getRoot() {
@@ -26,7 +36,7 @@ class BaseViewMock {
   }
 }
 
-jest.mock('pimui/js/view/base', () => (BaseViewMock));
+jest.mock('@akeneo-pim-community/legacy-bridge/src/bridge/react', () => ({ReactView: BaseViewMock}));
 jest.mock('oro/translator', () => (key: string, _params: any, count: number): string => {
   switch (key) {
     case 'duration.days':

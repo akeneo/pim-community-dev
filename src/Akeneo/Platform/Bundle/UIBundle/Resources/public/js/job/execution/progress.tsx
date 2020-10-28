@@ -1,9 +1,8 @@
-import ReactDOM from 'react-dom';
 import React from 'react';
 import {formatSecondsIntl} from 'pimui/js/intl-duration';
 import styled, {ThemeProvider} from 'styled-components';
 import {Level, pimTheme, ProgressBar} from 'akeneo-design-system';
-import BaseView = require('pimui/js/view/base');
+import {ReactView} from '@akeneo-pim-community/legacy-bridge/src/bridge/react';
 
 const __ = require('oro/translator');
 
@@ -79,17 +78,17 @@ const getStepExecutionTrackingProgressLabel = (step: StepExecutionTracking): str
   }
 };
 
-class JobExecutionProgress extends BaseView {
+class JobExecutionProgress extends ReactView {
   configure () {
       this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 
       return super.configure();
   }
 
-  render() {
+  reactElementToMount() {
     const data = this.getRoot().getFormData();
 
-    ReactDOM.render(
+    return (
       <ThemeProvider theme={pimTheme}>
         <Container>
           {data.tracking.steps.map((step: StepExecutionTracking, i: number) => (
@@ -103,15 +102,12 @@ class JobExecutionProgress extends BaseView {
             />
           ))}
         </Container>
-      </ThemeProvider>,
-      this.el,
+      </ThemeProvider>
     );
-    return this;
   }
 
   remove() {
     this.stopListening();
-    ReactDOM.unmountComponentAtNode(this.el);
 
     return super.remove();
   }
