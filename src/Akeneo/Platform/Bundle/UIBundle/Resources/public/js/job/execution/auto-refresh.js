@@ -89,7 +89,7 @@ define(
              * @param jobExecution
              */
             fetchData: function (jobExecution) {
-                if (jobExecution.isRunning) {
+                if ('Stopping' === jobExecution.status || jobExecution.isRunning) {
                     this.setStatus('isLoading');
                     var jobId = jobExecution.meta.id;
                     FetcherRegistry.getFetcher('job-execution').fetch(jobId, {id: jobId, cached: false})

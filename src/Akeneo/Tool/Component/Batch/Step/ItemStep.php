@@ -138,7 +138,6 @@ class ItemStep extends AbstractStep implements StoppableStepInterface
                 $this->getJobRepository()->updateStepExecution($stepExecution);
                 $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
                 $batchCount = 0;
-
                 if (
                     $this->stoppable &&
                     null !== $this->sqlGetJobExecutionStatus &&
@@ -161,6 +160,18 @@ class ItemStep extends AbstractStep implements StoppableStepInterface
 
         if ($batchCount > 0) {
             $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
+        }
+
+        if (
+            $this->stoppable &&
+            null !== $this->sqlGetJobExecutionStatus &&
+            BatchStatus::STOPPING === $this->sqlGetJobExecutionStatus->getByJobExecutionId(
+                $stepExecution->getJobExecution()->getId()
+            )->getValue()
+        ) {
+            $stepExecution->setExitStatus(new ExitStatus(ExitStatus::STOPPED));
+            $stepExecution->setStatus(new BatchStatus(BatchStatus::STOPPED));
+            $this->getJobRepository()->updateStepExecution($stepExecution);
         }
 
         $this->flushStepElements();

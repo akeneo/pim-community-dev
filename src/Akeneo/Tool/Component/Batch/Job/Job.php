@@ -164,7 +164,7 @@ class Job implements JobInterface, StoppableJobInterface
                 // The job was already stopped before we even got this far. Deal
                 // with it in the same way as any other interruption.
                 $jobExecution->setStatus(new BatchStatus(BatchStatus::STOPPED));
-                $jobExecution->setExitStatus(new ExitStatus(ExitStatus::COMPLETED));
+                $jobExecution->setExitStatus(new ExitStatus(ExitStatus::STOPPED));
                 $this->jobRepository->updateJobExecution($jobExecution);
 
                 $this->dispatchJobExecutionEvent(EventInterface::JOB_EXECUTION_STOPPED, $jobExecution);
@@ -240,8 +240,6 @@ class Job implements JobInterface, StoppableJobInterface
         }
 
         if ($stepExecution !== null && BatchStatus::STOPPED === $stepExecution->getStatus()->getValue()) {
-            $this->dispatchJobExecutionEvent(EventInterface::BEFORE_JOB_STATUS_UPGRADE, $jobExecution);
-
             $jobExecution->setStatus($stepExecution->getStatus());
             $jobExecution->setExitStatus($stepExecution->getExitStatus());
             $this->jobRepository->updateJobExecution($jobExecution);
