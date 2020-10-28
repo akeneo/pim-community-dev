@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Platform\Bundle\ImportExportBundle\Normalizer;
 
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -15,9 +16,13 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class JobExecutionNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer, TranslatorInterface $translator, NormalizerInterface $jobInstanceNormalizer)
-    {
-        $this->beConstructedWith($translator, $jobInstanceNormalizer);
+    function let(
+        SerializerInterface $serializer,
+        TranslatorInterface $translator,
+        NormalizerInterface $jobInstanceNormalizer,
+        JobRegistry $jobRegistry
+    ) {
+        $this->beConstructedWith($translator, $jobInstanceNormalizer, $jobRegistry);
 
         $serializer->implement(NormalizerInterface::class);
         $this->setSerializer($serializer);
@@ -67,6 +72,7 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
             'failures'       => ['Such error'],
             'stepExecutions' => ['**exportExecution**', '**cleanExecution**'],
             'isRunning'      => true,
+            'isStoppable'    => false,
             'status'         => 'COMPLETED',
             'jobInstance'    => ['Normalized job instance']
         ]);
