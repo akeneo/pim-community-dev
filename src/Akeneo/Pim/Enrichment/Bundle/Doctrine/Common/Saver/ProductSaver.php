@@ -46,6 +46,10 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
     {
         $this->validateProduct($product);
 
+        if (!$product->isUpdated()) {
+            return;
+        }
+
         $options['unitary'] = true;
         $options['is_new'] = null === $product->getId();
 

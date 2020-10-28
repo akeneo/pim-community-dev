@@ -90,9 +90,9 @@ abstract class AbstractProduct implements ProductInterface
     /** @var FamilyVariantInterface */
     protected $familyVariant;
 
-    /**
-     * Constructor
-     */
+    /** @var bool */
+    protected $isUpdated = false;
+
     public function __construct()
     {
         $this->values = new WriteValueCollection();
@@ -102,6 +102,7 @@ abstract class AbstractProduct implements ProductInterface
         $this->associations = new ArrayCollection();
         $this->uniqueData = new ArrayCollection();
         $this->quantifiedAssociationCollection = QuantifiedAssociationCollection::createFromNormalized([]);
+        $this->setEnabled(true);
     }
 
     /**
@@ -158,12 +159,29 @@ abstract class AbstractProduct implements ProductInterface
         return $this;
     }
 
+    public function addOrReplaceValue(ValueInterface $value): void
+    {
+        $formerValue = $this->values->getByCodes($value->getAttributeCode(), $value->getScopeCode(), $value->getLocaleCode());
+        if (null !== $formerValue) {
+            if ($formerValue->isEqual($value)) {
+                return;
+            }
+
+            $this->values->remove($formerValue);
+            $this->values->add($value);
+            $this->setIsUpdated();
+        } else {
+            $this->values->add($value);
+            $this->setIsUpdated();
+        }
+    }
+
     /**
      * {@inheritdoc}
      */
     public function addValue(ValueInterface $value)
     {
-        $this->values->add($value);
+        $this->addOrReplaceValue($value);
 
         return $this;
     }
@@ -173,7 +191,10 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function removeValue(ValueInterface $value)
     {
-        $this->values->remove($value);
+        if ($this->values->contains($value)) {
+            $this->values->remove($value);
+            $this->setIsUpdated();
+        }
 
         return $this;
     }
@@ -305,6 +326,36 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setValues(WriteValueCollection $values)
     {
+        $formerValues = null === $this->values ?
+            new WriteValueCollection() :
+            WriteValueCollection::fromCollection($this->values);
+
+        if (!$this->isUpdated()) {
+            foreach ($formerValues as $formerValue) {
+                $matchingNewValue = $values->getByCodes(
+                    $formerValue->getAttributeCode(),
+                    $formerValue->getScopeCode(),
+                    $formerValue->getLocaleCode()
+                );
+                if (null === $matchingNewValue || !$formerValue->isEqual($matchingNewValue)) {
+                    $this->setIsUpdated();
+                    break;
+                }
+            }
+        }
+
+        if (!$this->isUpdated()) {
+            foreach ($values as $newValue) {
+                if (null === $formerValues->getByCodes(
+                        $newValue->getAttributeCode(),
+                        $newValue->getScopeCode(),
+                        $newValue->getLocaleCode()
+                    )) {
+                    $this->setIsUpdated();
+                    break;
+                }
+            }
+        }
         $this->values = $values;
 
         return $this;
@@ -717,6 +768,21 @@ abstract class AbstractProduct implements ProductInterface
     public function isVariant(): bool
     {
         return null !== $this->getParent();
+    }
+
+    public function isUpdated(): bool
+    {
+        return $this->isUpdated;
+    }
+
+    protected function setIsUpdated(bool $dirty = true): void
+    {
+        $this->isUpdated = $dirty;
+    }
+
+    public function clean(): void
+    {
+        $this->setIsUpdated(false);
     }
 
     /**
