@@ -239,6 +239,8 @@ pim_enrich.entity.attribute_group:
       attributes_groups_selected: '{{ itemsCount }} groep(en) geselecteerd'
     delete:
       confirm: Weet u zeker dat u deze attribuut groep wilt verwijderen?
+  grid:
+    no_search_result: Sorry, er is geen resultaat voor uw zoekopdracht.
 pim_enrich.mass_edit.family:
   title: Gezamenlijke actie voor families
   confirm: "{1}U staat op het punt een familie te updaten met de volgende informatie, bevestig alstublieft.|]1, Inf[U staat op het punt om {{ itemsCount }} families te updaten met de volgende informatie, bevestig alstublieft."

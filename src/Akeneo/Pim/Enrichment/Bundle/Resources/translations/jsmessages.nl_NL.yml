@@ -401,6 +401,7 @@ pim_datagrid:
       label: Compleet
     identifier:
       label: Identifier
+  search: Zoeken op {{ label }}
 batch_jobs:
   add_association:
     label: Associëren
