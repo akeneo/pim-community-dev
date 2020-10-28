@@ -192,3 +192,64 @@ test('it render the progress bar of one untrackable job step', () => {
   expect(screen.getByText('pim_import_export.tracking.untrackable')).toBeInTheDocument();
   expect(screen.getByRole('progressbar')).not.toHaveAttribute('aria-valuenow');
 });
+
+test('it render without error the progress bar of one job step with warning', () => {
+  mockGetFormData.mockImplementationOnce(() => ({
+    'tracking': {
+      'status': 'NOT_STARTED',
+      'currentStep': 1,
+      'totalSteps': 1,
+      'steps': [
+        {
+          'hasWarning': true,
+        },
+      ],
+    },
+  }));
+
+  const component = new JobExecutionProgress(container);
+  component.render();
+
+  expect(screen.getByRole('progressbar')).toBeInTheDocument();
+});
+
+test('it render without error the progress bar of one job step with error', () => {
+  mockGetFormData.mockImplementationOnce(() => ({
+    'tracking': {
+      'status': 'NOT_STARTED',
+      'currentStep': 1,
+      'totalSteps': 1,
+      'steps': [
+        {
+          'hasError': true,
+        },
+      ],
+    },
+  }));
+
+  const component = new JobExecutionProgress(container);
+  component.render();
+
+  expect(screen.getByRole('progressbar')).toBeInTheDocument();
+});
+
+test('it fallback on default job step label when missing', () => {
+  mockGetFormData.mockImplementationOnce(() => ({
+    'tracking': {
+      'status': 'NOT_STARTED',
+      'currentStep': 1,
+      'totalSteps': 1,
+      'steps': [
+        {
+          'jobName': 'csv_product_export',
+          'stepName': 'unknown_step',
+        },
+      ],
+    },
+  }));
+
+  const component = new JobExecutionProgress(container);
+  component.render();
+
+  expect(screen.getByText('batch_jobs.default_steps.unknown_step')).toBeInTheDocument();
+});

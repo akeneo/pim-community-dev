@@ -79,6 +79,7 @@ const getStepExecutionTrackingProgressLabel = (step: StepExecutionTracking): str
 };
 
 class JobExecutionProgress extends ReactView {
+  /* istanbul ignore next */
   configure () {
       this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 
@@ -106,6 +107,7 @@ class JobExecutionProgress extends ReactView {
     );
   }
 
+  /* istanbul ignore next */
   remove() {
     this.stopListening();
 
