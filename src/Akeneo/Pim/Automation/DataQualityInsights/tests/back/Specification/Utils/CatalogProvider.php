@@ -13,7 +13,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 abstract class CatalogProvider
 {
-    public static function aListOfChannelsWithLocales(array $localesByChannel = ['a_channel' => ['en_US', 'fr_FR', 'de_DE']]): ChannelLocaleCollection
+    public static function aListOfChannelsWithLocales(array $localesByChannel = ['a_channel' => ['en_US', 'fr_FR']]): ChannelLocaleCollection
     {
         return new ChannelLocaleCollection($localesByChannel);
     }
