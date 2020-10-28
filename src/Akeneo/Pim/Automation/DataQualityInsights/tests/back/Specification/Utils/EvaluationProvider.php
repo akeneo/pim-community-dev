@@ -35,15 +35,17 @@ abstract class EvaluationProvider
             foreach ($locales as $locale => $data) {
                 $channelCode = new ChannelCode($channel);
                 $localeCode = new LocaleCode($locale);
-                $rate = $data['rate'] ?? 100;
-                $status = $data['status'] ?? CriterionEvaluationResultStatus::DONE;
-                $attributes = $data['attributes'] ?? [];
 
-                $result
-                    ->addRate($channelCode, $localeCode, new Rate($rate))
-                    ->addStatus($channelCode, $localeCode, new CriterionEvaluationResultStatus($status))
-                    ->addRateByAttributes($channelCode, $localeCode, $attributes)
-                ;
+                if (array_key_exists('rate', $data)) {
+                    $result->addRate($channelCode, $localeCode, new Rate((int) $data['rate']));
+                }
+                if (array_key_exists('attributes', $data)) {
+                    $result->addRateByAttributes($channelCode, $localeCode, $data['attributes'] ?? []);
+                }
+
+                $status = $data['status'] ?? CriterionEvaluationResultStatus::NOT_APPLICABLE;
+
+                $result->addStatus($channelCode, $localeCode, new CriterionEvaluationResultStatus($status));
             }
         }
 
@@ -59,8 +61,13 @@ abstract class EvaluationProvider
                 $channelCode = new ChannelCode($channel);
                 $localeCode = new LocaleCode($locale);
 
-                $result->addRate($channelCode, $localeCode, new Rate($data['rate'] ?? 0));
-                $result->addMissingAttributes($channelCode, $localeCode, $data['attributes'] ?? []);
+                if (array_key_exists('rate', $data) && is_numeric($data['rate'])) {
+                    $result->addRate($channelCode, $localeCode, new Rate($data['rate']));
+                }
+
+                if (array_key_exists('attributes', $data)){
+                    $result->addMissingAttributes($channelCode, $localeCode, $data['attributes'] ?? []);
+                }
             }
         }
 

@@ -35,15 +35,18 @@ class EvaluateImageEnrichmentSpec extends ObjectBehavior
         $secondImageAttribute = CatalogProvider::anAttribute('a_second_image_attribute', AttributeTypes::IMAGE);
         $textAttribute = CatalogProvider::anAttribute('a_text_attribute');
         $productValues = CatalogProvider::aListOfProductValues([
-            ['attribute' => $imageAttribute, 'values' => ['a_channel' => ['en_US' => '/an_en_image.jpg', 'fr_FR' => '/an_fr_image.jpg']]],
-            ['attribute' => $secondImageAttribute, 'values' => ['a_channel' => ['en_US' => '/an_en_image.jpg', 'fr_FR' => '']]],
-            ['attribute' => $textAttribute, 'values' => ['a_channel' => ['en_US' => '', 'fr_FR' => '']]],
+            ['attribute' => $imageAttribute, 'values' => ['a_channel' => ['en_US' => '/an_en_image.jpg', 'fr_FR' => '/an_fr_image.jpg', 'de_DE' => '']]],
+            ['attribute' => $secondImageAttribute, 'values' => ['a_channel' => ['en_US' => '/an_en_image.jpg', 'fr_FR' => '', 'de_DE' => '']]],
+            ['attribute' => $textAttribute, 'values' => ['a_channel' => ['en_US' => '', 'fr_FR' => '', 'de_DE' => '']]],
         ]);
-        $channelsWithLocales = CatalogProvider::aListOfChannelsWithLocales();
+        $channelsWithLocales = CatalogProvider::aListOfChannelsWithLocales([
+            'a_channel' => ['en_US', 'fr_FR', 'de_DE']
+        ]);
         $completenessResult = EvaluationProvider::aWritableCompletenessCalculationResult([
             'a_channel' => [
                 'en_US' => ['rate' => 100, 'attributes' => []],
                 'fr_FR' => ['rate' => 50, 'attributes' => ['a_second_image']],
+                'de_DE' => ['rate' => 0, 'attributes' => ['an_image', 'a_second_image']],
             ]
         ]);
 
@@ -55,8 +58,13 @@ class EvaluateImageEnrichmentSpec extends ObjectBehavior
                     'status' => 'done',
                 ],
                 'fr_FR' => [
-                    'rate' => 50,
+                    'rate' => 100,
                     'attributes' => ['a_second_image' => 0],
+                    'status' => 'done',
+                ],
+                'de_DE' => [
+                    'rate' => 0,
+                    'attributes' => ['an_image' => 0, 'a_second_image' => 0],
                     'status' => 'done',
                 ],
             ]
@@ -83,10 +91,12 @@ class EvaluateImageEnrichmentSpec extends ObjectBehavior
         $productValues = CatalogProvider::aListOfProductValues([
             ['attribute' => $textAttribute, 'values' => ['a_channel' => ['en_US' => '', 'fr_FR' => '']]],
         ]);
-        $channelsWithLocales = CatalogProvider::aListOfChannelsWithLocales();
+        $channelsWithLocales = CatalogProvider::aListOfChannelsWithLocales([
+            'a_channel' => ['en_US', 'fr_FR']
+        ]);
         $completenessResult = EvaluationProvider::aWritableCompletenessCalculationResult([
             'a_channel' => [
-                'en_US' => ['rate' => 0, 'attributes' => []],
+                'en_US' => ['rate' => null],
                 'fr_FR' => ['rate' => 0, 'attributes' => []],
             ]
         ]);
@@ -94,9 +104,7 @@ class EvaluateImageEnrichmentSpec extends ObjectBehavior
         $expectedResult = EvaluationProvider::aWritableCriterionEvaluationResult([
             'a_channel' => [
                 'en_US' => [
-                    'rate' => 0,
-                    'attributes' => [],
-                    'status' => 'done',
+                    'status' => 'not_applicable',
                 ],
                 'fr_FR' => [
                     'rate' => 0,

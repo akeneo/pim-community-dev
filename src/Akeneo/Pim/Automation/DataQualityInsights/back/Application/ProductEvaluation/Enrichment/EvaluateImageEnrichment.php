@@ -11,6 +11,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 
 class EvaluateImageEnrichment implements EvaluateCriterionInterface
 {
@@ -73,6 +74,11 @@ class EvaluateImageEnrichment implements EvaluateCriterionInterface
             foreach ($missingAttributes as $attributeCode) {
                 $attributesRates[$attributeCode] = 0;
             }
+        }
+
+        // The score is 100 when there is at least one image uploaded, 0 otherwise
+        if (!$rate->isPerfect() && $rate->toInt() > 0) {
+            $rate = new Rate(100);
         }
 
         $evaluationResult
