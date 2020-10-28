@@ -1,9 +1,9 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
 import {formatSecondsIntl} from 'pimui/js/intl-duration';
-import BaseView = require('pimui/js/view/base');
 import styled, {ThemeProvider} from 'styled-components';
-import {ProgressBar, Level, pimTheme} from 'akeneo-design-system';
+import {Level, pimTheme, ProgressBar} from 'akeneo-design-system';
+import BaseView = require('pimui/js/view/base');
 
 const __ = require('oro/translator');
 
@@ -37,7 +37,11 @@ const guessStepExecutionTrackingLevel = (step: StepExecutionTracking): Level => 
   return 'primary';
 };
 
-const computeStepExecutionTrackingPercent = (step: StepExecutionTracking): number => {
+const getStepExecutionTrackingPercent = (step: StepExecutionTracking): number | 'indeterminate' => {
+  if (!step.isTrackable) {
+    return 'indeterminate';
+  }
+
   if (step.totalItems === 0) {
     switch (step.status) {
       case 'COMPLETED':
@@ -52,22 +56,26 @@ const computeStepExecutionTrackingPercent = (step: StepExecutionTracking): numbe
 };
 
 const getStepExecutionTrackingTitle = (step: StepExecutionTracking): string => {
-  let key = 'batch_jobs.' + step.jobName + '.' + step.stepName + '.label';
+  let key = `batch_jobs.${step.jobName}.${step.stepName}.label`;
   if (__(key) === key) {
-    key = 'batch_jobs.default_steps.' + step.stepName;
+    key = `batch_jobs.default_steps.${step.stepName}`;
   }
 
   return __(key);
 };
 
 const getStepExecutionTrackingProgressLabel = (step: StepExecutionTracking): string => {
+  if (!step.isTrackable) {
+    return __('pim_import_export.tracking.untrackable');
+  }
+
   switch (step.status) {
     case 'NOT_STARTED':
-      return __('pim_import_export.tracking.eta.not_started');
+      return __('pim_import_export.tracking.not_started');
     case 'COMPLETED':
-      return __('pim_import_export.tracking.eta.completed', {duration: formatSecondsIntl(step.duration)});
+      return __('pim_import_export.tracking.completed', {duration: formatSecondsIntl(step.duration)});
     case 'IN_PROGRESS':
-      return __('pim_import_export.tracking.eta.in_progress', {duration: formatSecondsIntl(step.duration)});
+      return __('pim_import_export.tracking.in_progress', {duration: formatSecondsIntl(step.duration)});
   }
 };
 
@@ -90,7 +98,7 @@ class JobExecutionProgress extends BaseView {
               title={getStepExecutionTrackingTitle(step)}
               progressLabel={getStepExecutionTrackingProgressLabel(step)}
               level={guessStepExecutionTrackingLevel(step)}
-              percent={computeStepExecutionTrackingPercent(step)}
+              percent={getStepExecutionTrackingPercent(step)}
               size="large"
             />
           ))}

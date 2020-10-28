@@ -92,7 +92,7 @@ test('it render the progress bar of one completed job step', () => {
   const component = new JobExecutionProgress(container);
   component.render();
 
-  expect(screen.getByText('pim_import_export.tracking.eta.completed')).toBeInTheDocument();
+  expect(screen.getByText('pim_import_export.tracking.completed')).toBeInTheDocument();
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '100');
 });
 
@@ -121,7 +121,7 @@ test('it render the progress bar of one job step in progress', () => {
   const component = new JobExecutionProgress(container);
   component.render();
 
-  expect(screen.getByText('pim_import_export.tracking.eta.in_progress')).toBeInTheDocument();
+  expect(screen.getByText('pim_import_export.tracking.in_progress')).toBeInTheDocument();
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '50');
 });
 
@@ -150,6 +150,35 @@ test('it render the progress bar of one pending job step', () => {
   const component = new JobExecutionProgress(container);
   component.render();
 
-  expect(screen.getByText('pim_import_export.tracking.eta.not_started')).toBeInTheDocument();
+  expect(screen.getByText('pim_import_export.tracking.not_started')).toBeInTheDocument();
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
+});
+
+test('it render the progress bar of one untrackable job step', () => {
+  mockGetFormData.mockImplementationOnce(() => ({
+    'tracking': {
+      'status': 'NOT_STARTED',
+      'currentStep': 1,
+      'totalSteps': 1,
+      'steps': [
+        {
+          'jobName': 'csv_product_export',
+          'stepName': 'export',
+          'status': 'NOT_STARTED',
+          'isTrackable': false,
+          'hasWarning': false,
+          'hasError': false,
+          'duration': 0,
+          'processedItems': 0,
+          'totalItems': 0,
+        },
+      ],
+    },
+  }));
+
+  const component = new JobExecutionProgress(container);
+  component.render();
+
+  expect(screen.getByText('pim_import_export.tracking.untrackable')).toBeInTheDocument();
+  expect(screen.getByRole('progressbar')).not.toHaveAttribute('aria-valuenow');
 });

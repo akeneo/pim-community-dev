@@ -175,10 +175,10 @@ pim_import_export:
         7: Abandoned
         8: Unknown
     tracking:
-        eta:
-            completed: "Time spent: {{ duration }}"
-            in_progress: "Estimated time left: {{ duration }}"
-            not_started: "Pending"
+        completed: "Time spent: {{ duration }}"
+        in_progress: "Estimated time left: {{ duration }}"
+        not_started: "Pending"
+        untrackable: Untrackable step
 
 confirmation:
     remove:
