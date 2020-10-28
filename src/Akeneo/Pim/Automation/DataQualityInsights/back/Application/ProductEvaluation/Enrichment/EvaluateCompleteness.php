@@ -20,10 +20,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 
-class EvaluateCompleteness
+final class EvaluateCompleteness
 {
-    /** @var GetLocalesByChannelQueryInterface */
-    private $localesByChannelQuery;
+    private GetLocalesByChannelQueryInterface $localesByChannelQuery;
 
     public function __construct(GetLocalesByChannelQueryInterface $localesByChannelQuery)
     {

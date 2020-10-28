@@ -6,7 +6,11 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluatio
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateCriterionInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 
 class EvaluateImageEnrichment implements EvaluateCriterionInterface
 {
@@ -14,25 +18,67 @@ class EvaluateImageEnrichment implements EvaluateCriterionInterface
 
     private CalculateProductCompletenessInterface $completenessCalculator;
 
-    private EvaluateCompleteness $evaluateCompleteness;
-
     private CriterionCode $code;
+    /**
+     * @var GetLocalesByChannelQueryInterface
+     */
+    private GetLocalesByChannelQueryInterface $localesByChannelQuery;
 
-    public function __construct(CalculateProductCompletenessInterface $completenessCalculator, EvaluateCompleteness $evaluateCompleteness)
+    public function __construct(CalculateProductCompletenessInterface $completenessCalculator, GetLocalesByChannelQueryInterface $localesByChannelQuery)
     {
         $this->code = new CriterionCode(self::CRITERION_CODE);
 
         $this->completenessCalculator = $completenessCalculator;
-        $this->evaluateCompleteness = $evaluateCompleteness;
+        $this->localesByChannelQuery = $localesByChannelQuery;
     }
 
     public function evaluate(Write\CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): Write\CriterionEvaluationResult
     {
-        return $this->evaluateCompleteness->evaluate($this->completenessCalculator, $criterionEvaluation);
+        $localesByChannel = $this->localesByChannelQuery->getChannelLocaleCollection();
+        $completenessResult = $this->completenessCalculator->calculate($criterionEvaluation->getProductId());
+
+        $evaluationResult = new Write\CriterionEvaluationResult();
+        foreach ($localesByChannel as $channelCode => $localeCodes) {
+            foreach ($localeCodes as $localeCode) {
+                $this->evaluateChannelLocaleRate($evaluationResult, $channelCode, $localeCode, $completenessResult);
+            }
+        }
+
+        return $evaluationResult;
     }
 
     public function getCode(): CriterionCode
     {
         return $this->code;
+    }
+
+    private function evaluateChannelLocaleRate(
+        Write\CriterionEvaluationResult $evaluationResult,
+        ChannelCode $channelCode,
+        LocaleCode $localeCode,
+        Write\CompletenessCalculationResult $completenessResult
+    ): void {
+        $rate = $completenessResult->getRates()->getByChannelAndLocale($channelCode, $localeCode);
+
+        if (null === $rate) {
+            $evaluationResult->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::notApplicable());
+            return;
+        }
+
+        $missingAttributes = $completenessResult->getMissingAttributes()->getByChannelAndLocale($channelCode, $localeCode);
+
+        $attributesRates = [];
+
+        if (null !== $missingAttributes) {
+            foreach ($missingAttributes as $attributeCode) {
+                $attributesRates[$attributeCode] = 0;
+            }
+        }
+
+        $evaluationResult
+            ->addRate($channelCode, $localeCode, $rate)
+            ->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::done())
+            ->addRateByAttributes($channelCode, $localeCode, $attributesRates)
+        ;
     }
 }

@@ -11,19 +11,19 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 
-trait CatalogProviderTrait
+abstract class CatalogProvider
 {
-    private function aListOfChannelsWithLocales(array $localesByChannel = ['a_channel' => ['en_US', 'fr_FR', 'de_DE']]): ChannelLocaleCollection
+    public static function aListOfChannelsWithLocales(array $localesByChannel = ['a_channel' => ['en_US', 'fr_FR', 'de_DE']]): ChannelLocaleCollection
     {
         return new ChannelLocaleCollection($localesByChannel);
     }
 
-    private function anAttribute(string $code = 'an_attribute', string $type = AttributeTypes::TEXT, bool $isLocalizable = false): Attribute
+    public static function anAttribute(string $code = 'an_attribute', string $type = AttributeTypes::TEXT, bool $isLocalizable = false): Attribute
     {
         return new Attribute(new AttributeCode($code), new AttributeType($type), $isLocalizable);
     }
 
-    private function aListOfProductValues(Attribute $attribute): ProductValuesCollection
+    public static function aListOfProductValues(Attribute $attribute): ProductValuesCollection
     {
         $values = new ChannelLocaleDataCollection();
         $collection = new ProductValuesCollection();
