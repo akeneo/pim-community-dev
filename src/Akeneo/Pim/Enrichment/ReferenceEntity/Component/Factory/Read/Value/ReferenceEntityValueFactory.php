@@ -18,6 +18,7 @@ use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntit
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Value\ReferenceEntityValue;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
@@ -56,7 +57,17 @@ final class ReferenceEntityValueFactory implements ValueFactory
             );
         }
 
-        return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
+        try {
+            return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
+        } catch (\InvalidArgumentException $e) {
+            throw InvalidPropertyException::validEntityCodeExpected(
+                $attribute->code(),
+                'code',
+                $e->getMessage(),
+                static::class,
+                $data
+            );
+        }
     }
 
     public function supportedAttributeType(): string
