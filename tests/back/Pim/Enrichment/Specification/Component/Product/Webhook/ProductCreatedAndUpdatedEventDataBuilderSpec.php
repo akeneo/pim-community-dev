@@ -106,7 +106,7 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
             ->during('build', [new ProductCreated('julia', ['identifier' => 'product_identifier'])]);
     }
 
-    public function it_does_raise_a_granted_category_exception($productRepository)
+    public function it_raises_a_not_granted_category_exception($productRepository)
     {
         $product = new Product();
         $product->setId(1);
