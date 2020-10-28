@@ -38,6 +38,19 @@ final class DeleteOrphanJobExecutionDirectories
         }
     }
 
+    /**
+     * With flysystem v2 we have a memory leak when we fetch all files/paths recursively: the listContents
+     * method gathers all file/directory data in one array. An out of memory error occurred when there is too many
+     * files/directories. With flysystem v2 the problem should be resolved as the function uses a generator instead.
+     * To try to fix this error with flysystem v2, we list the paths step by step to prevent memory errors.
+     * We stop the listing at level 3 as for our use case we don't need to go deeper: the level 3
+     * contains the id of the jobs that we are looking for.
+     *
+     * @TIP-1536: when flysystem v2 will be out, try to replace this method
+     * by $this->archivistFilesystem->listPaths('.', true);
+     *
+     * @return \Iterator
+     */
     private function getPathsAtLevel3ByBatch(): \Iterator
     {
         $paths = [];
