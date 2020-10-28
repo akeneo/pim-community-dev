@@ -19,6 +19,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Cons
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateUppercaseWords;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateImageEnrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Criterion\LowerCaseWords;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
 
@@ -32,6 +33,7 @@ final class PimEnterpriseSynchronousCriterionEvaluationsFilter implements Synchr
         EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE,
         EvaluateAttributeSpelling::CRITERION_CODE,
         EvaluateAttributeOptionSpelling::CRITERION_CODE,
+        EvaluateImageEnrichment::CRITERION_CODE,
     ];
 
     public function filter(\Iterator $iterator): array

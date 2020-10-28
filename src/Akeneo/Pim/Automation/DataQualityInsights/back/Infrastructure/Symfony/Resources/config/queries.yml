@@ -112,7 +112,7 @@ services:
         arguments:
             $connection: '@database_connection'
             $attributeTypes:
-                - !php/const Akeneo\Pim\Structure\Component\AttributeTypes::IMAGErm
+                - !php/const Akeneo\Pim\Structure\Component\AttributeTypes::IMAGE
                 - !php/const Akeneo\Pim\Structure\Component\AttributeTypes::ASSET_COLLECTION
                 - !php/const Akeneo\Pim\Structure\Component\AttributeTypes::LEGACY_ASSET_COLLECTION
 
