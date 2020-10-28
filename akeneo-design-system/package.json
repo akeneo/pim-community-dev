@@ -49,6 +49,7 @@
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-hooks": "^4.1.0",
     "http-server": "^0.12.3",
+    "glob": "^7.1.6",
     "jest": "^26.3.0",
     "jest-image-snapshot": "^4.1.0",
     "jest-puppeteer": "^4.4.0",
