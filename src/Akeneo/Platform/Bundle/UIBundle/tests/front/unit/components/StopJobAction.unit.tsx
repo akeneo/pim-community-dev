@@ -1,7 +1,7 @@
 import React from 'react';
 import {fireEvent, screen} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
-import {StopJobAction} from '../../../../../../../../../public/bundles/pimui/js/job/execution/StopJobAction';
+import {StopJobAction} from '../../../../Resources/public/js/job/execution/StopJobAction';
 
 declare global {
   namespace NodeJS {
