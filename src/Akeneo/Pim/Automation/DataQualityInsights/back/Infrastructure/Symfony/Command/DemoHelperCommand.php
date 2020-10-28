@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjec
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionaryGenerator;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductsIndex;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardRatesProjectionRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
@@ -54,8 +54,8 @@ final class DemoHelperCommand extends Command
     /** @var ConsolidateAxesRates */
     private $consolidateProductAxisRates;
 
-    /** @var IndexProductRates */
-    private $indexProductRates;
+    /** @var UpdateProductsIndex */
+    private $updateProductsIndex;
 
     /** @var CreateCriteriaEvaluations */
     private $createProductModelsCriteriaEvaluations;
@@ -75,7 +75,7 @@ final class DemoHelperCommand extends Command
         CreateCriteriaEvaluations $createProductsCriteriaEvaluations,
         EvaluatePendingCriteria $evaluatePendingCriteria,
         ConsolidateAxesRates $consolidateProductAxisRates,
-        IndexProductRates $indexProductRates,
+        UpdateProductsIndex $updateProductsIndex,
         CreateCriteriaEvaluations $createProductModelsCriteriaEvaluations,
         EvaluatePendingCriteria $evaluateProductModelsPendingCriteria,
         ConsolidateAxesRates $consolidateProductModelsAxisRates
@@ -88,7 +88,7 @@ final class DemoHelperCommand extends Command
         $this->createProductsCriteriaEvaluations = $createProductsCriteriaEvaluations;
         $this->evaluatePendingCriteria = $evaluatePendingCriteria;
         $this->consolidateProductAxisRates = $consolidateProductAxisRates;
-        $this->indexProductRates = $indexProductRates;
+        $this->updateProductsIndex = $updateProductsIndex;
         $this->createProductModelsCriteriaEvaluations = $createProductModelsCriteriaEvaluations;
         $this->evaluateProductModelsPendingCriteria = $evaluateProductModelsPendingCriteria;
         $this->consolidateProductModelsAxisRates = $consolidateProductModelsAxisRates;
@@ -429,7 +429,7 @@ final class DemoHelperCommand extends Command
         $this->createProductsCriteriaEvaluations->createAll($productIds);
         $this->evaluatePendingCriteria->evaluateAllCriteria($ids);
         $this->consolidateProductAxisRates->consolidate($ids);
-        $this->indexProductRates->execute($ids);
+        $this->updateProductsIndex->execute($ids);
     }
 
     private function evaluateProductModels(array $ids): void

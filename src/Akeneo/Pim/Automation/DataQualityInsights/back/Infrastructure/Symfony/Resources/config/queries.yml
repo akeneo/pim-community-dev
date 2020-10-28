@@ -106,3 +106,9 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeQuery:
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\KeyIndicator\GetProductsSpellingStatusQuery:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluationRatesByProductsAndCriterionQuery'
+        tags:
+            - { name: akeneo.pim.automation.data_quality_insights.key_indicator_query }
