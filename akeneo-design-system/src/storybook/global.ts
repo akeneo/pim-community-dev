@@ -7,11 +7,9 @@ const StoryStyle = styled.div`
   @import url(${fontUrl});
 
   font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-
   color: #67768a;
   font-size: 13px;
   line-height: 20px;
-  padding: 10px;
 
   & > * {
     margin: 0 10px 10px 0;

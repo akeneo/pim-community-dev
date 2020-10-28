@@ -33,7 +33,7 @@ Colors enhance the experience by providing visual clues and drawing attention to
                     <PreviewCard key={colorCode}>
                       <ColorContainer color={theme.color[colorCode]} />
                       <LabelContainer>{colorCode}</LabelContainer>
-                      <LabelContainer>{theme.color[colorCode].toUpperCase()}</LabelContainer>
+                      <LabelContainer>{theme.color[colorCode]}</LabelContainer>
                     </PreviewCard>
                   );
                 })}
@@ -57,7 +57,7 @@ Colors enhance the experience by providing visual clues and drawing attention to
                     <PreviewCard key={colorCode}>
                       <ColorContainer color={color} />
                       <LabelContainer>{colorCode}</LabelContainer>
-                      <LabelContainer>{color.toUpperCase()}</LabelContainer>
+                      <LabelContainer>{color}</LabelContainer>
                     </PreviewCard>
                   );
                 })}

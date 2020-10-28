@@ -1,10 +1,11 @@
-import React, {ReactElement, Ref, RefAttributes} from 'react';
-import styled, {StyledComponent} from 'styled-components';
+import React, {ReactElement, ReactNode, useEffect, useRef} from 'react';
+import {createPortal} from 'react-dom';
+import styled from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {CloseIcon} from '../../icons';
 import {IllustrationProps} from '../../illustrations/IllustrationProps';
 import {useShortcut} from '../../hooks';
-import {Key, Component} from '../../shared';
+import {Key} from '../../shared';
 
 const ModalContainer = styled.div`
   position: fixed;
@@ -12,7 +13,7 @@ const ModalContainer = styled.div`
   height: 100vh;
   top: 0;
   left: 0;
-  background: ${getColor('white')};
+  background-color: ${getColor('white')};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -90,45 +91,50 @@ type ModalProps = {
   /**
    * The content of the modal.
    */
-  children?: string;
+  children?: ReactNode;
 };
 
-type ModalComponent = Component<ModalProps & RefAttributes<HTMLDivElement>> & {
-  BottomButtons?: StyledComponent<'div', any, any, never>;
+/**
+ * The Modal Component is used to display a secondary window over the content.
+ */
+const Modal = ({isOpen, onClose, illustration, children, ...rest}: ModalProps) => {
+  useShortcut(Key.Escape, onClose);
+
+  const containerRef = useRef(document.createElement('div'));
+
+  useEffect(() => {
+    document.body.appendChild(containerRef.current);
+
+    return () => {
+      document.body.removeChild(containerRef.current);
+    };
+  }, []);
+
+  if (!isOpen) return null;
+
+  return createPortal(
+    <ModalContainer {...rest}>
+      <ModalCloseButton onClick={onClose}>
+        <CloseIcon size={20} />
+      </ModalCloseButton>
+      {undefined === illustration ? (
+        children
+      ) : (
+        <ModalContent>
+          {React.cloneElement(illustration, {size: 220})}
+          <Separator />
+          <ModalChildren>{children}</ModalChildren>
+        </ModalContent>
+      )}
+    </ModalContainer>,
+    containerRef.current
+  );
 };
-
-const Modal: ModalComponent = React.forwardRef<HTMLDivElement, ModalProps>(
-  ({isOpen, onClose, illustration, children, ...rest}: ModalProps, forwardedRef: Ref<HTMLDivElement>) => {
-    useShortcut(Key.Escape, onClose, forwardedRef);
-
-    if (!isOpen) return null;
-
-    return (
-      <ModalContainer ref={forwardedRef} {...rest}>
-        <ModalCloseButton onClick={onClose}>
-          <CloseIcon size={20} />
-        </ModalCloseButton>
-        {undefined === illustration ? (
-          children
-        ) : (
-          <ModalContent>
-            {React.cloneElement(illustration, {size: 220})}
-            <Separator />
-            <ModalChildren>{children}</ModalChildren>
-          </ModalContent>
-        )}
-      </ModalContainer>
-    );
-  }
-);
 
 Modal.BottomButtons = styled.div`
   display: flex;
   gap: 10px;
   margin-top: 20px;
 `;
-
-Modal.__docgenInfo = {description: 'The Modal Component is used to display a secondary window over the content.'};
-Modal.displayName = 'Modal';
 
 export {Modal, SectionTitle, Title};

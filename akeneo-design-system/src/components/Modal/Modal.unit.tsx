@@ -12,6 +12,16 @@ test('it renders its children properly', () => {
   expect(screen.getByText('Modal content')).toBeInTheDocument();
 });
 
+test('it renders its exposed subcomponent `BottomButtons` properly', () => {
+  render(
+    <Modal isOpen={true} onClose={jest.fn()}>
+      <Modal.BottomButtons>Buttons</Modal.BottomButtons>
+    </Modal>
+  );
+
+  expect(screen.getByText('Buttons')).toBeInTheDocument();
+});
+
 test('it does not display its children if it is closed', () => {
   render(
     <Modal isOpen={false} onClose={jest.fn()}>
