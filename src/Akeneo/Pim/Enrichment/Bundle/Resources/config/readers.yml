@@ -151,3 +151,9 @@ services:
             - '@pim_catalog.query.product_and_product_model_query_builder_factory'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.converter.metric'
+
+    # Queries
+    pim_connector.reader.file.csv.find_family_codes:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv\FindFamilyCodes
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'

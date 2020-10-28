@@ -102,6 +102,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
     public function execute()
     {
         $this->initialize();
+        $this->computeTotalItemsToProcess();
 
         while (true) {
             try {
@@ -197,4 +198,27 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
 
         return $pqb->execute();
     }
+
+//    private function computeTotalItemsToProcess(): void
+//    {
+//
+//        $familyCodes = [];
+//        while (true) {
+//            try {
+//                $familyItem = $this->familyReader->read();
+//                if (null === $familyItem) {
+//                    break;
+//                }
+//            } catch (InvalidItemException $e) {
+//                continue;
+//            }
+//            $familyCodes[] = $familyItem['code'];
+//
+//            if (\count($familyCodes) % 100 === 0) {
+//
+//            }
+//        }
+//
+//        $this->familyReader->
+//    }
 }
