@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\tests\back\Specification\Uti
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
@@ -27,12 +28,22 @@ abstract class EvaluationProvider
         return $evaluation;
     }
 
-    public static function aWritableCriterionEvaluationResult(array $resultData = ['a_channel' => ['en_US' => ['an_attribute' => 100]]]): Write\CriterionEvaluationResult
+    public static function aWritableCriterionEvaluationResult(array $resultData = ['a_channel' => ['en_US' => ['rate' => 100, 'status' => CriterionEvaluationResultStatus::DONE, 'attributes' => ['an_attribute' => 100]]]]): Write\CriterionEvaluationResult
     {
         $result = new Write\CriterionEvaluationResult();
         foreach ($resultData as $channel => $locales) {
             foreach ($locales as $locale => $data) {
-                $result->addRateByAttributes(new ChannelCode($channel), new LocaleCode($locale), $data);
+                $channelCode = new ChannelCode($channel);
+                $localeCode = new LocaleCode($locale);
+                $rate = $data['rate'] ?? 100;
+                $status = $data['status'] ?? CriterionEvaluationResultStatus::DONE;
+                $attributes = $data['attributes'] ?? [];
+
+                $result
+                    ->addRate($channelCode, $localeCode, new Rate($rate))
+                    ->addStatus($channelCode, $localeCode, new CriterionEvaluationResultStatus($status))
+                    ->addRateByAttributes($channelCode, $localeCode, $attributes)
+                ;
             }
         }
 
@@ -45,8 +56,11 @@ abstract class EvaluationProvider
 
         foreach ($resultData as $channel => $locales) {
             foreach ($locales as $locale => $data) {
-                $result->addRate(new ChannelCode($channel), new LocaleCode($locale), new Rate($data['rate'] ?? 0));
-                $result->addMissingAttributes(new ChannelCode($channel), new LocaleCode($locale), $data['attributes'] ?? []);
+                $channelCode = new ChannelCode($channel);
+                $localeCode = new LocaleCode($locale);
+
+                $result->addRate($channelCode, $localeCode, new Rate($data['rate'] ?? 0));
+                $result->addMissingAttributes($channelCode, $localeCode, $data['attributes'] ?? []);
             }
         }
 

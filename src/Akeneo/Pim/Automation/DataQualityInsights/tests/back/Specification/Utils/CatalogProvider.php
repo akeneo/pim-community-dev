@@ -23,11 +23,14 @@ abstract class CatalogProvider
         return new Attribute(new AttributeCode($code), new AttributeType($type), $isLocalizable);
     }
 
-    public static function aListOfProductValues(Attribute $attribute): ProductValuesCollection
+    public static function aListOfProductValues(array $params = []): ProductValuesCollection
     {
-        $values = new ChannelLocaleDataCollection();
         $collection = new ProductValuesCollection();
-        $collection->add(new ProductValues($attribute, $values));
+
+        foreach ($params as $data) {
+            ['attribute' => $attribute, 'values' => $rawValues] = $data;
+            $collection->add(new ProductValues($attribute, ChannelLocaleDataCollection::fromNormalizedChannelLocaleData($rawValues, fn($data) => $data)));
+        }
 
         return $collection;
     }
