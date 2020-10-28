@@ -8,11 +8,13 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\NotGrantedCategoryException;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductCreatedAndUpdatedEventDataBuilder;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
@@ -101,6 +103,18 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier('product_identifier')->willReturn(null);
 
         $this->shouldThrow(ProductNotFoundException::class)
+            ->during('build', [new ProductCreated('julia', ['identifier' => 'product_identifier'])]);
+    }
+
+    public function it_does_raise_a_granted_category_exception($productRepository)
+    {
+        $product = new Product();
+        $product->setId(1);
+        $product->setIdentifier('product_identifier');
+
+        $productRepository->findOneByIdentifier('product_identifier')->willThrow(AccessDeniedException::class);
+
+        $this->shouldThrow(NotGrantedCategoryException::class)
             ->during('build', [new ProductCreated('julia', ['identifier' => 'product_identifier'])]);
     }
 }
