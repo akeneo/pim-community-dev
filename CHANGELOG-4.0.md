@@ -1,5 +1,13 @@
 # 4.0.x
 
+# 4.0.67 (2020-10-28)
+
+## Bug fixes
+
+- PIM-9518: Improve performance of SQL query about fetching images from product model codes
+
+# 4.0.66 (2020-10-23)
+
 # 4.0.65 (2020-10-19)
 
 # 4.0.64 (2020-10-09)
