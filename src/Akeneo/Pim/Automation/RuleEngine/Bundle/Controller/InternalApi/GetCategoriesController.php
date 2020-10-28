@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi;
 
-use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
+use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -26,19 +26,19 @@ class GetCategoriesController
     /** @var CategoryRepositoryInterface */
     protected $repository;
 
-    /** @var ObjectFilterInterface */
-    protected $objectFilter;
+    /** @var CollectionFilterInterface */
+    protected $collectionFilter;
 
     /** @var NormalizerInterface */
     protected $normalizer;
 
     public function __construct(
         CategoryRepositoryInterface $repository,
-        ObjectFilterInterface $objectFilter,
+        CollectionFilterInterface $collectionFilter,
         NormalizerInterface $normalizer
     ) {
         $this->repository = $repository;
-        $this->objectFilter = $objectFilter;
+        $this->collectionFilter = $collectionFilter;
         $this->normalizer = $normalizer;
     }
 
@@ -51,7 +51,7 @@ class GetCategoriesController
         $categoryCodes = $request->get('identifiers');
 
         $categories = $this->repository->findBy(['code' => $categoryCodes]);
-        $categories = $this->objectFilter->filterCollection($categories, 'pim.internal_api.product_category.view');
+        $categories = $this->collectionFilter->filterCollection($categories, 'pim.internal_api.product_category.view');
 
         return new JsonResponse($this->normalizer->normalize($categories, 'internal_api', ['with_root' => true]));
     }

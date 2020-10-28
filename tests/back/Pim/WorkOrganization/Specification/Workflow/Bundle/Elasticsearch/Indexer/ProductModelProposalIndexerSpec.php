@@ -109,7 +109,7 @@ class ProductModelProposalIndexerSpec extends ObjectBehavior
     {
         $productModelProposalClient->search(
             ['query' => ['term' => ['id' => 'product_model_draft_1']]]
-        )->willReturn(['hits' => ['total' => 1]]);
+        )->willReturn(['hits' => ['total' => ['value' => 1]]]);
 
         $productModelProposalClient->delete('product_model_draft_1')->shouldBeCalled();
         $productModelProposalClient->refreshIndex()->shouldNotBeCalled();
@@ -121,7 +121,7 @@ class ProductModelProposalIndexerSpec extends ObjectBehavior
     {
         $productModelProposalClient->search(
             ['query' => ['term' => ['id' => 'product_model_draft_1']]]
-        )->willReturn(['hits' => ['total' => 1]]);
+        )->willReturn(['hits' => ['total' => ['value' => 1]]]);
 
         $productModelProposalClient->delete('product_model_draft_1')->shouldBeCalled();
         $productModelProposalClient->refreshIndex()->shouldBeCalled();

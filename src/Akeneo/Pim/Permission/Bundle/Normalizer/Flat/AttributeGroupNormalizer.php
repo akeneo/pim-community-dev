@@ -51,12 +51,12 @@ class AttributeGroupNormalizer implements NormalizerInterface, CacheableSupports
         $normalizedAttrGroup = $this->attrGroupNormalizer->normalize($attributeGroup, $format, $context);
 
         $normalizedAttrGroup['view_permission'] = implode(
-            array_map('strval', $this->accessManager->getViewUserGroups($attributeGroup)),
-            ','
+            ',',
+            array_map('strval', $this->accessManager->getViewUserGroups($attributeGroup))
         );
         $normalizedAttrGroup['edit_permission'] = implode(
-            array_map('strval', $this->accessManager->getEditUserGroups($attributeGroup)),
-            ','
+            ',',
+            array_map('strval', $this->accessManager->getEditUserGroups($attributeGroup))
         );
 
         return $normalizedAttrGroup;

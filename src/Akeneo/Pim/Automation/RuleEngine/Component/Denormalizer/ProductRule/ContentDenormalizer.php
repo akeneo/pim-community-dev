@@ -45,7 +45,7 @@ class ContentDenormalizer implements DenormalizerInterface, ChainedDenormalizerA
      *
      * {@inheritdoc}
      *
-     * @return ["conditions" => ConditionInterface[], "actions" => ActionInterface[])
+     * @return array ["conditions" => ConditionInterface[], "actions" => ActionInterface[])
      */
     public function denormalize($ruleContent, $class, $format = null, array $context = [])
     {

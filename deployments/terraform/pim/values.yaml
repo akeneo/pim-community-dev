@@ -85,6 +85,9 @@ pim:
     serviceAccountKey: null
   updateStrategy:
     type: RollingUpdate
+  # Any changes on the `daemons` configuration and you need to update the
+  # `deployments/terraform/helm.tf` script to stop & restart daemons while a
+  # migration is running.
   daemons:
     all-but-linking-assets-to-products:
       enabled: true
@@ -93,10 +96,6 @@ pim:
     default:
       enabled: true
       pimCommand: "akeneo:batch:job-queue-consumer-daemon"
-      replicas: 1
-    webhook-consumer-process:
-      enabled: true
-      pimCommand: "messenger:consume webhook --time-limit=300"
       replicas: 1
   replicas: 2
   extraLabels: {}
@@ -182,6 +181,10 @@ pim:
       enabled: true
       pimCommand: "pim:data-quality-insights:evaluations"
       schedule: "*/30 * * * *"
+    webhook-consumer-process:
+      enabled: true
+      pimCommand: "messenger:consume webhook --sleep=1 --memory-limit=384M --time-limit=300 --quiet"
+      schedule: "*/5 * * * *"
 
 # Onboarder
 onboarder:
@@ -240,6 +243,7 @@ mysql:
       failureThreshold: 3
 
 memcached:
+  image: memcached:1.6.7
   fullnameOverride: memcached
   replicaCount: 1
   resources:

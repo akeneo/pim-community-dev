@@ -19,7 +19,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionaryGenerator;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardRatesProjectionRepository;
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -105,7 +105,7 @@ final class DemoHelperCommand extends Command
             ->setHidden(true);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
@@ -147,7 +147,7 @@ final class DemoHelperCommand extends Command
         }
 
         if (false === $confirm) {
-            return;
+            return 0;
         }
 
         $now = new ConsolidationDate(new \DateTimeImmutable());
@@ -303,6 +303,8 @@ final class DemoHelperCommand extends Command
         }
 
         $io->success('Fake consolidation generated');
+
+        return 0;
     }
 
     private function generateChaos(array $rates, int $numberOfProducts, array $idealRates, int $day): array

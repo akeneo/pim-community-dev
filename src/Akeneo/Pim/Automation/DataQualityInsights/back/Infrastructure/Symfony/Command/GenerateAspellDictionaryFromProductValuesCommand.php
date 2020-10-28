@@ -67,12 +67,12 @@ class GenerateAspellDictionaryFromProductValuesCommand extends Command
             ->setHidden(true);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!empty($input->getOption('language-codes'))) {
             $this->customLanguageCodes($input, $output);
 
-            return;
+            return 0;
         }
 
         $this->aspellDictionaryGenerator
@@ -80,6 +80,8 @@ class GenerateAspellDictionaryFromProductValuesCommand extends Command
             ->generate($this->productValueInDatabaseDictionarySource);
 
         $output->writeln('<info>Dictionaries generated and pushed to shared filesystem.</info>');
+
+        return 0;
     }
 
     private function customLanguageCodes(InputInterface $input, OutputInterface $output)

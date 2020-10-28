@@ -45,7 +45,9 @@ class EvaluateAttributesTasklet implements TaskletInterface
         try {
             $this->evaluateUpdatedAttributes->evaluateAll();
         } catch (\Exception $exception) {
-            null !== $this->stepExecution && $this->stepExecution->addFailureException($exception);
+            if (null !== $this->stepExecution) {
+                $this->stepExecution->addFailureException($exception);
+            }
             $this->logger->error('The evaluations of the attributes has failed', [
                 'error_code' => 'attributes_evaluation_failed',
                 'error_message' => $exception->getMessage(),

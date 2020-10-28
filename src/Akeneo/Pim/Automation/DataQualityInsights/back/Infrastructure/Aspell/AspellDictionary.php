@@ -9,7 +9,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\UnableToRetrieveD
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Dictionary;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LanguageCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\MountManager;
 use Mekras\Speller;
@@ -24,7 +23,7 @@ final class AspellDictionary implements AspellDictionaryInterface
     /** @var Clock */
     private $clock;
 
-    /** @var Filesystem */
+    /** @var FilesystemInterface */
     private $localFilesystem;
 
     /** @var FilesystemInterface */

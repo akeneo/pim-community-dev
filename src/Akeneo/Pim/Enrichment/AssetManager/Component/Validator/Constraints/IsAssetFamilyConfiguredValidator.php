@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyDetailsInterface
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Checks if the asset family is well configured for attribute entity.
@@ -49,6 +50,7 @@ class IsAssetFamilyConfiguredValidator extends ConstraintValidator
      */
     public function validate($attribute, Constraint $constraint)
     {
+        Assert::isInstanceOf($constraint, IsAssetFamilyConfigured::class);
         $rawAssetFamilyIdentifier = $attribute->getReferenceDataName();
 
         if (null === $rawAssetFamilyIdentifier || '' === $rawAssetFamilyIdentifier) {
@@ -72,7 +74,7 @@ class IsAssetFamilyConfiguredValidator extends ConstraintValidator
         }
     }
 
-    private function addEmptyViolation(ExecutionContextInterface $context, Constraint $constraint)
+    private function addEmptyViolation(ExecutionContextInterface $context, IsAssetFamilyConfigured $constraint)
     {
         $context
             ->buildViolation($constraint->emptyMessage)
@@ -80,7 +82,7 @@ class IsAssetFamilyConfiguredValidator extends ConstraintValidator
             ->addViolation();
     }
 
-    private function addInvalidViolation(Constraint $constraint, string $rawAssetFamilyIdentifier)
+    private function addInvalidViolation(IsAssetFamilyConfigured $constraint, string $rawAssetFamilyIdentifier)
     {
         $this->context
             ->buildViolation($constraint->invalidMessage)
@@ -89,7 +91,7 @@ class IsAssetFamilyConfiguredValidator extends ConstraintValidator
             ->addViolation();
     }
 
-    private function addUnknownViolation(Constraint $constraint, string $rawAssetFamilyIdentifier)
+    private function addUnknownViolation(IsAssetFamilyConfigured $constraint, string $rawAssetFamilyIdentifier)
     {
         $this->context
             ->buildViolation($constraint->unknownMessage)

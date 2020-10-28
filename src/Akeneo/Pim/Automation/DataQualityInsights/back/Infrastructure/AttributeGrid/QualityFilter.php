@@ -14,7 +14,9 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\AttributeGrid
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
+use Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface as PimFilterDatasourceAdapterInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Webmozart\Assert\Assert;
 
 class QualityFilter extends ChoiceFilter
 {
@@ -31,6 +33,7 @@ class QualityFilter extends ChoiceFilter
             return false;
         }
 
+        Assert::implementsInterface($ds, PimFilterDatasourceAdapterInterface::class);
         $ds->getQueryBuilder()
             ->andWhere(AddQualityDataExtension::ATTRIBUTE_QUALITY_ALIAS . '.quality = :quality_value')
             ->setParameter(':quality_value', $data['value']);

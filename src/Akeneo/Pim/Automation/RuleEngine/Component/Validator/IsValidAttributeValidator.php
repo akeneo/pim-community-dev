@@ -129,7 +129,7 @@ final class IsValidAttributeValidator extends ConstraintValidator
                 'pimee_catalog_rule.rule_definition.validation.attribute.invalid_specific_locale',
                 [
                     '{{ attributeCode }}' => $attribute->code(),
-                    '{{ expectedLocales }}' => implode($attribute->availableLocaleCodes(), ', '),
+                    '{{ expectedLocales }}' => implode(', ', $attribute->availableLocaleCodes()),
                     '{{ invalidLocale }}' => $locale,
                 ],
                 $locale

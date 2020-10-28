@@ -48,11 +48,11 @@ class PimEnterpriseLaunchEvaluationsCommand extends Command
     }
 
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (! $this->featureFlag->isEnabled()) {
             $output->writeln('<info>Data Quality Insights feature is disabled</info>');
-            return;
+            return 0;
         }
 
         try {
@@ -62,6 +62,8 @@ class PimEnterpriseLaunchEvaluationsCommand extends Command
         } catch (AnotherJobStillRunningException $e) {
             exit(0);
         }
+
+        return 0;
     }
 
     private function getJobParameters(?JobExecution $lastJobExecution): array

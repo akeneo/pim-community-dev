@@ -34,6 +34,7 @@ $rules = [
 
     $builder->only(
         [
+            'Webmozart\Assert\Assert',
             'Akeneo\Pim\Automation\DataQualityInsights\Domain',
             'Akeneo\Pim\Automation\DataQualityInsights\Application',
 
@@ -107,6 +108,9 @@ $rules = [
             'Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface',
             'Oro\Bundle\FilterBundle\Filter\ChoiceFilter',
             'Oro\Bundle\FilterBundle\Filter\FilterUtility',
+            'Oro\Bundle\PimFilterBundle\Datasource\FilterProductDatasourceAdapterInterface',
+            'Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface',
+            'Oro\Bundle\PimDataGridBundle\Datasource\DatasourceInterface',
 
             //Necessary for the particular command EvaluatePendingCriteriaCommand
             'Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager',

@@ -510,6 +510,8 @@ pim_asset_manager:
     asset_manager_execute_naming_convention:
       error: '对资产"{{ asset }}"执行命名约定失败'
 pim_enrich:
+  confirmation:
+    discard_changes: '如果离开此页面，将丢失对"{{ entity }}"实体的更改。'
   entity:
     attribute:
       property:
