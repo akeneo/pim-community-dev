@@ -1,4 +1,12 @@
-import {Color, FontSize, Palette} from './theme';
+import {css} from 'styled-components';
+import {Color, FontSize, getColor, getFontSize, Palette} from './theme';
+
+const CommonStyle = css`
+  font-family: 'Lato';
+  color: ${getColor('grey', 120)};
+  font-size: ${getFontSize('default')};
+  line-height: 20px;
+`;
 
 const color: Color = {
   blue10: '#f5f9fc',
@@ -72,4 +80,4 @@ const palette: Palette = {
   danger: 'red',
 };
 
-export {color, fontSize, palette};
+export {color, fontSize, palette, CommonStyle};

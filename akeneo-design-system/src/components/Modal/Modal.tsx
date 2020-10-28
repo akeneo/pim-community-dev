@@ -1,13 +1,14 @@
 import React, {ReactElement, ReactNode, useEffect, useRef} from 'react';
 import {createPortal} from 'react-dom';
 import styled from 'styled-components';
-import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
+import {AkeneoThemedProps, CommonStyle, getColor, getFontSize} from '../../theme';
 import {CloseIcon} from '../../icons';
 import {IllustrationProps} from '../../illustrations/IllustrationProps';
 import {useShortcut} from '../../hooks';
 import {Key} from '../../shared';
 
 const ModalContainer = styled.div`
+  ${CommonStyle}
   position: fixed;
   width: 100vw;
   height: 100vh;
