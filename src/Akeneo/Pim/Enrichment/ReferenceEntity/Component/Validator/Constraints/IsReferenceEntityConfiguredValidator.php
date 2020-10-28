@@ -17,6 +17,7 @@ use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityDetai
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Checks if the reference entity is well configured for attribute entity.
@@ -49,6 +50,7 @@ class IsReferenceEntityConfiguredValidator extends ConstraintValidator
      */
     public function validate($attribute, Constraint $constraint)
     {
+        Assert::isInstanceOf($constraint, IsReferenceEntityConfigured::class);
         $rawReferenceEntityIdentifier = $attribute->getReferenceDataName();
 
         if (null === $rawReferenceEntityIdentifier || '' === $rawReferenceEntityIdentifier) {
@@ -72,7 +74,7 @@ class IsReferenceEntityConfiguredValidator extends ConstraintValidator
         }
     }
 
-    private function addEmptyViolation(ExecutionContextInterface $context, Constraint $constraint)
+    private function addEmptyViolation(ExecutionContextInterface $context, IsReferenceEntityConfigured $constraint)
     {
         $context
             ->buildViolation($constraint->emptyMessage)
@@ -80,7 +82,7 @@ class IsReferenceEntityConfiguredValidator extends ConstraintValidator
             ->addViolation();
     }
 
-    private function addInvalidViolation(Constraint $constraint, string $rawReferenceEntityIdentifier)
+    private function addInvalidViolation(IsReferenceEntityConfigured $constraint, string $rawReferenceEntityIdentifier)
     {
         $this->context
             ->buildViolation($constraint->invalidMessage)
@@ -89,7 +91,7 @@ class IsReferenceEntityConfiguredValidator extends ConstraintValidator
             ->addViolation();
     }
 
-    private function addUnknownViolation(Constraint $constraint, string $rawReferenceEntityIdentifier)
+    private function addUnknownViolation(IsReferenceEntityConfigured $constraint, string $rawReferenceEntityIdentifier)
     {
         $this->context
             ->buildViolation($constraint->unknownMessage)

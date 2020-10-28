@@ -186,8 +186,6 @@ const EditRulesContent: React.FC<Props> = ({
             <AlertDialog
               dialog={deleteDialog}
               onValidate={handleDeleteRule}
-              cancelLabel={translate('pim_common.cancel')}
-              confirmLabel={translate('pim_common.confirm')}
               label={translate(
                 'pimee_catalog_rule.form.edit.actions.delete.label'
               )}
@@ -205,8 +203,6 @@ const EditRulesContent: React.FC<Props> = ({
                 <AlertDialog
                   dialog={saveAndExecuteDialog}
                   onValidate={handleSaveAndExecuteRule}
-                  cancelLabel={translate('pim_common.cancel')}
-                  confirmLabel={translate('pim_common.confirm')}
                   label={translate(
                     'pimee_catalog_rule.form.edit.execute.title'
                   )}
@@ -214,6 +210,7 @@ const EditRulesContent: React.FC<Props> = ({
                     'pimee_catalog_rule.form.edit.execute.description'
                   )}
                   illustrationClassName={'AknFullPage-illustration--rules'}
+                  validateButtonClassName={'AknButton--apply'}
                 />
               </>
             )}

@@ -105,3 +105,5 @@
 - Change interface `Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface` to rename `findAllOrderedByPriority` method by `findEnabledOrderedByPriority`
 - Change constructor of `Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi\GetCategoriesController` to replace `ObjectFilterInterface $objectFilter` by `CollectionFilterInterface $collectionFilter`
 - Change constructor of `Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\AssociationContext` to replace `IdentifiableObjectRepositoryInterface $productRepository` by `ProductRepositoryInterface $productRepository`
+- Remove `Akeneo\Pim\Enrichment\AssetManager\Bundle\Analytics\CountAssetFamilies` class
+- Remove `Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Analytics\CountReferenceEntities` class

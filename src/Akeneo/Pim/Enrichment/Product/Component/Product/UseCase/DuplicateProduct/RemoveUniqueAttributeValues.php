@@ -20,12 +20,13 @@ class RemoveUniqueAttributeValues
     /** @var GetUniqueAttributeCodes */
     private $getUniqueAttributeCodes;
 
-    /** @var AttributeRepository */
+    /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
-
-    public function __construct(GetUniqueAttributeCodes $getUniqueAttributeCodes, AttributeRepositoryInterface $attributeRepository)
-    {
+    public function __construct(
+        GetUniqueAttributeCodes $getUniqueAttributeCodes,
+        AttributeRepositoryInterface $attributeRepository
+    ) {
         $this->getUniqueAttributeCodes = $getUniqueAttributeCodes;
         $this->attributeRepository = $attributeRepository;
     }

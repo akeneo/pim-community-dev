@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Enrichment\AssetManager\Component\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Webmozart\Assert\Assert;
 
 /**
  * Validator to ensure there is no more assets in the product value than the limit defined.
@@ -34,6 +35,7 @@ class ThereShouldBeLessAssetsInValueThanLimitValidator extends ConstraintValidat
 
     public function validate($value, Constraint $constraint)
     {
+        Assert::isInstanceOf($constraint, ThereShouldBeLessAssetsInValueThanLimit::class);
         $data = $value->getData();
 
         if (is_array($data) && count($data) > $this->maxAssets) {

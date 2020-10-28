@@ -23,6 +23,7 @@ lint-back:
 	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
 	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim --level 1
 	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim/Automation --level 3
+	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim/Enrichment --level 2
 	$(PHP_RUN) vendor/bin/phpstan analyse vendor/akeneo/pim-community-dev/src/Akeneo/Pim --level 2
 	$(MAKE) data-quality-insights-lint-back data-quality-insights-phpstan reference-entity-lint-back asset-manager-lint-back connectivity-connection-lint-back communication-channel-lint-back
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
