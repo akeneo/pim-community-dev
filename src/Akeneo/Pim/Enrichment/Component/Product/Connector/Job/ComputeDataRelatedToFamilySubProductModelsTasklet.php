@@ -8,10 +8,12 @@ use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\KeepOnlyValu
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -34,7 +36,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ComputeDataRelatedToFamilySubProductModelsTasklet implements TaskletInterface, InitializableInterface
+class ComputeDataRelatedToFamilySubProductModelsTasklet implements TaskletInterface, InitializableInterface, TrackableTaskletInterface
 {
     /** @var StepExecution */
     private $stepExecution;
@@ -132,7 +134,7 @@ class ComputeDataRelatedToFamilySubProductModelsTasklet implements TaskletInterf
 
             $skippedProductModels = [];
             $productModelsToSave = [];
-            $productModels = $this->getSubProductModelsForFamily($family);
+            $productModels = $this->getSubProductModelsForFamily([$family->getCode()]);
 
             foreach ($productModels as $productModel) {
                 $this->keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$productModel]);
@@ -164,6 +166,53 @@ class ComputeDataRelatedToFamilySubProductModelsTasklet implements TaskletInterf
         $this->cacheClearer->clear();
     }
 
+    public function count(): int
+    {
+        return $this->computeSubProductModelsToProcess();
+    }
+
+    /**
+     * Quentin raised some concerns regarding the ability to rewind the familyReader (which can be seen as a cursor)
+     * in a shared environment.
+     *
+     * @throws \Exception
+     */
+    private function computeSubProductModelsToProcess(): int
+    {
+        $this->familyReader->rewind(); // <= especially this bit here :'(
+
+        $familyCodes = [];
+        $totalProductsToProcess = 0;
+        while (true) {
+            try {
+                $familyItem = $this->familyReader->read();
+                if (null === $familyItem) {
+                    break;
+                }
+            } catch (InvalidItemException $e) {
+                continue;
+            }
+            $familyCodes[] = $familyItem['code'];
+
+            if (\count($familyCodes) % 100 === 0) {
+                $totalProductsToProcess += $this->countSubProductModels($familyCodes);
+                $familyCodes = [];
+            }
+        }
+        $totalProductsToProcess += $this->countSubProductModels($familyCodes);
+
+        $this->familyReader->rewind();
+
+        return $totalProductsToProcess;
+    }
+
+    private function countSubProductModels(array $familyCodes): int
+    {
+        $cursor = $this->getSubProductModelsForFamily($familyCodes);
+
+        return $cursor->count();
+    }
+
     /**
      * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
      *
@@ -187,18 +236,14 @@ class ComputeDataRelatedToFamilySubProductModelsTasklet implements TaskletInterf
 
         $this->productModelSaver->saveAll($productModels);
         $this->stepExecution->incrementSummaryInfo('process', count($productModels));
+        $this->stepExecution->incrementProcessedItems(count($productModels));
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 
-    /**
-     * @param FamilyInterface $family
-     *
-     * @return CursorInterface
-     */
-    private function getSubProductModelsForFamily(FamilyInterface $family): CursorInterface
+    private function getSubProductModelsForFamily(array $familyCodes): CursorInterface
     {
         $pqb = $this->queryBuilderFactory->create();
-        $pqb->addFilter('family', Operators::IN_LIST, [$family->getCode()]);
+        $pqb->addFilter('family', Operators::IN_LIST, $familyCodes);
         $pqb->addFilter('parent', Operators::IS_NOT_EMPTY, null);
 
         return $pqb->execute();

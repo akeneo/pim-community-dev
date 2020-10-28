@@ -99,7 +99,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
 
     public function count(): int
     {
-        return $this->computeTotalItemsToProcess();
+        return $this->computeProductsToProcess();
     }
 
     /**
@@ -211,7 +211,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
      *
      * @throws \Exception
      */
-    private function computeTotalItemsToProcess(): int
+    private function computeProductsToProcess(): int
     {
         $this->familyReader->rewind();
 

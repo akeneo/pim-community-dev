@@ -139,6 +139,22 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
 
     public function rewind():void
     {
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $filePath = $jobParameters->get('filePath');
+        if (null === $this->fileIterator) {
+            $delimiter = $jobParameters->get('delimiter');
+            $enclosure = $jobParameters->get('enclosure');
+            $defaultOptions = [
+                'reader_options' => [
+                    'fieldDelimiter' => $delimiter,
+                    'fieldEnclosure' => $enclosure,
+                ],
+            ];
+            $this->fileIterator = $this->fileIteratorFactory->create(
+                $filePath,
+                array_merge($defaultOptions, $this->options)
+            );
+        }
         $this->fileIterator->rewind();
     }
 
