@@ -220,6 +220,7 @@ pim_enrich.entity.attribute_group:
   label: attribute group
   uppercase_label: Attribute group
   plural_label: Attribute groups
+  result_count: '{0}0 attribute groups|{1}1 attribute group|]1, Inf[{{ count }} attribute groups'
   show_more_attribute:
     title: It's a bit crowded around here, we show you {{ attributeCount }}/{{ totalAttributeCount }} attributes.
     subtitle: To discover all the attributes of this group, just click below!
@@ -239,6 +240,10 @@ pim_enrich.entity.attribute_group:
       attributes_groups_selected: '{{ itemsCount }} group(s) selected'
     delete:
       confirm: Are you sure you want to delete this attribute group?
+  grid:
+    columns:
+      name: Attribute groups name
+    no_search_result: Sorry, there is no result for your search.
 pim_enrich.mass_edit.family:
   title: Families bulk action
   confirm: "{1}You are about to update a family with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} families with the following information, please confirm."
