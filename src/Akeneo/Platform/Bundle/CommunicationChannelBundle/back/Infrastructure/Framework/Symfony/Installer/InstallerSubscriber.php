@@ -35,7 +35,6 @@ class InstallerSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            InstallerEvents::POST_DB_CREATE => ['createCommunicationChannelTable'],
             InstallerEvents::POST_ASSETS_DUMP => [['installAssets'], ['addRequiredDependencies']],
         ];
     }
@@ -49,10 +48,5 @@ class InstallerSubscriber implements EventSubscriberInterface
     public function addRequiredDependencies(GenericEvent $event): void
     {
         $this->frontendDependencies->addRequiredDependencies();
-    }
-
-    public function createCommunicationChannelTable(): void
-    {
-        $this->dbalConnection->exec(CreateViewedAnnouncementsTableQuery::QUERY);
     }
 }
