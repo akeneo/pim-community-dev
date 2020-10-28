@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration;
 
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\AttributeGroupActivation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeGroupCode;
@@ -29,6 +30,14 @@ class DataQualityInsightsTestCase extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
+    protected function deleteProductCriterionEvaluations(int $productId): void
+    {
+        $this->get('database_connection')->executeQuery(
+            'DELETE FROM pim_data_quality_insights_product_criteria_evaluation WHERE product_id = :productId',
+            ['productId' => $productId]
+        );
+    }
+
     protected function createProduct(string $identifier, array $data = []): ProductInterface
     {
         $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
@@ -40,6 +49,14 @@ class DataQualityInsightsTestCase extends TestCase
         }
 
         $this->get('pim_catalog.saver.product')->save($product);
+
+        return $product;
+    }
+
+    protected function createProductWithoutEvaluations(string $identifier, array $data = []): ProductInterface
+    {
+        $product = $this->createProduct($identifier, $data);
+        $this->deleteProductCriterionEvaluations($product->getId());
 
         return $product;
     }
@@ -199,5 +216,39 @@ SQL;
             'evaluatedAt' => $evaluatedAt->format(Clock::TIME_FORMAT),
             'productModelId' => $productModelId,
         ]);
+    }
+
+    protected function createChannel(string $code, array $data = []): ChannelInterface
+    {
+        $defaultData = [
+            'code' => $code,
+            'locales' => ['en_US'],
+            'currencies' => ['USD'],
+            'category_tree' => 'master',
+        ];
+        $data = array_merge($defaultData, $data);
+
+        $channel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier($code);
+        if (null === $channel) {
+            $channel = $this->get('pim_catalog.factory.channel')->create();
+        }
+
+        $this->get('pim_catalog.updater.channel')->update($channel, $data);
+        $errors = $this->get('validator')->validate($channel);
+        Assert::count($errors, 0, 'Invalid channel');
+
+        $this->get('pim_catalog.saver.channel')->save($channel);
+
+        return $channel;
+    }
+
+    protected function getLocaleId(string $code): int
+    {
+        $localeId = $this->get('database_connection')->executeQuery(
+            'SELECT id FROM pim_catalog_locale WHERE code = :code',
+            ['code' => $code]
+        )->fetchColumn();
+
+        return intval($localeId);
     }
 }
