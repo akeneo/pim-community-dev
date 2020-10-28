@@ -58,6 +58,7 @@ pim_asset_manager:
       text:
         incompatible_with_regular_expression: '文本与正则表达式"%regular_expression% "不兼容'
       file:
+        extension_not_allowed: '此属性不允许"%file_extension%"文件。允许的扩展名为：%allowed_file_extensions%'
         file_size_exceeded: '此文件超出属性的最大文件大小设定。'
         should_exist: '找不到文件"%file_path%"。'
         target_readonly: '您不能更新"%attribute_code%"的值，因为它是一个转换的目标。'
@@ -72,6 +73,7 @@ pim_asset_manager:
       limit_reached: '无法创建资产"%asset_label%"，因为已达到此资产品类的资产上限数目 %limit%'
       channel:
         is_expected: '属性"%attribute_code%"应有一个渠道，因为其具有针对每个渠道的值。'
+        is_not_expected: '属性"%attribute_code%"不应有一个渠道，因为其没有针对每个渠道的值。'
         should_exist: '渠道"%channel_identifier%"不存在。'
       locale:
         is_expected: '属性"%attribute_code%"应有一个区域设置，因为其有针对每个区域的值。'

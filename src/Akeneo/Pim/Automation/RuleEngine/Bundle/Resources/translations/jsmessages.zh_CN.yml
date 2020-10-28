@@ -212,6 +212,14 @@ pimee_catalog_rule:
           title: 从分组中移除产品
           helper: 要从组中移除产品，请选择一个或多个组
           subtitle: 选择组
+        calculate:
+          operator:
+            add: 添加
+            subtract: 减去
+            multiply: 乘
+            divide: 除
+        concatenate:
+          select_target: 选择目标
       conditions:
         delete:
           label: 移除条件

@@ -1,5 +1,6 @@
 import { Dialog, DialogStateReturn } from 'reakit/Dialog';
 import React from 'react';
+import { useTranslate } from '../../dependenciesTools/hooks';
 
 type Props = {
   dialog: DialogStateReturn;
@@ -7,9 +8,10 @@ type Props = {
   onCancel?: () => void;
   label: string;
   description: string;
-  cancelLabel: string;
-  confirmLabel: string;
+  cancelLabel?: string;
+  confirmLabel?: string;
   illustrationClassName?: string;
+  validateButtonClassName?: string;
 };
 
 const AlertDialog: React.FC<Props> = ({
@@ -21,7 +23,10 @@ const AlertDialog: React.FC<Props> = ({
   cancelLabel,
   confirmLabel,
   illustrationClassName = 'AknFullPage-illustration--delete',
+  validateButtonClassName = 'AknButton--important',
 }) => {
+  const translate = useTranslate();
+
   const handleConfirm = () => {
     dialog.hide();
     if (onValidate) {
@@ -58,16 +63,16 @@ const AlertDialog: React.FC<Props> = ({
           </div>
           <div className='AknButtonList'>
             <button
-              title={cancelLabel}
+              title={cancelLabel ?? translate('pim_common.cancel')}
               className='AknButton AknButton--grey AknButtonList-item'
               onClick={handleCancel}>
-              {cancelLabel}
+              {cancelLabel ?? translate('pim_common.cancel')}
             </button>
             <button
-              title={confirmLabel}
-              className='AknButton AknButtonList-item AknButton--apply AknButton--important ok'
+              title={confirmLabel ?? translate('pim_common.confirm')}
+              className={`AknButton AknButtonList-item ${validateButtonClassName} ok`}
               onClick={handleConfirm}>
-              {confirmLabel}
+              {confirmLabel ?? translate('pim_common.confirm')}
             </button>
           </div>
         </div>

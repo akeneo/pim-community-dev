@@ -23,6 +23,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\TextAttribute;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimpleArrayConverter;
+use Webmozart\Assert\Assert;
 
 class Asset extends AbstractSimpleArrayConverter
 {
@@ -72,6 +73,7 @@ class Asset extends AbstractSimpleArrayConverter
                     $data = implode(',', $value['data']);
                     break;
                 case MediaLinkAttribute::ATTRIBUTE_TYPE:
+                    Assert::isInstanceOf($attribute, MediaLinkAttribute::class);
                     $data = sprintf(
                         '%s%s%s',
                         $attribute->getPrefix()->stringValue(),
