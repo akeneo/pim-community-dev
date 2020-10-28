@@ -32,6 +32,7 @@ class ProductCsvImportSpec extends ObjectBehavior
                 'groupsColumn'       => "groups",
                 'enabledComparison'  => true,
                 'realTimeVersioning' => true,
+                'convertVariantToSimple' => false,
             ]
         );
     }
