@@ -41,8 +41,7 @@ datagrid:
                     id: string
                     jobLabel: string
                     isStoppable: boolean
-                # TODO fix this
-                data_name: warningCount
+                data_name: id
         sorters:
             columns:
                 job:
