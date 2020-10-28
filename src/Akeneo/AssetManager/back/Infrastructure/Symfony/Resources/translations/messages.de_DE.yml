@@ -62,10 +62,12 @@ pim_datagrid:
     type:
       asset_manager_execute_naming_convention: Asset-Familien-Namenskonvention ausführen
       asset_manager_link_assets_to_products: Assets mit Produkten verknüpfen
+      asset_manager_compute_transformations: Asset-Transformationen berechnen
 batch_jobs:
   default_steps:
     execute_naming_convention: Asset-Familien-Namenskonvention ausführen
     link_assets_to_products: Assets mit Produkten verknüpfen
+    compute_transformations: Asset-Transformationen berechnen
 job_execution:
   summary:
     assets: Assets
