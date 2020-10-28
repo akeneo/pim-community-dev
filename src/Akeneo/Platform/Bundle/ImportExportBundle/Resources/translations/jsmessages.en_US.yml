@@ -135,6 +135,9 @@ pim_import_export:
                     real_time_versioning:
                         title: Real time history update
                         help: Means that the product history is automatically updated, can be switched off to improve performances
+                    convert_variant_to_simple:
+                        title: Convert variant products to simple products
+                        help: Try to convert variant products to simple products when the "parent" column is empty. If set to "No", an empty "parent" column will be ignored
                     family_variant_column:
                         title: Family variant column
                     with_label:
