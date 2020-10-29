@@ -56,7 +56,7 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
             <AxisEvaluation axis={'enrichment'}>
               <Criterion code={'completeness_of_non_required_attributes'}/>
               <Criterion code={'completeness_of_required_attributes'}/>
-              <Criterion code={'missing_image_attribute'} followAttributeRecommendation={followImageAttributeRecommendation}>
+              <Criterion code={'enrichment_image'} followAttributeRecommendation={followImageAttributeRecommendation}>
                 <Recommendation supports={criterion => criterion.status === CRITERION_NOT_APPLICABLE || (criterion.status === CRITERION_DONE && !isSuccess(criterion.rate) && criterion.improvable_attributes.length === 0)}>
                   <span className="NotApplicableAttribute">{translate('akeneo_data_quality_insights.product_evaluation.messages.add_image_attribute_recommendation')}</span>
                 </Recommendation>
