@@ -2,12 +2,13 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Job;
 
-use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeCompletenessOfFamilyProductsTasklet;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
@@ -24,7 +25,8 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
         ItemReaderInterface $familyReader,
         EntityManagerClearerInterface $cacheClearer,
         JobRepositoryInterface $jobRepository,
-        ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
+        CompletenessCalculator $completenessCalculator,
+        SaveProductCompletenesses $saveProductCompletenesses,
         StepExecution $stepExecution
     )
     {
@@ -33,7 +35,8 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
             $familyReader,
             $cacheClearer,
             $jobRepository,
-            $computeAndPersistProductCompletenesses
+            $completenessCalculator,
+            $saveProductCompletenesses
         );
 
         $this->setStepExecution($stepExecution);
@@ -47,11 +50,13 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
     function it_does_nothing_if_there_is_no_family(
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         ItemReaderInterface $familyReader,
-        ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses
+        CompletenessCalculator $completenessCalculator,
+        SaveProductCompletenesses $saveProductCompletenesses
     ) {
         $familyReader->read()->shouldBeCalledOnce()->willReturn(null);
         $productQueryBuilderFactory->create()->shouldNotBeCalled();
-        $computeAndPersistProductCompletenesses->fromProductIdentifiers(Argument::any())->shouldNotBeCalled();
+        $completenessCalculator->fromProductIdentifiers(Argument::any())->shouldNotBeCalled();
+        $saveProductCompletenesses->saveAll(Argument::any())->shouldNotBeCalled();
 
         $this->execute();
     }
@@ -60,7 +65,8 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
         ProductQueryBuilderInterface $productQueryBuilder,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         ItemReaderInterface $familyReader,
-        ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
+        CompletenessCalculator $completenessCalculator,
+        SaveProductCompletenesses $saveProductCompletenesses,
         StepExecution $stepExecution,
         JobRepositoryInterface $jobRepository,
         FamilyInterface $familyShoes,
@@ -86,12 +92,13 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
             new ProductCursor([$product1->getWrappedObject(), $product2->getWrappedObject(), $product3->getWrappedObject(), $product4->getWrappedObject()]),
         );
 
-        $computeAndPersistProductCompletenesses->fromProductIdentifiers([
+        $completenessCalculator->fromProductIdentifiers([
             'product_shoes_1',
             'product_shoes_2',
             'product_tshirt_1',
             'product_tshirt_2',
-        ])->shouldBeCalled();
+        ])->shouldBeCalled()->willReturn(['completeness_collection']);
+        $saveProductCompletenesses->saveAll(['completeness_collection'])->shouldBeCalled();
 
         $stepExecution->incrementSummaryInfo('process', 4)->shouldBeCalled();
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
@@ -103,7 +110,8 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
         ProductQueryBuilderInterface $productQueryBuilder,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         ItemReaderInterface $familyReader,
-        ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
+        CompletenessCalculator $completenessCalculator,
+        SaveProductCompletenesses $saveProductCompletenesses,
         StepExecution $stepExecution,
         JobRepositoryInterface $jobRepository,
         FamilyInterface $familyShoes
@@ -120,7 +128,8 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
             }, range(1, 1006)))
         );
 
-        $computeAndPersistProductCompletenesses->fromProductIdentifiers(Argument::type('array'))->shouldBeCalledTimes(2);
+        $completenessCalculator->fromProductIdentifiers(Argument::type('array'))->shouldBeCalledTimes(2);
+        $saveProductCompletenesses->saveAll(Argument::type('array'))->shouldBeCalledTimes(2);
 
         $stepExecution->incrementSummaryInfo('process', 1000)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('process', 6)->shouldBeCalled();

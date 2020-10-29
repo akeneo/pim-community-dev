@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job;
 
-use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
@@ -17,43 +18,40 @@ use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Webmozart\Assert\Assert;
 
 /**
+ *  Computation of the completeness for all products belonging to a family that has been updated by mass action
+ *
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * TODO refactor with Akeneo\Pim\Enrichment\Component\Product\Job\ComputeCompletenessOfProductsFamilyTasklet
+ *            that work only for unitary update
  */
 class ComputeCompletenessOfFamilyProductsTasklet implements TaskletInterface
 {
     private const BATCH_SIZE = 1000;
 
-    /** @var StepExecution */
-    private $stepExecution;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    private $productQueryBuilderFactory;
-
-    /** @var ItemReaderInterface */
-    private $familyReader;
-
-    /** @var EntityManagerClearerInterface */
-    private $cacheClearer;
-
-    /** @var JobRepositoryInterface */
-    private $jobRepository;
-
-    /** @var ComputeAndPersistProductCompletenesses */
-    private $computeAndPersistProductCompletenesses;
+    private StepExecution $stepExecution;
+    private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory;
+    private ItemReaderInterface $familyReader;
+    private EntityManagerClearerInterface $cacheClearer;
+    private JobRepositoryInterface $jobRepository;
+    private CompletenessCalculator $completenessCalculator;
+    private SaveProductCompletenesses $saveProductCompletenesses;
 
     public function __construct(
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         ItemReaderInterface $familyReader,
         EntityManagerClearerInterface $cacheClearer,
         JobRepositoryInterface $jobRepository,
-        ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses
+        CompletenessCalculator $completenessCalculator,
+        SaveProductCompletenesses $saveProductCompletenesses
     ) {
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
         $this->familyReader = $familyReader;
         $this->cacheClearer = $cacheClearer;
         $this->jobRepository = $jobRepository;
-        $this->computeAndPersistProductCompletenesses = $computeAndPersistProductCompletenesses;
+        $this->completenessCalculator = $completenessCalculator;
+        $this->saveProductCompletenesses = $saveProductCompletenesses;
     }
 
     /**
@@ -113,7 +111,9 @@ class ComputeCompletenessOfFamilyProductsTasklet implements TaskletInterface
 
     private function computeCompleteness(array $productIdentifiers): void
     {
-        $this->computeAndPersistProductCompletenesses->fromProductIdentifiers($productIdentifiers);
+        $completenessCollections = $this->completenessCalculator->fromProductIdentifiers($productIdentifiers);
+        $this->saveProductCompletenesses->saveAll($completenessCollections);
+
         $this->stepExecution->incrementSummaryInfo('process', count($productIdentifiers));
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
