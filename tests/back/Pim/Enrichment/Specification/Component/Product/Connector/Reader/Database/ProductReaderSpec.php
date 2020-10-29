@@ -51,29 +51,29 @@ class ProductReaderSpec extends ObjectBehavior
         JobParameters $jobParameters
     ) {
         $filters = [
-            'data'      => [
+            'data' => [
                 [
-                    'field'    => 'enabled',
+                    'field' => 'enabled',
                     'operator' => '=',
-                    'value'    => true
+                    'value' => true,
                 ],
                 [
-                    'field'    => 'family',
+                    'field' => 'family',
                     'operator' => 'IN',
-                    'value'    => [
-                        'camcorder'
-                    ]
+                    'value' => [
+                        'camcorder',
+                    ],
                 ],
                 [
-                    'field'    => 'completeness',
+                    'field' => 'completeness',
                     'operator' => '>=',
-                    'value'    => 100
-                ]
+                    'value' => 100,
+                ],
             ],
             'structure' => [
-                'scope'   => 'mobile',
+                'scope' => 'mobile',
                 'locales' => ['fr_FR', 'en_US'],
-            ]
+            ],
         ];
 
         $products = [$product1, $product2, $product3];
@@ -127,17 +127,17 @@ class ProductReaderSpec extends ObjectBehavior
         JobParameters $jobParameters
     ) {
         $filters = [
-            'data'      => [
+            'data' => [
                 [
-                    'field'    => 'completeness',
+                    'field' => 'completeness',
                     'operator' => '>=',
-                    'value'    => 100
-                ]
+                    'value' => 100,
+                ],
             ],
             'structure' => [
-                'scope'   => 'mobile',
+                'scope' => 'mobile',
                 'locales' => ['fr_FR', 'en_US'],
-            ]
+            ],
         ];
 
         $products = [$product1, $product2, $product3];
@@ -190,17 +190,17 @@ class ProductReaderSpec extends ObjectBehavior
         JobParameters $jobParameters
     ) {
         $filters = [
-            'data'      => [
+            'data' => [
                 [
-                    'field'    => 'completeness',
+                    'field' => 'completeness',
                     'operator' => '>=',
-                    'value'    => 100
-                ]
+                    'value' => 100,
+                ],
             ],
             'structure' => [
-                'scope'   => 'mobile',
+                'scope' => 'mobile',
                 'locales' => ['fr_FR', 'en_US'],
-            ]
+            ],
         ];
 
         $products = [$product1, $product2, $product3];
@@ -248,29 +248,29 @@ class ProductReaderSpec extends ObjectBehavior
         JobParameters $jobParameters
     ) {
         $filters = [
-            'data'      => [
+            'data' => [
                 [
-                    'field'    => 'enabled',
+                    'field' => 'enabled',
                     'operator' => '=',
-                    'value'    => true
+                    'value' => true,
                 ],
                 [
-                    'field'    => 'family',
+                    'field' => 'family',
                     'operator' => 'IN',
-                    'value'    => [
-                        'camcorder'
-                    ]
+                    'value' => [
+                        'camcorder',
+                    ],
                 ],
                 [
-                    'field'    => 'completeness',
+                    'field' => 'completeness',
                     'operator' => '>=',
-                    'value'    => 100
-                ]
+                    'value' => 100,
+                ],
             ],
             'structure' => [
-                'scope'   => 'mobile',
+                'scope' => 'mobile',
                 'locales' => ['fr_FR', 'en_US'],
-            ]
+            ],
         ];
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);

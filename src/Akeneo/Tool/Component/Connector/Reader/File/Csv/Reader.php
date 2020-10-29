@@ -70,18 +70,7 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
         $jobParameters = $this->stepExecution->getJobParameters();
         $filePath = $jobParameters->get('filePath');
         if (null === $this->fileIterator) {
-            $delimiter = $jobParameters->get('delimiter');
-            $enclosure = $jobParameters->get('enclosure');
-            $defaultOptions = [
-                'reader_options' => [
-                    'fieldDelimiter' => $delimiter,
-                    'fieldEnclosure' => $enclosure,
-                ],
-            ];
-            $this->fileIterator = $this->fileIteratorFactory->create(
-                $filePath,
-                array_merge($defaultOptions, $this->options)
-            );
+            $this->initializeFileIterator($jobParameters, $filePath);
             $this->fileIterator->rewind();
         }
 
@@ -137,23 +126,12 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
         $this->fileIterator = null;
     }
 
-    public function rewind():void
+    public function rewind(): void
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $filePath = $jobParameters->get('filePath');
         if (null === $this->fileIterator) {
-            $delimiter = $jobParameters->get('delimiter');
-            $enclosure = $jobParameters->get('enclosure');
-            $defaultOptions = [
-                'reader_options' => [
-                    'fieldDelimiter' => $delimiter,
-                    'fieldEnclosure' => $enclosure,
-                ],
-            ];
-            $this->fileIterator = $this->fileIteratorFactory->create(
-                $filePath,
-                array_merge($defaultOptions, $this->options)
-            );
+            $this->initializeFileIterator($jobParameters, $filePath);
         }
         $this->fileIterator->rewind();
     }
@@ -221,5 +199,28 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
                 ]
             );
         }
+    }
+
+    /**
+     * @param \Akeneo\Tool\Component\Batch\Job\JobParameters $jobParameters
+     * @param $filePath
+     *
+     */
+    private function initializeFileIterator(
+        \Akeneo\Tool\Component\Batch\Job\JobParameters $jobParameters,
+        $filePath
+    ): void {
+        $delimiter = $jobParameters->get('delimiter');
+        $enclosure = $jobParameters->get('enclosure');
+        $defaultOptions = [
+            'reader_options' => [
+                'fieldDelimiter' => $delimiter,
+                'fieldEnclosure' => $enclosure,
+            ],
+        ];
+        $this->fileIterator = $this->fileIteratorFactory->create(
+            $filePath,
+            array_merge($defaultOptions, $this->options)
+        );
     }
 }
