@@ -1,5 +1,15 @@
 # 3.2.x
 
+# 3.2.76 (2020-10-22)
+
+## Features:
+
+- GITHUB-APD-227: add the PIM communication channel
+
+One frontend dependency is required for the backport of this feature (react-markdown). Therefore, it will add this dependencies in the file`package.json` of your project automatically when executing `composer update` or `composer install`.  
+
+Please commit changes of the file `package.json` in your CVS.
+
 # 3.2.75 (2020-10-14)
 
 ## Improvements:

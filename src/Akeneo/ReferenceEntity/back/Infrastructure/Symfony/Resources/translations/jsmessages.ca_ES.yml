@@ -13,6 +13,11 @@ pim_reference_entity:
         remove: Eliminar
         download: Baixar
         upload: Arrossegar i deixar anar per carregar
+  editor:
+    embedded:
+      invalid_link:
+        title: Enllaç incrustat sospitós
+        message: Ho sentim, no podem mostrar aquest article tot i ser guardat correctament
   grid:
     counter: '{{ count }} resultat|{{ count }} resultats'
   reference_entity:
