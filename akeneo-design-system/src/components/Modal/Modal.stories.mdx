@@ -51,6 +51,29 @@ It can be used with or without an Illustration and adapts its content accordingl
 
 <ArgsTable story="Standard" />
 
+## Variation with Illustration
+
+<Canvas>
+  <Story name="With Illustration">
+    {args => {
+      const [{isOpen}, updateArgs] = useArgs();
+      const open = () => updateArgs({isOpen: true});
+      const close = () => updateArgs({isOpen: false});
+      return (
+        <>
+          <Modal {...args} onClose={close} illustration={<Illustrations.ChannelsIllustration />}>
+            Such nice Illustration
+            <Modal.BottomButtons>
+              <Button onClick={close}>Close</Button>
+            </Modal.BottomButtons>
+          </Modal>
+          <Button onClick={open}>Open Modal with Illustration</Button>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
 ## Usage with Composition
 
 The Modal Component also exposes a `BottomButtons` Component that is helpful to display Buttons at the bottom of the Modal children. It can be used as simply as this:
