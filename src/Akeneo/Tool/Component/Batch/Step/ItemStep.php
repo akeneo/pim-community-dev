@@ -138,16 +138,8 @@ class ItemStep extends AbstractStep implements StoppableStepInterface
                 $this->getJobRepository()->updateStepExecution($stepExecution);
                 $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
                 $batchCount = 0;
-                if (
-                    $this->stoppable &&
-                    null !== $this->sqlGetJobExecutionStatus &&
-                    BatchStatus::STOPPING === $this->sqlGetJobExecutionStatus->getByJobExecutionId(
-                        $stepExecution->getJobExecution()->getId()
-                    )->getValue()
-                ) {
-                    $stepExecution->setExitStatus(new ExitStatus(ExitStatus::STOPPED));
-                    $stepExecution->setStatus(new BatchStatus(BatchStatus::STOPPED));
-                    $this->getJobRepository()->updateStepExecution($stepExecution);
+                if ($this->isStopping($stepExecution)) {
+                    $this->stop($stepExecution);
 
                     break;
                 }
@@ -162,10 +154,8 @@ class ItemStep extends AbstractStep implements StoppableStepInterface
             $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
         }
 
-        if ($this->isStoppting($stepExecution)) {
-            $stepExecution->setExitStatus(new ExitStatus(ExitStatus::STOPPED));
-            $stepExecution->setStatus(new BatchStatus(BatchStatus::STOPPED));
-            $this->getJobRepository()->updateStepExecution($stepExecution);
+        if ($this->isStopping($stepExecution)) {
+            $this->stop($stepExecution);
         }
 
         $this->flushStepElements();
@@ -270,12 +260,19 @@ class ItemStep extends AbstractStep implements StoppableStepInterface
         ];
     }
 
-    private function isStoppting(StepExecution $stepExecution): bool
+    private function isStopping(StepExecution $stepExecution): bool
     {
         return $this->stoppable &&
             null !== $this->sqlGetJobExecutionStatus &&
             BatchStatus::STOPPING === $this->sqlGetJobExecutionStatus->getByJobExecutionId(
                 $stepExecution->getJobExecution()->getId()
             )->getValue();
+    }
+
+    private function stop(StepExecution $stepExecution): void
+    {
+        $stepExecution->setExitStatus(new ExitStatus(ExitStatus::STOPPED));
+        $stepExecution->setStatus(new BatchStatus(BatchStatus::STOPPED));
+        $this->getJobRepository()->updateStepExecution($stepExecution);
     }
 }
