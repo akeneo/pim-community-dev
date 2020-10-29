@@ -10,6 +10,7 @@ use Akeneo\Platform\Component\EventQueue\BusinessEventNormalizer;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\Assert;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -20,10 +21,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class BusinessEventNormalizerSpec extends ObjectBehavior
 {
-    public function let(
-        UserRepositoryInterface $userRepository
-    ): void {
-        $this->beConstructedWith($userRepository);
+    public function let(): void
+    {
+        $this->beConstructedWith();
     }
 
     public function it_is_initializable(): void
@@ -121,15 +121,43 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
             ->shouldReturn(false);
     }
 
-    public function it_denormalizes_a_business_event(UserInterface $user, $userRepository)
+    public function it_denormalizes_a_business_event(UserInterface $user)
+    {
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(true);
+
+        $author = Author::fromUser($user->getWrappedObject());
+
+        $businessEvent = new class ($author, ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends BusinessEvent {
+            public function name(): string
+            {
+                return 'event_name';
+            }
+        };
+
+        $data = [
+            'name' => 'event_name',
+            'author' => 'julia',
+            'author_type' => 'api',
+            'data' => ['data'],
+            'timestamp' => 0,
+            'uuid' => 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba',
+        ];
+
+        $denormalizedBusinessEvent = $this->denormalize($data, get_class($businessEvent));
+
+        Assert::assertEquals($denormalizedBusinessEvent->getWrappedObject(), $businessEvent);
+    }
+
+    public function it_does_not_denormalize_a_business_event_because_author_type_is_not_good(UserInterface $user)
     {
         $user->getUsername()->willReturn('julia');
         $user->getFirstName()->willReturn('Julia');
         $user->getLastName()->willReturn('Doe');
         $user->isApiUser()->willReturn(false);
         $author = Author::fromUser($user->getWrappedObject());
-
-        $userRepository->findOneByIdentifier(Argument::any())->willReturn($user);
 
         $businessEvent = new class ($author, ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends BusinessEvent {
             public function name(): string
@@ -141,13 +169,18 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
         $data = [
             'name' => 'event_name',
             'author' => 'author',
-            'author_type' => 'ui',
+            'author_type' => 'not_an_author_type',
             'data' => ['data'],
             'timestamp' => 0,
             'uuid' => 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba',
         ];
 
-        $this->denormalize($data, get_class($businessEvent))
-            ->shouldBeLike($businessEvent);
+        $this->shouldThrow(\InvalidArgumentException::class)->during(
+            'denormalize',
+            [
+                $data,
+                get_class($businessEvent),
+            ]
+        );
     }
 }

@@ -161,10 +161,11 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         $product = new Product();
         $product->setId(1);
         $product->setIdentifier('product_identifier');
+        $author = Author::fromNameAndType('julia', 'ui');
 
         $productRepository->findOneByIdentifier('product_identifier')->willThrow(AccessDeniedException::class);
 
         $this->shouldThrow(NotGrantedCategoryException::class)
-            ->during('build', [new ProductCreated('julia', ['identifier' => 'product_identifier'])]);
+            ->during('build', [new ProductCreated($author, ['identifier' => 'product_identifier'])]);
     }
 }

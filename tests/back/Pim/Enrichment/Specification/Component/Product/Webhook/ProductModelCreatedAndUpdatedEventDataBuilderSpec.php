@@ -152,10 +152,14 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         $productModel = new ProductModel();
         $productModel->setCode('polo_col_mao');
 
-        $productModelRepository->findOneByIdentifier('polo_col_mao')->willReturn($productModel)->willThrow(AccessDeniedException::class);
+        $author = Author::fromNameAndType('julia', 'ui');
+
+        $productModelRepository->findOneByIdentifier('polo_col_mao')->willReturn($productModel)->willThrow(
+            AccessDeniedException::class
+        );
 
         $this->shouldThrow(NotGrantedCategoryException::class)
-            ->during('build', [new ProductModelCreated('julia', ['code' => 'polo_col_mao'])]);
+            ->during('build', [new ProductModelCreated($author, ['code' => 'polo_col_mao'])]);
     }
 }
 

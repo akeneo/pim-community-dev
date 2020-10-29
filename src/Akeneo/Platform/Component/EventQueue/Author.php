@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Component\EventQueue;
 
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Thomas Galvaing <thomas.galvaing@akeneo.com>
@@ -35,6 +36,13 @@ class Author
         $type = $user->isApiUser() ? self::TYPE_API : self::TYPE_UI;
 
         return new self($user->getUsername(), $type);
+    }
+
+    public static function fromNameAndType(string $name, string $type): Author
+    {
+        Assert::oneOf($type, [self::TYPE_API, self::TYPE_UI]);
+
+        return new self($name, $type);
     }
 
     public function type(): string

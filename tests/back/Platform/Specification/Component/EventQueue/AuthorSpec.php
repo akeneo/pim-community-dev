@@ -26,10 +26,11 @@ class AuthorSpec extends ObjectBehavior
         $user->getFirstName()->willReturn('Julia');
         $user->getLastName()->willReturn('Doe');
         $user->isApiUser()->willReturn(false);
-        $author = Author::fromUser($user->getWrappedObject());
 
-        Assert::assertEquals('julia', $author->name());
-        Assert::assertEquals(Author::TYPE_UI, $author->type());
+        $this->beConstructedThrough('fromUser', [$user->getWrappedObject()]);
+
+        Assert::assertEquals('julia', $this->getWrappedObject()->name());
+        Assert::assertEquals(Author::TYPE_UI, $this->getWrappedObject()->type());
     }
 
     public function it_does_create_an_api_author_from_user(UserInterface $user): void
@@ -38,9 +39,24 @@ class AuthorSpec extends ObjectBehavior
         $user->getFirstName()->willReturn('Julia');
         $user->getLastName()->willReturn('Doe');
         $user->isApiUser()->willReturn(true);
-        $author = Author::fromUser($user->getWrappedObject());
 
-        Assert::assertEquals('julia', $author->name());
-        Assert::assertEquals(Author::TYPE_API, $author->type());
+        $this->beConstructedThrough('fromUser', [$user->getWrappedObject()]);
+
+        Assert::assertEquals('julia', $this->getWrappedObject()->name());
+        Assert::assertEquals(Author::TYPE_API, $this->getWrappedObject()->type());
+    }
+
+    public function it_does_create_an_author_from_name_and_type(): void
+    {
+        $this->beConstructedThrough('fromNameAndType', ['julia', Author::TYPE_UI,]);
+
+        Assert::assertEquals('julia', $this->getWrappedObject()->name());
+        Assert::assertEquals(Author::TYPE_UI, $this->getWrappedObject()->type());
+    }
+
+    public function it_not_does_create_an_author_from_name_and_type_because_of_wrong_type(): void
+    {
+        $this->beConstructedThrough('fromNameAndType', ['julia', 'not_my_type',]);
+        $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();
     }
 }

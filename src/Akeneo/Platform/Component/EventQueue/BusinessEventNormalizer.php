@@ -16,14 +16,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class BusinessEventNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    /** @var UserRepositoryInterface */
-    private $userRepository;
-
-    public function __construct(UserRepositoryInterface $userRepository)
-    {
-        $this->userRepository = $userRepository;
-    }
-
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof BusinessEvent;
@@ -63,16 +55,8 @@ class BusinessEventNormalizer implements NormalizerInterface, DenormalizerInterf
             throw new RuntimeException(sprintf('The class "%s" is not defined.', $type));
         }
 
-        $user = $this->userRepository->findOneByIdentifier($data['author']);
-
-        if (!$user instanceof UserInterface) {
-            throw new \LogicException('User not found.');
-        }
-
-        $author = Author::fromUser($user);
-
         return new $type(
-            $author,
+            Author::fromNameAndType($data['author'], $data['author_type']),
             $data['data'],
             $data['timestamp'],
             $data['uuid']

@@ -5,7 +5,5 @@ services:
             - !tagged pim_enrich.messenger.normalizer.business_event
 
     Akeneo\Platform\Component\EventQueue\BusinessEventNormalizer:
-        arguments:
-            - '@pim_user.repository.user'
         tags:
             - { name: pim_enrich.messenger.normalizer.business_event, priority: 0 }
