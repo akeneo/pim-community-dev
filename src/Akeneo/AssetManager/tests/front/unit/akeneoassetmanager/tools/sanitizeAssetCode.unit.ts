@@ -1,4 +1,4 @@
-import sanitizeAssetCode from 'akeneoassetmanager/tools/sanitizeAssetCode';
+import {sanitizeAssetCode} from 'akeneoassetmanager/tools/sanitizeAssetCode';
 
 describe('akeneoassetmanager/tools/sanitizeAssetCode', () => {
   test('I remove spaces', () => {

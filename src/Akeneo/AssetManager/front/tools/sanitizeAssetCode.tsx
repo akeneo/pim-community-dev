@@ -1,4 +1,4 @@
-export default (value: string) => {
+const sanitizeAssetCode = (value: string): string => {
   const regex = /[a-zA-Z0-9_]/;
 
   return value
@@ -7,3 +7,5 @@ export default (value: string) => {
     .map((char: string) => (char.match(regex) ? char : '_'))
     .join('');
 };
+
+export {sanitizeAssetCode};

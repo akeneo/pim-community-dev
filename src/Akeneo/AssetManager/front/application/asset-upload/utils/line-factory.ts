@@ -1,7 +1,7 @@
 import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import {AssetFamily, getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import sanitizeAssetCode from 'akeneoassetmanager/tools/sanitizeAssetCode';
+import {sanitizeAssetCode} from 'akeneoassetmanager/tools/sanitizeAssetCode';
 import {createUUIDV4} from 'akeneoassetmanager/application/asset-upload/utils/uuid';
 import Locale from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
