@@ -191,7 +191,7 @@ class ProductAndProductModelReader implements
     public function count(): int
     {
         if (null === $this->productsAndProductModels) {
-            throw new \RuntimeException('Unable to compute the total items the reader will reader until the reader is not initialized');
+            throw new \RuntimeException('Unable to compute the total items the reader will process until the reader is not initialized');
         }
 
         return $this->productsAndProductModels->count();
