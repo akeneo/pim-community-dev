@@ -47,6 +47,7 @@
 - PIM-9519: Fix translation key for datagrid search field
 - PIM-9517: Fix locale selector default value on localizable attributes in product exports
 - PIM-9516: Recalculate completeness after a bulk set attribute requirements on families
+- PIM-9532: Fix the family selection in mass action when a filter on label is set
 
 ## New features
 
