@@ -45,7 +45,7 @@ test('I can create a line from a filename not localizable and not scopable', () 
       locales: locales,
       expected: {
         ...line,
-        code: 'foobar_20',
+        code: 'Foobar_20',
       },
     },
     {
@@ -239,7 +239,7 @@ test('I can create a line from a filename but ignores invalid locale and channel
       locales: locales,
       expected: {
         ...line,
-        code: 'foo_fr_fr_print',
+        code: 'foo_fr_FR_print',
         locale: null,
         channel: null,
       },
@@ -251,7 +251,7 @@ test('I can create a line from a filename but ignores invalid locale and channel
       locales: locales,
       expected: {
         ...line,
-        code: 'foo_fr_fr',
+        code: 'foo_fr_FR',
         locale: null,
         channel: null,
       },
