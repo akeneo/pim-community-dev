@@ -11,7 +11,6 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Pool;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\TransferStats;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Encoder\EncoderInterface;
 
