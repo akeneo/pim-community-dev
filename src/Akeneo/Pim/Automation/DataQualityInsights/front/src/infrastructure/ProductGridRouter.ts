@@ -9,7 +9,12 @@ export const redirectToProductGridFilteredByFamily = (channelCode: string, local
   redirectToFilteredProductGrid(channelCode, localeCode, gridFilters);
 };
 
-export const redirectToProductGridFilteredByCategory = (channelCode: string, localeCode: string, categoryId: string, rootCategoryId: string) => {
+export const redirectToProductGridFilteredByCategory = (
+  channelCode: string,
+  localeCode: string,
+  categoryId: string,
+  rootCategoryId: string
+) => {
   const gridFilters = `s[updated]=1&f[category][value][treeId]=${rootCategoryId}&f[category][value][categoryId]=${categoryId}&f[category][type]=1&f[scope][value]=${channelCode}&t=product-grid`;
   redirectToFilteredProductGrid(channelCode, localeCode, gridFilters);
 };
@@ -34,7 +39,9 @@ const addAxisColumnsToTheProductGrid = () => {
     productGridColumns = storedProductGridColumns.split(',');
   } else {
     //If the user has never been to the product grid since its last login
-    productGridColumns = 'identifier,image,label,family,enabled,completeness,created,updated,complete_variant_products,success'.split(',');
+    productGridColumns = 'identifier,image,label,family,enabled,completeness,created,updated,complete_variant_products,success'.split(
+      ','
+    );
   }
   if (!productGridColumns.includes(PRODUCT_GRID_CONSISTENCY_COLUMN)) {
     productGridColumns.push(PRODUCT_GRID_CONSISTENCY_COLUMN);

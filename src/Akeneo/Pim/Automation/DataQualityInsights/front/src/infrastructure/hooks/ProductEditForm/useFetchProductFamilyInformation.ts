@@ -1,6 +1,6 @@
 import {useSelector} from 'react-redux';
 
-import {ProductEditFormState} from "../../store";
+import {ProductEditFormState} from '../../store';
 
 const useFetchProductFamilyInformation = () => {
   return useSelector((state: ProductEditFormState) => {

@@ -1,9 +1,9 @@
 import {fetchAllAttributeGroupsDqiStatus, fetchAttributeGroupsByCode} from '../../fetcher';
-import {useEffect, useState} from "react";
-import {useCatalogContext, useFetchProductFamilyInformation, useProductEvaluation} from "../index";
-import {Attribute, Family as FamilyInformation} from "../../../domain";
-import {AttributeGroupCollection} from "@akeneo-pim-community/settings-ui/src/models";
-import {useMountedRef} from "@akeneo-pim-community/settings-ui/src/hooks";
+import {useEffect, useState} from 'react';
+import {useCatalogContext, useFetchProductFamilyInformation, useProductEvaluation} from '../index';
+import {Attribute, Family as FamilyInformation} from '../../../domain';
+import {AttributeGroupCollection} from '@akeneo-pim-community/settings-ui/src/models';
+import {useMountedRef} from '@akeneo-pim-community/settings-ui/src/hooks';
 
 const useProductEvaluatedAttributeGroups = () => {
   const family = useFetchProductFamilyInformation();
@@ -17,13 +17,13 @@ const useProductEvaluatedAttributeGroups = () => {
   const extractFamilyAttributeGroupCodes = (family: FamilyInformation) => {
     let familyAttributeGroups = family.attributes.map((attribute: Attribute) => attribute.group);
     return Array.from(new Set(familyAttributeGroups)); //To remove duplicates (no native JS method)
-  }
+  };
 
   const filterDisabledAttributeGroups = (allGroupsStatus: object, familyAttributeGroups: string[]) => {
     return Object.entries(allGroupsStatus)
       .filter(([groupCode, status]) => familyAttributeGroups.includes(groupCode) && status === true)
       .map(([groupCode, _]) => groupCode);
-  }
+  };
 
   useEffect(() => {
     if (channel && locale && evaluation) {
@@ -43,7 +43,10 @@ const useProductEvaluatedAttributeGroups = () => {
 
     (async () => {
       const familyAttributeGroupCodes = extractFamilyAttributeGroupCodes(family);
-      const productEvaluatedGroupsCodes = filterDisabledAttributeGroups(attributeGroupsStatus, familyAttributeGroupCodes);
+      const productEvaluatedGroupsCodes = filterDisabledAttributeGroups(
+        attributeGroupsStatus,
+        familyAttributeGroupCodes
+      );
 
       if (productEvaluatedGroupsCodes.length === 0) {
         setEvaluatedGroups({});

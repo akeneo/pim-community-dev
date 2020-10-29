@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const translate = require('oro/translator');
 
@@ -31,9 +31,11 @@ const HelpCenterLink = styled.a`
 const NoAttributeGroups = () => {
   return (
     <Message>
-      <img src="bundles/akeneodataqualityinsights/images/QualityScore.svg"/>
+      <img src="bundles/akeneodataqualityinsights/images/QualityScore.svg" />
       <Title>{translate('akeneo_data_quality_insights.product_evaluation.messages.no_attribute_groups.title')}</Title>
-      <Subtitle>{translate('akeneo_data_quality_insights.product_evaluation.messages.no_attribute_groups.subtitle')}</Subtitle>
+      <Subtitle>
+        {translate('akeneo_data_quality_insights.product_evaluation.messages.no_attribute_groups.subtitle')}
+      </Subtitle>
       <HelpCenterLink href="https://help.akeneo.com/pim/serenity/articles/understand-data-quality.html" target="_blank">
         {translate('akeneo_data_quality_insights.product_evaluation.messages.no_attribute_groups.help_center_link')}
       </HelpCenterLink>

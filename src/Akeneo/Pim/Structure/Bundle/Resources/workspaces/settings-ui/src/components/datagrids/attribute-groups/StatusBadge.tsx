@@ -1,6 +1,6 @@
 import React from 'react';
-import styled, {css} from "styled-components";
-import {useTranslate} from "@akeneo-pim-community/legacy-bridge";
+import styled, {css} from 'styled-components';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 type Props = {
   isActivated: boolean;
@@ -8,12 +8,12 @@ type Props = {
 
 const activatedMixin = css`
   color: #3d6b45;
-  border: 1px #67B373 solid;
+  border: 1px #67b373 solid;
 `;
 
 const disabledMixin = css`
   color: #7f392f;
-  border: 1px #D4604F solid;
+  border: 1px #d4604f solid;
 `;
 
 const Badge = styled.div<Props>`
@@ -25,7 +25,7 @@ const Badge = styled.div<Props>`
   font-size: 11px;
   font-weight: normal;
   background-color: ${({theme}) => theme.color.white};
-  
+
   ${props => (props.isActivated ? activatedMixin : disabledMixin)}
 `;
 
@@ -37,6 +37,6 @@ const StatusBadge = ({isActivated}: Props) => {
       {translate(`akeneo_data_quality_insights.attribute_group.${isActivated ? 'activated' : 'disabled'}`)}
     </Badge>
   );
-}
+};
 
 export {StatusBadge};

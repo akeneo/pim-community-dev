@@ -10,8 +10,8 @@ const UserContext = require('pim/user-context');
  */
 type InterfaceNormalizedChannel = {
   code: string;
-  labels: { [key:string] : string };
-}
+  labels: {[key: string]: string};
+};
 
 class ChannelField extends BaseSelect {
   /**
@@ -20,7 +20,8 @@ class ChannelField extends BaseSelect {
   configure() {
     return $.when(
       BaseSelect.prototype.configure.apply(this, arguments),
-      FetcherRegistry.getFetcher('channel').fetchAll()
+      FetcherRegistry.getFetcher('channel')
+        .fetchAll()
         .then((scopes: InterfaceNormalizedChannel[]) => {
           this.config.choices = scopes;
         })
@@ -30,8 +31,8 @@ class ChannelField extends BaseSelect {
   /**
    * @{inheritdoc}
    */
-  formatChoices(scopes: InterfaceNormalizedChannel[]): { [key:string] : string } {
-    return scopes.reduce((result: { [key:string] : string }, channel: InterfaceNormalizedChannel) => {
+  formatChoices(scopes: InterfaceNormalizedChannel[]): {[key: string]: string} {
+    return scopes.reduce((result: {[key: string]: string}, channel: InterfaceNormalizedChannel) => {
       const label = channel.labels[UserContext.get('catalogLocale')];
       result[channel.code] = label !== undefined ? label : '[' + channel.code + ']';
 
