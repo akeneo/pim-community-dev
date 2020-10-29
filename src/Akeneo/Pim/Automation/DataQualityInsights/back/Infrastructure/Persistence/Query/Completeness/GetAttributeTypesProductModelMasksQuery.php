@@ -19,7 +19,7 @@ class GetAttributeTypesProductModelMasksQuery implements GetProductModelAttribut
     public function __construct(Connection $connection, array $attributeTypes)
     {
         $this->connection = $connection;
-        $this->attributeTypes = array_map(fn($code) => (string) $code, $attributeTypes);
+        $this->attributeTypes = array_map(fn ($code) => (string) $code, $attributeTypes);
     }
 
     public function execute(ProductId $productModelId): ?RequiredAttributesMask

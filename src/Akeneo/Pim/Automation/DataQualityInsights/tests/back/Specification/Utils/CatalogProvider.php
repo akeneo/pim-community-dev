@@ -29,7 +29,7 @@ abstract class CatalogProvider
 
         foreach ($params as $data) {
             ['attribute' => $attribute, 'values' => $rawValues] = $data;
-            $collection->add(new ProductValues($attribute, ChannelLocaleDataCollection::fromNormalizedChannelLocaleData($rawValues, fn($data) => $data)));
+            $collection->add(new ProductValues($attribute, ChannelLocaleDataCollection::fromNormalizedChannelLocaleData($rawValues, fn ($data) => $data)));
         }
 
         return $collection;

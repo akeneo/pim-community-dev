@@ -65,7 +65,7 @@ abstract class EvaluationProvider
                     $result->addRate($channelCode, $localeCode, new Rate($data['rate']));
                 }
 
-                if (array_key_exists('attributes', $data)){
+                if (array_key_exists('attributes', $data)) {
                     $result->addMissingAttributes($channelCode, $localeCode, $data['attributes'] ?? []);
                 }
             }
