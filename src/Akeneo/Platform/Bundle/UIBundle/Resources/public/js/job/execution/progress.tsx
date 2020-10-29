@@ -37,15 +37,12 @@ const guessStepExecutionTrackingLevel = (step: StepExecutionTracking): Level => 
 };
 
 const getStepExecutionTrackingPercent = (step: StepExecutionTracking): number | 'indeterminate' => {
-  if (!step.isTrackable) {
-    return 'indeterminate';
-  }
-
-  if (step.totalItems === 0) {
+  if (step.totalItems === 0 || !step.isTrackable) {
     switch (step.status) {
       case 'COMPLETED':
         return 100;
       case 'IN_PROGRESS':
+        return 'indeterminate';
       case 'NOT_STARTED':
         return 0;
     }
@@ -64,17 +61,19 @@ const getStepExecutionTrackingTitle = (step: StepExecutionTracking): string => {
 };
 
 const getStepExecutionTrackingProgressLabel = (step: StepExecutionTracking): string => {
-  if (!step.isTrackable) {
-    return __('pim_import_export.tracking.untrackable');
-  }
-
   switch (step.status) {
     case 'NOT_STARTED':
       return __('pim_import_export.tracking.not_started');
     case 'COMPLETED':
       return __('pim_import_export.tracking.completed', {duration: formatSecondsIntl(step.duration)});
     case 'IN_PROGRESS':
-      return __('pim_import_export.tracking.in_progress', {duration: formatSecondsIntl(step.duration)});
+      if (step.totalItems === 0 || !step.isTrackable) {
+        return __('pim_import_export.tracking.untrackable');
+      }
+      const percentProccessed = Math.round((step.processedItems * 100) / step.totalItems);
+      const durationProjection = Math.round((step.duration * 100) / percentProccessed);
+      const durationLeft = durationProjection - step.duration;
+      return __('pim_import_export.tracking.in_progress', {duration: formatSecondsIntl(durationLeft)});
   }
 };
 

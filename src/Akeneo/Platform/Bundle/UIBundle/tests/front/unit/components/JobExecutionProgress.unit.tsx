@@ -36,8 +36,7 @@ abstract class BaseViewMock {
   }
 }
 
-jest.mock('@akeneo-pim-community/legacy-bridge/src/bridge/react', () => ({ReactView: BaseViewMock}));
-jest.mock('oro/translator', () => (key: string, _params: any, count: number): string => {
+const translator = jest.fn().mockImplementation((key: string, _params: any, count: number): string => {
   switch (key) {
     case 'duration.days':
       return `${count} day(s)`;
@@ -53,6 +52,9 @@ jest.mock('oro/translator', () => (key: string, _params: any, count: number): st
       return key;
   }
 });
+
+jest.mock('@akeneo-pim-community/legacy-bridge/src/bridge/react', () => ({ReactView: BaseViewMock}));
+jest.mock('oro/translator', () => translator);
 
 const JobExecutionProgress = require('pimui/js/job/execution/progress');
 
@@ -120,8 +122,8 @@ test('it render the progress bar of one job step in progress', () => {
           'isTrackable': true,
           'hasWarning': false,
           'hasError': false,
-          'duration': 10,
-          'processedItems': 50,
+          'duration': 12,
+          'processedItems': 60,
           'totalItems': 100,
         },
       ],
@@ -132,7 +134,9 @@ test('it render the progress bar of one job step in progress', () => {
   component.render();
 
   expect(screen.getByText('pim_import_export.tracking.in_progress')).toBeInTheDocument();
-  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '50');
+  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '60');
+  // we are at 60% of the items, done in 12 seconds, we should expect 8 seconds left
+  expect(translator).toHaveBeenCalledWith('pim_import_export.tracking.in_progress', {duration: '8 second(s)'});
 });
 
 test('it render the progress bar of one pending job step', () => {
@@ -164,7 +168,7 @@ test('it render the progress bar of one pending job step', () => {
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
 });
 
-test('it render the progress bar of one untrackable job step', () => {
+test('it render the progress bar of one untrackable & pending job step', () => {
   mockGetFormData.mockImplementationOnce(() => ({
     'tracking': {
       'status': 'NOT_STARTED',
@@ -175,6 +179,35 @@ test('it render the progress bar of one untrackable job step', () => {
           'jobName': 'csv_product_export',
           'stepName': 'export',
           'status': 'NOT_STARTED',
+          'isTrackable': false,
+          'hasWarning': false,
+          'hasError': false,
+          'duration': 0,
+          'processedItems': 0,
+          'totalItems': 0,
+        },
+      ],
+    },
+  }));
+
+  const component = new JobExecutionProgress(container);
+  component.render();
+
+  expect(screen.getByText('pim_import_export.tracking.not_started')).toBeInTheDocument();
+  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
+});
+
+test('it render the progress bar of one untrackable & started job step', () => {
+  mockGetFormData.mockImplementationOnce(() => ({
+    'tracking': {
+      'status': 'IN_PROGRESS',
+      'currentStep': 1,
+      'totalSteps': 1,
+      'steps': [
+        {
+          'jobName': 'csv_product_export',
+          'stepName': 'export',
+          'status': 'IN_PROGRESS',
           'isTrackable': false,
           'hasWarning': false,
           'hasError': false,
