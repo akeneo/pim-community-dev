@@ -14,6 +14,7 @@ class TextFilterType extends AbstractType
     const TYPE_EQUAL = 3;
     const TYPE_STARTS_WITH = 4;
     const TYPE_ENDS_WITH = 5;
+    const TYPE_DOES_NOT_START_WITH = 'does_not_start_with';
     const TYPE_EMPTY = 'empty';
     const NAME = 'oro_type_text_filter';
 
@@ -52,11 +53,12 @@ class TextFilterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $choices = [
-            self::TYPE_CONTAINS     => $this->translator->trans('oro.filter.form.label_type_contains'),
-            self::TYPE_NOT_CONTAINS => $this->translator->trans('oro.filter.form.label_type_not_contains'),
-            self::TYPE_EQUAL        => $this->translator->trans('oro.filter.form.label_type_equals'),
-            self::TYPE_STARTS_WITH  => $this->translator->trans('oro.filter.form.label_type_start_with'),
-            self::TYPE_EMPTY        => $this->translator->trans('oro.filter.form.label_type_empty'),
+            self::TYPE_CONTAINS            => $this->translator->trans('oro.filter.form.label_type_contains'),
+            self::TYPE_NOT_CONTAINS        => $this->translator->trans('oro.filter.form.label_type_not_contains'),
+            self::TYPE_EQUAL               => $this->translator->trans('oro.filter.form.label_type_equals'),
+            self::TYPE_STARTS_WITH         => $this->translator->trans('oro.filter.form.label_type_start_with'),
+            self::TYPE_DOES_NOT_START_WITH => $this->translator->trans('oro.filter.form.label_type_does_not_start_with'),
+            self::TYPE_EMPTY               => $this->translator->trans('oro.filter.form.label_type_empty'),
         ];
 
         $resolver->setDefaults(

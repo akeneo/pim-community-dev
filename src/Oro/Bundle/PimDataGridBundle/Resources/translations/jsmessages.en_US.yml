@@ -83,6 +83,7 @@ pim_datagrid:
       does_not_contain: does not contain
       equal: is equal to
       start_with: starts with
+      does_not_start_with: does not start with
       operator: Operator
     price_filter:
       label: Currency
