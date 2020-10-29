@@ -47,6 +47,9 @@ git branch -D real40 || true
 git checkout -b real40 --track origin/4.0
 popd
 
+echo "Creation of image with php 7.3..."
+make php-image-dev
+
 echo "Copy CE migrations into EE to install 4.0 branch..."
 cp -R vendor/akeneo/pim-community-dev/upgrades/schema/* upgrades/schema
 

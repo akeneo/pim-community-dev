@@ -1,4 +1,4 @@
 export interface Locale {
-    code: string;
-    label: string;
+  code: string;
+  label: string;
 }

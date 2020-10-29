@@ -1,8 +1,7 @@
 import {useEffect, useState} from 'react';
-import fetchCategoryTrees from "../../fetcher/Dashboard/fetchCategoryTrees";
+import fetchCategoryTrees from '../../fetcher/Dashboard/fetchCategoryTrees';
 
 const useFetchCategoryTrees = () => {
-
   const [categoryTrees, setCategoryTrees] = useState([] as any);
 
   useEffect(() => {

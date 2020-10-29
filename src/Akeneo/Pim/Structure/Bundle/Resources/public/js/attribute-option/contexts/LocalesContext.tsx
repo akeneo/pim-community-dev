@@ -6,21 +6,16 @@ export const LocalesContext = createContext<Locale[]>([]);
 LocalesContext.displayName = 'LocalesContext';
 
 export const useLocalesContext = () => {
-    const localesContext = useContext(LocalesContext);
-    if (!localesContext) {
-        throw new Error('[LocaleContext]: locales context has not been properly initiated');
-    }
+  const localesContext = useContext(LocalesContext);
+  if (!localesContext) {
+    throw new Error('[LocaleContext]: locales context has not been properly initiated');
+  }
 
-    return localesContext;
-
+  return localesContext;
 };
 
 export const LocalesContextProvider: FC = ({children}) => {
-    const locales = useLocales();
+  const locales = useLocales();
 
-    return (
-        <LocalesContext.Provider value={locales}>
-            {children}
-        </LocalesContext.Provider>
-    );
+  return <LocalesContext.Provider value={locales}>{children}</LocalesContext.Provider>;
 };

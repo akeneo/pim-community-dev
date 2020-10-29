@@ -91,11 +91,11 @@ class MediaField extends BaseField {
         return myXhr;
       },
     })
-      .done((data) => {
+      .done(data => {
         this.setUploadContextValue(data);
         this.render();
       })
-      .fail((xhr) => {
+      .fail(xhr => {
         const message =
           xhr.responseJSON && xhr.responseJSON.message
             ? xhr.responseJSON.message

@@ -67,7 +67,14 @@ const DataGridStateProvider = <T extends {}>({
   compareData,
   isFilterable,
 }: PropsWithChildren<Props<T>>) => {
-  const state = useInitialDataGridState(isReorderAllowed, dataSource, handleAfterMove, compareData, isFilterable, isReorderActive);
+  const state = useInitialDataGridState(
+    isReorderAllowed,
+    dataSource,
+    handleAfterMove,
+    compareData,
+    isFilterable,
+    isReorderActive
+  );
 
   return <DataGridStateContext.Provider value={state}>{children}</DataGridStateContext.Provider>;
 };

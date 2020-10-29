@@ -17,10 +17,10 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCred
  */
 class ConnectionLoader
 {
-    /** @var CreateConnectionHandler*/
+    /** @var CreateConnectionHandler */
     private $createConnectionHandler;
 
-    /** @var UpdateConnectionHandler*/
+    /** @var UpdateConnectionHandler */
     private $updateConnectionHandler;
 
     public function __construct(
@@ -31,9 +31,14 @@ class ConnectionLoader
         $this->updateConnectionHandler = $updateConnectionHandler;
     }
 
-    public function createConnection(string $code, string $label, string $flowType, bool $auditable): ConnectionWithCredentials
-    {
+    public function createConnection(
+        string $code,
+        string $label,
+        string $flowType,
+        bool $auditable
+    ): ConnectionWithCredentials {
         $command = new CreateConnectionCommand($code, $label, $flowType, $auditable);
+
         return $this->createConnectionHandler->handle($command);
     }
 

@@ -10,12 +10,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\NotGrantedCategoryException;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductModelNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductModelCreatedAndUpdatedEventDataBuilder;
 use Akeneo\Platform\Component\EventQueue\BusinessEvent;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -93,6 +95,17 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
 
         $this->shouldThrow(ProductModelNotFoundException::class)
             ->during('build', [new ProductModelUpdated('julia', ['code' => 'polo_col_mao'])]);
+    }
+
+    public function it_raises_a_not_granted_category_exception($productModelRepository)
+    {
+        $productModel = new ProductModel();
+        $productModel->setCode('polo_col_mao');
+
+        $productModelRepository->findOneByIdentifier('polo_col_mao')->willReturn($productModel)->willThrow(AccessDeniedException::class);
+
+        $this->shouldThrow(NotGrantedCategoryException::class)
+            ->during('build', [new ProductModelCreated('julia', ['code' => 'polo_col_mao'])]);
     }
 }
 

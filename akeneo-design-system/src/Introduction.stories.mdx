@@ -5,7 +5,7 @@ import * as Components from './components';
 <!-- If for some reason (not relevant, too small) you do not want your component
 to be featured on the Introduction Story, add its name to this list -->
 
-export const COMPONENTS_EXCLUDE = ['CardGrid', 'HighlightTitle'];
+export const COMPONENTS_EXCLUDE = ['CardGrid', 'HighlightTitle', 'SectionTitle', 'Title'];
 
 <Meta title="Introduction" />
 
@@ -145,16 +145,27 @@ export const COMPONENTS_EXCLUDE = ['CardGrid', 'HighlightTitle'];
         <div
           class="link-icon"
           style={{
-            backgroundImage: `url("./all-visual-tsx-visual-tests-renders-components-${componentName.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()}-standard-correctly-1-snap.png")`,
+            backgroundImage: `url("./all-visual-tsx-visual-tests-renders-components-${componentName
+              .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+              .toLowerCase()}-standard-correctly-1-snap.png")`,
           }}
         ></div>
         <span>
           <strong>{componentName}</strong>
-          {Components[componentName].__docgenInfo.description}
+          {Components[componentName].__docgenInfo?.description}
         </span>
       </a>
     ))}
 </div>
 <div class="subheading">Patterns</div>
 
-`//TODO`
+<div class="link-list">
+  <a class="link-item" onClick={linkTo('Patterns/Overlays', 'Confirm Modal')}>
+    <span class="link-icon">🥗</span>
+    <span>
+      <strong>Overlays</strong>
+      Overlays communicate information through a secondary window and allow the user to keep the context of a particular
+      job.
+    </span>
+  </a>
+</div>

@@ -64,5 +64,10 @@ akeneo_data_quality_insights:
   product_edit_form:
     attribute_filter:
       all_missing_attributes: Tous les attributs manquants
+  attribute_group:
+    helper_dqi_link: Plus d'informations sur notre centre d'aide.
+    activation: Activation
+    activated: Activé
+    disabled: Désactivé
 pim_title:
   akeneo_data_quality_insights_dashboard: Qualité des données
