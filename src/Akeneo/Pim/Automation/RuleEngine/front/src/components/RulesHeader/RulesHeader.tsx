@@ -1,11 +1,11 @@
-import React, { ReactElement } from 'react';
+import React, {ReactElement} from 'react';
 import styled from 'styled-components';
-import { Header } from '../Header';
-import { PrimaryButton } from '../Buttons/PrimaryButton';
-import { PimView } from '../../dependenciesTools/components/PimView';
-import { Breadcrumb } from '../Breadcrumb';
-import { UnsavedChangesWarning } from '../UnsavedChangesWarning';
-import { useTranslate } from '../../dependenciesTools/hooks';
+import {Header} from '../Header';
+import {PrimaryButton} from '../Buttons/PrimaryButton';
+import {PimView} from '../../dependenciesTools/components/PimView';
+import {Breadcrumb} from '../Breadcrumb';
+import {UnsavedChangesWarning} from '../UnsavedChangesWarning';
+import {useTranslate} from '../../dependenciesTools/hooks';
 
 const BreadcrumbAndButtons = styled.div`
   display: inline-flex;
@@ -69,4 +69,4 @@ const RulesHeader: React.FC<Props> = ({
 
 RulesHeader.displayName = 'RulesHeader';
 
-export { RulesHeader };
+export {RulesHeader};

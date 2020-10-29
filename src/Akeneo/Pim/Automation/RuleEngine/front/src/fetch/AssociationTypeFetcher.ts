@@ -1,6 +1,6 @@
-import { Router } from '../dependenciesTools';
-import { httpGet } from './fetch';
-import { AssociationType } from '../models';
+import {Router} from '../dependenciesTools';
+import {httpGet} from './fetch';
+import {AssociationType} from '../models';
 
 const fetchAllAssociationTypes = async (
   router: Router
@@ -11,4 +11,4 @@ const fetchAllAssociationTypes = async (
   return await response.json();
 };
 
-export { fetchAllAssociationTypes };
+export {fetchAllAssociationTypes};

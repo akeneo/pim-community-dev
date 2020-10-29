@@ -125,7 +125,12 @@ const LinkedProducts = ({
         ))}
       </Grid>
       {products.length === 0 && <NoResults message={__('pim_asset_manager.asset.no_linked_products')} />}
-      <Limit assetCode={assetCode} productCount={products.length} totalCount={totalCount} attribute={selectedAttribute} />
+      <Limit
+        assetCode={assetCode}
+        productCount={products.length}
+        totalCount={totalCount}
+        attribute={selectedAttribute}
+      />
     </Subsection>
   );
 };

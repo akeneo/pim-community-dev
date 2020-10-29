@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { Deferred } from 'jquery';
+import {Deferred} from 'jquery';
 import {
   mountReactElementRef,
   unmountReactElementRef,

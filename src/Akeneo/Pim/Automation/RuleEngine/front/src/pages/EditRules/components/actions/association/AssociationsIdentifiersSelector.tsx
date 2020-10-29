@@ -1,7 +1,7 @@
 import React from 'react';
-import { useTranslate } from '../../../../../dependenciesTools/hooks';
-import { IdentifiersSelector } from '../../../../../components/Selectors/IdentifierSelector';
-import { ProductIdentifier, ProductModelCode } from '../../../../../models';
+import {useTranslate} from '../../../../../dependenciesTools/hooks';
+import {IdentifiersSelector} from '../../../../../components/Selectors/IdentifierSelector';
+import {ProductIdentifier, ProductModelCode} from '../../../../../models';
 
 type Identifier = ProductIdentifier | ProductModelCode;
 
@@ -71,4 +71,4 @@ const AssociationsIdentifiersSelector: React.FC<Props> = ({
   );
 };
 
-export { AssociationsIdentifiersSelector };
+export {AssociationsIdentifiersSelector};

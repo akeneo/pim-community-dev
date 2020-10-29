@@ -13,17 +13,17 @@ export const areMediaFileDataEqual = areFilesEqual;
 export const isMediaFileData = (mediaFileData: any): mediaFileData is MediaFileData => isFile(mediaFileData);
 
 export const getMediaFilePath = (mediaFile: File) => {
+  if (isFileEmpty(mediaFile)) {
+    return PLACEHOLDER_PATH;
+  }
+  if (isAssetManagerImagePath(mediaFile.filePath)) {
+    return mediaFile.filePath;
+  }
 
-    if (isFileEmpty(mediaFile)) {
-
-        return PLACEHOLDER_PATH;
-    }
-    if (isAssetManagerImagePath(mediaFile.filePath)) {
-
-        return mediaFile.filePath;
-    }
-
-    return routing.generate('pim_enrich_media_show', {filename: encodeURIComponent(mediaFile.filePath), filter: "thumbnail"});
+  return routing.generate('pim_enrich_media_show', {
+    filename: encodeURIComponent(mediaFile.filePath),
+    filter: 'thumbnail',
+  });
 };
 
 export default MediaFileData;

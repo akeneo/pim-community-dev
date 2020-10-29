@@ -1,6 +1,6 @@
-import { AddCategoriesActionLine } from '../../pages/EditRules/components/actions/AddCategoriesActionLine';
-import { ActionModuleGuesser } from './ActionModuleGuesser';
-import { CategoryCode } from '../Category';
+import {AddCategoriesActionLine} from '../../pages/EditRules/components/actions/AddCategoriesActionLine';
+import {ActionModuleGuesser} from './ActionModuleGuesser';
+import {CategoryCode} from '../Category';
 
 export type AddCategoriesAction = {
   type: 'add';

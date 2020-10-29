@@ -1,7 +1,7 @@
 import React from 'react';
-import { GroupCode } from '../../../../../models';
-import { GroupSelector } from '../../../../../components/Selectors/GroupSelector';
-import { useTranslate } from '../../../../../dependenciesTools/hooks';
+import {GroupCode} from '../../../../../models';
+import {GroupSelector} from '../../../../../components/Selectors/GroupSelector';
+import {useTranslate} from '../../../../../dependenciesTools/hooks';
 
 type Props = {
   groupCodes: GroupCode[];
@@ -69,4 +69,4 @@ const AssociationsGroupsSelector: React.FC<Props> = ({
   );
 };
 
-export { AssociationsGroupsSelector };
+export {AssociationsGroupsSelector};

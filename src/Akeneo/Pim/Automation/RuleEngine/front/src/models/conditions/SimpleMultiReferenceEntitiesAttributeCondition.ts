@@ -1,8 +1,8 @@
-import { Operator } from '../Operator';
-import { ConditionFactory } from './Condition';
-import { ConditionModuleGuesser } from './ConditionModuleGuesser';
-import { AttributeType } from '../Attribute';
-import { SimpleMultiReferenceEntitiesAttributeConditionLine } from '../../pages/EditRules/components/conditions/SimpleMultiReferenceEntitiesAttributeConditionLine';
+import {Operator} from '../Operator';
+import {ConditionFactory} from './Condition';
+import {ConditionModuleGuesser} from './ConditionModuleGuesser';
+import {AttributeType} from '../Attribute';
+import {SimpleMultiReferenceEntitiesAttributeConditionLine} from '../../pages/EditRules/components/conditions/SimpleMultiReferenceEntitiesAttributeConditionLine';
 import {
   createAttributeCondition,
   getAttributeConditionModule,

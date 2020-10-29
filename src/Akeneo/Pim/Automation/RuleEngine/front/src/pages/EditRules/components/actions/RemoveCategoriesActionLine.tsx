@@ -1,11 +1,11 @@
 import React from 'react';
-import { ActionLineProps } from './ActionLineProps';
-import { useTranslate } from '../../../../dependenciesTools/hooks';
-import { ActionTemplate } from './ActionTemplate';
-import { Controller } from 'react-hook-form';
-import { ActionCategoriesSelector } from './ActionCategoriesSelector';
-import { useControlledFormInputAction } from '../../hooks';
-import { CategoryCode } from '../../../../models';
+import {ActionLineProps} from './ActionLineProps';
+import {useTranslate} from '../../../../dependenciesTools/hooks';
+import {ActionTemplate} from './ActionTemplate';
+import {Controller} from 'react-hook-form';
+import {ActionCategoriesSelector} from './ActionCategoriesSelector';
+import {useControlledFormInputAction} from '../../hooks';
+import {CategoryCode} from '../../../../models';
 
 const RemoveCategoriesActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
@@ -65,4 +65,4 @@ const RemoveCategoriesActionLine: React.FC<ActionLineProps> = ({
   );
 };
 
-export { RemoveCategoriesActionLine };
+export {RemoveCategoriesActionLine};

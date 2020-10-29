@@ -1,13 +1,13 @@
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
-import { Locale } from '../../../../../models';
-import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
-import { useControlledFormInputAction } from '../../../hooks';
-import { useTranslate } from '../../../../../dependenciesTools/hooks';
+import {Controller, useFormContext} from 'react-hook-form';
+import {Locale} from '../../../../../models';
+import {IndexedScopes} from '../../../../../repositories/ScopeRepository';
+import {useControlledFormInputAction} from '../../../hooks';
+import {useTranslate} from '../../../../../dependenciesTools/hooks';
 import styled from 'styled-components';
-import { AttributePropertiesSelector } from '../attribute/AttributePropertiesSelector';
-import { ConcatenateSource } from '../../../../../models/actions';
-import { InputText } from '../../../../../components/Inputs';
+import {AttributePropertiesSelector} from '../attribute/AttributePropertiesSelector';
+import {ConcatenateSource} from '../../../../../models/actions';
+import {InputText} from '../../../../../components/Inputs';
 
 const DeleteButton = styled.button`
   border: none;
@@ -41,7 +41,7 @@ const ConcatenateSourceLine: React.FC<OperationLineProps> = ({
     getFormValue,
     isFormFieldInError,
   } = useControlledFormInputAction<string | null>(lineNumber);
-  const { setValue, watch } = useFormContext();
+  const {setValue, watch} = useFormContext();
 
   const getText = () =>
     getFormValue(formName(`${baseFormName}.text`)) ?? source.text;
@@ -131,4 +131,4 @@ const ConcatenateSourceLine: React.FC<OperationLineProps> = ({
   );
 };
 
-export { ConcatenateSourceLine };
+export {ConcatenateSourceLine};

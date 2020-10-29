@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect } from 'react';
+import React, {ChangeEvent, useEffect} from 'react';
 import {
   Select2Option,
   Select2OptionGroup,
@@ -6,8 +6,8 @@ import {
   Select2Value,
   Select2Wrapper as BaseWrapper,
 } from '../Select2Wrapper';
-import { Label } from '../../Labels';
-import { httpGet } from '../../../fetch';
+import {Label} from '../../Labels';
+import {httpGet} from '../../../fetch';
 
 const Select2Wrapper: typeof BaseWrapper = ({
   data,
@@ -59,7 +59,7 @@ const Select2Wrapper: typeof BaseWrapper = ({
             (
               fetchedOptions:
                 | (Select2Option | Select2OptionGroup)[]
-                | { results: (Select2Option | Select2OptionGroup)[] }
+                | {results: (Select2Option | Select2OptionGroup)[]}
             ) => {
               if (fetchedOptions.hasOwnProperty('results')) {
                 setOptions(
@@ -153,4 +153,4 @@ const Select2Wrapper: typeof BaseWrapper = ({
   );
 };
 
-export { Select2Wrapper };
+export {Select2Wrapper};

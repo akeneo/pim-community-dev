@@ -1,11 +1,11 @@
-import { Operator } from '../Operator';
-import { ConditionFactory } from './Condition';
-import { ConditionModuleGuesser } from './ConditionModuleGuesser';
+import {Operator} from '../Operator';
+import {ConditionFactory} from './Condition';
+import {ConditionModuleGuesser} from './ConditionModuleGuesser';
 import {
   DateValue,
   DateOperator,
 } from '../../pages/EditRules/components/conditions/DateConditionLines/dateConditionLines.type';
-import { DateSystemConditionLine } from '../../pages/EditRules/components/conditions/DateConditionLines';
+import {DateSystemConditionLine} from '../../pages/EditRules/components/conditions/DateConditionLines';
 
 const CREATED_FIELD = 'created';
 const UPDATED_FIELD = 'updated';

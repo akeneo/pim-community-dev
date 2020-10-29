@@ -127,8 +127,7 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
       }`;
       const dropdownCssClass = `${
         this.props.multiple ? 'record-selector-multi-dropdown' : 'record-selector-dropdown'
-      } ${this.props.compact ? 'record-selector-dropdown--compact' : ''
-      } ${this.props.dropdownCssClass || ''}`;
+      } ${this.props.compact ? 'record-selector-dropdown--compact' : ''} ${this.props.dropdownCssClass || ''}`;
 
       this.el.select2({
         allowClear: true,

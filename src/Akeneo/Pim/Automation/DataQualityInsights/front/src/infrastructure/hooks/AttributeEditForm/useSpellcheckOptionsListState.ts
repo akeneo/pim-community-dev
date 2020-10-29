@@ -1,14 +1,14 @@
-import {Reducer, RefObject, useEffect, useReducer, useState} from "react";
+import {Reducer, RefObject, useEffect, useReducer, useState} from 'react';
 
 import {
   AttributeOptionFormEvent,
   EditAttributeOptionEvent,
   PIM_ATTRIBUTE_OPTION_EDITING,
   PIM_ATTRIBUTE_OPTION_LABEL_FORM_ADDED,
-  PIM_ATTRIBUTE_OPTION_LABEL_FORM_REMOVED
-} from "akeneopimstructure/js/attribute-option/hooks";
-import {AttributeOption} from "akeneopimstructure/js/attribute-option/model";
-import {useUuid} from "../Common/useUuid";
+  PIM_ATTRIBUTE_OPTION_LABEL_FORM_REMOVED,
+} from 'akeneopimstructure/js/attribute-option/hooks';
+import {AttributeOption} from 'akeneopimstructure/js/attribute-option/model';
+import {useUuid} from '../Common/useUuid';
 
 const SPELLCHECK_ELEMENTS_UUID_NAMESPACE = 'd6982914-8568-443c-8c85-8b5b63691ad2';
 
@@ -21,15 +21,15 @@ export type ElementsList<P extends HTMLElement> = {
 
 export type SpellcheckOptionsListState = {
   elements: ElementsList<HTMLInputElement>;
-  editingOption: AttributeOption|null;
-}
+  editingOption: AttributeOption | null;
+};
 
 type SpellcheckOptionsListAction = {
   type: string;
   id: string;
   locale: string;
   ref: RefObject<HTMLInputElement>;
-}
+};
 type SpellcheckOptionsListReducer = Reducer<ElementsList<HTMLInputElement>, SpellcheckOptionsListAction>;
 
 const reducer: SpellcheckOptionsListReducer = (state, action) => {
@@ -46,7 +46,7 @@ const reducer: SpellcheckOptionsListReducer = (state, action) => {
         [id]: {
           element: ref.current,
           locale,
-        }
+        },
       };
     }
     case 'remove': {
@@ -60,7 +60,7 @@ const reducer: SpellcheckOptionsListReducer = (state, action) => {
         return {
           ...list,
           [key]: state[key],
-        }
+        };
       }, {});
     }
     default:
@@ -70,13 +70,13 @@ const reducer: SpellcheckOptionsListReducer = (state, action) => {
 
 const useSpellcheckOptionsListState = (): SpellcheckOptionsListState => {
   const [elements, dispatch] = useReducer<SpellcheckOptionsListReducer>(reducer, {});
-  const [editingOption, setEditingOption] = useState<AttributeOption|null>(null);
+  const [editingOption, setEditingOption] = useState<AttributeOption | null>(null);
   const {uuid} = useUuid('option-element-', SPELLCHECK_ELEMENTS_UUID_NAMESPACE);
 
   useEffect(() => {
-    const nodes =  document.querySelectorAll<HTMLElement>('input[role="attribute-option-label"]');
+    const nodes = document.querySelectorAll<HTMLElement>('input[role="attribute-option-label"]');
 
-    nodes.forEach((element) => {
+    nodes.forEach(element => {
       const ref = {current: element as HTMLInputElement};
       const locale = element.dataset.locale;
       if (!locale) {
@@ -116,7 +116,7 @@ const useSpellcheckOptionsListState = (): SpellcheckOptionsListState => {
 
   return {
     elements,
-    editingOption
+    editingOption,
   };
 };
 

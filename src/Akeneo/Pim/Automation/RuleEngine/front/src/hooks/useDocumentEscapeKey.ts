@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import {useEffect} from 'react';
 
 const useDocumentEscapeKey = (onKeyPress: () => void): void => {
   useEffect(() => {
@@ -10,4 +10,4 @@ const useDocumentEscapeKey = (onKeyPress: () => void): void => {
   }, [onKeyPress]);
 };
 
-export { useDocumentEscapeKey };
+export {useDocumentEscapeKey};

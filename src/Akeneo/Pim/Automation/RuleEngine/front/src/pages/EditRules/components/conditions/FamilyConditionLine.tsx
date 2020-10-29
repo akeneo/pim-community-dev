@@ -1,10 +1,10 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
-import { ConditionLineProps } from './ConditionLineProps';
-import { FamilyOperators } from '../../../../models/conditions';
-import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
-import { Operator } from '../../../../models/Operator';
-import { FamilyCode } from '../../../../models';
+import {Controller} from 'react-hook-form';
+import {ConditionLineProps} from './ConditionLineProps';
+import {FamilyOperators} from '../../../../models/conditions';
+import {OperatorSelector} from '../../../../components/Selectors/OperatorSelector';
+import {Operator} from '../../../../models/Operator';
+import {FamilyCode} from '../../../../models';
 import {
   ConditionLineErrorsContainer,
   ConditionLineFormAndErrorsContainer,
@@ -13,15 +13,15 @@ import {
   OperatorColumn,
   ValueColumn,
 } from './style';
-import { FamiliesSelector } from '../../../../components/Selectors/FamiliesSelector';
-import { getFamiliesByIdentifiers } from '../../../../repositories/FamilyRepository';
-import { LineErrors } from '../LineErrors';
+import {FamiliesSelector} from '../../../../components/Selectors/FamiliesSelector';
+import {getFamiliesByIdentifiers} from '../../../../repositories/FamilyRepository';
+import {LineErrors} from '../LineErrors';
 import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
 
-import { useControlledFormInputCondition } from '../../hooks';
+import {useControlledFormInputCondition} from '../../hooks';
 
 const INIT_OPERATOR = Operator.IN_LIST;
 
@@ -145,4 +145,4 @@ const FamilyConditionLine: React.FC<ConditionLineProps> = ({
   );
 };
 
-export { FamilyConditionLine };
+export {FamilyConditionLine};

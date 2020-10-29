@@ -1,18 +1,17 @@
 import BaseView = require('pimui/js/view/base');
 import ReactDOM from 'react-dom';
-import React from "react";
+import React from 'react';
 import {BackLinkButton, BACK_LINK_SESSION_STORAGE_KEY} from 'akeneodataqualityinsights-react';
 
 const mediator = require('oro/mediator');
 
 class BackLink extends BaseView {
-
   configure(): JQueryPromise<any> {
     const backLink: any = sessionStorage.getItem(BACK_LINK_SESSION_STORAGE_KEY);
     if (backLink) {
       mediator.on('route_start', (route: string) => {
         const backLinkParams = JSON.parse(backLink);
-        if (backLinkParams.hasOwnProperty('displayLinkRoutes') && ! backLinkParams.displayLinkRoutes.includes(route)) {
+        if (backLinkParams.hasOwnProperty('displayLinkRoutes') && !backLinkParams.displayLinkRoutes.includes(route)) {
           sessionStorage.removeItem(BACK_LINK_SESSION_STORAGE_KEY);
         }
       });
@@ -23,14 +22,18 @@ class BackLink extends BaseView {
 
   render(): BaseView {
     const backLink: any = sessionStorage.getItem(BACK_LINK_SESSION_STORAGE_KEY);
-    if (! backLink) {
+    if (!backLink) {
       return this;
     }
 
     const backLinkParams = JSON.parse(backLink);
 
     ReactDOM.render(
-      <BackLinkButton label={backLinkParams.label} route={backLinkParams.route} routeParams={backLinkParams.routeParams}/>,
+      <BackLinkButton
+        label={backLinkParams.label}
+        route={backLinkParams.route}
+        routeParams={backLinkParams.routeParams}
+      />,
       this.el
     );
     return this;

@@ -7,7 +7,7 @@ type Uuid = {
   baseId: string;
   uuidNamespace: string;
   uuid: (key: string) => string;
-}
+};
 
 export const useUuid = (baseId: string = DEFAULT_BASE_ID, namespace: string = DEFAULT_UUID_NAMESPACE): Uuid => {
   return {
@@ -15,6 +15,6 @@ export const useUuid = (baseId: string = DEFAULT_BASE_ID, namespace: string = DE
     uuidNamespace: namespace,
     uuid: (key: string): string => {
       return uuidV5(`${baseId}${key}`, namespace);
-    }
+    },
   };
-}
+};

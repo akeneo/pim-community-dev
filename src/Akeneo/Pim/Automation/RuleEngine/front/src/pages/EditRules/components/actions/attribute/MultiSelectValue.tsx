@@ -1,8 +1,8 @@
 import React from 'react';
-import { useUserCatalogLocale } from '../../../../../dependenciesTools/hooks';
-import { InputValueProps } from './AttributeValue';
-import { getAttributeLabel } from '../../../../../models';
-import { MultiOptionsSelector } from '../../../../../components/Selectors/MultiOptionsSelector';
+import {useUserCatalogLocale} from '../../../../../dependenciesTools/hooks';
+import {InputValueProps} from './AttributeValue';
+import {getAttributeLabel} from '../../../../../models';
+import {MultiOptionsSelector} from '../../../../../components/Selectors/MultiOptionsSelector';
 
 const MultiSelectValue: React.FC<InputValueProps> = ({
   id,
@@ -27,4 +27,4 @@ const MultiSelectValue: React.FC<InputValueProps> = ({
   );
 };
 
-export { MultiSelectValue };
+export {MultiSelectValue};

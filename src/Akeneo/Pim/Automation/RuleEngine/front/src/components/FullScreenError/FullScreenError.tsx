@@ -1,12 +1,12 @@
 import React from 'react';
-import { useTranslate } from '../../dependenciesTools/hooks';
+import {useTranslate} from '../../dependenciesTools/hooks';
 
 type Props = {
   statusCode: number;
   message: string;
 };
 
-const FullScreenError: React.FC<Props> = ({ statusCode, message }) => {
+const FullScreenError: React.FC<Props> = ({statusCode, message}) => {
   const translate = useTranslate();
 
   return (
@@ -22,7 +22,7 @@ const FullScreenError: React.FC<Props> = ({ statusCode, message }) => {
         }`}>
         {statusCode}
       </span>
-      <h1>{translate('error.exception', { status_code: statusCode })}</h1>
+      <h1>{translate('error.exception', {status_code: statusCode})}</h1>
       <div className='AknMessageBox AknMessageBox--danger AknMessageBox--centered'>
         {translate(message)}
       </div>
@@ -30,4 +30,4 @@ const FullScreenError: React.FC<Props> = ({ statusCode, message }) => {
   );
 };
 
-export { FullScreenError };
+export {FullScreenError};

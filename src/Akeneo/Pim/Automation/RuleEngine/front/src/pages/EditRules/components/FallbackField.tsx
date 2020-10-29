@@ -1,8 +1,8 @@
-import React, { ReactElement } from 'react';
-import { Flag } from '../../../components/Flag';
-import { ProductField } from '../../../models/actions';
+import React, {ReactElement} from 'react';
+import {Flag} from '../../../components/Flag';
+import {ProductField} from '../../../models/actions';
 
-const FallbackField: React.FC<ProductField> = ({ field, scope, locale }) => {
+const FallbackField: React.FC<ProductField> = ({field, scope, locale}) => {
   const displayLocale = (
     locale: string | null | undefined
   ): ReactElement | null => {
@@ -36,4 +36,4 @@ const FallbackField: React.FC<ProductField> = ({ field, scope, locale }) => {
   );
 };
 
-export { FallbackField };
+export {FallbackField};

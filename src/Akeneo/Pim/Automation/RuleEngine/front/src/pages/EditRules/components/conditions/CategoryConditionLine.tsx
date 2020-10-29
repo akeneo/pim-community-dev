@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Controller } from 'react-hook-form';
-import { ConditionLineProps } from './ConditionLineProps';
-import { CategoryOperators } from '../../../../models/conditions';
-import { Operator } from '../../../../models/Operator';
-import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
+import React, {useEffect, useState} from 'react';
+import {Controller} from 'react-hook-form';
+import {ConditionLineProps} from './ConditionLineProps';
+import {CategoryOperators} from '../../../../models/conditions';
+import {Operator} from '../../../../models/Operator';
+import {OperatorSelector} from '../../../../components/Selectors/OperatorSelector';
 import {
   ConditionLineErrorsContainer,
   ConditionLineFormAndErrorsContainer,
@@ -11,9 +11,9 @@ import {
   FieldColumn,
   OperatorColumn,
 } from './style';
-import { Category, CategoryCode } from '../../../../models';
-import { getCategoriesByIdentifiers } from '../../../../repositories/CategoryRepository';
-import { CategoriesSelector } from '../../../../components/Selectors/CategoriesSelector';
+import {Category, CategoryCode} from '../../../../models';
+import {getCategoriesByIdentifiers} from '../../../../repositories/CategoryRepository';
+import {CategoriesSelector} from '../../../../components/Selectors/CategoriesSelector';
 import {
   getInitCategoryTreeOpenedNode,
   getCategoriesTrees,
@@ -22,13 +22,13 @@ import {
   CategoryTreeModelWithOpenBranch,
   CategoryTreeModel,
 } from '../../../../components/CategoryTree/category-tree.types';
-import { NetworkLifeCycle } from '../../../../components/CategoryTree/hooks/NetworkLifeCycle.types';
+import {NetworkLifeCycle} from '../../../../components/CategoryTree/hooks/NetworkLifeCycle.types';
 import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
-import { useControlledFormInputCondition } from '../../hooks';
-import { LineErrors } from '../LineErrors';
+import {useControlledFormInputCondition} from '../../hooks';
+import {LineErrors} from '../LineErrors';
 
 const INIT_OPERATOR = Operator.IN_LIST;
 
@@ -175,4 +175,4 @@ const CategoryConditionLine: React.FC<ConditionLineProps> = ({
   );
 };
 
-export { CategoryConditionLine };
+export {CategoryConditionLine};

@@ -11,11 +11,11 @@ type Props = Select2GlobalProps & {
   value?: Select2Value[];
   ajax: Select2Ajax;
   name: string;
-  validation?: { required?: string; validate?: (value: any) => string | true };
+  validation?: {required?: string; validate?: (value: any) => string | true};
 };
 
 const Select2MultiAsyncWrapper: React.FC<Props> = props => {
-  const { onChange, ...remainingProps } = props;
+  const {onChange, ...remainingProps} = props;
 
   const handleChange = (value: Select2Value | Select2Value[]) => {
     if (onChange && Array.isArray(value)) {
@@ -32,4 +32,4 @@ const Select2MultiAsyncWrapper: React.FC<Props> = props => {
   );
 };
 
-export { Select2MultiAsyncWrapper };
+export {Select2MultiAsyncWrapper};

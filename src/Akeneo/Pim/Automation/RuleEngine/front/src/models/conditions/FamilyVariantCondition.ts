@@ -1,8 +1,8 @@
-import { Operator } from '../Operator';
-import { ConditionFactory } from './Condition';
-import { ConditionModuleGuesser } from './ConditionModuleGuesser';
-import { FamilyVariantConditionLine } from '../../pages/EditRules/components/conditions/FamilyVariantConditionLine';
-import { FamilyVariantCode } from '../';
+import {Operator} from '../Operator';
+import {ConditionFactory} from './Condition';
+import {ConditionModuleGuesser} from './ConditionModuleGuesser';
+import {FamilyVariantConditionLine} from '../../pages/EditRules/components/conditions/FamilyVariantConditionLine';
+import {FamilyVariantCode} from '../';
 
 const FIELD = 'family_variant';
 

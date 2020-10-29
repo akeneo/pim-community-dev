@@ -1,13 +1,13 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
-import { CategoryTreeFilter } from '../../../../src/components/CategoryTree/CategoryTreeFilter';
-import { renderWithProviders, screen } from '../../../../test-utils';
-import { Category } from '../../../../src/models';
+import {CategoryTreeFilter} from '../../../../src/components/CategoryTree/CategoryTreeFilter';
+import {renderWithProviders, screen} from '../../../../test-utils';
+import {Category} from '../../../../src/models';
 import {
   CategoryTreeModel,
   CategoryTreeModelWithOpenBranch,
 } from '../../../../src/components/CategoryTree/category-tree.types';
-import { NetworkLifeCycle } from '../../../../src/components/CategoryTree/hooks/NetworkLifeCycle.types';
+import {NetworkLifeCycle} from '../../../../src/components/CategoryTree/hooks/NetworkLifeCycle.types';
 
 describe('CategoryTreeFilter', () => {
   it('should render the component with category tree master selected', async () => {

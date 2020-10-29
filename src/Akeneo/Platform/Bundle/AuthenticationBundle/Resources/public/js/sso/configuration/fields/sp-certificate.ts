@@ -16,8 +16,10 @@ class SpCertificate extends BaseTextarea {
       }
 
       const expiresSoon = this.getFormData().meta.service_provider_certificate_expires_soon;
-      const expirationMessage = __('authentication.sso.configuration.field.certificate.expiration_warning')
-        .replace('{{date}}', expirationDate);
+      const expirationMessage = __('authentication.sso.configuration.field.certificate.expiration_warning').replace(
+        '{{date}}',
+        expirationDate
+      );
 
       if (expiresSoon) {
         this.errors = [{message: expirationMessage}];

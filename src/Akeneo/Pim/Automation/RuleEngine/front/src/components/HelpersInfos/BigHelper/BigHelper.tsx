@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import defaultIllustrationUrl from '../../../assets/illustrations/api.svg';
 
-const HelperTitle: React.FC = ({ children }) => <>{children}</>;
+const HelperTitle: React.FC = ({children}) => <>{children}</>;
 
 type Props = {
   illustrationUrl?: string;
@@ -28,7 +28,7 @@ const BigHelper: React.FC<Props> = ({
     <div className='AknDescriptionHeader'>
       <div
         className='AknDescriptionHeader-icon'
-        style={{ backgroundImage: `url('${illustrationUrl}')` }}></div>
+        style={{backgroundImage: `url('${illustrationUrl}')`}}></div>
       <div className='AknDescriptionHeader-title'>
         {titleChildren}
         <div className='AknDescriptionHeader-description'>
@@ -46,4 +46,4 @@ const HelperLink: React.FC = (
   >
 ) => <a {...props} className='AknDescriptionHeader-link' />;
 
-export { HelperLink, HelperTitle, BigHelper };
+export {HelperLink, HelperTitle, BigHelper};

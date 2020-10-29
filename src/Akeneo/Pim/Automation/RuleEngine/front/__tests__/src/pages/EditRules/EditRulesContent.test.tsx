@@ -1,10 +1,10 @@
 import React from 'react';
-import { EditRulesContent } from '../../../../src/pages/EditRules/EditRulesContent';
+import {EditRulesContent} from '../../../../src/pages/EditRules/EditRulesContent';
 import userEvent from '@testing-library/user-event';
-import { wait } from '@testing-library/dom';
-import { render, act, screen } from '../../../../test-utils';
-import { IndexedScopes } from '../../../../src/repositories/ScopeRepository';
-import { Security } from '../../../../src/dependenciesTools';
+import {wait} from '@testing-library/dom';
+import {render, act, screen} from '../../../../test-utils';
+import {IndexedScopes} from '../../../../src/repositories/ScopeRepository';
+import {Security} from '../../../../src/dependenciesTools';
 
 const setIsDirty = (_isDirty: boolean) => {};
 
@@ -20,7 +20,7 @@ describe('EditRulesContent', () => {
       enabled: true,
       actions: [],
       conditions: [],
-      labels: { en_US: 'toto' },
+      labels: {en_US: 'toto'},
     };
     const locales = [
       {
@@ -37,13 +37,13 @@ describe('EditRulesContent', () => {
         locales: [locales[0]],
         category_tree: 'master',
         conversion_units: [],
-        labels: { en_US: 'e-commerce' },
+        labels: {en_US: 'e-commerce'},
         meta: {},
       },
     };
-    const security: Security = { isGranted: (_acl: string) => true };
+    const security: Security = {isGranted: (_acl: string) => true};
     // When
-    const { findByText, findByLabelText } = render(
+    const {findByText, findByLabelText} = render(
       <EditRulesContent
         ruleDefinitionCode={ruleDefinitionCode}
         ruleDefinition={ruleDefinition}
@@ -79,7 +79,7 @@ describe('EditRulesContent', () => {
       enabled: true,
       actions: [],
       conditions: [],
-      labels: { fr_FR: 'toto' },
+      labels: {fr_FR: 'toto'},
     };
     const locales = [
       {
@@ -102,13 +102,13 @@ describe('EditRulesContent', () => {
         locales: [locales[0]],
         category_tree: 'master',
         conversion_units: [],
-        labels: { en_US: 'e-commerce' },
+        labels: {en_US: 'e-commerce'},
         meta: {},
       },
     };
-    const security: Security = { isGranted: (_acl: string) => true };
+    const security: Security = {isGranted: (_acl: string) => true};
     // When
-    const { findByTestId, findByText, findByLabelText } = render(
+    const {findByTestId, findByText, findByLabelText} = render(
       <EditRulesContent
         ruleDefinitionCode={ruleDefinitionCode}
         ruleDefinition={ruleDefinition}
@@ -150,7 +150,7 @@ describe('EditRulesContent', () => {
       enabled: true,
       actions: [],
       conditions: [],
-      labels: { fr_FR: 'toto' },
+      labels: {fr_FR: 'toto'},
     };
     const locales = [
       {
@@ -173,11 +173,11 @@ describe('EditRulesContent', () => {
         locales: [locales[0]],
         category_tree: 'master',
         conversion_units: [],
-        labels: { en_US: 'e-commerce' },
+        labels: {en_US: 'e-commerce'},
         meta: {},
       },
     };
-    const security: Security = { isGranted: (_acl: string) => false };
+    const security: Security = {isGranted: (_acl: string) => false};
     // When
     render(
       <EditRulesContent
@@ -209,7 +209,7 @@ describe('EditRulesContent', () => {
       enabled: true,
       actions: [],
       conditions: [],
-      labels: { fr_FR: 'toto' },
+      labels: {fr_FR: 'toto'},
     };
     const locales = [
       {
@@ -232,11 +232,11 @@ describe('EditRulesContent', () => {
         locales: [locales[0]],
         category_tree: 'master',
         conversion_units: [],
-        labels: { en_US: 'e-commerce' },
+        labels: {en_US: 'e-commerce'},
         meta: {},
       },
     };
-    const security: Security = { isGranted: (_acl: string) => true };
+    const security: Security = {isGranted: (_acl: string) => true};
     // When
     render(
       <EditRulesContent

@@ -1,5 +1,5 @@
 import React from 'react';
-import { VisuallyHidden } from 'reakit/VisuallyHidden';
+import {VisuallyHidden} from 'reakit/VisuallyHidden';
 import styled from 'styled-components';
 
 const StyledLabel = styled.label`
@@ -11,7 +11,7 @@ type Props = {
   hiddenLabel?: boolean;
 } & React.LabelHTMLAttributes<HTMLLabelElement>;
 
-const Label: React.FC<Props> = ({ htmlFor, label, hiddenLabel }) => {
+const Label: React.FC<Props> = ({htmlFor, label, hiddenLabel}) => {
   const HTMLLabel = (
     <StyledLabel
       className='AknFieldContainer-label control-label'
@@ -22,4 +22,4 @@ const Label: React.FC<Props> = ({ htmlFor, label, hiddenLabel }) => {
   return hiddenLabel ? <VisuallyHidden>{HTMLLabel}</VisuallyHidden> : HTMLLabel;
 };
 
-export { Label };
+export {Label};

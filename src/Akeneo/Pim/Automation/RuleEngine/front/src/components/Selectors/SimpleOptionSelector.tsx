@@ -1,10 +1,10 @@
 import React from 'react';
-import { Select2Option, Select2Value, Select2Wrapper } from '../Select2Wrapper';
+import {Select2Option, Select2Value, Select2Wrapper} from '../Select2Wrapper';
 import {
   AttributeOptionDataProvider,
   getAttributeOptionsByIdentifiers,
 } from '../../fetch/AttributeOptionFetcher';
-import { AttributeId } from '../../models';
+import {AttributeId} from '../../models';
 import {
   useBackboneRouter,
   useUserCatalogLocale,
@@ -18,7 +18,7 @@ type Props = {
   value: string;
   name: string;
   allowClear?: boolean;
-  validation?: { required?: string; validate?: (value: any) => string | true };
+  validation?: {required?: string; validate?: (value: any) => string | true};
 };
 
 const SimpleOptionSelector: React.FC<Props> = ({
@@ -33,7 +33,7 @@ const SimpleOptionSelector: React.FC<Props> = ({
   const currentCatalogLocale = useUserCatalogLocale();
 
   const router = useBackboneRouter();
-  const handleResults = (response: { results: Select2Option[] }) => {
+  const handleResults = (response: {results: Select2Option[]}) => {
     return {
       more: 20 === response.results.length,
       results: response.results,
@@ -97,4 +97,4 @@ const SimpleOptionSelector: React.FC<Props> = ({
   );
 };
 
-export { SimpleOptionSelector };
+export {SimpleOptionSelector};

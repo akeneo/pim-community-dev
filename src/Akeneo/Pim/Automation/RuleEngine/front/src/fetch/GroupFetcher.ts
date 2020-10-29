@@ -1,8 +1,8 @@
-import { httpGet } from './fetch';
-import { Group, GroupCode } from '../models';
-import { Router } from '../dependenciesTools';
+import {httpGet} from './fetch';
+import {Group, GroupCode} from '../models';
+import {Router} from '../dependenciesTools';
 
-type IndexedGroups = { [groupCode: string]: Group };
+type IndexedGroups = {[groupCode: string]: Group};
 
 const fetchGroupsByIdentifiers = async (
   identifiers: GroupCode[],
@@ -15,7 +15,7 @@ const fetchGroupsByIdentifiers = async (
   const json = response.status === 404 ? null : await response.json();
 
   const results: IndexedGroups = {};
-  json.results?.forEach((element: { id: string; text: string }) => {
+  json.results?.forEach((element: {id: string; text: string}) => {
     results[element.id] = {
       code: element.id,
       label: element.text,
@@ -25,4 +25,4 @@ const fetchGroupsByIdentifiers = async (
   return results;
 };
 
-export { fetchGroupsByIdentifiers, IndexedGroups };
+export {fetchGroupsByIdentifiers, IndexedGroups};

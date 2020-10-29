@@ -1,13 +1,13 @@
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
-import { ConditionLineProps } from './ConditionLineProps';
-import { FallbackField } from '../FallbackField';
-import { useTranslate } from '../../../../dependenciesTools/hooks';
-import { useControlledFormInputCondition } from '../../hooks';
+import {Controller, useFormContext} from 'react-hook-form';
+import {ConditionLineProps} from './ConditionLineProps';
+import {FallbackField} from '../FallbackField';
+import {useTranslate} from '../../../../dependenciesTools/hooks';
+import {useControlledFormInputCondition} from '../../hooks';
 
-const PimConditionLine: React.FC<ConditionLineProps> = ({ lineNumber }) => {
+const PimConditionLine: React.FC<ConditionLineProps> = ({lineNumber}) => {
   const translate = useTranslate();
-  const { watch } = useFormContext();
+  const {watch} = useFormContext();
   const {
     formName,
     getFormValue,
@@ -94,4 +94,4 @@ const PimConditionLine: React.FC<ConditionLineProps> = ({ lineNumber }) => {
   );
 };
 
-export { PimConditionLine };
+export {PimConditionLine};

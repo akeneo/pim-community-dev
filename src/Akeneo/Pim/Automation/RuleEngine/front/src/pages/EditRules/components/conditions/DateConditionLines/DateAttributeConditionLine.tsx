@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Controller } from 'react-hook-form';
-import { ConditionLineProps } from '../ConditionLineProps';
-import { DateAttributeCondition } from '../../../../../models/conditions';
+import React, {useState} from 'react';
+import {Controller} from 'react-hook-form';
+import {ConditionLineProps} from '../ConditionLineProps';
+import {DateAttributeCondition} from '../../../../../models/conditions';
 import {
   ConditionLineErrorsContainer,
   ConditionLineFormAndErrorsContainer,
@@ -10,9 +10,9 @@ import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../../dependenciesTools/hooks';
-import { Attribute, getAttributeLabel } from '../../../../../models';
-import { useControlledFormInputCondition } from '../../../hooks';
-import { Operator } from '../../../../../models/Operator';
+import {Attribute, getAttributeLabel} from '../../../../../models';
+import {useControlledFormInputCondition} from '../../../hooks';
+import {Operator} from '../../../../../models/Operator';
 import {
   createDateTypeOptions,
   createTimePeriodCalendarOptions,
@@ -24,10 +24,10 @@ import {
   validateDateConditionLine,
   getDateAttributeOperatorsFromDateType,
 } from './dateConditionLines.utils';
-import { LineErrors } from '../../LineErrors';
-import { useGetAttributeAtMount } from '../../actions/attribute/attribute.utils';
-import { DateTemplateConditionLine } from './DateTemplateConditionLine';
-import { useDateConditionHandlers } from './dateConditionLines.hooks';
+import {LineErrors} from '../../LineErrors';
+import {useGetAttributeAtMount} from '../../actions/attribute/attribute.utils';
+import {DateTemplateConditionLine} from './DateTemplateConditionLine';
+import {useDateConditionHandlers} from './dateConditionLines.hooks';
 
 type DateAttributeConditionLineProps = {
   condition: DateAttributeCondition;
@@ -131,4 +131,4 @@ const DateAttributeConditionLine: React.FC<DateAttributeConditionLineProps> = ({
   );
 };
 
-export { DateAttributeConditionLine };
+export {DateAttributeConditionLine};

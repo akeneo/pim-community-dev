@@ -1,18 +1,20 @@
-import React, {ComponentType, FunctionComponent, useEffect, useState} from "react";
-import {createPortal} from "react-dom";
-import {PopoverProps} from "./Popover";
+import React, {ComponentType, FunctionComponent, useEffect, useState} from 'react';
+import {createPortal} from 'react-dom';
+import {PopoverProps} from './Popover';
 
 interface PopoverWithPortalDecoratorProps {
   containerId: string;
 }
 
-const PopoverWithPortalDecorator = <P extends PopoverProps>(PopoverComponent:  ComponentType<P>): FunctionComponent<PopoverWithPortalDecoratorProps & P> => {
-  return (props) => {
+const PopoverWithPortalDecorator = <P extends PopoverProps>(
+  PopoverComponent: ComponentType<P>
+): FunctionComponent<PopoverWithPortalDecoratorProps & P> => {
+  return props => {
     const {containerId} = props;
-    const [popoverContainer, setPopoverContainer] = useState<Element|null>(null);
+    const [popoverContainer, setPopoverContainer] = useState<Element | null>(null);
 
     useEffect(() => {
-      const element = document.createElement("div");
+      const element = document.createElement('div');
       element.id = containerId;
       setPopoverContainer(element);
 
@@ -23,12 +25,8 @@ const PopoverWithPortalDecorator = <P extends PopoverProps>(PopoverComponent:  C
       };
     }, []);
 
-    return (
-      <>
-        {popoverContainer && createPortal(<PopoverComponent {...props as P}/>, popoverContainer)}
-      </>
-    );
-  }
+    return <>{popoverContainer && createPortal(<PopoverComponent {...(props as P)} />, popoverContainer)}</>;
+  };
 };
 
 export default PopoverWithPortalDecorator;

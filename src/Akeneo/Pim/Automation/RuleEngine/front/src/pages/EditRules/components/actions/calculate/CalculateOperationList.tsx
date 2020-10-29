@@ -1,15 +1,15 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Dragula = require('react-dragula');
 import React from 'react';
-import { useFieldArray, useFormContext } from 'react-hook-form';
-import { Operation } from '../../../../../models/actions/Calculate/Operation';
-import { useTranslate } from '../../../../../dependenciesTools/hooks';
-import { AttributeCode, AttributeType, Locale } from '../../../../../models';
-import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
-import { useControlledFormInputAction } from '../../../hooks';
-import { CalculateOperationLine } from './CalculateOperationLine';
-import { AddFieldButton } from '../../../../../components/Selectors/AddFieldButton';
-import { BlueGhostButton } from '../../../../../components/Buttons';
+import {useFieldArray, useFormContext} from 'react-hook-form';
+import {Operation} from '../../../../../models/actions/Calculate/Operation';
+import {useTranslate} from '../../../../../dependenciesTools/hooks';
+import {AttributeCode, AttributeType, Locale} from '../../../../../models';
+import {IndexedScopes} from '../../../../../repositories/ScopeRepository';
+import {useControlledFormInputAction} from '../../../hooks';
+import {CalculateOperationLine} from './CalculateOperationLine';
+import {AddFieldButton} from '../../../../../components/Selectors/AddFieldButton';
+import {BlueGhostButton} from '../../../../../components/Buttons';
 
 type Props = {
   lineNumber: number;
@@ -24,14 +24,14 @@ const CalculateOperationList: React.FC<Props> = ({
   scopes,
 }) => {
   const translate = useTranslate();
-  const { formName, isFormFieldInError } = useControlledFormInputAction<
+  const {formName, isFormFieldInError} = useControlledFormInputAction<
     string | null
   >(lineNumber);
 
-  const { fields, remove, move, append } = useFieldArray({
+  const {fields, remove, move, append} = useFieldArray({
     name: formName('full_operation_list'),
   });
-  const { watch } = useFormContext();
+  const {watch} = useFormContext();
 
   const removeOperation = (lineToRemove: number) => () => {
     remove(lineToRemove);
@@ -50,17 +50,17 @@ const CalculateOperationList: React.FC<Props> = ({
 
   const handleAddValue = () => {
     if (fields.length > 0) {
-      append({ operator: null, value: '' });
+      append({operator: null, value: ''});
     } else {
-      append({ value: '' });
+      append({value: ''});
     }
   };
 
   const handleAddAttribute = (attributeCode: AttributeCode) => {
     if (fields.length > 0) {
-      append({ operator: null, field: attributeCode });
+      append({operator: null, field: attributeCode});
     } else {
-      append({ field: attributeCode });
+      append({field: attributeCode});
     }
   };
 
@@ -161,4 +161,4 @@ const CalculateOperationList: React.FC<Props> = ({
   );
 };
 
-export { CalculateOperationList };
+export {CalculateOperationList};

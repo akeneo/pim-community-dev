@@ -1,18 +1,18 @@
 import React from 'react';
-import { Locale } from '../../../../../models';
-import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
+import {Locale} from '../../../../../models';
+import {IndexedScopes} from '../../../../../repositories/ScopeRepository';
 import {
   Operation,
   Operator,
 } from '../../../../../models/actions/Calculate/Operation';
-import { useControlledFormInputAction } from '../../../hooks';
-import { useTranslate } from '../../../../../dependenciesTools/hooks';
-import { Controller, useFormContext } from 'react-hook-form';
-import { CalculateOperatorSelector } from './CalculateOperatorSelector';
+import {useControlledFormInputAction} from '../../../hooks';
+import {useTranslate} from '../../../../../dependenciesTools/hooks';
+import {Controller, useFormContext} from 'react-hook-form';
+import {CalculateOperatorSelector} from './CalculateOperatorSelector';
 import styled from 'styled-components';
-import { Translate } from '../../../../../dependenciesTools';
-import { AttributePropertiesSelector } from '../attribute/AttributePropertiesSelector';
-import { InputNumber } from '../../../../../components/Inputs';
+import {Translate} from '../../../../../dependenciesTools';
+import {AttributePropertiesSelector} from '../attribute/AttributePropertiesSelector';
+import {InputNumber} from '../../../../../components/Inputs';
 import {
   FieldOperand,
   Operand,
@@ -70,10 +70,10 @@ const CalculateOperationLine: React.FC<OperationLineProps> = ({
   isValue,
 }) => {
   const translate = useTranslate();
-  const { setValue, watch, errors } = useFormContext();
-  const { formName, getFormValue } = useControlledFormInputAction<
-    string | null
-  >(lineNumber);
+  const {setValue, watch, errors} = useFormContext();
+  const {formName, getFormValue} = useControlledFormInputAction<string | null>(
+    lineNumber
+  );
   const fieldOperand = sourceOrOperation as FieldOperand;
 
   const isOperatorInError =
@@ -190,4 +190,4 @@ const CalculateOperationLine: React.FC<OperationLineProps> = ({
   );
 };
 
-export { CalculateOperationLine };
+export {CalculateOperationLine};

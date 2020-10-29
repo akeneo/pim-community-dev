@@ -1,9 +1,9 @@
 import React from 'react';
 import 'jest-fetch-mock';
-import { renderWithProviders, screen } from '../../../../../../test-utils';
-import { locales, scopes } from '../../../../factories';
-import { RemoveGroupsActionLine } from '../../../../../../src/pages/EditRules/components/actions/RemoveGroupsActionLine';
-import { clearGroupRepositoryCache } from '../../../../../../src/repositories/GroupRepository';
+import {renderWithProviders, screen} from '../../../../../../test-utils';
+import {locales, scopes} from '../../../../factories';
+import {RemoveGroupsActionLine} from '../../../../../../src/pages/EditRules/components/actions/RemoveGroupsActionLine';
+import {clearGroupRepositoryCache} from '../../../../../../src/repositories/GroupRepository';
 
 describe('RemoveGroupsActionLine', () => {
   beforeEach(() => {
@@ -20,7 +20,7 @@ describe('RemoveGroupsActionLine', () => {
         currentCatalogLocale={'en_US'}
         handleDelete={jest.fn()}
       />,
-      { all: true }
+      {all: true}
     );
     expect(
       await screen.findByText(
@@ -42,8 +42,8 @@ describe('RemoveGroupsActionLine', () => {
         return Promise.resolve(
           JSON.stringify({
             results: [
-              { id: 'tshirts', text: 'T-shirts' },
-              { id: 'winter', text: 'Winter' },
+              {id: 'tshirts', text: 'T-shirts'},
+              {id: 'winter', text: 'Winter'},
             ],
           })
         );
@@ -64,9 +64,9 @@ describe('RemoveGroupsActionLine', () => {
       },
     };
     const toRegister = [
-      { name: 'content.actions[0].type', type: 'custom' },
-      { name: 'content.actions[0].field', type: 'custom' },
-      { name: 'content.actions[0].items', type: 'custom' },
+      {name: 'content.actions[0].type', type: 'custom'},
+      {name: 'content.actions[0].field', type: 'custom'},
+      {name: 'content.actions[0].items', type: 'custom'},
     ];
 
     renderWithProviders(
@@ -77,8 +77,8 @@ describe('RemoveGroupsActionLine', () => {
         currentCatalogLocale={'en_US'}
         handleDelete={jest.fn()}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
     expect(
       await screen.findByText(
@@ -101,8 +101,8 @@ describe('RemoveGroupsActionLine', () => {
         return Promise.resolve(
           JSON.stringify({
             results: [
-              { id: 'tshirts', text: 'T-shirts' },
-              { id: 'winter', text: 'Winter' },
+              {id: 'tshirts', text: 'T-shirts'},
+              {id: 'winter', text: 'Winter'},
             ],
           })
         );
@@ -123,9 +123,9 @@ describe('RemoveGroupsActionLine', () => {
       },
     };
     const toRegister = [
-      { name: 'content.actions[0].type', type: 'custom' },
-      { name: 'content.actions[0].field', type: 'custom' },
-      { name: 'content.actions[0].items', type: 'custom' },
+      {name: 'content.actions[0].type', type: 'custom'},
+      {name: 'content.actions[0].field', type: 'custom'},
+      {name: 'content.actions[0].items', type: 'custom'},
     ];
 
     renderWithProviders(
@@ -136,8 +136,8 @@ describe('RemoveGroupsActionLine', () => {
         currentCatalogLocale={'en_US'}
         handleDelete={jest.fn()}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
     expect(
       await screen.findByText(

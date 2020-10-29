@@ -1,7 +1,7 @@
 import React from 'react';
-import { renderWithProviders } from '../../../../../../test-utils';
-import { ClearGroupsActionLine } from '../../../../../../src/pages/EditRules/components/actions/ClearGroupsActionLine';
-import { locales, scopes } from '../../../../factories';
+import {renderWithProviders} from '../../../../../../test-utils';
+import {ClearGroupsActionLine} from '../../../../../../src/pages/EditRules/components/actions/ClearGroupsActionLine';
+import {locales, scopes} from '../../../../factories';
 
 describe('ClearGroupsActionLine', () => {
   it('should display the clear groups action line', async () => {
@@ -16,7 +16,7 @@ describe('ClearGroupsActionLine', () => {
         locales={locales}
         scopes={scopes}
       />,
-      { all: true }
+      {all: true}
     );
 
     expect(

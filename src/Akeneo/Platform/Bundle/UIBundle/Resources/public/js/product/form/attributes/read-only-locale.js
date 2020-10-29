@@ -1,71 +1,65 @@
 'use strict';
 
-define(
-    [
-        'jquery',
-        'underscore',
-        'backbone',
-        'pim/form',
-        'pim/field-manager',
-        'pim/fetcher-registry'
-    ],
-    function (
-        $,
-        _,
-        Backbone,
-        BaseForm,
-        FieldManager,
-        FetcherRegistry
-    ) {
-        return BaseForm.extend({
-            /**
-             * {@inheritdoc}
-             */
-            configure: function () {
-                this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
+define(['jquery', 'underscore', 'backbone', 'pim/form', 'pim/field-manager', 'pim/fetcher-registry'], function(
+  $,
+  _,
+  Backbone,
+  BaseForm,
+  FieldManager,
+  FetcherRegistry
+) {
+  return BaseForm.extend({
+    /**
+     * {@inheritdoc}
+     */
+    configure: function() {
+      this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
 
-                return BaseForm.prototype.configure.apply(this, arguments);
-            },
+      return BaseForm.prototype.configure.apply(this, arguments);
+    },
 
-            /**
-             * Add field extension if the user doesn't have right to edit locale
-             *
-             * @param {object} event
-             */
-            addFieldExtension: function (event) {
-                event.promises.push(
-                    FetcherRegistry.getFetcher('permission').fetchAll().then(function (permissions) {
-                        var field = event.field;
+    /**
+     * Add field extension if the user doesn't have right to edit locale
+     *
+     * @param {object} event
+     */
+    addFieldExtension: function(event) {
+      event.promises.push(
+        FetcherRegistry.getFetcher('permission')
+          .fetchAll()
+          .then(
+            function(permissions) {
+              var field = event.field;
 
-                        if (!this.isAttributeEditable(permissions, field.attribute, field.context.locale)) {
-                            field.setEditable(false);
-                        }
+              if (!this.isAttributeEditable(permissions, field.attribute, field.context.locale)) {
+                field.setEditable(false);
+              }
 
-                        return event;
-                    }.bind(this))
-                );
+              return event;
+            }.bind(this)
+          )
+      );
 
-                return this;
-            },
+      return this;
+    },
 
-            /**
-             * Is the current attribute editable ?
-             *
-             * @param  {object}  permissions
-             * @param  {object}  attribute
-             * @param  {string}  locale
-             *
-             * @return {Boolean}
-             */
-            isAttributeEditable: function (permissions, attribute, locale) {
-                if (attribute.localizable) {
-                    var localePermission = _.findWhere(permissions.locales, {code: locale});
+    /**
+     * Is the current attribute editable ?
+     *
+     * @param  {object}  permissions
+     * @param  {object}  attribute
+     * @param  {string}  locale
+     *
+     * @return {Boolean}
+     */
+    isAttributeEditable: function(permissions, attribute, locale) {
+      if (attribute.localizable) {
+        var localePermission = _.findWhere(permissions.locales, {code: locale});
 
-                    return localePermission.edit;
-                }
+        return localePermission.edit;
+      }
 
-                return true;
-            }
-        });
-    }
-);
+      return true;
+    },
+  });
+});

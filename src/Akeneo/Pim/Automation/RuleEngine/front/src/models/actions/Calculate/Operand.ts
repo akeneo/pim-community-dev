@@ -27,5 +27,5 @@ export const denormalizeOperand = (data: any): Operand => {
     };
   }
 
-  return { value: data.value };
+  return {value: data.value};
 };

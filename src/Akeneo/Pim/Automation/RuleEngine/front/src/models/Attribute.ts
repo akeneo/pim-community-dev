@@ -1,4 +1,4 @@
-import { LocaleCode } from './Locale';
+import {LocaleCode} from './Locale';
 
 type AttributeId = number;
 type AttributeCode = string;
@@ -50,14 +50,14 @@ type Attribute = {
   sort_order: number;
   localizable: boolean;
   scopable: boolean;
-  labels: { [locale: string]: string };
+  labels: {[locale: string]: string};
   auto_option_sorting: boolean | null;
   is_read_only: boolean;
   empty_value: any | null;
   field_type: string;
-  filter_types: { [type: string]: string };
+  filter_types: {[type: string]: string};
   is_locale_specific: boolean;
-  meta: { id: AttributeId } & { [key: string]: any };
+  meta: {id: AttributeId} & {[key: string]: any};
 };
 
 const validateLocalizableScopableAttribute = (

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
-import { Operator } from '../../../../models/Operator';
-import { Locale, LocaleCode } from '../../../../models';
+import {Controller} from 'react-hook-form';
+import {Operator} from '../../../../models/Operator';
+import {Locale, LocaleCode} from '../../../../models';
 import {
   getScopeValidation,
   ScopeSelector,
@@ -10,7 +10,7 @@ import {
   getLocaleValidation,
   LocaleSelector,
 } from '../../../../components/Selectors/LocaleSelector';
-import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
+import {OperatorSelector} from '../../../../components/Selectors/OperatorSelector';
 import {
   ConditionLineFormContainer,
   ConditionLineFormAndErrorsContainer,
@@ -22,12 +22,12 @@ import {
   ValueColumn,
   ConditionLineErrorsContainer,
 } from './style';
-import { IndexedScopes } from '../../../../repositories/ScopeRepository';
-import { LineErrors } from '../LineErrors';
-import { useTranslate } from '../../../../dependenciesTools/hooks';
-import { Attribute } from '../../../../models';
+import {IndexedScopes} from '../../../../repositories/ScopeRepository';
+import {LineErrors} from '../LineErrors';
+import {useTranslate} from '../../../../dependenciesTools/hooks';
+import {Attribute} from '../../../../models';
 
-import { useControlledFormInputCondition } from '../../hooks';
+import {useControlledFormInputCondition} from '../../hooks';
 
 const shouldDisplayValue: (operator: Operator) => boolean = operator =>
   !([Operator.IS_EMPTY, Operator.IS_NOT_EMPTY] as Operator[]).includes(
@@ -192,4 +192,4 @@ const AttributeConditionLine: React.FC<AttributeConditionLineProps> = ({
   );
 };
 
-export { AttributeConditionLine };
+export {AttributeConditionLine};

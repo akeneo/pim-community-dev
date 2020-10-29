@@ -79,8 +79,9 @@ export const selectCurrentValues = (state: AssetCollectionState) => {
 
   return state.product.values.filter(
     ({locale, channel, attribute}: Value) =>
-        (0 === attribute.availableLocales.length || attribute.availableLocales.includes(currentLocale)) &&
-        (locale === null || locale === currentLocale) && (channel === null || currentChannel === channel)
+      (0 === attribute.availableLocales.length || attribute.availableLocales.includes(currentLocale)) &&
+      (locale === null || locale === currentLocale) &&
+      (channel === null || currentChannel === channel)
   );
 };
 

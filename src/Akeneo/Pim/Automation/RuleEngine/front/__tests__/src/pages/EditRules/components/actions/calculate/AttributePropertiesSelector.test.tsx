@@ -1,15 +1,15 @@
 import React from 'react';
 import 'jest-fetch-mock';
-import { renderWithProviders, screen } from '../../../../../../../test-utils';
-import { clearAttributeRepositoryCache } from '../../../../../../../src/repositories/AttributeRepository';
+import {renderWithProviders, screen} from '../../../../../../../test-utils';
+import {clearAttributeRepositoryCache} from '../../../../../../../src/repositories/AttributeRepository';
 import {
   createAttribute,
   currencies,
   locales,
   scopes,
 } from '../../../../../factories';
-import { AttributeType } from '../../../../../../../src/models';
-import { AttributePropertiesSelector } from '../../../../../../../src/pages/EditRules/components/actions/attribute/AttributePropertiesSelector';
+import {AttributeType} from '../../../../../../../src/models';
+import {AttributePropertiesSelector} from '../../../../../../../src/pages/EditRules/components/actions/attribute/AttributePropertiesSelector';
 
 jest.mock('../../../../../../../src/components/Select2Wrapper/Select2Wrapper');
 jest.mock(
@@ -37,10 +37,10 @@ const priceAttribute = createAttribute({
 });
 
 const toRegister = [
-  { name: 'attribute.field.field', type: 'custom' },
-  { name: 'attribute.field.locale', type: 'custom' },
-  { name: 'attribute.field.scope', type: 'custom' },
-  { name: 'attribute.field.currency', type: 'custom' },
+  {name: 'attribute.field.field', type: 'custom'},
+  {name: 'attribute.field.locale', type: 'custom'},
+  {name: 'attribute.field.scope', type: 'custom'},
+  {name: 'attribute.field.currency', type: 'custom'},
 ];
 
 describe('AttributePropertiesSelector', () => {
@@ -77,8 +77,8 @@ describe('AttributePropertiesSelector', () => {
         locales={locales}
         isCurrencyRequired={true}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     expect(await screen.findByText('The Margin')).toBeInTheDocument();
@@ -124,8 +124,8 @@ describe('AttributePropertiesSelector', () => {
         locales={locales}
         isCurrencyRequired={true}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     expect(await screen.findByText('PriceUS')).toBeInTheDocument();

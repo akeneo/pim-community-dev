@@ -12,7 +12,7 @@ import {
   AssociationValue,
 } from '../../../../../../../src/models';
 import userEvent from '@testing-library/user-event';
-import { AssociationTypesSelector } from '../../../../../../../src/pages/EditRules/components/actions/association/AssociationTypesSelector';
+import {AssociationTypesSelector} from '../../../../../../../src/pages/EditRules/components/actions/association/AssociationTypesSelector';
 
 const associationTypes: AssociationType[] = [
   {
@@ -23,7 +23,7 @@ const associationTypes: AssociationType[] = [
       en_US: 'X sell',
       fr_FR: 'Vente croisee',
     },
-    meta: { id: 42 },
+    meta: {id: 42},
   },
   {
     code: 'PACK',
@@ -33,7 +33,7 @@ const associationTypes: AssociationType[] = [
       en_US: 'Pack',
       fr_FR: 'Paques',
     },
-    meta: { id: 43 },
+    meta: {id: 43},
   },
 ];
 
@@ -70,7 +70,7 @@ describe('SetAssociationsActionLine', () => {
         onChange={onChange}
         required={false}
       />,
-      { all: true }
+      {all: true}
     );
 
     await waitForElementToBeRemoved(() =>
@@ -143,7 +143,7 @@ describe('SetAssociationsActionLine', () => {
         onChange={onChange}
         required={false}
       />,
-      { all: true }
+      {all: true}
     );
 
     await waitForElementToBeRemoved(() =>
@@ -165,7 +165,7 @@ describe('SetAssociationsActionLine', () => {
       fireEvent.change(
         await screen.findByTestId('association-types-selector'),
         {
-          target: { value: 'products' },
+          target: {value: 'products'},
         }
       );
 
@@ -178,7 +178,7 @@ describe('SetAssociationsActionLine', () => {
       ).not.toBeInTheDocument();
       expect(onChange).toHaveBeenLastCalledWith({
         ...value,
-        PACK: { products: [] },
+        PACK: {products: []},
       });
     });
   });
@@ -199,7 +199,7 @@ describe('SetAssociationsActionLine', () => {
         onChange={onChange}
         required={false}
       />,
-      { all: true }
+      {all: true}
     );
 
     await waitForElementToBeRemoved(() =>
@@ -225,7 +225,7 @@ describe('SetAssociationsActionLine', () => {
       fireEvent.change(
         await screen.findByTestId('association-types-selector'),
         {
-          target: { value: 'product_models' },
+          target: {value: 'product_models'},
         }
       );
 
@@ -240,7 +240,7 @@ describe('SetAssociationsActionLine', () => {
       ).not.toBeInTheDocument();
       expect(onChange).toHaveBeenLastCalledWith({
         ...value,
-        PACK: { product_models: [] },
+        PACK: {product_models: []},
       });
     });
   });
@@ -261,7 +261,7 @@ describe('SetAssociationsActionLine', () => {
         onChange={onChange}
         required={false}
       />,
-      { all: true }
+      {all: true}
     );
 
     await waitForElementToBeRemoved(() =>
@@ -283,7 +283,7 @@ describe('SetAssociationsActionLine', () => {
       fireEvent.change(
         await screen.findByTestId('association-types-selector'),
         {
-          target: { value: 'groups' },
+          target: {value: 'groups'},
         }
       );
 
@@ -296,7 +296,7 @@ describe('SetAssociationsActionLine', () => {
       ).not.toBeInTheDocument();
       expect(onChange).toHaveBeenLastCalledWith({
         ...value,
-        PACK: { groups: [] },
+        PACK: {groups: []},
       });
     });
   });

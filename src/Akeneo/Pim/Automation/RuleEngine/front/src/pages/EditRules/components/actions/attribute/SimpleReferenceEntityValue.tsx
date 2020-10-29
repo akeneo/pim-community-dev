@@ -4,10 +4,10 @@ import {
   useUserCatalogLocale,
   useUserCatalogScope,
 } from '../../../../../dependenciesTools/hooks';
-import { InputValueProps } from './AttributeValue';
-import { getAttributeLabel } from '../../../../../models';
-import { Label } from '../../../../../components/Labels';
-import { ReferenceEntitySelector } from '../../../../../dependenciesTools/components/ReferenceEntity/ReferenceEntitySelector';
+import {InputValueProps} from './AttributeValue';
+import {getAttributeLabel} from '../../../../../models';
+import {Label} from '../../../../../components/Labels';
+import {ReferenceEntitySelector} from '../../../../../dependenciesTools/components/ReferenceEntity/ReferenceEntitySelector';
 
 const SimpleReferenceEntityValue: React.FC<InputValueProps> = ({
   attribute,
@@ -42,4 +42,4 @@ const SimpleReferenceEntityValue: React.FC<InputValueProps> = ({
   );
 };
 
-export { SimpleReferenceEntityValue };
+export {SimpleReferenceEntityValue};

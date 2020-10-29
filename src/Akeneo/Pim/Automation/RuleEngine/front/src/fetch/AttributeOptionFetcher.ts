@@ -1,7 +1,7 @@
-import { httpGet } from './fetch';
-import { Router } from '../dependenciesTools';
-import { LocaleCode } from '../models';
-import { Select2Option } from '../components/Select2Wrapper';
+import {httpGet} from './fetch';
+import {Router} from '../dependenciesTools';
+import {LocaleCode} from '../models';
+import {Select2Option} from '../components/Select2Wrapper';
 
 type AttributeOptionCode = string;
 
@@ -46,7 +46,7 @@ const getAttributeOptionsByIdentifiers: (
   );
   dataParams = {
     ...dataParams,
-    options: { ...dataParams.options, ids: identifiers },
+    options: {...dataParams.options, ids: identifiers},
   };
   const url = router.generate('pim_ui_ajaxentity_list', dataParams);
   const response = await httpGet(url);

@@ -28,7 +28,7 @@ const Grid = async (nodeElement, createElementDecorator, page) => {
     return true;
   };
 
-  const getReferenceEntityLabel = async (identifier) => {
+  const getReferenceEntityLabel = async identifier => {
     const row = await page.waitForSelector(`.AknGrid-bodyRow[data-identifier="${identifier}"]`);
     const label = await row.$('.AknGrid-title');
     const labelProperty = await label.getProperty('textContent');
