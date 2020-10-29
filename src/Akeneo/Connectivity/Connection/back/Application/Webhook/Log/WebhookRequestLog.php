@@ -31,7 +31,7 @@ class WebhookRequestLog
         $this->endTime = $endTime;
     }
 
-    public function setEndTime($endTime): float
+    public function setEndTime($endTime): void
     {
         $this->endTime = $endTime;
     }
