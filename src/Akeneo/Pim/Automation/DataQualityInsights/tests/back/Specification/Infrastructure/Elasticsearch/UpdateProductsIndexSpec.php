@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductsKeyIndicators;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Enrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRankCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisRankCollection;
@@ -22,15 +22,15 @@ class UpdateProductsIndexSpec extends ObjectBehavior
     public function let(
         Client $esClient,
         GetLatestProductAxesRanksQueryInterface $getLatestProductAxesRanksQuery,
-        GetProductsKeyIndicators $getProductsKeyIndicators
+        ComputeProductsKeyIndicators $computeProductsKeyIndicators
     ) {
-        $this->beConstructedWith($esClient, $getLatestProductAxesRanksQuery, $getProductsKeyIndicators);
+        $this->beConstructedWith($esClient, $getLatestProductAxesRanksQuery, $computeProductsKeyIndicators);
     }
 
     public function it_updates_products_index(
         $esClient,
         $getLatestProductAxesRanksQuery,
-        $getProductsKeyIndicators
+        $computeProductsKeyIndicators
     ) {
         $consistency = new Consistency();
         $enrichment = new Enrichment();
@@ -82,7 +82,7 @@ class UpdateProductsIndexSpec extends ObjectBehavior
             ],
         ];
 
-        $getProductsKeyIndicators->get($productIds)->willReturn($productsKeyIndicators);
+        $computeProductsKeyIndicators->compute($productIds)->willReturn($productsKeyIndicators);
 
         $esClient->updateByQuery([
             'script' => [

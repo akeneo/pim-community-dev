@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductsKeyIndicators;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Enrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRankCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisRankCollection;
@@ -22,15 +22,15 @@ final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends Obj
     public function let(
         GetLatestProductAxesRanksQueryInterface $getLatestProductAxesRanksQuery,
         GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery,
-        GetProductsKeyIndicators $getProductsKeyIndicators
+        ComputeProductsKeyIndicators $computeProductsKeyIndicators
     ) {
-        $this->beConstructedWith($getLatestProductAxesRanksQuery, $getProductIdsFromProductIdentifiersQuery, $getProductsKeyIndicators);
+        $this->beConstructedWith($getLatestProductAxesRanksQuery, $getProductIdsFromProductIdentifiersQuery, $computeProductsKeyIndicators);
     }
 
     public function it_returns_additional_properties_from_product_identifiers(
         $getLatestProductAxesRanksQuery,
         $getProductIdsFromProductIdentifiersQuery,
-        $getProductsKeyIndicators
+        $computeProductsKeyIndicators
     ) {
         $productId42 = new ProductId(42);
         $productId123 = new ProductId(123);
@@ -108,7 +108,7 @@ final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends Obj
             ],
         ];
 
-        $getProductsKeyIndicators->get($productIds)->willReturn($productsKeyIndicators);
+        $computeProductsKeyIndicators->compute($productIds)->willReturn($productsKeyIndicators);
 
         $this->fromProductIdentifiers($productIdentifiers)->shouldReturn([
             'product_1' => [

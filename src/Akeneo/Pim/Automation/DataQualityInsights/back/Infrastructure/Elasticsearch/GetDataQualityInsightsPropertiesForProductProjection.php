@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductsKeyIndicators;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdsFromProductIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductAxesRanksQueryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface;
@@ -19,12 +19,12 @@ final class GetDataQualityInsightsPropertiesForProductProjection implements GetA
 
     private GetLatestProductAxesRanksQueryInterface $getLatestProductAxesRanksQuery;
 
-    private GetProductsKeyIndicators $getProductsKeyIndicators;
+    private ComputeProductsKeyIndicators $getProductsKeyIndicators;
 
     public function __construct(
         GetLatestProductAxesRanksQueryInterface $getLatestProductAxesRanksQuery,
         GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery,
-        GetProductsKeyIndicators $getProductsKeyIndicators
+        ComputeProductsKeyIndicators $getProductsKeyIndicators
     ) {
         $this->getProductIdsFromProductIdentifiersQuery = $getProductIdsFromProductIdentifiersQuery;
         $this->getLatestProductAxesRanksQuery = $getLatestProductAxesRanksQuery;
@@ -38,7 +38,7 @@ final class GetDataQualityInsightsPropertiesForProductProjection implements GetA
     {
         $productIds = $this->getProductIdsFromProductIdentifiersQuery->execute($productIdentifiers);
         $productAxesRanks = $this->getLatestProductAxesRanksQuery->byProductIds($productIds);
-        $productKeyIndicators = $this->getProductsKeyIndicators->get($productIds);
+        $productKeyIndicators = $this->getProductsKeyIndicators->compute($productIds);
 
         $additionalProperties = [];
         foreach ($productIds as $productIdentifier => $productId) {

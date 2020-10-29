@@ -174,7 +174,7 @@ services:
     akeneo.pim.automation.data_quality_insights.synchronous_criterion_evaluations_filter:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\SynchronousCriterionEvaluationsFilter
 
-    Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductsKeyIndicators:
+    Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
-            - !tagged akeneo.pim.automation.data_quality_insights.key_indicator_query
+            - !tagged akeneo.pim.automation.data_quality_insights.compute_key_indicator_query
