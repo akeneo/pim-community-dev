@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes:
+
+- PIM-9525: Fix memory leak during project calculation
+
 # 4.0.67 (2020-10-28)
 
 # 4.0.66 (2020-10-23)
