@@ -23,9 +23,15 @@ datagrid:
                 frontendType: label
             status:
                 label:         Status
-                type:          twig
-                template:      PimImportExportBundle:Property:status.html.twig
-                frontend_type: html
+                frontend_type: react
+                type: field
+                component: pimimportexport/js/JobExecutionStatus
+                props:
+                    status: string
+                    currentStep: integer
+                    totalSteps: integer
+                    hasWarning: boolean
+                    hasError: boolean
             warning:
                 label:         Warnings
                 type:          twig
@@ -79,6 +85,10 @@ datagrid:
                             choices: '%akeneo_batch.job.batch_status.class%::getAllLabels()'
         properties:
             id: ~
+            currentStep: ~
+            totalSteps: ~
+            hasWarning: ~
+            hasError: ~
             show_link:
                 type: url
                 params:

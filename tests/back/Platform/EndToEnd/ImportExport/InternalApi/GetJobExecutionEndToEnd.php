@@ -145,7 +145,9 @@ SQL;
                     ],
             ],
             'tracking' => [
-                'status' => 'COMPLETED',
+                'error'   => false,
+                'warning' => false,
+                'status'  => 'COMPLETED',
                 'currentStep' => 3,
                 'totalSteps' => 3,
                 'steps' => [

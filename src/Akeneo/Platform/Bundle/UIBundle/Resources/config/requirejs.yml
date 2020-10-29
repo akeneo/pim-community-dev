@@ -724,6 +724,7 @@ config:
     oro/datagrid/edit-in-modal-action:                      pimui/js/datagrid/action/edit-in-modal-action
     oro/datagrid/delete-product-action:                     pimui/js/datagrid/action/delete-product-action
     oro/datagrid/toggle-product-action:                     pimui/js/datagrid/action/toggle-product-action
+    oro/datagrid/react-cell:                                pimui/js/datagrid/reactCell
 
     # Attribute group
     pim/attribute-group-form/tab/attribute: pimui/js/attribute-group/form/tab/attribute
