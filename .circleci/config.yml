@@ -101,6 +101,11 @@ jobs:
                 command: make acceptance-back
 
                 when: always
+          - run:
+                name: Communication panel
+                command: |
+                    make communication-channel-coupling-back
+                    make communication-channel-unit-back
           - store_test_results:
                 path: var/tests
           - store_artifacts:

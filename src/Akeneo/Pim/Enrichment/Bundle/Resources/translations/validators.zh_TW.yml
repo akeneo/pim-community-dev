@@ -1,0 +1,87 @@
+An identifier attribute already exists.: 已存在一個標識符屬性。
+Attribute code may contain only letters, numbers and underscore: 屬性代碼只可使用字母、數字和下劃線
+Attribute code may contain only letters (at least one), numbers and underscores: 屬性代碼只可使用字母（至少一個）、數字和下劃線
+Attribute group code may contain only letters, numbers and underscores: 屬性分組代碼只可使用字母、數字和下劃線
+This attribute type can't be used as a grid filter: 此屬性類別不可用於界面篩選
+This code is not available: 此代碼不可用
+This attribute type must be required: 需要此屬性類別
+This attribute type can't be required: 不需要此屬性類別
+This attribute type can't have unique value: 此屬性類別不可為唯一值
+No default value may be specified for this attribute type: 不能為此屬性類別指定默認值
+This value should be Yes or No: 該值應為“是”或“否”
+This value should not be blank: 此數值不可為空
+Option code may contain only letters, numbers and underscores: 選項代碼只可使用字母、數字和下劃線
+Option code may contain only letters (at least one), numbers and underscores: 選項代碼只可使用字母（至少一個）、數字和下劃線
+This value should not be a decimal.: 此數值必須為整數。
+'The file extension is not allowed (allowed extensions: %extensions%).': '不支持此檔案擴展名（支持的擴展名：%extensions%）。'
+"The value %value% is already set on another product for the unique attribute %attribute%": 此數值%value%已設置為另一產品的唯一屬性%attribute%
+The same identifier is already set on another product: 同樣的標識符已用於另一產品
+regex.comma_or_semicolon.message: 此欄不應包含逗號或分號。
+file.extensions.message: '不支持此檔案擴展名（支持的擴展名：%extensions%）。'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": 此類值需要使用{{decimal_separator}}來分隔小數。
+"This type of value expects the use of dot (.) to separate decimals.": 此類值需要使用點(.)來分隔小數。
+"This type of value expects the use of comma (,) to separate decimals.": 此類值需要使用逗號(,)來分隔小數。
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": 此類值需要使用阿拉伯小數分隔符(,)來分隔小數。
+"This type of value expects the use of the format {{ date_format }} for dates.": 此類值需要使用{{ date_format }}的日期格式。
+"The category \"%category%\" has to be a root category.": 此類別"%category%"必須為根類別。
+"The attribute \"%attributeCode%\" does not exist.": 狀態"%attributeCode%"不存在。
+"The attribute \"%attributeCode%\" is not a metric attribute.": 狀態"%attributeCode%"不是計量單位。
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": 單位"%unitCode%"不存在或不屬於給定屬性"%attributeCode%"的默認計量品類。
+"The currency \"%currency%\" has to be activated.": 需要激活貨幣"%currency%"。
+product_model.code.not_blank.message: 產品型號代碼不可為空。
+product_model.code.unique.message: 同樣的代碼已用於另一產品型號。
+product_model.family_variant.not_blank.message: 產品型號品類變量不可為空。
+pim_catalog:
+  constraint:
+    can_have_family_variant_empty_axis_value: '狀態"%attribute%"不可為空，因為以將其定義為此實體軸。'
+    product_model_with_same_axis_value_already_exists: '無法為產品型號"%validated_entity%"的狀態軸"%attributes%"设置值"%values%"，因為產品型號"%sibling_with_same_value%"已擁有此值'
+    variant_product_with_same_axis_value_already_exists: '無法為產品變量"%validated_entity%"的狀態軸"%attributes%"设置值"%values%"，因為產品變量"%sibling_with_same_value%"已擁有此值'
+    can_have_family_variant_unexpected_attribute: '無法為此實體設置屬性"%attribute%"，因為它不在屬性組中'
+    cannot_have_product_model_as_parent: '產品型號"%product_model%"不可將產品型號"%parent_product_model%"作為父級'
+    cannot_have_parent: '產品型號"%product_model%"不可擁有父級'
+    attribute_does_not_belong_to_family: '狀態"%attribute%"不屬於品類"%family%"'
+    variant_product_invalid_family: '變量產品品類必須與其父級保持一致'
+    php_int_max_reached: '最大數值必須小於%php_int_max%。'
+    not_null_family: 品類不可為“null”，因為標識符為"%sku%"的產品是產品變量。
+    variant_product_has_parent: '產品變量"%variant_product%"必須擁有一個父級'
+    invalid_variant_product_parent: '產品變量"%variant_product%"不可將產品型號"%product_model%"作為父級，（此產品型號只可將其他產品型號作為子級）'
+    modified_variant_axis_value: '變量軸"%variant_axis%"不可修改，"%provided_value%"已確定'
+    family_variant_attributes_unique: 屬性必須是唯一的，"%attributes%"多次在變量屬性組中使用
+    family_variant_axes_unique: 變量軸必須是唯一的，"%attributes%"多次在變量屬性組中使用
+    family_variant_axes_immutable: '"%level%"級別的變量軸不可更改'
+    family_variant_axes_attribute_type_unique: 變量軸"%axis%"不可為唯一值或標識符
+    family_variant_axes_attribute_type: 變量軸"%axis%"必須為布爾值、簡單選擇、簡單參考數據或計量值
+    family_variant_axes_wrong_type: 變量軸"%axis%"不可本地化、不可有範圍限制、不可針對區域
+    family_variant_axes_number_of_axes: '變量屬性組不可超過%max_axes_number%軸'
+    family_variant_no_axis: 級別“％level％”的屬性z组應至少定義一個屬性作為軸
+    family_variant_axis_level: 必須將屬性“%axis%”設置為與設置為軸的變量屬性相同的屬性
+    family_variant_has_family_attribute: '無法將“%attribute%”屬性添加到“%family_variant%”品類變體中，因為它不是“%family%”品類的屬性'
+    family_variant_level_do_not_exist: 不存在“%level%”級別的變量屬性組
+    family_variant_no_level: 品類變量中至少應定義一個級別
+    family_variant_maximum_number_of_level: 品類變量不可超過"%level%"級別
+    family_variant_unique_attributes_in_last_level: 唯一屬性"%attribute%"必須設置為產品級
+    product_identifier: 此標識符"%s"不存在。
+    0: 發生未預期的錯誤。
+    100: 非預期值
+    101: 此字段需要一個布爾值。
+    102: 此字段需要一個浮點值。
+    103: 此字段需要一個整數值。
+    104: 此字段需要一個數字值。
+    105: 此字段需要一個字符串值。
+    106: 此字段需要一個數組值。
+    107: 此字段需要一個嵌套數組值。
+    200: 發生內部錯誤
+    201: 發生內部錯誤
+    202: 此字段需要一個數字值。
+    203: 此字段需要一個字符串值。
+    204: 此字段需要一個字符串值。
+    205: 發生內部錯誤
+    300: 此字段需要一個有效的實體代碼。
+    301: 此字段需要一個有效的範圍和區域。
+    302: 此字段需要一個有效的範圍。
+    303: 此字段需要一個有效的關聯格式。
+    pim_immutable_product_validator: 同樣的標識符已用於另一產品
+    pim_immutable_product_model_validator: 同樣的代碼已用於另一產品型號。
+mass_edit:
+  edit_common_attributes:
+    invalid_values: 屬性形式存在錯誤
