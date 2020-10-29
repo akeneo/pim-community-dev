@@ -31,6 +31,7 @@ services:
             -
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_category.import'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 
@@ -43,6 +44,7 @@ services:
             -
                 - '@pim_connector.step.charset_validator'
                 - '@pim_installer.step.fixtures_attribute_group_csv.import'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 
@@ -55,6 +57,7 @@ services:
             -
                 - '@pim_connector.step.charset_validator'
                 - '@pim_installer.step.fixtures_channel_csv.import'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 
@@ -67,6 +70,7 @@ services:
             -
                 - '@pim_connector.step.charset_validator'
                 - '@pim_installer.step.fixtures_locale_csv.import'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 
@@ -79,6 +83,7 @@ services:
             -
                 - '@pim_connector.step.charset_validator'
                 - '@pim_installer.step.fixtures_currency_csv.import'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 
@@ -91,6 +96,7 @@ services:
             -
                 - '@pim_connector.step.charset_validator'
                 - '@pim_installer.step.fixtures_group_type_csv.import'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 
@@ -103,6 +109,7 @@ services:
             -
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_association_type.import'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 
@@ -115,6 +122,7 @@ services:
             -
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_attribute.import'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 
@@ -127,6 +135,7 @@ services:
             -
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_attribute_option.import'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 
@@ -139,6 +148,7 @@ services:
             -
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_family.import'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 
@@ -151,6 +161,7 @@ services:
             -
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_family_variant.import'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 
@@ -164,6 +175,7 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_root_product_model.import'
                 - '@pim_connector.step.csv_sub_product_model.import'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 
@@ -177,6 +189,7 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_product.import'
                 - '@pim_connector.step.csv_product.import_associations'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 
@@ -189,6 +202,7 @@ services:
             -
                 - '@pim_connector.step.charset_validator'
                 - '@pim_installer.step.fixtures_user_csv.import'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 
@@ -201,6 +215,7 @@ services:
             -
                 - '@pim_connector.step.charset_validator'
                 - '@pim_installer.step.fixtures_user_role_csv.import'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 
@@ -213,6 +228,7 @@ services:
             -
                 - '@pim_connector.step.charset_validator'
                 - '@pim_installer.step.fixtures_user_group_csv.import'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 
@@ -225,6 +241,7 @@ services:
             -
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_group.import'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 
@@ -237,5 +254,6 @@ services:
             -
                 - '@pim_connector.step.charset_validator'
                 - '@pim_installer.step.fixtures_job_yml.import'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
