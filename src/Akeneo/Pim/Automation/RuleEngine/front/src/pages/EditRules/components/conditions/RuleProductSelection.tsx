@@ -68,6 +68,9 @@ const LegendSrOnly = styled.legend`
 const HeaderPartContainer = styled.span`
   display: flex;
   align-items: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;
 
 const TitleHeader = styled.span`
