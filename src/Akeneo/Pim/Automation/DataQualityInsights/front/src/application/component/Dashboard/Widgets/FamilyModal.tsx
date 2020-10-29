@@ -1,6 +1,6 @@
-import React from "react";
-import Modal from "../../Modal";
-import {FamiliesSelect2} from "./FamiliesSelect2";
+import React from 'react';
+import Modal from '../../Modal';
+import {FamiliesSelect2} from './FamiliesSelect2';
 
 const __ = require('oro/translator');
 
@@ -13,22 +13,27 @@ interface FamilyModalProps {
   errorMessage: string;
 }
 
-const FamilyModal = ({onConfirm, onDismissModal, onSelectFamily, isVisible, canAddMoreFamilies, errorMessage}: FamilyModalProps) => {
-
+const FamilyModal = ({
+  onConfirm,
+  onDismissModal,
+  onSelectFamily,
+  isVisible,
+  canAddMoreFamilies,
+  errorMessage,
+}: FamilyModalProps) => {
   if (!isVisible) {
-    return (<></>);
+    return <></>;
   }
 
-  let modalContent =
+  let modalContent = (
     <div>
       {!canAddMoreFamilies && (
-        <div className="AknMessageBox AknMessageBox--error AknMessageBox--withIcon">
-          {errorMessage}
-        </div>
+        <div className="AknMessageBox AknMessageBox--error AknMessageBox--withIcon">{errorMessage}</div>
       )}
       <div>{__('pim_enrich.entity.family.plural_label')} :</div>
-      <FamiliesSelect2 onChange={onSelectFamily}/>
-    </div>;
+      <FamiliesSelect2 onChange={onSelectFamily} />
+    </div>
+  );
 
   return (
     <Modal
@@ -42,7 +47,7 @@ const FamilyModal = ({onConfirm, onDismissModal, onSelectFamily, isVisible, canA
       onDismissModal={onDismissModal}
       enableSaveButton={canAddMoreFamilies}
     />
-  )
+  );
 };
 
 export default FamilyModal;

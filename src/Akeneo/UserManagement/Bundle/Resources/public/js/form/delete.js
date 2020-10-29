@@ -8,15 +8,14 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define(['pim/form/common/delete', 'pim/remover/user'], function (DeleteForm, UserRemover) {
-    return DeleteForm.extend({
-        remover: UserRemover,
+  return DeleteForm.extend({
+    remover: UserRemover,
 
-        /**
-         * {@inheritdoc}
-         */
-        getIdentifier: function () {
-            return this.getFormData().meta.id;
-        }
-    });
+    /**
+     * {@inheritdoc}
+     */
+    getIdentifier: function () {
+      return this.getFormData().meta.id;
+    },
+  });
 });
-

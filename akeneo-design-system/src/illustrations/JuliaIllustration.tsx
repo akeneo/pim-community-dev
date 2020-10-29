@@ -1681,7 +1681,7 @@ const JuliaIllustration = ({title, size = 256}: IllustrationProps) => (
           <use xlinkHref="#JuliaIllustration_prefix__fn" />
         </mask>
         <path
-          fill={useTheme().palette.brand}
+          fill={useTheme().color.brand100}
           mask="url(#JuliaIllustration_prefix__fo)"
           d="M-8.048 5.194l24.354-12.41 12.41 24.355L4.36 29.548z"
         />

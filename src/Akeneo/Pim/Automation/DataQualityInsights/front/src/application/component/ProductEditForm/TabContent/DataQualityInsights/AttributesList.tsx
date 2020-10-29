@@ -2,7 +2,7 @@ import AttributeWithRecommendation from '../../../../../domain/AttributeWithReco
 import Attribute from './Attribute';
 import React from 'react';
 import {CriterionEvaluationResult, Evaluation, Product} from '../../../../../domain';
-import TooManyAttributesLink from "./TooManyAttributesLink";
+import TooManyAttributesLink from './TooManyAttributesLink';
 import {uniq as _uniq} from 'lodash';
 
 const __ = require('oro/translator');
@@ -18,20 +18,16 @@ interface AttributesListProps {
 }
 
 const getAxisAttributesWithRecommendations = (criteria: CriterionEvaluationResult[]): string[] => {
-  let  attributes: string[] = [];
+  let attributes: string[] = [];
 
-  criteria.map((criterion) => {
-    attributes = [
-      ...criterion.improvable_attributes,
-      ...attributes,
-    ];
+  criteria.map(criterion => {
+    attributes = [...criterion.improvable_attributes, ...attributes];
   });
 
   return _uniq(attributes);
 };
 
 const AttributesList = ({product, criterionCode, attributes, axis, evaluation}: AttributesListProps) => {
-
   const criteria = evaluation.criteria || [];
   const allAttributes = getAxisAttributesWithRecommendations(criteria);
 
@@ -40,7 +36,7 @@ const AttributesList = ({product, criterionCode, attributes, axis, evaluation}: 
       <span className="CriterionSuccessMessage">
         {__(`akeneo_data_quality_insights.product_evaluation.messages.success.criterion`)}
       </span>
-    )
+    );
   }
 
   if (attributes.length <= MAX_ATTRIBUTES_DISPLAYED) {
@@ -49,8 +45,8 @@ const AttributesList = ({product, criterionCode, attributes, axis, evaluation}: 
         {attributes.map((attribute: AttributeWithRecommendation, index: number) => {
           const separator = (
             <>
-              {(index < (attributes.length - 1)) && <>,&thinsp;</>}
-              {(index === (attributes.length - 1)) && '.'}
+              {index < attributes.length - 1 && <>,&thinsp;</>}
+              {index === attributes.length - 1 && '.'}
             </>
           );
 
@@ -68,7 +64,12 @@ const AttributesList = ({product, criterionCode, attributes, axis, evaluation}: 
     );
   } else {
     return (
-      <TooManyAttributesLink axis={axis} attributes={allAttributes} numOfAttributes={attributes.length} product={product}/>
+      <TooManyAttributesLink
+        axis={axis}
+        attributes={allAttributes}
+        numOfAttributes={attributes.length}
+        product={product}
+      />
     );
   }
 };

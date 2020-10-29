@@ -1,0 +1,70 @@
+import styled from 'styled-components';
+import {Canvas, Meta, Story} from '@storybook/addon-docs/blocks';
+import {PreviewGrid, PreviewCard, PreviewContainer, LabelContainer, Subtitle} from '../storybook/PreviewGallery';
+import {themes} from '../theme';
+
+<Meta title="Guidelines/Colors" />
+
+export const ColorContainer = styled(PreviewContainer)`
+  background-color: ${({color}) => color};
+`;
+
+export const colors = ['green', 'blue', 'yellow', 'red', 'grey', 'purple'];
+
+# Colors
+
+Colors enhance the experience by providing visual clues and drawing attention to the main actions. Colors indicate which elements are interactive, how they relate to other elements and their degree of visibility. Important elements should stand out the most.
+
+## Gallery
+
+<Canvas>
+  <Story name="Standard">
+    <div>
+      <h1>Brand colors</h1>
+      {themes.map(theme => {
+        return (
+          <div key={theme.name}>
+            <Subtitle>{theme.name}</Subtitle>
+            <PreviewGrid>
+              {Object.keys(theme.color)
+                .filter(colorCode => 0 === colorCode.indexOf('brand'))
+                .map(colorCode => {
+                  return (
+                    <PreviewCard key={colorCode}>
+                      <ColorContainer color={theme.color[colorCode]} />
+                      <LabelContainer>{colorCode}</LabelContainer>
+                      <LabelContainer>{theme.color[colorCode]}</LabelContainer>
+                    </PreviewCard>
+                  );
+                })}
+            </PreviewGrid>
+          </div>
+        );
+      })}
+    </div>
+    <div>
+      <h1>System</h1>
+      {colors.map(color => {
+        return (
+          <div key={color}>
+            <Subtitle>{color}</Subtitle>
+            <PreviewGrid>
+              {Object.keys(themes[0].color)
+                .filter(colorCode => 0 === colorCode.indexOf(color))
+                .map(colorCode => {
+                  const color = themes[0].color[colorCode];
+                  return (
+                    <PreviewCard key={colorCode}>
+                      <ColorContainer color={color} />
+                      <LabelContainer>{colorCode}</LabelContainer>
+                      <LabelContainer>{color}</LabelContainer>
+                    </PreviewCard>
+                  );
+                })}
+            </PreviewGrid>
+          </div>
+        );
+      })}
+    </div>
+  </Story>
+</Canvas>

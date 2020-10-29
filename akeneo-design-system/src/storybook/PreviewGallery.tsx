@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import {AkeneoThemedProps, getColor} from '../theme';
 
 const PreviewGrid = styled.div<{width: number}>`
   display: grid;
@@ -37,8 +38,19 @@ const LabelContainer = styled.div`
   text-overflow: ellipsis;
 `;
 
-const SubTitle = styled.h2`
+const Subtitle = styled.h2`
   text-transform: Capitalize;
 `;
 
-export {PreviewGrid, PreviewCard, PreviewContainer, LabelContainer, SubTitle};
+const Content = styled.div<{width: number; height: number} & AkeneoThemedProps>`
+  width: ${({width}) => width}px;
+  height: ${({height}) => height}px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid ${getColor('blue', 40)};
+  background-color: ${getColor('blue', 10)};
+  margin-top: 30px;
+`;
+
+export {PreviewGrid, PreviewCard, PreviewContainer, LabelContainer, Subtitle, Content};

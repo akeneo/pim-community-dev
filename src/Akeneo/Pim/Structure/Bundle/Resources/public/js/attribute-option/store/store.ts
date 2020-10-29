@@ -4,23 +4,24 @@ import {attributeOptionsReducer} from '../reducers';
 import {AttributeOption} from '../model';
 
 export interface AttributeOptionsState {
-    attributeOptions: AttributeOption[] | null;
+  attributeOptions: AttributeOption[] | null;
 }
 
 const composeEnhancers = composeWithDevTools({
-    name: 'Akeneo PIM / Attribute edit form / attribute options / Store',
+  name: 'Akeneo PIM / Attribute edit form / attribute options / Store',
 });
 
-export const createStoreWithInitialState = (initialState = {}) => createStore(
+export const createStoreWithInitialState = (initialState = {}) =>
+  createStore(
     combineReducers({
-        attributeOptions: attributeOptionsReducer,
+      attributeOptions: attributeOptionsReducer,
     }),
     initialState,
-    composeEnhancers(applyMiddleware()),
-);
+    composeEnhancers(applyMiddleware())
+  );
 
 const attributeOptionsStore: Store = createStoreWithInitialState({
-    attributeOptions: null,
+  attributeOptions: null,
 });
 
 export default attributeOptionsStore;
