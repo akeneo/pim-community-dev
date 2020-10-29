@@ -1,4 +1,4 @@
-import {Rate} from "@akeneo-pim-community/data-quality-insights/src/domain";
+import {Rate} from '@akeneo-pim-community/data-quality-insights/src/domain';
 
 export interface ProductEvaluation {
   [axis: string]: AxisEvaluation;

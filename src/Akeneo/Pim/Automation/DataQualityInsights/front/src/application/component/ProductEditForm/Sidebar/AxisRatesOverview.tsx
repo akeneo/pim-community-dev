@@ -1,13 +1,12 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
 import {get} from 'lodash';
-import {useCatalogContext, useFetchProductAxisRates} from "../../../../infrastructure/hooks";
-import Rate from "../../Rate";
-import {useAxesContext} from "../../../context/AxesContext";
+import {useCatalogContext, useFetchProductAxisRates} from '../../../../infrastructure/hooks';
+import Rate from '../../Rate';
+import {useAxesContext} from '../../../context/AxesContext';
 
 const __ = require('oro/translator');
 
-interface AxisRatesOverviewProps {
-}
+interface AxisRatesOverviewProps {}
 
 const AxisRatesOverview: FunctionComponent<AxisRatesOverviewProps> = () => {
   const {locale, channel} = useCatalogContext();
@@ -39,14 +38,14 @@ const AxisRatesOverview: FunctionComponent<AxisRatesOverviewProps> = () => {
             <ul>
               <li>
                 <span>{__(`akeneo_data_quality_insights.product_evaluation.axis.enrichment.title`)}</span>
-                <Rate value={enrichmentRate} isLoading={isLoading}/>
+                <Rate value={enrichmentRate} isLoading={isLoading} />
               </li>
-              {axesContext.axes.includes('consistency') &&
+              {axesContext.axes.includes('consistency') && (
                 <li>
-                    <span>{__(`akeneo_data_quality_insights.product_evaluation.axis.consistency.title`)}</span>
-                    <Rate value={consistencyRate} isLoading={isLoading}/>
+                  <span>{__(`akeneo_data_quality_insights.product_evaluation.axis.consistency.title`)}</span>
+                  <Rate value={consistencyRate} isLoading={isLoading} />
                 </li>
-              }
+              )}
             </ul>
           </div>
         </div>

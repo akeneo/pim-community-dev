@@ -1,12 +1,12 @@
 import BaseView = require('pimui/js/view/base');
 import ReactDOM from 'react-dom';
-import React from "react";
+import React from 'react';
 import {
   Dashboard,
   DashboardHelper,
   DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD,
   DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY,
-  DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY
+  DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY,
 } from '@akeneo-pim-community/data-quality-insights/src/index';
 
 interface SectionConfig {
@@ -53,18 +53,24 @@ class SectionView extends BaseView {
   }
 
   configure(): JQueryPromise<any> {
-    window.addEventListener(DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD, ((event: CustomEvent<DashboardChangeTimePeriodEvent>) => {
+    window.addEventListener(DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD, ((
+      event: CustomEvent<DashboardChangeTimePeriodEvent>
+    ) => {
       this.timePeriod = event.detail.timePeriod;
       this.render();
     }) as EventListener);
 
-    window.addEventListener(DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY, ((event: CustomEvent<DashboardFilterOnFamilyEvent>) => {
+    window.addEventListener(DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY, ((
+      event: CustomEvent<DashboardFilterOnFamilyEvent>
+    ) => {
       this.familyCode = event.detail.familyCode;
       this.categoryCode = null;
       this.render();
     }) as EventListener);
 
-    window.addEventListener(DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY, ((event: CustomEvent<DashboardFilterOnCategoryEvent>) => {
+    window.addEventListener(DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY, ((
+      event: CustomEvent<DashboardFilterOnCategoryEvent>
+    ) => {
       this.categoryCode = event.detail.categoryCode;
       this.familyCode = null;
       this.render();
@@ -81,13 +87,12 @@ class SectionView extends BaseView {
   }
 
   render(): BaseView {
-
     const catalogLocale: string = UserContext.get('catalogLocale');
     const catalogChannel: string = UserContext.get('catalogScope');
 
     ReactDOM.render(
       <div>
-        <DashboardHelper/>
+        <DashboardHelper />
         <Dashboard
           timePeriod={this.timePeriod}
           catalogLocale={catalogLocale}

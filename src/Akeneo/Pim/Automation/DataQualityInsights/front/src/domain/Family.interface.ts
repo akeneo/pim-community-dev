@@ -1,4 +1,4 @@
-import {Attribute} from "./index";
+import {Attribute} from './index';
 
 export default interface Family {
   attributes: Attribute[];
@@ -9,6 +9,5 @@ export default interface Family {
   };
   meta: {
     id: number;
-  }
+  };
 }
-
