@@ -137,7 +137,7 @@ services:
         class: Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator
         arguments:
             - '@akeneo.pim.enrichment.completeness.query.get_product_masks'
-            - '@akeneo.pim.automation.data_quality_insights.query.product.get_missing_image_attributes_masks'
+            - '@akeneo.pim.automation.data_quality_insights.query.product.get_enrichment_images_masks'
 
     akeneo.pim.automation.calculate_product_model_completeness_of_required_attributes:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\CalculateProductModelCompleteness
@@ -157,7 +157,7 @@ services:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\CalculateProductModelCompleteness
         arguments:
             - '@akeneo.pim.enrichment.completeness.query.get_product_masks'
-            - '@akeneo.pim.automation.data_quality_insights.query.product_model.get_missing_image_attributes_masks'
+            - '@akeneo.pim.automation.data_quality_insights.query.product_model.get_enrichment_images_masks'
             - '@pim_catalog.repository.product_model'
 
     akeneo.pim.automation.data_quality_insights.mark_product_criteria_to_evaluate:

@@ -49,7 +49,7 @@ akeneo_data_quality_insights:
                 recommendation: Required attributes with missing values
             completeness_of_non_required_attributes:
                 recommendation: Non required attributes with missing values
-            missing_image_attribute:
+            enrichment_image:
                 recommendation: Missing image
         axis:
             enrichment:

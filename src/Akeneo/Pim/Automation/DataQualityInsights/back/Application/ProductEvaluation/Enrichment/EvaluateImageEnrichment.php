@@ -15,7 +15,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 
 class EvaluateImageEnrichment implements EvaluateCriterionInterface
 {
-    public const CRITERION_CODE = 'missing_image_attribute';
+    public const CRITERION_CODE = 'enrichment_image';
 
     private CalculateProductCompletenessInterface $completenessCalculator;
 

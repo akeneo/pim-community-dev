@@ -479,7 +479,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                 "status" => CriterionEvaluationResultStatus::DONE,
                             ],
                             [
-                                "code" => "missing_image_attribute",
+                                "code" => "enrichment_image",
                                 "rate" => [
                                     "value" => 100,
                                     "rank" => "A",
@@ -514,7 +514,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                 "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
                             ],
                             [
-                                "code" => "missing_image_attribute",
+                                "code" => "enrichment_image",
                                 "rate" => [
                                     "value" => null,
                                     "rank" => null,
@@ -551,7 +551,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                 "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
                             ],
                             [
-                                "code" => "missing_image_attribute",
+                                "code" => "enrichment_image",
                                 "rate" => [
                                     "value" => null,
                                     "rank" => null,

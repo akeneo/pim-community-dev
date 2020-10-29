@@ -65,7 +65,7 @@ class GetAttributeTypesMasksQueryIntegration extends CompletenessTestCase
 
     public function test_it_retrieves_image_attributes()
     {
-        $result = $this->get('akeneo.pim.automation.data_quality_insights.query.product.get_missing_image_attributes_masks')->fromFamilyCodes(['familyA']);
+        $result = $this->get('akeneo.pim.automation.data_quality_insights.query.product.get_enrichment_images_masks')->fromFamilyCodes(['familyA']);
         $familyAMask = $result['familyA'];
 
         $this->assertCount(3, $familyAMask->masks());
