@@ -543,7 +543,8 @@ config:
     pim/tree/associate:                 pimui/js/tree-associate.jstree
     pim/tree/manage:                    pimui/js/tree-manage.jstree
     pim/attributeoptionview:            pimui/js/pim-attributeoptionview
-    pim/i18n:                           pimui/js/i18n.ts
+    pim/i18n:                           pimui/js/i18n
+    pim/intl-duration:                  pimui/js/intl-duration
     pim/user-context:                   pimui/js/user-context
     pim/date-context:                   pimui/js/date-context
     pim/error:                          pimui/js/error/error
@@ -764,6 +765,7 @@ config:
     pim/job/execution/show-profile:                              pimui/js/job/execution/show-profile
     pim/job/execution/download-archives-buttons:                 pimui/js/job/execution/download-archives-buttons
     pim/job/execution/download-log:                              pimui/js/job/execution/download-log
+    pim/job/execution/progress:                                  pimui/js/job/execution/progress
     pim/job/product/edit/content:                                pimui/js/job/product/edit/content
 
     # Filters
