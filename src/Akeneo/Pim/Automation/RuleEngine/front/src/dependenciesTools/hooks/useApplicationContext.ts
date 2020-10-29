@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import {useContext} from 'react';
 import {
   ApplicationDependenciesContextProps,
   ApplicationDependenciesContext,
@@ -16,4 +16,4 @@ const useApplicationContext = (): ApplicationDependenciesContextProps => {
   return context;
 };
 
-export { useApplicationContext };
+export {useApplicationContext};

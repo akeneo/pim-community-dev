@@ -1,23 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useTabState, Tab, TabList, TabPanel } from 'reakit/Tab';
-import { Condition, LocaleCode } from '../../../models';
-import { RulesBuilder } from './RulesBuilder';
-import { RuleProperties } from './RuleProperties';
-import { Locale } from '../../../models';
-import { IndexedScopes } from '../../../repositories/ScopeRepository';
-import { useFormContext } from 'react-hook-form';
-import { useTranslate } from '../../../dependenciesTools/hooks';
-import { Action } from '../../../models/Action';
+import {useTabState, Tab, TabList, TabPanel} from 'reakit/Tab';
+import {Condition, LocaleCode} from '../../../models';
+import {RulesBuilder} from './RulesBuilder';
+import {RuleProperties} from './RuleProperties';
+import {Locale} from '../../../models';
+import {IndexedScopes} from '../../../repositories/ScopeRepository';
+import {useFormContext} from 'react-hook-form';
+import {useTranslate} from '../../../dependenciesTools/hooks';
+import {Action} from '../../../models/Action';
 
-const getTabBorder = ({ id, selectedId, theme }: any): string | number => {
+const getTabBorder = ({id, selectedId, theme}: any): string | number => {
   if (id === selectedId) {
     return `3px solid ${theme.color.purple100}`;
   }
   return 0;
 };
 
-const getTabColor = ({ id, selectedId, theme }: any): string => {
+const getTabColor = ({id, selectedId, theme}: any): string => {
   if (id === selectedId) {
     return theme.color.purple100;
   }
@@ -26,7 +26,7 @@ const getTabColor = ({ id, selectedId, theme }: any): string => {
 };
 
 const StyledTab = styled(Tab)`
-  background: ${({ theme }): string => theme.color.white};
+  background: ${({theme}): string => theme.color.white};
   border-bottom: ${(props): string | number => getTabBorder(props)};
   border-width: 0 0 3px 0;
   color: ${(props): string => getTabColor(props)};
@@ -39,8 +39,8 @@ const StyledTab = styled(Tab)`
   text-align: left;
   transition: color 0.1s ease-in, border-width 0.1s ease-in;
   &:hover {
-    color: ${({ theme }): string => theme.color.purple100};
-    border-bottom: 3px solid ${({ theme }): string => theme.color.purple100};
+    color: ${({theme}): string => theme.color.purple100};
+    border-bottom: 3px solid ${({theme}): string => theme.color.purple100};
   }
 `;
 
@@ -56,7 +56,7 @@ const StyledTabList = styled(TabList)`
 `;
 
 const TabDiv = styled.div`
-  border-bottom: 1px solid ${({ theme }): string => theme.color.grey80};
+  border-bottom: 1px solid ${({theme}): string => theme.color.grey80};
 `;
 
 type FormData = {
@@ -91,9 +91,9 @@ const EditRulesForm: React.FC<Props> = ({
   handleDeleteCondition,
 }) => {
   const translate = useTranslate();
-  const tab = useTabState({ selectedId: 'rulesBuilderTab' });
+  const tab = useTabState({selectedId: 'rulesBuilderTab'});
 
-  const { formState } = useFormContext();
+  const {formState} = useFormContext();
   const beforeUnload = (event: Event) => {
     event = event || window.event;
     if (formState.dirty) {
@@ -142,4 +142,4 @@ const EditRulesForm: React.FC<Props> = ({
   );
 };
 
-export { EditRulesForm, FormData };
+export {EditRulesForm, FormData};

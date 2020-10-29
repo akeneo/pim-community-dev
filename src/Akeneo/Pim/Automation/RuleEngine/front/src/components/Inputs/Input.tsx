@@ -1,9 +1,9 @@
-import React, { forwardRef } from 'react';
-import { Label } from '../Labels';
+import React, {forwardRef} from 'react';
+import {Label} from '../Labels';
 import styled from 'styled-components';
 
-const InputElement = styled.input<{ small?: boolean }>`
-  width: ${({ small }) => (small ? '95px' : '100%')};
+const InputElement = styled.input<{small?: boolean}>`
+  width: ${({small}) => (small ? '95px' : '100%')};
 `;
 
 type Props = {
@@ -18,7 +18,7 @@ type Props = {
 
 const Input = forwardRef<HTMLInputElement, Props>(
   (
-    { ariaInvalid, ariaDescribedBy, children, id, label, hiddenLabel, ...rest },
+    {ariaInvalid, ariaDescribedBy, children, id, label, hiddenLabel, ...rest},
     forwardedRef: React.Ref<HTMLInputElement>
   ) => {
     return (
@@ -47,4 +47,4 @@ const Input = forwardRef<HTMLInputElement, Props>(
 
 Input.displayName = 'Input';
 
-export { Input, Props as InputProps };
+export {Input, Props as InputProps};

@@ -1,10 +1,10 @@
 import React from 'react';
-import { Router } from '../../dependenciesTools';
-import { getAttributeByIdentifier } from '../../repositories/AttributeRepository';
-import { AttributeType } from '../Attribute';
-import { Operator } from '../Operator';
-import { Condition } from './Condition';
-import { ConditionLineProps } from '../../pages/EditRules/components/conditions/ConditionLineProps';
+import {Router} from '../../dependenciesTools';
+import {getAttributeByIdentifier} from '../../repositories/AttributeRepository';
+import {AttributeType} from '../Attribute';
+import {Operator} from '../Operator';
+import {Condition} from './Condition';
+import {ConditionLineProps} from '../../pages/EditRules/components/conditions/ConditionLineProps';
 
 const createAttributeCondition = async (
   fieldCode: string,
@@ -30,7 +30,7 @@ const getAttributeConditionModule = async (
   router: Router,
   operators: Operator[],
   attributeTypes: AttributeType[],
-  module: React.FC<ConditionLineProps & { condition: Condition }>
+  module: React.FC<ConditionLineProps & {condition: Condition}>
 ) => {
   if (typeof json.field !== 'string') {
     return null;
@@ -48,4 +48,4 @@ const getAttributeConditionModule = async (
   return module;
 };
 
-export { createAttributeCondition, getAttributeConditionModule };
+export {createAttributeCondition, getAttributeConditionModule};

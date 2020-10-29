@@ -1,8 +1,8 @@
-import { useApplicationContext } from './useApplicationContext';
-import { Security } from '../provider/applicationDependenciesProvider.type';
+import {useApplicationContext} from './useApplicationContext';
+import {Security} from '../provider/applicationDependenciesProvider.type';
 
 export const useSecurity = (): Security => {
-  const { security } = useApplicationContext();
+  const {security} = useApplicationContext();
 
   if (security) {
     return security;

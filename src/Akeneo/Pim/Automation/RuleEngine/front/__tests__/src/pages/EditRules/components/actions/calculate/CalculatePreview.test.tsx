@@ -1,23 +1,23 @@
 import React from 'react';
 import 'jest-fetch-mock';
-import { renderWithProviders, screen } from '../../../../../../../test-utils';
-import { clearAttributeRepositoryCache } from '../../../../../../../src/repositories/AttributeRepository';
-import { CalculatePreview } from '../../../../../../../src/pages/EditRules/components/actions/calculate/CalculatePreview';
-import { createAttribute } from '../../../../../factories';
+import {renderWithProviders, screen} from '../../../../../../../test-utils';
+import {clearAttributeRepositoryCache} from '../../../../../../../src/repositories/AttributeRepository';
+import {CalculatePreview} from '../../../../../../../src/pages/EditRules/components/actions/calculate/CalculatePreview';
+import {createAttribute} from '../../../../../factories';
 
 jest.mock('../../../../../../../src/fetch/categoryTree.fetcher.ts');
 
 const toRegister = [
-  { name: 'content.actions[0].destination.field', type: 'custom' },
-  { name: 'content.actions[0].destination.unit', type: 'custom' },
-  { name: 'content.actions[0].destination.locale', type: 'custom' },
-  { name: 'content.actions[0].destination.scope', type: 'custom' },
+  {name: 'content.actions[0].destination.field', type: 'custom'},
+  {name: 'content.actions[0].destination.unit', type: 'custom'},
+  {name: 'content.actions[0].destination.locale', type: 'custom'},
+  {name: 'content.actions[0].destination.scope', type: 'custom'},
   {
     name: 'content.actions[0].round_precision',
     type: 'custom',
   },
-  { name: 'content.actions[0].operation_list', type: 'custom' },
-  { name: 'content.actions[0].source', type: 'custom' },
+  {name: 'content.actions[0].operation_list', type: 'custom'},
+  {name: 'content.actions[0].source', type: 'custom'},
 ];
 
 describe('CalculatePreview', () => {
@@ -64,10 +64,10 @@ describe('CalculatePreview', () => {
       },
     };
     const marginAttribute = createAttribute({
-      labels: { en_US: 'Margin', fr_FR: 'Marge' },
+      labels: {en_US: 'Margin', fr_FR: 'Marge'},
     });
     const priceAttribute = createAttribute({
-      labels: { en_US: 'PriceUS', fr_FR: 'Prix' },
+      labels: {en_US: 'PriceUS', fr_FR: 'Prix'},
     });
     fetchMock.mockResponse((request: Request) => {
       if (
@@ -93,8 +93,8 @@ describe('CalculatePreview', () => {
 
     renderWithProviders(
       <CalculatePreview lineNumber={0} />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     expect(

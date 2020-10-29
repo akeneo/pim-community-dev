@@ -1,9 +1,9 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
-import { DateSystemConditionLine } from '../../../../../../../src/pages/EditRules/components/conditions/DateConditionLines';
-import { Operator } from '../../../../../../../src/models/Operator';
-import { render, screen, act } from '../../../../../../../test-utils';
-import { DateTypeOptionIds } from '../../../../../../../src/pages/EditRules/components/conditions/DateConditionLines/dateConditionLines.type';
+import {DateSystemConditionLine} from '../../../../../../../src/pages/EditRules/components/conditions/DateConditionLines';
+import {Operator} from '../../../../../../../src/models/Operator';
+import {render, screen, act} from '../../../../../../../test-utils';
+import {DateTypeOptionIds} from '../../../../../../../src/pages/EditRules/components/conditions/DateConditionLines/dateConditionLines.type';
 
 describe('DateSystemConditionLine', () => {
   it('should render by default', async () => {
@@ -17,7 +17,7 @@ describe('DateSystemConditionLine', () => {
         }}
         lineNumber={0}
       />,
-      { all: true }
+      {all: true}
     );
     // When
     const operator = await screen.findByTestId(
@@ -43,8 +43,8 @@ describe('DateSystemConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[0].value', type: 'custom' },
-      { name: 'content.conditions[0].operator', type: 'custom' },
+      {name: 'content.conditions[0].value', type: 'custom'},
+      {name: 'content.conditions[0].operator', type: 'custom'},
     ];
 
     render(
@@ -56,8 +56,8 @@ describe('DateSystemConditionLine', () => {
         }}
         lineNumber={0}
       />,
-      { all: true },
-      { toRegister, defaultValues }
+      {all: true},
+      {toRegister, defaultValues}
     );
     // When
     const operator = await screen.findByTestId(
@@ -91,8 +91,8 @@ describe('DateSystemConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[0].value', type: 'custom' },
-      { name: 'content.conditions[0].operator', type: 'custom' },
+      {name: 'content.conditions[0].value', type: 'custom'},
+      {name: 'content.conditions[0].operator', type: 'custom'},
     ];
 
     render(
@@ -104,8 +104,8 @@ describe('DateSystemConditionLine', () => {
         }}
         lineNumber={0}
       />,
-      { all: true },
-      { toRegister, defaultValues }
+      {all: true},
+      {toRegister, defaultValues}
     );
 
     // When
@@ -130,7 +130,7 @@ describe('DateSystemConditionLine', () => {
         }}
         lineNumber={0}
       />,
-      { all: true }
+      {all: true}
     );
 
     // When
@@ -195,8 +195,8 @@ describe('DateSystemConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[0].value', type: 'custom' },
-      { name: 'content.conditions[0].operator', type: 'custom' },
+      {name: 'content.conditions[0].value', type: 'custom'},
+      {name: 'content.conditions[0].operator', type: 'custom'},
     ];
 
     render(
@@ -208,8 +208,8 @@ describe('DateSystemConditionLine', () => {
         }}
         lineNumber={0}
       />,
-      { all: true },
-      { toRegister, defaultValues }
+      {all: true},
+      {toRegister, defaultValues}
     );
 
     // When
@@ -232,8 +232,8 @@ describe('DateSystemConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[0].value', type: 'custom' },
-      { name: 'content.conditions[0].operator', type: 'custom' },
+      {name: 'content.conditions[0].value', type: 'custom'},
+      {name: 'content.conditions[0].operator', type: 'custom'},
     ];
 
     render(
@@ -245,8 +245,8 @@ describe('DateSystemConditionLine', () => {
         }}
         lineNumber={0}
       />,
-      { all: true },
-      { toRegister, defaultValues }
+      {all: true},
+      {toRegister, defaultValues}
     );
 
     // When
@@ -269,8 +269,8 @@ describe('DateSystemConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[0].value', type: 'custom' },
-      { name: 'content.conditions[0].operator', type: 'custom' },
+      {name: 'content.conditions[0].value', type: 'custom'},
+      {name: 'content.conditions[0].operator', type: 'custom'},
     ];
 
     render(
@@ -282,8 +282,8 @@ describe('DateSystemConditionLine', () => {
         }}
         lineNumber={0}
       />,
-      { all: true },
-      { toRegister, defaultValues }
+      {all: true},
+      {toRegister, defaultValues}
     );
 
     // When
@@ -314,8 +314,8 @@ describe('DateSystemConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[0].value', type: 'custom' },
-      { name: 'content.conditions[0].operator', type: 'custom' },
+      {name: 'content.conditions[0].value', type: 'custom'},
+      {name: 'content.conditions[0].operator', type: 'custom'},
     ];
 
     render(
@@ -327,8 +327,8 @@ describe('DateSystemConditionLine', () => {
         }}
         lineNumber={0}
       />,
-      { all: true },
-      { toRegister, defaultValues }
+      {all: true},
+      {toRegister, defaultValues}
     );
 
     // When
@@ -357,7 +357,7 @@ describe('DateSystemConditionLine', () => {
         }}
         lineNumber={0}
       />,
-      { all: true }
+      {all: true}
     );
 
     // When
@@ -388,7 +388,7 @@ describe('DateSystemConditionLine', () => {
         }}
         lineNumber={0}
       />,
-      { all: true }
+      {all: true}
     );
 
     // When
@@ -421,8 +421,8 @@ describe('DateSystemConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[0].value', type: 'custom' },
-      { name: 'content.conditions[0].operator', type: 'custom' },
+      {name: 'content.conditions[0].value', type: 'custom'},
+      {name: 'content.conditions[0].operator', type: 'custom'},
     ];
 
     render(
@@ -434,8 +434,8 @@ describe('DateSystemConditionLine', () => {
         }}
         lineNumber={0}
       />,
-      { all: true },
-      { toRegister, defaultValues }
+      {all: true},
+      {toRegister, defaultValues}
     );
 
     // Then

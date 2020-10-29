@@ -7,4 +7,4 @@ type Family = {
   };
 };
 
-export { Family, FamilyCode };
+export {Family, FamilyCode};

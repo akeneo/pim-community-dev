@@ -28,7 +28,12 @@ export type StructureState = {
 // Reducer
 export const structureReducer = (
   state: StructureState = {attributes: [], attributeGroups: {}, channels: [], family: null, ruleRelations: []},
-  action: AttributeListUpdatedAction | AttributeGroupListUpdatedAction | ChannelListUpdatedAction | FamilyUpdatedAction | RuleRelationListUpdatedAction
+  action:
+    | AttributeListUpdatedAction
+    | AttributeGroupListUpdatedAction
+    | ChannelListUpdatedAction
+    | FamilyUpdatedAction
+    | RuleRelationListUpdatedAction
 ) => {
   switch (action.type) {
     case 'ATTRIBUTE_LIST_UPDATED':
@@ -59,8 +64,12 @@ export const attributeListUpdated = (attributes: Attribute[]): AttributeListUpda
   return {type: 'ATTRIBUTE_LIST_UPDATED', attributes};
 };
 
-type AttributeGroupListUpdatedAction = Action<'ATTRIBUTE_GROUP_LIST_UPDATED'> & {attributeGroups: AttributeGroupCollection};
-export const attributeGroupListUpdated = (attributeGroups: AttributeGroupCollection): AttributeGroupListUpdatedAction => {
+type AttributeGroupListUpdatedAction = Action<'ATTRIBUTE_GROUP_LIST_UPDATED'> & {
+  attributeGroups: AttributeGroupCollection;
+};
+export const attributeGroupListUpdated = (
+  attributeGroups: AttributeGroupCollection
+): AttributeGroupListUpdatedAction => {
   return {type: 'ATTRIBUTE_GROUP_LIST_UPDATED', attributeGroups};
 };
 

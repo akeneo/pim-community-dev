@@ -1,8 +1,8 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
-import { ConditionLineProps } from './ConditionLineProps';
-import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
-import { Operator } from '../../../../models/Operator';
+import {Controller} from 'react-hook-form';
+import {ConditionLineProps} from './ConditionLineProps';
+import {OperatorSelector} from '../../../../components/Selectors/OperatorSelector';
+import {Operator} from '../../../../models/Operator';
 import {
   ConditionLineErrorsContainer,
   ConditionLineFormAndErrorsContainer,
@@ -11,16 +11,16 @@ import {
   OperatorColumn,
   ValueColumn,
 } from './style';
-import { LineErrors } from '../LineErrors';
+import {LineErrors} from '../LineErrors';
 import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
-import { useControlledFormInputCondition } from '../../hooks';
-import { GroupCode } from '../../../../models';
-import { getGroupsByIdentifiers } from '../../../../repositories/GroupRepository';
-import { GroupOperators } from '../../../../models/conditions';
-import { GroupsSelector } from '../../../../components/Selectors/GroupsSelector';
+import {useControlledFormInputCondition} from '../../hooks';
+import {GroupCode} from '../../../../models';
+import {getGroupsByIdentifiers} from '../../../../repositories/GroupRepository';
+import {GroupOperators} from '../../../../models/conditions';
+import {GroupsSelector} from '../../../../components/Selectors/GroupsSelector';
 
 const DEFAULT_OPERATOR = Operator.IN_LIST;
 
@@ -121,7 +121,7 @@ const GroupsConditionLine: React.FC<ConditionLineProps> = ({
               defaultValue={getValueFormValue()}
               hiddenLabel
               name={valueFormName}
-              rules={{ validate: validateGroupCodes }}
+              rules={{validate: validateGroupCodes}}
               value={getValueFormValue()}
             />
           </ValueColumn>
@@ -134,4 +134,4 @@ const GroupsConditionLine: React.FC<ConditionLineProps> = ({
   );
 };
 
-export { GroupsConditionLine };
+export {GroupsConditionLine};

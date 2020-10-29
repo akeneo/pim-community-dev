@@ -1,10 +1,10 @@
 import React from 'react';
-import { ContentState, convertToRaw, EditorState } from 'draft-js';
-import { Label } from '../Labels';
-import { Editor } from 'react-draft-wysiwyg';
+import {ContentState, convertToRaw, EditorState} from 'draft-js';
+import {Label} from '../Labels';
+import {Editor} from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
-import { PreviewBlock, PreviewOption } from './WysiwygOption/PreviewOption';
+import {PreviewBlock, PreviewOption} from './WysiwygOption/PreviewOption';
 
 const draftToRaw = (editorState: any) => {
   return draftToHtml(convertToRaw(editorState.getCurrentContent()) as any);
@@ -78,4 +78,4 @@ const InputWysiwygTextArea: React.FC<Props> = ({
   );
 };
 
-export { InputWysiwygTextArea };
+export {InputWysiwygTextArea};

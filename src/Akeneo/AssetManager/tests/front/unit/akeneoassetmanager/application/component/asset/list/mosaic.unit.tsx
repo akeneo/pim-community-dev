@@ -140,16 +140,11 @@ test('it can remove an asset from the selection', () => {
 });
 
 test('it can show the assets as links', () => {
-  getAssetEditUrl = jest.fn().mockImplementation((asset) => '#' + asset.code);
+  getAssetEditUrl = jest.fn().mockImplementation(asset => '#' + asset.code);
 
   const {container} = render(
     <ThemeProvider theme={akeneoTheme}>
-      <Mosaic
-        selection={[]}
-        assetCollection={assetCollection}
-        context={context}
-        assetHasLink={true}
-      />
+      <Mosaic selection={[]} assetCollection={assetCollection} context={context} assetHasLink={true} />
     </ThemeProvider>
   );
 

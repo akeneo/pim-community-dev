@@ -1,15 +1,15 @@
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
-import { ActionTemplate } from './ActionTemplate';
-import { ActionLineProps } from './ActionLineProps';
-import { ActionGrid, ActionTitle, ActionLeftSide } from './ActionLine';
-import { AttributeLocaleScopeSelector } from './attribute/AttributeLocaleScopeSelector';
+import {Controller, useFormContext} from 'react-hook-form';
+import {ActionTemplate} from './ActionTemplate';
+import {ActionLineProps} from './ActionLineProps';
+import {ActionGrid, ActionTitle, ActionLeftSide} from './ActionLine';
+import {AttributeLocaleScopeSelector} from './attribute/AttributeLocaleScopeSelector';
 import {
   useTranslate,
   useBackboneRouter,
 } from '../../../../dependenciesTools/hooks';
-import { useControlledFormInputAction } from '../../hooks';
-import { Attribute } from '../../../../models';
+import {useControlledFormInputAction} from '../../hooks';
+import {Attribute} from '../../../../models';
 import {
   validateAttribute,
   useGetAttributeAtMount,
@@ -23,7 +23,7 @@ const ClearAttributeActionLine: React.FC<ActionLineProps> = ({
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
-  const { watch } = useFormContext();
+  const {watch} = useFormContext();
   const [attribute, setAttribute] = React.useState<
     Attribute | null | undefined
   >(undefined);
@@ -48,7 +48,7 @@ const ClearAttributeActionLine: React.FC<ActionLineProps> = ({
         name={fieldFormName}
         as={<span hidden />}
         defaultValue=''
-        rules={{ validate: validateAttribute(translate, router) }}
+        rules={{validate: validateAttribute(translate, router)}}
       />
       <Controller
         name={typeFormName}
@@ -95,4 +95,4 @@ const ClearAttributeActionLine: React.FC<ActionLineProps> = ({
   );
 };
 
-export { ClearAttributeActionLine };
+export {ClearAttributeActionLine};

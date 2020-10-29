@@ -1,15 +1,15 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
-import { ActionTemplate } from './ActionTemplate';
-import { ActionLineProps } from './ActionLineProps';
-import { FallbackField } from '../FallbackField';
-import { useControlledFormInputAction } from '../../hooks';
+import {Controller} from 'react-hook-form';
+import {ActionTemplate} from './ActionTemplate';
+import {ActionLineProps} from './ActionLineProps';
+import {FallbackField} from '../FallbackField';
+import {useControlledFormInputAction} from '../../hooks';
 
 const AddActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
   handleDelete,
 }) => {
-  const { formName, getFormValue } = useControlledFormInputAction<boolean>(
+  const {formName, getFormValue} = useControlledFormInputAction<boolean>(
     lineNumber
   );
   const items = getFormValue('items');
@@ -58,4 +58,4 @@ const AddActionLine: React.FC<ActionLineProps> = ({
   );
 };
 
-export { AddActionLine };
+export {AddActionLine};

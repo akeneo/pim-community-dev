@@ -1,10 +1,10 @@
 import React from 'react';
 import 'jest-fetch-mock';
-import { act, renderWithProviders, screen } from '../../../../../../test-utils';
-import { createAttribute, locales, scopes } from '../../../../factories';
-import { clearAttributeRepositoryCache } from '../../../../../../src/repositories/AttributeRepository';
-import { AttributeType } from '../../../../../../src/models';
-import { RemoveAttributeValueActionLine } from '../../../../../../src/pages/EditRules/components/actions/RemoveAttributeValueActionLine';
+import {act, renderWithProviders, screen} from '../../../../../../test-utils';
+import {createAttribute, locales, scopes} from '../../../../factories';
+import {clearAttributeRepositoryCache} from '../../../../../../src/repositories/AttributeRepository';
+import {AttributeType} from '../../../../../../src/models';
+import {RemoveAttributeValueActionLine} from '../../../../../../src/pages/EditRules/components/actions/RemoveAttributeValueActionLine';
 import userEvent from '@testing-library/user-event';
 
 describe('RemoveAttributeValueActionLine', () => {
@@ -29,11 +29,11 @@ describe('RemoveAttributeValueActionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.actions[0].type', type: 'custom' },
-      { name: 'content.actions[0].field', type: 'custom' },
-      { name: 'content.actions[0].locale', type: 'custom' },
-      { name: 'content.actions[0].scope', type: 'custom' },
-      { name: 'content.actions[0].items', type: 'custom' },
+      {name: 'content.actions[0].type', type: 'custom'},
+      {name: 'content.actions[0].field', type: 'custom'},
+      {name: 'content.actions[0].locale', type: 'custom'},
+      {name: 'content.actions[0].scope', type: 'custom'},
+      {name: 'content.actions[0].items', type: 'custom'},
     ];
 
     fetchMock.mockResponse((request: Request) => {
@@ -54,8 +54,8 @@ describe('RemoveAttributeValueActionLine', () => {
         return Promise.resolve(
           JSON.stringify({
             results: [
-              { id: 'autumn_2016', text: 'Autumn 2016' },
-              { id: 'winter_2016', text: 'Winter 2016' },
+              {id: 'autumn_2016', text: 'Autumn 2016'},
+              {id: 'winter_2016', text: 'Winter 2016'},
             ],
           })
         );
@@ -72,8 +72,8 @@ describe('RemoveAttributeValueActionLine', () => {
         currentCatalogLocale={'fr_FR'}
         handleDelete={jest.fn()}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
     expect(
       await screen.findByText(

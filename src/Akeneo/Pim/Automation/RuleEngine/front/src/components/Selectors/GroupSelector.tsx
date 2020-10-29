@@ -6,10 +6,10 @@ import {
   Select2SimpleAsyncWrapper,
   Select2Value,
 } from '../Select2Wrapper';
-import { Router } from '../../dependenciesTools';
-import { getGroupsByIdentifiers } from '../../repositories/GroupRepository';
-import { GroupCode, LocaleCode } from '../../models';
-import { useBackboneRouter, useTranslate } from '../../dependenciesTools/hooks';
+import {Router} from '../../dependenciesTools';
+import {getGroupsByIdentifiers} from '../../repositories/GroupRepository';
+import {GroupCode, LocaleCode} from '../../models';
+import {useBackboneRouter, useTranslate} from '../../dependenciesTools/hooks';
 
 type Props = {
   label?: string;
@@ -111,4 +111,4 @@ const GroupSelector: React.FC<Props> = ({
   );
 };
 
-export { GroupSelector };
+export {GroupSelector};

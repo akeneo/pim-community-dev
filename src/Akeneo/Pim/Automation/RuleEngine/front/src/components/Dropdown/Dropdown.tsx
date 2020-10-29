@@ -4,7 +4,7 @@ type Props = {
   title: string;
 };
 
-const Dropdown: React.FC<Props> = ({ title, children }) => {
+const Dropdown: React.FC<Props> = ({title, children}) => {
   return (
     <div className='AknSecondaryActions AknDropdown AknButtonList-item'>
       <div className='AknSecondaryActions-button' data-toggle='dropdown'></div>
@@ -16,4 +16,4 @@ const Dropdown: React.FC<Props> = ({ title, children }) => {
   );
 };
 
-export { Dropdown };
+export {Dropdown};

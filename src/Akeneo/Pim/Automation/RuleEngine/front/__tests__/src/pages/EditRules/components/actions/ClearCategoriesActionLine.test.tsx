@@ -1,7 +1,7 @@
 import React from 'react';
-import { renderWithProviders } from '../../../../../../test-utils';
-import { ClearCategoriesActionLine } from '../../../../../../src/pages/EditRules/components/actions/ClearCategoriesActionLine';
-import { locales, scopes } from '../../../../factories';
+import {renderWithProviders} from '../../../../../../test-utils';
+import {ClearCategoriesActionLine} from '../../../../../../src/pages/EditRules/components/actions/ClearCategoriesActionLine';
+import {locales, scopes} from '../../../../factories';
 
 describe('ClearCategoriesActionLine', () => {
   it('should display the clear categories action line', async () => {
@@ -16,7 +16,7 @@ describe('ClearCategoriesActionLine', () => {
         locales={locales}
         scopes={scopes}
       />,
-      { all: true }
+      {all: true}
     );
 
     expect(

@@ -1,16 +1,16 @@
 import React from 'react';
 import 'jest-fetch-mock';
-import { renderWithProviders, act, screen } from '../../../../../../test-utils';
-import { Operator } from '../../../../../../src/models/Operator';
-import { FamilyConditionLine } from '../../../../../../src/pages/EditRules/components/conditions/FamilyConditionLine';
+import {renderWithProviders, act, screen} from '../../../../../../test-utils';
+import {Operator} from '../../../../../../src/models/Operator';
+import {FamilyConditionLine} from '../../../../../../src/pages/EditRules/components/conditions/FamilyConditionLine';
 import userEvent from '@testing-library/user-event';
 
 const familiesPayload = {
   accessories: {
     code: 'accessories',
-    labels: { en_US: 'Accessories', fr_FR: 'Accessoires' },
+    labels: {en_US: 'Accessories', fr_FR: 'Accessoires'},
   },
-  mugs: { code: 'mugs', labels: { en_US: 'Mugs', fr_FR: 'Tasses' } },
+  mugs: {code: 'mugs', labels: {en_US: 'Mugs', fr_FR: 'Tasses'}},
 };
 
 describe('FamilyConditionLine', () => {
@@ -19,7 +19,7 @@ describe('FamilyConditionLine', () => {
   });
 
   it('should display the family condition line', async () => {
-    fetchMock.mockResponses([JSON.stringify(familiesPayload), { status: 200 }]);
+    fetchMock.mockResponses([JSON.stringify(familiesPayload), {status: 200}]);
     const defaultValues = {
       content: {
         conditions: [
@@ -33,9 +33,9 @@ describe('FamilyConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[1].field', type: 'custom' },
-      { name: 'content.conditions[1].value', type: 'custom' },
-      { name: 'content.conditions[1].operator', type: 'custom' },
+      {name: 'content.conditions[1].field', type: 'custom'},
+      {name: 'content.conditions[1].value', type: 'custom'},
+      {name: 'content.conditions[1].operator', type: 'custom'},
     ];
     renderWithProviders(
       <FamilyConditionLine
@@ -44,8 +44,8 @@ describe('FamilyConditionLine', () => {
         locales={[]}
         scopes={{}}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
     expect(
       await screen.findByText('pimee_catalog_rule.form.edit.fields.family')
@@ -89,7 +89,7 @@ describe('FamilyConditionLine', () => {
         locales={[]}
         scopes={{}}
       />,
-      { all: true }
+      {all: true}
     );
 
     const operatorSelector = await screen.findByTestId(

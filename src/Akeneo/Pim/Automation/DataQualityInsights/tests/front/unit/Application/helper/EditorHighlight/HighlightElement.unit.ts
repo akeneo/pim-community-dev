@@ -4,10 +4,10 @@ import HighlightElement, {
   getTextRange,
   isIntersectingHighlight,
 } from '@akeneo-pim-ee/data-quality-insights/src/application/helper/EditorHighlight/HighlightElement';
-import EditorElement from "@akeneo-pim-ee/data-quality-insights/src/application/helper/EditorHighlight/EditorElement";
+import EditorElement from '@akeneo-pim-ee/data-quality-insights/src/application/helper/EditorHighlight/EditorElement';
 import Range from '../../../__mocks__/Range';
 
-beforeEach(() =>  {
+beforeEach(() => {
   jest.resetModules();
 });
 
@@ -84,7 +84,9 @@ describe('HighlightElement.', () => {
       expect(range2.startContainer).toEqual(expectedContainer);
       expect(range2.endOffset).toBe(5);
 
-      const editorElement3 = givenRichTextEditor('<p><span>typos</span> <span>hapen</span></p><p><span>typos</span> <span>hapen</span></p>');
+      const editorElement3 = givenRichTextEditor(
+        '<p><span>typos</span> <span>hapen</span></p><p><span>typos</span> <span>hapen</span></p>'
+      );
       const range3 = getTextRange(editorElement3, 6, 11);
       const range4 = getTextRange(editorElement3, 18, 23);
       const expectedContainer3 = document.createTextNode('hapen');
@@ -173,7 +175,7 @@ const givenSimpleTextEditor = (content: string): EditorElement => {
 
 const givenRichTextEditor = (htmlContent: string): EditorElement => {
   const editorElement = document.createElement('div');
-  editorElement.insertAdjacentHTML("beforeend", htmlContent);
+  editorElement.insertAdjacentHTML('beforeend', htmlContent);
 
   return editorElement;
 };
@@ -205,8 +207,8 @@ const givenHighlight = (): HighlightElement => {
           x: 5,
           y: 10,
         } as DOMRect;
-      })
-    }
+      }),
+    },
   };
 };
 

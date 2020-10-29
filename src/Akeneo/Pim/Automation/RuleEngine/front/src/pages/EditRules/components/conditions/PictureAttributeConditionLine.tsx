@@ -1,20 +1,20 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
-import { ConditionLineProps } from './ConditionLineProps';
+import {Controller} from 'react-hook-form';
+import {ConditionLineProps} from './ConditionLineProps';
 import {
   PictureAttributeCondition,
   Attribute,
   PictureAttributeOperators,
 } from '../../../../models';
-import { AttributeConditionLine } from './AttributeConditionLine';
+import {AttributeConditionLine} from './AttributeConditionLine';
 import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
-import { useControlledFormInputCondition } from '../../hooks';
-import { Operator } from '../../../../models/Operator';
-import { InputText } from '../../../../components';
-import { useGetAttributeAtMount } from '../actions/attribute/attribute.utils';
+import {useControlledFormInputCondition} from '../../hooks';
+import {Operator} from '../../../../models/Operator';
+import {InputText} from '../../../../components';
+import {useGetAttributeAtMount} from '../actions/attribute/attribute.utils';
 
 type PictureAttributeConditionLineProps = ConditionLineProps & {
   condition: PictureAttributeCondition;
@@ -69,4 +69,4 @@ const PictureAttributeConditionLine: React.FC<PictureAttributeConditionLineProps
   );
 };
 
-export { PictureAttributeConditionLine, PictureAttributeConditionLineProps };
+export {PictureAttributeConditionLine, PictureAttributeConditionLineProps};

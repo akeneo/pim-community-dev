@@ -1,8 +1,8 @@
 import React from 'react';
-import { useUserCatalogLocale } from '../../../../../dependenciesTools/hooks';
-import { InputDate } from '../../../../../components/Inputs';
-import { InputValueProps } from './AttributeValue';
-import { getAttributeLabel } from '../../../../../models';
+import {useUserCatalogLocale} from '../../../../../dependenciesTools/hooks';
+import {InputDate} from '../../../../../components/Inputs';
+import {InputValueProps} from './AttributeValue';
+import {getAttributeLabel} from '../../../../../models';
 
 const DateValue: React.FC<InputValueProps> = ({
   id,
@@ -23,4 +23,4 @@ const DateValue: React.FC<InputValueProps> = ({
   );
 };
 
-export { DateValue };
+export {DateValue};

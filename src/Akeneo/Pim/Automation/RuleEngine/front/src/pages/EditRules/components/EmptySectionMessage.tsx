@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useTranslate } from '../../../dependenciesTools/hooks';
+import {useTranslate} from '../../../dependenciesTools/hooks';
 
 const DEFAULT_ILLUSTRATION_URL =
   '/bundles/akeneopimruleengine/assets/illustrations/rules.svg';
@@ -8,17 +8,17 @@ const DEFAULT_ILLUSTRATION_URL =
 const Container = styled.div`
   text-align: center;
   margin-top: 10px;
-  font-size: ${({ theme }) => theme.fontSize.big};
-  color: ${({ theme }) => theme.color.grey140};
+  font-size: ${({theme}) => theme.fontSize.big};
+  color: ${({theme}) => theme.color.grey140};
 `;
 
 const LinkSection = styled.div`
-  font-size: ${({ theme }) => theme.fontSize.default};
-  color: ${({ theme }) => theme.color.grey100};
+  font-size: ${({theme}) => theme.fontSize.default};
+  color: ${({theme}) => theme.color.grey100};
   margin-top: 5px;
 
   a {
-    color: ${({ theme }) => theme.color.purple100};
+    color: ${({theme}) => theme.color.purple100};
     text-decoration: underline;
 
     &:hover {
@@ -27,10 +27,10 @@ const LinkSection = styled.div`
   }
 `;
 
-const Illustration = styled.div<{ url: string }>`
+const Illustration = styled.div<{url: string}>`
   width: 128px;
   height: 128px;
-  background-image: url('${({ url }) => url}');
+  background-image: url('${({url}) => url}');
   background-size: contain;
   margin: 0 auto;
 `;
@@ -62,4 +62,4 @@ const EmptySectionMessage: React.FC<Props> = ({
   );
 };
 
-export { EmptySectionMessage };
+export {EmptySectionMessage};

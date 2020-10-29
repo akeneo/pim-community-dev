@@ -6,10 +6,10 @@ import {
   Select2Option,
   Select2Value,
 } from '../Select2Wrapper';
-import { Router } from '../../dependenciesTools';
-import { getGroupsByIdentifiers } from '../../repositories/GroupRepository';
-import { GroupCode, LocaleCode } from '../../models';
-import { useBackboneRouter, useTranslate } from '../../dependenciesTools/hooks';
+import {Router} from '../../dependenciesTools';
+import {getGroupsByIdentifiers} from '../../repositories/GroupRepository';
+import {GroupCode, LocaleCode} from '../../models';
+import {useBackboneRouter, useTranslate} from '../../dependenciesTools/hooks';
 
 type Props = {
   label?: string;
@@ -17,7 +17,7 @@ type Props = {
   currentCatalogLocale: LocaleCode;
   value: GroupCode[];
   onChange?: (value: GroupCode[]) => void;
-  validation?: { required?: string; validate?: (value: any) => string | true };
+  validation?: {required?: string; validate?: (value: any) => string | true};
   name: string;
   id: string;
 };
@@ -116,4 +116,4 @@ const GroupsSelector: React.FC<Props> = ({
   );
 };
 
-export { GroupsSelector };
+export {GroupsSelector};

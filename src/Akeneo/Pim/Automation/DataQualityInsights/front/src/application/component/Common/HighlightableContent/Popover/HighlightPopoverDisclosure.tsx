@@ -1,34 +1,43 @@
-import React, {FC, useCallback, useLayoutEffect} from "react";
+import React, {FC, useCallback, useLayoutEffect} from 'react';
 
-import {HighlightElement, isIntersectingHighlight} from "../../../../helper";
-import {useHighlightsContext} from "../../../../context/HighlightsContext";
-import {useHighlightableContentContext} from "../../../../context/HighlightableContentContext";
+import {HighlightElement, isIntersectingHighlight} from '../../../../helper';
+import {useHighlightsContext} from '../../../../context/HighlightsContext';
+import {useHighlightableContentContext} from '../../../../context/HighlightableContentContext';
 
 export type HighlightPopoverDisclosureProps = {
   element: HTMLElement;
   show: () => void;
   hide: () => void;
-  setActiveHighlight: (highlight: HighlightElement|null) => void;
-  setActiveElement: (element: HTMLElement|null) => void;
-}
+  setActiveHighlight: (highlight: HighlightElement | null) => void;
+  setActiveElement: (element: HTMLElement | null) => void;
+};
 
-const HighlightPopoverDisclosure: FC<HighlightPopoverDisclosureProps> = ({element, show, hide, setActiveHighlight, setActiveElement}) => {
-  const {isActive}= useHighlightableContentContext();
+const HighlightPopoverDisclosure: FC<HighlightPopoverDisclosureProps> = ({
+  element,
+  show,
+  hide,
+  setActiveHighlight,
+  setActiveElement,
+}) => {
+  const {isActive} = useHighlightableContentContext();
   const {highlights} = useHighlightsContext();
 
-  const findActiveHighlight = useCallback((x: number, y: number) => {
-    const highlight = highlights.find((highlight) => {
-      return isIntersectingHighlight(x, y, highlight)
-    });
+  const findActiveHighlight = useCallback(
+    (x: number, y: number) => {
+      const highlight = highlights.find(highlight => {
+        return isIntersectingHighlight(x, y, highlight);
+      });
 
-    return highlight || null;
-  }, [highlights]);
+      return highlight || null;
+    },
+    [highlights]
+  );
 
   useLayoutEffect(() => {
-    let requestAnimationFrameId: number|null = null;
+    let requestAnimationFrameId: number | null = null;
 
     const handleMouseMove = (event: MouseEvent) => {
-      if(highlights.length === 0) {
+      if (highlights.length === 0) {
         return;
       }
 
@@ -42,13 +51,12 @@ const HighlightPopoverDisclosure: FC<HighlightPopoverDisclosureProps> = ({elemen
           setActiveHighlight(activeHighlight);
           setActiveElement(element);
           show();
-        }
-        else {
+        } else {
           hide();
           setActiveElement(null);
           setActiveHighlight(null);
         }
-      })
+      });
     };
 
     if (isActive && element) {
@@ -66,6 +74,6 @@ const HighlightPopoverDisclosure: FC<HighlightPopoverDisclosureProps> = ({elemen
   }, [isActive, element, findActiveHighlight, highlights]);
 
   return <></>;
-}
+};
 
 export default HighlightPopoverDisclosure;

@@ -1,7 +1,7 @@
-import {useLayoutEffect, useState} from "react";
-import {useGetEditorHighlightBoundingRect} from "../index";
-import EditorElement from "../../../application/helper/EditorHighlight/EditorElement";
-import useGetEditorScroll from "../EditorHighlight/useGetEditorScroll";
+import {useLayoutEffect, useState} from 'react';
+import {useGetEditorHighlightBoundingRect} from '../index';
+import EditorElement from '../../../application/helper/EditorHighlight/EditorElement';
+import useGetEditorScroll from '../EditorHighlight/useGetEditorScroll';
 
 type Position = {
   top: number;
@@ -25,8 +25,8 @@ export type HighlightsContainerState = {
 };
 
 const useHighlightsContainerState = (element: Element): HighlightsContainerState => {
-  const { editorBoundingClientRect } = useGetEditorHighlightBoundingRect(element as EditorElement);
-  const { editorScrollTop, editorScrollLeft } = useGetEditorScroll(element as EditorElement);
+  const {editorBoundingClientRect} = useGetEditorHighlightBoundingRect(element as EditorElement);
+  const {editorScrollTop, editorScrollLeft} = useGetEditorScroll(element as EditorElement);
 
   const [position, setPosition] = useState<Position>({top: 0, left: 0});
   const [dimension, setDimension] = useState<Dimension>({width: 0, height: 0});
@@ -50,13 +50,13 @@ const useHighlightsContainerState = (element: Element): HighlightsContainerState
     setScrollPosition({
       scrollLeft: editorScrollLeft,
       scrollTop: editorScrollTop,
-    })
-  }, [editorScrollTop, editorScrollLeft])
+    });
+  }, [editorScrollTop, editorScrollLeft]);
 
   return {
     position,
     dimension,
-    scrollPosition
+    scrollPosition,
   };
 };
 

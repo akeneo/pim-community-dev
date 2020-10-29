@@ -1,8 +1,8 @@
 import React from 'react';
-import { Action } from '../../../../models/Action';
-import { ActionLineProps } from './ActionLineProps';
+import {Action} from '../../../../models/Action';
+import {ActionLineProps} from './ActionLineProps';
 import styled from 'styled-components';
-import { getActionModule } from '../../../../models/actions/ActionModuleGuesser';
+import {getActionModule} from '../../../../models/actions/ActionModuleGuesser';
 import {
   useBackboneRouter,
   useTranslate,
@@ -13,7 +13,7 @@ const AknActionFormContainer = styled.div`
 `;
 
 const ActionTitle = styled.div`
-  color: ${({ theme }): string => theme.color.purple100};
+  color: ${({theme}): string => theme.color.purple100};
   font-size: 17px;
   line-height: 30px;
   margin-bottom: 15px;
@@ -25,14 +25,14 @@ const ActionGrid = styled.div`
   grid-gap: 40px;
 `;
 
-const ActionGridItem: React.FC = ({ children }) => (
+const ActionGridItem: React.FC = ({children}) => (
   <div className='ActionGridItem'>{children}</div>
 );
 
 const ActionLeftSide = ActionGridItem;
 const ActionRightSide = ActionGridItem;
 
-const ActionLine: React.FC<{ action: Action } & ActionLineProps> = ({
+const ActionLine: React.FC<{action: Action} & ActionLineProps> = ({
   action,
   lineNumber,
   handleDelete,

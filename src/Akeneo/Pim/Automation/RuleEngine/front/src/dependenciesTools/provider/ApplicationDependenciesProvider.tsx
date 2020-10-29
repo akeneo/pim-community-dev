@@ -1,5 +1,5 @@
-import React, { createContext } from 'react';
-import { dependencies } from './dependencies';
+import React, {createContext} from 'react';
+import {dependencies} from './dependencies';
 import {
   Notify,
   Router,
@@ -22,7 +22,7 @@ const ApplicationDependenciesContext = createContext<
   ApplicationDependenciesContextProps
 >({});
 
-const ApplicationDependenciesProvider: React.FC = ({ children }) => {
+const ApplicationDependenciesProvider: React.FC = ({children}) => {
   const value = {
     notify: dependencies.notify,
     router: dependencies.router,

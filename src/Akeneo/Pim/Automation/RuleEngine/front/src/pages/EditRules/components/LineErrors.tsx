@@ -1,13 +1,13 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
-import { SmallHelper } from '../../../components/HelpersInfos/SmallHelper';
+import {useFormContext} from 'react-hook-form';
+import {SmallHelper} from '../../../components/HelpersInfos/SmallHelper';
 
 type Props = {
   lineNumber: number;
   type: 'actions' | 'conditions';
 };
 
-const getErrorMessages = (obj: { [key: string]: any }): string[] => {
+const getErrorMessages = (obj: {[key: string]: any}): string[] => {
   const nestedMessages = Object.values(obj)
     .filter(
       value =>
@@ -27,10 +27,10 @@ const getErrorMessages = (obj: { [key: string]: any }): string[] => {
     .concat(nestedMessages);
 };
 
-const LineErrors: React.FC<Props> = ({ lineNumber, type }) => {
-  const { errors } = useFormContext();
+const LineErrors: React.FC<Props> = ({lineNumber, type}) => {
+  const {errors} = useFormContext();
   const currentErrors: {
-    [fieldName: string]: { type: string; message: string };
+    [fieldName: string]: {type: string; message: string};
   } = errors?.content?.[type]?.[lineNumber] || {};
   const messages = getErrorMessages(currentErrors);
   return (
@@ -44,4 +44,4 @@ const LineErrors: React.FC<Props> = ({ lineNumber, type }) => {
   );
 };
 
-export { LineErrors };
+export {LineErrors};

@@ -5,9 +5,9 @@ type FormData = {
   labels: {
     [key: string]: string;
   };
-  content: { conditions: any[]; actions: any[] };
+  content: {conditions: any[]; actions: any[]};
   execute_on_save?: boolean;
   duplicate_on_save?: boolean;
 };
 
-export { FormData };
+export {FormData};

@@ -5,7 +5,7 @@ import {
   AttributeType,
   Locale,
 } from '../../../../../models';
-import { AttributeSelector } from '../../../../../components/Selectors/AttributeSelector';
+import {AttributeSelector} from '../../../../../components/Selectors/AttributeSelector';
 import {
   getScopeValidation,
   ScopeSelector,
@@ -19,13 +19,13 @@ import {
   useTranslate,
   useUserCatalogLocale,
 } from '../../../../../dependenciesTools/hooks';
-import { Controller } from 'react-hook-form';
-import { useControlledFormInputAction } from '../../../hooks';
+import {Controller} from 'react-hook-form';
+import {useControlledFormInputAction} from '../../../hooks';
 
-import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
+import {IndexedScopes} from '../../../../../repositories/ScopeRepository';
 import styled from 'styled-components';
-import { InlineHelper } from '../../../../../components/HelpersInfos/InlineHelper';
-import { ActionFormContainer } from '../style';
+import {InlineHelper} from '../../../../../components/HelpersInfos/InlineHelper';
+import {ActionFormContainer} from '../style';
 import {
   createAttributeLink,
   fetchAttribute,

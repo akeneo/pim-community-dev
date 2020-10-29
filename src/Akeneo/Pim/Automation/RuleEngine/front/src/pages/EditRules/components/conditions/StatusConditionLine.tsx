@@ -1,9 +1,9 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
-import { ConditionLineProps } from './ConditionLineProps';
-import { StatusOperators } from '../../../../models/conditions';
-import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
-import { Operator } from '../../../../models/Operator';
+import {Controller} from 'react-hook-form';
+import {ConditionLineProps} from './ConditionLineProps';
+import {StatusOperators} from '../../../../models/conditions';
+import {OperatorSelector} from '../../../../components/Selectors/OperatorSelector';
+import {Operator} from '../../../../models/Operator';
 import {
   ConditionLineFormAndErrorsContainer,
   ConditionLineFormContainer,
@@ -11,15 +11,15 @@ import {
   OperatorColumn,
   ValueColumn,
 } from './style';
-import { StatusSelector } from '../../../../components/Selectors/StatusSelector';
-import { LineErrors } from '../LineErrors';
-import { useTranslate } from '../../../../dependenciesTools/hooks';
+import {StatusSelector} from '../../../../components/Selectors/StatusSelector';
+import {LineErrors} from '../LineErrors';
+import {useTranslate} from '../../../../dependenciesTools/hooks';
 
-import { useControlledFormInputCondition } from '../../hooks';
+import {useControlledFormInputCondition} from '../../hooks';
 
 const INIT_OPERATOR = Operator.EQUALS;
 
-const StatusConditionLine: React.FC<ConditionLineProps> = ({ lineNumber }) => {
+const StatusConditionLine: React.FC<ConditionLineProps> = ({lineNumber}) => {
   const translate = useTranslate();
   const {
     fieldFormName,
@@ -87,4 +87,4 @@ const StatusConditionLine: React.FC<ConditionLineProps> = ({ lineNumber }) => {
   );
 };
 
-export { StatusConditionLine };
+export {StatusConditionLine};

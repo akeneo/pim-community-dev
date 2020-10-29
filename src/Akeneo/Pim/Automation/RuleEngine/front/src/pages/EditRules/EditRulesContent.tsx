@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import styled, { ThemeProvider } from 'styled-components';
-import { DialogDisclosure, useDialogState } from 'reakit/Dialog';
-import { FormContext } from 'react-hook-form';
+import React, {useEffect} from 'react';
+import styled, {ThemeProvider} from 'styled-components';
+import {DialogDisclosure, useDialogState} from 'reakit/Dialog';
+import {FormContext} from 'react-hook-form';
 import * as akeneoTheme from '../../theme';
 import {
   AkeneoSpinner,
@@ -10,7 +10,7 @@ import {
   LastBreadcrumbItem,
   RulesHeader,
 } from '../../components';
-import { EditRulesForm } from './components/EditRulesForm';
+import {EditRulesForm} from './components/EditRulesForm';
 import {
   generateAndRedirect,
   generateUrl,
@@ -20,15 +20,15 @@ import {
   useTranslate,
   useUserContext,
 } from '../../dependenciesTools/hooks';
-import { Condition, Locale, RuleDefinition } from '../../models';
-import { useSubmitEditRuleForm } from './hooks';
-import { IndexedScopes } from '../../repositories/ScopeRepository';
-import { AddActionButton } from './components/actions/AddActionButton';
-import { Action } from '../../models/Action';
-import { httpDelete } from '../../fetch';
-import { NotificationLevel, Security } from '../../dependenciesTools';
-import { Dropdown } from '../../components/Dropdown';
-import { AlertDialog } from '../../components/AlertDialog/AlertDialog';
+import {Condition, Locale, RuleDefinition} from '../../models';
+import {useSubmitEditRuleForm} from './hooks';
+import {IndexedScopes} from '../../repositories/ScopeRepository';
+import {AddActionButton} from './components/actions/AddActionButton';
+import {Action} from '../../models/Action';
+import {httpDelete} from '../../fetch';
+import {NotificationLevel, Security} from '../../dependenciesTools';
+import {Dropdown} from '../../components/Dropdown';
+import {AlertDialog} from '../../components/AlertDialog/AlertDialog';
 
 const Illustration = styled.div`
   background-image: url('/bundles/akeneopimruleengine/assets/illustrations/rules.svg');
@@ -64,7 +64,7 @@ const EditRulesContent: React.FC<Props> = ({
     router,
     'pimee_catalog_rule_rule_index'
   );
-  const { formMethods, onSubmit, pending } = useSubmitEditRuleForm(
+  const {formMethods, onSubmit, pending} = useSubmitEditRuleForm(
     ruleDefinitionCode,
     translate,
     notify,
@@ -161,7 +161,7 @@ const EditRulesContent: React.FC<Props> = ({
     security.isGranted('pimee_catalog_rule_rule_execute_permissions');
 
   const handleSaveAndExecuteRule = () => {
-    formMethods.register({ name: 'execute_on_save', value: true });
+    formMethods.register({name: 'execute_on_save', value: true});
     onSubmit().then(() => {
       formMethods.unregister('execute_on_save');
     });
@@ -280,4 +280,4 @@ const EditRulesContent: React.FC<Props> = ({
 
 EditRulesContent.displayName = 'EditRulesContent';
 
-export { EditRulesContent };
+export {EditRulesContent};

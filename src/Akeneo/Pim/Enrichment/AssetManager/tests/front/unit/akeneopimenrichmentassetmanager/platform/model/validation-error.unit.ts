@@ -1,8 +1,5 @@
 import {getValidationErrorsForAttribute} from 'akeneoassetmanager/platform/model/validation-error';
-import {
-  isValidErrorCollection,
-  denormalizeErrorCollection,
-} from 'akeneoassetmanager/platform/model/validation-error';
+import {isValidErrorCollection, denormalizeErrorCollection} from 'akeneoassetmanager/platform/model/validation-error';
 
 test('It should get the error for the attribute and the context given', () => {
   const attributeCode = 'packshot';

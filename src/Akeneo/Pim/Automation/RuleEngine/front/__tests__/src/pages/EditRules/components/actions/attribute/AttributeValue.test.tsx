@@ -6,8 +6,8 @@ import {
   renderWithProviders,
   screen,
 } from '../../../../../../../test-utils';
-import { createAttribute } from '../../../../../factories';
-import { AttributeValue } from '../../../../../../../src/pages/EditRules/components/actions/attribute';
+import {createAttribute} from '../../../../../factories';
+import {AttributeValue} from '../../../../../../../src/pages/EditRules/components/actions/attribute';
 import {
   AttributeType,
   getAttributeLabel,
@@ -27,7 +27,7 @@ describe('AttributeValue', () => {
         onChange={jest.fn()}
         actionType={'set'}
       />,
-      { all: true }
+      {all: true}
     );
     expect(
       screen.getByText('pimee_catalog_rule.form.edit.please_select_attribute')
@@ -45,7 +45,7 @@ describe('AttributeValue', () => {
         onChange={jest.fn()}
         actionType={'set'}
       />,
-      { all: true }
+      {all: true}
     );
     const valueInput = screen.getByTestId('attribute-value-id');
     expect(valueInput).toHaveValue('default');
@@ -54,7 +54,7 @@ describe('AttributeValue', () => {
   });
 
   it('should display a disabled value with a non managed attribute', () => {
-    const attribute = createAttribute({ type: 'unknown' });
+    const attribute = createAttribute({type: 'unknown'});
     renderWithProviders(
       <AttributeValue
         id={'attribute-value-id'}
@@ -64,7 +64,7 @@ describe('AttributeValue', () => {
         onChange={jest.fn()}
         actionType={'set'}
       />,
-      { all: true }
+      {all: true}
     );
 
     expect(
@@ -87,7 +87,7 @@ describe('AttributeValue', () => {
         onChange={jest.fn()}
         actionType={'set'}
       />,
-      { all: true }
+      {all: true}
     );
     expect(
       screen.getByText(
@@ -119,7 +119,7 @@ describe('AttributeValue', () => {
       throw new Error(`The "${request.url}" url is not mocked.`);
     });
 
-    const attribute = createAttribute({ type: 'pim_catalog_simpleselect' });
+    const attribute = createAttribute({type: 'pim_catalog_simpleselect'});
     const onChange = jest.fn();
     renderWithProviders(
       <AttributeValue
@@ -130,7 +130,7 @@ describe('AttributeValue', () => {
         onChange={onChange}
         actionType={'set'}
       />,
-      { all: true }
+      {all: true}
     );
 
     expect(
@@ -143,7 +143,7 @@ describe('AttributeValue', () => {
     expect(valueInput).not.toBeDisabled();
     act(() => {
       fireEvent.change(valueInput, {
-        target: { value: 'test1' },
+        target: {value: 'test1'},
       });
       expect(onChange).toHaveBeenCalledTimes(1);
     });
@@ -168,7 +168,7 @@ describe('AttributeValue', () => {
         onChange={onChange}
         actionType={'set'}
       />,
-      { all: true }
+      {all: true}
     );
 
     expect(
@@ -179,7 +179,7 @@ describe('AttributeValue', () => {
     expect(valueInput).not.toBeDisabled();
     act(() => {
       fireEvent.change(valueInput, {
-        target: { value: '2020-05-20' },
+        target: {value: '2020-05-20'},
       });
       expect(onChange).toHaveBeenCalledTimes(1);
     });
@@ -199,7 +199,7 @@ describe('AttributeValue', () => {
         onChange={jest.fn()}
         actionType={'set'}
       />,
-      { all: true }
+      {all: true}
     );
     expect(
       screen.getByText(
@@ -226,7 +226,7 @@ describe('AttributeValue', () => {
         onChange={jest.fn()}
         actionType={'set'}
       />,
-      { all: true }
+      {all: true}
     );
     expect(
       screen.getByText(

@@ -1,21 +1,21 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
+import {Controller} from 'react-hook-form';
 import {
   TextareaAttributeCondition,
   TextareaAttributeOperators,
 } from '../../../../models/conditions';
-import { ConditionLineProps } from './ConditionLineProps';
-import { InputText } from '../../../../components/Inputs';
-import { AttributeConditionLine } from './AttributeConditionLine';
+import {ConditionLineProps} from './ConditionLineProps';
+import {InputText} from '../../../../components/Inputs';
+import {AttributeConditionLine} from './AttributeConditionLine';
 import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
-import { Attribute } from '../../../../models';
-import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepository';
+import {Attribute} from '../../../../models';
+import {getAttributeByIdentifier} from '../../../../repositories/AttributeRepository';
 
-import { useControlledFormInputCondition } from '../../hooks';
-import { Operator } from '../../../../models/Operator';
+import {useControlledFormInputCondition} from '../../hooks';
+import {Operator} from '../../../../models/Operator';
 
 type TextareaAttributeConditionLineProps = ConditionLineProps & {
   condition: TextareaAttributeCondition;
@@ -73,4 +73,4 @@ const TextareaAttributeConditionLine: React.FC<TextareaAttributeConditionLinePro
   );
 };
 
-export { TextareaAttributeConditionLine, TextareaAttributeConditionLineProps };
+export {TextareaAttributeConditionLine, TextareaAttributeConditionLineProps};

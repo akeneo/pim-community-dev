@@ -1,11 +1,11 @@
 import React, {FC, useEffect, useState} from 'react';
-import {useAttributeOptionsListContext} from "../../../context/AttributeOptionsListContext";
-import {useAttributeSpellcheckEvaluationContext} from "../../../context/AttributeSpellcheckEvaluationContext";
-import {ATTRIBUTE_EDIT_FORM_UPDATED} from "../../../constant";
+import {useAttributeOptionsListContext} from '../../../context/AttributeOptionsListContext';
+import {useAttributeSpellcheckEvaluationContext} from '../../../context/AttributeSpellcheckEvaluationContext';
+import {ATTRIBUTE_EDIT_FORM_UPDATED} from '../../../constant';
 import {AttributeOption} from 'akeneopimstructure/js/attribute-option/model/AttributeOption.interface';
-import {useMountedState} from "../../../../infrastructure/hooks/Common/useMountedState";
+import {useMountedState} from '../../../../infrastructure/hooks/Common/useMountedState';
 
-type AttributeOptionsList = AttributeOption[]|null
+type AttributeOptionsList = AttributeOption[] | null;
 
 const RefreshEvaluationWhenAttributeOptionsChanged: FC = () => {
   const [updatedOptions, setUpdatedOptions] = useState<AttributeOptionsList>(null);
@@ -25,11 +25,9 @@ const RefreshEvaluationWhenAttributeOptionsChanged: FC = () => {
         if (isMounted()) {
           window.dispatchEvent(new CustomEvent(ATTRIBUTE_EDIT_FORM_UPDATED));
         }
-      })
+      });
     }
   }, [updatedOptions]);
-
-
 
   return <></>;
 };

@@ -1,14 +1,14 @@
 import React from 'react';
-import { ActionTemplate } from './ActionTemplate';
-import { ActionLineProps } from './ActionLineProps';
-import { ActionLeftSide, ActionRightSide, ActionTitle } from './ActionLine';
+import {ActionTemplate} from './ActionTemplate';
+import {ActionLineProps} from './ActionLineProps';
+import {ActionLeftSide, ActionRightSide, ActionTitle} from './ActionLine';
 import {
   useBackboneRouter,
   useTranslate,
   useUserCatalogLocale,
 } from '../../../../dependenciesTools/hooks';
-import { useControlledFormInputAction } from '../../hooks';
-import { Controller, useFormContext } from 'react-hook-form';
+import {useControlledFormInputAction} from '../../hooks';
+import {Controller, useFormContext} from 'react-hook-form';
 import {
   Attribute,
   AttributeCode,
@@ -20,8 +20,8 @@ import {
   fetchAttribute,
   useGetAttributeAtMount,
 } from './attribute/attribute.utils';
-import { AttributeSelector } from '../../../../components/Selectors/AttributeSelector';
-import { InlineHelper } from '../../../../components/HelpersInfos/InlineHelper';
+import {AttributeSelector} from '../../../../components/Selectors/AttributeSelector';
+import {InlineHelper} from '../../../../components/HelpersInfos/InlineHelper';
 import {
   getMeasurementUnitValidator,
   MeasurementUnitSelector,
@@ -40,16 +40,16 @@ import {
   SelectorBlock,
   ErrorBlock,
 } from './style';
-import { InputNumber } from '../../../../components/Inputs';
+import {InputNumber} from '../../../../components/Inputs';
 import {
   CurrencySelector,
   getCurrencyValidation,
 } from '../../../../components/Selectors/CurrencySelector';
-import { Currency } from '../../../../models/Currency';
-import { useActiveCurrencies } from '../../hooks/useActiveCurrencies';
-import { IndexedCurrencies } from '../../../../repositories/CurrencyRepository';
-import { CalculatePreview } from './calculate/CalculatePreview';
-import { CalculateOperationList } from './calculate/CalculateOperationList';
+import {Currency} from '../../../../models/Currency';
+import {useActiveCurrencies} from '../../hooks/useActiveCurrencies';
+import {IndexedCurrencies} from '../../../../repositories/CurrencyRepository';
+import {CalculatePreview} from './calculate/CalculatePreview';
+import {CalculateOperationList} from './calculate/CalculateOperationList';
 
 const targetAttributeTypes: AttributeType[] = [
   AttributeType.NUMBER,
@@ -66,7 +66,7 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
   const translate = useTranslate();
   const router = useBackboneRouter();
   const currentCatalogLocale = useUserCatalogLocale();
-  const { setValue, watch, getValues } = useFormContext();
+  const {setValue, watch, getValues} = useFormContext();
   const {
     formName,
     typeFormName,
@@ -112,7 +112,7 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
     }
     const scopeCode = getScopeFormValue();
     if (scopeCode && scopes[scopeCode]) {
-      return scopes[scopeCode].currencies.map(code => ({ code }));
+      return scopes[scopeCode].currencies.map(code => ({code}));
     }
     return [];
   };
@@ -160,7 +160,7 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
           // validation.
           validate: () =>
             (
-              getValues({ nest: true })?.content?.actions?.[lineNumber]
+              getValues({nest: true})?.content?.actions?.[lineNumber]
                 ?.full_operation_list || []
             ).length >= 2
               ? true
@@ -372,4 +372,4 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
   );
 };
 
-export { CalculateActionLine };
+export {CalculateActionLine};

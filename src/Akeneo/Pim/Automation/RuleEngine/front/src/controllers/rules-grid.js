@@ -5,41 +5,29 @@
  */
 'use strict';
 
-define([
-    'underscore',
-    'pim/form',
-    'pim/common/grid'
-],
-function (
-    _,
-    BaseForm,
-    Grid
-) {
-    return BaseForm.extend({
-        grid: null,
+define(['underscore', 'pim/form', 'pim/common/grid'], function(_, BaseForm, Grid) {
+  return BaseForm.extend({
+    grid: null,
 
-        /**
-         * @param {Object} meta
-         */
-        initialize: function (meta) {
-            this.config = _.extend({}, meta.config);
-        },
+    /**
+     * @param {Object} meta
+     */
+    initialize: function(meta) {
+      this.config = _.extend({}, meta.config);
+    },
 
-        /**
-         * {@inheritdoc}
-         */
-        render: function () {
-            if (!this.grid) {
-                this.grid = new Grid(
-                    'rule-grid',
-                    {
-                        resourceName: this.config.resourceName,
-                        resourceId: this.getFormData().meta.id
-                    }
-                );
-            }
+    /**
+     * {@inheritdoc}
+     */
+    render: function() {
+      if (!this.grid) {
+        this.grid = new Grid('rule-grid', {
+          resourceName: this.config.resourceName,
+          resourceId: this.getFormData().meta.id,
+        });
+      }
 
-            this.$el.empty().append(this.grid.render().$el);
-        }
-    });
+      this.$el.empty().append(this.grid.render().$el);
+    },
+  });
 });

@@ -28,7 +28,7 @@ module.exports = async function(cucumber) {
     await attributeEdit[`set${property}`](value);
   });
 
-  Then('the user can\'t edit the attribute property {string}', async function(property) {
+  Then('the user cannot edit the attribute property {string}', async function(property) {
     const attributeEdit = await await getElement(this.page, 'AttributeEdit');
     await attributeEdit[`disabled${property}`]();
   });

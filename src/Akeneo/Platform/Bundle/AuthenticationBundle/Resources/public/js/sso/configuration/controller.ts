@@ -26,10 +26,7 @@ class ConfigurationController extends BaseController {
       });
 
       form.setData(data[0]);
-      form
-        .setElement(this.$el)
-        .render()
-      ;
+      form.setElement(this.$el).render();
 
       return form;
     });

@@ -15,17 +15,17 @@ import {
   currencies,
 } from '../../../../factories';
 import userEvent from '@testing-library/user-event';
-import { clearMeasurementFamilyRepositoryCache } from '../../../../../../src/repositories/MeasurementFamilyRepository';
-import { CalculateActionLine } from '../../../../../../src/pages/EditRules/components/actions/CalculateActionLine';
-import { AttributeType } from '../../../../../../src/models';
-import { clearAttributeRepositoryCache } from '../../../../../../src/repositories/AttributeRepository';
-import { clearCurrencyRepositoryCache } from '../../../../../../src/repositories/CurrencyRepository';
+import {clearMeasurementFamilyRepositoryCache} from '../../../../../../src/repositories/MeasurementFamilyRepository';
+import {CalculateActionLine} from '../../../../../../src/pages/EditRules/components/actions/CalculateActionLine';
+import {AttributeType} from '../../../../../../src/models';
+import {clearAttributeRepositoryCache} from '../../../../../../src/repositories/AttributeRepository';
+import {clearCurrencyRepositoryCache} from '../../../../../../src/repositories/CurrencyRepository';
 
 jest.mock('../../../../../../src/components/Select2Wrapper/Select2Wrapper');
 jest.mock('../../../../../../src/dependenciesTools/provider/dependencies.ts');
 jest.mock('../../../../../../src/fetch/categoryTree.fetcher.ts');
 
-const buildDefaultValues = (data: { [key: string]: any }) => {
+const buildDefaultValues = (data: {[key: string]: any}) => {
   return {
     content: {
       actions: [
@@ -48,16 +48,16 @@ const buildDefaultValues = (data: { [key: string]: any }) => {
 };
 
 const toRegister = [
-  { name: 'content.actions[0].destination.field', type: 'custom' },
-  { name: 'content.actions[0].destination.unit', type: 'custom' },
-  { name: 'content.actions[0].destination.locale', type: 'custom' },
-  { name: 'content.actions[0].destination.scope', type: 'custom' },
+  {name: 'content.actions[0].destination.field', type: 'custom'},
+  {name: 'content.actions[0].destination.unit', type: 'custom'},
+  {name: 'content.actions[0].destination.locale', type: 'custom'},
+  {name: 'content.actions[0].destination.scope', type: 'custom'},
   {
     name: 'content.actions[0].round_precision',
     type: 'custom',
   },
-  { name: 'content.actions[0].operation_list', type: 'custom' },
-  { name: 'content.actions[0].source', type: 'custom' },
+  {name: 'content.actions[0].operation_list', type: 'custom'},
+  {name: 'content.actions[0].source', type: 'custom'},
 ];
 
 const assertTextIsInDocument = async (text: string): Promise<void> => {
@@ -157,8 +157,8 @@ describe('CalculateActionLine', () => {
         currentCatalogLocale={'fr_FR'}
         handleDelete={jest.fn()}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
     await assertTextIsInDocument(
       'pimee_catalog_rule.form.edit.actions.calculate.select_target'
@@ -204,8 +204,8 @@ describe('CalculateActionLine', () => {
         currentCatalogLocale={'fr_FR'}
         handleDelete={jest.fn()}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
     await assertTextIsInDocument(
       'pimee_catalog_rule.form.edit.actions.calculate.select_target'
@@ -249,8 +249,8 @@ describe('CalculateActionLine', () => {
         currentCatalogLocale={'fr_FR'}
         handleDelete={jest.fn()}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
     await assertTextIsInDocument(
       'pimee_catalog_rule.form.edit.actions.calculate.select_target'
@@ -282,8 +282,8 @@ describe('CalculateActionLine', () => {
         currentCatalogLocale={'en_US'}
         handleDelete={jest.fn()}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     await assertTextIsInDocument(
@@ -308,7 +308,7 @@ describe('CalculateActionLine', () => {
       fireEvent.change(
         await screen.findByTestId('edit-rules-action-0-destination-field'),
         {
-          target: { value: 'weight' },
+          target: {value: 'weight'},
         }
       );
     });
@@ -334,7 +334,7 @@ describe('CalculateActionLine', () => {
       fireEvent.change(
         await screen.findByTestId('edit-rules-action-0-destination-unit'),
         {
-          target: { value: 'KILOGRAM' },
+          target: {value: 'KILOGRAM'},
         }
       );
     });

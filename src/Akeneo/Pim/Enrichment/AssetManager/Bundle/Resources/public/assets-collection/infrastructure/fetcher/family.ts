@@ -1,9 +1,5 @@
 import promisify from 'akeneoassetmanager/tools/promisify';
-import {
-  Family,
-  FamilyCode,
-  AttributeRequirements,
-} from 'akeneoassetmanager/platform/model/structure/family';
+import {Family, FamilyCode, AttributeRequirements} from 'akeneoassetmanager/platform/model/structure/family';
 import {isString, isObject, isLabels} from 'akeneoassetmanager/domain/model/utils';
 const fetcherRegistry = require('pim/fetcher-registry');
 

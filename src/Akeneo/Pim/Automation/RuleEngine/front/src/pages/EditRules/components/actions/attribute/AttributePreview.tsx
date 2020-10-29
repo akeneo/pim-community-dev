@@ -3,11 +3,11 @@ import {
   useBackboneRouter,
   useUserCatalogLocale,
 } from '../../../../../dependenciesTools/hooks';
-import { Attribute, getAttributeLabel } from '../../../../../models';
-import { getAttributeByIdentifier } from '../../../../../repositories/AttributeRepository';
-import { AkeneoSpinner } from '../../../../../components';
+import {Attribute, getAttributeLabel} from '../../../../../models';
+import {getAttributeByIdentifier} from '../../../../../repositories/AttributeRepository';
+import {AkeneoSpinner} from '../../../../../components';
 
-const AttributePreview: React.FC<{ attributeCode: string }> = ({
+const AttributePreview: React.FC<{attributeCode: string}> = ({
   attributeCode,
 }) => {
   const currentCatalogLocale = useUserCatalogLocale();
@@ -35,4 +35,4 @@ const AttributePreview: React.FC<{ attributeCode: string }> = ({
   );
 };
 
-export { AttributePreview };
+export {AttributePreview};

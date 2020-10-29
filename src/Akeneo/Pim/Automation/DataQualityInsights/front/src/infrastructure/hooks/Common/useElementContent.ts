@@ -1,12 +1,12 @@
-import {useCallback, useEffect, useState} from "react";
-import {convertHtmlContent, getEditorContent} from "../../../application/helper";
-import EditorElement, {isEditableContent} from "../../../application/helper/EditorHighlight/EditorElement";
+import {useCallback, useEffect, useState} from 'react';
+import {convertHtmlContent, getEditorContent} from '../../../application/helper';
+import EditorElement, {isEditableContent} from '../../../application/helper/EditorHighlight/EditorElement';
 
 type ElementContentState = {
   content: string;
   analyzableContent: string;
   refresh: () => void;
-}
+};
 
 const useElementContent = (element: HTMLElement): ElementContentState => {
   const [content, setContent] = useState<string>('');
@@ -33,7 +33,7 @@ const useElementContent = (element: HTMLElement): ElementContentState => {
   return {
     content,
     analyzableContent,
-    refresh: handleRefresh
+    refresh: handleRefresh,
   };
 };
 

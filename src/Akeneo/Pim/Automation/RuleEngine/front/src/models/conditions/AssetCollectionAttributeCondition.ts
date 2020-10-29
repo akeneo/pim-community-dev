@@ -1,8 +1,8 @@
-import { Operator } from '../Operator';
-import { ConditionFactory } from './Condition';
-import { AssetCollectionAttributeConditionLine } from '../../pages/EditRules/components/conditions/AssetCollectionAttributeConditionLine';
-import { ConditionModuleGuesser } from './ConditionModuleGuesser';
-import { AttributeType } from '../Attribute';
+import {Operator} from '../Operator';
+import {ConditionFactory} from './Condition';
+import {AssetCollectionAttributeConditionLine} from '../../pages/EditRules/components/conditions/AssetCollectionAttributeConditionLine';
+import {ConditionModuleGuesser} from './ConditionModuleGuesser';
+import {AttributeType} from '../Attribute';
 import {
   createAttributeCondition,
   getAttributeConditionModule,

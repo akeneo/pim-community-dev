@@ -1,8 +1,8 @@
-import { Operator } from '../Operator';
-import { ConditionFactory } from './Condition';
-import { ConditionModuleGuesser } from './ConditionModuleGuesser';
-import { IdentifierConditionLine } from '../../pages/EditRules/components/conditions/IdentifierConditionLine';
-import { Identifier } from '../../components/Selectors/IdentifiersSelector';
+import {Operator} from '../Operator';
+import {ConditionFactory} from './Condition';
+import {ConditionModuleGuesser} from './ConditionModuleGuesser';
+import {IdentifierConditionLine} from '../../pages/EditRules/components/conditions/IdentifierConditionLine';
+import {Identifier} from '../../components/Selectors/IdentifiersSelector';
 
 const FIELD = 'identifier';
 

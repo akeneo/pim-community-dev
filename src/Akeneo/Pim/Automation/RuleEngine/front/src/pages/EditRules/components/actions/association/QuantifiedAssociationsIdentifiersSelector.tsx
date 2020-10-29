@@ -1,14 +1,14 @@
 import React from 'react';
-import { useTranslate } from '../../../../../dependenciesTools/hooks';
-import { IdentifiersSelector } from '../../../../../components/Selectors/IdentifierSelector';
-import { ProductIdentifier, ProductModelCode } from '../../../../../models';
-import { InputNumber } from '../../../../../components/Inputs';
+import {useTranslate} from '../../../../../dependenciesTools/hooks';
+import {IdentifiersSelector} from '../../../../../components/Selectors/IdentifierSelector';
+import {ProductIdentifier, ProductModelCode} from '../../../../../models';
+import {InputNumber} from '../../../../../components/Inputs';
 
 type Identifier = ProductIdentifier | ProductModelCode;
 
 type Props = {
-  value: { identifier: Identifier; quantity: number }[];
-  onChange: (value: { identifier: Identifier; quantity: number }[]) => void;
+  value: {identifier: Identifier; quantity: number}[];
+  onChange: (value: {identifier: Identifier; quantity: number}[]) => void;
   entityType: 'product' | 'product_model';
 };
 
@@ -46,7 +46,7 @@ const QuantifiedAssociationsIdentifiersSelector: React.FC<Props> = ({
 
   return (
     <ul>
-      {value.map(({ identifier, quantity }, i) => {
+      {value.map(({identifier, quantity}, i) => {
         return (
           <li
             key={identifier}
@@ -95,4 +95,4 @@ const QuantifiedAssociationsIdentifiersSelector: React.FC<Props> = ({
   );
 };
 
-export { QuantifiedAssociationsIdentifiersSelector };
+export {QuantifiedAssociationsIdentifiersSelector};

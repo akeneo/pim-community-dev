@@ -1,6 +1,6 @@
-import { GroupCode } from '../Group';
-import { ActionModuleGuesser } from './ActionModuleGuesser';
-import { SetGroupsActionLine } from '../../pages/EditRules/components/actions/SetGroupsActionLine';
+import {GroupCode} from '../Group';
+import {ActionModuleGuesser} from './ActionModuleGuesser';
+import {SetGroupsActionLine} from '../../pages/EditRules/components/actions/SetGroupsActionLine';
 
 export type SetGroupsAction = {
   type: 'set';

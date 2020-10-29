@@ -6,11 +6,11 @@ import {
   renderWithProviders,
   waitForElementToBeRemoved,
 } from '../../../../../../test-utils';
-import { locales, scopes } from '../../../../factories';
-import { SetCategoriesActionLine } from '../../../../../../src/pages/EditRules/components/actions/SetCategoriesActionLine';
-import { createCategory } from '../../../../factories/CategoryFactory';
+import {locales, scopes} from '../../../../factories';
+import {SetCategoriesActionLine} from '../../../../../../src/pages/EditRules/components/actions/SetCategoriesActionLine';
+import {createCategory} from '../../../../factories/CategoryFactory';
 import userEvent from '@testing-library/user-event';
-import { clearCategoryRepositoryCache } from '../../../../../../src/repositories/CategoryRepository';
+import {clearCategoryRepositoryCache} from '../../../../../../src/repositories/CategoryRepository';
 
 describe('SetCategoriesActionLine', () => {
   beforeEach(() => {
@@ -27,9 +27,9 @@ describe('SetCategoriesActionLine', () => {
       ) {
         return Promise.resolve(
           JSON.stringify([
-            createCategory('cat1', { root: 1 }),
-            createCategory('cat2', { root: 200 }),
-            createCategory('cat3', { root: 1 }),
+            createCategory('cat1', {root: 1}),
+            createCategory('cat2', {root: 200}),
+            createCategory('cat3', {root: 1}),
           ])
         );
       }
@@ -49,9 +49,9 @@ describe('SetCategoriesActionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.actions[0].value', type: 'custom' },
-      { name: 'content.actions[0].field', type: 'custom' },
-      { name: 'content.actions[0].type', type: 'custom' },
+      {name: 'content.actions[0].value', type: 'custom'},
+      {name: 'content.actions[0].field', type: 'custom'},
+      {name: 'content.actions[0].type', type: 'custom'},
     ];
 
     renderWithProviders(
@@ -62,8 +62,8 @@ describe('SetCategoriesActionLine', () => {
         currentCatalogLocale={'fr_FR'}
         handleDelete={jest.fn()}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
     await waitForElementToBeRemoved(() =>
       document.querySelector('fieldset img[alt="pim_common.loading"]')
@@ -113,8 +113,8 @@ describe('SetCategoriesActionLine', () => {
       ) {
         return Promise.resolve(
           JSON.stringify([
-            createCategory('cat1', { root: 1 }),
-            createCategory('cat3', { root: 1 }),
+            createCategory('cat1', {root: 1}),
+            createCategory('cat3', {root: 1}),
           ])
         );
       }
@@ -133,9 +133,9 @@ describe('SetCategoriesActionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.actions[0].value', type: 'custom' },
-      { name: 'content.actions[0].field', type: 'custom' },
-      { name: 'content.actions[0].type', type: 'custom' },
+      {name: 'content.actions[0].value', type: 'custom'},
+      {name: 'content.actions[0].field', type: 'custom'},
+      {name: 'content.actions[0].type', type: 'custom'},
     ];
 
     renderWithProviders(
@@ -146,8 +146,8 @@ describe('SetCategoriesActionLine', () => {
         currentCatalogLocale={'fr_FR'}
         handleDelete={jest.fn()}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     await waitForElementToBeRemoved(() =>

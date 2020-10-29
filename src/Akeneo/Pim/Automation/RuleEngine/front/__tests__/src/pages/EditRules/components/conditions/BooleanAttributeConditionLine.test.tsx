@@ -1,11 +1,11 @@
 import 'jest-fetch-mock';
 import React from 'react';
-import { renderWithProviders, screen } from '../../../../../../test-utils';
-import { BooleanAttributeCondition } from '../../../../../../src/models/conditions';
-import { Operator } from '../../../../../../src/models/Operator';
-import { createAttribute, locales, scopes } from '../../../../factories';
-import { clearAttributeRepositoryCache } from '../../../../../../src/repositories/AttributeRepository';
-import { BooleanAttributeConditionLine } from '../../../../../../src/pages/EditRules/components/conditions/BooleanAttributeConditionLine';
+import {renderWithProviders, screen} from '../../../../../../test-utils';
+import {BooleanAttributeCondition} from '../../../../../../src/models/conditions';
+import {Operator} from '../../../../../../src/models/Operator';
+import {createAttribute, locales, scopes} from '../../../../factories';
+import {clearAttributeRepositoryCache} from '../../../../../../src/repositories/AttributeRepository';
+import {BooleanAttributeConditionLine} from '../../../../../../src/pages/EditRules/components/conditions/BooleanAttributeConditionLine';
 
 describe('BooleanAttributeConditionLine', () => {
   beforeEach(() => {
@@ -47,7 +47,7 @@ describe('BooleanAttributeConditionLine', () => {
         locales={locales}
         scopes={scopes}
       />,
-      { all: true }
+      {all: true}
     );
 
     expect(await screen.findByText('Auto focus')).toBeInTheDocument();
@@ -100,9 +100,9 @@ describe('BooleanAttributeConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[1].value', type: 'custom' },
-      { name: 'content.conditions[1].operator', type: 'custom' },
-      { name: 'content.conditions[1].value', type: 'custom' },
+      {name: 'content.conditions[1].value', type: 'custom'},
+      {name: 'content.conditions[1].operator', type: 'custom'},
+      {name: 'content.conditions[1].value', type: 'custom'},
     ];
 
     renderWithProviders(
@@ -113,8 +113,8 @@ describe('BooleanAttributeConditionLine', () => {
         locales={locales}
         scopes={scopes}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     expect(await screen.findByText('Auto focus')).toBeInTheDocument();

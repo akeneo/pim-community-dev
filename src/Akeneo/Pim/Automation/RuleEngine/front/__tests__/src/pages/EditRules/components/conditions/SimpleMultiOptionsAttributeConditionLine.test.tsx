@@ -1,16 +1,16 @@
 import 'jest-fetch-mock';
 import React from 'react';
-import { render, screen } from '../../../../../../test-utils';
-import { SimpleMultiOptionsAttributeCondition } from '../../../../../../src/models/conditions';
-import { Operator } from '../../../../../../src/models/Operator';
-import { SimpleMultiOptionsAttributeConditionLine } from '../../../../../../src/pages/EditRules/components/conditions/SimpleMultiOptionsAttributeConditionLine';
+import {render, screen} from '../../../../../../test-utils';
+import {SimpleMultiOptionsAttributeCondition} from '../../../../../../src/models/conditions';
+import {Operator} from '../../../../../../src/models/Operator';
+import {SimpleMultiOptionsAttributeConditionLine} from '../../../../../../src/pages/EditRules/components/conditions/SimpleMultiOptionsAttributeConditionLine';
 import {
   attributeOptionsSelect2Response,
   createAttribute,
   locales,
   scopes,
 } from '../../../../factories';
-import { clearAttributeRepositoryCache } from '../../../../../../src/repositories/AttributeRepository';
+import {clearAttributeRepositoryCache} from '../../../../../../src/repositories/AttributeRepository';
 
 describe('SimpleMultiOptionsAttributeConditionLine', () => {
   beforeEach(() => {
@@ -58,9 +58,9 @@ describe('SimpleMultiOptionsAttributeConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[1].value', type: 'custom' },
-      { name: 'content.conditions[1].operator', type: 'custom' },
-      { name: 'content.conditions[1].value', type: 'custom' },
+      {name: 'content.conditions[1].value', type: 'custom'},
+      {name: 'content.conditions[1].operator', type: 'custom'},
+      {name: 'content.conditions[1].value', type: 'custom'},
     ];
 
     render(
@@ -71,8 +71,8 @@ describe('SimpleMultiOptionsAttributeConditionLine', () => {
         locales={locales}
         scopes={scopes}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     expect(await screen.findByText('Name')).toBeInTheDocument();

@@ -1,22 +1,22 @@
 import React from 'react';
-import { ConditionLineProps } from './ConditionLineProps';
-import { AttributeConditionLine } from './AttributeConditionLine';
+import {ConditionLineProps} from './ConditionLineProps';
+import {AttributeConditionLine} from './AttributeConditionLine';
 import {
   useBackboneRouter,
   useTranslate,
   useUserCatalogLocale,
   useUserCatalogScope,
 } from '../../../../dependenciesTools/hooks';
-import { Attribute } from '../../../../models';
-import { Operator } from '../../../../models/Operator';
+import {Attribute} from '../../../../models';
+import {Operator} from '../../../../models/Operator';
 import {
   AssetCollectionAttributeCondition,
   AssetCollectionAttributeOperators,
 } from '../../../../models/conditions';
-import { Controller } from 'react-hook-form';
-import { useControlledFormInputCondition } from '../../hooks';
-import { AssetSelector } from '../../../../dependenciesTools/components/AssetManager/AssetSelector';
-import { useGetAttributeAtMount } from '../actions/attribute/attribute.utils';
+import {Controller} from 'react-hook-form';
+import {useControlledFormInputCondition} from '../../hooks';
+import {AssetSelector} from '../../../../dependenciesTools/components/AssetManager/AssetSelector';
+import {useGetAttributeAtMount} from '../actions/attribute/attribute.utils';
 
 type AssetCollectionAttributeConditionLineProps = ConditionLineProps & {
   condition: AssetCollectionAttributeCondition;

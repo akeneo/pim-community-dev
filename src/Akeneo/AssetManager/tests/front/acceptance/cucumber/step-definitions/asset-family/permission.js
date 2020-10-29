@@ -55,16 +55,16 @@ module.exports = async function(cucumber) {
     await askForAssetFamily.apply(this, ['designer']);
   });
 
-  Then(
-    'there should be a {string} permission right for the user group {string} on the asset family',
-    async function(rightLevel, groupName) {
-      const editView = await await getElement(this.page, 'Edit');
-      const permissionView = await editView.getPermission();
-      const actualRightLevel = await permissionView.getRightLevel(groupName);
+  Then('there should be a {string} permission right for the user group {string} on the asset family', async function(
+    rightLevel,
+    groupName
+  ) {
+    const editView = await await getElement(this.page, 'Edit');
+    const permissionView = await editView.getPermission();
+    const actualRightLevel = await permissionView.getRightLevel(groupName);
 
-      assert.strictEqual(actualRightLevel, rightLevel);
-    }
-  );
+    assert.strictEqual(actualRightLevel, rightLevel);
+  });
 
   Then('the user should be warned that he needs to create user groups first', async function() {
     const editView = await await getElement(this.page, 'Edit');

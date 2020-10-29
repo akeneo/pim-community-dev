@@ -1,8 +1,8 @@
-import { Router } from '../dependenciesTools';
-import { Category, CategoryCode } from '../models/Category';
-import { fetchCategoriesByIdentifiers } from '../fetch/CategoryFetcher';
+import {Router} from '../dependenciesTools';
+import {Category, CategoryCode} from '../models/Category';
+import {fetchCategoriesByIdentifiers} from '../fetch/CategoryFetcher';
 
-const cacheCategories: { [identifier: string]: Category | null } = {};
+const cacheCategories: {[identifier: string]: Category | null} = {};
 
 export const clearCategoryRepositoryCache = () => {
   for (const key in cacheCategories) {
@@ -13,7 +13,7 @@ export const clearCategoryRepositoryCache = () => {
 export const getCategoriesByIdentifiers = async (
   categoryIdentifiers: CategoryCode[],
   router: Router
-): Promise<{ [identifier: string]: Category | null }> => {
+): Promise<{[identifier: string]: Category | null}> => {
   if (categoryIdentifiers === undefined) {
     throw new Error(
       'getCategoriesByIdentifiers cannot be called with undefined parameter'
@@ -39,7 +39,7 @@ export const getCategoriesByIdentifiers = async (
   }
 
   return categoryIdentifiers.reduce((previousValue, currentValue) => {
-    const result: { [identifier: string]: Category | null } = {
+    const result: {[identifier: string]: Category | null} = {
       ...previousValue,
     };
     result[currentValue] = cacheCategories[currentValue];

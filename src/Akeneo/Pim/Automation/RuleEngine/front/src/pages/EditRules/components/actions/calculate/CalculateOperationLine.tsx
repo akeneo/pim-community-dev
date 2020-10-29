@@ -1,18 +1,18 @@
 import React from 'react';
-import { Locale } from '../../../../../models';
-import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
+import {Locale} from '../../../../../models';
+import {IndexedScopes} from '../../../../../repositories/ScopeRepository';
 import {
   Operation,
   Operator,
 } from '../../../../../models/actions/Calculate/Operation';
-import { useControlledFormInputAction } from '../../../hooks';
-import { useTranslate } from '../../../../../dependenciesTools/hooks';
-import { Controller, useFormContext } from 'react-hook-form';
-import { CalculateOperatorSelector } from './CalculateOperatorSelector';
+import {useControlledFormInputAction} from '../../../hooks';
+import {useTranslate} from '../../../../../dependenciesTools/hooks';
+import {Controller, useFormContext} from 'react-hook-form';
+import {CalculateOperatorSelector} from './CalculateOperatorSelector';
 import styled from 'styled-components';
-import { Translate } from '../../../../../dependenciesTools';
-import { AttributePropertiesSelector } from '../attribute/AttributePropertiesSelector';
-import { InputNumber } from '../../../../../components/Inputs';
+import {Translate} from '../../../../../dependenciesTools';
+import {AttributePropertiesSelector} from '../attribute/AttributePropertiesSelector';
+import {InputNumber} from '../../../../../components/Inputs';
 import {
   FieldOperand,
   Operand,
@@ -70,8 +70,10 @@ const CalculateOperationLine: React.FC<OperationLineProps> = ({
   isValue,
 }) => {
   const translate = useTranslate();
-  const { setValue, watch, errors } = useFormContext();
-  const { formName } = useControlledFormInputAction<string | null>(lineNumber);
+  const {setValue, watch, errors} = useFormContext();
+  const {formName, getFormValue} = useControlledFormInputAction<string | null>(
+    lineNumber
+  );
   const fieldOperand = sourceOrOperation as FieldOperand;
 
   const isOperatorInError =
@@ -82,6 +84,16 @@ const CalculateOperationLine: React.FC<OperationLineProps> = ({
     typeof errors?.content?.actions?.[lineNumber]?.full_operation_list?.[
       operationLineNumber
     ]?.value === 'object';
+
+  const getOperator = () =>
+    getFormValue(formName(`${baseFormName}.operator`)) ??
+    (sourceOrOperation as any).operator;
+  watch(formName(`${baseFormName}.operator`));
+
+  const getValue = () =>
+    getFormValue(formName(`${baseFormName}.value`)) ??
+    (sourceOrOperation as any).value;
+  watch(formName(`${baseFormName}.value`));
 
   return (
     <li
@@ -113,7 +125,7 @@ const CalculateOperationLine: React.FC<OperationLineProps> = ({
                 isOperatorInError ? ' select2-container-error' : ''
               }`}>
               <CalculateOperatorSelector
-                value={watch(formName(`${baseFormName}.operator`))}
+                value={getOperator()}
                 hiddenLabel
                 onChange={operator => {
                   setValue(formName(`${baseFormName}.operator`), operator);
@@ -127,7 +139,7 @@ const CalculateOperationLine: React.FC<OperationLineProps> = ({
             as={<input type='hidden' />}
             rules={getConstantValidation(
               isValue,
-              watch(formName(`${baseFormName}.operator`)),
+              getFormValue(formName(`${baseFormName}.operator`)),
               translate
             )}
           />
@@ -139,7 +151,7 @@ const CalculateOperationLine: React.FC<OperationLineProps> = ({
                 }`}
                 data-testid={`edit-rules-action-operation-list-${operationLineNumber}-number`}
                 hiddenLabel={true}
-                defaultValue={watch(formName(`${baseFormName}.value`))}
+                defaultValue={getValue()}
                 step={'any'}
                 onChange={e => {
                   setValue(
@@ -178,4 +190,4 @@ const CalculateOperationLine: React.FC<OperationLineProps> = ({
   );
 };
 
-export { CalculateOperationLine };
+export {CalculateOperationLine};
