@@ -366,3 +366,11 @@ services:
             - '@pim_enrich.connector.processor.mass_edit.family.set_requirements'
             - '@pim_connector.writer.database.family'
             - '%pim_job_product_batch_size%'
+
+    pim_connector.step.mass_edit_family.compute_data_related_to_family_products:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'compute_data_related_to_family_products'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.tasklet.mass_edit_family.compute_completeness_of_family_products'
