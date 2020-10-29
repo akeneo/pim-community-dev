@@ -20,9 +20,7 @@ class EvaluateImageEnrichment implements EvaluateCriterionInterface
     private CalculateProductCompletenessInterface $completenessCalculator;
 
     private CriterionCode $code;
-    /**
-     * @var GetLocalesByChannelQueryInterface
-     */
+
     private GetLocalesByChannelQueryInterface $localesByChannelQuery;
 
     public function __construct(CalculateProductCompletenessInterface $completenessCalculator, GetLocalesByChannelQueryInterface $localesByChannelQuery)
