@@ -16,6 +16,8 @@ pim_title:
   akeneo_connectivity_connection_audit_any: Connection dashboard
   akeneo_connectivity_connection_error_management_dashboard: Connection dashboard
   akeneo_connectivity_connection_error_management_connection_monitoring: Connection monitoring
+  akeneo_connectivity_connection_webhook_edit: Event subscription (BETA)
+  akeneo_connectivity_connection_webhook_regenerate_secret: Event subscription (BETA)
 akeneo_connectivity.connection:
   connections: Connections
   secondary_actions:
@@ -190,13 +192,32 @@ akeneo_connectivity.connection:
         message: Ask your administrator to create one.
         link: Learn more about connections here...
   webhook:
+    title: Event subscription (BETA)
+    event_subscription: Event subscription (bêta)
+    helper:
+      message: Your connected app can subscribe to be notified of events in the Akeneo PIM (for example when a product is updated) at a URL you choose.
+      link: Learn more about event subscriptions configuration...
     form:
+      url: URL
       secret: Secret
+      enabled: Event subscription activation
+      test: Test
+    error:
+      wrong_url: This value is not a valid URL.
+      required: This field is required.
+      not_found: You are trying to update a connection that does not exist.
+    flash:
+      success: Event subscription successfully updated.
+      error: Sorry, an error occurred while editing the event subscription.
     regenerate_secret:
       title: Confirm regeneration
+      description: Are you sure you want to regenerate the event subscription secret?
       action:
         regenerate: Regenerate
       link: Here is what will happen.
+      flash:
+        success: Webhook secret successfully regenerated.
+        error: Sorry, an error occurred while regenerating the webhook secret.
   error_management:
     connection_monitoring:
       title: Monitoring

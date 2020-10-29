@@ -921,7 +921,7 @@ abstract class AbstractAttribute implements AttributeInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslation(?string $locale = null)
+    public function getTranslation(?string $locale = null): ?AttributeTranslationInterface
     {
         $locale = ($locale) ? $locale : $this->locale;
         if (null === $locale) {

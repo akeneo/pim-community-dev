@@ -220,6 +220,7 @@ pim_enrich.entity.attribute_group:
   label: Attributgruppe
   uppercase_label: Attributgruppe
   plural_label: Attributgruppen
+  result_count: '{0}0 Attributgruppen|{1}1 Attributgruppe |]1, Inf [{{ count }} Attributgruppen'
   show_more_attribute:
     title: Es ist ein bisschen überfüllt hier, wir zeigen dir {{ attributeCount }}/{{ totalAttributeCount }} Attribute.
     subtitle: Um alle Attribute dieser Gruppe zu entdecken, klicken Sie einfach unten!
@@ -239,6 +240,10 @@ pim_enrich.entity.attribute_group:
       attributes_groups_selected: '{{ itemsCount }} Gruppe(n) ausgewählt'
     delete:
       confirm: Möchten Sie diese Attributgruppe wirklich löschen?
+  grid:
+    columns:
+      name: Attributgruppen
+    no_search_result: Für Ihre Suche wurden leider keine passenden Treffer gefunden.
 pim_enrich.mass_edit.family:
   title: Massenbearbeitung Produktfamilien
   confirm: "{1}Sie sind im Begriff, eine Familie mit den folgenden Informationen zu aktualisieren, bitte bestätigen Sie.|]1, Inf[Sie sind im Begriff, {{ itemsCount }} Familien mit den folgenden Informationen zu aktualisieren, bitte bestätigen."

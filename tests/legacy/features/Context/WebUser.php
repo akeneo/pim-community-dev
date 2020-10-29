@@ -1625,14 +1625,10 @@ class WebUser extends PimContext
     public function iCreateTheFollowingAttributeOptions(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $this->spin(function () use ($data) {
-                $code = $data['Code'];
-                unset($data['Code']);
+            $code = $data['Code'];
+            unset($data['Code']);
 
-                $this->getCurrentPage()->addOption($code, $data);
-
-                return true;
-            }, sprintf('Unable to create the attribute option %s', $data['Code']));
+            $this->getCurrentPage()->addOption($code, $data);
         }
     }
 
