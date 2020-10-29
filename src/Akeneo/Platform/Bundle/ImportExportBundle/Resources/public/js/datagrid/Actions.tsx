@@ -75,7 +75,7 @@ const Actions = ({id, jobLabel, isStoppable, refreshCollection}: ActionsProps) =
   };
 
   return (
-    <ActionsContainer className="action-column">
+    <ActionsContainer>
       {isConfirmOpen && (
         <Modal>
           <ModalCloseButton onClick={closeConfirm} />
