@@ -68,19 +68,21 @@ final class ReferenceEntityCollectionValueFactory implements ValueFactory
                     $data
                 );
             }
+
+            try {
+                RecordCode::fromString($value);
+            } catch (\InvalidArgumentException $e) {
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    $attribute->code(),
+                    'code',
+                    $e->getMessage(),
+                    static::class,
+                    $value
+                );
+            }
         }
 
-        try {
-            return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
-        } catch (\InvalidArgumentException $e) {
-            throw InvalidPropertyException::validEntityCodeExpected(
-                $attribute->code(),
-                'code',
-                $e->getMessage(),
-                static::class,
-                json_encode($data)
-            );
-        }
+        return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
     }
 
     public function supportedAttributeType(): string

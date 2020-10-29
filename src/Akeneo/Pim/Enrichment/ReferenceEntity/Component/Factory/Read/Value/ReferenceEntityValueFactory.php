@@ -58,7 +58,7 @@ final class ReferenceEntityValueFactory implements ValueFactory
         }
 
         try {
-            return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
+            RecordCode::fromString($data);
         } catch (\InvalidArgumentException $e) {
             throw InvalidPropertyException::validEntityCodeExpected(
                 $attribute->code(),
@@ -68,6 +68,8 @@ final class ReferenceEntityValueFactory implements ValueFactory
                 $data
             );
         }
+
+        return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
     }
 
     public function supportedAttributeType(): string
