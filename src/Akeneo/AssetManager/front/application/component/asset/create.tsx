@@ -8,7 +8,7 @@ import {createLocaleFromCode, LocaleCode} from 'akeneoassetmanager/domain/model/
 import Checkbox from 'akeneoassetmanager/application/component/app/checkbox';
 import {Asset} from 'akeneoassetmanager/application/component/app/illustration/asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
-import sanitize from 'akeneoassetmanager/tools/sanitize';
+import sanitizeAssetCode from 'akeneoassetmanager/tools/sanitizeAssetCode';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import assetSaver from 'akeneoassetmanager/infrastructure/saver/asset';
 import {useFocus, useShortcut} from 'akeneoassetmanager/application/hooks/input';
@@ -87,8 +87,8 @@ export const CreateModal = ({assetFamily, locale, onClose, onAssetCreated}: Crea
 
   const onLabelUpdate = React.useCallback(
     (newLabel: string) => {
-      const expectedSanitizedCode = sanitize(label);
-      const newCode = expectedSanitizedCode === code ? sanitize(newLabel) : code;
+      const expectedSanitizedCode = sanitizeAssetCode(label);
+      const newCode = expectedSanitizedCode === code ? sanitizeAssetCode(newLabel) : code;
       setCode(newCode);
       setLabel(newLabel);
     },

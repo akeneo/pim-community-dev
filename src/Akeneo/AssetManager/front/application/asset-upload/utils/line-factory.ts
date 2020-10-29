@@ -1,7 +1,7 @@
 import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import {AssetFamily, getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import sanitize from 'akeneoassetmanager/tools/sanitize';
+import sanitizeAssetCode from 'akeneoassetmanager/tools/sanitizeAssetCode';
 import {createUUIDV4} from 'akeneoassetmanager/application/asset-upload/utils/uuid';
 import Locale from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
@@ -54,7 +54,7 @@ const extractInfoFromFilename = (filename: string, assetFamily: AssetFamily): Fi
 
   if (valuePerLocale && valuePerChannel && (matches = filename.match(/^(\w+)-(\w*)-(\w*)/))) {
     return {
-      code: sanitize(matches[1]),
+      code: sanitizeAssetCode(matches[1]),
       locale: matches[2] ? matches[2] : null,
       channel: matches[3] ? matches[3] : null,
     };
@@ -62,7 +62,7 @@ const extractInfoFromFilename = (filename: string, assetFamily: AssetFamily): Fi
 
   if (valuePerLocale && !valuePerChannel && (matches = filename.match(/^(\w+)-(\w+)/))) {
     return {
-      code: sanitize(matches[1]),
+      code: sanitizeAssetCode(matches[1]),
       locale: matches[2],
       channel: null,
     };
@@ -70,7 +70,7 @@ const extractInfoFromFilename = (filename: string, assetFamily: AssetFamily): Fi
 
   if (!valuePerLocale && valuePerChannel && (matches = filename.match(/^(\w+)-(\w+)/))) {
     return {
-      code: sanitize(matches[1]),
+      code: sanitizeAssetCode(matches[1]),
       locale: null,
       channel: matches[2],
     };
@@ -81,7 +81,7 @@ const extractInfoFromFilename = (filename: string, assetFamily: AssetFamily): Fi
 
 const extractInfoWithOnlyCodeFromFilename = (filename: string): FilenameInfo => {
   return {
-    code: sanitize(filename.replace(/\.[^/.]+$/, '')),
+    code: sanitizeAssetCode(filename.replace(/\.[^/.]+$/, '')),
     locale: null,
     channel: null,
   };
