@@ -282,4 +282,4 @@ mappings:
             data_quality_insights:
                 path_match: 'data_quality_insights.key_indicators.*'
                 mapping:
-                    type: 'keyword'
+                    type: 'boolean'
