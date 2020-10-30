@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Log;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
-use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -16,7 +16,7 @@ class WebhookRequestLog
     private WebhookRequest $webhookRequest;
     private float $startTime;
     private ?float $endTime = null;
-    private ?Response $response;
+    private ?ResponseInterface $response;
 
     public function __construct(
         WebhookRequest $webhookRequest,
@@ -31,7 +31,7 @@ class WebhookRequestLog
         $this->endTime = $endTime;
     }
 
-    public function setResponse(?Response $response): void
+    public function setResponse(?ResponseInterface $response): void
     {
         $this->response = $response;
     }
