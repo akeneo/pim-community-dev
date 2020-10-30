@@ -9,6 +9,7 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Model\StepExecutionTracking;
 use Akeneo\Platform\Bundle\ImportExportBundle\Query\GetJobExecutionTracking;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use AkeneoTest\Platform\Integration\ImportExport\Utils\FrozenClock;
 use Doctrine\DBAL\Connection;
 
@@ -186,7 +187,7 @@ SQL;
     private function expectedJobExecutionTrackingNotStarted(): JobExecutionTracking
     {
         $expectedJobExecutionTracking = new JobExecutionTracking();
-        $expectedJobExecutionTracking->status = 'NOT_STARTED';
+        $expectedJobExecutionTracking->status = 'STARTING';
         $expectedJobExecutionTracking->currentStep = 0;
         $expectedJobExecutionTracking->totalSteps = 3;
 
@@ -194,7 +195,7 @@ SQL;
         $expectedStepExecutionTracking1->isTrackable = false;
         $expectedStepExecutionTracking1->jobName = 'csv_product_import';
         $expectedStepExecutionTracking1->stepName = 'validation';
-        $expectedStepExecutionTracking1->status = 'NOT_STARTED';
+        $expectedStepExecutionTracking1->status = 'STARTING';
         $expectedStepExecutionTracking1->duration = 0;
         $expectedStepExecutionTracking1->hasError = false;
         $expectedStepExecutionTracking1->hasWarning = false;
@@ -205,7 +206,7 @@ SQL;
         $expectedStepExecutionTracking2->isTrackable = true;
         $expectedStepExecutionTracking2->jobName = 'csv_product_import';
         $expectedStepExecutionTracking2->stepName = 'import';
-        $expectedStepExecutionTracking2->status = 'NOT_STARTED';
+        $expectedStepExecutionTracking2->status = 'STARTING';
         $expectedStepExecutionTracking2->duration = 0;
         $expectedStepExecutionTracking2->hasError = false;
         $expectedStepExecutionTracking2->hasWarning = false;
@@ -216,7 +217,7 @@ SQL;
         $expectedStepExecutionTracking3->isTrackable = true;
         $expectedStepExecutionTracking3->jobName = 'csv_product_import';
         $expectedStepExecutionTracking3->stepName = 'import_associations';
-        $expectedStepExecutionTracking3->status = 'NOT_STARTED';
+        $expectedStepExecutionTracking3->status = 'STARTING';
         $expectedStepExecutionTracking3->duration = 0;
         $expectedStepExecutionTracking3->hasError = false;
         $expectedStepExecutionTracking3->hasWarning = false;
@@ -235,7 +236,7 @@ SQL;
     private function expectedJobExecutionTrackingInProgress(): JobExecutionTracking
     {
         $expectedJobExecutionTracking = new JobExecutionTracking();
-        $expectedJobExecutionTracking->status = 'IN_PROGRESS';
+        $expectedJobExecutionTracking->status = 'STARTED';
         $expectedJobExecutionTracking->currentStep = 2;
         $expectedJobExecutionTracking->totalSteps = 3;
 
@@ -254,7 +255,7 @@ SQL;
         $expectedStepExecutionTracking2->isTrackable = true;
         $expectedStepExecutionTracking2->jobName = 'csv_product_import';
         $expectedStepExecutionTracking2->stepName = 'import';
-        $expectedStepExecutionTracking2->status = 'IN_PROGRESS';
+        $expectedStepExecutionTracking2->status = 'STARTED';
         $expectedStepExecutionTracking2->duration = 7;
         $expectedStepExecutionTracking2->hasError = false;
         $expectedStepExecutionTracking2->hasWarning = false;
@@ -265,7 +266,7 @@ SQL;
         $expectedStepExecutionTracking3->isTrackable = true;
         $expectedStepExecutionTracking3->jobName = 'csv_product_import';
         $expectedStepExecutionTracking3->stepName = 'import_associations';
-        $expectedStepExecutionTracking3->status = 'NOT_STARTED';
+        $expectedStepExecutionTracking3->status = 'STARTING';
         $expectedStepExecutionTracking3->duration = 0;
         $expectedStepExecutionTracking3->hasError = false;
         $expectedStepExecutionTracking3->hasWarning = false;
@@ -333,7 +334,7 @@ SQL;
     private function expectedJobExecutionTrackingFailed()
     {
         $expectedJobExecutionTracking = new JobExecutionTracking();
-        $expectedJobExecutionTracking->status = 'COMPLETED';
+        $expectedJobExecutionTracking->status = 'FAILED';
         $expectedJobExecutionTracking->currentStep = 2;
         $expectedJobExecutionTracking->totalSteps = 3;
 
@@ -352,7 +353,7 @@ SQL;
         $expectedStepExecutionTracking2->isTrackable = true;
         $expectedStepExecutionTracking2->jobName = 'csv_product_import';
         $expectedStepExecutionTracking2->stepName = 'import';
-        $expectedStepExecutionTracking2->status = 'COMPLETED';
+        $expectedStepExecutionTracking2->status = 'FAILED';
         $expectedStepExecutionTracking2->duration = 14;
         $expectedStepExecutionTracking2->hasError = true;
         $expectedStepExecutionTracking2->hasWarning = false;
@@ -363,7 +364,7 @@ SQL;
         $expectedStepExecutionTracking3->isTrackable = true;
         $expectedStepExecutionTracking3->jobName = 'csv_product_import';
         $expectedStepExecutionTracking3->stepName = 'import_associations';
-        $expectedStepExecutionTracking3->status = 'NOT_STARTED';
+        $expectedStepExecutionTracking3->status = 'STARTING';
         $expectedStepExecutionTracking3->duration = 0;
         $expectedStepExecutionTracking3->hasError = false;
         $expectedStepExecutionTracking3->hasWarning = false;
