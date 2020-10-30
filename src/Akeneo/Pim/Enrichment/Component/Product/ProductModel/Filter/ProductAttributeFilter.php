@@ -72,14 +72,14 @@ class ProductAttributeFilter implements AttributeFilterInterface
             }
         }
 
+        $parentProperty = $standardProduct['parent'] ?? null;
         $product = $this->productRepository->findOneByIdentifier($standardProduct['identifier']);
-        if (null !== $product && $product->isVariant() && null !== $product->getParent()
-            && !array_key_exists('parent', $standardProduct)) {
-            $standardProduct['parent'] = $product->getParent()->getCode();
-        }
-
-        if (isset($standardProduct['parent']) && '' === $standardProduct['parent']) {
-            $standardProduct['parent'] = null;
+        if (null !== $product) {
+            if ($product->isVariant() && null === $parentProperty) {
+                $standardProduct['parent'] = $product->getParent()->getCode();
+            } elseif (!$product->isVariant() && '' === $parentProperty) {
+                $standardProduct['parent'] = null;
+            }
         }
 
         if (isset($standardProduct['parent']) &&

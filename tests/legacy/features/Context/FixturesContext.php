@@ -1634,6 +1634,19 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @Then /^the "([^"]*)" product should( not)? be variant$/
+     */
+    public function theProductShouldBeVariant(string $identifier, bool $not = false)
+    {
+        $product = $this->getProduct($identifier);
+        if ($not) {
+            Assert::assertFalse($product->isVariant());
+        } else {
+            Assert::assertTrue($product->isVariant());
+        }
+    }
+
+    /**
      * @param Channel   $channel
      * @param TableNode $conversionUnits
      *
