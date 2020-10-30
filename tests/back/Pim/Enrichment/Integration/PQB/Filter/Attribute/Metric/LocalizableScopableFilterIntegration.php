@@ -87,7 +87,7 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
             'a_scopable_localizable_metric',
             Operators::LOWER_THAN,
             ['amount' => 80, 'unit' => 'KILOWATT'],
-            ['locale' => 'fr_FR', 'scope' => 'tablet']
+            ['locale' => 'fr_FR', 'scope' => 'ecommerce']
         ]]);
         $this->assert($result, ['product_two']);
     }
