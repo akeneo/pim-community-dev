@@ -125,7 +125,7 @@ class BatchStatus
      */
     public function isUnsuccessful()
     {
-        return ($this->value == self::FAILED || $this->value > self::FAILED);
+        return ($this->value === self::FAILED || $this->value > self::FAILED);
     }
 
     /**

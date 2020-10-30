@@ -1,5 +1,4 @@
 import styled, {css} from 'styled-components';
-import styled, {css} from 'styled-components';
 
 type Props = {
   width?: number;
@@ -31,7 +30,8 @@ const TableCell = styled.td.attrs((props: Props) => ({
 
   ${props => props.isDraggable && props.isActive === false && dragDisabledStyle}
 
-  ${props => props.isActive === false && inactiveStyle}
+  ${props =>
+    props.isActive === false && inactiveStyle}
 `;
 
 export {TableCell};
