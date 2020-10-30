@@ -52,10 +52,3 @@ services:
             - '@pim_catalog.factory.attribute_requirement'
         tags:
             - { name: doctrine.event_subscriber }
-
-    pim_catalog.event_subscriber.clear_locale_cache_on_save:
-        class: 'Akeneo\Pim\Structure\Bundle\EventSubscriber\Channel\ClearCacheSubscriber'
-        arguments:
-            - '@pim_channel.query.cache.channel_exists_with_locale'
-        tags:
-            - { name: kernel.event_subscriber }

@@ -1,10 +1,10 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Structure\Bundle\EventSubscriber\Channel;
+namespace Specification\Akeneo\Channel\Bundle\EventListener;
 
+use Akeneo\Channel\Bundle\EventListener\ClearCacheSubscriber;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
-use Akeneo\Pim\Structure\Bundle\EventSubscriber\Channel\ClearCacheSubscriber;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\GenericEvent;
