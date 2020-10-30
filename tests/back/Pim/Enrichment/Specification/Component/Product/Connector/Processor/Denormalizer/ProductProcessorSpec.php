@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\MediaStorer;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
@@ -37,8 +38,10 @@ class ProductProcessorSpec extends ObjectBehavior
         ObjectDetacherInterface $productDetacher,
         FilterInterface $productFilter,
         AttributeFilterInterface $productAttributeFilter,
-        MediaStorer $mediaStorer
+        MediaStorer $mediaStorer,
+        RemoveParentInterface $removeParent
     ) {
+        $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $this->beConstructedWith(
             $productRepository,
             $productToImport,
@@ -48,7 +51,8 @@ class ProductProcessorSpec extends ObjectBehavior
             $productDetacher,
             $productFilter,
             $productAttributeFilter,
-            $mediaStorer
+            $mediaStorer,
+            $removeParent
         );
         $this->setStepExecution($stepExecution);
     }
@@ -60,7 +64,6 @@ class ProductProcessorSpec extends ObjectBehavior
     }
 
     function it_updates_an_existing_product(
-        $productRepository,
         $productUpdater,
         $productValidator,
         $productFilter,
@@ -81,8 +84,8 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('enabled')->willReturn(true);
         $jobParameters->get('decimalSepara7tor')->willReturn('.');
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+        $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productToImport->fromFlatData('tshirt', 'Summer Tshirt')->willReturn($product);
         $product->getId()->willReturn(42);
 
@@ -166,7 +169,6 @@ class ProductProcessorSpec extends ObjectBehavior
     }
 
     function it_updates_an_existing_product_with_filtered_values(
-        $productRepository,
         $productToImport,
         $productUpdater,
         $productValidator,
@@ -187,8 +189,8 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('enabled')->willReturn(true);
         $jobParameters->get('decimalSeparator')->willReturn('.');
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+        $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productToImport->fromFlatData('tshirt', 'Tshirt')->willReturn($product);
         $product->getId()->willReturn(42);
 
@@ -274,7 +276,6 @@ class ProductProcessorSpec extends ObjectBehavior
     }
 
     function it_updates_an_existing_product_without_filtered_values(
-        $productRepository,
         $productToImport,
         $productUpdater,
         $productValidator,
@@ -295,8 +296,8 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('enabled')->willReturn(true);
         $jobParameters->get('decimalSeparator')->willReturn('.');
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+        $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productToImport->fromFlatData('tshirt', 'Tshirt')->willReturn($product);
         $product->getId()->willReturn(42);
 
@@ -389,6 +390,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('enabled')->willReturn(true);
         $jobParameters->get('decimalSeparator')->willReturn('.');
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+        $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
         $convertedData = [
             'identifier' => null,
@@ -416,7 +418,6 @@ class ProductProcessorSpec extends ObjectBehavior
     }
 
     function it_skips_a_product_when_update_fails(
-        $productRepository,
         $productToImport,
         $productUpdater,
         $productDetacher,
@@ -436,8 +437,8 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('enabled')->willReturn(true);
         $jobParameters->get('decimalSeparator')->willReturn('.');
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+        $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productToImport->fromFlatData('tshirt', 'Tshirt')->willReturn($product);
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
 
@@ -525,7 +526,6 @@ class ProductProcessorSpec extends ObjectBehavior
     }
 
     function it_skips_a_product_when_object_is_invalid(
-        $productRepository,
         $productToImport,
         $productUpdater,
         $productValidator,
@@ -546,8 +546,8 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('enabled')->willReturn(true);
         $jobParameters->get('decimalSeparator')->willReturn('.');
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+        $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productToImport->fromFlatData('tshirt', 'Tshirt')->willReturn($product);
 
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
@@ -640,7 +640,6 @@ class ProductProcessorSpec extends ObjectBehavior
     }
 
     function it_skips_a_product_when_there_is_nothing_to_update(
-        $productRepository,
         $productToImport,
         $productUpdater,
         $productDetacher,
@@ -660,8 +659,8 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('enabled')->willReturn(true);
         $jobParameters->get('decimalSeparator')->willReturn('.');
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+        $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productToImport->fromFlatData('tshirt', 'Tshirt')->willReturn($product);
         $product->getId()->willReturn(1);
         $addParent->to($product, '')->willReturn($product);
@@ -742,7 +741,6 @@ class ProductProcessorSpec extends ObjectBehavior
     }
 
     function it_updates_an_existing_product_and_does_not_change_his_state(
-        $productRepository,
         $productToImport,
         $productUpdater,
         $productValidator,
@@ -763,8 +761,8 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('enabled')->willReturn(true);
         $jobParameters->get('decimalSeparator')->willReturn('.');
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+        $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productToImport->fromFlatData('tshirt', 'Summer Tshirt')->willReturn($product);
         $product->getId()->willReturn(42);
 
@@ -850,7 +848,6 @@ class ProductProcessorSpec extends ObjectBehavior
     }
 
     function it_creates_a_product_with_sku_and_family_columns(
-        $productRepository,
         $productToImport,
         $productUpdater,
         $productValidator,
@@ -871,8 +868,8 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('enabled')->willReturn(true);
         $jobParameters->get('decimalSeparator')->willReturn('.');
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+        $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
-        $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productToImport->fromFlatData('tshirt', 'Tshirt')->willReturn($product);
 
         $addParent->to($product, '')->willReturn($product);
@@ -941,8 +938,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('enabled')->willReturn(true);
         $jobParameters->get('decimalSeparator')->willReturn('.');
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
-
-        $productRepository->getIdentifierProperties()->willReturn(['sku']);
+        $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
         $productRepository->findOneByIdentifier('tshirt')->willReturn($productInDB);
         $productInDB->getFamily()->willReturn($family);
@@ -1011,5 +1007,78 @@ class ProductProcessorSpec extends ObjectBehavior
         $this
             ->process($originalItem)
             ->shouldReturn($product);
+    }
+
+    function it_converts_a_variant_product_to_simple_product_when_the_job_parameter_is_true(
+        FindProductToImport $productToImport,
+        StepExecution $stepExecution,
+        AttributeFilterInterface $productAttributeFilter,
+        ObjectUpdaterInterface $productUpdater,
+        ValidatorInterface $productValidator,
+        RemoveParentInterface $removeParent,
+        JobParameters $jobParameters,
+        ProductInterface $product
+    ) {
+        $item = [
+            'identifier' => 'my_sku',
+            'family' => 'clothing',
+            'enabled' => true,
+            'parent' => '',
+        ];
+        $filteredItem = [
+            'identifier' => 'my_sku',
+            'parent' => '',
+        ];
+
+        $jobParameters->get('convertVariantToSimple')->willReturn(true);
+        $jobParameters->get('enabledComparison')->willReturn(false);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $productAttributeFilter->filter($item)->willReturn($filteredItem);
+        $product->isVariant()->willReturn(true);
+        $productToImport->fromFlatData('my_sku', 'clothing')->willReturn($product);
+
+        $removeParent->from($product)->shouldBeCalled();
+        $productUpdater->update($product, ['parent' => ''])->shouldBeCalled();
+        $productValidator->validate($product)->willReturn(new ConstraintViolationList([]));
+
+        $this->process($item)->shouldReturn($product);
+    }
+
+    function it_does_not_convert_a_variant_product_to_simple_product_when_the_job_parameter_is_false(
+        FindProductToImport $productToImport,
+        StepExecution $stepExecution,
+        AttributeFilterInterface $productAttributeFilter,
+        ObjectUpdaterInterface $productUpdater,
+        ValidatorInterface $productValidator,
+        RemoveParentInterface $removeParent,
+        JobParameters $jobParameters,
+        ProductInterface $product
+    ) {
+        $item = [
+            'identifier' => 'my_sku',
+            'family' => 'clothing',
+            'enabled' => true,
+            'parent' => '',
+        ];
+        $filteredItem = [
+            'identifier' => 'my_sku',
+            'enabled' => true,
+        ];
+
+        $jobParameters->get('convertVariantToSimple')->willReturn(false);
+        $jobParameters->get('enabledComparison')->willReturn(false);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $productAttributeFilter->filter([
+            'identifier' => 'my_sku',
+            'family' => 'clothing',
+            'enabled' => true,
+        ])->shouldBeCalled()->willReturn($filteredItem);
+        $productToImport->fromFlatData('my_sku', 'clothing')->willReturn($product);
+
+        $removeParent->from($product)->shouldNotBeCalled();
+        $productUpdater->update($product, ['enabled' => true])->shouldBeCalled();
+        $productValidator->validate($product)->willReturn(new ConstraintViolationList([]));
+
+        $this->process($item)->shouldReturn($product);
     }
 }
