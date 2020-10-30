@@ -11,11 +11,10 @@ import AttributesTabContent from './component/ProductEditForm/TabContent/Attribu
 import {AssetCollectionIcon, EditIcon, pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
 import AxisEvaluation from './component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation';
-import {Criterion} from './component/ProductEditForm/TabContent/DataQualityInsights/Criterion';
+import {Criterion, Icon} from './component/ProductEditForm/TabContent/DataQualityInsights/Criterion';
 import {Recommendation} from './component/ProductEditForm/TabContent/DataQualityInsights/Recommendation';
 import {CRITERION_DONE, CRITERION_NOT_APPLICABLE} from '../domain/Evaluation.interface';
 import {isSuccess} from './helper';
-import {Icon} from './component/ProductEditForm/TabContent/DataQualityInsights/Criterion/Icon';
 
 const translate = require('oro/translator');
 
