@@ -127,6 +127,7 @@
 - Change constructor of `\Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductController` to
     - add `Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts $getConnectorProductsWithOptions`
     - add `Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher`
+    - add `GetProductsWithQualityScoresInterface $getProductsWithQualityScores`  
     - add `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface $removeParent`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductController` to
     - add `Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface $productEditDataFilter`
@@ -274,6 +275,7 @@
 - Move `Akeneo\Channel\Component\Query\GetChannelCodeWithLocaleCodesInterface` to `Akeneo\Channel\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface`
 - Remove `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ImmutableVariantAxesValues`
 - Remove `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ImmutableVariantAxesValuesValidator`
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductProcessor` to add `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface $removeParent`
 
 ### CLI commands
 
