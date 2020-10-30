@@ -1,6 +1,8 @@
 import React from 'react';
 import {Badge, Level} from 'akeneo-design-system';
 
+const __ = require('oro/translator');
+
 type JobStatus = 'COMPLETED' | 'STARTING' | 'STARTED' | 'STOPPING' | 'STOPPED' | 'FAILED' | 'ABANDONED' | 'UNKNOWN';
 
 const badgeLevel = (status: JobStatus, hasError: boolean, hasWarning: boolean): Level => {
@@ -24,7 +26,7 @@ type JobExecutionStatusProps = {
 
 const jobStatusLabel = (status: JobStatus, currentStep: number, totalSteps: number): string => {
   if (status !== 'STARTING' && status !== 'STARTED') {
-    return status;
+    return __(status.toLowerCase());
   }
 
   return `${status} ${currentStep}/${totalSteps}`;
