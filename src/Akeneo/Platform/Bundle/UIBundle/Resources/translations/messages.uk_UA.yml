@@ -1,0 +1,504 @@
+User: Користувач
+Run demo: Запустити демо
+Product: Продукт
+Attribute list: Список атрибутів
+Attribute Group list: Список груп атрибутів
+Users: Користувачі
+Roles: Ролі
+Groups: Групи
+Configuration: Конфігурація
+Currency list: Список валют
+Locale list: Список локалей
+Logged in as: Ви увійшли як
+Logout: Вийти
+Login: Увійти
+Previous: Попередній
+Next: Наступний
+Channel list: Список каналів
+Select file: Вибрати файл
+Change file: Змінити файл
+Remove file: Видалити файл
+Delete: Видалити
+Save: Зберегти
+Get help: Отримати допомогу
+My User: Мій акаунт
+oro.form.choose_value: Виберіть значення...
+Read more: Читати далі
+oro.form.click_here_to_select: Натисніть тут, щоб вибрати...
+Add: Додати
+"Learn how to use this space": "Дізнайтеся, як використовувати цей простір"
+"How To Use Pinbar": "Як використовувати Pinbar"
+Pinbar: Pinbar
+Favorites: Улюблене
+Most Viewed: Найпопулярніше
+"Add this page to favorites": "Додати цю сторінку в улюбленого"
+"Minimize the window to the pinbar": "Мінімізувати вікно у pinbar"
+"Loading ...": "Завантаження ..."
+"Yes": "Так"
+"No": "Ні"
+required: (обов'язково)
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Дозволити завантаження повідомлень
+    loading_message_enabled.tooltip: Показувати користувачу повідомлення під час завантаження сторінки
+    loading_messages.label: Доступні для завантаження повідомлення
+    loading_messages.tooltip: Всі доступні для завантаження повідомлення розділені розривом рядка
+  group:
+    loading_message.title: Завантаження повідомлень
+other_actions: Інші дії
+pim_common:
+  cancel: Відмінити
+  save: Зберегти
+  delete: Видалити
+  update: Оновити
+  view: Вид
+  edit: Редагувати
+  created: Створено
+  updated: Оновлено
+  create: Створити
+  permissions: Права доступу
+  properties: Властивості
+  name: Ім’я
+  remove: Видалити
+pim_enrich:
+  #ACLs
+  acl:
+    locale:
+      index: Перегляд локалей
+    currency:
+      index: Список валют
+      toggle: Переключення валют
+    product:
+      index: Список продуктів
+      create: Створити продукт
+      edit_attributes: Змінити атрибути продукту
+      remove: Видалити продукт
+      add_attribute: Додати атрибут до продукту
+      remove_attribute: Видалити атрибут з продукту
+      categories_view: Звернення до категорії продукту
+      associations_view: Переглянути зв'язки продукту
+      associations_edit: Додавання зв'язків продукту
+      change_family: Змінити сімейство продуктів
+      add_to_groups: Додати продукт до груп
+      mass_edit: Масові дії редагування продуктів
+      comment: Коментувати продукти
+      download: Завантажити продукт у PDF
+      history: Переглянути журнал продукту
+    product_model:
+      create: Створити модель продукту
+      edit_attributes: Змінити атрибути моделі продукту
+      categories_view: Звернення до категоріїй  моделі продукту
+      history: Перегляд історії моделі продукту
+      remove: Видалити модель продукту
+    category:
+      list: Список категорій
+      create: Створити категорію
+      edit: Редагувати категорію
+      remove: Видалити категорію
+      move: Перемістити категорію
+      children: Переглянути дочірні категорії
+      products: Переглянути продукти в категорії
+      history: Переглянути журнал категорії
+    channel:
+      index: Список каналів
+      create: Створити канал
+      edit: Редагувати канал
+      remove: Видалити канал
+      history: Переглянути журнал канала
+    family:
+      index: Перегляд сімейств
+      create: Створити сімейство
+      edit_properties: Змінити властивості сімейства
+      edit_attributes: Змінити атрибути сімейства
+      edit_variants: Змінити варіант сімейства
+      remove: Видалити сімейство
+      history: Переглянути журнал сімейства
+    family_variant:
+      remove: Видалити варіант сімейства
+    attribute_group:
+      index: Перелічити групи атрибутів
+      create: Створити групу атрибутів
+      edit: Редагувати групу атрибутів
+      remove: Видалити групу атрибутів
+      sort: Сортування груп атрибутів
+      add_attribute: Додати атрибут до групи
+      remove_attribute: Видалити атрибут з групи
+      history: Переглянути журнал групи атрибутів
+    attribute:
+      index: Список атрибутів
+      create: Створити атрибут
+      edit: Редагувати атрибут
+      remove: Видалити атрибут
+      sort: Сортування атрибутів всередині груп атрибутів
+      history: Переглянути журнал атрибуту
+    group:
+      index: Список груп
+      create: Створити групу
+      edit: Редагувати групу
+      remove: Видалити групу
+      history: Переглянути журнал групи
+    group_type:
+      index: Список типів груп
+      create: Створити тип групи
+      edit: Редагувати тип групи
+      remove: Видалити тип групи
+    association_type:
+      index: Список типів асоціацій
+      create: Створити тип асоціації
+      edit: Редагувати тип асоціації
+      remove: Видалити тип асоціації
+      history: Переглянути журнал типу асоціацій
+    association:
+      remove: Видалення зв'язків з продуктом
+    job_tracker:
+      index: Перегляд трекеру процеса
+    api_connection:
+      manage: Керування підключеннями API
+  acl_group:
+    association_type: Типи асоціацій
+    attribute: Атрибути
+    attribute_group: Групи атрибутів
+    category: Категорії
+    channel: Канали
+    currency: Валюти
+    family: Сімейства
+    group: Групи
+    group_type: Типи груп
+    locale: Локалі
+    product: Продукти
+    product_model: Моделі продукту
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: Локаль була видалена з каналу. Триває видалення пов'язаних з нею даних.
+        done: Видалення локалі на каналі завершене.
+  create:
+    attribute: створити атрибут
+    attribute group: створити групу атрибутів
+    category: створити категорію
+    tree: створити дерево
+    channel: створити канал
+    currency: створити валюту
+    family: створити сімейство
+    locale: створити локаль
+    product: створити продукт
+    group: створити групу
+    association type: створити тип асоціації
+    group type: створити тип групи
+    drag_or_upload: Перетягніть для вивантаження, або натисніть тут
+#Confirmation messages
+confirmation:
+  delete: Підтвердити видалення
+  leave: Ви впевнені, що ви хочете залишити цю сторінку?
+  discard changes: Ви втратите зміни до %entity%, якщо залишите сторінку.
+  remove:
+    category: Ви впевнені, що ви хочете видалити категорію %name%?
+    user: Ви впевнені, що ви хочете видалити користувача %name%?
+#Flash messages
+flash:
+  entity:
+    removed: Елемент було видалено
+  attribute:
+    identifier_not_removable: Ідентифікатор атрибуту не може бути видалений
+  category:
+    removed: Категорію успішно видалено
+  tree:
+    removed: Дерево успішно видалено
+    not removable: Дерева, які підключені до каналів не можна видалити.
+  currency:
+    updated: Валюту успішно оновлено
+    error.linked_to_channel: Не можна дезактивувати валюти, пов'язані з каналом.
+  product:
+    enabled: Продукт був активований
+    disabled: Продукт був дезактивований
+  group type:
+    created: Тип групи успішно створено
+  user:
+    removed: Користувача успішно видалено
+  error occurred: Не вдалося виконати дію. Спробуйте ще раз.
+#Info messages
+info:
+  updated: Є незбережені зміни.
+  category:
+    remove children: Всі підкатегорії буде видалено.
+    keep products: Продукти в цих категоріях не буде видалено.
+    products limit exceeded: Ця категорія містить більше продуктів, ніж дозволено для цієї операції (максимум %limit% продуктів)
+  product:
+    no available attributes: Немає більше атрибутів для додавання
+    no family defined: Сімейство не визначено
+    change family: Змінити сімейство продуктів
+    change family to: Змінити сімейство на
+    merge attributes: Поточні атрибути буде об'єднано з іншими в нову родину.
+    keep attributes: Атрибути не буде видалено.
+    number of associations: '%productCount% продуктів та %groupCount% груп'
+    enable: Увімкнути
+    enabled: Ввімкнено
+    disable: Вимкнути
+    disabled: Вимкнено
+  group:
+    axis: 'Конфігураційні атрибути: %attributes%'
+    select products: Будь ласка, виберіть продукти, які повинні належати до цієї групи.
+    selectable products: Наступні виділені продукти мають визначене значення для кожного конфігураційного атрибуту.
+    no group types: Типи груп не існуюють, натисніть тут, щоб створити одну
+    more products: 'Ще %count% продуктів...'
+  association type:
+    show products: Показати товари
+    show groups: Показати групи
+    remove from products: Видалення типу асоціації буде видалено з %count% продуктів.
+    none exist: Типи асоціацій не існуюють.
+    create one: Натисніть тут, щоб створити один
+  attribute:
+    auto option sorting: Якщо активовано, параметри будуть впорядковані автоматично за їх локалізованими ярликами
+  completeness:
+    not calculated: не обчислена
+#Form elements
+Created: Створено
+Updated: Оновлено
+Last update: Останнє оновлення
+by: За
+N/A: Н/Д
+Manage products: Керувати продуктами
+Manage groups: Керувати групами
+Code: Код
+Name: Ім’я
+Type: Тип
+Scope: Канал
+Required: Обов’язково
+Unique: Унікальний
+Not required: Не вимагається
+Translatable: Перекладається
+Scopable: Сфера визначається
+Localizable: Локалізуємий
+Unique value: Унікальне значення
+Attribute group: Група атрибутів
+Other: Інші
+Variants behavior when edited: Варіанти поведінки під час редагування
+Remove: Видалити
+Parameters: Параметри
+System: Система
+Values: Значення
+General parameters: Загальні параметри
+Backend parameters: Параметри бази даних
+Label: Мітка
+Default label: Мітка за промовчанням
+Default value: Значення за промовчанням
+Attributetype: Тип атрибуту
+Attribute type: Тип атрибуту
+Defaultvalue: Значення за промовчанням
+Variant: Варіант
+Smart: Розумний
+Useable as grid column: Може використовуватися як стовпець таблиці
+Useable as grid filter: Використовується в сітці
+Family: Сімейство
+Image: Зображення
+Variant products: Варіанти продуктів
+Available locales: Доступні локалі
+Locale specific: Специфічно для локалі
+default: За промовчанням
+Axis: Вісь
+Add attributes: Додати атрибути
+switch_on: "Так"
+switch_off: "Ні"
+Close: Закрити
+Search: Пошук
+Choose the attribute type: Оберіть тип атрибута
+Choose the attribute group: Оберіть групу атрибутів
+Drag and drop a file or click here: Перетягніть файл або натисніть тут
+Drop an image or click here: Перетягніть зображення або натисніть тут
+Automatic option sorting: Автоматичне сортування
+save_attribute_before_manage_option: Для керування параметрами, будь ласка, спочатку збережіть цей атрибут
+Please select: Будь ласка, оберіть
+Active: Активний
+Inactive: Неактивний
+Do not convert: Не перетворювати
+Create: Створити
+Choose a family: Виберіть сімейство
+Choose a unit: Виберіть одиниці виміру
+No matches found: Збіги не знайдено
+Category tree: Дерево категорій
+Completeness: Ступінь заповненості
+Attribute used as label: Атрибут, який використовується як мітка
+Credentials: Дані доступу
+#Scopes
+Global: Глобальний
+Channel: Канал
+Expand all channels: Розгорнути всі канали
+Collapse all channels: Згорнути всі канали
+#Variants
+Always override: Завжди перевизначити
+Ask: Запитати
+#Attribute group
+General Properties: Загальні властивості
+Group values: Значення групи
+New group: Нова група
+Groups overview: Огляд груп
+'Y-m-d h:i:s': 'd-m-Y H:i:s'
+#Attribute properties
+Max characters: Максимум символів
+Validation rule: Правило перевірки
+Validation regexp: Регулярний вираз для перевірки
+Wysiwyg enabled: WYSIWYG включений
+Number min: Мінімальне число
+Number max: Максимальне число
+Decimals allowed: Дозволити десяткові знаки
+Negative allowed: Дозволити від'ємні значення
+Date min: Мінімальна дата
+Date max: Максимальна дата
+Metric family: Сімейство вимірів
+Default metric unit: Одиниці виміру за промовчанням
+Max file size: Максимальний розмір файлу (МБ)
+Allowed extensions: Дозволені розширення
+None: Жоден
+E-mail: E-mail
+URL: URL
+Regular expression: Регулярний вираз
+Minimum input length: Мінімальна довжина вводу
+Default: За промовчанням
+#Family
+Attributes: Атрибути
+#Category
+Title: Назва
+#Page titles
+pim_catalog_identifier: Ідентифікатор
+pim_catalog_text: Текст до 255 символів
+pim_catalog_textarea: Область тексту
+pim_catalog_number: Число
+pim_catalog_price_collection: Ціна
+pim_catalog_multiselect: Множинний вибір
+pim_catalog_simpleselect: Простий вибір
+pim_catalog_file: Файл
+pim_catalog_image: Зображення
+pim_catalog_boolean: "Так/Ні"
+pim_catalog_date: Дата
+pim_catalog_metric: Метричний
+pim_reference_data_simpleselect: Простий розкривний список довідкових даниx
+pim_reference_data_multiselect: Множинний розкривний список довідкових даниx
+#Locales
+Activated: Активовано
+Edit: Редагувати
+Disable: Вимкнути
+To enable: Увімкнути
+Select attributes: Виберіть атрибути
+Select: Виберіть
+Remove this attribute: Видалити цей атрибут
+Copy: Копія
+Translate from: Переклад з
+Current tab: Поточна вкладка
+#Product view
+Group: Група
+View group: Переглянути групу
+Products: Продукти
+#Tabs
+Properties: Властивості
+History: Історія
+pane.accordion:
+  node_values: Значення вузлів
+  general_properties: Загальні властивості
+  locale_values: Значення локалі
+  backend_parameters: Параметри бази даних
+  general_parameters: Загальні параметри
+  validation_parameters: Параметри перевірки
+  label_translations: Переклади міток
+  options: Параметри
+  group_values: Значення групи
+#Popin titles
+popin.create:
+  association_type.title: Створити новий тип асоціації
+  group.title: Створити нову групу
+  product.title: Створити новий продукт
+  option.title: Створити новий параметр
+#Datagrid contents
+In group: У групі
+Attribute as label: Атрибут як мітка
+Is associated: Пов'язано
+Complete: Завершено
+Created At: Створено в
+Updated At: Оновлено в
+Enabled: Ввімкнено
+Disabled: Вимкнено
+Status: Статус
+#Versioning / history
+Change History: Історія змін
+Data Audit: Аудит даних
+Data Audit - System: 'Аудит даних - система'
+Action: Дія
+Version: Версія
+Entity type: Тип сутності
+Entity name: Ім'я сутності
+Entity id: Ідентифікатор сутності
+Data: Дані
+Author: Автор
+Logged at: Увійти в
+Deleted: Видалено
+Old values: Старі значення
+New values: Нові значення
+#Configuration
+System configuration: Конфігурація системи
+General setup: Загальні установки
+Localization: Локалізація
+Localization options: Параметри локалізації
+Locale: Локаль
+Location: Розташування
+Format address by address country: Формат адреси в залежності від країни
+Language: Мова
+Timezone: Часовий пояс
+Currency: Валюта
+oro.locale:
+  address_format:
+    region_name_type:
+      parish: "парафія"
+      state: "держава"
+      island: "острів"
+      county: "округ"
+      area: "область"
+      prefecture: "префектура"
+      department: "департамент"
+      district: "район"
+      province: "провінція"
+  form:
+    tooltip:
+      locale: "Виберіть параметр локалі для форматування чисел, адрес, імен та дат"
+      location: " Розташування буде використовуватися для форматування адреси, якщо вимкнуто параметр \"Форматувати адресу в залежності від країни\""
+      format_address_by_address_country: "Увімкнувши цей параметр, адреса буде відформатована в залежності від країни, де ви знаходитеся. Вимкнувши цей параметр, адреса буде відформатована відповідно до вашого розташування"
+      language: "Виберіть мову системи, яку ви хочете використовувати"
+      timezone: "Виберіть часовий пояс для відображення дати та часу"
+      currency: "Виберіть валюту за промовчанням"
+#Datagrid
+Selected products successfully deleted: Вибрані продукти успішно видалені
+pim_mass_edit:
+  notification:
+    mass_edit:
+      error: Масове редагування <strong>%label%</strong> не вдалося
+      warning: Масове редагування <strong>%label%</strong> завершилося з деякими попередженнями
+      success: Масове редагування <strong>%label%</strong> завершилося
+    quick_export:
+      error: Швидкий експорт <strong>%label%</strong> не вдався
+      warning: Швидкий експорт <strong>%label%</strong> завершений з деякими попередженнями
+      success: Швидкий експорт <strong>%label%</strong> завершений
+    mass_delete:
+      error: Масове видалення <strong>%label%</strong> не вдалося
+      warning: Масове видалення <strong>%label%</strong> завершилося з деякими попередженнями
+      success: Масове видалення <strong>%label%</strong> завершилося
+job_execution.summary:
+  mass_edited: Відредаговано
+  skip: Пропущено
+  skipped_products: Пропущені продукти
+  skipped_attributes: Пропущені атрибути
+  skipped_families: Пропущені сімейства
+  deleted_products: Видалені товари
+  deleted_product_models: Видалені моделі продукту
+pim_mass_edit_execution_show: Задачі масового редагування | Деталі
+edit_common_attributes.steps.edit_common_attributes_processor.title: Редагувати атрибути
+update_product_value.steps.update_product_value_processor.title: Оновити значення продукту
+remove_product_value.steps.update_product_value_processor.title: Видалити значення продукту
+edit_common_attributes: Редагувати атрибути
+edit_common_attributes_clean: Очищення файлів для атрибутів
+perform.steps.duplicated.title: Продубльовані конфігураційні атрибути
+perform.steps.excluded.title: Виключені продукти
+mass_edit report:
+  overview: Звіти масового редагування
+job_tracker:
+  tab:
+    title: Трекер процесів
+  filter:
+    started_at: Розпочато о

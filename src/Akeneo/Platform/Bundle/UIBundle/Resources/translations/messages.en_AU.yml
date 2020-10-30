@@ -62,16 +62,12 @@ pim_common:
   name: Name
   remove: Remove
   code: Code
-  quantity: Quantity
   products: Products
   product_models: Product models
   categories: Categories
-  family_variant: Family variant
   enabled: Enabled
   family: Family
-  parent: Parent
   groups: Groups
-  unit: Unit
   yes: "Yes"
   no: "No"
 pim_enrich:
@@ -104,7 +100,7 @@ pim_enrich:
       edit_attributes: Edit attributes of a product model
       categories_view: Consult the categories of a product model
       history: View product model history
-      remove: Remove a product model (including children)
+      remove: Remove a product model
     category:
       list: List categories
       create: Create a category
@@ -434,8 +430,6 @@ Disabled: Disabled
 Status: Status
 pim_datagrid:
   filters:
-    product_typology:
-      label: Product typology
     entity_type:
       label: Variant
     family:
@@ -444,18 +438,8 @@ pim_datagrid:
       label: Groups
     enabled:
       label: Status
-    scope:
-      label: Scope
     completeness:
       label: Complete
-    created:
-      label: Created At
-    updated:
-      label: Updated At
-    label_or_identifier:
-      label: Label or identifier
-    parent:
-      label: Parent
     identifier:
       label: Identifier
 #Versioning / history

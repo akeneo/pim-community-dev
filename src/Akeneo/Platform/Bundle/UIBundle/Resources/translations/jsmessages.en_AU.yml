@@ -202,7 +202,6 @@ pim_common:
   to: to
   type: Type
   update: Update
-  updated: Updated
   "yes": "Yes"
   operator: Operator
   operators:
