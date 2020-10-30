@@ -12,7 +12,7 @@ import AttributesTabContent from "./component/ProductEditForm/TabContent/Attribu
 import {DataQualityInsightsTabContent} from "@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent";
 import AxisEvaluation
   from "@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation";
-import Criterion
+import {Criterion, Icon}
   from "@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/Criterion";
 import {Recommendation} from "@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/Recommendation";
 import {AxisRatesOverviewPortal} from "@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm";
@@ -55,13 +55,13 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
           <DataQualityInsightsTabContent product={product} productEvaluationFetcher={fetchProductDataQualityEvaluation}>
             <AxisEvaluation axis={'enrichment'}>
               <Criterion code={'completeness_of_non_required_attributes'}>
-                <EditIcon/>
+                <Icon type={EditIcon}/>
               </Criterion>
               <Criterion code={'completeness_of_required_attributes'}>
-                <EditIcon/>
+                <Icon type={EditIcon}/>
               </Criterion>
               <Criterion code={'enrichment_image'} followAttributeRecommendation={followImageAttributeRecommendation}>
-                <AssetCollectionIcon/>
+                <Icon type={AssetCollectionIcon}/>
                 <Recommendation supports={criterion => criterion.status === CRITERION_NOT_APPLICABLE || (criterion.status === CRITERION_DONE && !isSuccess(criterion.rate) && criterion.improvable_attributes.length === 0)}>
                   <span className="NotApplicableAttribute">{translate('akeneo_data_quality_insights.product_evaluation.messages.add_image_attribute_recommendation')}</span>
                 </Recommendation>
@@ -70,28 +70,28 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
 
             <AxisEvaluation axis={"consistency"}>
               <Criterion code={'consistency_spelling'}>
-                <EditIcon/>
+                <Icon type={EditIcon}/>
               </Criterion>
               <Criterion code={'consistency_textarea_lowercase_words'}>
-                <EditIcon/>
+                <Icon type={EditIcon}/>
               </Criterion>
               <Criterion code={'consistency_textarea_uppercase_words'}>
-                <EditIcon/>
+                <Icon type={EditIcon}/>
               </Criterion>
               <Criterion code={'consistency_text_title_formatting'}>
-                <EditIcon/>
+                <Icon type={EditIcon}/>
               </Criterion>
               <Criterion code={'consistency_attribute_spelling'}
                followCriterionRecommendation={followAttributeSpellingCriterion}
                isFollowingCriterionRecommendationAllowed={checkFollowingAttributeSpellingCriterionActive}
               >
-                <SettingsIcon/>
+                <Icon type={SettingsIcon}/>
               </Criterion>
               <Criterion code={'consistency_attribute_option_spelling'}
                followCriterionRecommendation={followAttributeOptionSpellingCriterion}
                isFollowingCriterionRecommendationAllowed={checkFollowingAttributeOptionSpellingCriterionActive}
               >
-                <SettingsIcon/>
+                <Icon type={SettingsIcon}/>
               </Criterion>
             </AxisEvaluation>
           </DataQualityInsightsTabContent>
