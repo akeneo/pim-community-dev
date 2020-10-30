@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Structure\Bundle\EventSubscriber\Locale;
+namespace Akeneo\Pim\Structure\Bundle\EventSubscriber\Channel;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
- * Validates and saves the family variants belonging to a family whenever it is updated.
+ * Clear channel cache on save.
  *
  * @author    jmleroux <jean-marie.leroux@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -43,7 +43,7 @@ class ClearCacheSubscriber implements EventSubscriberInterface
     public function clearCache(GenericEvent $event): void
     {
         $subject = $event->getSubject();
-        if (!$subject instanceof LocaleInterface) {
+        if (!$subject instanceof ChannelInterface) {
             return;
         }
 

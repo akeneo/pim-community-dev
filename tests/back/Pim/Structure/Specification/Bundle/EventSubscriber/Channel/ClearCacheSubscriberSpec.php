@@ -1,10 +1,10 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Structure\Bundle\EventSubscriber\Locale;
+namespace Specification\Akeneo\Pim\Structure\Bundle\EventSubscriber\Channel;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
-use Akeneo\Pim\Structure\Bundle\EventSubscriber\Locale\ClearCacheSubscriber;
+use Akeneo\Pim\Structure\Bundle\EventSubscriber\Channel\ClearCacheSubscriber;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -42,10 +42,10 @@ class ClearCacheSubscriberSpec extends ObjectBehavior
 
     function it_clears_locale_cache_on_save(
         ChannelExistsWithLocaleInterface $cachedChannelExistsWithLocale,
-        LocaleInterface $locale,
+        ChannelInterface $channel,
         GenericEvent $event
     ) {
-        $event->getSubject()->willReturn($locale);
+        $event->getSubject()->willReturn($channel);
 
         $cachedChannelExistsWithLocale->clearCache()->shouldBeCalled();
 

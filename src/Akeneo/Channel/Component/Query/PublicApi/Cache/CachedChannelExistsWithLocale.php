@@ -71,7 +71,7 @@ final class CachedChannelExistsWithLocale implements ChannelExistsWithLocaleInte
      * - then activate the locale en_US for ecommerce
      * - if this cache is not cleared, then en_US is not considered activated when querying with this service
      *
-     * The correct way to handle that is to clear the cache after saving a locale.
+     * The correct way to handle that is to clear the cache after saving a channel.
      * As it never occur in real use case (except tests), it will not impact performance
      */
     public function clearCache(): void
