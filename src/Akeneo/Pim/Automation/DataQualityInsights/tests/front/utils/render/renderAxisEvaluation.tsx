@@ -4,16 +4,15 @@ import {Provider} from 'react-redux';
 import {createStoreWithInitialState} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/store/productEditFormStore';
 import AxisEvaluation from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation';
 import Evaluation from '@akeneo-pim-community/data-quality-insights/src/domain/Evaluation.interface';
-import Criterion
-    from "@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/Criterion";
+import {Criterion} from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/Criterion';
 
 const renderEnrichmentEvaluation = (evaluation: Evaluation) => {
-    return renderWithRedux(
-        <AxisEvaluation axis={'enrichment'} evaluation={evaluation}>
-            <Criterion code={'completeness_of_non_required_attributes'}/>
-            <Criterion code={'completeness_of_required_attributes'}/>
-        </AxisEvaluation>
-    );
+  return renderWithRedux(
+    <AxisEvaluation axis={'enrichment'} evaluation={evaluation}>
+      <Criterion code={'completeness_of_non_required_attributes'} />
+      <Criterion code={'completeness_of_required_attributes'} />
+    </AxisEvaluation>
+  );
 };
 
 const renderConsistencyEvaluation = (evaluation: Evaluation) =>  {

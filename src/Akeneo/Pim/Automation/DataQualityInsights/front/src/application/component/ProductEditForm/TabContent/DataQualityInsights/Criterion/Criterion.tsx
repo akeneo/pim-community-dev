@@ -1,14 +1,14 @@
-import React, {FC, ReactElement, ReactNode, useMemo} from 'react';
-import {Product} from '../../../../../domain';
+import React, {Children, cloneElement, createElement, FC, isValidElement, ReactElement, ReactNode} from 'react';
+import {Product} from '../../../../../../domain';
 import Evaluation, {
   CRITERION_ERROR,
   CRITERION_IN_PROGRESS,
   CRITERION_NOT_APPLICABLE,
   CriterionEvaluationResult,
-} from '../../../../../domain/Evaluation.interface';
-import {Recommendation, RecommendationType, RecommendationWithAttributesList} from './Recommendation';
-import {useProduct, useProductFamily} from '../../../../../infrastructure/hooks';
-import {criterionPlaceholder, evaluationPlaceholder, isSimpleProduct, isSuccess} from '../../../../helper';
+} from '../../../../../../domain/Evaluation.interface';
+import {Recommendation, RecommendationType, RecommendationWithAttributesList} from '../Recommendation';
+import {useProduct, useProductFamily} from '../../../../../../infrastructure/hooks';
+import {criterionPlaceholder, evaluationPlaceholder, isSimpleProduct, isSuccess} from '../../../../../helper';
 import {
   AllowFollowingCriterionRecommendation,
   allowFollowingCriterionRecommendation as defaultAllowFollowingCriterionRecommendation,
@@ -16,9 +16,9 @@ import {
   FollowAttributesListRecommendationHandler,
   followCriterionRecommendation as defaultFollowCriterionRecommendation,
   FollowCriterionRecommendationHandler,
-} from '../../../../user-actions';
-
-const translate = require('oro/translator');
+} from '../../../../../user-actions';
+import {Title} from './Title';
+import {Icon} from './Icon';
 
 interface CriterionProps {
   code: string;
@@ -27,31 +27,38 @@ interface CriterionProps {
   evaluation?: Evaluation;
   isFollowingCriterionRecommendationAllowed?: AllowFollowingCriterionRecommendation;
   followCriterionRecommendation?: FollowCriterionRecommendationHandler;
-  followAttributeRecommendation?: FollowAttributeRecommendationHandler,
-  followAttributesListRecommendation?: FollowAttributesListRecommendationHandler
+  followAttributeRecommendation?: FollowAttributeRecommendationHandler;
+  followAttributesListRecommendation?: FollowAttributesListRecommendationHandler;
 }
 
 const buildRecommendation = (
-  recommendationContent: ReactNode | null,
+  children: ReactNode | null | undefined,
   criterionEvaluation: CriterionEvaluationResult,
   evaluation: Evaluation,
   product: Product,
   axis: string,
-  followAttributeRecommendation: FollowAttributeRecommendationHandler|undefined,
-  followAttributesListRecommendation: FollowAttributesListRecommendationHandler|undefined
+  followAttributeRecommendation: FollowAttributeRecommendationHandler | undefined,
+  followAttributesListRecommendation: FollowAttributesListRecommendationHandler | undefined
 ): ReactElement => {
   const criterion = criterionEvaluation.code;
   const attributes = criterionEvaluation.improvable_attributes || ([] as string[]);
 
   // Display a specific recommendation
-  if (recommendationContent !== undefined) {
-    const element = recommendationContent as ReactElement;
-    if (
+  let recommendationContent: ReactElement | undefined = undefined;
+  React.Children.forEach(children, child => {
+    if (isValidElement(child)) {
+      const element = child as ReactElement;
+      if (
         element.type === Recommendation &&
         (element.props.supports === undefined || element.props.supports(criterionEvaluation))
-    ) {
-      return element;
+      ) {
+        recommendationContent = element;
+      }
     }
+  });
+
+  if (recommendationContent) {
+    return recommendationContent;
   }
 
   if (criterionEvaluation.status === CRITERION_ERROR) {
@@ -82,6 +89,22 @@ const buildRecommendation = (
   );
 };
 
+const buildIcon = (children?: ReactNode): ReactElement | undefined => {
+  let icon: ReactElement | undefined = undefined;
+
+  Children.forEach(children, child => {
+    if (isValidElement(child) && child.type === Icon && child.props.type) {
+      try {
+        icon = cloneElement(child, {}, createElement(child.props.type));
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  });
+
+  return icon;
+};
+
 const Criterion: FC<CriterionProps> = ({
   children,
   code,
@@ -91,35 +114,44 @@ const Criterion: FC<CriterionProps> = ({
   followCriterionRecommendation = defaultFollowCriterionRecommendation,
   isFollowingCriterionRecommendationAllowed = defaultAllowFollowingCriterionRecommendation,
   followAttributeRecommendation,
-  followAttributesListRecommendation
+  followAttributesListRecommendation,
 }) => {
   const criterion = code;
   const product = useProduct();
   const family = useProductFamily();
   const isClickable = isFollowingCriterionRecommendationAllowed(criterionEvaluation, family, product);
-  const handleFollowingCriterionRecommendation = (!isClickable || followCriterionRecommendation === undefined) ? undefined : () => {
-    followCriterionRecommendation(criterionEvaluation, family, product);
-  };
-
-  const recommendation = useMemo(() => {
-    return buildRecommendation(children, criterionEvaluation, evaluation, product, axis, followAttributeRecommendation, followAttributesListRecommendation);
-  }, [children, criterionEvaluation, evaluation, product, axis, followAttributeRecommendation, followAttributesListRecommendation]);
+  const handleFollowingCriterionRecommendation =
+    !isClickable || followCriterionRecommendation === undefined
+      ? undefined
+      : () => {
+          followCriterionRecommendation(criterionEvaluation, family, product);
+        };
 
   const rowProps = {
     className: `AknVerticalList-item ${isClickable ? 'AknVerticalList-item--clickable' : ''}`,
     onClick: handleFollowingCriterionRecommendation,
   };
 
+  const icon = buildIcon(children);
+  const recommendation = buildRecommendation(
+    children,
+    criterionEvaluation,
+    evaluation,
+    product,
+    axis,
+    followAttributeRecommendation,
+    followAttributesListRecommendation
+  );
+
   return (
     <li data-testid={'dqiProductEvaluationCriterion'} {...rowProps}>
       <div className={`CriterionMessage ${!isSimpleProduct(product) ? 'CriterionMessage--Variant' : ''}`}>
-        <span className="CriterionRecommendationMessage">
-          {translate(`akeneo_data_quality_insights.product_evaluation.criteria.${criterion}.recommendation`)}:&nbsp;
-        </span>
+        {icon}
+        <Title criterion={criterion} />
         {recommendation}
       </div>
     </li>
   );
 };
 
-export default Criterion;
+export {Criterion};

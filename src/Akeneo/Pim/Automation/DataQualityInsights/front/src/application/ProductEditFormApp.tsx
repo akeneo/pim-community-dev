@@ -8,13 +8,14 @@ import {AxisRatesOverviewPortal} from './component/ProductEditForm';
 import {AxesContextProvider} from './context/AxesContext';
 import {DataQualityInsightsTabContent} from './component/ProductEditForm/TabContent';
 import AttributesTabContent from './component/ProductEditForm/TabContent/AttributesTabContent';
-import {pimTheme} from 'akeneo-design-system';
+import {AssetCollectionIcon, EditIcon, pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
 import AxisEvaluation from './component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation';
-import Criterion from "./component/ProductEditForm/TabContent/DataQualityInsights/Criterion";
-import {Recommendation} from "./component/ProductEditForm/TabContent/DataQualityInsights/Recommendation";
-import {CRITERION_DONE, CRITERION_NOT_APPLICABLE} from "../domain/Evaluation.interface";
-import {isSuccess} from "./helper";
+import {Criterion} from './component/ProductEditForm/TabContent/DataQualityInsights/Criterion';
+import {Recommendation} from './component/ProductEditForm/TabContent/DataQualityInsights/Recommendation';
+import {CRITERION_DONE, CRITERION_NOT_APPLICABLE} from '../domain/Evaluation.interface';
+import {isSuccess} from './helper';
+import {Icon} from './component/ProductEditForm/TabContent/DataQualityInsights/Criterion/Icon';
 
 const translate = require('oro/translator');
 
@@ -37,9 +38,14 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
         <AxesContextProvider axes={['enrichment']}>
           <DataQualityInsightsTabContent product={product} productEvaluationFetcher={fetchProductDataQualityEvaluation}>
             <AxisEvaluation axis={'enrichment'}>
-              <Criterion code={'completeness_of_required_attributes'} />
-              <Criterion code={'completeness_of_non_required_attributes'} />
+              <Criterion code={'completeness_of_required_attributes'}>
+                <Icon type={EditIcon}/>
+              </Criterion>
+              <Criterion code={'completeness_of_non_required_attributes'}>
+                <Icon type={EditIcon}/>
+              </Criterion>
               <Criterion code={'enrichment_image'}>
+                <Icon type={AssetCollectionIcon}/>
                 <Recommendation supports={criterion => criterion.status === CRITERION_NOT_APPLICABLE || (criterion.status === CRITERION_DONE && !isSuccess(criterion.rate) && criterion.improvable_attributes.length === 0)}>
                   <span className="NotApplicableAttribute">{translate('akeneo_data_quality_insights.product_evaluation.messages.add_image_attribute_recommendation')}</span>
                 </Recommendation>
