@@ -19,8 +19,9 @@ class StopJob extends ReactView {
     const data = this.getFormData();
     const props = {
       id: data.meta.id,
+      jobLabel: data.jobInstance.label,
       isStoppable: Boolean(data.isStoppable),
-      refresh: () => this.getRoot().trigger('pim-job-execution-form:request-fetch-data'),
+      onStop: () => this.getRoot().trigger('pim-job-execution-form:request-fetch-data'),
     };
 
     return (

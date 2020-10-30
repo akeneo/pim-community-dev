@@ -57,7 +57,7 @@ type ButtonProps = Override<
     /**
      * Children of the button.
      */
-    children: ReactNode;
+    children?: ReactNode;
   }
 >;
 
@@ -191,3 +191,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 
 export {Button};
+export type {ButtonProps};
