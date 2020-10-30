@@ -3,6 +3,7 @@
 ## Bug fixes:
 
 - PIM-9525: Fix memory leak during project calculation
+- PIM-9534: Fix product link rules for scopable/localizable asset collection attributes
 
 # 4.0.67 (2020-10-28)
 

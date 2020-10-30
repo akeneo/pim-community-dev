@@ -90,12 +90,23 @@ class Action
             return ReplacePattern::replace($item, $propertyAccessibleAsset);
         }, $this->items->normalize());
 
+
+        $channelCompiled = $this->channel->normalize();
+        if (!$this->channel->isEmpty()) {
+            $channelCompiled = ReplacePattern::replace($this->channel->normalize(), $propertyAccessibleAsset);
+        }
+
+        $localeCompiled = $this->locale->normalize();
+        if (!$this->locale->isEmpty()) {
+            $localeCompiled = ReplacePattern::replace($this->locale->normalize(), $propertyAccessibleAsset);
+        }
+
         return new self(
             Field::createFromNormalized($field),
             $this->type,
             ItemCollection::createFromNormalized($items),
-            $this->channel,
-            $this->locale
+            ChannelReference::createfromNormalized($channelCompiled),
+            LocaleReference::createFromNormalized($localeCompiled)
         );
     }
 
