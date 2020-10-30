@@ -12,17 +12,10 @@ use Akeneo\Platform\Component\EventQueue\BusinessEvent;
  */
 class WebhookEventBuildLog
 {
-    /** @var int */
-    private $webhookEventBuildCount;
-
-    /** @var BusinessEvent */
-    private $businessEvent;
-
-    /** @var float */
-    private $startTime;
-
-    /** @var float */
-    private $endTime;
+    private int $webhookEventBuildCount;
+    private BusinessEvent $businessEvent;
+    private float $startTime;
+    private float $endTime;
 
     public function __construct(
         int $webhookEventBuildCount,
@@ -34,11 +27,6 @@ class WebhookEventBuildLog
         $this->businessEvent = $businessEvent;
         $this->startTime = $startTime;
         $this->endTime = $endTime;
-    }
-
-    private function getDuration(): float
-    {
-        return $this->endTime - $this->startTime;
     }
 
     public function toLog(): array
@@ -56,5 +44,16 @@ class WebhookEventBuildLog
                 'timestamp' => $this->businessEvent->timestamp(),
             ],
         ];
+    }
+
+    private function getDuration(): float
+    {
+        if (null === $this->endTime) {
+            throw new \RuntimeException();
+        }
+
+        $duration = $this->endTime - $this->startTime;
+
+        return round($duration * 1000);
     }
 }

@@ -38,7 +38,7 @@ class WebhookEventBuildLogSpec extends ObjectBehavior
             'type' => 'webhook.business_event_build',
             'monitor' => [
                 'webhook_event_build_count' => 10,
-                'duration' => '21.289000034332',
+                'duration' => '21289',
             ],
             'business_event' => [
                 'uuid' => 'fe904867-9428-4d97-bfa9-7aa13c0ee0bf',

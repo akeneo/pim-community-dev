@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Log;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
+use GuzzleHttp\Psr7\Response;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -12,28 +13,27 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
  */
 class WebhookRequestLog
 {
-    /** @var WebhookRequest */
-    private $webhookRequest;
-
-    /** @var float */
-    private $startTime;
-
-    /** @var float */
-    private $endTime;
+    private WebhookRequest $webhookRequest;
+    private float $startTime;
+    private ?float $endTime = null;
+    private ?Response $response;
 
     public function __construct(
         WebhookRequest $webhookRequest,
-        float $startTime,
-        float $endTime = null
+        float $startTime
     ) {
         $this->webhookRequest = $webhookRequest;
         $this->startTime = $startTime;
+    }
+
+    public function setEndTime(float $endTime): void
+    {
         $this->endTime = $endTime;
     }
 
-    public function setEndTime($endTime): void
+    public function setResponse(?Response $response): void
     {
-        $this->endTime = $endTime;
+        $this->response = $response;
     }
 
     public function toLog(): array
@@ -45,6 +45,7 @@ class WebhookRequestLog
             'monitor' => [
                 'duration' => (string) $this->getDuration(),
             ],
+            'response' => $this->response ? ['status_code' => $this->response->getStatusCode()] : null,
             'business_event' => [
                 'uuid' => $this->webhookRequest->event()->eventId(),
                 'author' => $this->webhookRequest->event()->author(),
@@ -56,6 +57,12 @@ class WebhookRequestLog
 
     private function getDuration(): float
     {
-        return $this->endTime - $this->startTime;
+        if (null === $this->endTime) {
+            throw new \RuntimeException();
+        }
+
+        $duration = $this->endTime - $this->startTime;
+
+        return round($duration * 1000);
     }
 }

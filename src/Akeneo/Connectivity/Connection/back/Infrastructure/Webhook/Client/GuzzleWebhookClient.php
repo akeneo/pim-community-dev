@@ -84,6 +84,8 @@ class GuzzleWebhookClient implements WebhookClient
             'fulfilled' => function (Response $response, int $index) use (&$logs) {
                 $webhookRequestLog = $logs[$index];
                 $webhookRequestLog->setEndTime(microtime(true));
+                $webhookRequestLog->setResponse($response);
+
                 $this->logger->info(json_encode(
                     $webhookRequestLog->toLog()
                 ));
@@ -91,6 +93,8 @@ class GuzzleWebhookClient implements WebhookClient
             'rejected' => function (RequestException $reason, int $index) use (&$logs) {
                 $webhookRequestLog = $logs[$index];
                 $webhookRequestLog->setEndTime(microtime(true));
+                $webhookRequestLog->setResponse($reason->getResponse());
+
                 $this->logger->info(json_encode(
                     $webhookRequestLog->toLog()
                 ));

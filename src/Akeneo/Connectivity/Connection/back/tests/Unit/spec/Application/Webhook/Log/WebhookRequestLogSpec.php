@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Log\WebhookRequestLog;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
+use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
 
 class WebhookRequestLogSpec extends ObjectBehavior
@@ -28,8 +29,7 @@ class WebhookRequestLogSpec extends ObjectBehavior
 
         $this->beConstructedWith(
             $webhookRequest,
-            1603935007.832,
-            1603935029.121
+            1603935007.832
         );
     }
 
@@ -38,12 +38,18 @@ class WebhookRequestLogSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(WebhookRequestLog::class);
     }
 
-    public function it_returns_the_log()
+    public function it_returns_the_log_with_response()
     {
+        $this->setEndTime(1603935029.121);
+        $this->setResponse(new Response());
+
         $this->toLog()->shouldReturn([
             'type' => 'webhook.send_request',
             'monitor' => [
-                'duration' => '21.289000034332',
+                'duration' => '21289',
+            ],
+            'response' => [
+                'status_code' => 200,
             ],
             'business_event' => [
                 'uuid' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
@@ -52,5 +58,30 @@ class WebhookRequestLogSpec extends ObjectBehavior
                 'timestamp' => 1577836800,
             ],
         ]);
+    }
+
+    public function it_returns_the_log_without_response()
+    {
+        $this->setEndTime(1603935029.121);
+        $this->setResponse(null);
+
+        $this->toLog()->shouldReturn([
+            'type' => 'webhook.send_request',
+            'monitor' => [
+                'duration' => '21289',
+            ],
+            'response' => null,
+            'business_event' => [
+                'uuid' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
+                'author' => 'Julia',
+                'name' => 'product.created',
+                'timestamp' => 1577836800,
+            ],
+        ]);
+    }
+
+    public function it_throw_an_exception_when_end_time_is_null()
+    {
+        $this->shouldThrow(\RuntimeException::class)->during('toLog');
     }
 }
