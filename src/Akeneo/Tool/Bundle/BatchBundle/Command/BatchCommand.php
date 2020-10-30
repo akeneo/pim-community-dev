@@ -199,7 +199,7 @@ class BatchCommand extends Command
             if (!$jobExecution) {
                 throw new \InvalidArgumentException(sprintf('Could not find job execution "%s".', $executionId));
             }
-            if (!$jobExecution->getStatus()->isStarting()) {
+            if (!$jobExecution->getStatus()->isStarting() && !$jobExecution->getStatus()->isStopping()) {
                 throw new \RuntimeException(
                     sprintf('Job execution "%s" has invalid status: %s', $executionId, $jobExecution->getStatus())
                 );
