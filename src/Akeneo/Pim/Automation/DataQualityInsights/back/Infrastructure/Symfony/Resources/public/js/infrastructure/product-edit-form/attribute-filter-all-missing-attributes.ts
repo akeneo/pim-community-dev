@@ -41,7 +41,7 @@ class AttributeFilterAllMissingAttributes extends BaseForm {
         attributes.push(...criterion.improvable_attributes);
       });
     }
-
+    b;
     return _uniq(attributes);
   }
 
