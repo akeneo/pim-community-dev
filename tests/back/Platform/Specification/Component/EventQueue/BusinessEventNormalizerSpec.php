@@ -151,7 +151,7 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
         Assert::assertEquals($denormalizedBusinessEvent->getWrappedObject(), $businessEvent);
     }
 
-    public function it_does_not_denormalize_a_business_event_because_author_type_is_not_good(UserInterface $user)
+    public function it_does_not_denormalize_a_business_event_because_author_type_is_invalid(UserInterface $user)
     {
         $user->getUsername()->willReturn('julia');
         $user->getFirstName()->willReturn('Julia');
