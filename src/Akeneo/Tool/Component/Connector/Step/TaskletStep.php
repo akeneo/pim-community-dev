@@ -42,7 +42,7 @@ class TaskletStep extends AbstractStep implements TrackableStepInterface
     {
         $this->tasklet->setStepExecution($stepExecution);
         if ($this->isTrackable()) {
-            $stepExecution->setTotalItems($this->tasklet->count());
+            $stepExecution->setTotalItems($this->tasklet->totalItems());
         }
         $this->tasklet->execute();
     }

@@ -97,7 +97,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
         $this->stepExecution = $stepExecution;
     }
 
-    public function count(): int
+    public function totalItems(): int
     {
         return $this->computeProductsToProcess();
     }

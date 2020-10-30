@@ -126,7 +126,7 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface, Tr
         }
     }
 
-    public function count(): int
+    public function totalItems(): int
     {
         return $this->attributeGroupReader->count();
     }

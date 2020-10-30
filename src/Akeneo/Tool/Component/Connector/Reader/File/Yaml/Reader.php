@@ -83,7 +83,7 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
         $this->stepExecution = $stepExecution;
     }
 
-    public function count(): int
+    public function totalItems(): int
     {
         return count($this->getFileData() ?? []);
     }

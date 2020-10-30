@@ -263,6 +263,12 @@ class ItemStep extends AbstractStep implements TrackableStepInterface
             throw new \RuntimeException('The reader should implement TrackableItemReaderInterface');
         }
 
-        return $this->reader->count();
+        try {
+            return $this->reader->totalItems();
+        } catch(\Exception $e) {
+            // TODO: Log the issue here plz
+        }
+
+        return -1;
     }
 }

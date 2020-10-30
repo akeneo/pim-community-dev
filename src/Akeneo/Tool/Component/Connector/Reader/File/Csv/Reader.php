@@ -52,7 +52,7 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
         $this->options = $options;
     }
 
-    public function count(): int
+    public function totalItems(): int
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $filePath = $jobParameters->get('filePath');

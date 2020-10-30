@@ -188,7 +188,7 @@ class ProductAndProductModelReader implements
         return $queryBuilder->execute();
     }
 
-    public function count(): int
+    public function totalItems(): int
     {
         if (null === $this->productsAndProductModels) {
             throw new \RuntimeException('Unable to compute the total items the reader will process until the reader is not initialized');

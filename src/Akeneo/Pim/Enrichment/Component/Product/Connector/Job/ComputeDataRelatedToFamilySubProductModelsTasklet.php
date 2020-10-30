@@ -169,7 +169,7 @@ class ComputeDataRelatedToFamilySubProductModelsTasklet implements TaskletInterf
         $this->cacheClearer->clear();
     }
 
-    public function count(): int
+    public function totalItems(): int
     {
         return $this->computeSubProductModelsToProcess();
     }

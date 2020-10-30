@@ -169,7 +169,7 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
         $this->cacheClearer->clear();
     }
 
-    public function count(): int
+    public function totalItems(): int
     {
         return $this->computeRootProductModelsToProcess();
     }

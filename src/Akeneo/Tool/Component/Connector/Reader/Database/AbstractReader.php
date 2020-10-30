@@ -56,7 +56,7 @@ abstract class AbstractReader implements ItemReaderInterface, InitializableInter
         $this->isExecuted = false;
     }
 
-    public function count(): int
+    public function totalItems(): int
     {
         $this->initialize();
 

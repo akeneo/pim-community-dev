@@ -166,7 +166,7 @@ class FilteredProductModelReaderSpec extends ObjectBehavior
         $cursor->count()->willReturn($expectedTotalItems);
 
         $this->initialize();
-        $this->count()->shouldReturn($expectedTotalItems);
+        $this->totalItems()->shouldReturn($expectedTotalItems);
     }
 
     function it_throws_if_the_reader_is_not_initialized()

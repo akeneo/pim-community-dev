@@ -194,7 +194,7 @@ class FilteredProductReader implements
         return $entity;
     }
 
-    public function count(): int
+    public function totalItems(): int
     {
         if (null === $this->products) {
             throw new \RuntimeException('Unable to compute the total items the reader will process if the reader is not initialized');
