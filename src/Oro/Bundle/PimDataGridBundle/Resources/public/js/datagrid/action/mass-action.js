@@ -81,7 +81,6 @@ define(['underscore', 'oro/messenger', 'oro/translator', 'pim/dialog', 'oro/data
 
       if ('family-grid' === this.datagrid.name) {
         locale = this.getLocaleFromUrl('localeCode');
-        delete params['filters[label][value]'];
       }
 
       if (locale) {
