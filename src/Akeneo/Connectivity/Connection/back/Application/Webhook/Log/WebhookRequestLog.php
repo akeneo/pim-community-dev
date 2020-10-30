@@ -36,6 +36,21 @@ class WebhookRequestLog
         $this->response = $response;
     }
 
+    /**
+     * @return array{
+     *  type: string,
+     *  monitor: array{
+     *      duration: string,
+     *  },
+     *  response: array{status_code: int}|null,
+     *  business_event: array{
+     *      uuid: string,
+     *      author: string,
+     *      name: string,
+     *      timestamp: int|null,
+     *  },
+     * }
+     */
     public function toLog(): array
     {
         $date = \DateTime::createFromFormat(\DateTime::ATOM, $this->webhookRequest->event()->eventDate());
@@ -50,7 +65,7 @@ class WebhookRequestLog
                 'uuid' => $this->webhookRequest->event()->eventId(),
                 'author' => $this->webhookRequest->event()->author(),
                 'name' => $this->webhookRequest->event()->action(),
-                'timestamp' => $date->getTimestamp(),
+                'timestamp' => ($date) ? $date->getTimestamp() : null,
             ],
         ];
     }

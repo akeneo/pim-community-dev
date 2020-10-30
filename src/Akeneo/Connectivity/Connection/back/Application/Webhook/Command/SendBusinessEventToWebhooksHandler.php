@@ -85,9 +85,11 @@ final class SendBusinessEventToWebhooksHandler
         };
 
         $endTimeBeforeSend = microtime(true);
-        $this->logger->info(json_encode(
-            (new WebhookEventBuildLog(count($webhooks), $businessEvent, $startTime, $endTimeBeforeSend))->toLog()
-        ));
+
+        $webhookEventBuildLog = new WebhookEventBuildLog(count($webhooks), $businessEvent, $startTime, $endTimeBeforeSend);
+        if ($jsonWebhookEventBuildLog = json_encode($webhookEventBuildLog->toLog())) {
+            $this->logger->info($jsonWebhookEventBuildLog);
+        }
 
         $this->client->bulkSend($requests());
     }
@@ -98,10 +100,14 @@ final class SendBusinessEventToWebhooksHandler
             $this->logger->info($error->getMessage());
         } elseif ($error instanceof EventBuildingExceptionInterface) {
             $webhookEventDataBuilderErrorLog = new WebhookEventDataBuilderErrorLog($error->getMessage(), $webhook, $businessEvent);
-            $this->logger->warning(json_encode($webhookEventDataBuilderErrorLog->toLog()));
+            if ($jsonWebhookEventDataBuilderErrorLog = json_encode($webhookEventDataBuilderErrorLog->toLog())) {
+                $this->logger->warning($jsonWebhookEventDataBuilderErrorLog);
+            }
         } else {
             $webhookEventDataBuilderErrorLog = new WebhookEventDataBuilderErrorLog((string)$error, $webhook, $businessEvent);
-            $this->logger->critical(json_encode($webhookEventDataBuilderErrorLog->toLog()));
+            if ($jsonWebhookEventDataBuilderErrorLog = json_encode($webhookEventDataBuilderErrorLog->toLog())) {
+                $this->logger->critical($jsonWebhookEventDataBuilderErrorLog);
+            }
         }
     }
 }

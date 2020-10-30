@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Log;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
-use Akeneo\Platform\Component\EventQueue\BusinessEvent;
+use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -13,25 +13,35 @@ use Akeneo\Platform\Component\EventQueue\BusinessEvent;
  */
 class WebhookEventDataBuilderErrorLog
 {
-    /** @var string */
-    private $message;
-
-    /** @var ActiveWebhook */
-    private $webhook;
-
-    /** @var BusinessEvent */
-    private $businessEvent;
+    private string $message;
+    private ActiveWebhook $webhook;
+    private BusinessEventInterface $businessEvent;
 
     public function __construct(
         string $message,
         ActiveWebhook $webhook,
-        BusinessEvent $businessEvent
+        BusinessEventInterface $businessEvent
     ) {
         $this->message = $message;
         $this->webhook = $webhook;
         $this->businessEvent = $businessEvent;
     }
 
+    /**
+     * @return array{
+     *  type: string,
+     *  webhook: array{
+            connection_code: string,
+     *      user_id: int,
+     *  },
+     *  business_event: array{
+     *      uuid: string,
+     *      author: string,
+     *      name: string,
+     *      timestamp: int|null,
+     *  },
+     * }
+     */
     public function toLog(): array
     {
         return [
