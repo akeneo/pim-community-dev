@@ -60,20 +60,26 @@ define([
       this.getDisplayedLocales().done(
         function (locales) {
           this.$el.removeClass('open');
+          let defaultLocaleCode = _.first(locales).code;
+          const catalogLocaleCode = locales.find(locale => {
+            return locale.code === UserContext.get('catalogLocale');
+          });
 
-          const params = {};
+          if (catalogLocaleCode) {
+              defaultLocaleCode = catalogLocaleCode.code;
+          }
+
+          const params = {
+              localeCode: defaultLocaleCode,
+              context: this.config.context,
+          };
+
           this.getRoot().trigger('pim_enrich:form:locale_switcher:pre_render', params);
 
-          const defaultLocaleCode = this.selectedLocale
-            ? this.selectedLocale
-            : params.localeCode
-            ? params.localeCode
-            : UserContext.get('catalogLocale');
-
           let currentLocale =
-            defaultLocaleCode &&
+            params.localeCode &&
             locales.find(locale => {
-              return locale.code === defaultLocaleCode;
+              return locale.code === params.localeCode;
             });
 
           if (undefined === currentLocale) {
@@ -116,7 +122,6 @@ define([
         localeCode: event.currentTarget.dataset.locale,
         context: this.config.context,
       });
-      this.selectedLocale = event.currentTarget.dataset.locale;
 
       this.render();
     },
