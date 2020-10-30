@@ -479,15 +479,26 @@ define(['underscore', 'backbone', 'backbone/pageable-collection', 'oro/app'], fu
       }
 
       // set sorting parameters
+      var hasSorterParameterInState = false;
       if (state.sorters) {
         _.each(
           state.sorters,
           function (direction, field) {
             var key = this.queryParams.sortBy.replace('%field%', field);
             data[key] = this.queryParams.directions[direction];
+            hasSorterParameterInState = true;
           },
           this
         );
+      }
+
+      // We can have sorter parameters in the url (saved in the session) and in the current state.
+      // To avoid to have multiple sorters (and strange display), when the user choose a new sorter, we
+      // remove the old one.
+      if (hasSorterParameterInState && !this.multipleSorting) {
+        if ('undefined' !== typeof data[this.inputName]) {
+          delete data[this.inputName]['_sort_by'];
+        }
       }
 
       // map extra query parameters
