@@ -13,6 +13,8 @@ akeneo_data_quality_insights:
       to_improve: Da migliorare
     widgets:
       title: Titolo
+    time_axis:
+      day: giorno
   product_evaluation:
     criteria:
       completeness_of_required_attributes:
