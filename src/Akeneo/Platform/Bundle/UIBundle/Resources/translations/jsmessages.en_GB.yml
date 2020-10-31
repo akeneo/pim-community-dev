@@ -210,6 +210,7 @@ pim_common:
     DOES NOT CONTAIN: Does not contain
     STARTS WITH: Starts with
     ENDS WITH: Ends with
+  read_more: Read more
 error:
   exception: Oh snap! A {{ status_code }} error occurred...
   forbidden: Forbidden. You are not allowed to access this page
@@ -334,3 +335,11 @@ pim_notification:
     export: Export
     quick_export: Quick Export
     mass_edit: Mass Edit
+akeneo_communication_channel:
+  link:
+    title: Announcements
+  panel:
+    title: Announcements
+    list:
+      empty: There is no news for the moment. Stay tuned!
+      error: We couldn't retrieve the news. Please retry later.

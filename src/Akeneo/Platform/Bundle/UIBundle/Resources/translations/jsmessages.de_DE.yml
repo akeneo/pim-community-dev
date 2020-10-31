@@ -210,6 +210,7 @@ pim_common:
     DOES NOT CONTAIN: Enthält nicht
     STARTS WITH: Beginnt mit
     ENDS WITH: Endet mit
+  read_more: Mehr lesen
 error:
   exception: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...
   forbidden: Sie haben keine Berechtigung, diese Seite anzuzeigen
@@ -334,3 +335,11 @@ pim_notification:
     export: Export
     quick_export: Schnellexport
     mass_edit: Massenbearbeitung
+akeneo_communication_channel:
+  link:
+    title: Ankündigungen
+  panel:
+    title: Ankündigungen
+    list:
+      empty: Im Moment gibt es keine Neuigkeiten. Bleiben Sie dran!
+      error: Wir konnten die Nachrichten nicht abrufen. Bitte versuchen Sie es später erneut.
