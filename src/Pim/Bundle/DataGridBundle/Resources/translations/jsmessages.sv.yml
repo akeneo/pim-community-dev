@@ -34,10 +34,14 @@ Yes: true
 No: false
 oro.datagrid.entityHint: Enhet
 oro.datagrid.noentities: Inga resultat hittades
+oro.datagrid.noresults: "Tyvärr finns det inget resultat för din sökning."
+oro.datagrid.noresults_subTitle: "Försök igen med nya sökkriterier."
 oro.datagrid.nocolumns: Inga kolumner konfigurerade för denna tabell
 oro.datagrid.pagination.label: "Sida"
 oro.datagrid.pagination.totalPages: "av {{ totalPages }}"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} poster"
+#TODO @merge 3.0: move this key under 'pim.datagrid.limit_warning'
+oro.datagrid.pagination.limit_warning: "Rutnätet kan inte visa mer än {{ limit }} resultat, försök att filtrera med ytterligare sökkriterier."
 oro.datagrid.action.reset: "Återställ"
 oro.datagrid.action.refresh: "Uppdatera"
 oro_datagrid.select.all: "Alla"
@@ -56,6 +60,7 @@ pim:
       label_empty: är tom
       label_not_empty: är inte tom
       label_in_list: i listan
+      operator: operatör
     price_filter:
       label: Valuta
     category_filter:
@@ -67,6 +72,7 @@ datagrid_view.columns.min_message: Du måste välja minst en tabellkolumn att vi
 pim_datagrid:
   column_configurator:
     label: Kolumner
+    title: Konfigurera kolumner
     all_groups: Alla grupper
     search: Sök
     clear: Rensa
@@ -74,6 +80,7 @@ pim_datagrid:
     apply: Tillämpa
     cancel: Avbryt
     remove_column: Ta bort
+    description: Välj den information du vill visa som kolumn
     attribute_groups: Attributgrupper
   mass_action:
     delete:
@@ -104,12 +111,19 @@ grid.view_selector:
   placeholder: Namnge ny vy
   choose_label: Välj en etikett för vyn
   confirmation:
+    remove: Är du säker på att du vill ta bort den här vyn?
     delete: Bekräfta radering
 #View selector flash messages
 grid.view_selector.flash.updated: Vy har uppdaterats
 #Display selector
 grid.display_selector:
+  label: Display
   gallery: Galleri
   list: Lista
 #Credentials cell
 Client ID: Klient-ID
+Secret: Hemlighet
+grid.empty_results:
+  associated_product:
+    hint: Det finns inga associerade produkter
+    subHint: 'Klicka på knappen "Lägg till associationer" för att associera den här produkten'

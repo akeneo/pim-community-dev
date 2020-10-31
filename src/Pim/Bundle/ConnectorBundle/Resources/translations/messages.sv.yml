@@ -41,12 +41,19 @@ job_execution.summary:
     skipped: hoppades över, filändelsen i godkäntlistan
   product_skipped_no_diff: hoppade över produkten (inga skillnader)
   product_skipped_no_associations: hoppade över produkten (inga associationer hittades)
+  product_model_skipped_no_associations: överhoppad produktmodell (inga associationer upptäcktes)
+  product_model_skipped_no_diff: överhoppad produktmodell (inga skillnader)
   item_position: lästa rader
+  skipped_in_root_product_model: överhoppad produktmodell med förälder
+  skipped_in_sub_product_model: överhoppad produktmodell utan förälder
 #Job labels
 batch_jobs:
   csv_product_export:
     label: Exportera produkt till CSV
     export.label: Exportera produkt
+  csv_product_model_export:
+    label: Export av produktmodell i CSV
+    export.label: Export av produktmodell
   csv_category_export:
     label: Exportera kategorier till CSV
     export.label: Exportera kategorier
@@ -65,13 +72,20 @@ batch_jobs:
   csv_family_export:
     label: Exportera familjer till CSV
     export.label: Exportera familjer
+  csv_family_variant_export:
+    label: Export av familjevariant i CSV
+    export.label: Export av familjevariant
   csv_product_import:
     label: Importera produkter från CSV
     validation.label: Filvalidering
     import.label: Importera produkter
     import_associations.label: Importera associationer
   csv_product_model_import:
+    label: Export av produktmodell i CSV
     validation.label: Filvalidering
+    import_root_product_model.label: Import av grundproduktmodell
+    import_sub_product_model.label: Import av delproduktmodell
+    import_product_model_descendants.label: Beräkna produktens underliggande modeller
   csv_category_import:
     label: Importera kategorier från CSV
     validation.label: Filvalidering
@@ -93,7 +107,9 @@ batch_jobs:
     validation.label: Filvalidering
     import.label: Importera familjer
   csv_family_variant_import:
+    label: Import av familjevariant i CSV
     validation.label: Filvalidering
+    import.label: Import av familjevariant
   csv_group_import:
     label: Importera grupper från CSV
     validation.label: Filvalidering
@@ -154,17 +170,26 @@ batch_jobs:
     validation.label: Filvalidering
     import.label: Importera familjer
   xlsx_family_variant_import:
+    label: Import av familjevariant i XSLX
     validation.label: Filvalidering
+    import.label: Import av familjevariant
   xlsx_product_export:
     label: Exportera produkt till XLSX
     export.label: Exportera produkt
+  xlsx_product_model_export:
+    label: Export av produktmodell i XSLX
+    export.label: Export av produktmodell
   xlsx_product_import:
     label: Importera produkter från XLSX
     validation.label: Filvalidering
     import.label: Importera produkter
     import_associations.label: Importera associationer
   xlsx_product_model_import:
+    label: Import av produktmodell i XSLX
     validation.label: Filvalidering
+    import_root_product_model.label: Import av grundproduktmodell
+    import_sub_product_model.label: Import av underliggande produktmodeller
+    import_product_model_descendants.label: Beräkna produktens underliggande modeller
     import_associations.label: Importera associationer
   xlsx_group_export:
     label: Exportera grupper till XLSX
@@ -176,6 +201,9 @@ batch_jobs:
   xlsx_family_export:
     label: Exportera familjer till XLSX
     export.label: Exportera familjer
+  xlsx_family_variant_export:
+    label: Export av familjevariant i XLSX
+    export.label: Export av familjevariant
   xlsx_category_export:
     label: Exportera kategorier till XLSX
     export.label: Exportera kategorier

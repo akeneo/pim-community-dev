@@ -7,6 +7,7 @@ confirmation:
     attribute: Är du säker på att du vill radera det här attributet?
     attribute_group: Är du säker på att du vill radera det här attributet?
     family: Är du säker på att du vill radera den här familjen?
+    family_variant: Är du säker på att du vill ta bort denna familjevariant?
     product: Är du säker på att du vill ta bort denna produkt?
     product_model: Är du säker på att du vill ta bort denna produkt modell? Alla barn, modell och variant produkter, kommer att tas bort.
     channel: Är du säker på att du vill ta bort denna kanal?
@@ -18,6 +19,7 @@ confirmation:
     role: Är du säker på att du vill ta bort denna roll?
     job_instance: Är du säker på att du vill ta bort den här jobbinstansen?
     api_connection: Är du säker du vill återkalla denna API-anslutning? Alla API-anrop som görs via denna anslutning kommer nu att kasta ett fel.
+    products_and_product_models: Är du säker på att du vill ta bort valda produkter och produktmodeller? Alla underliggande produktmodeller raderas också.
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -27,6 +29,7 @@ pim_datagrid:
   mass_action:
     delete:
       label: Ta bort
+      confirm_content: Är du säker på att du vill ta bort de valda produkterna?
       success: Valda produkter har tagits bort.
       error: Ett fel uppstod när de valda produkterna skulle tas bort, vänligen försök igen.
   view_selector:
@@ -46,8 +49,12 @@ flash:
     removed: Attributgruppen har tagits bort
   family:
     removed: Familjen har tagits bort
+  family_variant:
+    removed: Familjevarianten har tagits bort
   product:
     removed: Produkten har tagits bort
+  product_model:
+    removed: Produktmodellen har tagits bort
   channel:
     removed: Kanalen har tagits bort
   group:
@@ -106,6 +113,7 @@ Classify the product: Klassificera produkten
 Delete the product: Ta bort denna produkt
 Change status: Ändra status
 Toggle status: Växla status
+mass_delete: Radera många
 #Quick export labels
 pim:
   grid:
@@ -118,6 +126,7 @@ pim:
       delete: Ta bort
       mass_edit: Massåtgärder
       category_edit: Flytta produkter i kategorier
+      sequential_edit: Sekventiell redigering
 #Jstree context menu actions
 jstree.create: Skapa
 jstree.done: Slutförd
@@ -150,11 +159,15 @@ pim_enrich:
     product:
       navigation: Produkt navigering
       infos: Produkt information
+      index_title: "] -Inf, 1] {{count}} resultat |] 1, Inf [{{count}} resultat"
       title: produkt
       locale: Språk
       category: Kategori
       create: Skapa
+      subTitle: Skapa produkt
+      modalTitle: Välj din åtgärd
       filters: Filter
+      selected: valda resultat
       common: Vanlig
       btn:
         enabled: Aktiverad
@@ -220,19 +233,37 @@ pim_enrich:
         title: Skapa
         labels:
           family: Välj en familj
+          family_variant: Välj en familjevariant
           save: Spara
           cancel: Avbryt
       message:
         created: Produkten har skapts
       completeness: Slutförd
+      sequential_edit:
+        item_limit: Endast de första 1000 objekten som visas i denna sekventiella redigering ({{count}} vald)
+        empty: Ditt val är tomt, ändra dina sökkriterier
     product_model:
       create_popin:
         type: Produktmodell
+        title: Skapa en produktmodell
+        content: En produktmodell samlar olika produktervarianter och underlättar hanteringen av deras gemensamma egenskaper.
+      info:
+        create_successful: Produktmodellen har skapats
+        update_successful: Produktmodellen har uppdaterats. Dess produktvarianter kommer att räknas om.
+        deletion_successful: Produktmodellen har tagits bort.
+        update_failed: Produktmodellen kunde inte uppdateras.
+        field_not_ready: "Produktmodellen kan inte sparas just nu. Följande fält är inte redo: {{ fields }}"
+      read_only_parent_attribute_from_common: Detta attribut kan bara uppdateras som gemensamt attribut.
+      read_only_parent_attribute_from_model: "Detta attribut kan uppdateras i attributen av {{ axes }}"
+      variant_axis: Variantaxel
+      title: Produktmodeller
       add_child:
         create: Lägg till ny
         cancel: Avbryt
         confirm: Bekräfta
+        create_label: "Lägg till en ny {{ axes }}"
         fields:
+          required_label: (variantaxel)
           code: Kod
     association_type:
       info:
@@ -291,12 +322,14 @@ pim_enrich:
         save: Spara
     family:
       title: familj
+      selected: Valda familjer
       info:
         update_successful: Familjen har uppdaterats.
         create_successful: Kanalen har skapats.
         cant_remove_attribute_as_label: Kan inte ta bort ett attribut som används som etikett
         cant_remove_attribute_as_image: Kan inte ta bort attributet används som huvudbild
         attribute_edit_permission_is_not_granted: Du saknar rättigheter för att ändra på en familjs attribut
+        cant_remove_attribute_used_as_axis: Det går inte att ta bort attribut som används som en variantaxel i en familjevariant
       meta:
         created: Skapad
         created_by: Skapad av
@@ -309,11 +342,30 @@ pim_enrich:
       message:
         created: Familjen har skapats
       variant:
+        common:
+          title: Gemensamma attribut
+          empty: Det finns inga gemensamma attribut
+        axis.label: Variantaxel
+        level_1.label: Variantattribut nivå ett
+        level_2.label: Variantattribut nivå två
         add_variant: Lägg till variant
+        create_label: Skapa en ny familjevariant
+        create_description: I en familjevariant kan du definiera en struktur för produkter med varianter. Välj antalet hanterade variantnivåer, attributen som används som variantaxlar för varje nivå och definiera sedan hur attributen ska fördelas.
+        update_description: Dra och släpp attribut till vald variantnivå för att dessa attribut ska hanteras på variantnivå.
+        update_translation: Översätt etikett för familjevariant
         create: Skapa
         cancel: Avbryt
         code: Kod
         label: Etikett
+        levels: Variantnivåer
+        axis_level: Variantaxelnivå
+        required: nödvändig
+        confirm_attribute_removal:
+          title: Bekräfta borttagning av attribut
+          message: Genom att ta bort dessa attribut lägger du tillbaka dem i de vanliga attributen för familjevarianten och tar bort värdena från variantprodukterna
+    family_variant:
+      info:
+        update_successful: Familjevarianten har uppdaterats. Produkterna med varianter kommer att uppdateras med dina ändringar.
     attribute_option:
       code: Kod
       label: Etikett
@@ -325,6 +377,7 @@ pim_enrich:
         deletion_failed: Grupp kunde inte raderas.
         update_successful: Gruppen ändrades.
         update_failed: Gruppen kunde inte ändras.
+        field_not_ready: "Gruppen kan inte sparas just nu. Följande fält är inte redo: {{ fields }}"
       btn:
         save: Spara
       meta:
@@ -343,6 +396,12 @@ pim_enrich:
         update_failed: Jobbets profil kunde inte ändras.
         update_successful: Jobbets profil har ändrats.
     attribute:
+      info:
+        deletion_successful: Attributet har tagits bort.
+        deletion_failed: Attributet kunde inte raderas.
+        update_successful: Attributet har uppdaterats.
+        update_failed: Attributet kunde inte uppdateras.
+        create_successful: Attributet har skapats.
       scopable: Omfattningbar
       type:
         pim_catalog_identifier: Identifierare
