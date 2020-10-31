@@ -392,6 +392,7 @@ pim_enrich:
     attribute:
       info:
         deletion_successful: Atributo excluído com sucesso.
+        deletion_failed: O atributo não pode ser excluído.
         update_successful: Atributo atualizado com sucesso.
         update_failed: O atributo não pôde ser atualizado.
         create_successful: Atributo criado com sucesso.
@@ -446,6 +447,7 @@ pim_enrich:
     required: (Obrigatório)
     product_model:
       choose_product_model: Escolha um modelo de produto
+      complete_variant_products: variante de produtos
       family_variant: Variante
       product_model: Modelo do produto
       flash:
@@ -478,6 +480,7 @@ pim_enrich:
             load_more: Carregando mais resultados...
           attribute_group_selector: Grupo de atributos
           attribute_group_all: Todos
+          attribute_group.to_fill_count: "{1}1 atributo obrigatório faltando|]1, Inf [{{ count }} atributos obrigatórios faltando"
           attribute_filter:
             display: Exibir
             all: Todos os atributos
@@ -491,6 +494,7 @@ pim_enrich:
           info:
             no_family: Família não definida. Por favor, defina uma família para calcular a plenitude desse produto.
             no_completeness: Você alterou a família do produto. Por favor, salve primeiramente para calcular a plenitude para nova família.
+          missing_values: "{1}1 valor faltando|] 1, Inf [{{ count }} valores faltando"
         history:
           title: Histórico
       switch:
@@ -934,10 +938,15 @@ pim_enrich:
         title: Propriedade
       global_settings:
         title: Configurações globais
+  mass_edit_action:
+    edit_common_attributes:
+      description: Apenas os atributos pertencentes às famílias dos produtos selecionados serão editados com os seguintes dados para a localização <span class="highlight">{{ locale }}</span> e o canal <span class="highlight">{{ channel }}</span>.
   index:
     association_type:
+      title: "] -Inf, 1 ]{{ count }} tipo de associação|] 1, Inf [{{ count }} tipos de associação"
       create_btn: Criar tipo de associação
     import_profiles:
+      title: "] -Inf, 1] {{ count }} perfil de importação|] 1, Inf [{{ count }} perfis de importação"
       create_btn: Criar perfil de importação
       list: Selecione uma tarefa
       create_popin:
@@ -945,6 +954,7 @@ pim_enrich:
       message:
         created: Perfil de importação criado com sucesso
     group:
+      title: "] -Inf, 1] {{ count }} grupo|] 1, Inf [{{ count }} grupos"
       create_btn: Criar Grupo
     export_profiles:
       create_btn: Criar perfil de exportação
@@ -983,6 +993,7 @@ pim_enrich:
           label: Escolha produtos
         choose:
           title: Ação em massa de produtos
+          label_count: "] 0, Inf [Selecione sua ação"
         configure:
           label: Configurar
         confirm:
@@ -992,6 +1003,7 @@ pim_enrich:
       operation:
         change_status:
           label: Alterar Status
+          label_count: "{1}Altere o status de <span class=\"AknFullPage-title--highlight\">produto</span>|]1, Inf[Alterar o status de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produtos</span>"
           description: Os produtos selecionados serão habilitados ou desabilitados.
           field: Habilitar
         edit_common:

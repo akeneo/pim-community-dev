@@ -868,6 +868,7 @@ pim_enrich:
           operators:
             ALL: 没有关于完成度的条件
             "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": 至少在一个选定的区域完成
+            "GREATER OR EQUALS THAN ON ALL LOCALES": 在所有选定的区域完成
             LOWER THAN ON ALL LOCALES: 在所有选定的区域未完成
             AT LEAST COMPLETE: 至少在选定的一个区域完成一个子产品
             ALL COMPLETE: 在所有选定的区域完成所有子产品

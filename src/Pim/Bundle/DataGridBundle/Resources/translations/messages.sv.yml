@@ -1,4 +1,5 @@
 "oro_datagrid.no_data_hint %entityHint%": Inga %entityHint% finns.
+oro_datagrid.not_found_hint: Tyvärr finns det inget resultat för din sökning.
 oro_datagrid.label_add_filter: Hantera filter
 oro_datagrid.label_loading_mask: Laddar . . .
 oro.grid.mass_action.selected_rows: Markerade rader
@@ -29,3 +30,4 @@ quick_export: Snabbexport
 import: Import
 export: Export
 mass_edit: Massredigera
+mass_delete: Radera många
