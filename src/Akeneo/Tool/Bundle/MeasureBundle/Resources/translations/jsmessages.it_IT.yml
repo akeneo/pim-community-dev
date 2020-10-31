@@ -178,3 +178,6 @@ pim_measure:
     #CaseBox
     PIECE: Pezzo
     DOZEN: Dozzina
+    #Brightness
+    LUMEN: Lumen
+    NIT: Nit

@@ -1,6 +1,7 @@
 pim_notification:
   types:
     settings: 설정
+    mass_delete: 삭제
 flash:
   comment:
     create:
