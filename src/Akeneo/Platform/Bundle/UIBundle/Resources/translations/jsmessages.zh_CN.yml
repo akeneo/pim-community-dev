@@ -184,6 +184,7 @@ pim_common:
   previous: 上一步
   properties: 属性
   remove: 移除
+  required_label: '（必填）'
   save: 保存
   search: 搜索
   select2:
