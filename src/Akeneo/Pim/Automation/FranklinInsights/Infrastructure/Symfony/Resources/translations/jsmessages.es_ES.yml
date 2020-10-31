@@ -35,6 +35,7 @@ akeneo_franklin_insights:
           active: Activo
           inactive: Inactivo
       constraint:
+        duplicate_attribute_code: "Un mapeo permitido por atributo de catálogo"
         attribute_type: "No se puede definir el tipo de este atributo como un identificador"
         localizable_not_allowed: "Los atributos localizables no están permitidos como identificador"
     attributes_mapping:

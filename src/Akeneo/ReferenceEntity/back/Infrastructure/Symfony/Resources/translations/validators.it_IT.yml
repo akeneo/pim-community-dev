@@ -18,6 +18,8 @@ pim_reference_entity:
         pattern: 'Questo campo può contenere solo lettere, numeri e trattini bassi (underscore).'
         should_be_unique: 'Il codice di registro esiste già per l''entità di riferimento "%reference_entity_identifier%" ed il codice registro "%code%"'
         should_exist: 'Il registro non è stato trovato'
+      text:
+        invalid_email: 'Per favore, inserisci un indirizzo email: xxxxx@xx.xx'
       file:
         extension_not_allowed: 'I file "%file_extension%" non sono consentiti per questo attributo. Le estensioni consentite sono: %allowed_file_extensions%'
         file_size_exceeded: 'Il file eccede la dimensione massima dei file impostata per l''attributo.'

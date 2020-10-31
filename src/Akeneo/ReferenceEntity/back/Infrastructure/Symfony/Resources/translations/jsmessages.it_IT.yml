@@ -102,6 +102,8 @@ pim_reference_entity:
       code:
         pattern: 'Questo campo può contenere solo lettere, numeri e trattini bassi (underscore).'
         should_be_unique: 'Questo codice è già esistente per questa entità.'
+      text:
+        invalid_email: 'Per favore, inserisci un indirizzo email: xxxxx@xx.xx'
     no_data:
       title: Non ci sono record per {{ entityLabel }}
       subtitle: Fai clic sul pulsante "Aggiungi nuovo" per creare il primo record

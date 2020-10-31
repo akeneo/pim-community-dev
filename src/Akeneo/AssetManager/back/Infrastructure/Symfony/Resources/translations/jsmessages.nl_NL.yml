@@ -1,0 +1,121 @@
+#pim_title:
+#akeneo_asset_manager_asset_family_index: Create a new entity
+#akeneo_asset_manager_asset_family_edit: Edit an asset family
+#akeneo_asset_manager_asset_edit: Edit an asset
+pim_asset_manager:
+  asset_picker:
+    no_result:
+      sub_title: Probeer opnieuw met nieuwe zoekcriteria
+  #breadcrumb: Asset Families
+  #img: The main image of the asset family named "{{ label }}"
+  #tab:
+  #assets: Assets
+  #attribute: Attributes
+  #properties: Properties
+  #permission: Permissions
+  #properties:
+  #title: Entity properties
+  #identifier: Code
+  #label: Label
+  #image: Image
+  #attribute:
+  #title: Asset attributes
+  #attribute:
+  #error:
+  #render_list: 'An error occured during the rendering of the "{{ %attribute_code% }}" attribute'
+  #render_edit: 'An error occured during the rendering of the "{{ %attribute_code% }}" attribute additional properties fields'
+  #module:
+  #delete:
+  #button: Delete entity
+  #confirm: Are you sure you want to delete this entity?
+  #index:
+  #grid:
+  #count: '{0} No Asset Family|{1} {{ count }} Asset Family|]1,Inf] {{ count }} Asset Families'
+  #help:
+  #title: 'Welcome to the Asset Families!'
+  #description_part_one: Enrich relevant information related to products (e.g. brands, manufacturers, colors, materials, ingredients...).
+  #description_part_two: It will enable you to provide a better Product Experience to your customers.
+  #description_part_three: Click on the “Create” button to create your 1st asset family, set its attributes and assets.
+  #description_part_four: Then, to link to products, create a product attribute type related to this asset family.
+  #description_part_five: For more details, we invite you to browse this article.
+  #create:
+  #header:
+  #title: Create
+  #subtitle: Asset Families
+  #title: Create a new entity
+  #input:
+  #label: Label
+  #code: Code (required)
+  #confirm: Save
+  #delete:
+  #message: Are you sure you want to delete the entity "{{ assetFamilyLabel }}"?
+  #title: Attribute
+  #notification:
+  #save:
+  #success: Asset family successfully updated.
+  #fail: An error occured during the save of the asset family
+  #create:
+  #success: Asset family successfully created.
+  #fail: An error occured during the creation of the asset family
+  #delete:
+  #success: Asset family successfully deleted.
+  #fail: An error occured during the deletion of the asset family
+  #permission:
+  #notification:
+  #save:
+  #success: Asset family permissions successfully updated.
+  #fail: At least one user group should have edit permission on this entity
+  #no_data:
+  #title: You have no user group
+  #subtitle: To manage permission on asset family you need to have at least one user group.
+  #link: Clic here to add your first user group
+  asset:
+    #error:
+    #value: Oops, it seems that the rendering of the "{{ fieldName }}" field failed. See the developer console for more details.
+    #button:
+    #save: Save
+    #create: Add new
+    #delete: Delete
+    #delete_all: Delete all assets
+    #back: Back to list
+    #product:
+    #attribute: Product attribute
+    #counter: '{{ totalCount }} result|{{ totalCount }} results'
+    #dropdown:
+    #attribute: Product attribute
+    #title: Products
+    #no_attribute:
+    #title: There is no product attribute linked to the asset family "{{ entityLabel }}"
+    #subtitle: "To start linking products to this asset family you can create a new one: "
+    #link: Create a new product attribute
+    #not_enough_items:
+    #title: Damn! You can see only {{ productCount }}/{{ totalCount }} products.
+    #subtitle:
+    #usable_in_grid: To discover all the products linked, just click below!
+    #not_usable_in_grid: To discover all the products linked, the product attribute must be set as "usable in grid".
+    #button: View all products
+    #no_product:
+    #title: There are no products linked for the product attribute "{{ entityLabel }}"
+    #subtitle: "Start linking products to this attribute to see them here"
+    #enrich:
+    #title: Asset attributes
+    #code: Code
+    #label: Label
+    #title: Assets
+    #create:
+    #header:
+    #title: Create
+    #subtitle: Asset Families
+    #title: Add new {{ entityLabel }}
+    #input:
+    #label: Label
+    #code: Code (required)
+    #create_another: Create another asset
+    #confirm: Save
+    #delete:
+    #message: Are you sure you want to delete the asset "{{ assetLabel }}"? If it's linked to products or assets, the links will be removed.
+    #title: Asset
+    #delete_all:
+    #confirm: Are you sure you want to delete all "{{ entityIdentifier }}" assets? If they are linked to products, the links to the products will be removed.
+    grid:
+      search: Zoek op label, code en tekstattributen

@@ -81,6 +81,8 @@ pimee_product_asset:
         error: 변형 파일이 삭제되지 않았습니다. 오류가 발생했습니다.
   popin.create:
     title: 새 자산 만들기
+    confirm: 확인
+    cancel: 취소
     is_localized: 지역화 가능
   menu: 자산
   page_tab:
