@@ -157,6 +157,8 @@ akeneo_franklin_insights:
           title: '{{ familyLabel }} - {{ franklinAttributeLabel }} opzioni attributo'
           sub_title: 'Conosci Franklin, il tuo <span class="AknDescriptionHeader-title--highlight">assistente AI Informazioni Prodotto</span>!'
           description: 'Per aiutare ad arricchire il tuo catalogo, Franklin necessiterà di conoscere le opzioni attributo del tuo catalogo che corrispondono alle sue. <a href="https://help.akeneo.com/pim/articles/franklin-insights-mappings.html#attributes-and-options-mapping" target="_blank" class="AknDescriptionHeader-link">Leggi di più</a>'
+      flash:
+        load_failed: 'Aggiornamento non riuscito'
   product:
     edit:
       btn.push: Suggerisci dati
