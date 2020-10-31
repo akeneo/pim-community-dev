@@ -333,6 +333,7 @@ pim_enrich.mass_edit.product:
       label_count: "{1}Vaihda <span class=\"AknFullPage-title--highlight\">1 tuotteen ylätason tuotemalli</span>|]1, Inf[Vaihda <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen ylätason tuotemalli</span>"
       description: Ylätason tuotteeksi vaihdetaan valitsemasi tuotemalli niille varianteille ja alatason tuotemalleille, jotka ovat valittuna tuoteruudukossa.
 pim_datagrid:
+  search: "Etsi {{ label }}"
   mass_action_group:
     bulk_actions:
       label: Massatoimenpiteet

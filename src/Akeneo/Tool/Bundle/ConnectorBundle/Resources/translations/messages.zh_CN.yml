@@ -3,6 +3,7 @@ pim_connector:
     file_reader:
       invalid_item_columns_count: '期望获取 %totalColumnsCount% 列，实际获取了 %itemColumnsCount% 列。路径：%filePath%:%lineno%'
 job_execution.summary:
+  read: 已读取
   write: 已写入
   skip: 已跳过
   create: 已创建
