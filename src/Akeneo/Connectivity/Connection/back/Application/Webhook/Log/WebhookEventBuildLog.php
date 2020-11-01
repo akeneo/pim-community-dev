@@ -32,10 +32,8 @@ class WebhookEventBuildLog
     /**
      * @return array{
      *  type: string,
-     *  monitor: array{
-     *      webhook_event_build_count: int,
-     *      duration: string,
-     *  },
+ *      webhook_event_build_count: int,
+ *      duration: string,
      *  business_event: array{
      *      uuid: string,
      *      author: string,
@@ -48,10 +46,8 @@ class WebhookEventBuildLog
     {
         return [
             'type' => 'webhook.business_event_build',
-            'monitor' => [
-                'webhook_event_build_count' => $this->webhookEventBuildCount,
-                'duration' => (string) $this->getDuration(),
-            ],
+            'webhook_event_build_count' => $this->webhookEventBuildCount,
+            'duration' => (string) $this->getDuration(),
             'business_event' => [
                 'uuid' => $this->businessEvent->uuid(),
                 'author' => $this->businessEvent->author(),

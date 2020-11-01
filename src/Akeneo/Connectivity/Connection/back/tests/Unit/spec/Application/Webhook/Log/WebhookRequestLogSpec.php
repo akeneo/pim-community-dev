@@ -45,9 +45,7 @@ class WebhookRequestLogSpec extends ObjectBehavior
 
         $this->toLog()->shouldReturn([
             'type' => 'webhook.send_request',
-            'monitor' => [
-                'duration' => '21289',
-            ],
+            'duration' => '21289',
             'response' => [
                 'status_code' => 200,
             ],
@@ -67,9 +65,7 @@ class WebhookRequestLogSpec extends ObjectBehavior
 
         $this->toLog()->shouldReturn([
             'type' => 'webhook.send_request',
-            'monitor' => [
-                'duration' => '21289',
-            ],
+            'duration' => '21289',
             'response' => null,
             'business_event' => [
                 'uuid' => '79fc4791-86d6-4d3b-93c5-76b787af9497',

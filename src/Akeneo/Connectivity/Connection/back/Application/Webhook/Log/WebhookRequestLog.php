@@ -39,9 +39,7 @@ class WebhookRequestLog
     /**
      * @return array{
      *  type: string,
-     *  monitor: array{
-     *      duration: string,
-     *  },
+ *      duration: string,
      *  response: array{status_code: int}|null,
      *  business_event: array{
      *      uuid: string,
@@ -57,9 +55,7 @@ class WebhookRequestLog
 
         return [
             'type' => 'webhook.send_request',
-            'monitor' => [
-                'duration' => (string) $this->getDuration(),
-            ],
+            'duration' => (string) $this->getDuration(),
             'response' => $this->response ? ['status_code' => $this->response->getStatusCode()] : null,
             'business_event' => [
                 'uuid' => $this->webhookRequest->event()->eventId(),

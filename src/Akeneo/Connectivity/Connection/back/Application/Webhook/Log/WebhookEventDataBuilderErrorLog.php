@@ -30,6 +30,7 @@ class WebhookEventDataBuilderErrorLog
     /**
      * @return array{
      *  type: string,
+     *  message: string,
      *  webhook: array{
             connection_code: string,
      *      user_id: int,
