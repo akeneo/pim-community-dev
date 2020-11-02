@@ -2,20 +2,20 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model;
 
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
-use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 class ProductSpec extends ObjectBehavior
 {
@@ -497,6 +497,28 @@ class ProductSpec extends ObjectBehavior
         $this->wasUpdated()->shouldReturn(false);
     }
 
+    function it_is_updated_when_setting_or_removing_categories(
+        CategoryInterface $category1,
+        CategoryInterface $category2
+    ) {
+        $this->setCategories(new ArrayCollection([$category1->getWrappedObject()]));
+        $this->cleanup();
+
+        $this->setCategories(new ArrayCollection([$category2->getWrappedObject()]));
+        $this->wasUpdated()->shouldReturn(true);
+    }
+
+    function it_is_updated_when_setting_the_same_categories(
+        CategoryInterface $category1,
+        CategoryInterface $category2
+    ) {
+        $this->setCategories(new ArrayCollection([$category1->getWrappedObject(), $category2->getWrappedObject()]));
+        $this->cleanup();
+
+        $this->setCategories(new ArrayCollection([$category2->getWrappedObject(), $category1->getWrappedObject()]));
+        $this->wasUpdated()->shouldReturn(false);
+    }
+
     function it_is_updated_when_a_group_is_added(GroupInterface $group)
     {
         $this->cleanup();
@@ -528,6 +550,24 @@ class ProductSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->removeGroup($group);
+        $this->wasUpdated()->shouldReturn(false);
+    }
+
+    function it_is_updated_when_setting_or_removing_groups(GroupInterface $group1, GroupInterface $group2)
+    {
+        $this->setGroups(new ArrayCollection([$group1->getWrappedObject()]));
+        $this->cleanup();
+
+        $this->setGroups(new ArrayCollection([$group2->getWrappedObject()]));
+        $this->wasUpdated()->shouldReturn(true);
+    }
+
+    function it_is_not_updated_when_setting_the_same_groups(GroupInterface $group1, GroupInterface $group2)
+    {
+        $this->setGroups(new ArrayCollection([$group1->getWrappedObject(), $group2->getWrappedObject()]));
+        $this->cleanup();
+
+        $this->setGroups(new ArrayCollection([$group2->getWrappedObject(), $group1->getWrappedObject()]));
         $this->wasUpdated()->shouldReturn(false);
     }
 }

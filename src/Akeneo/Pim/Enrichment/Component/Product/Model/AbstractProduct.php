@@ -237,6 +237,9 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setFamily(FamilyInterface $family = null)
     {
+        if ($family !== $this->family) {
+            $this->wasUpdated = true;
+        }
         $this->family = $family;
 
         return $this;
@@ -376,7 +379,23 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setCategories(Collection $categories): void
     {
-        $this->categories = $categories;
+        $formerCategories = $this->getCategories();
+        $categoriesToAdd = $categories->filter(
+            function (CategoryInterface $category) use ($formerCategories) {
+                return !$formerCategories->contains($category);
+            }
+        );
+        foreach ($categoriesToAdd as $categoryToAdd) {
+            $this->addCategory($categoryToAdd);
+        }
+        $categoriesToRemove = $formerCategories->filter(
+            function (Categoryinterface $category) use ($categories) {
+                return !$categories->contains($category);
+            }
+        );
+        foreach ($categoriesToRemove as $categoryToRemove) {
+            $this->removeCategory($categoryToRemove);
+        }
     }
 
     /**
@@ -396,10 +415,9 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getCategoryCodes()
     {
-        $codes = [];
-        foreach ($this->getCategories() as $category) {
-            $codes[] = $category->getCode();
-        }
+        $codes = $this->getCategories()->map(function (CategoryInterface $category): string {
+            return $category->getCode();
+        })->toArray();
         sort($codes);
 
         return $codes;
@@ -410,10 +428,9 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getGroupCodes()
     {
-        $codes = [];
-        foreach ($this->getGroups() as $group) {
-            $codes[] = $group->getCode();
-        }
+        $codes = $this->groups->map(function (GroupInterface $group): string {
+            return $group->getCode();
+        })->toArray();
         sort($codes);
 
         return $codes;
@@ -424,7 +441,19 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setGroups(Collection $groups): void
     {
-        $this->groups = $groups;
+        $formerGroups = $this->getGroups();
+        $groupsToAdd = $groups->filter(function (GroupInterface $group) use ($formerGroups): bool {
+            return !$formerGroups->contains($group);
+        });
+        foreach ($groupsToAdd as $groupToAdd) {
+            $this->addGroup($groupToAdd);
+        }
+        $groupsToRemove = $formerGroups->filter(function (GroupInterface $group) use ($groups): bool {
+            return !$groups->contains($group);
+        });
+        foreach ($groupsToRemove as $groupToRemove) {
+            $this->removeGroup($groupToRemove);
+        }
     }
 
     /**
@@ -696,7 +725,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getCategoriesForVariation(): Collection
     {
-        return $this->categories;
+        return new ArrayCollection($this->categories->toArray());
     }
 
     /**
