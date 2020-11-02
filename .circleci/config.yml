@@ -131,7 +131,7 @@ jobs:
           - run:
                 name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
                 command: sudo chown -R 1000:1000 ../project
-         - run:
+          - run:
                 name: No legacy translation format
                 command: .circleci/find_legacy_translations.sh
           - run:
