@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\tests\back\Integration\Elast
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\KeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\KeyIndicatorCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetProductKeyIndicatorsQuery;
@@ -33,7 +34,7 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
         $this->createProductModel('product_model_with_perfect_enrichment', 'family_V_1');
         $this->createProductModel('product_model_with_missing_enrichment', 'family_V_1');
 
-        $this->givenProductsWithoutValues(4);
+        $this->givenAProductsWithoutValues();
         $this->givenAProductVariantWithoutValues('product_model_with_missing_enrichment');
 
         $this->givenAProductWithPerfectEnrichmentAndImage();
@@ -46,8 +47,8 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
         $hasImage = new KeyIndicatorCode('has_image');
 
         $expectedKeyIndicators = [
-            'good_enrichment' => new KeyIndicator($goodEnrichment, 4, 6),
-            'has_image' => new KeyIndicator($hasImage, 3, 7),
+            'good_enrichment' => new KeyIndicator($goodEnrichment, 4, 3),
+            'has_image' => new KeyIndicator($hasImage, 3, 4),
         ];
 
         $keyIndicators = $this->get(GetProductKeyIndicatorsQuery::class)->all(new ChannelCode('ecommerce'), new LocaleCode('en_US'), $goodEnrichment, $hasImage);
@@ -55,32 +56,55 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
         $this->assertEquals($expectedKeyIndicators, $keyIndicators);
     }
 
-    private function givenProductsWithoutValues(int $nbProducts): void
+    public function test_it_retrieves_key_indicators_for_the_products_of_a_given_family()
     {
-        for ($i = 1; $i <= $nbProducts; $i++) {
-            $product = $this->createProduct(sprintf('product_without_values_%d', $i));
+        $this->createFamily('family_A');
+        $this->createFamily('family_B');
 
-            $this->updateProductKeyIndicators($product->getId(), false, false);
-        }
+        $this->givenAProductsWithoutValues(['family' => 'family_A']);
+        $this->givenAProductsWithoutValues(['family' => 'family_B']);
+        $this->givenAProductWithPerfectEnrichmentAndImage(['family' => 'family_B']);
+        $this->givenAProductWithImageButMissingEnrichment(['family' => 'family_A']);
+        $this->givenAProductWithImageButMissingEnrichment(['family' => 'family_A']);
+
+        $goodEnrichment = new KeyIndicatorCode('good_enrichment');
+        $hasImage = new KeyIndicatorCode('has_image');
+
+        $expectedKeyIndicators = [
+            'good_enrichment' => new KeyIndicator($goodEnrichment, 0, 3),
+            'has_image' => new KeyIndicator($hasImage, 2, 1),
+        ];
+
+        $keyIndicators = $this->get(GetProductKeyIndicatorsQuery::class)
+            ->byFamily(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new FamilyCode('family_A'), $goodEnrichment, $hasImage);
+
+        $this->assertEquals($expectedKeyIndicators, $keyIndicators);
     }
 
-    private function givenAProductWithPerfectEnrichmentAndImage(): void
+    private function givenAProductsWithoutValues(array $data = []): void
     {
-        $product = $this->createProduct('product_with_perfect_enrichment_and_image');
+        $product = $this->createProduct($this->getRandomCode(), $data);
+
+        $this->updateProductKeyIndicators($product->getId(), false, false);
+    }
+
+    private function givenAProductWithPerfectEnrichmentAndImage(array $data = []): void
+    {
+        $product = $this->createProduct($this->getRandomCode(), $data);
 
         $this->updateProductKeyIndicators($product->getId(), true, true);
     }
 
-    private function givenAProductWithPerfectEnrichmentButWithoutAttributeImage(): void
+    private function givenAProductWithPerfectEnrichmentButWithoutAttributeImage(array $data = []): void
     {
-        $product = $this->createProduct('product_with_perfect_enrichment_but_without_attribute_image');
+        $product = $this->createProduct($this->getRandomCode(), $data);
 
         $this->updateProductKeyIndicators($product->getId(), true, false);
     }
 
-    private function givenAProductWithImageButMissingEnrichment(): void
+    private function givenAProductWithImageButMissingEnrichment(array $data = []): void
     {
-        $product = $this->createProduct('product_with_image_but_missing_enrichment');
+        $product = $this->createProduct($this->getRandomCode(), $data);
 
         $this->updateProductKeyIndicators($product->getId(), false, true);
     }

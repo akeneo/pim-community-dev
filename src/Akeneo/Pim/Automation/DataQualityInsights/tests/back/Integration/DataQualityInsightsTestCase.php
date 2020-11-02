@@ -17,6 +17,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Test\Integration\TestCase;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Webmozart\Assert\Assert;
 
@@ -32,6 +33,11 @@ class DataQualityInsightsTestCase extends TestCase
     protected function getConfiguration()
     {
         return $this->catalog->useMinimalCatalog();
+    }
+
+    protected function getRandomCode(): string
+    {
+        return Uuid::uuid4()->toString();
     }
 
     protected function deleteProductCriterionEvaluations(int $productId): void
