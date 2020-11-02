@@ -15,6 +15,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Model\Warning;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ItemStepSpec extends ObjectBehavior
@@ -24,7 +25,8 @@ class ItemStepSpec extends ObjectBehavior
         DoctrineJobRepository $repository,
         ItemReaderInterface $reader,
         ItemProcessorInterface $processor,
-        ItemWriterInterface $writer
+        ItemWriterInterface $writer,
+        LoggerInterface $logger
     ) {
         $this->beConstructedWith(
             'myname',
@@ -33,6 +35,7 @@ class ItemStepSpec extends ObjectBehavior
             $reader,
             $processor,
             $writer,
+            $logger,
             3
         );
     }

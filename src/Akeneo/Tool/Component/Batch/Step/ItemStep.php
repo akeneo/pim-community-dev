@@ -13,6 +13,7 @@ use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Model\Warning;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -39,6 +40,8 @@ class ItemStep extends AbstractStep implements TrackableStepInterface
     /** @var StepExecution */
     protected $stepExecution = null;
 
+    private LoggerInterface $logger;
+
     /**
      * @param string                   $name
      * @param EventDispatcherInterface $eventDispatcher
@@ -55,6 +58,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface
         ItemReaderInterface $reader,
         ItemProcessorInterface $processor,
         ItemWriterInterface $writer,
+        LoggerInterface $logger,
         $batchSize = 100
     ) {
         parent::__construct($name, $eventDispatcher, $jobRepository);
@@ -63,6 +67,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface
         $this->processor = $processor;
         $this->writer = $writer;
         $this->batchSize = $batchSize;
+        $this->logger = $logger;
     }
 
     /**
@@ -266,9 +271,9 @@ class ItemStep extends AbstractStep implements TrackableStepInterface
         try {
             return $this->reader->totalItems();
         } catch(\Exception $e) {
-            // TODO: Log the issue here plz
+            $this->logger->critical('Impossible to get the total items to process from the reader.');
         }
 
-        return -1;
+        return 0;
     }
 }
