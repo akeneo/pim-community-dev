@@ -41,7 +41,6 @@ final class DashboardKeyIndicatorsController
             } else {
                 $keyIndicators = $this->getKeyIndicators->all($channel, $locale);
             }
-
         } catch (\InvalidArgumentException $exception) {
             return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
         }

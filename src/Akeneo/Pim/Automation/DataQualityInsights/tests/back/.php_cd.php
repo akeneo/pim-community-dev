@@ -29,6 +29,7 @@ $rules = [
             //External dependencies
             'Psr\Log\LoggerInterface',
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
+            'Webmozart\Assert\Assert',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Application'),
 
@@ -142,6 +143,7 @@ $rules = [
             'GuzzleHttp\Exception',
             'Mekras\Speller',
             'League\Flysystem',
+            'Webmozart\Assert\Assert',
 
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
         ]
