@@ -41,13 +41,10 @@ class ProjectCalculationTasklet implements TaskletInterface
     /** @var SaverInterface */
     protected $projectSaver;
 
-    /** @var ObjectDetacherInterface */
-    protected $objectDetacher;
-
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var EntityManagerClearerInterface|null */
+    /** @var EntityManagerClearerInterface */
     protected $cacheClearer;
 
     public function __construct(
@@ -55,15 +52,12 @@ class ProjectCalculationTasklet implements TaskletInterface
         IdentifiableObjectRepositoryInterface $projectRepository,
         CalculationStepInterface $calculationStep,
         SaverInterface $projectSaver,
-        ObjectDetacherInterface $objectDetacher,
-        // @todo merge on master: remove null and remove $objectDetacher
-        EntityManagerClearerInterface $cacheClearer = null
+        EntityManagerClearerInterface $cacheClearer
     ) {
         $this->productRepository = $productRepository;
         $this->projectRepository = $projectRepository;
         $this->calculationStep = $calculationStep;
         $this->projectSaver = $projectSaver;
-        $this->objectDetacher = $objectDetacher;
         $this->cacheClearer = $cacheClearer;
     }
 
@@ -88,7 +82,6 @@ class ProjectCalculationTasklet implements TaskletInterface
         $handledProductsCount = 0;
         foreach ($products as $product) {
             $this->calculationStep->execute($product, $project);
-            $this->objectDetacher->detach($product);
             $this->stepExecution->incrementSummaryInfo('processed_products');
 
             if (self::PRODUCT_BATCH_SIZE <= ++$handledProductsCount && $this->cacheClearer) {
