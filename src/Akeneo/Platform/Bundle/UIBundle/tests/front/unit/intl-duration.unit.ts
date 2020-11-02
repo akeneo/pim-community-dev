@@ -1,7 +1,7 @@
 import {formatSecondsIntl} from 'pimui/js/intl-duration';
 
 jest.mock('oro/translator', () => (key: string, _params: any, count: number): string => {
-  switch(key){
+  switch (key) {
     case 'duration.days':
       return `${count} day(s)`;
     case 'duration.hours':
@@ -16,10 +16,7 @@ jest.mock('oro/translator', () => (key: string, _params: any, count: number): st
 });
 
 const createDuration = (days: number, hours: number, minutes: number, seconds: number): number => {
-  return seconds +
-    (minutes * 60) +
-    (hours * 3600) +
-    (days * 86400);
+  return seconds + minutes * 60 + hours * 3600 + days * 86400;
 };
 
 describe('>>>TOOLS --- intl-duration', () => {

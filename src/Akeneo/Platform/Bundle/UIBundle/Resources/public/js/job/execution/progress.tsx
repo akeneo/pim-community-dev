@@ -17,7 +17,7 @@ type StepExecutionTracking = {
   duration: number;
   processedItems: number;
   totalItems: number;
-}
+};
 
 const Container = styled.div`
   display: grid;
@@ -80,10 +80,10 @@ const getStepExecutionTrackingProgressLabel = (step: StepExecutionTracking): str
 
 class JobExecutionProgress extends ReactView {
   /* istanbul ignore next */
-  configure () {
-      this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
+  configure() {
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 
-      return super.configure();
+    return super.configure();
   }
 
   reactElementToMount() {
