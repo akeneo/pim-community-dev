@@ -570,4 +570,77 @@ class ProductSpec extends ObjectBehavior
         $this->setGroups(new ArrayCollection([$group2->getWrappedObject(), $group1->getWrappedObject()]));
         $this->wasUpdated()->shouldReturn(false);
     }
+
+    function it_is_updated_when_changing_the_identifier()
+    {
+        $this->setIdentifier('foo');
+        $this->cleanup();
+
+        $this->setIdentifier('baz');
+        $this->wasUpdated()->shouldReturn(true);
+    }
+
+    function it_is_not_updated_when_setting_the_same_identifier()
+    {
+        $this->setIdentifier('foo');
+        $this->cleanup();
+
+        $this->setIdentifier('foo');
+        $this->wasUpdated()->shouldReturn(false);
+    }
+
+    function it_is_updated_when_updating_the_status()
+    {
+        $this->cleanup();
+        $this->setEnabled(false);
+        $this->wasUpdated()->shouldReturn(true);
+    }
+
+    function it_is_not_updated_when_the_status_is_not_updated()
+    {
+        $this->cleanup();
+        $this->setEnabled(true);
+        $this->wasUpdated()->shouldReturn(false);
+    }
+
+    function it_is_updated_when_updating_the_parent_model(
+        ProductModelInterface $productModel,
+        ProductModelInterface $otherProductModel
+    ) {
+        $this->setParent($productModel);
+        $this->cleanup();
+
+        $this->setParent($otherProductModel);
+        $this->wasUpdated()->shouldReturn(true);
+    }
+
+    function it_is_not_updated_when_setting_the_same_parent_model(ProductModelInterface $parent)
+    {
+        $this->setParent($parent);
+        $this->cleanup();
+
+        $this->setParent($parent);
+        $this->wasUpdated()->shouldReturn(false);
+    }
+
+    function it_is_updated_when_changing_the_family_variant(
+        FamilyVariantInterface $familyVariant,
+        FamilyVariantInterface $otherFamilyVariant
+    ) {
+        $this->setFamilyVariant($familyVariant);
+        $this->cleanup();
+
+        $this->setFamilyVariant($otherFamilyVariant);
+        $this->wasUpdated()->shouldReturn(true);
+    }
+
+    function it_is_not_updated_when_setting_the_same_family_variant(
+        FamilyVariantInterface $familyVariant
+    ) {
+        $this->setFamilyVariant($familyVariant);
+        $this->cleanup();
+
+        $this->setFamilyVariant($familyVariant);
+        $this->wasUpdated()->shouldReturn(false);
+    }
 }

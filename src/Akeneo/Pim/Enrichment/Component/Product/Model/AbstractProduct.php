@@ -81,7 +81,6 @@ abstract class AbstractProduct implements ProductInterface
     /** @var FamilyVariantInterface|null */
     protected $familyVariant;
 
-    /** @var bool */
     protected bool $wasUpdated = false;
 
     /**
@@ -266,7 +265,10 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setIdentifier(?string $identifierValue): ProductInterface
     {
-        $this->identifier = $identifierValue;
+        if ($identifierValue !== $this->identifier) {
+            $this->identifier = $identifierValue;
+            $this->wasUpdated = true;
+        }
 
         return $this;
     }
@@ -469,7 +471,10 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setEnabled($enabled)
     {
-        $this->enabled = $enabled;
+        if ($enabled !== $this->enabled) {
+            $this->enabled = $enabled;
+            $this->wasUpdated = true;
+        }
 
         return $this;
     }
@@ -685,7 +690,10 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setParent(ProductModelInterface $parent = null): void
     {
-        $this->parent = $parent;
+        if ($parent !== $this->parent) {
+            $this->parent = $parent;
+            $this->wasUpdated = true;
+        }
     }
 
     /**
@@ -697,11 +705,14 @@ abstract class AbstractProduct implements ProductInterface
     }
 
     /**
-     * @param FamilyVariantInterface $familyVariant
+     * {@inheritdoc}
      */
     public function setFamilyVariant(FamilyVariantInterface $familyVariant): void
     {
-        $this->familyVariant = $familyVariant;
+        if ($familyVariant !== $this->familyVariant) {
+            $this->familyVariant = $familyVariant;
+            $this->wasUpdated = true;
+        }
     }
 
     /**
