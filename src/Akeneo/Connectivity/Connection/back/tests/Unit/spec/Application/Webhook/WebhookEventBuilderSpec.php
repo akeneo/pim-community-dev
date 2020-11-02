@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Application\Webhook;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
+use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Platform\Component\EventQueue\BusinessEvent;
 use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -31,10 +33,16 @@ class WebhookEventBuilderSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(WebhookEventBuilder::class);
     }
 
-    public function it_builds_a_webhook_event($eventDataBuilder1, $eventDataBuilder2): void
+    public function it_builds_a_webhook_event($eventDataBuilder1, $eventDataBuilder2, UserInterface $user): void
     {
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+
+        $author = Author::fromUser($user->getWrappedObject());
         $businessEvent = $this->createBusinessEvent(
-            'julia',
+            $author,
             ['data'],
             1599814161,
             'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
@@ -51,19 +59,25 @@ class WebhookEventBuilderSpec extends ObjectBehavior
                     'product.created',
                     'a20832d1-a1e6-4f39-99ea-a1dd859faddb',
                     '2020-09-11T08:49:21+00:00',
-                    'julia',
+                    $author,
                     'staging.akeneo.com',
                     ['data']
                 )
             );
     }
 
-    public function it_throws_an_error_if_the_business_event_is_not_supported(): void
+    public function it_throws_an_error_if_the_business_event_is_not_supported(UserInterface $user): void
     {
         $this->beConstructedWith([]);
 
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+
+        $author = Author::fromUser($user->getWrappedObject());
         $businessEvent = $this->createBusinessEvent(
-            'julia',
+            $author,
             ['data'],
             1599814161,
             'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
@@ -75,10 +89,17 @@ class WebhookEventBuilderSpec extends ObjectBehavior
 
     public function it_throws_an_exception_if_there_is_no_pim_source_in_context(
         $eventDataBuilder1,
-        $eventDataBuilder2
+        $eventDataBuilder2,
+        UserInterface $user
     ): void {
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+
+        $author = Author::fromUser($user->getWrappedObject());
         $businessEvent = $this->createBusinessEvent(
-            'julia',
+            $author,
             ['data'],
             1599814161,
             'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
@@ -95,10 +116,17 @@ class WebhookEventBuilderSpec extends ObjectBehavior
 
     public function it_throws_an_exception_if_pim_source_is_empty(
         $eventDataBuilder1,
-        $eventDataBuilder2
+        $eventDataBuilder2,
+        UserInterface $user
     ): void {
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+
+        $author = Author::fromUser($user->getWrappedObject());
         $businessEvent = $this->createBusinessEvent(
-            'julia',
+            $author,
             ['data'],
             1599814161,
             'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
@@ -115,10 +143,17 @@ class WebhookEventBuilderSpec extends ObjectBehavior
 
     public function it_throws_an_exception_if_pim_source_is_null(
         $eventDataBuilder1,
-        $eventDataBuilder2
+        $eventDataBuilder2,
+        UserInterface $user
     ): void {
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+
+        $author = Author::fromUser($user->getWrappedObject());
         $businessEvent = $this->createBusinessEvent(
-            'julia',
+            $author,
             ['data'],
             1599814161,
             'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
@@ -134,7 +169,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
     }
 
     private function createBusinessEvent(
-        string $author,
+        Author $author,
         array $data,
         int $timestamp,
         string $uuid
