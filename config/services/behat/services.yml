@@ -1,6 +1,3 @@
-parameters:
-    comm_panel_api_url: 'http://localhost:8088' # avoid to call the external service in the CI
-
 imports:
 
 services:
