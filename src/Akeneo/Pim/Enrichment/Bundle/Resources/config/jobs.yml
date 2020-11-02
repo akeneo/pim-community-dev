@@ -228,6 +228,7 @@ services:
             - '@pim_catalog.saver.attribute_group'
             - '@akeneo.pim.structure.query.find_attribute_group_orders_equal_or_superior_to'
             - '@validator'
+            - '@akeneo_batch.job_repository'
 
     pim_connector.tasklet.xlsx_attribute_group_import.ensure_attribute_group_order:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\EnsureConsistentAttributeGroupOrderTasklet'
@@ -237,6 +238,7 @@ services:
             - '@pim_catalog.saver.attribute_group'
             - '@akeneo.pim.structure.query.find_attribute_group_orders_equal_or_superior_to'
             - '@validator'
+            - '@akeneo_batch.job_repository'
 
     pim_connector.job.csv_group_import:
         class: '%pim_connector.job.simple_job.class%'

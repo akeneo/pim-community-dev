@@ -9,6 +9,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -45,18 +46,22 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface, Tr
     /** @var ValidatorInterface */
     private $validator;
 
+    private JobRepositoryInterface $jobRepository;
+
     public function __construct(
         IdentifiableObjectRepositoryInterface $attributeGroupRepository,
         ItemReaderInterface $attributeGroupReader,
         SaverInterface $attributeGroupSaver,
         FindAttributeGroupOrdersEqualOrSuperiorTo $findAttributeGroupOrdersEqualOrSuperiorTo,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        JobRepositoryInterface $jobRepository
     ) {
         $this->attributeGroupRepository = $attributeGroupRepository;
         $this->attributeGroupReader = $attributeGroupReader;
         $this->attributeGroupSaver = $attributeGroupSaver;
         $this->findAttributeGroupOrdersEqualOrSuperiorTo = $findAttributeGroupOrdersEqualOrSuperiorTo;
         $this->validator = $validator;
+        $this->jobRepository = $jobRepository;
     }
 
     /**
@@ -87,8 +92,7 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface, Tr
             $attributeGroup = $this->attributeGroupRepository->findOneByIdentifier($attributeGroupItem['code']);
 
             if (null === $attributeGroup) {
-                $this->stepExecution->incrementSummaryInfo('skip');
-                $this->stepExecution->incrementProcessedItems();
+                $this->updateProgressWithProcessed();
 
                 continue;
             }
@@ -110,18 +114,17 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface, Tr
                 $violations = $this->validator->validate($attributeGroup);
 
                 if ($violations->count() > 0) {
-                    $this->stepExecution->incrementSummaryInfo('skip');
-                    $this->stepExecution->incrementProcessedItems();
+                    $this->updateProgressWithProcessed();
 
                     continue;
                 }
 
                 $this->attributeGroupSaver->save($attributeGroup);
-                $this->stepExecution->incrementSummaryInfo('process');
-                $this->stepExecution->incrementProcessedItems();
+                $this->updateProgressWithSkipItem();
+
             } else {
-                $this->stepExecution->incrementSummaryInfo('skip');
-                $this->stepExecution->incrementProcessedItems();
+                $this->updateProgressWithProcessed();
+
             }
         }
     }
@@ -129,5 +132,19 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface, Tr
     public function totalItems(): int
     {
         return $this->attributeGroupReader->count();
+    }
+
+    private function updateProgressWithProcessed(): void
+    {
+        $this->stepExecution->incrementSummaryInfo('skip');
+        $this->stepExecution->incrementProcessedItems();
+        $this->jobRepository->updateStepExecution($this->stepExecution);
+    }
+
+    private function updateProgressWithSkipItem(): void
+    {
+        $this->stepExecution->incrementSummaryInfo('process');
+        $this->stepExecution->incrementProcessedItems();
+        $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 }

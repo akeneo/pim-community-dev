@@ -41,7 +41,7 @@ class ReaderSpec extends ObjectBehavior
         $fileIteratorFactory->create($filePath)->willReturn($fileIterator);
 
         /** Expect 2 items, even there is 3 lines because the first one (the header) is ignored */
-        $this->count()->shouldReturn(2);
+        $this->totalItems()->shouldReturn(2);
     }
 
     function it_reads_csv_file(
@@ -124,6 +124,30 @@ class ReaderSpec extends ObjectBehavior
         );
 
         $this->shouldThrow(InvalidItemFromViolationsException::class)->during('read');
+    }
+
+    function it_rewinds_the_reader(
+        $fileIteratorFactory,
+        $stepExecution,
+        FileIteratorInterface $fileIterator,
+        JobParameters $jobParameters
+    ) {
+        $filePath = $this->getPath() . DIRECTORY_SEPARATOR  . 'with_media.csv';
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enclosure')->willReturn('"');
+        $jobParameters->get('delimiter')->willReturn(';');
+        $jobParameters->get('filePath')->willReturn($filePath);
+
+        $fileIteratorFactory->create($filePath, [
+            'reader_options' => [
+                'fieldDelimiter' => ';',
+                'fieldEnclosure' => '"',
+            ]
+        ])->willReturn($fileIterator);
+        $fileIterator->rewind()->shouldBeCalled();
+
+        $this->rewind();
     }
 
     private function getPath()

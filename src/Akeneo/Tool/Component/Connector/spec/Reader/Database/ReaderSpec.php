@@ -40,6 +40,6 @@ class ReaderSpec extends ObjectBehavior
         ProductInterface $product
     ) {
         $repository->findAll()->willReturn([$product, $product]);
-        $this->count()->shouldReturn(2);
+        $this->totalItems()->shouldReturn(2);
     }
 }

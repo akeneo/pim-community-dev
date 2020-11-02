@@ -9,6 +9,7 @@ services:
             - '@pim_connector.reader.file.csv_locale'
             - '@pim_connector.processor.denormalization.locale'
             - '@pim_connector.writer.database.locale'
+            - '@logger'
 
     pim_connector.step.csv_locale_export.export:
         class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
@@ -19,6 +20,7 @@ services:
             - '@pim_connector.reader.database.locale'
             - '@pim_connector.processor.normalization.locale'
             - '@pim_connector.writer.file.csv_locale'
+            - '@logger'
 
     pim_connector.step.xlsx_locale_import.import:
         class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
@@ -29,6 +31,7 @@ services:
             - '@pim_connector.reader.file.xlsx_locale'
             - '@pim_connector.processor.denormalization.locale'
             - '@pim_connector.writer.database.locale'
+            - '@logger'
 
     pim_connector.step.xlsx_locale_export.export:
         class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
@@ -39,6 +42,7 @@ services:
             - '@pim_connector.reader.database.locale'
             - '@pim_connector.processor.normalization.locale'
             - '@pim_connector.writer.file.xlsx_locale'
+            - '@logger'
             - 10
 
     ### Channel
@@ -51,6 +55,7 @@ services:
             - '@pim_connector.reader.file.csv_channel'
             - '@pim_connector.processor.denormalization.channel'
             - '@pim_connector.writer.database.channel'
+            - '@logger'
 
     pim_connector.step.csv_channel_export.export:
         class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
@@ -61,6 +66,7 @@ services:
             - '@pim_connector.reader.database.channel'
             - '@pim_connector.processor.normalization.channel'
             - '@pim_connector.writer.file.csv_channel'
+            - '@logger'
 
     pim_connector.step.xlsx_channel_import.import:
         class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
@@ -71,6 +77,7 @@ services:
             - '@pim_connector.reader.file.xlsx_channel'
             - '@pim_connector.processor.denormalization.channel'
             - '@pim_connector.writer.database.channel'
+            - '@logger'
 
     pim_connector.step.xlsx_channel_export.export:
         class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
@@ -81,6 +88,7 @@ services:
             - '@pim_connector.reader.database.channel'
             - '@pim_connector.processor.normalization.channel'
             - '@pim_connector.writer.file.xlsx_channel'
+            - '@logger'
             - 10
 
     ### Currency
@@ -93,6 +101,7 @@ services:
             - '@pim_connector.reader.file.csv_currency'
             - '@pim_connector.processor.denormalization.currency'
             - '@pim_connector.writer.database.currency'
+            - '@logger'
 
     pim_connector.step.csv_currency_export.export:
         class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
@@ -103,6 +112,7 @@ services:
             - '@pim_connector.reader.database.currency'
             - '@pim_connector.processor.normalization.currency'
             - '@pim_connector.writer.file.csv_currency'
+            - '@logger'
 
     pim_connector.step.xlsx_currency_import.import:
         class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
@@ -113,6 +123,7 @@ services:
             - '@pim_connector.reader.file.xlsx_currency'
             - '@pim_connector.processor.denormalization.currency'
             - '@pim_connector.writer.database.currency'
+            - '@logger'
 
     pim_connector.step.xlsx_currency_export.export:
         class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
@@ -123,4 +134,5 @@ services:
             - '@pim_connector.reader.database.currency'
             - '@pim_connector.processor.normalization.currency'
             - '@pim_connector.writer.file.xlsx_currency'
+            - '@logger'
             - 10

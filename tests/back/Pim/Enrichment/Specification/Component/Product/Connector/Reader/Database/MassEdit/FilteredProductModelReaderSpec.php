@@ -172,6 +172,6 @@ class FilteredProductModelReaderSpec extends ObjectBehavior
     function it_throws_if_the_reader_is_not_initialized()
     {
         $this->shouldThrow(\RuntimeException::class)
-            ->during('count');
+            ->during('totalItems');
     }
 }

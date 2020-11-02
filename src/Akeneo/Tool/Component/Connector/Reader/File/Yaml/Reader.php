@@ -169,6 +169,11 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
         $this->yaml = null;
     }
 
+    public function rewind(): void
+    {
+        $this->yaml->rewind();
+    }
+
     /**
      * @param array                        $item
      * @param DataArrayConversionException $exception

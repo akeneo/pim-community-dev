@@ -125,6 +125,16 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
         $this->fileIterator = null;
     }
 
+    public function rewind(): void
+    {
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $filePath = $jobParameters->get('filePath');
+        if (null === $this->fileIterator) {
+            $this->fileIterator = $this->fileIteratorFactory->create($filePath, $this->options);
+        }
+        $this->fileIterator->rewind();
+    }
+
     /**
      * Returns the options for array converter. It can be overridden in the sub classes.
      *

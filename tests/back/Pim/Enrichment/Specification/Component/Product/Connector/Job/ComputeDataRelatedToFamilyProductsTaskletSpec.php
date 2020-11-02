@@ -94,6 +94,8 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('process', 2)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('process', 1)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldNotBeCalled();
+        $stepExecution->incrementProcessedItems(2)->shouldBeCalled();
+        $stepExecution->incrementProcessedItems(1)->shouldBeCalled();
 
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
         $cacheClearer->clear()->shouldBeCalledTimes(3);
@@ -159,6 +161,8 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('process', 2)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('process', 1)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldNotBeCalled();
+        $stepExecution->incrementProcessedItems(2)->shouldBeCalled();
+        $stepExecution->incrementProcessedItems(1)->shouldBeCalled();
 
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
         $cacheClearer->clear()->shouldBeCalledTimes(3);
@@ -221,6 +225,8 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
 
         $stepExecution->incrementSummaryInfo('process', 1)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(2);
+        $stepExecution->incrementProcessedItems(1)->shouldBeCalled();
+        $stepExecution->incrementProcessedItems()->shouldBeCalled();
 
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
         $cacheClearer->clear()->shouldBeCalledTimes(3);
@@ -241,6 +247,7 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $familyRepository->findOneByIdentifier('unkown_family')->willReturn(null);
 
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $stepExecution->incrementProcessedItems()->shouldBeCalled();
 
         $productQueryBuilderFactory->create()->shouldNotBeCalled();
         $productSaver->saveAll(Argument::any())->shouldNotBeCalled();

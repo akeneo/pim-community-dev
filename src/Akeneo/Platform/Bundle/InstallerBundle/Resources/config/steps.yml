@@ -97,3 +97,4 @@ services:
             - '@pim_connector.reader.file.yaml_job_instance'
             - '@pim_connector.processor.denormalization.job_instance'
             - '@pim_connector.writer.database.job_instance'
+            - '@logger'

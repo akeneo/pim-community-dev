@@ -40,7 +40,7 @@ class ReaderSpec extends ObjectBehavior
         $jobParameters->get('filePath')->willReturn($incorrectlyFormattedFilePath);
 
         $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
-        $this->count()->shouldReturn(0);
+        $this->totalItems()->shouldReturn(0);
     }
 
     function it_return_item_count(
@@ -53,7 +53,7 @@ class ReaderSpec extends ObjectBehavior
         $jobParameters->get('filePath')->willReturn($incorrectlyFormattedFilePath);
 
         $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
-        $this->count()->shouldReturn(3);
+        $this->totalItems()->shouldReturn(3);
     }
 
     function it_initializes_the_summary_info_if_the_yaml_file_is_not_correctly_formatted(

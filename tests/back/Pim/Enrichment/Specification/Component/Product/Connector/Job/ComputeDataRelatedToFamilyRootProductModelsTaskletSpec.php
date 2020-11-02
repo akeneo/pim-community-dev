@@ -97,6 +97,7 @@ class ComputeDataRelatedToFamilyRootProductModelsTaskletSpec extends ObjectBehav
         $familyRepository->findOneByIdentifier('family_code')->willReturn(null);
 
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $stepExecution->incrementProcessedItems()->shouldBeCalled();
         $cacheClearer->clear()->shouldBeCalledTimes(1);
 
         $this->execute();
@@ -154,6 +155,8 @@ class ComputeDataRelatedToFamilyRootProductModelsTaskletSpec extends ObjectBehav
         $stepExecution->incrementSummaryInfo('process', 2)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('process', 1)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldNotBeCalled();
+        $stepExecution->incrementProcessedItems(2)->shouldBeCalled();
+        $stepExecution->incrementProcessedItems(1)->shouldBeCalled();
 
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalledTimes(2);
         $cacheClearer->clear()->shouldBeCalledTimes(2);
@@ -210,6 +213,8 @@ class ComputeDataRelatedToFamilyRootProductModelsTaskletSpec extends ObjectBehav
 
         $stepExecution->incrementSummaryInfo('process', 1)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(2);
+        $stepExecution->incrementProcessedItems(1)->shouldBeCalled();
+        $stepExecution->incrementProcessedItems()->shouldBeCalled();
 
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalledTimes(1);
         $cacheClearer->clear()->shouldBeCalledTimes(2);

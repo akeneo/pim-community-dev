@@ -285,6 +285,6 @@ class ProductAndProductModelReaderSpec extends ObjectBehavior
         );
 
         $this->shouldThrow(\RuntimeException::class)
-            ->during('count');
+            ->during('totalItems');
     }
 }

@@ -5,6 +5,7 @@ namespace Akeneo\Tool\Component\Connector\Reader\File\Csv;
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
@@ -201,13 +202,8 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
         }
     }
 
-    /**
-     * @param \Akeneo\Tool\Component\Batch\Job\JobParameters $jobParameters
-     * @param $filePath
-     *
-     */
     private function initializeFileIterator(
-        \Akeneo\Tool\Component\Batch\Job\JobParameters $jobParameters,
+        JobParameters $jobParameters,
         $filePath
     ): void {
         $delimiter = $jobParameters->get('delimiter');

@@ -10,8 +10,8 @@ use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CountVa
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\CountProductModelsAndChildrenProductModelsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Tool\Component\Batch\Step\TrackableStepInterface;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
@@ -24,7 +24,7 @@ use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DeleteProductsAndProductModelsTasklet implements TaskletInterface, TrackableStepInterface
+class DeleteProductsAndProductModelsTasklet implements TaskletInterface, TrackableTaskletInterface
 {
     /** @var StepExecution */
     protected $stepExecution;
@@ -81,6 +81,15 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
         $this->stepExecution = $stepExecution;
     }
 
+    public function totalItems(): int
+    {
+        $productsAndRootProductModels = $this->findSimpleProductsAndRootProductModels();
+        $subProductModels = $this->findSubProductModels();
+        $variantProducts = $this->findVariantProducts();
+
+        return $this->totalItemsToDelete($productsAndRootProductModels, $subProductModels, $variantProducts);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -95,11 +104,6 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
         $productsAndRootProductModels = $this->findSimpleProductsAndRootProductModels();
         $subProductModels = $this->findSubProductModels();
         $variantProducts = $this->findVariantProducts();
-
-        if ($this->isTrackable()) {
-            $totalItems = $this->totalItemsToDelete($productsAndRootProductModels, $subProductModels, $variantProducts);
-            $this->stepExecution->setTotalItems($totalItems);
-        }
 
         $this->stepExecution->addSummaryInfo('deleted_products', 0);
         $this->stepExecution->addSummaryInfo('deleted_product_models', 0);
@@ -272,11 +276,6 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
                 return $item instanceof ProductModelInterface;
             })
         );
-    }
-
-    public function isTrackable(): bool
-    {
-        return true;
     }
 
     private function totalItemsToDelete(
