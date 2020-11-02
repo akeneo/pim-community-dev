@@ -1,6 +1,10 @@
 var/tests/%:
 	$(DOCKER_COMPOSE) run -u www-data --rm php mkdir -p $@
 
+.PHONY: find-legacy-translations
+find-legacy-translations:
+	vendor/akeneo/pim-community-dev/.circleci/find_legacy_translations.sh
+
 .PHONY: coupling-back
 coupling-back: twa-coupling-back data-quality-insights-coupling-back reference-entity-coupling-back asset-manager-coupling-back rule-engine-coupling-back workflow-coupling-back permission-coupling-back connectivity-connection-coupling-back communication-channel-coupling-back
 
