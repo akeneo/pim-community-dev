@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Component\Authorization;
 
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Decorates the authorization checker from symfony to be able to cache results.
@@ -138,6 +140,7 @@ class CachedAuthorizationChecker implements AuthorizationCheckerInterface
     private function getCurrentUserAsIndex(): string
     {
         $user = $this->tokenStorage->getToken()->getUser();
+        Assert::implementsInterface($user, UserInterface::class);
 
         return sprintf('%s_%s', $user->getUsername(), (string) $user->getId());
     }

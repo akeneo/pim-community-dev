@@ -20,8 +20,10 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter as OroChoiceFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
+use Oro\Bundle\PimFilterBundle\Datasource\FilterProductDatasourceAdapterInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Allow to know if current user can review/publish, edit or view products
@@ -86,6 +88,7 @@ class PermissionFilter extends OroChoiceFilter
             return false;
         }
 
+        Assert::implementsInterface($ds, FilterProductDatasourceAdapterInterface::class);
         $pqb = $ds->getProductQueryBuilder();
         $this->removeCategoryInListOrUnclassified($pqb);
         $userGroupIds = $user->getGroupsIds();

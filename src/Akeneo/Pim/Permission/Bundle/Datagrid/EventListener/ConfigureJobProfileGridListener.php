@@ -57,8 +57,9 @@ class ConfigureJobProfileGridListener
      */
     protected function getActionConfiguration(ResultRecordInterface $record)
     {
-        if (!$this->authorizationChecker->isGranted(Attributes::EDIT, $record->getRootEntity())) {
-            return ['edit' => false];
-        }
+        return !$this->authorizationChecker->isGranted(Attributes::EDIT, $record->getRootEntity())
+            ? ['edit' => false]
+            : null
+            ;
     }
 }

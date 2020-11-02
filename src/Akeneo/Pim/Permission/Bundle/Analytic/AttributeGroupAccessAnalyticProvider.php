@@ -43,7 +43,7 @@ class AttributeGroupAccessAnalyticProvider implements DataCollectorInterface
      */
     public function collect()
     {
-        $result = (int) $this->entityManager->createQueryBuilder('a')
+        $result = (int) $this->entityManager->createQueryBuilder()
             ->select('COUNT(DISTINCT a.attributeGroup)')
             ->from($this->entityName, 'a')
             ->innerJoin('a.userGroup', 'g')

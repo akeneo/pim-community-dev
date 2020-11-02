@@ -2,19 +2,19 @@
 
 namespace Specification\Akeneo\Pim\Permission\Component\Updater\Setter;
 
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
-use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Query\ItemCategoryAccessQuery;
-use Akeneo\Pim\Permission\Component\Updater\Setter\GrantedAssociationFieldSetter;
 use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;
+use Akeneo\Pim\Permission\Component\Updater\Setter\GrantedAssociationFieldSetter;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\User;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class GrantedAssociationFieldSetterSpec extends ObjectBehavior
 {
@@ -54,9 +54,9 @@ class GrantedAssociationFieldSetterSpec extends ObjectBehavior
         $tokenStorage,
         $productCategoryAccessQuery,
         ProductInterface $product,
-        TokenInterface $token,
-        UserInterface $user
+        TokenInterface $token
     ) {
+        $user = new User();
         $data = ['X_SELL' => ['products' => ['associationA']]];
 
         $tokenStorage->getToken()->willReturn($token);
@@ -82,9 +82,9 @@ class GrantedAssociationFieldSetterSpec extends ObjectBehavior
         ProductInterface $product,
         ProductInterface $associatedProductA,
         ProductInterface $associatedProductB,
-        TokenInterface $token,
-        UserInterface $user
+        TokenInterface $token
     ) {
+        $user = new User();
         $data = ['X_SELL' => ['products' => ['associationA', 'associationB']]];
 
         $tokenStorage->getToken()->willReturn($token);
@@ -116,9 +116,9 @@ class GrantedAssociationFieldSetterSpec extends ObjectBehavior
         ProductInterface $product,
         ProductModelInterface $associatedProductModelA,
         ProductModelInterface $associatedProductModelB,
-        TokenInterface $token,
-        UserInterface $user
+        TokenInterface $token
     ) {
+        $user = new User();
         $data = ['X_SELL' => ['product_models' => ['associationA', 'associationB']]];
 
         $tokenStorage->getToken()->willReturn($token);

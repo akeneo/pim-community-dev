@@ -110,5 +110,7 @@ class ContextConfigurator extends BaseContextConfigurator
                 return null;
             }
         }
+
+        return null;
     }
 }

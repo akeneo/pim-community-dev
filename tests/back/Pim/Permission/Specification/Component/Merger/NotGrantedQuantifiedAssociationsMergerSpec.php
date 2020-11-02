@@ -8,12 +8,12 @@ use Akeneo\Pim\Permission\Bundle\Entity\Query\ProductCategoryAccessQuery;
 use Akeneo\Pim\Permission\Bundle\Entity\Query\ProductModelCategoryAccessQuery;
 use Akeneo\Pim\Permission\Component\Merger\NotGrantedQuantifiedAssociationsMerger;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class NotGrantedQuantifiedAssociationsMergerSpec extends ObjectBehavior
 {
