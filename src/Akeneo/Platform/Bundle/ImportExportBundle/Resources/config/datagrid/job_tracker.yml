@@ -41,6 +41,7 @@ datagrid:
                     id: string
                     jobLabel: string
                     isStoppable: boolean
+                    showLink: string
                 data_name: id
         sorters:
             columns:
@@ -83,3 +84,8 @@ datagrid:
             id: ~
             jobLabel: ~
             isStoppable: ~
+            showLink:
+                type: url
+                params:
+                    - id
+                route: pim_enrich_job_tracker_show

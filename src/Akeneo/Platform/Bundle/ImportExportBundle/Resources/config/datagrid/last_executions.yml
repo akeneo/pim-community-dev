@@ -37,8 +37,13 @@ datagrid:
                     id: string
                     jobLabel: string
                     isStoppable: boolean
+                    showLink: string
                 data_name: id
         properties:
             id: ~
             jobLabel: ~
             isStoppable: ~
+            showLink:
+                type: url
+                params:
+                    - id
