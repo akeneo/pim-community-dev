@@ -12,8 +12,12 @@ type Tip = {
   link?: string;
 };
 
-type Tips = {
+type KeyIndicatorTips = {
   [step: string]: Tip[];
 };
 
-export {KeyIndicator, keyIndicatorMap, Tip, Tips};
+type KeyIndicatorsTips = {
+  [keyIndicatorName: string]: KeyIndicatorTips;
+};
+
+export {KeyIndicator, keyIndicatorMap, Tip, KeyIndicatorTips, KeyIndicatorsTips};

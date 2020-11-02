@@ -34,7 +34,6 @@ const KeyIndicators: FC<Props> = ({children, channel, locale, family, category})
             return React.cloneElement(
               element,
               {
-                type: element.props.type,
                 ratio: parseFloat(keyIndicatorData.ratio.toString()),
                 total: keyIndicatorData.total,
               }

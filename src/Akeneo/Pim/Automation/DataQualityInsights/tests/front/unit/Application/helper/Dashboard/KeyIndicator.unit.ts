@@ -2,7 +2,7 @@ import {
   computeProductsNumberToWorkOn,
   computeTipMessage
 } from "@akeneo-pim-community/data-quality-insights/src/application/helper/Dashboard/KeyIndicator";
-import {tips} from "../../../../utils/provider/provideKeyIndicatorsHelper";
+import {keyIndicatorsTips} from "@akeneo-pim-community/data-quality-insights/src/application/helper/Dashboard/KeyIndicatorsTips";
 
 test('Compute products number to work on', () => {
   expect(computeProductsNumberToWorkOn(1)).toEqual(1);
@@ -27,17 +27,17 @@ test('Compute products number to work on', () => {
 });
 
 test('Compute tip message', () => {
-  expect(computeTipMessage(tips, 1).message).toMatch(/first_step/);
-  expect(computeTipMessage(tips, 59).message).toMatch(/first_step/);
-  expect(computeTipMessage(tips, 59.99).message).toMatch(/first_step/);
+  expect(computeTipMessage(keyIndicatorsTips['has_image'], 1).message).toMatch(/first_step/);
+  expect(computeTipMessage(keyIndicatorsTips['has_image'], 59).message).toMatch(/first_step/);
+  expect(computeTipMessage(keyIndicatorsTips['has_image'], 59.99).message).toMatch(/first_step/);
 
-  expect(computeTipMessage(tips, 60).message).toMatch(/second_step/);
-  expect(computeTipMessage(tips, 79).message).toMatch(/second_step/);
-  expect(computeTipMessage(tips, 79.99).message).toMatch(/second_step/);
+  expect(computeTipMessage(keyIndicatorsTips['has_image'], 60).message).toMatch(/second_step/);
+  expect(computeTipMessage(keyIndicatorsTips['has_image'], 79).message).toMatch(/second_step/);
+  expect(computeTipMessage(keyIndicatorsTips['has_image'], 79.99).message).toMatch(/second_step/);
 
-  expect(computeTipMessage(tips, 80).message).toMatch(/third_step/);
-  expect(computeTipMessage(tips, 99).message).toMatch(/third_step/);
-  expect(computeTipMessage(tips, 99.56).message).toMatch(/third_step/);
+  expect(computeTipMessage(keyIndicatorsTips['has_image'], 80).message).toMatch(/third_step/);
+  expect(computeTipMessage(keyIndicatorsTips['has_image'], 99).message).toMatch(/third_step/);
+  expect(computeTipMessage(keyIndicatorsTips['has_image'], 99.56).message).toMatch(/third_step/);
 
-  expect(computeTipMessage(tips, 100).message).toMatch(/perfect_score_step/);
+  expect(computeTipMessage(keyIndicatorsTips['has_image'], 100).message).toMatch(/perfect_score_step/);
 });

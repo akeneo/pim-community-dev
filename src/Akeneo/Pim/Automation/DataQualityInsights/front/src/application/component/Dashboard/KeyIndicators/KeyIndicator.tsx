@@ -7,18 +7,21 @@ import {
   computeTipMessage,
   getProgressBarLevel
 } from "../../../helper/Dashboard/KeyIndicator";
-import {Tip, Tips} from "../../../../domain";
+import {Tip, KeyIndicatorTips} from "../../../../domain";
+import {useGetKeyIndicatorTips} from "../../../../infrastructure/hooks/Dashboard/UseKeyIndicatorTips";
 
 type Props = {
-  tips: Tips;
+  type: string;
   ratio?: number;
   total?: number;
   title?: string;
-  entitiesToWorkOnMessage?: string;
+  resultsMessage?: string;
+  followResults?: () => void;
 };
 
-const KeyIndicator: FC<Props> = ({children, ratio, total, tips, title, entitiesToWorkOnMessage}) => {
+const KeyIndicator: FC<Props> = ({children, type, ratio, total, title, resultsMessage, followResults}) => {
   const translate = useTranslate();
+  const tips: KeyIndicatorTips = useGetKeyIndicatorTips(type);
 
   if (ratio === undefined || total === undefined || title === undefined) {
     return <></>;
@@ -27,6 +30,13 @@ const KeyIndicator: FC<Props> = ({children, ratio, total, tips, title, entitiesT
   const tip: Tip = computeTipMessage(tips, ratio);
 
   const productsNumberToWorkOn: number = computeProductsNumberToWorkOn(total);
+
+  const handleOnClickOnProductsNumber = (event: any) => {
+    event.stopPropagation();
+    if (event.target.tagName === 'BUTTON' && followResults) {
+      followResults();
+    }
+  };
 
   return (
     <Container>
@@ -38,14 +48,14 @@ const KeyIndicator: FC<Props> = ({children, ratio, total, tips, title, entitiesT
           percent={ratio}
           progressLabel={Math.round(ratio) + '%'}
           size="small"
-          title={title}
+          title={translate(title)}
         />
         <Text>
           {
-            total > 0 && entitiesToWorkOnMessage &&
-            <TextWithLink dangerouslySetInnerHTML={{
+            total > 0 && resultsMessage &&
+            <TextWithLink onClickCapture={(event: any) => handleOnClickOnProductsNumber(event)} dangerouslySetInnerHTML={{
               __html: translate(
-                entitiesToWorkOnMessage,
+                resultsMessage,
                 {count: productsNumberToWorkOn.toString()},
                 productsNumberToWorkOn
               )
@@ -94,9 +104,18 @@ const Text = styled.div`
 `;
 
 const TextWithLink = styled.span`
-  a {
+  a, button {
     color: ${({theme}) => theme.color.purple100};
     text-decoration: underline ${({theme}) => theme.color.purple100};
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    
+    :focus {
+      outline: none;
+    }
   }
 `;
 

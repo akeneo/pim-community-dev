@@ -1,11 +1,9 @@
 import React from 'react';
 import {renderWithAppContextHelper} from '../../../../../utils/render';
-import {
-  KeyIndicators,
-  ProductsWithAnImage,
-  ProductsWithGoodEnrichment
-} from '../../../../../../../front/src/application/component/Dashboard';
+import {KeyIndicator, KeyIndicators} from '../../../../../../../front/src/application/component/Dashboard';
 import {useFetchKeyIndicators} from "@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks";
+import {keyIndicatorsTips} from "@akeneo-pim-community/data-quality-insights/src/application/helper/Dashboard/KeyIndicatorsTips";
+import {KeyIndicatorsProvider} from "@akeneo-pim-community/data-quality-insights/src/application/context/KeyIndicatorsContext";
 
 jest.mock('@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks');
 
@@ -56,9 +54,11 @@ test('It displays only the key indicators for which we have data', async() => {
 function renderComponent()
 {
   return renderWithAppContextHelper(
-    <KeyIndicators channel={'ecommerce'} locale={'en_US'} category={null} family={null}>
-      <ProductsWithAnImage type="has_image"/>
-      <ProductsWithGoodEnrichment type="good_enrichment"/>
-    </KeyIndicators>
+    <KeyIndicatorsProvider tips={keyIndicatorsTips}>
+      <KeyIndicators channel={'ecommerce'} locale={'en_US'} category={null} family={null}>
+        <KeyIndicator type={'has_image'} title={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.list.has_image.title'}/>
+        <KeyIndicator type={'good_enrichment'} title={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.list.good_enrichment.title'} resultsMessage={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.products_to_work_on'}/>
+      </KeyIndicators>
+    </KeyIndicatorsProvider>
   )
 }
