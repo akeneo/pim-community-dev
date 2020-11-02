@@ -71,17 +71,13 @@ class DataQualityInsightsTestCase extends TestCase
         return $product;
     }
 
-    protected function createMinimalProductVariant(string $identifier, string $parent, string $axisOption): ProductInterface
+    protected function createMinimalProductVariant(string $identifier, string $parent, string $axisOption, array $data = []): ProductInterface
     {
         Assert::oneOf($axisOption, self::MINIMAL_VARIANT_OPTIONS, 'Unknown minimal variant option');
 
-        $data = [
-            'parent' => $parent,
-            'values' => [
-                self::MINIMAL_VARIANT_AXIS_CODE => [
-                    ['data' => $axisOption, 'scope' => null, 'locale' => null],
-                ],
-            ],
+        $data['parent'] = $parent;
+        $data['values'][self::MINIMAL_VARIANT_AXIS_CODE] = [
+            ['data' => $axisOption, 'scope' => null, 'locale' => null],
         ];
 
         return $this->createProduct($identifier, $data);
@@ -95,7 +91,7 @@ class DataQualityInsightsTestCase extends TestCase
             ->build();
 
         if (!empty($data)) {
-            $this->get('pim_catalog.updater.product')->update($productModel, $data);
+            $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
             $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
             Assert::count($errors, 0, $this->formatValidationErrorMessage('Invalid product model', $errors));
         }
