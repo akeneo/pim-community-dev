@@ -23,7 +23,6 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $projectRepository,
         CalculationStepInterface $chainCalculationStep,
         SaverInterface $projectSaver,
-        ObjectDetacherInterface $objectDetacher,
         EntityManagerClearerInterface $cacheClearer
     ) {
         $this->beConstructedWith(
@@ -31,7 +30,6 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
             $projectRepository,
             $chainCalculationStep,
             $projectSaver,
-            $objectDetacher,
             $cacheClearer
         );
     }
@@ -56,7 +54,6 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $projectRepository,
         CalculationStepInterface $chainCalculationStep,
         SaverInterface $projectSaver,
-        ObjectDetacherInterface $objectDetacher,
         StepExecution $stepExecution,
         ProjectInterface $project,
         ProductInterface $product,
@@ -77,9 +74,6 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
 
         $stepExecution->incrementSummaryInfo('processed_products')->shouldBeCalledTimes(2);
 
-        $objectDetacher->detach($product)->shouldBeCalled();
-        $objectDetacher->detach($otherProduct)->shouldBeCalled();
-
         $projectSaver->save($project);
 
         $this->execute()->shouldReturn(null);
@@ -90,7 +84,6 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $projectRepository,
         CalculationStepInterface $chainCalculationStep,
         SaverInterface $projectSaver,
-        ObjectDetacherInterface $objectDetacher,
         EntityManagerClearerInterface $cacheClearer,
         StepExecution $stepExecution,
         ProjectInterface $project,
@@ -106,7 +99,6 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
 
         $chainCalculationStep->execute($product, $project)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('processed_products')->shouldBeCalledTimes(1001);
-        $objectDetacher->detach($product)->shouldBeCalled();
         $cacheClearer->clear()->shouldBeCalled();
 
         $projectSaver->save($project);
