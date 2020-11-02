@@ -49,9 +49,9 @@ interface ProductInterface extends
     /**
      * @param string|null $identifierValue
      *
-     * @return ProductInterface
+     * @return self
      */
-    public function setIdentifier(?string $identifierValue): ProductInterface;
+    public function setIdentifier(?string $identifierValue): self;
 
     /**
      * Get the product groups
@@ -86,7 +86,7 @@ interface ProductInterface extends
     /**
      * Get groups code
      *
-     * @return array
+     * @return string[]
      */
     public function getGroupCodes();
 
@@ -141,8 +141,8 @@ interface ProductInterface extends
     /**
      * Get product label
      *
-     * @param string $locale
-     * @param string $scopeCode
+     * @param ?string $locale
+     * @param ?string $scopeCode
      *
      * @return mixed|string
      */
@@ -151,7 +151,7 @@ interface ProductInterface extends
     /**
      * Set family
      *
-     * @param FamilyInterface $family
+     * @param ?FamilyInterface $family
      *
      * @return ProductInterface
      */
@@ -192,4 +192,16 @@ interface ProductInterface extends
      * @return Collection
      */
     public function getCategoriesForVariation(): Collection;
+
+    /**
+     * Whether the product was updated
+     *
+     * @return bool
+     */
+    public function wasUpdated(): bool;
+
+    /**
+     * Resets the updated state (to false)
+     */
+    public function cleanup(): void;
 }

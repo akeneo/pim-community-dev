@@ -448,4 +448,16 @@ class ProductSpec extends ObjectBehavior
         $this->setFamilyVariant($familyVariant);
         $this->getFamilyVariant()->shouldReturn($familyVariant);
     }
+
+    function it_is_updated_at_instantiation()
+    {
+        $this->beConstructedWith([]);
+        $this->wasUpdated()->shouldReturn(true);
+    }
+
+    function it_can_reset_its_updated_state()
+    {
+        $this->cleanup();
+        $this->wasUpdated()->shouldReturn(false);
+    }
 }

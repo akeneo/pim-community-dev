@@ -81,6 +81,9 @@ abstract class AbstractProduct implements ProductInterface
     /** @var FamilyVariantInterface|null */
     protected $familyVariant;
 
+    /** @var bool */
+    protected bool $wasUpdated = false;
+
     /**
      * Constructor
      */
@@ -93,6 +96,7 @@ abstract class AbstractProduct implements ProductInterface
         $this->associations = new ArrayCollection();
         $this->uniqueData = new ArrayCollection();
         $this->quantifiedAssociationCollection = QuantifiedAssociationCollection::createFromNormalized([]);
+        $this->wasUpdated = true;
     }
 
     /**
@@ -695,6 +699,22 @@ abstract class AbstractProduct implements ProductInterface
     public function isVariant(): bool
     {
         return null !== $this->getParent();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function wasUpdated(): bool
+    {
+        return $this->wasUpdated;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function cleanup(): void
+    {
+        $this->wasUpdated = false;
     }
 
     /**
