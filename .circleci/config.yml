@@ -766,7 +766,7 @@ workflows:
                 filters:
                     branches:
                         ignore:
-                            - master
+                            - "4.0"
           - checkout:
                 requires:
                     - ready_to_build?
