@@ -292,14 +292,12 @@ class Job implements JobInterface, StoppableJobInterface
             $jobExecution->setStatus($stepExecution->getStatus());
             $jobExecution->setExitStatus($stepExecution->getExitStatus());
             $this->jobRepository->updateJobExecution($jobExecution);
+
             return $stepExecution;
         }
 
         if (
-            (
-                $stepExecution->getStatus()->getValue() === BatchStatus::STOPPING ||
-                $stepExecution->getStatus()->getValue() === BatchStatus::STOPPED
-            ) &&
+            $stepExecution->getStatus()->getValue() === BatchStatus::STOPPING &&
             $stepExecution->getExitStatus()->getExitCode() !== ExitStatus::STOPPED
         ) {
             $jobExecution->setStatus(new BatchStatus(BatchStatus::STOPPING));

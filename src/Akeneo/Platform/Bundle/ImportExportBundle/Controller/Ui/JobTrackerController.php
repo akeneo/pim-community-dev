@@ -6,6 +6,8 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Event\JobExecutionEvents;
 use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository;
 use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Component\Batch\Job\StoppableJobInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Query\SqlUpdateJobExecutionStatus;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
@@ -32,14 +34,16 @@ class JobTrackerController extends Controller
     protected SecurityFacade $securityFacade;
     protected array $jobSecurityMapping;
     private SqlUpdateJobExecutionStatus $updateJobExecutionStatus;
+    private JobRegistry $jobRegistry;
 
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         JobExecutionRepository $jobExecutionRepo,
         JobExecutionArchivist $archivist,
         SecurityFacade $securityFacade,
-        $jobSecurityMapping,
-        SqlUpdateJobExecutionStatus $updateJobExecutionStatus
+        array $jobSecurityMapping,
+        SqlUpdateJobExecutionStatus $updateJobExecutionStatus,
+        JobRegistry $jobRegistry
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->jobExecutionRepo = $jobExecutionRepo;
@@ -47,6 +51,7 @@ class JobTrackerController extends Controller
         $this->securityFacade = $securityFacade;
         $this->jobSecurityMapping = $jobSecurityMapping;
         $this->updateJobExecutionStatus = $updateJobExecutionStatus;
+        $this->jobRegistry = $jobRegistry;
     }
 
     /**
@@ -96,9 +101,14 @@ class JobTrackerController extends Controller
      */
     public function stopJobAction(int $id): JsonResponse
     {
-        $this->updateJobExecutionStatus->updateByJobExecutionId($id, new BatchStatus(BatchStatus::STOPPING));
+        $jobExecution = $this->jobExecutionRepo->find($id);
+        $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
+        $isStoppable = $jobExecution->isRunning() && $job instanceof StoppableJobInterface && $job->isStoppable();
 
-        //TODO send meaningful message
+        if ($isStoppable) {
+            $this->updateJobExecutionStatus->updateByJobExecutionId($id, new BatchStatus(BatchStatus::STOPPING));
+        }
+
         return new JsonResponse(['successful' => true]);
     }
 }
